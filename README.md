@@ -15,6 +15,10 @@ Tutorial material on amortized / simulation-based Bayesian inference for finance
 
 Total: ~2 hours.
 
+## Simulator and inference plan
+
+The [implementation plan and mathematical guide](docs/simulator-plan/README.md) proposes a modular simulator library, pre-simulated training banks, and returns-inference and option-pricing workflows. It includes nine milestone subplans, beginner-oriented mathematical notes, and validation requirements. The plan is under review; implementation and the tutorial's central application remain to be agreed.
+
 ## Setup
 
 One environment, managed by [pixi](https://pixi.sh) from `pyproject.toml`:
