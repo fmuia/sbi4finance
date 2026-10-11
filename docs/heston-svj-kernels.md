@@ -2,7 +2,9 @@
 
 This implements **M3.1–M3.2**, the fourth of ten envisioned simulator-plan PRs:
 one batched NumPy reference and one serial Numba kernel, with the same explicit
-random inputs. It does not yet add a Heston/SVJ bank or posterior network.
+random inputs. The subsequent [joint Heston pilot](heston-joint-inference.md)
+adds a bank, reference and provisional posterior network; that checkpoint's
+conditional test failure leaves inference acceptance open.
 The live tutorial's returns-versus-options choice remains open; these are
 shared model building blocks.
 

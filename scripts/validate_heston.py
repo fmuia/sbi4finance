@@ -144,20 +144,21 @@ def coarsen(innovations, substeps):
             "jump_normals": innovations["jump_normals"]}
 
 
-def run_case(name, parameters, initial_variance, *, paths, seed, stream_id, backend):
-    dt = np.full(OBSERVATIONS, HORIZON / OBSERVATIONS)
-    references = moment_references(parameters, initial_variance, HORIZON)
-    ode = [joint_transform(parameters, initial_variance, HORIZON, FREQUENCIES, steps)
+def run_case(name, parameters, initial_variance, *, paths, seed, stream_id, backend,
+             observations=OBSERVATIONS, horizon=HORIZON, substep_levels=SUBSTEPS):
+    dt = np.full(observations, horizon / observations)
+    references = moment_references(parameters, initial_variance, horizon)
+    ode = [joint_transform(parameters, initial_variance, horizon, FREQUENCIES, steps)
            for steps in ODE_STEPS]
     ode_error = float(np.max(np.abs(ode[1] - ode[0])))
     started = perf_counter()
-    finest = heston.draw_innovations(dt, max(SUBSTEPS), seed=seed,
+    finest = heston.draw_innovations(dt, max(substep_levels), seed=seed,
                                     example_ids=np.arange(paths), stream_id=stream_id,
                                     jump_intensity=parameters.get("jump_intensity", 0.0))
     generated = perf_counter() - started
     levels, paired_checks = [], []
     previous_observables = None
-    for substeps in SUBSTEPS:
+    for substeps in substep_levels:
         innovations = coarsen(finest, substeps)
         started = perf_counter()
         output = heston.simulate(parameters, dt, initial_variance, innovations, backend=backend)
@@ -167,7 +168,7 @@ def run_case(name, parameters, initial_variance, *, paths, seed, stream_id, back
         terminal = np.maximum(raw_variance[:, -1], 0.0)
         summary, observables = summarize(log_returns, terminal, references, ode[1])
         summary.update({"substeps_per_observation": substeps,
-                        "internal_dt_years": HORIZON / (OBSERVATIONS * substeps),
+                        "internal_dt_years": horizon / (observations * substeps),
                         "simulation_seconds_including_compile_if_needed": elapsed,
                         "negative_auxiliary_fraction_at_observation_times": float(np.mean(raw_variance[:, 1:] < 0)),
                         "negative_terminal_auxiliary_fraction": float(np.mean(raw_variance[:, -1] < 0)),
@@ -178,7 +179,7 @@ def run_case(name, parameters, initial_variance, *, paths, seed, stream_id, back
             comparisons = {key: compare(values - previous_observables[key], 0.0,
                                          BUDGETS["characteristic_component"] if key.startswith("cf_") else BUDGETS[key])
                            for key, values in observables.items()}
-            paired_checks.append({"coarse_substeps": SUBSTEPS[len(levels) - 2],
+            paired_checks.append({"coarse_substeps": substep_levels[len(levels) - 2],
                                   "fine_substeps": substeps, "differences": comparisons,
                                   "passed": all(item["passed"] for item in comparisons.values())})
         previous_observables = observables

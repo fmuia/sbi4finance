@@ -50,6 +50,10 @@ test-simulators = "python -m unittest discover -s tests -v"
 test-heston = "python -m unittest discover -s tests -p test_heston.py -v"
 heston-validate = "python scripts/validate_heston.py --include-svj"
 heston-benchmark = "python scripts/benchmark_heston.py"
+heston-bank = "python scripts/generate_heston_bank.py"
+heston-reference = "python scripts/check_heston_reference.py"
+heston-task-numerics = "python scripts/check_heston_discretization.py"
+heston-train = "python scripts/train_heston.py"
 
 # GPU environment for Oscar (linux-64 only): `pixi install -e gpu` on a login node.
 [tool.pixi.feature.cuda]
