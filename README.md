@@ -65,6 +65,6 @@ cluster/              Oscar discovery script and sbatch template
 
 Simulator, data cache and checkpoint come from Stefan Radev's [amortized-fractals](https://github.com/stefanradev93/amortized-fractals).
 
-## Option data planning
+## Inference tasks and data planning
 
-The [data loading plan](docs/data-loading-plan.md) defines local option panels, synthetic-bank compatibility, quote validation and implementation milestones for HKDE and rough Bergomi. The accompanying [source comparison](docs/data-source-landscape.md) evaluates Yahoo, Alpaca, Cboe, ThetaData, Massive, Databento and research datasets. These are proposed interfaces; participant notebooks will continue to use local data.
+Start with [inference scenarios and data contracts](docs/inference-scenarios-and-data.md): returns/state inference, option calibration, pricing surrogates and direct price posteriors need different observations and training targets. The [option loading plan](docs/data-loading-plan.md) specifies the options branch, and the [source comparison](docs/data-source-landscape.md) evaluates Yahoo, Alpaca, Cboe, ThetaData, Massive, Databento and research datasets. These are proposed interfaces aligned with PR #3; they leave the live curriculum open and keep participant data local.

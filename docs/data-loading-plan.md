@@ -2,7 +2,9 @@
 
 Status: proposed implementation plan. Source review: 11 October 2026.
 
-Build the tutorial around local, versioned option panels and our own synthetic training banks. Use the same European market panel for HKDE and rough Bergomi, with separate model-specific training banks. Participants should not need a brokerage account, data subscription, Java service, API key, or network connection to execute the required exercises.
+For the **options application**, build exercises around local, versioned option panels and our own synthetic training banks. Use the same European market panel for HKDE and rough Bergomi, with separate model-specific training banks. Participants should not need a brokerage account, data subscription, Java service, API key, or network connection to execute the required exercises.
+
+Start with [inference scenarios and data contracts](inference-scenarios-and-data.md), which distinguishes returns inference, option calibration, pricing regression and direct price-posterior inference. PR #3 leaves the first tutorial application open; this document specifies its options branch rather than fixing the live curriculum.
 
 This plan covers acquisition, normalization, validation and loading. It complements the [simulator and inference plan in PR 3](https://github.com/fmuia/sbi4finance/pull/3); it does not implement the proposed interfaces or change the existing MMAR returns notebook. The [source comparison](data-source-landscape.md) records the provider evidence and tradeoffs.
 

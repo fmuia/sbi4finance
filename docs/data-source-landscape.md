@@ -1,6 +1,6 @@
 # Option data sources and tools
 
-Reviewed 11 October 2026 for a two-hour HKDE tutorial, a rough-Bergomi extension and an American-put take-home. The comparison asks whether a source supplies usable **option bid/ask observations**, not merely option trades, underlying index values, model IVs, or a broadly named historical endpoint.
+Reviewed 11 October 2026 for the options application: HKDE calibration, a rough-Bergomi extension and American-put pricing. The live curriculum remains open in PR #3. Read the [scenario-to-data mapping](inference-scenarios-and-data.md) first: returns inference needs a chronological price/return history, which this options-provider comparison does not evaluate. Here the question is whether a source supplies usable **option bid/ask observations**, not merely option trades, underlying index values, model IVs, or a broadly named historical endpoint.
 
 The recommendation is a local file interface backed by our own synthetic fixtures, with one processed European market example. Cboe is the first controlled one-date export to price; ThetaData is the first historical API alternative to evaluate; Alpaca is an optional current-capture API. See the [loading plan](data-loading-plan.md) for schema, validation and implementation milestones.
 
