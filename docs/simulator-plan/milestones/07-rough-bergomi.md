@@ -1,6 +1,6 @@
 # M7 Rough Bergomi, starting with option calibration
 
-**Status:** proposed; implementation starts after review. **Depends on:** accepted one-factor core in [M6](06-bergomi-factors.md) and [M2](02-banks-and-cluster.md). Two-factor Bergomi, HKDE, and M5 are not prerequisites. Read [models and numerics](../notes/02-models-and-numerics.md) and [inference and pricing](../notes/03-inference-and-pricing.md).
+**Status:** proposed; implementation starts after review. **Depends on:** accepted one-factor steps [M6.1–M6.3](06-bergomi-factors.md) and the local bank/loader pipeline in [M2.3](02-banks-and-cluster.md). Optional M6.4 two-factor Bergomi, HKDE, and M5 are not prerequisites. Read [models and numerics](../notes/02-models-and-numerics.md) and [inference and pricing](../notes/03-inference-and-pricing.md).
 
 ## Purpose
 
@@ -13,6 +13,17 @@ Add a power-law-memory forward-variance model with an independently checked driv
 3. Validate normalization and implement MC European pricing with explicit grids and budgets. Verify the estimator admits its reported error assessment: a finite price need not have finite payoff variance. Bounded put-payoff estimation plus put-call parity is a candidate within a verified martingale domain. Keep sampling error, contract dependence and discretization bias explicit.
 4. Generate a small option-panel bank with Q parameters and any declared curve coefficients as targets. Synthetic admissible curves, contracts, rates, and quote observations suffice for S; a real surface is optional M input. Reuse bank/adapter contracts and train a pilot posterior for a restricted task. Assess time-grid/kernel refinement, conditional cases and price-sensitive posterior functionals before increasing volume; unresolved reference accuracy limits acceptance for teaching.
 5. If pursuing a finite-factor approximation, version its kernel, weights, factor count, and error targets as numerical settings for the specified rough model. Compare it against the reference; do not equate it with an independently estimated two-factor Bergomi model.
+
+## Ordered implementation subplan
+
+| Step | Concrete output | Verification and handoff |
+|---|---|---|
+| M7.1 Gaussian driver reference | Explicit kernel/field convention, supported parameter domain and small-grid joint covariance fixtures | Check Gaussian covariance and asset-driver dependence independently before production optimization. |
+| M7.2 Production simulation and pricing | Hybrid/convolution generator, variance normalization, European pricer and numerical error report | Compare with M7.1, refine grids and justify the price estimator's moments/error bars. Accept this gate before producing a training bank. |
+| M7.3 Restricted bank and posterior | Q task, verified bank, pilot checkpoint and reproducible conditional/reference validation report | Reuse the panel helper accepted in M6.3 and M2.3 loading. Separate accepted numerical infrastructure from unresolved posterior accuracy; only accepted inference and price propagation can enter M8. |
+| M7.4 Optional numerical factor approximation | Versioned approximate kernel/weights and accuracy/cost comparison | Compare with the accepted rough reference at declared error targets. Do not present this approximation as the independently specified M6.4 model. |
+
+Complete M7.1–M7.3 in order. M7.4 is optional and may follow the accepted numerical reference without delaying the reference-based posterior pilot. Likely destinations are `simulators/` and `pricing/` for numerical work, and `tasks/` and `inference/` for the restricted calibration experiment. These reuse the shared observation interface without creating a hidden dependency on M4 or M5.
 
 ## Deliverables
 

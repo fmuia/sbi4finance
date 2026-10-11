@@ -14,6 +14,17 @@ Turn accepted task specifications into reusable training banks using the same ge
 4. Support small banks through `fit_offline`; implement a thin shard-aware `keras.utils.PyDataset` for larger banks. Use public BayesFlow approximator interfaces and preserve build/compile, training-only normalization, adapter, and checkpoint behavior. Existing `fit_disk` treats each file as one example and cannot directly consume these shards.
 5. Add a CPU-array wrapper selecting predetermined shard work, bounded concurrency, explicit thread budgets, and verified storage paths. Recheck actual cluster access/allocations before submission. Keep generation separate from GPU training and require manifest verification before dependent training.
 
+## Ordered implementation subplan
+
+All steps below are planned, not implemented. Work in order; each step uses the preceding step's output. M2.1–M2.3 establish local acceptance. M2.4 requires measured execution on the actual cluster and stays pending if access is unavailable; an offline rehearsal cannot satisfy it. Suggested destinations do not freeze filenames or public APIs.
+
+| Step | Concrete output | Verification/handoff |
+|---|---|---|
+| M2.1 — Stable identities and shard generation | Identity/RNG derivation, manifest and shard writers in `datasets/`, plus a generation command in `scripts/`, using the accepted GBM task. | Generate the same example IDs with changed shard sizes and worker assignments; compare values within the pinned backend. Inspect provenance, context, labels and numerical-failure records. |
+| M2.2 — Verification, retries and splits | A bank verifier, safe publication/retry behavior, and independent grouped train/validation/test assignment. | Exercise interrupted writes, duplicate/missing IDs, corruption, incompatible specifications and split leakage. Retrying must preserve example identity; related noise panels/windows must remain grouped. Hand only verified banks to training. |
+| M2.3 — Shard loading and tiny training round trip | A shard-aware reader/BayesFlow bridge in `datasets/` and `adapters/`, with a small training demonstration in `scripts/` and checkpoint provenance. | Compare loaded and in-memory minibatches; complete synthetic train/save/reload against the GBM reference with every market fixture absent and provider access disabled. Check training-only normalization and that truth/diagnostics cannot leak into conditioning. Record local throughput and memory. |
+| M2.4 — Actual cluster smoke and cost measurements | A CPU-array wrapper in `cluster/` invoking the same generation/verification commands, plus a measured run record identifying source/environment, resources, storage and bank manifest. | Recheck access and allocation, execute a small real cluster array, verify its output and test retry/reproducibility behavior there. Measure generation, serialization and reading costs before sizing larger jobs; record remote execution as pending if it cannot run. |
+
 ## Deliverables
 
 Generation/verification CLIs, a manifest schema, shard reader, BayesFlow bridge, CPU-array template, and a documented local-to-cluster smoke procedure. Checkpoints reference the bank manifest and adapter/schema versions.

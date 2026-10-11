@@ -14,6 +14,16 @@ Build the smallest complete scientific example whose simulation, likelihood, pos
 4. Add risk-neutral European pricing and deterministic integrated-variance checks using the same declared units, calendar, rates, and dividend conventions. Keep the P returns experiment and Q pricing experiment separately identified.
 5. Create a small collection of seeded examples covering ordinary settings, short windows, small variances, and permitted boundaries. Use these examples to exercise the proposed observation and target schemas.
 
+## Ordered implementation subplan
+
+All steps below are planned, not implemented. Work in order; each step uses the preceding step's output. Destinations are guidance for the existing package layout, not fixed API signatures.
+
+| Step | Concrete output | Verification/handoff |
+|---|---|---|
+| M1.1 — Exact simulator and returns experiment | Exact float64 GBM log-increment simulation in `simulators/`, return construction in `observations/`, and the known-volatility/unknown-drift task in `tasks/` with a versioned configuration. | Verify increment moments, independence, shapes, explicit RNG use and the proportional-drift/log-drift mapping on fully generated context. |
+| M1.2 — Analytic P and Q references | Analytic likelihood, Gaussian posterior and predictive utilities in `inference/`; European price and integrated-variance references in `pricing/`. Keep the P return task and Q pricing task separately identified. | Check formulas independently, reproduce posterior updates, and compare simulation moments/prices against analytic quantities using declared statistical tolerances and loss conventions. |
+| M1.3 — Reproducible fixtures and baseline | Compact synthetic fixtures with metadata, a runnable local demonstration in `scripts/`, targeted validation checks and a NumPy baseline benchmark. | Reproduce the full simulation-to-prediction demonstration without market files, a neural checkpoint or cluster access. Hand accepted fixtures and reference results to M2 and later model branches; record whether acceleration is justified. |
+
 ## Deliverables
 
 GBM reference kernels, a returns-task configuration, an analytic Bayesian reference utility, European price references, and compact reproducible synthetic fixtures with origin and truth-label metadata. Provide a small script demonstrating simulation → observations → analytic posterior → conditional prediction; it must not depend on a neural checkpoint, market file, provider, or cluster access.

@@ -48,24 +48,28 @@ Every milestone is proposed. Acceptance means its stated checks pass; completing
 | [M0 Contracts](milestones/00-contracts.md) | Versioned model, observation, task, target and numerical specifications | Plan review | Shared foundation |
 | [M1 GBM reference](milestones/01-gbm-reference.md) | Exact simulator, analytic posterior/pricing checks, small local inference example | M0 | Shared foundation |
 | [M2 Banks and cluster](milestones/02-banks-and-cluster.md) | Reproducible shards, verifier, BayesFlow loader and CPU generation array | M1 | Shared foundation |
-| [M3 Heston and SVJ](milestones/03-heston-and-svj.md) | Validated hidden-variance/jump kernels and returns inference | M1; M2 for large banks | Returns application and shared kernels |
-| [M4 HKDE and options](milestones/04-hkde-and-options.md) | Double-exponential jump variant, reference pricing and option-panel observations | M3 and M2 | Options application |
-| [M5 Amortized pricing](milestones/05-amortized-pricing.md) | Parameter posterior plus learned price surrogate; optional direct-price posterior experiment | M4 and M2 | Learned financial output |
-| [M6 Bergomi factors](milestones/06-bergomi-factors.md) | One-factor model and pricing checks; optional two-factor extension | M1; M2 for banks | Independent model branch |
-| [M7 Rough Bergomi](milestones/07-rough-bergomi.md) | Validated rough simulator and option-calibration bank | M6 and M2 | Advanced model branch |
-| [M8 Validation and tutorial](milestones/08-validation-and-tutorial.md) | Accepted checkpoint, reproducible reports and participant notebook for a selected application | M2 plus the selected accepted model/inference milestones | Delivery gate |
+| [M3 Heston and SVJ](milestones/03-heston-and-svj.md) | Validated hidden-variance/jump kernels and returns inference | M1 for kernels; M2.3 for bank-backed inference | Returns application and shared kernels |
+| [M4 HKDE and options](milestones/04-hkde-and-options.md) | Double-exponential jump variant, reference pricing and option-panel observations | M3.1 Heston kernel; M2.3 for banks | Options application |
+| [M5 Amortized pricing](milestones/05-amortized-pricing.md) | Parameter posterior plus learned price surrogate; optional direct-price posterior experiment | M4 and M2.3 | Learned financial output |
+| [M6 Bergomi factors](milestones/06-bergomi-factors.md) | One-factor model and pricing checks; optional two-factor extension | M1 for reference work; M2.3 for banks | Independent model branch |
+| [M7 Rough Bergomi](milestones/07-rough-bergomi.md) | Validated rough simulator and option-calibration bank | M6.1–M6.3 and M2.3; not optional two-factor work | Advanced model branch |
+| [M8 Validation and tutorial](milestones/08-validation-and-tutorial.md) | Accepted checkpoint, reproducible reports and participant notebook for a selected application | M2.1–M2.3 plus the selected accepted model/inference substeps | Delivery gate |
 
-The minimum useful infrastructure release is M0–M2. A returns-based teaching release can then use M3 and M8. An options-based release can use M4, M5 and M8. M6–M7 can proceed independently once their shared dependencies are available; they need not delay either teaching release.
+The minimum useful local infrastructure release is M0, M1 and M2.1–M2.3. M2.4 adds the verified cluster workflow and is required to call the full cluster milestone complete. A returns-based teaching release can use M3 and M8; an options-based release can use M4, M5 and M8. M6–M7 can proceed independently once their shared dependencies are available; they need not delay either teaching release.
 
 ```mermaid
 flowchart TD
     M0["M0 Contracts"] --> M1["M1 GBM reference"]
-    M1 --> M2["M2 Banks and cluster"]
-    M1 --> M3["M3 Heston and SVJ"]
+    M1 --> M2["M2.1–M2.3 Local banks and loader"]
+    M2 --> C["M2.4 Cluster smoke and resource report"]
+    M1 --> H["M3.1 Heston kernel"]
+    H --> M3["M3.2–M3.3 Gaussian jumps and returns inference"]
+    M2 --> M3
     M2 --> M4["M4 HKDE and options"]
-    M3 --> M4
+    H --> M4
     M4 --> M5["M5 Amortized pricing"]
-    M1 --> M6["M6 Bergomi factors"]
+    M1 --> M6["M6.1–M6.3 One-factor Bergomi"]
+    M2 --> M6
     M2 --> M7["M7 Rough Bergomi"]
     M6 --> M7
     M2 --> M8["M8 Selected tutorial and validation"]
@@ -74,7 +78,32 @@ flowchart TD
     M7 -. "optional advanced track" .-> M8
 ```
 
-The table is authoritative for dependencies. The graph emphasizes the independent branches; shared bank infrastructure also supports the larger experiments in M3 and M6. Market acquisition has no dependency edge to the required S tutorial.
+The table and ordered subplans specify the dependencies; the graph summarizes required branches. Optional collaborator parity, two-factor Bergomi, direct price inference and finite-factor approximation experiments are omitted from the graph. Market acquisition has no dependency edge to the required S tutorial. A locally accepted notebook does not certify cluster execution: M2.4 remains separately tracked until its actual smoke job passes.
+
+## Implementation sequence and subplans
+
+Start with the shared foundation in this order. Each milestone file contains an **Ordered implementation subplan** table with stable step IDs, a concrete output and verification evidence. Existing task descriptions supply the scientific detail; the subplan defines the execution order. All steps are currently planned, with no implementation completion claimed by this documentation PR.
+
+| Order | Work unit | Result needed before moving on |
+|---|---|---|
+| 1 | [M0.1–M0.3](milestones/00-contracts.md#ordered-implementation-subplan): conventions, worked schemas, contract review | Explicit P/Q tasks, units, inputs/targets, continuation requirements, identity and evidence metadata. Worked mock records suffice; a simulator is not a prerequisite. |
+| 2 | [M1.1–M1.3](milestones/01-gbm-reference.md#ordered-implementation-subplan): exact GBM, analytic references, verified fixtures | One executable local simulation → observation → analytic posterior → conditional prediction example, plus separate Q price references. |
+| 3 | [M2.1–M2.3](milestones/02-banks-and-cluster.md#ordered-implementation-subplan): bank generation, verifier, neural-loader round trip | Immutable synthetic shards and a small train/save/reload calculation checked against GBM. This is the first complete reusable data-to-checkpoint path. |
+| 4 | [M2.4](milestones/02-banks-and-cluster.md#ordered-implementation-subplan): cluster execution | Actual CPU-array smoke run, verified output and measured resource report. If access is unavailable, keep this step pending while local model work continues. |
+| 5 | Select and implement a model/application branch below | Use accepted shared infrastructure; branch choice does not retrospectively change the observation or measure contracts. |
+| 6 | [M8.1–M8.4](milestones/08-validation-and-tutorial.md#ordered-implementation-subplan): evidence, artifact reproduction, offline notebook, release report | Selected S workflow passes its numerical/inference checks and runs with every market fixture absent. |
+
+After the shared foundation, the supported execution routes are:
+
+| Route | Ordered model work | Independent or optional work |
+|---|---|---|
+| Heston/Gaussian-jump returns | M3.1 Heston → M3.2 jumps → M3.3 joint parameter/state inference → M8 | M3.F imports Francesco's exact study when available. Its absence blocks a parity claim, not independently specified kernels. |
+| HKDE option calibration/pricing | M3.1 Heston → M4.1–M4.3 HKDE/pricing/panel → M5.1 posterior plus reference pricing → M5.2 price surrogate when included in the selected deliverable → M8 | M3.2 Gaussian jumps and M3.3 returns inference are not prerequisites. M5.3 direct price inference is a separate experiment. M5.1's validated baseline can be delivered before surrogate acceptance; the proposed learned-pricing deliverable includes M5.2. |
+| Bergomi and rough Bergomi | M6.1–M6.3 one-factor model/pricing/panel → M7.1–M7.3 rough reference/production/pilot posterior → M8 if selected for teaching | M6.4 two-factor extension and M7.4 finite-factor approximation are independent additions. This route does not depend on completing the Heston/HKDE branch. |
+
+The option-observation contract belongs to M0. The first options branch to need its implementation—M4.2 or M6.3—adds the common helper under `observations/` and `tasks/`; the other branch reuses it. Do not duplicate the helper or make Bergomi depend on completing HKDE. M8's evidence sheet starts alongside the selected branch, before final training/evaluation; M8 release waits for the selected outputs to pass.
+
+Implement one coherent substep or small group of tightly coupled substeps at a time. When work starts, record its status and link the implementation, exact configuration/artifact versions and verification report in that milestone. Distinguish planned, in progress, accepted, blocked and deferred work. A partial milestone lists accepted substeps explicitly; passing the local loader does not mark the remote cluster step complete. These records document progress and acceptance, not a new permission request for every step.
 
 Milestone acceptance gates are scientific and engineering checks, rather than automatic requests for another permission at every step. After the plan is approved, implementation can proceed through the agreed scope as checks pass. A material scope change or unresolved scientific choice returns for review with its concrete alternatives.
 

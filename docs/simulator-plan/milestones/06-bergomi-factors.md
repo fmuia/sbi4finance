@@ -1,6 +1,6 @@
 # M6 One-factor Bergomi, with a two-factor extension
 
-**Status:** proposed; implementation starts after review. **Depends on:** [M0](00-contracts.md) and [M1](01-gbm-reference.md); use [M2](02-banks-and-cluster.md) for banks. This branch is independent of HKDE and M5. Read [models and numerics](../notes/02-models-and-numerics.md).
+**Status:** proposed; implementation starts after review. **Depends on:** [M0](00-contracts.md) and [M1](01-gbm-reference.md) for kernels; the local bank/loader pipeline in [M2.3](02-banks-and-cluster.md) for the pilot bank. This branch is independent of HKDE and M5. Read [models and numerics](../notes/02-models-and-numerics.md).
 
 ## Purpose
 
@@ -13,6 +13,17 @@ Introduce lognormal forward variance with a finite-dimensional continuation stat
 3. Implement variance normalization and Q asset simulation with declared integration settings. Define conditional continuation using all factor states, the curve specification, and elapsed time; do not restart an unconditional curve at the forecast origin.
 4. Add a fixed European option-panel task using the accepted observation/bank interfaces. Use variance reduction and numerical refinement before low-level acceleration. Justify the estimator's moments and error assessment; finite prices alone do not justify conventional MC error bars. Preserve sampling error separately from quote error.
 5. If the reviewed use case needs separate fast and slow factors, extend to a two-factor model with a valid full correlation matrix, explicit loading conventions, and complete state output. Treat this as a scientific model, distinct from fitting numerical factors to a rough kernel.
+
+## Ordered implementation subplan
+
+| Step | Concrete output | Verification and handoff |
+|---|---|---|
+| M6.1 Model and curve contract | Reviewed factor normalization, covariance/support conventions, synthetic curve configuration and continuation-state specification | Resolve known versus inferred curve inputs and all elapsed-time conventions before implementing kernels. |
+| M6.2 One-factor kernels and prices | Gaussian/OU reference, asset integration, complete continuation and MC European pricing fixtures | Pass covariance, normalization, continuation, martingale-domain and price-refinement gates with justified MC uncertainty. |
+| M6.3 Option task and bank | Shared fixed-panel observation helper, task configuration and a verified small bank using M2.3 | Check context/contract ordering, quote versus numerical error, split groups and loading. Accepted M6.1–M6.3 unlock M7. |
+| M6.4 Optional two-factor extension | Separate model configuration, valid joint correlation construction, kernels and acceptance report | Repeat the relevant one-factor checks and verify limiting cases. This step does not block M7. |
+
+Implement the required one-factor steps in order. Use `simulators/`, `pricing/`, `observations/` and `tasks/` under `src/sbi4finance/` as they acquire implementations. M6.3 can implement the panel helper against M0's schema if M4.2 has not run, or reuse it if already accepted; neither the helper nor its task contract requires HKDE. A one-factor inference teaching release would additionally need an accepted posterior/reference workflow; the bank alone does not provide that inference gate.
 
 ## Deliverables
 

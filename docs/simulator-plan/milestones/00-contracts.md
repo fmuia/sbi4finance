@@ -16,13 +16,23 @@ Adopt the [S/M/E evidence boundary](https://github.com/fmuia/sbi4finance/blob/1e
 4. Freeze the first task schemas: a complete return window and a complete option panel. Add `data_origin`, purpose, measure/task, conditioning cutoff or contract selection, available truth labels, and S/M/E evidence scope to the common schema. Separate observations/context from target truth and numerical diagnostics. Preserve batch, time/contract, and channel axes; distinguish missing observations from zero returns. Market records have no fabricated parameter/state labels.
 5. Specify canonical task identity, stable example IDs, split groups, purpose-separated randomness, failure recording, and checkpoint provenance. Document which settings change the statistical experiment and which merely change execution.
 
+## Ordered implementation subplan
+
+All steps below are planned, not implemented. Work in order; each step uses the preceding step's output. Suggested destinations follow the [module responsibilities](../notes/04-software-and-data.md#responsibilities-and-dependencies), without fixing final filenames or requiring empty modules.
+
+| Step | Concrete output | Verification/handoff |
+|---|---|---|
+| M0.1 — Conventions and capabilities | A convention table for parameters, units, P/Q measure, initialization, numerical settings and model-specific continuation; a supported-capability table. Keep these contracts with the plan and use them to guide `simulators/`, `observations/` and `pricing/`. | Trace the proposed model ladder through the capability table. State unsupported operations explicitly, including rough-state continuation that has no accepted representation. |
+| M0.2 — Two worked task schemas | A synthetic returns specification and option-panel specification, illustrated with paper/mock records for batch shapes, priors/targets, hypothetical context, example/split identity, and S/M/E provenance and truth-label metadata. These guide `tasks/`, `configs/tasks/`, `datasets/` and `adapters/`. | Trace the declared roles of parameter draws, observations and targets without requiring executable simulators. Show that no latent truth or future evaluation outcome enters conditioning, and that neither task needs market fixtures. |
+| M0.3 — Accepted contracts and decision record | Consolidated contracts plus a short record of resolved choices and explicitly deferred alternatives. Identify the subset needed for GBM and bank generation. | Hand the agreed subset to M1 and M2. Keep the returns-versus-options teaching choice open; pending collaborator mappings or optional M/E acquisition do not block the common contracts. |
+
 ## Deliverables
 
 A reviewed convention table, two worked task specifications, illustrative batch shapes, a minimal capability table, and a short decision record for unresolved scientific choices. The initial package remains inside `sbi4finance`; these documents define the boundary for later code, not a requirement to create every suggested module immediately.
 
 ## Acceptance and tests
 
-Walk one fully generated returns example and one fully generated option example, including hypothetical contexts, from parameter draw to inference target with all market fixtures absent. Confirm that no target truth reaches network inputs, and that changing shard size cannot change an example's scientific identity. Review P/Q distinctions and model-specific continuation with the mathematical notes. Missing market access or permission affects only M/E; a synthetic substitute must never be labelled real. Mark every unresolved convention explicitly; later milestones may implement only the reviewed subset.
+Walk one worked returns record and one worked option-panel record, including hypothetical contexts, from declared parameter draw to observation and inference target. Use paper/mock values and schema checks; executable generation is accepted in M1 and the relevant later model/pricing milestone, including M4 for HKDE panels. Confirm from the contracts that no target truth reaches network inputs, that no market fixture is required, and that changing shard size cannot change an example's scientific identity. Review P/Q distinctions and model-specific continuation with the mathematical notes. Missing market access or permission affects only M/E; a synthetic substitute must never be labelled real. Mark every unresolved convention explicitly; later milestones may implement only the reviewed subset.
 
 ## Decision gate and deferred scope
 

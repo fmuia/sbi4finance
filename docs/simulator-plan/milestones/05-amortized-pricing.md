@@ -1,6 +1,6 @@
 # M5 Parameter posteriors and amortized pricing
 
-**Status:** proposed; implementation starts after review. **Depends on:** [M4](04-hkde-and-options.md) and [M2](02-banks-and-cluster.md). Read [inference and pricing](../notes/03-inference-and-pricing.md) and [software and data](../notes/04-software-and-data.md).
+**Status:** proposed; implementation starts after review. **Depends on:** accepted [M4.3](04-hkde-and-options.md) option observations and the local bank/loader pipeline in [M2.3](02-banks-and-cluster.md). Read [inference and pricing](../notes/03-inference-and-pricing.md) and [software and data](../notes/04-software-and-data.md).
 
 ## Purpose
 
@@ -13,6 +13,16 @@ Establish the relationship between Bayesian calibration and fast downstream pric
 3. Define a supervised price-surrogate task with inputs consisting of Q parameters, contract terms, and required market/state context. Labels are validated pricing expectations, not individual realized payoffs or presumed real-market fair values. Set the supported domain and loss/error scales deliberately; tiny prices and tail contracts require more than a single average relative-error score.
 4. Train and test the surrogate using grouped splits that keep related contracts/parameter draws from leaking across partitions. Assess posterior price propagation with both exact and surrogate pricers. Keep the calibration observation generator on the validated reference route unless a separate approximation study permits replacement.
 5. Optionally design a direct conditional posterior-price model for a fixed target payoff and context. Generate each noisy conditioning panel and reference target model price from the same parameter draw. Its labels and validation must reproduce the relevant push-forward distribution, rather than confusing a conditional price with a future realized payoff.
+
+## Ordered implementation subplan
+
+| Step | Concrete output | Verification and handoff |
+|---|---|---|
+| M5.1 Parameter posterior and reference prices | Validated calibration checkpoint, same-likelihood posterior reference cases and downstream price distributions from the reference pricer | Accept conditional/joint posterior checks and price propagation. This complete options baseline can enter M8 without waiting for a learned pricer. |
+| M5.2 Supervised price surrogate | Separate regression bank/checkpoint, supported-domain specification, error report and measured cost comparison | Compare price errors and propagated quantiles against M5.1. Accept or reject the surrogate independently; its failure does not invalidate the accepted reference-price path. |
+| M5.3 Optional direct price posterior | Fixed-target conditional price-posterior experiment and comparison with M5.1 | Verify matched panel/target generation and push-forward agreement. Keep this experiment independent of acceptance of either earlier route. |
+
+Complete M5.1 first. M5.2 and, if selected, M5.3 then use that accepted baseline; M5.3 need not wait for surrogate acceptance. Likely destinations are `inference/` and `adapters/` for calibration, `surrogates/` for regression, and `tasks/` for their distinct datasets. Checkpoint cards must identify which route and supported domain they implement.
 
 ## Deliverables
 
