@@ -49,7 +49,10 @@ hybrid Volterra driver. Its separate preset is
 `configs/tasks/rough_bergomi_option_bank.json`, consumed by the same bank command.
 `pixi run review-bergomi` covers both models, their bank results and numerical
 limits. A current variance alone is not a continuation state for rough memory;
-historical-return forecasting and neural Q posterior training remain separate work.
+historical-return forecasting remains separate work. The
+[restricted rough posterior pilot](docs/rough-joint-inference.md) adds a frozen
+512-step Q inference task, cluster chunks, an independent importance reference,
+and a separate review of conditional, SBC and mean-price evidence.
 
 One environment, managed by [pixi](https://pixi.sh) from `pyproject.toml`:
 
@@ -78,6 +81,7 @@ two-hour participant curriculum. Closely related increments share named sections
 | [Joint Heston inference](notebooks/05_heston_joint_inference.py) | M3.3 / 5: observed histories, reference/neural joint posteriors, conditional futures and the failed frozen checks | `pixi run review-heston` |
 | [HKDE and option panels](notebooks/06_hkde_and_pricing.py) | M4 / 6: jump law, Q prices, noisy observations, bank roles and reference checks | `pixi run review-hkde` |
 | [Bergomi models](notebooks/08_bergomi_models.py) | M6–M7 / 8–9: factor and rough drivers, memory, MC pricing, numerical and bank evidence | `pixi run review-bergomi` |
+| [Rough posterior pilot](notebooks/09_rough_inference.py) | M7.3b / 9: numerical observation law, independent reference, prior control, joint inference, SBC and excluded-price means | `pixi run review-rough-inference` |
 
 Default execution uses synthetic examples and committed evidence, with no market
 downloads, cluster submission or full training run. Recorded results and fresh

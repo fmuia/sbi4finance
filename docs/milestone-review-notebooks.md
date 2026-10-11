@@ -8,6 +8,9 @@ From the repository root, install the pinned environment with
 | `pixi run review-foundations` | [01_gbm_foundations.py](../notebooks/01_gbm_foundations.py) | M0–M2 / increments 1–3: observation and truth roles, exact GBM posterior/prediction, separate Q prices, tiny saved bank, historical training and actual cluster evidence |
 | `pixi run review-kernels` | [04_heston_svj_kernels.py](../notebooks/04_heston_svj_kernels.py) | M3.1–M3.2 / increment 4: diffusion and price jumps, signed-state restart, matched NumPy/Numba calculations and recorded numerical/timing checks |
 | `pixi run review-heston` | [05_heston_joint_inference.py](../notebooks/05_heston_joint_inference.py) | M3.3 / increment 5: joint parameter/state inference, four original cases, neural/reference posteriors, future losses, failed frozen test, spline follow-up and bounded-time diagnosis/validation |
+| `pixi run review-hkde` | [06_hkde_and_pricing.py](../notebooks/06_hkde_and_pricing.py) | HKDE kernels, Q prices, panel banks and numerical reference checks |
+| `pixi run review-bergomi` | [08_bergomi_models.py](../notebooks/08_bergomi_models.py) | One-factor and rough kernels, pricing, banks and paired numerical refinement |
+| `pixi run review-rough-inference` | [09_rough_inference.py](../notebooks/09_rough_inference.py) | M7.3b / increment 9: finite-MC observation law, independent reference, prior control, conditional/joint inference, SBC and target-price means |
 
 These are development review tutorials. M8 will separately select and pace the
 participant course. Each notebook explains the mathematics and conventions,
@@ -29,7 +32,7 @@ stop rule was applied; no new final-test evaluation followed.
 
 ## Verification and reproduction
 
-All three pass strict marimo checks:
+The original three reviews passed strict marimo checks:
 
 ```bash
 pixi run marimo check --strict notebooks/01_gbm_foundations.py \

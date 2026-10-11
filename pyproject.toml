@@ -65,6 +65,12 @@ bergomi-validate = "python scripts/validate_bergomi.py"
 rough-bergomi-validate = "python scripts/validate_rough_bergomi.py"
 bergomi-refinement = "python scripts/check_bergomi_coupled_refinement.py"
 review-bergomi = "marimo edit notebooks/08_bergomi_models.py --no-token"
+option-bank-shard = "python scripts/generate_option_bank_shard.py"
+option-bank-assemble = "python scripts/assemble_option_bank.py"
+rough-reference = "python scripts/check_rough_reference.py"
+rough-train = "python scripts/train_rough.py"
+rough-evaluate = "python scripts/evaluate_rough.py"
+review-rough-inference = "marimo edit notebooks/09_rough_inference.py --no-token"
 
 # GPU environment for Oscar (linux-64 only): `pixi install -e gpu` on a login node.
 [tool.pixi.feature.cuda]
