@@ -13,6 +13,12 @@ and its offline review. Keep Heston's failures and Bergomi's fidelity limits
 visible. The final returns-versus-options curriculum remains open; real-market
 acquisition cannot block S delivery.
 
+The first [HKDE baseline](../../hkde-joint-inference.md) is now available for
+review. Its numerical reference, parameter checks and marginal SBC pass,
+but the downstream price-quantile gate fails. Its verified review notebook
+is development teaching material; it does not make the provisional checkpoint
+an accepted participant inference path. Final-test evaluation remains reserved.
+
 Assemble evidence already collected at each milestone into a complete S participant workflow. Validation and didactic review begin with M0 contracts and M1 analytic checks; this milestone closes end-to-end gaps rather than postponing either. The earlier review notebooks explain each development increment, including failed experiments; M8 selects and paces a scientifically accepted application for participants. M is an optional market illustration and E is a separate empirical extension; neither is required for S acceptance.
 
 ## Tasks

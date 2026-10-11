@@ -38,10 +38,15 @@ three option banks complete the current coverage push. All three now have actual
 CPU generation, exact Linux replay, verified transfer and numerical Mac replay
 in the [cluster report](../option-cluster-smoke.md). The original HKDE portable
 tolerance failure and adjustment remain visible; scientific gates are unchanged.
-Next follow the [restricted HKDE subplan](milestones/05-amortized-pricing.md#next-increment-restricted-hkde-baseline):
-refined two-dimensional reference, one small baseline, conditional/joint and
-price checks, and offline review. M5 posterior acceptance, Bergomi's M7.3b
-inference, and M8's chosen participant release remain pending. Optional
+The [restricted HKDE experiment](../hkde-joint-inference.md) now implements
+that next step: accepted numerical grid, one 80-epoch baseline and conditional,
+joint, SBC and price checks. Parameter gates and marginal SBC pass, with mean
+RMSE 0.123 reference SD versus the prior's 2.09. The maximum target-price
+quantile error is 0.0439 currency, above its frozen 0.03 gate. The checkpoint
+remains provisional, the final test is unused, and the one-run stop rule was
+applied. Notebook 06 and standalone figures teach the measured outcome.
+M5.1 scientific acceptance, M5.2 surrogate work, Bergomi's M7.3b inference,
+and M8's chosen participant release remain pending. Optional
 two-factor models and rough-memory P forecasting are outside this required core.
 
 The priority is a useful, scientifically sound tutorial that is easy to change. These milestones organize the work; they are not a requirement to build a production platform or complete every model before learning from a working example. The ordered substeps are a checklist, not separate PRs or approval rounds.
@@ -68,7 +73,7 @@ Implementation titles use `N/10-simulator-plan-description`: the denominator is 
 | 4/10 | M3.1–M3.2: [Heston and Gaussian-jump kernels, checks and timings](../heston-svj-kernels.md) |
 | 5/10 | M3.3: [restricted joint Heston inference and conditional forecasts](../heston-joint-inference.md); pipeline implemented, checkpoint provisional |
 | 6/10 | M4: HKDE pricing and option panels |
-| 7/10 | M5.1–M5.2: Q posterior, reference pricing and price surrogate |
+| 7/10 | M5.1: [restricted Q posterior/reference experiment](../hkde-joint-inference.md), checkpoint provisional; M5.2 surrogate remains pending |
 | 8/10 | M6.1–M6.3: one-factor Bergomi |
 | 9/10 | M7.1–M7.3: rough Bergomi and pilot inference |
 | 10/10 | M8: selected, validated offline teaching workflow |

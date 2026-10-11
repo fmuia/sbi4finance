@@ -47,14 +47,24 @@ def main():
     training = json.loads((args.checkpoint / "training.json").read_text())
     checkpoint_hash = sha(args.checkpoint / "model.keras")
     reference_report = json.loads((args.reference / "reference.json").read_text())
+    reference_report_hash = sha(args.reference / "reference.json")
     if (training["protocol_sha256"] != sha(args.protocol)
             or training["bank_configuration"] != config or training["checkpoint_sha256"] != checkpoint_hash
             or not training["same_seed_reload_exact"] or not reference_report["passed"]
             or reference_report["protocol_sha256"] != sha(args.protocol)
+            or training["reference_report_sha256"] != reference_report_hash
             or reference_report["task"] != task
             or reference_report["reference_grid_sha256"] != sha(args.reference / "reference-grid.npz")
             or json.loads((args.checkpoint / "task.json").read_text()) != task):
         raise ValueError("matching frozen task, checkpoint, protocol and accepted reference required")
+    expected_sources = {"check_hkde_reference.py", "hkde_reference.py", *option_bank.source_files("hkde")}
+    if set(reference_report["source_sha256"]) != expected_sources:
+        raise ValueError("accepted reference has an incomplete or unexpected source set")
+    for name, digest in reference_report["source_sha256"].items():
+        source = (Path(__file__).with_name(name) if name == "check_hkde_reference.py"
+                  else Path(option_bank.__file__).with_name(name))
+        if digest != sha(source):
+            raise ValueError(f"accepted reference source changed: {name}")
     for name, path in (("hkde_inference.py", inference.__file__),):
         if training["source_sha256"][name] != sha(path):
             raise ValueError("checkpoint inference source changed")
@@ -64,7 +74,9 @@ def main():
         previous = json.loads(args.validation_report.read_text())
         if (not previous["passed"] or previous["split"] != "validation"
                 or previous["checkpoint_sha256"] != checkpoint_hash
-                or previous["protocol_sha256"] != sha(args.protocol)):
+                or previous["protocol_sha256"] != sha(args.protocol)
+                or previous["bank_manifest_sha256"] != training["bank_manifest_sha256"]
+                or previous["reference_report_sha256"] != reference_report_hash):
             raise ValueError("reserved test cannot select a new candidate or bypass failed validation")
     manifest, splits = option_bank.load_bank(args.bank)
     if manifest["configuration"] != config or sha(args.bank / "manifest.json") != training["bank_manifest_sha256"]:
@@ -149,7 +161,7 @@ def main():
     report = {
         "experiment_id": protocol["experiment_id"], "evidence_scope": "S", "measure": "Q", "split": args.split,
         "protocol_sha256": sha(args.protocol), "checkpoint_sha256": checkpoint_hash,
-        "reference_report_sha256": sha(args.reference / "reference.json"),
+        "reference_report_sha256": reference_report_hash,
         "bank_manifest_sha256": sha(args.bank / "manifest.json"), "checks_sha256": sha(checks_path),
         "passed": bool(all(gates.values())), "metrics": metrics, "thresholds": evaluation["gates"], "gates": gates,
         "case_ids": case_ids, "conditional_draws_per_case": len(draws[0]), "cases": cases,

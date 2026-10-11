@@ -4,11 +4,14 @@
 
 ## Purpose
 
-**Priority update:** increment 7 is next, beginning with the existing restricted
-HKDE panel task after the measured option-bank cluster smoke. No Q posterior
-has yet been trained or accepted. Use the deterministic Fourier price map and
-its explicit Gaussian quote likelihood to establish a small reference-backed
-baseline before considering a pricing surrogate. Bergomi banks remain useful
+**Measured update:** increment 7 now includes the first
+[restricted HKDE baseline](../../hkde-joint-inference.md). M5.1a–c are delivered:
+frozen protocol, refined numerical reference, saved bank and one trained,
+reloadable checkpoint. M5.1d ran and failed only the target-price quantile gate
+(0.0439 currency versus 0.03); parameter checks and marginal SBC pass. M5.1e
+provides the offline review of that outcome. The checkpoint remains provisional,
+the reserved final test is untouched, and no tuning sweep follows. M5.1
+scientific acceptance and M5.2 surrogate work remain pending. Bergomi banks remain useful
 numerical pilots; settling their continuum-price bias is not a dependency of
 this HKDE experiment. Heston tuning stays paused with its results preserved,
 and the returns-versus-options curriculum choice remains open.
@@ -39,6 +42,11 @@ Establish the relationship between Bayesian calibration and fast downstream pric
 Complete M5.1 first. M5.2 and, if selected, M5.3 then use that accepted baseline; M5.3 need not wait for surrogate acceptance. Likely destinations are `inference/` and `adapters/` for calibration, `surrogates/` for regression, and `tasks/` for their distinct datasets. Checkpoint cards must identify which route and supported domain they implement.
 
 ## Next increment: restricted HKDE baseline
+
+The subplan below remains the frozen acceptance specification. Its first-run
+[protocol](../../hkde-inference-protocol.md), [measured result](../../hkde-joint-inference.md)
+and graph-linked review preserve both the completed implementation and failed
+scientific gate; a later experiment must retain that record.
 
 Reuse `configs/tasks/hkde_option_bank.json`: infer only long-run variance
 `theta` and jump intensity `jump_intensity`, with independent uniform priors

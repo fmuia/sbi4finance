@@ -76,15 +76,25 @@ surface in its split.
 
 ## 3. Pick one restricted inference task only after its price labels are ready
 
-**Next integration task: the existing two-parameter HKDE Q panel.** This is a
-bounded implementation choice, not selection of the final curriculum. Its
+**First Q experiment now implemented: the existing two-parameter HKDE panel.**
+The [measured baseline](hkde-joint-inference.md) now includes the refined grid,
+training/reload, conditional/joint checks, SBC and target-price propagation.
+Its reference passes, and parameter/SBC gates pass; maximum target-price
+quantile error 0.0439 exceeds the frozen 0.03 currency gate. The one-run stop
+rule was applied, so this checkpoint remains provisional and its 256 final-test
+panels remain unevaluated. Mean RMSE is 0.123 reference SD versus 2.09 for the
+prior baseline: this is substantial updating, not a prior copy. The graph-linked
+review preserves the failure. Any later bounded follow-up must retain this
+record; do not quietly relax the output tolerance or start a broad tuning sweep.
+
+The original choice was a bounded implementation experiment, not selection
+of the final curriculum. Its
 deterministic Fourier labels and Gaussian quote law permit a direct likelihood
 and a two-dimensional numerical posterior reference over `theta` and
 `jump_intensity`. The saved bank's largest Fourier refinement difference is
-about 1.12e-9 currency, against quote sigma 0.25. Start with a refined posterior
-grid and fixed validation cases; then train one small neural baseline, inspect
-prior-to-posterior updating, and compare conditional/joint quantities. Keep
-new final-test cases separate from development. A surrogate is a later,
+about 1.12e-9 currency, against quote sigma 0.25. The refined posterior
+grid, fixed cases and first baseline now provide these comparisons. Keep the
+final-test cases separate from further development. A surrogate is a later,
 independently accepted step.
 
 There is no need to expand every Bergomi bank before that integration. Their

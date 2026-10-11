@@ -34,6 +34,14 @@ def main():
             or reference["task"] != config["task"]
             or reference["reference_grid_sha256"] != sha(args.reference / "reference-grid.npz")):
         raise ValueError("matching accepted numerical reference required before training")
+    expected_sources = {"check_hkde_reference.py", "hkde_reference.py", *option_bank.source_files("hkde")}
+    if set(reference["source_sha256"]) != expected_sources:
+        raise ValueError("accepted reference has an incomplete or unexpected source set")
+    for name, digest in reference["source_sha256"].items():
+        source = (Path(__file__).with_name(name) if name == "check_hkde_reference.py"
+                  else Path(option_bank.__file__).with_name(name))
+        if digest != sha(source):
+            raise ValueError(f"accepted reference source changed: {name}")
     manifest, splits = option_bank.load_bank(args.bank)
     if manifest["configuration"] != config:
         raise ValueError("bank does not match the frozen experiment")
