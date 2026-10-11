@@ -2,6 +2,8 @@
 
 The software should express the experiment defined in [foundations](01-foundations.md), [models](02-models-and-numerics.md), and [inference and pricing](03-inference-and-pricing.md). This note maps those mathematical objects to modules and stored data. The APIs and layouts are proposals to implement through the [milestones](../README.md), not existing functionality.
 
+Apply the roadmap's [tutorial-iteration rule](../README.md#build-for-tutorial-iteration): begin with a few functions, explicit arrays/configuration and the smallest reproducible example. The responsibilities below need not each become a module or class. Scientific meanings must be explicit; infrastructure grows only when the experiments require it.
+
 ## Responsibilities and dependencies
 
 Keep mathematical definitions independent of where computation runs and which network consumes its output:
@@ -26,6 +28,8 @@ Create modules as they acquire a concrete implementation. The numerical kernels 
 The initial registry is a small table of supported models and capabilities. A model may support paths without Fourier pricing, or pricing without the conditional continuation required by a returns task. Unsupported combinations must fail explicitly. A general plugin system and arbitrary composition of every variance/jump/payoff component would create obligations beyond the initial task.
 
 ## Five specifications
+
+These are five kinds of information, not a requirement for five object types. One small configuration dictionary/JSON record can carry them initially. Keep a saved run configuration and an explicit format version; do not build registries, schema migration or backward-compatibility machinery before actual reuse demands it.
 
 | Specification | Required meaning | Examples of decisions |
 |---|---|---|
@@ -118,9 +122,11 @@ First keep serial stream consumption within an example and parallelize independe
 
 Record reproducibility within a pinned backend/environment. Different compilers, numerical methods or reduction orders may not be bitwise identical. Compare those implementations through scientific tolerances and distributional checks. For a refinement experiment, specify how coarse and fine randomness is coupled; reusing a seed alone does not guarantee matched Brownian paths.
 
-## Shards and restartable generation
+## Compact banks and later sharding
 
-An initial bank layout is:
+The first pilot may be an NPZ file or a directory of NumPy arrays with one JSON metadata file, loaded entirely into memory. Preserve IDs, seed derivation, independent splits, observation/target separation, provenance and failure records. A short checking function and safe write/rename are enough; there is no requirement for a general storage or recovery subsystem.
+
+A scalable layout, to adopt when bank size or job partitioning needs it, is:
 
 ```text
 banks/<bank-id>/
@@ -165,7 +171,7 @@ Optional E uses a separate chronological/contract holdout design. Account for de
 
 ## Cluster workflow and training
 
-The proposed CPU array selects predefined example-ID ranges and invokes the same generation command used locally. The laptop connection submits and monitors work; large banks are generated and read on the cluster data volume. Transfer only the small fixtures, diagnostics and checkpoints required locally.
+The first cluster job invokes the same generation command used locally. When more parallelism is needed, a CPU array selects predefined example-ID ranges. The laptop connection submits and monitors work; large banks are generated and read on the cluster data volume. Transfer only the small fixtures, diagnostics and checkpoints required locally.
 
 Generation and training consume synthetic task specifications, not provider credentials or acquired quotes. After artifacts are prepared, the required participant S notebook runs offline from synthetic fixtures/checkpoints, including its downstream forecast/pricing exercise. An acceptance rehearsal removes all market fixtures and disables provider/network access. Optional M/E cells must report missing inputs explicitly and never relabel synthetic data as real.
 
@@ -175,9 +181,9 @@ For a rough workload estimate, suppose $N$ examples cost $t_e$ seconds each on o
 
 One million 252-day float32 return windows require $10^6\times252\times4=1.008\times10^9$ bytes for that observation channel alone, about 1.0 decimal GB. Targets, masks, context and metadata add storage. Retaining every high-resolution path for every price label would usually dominate this budget.
 
-The inspected scaffold's [trainer](https://github.com/fmuia/sbi4finance/blob/9a3abf86902ec72aa859bf060b3ec05edd42581d/scripts/train_univariate.py) generates train/validation dictionaries in RAM and calls `fit_offline`. Its [cluster discovery](https://github.com/fmuia/sbi4finance/blob/9a3abf86902ec72aa859bf060b3ec05edd42581d/cluster/discover_cluster.py) already distinguishes CPU generation and GPU training. M2 supplies the missing array, manifest and loader components.
+The inspected scaffold's [trainer](https://github.com/fmuia/sbi4finance/blob/9a3abf86902ec72aa859bf060b3ec05edd42581d/scripts/train_univariate.py) generates train/validation dictionaries in RAM and calls `fit_offline`. Its [cluster discovery](https://github.com/fmuia/sbi4finance/blob/9a3abf86902ec72aa859bf060b3ec05edd42581d/cluster/discover_cluster.py) already distinguishes CPU generation and GPU training. M2 first saves/loads explicit banks around that training route; custom loading and array infrastructure follow measured needs.
 
-In the inspected BayesFlow 2.0.14 source, [DiskDataset](https://github.com/bayesflow-org/bayesflow/blob/v2.0.14/bayesflow/datasets/disk_dataset.py) loads each file as one example and stacks files. Passing a multi-example shard directly would add an incorrect batch axis. Use a thin shard-aware `keras.utils.PyDataset` with bounded caching and row batching, passed to the public [approximator dataset interface](https://github.com/bayesflow-org/bayesflow/blob/v2.0.14/bayesflow/approximators/approximator.py). Small banks can retain the existing in-memory path. The bridge must also preserve training-only normalization, compile/build behavior and checkpoint reloads.
+In the inspected BayesFlow 2.0.14 source, [DiskDataset](https://github.com/bayesflow-org/bayesflow/blob/v2.0.14/bayesflow/datasets/disk_dataset.py) loads each file as one example and stacks files. Passing a multi-example shard directly would add an incorrect batch axis. If memory measurements require disk batching, use a thin shard-aware `keras.utils.PyDataset` with bounded caching and row batching, passed to the public [approximator dataset interface](https://github.com/bayesflow-org/bayesflow/blob/v2.0.14/bayesflow/approximators/approximator.py). This is conditional scaling guidance, not an M2.3 acceptance requirement. Small banks use the existing in-memory path. Either path must preserve training-only normalization and checkpoint reloads.
 
 ## What to reuse from SSMS
 
@@ -188,6 +194,8 @@ Use the HSSMSpine pipeline as a design reference for generation/training separat
 ## A validation sheet for every task
 
 Before its large bank is generated, record:
+
+One short table beside the task configuration or notebook is sufficient. Exploratory pilots need the relevant initial checks and clearly provisional results; they need not finish every validation experiment before testing an idea. Complete the applicable evidence before accepting the teaching result. This is not a requirement for a dashboard, report generator or exhaustive tests over unsupported inputs.
 
 | Field | What must be specified |
 |---|---|

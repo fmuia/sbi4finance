@@ -6,6 +6,20 @@ Build reusable simulators and reproducible training datasets for two financial a
 
 The intended result is a small library inside `sbi4finance`, a cluster workflow that produces validated simulation banks, and selected BayesFlow examples that can be run from saved checkpoints. Numerical pricing engines provide reference calculations and training labels. Learned pricing components can subsequently remove those expensive calculations from the routine inference path.
 
+## Build for tutorial iteration
+
+The priority is a useful, scientifically sound tutorial that is easy to change. These milestones organize the work; they are not a requirement to build a production platform or complete every model before learning from a working example. The 32 substeps are a checklist, not 32 separate PRs or approval rounds.
+
+Start with a small executable path: a few functions, explicit parameters and arrays, a saved configuration and seed, a compact synthetic bank, and the existing in-memory training route. M0 should settle the conventions needed for that path and sketch the second observation type; it should not design every future model's API. Adapt contracts as experiments teach us what is needed, record the change, and regenerate small pilot banks when simpler than supporting old formats.
+
+- Keep scientific essentials from the start: units and P/Q meaning, observation/target separation, correct continuation state, reproducible draws, independent evaluation, and appropriate reference checks on the declared domain.
+- Add structure when an actual use needs it. Functions and plain dictionaries or small dataclasses are enough initially; the module diagram names responsibilities, not mandatory packages, base classes or registries.
+- Start M2 with compact saved arrays, a short metadata file and a small train/reload example. A custom disk loader is needed only when a measured bank no longer fits comfortably in memory. Cluster support starts with a thin job script using the same generator.
+- Use focused tests and a few informative reference cases during iteration. Broader numerical/inference validation is required before large banks or accepted teaching claims, not before every exploratory run. Mark provisional results clearly and constrain supported inputs rather than claiming generality.
+- Defer plugin systems, schema-migration frameworks, deployment services, cross-platform compatibility matrices, generalized fault recovery and speculative optimization. Add an abstraction or hardening step when a second concrete use or a measured failure/cost justifies it.
+
+Model prototypes can proceed alongside bank improvements once their scientific inputs are defined. A release dependency specifies the evidence needed to accept an output; it need not prevent a small exploratory script. Stop each increment when it answers the current question with credible checks, then use that evidence to choose the next increment. The full selected S teaching workflow still has to pass its stated acceptance checks.
+
 ## Synthetic delivery and market evidence
 
 The required delivery is **S, a complete synthetic teaching core**. Market observations, provider access and acquisition permissions are not prerequisites. S, M and E describe delivery/evidence levels; they are separate from the numbered implementation milestones M0–M8.
@@ -47,7 +61,7 @@ Every milestone is proposed. Acceptance means its stated checks pass; completing
 |---|---|---|---|
 | [M0 Contracts](milestones/00-contracts.md) | Versioned model, observation, task, target and numerical specifications | Plan review | Shared foundation |
 | [M1 GBM reference](milestones/01-gbm-reference.md) | Exact simulator, analytic posterior/pricing checks, small local inference example | M0 | Shared foundation |
-| [M2 Banks and cluster](milestones/02-banks-and-cluster.md) | Reproducible shards, verifier, BayesFlow loader and CPU generation array | M1 | Shared foundation |
+| [M2 Banks and cluster](milestones/02-banks-and-cluster.md) | Reproducible saved bank, integrity checks, training round trip and CPU generation job; scale storage/loading when needed | M1 | Shared foundation |
 | [M3 Heston and SVJ](milestones/03-heston-and-svj.md) | Validated hidden-variance/jump kernels and returns inference | M1 for kernels; M2.3 for bank-backed inference | Returns application and shared kernels |
 | [M4 HKDE and options](milestones/04-hkde-and-options.md) | Double-exponential jump variant, reference pricing and option-panel observations | M3.1 Heston kernel; M2.3 for banks | Options application |
 | [M5 Amortized pricing](milestones/05-amortized-pricing.md) | Parameter posterior plus learned price surrogate; optional direct-price posterior experiment | M4 and M2.3 | Learned financial output |
@@ -88,8 +102,8 @@ Start with the shared foundation in this order. Each milestone file contains an 
 |---|---|---|
 | 1 | [M0.1–M0.3](milestones/00-contracts.md#ordered-implementation-subplan): conventions, worked schemas, contract review | Explicit P/Q tasks, units, inputs/targets, continuation requirements, identity and evidence metadata. Worked mock records suffice; a simulator is not a prerequisite. |
 | 2 | [M1.1–M1.3](milestones/01-gbm-reference.md#ordered-implementation-subplan): exact GBM, analytic references, verified fixtures | One executable local simulation → observation → analytic posterior → conditional prediction example, plus separate Q price references. |
-| 3 | [M2.1–M2.3](milestones/02-banks-and-cluster.md#ordered-implementation-subplan): bank generation, verifier, neural-loader round trip | Immutable synthetic shards and a small train/save/reload calculation checked against GBM. This is the first complete reusable data-to-checkpoint path. |
-| 4 | [M2.4](milestones/02-banks-and-cluster.md#ordered-implementation-subplan): cluster execution | Actual CPU-array smoke run, verified output and measured resource report. If access is unavailable, keep this step pending while local model work continues. |
+| 3 | [M2.1–M2.3](milestones/02-banks-and-cluster.md#ordered-implementation-subplan): bank generation, checks, training round trip | A saved synthetic bank and a small train/save/reload calculation checked against GBM. In-memory loading suffices initially; custom streaming is triggered by measured memory needs. |
+| 4 | [M2.4](milestones/02-banks-and-cluster.md#ordered-implementation-subplan): cluster execution | Actual CPU generation smoke run, verified output and a short resource record. A thin job script suffices; add array partitioning when needed. If access is unavailable, keep this step pending while local model work continues. |
 | 5 | Select and implement a model/application branch below | Use accepted shared infrastructure; branch choice does not retrospectively change the observation or measure contracts. |
 | 6 | [M8.1–M8.4](milestones/08-validation-and-tutorial.md#ordered-implementation-subplan): evidence, artifact reproduction, offline notebook, release report | Selected S workflow passes its numerical/inference checks and runs with every market fixture absent. |
 
@@ -103,7 +117,7 @@ After the shared foundation, the supported execution routes are:
 
 The option-observation contract belongs to M0. The first options branch to need its implementation—M4.2 or M6.3—adds the common helper under `observations/` and `tasks/`; the other branch reuses it. Do not duplicate the helper or make Bergomi depend on completing HKDE. M8's evidence sheet starts alongside the selected branch, before final training/evaluation; M8 release waits for the selected outputs to pass.
 
-Implement one coherent substep or small group of tightly coupled substeps at a time. When work starts, record its status and link the implementation, exact configuration/artifact versions and verification report in that milestone. Distinguish planned, in progress, accepted, blocked and deferred work. A partial milestone lists accepted substeps explicitly; passing the local loader does not mark the remote cluster step complete. These records document progress and acceptance, not a new permission request for every step.
+Implement one coherent substep or small group of tightly coupled substeps at a time. A brief milestone update linking the code, configuration and relevant check output is enough to record progress; do not create a separate reporting system. Distinguish planned, in progress, accepted, blocked and deferred work. A partial milestone lists accepted substeps explicitly; passing the local loader does not mark the remote cluster step complete. These records document progress and acceptance, not a new permission request for every step.
 
 Milestone acceptance gates are scientific and engineering checks, rather than automatic requests for another permission at every step. After the plan is approved, implementation can proceed through the agreed scope as checks pass. A material scope change or unresolved scientific choice returns for review with its concrete alternatives.
 
@@ -113,8 +127,8 @@ Milestone acceptance gates are scientific and engineering checks, rather than au
 |---|---|---|
 | Package location | Modules inside `sbi4finance` | One integration destination and one environment to maintain |
 | Kernel backend | NumPy reference plus Numba where useful | Readable reference, fast CPU stepping, limited deployment burden |
-| Storage | Many-example NumPy shards plus JSON manifests | Simple inspection, memory mapping and deterministic retries |
-| Neural interface | BayesFlow adapter over raw arrays | Scientific simulation stays independent of network architecture |
+| Storage | Compact NumPy arrays plus JSON metadata; shard as bank size grows | Simple inspection and reproducible generation without a storage framework |
+| Neural interface | Existing in-memory BayesFlow training over raw arrays; disk batching only when needed | Scientific simulation stays independent of network architecture |
 | First data design | Fixed regular return windows and fixed European contract panels in separate tasks | Makes dimensions and acceptance criteria explicit |
 | Required teaching inputs | Synthetic observations and context, with no real-market fixtures | Makes either chosen S workflow independently deliverable offline |
 | Actual-market example | Optional M, with separately designed E evaluation | Keeps application distinct from evidence of real performance |

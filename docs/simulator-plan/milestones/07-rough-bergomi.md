@@ -19,7 +19,7 @@ Add a power-law-memory forward-variance model with an independently checked driv
 | Step | Concrete output | Verification and handoff |
 |---|---|---|
 | M7.1 Gaussian driver reference | Explicit kernel/field convention, supported parameter domain and small-grid joint covariance fixtures | Check Gaussian covariance and asset-driver dependence independently before production optimization. |
-| M7.2 Production simulation and pricing | Hybrid/convolution generator, variance normalization, European pricer and numerical error report | Compare with M7.1, refine grids and justify the price estimator's moments/error bars. Accept this gate before producing a training bank. |
+| M7.2 Reusable simulation and pricing | Hybrid/convolution generator, variance normalization, European pricer and numerical error report | Compare with M7.1, refine grids and justify the price estimator's moments/error bars before accepting a reusable training bank or scaling it. Small explicitly provisional pilots can inform these choices. |
 | M7.3 Restricted bank and posterior | Q task, verified bank, pilot checkpoint and reproducible conditional/reference validation report | Reuse the panel helper accepted in M6.3 and M2.3 loading. Separate accepted numerical infrastructure from unresolved posterior accuracy; only accepted inference and price propagation can enter M8. |
 | M7.4 Optional numerical factor approximation | Versioned approximate kernel/weights and accuracy/cost comparison | Compare with the accepted rough reference at declared error targets. Do not present this approximation as the independently specified M6.4 model. |
 

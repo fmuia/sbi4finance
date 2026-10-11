@@ -18,7 +18,7 @@ Add the double-exponential jump sibling of Gaussian-jump Heston and establish an
 
 | Step | Concrete output | Verification and handoff |
 |---|---|---|
-| M4.1 HKDE law and reference pricing | Double-exponential jump implementation, supported-domain checks and Fourier/PROJ adapter with independent comparison fixtures | Verify moments, compensation, limits, price identities and representative reference comparisons before producing a bank. |
+| M4.1 HKDE law and reference pricing | Double-exponential jump implementation, supported-domain checks and Fourier/PROJ adapter with independent comparison fixtures | Verify moments, compensation, limits, price identities and representative reference comparisons before accepting a reusable bank. Small provisional panels may help develop these checks. |
 | M4.2 Option task and pilot bank | Shared fixed-panel observation helper, explicit context/noise configuration, grouped pilot bank and diagnostics | Check the M0 observation contract, panel ordering, truth separation and M2.3 loading. Generate prices only within the supported numerical domain from M4.1. |
 | M4.3 Numerical acceptance | Accuracy/refinement report covering difficult prior regions, quote-noise scales and correlated MC cross-checks | Accept the panel generator and its error budget before large-bank production or M5 training. Record unsupported regions explicitly. |
 
