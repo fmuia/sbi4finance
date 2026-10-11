@@ -91,9 +91,9 @@ The same preparation works on declared synthetic or market records. Market windo
 |---|---|---|
 | `1/5-data-plan-local-observation-fixtures` ([PR #5](https://github.com/fmuia/sbi4finance/pull/5)) | Local D0–D1 IO implemented | Model-specific contracts remain with their scientific tasks |
 | `2/5-data-plan-return-window-preparation` ([PR #6](https://github.com/fmuia/sbi4finance/pull/6)) | D1-R daily preparation implemented | Durable return-checkpoint equivalence remains D2 |
-| `3/5-data-plan-hkde-panel-handoff` | [Single premiums and exact HKDE task checks](hkde-local-panels.md); real-checkpoint regression | Broader option normalization and other checkpoint interfaces |
+| `3/5-data-plan-hkde-panel-handoff` ([PR #16](https://github.com/fmuia/sbi4finance/pull/16)) | [Single premiums and exact HKDE task checks](hkde-local-panels.md); real-checkpoint regression | Broader option normalization and other checkpoint interfaces |
 | `4/5-data-plan-synthetic-bank-integration` ([PR #17](https://github.com/fmuia/sbi4finance/pull/17)) | [Simulator bank → local panel → checkpoint](hkde-local-panels.md#load-a-generated-bank-panel) | Scientific acceptance remains pending |
-| `5/5-data-plan-offline-teaching-example` | [Cached synthetic walkthrough](hkde-offline-teaching.md), independently executable without market files or weights | Provisional demonstration; accepted participant checkpoint still pending |
+| `5/5-data-plan-offline-teaching-example` ([PR #18](https://github.com/fmuia/sbi4finance/pull/18)) | [Cached synthetic walkthrough](hkde-offline-teaching.md), independently executable without market files or weights | Provisional demonstration; accepted participant checkpoint still pending |
 | D2 / D4 | Current HKDE engineering path implemented | Final scientific acceptance awaits a checkpoint passing the simulator plan's gates |
 | D3 / D5 | Optional, not implemented | Market application / held-out empirical evaluation |
 
