@@ -60,6 +60,12 @@ Its weighted H/eta rows approximate the posterior for that numerical law.
 Effective sample size and block agreement measure finite-bank precision; they
 do not certify global support or continuum accuracy.
 
+The reference bank can itself be reused across compatible panels, so it also
+spreads simulation cost over repeated queries. This restricted two-parameter
+experiment does not establish a neural speed advantage over that alternative.
+Report bank generation, reference weighting, training, posterior sampling and
+downstream pricing separately before making an amortization claim.
+
 Training uses eight new quote errors per expensive base panel. This creates
 8,192 training observations from **1,024 independent parameter/pricing bases**.
 Selection and audit remain independent, unaugmented base panels. The adapter

@@ -222,6 +222,11 @@ def _(mo):
     Largest weight, Monte Carlo uncertainty and disagreement between two
     independent 2,048-row blocks provide additional checks. None can prove
     that a finite prior bank sampled every important region.
+
+    This reference bank is itself reusable across compatible panels. In this
+    two-parameter task, fast neural sampling alone therefore does not establish
+    a speed advantage over the reference; their up-front and query costs must
+    be compared separately.
     """)
     return
 
