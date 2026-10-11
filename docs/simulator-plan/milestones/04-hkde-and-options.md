@@ -7,8 +7,18 @@
 **Implementation update:** [PR #12](https://github.com/fmuia/sbi4finance/pull/12)
 delivers M4.1–M4.2: HKDE law, Fourier pricing, shared fixed-panel bank and offline
 notebook06. Bounded M4.3 checks pass in the declared European pilot/fixture
-domain. Broader numerical domains, Q posterior training, American/exotic targets
-and actual option-pricing cluster execution remain outside this acceptance.
+domain. Actual option-bank cluster execution is now measured: Oscar job
+**7297096** generated the 24-panel HKDE bank in **4 s** scheduler elapsed with
+one CPU and 4 GB, and passed same-Linux selected-ID reproduction. The shared
+[cluster report](https://github.com/fmuia/sbi4finance/blob/feat/rough-bergomi-option-bank/docs/option-cluster-smoke.md)
+records this run, verified transferred-file hashes and the passed Mac numerical
+comparison alongside the Bergomi jobs. It preserves the initial HKDE portable
+tolerance failure and its adjustment separately from scientific pricing gates.
+Broader numerical domains, Q posterior training and
+American/exotic targets remain outside this acceptance. The next experiment
+uses the existing `theta`/`jump_intensity` task and its deterministic Fourier
+labels for [M5.1](05-amortized-pricing.md#next-increment-restricted-hkde-baseline);
+it does not wait for Bergomi continuum-bias acceptance.
 Flat modules implement the intended responsibilities without a package framework.
 
 Add the double-exponential jump sibling of Gaussian-jump Heston and establish an options-calibration task. This tests the architecture's ability to generate pricing-based observations without conflating Q calibration with historical-return inference.

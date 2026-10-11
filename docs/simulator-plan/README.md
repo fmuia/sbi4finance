@@ -17,26 +17,45 @@ curriculum or a relaxation of scientific gates.
 
 | Planned increment | Delivered scope and review | Remaining acceptance/work |
 |---|---|---|
-| 6/10, M4 — [PR #12](https://github.com/fmuia/sbi4finance/pull/12) | HKDE jumps, Fourier European pricing, common option-panel bank and offline notebook06 | Wider numerical domains, Q inference, American/exotic extensions and actual option cluster job are separate. |
+| 6/10, M4 — [PR #12](https://github.com/fmuia/sbi4finance/pull/12) | HKDE jumps, Fourier European pricing, common option-panel bank and offline notebook06; actual option-bank cluster run recorded below | Wider numerical domains, Q inference and American/exotic extensions are separate. |
 | 8/10, M6 — [PR #13](https://github.com/fmuia/sbi4finance/pull/13) | One-factor Bergomi, exact OU/asset covariance, complete continuation, bounded-price MC, bank and notebook08 | Price-label bias at the final chosen tolerance; no accepted posterior or optional two-factor model. |
 | 9/10, M7 — [PR #14](https://github.com/fmuia/sbi4finance/pull/14) | Joint Gaussian rough reference, FFT hybrid driver, European pricing, bank and rough sections in notebook08 | M7.3b posterior work deferred; no scalar-state rough-memory forecast. |
-| 7/10, M5 | Deferred while simulator coverage is the immediate priority | Choose one restricted Q inference task, then validate posterior/reference prices and any surrogate separately. |
+| 7/10, M5 | Next: restricted two-parameter HKDE inference using the existing option task; no neural result delivered | Follow [M5.1a–M5.1e](milestones/05-amortized-pricing.md#next-increment-restricted-hkde-baseline): freeze evidence design, refine a likelihood/grid reference, train one small baseline, check conditional/joint and price outputs, then verify its offline review. A surrogate has its own later gate. |
 | 10/10, M8 | Participant release remains pending | Select a coherent application and meet its numerical/inference and offline teaching gates. |
 
 All three 24-panel banks save/load and reproduce selected IDs. Bergomi bank
 sampling SEs are below 10% of quote sigma, but their 128-to-512-step checks do
 not prove bias below 0.025 currency. Treat these as numerical pilot labels,
-not continuum-price oracles. The full stack passes 70 software tests; the
+not continuum-price oracles. The full stack passes 84 software tests; the
 HKDE and combined Bergomi marimo reviews pass isolated offline export without
 market fixtures or external connections. These execution checks do not accept
 new posteriors. Source hashes and full numerical evidence are committed with
 the implementation PRs.
 
-Next use the existing thin CPU script for an actual option-workload cluster
-smoke, settle the chosen task's label fidelity, then develop its restricted
-inference workflow. No schema registry, orchestration service or additional
-production framework is needed. The original 10-part numbering denotes
-planned scope; independent increments may execute out of numerical order.
+The thin CPU script has now generated all three 24-panel banks on Oscar:
+HKDE job **7297096** took **4 s**, one-factor job **7297097** took **158 s**,
+and rough job **7297098** took **164 s**, each requesting one CPU and 4 GB.
+Same-Linux selected-ID regeneration passed. All 15 transferred files match
+independently retrieved remote hashes, and Mac numerical regeneration passed
+for all three banks. The
+[cluster run record](https://github.com/fmuia/sbi4finance/blob/feat/rough-bergomi-option-bank/docs/option-cluster-smoke.md)
+and [machine-readable evidence](https://github.com/fmuia/sbi4finance/blob/feat/rough-bergomi-option-bank/docs/results/option-cluster-smoke.json)
+retain the checks and their settings.
+Scheduler elapsed times are smoke measurements, not scaling forecasts.
+HKDE's initial portable comparison failed on a **1.55e-9 currency** difference;
+the report preserves that result and the revised currency tolerance
+`max(1e-14, 1e-6 * quote_sigma)` (**2.5e-7** here). Both MC banks differ by at
+most **1.25e-14 currency**. This portable tolerance neither relaxes task pricing
+gates nor promises cross-platform binary equality; integrity and parameter
+identity checks remain separate.
+
+Next develop the restricted HKDE posterior/reference path. Its deterministic
+Fourier labels avoid making unresolved Bergomi grid bias a dependency of this
+first Q-inference experiment. Bergomi's banks remain numerical pilots, and
+Heston's frozen failed gates remain unchanged. This ordering does not select
+the participant curriculum. No schema registry, orchestration service or
+additional production framework is needed. The original 10-part numbering
+denotes planned scope; independent increments may execute out of numerical order.
 
 The priority is a useful, scientifically sound tutorial that is easy to change. These milestones organize the work; they are not a requirement to build a production platform or complete every model before learning from a working example. The ordered substeps are a checklist, not separate PRs or approval rounds.
 

@@ -7,8 +7,18 @@
 **Current boundary:** the new HKDE and Bergomi banks and review notebooks
 increase simulator coverage; they do not complete M8. Keep the curriculum choice
 open and select one accepted end-to-end inference/pricing or returns workflow.
-The follow-up queue is actual option-bank cluster execution, selected numerical
-fidelity, restricted inference validation and the paced participant notebook.
+Actual option-bank cluster execution is now measured for all three 24-panel
+tasks; same-Linux selected-ID reproduction passed. The
+[cluster report](https://github.com/fmuia/sbi4finance/blob/feat/rough-bergomi-option-bank/docs/option-cluster-smoke.md)
+also records matched hashes for all 15 transferred files and passed portable
+regeneration, including the initial HKDE comparison failure and the documented
+tolerance adjustment. These storage/portability checks remain separate from
+scientific accuracy.
+The follow-up queue is the [restricted HKDE reference/inference subplan](05-amortized-pricing.md#next-increment-restricted-hkde-baseline),
+its conditional/joint and downstream-price validation, then the selected paced
+participant notebook. Bergomi's remaining label-bias work does not block that
+HKDE experiment. No new inference or participant acceptance follows from the
+cluster runs, and the recorded Heston failures remain unresolved.
 Market acquisition cannot block the required offline S delivery.
 
 Assemble evidence already collected at each milestone into a complete S participant workflow. Validation and didactic review begin with M0 contracts and M1 analytic checks; this milestone closes end-to-end gaps rather than postponing either. The earlier review notebooks explain each development increment, including failed experiments; M8 selects and paces a scientifically accepted application for participants. M is an optional market illustration and E is a separate empirical extension; neither is required for S acceptance.
