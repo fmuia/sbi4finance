@@ -8,7 +8,37 @@ The intended result is a small library inside `sbi4finance`, a cluster workflow 
 
 ## Build for tutorial iteration
 
-The priority is a useful, scientifically sound tutorial that is easy to change. These milestones organize the work; they are not a requirement to build a production platform or complete every model before learning from a working example. The 32 substeps are a checklist, not 32 separate PRs or approval rounds.
+**Current priority: simulator and bank coverage before further Heston tuning.**
+The Heston posterior learns substantially from observations, although its
+conditional acceptance gates remain unresolved. Preserve the frozen results
+and untouched final test; record subsequent analysis in the [follow-up note](https://github.com/fmuia/sbi4finance/blob/feat/rough-bergomi-option-bank/docs/simulator-analysis-next-steps.md).
+This is a change of sequencing, not a decision on the returns-versus-options
+curriculum or a relaxation of scientific gates.
+
+| Planned increment | Delivered scope and review | Remaining acceptance/work |
+|---|---|---|
+| 6/10, M4 — [PR #12](https://github.com/fmuia/sbi4finance/pull/12) | HKDE jumps, Fourier European pricing, common option-panel bank and offline notebook06 | Wider numerical domains, Q inference, American/exotic extensions and actual option cluster job are separate. |
+| 8/10, M6 — [PR #13](https://github.com/fmuia/sbi4finance/pull/13) | One-factor Bergomi, exact OU/asset covariance, complete continuation, bounded-price MC, bank and notebook08 | Price-label bias at the final chosen tolerance; no accepted posterior or optional two-factor model. |
+| 9/10, M7 — [PR #14](https://github.com/fmuia/sbi4finance/pull/14) | Joint Gaussian rough reference, FFT hybrid driver, European pricing, bank and rough sections in notebook08 | M7.3b posterior work deferred; no scalar-state rough-memory forecast. |
+| 7/10, M5 | Deferred while simulator coverage is the immediate priority | Choose one restricted Q inference task, then validate posterior/reference prices and any surrogate separately. |
+| 10/10, M8 | Participant release remains pending | Select a coherent application and meet its numerical/inference and offline teaching gates. |
+
+All three 24-panel banks save/load and reproduce selected IDs. Bergomi bank
+sampling SEs are below 10% of quote sigma, but their 128-to-512-step checks do
+not prove bias below 0.025 currency. Treat these as numerical pilot labels,
+not continuum-price oracles. The full stack passes 70 software tests; the
+HKDE and combined Bergomi marimo reviews pass isolated offline export without
+market fixtures or external connections. These execution checks do not accept
+new posteriors. Source hashes and full numerical evidence are committed with
+the implementation PRs.
+
+Next use the existing thin CPU script for an actual option-workload cluster
+smoke, settle the chosen task's label fidelity, then develop its restricted
+inference workflow. No schema registry, orchestration service or additional
+production framework is needed. The original 10-part numbering denotes
+planned scope; independent increments may execute out of numerical order.
+
+The priority is a useful, scientifically sound tutorial that is easy to change. These milestones organize the work; they are not a requirement to build a production platform or complete every model before learning from a working example. The ordered substeps are a checklist, not separate PRs or approval rounds.
 
 Start with a small executable path: a few functions, explicit parameters and arrays, a saved configuration and seed, a compact synthetic bank, and the existing in-memory training route. M0 should settle the conventions needed for that path and sketch the second observation type; it should not design every future model's API. Adapt contracts as experiments teach us what is needed, record the change, and regenerate small pilot banks when simpler than supporting old formats.
 
@@ -79,10 +109,10 @@ The following map uses **implementation increment numbers**, not GitHub PR numbe
 | 3 — Cluster generation | M2.4 in an explicit cluster section of the same bank notebook: job/configuration, actual run evidence and cost | Delivered and verified in PR #11. Reviews actual cluster evidence without submitting jobs. |
 | 4 — Heston/SVJ kernels | M3.1–M3.2 in `notebooks/04_heston_svj_kernels.py`: hidden variance, jumps, continuation and numerical checks | Delivered and verified in PR #11. Numerical support remains bounded to the reported cases. |
 | 5 — Joint returns inference | M3.3 in `notebooks/05_heston_joint_inference.py`: task, joint posterior/reference comparison, continuation and future losses | Delivered and verified in PR #11, including the explicit-time follow-up section and its failed validation checks. M3.3 scientific acceptance remains pending. |
-| 6 — HKDE option observations | M4 in `notebooks/06_hkde_and_pricing.py`: Q jump law, price expectations, noisy panel and accuracy budget | Planned with M4. |
+| 6 — HKDE option observations | M4 in `notebooks/06_hkde_and_pricing.py`: Q jump law, price expectations, noisy panel and accuracy budget | Delivered in PR #12; offline execution and bounded numerical evidence pass, Q inference remains separate. |
 | 7 — Learned pricing routes | M5 in separate sections of the HKDE/pricing notebook: posterior plus reference pricer, surrogate, optional direct-price study | Planned with M5; report each route's acceptance independently. |
-| 8 — Finite-factor Bergomi | M6 in `notebooks/08_bergomi_models.py`: curve context, factor state, normalization and pricing | Planned with M6; optional two-factor material stays visibly optional. |
-| 9 — Rough Bergomi | M7 in separate sections of the Bergomi notebook: Gaussian reference, rough memory, refinement and restricted inference | Planned with M7; do not imply that a validated simulator validates its posterior. |
+| 8 — Finite-factor Bergomi | M6 in `notebooks/08_bergomi_models.py`: curve context, factor state, normalization and pricing | Delivered in PR #13; offline review passes, numerical fidelity limits and optional two-factor scope remain explicit. |
+| 9 — Rough Bergomi | M7 in separate sections of the Bergomi notebook: Gaussian reference, rough memory, refinement and restricted inference | Numerical/bank sections delivered in PR #14; offline review passes. Restricted posterior remains deferred. |
 | 10 — Participant release | M8: a separately selected participant notebook, supported by the earlier review tutorials and release evidence | Planned; returns-versus-options curriculum choice remains open. |
 
 New increments include their review material in the same PR. The backfills above are complete on the strength of their notebook checks, not retrospectively inferred from older implementation results. A review notebook can accurately explain a failed experiment and pass its execution check while that scientific substep remains pending. Track both states explicitly. M8 is the selected, paced participant course and final scientific delivery gate; the review notebooks support that decision and do not preselect the curriculum.
@@ -93,7 +123,7 @@ The [80-epoch explicit-time follow-up](https://github.com/fmuia/sbi4finance/pull
 
 The [diagnostic review](https://github.com/fmuia/sbi4finance/blob/feat/heston-joint-inference/docs/heston-diagnostics.md) now separates marginal SBC, conditional reference checks and engineering diagnostics, and directly compares the prior with all 16 conditional posteriors. Reference-normalized mean RMSE is 3.265 for a prior-copy baseline versus 0.173 for the neural posterior: this is substantial data updating. A frozen-weight precision follow-up confirms a persistent low-state mean discrepancy, while predictive endpoint errors straddle their tolerance across seeds. This is development evidence; it changes neither the original failed gate nor the reserved-test status.
 
-The single [signed-asinh state experiment](https://github.com/fmuia/sbi4finance/blob/feat/heston-joint-inference/docs/heston-state-transform.md) also failed the unchanged validation checks: mean RMSE 0.1865 reference SD, maximum mean error 0.5268, maximum relative SD error 0.3212 and predictive endpoint error 0.2403. Both marginal rank checks pass, illustrating why conditional checks remain necessary. Its predeclared stop rule was applied: no further candidate or final-test evaluation. M3.3 remains pending; the next implementation increment is M4.1 HKDE law/reference pricing. The expanded software suite passes 43 tests, and notebook 05 includes the transform mathematics and measured failure.
+The single [signed-asinh state experiment](https://github.com/fmuia/sbi4finance/blob/feat/heston-joint-inference/docs/heston-state-transform.md) also failed the unchanged validation checks: mean RMSE 0.1865 reference SD, maximum mean error 0.5268, maximum relative SD error 0.3212 and predictive endpoint error 0.2403. Both marginal rank checks pass, illustrating why conditional checks remain necessary. Its predeclared stop rule was applied: no further candidate or final-test evaluation. M3.3 remains pending; further inference analysis is deferred during the simulator/bank coverage push described above. The expanded software suite passes 43 tests, and notebook 05 includes the transform mathematics and measured failure.
 
 ## Milestones and deliverables
 

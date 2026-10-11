@@ -4,6 +4,13 @@
 
 ## Purpose
 
+**Priority update:** increment 7 is deferred while HKDE and Bergomi simulator
+banks are completed. It remains the next restricted learned-pricing workstream,
+not a delivered neural result. MC-generated panels include numerical estimator
+randomness as well as quote noise; reference inference must match that declared
+law or justify neglecting numerical error at the selected fidelity. A bank's
+successful save/load or marginal SBC cannot replace conditional validation.
+
 Establish the relationship between Bayesian calibration and fast downstream prices. Build parameter-posterior inference first, then a separately assessed supervised pricing surrogate; study direct inference of posterior prices only if a concrete use case justifies it.
 
 ## Tasks

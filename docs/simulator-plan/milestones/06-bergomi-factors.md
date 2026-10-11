@@ -4,6 +4,15 @@
 
 ## Purpose
 
+**Implementation update:** [PR #13](https://github.com/fmuia/sbi4finance/pull/13)
+delivers M6.1–M6.3 infrastructure: curve contract, exact OU/asset covariance,
+complete continuation, bounded conditional-put prices, shared bank and offline
+notebook08. Reference/limit tests and bounded numerical screens pass. The actual
+bank-prior grid screen has maximum difference 0.0309 currency with combined SE
+0.0190; it does not prove bias below 0.025. Settle the final label fidelity
+before scaling; no posterior, optional two-factor model or P forecast is accepted.
+The numerical building blocks can support M7 while these limits remain visible.
+
 Introduce lognormal forward variance with a finite-dimensional continuation state before rough-memory models. One factor is the required core; two factors are an optional scientific extension, not a prerequisite for rough Bergomi.
 
 ## Tasks

@@ -4,6 +4,13 @@
 
 ## Purpose
 
+**Implementation update:** [PR #12](https://github.com/fmuia/sbi4finance/pull/12)
+delivers M4.1–M4.2: HKDE law, Fourier pricing, shared fixed-panel bank and offline
+notebook06. Bounded M4.3 checks pass in the declared European pilot/fixture
+domain. Broader numerical domains, Q posterior training, American/exotic targets
+and actual option-pricing cluster execution remain outside this acceptance.
+Flat modules implement the intended responsibilities without a package framework.
+
 Add the double-exponential jump sibling of Gaussian-jump Heston and establish an options-calibration task. This tests the architecture's ability to generate pricing-based observations without conflating Q calibration with historical-return inference.
 
 ## Tasks

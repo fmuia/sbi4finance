@@ -4,6 +4,11 @@
 
 ## Purpose
 
+**Priority update:** M3.1–M3.2 kernels are available and M3.3's pipeline is
+implemented, but conditional posterior acceptance remains pending. Further
+network experiments are deferred during the independent simulator/bank coverage
+push. Preserve root43022's untouched test and the [recorded analysis next steps](https://github.com/fmuia/sbi4finance/blob/feat/rough-bergomi-option-bank/docs/simulator-analysis-next-steps.md).
+
 Introduce hidden variance, leverage, and price jumps while preserving agreement between simulation, inference references, and forecasting. Distinguish our declared continuous-time implementation from Francesco's existing experiment until equivalence is demonstrated.
 
 ## Tasks

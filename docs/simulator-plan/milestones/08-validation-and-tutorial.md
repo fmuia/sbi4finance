@@ -4,6 +4,13 @@
 
 ## Purpose
 
+**Current boundary:** the new HKDE and Bergomi banks and review notebooks
+increase simulator coverage; they do not complete M8. Keep the curriculum choice
+open and select one accepted end-to-end inference/pricing or returns workflow.
+The follow-up queue is actual option-bank cluster execution, selected numerical
+fidelity, restricted inference validation and the paced participant notebook.
+Market acquisition cannot block the required offline S delivery.
+
 Assemble evidence already collected at each milestone into a complete S participant workflow. Validation and didactic review begin with M0 contracts and M1 analytic checks; this milestone closes end-to-end gaps rather than postponing either. The earlier review notebooks explain each development increment, including failed experiments; M8 selects and paces a scientifically accepted application for participants. M is an optional market illustration and E is a separate empirical extension; neither is required for S acceptance.
 
 ## Tasks

@@ -4,6 +4,13 @@
 
 ## Purpose
 
+**Implementation update:** [PR #14](https://github.com/fmuia/sbi4finance/pull/14)
+delivers M7.1–M7.2 numerical infrastructure, M7.3a bank and offline rough review
+sections. M7.3b posterior work is explicitly deferred. The exact-bank-prior
+128-to-512-step screen passes with maximum difference 0.0427 currency and combined
+SE 0.0248; this does not prove bias below 0.025. Numerical pilots are distinct
+from accepted inference; rough-memory P forecasting remains deferred.
+
 Add a power-law-memory forward-variance model with an independently checked driver and controlled numerical pricing. The initial inference task is Q calibration from option panels, which avoids pretending that current variance alone solves conditional forecasting from historical returns.
 
 ## Tasks
@@ -20,10 +27,11 @@ Add a power-law-memory forward-variance model with an independently checked driv
 |---|---|---|
 | M7.1 Gaussian driver reference | Explicit kernel/field convention, supported parameter domain and small-grid joint covariance fixtures | Check Gaussian covariance and asset-driver dependence independently before production optimization. |
 | M7.2 Reusable simulation and pricing | Hybrid/convolution generator, variance normalization, European pricer and numerical error report | Compare with M7.1, refine grids and justify the price estimator's moments/error bars before accepting a reusable training bank or scaling it. Small explicitly provisional pilots can inform these choices. |
-| M7.3 Restricted bank and posterior | Q task, verified bank, pilot checkpoint and reproducible conditional/reference validation report | Reuse the panel helper accepted in M6.3 and M2.3 loading. Separate accepted numerical infrastructure from unresolved posterior accuracy; only accepted inference and price propagation can enter M8. |
+| M7.3a Restricted bank | Q task, grouped pilot bank and verified load/regeneration | Reuse shared panel and bank interfaces; record numerical fidelity limits before scaling. Delivered in increment 9. |
+| M7.3b Restricted posterior | Pilot checkpoint and conditional/reference validation report | Deferred during simulator coverage work. Match the declared observation law and assess joint/price-sensitive outputs. Accepted inference is required for M8. |
 | M7.4 Optional numerical factor approximation | Versioned approximate kernel/weights and accuracy/cost comparison | Compare with the accepted rough reference at declared error targets. Do not present this approximation as the independently specified M6.4 model. |
 
-Complete M7.1–M7.3 in order. M7.4 is optional and may follow the accepted numerical reference without delaying the reference-based posterior pilot. Likely destinations are `simulators/` and `pricing/` for numerical work, and `tasks/` and `inference/` for the restricted calibration experiment. These reuse the shared observation interface without creating a hidden dependency on M4 or M5.
+Complete M7.1–M7.3b in order. M7.4 is optional and may follow the accepted numerical reference without delaying the reference-based posterior pilot. Likely destinations are `simulators/` and `pricing/` for numerical work, and `tasks/` and `inference/` for the restricted calibration experiment. These reuse the shared observation interface without creating a hidden dependency on M4 or M5.
 
 ## Didactic review deliverable
 
