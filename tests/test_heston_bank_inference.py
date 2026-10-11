@@ -11,7 +11,9 @@ import numpy as np
 from numpy.testing import assert_allclose, assert_array_equal
 
 from sbi4finance.heston_bank import generate_examples, load_bank, write_bank
-from sbi4finance.heston_inference import build_workflow, conditioning_data, training_data
+from sbi4finance.heston_inference import (
+    ADAPTER_ID, TIME_ADAPTER_ID, build_workflow, conditioning_data, training_data,
+)
 
 
 class HestonBankInferenceTests(unittest.TestCase):
@@ -140,13 +142,78 @@ class HestonBankInferenceTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "terminal_state targets"):
             training_data(invalid, self.task)
 
+    def test_explicit_time_conditioning_uses_only_the_known_observation_grid(self):
+        split = generate_examples(self.config, "train", range(4))
+        original_observations = split["observations"].copy()
+        selected = training_data(split, self.task, adapter_id=TIME_ADAPTER_ID)
+        legacy = training_data(split, self.task)
+        self.assertEqual(selected["observations"].shape, (4, 12, 2))
+        assert_array_equal(selected["observations"][..., :1], original_observations)
+        # Independently accumulate the supplied intervals, rather than deriving
+        # time from return values or any simulator-only metadata.
+        elapsed = 0.0
+        end_times = []
+        for interval in split["dt_years"]:
+            elapsed += float(interval)
+            end_times.append(elapsed)
+        expected_time = np.broadcast_to(end_times, (4, 12))
+        assert_array_equal(selected["observations"][..., 1], expected_time)
+        assert_array_equal(selected["history_features"], legacy["history_features"])
+        self.assertEqual(split["observations"].shape, (4, 12, 1))
+        assert_array_equal(split["observations"], original_observations)
+
+        changed = deepcopy(split)
+        changed["parameters"][:] = 0.06
+        changed["terminal_state"][:] = -0.02
+        changed["future_returns"] = np.full((4, 10, 1), 1e6)
+        changed["diagnostics"] = np.full((4, 3), np.nan)
+        changed["example_id"] = np.array(["different"] * 4)
+        after = training_data(changed, self.task, adapter_id=TIME_ADAPTER_ID)
+        for key in ("observations", "history_features"):
+            assert_array_equal(after[key], selected[key])
+        assert_array_equal(after["theta"], changed["parameters"])
+        assert_array_equal(after["terminal_state"], changed["terminal_state"])
+
+        for history in (original_observations, 2 * original_observations,
+                        original_observations[:, ::-1]):
+            with self.subTest(history=history):
+                conditions = conditioning_data(history, split["dt_years"], self.task,
+                                               adapter_id=TIME_ADAPTER_ID)
+                self.assertEqual(set(conditions), {"observations", "history_features"})
+                assert_array_equal(conditions["observations"][..., :1], history)
+                assert_array_equal(conditions["observations"][..., 1], expected_time)
+
+        # Changing the declared design and its matching context changes only
+        # the time channel and the dt-dependent second-moment features.
+        slower_task = {**self.task, "dt_years": 2 * self.task["dt_years"]}
+        slower = conditioning_data(original_observations, 2 * split["dt_years"],
+                                   slower_task, adapter_id=TIME_ADAPTER_ID)
+        assert_array_equal(slower["observations"][..., :1], original_observations)
+        assert_allclose(slower["observations"][..., 1], 2 * expected_time)
+        with self.assertRaisesRegex(ValueError, "time grid"):
+            conditioning_data(original_observations, 2 * split["dt_years"], self.task,
+                              adapter_id=TIME_ADAPTER_ID)
+
+    def test_unknown_adapter_is_rejected_at_every_public_entry_point(self):
+        split = generate_examples(self.config, "test", [0])
+        with self.assertRaisesRegex(ValueError, "unsupported Heston adapter_id"):
+            conditioning_data(split["observations"], split["dt_years"], self.task,
+                              adapter_id="unknown")
+        with self.assertRaisesRegex(ValueError, "unsupported Heston adapter_id"):
+            training_data(split, self.task, adapter_id="unknown")
+        with self.assertRaisesRegex(ValueError, "unsupported Heston adapter_id"):
+            build_workflow(self.task, adapter_id="unknown")
+
     def test_offline_joint_training_normalization_sampling_and_reload(self):
         self._check_offline_roundtrip("flow_matching")
 
     def test_spline_joint_training_normalization_sampling_and_reload(self):
         self._check_offline_roundtrip("spline")
 
-    def _check_offline_roundtrip(self, density_estimator):
+    def test_explicit_time_joint_training_normalization_sampling_and_reload(self):
+        self._check_offline_roundtrip("spline", adapter_id=TIME_ADAPTER_ID)
+
+    def _check_offline_roundtrip(self, density_estimator, *, adapter_id=ADAPTER_ID):
         with (
             tempfile.TemporaryDirectory() as temporary,
             patch("socket.socket.connect", side_effect=AssertionError("network disabled")),
@@ -159,24 +226,28 @@ class HestonBankInferenceTests(unittest.TestCase):
             directory = Path(temporary)
             write_bank(directory / "bank", self.config)
             _, splits = load_bank(directory / "bank")
-            train, validation = [training_data(splits[name], self.task)
+            train, validation = [training_data(splits[name], self.task, adapter_id=adapter_id)
                                  for name in ("train", "validation")]
             workflow = build_workflow(self.task, directory / "checkpoint",
-                                      density_estimator=density_estimator)
+                                      density_estimator=density_estimator,
+                                      adapter_id=adapter_id)
             history = workflow.fit_offline(data=train, validation_data=validation,
                                            epochs=2, batch_size=32, verbose=0)
             self.assertTrue(all(np.isfinite(values).all() for values in history.history.values()))
             checkpoint = directory / "checkpoint" / "model.keras"
             self.assertTrue(checkpoint.is_file())
             workflow.load_approximator()
+            expected_time_axis = 1 if adapter_id == TIME_ADAPTER_ID else None
+            self.assertEqual(workflow.approximator.summary_network.time_axis, expected_time_axis)
 
             # Compare saved statistics to independent transformed training-array
             # moments, including global raw-return scaling across all windows.
             low, high = self.task["theta_bounds"]
             transformed_theta = np.log((train["theta"] - low) / (high - train["theta"]))
             expected_targets = np.concatenate([transformed_theta, train["terminal_state"]], axis=-1)
+            channel_count = 2 if adapter_id == TIME_ADAPTER_ID else 1
             expected = {"inference_variables": expected_targets.astype("float32"),
-                        "summary_variables": train["observations"].reshape(-1, 1).astype("float32"),
+                        "summary_variables": train["observations"].reshape(-1, channel_count).astype("float32"),
                         "inference_conditions": train["history_features"].astype("float32")}
             layers = workflow.approximator.standardizer.standardize_layers
             self.assertEqual(set(layers), set(expected))
@@ -194,7 +265,8 @@ class HestonBankInferenceTests(unittest.TestCase):
             saved_statistics = {name: [weight.numpy().copy() for weight in layer.weights]
                                 for name, layer in layers.items()}
             conditions = conditioning_data(splits["test"]["observations"],
-                                           splits["test"]["dt_years"], self.task)
+                                           splits["test"]["dt_years"], self.task,
+                                           adapter_id=adapter_id)
             samples = workflow.sample(num_samples=32, conditions=conditions, seed=983)
             self.assertEqual(set(samples), {"theta", "terminal_state"})
             for values in samples.values():
@@ -206,6 +278,9 @@ class HestonBankInferenceTests(unittest.TestCase):
                     assert_array_equal(before, after.numpy())
             restored = build_workflow(self.task)
             restored.load_approximator(checkpoint)
+            # The saved network, not the fresh workflow's default adapter,
+            # determines whether explicit time is split from the input.
+            self.assertEqual(restored.approximator.summary_network.time_axis, expected_time_axis)
             repeated = restored.sample(num_samples=32, conditions=conditions, seed=983)
             for key in samples:
                 assert_array_equal(repeated[key], samples[key])

@@ -10,6 +10,12 @@ import numpy as np
 
 
 ADAPTER_ID = "heston_raw_and_window_moments_v1"
+TIME_ADAPTER_ID = "heston_returns_time_and_window_moments_v2"
+
+
+def _check_adapter(adapter_id):
+    if adapter_id not in (ADAPTER_ID, TIME_ADAPTER_ID):
+        raise ValueError("unsupported Heston adapter_id")
 
 
 def _task_design(task):
@@ -34,10 +40,14 @@ def _task_design(task):
     return bounds, int(count), float(step)
 
 
-def conditioning_data(log_returns, dt_years, task):
+def conditioning_data(log_returns, dt_years, task, *, adapter_id=ADAPTER_ID):
     """Select the ordered history and observation-derived trailing moments.
 
-    Returns unchanged ``observations [B,T,1]`` plus ``history_features [B,8]``.
+    V1 returns unchanged ``observations [B,T,1]``. V2 appends known observation
+    end times in years as channel 1, giving ``observations [B,T,2]`` for the
+    neural adapter only; the bank still stores raw returns [B,T,1]. Training
+    standardization puts this fixed time channel on an O(1) scale before the
+    recurrent network's Time2Vec layer. Both return ``history_features [B,8]``.
     For trailing lengths ``min(8,T), min(32,T), min(128,T), T``, the features
     interleave mean log return and mean squared log return divided by dt.
     Duplicate short-history windows keep the feature count fixed. These are
@@ -48,6 +58,7 @@ def conditioning_data(log_returns, dt_years, task):
     checkpoint's full saved task and adapter ID, including fixed parameters,
     theta prior, initialization and integration substeps.
     """
+    _check_adapter(adapter_id)
     _, count, step = _task_design(task)
     observations = np.asarray(log_returns, dtype=np.float64)
     if (observations.ndim != 3 or observations.shape[0] == 0
@@ -60,18 +71,23 @@ def conditioning_data(log_returns, dt_years, task):
     for width in (min(8, count), min(32, count), min(128, count), count):
         window = observations[:, -width:, 0]
         features.extend((window.mean(axis=1), np.square(window).mean(axis=1) / step))
+    if adapter_id == TIME_ADAPTER_ID:
+        end_times = np.cumsum(np.asarray(dt_years, dtype=np.float64))
+        time_channel = np.broadcast_to(end_times[None, :, None], observations.shape)
+        observations = np.concatenate([observations, time_channel], axis=-1)
     return {"observations": observations,
             "history_features": np.stack(features, axis=1)}
 
 
-def training_data(split, task):
+def training_data(split, task, *, adapter_id=ADAPTER_ID):
     """Add theta and SIGNED terminal auxiliary variance as separate targets.
 
     The network subsequently learns their joint distribution. No logarithm or
     positivity constraint is applied to the state: clipping it would change the
     full-truncation transition used by conditional forecasts.
     """
-    result = conditioning_data(split["observations"], split["dt_years"], task)
+    result = conditioning_data(split["observations"], split["dt_years"], task,
+                               adapter_id=adapter_id)
     bounds, _, _ = _task_design(task)
     shape = (len(result["observations"]), 1)
     theta = np.asarray(split["parameters"], dtype=np.float64)
@@ -84,7 +100,8 @@ def training_data(split, task):
     return {**result, "theta": theta, "terminal_state": state}
 
 
-def build_workflow(task, checkpoint_dir=None, *, density_estimator="flow_matching"):
+def build_workflow(task, checkpoint_dir=None, *, density_estimator="flow_matching",
+                   adapter_id=ADAPTER_ID):
     """Joint flow conditioned on a GRU summary and observed trailing moments.
 
     The built-in logit constraint is applied in float64 before neural casting.
@@ -94,6 +111,7 @@ def build_workflow(task, checkpoint_dir=None, *, density_estimator="flow_matchin
     targets, raw returns and moment features preserves between-window scale;
     there is no per-window standardization or conditioning on future outcomes.
     """
+    _check_adapter(adapter_id)
     bounds, _, _ = _task_design(task)
     if density_estimator not in ("flow_matching", "spline"):
         raise ValueError("density_estimator must be flow_matching or spline")
@@ -108,6 +126,7 @@ def build_workflow(task, checkpoint_dir=None, *, density_estimator="flow_matchin
     summary = bf.networks.RecurrentNetwork(
         summary_dim=16, hidden_dim=32, recurrent_type="gru", bidirectional=False,
         time_embed_dim=4, dropout=0.0, return_sequences=False,
+        time_axis=1 if adapter_id == TIME_ADAPTER_ID else None,
     )
     if density_estimator == "spline":
         inference = bf.networks.CouplingFlow(

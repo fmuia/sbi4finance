@@ -50,9 +50,11 @@ def joint_array(samples, task):
     return joint
 
 
-def evaluate(workflow, data, task, reference_dir, reference_report, *, cases, draws, seed, out):
+def evaluate(workflow, data, task, reference_dir, reference_report, *, cases, draws, seed, out,
+             adapter_id=heston_inference.ADAPTER_ID):
     count = min(cases, len(data["observations"]))
-    conditions = conditioning_data(data["observations"][:count], data["dt_years"], task)
+    conditions = conditioning_data(data["observations"][:count], data["dt_years"], task,
+                                   adapter_id=adapter_id)
     started = perf_counter()
     joint = joint_array(workflow.sample(num_samples=draws, conditions=conditions,
                                        batch_size=16, seed=seed), task)
@@ -148,6 +150,8 @@ def main():
     parser.add_argument("--checkpoint", type=Path, help="evaluate frozen model.keras + task.json; no training")
     parser.add_argument("--density-estimator", choices=("flow_matching", "spline"), default="flow_matching",
                         help="training architecture; --checkpoint restores its own saved architecture")
+    parser.add_argument("--explicit-time", action="store_true",
+                        help="train with known end times and globally scaled Time2Vec inputs; frozen checkpoints use their saved adapter")
     parser.add_argument("--epochs", type=int, default=40)
     parser.add_argument("--batch-size", type=int, default=128)
     parser.add_argument("--draws", type=int, default=2048)
@@ -165,17 +169,23 @@ def main():
     split = reference_report["split"]
     if args.checkpoint is None and split != "validation":
         raise ValueError("develop on validation; evaluate test only with a frozen --checkpoint")
-    checkpoint_design = {"task": task, "adapter_id": heston_inference.ADAPTER_ID}
-    if args.checkpoint is not None and json.loads((args.checkpoint / "task.json").read_text()) != checkpoint_design:
-        raise ValueError("saved checkpoint task differs in prior, parameters, initialization or observation design")
+    adapter_id = heston_inference.TIME_ADAPTER_ID if args.explicit_time else heston_inference.ADAPTER_ID
+    if args.checkpoint is not None:
+        checkpoint_design = json.loads((args.checkpoint / "task.json").read_text())
+        if set(checkpoint_design) != {"task", "adapter_id"} or checkpoint_design["task"] != task:
+            raise ValueError("saved checkpoint task differs in prior, parameters, initialization or observation design")
+        adapter_id = checkpoint_design["adapter_id"]
+    else:
+        checkpoint_design = {"task": task, "adapter_id": adapter_id}
+    heston_inference._check_adapter(adapter_id)
     args.out.mkdir(parents=True, exist_ok=False)
     keras.utils.set_random_seed(args.seed)
     workflow = build_workflow(task, args.out if args.checkpoint is None else None,
-                              density_estimator=args.density_estimator)
+                              density_estimator=args.density_estimator, adapter_id=adapter_id)
     training_started = perf_counter()
     if args.checkpoint is None:
-        history = workflow.fit_offline(data=training_data(splits["train"], task),
-                                       validation_data=training_data(splits["validation"], task),
+        history = workflow.fit_offline(data=training_data(splits["train"], task, adapter_id=adapter_id),
+                                       validation_data=training_data(splits["validation"], task, adapter_id=adapter_id),
                                        epochs=args.epochs, batch_size=args.batch_size, verbose=2)
         workflow.load_approximator()
         (args.out / "task.json").write_text(json.dumps(checkpoint_design, indent=2) + "\n")
@@ -186,15 +196,17 @@ def main():
         workflow.load_approximator(checkpoint)
         history_values = None
     training_seconds = perf_counter() - training_started
-    small = conditioning_data(splits[split]["observations"][:2], splits[split]["dt_years"], task)
+    small = conditioning_data(splits[split]["observations"][:2], splits[split]["dt_years"], task,
+                              adapter_id=adapter_id)
     original = joint_array(workflow.sample(num_samples=64, conditions=small, seed=args.seed + 1), task)
-    reloaded = build_workflow(task)
+    reloaded = build_workflow(task, adapter_id=adapter_id)
     reloaded.load_approximator(checkpoint)
     repeated = joint_array(reloaded.sample(num_samples=64, conditions=small, seed=args.seed + 1), task)
     if not np.array_equal(original, repeated):
         raise RuntimeError("same-seed checkpoint reload changed the joint posterior draws")
     evaluation = evaluate(workflow, splits[split], task, args.references, reference_report,
-                          cases=args.cases, draws=args.draws, seed=args.seed + 2, out=args.out)
+                          cases=args.cases, draws=args.draws, seed=args.seed + 2, out=args.out,
+                          adapter_id=adapter_id)
     report = {
         "data_origin": "synthetic", "measure": "P", "evidence_scope": "S bounded joint-inference pilot",
         "task": task, "split": split, "frozen_checkpoint_evaluation": args.checkpoint is not None,
@@ -207,12 +219,13 @@ def main():
         "versions": {"python": platform.python_version(), "numpy": np.__version__,
                      "bayesflow": bf.__version__, "keras": keras.__version__, "jax": jax.__version__},
         "inference_network_class": type(workflow.inference_network).__name__,
+        "adapter_id": adapter_id,
         "checkpoint_load_seconds": training_seconds if history_values is None else None,
         "training": {"performed": True, "seed": args.seed, "epochs": args.epochs,
                      "batch_size": args.batch_size, "history": history_values,
                      "selection": "minimum validation loss", "normalization": "training batches only",
-                     "adapter_id": heston_inference.ADAPTER_ID,
-                     "architecture": "causal GRU32 summary16 + eight observed window moments; full density architecture saved in model.keras",
+                     "adapter_id": adapter_id,
+                     "architecture": "causal GRU32 summary16 + eight observed window moments; adapter_id specifies time context; full density architecture saved in model.keras",
                      "inference_network_class": type(workflow.inference_network).__name__,
                      "density_estimator_requested_for_training": args.density_estimator if history_values is not None else None,
                      "seconds_including_compile_or_load": training_seconds} if history_values is not None else {"performed": False},
