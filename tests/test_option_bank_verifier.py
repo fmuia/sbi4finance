@@ -65,7 +65,7 @@ class OptionBankVerifierTests(unittest.TestCase):
         self.assertTrue(exact["passed"])
         self.assertEqual(exact["verification_mode"], "exact")
         self.assertEqual(portable["tolerances"]["rtol"], 1e-12)
-        self.assertEqual(portable["tolerances"]["atol"], 1e-14)
+        self.assertEqual(portable["tolerances"]["base_atol"], 1e-14)
         self.assertEqual(portable["scientific_source_identity"]["differences"], {})
         self.assertTrue(portable["transfer_integrity"]["matched_manifest_split_hashes"])
         self.assertEqual(portable["array_comparisons"]["train"]["observations"]["max_absolute_difference"], 0)
@@ -123,10 +123,54 @@ class OptionBankVerifierTests(unittest.TestCase):
             verifier.verify_bank(self.bank)
         report = verifier.verify_bank(self.bank, portable=True)
         self.assertGreater(report["array_comparisons"]["train"]["observations"]["max_absolute_difference"], 0)
-        with self.assertRaisesRegex(ValueError, "regeneration mismatch"):
-            verifier.verify_bank(self.bank, portable=True, rtol=0, atol=0)
+        # Currency noise-scaled absolute tolerance remains when base atol is zero.
+        self.assertTrue(verifier.verify_bank(self.bank, portable=True, rtol=0, atol=0)["passed"])
         with self.assertRaisesRegex(ValueError, "tolerances"):
             verifier.verify_bank(self.bank, portable=True, rtol=float("nan"))
+
+    def test_currency_roundoff_uses_explicit_quote_noise_fraction(self):
+        self.change_train(lambda a: [a[key].__iadd__(2e-9) for key in verifier.CURRENCY_ARRAYS])
+        with self.assertRaisesRegex(ValueError, "regeneration mismatch"):
+            verifier.verify_bank(self.bank)
+        report = verifier.verify_bank(self.bank, portable=True)
+        self.assertEqual(report["tolerances"]["price_noise_fraction"], 1e-6)
+        self.assertEqual(report["tolerances"]["currency_atol"], 2.5e-7)
+        for key in verifier.CURRENCY_ARRAYS:
+            comparison = report["array_comparisons"]["train"][key]
+            self.assertEqual(comparison["units"], "currency")
+            self.assertEqual(comparison["tolerances"]["atol"], 2.5e-7)
+            self.assertGreater(comparison["max_absolute_difference_over_quote_sigma"], 0)
+        self.assertEqual(report["array_comparisons"]["train"]["parameters"]["tolerances"]["atol"], 1e-14)
+        self.assertEqual(report["array_comparisons"]["train"]["pricing_covariance"]["units"], "currency squared")
+
+    def test_currency_changes_above_noise_scaled_budget_fail(self):
+        self.change_train(lambda a: a["observations"].__iadd__(5e-7))
+        with self.assertRaisesRegex(ValueError, "train/observations: regeneration mismatch"):
+            verifier.verify_bank(self.bank, portable=True)
+
+    def test_parameters_keep_the_tight_base_tolerance(self):
+        self.change_train(lambda a: a["parameters"].__iadd__(2e-9))
+        with self.assertRaisesRegex(ValueError, "train/parameters: regeneration mismatch"):
+            verifier.verify_bank(self.bank, portable=True)
+
+    def test_covariance_keeps_the_tight_currency_squared_tolerance(self):
+        def change(arrays):
+            arrays["pricing_covariance"][:] = 2e-14
+            arrays["pricing_standard_errors"][:] = np.sqrt(2e-14)
+        self.change_train(change)
+        # Coherent covariance/SE passes storage checks; currency-valued SE
+        # passes its portable budget but covariance must still fail at 1e-14.
+        with self.assertRaisesRegex(ValueError, "train/pricing_covariance: regeneration mismatch"):
+            verifier.verify_bank(self.bank, portable=True)
+
+    def test_invalid_quote_sigma_cannot_define_a_portable_budget(self):
+        manifest, splits = option_bank.load_bank(self.bank)
+        for sigma in (0, -1, float("nan"), float("inf"), True):
+            with self.subTest(sigma=sigma):
+                manifest["configuration"]["task"]["context"]["quote_noise_std"] = sigma
+                with patch.object(option_bank, "load_bank", return_value=(manifest, splits)):
+                    with self.assertRaisesRegex(ValueError, "positive scalar quote_noise_std"):
+                        verifier.verify_bank(self.bank, portable=True)
 
     def test_ids_are_exact_even_in_portable_mode(self):
         self.change_train(lambda a: a["example_id"].__setitem__(0, "train:9"))

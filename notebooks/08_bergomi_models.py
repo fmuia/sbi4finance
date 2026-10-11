@@ -698,5 +698,159 @@ def _(mo):
 
 
 
+@app.cell
+def _(mo):
+    mo.md(r"""
+    ## Run the same bank experiment on the cluster
+
+    A simulator becomes useful for pre-simulated training when another machine
+    can generate and return its declared experiment. The cluster smoke follows
+    this small, inspectable chain:
+
+    **Source archive → Slurm job → bank files → transfer hashes → local
+    numerical reproduction.**
+
+    1. Archive a recorded source revision and hash the archive. This identifies
+       the code sent to Oscar independently of a mutable working directory.
+    2. Submit the existing generation command through Slurm with a declared
+       resource allocation. Keep the scientific task, seeds, splits and
+       numerical settings in its saved configuration.
+    3. Load the generated bank and regenerate selected first, middle and last
+       IDs from each split on Linux. The manifest records what the arrays mean;
+       regeneration checks those examples against the declared seeded
+       calculation. It does not recompute every stored panel.
+    4. Transfer the artifacts and compare file hashes. Equal hashes establish
+       byte-for-byte transfer, not correctness of the underlying price model.
+    5. Regenerate on the local Mac and compare numerical arrays using the
+       declared portability tolerances. CPU architecture, operating system
+       and numerical libraries can change floating-point results.
+       This check has a different purpose from exact same-environment replay.
+
+    The notebook only reads the saved report. It submits no jobs, downloads
+    nothing and trains no network. The bank remains a synthetic **S** artifact;
+    real market observations are not needed for this infrastructure check.
+    """)
+    return
+
+
+@app.cell
+def _(ROOT, json, mo, pd):
+    _report_path = ROOT / "docs/results/option-cluster-smoke.json"
+    if not _report_path.exists():
+        _display = mo.md("""
+        **Cluster evidence is not available in this checkout.** No outcome is
+        inferred from the absence of the report. The sequence above describes
+        the intended check; its acceptance remains pending until a saved run
+        and its verification results are present.
+        """)
+    else:
+        _report = json.loads(_report_path.read_text())
+        _performance = []
+        _reproduction = []
+        for _run in _report["runs"]:
+            _performance.append({
+                "Model": _run["model"],
+                "Job": str(_run["job_id"]),
+                "Slurm state / exit": f"{_run['state']} / {_run['exit_code']}",
+                "Examples by split": ", ".join(f"{k}: {v}" for k, v in _run["examples"].items()),
+                "Generation (s)": _run["generation_seconds"],
+                "Job elapsed (s)": _run["elapsed_seconds"],
+                "Job CPU (s)": _run["total_cpu_seconds"],
+                "Peak RSS (MiB)": _run["max_rss_kib"] / 1024,
+                "Loaded arrays (MiB)": _run["loaded_array_bytes"] / 1024**2,
+            })
+            _reproduction.append({
+                "Model": _run["model"],
+                "Transfer hashes match": _run["transfer_hashes_match"],
+                "Exact Linux regeneration (selected IDs)": _run["exact_linux_regeneration"],
+                "Linux verification (s)": _run["linux_verification_seconds"],
+                "Mac portability passed": _run["mac_portable_passed"],
+                "Mac verification (s)": _run["mac_verification_seconds"],
+                "Largest reference-price difference (currency)": f"{_run['max_absolute_difference_by_array']['reference_prices']:.3g}",
+            })
+        _display = mo.vstack([
+            mo.md("### Recorded jobs, costs and reproduction"),
+            mo.ui.table(pd.DataFrame(_performance), selection=None, show_column_summaries=False),
+            mo.md("""
+            Generation time measures the bank command; job elapsed time also
+            includes job setup and verification. CPU time can differ from wall
+            time. Peak resident memory concerns the process during the job;
+            loaded-array bytes count only stored array payloads and exclude
+            pricing workspaces. These tiny jobs verify the route, rather than
+            establish throughput or memory scaling for a large training bank.
+            """),
+            mo.ui.table(pd.DataFrame(_reproduction), selection=None, show_column_summaries=False),
+            mo.md("""
+            This table compares reference prices in currency units. The full
+            report preserves differences for every array, whose units differ.
+            A small reproduction difference is not an estimate of pricing
+            bias: two machines can reproduce the same biased discretization
+            precisely. The Mac check allows bounded numerical differences;
+            it does not claim exact identity across environments.
+            """),
+            mo.md(r"""
+            **A portability tolerance was revised after the first check.**
+            The original cross-platform check used relative tolerance
+            $10^{-12}$ and absolute tolerance $10^{-14}$. Both Monte Carlo
+            banks passed it. HKDE failed it: its largest reference-price
+            difference was about $1.55\times10^{-9}$ currency, despite exact
+            same-environment Linux replay and intact transfers.
+
+            The revised checker gives currency-valued arrays absolute tolerance
+            $\max(10^{-14},10^{-6}\sigma_{\rm quote})$, which is
+            $2.5\times10^{-7}$ currency for these tasks' quote-noise SD of 0.25.
+            Parameter and covariance checks retain the tighter tolerance.
+            The original outcome is retained in the report. This is an
+            explicit revision of the portability check, not a retrospectively
+            predeclared success or a change in generated prices, quote noise,
+            Monte Carlo precision or pricing-bias budgets. The submitted
+            source archive identifies the original generation and checking
+            code; the report separately records the revised local checker.
+            """),
+            mo.accordion({
+                "Source and allocation": mo.json({
+                    "source_revision": _report["source_revision"],
+                    "source_archive_sha256": _report["source_archive_sha256"],
+                    "allocation": _report["allocation"],
+                }),
+                "Linux and Mac environments": mo.json({
+                    "linux": _report["linux_environment"],
+                    "mac": _report["mac_environment"],
+                }),
+                "Complete recorded checks, hashes and limitations": mo.json(_report),
+            }),
+        ])
+    _display
+    return
+
+
+@app.cell
+def _(mo):
+    mo.md("""
+    ### What this milestone accepts
+
+    Successful jobs, intact transfers and reproducible arrays establish the
+    **generation and retrieval route for the tested configurations**. They do
+    not reduce Monte Carlo error, bound time-grid bias, establish posterior
+    calibration or show that a real option panel follows the model. Sampling
+    precision, pricing accuracy and conditional inference retain their own
+    checks. The prior simulator demonstrations remain valid even if optional
+    market acquisition has not started.
+
+    **Review questions.**
+
+    1. If every transferred file has the expected hash, why regenerate the
+       arrays locally? What distinct question does each check answer?
+    2. Suppose both machines agree to numerical precision but a finer time grid
+       changes prices materially. Which milestone has passed, and what must be
+       resolved before treating these prices as accurate training labels?
+
+    Read the [cluster run and reproduction guide](../docs/option-cluster-smoke.md),
+    [raw cluster report](../docs/results/option-cluster-smoke.json), and
+    [shared bank and cluster subplan](../docs/simulator-plan/milestones/02-banks-and-cluster.md).
+    """)
+    return
+
+
 if __name__ == "__main__":
     app.run()

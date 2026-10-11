@@ -76,6 +76,49 @@ surface in its split.
 
 ## 3. Pick one restricted inference task only after its price labels are ready
 
+**Next integration task: the existing two-parameter HKDE Q panel.** This is a
+bounded implementation choice, not selection of the final curriculum. Its
+deterministic Fourier labels and Gaussian quote law permit a direct likelihood
+and a two-dimensional numerical posterior reference over `theta` and
+`jump_intensity`. The saved bank's largest Fourier refinement difference is
+about 1.12e-9 currency, against quote sigma 0.25. Start with a refined posterior
+grid and fixed validation cases; then train one small neural baseline, inspect
+prior-to-posterior updating, and compare conditional/joint quantities. Keep
+new final-test cases separate from development. A surrogate is a later,
+independently accepted step.
+
+There is no need to expand every Bergomi bank before that integration. Their
+largest saved MCSE/quote-sigma ratios are 0.0814 (one factor) and 0.0741 (rough).
+However, the current `abs(grid difference) <= 0.025 + 4 SE` rule is a discrepancy
+screen, not proof that bias is below 0.025. None of the five complete corner/
+center panels passes the stronger resolution check
+`abs(grid difference) + 4 SE <= 0.025`; the independent runs cannot resolve that
+budget. Even a precisely measured two-grid difference is not a continuum bound.
+
+A coherent Bergomi inference pilot can instead declare the implemented law
+explicitly:
+
+\[
+y=\widehat P_{128,N}(\theta;U)+0.25\epsilon,
+\qquad N=262144,\quad \epsilon\sim N(0,I).
+\]
+
+Here `U` is the independent Monte Carlo randomness used to estimate a full
+panel. Its errors are correlated across contracts. This numerical experiment
+already has a valid simulator; it is different from a Gaussian likelihood
+centered at an exact continuum price. Independent base draws/splits and full
+validation remain necessary before accepting its posterior.
+
+If tighter Bergomi price fidelity becomes necessary, use one bounded **coupled
+grid comparison** before increasing every bank's path count. For one factor,
+subsample the fine exact OU factors and sum fine Brownian increments into
+coarse increments. For the rough hybrid, aggregate independent normal inputs
+to coarse standard normals, then rebuild each grid with its own hybrid weights
+and normalization; subsampling a fine hybrid field does not give the coarse
+model. Compare paired conditional-put expectations and estimate the SE of their
+difference. This reduces sampling noise while preserving both discrete
+marginals; it measures a grid difference, not uniform continuum accuracy.
+
 For any chosen model, declare a small parameter prior, known context, contract
 panel and observation law. Decide explicitly whether the initial
 forward-variance curve is known context or an inferred object. Price-label
@@ -102,10 +145,15 @@ this increment substitutes for that inference validation.
 ## 4. Scale measured work and preserve the data boundary
 
 Use the same frozen task and stable example IDs locally and on the cluster.
-First time a small job, verification/loading and failure handling; use measured
-per-surface cost, memory and I/O to choose shard size and total volume. Cluster
-connectivity proven for the earlier GBM bank does not measure the new pricing
-workload. Do not turn a notebook opening into a generation or training job.
+The [option-workload smoke](option-cluster-smoke.md) now measures three actual
+24-panel jobs, exact Linux regeneration, complete transfer hashes and selected
+Mac numerical replay. Generation/write took 2.45, 111.95 and 116.59 seconds
+for HKDE, one-factor and rough Bergomi; job elapsed times also include
+verification. Use these bounded measurements before choosing a first modest
+training volume, without extrapolating them into a large-scale benchmark.
+The initial HKDE portability failure and currency-only tolerance adjustment
+remain recorded separately from numerical accuracy. Do not turn a notebook
+opening into a generation or training job.
 
 All required **S** work can be synthetic and offline: generated curves and
 contracts, clean prices, noisy panels, training, validation and downstream

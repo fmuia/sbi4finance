@@ -21,8 +21,8 @@ not scientific acceptance: a working simulator bank does not validate a posterio
 The [HKDE reference](../hkde-reference.md) and [shared option bank](../option-banks.md)
 now implement M4.1–M4.2 with bounded M4.3 evidence. The numerical pilot covers
 the supplied restricted prior and European panel; wider priors and products
-need new accuracy checks. Notebook 06 is verified offline. M5 training and
-the new option workload's actual cluster execution remain pending.
+need new accuracy checks. Notebook 06 is verified offline. The actual option workload now passes the
+[cluster smoke](../option-cluster-smoke.md); M5 training remains pending.
 
 Increment 8 now supplies [one-factor Bergomi](../bergomi-simulators.md), its
 verified small bank and offline notebook 08. M6.1–M6.3 infrastructure is in place;
@@ -34,9 +34,14 @@ Increment 9 supplies the [rough reference and hybrid driver](../rough-bergomi.md
 European pricing, a verified rough option bank and the rough sections of notebook
 08. M7.1–M7.2 numerical infrastructure and M7.3a bank delivery are available with
 explicit fidelity limits; M7.3b posterior training/acceptance is deferred. These
-three option banks complete the current coverage push. Remaining work is an actual
-option-workload cluster smoke, selected-task price fidelity, one restricted Q
-inference workflow (M5/M7.3b), and M8's chosen participant release. Optional
+three option banks complete the current coverage push. All three now have actual
+CPU generation, exact Linux replay, verified transfer and numerical Mac replay
+in the [cluster report](../option-cluster-smoke.md). The original HKDE portable
+tolerance failure and adjustment remain visible; scientific gates are unchanged.
+Next follow the [restricted HKDE subplan](milestones/05-amortized-pricing.md#next-increment-restricted-hkde-baseline):
+refined two-dimensional reference, one small baseline, conditional/joint and
+price checks, and offline review. M5 posterior acceptance, Bergomi's M7.3b
+inference, and M8's chosen participant release remain pending. Optional
 two-factor models and rough-memory P forecasting are outside this required core.
 
 The priority is a useful, scientifically sound tutorial that is easy to change. These milestones organize the work; they are not a requirement to build a production platform or complete every model before learning from a working example. The ordered substeps are a checklist, not separate PRs or approval rounds.

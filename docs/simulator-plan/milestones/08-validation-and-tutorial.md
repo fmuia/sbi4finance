@@ -4,6 +4,15 @@
 
 ## Purpose
 
+**Current boundary:** the [actual three-model cluster smoke](../../option-cluster-smoke.md)
+and offline marimo reviews establish the tested generation/retrieval route.
+They do not complete M8 or accept a new posterior. Next follow the
+[restricted HKDE subplan](05-amortized-pricing.md#next-increment-restricted-hkde-baseline):
+reference refinement, one modest baseline, conditional/joint and price checks,
+and its offline review. Keep Heston's failures and Bergomi's fidelity limits
+visible. The final returns-versus-options curriculum remains open; real-market
+acquisition cannot block S delivery.
+
 Assemble evidence already collected at each milestone into a complete S participant workflow. Validation and didactic review begin with M0 contracts and M1 analytic checks; this milestone closes end-to-end gaps rather than postponing either. The earlier review notebooks explain each development increment, including failed experiments; M8 selects and paces a scientifically accepted application for participants. M is an optional market illustration and E is a separate empirical extension; neither is required for S acceptance.
 
 ## Tasks

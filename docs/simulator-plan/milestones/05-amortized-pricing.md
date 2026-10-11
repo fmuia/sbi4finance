@@ -4,6 +4,20 @@
 
 ## Purpose
 
+**Priority update:** increment 7 is next, beginning with the existing restricted
+HKDE panel task after the measured option-bank cluster smoke. No Q posterior
+has yet been trained or accepted. Use the deterministic Fourier price map and
+its explicit Gaussian quote likelihood to establish a small reference-backed
+baseline before considering a pricing surrogate. Bergomi banks remain useful
+numerical pilots; settling their continuum-price bias is not a dependency of
+this HKDE experiment. Heston tuning stays paused with its results preserved,
+and the returns-versus-options curriculum choice remains open.
+
+MC-generated Bergomi panels include numerical estimator randomness as well as
+quote noise; later reference inference must match that declared law or justify
+neglecting numerical error at the selected fidelity. A bank's successful
+save/load or marginal SBC cannot replace conditional validation.
+
 Establish the relationship between Bayesian calibration and fast downstream prices. Build parameter-posterior inference first, then a separately assessed supervised pricing surrogate; study direct inference of posterior prices only if a concrete use case justifies it.
 
 ## Tasks
@@ -23,6 +37,53 @@ Establish the relationship between Bayesian calibration and fast downstream pric
 | M5.3 Optional direct price posterior | Fixed-target conditional price-posterior experiment and comparison with M5.1 | Verify matched panel/target generation and push-forward agreement. Keep this experiment independent of acceptance of either earlier route. |
 
 Complete M5.1 first. M5.2 and, if selected, M5.3 then use that accepted baseline; M5.3 need not wait for surrogate acceptance. Likely destinations are `inference/` and `adapters/` for calibration, `surrogates/` for regression, and `tasks/` for their distinct datasets. Checkpoint cards must identify which route and supported domain they implement.
+
+## Next increment: restricted HKDE baseline
+
+Reuse `configs/tasks/hkde_option_bank.json`: infer only long-run variance
+`theta` and jump intensity `jump_intensity`, with independent uniform priors
+on `[0.025, 0.065]` and `[0.25, 1.0]`. Initial variance, the other model
+parameters, spot/carry and the nine European put contracts remain known
+context. Observations are currency prices with independent additive Gaussian
+quote errors of standard deviation **0.25**. This is one bounded S experiment,
+not full HKDE calibration, a market study or a curriculum commitment.
+
+Writing the parameter pair as \(\vartheta\), the implemented observation law is
+
+\[
+x_j=p_j^{\mathrm{quad}}(\vartheta)+\epsilon_j,
+\qquad \epsilon_j\overset{\mathrm{iid}}\sim N(0,0.25^2),
+\]
+
+where \(p^{\mathrm{quad}}\) denotes the declared deterministic Fourier
+quadrature. Therefore the posterior density on the prior rectangle is
+proportional to
+
+\[
+\pi(\vartheta)\exp\!\left[-\frac{1}{2(0.25)^2}
+\sum_{j=1}^{9}\{x_j-p_j^{\mathrm{quad}}(\vartheta)\}^2\right].
+\]
+
+The likelihood is evaluable for this numerical model; the posterior grid and
+continuum-price approximation still require refinement checks. No latent-path
+sampler, new simulation framework or real-data acquisition is needed for this
+two-dimensional baseline. Training pairs contain the noisy panel and known
+context as inputs, and the synthetic parameter pair as targets. Clean prices,
+pricing diagnostics and truths must not enter observed conditioning.
+
+| Order | Bounded output | Check before moving on |
+|---|---|---|
+| M5.1a — Freeze the experiment | Existing task/configuration plus one short validation sheet: independent bank/split identities, fixed validation panels, a reserved final test, a few declared downstream European contracts outside the conditioning panel, metrics and tolerances. | Keep the final test unused for architecture, training-budget and acceptance-threshold choices. Express tolerances in posterior/price units with reference uncertainty, and preserve the original fixed cases when a check fails. |
+| M5.1b — Build the two-dimensional reference | Evaluate the explicit likelihood on a parameter grid or quadrature; retain normalized weights, joint dependence, marginals and reference target-price distributions for the fixed validation cases. Reuse the grid's price matrix across panels. | Refine both parameter integration and pricing controls. Check posterior normalization, moments/dependence and target-price quantiles at the intended comparison resolution. Record this as a numerical reference, not an analytically exact posterior. Resolve an inadequate reference before interpreting neural differences. |
+| M5.1c — Train one small baseline | A measured modest bank, the existing in-memory BayesFlow route, one declared architecture/seed/budget, and a reloadable checkpoint. | Keep normalization training-only; preserve the bank/task/adapter identities and deterministic reload checks. The existing 24-panel smoke bank is an interface test, not an adequate training set. Size this first training run from measured generation cost; do not start an architecture sweep or change Bergomi settings. |
+| M5.1d — Check inference and price propagation | Same-case neural/reference comparisons, joint/dependence checks, synthetic SBC and coverage, contraction/data updating relative to the prior, and downstream reference-pricer distributions. | Separate identifiable combinations from weak parameter directions; do not require arbitrary contraction of every marginal. A prior-copy baseline and conditional references distinguish learning from an SBC-only pass. Include posterior sampling uncertainty and grid/pricing uncertainty. Preserve failures; evaluate the untouched final test only after fixing the candidate and its selection rules. |
+| M5.1e — Review the complete baseline | Extend notebook06 with the likelihood, grid reference, a bounded checkpoint example, diagnostic/price plots, actual gate outcomes and a brief cost breakdown. | Execute/export offline without market fixtures or automatic training/cluster submission. A provisional result can be reviewed but cannot be relabelled an accepted participant checkpoint. M5.2 surrogate training starts as its own subsequent acceptance step. |
+
+Keep these steps within the existing increment 7 scope. Plain functions, the
+shared option bank, small cached reference arrays and the existing review
+notebook are sufficient. A finite numerical experiment with unresolved gates
+remains useful evidence; it does not require restarting the simulator ladder
+or repeatedly tuning the neural model before recording what was learned.
 
 ## Didactic review deliverable
 

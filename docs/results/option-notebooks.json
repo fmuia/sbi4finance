@@ -42,29 +42,32 @@
       "notebook": "notebooks/08_bergomi_models.py",
       "scope": "offline didactic execution, separate from scientific numerical or posterior acceptance",
       "command": [
-        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-option-banks/.pixi/envs/default/bin/marimo",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-option-banks/.pixi/envs/default/bin/python",
+        "-m",
+        "marimo",
         "export",
         "html",
         "notebooks/08_bergomi_models.py",
         "-o",
-        "/private/tmp/08_bergomi_models-isolated-offline.html",
+        "/private/tmp/08_bergomi_models-cluster-isolated-offline.html",
         "--force"
       ],
-      "working_directory": "/private/tmp/sbi-option-notebooks-offline-20261011",
+      "working_directory": "/private/tmp/sbi-option-cluster-review-1x502jb8",
       "environment_overrides": {
-        "PYTHONPATH": "/private/tmp/sbi-notebook-offline-guard:/private/tmp/sbi-option-notebooks-offline-20261011/src",
-        "MPLCONFIGDIR": "/private/tmp/mpl-option-isolated"
+        "PYTHONPATH": "/private/tmp/sbi-notebook-offline-guard:/private/tmp/sbi-option-cluster-review-1x502jb8/src",
+        "MPLCONFIGDIR": "/private/tmp/sbi-option-cluster-review-1x502jb8/mpl-cache",
+        "MPLBACKEND": "Agg"
       },
       "external_network_guard_sha256": "34c701c1e9ac7197e43094e02e5f84d2a4d49f8d2937f941f6ed23c37514a03d",
       "external_connects_blocked": true,
       "localhost_ipc_allowed": true,
       "market_data_directory_present": false,
       "exit_code": 0,
-      "elapsed_seconds": 4.311614749953151,
-      "output_cells": 22,
+      "elapsed_seconds": 4.61781045794487,
+      "output_cells": 25,
       "error_outputs": 0,
       "source_and_artifact_sha256": {
-        "notebooks/08_bergomi_models.py": "ec6fa5b3fba69b0cf98b0f799c86648a87d544c6293240dc8a6b27b86289aef7",
+        "notebooks/08_bergomi_models.py": "94901a1316e41e9f9a785792ff1f09fb26ebbf694613969f3824ff4cca34aeac",
         "configs/tasks/bergomi_option_bank.json": "e16bfdd1d4ebd3c8b11f9373e467012580e14947f6684265482c3aa395082360",
         "docs/results/bergomi-validation.json": "34906732606f525601d955df320ce6b020186f11b5adf375ed441483063ccbe6",
         "src/sbi4finance/option_bank.py": "8d41e6cecf115f6aa96475295c8291b9c6474e0c1e44ead001539129f3ba3d0a",
@@ -75,15 +78,22 @@
         "docs/results/rough-bergomi-bank-numerics.json": "fb2ec41358ad7f19e27ce4be18aa037586196cc74858203b2a89c67025d12af2",
         "configs/tasks/rough_bergomi_option_bank.json": "872a5225deb3f4d2ab45b7bed6a35562175b35a04bf74fddde281dbc8c848ac0",
         "src/sbi4finance/rough_bergomi.py": "ab47c3bcd3292fde093b4aaaf4fb668101793997dc25afe11a485ec8f2537b8f",
-        "src/sbi4finance/bergomi.py": "39234a7e8443a3d27fa9b460c3e9e584e41e8780bd084b6113648c78f1dd3c1d"
-      }
+        "src/sbi4finance/bergomi.py": "39234a7e8443a3d27fa9b460c3e9e584e41e8780bd084b6113648c78f1dd3c1d",
+        "docs/results/option-cluster-smoke.json": "3f3b118ed274ab27f79954fb04de964569210d50a78f621f2c338e448efb4d38"
+      },
+      "strict_marimo_check": "passed",
+      "source_package_path": "/private/tmp/sbi-option-cluster-review-1x502jb8/src/sbi4finance/__init__.py",
+      "inspection": "Inspected the three new rendered output payloads; all three actual job IDs, completed states, currency price differences, original HKDE portability failure and revised tolerance appear. No claim of browser visual inspection.",
+      "execution_note": "Initial sandbox blocked local kernel socket binding before any notebook execution; rerun allowed localhost IPC while retaining the external socket guard.",
+      "html_sha256": "7dfe74b19efae64b5288a26eb652b75f86863fb5d3ee26efafdf1209d6d42041",
+      "timing_note": "Final export after the report file-count correction; startup and notebook execution included, with an existing local Matplotlib font cache. This is not a simulator throughput benchmark."
     }
   ],
   "software_tests": {
     "command": "PYTHONPATH=src KERAS_BACKEND=jax python -m unittest discover -s tests -v",
-    "count": 70,
+    "count": 84,
     "passed": true,
-    "wall_seconds": 23.846,
+    "wall_seconds": 23.957,
     "scope": "complete current source tree, separate from posterior acceptance"
   }
 }

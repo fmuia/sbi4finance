@@ -8,6 +8,21 @@ Turn accepted task specifications into reusable training banks using the same ge
 
 Start with one compact bank and a thin generation/training script. This milestone does not require a data platform, custom loader or general job orchestrator. A few arrays, one metadata file and focused checks are sufficient for the first round trip; grow the storage and execution machinery when a measured experiment needs it.
 
+**Measured cluster extension:** the existing GBM route now extends to actual
+24-panel option-bank jobs on Oscar: HKDE **7297096** (4 s scheduler elapsed),
+one-factor Bergomi **7297097** (158 s), and rough Bergomi **7297098** (164 s).
+Each requested one CPU and 4 GB; each passed exact selected-ID regeneration
+inside the Linux job. The [run record](https://github.com/fmuia/sbi4finance/blob/feat/rough-bergomi-option-bank/docs/option-cluster-smoke.md)
+and [JSON evidence](https://github.com/fmuia/sbi4finance/blob/feat/rough-bergomi-option-bank/docs/results/option-cluster-smoke.json)
+record configuration/source identity, accounting, downloaded-bank integrity and
+the separate portable comparison. All 15 transferred files match independently
+retrieved remote hashes; Mac numerical regeneration passed for all three banks.
+The report retains the initial HKDE portability failure and subsequent currency
+tolerance `max(1e-14, 1e-6 * quote_sigma)`, or 2.5e-7 here. That adjustment
+does not weaken file hashes, parameter identities, same-environment reproduction
+or scientific price-accuracy gates. These runs
+establish the workload route, not large-bank scaling or posterior acceptance.
+
 ## Tasks
 
 1. Define immutable example identities and purpose-separated RNG streams using stable task/split/example identifiers and a root seed. Scheduler IDs, thread counts, shard boundaries, and retries must not define randomness. Kernels receive explicit streams or random inputs; do not share mutable generators unsafely across parallel loops. Reproducibility is within a pinned backend, not an unsupported cross-compiler bitwise promise.

@@ -1,0 +1,637 @@
+{
+  "date": "2026-10-11",
+  "scope": "S: actual CPU generation, transfer integrity and selected-ID numerical reproduction; no posterior or market acceptance",
+  "source_revision": "25f4070753243c89ac46b365877cafdeb688410f",
+  "source_archive_sha256": "b44c6f83383ca609ccf50f87107481e707f1c80ffde8d3eb7b3149b3da1f4f8c",
+  "source_archive_paths": [
+    "src/sbi4finance/__init__.py",
+    "src/sbi4finance/gbm.py",
+    "src/sbi4finance/gbm_bank.py",
+    "src/sbi4finance/heston.py",
+    "src/sbi4finance/hkde.py",
+    "src/sbi4finance/bergomi.py",
+    "src/sbi4finance/rough_bergomi.py",
+    "src/sbi4finance/option_panel.py",
+    "src/sbi4finance/option_bank.py",
+    "scripts/generate_option_bank.py",
+    "cluster/option_bank.sbatch",
+    "configs/tasks/hkde_option_bank.json",
+    "configs/tasks/bergomi_option_bank.json",
+    "configs/tasks/rough_bergomi_option_bank.json"
+  ],
+  "mac_verifier_file": "scripts/generate_option_bank.py",
+  "mac_verifier_sha256": "440716770485457df91e2448ffffc64bedc009c9dbf876ebd8b68ab93f9727c5",
+  "checker_change": "Original submitted code used rtol=1e-12, atol=1e-14 for all portable arrays. After HKDE failed, currency atol was changed to max(base_atol, 1e-6*quote_noise_std); parameters/covariance retain base tolerance. Source kernels, stored banks, exact Linux checks and scientific budgets unchanged. Original outcomes retained.",
+  "allocation": {
+    "cluster": "Brown Oscar",
+    "account": "carney-mjfrank-condo2",
+    "partition": "batch",
+    "qos": "carney-condo2",
+    "cpus_per_job": 1,
+    "memory_per_job": "4G",
+    "wall_limit_seconds": 600,
+    "jobs": 3,
+    "active_allocation_discovered": true
+  },
+  "linux_environment": {
+    "platform": {
+      "description": "Linux-5.14.0-570.62.1.0.1.el9_6.x86_64-x86_64-with-glibc2.34",
+      "machine": "x86_64",
+      "system": "Linux"
+    },
+    "versions": {
+      "numpy": "2.5.3",
+      "python": "3.12.8",
+      "scipy": "1.18.1"
+    }
+  },
+  "mac_environment": {
+    "versions": {
+      "numpy": "2.5.3",
+      "scipy": "1.18.1",
+      "python": "3.12.15"
+    },
+    "platform": {
+      "system": "Darwin",
+      "machine": "arm64",
+      "description": "macOS-26.4.1-arm64-arm-64bit"
+    }
+  },
+  "declared_numba_version": "0.68.0",
+  "runs": [
+    {
+      "model": "hkde",
+      "job_id": 7297096,
+      "state": "COMPLETED",
+      "exit_code": "0:0",
+      "elapsed_seconds": 4,
+      "total_cpu_seconds": 1.495,
+      "max_rss_kib": 147948,
+      "generation_seconds": 2.4546133372932673,
+      "linux_verification_seconds": 0.20118545554578304,
+      "mac_verification_seconds": 0.5098839583806694,
+      "examples": {
+        "test": 4,
+        "train": 16,
+        "validation": 4
+      },
+      "loaded_array_bytes": 23648,
+      "exact_linux_regeneration": true,
+      "mac_portable_passed": true,
+      "regenerated_ids": {
+        "test": [
+          3,
+          2,
+          0
+        ],
+        "train": [
+          15,
+          8,
+          0
+        ],
+        "validation": [
+          3,
+          2,
+          0
+        ]
+      },
+      "exact_ids": true,
+      "max_absolute_difference": 1.5485674964565987e-09,
+      "max_absolute_difference_by_array": {
+        "observations": 1.5485674964565987e-09,
+        "parameters": 6.938893903907228e-18,
+        "reference_prices": 1.5485674964565987e-09,
+        "pricing_standard_errors": 0.0,
+        "pricing_covariance": 0.0,
+        "refinement_difference": 1.4867751474412216e-09
+      },
+      "portable_array_comparisons": {
+        "observations": {
+          "units": "currency",
+          "tolerances": {
+            "rtol": 1e-12,
+            "atol": 2.5e-07
+          },
+          "max_absolute_difference": 1.5485674964565987e-09,
+          "passed": true
+        },
+        "parameters": {
+          "units": "parameter-specific (parameter_names order)",
+          "tolerances": {
+            "rtol": 1e-12,
+            "atol": 1e-14
+          },
+          "max_absolute_difference": 6.938893903907228e-18,
+          "passed": true
+        },
+        "reference_prices": {
+          "units": "currency",
+          "tolerances": {
+            "rtol": 1e-12,
+            "atol": 2.5e-07
+          },
+          "max_absolute_difference": 1.5485674964565987e-09,
+          "passed": true
+        },
+        "pricing_standard_errors": {
+          "units": "currency",
+          "tolerances": {
+            "rtol": 1e-12,
+            "atol": 2.5e-07
+          },
+          "max_absolute_difference": 0.0,
+          "passed": true
+        },
+        "pricing_covariance": {
+          "units": "currency squared",
+          "tolerances": {
+            "rtol": 1e-12,
+            "atol": 1e-14
+          },
+          "max_absolute_difference": 0.0,
+          "passed": true
+        },
+        "refinement_difference": {
+          "units": "currency",
+          "tolerances": {
+            "rtol": 1e-12,
+            "atol": 2.5e-07
+          },
+          "max_absolute_difference": 1.4867751474412216e-09,
+          "passed": true
+        }
+      },
+      "max_price_difference_over_quote_sigma": 6.194269985826395e-09,
+      "manifest_sha256": "44ae3cee4a54f66452f5d6a2950e58f0da4b8645cace92abc62428c481db6e12",
+      "linux_verification_sha256": "9feef855d9f51a0d7053e413918acf096d2eec2dfad1493d1fa5547ed829be40",
+      "mac_verification_sha256": "9e5ace2410af38bb10e783625692a25471d281e2a320c94c805b0aeb2c5d8d25",
+      "transfer_hashes_match": true,
+      "transferred_file_sha256": {
+        "train.npz": "cc065ba2efd3d165267ee486cd5d2c57d627dcf56d8b27306aa645fa61b92a55",
+        "test.npz": "dfbe17005eec41a3f42335b8f6d3407958b38ad3fa7c547b9b1b77b3de1fc769",
+        "manifest.json": "44ae3cee4a54f66452f5d6a2950e58f0da4b8645cace92abc62428c481db6e12",
+        "verification.json": "9feef855d9f51a0d7053e413918acf096d2eec2dfad1493d1fa5547ed829be40",
+        "validation.npz": "ffb81ccda6e804e714cb9ed86ab06b8be18f21758f3246de77fe4e33949547f4"
+      },
+      "scientific_source_identity": {
+        "matched": true,
+        "sha256": {
+          "gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
+          "option_panel.py": "b37400bfc7f7ec91d208e8637cee1fcb53885b76ca0b00c016574b495fa035f2",
+          "gbm.py": "8d491f019326712a4a6e985b491658146fa3da9f57f513a6fed421259d55cb5d",
+          "option_bank.py": "8d41e6cecf115f6aa96475295c8291b9c6474e0c1e44ead001539129f3ba3d0a",
+          "heston.py": "f85237a6f223689bb83fb2837d6f6cba855867f5da9f919667163ae4a4c8996c",
+          "hkde.py": "c6618b6bd54eae169b4fc0e90201b8582b8e7da14ff41a305c27e4e2bd06e503"
+        },
+        "differences": {}
+      },
+      "config_file": "configs/tasks/hkde_option_bank.json",
+      "config_sha256": "f8fe74d4bfe654a30932f39ccf7d3acb2ccfc5555f5d70220027808bd6c4b83b",
+      "max_mc_se_over_quote_sigma": 0.0,
+      "max_abs_fourier_refinement_over_quote_sigma": 1.4680097137897974e-09,
+      "original_portable_check": {
+        "passed": false,
+        "rtol": 1e-12,
+        "atol": 1e-14,
+        "max_absolute_difference_by_array": {
+          "observations": 1.5485674964565987e-09,
+          "parameters": 6.938893903907228e-18,
+          "reference_prices": 1.5485674964565987e-09,
+          "pricing_standard_errors": 0.0,
+          "pricing_covariance": 0.0,
+          "refinement_difference": 1.4867751474412216e-09
+        },
+        "report_sha256": "adbc3830362517ae982060688ec46ec958af2cb02582297a2fb566ca2ab29e74"
+      },
+      "portable_tolerances": {
+        "rtol": 1e-12,
+        "base_atol": 1e-14,
+        "currency_atol": 2.5e-07,
+        "price_noise_fraction": 1e-06,
+        "currency_atol_over_quote_sigma": 1e-06,
+        "quote_noise_std": 0.25,
+        "relative_to": "regenerated values",
+        "scope": "numerical portability only; scientific/pricer acceptance unchanged"
+      }
+    },
+    {
+      "model": "bergomi",
+      "job_id": 7297097,
+      "state": "COMPLETED",
+      "exit_code": "0:0",
+      "elapsed_seconds": 158,
+      "total_cpu_seconds": 155.333,
+      "max_rss_kib": 77984,
+      "generation_seconds": 111.94549933075905,
+      "linux_verification_seconds": 44.88235280662775,
+      "mac_verification_seconds": 10.763457667082548,
+      "examples": {
+        "test": 4,
+        "train": 16,
+        "validation": 4
+      },
+      "loaded_array_bytes": 23648,
+      "exact_linux_regeneration": true,
+      "mac_portable_passed": true,
+      "regenerated_ids": {
+        "test": [
+          3,
+          2,
+          0
+        ],
+        "train": [
+          15,
+          8,
+          0
+        ],
+        "validation": [
+          3,
+          2,
+          0
+        ]
+      },
+      "exact_ids": true,
+      "max_absolute_difference": 1.2434497875801753e-14,
+      "max_absolute_difference_by_array": {
+        "observations": 1.2434497875801753e-14,
+        "parameters": 1.1102230246251565e-16,
+        "reference_prices": 1.2434497875801753e-14,
+        "pricing_standard_errors": 6.938893903907228e-18,
+        "pricing_covariance": 1.8973538018496328e-19,
+        "refinement_difference": 0.0
+      },
+      "portable_array_comparisons": {
+        "observations": {
+          "units": "currency",
+          "tolerances": {
+            "rtol": 1e-12,
+            "atol": 2.5e-07
+          },
+          "max_absolute_difference": 1.2434497875801753e-14,
+          "passed": true
+        },
+        "parameters": {
+          "units": "parameter-specific (parameter_names order)",
+          "tolerances": {
+            "rtol": 1e-12,
+            "atol": 1e-14
+          },
+          "max_absolute_difference": 1.1102230246251565e-16,
+          "passed": true
+        },
+        "reference_prices": {
+          "units": "currency",
+          "tolerances": {
+            "rtol": 1e-12,
+            "atol": 2.5e-07
+          },
+          "max_absolute_difference": 1.2434497875801753e-14,
+          "passed": true
+        },
+        "pricing_standard_errors": {
+          "units": "currency",
+          "tolerances": {
+            "rtol": 1e-12,
+            "atol": 2.5e-07
+          },
+          "max_absolute_difference": 6.938893903907228e-18,
+          "passed": true
+        },
+        "pricing_covariance": {
+          "units": "currency squared",
+          "tolerances": {
+            "rtol": 1e-12,
+            "atol": 1e-14
+          },
+          "max_absolute_difference": 1.8973538018496328e-19,
+          "passed": true
+        },
+        "refinement_difference": {
+          "units": "currency",
+          "tolerances": {
+            "rtol": 1e-12,
+            "atol": 2.5e-07
+          },
+          "max_absolute_difference": 0.0,
+          "passed": true
+        }
+      },
+      "max_price_difference_over_quote_sigma": 4.973799150320701e-14,
+      "manifest_sha256": "993cddee709dfa5d50959569646f5bd3a11ecabb3f1092350f8fb3138763ed13",
+      "linux_verification_sha256": "f1d4bf26f4389e5f0758795f5f417f600c30aa6db9c6007647befe3269b1ae67",
+      "mac_verification_sha256": "0edd0ad669f6f6198481200ce4707d82087b98ac27409e07847ab4abec143971",
+      "transfer_hashes_match": true,
+      "transferred_file_sha256": {
+        "train.npz": "530eb35d5b2e6c5d570f3d82c7b077d1914e77b98d0aaad7806ee8db6eadfb39",
+        "test.npz": "a70bab1fb21688d14cea7afe6a01cf82809631f856fce9e844491795449746fe",
+        "manifest.json": "993cddee709dfa5d50959569646f5bd3a11ecabb3f1092350f8fb3138763ed13",
+        "verification.json": "f1d4bf26f4389e5f0758795f5f417f600c30aa6db9c6007647befe3269b1ae67",
+        "validation.npz": "b2dc59a8de3fb058626869759c4c0b2d7cba72aacc93df61567025fe3eff50dc"
+      },
+      "scientific_source_identity": {
+        "matched": true,
+        "sha256": {
+          "option_panel.py": "b37400bfc7f7ec91d208e8637cee1fcb53885b76ca0b00c016574b495fa035f2",
+          "option_bank.py": "8d41e6cecf115f6aa96475295c8291b9c6474e0c1e44ead001539129f3ba3d0a",
+          "bergomi.py": "39234a7e8443a3d27fa9b460c3e9e584e41e8780bd084b6113648c78f1dd3c1d",
+          "gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb"
+        },
+        "differences": {}
+      },
+      "config_file": "configs/tasks/bergomi_option_bank.json",
+      "config_sha256": "e16bfdd1d4ebd3c8b11f9373e467012580e14947f6684265482c3aa395082360",
+      "max_mc_se_over_quote_sigma": 0.08142122489873731,
+      "max_abs_fourier_refinement_over_quote_sigma": null,
+      "original_portable_check": {
+        "passed": true,
+        "rtol": 1e-12,
+        "atol": 1e-14,
+        "max_absolute_difference_by_array": {
+          "observations": 1.2434497875801753e-14,
+          "parameters": 1.1102230246251565e-16,
+          "reference_prices": 1.2434497875801753e-14,
+          "pricing_standard_errors": 6.938893903907228e-18,
+          "pricing_covariance": 1.8973538018496328e-19,
+          "refinement_difference": 0.0
+        },
+        "report_sha256": "c96d4de04a906920db72de50752308e7bd293cdd12eb8419d7985f3f8b772ffd"
+      },
+      "portable_tolerances": {
+        "rtol": 1e-12,
+        "base_atol": 1e-14,
+        "currency_atol": 2.5e-07,
+        "price_noise_fraction": 1e-06,
+        "currency_atol_over_quote_sigma": 1e-06,
+        "quote_noise_std": 0.25,
+        "relative_to": "regenerated values",
+        "scope": "numerical portability only; scientific/pricer acceptance unchanged"
+      }
+    },
+    {
+      "model": "rough_bergomi",
+      "job_id": 7297098,
+      "state": "COMPLETED",
+      "exit_code": "0:0",
+      "elapsed_seconds": 164,
+      "total_cpu_seconds": 160.058,
+      "max_rss_kib": 106476,
+      "generation_seconds": 116.59342445060611,
+      "linux_verification_seconds": 45.68291750922799,
+      "mac_verification_seconds": 11.937844540923834,
+      "examples": {
+        "test": 4,
+        "train": 16,
+        "validation": 4
+      },
+      "loaded_array_bytes": 23648,
+      "exact_linux_regeneration": true,
+      "mac_portable_passed": true,
+      "regenerated_ids": {
+        "test": [
+          3,
+          2,
+          0
+        ],
+        "train": [
+          15,
+          8,
+          0
+        ],
+        "validation": [
+          3,
+          2,
+          0
+        ]
+      },
+      "exact_ids": true,
+      "max_absolute_difference": 1.2434497875801753e-14,
+      "max_absolute_difference_by_array": {
+        "observations": 1.2434497875801753e-14,
+        "parameters": 1.1102230246251565e-16,
+        "reference_prices": 1.2434497875801753e-14,
+        "pricing_standard_errors": 6.938893903907228e-18,
+        "pricing_covariance": 1.8973538018496328e-19,
+        "refinement_difference": 0.0
+      },
+      "portable_array_comparisons": {
+        "observations": {
+          "units": "currency",
+          "tolerances": {
+            "rtol": 1e-12,
+            "atol": 2.5e-07
+          },
+          "max_absolute_difference": 1.2434497875801753e-14,
+          "passed": true
+        },
+        "parameters": {
+          "units": "parameter-specific (parameter_names order)",
+          "tolerances": {
+            "rtol": 1e-12,
+            "atol": 1e-14
+          },
+          "max_absolute_difference": 1.1102230246251565e-16,
+          "passed": true
+        },
+        "reference_prices": {
+          "units": "currency",
+          "tolerances": {
+            "rtol": 1e-12,
+            "atol": 2.5e-07
+          },
+          "max_absolute_difference": 1.2434497875801753e-14,
+          "passed": true
+        },
+        "pricing_standard_errors": {
+          "units": "currency",
+          "tolerances": {
+            "rtol": 1e-12,
+            "atol": 2.5e-07
+          },
+          "max_absolute_difference": 6.938893903907228e-18,
+          "passed": true
+        },
+        "pricing_covariance": {
+          "units": "currency squared",
+          "tolerances": {
+            "rtol": 1e-12,
+            "atol": 1e-14
+          },
+          "max_absolute_difference": 1.8973538018496328e-19,
+          "passed": true
+        },
+        "refinement_difference": {
+          "units": "currency",
+          "tolerances": {
+            "rtol": 1e-12,
+            "atol": 2.5e-07
+          },
+          "max_absolute_difference": 0.0,
+          "passed": true
+        }
+      },
+      "max_price_difference_over_quote_sigma": 4.973799150320701e-14,
+      "manifest_sha256": "b040348244c78469b6b9b1bc74cf08c10c8accb10e161eda8f1100983e6dc136",
+      "linux_verification_sha256": "1770e189613fef1f7e86e07151ee65d4223cec751a7feb7d9a2eaf7f52518738",
+      "mac_verification_sha256": "3309d6334fa6834d516a21cbb296d5146bc0863cb853187f11cd36d0b252428f",
+      "transfer_hashes_match": true,
+      "transferred_file_sha256": {
+        "train.npz": "bb2f262802f852e59842bc540f61a391f8a96d55d2ad42a86eb496a0bf4d29bf",
+        "test.npz": "4635d3a8970ebf76e6017e8067cf2897364605fa0489662e0a9c6d683ea53b01",
+        "manifest.json": "b040348244c78469b6b9b1bc74cf08c10c8accb10e161eda8f1100983e6dc136",
+        "verification.json": "1770e189613fef1f7e86e07151ee65d4223cec751a7feb7d9a2eaf7f52518738",
+        "validation.npz": "dfd2183b270bc749c1c16f82a6bd02ab33591ecb5e39e10377894b3ea2d64217"
+      },
+      "scientific_source_identity": {
+        "matched": true,
+        "sha256": {
+          "bergomi.py": "39234a7e8443a3d27fa9b460c3e9e584e41e8780bd084b6113648c78f1dd3c1d",
+          "gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
+          "option_panel.py": "b37400bfc7f7ec91d208e8637cee1fcb53885b76ca0b00c016574b495fa035f2",
+          "option_bank.py": "8d41e6cecf115f6aa96475295c8291b9c6474e0c1e44ead001539129f3ba3d0a",
+          "rough_bergomi.py": "ab47c3bcd3292fde093b4aaaf4fb668101793997dc25afe11a485ec8f2537b8f"
+        },
+        "differences": {}
+      },
+      "config_file": "configs/tasks/rough_bergomi_option_bank.json",
+      "config_sha256": "872a5225deb3f4d2ab45b7bed6a35562175b35a04bf74fddde281dbc8c848ac0",
+      "max_mc_se_over_quote_sigma": 0.07406760242522795,
+      "max_abs_fourier_refinement_over_quote_sigma": null,
+      "original_portable_check": {
+        "passed": true,
+        "rtol": 1e-12,
+        "atol": 1e-14,
+        "max_absolute_difference_by_array": {
+          "observations": 1.2434497875801753e-14,
+          "parameters": 1.1102230246251565e-16,
+          "reference_prices": 1.2434497875801753e-14,
+          "pricing_standard_errors": 6.938893903907228e-18,
+          "pricing_covariance": 1.8973538018496328e-19,
+          "refinement_difference": 0.0
+        },
+        "report_sha256": "80b19bd68f8c01ce5fbaefc6aa4e79e670ea2b3d6f5d9ff73a26aa6dac5d05eb"
+      },
+      "portable_tolerances": {
+        "rtol": 1e-12,
+        "base_atol": 1e-14,
+        "currency_atol": 2.5e-07,
+        "price_noise_fraction": 1e-06,
+        "currency_atol_over_quote_sigma": 1e-06,
+        "quote_noise_std": 0.25,
+        "relative_to": "regenerated values",
+        "scope": "numerical portability only; scientific/pricer acceptance unchanged"
+      }
+    }
+  ],
+  "scheduler_accounting": [
+    {
+      "JobIDRaw": "7297096",
+      "JobName": "sbi-options-hkde",
+      "State": "COMPLETED",
+      "ExitCode": "0:0",
+      "ElapsedRaw": "4",
+      "TotalCPU": "00:01.495",
+      "MaxRSS": "",
+      "AllocCPUS": "1",
+      "ReqMem": "4G"
+    },
+    {
+      "JobIDRaw": "7297096.batch",
+      "JobName": "batch",
+      "State": "COMPLETED",
+      "ExitCode": "0:0",
+      "ElapsedRaw": "4",
+      "TotalCPU": "00:01.495",
+      "MaxRSS": "147948K",
+      "AllocCPUS": "1",
+      "ReqMem": ""
+    },
+    {
+      "JobIDRaw": "7297096.extern",
+      "JobName": "extern",
+      "State": "COMPLETED",
+      "ExitCode": "0:0",
+      "ElapsedRaw": "4",
+      "TotalCPU": "00:00:00",
+      "MaxRSS": "",
+      "AllocCPUS": "1",
+      "ReqMem": ""
+    },
+    {
+      "JobIDRaw": "7297097",
+      "JobName": "sbi-options-bergomi",
+      "State": "COMPLETED",
+      "ExitCode": "0:0",
+      "ElapsedRaw": "158",
+      "TotalCPU": "02:35.333",
+      "MaxRSS": "",
+      "AllocCPUS": "1",
+      "ReqMem": "4G"
+    },
+    {
+      "JobIDRaw": "7297097.batch",
+      "JobName": "batch",
+      "State": "COMPLETED",
+      "ExitCode": "0:0",
+      "ElapsedRaw": "158",
+      "TotalCPU": "02:35.333",
+      "MaxRSS": "77984K",
+      "AllocCPUS": "1",
+      "ReqMem": ""
+    },
+    {
+      "JobIDRaw": "7297097.extern",
+      "JobName": "extern",
+      "State": "COMPLETED",
+      "ExitCode": "0:0",
+      "ElapsedRaw": "158",
+      "TotalCPU": "00:00:00",
+      "MaxRSS": "",
+      "AllocCPUS": "1",
+      "ReqMem": ""
+    },
+    {
+      "JobIDRaw": "7297098",
+      "JobName": "sbi-options-rough_bergomi",
+      "State": "COMPLETED",
+      "ExitCode": "0:0",
+      "ElapsedRaw": "164",
+      "TotalCPU": "02:40.058",
+      "MaxRSS": "",
+      "AllocCPUS": "1",
+      "ReqMem": "4G"
+    },
+    {
+      "JobIDRaw": "7297098.batch",
+      "JobName": "batch",
+      "State": "COMPLETED",
+      "ExitCode": "0:0",
+      "ElapsedRaw": "164",
+      "TotalCPU": "02:40.058",
+      "MaxRSS": "106476K",
+      "AllocCPUS": "1",
+      "ReqMem": ""
+    },
+    {
+      "JobIDRaw": "7297098.extern",
+      "JobName": "extern",
+      "State": "COMPLETED",
+      "ExitCode": "0:0",
+      "ElapsedRaw": "164",
+      "TotalCPU": "00:00:00",
+      "MaxRSS": "",
+      "AllocCPUS": "1",
+      "ReqMem": ""
+    }
+  ],
+  "limits": [
+    "Only 24 complete panels per model, 16 train/4 validation/4 test; not a useful neural training bank.",
+    "Selected first/middle/last IDs in each split are regenerated; stored hashes cover every transferred file.",
+    "Portability tolerance was revised after seeing the HKDE failure; it is separate from unchanged pricing and inference acceptance.",
+    "Same-source regeneration is not an independent numerical price reference. File equality is not model correctness.",
+    "MC standard errors exclude asset-grid and rough-kernel bias; passing existing refinement screens does not bound continuum bias below 0.025 currency.",
+    "Tiny-job timing includes setup, generation and selected regeneration; use generation-specific timing before sizing larger banks. No large-scale throughput or network speedup claim.",
+    "Generation remains entirely synthetic, with known curve and contracts. No market conditioning, empirical claim, new training or accepted option posterior."
+  ],
+  "next_task": "M5.1: existing two-parameter HKDE Q panel; refined 2D likelihood/posterior-grid reference, fixed validation and separate final test, then one bounded neural baseline. Curriculum choice remains open.",
+  "transferred_bank_file_count": 15
+}

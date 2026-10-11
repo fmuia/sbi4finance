@@ -98,11 +98,26 @@ sbatch --account="$BANK_ACCOUNT" --partition="$BANK_PARTITION" --qos="$BANK_QOS"
 Use a Python 3.12 environment containing the pinned NumPy 2.5.3, SciPy 1.18.1
 and Numba 0.68.0, or the locked default Pixi environment. No package installation
 occurs in the job. Keep its source revision, manifest, verification file and
-scheduler accounting. This new script has local CLI and shell-syntax checks;
-an actual option-pricing job on the cluster is still pending. The earlier
-[GBM cluster smoke](gbm-cluster-smoke.md) establishes the connection, not this
-workload's Linux performance. No scaling/orchestration framework is required
-before measuring that job.
+scheduler accounting. The [actual option cluster smoke](option-cluster-smoke.md)
+now covers all three 24-panel presets: scheduler elapsed times 4, 158 and 164
+seconds for HKDE, one-factor and rough Bergomi. Exact Linux regeneration,
+transferred-file hashes and Mac numerical replay pass. The report retains the
+original strict HKDE portability failure and the subsequent currency-only
+tolerance adjustment; pricing-accuracy gates remain unchanged.
+
+To check a copied bank without rewriting it:
+
+```bash
+PYTHONPATH=src pixi run python scripts/generate_option_bank.py \
+  --verify-existing /path/to/copied/bank --portable \
+  --report /path/to/new/external-verification.json
+```
+
+The report must be outside the bank and cannot overwrite an existing file.
+Scientific source hashes and IDs must match. Portable checking records the
+changed environment, per-array units, tolerances and discrepancies; exact mode
+instead requires the recorded environment and exact arrays. These are narrow
+reproduction checks, not a compatibility framework or a price-bias certificate.
 
 ## What comes after the bank
 
