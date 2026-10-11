@@ -1,6 +1,6 @@
 # Finance simulator and amortized inference implementation plan
 
-Status: draft for review, 11 October 2026. Implementation starts after review of this plan.
+Status: implementation started, 11 October 2026. The [first GBM increment](../gbm-reference.md) records M0/M1 scope and evidence; later milestones remain planned. The live tutorial's main application remains open.
 
 Build reusable simulators and reproducible training datasets for two financial applications: learning dynamics from return histories, and learning pricing parameters or prices from option quotes. Both can be taught and validated on simulated observations. Shared infrastructure should make both applications practical while preserving their different probability measures, observations and inference targets.
 
@@ -55,7 +55,7 @@ The notes define the equations and conventions used by this plan. They are an in
 
 ## Milestones and deliverables
 
-Every milestone is proposed. Acceptance means its stated checks pass; completing one does not automatically accept the others.
+Milestone status is recorded in each subplan. Acceptance means its stated checks pass; completing one does not automatically accept the others.
 
 | Milestone | Main deliverable | Dependencies | Role |
 |---|---|---|---|
@@ -96,7 +96,7 @@ The table and ordered subplans specify the dependencies; the graph summarizes re
 
 ## Implementation sequence and subplans
 
-Start with the shared foundation in this order. Each milestone file contains an **Ordered implementation subplan** table with stable step IDs, a concrete output and verification evidence. Existing task descriptions supply the scientific detail; the subplan defines the execution order. All steps are currently planned, with no implementation completion claimed by this documentation PR.
+Start with the shared foundation in this order. Each milestone file contains an **Ordered implementation subplan** table with stable step IDs, a concrete output and verification evidence. Existing task descriptions supply the scientific detail; the subplan defines the execution order. M0/M1 now have the linked first implementation; unfinished and optional steps retain their planned status.
 
 | Order | Work unit | Result needed before moving on |
 |---|---|---|

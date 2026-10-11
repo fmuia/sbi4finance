@@ -41,6 +41,8 @@ KERAS_BACKEND = "jax"
 edit = { cmd = "marimo edit --no-token", cwd = "notebooks" }
 check = "marimo check notebooks"
 selfcheck = "python src/sbi4finance/mmar/univariate.py"
+gbm-demo = "python scripts/gbm_reference.py"
+test-gbm = "python -m unittest discover -s tests -p test_gbm.py -v"
 
 # GPU environment for Oscar (linux-64 only): `pixi install -e gpu` on a login node.
 [tool.pixi.feature.cuda]

@@ -1,6 +1,6 @@
 # M0 Scientific and software contracts
 
-**Status:** proposed; implementation starts after review. **Depends on:** no implementation milestone. Read [foundations](../notes/01-foundations.md), [software and data](../notes/04-software-and-data.md), and the [roadmap](../README.md).
+**Status:** M0.1–M0.3 implemented for the first GBM task; later-model details remain deferred. See the [conventions, worked records and limits](../../gbm-reference.md). **Depends on:** no implementation milestone. Read [foundations](../notes/01-foundations.md), [software and data](../notes/04-software-and-data.md), and the [roadmap](../README.md).
 
 ## Purpose
 
@@ -20,7 +20,7 @@ Adopt the [S/M/E evidence boundary](https://github.com/fmuia/sbi4finance/blob/1e
 
 ## Ordered implementation subplan
 
-All steps below are planned, not implemented. Work in order; each step uses the preceding step's output. Suggested destinations follow the [module responsibilities](../notes/04-software-and-data.md#responsibilities-and-dependencies), without fixing final filenames or requiring empty modules.
+The first-task outputs below are recorded in the linked implementation note; broader model contracts are sketched, not frozen. Suggested destinations follow the [module responsibilities](../notes/04-software-and-data.md#responsibilities-and-dependencies), without fixing final filenames or requiring empty modules.
 
 | Step | Concrete output | Verification/handoff |
 |---|---|---|

@@ -23,6 +23,8 @@ Its [delivery and evidence boundary](docs/simulator-plan/README.md#synthetic-del
 
 ## Setup
 
+The first simulator-ladder implementation is the [GBM reference example](docs/gbm-reference.md): exact simulation, an analytic drift posterior, conditional future losses and separate European price checks. Run `pixi run gbm-demo` and `pixi run test-gbm`. It uses generated data and has no neural-training or market-data prerequisite.
+
 One environment, managed by [pixi](https://pixi.sh) from `pyproject.toml`:
 
 ```bash

@@ -1,6 +1,6 @@
 # M1 GBM with analytic inference and pricing references
 
-**Status:** proposed; implementation starts after review. **Depends on:** [M0](00-contracts.md). Read [foundations](../notes/01-foundations.md), [models and numerics](../notes/02-models-and-numerics.md), and [inference and pricing](../notes/03-inference-and-pricing.md).
+**Status:** M1.1–M1.3 implemented and locally checked; see the [runnable example and evidence](../../gbm-reference.md). **Depends on:** [M0](00-contracts.md). Read [foundations](../notes/01-foundations.md), [models and numerics](../notes/02-models-and-numerics.md), and [inference and pricing](../notes/03-inference-and-pricing.md).
 
 ## Purpose
 
@@ -16,7 +16,7 @@ Build the smallest complete scientific example whose simulation, likelihood, pos
 
 ## Ordered implementation subplan
 
-All steps below are planned, not implemented. Work in order; each step uses the preceding step's output. Destinations are guidance for the existing package layout, not fixed API signatures.
+The first reference is implemented in a single small GBM module, one script and focused tests, following the tutorial-iteration rule. Destinations below describe responsibilities, not a requirement to split this small implementation into multiple packages.
 
 | Step | Concrete output | Verification/handoff |
 |---|---|---|
