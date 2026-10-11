@@ -1,0 +1,84 @@
+{
+  "experiment_id": "hkde_boundary_defensive_importance_v2",
+  "evidence_scope": "S",
+  "measure": "Q",
+  "task_config": "configs/tasks/hkde_inference_bank.json",
+  "baseline_protocol": "configs/hkde_inference_protocol.json",
+  "baseline_results": "docs/results/hkde-inference",
+  "checkpoint": "checkpoints/hkde-theta-intensity-provisional",
+  "surrogate_results": "docs/results/hkde-surrogate",
+  "root_seed": 95021,
+  "proposal": {
+    "prior_fraction": 0.1,
+    "component_selection": "independent Bernoulli for each row",
+    "density": "0.8 frozen flow + 0.1 uniform prior + 0.1 product-arcsine, full raw-unit mixture density for every row",
+    "boundary_fraction": 0.1,
+    "boundary_distribution": "independent Beta(0.5,0.5) in each normalized prior coordinate, transformed to raw units"
+  },
+  "conditional": {
+    "samples": 8192,
+    "uncertainty_blocks": 8,
+    "validation_cases": "same 16 audit panels and 4 stress panels as original baseline",
+    "min_ess_fraction": 0.5,
+    "max_weight": 0.01,
+    "participant_samples": 2048,
+    "acceptance": "Both the first 2048 proposals and the full 8192 precision run must pass unchanged gates. Participant and SIR calibration use the same 2048-proposal budget."
+  },
+  "calibration": {
+    "validation_ids": [
+      256,
+      768
+    ],
+    "proposal_samples": 2048,
+    "resampled_draws": 512,
+    "family_alpha": 0.05,
+    "min_ess_fraction": 0.1,
+    "max_weight": 0.05,
+    "scope": "SBC ranks for the complete finite-pool sampling-importance-resampling algorithm; pooled resamples are not IID exact posterior draws"
+  },
+  "quantiles": [
+    0.05,
+    0.5,
+    0.95
+  ],
+  "gates": {
+    "mean_rmse_in_ref_sd": 0.15,
+    "max_abs_mean_error_in_ref_sd": 0.4,
+    "max_abs_relative_std_error": 0.25,
+    "max_abs_correlation_error": 0.1,
+    "max_abs_target_quantile_error_currency": 0.03,
+    "mean_reference_mass_of_90_interval_abs_error": 0.03
+  },
+  "test": {
+    "root_seed": 95026,
+    "count": 256,
+    "conditional_ids": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "access": "Generate and evaluate only after this correction protocol passes every validation gate. The old posterior test remains untouched."
+  },
+  "reference": {
+    "grid_sizes": [
+      65,
+      129
+    ],
+    "thresholds": "unchanged baseline reference gates; no automatic refinement on a failed new test"
+  },
+  "stop_rule": "One boundary-covering proposal follow-up after the v1 stress-boundary weight diagnosis. Same checkpoint, prior, likelihood, seeds, budgets and gates. No further automatic proposal/budget/seed changes. Preserve failures; neither v1 nor the raw flow is retrospectively accepted.",
+  "predecessor_results": "docs/results/hkde-correction-v1"
+}
