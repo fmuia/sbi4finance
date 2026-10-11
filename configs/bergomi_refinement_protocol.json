@@ -1,0 +1,58 @@
+{
+  "protocol_id": "bergomi_coupled_refinement_v1",
+  "scope": "S numerical refinement at fixed prior corners and center; no inference or market evidence",
+  "tasks": [
+    {
+      "config": "configs/tasks/bergomi_option_bank.json",
+      "sha256": "e16bfdd1d4ebd3c8b11f9373e467012580e14947f6684265482c3aa395082360"
+    },
+    {
+      "config": "configs/tasks/rough_bergomi_option_bank.json",
+      "sha256": "872a5225deb3f4d2ab45b7bed6a35562175b35a04bf74fddde281dbc8c848ac0"
+    }
+  ],
+  "case_design": "Cartesian product of the two prior bounds in saved parameter order, followed by their midpoint",
+  "grids": [
+    128,
+    256,
+    512,
+    1024
+  ],
+  "n_paths": 262144,
+  "chunk_size": 256,
+  "root_seed": 73026,
+  "seed_rule": "root_seed + 100 * model_index + case_index",
+  "comparisons": [
+    [
+      128,
+      256
+    ],
+    [
+      256,
+      512
+    ],
+    [
+      512,
+      1024
+    ],
+    [
+      128,
+      1024
+    ]
+  ],
+  "absolute_budget_over_quote_sigma": 0.1,
+  "mc_se_multiplier": 4.0,
+  "resolution_rule": "abs(paired_mean_difference) + 4 * paired_standard_error <= 0.1 * quote_noise_std for each contract",
+  "marginal_sampling_rule": "each grid price standard error <= 0.1 * quote_noise_std",
+  "one_factor_coupling": "exact OU coarse innovations from weighted fine innovations, with coarse Brownian increments summed; exact shared factor endpoints",
+  "rough_coupling": "sum disjoint fine independent normal blocks divided by sqrt(ratio), independently per channel; rebuild each grid hybrid field and its own variance normalization",
+  "stop_rule": "Run each declared model/case once. Preserve all failures; no extra seeds, path counts, adaptive grids, changed tolerances, new training bank or neural training in this increment.",
+  "numerical_bias_certified": false,
+  "limitations": [
+    "Finite-grid differences do not bound continuum price bias.",
+    "Four-SE screens are pointwise engineering diagnostics, not simultaneous confidence statements.",
+    "Five parameter cases do not establish uniform prior-wide accuracy.",
+    "Monte Carlo price-label error is separate from quote noise.",
+    "No inference validation or production-bank acceptance follows automatically."
+  ]
+}
