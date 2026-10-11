@@ -91,6 +91,8 @@ Baseline PR #11 verification: all three notebooks passed strict marimo checks, h
 
 The [80-epoch explicit-time follow-up](https://github.com/fmuia/sbi4finance/pull/11) uses the same bank and spline training design. Mean RMSE improved from 0.2457 to 0.1732 reference SD, but maximum mean error 0.4554 SD and predictive-interval endpoint error 0.2099 SD still exceed the unchanged 0.40 and 0.15 gates. Both failures occur on validation case 0; no other case exceeds an individual-error limit, and both aggregate rank checks pass. Root 43022's final test remains unevaluated, and M3.3 acceptance remains pending. These restricted Heston results make no full-SVJ or market claim and do not block the independent HKDE branch.
 
+The [diagnostic review](https://github.com/fmuia/sbi4finance/blob/feat/heston-joint-inference/docs/heston-diagnostics.md) now separates marginal SBC, conditional reference checks and engineering diagnostics, and directly compares the prior with all 16 conditional posteriors. Reference-normalized mean RMSE is 3.265 for a prior-copy baseline versus 0.173 for the neural posterior: this is substantial data updating. A frozen-weight precision follow-up confirms a persistent low-state mean discrepancy, while predictive endpoint errors straddle their tolerance across seeds. This is development evidence; it changes neither the original failed gate nor the reserved-test status.
+
 ## Milestones and deliverables
 
 The milestone files define the required scope. Acceptance means the stated scientific/engineering checks pass and the corresponding didactic review sections are verified; completing one does not automatically accept the others. Implementation PRs record the evidence and any pending review backfill.
