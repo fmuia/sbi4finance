@@ -64,3 +64,7 @@ cluster/              Oscar discovery script and sbatch template
 ```
 
 Simulator, data cache and checkpoint come from Stefan Radev's [amortized-fractals](https://github.com/stefanradev93/amortized-fractals).
+
+## Local observation fixtures
+
+[Local data IO](docs/local-data.md) supplies a small CSV/JSON reader and writer for return windows and option panels, with explicit observation/context roles and separate synthetic truth. The fixtures are parser examples, not scientific training data. Run `pixi run data-check` for the focused tests. Financial preparation, simulator-bank integration and checkpoint compatibility remain subsequent work.

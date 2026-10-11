@@ -1,0 +1,80 @@
+{
+  "artifact_id": "options_raw",
+  "artifact_type": "option_panel",
+  "columns": [
+    {
+      "dtype": "str",
+      "name": "contract_id",
+      "role": "id"
+    },
+    {
+      "dtype": "float",
+      "name": "strike",
+      "role": "context",
+      "unit": "currency_per_underlying_unit"
+    },
+    {
+      "dtype": "float",
+      "name": "time_to_expiry",
+      "role": "context",
+      "unit": "years"
+    },
+    {
+      "dtype": "float",
+      "name": "forward",
+      "role": "context",
+      "unit": "currency_per_underlying_unit"
+    },
+    {
+      "dtype": "float",
+      "name": "discount_factor",
+      "role": "context",
+      "unit": "dimensionless"
+    },
+    {
+      "dtype": "float",
+      "name": "bid",
+      "role": "observation",
+      "unit": "currency_per_underlying_unit"
+    },
+    {
+      "dtype": "float",
+      "name": "ask",
+      "role": "observation",
+      "unit": "currency_per_underlying_unit"
+    },
+    {
+      "dtype": "str",
+      "name": "quote_time",
+      "nullable": true,
+      "role": "auxiliary"
+    },
+    {
+      "dtype": "float",
+      "name": "numerical_error",
+      "nullable": true,
+      "role": "auxiliary",
+      "unit": "currency_per_underlying_unit"
+    }
+  ],
+  "conventions": {
+    "context_origin": "hypothetical",
+    "currency": "USD",
+    "exercise_style": "European",
+    "quote_noise": "unspecified; parser test only",
+    "valuation_time": "2000-01-03T16:00:00Z"
+  },
+  "data_origin": "synthetic",
+  "measure": "Q",
+  "provenance": {
+    "description": "Hand-constructed parser fixture, not market data or validated simulation output."
+  },
+  "purpose": "parser_test",
+  "representation": "raw_quote",
+  "schema_version": 1,
+  "table": {
+    "n_rows": 2,
+    "sha256": "970a163c2f480f60b9c0720a4deebf3451c765ad6b903488c3054f44c3630c23"
+  },
+  "task_id": "parser-only/options_raw"
+}
