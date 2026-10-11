@@ -25,6 +25,13 @@ HKDE experiment. No participant acceptance follows from the
 cluster runs or provisional checkpoint, and the recorded Heston failures remain unresolved.
 Market acquisition cannot block the required offline S delivery.
 
+The [rough H/eta pilot](https://github.com/fmuia/sbi4finance/blob/feat/rough-bergomi-option-bank/docs/rough-joint-inference.md)
+adds saved synthetic banks and a reference audit: 19/20 panels pass, but one
+misses the frozen ESS and maximum-weight gates. Neural training and SBC were
+not run; the final test stays reserved. Notebook09 is a didactic review of this
+reference limitation, not an accepted participant checkpoint. The next rough
+reference experiment and M5.2 surrogate remain distinct from M8 selection.
+
 Assemble evidence already collected at each milestone into a complete S participant workflow. Validation and didactic review begin with M0 contracts and M1 analytic checks; this milestone closes end-to-end gaps rather than postponing either. The earlier review notebooks explain each development increment, including failed experiments; M8 selects and paces a scientifically accepted application for participants. M is an optional market illustration and E is a separate empirical extension; neither is required for S acceptance.
 
 ## Tasks

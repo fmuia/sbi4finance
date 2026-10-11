@@ -1,6 +1,6 @@
 # Finance simulator and amortized inference implementation plan
 
-Status: implementation roadmap and acceptance checklist, 11 October 2026. Record implementation evidence and didactic completion separately in the corresponding implementation PRs.
+Status: implementation roadmap and acceptance checklist, 12 October 2026. Record implementation evidence and didactic completion separately in the corresponding implementation PRs.
 
 Build reusable simulators and reproducible training datasets for two financial applications: learning dynamics from return histories, and learning pricing parameters or prices from option quotes. Both can be taught and validated on simulated observations. Shared infrastructure should make both applications practical while preserving their different probability measures, observations and inference targets.
 
@@ -19,7 +19,7 @@ curriculum or a relaxation of scientific gates.
 |---|---|---|
 | 6/10, M4 — [PR #12](https://github.com/fmuia/sbi4finance/pull/12) | HKDE jumps, Fourier European pricing, common option-panel bank and offline notebook06; actual option-bank cluster run recorded below | Wider numerical domains, Q inference and American/exotic extensions are separate. |
 | 8/10, M6 — [PR #13](https://github.com/fmuia/sbi4finance/pull/13) | One-factor Bergomi, exact OU/asset covariance, complete continuation, bounded-price MC, bank and notebook08; PR #14 adds resolved paired-grid checks | No uniform continuum-bias certificate, accepted posterior or optional two-factor model. |
-| 9/10, M7 — [PR #14](https://github.com/fmuia/sbi4finance/pull/14) | Joint Gaussian rough reference, FFT hybrid driver, European pricing, bank and offline review; paired-grid follow-up complete | 128-step accuracy remains unresolved at one prior corner; 512 steps is a candidate for the next explicit numerical pilot. M7.3b posterior remains pending; no scalar-state rough-memory forecast. |
+| 9/10, M7 — [PR #14](https://github.com/fmuia/sbi4finance/pull/14) | Rough simulator/pricer, shared banks, paired-grid study and restricted H/eta reference pilot; notebooks08–09 | 512-step finite-MC banks delivered. Reference passes 19/20 panels; one fails ESS/maximum weight. Stop rule applied before training/SBC; M7.3b acceptance pending. No scalar-state rough-memory forecast. |
 | 7/10, M5 — [PR #15](https://github.com/fmuia/sbi4finance/pull/15) | [First restricted HKDE baseline](https://github.com/fmuia/sbi4finance/blob/feat/hkde-inference/docs/hkde-joint-inference.md): refined reference, trained checkpoint, conditional/joint/SBC/price audit and marimo review | Numerical reference and parameter/SBC gates pass; price-quantile error 0.0439 exceeds 0.03. Checkpoint provisional, final test untouched. M5.1 acceptance and M5.2 surrogate remain pending. |
 | 10/10, M8 | Participant release remains pending | Select a coherent application and meet its numerical/inference and offline teaching gates. |
 
@@ -29,7 +29,7 @@ all one-factor comparisons and rough 512-to-1,024 comparisons within 0.025
 currency; the rough 128-step comparison remains unresolved at its difficult
 corner. These finite-grid checks do not prove continuum bias below 0.025.
 Existing banks retain their original numerical-pilot identities. The combined
-implementation passes 112 software tests (92 on PR #14 without PR #15); the
+implementation passes 142 software tests (122 on PR #14 without PR #15); the
 HKDE and combined Bergomi marimo reviews pass isolated offline export without
 market fixtures or external connections. These execution checks do not accept
 new posteriors. Source hashes and full numerical evidence are committed with
@@ -60,8 +60,17 @@ uses 262,144 paired paths at each of five cases per model, with grids 128, 256,
 the next restricted numerical observation law; it does not demonstrate a
 continuum-bias bound or retroactively change the original 128-step bank.
 Notebook08 explains pairing, the retained failure and the measured outcome.
-Next specify M7.3b's observation/reference strategy, then generate a modest
-independent training bank and validate the restricted posterior.
+The [frozen M7.3b pilot](https://github.com/fmuia/sbi4finance/blob/feat/rough-bergomi-option-bank/docs/rough-joint-inference.md)
+now declares a 512-step finite-Monte-Carlo observation law. Its cluster run
+completed all 98 fixed-ID tasks, delivering 6,146 panels in a 34.28-minute wall
+span (31.68 allocated CPU hours). Compact banks and reference artifacts are
+committed. The reference passes 19/20 panels; `validation:260` fails ESS
+(600.55 < 800) and maximum weight (0.005392 > 0.005), while all mean/block/target
+precision checks pass. The predeclared stop rule prevents training and SBC in
+this run. The reduced end-to-end CLI smoke verifies software only. Notebook09
+explains the measured result, reference efficiency and costs. M7.3b's reference
+follow-up needs a new bounded design; no automatic expansion or threshold change
+was made. Reserved tests and the existing Heston/HKDE findings remain intact.
 
 The restricted HKDE posterior/reference path has now run once under its frozen
 protocol. Mean RMSE is 0.123 reference SD versus 2.09 for the prior baseline;
@@ -149,7 +158,7 @@ The following map uses **implementation increment numbers**, not GitHub PR numbe
 | 6 — HKDE option observations | M4 in `notebooks/06_hkde_and_pricing.py`: Q jump law, price expectations, noisy panel and accuracy budget | Delivered in PR #12; offline execution and bounded numerical evidence pass, Q inference remains separate. |
 | 7 — Learned pricing routes | M5 in separate sections of the HKDE/pricing notebook: posterior plus reference pricer, surrogate, optional direct-price study | First M5.1 experiment and 18-cell offline review delivered in PR #15. Checkpoint provisional after the price-quantile failure; surrogate and direct-price study remain pending. |
 | 8 — Finite-factor Bergomi | M6 in `notebooks/08_bergomi_models.py`: curve context, factor state, normalization and pricing | Delivered in PR #13; PR #14 adds the paired-grid explanation and measured checks. Optional two-factor scope remains explicit. |
-| 9 — Rough Bergomi | M7 in separate sections of the Bergomi notebook: Gaussian reference, rough memory, refinement and restricted inference | Numerical/bank and coupled-grid sections delivered in PR #14; offline review passes. Restricted posterior remains pending. |
+| 9 — Rough Bergomi | Notebook08: Gaussian reference, rough memory and refinement; notebook09: restricted posterior workflow, independent reference and actual cost | Numerical/bank reviews delivered in PR #14. Notebook09 reviews the failed reference gate; no neural training/SBC for the frozen run, and posterior acceptance remains pending. |
 | 10 — Participant release | M8: a separately selected participant notebook, supported by the earlier review tutorials and release evidence | Planned; returns-versus-options curriculum choice remains open. |
 
 New increments include their review material in the same PR. The backfills above are complete on the strength of their notebook checks, not retrospectively inferred from older implementation results. A review notebook can accurately explain a failed experiment and pass its execution check while that scientific substep remains pending. Track both states explicitly. M8 is the selected, paced participant course and final scientific delivery gate; the review notebooks support that decision and do not preselect the curriculum.
