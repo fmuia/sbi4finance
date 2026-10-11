@@ -1,8 +1,8 @@
 # Inference scenarios and their data contracts
 
-Status: proposed task-to-data specification, 11 October 2026. Read this before choosing a market-data provider.
+Status: proposed task-to-data specification, 11 October 2026. Read this before choosing a market-data provider; follow the [implementation roadmap and subplans](data-plan/README.md) to begin development.
 
-This reconciles Francesco's HKDE-to-SVJ discussion with [PR #3](https://github.com/fmuia/sbi4finance/pull/3), inspected at `720eb6b`. That discussion contains two applications: Bayesian calibration to option quotes, followed by a proposal to infer stochastic volatility and jumps from historical returns. PR #3 deliberately supports both and leaves the first teaching application open. The [option loading plan](data-loading-plan.md) and [provider comparison](data-source-landscape.md) cover the options branch; they do not settle the curriculum or supply a returns-data specification.
+This reconciles Francesco's HKDE-to-SVJ discussion with [PR #3](https://github.com/fmuia/sbi4finance/pull/3), initially inspected at `720eb6b` and subsequently aligned with its S/M/E revision `6bfafe4`. That discussion contains two applications: Bayesian calibration to option quotes, followed by a proposal to infer stochastic volatility and jumps from historical returns. PR #3 deliberately supports both and leaves the first teaching application open. The [option loading plan](data-loading-plan.md) and [provider comparison](data-source-landscape.md) cover the options branch; the [return-window subplan](data-plan/milestones/01a-return-windows.md) now specifies the corresponding preparation work for returns.
 
 The model name alone does not determine the required data. Specify **model + probability measure + observed channels + inference target + downstream use**. The same stochastic-volatility family can support distinct experiments, with different parameters, training banks and checkpoints.
 
@@ -168,10 +168,8 @@ Training-bank size, days per window, quotes per surface and number of real snaps
 
 ## Data work to prioritize
 
-1. **Define two task contracts first:** R for chronological return windows and O for dated option panels. Agree the measure, observation channels/units, initialization, targets, fixed/inferred inputs and downstream question. Record these in M0 of PR #3 before fixing provider APIs.
-2. **Prepare generated fixtures for S first.** Each implemented returns or options workflow must be executable without any real fixture. Add a real return window or processed research surface for M separately, after checking its conventions, provenance and permitted use. Unknown metadata remains explicit.
-3. **Keep the options acquisition choices conditional on O.** The Cboe/ThetaData/Alpaca comparison solves option-quote acquisition. R's daily-return example can use a vetted historical price export, potentially via yfinance or a stock-data API, without an options subscription. This note does not establish a particular returns source's quality or usage rights.
-4. **Specify evaluation separately:** independent synthetic cases for S; later realized returns for R's E evaluation; same-time excluded quotes for O/D's E evaluation; converged model prices for P's numerical evaluation. Volatility-proxy observations and joint P/Q datasets are additional experiments, not mandatory fields to invent in either basic loader.
-5. **Generate separate compatible synthetic banks.** Keep observation fields the same as those available in the corresponding real example, retain synthetic truth only as target/diagnostic information, and split before related augmentations. Use the manifest and checkpoint contracts of PR #3 rather than a second bank architecture.
+The [data roadmap](data-plan/README.md#sequence-and-subplans) is the execution plan: D0 contracts → D1 local fixtures and the selected returns/options preparation → D2 compatibility → D4 complete synthetic teaching. D3 market application and D5 empirical evaluation are optional. Each milestone has its own implementation sequence, acceptance criteria and dependency boundary with PR #3.
+
+Keep the options provider choices conditional on the options task. A returns application can use a vetted historical price export without an options subscription. Neither source acquisition nor the choice of live application blocks the common contract/IO work. Genuine simulation banks and checkpoints remain owned by the simulator/inference workstream; parser fixtures cannot establish scientific validation.
 
 This is a scope correction to PR #4: its options work remains useful, while a returns-first tutorial would prioritize the R fixture and forecasting evaluation. No curriculum pivot, model implementation or provider purchase is implied by this document.

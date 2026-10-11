@@ -6,6 +6,8 @@ For the **options application**, build exercises around local, versioned option 
 
 Start with [inference scenarios and data contracts](inference-scenarios-and-data.md), which distinguishes returns inference, option calibration, pricing regression and direct price-posterior inference. PR #3 leaves the first tutorial application open; this document specifies its options branch rather than fixing the live curriculum.
 
+The [data implementation roadmap](data-plan/README.md) now provides the authoritative execution sequence and detailed subplans for both observation branches. This document remains the options schema, normalization and source-decision reference.
+
 This plan covers acquisition, normalization, validation and loading. It complements the [simulator and inference plan in PR 3](https://github.com/fmuia/sbi4finance/pull/3); it does not implement the proposed interfaces or change the existing MMAR returns notebook. The [source comparison](data-source-landscape.md) records the provider evidence and tradeoffs.
 
 ## Real-data dependency boundary
@@ -56,7 +58,7 @@ Declare whether errors are modeled in premiums or IVs. Bid–ask half-spreads ar
 
 ## Initial fixtures and acceptance targets
 
-1. Prepare two or three synthetic HKDE demonstration panels with known truth and separately generated validation cases. Add a rough-Bergomi panel when its pricer is validated. Downstream payoff specifications need no observed exotic prices unless empirical validation is claimed.
+1. Start loader development with explicitly labelled generated parser fixtures. For scientific demonstrations, consume two or three synthetic HKDE panels and independent validation cases from the accepted simulator/pricer; add a rough-Bergomi panel when its pricer is validated. Hand-constructed parser values are not pricing truth. Downstream payoff specifications need no observed exotic prices unless empirical validation is claimed.
 2. For optional M, import the [15 February 2023 SPX research file](https://github.com/jgatheral/QuadraticRoughHeston/blob/76dd1f9122c13333032bd3b8cc1e4d3dcc182009/spx_implied_vol_20230215.csv) as **processed IV**, retaining supplied forwards and year fractions. `Bid`/`Ask` mean annualized decimal IVs. Do not reinterpret `CallMid` as a verified discounted market premium. Metadata gaps must remain explicit; see the [source audit](data-source-landscape.md#research-files-and-synthetic-resources). This import is not an acceptance condition for S.
 3. For M, target one usable European surface, approximately 6–10 expiries and 10–20 selected strikes per expiry, including ATM and both wings. Start around two weeks to one or two years where liquidity permits. This is a teaching design, not a guarantee of parameter identification. Avoid requiring 0DTE or a long historical panel.
 4. Freeze the selected synthetic or market contract coordinates before training a fixed-grid estimator. Prefer consistent PM-settled SPXW contracts for a new raw snapshot; do not guess settlement for the processed research file. State any unresolved convention as an illustrative limitation or exclude the affected rows from a stronger empirical claim.
@@ -124,15 +126,18 @@ Begin with a synthetic European posterior propagated into an American put on the
 
 ## Implementation milestones
 
-| Milestone | Deliverable | Acceptance |
-|---|---|---|
-| D0 Define the data contract | Representations, units, timing semantics, curve treatment, selection policy and S/M/E scope | Walk generated premium/IV fixtures through the task; specify real-input compatibility without requiring an external file |
-| D1 Local import | Generated fixture, loader and manifest; processed-IV market importer as optional M work | S: deterministic round trip, units/year fractions and provenance. M separately checks actual imported conventions and retains unknown fields |
-| D2 Validate and freeze | Fixture checks, contract design and checkpoint compatibility; real cleaning report for M | S: numerical checks, stable ordering/hash, incompatible input rejection. M additionally explains real quote selection/exclusions |
-| D3 Optional market acquisition | Processed research import or controlled raw surface for M; additional held-out observations if E is intended | Demonstrated source/quote semantics, required context, provenance and permitted use; no claim of E merely from obtaining M |
-| D4 Connect training and teaching | Matching synthetic bank, synthetic holdouts, checkpoint and local notebook loader | Complete S exercise passes in a clean offline CPU environment with all market fixtures absent; M/E cells are explicitly optional |
+Follow the [full roadmap](data-plan/README.md) and these linked subplans. Existing D0–D4 identifiers remain stable for PR #3's references; D5 separates the empirical work from acquisition.
 
-D0–D2 and D4 form the S delivery path; D3 is not a dependency of D4. M/E remain independently tracked extensions. A public market fixture is released only with established permission; otherwise the required tutorial stays synthetic and any market illustration follows its permitted access/display arrangement. A generated fallback may demonstrate the method but must never be labelled a real-market result.
+| Milestone | Detailed subplan and acceptance focus |
+|---|---|
+| [D0 Contracts](data-plan/milestones/00-contracts.md) | Units, roles, truth availability, task compatibility and shared-schema ownership |
+| [D1 Local fixtures](data-plan/milestones/01-local-fixtures.md) | Offline IO and integrity; [D1-O](data-plan/milestones/01b-option-panels.md) provides the premium/IV preparation steps |
+| [D2 Validate and freeze](data-plan/milestones/02-compatibility.md) | Local checks followed by actual integration with PR #3's bank/adapter/checkpoint artifacts |
+| [D4 Synthetic teaching](data-plan/milestones/04-synthetic-teaching.md) | Scientifically accepted selected workflow runs with all market fixtures absent |
+| [D3 Optional market application](data-plan/milestones/03-market-application.md) | One compatible actual observation dataset; acquisition/import does not alone establish successful calibration |
+| [D5 Optional empirical evaluation](data-plan/milestones/05-empirical-evaluation.md) | Separate held-out observations, a no-leakage protocol and claims scoped to the tested evidence |
+
+D0–D2 and D4 form the S delivery path; D3/D5 are not dependencies of D4. The [returns subplan](data-plan/milestones/01a-return-windows.md) supplies an independent observation branch, rather than forcing returns into the option schema. A public market fixture is released only with established permission; otherwise S remains fully deliverable. A generated fallback may demonstrate the method but must never be labelled a real-market result.
 
 Meaningful implementation tests cover unit conversion, expiry/day-count handling, distinct roots, timestamp semantics, missing quote data, interrupted pagination, wrong feeds, integrity checks and incompatible checkpoint grids. Live vendor calls are optional integration checks, never default tests or live-session dependencies. This documentation-only change does not claim these loaders or checks already exist.
 
