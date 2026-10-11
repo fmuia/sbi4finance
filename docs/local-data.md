@@ -1,6 +1,6 @@
 # Small local observation fixtures
 
-This implements the local D0–D1 foundation and a bounded D1-R return-preparation step from the [data plan](https://github.com/fmuia/sbi4finance/pull/4). It uses only the standard library and remains a small, provisional interface that we can change as the tutorial develops. There is no new task registry, provider abstraction, bank format or neural dependency.
+This implements the local D0–D1 foundation, bounded D1-R return preparation, and [single-premium HKDE panels](hkde-local-panels.md) from the [data plan](https://github.com/fmuia/sbi4finance/pull/4). The library helpers use only the standard library and remain small, provisional interfaces that we can change as the tutorial develops. There is no new task registry, provider abstraction, bank format or neural dependency.
 
 One directory holds one observed example: a whole return history or an option panel. It contains `manifest.json` and `observations.csv`. A row is a day/interval or a contract, not an independent labelled training example. Larger simulation banks remain the simulator workstream's responsibility.
 
@@ -89,13 +89,13 @@ The same preparation works on declared synthetic or market records. Market windo
 
 | Increment | Status | What remains |
 |---|---|---|
-| `1/X-data-plan-local-observation-fixtures` ([PR #5](https://github.com/fmuia/sbi4finance/pull/5)) | Local D0–D1 IO implemented | Model-specific contracts remain with their scientific tasks |
-| `2/X-data-plan-return-window-preparation` | D1-R daily preparation implemented | Actual simulator/adapter/checkpoint equivalence remains D2 |
-| D1-O options | Parser fixtures only | Financial panel preparation and pricing-context checks |
-| D2 / D4 | Pending scientific integration | Compatible bank, adapter, checkpoint and validated teaching workflow |
+| `1/5-data-plan-local-observation-fixtures` ([PR #5](https://github.com/fmuia/sbi4finance/pull/5)) | Local D0–D1 IO implemented | Model-specific contracts remain with their scientific tasks |
+| `2/5-data-plan-return-window-preparation` ([PR #6](https://github.com/fmuia/sbi4finance/pull/6)) | D1-R daily preparation implemented | Durable return-checkpoint equivalence remains D2 |
+| `3/5-data-plan-hkde-panel-handoff` | [Single premiums and exact HKDE task checks](hkde-local-panels.md); real-checkpoint regression | Broader option normalization and other checkpoint interfaces |
+| D2 / D4 | HKDE interoperability available; scientific acceptance pending | Bank-wide integration and accepted teaching checkpoint/workflow |
 | D3 / D5 | Optional, not implemented | Market application / held-out empirical evaluation |
 
-Implementation PRs use sequential `N/X-data-plan-…` titles linked to PR #4. `X` indicates that the total is not frozen; optional branches need not block a selected synthetic workflow.
+Implementation PRs use sequential `N/5-data-plan-…` titles linked to PR #4. Optional market branches do not block a selected synthetic workflow.
 
 Successful parsing does **not** certify financial conventions, grid compatibility, numerical pricing accuracy or model adequacy. Return preparation checks only the explicit rules above. It does not validate the source's adjustment policy, infer curves, simulate paths, check checkpoints or train a network. Those belong to the relevant scientific workflow.
 

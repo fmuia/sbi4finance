@@ -67,4 +67,4 @@ Simulator, data cache and checkpoint come from Stefan Radev's [amortized-fractal
 
 ## Local observation fixtures
 
-[Local data preparation](docs/local-data.md) supplies a small CSV/JSON reader/writer and daily return-window preparation from declared prices or returns. It uses explicit observation/context roles and separate synthetic truth, without downloads or extra dependencies. The fixtures are parser examples, not scientific training data. Run `pixi run data-check` for the tests. Option-panel preparation, simulator integration and checkpoint compatibility remain subsequent work.
+[Local data preparation](docs/local-data.md) supplies CSV/JSON IO, daily return windows and [fixed HKDE premium panels](docs/hkde-local-panels.md), with explicit observation/context roles and separate synthetic truth. The helpers need no downloads or extra dependencies. Run `pixi run data-check` for unit tests; `pixi run hkde-data-check` checks the real HKDE checkpoint handoff when simulator PR #15 is available. That checkpoint remains provisional; passing IO checks does not establish scientific acceptance.

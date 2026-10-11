@@ -13,3 +13,10 @@ They are **not real market data, validated simulator output, or training banks**
 
 The manifest declares every column's type and role, alongside the row count and
 CSV hash. Empty cells mean unknown/null, not zero. There is no download step.
+
+`hkde_task.json` is the exact task specification copied from
+`checkpoints/hkde-theta-intensity-provisional/task.json` at simulator PR #15,
+commit `729ac26067a1a3e34112d6b153b5783dae4219f5`. It freezes the interface for
+small local unit tests; it contains no prices, model weights or truth labels.
+The separate checkpoint regression reads actual observations and weights from
+the simulator checkout, without committing another copy here.
