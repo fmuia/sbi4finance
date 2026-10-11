@@ -106,6 +106,19 @@ before measuring that job.
 
 ## What comes after the bank
 
+The one-factor Bergomi preset is `configs/tasks/bergomi_option_bank.json`.
+It infers `eta` and `rho`, with `kappa=2` and a known flat forward-variance
+curve of 0.04. It uses 262,144 paths and 128 asset steps per panel, retaining
+MC covariance and enforcing every price SE below 0.1 times quote sigma.
+The [24-panel measured bank](results/bergomi-option-bank.json) passed integrity
+and selected-ID regeneration: largest SE/quote-sigma ratio 0.0814, generation
+32.9 seconds and regeneration 11.2 seconds. These Mac CPU runs were concurrent
+with another bank, so timings are measurements rather than isolated benchmarks.
+The [corner/center grid checks](results/bergomi-bank-numerics.json) pass their
+sampling-aware screen but do not certify bias below 0.025 currency. This is a
+numerical pilot suitable for developing the inference task; price-label fidelity
+must be settled before a large training run.
+
 For posterior estimation, training pairs are `(noisy panel, known context)` →
 synthetic parameters. A fitted posterior can then feed a validated target
 pricer. A pricing surrogate instead learns parameters/contracts → accurate

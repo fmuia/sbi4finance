@@ -37,6 +37,42 @@
         "src/sbi4finance/heston.py": "f85237a6f223689bb83fb2837d6f6cba855867f5da9f919667163ae4a4c8996c",
         "src/sbi4finance/gbm.py": "8d491f019326712a4a6e985b491658146fa3da9f57f513a6fed421259d55cb5d"
       }
+    },
+    {
+      "notebook": "notebooks/08_bergomi_models.py",
+      "scope": "offline didactic execution, separate from scientific numerical or posterior acceptance",
+      "command": [
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-option-banks/.pixi/envs/default/bin/marimo",
+        "export",
+        "html",
+        "notebooks/08_bergomi_models.py",
+        "-o",
+        "/private/tmp/08_bergomi_models-isolated-offline.html",
+        "--force"
+      ],
+      "working_directory": "/private/tmp/sbi-option-notebooks-offline-20261011",
+      "environment_overrides": {
+        "PYTHONPATH": "/private/tmp/sbi-notebook-offline-guard:/private/tmp/sbi-option-notebooks-offline-20261011/src",
+        "MPLCONFIGDIR": "/private/tmp/mpl-option-isolated"
+      },
+      "external_network_guard_sha256": "34c701c1e9ac7197e43094e02e5f84d2a4d49f8d2937f941f6ed23c37514a03d",
+      "external_connects_blocked": true,
+      "localhost_ipc_allowed": true,
+      "market_data_directory_present": false,
+      "exit_code": 0,
+      "elapsed_seconds": 2.8919169171713293,
+      "output_cells": 14,
+      "error_outputs": 0,
+      "source_and_artifact_sha256": {
+        "notebooks/08_bergomi_models.py": "41153b3ce4bb054c0980dc6f723f57a8592caea4e493e0de7aef58a704b5ce78",
+        "configs/tasks/bergomi_option_bank.json": "e16bfdd1d4ebd3c8b11f9373e467012580e14947f6684265482c3aa395082360",
+        "docs/results/bergomi-validation.json": "34906732606f525601d955df320ce6b020186f11b5adf375ed441483063ccbe6",
+        "src/sbi4finance/option_bank.py": "8d41e6cecf115f6aa96475295c8291b9c6474e0c1e44ead001539129f3ba3d0a",
+        "src/sbi4finance/option_panel.py": "b37400bfc7f7ec91d208e8637cee1fcb53885b76ca0b00c016574b495fa035f2",
+        "src/sbi4finance/gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
+        "docs/results/bergomi-bank-numerics.json": "09e495f65511636fc8d02c0cd32506ce04be609ef49d55bf628f6ec7aacf8f8a",
+        "src/sbi4finance/bergomi.py": "39234a7e8443a3d27fa9b460c3e9e584e41e8780bd084b6113648c78f1dd3c1d"
+      }
     }
   ]
 }

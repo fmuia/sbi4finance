@@ -24,6 +24,12 @@ the supplied restricted prior and European panel; wider priors and products
 need new accuracy checks. Notebook 06 is verified offline. M5 training and
 the new option workload's actual cluster execution remain pending.
 
+Increment 8 now supplies [one-factor Bergomi](../bergomi-simulators.md), its
+verified small bank and offline notebook 08. M6.1–M6.3 infrastructure is in place;
+numerical acceptance is limited to the reported fixtures and sampling-aware
+refinement screens. Before scaling, settle the chosen price-label fidelity.
+Two-factor models and Bergomi posterior acceptance remain outside this increment.
+
 The priority is a useful, scientifically sound tutorial that is easy to change. These milestones organize the work; they are not a requirement to build a production platform or complete every model before learning from a working example. The 32 substeps are a checklist, not 32 separate PRs or approval rounds.
 
 Start with a small executable path: a few functions, explicit parameters and arrays, a saved configuration and seed, a compact synthetic bank, and the existing in-memory training route. M0 should settle the conventions needed for that path and sketch the second observation type; it should not design every future model's API. Adapt contracts as experiments teach us what is needed, record the change, and regenerate small pilot banks when simpler than supporting old formats.

@@ -38,6 +38,12 @@ The [joint Heston inference pilot](docs/heston-joint-inference.md) adds a synthe
 training follows later. The [analysis follow-up note](docs/simulator-analysis-next-steps.md)
 preserves the Heston findings while simulator and bank coverage expands.
 
+[One-factor Bergomi](docs/bergomi-simulators.md) adds an explicit forward-variance
+curve, exact OU factor stepping, complete continuation and bounded European
+Monte Carlo pricing. Generate its numerical pilot with `pixi run option-bank
+--config configs/tasks/bergomi_option_bank.json --out /tmp/new-bergomi-bank`.
+Sampling uncertainty and time-grid bias remain distinct from quote noise.
+
 One environment, managed by [pixi](https://pixi.sh) from `pyproject.toml`:
 
 ```bash
@@ -64,6 +70,7 @@ two-hour participant curriculum. Closely related increments share named sections
 | [Heston and Gaussian jumps](notebooks/04_heston_svj_kernels.py) | M3.1–M3.2 / 4: diffusion/jump simulation, continuation, numerical checks and Numba timings | `pixi run review-kernels` |
 | [Joint Heston inference](notebooks/05_heston_joint_inference.py) | M3.3 / 5: observed histories, reference/neural joint posteriors, conditional futures and the failed frozen checks | `pixi run review-heston` |
 | [HKDE and option panels](notebooks/06_hkde_and_pricing.py) | M4 / 6: jump law, Q prices, noisy observations, bank roles and reference checks | `pixi run review-hkde` |
+| [Bergomi models](notebooks/08_bergomi_models.py) | M6 / 8: forward variance, factor covariance, continuation, MC pricing and bank evidence | `pixi run review-bergomi` |
 
 Default execution uses synthetic examples and committed evidence, with no market
 downloads, cluster submission or full training run. Recorded results and fresh

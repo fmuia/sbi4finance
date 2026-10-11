@@ -4,6 +4,17 @@
 
 ## Purpose
 
+**Implementation update:** increment 8 delivers the explicit curve/factor
+contract, exact OU reference, asset simulator, conditional-put pricing and
+shared option bank (M6.1–M6.3 infrastructure). See [math and evidence](../../bergomi-simulators.md),
+[measured bank](../../results/bergomi-option-bank.json) and notebook 08.
+The covariance/continuation/limit tests and bounded numerical screens pass.
+The maximum bank-corner/center grid difference is 0.0309 currency with 0.0190
+combined sampling SE; this does not certify bias below the desired 0.025.
+Large-bank fidelity, a posterior workflow, remote option workload and optional
+two-factor work remain pending. The numerical building blocks can support the
+rough reference branch while these narrower acceptance limits remain visible.
+
 Introduce lognormal forward variance with a finite-dimensional continuation state before rough-memory models. One factor is the required core; two factors are an optional scientific extension, not a prerequisite for rough Bergomi.
 
 ## Tasks
