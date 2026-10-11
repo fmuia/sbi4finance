@@ -2,6 +2,8 @@
 
 This note specifies the mathematical building blocks proposed for `sbi4finance`. It is a review document, not a claim that the simulators exist. Read [Foundations](01-foundations.md) first for the statistical vocabulary; continue with [Inference and pricing](03-inference-and-pricing.md) for observation models, posteriors and financial outputs.
 
+All model construction and numerical checks below can be performed with synthetic fixtures. Real market access is not a prerequisite for the simulators, training banks or complete offline teaching workflow. The distinction between that S delivery, actual-market conditioning M and empirical evaluation E is specified in [synthetic delivery and market evidence](../README.md#synthetic-delivery-and-market-evidence).
+
 ## 1 Notation units and the meaning of a model
 
 Let $S_t>0$ be an asset price and $X_t=\log S_t$, using a fixed currency unit. An observed log return is $r_i=X_{t_i}-X_{t_{i-1}}$; its corresponding simple return is $e^{r_i}-1$. These are different quantities even though they are close for small moves. Use $\vartheta$ for the complete parameter vector.
@@ -187,6 +189,8 @@ $$
 
 The positive function $\xi_0(t)$ specifies initial mean variance. Because $E[e^{aG}]=e^{a^2\operatorname{Var}(G)/2}$ for centered Gaussian $G$, the correction ensures $E[v_t]=\xi_0(t)$. This normalization must use the covariance of the driver actually simulated.
 
+For an S experiment, $\xi_0$ can be a chosen positive curve or a curve generated from specified coefficients; no observed variance-swap or option curve is required. Its role remains explicit: known conditioning context, an unknown target, or a noisy measured input. Generated rates, asset forwards and contract coordinates likewise suffice for synthetic pricing tasks. The asset forward and the forward-variance curve are different model inputs. Supplying true generated curve coefficients as context is valid only when the task declares them known.
+
 A useful representation is
 
 $$
@@ -370,5 +374,7 @@ Basic checks are $\varphi_R(0;T)=1$ and $\varphi_R(-u;T)=\overline{\varphi_R(u;T
 A reference pricer tests the map from parameters to prices. It is not automatically a likelihood for latent-volatility return histories. Conversely, simulating paths does not by itself define observed quote errors. The next note makes those observation contracts explicit.
 
 Validation should check Gaussian covariances, variance means, jump counts, compensation, analytic limits and refinement across the prior. Martingale tests need mathematically appropriate domains: in standard rough Bergomi, the true-martingale property depends on price/volatility correlation. Merely writing $r-q$ in the drift does not settle it, and high price moments may be infinite. [Gassiat's martingale analysis](https://arxiv.org/abs/1811.10935)
+
+These numerical checks ask whether computation approximates the specified mathematical model. Synthetic inference checks ask whether the learned posterior matches that model's inference problem. Empirical evaluation asks whether the resulting model and inference procedure are useful for actual observations. Each answers a different question: accurate numerics and synthetic inference are achievable without market data, while neither establishes real-market adequacy.
 
 Compiler acceleration does not resolve these mathematical questions. First identify the law, state and acceptable numerical error; then benchmark kernels and storage against those requirements.

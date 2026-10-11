@@ -2,6 +2,8 @@
 
 > Historical context: the recommendations below describe the 10 October assessment. The [current implementation plan](simulator-plan/README.md) supersedes its proposed curriculum and sequencing choices, defines shared infrastructure for both applications, and leaves the live example open for review.
 
+> Delivery clarification: under the current [S/M/E boundary](simulator-plan/README.md#synthetic-delivery-and-market-evidence), either chosen application has a complete required synthetic workflow with no market observations. The real-asset study mentioned below is optional M/E work, separate from numerical and conditional inference validation. Synthetic findings remain conditional on the tested experiments and do not certify real-market model adequacy.
+
 Audit date: 10 October 2026. Status: assessment and proposed integration plan, not a team-approved change of curriculum. The collaborator's code, checkpoint, technical document, and numerical result files were not available in the audited repository. Reported experiment results below come from the chat supplied by Alex and have not been reproduced.
 
 ## Recommendation

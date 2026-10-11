@@ -4,7 +4,7 @@
 
 ## Purpose
 
-Build the smallest complete scientific example whose simulation, likelihood, posterior, and European prices can be checked independently. GBM is an infrastructure acceptance case, not an assertion that it describes market returns adequately.
+Build the smallest complete scientific example whose simulation, likelihood, posterior, and European prices can be checked independently. All histories, futures, rates, contracts, and other required context can be generated for S. GBM is an infrastructure acceptance case, not an assertion that it describes market returns adequately.
 
 ## Tasks
 
@@ -16,7 +16,7 @@ Build the smallest complete scientific example whose simulation, likelihood, pos
 
 ## Deliverables
 
-GBM reference kernels, a returns-task configuration, an analytic Bayesian reference utility, European price references, and compact reproducible fixtures. Provide a small script demonstrating simulation → observations → analytic posterior → conditional prediction; it must not depend on a neural checkpoint or cluster access.
+GBM reference kernels, a returns-task configuration, an analytic Bayesian reference utility, European price references, and compact reproducible synthetic fixtures with origin and truth-label metadata. Provide a small script demonstrating simulation → observations → analytic posterior → conditional prediction; it must not depend on a neural checkpoint, market file, provider, or cluster access.
 
 ## Acceptance and tests
 

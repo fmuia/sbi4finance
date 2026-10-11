@@ -2,11 +2,13 @@
 
 > Historical context: the curriculum assumptions below describe the 10 October discussion. The [current implementation plan](simulator-plan/README.md) retains this options-data research while leaving the live example and implementation sequence open for review.
 
+> Delivery clarification: the [S/M/E boundary](simulator-plan/README.md#synthetic-delivery-and-market-evidence) makes the synthetic core independently complete, with generated contracts/curves and no market fixtures. The archived SPX illustration below is optional M; held-out real quotes are needed only for E pricing comparisons. Source acquisition and permissions do not gate the required tutorial.
+
 Research date: 10 October 2026. This note follows the decision to use HKDE for the live tutorial, rough Bergomi as an extension, and American-put pricing as take-home material. It records data-source checks and a proposed specification; no model has been fitted or trained in this task.
 
 ## Recommendation
 
-Build the required tutorial around independently generated synthetic parameter–surface pairs. Add one archived European SPX surface for illustration. The same market surface can be fitted with both models. Start with the processed author snapshot below; use a raw sample to develop cleaning, and obtain a controlled Cboe snapshot only if its additional provenance and fields are needed. Public access and permission to redistribute a dataset are separate checks.
+Build the required tutorial around independently generated synthetic parameter–surface pairs. Optionally add one archived European SPX surface for M illustration. The same market surface can be fitted with both models. If that optional illustration is pursued, start with the processed author snapshot below; use a raw sample to develop cleaning, and obtain a controlled Cboe snapshot only if its additional provenance and fields are needed. Public access and permission to redistribute a dataset are separate checks.
 
 A subscription and years of market history are unnecessary for the proposed cross-sectional illustration. An option surface is many contracts observed at one time. Repeated historical dates are needed for claims about calibration stability through time or backtesting, which are outside the core tutorial.
 
@@ -16,7 +18,7 @@ A subscription and years of market history are unnecessary for the proposed cros
 |---|---|---|
 | Synthetic training bank | Parameter draw, contract design, fixed pricing inputs, model prices/IVs, numerical settings | Learn the inverse mapping |
 | Synthetic validation/test bank | Independent parameter draws and noise; refined/repeated pricing for selected cases | Recovery, calibration, pricing accuracy, reference-posterior checks |
-| Illustrative market surface | One date's European quotes or documented processed IVs, with contract/market inputs | Show how the trained workflow is applied to observations |
+| Optional M market surface | One date's European quotes or documented processed IVs, with contract/market inputs | Show how the trained workflow is applied to actual observations |
 | Downstream contract specification | Payoff, strike, expiry, exercise/monitoring/settlement rules | Propagate posterior uncertainty into another model price |
 
 Observed exotic or American prices are not required to demonstrate model-price uncertainty. They are required if we claim empirical validation of that prediction. Historical returns, realized-volatility estimates, and observed jump labels are not inputs to this vanilla-option calibration exercise.
@@ -105,7 +107,7 @@ SPX/SPXW are European but differ in settlement; select consistent contracts. [Cb
 
 1. Keep two or three deliberately chosen synthetic surfaces with known parameters, plus independent simulations for diagnostic evaluation.
 2. Select one processed real SPX snapshot for the optional illustration. A working target is 6–10 expiries and about 10–20 usable strikes per expiry, roughly 60–200 observations, including ATM and both wings. This is a proposed teaching design, not a guarantee of identification. Short maturities of about two weeks onward and longer maturities up to one or two years provide distinct information without requiring 0DTE machinery.
-3. Preserve the selected contracts' actual maturities and forward moneyness. Price both models at these exact coordinates. The existing 210-contract collaborator benchmark can remain a separate synthetic reference.
+3. For S, predeclare synthetic maturities and forward moneyness, with generated pricing context. For optional M, preserve the selected contracts' actual coordinates and ensure compatibility with the trained design. Price both models at the applicable exact coordinates. The existing 210-contract collaborator benchmark can remain a separate synthetic reference.
 4. Fix the input design before training a fixed-grid posterior network. A network trained on one maturity/strike grid cannot simply accept another. Alternatively condition explicitly on coordinates, masks and other varying inputs. Interpolated quotes are not new independent information.
 5. For a held-out-pricing exercise, remove the held-out contracts from the conditioning design during training. Pricing posterior draws on those contracts then supplies a meaningful prediction.
 
@@ -127,10 +129,10 @@ Use synthetic European calibration followed by an American put on the same synth
 
 Concrete follow-up deliverables:
 
-1. A small source manifest and cleaned exploratory SPX IV fixture, with provenance and unresolved distribution/convention questions recorded.
-2. A common contract/input schema and one frozen quote selection used for both models.
+1. Optional M: a small source manifest and cleaned exploratory SPX IV fixture, with provenance and unresolved distribution/convention questions recorded. This is not a prerequisite for the remaining synthetic deliverables.
+2. A common contract/input schema and one frozen synthetic contract selection used for both models; an optional market selection is a separate compatible fixture.
 3. Explicit prior, noise model, and rough-Bergomi forward-variance treatment.
 4. A measured, accuracy-checked synthetic generation pilot for each model, followed by validated independent training/test banks.
-5. A public teaching bundle containing generated data and checkpoints; include market data only under established permissions, otherwise provide the appropriately permitted illustration/access route.
+5. A public teaching bundle containing generated data and checkpoints, fully runnable with all market fixtures absent. Include optional market data only under established permissions; an unavailable illustration is labeled unavailable and never replaced with synthetic data labeled real.
 
 This task established sources and requirements. It did not create accounts, buy data, contact providers, train estimators, or perform full market-data quality validation.

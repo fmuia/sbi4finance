@@ -6,12 +6,14 @@
 
 Agree what a model, observation, inference target, and generated example mean before optimizing kernels. This establishes common building blocks without committing the tutorial to returns or options, and without making the implementation depend on Francesco's pending bundle.
 
+Adopt the [S/M/E evidence boundary](https://github.com/fmuia/sbi4finance/blob/1e45918214c57b20120feb1c802cb3220cefcc41/docs/inference-scenarios-and-data.md#three-delivery-and-evidence-levels): S is the required complete synthetic workflow; M is optional market conditioning; E is a separate empirical evaluation. This is a shared contract, not a dependency on merging the data-plan PR or acquiring market data.
+
 ## Tasks
 
 1. Define small immutable specifications for model, observation, inference task, numerical settings, and execution. Keep parameter values and priors outside numerical kernels. Distinguish scientific parameters from discretization, factor-approximation, and execution settings.
 2. Review parameter names, units, ordering, supports, drift/jump compensation, probability measure, and initialization conventions. Record whether initial variance or a forward-variance curve is known context, an inferred quantity, or a draw from a declared law. Identify any deliberate incompatibility with a collaborator's parameterization.
 3. Define capabilities for path simulation, pricing, and conditional continuation. Continuation state is model-specific: variance for Heston, factors for finite-factor Bergomi, and an explicit memory representation for rough models. Unsupported combinations must fail clearly.
-4. Freeze the first task schemas: a complete return window and a complete option panel. Separate observations/context from target truth and numerical diagnostics. Preserve batch, time/contract, and channel axes; distinguish missing observations from zero returns.
+4. Freeze the first task schemas: a complete return window and a complete option panel. Add `data_origin`, purpose, measure/task, conditioning cutoff or contract selection, available truth labels, and S/M/E evidence scope to the common schema. Separate observations/context from target truth and numerical diagnostics. Preserve batch, time/contract, and channel axes; distinguish missing observations from zero returns. Market records have no fabricated parameter/state labels.
 5. Specify canonical task identity, stable example IDs, split groups, purpose-separated randomness, failure recording, and checkpoint provenance. Document which settings change the statistical experiment and which merely change execution.
 
 ## Deliverables
@@ -20,7 +22,7 @@ A reviewed convention table, two worked task specifications, illustrative batch 
 
 ## Acceptance and tests
 
-Walk one returns example and one option example from parameter draw to inference target. Confirm that no target truth reaches network inputs, and that changing shard size cannot change an example's scientific identity. Review P/Q distinctions and model-specific continuation with the mathematical notes. Mark every unresolved convention explicitly; later milestones may implement only the reviewed subset.
+Walk one fully generated returns example and one fully generated option example, including hypothetical contexts, from parameter draw to inference target with all market fixtures absent. Confirm that no target truth reaches network inputs, and that changing shard size cannot change an example's scientific identity. Review P/Q distinctions and model-specific continuation with the mathematical notes. Missing market access or permission affects only M/E; a synthetic substitute must never be labelled real. Mark every unresolved convention explicitly; later milestones may implement only the reviewed subset.
 
 ## Decision gate and deferred scope
 

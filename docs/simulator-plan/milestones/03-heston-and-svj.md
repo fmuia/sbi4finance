@@ -13,7 +13,7 @@ Introduce hidden variance, leverage, and price jumps while preserving agreement 
 3. Define a returns task targeting selected static parameters and the complete current continuation state. For a scheme retaining a potentially negative auxiliary variance, that auxiliary state cannot be replaced by its nonnegative reported variance. Forecasts use paired joint parameter–state draws. Preserve the same transition and initialization in filters, simulators, and forecasts.
 4. When Francesco's bundle arrives, create an adapter around its exact model, preprocessing, parameterization, discretization, and checkpoint. Reproduce a saved seeded example, checkpoint output, and reference comparison before substituting kernels or retraining. Record any mapping and numerical discrepancy explicitly.
 5. Add measured Numba acceleration for suitable loops only after the NumPy reference passes. Keep the collaborator-parity path versioned separately from any numerical refinement.
-6. Train a small joint posterior using the accepted bank/adapter path, continuing forecasts from its sampled state. Compare fixed held-out cases against a validated same-model reference; assess joint dependence and predictive quantities before a large training run. A reduced target with declared fixed parameters is acceptable if the full task is not yet validated.
+6. Train a small joint posterior using generated histories, initialization/context, and targets through the accepted bank/adapter path, continuing forecasts from its sampled state. Compare independent synthetic held-out histories and futures against a validated same-model reference; assess joint dependence and predictive quantities before a large training run. These S checks are not historical backtests. A reduced target with declared fixed parameters is acceptable if the full task is not yet validated.
 
 ## Deliverables
 
@@ -25,4 +25,4 @@ Check variance moments, leverage/cross-covariances, jump count and size moments,
 
 ## Decision gate and deferred scope
 
-Accept native Heston and the collaborator adapter independently. Do not claim Francesco parity without artifacts, or impose the Feller condition merely to conceal a solver limitation. Defer joint price/variance jumps, automatic model selection, general-purpose filtering infrastructure, and strong risk-benefit claims until supported by matched experiments.
+Accept native Heston and the collaborator adapter independently. S requires no real return window. An optional M window normally conditions frozen weights without observed parameter/state truth; E additionally requires held-out later outcomes and a chronological evaluation design. Do not claim Francesco parity without artifacts, or impose the Feller condition merely to conceal a solver limitation. Defer joint price/variance jumps, automatic model selection, general-purpose filtering infrastructure, and strong risk-benefit claims until supported by matched experiments.

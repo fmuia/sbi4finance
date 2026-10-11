@@ -19,6 +19,8 @@ Total: ~2 hours.
 
 The [implementation plan and mathematical guide](docs/simulator-plan/README.md) proposes a modular simulator library, pre-simulated training banks, and returns-inference and option-pricing workflows. It includes nine milestone subplans, beginner-oriented mathematical notes, and validation requirements. The plan is under review; implementation and the tutorial's central application remain to be agreed.
 
+Its [delivery and evidence boundary](docs/simulator-plan/README.md#synthetic-delivery-and-market-evidence) requires a complete offline synthetic teaching workflow. Actual-market application and empirical evaluation are optional additions with separate data and evidence requirements; acquisition does not block the synthetic core.
+
 ## Setup
 
 One environment, managed by [pixi](https://pixi.sh) from `pyproject.toml`:

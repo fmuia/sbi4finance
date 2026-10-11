@@ -8,7 +8,7 @@ Introduce lognormal forward variance with a finite-dimensional continuation stat
 
 ## Tasks
 
-1. Specify an exponential-kernel one-factor Bergomi model, including the factor normalization, mean-reversion convention, asset correlation, and initial forward-variance curve. Classify the curve as known context or a low-dimensional inferred object; do not conceal curve assumptions inside the simulator.
+1. Specify an exponential-kernel one-factor Bergomi model, including the factor normalization, mean-reversion convention, asset correlation, and initial forward-variance curve. Classify the curve as known context or a low-dimensional inferred object; do not conceal curve assumptions inside the simulator. S may use generated admissible curves and pricing context; no observed market curve is required.
 2. Implement a Gaussian/OU reference with exact factor-transition distributions where available. Couple factor and asset innovations using the appropriate joint covariance. Exact factor stepping does not make discretized asset integration or option prices exact.
 3. Implement variance normalization and Q asset simulation with declared integration settings. Define conditional continuation using all factor states, the curve specification, and elapsed time; do not restart an unconditional curve at the forecast origin.
 4. Add a fixed European option-panel task using the accepted observation/bank interfaces. Use variance reduction and numerical refinement before low-level acceleration. Justify the estimator's moments and error assessment; finite prices alone do not justify conventional MC error bars. Preserve sampling error separately from quote error.
@@ -24,4 +24,4 @@ Check factor transition moments and cross-covariances, positive-semidefinite cor
 
 ## Decision gate and deferred scope
 
-Accept one factor before adding two. Select numerics and any Numba kernels from measured error/cost evidence. Two-factor delays do not block M7. Defer historical-return applications until P dynamics and initialization are specified, and defer rough-kernel factor approximations to a separately versioned numerical study.
+Accept one factor before adding two using synthetic fixtures independently of M/E market assets. Select numerics and any Numba kernels from measured error/cost evidence. Two-factor delays do not block M7. Q continuation/pricing checks do not establish P return-risk forecasts or future option-chain dynamics. Defer historical-return applications until P dynamics and initialization are specified, and defer rough-kernel factor approximations to a separately versioned numerical study.

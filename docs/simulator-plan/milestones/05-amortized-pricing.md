@@ -8,11 +8,11 @@ Establish the relationship between Bayesian calibration and fast downstream pric
 
 ## Tasks
 
-1. Train a posterior approximator for the reviewed option-panel task. Record prior, observed context, parameter transformations, initialization targets, bank identity, architecture, and training-only normalization.
+1. Train a posterior approximator for the reviewed synthetic option-panel task, including generated curves/context. Record prior, observed context, parameter transformations, initialization targets, bank identity, architecture, and training-only normalization. Optional M applies the normally frozen checkpoint to an unlabelled market panel; it is distinct from network training.
 2. Validate against the explicit quote likelihood and trusted reference posterior calculations on fixed cases. Push matched parameter/state draws through the validated pricer to obtain distributions of downstream prices. These are the baseline uncertainty outputs.
-3. Define a supervised price-surrogate task with inputs consisting of Q parameters, contract terms, and required market/state context, and labels from accepted reference prices. Set the supported domain and loss/error scales deliberately; tiny prices and tail contracts require more than a single average relative-error score.
+3. Define a supervised price-surrogate task with inputs consisting of Q parameters, contract terms, and required market/state context. Labels are validated pricing expectations, not individual realized payoffs or presumed real-market fair values. Set the supported domain and loss/error scales deliberately; tiny prices and tail contracts require more than a single average relative-error score.
 4. Train and test the surrogate using grouped splits that keep related contracts/parameter draws from leaking across partitions. Assess posterior price propagation with both exact and surrogate pricers. Keep the calibration observation generator on the validated reference route unless a separate approximation study permits replacement.
-5. Optionally design a direct conditional posterior-price model for a fixed target payoff and context. Its labels and validation must reproduce the relevant push-forward distribution, rather than confusing a deterministic conditional price with a future realized payoff.
+5. Optionally design a direct conditional posterior-price model for a fixed target payoff and context. Generate each noisy conditioning panel and reference target model price from the same parameter draw. Its labels and validation must reproduce the relevant push-forward distribution, rather than confusing a conditional price with a future realized payoff.
 
 ## Deliverables
 
@@ -24,4 +24,4 @@ Evaluate conditional posterior agreement and risk/price functionals alongside SB
 
 ## Decision gate and deferred scope
 
-First accept the parameter-posterior path; then accept or reject the surrogate independently. Direct posterior-price inference requires its own benefit and validation gate and does not block either path. Defer claims of exactness from unverified importance correction, arbitrary-payoff generalization, and exotic products lacking independently validated labels.
+First accept the parameter-posterior path; then accept or reject the surrogate independently. Direct posterior-price inference has its own gate and does not block either path. All three routes support S without market files; E requires genuinely excluded same-time quotes, including exclusion from smoothing and input construction. Q price uncertainty is not a forecast of future chain movements or P losses. American/exotic S outputs need validated target pricers, not observed target quotes; their implementation remains deferred. Also defer unverified exactness claims and arbitrary-payoff generalization.

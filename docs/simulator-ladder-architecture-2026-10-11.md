@@ -4,6 +4,8 @@
 
 The expanded [implementation plan and mathematical guide](simulator-plan/README.md) now provide milestone subplans and explicitly distinguish reference pricing, learned pricing surrogates and direct posterior-price inference. Use that roadmap for the implementation review; this note preserves the initial architecture discussion.
 
+The roadmap's [S/M/E boundary](simulator-plan/README.md#synthetic-delivery-and-market-evidence) also makes the complete synthetic workflow independently deliverable offline. Generated observations and context suffice for banks, training, inference validation and model-based forecasting/pricing. Actual-market conditioning and held-out empirical assessment are separate optional additions. The bank layouts below describe labeled synthetic examples; real conditioning fixtures omit unavailable truth labels. Current provenance and evidence requirements are in the [software/data contract](simulator-plan/notes/04-software-and-data.md).
+
 ## Recommendation
 
 Build a small simulator layer inside `sbi4finance`, with two model families, explicit observation/inference tasks, and one reproducible dataset-generation pipeline. Start with NumPy reference calculations and Numba for suitable CPU kernels. Add Cython only where measurements justify the build and maintenance cost. Keep BayesFlow, Slurm, and storage outside the scientific kernels.
@@ -232,3 +234,5 @@ The cluster connection was not exercised, and no successful generation run or pe
 Across these increments, verify analytic limits, moments/covariances, declared supports, price identities where applicable, and state continuation. Test martingale expectations only on parameter domains where the specified model should be a true martingale. Compare backends statistically and against numerical error tolerances, not merely matching one seeded trajectory. Validate the prior's difficult regions as well as representative parameter points.
 
 SBC, posterior/reference comparisons and predictive-risk diagnostics remain separate inference acceptance tests; a validated simulator does not certify a learned posterior. Conversely, a fast training loss decrease does not validate a simulator. More complex models enter the library when a concrete observation and inference task needs them, rather than because they complete a catalog.
+
+Neither numerical nor synthetic inference acceptance establishes actual-market model adequacy. Optional E requires held-out later outcomes for return forecasts or contemporaneous excluded quotes for price comparisons, with leakage controls and sufficient dates for the claim. Acquiring those records is not a dependency of the required S tutorial or a substitute for its truth-based checks.

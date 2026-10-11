@@ -4,6 +4,22 @@ This guide explains the two questions the simulator library serves: what histori
 
 Read this before [models and numerics](02-models-and-numerics.md), then continue to [inference and pricing](03-inference-and-pricing.md). The [implementation plan](../README.md) explains when each concept becomes software.
 
+## Synthetic delivery and market evidence
+
+The complete teaching workflow can run offline using generated data. In a synthetic experiment, an “observation” means the input visible to the inference method; it need not be a recorded market observation. The generator supplies both that input and hidden truth for training and checking the answer. Rates, contract designs and forward-variance curves can also be generated under declared conventions.
+
+| Level | What we can deliver | What real data adds |
+|---|---|---|
+| S Synthetic teaching core | Train and test networks; infer from generated histories or quote panels; simulate future losses or calculate target model prices | Nothing is required from a market provider |
+| M Real market application | Apply the compatible trained network to an actual asset and date, usually with its weights frozen | One real return window or one real quote panel, with context and provenance |
+| E Empirical evaluation | Assess forecasts or held-out pricing agreement in the market | Later outcomes for return forecasts, or same-time target quotes excluded from option calibration |
+
+M can produce a forecast before any future return is observed, or a model price without a quote for that target contract. E asks whether those outputs agree with subsequent outcomes or excluded observations. Repeated cases and a suitable evaluation design are needed for claims beyond one illustration.
+
+Synthetic truth is known because we chose it. Ordinary market records do not reveal true model parameters, instantaneous variance, jump identities or a uniquely correct model price. A volatility proxy or quoted premium is an observation, not such a truth label. Passing synthetic checks establishes performance for specified simulation experiments; it does not establish empirical market performance.
+
+S is the required delivery path; M is optional and E is a separate extension. See the plan's [synthetic delivery and market evidence](../README.md#synthetic-delivery-and-market-evidence) for their acceptance boundaries.
+
 ## Prices and returns
 
 Let $S_t>0$ be an asset price at time $t$. A simple return over an interval is

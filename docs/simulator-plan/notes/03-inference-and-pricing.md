@@ -36,9 +36,20 @@ An initialization law is substantive. Fixing $v_0$, drawing it from a stationary
 
 One returns training example is a complete ordered history, such as 252 daily log returns, together with its times and mask. One option-calibration example is a complete surface or quote panel with contract coordinates. Individual days and strikes are elements of those examples. They do not become independent inference examples simply because they occupy separate array rows.
 
+Both branches have a complete synthetic delivery path. The [S M E distinction](../README.md#synthetic-delivery-and-market-evidence) separates producing an inference result from testing it against market observations:
+
+| Branch | S uses only generated inputs | M conditions on an actual date | E adds held-out market evidence |
+|---|---|---|---|
+| Returns | Return history → joint P parameter/state posterior → simulated future returns, volatility and losses → risk measures | One compatible real return window and its known context | Later realized outcomes, with repeated forecast origins for general performance claims |
+| Options | Quote panel → Q posterior → reference or surrogate target prices and their uncertainty | One compatible real panel and its pricing context | Same-time target quotes excluded from calibration, with repeated cases for broader pricing claims |
+
+Training changes network weights using labelled synthetic examples. M normally applies frozen weights to an unlabelled real conditioning example. It requires neither future realized returns nor observed target-contract prices merely to produce forecasts or model valuations. Ordinary market data cannot label the true latent parameters, variance, jumps or fair model prices; real loaders must not manufacture those labels.
+
 Historical returns describe evolution under the **physical measure**, $\mathbb P$. Derivative valuation generally uses a specified **risk-neutral measure**, $\mathbb Q$, under which discounted tradable gains satisfy the appropriate martingale condition. These measures can assign different probabilities to adverse outcomes. A return-based posterior over $\vartheta^{\mathbb P}$ is therefore not automatically a posterior over pricing parameters $\vartheta^{\mathbb Q}$.
 
 Shared simulation machinery does not establish the relationship. Joint inference would need an explicit model of risk premia and a mapping between the measures. Changing only the stock drift is insufficient in general: volatility and jump dynamics can also change. The HKDE paper's option calibration belongs to the risk-neutral workflow. [Agazzotti et al., HKDE calibration and pricing](https://arxiv.org/html/2502.13824v1)
+
+A Q fit to today's panel supports pricing at today's valuation time. It does not by itself forecast tomorrow's option chain or give P probabilities for actual future returns. Observing or independently recalibrating several dates does not supply the missing dynamics or measure relationship.
 
 For a quote panel, a simple illustrative observation model is
 
@@ -101,6 +112,8 @@ V(\vartheta^{\mathbb Q},z_t;c_*)
 $$
 
 Here $H$ is the payoff, $D$ discounts it, and $\tau$ is maturity. A call has $H=(S_\tau-K)^+$. A barrier payoff depends on the path. An American price additionally optimizes over admissible exercise times, so its reference solver and error checks need an optimal-stopping calculation.
+
+Uncertainty in European, American or path-dependent model prices can be demonstrated at S using synthetic calibration inputs and a validated target pricer. Observed target quotes are unnecessary for that calculation; they are needed for an empirical agreement claim. This data distinction does not bring the deferred American or exotic implementation into the initial development scope.
 
 Drawing a future path produces one discounted payoff. Pricing averages over future randomness. Consequently, a posterior distribution of model prices differs from a predictive distribution of discounted payoffs. If $W$ is the uncertain parameter/state vector and $G$ the discounted payoff, then
 
@@ -224,7 +237,9 @@ Reference inference can use analytic posteriors for simple limits, ordinary MCMC
 
 Validation should combine held-out conditional reference cases, posterior dependence checks, and simulation-based calibration (SBC). SBC repeatedly simulates a truth and observations, infers a posterior, and checks ranks of the generating truth among posterior draws. Marginal checks can miss important failures; data-dependent and joint test quantities improve sensitivity. Passing ranks is not proof of accurate inference on every individual dataset. [Modrák et al., SBC test quantities](https://arxiv.org/abs/2211.02383)
 
-Finally, distinguish two checks: agreement with a reference using the **same** discretization tests inference; comparison against higher-accuracy simulation tests numerical bias. Both methods can agree perfectly on the same inadequate simulator. Real-data adequacy is a further question, assessed through relevant predictive diagnostics and sensitivity to prior and discrepancy assumptions.
+Finally, distinguish three checks. Agreement with a reference using the **same** discretization tests inference; comparison against higher-accuracy simulation tests numerical bias; held-out market evaluation tests empirical adequacy. Both inference methods can agree perfectly on the same inadequate simulator. Synthetic recovery, SBC, joint behavior, contraction, prior sensitivity, controlled misspecification experiments and accuracy/cost comparisons require no real observations. Their conclusions remain conditional on the declared generators, test cases and computational settings; they do not demonstrate universal robustness or real-market calibration.
+
+For E returns evaluation, keep later outcomes outside the forecast-origin information set. Preprocessing, normalization, tuning and state smoothing must not use future observations unavailable at that origin. Repeated chronological origins support broader claims, with dependence from overlapping windows and horizons handled explicitly. For E option evaluation, exclude target quotes not only from the conditioning panel but also from input construction such as surface smoothing. A quote used in calibration supports an in-sample residual check, not a held-out result. One actual window or panel supports M without meeting these E requirements, and one realized loss is not a true VaR or ES label.
 
 ## 8 Short checks with worked answers
 
