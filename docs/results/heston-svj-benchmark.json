@@ -1,0 +1,114 @@
+{
+  "task": {
+    "task_id": "heston-svj-kernel-pilot-v1",
+    "data_origin": "synthetic",
+    "evidence_scope": "S numerical and timing pilot; no inference or market evaluation",
+    "measure": "P",
+    "scheme": "full-truncation-euler-signed-auxiliary-v1",
+    "return_convention": "decimal_log_return",
+    "observations": 252,
+    "dt_years": 0.003968253968253968,
+    "substeps": 8,
+    "initial_variance": 0.04,
+    "parameters": {
+      "drift": 0.05,
+      "kappa": 2.0,
+      "theta": 0.04,
+      "vol_of_vol": 0.3,
+      "rho": -0.6,
+      "jump_intensity": 0.7,
+      "jump_mean": -0.07,
+      "jump_std": 0.1
+    }
+  },
+  "batch_size": 256,
+  "batches": 4,
+  "repeats": 3,
+  "seed": 7412,
+  "environment": {
+    "python": "3.12.15",
+    "numpy": "2.5.3",
+    "numba": "0.68.0",
+    "platform": "macOS-26.4.1-arm64-arm-64bit"
+  },
+  "source_sha256": {
+    "heston.py": "f85237a6f223689bb83fb2837d6f6cba855867f5da9f919667163ae4a4c8996c",
+    "benchmark_heston.py": "21b23cb29a50ab0767d9916b88717bf31eeceb3119a7532c8804634ba8408969",
+    "config": "2f66d5dc032b071118dac3bdea738b92e97a9d681c123b80a66f0c7f3efcf21a"
+  },
+  "kernel": "serial float64, fastmath=False; both backends include public validation and output allocation",
+  "first_numba_call_seconds": 0.6185660408809781,
+  "numba_cache_directory": "/private/tmp/heston-numba-cold.HWO8KK",
+  "first_call_scope": "compilation or cache loading plus one simulation; imports excluded",
+  "innovation_array_bytes_per_batch": 9289728,
+  "output_array_bytes_per_batch": 1034240,
+  "matched_input_max_absolute_error": {
+    "log_returns": 0.0,
+    "variance_state": 0.0
+  },
+  "rng_one_batch": {
+    "seconds": [
+      0.012022083159536123,
+      0.011869875248521566,
+      0.011592666618525982
+    ],
+    "median_seconds": 0.011869875248521566
+  },
+  "warm_simulation_one_batch": {
+    "numpy": {
+      "seconds": [
+        0.013035709038376808,
+        0.013402875047177076,
+        0.012753084301948547
+      ],
+      "median_seconds": 0.013035709038376808
+    },
+    "numba": {
+      "seconds": [
+        0.0041744583286345005,
+        0.004275457933545113,
+        0.004746499937027693
+      ],
+      "median_seconds": 0.004275457933545113
+    }
+  },
+  "complete_simulation": {
+    "numpy": {
+      "seconds": [
+        0.10199725022539496,
+        0.09372487477958202,
+        0.09086500015109777
+      ],
+      "median_seconds": 0.09372487477958202
+    },
+    "numba": {
+      "seconds": [
+        0.05615412537008524,
+        0.06138024991378188,
+        0.06071345787495375
+      ],
+      "median_seconds": 0.06071345787495375
+    }
+  },
+  "warm_speedup_numpy_over_numba": 3.0489620623089357,
+  "complete_speedup_numpy_over_numba": 1.5437248685887572,
+  "complete_paths_per_second": {
+    "numpy": 10925.594751747574,
+    "numba": 16866.11232239554
+  },
+  "continuation": {
+    "history_shape": [
+      256,
+      252,
+      1
+    ],
+    "future_shape": [
+      256,
+      10,
+      1
+    ],
+    "matched_start_state": true,
+    "interpretation": "known-parameter synthetic continuation, not posterior forecasting"
+  },
+  "limits": "fixed-parameter CPU pilot; no bank IO, neural training, inference, pricing or broad-domain accuracy claim"
+}

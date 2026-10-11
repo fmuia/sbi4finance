@@ -27,6 +27,8 @@ The first simulator-ladder implementation is the [GBM reference example](docs/gb
 
 The next increment adds a [saved synthetic bank and BayesFlow training/reload example](docs/gbm-bank-training.md). Run `pixi run gbm-bank --out /tmp/gbm-bank`, then `pixi run gbm-train --bank /tmp/gbm-bank --out /tmp/gbm-trained`. Both output directories must be new. A separate [one-CPU Oscar smoke run](docs/gbm-cluster-smoke.md) has verified actual cluster generation, storage and selected-example reproduction.
 
+[Heston and Gaussian-price-jump kernels](docs/heston-svj-kernels.md) add hidden variance, leverage, signed-state continuation and serial Numba stepping. Run `pixi run test-heston`, `pixi run heston-validate`, and `pixi run heston-benchmark`. These are synthetic numerical/timing pilots; joint Heston/SVJ posterior training is the next milestone.
+
 One environment, managed by [pixi](https://pixi.sh) from `pyproject.toml`:
 
 ```bash

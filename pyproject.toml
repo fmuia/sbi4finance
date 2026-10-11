@@ -33,6 +33,7 @@ sbi4finance = { path = ".", editable = true }
 bayesflow = "==2.0.14"
 keras = "==3.15.1"
 jax = "==0.11.1"
+numba = "==0.68.0"
 
 [tool.pixi.activation.env]
 KERAS_BACKEND = "jax"
@@ -46,6 +47,9 @@ test-gbm = "python -m unittest discover -s tests -p test_gbm.py -v"
 gbm-bank = "python scripts/generate_gbm_bank.py"
 gbm-train = "python scripts/train_gbm.py"
 test-simulators = "python -m unittest discover -s tests -v"
+test-heston = "python -m unittest discover -s tests -p test_heston.py -v"
+heston-validate = "python scripts/validate_heston.py --include-svj"
+heston-benchmark = "python scripts/benchmark_heston.py"
 
 # GPU environment for Oscar (linux-64 only): `pixi install -e gpu` on a login node.
 [tool.pixi.feature.cuda]
