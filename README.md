@@ -67,9 +67,15 @@ Simulator, data cache and checkpoint come from Stefan Radev's [amortized-fractal
 
 ## Local observation fixtures
 
-[Local data preparation](docs/local-data.md) supplies CSV/JSON IO, daily return windows and [fixed HKDE premium panels](docs/hkde-local-panels.md), with explicit observation/context roles and separate synthetic truth. The helpers need no downloads or extra dependencies. Run `pixi run data-check` for unit tests; `pixi run hkde-data-check` checks the real HKDE checkpoint handoff when simulator PR #15 is available. That checkpoint remains provisional; passing IO checks does not establish scientific acceptance.
+[Local data preparation](docs/local-data.md) supplies CSV/JSON IO, daily return windows and [fixed HKDE premium panels](docs/hkde-local-panels.md), with explicit observation/context roles and separate synthetic truth. The CSV/JSON and preparation helpers need no downloads or extra dependencies. Run `pixi run data-check` for unit tests; `pixi run hkde-data-check` checks the real HKDE checkpoint handoff when simulator PR #15 is available. That checkpoint remains provisional; passing IO checks does not establish scientific acceptance.
 
 `pixi run hkde-bank-data-check` exercises the generated-bank → local-panel →
 checkpoint path using the simulator's existing writer, reader and adapter.
 It needs the simulator PR #15 implementation (or `--simulator-root` pointing to
 that checkout); no provider account or real-market data are used.
+
+The [cached HKDE data walkthrough](notebooks/hkde_data_walkthrough.py) is a
+small offline example of a synthetic panel, paired parameter draws and a
+held-out option's model-price uncertainty. Run `pixi run hkde-data-walkthrough`;
+see [reproduction and evidence limits](docs/hkde-offline-teaching.md). Its
+checkpoint is **provisional**, and the failed price gate is shown explicitly.
