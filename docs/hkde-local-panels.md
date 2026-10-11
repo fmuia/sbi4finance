@@ -81,8 +81,69 @@ The preparation unit tests have no simulator dependency; `pixi run data-check` o
 
 The [recorded integration run](results/hkde-data-handoff.json) passed against simulator commit `729ac26`: both validation cases retained exact conditions and seeded posterior draws, truth/auxiliary fields were removable, and all seven incompatible variants were rejected. The record includes source and checkpoint hashes.
 
+## Load a generated bank panel
+
+Increment **4/5-data-plan-synthetic-bank-integration** removes manual record
+assembly from the generated-data path:
+
+```python
+import json
+from pathlib import Path
+from sbi4finance.datasets import load_hkde_bank_panel, write_artifact
+
+checkpoint_task = json.loads(Path(
+    "checkpoints/hkde-theta-intensity-provisional/task.json"
+).read_text())
+panel = load_hkde_bank_panel(
+    "/path/to/hkde-bank", example_id="validation:257",
+    checkpoint_task=checkpoint_task,
+)
+write_artifact("/tmp/new-hkde-panel", panel.metadata, panel.rows)
+```
+
+The helper calls the simulator's existing `option_bank.load_bank`, which checks
+the bank's manifest, split hashes and array contracts. It selects one validation
+panel by its stored identity, derives its contract coordinates from the bank's
+actual task, and requires that full task to match the checkpoint. Train/test IDs
+are outside this teaching interface. The bank reader loads all split files for
+integrity checks; only the chosen validation observation is used for inference.
+
+Synthetic parameters remain in `panel.truth`, never in its price column.
+Clean numerical prices and pricing-error arrays stay in the source bank; they
+are not extra input channels. The local manifest records the bank/split hashes,
+task fingerprint, seed and original case ID. No dates, spreads or market history
+are manufactured. Full training banks are generated artifacts, not bundled here.
+
+Run the durable integration with:
+
+```bash
+pixi run hkde-bank-data-check
+# Or use an existing bank and an explicit validation ID:
+pixi run hkde-bank-data-check --bank /path/to/hkde-bank --example-id validation:257
+```
+
+The default creates a tiny independent smoke bank using the **existing writer**:
+two training, two validation and one unused test example, with seed 72026.
+It does not access the checkpoint's reserved test observations. An existing bank
+can instead be supplied. The check transports a selected observation through
+CSV/JSON, invokes the original neural adapter, compares 32 same-seed draws with
+direct bank conditioning, and exercises identity/task/integrity failures.
+`--simulator-root` and `--out` work as in the preceding regression. Before the
+branches coexist, use the simulator checkout's pinned Python environment.
+
+The [recorded bank integration](results/hkde-bank-data-integration.json) uses
+the original seed-62026 training/validation bank and `validation:257`, against
+simulator commit `729ac26`. Conditions and seeded posterior draws match exactly;
+five invalid identity/task/integrity cases are rejected. The independent smoke
+bank path also passes. Neither run evaluates a reserved-test posterior.
+
+This is a narrow integration of the current two-parameter HKDE example, not a
+bank registry or a replacement for the simulator workstream. The core parser
+helpers remain standard-library-only; loading a bank requires the simulator
+dependencies already declared in PR #15.
+
 ## Evidence boundary
 
 The current HKDE checkpoint remains **provisional**: its original downstream price-quantile error is approximately 0.0439 currency versus a 0.03 gate. An exact round trip proves that storage and preparation preserve its behavior; it does not repair or override that failed scientific check. The regression report records interoperability and scientific acceptance separately.
 
-This completes the current single-premium preparation and checkpoint-handoff checks. General premium/IV market normalization, return-checkpoint compatibility, bank-wide integration and final D2/D4 acceptance remain separate work. No real data are needed for this synthetic path. Real-market adequacy and held-out empirical evaluation still require appropriately prepared real observations.
+This completes the current single-premium preparation and selected bank-panel/checkpoint handoff. General premium/IV market normalization, return-checkpoint compatibility and final D2/D4 acceptance remain separate work. No real data are needed for this synthetic path. Real-market adequacy and held-out empirical evaluation still require appropriately prepared real observations.

@@ -92,7 +92,8 @@ The same preparation works on declared synthetic or market records. Market windo
 | `1/5-data-plan-local-observation-fixtures` ([PR #5](https://github.com/fmuia/sbi4finance/pull/5)) | Local D0–D1 IO implemented | Model-specific contracts remain with their scientific tasks |
 | `2/5-data-plan-return-window-preparation` ([PR #6](https://github.com/fmuia/sbi4finance/pull/6)) | D1-R daily preparation implemented | Durable return-checkpoint equivalence remains D2 |
 | `3/5-data-plan-hkde-panel-handoff` | [Single premiums and exact HKDE task checks](hkde-local-panels.md); real-checkpoint regression | Broader option normalization and other checkpoint interfaces |
-| D2 / D4 | HKDE interoperability available; scientific acceptance pending | Bank-wide integration and accepted teaching checkpoint/workflow |
+| `4/5-data-plan-synthetic-bank-integration` | [Simulator bank → local panel → checkpoint](hkde-local-panels.md#load-a-generated-bank-panel) | Scientific acceptance remains pending |
+| D2 / D4 | HKDE transport/inference integration available | Accepted teaching checkpoint and offline walkthrough |
 | D3 / D5 | Optional, not implemented | Market application / held-out empirical evaluation |
 
 Implementation PRs use sequential `N/5-data-plan-…` titles linked to PR #4. Optional market branches do not block a selected synthetic workflow.
