@@ -1,6 +1,6 @@
 # M7 Rough Bergomi, starting with option calibration
 
-**Status:** proposed; implementation starts after review. **Depends on:** accepted one-factor steps [M6.1–M6.3](06-bergomi-factors.md) and the local bank/loader pipeline in [M2.3](02-banks-and-cluster.md). Optional M6.4 two-factor Bergomi, HKDE, and M5 are not prerequisites. Read [models and numerics](../notes/02-models-and-numerics.md) and [inference and pricing](../notes/03-inference-and-pricing.md).
+**Status:** acceptance scope; track implementation evidence and didactic completion separately. **Depends on:** accepted one-factor steps [M6.1–M6.3](06-bergomi-factors.md) and the local bank/loader pipeline in [M2.3](02-banks-and-cluster.md). Optional M6.4 two-factor Bergomi, HKDE, and M5 are not prerequisites. Read [models and numerics](../notes/02-models-and-numerics.md) and [inference and pricing](../notes/03-inference-and-pricing.md).
 
 ## Purpose
 
@@ -25,9 +25,15 @@ Add a power-law-memory forward-variance model with an independently checked driv
 
 Complete M7.1–M7.3 in order. M7.4 is optional and may follow the accepted numerical reference without delaying the reference-based posterior pilot. Likely destinations are `simulators/` and `pricing/` for numerical work, and `tasks/` and `inference/` for the restricted calibration experiment. These reuse the shared observation interface without creating a hidden dependency on M4 or M5.
 
+## Didactic review deliverable
+
+Planned with M7: extend `notebooks/08_bergomi_models.py` with named rough-driver, numerical pricing and restricted-posterior sections, following the [common review requirements](../README.md#didactic-review-notebooks-at-every-milestone). Explain the actual Volterra kernel/normalization and memory requirement, then run a small seeded Gaussian-reference comparison. Display cached production/refinement and conditional-inference evidence from exact artifacts, including unresolved gates and estimator-moment limitations. Identify the Q observation, curve context and targets. Exercises should distinguish a finite-factor numerical approximation from a two-factor model and explain why current variance alone cannot initialize a P rough-memory forecast.
+
+Accept the sections after offline headless execution/export reproduces the bounded reference demonstration and renders the separate numerical/posterior gates. Large covariance studies, pricing banks and training remain opt-in; a failed inference gate stays visible even if simulation and notebook execution pass.
+
 ## Deliverables
 
-Gaussian-driver fixtures, a checked production simulator/pricer, one Q calibration configuration, a pilot bank/posterior, and an accuracy/cost report covering roughness and leverage regimes. Separate simulator acceptance from posterior acceptance; the latter includes a reproducible validation procedure and its reference limitations.
+Gaussian-driver fixtures, a checked production simulator/pricer, one Q calibration configuration, a pilot bank/posterior, an accuracy/cost report covering roughness and leverage regimes, and verified M7 review sections. Separate simulator acceptance from posterior acceptance; the latter includes a reproducible validation procedure and its reference limitations.
 
 ## Acceptance and tests
 

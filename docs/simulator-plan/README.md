@@ -1,6 +1,6 @@
 # Finance simulator and amortized inference implementation plan
 
-Status: implementation started, 11 October 2026. The [GBM reference](../gbm-reference.md) records M0/M1, the [bank/training increment](../gbm-bank-training.md) records local M2.1–M2.3, and the [actual CPU cluster smoke](../gbm-cluster-smoke.md) records M2.4. [Heston/Gaussian-jump kernels](../heston-svj-kernels.md) implement M3.1–M3.2 with bounded numerical checks and measured Numba timings. The [M3.3 joint Heston pilot](../heston-joint-inference.md) implements the bank/reference/training/forecast path, but its frozen checkpoint failed conditional test checks: posterior acceptance remains pending. The live tutorial's main application remains open.
+Status: implementation started, 11 October 2026. The [GBM reference](../gbm-reference.md) records M0/M1, the [bank/training increment](../gbm-bank-training.md) records local M2.1–M2.3, and the [actual CPU cluster smoke](../gbm-cluster-smoke.md) records M2.4. [Heston/Gaussian-jump kernels](../heston-svj-kernels.md) implement M3.1–M3.2 with bounded numerical checks and measured Numba timings. The [M3.3 joint Heston pilot](../heston-joint-inference.md) implements the bank/reference/training/forecast path, but its frozen checkpoint failed conditional test checks: posterior acceptance remains pending. The live tutorial's main application remains open. Track implementation evidence and didactic completion separately.
 
 Build reusable simulators and reproducible training datasets for two financial applications: learning dynamics from return histories, and learning pricing parameters or prices from option quotes. Both can be taught and validated on simulated observations. Shared infrastructure should make both applications practical while preserving their different probability measures, observations and inference targets.
 
@@ -72,9 +72,43 @@ For an introduction to the subject, read these notes in order:
 
 The notes define the equations and conventions used by this plan. They are an introduction to the proposed work, rather than a complete course in stochastic calculus or a claim that every listed model has already been validated.
 
+## Didactic review notebooks at every milestone
+
+Every significant implementation increment includes a **marimo review tutorial** that lets a reviewer learn the problem, run a small example, and inspect the evidence before moving on. This is part of that milestone's deliverable and acceptance, not work postponed to M8. Keep it lean: import the package's functions, reuse existing mathematical notes and saved reports, and extend explicit sections in an existing notebook when increments belong together. Do not introduce a separate notebook framework or copy simulator/training implementations into cells.
+
+Each milestone's review sections must contain:
+
+1. **Motivation and mathematics:** the financial question, essential equations and assumptions, and an explanation of the new step relative to the preceding milestone. Link the fuller mathematical notes and define notation needed to understand the example.
+2. **A concrete task:** identify P or Q, the observation, conditioning context, inference target and continuation state, with units and array axes. Show which truth/diagnostic fields are unavailable to the estimator; distinguish numerical settings from model parameters. Explain any synthetic context and the S/M/E evidence boundary.
+3. **A runnable small demonstration:** deterministic seeded synthetic inputs and a bounded CPU calculation using the actual implementation. Display a useful plot or table with units; explain what it means. Cached expensive results complement this demonstration, rather than substituting for all executable work.
+4. **Actual evidence and limitations:** show measured results, tolerances, passed and failed gates, reference uncertainty and unsupported scope. Separate numerical correctness, conditional inference and empirical assessment. A functioning pipeline or marginal SBC pass cannot conceal a failed conditional check. A provisional checkpoint can be reviewed, but the notebook must not present it as an accepted inference product.
+5. **Traceable artifacts:** link the source functions, task/configuration, bank manifest, relevant checkpoint and evidence reports, as applicable. Identify versions, seeds, hardware and what was computed live versus cached. Use the reports' actual numbers rather than copying optimistic summaries.
+6. **Short review exercises:** two or three focused prompts with hints or answers, such as predicting a parameter change, inspecting a conditioning boundary, or explaining a failed gate. These should test understanding of this increment, not require another large experiment.
+
+The default path is S and runs offline with all real-market fixtures absent. It neither submits cluster jobs nor automatically launches substantial bank generation, training, reference inference or provider access. Use explicit documented opt-in commands for expensive work. If a required cached artifact is missing, explain the missing dependency and how to obtain or reproduce it; do not silently start a costly fallback or invent a result. Optional M/E cells retain their labels and skip visibly without their inputs.
+
+**Review verification:** execute the default notebook headlessly in a fresh process in the pinned CPU environment, and export it to HTML. Record the exact commands, exit status, runtime and artifact versions in the implementation PR; inspect the exported explanation, figures/tables and gate status. Verify that network/provider access and real-market fixtures are unnecessary, and that execution/export does not trigger expensive jobs. Execution failures and missing artifacts remain explicit incomplete checks. This verifies the review artifact; scientific acceptance still depends on the milestone's own numerical and inference gates.
+
+The following map uses **implementation increment numbers**, not GitHub PR numbers. Increments 1–4 are being backfilled in PR #11; their didactic verification remains pending. The increment-5 notebook is implemented and its headless HTML export has been verified. Later filenames are proposed destinations, not claims that those notebooks exist.
+
+| Increment | Milestone sections and review notebook | Didactic status / next work |
+|---|---|---|
+| 1 — GBM foundation | M0 and M1 in `notebooks/01_gbm_foundations.py`: contracts, exact increments, analytic posterior and separate Q pricing | Being backfilled in PR #11; verification pending. Existing implementation evidence does not complete the tutorial. Keep the MMAR notebook separate. |
+| 2 — Local bank and training round trip | M2.1–M2.3 in `notebooks/01_gbm_foundations.py`: identities, splits, saved arrays, normalization and checkpoint reload | Being backfilled in PR #11; verification pending. |
+| 3 — Cluster generation | M2.4 in an explicit cluster section of the same bank notebook: job/configuration, actual run evidence and cost | Being backfilled in PR #11; verification pending. Show the actual cluster evidence and never submit from the default notebook. |
+| 4 — Heston/SVJ kernels | M3.1–M3.2 in `notebooks/04_heston_svj_kernels.py`: hidden variance, jumps, continuation and numerical checks | Being backfilled in PR #11; verification pending. Kernel acceptance and didactic completion remain separate. |
+| 5 — Joint returns inference | M3.3 in `notebooks/05_heston_joint_inference.py`: task, joint posterior/reference comparison, continuation and future losses | Implemented; headless HTML export verified. Includes the provisional checkpoint's failed conditional gates and development/test history; M3.3 scientific acceptance remains pending. |
+| 6 — HKDE option observations | M4 in `notebooks/06_hkde_and_pricing.py`: Q jump law, price expectations, noisy panel and accuracy budget | Planned with M4. |
+| 7 — Learned pricing routes | M5 in separate sections of the HKDE/pricing notebook: posterior plus reference pricer, surrogate, optional direct-price study | Planned with M5; report each route's acceptance independently. |
+| 8 — Finite-factor Bergomi | M6 in `notebooks/08_bergomi_models.py`: curve context, factor state, normalization and pricing | Planned with M6; optional two-factor material stays visibly optional. |
+| 9 — Rough Bergomi | M7 in separate sections of the Bergomi notebook: Gaussian reference, rough memory, refinement and restricted inference | Planned with M7; do not imply that a validated simulator validates its posterior. |
+| 10 — Participant release | M8: a separately selected participant notebook, supported by the earlier review tutorials and release evidence | Planned; returns-versus-options curriculum choice remains open. |
+
+Backfill increments 1–4 as bounded documentation/notebook tasks; do not retroactively label them tutorial-complete or repeat expensive accepted experiments merely to make a notebook. New increments include their review material in the same PR. A review notebook can accurately explain a failed experiment and pass its execution check while that scientific substep remains pending. Track both states explicitly. M8 is the selected, paced participant course and final scientific delivery gate; the review notebooks support that decision and do not preselect the curriculum.
+
 ## Milestones and deliverables
 
-Milestone status is recorded in each subplan. Acceptance means its stated checks pass; completing one does not automatically accept the others.
+Milestone status is recorded in each subplan. The milestone files define the required scope. Acceptance means the stated scientific/engineering checks pass and the corresponding didactic review sections are verified; completing one does not automatically accept the others. Implementation PRs record the evidence and any pending review backfill.
 
 | Milestone | Main deliverable | Dependencies | Role |
 |---|---|---|---|
@@ -115,7 +149,7 @@ The table and ordered subplans specify the dependencies; the graph summarizes re
 
 ## Implementation sequence and subplans
 
-Start with the shared foundation in this order. Each milestone file contains an **Ordered implementation subplan** table with stable step IDs, a concrete output and verification evidence. Existing task descriptions supply the scientific detail; the subplan defines the execution order. M0/M1 now have the linked first implementation; unfinished and optional steps retain their planned status.
+Start with the shared foundation in this order. Each milestone file contains an **Ordered implementation subplan** table with stable step IDs, a concrete output and verification evidence. Existing task descriptions supply the scientific detail; the subplan defines the execution order. This documentation does not certify implementation completion; follow the linked artifacts and implementation PRs for measured status. Develop the corresponding review-notebook sections alongside each increment.
 
 | Order | Work unit | Result needed before moving on |
 |---|---|---|
@@ -136,7 +170,7 @@ After the shared foundation, the supported execution routes are:
 
 The option-observation contract belongs to M0. The first options branch to need its implementation—M4.2 or M6.3—adds the common helper under `observations/` and `tasks/`; the other branch reuses it. Do not duplicate the helper or make Bergomi depend on completing HKDE. M8's evidence sheet starts alongside the selected branch, before final training/evaluation; M8 release waits for the selected outputs to pass.
 
-Implement one coherent substep or small group of tightly coupled substeps at a time. A brief milestone update linking the code, configuration and relevant check output is enough to record progress; do not create a separate reporting system. Distinguish planned, in progress, accepted, blocked and deferred work. A partial milestone lists accepted substeps explicitly; passing the local loader does not mark the remote cluster step complete. These records document progress and acceptance, not a new permission request for every step.
+Implement one coherent substep or small group of tightly coupled substeps at a time. A brief milestone update linking the code, configuration, relevant check output and verified review-notebook sections is enough to record progress; do not create a separate reporting system. Distinguish planned, in progress, accepted, blocked and deferred work, and record outstanding didactic backfills separately. A partial milestone lists accepted substeps explicitly; passing the local loader does not mark the remote cluster step complete. These records document progress and acceptance, not a new permission request for every step.
 
 Milestone acceptance gates are scientific and engineering checks, rather than automatic requests for another permission at every step. After the plan is approved, implementation can proceed through the agreed scope as checks pass. A material scope change or unresolved scientific choice returns for review with its concrete alternatives.
 

@@ -1,6 +1,6 @@
 # M2 Reproducible banks, offline loading, and CPU arrays
 
-**Status:** M2.1–M2.3 implemented and locally checked for the fixed GBM task; [local evidence](../../gbm-bank-training.md). M2.4 passed a real one-CPU Oscar generation/reproduction job; [cluster instructions and run record](../../gbm-cluster-smoke.md). Larger banks/arrays and Linux neural training remain separate work. **Depends on:** [M0](00-contracts.md) and [M1](01-gbm-reference.md). Read [software and data](../notes/04-software-and-data.md).
+**Status:** M2.1–M2.3 implemented and locally checked for the fixed GBM task; [local evidence](../../gbm-bank-training.md). M2.4 passed a real one-CPU Oscar generation/reproduction job; [cluster instructions and run record](../../gbm-cluster-smoke.md). Larger banks/arrays and Linux neural training remain separate work. Didactic completion is tracked separately below. **Depends on:** [M0](00-contracts.md) and [M1](01-gbm-reference.md). Read [software and data](../notes/04-software-and-data.md).
 
 ## Purpose
 
@@ -27,9 +27,15 @@ M2.1–M2.3 establish local acceptance for independent GBM histories, and M2.4 n
 | M2.3 — Load and tiny training round trip | A saved-bank → in-memory arrays → `fit_offline` demonstration, reloadable checkpoint and configuration links. Add a custom disk-batching bridge only if memory measurements require one. | Compare saved and loaded data; complete synthetic train/save/reload against GBM with every market fixture absent and provider access disabled. Check training-only normalization and no truth/diagnostic leakage. Record a simple runtime/memory measurement. |
 | M2.4 — Actual cluster smoke and cost measurements | A thin CPU job script in `cluster/` invoking the same generator and checks, plus a short run record identifying code/environment, resources, storage and bank. | Execute a small real cluster job and verify output/selected ID reproduction. Measure cost before scaling. Add array partitioning when needed; actual remote execution remains pending if access is unavailable. |
 
+## Didactic review deliverable
+
+Backfills for increments 2 and 3 are underway in PR #11; verification pending: use explicit local-bank and cluster sections in `notebooks/01_gbm_foundations.py`, following the [common review requirements](../README.md#didactic-review-notebooks-at-every-milestone). Explain the generative training pairs, independent splits, stable identity and training-only normalization. Generate/reload a tiny temporary bank and inspect the actual manifest and saved-checkpoint round-trip evidence. Show cluster commands, artifact lineage and actual resource results or pending status; the default notebook never submits a job or starts training. Exercises should trace one example across batching and identify augmentation/split leakage.
+
+Accept each section after offline headless execution/export displays its small calculation and linked evidence correctly. A rendered cluster command is not M2.4 execution evidence; a successful cluster job does not itself complete this didactic backfill.
+
 ## Deliverables
 
-A small generation/checking command, saved arrays and metadata, an in-memory training/reload example, a CPU job script and local-to-cluster smoke instructions. Checkpoints reference bank/configuration and adapter versions. Shard-aware loading and larger arrays are conditional extensions, not prerequisites for accepting a small bank workflow.
+A small generation/checking command, saved arrays and metadata, an in-memory training/reload example, a CPU job script, local-to-cluster smoke instructions and verified local/cluster review sections. Checkpoints reference bank/configuration and adapter versions. Shard-aware loading and larger arrays are conditional extensions, not prerequisites for accepting a small bank workflow.
 
 ## Acceptance and tests
 
