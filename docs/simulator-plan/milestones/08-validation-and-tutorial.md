@@ -6,10 +6,10 @@
 
 **Current boundary:** the [actual three-model cluster smoke](../../option-cluster-smoke.md)
 and offline marimo reviews establish the tested generation/retrieval route.
-They do not complete M8 or accept a new posterior. Next follow the
-[restricted HKDE subplan](05-amortized-pricing.md#next-increment-restricted-hkde-baseline):
-reference refinement, one modest baseline, conditional/joint and price checks,
-and its offline review. Keep Heston's failures and Bergomi's fidelity limits
+They do not complete M8 or accept a new posterior. The
+[restricted HKDE subplan](05-amortized-pricing.md#next-increment-restricted-hkde-baseline)
+and [rough pilot](07-rough-bergomi.md#m73b-bounded-posterior-subplan) now have
+concrete measured outcomes below. Keep Heston's failures and Bergomi's fidelity limits
 visible. The final returns-versus-options curriculum remains open; real-market
 acquisition cannot block S delivery.
 
@@ -18,6 +18,13 @@ review. Its numerical reference, parameter checks and marginal SBC pass,
 but the downstream price-quantile gate fails. Its verified review notebook
 is development teaching material; it does not make the provisional checkpoint
 an accepted participant inference path. Final-test evaluation remains reserved.
+
+The [restricted rough pilot](../../rough-joint-inference.md) delivered reusable
+synthetic banks and a reference audit. One of 20 panels misses the frozen ESS
+and maximum-weight requirements; neural training and SBC were therefore not run.
+Notebook09 reviews this precision limit and the measured generation cost. Its
+successful offline execution is separate from M7.3b inference acceptance. There
+is no accepted rough checkpoint to select for M8 yet.
 
 Assemble evidence already collected at each milestone into a complete S participant workflow. Validation and didactic review begin with M0 contracts and M1 analytic checks; this milestone closes end-to-end gaps rather than postponing either. The earlier review notebooks explain each development increment, including failed experiments; M8 selects and paces a scientifically accepted application for participants. M is an optional market illustration and E is a separate empirical extension; neither is required for S acceptance.
 

@@ -154,6 +154,23 @@ this increment substitutes for that inference validation.
 
 ## 4. Scale measured work and preserve the data boundary
 
+**Rough follow-up now recorded:** the paired-grid study supports 512 steps for
+the explicitly numerical [H/eta pilot](rough-joint-inference.md), without a
+continuum certificate. Its 6,146 saved panels were generated in 98 fixed-ID
+cluster tasks (34.28-minute wall span; 31.68 allocated CPU hours). The independent
+reference passes 19/20 panels, but `validation:260` has ESS 600.55 below 800 and
+maximum weight 0.005392 above 0.005. Mean/block/target precision checks pass.
+This triggers the frozen stop rule before training; no neural SBC result or
+accepted rough checkpoint exists. The complete reduced software smoke is a
+separate wiring test. Preserve all banks, the failed gate and the reserved test.
+
+The next rough analysis should address reference efficiency in a newly declared
+bounded experiment. Reusing the existing training bank is possible; a targeted
+importance proposal needs correct proposal densities and support checks. Do not
+automatically expand every bank or reinterpret the existing gates. This work
+does not block the independent M5.2 surrogate deliverable, and does not establish
+a neural speed advantage over a reference bank that can itself be reused.
+
 Use the same frozen task and stable example IDs locally and on the cluster.
 The [option-workload smoke](option-cluster-smoke.md) now measures three actual
 24-panel jobs, exact Linux regeneration, complete transfer hashes and selected
