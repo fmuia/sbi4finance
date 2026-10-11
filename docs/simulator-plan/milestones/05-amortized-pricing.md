@@ -11,7 +11,10 @@ reloadable checkpoint. M5.1d ran and failed only the target-price quantile gate
 (0.0439 currency versus 0.03); parameter checks and marginal SBC pass. M5.1e
 provides the offline review of that outcome. The checkpoint remains provisional,
 the reserved final test is untouched, and no tuning sweep follows. M5.1
-scientific acceptance and M5.2 surrogate work remain pending. Bergomi banks remain useful
+scientific acceptance remains pending. The [bounded M5.2 price surrogate](https://github.com/fmuia/sbi4finance/blob/feat/hkde-inference/docs/hkde-price-surrogate.md)
+now passes independent validation and its new regression test, with maximum
+observed error 3.84e-7 currency. Its successful substitution leaves the original
+0.0439 inference discrepancy unchanged. Bergomi banks remain useful
 numerical pilots; settling their continuum-price bias is not a dependency of
 this HKDE experiment. Heston tuning stays paused with its results preserved,
 and the returns-versus-options curriculum choice remains open.
@@ -39,7 +42,15 @@ Establish the relationship between Bayesian calibration and fast downstream pric
 | M5.2 Supervised price surrogate | Separate regression bank/checkpoint, supported-domain specification, error report and measured cost comparison | Compare price errors and propagated quantiles against M5.1. Accept or reject the surrogate independently; its failure does not invalidate the accepted reference-price path. |
 | M5.3 Optional direct price posterior | Fixed-target conditional price-posterior experiment and comparison with M5.1 | Verify matched panel/target generation and push-forward agreement. Keep this experiment independent of acceptance of either earlier route. |
 
-Complete M5.1 first. M5.2 and, if selected, M5.3 then use that accepted baseline; M5.3 need not wait for surrogate acceptance. Likely destinations are `inference/` and `adapters/` for calibration, `surrogates/` for regression, and `tasks/` for their distinct datasets. Checkpoint cards must identify which route and supported domain they implement.
+M5.1 supplies the reference price map and propagation cases first. M5.2 may
+assess the **pricing component independently against an accepted numerical
+pricer/reference**, even while the neural posterior remains provisional. In
+that case, its fixed posterior draws are stress cases, not accepted inference
+evidence; passing the surrogate does not accept M5.1 or unlock its final test.
+An accepted combined participant route still requires both components. M5.3
+needs its own accepted reference comparison and need not wait for surrogate
+acceptance. Plain model-specific modules and compact artifacts suffice;
+checkpoint cards identify the route and supported domain.
 
 ## Next increment: restricted HKDE baseline
 
@@ -93,9 +104,25 @@ notebook are sufficient. A finite numerical experiment with unresolved gates
 remains useful evidence; it does not require restarting the simulator ladder
 or repeatedly tuning the neural model before recording what was learned.
 
+## M5.2 bounded surrogate subplan
+
+The [fixed-contract protocol](https://github.com/fmuia/sbi4finance/blob/feat/hkde-inference/docs/hkde-surrogate-protocol.md) adds a supervised
+degree-six tensor Chebyshev fit for the two existing target puts. Its 49
+coefficients per output keep the first two-dimensional price approximation
+inspectable; neural regression and variable contract inputs are unnecessary for
+this bounded task. The protocol is frozen before fitting.
+
+| Substep | Concrete output | Acceptance boundary |
+|---|---|---|
+| M5.2a — Separate regression contract | Fixed Q context/target contracts, parameter rectangle, independent train/validation/test streams, numerical expectation labels | No quote errors or single-payoff labels; no extrapolation or arbitrary-contract claim. |
+| M5.2b — One fitted map | 512 joint parameter bases, one degree-six least-squares solve and compact reloadable coefficient checkpoint | Group both contract labels per row; require full rank and stable design, exact reload and domain/context rejection. |
+| M5.2c — Paired validation | New validation rows, boundary-inclusive reference grid, tighter Fourier labels and matched posterior price propagation | Report regression error separately from the preserved M5.1 inference miss. No degree/seed sweep; maximum substitution error 0.003 currency. |
+| M5.2d — New regression holdout and cost | 256 fresh test parameter pairs only after validation passes; actual direct-versus-surrogate timings | This is not the old posterior test. Compare recomputed reference prices, include setup/loading, and separate component speed from end-to-end inference. |
+| M5.2e — Offline review | Notebook07 with math, live analytic regression, measured error/cost plots, supported domain and remaining gates | Execute without market data or ML runtime; cached evidence does not rerun generation or training. M8 remains a separate selected participant release. |
+
 ## Didactic review deliverable
 
-Planned with M5: extend `notebooks/06_hkde_and_pricing.py` with separate sections for the parameter posterior plus reference pricer, supervised surrogate and optional direct-price posterior. Follow the [common review requirements](../README.md#didactic-review-notebooks-at-every-milestone). Explain each conditional distribution or regression target, then run one bounded synthetic-panel example through the implemented routes. Display inference errors separately from pricing errors and measured costs, with links to exact checkpoint/bank/reference reports. Failed or unimplemented routes remain visibly distinct from the accepted baseline. Exercises should trace a training label through each route and distinguish a distribution of model prices from realized payoff uncertainty.
+Notebook06 reviews the parameter posterior and reference pricer; notebook07 reviews the fixed-contract supervised surrogate. A direct-price posterior remains an optional separate experiment. Follow the [common review requirements](../README.md#didactic-review-notebooks-at-every-milestone). Explain each conditional distribution or regression target, then run one bounded synthetic-panel example through the implemented routes. Display inference errors separately from pricing errors and measured costs, with links to exact checkpoint/bank/reference reports. Failed or unimplemented routes remain visibly distinct from the accepted baseline. Exercises should trace a training label through each route and distinguish a distribution of model prices from realized payoff uncertainty.
 
 Accept the sections after offline headless execution/export reproduces the included routes and renders their independent gates. Expensive label generation and retraining are opt-in commands; optional direct-price work cannot block the M5.1 review.
 
@@ -109,4 +136,12 @@ Evaluate conditional posterior agreement and risk/price functionals alongside SB
 
 ## Decision gate and deferred scope
 
-First accept the parameter-posterior path; then accept or reject the surrogate independently. Direct posterior-price inference has its own gate and does not block either path. All three routes support S without market files; E requires genuinely excluded same-time quotes, including exclusion from smoothing and input construction. Q price uncertainty is not a forecast of future chain movements or P losses. American/exotic S outputs need validated target pricers, not observed target quotes; their implementation remains deferred. Also defer unverified exactness claims and arbitrary-payoff generalization.
+Accept or reject the surrogate component against its numerical reference
+independently; accept the combined posterior-price route only when both
+components pass. Direct posterior-price inference has its own gate and does
+not block either path. All three routes support S without market files; E
+requires genuinely excluded same-time quotes, including exclusion from smoothing
+and input construction. Q price uncertainty is not a forecast of future chain
+movements or P losses. American/exotic S outputs need validated target pricers,
+not observed target quotes; their implementation remains deferred. Also defer
+unverified exactness claims and arbitrary-payoff generalization.

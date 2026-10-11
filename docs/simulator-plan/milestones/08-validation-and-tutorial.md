@@ -72,4 +72,10 @@ Apply predeclared tolerances, including difficult-region and higher-accuracy che
 
 ## Decision gate and deferred scope
 
+The [M5.2 fixed-contract surrogate](https://github.com/fmuia/sbi4finance/blob/feat/hkde-inference/docs/hkde-price-surrogate.md)
+passes its independent pricing checks and has a didactic review. The original
+HKDE neural posterior still fails its price-quantile gate, so a faster price map
+does not accept the combined M8 workflow. Its new regression test is independent
+of the reserved posterior test. Curriculum selection remains open.
+
 Release the selected S track when its material failures are resolved or its supported scope is explicit. Market acquisition/permissions never block that release, and passing S does not imply M/E success. Avoid predetermined claims that frequentist methods fail, Bayes always raises risk estimates, or SBI is necessary. Additional models, scaling, and curriculum replacement remain separate decisions; no unmeasured runtime or speedup becomes a tutorial promise.

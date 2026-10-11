@@ -20,7 +20,7 @@ curriculum or a relaxation of scientific gates.
 | 6/10, M4 — [PR #12](https://github.com/fmuia/sbi4finance/pull/12) | HKDE jumps, Fourier European pricing, common option-panel bank and offline notebook06; actual option-bank cluster run recorded below | Wider numerical domains, Q inference and American/exotic extensions are separate. |
 | 8/10, M6 — [PR #13](https://github.com/fmuia/sbi4finance/pull/13) | One-factor Bergomi, exact OU/asset covariance, complete continuation, bounded-price MC, bank and notebook08; PR #14 adds resolved paired-grid checks | No uniform continuum-bias certificate, accepted posterior or optional two-factor model. |
 | 9/10, M7 — [PR #14](https://github.com/fmuia/sbi4finance/pull/14) | Rough simulator/pricer, shared banks, paired-grid study and restricted H/eta reference pilot; notebooks08–09 | 512-step finite-MC banks delivered. Reference passes 19/20 panels; one fails ESS/maximum weight. Stop rule applied before training/SBC; M7.3b acceptance pending. No scalar-state rough-memory forecast. |
-| 7/10, M5 — [PR #15](https://github.com/fmuia/sbi4finance/pull/15) | [First restricted HKDE baseline](https://github.com/fmuia/sbi4finance/blob/feat/hkde-inference/docs/hkde-joint-inference.md): refined reference, trained checkpoint, conditional/joint/SBC/price audit and marimo review | Numerical reference and parameter/SBC gates pass; price-quantile error 0.0439 exceeds 0.03. Checkpoint provisional, final test untouched. M5.1 acceptance and M5.2 surrogate remain pending. |
+| 7/10, M5 — [PR #15](https://github.com/fmuia/sbi4finance/pull/15) | [First restricted HKDE baseline](https://github.com/fmuia/sbi4finance/blob/feat/hkde-inference/docs/hkde-joint-inference.md): refined reference, trained checkpoint, conditional/joint/SBC/price audit and marimo review | Numerical reference and parameter/SBC gates pass; price-quantile error 0.0439 exceeds 0.03. Checkpoint provisional, posterior final test untouched. M5.1 acceptance remains pending; the fixed-contract M5.2 surrogate now passes its separate checks. |
 | 10/10, M8 | Participant release remains pending | Select a coherent application and meet its numerical/inference and offline teaching gates. |
 
 All three 24-panel banks save/load and reproduce selected IDs. Bergomi bank
@@ -29,7 +29,7 @@ all one-factor comparisons and rough 512-to-1,024 comparisons within 0.025
 currency; the rough 128-step comparison remains unresolved at its difficult
 corner. These finite-grid checks do not prove continuum bias below 0.025.
 Existing banks retain their original numerical-pilot identities. The combined
-implementation passes 142 software tests (122 on PR #14 without PR #15); the
+implementation passes 155 software tests (122 on PR #14 without PR #15); the
 HKDE and combined Bergomi marimo reviews pass isolated offline export without
 market fixtures or external connections. These execution checks do not accept
 new posteriors. Source hashes and full numerical evidence are committed with
@@ -77,6 +77,18 @@ protocol. Mean RMSE is 0.123 reference SD versus 2.09 for the prior baseline;
 parameter checks and marginal SBC pass, but the 0.0439 currency target-price
 quantile error exceeds the 0.03 gate. The stop rule was applied without tuning
 or final-test evaluation. The review notebook teaches this provisional result.
+The [M5.2 fixed-contract surrogate](https://github.com/fmuia/sbi4finance/blob/feat/hkde-inference/docs/hkde-price-surrogate.md)
+now passes its independently frozen regression checks: 512 training pairs,
+256 validation pairs, the 129×129 reference grid and 256 new regression-test
+pairs. Maximum observed price error is 3.84e-7 currency versus 0.003. The same
+old neural draws priced by the surrogate still have a 0.04387 quantile miss:
+surrogate acceptance does not repair or accept M5.1, unlock its test or select
+M8. Notebook07 explains the regression and paired error checks. This small
+polynomial supplies a learned forward-price building block without another
+network or contract-generalization framework. Notebook07 passes its isolated
+offline export (14 cells, zero errors, 9.17 seconds), and PR #15 alone passes
+117 software tests.
+
 Its deterministic Fourier labels avoid making unresolved Bergomi grid bias a
 dependency of this first Q-inference experiment. Bergomi's banks remain numerical pilots, and
 Heston's frozen failed gates remain unchanged. This ordering does not select
@@ -156,7 +168,7 @@ The following map uses **implementation increment numbers**, not GitHub PR numbe
 | 4 — Heston/SVJ kernels | M3.1–M3.2 in `notebooks/04_heston_svj_kernels.py`: hidden variance, jumps, continuation and numerical checks | Delivered and verified in PR #11. Numerical support remains bounded to the reported cases. |
 | 5 — Joint returns inference | M3.3 in `notebooks/05_heston_joint_inference.py`: task, joint posterior/reference comparison, continuation and future losses | Delivered and verified in PR #11, including the explicit-time follow-up section and its failed validation checks. M3.3 scientific acceptance remains pending. |
 | 6 — HKDE option observations | M4 in `notebooks/06_hkde_and_pricing.py`: Q jump law, price expectations, noisy panel and accuracy budget | Delivered in PR #12; offline execution and bounded numerical evidence pass, Q inference remains separate. |
-| 7 — Learned pricing routes | M5 in separate sections of the HKDE/pricing notebook: posterior plus reference pricer, surrogate, optional direct-price study | First M5.1 experiment and 18-cell offline review delivered in PR #15. Checkpoint provisional after the price-quantile failure; surrogate and direct-price study remain pending. |
+| 7 — Learned pricing routes | M5 in separate sections of the HKDE/pricing notebook: posterior plus reference pricer, surrogate, optional direct-price study | First M5.1 experiment and 18-cell offline review delivered in PR #15. Checkpoint provisional after the price-quantile failure; notebook07 reviews the independently passing fixed-contract surrogate. Direct-price study remains optional. |
 | 8 — Finite-factor Bergomi | M6 in `notebooks/08_bergomi_models.py`: curve context, factor state, normalization and pricing | Delivered in PR #13; PR #14 adds the paired-grid explanation and measured checks. Optional two-factor scope remains explicit. |
 | 9 — Rough Bergomi | Notebook08: Gaussian reference, rough memory and refinement; notebook09: restricted posterior workflow, independent reference and actual cost | Numerical/bank reviews delivered in PR #14. Notebook09 reviews the failed reference gate; no neural training/SBC for the frozen run, and posterior acceptance remains pending. |
 | 10 — Participant release | M8: a separately selected participant notebook, supported by the earlier review tutorials and release evidence | Planned; returns-versus-options curriculum choice remains open. |
