@@ -46,7 +46,10 @@ RMSE 0.123 reference SD versus the prior's 2.09. The maximum target-price
 quantile error is 0.0439 currency, above its frozen 0.03 gate. The checkpoint
 remains provisional, the final test is unused, and the one-run stop rule was
 applied. Notebook 06 and standalone figures teach the measured outcome.
-M5.1 scientific acceptance, M5.2 surrogate work, Bergomi's M7.3b inference,
+The [fixed-contract M5.2 surrogate](../hkde-price-surrogate.md) passes its
+independent numerical-map checks and new regression test, with maximum observed
+error 3.84e-7 currency. The original neural posterior remains provisional.
+M5.1 scientific acceptance, Bergomi's M7.3b inference,
 and M8's chosen participant release remain pending. Optional
 two-factor models and rough-memory P forecasting are outside this required core.
 
@@ -74,7 +77,7 @@ Implementation titles use `N/10-simulator-plan-description`: the denominator is 
 | 4/10 | M3.1–M3.2: [Heston and Gaussian-jump kernels, checks and timings](../heston-svj-kernels.md) |
 | 5/10 | M3.3: [restricted joint Heston inference and conditional forecasts](../heston-joint-inference.md); pipeline implemented, checkpoint provisional |
 | 6/10 | M4: HKDE pricing and option panels |
-| 7/10 | M5.1: [restricted Q posterior/reference experiment](../hkde-joint-inference.md), checkpoint provisional; M5.2 surrogate remains pending |
+| 7/10 | M5.1: [restricted Q posterior/reference experiment](../hkde-joint-inference.md), checkpoint provisional; [fixed-contract M5.2 surrogate](../hkde-price-surrogate.md) passes its independent checks |
 | 8/10 | M6.1–M6.3: one-factor Bergomi |
 | 9/10 | M7.1–M7.3: rough Bergomi and pilot inference |
 | 10/10 | M8: selected, validated offline teaching workflow |
@@ -141,7 +144,7 @@ The following map uses **implementation increment numbers**, not GitHub PR numbe
 | 4 — Heston/SVJ kernels | M3.1–M3.2 in `notebooks/04_heston_svj_kernels.py`: hidden variance, jumps, continuation and numerical checks | Delivered and verified in PR #11. Numerical support remains bounded to the reported cases. |
 | 5 — Joint returns inference | M3.3 in `notebooks/05_heston_joint_inference.py`: task, joint posterior/reference comparison, continuation and future losses | Delivered and verified in PR #11, including the explicit-time follow-up section and its failed validation checks. M3.3 scientific acceptance remains pending. |
 | 6 — HKDE option observations | M4 in `notebooks/06_hkde_and_pricing.py`: Q jump law, price expectations, noisy panel and accuracy budget | Delivered in PR #12; offline execution and bounded numerical evidence pass. |
-| 7 — Learned pricing routes | M5 in separate sections of the HKDE/pricing notebook: posterior plus reference pricer, surrogate, optional direct-price study | First M5.1 experiment and 18-cell offline review delivered in PR #15. Checkpoint provisional after the price-quantile failure; surrogate and direct-price study remain pending. |
+| 7 — Learned pricing routes | M5 in separate sections of the HKDE/pricing notebook: posterior plus reference pricer, surrogate, optional direct-price study | First M5.1 experiment and 18-cell offline review delivered in PR #15. Checkpoint provisional after the price-quantile failure; notebook07 reviews the independently passing fixed-contract surrogate. Direct-price study remains optional. |
 | 8 — Finite-factor Bergomi | M6 in `notebooks/08_bergomi_models.py`: curve context, factor state, normalization and pricing | Planned with M6; optional two-factor material stays visibly optional. |
 | 9 — Rough Bergomi | M7 in separate sections of the Bergomi notebook: Gaussian reference, rough memory, refinement and restricted inference | Planned with M7; do not imply that a validated simulator validates its posterior. |
 | 10 — Participant release | M8: a separately selected participant notebook, supported by the earlier review tutorials and release evidence | Planned; returns-versus-options curriculum choice remains open. |

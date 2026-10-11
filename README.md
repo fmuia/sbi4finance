@@ -35,7 +35,11 @@ The [joint Heston inference pilot](docs/heston-joint-inference.md) adds a synthe
 [fixed synthetic option-panel banks](docs/option-banks.md). Run `pixi run option-bank
 --config configs/tasks/hkde_option_bank.json --out /tmp/new-hkde-bank` and inspect
 `pixi run review-hkde`. These are reusable numerical building blocks; Q posterior
-training follows later. The [analysis follow-up note](docs/simulator-analysis-next-steps.md)
+inference is available as a [provisional baseline](docs/hkde-joint-inference.md).
+The separate [fixed-contract learned price map](docs/hkde-price-surrogate.md)
+passes its regression checks and preserves that baseline's inference discrepancy.
+Run `pixi run review-hkde-surrogate` for the math, actual accuracy and costs.
+The [analysis follow-up note](docs/simulator-analysis-next-steps.md)
 preserves the Heston findings while simulator and bank coverage expands.
 
 [One-factor Bergomi](docs/bergomi-simulators.md) adds an explicit forward-variance
@@ -77,6 +81,7 @@ two-hour participant curriculum. Closely related increments share named sections
 | [Heston and Gaussian jumps](notebooks/04_heston_svj_kernels.py) | M3.1–M3.2 / 4: diffusion/jump simulation, continuation, numerical checks and Numba timings | `pixi run review-kernels` |
 | [Joint Heston inference](notebooks/05_heston_joint_inference.py) | M3.3 / 5: observed histories, reference/neural joint posteriors, conditional futures and the failed frozen checks | `pixi run review-heston` |
 | [HKDE and option panels](notebooks/06_hkde_and_pricing.py) | M4 / 6: jump law, Q prices, noisy observations, bank roles and reference checks | `pixi run review-hkde` |
+| [HKDE learned prices](notebooks/07_hkde_price_surrogate.py) | M5.2 / 7: supervised regression, matched price propagation, independent accuracy and cost checks | `pixi run review-hkde-surrogate` |
 | [Bergomi models](notebooks/08_bergomi_models.py) | M6–M7 / 8–9: factor and rough drivers, memory, MC pricing, numerical and bank evidence | `pixi run review-bergomi` |
 
 Default execution uses synthetic examples and committed evidence, with no market

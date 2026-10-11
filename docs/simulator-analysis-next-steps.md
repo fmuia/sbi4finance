@@ -94,8 +94,10 @@ and a two-dimensional numerical posterior reference over `theta` and
 `jump_intensity`. The saved bank's largest Fourier refinement difference is
 about 1.12e-9 currency, against quote sigma 0.25. The refined posterior
 grid, fixed cases and first baseline now provide these comparisons. Keep the
-final-test cases separate from further development. A surrogate is a later,
-independently accepted step.
+final-test cases separate from further development. The [fixed-contract surrogate](hkde-price-surrogate.md)
+now passes its separate numerical-map checks (maximum observed error 3.84e-7
+currency) and new regression test. It preserves the posterior-price discrepancy;
+its new holdout does not unlock or inspect the posterior final test.
 
 There is no need to expand every Bergomi bank before that integration. Their
 largest saved MCSE/quote-sigma ratios are 0.0814 (one factor) and 0.0741 (rough).

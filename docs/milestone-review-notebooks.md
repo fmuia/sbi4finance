@@ -8,6 +8,7 @@ From the repository root, install the pinned environment with
 | `pixi run review-foundations` | [01_gbm_foundations.py](../notebooks/01_gbm_foundations.py) | M0–M2 / increments 1–3: observation and truth roles, exact GBM posterior/prediction, separate Q prices, tiny saved bank, historical training and actual cluster evidence |
 | `pixi run review-kernels` | [04_heston_svj_kernels.py](../notebooks/04_heston_svj_kernels.py) | M3.1–M3.2 / increment 4: diffusion and price jumps, signed-state restart, matched NumPy/Numba calculations and recorded numerical/timing checks |
 | `pixi run review-heston` | [05_heston_joint_inference.py](../notebooks/05_heston_joint_inference.py) | M3.3 / increment 5: joint parameter/state inference, four original cases, neural/reference posteriors, future losses, failed frozen test, spline follow-up and bounded-time diagnosis/validation |
+| `pixi run review-hkde-surrogate` | [07_hkde_price_surrogate.py](../notebooks/07_hkde_price_surrogate.py) | M5.2 / increment 7: fixed-contract supervised price map, analytic regression example, independent price errors, matched posterior propagation and measured CPU costs |
 
 These are development review tutorials. M8 will separately select and pace the
 participant course. Each notebook explains the mathematics and conventions,
@@ -29,7 +30,7 @@ stop rule was applied; no new final-test evaluation followed.
 
 ## Verification and reproduction
 
-All three pass strict marimo checks:
+The original three reviews pass strict marimo checks:
 
 ```bash
 pixi run marimo check --strict notebooks/01_gbm_foundations.py \
@@ -61,3 +62,11 @@ state transform's offline train/normalization/save/reload checks. Notebook execu
 scientific acceptance: the original checkpoint failed conditional final-test
 checks, all three spline candidates failed the expanded validation checks, and the new
 final test remains unevaluated. The notebook exposes those results deliberately.
+
+The [M5.2 surrogate review](hkde-price-surrogate.md) adds an independently
+passing forward-price component while preserving HKDE's inference failure.
+Notebook07 passes strict checking and an isolated offline HTML export: 14 cells,
+zero errors, 9.17 seconds, without market data, raw regression banks or the
+neural checkpoint. Its small coefficient file supports bounded live prediction.
+The current HKDE implementation suite passes 117 tests. This verification and
+the regression's new test do not unlock the posterior's reserved final test.

@@ -11,7 +11,10 @@ reloadable checkpoint. M5.1d ran and failed only the target-price quantile gate
 (0.0439 currency versus 0.03); parameter checks and marginal SBC pass. M5.1e
 provides the offline review of that outcome. The checkpoint remains provisional,
 the reserved final test is untouched, and no tuning sweep follows. M5.1
-scientific acceptance and M5.2 surrogate work remain pending. Bergomi banks remain useful
+scientific acceptance remains pending. The [bounded M5.2 price surrogate](../../hkde-price-surrogate.md)
+now passes independent validation and its new regression test, with maximum
+observed error 3.84e-7 currency. Its successful substitution leaves the original
+0.0439 inference discrepancy unchanged. Bergomi banks remain useful
 numerical pilots; settling their continuum-price bias is not a dependency of
 this HKDE experiment. Heston tuning stays paused with its results preserved,
 and the returns-versus-options curriculum choice remains open.
@@ -101,9 +104,7 @@ notebook are sufficient. A finite numerical experiment with unresolved gates
 remains useful evidence; it does not require restarting the simulator ladder
 or repeatedly tuning the neural model before recording what was learned.
 
-## Didactic review deliverable
-
-### M5.2 bounded surrogate subplan
+## M5.2 bounded surrogate subplan
 
 The [fixed-contract protocol](../../hkde-surrogate-protocol.md) adds a supervised
 degree-six tensor Chebyshev fit for the two existing target puts. Its 49
@@ -119,7 +120,9 @@ this bounded task. The protocol is frozen before fitting.
 | M5.2d — New regression holdout and cost | 256 fresh test parameter pairs only after validation passes; actual direct-versus-surrogate timings | This is not the old posterior test. Compare recomputed reference prices, include setup/loading, and separate component speed from end-to-end inference. |
 | M5.2e — Offline review | Notebook07 with math, live analytic regression, measured error/cost plots, supported domain and remaining gates | Execute without market data or ML runtime; cached evidence does not rerun generation or training. M8 remains a separate selected participant release. |
 
-Planned with M5: extend `notebooks/06_hkde_and_pricing.py` with separate sections for the parameter posterior plus reference pricer, supervised surrogate and optional direct-price posterior. Follow the [common review requirements](../README.md#didactic-review-notebooks-at-every-milestone). Explain each conditional distribution or regression target, then run one bounded synthetic-panel example through the implemented routes. Display inference errors separately from pricing errors and measured costs, with links to exact checkpoint/bank/reference reports. Failed or unimplemented routes remain visibly distinct from the accepted baseline. Exercises should trace a training label through each route and distinguish a distribution of model prices from realized payoff uncertainty.
+## Didactic review deliverable
+
+Notebook06 reviews the parameter posterior and reference pricer; notebook07 reviews the fixed-contract supervised surrogate. A direct-price posterior remains an optional separate experiment. Follow the [common review requirements](../README.md#didactic-review-notebooks-at-every-milestone). Explain each conditional distribution or regression target, then run one bounded synthetic-panel example through the implemented routes. Display inference errors separately from pricing errors and measured costs, with links to exact checkpoint/bank/reference reports. Failed or unimplemented routes remain visibly distinct from the accepted baseline. Exercises should trace a training label through each route and distinguish a distribution of model prices from realized payoff uncertainty.
 
 Accept the sections after offline headless execution/export reproduces the included routes and renders their independent gates. Expensive label generation and retraining are opt-in commands; optional direct-price work cannot block the M5.1 review.
 
