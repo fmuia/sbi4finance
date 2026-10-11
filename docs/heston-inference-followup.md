@@ -95,3 +95,7 @@ Evidence: [bank manifest](results/heston-inference-followup/bank-manifest.json),
 [provisional spline checkpoint](../checkpoints/heston-spline-provisional/README.md).
 The [milestone notebook](../notebooks/05_heston_joint_inference.py) distinguishes
 this follow-up from the original frozen-test results.
+
+The next [controlled time-context experiment](heston-time-context.md) reuses
+this bank and its 16 validation references. It improves the recorded errors but
+still fails two gates; the reserved final test remains unevaluated.

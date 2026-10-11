@@ -62,6 +62,10 @@ downloads, cluster submission or full training run. Recorded results and fresh
 illustrations are labeled separately. The joint-inference notebook keeps the
 original provisional checkpoint visible during further development.
 
+Its latest section explains the [time-context correction](docs/heston-time-context.md),
+with before/after recurrent-gate diagnostics and the improved but still-failing
+validation results. The reserved final test remains unevaluated.
+
 See the [review guide and verification record](docs/milestone-review-notebooks.md)
 for export commands, evidence boundaries and the current inference results.
 

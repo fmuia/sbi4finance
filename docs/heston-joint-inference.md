@@ -19,6 +19,11 @@ four original reference cases with posterior and future-loss plots. The
 [bounded follow-up](heston-inference-followup.md) records subsequent development
 separately; it does not replace this original failure report.
 
+The subsequent [time-context experiment](heston-time-context.md) diagnosed
+recurrent-gate saturation and improved conditional accuracy by scaling known
+times. Two validation gates still fail on a low-variance history, so the new
+final test remains unevaluated. The notebook now shows this comparison too.
+
 ## What one observation means
 
 One training example is a complete history of 252 daily decimal log returns,

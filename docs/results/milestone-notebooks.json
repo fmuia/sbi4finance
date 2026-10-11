@@ -32,13 +32,29 @@
     {
       "notebook": "05_heston_joint_inference.py",
       "exit_code": 0,
-      "wall_seconds": null,
+      "wall_seconds": 13.086033790837973,
       "initial_export_wall_seconds": 16.5,
-      "timing_note": "Initial pre-follow-up-section export measured 16.5 seconds; final external-network-blocked export passed but was not timed.",
-      "source_sha256": "4926dc1fdd526bf4de9624aab0df660aa3825d3f0d74b801c1e9ac904dfeb031",
-      "html_sha256": "a3d4df1d21aeaa1e711aac9cb9394cc147cae9e1598fed515968a44bd50588b6",
+      "timing_note": "Latest export includes the bounded-time diagnosis and failed validation result; notebook runtime includes startup/compilation and is not an inference benchmark.",
+      "source_sha256": "3004bca6ef452c69a9cc2510b22b1862dc3e085eeb5a83b4b4e35303a5e530de",
+      "html_sha256": "3800a5e9ca3035de4671b867ec331d19fa2ecb8b7e2857631d5131908a870785",
       "market_data_directory_absent": true,
-      "external_socket_connections_blocked": true
+      "external_socket_connections_blocked": true,
+      "export_command": [
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-inference/.pixi/envs/default/bin/python",
+        "-m",
+        "marimo",
+        "export",
+        "html",
+        "/private/tmp/sbi-time-context-review-offline/notebooks/05_heston_joint_inference.py",
+        "-o",
+        "/private/tmp/05_heston_time_context-offline.html"
+      ]
     }
-  ]
+  ],
+  "software_tests": {
+    "command": "pixi run test-simulators",
+    "count": 40,
+    "passed": true,
+    "wall_seconds": 22.521
+  }
 }

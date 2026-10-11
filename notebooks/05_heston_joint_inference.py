@@ -541,6 +541,222 @@ def _(ROOT, json, mo, pd):
 
 
 @app.cell
+def _(ROOT, json):
+    _directory = ROOT / "docs/results/heston-time-context"
+    legacy_time_diagnosis = json.loads((_directory / "summary-legacy.json").read_text())
+    explicit_time_diagnosis = json.loads((_directory / "summary-explicit-time.json").read_text())
+    explicit_time_validation = json.loads((_directory / "neural-validation.json").read_text())
+    spline_baseline_validation = json.loads(
+        (ROOT / "docs/results/heston-inference-followup/neural-validation.json").read_text()
+    )
+    return (
+        explicit_time_diagnosis,
+        explicit_time_validation,
+        legacy_time_diagnosis,
+        spline_baseline_validation,
+    )
+
+
+@app.cell
+def _(mo):
+    mo.md(r"""
+    ## Focused experiment: put known time on a sensible scale
+
+    The preceding spline failure motivated a smaller question: **how is time
+    represented inside the recurrent summary?** A GRU reads the sequence one
+    step at a time, using gates to control how previous information combines
+    with the current input. BayesFlow also supplies a learned Time2Vec embedding.
+    Its linear component has the form $w t+b$, alongside periodic components.
+    Without an explicit time channel, it receives positions $0,1,\ldots,251$.
+    A growing time component can dominate globally standardized return inputs.
+
+    A sigmoid gate converts its input $z$ to
+
+    $$\sigma(z)=\frac{1}{1+e^{-z}},\qquad
+      \sigma'(z)=\sigma(z)[1-\sigma(z)].$$
+
+    At $z=0$, the derivative is $1/4$. At $z=\pm5$, the output is already
+    approximately 0.007 or 0.993 and the derivative is about 0.0066. Large
+    absolute inputs therefore put the gate near an endpoint, where further
+    changes have less effect. This motivates inspecting **gate preactivations**
+    (the inputs before the sigmoid), not merely increasing training epochs.
+    Saturation can be useful for memory; a high fraction alone neither proves
+    a bug nor explains every posterior error.
+
+    The bounded-time candidate instead supplies the known observation end times
+
+    $$t_j=\sum_{i=1}^{j}\Delta_i,\qquad
+      \widetilde t_j=\frac{t_j-\overline t_{\rm train}}{s_{t,\rm train}}.$$
+
+    For this fixed 252-day grid, $t_j$ runs from $1/252$ to 1 year and global
+    training scaling puts it approximately between −1.73 and 1.73. The
+    recurrent network uses this channel via `time_axis=1`. Scaling statistics
+    are fitted on training inputs and frozen for validation/application;
+    returns are not normalized separately within each history.
+    Centering and scaling integer positions would give the same values on this
+    fixed grid; explicit end times also make the units and convention clear.
+
+    **Nothing new has been observed.** The bank still stores `[B, T, 1]` decimal
+    log returns. Adapter v2 constructs `[return, end_time]`, shape `[B, T, 2]`,
+    for the network only. The known grid supplies time; neither latent variance,
+    theta, nor future outcomes enter these conditions. Return amplitudes and
+    the eight trailing moments remain the same. This task is still restricted
+    to its saved fixed grid; explicit time does not establish support for
+    arbitrary lengths or irregular observations.
+    """)
+    return
+
+
+@app.cell
+def _(explicit_time_diagnosis, legacy_time_diagnosis, plt):
+    _fig, _axes = plt.subplots(1, 2, figsize=(10.5, 3.6), sharey=True, layout="constrained")
+    for _axis, _gate in zip(_axes, ("update", "reset")):
+        for _report, _label, _color in [
+            (legacy_time_diagnosis, "Raw-index spline", "#4d749b"),
+            (explicit_time_diagnosis, "Bounded-time spline", "#c06b48"),
+        ]:
+            _records = _report["gate_diagnostics"]
+            _axis.plot([r["time_index"] + 1 for r in _records],
+                       [100 * r[_gate]["fraction_abs_preactivation_above_5"] for r in _records],
+                       marker="o", color=_color, label=_label)
+        _axis.set(xlabel="Observed day", title=f"GRU {_gate} gate",
+                  xticks=[1, 32, 128, 252], ylim=(-2, 102))
+        _axis.legend(fontsize=8)
+    _axes[0].set_ylabel("Preactivations with |z| > 5 (%)")
+    _fig
+    return
+
+
+@app.cell
+def _(explicit_time_diagnosis, legacy_time_diagnosis, mo):
+    _old_error = legacy_time_diagnosis["manual_gru_hidden_state_max_abs_error"]
+    _new_error = explicit_time_diagnosis["manual_gru_hidden_state_max_abs_error"]
+    mo.md(f"""
+    These are **saved-checkpoint diagnostics on the same 16 validation
+    histories**, sampled at four sequence positions. The percentages pool
+    histories and hidden units. Lines connect the recorded positions; the
+    notebook does not rerun activation tracing.
+
+    The final learned linear time component changes from
+    **{legacy_time_diagnosis['final_embedded_time_trend']:.2f}** to
+    **{explicit_time_diagnosis['final_embedded_time_trend']:.2f}**.
+    The independently reconstructed GRU hidden states match their respective
+    saved Keras layers to maximum absolute errors of {_old_error:.2g} and
+    {_new_error:.2g}. This checks the diagnostic calculation. The two trained
+    networks have different learned weights, so this is a before/after training
+    comparison, not an isolated intervention on one gate. Posterior accuracy
+    must still be evaluated separately.
+    """)
+    return
+
+
+@app.cell
+def _(explicit_time_validation, mo, pd, spline_baseline_validation):
+    for _fingerprint in ("bank_manifest_sha256", "reference_report_sha256"):
+        if explicit_time_validation[_fingerprint] != spline_baseline_validation[_fingerprint]:
+            raise ValueError("The time-context comparison requires identical bank and reference reports.")
+    _baseline = spline_baseline_validation["evaluation"]
+    _bounded = explicit_time_validation["evaluation"]
+    if _baseline["thresholds"] != _bounded["thresholds"]:
+        raise ValueError("The time-context comparison requires unchanged validation thresholds.")
+    _names = {
+        "mean_rmse_in_reference_sd": "Posterior mean RMSE / reference SD",
+        "maximum_abs_mean_error_in_reference_sd": "Largest absolute mean error / reference SD",
+        "maximum_relative_std_error": "Largest relative posterior SD error",
+        "maximum_correlation_error": "Largest correlation error",
+        "maximum_predictive_std_relative_error": "Largest relative future-loss SD error",
+        "maximum_predictive_interval_error_in_sd": "Largest predictive interval endpoint error / SD",
+    }
+    _rows = [
+        {"Validation check": _names[k], "Raw-index spline": round(_baseline["metrics"][k], 4),
+         "Bounded-time spline": round(_bounded["metrics"][k], 4), "Maximum": limit,
+         "Bounded-time result": "PASS" if _bounded["metrics"][k] <= limit else "FAIL"}
+        for k, limit in _bounded["thresholds"].items()
+    ]
+    for _i, _name in enumerate(("theta", "signed state")):
+        _limit = _bounded["rank_dkw_bound_two_targets"]
+        if _limit != _baseline["rank_dkw_bound_two_targets"]:
+            raise ValueError("The time-context comparison requires the same rank-check bound.")
+        _value = _bounded["rank_uniformity_max_ecdf_error"][_i]
+        _rows.append({"Validation check": f"Marginal rank ECDF error: {_name}",
+                      "Raw-index spline": round(_baseline["rank_uniformity_max_ecdf_error"][_i], 4),
+                      "Bounded-time spline": round(_value, 4), "Maximum": round(_limit, 4),
+                      "Bounded-time result": "PASS" if _value <= _limit else "FAIL"})
+    _outcome = "PASSED" if _bounded["pilot_passed"] else "FAILED"
+    mo.vstack([
+        mo.md(f"""
+        ### Did the conditional posterior improve?
+
+        The bounded-time candidate **{_outcome} its recorded validation
+        checks**. Both spline runs use the same root-43022 bank, 32,768 training
+        histories, 2,048 validation histories, GRU32/summary16, eight trailing
+        features, seed 871, 80 epochs and batch size 256. Each selects minimum
+        validation loss. The intended change is the time-context adapter.
+
+        Conditional comparisons use the same first 16 preselected reference
+        histories and unchanged thresholds. Marginal rank checks compare the
+        rank empirical CDF with uniformity over 256 histories. They use the same
+        simultaneous DKW bound for the two targets. Errors below their individual
+        limits are necessary checks, not guarantees for every possible history.
+        """),
+        mo.ui.table(pd.DataFrame(_rows), selection=None, show_column_summaries=False),
+        mo.md("""
+        **Validation failed, so the reserved final test remains unevaluated.**
+        Both failed limits arise on `validation:0`, a low-current-variance
+        history: the signed-state mean error is about 0.455 reference SD and
+        the upper predictive-interval endpoint error is about 0.210 predictive
+        SD. Their limits remain 0.40 and 0.15. Mean RMSE and both marginal rank
+        checks pass, but cannot override these conditional failures.
+
+        The recorded gate-saturation fractions are now zero at the four
+        inspected positions. That confirms a change in representation behavior,
+        while the remaining posterior errors demonstrate its limited evidential
+        scope. No additional training or threshold changes follow this result;
+        M3.3 inference acceptance remains pending.
+
+        This is a **validation-based development comparison**. Improved gate
+        behavior alone cannot certify a posterior; validation success alone
+        cannot substitute for a frozen held-out test. The predeclared protocol
+        allows the reserved root-43022 test only after validation passes, with
+        separately checked references and no subsequent retuning on that test.
+        The earlier interactive plots remain the original checkpoint's
+        historical regression cases; they do not switch to this candidate.
+        """),
+    ])
+    return
+
+
+@app.cell
+def _(mo):
+    mo.md(r"""
+    **Exercise: scale, information and evidence.** Multiplying every time in
+    this fixed grid by 252 expresses years as trading days. Show algebraically
+    that global centering and scaling gives the same $\widetilde t$ in either
+    unit. Why is this unlike normalizing every return history to unit variance?
+    If a new network has less saturated gates but misses a posterior-mean gate,
+    which result determines the inference acceptance decision?
+
+    **Review hint:** multiplying time, its mean and its standard deviation by
+    the same positive constant cancels in the ratio. Per-history return scaling
+    can remove between-history volatility information. The numerical diagnostic
+    supports a mechanism to investigate; it does not override failed posterior
+    checks. No inference result here establishes empirical adequacy on real data.
+
+    Inspect the [bounded-time design and outcome](../docs/heston-time-context.md),
+    [v1/v2 adapter and recurrent network](../src/sbi4finance/heston_inference.py),
+    [activation diagnostic script](../scripts/diagnose_heston_summary.py),
+    [training/evaluation script](../scripts/train_heston.py),
+    [raw-index diagnostic](../docs/results/heston-time-context/summary-legacy.json),
+    [bounded-time diagnostic](../docs/results/heston-time-context/summary-explicit-time.json),
+    and [recorded validation](../docs/results/heston-time-context/neural-validation.json).
+    Those records identify the checkpoints and source hashes. The design lists
+    the explicit reproduction command; opening this notebook only reads the
+    saved comparison. Original checkpoints keep their v1 adapter and weights.
+    """)
+    return
+
+
+@app.cell
 def _(mo):
     mo.md(r"""
     ## Exercises and further inspection

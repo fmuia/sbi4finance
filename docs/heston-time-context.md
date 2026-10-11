@@ -80,3 +80,61 @@ are examples; use fresh output directories. The [marimo review](../notebooks/05_
 will display this diagnosis and its measured outcome separately from the old
 regression-case illustrations. Notebook execution, synthetic posterior accuracy
 and empirical model adequacy remain separate checks.
+
+## Recorded outcome
+
+Training finished in 347.5 seconds including compilation; the saved candidate
+had minimum validation loss at epoch 63. This is elapsed local execution time,
+not an isolated performance benchmark: small tests/diagnostics ran concurrently
+for part of the run. Same-seed checkpoint reload reproduced draws exactly.
+
+The saved model's final linear time component is now **3.09**, versus 235.87.
+None of its update/reset preactivations exceeded magnitude five at the four
+recorded positions across the same 16 histories. The reconstructed GRU matches
+Keras within 1.6e-7. This supports the intended scaling correction; both models
+were trained separately, and the result does not identify a universal cause of
+inference error.
+
+| Validation check | Raw-index spline | Explicit-time spline | Maximum |
+|---|---:|---:|---:|
+| Mean RMSE / reference SD | 0.246 | **0.173** | 0.20 |
+| Largest absolute mean error / reference SD | 0.792 | **0.455 — fails** | 0.40 |
+| Largest relative posterior SD error | 0.461 | 0.289 | 0.30 |
+| Largest correlation error | 0.077 | 0.071 | 0.20 |
+| Largest relative predictive SD error | 0.147 | 0.088 | 0.15 |
+| Largest predictive interval endpoint error / predictive SD | 0.300 | **0.210 — fails** | 0.15 |
+
+Both marginal rank diagnostics now pass (0.0473 for theta, 0.0760 for state,
+against 0.0925). Nominal 90% coverage is 91.8% for theta and 86.7% for state;
+future-loss interval coverage is 90.2%. These aggregate results do not override
+the two failed conditional gates. This candidate **still fails validation**.
+
+Both remaining gate failures occur on `validation:0`, whose reference mean
+state is about 0.00644. Its neural state mean remains too high, and its posterior
+state SD is about 26% wider than the reference. No other reference case exceeds an individual-error limit in this run. That observation identifies a useful
+diagnostic case; it is not a reason to drop or downweight it. The next focused
+investigation is conditional approximation in low-variance histories, using
+validation and old regression cases before choosing another training change.
+
+**The reserved root-43022 final test remains unevaluated.** No test reference or
+neural test report was generated, and neither weights nor thresholds changed
+after these results. M3.3 scientific acceptance remains pending. The diagnostic
+script uses only validation data; the training bank loader verifies all split
+files, but test observations/targets do not enter training, metrics or selection.
+
+The [marimo tutorial](../notebooks/05_heston_joint_inference.py) shows the gate
+traces and comparison table, while keeping its original regression-case plots
+explicitly historical. Forty software tests pass, including context/label
+separation, training-only normalization and both old and new checkpoint paths.
+
+Evidence: [explicit-time diagnostic](results/heston-time-context/summary-explicit-time.json),
+[validation report](results/heston-time-context/neural-validation.json),
+[per-case checks](results/heston-time-context/validation-checks.npz), and
+[saved candidate](../checkpoints/heston-time-context-provisional/README.md).
+The [bank manifest](results/heston-inference-followup/bank-manifest.json) and
+[reference report](results/heston-inference-followup/reference-validation.json)
+are shared with the previous spline experiment; their hashes match exactly.
+
+To reproduce the new activation diagnostic, pass
+`--checkpoint checkpoints/heston-time-context-provisional` to the command above
+and choose a new output path. The script reads the saved adapter ID.

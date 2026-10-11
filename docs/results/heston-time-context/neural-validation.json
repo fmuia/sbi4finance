@@ -1,0 +1,881 @@
+{
+  "data_origin": "synthetic",
+  "measure": "P",
+  "evidence_scope": "S bounded joint-inference pilot",
+  "task": {
+    "dt_years": 0.003968253968253968,
+    "initial_variance": 0.04,
+    "measure": "P",
+    "n_observations": 252,
+    "parameters": {
+      "drift": 0.05,
+      "kappa": 2.0,
+      "rho": -0.6,
+      "vol_of_vol": 0.2
+    },
+    "prior": "log_uniform",
+    "substeps": 1,
+    "task_id": "heston_theta_state_v1",
+    "theta_bounds": [
+      0.02,
+      0.08
+    ]
+  },
+  "split": "validation",
+  "frozen_checkpoint_evaluation": false,
+  "bank_manifest_sha256": "5a874a03faac8282ac531da8cdd533a95de9355e8cd024d3b567003da12bb452",
+  "reference_report_sha256": "ef58b568f9de059a21596cf6c7026d32d30cd78a3a5e8ede9ab082a74f2e5ca6",
+  "checkpoint_sha256": "bd20d8dde5afd890713811ad6a53ffd03d66491d46139ae221b5b6de5a03aff6",
+  "source_sha256": {
+    "train_heston.py": "bac899407771229e4f05bd7d77102c77475a1dc4fac576f5ddf231b0feb34310",
+    "heston_inference.py": "bf834fa1c8f63a59bfe1dacf32885ea7a25a3da2ca42db7bb0c1d1009dcd532a",
+    "heston_forecast.py": "bee57c2e8294407418a4ddd3105e70f0d4ea6cdc845e8824636e4b40f2b6c091"
+  },
+  "versions": {
+    "python": "3.12.15",
+    "numpy": "2.5.3",
+    "bayesflow": "2.0.14",
+    "keras": "3.15.1",
+    "jax": "0.11.1"
+  },
+  "inference_network_class": "CouplingFlow",
+  "adapter_id": "heston_returns_time_and_window_moments_v2",
+  "checkpoint_load_seconds": null,
+  "training": {
+    "performed": true,
+    "seed": 871,
+    "epochs": 80,
+    "batch_size": 256,
+    "history": {
+      "loss": [
+        2.3026843070983887,
+        1.6393877267837524,
+        1.5669981241226196,
+        1.5431687831878662,
+        1.5294902324676514,
+        1.520246148109436,
+        1.5152137279510498,
+        1.5148441791534424,
+        1.5104222297668457,
+        1.5065891742706299,
+        1.5027443170547485,
+        1.5004466772079468,
+        1.5013341903686523,
+        1.4989652633666992,
+        1.4948011636734009,
+        1.4948400259017944,
+        1.4896141290664673,
+        1.4862688779830933,
+        1.4843863248825073,
+        1.4787150621414185,
+        1.4735379219055176,
+        1.4754319190979004,
+        1.4693150520324707,
+        1.4700828790664673,
+        1.467888593673706,
+        1.4652479887008667,
+        1.4591844081878662,
+        1.461734414100647,
+        1.4583649635314941,
+        1.4570481777191162,
+        1.4583821296691895,
+        1.4546774625778198,
+        1.4541860818862915,
+        1.4558923244476318,
+        1.45244562625885,
+        1.4508403539657593,
+        1.4492745399475098,
+        1.4516005516052246,
+        1.4509140253067017,
+        1.4475126266479492,
+        1.4487007856369019,
+        1.4470956325531006,
+        1.44839346408844,
+        1.4456629753112793,
+        1.4446091651916504,
+        1.4431966543197632,
+        1.4449433088302612,
+        1.441807508468628,
+        1.4436864852905273,
+        1.442936658859253,
+        1.441197156906128,
+        1.439611792564392,
+        1.4391082525253296,
+        1.4410550594329834,
+        1.4367496967315674,
+        1.436527967453003,
+        1.437064528465271,
+        1.4380507469177246,
+        1.4392691850662231,
+        1.4372471570968628,
+        1.4364608526229858,
+        1.4349945783615112,
+        1.4359886646270752,
+        1.4345324039459229,
+        1.4356040954589844,
+        1.434834599494934,
+        1.4347262382507324,
+        1.4356021881103516,
+        1.433929681777954,
+        1.4339609146118164,
+        1.4331848621368408,
+        1.4336578845977783,
+        1.4344359636306763,
+        1.4337437152862549,
+        1.4337117671966553,
+        1.4333261251449585,
+        1.433172583580017,
+        1.4333730936050415,
+        1.4323430061340332,
+        1.4329392910003662
+      ],
+      "val_loss": [
+        1.7593531608581543,
+        1.544516682624817,
+        1.5327118635177612,
+        1.5224721431732178,
+        1.5001013278961182,
+        1.5166469812393188,
+        1.4943180084228516,
+        1.4942988157272339,
+        1.4964863061904907,
+        1.4872503280639648,
+        1.4945036172866821,
+        1.4968270063400269,
+        1.4849004745483398,
+        1.4993853569030762,
+        1.4852970838546753,
+        1.4783068895339966,
+        1.4786564111709595,
+        1.4760997295379639,
+        1.4756580591201782,
+        1.4735196828842163,
+        1.4659134149551392,
+        1.465986728668213,
+        1.4714670181274414,
+        1.462953805923462,
+        1.4692623615264893,
+        1.4637606143951416,
+        1.455397367477417,
+        1.4664002656936646,
+        1.465010166168213,
+        1.4537185430526733,
+        1.456677794456482,
+        1.460671067237854,
+        1.4690169095993042,
+        1.4614112377166748,
+        1.4677914381027222,
+        1.4575351476669312,
+        1.4571917057037354,
+        1.4497129917144775,
+        1.4556277990341187,
+        1.4477484226226807,
+        1.4561285972595215,
+        1.4651384353637695,
+        1.4533214569091797,
+        1.4564778804779053,
+        1.4497604370117188,
+        1.4554612636566162,
+        1.4480559825897217,
+        1.4514274597167969,
+        1.4474365711212158,
+        1.4507638216018677,
+        1.4509855508804321,
+        1.4533898830413818,
+        1.4516804218292236,
+        1.447832703590393,
+        1.4488096237182617,
+        1.4481664896011353,
+        1.4490638971328735,
+        1.4503787755966187,
+        1.4467718601226807,
+        1.4491019248962402,
+        1.4509103298187256,
+        1.4507668018341064,
+        1.4464757442474365,
+        1.450057029724121,
+        1.447974681854248,
+        1.4503411054611206,
+        1.4486850500106812,
+        1.447157621383667,
+        1.4490833282470703,
+        1.4489203691482544,
+        1.4503117799758911,
+        1.448183298110962,
+        1.4478105306625366,
+        1.449144959449768,
+        1.4478049278259277,
+        1.4481801986694336,
+        1.447986364364624,
+        1.4479565620422363,
+        1.448111653327942,
+        1.448105812072754
+      ]
+    },
+    "selection": "minimum validation loss",
+    "normalization": "training batches only",
+    "adapter_id": "heston_returns_time_and_window_moments_v2",
+    "architecture": "causal GRU32 summary16 + eight observed window moments; adapter_id specifies time context; full density architecture saved in model.keras",
+    "inference_network_class": "CouplingFlow",
+    "density_estimator_requested_for_training": "spline",
+    "seconds_including_compile_or_load": 347.45693808374926
+  },
+  "same_seed_reload_exact": true,
+  "evaluation": {
+    "cases": 256,
+    "draws_per_case": 2048,
+    "seed": 873,
+    "target_order": [
+      "theta",
+      "signed_terminal_auxiliary"
+    ],
+    "reference_cases": [
+      {
+        "example_id": "validation:0",
+        "reference": {
+          "mean": [
+            0.026103611415639206,
+            0.0064353449612989996
+          ],
+          "std": [
+            0.005419717896358282,
+            0.0029403068136994687
+          ],
+          "correlation": 0.2723231739190827
+        },
+        "neural_mean": [
+          0.02776187192226516,
+          0.007774289008011692
+        ],
+        "neural_std": [
+          0.006856487600878384,
+          0.003697047525431576
+        ],
+        "mean_error_in_reference_sd": [
+          0.3059680482152409,
+          0.45537562286843286
+        ],
+        "relative_std_error": [
+          0.26510045946958294,
+          0.2573679414020005
+        ],
+        "correlation_error": -0.01622062745108943,
+        "predictive_std_relative_error": 0.08809232133086042,
+        "predictive_interval_error_in_sd": [
+          -0.0905563528885396,
+          0.20989016501369626
+        ],
+        "neural_negative_state_probability": 0.00048828125,
+        "reference_negative_state_probability": 0.0
+      },
+      {
+        "example_id": "validation:1",
+        "reference": {
+          "mean": [
+            0.057686726007254975,
+            0.05640279661200951
+          ],
+          "std": [
+            0.014279777545449363,
+            0.011425113885824107
+          ],
+          "correlation": 0.28303969552359676
+        },
+        "neural_mean": [
+          0.05833210269788577,
+          0.0575061739755256
+        ],
+        "neural_std": [
+          0.013813205442007141,
+          0.011638416815089416
+        ],
+        "mean_error_in_reference_sd": [
+          0.045195150174903,
+          0.09657473654465021
+        ],
+        "relative_std_error": [
+          -0.03267362547891428,
+          0.018669654534469782
+        ],
+        "correlation_error": -0.02644029290628952,
+        "predictive_std_relative_error": 0.005407378106519145,
+        "predictive_interval_error_in_sd": [
+          0.016884484927623435,
+          0.002187897580730669
+        ],
+        "neural_negative_state_probability": 0.0,
+        "reference_negative_state_probability": 0.0
+      },
+      {
+        "example_id": "validation:2",
+        "reference": {
+          "mean": [
+            0.05308216359380454,
+            0.06248898333759274
+          ],
+          "std": [
+            0.015272095021202333,
+            0.01501708563417442
+          ],
+          "correlation": 0.2585322392328624
+        },
+        "neural_mean": [
+          0.05358891515097358,
+          0.062410449066192086
+        ],
+        "neural_std": [
+          0.015241504863485593,
+          0.016182915641850776
+        ],
+        "mean_error_in_reference_sd": [
+          0.03318153511129376,
+          -0.005229661288068865
+        ],
+        "relative_std_error": [
+          -0.002003009912803111,
+          0.07763357259036163
+        ],
+        "correlation_error": -0.009132659204501181,
+        "predictive_std_relative_error": -0.012391221881416503,
+        "predictive_interval_error_in_sd": [
+          -0.031939636101839766,
+          0.021821670094770266
+        ],
+        "neural_negative_state_probability": 0.0,
+        "reference_negative_state_probability": 0.0
+      },
+      {
+        "example_id": "validation:3",
+        "reference": {
+          "mean": [
+            0.04906578986412128,
+            0.04379152573669976
+          ],
+          "std": [
+            0.01447189039454581,
+            0.010328972969243276
+          ],
+          "correlation": 0.2940773171724825
+        },
+        "neural_mean": [
+          0.048281243080664955,
+          0.044070073173315905
+        ],
+        "neural_std": [
+          0.014220447262353718,
+          0.010324474127121506
+        ],
+        "mean_error_in_reference_sd": [
+          -0.05421176930361537,
+          0.026967583073900722
+        ],
+        "relative_std_error": [
+          -0.01737458793129454,
+          -0.0004355556099494562
+        ],
+        "correlation_error": -0.004585658312294183,
+        "predictive_std_relative_error": 0.0015098572916165676,
+        "predictive_interval_error_in_sd": [
+          0.020595530419879736,
+          -0.03448831034943325
+        ],
+        "neural_negative_state_probability": 0.0009765625,
+        "reference_negative_state_probability": 0.0
+      },
+      {
+        "example_id": "validation:4",
+        "reference": {
+          "mean": [
+            0.053354574920236576,
+            0.03854666735954492
+          ],
+          "std": [
+            0.014872059272818542,
+            0.010516215387485624
+          ],
+          "correlation": 0.32329386082216066
+        },
+        "neural_mean": [
+          0.05518945061962753,
+          0.04132381746239844
+        ],
+        "neural_std": [
+          0.01505851212582778,
+          0.011478580134465002
+        ],
+        "mean_error_in_reference_sd": [
+          0.12337737940195892,
+          0.26408265716565166
+        ],
+        "relative_std_error": [
+          0.012537124119052834,
+          0.09151246066380492
+        ],
+        "correlation_error": -0.0014467763866078953,
+        "predictive_std_relative_error": 0.03403575739599041,
+        "predictive_interval_error_in_sd": [
+          -0.06150611232340345,
+          0.059108875717829114
+        ],
+        "neural_negative_state_probability": 0.0,
+        "reference_negative_state_probability": 0.0
+      },
+      {
+        "example_id": "validation:5",
+        "reference": {
+          "mean": [
+            0.0242749420547581,
+            0.009560230402054006
+          ],
+          "std": [
+            0.00402725462415949,
+            0.004328740406500353
+          ],
+          "correlation": 0.1617538851849445
+        },
+        "neural_mean": [
+          0.02403560574945315,
+          0.010434815940243425
+        ],
+        "neural_std": [
+          0.003896111143177023,
+          0.004339074372366621
+        ],
+        "mean_error_in_reference_sd": [
+          -0.0594291465628156,
+          0.20204157700842432
+        ],
+        "relative_std_error": [
+          -0.032563990415638844,
+          0.0023872916589662285
+        ],
+        "correlation_error": -0.06563153257945102,
+        "predictive_std_relative_error": 0.029766183625834275,
+        "predictive_interval_error_in_sd": [
+          -0.060492676635647294,
+          0.09035682567640903
+        ],
+        "neural_negative_state_probability": 0.0,
+        "reference_negative_state_probability": 0.0
+      },
+      {
+        "example_id": "validation:6",
+        "reference": {
+          "mean": [
+            0.02804654090229454,
+            0.014514468396145635
+          ],
+          "std": [
+            0.0066218643998996,
+            0.004979583611585125
+          ],
+          "correlation": 0.21112445569335286
+        },
+        "neural_mean": [
+          0.026827449337680977,
+          0.01429503899453266
+        ],
+        "neural_std": [
+          0.0060192598790490695,
+          0.005012682857247197
+        ],
+        "mean_error_in_reference_sd": [
+          -0.18410095571151328,
+          -0.04406581327452078
+        ],
+        "relative_std_error": [
+          -0.09100224415040381,
+          0.00664699064095764
+        ],
+        "correlation_error": -0.012889956217131293,
+        "predictive_std_relative_error": -0.003658366544327496,
+        "predictive_interval_error_in_sd": [
+          0.008999788338423907,
+          0.051798895028000974
+        ],
+        "neural_negative_state_probability": 0.0009765625,
+        "reference_negative_state_probability": 0.0
+      },
+      {
+        "example_id": "validation:7",
+        "reference": {
+          "mean": [
+            0.03177993377929003,
+            0.055410253578801964
+          ],
+          "std": [
+            0.009106077512097499,
+            0.010476916614366331
+          ],
+          "correlation": 0.1885155383257446
+        },
+        "neural_mean": [
+          0.032272038676296175,
+          0.054016728182432416
+        ],
+        "neural_std": [
+          0.009084456508460279,
+          0.010368035854205626
+        ],
+        "mean_error_in_reference_sd": [
+          0.05404136922317845,
+          -0.1330091140038945
+        ],
+        "relative_std_error": [
+          -0.00237434873670872,
+          -0.010392443136504892
+        ],
+        "correlation_error": -0.0189673542426764,
+        "predictive_std_relative_error": -0.016045344814594187,
+        "predictive_interval_error_in_sd": [
+          0.04221065295352019,
+          -0.03898635704837963
+        ],
+        "neural_negative_state_probability": 0.0,
+        "reference_negative_state_probability": 0.0
+      },
+      {
+        "example_id": "validation:8",
+        "reference": {
+          "mean": [
+            0.029185824722355137,
+            0.038941445990044
+          ],
+          "std": [
+            0.007183601813853192,
+            0.008558021186538029
+          ],
+          "correlation": 0.16488422290933658
+        },
+        "neural_mean": [
+          0.0316469079461695,
+          0.03989890706088772
+        ],
+        "neural_std": [
+          0.009256980198083995,
+          0.008553094585750475
+        ],
+        "mean_error_in_reference_sd": [
+          0.34259738882913787,
+          0.11187879183447554
+        ],
+        "relative_std_error": [
+          0.28862657451759133,
+          -0.0005756705528263684
+        ],
+        "correlation_error": -0.008014569664945043,
+        "predictive_std_relative_error": 0.006595392141448109,
+        "predictive_interval_error_in_sd": [
+          -0.02523679855726554,
+          0.015432459392282544
+        ],
+        "neural_negative_state_probability": 0.00048828125,
+        "reference_negative_state_probability": 0.0
+      },
+      {
+        "example_id": "validation:9",
+        "reference": {
+          "mean": [
+            0.050911301152841947,
+            0.0340603221064783
+          ],
+          "std": [
+            0.015236625659866493,
+            0.0095847246145756
+          ],
+          "correlation": 0.2916167347270371
+        },
+        "neural_mean": [
+          0.0455072716907844,
+          0.030910426396985713
+        ],
+        "neural_std": [
+          0.015409202020225478,
+          0.009679700721840784
+        ],
+        "mean_error_in_reference_sd": [
+          -0.35467363855317696,
+          -0.3286370590869671
+        ],
+        "relative_std_error": [
+          0.011326415980249083,
+          0.009909111746492227
+        ],
+        "correlation_error": 0.04274679623894051,
+        "predictive_std_relative_error": -0.050283323143298086,
+        "predictive_interval_error_in_sd": [
+          0.07974636764336011,
+          -0.06762386931617195
+        ],
+        "neural_negative_state_probability": 0.0009765625,
+        "reference_negative_state_probability": 0.0
+      },
+      {
+        "example_id": "validation:10",
+        "reference": {
+          "mean": [
+            0.03269958464753699,
+            0.016860437634996662
+          ],
+          "std": [
+            0.009112797512913847,
+            0.006098750674142038
+          ],
+          "correlation": 0.2711031665595679
+        },
+        "neural_mean": [
+          0.03203680598872801,
+          0.017047791921868338
+        ],
+        "neural_std": [
+          0.008934893714854012,
+          0.005772276417698343
+        ],
+        "mean_error_in_reference_sd": [
+          -0.07273053723291352,
+          0.03072010922926163
+        ],
+        "relative_std_error": [
+          -0.01952241315663228,
+          -0.05353133352834161
+        ],
+        "correlation_error": -0.005512286051651216,
+        "predictive_std_relative_error": 0.014845951786805811,
+        "predictive_interval_error_in_sd": [
+          -0.022298273094725703,
+          -0.0027556115734610797
+        ],
+        "neural_negative_state_probability": 0.0,
+        "reference_negative_state_probability": 0.0
+      },
+      {
+        "example_id": "validation:11",
+        "reference": {
+          "mean": [
+            0.03147431024268628,
+            0.03653657742712664
+          ],
+          "std": [
+            0.008649107120899275,
+            0.00840186528067778
+          ],
+          "correlation": 0.21600889910061158
+        },
+        "neural_mean": [
+          0.030721816235312945,
+          0.03621197748816485
+        ],
+        "neural_std": [
+          0.00854686938770583,
+          0.008861194731086658
+        ],
+        "mean_error_in_reference_sd": [
+          -0.08700250752531954,
+          -0.03863427085748351
+        ],
+        "relative_std_error": [
+          -0.011820611279793614,
+          0.054669937575078986
+        ],
+        "correlation_error": 0.07073671123006245,
+        "predictive_std_relative_error": -0.0050792741061145286,
+        "predictive_interval_error_in_sd": [
+          0.015568205711042086,
+          -0.009261885869382576
+        ],
+        "neural_negative_state_probability": 0.0009765625,
+        "reference_negative_state_probability": 0.0
+      },
+      {
+        "example_id": "validation:12",
+        "reference": {
+          "mean": [
+            0.05980187344945232,
+            0.06195603508324718
+          ],
+          "std": [
+            0.014223390374988206,
+            0.013791569593659054
+          ],
+          "correlation": 0.291040999152795
+        },
+        "neural_mean": [
+          0.058299397129743746,
+          0.05929910338454647
+        ],
+        "neural_std": [
+          0.01499583572772938,
+          0.013540941660543551
+        ],
+        "mean_error_in_reference_sd": [
+          -0.10563418988701001,
+          -0.1926489715806014
+        ],
+        "relative_std_error": [
+          0.05430810322829327,
+          -0.01817254601903573
+        ],
+        "correlation_error": 0.0282673935463868,
+        "predictive_std_relative_error": -0.012462480914757545,
+        "predictive_interval_error_in_sd": [
+          0.0842096947236296,
+          -0.005276613328348841
+        ],
+        "neural_negative_state_probability": 0.0,
+        "reference_negative_state_probability": 0.0
+      },
+      {
+        "example_id": "validation:13",
+        "reference": {
+          "mean": [
+            0.034794578512462586,
+            0.03271950108594749
+          ],
+          "std": [
+            0.01097400587423055,
+            0.008660293458628654
+          ],
+          "correlation": 0.2624448255516431
+        },
+        "neural_mean": [
+          0.03395043766152899,
+          0.03274285299812618
+        ],
+        "neural_std": [
+          0.010303847373296508,
+          0.008626286179946364
+        ],
+        "mean_error_in_reference_sd": [
+          -0.0769218515652364,
+          0.0026964342825386524
+        ],
+        "relative_std_error": [
+          -0.061067809568767006,
+          -0.003926804425825381
+        ],
+        "correlation_error": -0.01205520773548402,
+        "predictive_std_relative_error": -0.002893348842554211,
+        "predictive_interval_error_in_sd": [
+          0.006144177248554268,
+          0.02767726480265716
+        ],
+        "neural_negative_state_probability": 0.0009765625,
+        "reference_negative_state_probability": 0.0
+      },
+      {
+        "example_id": "validation:14",
+        "reference": {
+          "mean": [
+            0.028959769031123374,
+            0.025530084679073972
+          ],
+          "std": [
+            0.007239906755030399,
+            0.0062819788193448686
+          ],
+          "correlation": 0.18977053738151253
+        },
+        "neural_mean": [
+          0.029445975108154988,
+          0.026263830282005074
+        ],
+        "neural_std": [
+          0.0075978112787667565,
+          0.006411868474426416
+        ],
+        "mean_error_in_reference_sd": [
+          0.06715640041824981,
+          0.11680166775978118
+        ],
+        "relative_std_error": [
+          0.04943496316270646,
+          0.020676550943082184
+        ],
+        "correlation_error": 0.06761353413980395,
+        "predictive_std_relative_error": 0.010850801753201633,
+        "predictive_interval_error_in_sd": [
+          -0.03867834053729544,
+          0.05821287824552802
+        ],
+        "neural_negative_state_probability": 0.0,
+        "reference_negative_state_probability": 0.0
+      },
+      {
+        "example_id": "validation:15",
+        "reference": {
+          "mean": [
+            0.058275029112722095,
+            0.0854776982908373
+          ],
+          "std": [
+            0.014830921603037514,
+            0.018047489029788755
+          ],
+          "correlation": 0.24651891894026448
+        },
+        "neural_mean": [
+          0.059041037247032954,
+          0.08646668237361155
+        ],
+        "neural_std": [
+          0.014845841581382207,
+          0.018432497994946506
+        ],
+        "mean_error_in_reference_sd": [
+          0.05164939541949799,
+          0.054798985118752565
+        ],
+        "relative_std_error": [
+          0.0010060048015920753,
+          0.021333104262995617
+        ],
+        "correlation_error": 0.012814421364256617,
+        "predictive_std_relative_error": 0.0014909614883733546,
+        "predictive_interval_error_in_sd": [
+          -0.059846194336155,
+          0.016323569958262868
+        ],
+        "neural_negative_state_probability": 0.0,
+        "reference_negative_state_probability": 0.0
+      }
+    ],
+    "metrics": {
+      "mean_rmse_in_reference_sd": 0.17319687218590424,
+      "maximum_abs_mean_error_in_reference_sd": 0.45537562286843286,
+      "maximum_relative_std_error": 0.28862657451759133,
+      "maximum_correlation_error": 0.07073671123006245,
+      "maximum_predictive_std_relative_error": 0.08809232133086042,
+      "maximum_predictive_interval_error_in_sd": 0.20989016501369626
+    },
+    "thresholds": {
+      "mean_rmse_in_reference_sd": 0.2,
+      "maximum_abs_mean_error_in_reference_sd": 0.4,
+      "maximum_relative_std_error": 0.3,
+      "maximum_correlation_error": 0.2,
+      "maximum_predictive_std_relative_error": 0.15,
+      "maximum_predictive_interval_error_in_sd": 0.15
+    },
+    "reference_comparisons_passed": false,
+    "coverage_90": [
+      0.91796875,
+      0.8671875
+    ],
+    "coverage_nominal_binomial_se": 0.01875,
+    "rank_uniformity_max_ecdf_error": [
+      0.047264763712408286,
+      0.07599239883605124
+    ],
+    "rank_dkw_bound_two_targets": 0.09251294920629989,
+    "rank_diagnostic_passed": true,
+    "predictive_loss_interval_90_coverage": 0.90234375,
+    "negative_state_draw_fraction": 0.0003376007080078125,
+    "forecast_steps": 10,
+    "forecast_horizon_years": 0.03968253968253968,
+    "timing_seconds": {
+      "posterior_sampling_including_compile": 2.369073749985546,
+      "predictive_intervals": 12.275323166046292
+    },
+    "pilot_passed": false
+  },
+  "limits": "Two-target, fixed-parameter, one-step discrete Heston pilot. Validation results are development only; finite-particle reference, finite draws and finite histories limit conclusions. No full SVJ, continuous-time, market, regulatory-risk or tutorial-wide acceptance."
+}
