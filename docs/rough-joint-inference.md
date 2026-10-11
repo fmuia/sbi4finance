@@ -101,7 +101,7 @@ experiment does not establish a neural speed advantage over that alternative.
 Report bank generation, reference weighting, training, posterior sampling and
 downstream pricing separately before making an amortization claim.
 
-Training uses eight new quote errors per expensive base panel. This creates
+The planned training would use eight new quote errors per expensive base panel, creating
 8,192 training observations from **1,024 independent parameter/pricing bases**.
 Selection and audit remain independent, unaugmented base panels. The adapter
 uses noisy observations alone; it does not expose true parameters, clean prices,
