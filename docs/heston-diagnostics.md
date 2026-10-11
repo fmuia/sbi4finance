@@ -1,8 +1,8 @@
 # Which Heston diagnostic answers which question?
 
-The key review plots concern the **latest explicit-time spline checkpoint** and
+The key review plots concern the **v2 explicit-time spline checkpoint** and
 root-43022 validation data. They are separate from notebook 05's older four-case
-regression illustrations. No real observations are required for these checks.
+regression illustrations and the later [v3 state-transform experiment](heston-state-transform.md). No real observations are required for these checks.
 
 | Plot | Question | Evidence and limit |
 |---|---|---|

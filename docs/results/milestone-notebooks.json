@@ -32,11 +32,11 @@
     {
       "notebook": "05_heston_joint_inference.py",
       "exit_code": 0,
-      "wall_seconds": 13.977329458110034,
+      "wall_seconds": 13.440932666882873,
       "initial_export_wall_seconds": 16.5,
-      "timing_note": "Latest isolated export includes prior/posterior and refined-reference diagnostics; notebook runtime includes startup/compilation and is not an inference benchmark.",
-      "source_sha256": "9eb8f970ac31e8d6d4b7bff8ef76bdc9b62d0e979c925e5bcf823db2ea8b4b87",
-      "html_sha256": "3eb85605db97da0104e4eb613c6640a400232da9a4e1d0c405ddcfd037c89d6b",
+      "timing_note": "Latest isolated export includes signed-asinh mathematics and its failed validation comparison; includes startup/compilation, not an inference benchmark.",
+      "source_sha256": "25c37a7ad29731cb4a73862b012311c33a67553388cb45664d553cb64e3a232e",
+      "html_sha256": "12d6330e4b634ddcb0b3e7f2ba1a0ad21adabf30d8478aa2c1dc1ceed7620ca7",
       "market_data_directory_absent": true,
       "external_socket_connections_blocked": true,
       "export_command": [
@@ -45,16 +45,16 @@
         "marimo",
         "export",
         "html",
-        "/private/tmp/sbi-diagnostic-review-offline/notebooks/05_heston_joint_inference.py",
+        "/private/tmp/sbi-asinh-review-offline/notebooks/05_heston_joint_inference.py",
         "-o",
-        "/private/tmp/05_heston_diagnostic_review-offline.html"
+        "/private/tmp/05_heston_asinh-offline.html"
       ]
     }
   ],
   "software_tests": {
-    "command": "pixi run test-simulators",
-    "count": 40,
+    "command": ".pixi/envs/default/bin/python -m unittest discover -s tests -v",
+    "count": 43,
     "passed": true,
-    "wall_seconds": 22.521
+    "wall_seconds": 22.939
   }
 }

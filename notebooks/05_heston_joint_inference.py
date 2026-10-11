@@ -79,9 +79,14 @@ def _(mo):
     mo.md(r"""
     ## Key figures and the questions they answer
 
-    These links show the **bounded-time candidate's development validation**;
+    These links show the **bounded-time v2 candidate's development validation**;
     the interactive regression plots later in this notebook retain the original
     checkpoint. The reserved final test remains unevaluated.
+
+    The separate [signed-asinh v3 experiment](../docs/heston-state-transform.md)
+    is reviewed near the end, under **One final bounded experiment: change the
+    state coordinate**. The linked prior/SBC/error figures here remain the v2
+    record and are not relabelled as results for v3.
 
     | Figure | What it checks |
     |---|---|
@@ -803,7 +808,7 @@ def _(explicit_time_validation, mo, pd, spline_baseline_validation):
         The recorded gate-saturation fractions are now zero at the four
         inspected positions. That confirms a change in representation behavior,
         while the remaining posterior errors demonstrate its limited evidential
-        scope. No additional training or threshold changes follow this result;
+        scope. This failure was retained without changing its thresholds;
         M3.3 inference acceptance remains pending.
 
         This is a **validation-based development comparison**. Improved gate
@@ -853,7 +858,7 @@ def _(mo):
     mo.md(r"""
     ## Does the remaining error survive a more precise calculation?
 
-    We froze the latest bounded-time checkpoint and increased neural draws
+    We froze the bounded-time v2 checkpoint and increased neural draws
     from 2,048 to 16,384 on all 16 validation histories, with three prespecified
     seeds. We also refined the calm-history reference twice from 48 grid nodes
     and 4,096 particles to 96 nodes and 16,384 particles. This is a **conditional
@@ -894,6 +899,188 @@ def _(ROOT, hashlib, json, mo):
     if hashlib.sha256(_arrays.read_bytes()).hexdigest() != _precision["plot_arrays"]["sha256"]:
         raise ValueError("Precision plot arrays must match the recorded diagnostic.")
     mo.image(_directory / "case-0-comparison.png")
+    return
+
+
+@app.cell
+def _(mo):
+    mo.md(r"""
+    ## One final bounded experiment: change the state coordinate
+
+    After the precision diagnostic, we tested one specific hypothesis: could
+    a smoother representation of the small state values improve the **finite
+    network's approximation**? This experiment preserves the physical model,
+    prior, bank, observations, time context and two-target joint posterior.
+    It changes only the coordinate used to learn the signed terminal state:
+
+    $$z=\operatorname{asinh}(a_T/c),\qquad a_T=c\sinh(z),\qquad c=0.01.$$
+
+    Here `asinh` is the inverse hyperbolic sine. The fixed $c$ has annualized
+    variance units and is one quarter of the known
+    initial variance, 0.04. It was declared before this run, not fitted to each
+    history or selected by trying several scales. The transformed $z$ is
+    dimensionless. Near zero, $z\approx a_T/c$; in either tail its magnitude
+    grows roughly logarithmically. Both negative and positive states remain
+    valid, with zero mapping to zero. A logarithm of the state would instead
+    exclude valid negative auxiliary values.
+
+    An invertible map preserves information and the exact Bayesian posterior
+    after inversion. A fixed-size neural density model trained for a finite
+    time need not approximate that posterior equally well in every coordinate.
+    Compressing the large-state range may help represent narrow calm-history
+    posteriors. That is a testable hypothesis, not extra evidence or a new
+    latent-state observation. Raw bank targets remain in variance units; the
+    adapter transforms them before float32 casting and global training scaling.
+    Sampling reverses the saved operations and returns the original signed
+    state, paired with its theta draw, for the same forecast calculation.
+
+    The state-coordinate log-Jacobian is
+
+    $$\log\left|\frac{dz}{da_T}\right|
+      =-\tfrac12\log(c^2+a_T^2).$$
+
+    It accounts for the change of density units; the implementation provides
+    forward and inverse Jacobians. For a fixed transform, its target-only
+    contribution does not depend on network weights. **Raw training or
+    validation losses across the two coordinates are not directly comparable.**
+    Select an epoch within each run, then compare posterior and predictive
+    errors in original units. The inverse `sinh` can amplify extreme neural
+    tails, so nonfinite outputs must fail visibly rather than being clipped
+    or selectively redrawn.
+    """)
+    return
+
+
+@app.cell
+def _(heston_inference, np, plt):
+    from sbi4finance.heston_transforms import SignedStateAsinh as _SignedStateAsinh
+
+    _transform = _SignedStateAsinh(scale=heston_inference.STATE_SCALE)
+    _state = np.linspace(-0.02, 0.12, 401)
+    _transformed = _transform.forward(_state)
+    np.testing.assert_allclose(_transform.inverse(_transformed), _state, rtol=2e-14, atol=1e-16)
+    _fig, _axis = plt.subplots(figsize=(9.2, 3.7), layout="constrained")
+    _axis.plot(_state, _transformed, color="#4d749b", linewidth=2)
+    _axis.axhline(0, color="#777777", linewidth=0.7)
+    _axis.axvline(0, color="#777777", linewidth=0.7)
+    _marked = np.array([-0.02, 0.0, 0.01, 0.04, 0.12])
+    _axis.scatter(_marked, _transform.forward(_marked), color="#c06b48", zorder=3)
+    _axis.set(xlabel="Signed terminal state aₜ (annualized variance units)",
+              ylabel="z = asinh(aₜ / 0.01) (dimensionless)",
+              title="A reversible coordinate change retains negative states and compresses tails")
+    _fig
+    return
+
+
+@app.cell
+def _(ROOT, json):
+    state_transform_validation = json.loads(
+        (ROOT / "docs/results/heston-state-transform/neural-validation.json").read_text()
+    )
+    return (state_transform_validation,)
+
+
+@app.cell
+def _(explicit_time_validation, heston_inference, mo, pd, state_transform_validation):
+    if (explicit_time_validation["adapter_id"] != heston_inference.TIME_ADAPTER_ID
+            or state_transform_validation["adapter_id"] != heston_inference.ASINH_ADAPTER_ID):
+        raise ValueError("The comparison requires the declared v2 and signed-asinh v3 adapters.")
+    for _key in ("bank_manifest_sha256", "reference_report_sha256", "task", "split"):
+        if state_transform_validation[_key] != explicit_time_validation[_key]:
+            raise ValueError("The state-transform comparison requires the same bank, reference and task.")
+    _baseline = explicit_time_validation["evaluation"]
+    _candidate = state_transform_validation["evaluation"]
+    for _key in ("thresholds", "cases", "draws_per_case", "seed", "target_order"):
+        if _candidate[_key] != _baseline[_key]:
+            raise ValueError("The state-transform comparison requires the unchanged validation design.")
+    if ([c["example_id"] for c in _candidate["reference_cases"]]
+            != [c["example_id"] for c in _baseline["reference_cases"]]):
+        raise ValueError("The same preselected conditional cases must be retained.")
+    _names = {
+        "mean_rmse_in_reference_sd": "Posterior mean RMSE / reference SD",
+        "maximum_abs_mean_error_in_reference_sd": "Largest absolute mean error / reference SD",
+        "maximum_relative_std_error": "Largest relative posterior SD error",
+        "maximum_correlation_error": "Largest correlation error",
+        "maximum_predictive_std_relative_error": "Largest relative future-loss SD error",
+        "maximum_predictive_interval_error_in_sd": "Largest predictive interval endpoint error / SD",
+    }
+    _rows = [{"Validation check": _names[k], "Original-state v2": round(_baseline["metrics"][k], 4),
+              "Signed-asinh v3": round(_candidate["metrics"][k], 4), "Maximum": limit,
+              "v3 result": "PASS" if _candidate["metrics"][k] <= limit else "FAIL"}
+             for k, limit in _candidate["thresholds"].items()]
+    for _i, _name in enumerate(("theta", "signed state")):
+        _limit = _candidate["rank_dkw_bound_two_targets"]
+        if _limit != _baseline["rank_dkw_bound_two_targets"]:
+            raise ValueError("The marginal rank diagnostic bound must remain unchanged.")
+        _value = _candidate["rank_uniformity_max_ecdf_error"][_i]
+        _rows.append({"Validation check": f"Marginal rank ECDF error: {_name}",
+                      "Original-state v2": round(_baseline["rank_uniformity_max_ecdf_error"][_i], 4),
+                      "Signed-asinh v3": round(_value, 4), "Maximum": round(_limit, 4),
+                      "v3 result": "PASS" if _value <= _limit else "FAIL"})
+    _outcome = "PASSED" if _candidate["pilot_passed"] else "FAILED"
+    mo.vstack([
+        mo.md(f"""
+        ### Recorded first validation result: {_outcome}
+
+        This table compares the unchanged first-stage checks: 2,048 draws for
+        each of 256 validation histories, with conditional references for the
+        same 16 preselected cases. Both candidates use root seed 43022, 32,768 training
+        and 2,048 validation histories, the same explicit-time GRU and spline
+        flow, eight trailing moments, seed 871, 80 epochs and batch size 256.
+        Only the state-target transform changes. The reported errors are after
+        inversion, in the original parameter/state and future-loss units.
+        """),
+        mo.ui.table(pd.DataFrame(_rows), selection=None, show_column_summaries=False),
+        mo.md(r"""
+        **The first stage failed, so this experiment stops here.** The maximum
+        mean error is 0.527 reference SD on the state of `validation:0`; the
+        largest relative posterior-SD error is 0.321 for theta on `validation:8`;
+        and the largest predictive endpoint error is 0.240 predictive SD on
+        `validation:0`. Their unchanged limits are 0.40, 0.30 and 0.15.
+        Passing mean RMSE and marginal rank checks does not override those
+        conditional failures.
+
+        No higher-draw validation or reserved-test evaluation was performed.
+        We retain v2 as the better of these two neural candidates for development;
+        both remain provisional. This single matched experiment does not show
+        that asinh transforms are generally unhelpful. It shows that this one
+        coordinate change did not clear the declared accuracy checks. No scale,
+        seed or architecture sweep follows; M3.3 acceptance remains pending.
+
+        This remains a development comparison on inspected validation data.
+        The protocol permits **one training candidate**. A first-stage failure
+        stops this experiment. A pass permits a frozen 16,384-draw validation
+        check; only if that also passes may the reserved final test be reached,
+        with separately checked references and no retuning afterward.
+
+        The next implementation milestone is M4 HKDE regardless of the outcome.
+        Heston inference acceptance is required for its returns teaching route,
+        not for the independently specified options branch. This experiment
+        does not choose the live curriculum or establish full-SVJ inference.
+
+        [Frozen design and measured outcome](../docs/heston-state-transform.md)
+        · [Reversible transform source](../src/sbi4finance/heston_transforms.py)
+        · [Versioned adapter](../src/sbi4finance/heston_inference.py)
+        · [First validation report](../docs/results/heston-state-transform/neural-validation.json)
+        """),
+    ])
+    return
+
+
+@app.cell
+def _(mo):
+    mo.md(r"""
+    **Exercise: coordinates versus a new model.** Show that a negative $a_T$
+    stays negative after forward transformation and inversion. Why would
+    clipping at zero change the forecasting law, whereas the asinh transform
+    does not? Can a better transformed validation loss alone establish a more
+    accurate posterior in variance units?
+
+    **Review hint:** both `asinh` and `sinh` are odd, strictly increasing
+    functions, and $c>0$. The exact inverse returns the original continuation
+    state. Clipping loses information. Density units change under a nonlinear
+    map, so compare the saved conditional and predictive checks after inversion.
+    """)
     return
 
 

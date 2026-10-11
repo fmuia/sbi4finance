@@ -68,6 +68,10 @@ validation results. The reserved final test remains unevaluated.
 The [diagnostic review](docs/heston-diagnostics.md) adds direct graph links,
 explains SBC versus conditional checks, demonstrates prior-to-posterior updating,
 and records the frozen-weight sampling/reference precision follow-up.
+The subsequent [signed-state transform experiment](docs/heston-state-transform.md)
+also failed validation. Its result is retained in the review notebook; the
+predeclared stop rule leaves Heston inference provisional and moves the next
+implementation increment to HKDE law and reference pricing.
 
 See the [review guide and verification record](docs/milestone-review-notebooks.md)
 for export commands, evidence boundaries and the current inference results.

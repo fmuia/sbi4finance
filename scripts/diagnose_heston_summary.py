@@ -48,7 +48,8 @@ def diagnose(config, checkpoint_dir):
     workflow.load_approximator(checkpoint_dir / "model.keras")
     approximator = workflow.approximator
     summary = approximator.summary_network
-    expected_time_axis = 1 if adapter_id == heston_inference.TIME_ADAPTER_ID else None
+    expected_time_axis = 1 if adapter_id in (
+        heston_inference.TIME_ADAPTER_ID, heston_inference.ASINH_ADAPTER_ID) else None
     if summary.time_axis != expected_time_axis or len(summary.recurrent_layers) != 1:
         raise ValueError("expected one recurrent layer and the declared adapter time axis")
 

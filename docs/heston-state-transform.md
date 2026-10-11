@@ -96,3 +96,50 @@ reference regeneration. Use a new output directory. A failed scientific gate
 makes the command exit nonzero after saving its report; that is distinct from
 a software exception. The loader integrity-checks all bank split files, but
 test observations and targets do not enter training or development metrics.
+
+## Measured outcome and stop decision
+
+The single run completed in **350.8 seconds**, including compilation, and selected
+epoch **49 of 80** by within-run validation loss. Seeded checkpoint reload
+reproduced joint draws exactly. Forty-three software tests pass, including
+the signed transformation/Jacobian, conditioning separation, transformed
+training-only normalization and all earlier checkpoint paths.
+
+| First validation check | Original-state v2 | Asinh-state v3 | Maximum |
+|---|---:|---:|---:|
+| Mean RMSE / reference SD | 0.1732 | 0.1865 | 0.20 |
+| Largest absolute mean error / reference SD | 0.4554 | **0.5268 — fails** | 0.40 |
+| Largest relative posterior SD error | 0.2886 | **0.3212 — fails** | 0.30 |
+| Largest correlation error | 0.0707 | 0.0878 | 0.20 |
+| Largest relative predictive SD error | 0.0881 | 0.1017 | 0.15 |
+| Largest predictive interval endpoint error / predictive SD | 0.2099 | **0.2403 — fails** | 0.15 |
+
+Both marginal SBC rank diagnostics pass: deviations 0.0283 for theta and 0.0659
+for state, below 0.0925. Nominal 90% coverage is 91.4% and 87.9%; predictive
+90% coverage is 89.8%. Improved marginal rank summaries do not override the
+conditional failures or establish an independently validated posterior.
+
+The largest state-mean and predictive endpoint errors remain on `validation:0`.
+Its neural state mean is 0.00798 versus the reference 0.00644. The new largest
+posterior-SD failure is theta on `validation:8` (32.1% too wide). All 16
+preselected histories remain in the report. This coordinate change therefore
+does not improve the checked conditional approximation under the fixed training
+design; it is not evidence that asinh transforms generally fail.
+
+**Stop rule applied:** no higher-draw validation, final-test references, reserved
+test evaluation, additional seeds, alternative scales or extra epochs were run.
+The v3 checkpoint is retained only as provisional experiment evidence; it does
+not replace the better-performing, still-provisional v2 candidate. M3.3 posterior
+acceptance remains pending. The next implementation increment is **M4.1 HKDE
+law and reference pricing**, which depends on the accepted kernels rather than
+this returns-inference gate. The curriculum choice remains open.
+
+Evidence: [complete validation report](results/heston-state-transform/neural-validation.json),
+[rank/coverage arrays](results/heston-state-transform/validation-checks.npz),
+[checkpoint and adapter contract](../checkpoints/heston-asinh-state-provisional/README.md),
+and [marimo review](../notebooks/05_heston_joint_inference.py).
+
+The code/protocol was committed as `a28e39c` before the run. The report records
+the exact source, bank, reference and checkpoint hashes; it preserves the full
+training history and original-unit metrics. The earlier bank and reference
+artifacts are reused unchanged.

@@ -23,6 +23,9 @@ marginal SBC, conditional reference accuracy and engineering diagnostics.
 Standalone prior/posterior graphs demonstrate data updating. A frozen-weight
 precision follow-up retains every inspected case and explains which errors
 persist and which are sensitive to finite sampling.
+Its final experiment tests a reversible signed-state asinh coordinate, explains
+the Jacobian and shows the failed raw-unit validation comparison. The fixed
+stop rule was applied; no new final-test evaluation followed.
 
 ## Verification and reproduction
 
@@ -47,14 +50,14 @@ The verification helper is not a new project framework; the commands above are
 the ordinary reproduction path.
 
 On the local CPU, the isolated foundations and kernels exports took about
-1.6 seconds each. The latest joint-notebook export, including the prior/posterior and refined-reference
-diagnostics, passed the isolation check in 13.98 seconds.
+1.6 seconds each. The latest joint-notebook export, including the signed-state transform and its
+failed validation comparison, passed the isolation check in 13.44 seconds.
 Startup/cache effects make these notebook runtimes, not simulator or amortization
 benchmarks. HTML exports are
 review previews; use marimo for live Python-backed controls.
 
-The 40 software tests also pass, including both flow families' offline
-train/normalization/save/reload checks. Notebook execution is distinct from
+The 43 software tests also pass, including both flow families and the signed
+state transform's offline train/normalization/save/reload checks. Notebook execution is distinct from
 scientific acceptance: the original checkpoint failed conditional final-test
-checks, both spline candidates failed the expanded validation checks, and the new
+checks, all three spline candidates failed the expanded validation checks, and the new
 final test remains unevaluated. The notebook exposes those results deliberately.
