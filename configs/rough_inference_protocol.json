@@ -1,0 +1,131 @@
+{
+  "experiment_id": "rough_hurst_eta_finite_mc_pilot_v1",
+  "evidence_scope": "S",
+  "measure": "Q",
+  "bank_config": "configs/tasks/rough_inference_bank.json",
+  "reference_config": "configs/tasks/rough_reference_bank.json",
+  "observation_law": "theta~declared uniform; U independent pricing randomness; Y=C_hat_512_262144(theta,U)+0.25*epsilon, epsilon~N(0,I9). Finite numerical model, not continuum exact prices.",
+  "selection_validation_ids": [
+    0,
+    256
+  ],
+  "audit_validation_ids": [
+    256,
+    768
+  ],
+  "conditional_audit_ids": [
+    256,
+    257,
+    258,
+    259,
+    260,
+    261,
+    262,
+    263,
+    264,
+    265,
+    266,
+    267,
+    268,
+    269,
+    270,
+    271
+  ],
+  "stress_prior_fractions": [
+    [
+      0.1,
+      0.1
+    ],
+    [
+      0.1,
+      0.9
+    ],
+    [
+      0.9,
+      0.1
+    ],
+    [
+      0.9,
+      0.9
+    ]
+  ],
+  "stress_pricing_seed": 83028,
+  "stress_quote_seed": 83029,
+  "reference": {
+    "method": "prior importance sampling over independent (theta,U) rows",
+    "split": "train",
+    "rows": 4096,
+    "blocks": 2,
+    "likelihood": "Gaussian quote noise centered on clean reference_prices; do not add pricing_covariance",
+    "gates": {
+      "min_ess": 800.0,
+      "max_weight": 0.005,
+      "max_mean_mcse_in_ref_sd": 0.05,
+      "max_abs_block_mean_difference_in_ref_sd": 0.2,
+      "max_abs_block_relative_std_difference": 0.2,
+      "max_abs_block_correlation_difference": 0.2,
+      "max_target_mean_mcse_currency": 0.02,
+      "max_abs_block_target_mean_difference_currency": 0.06
+    },
+    "fallback": "No automatic bank expansion; report unresolved cases and stop acceptance. Two compatibility rows in validation/test are unused."
+  },
+  "targets": [
+    {
+      "strike": 95.0,
+      "maturity": 0.75,
+      "option_type": "put"
+    },
+    {
+      "strike": 80.0,
+      "maturity": 1.0,
+      "option_type": "put"
+    }
+  ],
+  "target_pricing": {
+    "reference_paths_per_row": 4096,
+    "reference_seed": 83030,
+    "neural_paths_per_draw": 128,
+    "neural_seed": 83031,
+    "n_steps": 512,
+    "method": "hybrid",
+    "estimand": "Posterior mean of the 512-step expected discounted payoff, with independent target randomness V. No target-price quantile or continuum accuracy claim."
+  },
+  "training": {
+    "seed": 83032,
+    "epochs": 80,
+    "batch_size": 128,
+    "density": "coupling_spline",
+    "depth": 4,
+    "widths": [
+      64,
+      64
+    ],
+    "bins": 8,
+    "quote_augmentations_per_base": 8,
+    "augmentation_seed": 83033,
+    "selection": "minimum loss on unaugmented validation IDs 0:256",
+    "normalization": "training data only; no per-panel scaling"
+  },
+  "evaluation": {
+    "conditional_draws": 4096,
+    "sbc_draws": 512,
+    "sample_seed": 83034,
+    "rank_randomization_seed": 83035,
+    "sbc_family_alpha": 0.05,
+    "gates": {
+      "mean_rmse_in_ref_sd": 0.15,
+      "max_abs_mean_error_in_ref_sd": 0.4,
+      "max_abs_relative_std_error": 0.25,
+      "max_abs_correlation_error": 0.1,
+      "mean_reference_mass_of_90_interval_abs_error": 0.03,
+      "max_target_mean_error_plus_2mcse_currency": 0.06
+    },
+    "prior_control_seed": 83036,
+    "prior_control_draws": 4096
+  },
+  "final_test": {
+    "access_rule": "Only after all reference and neural validation gates pass; no tuning on final outcomes. Final-test evaluation is a separate explicit run.",
+    "split": "test"
+  },
+  "stop_rule": "One architecture, seed and 80-epoch budget. Freeze before bank generation. Failed reference gates prohibit an accepted conditional inference claim; failed neural gates keep final test reserved. No sweep, no automatic scaling, no market acquisition dependency."
+}
