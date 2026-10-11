@@ -6,9 +6,47 @@ This reconciles Francesco's HKDE-to-SVJ discussion with [PR #3](https://github.c
 
 The model name alone does not determine the required data. Specify **model + probability measure + observed channels + inference target + downstream use**. The same stochastic-volatility family can support distinct experiments, with different parameters, training banks and checkpoints.
 
+## What we can and cannot do without real data
+
+**No real market observations are required to train the proposed networks, validate them under specified simulators, or deliver a complete teaching workflow.** We can generate both the observed inputs and the hidden training targets, including hypothetical market context such as rates, forwards and contracts. Real observations are required when we want to condition the result on an actual market or assess empirical performance there. Choosing a prior, quote-error model or synthetic context does not establish that it accurately describes a particular market.
+
+| Activity or claim | Possible without real data? | Boundary or additional requirement |
+|---|---|---|
+| Build and numerically test SVJ, HKDE and Bergomi simulators/pricers | Yes | Check mathematical limits, independent references, refinement and state continuation as appropriate; agreement between two methods using the same flawed simulator is insufficient |
+| Generate training banks and train parameter/state posteriors, pricing surrogates and direct price posteriors | Yes | Labels come from the generator/reference pricer, not inferred market ground truth |
+| Test recovery, SBC, contraction, joint behavior, prior sensitivity and controlled misspecification | Yes | Establish behavior for the declared simulation experiments; do not claim real-market calibration or universal misspecification detection |
+| Compare inference methods and measure costs | Yes | State the tested synthetic cases, accuracy criteria and hardware; do not generalize performance to all market regimes |
+| Forecast returns/volatility/losses after a simulated history, and assess forecasts against simulated futures | Yes | These are model-conditional simulation experiments, not historical market backtests |
+| Price held-out European, American or path-dependent contracts after synthetic calibration | Yes | Requires a validated pricer and complete target specification; observed target quotes are unnecessary for model-price uncertainty |
+| Infer parameters/state for an actual asset/date, or calibrate to an actual option surface | No | Need a compatible real return window or real quote panel, respectively; this is market application, not network training |
+| Assess real forecast coverage, VaR/ES behavior or pricing agreement | No | Need future realized outcomes or contemporaneous held-out target quotes, as appropriate; repeated cases for claims beyond an illustration |
+| Demonstrate recovery of the true parameters, jumps or instantaneous variance of a real market | Not from ordinary market data alone | Market parameters/states are unobserved and the assumed model may be misspecified; observed volatility proxies are not exact latent-state labels |
+
+A good real-data fit does not prove model correctness or parameter identification. Real quotes are observed trading indications, not known true model values. Neither synthetic nor real option data automatically turns Q pricing parameters into P forecasting parameters. These limitations remain even after acquisition succeeds.
+
+Training and market calibration are separate operations. Training changes network weights using many synthetic examples. Market calibration normally applies the frozen network to one unlabelled market dataset. Real data may inform subsequent model revision, but that is a separately documented experiment, with evaluation data protected from tuning.
+
+## Three delivery and evidence levels
+
+These levels describe data dependencies, not permission checkpoints. They apply separately to the returns and options branches and do not choose the live curriculum.
+
+| Level | Required artifacts | Acceptance and permitted interpretation |
+|---|---|---|
+| S: Synthetic teaching core | Specified simulator/observation law, independent generated train/validation/test banks, illustrative synthetic cases, numerical references, checkpoint and notebook | The entire exercise runs offline with no market files, API key or external account. Demonstrate inference and downstream uncertainty, with statistical/numerical checks and claims explicitly conditional on the simulated model |
+| M: Real-market application | S plus one compatible return window **or** one option panel, its market context and provenance | Apply the checkpoint with no fabricated truth labels; inspect the case and its fit/predictive diagnostics. A forecast or target model price can be produced without future outcomes or observed target prices. This alone does not establish empirical predictive performance |
+| E: Empirical evaluation | M plus separately held-out outcomes/quotes and a stated evaluation design | Compare return forecasts with later outcomes, or held-out prices with same-time excluded quotes. Report uncertainty and the scope of tested dates/contracts; a single case cannot establish performance across regimes |
+
+S is the required delivery path. M is an optional teaching illustration; E is a separate empirical extension when the tutorial or research claims require it. Missing market-data access or usage permission blocks the corresponding M/E artifact, **not** simulation, training, synthetic validation or the S notebook. Passing S does not imply that M/E will succeed.
+
+For R, keep forecast-origin information and future outcomes separate; use chronological evaluation and account for dependent horizons/windows. For O/D, exclude held-out target quotes from conditioning and from transformations that would leak their values into the input, including surface smoothing. A quote used in calibration supports an in-sample residual check rather than a held-out pricing claim. Repeated historical surfaces are needed for temporal stability claims, not for every calibration illustration.
+
+Each fixture/result should record `data_origin` (synthetic, market, or a documented mixture), task/measure, purpose (training, validation, conditioning or evaluation), conditioning cutoff or contract selection, and which truth labels actually exist. Reports should state their S/M/E evidence scope. Real loaders must not manufacture parameter/state targets, and absent market fixtures must never silently turn into synthetic data labelled as real.
+
 ## Scenario map
 
-| Task | One observed input | Inferred or learned object | Downstream use | Real data required |
+All four tasks below run on synthetic inputs at level S. The final column describes the additional data for M/E, not a training prerequisite.
+
+| Task | One observed input | Inferred or learned object | Downstream use | Real data for market application/evaluation |
 |---|---|---|---|---|
 | R: Return dynamics and state inference | An ordered return window, with times and any supported masks | Joint posterior over physical-measure parameters and current continuation state | Current volatility estimate; future returns, volatility and losses; VaR/ES | Underlying price/return history; subsequent outcomes only for forecast evaluation |
 | O: Option calibration | A cross-section of option quotes across strikes and expiries at one valuation time | Posterior over risk-neutral parameters and any explicitly inferred curve/state inputs | Fitted smiles; same-time held-out option values; uncertainty in another derivative's model price | Contract panel with premiums or documented IVs and consistent pricing inputs |
@@ -131,9 +169,9 @@ Training-bank size, days per window, quotes per surface and number of real snaps
 ## Data work to prioritize
 
 1. **Define two task contracts first:** R for chronological return windows and O for dated option panels. Agree the measure, observation channels/units, initialization, targets, fixed/inferred inputs and downstream question. Record these in M0 of PR #3 before fixing provider APIs.
-2. **Prepare a small local return fixture and a separate option fixture.** Reuse an existing return cache only after checking its conventions against the chosen task. The options fixture can initially be synthetic; the processed research surface remains an illustrative import with documented missing metadata.
+2. **Prepare generated fixtures for S first.** Each implemented returns or options workflow must be executable without any real fixture. Add a real return window or processed research surface for M separately, after checking its conventions, provenance and permitted use. Unknown metadata remains explicit.
 3. **Keep the options acquisition choices conditional on O.** The Cboe/ThetaData/Alpaca comparison solves option-quote acquisition. R's daily-return example can use a vetted historical price export, potentially via yfinance or a stock-data API, without an options subscription. This note does not establish a particular returns source's quality or usage rights.
-4. **Specify evaluation separately:** future realized returns for R; same-time excluded quotes for O/D; converged model prices for P. Volatility-proxy observations and joint P/Q datasets are additional experiments, not mandatory fields to invent in either basic loader.
+4. **Specify evaluation separately:** independent synthetic cases for S; later realized returns for R's E evaluation; same-time excluded quotes for O/D's E evaluation; converged model prices for P's numerical evaluation. Volatility-proxy observations and joint P/Q datasets are additional experiments, not mandatory fields to invent in either basic loader.
 5. **Generate separate compatible synthetic banks.** Keep observation fields the same as those available in the corresponding real example, retain synthetic truth only as target/diagnostic information, and split before related augmentations. Use the manifest and checkpoint contracts of PR #3 rather than a second bank architecture.
 
 This is a scope correction to PR #4: its options work remains useful, while a returns-first tutorial would prioritize the R fixture and forecasting evaluation. No curriculum pivot, model implementation or provider purchase is implied by this document.

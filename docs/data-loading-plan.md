@@ -8,6 +8,14 @@ Start with [inference scenarios and data contracts](inference-scenarios-and-data
 
 This plan covers acquisition, normalization, validation and loading. It complements the [simulator and inference plan in PR 3](https://github.com/fmuia/sbi4finance/pull/3); it does not implement the proposed interfaces or change the existing MMAR returns notebook. The [source comparison](data-source-landscape.md) records the provider evidence and tradeoffs.
 
+## Real-data dependency boundary
+
+The [capability matrix and evidence levels](inference-scenarios-and-data.md#what-we-can-and-cannot-do-without-real-data) are authoritative: **the synthetic teaching core (S) needs no real market files**. Generated panels, simulated context and reference target prices are sufficient for training, synthetic validation, prior/noise sensitivity, held-out model pricing and the American extension. Passing those checks supports claims under the specified simulation experiments, not empirical market performance.
+
+A real panel is required only to condition the example on an actual market (M). Additional same-time excluded target quotes are required for empirical held-out pricing comparisons (E); repeated dates are needed for temporal performance claims. Actual American/exotic quotes are unnecessary merely to propagate an inferred posterior into their model prices. Even with market quotes, true model parameters and fair prices are not observed labels.
+
+Missing provider access or permission must not block S. Use separate optional market imports and evaluation assets; preserve the distinction visibly in manifests, notebook outputs and reported claims. Training the inference network and applying it to a market panel are different operations.
+
 ## Source decisions
 
 | Need | First choice | Reason and fallback |
@@ -49,12 +57,12 @@ Declare whether errors are modeled in premiums or IVs. Bid–ask half-spreads ar
 ## Initial fixtures and acceptance targets
 
 1. Prepare two or three synthetic HKDE demonstration panels with known truth and separately generated validation cases. Add a rough-Bergomi panel when its pricer is validated. Downstream payoff specifications need no observed exotic prices unless empirical validation is claimed.
-2. Import the [15 February 2023 SPX research file](https://github.com/jgatheral/QuadraticRoughHeston/blob/76dd1f9122c13333032bd3b8cc1e4d3dcc182009/spx_implied_vol_20230215.csv) as **processed IV**, retaining supplied forwards and year fractions. `Bid`/`Ask` mean annualized decimal IVs. Do not reinterpret `CallMid` as a verified discounted market premium. Metadata gaps must remain explicit; see the [source audit](data-source-landscape.md#research-files-and-synthetic-resources).
-3. Target one usable European surface, approximately 6–10 expiries and 10–20 selected strikes per expiry, including ATM and both wings. Start around two weeks to one or two years where liquidity permits. This is a teaching design, not a guarantee of parameter identification. Avoid requiring 0DTE or a long historical panel.
-4. Freeze actual contract coordinates before training a fixed-grid estimator. Prefer consistent PM-settled SPXW contracts for a new raw snapshot; do not guess settlement for the processed research file. State any unresolved convention as an illustrative limitation or exclude the affected rows from a stronger empirical claim.
+2. For optional M, import the [15 February 2023 SPX research file](https://github.com/jgatheral/QuadraticRoughHeston/blob/76dd1f9122c13333032bd3b8cc1e4d3dcc182009/spx_implied_vol_20230215.csv) as **processed IV**, retaining supplied forwards and year fractions. `Bid`/`Ask` mean annualized decimal IVs. Do not reinterpret `CallMid` as a verified discounted market premium. Metadata gaps must remain explicit; see the [source audit](data-source-landscape.md#research-files-and-synthetic-resources). This import is not an acceptance condition for S.
+3. For M, target one usable European surface, approximately 6–10 expiries and 10–20 selected strikes per expiry, including ATM and both wings. Start around two weeks to one or two years where liquidity permits. This is a teaching design, not a guarantee of parameter identification. Avoid requiring 0DTE or a long historical panel.
+4. Freeze the selected synthetic or market contract coordinates before training a fixed-grid estimator. Prefer consistent PM-settled SPXW contracts for a new raw snapshot; do not guess settlement for the processed research file. State any unresolved convention as an illustrative limitation or exclude the affected rows from a stronger empirical claim.
 5. Remove genuinely held-out contracts from the conditioning design used in training. For irregular/missing quotes, either train with coordinates/masks or fail clearly. Interpolation creates neither new independent observations nor automatic compatibility with an existing checkpoint.
 
-Success means a reproducible panel, an observed-versus-fitted smile comparison, residuals by maturity/strike, numerical accuracy checks, and uncertainty in parameters and held-out prices. Good price fit alone is not parameter identification, and an option fit concerns risk-neutral dynamics rather than a physical returns forecast.
+For S, success means a reproducible generated panel, known-truth diagnostics, numerical accuracy checks and stable downstream model-price uncertainty. For M, add observed-versus-fitted smiles and residuals for an actual market case. For E, report performance on genuinely held-out quotes with the scope and uncertainty of that comparison. Good price fit alone is not parameter identification, and an option fit concerns risk-neutral dynamics rather than a physical returns forecast.
 
 ## Shared panel schema
 
@@ -70,7 +78,7 @@ Support two representations: `raw_quote` and `processed_iv`. Missing raw fields 
 | Timing | Requested as-of instant, original quote timestamp when available, timestamp semantics, acquisition start/end, last-trade time in a separate field |
 | Context | Discount factor and asset forward by expiry; source/method; spot/dividend inputs if the pricer needs them; fixed/inferred forward-variance treatment |
 | Derived fields | Mid, spread, log-forward moneyness, computed IV with convention, quality flags and exclusion reason |
-| Manifest | Schema version, source URL/revision or endpoint, request filters/feed, SDK version, retrieval time, raw hashes, normalization version, panel hash, permitted-use evidence |
+| Manifest | Schema/task version, data origin and purpose, source URL/revision or endpoint, request filters/feed, SDK version, retrieval time, raw hashes, normalization version, panel hash, permitted-use evidence |
 
 Preserve original symbols while normalizing them: `^SPX`, `SPX`, and SPXW contract roots are provider-specific identifiers, not interchangeable string substitutions. Quote premium units and per-contract cash values also differ by multiplier. Infer known exercise/settlement rules only from an authoritative product mapping, with its provenance recorded. [Cboe contract specifications](https://www.cboe.com/tradable-products/sp-500/spx-options/spx-specifications).
 
@@ -118,13 +126,13 @@ Begin with a synthetic European posterior propagated into an American put on the
 
 | Milestone | Deliverable | Acceptance |
 |---|---|---|
-| D0 Define the data contract | Representations, units, timing semantics, curve treatment and selection policy | Walk a synthetic panel and processed SPX panel through the same statistical task without inventing fields |
-| D1 Local import | Generated fixture plus processed-IV importer and manifest | Deterministic round trip; correct decimal IVs, supplied year fractions, null metadata and provenance |
-| D2 Validate and freeze | Cleaning report, selected contracts and checkpoint compatibility checks | Numerical spot checks, exclusions explained, stable ordering/hash, invalid or mismatched input fails visibly |
-| D3 Acquire one raw surface if needed | Cboe file, ThetaData historical sample, or Alpaca current OPRA capture | Actual access and quote semantics demonstrated; pagination complete; curves/settlement resolved; use rights documented |
-| D4 Connect training and teaching | Matching synthetic bank, held-out design and local notebook loader | Independent splits, no target leakage, same observations/context as training, clean offline CPU run |
+| D0 Define the data contract | Representations, units, timing semantics, curve treatment, selection policy and S/M/E scope | Walk generated premium/IV fixtures through the task; specify real-input compatibility without requiring an external file |
+| D1 Local import | Generated fixture, loader and manifest; processed-IV market importer as optional M work | S: deterministic round trip, units/year fractions and provenance. M separately checks actual imported conventions and retains unknown fields |
+| D2 Validate and freeze | Fixture checks, contract design and checkpoint compatibility; real cleaning report for M | S: numerical checks, stable ordering/hash, incompatible input rejection. M additionally explains real quote selection/exclusions |
+| D3 Optional market acquisition | Processed research import or controlled raw surface for M; additional held-out observations if E is intended | Demonstrated source/quote semantics, required context, provenance and permitted use; no claim of E merely from obtaining M |
+| D4 Connect training and teaching | Matching synthetic bank, synthetic holdouts, checkpoint and local notebook loader | Complete S exercise passes in a clean offline CPU environment with all market fixtures absent; M/E cells are explicitly optional |
 
-D1–D2 can proceed with generated fixtures while permissions for the external research file are clarified. A public market fixture is released only with established permission; otherwise the required tutorial stays synthetic and any market illustration follows its permitted access/display arrangement.
+D0–D2 and D4 form the S delivery path; D3 is not a dependency of D4. M/E remain independently tracked extensions. A public market fixture is released only with established permission; otherwise the required tutorial stays synthetic and any market illustration follows its permitted access/display arrangement. A generated fallback may demonstrate the method but must never be labelled a real-market result.
 
 Meaningful implementation tests cover unit conversion, expiry/day-count handling, distinct roots, timestamp semantics, missing quote data, interrupted pagination, wrong feeds, integrity checks and incompatible checkpoint grids. Live vendor calls are optional integration checks, never default tests or live-session dependencies. This documentation-only change does not claim these loaders or checks already exist.
 

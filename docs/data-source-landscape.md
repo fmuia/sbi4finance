@@ -4,6 +4,8 @@ Reviewed 11 October 2026 for the options application: HKDE calibration, a rough-
 
 The recommendation is a local file interface backed by our own synthetic fixtures, with one processed European market example. Cboe is the first controlled one-date export to price; ThetaData is the first historical API alternative to evaluate; Alpaca is an optional current-capture API. See the [loading plan](data-loading-plan.md) for schema, validation and implementation milestones.
 
+Provider acquisition belongs to the optional real-market application and empirical-evaluation levels. No provider or real market file is needed for the complete synthetic teaching core; the [evidence levels](inference-scenarios-and-data.md#three-delivery-and-evidence-levels) state exactly which claims each level supports.
+
 ## Comparison
 
 Prices below are advertised individual plans at review time, not quotations for this team's use or redistribution rights. Account eligibility and actual entitlements have not been tested. Open-source clients are software access tools; the data remain governed by provider terms.
