@@ -1,0 +1,44 @@
+{
+  "scope": "Didactic notebook verification, separate from model/inference acceptance",
+  "environment": {
+    "python": "3.12.15",
+    "marimo": "0.25.1",
+    "platform": "macOS arm64",
+    "backend": "CPU"
+  },
+  "command_pattern": "python -m marimo export html <isolated-root>/notebooks/<name>.py -o /private/tmp/<name>-offline.html",
+  "isolation": "Copied source, configurations, docs and required checkpoints only; no data directory. Python socket connect/connect_ex rejected non-local destinations; local kernel IPC remained enabled.",
+  "strict_marimo_check": "passed for all three notebooks",
+  "visual_check": "Exported figures and tables inspected; recorded gate failures remain visible",
+  "notebooks": [
+    {
+      "notebook": "01_gbm_foundations.py",
+      "exit_code": 0,
+      "wall_seconds": 1.587430250365287,
+      "source_sha256": "d4b34027f3d75fe20d7658462bf2189e830b355198abe708a0d0ab9ca06e9e2c",
+      "html_sha256": "7bdf6387e37d82d81943bc648995f54c3b47cf4dfe1762ad7f9cb6e92142807e",
+      "market_data_directory_absent": true,
+      "external_socket_connections_blocked": true
+    },
+    {
+      "notebook": "04_heston_svj_kernels.py",
+      "exit_code": 0,
+      "wall_seconds": 1.6224962496198714,
+      "source_sha256": "084702bd4ebb82d66553dedfb62301c4a05a8a4fbf935734481ce4b9a36f6c0b",
+      "html_sha256": "e3b5551467ecbf0450f3407a88cf7b3078a479aa62230421171f8973bb2aaf50",
+      "market_data_directory_absent": true,
+      "external_socket_connections_blocked": true
+    },
+    {
+      "notebook": "05_heston_joint_inference.py",
+      "exit_code": 0,
+      "wall_seconds": null,
+      "initial_export_wall_seconds": 16.5,
+      "timing_note": "Initial pre-follow-up-section export measured 16.5 seconds; final external-network-blocked export passed but was not timed.",
+      "source_sha256": "4926dc1fdd526bf4de9624aab0df660aa3825d3f0d74b801c1e9ac904dfeb031",
+      "html_sha256": "a3d4df1d21aeaa1e711aac9cb9394cc147cae9e1598fed515968a44bd50588b6",
+      "market_data_directory_absent": true,
+      "external_socket_connections_blocked": true
+    }
+  ]
+}

@@ -146,6 +146,8 @@ def main():
     parser.add_argument("--references", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True, help="new output directory")
     parser.add_argument("--checkpoint", type=Path, help="evaluate frozen model.keras + task.json; no training")
+    parser.add_argument("--density-estimator", choices=("flow_matching", "spline"), default="flow_matching",
+                        help="training architecture; --checkpoint restores its own saved architecture")
     parser.add_argument("--epochs", type=int, default=40)
     parser.add_argument("--batch-size", type=int, default=128)
     parser.add_argument("--draws", type=int, default=2048)
@@ -168,7 +170,8 @@ def main():
         raise ValueError("saved checkpoint task differs in prior, parameters, initialization or observation design")
     args.out.mkdir(parents=True, exist_ok=False)
     keras.utils.set_random_seed(args.seed)
-    workflow = build_workflow(task, args.out if args.checkpoint is None else None)
+    workflow = build_workflow(task, args.out if args.checkpoint is None else None,
+                              density_estimator=args.density_estimator)
     training_started = perf_counter()
     if args.checkpoint is None:
         history = workflow.fit_offline(data=training_data(splits["train"], task),
@@ -203,12 +206,16 @@ def main():
                           "heston_forecast.py": file_hash(heston_forecast.__file__)},
         "versions": {"python": platform.python_version(), "numpy": np.__version__,
                      "bayesflow": bf.__version__, "keras": keras.__version__, "jax": jax.__version__},
-        "training": {"seed": args.seed, "epochs": args.epochs if history_values is not None else None,
+        "inference_network_class": type(workflow.inference_network).__name__,
+        "checkpoint_load_seconds": training_seconds if history_values is None else None,
+        "training": {"performed": True, "seed": args.seed, "epochs": args.epochs,
                      "batch_size": args.batch_size, "history": history_values,
                      "selection": "minimum validation loss", "normalization": "training batches only",
                      "adapter_id": heston_inference.ADAPTER_ID,
-                     "architecture": "causal GRU32 summary16 + eight observed window moments + FlowMatching32x32 with16integrationsteps",
-                     "seconds_including_compile_or_load": training_seconds},
+                     "architecture": "causal GRU32 summary16 + eight observed window moments; full density architecture saved in model.keras",
+                     "inference_network_class": type(workflow.inference_network).__name__,
+                     "density_estimator_requested_for_training": args.density_estimator if history_values is not None else None,
+                     "seconds_including_compile_or_load": training_seconds} if history_values is not None else {"performed": False},
         "same_seed_reload_exact": True, "evaluation": evaluation,
         "limits": "Two-target, fixed-parameter, one-step discrete Heston pilot. Validation results are development only; finite-particle reference, finite draws and finite histories limit conclusions. No full SVJ, continuous-time, market, regulatory-risk or tutorial-wide acceptance.",
     }

@@ -141,6 +141,12 @@ class HestonBankInferenceTests(unittest.TestCase):
             training_data(invalid, self.task)
 
     def test_offline_joint_training_normalization_sampling_and_reload(self):
+        self._check_offline_roundtrip("flow_matching")
+
+    def test_spline_joint_training_normalization_sampling_and_reload(self):
+        self._check_offline_roundtrip("spline")
+
+    def _check_offline_roundtrip(self, density_estimator):
         with (
             tempfile.TemporaryDirectory() as temporary,
             patch("socket.socket.connect", side_effect=AssertionError("network disabled")),
@@ -155,7 +161,8 @@ class HestonBankInferenceTests(unittest.TestCase):
             _, splits = load_bank(directory / "bank")
             train, validation = [training_data(splits[name], self.task)
                                  for name in ("train", "validation")]
-            workflow = build_workflow(self.task, directory / "checkpoint")
+            workflow = build_workflow(self.task, directory / "checkpoint",
+                                      density_estimator=density_estimator)
             history = workflow.fit_offline(data=train, validation_data=validation,
                                            epochs=2, batch_size=32, verbose=0)
             self.assertTrue(all(np.isfinite(values).all() for values in history.history.values()))

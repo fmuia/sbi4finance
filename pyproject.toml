@@ -54,6 +54,9 @@ heston-bank = "python scripts/generate_heston_bank.py"
 heston-reference = "python scripts/check_heston_reference.py"
 heston-task-numerics = "python scripts/check_heston_discretization.py"
 heston-train = "python scripts/train_heston.py"
+review-foundations = "marimo edit notebooks/01_gbm_foundations.py --no-token"
+review-kernels = "marimo edit notebooks/04_heston_svj_kernels.py --no-token"
+review-heston = "marimo edit notebooks/05_heston_joint_inference.py --no-token"
 
 # GPU environment for Oscar (linux-64 only): `pixi install -e gpu` on a login node.
 [tool.pixi.feature.cuda]

@@ -1,0 +1,27 @@
+{
+  "task": {
+    "task_id": "heston_theta_state_v1",
+    "measure": "P",
+    "parameters": {
+      "drift": 0.05,
+      "kappa": 2.0,
+      "vol_of_vol": 0.2,
+      "rho": -0.6
+    },
+    "theta_bounds": [
+      0.02,
+      0.08
+    ],
+    "prior": "log_uniform",
+    "initial_variance": 0.04,
+    "n_observations": 252,
+    "dt_years": 0.003968253968253968,
+    "substeps": 1
+  },
+  "root_seed": 43022,
+  "splits": {
+    "train": 32768,
+    "validation": 2048,
+    "test": 256
+  }
+}

@@ -84,7 +84,7 @@ def training_data(split, task):
     return {**result, "theta": theta, "terminal_state": state}
 
 
-def build_workflow(task, checkpoint_dir=None):
+def build_workflow(task, checkpoint_dir=None, *, density_estimator="flow_matching"):
     """Joint flow conditioned on a GRU summary and observed trailing moments.
 
     The built-in logit constraint is applied in float64 before neural casting.
@@ -95,6 +95,8 @@ def build_workflow(task, checkpoint_dir=None):
     there is no per-window standardization or conditioning on future outcomes.
     """
     bounds, _, _ = _task_design(task)
+    if density_estimator not in ("flow_matching", "spline"):
+        raise ValueError("density_estimator must be flow_matching or spline")
     import bayesflow as bf
 
     adapter = (bf.Adapter()
@@ -107,10 +109,17 @@ def build_workflow(task, checkpoint_dir=None):
         summary_dim=16, hidden_dim=32, recurrent_type="gru", bidirectional=False,
         time_embed_dim=4, dropout=0.0, return_sequences=False,
     )
+    if density_estimator == "spline":
+        inference = bf.networks.CouplingFlow(
+            depth=4, transform="spline", subnet_kwargs={"widths": [32, 32]},
+            transform_kwargs={"bins": 8},
+        )
+    else:
+        inference = bf.networks.FlowMatching(
+            subnet_kwargs={"widths": [32, 32]}, integrate_kwargs={"steps": 16})
     return bf.BasicWorkflow(
         adapter=adapter, summary_network=summary,
-        inference_network=bf.networks.FlowMatching(
-            subnet_kwargs={"widths": [32, 32]}, integrate_kwargs={"steps": 16}),
+        inference_network=inference,
         standardize="all",
         checkpoint_filepath=None if checkpoint_dir is None else str(checkpoint_dir),
         save_weights_only=False, save_best_only=True,

@@ -46,6 +46,25 @@ pixi run edit           # marimo editor (no auth token, so agents can pair with 
 
 Notebooks are [marimo](https://marimo.io) files: plain Python, reactive, git-friendly.
 
+Each simulator milestone includes a didactic review notebook explaining the
+new functionality, the mathematics, a small runnable example and the actual
+results with their limits. These review notebooks are separate from the final
+two-hour participant curriculum. Closely related increments share named sections.
+
+| Review notebook | Milestones / increments | Run |
+|---|---|---|
+| [GBM, banks and cluster](notebooks/01_gbm_foundations.py) | M0–M2 / 1–3: exact inference, array roles, reproducible banks and the recorded cluster result | `pixi run review-foundations` |
+| [Heston and Gaussian jumps](notebooks/04_heston_svj_kernels.py) | M3.1–M3.2 / 4: diffusion/jump simulation, continuation, numerical checks and Numba timings | `pixi run review-kernels` |
+| [Joint Heston inference](notebooks/05_heston_joint_inference.py) | M3.3 / 5: observed histories, reference/neural joint posteriors, conditional futures and the failed frozen checks | `pixi run review-heston` |
+
+Default execution uses synthetic examples and committed evidence, with no market
+downloads, cluster submission or full training run. Recorded results and fresh
+illustrations are labeled separately. The joint-inference notebook keeps the
+original provisional checkpoint visible during further development.
+
+See the [review guide and verification record](docs/milestone-review-notebooks.md)
+for export commands, evidence boundaries and the current inference results.
+
 | Notebook | Schedule item | What it shows |
 |---|---|---|
 | `notebooks/01_mmar_univariate.py` | 4 | Univariate multifractal model of asset returns (MMAR): simulator, prior predictive check, adapter and networks, pretrained checkpoint or CPU toy fit, recovery and calibration, posterior on SPMO and VOO |

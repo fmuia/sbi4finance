@@ -12,6 +12,13 @@ implemented. The frozen checkpoint **failed conditional test checks** and is
 shipped as provisional evidence, not an accepted tutorial posterior. M3.3
 inference acceptance remains open.
 
+For a guided, visual review, run **`pixi run review-heston`** to open
+[`notebooks/05_heston_joint_inference.py`](../notebooks/05_heston_joint_inference.py).
+It explains the task, displays the recorded checks, and lets you inspect the
+four original reference cases with posterior and future-loss plots. The
+[bounded follow-up](heston-inference-followup.md) records subsequent development
+separately; it does not replace this original failure report.
+
 ## What one observation means
 
 One training example is a complete history of 252 daily decimal log returns,

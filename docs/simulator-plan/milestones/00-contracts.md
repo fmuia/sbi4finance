@@ -30,9 +30,9 @@ The first-task outputs below are recorded in the linked implementation note; bro
 
 ## Didactic review deliverable
 
-Being backfilled in PR #11; verification pending: add an M0 contracts section to `notebooks/01_gbm_foundations.py`, following the [common review requirements](../README.md#didactic-review-notebooks-at-every-milestone). Explain the P/Q questions and units, then execute small worked returns and option-panel records with role/shape checks; this requires no simulator. Show the observation/context/target boundary and unresolved conventions. Include exercises identifying a leaked latent label and distinguishing a changed statistical task from a changed execution setting. Link the actual configurations and contract notes as they become available.
+Delivered and verified in [PR #11](https://github.com/fmuia/sbi4finance/pull/11): the M0 section of `notebooks/01_gbm_foundations.py` follows the [common review requirements](../README.md#didactic-review-notebooks-at-every-milestone). It explains the P/Q questions and units, executes small worked returns and option-panel records with role/shape checks, and separates observations/context from synthetic truth. Exercises address latent-label leakage and statistical-task versus execution changes, with links to the implemented conventions.
 
-Accept this section only after headless execution and HTML export offline show both records and their boundaries correctly. Existing contract documentation alone does not complete the notebook backfill.
+Strict marimo checking, offline headless execution/export and visual inspection passed, including an isolated copy with no market-data directory and external sockets blocked. This completes the didactic backfill; broader model contracts remain subject to their own milestone review.
 
 ## Deliverables
 
