@@ -1,6 +1,6 @@
 # M4 HKDE and risk-neutral option observations
 
-**Status:** proposed; implementation starts after review. **Depends on:** accepted [M3.1](03-heston-and-svj.md) Heston kernels and the local bank/loader pipeline in [M2.3](02-banks-and-cluster.md). Gaussian-jump returns inference and collaborator reproduction are not prerequisites. Read [models and numerics](../notes/02-models-and-numerics.md) and [inference and pricing](../notes/03-inference-and-pricing.md).
+**Status:** acceptance scope; track implementation evidence and didactic completion separately. **Depends on:** accepted [M3.1](03-heston-and-svj.md) Heston kernels and the local bank/loader pipeline in [M2.3](02-banks-and-cluster.md). Gaussian-jump returns inference and collaborator reproduction are not prerequisites. Read [models and numerics](../notes/02-models-and-numerics.md) and [inference and pricing](../notes/03-inference-and-pricing.md).
 
 ## Purpose
 
@@ -24,9 +24,15 @@ Add the double-exponential jump sibling of Gaussian-jump Heston and establish an
 
 Likely destinations are `simulators/` for the jump variant, `pricing/` for reference adapters, `observations/` for panel construction and `tasks/` for the calibration configuration, all under `src/sbi4finance/`. The panel helper follows M0's contract: M4.2 implements it if absent and otherwise reuses the accepted helper from M6.3. It must not depend on an HKDE-specific kernel, so Bergomi can implement and use the same interface independently.
 
+## Didactic review deliverable
+
+Planned with M4: begin `notebooks/06_hkde_and_pricing.py` with the Q double-exponential jump law, compensator/support and discounted payoff expectation. Follow the [common review requirements](../README.md#didactic-review-notebooks-at-every-milestone). Construct a small synthetic contract panel using the implemented pricer; distinguish its clean expectation, intentional quote noise and numerical error, with units and hypothetical curve context. Link the task, bank and independent accuracy evidence, including failed regions. Exercises should explain why one realized payoff is not a price label and why these Q parameters do not forecast P returns.
+
+Accept the M4 sections after offline headless execution/export shows the seeded panel and declared accuracy budget. Use a bounded pricing example and cached costly comparisons; no market acquisition or full-bank generation runs by default.
+
 ## Deliverables
 
-HKDE jump and pricing adapters, a reviewed synthetic option-panel configuration, small bank/reference fixtures, and a pricing-accuracy report. Market conditioning and empirical excluded-quote checks remain optional M/E additions; observed quotes do not supply parameter truth. Preserve the existing HKDE data-needs document as the source for later market-data integration.
+HKDE jump and pricing adapters, a reviewed synthetic option-panel configuration, small bank/reference fixtures, a pricing-accuracy report and verified M4 review sections. Market conditioning and empirical excluded-quote checks remain optional M/E additions; observed quotes do not supply parameter truth. Preserve the existing HKDE data-needs document as the source for later market-data integration.
 
 ## Acceptance and tests
 

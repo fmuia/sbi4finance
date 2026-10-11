@@ -1,6 +1,6 @@
 # M3 Heston and a precisely specified Gaussian-jump SVJ
 
-**Status:** proposed; implementation starts after review. **Depends on:** [M0](00-contracts.md) and [M1](01-gbm-reference.md) for kernels; the accepted local bank/loader pipeline in [M2.3](02-banks-and-cluster.md) for the returns inference pilot. Read [models and numerics](../notes/02-models-and-numerics.md) and [inference and pricing](../notes/03-inference-and-pricing.md).
+**Status:** acceptance scope; track implementation evidence and didactic completion separately. **Depends on:** [M0](00-contracts.md) and [M1](01-gbm-reference.md) for kernels; the accepted local bank/loader pipeline in [M2.3](02-banks-and-cluster.md) for the returns inference pilot. Read [models and numerics](../notes/02-models-and-numerics.md) and [inference and pricing](../notes/03-inference-and-pricing.md).
 
 ## Purpose
 
@@ -26,9 +26,17 @@ Introduce hidden variance, leverage, and price jumps while preserving agreement 
 
 Implement M3.1–M3.3 in order; M3.F can proceed independently when artifacts arrive. Likely destinations are the model kernels in `src/sbi4finance/simulators/`, task definitions in `tasks/`, and forecast/inference adapters in the existing inference boundary. Create only the modules these outputs require. The collaborator adapter does not silently replace the native model or its reference.
 
+## Didactic review deliverable
+
+Increment 4 backfill is pending in the proposed `notebooks/04_heston_svj_kernels.py`: explain hidden variance, leverage, compound-Poisson jumps and the numerical continuation state, with a seeded path/continuation demonstration and measured refinement/benchmark evidence. Exercises should distinguish signed auxiliary state from displayed variance and predict a zero-intensity limit.
+
+Increment 5's immediate deliverable is `notebooks/05_heston_joint_inference.py`, following the [common review requirements](../README.md#didactic-review-notebooks-at-every-milestone). Explain the actual reduced task and joint posterior mathematically; identify fixed context, observations, targets and units. Run bounded checkpoint conditioning and matched-state continuation, and show neural/reference marginals, dependence, future losses and aggregate gates from linked artifacts. Include the provisional checkpoint's failed conditional tests and development history: this is a reviewable inference experiment, with M3.3 scientific acceptance still pending. Exercises should explain why marginal SBC cannot settle a conditional discrepancy and why independent marginal parameter/state draws change a forecast. If M3.F is added, give its exact-artifact parity evidence a separately labelled section.
+
+Verify each notebook by offline headless execution and HTML export, checking the displayed gate status against the reports. Use cached reference inference; default execution must not train or launch PMCMC/grid studies. A passing notebook execution does not clear failed posterior gates or substitute for the kernel backfill.
+
 ## Deliverables
 
-Heston and Gaussian-price-jump capabilities, model-specific continuation, task configurations, difficult-region fixtures, a pilot posterior/forecast report, and a collaborator compatibility report. The report may state that the bundle is pending; common model work does not depend on its arrival.
+Heston and Gaussian-price-jump capabilities, model-specific continuation, task configurations, difficult-region fixtures, a pilot posterior/forecast report, verified kernel/inference review notebooks, and a collaborator compatibility report. The report may state that the bundle is pending; common model work does not depend on its arrival.
 
 ## Acceptance and tests
 

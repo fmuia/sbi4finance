@@ -1,6 +1,6 @@
 # M1 GBM with analytic inference and pricing references
 
-**Status:** proposed; implementation starts after review. **Depends on:** [M0](00-contracts.md). Read [foundations](../notes/01-foundations.md), [models and numerics](../notes/02-models-and-numerics.md), and [inference and pricing](../notes/03-inference-and-pricing.md).
+**Status:** acceptance scope; track implementation evidence and didactic completion separately. **Depends on:** [M0](00-contracts.md). Read [foundations](../notes/01-foundations.md), [models and numerics](../notes/02-models-and-numerics.md), and [inference and pricing](../notes/03-inference-and-pricing.md).
 
 ## Purpose
 
@@ -16,7 +16,7 @@ Build the smallest complete scientific example whose simulation, likelihood, pos
 
 ## Ordered implementation subplan
 
-All steps below are planned, not implemented. Work in order; each step uses the preceding step's output. Destinations are guidance for the existing package layout, not fixed API signatures.
+Work in order; each step uses the preceding step's output. Acceptance is evidenced in the implementation PRs. Destinations are guidance for the existing package layout, not fixed API signatures.
 
 | Step | Concrete output | Verification/handoff |
 |---|---|---|
@@ -24,9 +24,15 @@ All steps below are planned, not implemented. Work in order; each step uses the 
 | M1.2 — Analytic P and Q references | Analytic likelihood, Gaussian posterior and predictive utilities in `inference/`; European price and integrated-variance references in `pricing/`. Keep the P return task and Q pricing task separately identified. | Check formulas independently, reproduce posterior updates, and compare simulation moments/prices against analytic quantities using declared statistical tolerances and loss conventions. |
 | M1.3 — Reproducible fixtures and baseline | Compact synthetic fixtures with metadata, a runnable local demonstration in `scripts/`, targeted validation checks and a NumPy baseline benchmark. | Reproduce the full simulation-to-prediction demonstration without market files, a neural checkpoint or cluster access. Hand accepted fixtures and reference results to M2 and later model branches; record whether acceleration is justified. |
 
+## Didactic review deliverable
+
+Backfill pending: extend `notebooks/01_gbm_foundations.py` with M1's exact log-increment equation, proportional-versus-log drift, Gaussian posterior update and separate Q European pricing section. Follow the [common review requirements](../README.md#didactic-review-notebooks-at-every-milestone). Run a seeded small history through the actual simulator, analytic posterior and conditional prediction; label units, known context and truth. Display numerical/reference comparisons and link fixtures. Exercises should predict how window length affects drift uncertainty and explain why the P drift is not the Q pricing drift.
+
+Accept the section after offline headless execution/export reproduces the example without neural, market or cluster dependencies and renders the analytic checks with their tolerances. Do not mark this pending backfill complete because the reference script already works.
+
 ## Deliverables
 
-GBM reference kernels, a returns-task configuration, an analytic Bayesian reference utility, European price references, and compact reproducible synthetic fixtures with origin and truth-label metadata. Provide a small script demonstrating simulation → observations → analytic posterior → conditional prediction; it must not depend on a neural checkpoint, market file, provider, or cluster access.
+GBM reference kernels, a returns-task configuration, an analytic Bayesian reference utility, European price references, compact reproducible synthetic fixtures with origin and truth-label metadata, and the verified M1 review section. Provide a small script demonstrating simulation → observations → analytic posterior → conditional prediction; it must not depend on a neural checkpoint, market file, provider, or cluster access.
 
 ## Acceptance and tests
 

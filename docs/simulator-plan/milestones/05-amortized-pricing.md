@@ -1,6 +1,6 @@
 # M5 Parameter posteriors and amortized pricing
 
-**Status:** proposed; implementation starts after review. **Depends on:** accepted [M4.3](04-hkde-and-options.md) option observations and the local bank/loader pipeline in [M2.3](02-banks-and-cluster.md). Read [inference and pricing](../notes/03-inference-and-pricing.md) and [software and data](../notes/04-software-and-data.md).
+**Status:** acceptance scope; track implementation evidence and didactic completion separately. **Depends on:** accepted [M4.3](04-hkde-and-options.md) option observations and the local bank/loader pipeline in [M2.3](02-banks-and-cluster.md). Read [inference and pricing](../notes/03-inference-and-pricing.md) and [software and data](../notes/04-software-and-data.md).
 
 ## Purpose
 
@@ -24,9 +24,15 @@ Establish the relationship between Bayesian calibration and fast downstream pric
 
 Complete M5.1 first. M5.2 and, if selected, M5.3 then use that accepted baseline; M5.3 need not wait for surrogate acceptance. Likely destinations are `inference/` and `adapters/` for calibration, `surrogates/` for regression, and `tasks/` for their distinct datasets. Checkpoint cards must identify which route and supported domain they implement.
 
+## Didactic review deliverable
+
+Planned with M5: extend `notebooks/06_hkde_and_pricing.py` with separate sections for the parameter posterior plus reference pricer, supervised surrogate and optional direct-price posterior. Follow the [common review requirements](../README.md#didactic-review-notebooks-at-every-milestone). Explain each conditional distribution or regression target, then run one bounded synthetic-panel example through the implemented routes. Display inference errors separately from pricing errors and measured costs, with links to exact checkpoint/bank/reference reports. Failed or unimplemented routes remain visibly distinct from the accepted baseline. Exercises should trace a training label through each route and distinguish a distribution of model prices from realized payoff uncertainty.
+
+Accept the sections after offline headless execution/export reproduces the included routes and renders their independent gates. Expensive label generation and retraining are opt-in commands; optional direct-price work cannot block the M5.1 review.
+
 ## Deliverables
 
-A validated parameter-posterior workflow, reference posterior price distributions, a supervised pricing prototype and domain/error report, and a short decision on whether direct posterior-price inference adds value. Keep model-posterior and surrogate checkpoints distinct.
+A validated parameter-posterior workflow, reference posterior price distributions, a supervised pricing prototype and domain/error report, verified M5 review sections, and a short decision on whether direct posterior-price inference adds value. Keep model-posterior and surrogate checkpoints distinct.
 
 ## Acceptance and tests
 

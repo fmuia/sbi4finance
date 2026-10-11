@@ -1,6 +1,6 @@
 # M0 Scientific and software contracts
 
-**Status:** proposed; implementation starts after review. **Depends on:** no implementation milestone. Read [foundations](../notes/01-foundations.md), [software and data](../notes/04-software-and-data.md), and the [roadmap](../README.md).
+**Status:** acceptance scope; track implementation evidence and didactic completion separately. **Depends on:** no implementation milestone. Read [foundations](../notes/01-foundations.md), [software and data](../notes/04-software-and-data.md), and the [roadmap](../README.md).
 
 ## Purpose
 
@@ -20,7 +20,7 @@ Adopt the [S/M/E evidence boundary](https://github.com/fmuia/sbi4finance/blob/1e
 
 ## Ordered implementation subplan
 
-All steps below are planned, not implemented. Work in order; each step uses the preceding step's output. Suggested destinations follow the [module responsibilities](../notes/04-software-and-data.md#responsibilities-and-dependencies), without fixing final filenames or requiring empty modules.
+Work in order; each step uses the preceding step's output. Acceptance is evidenced in the implementation PRs. Suggested destinations follow the [module responsibilities](../notes/04-software-and-data.md#responsibilities-and-dependencies), without fixing final filenames or requiring empty modules.
 
 | Step | Concrete output | Verification/handoff |
 |---|---|---|
@@ -28,9 +28,15 @@ All steps below are planned, not implemented. Work in order; each step uses the 
 | M0.2 — Two worked task schemas | A synthetic returns specification and option-panel specification, illustrated with paper/mock records for batch shapes, priors/targets, hypothetical context, example/split identity, and S/M/E provenance and truth-label metadata. These guide `tasks/`, `configs/tasks/`, `datasets/` and `adapters/`. | Trace the declared roles of parameter draws, observations and targets without requiring executable simulators. Show that no latent truth or future evaluation outcome enters conditioning, and that neither task needs market fixtures. |
 | M0.3 — Accepted contracts and decision record | Consolidated contracts plus a short record of resolved choices and explicitly deferred alternatives. Identify the subset needed for GBM and bank generation. | Hand the agreed subset to M1 and M2. Keep the returns-versus-options teaching choice open; pending collaborator mappings or optional M/E acquisition do not block the common contracts. |
 
+## Didactic review deliverable
+
+Backfill pending: add an M0 contracts section to the proposed `notebooks/01_gbm_foundations.py`, following the [common review requirements](../README.md#didactic-review-notebooks-at-every-milestone). Explain the P/Q questions and units, then execute small worked returns and option-panel records with role/shape checks; this requires no simulator. Show the observation/context/target boundary and unresolved conventions. Include exercises identifying a leaked latent label and distinguishing a changed statistical task from a changed execution setting. Link the actual configurations and contract notes as they become available.
+
+Accept this section only after headless execution and HTML export offline show both records and their boundaries correctly. Existing contract documentation alone does not complete the notebook backfill.
+
 ## Deliverables
 
-A reviewed convention table, two worked task specifications, illustrative batch shapes, a minimal capability table, and a short decision record for unresolved scientific choices. The initial package remains inside `sbi4finance`; these documents define the boundary for later code, not a requirement to create every suggested module immediately.
+A reviewed convention table, two worked task specifications, illustrative batch shapes, a minimal capability table, the verified M0 review section, and a short decision record for unresolved scientific choices. The initial package remains inside `sbi4finance`; these documents define the boundary for later code, not a requirement to create every suggested module immediately.
 
 ## Acceptance and tests
 

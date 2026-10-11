@@ -1,6 +1,6 @@
 # M2 Reproducible banks, offline loading, and CPU arrays
 
-**Status:** proposed; implementation starts after review. **Depends on:** [M0](00-contracts.md) and [M1](01-gbm-reference.md). Read [software and data](../notes/04-software-and-data.md).
+**Status:** acceptance scope; track implementation evidence and didactic completion separately. **Depends on:** [M0](00-contracts.md) and [M1](01-gbm-reference.md). Read [software and data](../notes/04-software-and-data.md).
 
 ## Purpose
 
@@ -18,7 +18,7 @@ Start with one compact bank and a thin generation/training script. This mileston
 
 ## Ordered implementation subplan
 
-All steps below are planned, not implemented. Work in order; each step uses the preceding step's output. M2.1–M2.3 establish local acceptance. M2.4 requires measured execution on the actual cluster and stays pending if access is unavailable; an offline rehearsal cannot satisfy it. Suggested destinations do not freeze filenames or public APIs.
+Work in order; each step uses the preceding step's output. Acceptance is evidenced in the implementation PRs. M2.1–M2.3 establish local acceptance. M2.4 requires measured execution on the actual cluster and stays pending if access is unavailable; an offline rehearsal cannot satisfy it. Suggested destinations do not freeze filenames or public APIs.
 
 | Step | Concrete output | Verification/handoff |
 |---|---|---|
@@ -27,9 +27,15 @@ All steps below are planned, not implemented. Work in order; each step uses the 
 | M2.3 — Load and tiny training round trip | A saved-bank → in-memory arrays → `fit_offline` demonstration, reloadable checkpoint and configuration links. Add a custom disk-batching bridge only if memory measurements require one. | Compare saved and loaded data; complete synthetic train/save/reload against GBM with every market fixture absent and provider access disabled. Check training-only normalization and no truth/diagnostic leakage. Record a simple runtime/memory measurement. |
 | M2.4 — Actual cluster smoke and cost measurements | A thin CPU job script in `cluster/` invoking the same generator and checks, plus a short run record identifying code/environment, resources, storage and bank. | Execute a small real cluster job and verify output/selected ID reproduction. Measure cost before scaling. Add array partitioning when needed; actual remote execution remains pending if access is unavailable. |
 
+## Didactic review deliverable
+
+Backfills pending for increments 2 and 3: use explicit local-bank and cluster sections in the proposed `notebooks/01_gbm_foundations.py`, following the [common review requirements](../README.md#didactic-review-notebooks-at-every-milestone). Explain the generative training pairs, independent splits, stable identity and training-only normalization. Generate/reload a tiny temporary bank and inspect the actual manifest and saved-checkpoint round-trip evidence. Show cluster commands, artifact lineage and actual resource results or pending status; the default notebook never submits a job or starts training. Exercises should trace one example across batching and identify augmentation/split leakage.
+
+Accept each section after offline headless execution/export displays its small calculation and linked evidence correctly. A rendered cluster command is not M2.4 execution evidence; a successful cluster job does not itself complete this didactic backfill.
+
 ## Deliverables
 
-A small generation/checking command, saved arrays and metadata, an in-memory training/reload example, a CPU job script and local-to-cluster smoke instructions. Checkpoints reference bank/configuration and adapter versions. Shard-aware loading and larger arrays are conditional extensions, not prerequisites for accepting a small bank workflow.
+A small generation/checking command, saved arrays and metadata, an in-memory training/reload example, a CPU job script, local-to-cluster smoke instructions and verified local/cluster review sections. Checkpoints reference bank/configuration and adapter versions. Shard-aware loading and larger arrays are conditional extensions, not prerequisites for accepting a small bank workflow.
 
 ## Acceptance and tests
 

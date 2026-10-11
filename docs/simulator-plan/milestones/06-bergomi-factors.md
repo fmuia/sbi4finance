@@ -1,6 +1,6 @@
 # M6 One-factor Bergomi, with a two-factor extension
 
-**Status:** proposed; implementation starts after review. **Depends on:** [M0](00-contracts.md) and [M1](01-gbm-reference.md) for kernels; the local bank/loader pipeline in [M2.3](02-banks-and-cluster.md) for the pilot bank. This branch is independent of HKDE and M5. Read [models and numerics](../notes/02-models-and-numerics.md).
+**Status:** acceptance scope; track implementation evidence and didactic completion separately. **Depends on:** [M0](00-contracts.md) and [M1](01-gbm-reference.md) for kernels; the local bank/loader pipeline in [M2.3](02-banks-and-cluster.md) for the pilot bank. This branch is independent of HKDE and M5. Read [models and numerics](../notes/02-models-and-numerics.md).
 
 ## Purpose
 
@@ -25,9 +25,15 @@ Introduce lognormal forward variance with a finite-dimensional continuation stat
 
 Implement the required one-factor steps in order. Use `simulators/`, `pricing/`, `observations/` and `tasks/` under `src/sbi4finance/` as they acquire implementations. M6.3 can implement the panel helper against M0's schema if M4.2 has not run, or reuse it if already accepted; neither the helper nor its task contract requires HKDE. A one-factor inference teaching release would additionally need an accepted posterior/reference workflow; the bank alone does not provide that inference gate.
 
+## Didactic review deliverable
+
+Planned with M6: start `notebooks/08_bergomi_models.py` with the forward-variance curve, normalized factor model and complete continuation state. Follow the [common review requirements](../README.md#didactic-review-notebooks-at-every-milestone). Show a small seeded factor/variance example and bounded European pricing comparison using generated curve context. Identify units, known versus inferred inputs and numerical integration settings; link covariance, normalization, continuation and pricing evidence with any failures. Exercises should explain why an exact OU transition does not make the asset price exact and why restarting the original curve loses conditioning. Add two-factor material only if M6.4 is implemented.
+
+Accept the sections after offline headless execution/export displays the small calculation and uncertainty-aware references without market curves or expensive default MC. Kernel/bank evidence alone must not be presented as a validated posterior.
+
 ## Deliverables
 
-One-factor kernels, continuation support, curve/task specifications, Gaussian reference fixtures, and a small option bank with price-error diagnostics. The optional two-factor extension receives a separate configuration and acceptance report.
+One-factor kernels, continuation support, curve/task specifications, Gaussian reference fixtures, a small option bank with price-error diagnostics and verified M6 review sections. The optional two-factor extension receives a separate configuration and acceptance report.
 
 ## Acceptance and tests
 
