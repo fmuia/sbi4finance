@@ -20,13 +20,13 @@ curriculum or a relaxation of scientific gates.
 | 6/10, M4 — [PR #12](https://github.com/fmuia/sbi4finance/pull/12) | HKDE jumps, Fourier European pricing, common option-panel bank and offline notebook06; actual option-bank cluster run recorded below | Wider numerical domains, Q inference and American/exotic extensions are separate. |
 | 8/10, M6 — [PR #13](https://github.com/fmuia/sbi4finance/pull/13) | One-factor Bergomi, exact OU/asset covariance, complete continuation, bounded-price MC, bank and notebook08 | Price-label bias at the final chosen tolerance; no accepted posterior or optional two-factor model. |
 | 9/10, M7 — [PR #14](https://github.com/fmuia/sbi4finance/pull/14) | Joint Gaussian rough reference, FFT hybrid driver, European pricing, bank and rough sections in notebook08 | M7.3b posterior work deferred; no scalar-state rough-memory forecast. |
-| 7/10, M5 | Next: restricted two-parameter HKDE inference using the existing option task; no neural result delivered | Follow [M5.1a–M5.1e](milestones/05-amortized-pricing.md#next-increment-restricted-hkde-baseline): freeze evidence design, refine a likelihood/grid reference, train one small baseline, check conditional/joint and price outputs, then verify its offline review. A surrogate has its own later gate. |
+| 7/10, M5 — [PR #15](https://github.com/fmuia/sbi4finance/pull/15) | [First restricted HKDE baseline](https://github.com/fmuia/sbi4finance/blob/feat/hkde-inference/docs/hkde-joint-inference.md): refined reference, trained checkpoint, conditional/joint/SBC/price audit and marimo review | Numerical reference and parameter/SBC gates pass; price-quantile error 0.0439 exceeds 0.03. Checkpoint provisional, final test untouched. M5.1 acceptance and M5.2 surrogate remain pending. |
 | 10/10, M8 | Participant release remains pending | Select a coherent application and meet its numerical/inference and offline teaching gates. |
 
 All three 24-panel banks save/load and reproduce selected IDs. Bergomi bank
 sampling SEs are below 10% of quote sigma, but their 128-to-512-step checks do
 not prove bias below 0.025 currency. Treat these as numerical pilot labels,
-not continuum-price oracles. The full stack passes 84 software tests; the
+not continuum-price oracles. The full stack passes 104 software tests; the
 HKDE and combined Bergomi marimo reviews pass isolated offline export without
 market fixtures or external connections. These execution checks do not accept
 new posteriors. Source hashes and full numerical evidence are committed with
@@ -49,9 +49,13 @@ most **1.25e-14 currency**. This portable tolerance neither relaxes task pricing
 gates nor promises cross-platform binary equality; integrity and parameter
 identity checks remain separate.
 
-Next develop the restricted HKDE posterior/reference path. Its deterministic
-Fourier labels avoid making unresolved Bergomi grid bias a dependency of this
-first Q-inference experiment. Bergomi's banks remain numerical pilots, and
+The restricted HKDE posterior/reference path has now run once under its frozen
+protocol. Mean RMSE is 0.123 reference SD versus 2.09 for the prior baseline;
+parameter checks and marginal SBC pass, but the 0.0439 currency target-price
+quantile error exceeds the 0.03 gate. The stop rule was applied without tuning
+or final-test evaluation. The review notebook teaches this provisional result.
+Its deterministic Fourier labels avoid making unresolved Bergomi grid bias a
+dependency of this first Q-inference experiment. Bergomi's banks remain numerical pilots, and
 Heston's frozen failed gates remain unchanged. This ordering does not select
 the participant curriculum. No schema registry, orchestration service or
 additional production framework is needed. The original 10-part numbering

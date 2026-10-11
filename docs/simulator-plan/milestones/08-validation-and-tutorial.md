@@ -14,11 +14,15 @@ also records matched hashes for all 15 transferred files and passed portable
 regeneration, including the initial HKDE comparison failure and the documented
 tolerance adjustment. These storage/portability checks remain separate from
 scientific accuracy.
-The follow-up queue is the [restricted HKDE reference/inference subplan](05-amortized-pricing.md#next-increment-restricted-hkde-baseline),
-its conditional/joint and downstream-price validation, then the selected paced
-participant notebook. Bergomi's remaining label-bias work does not block that
-HKDE experiment. No new inference or participant acceptance follows from the
-cluster runs, and the recorded Heston failures remain unresolved.
+The first [restricted HKDE experiment](https://github.com/fmuia/sbi4finance/blob/feat/hkde-inference/docs/hkde-joint-inference.md) now
+implements that reference/inference path and its review. Parameter and marginal
+SBC checks pass, but the target-price quantile gate fails (0.0439 versus 0.03
+currency). Its checkpoint remains provisional and final test unused. A verified
+review of this outcome does not accept a participant inference workflow;
+M5.1 scientific acceptance and the selected paced participant notebook remain
+pending. Bergomi's remaining label-bias work does not block that
+HKDE experiment. No participant acceptance follows from the
+cluster runs or provisional checkpoint, and the recorded Heston failures remain unresolved.
 Market acquisition cannot block the required offline S delivery.
 
 Assemble evidence already collected at each milestone into a complete S participant workflow. Validation and didactic review begin with M0 contracts and M1 analytic checks; this milestone closes end-to-end gaps rather than postponing either. The earlier review notebooks explain each development increment, including failed experiments; M8 selects and paces a scientifically accepted application for participants. M is an optional market illustration and E is a separate empirical extension; neither is required for S acceptance.
