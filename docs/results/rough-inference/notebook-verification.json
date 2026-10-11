@@ -1,0 +1,38 @@
+{
+  "scope": "Offline didactic review; cached scientific statuses remain separate from execution success.",
+  "notebook": "notebooks/09_rough_inference.py",
+  "strict_marimo_check": "passed",
+  "exit_code": 0,
+  "elapsed_seconds": 8.505999292246997,
+  "output_cells": 21,
+  "error_outputs": 0,
+  "external_connects_blocked": true,
+  "localhost_ipc_allowed": true,
+  "external_network_guard_sha256": "34c701c1e9ac7197e43094e02e5f84d2a4d49f8d2937f941f6ed23c37514a03d",
+  "market_data_directory_present": false,
+  "checkpoint_directory_present": false,
+  "raw_bank_directory_present": false,
+  "training_or_cluster_submission": false,
+  "ml_framework_required": false,
+  "source_and_artifact_sha256": {
+    "notebooks/09_rough_inference.py": "1bd3440f56873ebe5e90cfd16630a7b777e4a2975bb2c853ec590379bfc3b37c",
+    "scripts/plot_rough_inference.py": "5b47eceaa5ce6fcb0d630f8370f20a941ca044b7abd56f58b42f4e3099dd8368",
+    "configs/rough_inference_protocol.json": "3b7ac94285efd3010c6222aede83d1b5bf2e246f576bf36a9ad633c0ca85eabd",
+    "configs/tasks/rough_inference_bank.json": "b514e6a7079acbd3975ad96458cd2be5c00c113adc8c1b7df967fa43d4809021",
+    "src/sbi4finance/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/sbi4finance/rough_reference.py": "db4042d9794fd0ea61e924dcfd4b7a914914076d88646be97d98ea1ad504b622",
+    "docs/results/rough-inference/reference.npz": "58ee13a5af3fa243f68c5ce39416a74e0697d5b6f8a8920ba35e32cf84b52982",
+    "docs/results/rough-inference/reference.json": "9e8dff7d24e35a325c93f1d5c96cadcfa45f44c6d52ecec14707d4140024228c",
+    "docs/results/rough-inference/cluster.json": "9d19a8ac0d411c07c5f7a3c3ec0dfe917b508b199fb51c7759df16690887959f",
+    "docs/results/rough-inference/reference-bank-manifest.json": "b3c312f13fca8ea3588b8e56cd364ae111fcc34df3307e468a7d3cc17e5cfa5d",
+    "docs/results/rough-inference/software-smoke.json": "1788b579ae98a5e6e3f3bb407e984b978babad7b54c0d9672e2fa817e8fdf196"
+  },
+  "html_sha256": "7180a8a5537d2e93e2679d8f0446af947bf2f2acae154a77e633371035377955",
+  "command": "PYTHONPATH=OFFLINE_GUARD:src MPLBACKEND=Agg python -m marimo export html notebooks/09_rough_inference.py -o review.html --force",
+  "inspection": "passed: exported status tables and stop-rule text inspected; analytic toy and actual reference diagnostic figures visually inspected",
+  "software_checks": {
+    "integrated_tests": 142,
+    "standalone_pr14_tests": 122,
+    "reduced_cli_smoke": "software-smoke.json"
+  }
+}

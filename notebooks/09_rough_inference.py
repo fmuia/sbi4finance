@@ -64,19 +64,29 @@ def _(ROOT, json, plot_helpers):
 @app.cell
 def _(mo, reports):
     _rows = []
+    _reference_stopped = reports.get("reference", {}).get("passed") is False
     for _name in ("reference", "training", "evaluation"):
         _report = reports.get(_name)
-        _status = ("not recorded" if _report is None else
+        _status = ("not run: reference stop rule (includes SBC)" if _report is None and _reference_stopped and _name == "evaluation" else
+                   "not run: reference stop rule" if _report is None and _reference_stopped else
+                   "not recorded" if _report is None else
                    "reload verified; inference acceptance separate" if _name == "training" and _report.get("same_seed_reload_exact") else
                    "PASS" if _report.get("passed") else "FAIL / unresolved")
         _rows.append({"Stage": _name, "Saved status": _status})
+    if _reference_stopped:
+        _cases = reports["reference"]["cases"]
+        _failed = [_case["case_id"] for _case in _cases if not _case["passed"]]
+        _message = (f"The frozen pilot stopped at reference validation: {len(_failed)} of {len(_cases)} cases "
+                    f"missed at least one gate ({', '.join(_failed)}). Neural training and SBC were not run. "
+                    "Separate small CLI smoke runs check software wiring only; they are not results of this frozen experiment.")
+    else:
+        _message = ("Reports are not yet present. The protocol and scalar illustration below remain runnable offline."
+                    if not reports else
+                    "This view displays the saved run, including failed gates. It performs no tuning or new final-test evaluation.")
     mo.vstack([
         mo.md("## Current evidence\n\nA delivered simulator, a sufficiently precise reference, and an accepted neural posterior are different achievements."),
         mo.ui.table(_rows, selection=None),
-        mo.callout("Reports are not yet present. The protocol and scalar illustration below remain runnable offline."
-                   if not reports else
-                   "This view displays the saved run, including failed gates. It performs no tuning or new final-test evaluation.",
-                   kind="info"),
+        mo.callout(_message, kind="warn" if _reference_stopped else "info"),
     ])
     return
 
@@ -194,6 +204,58 @@ def _(bank_config, mo, protocol):
                      {"Role": "Independent reference rows", "Count": protocol["reference"]["rows"]},
                      {"Role": "Reserved final-test cases", "Count": bank_config["splits"]["test"]}], selection=None),
     ])
+    return
+
+
+@app.cell
+def _(mo, reports):
+    _cluster = reports.get("cluster")
+    _items = [mo.md(r"""
+        ## Measured cluster generation cost
+
+        Bank generation is a one-off cost shared by later training and audit
+        calculations. The independent prior-reference bank is also reusable:
+        a new compatible panel can reweight its existing rows without
+        regenerating them, provided its importance diagnostics remain adequate.
+        **Both routes therefore have amortization.** A neural speed advantage
+        requires an actual comparison at comparable accuracy, with generation,
+        training, posterior evaluation and downstream pricing counted separately.
+        """)]
+    if _cluster:
+        _accounting = _cluster["accounting"]
+        _allocation = _cluster["allocation"]
+        _items.append(mo.ui.table([
+            {"Quantity": "Generated base panels, total", "Recorded value": f"{_cluster['total_generated_panels']:,}"},
+            {"Quantity": "Pilot / independent-reference panels", "Recorded value":
+             f"{_cluster['banks']['pilot']['total_examples']:,} / {_cluster['banks']['reference']['total_examples']:,}"},
+            {"Quantity": "Completed array tasks / submitted", "Recorded value":
+             f"{_accounting['all_task_states'].get('COMPLETED', 0)} / {_allocation['array_tasks']}"},
+            {"Quantity": "First task start to last task end (minutes)", "Recorded value":
+             f"{_accounting['wall_span_seconds'] / 60:.2f}"},
+            {"Quantity": "Allocated CPU hours (not utilized CPU time)", "Recorded value":
+             f"{_accounting['allocated_cpu_hours']:.2f}"},
+            {"Quantity": "Maximum simultaneous tasks, observed / requested", "Recorded value":
+             f"{_allocation['observed_max_concurrent_tasks']} / {_allocation['max_concurrent_tasks_requested']}"},
+            {"Quantity": "Allocated CPUs per task", "Recorded value": str(_allocation['cpus_per_task'])},
+            {"Quantity": "Maximum single-task batch-step RSS (MiB)", "Recorded value":
+             f"{_accounting['max_task_batch_rss_bytes'] / 2**20:.2f}"},
+        ], selection=None))
+        _items.append(mo.md(r"""
+        The reference panel count includes two unused compatibility rows.
+        Wall span excludes queueing before the first task starts. Allocated
+        CPU hours sum each parent task's elapsed time times its allocated CPUs;
+        they are **not measured utilized CPU time**, and job steps are not
+        double-counted. RSS is the largest recorded batch-step resident-memory
+        value, not the sum across simultaneous tasks.
+
+        These measurements cover bank generation. Independent target-pricing
+        reference calculations, neural training and downstream neural-draw
+        pricing are separate costs. Successful cluster execution and portable
+        bank delivery do not establish posterior or market-model acceptance.
+        """))
+    else:
+        _items.append(mo.callout("No cluster accounting report is present. Generation costs remain unreported.", kind="info"))
+    mo.vstack(_items)
     return
 
 
@@ -338,21 +400,25 @@ def _(mo, reports):
               for _name, _value in _training_report["timing_seconds"].items()],
         ], selection=None))
     else:
-        _items.append(mo.callout("No training report is present. The cached review does not load an optional checkpoint.", kind="info"))
+        _items.append(mo.callout(
+            "Training was not run: the frozen reference acceptance gate failed. A software smoke-test checkpoint is not this pilot's result."
+            if reports.get("reference", {}).get("passed") is False else
+            "No training report is present. The cached review does not load an optional checkpoint.", kind="info"))
     mo.vstack(_items)
     return
 
 
 @app.cell
-def _(cached_figures, mo):
+def _(cached_figures, mo, reports):
     _items = [mo.md(r"""
-        ## Yes, this includes SBC—and SBC alone is insufficient
+        ## Planned SBC—and why SBC alone is insufficient
 
-        For each of 512 independent audit panels, we know the synthetic truth
-        and draw 512 posterior samples. Rank the truth among the samples,
+        The protocol calls for 512 independent audit panels with known
+        synthetic truth and 512 posterior samples per panel, **after the
+        reference gate passes**. Rank the truth among the samples,
         randomize ties and rank-bin positions, and compare the marginal rank
-        distribution with uniform. The graph shows **empirical CDF minus the
-        uniform CDF**; zero is ideal. Dashed DKW limits control the two marginal
+        distribution with uniform. The diagnostic would plot **empirical CDF
+        minus the uniform CDF**; zero is ideal. Dashed DKW limits control the two marginal
         rank checks together at family $\alpha=0.05$.
 
         A method that ignores $y$ and always samples the prior can pass this
@@ -365,7 +431,10 @@ def _(cached_figures, mo):
     if "marginal-sbc" in cached_figures:
         _items.append(cached_figures["marginal-sbc"])
     else:
-        _items.append(mo.callout("The saved SBC report/ranks are absent; no ranks are synthesized here.", kind="info"))
+        _items.append(mo.callout(
+            "SBC was not run for this frozen pilot because reference validation failed before training. No calibration claim follows from the software smoke runs."
+            if reports.get("reference", {}).get("passed") is False else
+            "The saved SBC report/ranks are absent; no ranks are synthesized here.", kind="info"))
     mo.vstack(_items)
     return
 

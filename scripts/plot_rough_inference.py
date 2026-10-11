@@ -29,7 +29,7 @@ def load_reports(directory):
     directory = Path(directory)
     reports, paths = {}, {}
     for name, filename in (("reference", "reference.json"), ("evaluation", "neural-validation.json"),
-                           ("training", "training.json")):
+                           ("training", "training.json"), ("cluster", "cluster.json")):
         path = directory / filename
         if path.exists():
             reports[name] = json.loads(path.read_text())
@@ -226,27 +226,44 @@ def target_figure(evaluation, reference):
 
 def reference_figure(reference):
     cases = reference["cases"]
-    figure, axes = plt.subplots(2, 1, figsize=(12.2, 6.4), sharex=True)
+    figure, axes = plt.subplots(3, 1, figsize=(12.2, 8.6), sharex=True)
     ids = [case["case_id"] for case in cases]
     x = np.arange(len(cases))
-    axes[0].plot(x, [case["reference"]["ess"] for case in cases], "o-", color=COLORS["reference"], ms=4)
-    axes[0].set_ylabel("Importance effective\nsample size")
-    for dimension, label in enumerate(PARAMETERS):
-        axes[1].plot(x, [case["reference"]["mean_mcse_in_ref_sd"][dimension] for case in cases],
-                     "o-", ms=4, label=label)
-    axes[1].set_ylabel("Mean MCSE /\nreference SD")
     thresholds = reference.get("thresholds", {})
-    if "min_ess" in thresholds:
-        axes[0].axhline(thresholds["min_ess"], color=COLORS["gate"], ls="--")
+    for axis, key, gate_name, ylabel, minimum in (
+        (axes[0], "ess", "min_ess", "Importance effective\nsample size", True),
+        (axes[1], "max_weight", "max_weight", "Largest normalized\nimportance weight", False),
+    ):
+        values = np.asarray([case["reference"][key] for case in cases])
+        axis.plot(x, values, "o-", color=COLORS["reference"], ms=4)
+        axis.set_ylabel(ylabel)
+        if gate_name in thresholds:
+            gate = thresholds[gate_name]
+            axis.axhline(gate, color=COLORS["gate"], ls="--", lw=1,
+                         label=f"Frozen {'minimum' if minimum else 'maximum'}: {gate:g}")
+            failed = np.flatnonzero(values < gate if minimum else values > gate)
+            axis.scatter(x[failed], values[failed], marker="x", s=65, linewidths=2,
+                         color=COLORS["gate"], zorder=5)
+            for index in failed:
+                axis.annotate(f"{ids[index]}: {values[index]:.4g}", (x[index], values[index]),
+                              xytext=(8, -16), textcoords="offset points", fontsize=8,
+                              color=COLORS["gate"])
+            axis.legend(loc="upper right", fontsize=8)
+    for dimension, label in enumerate(PARAMETERS):
+        axes[2].plot(x, [case["reference"]["mean_mcse_in_ref_sd"][dimension] for case in cases],
+                     "o-", ms=4, label=label, color=[COLORS["neural"], COLORS["reference"]][dimension])
+    axes[2].set_ylabel("Mean MCSE /\nreference SD")
     if "max_mean_mcse_in_ref_sd" in thresholds:
-        axes[1].axhline(thresholds["max_mean_mcse_in_ref_sd"], color=COLORS["gate"], ls="--")
+        gate = thresholds["max_mean_mcse_in_ref_sd"]
+        axes[2].axhline(gate, color=COLORS["gate"], ls="--", lw=1, label=f"Frozen maximum: {gate:g}")
     for axis in axes:
         _case_axis(axis, ids)
     axes[0].set_xlabel("")
-    axes[1].legend(fontsize=8)
+    axes[1].set_xlabel("")
+    axes[2].legend(fontsize=8, loc="upper right", ncol=3)
     return _finish(figure, "Independent importance-reference precision",
-                   "ESS and mean MCSE are necessary finite-bank checks, not proof of complete posterior support.\n"
-                   "Largest weight, independent-block agreement and target-mean precision have separate recorded gates.")
+                   "Red crosses identify failed ESS/weight gates; passing mean MCSE does not override them.\n"
+                   "Independent-block and target-mean precision have additional gates. These checks do not prove complete posterior support.")
 
 
 def figures(reports, checks):
