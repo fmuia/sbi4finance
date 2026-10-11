@@ -152,6 +152,8 @@ def main():
                         help="training architecture; --checkpoint restores its own saved architecture")
     parser.add_argument("--explicit-time", action="store_true",
                         help="train with known end times and globally scaled Time2Vec inputs; frozen checkpoints use their saved adapter")
+    parser.add_argument("--asinh-state", action="store_true",
+                        help="train with explicit time and reversible asinh(state/0.01) targets; no clipping or support restriction")
     parser.add_argument("--epochs", type=int, default=40)
     parser.add_argument("--batch-size", type=int, default=128)
     parser.add_argument("--draws", type=int, default=2048)
@@ -170,6 +172,8 @@ def main():
     if args.checkpoint is None and split != "validation":
         raise ValueError("develop on validation; evaluate test only with a frozen --checkpoint")
     adapter_id = heston_inference.TIME_ADAPTER_ID if args.explicit_time else heston_inference.ADAPTER_ID
+    if args.asinh_state:
+        adapter_id = heston_inference.ASINH_ADAPTER_ID
     if args.checkpoint is not None:
         checkpoint_design = json.loads((args.checkpoint / "task.json").read_text())
         if set(checkpoint_design) != {"task", "adapter_id"} or checkpoint_design["task"] != task:
@@ -215,6 +219,7 @@ def main():
         "checkpoint_sha256": file_hash(checkpoint),
         "source_sha256": {"train_heston.py": file_hash(__file__),
                           "heston_inference.py": file_hash(heston_inference.__file__),
+                          "heston_transforms.py": file_hash(Path(heston_inference.__file__).with_name("heston_transforms.py")),
                           "heston_forecast.py": file_hash(heston_forecast.__file__)},
         "versions": {"python": platform.python_version(), "numpy": np.__version__,
                      "bayesflow": bf.__version__, "keras": keras.__version__, "jax": jax.__version__},

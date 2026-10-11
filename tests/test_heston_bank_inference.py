@@ -12,7 +12,8 @@ from numpy.testing import assert_allclose, assert_array_equal
 
 from sbi4finance.heston_bank import generate_examples, load_bank, write_bank
 from sbi4finance.heston_inference import (
-    ADAPTER_ID, TIME_ADAPTER_ID, build_workflow, conditioning_data, training_data,
+    ADAPTER_ID, ASINH_ADAPTER_ID, STATE_SCALE, TIME_ADAPTER_ID,
+    build_workflow, conditioning_data, training_data,
 )
 
 
@@ -204,6 +205,60 @@ class HestonBankInferenceTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "unsupported Heston adapter_id"):
             build_workflow(self.task, adapter_id="unknown")
 
+    def test_asinh_adapter_preserves_time_conditions_and_raw_signed_targets(self):
+        split = generate_examples(self.config, "train", range(3))
+        # Deliberate target perturbations exercise signed support independently
+        # of whether this small simulated batch happens to contain negatives.
+        split["terminal_state"] = np.array([[-0.01], [0.0], [0.02]])
+        previous = training_data(split, self.task, adapter_id=TIME_ADAPTER_ID)
+        selected = training_data(split, self.task, adapter_id=ASINH_ADAPTER_ID)
+        self.assertEqual(set(selected), set(previous))
+        for key in previous:
+            assert_array_equal(selected[key], previous[key])
+        assert_array_equal(selected["terminal_state"], split["terminal_state"])
+        changed = deepcopy(split)
+        changed["parameters"][:] = 0.06
+        changed["terminal_state"] *= -3
+        changed["future_returns"] = np.full((3, 10, 1), 1e6)
+        changed["diagnostics"] = np.full((3, 3), np.nan)
+        after = training_data(changed, self.task, adapter_id=ASINH_ADAPTER_ID)
+        unlabelled = conditioning_data(split["observations"], split["dt_years"], self.task,
+                                       adapter_id=ASINH_ADAPTER_ID)
+        self.assertEqual(set(unlabelled), {"observations", "history_features"})
+        for key in unlabelled:
+            assert_array_equal(after[key], selected[key])
+            assert_array_equal(unlabelled[key], selected[key])
+        assert_array_equal(after["theta"], changed["parameters"])
+        assert_array_equal(after["terminal_state"], changed["terminal_state"])
+
+    def test_signed_state_asinh_inverse_and_change_of_variables(self):
+        with patch.dict(os.environ, {"KERAS_BACKEND": "jax"}):
+            from sbi4finance.heston_transforms import SignedStateAsinh
+
+            transform = SignedStateAsinh(scale=STATE_SCALE)
+            values = np.array([[-0.5, -0.02], [-0.001, 0.0], [0.001, 0.02], [0.5, 1.0]])
+            original = values.copy()
+            transformed = transform.forward(values)
+            assert_array_equal(np.sign(transformed), np.sign(values))
+            assert_allclose(transform.inverse(transformed), values, rtol=2e-14, atol=1e-16)
+            assert_array_equal(values, original)
+
+            # Finite differences validate the Jacobian, including its sign,
+            # raw-unit scale and sum over the two event dimensions.
+            delta = 1e-7
+            derivative = (transform.forward(values + delta)
+                          - transform.forward(values - delta)) / (2 * delta)
+            numeric_log_det = np.log(np.abs(derivative)).sum(axis=1)
+            forward_log_det = transform.log_det_jac(values)
+            assert_allclose(forward_log_det, numeric_log_det, rtol=2e-8, atol=2e-8)
+            inverse_delta = 1e-6
+            inverse_derivative = (transform.inverse(transformed + inverse_delta)
+                                  - transform.inverse(transformed - inverse_delta)) / (2 * inverse_delta)
+            inverse_log_det = transform.log_det_jac(transformed, inverse=True)
+            assert_allclose(inverse_log_det, np.log(np.abs(inverse_derivative)).sum(axis=1),
+                            rtol=2e-8, atol=2e-8)
+            assert_allclose(forward_log_det + inverse_log_det, 0.0, atol=2e-14)
+
     def test_offline_joint_training_normalization_sampling_and_reload(self):
         self._check_offline_roundtrip("flow_matching")
 
@@ -212,6 +267,9 @@ class HestonBankInferenceTests(unittest.TestCase):
 
     def test_explicit_time_joint_training_normalization_sampling_and_reload(self):
         self._check_offline_roundtrip("spline", adapter_id=TIME_ADAPTER_ID)
+
+    def test_asinh_state_joint_training_normalization_sampling_and_reload(self):
+        self._check_offline_roundtrip("spline", adapter_id=ASINH_ADAPTER_ID)
 
     def _check_offline_roundtrip(self, density_estimator, *, adapter_id=ADAPTER_ID):
         with (
@@ -237,15 +295,18 @@ class HestonBankInferenceTests(unittest.TestCase):
             checkpoint = directory / "checkpoint" / "model.keras"
             self.assertTrue(checkpoint.is_file())
             workflow.load_approximator()
-            expected_time_axis = 1 if adapter_id == TIME_ADAPTER_ID else None
+            explicit_time = adapter_id in (TIME_ADAPTER_ID, ASINH_ADAPTER_ID)
+            expected_time_axis = 1 if explicit_time else None
             self.assertEqual(workflow.approximator.summary_network.time_axis, expected_time_axis)
 
             # Compare saved statistics to independent transformed training-array
             # moments, including global raw-return scaling across all windows.
             low, high = self.task["theta_bounds"]
             transformed_theta = np.log((train["theta"] - low) / (high - train["theta"]))
-            expected_targets = np.concatenate([transformed_theta, train["terminal_state"]], axis=-1)
-            channel_count = 2 if adapter_id == TIME_ADAPTER_ID else 1
+            transformed_state = (np.arcsinh(train["terminal_state"] / STATE_SCALE)
+                                 if adapter_id == ASINH_ADAPTER_ID else train["terminal_state"])
+            expected_targets = np.concatenate([transformed_theta, transformed_state], axis=-1)
+            channel_count = 2 if explicit_time else 1
             expected = {"inference_variables": expected_targets.astype("float32"),
                         "summary_variables": train["observations"].reshape(-1, channel_count).astype("float32"),
                         "inference_conditions": train["history_features"].astype("float32")}

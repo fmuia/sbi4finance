@@ -11,10 +11,12 @@ import numpy as np
 
 ADAPTER_ID = "heston_raw_and_window_moments_v1"
 TIME_ADAPTER_ID = "heston_returns_time_and_window_moments_v2"
+ASINH_ADAPTER_ID = "heston_returns_time_asinh_state_v3"
+STATE_SCALE = 0.01  # Annualized variance units; fixed before the v3 experiment.
 
 
 def _check_adapter(adapter_id):
-    if adapter_id not in (ADAPTER_ID, TIME_ADAPTER_ID):
+    if adapter_id not in (ADAPTER_ID, TIME_ADAPTER_ID, ASINH_ADAPTER_ID):
         raise ValueError("unsupported Heston adapter_id")
 
 
@@ -43,7 +45,7 @@ def _task_design(task):
 def conditioning_data(log_returns, dt_years, task, *, adapter_id=ADAPTER_ID):
     """Select the ordered history and observation-derived trailing moments.
 
-    V1 returns unchanged ``observations [B,T,1]``. V2 appends known observation
+    V1 returns unchanged ``observations [B,T,1]``. V2/V3 append known observation
     end times in years as channel 1, giving ``observations [B,T,2]`` for the
     neural adapter only; the bank still stores raw returns [B,T,1]. Training
     standardization puts this fixed time channel on an O(1) scale before the
@@ -71,7 +73,7 @@ def conditioning_data(log_returns, dt_years, task, *, adapter_id=ADAPTER_ID):
     for width in (min(8, count), min(32, count), min(128, count), count):
         window = observations[:, -width:, 0]
         features.extend((window.mean(axis=1), np.square(window).mean(axis=1) / step))
-    if adapter_id == TIME_ADAPTER_ID:
+    if adapter_id in (TIME_ADAPTER_ID, ASINH_ADAPTER_ID):
         end_times = np.cumsum(np.asarray(dt_years, dtype=np.float64))
         time_channel = np.broadcast_to(end_times[None, :, None], observations.shape)
         observations = np.concatenate([observations, time_channel], axis=-1)
@@ -105,7 +107,8 @@ def build_workflow(task, checkpoint_dir=None, *, density_estimator="flow_matchin
     """Joint flow conditioned on a GRU summary and observed trailing moments.
 
     The built-in logit constraint is applied in float64 before neural casting.
-    The state is an identity transform. Sampling reverses the saved adapter and
+    V1/V2 use an identity state transform; V3 uses asinh(state / 0.01), preserving
+    its signed support. Sampling reverses the saved adapter and
     returns matched raw-unit ``theta`` and ``terminal_state`` arrays: keep their
     common draw index when forecasting. Training-only global normalization of
     targets, raw returns and moment features preserves between-window scale;
@@ -116,17 +119,23 @@ def build_workflow(task, checkpoint_dir=None, *, density_estimator="flow_matchin
     if density_estimator not in ("flow_matching", "spline"):
         raise ValueError("density_estimator must be flow_matching or spline")
     import bayesflow as bf
+    from bayesflow.adapters.transforms import MapTransform
+    # Register even when creating a legacy workflow: loading a saved V3 model
+    # must restore its own transform rather than depend on the fresh defaults.
+    from sbi4finance.heston_transforms import SignedStateAsinh
 
     adapter = (bf.Adapter()
-               .constrain("theta", lower=float(bounds[0]), upper=float(bounds[1]), inclusive="none")
-               .convert_dtype("float64", "float32")
+               .constrain("theta", lower=float(bounds[0]), upper=float(bounds[1]), inclusive="none"))
+    if adapter_id == ASINH_ADAPTER_ID:
+        adapter.append(MapTransform({"terminal_state": SignedStateAsinh(scale=STATE_SCALE)}))
+    adapter = (adapter.convert_dtype("float64", "float32")
                .concatenate(["theta", "terminal_state"], into="inference_variables")
                .rename("observations", "summary_variables")
                .rename("history_features", "inference_conditions"))
     summary = bf.networks.RecurrentNetwork(
         summary_dim=16, hidden_dim=32, recurrent_type="gru", bidirectional=False,
         time_embed_dim=4, dropout=0.0, return_sequences=False,
-        time_axis=1 if adapter_id == TIME_ADAPTER_ID else None,
+        time_axis=1 if adapter_id in (TIME_ADAPTER_ID, ASINH_ADAPTER_ID) else None,
     )
     if density_estimator == "spline":
         inference = bf.networks.CouplingFlow(
