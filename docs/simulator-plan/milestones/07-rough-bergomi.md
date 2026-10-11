@@ -14,6 +14,8 @@ coverage is prioritized. The maximum 128-to-512-step bank-grid difference is
 0.0427 currency with 0.0248 combined SE: the screen passes but does not prove
 bias below 0.025. No posterior or scalar-state rough continuation is claimed.
 
+**Coupled-grid follow-up:** the [frozen paired study](../../bergomi-coupled-refinement.md) leaves the 128-step comparison unresolved at H=0.1 and eta=1.2: maximum 128-to-1,024 envelope 0.03839 exceeds 0.025. All 512-to-1,024 comparisons resolve within the budget (maximum 0.02011). This supports 512 steps as a candidate for a new explicitly numerical pilot; it does not prove continuum accuracy or change existing bank identities. The bounded numerical study is complete. M7.3b now needs a declared observation/reference strategy and a modest independent training bank, followed by conditional/joint/price-sensitive checks and its didactic sections.
+
 Add a power-law-memory forward-variance model with an independently checked driver and controlled numerical pricing. The initial inference task is Q calibration from option panels, which avoids pretending that current variance alone solves conditional forecasting from historical returns.
 
 ## Tasks
@@ -38,7 +40,7 @@ Complete M7.1–M7.3b in order. M7.4 is optional and may follow the accepted num
 
 ## Didactic review deliverable
 
-Planned with M7: extend `notebooks/08_bergomi_models.py` with named rough-driver, numerical pricing and restricted-posterior sections, following the [common review requirements](../README.md#didactic-review-notebooks-at-every-milestone). Explain the actual Volterra kernel/normalization and memory requirement, then run a small seeded Gaussian-reference comparison. Display cached production/refinement and conditional-inference evidence from exact artifacts, including unresolved gates and estimator-moment limitations. Identify the Q observation, curve context and targets. Exercises should distinguish a finite-factor numerical approximation from a two-factor model and explain why current variance alone cannot initialize a P rough-memory forecast.
+The rough-driver and numerical-pricing sections are delivered in `notebooks/08_bergomi_models.py`, following the [common review requirements](../README.md#didactic-review-notebooks-at-every-milestone). They explain the Volterra kernel, normalization and memory requirement with a small Gaussian-reference example and cached numerical evidence. The [coupled-grid follow-up](../../bergomi-coupled-refinement.md) adds a live pairing example and measured comparisons. Restricted-posterior sections remain pending with M7.3b; numerical review does not supply conditional-inference evidence. Exercises distinguish a finite-factor approximation from a two-factor model and explain why current variance alone cannot initialize a P rough-memory forecast.
 
 Accept the sections after offline headless execution/export reproduces the bounded reference demonstration and renders the separate numerical/posterior gates. Large covariance studies, pricing banks and training remain opt-in; a failed inference gate stays visible even if simulation and notebook execution pass.
 
