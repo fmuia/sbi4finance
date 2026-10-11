@@ -1,6 +1,6 @@
 # Small local observation fixtures
 
-This is the first D0–D1 implementation from the [data plan](https://github.com/fmuia/sbi4finance/pull/4): a standard-library-only CSV reader/writer with explicit metadata and column roles. It is deliberately a small, provisional interface that we can change as the tutorial develops. There is no new task registry, provider abstraction, bank format or neural dependency.
+This implements the local D0–D1 foundation and a bounded D1-R return-preparation step from the [data plan](https://github.com/fmuia/sbi4finance/pull/4). It uses only the standard library and remains a small, provisional interface that we can change as the tutorial develops. There is no new task registry, provider abstraction, bank format or neural dependency.
 
 One directory holds one observed example: a whole return history or an option panel. It contains `manifest.json` and `observations.csv`. A row is a day/interval or a contract, not an independent labelled training example. Larger simulation banks remain the simulator workstream's responsibility.
 
@@ -37,10 +37,70 @@ The reader checks version/representation, declared columns, types, IDs, row coun
 
 The writer validates before creating a new directory, writes the table, and publishes the manifest last. A failed write can leave an incomplete directory; the loader rejects it. Inspect/remove that directory before retrying. Automatic overwrite, recovery, migration and remote storage are intentionally absent.
 
-## What this slice does not establish
+## Prepare a daily return window
 
-Successful parsing does **not** certify calendar handling, adjustment policy, price/IV conventions, grid compatibility, numerical pricing accuracy or model adequacy. It does not perform price-to-return conversion, financial filtering, curve inference, forward simulation, checkpoint checks or network training. Those belong to D1-R/D1-O, D2 and the simulator workstream as they become useful.
+`prepare_return_window` takes local records and an explicit schedule. It returns an in-memory `LocalArtifact`; use the same writer to save it. Here is a complete synthetic preparation example (illustrative levels, not a validated simulation):
+
+```python
+from sbi4finance.datasets import prepare_return_window, write_artifact
+
+prices = [
+    {"timestamp": "2000-01-06", "value": 100.0},
+    {"timestamp": "2000-01-07", "value": 100.0},
+    {"timestamp": "2000-01-10", "value": 102.0},
+    {"timestamp": "2000-01-11", "value": 99.0},  # future, excluded
+]
+window = prepare_return_window(
+    prices,
+    metadata={
+        "artifact_id": "example-window", "task_id": "parser-only/returns",
+        "measure": "P", "data_origin": "synthetic", "purpose": "parser_test",
+        "provenance": {"source": "hand-constructed example", "series_id": "example"},
+        "conventions": {
+            "currency": "USD", "adjustment_policy": "none; hypothetical levels",
+            "calendar": "explicit hypothetical session dates",
+            "time_basis": "one trading step per supplied interval, 252 steps/year",
+        },
+    },
+    source_kind="prices", source_unit="currency", return_kind="log",
+    boundaries=["2000-01-06", "2000-01-07", "2000-01-10"],
+    dt_years=[1 / 252, 1 / 252], cutoff="2000-01-10",
+)
+print(window.observations)  # zero followed by approximately 0.0198026
+print(window.context)       # only dt_years
+print(window.metadata["preparation"])  # selection counts and source hash
+# Optional: write_artifact("/tmp/prepared-return-window", window.metadata, window.rows)
+```
+
+For supplied returns, use rows with `interval_start`, `interval_end`, and `value`; set `source_kind="log_returns"` or `"simple_returns"`, and `source_unit="decimal"` or `"percent"`. The return type and unit are explicit, never guessed from magnitude. The requested `return_kind` is `log` or `simple`; output is always decimal. Price conversion uses log price differences or price ratios minus one. Supplied simple/log returns are converted with `log1p`/`expm1` only when the requested output differs.
+
+The preparation rules are deliberately narrow:
+
+- `boundaries` contains N+1 strictly increasing `YYYY-MM-DD` dates for N returns. `dt_years` contains N positive year fractions. The last boundary must equal the explicit cutoff. Intraday timestamps and inferred calendars are deferred.
+- The caller supplies the expected schedule, currency, adjustment policy and time convention. Weekend/holiday gaps are valid if declared by the schedule. A missing expected observation fails; there is no forward filling, zero filling, inferred trading calendar or automatic corporate-action correction. A wrong supplied schedule is still a wrong scientific assumption.
+- Source endpoint dates must be unique and ordered. Selected rows must exactly match the requested schedule, including the start of each supplied return. Out-of-order input is rejected rather than silently sorted. Values before/after the requested window are excluded before numerical conversion; changing future values or extra diagnostic columns cannot change conditioning.
+- Selected values must be finite and complete. Prices must be positive; simple returns must exceed -1 in this first positive-price scope. Zero returns remain valid. There is no per-window standardization or volatility estimation.
+- Only returns and year fractions become observations/context. Dates, the all-true validity flag and selected source values remain auxiliary. Raw source files stay with the caller. The report records row counts and a hash of the selected source values/dates/units; it is not a checksum of the entire source file or a model-design fingerprint.
+- `provenance.series_id` groups related windows from the same series; cutoff and window start identify the selection. Overlapping windows are not independent training/test examples. The simulator workstream still owns grouped splitting. Synthetic state labels must refer to this window's cutoff; the helper does not compute or retime them.
+
+The same preparation works on declared synthetic or market records. Market windows remain unlabelled. This enables data preparation without accounts or downloads; it does not establish an empirical forecasting result.
+
+## Status and limits
+
+| Increment | Status | What remains |
+|---|---|---|
+| `1/X-data-plan-local-observation-fixtures` ([PR #5](https://github.com/fmuia/sbi4finance/pull/5)) | Local D0–D1 IO implemented | Model-specific contracts remain with their scientific tasks |
+| `2/X-data-plan-return-window-preparation` | D1-R daily preparation implemented | Actual simulator/adapter/checkpoint equivalence remains D2 |
+| D1-O options | Parser fixtures only | Financial panel preparation and pricing-context checks |
+| D2 / D4 | Pending scientific integration | Compatible bank, adapter, checkpoint and validated teaching workflow |
+| D3 / D5 | Optional, not implemented | Market application / held-out empirical evaluation |
+
+Implementation PRs use sequential `N/X-data-plan-…` titles linked to PR #4. `X` indicates that the total is not frozen; optional branches need not block a selected synthetic workflow.
+
+Successful parsing does **not** certify financial conventions, grid compatibility, numerical pricing accuracy or model adequacy. Return preparation checks only the explicit rules above. It does not validate the source's adjustment policy, infer curves, simulate paths, check checkpoints or train a network. Those belong to the relevant scientific workflow.
+
+The current GBM reference uses decimal **log** returns and a positive year-fraction vector, with a `[batch, time, 1]` array convention. This local preparation preserves those numerical quantities when `return_kind="log"`; it is not yet a neural adapter or an integration test. Simple returns cannot be sent unchanged to that GBM interface. Missing-value parser fixtures also cannot condition a model that requires complete observations.
 
 Fixtures here are hand-constructed parser examples, not market data or scientifically validated simulation outputs. Missing-value examples do not imply that a trained network supports masks. No real observations or account access are needed for these checks.
 
-Run the focused checks with `pixi run data-check`, or `PYTHONPATH=src python -m unittest discover -s tests -p 'test_local_data.py'`. Tests use temporary directories and no provider access. The existing MMAR notebook, data cache and checkpoint remain separate.
+Run the checks with `pixi run data-check`, or `PYTHONPATH=src python -m unittest discover -s tests`. Tests use temporary directories and no provider access. The existing MMAR notebook, data cache and checkpoint remain separate.
