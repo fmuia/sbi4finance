@@ -13,6 +13,8 @@ bank-prior grid screen has maximum difference 0.0309 currency with combined SE
 before scaling; no posterior, optional two-factor model or P forecast is accepted.
 The numerical building blocks can support M7 while these limits remain visible.
 
+**Coupled-grid follow-up:** the [frozen paired study](https://github.com/fmuia/sbi4finance/blob/feat/rough-bergomi-option-bank/docs/bergomi-coupled-refinement.md) resolves all one-factor comparisons over the five declared cases. The largest 128-to-1,024-step difference plus four paired SEs is 0.00827 currency, below 0.025; the largest 512-to-1,024 envelope is 0.00143. These are finite-grid checks, not a uniform continuum-bias certificate. The actual cluster route is delivered; a one-factor posterior and optional two-factor model remain separate.
+
 Introduce lognormal forward variance with a finite-dimensional continuation state before rough-memory models. One factor is the required core; two factors are an optional scientific extension, not a prerequisite for rough Bergomi.
 
 ## Tasks
@@ -36,7 +38,7 @@ Implement the required one-factor steps in order. Use `simulators/`, `pricing/`,
 
 ## Didactic review deliverable
 
-Planned with M6: start `notebooks/08_bergomi_models.py` with the forward-variance curve, normalized factor model and complete continuation state. Follow the [common review requirements](../README.md#didactic-review-notebooks-at-every-milestone). Show a small seeded factor/variance example and bounded European pricing comparison using generated curve context. Identify units, known versus inferred inputs and numerical integration settings; link covariance, normalization, continuation and pricing evidence with any failures. Exercises should explain why an exact OU transition does not make the asset price exact and why restarting the original curve loses conditioning. Add two-factor material only if M6.4 is implemented.
+The one-factor sections are delivered in `notebooks/08_bergomi_models.py`: forward-variance curve, normalized factor model, complete continuation state and bounded European pricing. They follow the [common review requirements](../README.md#didactic-review-notebooks-at-every-milestone), with generated context, units, source links and measured evidence. The [coupled-grid follow-up](https://github.com/fmuia/sbi4finance/blob/feat/rough-bergomi-option-bank/docs/bergomi-coupled-refinement.md) adds a live pairing example and cached refinement results. Exercises explain why exact OU transitions do not make asset integration exact and why restarting the original curve loses conditioning. Add two-factor material only if M6.4 is implemented.
 
 Accept the sections after offline headless execution/export displays the small calculation and uncertainty-aware references without market curves or expensive default MC. Kernel/bank evidence alone must not be presented as a validated posterior.
 
