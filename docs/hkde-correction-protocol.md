@@ -47,7 +47,10 @@ target pricing and loading separately; make no speed advantage assumption.
 ## Frozen checks and data roles
 
 1. Reuse the original 16 conditional audit panels and four stress panels. Draw
-   8,192 IID mixture proposals per panel, seeded independently by case. Use
+   8,192 IID mixture proposals per panel, seeded independently by case. The
+   participant algorithm uses the first 2,048 proposals; the full 8,192 are a
+   precision check. **Both budgets must pass** all conditional gates; no
+   post-result choice between budgets is permitted. Use
    weighted moments and weighted empirical quantiles, rather than adding
    resampling noise to conditional comparisons. Apply the original six
    parameter/joint/price gates unchanged, plus ESS/N at least 0.5 and largest
@@ -79,7 +82,7 @@ guarantee, or proof that all latent HKDE parameters can be recovered.
 
 If the complete new experiment passes, an M8 options candidate can load the
 saved checkpoint, condition on a labelled synthetic panel, perform the bounded
-correction live, and price its weighted joint draws with the saved surrogate.
+2,048-proposal correction live, and price its weighted joint draws with the saved surrogate.
 Explain why raw neural SBC passed while a conditional price check failed, what
 the correction costs, and why likelihood-based correction is available for this
 example. A rough/likelihood-intractable task needs a different reference route.
@@ -89,3 +92,8 @@ include exercises and exact evidence links, and show the original failure
 alongside the corrected result. Optional M/E data are neither necessary nor
 silently substituted. Heston's and rough Bergomi's unresolved analyses remain
 separate; completing this candidate does not certify those branches.
+
+Before scientific execution, the protocol was clarified to require the same
+2,048-proposal budget for participant inference, conditional acceptance and
+SIR calibration. The full 8,192 run is an additional precision check, not an
+automatic fallback. This avoids transferring calibration claims across budgets.
