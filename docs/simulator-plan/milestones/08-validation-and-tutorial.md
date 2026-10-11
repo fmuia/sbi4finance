@@ -13,6 +13,14 @@ and its offline review. Keep Heston's failures and Bergomi's fidelity limits
 visible. The final returns-versus-options curriculum remains open; real-market
 acquisition cannot block S delivery.
 
+The [restricted rough pilot](../../rough-joint-inference.md) delivers reusable
+synthetic banks and a reference audit. One of 20 panels misses the frozen ESS
+and maximum-weight requirements; neural training and SBC were therefore not run.
+Notebook09 reviews this precision limit and measured generation costs. Its
+successful offline execution is separate from M7.3b inference acceptance; no
+accepted rough checkpoint is available for M8 yet. The separate [HKDE baseline
+in PR #15](https://github.com/fmuia/sbi4finance/pull/15) also remains provisional.
+
 Assemble evidence already collected at each milestone into a complete S participant workflow. Validation and didactic review begin with M0 contracts and M1 analytic checks; this milestone closes end-to-end gaps rather than postponing either. The earlier review notebooks explain each development increment, including failed experiments; M8 selects and paces a scientifically accepted application for participants. M is an optional market illustration and E is a separate empirical extension; neither is required for S acceptance.
 
 ## Tasks

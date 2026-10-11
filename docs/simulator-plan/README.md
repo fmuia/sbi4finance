@@ -33,7 +33,12 @@ Two-factor models and Bergomi posterior acceptance remain outside this increment
 Increment 9 supplies the [rough reference and hybrid driver](../rough-bergomi.md),
 European pricing, a verified rough option bank and the rough sections of notebook
 08. M7.1–M7.2 numerical infrastructure and M7.3a bank delivery are available with
-explicit fidelity limits; M7.3b posterior training/acceptance is deferred. These
+explicit fidelity limits. The [restricted M7.3b pilot](../rough-joint-inference.md)
+now supplies fixed-ID cluster generation, compact saved training/reference banks,
+and the joint training/audit software path. Its independent reference passes
+19/20 cases; one case fails weight-concentration requirements, so the frozen run
+stops before neural training or SBC. Notebook09 reviews the result and costs.
+These
 three option banks complete the current coverage push. All three now have actual
 CPU generation, exact Linux replay, verified transfer and numerical Mac replay
 in the [cluster report](../option-cluster-smoke.md). The original HKDE portable
