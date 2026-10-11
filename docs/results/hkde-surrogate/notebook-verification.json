@@ -50,5 +50,11 @@
   "inspection": "passed: exported gate/test tables and fixed-domain controls inspected; all three scientific graphs visually inspected",
   "scientific_training_or_cluster_submission": false,
   "live_analytic_polynomial_fit": true,
-  "software_tests": 117
+  "software_tests": 117,
+  "combined_stack_check": {
+    "tests": 155,
+    "elapsed_seconds": 33.138,
+    "tree": "2aeab018c654bf05a806cfe5e9a079279b63f96c",
+    "scope": "Temporary auto-combined snapshot with current PR14; no PR merge or branch mutation."
+  }
 }
