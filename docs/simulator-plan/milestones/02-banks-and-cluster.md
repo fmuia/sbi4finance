@@ -29,9 +29,9 @@ Work in order; each step uses the preceding step's output. Acceptance is evidenc
 
 ## Didactic review deliverable
 
-Backfills pending for increments 2 and 3: use explicit local-bank and cluster sections in the proposed `notebooks/01_gbm_foundations.py`, following the [common review requirements](../README.md#didactic-review-notebooks-at-every-milestone). Explain the generative training pairs, independent splits, stable identity and training-only normalization. Generate/reload a tiny temporary bank and inspect the actual manifest and saved-checkpoint round-trip evidence. Show cluster commands, artifact lineage and actual resource results or pending status; the default notebook never submits a job or starts training. Exercises should trace one example across batching and identify augmentation/split leakage.
+Increments 2 and 3 are delivered and verified in [PR #11](https://github.com/fmuia/sbi4finance/pull/11) as explicit bank/training and cluster sections of `notebooks/01_gbm_foundations.py`, following the [common review requirements](../README.md#didactic-review-notebooks-at-every-milestone). They explain generative training pairs, independent splits, stable identity and training-only normalization; generate/reload a tiny temporary bank; and distinguish historical training/reload evidence from the live calculation. Cluster commands, lineage and the actual one-CPU run record are shown without submission. Exercises address example identity and split leakage.
 
-Accept each section after offline headless execution/export displays its small calculation and linked evidence correctly. A rendered cluster command is not M2.4 execution evidence; a successful cluster job does not itself complete this didactic backfill.
+Strict marimo checking, offline headless execution/export and visual inspection passed, including the isolated no-data/external-socket-blocked run. The default notebook neither trains nor submits a job. Its verified cluster section explains the existing M2.4 execution evidence; it is not a new cluster benchmark.
 
 ## Deliverables
 

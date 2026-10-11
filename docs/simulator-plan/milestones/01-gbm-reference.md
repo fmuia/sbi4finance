@@ -26,9 +26,9 @@ Work in order; each step uses the preceding step's output. Acceptance is evidenc
 
 ## Didactic review deliverable
 
-Backfill pending: extend `notebooks/01_gbm_foundations.py` with M1's exact log-increment equation, proportional-versus-log drift, Gaussian posterior update and separate Q European pricing section. Follow the [common review requirements](../README.md#didactic-review-notebooks-at-every-milestone). Run a seeded small history through the actual simulator, analytic posterior and conditional prediction; label units, known context and truth. Display numerical/reference comparisons and link fixtures. Exercises should predict how window length affects drift uncertainty and explain why the P drift is not the Q pricing drift.
+Delivered and verified in [PR #11](https://github.com/fmuia/sbi4finance/pull/11): M1's sections in `notebooks/01_gbm_foundations.py` explain exact log increments, proportional-versus-log drift, the Gaussian posterior update and separate Q European pricing. Following the [common review requirements](../README.md#didactic-review-notebooks-at-every-milestone), a seeded small history runs through the simulator, analytic posterior and prediction with units and truth labelled. Numerical comparisons and exercises connect window length to drift uncertainty and distinguish P drift from Q pricing drift.
 
-Accept the section after offline headless execution/export reproduces the example without neural, market or cluster dependencies and renders the analytic checks with their tolerances. Do not mark this pending backfill complete because the reference script already works.
+Strict marimo checking, offline headless execution/export and visual inspection passed. The foundation notebook also ran in an isolated copy without a `data/` directory or external sockets in 1.587 s, without neural training, provider or cluster access. The delivered review does not assert GBM's empirical adequacy.
 
 ## Deliverables
 
