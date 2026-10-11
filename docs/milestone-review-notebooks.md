@@ -68,5 +68,6 @@ passing forward-price component while preserving HKDE's inference failure.
 Notebook07 passes strict checking and an isolated offline HTML export: 14 cells,
 zero errors, 9.17 seconds, without market data, raw regression banks or the
 neural checkpoint. Its small coefficient file supports bounded live prediction.
-The current HKDE implementation suite passes 117 tests. This verification and
+The current HKDE implementation suite passes 117 tests; the combined snapshot
+with the latest rough stack passes 155. This verification and
 the regression's new test do not unlock the posterior's reserved final test.

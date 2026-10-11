@@ -149,7 +149,8 @@ The [verification record](results/hkde-surrogate/notebook-verification.json)
 records a fresh isolated HTML export: 14 cells, zero errors, 9.17 seconds,
 with external connections blocked, no market files, raw banks or neural
 checkpoint, and the small surrogate artifact available. Strict marimo checks
-and 117 software tests pass; the three scientific plots were visually inspected.
+and 117 software tests pass; 155 pass in the clean combined snapshot with the
+latest rough-Bergomi stack. The three scientific plots were visually inspected.
 M5.1's neural inference discrepancy, the rough reference follow-up and M8's
 selected, paced participant workflow remain separate work. Required S evidence
 is fully synthetic; it neither requires market observations nor establishes
