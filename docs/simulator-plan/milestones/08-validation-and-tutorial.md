@@ -1,17 +1,17 @@
 # M8 Accumulated validation and a complete teaching path
 
-**Status:** acceptance scope; track implementation evidence and didactic completion separately. **Depends on:** M0, M1, accepted local [M2.1–M2.3](02-banks-and-cluster.md#ordered-implementation-subplan), and the selected scientific/inference substeps. Start the evidence sheet alongside that branch; final delivery requires its checks to pass. Cluster execution is accepted separately at M2.4. Completion of every model branch is not required. Read [inference and pricing](../notes/03-inference-and-pricing.md), [software and data](../notes/04-software-and-data.md), and the [roadmap](../README.md).
+**Status:** an [HKDE options candidate](../../m8-options-candidate.md) is implemented for review; scientific acceptance and its live offline verification remain pending. The final curriculum choice is open. Track implementation evidence and didactic completion separately. **Depends on:** M0, M1, accepted local [M2.1–M2.3](02-banks-and-cluster.md#ordered-implementation-subplan), and the selected scientific/inference substeps. Start the evidence sheet alongside that branch; final delivery requires its checks to pass. Cluster execution is accepted separately at M2.4. Completion of every model branch is not required. Read [inference and pricing](../notes/03-inference-and-pricing.md), [software and data](../notes/04-software-and-data.md), and the [roadmap](../README.md).
 
 ## Purpose
 
 **Current boundary:** the [actual three-model cluster smoke](../../option-cluster-smoke.md)
 and offline marimo reviews establish the tested generation/retrieval route.
-They do not complete M8 or accept a new posterior. Next follow the
-[restricted HKDE subplan](05-amortized-pricing.md#next-increment-restricted-hkde-baseline):
-reference refinement, one modest baseline, conditional/joint and price checks,
-and its offline review. Keep Heston's failures and Bergomi's fidelity limits
-visible. The final returns-versus-options curriculum remains open; real-market
-acquisition cannot block S delivery.
+They do not complete M8 or accept a new posterior. The current candidate follows
+the [restricted HKDE subplan](05-amortized-pricing.md#next-increment-restricted-hkde-baseline)
+and its measured follow-ups below. Keep Heston's failures, rough Bergomi's
+unresolved reference gate and numerical fidelity limits visible. The final
+returns-versus-options curriculum remains open; real-market acquisition cannot
+block S delivery.
 
 The first [HKDE baseline](../../hkde-joint-inference.md) is now available for
 review. Its numerical reference, parameter checks and marginal SBC pass,
@@ -24,6 +24,16 @@ independent pricing checks and has a didactic review. The original HKDE neural
 posterior still fails its price-quantile gate, so a faster price map does not
 accept the combined M8 workflow. Its new regression test is independent of the
 reserved posterior test. Curriculum selection remains open.
+
+The [bounded likelihood-correction follow-up](../../hkde-corrected-inference.md)
+uses the unchanged network as a proposal, not an accepted standalone posterior.
+Its first run passed conditional accuracy but stopped on proposal reliability;
+SBC and the new test were not run. The [frozen boundary proposal](../../hkde-correction-boundary-protocol.md)
+adds symmetric boundary coverage without changing the prior, likelihood,
+checkpoint, seeds, budgets or thresholds. Its scientific outcomes must pass
+before [notebook 10](../../../notebooks/10_hkde_corrected_workflow.py) enables its
+live candidate calculation. This pending path neither selects the curriculum
+nor accepts the Heston or rough-Bergomi inference branches.
 
 
 Assemble evidence already collected at each milestone into a complete S participant workflow. Validation and didactic review begin with M0 contracts and M1 analytic checks; this milestone closes end-to-end gaps rather than postponing either. The earlier review notebooks explain each development increment, including failed experiments; M8 selects and paces a scientifically accepted application for participants. M is an optional market illustration and E is a separate empirical extension; neither is required for S acceptance.
@@ -43,16 +53,16 @@ Define M8.1 before the selected branch's final training/evaluation; complete M8.
 
 | Step | Concrete output | Verification/handoff |
 |---|---|---|
-| M8.1 — Task and evidence sheet | A named teaching configuration, required outputs, supported domain, independent case bank and predeclared metrics/tolerances, with S/M/E scope and a reference strategy. | Trace every promised output to its model/inference acceptance gate. Specify joint/state-sensitive and difficult-region cases before final evaluation; keep unavailable M/E evidence optional. |
-| M8.2 — Reproducible inference and output | A versioned configuration → bank → training → checkpoint reload → posterior → forecast/price run, with reference results, numerical error and sampling uncertainty. | Reproduce the selected task's conditional/joint checks and financial outputs, not only training loss or marginal SBC. Resolve material discrepancies or explicitly narrow the supported scope before teaching it. |
-| M8.3 — Offline participant notebook | One compact marimo notebook in `notebooks/`, reusing selected milestone explanations, synthetic fixtures, compatible checkpoint, exercises and a measured CPU run. Record which expensive calculations are cached and how they were produced. | Execute headlessly and export to HTML in a clean supported installation with all market fixtures absent and provider/network access disabled. Inspect the complete chosen S workflow and measure loading, inference and downstream calculation together. No expensive job starts automatically; optional M/E cells skip visibly when unavailable. |
-| M8.4 — Acceptance report and handover | A checkpoint card, links to exact artifacts and checks, reproducible run instructions, limitations and remaining work. Keep reports with the implementation documentation; large banks stay in their declared artifact storage. | Mark only verified substeps accepted. Record M2.4 separately if cluster execution is pending, preserve the open status of unused branches, and ensure every teaching claim stays within its numerical, synthetic or optional empirical evidence. |
+| M8.1 — Task and evidence sheet | **Specified:** [named HKDE candidate](../../m8-options-candidate.md#m81--named-task-and-evidence-boundary), nine Q quotes, two joint parameters and two excluded put-price distributions. [Frozen settings](../../../configs/hkde_correction_boundary_protocol.json) bind the prior, numerical law, references, case splits and unchanged thresholds. | Trace each output to its numerical, conditional/joint or price gate. Keep synthetic truth out of conditioning. S is required; M/E are optional and supply no acceptance shortcut. |
+| M8.2 — Reproducible inference and output | **Implemented; scientific acceptance pending:** existing bank/training/checkpoint → full-mixture proposals → numerical-likelihood weights → accepted target-price surrogate. [Correction evidence](../../hkde-corrected-inference.md) retains source/artifact bindings and failed predecessors. | Both 2,048- and 8,192-proposal conditional checks must pass, along with finite-pool SIR calibration and reliability gates. Only then evaluate the separate 256-panel test. The original neural final test remains unused. Retain failure and stop if a required gate fails. |
+| M8.3 — Offline participant notebook | **Implemented; live offline acceptance pending:** [notebook 10](../../../notebooks/10_hkde_corrected_workflow.py), a paced 30-minute candidate with equations, observed/context/target roles, one 2,048-proposal example, joint/pricing graphs, stage gates, costs and exercises. | Run `PYTHONPATH=src pixi run review-hkde-corrected`. After scientific acceptance, export in a fresh process with all market fixtures and raw banks absent and external networking blocked. Inspect cell outputs and live gates; measure loading, inference and pricing together. A skipped live cell does not pass this gate. No training or cluster job starts automatically. |
+| M8.4 — Acceptance report and handover | **Pending measured evidence:** [candidate handover](../../m8-options-candidate.md#m84--handover-and-open-work), links to immutable reports/checkpoint metadata, verified export, run instructions, supported domain and remaining work. | Accept only this bounded S pipeline after M8.2 and M8.3 pass. Preserve raw-flow and predecessor failures, Heston/rough-Bergomi pending work, and the open curriculum choice. Keep existing MMAR; empirical claims and broader products need separate evidence. |
 
 The mathematical explanations come from the existing notes and milestone review tutorials; this milestone turns one accepted branch into a paced participant lesson rather than requiring all models in one notebook.
 
 ## Didactic review deliverable
 
-Planned with M8: deliver the selected participant marimo notebook and a short release-review section or companion report tracing its claims to the prior milestone artifacts. Follow the [common review requirements](../README.md#didactic-review-notebooks-at-every-milestone), including motivation/math, explicit observation/context/target units, a bounded runnable calculation, actual results, provenance and short exercises. Keep the returns-versus-options choice open until selection. Review notebooks containing provisional checkpoints are useful development material but do not qualify those checkpoints for the accepted participant inference path.
+The [implemented candidate notebook](../../../notebooks/10_hkde_corrected_workflow.py) and [handover subplan](../../m8-options-candidate.md) trace claims to the prior milestone artifacts. They follow the [common review requirements](../README.md#didactic-review-notebooks-at-every-milestone), including motivation/math, explicit observation/context/target units, a bounded runnable calculation, actual results, provenance and short exercises. Its review explains both accepted numerical components and failed inference experiments; candidate implementation does not clear pending scientific or offline gates. Keep the returns-versus-options choice open until selection. A corrected pipeline may use the provisional flow as a proposal without accepting it as a standalone posterior.
 
 Accept the participant artifact after a fresh-process offline headless run and inspected HTML export, with every real-market fixture absent, no automatic expensive jobs and measured end-to-end CPU cost. Check that its exercises, caveats and displayed pass/fail evidence agree with the selected scientific gates. This does not retroactively complete missing review sections for unused model branches.
 

@@ -47,6 +47,13 @@ accuracy, finite-pool SBC and actual numerical likelihood cost.
 Validation passes, but the fresh correction test fails one SBC rank gate;
 the corrected pipeline remains provisional. See the saved diagnostics before
 choosing a participant workflow.
+The [M8 options candidate](docs/m8-options-candidate.md) combines the frozen
+neural proposal, numerical-likelihood correction and that accepted target-price
+map in a paced lesson. Open it with
+`PYTHONPATH=src pixi run review-hkde-corrected`. Scientific and offline participant
+acceptance are pending: the notebook enables its bounded live calculation only
+after both corrected validation and the new independent test pass. The original
+neural failure remains visible, and the final returns-versus-options choice is open.
 The [analysis follow-up note](docs/simulator-analysis-next-steps.md)
 preserves the Heston findings while simulator and bank coverage expands.
 
@@ -91,13 +98,19 @@ two-hour participant curriculum. Closely related increments share named sections
 | [HKDE and option panels](notebooks/06_hkde_and_pricing.py) | M4 / 6: jump law, Q prices, noisy observations, bank roles and reference checks | `pixi run review-hkde` |
 | [HKDE learned prices](notebooks/07_hkde_price_surrogate.py) | M5.2 / 7: supervised regression, matched price propagation, independent accuracy and cost checks | `pixi run review-hkde-surrogate` |
 | [Bergomi models](notebooks/08_bergomi_models.py) | M6–M7 / 8–9: factor and rough drivers, memory, MC pricing, numerical and bank evidence | `pixi run review-bergomi` |
+| [Corrected HKDE options candidate](notebooks/10_hkde_corrected_workflow.py) | M8 / 10: synthetic panel → weighted joint Q posterior → two target-price distributions; scientific and offline acceptance pending | `PYTHONPATH=src pixi run review-hkde-corrected` |
 
 Default execution uses synthetic examples and committed evidence, with no market
 downloads, cluster submission or full training run. Recorded results and fresh
 illustrations are labeled separately. The joint-inference notebook keeps the
 original provisional checkpoint visible during further development.
+Notebook 10 is a 30-minute participant candidate built from the earlier reviews;
+it does not select or replace the full tutorial curriculum. Once its gates pass,
+opening it computes one live 2,048-proposal correction, including the nine
+numerical likelihood prices and two surrogate prices. It uses a saved synthetic
+panel and needs neither market fixtures nor raw training banks.
 
-Its latest section explains the [time-context correction](docs/heston-time-context.md),
+The Heston review explains the [time-context correction](docs/heston-time-context.md),
 with before/after recurrent-gate diagnostics and the improved but still-failing
 validation results. The reserved final test remains unevaluated.
 The [diagnostic review](docs/heston-diagnostics.md) adds direct graph links,
