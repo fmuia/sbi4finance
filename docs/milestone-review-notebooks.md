@@ -18,6 +18,11 @@ The joint-inference notebook loads the original provisional checkpoint and
 recomputes a small reference for the selected old regression case. Its later
 sections compare the spline and explicit-time experiments, with gate diagnostics
 and the two remaining conditional failures. Neither candidate is accepted.
+The [diagnostic guide](heston-diagnostics.md) and notebook now distinguish
+marginal SBC, conditional reference accuracy and engineering diagnostics.
+Standalone prior/posterior graphs demonstrate data updating. A frozen-weight
+precision follow-up retains every inspected case and explains which errors
+persist and which are sensitive to finite sampling.
 
 ## Verification and reproduction
 
@@ -42,8 +47,8 @@ The verification helper is not a new project framework; the commands above are
 the ordinary reproduction path.
 
 On the local CPU, the isolated foundations and kernels exports took about
-1.6 seconds each. The latest joint-notebook export, including the time-context
-diagnosis and validation comparison, passed the isolation check in 13.09 seconds.
+1.6 seconds each. The latest joint-notebook export, including the prior/posterior and refined-reference
+diagnostics, passed the isolation check in 13.98 seconds.
 Startup/cache effects make these notebook runtimes, not simulator or amortization
 benchmarks. HTML exports are
 review previews; use marimo for live Python-backed controls.

@@ -32,11 +32,11 @@
     {
       "notebook": "05_heston_joint_inference.py",
       "exit_code": 0,
-      "wall_seconds": 13.086033790837973,
+      "wall_seconds": 13.977329458110034,
       "initial_export_wall_seconds": 16.5,
-      "timing_note": "Latest export includes the bounded-time diagnosis and failed validation result; notebook runtime includes startup/compilation and is not an inference benchmark.",
-      "source_sha256": "3004bca6ef452c69a9cc2510b22b1862dc3e085eeb5a83b4b4e35303a5e530de",
-      "html_sha256": "3800a5e9ca3035de4671b867ec331d19fa2ecb8b7e2857631d5131908a870785",
+      "timing_note": "Latest isolated export includes prior/posterior and refined-reference diagnostics; notebook runtime includes startup/compilation and is not an inference benchmark.",
+      "source_sha256": "9eb8f970ac31e8d6d4b7bff8ef76bdc9b62d0e979c925e5bcf823db2ea8b4b87",
+      "html_sha256": "3eb85605db97da0104e4eb613c6640a400232da9a4e1d0c405ddcfd037c89d6b",
       "market_data_directory_absent": true,
       "external_socket_connections_blocked": true,
       "export_command": [
@@ -45,9 +45,9 @@
         "marimo",
         "export",
         "html",
-        "/private/tmp/sbi-time-context-review-offline/notebooks/05_heston_joint_inference.py",
+        "/private/tmp/sbi-diagnostic-review-offline/notebooks/05_heston_joint_inference.py",
         "-o",
-        "/private/tmp/05_heston_time_context-offline.html"
+        "/private/tmp/05_heston_diagnostic_review-offline.html"
       ]
     }
   ],

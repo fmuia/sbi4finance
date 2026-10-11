@@ -65,6 +65,9 @@ original provisional checkpoint visible during further development.
 Its latest section explains the [time-context correction](docs/heston-time-context.md),
 with before/after recurrent-gate diagnostics and the improved but still-failing
 validation results. The reserved final test remains unevaluated.
+The [diagnostic review](docs/heston-diagnostics.md) adds direct graph links,
+explains SBC versus conditional checks, demonstrates prior-to-posterior updating,
+and records the frozen-weight sampling/reference precision follow-up.
 
 See the [review guide and verification record](docs/milestone-review-notebooks.md)
 for export commands, evidence boundaries and the current inference results.

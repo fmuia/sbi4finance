@@ -113,8 +113,10 @@ Both remaining gate failures occur on `validation:0`, whose reference mean
 state is about 0.00644. Its neural state mean remains too high, and its posterior
 state SD is about 26% wider than the reference. No other reference case exceeds an individual-error limit in this run. That observation identifies a useful
 diagnostic case; it is not a reason to drop or downweight it. The next focused
-investigation is conditional approximation in low-variance histories, using
-validation and old regression cases before choosing another training change.
+investigation, now recorded in the [diagnostic review](heston-diagnostics.md),
+repeats frozen sampling and refines the numerical reference before choosing
+another training change. It confirms data updating and a persistent state-mean
+discrepancy; predictive endpoint errors are more sensitive to Monte Carlo draws.
 
 **The reserved root-43022 final test remains unevaluated.** No test reference or
 neural test report was generated, and neither weights nor thresholds changed

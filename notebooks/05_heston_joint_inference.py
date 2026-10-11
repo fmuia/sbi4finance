@@ -75,6 +75,98 @@ def _(mo):
 
 
 @app.cell
+def _(mo):
+    mo.md(r"""
+    ## Key figures and the questions they answer
+
+    These links show the **bounded-time candidate's development validation**;
+    the interactive regression plots later in this notebook retain the original
+    checkpoint. The reserved final test remains unevaluated.
+
+    | Figure | What it checks |
+    |---|---|
+    | [Prior versus conditional posteriors](../docs/results/heston-diagnostic-review/prior-posterior-comparison.png) | Whether the observations change inference, and how neural/reference means and SDs compare |
+    | [Marginal SBC ranks](../docs/results/heston-diagnostic-review/sbc-rank-ecdf.png) | Aggregate rank calibration for theta and the signed current state |
+    | [Conditional reference errors](../docs/results/heston-diagnostic-review/conditional-reference-errors.png) | Means and predictive interval endpoints on 16 particular histories; **not SBC** |
+    | [Refined calm-history comparison](../docs/results/heston-precision/case-0-comparison.png) | Remaining state and future-loss differences after increasing sampling/reference precision; **not SBC** |
+    | [GRU gate saturation](../docs/results/heston-diagnostic-review/gru-gate-saturation.png) | A representation/scaling diagnosis; **not an inference acceptance gate** |
+
+    **The candidate is learning from the histories, not simply copying the
+    prior.** The prior/posterior figure shows different locations and widths
+    across all 16 reference histories. The neural posterior generally follows
+    those reference changes, especially for the current state. Some theta
+    posteriors remain broad: weak identification can be a feature of the data,
+    rather than a failure to learn. Bars are means ± one standard deviation,
+    **not credible intervals** or markers of synthetic truth.
+
+    **Yes, we perform marginal simulation-based calibration (SBC) diagnostics.**
+    For each of 256 independently generated prior/simulator examples, theta is
+    drawn from its prior and the simulator jointly produces the observed history
+    and true terminal state. The state is not drawn independently of that history.
+    We condition the neural posterior on the history and take 2,048 independent
+    joint neural draws. For each target separately, its rank counts how many
+    draws lie below the simulated truth. Under correct posterior sampling,
+    these ranks are uniform across fresh joint generative examples.
+
+    The figure plots the empirical rank CDF minus uniform, using the saved
+    finite-draw ranks and exactly the same randomized normalization as the report.
+    Its DKW band is a **development diagnostic**: these validation data were
+    reused for model selection, so the band is not an independent calibration
+    certificate. Marginal SBC cannot establish all joint dependence or accuracy
+    conditional on every history. Coverage of a single 90% interval is only one
+    aggregate summary; it is not the complete SBC check.
+    A sampler that ignores observations and returns the marginal prior can also
+    produce uniform marginal ranks: the truth and those draws share the same
+    unconditional distribution. This is why we explicitly inspect the prior
+    update and conditional reference agreement as well.
+
+    The separate reference comparisons answer those conditional questions.
+    Their 0.40 posterior-SD mean-error and 0.15 predictive-SD endpoint limits
+    are **declared pilot engineering tolerances**, not universal statistical
+    tests. Reference and sampling precision also matter near a limit. Gate
+    saturation motivated one focused change; removing it did not eliminate
+    the recorded posterior failures. All three checks inform the investigation
+    without substituting for one another.
+
+    [Figure source and artifact hashes](../docs/results/heston-diagnostic-review/figures-manifest.json)
+    · [Offline reproduction script](../scripts/plot_heston_diagnostics.py)
+    · [Diagnostic interpretation and precision review](../docs/heston-diagnostics.md)
+    """)
+    return
+
+
+@app.cell
+def _(ROOT, hashlib, json, mo):
+    _prior = json.loads((ROOT / "docs/results/heston-diagnostic-review/prior-comparison.json").read_text())
+    _report_path = ROOT / "docs/results/heston-time-context/neural-validation.json"
+    _report = json.loads(_report_path.read_text())
+    if (_prior["neural_report_sha256"] != hashlib.sha256(_report_path.read_bytes()).hexdigest()
+            or _prior["bank_manifest_sha256"] != _report["bank_manifest_sha256"]):
+        raise ValueError("Prior comparison must match the current recorded experiment.")
+    mo.md(f"""
+    Across these 16 histories and both targets, the reference-standardized mean
+    RMSE is **{_prior['prior_copy_reference_mean_rmse_in_sd']:.3f} for an unchanged
+    prior mean**, versus **{_prior['neural_reference_mean_rmse_in_sd']:.3f} for the
+    neural posterior mean**. That is evidence of substantial data updating,
+    not a certificate of full posterior accuracy. The conditional failures
+    remain visible in the separate error plot.
+
+    Theta's prior mean and SD are analytic log-uniform moments. The terminal
+    state's prior is induced by the known initialization, theta prior and one
+    year of dynamics; its mean and SD are estimated from all
+    {_prior['prior_sample_count']:,} training simulations, without conditioning
+    on their returns. See the [prior comparison record](../docs/results/heston-diagnostic-review/prior-comparison.json).
+    """)
+    return
+
+
+@app.cell
+def _(ROOT, mo):
+    mo.image(ROOT / "docs/results/heston-diagnostic-review/prior-posterior-comparison.png")
+    return
+
+
+@app.cell
 def _(mo, task):
     mo.md(rf"""
     ## What is one observation?
@@ -759,6 +851,55 @@ def _(mo):
 @app.cell
 def _(mo):
     mo.md(r"""
+    ## Does the remaining error survive a more precise calculation?
+
+    We froze the latest bounded-time checkpoint and increased neural draws
+    from 2,048 to 16,384 on all 16 validation histories, with three prespecified
+    seeds. We also refined the calm-history reference twice from 48 grid nodes
+    and 4,096 particles to 96 nodes and 16,384 particles. This is a **conditional
+    precision diagnostic, not new SBC**. No weights, thresholds or reserved
+    test observations changed.
+
+    Across repeats, overall mean RMSE remains 0.171–0.177 reference SD. Against
+    the second refined reference, the calm history's state mean is still high
+    by 0.412–0.435 reference SD, with neural-mean sampling SE about 0.0096 SD.
+    The two refined reference state means differ by 0.007 SD. Thus the nonzero
+    discrepancy persists; these calculations do not establish statistically
+    certain rejection at exactly the 0.40 engineering boundary. The original
+    failed gate remains recorded without retrospective changes.
+
+    Predictive endpoint errors are more sensitive to finite draws and straddle
+    the 0.15 tolerance. For the first prespecified repeat shown below, the
+    ten-step 95% loss quantile is **2.96% versus 2.74% of initial wealth**:
+    a 0.22 percentage-point difference. Predictive SD is 8.4% larger. Those
+    effects describe one synthetic history; they are not a market-risk claim.
+
+    The checkpoint clearly learns from the observations, but its conditional
+    accuracy still needs work. This is a restricted two-target Heston pilot,
+    with other parameters fixed, not full-SVJ acceptance. Passing marginal SBC
+    alone would not have answered the prior-copy or conditional-error questions.
+
+    [Protocol, results and reproduction](../docs/heston-diagnostics.md)
+    · [Complete precision report](../docs/results/heston-precision/report.json)
+    · [Frozen diagnostic script](../scripts/check_heston_precision.py)
+    """)
+    return
+
+
+@app.cell
+def _(ROOT, hashlib, json, mo):
+    _directory = ROOT / "docs/results/heston-precision"
+    _precision = json.loads((_directory / "report.json").read_text())
+    _arrays = _directory / _precision["plot_arrays"]["file"]
+    if hashlib.sha256(_arrays.read_bytes()).hexdigest() != _precision["plot_arrays"]["sha256"]:
+        raise ValueError("Precision plot arrays must match the recorded diagnostic.")
+    mo.image(_directory / "case-0-comparison.png")
+    return
+
+
+@app.cell
+def _(mo):
+    mo.md(r"""
     ## Exercises and further inspection
 
     1. Compare `test:0` and `test:3`. Which target has the largest recorded
@@ -771,11 +912,18 @@ def _(mo):
        unchanged. Use the scatter plot to identify the information being lost.
     4. Why is a repeat on these four histories a regression check rather than
        a new out-of-sample accuracy claim?
+    5. Why can an algorithm that returns the prior pass marginal SBC? Which
+       plot here rules out that behavior on the inspected histories, and why
+       does it still not prove full posterior accuracy?
 
     **Review hints:** the state error on `test:0` is about 0.88 reference SD;
     marginal coverage averages across histories. Volatility scale informs both
     targets. Shuffling destroys their posterior dependence. Once inspected
     during development, these cases cannot provide untouched holdout evidence.
+    Under the joint generative model, truth and independent prior draws have
+    exchangeable marginal ranks. The prior/posterior plot instead checks that
+    inference responds to each history; conditional reference checks still
+    reveal approximation errors after that response is established.
 
     The expensive pipeline is explicit and separate from notebook execution:
 
