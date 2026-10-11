@@ -1,6 +1,6 @@
 # M2 Reproducible banks, offline loading, and CPU arrays
 
-**Status:** M2.1–M2.3 implemented and locally checked for the fixed GBM task; [run instructions and evidence](../../gbm-bank-training.md). M2.4 remains pending actual cluster execution. **Depends on:** [M0](00-contracts.md) and [M1](01-gbm-reference.md). Read [software and data](../notes/04-software-and-data.md).
+**Status:** M2.1–M2.3 implemented and locally checked for the fixed GBM task; [local evidence](../../gbm-bank-training.md). M2.4 passed a real one-CPU Oscar generation/reproduction job; [cluster instructions and run record](../../gbm-cluster-smoke.md). Larger banks/arrays and Linux neural training remain separate work. **Depends on:** [M0](00-contracts.md) and [M1](01-gbm-reference.md). Read [software and data](../notes/04-software-and-data.md).
 
 ## Purpose
 
@@ -18,7 +18,7 @@ Start with one compact bank and a thin generation/training script. This mileston
 
 ## Ordered implementation subplan
 
-M2.1–M2.3 now establish local acceptance for independent GBM histories. Related option augmentations and dependent market windows are not implemented and will need grouped splitting when introduced. M2.4 requires measured execution on the actual cluster and stays pending if access is unavailable; an offline rehearsal cannot satisfy it. Suggested destinations do not freeze filenames or public APIs.
+M2.1–M2.3 establish local acceptance for independent GBM histories, and M2.4 now has measured execution on the actual cluster. Related option augmentations and dependent market windows are not implemented and will need grouped splitting when introduced. Larger arrays are triggered by a workload that needs them. Suggested destinations do not freeze filenames or public APIs.
 
 | Step | Concrete output | Verification/handoff |
 |---|---|---|

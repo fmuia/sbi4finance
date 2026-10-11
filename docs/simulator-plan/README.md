@@ -1,6 +1,6 @@
 # Finance simulator and amortized inference implementation plan
 
-Status: implementation started, 11 October 2026. The [GBM reference](../gbm-reference.md) records M0/M1, and the [bank/training increment](../gbm-bank-training.md) records local M2.1–M2.3 evidence. Actual cluster execution (M2.4) and model extensions remain planned. The live tutorial's main application remains open.
+Status: implementation started, 11 October 2026. The [GBM reference](../gbm-reference.md) records M0/M1, the [bank/training increment](../gbm-bank-training.md) records local M2.1–M2.3, and the [actual CPU cluster smoke](../gbm-cluster-smoke.md) records M2.4. Model extensions remain planned. The live tutorial's main application remains open.
 
 Build reusable simulators and reproducible training datasets for two financial applications: learning dynamics from return histories, and learning pricing parameters or prices from option quotes. Both can be taught and validated on simulated observations. Shared infrastructure should make both applications practical while preserving their different probability measures, observations and inference targets.
 
@@ -27,8 +27,8 @@ Implementation titles use `N/10-simulator-plan-description`: the denominator is 
 | PR position | Milestone/scope |
 |---|---|
 | 1/10 | M0/M1: GBM reference — [PR #7](https://github.com/fmuia/sbi4finance/pull/7) |
-| 2/10 | M2.1–M2.3: small local bank, checks and training/reload |
-| 3/10 | M2.4: CPU cluster generation and measured smoke run |
+| 2/10 | M2.1–M2.3: small local bank, checks and training/reload — [PR #8](https://github.com/fmuia/sbi4finance/pull/8) |
+| 3/10 | M2.4: CPU cluster generation and [measured smoke run](../gbm-cluster-smoke.md) |
 | 4/10 | M3.1–M3.2: Heston and Gaussian-jump kernels |
 | 5/10 | M3.3: joint SVJ inference and conditional forecasts |
 | 6/10 | M4: HKDE pricing and option panels |

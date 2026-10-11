@@ -25,7 +25,7 @@ Its [delivery and evidence boundary](docs/simulator-plan/README.md#synthetic-del
 
 The first simulator-ladder implementation is the [GBM reference example](docs/gbm-reference.md): exact simulation, an analytic drift posterior, conditional future losses and separate European price checks. Run `pixi run gbm-demo` and `pixi run test-gbm`. It uses generated data and has no neural-training or market-data prerequisite.
 
-The next increment adds a [saved synthetic bank and BayesFlow training/reload example](docs/gbm-bank-training.md). Run `pixi run gbm-bank --out /tmp/gbm-bank`, then `pixi run gbm-train --bank /tmp/gbm-bank --out /tmp/gbm-trained`. Both output directories must be new. This is local M2 evidence; actual cluster execution remains separate.
+The next increment adds a [saved synthetic bank and BayesFlow training/reload example](docs/gbm-bank-training.md). Run `pixi run gbm-bank --out /tmp/gbm-bank`, then `pixi run gbm-train --bank /tmp/gbm-bank --out /tmp/gbm-trained`. Both output directories must be new. A separate [one-CPU Oscar smoke run](docs/gbm-cluster-smoke.md) has verified actual cluster generation, storage and selected-example reproduction.
 
 One environment, managed by [pixi](https://pixi.sh) from `pyproject.toml`:
 
@@ -55,6 +55,8 @@ Export for people without marimo: `pixi run marimo export ipynb notebooks/01_mma
 ## Cluster (Oscar)
 
 `cluster/` holds what is lab-wide; `.claude/skills/cluster-setup/` walks a user through the per-person part:
+
+For the simulator ladder, [the CPU smoke guide](docs/gbm-cluster-smoke.md) uses `cluster/simulate.sbatch`, current allocation discovery, and an explicit Python interpreter/output path. The existing script below is for MMAR GPU training.
 
 ```bash
 pixi run python cluster/discover_cluster.py --ssh-host oscar   # which lanes do I hold? -> cluster/oscar.local.json
