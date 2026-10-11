@@ -1,6 +1,7 @@
 """Defensive importance correction of the frozen two-parameter HKDE flow.
 
-The proposal mixes the existing conditional flow with the declared uniform prior.
+The proposal mixes the existing conditional flow with the declared uniform prior
+and, optionally, a fixed product-arcsine density on the prior rectangle.
 Every row is weighted using the *whole mixture density* and the original refined
 Fourier/Gaussian likelihood. Correction targets that numerical posterior; it is
 not a retrained or newly validated flow. Finite weighted pools, resampling and
@@ -75,24 +76,34 @@ def _flow_log_prob(workflow, task, observation, parameters):
     return log_prob
 
 
-def propose(workflow, task, observation, num_samples, seed, prior_fraction=0.1):
-    """IID flow/prior mixture proposals and their full raw-unit log densities.
+def propose(workflow, task, observation, num_samples, seed, prior_fraction=0.1,
+            boundary_fraction=0.0):
+    """IID defensive mixture proposals and their full raw-unit log densities.
 
-    N flow draws are generated, then IID Bernoulli-selected rows are replaced
-    by independent prior draws. Fixed N avoids variable-count compilation; unused
-    flow draws are discarded. Component identities are diagnostics, never a
-    substitute for the mixture denominator. Endpoints/nonfinite flow draws stop
-    the calculation instead of being clipped or silently redrawn.
+    N flow draws are generated, then IID category-selected rows are replaced by
+    independent uniform-prior or product-Beta(1/2,1/2) draws on normalized prior
+    coordinates. The optional boundary component is fixed, not fitted to a case.
+    Fixed N avoids variable-count compilation; unused draws are discarded.
+    Component identities never replace the full mixture denominator. Retained
+    endpoints/nonfinite draws stop the calculation, without clipping or redraws.
+    The default zero boundary fraction preserves the original two-component
+    proposal's draws and log densities exactly.
     """
     num_samples = _integer(num_samples, "num_samples")
     seed = _integer(seed, "seed", minimum=0)
     if (isinstance(prior_fraction, (bool, np.bool_)) or np.ndim(prior_fraction) != 0
             or not np.isfinite(prior_fraction) or not 0 < prior_fraction < 1):
         raise ValueError("prior_fraction must lie strictly between zero and one")
+    if (isinstance(boundary_fraction, (bool, np.bool_)) or np.ndim(boundary_fraction) != 0
+            or not np.isfinite(boundary_fraction) or boundary_fraction < 0
+            or prior_fraction + boundary_fraction >= 1):
+        raise ValueError("boundary_fraction must be nonnegative with prior_fraction + boundary_fraction < 1")
     bounds, conditions = _context(task, observation)
     streams = [np.random.SeedSequence([_PROPOSAL_TAG, seed, purpose]) for purpose in range(3)]
     start = time.perf_counter()
-    is_prior = np.random.default_rng(streams[0]).random(num_samples) < prior_fraction
+    categories = np.random.default_rng(streams[0]).random(num_samples)
+    is_prior = categories < prior_fraction
+    is_boundary = (categories >= prior_fraction) & (categories < prior_fraction + boundary_fraction)
     prior_rows = np.random.default_rng(streams[1]).uniform(bounds[:, 0], bounds[:, 1], (num_samples, 2))
     network_seed = int(streams[2].generate_state(1, dtype=np.uint32)[0])
     sampled = workflow.sample(num_samples=num_samples, conditions=conditions, seed=network_seed)
@@ -102,13 +113,23 @@ def propose(workflow, task, observation, num_samples, seed, prior_fraction=0.1):
     neural_rows = np.concatenate(pieces, axis=-1)[0]
     _inside(neural_rows, bounds)
     parameters = np.where(is_prior[:, None], prior_rows, neural_rows)
+    if boundary_fraction > 0:
+        boundary_stream = np.random.SeedSequence([_PROPOSAL_TAG, seed, 3])
+        unit_boundary = np.random.default_rng(boundary_stream).beta(.5, .5, size=(num_samples, 2))
+        boundary_rows = bounds[:, 0] + np.diff(bounds, axis=1)[:, 0] * unit_boundary
+        parameters = np.where(is_boundary[:, None], boundary_rows, parameters)
     _inside(parameters, bounds)
     sampled_at = time.perf_counter()
     log_neural = _flow_log_prob(workflow, task, observation, parameters)
     log_prior = -float(np.log(np.diff(bounds, axis=1)[:, 0]).sum())
-    log_proposal = np.logaddexp(np.log1p(-prior_fraction) + log_neural,
+    log_proposal = np.logaddexp(np.log1p(-prior_fraction-boundary_fraction) + log_neural,
                                np.log(prior_fraction) + log_prior)
+    if boundary_fraction > 0:
+        unit = (parameters-bounds[:, 0])/np.diff(bounds, axis=1)[:, 0]
+        log_boundary = log_prior-2*np.log(np.pi)-.5*np.sum(np.log(unit)+np.log1p(-unit), axis=1)
+        log_proposal = np.logaddexp(log_proposal, np.log(boundary_fraction)+log_boundary)
     return {"parameters": parameters, "log_proposal": log_proposal, "is_prior": is_prior,
+            "is_boundary": is_boundary,
             "timing_seconds": {"sample": sampled_at-start, "density": time.perf_counter()-sampled_at}}
 
 

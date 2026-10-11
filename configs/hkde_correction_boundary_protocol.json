@@ -10,7 +10,7 @@
   "root_seed": 95021,
   "proposal": {
     "prior_fraction": 0.1,
-    "component_selection": "independent Bernoulli for each row",
+    "component_selection": "independent categorical choice for each row",
     "density": "0.8 frozen flow + 0.1 uniform prior + 0.1 product-arcsine, full raw-unit mixture density for every row",
     "boundary_fraction": 0.1,
     "boundary_distribution": "independent Beta(0.5,0.5) in each normalized prior coordinate, transformed to raw units"

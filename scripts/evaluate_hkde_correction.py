@@ -34,7 +34,7 @@ def source_hashes():
     return {path.name: sha(path) for path in paths}
 
 
-def load_inputs(protocol_path=Path("configs/hkde_correction_protocol.json")):
+def load_inputs(protocol_path=Path("configs/hkde_correction_boundary_protocol.json")):
     """Bind task, frozen checkpoint, numerical reference and accepted surrogate."""
     protocol_path = Path(protocol_path).resolve()
     root = protocol_path.parents[1]
@@ -52,6 +52,8 @@ def load_inputs(protocol_path=Path("configs/hkde_correction_protocol.json")):
              old_dir / "neural-validation.json", checkpoint_dir / "model.keras",
              checkpoint_dir / "training.json", checkpoint_dir / "task.json",
              fast_dir / "report.json", fast_dir / "model.npz"]
+    if "predecessor_results" in protocol:
+        paths.append(root / protocol["predecessor_results"] / "validation.json")
     bindings = {str(path.relative_to(root)): sha(path) for path in paths}
     ref_report = json.loads((old_dir / "reference.json").read_text())
     training = json.loads((checkpoint_dir / "training.json").read_text())
@@ -128,7 +130,7 @@ def summarize_cases(cases, efficiencies, limits, thresholds):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--protocol", type=Path, default=Path("configs/hkde_correction_protocol.json"))
+    parser.add_argument("--protocol", type=Path, default=Path("configs/hkde_correction_boundary_protocol.json"))
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--split", choices=("validation", "test"), default="validation")
     parser.add_argument("--validation-report", type=Path)
@@ -185,7 +187,8 @@ def main():
         tick = time.perf_counter()
         proposed = correction.propose(workflow, task, observation,
              num_samples=protocol["conditional"]["samples"], seed=case_seed(protocol, args.split, 0, i),
-             prior_fraction=protocol["proposal"]["prior_fraction"])
+             prior_fraction=protocol["proposal"]["prior_fraction"],
+             boundary_fraction=protocol["proposal"].get("boundary_fraction", 0.0))
         timing["proposal"] += time.perf_counter() - tick
         tick = time.perf_counter()
         fixed = correction.correct(proposed["parameters"], proposed["log_proposal"], observation, task)
@@ -205,7 +208,7 @@ def main():
             output.append(row)
             eff.append(row)
         pools.append((parameters, all_weights, targets, summary["target_quantiles"],
-                      proposed["log_proposal"], fixed["log_likelihood"], proposed["is_prior"]))
+                      proposed["log_proposal"], fixed["log_likelihood"], proposed["is_prior"], proposed["is_boundary"]))
         timing["target_surrogate_and_checks"] += time.perf_counter() - tick
         print(f"{args.split} conditional {i+1}/{len(ids)}", flush=True)
     report.update(summarize_cases(cases, efficiencies, protocol["conditional"], protocol["gates"]))
@@ -217,14 +220,16 @@ def main():
               "reference_target_quantiles": np.asarray([p[3] for p in pools]),
               "log_proposal": np.asarray([p[4] for p in pools]),
               "log_likelihood": np.asarray([p[5] for p in pools]),
-              "is_prior": np.asarray([p[6] for p in pools])}
+              "is_prior": np.asarray([p[6] for p in pools]),
+              "is_boundary": np.asarray([p[7] for p in pools])}
     if conditional_passed:
         tick = time.perf_counter()
         audit_draws, audit_eff, audit_max = [], [], []
         settings = protocol["calibration"]
         for i, observation in enumerate(audit["observations"]):
             proposal = correction.propose(workflow, task, observation, num_samples=settings["proposal_samples"],
-                       seed=case_seed(protocol, args.split, 1, i), prior_fraction=protocol["proposal"]["prior_fraction"])
+                       seed=case_seed(protocol, args.split, 1, i), prior_fraction=protocol["proposal"]["prior_fraction"],
+             boundary_fraction=protocol["proposal"].get("boundary_fraction", 0.0))
             fixed = correction.correct(proposal["parameters"], proposal["log_proposal"], observation, task)
             audit_eff.append(fixed["ess_fraction"])
             audit_max.append(fixed["max_weight"])
