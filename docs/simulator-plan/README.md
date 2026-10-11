@@ -30,7 +30,16 @@ numerical acceptance is limited to the reported fixtures and sampling-aware
 refinement screens. Before scaling, settle the chosen price-label fidelity.
 Two-factor models and Bergomi posterior acceptance remain outside this increment.
 
-The priority is a useful, scientifically sound tutorial that is easy to change. These milestones organize the work; they are not a requirement to build a production platform or complete every model before learning from a working example. The 32 substeps are a checklist, not 32 separate PRs or approval rounds.
+Increment 9 supplies the [rough reference and hybrid driver](../rough-bergomi.md),
+European pricing, a verified rough option bank and the rough sections of notebook
+08. M7.1–M7.2 numerical infrastructure and M7.3a bank delivery are available with
+explicit fidelity limits; M7.3b posterior training/acceptance is deferred. These
+three option banks complete the current coverage push. Remaining work is an actual
+option-workload cluster smoke, selected-task price fidelity, one restricted Q
+inference workflow (M5/M7.3b), and M8's chosen participant release. Optional
+two-factor models and rough-memory P forecasting are outside this required core.
+
+The priority is a useful, scientifically sound tutorial that is easy to change. These milestones organize the work; they are not a requirement to build a production platform or complete every model before learning from a working example. The ordered substeps are a checklist, not separate PRs or approval rounds.
 
 Start with a small executable path: a few functions, explicit parameters and arrays, a saved configuration and seed, a compact synthetic bank, and the existing in-memory training route. M0 should settle the conventions needed for that path and sketch the second observation type; it should not design every future model's API. Adapt contracts as experiments teach us what is needed, record the change, and regenerate small pilot banks when simpler than supporting old formats.
 
@@ -134,7 +143,7 @@ The [80-epoch explicit-time follow-up](../heston-time-context.md) uses the same 
 
 The [diagnostic review](../heston-diagnostics.md) now separates marginal SBC, conditional reference checks and engineering diagnostics, and directly compares the prior with all 16 conditional posteriors. Reference-normalized mean RMSE is 3.265 for a prior-copy baseline versus 0.173 for the neural posterior: this is substantial data updating. A frozen-weight precision follow-up confirms a persistent low-state mean discrepancy, while predictive endpoint errors straddle their tolerance across seeds. This is development evidence; it changes neither the original failed gate nor the reserved-test status.
 
-The single [signed-asinh state experiment](../heston-state-transform.md) also failed the unchanged validation checks: mean RMSE 0.1865 reference SD, maximum mean error 0.5268, maximum relative SD error 0.3212 and predictive endpoint error 0.2403. Both marginal rank checks pass, illustrating why conditional checks remain necessary. Its predeclared stop rule was applied: no further candidate or final-test evaluation. M3.3 remains pending; the next implementation increment is M4.1 HKDE law/reference pricing. The expanded software suite passes 43 tests, and notebook 05 includes the transform mathematics and measured failure.
+The single [signed-asinh state experiment](../heston-state-transform.md) also failed the unchanged validation checks: mean RMSE 0.1865 reference SD, maximum mean error 0.5268, maximum relative SD error 0.3212 and predictive endpoint error 0.2403. Both marginal rank checks pass, illustrating why conditional checks remain necessary. Its predeclared stop rule was applied: no further candidate or final-test evaluation. M3.3 remains pending; further inference analysis is deferred during the simulator/bank coverage push described above. The expanded software suite passes 43 tests, and notebook 05 includes the transform mathematics and measured failure.
 
 ## Milestones and deliverables
 

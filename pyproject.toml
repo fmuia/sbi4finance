@@ -62,6 +62,7 @@ option-bank = "python scripts/generate_option_bank.py"
 hkde-validate = "python scripts/validate_hkde.py"
 review-hkde = "marimo edit notebooks/06_hkde_and_pricing.py --no-token"
 bergomi-validate = "python scripts/validate_bergomi.py"
+rough-bergomi-validate = "python scripts/validate_rough_bergomi.py"
 review-bergomi = "marimo edit notebooks/08_bergomi_models.py --no-token"
 
 # GPU environment for Oscar (linux-64 only): `pixi install -e gpu` on a login node.

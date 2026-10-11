@@ -30,7 +30,8 @@ def _(mo):
     option-bank route**. A working kernel or bank is not an accepted posterior.
 
     All curves, contracts and paths here are synthetic. Default execution uses
-    three short illustrative paths and one bounded Monte Carlo panel; it runs
+    three short illustrative paths, small Monte Carlo panels, and one bank
+    example for each model; it runs
     offline without market fixtures, training or cluster jobs. Larger numerical
     checks are displayed from a saved report. This is **S evidence**, not a
     claim that the model explains a real market. Returns-versus-options remains
@@ -387,9 +388,9 @@ def _(mo):
     tomorrow's option-chain dynamics.
 
     Two-factor Bergomi remains a separate optional scientific extension.
-    Rough Bergomi replaces the exponential kernel with power-law memory;
-    its later section must state the actual Gaussian field, approximation and
-    memory requirements. Current variance alone would not initialize a rough
+    The next section replaces the exponential kernel with rough Bergomi's
+    power-law memory and states the actual Gaussian field, approximation and
+    memory requirements. Current variance alone cannot initialize a rough
     conditional forecast.
 
     ## Review exercises
@@ -413,6 +414,288 @@ def _(mo):
     [Bergomi's original model](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=1493302).
     """)
     return
+
+
+@app.cell
+def _(mo):
+    mo.md(r"""
+    ## 9. Rough Bergomi: replace a factor with a memory kernel
+
+    One exponential factor compresses all past volatility-driver shocks into
+    one state. Rough Bergomi uses a power kernel instead:
+
+    $$G_t=\sqrt{2H}\int_0^t(t-s)^{H-1/2}\,dW_s^V,
+      \qquad 0<H<1/2,$$
+    $$\operatorname{Var}(G_t)=t^{2H},\qquad
+      V_t=\xi_0(t)\exp\!\left(\eta G_t-\tfrac12\eta^2t^{2H}\right).$$
+
+    This is the **Riemann–Liouville Volterra field starting at zero**, not the
+    stationary-increment version of fractional Brownian motion. The
+    $\sqrt{2H}$ normalization is part of the model; another convention changes
+    the numerical meaning of $\eta$. Smaller $H$ gives rougher local paths.
+    With time in years, this $\eta$ has units year$^{-H}$, unlike the OU
+    factor's year$^{-1/2}$. The $H\to1/2$ limit has a constant kernel, matching
+    zero-mean-reversion one-factor dynamics, not arbitrary OU mean reversion.
+
+    The initial curve remains known synthetic Q context. The new bank targets
+    $H$ and $\eta$ on its declared restricted prior. Its observations are noisy
+    option panels, not rough variance paths. This increment supplies a driver,
+    price generator and pilot-bank route; **no rough posterior is trained or
+    accepted here**.
+
+    ### Two different numerical constructions
+
+    The small-grid Gaussian reference calculates
+    $C_{ij}=\int_0^{\min(t_i,t_j)}K_H(t_i-s)K_H(t_j-s)ds$ together with
+    $\operatorname{Cov}(G_{t_i},\Delta W_j^V)$. It samples that joint Gaussian
+    vector. This is a grid reference with a dense matrix cost, not a scalable
+    path generator or an exact asset-price integral.
+
+    The one-cell hybrid construction treats the most recent singular kernel
+    cell exactly, including its independent Gaussian residual, and approximates
+    older cells by interval-average weights. FFT convolution applies those
+    weights. Its covariance differs from the continuum field at finite grid
+    size. The exponential correction uses the **actual approximate driver
+    variance**, so the intended mean variance curve stays normalized. Merely
+    substituting $t^{2H}$ into a different driver's variance would change that
+    expectation.
+    """)
+    return
+
+
+@app.cell
+def _(np):
+    from sbi4finance import rough_bergomi
+
+    rough_parameters = dict(hurst=0.12, eta=1.0, rho=-0.6)
+    rough_dt = 1 / 16
+    rough_covariance, rough_cross_covariance = rough_bergomi.rough_covariance(0.12, rough_dt, 16)
+    hybrid_covariance, hybrid_cross_covariance = rough_bergomi.hybrid_covariance(0.12, rough_dt, 16)
+    rough_times = np.arange(1, 17) * rough_dt
+    return hybrid_covariance, hybrid_cross_covariance, rough_bergomi, rough_covariance, rough_cross_covariance, rough_parameters, rough_times
+
+
+@app.cell
+def _(hybrid_covariance, hybrid_cross_covariance, mo, np, plt, rough_covariance, rough_cross_covariance, rough_times):
+    _fig, _axes = plt.subplots(1, 2, figsize=(10, 3.7), layout="constrained")
+    _axes[0].plot(rough_times, np.diag(rough_covariance), "o-", label="Continuum Gaussian reference")
+    _axes[0].plot(rough_times, np.diag(hybrid_covariance), "x--", label="Hybrid driver on 16 steps")
+    _axes[0].set(xlabel="Time (years)", ylabel="Driver variance (years^(2H))",
+                 title="Normalize with the variance actually simulated")
+    _axes[0].legend(fontsize=8)
+    _axes[1].plot(rough_times, hybrid_covariance[:, -1] - rough_covariance[:, -1],
+                  "o-", color="#bb653f")
+    _axes[1].axhline(0, color="0.4", linewidth=0.8)
+    _axes[1].set(xlabel="Time (years)", ylabel="Hybrid − reference (years^(2H))",
+                 title="Covariance error against G at 1 year")
+    _cross_error = float(np.max(np.abs(rough_cross_covariance - hybrid_cross_covariance)))
+    mo.vstack([
+        _fig,
+        mo.md(f"""
+        This is a deterministic covariance comparison at H=0.12, not a
+        posterior check or an empirical estimate from a few paths. The maximum
+        difference in driver–Brownian-increment cross-covariance is
+        **{_cross_error:.3g}**; interval-average kernel weights preserve this
+        cross-covariance while the full driver covariance still differs.
+        Normalization corrects the marginal mean variance; it does not repair
+        the missing covariance or erase option-price discretization bias.
+        """),
+    ])
+    return
+
+
+@app.cell
+def _(bergomi, contracts, mo, np, pd, rough_parameters, variance_curve):
+    _hybrid_panel = bergomi.option_panel(
+        "rough", rough_parameters, variance_curve, contracts, spot=100, rate=0.02,
+        n_paths=2048, n_steps=32, seed=9621, method="hybrid",
+    )
+    _reference_panel = bergomi.option_panel(
+        "rough", rough_parameters, variance_curve, contracts, spot=100, rate=0.02,
+        n_paths=2048, n_steps=32, seed=9631, method="covariance",
+    )
+    _table = pd.DataFrame({
+        "Maturity (years)": [c["maturity"] for c in contracts],
+        "Strike": [c["strike"] for c in contracts],
+        "Hybrid put estimate": _hybrid_panel["prices"],
+        "Hybrid sampling SE": _hybrid_panel["standard_errors"],
+        "Gaussian-reference put estimate": _reference_panel["prices"],
+        "Reference sampling SE": _reference_panel["standard_errors"],
+    })
+    mo.vstack([
+        mo.md("""
+        ### A bounded pricing comparison, not an acceptance study
+
+        Both methods use 32 asset steps and 2,048 independent driver paths,
+        with distinct seeds. Both average bounded conditional put values and
+        have finite sampling variance. The reference removes the hybrid-driver
+        approximation at its grid points, but **both retain asset-integration
+        bias**. Individual standard errors do not cover that bias. This small
+        live illustration is complemented by the recorded refinement study;
+        numerical disagreement must be resolved before accepting a larger bank.
+        """),
+        mo.ui.table(_table, selection=None, show_column_summaries=False),
+    ])
+    return
+
+
+@app.cell
+def _(ROOT, json, mo, option_bank, pd):
+    rough_bank_config = json.loads((ROOT / "configs/tasks/rough_bergomi_option_bank.json").read_text())
+    _example = option_bank.generate_examples(rough_bank_config, "train", [0])
+    _rows = pd.DataFrame({
+        "Contract index": range(_example["observations"].shape[1]),
+        "Observed quote": _example["observations"][0, :, 0],
+        "Reference estimate (not observed)": _example["reference_prices"][0],
+        "Sampling SE (not observed)": _example["pricing_standard_errors"][0],
+    })
+    mo.vstack([
+        mo.md("""
+        ### The same storage roles, a different model task
+
+        One seeded example uses the rough task's declared H/eta prior,
+        known curve, contract panel and quote-error law. No bank is written.
+        The generator's latent labels and pricing diagnostics stay outside
+        observed conditioning. A zero refinement-difference placeholder for
+        Monte Carlo is explicitly marked **not calculated** in bank metadata;
+        it cannot be read as zero bias. The raw task below fixes the finite
+        numerical experiment and is not a posterior-acceptance result.
+        """),
+        mo.ui.table(_rows, selection=None, show_column_summaries=False),
+        mo.json(rough_bank_config),
+    ])
+    return (rough_bank_config,)
+
+
+@app.cell
+def _(ROOT, json, mo, np, pd):
+    rough_report = json.loads((ROOT / "docs/results/rough-bergomi-validation.json").read_text())
+    _rows = []
+    for _case in rough_report["cases"]:
+        _comparison = _case["same_grid_reference_comparison"]
+        _rows.append({
+            "H": _case["parameters"]["hurst"],
+            "eta": _case["parameters"]["eta"],
+            "rho": _case["parameters"]["rho"],
+            "Largest grid-refinement difference / spot": max(float(np.max(np.abs(c["price_difference_second_minus_first"]))) for c in _case["refinements"]),
+            "Largest same-grid Gaussian comparison / spot": float(np.max(np.abs(_comparison["price_difference_second_minus_first"]))),
+            "Recorded comparisons": "PASS" if _comparison["passed"] and all(c["passed"] for c in _case["refinements"]) else "FAIL",
+        })
+    mo.vstack([
+        mo.md("""
+        ### Saved rough-driver and pricing evidence
+
+        These are the recorded numerical cases and budgets. Passing kernel
+        checks, generating a pilot bank and opening this notebook do not
+        accept a rough posterior. Price refinement, Gaussian references and
+        their finite sampling uncertainty must be judged separately. The full
+        report preserves unresolved checks and the restricted evidence scope.
+        """),
+        mo.ui.table(pd.DataFrame(_rows), selection=None, show_column_summaries=False),
+        mo.md(f"""
+        The declared allowance is
+        **{rough_report['predeclared_budgets']['absolute_price_in_spot_units']:g}
+        of spot + {rough_report['predeclared_budgets']['mc_se_multiplier']} SEs**
+        of the independent-run price difference. It is a refinement screen,
+        not a continuum-bias bound. Overall recorded result:
+        **{'PASS' if rough_report['passed'] else 'FAIL'}** for these numerical
+        fixtures. Per-bank Monte Carlo precision is separately limited relative
+        to quote noise, but the remaining kernel/grid bias still needs its own
+        analysis before larger inference banks are accepted.
+        """),
+        mo.accordion({"Complete Gaussian, pricing and limitation report": mo.json(rough_report)}),
+        mo.md("[Raw report](../docs/results/rough-bergomi-validation.json) · [Next analysis](../docs/simulator-analysis-next-steps.md)"),
+    ])
+    return (rough_report,)
+
+
+@app.cell
+def _(ROOT, rough_bank_config, json, mo, np, pd):
+    from hashlib import sha256 as _rough_sha256
+
+    rough_bank_numerics = json.loads((ROOT / "docs/results/rough-bergomi-bank-numerics.json").read_text())
+    if rough_bank_numerics["config_sha256"] != _rough_sha256((ROOT / "configs/tasks/rough_bergomi_option_bank.json").read_bytes()).hexdigest():
+        raise ValueError("Bank-specific report does not match the displayed configuration")
+    if rough_bank_numerics["task"] != rough_bank_config["task"]:
+        raise ValueError("Bank-specific report describes a different task")
+    _rows = []
+    for _case in rough_bank_numerics["cases"]:
+        _comparison = _case["refinement"]
+        _differences = np.abs(_comparison["price_difference_second_minus_first"])
+        _index = int(np.argmax(_differences))
+        _rows.append({
+            "Case": _case["role"], "H": _case["parameters"]["hurst"],
+            "eta": _case["parameters"]["eta"], "Contract with largest difference": _index,
+            "Largest absolute difference (currency)": float(_differences[_index]),
+            "SE of that difference (currency)": _comparison["mc_standard_error_of_difference"][_index],
+            "Allowed difference at that contract": _comparison["allowance"][_index],
+            "Recorded screen": "PASS" if _comparison["passed"] else "FAIL",
+        })
+    _worst = max(_rows, key=lambda row: row["Largest absolute difference (currency)"])
+    mo.vstack([
+        mo.md("""
+        ### The rough bank's own corners and center
+
+        The earlier fixture study had a different curve and contract domain.
+        This additional report matches the exact saved bank configuration,
+        including its one-year contracts, constant known curve and H/eta
+        prior. Four corners and the center compare **128 with 512 steps**,
+        each using **262,144 paths** and independent seeds. This is cached
+        evidence, not another computation launched by this notebook.
+        """),
+        mo.ui.table(pd.DataFrame(_rows), selection=None, show_column_summaries=False),
+        mo.md(f"""
+        Largest observed difference:
+        **{_worst['Largest absolute difference (currency)']:.5f} currency**,
+        with combined sampling SE
+        **{_worst['SE of that difference (currency)']:.5f}** at that contract.
+        The screen permits **0.025 currency + 4 SEs**. Its saved result is
+        **{'PASS' if rough_bank_numerics['passed'] else 'FAIL'}**.
+        A pass does **not** prove bias below 0.025: sampling uncertainty can
+        hide smaller differences, the 512-step reference retains grid bias,
+        and five cases do not cover every draw. The bank's separate SE limit
+        of 0.1 times quote-noise SD controls sampling precision only.
+        """),
+        mo.accordion({"Exact bank configuration, all contracts and limits": mo.json(rough_bank_numerics)}),
+        mo.md("[Bank-specific report](../docs/results/rough-bergomi-bank-numerics.json) · [Reproduction script](../scripts/check_bergomi_bank_numerics.py)"),
+    ])
+    return (rough_bank_numerics,)
+
+
+
+@app.cell
+def _(mo):
+    mo.md(r"""
+    ### Why there is no rough P forecast button
+
+    At time $t$, the past contribution to a later driver's value is the whole
+    function $m_t(u)=\int_0^tK_H(u-s)dW_s^V$ for $u>t$. Current variance or
+    $G_t$ alone does not determine it. The kernel exposes full synthetic
+    histories, but it does not infer the hidden memory from observed returns.
+    A rough P forecast needs separately declared physical dynamics,
+    initialization/prehistory and conditional memory inference. A Q calibration
+    does not provide those objects or predict tomorrow's market option chain.
+
+    A finite-factor approximation of the rough kernel would be a versioned
+    numerical approximation with its own weights and error targets. It is not
+    automatically the same scientific model as an independently parameterized
+    two-factor Bergomi model.
+
+    **Review exercises.** Why is correct marginal variance normalization not
+    enough to price an option correctly? Why is a Gaussian covariance reference
+    still a discretized price reference? What information would a rough
+    conditional continuation need beyond today's variance?
+
+    Sources: [rough kernel implementation](../src/sbi4finance/rough_bergomi.py),
+    [restricted task](../configs/tasks/rough_bergomi_option_bank.json),
+    [model and reproduction guide](../docs/rough-bergomi.md),
+    [M7 subplan](../docs/simulator-plan/milestones/07-rough-bergomi.md),
+    [mathematical conventions](../docs/simulator-plan/notes/02-models-and-numerics.md),
+    [hybrid simulation paper](https://arxiv.org/abs/1507.03004), and
+    [martingale and moment analysis](https://arxiv.org/abs/1811.10935).
+    """)
+    return
+
 
 
 if __name__ == "__main__":

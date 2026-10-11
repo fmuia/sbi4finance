@@ -96,7 +96,7 @@ Calls use \(C=P+S_0e^{-q_dT}-Ke^{-rT}\). The public API restricts leverage to
 \(-1\le\rho\le0\), a conservative common martingale-domain convention for this
 and the rough branch. It never relies on a sample second moment of raw call
 payoffs as evidence of finite population variance. That concern is especially
-concrete in rough Bergomi; see [the rough-model plan](simulator-plan/milestones/07-rough-bergomi.md).
+concrete in rough Bergomi; see [the rough-model notes](rough-bergomi.md).
 
 `option_panel("one_factor", parameters, curve, contracts, ...)` uses a uniform
 asset grid ending at the largest maturity. Every contract maturity must land

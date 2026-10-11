@@ -11,8 +11,8 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class BergomiBankTests(unittest.TestCase):
-    def test_one_factor_roundtrip_and_order(self):
-        c = json.loads((ROOT / "configs/tasks/bergomi_option_bank.json").read_text())
+    def _check_roundtrip_and_order(self, filename):
+        c = json.loads((ROOT / "configs/tasks" / filename).read_text())
         c["splits"] = dict(train=2, validation=1, test=1)
         # Interface fixture only: the scientific preset has much higher precision.
         c["task"]["numerics"].update(n_paths=256, n_steps=16, max_mc_se_over_quote_sigma=5.)
@@ -28,6 +28,12 @@ class BergomiBankTests(unittest.TestCase):
             self.assertTrue(np.any(covariance[:, 0, 1] != 0))
             np.testing.assert_allclose(np.diagonal(covariance, axis1=-2, axis2=-1),
                                        arrays["train"]["pricing_standard_errors"] ** 2)
+
+    def test_one_factor_roundtrip_and_order(self):
+        self._check_roundtrip_and_order("bergomi_option_bank.json")
+
+    def test_rough_roundtrip_and_order(self):
+        self._check_roundtrip_and_order("rough_bergomi_option_bank.json")
 
 
 if __name__ == "__main__":

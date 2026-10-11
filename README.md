@@ -44,6 +44,13 @@ Monte Carlo pricing. Generate its numerical pilot with `pixi run option-bank
 --config configs/tasks/bergomi_option_bank.json --out /tmp/new-bergomi-bank`.
 Sampling uncertainty and time-grid bias remain distinct from quote noise.
 
+[Rough Bergomi](docs/rough-bergomi.md) adds a joint Gaussian reference and FFT
+hybrid Volterra driver. Its separate preset is
+`configs/tasks/rough_bergomi_option_bank.json`, consumed by the same bank command.
+`pixi run review-bergomi` covers both models, their bank results and numerical
+limits. A current variance alone is not a continuation state for rough memory;
+historical-return forecasting and neural Q posterior training remain separate work.
+
 One environment, managed by [pixi](https://pixi.sh) from `pyproject.toml`:
 
 ```bash
@@ -70,7 +77,7 @@ two-hour participant curriculum. Closely related increments share named sections
 | [Heston and Gaussian jumps](notebooks/04_heston_svj_kernels.py) | M3.1–M3.2 / 4: diffusion/jump simulation, continuation, numerical checks and Numba timings | `pixi run review-kernels` |
 | [Joint Heston inference](notebooks/05_heston_joint_inference.py) | M3.3 / 5: observed histories, reference/neural joint posteriors, conditional futures and the failed frozen checks | `pixi run review-heston` |
 | [HKDE and option panels](notebooks/06_hkde_and_pricing.py) | M4 / 6: jump law, Q prices, noisy observations, bank roles and reference checks | `pixi run review-hkde` |
-| [Bergomi models](notebooks/08_bergomi_models.py) | M6 / 8: forward variance, factor covariance, continuation, MC pricing and bank evidence | `pixi run review-bergomi` |
+| [Bergomi models](notebooks/08_bergomi_models.py) | M6–M7 / 8–9: factor and rough drivers, memory, MC pricing, numerical and bank evidence | `pixi run review-bergomi` |
 
 Default execution uses synthetic examples and committed evidence, with no market
 downloads, cluster submission or full training run. Recorded results and fresh

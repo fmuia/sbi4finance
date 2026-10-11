@@ -60,19 +60,30 @@
       "localhost_ipc_allowed": true,
       "market_data_directory_present": false,
       "exit_code": 0,
-      "elapsed_seconds": 2.8919169171713293,
-      "output_cells": 14,
+      "elapsed_seconds": 4.311614749953151,
+      "output_cells": 22,
       "error_outputs": 0,
       "source_and_artifact_sha256": {
-        "notebooks/08_bergomi_models.py": "41153b3ce4bb054c0980dc6f723f57a8592caea4e493e0de7aef58a704b5ce78",
+        "notebooks/08_bergomi_models.py": "ec6fa5b3fba69b0cf98b0f799c86648a87d544c6293240dc8a6b27b86289aef7",
         "configs/tasks/bergomi_option_bank.json": "e16bfdd1d4ebd3c8b11f9373e467012580e14947f6684265482c3aa395082360",
         "docs/results/bergomi-validation.json": "34906732606f525601d955df320ce6b020186f11b5adf375ed441483063ccbe6",
         "src/sbi4finance/option_bank.py": "8d41e6cecf115f6aa96475295c8291b9c6474e0c1e44ead001539129f3ba3d0a",
         "src/sbi4finance/option_panel.py": "b37400bfc7f7ec91d208e8637cee1fcb53885b76ca0b00c016574b495fa035f2",
         "src/sbi4finance/gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
         "docs/results/bergomi-bank-numerics.json": "09e495f65511636fc8d02c0cd32506ce04be609ef49d55bf628f6ec7aacf8f8a",
+        "docs/results/rough-bergomi-validation.json": "0a980e953c69087561202b2168c56ef79d2eb71031c81ff3791a8702179d9d4e",
+        "docs/results/rough-bergomi-bank-numerics.json": "fb2ec41358ad7f19e27ce4be18aa037586196cc74858203b2a89c67025d12af2",
+        "configs/tasks/rough_bergomi_option_bank.json": "872a5225deb3f4d2ab45b7bed6a35562175b35a04bf74fddde281dbc8c848ac0",
+        "src/sbi4finance/rough_bergomi.py": "ab47c3bcd3292fde093b4aaaf4fb668101793997dc25afe11a485ec8f2537b8f",
         "src/sbi4finance/bergomi.py": "39234a7e8443a3d27fa9b460c3e9e584e41e8780bd084b6113648c78f1dd3c1d"
       }
     }
-  ]
+  ],
+  "software_tests": {
+    "command": "PYTHONPATH=src KERAS_BACKEND=jax python -m unittest discover -s tests -v",
+    "count": 70,
+    "passed": true,
+    "wall_seconds": 23.846,
+    "scope": "complete current source tree, separate from posterior acceptance"
+  }
 }

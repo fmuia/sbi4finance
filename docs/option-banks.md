@@ -119,6 +119,22 @@ sampling-aware screen but do not certify bias below 0.025 currency. This is a
 numerical pilot suitable for developing the inference task; price-label fidelity
 must be settled before a large training run.
 
+The rough preset is `configs/tasks/rough_bergomi_option_bank.json`: infer `hurst`
+and `eta`, fix `rho=-0.6`, and retain the same known flat curve/panel. Its hybrid
+driver also uses 262,144 paths and 128 asset steps. The [measured bank](results/rough-bergomi-option-bank.json)
+passed with maximum SE/quote-sigma 0.0741; generation took 36.4 seconds and
+selected-ID regeneration 12.1 seconds during concurrent work. Its [config-specific
+grid screen](results/rough-bergomi-bank-numerics.json) likewise passes without
+certifying bias below 0.025 currency. The current variance does not contain the
+rough model's memory; this Q panel task does not supply a P forecasting state.
+
+Both MC presets simulate quote panels around **numerically estimated** prices.
+Their effective simulation law therefore includes the recorded MC estimator
+randomness as well as the deliberately added quote noise. Do not equate this
+with an exact continuum-price Gaussian likelihood in a later posterior-reference
+comparison. Settle or account for both sampling error and discretization error
+for that selected inference experiment.
+
 For posterior estimation, training pairs are `(noisy panel, known context)` →
 synthetic parameters. A fitted posterior can then feed a validated target
 pricer. A pricing surrogate instead learns parameters/contracts → accurate

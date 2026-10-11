@@ -4,6 +4,16 @@
 
 ## Purpose
 
+**Implementation update:** increment 9 delivers the Volterra joint Gaussian
+reference, FFT hybrid simulator/pricer and small shared Q bank. See [math and
+evidence](../../rough-bergomi.md), [measured bank](../../results/rough-bergomi-option-bank.json)
+and notebook 08's rough sections. M7.1–M7.2 numerical infrastructure and M7.3a
+bank delivery are runnable; their scientific evidence is bounded to the recorded
+fixtures/screens. M7.3b posterior training/acceptance remains deferred while bank
+coverage is prioritized. The maximum 128-to-512-step bank-grid difference is
+0.0427 currency with 0.0248 combined SE: the screen passes but does not prove
+bias below 0.025. No posterior or scalar-state rough continuation is claimed.
+
 Add a power-law-memory forward-variance model with an independently checked driver and controlled numerical pricing. The initial inference task is Q calibration from option panels, which avoids pretending that current variance alone solves conditional forecasting from historical returns.
 
 ## Tasks
@@ -20,10 +30,11 @@ Add a power-law-memory forward-variance model with an independently checked driv
 |---|---|---|
 | M7.1 Gaussian driver reference | Explicit kernel/field convention, supported parameter domain and small-grid joint covariance fixtures | Check Gaussian covariance and asset-driver dependence independently before production optimization. |
 | M7.2 Reusable simulation and pricing | Hybrid/convolution generator, variance normalization, European pricer and numerical error report | Compare with M7.1, refine grids and justify the price estimator's moments/error bars before accepting a reusable training bank or scaling it. Small explicitly provisional pilots can inform these choices. |
-| M7.3 Restricted bank and posterior | Q task, verified bank, pilot checkpoint and reproducible conditional/reference validation report | Reuse the panel helper accepted in M6.3 and M2.3 loading. Separate accepted numerical infrastructure from unresolved posterior accuracy; only accepted inference and price propagation can enter M8. |
+| M7.3a Restricted bank | Q task, grouped pilot bank, numerical metadata and verified load/regeneration | Reuse the shared panel helper and M2.3 loading. Record fidelity limits; settle the selected price-label budget before scaling. This is available in increment 9. |
+| M7.3b Restricted posterior | Pilot checkpoint and reproducible conditional/reference validation report | Deferred during the simulator coverage push. Validate against the declared observation/numerical law, including joint and price-sensitive quantities. Only accepted inference and price propagation can enter M8. |
 | M7.4 Optional numerical factor approximation | Versioned approximate kernel/weights and accuracy/cost comparison | Compare with the accepted rough reference at declared error targets. Do not present this approximation as the independently specified M6.4 model. |
 
-Complete M7.1–M7.3 in order. M7.4 is optional and may follow the accepted numerical reference without delaying the reference-based posterior pilot. Likely destinations are `simulators/` and `pricing/` for numerical work, and `tasks/` and `inference/` for the restricted calibration experiment. These reuse the shared observation interface without creating a hidden dependency on M4 or M5.
+Complete M7.1–M7.3b in order. M7.4 is optional and may follow the accepted numerical reference without delaying the reference-based posterior pilot. Flat `rough_bergomi.py` and the shared `option_panel.py`/`option_bank.py` now implement the numerical and bank responsibilities. Later inference can reuse these without creating a hidden dependency on M4 or M5.
 
 ## Didactic review deliverable
 

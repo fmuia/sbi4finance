@@ -1,0 +1,197 @@
+{
+  "scope": "S numerical pilot and verified bank; no posterior or market claim",
+  "generation_command": "pixi run option-bank --config configs/tasks/rough_bergomi_option_bank.json --out /new/rough-bergomi-bank",
+  "manifest": {
+    "conditioning_cutoff_years": 0.0,
+    "configuration": {
+      "root_seed": 52026,
+      "splits": {
+        "test": 4,
+        "train": 16,
+        "validation": 4
+      },
+      "task": {
+        "context": {
+          "contracts": [
+            {
+              "maturity": 0.25,
+              "option_type": "put",
+              "strike": 90.0
+            },
+            {
+              "maturity": 0.25,
+              "option_type": "put",
+              "strike": 100.0
+            },
+            {
+              "maturity": 0.25,
+              "option_type": "put",
+              "strike": 110.0
+            },
+            {
+              "maturity": 0.5,
+              "option_type": "put",
+              "strike": 90.0
+            },
+            {
+              "maturity": 0.5,
+              "option_type": "put",
+              "strike": 100.0
+            },
+            {
+              "maturity": 0.5,
+              "option_type": "put",
+              "strike": 110.0
+            },
+            {
+              "maturity": 1.0,
+              "option_type": "put",
+              "strike": 90.0
+            },
+            {
+              "maturity": 1.0,
+              "option_type": "put",
+              "strike": 100.0
+            },
+            {
+              "maturity": 1.0,
+              "option_type": "put",
+              "strike": 110.0
+            }
+          ],
+          "dividend": 0.0,
+          "quote_noise_std": 0.25,
+          "rate": 0.02,
+          "spot": 100.0
+        },
+        "fixed_parameters": {
+          "rho": -0.6
+        },
+        "measure": "Q",
+        "model": "rough",
+        "model_context": {
+          "times": [
+            0.0,
+            1.0
+          ],
+          "values": [
+            0.04,
+            0.04
+          ]
+        },
+        "numerics": {
+          "max_mc_se_over_quote_sigma": 0.1,
+          "method": "hybrid",
+          "n_paths": 262144,
+          "n_steps": 128
+        },
+        "parameter_names": [
+          "hurst",
+          "eta"
+        ],
+        "prior_bounds": [
+          [
+            0.1,
+            0.3
+          ],
+          [
+            0.4,
+            1.2
+          ]
+        ],
+        "task_id": "rough_option_panel_v1"
+      }
+    },
+    "configuration_sha256": "ba7ec8872a54132ae85eba800e7762a0cb19719f3de6eef2bbc8372e7f216f1a",
+    "contract_selection": "fixed ordered synthetic contracts in task context",
+    "data_origin": "synthetic",
+    "evidence_scope": "S",
+    "format": "option_bank_v1",
+    "future_outcomes_in_conditioning": false,
+    "measure": "Q",
+    "noise": "independent additive Gaussian currency quote errors, no clipping",
+    "numerical_scope": {
+      "fourier_difference_is_error_bound": false,
+      "mc_se_excludes_bias": true,
+      "posterior_validated": false,
+      "refinement_difference_available": false
+    },
+    "prior": "independent uniforms in explicit parameter_names order",
+    "purpose": "synthetic fixed-panel inference training/evaluation",
+    "rng": "PCG64; SeedSequence(option tag, root, task digest words, split, ID, purpose); purposes 0 prior,1 pricing,2 quotes",
+    "roles": {
+      "context": "known synthetic contracts/spot/rates/quote sigma; model_context also known; stored in configuration",
+      "example_id": "auxiliary split-qualified base-panel identity; future augmentations must keep base grouping",
+      "observations": "conditioning: noisy currency prices [batch,contract,1]",
+      "parameters": "ordered synthetic training targets only; never observed conditioning",
+      "pricing_covariance": "auxiliary covariance of MC price MEANS; zero for Fourier",
+      "pricing_standard_errors": "auxiliary MC standard errors (zero for deterministic Fourier)",
+      "reference_prices": "auxiliary numerical expectation estimates, not exact market truth",
+      "refinement_difference": "auxiliary refined-minus-base Fourier estimate; MC zeros mean not calculated"
+    },
+    "source_sha256": {
+      "bergomi.py": "39234a7e8443a3d27fa9b460c3e9e584e41e8780bd084b6113648c78f1dd3c1d",
+      "gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
+      "option_bank.py": "8d41e6cecf115f6aa96475295c8291b9c6474e0c1e44ead001539129f3ba3d0a",
+      "option_panel.py": "b37400bfc7f7ec91d208e8637cee1fcb53885b76ca0b00c016574b495fa035f2",
+      "rough_bergomi.py": "ab47c3bcd3292fde093b4aaaf4fb668101793997dc25afe11a485ec8f2537b8f"
+    },
+    "splits": {
+      "test": {
+        "examples": 4,
+        "file": "test.npz",
+        "sha256": "55a159490d7ae5763457c81329e32bb87babfc98df0c33296f03d4a11b951fa0"
+      },
+      "train": {
+        "examples": 16,
+        "file": "train.npz",
+        "sha256": "f0e7b6c500bb023249342af59ac4d65d6f8d96c853047c27e8a11b007c7f77f0"
+      },
+      "validation": {
+        "examples": 4,
+        "file": "validation.npz",
+        "sha256": "d7a4b39b834a460ba58d99a75fc2bcccacfb750d9ec641de3234ede1a8ca3dae"
+      }
+    },
+    "task_fingerprint": "f764fd72583bc2600a1cce7dc9e974c397a938c6ccb4f478450cd0dd02b2d8bd",
+    "truth_available": [
+      "hurst",
+      "eta"
+    ],
+    "versions": {
+      "numpy": "2.5.3",
+      "python": "3.12.15",
+      "scipy": "1.18.1"
+    }
+  },
+  "verification": {
+    "generation_write_seconds": 36.3774136248976,
+    "loaded_array_bytes": 23648,
+    "manifest_sha256": "cf553767546170f6e3db401cb227e728890161591024db7077b0a4082f4d50d4",
+    "max_abs_fourier_refinement_over_quote_sigma": 0.0,
+    "max_mc_se_over_quote_sigma": 0.07406760242522796,
+    "numerical_bias_certified": false,
+    "passed": true,
+    "posterior_validated": false,
+    "regenerated_ids": {
+      "test": [
+        3,
+        2,
+        0
+      ],
+      "train": [
+        15,
+        8,
+        0
+      ],
+      "validation": [
+        3,
+        2,
+        0
+      ]
+    },
+    "scope": "S: storage and same-environment selected-ID regeneration",
+    "verified_regeneration_seconds": 12.098896250128746
+  },
+  "timing_note": "macOS arm64 CPU; Bergomi runs ran concurrently, not a scaling benchmark"
+}
