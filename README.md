@@ -31,6 +31,13 @@ The next increment adds a [saved synthetic bank and BayesFlow training/reload ex
 
 The [joint Heston inference pilot](docs/heston-joint-inference.md) adds a synthetic bank, a same-model particle reference, BayesFlow training/reload and conditional futures. Its saved checkpoint **failed conditional test checks** and remains provisional; the working pipeline and full reports are available for the next inference iteration. No market data are needed.
 
+[HKDE paths and European Fourier pricing](docs/hkde-reference.md) now supply
+[fixed synthetic option-panel banks](docs/option-banks.md). Run `pixi run option-bank
+--config configs/tasks/hkde_option_bank.json --out /tmp/new-hkde-bank` and inspect
+`pixi run review-hkde`. These are reusable numerical building blocks; Q posterior
+training follows later. The [analysis follow-up note](docs/simulator-analysis-next-steps.md)
+preserves the Heston findings while simulator and bank coverage expands.
+
 One environment, managed by [pixi](https://pixi.sh) from `pyproject.toml`:
 
 ```bash
@@ -56,6 +63,7 @@ two-hour participant curriculum. Closely related increments share named sections
 | [GBM, banks and cluster](notebooks/01_gbm_foundations.py) | M0–M2 / 1–3: exact inference, array roles, reproducible banks and the recorded cluster result | `pixi run review-foundations` |
 | [Heston and Gaussian jumps](notebooks/04_heston_svj_kernels.py) | M3.1–M3.2 / 4: diffusion/jump simulation, continuation, numerical checks and Numba timings | `pixi run review-kernels` |
 | [Joint Heston inference](notebooks/05_heston_joint_inference.py) | M3.3 / 5: observed histories, reference/neural joint posteriors, conditional futures and the failed frozen checks | `pixi run review-heston` |
+| [HKDE and option panels](notebooks/06_hkde_and_pricing.py) | M4 / 6: jump law, Q prices, noisy observations, bank roles and reference checks | `pixi run review-hkde` |
 
 Default execution uses synthetic examples and committed evidence, with no market
 downloads, cluster submission or full training run. Recorded results and fresh

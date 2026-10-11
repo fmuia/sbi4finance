@@ -34,6 +34,7 @@ bayesflow = "==2.0.14"
 keras = "==3.15.1"
 jax = "==0.11.1"
 numba = "==0.68.0"
+scipy = "==1.18.1" # Fourier quadrature, Gaussian references and option expectations
 
 [tool.pixi.activation.env]
 KERAS_BACKEND = "jax"
@@ -57,6 +58,9 @@ heston-train = "python scripts/train_heston.py"
 review-foundations = "marimo edit notebooks/01_gbm_foundations.py --no-token"
 review-kernels = "marimo edit notebooks/04_heston_svj_kernels.py --no-token"
 review-heston = "marimo edit notebooks/05_heston_joint_inference.py --no-token"
+option-bank = "python scripts/generate_option_bank.py"
+hkde-validate = "python scripts/validate_hkde.py"
+review-hkde = "marimo edit notebooks/06_hkde_and_pricing.py --no-token"
 
 # GPU environment for Oscar (linux-64 only): `pixi install -e gpu` on a login node.
 [tool.pixi.feature.cuda]

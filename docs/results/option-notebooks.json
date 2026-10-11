@@ -1,0 +1,42 @@
+{
+  "verification": "isolated source/config/docs/notebooks copy; no data directory, checkpoint loading, training or cluster submission",
+  "records": [
+    {
+      "notebook": "notebooks/06_hkde_and_pricing.py",
+      "scope": "offline didactic execution, separate from scientific numerical or posterior acceptance",
+      "command": [
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-option-banks/.pixi/envs/default/bin/marimo",
+        "export",
+        "html",
+        "notebooks/06_hkde_and_pricing.py",
+        "-o",
+        "/private/tmp/06_hkde_and_pricing-isolated-offline.html",
+        "--force"
+      ],
+      "working_directory": "/private/tmp/sbi-option-notebooks-offline-20261011",
+      "environment_overrides": {
+        "PYTHONPATH": "/private/tmp/sbi-notebook-offline-guard:/private/tmp/sbi-option-notebooks-offline-20261011/src",
+        "MPLCONFIGDIR": "/private/tmp/mpl-option-isolated"
+      },
+      "external_network_guard_sha256": "34c701c1e9ac7197e43094e02e5f84d2a4d49f8d2937f941f6ed23c37514a03d",
+      "external_connects_blocked": true,
+      "localhost_ipc_allowed": true,
+      "market_data_directory_present": false,
+      "exit_code": 0,
+      "elapsed_seconds": 8.030330916400999,
+      "output_cells": 10,
+      "error_outputs": 0,
+      "source_and_artifact_sha256": {
+        "notebooks/06_hkde_and_pricing.py": "4b60af5de0befdaf8305f965b451d6f68a0ab81cff69f989a27382bb46f796a0",
+        "configs/tasks/hkde_option_bank.json": "f8fe74d4bfe654a30932f39ccf7d3acb2ccfc5555f5d70220027808bd6c4b83b",
+        "docs/results/hkde-validation.json": "4f8bb3e92af25f20caf0ba70472bb18b6d4f9de751a68dc1370c56c89d4940a5",
+        "src/sbi4finance/option_bank.py": "8d41e6cecf115f6aa96475295c8291b9c6474e0c1e44ead001539129f3ba3d0a",
+        "src/sbi4finance/option_panel.py": "b37400bfc7f7ec91d208e8637cee1fcb53885b76ca0b00c016574b495fa035f2",
+        "src/sbi4finance/gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
+        "src/sbi4finance/hkde.py": "c6618b6bd54eae169b4fc0e90201b8582b8e7da14ff41a305c27e4e2bd06e503",
+        "src/sbi4finance/heston.py": "f85237a6f223689bb83fb2837d6f6cba855867f5da9f919667163ae4a4c8996c",
+        "src/sbi4finance/gbm.py": "8d491f019326712a4a6e985b491658146fa3da9f57f513a6fed421259d55cb5d"
+      }
+    }
+  ]
+}

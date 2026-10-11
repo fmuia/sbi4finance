@@ -4,6 +4,15 @@
 
 ## Purpose
 
+**Implementation update:** increment 6 delivers the HKDE law, Fourier pricer,
+shared fixed-panel bank, numerical evidence and offline notebook 06. See
+[reference mathematics/results](../../hkde-reference.md), [bank workflow](../../option-banks.md),
+and [measured bank](../../results/hkde-option-bank.json). M4.1–M4.2 are runnable;
+M4.3 evidence is bounded to the declared pilot/fixture domain. Neural inference,
+broader-prior numerical certification, American/exotic products and an actual
+option-pricing cluster run are not claimed. Flat modules implement the planned
+responsibilities without requiring the proposed package hierarchy.
+
 Add the double-exponential jump sibling of Gaussian-jump Heston and establish an options-calibration task. This tests the architecture's ability to generate pricing-based observations without conflating Q calibration with historical-return inference.
 
 ## Tasks

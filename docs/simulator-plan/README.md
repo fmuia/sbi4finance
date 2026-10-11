@@ -8,6 +8,22 @@ The intended result is a small library inside `sbi4finance`, a cluster workflow 
 
 ## Build for tutorial iteration
 
+**Current priority (11 October): complete useful simulator and bank coverage.**
+Keep the Heston inference findings and reserved test intact; further network
+analysis is recorded in [next steps](../simulator-analysis-next-steps.md).
+Implement HKDE (increment 6), one-factor Bergomi (8), and rough Bergomi (9)
+with small verified banks and didactic reviews before returning to learned
+pricing (7) or the final participant release (10). The numbering identifies
+the planned scope, not a requirement to execute independent branches in order.
+The returns-versus-options curriculum remains open. This changes work priority,
+not scientific acceptance: a working simulator bank does not validate a posterior.
+
+The [HKDE reference](../hkde-reference.md) and [shared option bank](../option-banks.md)
+now implement M4.1–M4.2 with bounded M4.3 evidence. The numerical pilot covers
+the supplied restricted prior and European panel; wider priors and products
+need new accuracy checks. Notebook 06 is verified offline. M5 training and
+the new option workload's actual cluster execution remain pending.
+
 The priority is a useful, scientifically sound tutorial that is easy to change. These milestones organize the work; they are not a requirement to build a production platform or complete every model before learning from a working example. The 32 substeps are a checklist, not 32 separate PRs or approval rounds.
 
 Start with a small executable path: a few functions, explicit parameters and arrays, a saved configuration and seed, a compact synthetic bank, and the existing in-memory training route. M0 should settle the conventions needed for that path and sketch the second observation type; it should not design every future model's API. Adapt contracts as experiments teach us what is needed, record the change, and regenerate small pilot banks when simpler than supporting old formats.
