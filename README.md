@@ -17,13 +17,15 @@ Total: ~2 hours.
 
 ## Simulator and inference plan
 
-The [implementation plan and mathematical guide](docs/simulator-plan/README.md) proposes a modular simulator library, pre-simulated training banks, and returns-inference and option-pricing workflows. It includes nine milestone subplans, beginner-oriented mathematical notes, and validation requirements. The plan is under review; implementation and the tutorial's central application remain to be agreed.
+The [implementation plan and mathematical guide](docs/simulator-plan/README.md) describes the simulator library, pre-simulated training banks, and returns-inference and option-pricing workflows. It includes nine milestone subplans, beginner-oriented mathematical notes, and validation requirements. Shared-foundation implementation has started; the tutorial's central application remains open.
 
 Its [delivery and evidence boundary](docs/simulator-plan/README.md#synthetic-delivery-and-market-evidence) requires a complete offline synthetic teaching workflow. Actual-market application and empirical evaluation are optional additions with separate data and evidence requirements; acquisition does not block the synthetic core.
 
 ## Setup
 
 The first simulator-ladder implementation is the [GBM reference example](docs/gbm-reference.md): exact simulation, an analytic drift posterior, conditional future losses and separate European price checks. Run `pixi run gbm-demo` and `pixi run test-gbm`. It uses generated data and has no neural-training or market-data prerequisite.
+
+The next increment adds a [saved synthetic bank and BayesFlow training/reload example](docs/gbm-bank-training.md). Run `pixi run gbm-bank --out /tmp/gbm-bank`, then `pixi run gbm-train --bank /tmp/gbm-bank --out /tmp/gbm-trained`. Both output directories must be new. This is local M2 evidence; actual cluster execution remains separate.
 
 One environment, managed by [pixi](https://pixi.sh) from `pyproject.toml`:
 

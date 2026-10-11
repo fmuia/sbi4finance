@@ -1,0 +1,13 @@
+{
+  "task": {
+    "task_id": "gbm_drift_known_vol_bank_v1",
+    "measure": "P",
+    "volatility": 0.2,
+    "prior_mean": 0.0,
+    "prior_std": 0.1,
+    "n_observations": 252,
+    "dt_years": 0.003968253968253968
+  },
+  "root_seed": 2026,
+  "splits": {"train": 8192, "validation": 1024, "test": 256}
+}

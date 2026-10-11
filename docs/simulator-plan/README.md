@@ -1,6 +1,6 @@
 # Finance simulator and amortized inference implementation plan
 
-Status: implementation started, 11 October 2026. The [first GBM increment](../gbm-reference.md) records M0/M1 scope and evidence; later milestones remain planned. The live tutorial's main application remains open.
+Status: implementation started, 11 October 2026. The [GBM reference](../gbm-reference.md) records M0/M1, and the [bank/training increment](../gbm-bank-training.md) records local M2.1–M2.3 evidence. Actual cluster execution (M2.4) and model extensions remain planned. The live tutorial's main application remains open.
 
 Build reusable simulators and reproducible training datasets for two financial applications: learning dynamics from return histories, and learning pricing parameters or prices from option quotes. Both can be taught and validated on simulated observations. Shared infrastructure should make both applications practical while preserving their different probability measures, observations and inference targets.
 
@@ -19,6 +19,25 @@ Start with a small executable path: a few functions, explicit parameters and arr
 - Defer plugin systems, schema-migration frameworks, deployment services, cross-platform compatibility matrices, generalized fault recovery and speculative optimization. Add an abstraction or hardening step when a second concrete use or a measured failure/cost justifies it.
 
 Model prototypes can proceed alongside bank improvements once their scientific inputs are defined. A release dependency specifies the evidence needed to accept an output; it need not prevent a small exploratory script. Stop each increment when it answers the current question with credible checks, then use that evidence to choose the next increment. The full selected S teaching workflow still has to pass its stated acceptance checks.
+
+## Envisioned PR sequence
+
+Implementation titles use `N/10-simulator-plan-description`: the denominator is the **current envisioned total**, not a literal placeholder. Planning PR #3 is outside the count. Each PR body identifies its milestone and actual Git dependency; a sequence number does not make independent scientific branches depend on each other. Adjust the denominator if review slices are combined, split or deferred; it is not a promise to complete every model before the tutorial.
+
+| PR position | Milestone/scope |
+|---|---|
+| 1/10 | M0/M1: GBM reference — [PR #7](https://github.com/fmuia/sbi4finance/pull/7) |
+| 2/10 | M2.1–M2.3: small local bank, checks and training/reload |
+| 3/10 | M2.4: CPU cluster generation and measured smoke run |
+| 4/10 | M3.1–M3.2: Heston and Gaussian-jump kernels |
+| 5/10 | M3.3: joint SVJ inference and conditional forecasts |
+| 6/10 | M4: HKDE pricing and option panels |
+| 7/10 | M5.1–M5.2: Q posterior, reference pricing and price surrogate |
+| 8/10 | M6.1–M6.3: one-factor Bergomi |
+| 9/10 | M7.1–M7.3: rough Bergomi and pilot inference |
+| 10/10 | M8: selected, validated offline teaching workflow |
+
+Optional collaborator parity, direct-price inference, two-factor Bergomi, finite-factor rough approximations and market/empirical additions are outside this count. M8 can follow the chosen route while unselected catalog work is deferred. The separate data-plan series currently envisions five review slices: local fixtures, returns preparation, options preparation, compatibility checks, and selected offline integration. Market acquisition is optional in both series.
 
 ## Synthetic delivery and market evidence
 
