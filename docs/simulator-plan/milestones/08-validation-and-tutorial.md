@@ -13,14 +13,6 @@ and its offline review. Keep Heston's failures and Bergomi's fidelity limits
 visible. The final returns-versus-options curriculum remains open; real-market
 acquisition cannot block S delivery.
 
-The [restricted rough pilot](../../rough-joint-inference.md) delivers reusable
-synthetic banks and a reference audit. One of 20 panels misses the frozen ESS
-and maximum-weight requirements; neural training and SBC were therefore not run.
-Notebook09 reviews this precision limit and measured generation costs. Its
-successful offline execution is separate from M7.3b inference acceptance; no
-accepted rough checkpoint is available for M8 yet. The separate [HKDE baseline
-in PR #15](https://github.com/fmuia/sbi4finance/pull/15) also remains provisional.
-
 Assemble evidence already collected at each milestone into a complete S participant workflow. Validation and didactic review begin with M0 contracts and M1 analytic checks; this milestone closes end-to-end gaps rather than postponing either. The earlier review notebooks explain each development increment, including failed experiments; M8 selects and paces a scientifically accepted application for participants. M is an optional market illustration and E is a separate empirical extension; neither is required for S acceptance.
 
 ## Tasks
@@ -60,5 +52,13 @@ An S acceptance report tied to exact versions, a verified compact participant no
 Apply predeclared tolerances, including difficult-region and higher-accuracy checks. Confirm independent base splits, no target/future-outcome leakage, valid posterior dependence, correct predictive-mixture versus conditional-risk calculations, and checkpoint reloads. For options, propagate pricing errors; for returns, validate inferred-state continuation. Require the full S workflow to pass without providers or cached market files. Missing M/E assets must skip visibly, never produce synthetic results labelled real. Synthetic forecasts and pricing checks remain model-conditional evidence, not empirical backtests.
 
 ## Decision gate and deferred scope
+
+The [restricted rough pilot](../../rough-joint-inference.md) delivers reusable
+synthetic banks and a reference audit. One of 20 panels misses the frozen ESS
+and maximum-weight requirements; neural training and SBC were therefore not run.
+Notebook09 reviews this precision limit and measured generation costs. Its
+successful offline execution is separate from M7.3b inference acceptance; no
+accepted rough checkpoint is available for M8 yet. The separate [HKDE baseline
+in PR #15](https://github.com/fmuia/sbi4finance/pull/15) also remains provisional.
 
 Release the selected S track when its material failures are resolved or its supported scope is explicit. Market acquisition/permissions never block that release, and passing S does not imply M/E success. Avoid predetermined claims that frequentist methods fail, Bayes always raises risk estimates, or SBI is necessary. Additional models, scaling, and curriculum replacement remain separate decisions; no unmeasured runtime or speedup becomes a tutorial promise.
