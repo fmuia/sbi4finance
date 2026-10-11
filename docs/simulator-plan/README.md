@@ -22,7 +22,8 @@ The [HKDE reference](../hkde-reference.md) and [shared option bank](../option-ba
 now implement M4.1–M4.2 with bounded M4.3 evidence. The numerical pilot covers
 the supplied restricted prior and European panel; wider priors and products
 need new accuracy checks. Notebook 06 is verified offline. The actual option workload now passes the
-[cluster smoke](../option-cluster-smoke.md); M5 training remains pending.
+[cluster smoke](../option-cluster-smoke.md); the first M5.1 training and review
+experiment is delivered below, with scientific acceptance still pending.
 
 Increment 8 now supplies [one-factor Bergomi](../bergomi-simulators.md), its
 verified small bank and offline notebook 08. M6.1–M6.3 infrastructure is in place;
@@ -139,8 +140,8 @@ The following map uses **implementation increment numbers**, not GitHub PR numbe
 | 3 — Cluster generation | M2.4 in an explicit cluster section of the same bank notebook: job/configuration, actual run evidence and cost | Delivered and verified in PR #11. Reviews actual cluster evidence without submitting jobs. |
 | 4 — Heston/SVJ kernels | M3.1–M3.2 in `notebooks/04_heston_svj_kernels.py`: hidden variance, jumps, continuation and numerical checks | Delivered and verified in PR #11. Numerical support remains bounded to the reported cases. |
 | 5 — Joint returns inference | M3.3 in `notebooks/05_heston_joint_inference.py`: task, joint posterior/reference comparison, continuation and future losses | Delivered and verified in PR #11, including the explicit-time follow-up section and its failed validation checks. M3.3 scientific acceptance remains pending. |
-| 6 — HKDE option observations | M4 in `notebooks/06_hkde_and_pricing.py`: Q jump law, price expectations, noisy panel and accuracy budget | Planned with M4. |
-| 7 — Learned pricing routes | M5 in separate sections of the HKDE/pricing notebook: posterior plus reference pricer, surrogate, optional direct-price study | Planned with M5; report each route's acceptance independently. |
+| 6 — HKDE option observations | M4 in `notebooks/06_hkde_and_pricing.py`: Q jump law, price expectations, noisy panel and accuracy budget | Delivered in PR #12; offline execution and bounded numerical evidence pass. |
+| 7 — Learned pricing routes | M5 in separate sections of the HKDE/pricing notebook: posterior plus reference pricer, surrogate, optional direct-price study | First M5.1 experiment and 18-cell offline review delivered in PR #15. Checkpoint provisional after the price-quantile failure; surrogate and direct-price study remain pending. |
 | 8 — Finite-factor Bergomi | M6 in `notebooks/08_bergomi_models.py`: curve context, factor state, normalization and pricing | Planned with M6; optional two-factor material stays visibly optional. |
 | 9 — Rough Bergomi | M7 in separate sections of the Bergomi notebook: Gaussian reference, rough memory, refinement and restricted inference | Planned with M7; do not imply that a validated simulator validates its posterior. |
 | 10 — Participant release | M8: a separately selected participant notebook, supported by the earlier review tutorials and release evidence | Planned; returns-versus-options curriculum choice remains open. |
