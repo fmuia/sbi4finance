@@ -9,6 +9,10 @@ scientific follow-ups. The scoped simulator/bank implementation is complete;
 these issues do not require a new architecture. The [mathematical guide](simulator-plan/notes/01-foundations.md)
 explains the underlying inference concepts.
 
+The [parallel agent handovers](parallel-agent-handover.md) assign ownership of
+scientific, teaching, data-entry and integration changes without introducing
+new architectural layers or competing implementations.
+
 The main code described here is on `feat/hkde-offline-tutorial` (PR #19).
 The later rough-inference and data additions are explicitly marked below:
 they live on separate branches and are not all present in this checkout.

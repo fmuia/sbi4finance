@@ -279,6 +279,10 @@ state these limitations.
 
 ## Tracked follow-ups
 
+For assignment to multiple agents, use the [parallel handover index](parallel-agent-handover.md).
+It links the individual briefs, covers every open PR, and separates work that
+can proceed now from conditional scientific/participant steps.
+
 Review and integration can proceed without accepting every model scientifically.
 Each issue has an ordered subplan, source/result links and explicit completion
 criteria. Start with the integration map and existing results, choose the

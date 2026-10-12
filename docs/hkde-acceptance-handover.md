@@ -3,6 +3,11 @@
 Prepared 12 October 2026. This is a self-contained briefing for the next agent;
 writing it does not start an experiment or change any acceptance decision.
 
+Use the [parallel assignment map](parallel-agent-handover.md) when other agents
+are active. This agent owns the HKDE scientific decision and notebook11 evidence;
+coordinate participant presentation and data-I4 changes with their owners, and
+send shared handover/status updates to the integration coordinator.
+
 ## Task
 
 Work through [issue #24](https://github.com/fmuia/sbi4finance/issues/24): decide
