@@ -16,7 +16,9 @@ earlier implementation snapshot. [PR #29](https://github.com/fmuia/sbi4finance/p
 retains provisional selected-case teaching at 2,048 proposals and defers formal
 I4. The pinned #27 combined revision includes #22's local input, cached default
 and explicit live option. The [delivery record](tutorial-delivery-verification.md)
-tracks #26's final participant verification separately.
+records #26's completed fresh setup and five isolated exports on `ca63424`,
+with 19 figure appearances reviewed. Static bundled assets/links are checked;
+browser layout, interaction and offline runtime remain unverified.
 
 ## Start here
 
@@ -322,7 +324,7 @@ teaching route, and schedule only the scientific work that decision needs.
 | Issue | Concrete outcome | Boundary |
 |---|---|---|
 | [#27 — review and consolidate the PR stacks](https://github.com/fmuia/sbi4finance/issues/27) | Review dependencies, integrate the intended revisions, verify the actual combined code/notebooks and record the reviewed/merged disposition. | Existing snapshot test counts do not certify the resulting tree. Merging does not change scientific acceptance. |
-| [#26 — choose the tutorial and finish participant review](https://github.com/fmuia/sbi4finance/issues/26) | Select P returns versus Q options, primary model/companions, claims and live/cached lesson; check clean setup and the complete offline S route. | Does not require every catalog model to pass or any market acquisition. |
+| [#26 — tutorial and participant review](https://github.com/fmuia/sbi4finance/issues/26) | Q/options selected; [fresh setup, five isolated exports, 19 figure appearances and exercise review](tutorial-delivery-verification.md) complete on `ca63424`. | Browser layout, interaction and offline runtime unverified; full selected-route verification remains false. Formal I4 deferred. |
 | [#23 — rough reserved-test evaluation](https://github.com/fmuia/sbi4finance/issues/23) | **Study completed in [PR #28](https://github.com/fmuia/sbi4finance/pull/28):** frozen checkpoint evaluated once; reference, conditional/joint, SBC and target-mean results audited and taught in notebook09. | All 256 cases used and closed. Reference passes; one conditional eta-spread gate fails, so candidate remains provisional. No retry, tuning or reference expansion followed. |
 | [#24 — HKDE scientific acceptance decision](https://github.com/fmuia/sbi4finance/issues/24) | **Decision recorded:** [retain provisional selected-case teaching at 2,048 proposals](hkde-acceptance-decision.md); unchanged tolerances, explicit shared-alarm policy, no new replication. Notebook11 teaches the decision. | Historical test remains failed and closed; broader acceptance is deferred. Formal data-teaching I4 stays deferred; I4a already runs. |
 | [#25 — Heston conditional state/forecast decision](https://github.com/fmuia/sbi4finance/issues/25) | Decide defer, retain as a diagnostic lesson, or investigate one mechanism with a bounded protocol and notebook05 update. | Optional unless the returns route needs it. Both v2 and v3 remain provisional; root-43022 stays reserved. |

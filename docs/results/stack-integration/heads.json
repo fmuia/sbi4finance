@@ -394,5 +394,20 @@
       "head_commits_not_in_current_base": 1,
       "snapshot_note": "Published during integration after the initial open-PR inventory; selected commit already composed."
     }
+  ],
+  "followup_patches": [
+    {
+      "pull_request": 30,
+      "source_commit": "8f565121d23b5b3e815be0e2bfde468db8e30211",
+      "applied_commit": "fc7af4a3b423285fd07e490cbcc6ffabea335573",
+      "composition": "single requested cherry-pick; initial be4a3ba already present",
+      "tested_source_commit": "ca63424a140c2e512db97e40f0bb30010da3956a",
+      "scope": [
+        "docs/tutorial-delivery-verification.md",
+        "docs/results/tutorial-participant-delivery/",
+        "scripts/check_tutorial_delivery.py"
+      ],
+      "status": "Fresh setup and isolated execution complete; browser layout, interaction and offline runtime unverified; full_selected_route_verified=false"
+    }
   ]
 }

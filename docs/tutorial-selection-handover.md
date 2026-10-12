@@ -7,19 +7,24 @@ or a new scientific experiment. Coordinate through the
 ## Current handback — 12 October 2026
 
 The user chose **Q/options: GBM foundations followed by the provisional
-corrected-HKDE diagnostic lesson**, and confirmed that #27 has **not yet**
-supplied a combined revision. The [participant route](tutorial-participant-route.md)
-records that choice, supported claims, exact sections, modes and a 120-minute
-schedule including exercises. The [delivery record](tutorial-delivery-verification.md)
-separates fresh setup/current-branch preflight from final combined-tree acceptance.
+corrected-HKDE diagnostic lesson**. The [participant route](tutorial-participant-route.md)
+records the two-hour schedule, exercises and agreed cached/default/live modes.
+The [final delivery record](tutorial-delivery-verification.md) verifies combined
+source `ca63424a140c2e512db97e40f0bb30010da3956a`, tree
+`0eaff7f14ae721efc74de6bc8784b7fab44f67a9`, in a separate fresh checkout.
+Evidence commit `8f565121d23b5b3e815be0e2bfde468db8e30211` from PR #30 is
+incorporated into the [combined PR #31](https://github.com/fmuia/sbi4finance/pull/31).
 
 - H26.1: curriculum choice and provisional teaching scope recorded.
-- H26.2: route specification prepared; #27 must retain the agreed #22 local
-  panel/cached-default/live-opt-in behavior and incorporate #29's explanation.
-- H26.3: **pending #27's pinned combined revision**. Preliminary checks cannot
-  discharge clean setup and complete offline execution on that revision.
-- H26.4: canonical schedule and MMAR scope corrected; final participant evidence
-  and PR closeout remain dependent on H26.3. No PR merges are part of this work.
+- H26.2: route specification and the agreed #22/#29 composition are included.
+- H26.3: **fresh setup and isolated execution complete**: install 6.789 s,
+  five strict checks/exports with zero errors, 19 figure appearances reviewed,
+  and E1's 252/504-day change replayed programmatically. Browser layout,
+  interaction and offline runtime remain unverified; static asset/link checks
+  do not make `full_selected_route_verified` true.
+- H26.4: canonical schedule, MMAR scope and final evidence are handed back.
+  The remaining browser check is explicit; no PR merge or scientific upgrade
+  is part of this work.
 
 [PR #29](https://github.com/fmuia/sbi4finance/pull/29) now records #24's decision:
 retain 2,048-proposal selected-case teaching as provisional; formal I4 stays

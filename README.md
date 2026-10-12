@@ -34,8 +34,10 @@ proposal and remain for the team to confirm.
 includes #22's local panel, cached default and explicit live opt-in, plus #29's
 scientific-decision explanation. The [integration review](docs/stack-integration-review.md)
 records combined tests and offline execution. #26's [participant delivery record](docs/tutorial-delivery-verification.md)
-separately covers clean setup, pacing and browser delivery limits. These checks
-do not upgrade scientific acceptance.
+now confirms fresh locked setup and all five isolated exports on the same source
+pin, with 19 figure appearances reviewed. Static mirror assets/links pass checks;
+browser layout, interaction and offline runtime remain unverified. Scientific
+acceptance remains false and formal I4 remains deferred.
 
 The optional Heston, rough Bergomi and original MMAR reviews remain available;
 they are outside this two-hour schedule and use their own task/checkpoint.

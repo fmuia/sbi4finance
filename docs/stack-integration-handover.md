@@ -11,7 +11,13 @@ head table, composition choices and exact-revision verification. This original
 brief remains the task context; its open-PR table is the preparation snapshot.
 The participant follow-up selected provisional Q/HKDE, with #22 local-panel
 cached/default and opt-in live modes plus #29's decision. GitHub merges remain
-the user's decision.
+the user's decision. The [final #26 delivery record](tutorial-delivery-verification.md)
+now verifies fresh setup and five isolated exports on source `ca63424`;
+its evidence commit `8f565121d23b5b3e815be0e2bfde468db8e30211` is incorporated
+without changing the verified notebooks or scientific implementation. Browser
+layout, interaction and offline runtime remain explicitly unverified. The
+software-composition checklist below is complete; those browser checks are a
+separate remaining participant-delivery boundary.
 
 ## Task and context
 
@@ -229,10 +235,10 @@ consume those patches instead of editing their working branches. Scientific
 acceptance and a curriculum choice are not blanket prerequisites to assembling
 the existing provisional implementation.
 
-- [ ] Current full heads and actual ancestry recorded, including combined review bases.
-- [ ] One isolated combined tree preserves existing implementations and immutable results.
-- [ ] Conflicts are resolved deliberately; no duplicate replay or collaborator branch rewrite.
-- [ ] Relevant tests and offline marimo modes pass on that exact tree, or failures are explicit.
-- [ ] Source-bound scientific statuses and cohort histories are preserved.
-- [ ] #26 receives the pinned revision; review/merge recommendation and docs are synchronized.
-- [ ] No new scientific study, production framework or unauthorized GitHub merge occurred.
+- [x] Current full heads and actual ancestry recorded, including combined review bases.
+- [x] One isolated combined tree preserves existing implementations and immutable results.
+- [x] Conflicts are resolved deliberately; no duplicate replay or collaborator branch rewrite.
+- [x] Relevant tests and offline marimo modes pass on that exact tree, or failures are explicit.
+- [x] Source-bound scientific statuses and cohort histories are preserved.
+- [x] #26 receives the pinned revision; review/merge recommendation and docs are synchronized.
+- [x] No new scientific study, production framework or unauthorized GitHub merge occurred.

@@ -15,11 +15,12 @@ ordered milestones, commands and completion criteria.
 **Curriculum handback, 12 October 2026:** the user selected the provisional
 Q/options route for #26. The [route card](tutorial-participant-route.md) records
 the two-hour schedule and required #22/#29 composition; the
-[delivery record](tutorial-delivery-verification.md) distinguishes fresh setup
-and current-branch preflight from final verification. The user confirmed that
-D/#27 has no pinned combined revision yet. C therefore hands back a prepared
-route, not a completed integrated participant release. #29 retains provisional
-HKDE selected-case teaching and leaves formal I4 deferred.
+[delivery record](tutorial-delivery-verification.md) now verifies fresh setup
+and five isolated exports on D/#27's pinned `ca63424` source. Final H26.3
+evidence from `8f565121d23b5b3e815be0e2bfde468db8e30211` is incorporated in
+PR #31. Browser layout, interaction and offline runtime remain unverified;
+static mirror checks do not complete full-route browser acceptance. #29 retains
+provisional HKDE selected-case teaching and leaves formal I4 deferred.
 
 ## Integration checkpoint
 
@@ -27,8 +28,9 @@ The [combined review](stack-integration-review.md) consumes the selected heads,
 including #29's provisional HKDE decision and participant-route commit
 `be4a3baf6d5753337f93c1b95510310aea2d3d69`. The agreed notebook10 behavior is
 #22's local panel, cached default and explicit 2,048-proposal demo. The selected
-Q/options route replaces the earlier open curriculum choice. #26 verifies the
-pinned combined revision; formal I4 stays deferred. The assignments and original
+Q/options route replaces the earlier open curriculum choice. #26 completed
+fresh setup and isolated execution on the pinned combined revision; browser
+validation remains outstanding and formal I4 stays deferred. The assignments and original
 briefs below retain their provenance; no new study or GitHub merge is authorized.
 
 ## Agent assignments and when to start

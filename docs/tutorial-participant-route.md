@@ -5,8 +5,9 @@
 exact GBM foundation. The financial question is: *which parameter pairs explain
 these nine option premiums, and what model prices do those pairs imply for two
 excluded European puts?* The [#27 combined review](stack-integration-review.md) now includes the
-selected source and presentation dependencies. Final participant delivery
-verification is recorded against its pinned revision.
+selected source and presentation dependencies. [Final H26.3 evidence](tutorial-delivery-verification.md)
+confirms fresh setup and isolated execution on its pinned revision; browser
+layout, interaction and offline runtime remain unverified.
 
 The scientific decision in [PR #29](https://github.com/fmuia/sbi4finance/pull/29),
 at [45bb08d](https://github.com/fmuia/sbi4finance/blob/45bb08d2b091df7bae49fa250424e122f19e3eca/docs/hkde-acceptance-decision.md),
@@ -140,16 +141,21 @@ If live execution is omitted during a session, use the saved
 [joint](results/hkde-live-demo/live-joint.png) and
 [price](results/hkde-live-demo/live-target-prices.png) figures and identify their
 provenance explicitly. A saved replay remains useful, but is not a successful
-execution on the participant's machine. The final delivery check must exercise
-both intended cached and opt-in modes.
+execution on the participant's machine. The final isolated delivery check
+exercised both intended cached and opt-in modes on `ca63424`.
 
-## Cost evidence and delivery acceptance still required
+## Cost evidence and remaining browser check
 
 The pinned #27 combined revision includes notebook10's cached default, local
 input and opt-in 2,048-proposal demonstration, together with #29's scientific
 decision. The [integration review](stack-integration-review.md) records combined
-execution. Final participant verification exercises that pinned revision;
-separate-checkout successes do not certify the complete route.
+execution. The [final participant verification](tutorial-delivery-verification.md)
+used that exact pin: fresh locked setup took 6.789 s, five exports took
+82.345 s and the complete checker took 92.011 s. All exports have zero cell
+errors; 19 figure appearances and six exercises were reviewed. Browser layout,
+interaction and offline runtime remain unverified. The derived mirror's 482
+assets and 583 local targets passed static checks; that does not replace
+browser execution or certify the full selected route.
 
 Historical PR #19 [execution](results/hkde-live-demo/verification.json) took
 13.50 seconds for a fresh-process export and 5.37 seconds within the live cell.
@@ -162,16 +168,14 @@ summed with the export or with timings from other checkouts. #22 separately
 records [5.06 seconds live / 14.60 seconds for its isolated two-notebook check](https://github.com/fmuia/sbi4finance/blob/663ac4edeaf5935b59da5eb3d6767e13b0806037/docs/hkde-provisional-demo.md).
 Neither is a promised participant time or an amortization speedup benchmark.
 
-The final check must pin the combined commit, install its locked environment
-fresh (package networking permitted for installation), then execute all four
-selected notebooks in fresh processes with external networking blocked while
-permitting local marimo kernel communication. Raw training banks and every
-real-market fixture must be absent; required synthetic assets/checkpoints must
-remain. Record cached and opt-in behavior, stage and whole-route export costs,
-cell errors, exact versions/hashes, every rendered graph and exercise review,
-and any platform limitation. Exercise review checks E1's slider change and the
-answer interpretations; it does not run new scientific experiments. Perform
-this after all executable or figure-affecting lesson edits.
+The completed check used a fresh real environment and isolated processes with
+external Python networking blocked and local kernel IPC permitted. Required
+synthetic assets/checkpoints remained; market fixtures and raw training banks
+were absent. E1 was replayed programmatically at 252/504 days; browser slider
+interaction was not tested. The remaining manual work is browser layout,
+navigation and offline requests for the mirror, plus live marimo controls.
+Repeat affected checks after any executable or figure-affecting lesson edits;
+no new scientific experiment is needed for this delivery review.
 
 The delivery record must distinguish **setup success**, **offline execution**,
 **selected-case numerical checks** and **scientific status**. A completed

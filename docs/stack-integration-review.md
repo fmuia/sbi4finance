@@ -51,7 +51,11 @@ the current named branch; the table uses freshly fetched named refs.
 [PR #30](https://github.com/fmuia/sbi4finance/pull/30) was published during this
 composition: participant head `be4a3baf6d5753337f93c1b95510310aea2d3d69`,
 based on #19 `c762d7613b57d3ea2632671e773498ae8734b701`. It is included;
-its preliminary delivery record remains historical pending the final #26 check.
+its preliminary delivery record remains historical. Final H26.3 commit
+`8f565121d23b5b3e815be0e2bfde468db8e30211` was subsequently cherry-picked as
+`fc7af4a` at the owner's request. This adds the scoped delivery report/results
+and verifier; unlike the initial stack merges, the original evidence commit
+is represented by its patch rather than a new merge parent.
 
 The #7, #15 and #29 heads omit later commits on their current named bases.
 Neither title numbering nor the displayed base name certifies ancestry.
@@ -100,7 +104,10 @@ Tested commit: `ca63424a140c2e512db97e40f0bb30010da3956a`.
 Tree: `0eaff7f14ae721efc74de6bc8784b7fab44f67a9`.
 Every execution below started from that clean combined tree. Later review
 commits add these records and reconcile documentation; they do not change the
-scientific implementation or notebook execution verified here.
+scientific implementation or notebook execution verified here. The final H26.3
+follow-up updates `scripts/check_tutorial_delivery.py`, a separate delivery
+verifier. Its original execution and later mirror-postprocessing snapshots
+have separate recorded hashes; the verified source pin is unchanged.
 
 | Check | Actual result | Fresh evidence |
 |---|---|---|
@@ -111,6 +118,16 @@ scientific implementation or notebook execution verified here.
 | HKDE decision lesson | **15 cells, 0 errors, 5 figures**, 1.087 s export; provisional / 2,048 / I4 deferred visible | [Verification](results/stack-integration/hkde-decision/verification.json), [visual inspection](results/stack-integration/hkde-decision/visual-inspection.json) |
 | Rough cached review | **26 cells, 0 errors, 14 figures**, 10.665 s export; all 256 cases used and eta failure visible | [Verification](results/stack-integration/rough/execution.json), [reproduction helper](results/stack-integration/rough/verify_review.py) |
 | Preserved input assets | **286 inherited source/config/checkpoint/result files** match selected input blobs; none omitted; every selected head is an ancestor; lock unchanged | [Preservation check](results/stack-integration/preservation.json) |
+| Final H26.3 fresh setup | Fresh real environment on the same pin; `pixi install --locked` passes in **6.789 s**, without lock changes | [Setup](results/tutorial-participant-delivery/setup.json) |
+| Final four-notebook participant execution | Five strict checks/exports, **21/8/20/20/15 cells**, zero errors; **19 figure appearances / 15 unique** reviewed; eight live case checks and programmatic E1 replay pass | [Execution](results/tutorial-participant-delivery/verification.json), [review](results/tutorial-participant-delivery/review.json) |
+
+The separate participant exports took **82.345 s** total; the checker took
+**92.011 s**. These fresh-environment measurements differ from the reused
+environment runs above and must not be added to them. One successful-process
+shutdown semaphore warning remains in the log. All 158 copied source hashes
+match the pinned Git tree. The incoming 30 evidence hashes, 59 frozen
+dependency bindings, figure inventory and verifier snapshots were independently
+checked during integration without rerunning inference or installation.
 
 All fresh graphs were inspected, including the retained failures, joint
 parameter dependence and two currency-price distributions. The cached plots
@@ -173,20 +190,31 @@ These are explicit Python guards, not a claim of an OS-wide network sandbox.
 No raw banks, checkpoints or market fixtures are available in the rough/decision
 review copies. The live HKDE copy includes its one necessary checkpoint.
 
-**Standalone offline HTML is not certified by these Python checks.** Marimo
-exports may reference CDN browser assets and temporary absolute review links.
-The supported participant entry is the installed local marimo route; #26's
-[delivery record](tutorial-delivery-verification.md) assesses the four-notebook
-route, clean setup and browser limitations against the same source pin.
-The pin was sent to #26 immediately after composition, along with the mode and
-scope contract. Historical generated SVG whitespace is retained rather than
-changing source-bound figure bytes; non-result paths pass `git diff --check`.
+**Standalone offline HTML is not certified.** The original five exports each
+contain 107 CDN references and temporary/source-relative review links. #26's
+[final delivery record](tutorial-delivery-verification.md) now includes a
+derived mirror with 482 matching frontend assets and 158 source inputs, with
+583 local targets checked and two optional pinned external provenance links.
+The mirror is a temporary local review artifact; its manifest and reproduction
+procedure are committed, not the full frontend/HTML bundle. Link-only
+postprocessing preserves all original HTML, notebook code and 19 PNGs without
+rerunning inference.
+
+Computer Use permissions were unavailable to the delivery reviewer, so browser
+layout, interaction and offline runtime remain unverified, and
+`full_selected_route_verified` remains false. Static link/asset checks do not
+establish browser behavior. Fresh setup and isolated Python execution are
+complete; formal I4 remains deferred independently of the remaining browser
+check. The supported interactive entry remains the installed local marimo
+route. Historical generated SVG whitespace is retained rather than changing
+source-bound figure bytes; non-result paths pass `git diff --check`.
 
 ## Review and merge recommendation
 
 The combined implementation is ready for the user's software/provisional-teaching
 review. All original open stack heads plus #28, #29 and participant commit
-`be4a3baf6d5753337f93c1b95510310aea2d3d69` are represented. The original PRs'
+`be4a3baf6d5753337f93c1b95510310aea2d3d69` plus final H26.3 evidence
+`8f565121d23b5b3e815be0e2bfde468db8e30211` are represented. The original PRs'
 focused diffs remain useful for reviewing each contribution; the combined PR
 shows their actual composed behavior.
 
@@ -201,8 +229,9 @@ shows their actual composed behavior.
   scientific investigation is deliberately outside this batch; existing
   implementation and retained failures are included. The selected options
   route needs no new Heston study.
-- **#26:** include the selected two-hour curriculum and its scoped follow-up;
-  final clean participant evidence is recorded separately. Optional M market
+- **#26 / PR #30:** selected curriculum, fresh setup and isolated execution
+  evidence are included. Browser layout/interaction/offline runtime remain
+  unverified; full selected-route verification is false. Optional M market
   acquisition, E empirical evaluation, new cohorts, training campaigns and
   formal I4 are outside this integration.
 
