@@ -1,0 +1,73 @@
+{
+  "audit": "independent NumPy recomputation of cached rough8192 neural diagnostics",
+  "checker_sha256": "9b52a61e0f032bc3850924476454f38c4fdecbe06e2c6f6378d7edd6ac935dd3",
+  "limits": [
+    "No model loading, network resampling, training, or pricing replay.",
+    "Neural SBC posterior draws were not saved: KS/DKW checked from saved randomized ranks; neural coverage only checked against recorded counts and Wilson formula.",
+    "Reference targets and neural target estimates are saved finite-grid Monte Carlo values, not exact price labels.",
+    "Reused inspected cases remain development evidence; no final-test outcomes evaluated."
+  ],
+  "audit_passed": true,
+  "report_sha256": "45906efb545f4b298eb7060e8aa9157032066eae380ff5d4c469dac6a856d3cf",
+  "checks_sha256": "d09f5f2d71af4355f38a2ba4b6af2f5069f71edc91b86e61ccdb8d3373ab370f",
+  "maximum_recomputed_case_metric_abs_error": 7.105427357601002e-15,
+  "neural_metrics": {
+    "mean_rmse_in_ref_sd": 0.11141978176920891,
+    "max_abs_mean_error_in_ref_sd": 0.27891991383363496,
+    "max_abs_relative_std_error": 0.16623729079614946,
+    "max_abs_correlation_error": 0.08398831904351424,
+    "mean_reference_mass_of_90_interval_abs_error": 0.010947194314808506,
+    "max_target_mean_error_plus_2mcse_currency": 0.025259288021278605
+  },
+  "prior_metrics": {
+    "mean_rmse_in_ref_sd": 1.4726288661174463,
+    "max_abs_mean_error_in_ref_sd": 5.395547590387042,
+    "max_abs_relative_std_error": 2.793071433770334,
+    "max_abs_correlation_error": 0.17319189908429583,
+    "mean_reference_mass_of_90_interval_abs_error": 0.011722881964406962
+  },
+  "neural_sbc": {
+    "rank_ks": [
+      0.057413970017135774,
+      0.04386791536214801
+    ],
+    "rank_dkw_bound": 0.06541653373134128,
+    "passed": true,
+    "coverage_90": [
+      0.8828125,
+      0.890625
+    ]
+  },
+  "prior_sbc": {
+    "rank_ks": [
+      0.05007386783438961,
+      0.04938970869169501
+    ],
+    "rank_dkw_bound": 0.06541653373134128,
+    "passed": true,
+    "coverage_90": [
+      0.900390625,
+      0.8828125
+    ]
+  },
+  "prior_control_rng_replayed": true,
+  "neural_gates": {
+    "mean_rmse_in_ref_sd": true,
+    "max_abs_mean_error_in_ref_sd": true,
+    "max_abs_relative_std_error": true,
+    "max_abs_correlation_error": true,
+    "mean_reference_mass_of_90_interval_abs_error": true,
+    "max_target_mean_error_plus_2mcse_currency": true,
+    "marginal_sbc": true
+  },
+  "reported_neural_passed": true,
+  "timing_seconds": {
+    "loading_including_reference": 2.211910500191152,
+    "conditional_sampling_including_compile": 2.575620375107974,
+    "target_mean_pricing_and_conditional_checks": 215.6331423749216,
+    "sbc_and_prior_control": 1.8185495408251882,
+    "total": 222.37752141617239
+  },
+  "reserved_test_evaluated": false,
+  "audit_elapsed_seconds": 0.16311850026249886
+}

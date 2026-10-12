@@ -30,8 +30,8 @@ def _(mo):
     option-bank route**. A working kernel or bank is not an accepted posterior.
 
     All curves, contracts and paths here are synthetic. Default execution uses
-    three short illustrative paths, small Monte Carlo panels, and one bank
-    example for each model; it runs
+    three short illustrative paths, small Monte Carlo panels, a paired-grid
+    illustration, and one bank example for each model; it runs
     offline without market fixtures, training or cluster jobs. Larger numerical
     checks are displayed from a saved report. This is **S evidence**, not a
     claim that the model explains a real market. Returns-versus-options remains
@@ -696,6 +696,281 @@ def _(mo):
     """)
     return
 
+
+
+@app.cell
+def _(mo):
+    mo.md(r"""
+    ## Resolve grid differences with paired paths
+
+    The earlier bank-specific screens compared independent Monte Carlo runs.
+    Their price difference includes noise from both runs. We can measure the
+    same finite-grid difference more precisely by constructing coarse and
+    fine prices from coupled Gaussian innovations. For path $i$, let $Y_i^c$ and
+    $Y_i^f$ be the conditional put values on the two grids and set
+
+    $$D_i=Y_i^f-Y_i^c,\qquad
+      \widehat\Delta=\frac1M\sum_iD_i,\qquad
+      \operatorname{SE}(\widehat\Delta)=s_D/\sqrt M.$$
+
+    Since $\operatorname{Var}(D)=\operatorname{Var}(Y^f)+
+    \operatorname{Var}(Y^c)-2\operatorname{Cov}(Y^f,Y^c)$, positively correlated
+    path values can make the difference much less noisy. The marginal pricing
+    law at each grid must stay unchanged. Pairing changes the **precision of
+    the comparison**, not either model or its expected discretized price.
+
+    * **One-factor Bergomi:** sum fine Brownian increments and combine the
+      exact OU innovations with their exponential weights. The resulting
+      coarse OU endpoints match the fine path at those times, with the
+      correct driver–asset covariance.
+    * **Rough Bergomi:** sum disjoint blocks in each independent Gaussian
+      channel and divide by the square root of the block size. Rebuild each
+      grid's hybrid field and its variance normalization from those normals.
+      Each grid keeps its declared marginal law. This is common random
+      numbers, **not an exact common-Wiener bridge** for the singular integrals
+      across grids. Simply subsampling the fine hybrid field would give a
+      different approximation from the declared coarse scheme. The coarse
+      and fine fields therefore need not agree at shared times.
+
+    Each run still integrates the asset process with pre-step variance.
+    Coupling does not remove the asset-integration error or the rough
+    approximation's kernel error. No Richardson extrapolation or assumed
+    convergence order is used here.
+    """)
+    return
+
+
+@app.cell
+def _(mo):
+    mo.md(r"""
+    ### A narrower question than continuum accuracy
+
+    The new predeclared comparison asks whether
+
+    $$|\widehat\Delta|+4\operatorname{SE}(\widehat\Delta)
+      \le 0.025\ \text{currency}.$$
+
+    This places the entire four-SE interval for the **finite-grid difference**
+    within the numerical budget. The earlier screen instead allowed
+    $|\widehat\Delta|\le 0.025+4\operatorname{SE}$, so a noisy result could pass
+    without resolving a small difference. The stricter calculation also has
+    limits: four estimated SEs are a diagnostic convention, not an exact
+    confidence bound or a simultaneous guarantee over all cases/contracts.
+
+    Even several successful comparisons do **not** prove continuum bias below
+    0.025: both grids may share a bias, convergence need not be monotone, and
+    sampled prior corners/center do not cover the whole prior. A failed check
+    means this declared resolution condition is not met; inspect the signed
+    difference and its sampling uncertainty before deciding whether the
+    signal or the measurement precision is the obstacle.
+
+    Keep four separate questions visible:
+
+    1. **Sampling precision:** how accurately did we estimate each grid price
+       and their difference?
+    2. **Numerical accuracy:** how does the grid calculation differ from the
+       intended continuous model?
+    3. **Inference accuracy:** does a trained posterior recover the declared
+       synthetic experiment, including joint and price-sensitive quantities?
+    4. **Market adequacy:** can that model describe independently held-out real
+       observations?
+
+    The bank's intentional Gaussian quote noise is another declared mechanism,
+    not an allowance for unknown numerical bias. This section addresses the
+    first two questions under Q; it is neither SBC nor an empirical backtest.
+    """)
+    return
+
+
+@app.cell
+def _(mo):
+    refinement_model_control = mo.ui.dropdown(
+        options=["one_factor", "rough"], value="rough", label="Small coupled illustration",
+    )
+    mo.vstack([
+        mo.md("### Try the paired calculation\n\nThis uses only **2,048 paths, 32 and 64 steps**, with a fixed seed. It demonstrates the interface and the two SE calculations; it does not replace the saved acceptance study below."),
+        refinement_model_control,
+    ])
+    return (refinement_model_control,)
+
+
+@app.cell
+def _(contracts, mo, np, pd, refinement_model_control, variance_curve):
+    from sbi4finance.bergomi_refinement import coupled_option_panels
+
+    _model = refinement_model_control.value
+    _parameters = (dict(kappa=2.0, eta=1.0, rho=-0.6) if _model == "one_factor"
+                   else dict(hurst=0.12, eta=1.0, rho=-0.6))
+    _paired = coupled_option_panels(
+        _model, _parameters, variance_curve, contracts,
+        spot=100, rate=0.02, n_paths=2048, steps=(32, 64), seed=73027,
+    )
+    _comparison = _paired["adjacent"]
+    _rows = pd.DataFrame({
+        "T (years)": [c["maturity"] for c in contracts],
+        "Strike": [c["strike"] for c in contracts],
+        "64 − 32 price (currency)": _comparison["differences"][0],
+        "Paired SE": _comparison["paired_standard_errors"][0],
+        "Independent-run SE at same marginal variance": _comparison["independent_standard_errors"][0],
+        "Independent / paired variance": _comparison["variance_reduction"][0],
+    })
+    mo.vstack([
+        mo.ui.table(_rows, selection=None, show_column_summaries=False),
+        mo.md(r"""
+        The counterfactual independent-run SE is
+        $\sqrt{\widehat{\operatorname{Var}}(\bar Y^f)+
+        \widehat{\operatorname{Var}}(\bar Y^c)}$. No second independent run is
+        performed for this column. The ratio compares variances, so a ratio
+        of 25 means a five-fold reduction in SE. It is not a measured wall-time
+        speedup, and a large ratio says nothing by itself about grid bias.
+        """),
+    ])
+    return
+
+
+@app.cell
+def _(ROOT, json):
+    from hashlib import sha256 as _refinement_sha256
+
+    _path = ROOT / "docs/results/bergomi-coupled-refinement.json"
+    coupled_refinement_report = None
+    if _path.exists():
+        coupled_refinement_report = json.loads(_path.read_text())
+        _protocol_bytes = (ROOT / "configs/bergomi_refinement_protocol.json").read_bytes()
+        if coupled_refinement_report["protocol_sha256"] != _refinement_sha256(_protocol_bytes).hexdigest():
+            raise ValueError("Coupled refinement report does not match its protocol")
+        if coupled_refinement_report["protocol"] != json.loads(_protocol_bytes):
+            raise ValueError("Coupled refinement report embeds a different protocol")
+        for _model in coupled_refinement_report["models"]:
+            _config_bytes = (ROOT / _model["config_file"]).read_bytes()
+            if _model["config_sha256"] != _refinement_sha256(_config_bytes).hexdigest():
+                raise ValueError("Coupled refinement report does not match its bank configuration")
+            if _model["task"] != json.loads(_config_bytes)["task"]:
+                raise ValueError("Coupled refinement report embeds a different bank task")
+    return (coupled_refinement_report,)
+
+
+@app.cell
+def _(coupled_refinement_report, mo, np, pd):
+    if coupled_refinement_report is None:
+        _display = mo.md("**Coupled-grid study pending in this checkout.** The saved report is absent. The small live example is an illustration only; this notebook does not launch the full study or invent a replacement outcome.")
+    else:
+        _summary_rows, _case_rows, _measured_notes = [], [], []
+        for _model in coupled_refinement_report["models"]:
+            _summary = _model["summary"]
+            _summary_rows.append({
+                "Model": _model["model"],
+                "Budget (currency)": _model["absolute_budget_currency"],
+                "All declared differences resolved": _summary["all_comparisons_resolved"],
+                "128 → 1024 resolved": _summary["base_to_finest_resolved"],
+                "512 → 1024 resolved": _summary["last_refinement_resolved"],
+                "Every grid SE within sampling budget": _summary["all_marginal_sampling_within_budget"],
+            })
+            _measured_notes.append(
+                f"**{_model['model']}:** the largest 128→1024 resolution envelope is "
+                f"**{_summary['max_base_to_finest_envelope']:.5f} currency**; "
+                f"the largest 512→1024 envelope is "
+                f"**{_summary['max_last_refinement_envelope']:.5f} currency**."
+            )
+            for _case in _model["cases"]:
+                for _comparison in _case["comparisons"]:
+                    _index = int(np.argmax(_comparison["resolution_envelope"]))
+                    _contract = _model["task"]["context"]["contracts"][_index]
+                    _case_rows.append({
+                        "Model": _model["model"], "Case": _case["role"],
+                        "Parameters": str(_case["parameters"]),
+                        "Steps": f"{_comparison['coarse_steps']} → {_comparison['fine_steps']}",
+                        "Worst contract (K, T)": f"{_contract['strike']:g}, {_contract['maturity']:g}",
+                        "Signed difference (currency)": _comparison["difference"][_index],
+                        "Paired SE (currency)": _comparison["paired_standard_errors"][_index],
+                        "Largest |difference| + 4 SE": _comparison["resolution_envelope"][_index],
+                        "All contracts resolved": all(_comparison["resolved_within_budget"]),
+                    })
+        _protocol = coupled_refinement_report["protocol"]
+        _display = mo.vstack([
+            mo.md(f"""
+            ### Recorded coupled-grid results
+
+            Each model uses its bank's four prior corners and center, with
+            **{_protocol['n_paths']:,} paths per case** on grids
+            **{', '.join(str(n) for n in _protocol['grids'])}**. All grids for a
+            case share one finest-grid innovation stream. The protocol fixes
+            the cases, seeds, grids, budgets and stop rule before execution.
+            These are cached measurements, not calculations launched on opening.
+            """),
+            mo.ui.table(pd.DataFrame(_summary_rows), selection=None, show_column_summaries=False),
+            mo.md("\n\n".join(_measured_notes)),
+            mo.md("The detailed table selects the largest resolution envelope for each case/comparison; other contracts can also fail. **Resolved** means the declared finite-grid condition is met, not that continuum bias is certified. A false sampling-budget entry separately concerns the marginal price SEs."),
+            mo.ui.table(pd.DataFrame(_case_rows), selection=None, show_column_summaries=False),
+            mo.accordion({"Complete coupled measurements and scope": mo.json(coupled_refinement_report)}),
+        ])
+    _display
+    return
+
+
+@app.cell
+def _(coupled_refinement_report, mo, np, plt):
+    if coupled_refinement_report is None:
+        _display = mo.md("The signed-difference figure appears when the recorded coupled-grid report is available.")
+    else:
+        _fig, _axes = plt.subplots(2, 2, figsize=(12.4, 7.7), sharex=True, layout="constrained")
+        _colors = ["#20639b", "#3c9952", "#b56b22", "#a1467e", "#5a50a5"]
+        for _row, _model in enumerate(coupled_refinement_report["models"]):
+            _budget = _model["absolute_budget_currency"]
+            _contracts = _model["task"]["context"]["contracts"]
+            for _col, (_coarse, _fine) in enumerate([(128, 1024), (512, 1024)]):
+                _ax = _axes[_row, _col]
+                _ax.axhspan(-_budget, _budget, color="#e4efe4", zorder=0, label="±0.025 budget")
+                _ax.axhline(0, color="0.35", linewidth=0.8)
+                for _ci, _case in enumerate(_model["cases"]):
+                    _comparison = next(c for c in _case["comparisons"]
+                                       if c["coarse_steps"] == _coarse and c["fine_steps"] == _fine)
+                    _ax.errorbar(np.arange(len(_contracts)) + (_ci - 2) * 0.13,
+                                 _comparison["difference"],
+                                 yerr=4 * np.asarray(_comparison["paired_standard_errors"]),
+                                 fmt="o", markersize=3.4, capsize=2,
+                                 color=_colors[_ci], label=f"Case {_case['case_index']}: {_case['role']}")
+                _ax.set(title=f"{_model['model']}: {_fine} − {_coarse} steps",
+                        ylabel="Price difference ± 4 SE (currency)",
+                        xticks=np.arange(len(_contracts)))
+                _ax.set_xticklabels([f"{c['strike']:g}\n{c['maturity']:g}" for c in _contracts], fontsize=8)
+                if _row == 1:
+                    _ax.set_xlabel("Contract: strike K / maturity T (years)")
+                if _col == 0:
+                    _ax.legend(fontsize=7, loc="best", ncol=2)
+        _display = mo.vstack([
+            _fig,
+            mo.md("**Read the whole error bar.** A finite-grid difference is resolved within budget only when its entire ±4 SE bar lies inside the green band. The left panels assess moving away from the original 128-step bank; the right panels assess the final observed refinement. Neither panel bounds the unobserved continuum tail. Different panels may use different vertical scales."),
+        ])
+    _display
+    return
+
+
+@app.cell
+def _(mo):
+    mo.md(r"""
+    ### Review the numerical decision
+
+    1. If the paired SE shrinks but the signed mean difference stays large,
+       should more Monte Carlo paths be the first remedy? Which numerical
+       approximation would you inspect instead?
+    2. Why must the rough coarse field be rebuilt from its own hybrid scheme?
+       What would simply sampling the fine field at coarse times actually test?
+    3. Suppose the 512→1024 comparison resolves while 128→1024 does not. What
+       does that say about keeping the original bank grid? What remains unknown
+       even after moving to a finer grid?
+    4. Could a network pass SBC when trained and tested with the same biased
+       numerical pricer? Why would this not settle continuum model accuracy?
+
+    Read the [frozen refinement protocol](../docs/bergomi-refinement-protocol.md),
+    [machine-readable settings](../configs/bergomi_refinement_protocol.json),
+    [coupling source](../src/sbi4finance/bergomi_refinement.py), and
+    [full recorded differences](../docs/results/bergomi-coupled-refinement.json).
+    These checks refine the existing synthetic building blocks. They do not
+    require market data, select the final curriculum, train a posterior or
+    accept a larger inference bank automatically.
+    """)
+    return
 
 
 @app.cell

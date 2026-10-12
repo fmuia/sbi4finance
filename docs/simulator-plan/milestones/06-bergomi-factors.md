@@ -11,9 +11,12 @@ shared option bank (M6.1–M6.3 infrastructure). See [math and evidence](../../b
 The covariance/continuation/limit tests and bounded numerical screens pass.
 The maximum bank-corner/center grid difference is 0.0309 currency with 0.0190
 combined sampling SE; this does not certify bias below the desired 0.025.
-Large-bank fidelity, a posterior workflow, remote option workload and optional
-two-factor work remain pending. The numerical building blocks can support the
+The actual remote option workload is recorded in the
+[cluster smoke](../../option-cluster-smoke.md). Large-bank fidelity, a posterior
+workflow and optional two-factor work remain pending. The numerical building blocks can support the
 rough reference branch while these narrower acceptance limits remain visible.
+
+**Coupled-grid follow-up:** the [frozen paired study](../../bergomi-coupled-refinement.md) resolves all one-factor comparisons over the five declared cases. The largest 128-to-1,024-step difference plus four paired SEs is 0.00827 currency, below 0.025; the largest 512-to-1,024 envelope is 0.00143. These are finite-grid checks, not a uniform continuum-bias certificate. The actual cluster route is delivered; a one-factor posterior and optional two-factor model remain separate.
 
 Introduce lognormal forward variance with a finite-dimensional continuation state before rough-memory models. One factor is the required core; two factors are an optional scientific extension, not a prerequisite for rough Bergomi.
 
@@ -38,7 +41,7 @@ Implement the required one-factor steps in order. Use `simulators/`, `pricing/`,
 
 ## Didactic review deliverable
 
-Planned with M6: start `notebooks/08_bergomi_models.py` with the forward-variance curve, normalized factor model and complete continuation state. Follow the [common review requirements](../README.md#didactic-review-notebooks-at-every-milestone). Show a small seeded factor/variance example and bounded European pricing comparison using generated curve context. Identify units, known versus inferred inputs and numerical integration settings; link covariance, normalization, continuation and pricing evidence with any failures. Exercises should explain why an exact OU transition does not make the asset price exact and why restarting the original curve loses conditioning. Add two-factor material only if M6.4 is implemented.
+The one-factor sections are delivered in `notebooks/08_bergomi_models.py`: forward-variance curve, normalized factor model, complete continuation state and bounded European pricing. They follow the [common review requirements](../README.md#didactic-review-notebooks-at-every-milestone), with generated context, units, source links and measured evidence. The [coupled-grid follow-up](../../bergomi-coupled-refinement.md) adds a live pairing example and cached refinement results. Exercises explain why exact OU transitions do not make asset integration exact and why restarting the original curve loses conditioning. Add two-factor material only if M6.4 is implemented.
 
 Accept the sections after offline headless execution/export displays the small calculation and uncertainty-aware references without market curves or expensive default MC. Kernel/bank evidence alone must not be presented as a validated posterior.
 

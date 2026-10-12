@@ -9,6 +9,9 @@ From the repository root, install the pinned environment with
 | `pixi run review-foundations` | [01_gbm_foundations.py](../notebooks/01_gbm_foundations.py) | M0–M2 / increments 1–3: observation and truth roles, exact GBM posterior/prediction, separate Q prices, tiny saved bank, historical training and actual cluster evidence |
 | `pixi run review-kernels` | [04_heston_svj_kernels.py](../notebooks/04_heston_svj_kernels.py) | M3.1–M3.2 / increment 4: diffusion and price jumps, signed-state restart, matched NumPy/Numba calculations and recorded numerical/timing checks |
 | `pixi run review-heston` | [05_heston_joint_inference.py](../notebooks/05_heston_joint_inference.py) | M3.3 / increment 5: joint parameter/state inference, four original cases, neural/reference posteriors, future losses, failed frozen test, spline follow-up and bounded-time diagnosis/validation |
+| `pixi run review-hkde` | [06_hkde_and_pricing.py](../notebooks/06_hkde_and_pricing.py) | HKDE kernels, Q prices, panel banks and numerical reference checks |
+| `pixi run review-bergomi` | [08_bergomi_models.py](../notebooks/08_bergomi_models.py) | One-factor and rough kernels, pricing, banks and paired numerical refinement |
+| `pixi run review-rough-inference` | [09_rough_inference.py](../notebooks/09_rough_inference.py) | M7.3b / increment 9 and issue #23: original reference stop, passed development validation and later held-out conditional-spread failure, with prior control, joint inference, SBC and target-price means |
 
 The earlier notebooks are development review tutorials. Notebook 10 packages
 one possible M8 participant segment; the final returns-versus-options curriculum
@@ -88,6 +91,15 @@ unresolved inference status, selects the final curriculum, or supplies market
 evidence.
 
 ## Verification and reproduction
+
+The latest [rough held-out review](rough-heldout-test.md) passes strict checking
+and an isolated offline export: **26 cells, zero errors, 10.72 seconds**, with
+14 inspected figures and no bank, checkpoint or market-fixture directory.
+The existing pinned environment was reused. Its [verification record](results/rough-heldout-test/notebook-verification.json)
+retains the candidate's provisional status: all references and six of seven
+neural gates pass, but one conditional spread check fails. All 256 test cases
+are now used; cached review does not run inference. Earlier records below
+retain the status and tested revisions of their own milestones.
 
 The original three reviews passed strict marimo checks:
 

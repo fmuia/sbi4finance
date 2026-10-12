@@ -83,4 +83,12 @@ Apply predeclared tolerances, including difficult-region and higher-accuracy che
 
 ## Decision gate and deferred scope
 
+The [restricted rough pilot](../../rough-joint-inference.md) delivers reusable
+synthetic banks and a reference audit. One of 20 panels misses the frozen ESS
+and maximum-weight requirements; neural training and SBC were therefore not run.
+Notebook09 reviews this precision limit and measured generation costs. Its
+successful offline execution is separate from M7.3b inference acceptance; no
+accepted rough checkpoint is available for M8 yet. The separate [HKDE baseline
+in PR #15](https://github.com/fmuia/sbi4finance/pull/15) also remains provisional.
+
 Release the selected S track when its material failures are resolved or its supported scope is explicit. Market acquisition/permissions never block that release, and passing S does not imply M/E success. Avoid predetermined claims that frequentist methods fail, Bayes always raises risk estimates, or SBI is necessary. Additional models, scaling, and curriculum replacement remain separate decisions; no unmeasured runtime or speedup becomes a tutorial promise.

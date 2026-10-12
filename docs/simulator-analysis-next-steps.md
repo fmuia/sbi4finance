@@ -156,6 +156,40 @@ this increment substitutes for that inference validation.
 
 ## 4. Scale measured work and preserve the data boundary
 
+**Original rough study:** the paired-grid study supports 512 steps for
+the explicitly numerical [H/eta pilot](rough-joint-inference.md), without a
+continuum certificate. Its 6,146 saved panels were generated in 98 fixed-ID
+cluster tasks (34.28-minute wall span; 31.68 allocated CPU hours). The independent
+reference passes 19/20 panels, but `validation:260` has ESS 600.55 below 800 and
+maximum weight 0.005392 above 0.005. Mean/block/target precision checks pass.
+This triggered the original frozen stop rule before training; that run produced
+no neural checkpoint or SBC result. The complete reduced software smoke is a
+separate wiring test. Preserve all banks, the failed gate and the reserved test.
+
+**Bounded reference extension:** one separately authorized
+[4,096-to-8,192-row follow-up](rough-reference-expansion.md) preserves the
+original bank, training/evaluation cases and thresholds. All 20 reference cases
+now pass: minimum ESS 1,207.19, maximum weight 0.002716, worst target-mean MCSE
+0.002512 currency and largest block target-mean difference 0.003351. The study
+also records a pass for the original single neural candidate: conditional mean
+RMSE 0.1114 reference SD (prior control 1.4726), all joint/interval checks,
+512-case marginal SBC and maximum target-mean error plus twice MCSE 0.02526
+currency against 0.06. The prior-only control passes marginal SBC too, showing
+why the conditional comparison is necessary. These are adaptive
+development cases, not fresh confirmatory evidence. Neither a passed reference
+nor fast neural sampling establishes a speed advantage over a reference bank
+that can itself be reused.
+
+**Held-out evaluation, issue #23:** the separately frozen
+[test study](rough-heldout-test.md) is complete. All 16 reference cases pass;
+the checkpoint passes six of seven neural gates, including SBC on all 256
+panels and target means. One conditional eta posterior is too narrow: SD error
+31.0% exceeds 25%, and its 90% interval contains 75.64% of the reference mass.
+The checkpoint remains provisional. All 256 cases are used and closed as a
+fresh acceptance cohort; no automatic expansion, tuning or rerun follows.
+Any further mechanism study must be separately defined and retain this result.
+
+
 Use the same frozen task and stable example IDs locally and on the cluster.
 The [option-workload smoke](option-cluster-smoke.md) now measures three actual
 24-panel jobs, exact Linux regeneration, complete transfer hashes and selected

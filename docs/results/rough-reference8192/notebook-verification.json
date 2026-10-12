@@ -1,0 +1,62 @@
+{
+  "scope": "Offline rough 8192-row follow-up review, preserving original stopped pilot. Reference and neural acceptance remain distinct.",
+  "notebook": "notebooks/09_rough_inference.py",
+  "strict_marimo_check": "passed",
+  "exit_code": 0,
+  "elapsed_seconds": 9.460897291079164,
+  "output_cells": 22,
+  "error_outputs": 0,
+  "external_connects_blocked": true,
+  "localhost_ipc_allowed": true,
+  "external_network_guard_sha256": "34c701c1e9ac7197e43094e02e5f84d2a4d49f8d2937f941f6ed23c37514a03d",
+  "market_data_directory_present": false,
+  "checkpoint_directory_present": false,
+  "raw_bank_directory_present": false,
+  "training_or_cluster_submission": false,
+  "ml_framework_required": false,
+  "source_and_artifact_sha256": {
+    "notebooks/09_rough_inference.py": "a055a63da3bbea820f09d3c77e78e7c86c5b8dc3f61009fb3958353113b17af2",
+    "scripts/plot_rough_inference.py": "5b47eceaa5ce6fcb0d630f8370f20a941ca044b7abd56f58b42f4e3099dd8368",
+    "configs/rough_reference8192_protocol.json": "785f8139285921338c94d171402408ad968c9dc20c1083948ef468c970122c8e",
+    "configs/tasks/rough_inference_bank.json": "b514e6a7079acbd3975ad96458cd2be5c00c113adc8c1b7df967fa43d4809021",
+    "src/sbi4finance/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/sbi4finance/rough_reference.py": "db4042d9794fd0ea61e924dcfd4b7a914914076d88646be97d98ea1ad504b622",
+    "docs/results/rough-inference/reference.json": "9e8dff7d24e35a325c93f1d5c96cadcfa45f44c6d52ecec14707d4140024228c",
+    "docs/results/rough-inference/cluster.json": "9d19a8ac0d411c07c5f7a3c3ec0dfe917b508b199fb51c7759df16690887959f",
+    "docs/results/rough-reference8192/training.json": "a4e4321668509e65aad20bb418819276e5aea031f5ea04200130b62746099a4d",
+    "docs/results/rough-reference8192/neural-validation.json": "45906efb545f4b298eb7060e8aa9157032066eae380ff5d4c469dac6a856d3cf",
+    "docs/results/rough-reference8192/validation-checks.npz": "d09f5f2d71af4355f38a2ba4b6af2f5069f71edc91b86e61ccdb8d3373ab370f",
+    "docs/results/rough-reference8192/reference.json": "0c9a41090bdbd201bcc47c273a312c297af93a37c4f74c9db2abf56507a7e6d6",
+    "docs/results/rough-reference8192/cluster.json": "d0220e6038dfbb42e7369b944cdb634a294c1a02373207fc65984d637f365434"
+  },
+  "html_sha256": "eb7afc5dcc041d94b907321d0b51706b368f0b51ad0c1050c0ac80ac1de7108e",
+  "command": "PYTHONPATH=OFFLINE_GUARD:src MPLBACKEND=Agg python -m marimo export html notebooks/09_rough_inference.py -o review.html --force",
+  "inspection": {
+    "passed": true,
+    "images_reviewed": [
+      "cell-12-0-0.png",
+      "cell-13-0-0.png",
+      "cell-15-0-0.png",
+      "cell-17-0-0.png",
+      "cell-18-0-0.png",
+      "cell-18-0-1.png",
+      "cell-19-0-0.png",
+      "cell-4-0-0.png"
+    ],
+    "checks": "Eight rendered plots inspected: readable labels/legends and units, all20cases/stress shading, unchanged gates, prior/reference/neural distinctions, scalar toy separated from evidence, no cropped substantive content."
+  },
+  "environment_scope": "Fresh source/assets copy with existing pinned environment; not a new installation.",
+  "software_tests": {
+    "command": "PYTHONPATH=src python -m unittest discover -s tests -v",
+    "passed": 125,
+    "elapsed_seconds": 23.358,
+    "log_sha256": "180fbd2ea6ce4991be82a4958545ea506b22b8c2c1fae6f0507e3416b6c79e02",
+    "scope": "Standalone rough branch; full suite after prefix-assembly change. No scientific generator/training/evaluator changes afterward."
+  },
+  "notebook_exported_figure": {
+    "file": "plots/reference-expansion.png",
+    "sha256": "21e0815689d893239509468de937ddbcdf2ee00598f3c4b3e0ed499e2befac1a",
+    "source_cell": 4,
+    "scope": "Before/after20caseplot from verified notebook export; separate from plot-script manifest."
+  }
+}
