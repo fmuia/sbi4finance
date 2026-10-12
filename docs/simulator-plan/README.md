@@ -41,8 +41,10 @@ authorized [reference extension](../rough-reference-expansion.md) retains that
 failure and appends 4,096 rows under unchanged gates. Notebook09 reviews both
 studies and separates reference precision from neural acceptance. All 20
 expanded-reference cases and all seven neural validation gates pass, including
-512-case SBC. The final test remains reserved; M8 curriculum/release acceptance
-is a separate decision.
+512-case SBC. The later [held-out study](../rough-heldout-test.md) passes its
+reference and six of seven neural gates, but fails one conditional eta-spread
+check. The candidate remains provisional; all 256 test cases are now used.
+M8 curriculum/release acceptance is a separate decision.
 These three option banks complete the current coverage push. All three now have actual
 CPU generation, exact Linux replay, verified transfer and numerical Mac replay
 in the [cluster report](../option-cluster-smoke.md). The original HKDE portable
@@ -146,7 +148,7 @@ The following map uses **implementation increment numbers**, not GitHub PR numbe
 | 6 — HKDE option observations | M4 in `notebooks/06_hkde_and_pricing.py`: Q jump law, price expectations, noisy panel and accuracy budget | Planned with M4. |
 | 7 — Learned pricing routes | M5 in separate sections of the HKDE/pricing notebook: posterior plus reference pricer, surrogate, optional direct-price study | Planned with M5; report each route's acceptance independently. |
 | 8 — Finite-factor Bergomi | M6 in `notebooks/08_bergomi_models.py`: curve context, factor state, normalization and pricing | Planned with M6; optional two-factor material stays visibly optional. |
-| 9 — Rough Bergomi | M7 in notebooks08–09: Gaussian reference, rough memory, refinement and restricted inference | Delivered, including the original reference stop and the bounded follow-up's passed reference/neural validation. Final test remains reserved; simulator, numerical and inference scopes remain distinct. |
+| 9 — Rough Bergomi | M7 in notebooks08–09: Gaussian reference, rough memory, refinement and restricted inference | Delivered. Reference/neural validation passed; later held-out study failed one conditional spread gate. Candidate remains provisional and test is used; simulator, numerical and inference scopes remain distinct. |
 | 10 — Participant release | M8: a separately selected participant notebook, supported by the earlier review tutorials and release evidence | Planned; returns-versus-options curriculum choice remains open. |
 
 New increments include their review material in the same PR. The backfills above are complete on the strength of their notebook checks, not retrospectively inferred from older implementation results. A review notebook can accurately explain a failed experiment and pass its execution check while that scientific substep remains pending. Track both states explicitly. M8 is the selected, paced participant course and final scientific delivery gate; the review notebooks support that decision and do not preselect the curriculum.

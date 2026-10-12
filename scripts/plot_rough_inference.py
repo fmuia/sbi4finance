@@ -27,15 +27,19 @@ def sha256(path):
 def load_reports(directory):
     """Load available cache only; absent artifacts never trigger computation."""
     directory = Path(directory)
+    heldout = (directory / "neural-test.json").exists()
+    if heldout and (directory / "neural-validation.json").exists():
+        raise ValueError("keep held-out and development evaluations in separate result directories")
+    evaluation_filename = "neural-test.json" if heldout else "neural-validation.json"
     reports, paths = {}, {}
-    for name, filename in (("reference", "reference.json"), ("evaluation", "neural-validation.json"),
+    for name, filename in (("reference", "reference.json"), ("evaluation", evaluation_filename),
                            ("training", "training.json"), ("cluster", "cluster.json")):
         path = directory / filename
         if path.exists():
             reports[name] = json.loads(path.read_text())
             paths[filename] = path
     checks = {}
-    checks_path = directory / "validation-checks.npz"
+    checks_path = directory / ("test-checks.npz" if heldout else "validation-checks.npz")
     if checks_path.exists():
         with np.load(checks_path, allow_pickle=False) as saved:
             # Graphs need ranks only; never load a neural framework/checkpoint.
@@ -48,17 +52,27 @@ def load_reports(directory):
     expected = evaluation.get("checks_sha256")
     if expected is not None and checks_path.exists() and sha256(checks_path) != expected:
         raise ValueError("evaluation/checks hash mismatch")
+    reference = reports.get("reference", {})
+    reference_checks = directory / "reference-checks.npz"
+    expected_reference = reference.get("artifact_sha256", {}).get(reference_checks.name)
+    if expected_reference is not None and reference_checks.exists():
+        # Bind cached reference evidence without loading any observation/bank arrays.
+        if sha256(reference_checks) != expected_reference:
+            raise ValueError("reference/checks hash mismatch")
+        paths[reference_checks.name] = reference_checks
     return reports, checks, paths
 
 
 def _case_axis(axis, ids):
-    labels = [name.replace("validation:", "").replace("stress:", "S") for name in ids]
+    labels = [name.replace("validation:", "").replace("test:", "").replace("stress:", "S") for name in ids]
     axis.set_xticks(np.arange(len(ids)), labels, fontsize=8)
     axis.set_xlim(-0.7, len(ids) - 0.3)
     stress = [i for i, name in enumerate(ids) if name.startswith("stress:")]
     if stress:
         axis.axvspan(stress[0] - .5, stress[-1] + .5, color="#EDF0F4", zorder=-5)
-    axis.set_xlabel("Validation panel ID; shaded S0–S3 are fixed stress panels")
+    axis.set_xlabel("Held-out test panel ID (fixed first 16; no stress replacements)"
+                    if ids and all(name.startswith("test:") for name in ids) else
+                    "Validation panel ID; shaded S0–S3 are fixed stress panels")
 
 
 def _finish(figure, title, note):
@@ -104,7 +118,8 @@ def sbc_figure(evaluation, checks):
     for axis in axes:
         axis.set_ylim(-limit, limit)
     axes[1].legend(loc="lower right", fontsize=9)
-    return _finish(figure, "Marginal SBC and the prior control",
+    return _finish(figure, "Held-out marginal SBC and the prior control" if evaluation.get("split") == "test" else
+                   "Marginal SBC and the prior control",
                    f"{report['cases']} independent audit panels; {report['draws_per_case']} draws each. "
                    f"DKW limits use family α={report.get('sbc_family_alpha', .05):g} across H and η.\n"
                    "An algorithm that ignores observations can pass this marginal check; conditional comparisons remain necessary.")
@@ -216,6 +231,8 @@ def target_figure(evaluation, reference):
         if len(contracts) > target:
             contract = contracts[target]
             axis.set_title(f"Excluded put: K={contract['strike']:g}, T={contract['maturity']:g} years", loc="left")
+        else:
+            axis.set_title(f"Excluded target {target + 1} (stored contract order)", loc="left")
         axis.set_ylabel("Neural − reference mean price\n(currency per option)")
         _case_axis(axis, ids)
     axes[0].set_xlabel("")
@@ -261,7 +278,8 @@ def reference_figure(reference):
     axes[0].set_xlabel("")
     axes[1].set_xlabel("")
     axes[2].legend(fontsize=8, loc="upper right", ncol=3)
-    return _finish(figure, "Independent importance-reference precision",
+    return _finish(figure, "Held-out importance-reference precision" if reference.get("split") == "test" else
+                   "Independent importance-reference precision",
                    "Red crosses identify failed ESS/weight gates; passing mean MCSE does not override them.\n"
                    "Independent-block and target-mean precision have additional gates. These checks do not prove complete posterior support.")
 
@@ -303,7 +321,10 @@ def main():
             figure.savefig(path, dpi=170, metadata={"Date": None} if suffix == "svg" else None)
             artifacts[path.name] = sha256(path)
         plt.close(figure)
-    manifest = {"scope": "cached synthetic Q finite-numerical-model diagnostics; no final-test access",
+    heldout = reports.get("evaluation", reports.get("reference", {})).get("split") == "test"
+    scope = ("cached held-out synthetic Q diagnostics; no bank access or new inference" if heldout else
+             "cached synthetic Q finite-numerical-model diagnostics; no final-test access")
+    manifest = {"scope": scope,
                 "input_sha256": {name: sha256(path) for name, path in paths.items()},
                 "plot_script_sha256": sha256(__file__), "artifact_sha256": artifacts,
                 "figures": list(rendered)}

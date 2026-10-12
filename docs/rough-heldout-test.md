@@ -6,6 +6,12 @@ reference and neural validation gates. We now test that already selected
 checkpoint on previously unevaluated synthetic panels. No new training,
 reference-bank expansion or market data is needed.
 
+**Measured outcome: reference passes; neural candidate remains provisional.**
+All 16 reference cases pass. Six of seven neural gates pass, including
+256-case SBC and target-price means. On `test:3`, eta's posterior SD is
+31.0% too small against the frozen 25% limit. All 256 test cases are now used;
+no retraining, replacement cases or second acceptance run followed.
+
 ## Protocol before outcomes
 
 The [machine-readable protocol](../configs/rough_heldout_protocol.json) binds
@@ -116,7 +122,109 @@ no outcome evaluation, but the original 256-case cohort is no longer wholly
 untouched. After a complete neural run all 256 are used. Reproduction with
 the same fixed artifacts is not a fresh acceptance attempt.
 
-Results will be added after the frozen runner is checked and executed.
+## Measured result
+
+The protocol was committed as `9e209d9` before test outcomes were inspected.
+The reviewed runner and its source binding were committed as `ec151b4` before
+execution. All **129 software tests** passed, including four new mocked tests
+for prerequisite rejection, test identities, reference-first stopping and
+completion of the full neural audit despite a failed metric.
+
+The [reference report](results/rough-heldout-test/reference.json) passes all
+eight checks on every fixed case. Worst ESS is **1,939.59** (minimum 800),
+largest weight **0.001404** (maximum 0.005), largest parameter-mean MCSE
+**0.02273 reference SD** (maximum 0.05) and target-mean MCSE **0.001866
+currency** (maximum 0.02). Block comparisons also pass. No reference row or
+target-price estimate was regenerated.
+
+The [neural test report](results/rough-heldout-test/neural-test.json) records:
+
+| Frozen neural check | Held-out result | Gate | Outcome |
+|---|---:|---:|---|
+| Pooled parameter-mean RMSE / reference SD | 0.11211 | ≤0.15 | Pass |
+| Largest absolute mean error / reference SD | 0.38222 | ≤0.40 | Pass |
+| Largest absolute relative posterior SD error | **0.31013** | ≤0.25 | **Fail** |
+| Largest absolute H–eta correlation error | 0.06209 | ≤0.10 | Pass |
+| Largest deviation of mean reference interval mass from 0.90, across parameters | 0.02201 | ≤0.03 | Pass |
+| Largest target-mean error plus 2 combined MCSE, currency | 0.02621 | ≤0.06 | Pass |
+| Marginal SBC KS, H / eta | 0.04930 / 0.04391 | Each ≤0.09251 | Pass |
+
+The 90% interval coverage counts across 256 synthetic truths are **221/256
+(86.33%) for H** and **231/256 (90.23%) for eta**. Individual 95% Wilson
+intervals are about [81.58%,90.00%] and [85.98%,93.30%]. These descriptive
+counts are not additional acceptance gates, and a passed marginal rank check
+is not a claim that every conditional posterior is calibrated.
+
+### The failure is in one conditional distribution
+
+For **test:3**, the neural eta posterior SD is **0.05220**, compared with
+**0.07567** in the independent reference. Its mean is **0.46067** versus
+**0.48959**, a difference of −0.38222 reference SD. The mean passes its gate,
+while the spread fails: the network puts too little mass in the upper tail.
+Its 90% interval is approximately **[0.41024,0.56587]**, whereas the reference
+90% interval is **[0.40546,0.64030]**. The neural interval contains only
+**75.64% of this reference posterior's mass**.
+
+That 75.64% is a conditional posterior-mass diagnostic for one observation,
+not the repeated-sampling coverage of all test cases. The average interval-mass
+gate passes because averaging can conceal individual conditional errors.
+Likewise, marginal SBC aggregates over different observations and does not
+erase this discrepancy. The fixed case's two target **mean** prices still pass;
+that does not establish correct parameter uncertainty or target-price quantiles.
+This case was selected for the explanatory graph **after** the complete fixed
+evaluation; it was neither dropped nor used to choose a new checkpoint.
+
+### The network is learning, but is not fully accepted
+
+The prior-only conditional mean RMSE is **1.48167 reference SD**, versus
+**0.11211** for the network. The prior control also passes marginal SBC
+(KS 0.04598 / 0.05604). Thus the network substantially improves conditional
+inference over ignoring the data, while missing the frozen spread criterion
+on one case. All other 15 conditional cases meet the SD tolerance.
+
+This completes the bounded study with a **provisional** outcome. The complete
+256-case cohort is used and closed as a fresh acceptance test. Any later
+investigation must be separately defined, keep this result visible and treat
+these cases as inspected development evidence. No further run is prescribed
+by this issue. Tutorial selection can consider the delivered diagnostic lesson
+without calling this a generally accepted rough-Bergomi posterior.
+
+### Cost and review artifacts
+
+The local run took **207.83 seconds**, including **194.93 s** of independent
+neural target-price simulation, **9.69 s** of loading, **1.32 s** of conditional
+sampling including compilation, **1.55 s** of SBC/prior checks and **0.13 s**
+of input/reference checking. These are component timings from this execution,
+not a speed comparison against the reusable reference bank. Reference target
+estimates were already available; their original cost remains in the
+development report.
+
+- [All conditional errors](results/rough-heldout-test/plots/conditional-errors.png)
+- [Post-hoc explanation of test:3](results/rough-heldout-test/plots/conditional-failure.png)
+- [Prior, reference and neural intervals](results/rough-heldout-test/plots/posterior-intervals.png)
+- [Marginal SBC and prior control](results/rough-heldout-test/plots/marginal-sbc.png)
+- [Target-mean errors](results/rough-heldout-test/plots/target-mean-errors.png)
+- [Test use and stop decision](results/rough-heldout-test/run-status.json)
+
+The reports retain every case and raw joint audit draw, so the independent
+check can reconstruct both ranks and coverage rather than relying on saved
+counts. The historical checkpoint metadata and development reports remain
+unchanged; the new test report supplies the current acceptance status.
+
+The [independent audit](results/rough-heldout-test/independent-audit.json)
+reproduces every reference, conditional, joint, target-mean and prior-control
+metric and all gate decisions. It reconstructs every neural and prior SBC
+rank and coverage event from individual saved draws, and exactly replays the
+prior random stream. This verifies the recorded **failure** as well as the
+passes; an audit pass does not change the candidate's provisional status.
+
+The [updated marimo review](../notebooks/09_rough_inference.py) passed strict
+checking and an isolated cached export: **26 cells, zero errors, 10.72 seconds**.
+External connections were blocked, with local kernel IPC permitted; raw banks,
+checkpoints and market fixtures were absent. All 14 rendered figures were
+inspected. The [verification record](results/rough-heldout-test/notebook-verification.json)
+states the reused-environment scope and distinguishes notebook execution from
+the retained scientific failure. Opening the review starts no new test run.
 
 ## Execution and review
 

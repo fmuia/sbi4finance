@@ -10,7 +10,7 @@ From the repository root, install the pinned environment with
 | `pixi run review-heston` | [05_heston_joint_inference.py](../notebooks/05_heston_joint_inference.py) | M3.3 / increment 5: joint parameter/state inference, four original cases, neural/reference posteriors, future losses, failed frozen test, spline follow-up and bounded-time diagnosis/validation |
 | `pixi run review-hkde` | [06_hkde_and_pricing.py](../notebooks/06_hkde_and_pricing.py) | HKDE kernels, Q prices, panel banks and numerical reference checks |
 | `pixi run review-bergomi` | [08_bergomi_models.py](../notebooks/08_bergomi_models.py) | One-factor and rough kernels, pricing, banks and paired numerical refinement |
-| `pixi run review-rough-inference` | [09_rough_inference.py](../notebooks/09_rough_inference.py) | M7.3b / increment 9: finite-MC observation law, original reference stop and bounded 8,192-row follow-up, prior control, conditional/joint inference, SBC and target-price means |
+| `pixi run review-rough-inference` | [09_rough_inference.py](../notebooks/09_rough_inference.py) | M7.3b / increment 9 and issue #23: original reference stop, passed development validation and later held-out conditional-spread failure, with prior control, joint inference, SBC and target-price means |
 
 These are development review tutorials. M8 will separately select and pace the
 participant course. Each notebook explains the mathematics and conventions,
@@ -31,6 +31,15 @@ the Jacobian and shows the failed raw-unit validation comparison. The fixed
 stop rule was applied; no new final-test evaluation followed.
 
 ## Verification and reproduction
+
+The latest [rough held-out review](rough-heldout-test.md) passes strict checking
+and an isolated offline export: **26 cells, zero errors, 10.72 seconds**, with
+14 inspected figures and no bank, checkpoint or market-fixture directory.
+The existing pinned environment was reused. Its [verification record](results/rough-heldout-test/notebook-verification.json)
+retains the candidate's provisional status: all references and six of seven
+neural gates pass, but one conditional spread check fails. All 256 test cases
+are now used; cached review does not run inference. Earlier records below
+retain the status and tested revisions of their own milestones.
 
 The original three reviews passed strict marimo checks:
 

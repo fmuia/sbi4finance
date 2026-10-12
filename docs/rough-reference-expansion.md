@@ -1,5 +1,11 @@
 # Rough-Bergomi reference precision: one 4,096 → 8,192 follow-up
 
+**Later held-out result:** [issue #23's separate study](rough-heldout-test.md)
+has now evaluated the reserved cohort. Its reference passes, but one conditional
+eta-spread gate fails; six of seven neural gates pass, including SBC and target
+means. The candidate remains provisional and all 256 test cases are now used.
+The report below preserves the development study and its then-reserved test status.
+
 This bounded follow-up preserves the [first pilot](rough-joint-inference.md),
 which stopped before neural training: 19/20 reference cases passed and
 `validation:260` missed ESS and maximum-weight thresholds. The new

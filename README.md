@@ -57,8 +57,11 @@ The [bounded reference extension](docs/rough-reference-expansion.md) preserves
 the original 19/20-case precision stop and expands only its independent
 reference bank to 8,192 rows. All 20 reference cases and all seven neural
 validation gates now pass, including conditional/joint checks, marginal SBC
-and target-price means. Notebook09 compares both experiments with the same
-gates. The final test remains reserved; this is a restricted synthetic task.
+and target-price means. The later [held-out study](docs/rough-heldout-test.md)
+passes its reference and six of seven neural gates, but eta's posterior SD is
+31.0% too small on one case (limit 25%). Notebook09 explains this conditional
+failure despite passing SBC and target means. The candidate remains provisional;
+all 256 test cases are now used. No retraining or bank expansion followed.
 
 One environment, managed by [pixi](https://pixi.sh) from `pyproject.toml`:
 

@@ -35,8 +35,12 @@ Conditional mean RMSE is 0.1114 reference SD versus 1.4726 for prior-only draws;
 maximum target-mean error plus twice MCSE is 0.02526 currency against 0.06.
 M7.3b's bounded validation and didactic deliverables are complete for this
 finite numerical task. These results do not certify continuum or market accuracy.
-The final test stays reserved. Notebook09 reviews
-both studies; a reference pass alone does not accept a neural posterior for M8.
+The [separate held-out study](../../rough-heldout-test.md) is now complete:
+all 16 references pass and six of seven neural gates pass, including 256-case
+SBC and target means. On `test:3`, eta's SD is 31.0% too small (limit 25%),
+so the candidate remains provisional. All 256 test cases are now used; no
+tuning or rerun followed. Notebook09 reviews the original stop, development
+pass and this held-out failure without conferring M8 acceptance.
 
 1. Specify the rough kernel, its normalization, roughness parameter, leverage construction, forward-variance curve, and supports. Identify precisely which Gaussian field is being simulated; do not interchange fractional Brownian and Volterra conventions by name.
 2. Build a small-grid covariance-based Gaussian reference including dependence with the asset driver. Use it to check a production hybrid/convolution scheme over representative and difficult parameter settings.

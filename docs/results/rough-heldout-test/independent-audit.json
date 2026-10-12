@@ -1,0 +1,102 @@
+{
+  "audit": "independent NumPy reconstruction of rough held-out metrics",
+  "stage": "full",
+  "checker_sha256": "24dbc4588df863ae16b590378ec1c63c75d8fef0eaa3ce22819b297bbde48d43",
+  "freeze_commit": "ec151b4",
+  "limits": [
+    "No neural network, training or financial pricing rerun.",
+    "Reuses recorded finite numerical reference and target estimates; no independent continuum-pricing or market-model certificate.",
+    "Conditional16cases overlap the256SBC cohort; checks are complementary, not independent cohorts.",
+    "Any passing result is scoped to the frozen candidate, finite task and declared held-out study."
+  ],
+  "frozen_protocol_sha256": "459690bd403c859cce9bc3db3fda788ddab8fd5294dc729b886f3572ef2a8afc",
+  "all_frozen_input_and_source_hashes_match": true,
+  "reference_report_sha256": "4413747dd6b2d6aa5abfc05b079f3402228beff290c2b0de0da3911884969c6c",
+  "reference_checks_sha256": "ca1126a4da17e8549ed757a8f1e3e2b266ce911a448067fc36d6dd5796ed11da",
+  "reference": {
+    "passed": true,
+    "cases": 16,
+    "source_observations_truth_ids_exact": true,
+    "reused_reference_arrays_exact": true,
+    "maximum_weight_abs_error": 1.5178830414797062e-18,
+    "maximum_case_metric_abs_error": 1.8189894035458565e-12,
+    "metrics": {
+      "min_ess": 1939.5915574610874,
+      "max_weight": 0.0014041224617493283,
+      "max_mean_mcse_in_ref_sd": 0.022726361984291038,
+      "max_abs_block_mean_difference_in_ref_sd": 0.1335439980301355,
+      "max_abs_block_relative_std_difference": 0.026618868242175076,
+      "max_abs_block_correlation_difference": 0.1012585265386809,
+      "max_target_mean_mcse_currency": 0.0018662651799533172,
+      "max_abs_block_target_mean_difference_currency": 0.0032268260880403687
+    },
+    "reported_reference_passed": true
+  },
+  "neural_report_sha256": "6a25a805a6a067ecead7178f9bfdd680c2eaa837e18c4db1c22a66d850c6f9f5",
+  "test_checks_sha256": "ec0befb7341c06fa03a8632ea834b497148ad4a3ed70d340d6a0fc83061525c3",
+  "neural": {
+    "passed": true,
+    "conditional_cases": 16,
+    "sbc_cases": 256,
+    "maximum_case_metric_abs_error": 8.881784197001252e-15,
+    "all_source_case_ids_observations_and_truth_exact": true,
+    "conditional_and_target_metrics": {
+      "neural": {
+        "mean_rmse_in_ref_sd": 0.11210671086817298,
+        "max_abs_mean_error_in_ref_sd": 0.3822201247871013,
+        "max_abs_relative_std_error": 0.310131927634017,
+        "max_abs_correlation_error": 0.062094388682327306,
+        "mean_reference_mass_of_90_interval_abs_error": 0.022006131002587193,
+        "max_target_mean_error_plus_2mcse_currency": 0.02620914352064288
+      },
+      "prior": {
+        "mean_rmse_in_ref_sd": 1.4816708250510533,
+        "max_abs_mean_error_in_ref_sd": 4.038858471876724,
+        "max_abs_relative_std_error": 2.038824615424109,
+        "max_abs_correlation_error": 0.1350623071981975,
+        "mean_reference_mass_of_90_interval_abs_error": 0.018100551560437328
+      }
+    },
+    "sbc": {
+      "neural": {
+        "rank_ks": [
+          0.04930312579756968,
+          0.0439111519114016
+        ],
+        "rank_dkw_bound": 0.09251294920629989,
+        "passed": true,
+        "coverage_90": [
+          0.86328125,
+          0.90234375
+        ]
+      },
+      "prior": {
+        "rank_ks": [
+          0.04598421484611692,
+          0.05604141349385819
+        ],
+        "rank_dkw_bound": 0.09251294920629989,
+        "passed": true,
+        "coverage_90": [
+          0.859375,
+          0.9140625
+        ]
+      }
+    },
+    "all_neural_and_prior_sbc_ranks_and_coverage_rebuilt": true,
+    "prior_control_rng_replayed": true,
+    "gates": {
+      "mean_rmse_in_ref_sd": true,
+      "max_abs_mean_error_in_ref_sd": true,
+      "max_abs_relative_std_error": false,
+      "max_abs_correlation_error": true,
+      "mean_reference_mass_of_90_interval_abs_error": true,
+      "max_target_mean_error_plus_2mcse_currency": true,
+      "marginal_sbc": true
+    },
+    "reported_neural_passed": false,
+    "reported_status": "provisional"
+  },
+  "audit_passed": true,
+  "elapsed_seconds": 0.16190029215067625
+}

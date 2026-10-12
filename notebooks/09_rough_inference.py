@@ -38,7 +38,9 @@ def _(mo):
     and excluded-contract mean prices. Each result has its own acceptance gate.
     The original 4,096-row reference passed 19 of 20 cases and stopped before
     neural training. This review now follows one bounded extension to 8,192
-    reference rows, preserving the original results below.
+    reference rows, preserving the original results below. A final section
+    separately reviews the frozen held-out study from issue #23, when its
+    cached outcomes are present. Development and held-out results stay distinct.
 
     This is the **S synthetic workflow under Q**, the pricing measure. It does
     not infer a physical-measure return model, today's hidden variance, or the
@@ -103,7 +105,7 @@ def _(mo, original_reports, reports):
                     if "reference" not in reports else
                     "This view displays the saved follow-up, including failed gates. It performs no tuning or final-test evaluation. Reference passage alone does not accept the neural posterior.")
     mo.vstack([
-        mo.md("## Current evidence\n\nA delivered simulator, a sufficiently precise reference, and an accepted neural posterior are different achievements."),
+        mo.md("## Development evidence\n\nA delivered simulator, a sufficiently precise reference, and an accepted neural posterior are different achievements. The separately frozen held-out study is reviewed below."),
         mo.ui.table(_rows, selection=None),
         mo.callout(_message, kind="warn" if _reference_stopped else "info"),
     ])
@@ -120,7 +122,8 @@ def _(mo, np, original_reports, plt, protocol, reports):
         The training bank, 20 conditional cases, likelihood and acceptance
         thresholds remain unchanged. This is **adaptive development after
         inspecting the original failure**, not a new independent validation
-        cohort. It leaves the final test reserved.
+        cohort. It left the final test reserved at that stage; the later held-out
+        study below records any subsequent test use.
 
         The comparison below shows every case. ESS should be at least 800 and the
         largest normalized weight should not exceed 0.005. These weight screens
@@ -277,9 +280,9 @@ def _(bank_config, mo, protocol):
 
         The separate validation split contains 256 checkpoint-selection panels
         and 512 audit panels. Conditional checks use the first 16 audit panels
-        plus four predeclared stress panels. The 256-case final test remains
-        reserved unless all reference and neural gates pass; a final-test run
-        would be a separate action, not a side effect of this notebook.
+        plus four predeclared stress panels. The 256-case final test was reserved
+        throughout development. Its later frozen evaluation is a separate run,
+        reviewed below, and is never a side effect of this notebook.
 
         Fixed-ID cluster chunks only change scheduling. The assembled arrays
         use the ordinary `option_bank_v1` schema, with exact coverage, source
@@ -687,7 +690,8 @@ def _(ROOT, mo, original_report_paths, report_paths, reports):
     The historical artifacts remain in their original directory:
     {_original_links_text}
 
-    Recorded final-test evaluation flag: **{_test_state}**. The default view
+    Development report's historical final-test evaluation flag: **{_test_state}**.
+    The held-out section below records later test use. The default view
     reads only published audit artifacts. Simulator checks concern numerical
     implementation; conditional/SBC checks concern this synthetic inference
     experiment; empirical market assessment would require appropriate real
@@ -713,6 +717,247 @@ def _(ROOT, mo, original_report_paths, report_paths, reports):
     report; cached review requires no ML
     framework import or checkpoint.
     """)
+    return
+
+
+@app.cell
+def _(ROOT, json, plot_helpers):
+    heldout_protocol_path = ROOT / "configs/rough_heldout_protocol.json"
+    heldout_protocol = json.loads(heldout_protocol_path.read_text())
+    heldout_reports, heldout_checks, heldout_paths = plot_helpers.load_reports(
+        ROOT / "docs/results/rough-heldout-test")
+    _status_path = ROOT / "docs/results/rough-heldout-test/run-status.json"
+    heldout_status = json.loads(_status_path.read_text()) if _status_path.exists() else {}
+    if heldout_status:
+        heldout_paths[_status_path.name] = _status_path
+    _protocol_hash = plot_helpers.sha256(heldout_protocol_path)
+    for _report in [*heldout_reports.values(), *([heldout_status] if heldout_status else [])]:
+        if (_report.get("experiment_id") != heldout_protocol["experiment_id"] or
+                _report.get("protocol_sha256") != _protocol_hash):
+            raise ValueError("Held-out evidence does not match the frozen protocol")
+    _reference = heldout_reports.get("reference")
+    if _reference:
+        _expected_ids = [f"test:{i}" for i in heldout_protocol["conditional_ids"]]
+        if _reference["case_ids"] != _expected_ids:
+            raise ValueError("Held-out reference cases differ from the frozen first 16")
+        _status_reference_hash = heldout_status.get("reference_report_sha256")
+        if (_status_reference_hash is not None and
+                _status_reference_hash != plot_helpers.sha256(heldout_paths["reference.json"])):
+            raise ValueError("Held-out status/reference hash mismatch")
+    if "evaluation" in heldout_reports and not (_reference and _reference["passed"]):
+        raise ValueError("Held-out neural results require the recorded passing reference")
+    heldout_figures = plot_helpers.figures(heldout_reports, heldout_checks)
+    return heldout_figures, heldout_paths, heldout_protocol, heldout_reports, heldout_status
+
+
+@app.cell
+def _(heldout_protocol, mo, np):
+    _n = heldout_protocol["sbc_ids"][1] - heldout_protocol["sbc_ids"][0]
+    _draws = heldout_protocol["evaluation"]["sbc_draws"]
+    _alpha = heldout_protocol["evaluation"]["sbc_family_alpha"]
+    _bound = np.sqrt(np.log(4 / _alpha) / (2 * _n))
+    mo.md(rf"""
+    ## Held-out study: freeze first, then evaluate once
+
+    The development pass selects a candidate; it does not evaluate a fresh
+    test cohort. Issue #23 freezes that checkpoint, the 8,192 reference rows,
+    task, seeds and diagnostics before reading outcomes from the existing
+    reserved test split. No retraining or new bank generation is part of this
+    study. The cached review below never opens the test bank or runs inference.
+
+    1. Check the reference on **test:0–15**, chosen by index before inspection,
+       using all eight unchanged gates. If any fails, stop before neural
+       sampling or SBC. Those 16 cases are consumed; the remaining 240 have no
+       outcome evaluation. The original cohort is no longer wholly untouched.
+    2. Only after every reference check passes, assess 4,096 joint draws on
+       each of those 16 panels and marginal SBC on **all {_n} test panels**,
+       with {_draws} posterior draws per panel. Complete this fixed evaluation
+       even if an early neural comparison fails. The 16 conditional cases are
+       included in the {_n}; they are not additional independent observations.
+    3. Retain all outcomes. A reference blockage does not establish neural
+       success or failure; a neural failure stays provisional. No case
+       replacements, threshold changes, seed search or automatic bank expansion
+       follow from either outcome.
+
+    The unchanged two-marginal DKW rule is
+
+    $$\delta=\sqrt{{\log(4/0.05)/(2\cdot {_n})}}={_bound:.6f}.$$
+
+    Its larger limit than the 512-panel development study reflects the smaller
+    cohort under the **same rule**, not a relaxed criterion chosen after seeing
+    results. The family level applies to these two marginal rank checks, not
+    all checks or all past experiments. A prior-only sampler can also pass SBC;
+    conditional means, spreads, H–η dependence and target means must be
+    compared with the reference. A broad H marginal alone is not failure.
+
+    Any acceptance is bounded to this selected candidate, synthetic Q task and
+    finite numerical model. It does not certify continuum pricing, market
+    adequacy, every posterior regime or physical-measure risk forecasting.
+    """)
+    return
+
+
+@app.cell
+def _(ROOT, heldout_figures, heldout_paths, heldout_protocol, heldout_reports, heldout_status, mo):
+    _reference = heldout_reports.get("reference")
+    _evaluation = heldout_reports.get("evaluation")
+    _items = [mo.md("### Recorded held-out outcome")]
+    if _reference and not _reference["passed"]:
+        _failed = [case["case_id"] for case in _reference["cases"] if not case["passed"]]
+        _message = (f"Reference blocked: {len(_failed)} / {len(_reference['cases'])} cases missed a gate "
+                    f"({', '.join(_failed)}). Neural sampling and SBC were not run. "
+                    "The first 16 cases are now used; the remaining 240 are unassessed. "
+                    "This is not a neural failure or pass, and the original cohort is not wholly untouched.")
+        _kind = "warn"
+    elif _evaluation:
+        _message = ("All recorded held-out neural gates pass for the declared finite task. "
+                    if _evaluation["passed"] else
+                    "At least one held-out neural gate failed; the candidate remains provisional. ")
+        _message += "All 256 test cases are now used. Replaying this fixed study is not a fresh acceptance attempt."
+        _kind = "info" if _evaluation["passed"] else "warn"
+    elif heldout_status.get("status") == "execution_failed":
+        _message = (f"The recorded execution stopped: {heldout_status.get('error', 'see run-status.json')}. "
+                    f"Test access recorded: {heldout_status.get('reserved_test_accessed', 'not reported')}. "
+                    "Partial artifacts do not establish completion, SBC or neural acceptance.")
+        _kind = "warn"
+    elif _reference:
+        _message = ("The 16-case reference passes, but no held-out neural report is present. "
+                    "The first 16 cases are used; later-stage completion and acceptance are not recorded here.")
+        _kind = "info"
+    else:
+        _message = ("No held-out reference or neural report is present. Missing outcomes remain missing; "
+                    "opening this review performs no held-out evaluation.")
+        _kind = "info"
+    _items.append(mo.callout(_message, kind=_kind))
+    _items.append(mo.ui.table([
+        {"Stage": "Reference: first 16 test panels", "Saved status":
+         "not recorded" if _reference is None else "PASS" if _reference["passed"] else "BLOCKED"},
+        {"Stage": "Neural conditional checks and 256-panel SBC", "Saved status":
+         "not run: reference stop" if _reference and not _reference["passed"] else
+         "not recorded" if _evaluation is None else "PASS" if _evaluation["passed"] else "PROVISIONAL"},
+        {"Stage": "Run status", "Saved status": heldout_status.get("status", "not recorded")},
+    ], selection=None))
+    if _reference:
+        _items.append(mo.md("#### Held-out reference precision\n\nEvery frozen reference gate is shown, including any failure."))
+        _items.append(mo.ui.table([
+            {"Gate": name, "Recorded metric": _reference["metrics"].get(name),
+             "Threshold": limit, "Passed": _reference["gates"].get(name)}
+            for name, limit in _reference["thresholds"].items()
+        ], selection=None))
+        if "reference-precision" in heldout_figures:
+            _items.append(heldout_figures["reference-precision"])
+    if _evaluation:
+        _items.append(mo.md("#### Held-out neural accuracy and the prior control"))
+        _items.append(mo.ui.table([
+            {"Gate": name, "Recorded metric": _evaluation["metrics"].get(name),
+             "Threshold": limit, "Passed": _evaluation["gates"].get(name)}
+            for name, limit in _evaluation["thresholds"].items()
+        ], selection=None))
+        _sbc = _evaluation.get("sbc", {})
+        _items.append(mo.ui.table([
+            {"Marginal SBC": name, "Recorded value": str(value)} for name, value in
+            (("Cases", _sbc.get("cases")), ("Draws per case", _sbc.get("draws_per_case")),
+             ("H / η rank KS", _sbc.get("rank_ks")), ("DKW bound", _sbc.get("rank_dkw_bound")),
+             ("Passed", _evaluation["gates"].get("marginal_sbc")))
+        ], selection=None))
+        _prior = _evaluation.get("prior_baseline", {}).get("metrics", {})
+        if _prior:
+            _items.append(mo.ui.table([
+                {"Conditional comparison": name, "Neural": _evaluation["metrics"].get(name),
+                 "Prior control": _prior.get(name)}
+                for name in ("mean_rmse_in_ref_sd", "max_abs_mean_error_in_ref_sd", "max_abs_correlation_error")
+            ], selection=None))
+        for _name in ("posterior-intervals", "conditional-errors", "marginal-sbc", "target-mean-errors"):
+            if _name in heldout_figures:
+                _items.append(heldout_figures[_name])
+        if "marginal-sbc" not in heldout_figures:
+            _items.append(mo.callout(
+                "Saved held-out rank arrays are absent. The report table is shown, but no SBC graph is synthesized.", kind="info"))
+    _timing = (_evaluation or heldout_status or _reference or {}).get("timing_seconds", {})
+    if _timing:
+        _items.append(mo.ui.table([
+            {"Held-out measured stage": name, "Seconds": seconds} for name, seconds in _timing.items()
+        ], selection=None))
+    _links = "\n".join(f"- [{name}]({path})" for name, path in heldout_paths.items())
+    _items.append(mo.md(f"""
+    [Frozen held-out protocol]({ROOT / 'configs/rough_heldout_protocol.json'}) ·
+    [Study design and test accounting]({ROOT / 'docs/rough-heldout-test.md'})
+
+    Cached result artifacts:
+
+    {_links if _links else 'No held-out result files recorded yet.'}
+
+    Expensive computation belongs to the explicit runner. This section reads
+    reports and cached diagnostics only; absence never triggers simulation,
+    training or test access.
+    """))
+    mo.vstack(_items)
+    return
+
+
+@app.cell
+def _(heldout_reports, mo, plot_helpers):
+    _evaluation = heldout_reports.get("evaluation")
+    _case_ids = _evaluation.get("case_ids", []) if _evaluation else []
+    _items = [mo.md(r"""
+        ### Reading the conditional spread failure
+
+        **Post-hoc illustration:** `test:3` is shown here because its saved
+        outcome explains the failed spread gate. It was one of the original
+        16 fixed cases; this illustration adds no acceptance rule, replaces no
+        case and does not change the complete comparisons above.
+        """)]
+    if "test:3" in _case_ids:
+        _index = _case_ids.index("test:3")
+        _case = _evaluation["cases"][_index]
+        _reference = _case["reference_summary"]
+        _sd_error = _case["relative_std_error"][1]
+        _sd_limit = _evaluation["thresholds"]["max_abs_relative_std_error"]
+        _mass = _case["reference_mass_of_90_interval"][1]
+        _average_mass = _evaluation["mean_reference_mass_of_90_interval_by_parameter"][1]
+        _mass_error = _evaluation["metrics"]["mean_reference_mass_of_90_interval_abs_error"]
+        _mass_limit = _evaluation["thresholds"]["mean_reference_mass_of_90_interval_abs_error"]
+        _sbc = _evaluation["sbc"]
+        _price_error = _evaluation["metrics"]["max_target_mean_error_plus_2mcse_currency"]
+        _price_limit = _evaluation["thresholds"]["max_target_mean_error_plus_2mcse_currency"]
+        _items.append(plot_helpers.selected_case_figure(
+            _evaluation, heldout_reports["reference"], _index))
+        _items.append(mo.ui.table([
+            {"Parameter": name, "Neural SD": _case["neural_std"][dimension],
+             "Reference SD": _reference["std"][dimension],
+             "Relative SD error": _case["relative_std_error"][dimension],
+             "Reference mass of neural 90% interval": _case["reference_mass_of_90_interval"][dimension]}
+            for dimension, name in enumerate(("H", "η"))
+        ], selection=None))
+        _items.append(mo.md(f"""
+        For η, neural SD is **{_case['neural_std'][1]:.6f}**, compared with
+        **{_reference['std'][1]:.6f}** in the reference. Its relative SD error
+        is **{_sd_error:+.5f}**: a negative value means the neural marginal is
+        too narrow. The magnitude **{abs(_sd_error):.5f}** exceeds the unchanged
+        **{_sd_limit:.2f}** gate. The neural nominal 90% interval contains only
+        **{100 * _mass:.2f}%** of this case's reference posterior mass. This is
+        conditional interval content under the reference, not a repeated-data
+        coverage estimate.
+
+        Across all {len(_case_ids)} conditional cases, η's average interval
+        mass is **{_average_mass:.5f}**. The pooled interval-mass error
+        **{_mass_error:.5f} ≤ {_mass_limit:.2f}** passes, while concealing this
+        worse individual case. Marginal SBC also passes: H/η KS values are
+        **{_sbc['rank_ks'][0]:.5f}/{_sbc['rank_ks'][1]:.5f}**, below
+        **{_sbc['rank_dkw_bound']:.6f}** over {_sbc['cases']} panels. Those
+        aggregate checks do not override conditional underdispersion.
+
+        The target-mean error plus two combined MCSE also passes
+        (**{_price_error:.5f} ≤ {_price_limit:.2f}** currency). Agreement in
+        these particular posterior mean prices does not establish accurate
+        parameter uncertainty. The recorded candidate therefore remains
+        **provisional** under its unchanged decision rule. All 256 test cases
+        have been used; this explanation does not reopen them for tuning.
+        """))
+    else:
+        _items.append(mo.callout(
+            "The saved neural report for test:3 is absent; no case values or outcome are invented.", kind="info"))
+    mo.vstack(_items)
     return
 
 
@@ -743,8 +988,8 @@ def _(mo):
     **Review decision:** judge the recorded gates and practical delivery
     separately. A failed bounded pilot can still deliver reusable simulators,
     banks and diagnostics. It should leave an explicit next-analysis note,
-    preserve the frozen result, and keep the final test reserved rather than
-    expanding the experiment until it passes.
+    preserve the frozen result and the record of which test cases were used,
+    rather than expanding the experiment until it passes.
     """)
     return
 

@@ -163,13 +163,19 @@ also records a pass for the original single neural candidate: conditional mean
 RMSE 0.1114 reference SD (prior control 1.4726), all joint/interval checks,
 512-case marginal SBC and maximum target-mean error plus twice MCSE 0.02526
 currency against 0.06. The prior-only control passes marginal SBC too, showing
-why the conditional comparison is necessary. The next scientific step is a
-separately specified evaluation on the reserved test, after reviewing this
-candidate. The final test remains unevaluated; no further automatic doubling,
-proposal change or network sweep is part of this follow-up. These are adaptive
+why the conditional comparison is necessary. These are adaptive
 development cases, not fresh confirmatory evidence. Neither a passed reference
 nor fast neural sampling establishes a speed advantage over a reference bank
 that can itself be reused.
+
+**Held-out evaluation, issue #23:** the separately frozen
+[test study](rough-heldout-test.md) is complete. All 16 reference cases pass;
+the checkpoint passes six of seven neural gates, including SBC on all 256
+panels and target means. One conditional eta posterior is too narrow: SD error
+31.0% exceeds 25%, and its 90% interval contains 75.64% of the reference mass.
+The checkpoint remains provisional. All 256 cases are used and closed as a
+fresh acceptance cohort; no automatic expansion, tuning or rerun follows.
+Any further mechanism study must be separately defined and retain this result.
 
 
 Use the same frozen task and stable example IDs locally and on the cluster.
