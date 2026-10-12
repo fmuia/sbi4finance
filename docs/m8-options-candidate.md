@@ -174,9 +174,12 @@ limitation; it is not a completed M8 participant release.
 The bounded rough-Bergomi expansion is complete in
 [PR #14](https://github.com/fmuia/sbi4finance/pull/14): the 8,192-row reference
 passes all 20 cases and the unchanged candidate passes all seven neural
-validation gates. Its separately frozen reserved-test evaluation is tracked by
-[issue #23](https://github.com/fmuia/sbi4finance/issues/23). The test has not run;
-this different task's validation does not change HKDE acceptance.
+validation gates. Its separately frozen test evaluation is now complete in
+[PR #28](https://github.com/fmuia/sbi4finance/pull/28), tracked by
+[issue #23](https://github.com/fmuia/sbi4finance/issues/23): all 16 references
+and six of seven neural gates pass; one eta-spread gate fails. All 256 test
+cases are used and closed, and the rough candidate remains provisional.
+This different task's result does not change HKDE acceptance.
 
 [Issue #24](https://github.com/fmuia/sbi4finance/issues/24) tracks the prospective
 HKDE decision; [#26](https://github.com/fmuia/sbi4finance/issues/26) tracks the

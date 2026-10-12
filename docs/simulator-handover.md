@@ -292,6 +292,10 @@ teaching route, and schedule only the scientific work that decision needs.
 | [#24 — HKDE scientific acceptance decision](https://github.com/fmuia/sbi4finance/issues/24) | Use the saved-cohort audit to specify prospective acceptance or retain provisional status; run fresh replication only if justified and predeclared. | Historical test remains failed and closed. Formal data-teaching I4 needs a compatible acceptance decision; I4a already runs. |
 | [#25 — Heston conditional state/forecast decision](https://github.com/fmuia/sbi4finance/issues/25) | Decide defer, retain as a diagnostic lesson, or investigate one mechanism with a bounded protocol and notebook05 update. | Optional unless the returns route needs it. Both v2 and v3 remain provisional; root-43022 stays reserved. |
 
+The dedicated [#24 agent handover](hkde-acceptance-handover.md) gives the HKDE
+task, current evidence, exact branches, ordered decision subplan, entry commands
+and constraints for a new agent. Preparing it does not start another experiment.
+
 The [rough held-out study](https://github.com/fmuia/sbi4finance/blob/feat/rough-heldout-test/docs/rough-heldout-test.md)
 passes all 16 reference cases and six of seven neural gates, including marginal
 SBC and target-price means. On `test:3`, eta's posterior SD is **31.0% too small**
