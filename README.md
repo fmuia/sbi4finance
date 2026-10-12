@@ -62,6 +62,12 @@ remains pending. Conditional and proposal-reliability checks passed; they do not
 override the failed gate. The frozen run stopped without tuning or a rerun.
 The independent-grid PIT also fails on these panels, so the rank result does
 not by itself isolate bias from the correction algorithm.
+The [calibration-gate audit](docs/hkde-calibration-gate-audit.md) checks this
+distinction: ideal reference sampling would trigger the same theta gate in
+98.85% of diagnostic runs on this fixed cohort. Direct CDF checks support
+bounded approximation accuracy; the historical failure and participant gate
+remain unchanged. Open `PYTHONPATH=src pixi run review-hkde-calibration` for
+the didactic explanation, conditional controls and remaining uncertainty.
 The original neural failure and open returns-versus-options choice remain visible.
 The [analysis follow-up note](docs/simulator-analysis-next-steps.md)
 preserves the Heston findings while simulator and bank coverage expands.
@@ -101,6 +107,7 @@ two-hour participant curriculum. Closely related increments share named sections
 
 | Review notebook | Milestones / increments | Run |
 |---|---|---|
+| [HKDE calibration-gate audit](notebooks/11_hkde_calibration_audit.py) | M8 follow-up: threshold calibration, conditional reference-rank controls and finite-pool CDF errors; no acceptance override | `PYTHONPATH=src pixi run review-hkde-calibration` |
 | [Corrected HKDE options candidate](notebooks/10_hkde_corrected_workflow.py) | M8 / 10: cached correction diagnostics; new-test theta SBC failed, live inference disabled, participant acceptance pending | `PYTHONPATH=src pixi run review-hkde-corrected` |
 | [GBM, banks and cluster](notebooks/01_gbm_foundations.py) | M0–M2 / 1–3: exact inference, array roles, reproducible banks and the recorded cluster result | `pixi run review-foundations` |
 | [Heston and Gaussian jumps](notebooks/04_heston_svj_kernels.py) | M3.1–M3.2 / 4: diffusion/jump simulation, continuation, numerical checks and Numba timings | `pixi run review-kernels` |

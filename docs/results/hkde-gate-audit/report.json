@@ -1,0 +1,243 @@
+{
+  "scope": "Post-hoc saved-cohort gate/reference audit; no new acceptance test or override",
+  "settings": {
+    "seed": 96012,
+    "conditional_replicates": 20000,
+    "uniform_replicates": 100000,
+    "chunk_size": 500
+  },
+  "input_sha256": {
+    "configs/hkde_correction_boundary_protocol.json": "12b7e422bfd89c8e072db1229e9df9b880e2f03fc0a79d5d1057564991d96b1d",
+    "configs/hkde_inference_protocol.json": "8ab6b9d87204f1b9a1ef55bb2a89877e7be81a24cfb9e9adba09e9dd319aae0d",
+    "configs/tasks/hkde_inference_bank.json": "10a3ef098db7fb11c3b14d708a08cfbb656aa3c9052bab2b79c843278420870f",
+    "docs/results/hkde-inference/reference.json": "8bc2851856e4171012718eed2d3bd57e71c0f93d71ac5cf03af18812370ea569",
+    "docs/results/hkde-inference/reference-grid.npz": "532d8ad4a7ae0321f6d1ae1a25fcb5124859b3884d6c7cc90d62abfb0401d0b2",
+    "docs/results/hkde-inference/neural-validation.json": "743500b877feabe5b4476f9a8ea66c61eb61038872e23c61cf651279d0cbc636",
+    "checkpoints/hkde-theta-intensity-provisional/model.keras": "fee8e8a04aee1d7789754f0b9a239d0dd09dbd05baba1f78233d41a6b8a0a8b3",
+    "checkpoints/hkde-theta-intensity-provisional/training.json": "057a86ca0802c5b8ad51a47cf499f0fd360685b4f76c3c722978d973d1411379",
+    "checkpoints/hkde-theta-intensity-provisional/task.json": "859f6e25cbeff0dc6d85bfaa223e44c575fdb9d0f7d9e54b67da7445abca245d",
+    "docs/results/hkde-surrogate/report.json": "3783b67ee97ca58c286849dc237c6b76b0a84f636e07548b563593e0278858ed",
+    "docs/results/hkde-surrogate/model.npz": "b342b2850f8973af77cc572dc1dde7c7bbe47737c2c3fd6d6a15362907d07681",
+    "docs/results/hkde-correction-v1/validation.json": "80ad72e44f01f0e08cee1e9021ee16c3b57a66a8c9cd65dd625577efd57c620e",
+    "scripts/evaluate_hkde_correction.py": "c665327828de97c61702d4744f6a43df38e725f10899a704aafbca4ccdf055b3",
+    "scripts/check_hkde_reference.py": "e7a5a724a0af492564676ca76041f571c4669bf025bcea4e81474d933c083668",
+    "scripts/evaluate_hkde.py": "23e60a0eccb02c620f9f425d6ef86134c209bc435bf68103381151f9b26ef504",
+    "src/sbi4finance/hkde_correction.py": "304916bb3892181dcfdc8afbf2796e19ade6513e5b515802882268ec7dd5ea29",
+    "src/sbi4finance/hkde_inference.py": "616014c460d6d0d164a08590d6ac47114cdabfb030584574854dc4ecfd061beb",
+    "src/sbi4finance/hkde_reference.py": "159194818b1f8b5a6194e1340568264271bad895474e5e1c9c8ce6cfdb71074b",
+    "src/sbi4finance/hkde_surrogate.py": "ddaea17ea2230acaeadf61a47af45187983200967bb395d1d1c67c9aaa605859",
+    "src/sbi4finance/hkde_diagnostics.py": "31d240ab6f5a592b253e63a9bc830770a5b8b9818a2532c3c4cc3b249eba9687",
+    "docs/results/hkde-correction/test-checks.npz": "d95dfdb943a65a11d6bb22efd22ecd9ed24a4996ae14b86dc49dda75472c9309",
+    "docs/results/hkde-correction/new-test-panels.npz": "e7bc3eae57dbdb7fdf4e3ffe60d9e01f7a7231bc26a7b5d7244b54a73acc510f",
+    "docs/results/hkde-correction/test-reference-pit.npz": "699fa8a84411bcadb2c26c4133a0d17bf9e7a22f29bcb13cc8371eeb823ca281",
+    "docs/results/hkde-correction/validation.json": "024cb9f0131866e28cec940e0d6cb58ee93e79379c72325e26fd49a6ea371e87",
+    "docs/results/hkde-correction/test.json": "e192f9c4029f0b2a16480d58ed671dfe6d2e6a11d594330d714e58917e66c090",
+    "docs/results/hkde-correction/test-independent-audit.json": "4505a9a77577cb17096f7c03a97629a435a356c6f50e40d978eee83785222b23"
+  },
+  "source_sha256": {
+    "scripts/audit_hkde_calibration_gate.py": "684253bc54995ca394426bb9e7c87e672e41678158d899739368430972832eed"
+  },
+  "versions": {
+    "python": "3.12.15",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1"
+  },
+  "historical_test_passed": false,
+  "scientific_acceptance_changed": false,
+  "new_model_panels": 0,
+  "new_estimator_proposals": 0,
+  "training_runs": 0,
+  "gate": {
+    "cases": 256,
+    "coordinates": 2,
+    "posterior_draws": 512,
+    "family_alpha": 0.05,
+    "dkw_bound": 0.09251294920629989,
+    "ideal_uniform_coordinate_exact_rejection_probability": 0.02339488082050145,
+    "ideal_two_coordinate_rejection_upper_bound": 0.0467897616410029,
+    "uniform_control_rejection_fraction": 0.02349,
+    "uniform_control_fraction_mcse": 0.0004789386171525533,
+    "observed_sir_ks_ideal_uniform_tail_probabilities": [
+      0.007886033749511988,
+      0.13367386236845724
+    ],
+    "tail_probability_scope": "Ideal uniform null only; post-hoc, not chance algorithm is wrong"
+  },
+  "reconstruction": {
+    "historical_hashes_match": true,
+    "ranks_jitter_and_ks_match": true,
+    "independent_marginal_integration_matches_saved_pit": true,
+    "pit_65_to_129_max_change": [
+      0.002395567218912764,
+      0.005109922608444117
+    ]
+  },
+  "conditional_oracle": [
+    {
+      "coordinate": 0,
+      "reference_ks": 0.10348507210156971,
+      "sir_ks": 0.10325308058147253,
+      "sir_minus_reference_mean": 0.0005523803834936048,
+      "sir_minus_reference_rmse": 0.02173004013079506,
+      "sir_reference_correlation": 0.9969004528474286,
+      "iid_reference_expected_mean_difference": -9.020279949372582e-05,
+      "iid_reference_mean_difference_sd": 0.001142863129791829,
+      "iid_reference_root_expected_mse": 0.018293943272801417,
+      "conditional_iid_reference_ks": {
+        "mean": 0.10233681378745274,
+        "std": 0.00466486737684032,
+        "quantiles_025_50_975": [
+          0.09372088954899678,
+          0.10213296227719953,
+          0.11192205624800965
+        ]
+      },
+      "conditional_iid_reference_mean_difference": {
+        "mean": -9.448050859633326e-05,
+        "std": 0.001146815336289259,
+        "quantiles_025_50_975": [
+          -0.0023782181580024532,
+          -9.094693228410347e-05,
+          0.0021399867337139975
+        ]
+      },
+      "conditional_iid_reference_rmse": {
+        "mean": 0.018275878737373283,
+        "std": 0.000884999289789764,
+        "quantiles_025_50_975": [
+          0.016558992430093705,
+          0.0182639592201589,
+          0.020052083802274575
+        ]
+      },
+      "conditional_iid_reference_gate_failure_fraction": 0.9885,
+      "failure_fraction_mcse": 0.0007539147829827969,
+      "sir_ks_percentile_in_control": 0.59265,
+      "sir_rmse_percentile_in_control": 0.99995
+    },
+    {
+      "coordinate": 1,
+      "reference_ks": 0.08211826830156743,
+      "sir_ks": 0.07202939487740745,
+      "sir_minus_reference_mean": 0.0011624081800672326,
+      "sir_minus_reference_rmse": 0.022100357378911216,
+      "sir_reference_correlation": 0.9967935102099135,
+      "iid_reference_expected_mean_difference": 5.1717346130333325e-05,
+      "iid_reference_mean_difference_sd": 0.0011479731755760936,
+      "iid_reference_root_expected_mse": 0.018375508553530526,
+      "conditional_iid_reference_ks": {
+        "mean": 0.0822673068720971,
+        "std": 0.00508440204580515,
+        "quantiles_025_50_975": [
+          0.07278087448094339,
+          0.08208975475368552,
+          0.09260674742531547
+        ]
+      },
+      "conditional_iid_reference_mean_difference": {
+        "mean": 6.090878728289485e-05,
+        "std": 0.0011552453022188754,
+        "quantiles_025_50_975": [
+          -0.002204478760742707,
+          6.058017004862906e-05,
+          0.0023091304540054985
+        ]
+      },
+      "conditional_iid_reference_rmse": {
+        "mean": 0.01836236349873865,
+        "std": 0.0008933287950144436,
+        "quantiles_025_50_975": [
+          0.016640344549726935,
+          0.018360041349528188,
+          0.020124272923908233
+        ]
+      },
+      "conditional_iid_reference_gate_failure_fraction": 0.02595,
+      "failure_fraction_mcse": 0.001124201883560066,
+      "sir_ks_percentile_in_control": 0.0172,
+      "sir_rmse_percentile_in_control": 1.0
+    }
+  ],
+  "saved_conditional_pool_cdf": [
+    {
+      "proposals": 2048,
+      "cases": 16,
+      "mean_cdf_error": [
+        0.003067377942384793,
+        0.0005066722148956665
+      ],
+      "rmse_cdf_error": [
+        0.008843469071430583,
+        0.00939712521308649
+      ],
+      "max_abs_cdf_error": [
+        0.015331017514829348,
+        0.01941898186222707
+      ],
+      "rms_plugin_snis_cdf_se": [
+        0.009762127234294458,
+        0.009801271829757699
+      ],
+      "max_abs_error_over_plugin_se": [
+        1.4932802775141576,
+        1.8012174989946472
+      ]
+    },
+    {
+      "proposals": 8192,
+      "cases": 16,
+      "mean_cdf_error": [
+        3.6984632946190574e-05,
+        0.0007527074935372211
+      ],
+      "rmse_cdf_error": [
+        0.0051327395574205575,
+        0.0034541272991243295
+      ],
+      "max_abs_cdf_error": [
+        0.01095443773067184,
+        0.006940346075238968
+      ],
+      "rms_plugin_snis_cdf_se": [
+        0.004877410824995477,
+        0.004885459350929769
+      ],
+      "max_abs_error_over_plugin_se": [
+        2.2814445778072336,
+        1.354487778947954
+      ]
+    }
+  ],
+  "cohort_noise_description": {
+    "standardized_quote_error_means_by_contract": [
+      -0.022759387153001995,
+      -0.03914454733880395,
+      -0.027190827258732703,
+      -0.07933152400027084,
+      -0.05749155352387075,
+      -0.1385783224200762,
+      -0.019012900533437044,
+      -0.03273840735911003,
+      -0.03308752001398438
+    ],
+    "overall_mean": -0.049926109955698655,
+    "scope": "Post-hoc description of existing cohort, not a selected statistical test or causal attribution"
+  },
+  "limits": [
+    "Numerical-reference PIT is not analytic truth and may share model/pricing errors.",
+    "Conditional binomial controls reproduce one marginal at a time, not cross-parameter rank dependence.",
+    "Controls condition on the saved cohort; they do not establish population calibration or fresh-cohort reproducibility.",
+    "Oracle rank controls omit finite importance-pool error; excess SIR dispersion need not imply systematic bias.",
+    "Saved 16 conditional clouds use different seeds from the 256 calibration clouds; 2048/8192 pools are nested.",
+    "SNIS CDF standard errors are asymptotic plug-in diagnostics, not simultaneous confidence guarantees.",
+    "All256 calibration clouds and individual SIR draws were not saved; aggregate ranks cannot fully separate pool error and resampling.",
+    "Original thresholds, test outcome, reserved tests, neural checkpoint and participant gate remain unchanged."
+  ],
+  "artifact_sha256": {
+    "checks.npz": "ade1cde3922b8ea51ebbc32df4ebce766c0e026dbd9aaecc59845180db518d5c",
+    "conditional-cdf-errors.png": "bc55821dddaa952d30d7b8189c225f04d72f289a3d89a07247b0fea7bf1589c0",
+    "oracle-rank-control.png": "91647552ae27d7d8155d56634201dde43b4ae01e502a8ca04c37938cf5639690",
+    "paired-rank-errors.png": "fd3198dbdbc97f78362dd508f8f65234778d766a9123555822f761aadd3fd1f8"
+  },
+  "elapsed_seconds": 8.406585792079568
+}

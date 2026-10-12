@@ -214,6 +214,13 @@ raw-HKDE root-62026 test remains untouched. Heston's later root-43022 test and
 the rough pilot's reserved test remain unevaluated. Preserve each experiment's
 own history; do not call an inspected test a fresh holdout.
 
+A subsequent [saved-cohort gate audit](hkde-calibration-gate-audit.md) verifies
+the threshold and shows that ideal reference sampling triggers this same theta
+alarm in 98.85% of conditional controls. It identifies measurable extra rank
+dispersion and direct-CDF errors consistent with importance-sampling uncertainty
+on the 16 saved conditional cases. Notebook11 explains the distinction; no
+historical flag, estimator or M8 acceptance rule was changed.
+
 Independent audits reconstruct saved weights and conditional metrics, check
 source/input bindings, and replay test parameter/quote-noise seed identities.
 SBC rank/coverage arithmetic is checked from saved summaries. Individual SIR
@@ -231,7 +238,9 @@ state these limitations.
    choosing it does not follow automatically from implementation progress.
    A returns example requires its own accepted parameter/state-to-forecast path.
 3. **Resolve the calibration acceptance question as a bounded scientific task.**
-   Review the shared reference/SIR shift before proposing more neural tuning.
+   The [gate audit](hkde-calibration-gate-audit.md) now explains why the shared
+   reference/SIR shift does not identify a correction-specific failure. Use
+   this result before proposing neural tuning or a mandatory larger run.
    Any new acceptance study should state its question, justified criteria and
    independent evaluation design in advance, while retaining this failed result.
    Do not keep drawing new seeds until a green result appears.
