@@ -34,7 +34,8 @@ def _(mo):
 
     This **post-hoc audit of one saved cohort** separates an absolute
     simulation-based calibration (SBC) question from a paired approximation
-    question. Allow about 15 minutes. Three cached graphs and their numerical
+    question, then records issue #24's decision to retain provisional status.
+    Allow about 20 minutes. Five cached graphs and their numerical
     results are verified before display. A tiny live calculation below shows
     rank moments; opening this notebook runs no inference, simulation bank,
     training, new panels, or random diagnostic controls.
@@ -60,6 +61,54 @@ def _(ROOT, hashlib, io, json, np):
     if report["scientific_acceptance_changed"] or report["new_model_panels"]:
         raise ValueError("This notebook requires the saved-cohort, no-acceptance-override audit")
     return artifact_bytes, audit_directory, checks, gate, report
+
+
+@app.cell
+def _(ROOT, hashlib, json):
+    decision_directory = ROOT / "docs/results/hkde-acceptance"
+    decision = json.loads((decision_directory / "decision.json").read_text())
+    _manifest_bytes = (ROOT / decision["artifact_manifest"]).read_bytes()
+    if hashlib.sha256(_manifest_bytes).hexdigest() != decision["artifact_manifest_sha256"]:
+        raise ValueError("Acceptance decision artifact manifest has changed")
+    decision_manifest = json.loads(_manifest_bytes)
+    decision_inputs = {}
+    for _path in (
+        "docs/results/hkde-gate-audit/report.json",
+        "docs/results/hkde-correction/test.json",
+        "docs/results/hkde-correction/plots/reference-pit.png",
+        "docs/results/hkde-correction/plots/price-errors.png",
+        "configs/hkde_correction_boundary_protocol.json",
+        "configs/hkde_inference_protocol.json",
+    ):
+        _content = (ROOT / _path).read_bytes()
+        if hashlib.sha256(_content).hexdigest() != decision_manifest["files"][_path]:
+            raise ValueError(f"Decision evidence changed: {_path}")
+        decision_inputs[_path] = _content
+    _protocol = json.loads(decision_inputs["configs/hkde_correction_boundary_protocol.json"])
+    _baseline = json.loads(decision_inputs["configs/hkde_inference_protocol.json"])
+    decision_test = json.loads(decision_inputs["docs/results/hkde-correction/test.json"])
+    if (decision["scientific_status"] != "provisional" or decision["scientific_acceptance"]
+            or decision["i4_status"] != "deferred" or decision_test["passed"]
+            or decision["participant_proposals"] != _protocol["conditional"]["participant_samples"]
+            or decision["conditional_thresholds"] != _protocol["gates"]
+            or decision["reference_thresholds"] != _baseline["reference"]["gates"]):
+        raise ValueError("Decision must retain the frozen budget, tolerances and provisional status")
+    return decision, decision_directory, decision_inputs, decision_test
+
+
+@app.cell
+def _(decision, mo):
+    mo.md(f"""
+    **Scientific status: {decision['scientific_status']}** ·
+    **Participant budget: {decision['participant_proposals']:,} proposals** ·
+    **I4: {decision['i4_status']}**
+
+    The decision is to continue the selected-case teaching demonstration and
+    retain the historical failed acceptance. No new cohort is needed for that
+    scope. I4a's runnable provisional example remains separate from formal I4.
+    The final sections explain the policy and what would justify reopening it.
+    """)
+    return
 
 
 @app.cell
@@ -258,12 +307,11 @@ def _(mo, report):
         would overstate the evidence. Paired checks nevertheless reveal finite
         approximation error, so close KS values do not make SIR exact.
 
-        We retain the historical failed flag. No gate is relaxed, no estimator
-        is tuned, and notebook 10's participant execution is not enabled here.
-        A decision to revise acceptance should be explicit and prospective,
-        distinguish conditional approximation from population calibration, and
-        state what additional evidence it requires. These results alone do not
-        prove that a fresh cohort will pass or that the model fits real markets.
+        We retain the historical failed flag. Notebook 10's separately
+        labelled provisional example already runs. The decision below keeps
+        that teaching scope and leaves formal scientific acceptance false.
+        These results alone do not prove that a fresh cohort will pass or that
+        the model fits real markets.
         """),
         mo.ui.table([
             {"Recorded status": "Historical test passed", "Value": report["historical_test_passed"]},
@@ -277,7 +325,145 @@ def _(mo, report):
 
 
 @app.cell
-def _(ROOT, audit_directory, mo):
+def _(decision_inputs, decision_test, mo):
+    mo.vstack([
+        mo.md(r"""
+        ## Issue #24: keep the useful example provisional
+
+        The actual participant estimator uses **2,048 proposals** from
+        80% frozen flow, 10% uniform prior and 10% product-arcsine density.
+        Likelihood times the uniform prior is divided by the full mixture
+        density for every row. Keep parameter pairs and weights together.
+        The likelihood still prices all nine observed puts numerically.
+
+        The first graph compares the reference and corrected rank shifts.
+        The second asks a different question: how accurate are the 5%, 50%
+        and 95% price quantiles for the two excluded puts? At 2,048 proposals
+        the independent test's largest price error is **0.01125 currency**,
+        below the unchanged **0.03** tolerance. That is useful evidence even
+        though the calibration test failed. The precision result at 8,192 is
+        distinct; it cannot replace a failed participant-budget result.
+        """),
+        mo.image(decision_inputs["docs/results/hkde-correction/plots/reference-pit.png"]),
+        mo.image(decision_inputs["docs/results/hkde-correction/plots/price-errors.png"]),
+        mo.ui.table([
+            {"Recorded result": "Historical independent test passed", "Value": str(decision_test["passed"])},
+            {"Recorded result": "2,048-proposal maximum target-quantile error", "Value": f"{decision_test['metrics']['max_abs_target_quantile_error_currency']:.5f} currency"},
+            {"Recorded result": "8,192-proposal maximum target-quantile error", "Value": f"{decision_test['precision']['metrics']['max_abs_target_quantile_error_currency']:.5f} currency"},
+        ], selection=None),
+        mo.md(r"""
+        These are synthetic **Q model-price distributions**, not realized
+        payoff distributions, physical-measure risks or tomorrow's quotes.
+        The frozen surrogate is accepted only for its two contracts and
+        parameter box. The raw neural flow remains provisional.
+
+        The conditional tests check moments, marginal intervals, correlation
+        and two price pushforwards. **Correlation is only one feature of the
+        joint distribution.** The CDF audit above evaluates each marginal at
+        one threshold per case; it does not bound the entire marginal or joint
+        CDF. None of these finite-case results certifies every future panel.
+        """),
+    ])
+    return
+
+
+@app.cell
+def _(decision, mo):
+    _labels = {
+        "mean_rmse_in_ref_sd": "Mean error / reference SD: RMS over cases and parameters",
+        "max_abs_mean_error_in_ref_sd": "Mean error / reference SD: largest absolute error",
+        "max_abs_relative_std_error": "Relative SD error: largest absolute error",
+        "max_abs_correlation_error": "Correlation error: largest absolute error",
+        "max_abs_target_quantile_error_currency": "Price error: maximum over cases, two puts and 5/50/95% quantiles",
+        "mean_reference_mass_of_90_interval_abs_error": "90% interval mass: max over parameters of absolute (case-average mass − .90)",
+    }
+    mo.vstack([
+        mo.md(r"""
+        ## A prospective policy for continuing the provisional lesson
+
+        Keep the task, checkpoint, likelihood, mixture and surrogate fixed.
+        Verify artifact identities, numerical-reference precision and the
+        actual **2,048-proposal** case checks. The 8,192 nested pool remains
+        separate precision evidence. For the fixed live case, its precision
+        evidence is already cached; opening a lesson starts no new study.
+
+        Retain the existing tolerances; no observed failure is converted to a
+        pass. These are necessary diagnostics for the selected example, not
+        an executable protocol granting broader scientific acceptance.
+        """),
+        mo.ui.table([
+            {"Conditional diagnostic": _labels[_key], "Upper limit": _limit}
+            for _key, _limit in decision["conditional_thresholds"].items()
+        ], selection=None),
+        mo.md(r"""
+        Every conditional case also needs **ESS/N ≥ 0.50** and **largest
+        weight ≤ 0.01**. For one live case the aggregates reduce to that case.
+        For many cases, average interval mass can conceal bad individual
+        intervals. ESS diagnoses concentration; it cannot establish mode coverage.
+
+        **Reference prerequisite:** 65/129-grid changes must be ≤0.01 for
+        standardized means, relative SD and correlation; ≤0.0025 currency for
+        target quantiles; and ≤0.001 for log evidence. Price-refinement error
+        divided by quote SD must be ≤0.001 on the declared check points.
+        The generator and reference share a Fourier engine. These numerical
+        checks do not certify continuum-model prices or market adequacy.
+
+        **Monte Carlo treatment:** report SNIS and eight-block SEs as
+        approximate diagnostics. Compare observed discrepancies directly to
+        the limits, without subtracting two SEs. These estimates omit bias
+        and give no simultaneous accuracy guarantee. More SIR resamples
+        cannot remove the shared importance-pool error. A failed check stays
+        visible; there is no seed retry, larger-pool substitution or override.
+
+        A pass permits the label **provisional demonstration; case checks
+        passed**. Formal scientific acceptance remains false.
+        """),
+    ])
+    return
+
+
+@app.cell
+def _(mo):
+    mo.vstack([
+        mo.md(r"""
+        ## How to handle the next claim, including a shared alarm
+
+        Retain the historical two-coordinate DKW rule at family α=0.05
+        and its failed result. Calibration uses 2,048 proposals and 512 SIR
+        draws; its separate weight limits are ESS/N ≥0.10 and largest weight
+        ≤0.05. The table is an interpretation policy, not another statistical
+        test selected after looking at the cohort.
+        """),
+        mo.ui.table([
+            {"Evidence state": "Numerical precision or identity checks fail", "Disposition": "Reference/comparison blocked; no reliable approximation verdict"},
+            {"Evidence state": "Reference prerequisites pass; conditional or weight checks fail", "Disposition": "Provisional; retain the specific failure"},
+            {"Evidence state": "Conditional checks pass; SIR and reference PIT both alarm (current)", "Disposition": "Provisional; calibration unresolved, no waiver or correction-only blame"},
+            {"Evidence state": "Reference PIT passes; SIR alarms", "Disposition": "Provisional; investigate finite-pool approximation/resampling"},
+            {"Evidence state": "SIR passes; reference PIT alarms", "Disposition": "Provisional; investigate discrepancy, not evidence of a better posterior"},
+            {"Evidence state": "Both calibration diagnostics and conditional checks pass", "Disposition": "Report scoped checks passed; no automatic general or I4 acceptance"},
+        ], selection=None),
+        mo.md(r"""
+        **Decision: no fresh replication now.** The selected-case lesson
+        already has measured checks, and retaining provisional status needs
+        no new cohort. A fresh pass could not erase the historical failure.
+        Root **95026 is used and closed**; the raw-neural root **62026 test
+        stays untouched**. I4 stays deferred; I4a remains separately provisional.
+
+        Reopen only for a concrete stronger claim. First fix the population,
+        tolerable failure frequency, joint metric if claimed, reference
+        precision, uncertainty treatment, sample size, independent seeds,
+        metrics, aggregation and stopping rule. Then, if justified, run once
+        and save every outcome plus enough raw proposal/weight/resampling
+        data to audit it. No mandatory 1,024-panel study, automatic cohort
+        expansion, new proposal or retraining follows from this decision.
+        The final curriculum and integration decisions remain #26 and #27.
+        """),
+    ])
+    return
+
+
+@app.cell
+def _(ROOT, audit_directory, decision_directory, mo):
     mo.md(f"""
     ## Review trail, reproduction and exercises
 
@@ -285,6 +471,8 @@ def _(ROOT, audit_directory, mo):
     - [Audit script]({ROOT / 'scripts/audit_hkde_calibration_gate.py'}) and [unchanged historical test]({ROOT / 'docs/results/hkde-correction/test.json'}).
     - [Frozen boundary-correction protocol]({ROOT / 'docs/hkde-correction-boundary-protocol.md'}).
     - [Previous corrected-workflow notebook]({ROOT / 'notebooks/10_hkde_corrected_workflow.py'}).
+    - [Issue #24 decision and full policy]({ROOT / 'docs/hkde-acceptance-decision.md'}).
+    - [Bound decision]({decision_directory / 'decision.json'}), [artifact manifest]({decision_directory / 'artifact-manifest.json'}) and [fresh review verification]({decision_directory / 'verification.json'}).
 
     Open the cached lesson from the repository root:
 
@@ -311,6 +499,10 @@ def _(ROOT, audit_directory, mo):
        imply a 98.85% false-alarm rate over new cohorts?
     3. Which uncertainty disappears when we inspect a weighted CDF instead of
        SIR ranks? Which uncertainties remain, even with 8,192 proposals?
+    4. A live example passes every conditional check. Why does its label stay
+       provisional? What stronger claim would justify a new predeclared study?
+    5. Why can an accurate correlation and a CDF at the truth still miss other
+       differences between joint posteriors? Which quantity does the price graph test?
     """)
     return
 
