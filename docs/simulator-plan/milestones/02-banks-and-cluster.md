@@ -12,8 +12,8 @@ Start with one compact bank and a thin generation/training script. This mileston
 24-panel option-bank jobs on Oscar: HKDE **7297096** (4 s scheduler elapsed),
 one-factor Bergomi **7297097** (158 s), and rough Bergomi **7297098** (164 s).
 Each requested one CPU and 4 GB; each passed exact selected-ID regeneration
-inside the Linux job. The [run record](https://github.com/fmuia/sbi4finance/blob/feat/rough-bergomi-option-bank/docs/option-cluster-smoke.md)
-and [JSON evidence](https://github.com/fmuia/sbi4finance/blob/feat/rough-bergomi-option-bank/docs/results/option-cluster-smoke.json)
+inside the Linux job. The [run record](../../option-cluster-smoke.md)
+and [JSON evidence](../../results/option-cluster-smoke.json)
 record configuration/source identity, accounting, downloaded-bank integrity and
 the separate portable comparison. All 15 transferred files match independently
 retrieved remote hashes; Mac numerical regeneration passed for all three banks.

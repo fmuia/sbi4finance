@@ -4,18 +4,23 @@
 
 ## Purpose
 
-**Implementation update:** increment 6 delivers the HKDE law, Fourier pricer,
-shared fixed-panel bank, numerical evidence and offline notebook 06. See
-[reference mathematics/results](../../hkde-reference.md), [bank workflow](../../option-banks.md),
-and [measured bank](../../results/hkde-option-bank.json). M4.1–M4.2 are runnable;
-M4.3 evidence is bounded to the declared pilot/fixture domain. The
-[actual option cluster run](../../option-cluster-smoke.md) now passes same-Linux
-replay, transfer integrity and portable Mac comparisons, with the original
-HKDE tolerance failure and adjustment preserved. Neural inference,
-broader-prior numerical certification and American/exotic products remain
-pending. The next [restricted HKDE baseline](05-amortized-pricing.md#next-increment-restricted-hkde-baseline)
-uses a refined two-dimensional posterior reference. Flat modules implement
-the planned responsibilities without requiring the proposed package hierarchy.
+**Implementation update:** [PR #12](https://github.com/fmuia/sbi4finance/pull/12)
+delivers M4.1–M4.2: HKDE law, Fourier pricing, shared fixed-panel bank and offline
+notebook06. The [reference mathematics/results](../../hkde-reference.md),
+[bank workflow](../../option-banks.md) and [measured bank](../../results/hkde-option-bank.json)
+record bounded M4.3 checks in the declared European pilot/fixture domain. Actual option-bank cluster execution is now measured: Oscar job
+**7297096** generated the 24-panel HKDE bank in **4 s** scheduler elapsed with
+one CPU and 4 GB, and passed same-Linux selected-ID reproduction. The shared
+[cluster report](../../option-cluster-smoke.md)
+records this run, verified transferred-file hashes and the passed Mac numerical
+comparison alongside the Bergomi jobs. It preserves the initial HKDE portable
+tolerance failure and its adjustment separately from scientific pricing gates.
+Broader numerical domains and American/exotic targets remain outside this
+acceptance. Q posterior evidence is tracked separately in M5. Its delivered
+baseline uses the existing `theta`/`jump_intensity` task and its deterministic Fourier
+labels for [M5.1](05-amortized-pricing.md#next-increment-restricted-hkde-baseline);
+it does not wait for Bergomi continuum-bias acceptance.
+Flat modules implement the intended responsibilities without a package framework.
 
 Add the double-exponential jump sibling of Gaussian-jump Heston and establish an options-calibration task. This tests the architecture's ability to generate pricing-based observations without conflating Q calibration with historical-return inference.
 

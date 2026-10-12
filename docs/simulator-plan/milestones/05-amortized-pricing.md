@@ -19,6 +19,15 @@ numerical pilots; settling their continuum-price bias is not a dependency of
 this HKDE experiment. Heston tuning stays paused with its results preserved,
 and the returns-versus-options curriculum choice remains open.
 
+**Current bounded follow-up:** [M5.1f below](#m51f-bounded-likelihood-correction-follow-up)
+uses the same frozen checkpoint as a proposal for numerical-likelihood
+importance correction. The first correction passes conditional accuracy but
+stops on proposal reliability. The separately frozen boundary-covering proposal
+passes every validation gate, then fails theta's SBC gate on the new independent
+test despite passing both budgets' conditional checks. The frozen stop rule
+is honored; corrected-pipeline and live participant acceptance remain pending.
+This is a different estimator, not a repair of the raw checkpoint's history.
+
 MC-generated Bergomi panels include numerical estimator randomness as well as
 quote noise; later reference inference must match that declared law or justify
 neglecting numerical error at the selected fidelity. A bank's successful
@@ -38,7 +47,7 @@ Establish the relationship between Bayesian calibration and fast downstream pric
 
 | Step | Concrete output | Verification and handoff |
 |---|---|---|
-| M5.1 Parameter posterior and reference prices | Validated calibration checkpoint, same-likelihood posterior reference cases and downstream price distributions from the reference pricer | Accept conditional/joint posterior checks and price propagation. This complete options baseline can enter M8 without waiting for a learned pricer. |
+| M5.1 Parameter posterior and reference prices | Validated inference pipeline, same-likelihood posterior reference cases and downstream price distributions from the reference pricer | Accept conditional/joint posterior checks and price propagation. If the pipeline includes explicit likelihood correction, validate that estimator and retain the raw checkpoint's separate status. This complete options baseline can enter M8 without waiting for a learned pricer. |
 | M5.2 Supervised price surrogate | Separate regression bank/checkpoint, supported-domain specification, error report and measured cost comparison | Compare price errors and propagated quantiles against M5.1. Accept or reject the surrogate independently; its failure does not invalidate the accepted reference-price path. |
 | M5.3 Optional direct price posterior | Fixed-target conditional price-posterior experiment and comparison with M5.1 | Verify matched panel/target generation and push-forward agreement. Keep this experiment independent of acceptance of either earlier route. |
 
@@ -47,7 +56,8 @@ assess the **pricing component independently against an accepted numerical
 pricer/reference**, even while the neural posterior remains provisional. In
 that case, its fixed posterior draws are stress cases, not accepted inference
 evidence; passing the surrogate does not accept M5.1 or unlock its final test.
-An accepted combined participant route still requires both components. M5.3
+An accepted combined participant route still requires both the declared
+inference pipeline and the price component. M5.3
 needs its own accepted reference comparison and need not wait for surrogate
 acceptance. Plain model-specific modules and compact artifacts suffice;
 checkpoint cards identify the route and supported domain.
@@ -106,33 +116,90 @@ or repeatedly tuning the neural model before recording what was learned.
 
 ## M5.1f bounded likelihood-correction follow-up
 
-The [separate correction protocol](../../hkde-correction-protocol.md) reuses the
-frozen neural weights as a proposal. The first 90% flow / 10% uniform mixture
-passes accuracy but stops on boundary weight concentration. The separately
-[frozen boundary follow-up](../../hkde-correction-boundary-protocol.md) mixes
-80% flow, 10% uniform and 10% product-arcsine draws, evaluates the original
-numerical quote likelihood and
-retains self-normalized importance weights. This is a new finite-sample
-pipeline; the raw neural candidate and its failed report remain provisional.
+The [first correction protocol](../../hkde-correction-protocol.md)
+reuses the frozen flow as 90% of an independent flow/prior mixture. Its
+[preserved validation report](../../results/hkde-correction-v1/validation.json)
+passes all six conditional accuracy gates at both budgets: maximum target-price
+quantile errors are 0.01261 and 0.005773 currency, below 0.03. The 8,192-proposal
+pool stops on `stress:2` reliability: ESS/N 0.3336 is below 0.5 and largest
+weight 0.01494 exceeds 0.01. Absolute ESS increased; this does not mean that
+more draws made the price estimates worse. SBC and the new test were not run.
+
+The [boundary diagnosis](../../hkde-correction-boundary-review.md)
+motivates one [separately frozen follow-up](../../hkde-correction-boundary-protocol.md):
+80% frozen flow, 10% uniform prior and 10% independent product-arcsine draws
+on the same bounded coordinates. This symmetric boundary component changes
+only the proposal. The prior, numerical quote likelihood, checkpoint, budgets,
+seeds and gates stay fixed. Every row uses the full raw-unit mixture density
+in its importance denominator; the uniform prior remains in the numerator.
+This finite-sample corrected pipeline has its own acceptance result. Both
+earlier attempts remain visible and the raw neural candidate stays provisional.
 
 | Substep | Concrete output | Acceptance boundary |
 |---|---|---|
-| M5.1f.1 — Correct density and weights | Small proposal/correction functions, full mixture denominator, independently checked raw-unit Jacobians | No double-counted transforms, clipped weights, fabricated labels or surrogate likelihood. |
-| M5.1f.2 — Frozen conditional and calibration audit | Same 20 validation cases at 2,048 participant proposals and 8,192 precision proposals; 512 prior-predictive cases at the participant budget | Both budgets pass original conditional/joint/price gates. SIR ranks assess the finite-pool resampling algorithm; ESS is not a mode-coverage certificate. |
-| M5.1f.3 — New independent test | Root-95026 256-panel test, with 16 refined conditional references, generated only after all new validation gates pass | No tuning on new test; the raw baseline's original test stays untouched. |
-| M5.1f.4 — Measured handoff | Saved weighted clouds, compact reports, component timings and an offline options candidate | A corrected pipeline may qualify for M8; the raw flow is not retrospectively accepted. Numerical likelihood cost stays visible and curriculum choice stays open. |
+| M5.1f.1 — Correct density and weights | Small proposal/correction functions; independently checked raw-unit Jacobians; full mixture denominator; saved component identities and weights | No double-counted transforms, clipped weights, changed prior, fabricated labels or surrogate likelihood. Keep the first correction's reliability stop and the reason for the one boundary follow-up. |
+| M5.1f.2 — Frozen conditional and calibration audit | Same 20 development-validation cases at 2,048 participant proposals and 8,192 precision proposals; 512 prior-predictive cases, each with 2,048 proposals and 512 joint SIR resamples | Both budgets must pass all six original accuracy gates, ESS/N at least 0.5 and largest weight at most 0.01. Calibration pools also have their frozen reliability gates. SIR ranks audit the finite-pool algorithm, not exact IID posterior draws; neither SBC nor ESS certifies every conditional/joint result. |
+| M5.1f.3 — New independent test | Root-95026 256-panel test, including 16 conditional references checked at 65 and 129 grid points; generated only after every new validation gate passes | No tuning, proposal selection or automatic grid refinement on test outcomes. The raw baseline's original root-62026 test remains untouched. |
+| M5.1f.4 — Measured handoff | Saved weighted clouds, exact reports/source bindings, component timings and the [M8 options candidate](../../m8-options-candidate.md) | A passing corrected pipeline may qualify for M8; it does not retrospectively accept the raw flow or select the curriculum. Separately pass the full live offline notebook check. |
 
 Use the accepted M5.2 surrogate only for the two downstream target prices.
-No new training or model family is required. Failure stops this bounded
-experiment without automatic sample-budget or seed changes.
+The nine likelihood prices remain numerical Fourier calculations; record their
+cost alongside loading, proposal sampling/density and downstream pricing.
+Self-normalized weights and finite-pool resampling remain approximate. Eight
+independent proposal blocks expose Monte Carlo variability without supplying a
+bound on total bias. No new training, model family or adaptive proposal framework
+is required. A failed follow-up remains recorded without another automatic
+mixture, sample-budget, seed or threshold change.
 
-**Recorded outcome:** v2 validation passes all stages. Its new 256-panel test
-passes the 16 conditional cases and efficiency checks at both budgets, but
-long-run-variance SBC fails (KS 0.10325 > 0.09251). The test is used and closed;
-the raw flow's older test remains untouched. The [measured report](../../hkde-corrected-inference.md)
-and review preserve the stop. Corrected-pipeline and M8 participant acceptance
-remain pending. The [M8 follow-up](../../m8-options-candidate.md) permits a
-provisional live demonstration, with that historical acceptance flag unchanged.
+**Current M5.1f status:** v2 validation passes both conditional budgets and the
+512-case finite-pool SIR audit. Maximum target-price quantile errors are
+0.01110 (2,048 proposals) and 0.004818 (8,192), versus 0.03. Minimum conditional
+ESS/N is 0.6878 and 0.6828; all maximum-weight gates pass. Marginal rank KS
+values 0.03149 and 0.03514 are below the 0.06542 DKW limit, and every calibration
+pool passes its reliability checks. This accepts the development-validation
+stage of the corrected estimator only.
+
+M5.1f.3's [new test](../../results/hkde-correction/test.json)
+has now run once. All 16 conditional cases pass the original accuracy and
+proposal-reliability gates at both budgets; maximum price-quantile errors are
+0.01125 and 0.006382 currency. All 256 calibration pools also pass reliability.
+However, theta's marginal SIR rank KS is 0.103253, above the frozen 0.092513
+DKW limit; lambda's 0.072029 is below it. The test and corrected pipeline are
+therefore **not accepted**. No retry, tuning or threshold change follows. The
+pass/fail result alone does not establish the discrepancy's cause.
+
+The [independent saved-test audit](../../results/hkde-correction/test-independent-audit.json)
+also evaluates the numerical-reference marginal CDF at each generating truth
+(a probability integral transform, or PIT). Theta's reference KS is 0.103485
+on the 129-point grid and 0.103404 on the 65-point grid, close to SIR's 0.103253;
+all exceed the original 0.092513 bound. Thus this finite-cohort shift is also
+present in the refined reference, and the diagnostic does not identify a
+proposal-specific bias or support another proposal adjustment. The reference
+is numerical quadrature with CDF interpolation, not an analytic oracle. This
+post-hoc explanation neither overrides the frozen failure nor reopens the
+used test; no proposals, test panels, seeds or acceptance gates were changed.
+
+M5.1f.4 hands over the retained result as a **provisional diagnostic lesson**.
+The [saved-cohort audit](../../hkde-calibration-gate-audit.md) supports a bounded
+live demonstration without accepting population calibration or changing the
+frozen failed gate. Default notebook execution reviews cached evidence via
+`PYTHONPATH=src pixi run review-hkde-corrected`;
+`pixi run demo-hkde-corrected` explicitly runs the fixed synthetic validation
+panel with 2,048 proposals. M8 remains scientifically pending; the raw flow
+is unchanged and provisional, and its original root-62026 test remains
+untouched. Any subsequent diagnosis is distinct from this frozen outcome.
+
+**Historical engineering and review verification:** PR #15 passed 133 software
+tests in 21.604 seconds. Its then-current combined tree with PR #14 and the M8 draft passed
+[171 tests in 25.263 seconds](../../results/hkde-correction/combined-stack-verification.json).
+Notebook10's [source-bound offline review export](../../results/hkde-correction/notebook-verification.json)
+executed 17 cells with zero errors in 8.2935 seconds, with external sockets
+blocked and raw training banks/market fixtures absent. That cached review
+skipped live inference. The subsequent [provisional-demo check](../../results/hkde-provisional-demo/execution.json)
+records live execution and passed case-level checks with scientific acceptance
+false. These reports remain evidence for their recorded sources; a new combined
+tree requires its own execution check. Neither accepts the corrected estimator
+or M8 participant delivery.
 
 ## M5.2 bounded surrogate subplan
 
@@ -152,7 +219,7 @@ this bounded task. The protocol is frozen before fitting.
 
 ## Didactic review deliverable
 
-Notebook06 reviews the parameter posterior and reference pricer; notebook07 reviews the fixed-contract supervised surrogate. A direct-price posterior remains an optional separate experiment. Follow the [common review requirements](../README.md#didactic-review-notebooks-at-every-milestone). Explain each conditional distribution or regression target, then run one bounded synthetic-panel example through the implemented routes. Display inference errors separately from pricing errors and measured costs, with links to exact checkpoint/bank/reference reports. Failed or unimplemented routes remain visibly distinct from the accepted baseline. Exercises should trace a training label through each route and distinguish a distribution of model prices from realized payoff uncertainty.
+Notebook06 reviews the parameter posterior and reference pricer; notebook07 reviews the fixed-contract supervised surrogate. The [draft notebook10](../../../notebooks/10_hkde_corrected_workflow.py) assembles M5.1f and M5.2 for diagnostic review while preserving the raw-neural failure, v1 reliability stop and v2 held-out SBC stop. Cached review is the default; the explicitly requested provisional live demo is runnable while scientific acceptance remains false. Neither execution mode completes M8 acceptance. A direct-price posterior remains an optional separate experiment. Follow the [common review requirements](../README.md#didactic-review-notebooks-at-every-milestone). Explain each conditional distribution or regression target, then run one bounded synthetic-panel example through the accepted implemented routes. Display inference errors separately from pricing errors and measured costs, with links to exact checkpoint/bank/reference reports. Failed or unimplemented routes remain visibly distinct from accepted components. Exercises should trace a training label through each route and distinguish a distribution of model prices from realized payoff uncertainty.
 
 Accept the sections after offline headless execution/export reproduces the included routes and renders their independent gates. Expensive label generation and retraining are opt-in commands; optional direct-price work cannot block the M5.1 review.
 
