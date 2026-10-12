@@ -56,6 +56,14 @@ exceeds the frozen 0.092513 DKW limit. Lambda's 0.072029 is below it. The test
 is not accepted, and no retry or tuning follows. A validation pass or an
 informative review notebook cannot qualify the participant artifact.
 
+An [independent reference-PIT diagnostic](https://github.com/fmuia/sbi4finance/blob/feat/hkde-inference/docs/results/hkde-correction/test-independent-audit.json)
+finds the same finite-cohort theta shift in the refined numerical posterior
+(KS 0.103485; 65-point check 0.103404) as in SIR (0.103253). This is useful
+material for the lesson: a failed rank gate does not by itself isolate neural
+or proposal bias, and this check does not indicate further proposal tuning.
+The numerical reference is not an analytic oracle. The post-hoc diagnosis
+changes neither the frozen failure nor the closed test or M8 acceptance status.
+
 Assemble evidence already collected at each milestone into a complete S participant workflow. Validation and didactic review begin with M0 contracts and M1 analytic checks; this milestone closes end-to-end gaps rather than postponing either. The earlier review notebooks explain each development increment, including failed experiments; M8 selects and paces a scientifically accepted application for participants. M is an optional market illustration and E is a separate empirical extension; neither is required for S acceptance.
 
 ## Tasks

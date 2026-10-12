@@ -30,8 +30,9 @@ sampling SEs are below 10% of quote sigma. The coupled-grid study now resolves
 all one-factor comparisons and rough 512-to-1,024 comparisons within 0.025
 currency; the rough 128-step comparison remains unresolved at its difficult
 corner. These finite-grid checks do not prove continuum bias below 0.025.
-Existing banks retain their original numerical-pilot identities. The combined
-implementation passes 155 software tests (122 on PR #14 without PR #15); the
+Existing banks retain their original numerical-pilot identities. The last
+combined pre-correction implementation passed 155 software tests (122 on
+PR #14 without PR #15); rerunning the combined suite after correction is pending. The
 HKDE and combined Bergomi marimo reviews pass isolated offline export without
 market fixtures or external connections. These execution checks do not accept
 new posteriors. Source hashes and full numerical evidence are committed with
@@ -88,8 +89,8 @@ surrogate acceptance does not repair or accept M5.1, unlock its test or select
 M8. Notebook07 explains the regression and paired error checks. This small
 polynomial supplies a learned forward-price building block without another
 network or contract-generalization framework. Notebook07 passes its isolated
-offline export (14 cells, zero errors, 9.17 seconds), and PR #15 alone passes
-117 software tests.
+offline export (14 cells, zero errors, 9.17 seconds), and PR #15 now passes
+133 software tests including correction checks.
 
 The [M5.1f likelihood correction](https://github.com/fmuia/sbi4finance/blob/feat/hkde-inference/docs/hkde-corrected-inference.md)
 reuses that provisional flow as a proposal. Its first 90% flow / 10% uniform
@@ -115,6 +116,13 @@ and 0.006382) and all proposal-reliability checks, but theta's SIR rank KS
 This single failed gate stops acceptance without another seed, mixture,
 budget or threshold change. Its cause is not established by the gate alone.
 The new test is now evaluated; the raw baseline's original test stays untouched.
+An [independent saved-test audit](https://github.com/fmuia/sbi4finance/blob/feat/hkde-inference/docs/results/hkde-correction/test-independent-audit.json)
+finds the same theta rank shift in numerical-reference posterior CDF values at
+the generating truths: KS 0.103485 on the 129-point grid, 0.103404 on the
+65-point grid, versus SIR's 0.103253. The shift is shared by the refined
+reference on this finite test cohort; this check does not identify
+proposal-specific bias or indicate further proposal tuning. It is post-hoc
+diagnosis, not a replacement gate: the frozen failure and closed test stay unchanged.
 The [M8 candidate subplans](milestones/08-validation-and-tutorial.md#bounded-options-candidate-concrete-m8-subplans)
 then require an actual 2,048-proposal live offline calculation with the accepted
 two-put surrogate, source-bound evidence, component timings and exercises.

@@ -168,6 +168,17 @@ DKW limit; lambda's 0.072029 is below it. The test and corrected pipeline are
 therefore **not accepted**. No retry, tuning or threshold change follows. The
 pass/fail result alone does not establish the discrepancy's cause.
 
+The [independent saved-test audit](https://github.com/fmuia/sbi4finance/blob/feat/hkde-inference/docs/results/hkde-correction/test-independent-audit.json)
+also evaluates the numerical-reference marginal CDF at each generating truth
+(a probability integral transform, or PIT). Theta's reference KS is 0.103485
+on the 129-point grid and 0.103404 on the 65-point grid, close to SIR's 0.103253;
+all exceed the original 0.092513 bound. Thus this finite-cohort shift is also
+present in the refined reference, and the diagnostic does not identify a
+proposal-specific bias or support another proposal adjustment. The reference
+is numerical quadrature with CDF interpolation, not an analytic oracle. This
+post-hoc explanation neither overrides the frozen failure nor reopens the
+used test; no proposals, test panels, seeds or acceptance gates were changed.
+
 M5.1f.4 hands over the retained result as a **draft diagnostic lesson**, not an
 accepted live inference product. M8 remains scientifically pending; the raw
 flow is unchanged and provisional, and its original root-62026 test remains
