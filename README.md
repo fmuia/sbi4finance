@@ -17,6 +17,9 @@ Total: ~2 hours.
 
 ## Simulator and inference plan
 
+For current code, PR dependencies, scientific limits and next review steps,
+start with the [collaborator handover](docs/simulator-handover.md).
+
 The [implementation plan and mathematical guide](docs/simulator-plan/README.md) describes the simulator library, pre-simulated training banks, and returns-inference and option-pricing workflows. It includes nine milestone subplans, beginner-oriented mathematical notes, and validation requirements. Shared-foundation implementation has started; the tutorial's central application remains open.
 
 Its [delivery and evidence boundary](docs/simulator-plan/README.md#synthetic-delivery-and-market-evidence) requires a complete offline synthetic teaching workflow. Actual-market application and empirical evaluation are optional additions with separate data and evidence requirements; acquisition does not block the synthetic core.
