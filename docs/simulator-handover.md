@@ -14,10 +14,12 @@ layout and distinguishes additions that still live on separate branches.
 
 1. Read the [plan and mathematical reading guide](https://github.com/fmuia/sbi4finance/blob/docs/simulator-plan/docs/simulator-plan/README.md)
    in [plan PR #3](https://github.com/fmuia/sbi4finance/pull/3).
-2. Open [notebook10](../notebooks/10_hkde_corrected_workflow.py) and the
-   [HKDE correction report](hkde-corrected-inference.md). These show the most
-   recent result, including the retained acceptance failure.
-3. Inspect the [price-error graph](results/hkde-correction/plots/price-errors.png)
+2. Open [notebook10](../notebooks/10_hkde_corrected_workflow.py) for the provisional
+   live synthetic demonstration, and read the [HKDE correction report](hkde-corrected-inference.md)
+   for the retained scientific acceptance failure.
+3. Inspect the live [joint posterior](results/hkde-live-demo/live-joint.png)
+   and [target-price distributions](results/hkde-live-demo/live-target-prices.png),
+   then the [price-error graph](results/hkde-correction/plots/price-errors.png)
    and [reference-versus-SIR rank graph](results/hkde-correction/plots/reference-pit.png).
 4. For Bergomi, use the latest [PR #14 study](https://github.com/fmuia/sbi4finance/blob/feat/rough-bergomi-option-bank/docs/rough-joint-inference.md)
    and its notebook09. The latest rough-inference additions are not all in
@@ -45,7 +47,7 @@ preserved. This work is not a reproduction/import of Francesco's full SVJ study.
 | M5: HKDE inference and learned pricing | Frozen neural checkpoint, refined numerical posterior grid, two-contract price surrogate, importance correction and notebook07 | The surrogate passes. The raw flow and corrected pipeline remain provisional for different recorded reasons. |
 | M6: one-factor Bergomi | Forward-variance context, exact OU/asset covariance, complete continuation, European Monte Carlo prices, banks and notebook08 | No two-factor implementation or accepted neural posterior is claimed. |
 | M7: rough Bergomi | Gaussian reference and FFT hybrid driver, option banks, coupled-grid study, restricted H/eta reference pilot and notebook09 | Reference passes 19/20 panels; one efficiency failure stops training/SBC. No accepted rough checkpoint. |
-| M8: paced options candidate | Notebook10, equations, diagnostics, exercises and verified offline review | Draft: the failed held-out calibration gate disables live participant inference. |
+| M8: paced options candidate | Notebook10, equations, diagnostics, exercises and provisional live offline demonstration | Fixed development example runs; historical theta SBC failure and pending scientific acceptance remain visible. |
 
 Numba accelerates implemented trajectory loops; independent/reference paths
 remain available for checks. Vectorized numerical work and the rough FFT
@@ -169,12 +171,20 @@ PYTHONPATH=src pixi run test-simulators
 
 Use `PYTHONPATH=src`, especially if sharing an editable environment between
 worktrees. Opening these reviews starts no training, bank generation or
-cluster job. Notebook10 currently shows cached scientific evidence and
-explicitly skips live inference. Its isolated export passed **17 cells, zero
-errors, 8.29 seconds**, with market fixtures/raw banks absent and external
-connections blocked. The existing pinned environment was reused; this is not
-a fresh-install test or a live-inference timing. The [verification record](results/hkde-correction/notebook-verification.json)
-binds the sources/assets and records `live_executed=false`.
+cluster job. Notebook10 now runs fixed synthetic **validation:257** with
+**2,048 proposals**, the same proposal seed and unchanged numerical tolerances.
+It displays the joint correction and two target-price distributions as a
+**provisional demonstration**. No real observations or generating truth enter
+conditioning. A passing single-case check does not change the used test or
+establish population calibration.
+
+The [live execution record](results/hkde-live-demo/verification.json) separates
+technical execution and single-case checks from `scientific_acceptance=false`.
+It records component timings in an isolated offline export with market
+fixtures/raw banks absent. The earlier [cached-only verification](results/hkde-correction/notebook-verification.json)
+passed **17 cells, zero errors, 8.29 seconds**, with `live_executed=false`;
+that historical record remains unchanged and is not a live-inference timing.
+Both checks reuse the pinned environment rather than testing a fresh installation.
 
 PR #15's implementation suite passes **133 tests**. The **171** count belongs
 to the combined snapshot, not a plain PR #19 checkout. On the latest PR #14
@@ -219,7 +229,8 @@ the threshold and shows that ideal reference sampling triggers this same theta
 alarm in 98.85% of conditional controls. It identifies measurable extra rank
 dispersion and direct-CDF errors consistent with importance-sampling uncertainty
 on the 16 saved conditional cases. Notebook11 explains the distinction; no
-historical flag, estimator or M8 acceptance rule was changed.
+historical flag or estimator was changed. The follow-up permits a provisional
+live demonstration while keeping the scientific acceptance flag false.
 
 Independent audits reconstruct saved weights and conditional metrics, check
 source/input bindings, and replay test parameter/quote-noise seed identities.
@@ -244,14 +255,17 @@ state these limitations.
    Any new acceptance study should state its question, justified criteria and
    independent evaluation design in advance, while retaining this failed result.
    Do not keep drawing new seeds until a green result appears.
-4. **Then finish M8's live gate.** An accepted chosen pipeline must actually run
-   inference and downstream output offline, with component timings and no
-   market fixtures. A skipped live cell cannot meet that requirement.
-5. **Resume other inference studies only if useful to the curriculum.** Heston
-   retains conditional discrepancies; rough Bergomi first needs a bounded
-   reference-efficiency follow-up (one case has ESS 600.55 < 800 and maximum
-   weight 0.005392 > 0.005). The current rough run stopped before neural training
-   and SBC. Two-factor Bergomi, full collaborator SVJ parity, direct-price
+4. **Review the provisional live lesson.** Notebook10 now computes the joint
+   correction and target prices offline on one fixed development case. Inspect
+   its outputs and component costs. Delivery of that runnable example is
+   separate from the unresolved M8 scientific release decision.
+5. **Make one bounded rough reference-bank expansion.** The current reference
+   passes 19/20 cases; one has ESS 600.55 < 800 and maximum weight
+   0.005392 > 0.005. Expand the independent reference bank from **4,096 to 8,192
+   rows**, preserving the training bank and all cases, then rerun the reference
+   checks. Train a candidate only if they pass; do not automatically double
+   again after a failure. The existing run stopped before neural training and
+   SBC. Heston retains conditional discrepancies. Two-factor Bergomi, full collaborator SVJ parity, direct-price
    posteriors, American/exotic pricing and P/Q linkage remain extensions.
 
 The latest [analysis note](https://github.com/fmuia/sbi4finance/blob/feat/rough-bergomi-option-bank/docs/simulator-analysis-next-steps.md)

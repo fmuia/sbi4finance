@@ -57,9 +57,11 @@ def _(mo):
     **Suggested 30-minute lesson:** 5 minutes for the financial task and data
     roles, 8 for correction, 7 for the live posterior/prices, 7 for diagnostics,
     and 3 for the exercises. Expensive training and reference studies are
-    cached. Once the new scientific gates pass, default execution performs
-    one bounded live correction with 2,048 proposals; it starts no bank
-    generation, training or cluster job and needs no real-market fixtures.
+    cached. Default execution performs one bounded live correction with
+    2,048 proposals as an **explicitly provisional demonstration**. The
+    historical test failure remains visible and scientific acceptance remains
+    pending. Opening the lesson starts no bank generation, training or cluster
+    job and needs no real-market fixtures.
     """)
     return
 
@@ -81,7 +83,7 @@ def _(ROOT, json, plot_helpers):
 
 
 @app.cell
-def _(candidate_accepted, mo, protocol, reports):
+def _(ROOT, candidate_accepted, mo, protocol, reports):
     _rows = [{"Check": _split, "Saved status":
               ("PASS" if reports[_split]["passed"] else "FAIL") if _split in reports else "not recorded"}
              for _split in ("validation", "test")]
@@ -103,10 +105,12 @@ def _(candidate_accepted, mo, protocol, reports):
         mo.md("## Candidate status\n\nThe corrected pipeline has its own frozen acceptance test. It does not retrospectively accept the raw neural posterior."),
         mo.ui.table(_rows, selection=None),
         mo.ui.table(_stages, selection=None) if _stages else mo.md("No corrected scientific stages are recorded yet."),
-        mo.callout("Both recorded gates pass. The bounded synthetic live example below is enabled."
+        mo.callout("Historical scientific acceptance: PASS."
                    if candidate_accepted else
-                   "The required corrected validation and new test are not both accepted. Live candidate execution is skipped; available development diagnostics remain visible.",
-                   kind="success" if candidate_accepted else "info"),
+                   "Historical scientific acceptance: NOT PASSED. Validation passed; the used and closed test failed theta SBC. These recorded flags and tolerances are unchanged.",
+                   kind="success" if candidate_accepted else "warn"),
+        mo.callout("Execution mode: PROVISIONAL LIVE DEMONSTRATION. The fixed development case runs below. A successful calculation or single-case check does not establish population calibration or accept the full participant release.", kind="info"),
+        mo.md(f"The [saved-cohort gate audit]({ROOT / 'docs/hkde-calibration-gate-audit.md'}) explains why the shared reference/SIR alarm does not isolate correction error. It supports continuing this bounded demonstration while the scientific question remains open."),
     ])
     return
 
@@ -264,10 +268,11 @@ def _(mo, protocol):
     ## One live synthetic panel
 
     We use **validation:257**, the fixed audit case with the largest earlier
-    raw-neural price discrepancy. Its selection is explicit; the independent
-    new test supplies the separate generalization check. This cell will load
-    compatible immutable assets, draw **{protocol['conditional']['participant_samples']:,}**
-    proposals, compute the numerical likelihood weights and evaluate the two
+    raw-neural price discrepancy. This is a selected development example,
+    not a fresh test. The separate test has already been used and closed;
+    its conditional checks passed but its theta SBC gate failed. This cell loads
+    compatible immutable assets, draws **{protocol['conditional']['participant_samples']:,}**
+    proposals, computes the numerical likelihood weights and evaluates the two
     accepted target-price outputs. It uses no generating truth in conditioning.
 
     The complete scientific audit separately checks both this participant
@@ -279,89 +284,92 @@ def _(mo, protocol):
 
 
 @app.cell
-def _(ROOT, candidate_accepted, load_script, mo, np, protocol_path, reports, task, time):
-    live_result = None
-    if candidate_accepted:
-        _started = time.perf_counter()
-        _runner = load_script("hkde_correction_runner", ROOT / "scripts/evaluate_hkde_correction.py")
-        _protocol, _baseline_protocol, _task, _grid, _saved, _model, _bindings = _runner.load_inputs(protocol_path)
-        if _task != task:
-            raise ValueError("displayed task differs from the bound correction task")
-        for _split in ("validation", "test"):
-            if reports[_split]["input_sha256"] != _bindings or reports[_split]["source_sha256"] != _runner.source_hashes():
-                raise ValueError(f"{_split}: saved correction evidence does not match the live inputs/source")
-        _index = list(_saved["case_ids"]).index("validation:257")
-        _observation = _saved["observations"][_index]
-        _seed = _runner.case_seed(_protocol, "validation", 0, _index)
-        _workflow = _runner.inference.build_workflow(_task)
-        _workflow.load_approximator(ROOT / _protocol["checkpoint"] / "model.keras")
-        _loaded = time.perf_counter()
-        _proposal = _runner.correction.propose(
-            _workflow, _task, _observation,
-            num_samples=_protocol["conditional"]["participant_samples"], seed=_seed,
-            prior_fraction=_protocol["proposal"]["prior_fraction"],
-            boundary_fraction=_protocol["proposal"]["boundary_fraction"])
-        _proposed = time.perf_counter()
-        _corrected = _runner.correction.correct(_proposal["parameters"], _proposal["log_proposal"], _observation, _task)
-        _weighted = time.perf_counter()
-        _target_prices = _runner.surrogate.predict(_model, _proposal["parameters"], task=_task, contracts=_baseline_protocol["targets"])
-        _target_ready = time.perf_counter()
-        _reference_weights = _runner.reference.posterior(_grid, _observation, _task["context"]["quote_noise_std"])
-        _reference_summary = _runner.reference.summarize(_grid, _reference_weights, _protocol["quantiles"])
-        _summary = _runner.correction.summarize(
-            _proposal["parameters"], _corrected["weights"], _target_prices,
-            reference_summary=_reference_summary, probabilities=_protocol["quantiles"],
-            blocks=_protocol["conditional"]["uncertainty_blocks"])
-        _metrics = _runner.aggregate([_summary])
-        _gates = {_name: _value <= _protocol["gates"][_name] for _name, _value in _metrics.items()}
-        _gates.update(proposal_ess=_corrected["ess_fraction"] >= _protocol["conditional"]["min_ess_fraction"],
-                      proposal_max_weight=_corrected["max_weight"] <= _protocol["conditional"]["max_weight"])
-        live_result = {
-            "case_id": "validation:257", "seed": _seed, "observation": _observation,
-            "parameters": _proposal["parameters"], "weights": _corrected["weights"],
-            "target_prices": _target_prices, "targets": _baseline_protocol["targets"],
-            "grid": _grid, "reference_weights": _reference_weights, "reference_summary": _reference_summary,
-            "summary": _summary, "metrics": _metrics, "gates": _gates, "passed": all(_gates.values()),
-            "ess": _corrected["ess"], "ess_fraction": _corrected["ess_fraction"],
-            "max_weight": _corrected["max_weight"], "prior_rows": int(_proposal["is_prior"].sum()),
-            "boundary_rows": int(_proposal["is_boundary"].sum()),
-            "timing_seconds": {"imports_bindings_checkpoint_load": _loaded - _started,
-                               "proposal_sample": _proposal["timing_seconds"]["sample"],
-                               "proposal_density": _proposal["timing_seconds"]["density"],
-                               "proposal_total": _proposed - _loaded,
-                               "nine_price_likelihood_and_weights": _weighted - _proposed,
-                               "two_target_surrogate": _target_ready - _weighted,
-                               "reference_comparison_and_summary": time.perf_counter() - _target_ready,
-                               "live_total": time.perf_counter() - _started},
-        }
-        _display = mo.md(f"Live correction completed with **{len(_proposal['parameters']):,} proposals** and ESS **{_corrected['ess']:.0f}**. "
-                         "The tables below report this execution separately from the cached scientific study.")
-    else:
-        _display = mo.callout("Live correction is disabled until both frozen validation and the new independent test pass. No bank, model training or test run is started here.", kind="info")
+def _(ROOT, load_script, mo, protocol_path, reports, task, time):
+    _started = time.perf_counter()
+    _runner = load_script("hkde_correction_runner", ROOT / "scripts/evaluate_hkde_correction.py")
+    _protocol, _baseline_protocol, _task, _grid, _saved, _model, _bindings = _runner.load_inputs(protocol_path)
+    if _task != task:
+        raise ValueError("displayed task differs from the bound correction task")
+    for _split in ("validation", "test"):
+        if reports[_split]["input_sha256"] != _bindings or reports[_split]["source_sha256"] != _runner.source_hashes():
+            raise ValueError(f"{_split}: saved correction evidence does not match the live inputs/source")
+    _index = list(_saved["case_ids"]).index("validation:257")
+    _observation = _saved["observations"][_index]
+    _seed = _runner.case_seed(_protocol, "validation", 0, _index)
+    _workflow = _runner.inference.build_workflow(_task)
+    _workflow.load_approximator(ROOT / _protocol["checkpoint"] / "model.keras")
+    _loaded = time.perf_counter()
+    _proposal = _runner.correction.propose(
+        _workflow, _task, _observation,
+        num_samples=_protocol["conditional"]["participant_samples"], seed=_seed,
+        prior_fraction=_protocol["proposal"]["prior_fraction"],
+        boundary_fraction=_protocol["proposal"]["boundary_fraction"])
+    _proposed = time.perf_counter()
+    _corrected = _runner.correction.correct(_proposal["parameters"], _proposal["log_proposal"], _observation, _task)
+    _weighted = time.perf_counter()
+    _target_prices = _runner.surrogate.predict(_model, _proposal["parameters"], task=_task, contracts=_baseline_protocol["targets"])
+    _target_ready = time.perf_counter()
+    _reference_weights = _runner.reference.posterior(_grid, _observation, _task["context"]["quote_noise_std"])
+    _reference_summary = _runner.reference.summarize(_grid, _reference_weights, _protocol["quantiles"])
+    _summary = _runner.correction.summarize(
+        _proposal["parameters"], _corrected["weights"], _target_prices,
+        reference_summary=_reference_summary, probabilities=_protocol["quantiles"],
+        blocks=_protocol["conditional"]["uncertainty_blocks"])
+    _metrics = _runner.aggregate([_summary])
+    _gates = {_name: _value <= _protocol["gates"][_name] for _name, _value in _metrics.items()}
+    _gates.update(proposal_ess=_corrected["ess_fraction"] >= _protocol["conditional"]["min_ess_fraction"],
+                  proposal_max_weight=_corrected["max_weight"] <= _protocol["conditional"]["max_weight"])
+    live_result = {
+        "execution_mode": "provisional_demonstration", "case_id": "validation:257", "seed": _seed, "observation": _observation,
+        "parameters": _proposal["parameters"], "weights": _corrected["weights"],
+        "target_prices": _target_prices, "targets": _baseline_protocol["targets"],
+        "grid": _grid, "reference_weights": _reference_weights, "reference_summary": _reference_summary,
+        "summary": _summary, "metrics": _metrics, "gates": _gates, "passed": all(_gates.values()),
+        "ess": _corrected["ess"], "ess_fraction": _corrected["ess_fraction"],
+        "max_weight": _corrected["max_weight"], "prior_rows": int(_proposal["is_prior"].sum()),
+        "boundary_rows": int(_proposal["is_boundary"].sum()),
+        "timing_seconds": {"imports_bindings_checkpoint_load": _loaded - _started,
+                           "proposal_sample": _proposal["timing_seconds"]["sample"],
+                           "proposal_density": _proposal["timing_seconds"]["density"],
+                           "proposal_total": _proposed - _loaded,
+                           "nine_price_likelihood_and_weights": _weighted - _proposed,
+                           "two_target_surrogate": _target_ready - _weighted,
+                           "reference_comparison_and_summary": time.perf_counter() - _target_ready,
+                           "live_total": time.perf_counter() - _started},
+    }
+    _display = mo.md(f"Live correction completed with **{len(_proposal['parameters']):,} proposals** and ESS **{_corrected['ess']:.0f}**. "
+                     "This provisional development calculation is separate from the cached scientific study and does not change its acceptance status.")
     _display
     return (live_result,)
 
 
 @app.cell
-def _(live_result, mo, task):
+def _(live_result, mo, protocol, task):
     if live_result is not None:
         _view = mo.vstack([
             mo.md("### The actual conditioning panel"),
             mo.ui.table([{**_contract, "Observed synthetic price": float(live_result["observation"][_index, 0])}
                          for _index, _contract in enumerate(task["context"]["contracts"])], selection=None),
-            mo.callout("This live case meets the same reported numerical thresholds."
+            mo.callout("This single development case meets the unchanged conditional numerical thresholds. Population calibration remains unresolved."
                        if live_result["passed"] else
                        "This live finite-pool execution misses at least one threshold. Its result is retained; the notebook does not retry or change the seed.",
                        kind="success" if live_result["passed"] else "warn"),
-            mo.ui.table([{"Metric": _name, "Live value": _value, "Passed": live_result["gates"][_name]}
+            mo.ui.table([{"Metric": _name, "Live value": _value,
+                          "Threshold (≤)": protocol["gates"][_name], "Passed": live_result["gates"][_name]}
                          for _name, _value in live_result["metrics"].items()], selection=None),
+            mo.ui.table([
+                {"Diagnostic": "ESS / proposal count", "Live value": live_result["ess_fraction"],
+                 "Criterion": f"≥ {protocol['conditional']['min_ess_fraction']}", "Passed": live_result["gates"]["proposal_ess"]},
+                {"Diagnostic": "Largest normalized weight", "Live value": live_result["max_weight"],
+                 "Criterion": f"≤ {protocol['conditional']['max_weight']}", "Passed": live_result["gates"]["proposal_max_weight"]},
+            ], selection=None),
             mo.md(f"Prior-component rows: **{live_result['prior_rows']}**; boundary-component rows: **{live_result['boundary_rows']}**; "
                   f"ESS/N: **{live_result['ess_fraction']:.3f}**; "
                   f"largest normalized weight: **{live_result['max_weight']:.5f}**. "
                   "The live 2,048-draw API call need not be bitwise identical to the stored prefix of an 8,192-draw call; it uses the same proposal law and is checked independently."),
         ])
     else:
-        _view = mo.md("The live observation/result table will appear after candidate acceptance.")
+        _view = mo.md("No live result is available; inspect the computation cell for an error.")
     _view
     return
 
@@ -438,11 +446,12 @@ def _(cached_figures, mo, protocol, reports):
 
         The original 16 validation cases and four stress cases were already
         inspected during development. Their improvement is useful, but not
-        independent confirmation. Only after every new validation gate passes
-        does the protocol generate a separate 256-panel test under a new seed.
-        Its first 16 cases receive conditional reference checks, and all 256
-        receive the finite-pool calibration audit. The old posterior final test
-        remains unevaluated.
+        independent confirmation. After every correction validation gate passed,
+        the protocol generated a separate 256-panel test under a new seed.
+        Its first 16 cases received conditional reference checks, and all 256
+        received the finite-pool calibration audit. That test is now used and
+        closed; opening this notebook does not generate another test. The
+        original neural posterior final test remains unevaluated.
 
         Parameter means, widths, joint correlation, interval mass and target
         price quantiles have separate gates. Both 2,048 and 8,192 conditional
@@ -505,11 +514,18 @@ def _(cached_figures, mo, reports):
             existing quadrature grid; it generates no new test or proposal draws.
 
             The agreement suggests variation shared by this finite cohort,
-            rather than demonstrating proposal-specific bias. A calibrated
-            method can occasionally fail a finite-sample diagnostic. The
-            numerical reference is still approximate, and this explanation
-            does not override the frozen gate. The corrected pipeline remains
-            provisional; this review skips the live participant example.
+            rather than demonstrating proposal-specific bias. The subsequent
+            saved-cohort audit found that ideal reference sampling triggers this
+            theta gate in 98.85% of controls **conditional on these same panels**.
+            This is not a population false-alarm rate or proof of calibration.
+            Extra finite-pool dispersion is measurable; direct weighted-CDF
+            errors on the 16 saved conditional cases are consistent with the
+            estimated importance-sampling uncertainty.
+
+            The numerical reference is still approximate. The historical gate
+            remains failed; the bounded live demonstration above continues with
+            that limitation explicit. Notebook11 develops the audit and its
+            remaining uncertainty.
             """))
         _items.append(cached_figures["reference-pit"])
     mo.vstack(_items)
@@ -525,6 +541,7 @@ def _(ROOT, artifact_paths, mo):
     - [Boundary-correction protocol]({ROOT / 'docs/hkde-correction-boundary-protocol.md'}) and [frozen settings]({ROOT / 'configs/hkde_correction_boundary_protocol.json'}).
     - [Preserved first-correction protocol]({ROOT / 'docs/hkde-correction-protocol.md'}) and [failed v1 evidence]({ROOT / 'docs/results/hkde-correction-v1/validation.json'}).
     - [Original HKDE inference]({ROOT / 'docs/hkde-joint-inference.md'}).
+    - [Calibration-gate audit]({ROOT / 'docs/hkde-calibration-gate-audit.md'}) and [didactic notebook11]({ROOT / 'notebooks/11_hkde_calibration_audit.py'}).
     - [Independent forward-surrogate checks]({ROOT / 'docs/hkde-price-surrogate.md'}).
     {_links}
 

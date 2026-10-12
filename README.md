@@ -55,9 +55,10 @@ choosing a participant workflow.
 The [M8 options candidate](docs/m8-options-candidate.md) combines the frozen
 neural proposal, numerical-likelihood correction and that accepted target-price
 map in a paced lesson. Open it with
-`PYTHONPATH=src pixi run review-hkde-corrected`. It currently runs as a **cached
-diagnostic review**: validation passed, but the new test failed its theta SBC
-gate (0.10325 > 0.09251), so live inference stays disabled and M8 acceptance
+`PYTHONPATH=src pixi run review-hkde-corrected`. It now runs one **provisional
+live demonstration** on fixed synthetic `validation:257`, with 2,048 proposals
+and unchanged seed/tolerances. Validation passed, but the used, closed test
+failed its theta SBC gate (0.10325 > 0.09251), so M8 scientific acceptance
 remains pending. Conditional and proposal-reliability checks passed; they do not
 override the failed gate. The frozen run stopped without tuning or a rerun.
 The independent-grid PIT also fails on these panels, so the rank result does
@@ -108,7 +109,7 @@ two-hour participant curriculum. Closely related increments share named sections
 | Review notebook | Milestones / increments | Run |
 |---|---|---|
 | [HKDE calibration-gate audit](notebooks/11_hkde_calibration_audit.py) | M8 follow-up: threshold calibration, conditional reference-rank controls and finite-pool CDF errors; no acceptance override | `PYTHONPATH=src pixi run review-hkde-calibration` |
-| [Corrected HKDE options candidate](notebooks/10_hkde_corrected_workflow.py) | M8 / 10: cached correction diagnostics; new-test theta SBC failed, live inference disabled, participant acceptance pending | `PYTHONPATH=src pixi run review-hkde-corrected` |
+| [Corrected HKDE options candidate](notebooks/10_hkde_corrected_workflow.py) | M8 / 10: provisional live joint correction and two target-price distributions; historical theta SBC failure retained, participant acceptance pending | `PYTHONPATH=src pixi run review-hkde-corrected` |
 | [GBM, banks and cluster](notebooks/01_gbm_foundations.py) | M0–M2 / 1–3: exact inference, array roles, reproducible banks and the recorded cluster result | `pixi run review-foundations` |
 | [Heston and Gaussian jumps](notebooks/04_heston_svj_kernels.py) | M3.1–M3.2 / 4: diffusion/jump simulation, continuation, numerical checks and Numba timings | `pixi run review-kernels` |
 | [Joint Heston inference](notebooks/05_heston_joint_inference.py) | M3.3 / 5: observed histories, reference/neural joint posteriors, conditional futures and the failed frozen checks | `pixi run review-heston` |
@@ -122,11 +123,15 @@ illustrations are labeled separately. The joint-inference notebook keeps the
 original provisional checkpoint visible during further development.
 Notebook 10 is designed as a 30-minute participant candidate built from the
 earlier reviews; it does not select or replace the full tutorial curriculum.
-The failed frozen test keeps its live 2,048-proposal correction disabled. Opening
-it reviews the cached evidence and mathematical workflow without new inference,
-market fixtures or raw training banks. The isolated review export passes with
-17 cells, zero errors and 8.29 seconds; it verifies the presentation, not the
-unfinished participant workflow.
+Opening it runs the bounded 2,048-proposal correction and target-price calculation
+offline while keeping the historical failure visible. The fixed example is a
+development case, not new calibration evidence. No market fixtures or raw
+training banks are required. Inspect the [joint posterior](docs/results/hkde-live-demo/live-joint.png),
+[target-price distributions](docs/results/hkde-live-demo/live-target-prices.png)
+and [live execution record](docs/results/hkde-live-demo/verification.json).
+Technical execution and single-case numerical checks remain separate from M8
+scientific acceptance. The earlier cached-only export (17 cells, zero errors,
+8.29 seconds) is preserved as a historical record, not a live-inference timing.
 
 The Heston review explains the [time-context correction](docs/heston-time-context.md),
 with before/after recurrent-gate diagnostics and the improved but still-failing

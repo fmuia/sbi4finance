@@ -6,12 +6,13 @@ returns-versus-options curriculum choice open and preserves the MMAR example.
 It does not require Heston's or rough Bergomi's unresolved inference studies to
 pass, and it does not mark those branches accepted.
 
-**Current status: cached diagnostic review; M8 participant acceptance pending.**
-The corrected 512-case validation passed. The new 256-case test passed conditional
+**Current status: provisional live demonstration; M8 participant acceptance pending.**
+The corrected 512-case validation passed. The 256-case test passed conditional
 and proposal-reliability gates but failed the theta SIR/SBC rank check: KS
 0.103253 > 0.092513. The frozen run stopped without tuning or a rerun. The
-notebook therefore skips its live inference cell. Review-export verification
-is separate and does not clear that scientific failure.
+test is used and closed, and its acceptance flag remains false. The notebook
+now executes one explicitly provisional development example; successful
+execution does not clear that scientific failure or establish population calibration.
 An independent-grid posterior PIT on the same test panels also exceeds the
 theta bound (0.103485), closely tracking the SIR result. This diagnostic does
 not isolate proposal-specific calibration bias or prove the failure harmless;
@@ -21,8 +22,8 @@ The [subsequent gate audit](hkde-calibration-gate-audit.md) now quantifies this:
 ideal numerical-reference sampling fails the theta gate in 98.85% of controls
 conditional on the same saved cohort. The uniformity threshold itself is
 calibrated; that alarm does not isolate correction error. Notebook11 presents
-the paired and direct-CDF evidence without changing this candidate's existing
-acceptance logic or claiming population calibration.
+the paired and direct-CDF evidence. This supports a bounded teaching demonstration
+with the frozen estimator while retaining the unresolved acceptance question.
 
 ## M8.1 — Named task and evidence boundary
 
@@ -80,48 +81,104 @@ PYTHONPATH=src pixi run review-hkde-corrected
 ```
 
 The suggested 30-minute segment covers the financial task and data roles,
-importance correction, a planned live joint posterior and price calculation,
-diagnostics, and short exercises. The live path would load a saved **synthetic
-validation panel**, checkpoint and surrogate and use 2,048 proposals. It remains
-disabled after the frozen test failure. Current execution reviews the cached
-scientific evidence; training, reference-grid pricing and base-bank generation
-are never started by opening the lesson, and no cluster job is submitted.
+importance correction, a live joint posterior and price calculation,
+diagnostics, and short exercises. Default execution loads the saved **synthetic
+validation:257 panel**, checkpoint and surrogate and uses **2,048 proposals**.
+This fixed development case was selected earlier for its raw-neural price
+discrepancy; it is not a fresh holdout. Its proposal seed, likelihood, reference,
+surrogate and numerical tolerances are unchanged. There is no retry on a failed
+live check, nor any new bank, training, full calibration study or cluster job.
+
+The notebook displays the failed historical acceptance separately from its
+**provisional demonstration** mode. A passing single-case comparison supports
+that example only. The [live joint plot](results/hkde-live-demo/live-joint.png)
+and [target-price plot](results/hkde-live-demo/live-target-prices.png) show the
+weighted approximation alongside the existing numerical reference.
 
 Exercises distinguish priors from proposals, high ESS from validated accuracy,
 SBC from conditional checks, joint draws from independent marginal sampling,
 and model-price uncertainty from payoff risk. The numerical likelihood cost
 and the raw neural failure are part of the lesson, not hidden setup work.
 
-Offline acceptance requires a fresh process with external sockets blocked,
+Offline execution verification requires a fresh process with external sockets blocked,
 all market fixtures and raw training banks absent, and a headless HTML export
 with no cell errors. Measure loading, sampling/density, likelihood, target
-pricing and reference comparison together. A notebook that merely skips its
-live calculation because evidence is missing or failed does not satisfy this
-acceptance. The current review-only export will instead verify that the failed
-test and skipped live stage are visible, with no cell errors. It must record
-`scientific_acceptance=false` and `live_executed=false`; its duration is not a
-measurement of live correction cost.
+pricing and reference comparison together. The [live verification record](results/hkde-live-demo/verification.json)
+separates technical execution and single-case checks from
+`scientific_acceptance=false`, while recording `live_executed=true`.
+This verifies the complete computational lesson with no market observations;
+it is not a new scientific acceptance experiment.
+
+### Measured live result
+
+The isolated final export completed **17 cells with zero errors in 13.50 s**;
+the live calculation itself took **5.37 s**. All six conditional accuracy checks
+and both proposal-reliability checks passed on the fixed development panel.
+The maximum target-price quantile error was **0.00530 currency** against the
+unchanged **0.03** tolerance. ESS/N was **0.68777** (about **1,409** effective
+samples from 2,048 proposals), and the largest weight was **0.00208**.
+
+| Live stage | Seconds |
+|---|---:|
+| Imports, asset checks and checkpoint loading | 2.557 |
+| Proposal sampling and density evaluation | 1.039 |
+| Nine-price numerical likelihood and weights | 1.767 |
+| Two target prices via the surrogate | 0.00062 |
+| Reference comparison and summaries | 0.0044 |
+| Total live calculation | 5.369 |
+
+These are one local CPU execution's timings in a fresh process with the existing
+pinned environment, not warm throughput or an amortization comparison. The
+full export also renders the lesson and cached diagnostic figures. The
+surrogate cost excludes the numerical likelihood pricing required by correction.
+
+| Target put | Corrected 5% | Corrected median | Corrected 95% | Reference median |
+|---|---:|---:|---:|---:|
+| K=95, T=0.75 years | 4.69659 | 4.85592 | 5.01432 | 4.85595 |
+| K=80, T=1 year | 1.84425 | 1.95487 | 2.06751 | 1.95499 |
+
+All values are currency model prices. These intervals reflect joint parameter
+uncertainty, not payoff quantiles or confidence bounds on numerical error.
+The narrow price distributions coexist with the elongated joint parameter
+posterior: several variance/jump combinations explain the panel similarly.
+The [plots](results/hkde-live-demo/live-joint.png) show concentration relative
+to the full prior rectangle, rather than simply reproducing the prior.
+
+The final verification retained the same seed after a prose-only correction;
+its numerical tables and both live figures reproduced exactly. The **57 HKDE
+unit tests** also passed. Source/asset hashes and the separate historical and
+execution statuses are recorded in the linked verification file. No training,
+new calibration cohort or cluster run was required.
 
 ## M8.4 — Handover and open work
 
-The [isolated review verification](results/hkde-correction/notebook-verification.json)
+The earlier [isolated cached-review verification](results/hkde-correction/notebook-verification.json)
 passes strict checking and HTML export: **17 cells, zero errors, 8.29 seconds**,
 with external connections blocked and market fixtures/raw banks absent. All
 four diagnostic figures and the failed/disabled status were inspected. This
 uses an existing pinned Pixi environment in a fresh source/assets copy; it is
 not a fresh dependency installation. It measures cached review rendering,
-not live inference, and does not accept the participant pipeline.
+not live inference, and does not accept the participant pipeline. That historical
+record remains unchanged; use the separate live verification above for current
+execution costs and outcomes.
 
 Record the exact scientific and notebook outcomes alongside their immutable
-artifacts. Only a passing corrected pipeline plus a successful live offline
-export accepts this bounded S candidate. The notebook's status display must
-agree with both saved validation and independent-test reports. At present those
-reports mean validation passed, the new test failed theta SBC, and the candidate
-is not accepted. The review material can be handed over as a draft with that
-limitation; it cannot be labelled a completed M8 participant release.
+artifacts. The notebook's historical acceptance display must agree with both
+saved validation and test reports: validation passed, the used test failed theta
+SBC, and the candidate is not scientifically accepted. Allowing a provisional
+live demonstration changes execution policy, not those reports. General
+calibration acceptance still requires a prospective decision rule and appropriate
+evidence. This material can be handed over as a runnable draft with that
+limitation; it is not a completed M8 participant release.
+
+The next bounded rough-Bergomi step is to expand its independent reference bank
+from **4,096 to 8,192 rows**, retain the existing training bank and all cases,
+and rerun its reference checks. Train a candidate only if those checks pass;
+there is no automatic further doubling on a failure. That work belongs to the
+rough branch and does not change this HKDE task's status.
 
 The broader simulator catalog and its cluster banks remain available. Further
-Heston analysis, rough-Bergomi reference efficiency, additional dimensions,
+Heston analysis, additional dimensions,
 American/exotic pricers, physical/risk-neutral linkage and empirical market
 claims are separate work. They neither invalidate this bounded options task
 nor gain acceptance from it. Curriculum selection remains a team decision.

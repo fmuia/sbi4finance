@@ -223,9 +223,15 @@ Correction avoids retraining the frozen network, but retains numerical-price
 and finite-sample errors. [`hkde_diagnostics.py`](../src/sbi4finance/hkde_diagnostics.py)
 and the evaluation scripts check SBC, conditional/reference accuracy, joint
 quantities and downstream prices. They answer different questions. The latest
-corrected test still fails one SBC gate, so notebook10 is a cached diagnostic
-review with live participant inference disabled; see the
-[result and acceptance record](hkde-corrected-inference.md).
+corrected test still fails one SBC gate; its used test and acceptance flag remain
+unchanged. Notebook10 now runs an explicitly **provisional live demonstration**
+on fixed synthetic `validation:257` with 2,048 proposals and the same seed and
+numerical tolerances. It uses the existing functions and assets; it adds no new
+inference framework. Technical execution and single-case checks are distinct
+from population calibration and M8 release acceptance. See the
+[historical result](hkde-corrected-inference.md),
+[gate explanation](hkde-calibration-gate-audit.md) and
+[live execution record](results/hkde-live-demo/verification.json).
 
 ## 6. Execution and review
 
