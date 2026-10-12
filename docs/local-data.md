@@ -102,7 +102,8 @@ Implementation PRs use sequential `N/5-data-plan-…` titles linked to PR #4. Op
 The [HKDE teaching integration](hkde-teaching-integration.md) completes I1–I3 of
 the [follow-up plan](hkde-teaching-integration-plan.md): these local inputs now
 enter the corrected lesson, and the combined cached workflow runs offline.
-I4 live participant acceptance remains deferred until its scientific gate passes.
+The [I4a provisional live demonstration](hkde-provisional-demo.md) exercises the
+same input explicitly; formal I4 participant acceptance remains deferred.
 
 Successful parsing does **not** certify financial conventions, grid compatibility, numerical pricing accuracy or model adequacy. Return preparation checks only the explicit rules above. It does not validate the source's adjustment policy, infer curves, simulate paths, check checkpoints or train a network. Those belong to the relevant scientific workflow.
 

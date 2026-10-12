@@ -6,12 +6,13 @@ returns-versus-options curriculum choice open and preserves the MMAR example.
 It does not require Heston's or rough Bergomi's unresolved inference studies to
 pass, and it does not mark those branches accepted.
 
-**Current status: cached diagnostic review; M8 participant acceptance pending.**
+**Current status: cached review plus opt-in provisional live demo; formal M8 acceptance pending.**
 The corrected 512-case validation passed. The new 256-case test passed conditional
 and proposal-reliability gates but failed the theta SIR/SBC rank check: KS
 0.103253 > 0.092513. The frozen run stopped without tuning or a rerun. The
-notebook therefore skips its live inference cell. Review-export verification
-is separate and does not clear that scientific failure.
+default notebook therefore skips its live inference cell. The explicitly
+provisional demo described below exercises one validation case. Neither
+execution mode clears that scientific failure.
 An independent-grid posterior PIT on the same test panels also exceeds the
 theta bound (0.103485), closely tracking the SIR result. This diagnostic does
 not isolate proposal-specific calibration bias or prove the failure harmless;
@@ -23,6 +24,9 @@ conditional on the same saved cohort. The uniformity threshold itself is
 calibrated; that alarm does not isolate correction error. Notebook11 presents
 the paired and direct-CDF evidence without changing this candidate's existing
 acceptance logic or claiming population calibration.
+
+The subsequent [I4a live demonstration](hkde-provisional-demo.md) uses this
+evidence to permit one opt-in run while leaving formal acceptance false.
 
 ## M8.1 — Named task and evidence boundary
 
@@ -77,18 +81,20 @@ Open [notebook10](../notebooks/10_hkde_corrected_workflow.py):
 
 ```bash
 PYTHONPATH=src pixi run review-hkde-corrected
+# Explicitly provisional live execution:
+pixi run demo-hkde-corrected
 ```
 
 The suggested 30-minute segment covers the financial task and data roles,
-importance correction, a planned live joint posterior and price calculation,
-diagnostics, and short exercises. The live path would load a saved **synthetic
+importance correction, a provisional live joint posterior and price calculation,
+diagnostics, and short exercises. The live path loads a saved **synthetic
 validation panel** through the [local CSV/JSON interface](hkde-teaching-integration.md),
-checkpoint and surrogate and use 2,048 proposals. The panel and a cached
+checkpoint and surrogate and uses 2,048 proposals. The panel and a cached
 raw/corrected/reference price comparison are visible before live acceptance.
 The corrected table uses the recorded 8,192-proposal precision sample, explicitly
-separate from the planned participant budget. Live inference remains
-disabled after the frozen test failure. Current execution reviews the cached
-scientific evidence; training, reference-grid pricing and base-bank generation
+separate from the live demonstration budget. Default execution reviews the cached
+scientific evidence; the explicit demo command runs the fixed validation case.
+Training, reference-grid pricing and base-bank generation
 are never started by opening the lesson, and no cluster job is submitted.
 
 Exercises distinguish priors from proposals, high ESS from validated accuracy,
@@ -101,10 +107,16 @@ all market fixtures and raw training banks absent, and a headless HTML export
 with no cell errors. Measure loading, sampling/density, likelihood, target
 pricing and reference comparison together. A notebook that merely skips its
 live calculation because evidence is missing or failed does not satisfy this
-acceptance. The current review-only export will instead verify that the failed
-test and skipped live stage are visible, with no cell errors. It must record
+acceptance. A review-only check verifies that the failed
+test and skipped live stage are visible, with no cell errors. It records
 `scientific_acceptance=false` and `live_executed=false`; its duration is not a
 measurement of live correction cost.
+
+The [provisional live check](results/hkde-provisional-demo/execution.json)
+instead records `live_executed=true` and `live_accuracy_passed=true`, while
+`scientific_acceptance=false`. All eight fixed case-level checks pass. Its
+5.06-second calculation and 14.60-second combined isolation/rendering check
+measure actual execution, without accepting population calibration.
 
 ## M8.4 — Handover and open work
 

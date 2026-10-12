@@ -181,8 +181,9 @@ def _(mo):
 
     Continue with the [corrected HKDE lesson](10_hkde_corrected_workflow.py).
     It loads this same local panel and compares the preserved raw result with
-    cached importance-corrected prices. Its live calculation remains subject
-    to the separate scientific acceptance gate.
+    cached importance-corrected prices. Run `pixi run demo-hkde-corrected`
+    for its opt-in provisional live calculation; formal scientific acceptance
+    remains separate.
     """)
     return
 

@@ -9,6 +9,7 @@ def _():
     import importlib.util
     import io
     import json
+    import os
     import sys
     import time
 
@@ -32,7 +33,7 @@ def _():
         return module
 
     plot_helpers = load_script("hkde_correction_plots", ROOT / "scripts/plot_hkde_correction.py")
-    return ROOT, io, json, load_script, mo, np, plot_helpers, plt, time
+    return ROOT, io, json, load_script, mo, np, os, plot_helpers, plt, time
 
 
 @app.cell
@@ -58,9 +59,11 @@ def _(mo):
     **Suggested 30-minute lesson:** 5 minutes for the financial task and data
     roles, 8 for correction, 7 for the live posterior/prices, 7 for diagnostics,
     and 3 for the exercises. Expensive training and reference studies are
-    cached. Once the new scientific gates pass, default execution performs
-    one bounded live correction with 2,048 proposals; it starts no bank
-    generation, training or cluster job and needs no real-market fixtures.
+    cached. Default execution reviews those caches. Launch
+    `pixi run demo-hkde-corrected` for one explicitly **provisional live
+    demonstration** with 2,048 proposals. It starts no bank generation,
+    training or cluster job and needs no real-market fixtures. Formal
+    participant acceptance remains separate from this demonstration.
     """)
     return
 
@@ -93,6 +96,33 @@ def _(ROOT, io, json, load_script, mo, plot_helpers, plt):
         cached_figures[_name] = mo.image(_png.getvalue())
     candidate_accepted = all(reports.get(_split, {}).get("passed", False) for _split in ("validation", "test"))
     return artifact_paths, baseline, baseline_protocol, cached_figures, candidate_accepted, predecessor, protocol, protocol_path, reports, saved_checks, task
+
+
+@app.cell
+def demo_mode(ROOT, json, mo, os, plot_helpers, protocol, reports):
+    _mode = os.environ.get("SBI4FINANCE_HKDE_DEMO", "0")
+    if _mode not in {"0", "1"}:
+        raise ValueError("SBI4FINANCE_HKDE_DEMO must be 0 or 1")
+    provisional_demo = _mode == "1"
+    if provisional_demo:
+        _audit = json.loads((ROOT / "docs/results/hkde-gate-audit/report.json").read_text())
+        for _path, _sha in {**_audit["input_sha256"], **_audit["source_sha256"]}.items():
+            if plot_helpers.sha256(ROOT / _path) != _sha:
+                raise ValueError(f"provisional demo audit binding changed: {_path}")
+        _failed = {_name for _name, _passed in reports["test"]["gates"].items() if not _passed}
+        if (not reports["validation"]["passed"] or _failed != {"sir_sbc"}
+                or _audit["scientific_acceptance_changed"] or _audit["historical_test_passed"]
+                or protocol["conditional"]["participant_samples"] != 2048):
+            raise ValueError("provisional demo requires the documented frozen audit and 2,048-proposal task")
+    mo.callout(
+        "PROVISIONAL LIVE DEMONSTRATION: the shared-reference audit supports exercising this fixed "
+        "case. The historical test still fails theta calibration; population calibration and formal "
+        "participant acceptance remain unresolved. This run keeps the original estimator, seed and tolerances."
+        if provisional_demo else
+        "Cached review mode. Use `pixi run demo-hkde-corrected` for the opt-in provisional live demonstration.",
+        kind="warn" if provisional_demo else "info",
+    )
+    return (provisional_demo,)
 
 
 @app.cell
@@ -178,7 +208,7 @@ def cached_comparison(ROOT, baseline, baseline_protocol, local_case_index, local
         The 8,192-proposal precision result below is distinct from the intended
         2,048-proposal participant run. Price accuracy improves; the original raw
         failure and the correction's separate held-out calibration failure remain
-        recorded. This comparison does not enable live execution.
+        recorded. This cached comparison is separate from the opt-in live demonstration.
         """),
         mo.ui.table(comparison_rows, selection=None),
     ])
@@ -186,7 +216,7 @@ def cached_comparison(ROOT, baseline, baseline_protocol, local_case_index, local
 
 
 @app.cell
-def _(candidate_accepted, mo, protocol, reports):
+def _(candidate_accepted, mo, protocol, provisional_demo, reports):
     _rows = [{"Check": _split, "Saved status":
               ("PASS" if reports[_split]["passed"] else "FAIL") if _split in reports else "not recorded"}
              for _split in ("validation", "test")]
@@ -210,8 +240,11 @@ def _(candidate_accepted, mo, protocol, reports):
         mo.ui.table(_stages, selection=None) if _stages else mo.md("No corrected scientific stages are recorded yet."),
         mo.callout("Both recorded gates pass. The bounded synthetic live example below is enabled."
                    if candidate_accepted else
-                   "The required corrected validation and new test are not both accepted. Live candidate execution is skipped; available development diagnostics remain visible.",
+                   ("Formal scientific acceptance is false. The explicitly provisional live demonstration is enabled; its case-level checks do not change that status."
+                    if provisional_demo else
+                    "The required corrected validation and new test are not both accepted. Live execution is skipped in cached review mode."),
                    kind="success" if candidate_accepted else "info"),
+        mo.md("The [saved-cohort audit](../docs/hkde-calibration-gate-audit.md) finds that ideal numerical-reference sampling also fails the theta gate in 98.85% of controls **conditional on these same cases**. This supports the provisional demonstration; it does not establish population calibration."),
     ])
     return
 
@@ -384,9 +417,9 @@ def _(mo, protocol):
 
 
 @app.cell
-def _(ROOT, candidate_accepted, load_script, local_observation, mo, np, protocol_path, reports, task, time):
+def _(ROOT, candidate_accepted, load_script, local_observation, mo, np, protocol_path, provisional_demo, reports, task, time):
     live_result = None
-    if candidate_accepted:
+    if candidate_accepted or provisional_demo:
         _started = time.perf_counter()
         _runner = load_script("hkde_correction_runner", ROOT / "scripts/evaluate_hkde_correction.py")
         _protocol, _baseline_protocol, _task, _grid, _saved, _model, _bindings = _runner.load_inputs(protocol_path)
@@ -424,6 +457,8 @@ def _(ROOT, candidate_accepted, load_script, local_observation, mo, np, protocol
         _gates.update(proposal_ess=_corrected["ess_fraction"] >= _protocol["conditional"]["min_ess_fraction"],
                       proposal_max_weight=_corrected["max_weight"] <= _protocol["conditional"]["max_weight"])
         live_result = {
+            "execution_mode": "provisional_demo" if provisional_demo else "accepted_participant",
+            "scientific_acceptance": candidate_accepted,
             "case_id": "validation:257", "seed": _seed, "observation": _observation,
             "parameters": _proposal["parameters"], "weights": _corrected["weights"],
             "target_prices": _target_prices, "targets": _baseline_protocol["targets"],
@@ -441,10 +476,10 @@ def _(ROOT, candidate_accepted, load_script, local_observation, mo, np, protocol
                                "reference_comparison_and_summary": time.perf_counter() - _target_ready,
                                "live_total": time.perf_counter() - _started},
         }
-        _display = mo.md(f"Live correction completed with **{len(_proposal['parameters']):,} proposals** and ESS **{_corrected['ess']:.0f}**. "
+        _display = mo.md(f"{'Provisional live demonstration' if provisional_demo else 'Live correction'} completed with **{len(_proposal['parameters']):,} proposals** and ESS **{_corrected['ess']:.0f}**. "
                          "The tables below report this execution separately from the cached scientific study.")
     else:
-        _display = mo.callout("Live correction is disabled until both frozen validation and the new independent test pass. No bank, model training or test run is started here.", kind="info")
+        _display = mo.callout("Cached review: no live correction was requested. The opt-in provisional demo is separate from formal scientific acceptance.", kind="info")
     _display
     return (live_result,)
 
@@ -468,13 +503,13 @@ def _(live_result, mo, task):
                   "The live 2,048-draw API call need not be bitwise identical to the stored prefix of an 8,192-draw call; it uses the same proposal law and is checked independently."),
         ])
     else:
-        _view = mo.md("The live observation/result table will appear after candidate acceptance.")
+        _view = mo.md("The live result table appears when the provisional demo is requested or the candidate is formally accepted.")
     _view
     return
 
 
 @app.cell
-def _(live_result, mo, plot_helpers):
+def _(io, live_result, mo, plot_helpers, plt):
     _items = [mo.md(r"""
         ## Keep the joint posterior when propagating prices
 
@@ -491,8 +526,11 @@ def _(live_result, mo, plot_helpers):
         market prices or Monte Carlo uncertainty in the estimated quantiles.
         """)]
     if live_result is not None:
-        _items.append(plot_helpers.live_joint_figure(live_result))
-        _items.append(plot_helpers.live_target_figure(live_result))
+        for _figure in (plot_helpers.live_joint_figure(live_result), plot_helpers.live_target_figure(live_result)):
+            _png = io.BytesIO()
+            _figure.savefig(_png, format="png", dpi=130, bbox_inches="tight")
+            plt.close(_figure)
+            _items.append(mo.image(_png.getvalue()))
         _items.append(mo.ui.table([
             {**_contract, "Corrected 5%": live_result["summary"]["target_quantiles"][_index][0],
              "Corrected median": live_result["summary"]["target_quantiles"][_index][1],
@@ -616,7 +654,8 @@ def _(cached_figures, mo, reports):
             method can occasionally fail a finite-sample diagnostic. The
             numerical reference is still approximate, and this explanation
             does not override the frozen gate. The corrected pipeline remains
-            provisional; this review skips the live participant example.
+            provisional. A separate opt-in demonstration exercises one fixed
+            validation case while preserving this formal acceptance status.
             """))
         _items.append(cached_figures["reference-pit"])
     mo.vstack(_items)
@@ -633,6 +672,7 @@ def _(ROOT, artifact_paths, mo):
     - [Preserved first-correction protocol]({ROOT / 'docs/hkde-correction-protocol.md'}) and [failed v1 evidence]({ROOT / 'docs/results/hkde-correction-v1/validation.json'}).
     - [Original HKDE inference]({ROOT / 'docs/hkde-joint-inference.md'}).
     - [Independent forward-surrogate checks]({ROOT / 'docs/hkde-price-surrogate.md'}).
+    - [Shared-reference calibration audit]({ROOT / 'docs/hkde-calibration-gate-audit.md'}).
     {_links}
 
     Run from the repository root with `PYTHONPATH=src pixi run marimo edit notebooks/10_hkde_corrected_workflow.py --no-token`.

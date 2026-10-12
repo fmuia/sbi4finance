@@ -1,11 +1,13 @@
 """Exercise the lesson's actual local-input cell without running inference."""
 
 from copy import deepcopy
+import hashlib
 import importlib.util
 import json
 from pathlib import Path
 import shutil
 import tempfile
+from types import SimpleNamespace
 import unittest
 
 import marimo as mo
@@ -134,6 +136,60 @@ class HKDETeachingIntegrationTests(unittest.TestCase):
                 self.write_panel(artifact)
                 with self.assertRaises(ValueError):
                     self.run_input()
+
+    def run_demo_mode(self, enabled, reports):
+        # The cell checks evidence only; supplying all refs avoids live inference.
+        _, definitions = self.lesson.demo_mode.run(
+            ROOT=self.root, json=json, mo=mo,
+            os=SimpleNamespace(environ={"SBI4FINANCE_HKDE_DEMO": "1"} if enabled else {}),
+            plot_helpers=SimpleNamespace(
+                sha256=lambda path: hashlib.sha256(path.read_bytes()).hexdigest()),
+            protocol=self.protocol, reports=reports,
+        )
+        return definitions["provisional_demo"]
+
+    def copy_audit_evidence(self):
+        audit_path = Path("docs/results/hkde-gate-audit/report.json")
+        audit = json.loads((ROOT / audit_path).read_text())
+        for relative in [audit_path, *audit["input_sha256"], *audit["source_sha256"]]:
+            target = self.root / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(ROOT / relative, target)
+        return {
+            split: json.loads((self.root / f"docs/results/hkde-correction/{split}.json").read_text())
+            for split in ("validation", "test")
+        }
+
+    def test_default_review_requires_no_demo_audit(self):
+        reports = {"validation": {"passed": True}, "test": {"passed": False}}
+        before = deepcopy(reports)
+        self.assertFalse((self.root / "docs/results/hkde-gate-audit").exists())
+        self.assertFalse(self.run_demo_mode(False, reports))
+        self.assertEqual(reports, before)
+
+    def test_opt_in_checks_published_evidence_without_changing_acceptance(self):
+        reports = self.copy_audit_evidence()
+        before = deepcopy(reports)
+        test_path = self.root / "docs/results/hkde-correction/test.json"
+        original_bytes = test_path.read_bytes()
+        self.assertTrue(self.run_demo_mode(True, reports))
+        self.assertEqual(reports, before)
+        self.assertFalse(reports["test"]["passed"])
+        self.assertEqual(test_path.read_bytes(), original_bytes)
+
+        # Even a parse-equivalent change breaks the published audit binding.
+        test_path.write_bytes(original_bytes + b"\n")
+        with self.assertRaisesRegex(ValueError, "audit binding changed"):
+            self.run_demo_mode(True, reports)
+
+    def test_demo_does_not_admit_an_additional_scientific_failure(self):
+        reports = self.copy_audit_evidence()
+        passing_gate = next(name for name, passed in reports["test"]["gates"].items() if passed)
+        reports["test"]["gates"][passing_gate] = False
+        before = deepcopy(reports)
+        with self.assertRaisesRegex(ValueError, "documented frozen audit"):
+            self.run_demo_mode(True, reports)
+        self.assertEqual(reports, before)
 
 
 if __name__ == "__main__":

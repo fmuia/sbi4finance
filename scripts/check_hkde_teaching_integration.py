@@ -1,8 +1,8 @@
-"""Run both cached HKDE lessons in isolation, with networking and BayesFlow blocked.
+"""Run both HKDE lessons offline; optionally execute the provisional live demo.
 
-This verifies the provisional teaching handoff, not scientific acceptance or a
-live posterior calculation. Published scientific caches and checkpoint bytes
-remain available for provenance checks; no market files or raw banks are copied.
+Default cached review blocks BayesFlow. --live permits the frozen 2,048-proposal
+demonstration and records execution separately from accuracy and scientific
+acceptance. No market files or raw banks are copied; no training/test run occurs.
 """
 
 import argparse
@@ -27,8 +27,9 @@ def sha(path):
 def main():
     root = Path(__file__).resolve().parents[1]
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--live", action="store_true", help="Run the explicitly provisional participant demonstration")
     parser.add_argument("--out", type=Path, help="Optional new JSON execution report")
-    parser.add_argument("--artifacts", type=Path, help="Optional new directory for the six rendered PNGs")
+    parser.add_argument("--artifacts", type=Path, help="Optional new directory for rendered PNGs and live weighted rows")
     args = parser.parse_args()
     args.out = args.out.resolve() if args.out else None
     args.artifacts = args.artifacts.resolve() if args.artifacts else None
@@ -59,7 +60,17 @@ def main():
                      "data/synthetic/hkde-walkthrough/panel/observations.csv",
                      "docs/results/hkde-inference/validation-checks.npz",
                      "docs/results/hkde-correction/test-reference-pit.npz",
-                     "docs/results/hkde-correction/test-independent-audit.json"))
+                     "docs/results/hkde-correction/test-independent-audit.json",
+                     "docs/hkde-calibration-gate-audit.md",
+                     "docs/results/hkde-gate-audit/report.json",
+                     "docs/results/hkde-gate-audit/checks.npz",
+                     "docs/results/hkde-gate-audit/input-consistency.json"))
+    audit = json.loads((root / "docs/results/hkde-gate-audit/report.json").read_text())
+    for key in ("input_sha256", "source_sha256"):
+        for name, expected_sha in audit[key].items():
+            if sha(root / name) != expected_sha:
+                raise RuntimeError(f"gate audit binding changed: {name}")
+            bindings.add(name)
     source_hashes = {name: sha(root / name) for name in sorted(bindings)}
 
     with tempfile.TemporaryDirectory(prefix="hkde-integration-offline-") as directory:
@@ -76,12 +87,14 @@ def main():
         sys.path.insert(0, str(isolated / "src"))
         os.environ["MPLBACKEND"] = "Agg"
         os.environ["MPLCONFIGDIR"] = str(isolated / "mpl")
+        os.environ["SBI4FINANCE_HKDE_DEMO"] = "1" if args.live else "0"
+        os.environ.setdefault("KERAS_BACKEND", "jax")
         os.chdir(isolated)
 
         def offline(event, arguments):
             if event in {"socket.connect", "socket.getaddrinfo", "socket.sendto"}:
                 raise RuntimeError(f"network disabled: {event}")
-            if event == "import" and arguments[0].split(".")[0] == "bayesflow":
+            if not args.live and event == "import" and arguments[0].split(".")[0] == "bayesflow":
                 raise RuntimeError("cached review must not import BayesFlow")
 
         sys.addaudithook(offline)
@@ -95,7 +108,7 @@ def main():
                 raise RuntimeError("network guard did not reject the probe before connection")
 
         runs = []
-        for name, expected_plots in zip(notebooks, (2, 4), strict=True):
+        for name, expected_plots in zip(notebooks, (2, 6 if args.live else 4), strict=True):
             outputs, definitions = runpy.run_path(str(isolated / "notebooks" / name))["app"].run()
             images = [image for output in outputs for image in re.findall(
                 r"data:image/png;base64,([A-Za-z0-9+/=]+)", getattr(output, "text", ""))]
@@ -112,12 +125,12 @@ def main():
             if name.startswith("sbi4finance") and getattr(module, "__file__", None):
                 if not Path(module.__file__).resolve().is_relative_to(isolated / "src"):
                     raise RuntimeError(f"{name}: module escaped the isolated checkout")
-        if "bayesflow" in sys.modules:
+        if not args.live and "bayesflow" in sys.modules:
             raise RuntimeError("cached review imported BayesFlow")
         reports, checks = definitions["reports"], definitions["saved_checks"]["validation"]
         if (not reports["validation"]["passed"] or reports["test"]["passed"]
-                or definitions["candidate_accepted"] or definitions["live_result"] is not None):
-            raise RuntimeError("this cached-only check requires the currently closed scientific gate")
+                or definitions["candidate_accepted"]):
+            raise RuntimeError("the historical scientific gate must remain closed")
         index = list(checks["case_ids"]).index("validation:257")
         np.testing.assert_array_equal(definitions["local_observation"], checks["observations"][index])
         with np.load(isolated / "docs/results/hkde-inference/validation-checks.npz", allow_pickle=False) as raw:
@@ -128,22 +141,62 @@ def main():
         actual = [[row[key] for key in ("5%", "Median", "95%")]
                   for row in definitions["comparison_rows"]]
         np.testing.assert_allclose(actual, expected, rtol=0, atol=1e-12)
+        live, live_report = definitions["live_result"], None
+        if bool(definitions["provisional_demo"]) != args.live:
+            raise RuntimeError("notebook demonstration mode differs from the requested mode")
+        if args.live:
+            if (live is None or live["execution_mode"] != "provisional_demo"
+                    or live["scientific_acceptance"] or "bayesflow" not in sys.modules):
+                raise RuntimeError("expected an explicitly provisional live calculation")
+            parameters, weights, prices = [np.asarray(live[key]) for key in
+                                           ("parameters", "weights", "target_prices")]
+            if (parameters.shape != (2048, 2) or weights.shape != (2048,)
+                    or prices.shape != (2048, 2) or np.any(weights < 0)
+                    or not all(np.isfinite(a).all() for a in (parameters, weights, prices))):
+                raise RuntimeError("expected 2,048 finite paired parameter/weight/target rows")
+            np.testing.assert_allclose(weights.sum(), 1., rtol=0, atol=1e-12)
+            np.testing.assert_array_equal(live["observation"], definitions["local_observation"])
+            for target in range(2):
+                np.testing.assert_allclose(live["summary"]["target_quantiles"][target],
+                                          weighted_quantiles(prices[:, target], weights), rtol=0, atol=1e-12)
+            if bool(live["passed"]) != all(live["gates"].values()):
+                raise RuntimeError("live accuracy flag differs from recorded gates")
+            live_report = {key: live[key] for key in (
+                "case_id", "execution_mode", "scientific_acceptance", "seed", "targets",
+                "summary", "metrics", "gates", "ess", "ess_fraction", "max_weight",
+                "prior_rows", "boundary_rows", "timing_seconds")}
+            live_report.update(proposal_rows=len(weights), weights_sum=float(weights.sum()),
+                               live_accuracy_passed=bool(live["passed"]),
+                               reference_target_quantiles=np.asarray(
+                                   live["reference_summary"]["target_quantiles"]).tolist())
+            if args.artifacts:
+                arrays_path = args.artifacts / "live-weighted-rows.npz"
+                np.savez_compressed(arrays_path, parameters=parameters, weights=weights,
+                                    target_prices=prices, observation=live["observation"],
+                                    seed=np.asarray(live["seed"]),
+                                    reference_target_quantiles=live_report["reference_target_quantiles"])
+                live_report["weighted_rows_sha256"] = sha(arrays_path)
+        elif live is not None:
+            raise RuntimeError("cached review unexpectedly executed live inference")
         for name, expected_sha in source_hashes.items():
             if sha(isolated / name) != expected_sha:
-                raise RuntimeError(f"cached review changed a bound artifact: {name}")
+                raise RuntimeError(f"teaching execution changed a bound artifact: {name}")
         report = {
-            "passed": True, "evidence_scope": "S: offline cached teaching integration only",
-            "integration_base_commit": "0ee09dd9a6b5a5333960cb800e28d1f6dbe7b13d",
-            "baseline_parent_commits": ["160bccecea4e806e6efce1e422eabf6347b9fb1b",
-                                        "b9b37877ca92521b287eb3bf2bd92e2ea7093215"],
+            "passed": True, "execution_passed": True,
+            "evidence_scope": ("S: offline provisional live demonstration on validation:257"
+                               if args.live else "S: offline cached teaching integration only"),
+            "integration_base_commit": "9cb6d20e0999e3888c3c906b893350e5f229ad3f",
+            "baseline_parent_commits": ["f385225874c875a7cfb1187554fe9f37fc88120c",
+                                        "88202d1cb39bc511ce0c9fcc8caa681d5ee13da1"],
             "case_id": "validation:257", "n_contracts": len(definitions["local_panel"].rows),
-            "notebooks": runs, "network_probe_rejected": True, "bayesflow_imported": False,
+            "notebooks": runs, "network_probe_rejected": True, "bayesflow_imported": "bayesflow" in sys.modules,
             "market_files_present": False, "raw_banks_present": False,
-            "checkpoint_bytes_present_for_hashing": True, "live_executed": False,
+            "checkpoint_bytes_present_for_hashing": True, "checkpoint_loaded": args.live,
+            "live_executed": args.live, "live_accuracy_passed": bool(live["passed"]) if args.live else None,
             "new_test_rerun": False, "bound_artifacts_unchanged": True,
             "corrected_validation_passed": True, "corrected_test_passed": False,
             "scientific_acceptance": False, "comparison": definitions["comparison_rows"],
-            "seconds_isolation_and_cached_execution": time.perf_counter() - started,
+            "live": live_report, "seconds_isolation_and_execution": time.perf_counter() - started,
             "source_sha256": source_hashes,
         }
     output = json.dumps(report, indent=2, allow_nan=False) + "\n"

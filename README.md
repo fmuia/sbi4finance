@@ -57,8 +57,8 @@ neural proposal, numerical-likelihood correction and that accepted target-price
 map in a paced lesson. Open it with
 `PYTHONPATH=src pixi run review-hkde-corrected`. It currently runs as a **cached
 diagnostic review**: validation passed, but the new test failed its theta SBC
-gate (0.10325 > 0.09251), so live inference stays disabled and M8 acceptance
-remains pending. Conditional and proposal-reliability checks passed; they do not
+gate (0.10325 > 0.09251), so formal M8 acceptance remains pending. Conditional
+and proposal-reliability checks passed; they do not
 override the failed gate. The frozen run stopped without tuning or a rerun.
 The independent-grid PIT also fails on these panels, so the rank result does
 not by itself isolate bias from the correction algorithm.
@@ -68,6 +68,9 @@ distinction: ideal reference sampling would trigger the same theta gate in
 bounded approximation accuracy; the historical failure and participant gate
 remain unchanged. Open `PYTHONPATH=src pixi run review-hkde-calibration` for
 the didactic explanation, conditional controls and remaining uncertainty.
+For the [opt-in provisional live demonstration](docs/hkde-provisional-demo.md),
+run `pixi run demo-hkde-corrected`. It executes the same local panel with 2,048
+proposals and reports its numerical checks separately from formal acceptance.
 The original neural failure and open returns-versus-options choice remain visible.
 The [analysis follow-up note](docs/simulator-analysis-next-steps.md)
 preserves the Heston findings while simulator and bank coverage expands.
@@ -199,5 +202,6 @@ checkpoint is **provisional**, and the failed price gate is shown explicitly.
 The [teaching handoff](docs/hkde-teaching-integration.md) connects that same local
 panel to the corrected lesson and a cached raw/weighted/reference comparison.
 Run `pixi run hkde-teaching-integration-check` to verify both lessons together
-offline. Integration milestones I1–I3 are complete; I4 live execution remains
-disabled pending the separate scientific acceptance decision.
+offline. Integration milestones I1–I3 and the separate I4a provisional live
+demonstration are complete; formal I4 acceptance remains pending. Add `--live`
+to the check command to exercise and record the actual demonstration.

@@ -3,7 +3,8 @@
 **Outcome:** one prepared synthetic option panel can enter the existing corrected
 HKDE lesson through the local-data interface. Reviewers can follow the observation,
 raw neural result, weighted correction and held-out price uncertainty. The
-participant live calculation stays disabled until scientific acceptance.
+formally accepted participant calculation remains gated on scientific acceptance.
+The subsequent I4a amendment below permits a separately labelled provisional demo.
 
 This is a small follow-up to [data plan #4](https://github.com/fmuia/sbi4finance/pull/4)
 and [simulator plan #3](https://github.com/fmuia/sbi4finance/pull/3). Reuse
@@ -28,6 +29,12 @@ test is already used and must not become another tuning or teaching input pool.
 Reuse existing loaders, correction, weighted summaries, surrogate and plots.
 Keep the task bounded: no provider acquisition, new banks, retraining, model
 expansion, generic adapter framework or changes to scientific thresholds.
+
+**12 October amendment:** following the [published shared-reference audit](hkde-calibration-gate-audit.md)
+and the user's instruction to proceed, add a bounded provisional live demonstration.
+The audit supports exercising the frozen estimator on the fixed validation case;
+it does not change the failed historical test or establish population calibration.
+The demonstration is I4a, separate from formal I4 acceptance.
 
 ## Milestones
 
@@ -76,7 +83,20 @@ boundary, and visibly records `scientific_acceptance=false` and
 `live_executed=false`. Save a small verification report with artifact/source hashes.
 The simulator-only 171-test report does not substitute for this combined check.
 
-### I4 — Live participant acceptance, deferred
+### I4a — Provisional live demonstration
+
+**Work:** add one opt-in command to the existing lesson, verify the published
+audit bindings, and execute the fixed `validation:257` case with the existing
+2,048-proposal seed, likelihood correction and two target prices. Keep cached
+review as the default. Report the actual execution, accuracy, weights and timing;
+retain any failure without retrying seeds or changing tolerances.
+
+**Done when:** the actual live workflow has run offline, its joint parameter and
+price plots have been inspected, and a source-bound report separately records
+execution success, case-level numerical checks and `scientific_acceptance=false`.
+No new population test, bank or training run is part of this milestone.
+
+### I4 — Formal live participant acceptance, deferred
 
 **Prerequisite:** the simulator/inference workstream supplies a scientifically
 accepted corrected algorithm with evidence bound to the actual artifacts and
@@ -95,11 +115,15 @@ budget or a successful cached export alone does not complete I4.
 
 The data workstream owns I1–I3 and the eventual I4 execution check. The
 simulator/inference workstream owns I4's scientific prerequisite. Implement I1–I3
-in one PR titled **`1/1-data-integration-hkde-teaching-handoff`**, referencing this
+in **`1/2-data-integration-hkde-teaching-handoff`**, referencing this
 plan and both dependency stacks. Review its diff against a combined base so the
 PR shows integration changes rather than copied upstream implementations. Record
 how that base was assembled; leave the other workstream's worktrees untouched.
 No PR or main-branch merge is part of this plan.
+
+The scoped I4a follow-up is **`2/2-data-integration-hkde-provisional-live`**. Its
+combined review base adds published audit commit `88202d1` to handoff PR #21.
+The [live-demo notes](hkde-provisional-demo.md) record its exact scope and result.
 
 I1–I3 complete the immediate integration deliverable. I4 remains explicitly
 deferred, not silently completed by the engineering checks. Real-market examples
@@ -114,4 +138,5 @@ retained; the completed milestones do not change the scientific decision.
 | I1: local entry point | Complete | Published data and simulator artifacts |
 | I2: connected cached lesson | Complete | I1 |
 | I3: combined offline check | Complete | I1–I2 |
+| I4a: provisional live demonstration | Complete | I1–I3 and the published shared-reference audit |
 | I4: live acceptance | Deferred | Scientific acceptance plus I1–I3 |

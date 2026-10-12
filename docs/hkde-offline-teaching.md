@@ -13,7 +13,8 @@ Continue from this introduction to the [corrected HKDE lesson](hkde-teaching-int
 It loads the same local panel and compares the original raw result with cached
 weighted correction and the numerical reference. The original bundle below is
 unchanged. Corrected pricing improves, but the separate corrected test still
-fails theta calibration, so live participant execution remains disabled.
+fails theta calibration. An [opt-in provisional live demo](hkde-provisional-demo.md)
+now exercises the fixed validation case; formal participant acceptance stays pending.
 
 ## Run without market data or weights
 

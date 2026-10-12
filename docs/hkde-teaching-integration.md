@@ -6,6 +6,10 @@ corrected-inference lesson. **I4 remains deferred:** the corrected validation
 passed, but its independent test failed theta calibration. Successful notebook
 execution does not change that scientific decision.
 
+The subsequent [I4a provisional live demo](hkde-provisional-demo.md) adds an
+explicit opt-in execution path based on the shared-reference audit. The I1–I3
+record below describes the earlier cached handoff; formal I4 remains deferred.
+
 ## Run and inspect
 
 From the combined checkout, with its pinned Pixi environment installed:
