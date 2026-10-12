@@ -30,14 +30,12 @@ proposal and remain for the team to confirm.
 | 95–113 | Conditional checks, SBC and the shared numerical-reference alarm | Alex |
 | 113–120 | Changing priors/task assumptions and the exit exercise | All |
 
-**Delivery status:** curriculum selected; final integrated participant verification
-is pending [#27](https://github.com/fmuia/sbi4finance/issues/27)'s pinned combined
-revision. The intended route uses #22's local panel, cached default and explicit
-live opt-in, plus #29's scientific-decision explanation. This #19-based checkout
-still runs notebook10 live by default and lacks the local-data walkthrough;
-it is not the combined participant release. See the
-[setup and preliminary delivery record](docs/tutorial-delivery-verification.md).
-Do not interpret separate branch checks as verification of the complete route.
+**Delivery status:** curriculum selected. The pinned #27 combined revision
+includes #22's local panel, cached default and explicit live opt-in, plus #29's
+scientific-decision explanation. The [integration review](docs/stack-integration-review.md)
+records combined tests and offline execution. #26's [participant delivery record](docs/tutorial-delivery-verification.md)
+separately covers clean setup, pacing and browser delivery limits. These checks
+do not upgrade scientific acceptance.
 
 The optional Heston, rough Bergomi and original MMAR reviews remain available;
 they are outside this two-hour schedule and use their own task/checkpoint.

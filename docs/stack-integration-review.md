@@ -88,9 +88,120 @@ follow-up from #26 is applied after that source composition.
 | Data | Only observations/context condition inference. Synthetic truth, auxiliary diagnostics and future outcomes stay separate; no real latent labels are invented. |
 | Claims | Synthetic Q teaching needs no market data and does not supply P risk probabilities or empirical performance evidence. |
 
-## Execution evidence and disposition
+## Execution on the pinned combined revision
 
-Execution evidence will be added for the fixed combined source revision before
-publication. Earlier test counts and historical notebook timings do not certify
-this combined tree. The #26 agent owns fresh installation, pacing and final
-participant review against the pinned combined revision.
+Tested commit: `ca63424a140c2e512db97e40f0bb30010da3956a`.
+Tree: `0eaff7f14ae721efc74de6bc8784b7fab44f67a9`.
+Every execution below started from that clean combined tree. Later review
+commits add these records and reconcile documentation; they do not change the
+scientific implementation or notebook execution verified here.
+
+| Check | Actual result | Fresh evidence |
+|---|---|---|
+| Combined simulator/data suite | **225 tests pass**, 37.114 s within unittest (38.652 s process) | [Environment/command](results/stack-integration/tests.json), [log](results/stack-integration/tests.log) |
+| Strict marimo | GBM01, local-data, rough09, HKDE10, HKDE11 and changed optional MMAR pass | [Static checks](results/stack-integration/static-checks.json) |
+| Local-panel cached route | 8 + 20 output cells, **2 + 4 plots**, 9.255 s; no neural import or live inference | [Report](results/stack-integration/hkde-cached.json) |
+| Local-panel provisional live route | 8 + 20 output cells, **2 + 6 plots**, 14.064 s; all eight fixed-case checks pass; scientific acceptance **false** | [Report](results/stack-integration/hkde-live.json), [joint](results/stack-integration/hkde-plots/10_hkde_corrected_workflow-1.png), [target prices](results/stack-integration/hkde-plots/10_hkde_corrected_workflow-2.png) |
+| HKDE decision lesson | **15 cells, 0 errors, 5 figures**, 1.087 s export; provisional / 2,048 / I4 deferred visible | [Verification](results/stack-integration/hkde-decision/verification.json), [visual inspection](results/stack-integration/hkde-decision/visual-inspection.json) |
+| Rough cached review | **26 cells, 0 errors, 14 figures**, 10.665 s export; all 256 cases used and eta failure visible | [Verification](results/stack-integration/rough/execution.json), [reproduction helper](results/stack-integration/rough/verify_review.py) |
+| Preserved input assets | **286 inherited source/config/checkpoint/result files** match selected input blobs; none omitted; every selected head is an ancestor; lock unchanged | [Preservation check](results/stack-integration/preservation.json) |
+
+All fresh graphs were inspected, including the retained failures, joint
+parameter dependence and two currency-price distributions. The cached plots
+match the corresponding live-route images byte-for-byte; the
+[visual record](results/stack-integration/visual-review.json) records the map
+and figure hashes. Output-cell counts from `app.run()` differ from complete
+export session-cell counts; each report states which it measured.
+
+Execution used the existing pinned macOS arm64 environment: Python 3.12.15,
+BayesFlow 2.0.14, Keras 3.15.1, JAX/jaxlib 0.11.1, NumPy 2.5.3, SciPy 1.18.1,
+Numba 0.68.0 and marimo 0.25.1. The local `.pixi` symlink reuses an environment
+whose editable installation points at another worktree, so every run sets
+`PYTHONPATH=src` and verifies the imported package belongs to this checkout or
+its isolated copy. No package/lock update occurred. This environment reuse is
+separate from #26's fresh-install check.
+
+For an ordinary checkout with its locked environment installed:
+
+```bash
+PYTHONPATH=src pixi run test-simulators
+PYTHONPATH=src pixi run hkde-teaching-integration-check \
+  --out /tmp/new-combined-cached.json --artifacts /tmp/new-combined-cached-plots
+PYTHONPATH=src pixi run hkde-teaching-integration-check --live \
+  --out /tmp/new-combined-live.json --artifacts /tmp/new-combined-live-plots
+PYTHONPATH=src pixi run python scripts/check_hkde_acceptance_review.py \
+  --allow-integrated-teaching --out /tmp/new-combined-decision
+```
+
+For this shared environment, execution invoked `.pixi/envs/default/bin/python`
+directly with `PYTHONPATH=src`, `KERAS_BACKEND=jax` and `MPLBACKEND=Agg`; the JSON
+and logs preserve the actual commands and timings. The suite includes existing
+tiny temporary training/reload tests; published checkpoints are unchanged.
+The notebook checks generate no banks, evaluate no reserved cohort and submit
+no cluster job.
+
+### Isolation, provenance and delivery limits
+
+The teaching checker now copies explicit bound assets and scans the isolated
+tree: market fixtures, raw banks (including banks below `docs/results`) and
+unused checkpoints are absent. Cached mode blocks BayesFlow imports; live mode
+loads the exact bound checkpoint/surrogate. Observation equality, full task
+matching, weighted quantiles, proposal pairing and scientific flags are checked.
+Its output records actual commit/tree/dirty status rather than historical base
+constants. Two regressions cover accidental bank copying.
+
+The decision checker retains its strict default. Its explicit
+`--allow-integrated-teaching` option verifies **126 current exact bindings** and
+**two historical teaching bindings** against the unchanged manifest's frozen
+local Git commit. Only notebook10 presentation and the Pixi task table can
+be reconciled; dependency/environment settings and all scientific inputs remain
+exact. Five tests reject scientific or lock changes, altered dependencies,
+unverifiable historical bytes and implicit reconciliation. This option does
+not certify replacement notebook execution; the separate cached/live reports do.
+
+Python socket/DNS guards block external connections. The export checks allow
+local kernel IPC and block neural-framework imports for cached reviews. The
+macOS sandbox initially denied their local listener, so the recorded successful
+exports used local IPC permission with the external Python guards still active.
+These are explicit Python guards, not a claim of an OS-wide network sandbox.
+No raw banks, checkpoints or market fixtures are available in the rough/decision
+review copies. The live HKDE copy includes its one necessary checkpoint.
+
+**Standalone offline HTML is not certified by these Python checks.** Marimo
+exports may reference CDN browser assets and temporary absolute review links.
+The supported participant entry is the installed local marimo route; #26's
+[delivery record](tutorial-delivery-verification.md) assesses the four-notebook
+route, clean setup and browser limitations against the same source pin.
+The pin was sent to #26 immediately after composition, along with the mode and
+scope contract. Historical generated SVG whitespace is retained rather than
+changing source-bound figure bytes; non-result paths pass `git diff --check`.
+
+## Review and merge recommendation
+
+The combined implementation is ready for the user's software/provisional-teaching
+review. All original open stack heads plus #28, #29 and participant commit
+`be4a3baf6d5753337f93c1b95510310aea2d3d69` are represented. The original PRs'
+focused diffs remain useful for reviewing each contribution; the combined PR
+shows their actual composed behavior.
+
+- **#19 disposition:** retain its upstream draft state as the historical M8
+  participant-release candidate. Its implemented lesson and handover changes
+  are included here for explicitly provisional delivery. Do not mark it
+  scientifically accepted to make the software mergeable.
+- **#29:** include the provisional decision and notebook11. #24's broader
+  calibration question and formal I4 remain deferred; integration resolves
+  neither by changing a Boolean.
+- **#25:** no new follow-up PR was published at the input snapshot. Heston
+  scientific investigation is deliberately outside this batch; existing
+  implementation and retained failures are included. The selected options
+  route needs no new Heston study.
+- **#26:** include the selected two-hour curriculum and its scoped follow-up;
+  final clean participant evidence is recorded separately. Optional M market
+  acquisition, E empirical evaluation, new cohorts, training campaigns and
+  formal I4 are outside this integration.
+
+A merge commit of the combined branch would retain the recorded stack ancestry
+and make the review history easiest to follow. The maintainer decides whether
+to merge this branch or apply the documented dependency order. Do not squash or
+rebase collaborators' branches as an automatic closeout step. No GitHub PR,
+main branch or scientific follow-up issue is closed or merged by this work.

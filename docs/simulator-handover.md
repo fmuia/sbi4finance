@@ -14,9 +14,9 @@ GBM foundations and a provisional corrected-HKDE diagnostic lesson**. Use the
 schedule for #26; references below to an open curriculum choice describe the
 earlier implementation snapshot. [PR #29](https://github.com/fmuia/sbi4finance/pull/29)
 retains provisional selected-case teaching at 2,048 proposals and defers formal
-I4. [Delivery preparation](tutorial-delivery-verification.md) does not certify
-the combined route: #27's pinned revision is still unavailable. Its integration
-must retain #22's local input, cached default and explicit live option.
+I4. The pinned #27 combined revision includes #22's local input, cached default
+and explicit live option. The [delivery record](tutorial-delivery-verification.md)
+tracks #26's final participant verification separately.
 
 ## Start here
 
@@ -206,9 +206,10 @@ composition check; no data-side worktree was changed for this handover.
 
 ## First review session
 
-In a dedicated checkout of `feat/hkde-offline-tutorial`, use the locked
-environment. Installation needs package access; execution of the review needs
-no market files or provider credentials.
+In a dedicated checkout of the pinned combined revision recorded in the
+[integration review](stack-integration-review.md), use the locked environment.
+Installation needs package access; execution of the review needs no market
+files or provider credentials.
 
 ```bash
 pixi install --locked

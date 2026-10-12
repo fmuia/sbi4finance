@@ -1,0 +1,23 @@
+{
+  "commit": "ca63424a140c2e512db97e40f0bb30010da3956a",
+  "tree": "0eaff7f14ae721efc74de6bc8784b7fab44f67a9",
+  "command": "PYTHONPATH=src KERAS_BACKEND=jax MPLBACKEND=Agg .pixi/envs/default/bin/python -m unittest discover -s tests -v",
+  "exit_code": 0,
+  "seconds": 38.652008125092834,
+  "python": "3.12.15",
+  "platform": "macOS-26.4.1-arm64-arm-64bit",
+  "executable": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-issue27-integration/.pixi/envs/default/bin/python",
+  "imported_package": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-issue27-integration/src/sbi4finance/__init__.py",
+  "packages": {
+    "bayesflow": "2.0.14",
+    "keras": "3.15.1",
+    "jax": "0.11.1",
+    "jaxlib": "0.11.1",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "numba": "0.68.0",
+    "marimo": "0.25.1"
+  },
+  "tests_run": 225,
+  "unittest_seconds": 37.114
+}

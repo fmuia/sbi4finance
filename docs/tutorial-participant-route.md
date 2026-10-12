@@ -145,10 +145,11 @@ both intended cached and opt-in modes.
 
 ## Cost evidence and delivery acceptance still required
 
-Current PR #19 notebook10 is **live by default**. Its current-tree preflight is
-useful but does not verify the proposed #22 cached-default/local-input behavior.
-The target is #27's explicit composition of these changes and #29's scientific
-decision; no combination of separate-checkout successes certifies that tree.
+The pinned #27 combined revision includes notebook10's cached default, local
+input and opt-in 2,048-proposal demonstration, together with #29's scientific
+decision. The [integration review](stack-integration-review.md) records combined
+execution. Final participant verification exercises that pinned revision;
+separate-checkout successes do not certify the complete route.
 
 Historical PR #19 [execution](results/hkde-live-demo/verification.json) took
 13.50 seconds for a fresh-process export and 5.37 seconds within the live cell.

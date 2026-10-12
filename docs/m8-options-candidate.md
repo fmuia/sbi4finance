@@ -1,10 +1,10 @@
 # M8: an offline options teaching candidate
 
-This delivery is one coherent synthetic **options candidate**, built from the
-HKDE work in M4–M5 and the common M0–M2 conventions. It leaves the final
-returns-versus-options curriculum choice open and preserves the MMAR example.
-It does not require Heston's or rough Bergomi's unresolved inference studies to
-pass, and it does not mark those branches accepted.
+This delivery is the provisional synthetic Q/HKDE lesson selected for the
+[participant route](tutorial-participant-route.md), built from M4–M5 and the
+common M0–M2 conventions. The MMAR example remains available separately.
+It does not require Heston's or rough Bergomi's unresolved inference studies
+to pass, and it does not mark those branches accepted.
 
 **Current status: cached review plus opt-in provisional live demo; formal M8 acceptance pending.**
 The corrected 512-case validation passed. The new 256-case test passed conditional
