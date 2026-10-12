@@ -1,0 +1,20 @@
+{
+  "scope": "cached synthetic Q correction diagnostics; no new inference/test access",
+  "input_sha256": {
+    "validation.json": "80ad72e44f01f0e08cee1e9021ee16c3b57a66a8c9cd65dd625577efd57c620e",
+    "validation-checks.npz": "b75470a506e3cc14e9f927d36a5102ad8538c3e62fa5a9acadd6d314cb2b75f2",
+    "protocol": "19ce380dc98f851c0d0ddbf671416f7387bbe6a3228dc71de32ce6ad2bf52be2",
+    "baseline": "743500b877feabe5b4476f9a8ea66c61eb61038872e23c61cf651279d0cbc636"
+  },
+  "plot_script_sha256": "1e1099f756d0634966bd15b1be87225cd2215f2497ca2623d62880a0a1d51e1a",
+  "artifact_sha256": {
+    "price-errors.png": "5b2d1e2930423a83b7b5ed3ac5b72bcc61bd41ea8701ddf5456c980b922597af",
+    "price-errors.svg": "ab61e7869bed4feaca415b63ba98235dd262e8f17a3e72059b9483633ce9661b",
+    "proposal-efficiency.png": "6d06aec51898ffcf206f1a4647a2da27a5477ec476a872e7f3ad477884e23e77",
+    "proposal-efficiency.svg": "6390c28983b4f21333c60eb050c1ecbc161c35fd9137f00be11fb030cc8f14be"
+  },
+  "figures": [
+    "price-errors",
+    "proposal-efficiency"
+  ]
+}

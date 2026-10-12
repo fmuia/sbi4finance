@@ -28,3 +28,9 @@ See [measured results and graphs](../../docs/hkde-joint-inference.md) and the
 [raw validation](../../docs/results/hkde-inference/neural-validation.json).
 The notebook uses cached results and does not automatically load or retrain
 this checkpoint. A failed gate cannot be removed by relabelling this card.
+
+A [separate corrected pipeline](../../docs/hkde-corrected-inference.md) reuses
+these exact weights as a proposal, with a fixed defensive mixture and numerical
+likelihood weights. Consult that pipeline's own protocol and reports for its
+acceptance. This card continues to describe the provisional standalone flow;
+a passing correction does not validate unweighted draws from this checkpoint.

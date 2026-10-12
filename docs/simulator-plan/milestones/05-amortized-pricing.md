@@ -104,6 +104,35 @@ notebook are sufficient. A finite numerical experiment with unresolved gates
 remains useful evidence; it does not require restarting the simulator ladder
 or repeatedly tuning the neural model before recording what was learned.
 
+## M5.1f bounded likelihood-correction follow-up
+
+The [separate correction protocol](../../hkde-correction-protocol.md) reuses the
+frozen neural weights as a proposal. The first 90% flow / 10% uniform mixture
+passes accuracy but stops on boundary weight concentration. The separately
+[frozen boundary follow-up](../../hkde-correction-boundary-protocol.md) mixes
+80% flow, 10% uniform and 10% product-arcsine draws, evaluates the original
+numerical quote likelihood and
+retains self-normalized importance weights. This is a new finite-sample
+pipeline; the raw neural candidate and its failed report remain provisional.
+
+| Substep | Concrete output | Acceptance boundary |
+|---|---|---|
+| M5.1f.1 — Correct density and weights | Small proposal/correction functions, full mixture denominator, independently checked raw-unit Jacobians | No double-counted transforms, clipped weights, fabricated labels or surrogate likelihood. |
+| M5.1f.2 — Frozen conditional and calibration audit | Same 20 validation cases at 2,048 participant proposals and 8,192 precision proposals; 512 prior-predictive cases at the participant budget | Both budgets pass original conditional/joint/price gates. SIR ranks assess the finite-pool resampling algorithm; ESS is not a mode-coverage certificate. |
+| M5.1f.3 — New independent test | Root-95026 256-panel test, with 16 refined conditional references, generated only after all new validation gates pass | No tuning on new test; the raw baseline's original test stays untouched. |
+| M5.1f.4 — Measured handoff | Saved weighted clouds, compact reports, component timings and an offline options candidate | A corrected pipeline may qualify for M8; the raw flow is not retrospectively accepted. Numerical likelihood cost stays visible and curriculum choice stays open. |
+
+Use the accepted M5.2 surrogate only for the two downstream target prices.
+No new training or model family is required. Failure stops this bounded
+experiment without automatic sample-budget or seed changes.
+
+**Recorded outcome:** v2 validation passes all stages. Its new 256-panel test
+passes the 16 conditional cases and efficiency checks at both budgets, but
+long-run-variance SBC fails (KS 0.10325 > 0.09251). The test is used and closed;
+the raw flow's older test remains untouched. The [measured report](../../hkde-corrected-inference.md)
+and review preserve the stop. Corrected-pipeline and M8 participant acceptance
+remain pending; a review notebook that skips live inference is not acceptance.
+
 ## M5.2 bounded surrogate subplan
 
 The [fixed-contract protocol](../../hkde-surrogate-protocol.md) adds a supervised

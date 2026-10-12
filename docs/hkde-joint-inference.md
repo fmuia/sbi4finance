@@ -13,6 +13,10 @@ M5.1 scientific acceptance, a learned pricing surrogate or M8 delivery. The
 results. Its one-run stop rule was applied. The final tutorial application
 remains open, and the Heston and Bergomi findings are preserved.
 
+A [separately specified likelihood-correction follow-up](hkde-corrected-inference.md)
+uses this frozen flow as a proposal. Its acceptance belongs to the weighted
+pipeline; this report and the standalone checkpoint remain unchanged.
+
 ## Inspect the result
 
 Open [notebook 06](../notebooks/06_hkde_and_pricing.py) with

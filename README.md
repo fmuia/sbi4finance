@@ -39,6 +39,14 @@ inference is available as a [provisional baseline](docs/hkde-joint-inference.md)
 The separate [fixed-contract learned price map](docs/hkde-price-surrogate.md)
 passes its regression checks and preserves that baseline's inference discrepancy.
 Run `pixi run review-hkde-surrogate` for the math, actual accuracy and costs.
+A [bounded likelihood-correction follow-up](docs/hkde-corrected-inference.md)
+uses the frozen flow as a proposal and separately tests the resulting weighted
+posterior. It preserves the raw-flow failure and the first correction's
+boundary-reliability stop; its reports distinguish proposal quality, posterior
+accuracy, finite-pool SBC and actual numerical likelihood cost.
+Validation passes, but the fresh correction test fails one SBC rank gate;
+the corrected pipeline remains provisional. See the saved diagnostics before
+choosing a participant workflow.
 The [analysis follow-up note](docs/simulator-analysis-next-steps.md)
 preserves the Heston findings while simulator and bank coverage expands.
 

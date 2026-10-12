@@ -155,3 +155,8 @@ M5.1's neural inference discrepancy, the rough reference follow-up and M8's
 selected, paced participant workflow remain separate work. Required S evidence
 is fully synthetic; it neither requires market observations nor establishes
 real-market model adequacy.
+
+The [likelihood-correction follow-up](hkde-corrected-inference.md) evaluates a
+new weighted posterior pipeline using this same accepted target-price map.
+It retains the original unweighted inference discrepancy and does not use
+this two-contract surrogate to approximate the nine-quote likelihood.
