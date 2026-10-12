@@ -17,6 +17,13 @@ theta bound (0.103485), closely tracking the SIR result. This diagnostic does
 not isolate proposal-specific calibration bias or prove the failure harmless;
 the frozen acceptance decision remains unchanged.
 
+The [subsequent gate audit](hkde-calibration-gate-audit.md) now quantifies this:
+ideal numerical-reference sampling fails the theta gate in 98.85% of controls
+conditional on the same saved cohort. The uniformity threshold itself is
+calibrated; that alarm does not isolate correction error. Notebook11 presents
+the paired and direct-CDF evidence without changing this candidate's existing
+acceptance logic or claiming population calibration.
+
 ## M8.1 — Named task and evidence boundary
 
 Use `hkde_boundary_defensive_importance_v2`, with the
