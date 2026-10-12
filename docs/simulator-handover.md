@@ -8,6 +8,10 @@ validated neural posterior. No PR was merged in this workstream.
 
 ## Start here
 
+For a module map, data-flow diagrams and extension points, read the companion
+[code architecture guide](code-architecture.md). It describes the implemented
+layout and distinguishes additions that still live on separate branches.
+
 1. Read the [plan and mathematical reading guide](https://github.com/fmuia/sbi4finance/blob/docs/simulator-plan/docs/simulator-plan/README.md)
    in [plan PR #3](https://github.com/fmuia/sbi4finance/pull/3).
 2. Open [notebook10](../notebooks/10_hkde_corrected_workflow.py) and the

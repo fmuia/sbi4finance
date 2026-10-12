@@ -19,6 +19,8 @@ Total: ~2 hours.
 
 For current code, PR dependencies, scientific limits and next review steps,
 start with the [collaborator handover](docs/simulator-handover.md).
+The [current code architecture](docs/code-architecture.md) maps the modules,
+data flow, saved artifacts and extension points for both financial workflows.
 
 The [implementation plan and mathematical guide](docs/simulator-plan/README.md) describes the simulator library, pre-simulated training banks, and returns-inference and option-pricing workflows. It includes nine milestone subplans, beginner-oriented mathematical notes, and validation requirements. Shared-foundation implementation has started; the tutorial's central application remains open.
 
@@ -157,13 +159,17 @@ sbatch cluster/train.sbatch                                   # retrain the univ
 ## Layout
 
 ```
-notebooks/            marimo notebooks, one per code-bearing schedule item
-src/sbi4finance/      package: mmar/univariate.py is vendored from amortized-fractals
-scripts/              train_univariate.py reproduces checkpoints/univariate
-data/                 pinned return CSVs; notebooks never download
-checkpoints/          pretrained approximators (univariate: 6 MB)
-cluster/              Oscar discovery script and sbatch template
+notebooks/            marimo milestone reviews and participant candidates
+src/sbi4finance/      model kernels, banks, inference, references and forecasts
+configs/              task designs and frozen experiment protocols
+scripts/              generation, training, evaluation and plotting commands
+tests/                numerical, data-boundary and workflow checks
+data/                 pinned return CSVs for the earlier MMAR example
+checkpoints/          saved approximators with task metadata and status notes
+docs/                 plans, architecture, handover and scientific reports
+docs/results/         committed summaries, selected arrays and diagnostic plots
+cluster/              Oscar discovery and CPU-bank / MMAR-training wrappers
 .claude/skills/       marimo-pair (vendored) and cluster-setup
 ```
 
-Simulator, data cache and checkpoint come from Stefan Radev's [amortized-fractals](https://github.com/stefanradev93/amortized-fractals).
+The original MMAR simulator, data cache and checkpoint come from Stefan Radev's [amortized-fractals](https://github.com/stefanradev93/amortized-fractals). The simulator ladder adds the model and inference modules described in the [architecture guide](docs/code-architecture.md).
