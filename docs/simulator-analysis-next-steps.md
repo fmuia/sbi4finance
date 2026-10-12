@@ -144,22 +144,32 @@ this increment substitutes for that inference validation.
 
 ## 4. Scale measured work and preserve the data boundary
 
-**Rough follow-up now recorded:** the paired-grid study supports 512 steps for
+**Original rough study:** the paired-grid study supports 512 steps for
 the explicitly numerical [H/eta pilot](rough-joint-inference.md), without a
 continuum certificate. Its 6,146 saved panels were generated in 98 fixed-ID
 cluster tasks (34.28-minute wall span; 31.68 allocated CPU hours). The independent
 reference passes 19/20 panels, but `validation:260` has ESS 600.55 below 800 and
 maximum weight 0.005392 above 0.005. Mean/block/target precision checks pass.
-This triggers the frozen stop rule before training; no neural SBC result or
-accepted rough checkpoint exists. The complete reduced software smoke is a
+This triggered the original frozen stop rule before training; that run produced
+no neural checkpoint or SBC result. The complete reduced software smoke is a
 separate wiring test. Preserve all banks, the failed gate and the reserved test.
 
-The next rough analysis should address reference efficiency in a newly declared
-bounded experiment. Reusing the existing training bank is possible; a targeted
-importance proposal needs correct proposal densities and support checks. Do not
-automatically expand every bank or reinterpret the existing gates. This work
-does not block the independent M5.2 surrogate deliverable, and does not establish
-a neural speed advantage over a reference bank that can itself be reused.
+**Bounded reference extension:** one separately authorized
+[4,096-to-8,192-row follow-up](rough-reference-expansion.md) preserves the
+original bank, training/evaluation cases and thresholds. All 20 reference cases
+now pass: minimum ESS 1,207.19, maximum weight 0.002716, worst target-mean MCSE
+0.002512 currency and largest block target-mean difference 0.003351. The study
+also records a pass for the original single neural candidate: conditional mean
+RMSE 0.1114 reference SD (prior control 1.4726), all joint/interval checks,
+512-case marginal SBC and maximum target-mean error plus twice MCSE 0.02526
+currency against 0.06. The prior-only control passes marginal SBC too, showing
+why the conditional comparison is necessary. The next scientific step is a
+separately specified evaluation on the reserved test, after reviewing this
+candidate. The final test remains unevaluated; no further automatic doubling,
+proposal change or network sweep is part of this follow-up. These are adaptive
+development cases, not fresh confirmatory evidence. Neither a passed reference
+nor fast neural sampling establishes a speed advantage over a reference bank
+that can itself be reused.
 
 
 Use the same frozen task and stable example IDs locally and on the cluster.

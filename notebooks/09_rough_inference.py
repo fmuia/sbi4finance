@@ -36,6 +36,9 @@ def _(mo):
     independent importance-sampling reference, a single joint-density candidate,
     conditional comparisons, marginal simulation-based calibration (**SBC**)
     and excluded-contract mean prices. Each result has its own acceptance gate.
+    The original 4,096-row reference passed 19 of 20 cases and stopped before
+    neural training. This review now follows one bounded extension to 8,192
+    reference rows, preserving the original results below.
 
     This is the **S synthetic workflow under Q**, the pricing measure. It does
     not infer a physical-measure return model, today's hidden variance, or the
@@ -54,16 +57,32 @@ def _(mo):
 
 @app.cell
 def _(ROOT, json, plot_helpers):
-    protocol = json.loads((ROOT / "configs/rough_inference_protocol.json").read_text())
+    protocol = json.loads((ROOT / "configs/rough_reference8192_protocol.json").read_text())
     bank_config = json.loads((ROOT / protocol["bank_config"]).read_text())
-    reports, check_arrays, report_paths = plot_helpers.load_reports(ROOT / "docs/results/rough-inference")
+    original_reports, _, original_report_paths = plot_helpers.load_reports(ROOT / "docs/results/rough-inference")
+    reports, check_arrays, report_paths = plot_helpers.load_reports(ROOT / "docs/results/rough-reference8192")
+    if any(_report["experiment_id"] != protocol["experiment_id"] for _report in reports.values()):
+        raise ValueError("Follow-up evidence belongs to a different experiment")
     cached_figures = plot_helpers.figures(reports, check_arrays)
-    return bank_config, cached_figures, check_arrays, protocol, report_paths, reports
+    return (
+        bank_config,
+        cached_figures,
+        check_arrays,
+        original_report_paths,
+        original_reports,
+        protocol,
+        report_paths,
+        reports,
+    )
 
 
 @app.cell
-def _(mo, reports):
+def _(mo, original_reports, reports):
     _rows = []
+    _original = original_reports.get("reference")
+    if _original:
+        _rows.append({"Stage": "Original 4,096-row reference (historical)",
+                      "Saved status": f"{sum(case['passed'] for case in _original['cases'])} / {len(_original['cases'])} cases passed; stopped before training"})
     _reference_stopped = reports.get("reference", {}).get("passed") is False
     for _name in ("reference", "training", "evaluation"):
         _report = reports.get(_name)
@@ -72,22 +91,89 @@ def _(mo, reports):
                    "not recorded" if _report is None else
                    "reload verified; inference acceptance separate" if _name == "training" and _report.get("same_seed_reload_exact") else
                    "PASS" if _report.get("passed") else "FAIL / unresolved")
-        _rows.append({"Stage": _name, "Saved status": _status})
+        _rows.append({"Stage": "8,192-row follow-up: " + _name, "Saved status": _status})
     if _reference_stopped:
         _cases = reports["reference"]["cases"]
         _failed = [_case["case_id"] for _case in _cases if not _case["passed"]]
-        _message = (f"The frozen pilot stopped at reference validation: {len(_failed)} of {len(_cases)} cases "
-                    f"missed at least one gate ({', '.join(_failed)}). Neural training and SBC were not run. "
-                    "Separate small CLI smoke runs check software wiring only; they are not results of this frozen experiment.")
+        _message = (f"The follow-up stopped at reference validation: {len(_failed)} of {len(_cases)} cases "
+                    f"missed at least one gate ({', '.join(_failed)}). The stop rule permits no further automatic doubling. "
+                    "Neural training and SBC require every reference gate to pass; software smoke runs do not satisfy these gates.")
     else:
-        _message = ("Reports are not yet present. The protocol and scalar illustration below remain runnable offline."
-                    if not reports else
-                    "This view displays the saved run, including failed gates. It performs no tuning or new final-test evaluation.")
+        _message = ("The 8,192-row reference report is not yet present. The original failure remains recorded; no new pass, training, or SBC result is inferred."
+                    if "reference" not in reports else
+                    "This view displays the saved follow-up, including failed gates. It performs no tuning or final-test evaluation. Reference passage alone does not accept the neural posterior.")
     mo.vstack([
         mo.md("## Current evidence\n\nA delivered simulator, a sufficiently precise reference, and an accepted neural posterior are different achievements."),
         mo.ui.table(_rows, selection=None),
         mo.callout(_message, kind="warn" if _reference_stopped else "info"),
     ])
+    return
+
+
+@app.cell
+def _(mo, np, original_reports, plt, protocol, reports):
+    _items = [mo.md(r"""
+        ## One reference-budget extension, on the same development cases
+
+        Reuse the original 4,096 independently generated rows, then append
+        4,096 new independent rows with the declared row IDs and random streams.
+        The training bank, 20 conditional cases, likelihood and acceptance
+        thresholds remain unchanged. This is **adaptive development after
+        inspecting the original failure**, not a new independent validation
+        cohort. It leaves the final test reserved.
+
+        The comparison below shows every case. ESS should be at least 800 and the
+        largest normalized weight should not exceed 0.005. These weight screens
+        are only part of acceptance: parameter and target-price Monte Carlo
+        precision and block agreement must also pass. With 8,192 rows, the two
+        reference blocks contain 4,096 rows each: the original block and the
+        new block. There is no automatic further doubling if a check fails.
+        """)]
+    _old = original_reports.get("reference")
+    _new = reports.get("reference")
+    if _old:
+        _ids = [case["case_id"] for case in _old["cases"]]
+        if _new and [case["case_id"] for case in _new["cases"]] != _ids:
+            raise ValueError("Reference comparison requires the same ordered cases")
+        _thresholds = protocol["reference"]["gates"]
+        for _report in (_old, _new):
+            if _report and _report["thresholds"] != _thresholds:
+                raise ValueError("Reference comparison requires unchanged thresholds")
+        _fig, _axes = plt.subplots(2, 1, figsize=(12, 6.5), sharex=True, layout="constrained")
+        _x = np.arange(len(_ids))
+        for _axis, _field, _gate, _ylabel in (
+            (_axes[0], "ess", _thresholds["min_ess"], "Importance ESS (higher is better)"),
+            (_axes[1], "max_weight", _thresholds["max_weight"], "Largest weight (lower is better)"),
+        ):
+            _axis.axhline(_gate, color="#B33E43", ls="--", lw=1, label="Unchanged gate")
+            for _report, _label, _color, _offset in (
+                (_old, "Original 4,096 rows", "#738095", -.1),
+                (_new, "Follow-up 8,192 rows", "#087F8C", .1),
+            ):
+                if _report:
+                    _axis.plot(_x + _offset, [case["reference"][_field] for case in _report["cases"]],
+                               "o-", color=_color, ms=4, lw=.8, label=_label)
+            _axis.set_ylabel(_ylabel)
+            _axis.axvspan(15.5, 19.5, color="#EDF0F4", zorder=-5)
+        _axes[0].legend(fontsize=8)
+        _axes[1].set_xticks(_x, [case.replace("validation:", "").replace("stress:", "S") for case in _ids], fontsize=8)
+        _axes[1].set_xlabel("Same development panel IDs; shaded S0–S3 are fixed stress panels")
+        _fig.suptitle("Reference weight concentration before and after the bounded extension")
+        _items.append(_fig)
+        _items.append(mo.ui.table([
+            {"Case": _case["case_id"], "Original ESS": _case["reference"]["ess"],
+             "Follow-up ESS": _new["cases"][_i]["reference"]["ess"] if _new else "not recorded",
+             "Original largest weight": _case["reference"]["max_weight"],
+             "Follow-up largest weight": _new["cases"][_i]["reference"]["max_weight"] if _new else "not recorded",
+             "Original all-gates pass": _case["passed"],
+             "Follow-up all-gates pass": _new["cases"][_i]["passed"] if _new else "not recorded"}
+            for _i, _case in enumerate(_old["cases"])
+        ], selection=None))
+        if not _new:
+            _items.append(mo.callout("Only the original run is plotted. Follow-up values remain missing until reference.json is published.", kind="info"))
+    else:
+        _items.append(mo.callout("The original reference report is missing; no before/after comparison is available.", kind="warn"))
+    mo.vstack(_items)
     return
 
 
@@ -208,10 +294,10 @@ def _(bank_config, mo, protocol):
 
 
 @app.cell
-def _(mo, reports):
-    _cluster = reports.get("cluster")
+def _(mo, original_reports, reports):
+    _cluster = original_reports.get("cluster")
     _items = [mo.md(r"""
-        ## Measured cluster generation cost
+        ## Historical cluster generation cost
 
         Bank generation is a one-off cost shared by later training and audit
         calculations. The independent prior-reference bank is also reusable:
@@ -220,6 +306,8 @@ def _(mo, reports):
         **Both routes therefore have amortization.** A neural speed advantage
         requires an actual comparison at comparable accuracy, with generation,
         training, posterior evaluation and downstream pricing counted separately.
+        The table here is the **original pilot plus 4,096-row reference run**;
+        it does not include the new 4,096-row extension or follow-up calculations.
         """)]
     if _cluster:
         _accounting = _cluster["accounting"]
@@ -254,7 +342,22 @@ def _(mo, reports):
         bank delivery do not establish posterior or market-model acceptance.
         """))
     else:
-        _items.append(mo.callout("No cluster accounting report is present. Generation costs remain unreported.", kind="info"))
+        _items.append(mo.callout("No original cluster accounting report is present. Historical generation costs remain unreported.", kind="info"))
+    _extension = reports.get("cluster")
+    if _extension:
+        _cost = _extension["accounting"]
+        _items.append(mo.md("### Additional reference-bank generation\n\nThe following costs belong only to the new 4,096 rows, including unsuccessful infrastructure attempts."))
+        _items.append(mo.ui.table([
+            {"Quantity": "New / reused reference rows", "Recorded value": f"{_extension['new_generated_rows']:,} / {_extension['reused_reference_train_rows']:,}"},
+            {"Quantity": "All task attempts / completed unique chunks", "Recorded value": f"{_cost['task_attempts']} / {_cost['unique_completed_task_ids']}"},
+            {"Quantity": "Wall span, including retry gap (minutes)", "Recorded value": f"{_cost['wall_span_seconds'] / 60:.2f}"},
+            {"Quantity": "Allocated CPU hours, all attempts", "Recorded value": f"{_cost['allocated_cpu_hours']:.2f}"},
+            {"Quantity": "Of which timed-out attempts (CPU hours)", "Recorded value": f"{_cost['unsuccessful_allocated_cpu_hours']:.2f}"},
+            {"Quantity": "Original prefix arrays exactly preserved", "Recorded value": str(_extension['prefix_all_arrays_bitwise_equal'])},
+        ], selection=None))
+        _items.append(mo.md(_cost["retry_cost_scope"]))
+    else:
+        _items.append(mo.callout("Extension cluster accounting is not yet recorded in the follow-up reports.", kind="info"))
     mo.vstack(_items)
     return
 
@@ -264,8 +367,9 @@ def _(mo):
     mo.md(r"""
     ## Independent reference: weight the clean numerical prices
 
-    A second, independently seeded bank draws 4,096 pairs $(\theta_i,U_i)$
-    from the prior and numerical simulator. For an observed panel $y$, assign
+    The extended independently seeded bank contains 8,192 pairs $(\theta_i,U_i)$
+    drawn from the prior and numerical simulator: 4,096 existing rows plus
+    4,096 new rows. For an observed panel $y$, assign
 
     $$w_i(y)\propto\exp\left[-\frac{
         \|y-\widehat C(\theta_i,U_i)\|^2}{2(0.25)^2}\right].$$
@@ -282,7 +386,8 @@ def _(mo):
 
     Effective sample size $1/\sum_iw_i^2$ describes weight concentration.
     Largest weight, Monte Carlo uncertainty and disagreement between two
-    independent 2,048-row blocks provide additional checks. None can prove
+    independent 4,096-row blocks provide additional checks. The original
+    4,096-row run instead used two 2,048-row blocks. None can prove
     that a finite prior bank sampled every important region.
 
     This reference bank is itself reusable across compatible panels. In this
@@ -344,7 +449,7 @@ def _(mo, norm, np, plt, rough_reference, toy_observation):
 @app.cell
 def _(cached_figures, mo, reports):
     _reference = reports.get("reference")
-    _items = [mo.md("## Is the numerical reference precise enough?")]
+    _items = [mo.md("## Is the 8,192-row numerical reference precise enough?")]
     if _reference:
         _items.append(mo.ui.table([
             {"Gate": _name, "Recorded metric": _reference["metrics"].get(_name),
@@ -401,7 +506,7 @@ def _(mo, reports):
         ], selection=None))
     else:
         _items.append(mo.callout(
-            "Training was not run: the frozen reference acceptance gate failed. A software smoke-test checkpoint is not this pilot's result."
+            "Training was not run: the follow-up reference acceptance gate failed. A software smoke-test checkpoint is not this experiment's result."
             if reports.get("reference", {}).get("passed") is False else
             "No training report is present. The cached review does not load an optional checkpoint.", kind="info"))
     mo.vstack(_items)
@@ -411,13 +516,13 @@ def _(mo, reports):
 @app.cell
 def _(cached_figures, mo, reports):
     _items = [mo.md(r"""
-        ## Planned SBC—and why SBC alone is insufficient
+        ## Marginal SBC—and why SBC alone is insufficient
 
         The protocol calls for 512 independent audit panels with known
         synthetic truth and 512 posterior samples per panel, **after the
         reference gate passes**. Rank the truth among the samples,
         randomize ties and rank-bin positions, and compare the marginal rank
-        distribution with uniform. The diagnostic would plot **empirical CDF
+        distribution with uniform. When available, the diagnostic plots **empirical CDF
         minus the uniform CDF**; zero is ideal. Dashed DKW limits control the two marginal
         rank checks together at family $\alpha=0.05$.
 
@@ -432,7 +537,7 @@ def _(cached_figures, mo, reports):
         _items.append(cached_figures["marginal-sbc"])
     else:
         _items.append(mo.callout(
-            "SBC was not run for this frozen pilot because reference validation failed before training. No calibration claim follows from the software smoke runs."
+            "SBC was not run for this follow-up because reference validation failed before training. No calibration claim follows from the software smoke runs."
             if reports.get("reference", {}).get("passed") is False else
             "The saved SBC report/ranks are absent; no ranks are synthesized here.", kind="info"))
     mo.vstack(_items)
@@ -530,9 +635,10 @@ def _(cached_figures, mo, protocol):
         The network here amortizes **calibration**. Each inferred parameter
         pair is still passed to the existing Monte Carlo pricer for the target
         contract. That downstream computation has its own cost, separate from
-        neural posterior sampling. A learned forward price surrogate is the
-        separate planned M5.2 workstream; it is not silently supplied by this
-        posterior network.
+        neural posterior sampling. This rough experiment has no learned target
+        price surrogate; that would require separate training and validation.
+        The HKDE surrogate elsewhere in the project does not transfer to this
+        model.
 
         Each target estimate uses fresh pricing randomness $V$, independent of
         the observation-pricing randomness $U$ given θ. Reusing U would select
@@ -562,19 +668,24 @@ def _(cached_figures, mo, protocol):
 
 
 @app.cell
-def _(ROOT, mo, report_paths, reports):
+def _(ROOT, mo, original_report_paths, report_paths, reports):
     _links = [f"- [{_name}]({_path})" for _name, _path in report_paths.items()]
     _links_text = "\n    ".join(_links)
+    _original_links_text = "\n    ".join(f"- [Original {_name}]({_path})" for _name, _path in original_report_paths.items())
     _evaluation = reports.get("evaluation", reports.get("reference", {}))
     _test_state = str(_evaluation.get("reserved_test_evaluated", "not reported"))
     mo.md(f"""
     ## Where to inspect and reproduce the work
 
-    - [Frozen protocol]({ROOT / 'docs/rough-inference-protocol.md'}) and [machine-readable thresholds]({ROOT / 'configs/rough_inference_protocol.json'}).
+    - [Follow-up protocol and stop rule]({ROOT / 'configs/rough_reference8192_protocol.json'}) and [reference extension notes]({ROOT / 'docs/rough-reference-expansion.md'}).
+    - [Original frozen protocol]({ROOT / 'docs/rough-inference-protocol.md'}) and [original machine-readable thresholds]({ROOT / 'configs/rough_inference_protocol.json'}).
     - [Run and milestone status]({ROOT / 'docs/rough-joint-inference.md'}) and [overall plan]({ROOT / 'docs/simulator-plan/README.md'}).
     - [Earlier numerical refinement]({ROOT / 'docs/bergomi-coupled-refinement.md'}).
-    - [Plot renderer]({ROOT / 'scripts/plot_rough_inference.py'}); exported PNG/SVG figures live in `docs/results/rough-inference/plots/` after rendering.
+    - [Plot renderer]({ROOT / 'scripts/plot_rough_inference.py'}); current reports use `docs/results/rough-reference8192/`.
     {_links_text}
+
+    The historical artifacts remain in their original directory:
+    {_original_links_text}
 
     Recorded final-test evaluation flag: **{_test_state}**. The default view
     reads only published audit artifacts. Simulator checks concern numerical
@@ -592,14 +703,14 @@ def _(ROOT, mo, report_paths, reports):
 
     ```bash
     PYTHONPATH=src pixi run python scripts/plot_rough_inference.py \\
-      --results docs/results/rough-inference --out /tmp/rough-review-plots
+      --results docs/results/rough-reference8192 --out /tmp/rough-review-plots
     ```
 
     Bank generation, reference construction and training are explicit scripts
     (`assemble_option_bank.py`, `check_rough_reference.py`, `train_rough.py`,
     `evaluate_rough.py`) with frozen inputs. They are intentionally not live
-    notebook cells. The optional checkpoint is
-    `checkpoints/rough-inference/model.keras`; cached review requires no ML
+    notebook cells. A delivered checkpoint is identified by its training
+    report; cached review requires no ML
     framework import or checkpoint.
     """)
     return
@@ -624,6 +735,10 @@ def _(mo):
     5. Explain why fresh target paths are required here, and why a distribution
        of noisy target estimates cannot directly supply price-uncertainty
        quantiles.
+    6. Compare the original and extended reference diagnostics on all 20 cases.
+       Why is reusing these development cases different from evaluating a new
+       independent test cohort? Why do good ESS and maximum weight alone not
+       establish reference precision?
 
     **Review decision:** judge the recorded gates and practical delivery
     separately. A failed bounded pilot can still deliver reusable simulators,

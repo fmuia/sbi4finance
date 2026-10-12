@@ -6,6 +6,13 @@ It infers **H and eta jointly from nine synthetic Q option quotes**, with all
 other context fixed. The experiment is a numerical-model study, not a market
 calibration or a continuation forecast from historical returns.
 
+**Follow-up:** the original stopped run below is retained. A separately named
+[4,096 → 8,192 reference extension](rough-reference-expansion.md) reuses the
+old rows, generates only a fixed suffix, and applies the same checks to the
+same 20 development cases. Notebook09 displays that current follow-up alongside
+the original evidence. Use the explicit v2 protocol for its commands; the
+commands below reproduce the original experiment.
+
 ## Review and reproduce
 
 Open `pixi run review-rough-inference`, or

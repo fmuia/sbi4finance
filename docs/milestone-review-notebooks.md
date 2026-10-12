@@ -10,7 +10,7 @@ From the repository root, install the pinned environment with
 | `pixi run review-heston` | [05_heston_joint_inference.py](../notebooks/05_heston_joint_inference.py) | M3.3 / increment 5: joint parameter/state inference, four original cases, neural/reference posteriors, future losses, failed frozen test, spline follow-up and bounded-time diagnosis/validation |
 | `pixi run review-hkde` | [06_hkde_and_pricing.py](../notebooks/06_hkde_and_pricing.py) | HKDE kernels, Q prices, panel banks and numerical reference checks |
 | `pixi run review-bergomi` | [08_bergomi_models.py](../notebooks/08_bergomi_models.py) | One-factor and rough kernels, pricing, banks and paired numerical refinement |
-| `pixi run review-rough-inference` | [09_rough_inference.py](../notebooks/09_rough_inference.py) | M7.3b / increment 9: finite-MC observation law, independent reference, prior control, conditional/joint inference, SBC and target-price means |
+| `pixi run review-rough-inference` | [09_rough_inference.py](../notebooks/09_rough_inference.py) | M7.3b / increment 9: finite-MC observation law, original reference stop and bounded 8,192-row follow-up, prior control, conditional/joint inference, SBC and target-price means |
 
 These are development review tutorials. M8 will separately select and pace the
 participant course. Each notebook explains the mathematics and conventions,

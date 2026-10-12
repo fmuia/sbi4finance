@@ -19,16 +19,23 @@ Add a power-law-memory forward-variance model with an independently checked driv
 
 ## Tasks
 
-**Measured M7.3b outcome (12 October):** the fixed-ID cluster run delivered
+**Original M7.3b outcome (12 October):** the fixed-ID cluster run delivered
 both banks (6,146 panels; 98 tasks; 34.28 minutes wall span). The independent
 reference passes 19/20 panels; `validation:260` has ESS 600.55 below 800 and
 largest weight 0.005392 above 0.005. All mean/block/target-precision checks pass.
-The stop rule applies: no neural training or SBC for this frozen run, no bank
-expansion, and the final test stays reserved. M7.3b.1 and bank delivery in
-M7.3b.2 are complete; reference acceptance, M7.3b.3–.4 scientific outcomes and
-M8 inference acceptance remain pending. Their software path is covered by a
-separate reduced smoke test. Notebook09 reviews the actual failed gate; it does
-not convert that result into an accepted posterior.
+The original stop rule prevented neural training, SBC and automatic bank
+expansion. A separately authorized [bounded follow-up](../../rough-reference-expansion.md)
+reuses the original 4,096 reference rows and adds 4,096 new rows. It preserves
+the training bank, cases and gates, and records reference and any subsequent
+neural outcomes separately. Its expanded reference passes all 20 cases and all
+eight gates; the original single flow candidate completed training and exact
+reload and passed all seven neural validation gates, including 512-case SBC.
+Conditional mean RMSE is 0.1114 reference SD versus 1.4726 for prior-only draws;
+maximum target-mean error plus twice MCSE is 0.02526 currency against 0.06.
+M7.3b's bounded validation and didactic deliverables are complete for this
+finite numerical task. These results do not certify continuum or market accuracy.
+The final test stays reserved. Notebook09 reviews
+both studies; a reference pass alone does not accept a neural posterior for M8.
 
 1. Specify the rough kernel, its normalization, roughness parameter, leverage construction, forward-variance curve, and supports. Identify precisely which Gaussian field is being simulated; do not interchange fractional Brownian and Volterra conventions by name.
 2. Build a small-grid covariance-based Gaussian reference including dependence with the asset driver. Use it to check a production hybrid/convolution scheme over representative and difficult parameter settings.
@@ -55,7 +62,7 @@ separates implementation, reference adequacy, neural acceptance and review execu
 | Substep | Output | Acceptance boundary |
 |---|---|---|
 | M7.3b.1 Observation contract | Fixed Q H/eta prior, nine quotes, known curve and context; finite 512-step/262,144-path numerical observation law | Pricing randomness remains explicit. No claim of a continuum posterior or P forecast. |
-| M7.3b.2 Independent banks and reference | 1,024 training bases, separate selection/audit/test, 4,096 reference rows; fixed-ID cluster chunks assemble to the existing schema | Check precision, weights and independent reference blocks. A failed gate stops acceptance; no automatic reference expansion. |
+| M7.3b.2 Independent banks and reference | 1,024 training bases, separate selection/audit/test; original 4,096-row reference and one authorized extension to 8,192; fixed-ID cluster chunks assemble to the existing schema | Check precision, weights and independent reference blocks. Preserve both reports. The extension permits no further automatic doubling. |
 | M7.3b.3 Single joint flow | Eight quote augmentations per training base; one 80-epoch coupling-flow budget and exact checkpoint reload | Train only after the matching reference passes. Keep augmentations grouped and reserve audit cases from selection. |
 | M7.3b.4 Inference and price audit | Conditional/joint comparisons, prior-only control, marginal SBC and two excluded-contract posterior means | Use independent target randomness and report sampling uncertainty. No price-quantile claim; preserve failed gates and reserved final test. |
 | M7.3b.5 Didactic review | Notebook09, reproducible graphs, actual costs, pass/fail outcomes and next-analysis note | Verify offline with all market fixtures absent; cached review does not silently train or launch cluster jobs. |
