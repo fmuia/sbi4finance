@@ -21,8 +21,9 @@ layout and distinguishes additions that still live on separate branches.
    and [target-price distributions](results/hkde-live-demo/live-target-prices.png),
    then the [price-error graph](results/hkde-correction/plots/price-errors.png)
    and [reference-versus-SIR rank graph](results/hkde-correction/plots/reference-pit.png).
-4. For Bergomi, use the latest [PR #14 study](https://github.com/fmuia/sbi4finance/blob/feat/rough-bergomi-option-bank/docs/rough-joint-inference.md)
-   and its notebook09. The latest rough-inference additions are not all in
+4. For Bergomi, use the [bounded reference extension and neural validation](https://github.com/fmuia/sbi4finance/blob/feat/rough-bergomi-option-bank/docs/rough-reference-expansion.md)
+   in PR #14 and its notebook09. The [original stopped study](https://github.com/fmuia/sbi4finance/blob/feat/rough-bergomi-option-bank/docs/rough-joint-inference.md)
+   is retained. The latest rough-inference additions are not all in
    the HKDE/tutorial branch ancestry; see the branch boundary below.
 
 The project should stay easy to change. Prefer the existing functions, explicit
@@ -46,7 +47,7 @@ preserved. This work is not a reproduction/import of Francesco's full SVJ study.
 | M4: HKDE and option panels | Double-exponential price jumps, direct Fourier European pricing, fixed noisy-panel tasks, common option banks and notebook06 | This uses numerical Fourier quadrature, not an imported PROJ implementation. Wider domains and American/exotic products need separate work. |
 | M5: HKDE inference and learned pricing | Frozen neural checkpoint, refined numerical posterior grid, two-contract price surrogate, importance correction and notebook07 | The surrogate passes. The raw flow and corrected pipeline remain provisional for different recorded reasons. |
 | M6: one-factor Bergomi | Forward-variance context, exact OU/asset covariance, complete continuation, European Monte Carlo prices, banks and notebook08 | No two-factor implementation or accepted neural posterior is claimed. |
-| M7: rough Bergomi | Gaussian reference and FFT hybrid driver, option banks, coupled-grid study, restricted H/eta reference pilot and notebook09 | Reference passes 19/20 panels; one efficiency failure stops training/SBC. No accepted rough checkpoint. |
+| M7: rough Bergomi | Gaussian reference and FFT hybrid driver, option banks, coupled-grid study, restricted H/eta pilot and notebook09 | Original 4,096-row reference stopped at 19/20 cases. Bounded 8,192-row follow-up passes all 20 reference cases and all seven neural validation gates, including 512-case SBC. Final test remains reserved; finite-model scope only. |
 | M8: paced options candidate | Notebook10, equations, diagnostics, exercises and provisional live offline demonstration | Fixed development example runs; historical theta SBC failure and pending scientific acceptance remain visible. |
 
 Numba accelerates implemented trajectory loops; independent/reference paths
@@ -126,7 +127,7 @@ The latest important heads at this snapshot are:
 | PR | Branch | Reviewed head | Role |
 |---|---|---|---|
 | [#3](https://github.com/fmuia/sbi4finance/pull/3) | `docs/simulator-plan` | `30982c4` | Authoritative roadmap/subplans |
-| [#14](https://github.com/fmuia/sbi4finance/pull/14) | `feat/rough-bergomi-option-bank` | `073ca8c` | Latest rough banks, refinement and stopped reference pilot |
+| [#14](https://github.com/fmuia/sbi4finance/pull/14) | `feat/rough-bergomi-option-bank` | `0260af9` | Expanded reference bank, passed bounded neural validation and preserved original stop |
 | [#15](https://github.com/fmuia/sbi4finance/pull/15) | `feat/hkde-inference` | `60ebe4d` | HKDE posterior, surrogate and correction evidence; PR base is #14's branch |
 | [#19](https://github.com/fmuia/sbi4finance/pull/19), **draft** | `feat/hkde-offline-tutorial` | `a21d019` before this documentation addition | M8 review; PR base is #15's branch |
 
@@ -259,14 +260,18 @@ state these limitations.
    correction and target prices offline on one fixed development case. Inspect
    its outputs and component costs. Delivery of that runnable example is
    separate from the unresolved M8 scientific release decision.
-5. **Make one bounded rough reference-bank expansion.** The current reference
-   passes 19/20 cases; one has ESS 600.55 < 800 and maximum weight
-   0.005392 > 0.005. Expand the independent reference bank from **4,096 to 8,192
-   rows**, preserving the training bank and all cases, then rerun the reference
-   checks. Train a candidate only if they pass; do not automatically double
-   again after a failure. The existing run stopped before neural training and
-   SBC. Heston retains conditional discrepancies. Two-factor Bergomi, full collaborator SVJ parity, direct-price
-   posteriors, American/exotic pricing and P/Q linkage remain extensions.
+5. **Review the completed rough follow-up and define its reserved test.** The
+   [bounded extension](https://github.com/fmuia/sbi4finance/blob/feat/rough-bergomi-option-bank/docs/rough-reference-expansion.md)
+   retains the original failure and all training/evaluation cases and thresholds.
+   The 8,192-row reference passes 20/20 cases (worst ESS 1,207.19); the unchanged
+   single candidate passes all seven neural validation gates. Its conditional
+   mean RMSE is 0.1114 reference SD versus 1.4726 for prior-only draws. Both
+   methods pass marginal SBC, so the conditional comparison is essential.
+   Notebook09 and the checkpoint are ready for review. A separately frozen
+   reserved-test evaluation is next; it has not run. No further automatic bank
+   doubling or network tuning is part of this follow-up. Heston retains its
+   conditional discrepancies. Two-factor Bergomi, full collaborator SVJ parity,
+   direct-price posteriors, American/exotic pricing and P/Q linkage remain extensions.
 
 The latest [analysis note](https://github.com/fmuia/sbi4finance/blob/feat/rough-bergomi-option-bank/docs/simulator-analysis-next-steps.md)
 preserves older decisions; its chronological “next” sections can describe work

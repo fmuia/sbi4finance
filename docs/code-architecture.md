@@ -273,19 +273,24 @@ pricing comparisons, `option_bank_shards.py` for independently generated array
 tasks and bank assembly, and `rough_reference.py` / `rough_inference.py` for
 the restricted H/eta inverse task. Shards own disjoint split-ID ranges;
 assembly checks coverage and identities, then produces an ordinary
-`option_bank_v1`. `cluster/option_bank_array.sbatch` selects a job-map record
+`option_bank_v1`. Optional verified prefix reuse extends a bank without changing
+its existing rows or schema. `cluster/option_bank_array.sbatch` selects a job-map record
 and invokes that route. Scheduling does not change the examples.
 
 The runner requires an accepted independent reference before training/reload,
-then provides validation-only evaluation. It stopped on a reference-efficiency
-failure before training/SBC; the presence of inference code is not a trained
-rough checkpoint. This pilot's observation law explicitly includes finite
+then provides validation-only evaluation. The original 4,096-row run stopped
+on a reference-efficiency failure. One bounded extension reuses those rows and
+appends 4,096 independent rows: all 20 reference cases and all seven neural validation
+gates now pass, including 512-case SBC. A trained checkpoint is delivered; the
+reserved test remains unevaluated. This pilot's observation law explicitly includes finite
 Monte Carlo pricing randomness followed by quote noise. It preserves base
 groups when augmenting training quotes, and estimates posterior target-price
 **means** using independent pricing randomness; noisy target-estimate quantiles
 are not presented as posterior price uncertainty. Read its
-[study](https://github.com/fmuia/sbi4finance/blob/feat/rough-bergomi-option-bank/docs/rough-joint-inference.md)
-and notebook09 on that branch. These later additions are absent from PR #19's ancestry.
+[extension study](https://github.com/fmuia/sbi4finance/blob/feat/rough-bergomi-option-bank/docs/rough-reference-expansion.md)
+and notebook09 on that branch. The original stopped study is preserved. These
+later additions are absent from PR #19's ancestry; this documentation update
+does not import their code or change the HKDE acceptance result.
 
 **Data workstream, [PRs #5, #6, #16–#18](simulator-handover.md#where-the-work-lives):**
 the separate `datasets/` modules load local CSV/JSON artifacts, prepare return
