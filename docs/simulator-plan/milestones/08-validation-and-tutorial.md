@@ -5,7 +5,7 @@
 ## Purpose
 
 **Current boundary:** one bounded HKDE options candidate is being assembled
-as a **draft 10/10** increment on `feat/hkde-offline-tutorial`, stacked on
+as **[draft PR #19, 10/10](https://github.com/fmuia/sbi4finance/pull/19)** on `feat/hkde-offline-tutorial`, stacked on
 [PR #15](https://github.com/fmuia/sbi4finance/pull/15). Its
 [candidate specification](https://github.com/fmuia/sbi4finance/blob/feat/hkde-offline-tutorial/docs/m8-options-candidate.md)
 and [notebook10](https://github.com/fmuia/sbi4finance/blob/feat/hkde-offline-tutorial/notebooks/10_hkde_corrected_workflow.py)
