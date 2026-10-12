@@ -4,6 +4,15 @@ Prepared 12 October 2026. See the [parallel assignment map](parallel-agent-hando
 for the other agents and ownership boundaries. This brief authorizes no GitHub
 merge and starts no experiment.
 
+## Receiving integration checkpoint
+
+See [the combined review](stack-integration-review.md) for the refreshed full
+head table, composition choices and exact-revision verification. This original
+brief remains the task context; its open-PR table is the preparation snapshot.
+The participant follow-up selected provisional Q/HKDE, with #22 local-panel
+cached/default and opt-in live modes plus #29's decision. GitHub merges remain
+the user's decision.
+
 ## Task and context
 
 Work through [issue #27](https://github.com/fmuia/sbi4finance/issues/27): compose

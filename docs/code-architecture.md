@@ -13,9 +13,10 @@ The [parallel agent handovers](parallel-agent-handover.md) assign ownership of
 scientific, teaching, data-entry and integration changes without introducing
 new architectural layers or competing implementations.
 
-The main code described here is on `feat/hkde-offline-tutorial` (PR #19).
-The later rough-inference and data additions are explicitly marked below:
-they live on separate branches and are not all present in this checkout.
+This checkout composes the simulator, rough-inference, local-data and teaching
+work in the [issue #27 integration review](stack-integration-review.md), which
+records exact input heads and combined verification. The user selected the
+Q/options provisional HKDE route through #26; P returns remains a separate example.
 Having a module or checkpoint does not mean its scientific validation passed.
 
 ## 1. Organizing idea
@@ -231,7 +232,7 @@ and finite-sample errors. [`hkde_diagnostics.py`](../src/sbi4finance/hkde_diagno
 and the evaluation scripts check SBC, conditional/reference accuracy, joint
 quantities and downstream prices. They answer different questions. The latest
 corrected test still fails one SBC gate; its used test and acceptance flag remain
-unchanged. Notebook10 now runs an explicitly **provisional live demonstration**
+unchanged. Notebook10 defaults to a cached review, with an opt-in **provisional live demonstration**
 on fixed synthetic `validation:257` with 2,048 proposals and the same seed and
 numerical tolerances. It uses the existing functions and assets; it adds no new
 inference framework. Technical execution and single-case checks are distinct
@@ -272,7 +273,7 @@ files. `PYTHONPATH=src` selects this checkout when sharing an editable environme
 between worktrees. Commands for checks and other reviews are in the
 [handover](simulator-handover.md#first-review-session).
 
-## 7. Related code on separate branches
+## 7. Composed rough and local-data workflows
 
 **Rough development work, [PR #14](https://github.com/fmuia/sbi4finance/pull/14):**
 `feat/rough-bergomi-option-bank` adds `bergomi_refinement.py` for coupled-grid
@@ -295,9 +296,9 @@ groups when augmenting training quotes, and estimates posterior target-price
 **means** using independent pricing randomness; noisy target-estimate quantiles
 are not presented as posterior price uncertainty. Read its
 [extension study](https://github.com/fmuia/sbi4finance/blob/feat/rough-bergomi-option-bank/docs/rough-reference-expansion.md)
-and notebook09 on that branch. The original stopped study is preserved. These
-later additions are absent from PR #19's ancestry; this documentation update
-does not import their code or change the HKDE acceptance result.
+and notebook09 in this checkout. The original stopped study is preserved.
+These additions were absent from PR #19's ancestry and are now composed
+explicitly; their integration does not change HKDE acceptance.
 
 **Rough held-out evaluation, [PR #28](https://github.com/fmuia/sbi4finance/pull/28):**
 `feat/rough-heldout-test` evaluates the frozen checkpoint and existing reference
@@ -309,8 +310,8 @@ provisional. All 256 cases are used and closed; no retry or tuning followed.
 The [study](https://github.com/fmuia/sbi4finance/blob/feat/rough-heldout-test/docs/rough-heldout-test.md)
 and updated notebook09 explain the conditional failure alongside the passed
 marginal ranks. The independent raw-draw audit, 129 software tests and offline
-26-cell review verify this result, not scientific acceptance. This follow-up
-also remains outside PR #19's code ancestry.
+26-cell review verify this result, not scientific acceptance. The follow-up is
+included in this combined tree; the quoted checks describe its original revision.
 
 **Data workstream, [PRs #5, #6, #16–#18](simulator-handover.md#where-the-work-lives):**
 the separate `datasets/` modules load local CSV/JSON artifacts, prepare return
@@ -339,12 +340,11 @@ Later [PR #21](https://github.com/fmuia/sbi4finance/pull/21) connects that prepa
 panel to the corrected cached lesson; [PR #22](https://github.com/fmuia/sbi4finance/pull/22)
 adds the opt-in provisional live route. They reuse the existing loader,
 correction and checker, with no new bank/adapter format. Their combined review
-bases contain specific older parent revisions; these changes are not imported
-by this architecture note. I1–I3 and I4a are complete, while formal participant
-I4 depends on [HKDE's acceptance decision](https://github.com/fmuia/sbi4finance/issues/24).
-[Issue #27](https://github.com/fmuia/sbi4finance/issues/27) tracks verifying the
-actual combined tree, and [#26](https://github.com/fmuia/sbi4finance/issues/26)
-tracks which route becomes the participant lesson.
+bases contain specific older parent revisions, recorded in the
+[combined review](stack-integration-review.md). I1–I3 and I4a are complete.
+The [HKDE decision](hkde-acceptance-decision.md) from PR #29 retains provisional
+status at 2,048 proposals, so formal I4 remains deferred. #26 owns final
+participant setup and pacing for the selected Q/options route.
 
 Synthetic teaching/training/testing is the required **S** workflow and needs
 no market acquisition. Optional **M** applies a compatible observation to

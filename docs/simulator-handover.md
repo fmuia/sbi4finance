@@ -20,14 +20,23 @@ must retain #22's local input, cached default and explicit live option.
 
 ## Start here
 
+**Combined integration checkpoint:** the [issue #27 review](stack-integration-review.md)
+now composes the simulator, data, rough held-out and #29 decision work in one
+checkout. The [selected participant route](tutorial-participant-route.md) is
+GBM foundations followed by provisional Q/HKDE. Notebook10 retains #22's local
+panel, **cached default** and explicit `demo-hkde-corrected` mode. Scientific
+acceptance remains false; I4 remains deferred. Exact input heads and fresh
+combined verification are recorded in the integration review; older counts
+below describe their original snapshots.
+
 For a module map, data-flow diagrams and extension points, read the companion
 [code architecture guide](code-architecture.md). It describes the implemented
 layout and distinguishes additions that still live on separate branches.
 
 1. Read the [plan and mathematical reading guide](https://github.com/fmuia/sbi4finance/blob/docs/simulator-plan/docs/simulator-plan/README.md)
    in [plan PR #3](https://github.com/fmuia/sbi4finance/pull/3).
-2. Open [notebook10](../notebooks/10_hkde_corrected_workflow.py) for the provisional
-   live synthetic demonstration, and read the [HKDE correction report](hkde-corrected-inference.md)
+2. Open [notebook10](../notebooks/10_hkde_corrected_workflow.py) for the cached review and opt-in
+   provisional live synthetic demonstration, and read the [HKDE correction report](hkde-corrected-inference.md)
    for the retained scientific acceptance failure.
 3. Inspect the live [joint posterior](results/hkde-live-demo/live-joint.png)
    and [target-price distributions](results/hkde-live-demo/live-target-prices.png),
@@ -50,8 +59,8 @@ is needed to continue this tutorial work.
 The original objective was reusable simulation building blocks, pre-simulated
 training banks and cluster generation for a finance SBI tutorial. We preserved
 two distinct applications: **P returns inference and conditional forecasting**,
-and **Q option calibration and downstream model pricing**. Choosing the final
-running example remains a curriculum decision. The existing MMAR example is
+and **Q option calibration and downstream model pricing**. The selected participant
+running example is provisional Q/HKDE; P returns remains available separately. The existing MMAR example is
 preserved. This work is not a reproduction/import of Francesco's full SVJ study.
 
 | Component | Delivered | Acceptance boundary |
@@ -119,7 +128,7 @@ scope; it is not necessarily Git dependency order. The actual PR bases determine
 review/integration order. The plan itself is outside that count.
 
 Remote state was checked for this note: `main` is still `b892fae`, containing
-the merged scaffold PR #2. The following implementation PRs are **open**;
+the merged scaffold PR #2. At the pre-integration snapshot, the following implementation PRs were **open**;
 only #19 is draft. A collaborator starting from `main` will not find this
 implementation stack there yet.
 
@@ -210,7 +219,8 @@ PYTHONPATH=src pixi run test-simulators
 
 Use `PYTHONPATH=src`, especially if sharing an editable environment between
 worktrees. Opening these reviews starts no training, bank generation or
-cluster job. Notebook10 now runs fixed synthetic **validation:257** with
+cluster job. Notebook10 defaults to cached review. `pixi run demo-hkde-corrected` runs
+fixed synthetic **validation:257** with
 **2,048 proposals**, the same proposal seed and unchanged numerical tolerances.
 It displays the joint correction and two target-price distributions as a
 **provisional demonstration**. No real observations or generating truth enter

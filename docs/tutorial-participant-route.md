@@ -4,16 +4,16 @@
 **Q/options route with a provisional HKDE diagnostic lesson**, following an
 exact GBM foundation. The financial question is: *which parameter pairs explain
 these nine option premiums, and what model prices do those pairs imply for two
-excluded European puts?* The user also confirmed that #27's combined revision
-is not yet available. Curriculum choice is recorded; final participant delivery
-verification is pending that revision.
+excluded European puts?* The [#27 combined review](stack-integration-review.md) now includes the
+selected source and presentation dependencies. Final participant delivery
+verification is recorded against its pinned revision.
 
 The scientific decision in [PR #29](https://github.com/fmuia/sbi4finance/pull/29),
 at [45bb08d](https://github.com/fmuia/sbi4finance/blob/45bb08d2b091df7bae49fa250424e122f19e3eca/docs/hkde-acceptance-decision.md),
 retains the frozen **2,048-proposal selected-case demonstration as provisional**.
 It grants no formal scientific participant acceptance; **I4 remains deferred**.
 This route uses that scope, not a new acceptance claim. PR #29's decision and
-notebook changes are reviewed dependencies, not imported code in this follow-up.
+notebook changes are included in this combined checkout.
 
 ## Why this question, and what remains optional
 
@@ -64,7 +64,7 @@ schedule's subject allocation and can be reassigned by the team.
 Here **GBM01** means [01_gbm_foundations.py](../notebooks/01_gbm_foundations.py),
 **HKDE10** means [10_hkde_corrected_workflow.py](../notebooks/10_hkde_corrected_workflow.py),
 and **HKDE11** means [11_hkde_calibration_audit.py](../notebooks/11_hkde_calibration_audit.py).
-The data walkthrough and specified #22/#29 additions are pending integration.
+The data walkthrough and specified #22/#29 additions are included here.
 
 | Elapsed | Topic and exact source sections | Activity / output | Lead |
 |---|---|---|---|
@@ -115,7 +115,7 @@ Neither rerunning a test cohort nor perturbing the fixed panel is an exercise.
 | Likelihood and reference | Nine Fourier prices per row at 1,024 nodes / upper limit 400; `docs/results/hkde-inference/{reference.json,reference-grid.npz,neural-validation.json,validation-checks.npz}`; numerical posterior grid has 129 points per parameter |
 | Forward outputs | `docs/results/hkde-surrogate/{model.npz,report.json}` prices only the supported European puts `(K=95,T=.75)` and `(K=80,T=1)`; it does not replace the nine-contract likelihood calculation |
 | Preserved evidence | `docs/results/hkde-correction/{validation.json,test.json,validation-checks.npz,test-checks.npz}` and `hkde-correction-v1/validation.json`; gate-audit report/checks/figures, linked live figures and source/artifact bindings remain available |
-| Scientific decision dependency | #29 at 45bb08d: `docs/hkde-acceptance-decision.md`, `docs/results/hkde-acceptance/{decision.json,artifact-manifest.json}` and extended notebook11; retained as external evidence until #27 composes the tree |
+| Scientific decision dependency | #29 at 45bb08d: `docs/hkde-acceptance-decision.md`, `docs/results/hkde-acceptance/{decision.json,artifact-manifest.json}` and extended notebook11; included in the #27 combined tree |
 | Runtime | Locked Pixi CPU environment: Python 3.12, BayesFlow 2.0.14, Keras 3.15.1, JAX 0.11.1; `KERAS_BACKEND=jax`, `PYTHONPATH=src` tied to the actual checkout. No GPU or cluster access needed. Platform and actual memory/runtime must be recorded at final verification. |
 
 The compact table identifies teaching assets, not a replacement integrity

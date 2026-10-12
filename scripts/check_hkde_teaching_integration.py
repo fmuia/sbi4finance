@@ -15,6 +15,7 @@ import re
 import runpy
 import shutil
 import socket
+import subprocess
 import sys
 import tempfile
 import time
@@ -22,6 +23,66 @@ import time
 
 def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def checkout_revision(root):
+    """Identify HEAD and whether its committed tree describes the working copy."""
+    def git(*arguments):
+        return subprocess.check_output(
+            ["git", "-C", str(root), *arguments], text=True,
+            stderr=subprocess.DEVNULL,
+        ).strip()
+
+    try:
+        return {"commit": git("rev-parse", "HEAD"),
+                "tree": git("rev-parse", "HEAD^{tree}"),
+                "dirty": bool(git("status", "--porcelain", "--untracked-files=normal"))}
+    except (OSError, subprocess.CalledProcessError):
+        # A source archive has no Git metadata; the copied-file hashes still
+        # identify exactly what ran. Never attribute it to a historical base.
+        return {"commit": None, "tree": None, "dirty": None}
+
+
+def isolation_status(isolated):
+    """Inspect the copy, including banks stored below docs/results."""
+    paths = [path.relative_to(isolated) for path in isolated.rglob("*")]
+    status = {
+        "market_files_present": any(
+            path.parts[0] in {"data", "tests"}
+            and not path.is_relative_to("data/synthetic/hkde-walkthrough")
+            and path not in (Path("data"), Path("data/synthetic"))
+            for path in paths),
+        "raw_banks_present": any(
+            {"bank", "banks"}.intersection(path.parts)
+            or (path.suffix == ".npz" and (
+                path.name.startswith("bank-") or path.stem in {"train", "validation", "test"}))
+            for path in paths),
+        "unused_checkpoints_present": any(
+            path.parts[0] == "checkpoints" and path != Path("checkpoints")
+            and not path.is_relative_to("checkpoints/hkde-theta-intensity-provisional")
+            for path in paths),
+    }
+    if any(status.values()):
+        raise RuntimeError(f"unexpected inputs in isolated review: {status}")
+    return status
+
+
+def copy_inputs(root, isolated, bindings):
+    """Copy code and explicit lesson assets, never entire result directories."""
+    paths = set(bindings)
+    for directory in ("src", "scripts", "configs"):
+        paths.update(str(path.relative_to(root)) for path in (root / directory).rglob("*")
+                     if path.is_file() and "__pycache__" not in path.parts)
+    hashes = {}
+    for name in sorted(paths):
+        relative = Path(name)
+        if relative.is_absolute() or ".." in relative.parts:
+            raise ValueError(f"review input must be relative to the checkout: {name}")
+        target = isolated / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(root / relative, target)
+        hashes[name] = sha(target)
+    return hashes, isolation_status(isolated)
 
 
 def main():
@@ -38,6 +99,7 @@ def main():
     if args.artifacts:
         args.artifacts.mkdir(parents=True, exist_ok=False)
     started = time.perf_counter()
+    revision = checkout_revision(root)
     notebooks = ("hkde_data_walkthrough.py", "10_hkde_corrected_workflow.py")
     correction_dir = Path("docs/results/hkde-correction")
     bindings = set()
@@ -61,6 +123,11 @@ def main():
                      "docs/results/hkde-inference/validation-checks.npz",
                      "docs/results/hkde-correction/test-reference-pit.npz",
                      "docs/results/hkde-correction/test-independent-audit.json",
+                     "docs/tutorial-participant-route.md",
+                     "docs/hkde-correction-boundary-protocol.md",
+                     "docs/hkde-correction-protocol.md",
+                     "docs/hkde-joint-inference.md",
+                     "docs/hkde-price-surrogate.md",
                      "docs/hkde-calibration-gate-audit.md",
                      "docs/results/hkde-gate-audit/report.json",
                      "docs/results/hkde-gate-audit/checks.npz",
@@ -71,19 +138,9 @@ def main():
             if sha(root / name) != expected_sha:
                 raise RuntimeError(f"gate audit binding changed: {name}")
             bindings.add(name)
-    source_hashes = {name: sha(root / name) for name in sorted(bindings)}
-
     with tempfile.TemporaryDirectory(prefix="hkde-integration-offline-") as directory:
         isolated = Path(directory).resolve()
-        for relative in ("src", "scripts", "configs", "docs",
-                         "checkpoints/hkde-theta-intensity-provisional",
-                         "data/synthetic/hkde-walkthrough"):
-            shutil.copytree(root / relative, isolated / relative,
-                            ignore=shutil.ignore_patterns("__pycache__"))
-        (isolated / "notebooks").mkdir()
-        for name in notebooks:
-            shutil.copyfile(root / "notebooks" / name, isolated / "notebooks" / name)
-        shutil.copyfile(root / "README.md", isolated / "README.md")
+        source_hashes, isolated_status = copy_inputs(root, isolated, bindings)
         sys.path.insert(0, str(isolated / "src"))
         os.environ["MPLBACKEND"] = "Agg"
         os.environ["MPLCONFIGDIR"] = str(isolated / "mpl")
@@ -181,16 +238,16 @@ def main():
         for name, expected_sha in source_hashes.items():
             if sha(isolated / name) != expected_sha:
                 raise RuntimeError(f"teaching execution changed a bound artifact: {name}")
+        isolation_status(isolated)
         report = {
             "passed": True, "execution_passed": True,
             "evidence_scope": ("S: offline provisional live demonstration on validation:257"
                                if args.live else "S: offline cached teaching integration only"),
-            "integration_base_commit": "9cb6d20e0999e3888c3c906b893350e5f229ad3f",
-            "baseline_parent_commits": ["f385225874c875a7cfb1187554fe9f37fc88120c",
-                                        "88202d1cb39bc511ce0c9fcc8caa681d5ee13da1"],
+            "source_revision": revision,
+            "source_revision_scope": "Git tree identifies committed HEAD; source_sha256 identifies every copied execution input, including working-copy changes.",
             "case_id": "validation:257", "n_contracts": len(definitions["local_panel"].rows),
             "notebooks": runs, "network_probe_rejected": True, "bayesflow_imported": "bayesflow" in sys.modules,
-            "market_files_present": False, "raw_banks_present": False,
+            **isolated_status,
             "checkpoint_bytes_present_for_hashing": True, "checkpoint_loaded": args.live,
             "live_executed": args.live, "live_accuracy_passed": bool(live["passed"]) if args.live else None,
             "new_test_rerun": False, "bound_artifacts_unchanged": True,

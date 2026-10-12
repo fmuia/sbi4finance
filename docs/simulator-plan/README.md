@@ -6,6 +6,11 @@ Build reusable simulators and reproducible training datasets for two financial a
 
 The intended result is a small library inside `sbi4finance`, a cluster workflow that produces validated simulation banks, and selected BayesFlow examples that can be run from saved checkpoints. Numerical pricing engines provide reference calculations and training labels. Learned pricing components can subsequently remove those expensive calculations from the routine inference path.
 
+The [combined integration review](../stack-integration-review.md) records the
+current source composition. Issue #26 selected the provisional Q/HKDE route
+with GBM foundations; historical planning alternatives below remain available
+for future extensions and do not reopen that participant choice.
+
 ## Build for tutorial iteration
 
 **Current priority: review the bounded options candidate and its retained scientific stop.**

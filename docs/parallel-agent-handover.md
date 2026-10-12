@@ -21,6 +21,16 @@ D/#27 has no pinned combined revision yet. C therefore hands back a prepared
 route, not a completed integrated participant release. #29 retains provisional
 HKDE selected-case teaching and leaves formal I4 deferred.
 
+## Integration checkpoint
+
+The [combined review](stack-integration-review.md) consumes the selected heads,
+including #29's provisional HKDE decision and participant-route commit
+`be4a3baf6d5753337f93c1b95510310aea2d3d69`. The agreed notebook10 behavior is
+#22's local panel, cached default and explicit 2,048-proposal demo. The selected
+Q/options route replaces the earlier open curriculum choice. #26 verifies the
+pinned combined revision; formal I4 stays deferred. The assignments and original
+briefs below retain their provenance; no new study or GitHub merge is authorized.
+
 ## Agent assignments and when to start
 
 | Agent | Handover | Work that can start now | Dependency for later work |

@@ -45,8 +45,9 @@ def _(mo):
     nine option quotes, and what prices do those plausible pairs imply for
     two other contracts?
 
-    This notebook assembles existing building blocks into an **M8 options
-    candidate**. It does not select the final returns-versus-options curriculum.
+    This notebook supplies the **provisional HKDE segment** of the selected
+    [two-hour Q/options route](../docs/tutorial-participant-route.md), following
+    GBM foundations and the local-data walkthrough.
     The model, observation and downstream prices all use the risk-neutral
     measure Q; nothing here forecasts tomorrow's chain or physical-measure
     loss probabilities.
@@ -56,10 +57,13 @@ def _(mo):
     and check a different estimator: likelihood-weighted joint parameter draws.
     An accepted forward surrogate then prices two fixed target puts.
 
-    **Suggested 30-minute lesson:** 5 minutes for the financial task and data
-    roles, 8 for correction, 7 for the live posterior/prices, 7 for diagnostics,
-    and 3 for the exercises. Expensive training and reference studies are
-    cached. Default execution reviews those caches. Launch
+    **Participant pacing:** the route card allocates 60–95 minutes to correction
+    and joint prices, 95–113 minutes to diagnostics with notebook11, and the
+    final seven minutes to discussion. Its six exercises span the full course.
+    For a standalone review, the original 30-minute outline remains useful:
+    5 minutes for task/data roles, 8 for correction, 7 for posterior/prices,
+    7 for diagnostics and 3 for exercises. Expensive training and reference
+    studies are cached. Default execution reviews those caches. Launch
     `pixi run demo-hkde-corrected` for one explicitly **provisional live
     demonstration** with 2,048 proposals. It starts no bank generation,
     training or cluster job and needs no real-market fixtures. Formal
@@ -700,8 +704,8 @@ def _(ROOT, artifact_paths, mo):
     6. Which parts are precomputed, which run live, and which would have to change for an American option or a returns-based P forecast?
     7. If a numerical reference and an approximate sampler show the same rank shift on one finite cohort, what does this establish—and what remains uncertain?
 
-    This draft **synthetic options lesson** leaves the final curriculum
-    choice open. Optional market application would need compatible observations
+    This selected **provisional synthetic options lesson** retains the failed
+    historical scientific gate. Optional market application would need compatible observations
     and context; empirical claims need separately held-out market outcomes.
     Neither is required for this offline lesson, and neither is supplied by
     labelling synthetic fixtures as real.

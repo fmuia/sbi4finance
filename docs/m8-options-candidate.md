@@ -213,4 +213,4 @@ The broader simulator catalog and its cluster banks remain available. Further
 Heston analysis, additional dimensions,
 American/exotic pricers, physical/risk-neutral linkage and empirical market
 claims are separate work. They neither invalidate this bounded options task
-nor gain acceptance from it. Curriculum selection remains a team decision.
+nor gain acceptance from it. The selected course follows the participant route card; model expansion remains separate.

@@ -17,10 +17,17 @@ import subprocess
 import sys
 import tempfile
 import time
+import tomllib
 
 
 NOTEBOOK = "notebooks/11_hkde_calibration_audit.py"
 DECISION = "docs/results/hkde-acceptance/decision.json"
+# These presentation bindings also identify the original delivery evidence.
+# Reconciled delivery is checked separately; scientific inputs stay byte-exact.
+HISTORICAL_TEACHING_PATHS = {
+    "notebooks/10_hkde_corrected_workflow.py",
+    "pyproject.toml",
+}
 CACHED_INPUTS = [
     "docs/results/hkde-gate-audit/report.json",
     "docs/results/hkde-gate-audit/checks.npz",
@@ -84,10 +91,69 @@ def source(root, name):
     return path
 
 
+def verify_manifest(root, manifest, *, allow_integrated_teaching=False):
+    """Verify current inputs and, explicitly, two historical delivery bindings.
+
+    The historical manifest is never changed. Only notebook10 and the Pixi
+    task table can be reconciled, using original bytes from local Git history.
+    This does not verify the replacement lesson's execution or accept inference.
+    """
+    frozen = manifest["files"]
+    if not frozen:
+        raise ValueError("Frozen manifest is empty")
+    current_sha256 = {name: sha(source(root, name).read_bytes()) for name in frozen}
+    mismatches = [name for name, digest in frozen.items() if current_sha256[name] != digest]
+    if mismatches and (not allow_integrated_teaching
+                       or not set(mismatches) <= HISTORICAL_TEACHING_PATHS):
+        raise ValueError(f"Frozen manifest hashes differ: {mismatches}")
+
+    replacements = {}
+    for name in mismatches:
+        base = manifest["base_commit"]
+        if not re.fullmatch(r"[0-9a-f]{40}", base):
+            raise ValueError("Historical teaching verification requires a full frozen commit SHA")
+        try:
+            original = subprocess.run(
+                ["git", "-C", str(root), "show", f"{base}:{name}"],
+                check=True, capture_output=True,
+            ).stdout
+        except (OSError, subprocess.CalledProcessError) as error:
+            raise ValueError(f"Cannot verify historical teaching input {name} at local commit {base}") from error
+        if sha(original) != frozen[name]:
+            raise ValueError(f"Historical teaching input differs from frozen manifest: {name}")
+        if name == "pyproject.toml":
+            historical_config = tomllib.loads(original.decode())
+            current_config = tomllib.loads(source(root, name).read_text())
+            for config in (historical_config, current_config):
+                config.get("tool", {}).get("pixi", {}).pop("tasks", None)
+            if historical_config != current_config:
+                raise ValueError("Integrated pyproject.toml may change only the Pixi task table")
+        replacements[name] = {
+            "historical_commit": base,
+            "historical_sha256": frozen[name],
+            "current_sha256": current_sha256[name],
+            "scope": ("Pixi tasks only; dependency and environment configuration unchanged"
+                      if name == "pyproject.toml" else
+                      "Reconciled teaching entry point; cached/live execution requires separate integration verification"),
+        }
+    return {
+        "manifest_files_verified": len(frozen),
+        "manifest_current_files_verified": len(frozen) - len(replacements),
+        "manifest_historical_teaching_files_verified": len(replacements),
+        "all_frozen_files_match_current_tree": not replacements,
+        "scientific_inputs_match_current_tree": True,
+        "historical_teaching_bindings": replacements,
+    }
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repo", type=Path, default=Path(__file__).resolve().parents[1])
     parser.add_argument("--out", type=Path, required=True)
+    parser.add_argument(
+        "--allow-integrated-teaching", action="store_true",
+        help="Verify original notebook10/Pixi-task bindings in local Git and record their replacements; scientific inputs remain exact",
+    )
     args = parser.parse_args()
     root, out = args.repo.resolve(), args.out.resolve()
     if out.exists():
@@ -99,10 +165,11 @@ def main():
         raise ValueError("Artifact manifest differs from the decision binding")
     manifest = json.loads(manifest_bytes)
     frozen = manifest["files"]
-    mismatches = [name for name, digest in frozen.items()
-                  if sha(source(root, name).read_bytes()) != digest]
-    if not frozen or mismatches:
-        raise ValueError(f"Frozen manifest is empty or hashes differ: {mismatches}")
+    if manifest["base_commit"] != decision["base_commit"]:
+        raise ValueError("Manifest and decision must bind the same historical commit")
+    provenance = verify_manifest(
+        root, manifest, allow_integrated_teaching=args.allow_integrated_teaching,
+    )
     out.mkdir(parents=True)
     isolated = Path(tempfile.mkdtemp(prefix="hkde-acceptance-review-", dir="/tmp"))
     copied = {}
@@ -190,7 +257,7 @@ print('External Python socket/DNS access and scientific imports guarded')
         "copied_src_checkpoints_raw_banks_market_fixtures": False,
         "network_guard_scope": "Python socket connect/connect_ex and DNS; loopback/Unix IPC permitted; not an OS sandbox",
         "network_guard_sha256": sha(GUARD.encode()),
-        "manifest_files_verified": len(frozen), "source_and_artifact_sha256": copied,
+        **provenance, "source_and_artifact_sha256": copied,
         "verifier_sha256": sha(Path(__file__).read_bytes()),
         "python_executable": sys.executable, "python_version": platform.python_version(),
         "package_versions": {name: version(name) for name in ("marimo", "numpy")},

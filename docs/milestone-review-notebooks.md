@@ -5,7 +5,7 @@ From the repository root, install the pinned environment with
 
 | Command | Notebook | What to inspect |
 |---|---|---|
-| `PYTHONPATH=src pixi run review-hkde-corrected` | [10_hkde_corrected_workflow.py](../notebooks/10_hkde_corrected_workflow.py) | M8 / increment 10: provisional live joint correction and target-price uncertainty; historical theta SBC failure retained, scientific acceptance pending |
+| `PYTHONPATH=src pixi run review-hkde-corrected` | [10_hkde_corrected_workflow.py](../notebooks/10_hkde_corrected_workflow.py) | M8 / increment 10: cached default and opt-in provisional live joint correction and target-price uncertainty; historical theta SBC failure retained, scientific acceptance pending |
 | `pixi run review-foundations` | [01_gbm_foundations.py](../notebooks/01_gbm_foundations.py) | M0–M2 / increments 1–3: observation and truth roles, exact GBM posterior/prediction, separate Q prices, tiny saved bank, historical training and actual cluster evidence |
 | `pixi run review-kernels` | [04_heston_svj_kernels.py](../notebooks/04_heston_svj_kernels.py) | M3.1–M3.2 / increment 4: diffusion and price jumps, signed-state restart, matched NumPy/Numba calculations and recorded numerical/timing checks |
 | `pixi run review-heston` | [05_heston_joint_inference.py](../notebooks/05_heston_joint_inference.py) | M3.3 / increment 5: joint parameter/state inference, four original cases, neural/reference posteriors, future losses, failed frozen test, spline follow-up and bounded-time diagnosis/validation |
@@ -14,8 +14,8 @@ From the repository root, install the pinned environment with
 | `pixi run review-rough-inference` | [09_rough_inference.py](../notebooks/09_rough_inference.py) | M7.3b / increment 9 and issue #23: original reference stop, passed development validation and later held-out conditional-spread failure, with prior control, joint inference, SBC and target-price means |
 
 The earlier notebooks are development review tutorials. Notebook 10 packages
-one possible M8 participant segment; the final returns-versus-options curriculum
-remains open. Each notebook explains the mathematics and conventions,
+the provisional HKDE segment selected for the Q/options participant route
+through issue #26. Scientific acceptance remains separate. Each notebook explains the mathematics and conventions,
 distinguishes recorded results from bounded live examples where enabled,
 links the evidence, and includes exercises. No default cell
 downloads market observations, trains a full network or submits a cluster job.
@@ -42,7 +42,8 @@ The proposal combines 80% flow, 10% uniform prior and 10% fixed boundary density
 the inference prior stays uniform. The raw flow's failed price gate and the first
 correction's reliability stop remain part of the explanation.
 
-The default live cell is deliberately bounded to 2,048 proposals for the saved
+The default is cached review; `pixi run demo-hkde-corrected` opts into a
+live cell bounded to 2,048 proposals for the saved
 synthetic `validation:257` panel, with the unchanged seed and tolerances. This is
 an explicitly **provisional demonstration** on a selected development case,
 not a new test. It computes nine numerical prices for each likelihood and
@@ -62,7 +63,7 @@ The independent-grid posterior PIT on the same panels also fails theta
 (0.103485 against 0.092513), close to the SIR value. This comparison does not
 isolate correction-specific bias or justify ignoring the frozen gate.
 
-The [live verification record](results/hkde-live-demo/verification.json) reports
+The historical PR #19 [live verification record](results/hkde-live-demo/verification.json) reports
 **17 cells, zero errors, 13.50 seconds** for the full offline export, including
 **5.37 seconds** for the live calculation. Market fixtures and raw training
 banks were absent, and external connections were blocked. The fixed case meets
@@ -87,8 +88,8 @@ includes presentation/startup work and must not be confused with the separately
 reported live stages or warm repeated throughput. Scientific
 correction evidence lives in [the correction report](hkde-corrected-inference.md).
 Neither this candidate nor its execution changes Heston or rough Bergomi's
-unresolved inference status, selects the final curriculum, or supplies market
-evidence.
+unresolved inference status or supplies market evidence. See the
+[combined integration review](stack-integration-review.md) for current verification.
 
 ## Verification and reproduction
 

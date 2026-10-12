@@ -12,6 +12,8 @@ The historical failed calibration gate stays visible. This is selected-case
 teaching, not scientific acceptance, physical-measure risk forecasting or a
 claim about market performance; formal HKDE I4 remains deferred.
 
+The [combined integration review](docs/stack-integration-review.md) records exact
+source heads, conflict choices and verification for issue #27.
 The [participant route card](docs/tutorial-participant-route.md) specifies the
 sections, exercises, inputs, assets and modes. The schedule below totals **120
 minutes including exercises**; lead assignments carry forward the original
@@ -148,7 +150,7 @@ sections of these reviews; the full development-review collection is optional. C
 | Review notebook | Milestones / increments | Run |
 |---|---|---|
 | [HKDE calibration-gate audit](notebooks/11_hkde_calibration_audit.py) | M8 follow-up: threshold calibration, conditional reference-rank controls and finite-pool CDF errors; no acceptance override | `PYTHONPATH=src pixi run review-hkde-calibration` |
-| [Corrected HKDE options candidate](notebooks/10_hkde_corrected_workflow.py) | M8 / 10: provisional live joint correction and two target-price distributions; historical theta SBC failure retained, participant acceptance pending | `PYTHONPATH=src pixi run review-hkde-corrected` |
+| [Corrected HKDE options candidate](notebooks/10_hkde_corrected_workflow.py) | M8 / 10: cached default and opt-in provisional live joint correction and two target-price distributions; historical theta SBC failure retained, participant acceptance pending | `PYTHONPATH=src pixi run review-hkde-corrected` |
 | [GBM, banks and cluster](notebooks/01_gbm_foundations.py) | M0–M2 / 1–3: exact inference, array roles, reproducible banks and the recorded cluster result | `pixi run review-foundations` |
 | [Heston and Gaussian jumps](notebooks/04_heston_svj_kernels.py) | M3.1–M3.2 / 4: diffusion/jump simulation, continuation, numerical checks and Numba timings | `pixi run review-kernels` |
 | [Joint Heston inference](notebooks/05_heston_joint_inference.py) | M3.3 / 5: observed histories, reference/neural joint posteriors, conditional futures and the failed frozen checks | `pixi run review-heston` |
@@ -164,7 +166,8 @@ original provisional checkpoint visible during further development.
 Notebook 10's original 30-minute pacing is a standalone review suggestion.
 For the selected curriculum, follow the schedule and exercises in the route
 card above; the combined lesson is still awaiting #27 verification.
-Opening it runs the bounded 2,048-proposal correction and target-price calculation
+Opening it reviews cached evidence; `pixi run demo-hkde-corrected` runs
+the bounded 2,048-proposal correction and target-price calculation
 offline while keeping the historical failure visible. The fixed example is a
 development case, not new calibration evidence. No market fixtures or raw
 training banks are required. Inspect the [joint posterior](docs/results/hkde-live-demo/live-joint.png),
