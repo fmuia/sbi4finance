@@ -96,13 +96,13 @@ two-hour participant curriculum. Closely related increments share named sections
 
 | Review notebook | Milestones / increments | Run |
 |---|---|---|
+| [Corrected HKDE options candidate](notebooks/10_hkde_corrected_workflow.py) | M8 / 10: cached correction diagnostics; new-test theta SBC failed, live inference disabled, participant acceptance pending | `PYTHONPATH=src pixi run review-hkde-corrected` |
 | [GBM, banks and cluster](notebooks/01_gbm_foundations.py) | M0–M2 / 1–3: exact inference, array roles, reproducible banks and the recorded cluster result | `pixi run review-foundations` |
 | [Heston and Gaussian jumps](notebooks/04_heston_svj_kernels.py) | M3.1–M3.2 / 4: diffusion/jump simulation, continuation, numerical checks and Numba timings | `pixi run review-kernels` |
 | [Joint Heston inference](notebooks/05_heston_joint_inference.py) | M3.3 / 5: observed histories, reference/neural joint posteriors, conditional futures and the failed frozen checks | `pixi run review-heston` |
 | [HKDE and option panels](notebooks/06_hkde_and_pricing.py) | M4 / 6: jump law, Q prices, noisy observations, bank roles and reference checks | `pixi run review-hkde` |
 | [HKDE learned prices](notebooks/07_hkde_price_surrogate.py) | M5.2 / 7: supervised regression, matched price propagation, independent accuracy and cost checks | `pixi run review-hkde-surrogate` |
 | [Bergomi models](notebooks/08_bergomi_models.py) | M6–M7 / 8–9: factor and rough drivers, memory, MC pricing, numerical and bank evidence | `pixi run review-bergomi` |
-| [Corrected HKDE options candidate](notebooks/10_hkde_corrected_workflow.py) | M8 / 10: cached correction diagnostics; new-test theta SBC failed, live inference disabled, participant acceptance pending | `PYTHONPATH=src pixi run review-hkde-corrected` |
 
 Default execution uses synthetic examples and committed evidence, with no market
 downloads, cluster submission or full training run. Recorded results and fresh

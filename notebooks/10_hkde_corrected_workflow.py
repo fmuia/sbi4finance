@@ -495,6 +495,23 @@ def _(cached_figures, mo, reports):
                     if _report.get("calibration", {}).get("skipped")]
         _items.append(mo.callout("Calibration was not run: " + "; ".join(_skipped) if _skipped else
                                 "No corrected calibration result is recorded yet.", kind="info"))
+    if "reference-pit" in cached_figures:
+        _items.append(mo.md(r"""
+            **Interpreting the held-out failure.** On the same 256 panels,
+            the numerical-reference marginal CDF evaluated at each truth has
+            nearly the same long-run-variance shift: KS 0.10349 versus 0.10325
+            for the SIR ranks, both above 0.09251. The 65-node comparison gives
+            0.10340. This post-hoc calculation uses saved observations and the
+            existing quadrature grid; it generates no new test or proposal draws.
+
+            The agreement suggests variation shared by this finite cohort,
+            rather than demonstrating proposal-specific bias. A calibrated
+            method can occasionally fail a finite-sample diagnostic. The
+            numerical reference is still approximate, and this explanation
+            does not override the frozen gate. The corrected pipeline remains
+            provisional; this review skips the live participant example.
+            """))
+        _items.append(cached_figures["reference-pit"])
     mo.vstack(_items)
     return
 
@@ -519,8 +536,9 @@ def _(ROOT, artifact_paths, mo):
     4. Why must θ and λ remain paired when evaluating target prices?
     5. Distinguish error from raw neural inference, finite-pool importance sampling, numerical Fourier pricing and the forward surrogate.
     6. Which parts are precomputed, which run live, and which would have to change for an American option or a returns-based P forecast?
+    7. If a numerical reference and an approximate sampler show the same rank shift on one finite cohort, what does this establish—and what remains uncertain?
 
-    This complete **synthetic options candidate** leaves the final curriculum
+    This draft **synthetic options lesson** leaves the final curriculum
     choice open. Optional market application would need compatible observations
     and context; empirical claims need separately held-out market outcomes.
     Neither is required for this offline lesson, and neither is supplied by

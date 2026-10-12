@@ -5,10 +5,10 @@ From the repository root, install the pinned environment with
 
 | Command | Notebook | What to inspect |
 |---|---|---|
+| `PYTHONPATH=src pixi run review-hkde-corrected` | [10_hkde_corrected_workflow.py](../notebooks/10_hkde_corrected_workflow.py) | M8 / increment 10: cached options-correction review; new-test theta SBC failed, live inference disabled, participant acceptance pending |
 | `pixi run review-foundations` | [01_gbm_foundations.py](../notebooks/01_gbm_foundations.py) | M0–M2 / increments 1–3: observation and truth roles, exact GBM posterior/prediction, separate Q prices, tiny saved bank, historical training and actual cluster evidence |
 | `pixi run review-kernels` | [04_heston_svj_kernels.py](../notebooks/04_heston_svj_kernels.py) | M3.1–M3.2 / increment 4: diffusion and price jumps, signed-state restart, matched NumPy/Numba calculations and recorded numerical/timing checks |
 | `pixi run review-heston` | [05_heston_joint_inference.py](../notebooks/05_heston_joint_inference.py) | M3.3 / increment 5: joint parameter/state inference, four original cases, neural/reference posteriors, future losses, failed frozen test, spline follow-up and bounded-time diagnosis/validation |
-| `PYTHONPATH=src pixi run review-hkde-corrected` | [10_hkde_corrected_workflow.py](../notebooks/10_hkde_corrected_workflow.py) | M8 / increment 10: cached options-correction review; new-test theta SBC failed, live inference disabled, participant acceptance pending |
 
 The earlier notebooks are development review tutorials. Notebook 10 packages
 one possible M8 participant segment; the final returns-versus-options curriculum
