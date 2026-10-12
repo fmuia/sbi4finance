@@ -11,7 +11,8 @@ and notebook 08's rough sections. M7.1–M7.2 numerical infrastructure and M7.3a
 bank delivery are runnable; their scientific evidence is bounded to the recorded
 fixtures/screens. M7.3b now follows the frozen [restricted posterior protocol](../../rough-inference-protocol.md); scientific acceptance remains separate from delivery. The maximum 128-to-512-step bank-grid difference is
 0.0427 currency with 0.0248 combined SE: the screen passes but does not prove
-bias below 0.025. No posterior or scalar-state rough continuation is claimed.
+bias below 0.025. These numerical checks alone do not establish posterior
+acceptance or scalar-state rough continuation; inference evidence follows below.
 
 **Coupled-grid follow-up:** the [frozen paired study](../../bergomi-coupled-refinement.md) leaves the 128-step comparison unresolved at H=0.1 and eta=1.2: maximum 128-to-1,024 envelope 0.03839 exceeds 0.025. All 512-to-1,024 comparisons resolve within the budget (maximum 0.02011). This supports 512 steps as a candidate for a new explicitly numerical pilot; it does not prove continuum accuracy or change existing bank identities. The bounded numerical study is complete. M7.3b now has a declared finite-Monte-Carlo observation law, independent-bank reference and bounded training/audit pipeline. Follow its [run record](../../rough-joint-inference.md) for measured status.
 
