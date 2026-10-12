@@ -112,8 +112,9 @@ Notebook 10 is designed as a 30-minute participant candidate built from the
 earlier reviews; it does not select or replace the full tutorial curriculum.
 The failed frozen test keeps its live 2,048-proposal correction disabled. Opening
 it reviews the cached evidence and mathematical workflow without new inference,
-market fixtures or raw training banks. A successful review export would verify
-the presentation, not accept the unfinished participant workflow.
+market fixtures or raw training banks. The isolated review export passes with
+17 cells, zero errors and 8.29 seconds; it verifies the presentation, not the
+unfinished participant workflow.
 
 The Heston review explains the [time-context correction](docs/heston-time-context.md),
 with before/after recurrent-gate diagnostics and the improved but still-failing

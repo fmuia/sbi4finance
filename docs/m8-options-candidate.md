@@ -97,6 +97,14 @@ measurement of live correction cost.
 
 ## M8.4 — Handover and open work
 
+The [isolated review verification](results/hkde-correction/notebook-verification.json)
+passes strict checking and HTML export: **17 cells, zero errors, 8.29 seconds**,
+with external connections blocked and market fixtures/raw banks absent. All
+four diagnostic figures and the failed/disabled status were inspected. This
+uses an existing pinned Pixi environment in a fresh source/assets copy; it is
+not a fresh dependency installation. It measures cached review rendering,
+not live inference, and does not accept the participant pipeline.
+
 Record the exact scientific and notebook outcomes alongside their immutable
 artifacts. Only a passing corrected pipeline plus a successful live offline
 export accepts this bounded S candidate. The notebook's status display must

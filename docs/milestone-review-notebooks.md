@@ -14,7 +14,7 @@ The earlier notebooks are development review tutorials. Notebook 10 packages
 one possible M8 participant segment; the final returns-versus-options curriculum
 remains open. Each notebook explains the mathematics and conventions,
 distinguishes recorded results from bounded live examples where enabled,
-illustrations, links the evidence, and includes exercises. No default cell
+links the evidence, and includes exercises. No default cell
 downloads market observations, trains a full network or submits a cluster job.
 The joint-inference notebook loads the original provisional checkpoint and
 recomputes a small reference for the selected old regression case. Its later
@@ -58,7 +58,8 @@ The independent-grid posterior PIT on the same panels also fails theta
 (0.103485 against 0.092513), close to the SIR value. This comparison does not
 isolate correction-specific bias or justify ignoring the frozen gate.
 
-The next export verifies the **cached diagnostic review only**, with all market
+The [recorded export](results/hkde-correction/notebook-verification.json) verifies
+the **cached diagnostic review only**: 17 cells, zero errors, 8.29 seconds, with all market
 fixtures and raw training banks absent. It must show the live calculation skipped
 and no cell errors. It cannot establish end-to-end participant acceptance or a
 live-inference runtime:
@@ -71,7 +72,7 @@ PYTHONPATH=src pixi run marimo export html notebooks/10_hkde_corrected_workflow.
 
 The export command alone does not enforce network isolation; the review run
 must separately disable external access while allowing local kernel communication.
-Record its outcome separately from scientific acceptance; review-export timing
+The saved outcome is separate from scientific acceptance; review-export timing
 must not be reported as a live correction benchmark. Scientific
 correction evidence lives in [the correction report](hkde-corrected-inference.md).
 Neither this candidate nor its execution changes Heston or rough Bergomi's
@@ -119,6 +120,6 @@ passing forward-price component while preserving HKDE's inference failure.
 Notebook07 passes strict checking and an isolated offline HTML export: 14 cells,
 zero errors, 9.17 seconds, without market data, raw regression banks or the
 neural checkpoint. Its small coefficient file supports bounded live prediction.
-The current HKDE implementation suite passes 117 tests; the combined snapshot
-with the latest rough stack passes 155. This verification and
+The current HKDE implementation suite passes 133 tests; the [combined snapshot](results/hkde-correction/combined-stack-verification.json)
+with the latest rough stack passes 171. This verification and
 the regression's new test do not unlock the posterior's reserved final test.
