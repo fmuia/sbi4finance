@@ -6,6 +6,8 @@ teaching demonstration with its existing checks and visible limitations.
 Formal scientific participant acceptance remains **false** and data integration
 **I4 stays deferred**; I4a remains a separate provisional demonstration.
 No new experiment is needed to make this decision.
+Published for review in [PR #29](https://github.com/fmuia/sbi4finance/pull/29),
+based on PR #19; issue #24 is synchronized and remains open for review.
 
 This completes the decision requested in [issue #24](https://github.com/fmuia/sbi4finance/issues/24)
 without claiming that the shared calibration anomaly has been resolved.

@@ -12,6 +12,9 @@ H24.3 is intentionally not run because no fresh cohort is needed for that
 scope. H24.4 records the decision and fresh offline review verification.
 Historical acceptance remains false, broader acceptance is deferred, and I4
 stays deferred. The briefing below is preserved as the original task context.
+Published for review in [PR #29](https://github.com/fmuia/sbi4finance/pull/29),
+based on PR #19 at `b588df33d8fa1456c05bae67438d130d5b00ee1a`.
+Issue #24 links the decision and actual verification; no PR was merged.
 
 ## Task
 
@@ -289,6 +292,6 @@ checks, not guarantees about a new combined tree or timings to add together.
 - [x] Shared reference alarm, conditional error, finite-pool noise and delivery are distinguished.
 - [x] Continued-use policy is prospective; original failures remain visible. A broader acceptance protocol is explicitly deferred.
 - [x] No replication is needed for the selected-case provisional decision; deferral is recorded.
-- [ ] Decision, limits, didactic marimo review and actual verification are published together.
+- [x] Decision, limits, didactic marimo review and actual verification are published together in PR #29.
 - [x] I4 stays deferred; I4a is not mislabeled acceptance.
-- [ ] Handover and #24 are synchronized, with no merge or unrelated implementation.
+- [x] Handover and #24 are synchronized, with no merge or unrelated implementation.

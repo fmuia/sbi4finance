@@ -241,6 +241,8 @@ hashes. Do not reuse historical account settings blindly.
 ## The HKDE scientific result and scoped decision
 
 **Issue #24 decision:** [retain provisional teaching status at 2,048 proposals](hkde-acceptance-decision.md).
+Published for review in [PR #29](https://github.com/fmuia/sbi4finance/pull/29),
+based on PR #19; no merge is part of this decision.
 The decision and source/artifact bindings are recorded in
 [the acceptance record](results/hkde-acceptance/decision.json); notebook11
 teaches the retained tolerances and shared-alarm policy. No fresh cohort is
