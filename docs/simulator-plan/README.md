@@ -8,20 +8,22 @@ The intended result is a small library inside `sbi4finance`, a cluster workflow 
 
 ## Build for tutorial iteration
 
-**Current priority: simulator and bank coverage before further Heston tuning.**
+**Current priority: review the bounded options candidate and its retained scientific stop.**
 The Heston posterior learns substantially from observations, although its
 conditional acceptance gates remain unresolved. Preserve the frozen results
 and untouched final test; record subsequent analysis in the [follow-up note](https://github.com/fmuia/sbi4finance/blob/feat/rough-bergomi-option-bank/docs/simulator-analysis-next-steps.md).
-This is a change of sequencing, not a decision on the returns-versus-options
-curriculum or a relaxation of scientific gates.
+The restricted HKDE correction and 30-minute options lesson below reuse the
+delivered infrastructure. They do not restart Heston tuning, require all model
+branches to pass, decide the returns-versus-options curriculum, or relax
+scientific gates.
 
 | Planned increment | Delivered scope and review | Remaining acceptance/work |
 |---|---|---|
 | 6/10, M4 — [PR #12](https://github.com/fmuia/sbi4finance/pull/12) | HKDE jumps, Fourier European pricing, common option-panel bank and offline notebook06; actual option-bank cluster run recorded below | Wider numerical domains, Q inference and American/exotic extensions are separate. |
 | 8/10, M6 — [PR #13](https://github.com/fmuia/sbi4finance/pull/13) | One-factor Bergomi, exact OU/asset covariance, complete continuation, bounded-price MC, bank and notebook08; PR #14 adds resolved paired-grid checks | No uniform continuum-bias certificate, accepted posterior or optional two-factor model. |
 | 9/10, M7 — [PR #14](https://github.com/fmuia/sbi4finance/pull/14) | Rough simulator/pricer, shared banks, paired-grid study and restricted H/eta reference pilot; notebooks08–09 | 512-step finite-MC banks delivered. Reference passes 19/20 panels; one fails ESS/maximum weight. Stop rule applied before training/SBC; M7.3b acceptance pending. No scalar-state rough-memory forecast. |
-| 7/10, M5 — [PR #15](https://github.com/fmuia/sbi4finance/pull/15) | [First restricted HKDE baseline](https://github.com/fmuia/sbi4finance/blob/feat/hkde-inference/docs/hkde-joint-inference.md): refined reference, trained checkpoint, conditional/joint/SBC/price audit and marimo review | Numerical reference and parameter/SBC gates pass; price-quantile error 0.0439 exceeds 0.03. Checkpoint provisional, posterior final test untouched. M5.1 acceptance remains pending; the fixed-contract M5.2 surrogate now passes its separate checks. |
-| 10/10, M8 | Participant release remains pending | Select a coherent application and meet its numerical/inference and offline teaching gates. |
+| 7/10, M5 — [PR #15](https://github.com/fmuia/sbi4finance/pull/15) | [Restricted HKDE baseline](https://github.com/fmuia/sbi4finance/blob/feat/hkde-inference/docs/hkde-joint-inference.md), independently accepted M5.2 surrogate, and bounded [M5.1f correction follow-up](milestones/05-amortized-pricing.md#m51f-bounded-likelihood-correction-follow-up) | Raw checkpoint provisional and old test untouched. First correction stops on proposal reliability. Boundary follow-up passes validation but fails theta SBC on its new held-out test; all conditional accuracy/reliability gates pass. Frozen stop honored; corrected pipeline unaccepted. |
+| 10/10, M8 — **draft** `feat/hkde-offline-tutorial`, stacked on PR #15 | [Options review lesson](https://github.com/fmuia/sbi4finance/blob/feat/hkde-offline-tutorial/docs/m8-options-candidate.md): 30-minute notebook10 explains the candidate and saved diagnostics | Scientific participant acceptance remains pending after the held-out SBC stop; live candidate execution stays disabled. A review-only export does not complete M8 or choose the curriculum. |
 
 All three 24-panel banks save/load and reproduce selected IDs. Bergomi bank
 sampling SEs are below 10% of quote sigma. The coupled-grid study now resolves
@@ -88,6 +90,41 @@ polynomial supplies a learned forward-price building block without another
 network or contract-generalization framework. Notebook07 passes its isolated
 offline export (14 cells, zero errors, 9.17 seconds), and PR #15 alone passes
 117 software tests.
+
+The [M5.1f likelihood correction](https://github.com/fmuia/sbi4finance/blob/feat/hkde-inference/docs/hkde-corrected-inference.md)
+reuses that provisional flow as a proposal. Its first 90% flow / 10% uniform
+mixture passes all conditional accuracy gates at 2,048 and 8,192 proposals,
+including price errors 0.01261 and 0.005773 currency. The precision run stops
+on `stress:2` weight concentration (ESS/N 0.3336 < 0.5; largest weight 0.01494 >
+0.01); SBC and the new test were not run. Its absolute ESS and accuracy improved,
+so the preserved failure is specifically a proposal-reliability stop.
+
+One [frozen boundary follow-up](https://github.com/fmuia/sbi4finance/blob/feat/hkde-inference/docs/hkde-correction-boundary-protocol.md)
+uses 80% flow, 10% uniform and 10% product-arcsine proposals. The prior remains
+uniform; checkpoint, likelihood, budgets, seeds and gates stay fixed. M5.1f's
+subplan separates density verification, conditional/calibration acceptance,
+an independent root-95026 test and the M8 handoff. The boundary follow-up now
+passes every validation gate: price-quantile errors are 0.01110 (participant)
+and 0.004818 (precision) against 0.03, with minimum ESS/N 0.6878 and 0.6828.
+Its 512-case finite-pool SIR check passes both marginal DKW limits and all
+calibration-pool reliability gates. These are development-validation results.
+The subsequently unlocked 256-panel [new test](https://github.com/fmuia/sbi4finance/blob/feat/hkde-inference/docs/results/hkde-correction/test.json)
+passes the 16 conditional cases at both budgets (maximum price errors 0.01125
+and 0.006382) and all proposal-reliability checks, but theta's SIR rank KS
+0.103253 exceeds the frozen 0.092513 DKW limit; lambda's 0.072029 does not.
+This single failed gate stops acceptance without another seed, mixture,
+budget or threshold change. Its cause is not established by the gate alone.
+The new test is now evaluated; the raw baseline's original test stays untouched.
+The [M8 candidate subplans](milestones/08-validation-and-tutorial.md#bounded-options-candidate-concrete-m8-subplans)
+then require an actual 2,048-proposal live offline calculation with the accepted
+two-put surrogate, source-bound evidence, component timings and exercises.
+No real-market fixtures, raw training bank or new training are needed to run
+that lesson. The 10/10 handoff is a **draft review**, with the accepted-live path
+disabled while scientific acceptance is unresolved; a successful export of
+cached diagnostics cannot meet the full M8 gate. Numerical likelihood calls remain in the corrected path, so this
+is not a purely amortized inference or unmeasured speedup claim. A passing
+wrapper would not retrospectively accept the raw flow; the original test and
+the unrelated Heston/rough failures remain unchanged.
 
 Its deterministic Fourier labels avoid making unresolved Bergomi grid bias a
 dependency of this first Q-inference experiment. Bergomi's banks remain numerical pilots, and
@@ -168,10 +205,10 @@ The following map uses **implementation increment numbers**, not GitHub PR numbe
 | 4 — Heston/SVJ kernels | M3.1–M3.2 in `notebooks/04_heston_svj_kernels.py`: hidden variance, jumps, continuation and numerical checks | Delivered and verified in PR #11. Numerical support remains bounded to the reported cases. |
 | 5 — Joint returns inference | M3.3 in `notebooks/05_heston_joint_inference.py`: task, joint posterior/reference comparison, continuation and future losses | Delivered and verified in PR #11, including the explicit-time follow-up section and its failed validation checks. M3.3 scientific acceptance remains pending. |
 | 6 — HKDE option observations | M4 in `notebooks/06_hkde_and_pricing.py`: Q jump law, price expectations, noisy panel and accuracy budget | Delivered in PR #12; offline execution and bounded numerical evidence pass, Q inference remains separate. |
-| 7 — Learned pricing routes | M5 in separate sections of the HKDE/pricing notebook: posterior plus reference pricer, surrogate, optional direct-price study | First M5.1 experiment and 18-cell offline review delivered in PR #15. Checkpoint provisional after the price-quantile failure; notebook07 reviews the independently passing fixed-contract surrogate. Direct-price study remains optional. |
+| 7 — Learned pricing routes | M5 in the HKDE/pricing reviews: posterior plus reference pricer, surrogate, bounded likelihood correction; optional direct-price study | First M5.1 experiment and 18-cell offline review delivered in PR #15. Raw checkpoint provisional; notebook07 reviews the accepted fixed-contract surrogate. M5.1f preserves both correction stops: v1 proposal reliability, v2 held-out theta SBC despite passing conditional checks. |
 | 8 — Finite-factor Bergomi | M6 in `notebooks/08_bergomi_models.py`: curve context, factor state, normalization and pricing | Delivered in PR #13; PR #14 adds the paired-grid explanation and measured checks. Optional two-factor scope remains explicit. |
 | 9 — Rough Bergomi | Notebook08: Gaussian reference, rough memory and refinement; notebook09: restricted posterior workflow, independent reference and actual cost | Numerical/bank reviews delivered in PR #14. Notebook09 reviews the failed reference gate; no neural training/SBC for the frozen run, and posterior acceptance remains pending. |
-| 10 — Participant release | M8: a separately selected participant notebook, supported by the earlier review tutorials and release evidence | Planned; returns-versus-options curriculum choice remains open. |
+| 10 — Draft participant review | M8 in [notebook10](https://github.com/fmuia/sbi4finance/blob/feat/hkde-offline-tutorial/notebooks/10_hkde_corrected_workflow.py): 30-minute synthetic Q lesson, saved correction/price diagnostics and exercises; live path gated on scientific acceptance | Draft on `feat/hkde-offline-tutorial`; corrected final test failed one SBC gate, so M8 remains scientifically pending. Offline review execution cannot substitute for accepted live delivery. Curriculum choice remains open. |
 
 New increments include their review material in the same PR. The backfills above are complete on the strength of their notebook checks, not retrospectively inferred from older implementation results. A review notebook can accurately explain a failed experiment and pass its execution check while that scientific substep remains pending. Track both states explicitly. M8 is the selected, paced participant course and final scientific delivery gate; the review notebooks support that decision and do not preselect the curriculum.
 
@@ -181,7 +218,7 @@ The [80-epoch explicit-time follow-up](https://github.com/fmuia/sbi4finance/pull
 
 The [diagnostic review](https://github.com/fmuia/sbi4finance/blob/feat/heston-joint-inference/docs/heston-diagnostics.md) now separates marginal SBC, conditional reference checks and engineering diagnostics, and directly compares the prior with all 16 conditional posteriors. Reference-normalized mean RMSE is 3.265 for a prior-copy baseline versus 0.173 for the neural posterior: this is substantial data updating. A frozen-weight precision follow-up confirms a persistent low-state mean discrepancy, while predictive endpoint errors straddle their tolerance across seeds. This is development evidence; it changes neither the original failed gate nor the reserved-test status.
 
-The single [signed-asinh state experiment](https://github.com/fmuia/sbi4finance/blob/feat/heston-joint-inference/docs/heston-state-transform.md) also failed the unchanged validation checks: mean RMSE 0.1865 reference SD, maximum mean error 0.5268, maximum relative SD error 0.3212 and predictive endpoint error 0.2403. Both marginal rank checks pass, illustrating why conditional checks remain necessary. Its predeclared stop rule was applied: no further candidate or final-test evaluation. M3.3 remains pending; further inference analysis is deferred during the simulator/bank coverage push described above. The expanded software suite passes 43 tests, and notebook 05 includes the transform mathematics and measured failure.
+The single [signed-asinh state experiment](https://github.com/fmuia/sbi4finance/blob/feat/heston-joint-inference/docs/heston-state-transform.md) also failed the unchanged validation checks: mean RMSE 0.1865 reference SD, maximum mean error 0.5268, maximum relative SD error 0.3212 and predictive endpoint error 0.2403. Both marginal rank checks pass, illustrating why conditional checks remain necessary. Its predeclared stop rule was applied: no further candidate or final-test evaluation. M3.3 remains pending; further inference analysis stays deferred while the separate options candidate is completed. The expanded software suite passes 43 tests, and notebook 05 includes the transform mathematics and measured failure.
 
 ## Milestones and deliverables
 
@@ -197,7 +234,7 @@ The milestone files define the required scope. Acceptance means the stated scien
 | [M5 Amortized pricing](milestones/05-amortized-pricing.md) | Parameter posterior plus learned price surrogate; optional direct-price posterior experiment | M4 and M2.3 | Learned financial output |
 | [M6 Bergomi factors](milestones/06-bergomi-factors.md) | One-factor model and pricing checks; optional two-factor extension | M1 for reference work; M2.3 for banks | Independent model branch |
 | [M7 Rough Bergomi](milestones/07-rough-bergomi.md) | Validated rough simulator and option-calibration bank | M6.1–M6.3 and M2.3; not optional two-factor work | Advanced model branch |
-| [M8 Validation and tutorial](milestones/08-validation-and-tutorial.md) | Accepted checkpoint, reproducible reports and participant notebook for a selected application | M2.1–M2.3 plus the selected accepted model/inference substeps | Delivery gate |
+| [M8 Validation and tutorial](milestones/08-validation-and-tutorial.md) | Accepted inference pipeline, reproducible reports and participant notebook for a bounded application; final curriculum selection separate | M2.1–M2.3 plus the selected accepted model/inference substeps | Delivery gate |
 
 The minimum useful local infrastructure release is M0, M1 and M2.1–M2.3. M2.4 adds the verified cluster workflow and is required to call the full cluster milestone complete. A returns-based teaching release can use M3 and M8; an options-based release can use M4, M5 and M8. M6–M7 can proceed independently once their shared dependencies are available; they need not delay either teaching release.
 
@@ -242,7 +279,7 @@ After the shared foundation, the supported execution routes are:
 | Route | Ordered model work | Independent or optional work |
 |---|---|---|
 | Heston/Gaussian-jump returns | M3.1 Heston → M3.2 jumps → M3.3 joint parameter/state inference → M8 | M3.F imports Francesco's exact study when available. Its absence blocks a parity claim, not independently specified kernels. |
-| HKDE option calibration/pricing | M3.1 Heston → M4.1–M4.3 HKDE/pricing/panel → M5.1 posterior plus reference pricing → M5.2 price surrogate when included in the selected deliverable → M8 | M3.2 Gaussian jumps and M3.3 returns inference are not prerequisites. M5.3 direct price inference is a separate experiment. M5.1's validated baseline can be delivered before surrogate acceptance; the proposed learned-pricing deliverable includes M5.2. |
+| HKDE option calibration/pricing | M3.1 Heston → M4.1–M4.3 HKDE/pricing/panel → M5.1 accepted posterior estimator (including M5.1f correction if used) → M5.2 price surrogate when included → M8 | M3.2 Gaussian jumps and M3.3 returns inference are not prerequisites. The current bounded candidate combines M5.1f with the independently accepted M5.2 surrogate; it preserves the raw-neural failure. M5.3 direct price inference is separate. |
 | Bergomi and rough Bergomi | M6.1–M6.3 one-factor model/pricing/panel → M7.1–M7.3 rough reference/production/pilot posterior → M8 if selected for teaching | M6.4 two-factor extension and M7.4 finite-factor approximation are independent additions. This route does not depend on completing the Heston/HKDE branch. |
 
 The option-observation contract belongs to M0. The first options branch to need its implementation—M4.2 or M6.3—adds the common helper under `observations/` and `tasks/`; the other branch reuses it. Do not duplicate the helper or make Bergomi depend on completing HKDE. M8's evidence sheet starts alongside the selected branch, before final training/evaluation; M8 release waits for the selected outputs to pass.

@@ -4,9 +4,17 @@
 
 ## Purpose
 
-**Current boundary:** the new HKDE and Bergomi banks and review notebooks
-increase simulator coverage; they do not complete M8. Keep the curriculum choice
-open and select one accepted end-to-end inference/pricing or returns workflow.
+**Current boundary:** one bounded HKDE options candidate is being assembled
+as a **draft 10/10** increment on `feat/hkde-offline-tutorial`, stacked on
+[PR #15](https://github.com/fmuia/sbi4finance/pull/15). Its
+[candidate specification](https://github.com/fmuia/sbi4finance/blob/feat/hkde-offline-tutorial/docs/m8-options-candidate.md)
+and [notebook10](https://github.com/fmuia/sbi4finance/blob/feat/hkde-offline-tutorial/notebooks/10_hkde_corrected_workflow.py)
+target a complete 30-minute S lesson. Corrected development-validation passes,
+but the new held-out test fails theta SBC. The draft reviews this retained
+stop; its live candidate path remains disabled and M8 scientific acceptance
+remains pending. Preparing this candidate does not select the final
+returns-versus-options curriculum, replace MMAR, or complete unresolved branches.
+
 Actual option-bank cluster execution is now measured for all three 24-panel
 tasks; same-Linux selected-ID reproduction passed. The
 [cluster report](https://github.com/fmuia/sbi4finance/blob/feat/rough-bergomi-option-bank/docs/option-cluster-smoke.md)
@@ -19,8 +27,9 @@ implements that reference/inference path and its review. Parameter and marginal
 SBC checks pass, but the target-price quantile gate fails (0.0439 versus 0.03
 currency). Its checkpoint remains provisional and final test unused. A verified
 review of this outcome does not accept a participant inference workflow;
-M5.1 scientific acceptance and the selected paced participant notebook remain
-pending. Bergomi's remaining label-bias work does not block that
+M5.1's raw posterior remains unaccepted. A separately evaluated corrected
+pipeline can qualify on its own declared evidence; it cannot rewrite that
+result. Bergomi's remaining label-bias work does not block the
 HKDE experiment. No participant acceptance follows from the
 cluster runs or provisional checkpoint, and the recorded Heston failures remain unresolved.
 Market acquisition cannot block the required offline S delivery.
@@ -29,8 +38,23 @@ The [rough H/eta pilot](https://github.com/fmuia/sbi4finance/blob/feat/rough-ber
 adds saved synthetic banks and a reference audit: 19/20 panels pass, but one
 misses the frozen ESS and maximum-weight gates. Neural training and SBC were
 not run; the final test stays reserved. Notebook09 is a didactic review of this
-reference limitation, not an accepted participant checkpoint. The next rough
-reference experiment and M5.2 surrogate remain distinct from M8 selection.
+reference limitation, not an accepted participant checkpoint. Its next
+reference experiment remains separate from M8 selection.
+
+The [M5.2 surrogate](https://github.com/fmuia/sbi4finance/blob/feat/hkde-inference/docs/hkde-price-surrogate.md)
+already passes its independent fixed-contract pricing checks. The new
+[M5.1f correction subplan](05-amortized-pricing.md#m51f-bounded-likelihood-correction-follow-up)
+addresses inference with the frozen checkpoint as a proposal. Its first
+90% flow / 10% uniform mixture passed all conditional accuracy gates but
+stopped on one boundary-region importance-weight reliability check; no SBC or
+new test was run. One frozen 80% flow / 10% uniform / 10% product-arcsine
+follow-up now passes every validation gate at both conditional budgets and
+the 512-case finite-pool SIR audit. The target prior stays uniform and all gates
+stay fixed. Its independent 256-panel test passes all 16 conditional cases at
+both budgets and every reliability check, but theta's SIR rank KS 0.103253
+exceeds the frozen 0.092513 DKW limit. Lambda's 0.072029 is below it. The test
+is not accepted, and no retry or tuning follows. A validation pass or an
+informative review notebook cannot qualify the participant artifact.
 
 Assemble evidence already collected at each milestone into a complete S participant workflow. Validation and didactic review begin with M0 contracts and M1 analytic checks; this milestone closes end-to-end gaps rather than postponing either. The earlier review notebooks explain each development increment, including failed experiments; M8 selects and paces a scientifically accepted application for participants. M is an optional market illustration and E is a separate empirical extension; neither is required for S acceptance.
 
@@ -45,7 +69,7 @@ Assemble evidence already collected at each milestone into a complete S particip
 
 ## Ordered implementation subplan
 
-Define M8.1 before the selected branch's final training/evaluation; complete M8.2–M8.4 in order once the relevant model and inference outputs are available. Acceptance is evidenced in the implementation PRs. A returns release uses M3.3. An HKDE options release requires M5.1, additionally M5.2 for a price surrogate and M5.3 for direct price inference when those outputs are included. A rough-Bergomi inference release uses M7.3. Optional extensions need their own accepted results only when included in the released workflow.
+Define M8.1 before the selected branch's final training/evaluation; complete M8.2–M8.4 in order once the relevant model and inference outputs are available. Acceptance is evidenced in the implementation PRs. A returns release uses M3.3. An HKDE options release requires an accepted M5.1 estimator, including M5.1f's explicit likelihood-correction pipeline if used, additionally M5.2 for a price surrogate and M5.3 for direct price inference when those outputs are included. Acceptance of a corrected estimator does not require relabelling its raw proposal checkpoint as an accepted posterior. A rough-Bergomi inference release uses M7.3. Optional extensions need their own accepted results only when included in the released workflow.
 
 | Step | Concrete output | Verification/handoff |
 |---|---|---|
@@ -55,6 +79,33 @@ Define M8.1 before the selected branch's final training/evaluation; complete M8.
 | M8.4 — Acceptance report and handover | A checkpoint card, links to exact artifacts and checks, reproducible run instructions, limitations and remaining work. Keep reports with the implementation documentation; large banks stay in their declared artifact storage. | Mark only verified substeps accepted. Record M2.4 separately if cluster execution is pending, preserve the open status of unused branches, and ensure every teaching claim stays within its numerical, synthetic or optional empirical evidence. |
 
 The mathematical explanations come from the existing notes and milestone review tutorials; this milestone turns one accepted branch into a paced participant lesson rather than requiring all models in one notebook.
+
+## Bounded options candidate: concrete M8 subplans
+
+Use the [frozen boundary-correction task](https://github.com/fmuia/sbi4finance/blob/feat/hkde-inference/configs/hkde_correction_boundary_protocol.json),
+without adding a model, training campaign, market provider or new framework.
+These are implementations of M8.1–M8.4, not additional PRs or an automatic
+curriculum decision.
+
+| Step | Candidate-specific output | Completion evidence still required |
+|---|---|---|
+| M8.1 — Freeze task and roles | Nine noisy synthetic European-put prices under Q; joint theta/jump-intensity targets; known remaining parameters/context; two excluded put-price outputs; uniform prior and a separately declared three-component proposal | Preserve the original raw-neural failure and v1 reliability stop. Bind the new estimator to protocol, checkpoint, likelihood, surrogate and source hashes. Only S is promised; truths and clean prices never enter observed conditioning. |
+| M8.2 — Qualify the corrected pipeline | M5.1f weighted joint inference followed by the accepted M5.2 two-price surrogate; both 2,048 and 8,192 conditional checks, finite-pool SIR calibration, and the new root-95026 test | Every frozen validation gate passes before generating the new test; the test passes without selecting another candidate. The original root-62026 test stays untouched. No acceptance transfers to the raw flow, Heston or rough Bergomi. |
+| M8.3 — Execute a 30-minute lesson | Notebook10: task/data roles (5 minutes), importance correction (8), one live posterior/price calculation (7), diagnostic interpretation (7), exercises (3) | Fresh-process headless HTML export with external sockets blocked, market fixtures and raw training banks absent; inspect the rendered graphs and tables. Actually execute the 2,048-proposal calculation on the named saved validation panel. A notebook that skips live work because evidence is missing does not pass. |
+| M8.4 — Record and hand over | Exact science and notebook reports, review commands, artifact links, a pipeline/checkpoint card, supported-domain limits and remaining work | Report loading, proposal sampling/density, nine-price numerical likelihood, two-price surrogate and reference comparison, with live versus cached work explicit. Keep self-normalized/SIR approximation, prior-versus-proposal distinction, unchanged failed predecessors and final curriculum choice visible. |
+
+Training, base-bank generation, accepted grid pricing and the scientific
+audits remain cached. Opening the notebook starts no such jobs or provider
+access. The live calculation retains matched parameter pairs and weights;
+its output is parameter-induced uncertainty in Q expectation prices, not
+realized payoff risk or a prediction of tomorrow's option chain. A live
+finite-pool miss is displayed without a new seed or automatic retry. Scientific
+and didactic outcomes must both be recorded before calling this bounded
+candidate accepted. **Development-validation has passed; the independent test
+failed theta SBC, so scientific participant acceptance remains pending.** The
+10/10 draft may pass a review-only offline export while showing the recorded
+failure and skipping live candidate execution. That software/didactic check
+must be reported separately and cannot count as the complete M8 workflow.
 
 ## Didactic review deliverable
 
