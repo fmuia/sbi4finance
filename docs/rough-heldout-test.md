@@ -117,3 +117,18 @@ untouched. After a complete neural run all 256 are used. Reproduction with
 the same fixed artifacts is not a fresh acceptance attempt.
 
 Results will be added after the frozen runner is checked and executed.
+
+## Execution and review
+
+The one-run command requires a new output directory and the pinned environment:
+
+```bash
+PYTHONPATH=src pixi run rough-heldout-test --out /path/to/new-heldout-result
+```
+
+It validates the frozen inputs before loading reserved arrays. A scientific
+failure saves its results and returns a nonzero exit; that is a stop decision,
+not a request to retry. Once results are published, the inexpensive review is
+`PYTHONPATH=src pixi run review-rough-inference`, which reads cached reports and
+does not execute the study. The new test protocol does not replace the
+checkpoint's original training/development protocol.

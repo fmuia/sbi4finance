@@ -40,7 +40,8 @@
     "src/sbi4finance/option_panel.py": "b37400bfc7f7ec91d208e8637cee1fcb53885b76ca0b00c016574b495fa035f2",
     "src/sbi4finance/rough_bergomi.py": "ab47c3bcd3292fde093b4aaaf4fb668101793997dc25afe11a485ec8f2537b8f",
     "src/sbi4finance/rough_inference.py": "1d3b453025419d9b78bce38e133f6fcb64a72fe1abb9e58acee9ff795478922e",
-    "src/sbi4finance/rough_reference.py": "db4042d9794fd0ea61e924dcfd4b7a914914076d88646be97d98ea1ad504b622"
+    "src/sbi4finance/rough_reference.py": "db4042d9794fd0ea61e924dcfd4b7a914914076d88646be97d98ea1ad504b622",
+    "scripts/evaluate_rough_test.py": "8631ca7194dfcd9ad0ca2f2464750f45fb958fec25032c11969d140ad4d0c1da"
   },
   "split": "test",
   "conditional_ids": [
