@@ -3,6 +3,16 @@
 Prepared 12 October 2026. This is a self-contained briefing for the next agent;
 writing it does not start an experiment or change any acceptance decision.
 
+**Receiving-agent outcome, 12 October 2026:** the
+[decision note](hkde-acceptance-decision.md),
+[artifact-bound record](results/hkde-acceptance/decision.json) and extended
+[notebook11](../notebooks/11_hkde_calibration_audit.py) retain **provisional
+selected-case teaching at 2,048 proposals**. H24.1 and H24.2 are complete;
+H24.3 is intentionally not run because no fresh cohort is needed for that
+scope. H24.4 records the decision and fresh offline review verification.
+Historical acceptance remains false, broader acceptance is deferred, and I4
+stays deferred. The briefing below is preserved as the original task context.
+
 ## Task
 
 Work through [issue #24](https://github.com/fmuia/sbi4finance/issues/24): decide
@@ -275,10 +285,10 @@ checks, not guarantees about a new combined tree or timings to add together.
 
 ## Completion checklist
 
-- [ ] Intended claim and 2,048-proposal configuration are explicit and bound to artifacts.
-- [ ] Shared reference alarm, conditional error, finite-pool noise and delivery are distinguished.
-- [ ] Any new decision rule is prospective; original failures remain visible.
-- [ ] Any replication is justified, frozen before outcomes and performed once; otherwise deferral is recorded.
+- [x] Intended claim and 2,048-proposal configuration are explicit and bound to artifacts.
+- [x] Shared reference alarm, conditional error, finite-pool noise and delivery are distinguished.
+- [x] Continued-use policy is prospective; original failures remain visible. A broader acceptance protocol is explicitly deferred.
+- [x] No replication is needed for the selected-case provisional decision; deferral is recorded.
 - [ ] Decision, limits, didactic marimo review and actual verification are published together.
-- [ ] I4 receives an exact scoped decision or stays deferred; I4a is not mislabeled acceptance.
+- [x] I4 stays deferred; I4a is not mislabeled acceptance.
 - [ ] Handover and #24 are synchronized, with no merge or unrelated implementation.

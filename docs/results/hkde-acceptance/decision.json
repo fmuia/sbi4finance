@@ -1,0 +1,69 @@
+{
+  "decision_id": "hkde_2048_provisional_scope_2026_10_12",
+  "date": "2026-10-12",
+  "issue": "https://github.com/fmuia/sbi4finance/issues/24",
+  "base_commit": "b588df33d8fa1456c05bae67438d130d5b00ee1a",
+  "scientific_status": "provisional",
+  "scientific_acceptance": false,
+  "historical_test_passed": false,
+  "i4_status": "deferred",
+  "i4a_status": "separate provisional demonstration; prior execution evidence retained",
+  "intended_claim": "Recorded conditional accuracy and continued selected-case teaching for the frozen synthetic Q task; no population calibration or full joint-distribution guarantee.",
+  "experiment_id": "hkde_boundary_defensive_importance_v2",
+  "participant_proposals": 2048,
+  "precision_proposals": 8192,
+  "calibration_sir_draws": 512,
+  "fixed_example": "validation:257",
+  "evidence_scope": "S",
+  "measure": "Q",
+  "artifact_manifest": "docs/results/hkde-acceptance/artifact-manifest.json",
+  "artifact_manifest_sha256": "444c2261ff08944d3fcd0bff077b0dd43d53ea9e0c1e5d57ad05f4bd8377966b",
+  "policy_scope": "Prospective continued-provisional-use policy; not an executable fresh-study protocol or retroactive acceptance gate.",
+  "conditional_thresholds": {
+    "mean_rmse_in_ref_sd": 0.15,
+    "max_abs_mean_error_in_ref_sd": 0.4,
+    "max_abs_relative_std_error": 0.25,
+    "max_abs_correlation_error": 0.1,
+    "max_abs_target_quantile_error_currency": 0.03,
+    "mean_reference_mass_of_90_interval_abs_error": 0.03
+  },
+  "conditional_weights": {
+    "min_ess_fraction": 0.5,
+    "max_weight": 0.01
+  },
+  "reference_thresholds": {
+    "max_abs_mean_difference_in_ref_sd": 0.01,
+    "max_abs_relative_std_difference": 0.01,
+    "max_abs_correlation_difference": 0.01,
+    "max_abs_target_quantile_difference": 0.0025,
+    "max_abs_log_evidence_difference": 0.001,
+    "max_price_difference_over_quote_sigma": 0.001
+  },
+  "calibration_policy": {
+    "family_alpha": 0.05,
+    "coordinates": 2,
+    "dkw_bound": "sqrt(log(2*2/0.05)/(2*N))",
+    "min_ess_fraction": 0.1,
+    "max_weight": 0.05,
+    "shared_alarm": "provisional; calibration unresolved, with historical failure retained",
+    "reference_alarm_alone": "provisional; investigate reference/SIR discrepancy",
+    "sir_alarm_alone": "provisional; investigate finite-pool approximation and resampling",
+    "both_pass": "Scoped diagnostic result only; no automatic general calibration or formal I4 acceptance"
+  },
+  "monte_carlo_policy": "Report SNIS and eight-block SEs as approximate diagnostics; compare observed discrepancies directly with unchanged limits, with no SE subtraction or simultaneous guarantee. Nested 8192 pools are separate precision evidence, not independent replication or a substitute for 2048.",
+  "new_joint_or_cdf_tolerance": null,
+  "broader_acceptance_protocol": "deferred until the intended population claim, joint metric if claimed, precision, uncertainty, size, seeds, aggregation and stopping rule are frozen before outcomes",
+  "fresh_replication": {
+    "needed_for_this_decision": false,
+    "executed": false,
+    "reason": "The selected-case provisional lesson already has measured checks; stronger curriculum/release claims have not been chosen. Another pass cannot erase the failed cohort.",
+    "new_panels": 0,
+    "new_proposals": 0,
+    "training_runs": 0
+  },
+  "test_status": {
+    "corrected_root_95026": "used and closed",
+    "raw_neural_root_62026": "untouched"
+  },
+  "i4_handoff": "No positive scientific acceptance; I4 remains deferred. Data workstream owns any later local-input acceptance verification."
+}

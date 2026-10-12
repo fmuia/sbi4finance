@@ -25,6 +25,13 @@ calibrated; that alarm does not isolate correction error. Notebook11 presents
 the paired and direct-CDF evidence. This supports a bounded teaching demonstration
 with the frozen estimator while retaining the unresolved acceptance question.
 
+The [issue #24 decision](hkde-acceptance-decision.md) now explicitly retains this
+provisional selected-case scope at **2,048 proposals**, with unchanged numerical
+and conditional tolerances. It requires no fresh cohort for that decision;
+broader scientific acceptance remains deferred. Notebook11 explains the shared
+alarm policy and the evidence limits. Formal data I4 stays deferred, separately
+from the already runnable I4a demonstration.
+
 ## M8.1 — Named task and evidence boundary
 
 Use `hkde_boundary_defensive_importance_v2`, with the
@@ -181,8 +188,9 @@ and six of seven neural gates pass; one eta-spread gate fails. All 256 test
 cases are used and closed, and the rough candidate remains provisional.
 This different task's result does not change HKDE acceptance.
 
-[Issue #24](https://github.com/fmuia/sbi4finance/issues/24) tracks the prospective
-HKDE decision; [#26](https://github.com/fmuia/sbi4finance/issues/26) tracks the
+[Issue #24](https://github.com/fmuia/sbi4finance/issues/24) records the
+[provisional-scope decision](hkde-acceptance-decision.md);
+[#26](https://github.com/fmuia/sbi4finance/issues/26) tracks the
 curriculum and final participant review. The [handover issue index](simulator-handover.md#tracked-follow-ups)
 also links integration and the optional Heston follow-up. No new experiment
 or merge is launched by this documentation closeout.

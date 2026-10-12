@@ -238,7 +238,15 @@ before another submission; discover the collaborator's current allocation and
 use their authenticated environment. Preserve manifests, job IDs and transfer
 hashes. Do not reuse historical account settings blindly.
 
-## The scientific result that needs a decision
+## The HKDE scientific result and scoped decision
+
+**Issue #24 decision:** [retain provisional teaching status at 2,048 proposals](hkde-acceptance-decision.md).
+The decision and source/artifact bindings are recorded in
+[the acceptance record](results/hkde-acceptance/decision.json); notebook11
+teaches the retained tolerances and shared-alarm policy. No fresh cohort is
+needed for this selected-case scope. Broader calibration and full joint accuracy
+remain unestablished, historical acceptance stays false, and formal data I4
+remains deferred. I4a's runnable provisional example is unaffected.
 
 The correction retains the trained flow as a proposal. Its final fixed mixture
 is 80% flow, 10% uniform prior and 10% product-arcsine boundary density. The
@@ -289,12 +297,13 @@ teaching route, and schedule only the scientific work that decision needs.
 | [#27 — review and consolidate the PR stacks](https://github.com/fmuia/sbi4finance/issues/27) | Review dependencies, integrate the intended revisions, verify the actual combined code/notebooks and record the reviewed/merged disposition. | Existing snapshot test counts do not certify the resulting tree. Merging does not change scientific acceptance. |
 | [#26 — choose the tutorial and finish participant review](https://github.com/fmuia/sbi4finance/issues/26) | Select P returns versus Q options, primary model/companions, claims and live/cached lesson; check clean setup and the complete offline S route. | Does not require every catalog model to pass or any market acquisition. |
 | [#23 — rough reserved-test evaluation](https://github.com/fmuia/sbi4finance/issues/23) | **Study completed in [PR #28](https://github.com/fmuia/sbi4finance/pull/28):** frozen checkpoint evaluated once; reference, conditional/joint, SBC and target-mean results audited and taught in notebook09. | All 256 cases used and closed. Reference passes; one conditional eta-spread gate fails, so candidate remains provisional. No retry, tuning or reference expansion followed. |
-| [#24 — HKDE scientific acceptance decision](https://github.com/fmuia/sbi4finance/issues/24) | Use the saved-cohort audit to specify prospective acceptance or retain provisional status; run fresh replication only if justified and predeclared. | Historical test remains failed and closed. Formal data-teaching I4 needs a compatible acceptance decision; I4a already runs. |
+| [#24 — HKDE scientific acceptance decision](https://github.com/fmuia/sbi4finance/issues/24) | **Decision recorded:** [retain provisional selected-case teaching at 2,048 proposals](hkde-acceptance-decision.md); unchanged tolerances, explicit shared-alarm policy, no new replication. Notebook11 teaches the decision. | Historical test remains failed and closed; broader acceptance is deferred. Formal data-teaching I4 stays deferred; I4a already runs. |
 | [#25 — Heston conditional state/forecast decision](https://github.com/fmuia/sbi4finance/issues/25) | Decide defer, retain as a diagnostic lesson, or investigate one mechanism with a bounded protocol and notebook05 update. | Optional unless the returns route needs it. Both v2 and v3 remain provisional; root-43022 stays reserved. |
 
-The dedicated [#24 agent handover](hkde-acceptance-handover.md) gives the HKDE
-task, current evidence, exact branches, ordered decision subplan, entry commands
-and constraints for a new agent. Preparing it does not start another experiment.
+The dedicated [#24 agent handover](hkde-acceptance-handover.md) preserves the
+original briefing and links the completed decision. Reopen scientific work only
+when a stronger claim is chosen and its prospective study is justified and
+frozen; another cohort is not an automatic closeout requirement.
 
 The [rough held-out study](https://github.com/fmuia/sbi4finance/blob/feat/rough-heldout-test/docs/rough-heldout-test.md)
 passes all 16 reference cases and six of seven neural gates, including marginal
