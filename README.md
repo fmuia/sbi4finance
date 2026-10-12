@@ -222,3 +222,9 @@ Run `pixi run hkde-teaching-integration-check` to verify both lessons together
 offline. Integration milestones I1–I3 and the separate I4a provisional live
 demonstration are complete; formal I4 acceptance remains pending. Add `--live`
 to the check command to exercise and record the actual demonstration.
+
+## Inference tasks and data planning
+
+Start with the [data implementation roadmap and milestone subplans](docs/data-plan/README.md). It sequences common contracts, local loading, separate returns/options preparation, checkpoint compatibility and the complete synthetic teaching workflow, with market application and empirical evaluation as optional branches. The [scenario specification](docs/inference-scenarios-and-data.md) explains the statistical objects, the [option format reference](docs/data-loading-plan.md) defines panels, and the [source comparison](docs/data-source-landscape.md) evaluates acquisition choices. The plans preserve their original scope; the implemented local interfaces and selected provisional Q/HKDE route are composed in this checkout.
+
+The [data dependency and evidence levels](docs/inference-scenarios-and-data.md#three-delivery-and-evidence-levels) separate a complete synthetic teaching core (no market data required), an optional real-market application, and empirical evaluation using held-out observations. Market-data acquisition does not block simulator development, synthetic training or the required notebook.
