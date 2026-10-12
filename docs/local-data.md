@@ -99,6 +99,8 @@ The same preparation works on declared synthetic or market records. Market windo
 
 Implementation PRs use sequential `N/5-data-plan-…` titles linked to PR #4. Optional market branches do not block a selected synthetic workflow.
 
+The next bounded follow-up is the [HKDE teaching integration plan](hkde-teaching-integration-plan.md): connect these local inputs to the corrected simulator lesson, verify the combined cached workflow, and defer live participant acceptance until its scientific gate passes.
+
 Successful parsing does **not** certify financial conventions, grid compatibility, numerical pricing accuracy or model adequacy. Return preparation checks only the explicit rules above. It does not validate the source's adjustment policy, infer curves, simulate paths, check checkpoints or train a network. Those belong to the relevant scientific workflow.
 
 The current GBM reference uses decimal **log** returns and a positive year-fraction vector, with a `[batch, time, 1]` array convention. This local preparation preserves those numerical quantities when `return_kind="log"`; it is not yet a neural adapter or an integration test. Simple returns cannot be sent unchanged to that GBM interface. Missing-value parser fixtures also cannot condition a model that requires complete observations.
