@@ -1,0 +1,145 @@
+{
+  "experiment_id": "hkde_theta_intensity_baseline_v1",
+  "evidence_scope": "S",
+  "measure": "Q",
+  "bank_config": "configs/tasks/hkde_inference_bank.json",
+  "selection_validation_ids": [
+    0,
+    256
+  ],
+  "audit_validation_ids": [
+    256,
+    768
+  ],
+  "conditional_audit_ids": [
+    256,
+    257,
+    258,
+    259,
+    260,
+    261,
+    262,
+    263,
+    264,
+    265,
+    266,
+    267,
+    268,
+    269,
+    270,
+    271
+  ],
+  "stress_prior_fractions": [
+    [
+      0.1,
+      0.1
+    ],
+    [
+      0.1,
+      0.9
+    ],
+    [
+      0.9,
+      0.1
+    ],
+    [
+      0.9,
+      0.9
+    ]
+  ],
+  "stress_quote_seed": 6210,
+  "targets": [
+    {
+      "strike": 95.0,
+      "maturity": 0.75,
+      "option_type": "put"
+    },
+    {
+      "strike": 80.0,
+      "maturity": 1.0,
+      "option_type": "put"
+    }
+  ],
+  "reference": {
+    "grid_points": [
+      65,
+      129
+    ],
+    "fallback_grid_points": 257,
+    "price_nodes": 1024,
+    "price_upper_limit": 400.0,
+    "check_price_nodes": 2048,
+    "check_price_upper_limit": 800.0,
+    "gates": {
+      "max_abs_mean_difference_in_ref_sd": 0.01,
+      "max_abs_relative_std_difference": 0.01,
+      "max_abs_correlation_difference": 0.01,
+      "max_abs_target_quantile_difference": 0.0025,
+      "max_abs_log_evidence_difference": 0.001,
+      "max_price_difference_over_quote_sigma": 0.001
+    }
+  },
+  "training": {
+    "seed": 6204,
+    "epochs": 80,
+    "batch_size": 128,
+    "density": "coupling_spline",
+    "depth": 4,
+    "widths": [
+      64,
+      64
+    ],
+    "bins": 8,
+    "selection": "minimum loss on validation IDs0:256",
+    "normalization": "training batches only"
+  },
+  "evaluation": {
+    "conditional_draws": 4096,
+    "sbc_draws": 512,
+    "sample_seed": 6205,
+    "rank_randomization_seed": 6206,
+    "sbc_family_alpha": 0.05,
+    "quantiles": [
+      0.05,
+      0.5,
+      0.95
+    ],
+    "gates": {
+      "mean_rmse_in_ref_sd": 0.15,
+      "max_abs_mean_error_in_ref_sd": 0.4,
+      "max_abs_relative_std_error": 0.25,
+      "max_abs_correlation_error": 0.1,
+      "max_abs_target_quantile_error_currency": 0.03,
+      "mean_reference_mass_of_90_interval_abs_error": 0.03
+    },
+    "reference_repeated_draws": {
+      "replicates": 32,
+      "seed": 6208,
+      "purpose": "report finite-draw variability for reference-sampled conditional metrics; does not change gates"
+    }
+  },
+  "final_test": {
+    "split": "test",
+    "conditional_ids": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "sbc_examples": 256,
+    "access_rule": "evaluate only after fixed checkpoint passes all validation gates; no tuning or retraining on final outcomes"
+  },
+  "stop_rule": "One architecture/seed/80-epoch budget. Preserve failures; no neural sweep. Refine reference only if its predeclared gates fail. Surrogate and curriculum acceptance separate."
+}

@@ -1,0 +1,100 @@
+{
+  "scope": "Read-only validation audit; no new proposal pools, training, full banks or test generation",
+  "experiment_id": "hkde_boundary_defensive_importance_v2",
+  "source_commit": "9875da8b7657405242cf22d1aff92f2e5f14936c",
+  "input_source_and_checks_hashes_match": true,
+  "conditional_cases_match_frozen_reference_and_old_baseline": true,
+  "audit_ids_256_to_767_and_truth_match_baseline_and_independent_prior_replay": true,
+  "max_recompute_deltas": {
+    "weights": 0.0,
+    "mean_error_in_ref_sd": 4.891920202254596e-15,
+    "relative_std_error": 4.440892098500626e-16,
+    "correlation_error": 4.440892098500626e-16,
+    "target_quantile_error_currency": 0,
+    "reference_mass_of_90_interval": 1.1102230246251565e-16,
+    "ess_fraction": 0,
+    "max_weight": 0,
+    "mean_snis_mcse": 2.168404344971009e-18,
+    "block_mean_mcse": 4.163336342344337e-17,
+    "block_quantile_mcse": 0,
+    "aggregate_mean_rmse_in_ref_sd": 1.6306400674181987e-16,
+    "aggregate_max_abs_mean_error_in_ref_sd": 3.0253577421035516e-15,
+    "aggregate_max_abs_relative_std_error": 0,
+    "aggregate_max_abs_correlation_error": 2.220446049250313e-16,
+    "aggregate_max_abs_target_quantile_error_currency": 0,
+    "aggregate_mean_reference_mass_of_90_interval_abs_error": 0,
+    "rank_jitter": 0,
+    "rank_ks": 0,
+    "rank_bound": 0,
+    "coverage_counts": 0,
+    "coverage_wilson": 0,
+    "audit_ess": 0,
+    "audit_max_weight": 0
+  },
+  "participant_metrics": {
+    "mean_rmse_in_ref_sd": 0.029278301606157086,
+    "max_abs_mean_error_in_ref_sd": 0.06570003662107624,
+    "max_abs_relative_std_error": 0.02518816805123314,
+    "max_abs_correlation_error": 0.019347149652946427,
+    "max_abs_target_quantile_error_currency": 0.011098886407029163,
+    "mean_reference_mass_of_90_interval_abs_error": 0.0015064700271448794
+  },
+  "participant_efficiency": {
+    "min_ess_fraction": 0.6877669870346219,
+    "max_weight": 0.002564223205659182
+  },
+  "precision_metrics": {
+    "mean_rmse_in_ref_sd": 0.011381917011699291,
+    "max_abs_mean_error_in_ref_sd": 0.025261751766963676,
+    "max_abs_relative_std_error": 0.015593873171726003,
+    "max_abs_correlation_error": 0.007115134846402693,
+    "max_abs_target_quantile_error_currency": 0.004818268957389016,
+    "mean_reference_mass_of_90_interval_abs_error": 0.0004241823819896018
+  },
+  "precision_efficiency": {
+    "min_ess_fraction": 0.6828081071146445,
+    "max_weight": 0.0009478705247641015
+  },
+  "calibration": {
+    "cases": 512,
+    "draws_per_case": 512,
+    "rank_ks": [
+      0.03148833735132836,
+      0.035138839912167485
+    ],
+    "rank_dkw_bound": 0.06541653373134128,
+    "sbc_family_alpha": 0.05,
+    "rank_diagnostic_passed": true,
+    "coverage_90": [
+      0.921875,
+      0.916015625
+    ],
+    "coverage_90_counts": [
+      472,
+      469
+    ],
+    "coverage_90_wilson_interval": [
+      [
+        0.8953621180192555,
+        0.9421044962145622
+      ],
+      [
+        0.8887825040202595,
+        0.9370526294603108
+      ]
+    ],
+    "coverage_interval_confidence": 0.95,
+    "coverage_interval_scope": "individual approximate binomial intervals",
+    "min_ess_fraction": 0.5105775367900587,
+    "max_weight": 0.007891399470219648,
+    "proposal_samples": 2048,
+    "scope": "SBC ranks for the complete finite-pool sampling-importance-resampling algorithm; pooled resamples are not IID exact posterior draws"
+  },
+  "raw_sir_draws_not_saved": "KS and randomized ranks replay from saved ranks; exact coverage events and ranks from individual resampled draws cannot be independently recomputed without rerunning the algorithm. Coverage counts/Wilson arithmetic were checked.",
+  "validation_pass_reproduced": true,
+  "limits": [
+    "Finite SIR pool error is part of algorithm tested; not exact posterior IID draws.",
+    "Validation was reused for a declared algorithm change; fresh untouched test is needed for generalization evidence.",
+    "Synthetic fixed-task Q evidence only; old neural flow and failed v1 remain unchanged."
+  ]
+}

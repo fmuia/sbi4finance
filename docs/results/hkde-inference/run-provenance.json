@@ -1,0 +1,53 @@
+{
+  "protocol_revision": "33135c0",
+  "executed_source_preserved_at_revision": "45d94fb24b037f71e74c1775ffc38a23de5d7b2f",
+  "chronology": "Protocol committed before outcomes; this source revision subsequently preserves the exact executed files, verified against recorded source hashes.",
+  "recorded_source_sha256": {
+    "reference": {
+      "scripts/check_hkde_reference.py": "e7a5a724a0af492564676ca76041f571c4669bf025bcea4e81474d933c083668",
+      "src/sbi4finance/hkde_reference.py": "159194818b1f8b5a6194e1340568264271bad895474e5e1c9c8ce6cfdb71074b",
+      "src/sbi4finance/gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
+      "src/sbi4finance/option_panel.py": "b37400bfc7f7ec91d208e8637cee1fcb53885b76ca0b00c016574b495fa035f2",
+      "src/sbi4finance/option_bank.py": "8d41e6cecf115f6aa96475295c8291b9c6474e0c1e44ead001539129f3ba3d0a",
+      "src/sbi4finance/hkde.py": "c6618b6bd54eae169b4fc0e90201b8582b8e7da14ff41a305c27e4e2bd06e503",
+      "src/sbi4finance/heston.py": "f85237a6f223689bb83fb2837d6f6cba855867f5da9f919667163ae4a4c8996c",
+      "src/sbi4finance/gbm.py": "8d491f019326712a4a6e985b491658146fa3da9f57f513a6fed421259d55cb5d"
+    },
+    "training": {
+      "scripts/train_hkde.py": "9320ba9eb1eca4b2ff8c7ae715bb963ad5e4eda23e23f43137a363930e85e55b",
+      "src/sbi4finance/hkde_inference.py": "616014c460d6d0d164a08590d6ac47114cdabfb030584574854dc4ecfd061beb"
+    },
+    "validation": {
+      "scripts/evaluate_hkde.py": "4f3b9fcbf34256bbb82a53c6feb2baf8480ba4b9ea03a23a7125a0cd568ffa21",
+      "src/sbi4finance/hkde_diagnostics.py": "31d240ab6f5a592b253e63a9bc830770a5b8b9818a2532c3c4cc3b249eba9687",
+      "src/sbi4finance/hkde_reference.py": "159194818b1f8b5a6194e1340568264271bad895474e5e1c9c8ce6cfdb71074b",
+      "src/sbi4finance/hkde_inference.py": "616014c460d6d0d164a08590d6ac47114cdabfb030584574854dc4ecfd061beb"
+    }
+  },
+  "recorded_sources_match_preserved_revision": true,
+  "post_run_changes": {
+    "scope": "Script-only provenance guards; no retraining, resampling or rewriting original reports.",
+    "current_guarded_script_sha256": {
+      "train_hkde.py": "62a8c7bc6b6a11048a033c339713222ca19a5633a8b066b8a944ed64d6931fab",
+      "evaluate_hkde.py": "23e60a0eccb02c620f9f425d6ef86134c209bc435bf68103381151f9b26ef504"
+    },
+    "checks": "Independent review verified original run hashes, then eight boundary smoke checks verified current reference source/report identity guards and rejection of test access after failed validation, before bank loading."
+  },
+  "scientific_outcome": "Reference accepted on declared fixtures; neural price-quantile gate failed; final test remains unevaluated.",
+  "software_tests": {
+    "command": "PYTHONPATH=src KERAS_BACKEND=jax python -m unittest discover -s tests -v",
+    "count": 104,
+    "passed": true,
+    "wall_seconds": 22.463
+  },
+  "artifacts_sha256": {
+    "docs/results/hkde-inference/reference.json": "8bc2851856e4171012718eed2d3bd57e71c0f93d71ac5cf03af18812370ea569",
+    "docs/results/hkde-inference/reference-grid.npz": "532d8ad4a7ae0321f6d1ae1a25fcb5124859b3884d6c7cc90d62abfb0401d0b2",
+    "docs/results/hkde-inference/training.json": "057a86ca0802c5b8ad51a47cf499f0fd360685b4f76c3c722978d973d1411379",
+    "docs/results/hkde-inference/bank-manifest.json": "04c35fd11291c4f10ace19a3989bd61125c4832b74e3c80da70e7014af027447",
+    "docs/results/hkde-inference/bank-verification.json": "6aa79a673556420c9cd349adb8fe03e32750120de540cfe95314386beae881e8",
+    "docs/results/hkde-inference/neural-validation.json": "743500b877feabe5b4476f9a8ea66c61eb61038872e23c61cf651279d0cbc636",
+    "docs/results/hkde-inference/validation-checks.npz": "c25e83ed45c5f890c120f56de04db8e50fd540279f79cdbec9c4c4a280fdf653",
+    "checkpoints/hkde-theta-intensity-provisional/model.keras": "fee8e8a04aee1d7789754f0b9a239d0dd09dbd05baba1f78233d41a6b8a0a8b3"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "task": {
+    "dt_years": 0.003968253968253968,
+    "initial_variance": 0.04,
+    "measure": "P",
+    "n_observations": 252,
+    "parameters": {
+      "drift": 0.05,
+      "kappa": 2.0,
+      "rho": -0.6,
+      "vol_of_vol": 0.2
+    },
+    "prior": "log_uniform",
+    "substeps": 1,
+    "task_id": "heston_theta_state_v1",
+    "theta_bounds": [
+      0.02,
+      0.08
+    ]
+  },
+  "adapter_id": "heston_returns_time_asinh_state_v3"
+}

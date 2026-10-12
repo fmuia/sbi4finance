@@ -1,0 +1,52 @@
+{
+  "experiment_id": "hkde_theta_intensity_baseline_v1",
+  "scope": "S synthetic validation only; frozen checkpoint remains provisional",
+  "input_sha256": {
+    "docs/results/hkde-inference/reference.json": "8bc2851856e4171012718eed2d3bd57e71c0f93d71ac5cf03af18812370ea569",
+    "docs/results/hkde-inference/reference-grid.npz": "532d8ad4a7ae0321f6d1ae1a25fcb5124859b3884d6c7cc90d62abfb0401d0b2",
+    "docs/results/hkde-inference/neural-validation.json": "743500b877feabe5b4476f9a8ea66c61eb61038872e23c61cf651279d0cbc636",
+    "docs/results/hkde-inference/validation-checks.npz": "c25e83ed45c5f890c120f56de04db8e50fd540279f79cdbec9c4c4a280fdf653"
+  },
+  "plot_script": "scripts/plot_hkde_inference.py",
+  "plot_script_sha256": "b6175f77b251b3fad7c37fc43cbe8988742298ed134d78d49fd474543f0940b7",
+  "checkpoint_sha256": "fee8e8a04aee1d7789754f0b9a239d0dd09dbd05baba1f78233d41a6b8a0a8b3",
+  "reserved_test_evaluated": false,
+  "versions": {
+    "numpy": "2.5.3",
+    "matplotlib": "3.11.2"
+  },
+  "figures": [
+    {
+      "name": "prior-to-posterior",
+      "caption": "Prior comparison and posterior contraction across all audit cases.",
+      "output_sha256": {
+        "prior-to-posterior.png": "cd59b8f9f1512a813bb93de24273eb09fbf8880362c202057c529d5d381b8751",
+        "prior-to-posterior.svg": "da2771b5c7a4998e5ccb6d21003ff9e52b973617edd730bd28ea44e6a387ff7c"
+      }
+    },
+    {
+      "name": "sbc-ranks",
+      "caption": "Randomized-rank ECDF deviations and individual coverage intervals.",
+      "output_sha256": {
+        "sbc-ranks.png": "19e856c994719282481750441e833e0ffc1652951ce53a50aa2d8d9ca262e4d4",
+        "sbc-ranks.svg": "9d78170e3c5d7036ccf0a5043e382c32837483c13bde71abede4a32991aa9117"
+      }
+    },
+    {
+      "name": "target-price-errors",
+      "caption": "Every saved downstream quantile error with sampling uncertainty and the fixed price gate.",
+      "output_sha256": {
+        "target-price-errors.png": "e7e65881b191651f2742201d53e78d313e1e7d3c73c30de98e8d826f17e269e3",
+        "target-price-errors.svg": "d14aca7e9ad7937fa41e3effb5744b487235eed0fd507302c88672d89eab64be"
+      }
+    },
+    {
+      "name": "joint-posterior-case-257",
+      "caption": "Joint numerical reference and neural draws for the largest downstream price error.",
+      "output_sha256": {
+        "joint-posterior-case-257.png": "932bd652af413c07fa796b0f370b6b6dbbf96824192de556b601a6972c268f8d",
+        "joint-posterior-case-257.svg": "4fb348aaa4fc73435a2de7146d11abdc3e0510247b439b290e92d8cde23badb6"
+      }
+    }
+  ]
+}

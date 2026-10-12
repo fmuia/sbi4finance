@@ -1,0 +1,65 @@
+{
+  "format": "hkde_teaching_v1",
+  "case_id": "validation:257",
+  "parameter_names": [
+    "theta",
+    "jump_intensity"
+  ],
+  "target_contract": {
+    "strike": 95.0,
+    "maturity": 0.75,
+    "option_type": "put"
+  },
+  "quantiles": [
+    0.05,
+    0.5,
+    0.95
+  ],
+  "reference_price_quantiles": [
+    4.69581856910316,
+    4.85594715041891,
+    5.009022051108699
+  ],
+  "checkpoint_status": "provisional",
+  "scientific_validation_passed": false,
+  "price_error_gate_currency": 0.03,
+  "original_max_price_quantile_error_currency": 0.043869754706384434,
+  "reserved_test_evaluated": false,
+  "cached_draw_count": 4096,
+  "sources": {
+    "simulator_commit": "729ac26067a1a3e34112d6b153b5783dae4219f5",
+    "checkpoint_sha256": "fee8e8a04aee1d7789754f0b9a239d0dd09dbd05baba1f78233d41a6b8a0a8b3",
+    "bank_manifest_sha256": "04c35fd11291c4f10ace19a3989bd61125c4832b74e3c80da70e7014af027447",
+    "checks_sha256": "c25e83ed45c5f890c120f56de04db8e50fd540279f79cdbec9c4c4a280fdf653",
+    "validation_report_sha256": "743500b877feabe5b4476f9a8ea66c61eb61038872e23c61cf651279d0cbc636",
+    "reference_report_sha256": "8bc2851856e4171012718eed2d3bd57e71c0f93d71ac5cf03af18812370ea569",
+    "protocol_sha256": "8ab6b9d87204f1b9a1ef55bb2a89877e7be81a24cfb9e9adba09e9dd319aae0d",
+    "adapter_sha256": "616014c460d6d0d164a08590d6ac47114cdabfb030584574854dc4ecfd061beb",
+    "pricing_source_sha256": "159194818b1f8b5a6194e1340568264271bad895474e5e1c9c8ce6cfdb71074b",
+    "builder_sha256": "e822425a5daaf24b75fe3e01dc41e900328e481ecea17c1d9e30ddcd5e71f684",
+    "bank_panel_loader_sha256": "a662cb2834f1421292e11985eb258a8f5c12fa002e9f99bcb91cd7d8486e6cf9",
+    "producer_driver_sha256": {
+      "train_hkde.py": {
+        "recorded": "9320ba9eb1eca4b2ff8c7ae715bb963ad5e4eda23e23f43137a363930e85e55b",
+        "checkout": "62a8c7bc6b6a11048a033c339713222ca19a5633a8b066b8a944ed64d6931fab"
+      },
+      "evaluate_hkde.py": {
+        "recorded": "4f3b9fcbf34256bbb82a53c6feb2baf8480ba4b9ea03a23a7125a0cd568ffa21",
+        "checkout": "23e60a0eccb02c620f9f425d6ef86134c209bc435bf68103381151f9b26ef504"
+      }
+    }
+  },
+  "files": {
+    "task.json": "859f6e25cbeff0dc6d85bfaa223e44c575fdb9d0f7d9e54b67da7445abca245d",
+    "panel/manifest.json": "ef30c9b183eb584aee3510e676be8c1d7604ab7b7c2da886bd2367c3e16bff5d",
+    "panel/observations.csv": "26290af45d62cc37bd7d02a91edb972a55bc1c95bdb309ba08af86a5e596a3db",
+    "posterior.npz": "24604a5a8d7720f672b2c71229d0127a8ca4071947e84cd185687b3be6786139"
+  },
+  "notes": [
+    "Cached validation replay, not fresh inference or new statistical validation.",
+    "Paired parameter rows propagate into Q model-price uncertainty, not realized payoffs or P risk.",
+    "Synthetic truth is evaluation-only; the held-out target never conditions the posterior.",
+    "The original failed price gate remains visible; no reserved-test evaluation or model copy.",
+    "Historical training/audit driver hashes are preserved separately from checkout hashes; those drivers were subsequently strengthened with provenance guards. This builder does not rerun them."
+  ]
+}
