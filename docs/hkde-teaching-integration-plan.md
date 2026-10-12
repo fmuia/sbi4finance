@@ -1,5 +1,10 @@
 # Plan: connect local HKDE data to the corrected teaching workflow
 
+**Implementation closeout:** the data-loading and runnable teaching-integration
+workstream is complete for its current scope (I1–I3 and I4a). PRs #21 and #22
+remain for repository review. Formal I4 acceptance is a conditional follow-up
+with an external scientific prerequisite, not an active data-engineering task.
+
 **Outcome:** one prepared synthetic option panel can enter the existing corrected
 HKDE lesson through the local-data interface. Reviewers can follow the observation,
 raw neural result, weighted correction and held-out price uncertainty. The
@@ -140,3 +145,23 @@ retained; the completed milestones do not change the scientific decision.
 | I3: combined offline check | Complete | I1–I2 |
 | I4a: provisional live demonstration | Complete | I1–I3 and the published shared-reference audit |
 | I4: live acceptance | Deferred | Scientific acceptance plus I1–I3 |
+
+## Latest upstream check — 12 October 2026
+
+The simulator chat and published heads were checked again at closeout:
+
+- [HKDE PR #19, `1bf3d8a`](https://github.com/fmuia/sbi4finance/blob/1bf3d8a52714d8a24024d2e422b456f53efbd272/docs/results/hkde-live-demo/verification.json)
+  records successful provisional live execution, but both scientific and
+  participant acceptance remain false. Its task, checkpoint, correction
+  protocol and historical validation/test reports are unchanged. Our local
+  panel and recorded 2,048-proposal result remain compatible.
+- [Rough-Bergomi PR #14, `dfaaee4`](https://github.com/fmuia/sbi4finance/blob/dfaaee4db9d50e23dc05e1c049554a36c39b9bfc/docs/rough-reference-expansion.md)
+  now passes the expanded-reference and neural validation checks. Its reserved
+  final test remains untouched. This is a different model/task and does not
+  supply HKDE's I4 prerequisite.
+
+No further data-side implementation follows from those updates. Reopen I4 when
+an explicit acceptance decision covers the selected HKDE task and participant
+configuration, or define a separate integration scope if the tutorial switches
+models. Real-market acquisition remains optional. The existing scientific
+flags and recorded execution evidence are preserved.
