@@ -150,11 +150,15 @@ This test took 618.53 seconds, including 492.77 seconds for calibration.
 
 The test is now **used and closed** for this experiment. It cannot be reused
 as a fresh selection holdout. The original raw-neural test remains untouched.
-The development review displays this stop and skips live candidate execution;
-that successful display is not participant acceptance. Any follow-up must
-separate a finite-ensemble SBC fluctuation, reference/numerical effects and
-finite-pool inference error before specifying a new experiment. No automatic
-training or seed/budget sweep follows from this result.
+The initial development review displayed this stop and skipped live execution.
+After the [saved-cohort gate audit](hkde-calibration-gate-audit.md), the
+[M8 lesson](m8-options-candidate.md) now permits a provisional live calculation
+on fixed development case `validation:257`. Its successful conditional check
+is separate from this unchanged historical failure and does not establish
+population calibration or full participant acceptance. Any new scientific
+acceptance experiment must distinguish cohort variability, reference/numerical
+effects and finite-pool inference error. No automatic training or seed/budget
+sweep follows from this result.
 
 ### Explaining the rank shift with the same numerical reference
 

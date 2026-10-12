@@ -238,7 +238,7 @@ def _(candidate_accepted, mo, protocol, provisional_demo, reports):
         mo.md("## Candidate status\n\nThe corrected pipeline has its own frozen acceptance test. It does not retrospectively accept the raw neural posterior."),
         mo.ui.table(_rows, selection=None),
         mo.ui.table(_stages, selection=None) if _stages else mo.md("No corrected scientific stages are recorded yet."),
-        mo.callout("Both recorded gates pass. The bounded synthetic live example below is enabled."
+        mo.callout("Historical scientific acceptance: PASS."
                    if candidate_accepted else
                    ("Formal scientific acceptance is false. The explicitly provisional live demonstration is enabled; its case-level checks do not change that status."
                     if provisional_demo else
@@ -402,10 +402,11 @@ def _(mo, protocol):
     ## One live synthetic panel
 
     We use **validation:257**, the fixed audit case with the largest earlier
-    raw-neural price discrepancy. Its selection is explicit; the independent
-    new test supplies the separate generalization check. This cell will load
-    compatible immutable assets, draw **{protocol['conditional']['participant_samples']:,}**
-    proposals, compute the numerical likelihood weights and evaluate the two
+    raw-neural price discrepancy. This is a selected development example,
+    not a fresh test. The separate test has already been used and closed;
+    its conditional checks passed but its theta SBC gate failed. This cell loads
+    compatible immutable assets, draws **{protocol['conditional']['participant_samples']:,}**
+    proposals, computes the numerical likelihood weights and evaluates the two
     accepted target-price outputs. It uses no generating truth in conditioning.
 
     The complete scientific audit separately checks both this participant
@@ -485,18 +486,25 @@ def _(ROOT, candidate_accepted, load_script, local_observation, mo, np, protocol
 
 
 @app.cell
-def _(live_result, mo, task):
+def _(live_result, mo, protocol, task):
     if live_result is not None:
         _view = mo.vstack([
             mo.md("### The actual conditioning panel"),
             mo.ui.table([{**_contract, "Observed synthetic price": float(live_result["observation"][_index, 0])}
                          for _index, _contract in enumerate(task["context"]["contracts"])], selection=None),
-            mo.callout("This live case meets the same reported numerical thresholds."
+            mo.callout("This single development case meets the unchanged conditional numerical thresholds. Population calibration remains unresolved."
                        if live_result["passed"] else
                        "This live finite-pool execution misses at least one threshold. Its result is retained; the notebook does not retry or change the seed.",
                        kind="success" if live_result["passed"] else "warn"),
-            mo.ui.table([{"Metric": _name, "Live value": _value, "Passed": live_result["gates"][_name]}
+            mo.ui.table([{"Metric": _name, "Live value": _value,
+                          "Threshold (≤)": protocol["gates"][_name], "Passed": live_result["gates"][_name]}
                          for _name, _value in live_result["metrics"].items()], selection=None),
+            mo.ui.table([
+                {"Diagnostic": "ESS / proposal count", "Live value": live_result["ess_fraction"],
+                 "Criterion": f"≥ {protocol['conditional']['min_ess_fraction']}", "Passed": live_result["gates"]["proposal_ess"]},
+                {"Diagnostic": "Largest normalized weight", "Live value": live_result["max_weight"],
+                 "Criterion": f"≤ {protocol['conditional']['max_weight']}", "Passed": live_result["gates"]["proposal_max_weight"]},
+            ], selection=None),
             mo.md(f"Prior-component rows: **{live_result['prior_rows']}**; boundary-component rows: **{live_result['boundary_rows']}**; "
                   f"ESS/N: **{live_result['ess_fraction']:.3f}**; "
                   f"largest normalized weight: **{live_result['max_weight']:.5f}**. "
@@ -583,11 +591,12 @@ def _(cached_figures, mo, protocol, reports):
 
         The original 16 validation cases and four stress cases were already
         inspected during development. Their improvement is useful, but not
-        independent confirmation. Only after every new validation gate passes
-        does the protocol generate a separate 256-panel test under a new seed.
-        Its first 16 cases receive conditional reference checks, and all 256
-        receive the finite-pool calibration audit. The old posterior final test
-        remains unevaluated.
+        independent confirmation. After every correction validation gate passed,
+        the protocol generated a separate 256-panel test under a new seed.
+        Its first 16 cases received conditional reference checks, and all 256
+        received the finite-pool calibration audit. That test is now used and
+        closed; opening this notebook does not generate another test. The
+        original neural posterior final test remains unevaluated.
 
         Parameter means, widths, joint correlation, interval mass and target
         price quantiles have separate gates. Both 2,048 and 8,192 conditional
@@ -650,12 +659,18 @@ def _(cached_figures, mo, reports):
             existing quadrature grid; it generates no new test or proposal draws.
 
             The agreement suggests variation shared by this finite cohort,
-            rather than demonstrating proposal-specific bias. A calibrated
-            method can occasionally fail a finite-sample diagnostic. The
-            numerical reference is still approximate, and this explanation
-            does not override the frozen gate. The corrected pipeline remains
-            provisional. A separate opt-in demonstration exercises one fixed
-            validation case while preserving this formal acceptance status.
+            rather than demonstrating proposal-specific bias. The subsequent
+            saved-cohort audit found that ideal reference sampling triggers this
+            theta gate in 98.85% of controls **conditional on these same panels**.
+            This is not a population false-alarm rate or proof of calibration.
+            Extra finite-pool dispersion is measurable; direct weighted-CDF
+            errors on the 16 saved conditional cases are consistent with the
+            estimated importance-sampling uncertainty.
+
+            The numerical reference is still approximate. The historical gate
+            remains failed; the opt-in live demonstration continues with
+            that limitation explicit. Notebook11 develops the audit and its
+            remaining uncertainty.
             """))
         _items.append(cached_figures["reference-pit"])
     mo.vstack(_items)
@@ -671,8 +686,8 @@ def _(ROOT, artifact_paths, mo):
     - [Boundary-correction protocol]({ROOT / 'docs/hkde-correction-boundary-protocol.md'}) and [frozen settings]({ROOT / 'configs/hkde_correction_boundary_protocol.json'}).
     - [Preserved first-correction protocol]({ROOT / 'docs/hkde-correction-protocol.md'}) and [failed v1 evidence]({ROOT / 'docs/results/hkde-correction-v1/validation.json'}).
     - [Original HKDE inference]({ROOT / 'docs/hkde-joint-inference.md'}).
+    - [Calibration-gate audit]({ROOT / 'docs/hkde-calibration-gate-audit.md'}) and [didactic notebook11]({ROOT / 'notebooks/11_hkde_calibration_audit.py'}).
     - [Independent forward-surrogate checks]({ROOT / 'docs/hkde-price-surrogate.md'}).
-    - [Shared-reference calibration audit]({ROOT / 'docs/hkde-calibration-gate-audit.md'}).
     {_links}
 
     Run from the repository root with `PYTHONPATH=src pixi run marimo edit notebooks/10_hkde_corrected_workflow.py --no-token`.

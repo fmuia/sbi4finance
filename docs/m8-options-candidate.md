@@ -22,8 +22,8 @@ The [subsequent gate audit](hkde-calibration-gate-audit.md) now quantifies this:
 ideal numerical-reference sampling fails the theta gate in 98.85% of controls
 conditional on the same saved cohort. The uniformity threshold itself is
 calibrated; that alarm does not isolate correction error. Notebook11 presents
-the paired and direct-CDF evidence without changing this candidate's existing
-acceptance logic or claiming population calibration.
+the paired and direct-CDF evidence. This supports a bounded teaching demonstration
+with the frozen estimator while retaining the unresolved acceptance question.
 
 The subsequent [I4a live demonstration](hkde-provisional-demo.md) uses this
 evidence to permit one opt-in run while leaving formal acceptance false.
@@ -102,15 +102,55 @@ SBC from conditional checks, joint draws from independent marginal sampling,
 and model-price uncertainty from payoff risk. The numerical likelihood cost
 and the raw neural failure are part of the lesson, not hidden setup work.
 
-Offline acceptance requires a fresh process with external sockets blocked,
+Offline execution verification requires a fresh process with external sockets blocked,
 all market fixtures and raw training banks absent, and a headless HTML export
 with no cell errors. Measure loading, sampling/density, likelihood, target
-pricing and reference comparison together. A notebook that merely skips its
-live calculation because evidence is missing or failed does not satisfy this
-acceptance. A review-only check verifies that the failed
-test and skipped live stage are visible, with no cell errors. It records
-`scientific_acceptance=false` and `live_executed=false`; its duration is not a
-measurement of live correction cost.
+pricing and reference comparison together. The [live verification record](results/hkde-live-demo/verification.json)
+separates technical execution and single-case checks from
+`scientific_acceptance=false`, while recording `live_executed=true`.
+This verifies the complete computational lesson with no market observations;
+it is not a new scientific acceptance experiment.
+
+### Historical PR #19 live result
+
+Before composition with the local-panel route, the isolated PR #19 export completed **17 cells with zero errors in 13.50 s**;
+the live calculation itself took **5.37 s**. All six conditional accuracy checks
+and both proposal-reliability checks passed on the fixed development panel.
+The maximum target-price quantile error was **0.00530 currency** against the
+unchanged **0.03** tolerance. ESS/N was **0.68777** (about **1,409** effective
+samples from 2,048 proposals), and the largest weight was **0.00208**.
+
+| Live stage | Seconds |
+|---|---:|
+| Imports, asset checks and checkpoint loading | 2.557 |
+| Proposal sampling and density evaluation | 1.039 |
+| Nine-price numerical likelihood and weights | 1.767 |
+| Two target prices via the surrogate | 0.00062 |
+| Reference comparison and summaries | 0.0044 |
+| Total live calculation | 5.369 |
+
+These are one local CPU execution's timings in a fresh process with the existing
+pinned environment, not warm throughput or an amortization comparison. The
+full export also renders the lesson and cached diagnostic figures. The
+surrogate cost excludes the numerical likelihood pricing required by correction.
+
+| Target put | Corrected 5% | Corrected median | Corrected 95% | Reference median |
+|---|---:|---:|---:|---:|
+| K=95, T=0.75 years | 4.69659 | 4.85592 | 5.01432 | 4.85595 |
+| K=80, T=1 year | 1.84425 | 1.95487 | 2.06751 | 1.95499 |
+
+All values are currency model prices. These intervals reflect joint parameter
+uncertainty, not payoff quantiles or confidence bounds on numerical error.
+The narrow price distributions coexist with the elongated joint parameter
+posterior: several variance/jump combinations explain the panel similarly.
+The [plots](results/hkde-live-demo/live-joint.png) show concentration relative
+to the full prior rectangle, rather than simply reproducing the prior.
+
+The final verification retained the same seed after a prose-only correction;
+its numerical tables and both live figures reproduced exactly. The **57 HKDE
+unit tests** also passed. Source/asset hashes and the separate historical and
+execution statuses are recorded in the linked verification file. No training,
+new calibration cohort or cluster run was required.
 
 The [provisional live check](results/hkde-provisional-demo/execution.json)
 instead records `live_executed=true` and `live_accuracy_passed=true`, while
@@ -120,13 +160,15 @@ measure actual execution, without accepting population calibration.
 
 ## M8.4 — Handover and open work
 
-The original [isolated review verification](results/hkde-correction/notebook-verification.json)
+The earlier [isolated cached-review verification](results/hkde-correction/notebook-verification.json)
 passes strict checking and HTML export: **17 cells, zero errors, 8.29 seconds**,
 with external connections blocked and market fixtures/raw banks absent. All
 four diagnostic figures and the failed/disabled status were inspected. This
 uses an existing pinned Pixi environment in a fresh source/assets copy; it is
 not a fresh dependency installation. It measures cached review rendering,
-not live inference, and does not accept the participant pipeline.
+not live inference, and does not accept the participant pipeline. That historical
+record remains unchanged; the combined integration record supplies current
+execution costs and outcomes.
 
 The subsequent [combined data/lesson check](hkde-teaching-integration.md) records
 the updated notebook and both dependency commits. It runs both lessons with
@@ -135,15 +177,32 @@ and weighted comparison, and renders all six cached figures. This is I3
 engineering evidence; I4 live participant acceptance remains deferred.
 
 Record the exact scientific and notebook outcomes alongside their immutable
-artifacts. Only a passing corrected pipeline plus a successful live offline
-export accepts this bounded S candidate. The notebook's status display must
-agree with both saved validation and independent-test reports. At present those
-reports mean validation passed, the new test failed theta SBC, and the candidate
-is not accepted. The review material can be handed over as a draft with that
-limitation; it cannot be labelled a completed M8 participant release.
+artifacts. The notebook's historical acceptance display must agree with both
+saved validation and test reports: validation passed, the used test failed theta
+SBC, and the candidate is not scientifically accepted. Allowing a provisional
+live demonstration changes execution policy, not those reports. General
+calibration acceptance still requires a prospective decision rule and appropriate
+evidence. This material can be handed over as a runnable draft with that
+limitation; it is not a completed M8 participant release.
+
+The bounded rough-Bergomi expansion is complete in
+[PR #14](https://github.com/fmuia/sbi4finance/pull/14): the 8,192-row reference
+passes all 20 cases and the unchanged candidate passes all seven neural
+validation gates. Its separately frozen test evaluation is now complete in
+[PR #28](https://github.com/fmuia/sbi4finance/pull/28), tracked by
+[issue #23](https://github.com/fmuia/sbi4finance/issues/23): all 16 references
+and six of seven neural gates pass; one eta-spread gate fails. All 256 test
+cases are used and closed, and the rough candidate remains provisional.
+This different task's result does not change HKDE acceptance.
+
+[Issue #24](https://github.com/fmuia/sbi4finance/issues/24) tracks the prospective
+HKDE decision; [#26](https://github.com/fmuia/sbi4finance/issues/26) tracks the
+curriculum and final participant review. The [handover issue index](simulator-handover.md#tracked-follow-ups)
+also links integration and the optional Heston follow-up. No new experiment
+or merge is launched by this documentation closeout.
 
 The broader simulator catalog and its cluster banks remain available. Further
-Heston analysis, rough-Bergomi reference efficiency, additional dimensions,
+Heston analysis, additional dimensions,
 American/exotic pricers, physical/risk-neutral linkage and empirical market
 claims are separate work. They neither invalidate this bounded options task
 nor gain acceptance from it. Curriculum selection remains a team decision.

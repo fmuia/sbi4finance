@@ -3,8 +3,15 @@
 **Implemented-code snapshot, 12 October 2026.** This guide explains how the
 building blocks fit together and where to make changes. The
 [collaborator handover](simulator-handover.md) records results, PR dependencies
-and outstanding decisions. The [mathematical guide](simulator-plan/notes/01-foundations.md)
+and outstanding decisions. Its [issue index](simulator-handover.md#tracked-follow-ups)
+separates stack integration, curriculum selection and the three model-specific
+scientific follow-ups. The scoped simulator/bank implementation is complete;
+these issues do not require a new architecture. The [mathematical guide](simulator-plan/notes/01-foundations.md)
 explains the underlying inference concepts.
+
+The [parallel agent handovers](parallel-agent-handover.md) assign ownership of
+scientific, teaching, data-entry and integration changes without introducing
+new architectural layers or competing implementations.
 
 The main code described here is on `feat/hkde-offline-tutorial` (PR #19).
 The later rough-inference and data additions are explicitly marked below:
@@ -223,9 +230,15 @@ Correction avoids retraining the frozen network, but retains numerical-price
 and finite-sample errors. [`hkde_diagnostics.py`](../src/sbi4finance/hkde_diagnostics.py)
 and the evaluation scripts check SBC, conditional/reference accuracy, joint
 quantities and downstream prices. They answer different questions. The latest
-corrected test still fails one SBC gate, so notebook10 is a cached diagnostic
-review with live participant inference disabled; see the
-[result and acceptance record](hkde-corrected-inference.md).
+corrected test still fails one SBC gate; its used test and acceptance flag remain
+unchanged. Notebook10 now runs an explicitly **provisional live demonstration**
+on fixed synthetic `validation:257` with 2,048 proposals and the same seed and
+numerical tolerances. It uses the existing functions and assets; it adds no new
+inference framework. Technical execution and single-case checks are distinct
+from population calibration and M8 release acceptance. See the
+[historical result](hkde-corrected-inference.md),
+[gate explanation](hkde-calibration-gate-audit.md) and
+[live execution record](results/hkde-live-demo/verification.json).
 
 ## 6. Execution and review
 
@@ -261,25 +274,43 @@ between worktrees. Commands for checks and other reviews are in the
 
 ## 7. Related code on separate branches
 
-**Latest rough work, [PR #14](https://github.com/fmuia/sbi4finance/pull/14):**
+**Rough development work, [PR #14](https://github.com/fmuia/sbi4finance/pull/14):**
 `feat/rough-bergomi-option-bank` adds `bergomi_refinement.py` for coupled-grid
 pricing comparisons, `option_bank_shards.py` for independently generated array
 tasks and bank assembly, and `rough_reference.py` / `rough_inference.py` for
 the restricted H/eta inverse task. Shards own disjoint split-ID ranges;
 assembly checks coverage and identities, then produces an ordinary
-`option_bank_v1`. `cluster/option_bank_array.sbatch` selects a job-map record
+`option_bank_v1`. Optional verified prefix reuse extends a bank without changing
+its existing rows or schema. `cluster/option_bank_array.sbatch` selects a job-map record
 and invokes that route. Scheduling does not change the examples.
 
 The runner requires an accepted independent reference before training/reload,
-then provides validation-only evaluation. It stopped on a reference-efficiency
-failure before training/SBC; the presence of inference code is not a trained
-rough checkpoint. This pilot's observation law explicitly includes finite
+then provides validation-only evaluation. The original 4,096-row run stopped
+on a reference-efficiency failure. One bounded extension reuses those rows and
+appends 4,096 independent rows: all 20 reference cases and all seven neural validation
+gates pass, including 512-case SBC. A trained checkpoint is delivered; its later
+held-out outcome is recorded separately below. This pilot's observation law explicitly includes finite
 Monte Carlo pricing randomness followed by quote noise. It preserves base
 groups when augmenting training quotes, and estimates posterior target-price
 **means** using independent pricing randomness; noisy target-estimate quantiles
 are not presented as posterior price uncertainty. Read its
-[study](https://github.com/fmuia/sbi4finance/blob/feat/rough-bergomi-option-bank/docs/rough-joint-inference.md)
-and notebook09 on that branch. These later additions are absent from PR #19's ancestry.
+[extension study](https://github.com/fmuia/sbi4finance/blob/feat/rough-bergomi-option-bank/docs/rough-reference-expansion.md)
+and notebook09 on that branch. The original stopped study is preserved. These
+later additions are absent from PR #19's ancestry; this documentation update
+does not import their code or change the HKDE acceptance result.
+
+**Rough held-out evaluation, [PR #28](https://github.com/fmuia/sbi4finance/pull/28):**
+`feat/rough-heldout-test` evaluates the frozen checkpoint and existing reference
+bank once, with source/input hashes and raw audit draws. It introduces no model,
+bank schema or retraining. All 16 reference cases pass; six of seven neural
+gates pass, including 256-case SBC and target-price means. On `test:3`, eta's
+posterior SD is 31.0% too small against the 25% gate, so the candidate remains
+provisional. All 256 cases are used and closed; no retry or tuning followed.
+The [study](https://github.com/fmuia/sbi4finance/blob/feat/rough-heldout-test/docs/rough-heldout-test.md)
+and updated notebook09 explain the conditional failure alongside the passed
+marginal ranks. The independent raw-draw audit, 129 software tests and offline
+26-cell review verify this result, not scientific acceptance. This follow-up
+also remains outside PR #19's code ancestry.
 
 **Data workstream, [PRs #5, #6, #16–#18](simulator-handover.md#where-the-work-lives):**
 the separate `datasets/` modules load local CSV/JSON artifacts, prepare return
@@ -303,6 +334,17 @@ Parsing alone does not establish compatibility. The audited round trips establis
 transport equivalence for the matched saved task/checkpoint, not scientific
 acceptance or market adequacy. Its cached HKDE lesson preserves the original raw-neural
 result rather than notebook10's correction.
+
+Later [PR #21](https://github.com/fmuia/sbi4finance/pull/21) connects that prepared
+panel to the corrected cached lesson; [PR #22](https://github.com/fmuia/sbi4finance/pull/22)
+adds the opt-in provisional live route. They reuse the existing loader,
+correction and checker, with no new bank/adapter format. Their combined review
+bases contain specific older parent revisions; these changes are not imported
+by this architecture note. I1–I3 and I4a are complete, while formal participant
+I4 depends on [HKDE's acceptance decision](https://github.com/fmuia/sbi4finance/issues/24).
+[Issue #27](https://github.com/fmuia/sbi4finance/issues/27) tracks verifying the
+actual combined tree, and [#26](https://github.com/fmuia/sbi4finance/issues/26)
+tracks which route becomes the participant lesson.
 
 Synthetic teaching/training/testing is the required **S** workflow and needs
 no market acquisition. Optional **M** applies a compatible observation to

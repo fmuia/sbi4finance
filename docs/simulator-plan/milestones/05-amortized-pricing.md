@@ -131,7 +131,8 @@ passes the 16 conditional cases and efficiency checks at both budgets, but
 long-run-variance SBC fails (KS 0.10325 > 0.09251). The test is used and closed;
 the raw flow's older test remains untouched. The [measured report](../../hkde-corrected-inference.md)
 and review preserve the stop. Corrected-pipeline and M8 participant acceptance
-remain pending; a review notebook that skips live inference is not acceptance.
+remain pending. The [M8 follow-up](../../m8-options-candidate.md) permits a
+provisional live demonstration, with that historical acceptance flag unchanged.
 
 ## M5.2 bounded surrogate subplan
 

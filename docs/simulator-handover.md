@@ -1,10 +1,12 @@
 # Collaborator handover: finance simulator ladder
 
 **Snapshot: 12 October 2026.** Repository: [fmuia/sbi4finance](https://github.com/fmuia/sbi4finance).
-The simulator/bank building blocks are substantially implemented. The final
+The scoped simulator/bank implementation workstream is complete. The final
 participant tutorial is **not yet scientifically accepted**. This note hands
 over code, evidence and decisions; it does not claim that every model has a
-validated neural posterior. No PR was merged in this workstream.
+validated neural posterior. Remaining review and scientific decisions are
+tracked in the [follow-up issues below](#tracked-follow-ups). No PR was merged
+in this workstream; issue creation launches no further experiments.
 
 ## Start here
 
@@ -14,13 +16,18 @@ layout and distinguishes additions that still live on separate branches.
 
 1. Read the [plan and mathematical reading guide](https://github.com/fmuia/sbi4finance/blob/docs/simulator-plan/docs/simulator-plan/README.md)
    in [plan PR #3](https://github.com/fmuia/sbi4finance/pull/3).
-2. Open [notebook10](../notebooks/10_hkde_corrected_workflow.py) and the
-   [HKDE correction report](hkde-corrected-inference.md). These show the most
-   recent result, including the retained acceptance failure.
-3. Inspect the [price-error graph](results/hkde-correction/plots/price-errors.png)
+2. Open [notebook10](../notebooks/10_hkde_corrected_workflow.py) for the provisional
+   live synthetic demonstration, and read the [HKDE correction report](hkde-corrected-inference.md)
+   for the retained scientific acceptance failure.
+3. Inspect the live [joint posterior](results/hkde-live-demo/live-joint.png)
+   and [target-price distributions](results/hkde-live-demo/live-target-prices.png),
+   then the [price-error graph](results/hkde-correction/plots/price-errors.png)
    and [reference-versus-SIR rank graph](results/hkde-correction/plots/reference-pit.png).
-4. For Bergomi, use the latest [PR #14 study](https://github.com/fmuia/sbi4finance/blob/feat/rough-bergomi-option-bank/docs/rough-joint-inference.md)
-   and its notebook09. The latest rough-inference additions are not all in
+4. For Bergomi's current status, use the [held-out study](https://github.com/fmuia/sbi4finance/blob/feat/rough-heldout-test/docs/rough-heldout-test.md)
+   and notebook09 in [PR #28](https://github.com/fmuia/sbi4finance/pull/28).
+   The [passed development validation](https://github.com/fmuia/sbi4finance/blob/feat/rough-bergomi-option-bank/docs/rough-reference-expansion.md)
+   and [original stopped study](https://github.com/fmuia/sbi4finance/blob/feat/rough-bergomi-option-bank/docs/rough-joint-inference.md)
+   remain unchanged in PR #14. The latest rough-inference additions are not all in
    the HKDE/tutorial branch ancestry; see the branch boundary below.
 
 The project should stay easy to change. Prefer the existing functions, explicit
@@ -44,8 +51,8 @@ preserved. This work is not a reproduction/import of Francesco's full SVJ study.
 | M4: HKDE and option panels | Double-exponential price jumps, direct Fourier European pricing, fixed noisy-panel tasks, common option banks and notebook06 | This uses numerical Fourier quadrature, not an imported PROJ implementation. Wider domains and American/exotic products need separate work. |
 | M5: HKDE inference and learned pricing | Frozen neural checkpoint, refined numerical posterior grid, two-contract price surrogate, importance correction and notebook07 | The surrogate passes. The raw flow and corrected pipeline remain provisional for different recorded reasons. |
 | M6: one-factor Bergomi | Forward-variance context, exact OU/asset covariance, complete continuation, European Monte Carlo prices, banks and notebook08 | No two-factor implementation or accepted neural posterior is claimed. |
-| M7: rough Bergomi | Gaussian reference and FFT hybrid driver, option banks, coupled-grid study, restricted H/eta reference pilot and notebook09 | Reference passes 19/20 panels; one efficiency failure stops training/SBC. No accepted rough checkpoint. |
-| M8: paced options candidate | Notebook10, equations, diagnostics, exercises and verified offline review | Draft: the failed held-out calibration gate disables live participant inference. |
+| M7: rough Bergomi | Gaussian reference and FFT hybrid driver, option banks, coupled-grid study, restricted H/eta inference and notebook09 | Development validation passes after the bounded 8,192-row reference expansion. Held-out study: 16/16 references and six of seven neural gates pass, including 256-case SBC and target means; one eta SD is 31.0% too small against a 25% limit. All test cases are used; candidate remains provisional. |
+| M8: paced options candidate | Notebook10, equations, diagnostics, exercises and provisional live offline demonstration | Fixed development example runs; historical theta SBC failure and pending scientific acceptance remain visible. |
 
 Numba accelerates implemented trajectory loops; independent/reference paths
 remain available for checks. Vectorized numerical work and the rough FFT
@@ -124,13 +131,20 @@ The latest important heads at this snapshot are:
 | PR | Branch | Reviewed head | Role |
 |---|---|---|---|
 | [#3](https://github.com/fmuia/sbi4finance/pull/3) | `docs/simulator-plan` | `30982c4` | Authoritative roadmap/subplans |
-| [#14](https://github.com/fmuia/sbi4finance/pull/14) | `feat/rough-bergomi-option-bank` | `073ca8c` | Latest rough banks, refinement and stopped reference pilot |
+| [#14](https://github.com/fmuia/sbi4finance/pull/14) | `feat/rough-bergomi-option-bank` | `dfaaee4` | Expanded reference bank, passed bounded neural validation and preserved original stop |
+| [#28](https://github.com/fmuia/sbi4finance/pull/28) | `feat/rough-heldout-test` | `f1bfa72` | One held-out study; reference passes, neural eta-spread failure retained, updated review and raw-draw audit |
 | [#15](https://github.com/fmuia/sbi4finance/pull/15) | `feat/hkde-inference` | `60ebe4d` | HKDE posterior, surrogate and correction evidence; PR base is #14's branch |
-| [#19](https://github.com/fmuia/sbi4finance/pull/19), **draft** | `feat/hkde-offline-tutorial` | `a21d019` before this documentation addition | M8 review; PR base is #15's branch |
+| [#19](https://github.com/fmuia/sbi4finance/pull/19), **draft** | `feat/hkde-offline-tutorial` | `b8f2700` before this held-out-result handover update | M8 review; PR base is #15's branch |
+
+The separate scientific follow-up [PR #28](https://github.com/fmuia/sbi4finance/pull/28)
+(`feat/rough-heldout-test`) adds the frozen one-run rough test evaluation,
+its results and updated notebook09. It is not another simulator-ladder
+implementation increment or an import into PR #19.
 
 **Branch caveat:** a PR targeting another branch does not automatically contain
 that branch's later commits. PR #19 is a good checkout for the HKDE review;
-PR #14 contains the latest rough-inference work. The non-mutating combined
+PR #14 contains the rough development study and PR #28 its held-out follow-up.
+The non-mutating combined
 snapshot passed **171 tests** and combined without conflicts. It was not a
 merge, and no single published head should be advertised as that tested combined
 release. See the exact [heads/tree verification](results/hkde-correction/combined-stack-verification.json).
@@ -154,6 +168,23 @@ Its separate open Git stack is [#5 fixtures](https://github.com/fmuia/sbi4financ
 from `main`. Those commits are not part of the #19 checkout or the recorded
 171-test simulator snapshot.
 
+The data team has also completed the bounded teaching integration. These newer
+PRs use combined review bases containing specific earlier parent revisions:
+
+| Addition | PR / head at this snapshot | Review base |
+|---|---|---|
+| Local-data teaching integration plan | [#20](https://github.com/fmuia/sbi4finance/pull/20) | #18 branch |
+| Shared panel and cached teaching route (I1–I3) | [#21](https://github.com/fmuia/sbi4finance/pull/21), `f385225` | `integration/hkde-data-teaching-base` |
+| Provisional live route (I4a) | [#22](https://github.com/fmuia/sbi4finance/pull/22), `663ac4e` | `integration/hkde-live-demo-base` |
+
+Read their recorded composition before integrating; neither combined base
+automatically contains later #14 or #19 commits. The data workstream is closed
+for I1–I3 and I4a. Formal I4 remains conditional on scientific acceptance for
+the actual HKDE participant configuration. The 168-test #21 report and #22
+live execution record cover their own snapshots, not a final merged tree.
+[Integration issue #27](https://github.com/fmuia/sbi4finance/issues/27) owns this
+composition check; no data-side worktree was changed for this handover.
+
 ## First review session
 
 In a dedicated checkout of `feat/hkde-offline-tutorial`, use the locked
@@ -169,17 +200,32 @@ PYTHONPATH=src pixi run test-simulators
 
 Use `PYTHONPATH=src`, especially if sharing an editable environment between
 worktrees. Opening these reviews starts no training, bank generation or
-cluster job. Notebook10 currently shows cached scientific evidence and
-explicitly skips live inference. Its isolated export passed **17 cells, zero
-errors, 8.29 seconds**, with market fixtures/raw banks absent and external
-connections blocked. The existing pinned environment was reused; this is not
-a fresh-install test or a live-inference timing. The [verification record](results/hkde-correction/notebook-verification.json)
-binds the sources/assets and records `live_executed=false`.
+cluster job. Notebook10 now runs fixed synthetic **validation:257** with
+**2,048 proposals**, the same proposal seed and unchanged numerical tolerances.
+It displays the joint correction and two target-price distributions as a
+**provisional demonstration**. No real observations or generating truth enter
+conditioning. A passing single-case check does not change the used test or
+establish population calibration.
+
+The [live execution record](results/hkde-live-demo/verification.json) separates
+technical execution and single-case checks from `scientific_acceptance=false`.
+It records component timings in an isolated offline export with market
+fixtures/raw banks absent. The earlier [cached-only verification](results/hkde-correction/notebook-verification.json)
+passed **17 cells, zero errors, 8.29 seconds**, with `live_executed=false`;
+that historical record remains unchanged and is not a live-inference timing.
+Both checks reuse the pinned environment rather than testing a fresh installation.
 
 PR #15's implementation suite passes **133 tests**. The **171** count belongs
-to the combined snapshot, not a plain PR #19 checkout. On the latest PR #14
-checkout, `PYTHONPATH=src pixi run review-rough-inference` opens notebook09;
-`review-bergomi` covers both Bergomi models and numerical checks.
+to the combined snapshot, not a plain PR #19 checkout. On PR #28's
+`feat/rough-heldout-test` checkout, `PYTHONPATH=src pixi run review-rough-inference`
+opens the updated notebook09; it reads cached results without rerunning the test.
+That snapshot passes **129 tests** and its cached offline review exports
+**26 cells, zero errors, 10.72 seconds**, without market fixtures, raw banks or
+checkpoints. An independent audit reconstructs all reference/conditional metrics
+and every neural/prior SBC rank and coverage event from raw saved draws.
+These execution/audit passes preserve the scientific failure. PR #14's older
+125-test/22-cell development verification remains historical; the counts are
+separate snapshots, not numbers to add together.
 
 For bank generation, use the existing JSON presets and a new output directory.
 The 24-panel presets check the route; they are not adequate neural training
@@ -210,16 +256,18 @@ self-normalized importance estimates, not exact posterior draws.
 | Same-panel numerical-reference PIT | Theta KS **0.10349**; 65-point-per-axis posterior-grid check **0.10340**. The reference shares the rank shift. This suggests finite-cohort variability, but does not prove the failure harmless or override the frozen gate. |
 
 The corrected experiment's root-95026 test is **used and closed**. The original
-raw-HKDE root-62026 test remains untouched. Heston's later root-43022 test and
-the rough pilot's reserved test remain unevaluated. Preserve each experiment's
-own history; do not call an inspected test a fresh holdout.
+raw-HKDE root-62026 test and Heston's later root-43022 test remain untouched.
+The rough pilot's full 256-case test is now **used and closed** after PR #28's
+evaluation. Preserve each experiment's own history; do not call an inspected
+test a fresh holdout.
 
 A subsequent [saved-cohort gate audit](hkde-calibration-gate-audit.md) verifies
 the threshold and shows that ideal reference sampling triggers this same theta
 alarm in 98.85% of conditional controls. It identifies measurable extra rank
 dispersion and direct-CDF errors consistent with importance-sampling uncertainty
 on the 16 saved conditional cases. Notebook11 explains the distinction; no
-historical flag, estimator or M8 acceptance rule was changed.
+historical flag or estimator was changed. The follow-up permits a provisional
+live demonstration while keeping the scientific acceptance flag false.
 
 Independent audits reconstruct saved weights and conditional metrics, check
 source/input bindings, and replay test parameter/quote-noise seed identities.
@@ -229,30 +277,45 @@ from the cache alone. Numerical reference PIT is quadrature/interpolation, not
 an analytic oracle. [Full results and reproduction](hkde-corrected-inference.md)
 state these limitations.
 
-## Recommended next steps
+## Tracked follow-ups
 
-1. **Review and consolidate the existing stack.** Use the actual base branches,
-   retain each milestone's review/evidence, and recheck the combined code.
-   No further infrastructure expansion is needed for this decision.
-2. **Decide the teaching application.** The options candidate is well developed;
-   choosing it does not follow automatically from implementation progress.
-   A returns example requires its own accepted parameter/state-to-forecast path.
-3. **Resolve the calibration acceptance question as a bounded scientific task.**
-   The [gate audit](hkde-calibration-gate-audit.md) now explains why the shared
-   reference/SIR shift does not identify a correction-specific failure. Use
-   this result before proposing neural tuning or a mandatory larger run.
-   Any new acceptance study should state its question, justified criteria and
-   independent evaluation design in advance, while retaining this failed result.
-   Do not keep drawing new seeds until a green result appears.
-4. **Then finish M8's live gate.** An accepted chosen pipeline must actually run
-   inference and downstream output offline, with component timings and no
-   market fixtures. A skipped live cell cannot meet that requirement.
-5. **Resume other inference studies only if useful to the curriculum.** Heston
-   retains conditional discrepancies; rough Bergomi first needs a bounded
-   reference-efficiency follow-up (one case has ESS 600.55 < 800 and maximum
-   weight 0.005392 > 0.005). The current rough run stopped before neural training
-   and SBC. Two-factor Bergomi, full collaborator SVJ parity, direct-price
-   posteriors, American/exotic pricing and P/Q linkage remain extensions.
+For assignment to multiple agents, use the [parallel handover index](parallel-agent-handover.md).
+It links the individual briefs, covers every open PR, and separates work that
+can proceed now from conditional scientific/participant steps.
+
+Review and integration can proceed without accepting every model scientifically.
+Each issue has an ordered subplan, source/result links and explicit completion
+criteria. Start with the integration map and existing results, choose the
+teaching route, and schedule only the scientific work that decision needs.
+
+| Issue | Concrete outcome | Boundary |
+|---|---|---|
+| [#27 — review and consolidate the PR stacks](https://github.com/fmuia/sbi4finance/issues/27) | Review dependencies, integrate the intended revisions, verify the actual combined code/notebooks and record the reviewed/merged disposition. | Existing snapshot test counts do not certify the resulting tree. Merging does not change scientific acceptance. |
+| [#26 — choose the tutorial and finish participant review](https://github.com/fmuia/sbi4finance/issues/26) | Select P returns versus Q options, primary model/companions, claims and live/cached lesson; check clean setup and the complete offline S route. | Does not require every catalog model to pass or any market acquisition. |
+| [#23 — rough reserved-test evaluation](https://github.com/fmuia/sbi4finance/issues/23) | **Study completed in [PR #28](https://github.com/fmuia/sbi4finance/pull/28):** frozen checkpoint evaluated once; reference, conditional/joint, SBC and target-mean results audited and taught in notebook09. | All 256 cases used and closed. Reference passes; one conditional eta-spread gate fails, so candidate remains provisional. No retry, tuning or reference expansion followed. |
+| [#24 — HKDE scientific acceptance decision](https://github.com/fmuia/sbi4finance/issues/24) | Use the saved-cohort audit to specify prospective acceptance or retain provisional status; run fresh replication only if justified and predeclared. | Historical test remains failed and closed. Formal data-teaching I4 needs a compatible acceptance decision; I4a already runs. |
+| [#25 — Heston conditional state/forecast decision](https://github.com/fmuia/sbi4finance/issues/25) | Decide defer, retain as a diagnostic lesson, or investigate one mechanism with a bounded protocol and notebook05 update. | Optional unless the returns route needs it. Both v2 and v3 remain provisional; root-43022 stays reserved. |
+
+The dedicated [#24 agent handover](hkde-acceptance-handover.md) gives the HKDE
+task, current evidence, exact branches, ordered decision subplan, entry commands
+and constraints for a new agent. Preparing it does not start another experiment.
+
+The [rough held-out study](https://github.com/fmuia/sbi4finance/blob/feat/rough-heldout-test/docs/rough-heldout-test.md)
+passes all 16 reference cases and six of seven neural gates, including marginal
+SBC and target-price means. On `test:3`, eta's posterior SD is **31.0% too small**
+against the unchanged 25% limit; its nominal 90% interval contains only **75.64%**
+of the reference posterior's mass. That is a single-case conditional diagnostic,
+not cohort coverage. Inspect the [conditional failure](https://github.com/fmuia/sbi4finance/blob/feat/rough-heldout-test/docs/results/rough-heldout-test/plots/conditional-failure.png)
+alongside the [SBC/prior control](https://github.com/fmuia/sbi4finance/blob/feat/rough-heldout-test/docs/results/rough-heldout-test/plots/marginal-sbc.png).
+The network improves mean RMSE from the prior's 1.4817 to 0.1121 reference SD,
+but remains provisional. The earlier passed development result is preserved;
+no further run is prescribed by #23, and this is not an HKDE I4 prerequisite.
+
+An explicit negative or deferred scientific decision is a valid issue outcome;
+the aim is not to keep experimenting until every status is green. Two-factor
+Bergomi, full collaborator SVJ parity, direct-price posteriors, American/exotic
+pricing, rough P-memory inference and P/Q linkage remain optional extensions.
+They are not hidden closeout requirements.
 
 The latest [analysis note](https://github.com/fmuia/sbi4finance/blob/feat/rough-bergomi-option-bank/docs/simulator-analysis-next-steps.md)
 preserves older decisions; its chronological “next” sections can describe work
@@ -273,7 +336,8 @@ On the current workstation, the useful worktrees under
 
 - `sbi4finance-offline-tutorial`: this handover and draft PR #19.
 - `sbi4finance-hkde-inference`: PR #15's scientific implementation/evidence.
-- `sbi4finance-option-banks`: latest PR #14 rough work.
+- `sbi4finance-option-banks`: PR #14 rough development work.
+- `sbi4finance-rough-heldout`: separate PR #28 test evaluation and current rough review.
 - `sbi4finance-plan-pr`: plan-only PR #3.
 - `sbi4finance-data-impl`: separate data workstream; coordinate edits there.
 

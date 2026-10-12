@@ -5,7 +5,7 @@ From the repository root, install the pinned environment with
 
 | Command | Notebook | What to inspect |
 |---|---|---|
-| `PYTHONPATH=src pixi run review-hkde-corrected` | [10_hkde_corrected_workflow.py](../notebooks/10_hkde_corrected_workflow.py) | M8 / increment 10: cached options-correction review; new-test theta SBC failed, live inference disabled, participant acceptance pending |
+| `PYTHONPATH=src pixi run review-hkde-corrected` | [10_hkde_corrected_workflow.py](../notebooks/10_hkde_corrected_workflow.py) | M8 / increment 10: provisional live joint correction and target-price uncertainty; historical theta SBC failure retained, scientific acceptance pending |
 | `pixi run review-foundations` | [01_gbm_foundations.py](../notebooks/01_gbm_foundations.py) | M0–M2 / increments 1–3: observation and truth roles, exact GBM posterior/prediction, separate Q prices, tiny saved bank, historical training and actual cluster evidence |
 | `pixi run review-kernels` | [04_heston_svj_kernels.py](../notebooks/04_heston_svj_kernels.py) | M3.1–M3.2 / increment 4: diffusion and price jumps, signed-state restart, matched NumPy/Numba calculations and recorded numerical/timing checks |
 | `pixi run review-heston` | [05_heston_joint_inference.py](../notebooks/05_heston_joint_inference.py) | M3.3 / increment 5: joint parameter/state inference, four original cases, neural/reference posteriors, future losses, failed frozen test, spline follow-up and bounded-time diagnosis/validation |
@@ -39,12 +39,12 @@ The proposal combines 80% flow, 10% uniform prior and 10% fixed boundary density
 the inference prior stays uniform. The raw flow's failed price gate and the first
 correction's reliability stop remain part of the explanation.
 
-The planned live cell is deliberately bounded to 2,048 proposals for the saved
-synthetic `validation:257` panel. It is currently **disabled** by the failed test.
-When enabled after acceptance, it would compute nine numerical prices for each
-likelihood and report loading, proposal, likelihood, target pricing and comparison
-costs. Opening the current review trains no network, generates no bank and submits
-no cluster job.
+The default live cell is deliberately bounded to 2,048 proposals for the saved
+synthetic `validation:257` panel, with the unchanged seed and tolerances. This is
+an explicitly **provisional demonstration** on a selected development case,
+not a new test. It computes nine numerical prices for each likelihood and
+reports loading, proposal, likelihood, target pricing and comparison costs.
+Opening the review trains no network, generates no bank and submits no cluster job.
 The two-output surrogate does not replace the likelihood pricer, and the lesson
 makes no purely amortized speed claim.
 
@@ -52,17 +52,24 @@ makes no purely amortized speed claim.
 validation passed. The new 256-case test passed conditional and reliability
 checks but failed the theta SIR/SBC rank gate: KS 0.103253 exceeded the declared
 0.092513 limit. The frozen study stopped without tuning or a rerun. The original
-neural final test remains unused. The notebook displays these stages and skips
-live inference; better conditional price accuracy does not override this failure.
+neural final test remains unused. The correction test is used and closed. The
+notebook displays its failed scientific acceptance separately from the live
+demonstration; a single-case pass does not establish population calibration.
 The independent-grid posterior PIT on the same panels also fails theta
 (0.103485 against 0.092513), close to the SIR value. This comparison does not
 isolate correction-specific bias or justify ignoring the frozen gate.
 
-The [recorded export](results/hkde-correction/notebook-verification.json) verifies
-the **cached diagnostic review only**: 17 cells, zero errors, 8.29 seconds, with all market
-fixtures and raw training banks absent. It must show the live calculation skipped
-and no cell errors. It cannot establish end-to-end participant acceptance or a
-live-inference runtime:
+The [live verification record](results/hkde-live-demo/verification.json) reports
+**17 cells, zero errors, 13.50 seconds** for the full offline export, including
+**5.37 seconds** for the live calculation. Market fixtures and raw training
+banks were absent, and external connections were blocked. The fixed case meets
+the unchanged numerical thresholds: maximum price-quantile error **0.00530 <
+0.03**, ESS fraction **0.688**, maximum weight **0.00208**. Technical execution
+and this single-case check pass; `scientific_acceptance=false` remains explicit.
+
+The earlier [cached-only export](results/hkde-correction/notebook-verification.json)
+(17 cells, zero errors, 8.29 seconds, live calculation skipped) remains a
+historical record and is not a live-inference timing. To review the current notebook:
 
 ```bash
 PYTHONPATH=src pixi run marimo check --strict notebooks/10_hkde_corrected_workflow.py
@@ -72,8 +79,9 @@ PYTHONPATH=src pixi run marimo export html notebooks/10_hkde_corrected_workflow.
 
 The export command alone does not enforce network isolation; the review run
 must separately disable external access while allowing local kernel communication.
-The saved outcome is separate from scientific acceptance; review-export timing
-must not be reported as a live correction benchmark. Scientific
+The saved outcome is separate from scientific acceptance; full-export timing
+includes presentation/startup work and must not be confused with the separately
+reported live stages or warm repeated throughput. Scientific
 correction evidence lives in [the correction report](hkde-corrected-inference.md).
 Neither this candidate nor its execution changes Heston or rough Bergomi's
 unresolved inference status, selects the final curriculum, or supplies market
