@@ -6,6 +6,17 @@ returns-versus-options curriculum choice open and preserves the MMAR example.
 It does not require Heston's or rough Bergomi's unresolved inference studies to
 pass, and it does not mark those branches accepted.
 
+**Current status: cached diagnostic review; M8 participant acceptance pending.**
+The corrected 512-case validation passed. The new 256-case test passed conditional
+and proposal-reliability gates but failed the theta SIR/SBC rank check: KS
+0.103253 > 0.092513. The frozen run stopped without tuning or a rerun. The
+notebook therefore skips its live inference cell. Review-export verification
+is separate and does not clear that scientific failure.
+An independent-grid posterior PIT on the same test panels also exceeds the
+theta bound (0.103485), closely tracking the SIR result. This diagnostic does
+not isolate proposal-specific calibration bias or prove the failure harmless;
+the frozen acceptance decision remains unchanged.
+
 ## M8.1 — Named task and evidence boundary
 
 Use `hkde_boundary_defensive_importance_v2`, with the
@@ -23,9 +34,10 @@ Use `hkde_boundary_defensive_importance_v2`, with the
 | Evidence | S only. Optional M would condition on a compatible real panel with frozen weights; optional E would need contemporaneous excluded target quotes and separately justified evaluation design. |
 
 The original neural experiment, the first correction's reliability stop and the
-independent surrogate audit stay visible. The fresh root-95026 test is reserved
-for the fixed second correction, with no retraining or selection after outcomes.
-The original neural root-62026 test is not opened.
+independent surrogate audit stay visible. The fresh root-95026 test was opened
+only after the fixed second correction passed validation; its failed theta
+rank gate is retained. No retraining or selection followed its outcome.
+The original neural root-62026 test remains unopened.
 
 ## M8.2 — Reproducible inference and output
 
@@ -61,11 +73,12 @@ PYTHONPATH=src pixi run review-hkde-corrected
 ```
 
 The suggested 30-minute segment covers the financial task and data roles,
-importance correction, one live joint posterior and price calculation,
-diagnostics, and short exercises. It loads a saved **synthetic validation
-panel**, checkpoint and surrogate. Its default live calculation has 2,048
-proposals. Training, reference-grid pricing, and base-bank generation are
-cached; opening the lesson never submits a cluster job or starts a training run.
+importance correction, a planned live joint posterior and price calculation,
+diagnostics, and short exercises. The live path would load a saved **synthetic
+validation panel**, checkpoint and surrogate and use 2,048 proposals. It remains
+disabled after the frozen test failure. Current execution reviews the cached
+scientific evidence; training, reference-grid pricing and base-bank generation
+are never started by opening the lesson, and no cluster job is submitted.
 
 Exercises distinguish priors from proposals, high ESS from validated accuracy,
 SBC from conditional checks, joint draws from independent marginal sampling,
@@ -76,14 +89,21 @@ Offline acceptance requires a fresh process with external sockets blocked,
 all market fixtures and raw training banks absent, and a headless HTML export
 with no cell errors. Measure loading, sampling/density, likelihood, target
 pricing and reference comparison together. A notebook that merely skips its
-live calculation because evidence is missing does not satisfy this acceptance.
+live calculation because evidence is missing or failed does not satisfy this
+acceptance. The current review-only export will instead verify that the failed
+test and skipped live stage are visible, with no cell errors. It must record
+`scientific_acceptance=false` and `live_executed=false`; its duration is not a
+measurement of live correction cost.
 
 ## M8.4 — Handover and open work
 
 Record the exact scientific and notebook outcomes alongside their immutable
 artifacts. Only a passing corrected pipeline plus a successful live offline
 export accepts this bounded S candidate. The notebook's status display must
-agree with both saved validation and independent-test reports.
+agree with both saved validation and independent-test reports. At present those
+reports mean validation passed, the new test failed theta SBC, and the candidate
+is not accepted. The review material can be handed over as a draft with that
+limitation; it cannot be labelled a completed M8 participant release.
 
 The broader simulator catalog and its cluster banks remain available. Further
 Heston analysis, rough-Bergomi reference efficiency, additional dimensions,
