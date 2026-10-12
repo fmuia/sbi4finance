@@ -1,0 +1,217 @@
+{
+  "displayed_appearances": 19,
+  "unique_sha256": 15,
+  "all_reviewed": true,
+  "browser_page_layout_verified": false,
+  "figures": [
+    {
+      "file": "01_gbm_foundations-figure-01.png",
+      "cell_index": 7,
+      "sha256": "a68a49dce11053871fe4f8bf457e2202c46787918f4fa23c981c8ff5a60d1a75",
+      "notebook": "notebooks/01_gbm_foundations.py",
+      "mode": "analytic-live",
+      "repository_file": "docs/results/tutorial-participant-preflight/01_gbm_foundations-figure-01.png",
+      "review": "passed",
+      "subject": "Observed synthetic history and exact drift posterior",
+      "method": "Direct extracted-PNG inspection or SHA256 identity to an already inspected figure; axes, units, legends and status labels readable"
+    },
+    {
+      "file": "01_gbm_foundations-figure-02.png",
+      "cell_index": 10,
+      "sha256": "8bf20292cc3442a491955060bf15e14094fd31d9f0821aecc891256024331cc1",
+      "notebook": "notebooks/01_gbm_foundations.py",
+      "mode": "analytic-live",
+      "repository_file": "docs/results/tutorial-participant-preflight/01_gbm_foundations-figure-02.png",
+      "review": "passed",
+      "subject": "Analytic predictive law and simulated paths",
+      "method": "Direct extracted-PNG inspection or SHA256 identity to an already inspected figure; axes, units, legends and status labels readable"
+    },
+    {
+      "file": "hkde_data_walkthrough-figure-01.png",
+      "cell_index": 5,
+      "sha256": "55093e865c4dcddc264bb7918cc2a7bb4ddcdca4255ff7a9897bc6dcdb4d1544",
+      "notebook": "notebooks/hkde_data_walkthrough.py",
+      "mode": "cached",
+      "repository_file": "docs/results/tutorial-participant-delivery/hkde_data_walkthrough-figure-01.png",
+      "review": "passed",
+      "subject": "Paired raw theta/intensity draws",
+      "method": "Direct extracted-PNG inspection or SHA256 identity to an already inspected figure; axes, units, legends and status labels readable"
+    },
+    {
+      "file": "hkde_data_walkthrough-figure-02.png",
+      "cell_index": 6,
+      "sha256": "9a78b673a5562cb339fa1eaa3afafb6db5663d6d2db73e0f3817585394097a18",
+      "notebook": "notebooks/hkde_data_walkthrough.py",
+      "mode": "cached",
+      "repository_file": "docs/results/tutorial-participant-delivery/hkde_data_walkthrough-figure-02.png",
+      "review": "passed",
+      "subject": "Posterior-induced price distribution for the excluded K95/T.75 put",
+      "method": "Direct extracted-PNG inspection or SHA256 identity to an already inspected figure; axes, units, legends and status labels readable"
+    },
+    {
+      "file": "10_hkde_corrected_workflow-cached-figure-01.png",
+      "cell_index": 17,
+      "sha256": "798332f7f21fe34fff340fe60244b7f050fbb60a9c3bc0df1809ed02a542de4a",
+      "notebook": "notebooks/10_hkde_corrected_workflow.py",
+      "mode": "cached",
+      "repository_file": "docs/results/tutorial-participant-delivery/10_hkde_corrected_workflow-cached-figure-01.png",
+      "review": "passed",
+      "subject": "Raw/corrected conditional errors",
+      "method": "Direct extracted-PNG inspection or SHA256 identity to an already inspected figure; axes, units, legends and status labels readable"
+    },
+    {
+      "file": "10_hkde_corrected_workflow-cached-figure-02.png",
+      "cell_index": 17,
+      "sha256": "48f78b127d0e75d596238ff4ab5e23a9cb07dee5c3ac478c72a5970436d47d09",
+      "notebook": "notebooks/10_hkde_corrected_workflow.py",
+      "mode": "cached",
+      "repository_file": "docs/results/tutorial-participant-delivery/10_hkde_corrected_workflow-cached-figure-02.png",
+      "review": "passed",
+      "subject": "ESS and proposal-weight diagnostics",
+      "method": "Direct extracted-PNG inspection or SHA256 identity to an already inspected figure; axes, units, legends and status labels readable"
+    },
+    {
+      "file": "10_hkde_corrected_workflow-cached-figure-03.png",
+      "cell_index": 18,
+      "sha256": "d5def42ec41e8450770ebe963187364683fdca205a8fd1ede8352e9867150733",
+      "notebook": "notebooks/10_hkde_corrected_workflow.py",
+      "mode": "cached",
+      "repository_file": "docs/results/tutorial-participant-delivery/10_hkde_corrected_workflow-cached-figure-03.png",
+      "review": "passed",
+      "subject": "Historical calibration curves with failure preserved",
+      "method": "Direct extracted-PNG inspection or SHA256 identity to an already inspected figure; axes, units, legends and status labels readable"
+    },
+    {
+      "file": "10_hkde_corrected_workflow-cached-figure-04.png",
+      "cell_index": 18,
+      "sha256": "c83f29fcd159c6329fb4f701500e9d2ca54a17a8f66571ea551181a8fba65a4b",
+      "notebook": "notebooks/10_hkde_corrected_workflow.py",
+      "mode": "cached",
+      "repository_file": "docs/results/tutorial-participant-delivery/10_hkde_corrected_workflow-cached-figure-04.png",
+      "review": "passed",
+      "subject": "Shared SIR/reference rank alarm",
+      "method": "Direct extracted-PNG inspection or SHA256 identity to an already inspected figure; axes, units, legends and status labels readable"
+    },
+    {
+      "file": "10_hkde_corrected_workflow-live-figure-01.png",
+      "cell_index": 15,
+      "sha256": "63f052ccb1cb1372982bdb9308d4c7fdbdf97ac33114231131764688cd858728",
+      "notebook": "notebooks/10_hkde_corrected_workflow.py",
+      "mode": "provisional-live",
+      "repository_file": "docs/results/tutorial-participant-delivery/10_hkde_corrected_workflow-live-figure-01.png",
+      "review": "passed",
+      "subject": "Joint live weighted posterior and reference",
+      "method": "Direct extracted-PNG inspection or SHA256 identity to an already inspected figure; axes, units, legends and status labels readable"
+    },
+    {
+      "file": "10_hkde_corrected_workflow-live-figure-02.png",
+      "cell_index": 15,
+      "sha256": "b35fbc8e14aa416844169df5aa7bdea1f3e17f8529434ae60556fbd9769f6178",
+      "notebook": "notebooks/10_hkde_corrected_workflow.py",
+      "mode": "provisional-live",
+      "repository_file": "docs/results/tutorial-participant-delivery/10_hkde_corrected_workflow-live-figure-02.png",
+      "review": "passed",
+      "subject": "Live two-target posterior price comparison",
+      "method": "Direct extracted-PNG inspection or SHA256 identity to an already inspected figure; axes, units, legends and status labels readable"
+    },
+    {
+      "file": "10_hkde_corrected_workflow-live-figure-03.png",
+      "cell_index": 17,
+      "sha256": "798332f7f21fe34fff340fe60244b7f050fbb60a9c3bc0df1809ed02a542de4a",
+      "notebook": "notebooks/10_hkde_corrected_workflow.py",
+      "mode": "provisional-live",
+      "repository_file": "docs/results/tutorial-participant-delivery/10_hkde_corrected_workflow-cached-figure-01.png",
+      "review": "passed",
+      "subject": "Raw/corrected conditional errors",
+      "method": "Direct extracted-PNG inspection or SHA256 identity to an already inspected figure; axes, units, legends and status labels readable"
+    },
+    {
+      "file": "10_hkde_corrected_workflow-live-figure-04.png",
+      "cell_index": 17,
+      "sha256": "48f78b127d0e75d596238ff4ab5e23a9cb07dee5c3ac478c72a5970436d47d09",
+      "notebook": "notebooks/10_hkde_corrected_workflow.py",
+      "mode": "provisional-live",
+      "repository_file": "docs/results/tutorial-participant-delivery/10_hkde_corrected_workflow-cached-figure-02.png",
+      "review": "passed",
+      "subject": "ESS and proposal-weight diagnostics",
+      "method": "Direct extracted-PNG inspection or SHA256 identity to an already inspected figure; axes, units, legends and status labels readable"
+    },
+    {
+      "file": "10_hkde_corrected_workflow-live-figure-05.png",
+      "cell_index": 18,
+      "sha256": "d5def42ec41e8450770ebe963187364683fdca205a8fd1ede8352e9867150733",
+      "notebook": "notebooks/10_hkde_corrected_workflow.py",
+      "mode": "provisional-live",
+      "repository_file": "docs/results/tutorial-participant-delivery/10_hkde_corrected_workflow-cached-figure-03.png",
+      "review": "passed",
+      "subject": "Historical calibration curves with failure preserved",
+      "method": "Direct extracted-PNG inspection or SHA256 identity to an already inspected figure; axes, units, legends and status labels readable"
+    },
+    {
+      "file": "10_hkde_corrected_workflow-live-figure-06.png",
+      "cell_index": 18,
+      "sha256": "c83f29fcd159c6329fb4f701500e9d2ca54a17a8f66571ea551181a8fba65a4b",
+      "notebook": "notebooks/10_hkde_corrected_workflow.py",
+      "mode": "provisional-live",
+      "repository_file": "docs/results/tutorial-participant-delivery/10_hkde_corrected_workflow-cached-figure-04.png",
+      "review": "passed",
+      "subject": "Shared SIR/reference rank alarm",
+      "method": "Direct extracted-PNG inspection or SHA256 identity to an already inspected figure; axes, units, legends and status labels readable"
+    },
+    {
+      "file": "11_hkde_calibration_audit-figure-01.png",
+      "cell_index": 7,
+      "sha256": "91647552ae27d7d8155d56634201dde43b4ae01e502a8ca04c37938cf5639690",
+      "notebook": "notebooks/11_hkde_calibration_audit.py",
+      "mode": "cached",
+      "repository_file": "docs/results/hkde-gate-audit/oracle-rank-control.png",
+      "review": "passed",
+      "subject": "Oracle rank-control experiment",
+      "method": "Direct extracted-PNG inspection or SHA256 identity to an already inspected figure; axes, units, legends and status labels readable"
+    },
+    {
+      "file": "11_hkde_calibration_audit-figure-02.png",
+      "cell_index": 8,
+      "sha256": "fd3198dbdbc97f78362dd508f8f65234778d766a9123555822f761aadd3fd1f8",
+      "notebook": "notebooks/11_hkde_calibration_audit.py",
+      "mode": "cached",
+      "repository_file": "docs/results/hkde-gate-audit/paired-rank-errors.png",
+      "review": "passed",
+      "subject": "Paired historical rank errors",
+      "method": "Direct extracted-PNG inspection or SHA256 identity to an already inspected figure; axes, units, legends and status labels readable"
+    },
+    {
+      "file": "11_hkde_calibration_audit-figure-03.png",
+      "cell_index": 9,
+      "sha256": "bc55821dddaa952d30d7b8189c225f04d72f289a3d89a07247b0fea7bf1589c0",
+      "notebook": "notebooks/11_hkde_calibration_audit.py",
+      "mode": "cached",
+      "repository_file": "docs/results/hkde-gate-audit/conditional-cdf-errors.png",
+      "review": "passed",
+      "subject": "Conditional CDF errors",
+      "method": "Direct extracted-PNG inspection or SHA256 identity to an already inspected figure; axes, units, legends and status labels readable"
+    },
+    {
+      "file": "11_hkde_calibration_audit-figure-04.png",
+      "cell_index": 11,
+      "sha256": "e097bccc771ebd41826ebf5df087968ca12dde777c7b1a5b2bccb2ec3f30e38e",
+      "notebook": "notebooks/11_hkde_calibration_audit.py",
+      "mode": "cached",
+      "repository_file": "docs/results/hkde-correction/plots/reference-pit.png",
+      "review": "passed",
+      "subject": "Shared SIR/reference rank alarm",
+      "method": "Direct extracted-PNG inspection or SHA256 identity to an already inspected figure; axes, units, legends and status labels readable"
+    },
+    {
+      "file": "11_hkde_calibration_audit-figure-05.png",
+      "cell_index": 11,
+      "sha256": "c178b4fe1bbe50976f5d79556cff0d967a47e5dce08c4e3ea78eb7c65dbf7441",
+      "notebook": "notebooks/11_hkde_calibration_audit.py",
+      "mode": "cached",
+      "repository_file": "docs/results/hkde-correction/plots/price-errors.png",
+      "review": "passed",
+      "subject": "Historical target-price errors",
+      "method": "Direct extracted-PNG inspection or SHA256 identity to an already inspected figure; axes, units, legends and status labels readable"
+    }
+  ]
+}
