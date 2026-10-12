@@ -23,10 +23,10 @@ def config():
     return result
 
 
-def chunks(path, configuration):
+def chunks(path, configuration, starts=None):
     paths = []
     for split, count in configuration["splits"].items():
-        for start in range(0, count, 2):
+        for start in range((starts or {}).get(split, 0), count, 2):
             destination = path / f"{split}-{start}"
             option_bank_shards.write_shard(destination, configuration, split, start, min(count, start + 2))
             paths.append(destination)
@@ -34,6 +34,87 @@ def chunks(path, configuration):
 
 
 class OptionBankShardTests(unittest.TestCase):
+    def test_append_cli_matches_full_bank_without_changing_base(self):
+        c = config()
+        base_config = copy.deepcopy(c)
+        base_config["splits"] = dict(train=2, validation=1, test=1)
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            base = root / "base"
+            option_bank.write_bank(base, base_config)
+            base_hashes = {p.name: option_bank._sha256(p) for p in base.iterdir()}
+            paths = chunks(root / "chunks", c, starts=base_config["splits"])
+            (root / "config.json").write_text(json.dumps(c))
+            env = dict(os.environ, PYTHONPATH=str(ROOT / "src"))
+            result = subprocess.run([sys.executable, str(ROOT / "scripts/assemble_option_bank.py"),
+                                     "--config", str(root / "config.json"),
+                                     "--shards", str(root / "chunks"), "--base-bank", str(base),
+                                     "--out", str(root / "appended")],
+                                    env=env, check=True, capture_output=True, text=True)
+            self.assertTrue(json.loads(result.stdout)["integrity_verified"])
+            actual_manifest, actual = option_bank.load_bank(root / "appended")
+            option_bank.write_bank(root / "full", c)
+            _, expected = option_bank.load_bank(root / "full")
+            for split in expected:
+                for key in expected[split]:
+                    np.testing.assert_array_equal(actual[split][key], expected[split][key])
+            self.assertEqual(base_hashes, {p.name: option_bank._sha256(p) for p in base.iterdir()})
+            provenance = actual_manifest["shard_assembly"]
+            self.assertEqual(len(provenance["chunks"]), len(paths))
+            self.assertEqual(provenance["base_bank"]["manifest_sha256"], base_hashes["manifest.json"])
+            for split, count in base_config["splits"].items():
+                self.assertEqual(provenance["base_bank"]["reused_ranges"][split],
+                                 {"start": 0, "stop": count, "array_sha256": base_hashes[f"{split}.npz"]})
+
+    def test_append_rejects_changed_base_identity_counts_sources_and_versions(self):
+        c = config()
+        base_config = copy.deepcopy(c)
+        base_config["splits"] = dict(train=2, validation=1, test=1)
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            base = root / "base"
+            option_bank.write_bank(base, base_config)
+            paths = chunks(root / "chunks", c, starts=base_config["splits"])
+            for name in ("root", "task", "shrink"):
+                changed = copy.deepcopy(c)
+                if name == "root":
+                    changed["root_seed"] += 1
+                elif name == "task":
+                    changed["task"]["context"]["spot"] += 1
+                else:
+                    changed["splits"]["train"] = 1
+                with self.subTest(name=name), self.assertRaises(ValueError):
+                    option_bank_shards.assemble_bank(root / name, changed, paths, base_bank=base)
+                self.assertFalse((root / name).exists())
+            manifest_path = base / "manifest.json"
+            original = json.loads(manifest_path.read_text())
+            for name, value in (("source_sha256", {}), ("versions", {}),
+                                ("versions", dict(original["versions"], python="changed"))):
+                modified = copy.deepcopy(original)
+                modified[name] = value
+                option_bank._write_json(manifest_path, modified)
+                with self.subTest(name=name, value=value), self.assertRaises(ValueError):
+                    option_bank_shards.assemble_bank(root / "invalid", c, paths, base_bank=base)
+                self.assertFalse((root / "invalid").exists())
+            option_bank._write_json(manifest_path, original)
+
+    def test_append_requires_exact_suffix_coverage(self):
+        c = config()
+        base_config = copy.deepcopy(c)
+        base_config["splits"] = dict(train=2, validation=1, test=1)
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            base = root / "base"
+            option_bank.write_bank(base, base_config)
+            paths = chunks(root / "chunks", c, starts=base_config["splits"])
+            overlap = root / "overlap"
+            option_bank_shards.write_shard(overlap, c, "train", 1, 3)
+            for name, selected in (("missing", paths[1:]), ("duplicate", paths + [paths[0]]),
+                                   ("overlapping-base", paths + [overlap])):
+                with self.subTest(name=name), self.assertRaisesRegex(ValueError, "shard IDs"):
+                    option_bank_shards.assemble_bank(root / name, c, selected, base_bank=base)
+                self.assertFalse((root / name).exists())
+
     def test_array_wrapper_and_assembly_cli(self):
         c = config()
         c["splits"] = dict(train=1, validation=1, test=1)

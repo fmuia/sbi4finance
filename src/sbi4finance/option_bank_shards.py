@@ -136,12 +136,17 @@ def _bank_manifest(config, identity, versions):
     }
 
 
-def assemble_bank(path, config, shard_paths):
+def assemble_bank(path, config, shard_paths, *, base_bank=None):
     """Validate exact split coverage and write an ordinary option_bank_v1 bank.
 
     All chunks must use identical source and generation versions. Assembly may
     run on another machine; its versions are separately recorded. No output
     directory is created until every input chunk has passed validation.
+
+    An optional existing bank supplies immutable prefixes. Its task, root seed,
+    generator sources and generation versions must match; only split counts may
+    grow. New chunks must cover exactly the remaining IDs. Split counts do not
+    enter the generator's random-stream identity, so reused rows are unchanged.
     """
     option_bank.validate_config(config)
     path = Path(path)
@@ -149,7 +154,32 @@ def assemble_bank(path, config, shard_paths):
         raise FileExistsError(path)
     identity = _identity(config)
     parts = {split: [] for split in option_bank.SPLITS}
-    provenance, versions = [], None
+    provenance, versions, base_provenance = [], None, None
+    if base_bank is not None:
+        base_bank = Path(base_bank)
+        base_manifest, base_arrays = option_bank.load_bank(base_bank)
+        base_config = base_manifest["configuration"]
+        if ({key: value for key, value in base_config.items() if key != "splits"}
+                != {key: value for key, value in config.items() if key != "splits"}):
+            raise ValueError("base bank task/root configuration differs")
+        if any(base_config["splits"][split] > config["splits"][split]
+               for split in option_bank.SPLITS):
+            raise ValueError("base bank split counts cannot shrink")
+        if base_manifest["source_sha256"] != identity["source_sha256"]:
+            raise ValueError("base bank generator sources differ")
+        versions = base_manifest.get("versions")
+        if not isinstance(versions, dict) or set(versions) != set(_versions()):
+            raise ValueError("base bank missing generation versions")
+        reused = {}
+        for split, count in base_config["splits"].items():
+            arrays = base_arrays[split]
+            _check_arrays(arrays, config, split, 0, count)
+            parts[split].append((0, count, arrays))
+            reused[split] = {"start": 0, "stop": count,
+                             "array_sha256": base_manifest["splits"][split]["sha256"]}
+        base_provenance = {"manifest_sha256": _sha256(base_bank / "manifest.json"),
+                           "configuration_sha256": base_manifest["configuration_sha256"],
+                           "reused_ranges": reused}
     for shard_path in shard_paths:
         shard_path = Path(shard_path)
         manifest_path = shard_path / "manifest.json"
@@ -195,6 +225,8 @@ def assemble_bank(path, config, shard_paths):
         "assembly_versions": _versions(),
         "chunks": sorted(provenance, key=lambda p: (option_bank.SPLITS[p["split"]], p["start"])),
     }
+    if base_provenance is not None:
+        manifest["shard_assembly"]["base_bank"] = base_provenance
     path.mkdir(parents=True, exist_ok=False)
     try:
         for split, chunks in parts.items():
