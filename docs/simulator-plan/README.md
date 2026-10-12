@@ -23,16 +23,18 @@ scientific gates.
 | 8/10, M6 — [PR #13](https://github.com/fmuia/sbi4finance/pull/13) | One-factor Bergomi, exact OU/asset covariance, complete continuation, bounded-price MC, bank and notebook08; PR #14 adds resolved paired-grid checks | No uniform continuum-bias certificate, accepted posterior or optional two-factor model. |
 | 9/10, M7 — [PR #14](https://github.com/fmuia/sbi4finance/pull/14) | Rough simulator/pricer, shared banks, paired-grid study and restricted H/eta reference pilot; notebooks08–09 | 512-step finite-MC banks delivered. Reference passes 19/20 panels; one fails ESS/maximum weight. Stop rule applied before training/SBC; M7.3b acceptance pending. No scalar-state rough-memory forecast. |
 | 7/10, M5 — [PR #15](https://github.com/fmuia/sbi4finance/pull/15) | [Restricted HKDE baseline](https://github.com/fmuia/sbi4finance/blob/feat/hkde-inference/docs/hkde-joint-inference.md), independently accepted M5.2 surrogate, and bounded [M5.1f correction follow-up](milestones/05-amortized-pricing.md#m51f-bounded-likelihood-correction-follow-up) | Raw checkpoint provisional and old test untouched. First correction stops on proposal reliability. Boundary follow-up passes validation but fails theta SBC on its new held-out test; all conditional accuracy/reliability gates pass. Frozen stop honored; corrected pipeline unaccepted. |
-| 10/10, M8 — **draft** `feat/hkde-offline-tutorial`, stacked on PR #15 | [Options review lesson](https://github.com/fmuia/sbi4finance/blob/feat/hkde-offline-tutorial/docs/m8-options-candidate.md): 30-minute notebook10 explains the candidate and saved diagnostics | Scientific participant acceptance remains pending after the held-out SBC stop; live candidate execution stays disabled. A review-only export does not complete M8 or choose the curriculum. |
+| 10/10, M8 — **draft** `feat/hkde-offline-tutorial`, stacked on PR #15 | [Options review lesson](https://github.com/fmuia/sbi4finance/blob/feat/hkde-offline-tutorial/docs/m8-options-candidate.md): 30-minute notebook10 explains the candidate and saved diagnostics; review-only offline export passes, 17 cells and zero errors | Scientific participant acceptance remains pending after the held-out SBC stop; live candidate execution stays disabled. The passed review-only export does not complete M8 or choose the curriculum. |
 
 All three 24-panel banks save/load and reproduce selected IDs. Bergomi bank
 sampling SEs are below 10% of quote sigma. The coupled-grid study now resolves
 all one-factor comparisons and rough 512-to-1,024 comparisons within 0.025
 currency; the rough 128-step comparison remains unresolved at its difficult
 corner. These finite-grid checks do not prove continuum bias below 0.025.
-Existing banks retain their original numerical-pilot identities. The last
-combined pre-correction implementation passed 155 software tests (122 on
-PR #14 without PR #15); rerunning the combined suite after correction is pending. The
+Existing banks retain their original numerical-pilot identities. The
+[combined-stack check](https://github.com/fmuia/sbi4finance/blob/feat/hkde-offline-tutorial/docs/results/hkde-correction/combined-stack-verification.json)
+now passes 171 software tests in 25.263 seconds. The nonmutating merge-tree
+check combines the M8/PR #15 work with PR #14 cleanly at tree `8ac2bea9f00a37f8f6cfe612e188c46492d33a99`.
+PR #15 alone passes 133 tests in 21.604 seconds. The
 HKDE and combined Bergomi marimo reviews pass isolated offline export without
 market fixtures or external connections. These execution checks do not accept
 new posteriors. Source hashes and full numerical evidence are committed with
@@ -90,7 +92,7 @@ M8. Notebook07 explains the regression and paired error checks. This small
 polynomial supplies a learned forward-price building block without another
 network or contract-generalization framework. Notebook07 passes its isolated
 offline export (14 cells, zero errors, 9.17 seconds), and PR #15 now passes
-133 software tests including correction checks.
+133 software tests in 21.604 seconds including correction checks.
 
 The [M5.1f likelihood correction](https://github.com/fmuia/sbi4finance/blob/feat/hkde-inference/docs/hkde-corrected-inference.md)
 reuses that provisional flow as a proposal. Its first 90% flow / 10% uniform
@@ -128,8 +130,12 @@ then require an actual 2,048-proposal live offline calculation with the accepted
 two-put surrogate, source-bound evidence, component timings and exercises.
 No real-market fixtures, raw training bank or new training are needed to run
 that lesson. The 10/10 handoff is a **draft review**, with the accepted-live path
-disabled while scientific acceptance is unresolved; a successful export of
-cached diagnostics cannot meet the full M8 gate. Numerical likelihood calls remain in the corrected path, so this
+disabled while scientific acceptance is unresolved. Its
+[source-bound offline review export](https://github.com/fmuia/sbi4finance/blob/feat/hkde-offline-tutorial/docs/results/hkde-correction/notebook-verification.json)
+passes all 17 cells with zero errors in 8.2935 seconds, with external sockets
+blocked and raw training banks/market fixtures absent. The live path was
+correctly skipped; this verifies the review lesson, not the full M8 workflow.
+Numerical likelihood calls remain in the corrected path, so this
 is not a purely amortized inference or unmeasured speedup claim. A passing
 wrapper would not retrospectively accept the raw flow; the original test and
 the unrelated Heston/rough failures remain unchanged.

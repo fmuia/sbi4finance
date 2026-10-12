@@ -184,6 +184,15 @@ accepted live inference product. M8 remains scientifically pending; the raw
 flow is unchanged and provisional, and its original root-62026 test remains
 untouched. Any subsequent diagnosis is distinct from this frozen outcome.
 
+**Engineering and review verification:** PR #15 passes 133 software tests in
+21.604 seconds. Its clean combined tree with PR #14 and the M8 draft passes
+[171 tests in 25.263 seconds](https://github.com/fmuia/sbi4finance/blob/feat/hkde-offline-tutorial/docs/results/hkde-correction/combined-stack-verification.json).
+Notebook10's [source-bound offline review export](https://github.com/fmuia/sbi4finance/blob/feat/hkde-offline-tutorial/docs/results/hkde-correction/notebook-verification.json)
+executes 17 cells with zero errors in 8.2935 seconds, with external sockets
+blocked and raw training banks/market fixtures absent. It correctly skips the
+unaccepted live candidate. These checks accept the software/review evidence,
+not the corrected estimator or M8 participant delivery.
+
 ## M5.2 bounded surrogate subplan
 
 The [fixed-contract protocol](https://github.com/fmuia/sbi4finance/blob/feat/hkde-inference/docs/hkde-surrogate-protocol.md) adds a supervised

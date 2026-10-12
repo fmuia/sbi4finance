@@ -111,9 +111,18 @@ finite-pool miss is displayed without a new seed or automatic retry. Scientific
 and didactic outcomes must both be recorded before calling this bounded
 candidate accepted. **Development-validation has passed; the independent test
 failed theta SBC, so scientific participant acceptance remains pending.** The
-10/10 draft may pass a review-only offline export while showing the recorded
-failure and skipping live candidate execution. That software/didactic check
-must be reported separately and cannot count as the complete M8 workflow.
+10/10 draft now passes its
+[source-bound review-only offline export](https://github.com/fmuia/sbi4finance/blob/feat/hkde-offline-tutorial/docs/results/hkde-correction/notebook-verification.json):
+17 cells, zero errors, 8.2935 seconds, external sockets blocked, raw training
+banks and market fixtures absent. It shows the recorded failure and correctly
+skips live candidate execution. This verifies the review lesson and its gate
+handling; it does not satisfy the complete live M8 workflow.
+
+The [combined-stack verification](https://github.com/fmuia/sbi4finance/blob/feat/hkde-offline-tutorial/docs/results/hkde-correction/combined-stack-verification.json)
+uses a clean nonmutating merge-tree of this M8/PR #15 stack and PR #14, passing
+171 software tests in 25.263 seconds. PR #15 alone passes 133 tests in
+21.604 seconds. Neither software result changes the scientific stop, the
+closed test or final curriculum choice.
 
 ## Didactic review deliverable
 
