@@ -171,11 +171,18 @@ calibration acceptance still requires a prospective decision rule and appropriat
 evidence. This material can be handed over as a runnable draft with that
 limitation; it is not a completed M8 participant release.
 
-The next bounded rough-Bergomi step is to expand its independent reference bank
-from **4,096 to 8,192 rows**, retain the existing training bank and all cases,
-and rerun its reference checks. Train a candidate only if those checks pass;
-there is no automatic further doubling on a failure. That work belongs to the
-rough branch and does not change this HKDE task's status.
+The bounded rough-Bergomi expansion is complete in
+[PR #14](https://github.com/fmuia/sbi4finance/pull/14): the 8,192-row reference
+passes all 20 cases and the unchanged candidate passes all seven neural
+validation gates. Its separately frozen reserved-test evaluation is tracked by
+[issue #23](https://github.com/fmuia/sbi4finance/issues/23). The test has not run;
+this different task's validation does not change HKDE acceptance.
+
+[Issue #24](https://github.com/fmuia/sbi4finance/issues/24) tracks the prospective
+HKDE decision; [#26](https://github.com/fmuia/sbi4finance/issues/26) tracks the
+curriculum and final participant review. The [handover issue index](simulator-handover.md#tracked-follow-ups)
+also links integration and the optional Heston follow-up. No new experiment
+or merge is launched by this documentation closeout.
 
 The broader simulator catalog and its cluster banks remain available. Further
 Heston analysis, additional dimensions,

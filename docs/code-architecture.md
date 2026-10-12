@@ -3,7 +3,10 @@
 **Implemented-code snapshot, 12 October 2026.** This guide explains how the
 building blocks fit together and where to make changes. The
 [collaborator handover](simulator-handover.md) records results, PR dependencies
-and outstanding decisions. The [mathematical guide](simulator-plan/notes/01-foundations.md)
+and outstanding decisions. Its [issue index](simulator-handover.md#tracked-follow-ups)
+separates stack integration, curriculum selection and the three model-specific
+scientific follow-ups. The scoped simulator/bank implementation is complete;
+these issues do not require a new architecture. The [mathematical guide](simulator-plan/notes/01-foundations.md)
 explains the underlying inference concepts.
 
 The main code described here is on `feat/hkde-offline-tutorial` (PR #19).
@@ -314,6 +317,17 @@ Parsing alone does not establish compatibility. The audited round trips establis
 transport equivalence for the matched saved task/checkpoint, not scientific
 acceptance or market adequacy. Its cached HKDE lesson preserves the original raw-neural
 result rather than notebook10's correction.
+
+Later [PR #21](https://github.com/fmuia/sbi4finance/pull/21) connects that prepared
+panel to the corrected cached lesson; [PR #22](https://github.com/fmuia/sbi4finance/pull/22)
+adds the opt-in provisional live route. They reuse the existing loader,
+correction and checker, with no new bank/adapter format. Their combined review
+bases contain specific older parent revisions; these changes are not imported
+by this architecture note. I1–I3 and I4a are complete, while formal participant
+I4 depends on [HKDE's acceptance decision](https://github.com/fmuia/sbi4finance/issues/24).
+[Issue #27](https://github.com/fmuia/sbi4finance/issues/27) tracks verifying the
+actual combined tree, and [#26](https://github.com/fmuia/sbi4finance/issues/26)
+tracks which route becomes the participant lesson.
 
 Synthetic teaching/training/testing is the required **S** workflow and needs
 no market acquisition. Optional **M** applies a compatible observation to
