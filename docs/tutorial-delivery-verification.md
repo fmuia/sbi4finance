@@ -1,144 +1,214 @@
-# Participant delivery preparation for issue #26
+# Participant delivery verification for issue #26
 
-The user selected **Q/options: GBM foundations followed by a provisional
-corrected-HKDE diagnostic lesson** on 12 October 2026. The
-[route card](tutorial-participant-route.md) and [README schedule](../README.md)
-record the two-hour curriculum. The user also confirmed that #27 has not yet
-supplied a pinned combined revision. **H26.3 remains incomplete.** This record
-separates useful preparation from the final participant acceptance check.
+The selected **120-minute Q/options route** passed fresh locked setup and
+isolated execution on the combined source supplied by #27. The route uses
+GBM foundations, the local synthetic panel, provisional corrected HKDE and the
+#29 diagnostic decision. All five exports passed strict marimo checks with
+zero cell errors; all 19 displayed figure appearances and the six exercises
+were reviewed. **Browser layout, interactive controls and offline browser
+runtime remain unverified** because Computer Use permissions were unavailable.
+This report does not claim standalone offline HTML delivery.
 
-## Repository and scientific scope
+The [route card](tutorial-participant-route.md) supplies the curriculum and
+exercise answers. [PR #31](https://github.com/fmuia/sbi4finance/pull/31) owns
+the combined delivery; [PR #30](https://github.com/fmuia/sbi4finance/pull/30)
+supplies the curriculum and this evidence. No GitHub PR was merged.
 
-Worktree: `sbi4finance-tutorial-followup`, branch
-`feat/tutorial-followup-participant-route`, based on #19 at
-`c762d7613b57d3ea2632671e773498ae8734b701`. No stacks were merged or collaborator
-branches changed. Current notebook10 is #19's fixed, live-by-default example.
-The selected combined experience requires the following existing contributions:
+## Exact source and scope
 
-| Contribution | Required revision | What #27 must preserve |
-|---|---|---|
-| #19 | `c762d7613b57d3ea2632671e773498ae8734b701` | Scientific history, audit, current handovers and participant figures |
-| #22 | `663ac4edeaf5935b59da5eb3d6767e13b0806037` | Local synthetic panel, cached default, explicit `demo-hkde-corrected` live opt-in, observation/truth boundary |
-| #29 | `45bb08d2b091df7bae49fa250424e122f19e3eca` | Artifact-bound provisional decision and updated notebook11 explanation |
-| #28 | `f1bfa7256cc1ea9e5798e49a95a8befc409fa84e` | Optional rough review with completed test and eta-spread failure retained |
-| This follow-up | `feat/tutorial-followup-participant-route` (final commit is recorded in its PR) | Chosen route, pacing/exercises, README and MMAR scope correction; preflight hashes identify executable inputs separately |
+| Binding | Verified value |
+|---|---|
+| Executable source | `ca63424a140c2e512db97e40f0bb30010da3956a` |
+| Git tree | `0eaff7f14ae721efc74de6bc8784b7fab44f67a9` |
+| Verification checkout | Separate detached `sbi4finance-tutorial-verified`; clean before/after |
+| Environment | Fresh real `.pixi`, created in that checkout; no shared-environment symlink |
+| Manifest SHA256 | `bd9c7de43610b62d559487aeab11c5caa5e52fbfc55795a749974fc46c575027` |
+| Lock SHA256 | `749dac2b9ae02df22ddaa8ae298d18804c53d7a040103a8f1df0dffc488d8933` |
+| Scientific decision | `hkde_2048_provisional_scope_2026_10_12`: provisional, scientific acceptance false, formal I4 deferred |
 
-These heads identify inputs to #27, not an assertion that this checkout
-contains them. #27 owns full stack composition, including the original plans
-and later rough/data branches. Do not copy notebook10 wholesale between #19
-and #22. Before final verification, reconcile its introductory selected-route
-and pacing text with the route card while keeping #22's mode/data controls.
-Use the #29 decision explanation without changing frozen scientific sources
-or historical evidence bindings.
+The pinned tree includes #22's local panel, cached default and explicit
+2,048-proposal opt-in, #29's five-figure decision notebook11, and the selected
+route introduction/closing in notebook10. Later evidence/prose commits in
+#31 do not replace this executable pin. The integration checkout was not edited.
 
-The [#24 decision in PR #29](https://github.com/fmuia/sbi4finance/blob/45bb08d2b091df7bae49fa250424e122f19e3eca/docs/hkde-acceptance-decision.md)
-permits continued provisional selected-case teaching at **2,048 proposals**;
-scientific acceptance is false and formal I4 is deferred. A delivery pass
-cannot change that decision. No retraining, new cohort, reserved-test use or
-market acquisition was undertaken for this follow-up.
+The [execution record](results/tutorial-participant-delivery/verification.json)
+binds all **158 copied inputs** to their Git content and SHA256, before and
+after execution. It also verifies 59 required frozen scientific dependencies
+against #29's manifest. That is a required-input subset, not the whole historical
+inventory: raw surrogate training banks are deliberately absent. Integrated
+teaching interfaces are bound to the combined Git revision.
 
-## Fresh locked setup: passed on this preliminary branch
+Only the five required `data/synthetic/hkde-walkthrough` files were copied from
+`data/`. Market fixtures and raw training banks were absent. The existing GBM
+exercise creates and removes its tiny temporary 64/16/8-example bank. There
+was no neural training, new acceptance cohort, reserved-test execution or
+market acquisition. Existing held-out reports were read as historical evidence.
+The integration owner's wider tests and rough-model review were not repeated.
 
-The new worktree had **no `.pixi` directory** before installation. Running
-`pixi install --locked` with Pixi 0.70.2 created a real environment inside it,
-not a symlink to another worktree. The normal package cache was allowed;
-this checks fresh environment construction, not a cold-cache download.
-The first restricted attempt could not write Pixi's global cache lock and
-stopped before dependency installation. The same command passed once normal
-package/cache access was permitted. No lock or dependency change was needed.
+## Fresh setup and measured execution
 
-The [setup record](results/tutorial-participant-preflight/setup.json) binds
-`pyproject.toml` and `pixi.lock` and lists the installed versions: Python
-3.12.15, BayesFlow 2.0.14, Keras 3.15.1, JAX 0.11.1, marimo 0.25.1 and the
-remaining scientific packages. Platform: macOS 26.4.1 / arm64; execution uses
-the CPU backend. Installation duration was not instrumented. Linux is present
-in the lock but was not installed here. Repeat fresh setup after #27 supplies
-the actual combined revision, even if its dependency files are unchanged.
+The [setup record](results/tutorial-participant-delivery/setup.json) and
+[install log](results/tutorial-participant-delivery/install.log) record
+`pixi install --locked`, exit 0, **6.789 s**, starting
+`2026-10-12T21:20:16.740686+00:00`. `.pixi` did not exist beforehand. Normal
+package caches were allowed: this is fresh environment construction, not a
+cold-download measurement. No dependency or lock change was needed.
 
-## Current-branch preflight
+Machine: **Apple M5 Max, 128 GiB memory, macOS 26.4.1 arm64**, CPU backend.
+Pixi 0.70.2 installed Python 3.12.15, BayesFlow 2.0.14, Keras 3.15.1,
+JAX/JAXlib 0.11.1 and marimo 0.25.1; setup JSON lists all checked versions.
+Linux was not installed. This machine is an observation, not a minimum
+hardware requirement or a performance guarantee.
 
-The narrow [preflight checker](../scripts/check_tutorial_delivery.py) exports
-the existing foundations, corrected-HKDE and calibration-audit notebooks in
-separate processes. It copies source/configuration and bound synthetic assets
-to a new directory, omitting market fixtures, the `data` directory and raw
-training banks. The foundations lesson still creates its tiny temporary
-64/16/8-example synthetic bank as part of its existing teaching exercise.
-No neural training or calibration-study rerun is part of this check.
+Each export used a fresh process and an isolated source copy. A tested Python
+socket/DNS guard blocked external TCP, UDP and DNS while permitting loopback
+and Unix IPC. This is a Python-level guard, not an OS network sandbox or a
+browser network test. Cached/analytic processes also blocked BayesFlow imports;
+only the explicit live export could load it.
+
+| Notebook / mode | Output cells | Figures | Cell errors | Export seconds |
+|---|---:|---:|---:|---:|
+| `01_gbm_foundations`, bounded analytic/live | 21 | 2 | 0 | 28.267 |
+| `hkde_data_walkthrough`, cached | 8 | 2 | 0 | 1.675 |
+| `10_hkde_corrected_workflow`, cached default | 20 | 4 | 0 | 25.471 |
+| `10_hkde_corrected_workflow`, explicit provisional live | 20 | 6 | 0 | 25.765 |
+| `11_hkde_calibration_audit`, #29 decision | 15 | 5 | 0 | 1.167 |
+
+All five strict checks and exports passed in one successful checker invocation.
+Total export time was **82.345 s**; isolation, hashes, checks, exports and the
+initial review bundle took **92.011 s**. Subsequent link-only postprocessing
+and manual review are outside that wall time. Initial font-cache/framework
+costs and concurrent machine activity can affect these observations.
+The live export retained one Python semaphore-cleanup warning at shutdown;
+the process exited successfully and no notebook cell failed.
+
+The live cell measured **21.555 s**, with these overlapping components:
+
+| Component | Seconds |
+|---|---:|
+| Imports, artifact bindings and checkpoint loading | 18.328 |
+| Proposal sampling | 1.040 |
+| Proposal density | 0.183 |
+| Proposal total, includes the preceding two rows | 1.223 |
+| Nine-price numerical likelihood and weights | 1.998 |
+| Two-target surrogate | 0.000600 |
+| Reference comparison and summary | 0.00580 |
+
+Do not add the cell, export and component totals. No comparison here establishes
+an amortization speedup. The raw cache contains 4,096 draws, the corrected
+precision cache uses 8,192 proposals, and the explicit live calculation uses
+2,048 proposals at fixed `validation:257`, seed `3667540760`.
+
+All eight existing selected-case checks passed: maximum target-quantile error
+was 0.005299 currency (limit 0.03), ESS fraction 0.687767 (minimum 0.5), and
+maximum normalized weight 0.002085 (maximum 0.01). The broader historical
+calibration failure remains visible and scientific acceptance remains false.
+The export retained tables, plots, flags and timings, not the raw live rows;
+it is not an additional independent row-alignment experiment.
+
+## Figures, tables and exercises
+
+The [review record](results/tutorial-participant-delivery/review.json) and
+[figure inventory](results/tutorial-participant-delivery/visual-review.json)
+identify every displayed figure by SHA256 and repository path. There are
+**19 appearances and 15 distinct PNGs**. All were visually inspected directly
+or matched byte-for-byte to an already inspected figure. Eight new PNGs are
+committed; existing identical figures are referenced without duplication.
+Axes, units, legends, paired-posterior structure and failure/budget labels are
+readable. This is extracted-figure inspection, not browser-page layout review.
+
+Exported tables and exercise text were read alongside the selected route:
+
+- E1 was replayed through the actual marimo graph with both slider definitions
+  overridden, seed 2026, at 252 and 504 days. The longer history extends the
+  same path. Drift variance falls from 0.008 to 0.0066667; doubling sampling
+  frequency within one year leaves it 0.008. The
+  [exercise result](results/tutorial-participant-delivery/exercise-e1.json)
+  records this separately from browser slider interaction, which was not tested.
+- E2 preserves the observation/context/truth boundary: nine ordered premiums
+  condition inference; synthetic truth, timestamps and target prices do not.
+  The cached raw and corrected tables refer to the same selected observation.
+- E3/E4 retain the full mixture denominator, reference comparison and paired
+  parameter/weight/target interpretation. A target-price interval describes
+  uncertainty in a Q expectation; it is not a payoff or physical-loss interval.
+- E5/E6 retain the shared historical rank alarm, the conditional-versus-SBC
+  distinction, provisional decision, and limits of changing the prior, payoff
+  type or P/Q question. These are reasoning exercises, not new experiments.
+
+Missing optional M/E inputs do not block the synthetic route. No real-panel
+or empirical-market claim was added. The original MMAR material remains an
+optional companion; its earlier prose-only scope correction passed strict
+checking in the [preflight record](results/tutorial-participant-preflight/verification.json).
+
+## Browser delivery findings and remaining check
+
+The five original marimo exports each declare **107 CDN frontend references**.
+They also contain temporary absolute and source-relative review links.
+Successful Python export therefore does not certify portable standalone
+offline HTML. Python-backed controls require a running marimo session.
+
+For review, the checker creates a derived `browser/` directory containing
+482 installed marimo 0.25.1 frontend assets, the 158-file source snapshot,
+and five transformed HTML files. It replaces CDN destinations with matching
+local assets and rewrites rendered anchor destinations. Required lesson/docs
+links resolve within the bundle; two optional provenance links explicitly
+point to pinned GitHub sources (Heston05 and #29's historical verification).
+Those two links still need internet access. Displayed reproduction commands
+retain their original text and are not promised portable shell commands.
+
+The [delivery manifest](results/tutorial-participant-delivery/browser-delivery-manifest.json)
+hashes every bundled file and records the link mappings. Static checks passed
+for **583 local targets across the five pages**. They do not audit every
+transitive link in copied Markdown or execute frontend JavaScript. After the
+original export, a link audit found 15 broken rendered link occurrences; these
+were repaired in the derived bundle only. The record preserves the original
+execution-verifier hash and the later postprocessor hash separately. All
+original HTML, notebook code and 19 PNGs remained byte-identical; no scientific
+calculation was rerun to repair links.
+
+Attempting browser inspection returned **“Computer Use permissions are not
+granted.”** No browser screenshot, interaction or request trace was obtained.
+`browser_offline_verified` and `full_selected_route_verified` therefore remain
+false. The remaining manual check is to serve the bundle over loopback with
+external requests blocked, inspect all five pages and navigation, and separately
+exercise the live marimo controls. No permission-dependent result is inferred
+from static file checks. H26.3's fresh setup and isolated execution evidence is
+complete; browser delivery retains this explicit limitation. Formal I4 remains
+deferred under the scientific decision regardless of that browser check.
+
+## Reproduction and evidence provenance
+
+Use a new checkout at the full source pin, install its locked environment,
+then run the final checker from the evidence branch with that environment:
 
 ```bash
+git worktree add --detach ../sbi4finance-participant-check \
+  ca63424a140c2e512db97e40f0bb30010da3956a
+cd ../sbi4finance-participant-check
 pixi install --locked
-PYTHONPATH=src pixi run python scripts/check_tutorial_delivery.py \
-  --scope preflight --out /tmp/tutorial-preflight-new
+.pixi/envs/default/bin/python /path/to/evidence-checkout/scripts/check_tutorial_delivery.py \
+  --scope participant --repo "$PWD" \
+  --revision ca63424a140c2e512db97e40f0bb30010da3956a \
+  --out /tmp/tutorial-participant-new
 ```
 
-The output directory must be new. A Python socket/DNS guard blocks external
-TCP, UDP and name lookups while permitting loopback and Unix kernel IPC.
-This is a Python-level guard, not an operating-system network sandbox. The
-checker probes the guard and local communication, checks strict marimo lint,
-reads exported cell errors, extracts all PNGs for visual inspection and binds
-copied inputs and HTML with SHA256. Its report cannot mark the full selected
-route, scientific acceptance or I4 as passed. It does not install dependencies.
+The output directory must be new. `--scope preflight` still describes the
+older three-notebook tree and must not be used unchanged on #29's notebook11.
+The current script incorporates the later link repair; the successful original
+execution used the retained
+[verifier snapshot](results/tutorial-participant-delivery/execution-verifier.py).
+The checker always leaves installation/manual/browser acceptance separate.
 
-The [preliminary execution record](results/tutorial-participant-preflight/verification.json)
-reports **21 / 17 / 10 output cells, zero cell errors and 2 / 6 / 3 figures**
-for notebooks01/10/11. All strict checks passed and all 11 PNGs were visually
-inspected: axes, units, legends and failure/budget annotations are readable.
-The existing eight selected-case HKDE checks passed. Its first run in the fresh
-environment took **41.95 s inside the live cell**, including **38.84 s** for
-imports, artifact checks and checkpoint loading; proposal sampling/density
-took 1.26 s, nine-price likelihood/weights 1.85 s and the two-price surrogate
-0.00063 s. These overlapping rows must not be summed. Cold setup costs differ
-materially from earlier branch timings; no universal runtime is promised.
+Original HTML, the isolated source, derived bundle and prior mirror are retained
+locally in `/tmp/sbi4finance-participant-final`; they are temporary review
+artifacts, not a published participant hosting service. Small reports, logs,
+verification-procedure snapshots and new figures are committed under
+`docs/results/tutorial-participant-delivery/`. The 26 MB frontend and full HTML
+are not committed. [review.json](results/tutorial-participant-delivery/review.json)
+binds the retained records and records manual findings; the automated
+`verification.json` deliberately retains its original pending manual fields.
 
-The first verifier stopped after successful exports because its text parser
-stripped a marimo callout's encoded warning. The parser was corrected and the
-existing HTML was inspected without repeating inference; notebook11 was then
-exported once in 0.95 s. Whole-export times for notebooks01/10 were not retained
-after that parser failure. This is **not** an end-to-end successful invocation
-of the final checker CLI or a full-route timing. The record preserves those
-limits and binds the actual executable inputs; #27's final check must measure
-the complete route afresh.
-
-HTML/session data, figures and logs are retained in
-`/tmp/sbi4finance-tutorial-preflight-20261012b`; small reports/logs and new figures
-are committed here. Identical existing figures are referenced by repository
-path and SHA256. Exported HTML uses CDN frontend assets and contains temporary
-absolute review links. Consequently **standalone offline browser rendering and
-full browser layout are not certified** by this Python export check. The
-installed local marimo lesson and exported review artifact must be assessed
-separately at final delivery. A shutdown warning about one Python semaphore
-was retained; no notebook cell failed. Exercise prompts/answers were reviewed;
-the interactive slider activity still belongs in the combined-tree check.
-
-## Remaining final acceptance work, in order
-
-1. Receive #27's exact combined commit and record source/lock/artifact hashes.
-   Check that #22's local panel and mode controls and #29's decision notebook
-   are actually present; a PR base name is insufficient. Incorporate the
-   selected lesson introduction/pacing before exporting.
-2. Install `pixi install --locked` in a new environment on that revision.
-   Record platform, package versions, command/exit output and limitations
-   separately from execution. The setup result above does not substitute.
-3. In fresh processes with external networking blocked and local kernel IPC
-   allowed, run the complete route: foundations, `hkde_data_walkthrough`,
-   notebook10 cached and opt-in live modes, and selected notebook11 sections.
-   Remove market fixtures and raw banks; retain only required synthetic assets.
-   Use the existing data-boundary/mode checks as well as HTML exports, with
-   source paths verified against the isolated copy.
-4. Record full-route and per-notebook runtime, checkpoint load, proposal
-   sampling/density, nine-price likelihood, two-price forward map and export
-   costs from that execution. Keep overlapping timing rows separate; never
-   sum old branch reports or substitute 8,192-proposal cache for 2,048 live.
-5. Inspect every exported graph, table and exercise, including live/replay
-   labels and missing optional M/E inputs. Verify observation/context versus
-   truth/future roles and aligned parameter/weight/target rows. Keep failures
-   visible; no seed retry or gate change follows a failed example.
-6. Link the exact final execution record from README, the selected lesson and
-   #26 handover; publish the tested route for review. Repeat affected checks
-   after executable or figure changes. Keep #26 open until those results are
-   available, and leave formal I4 deferred under the current scientific decision.
-
-The MMAR text change is presentation-only and passes strict marimo checking.
-Its optional market-data/checkpoint workflow was not executed as part of the
-selected synthetic route. It no longer promises that later sections use the
-same approximator, and states the fresh-cascade/latent-state distinction.
+The earlier [preflight evidence](results/tutorial-participant-preflight/verification.json)
+remains historical and is not substituted for this combined-tree run. This
+final commit is confined to the delivery report/results and verifier. The
+integration owner updates the route, README and handover links in #31.
