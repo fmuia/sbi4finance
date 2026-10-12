@@ -105,9 +105,13 @@ I1–I3 complete the immediate integration deliverable. I4 remains explicitly
 deferred, not silently completed by the engineering checks. Real-market examples
 and empirical evaluation remain optional separate work.
 
-| Milestone | Initial status | Dependency |
+Implementation and verification are recorded in the
+[teaching handoff](hkde-teaching-integration.md). The original scope above is
+retained; the completed milestones do not change the scientific decision.
+
+| Milestone | Status | Dependency |
 |---|---|---|
-| I1: local entry point | Planned | Published data and simulator artifacts |
-| I2: connected cached lesson | Planned | I1 |
-| I3: combined offline check | Planned | I1–I2 |
+| I1: local entry point | Complete | Published data and simulator artifacts |
+| I2: connected cached lesson | Complete | I1 |
+| I3: combined offline check | Complete | I1–I2 |
 | I4: live acceptance | Deferred | Scientific acceptance plus I1–I3 |

@@ -188,3 +188,9 @@ small offline example of a synthetic panel, paired parameter draws and a
 held-out option's model-price uncertainty. Run `pixi run hkde-data-walkthrough`;
 see [reproduction and evidence limits](docs/hkde-offline-teaching.md). Its
 checkpoint is **provisional**, and the failed price gate is shown explicitly.
+
+The [teaching handoff](docs/hkde-teaching-integration.md) connects that same local
+panel to the corrected lesson and a cached raw/weighted/reference comparison.
+Run `pixi run hkde-teaching-integration-check` to verify both lessons together
+offline. Integration milestones I1–I3 are complete; I4 live execution remains
+disabled pending the separate scientific acceptance decision.

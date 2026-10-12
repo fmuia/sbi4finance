@@ -75,7 +75,11 @@ PYTHONPATH=src pixi run review-hkde-corrected
 The suggested 30-minute segment covers the financial task and data roles,
 importance correction, a planned live joint posterior and price calculation,
 diagnostics, and short exercises. The live path would load a saved **synthetic
-validation panel**, checkpoint and surrogate and use 2,048 proposals. It remains
+validation panel** through the [local CSV/JSON interface](hkde-teaching-integration.md),
+checkpoint and surrogate and use 2,048 proposals. The panel and a cached
+raw/corrected/reference price comparison are visible before live acceptance.
+The corrected table uses the recorded 8,192-proposal precision sample, explicitly
+separate from the planned participant budget. Live inference remains
 disabled after the frozen test failure. Current execution reviews the cached
 scientific evidence; training, reference-grid pricing and base-bank generation
 are never started by opening the lesson, and no cluster job is submitted.
@@ -97,13 +101,19 @@ measurement of live correction cost.
 
 ## M8.4 — Handover and open work
 
-The [isolated review verification](results/hkde-correction/notebook-verification.json)
+The original [isolated review verification](results/hkde-correction/notebook-verification.json)
 passes strict checking and HTML export: **17 cells, zero errors, 8.29 seconds**,
 with external connections blocked and market fixtures/raw banks absent. All
 four diagnostic figures and the failed/disabled status were inspected. This
 uses an existing pinned Pixi environment in a fresh source/assets copy; it is
 not a fresh dependency installation. It measures cached review rendering,
 not live inference, and does not accept the participant pipeline.
+
+The subsequent [combined data/lesson check](hkde-teaching-integration.md) records
+the updated notebook and both dependency commits. It runs both lessons with
+networking blocked and market files/raw banks absent, checks the shared input
+and weighted comparison, and renders all six cached figures. This is I3
+engineering evidence; I4 live participant acceptance remains deferred.
 
 Record the exact scientific and notebook outcomes alongside their immutable
 artifacts. Only a passing corrected pipeline plus a successful live offline

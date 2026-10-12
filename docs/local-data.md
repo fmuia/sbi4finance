@@ -99,7 +99,10 @@ The same preparation works on declared synthetic or market records. Market windo
 
 Implementation PRs use sequential `N/5-data-plan-…` titles linked to PR #4. Optional market branches do not block a selected synthetic workflow.
 
-The next bounded follow-up is the [HKDE teaching integration plan](hkde-teaching-integration-plan.md): connect these local inputs to the corrected simulator lesson, verify the combined cached workflow, and defer live participant acceptance until its scientific gate passes.
+The [HKDE teaching integration](hkde-teaching-integration.md) completes I1–I3 of
+the [follow-up plan](hkde-teaching-integration-plan.md): these local inputs now
+enter the corrected lesson, and the combined cached workflow runs offline.
+I4 live participant acceptance remains deferred until its scientific gate passes.
 
 Successful parsing does **not** certify financial conventions, grid compatibility, numerical pricing accuracy or model adequacy. Return preparation checks only the explicit rules above. It does not validate the source's adjustment policy, infer curves, simulate paths, check checkpoints or train a network. Those belong to the relevant scientific workflow.
 

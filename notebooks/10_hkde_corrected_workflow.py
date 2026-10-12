@@ -7,6 +7,7 @@ app = marimo.App(width="medium")
 @app.cell
 def _():
     import importlib.util
+    import io
     import json
     import sys
     import time
@@ -31,7 +32,7 @@ def _():
         return module
 
     plot_helpers = load_script("hkde_correction_plots", ROOT / "scripts/plot_hkde_correction.py")
-    return ROOT, json, load_script, mo, np, plot_helpers, plt, time
+    return ROOT, io, json, load_script, mo, np, plot_helpers, plt, time
 
 
 @app.cell
@@ -65,7 +66,7 @@ def _(mo):
 
 
 @app.cell
-def _(ROOT, json, plot_helpers):
+def _(ROOT, io, json, load_script, mo, plot_helpers, plt):
     protocol_path = ROOT / "configs/hkde_correction_boundary_protocol.json"
     protocol = json.loads(protocol_path.read_text())
     task = json.loads((ROOT / protocol["task_config"]).read_text())["task"]
@@ -75,9 +76,113 @@ def _(ROOT, json, plot_helpers):
     reports, saved_checks, artifact_paths = plot_helpers.load_cache(ROOT / "docs/results/hkde-correction")
     if any(_report["experiment_id"] != protocol["experiment_id"] for _report in reports.values()):
         raise ValueError("cached correction evidence belongs to a different proposal experiment")
-    cached_figures = plot_helpers.figures(reports, saved_checks, baseline, protocol)
+    # Reuse the scientific runner's bindings; reading hashes/NPZs does not load
+    # the neural model or run inference. Apply this check to cached review too.
+    _runner = load_script("hkde_correction_bindings", ROOT / "scripts/evaluate_hkde_correction.py")
+    _protocol, baseline_protocol, _task, _, _, _, _bindings = _runner.load_inputs(protocol_path)
+    if _task != task or _protocol != protocol:
+        raise ValueError("displayed task/protocol differs from the bound correction")
+    for _split, _report in reports.items():
+        if _report["input_sha256"] != _bindings or _report["source_sha256"] != _runner.source_hashes():
+            raise ValueError(f"{_split}: cached evidence does not match its inputs/source")
+    cached_figures = {}
+    for _name, _figure in plot_helpers.figures(reports, saved_checks, baseline, protocol).items():
+        _png = io.BytesIO()
+        _figure.savefig(_png, format="png", dpi=130, bbox_inches="tight")
+        plt.close(_figure)
+        cached_figures[_name] = mo.image(_png.getvalue())
     candidate_accepted = all(reports.get(_split, {}).get("passed", False) for _split in ("validation", "test"))
-    return artifact_paths, baseline, cached_figures, candidate_accepted, predecessor, protocol, protocol_path, reports, saved_checks, task
+    return artifact_paths, baseline, baseline_protocol, cached_figures, candidate_accepted, predecessor, protocol, protocol_path, reports, saved_checks, task
+
+
+@app.cell
+def local_input(ROOT, json, mo, np, protocol, saved_checks, task):
+    from sbi4finance.datasets import hkde_panel_prices, load_artifact
+
+    _checkpoint_task = json.loads((ROOT / protocol["checkpoint"] / "task.json").read_text())
+    if _checkpoint_task != task:
+        raise ValueError("local input task differs from the saved checkpoint task")
+    local_panel = load_artifact(ROOT / "data/synthetic/hkde-walkthrough/panel")
+    if (local_panel.metadata["provenance"]["case_id"] != "validation:257"
+            or local_panel.metadata["data_origin"] != "synthetic"
+            or local_panel.metadata["purpose"] != "validation"):
+        raise ValueError("this lesson requires the synthetic validation:257 panel")
+    local_observation = np.asarray(hkde_panel_prices(
+        local_panel, checkpoint_task=_checkpoint_task))[:, None]
+    _checks = saved_checks["validation"]
+    local_case_index = list(_checks["case_ids"]).index("validation:257")
+    if not np.array_equal(local_observation, _checks["observations"][local_case_index]):
+        raise ValueError("local prices differ from the observation bound to this cached review")
+    mo.vstack([
+        mo.md("""
+        ## The local observation entering this lesson
+
+        This is the CSV/JSON panel from the [data introduction](hkde_data_walkthrough.py).
+        Only its nine ordered premiums enter inference. The loader verifies the
+        full saved task and observation identity; synthetic truth and auxiliary
+        timestamps stay outside conditioning. The panel is visible even while
+        live inference is disabled. Editing its prices requires new compatible
+        inference and reference results, not reuse of this cached posterior.
+        """),
+        mo.ui.table(list(local_panel.rows), selection=None, show_column_summaries=False),
+    ])
+    return local_case_index, local_observation, local_panel
+
+
+@app.cell
+def cached_comparison(ROOT, baseline, baseline_protocol, local_case_index, local_observation, mo, np, plot_helpers, protocol, reports, saved_checks):
+    from sbi4finance.hkde_reference import weighted_quantiles
+
+    _raw_path = ROOT / protocol["baseline_results"] / "validation-checks.npz"
+    if plot_helpers.sha256(_raw_path) != baseline["checks_sha256"]:
+        raise ValueError("raw posterior cache differs from its published report")
+    _target = baseline_protocol["targets"][0]
+    if _target != {"strike": 95.0, "maturity": 0.75, "option_type": "put"}:
+        raise ValueError("expected the common held-out nine-month 95-strike put")
+    with np.load(_raw_path, allow_pickle=False) as _raw:
+        _index = list(_raw["case_ids"]).index("validation:257")
+        if not np.array_equal(_raw["observations"][_index], local_observation):
+            raise ValueError("raw and corrected results condition on different panels")
+        _raw_prices = _raw["target_draws"][_index, :, 0]
+        _reference = _raw["reference_target_quantiles"][_index, 0]
+    _checks = saved_checks["validation"]
+    _weights = _checks["weights"][local_case_index]
+    _prices = _checks["target_prices"][local_case_index]
+    _parameters = _checks["parameters"][local_case_index]
+    if (len(_weights) != reports["validation"]["precision_samples"]
+            or _parameters.shape != _prices.shape or _prices.shape != (len(_weights), 2)
+            or not np.array_equal(_reference, _checks["reference_target_quantiles"][local_case_index, 0])):
+        raise ValueError("corrected rows, precision budget or reference differ")
+    _corrected = weighted_quantiles(_prices[:, 0], _weights, protocol["quantiles"])
+    _recorded = reports["validation"]["precision"]["cases"][local_case_index]
+    if (_recorded["case_id"] != "validation:257"
+            or not np.allclose(_corrected, _recorded["target_quantiles"][0], rtol=0, atol=1e-12)):
+        raise ValueError("weighted cache does not reproduce its recorded precision summary")
+    comparison_rows = [
+        {"Estimate": _label, "5%": float(_q[0]), "Median": float(_q[1]), "95%": float(_q[2])}
+        for _label, _q in (
+            (f"Raw: cached {len(_raw_prices):,} neural draws", np.quantile(_raw_prices, protocol["quantiles"])),
+            (f"Corrected: cached {len(_weights):,} precision proposals", _corrected),
+            ("Numerical posterior reference", _reference),
+        )
+    ]
+    mo.vstack([
+        mo.md("""
+        ## Same observation, same target, different estimators
+
+        The table compares the **95-strike, 0.75-year European put** in currency.
+        Corrected prices keep each parameter row's importance weight and use the
+        existing weighted-quantile routine. The raw row retains its original
+        unweighted quantile convention. These are cached results, not live draws.
+
+        The 8,192-proposal precision result below is distinct from the intended
+        2,048-proposal participant run. Price accuracy improves; the original raw
+        failure and the correction's separate held-out calibration failure remain
+        recorded. This comparison does not enable live execution.
+        """),
+        mo.ui.table(comparison_rows, selection=None),
+    ])
+    return (comparison_rows,)
 
 
 @app.cell
@@ -279,7 +384,7 @@ def _(mo, protocol):
 
 
 @app.cell
-def _(ROOT, candidate_accepted, load_script, mo, np, protocol_path, reports, task, time):
+def _(ROOT, candidate_accepted, load_script, local_observation, mo, np, protocol_path, reports, task, time):
     live_result = None
     if candidate_accepted:
         _started = time.perf_counter()
@@ -291,7 +396,9 @@ def _(ROOT, candidate_accepted, load_script, mo, np, protocol_path, reports, tas
             if reports[_split]["input_sha256"] != _bindings or reports[_split]["source_sha256"] != _runner.source_hashes():
                 raise ValueError(f"{_split}: saved correction evidence does not match the live inputs/source")
         _index = list(_saved["case_ids"]).index("validation:257")
-        _observation = _saved["observations"][_index]
+        if not np.array_equal(local_observation, _saved["observations"][_index]):
+            raise ValueError("local input differs from the live reference observation")
+        _observation = local_observation
         _seed = _runner.case_seed(_protocol, "validation", 0, _index)
         _workflow = _runner.inference.build_workflow(_task)
         _workflow.load_approximator(ROOT / _protocol["checkpoint"] / "model.keras")

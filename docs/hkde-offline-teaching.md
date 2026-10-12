@@ -9,6 +9,12 @@ fails its downstream price-quantile gate and is not the accepted participant
 pricing checkpoint. This is an executable provisional example for development
 and review, with that failure shown in the notebook.
 
+Continue from this introduction to the [corrected HKDE lesson](hkde-teaching-integration.md).
+It loads the same local panel and compares the original raw result with cached
+weighted correction and the numerical reference. The original bundle below is
+unchanged. Corrected pricing improves, but the separate corrected test still
+fails theta calibration, so live participant execution remains disabled.
+
 ## Run without market data or weights
 
 After installing the repository's pinned environment:

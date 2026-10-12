@@ -178,6 +178,11 @@ def _(mo):
 
     See the [offline example notes](../docs/hkde-offline-teaching.md) for
     provenance, reproduction and optional checkpoint/pricer execution.
+
+    Continue with the [corrected HKDE lesson](10_hkde_corrected_workflow.py).
+    It loads this same local panel and compares the preserved raw result with
+    cached importance-corrected prices. Its live calculation remains subject
+    to the separate scientific acceptance gate.
     """)
     return
 
