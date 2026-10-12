@@ -375,6 +375,24 @@
       "merge_base_oid": "b588df33d8fa1456c05bae67438d130d5b00ee1a",
       "unique_patch_stat": "9 files changed, 1788 insertions(+), 22 deletions(-)",
       "head_commits_not_in_current_base": 2
+    },
+    {
+      "baseRefName": "feat/hkde-offline-tutorial",
+      "baseRefOid": "c762d7613b57d3ea2632671e773498ae8734b701",
+      "headRefName": "feat/tutorial-followup-participant-route",
+      "headRefOid": "be4a3baf6d5753337f93c1b95510310aea2d3d69",
+      "isDraft": true,
+      "number": 30,
+      "reviewDecision": "",
+      "statusCheckRollup": [],
+      "title": "1/1-tutorial-followup-participant-route",
+      "url": "https://github.com/fmuia/sbi4finance/pull/30",
+      "current_base_ref_oid": "c762d7613b57d3ea2632671e773498ae8734b701",
+      "current_base_is_ancestor": true,
+      "merge_base_oid": "c762d7613b57d3ea2632671e773498ae8734b701",
+      "unique_patch_stat": "23 files changed, 1392 insertions(+), 22 deletions(-)",
+      "head_commits_not_in_current_base": 1,
+      "snapshot_note": "Published during integration after the initial open-PR inventory; selected commit already composed."
     }
   ]
 }

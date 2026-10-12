@@ -1,6 +1,7 @@
 # Combined simulator and data integration review
 
 This is the composition record for [issue #27](https://github.com/fmuia/sbi4finance/issues/27).
+Published for review in [PR #31](https://github.com/fmuia/sbi4finance/pull/31).
 The review branch is `integration/issue-27-combined-review`, created in its own
 worktree from freshly fetched `origin/main` at
 `b892fae382b29ac3350246e3be2bc9946e60437f` on 12 October 2026.
@@ -46,6 +47,11 @@ the current named branch; the table uses freshly fetched named refs.
 | [#22](https://github.com/fmuia/sbi4finance/pull/22) | `663ac4edeaf5935b59da5eb3d6767e13b0806037` | `integration/hkde-live-demo-base` | `9cb6d20e0999e3888c3c906b893350e5f229ad3f` | yes |
 | [#28](https://github.com/fmuia/sbi4finance/pull/28) | `f1bfa7256cc1ea9e5798e49a95a8befc409fa84e` | `feat/rough-bergomi-option-bank` | `dfaaee4db9d50e23dc05e1c049554a36c39b9bfc` | yes |
 | [#29](https://github.com/fmuia/sbi4finance/pull/29) | `45bb08d2b091df7bae49fa250424e122f19e3eca` | `feat/hkde-offline-tutorial` | `c762d7613b57d3ea2632671e773498ae8734b701` | **no** |
+
+[PR #30](https://github.com/fmuia/sbi4finance/pull/30) was published during this
+composition: participant head `be4a3baf6d5753337f93c1b95510310aea2d3d69`,
+based on #19 `c762d7613b57d3ea2632671e773498ae8734b701`. It is included;
+its preliminary delivery record remains historical pending the final #26 check.
 
 The #7, #15 and #29 heads omit later commits on their current named bases.
 Neither title numbering nor the displayed base name certifies ancestry.
