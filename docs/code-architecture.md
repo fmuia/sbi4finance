@@ -270,7 +270,7 @@ between worktrees. Commands for checks and other reviews are in the
 
 ## 7. Related code on separate branches
 
-**Latest rough work, [PR #14](https://github.com/fmuia/sbi4finance/pull/14):**
+**Rough development work, [PR #14](https://github.com/fmuia/sbi4finance/pull/14):**
 `feat/rough-bergomi-option-bank` adds `bergomi_refinement.py` for coupled-grid
 pricing comparisons, `option_bank_shards.py` for independently generated array
 tasks and bank assembly, and `rough_reference.py` / `rough_inference.py` for
@@ -284,8 +284,8 @@ The runner requires an accepted independent reference before training/reload,
 then provides validation-only evaluation. The original 4,096-row run stopped
 on a reference-efficiency failure. One bounded extension reuses those rows and
 appends 4,096 independent rows: all 20 reference cases and all seven neural validation
-gates now pass, including 512-case SBC. A trained checkpoint is delivered; the
-reserved test remains unevaluated. This pilot's observation law explicitly includes finite
+gates pass, including 512-case SBC. A trained checkpoint is delivered; its later
+held-out outcome is recorded separately below. This pilot's observation law explicitly includes finite
 Monte Carlo pricing randomness followed by quote noise. It preserves base
 groups when augmenting training quotes, and estimates posterior target-price
 **means** using independent pricing randomness; noisy target-estimate quantiles
@@ -294,6 +294,19 @@ are not presented as posterior price uncertainty. Read its
 and notebook09 on that branch. The original stopped study is preserved. These
 later additions are absent from PR #19's ancestry; this documentation update
 does not import their code or change the HKDE acceptance result.
+
+**Rough held-out evaluation, [PR #28](https://github.com/fmuia/sbi4finance/pull/28):**
+`feat/rough-heldout-test` evaluates the frozen checkpoint and existing reference
+bank once, with source/input hashes and raw audit draws. It introduces no model,
+bank schema or retraining. All 16 reference cases pass; six of seven neural
+gates pass, including 256-case SBC and target-price means. On `test:3`, eta's
+posterior SD is 31.0% too small against the 25% gate, so the candidate remains
+provisional. All 256 cases are used and closed; no retry or tuning followed.
+The [study](https://github.com/fmuia/sbi4finance/blob/feat/rough-heldout-test/docs/rough-heldout-test.md)
+and updated notebook09 explain the conditional failure alongside the passed
+marginal ranks. The independent raw-draw audit, 129 software tests and offline
+26-cell review verify this result, not scientific acceptance. This follow-up
+also remains outside PR #19's code ancestry.
 
 **Data workstream, [PRs #5, #6, #16–#18](simulator-handover.md#where-the-work-lives):**
 the separate `datasets/` modules load local CSV/JSON artifacts, prepare return
