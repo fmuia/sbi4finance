@@ -175,7 +175,7 @@ def audit(root):
     shift = losses["neural"][2] - losses["reference"][2]
     return {
         "scope": "Arithmetic review of saved validation evidence; no scientific rerun or acceptance",
-        "decision": "retain optional diagnostic lesson; defer further acceptance experiments pending #26",
+        "decision": "retain optional diagnostic lesson; defer further acceptance experiments for the selected Q/options curriculum (#26/#30)",
         "scientific_status": "provisional", "scientific_acceptance": False,
         "training_performed": False, "reserved_test_accessed": False,
         "raw_banks_accessed": False, "new_scientific_examples": 0,

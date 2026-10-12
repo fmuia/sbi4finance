@@ -1,6 +1,7 @@
 # Heston #25: retain the diagnostic lesson; defer further experiments
 
-Decision recorded 12 October 2026 for [issue #25](https://github.com/fmuia/sbi4finance/issues/25).
+Decision recorded 12 October 2026 for [issue #25](https://github.com/fmuia/sbi4finance/issues/25),
+updated 13 October to incorporate the completed curriculum choice in PR #30.
 Retain notebook05 as an **optional diagnostic lesson** and defer further
 posterior-acceptance experiments. The restricted Heston posterior remains
 **provisional**. This resolves the decision requested by #25; it does not grant
@@ -17,17 +18,25 @@ empirical market adequacy.
 
 ## Why stop here?
 
-[Curriculum #26](https://github.com/fmuia/sbi4finance/issues/26) is still open,
-with no recorded choice requiring an accepted Heston returns posterior as of
-this review. The existing evidence already makes a useful diagnostic lesson.
-Another training candidate would consume development effort without an agreed
-teaching need. No experiment is selected or frozen in this increment; H25.2
-and the candidate-execution portion of H25.3 are therefore not applicable.
+[Curriculum #26](https://github.com/fmuia/sbi4finance/issues/26) has selected a
+**120-minute Q/options course**, recorded in [PR #30](https://github.com/fmuia/sbi4finance/pull/30)
+and its [pinned participant route](https://github.com/fmuia/sbi4finance/blob/8f565121d23b5b3e815be0e2bfde468db8e30211/docs/tutorial-participant-route.md).
+That route uses exact GBM foundations, the local synthetic panel, provisional
+corrected HKDE and diagnostic reasoning. Heston notebook05 is explicitly
+optional, outside the two-hour route and its required runtime measurement.
+An accepted Heston returns posterior is therefore not a course prerequisite.
+No experiment is selected or frozen in this increment; H25.2 and the
+candidate-execution portion of H25.3 are not applicable.
 
-This decision does not choose P returns over Q options. #26 may retain this
-lesson, omit it, or later justify one bounded investigation. Software integration
-under [#27](https://github.com/fmuia/sbi4finance/issues/27) can proceed while
-scientific acceptance is deferred. Neither HKDE nor rough-Bergomi gates change.
+The curriculum choice is complete even though the GitHub issue remains open.
+PR #30 records fresh locked setup and isolated execution on #27's combined
+source; browser layout, controls and offline browser runtime remain unverified.
+Those delivery limits do not reopen the choice or require a Heston experiment.
+The initial version of this note inferred a pending choice from the open issue
+and missed PR #30; this update corrects that rationale without changing the
+scientific decision. Software integration under [#27](https://github.com/fmuia/sbi4finance/issues/27)
+can proceed while Heston acceptance is deferred. Neither HKDE nor rough-Bergomi
+gates change.
 
 ## Evidence reviewed and independently checked
 
@@ -123,7 +132,8 @@ reference or neural test evaluation has occurred. They remain reserved.
 V3's first-stage failure and stop rule remain intact; v2 is still the better
 provisional comparison, not an accepted replacement.
 
-Reopen experimental work only if #26 identifies the need and one mechanism is
+Reopen experimental work only if a later curriculum change or explicit request
+identifies the need for an accepted Heston returns posterior and one mechanism is
 prospectively specified with task, adapter/checkpoint, bank, references, seeds,
 all cases, budget, precision, metrics and stop rule. Preserve signed states,
 joint draws, all failures and original thresholds. Any different use-based
@@ -147,13 +157,14 @@ H25.3 reviews existing evidence without executing another candidate. H25.4
 updates notebook05 and verifies its fresh-process offline export. The
 [execution record](results/heston-validation-decision/notebook-verification.json)
 records exactly what ran and the limits of its isolation. It reuses the pinned
-environment; it does not certify a clean dependency installation or #26's
-eventual combined participant route.
+environment; it does not certify a clean dependency installation or replace
+#30's separate verification of the selected combined participant route.
 
-Verification on 12 October, with artifact identities rechecked on 13 October:
-**24 Heston software tests passed** (22.61 seconds); strict marimo validation
-passed; the isolated export produced **39 output cells, zero errors and ten
-figures** in 13.52 seconds. All ten exported figures were visually inspected.
+On 12 October, **24 Heston software tests passed** (22.61 seconds), and the
+strictly checked isolated export completed in 13.52 seconds. After the
+curriculum wording update on 13 October, strict checks and the isolated export
+passed again: **39 output cells, zero errors and ten figures** in **14.41 seconds**.
+All ten figure hashes match the individually inspected 12 October images.
 The tests include tiny training/save/reload smoke checks, distinct from a new
 scientific candidate. The optional browser layout inspection was interrupted;
 the HTML session outputs and exported figures were checked directly. No clean

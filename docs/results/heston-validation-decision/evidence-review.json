@@ -1,6 +1,6 @@
 {
   "scope": "Arithmetic review of saved validation evidence; no scientific rerun or acceptance",
-  "decision": "retain optional diagnostic lesson; defer further acceptance experiments pending #26",
+  "decision": "retain optional diagnostic lesson; defer further acceptance experiments for the selected Q/options curriculum (#26/#30)",
   "scientific_status": "provisional",
   "scientific_acceptance": false,
   "training_performed": false,
@@ -173,5 +173,5 @@
     "docs/results/heston-precision/report.json": "1daaf8e7bda43de1136056bb461d40bcf1b3b8749ecb88c734b14d029ef3f7d1",
     "docs/results/heston-precision/case-0-draws.npz": "d2ccd62f8265bd97982cd2a4af243b61e55653419dfb62a1d9b1ed57347e5f3a"
   },
-  "checker_sha256": "87cd8b081ee296ea870f086351bb4daa5b01035806252fd4e97490e569d7b6bc"
+  "checker_sha256": "0e4126f19167da800d8550172e544840553ac2f715b12f9e4e79a4240294ca8e"
 }

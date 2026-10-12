@@ -64,9 +64,9 @@
   ],
   "visual_inspection": {
     "status": "all 10 exported figures inspected",
-    "method": "Viewed each extracted PNG at readable resolution; checked axes, legends, interval meanings, clipping, and retained failed results.",
+    "method": "All ten PNG hashes match the ten individually inspected figures from the 12 October export; the 13 October rerun changes curriculum prose only.",
     "browser_layout_check": "Not completed: optional Chrome UI inspection stalled and was interrupted. Exported cell outputs and figures were checked directly.",
-    "figure_artifact_root": "/private/tmp/heston-decision-offline-20261012-ipc"
+    "figure_artifact_root": "/private/tmp/heston-decision-offline-20261013-curriculum"
   },
   "execution_modes": {
     "historical_root_seed": 43021,
@@ -131,7 +131,7 @@
     "docs/results/heston-time-context/summary-explicit-time.json": "aed55a359c0a1987cbbc20946025768dbc9f8fa30014ba4c08a895ce19991d48",
     "docs/results/heston-time-context/summary-legacy.json": "be9b0fb76837b21bacbeea5826f6032b2db648f5cf2eb4637589a75552ba1d5b",
     "docs/results/heston-time-context/validation-checks.npz": "e1fa709c3a19e7eda1b01e323493c40f16231c0cd42c14b6637b66fd353fb920",
-    "notebooks/05_heston_joint_inference.py": "7c8b8c58f62a048066dcba6dffa9a6ad890020a93f7b2cd63cbd89012d212f39",
+    "notebooks/05_heston_joint_inference.py": "3378a90dbf8f21ab5cb43eb6d926511ccd2598035b5e3ca10c75202a402d4d71",
     "pixi.lock": "749dac2b9ae02df22ddaa8ae298d18804c53d7a040103a8f1df0dffc488d8933",
     "pyproject.toml": "5b657aa38d3d3f9b3e66055f90d432312d886beb182e909f26c51e3d7d6d2e50",
     "src/sbi4finance/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
@@ -148,7 +148,7 @@
     "src/sbi4finance/mmar/univariate.py": "1989f8a9eb7e057436220d45971b6effadbcfe2555b678c23f43fa52890c6e34"
   },
   "verifier_sha256": "c7a6f1573c9f68e76ca1602e7d26d884031109d129ffaaaa809c56a85defd431",
-  "python_executable": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-inference/.pixi/envs/default/bin/python",
+  "python_executable": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-decision/../sbi4finance-heston-inference/.pixi/envs/default/bin/python",
   "python_version": "3.12.15",
   "platform": "macOS-26.4.1-arm64-arm-64bit",
   "package_versions": {
@@ -162,16 +162,15 @@
     "numba": "0.68.0"
   },
   "environment_scope": "Existing pinned environment, fresh isolated input copy/process; no dependency installation certification",
-  "isolated_copy": "/private/tmp/heston-decision-offline-20261012-ipc/isolated",
-  "html_path": "/private/tmp/heston-decision-offline-20261012-ipc/isolated/review.html",
-  "html_sha256": "b489351c148196a8b241c027118f9c55c03b531c40ed6238c7ab2ea557e5b416",
+  "isolated_copy": "/private/tmp/heston-decision-offline-20261013-curriculum/isolated",
+  "html_path": "/private/tmp/heston-decision-offline-20261013-curriculum/isolated/review.html",
+  "html_sha256": "1fcec2c674f5f48023eb7ea47698ea1c12013d2ae673d5467281ff6674445888",
   "elapsed_seconds": {
-    "guard-preflight": 0.01700066728517413,
-    "marimo-check": 0.3900210000574589,
-    "export": 13.523906917311251
+    "guard-preflight": 0.021144665777683258,
+    "marimo-check": 0.765975792426616,
+    "export": 14.41323750000447
   },
-  "verification_date": "2026-10-12",
-  "final_artifact_identity_check_date": "2026-10-13",
+  "verification_date": "2026-10-13",
   "base_commit": "ba920bbd628a0913f43984edf0f2718cd755cf6f",
   "software_tests": {
     "command": "KERAS_BACKEND=jax MPLBACKEND=Agg MPLCONFIGDIR=/tmp/heston-decision-mpl PYTHONPATH=src ../sbi4finance-heston-inference/.pixi/envs/default/bin/python -m unittest discover -s tests -p \"test_heston*.py\" -v",
@@ -183,7 +182,10 @@
       "tests/test_heston.py": "8e761c90debe7becb1d5b6bd829c68968f81bc0f27994a602d2fff4c08a9e401",
       "tests/test_heston_reference.py": "2f6eff282696131d259d0345012fe2d943ca42ec2a63a0eb4037897cadbeb3ea",
       "tests/test_heston_bank_inference.py": "01e763420016668f09beca9e0987274ebf3da87e470c136935b189d98dd1bb20"
-    }
+    },
+    "verification_date": "2026-10-12",
+    "reuse_note": "No simulator, inference, test or dependency changes since this passing run; follow-up changes curriculum prose and the audit decision label only."
   },
-  "execution_note": "The initial sandbox attempt could not bind marimo loopback IPC. The successful run allowed local IPC while retaining the recorded external Python socket/DNS guards."
+  "curriculum_source_commit": "8f565121d23b5b3e815be0e2bfde468db8e30211",
+  "execution_note": "Repeat strict check and guarded isolated export after aligning curriculum prose with the selected Q/options route; no browser retry."
 }

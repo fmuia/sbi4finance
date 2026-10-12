@@ -64,9 +64,11 @@ def _(mo):
 
     The learning objective is to distinguish data updating, marginal calibration,
     conditional accuracy and numerical precision. This decision does not accept
-    a Heston risk forecast or full SVJ/SVCJ inference. Further experiments depend
-    on the [curriculum decision #26](https://github.com/fmuia/sbi4finance/issues/26)
-    identifying a need for an accepted returns posterior. See the
+    a Heston risk forecast or full SVJ/SVCJ inference. The
+    [#26 curriculum choice, recorded in PR #30](https://github.com/fmuia/sbi4finance/pull/30),
+    selects a 120-minute Q/options course and keeps Heston optional, outside
+    that route. An accepted Heston returns posterior is not a prerequisite.
+    Further experiments need a new teaching need or explicit request. See the
     [decision and reopening prerequisites](../docs/heston-validation-decision.md).
 
     This notebook runs offline. It reads recorded results, regenerates four
@@ -1122,8 +1124,8 @@ def _(explicit_time_validation, heston_inference, mo, pd, state_transform_valida
 
         This historical experiment does not choose the live curriculum or
         establish full-SVJ inference. The #25 decision retains the diagnostic
-        lesson and defers acceptance work; #26 determines whether the curriculum
-        needs an accepted returns posterior. Integration #27 can proceed while
+        lesson and defers acceptance work. The Q/options curriculum selected
+        under #26/#30 keeps Heston optional. Integration #27 can proceed while
         Heston remains deferred, with its provisional status visible.
 
         [Frozen design and measured outcome](../docs/heston-state-transform.md)
@@ -1196,7 +1198,9 @@ def _(mo):
 
     ### When could acceptance work reopen?
 
-    First, #26 must identify a curriculum need for an accepted returns posterior.
+    First, a later curriculum change or explicit request must identify a need
+    for an accepted Heston returns posterior. The selected Q/options course
+    does not require one.
     Then declare one mechanism and a bounded development protocol: unchanged
     task and prior, identified bank/checkpoint/reference artifacts, fixed seeds,
     all 16 validation cases, numerical precision, metrics, budget and a stopping
