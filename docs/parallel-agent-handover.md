@@ -12,6 +12,15 @@ The briefs live in `sbi4finance-offline-tutorial/docs/`, published on
 Each is self-contained and records the relevant branches, current evidence,
 ordered milestones, commands and completion criteria.
 
+**Curriculum handback, 12 October 2026:** the user selected the provisional
+Q/options route for #26. The [route card](tutorial-participant-route.md) records
+the two-hour schedule and required #22/#29 composition; the
+[delivery record](tutorial-delivery-verification.md) distinguishes fresh setup
+and current-branch preflight from final verification. The user confirmed that
+D/#27 has no pinned combined revision yet. C therefore hands back a prepared
+route, not a completed integrated participant release. #29 retains provisional
+HKDE selected-case teaching and leaves formal I4 deferred.
+
 ## Agent assignments and when to start
 
 | Agent | Handover | Work that can start now | Dependency for later work |

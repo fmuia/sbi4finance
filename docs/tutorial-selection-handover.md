@@ -4,6 +4,29 @@ Prepared 12 October 2026. This is a work assignment, not a curriculum decision
 or a new scientific experiment. Coordinate through the
 [parallel-agent handover](parallel-agent-handover.md).
 
+## Current handback — 12 October 2026
+
+The user chose **Q/options: GBM foundations followed by the provisional
+corrected-HKDE diagnostic lesson**, and confirmed that #27 has **not yet**
+supplied a combined revision. The [participant route](tutorial-participant-route.md)
+records that choice, supported claims, exact sections, modes and a 120-minute
+schedule including exercises. The [delivery record](tutorial-delivery-verification.md)
+separates fresh setup/current-branch preflight from final combined-tree acceptance.
+
+- H26.1: curriculum choice and provisional teaching scope recorded.
+- H26.2: route specification prepared; #27 must retain the agreed #22 local
+  panel/cached-default/live-opt-in behavior and incorporate #29's explanation.
+- H26.3: **pending #27's pinned combined revision**. Preliminary checks cannot
+  discharge clean setup and complete offline execution on that revision.
+- H26.4: canonical schedule and MMAR scope corrected; final participant evidence
+  and PR closeout remain dependent on H26.3. No PR merges are part of this work.
+
+[PR #29](https://github.com/fmuia/sbi4finance/pull/29) now records #24's decision:
+retain 2,048-proposal selected-case teaching as provisional; formal I4 stays
+deferred. A provisional curriculum does not need a new acceptance experiment.
+The assignment below is retained as the acceptance checklist, not evidence
+that its remaining items have already passed.
+
 ## Task and boundaries
 
 Complete [issue #26](https://github.com/fmuia/sbi4finance/issues/26): help the
