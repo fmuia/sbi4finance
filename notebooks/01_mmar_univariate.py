@@ -32,7 +32,8 @@ def _(mo):
     mo.md(r"""
     # Basic worked example: amortized inference for a multifractal volatility model
 
-    Schedule item 4. One asset, 256 trading days, four parameters. We
+    Optional companion to the selected Q/options tutorial. This separate returns
+    example uses one asset, 256 trading days and four parameters. We
 
     1. write down a simulator (no likelihood needed),
     2. train a BayesFlow approximator on simulated data, or load the pretrained one,
@@ -299,7 +300,15 @@ def _(mo):
     mo.md(r"""
     ## What this establishes
 
-    One simulator, one adapter, two networks: after training once, every new 256-day window costs a forward pass. Items 5 and 6 build on exactly this approximator: rolling VaR/ES with parameter uncertainty, and what happens when real data does not look like the simulator.
+    One simulator, one adapter, two networks: after training once, a compatible
+    256-day window can be passed through this approximator. This optional MMAR
+    example keeps its own simulator, checkpoint and return-data assumptions.
+    The selected Q/options lesson uses the separate HKDE task and checkpoint.
+    Its model-price uncertainty does not supply physical-measure VaR or ES.
+
+    A fresh-cascade MMAR forecast is not latent-state filtering. Forecasting
+    claims would need a declared continuation model and separate validation;
+    this example does not establish rolling market-risk performance.
 
     *Simulator and checkpoint come from Stefan Radev's [amortized-fractals](https://github.com/stefanradev93/amortized-fractals).*
     """)

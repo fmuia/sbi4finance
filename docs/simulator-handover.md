@@ -8,6 +8,16 @@ validated neural posterior. Remaining review and scientific decisions are
 tracked in the [follow-up issues below](#tracked-follow-ups). No PR was merged
 in this workstream; issue creation launches no further experiments.
 
+**Curriculum update, 12 October 2026:** the user has selected **Q/options with
+GBM foundations and a provisional corrected-HKDE diagnostic lesson**. Use the
+[participant route card](tutorial-participant-route.md) and canonical README
+schedule for #26; references below to an open curriculum choice describe the
+earlier implementation snapshot. [PR #29](https://github.com/fmuia/sbi4finance/pull/29)
+retains provisional selected-case teaching at 2,048 proposals and defers formal
+I4. [Delivery preparation](tutorial-delivery-verification.md) does not certify
+the combined route: #27's pinned revision is still unavailable. Its integration
+must retain #22's local input, cached default and explicit live option.
+
 ## Start here
 
 For a module map, data-flow diagrams and extension points, read the companion

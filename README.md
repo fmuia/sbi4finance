@@ -2,18 +2,43 @@
 
 Tutorial material on amortized / simulation-based Bayesian inference for finance, built on [BayesFlow](https://github.com/bayesflow-org/bayesflow).
 
-## Tentative schedule
+## Selected participant route: Q/options
 
-| # | Topic | Time | Lead |
-|---|-------|------|------|
-| 1 | Problem introduction: Bayes for volatility models | 15 min | Francesco |
-| 2 | What is amortized Bayes? | 15 min | Alex |
-| 3 | Relevant neural network architectures | 10 min | Stefan |
-| 4 | Basic worked-out example in BayesFlow | 20 min | Stefan |
-| 5 | Advanced: something interesting for finance | 40 min | Francesco & Alex |
-| 6 | Advanced: changing priors and dealing with misspecified models | 15 min | Stefan |
+On 12 October 2026 the user selected **GBM foundations followed by a provisional
+corrected-HKDE diagnostic lesson** for [issue #26](https://github.com/fmuia/sbi4finance/issues/26).
+The financial question is: which parameter pairs explain nine synthetic option
+premiums, and what model prices do they imply for two excluded contracts?
+The historical failed calibration gate stays visible. This is selected-case
+teaching, not scientific acceptance, physical-measure risk forecasting or a
+claim about market performance; formal HKDE I4 remains deferred.
 
-Total: ~2 hours.
+The [participant route card](docs/tutorial-participant-route.md) specifies the
+sections, exercises, inputs, assets and modes. The schedule below totals **120
+minutes including exercises**; lead assignments carry forward the original
+proposal and remain for the team to confirm.
+
+| Minutes | Topic / participant activity | Proposed lead |
+|---|---|---|
+| 0–10 | Financial question, P/Q distinction and data roles | Francesco |
+| 10–30 | Exact GBM inference and separate Q expectation pricing | Stefan |
+| 30–45 | Amortized inference; spline coupling flow and its dense subnets; cached training/reload | Alex & Stefan |
+| 45–60 | Local synthetic panel → raw joint draws → excluded price | Stefan |
+| 60–75 | Likelihood correction and the full proposal-mixture denominator | Alex |
+| 75–95 | Joint posterior → two price distributions; one opt-in 2,048-proposal demo or labelled saved replay | Francesco & Alex |
+| 95–113 | Conditional checks, SBC and the shared numerical-reference alarm | Alex |
+| 113–120 | Changing priors/task assumptions and the exit exercise | All |
+
+**Delivery status:** curriculum selected; final integrated participant verification
+is pending [#27](https://github.com/fmuia/sbi4finance/issues/27)'s pinned combined
+revision. The intended route uses #22's local panel, cached default and explicit
+live opt-in, plus #29's scientific-decision explanation. This #19-based checkout
+still runs notebook10 live by default and lacks the local-data walkthrough;
+it is not the combined participant release. See the
+[setup and preliminary delivery record](docs/tutorial-delivery-verification.md).
+Do not interpret separate branch checks as verification of the complete route.
+
+The optional Heston, rough Bergomi and original MMAR reviews remain available;
+they are outside this two-hour schedule and use their own task/checkpoint.
 
 ## Simulator and inference plan
 
@@ -22,7 +47,7 @@ start with the [collaborator handover](docs/simulator-handover.md).
 The [current code architecture](docs/code-architecture.md) maps the modules,
 data flow, saved artifacts and extension points for both financial workflows.
 
-The [implementation plan and mathematical guide](docs/simulator-plan/README.md) describes the simulator library, pre-simulated training banks, and returns-inference and option-pricing workflows. It includes nine milestone subplans, beginner-oriented mathematical notes, and validation requirements. Shared-foundation implementation has started; the tutorial's central application remains open.
+The [implementation plan and mathematical guide](docs/simulator-plan/README.md) describes the simulator library, pre-simulated training banks, and returns-inference and option-pricing workflows. It includes nine milestone subplans, beginner-oriented mathematical notes, and validation requirements. The selected participant application is the provisional Q/options route above; implementation and scientific evidence remain separately scoped.
 
 Its [delivery and evidence boundary](docs/simulator-plan/README.md#synthetic-delivery-and-market-evidence) requires a complete offline synthetic teaching workflow. Actual-market application and empirical evaluation are optional additions with separate data and evidence requirements; acquisition does not block the synthetic core.
 
@@ -69,7 +94,7 @@ distinction: ideal reference sampling would trigger the same theta gate in
 bounded approximation accuracy; the historical failure and participant gate
 remain unchanged. Open `PYTHONPATH=src pixi run review-hkde-calibration` for
 the didactic explanation, conditional controls and remaining uncertainty.
-The original neural failure and open returns-versus-options choice remain visible.
+The original neural failure remains visible. The selected Q/options teaching scope is recorded in the [route card](docs/tutorial-participant-route.md); it does not upgrade scientific acceptance.
 The [analysis follow-up note](docs/simulator-analysis-next-steps.md)
 preserves the Heston findings while simulator and bank coverage expands.
 
@@ -89,7 +114,7 @@ historical-return forecasting and neural Q posterior training remain separate wo
 One environment, managed by [pixi](https://pixi.sh) from `pyproject.toml`:
 
 ```bash
-pixi install            # BayesFlow 2.0.14 on the jax backend, marimo, python 3.12
+pixi install --locked   # BayesFlow 2.0.14 on the jax backend, marimo, python 3.12
 pixi run selfcheck      # simulator sanity check
 pixi run check          # marimo lint for notebooks/
 pixi run edit           # marimo editor (no auth token, so agents can pair with it)
@@ -103,8 +128,8 @@ Notebooks are [marimo](https://marimo.io) files: plain Python, reactive, git-fri
 
 Each simulator milestone includes a didactic review notebook explaining the
 new functionality, the mathematics, a small runnable example and the actual
-results with their limits. These review notebooks are separate from the final
-two-hour participant curriculum. Closely related increments share named sections.
+results with their limits. The [selected two-hour curriculum](docs/tutorial-participant-route.md) uses named
+sections of these reviews; the full development-review collection is optional. Closely related increments share named sections.
 
 | Review notebook | Milestones / increments | Run |
 |---|---|---|
@@ -121,8 +146,9 @@ Default execution uses synthetic examples and committed evidence, with no market
 downloads, cluster submission or full training run. Recorded results and fresh
 illustrations are labeled separately. The joint-inference notebook keeps the
 original provisional checkpoint visible during further development.
-Notebook 10 is designed as a 30-minute participant candidate built from the
-earlier reviews; it does not select or replace the full tutorial curriculum.
+Notebook 10's original 30-minute pacing is a standalone review suggestion.
+For the selected curriculum, follow the schedule and exercises in the route
+card above; the combined lesson is still awaiting #27 verification.
 Opening it runs the bounded 2,048-proposal correction and target-price calculation
 offline while keeping the historical failure visible. The fixed example is a
 development case, not new calibration evidence. No market fixtures or raw
@@ -149,7 +175,7 @@ for export commands, evidence boundaries and the current inference results.
 
 | Notebook | Schedule item | What it shows |
 |---|---|---|
-| `notebooks/01_mmar_univariate.py` | 4 | Univariate multifractal model of asset returns (MMAR): simulator, prior predictive check, adapter and networks, pretrained checkpoint or CPU toy fit, recovery and calibration, posterior on SPMO and VOO |
+| `notebooks/01_mmar_univariate.py` | Optional companion | Univariate multifractal model of asset returns (MMAR): simulator, prior predictive check, adapter and networks, pretrained checkpoint or CPU toy fit, recovery and calibration, posterior on SPMO and VOO |
 
 Export for people without marimo: `pixi run marimo export ipynb notebooks/01_mmar_univariate.py -o /tmp/01.ipynb --include-outputs`.
 
