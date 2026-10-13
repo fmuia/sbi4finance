@@ -5,6 +5,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.ticker import FuncFormatter
 
 SURFACE = "#fcfcfb"
 INK = "#0b0b0b"
@@ -140,6 +141,39 @@ def interval_dots(rows, nominal, xlabel, title):
     ax.grid(axis="y", visible=False)
     ax.set_xlabel(xlabel)
     ax.set_title(title, loc="left")
+    return fig
+
+
+def cost_dots(rows, xlabel, title, reference_label):
+    """Cost per route on a log scale: every run as a small dot, the median as a large one, the range as a line.
+
+    rows = [(label, runs, color, note, reference)]; `reference` (or None) is drawn as a hollow diamond, and
+    `note` goes in a column to the right of the plot, level with its row.
+    """
+    style()
+    fig, ax = plt.subplots(figsize=(9.6, 0.62 * len(rows) + 1.3), constrained_layout=True)
+    y = np.arange(len(rows))
+    shown = False
+    for yi, (label, runs, color, note, reference) in zip(y, rows):
+        runs = np.asarray(runs, dtype=float)
+        ax.hlines(yi, runs.min(), runs.max(), color=color, linewidth=1.5)
+        ax.scatter(runs, np.full(len(runs), yi), s=14, color=color, alpha=0.55, linewidth=0, zorder=2)
+        ax.scatter([np.median(runs)], [yi], s=60, color=color, edgecolor=SURFACE, linewidth=1.4, zorder=3)
+        if reference is not None:
+            ax.scatter([reference], [yi], s=46, marker="D", facecolor="none", edgecolor=INK_2, linewidth=1.1, zorder=4,
+                       label=None if shown else reference_label)
+            shown = True
+        ax.text(1.03, yi, note, transform=ax.get_yaxis_transform(), va="center", ha="left", color=INK_2, fontsize=8.5)
+    ax.set_xscale("log")
+    ax.set_xlim(0.5, 1e4)
+    ax.set_ylim(len(rows) - 0.4, -0.6)
+    ax.set_yticks(y, [r[0] for r in rows])
+    ax.grid(axis="y", visible=False)
+    ax.xaxis.set_major_formatter(FuncFormatter(lambda v, _: f"{v:,.0f}"))
+    ax.set_xlabel(xlabel)
+    ax.set_title(title, loc="left", color=INK, fontsize=10.5, fontweight="bold", pad=18)
+    if shown:
+        ax.legend(loc="lower left", bbox_to_anchor=(0.0, 1.0), borderaxespad=0.1, handletextpad=0.3)
     return fig
 
 

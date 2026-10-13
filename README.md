@@ -45,7 +45,7 @@ Export for people without marimo: `pixi run marimo export ipynb notebooks/01_mma
 
 ## SVJ advanced example: the end-to-end pipeline
 
-A proposal for item 5: calibrate a stochastic-volatility model with jumps (SVJ, Bates 1996 in the daily form of Eraker, Johannes and Polson 2003) from the last 1,000 daily returns of one name, and carry the posterior into VaR and ES. `src/sbi4finance/svj/` holds the whole daily process; [`docs/svj-pipeline.md`](docs/svj-pipeline.md) describes the design, how each piece was checked, and the results.
+A proposal for item 5: calibrate a stochastic-volatility model with jumps (SVJ, Bates 1996 in the daily form of Eraker, Johannes and Polson 2003) from the last 1,000 daily returns of one name, and carry the posterior into VaR and ES. `src/sbi4finance/svj/` holds the whole daily process; [`docs/svj-pipeline.md`](docs/svj-pipeline.md) describes the design, how each piece was checked, and the results. [`docs/svj-results-summary.md`](docs/svj-results-summary.md) summarizes the results with the main figures, and [`docs/design/svj-design-document.md`](docs/design/svj-design-document.md) reproduces the design document the branch implements.
 
 ```bash
 pixi run test-svj                  # unit tests: simulator, particle vs grid filter, MCMC diagnostics, risk, checks, audit
@@ -57,6 +57,7 @@ pixi run svj-backtest              # VaR and ES backtests with a known truth
 pixi run svj-backtest-check        # exact one-day check of the backtest itself, and of the filter's law of v_T
 pixi run svj-classical             # approximate ML and Wald intervals against posterior intervals on 40 series
 pixi run svj-rolling               # rolling posteriors and misspecification p-values on VOO and SPMO
+pixi run svj-costs                 # cost per name of each route, from the recorded runs; times the network pass
 ```
 
 ## Cluster (Oscar)
@@ -77,7 +78,7 @@ scripts/              train_univariate.py reproduces checkpoints/univariate
 data/                 pinned return CSVs; notebooks never download
 checkpoints/          pretrained approximators (univariate: 6 MB; svj: 6 MB plus its misspecification reference)
 tests/                unittest suites (pixi run test-svj)
-docs/                 SVJ pipeline notes; docs/results/ holds the validation and evaluation outputs
+docs/                 SVJ pipeline notes and results summary; docs/design/ holds the design document, docs/results/ the outputs
 cluster/              Oscar discovery script and sbatch template
 .claude/skills/       marimo-pair (vendored) and cluster-setup
 ```

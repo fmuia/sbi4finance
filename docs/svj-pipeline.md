@@ -39,7 +39,7 @@ The reference network reproduces the design document's calibration and identific
 | 1 | Training cost on CPU | 64 min on 2 cores, 2.56 million series; validation loss 0.79 over the last ten epochs | 79 min on 4 cores, 2.56 million series; validation loss 0.80 over the last ten epochs | Passed |
 | 2 | Calibration on 1,000 held-out series | SBC 9 of 9 inside the band; 95% intervals cover 94% to 96% | SBC 8 of 9 (mean jump size leaves the band near rank 0.05), 9 of 9 on a replicate set; 95% intervals cover 93% to 96% | Passed |
 | 3 | Agreement with particle MCMC on 4 series | Network alone off by 0.47 to 1.57 sd; within 0.4 sd after importance sampling, at 4 to 7 times less CPU on 3 series | Network alone off by 0.61 to 1.00 sd; after importance sampling 0.14 to 0.40 sd, 3 of 4 inside the criterion at 5 to 9 times less CPU, the fourth flagged by the audit | Mixed |
-| 4 | Cost per name | Network 1.4 CPU-s; audit 18 to 146 CPU-s; particle MCMC 285 to 1,733 CPU-s per 400 effective draws | Network 2.5 CPU-s; audit 31 to 157 CPU-s; particle MCMC 715 to 3,101 CPU-s per 400 effective draws | Measured |
+| 4 | Cost per name | Network 1.4 CPU-s for 1,000 draws, against a criterion of 2,000 draws in 1 s; audit 18 to 146 CPU-s; particle MCMC 285 to 1,733 CPU-s per 400 effective draws | Network about 3 CPU-s (criterion of 2,000 draws in 1 s missed, as in the document); audit 31 to 157 CPU-s; particle MCMC 715 to 3,101 CPU-s per 400 effective draws | Mixed |
 | 5 | Wald against posterior coverage on 40 series | Wald 0.68 and 0.60 for jump frequency and mean jump; posterior 0.88 and 0.98; 15 of 40 fits on a bound | Wald 0.65 and 0.43; posterior 0.98 and 0.98; 20 of 40 fits on a bound | Passed |
 | 6 | VaR and ES backtest with a known truth | Plug-in minus predictive: exceedance +0.05 / +0.12 pp, Z2 −0.05 / −0.08 at 1 / 10 days | Plug-in minus predictive: exceedance +0.06 / +0.09 pp, Z2 −0.05 / −0.07; the predictive matches the true-parameter check | Passed |
 | 7 | Real data | S&P 500 and WTI: sensible rolling posteriors, 9 of 807 windows flagged | VOO and SPMO, 136 weekly windows each: spot vol tracks realized vol (correlation 0.73 and 0.80), no window flagged; VOO's last window flagged by the audit and sent to particle MCMC, which lowers its 1-day VaR from 1.99% to 1.85% | Mixed |
@@ -93,16 +93,20 @@ As in the document, the network is calibrated on average but off for single seri
 
 ### Cost per name
 
-All costs are process CPU seconds on the 4-core container, which count every thread; the network pass runs essentially on one core when the others are busy.
+`pixi run svj-costs` collects the costs of the recorded runs and times the network pass afresh. All costs are process CPU seconds on the 4-core container, which count every thread; the network pass runs essentially on one core when the others are busy.
 
 | Route | CPU-s per name | 2,000 names | Design document |
 |---|---|---|---|
-| Network posterior, 1,000 draws | 2.5 | 1.4 CPU-hours | 1.4 CPU-s |
-| Audit, 3,000 proposals | 31 to 157 (6 runs, median 76) | 42 CPU-hours at the median | 18 to 146 (median 35) |
-| Particle MCMC, per 400 effective draws | 715 to 3,101 (5 runs, median 2,074) | 1,150 CPU-hours at the median | 285 to 1,733 (median 367) |
-| Approximate ML with Hessian, two starts | 647 (median of 40) | 360 CPU-hours | 118 |
+| Network posterior, 1,000 draws | 3.0 (median of 10 runs; medians of 2.5 to 3.1 across four timing runs) | 1.7 CPU-hours | 1.4 CPU-s |
+| Audit, 3,000 proposals | 31 to 157 (6 runs, median 75) | 42 CPU-hours at the median | 18 to 146 (median 35) |
+| Particle MCMC, per 400 effective draws | 715 to 3,101 (5 runs, median 2,074) | 1,152 CPU-hours at the median | 285 to 1,733 (median 367) |
+| Approximate ML with Hessian, two starts | 647 (median of 40) | 359 CPU-hours | 118 |
 
-At the medians, the network is about 800 times cheaper than particle MCMC before the audit and about 25 times cheaper with an audit of every name, against 270 and 10 times in the document: the network costs more CPU here, and particle MCMC more still, because its proposal is poorly scaled (see the agreement study). A whole daily run, with misspecification test, audit and forecast, took 1 min 49 s of wall time for VOO and 2 min 16 s for SPMO.
+![Cost per name](results/svj-costs/cost_per_name.png)
+
+How to read the figure: each row is one route, on a log scale. Small dots are single runs, the large dot is the median and the line the range; the hollow diamond is the design document's median on its 2-core machine.
+
+At the medians, the network is about 700 times cheaper than particle MCMC before the audit and about 26 times cheaper with an audit of every name, against 270 and 10 times in the document: the network costs more CPU here, and particle MCMC more still, because its proposal is poorly scaled (see the agreement study). A whole daily run, with misspecification test, audit and forecast, took 1 min 49 s of wall time for VOO and 2 min 16 s for SPMO.
 
 ### The classical baseline
 
