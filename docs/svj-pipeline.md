@@ -28,11 +28,11 @@ Training happens once, before any of this: `scripts/svj_train.py` simulates ever
 | `risk.py` | Predictive and plug-in VaR / ES, conditional VaR, variance split | Normal closed forms; the mixture example of Appendix H.2; the forward-simulation figure of the document |
 | `pipeline.py`, `data.py`, `plots.py` | One window end to end; return windows from CSV; figures | Run on VOO and SPMO |
 
-`pixi run test-svj` runs the 20 unit tests in `tests/test_svj.py` in about a minute and a half.
+`pixi run test-svj` runs the 21 unit tests in `tests/test_svj.py` in about a minute and a half.
 
 ## Results
 
-The reference network reproduces the design document's calibration and identification, the daily process runs end to end on real windows in about two minutes per name, and the evidence for both claims of the tutorial holds. On 500 held-out series a forecast at a point estimate understates the expected shortfall, while the predictive forecast matches the true-parameter benchmark. The network, checked name by name by the audit, costs about 80 CPU-seconds per name against about 2,000 for particle MCMC. As in the document, the network alone is not trusted for single names: on four test series it is off by 0.6 to 1.0 posterior sd, and the audit repairs three and flags the fourth; it also flags VOO's last window, whose exact posterior lowers the 1-day VaR from 1.99% to 1.85%.
+The reference network reproduces the design document's calibration and identification, the daily process runs end to end on real windows in about two minutes per name, and the evidence for both claims of the tutorial holds. Wald intervals from approximate ML cover the true jump frequency and mean jump in 65% and 43% of 40 series, against 98% for the posterior; on 500 held-out series a forecast at a point estimate understates the expected shortfall, while the predictive forecast matches the true-parameter benchmark. The network, checked name by name by the audit, costs about 80 CPU-seconds per name against about 2,000 for particle MCMC. As in the document, the network alone is not trusted for single names: on four test series it is off by 0.6 to 1.0 posterior sd, and the audit repairs three and flags the fourth; it also flags VOO's last window, whose exact posterior lowers the 1-day VaR from 1.99% to 1.85%.
 
 | # | Check | Design document | This branch | Status |
 |---|---|---|---|---|
@@ -40,7 +40,7 @@ The reference network reproduces the design document's calibration and identific
 | 2 | Calibration on 1,000 held-out series | SBC 9 of 9 inside the band; 95% intervals cover 94% to 96% | SBC 8 of 9 (mean jump size leaves the band near rank 0.05), 9 of 9 on a replicate set; 95% intervals cover 93% to 96% | Passed |
 | 3 | Agreement with particle MCMC on 4 series | Network alone off by 0.47 to 1.57 sd; within 0.4 sd after importance sampling, at 4 to 7 times less CPU on 3 series | Network alone off by 0.61 to 1.00 sd; after importance sampling 0.14 to 0.40 sd, 3 of 4 inside the criterion at 5 to 9 times less CPU, the fourth flagged by the audit | Mixed |
 | 4 | Cost per name | Network 1.4 CPU-s; audit 18 to 146 CPU-s; particle MCMC 285 to 1,733 CPU-s per 400 effective draws | Network 2.5 CPU-s; audit 31 to 157 CPU-s; particle MCMC 715 to 3,101 CPU-s per 400 effective draws | Measured |
-| 5 | Wald against posterior coverage | Wald 0.68 and 0.60 for jump frequency and mean jump; posterior 0.88 and 0.98 | Pending: `pixi run svj-classical` | Pending |
+| 5 | Wald against posterior coverage on 40 series | Wald 0.68 and 0.60 for jump frequency and mean jump; posterior 0.88 and 0.98; 15 of 40 fits on a bound | Wald 0.65 and 0.43; posterior 0.98 and 0.98; 20 of 40 fits on a bound | Passed |
 | 6 | VaR and ES backtest with a known truth | Plug-in minus predictive: exceedance +0.05 / +0.12 pp, Z2 −0.05 / −0.08 at 1 / 10 days | Plug-in minus predictive: exceedance +0.06 / +0.09 pp, Z2 −0.05 / −0.07; the predictive matches the true-parameter check | Passed |
 | 7 | Real data | S&P 500 and WTI: sensible rolling posteriors, 9 of 807 windows flagged | VOO and SPMO, 136 weekly windows each: spot vol tracks realized vol (correlation 0.73 and 0.80), no window flagged; VOO's last window flagged by the audit and sent to particle MCMC, which lowers its 1-day VaR from 1.99% to 1.85% | Mixed |
 
@@ -100,13 +100,28 @@ All costs are process CPU seconds on the 4-core container, which count every thr
 | Network posterior, 1,000 draws | 2.5 | 1.4 CPU-hours | 1.4 CPU-s |
 | Audit, 3,000 proposals | 31 to 157 (6 runs, median 76) | 42 CPU-hours at the median | 18 to 146 (median 35) |
 | Particle MCMC, per 400 effective draws | 715 to 3,101 (5 runs, median 2,074) | 1,150 CPU-hours at the median | 285 to 1,733 (median 367) |
-| Approximate ML with Hessian, two starts | pending | | 118 |
+| Approximate ML with Hessian, two starts | 647 (median of 40) | 360 CPU-hours | 118 |
 
 At the medians, the network is about 800 times cheaper than particle MCMC before the audit and about 25 times cheaper with an audit of every name, against 270 and 10 times in the document: the network costs more CPU here, and particle MCMC more still, because its proposal is poorly scaled (see the agreement study). A whole daily run, with misspecification test, audit and forecast, took 1 min 49 s of wall time for VOO and 2 min 16 s for SPMO.
 
 ### The classical baseline
 
-Pending: `pixi run svj-classical` fits approximate ML with Wald intervals on 40 held-out series and is running.
+`pixi run svj-classical` fits approximate maximum likelihood to 40 held-out series. The grid filter's log likelihood (100 cells, exact gradient by automatic differentiation) is maximized with L-BFGS-B from the prior mean and from the network's posterior median, inside bounds at the prior mean ± 6 prior sd, and 95% Wald intervals come from the Hessian in the unbounded coordinates, which favours them. The network gives 95% posterior intervals on the same series.
+
+| Coverage of 95% intervals, 40 series | Wald | Posterior | Wald, design document | Posterior, design document |
+|---|---|---|---|---|
+| Jump frequency | 0.65 | 0.98 | 0.68 | 0.88 |
+| Mean jump size | 0.43 | 0.98 | 0.60 | 0.98 |
+| Jump size sd | 0.75 | 0.90 | 0.83 | – |
+| Drift, volatility level and dynamics | 0.68 to 0.80 | 0.90 to 0.98 | 0.80 to 0.93 | 0.85 to 0.95 |
+
+![Coverage](results/svj-classical/coverage.png)
+
+How to read the figure: each row is one parameter. Orange is the share of the 40 series whose 95% Wald interval contains the true value, blue the same share for the posterior interval, with 95% Wilson intervals for each share; the vertical line marks the nominal 95%.
+
+The misses have the document's causes. 20 of the 40 fits put a parameter on a bound, the jump-size sd at its floor of 0.2% in 17 of them, and 6 Hessians are not positive definite, so no interval exists; these count as misses. Coverage also hides the failure for the jump-size sd: 15 of its 40 Wald intervals span more than a factor of 100, the document's count. One fit, with two starts and the Hessian, costs 647 CPU-s at the median.
+
+The forecast at the MLE, with today's variance filtered at the estimate, scores worst on these series: 10-day exceedance 1.26% and Z2 −0.20, against 0.98% and +0.01 for the true-parameter check. Forty series cannot separate it from the predictive forecast, though (paired differences +0.12 pp, se 0.08, and Z2 −0.07, se 0.07), as the document found; three series with large or volatile jumps pull every forecast below the check on this small set, so the 500-series backtest is the comparison to quote.
 
 ### VaR and ES backtests with a known truth
 

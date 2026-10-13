@@ -54,6 +54,8 @@ pixi run svj-train                 # reference network, 2.56 million simulated s
 pixi run svj-validate              # SBC, coverage, recovery, contraction; builds the misspecification reference
 pixi run svj-agreement             # network and audit against particle MCMC on four series spanning the prior
 pixi run svj-backtest              # VaR and ES backtests with a known truth
+pixi run svj-backtest-check        # exact one-day check of the backtest itself, and of the filter's law of v_T
+pixi run svj-classical             # approximate ML and Wald intervals against posterior intervals on 40 series
 pixi run svj-rolling               # rolling posteriors and misspecification p-values on VOO and SPMO
 ```
 

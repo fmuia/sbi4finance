@@ -88,11 +88,39 @@ def fit_series(args, out):
         shard_file.write_text(json.dumps(records, indent=1))
 
 
+def scores(forecast_targets, n_paths, losses, seed):
+    """Exceedance of the 99% VaR and Z2 of the 97.5% ES of a forecast, against the true future losses."""
+    out = {}
+    for h, r in risk.horizon_returns(forecast_targets, (1, 10), n_paths, seed).items():
+        var99, _ = risk.var_es(r)
+        var975, es975 = risk.var_es(r, var_level=0.975)
+        loss = losses[h]
+        out[str(h)] = {
+            "exceedance_99": float(np.mean(loss > var99)),
+            "z2_975": float(1 - np.mean(loss * (loss > var975)) / (0.025 * es975)),
+        }
+    return out
+
+
+def paired_references(args, records):
+    """Score the true-parameter check and the predictive forecast on the same series and futures as the MLE plug-in."""
+    posterior = amortized.AmortizedPosterior.load(args.checkpoint)
+    sims = model.simulate(args.n_series, seed=args.seed)
+    draws = posterior.sample(sims["returns"], num_samples=1_000, seed=args.seed + 1)
+    for r in records:
+        i = r["series"]
+        y, truth = sims["returns"][i], sims["targets"][i]
+        losses = {h: -v for h, v in risk.horizon_returns(truth[None], (1, 10), 50_000, seed=i + 1).items()}
+        r["check"] = scores(risk.point_forecast_draws(truth, y, seed=i + 3), 1, losses, i + 4)
+        r["predictive"] = scores(draws[i], 20, losses, i + 5)
+
+
 def summarize(args, out):
     records = sorted(
         (r for f in sorted(out.glob("classical_series_*_of_*.json")) for r in json.loads(f.read_text())),
         key=lambda r: r["series"],
     )
+    paired_references(args, records)
     wald = np.array([r["wald_covers"] for r in records])
     post = np.array([r["posterior_covers"] for r in records])
     bound = np.array([r["on_bound"] for r in records])
@@ -107,26 +135,65 @@ def summarize(args, out):
         "wald_coverage_95": dict(zip(model.QUANTITY_LABELS, wald.mean(0).round(3).tolist())),
         "posterior_coverage_95": dict(zip(model.QUANTITY_LABELS, post.mean(0).round(3).tolist())),
         "jump_sd_wald_intervals_spanning_factor_100": int(np.sum(jsd_width[np.isfinite(jsd_width)] > 100)),
-        "plugin_at_mle": {
+        "forecasts_on_these_series": {
+            method: {
+                h: {
+                    "expected_exceedance_99": float(np.mean([r[method][h]["exceedance_99"] for r in records])),
+                    "z2_975": float(np.mean([r[method][h]["z2_975"] for r in records])),
+                }
+                for h in ("1", "10")
+            }
+            for method in ("check", "predictive", "plugin_at_mle")
+        },
+        "plugin_at_mle_minus_check": {
             h: {
-                "expected_exceedance_99": float(np.mean([r["plugin_at_mle"][h]["exceedance_99"] for r in records])),
-                "z2_975": float(np.mean([r["plugin_at_mle"][h]["z2_975"] for r in records])),
+                key: {
+                    "mean": float(np.mean(d := np.array([r["plugin_at_mle"][h][key] - r["check"][h][key] for r in records]))),
+                    "se": float(d.std(ddof=1) / np.sqrt(len(d))),
+                }
+                for key in ("exceedance_99", "z2_975")
+            }
+            for h in ("1", "10")
+        },
+        "plugin_at_mle_minus_predictive": {
+            h: {
+                key: {
+                    "mean": float(np.mean(d := np.array([r["plugin_at_mle"][h][key] - r["predictive"][h][key] for r in records]))),
+                    "se": float(d.std(ddof=1) / np.sqrt(len(d))),
+                }
+                for key in ("exceedance_99", "z2_975")
+            }
+            for h in ("1", "10")
+        },
+        "predictive_minus_check": {
+            h: {
+                key: {
+                    "mean": float(np.mean(d := np.array([r["predictive"][h][key] - r["check"][h][key] for r in records]))),
+                    "se": float(d.std(ddof=1) / np.sqrt(len(d))),
+                }
+                for key in ("exceedance_99", "z2_975")
             }
             for h in ("1", "10")
         },
     }
     (out / "classical.json").write_text(json.dumps(summary, indent=1))
     n = len(records)
-    binomial = lambda p: 1.96 * np.sqrt(np.clip(p * (1 - p), 1e-12, None) / n)
+    def wilson(p, z=1.96):
+        centre = (p + z**2 / (2 * n)) / (1 + z**2 / n)
+        half = z * np.sqrt(p * (1 - p) / n + z**2 / (4 * n**2)) / (1 + z**2 / n)
+        return centre - half, centre + half
+
     labels = list(model.QUANTITY_LABELS[: model.N_PARAMS])
+    methods = ("Wald (approximate ML)", "posterior (amortized)")
     values = {}
     for j, label in enumerate(labels):
-        for method, cover in (("Wald (approximate ML)", wald[:, j].mean()), ("posterior (amortized)", post[:, j].mean())):
-            values[(label, method)] = (100 * cover, 100 * (cover - binomial(cover)), 100 * (cover + binomial(cover)))
+        for method, cover in zip(methods, (wald[:, j].mean(), post[:, j].mean())):
+            lo, hi = wilson(cover)
+            values[(label, method)] = (100 * cover, 100 * lo, 100 * hi)
     plots.method_panels(
-        [("coverage of 95% intervals (%), with 95% binomial intervals", 95.0, values)],
-        labels, ["Wald (approximate ML)", "posterior (amortized)"],
-        f"Wald against posterior intervals on {n} held-out series", height_per_row=0.55,
+        [("coverage of 95% intervals (%), with 95% Wilson intervals", 95.0, values)],
+        labels, list(methods), f"Wald against posterior intervals on {n} held-out series", height_per_row=0.55,
+        colors={methods[0]: plots.SERIES[1], methods[1]: plots.SERIES[0]},
     ).savefig(out / "coverage.png", dpi=150)
     print(json.dumps(summary, indent=1))
 
