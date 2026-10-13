@@ -55,17 +55,33 @@ def _(mo):
     mo.md(r"""
     # 5. Infer a persistent parameter and today's hidden state together
 
-    **A working pipeline with a provisional posterior.** This milestone connects
-    a Heston simulator, a saved training bank, Bayesian reference inference,
-    a neural posterior and conditional forecasts. The shipped checkpoint failed
-    its frozen conditional test checks. We inspect that failure rather than
-    treating plausible plots or good average coverage as proof of accuracy.
+    **Decision for [#25](https://github.com/fmuia/sbi4finance/issues/25): retain
+    this optional diagnostic lesson; defer further posterior acceptance work.**
+    The pipeline demonstrates joint parameter/state inference and conditional
+    forecasting, but its neural candidates remain **provisional**. The better
+    bounded-time v2 candidate learns from returns while retaining conditional
+    errors; the signed-asinh v3 change did not clear the failed checks.
+
+    The learning objective is to distinguish data updating, marginal calibration,
+    conditional accuracy and numerical precision. This decision does not accept
+    a Heston risk forecast or full SVJ/SVCJ inference. The
+    [#26 curriculum choice, recorded in PR #30](https://github.com/fmuia/sbi4finance/pull/30),
+    selects a 120-minute Q/options course and keeps Heston optional, outside
+    that route. An accepted Heston returns posterior is not a prerequisite.
+    Further experiments need a new teaching need or explicit request. See the
+    [decision and reopening prerequisites](../docs/heston-validation-decision.md).
 
     This notebook runs offline. It reads recorded results, regenerates four
     previously inspected synthetic histories, loads fixed weights and computes
     a small reference for the selected history. It does **not** retrain, submit
     cluster jobs or download market data. The interactive plots are illustrations
-    on an existing regression set, not a new holdout evaluation.
+    on the original root-43021 regression set, not a new holdout evaluation.
+
+    | Evidence identity | How to read it here |
+    |---|---|
+    | Root 43021, `test:0`–`test:3`, original flow-matching checkpoint | Historical failed test and interactive regression illustrations; this test has been used |
+    | Root 43022, spline/v2/v3 validation | Saved development results; the same 16 conditional reference cases are retained, alongside marginal SBC on 256 validation histories |
+    | Root 43022, reserved test | Generated and integrity-checked only; **no test reference or neural test evaluation has run** |
 
     Follow the sequence: **define the observation → distinguish the targets →
     inspect recorded checks → compare a history's joint posterior → continue
@@ -79,7 +95,7 @@ def _(mo):
     mo.md(r"""
     ## Key figures and the questions they answer
 
-    These links show the **bounded-time v2 candidate's development validation**;
+    These saved figures show the **bounded-time v2 candidate's development validation**;
     the interactive regression plots later in this notebook retain the original
     checkpoint. The reserved final test remains unevaluated.
 
@@ -167,7 +183,17 @@ def _(ROOT, hashlib, json, mo):
 
 @app.cell
 def _(ROOT, mo):
-    mo.image(ROOT / "docs/results/heston-diagnostic-review/prior-posterior-comparison.png")
+    mo.vstack([
+        mo.image(ROOT / "docs/results/heston-diagnostic-review/prior-posterior-comparison.png"),
+        mo.md("**Conditional comparison, root 43022 validation:** bars are means ± one SD, "
+              "not credible intervals. Each history has its own posterior; this is not SBC."),
+        mo.image(ROOT / "docs/results/heston-diagnostic-review/sbc-rank-ecdf.png"),
+        mo.md("**Marginal development SBC, root 43022 validation:** aggregate ranks over "
+              "256 histories. Reused validation data do not provide an independent calibration certificate."),
+        mo.image(ROOT / "docs/results/heston-diagnostic-review/conditional-reference-errors.png"),
+        mo.md("**Conditional errors, root 43022 validation:** all 16 preselected reference "
+              "histories remain visible. These mean and predictive-endpoint errors are not SBC."),
+    ])
     return
 
 
@@ -266,9 +292,22 @@ def _(mo):
 
     Our reference instead combines quadrature over $\log\theta$ with a particle
     filter for the hidden state. It uses the same return/state shock correlation
-    and daily transition. This is likelihood-based inference; SBI is useful for
-    amortization, not mathematically required. The reference also has finite-grid
-    and finite-particle error, checked by refinement and independent repeats.
+    and daily transition. For $v=\max(a,0)>0$ and observed return $r$, write
+    $m=(\mu-v/2)\Delta$. The adapted state transition is
+
+    $$a'\mid a,r,\theta\sim\mathcal N\!\left(
+      a+\kappa(\theta-v)\Delta+\xi\rho(r-m),\;
+      \xi^2v\Delta(1-\rho^2)\right),$$
+
+    with the second argument denoting variance. At $a\leq0$, the return is the
+    deterministic atom $r=\mu\Delta$, followed by
+    $a'=a+\kappa\theta\Delta$. A variance floor or independent state transition
+    would change this reference problem. The final state follows the final
+    observed return's update and is the signed restart state for tomorrow.
+
+    This is likelihood-based inference; SBI is useful for amortization, not
+    mathematically required. The reference also has finite-grid and
+    finite-particle error, checked by refinement and independent repeats.
     """)
     return
 
@@ -291,9 +330,9 @@ def _(evaluation, mo, pd):
     ])
     mo.vstack([
         mo.md("""
-        ## Recorded outcome: conditional checks failed
+        ## Historical root-43021 outcome: conditional checks failed
 
-        These numbers come from the committed **frozen test report**, not the
+        These numbers come from the original **root-43021 frozen test report**, not the
         interactive samples below. The checkpoint was selected on validation
         data, frozen, then tested. The same predeclared gates were retained.
         Means and dependence concern four reference histories; the broader
@@ -346,10 +385,11 @@ def _(evaluation, mo, reference_report):
     but do not make the reference exact. Coverage at this sample size has about
     **1.9 percentage points** nominal binomial standard error.
 
-    **Acceptance remains open.** Software checks, numerical refinement and
+    **This candidate remains provisional.** Software checks, numerical refinement and
     neural accuracy are distinct. Revisiting these test histories does not make
-    them a fresh holdout; further model development needs a reserved independent
-    evaluation set.
+    them a fresh holdout. Root 43022 supplies the separate development evidence
+    below and its reserved, unevaluated test; today's decision defers further
+    acceptance work.
     """)
     return
 
@@ -357,7 +397,7 @@ def _(evaluation, mo, reference_report):
 @app.cell
 def _(mo):
     _intro = mo.md("""
-    ## Inspect one previously tested history
+    ## Inspect one previously tested root-43021 history
 
     Switch among all four reference cases. The saved error table remains the
     historical result. The following distributions use newly drawn illustrative
@@ -584,9 +624,10 @@ def _(development, mo, pd):
         mo.md("""
         Moving from 16 to 64 flow integration steps changed conditional means
         by less than 3×10⁻⁷ reference SD in the recorded solver probe. That did
-        not explain the learned-posterior error. A broader validation reference
-        set and a new reserved holdout are appropriate for another inference
-        iteration. No market-data acquisition is needed for this synthetic task.
+        not explain the learned-posterior error. The subsequent root-43022
+        experiments below used a broader validation reference set and reserved
+        a separate holdout. No market-data acquisition is needed for this
+        synthetic task.
         """),
     ])
     return
@@ -629,9 +670,9 @@ def _(ROOT, json, mo, pd):
         and original regression cases. They do not visualize this new candidate
         or replace either report. See the
         [follow-up design and results](../docs/heston-inference-followup.md).
-        M3.3 inference acceptance remains pending; the next investigation can
-        stay within the existing pipeline and the reserved holdout can remain
-        untouched until a candidate passes validation.
+        The next recorded investigation, shown below, kept the existing pipeline
+        and reserved holdout. None of the subsequent validation results cleared
+        acceptance; the current decision defers further experiments.
         """),
     ])
     return
@@ -854,33 +895,56 @@ def _(mo):
 
 
 @app.cell
-def _(mo):
-    mo.md(r"""
+def _(ROOT, json, mo):
+    _precision = json.loads((ROOT / "docs/results/heston-precision/report.json").read_text())
+    _fine = _precision["case0_fine_references"][1]
+    _selected = _fine["neural_comparisons"][0]
+    _mean_range = _precision["aggregate_metric_ranges"]["mean_rmse_in_reference_sd"]
+    _state_errors = [_case["mean_error_in_reference_sd"][1] for _case in _fine["neural_comparisons"]]
+    _state_ses = [_case["neural_mean_mcse_in_reference_sd"][1] for _case in _fine["neural_comparisons"]]
+    _state_repeat_change = _precision["case0_fine_repeat_difference_second_vs_first"]["mean_error_in_reference_sd"][1]
+    _neural_q95 = 100 * _selected["neural_loss_q05_median_q95"][2]
+    _reference_q95 = 100 * _selected["reference_loss_q05_median_q95"][2]
+    mo.md(f"""
     ## Does the remaining error survive a more precise calculation?
 
     We froze the bounded-time v2 checkpoint and increased neural draws
-    from 2,048 to 16,384 on all 16 validation histories, with three prespecified
+    from 2,048 to {_precision['draws_per_case_per_repeat']:,} on all 16 validation histories, with three prespecified
     seeds. We also refined the calm-history reference twice from 48 grid nodes
-    and 4,096 particles to 96 nodes and 16,384 particles. This is a **conditional
+    and 4,096 particles to {_fine['grid_size']} nodes and {_fine['particles']:,} particles. This is a **conditional
     precision diagnostic, not new SBC**. No weights, thresholds or reserved
     test observations changed.
 
-    Across repeats, overall mean RMSE remains 0.171–0.177 reference SD. Against
+    Across repeats, overall mean RMSE remains
+    {_mean_range['minimum']:.3f}–{_mean_range['maximum']:.3f} reference SD. Against
     the second refined reference, the calm history's state mean is still high
-    by 0.412–0.435 reference SD, with neural-mean sampling SE about 0.0096 SD.
-    The two refined reference state means differ by 0.007 SD. Thus the nonzero
-    discrepancy persists; these calculations do not establish statistically
+    by {min(_state_errors):.3f}–{max(_state_errors):.3f} reference SD, with
+    neural-mean sampling SE {min(_state_ses):.4f}–{max(_state_ses):.4f} SD.
+    The two refined reference state means differ by {_state_repeat_change:.3f} SD.
+    These three-seed ranges describe repeat sensitivity, not confidence intervals;
+    neural sampling SE excludes approximation and reference error. The nonzero
+    discrepancy persists, but these calculations do not establish statistically
     certain rejection at exactly the 0.40 engineering boundary. The original
-    failed gate remains recorded without retrospective changes.
+    failed gate remains recorded.
 
     Predictive endpoint errors are more sensitive to finite draws and straddle
     the 0.15 tolerance. For the first prespecified repeat shown below, the
-    ten-step 95% loss quantile is **2.96% versus 2.74% of initial wealth**:
-    a 0.22 percentage-point difference. Predictive SD is 8.4% larger. Those
-    effects describe one synthetic history; they are not a market-risk claim.
+    reference and neural signed-state means are
+    **{_selected['reference']['mean'][1]:.5f} versus {_selected['neural']['mean'][1]:.5f}**
+    in annualized variance units. The ten-step 95th loss percentile is
+    **{_reference_q95:.2f}% versus {_neural_q95:.2f}% of initial wealth**:
+    a {_neural_q95 - _reference_q95:.2f} percentage-point difference.
+    Predictive SD is {100 * _selected['predictive_std_relative_error']:.1f}% larger.
+
+    **Practical lesson:** report both the standardized discrepancy and its
+    original-unit consequence. The displayed loss interval is the central 90%
+    of future outcomes, not a confidence interval for its estimated endpoints.
+    These differences describe one synthetic calm history; their usefulness
+    depends on a stated teaching or decision task. They do not validate 99% VaR
+    or ES, establish market performance, or justify changing an inspected gate.
 
     The checkpoint clearly learns from the observations, but its conditional
-    accuracy still needs work. This is a restricted two-target Heston pilot,
+    acceptance remains deferred. This is a restricted two-target Heston pilot,
     with other parameters fixed, not full-SVJ acceptance. Passing marginal SBC
     alone would not have answered the prior-copy or conditional-error questions.
 
@@ -898,7 +962,12 @@ def _(ROOT, hashlib, json, mo):
     _arrays = _directory / _precision["plot_arrays"]["file"]
     if hashlib.sha256(_arrays.read_bytes()).hexdigest() != _precision["plot_arrays"]["sha256"]:
         raise ValueError("Precision plot arrays must match the recorded diagnostic.")
-    mo.image(_directory / "case-0-comparison.png")
+    mo.vstack([
+        mo.image(_directory / "case-0-comparison.png"),
+        mo.md("**Conditional precision comparison, validation:0; not SBC.** "
+              "State lines mark means; loss bars span the 5th–95th percentiles "
+              "with median dots. These are predictive intervals, not mean ± SD or Monte Carlo confidence intervals."),
+    ])
     return
 
 
@@ -1053,10 +1122,11 @@ def _(explicit_time_validation, heston_inference, mo, pd, state_transform_valida
         check; only if that also passes may the reserved final test be reached,
         with separately checked references and no retuning afterward.
 
-        The next implementation milestone is M4 HKDE regardless of the outcome.
-        Heston inference acceptance is required for its returns teaching route,
-        not for the independently specified options branch. This experiment
-        does not choose the live curriculum or establish full-SVJ inference.
+        This historical experiment does not choose the live curriculum or
+        establish full-SVJ inference. The #25 decision retains the diagnostic
+        lesson and defers acceptance work. The Q/options curriculum selected
+        under #26/#30 keeps Heston optional. Integration #27 can proceed while
+        Heston remains deferred, with its provisional status visible.
 
         [Frozen design and measured outcome](../docs/heston-state-transform.md)
         · [Reversible transform source](../src/sbi4finance/heston_transforms.py)
@@ -1112,21 +1182,37 @@ def _(mo):
     inference responds to each history; conditional reference checks still
     reveal approximation errors after that response is established.
 
-    The expensive pipeline is explicit and separate from notebook execution:
+    **Bounded decision exercise (saved evidence only):** write three sentences
+    stating what the prior comparison establishes, what the case-0 precision
+    comparison leaves unresolved, and why this supports an optional diagnostic
+    lesson while acceptance is deferred. Include one standardized error and one
+    original-unit difference. Name the evidence that would be needed before
+    reopening acceptance work. Do not retrain, drop a difficult validation case
+    or access root 43022's reserved test to answer this exercise.
 
-    ```bash
-    pixi run heston-bank --out /tmp/heston-bank-new
-    pixi run heston-reference --bank /tmp/heston-bank-new \
-      --out /tmp/heston-reference-validation-new
-    pixi run heston-train --bank /tmp/heston-bank-new \
-      --references /tmp/heston-reference-validation-new \
-      --out /tmp/heston-trained-new --epochs 80 --batch-size 256
-    ```
+    **Review hint:** data updating is established on the inspected cases; a
+    conditional state discrepancy persists, with finite-reference and sampling
+    uncertainty near the engineering limit. The saved loss difference puts its
+    size in context without clearing the failed gate. The learning claim is
+    diagnostic reasoning, not an accepted risk forecast.
 
-    Output directories must be new. These commands reproduce the task; they do
-    not reserve a new holdout automatically. Use the guide's frozen-evaluation
-    procedure and a deliberately independent bank identity before another
-    scientific acceptance claim.
+    ### When could acceptance work reopen?
+
+    First, a later curriculum change or explicit request must identify a need
+    for an accepted Heston returns posterior. The selected Q/options course
+    does not require one.
+    Then declare one mechanism and a bounded development protocol: unchanged
+    task and prior, identified bank/checkpoint/reference artifacts, fixed seeds,
+    all 16 validation cases, numerical precision, metrics, budget and a stopping
+    rule. Any new use-based criterion needs a prospective rationale; it cannot
+    retrospectively accept these inspected cases. Preserve all prior failures.
+
+    If the declared validation prerequisites fail, stop and retain provisional
+    status. Only after they pass may the candidate and final-test protocol be
+    frozen, the preselected test references checked, and the root-43022 reserve
+    evaluated once, without subsequent test-driven retuning. This notebook
+    begins none of those steps. The [#25 decision note](../docs/heston-validation-decision.md)
+    records this deferral; #27 owns integration and combined-tree verification.
 
     Continue with the [joint-inference guide](../docs/heston-joint-inference.md),
     [simulator plan](../docs/simulator-plan/README.md),
