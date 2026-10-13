@@ -46,8 +46,12 @@ def fit_series(args, out):
     sims = model.simulate(args.n_series, seed=args.seed)
     draws = posterior.sample(sims["returns"], num_samples=1_000, seed=args.seed + 1)
     truths = sims["targets"][:, : model.N_PARAMS]
-    records = []
+    shard_file = out / f"classical_series_{args.shard}_of_{args.shards}.json"
+    records = json.loads(shard_file.read_text()) if shard_file.exists() else []  # resume an interrupted shard
+    done = {r["series"] for r in records}
     for i in range(args.shard, args.n_series, args.shards):
+        if i in done:
+            continue
         y, truth = sims["returns"][i], truths[i]
         starts = [classical.prior_mean(), np.median(draws[i, :, : model.N_PARAMS], axis=0)]
         fit = classical.fit_mle(y, starts, n_cells=args.n_cells)
@@ -81,7 +85,7 @@ def fit_series(args, out):
         })
         print(f"series {i + 1}/{args.n_series}: {fit.cpu_s:.0f} CPU-s, Hessian PD {fit.hessian_positive_definite}, "
               f"on bound {[model.QUANTITY_LABELS[j] for j in np.flatnonzero(fit.on_bound)]}", flush=True)
-        (out / f"classical_series_{args.shard}_of_{args.shards}.json").write_text(json.dumps(records, indent=1))
+        shard_file.write_text(json.dumps(records, indent=1))
 
 
 def summarize(args, out):

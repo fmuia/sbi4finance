@@ -81,9 +81,7 @@ def fit_mle(returns, starts, n_cells=100, step=1e-4):
             plus = np.asarray(grad(jnp.asarray(np.minimum(theta + e, hi)), y), dtype=float)
             minus = np.asarray(grad(jnp.asarray(np.maximum(theta - e, lo)), y), dtype=float)
             hessian[:, j] = (plus - minus) / (np.minimum(theta + e, hi)[j] - np.maximum(theta - e, lo)[j])
-    hessian = 0.5 * (hessian + hessian.T)
-    positive = bool(np.all(np.isfinite(hessian)) and np.linalg.eigvalsh(hessian).min() > 0)
-    se = np.sqrt(np.diag(np.linalg.inv(hessian))) if positive else np.full(model.N_PARAMS, np.nan)
+    positive, se = wald_standard_errors(hessian)
     span = hi - lo
     return MLEResult(
         coords=theta,
@@ -96,6 +94,25 @@ def fit_mle(returns, starts, n_cells=100, step=1e-4):
         n_evaluations=int(evaluations),
         cpu_s=time.process_time() - start_time,
     )
+
+
+def wald_standard_errors(hessian, rtol=1e-10):
+    """Standard errors from the Hessian of the negative log likelihood, or NaN when no Wald interval exists.
+
+    The Hessian must be positive definite with its smallest eigenvalue above rtol times its largest; a
+    numerically singular Hessian gives no interval, like an indefinite one.
+    """
+    hessian = 0.5 * (np.asarray(hessian) + np.asarray(hessian).T)
+    nan = np.full(len(hessian), np.nan)
+    if not np.all(np.isfinite(hessian)):
+        return False, nan
+    eigenvalues = np.linalg.eigvalsh(hessian)
+    if eigenvalues.min() <= rtol * max(eigenvalues.max(), 0.0) or eigenvalues.max() <= 0:
+        return False, nan
+    try:
+        return True, np.sqrt(np.diag(np.linalg.inv(hessian)))
+    except np.linalg.LinAlgError:
+        return False, nan
 
 
 def prior_mean():

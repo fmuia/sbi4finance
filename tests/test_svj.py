@@ -196,6 +196,17 @@ class TestClassical(unittest.TestCase):
                 self.assertAlmostEqual(float(grad[k]), (plus - minus) / 2e-5, delta=1e-3 * max(1, abs(float(grad[k]))))
 
 
+class TestWaldStandardErrors(unittest.TestCase):
+    def test_positive_definite_singular_and_indefinite(self):
+        positive, se = classical.wald_standard_errors(np.diag([4.0, 1.0]))
+        self.assertTrue(positive)
+        np.testing.assert_allclose(se, [0.5, 1.0])
+        for hessian in (np.array([[1.0, 1.0], [1.0, 1.0]]), np.diag([1.0, 1e-14]), np.diag([1.0, -1.0])):
+            positive, se = classical.wald_standard_errors(hessian)
+            self.assertFalse(positive)
+            self.assertTrue(np.isnan(se).all())
+
+
 class TestAudit(unittest.TestCase):
     def test_audit_runs_and_normalizes(self):
         sims = example_series()
