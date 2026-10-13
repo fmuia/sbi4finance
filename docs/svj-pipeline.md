@@ -32,7 +32,71 @@ Training happens once, before any of this: `scripts/svj_train.py` simulates ever
 
 ## Results
 
-Pending: the reference network (2.56 million series) is training; validation, agreement with particle MCMC, backtests and the real-data runs follow it.
+The reference network reproduces the design document's calibration and identification on held-out simulations, and the daily process runs end to end on real windows in about two minutes per name. As in the document, the network alone is not trusted name by name: on VOO's last window the audit flags it, while SPMO passes.
+
+| # | Check | Design document | This branch | Status |
+|---|---|---|---|---|
+| 1 | Training cost on CPU | 64 min on 2 cores, 2.56 million series; validation loss 0.79 over the last ten epochs | 79 min on 4 cores, 2.56 million series; validation loss 0.80 over the last ten epochs | Passed |
+| 2 | Calibration on 1,000 held-out series | SBC 9 of 9 inside the band; 95% intervals cover 94% to 96% | SBC 8 of 9 (mean jump size leaves the band near rank 0.05), 9 of 9 on a replicate set; 95% intervals cover 93% to 96% | Passed |
+| 3 | Agreement with particle MCMC on 4 series | Network alone off by 0.47 to 1.57 sd; within 0.4 sd after importance sampling | Pending: the agreement study runs after the real-data checks | Pending |
+| 4 | Cost per name | Network 1.4 CPU-s; audit 18 to 146 CPU-s; particle MCMC 285 to 1,733 CPU-s | Network 0.5 s wall for 500 draws, 1.1 s for 1,000; audit 100 and 157 CPU-s on the two real windows; particle MCMC pending | Measured |
+| 5 | Wald against posterior coverage | Wald 0.68 and 0.60 for jump frequency and mean jump; posterior 0.88 and 0.98 | Pending: `pixi run svj-classical` | Pending |
+| 6 | VaR and ES backtest with a known truth | 10-day exceedance: predictive 1.03%, plug-in 1.14%; 10-day Z2: predictive −0.02, plug-in −0.10 | Pending: `pixi run svj-backtest` is running | Pending |
+| 7 | Real data | S&P 500 and WTI: sensible rolling posteriors, 9 of 807 windows flagged | VOO and SPMO, 136 weekly windows each: spot vol tracks realized vol (correlation 0.73 and 0.80), no window flagged; VOO's last window flagged by the audit | Mixed |
+
+### 1. Training
+
+`pixi run svj-train` trained the reference network online in 79 minutes on a 4-core cloud container (process CPU time counts all four cores): 50 epochs of 400 batches of 128 freshly simulated series. The validation loss fell from 1.36 after the first epoch to 0.80 on average over the last ten, against 1.38 and 0.79 in the design document; training and validation losses agree because no series is seen twice. The checkpoint (6.1 MB, no optimizer state) and the training record are in `checkpoints/svj/`.
+
+### 2. Calibration and recovery
+
+`pixi run svj-validate` checks the network on 1,000 held-out series with 500 draws each. Eight of the nine rank ECDFs stay inside the 95% simultaneous band (half-width 0.050 at the centre); the mean jump size leaves it near rank 0.05, the shape of a posterior slightly too high. On 1,000 fresh series with another seed all nine stay inside, the mean jump's largest deviation falls from 0.040 to 0.024, and its posterior median lies above the truth in 49.4% of series (`sbc_replicate.json`): the excursion is the chance alarm the document anticipates, since nine bands at 5% each leave one band in up to 37% of studies.
+
+![SBC](results/svj-validation/sbc.png)
+
+How to read the figure: each panel is one target; the curve is the ECDF of the fractional ranks of the 1,000 true values minus the uniform CDF, and the grey area is the 95% simultaneous band. A curve that leaves the band is drawn red.
+
+Coverage is close to nominal for every target: 50% intervals cover 47% to 52%, 90% intervals 87% to 92% and 95% intervals 93% to 96%. Contraction, the share of prior variance the data remove, matches the design document within 0.04 for every target except the drift:
+
+| Target | Contraction, this branch | Design document |
+|---|---|---|
+| Long-run volatility | 0.94 | 0.94 |
+| CV of variance | 0.82 | 0.82 |
+| Leverage | 0.82 | 0.81 |
+| Spot volatility at the last day | 0.76 | 0.75 |
+| Mean jump size | 0.58 | 0.56 |
+| Half-life | 0.57 | 0.61 |
+| Drift | 0.40 | 0.52 |
+| Jump size sd | 0.39 | 0.42 |
+| Jump frequency | 0.35 | 0.33 |
+
+![Recovery](results/svj-validation/recovery.png)
+
+How to read the figure: each point is one of 300 held-out series at its true value (horizontal) and posterior median (vertical), with its 90% interval; the diagonal is perfect recovery. Long-run and spot volatility hug the diagonal; the jump frequency and jump size sd form flat clouds near the prior medians, because four years of returns say little about them. The misspecification test, run on 500 fresh simulated series, raises a false alarm at the 5% level for 3.2% of them.
+
+### 3. One window, end to end
+
+`pixi run svj-daily` runs the daily process on the last 1,000 trading days of the bundled CSV (9 Sep 2022 to 3 Sep 2026). Both windows look like the training data (misspecification p-values 0.43 and 0.81).
+
+| Window | Audit efficiency | Spot vol, median [90%] | 1-day VaR99 / ES97.5 | 10-day VaR99 / ES97.5 | Plug-in 10-day VaR99 / ES97.5 | Today's variance share |
+|---|---|---|---|---|---|---|
+| VOO | 0.9% (27 of 3,000, 200 particles): flagged | 12.3% [7.5%, 14.9%] | 1.99% / 2.17% | 7.51% / 7.62% | 7.08% / 7.18% | 92% |
+| SPMO | 8.4% (253 of 3,000, 400 particles) | 19.8% [11.9%, 29.8%] | 3.36% / 3.43% | 10.88% / 11.15% | 10.59% / 10.81% | 94% |
+
+On VOO the correction moves the parameters, leverage from −0.87 to −0.77 and jumps per year from 1.4 to 2.5, but barely the risk numbers (10-day VaR 7.49% from the network, 7.51% after the correction), because spot volatility agrees and today's variance carries 92% of the uncertainty of the 1-day conditional VaR. This is the pattern of the document's S&P 500 window. With 27 effective draws the corrected figure is approximate, and the window goes to particle MCMC: its particle-MCMC run is pending.
+
+### 4. Rolling posteriors on real data
+
+`pixi run svj-rolling` applies the network to 136 windows per ticker, one every five trading days, ending between 22 Dec 2023 and 3 Sep 2026; each window costs one network pass.
+
+![VOO rolling](results/svj-rolling/VOO_rolling.png)
+
+How to read the figure: each point on the horizontal axis is one 1,000-day window, labelled by its last day. The top panel shows the posterior median and 90% band of spot volatility against the realized volatility of the last 20 days, the middle panel the jump frequency, and the bottom panel the misspecification p-value.
+
+Spot volatility tracks realized volatility (correlation 0.73 for VOO, 0.80 for SPMO). In April 2025 the realized volatility reaches 49% while the posterior spot volatility peaks near 32%: the model assigns part of those days to jumps, which do not move the variance. The model has no jumps in volatility, and the misspecification test does not flag these windows (p near 0.22). VOO's leverage medians lie between −0.92 and −0.77, partly below the prior's 2.5% quantile of −0.89, as the document found for the S&P 500; SPMO's lie between −0.74 and −0.41. Jump-frequency medians stay between 1.2 and 2.3 a year with wide bands.
+
+
+
 
 ## Deviations from the design document
 

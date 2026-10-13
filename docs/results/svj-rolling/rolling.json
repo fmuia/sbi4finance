@@ -1,0 +1,34 @@
+{
+ "VOO": {
+  "n_windows": 136,
+  "first_end": "2023-12-22",
+  "last_end": "2026-09-03",
+  "flagged_at_5pct": 0,
+  "flagged_ends": [],
+  "corr_spot_vol_vs_realized_20d": 0.7272726228354031,
+  "jumps_per_year_median_range": [
+   1.1963051254026955,
+   2.3161094672108296
+  ],
+  "leverage_median_range": [
+   -0.9151864918251496,
+   -0.7674689136357069
+  ]
+ },
+ "SPMO": {
+  "n_windows": 136,
+  "first_end": "2023-12-22",
+  "last_end": "2026-09-03",
+  "flagged_at_5pct": 0,
+  "flagged_ends": [],
+  "corr_spot_vol_vs_realized_20d": 0.8017810932721458,
+  "jumps_per_year_median_range": [
+   1.3702731978669986,
+   2.2469985717246246
+  ],
+  "leverage_median_range": [
+   -0.7405467703779264,
+   -0.40898495246860767
+  ]
+ }
+}
