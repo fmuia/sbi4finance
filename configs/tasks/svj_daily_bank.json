@@ -1,0 +1,89 @@
+{
+  "task": {
+    "task_id": "svj_daily_parameter_state_v1",
+    "model_id": "daily_bernoulli_gaussian_jump_floored_euler_v1",
+    "measure": "P",
+    "n_observations": 1000,
+    "dt_years": 0.003968253968253968,
+    "substeps": 1,
+    "observation_unit": "decimal_log_return",
+    "parameter_coordinates": [
+      "drift",
+      "log_vol_lr",
+      "log_half_life",
+      "log_cv",
+      "atanh_rho",
+      "log_jumps_per_year",
+      "mean_jump",
+      "log_jump_sd"
+    ],
+    "target_coordinates": [
+      "drift",
+      "log_vol_lr",
+      "log_half_life",
+      "log_cv",
+      "atanh_rho",
+      "log_jumps_per_year",
+      "mean_jump",
+      "log_jump_sd",
+      "log_spot_vol"
+    ],
+    "terminal_state": {
+      "name": "terminal_variance",
+      "unit": "percent_squared_per_trading_day"
+    },
+    "prior": {
+      "drift_loc": 8.0,
+      "drift_sd": 10.0,
+      "vol_lr": 0.25,
+      "vol_lr_sd": 0.4,
+      "half_life": 30.0,
+      "half_life_sd": 0.7,
+      "cv": 0.6,
+      "cv_sd": 0.35,
+      "rho_a": 2.0,
+      "rho_b": 4.0,
+      "jumps_per_year": 2.5,
+      "jumps_per_year_sd": 0.75,
+      "mean_jump_loc": -1.0,
+      "mean_jump_sd": 2.5,
+      "jump_sd": 3.0,
+      "jump_sd_sd": 0.45
+    },
+    "constants": {
+      "days_per_year": 252,
+      "variance_floor": 0.001,
+      "jump_probability_cap": 0.5,
+      "rho_prior_probability_clip": 1e-09
+    },
+    "initialization": {
+      "family": "floored_gamma",
+      "shape": "exp(-2*log_cv)",
+      "scale": "theta*exp(2*log_cv)",
+      "floor": 0.001
+    },
+    "dynamics": {
+      "return_drift": "additive_daily_log_return_intercept",
+      "variance": "previous_variance_euler_with_positive_floor",
+      "jumps": "one_bernoulli_gaussian_opportunity_per_day"
+    },
+    "features": {
+      "channels": [
+        "percent_log_return",
+        "log_squared_percent_return_plus_offset"
+      ],
+      "squared_return_offset": 0.01,
+      "dtype": "float32"
+    },
+    "reference_sampler": {
+      "method": "euler",
+      "steps": 50
+    }
+  },
+  "root_seed": 43021,
+  "splits": {
+    "train": 2048,
+    "validation": 256,
+    "test": 256
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "format": "svj_teaching_v1",
+  "evidence_scope": "S",
+  "scientific_acceptance": false,
+  "description": "One fixed synthetic illustration, not a calibration or acceptance study",
+  "task_fingerprint": "aa84f9dd77b8a516e1c2ecf743517183808645ea6f75c54b1dcbd376de53b86b",
+  "checkpoint": {
+    "files": {
+      "artifact.json": "dfe1859952f512cddf2ff20a7d5b59020a682057dfd43a72786b9c0018f505a5",
+      "model.keras": "02fd80d07babc73f7f454cf43c6390fe9dc0ad77b9f50af042264c378d6b81cf",
+      "training.json": "5e2379ac7a11885065b09355918c4a3a5e3033e08594ce8ef8d76a383f43f850",
+      "misspecification.npz": "d2740b384da70f99555bc6133abd43b57695f159e2e5a7861fb90464ea4155ef"
+    },
+    "task_fingerprint": "aa84f9dd77b8a516e1c2ecf743517183808645ea6f75c54b1dcbd376de53b86b"
+  },
+  "source_sha256": {
+    "inference_workflow.py": "f2e8fa6ccbf4ad1e96491b6ca21d19a44344ce481122e9779b911638c6944513",
+    "training_workflow.py": "5a53bdd43996797133812e7ec578b08f191e7ed20b4f6b7059d28edaf9bb711c",
+    "datasets/local.py": "eb98d430431e748755ad4c915860c90b661debae5cd25c18c14068eff402b244",
+    "datasets/returns.py": "c8e8f559be1b7d2a6b0c19804feccbbe046db7c7f378b661f33dc6ff851d38d0",
+    "svj/model.py": "e7efb64088c591fd308c9133e4e2a5ae6d511c5fc960450c3cadecf6f059914b",
+    "svj/bank.py": "8bd9a389a5724885f72ef56f29061cf53e47b06ef3db603658cd24b05d3c0e8a",
+    "svj/adapters.py": "e776d28c14ed73d06e2d554bd314a80698e5dcf107ec2db4129eec37ef0174aa",
+    "svj/artifacts.py": "52fd6af64ec1a4aa95549b9c685f4c35e5ee8f61fc06f7d64366cba502fb6a35",
+    "svj/amortized.py": "6c09be55cf18d400175c9603969172b9d4e160bfea6ed7dcb5d47c6ee39d17b9",
+    "svj/checks.py": "be94d48f3b91524832a2dc684ac068d02a8af4daf0fb1f48175b70e5b93540f1",
+    "svj/filtering.py": "23fc5ba54c86654b9f4fb2856015a3a81bb7d069b93fb143381eaebff7f7ac51",
+    "svj/audit.py": "a2cd6bc3a23c9dd6a49187806ddc5571f37089e7e2238574bbd86a0890657fd4",
+    "svj/pmmh.py": "8de1b2195a3027b275ab71ea0bbd334f57d6f85e04ba79154473c906cb9d7683",
+    "svj/pipeline.py": "f8e8515b2b6714119704dbd65fa1dde23fcf129ce15fbdc7549c56d8e177e4fe",
+    "svj/risk.py": "2e1b7d954d53d82aae96e5faef9f9ac304acdc6c45079ed07f32246a714619ed",
+    "svj/teaching.py": "67044de6c8b5b2208aae5e7104cea24e257703a09dc0f1e13d0fadb1f767341e"
+  },
+  "files": {
+    "illustration.npz": "9915557eb09b713947dd1ded2f5ba9b87686f556158f49f0f7a89865019c5004",
+    "report.json": "42fbe9b07da55bea85961636dcfcb4ee2bff5bdf3cedd180e0c2b69c1d61e0ba",
+    "window/manifest.json": "9d2d200596bbdd3a3bf1babc34d54bbb5edebe6220c5de1d185a9658cc25586a",
+    "window/observations.csv": "a4d38925d2cd3f7fbcad88bfb5264cce3c6d66ab06d78a52d0adfcc096ba66a6"
+  },
+  "roles": {
+    "returns": "observation_percent_log_return",
+    "variance": "auxiliary_truth_percent_squared_per_trading_day",
+    "jumps": "auxiliary_truth_jump_indicator",
+    "truth": "auxiliary_truth_native_targets",
+    "posterior": "inference_output_equal_weight_joint_rows",
+    "conditional_var": "downstream_output_percent_log_loss"
+  },
+  "seeds": {
+    "simulation": 3,
+    "conditional_workflow": 7301
+  },
+  "run_config": {
+    "n_draws": 128,
+    "run_audit": true,
+    "n_proposals": 256,
+    "audit_threshold": 0.02,
+    "audit_particles": 128,
+    "loglik_sd_threshold": 1.5,
+    "misspecification_threshold": 0.05,
+    "pmmh_on_flag": false,
+    "pmmh_iterations": 12500,
+    "pmmh_burn_in": 2000,
+    "pmmh_max_rhat": 1.01,
+    "pmmh_min_ess": 400.0,
+    "on_flag": null,
+    "horizons": [
+      1,
+      10
+    ],
+    "n_paths": 4,
+    "variance_split": false,
+    "seed": 7301
+  }
+}

@@ -15,7 +15,7 @@ import jax
 import keras
 import numpy as np
 
-from sbi4finance import hkde_inference, option_bank
+from sbi4finance import hkde_inference, option_bank, training_workflow
 from check_hkde_reference import sha
 
 
@@ -55,21 +55,22 @@ def main():
     selection = {key: values[lo:hi] for key, values in splits["validation"].items()}
     train = hkde_inference.training_data(splits["train"], config["task"])
     validation = hkde_inference.training_data(selection, config["task"])
-    args.out.mkdir(parents=True, exist_ok=False)
+    training_workflow.reserve_output_dir(args.out)
     keras.utils.set_random_seed(spec["seed"])
     workflow = hkde_inference.build_workflow(config["task"], args.out)
     ready = time.perf_counter()
-    history = workflow.fit_offline(data=train, validation_data=validation,
-                                   epochs=spec["epochs"], batch_size=spec["batch_size"], verbose=0)
+    history, lifecycle = training_workflow.fit_and_select(
+        workflow, training_data=train, validation_data=validation,
+        epochs=spec["epochs"], batch_size=spec["batch_size"], seed=spec["seed"], verbose=0)
     trained = time.perf_counter()
-    workflow.load_approximator()
     small = hkde_inference.conditioning_data(selection["observations"][:2], config["task"])
-    before = workflow.sample(num_samples=128, conditions=small, seed=spec["seed"] + 11)
-    restored = hkde_inference.build_workflow(config["task"])
-    restored.load_approximator(args.out / "model.keras")
-    after = restored.sample(num_samples=128, conditions=small, seed=spec["seed"] + 11)
-    if not all(np.array_equal(before[name], after[name]) for name in hkde_inference.PARAMETER_NAMES):
-        raise RuntimeError("checkpoint reload changed same-seed joint draws")
+    def restore():
+        restored = hkde_inference.build_workflow(config["task"])
+        restored.load_approximator(args.out / "model.keras")
+        return restored
+    lifecycle["same_seed_reload_exact"] = training_workflow.verify_reload(
+        workflow, restore=restore,
+        sample=lambda candidate: candidate.sample(num_samples=128, conditions=small, seed=spec["seed"] + 11))
     peak = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
     report = {
         "experiment_id": protocol["experiment_id"], "evidence_scope": "S", "measure": "Q",
@@ -77,6 +78,7 @@ def main():
         "bank_manifest_sha256": sha(args.bank / "manifest.json"), "bank_configuration": config,
         "checkpoint_sha256": sha(args.out / "model.keras"), "adapter_id": hkde_inference.ADAPTER_ID,
         "training": spec, "selection_validation_ids": [lo, hi],
+        "lifecycle": lifecycle,
         "training_examples": len(splits["train"]["parameters"]), "selection_examples": len(selection["parameters"]),
         "same_seed_reload_exact": True, "reserved_test_evaluated": False,
         "timing_seconds": {"load_and_setup": ready - started, "training_including_compile": trained - ready,
@@ -85,7 +87,8 @@ def main():
         "history": {key: [float(v) for v in values] for key, values in history.history.items()},
         "versions": {"python": platform.python_version(), "numpy": np.__version__, "bayesflow": bf.__version__,
                      "keras": keras.__version__, "jax": jax.__version__, "devices": [str(d) for d in jax.devices()]},
-        "source_sha256": {"train_hkde.py": sha(__file__), "hkde_inference.py": sha(hkde_inference.__file__)},
+        "source_sha256": {"train_hkde.py": sha(__file__), "hkde_inference.py": sha(hkde_inference.__file__),
+                          "training_workflow.py": sha(training_workflow.__file__)},
         "acceptance": "checkpoint/reload only; conditional, joint, SBC and target-price evaluation required",
     }
     for name, content in (("training.json", report), ("task.json", config["task"]),

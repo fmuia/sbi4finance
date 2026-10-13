@@ -15,9 +15,9 @@ claim about market performance; formal HKDE I4 remains deferred.
 The [combined integration review](docs/stack-integration-review.md) records exact
 source heads, conflict choices and verification for issue #27.
 The [13 October main-merge review](docs/main-merge-review.md) adds the completed
-Heston decision and final verification. Francesco's separate draft
-[SVJ contribution](docs/svj-contribution-compatibility.md) is reviewed for
-compatibility and remains outside this merge.
+Heston decision and final verification. Francesco's [SVJ application](docs/svj-integration-review.md) is incorporated as an optional P/returns companion.
+SVJ and HKDE share an [executable inference and training workflow](docs/shared-inference-workflow.md),
+with task-specific networks, references and downstream quantities.
 The [participant route card](docs/tutorial-participant-route.md) specifies the
 sections, exercises, inputs, assets and modes. The schedule below totals **120
 minutes including exercises**; lead assignments carry forward the original
@@ -199,12 +199,45 @@ for export commands, evidence boundaries and the current inference results.
 | Notebook | Schedule item | What it shows |
 |---|---|---|
 | `notebooks/01_mmar_univariate.py` | Optional companion | Univariate multifractal model of asset returns (MMAR): simulator, prior predictive check, adapter and networks, pretrained checkpoint or CPU toy fit, recovery and calibration, posterior on SPMO and VOO |
+| `notebooks/svj_var_pipeline.py` | Optional P companion | Daily SVJ joint inference, particle audit and conditional log-loss forecasts |
 
 Export for people without marimo: `pixi run marimo export ipynb notebooks/01_mmar_univariate.py -o /tmp/01.ipynb --include-outputs`.
 
 ### Pairing with an agent
 
 `.claude/skills/marimo-pair/` is the [marimo-pair](https://github.com/marimo-team/marimo-pair) skill (Apache-2.0, vendored at commit 6cecaff). With `pixi run edit` running and the notebook open in the browser, an agent runs code in the live kernel and commits cell changes through marimo rather than editing the `.py` file. See the skill for the rules; the short version is that during a live session the kernel, not the file, is the source of truth.
+
+## Shared inference workflow and optional SVJ application
+
+The [shared workflow guide](docs/shared-inference-workflow.md) follows the same
+sequence for SVJ and HKDE: task and simulation checks, separate training and
+validation, selected-checkpoint reload, compatible observation preparation,
+joint inference, diagnostics and correction/fallback, then downstream analysis.
+Both applications execute the same inference runner and training lifecycle.
+Architectures, summary networks, numerical references and risk/pricing targets
+remain specific to the financial question.
+
+Francesco's daily SVJ application infers eight parameter coordinates and terminal
+volatility from 1,000 daily returns. Its particle audit, PMMH and conditional
+forecasting extend the P route; its finite model remains distinct from the
+smaller Heston diagnostic example. The optional lesson defaults to a complete
+cached synthetic case, with no market CSV or network access. Reported VaR/ES is
+**percent log-loss**, and local diagnostic status accompanies forecasts.
+
+```bash
+pixi run review-svj
+pixi run demo-svj                 # bounded synthetic live inference, no PMMH
+pixi run svj-bank --config configs/tasks/svj_daily_smoke.json --out /tmp/svj-bank
+pixi run svj-bank-check --bank /tmp/svj-bank
+pixi run svj-train --bank /tmp/svj-bank --epochs 1 --batch-size 8 --out /tmp/svj-trained
+```
+
+Training and validation require new explicit output directories. The contributed
+network, training record, diagnostic reference and numerical results remain
+preserved; [historical results](docs/svj-results-summary.md) retain mixed SBC and
+conditional-reference evidence. A tiny train/reload or a successful illustration
+is not scientific acceptance. The [integration record](docs/svj-integration-review.md)
+separates software, cluster, teaching and scientific evidence.
 
 ## Cluster (Oscar)
 

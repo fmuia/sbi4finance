@@ -1,0 +1,195 @@
+{
+  "date": "2026-10-13",
+  "evidence_scope": "S: bank engineering only; no posterior acceptance",
+  "source": {
+    "base_revision": "9aac7e098e083c1c59e329ba09270a8c402ef17b",
+    "scope": "explicit integration working-tree source; hashes authoritative",
+    "files": {
+      "src/sbi4finance/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/sbi4finance/gbm.py": "8d491f019326712a4a6e985b491658146fa3da9f57f513a6fed421259d55cb5d",
+      "src/sbi4finance/gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
+      "src/sbi4finance/svj/__init__.py": "6108974db5443ee6f3589226bc50d146f34ea718c6593a82a6c4152d9921f3b0",
+      "src/sbi4finance/svj/model.py": "e7efb64088c591fd308c9133e4e2a5ae6d511c5fc960450c3cadecf6f059914b",
+      "src/sbi4finance/svj/bank.py": "8bd9a389a5724885f72ef56f29061cf53e47b06ef3db603658cd24b05d3c0e8a",
+      "scripts/generate_svj_bank.py": "d6b4a30ae12c34b33864152d42378ef4ca6b8e4d24f914b38b8e306ff6b87e37",
+      "scripts/check_svj_bank.py": "fa61f7995ff5fcc20c601961c32e7bac332963448cc9d9603f0cedd95ca1dcbb",
+      "configs/tasks/svj_daily_smoke.json": "769cc0585d2c5e13baaf52556f2668d2396475ee12a30857e8ea4560196089b3",
+      "cluster/svj_bank.sbatch": "caa18aba0502094864f1c39ac8d00592e7ed51c2be2c7f3bbd4f672027b64d3a"
+    },
+    "archive_sha256": "aefd0a12f2e0bf17676c0261b5e0a07ec7397e898596ff68f04c28ec639f3b2a",
+    "revision_note": "starting variance check restored to original nonnegative-state behavior; bank law unchanged"
+  },
+  "slurm": {
+    "job_id": 7345295,
+    "state": "COMPLETED",
+    "exit_code": "0:0",
+    "elapsed_seconds": 5,
+    "total_cpu_seconds": 2.475,
+    "max_rss_kib": 82692,
+    "cpus": 1,
+    "requested_memory_mib": 2048
+  },
+  "bank": {
+    "train": 16,
+    "validation": 8,
+    "test": 4,
+    "generation_and_write_seconds": 0.12467960827052593,
+    "verified_load_seconds": 0.015673624351620674,
+    "loaded_array_bytes": 251008
+  },
+  "remote_file_sha256": {
+    "manifest.json": "cfbf5b3a224358954af3aba86754543dc2cbc51ab38b76f19e12f6ca684e705a",
+    "test.npz": "f48225e2af588ec84f743bdd5b6cc64af44eb53ee9772d9cba9f4b108aa2c92c",
+    "train.npz": "dd62d17f7bab5575576be46b99e0be513043d2192792d08c3e94043f838b926d",
+    "validation.npz": "4e671ae68c7da8801e314f1323b547c7618b087bb398d6badbd87a38b68b90b2",
+    "verification.json": "84b864b6c774ae41e451536550eee837206e7ecaa8b200e0aebeefe130d5bb4e"
+  },
+  "download_matches_remote_hashes": true,
+  "final_source_matches_submitted_hashes": true,
+  "remote_reproduction": {
+    "passed": true,
+    "mode": "same-environment exact",
+    "tolerance": {
+      "rtol": 0,
+      "atol": 0
+    },
+    "task_fingerprint": "aa84f9dd77b8a516e1c2ecf743517183808645ea6f75c54b1dcbd376de53b86b",
+    "manifest_sha256": "cfbf5b3a224358954af3aba86754543dc2cbc51ab38b76f19e12f6ca684e705a",
+    "source_sha256": {
+      "gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
+      "svj/bank.py": "8bd9a389a5724885f72ef56f29061cf53e47b06ef3db603658cd24b05d3c0e8a",
+      "svj/model.py": "e7efb64088c591fd308c9133e4e2a5ae6d511c5fc960450c3cadecf6f059914b"
+    },
+    "generating_versions": {
+      "numpy": "2.5.3",
+      "python": "3.12.8",
+      "scipy": "1.18.1"
+    },
+    "checking_versions": {
+      "numpy": "2.5.3",
+      "scipy": "1.18.1",
+      "python": "3.12.8"
+    },
+    "platform": "Linux-5.14.0-570.62.1.0.1.el9_6.x86_64-x86_64-with-glibc2.34",
+    "machine": "x86_64",
+    "slurm_job_id": "7345295",
+    "selected_examples": {
+      "test": {
+        "regenerated_ids": [
+          "test:3",
+          "test:2",
+          "test:0"
+        ],
+        "exact_array_match": true,
+        "max_absolute_difference_by_array": {
+          "observations": 0.0,
+          "parameters": 0.0,
+          "terminal_state": 0.0,
+          "dt_years": 0.0
+        }
+      },
+      "train": {
+        "regenerated_ids": [
+          "train:15",
+          "train:8",
+          "train:0"
+        ],
+        "exact_array_match": true,
+        "max_absolute_difference_by_array": {
+          "observations": 0.0,
+          "parameters": 0.0,
+          "terminal_state": 0.0,
+          "dt_years": 0.0
+        }
+      },
+      "validation": {
+        "regenerated_ids": [
+          "validation:7",
+          "validation:4",
+          "validation:0"
+        ],
+        "exact_array_match": true,
+        "max_absolute_difference_by_array": {
+          "observations": 0.0,
+          "parameters": 0.0,
+          "terminal_state": 0.0,
+          "dt_years": 0.0
+        }
+      }
+    },
+    "evidence_scope": "S: bank integrity and selected example reproduction only"
+  },
+  "portable_reproduction": {
+    "passed": true,
+    "mode": "portable",
+    "tolerance": {
+      "rtol": 1e-10,
+      "atol": 1e-12
+    },
+    "task_fingerprint": "aa84f9dd77b8a516e1c2ecf743517183808645ea6f75c54b1dcbd376de53b86b",
+    "manifest_sha256": "cfbf5b3a224358954af3aba86754543dc2cbc51ab38b76f19e12f6ca684e705a",
+    "source_sha256": {
+      "gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
+      "svj/bank.py": "8bd9a389a5724885f72ef56f29061cf53e47b06ef3db603658cd24b05d3c0e8a",
+      "svj/model.py": "e7efb64088c591fd308c9133e4e2a5ae6d511c5fc960450c3cadecf6f059914b"
+    },
+    "generating_versions": {
+      "numpy": "2.5.3",
+      "python": "3.12.8",
+      "scipy": "1.18.1"
+    },
+    "checking_versions": {
+      "numpy": "2.5.3",
+      "scipy": "1.18.1",
+      "python": "3.12.15"
+    },
+    "platform": "macOS-26.4.1-arm64-arm-64bit",
+    "machine": "arm64",
+    "slurm_job_id": null,
+    "selected_examples": {
+      "test": {
+        "regenerated_ids": [
+          "test:3",
+          "test:2",
+          "test:0"
+        ],
+        "exact_array_match": false,
+        "max_absolute_difference_by_array": {
+          "observations": 0.0,
+          "parameters": 5.551115123125783e-17,
+          "terminal_state": 0.0,
+          "dt_years": 0.0
+        }
+      },
+      "train": {
+        "regenerated_ids": [
+          "train:15",
+          "train:8",
+          "train:0"
+        ],
+        "exact_array_match": false,
+        "max_absolute_difference_by_array": {
+          "observations": 2.7755575615628914e-17,
+          "parameters": 2.220446049250313e-16,
+          "terminal_state": 8.881784197001252e-16,
+          "dt_years": 0.0
+        }
+      },
+      "validation": {
+        "regenerated_ids": [
+          "validation:7",
+          "validation:4",
+          "validation:0"
+        ],
+        "exact_array_match": false,
+        "max_absolute_difference_by_array": {
+          "observations": 1.3877787807814457e-17,
+          "parameters": 4.440892098500626e-16,
+          "terminal_state": 1.1102230246251565e-15,
+          "dt_years": 0.0
+        }
+      }
+    },
+    "evidence_scope": "S: bank integrity and selected example reproduction only"
+  }
+}
