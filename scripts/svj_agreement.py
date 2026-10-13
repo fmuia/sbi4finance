@@ -1,6 +1,6 @@
 """Agreement of the amortized posterior with particle MCMC on four held-out series (feasibility result 3).
 
-    pixi run svj-agreement                         # 12,500 iterations x 4 chains per series; long
+    pixi run svj-agreement --out /tmp/svj-agreement-new  # 12,500 iterations x 4 chains per series; long
     pixi run svj-agreement --n-iter 3000 --burn-in 500 --out /tmp/svj-agreement   # quick look
 
 The four series span the prior: rare or frequent jumps (15% and 85% prior quantiles of the jump frequency),
@@ -17,6 +17,7 @@ from pathlib import Path
 import numpy as np
 from scipy.stats import norm
 
+from sbi4finance.training_workflow import reserve_output_dir
 from sbi4finance.svj import amortized, audit, model, plots, pmmh
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -35,10 +36,9 @@ def main() -> None:
     parser.add_argument("--n-iter", type=int, default=12_500)
     parser.add_argument("--burn-in", type=int, default=2_000)
     parser.add_argument("--seed", type=int, default=31)
-    parser.add_argument("--out", default=str(ROOT / "docs" / "results" / "svj-agreement"))
+    parser.add_argument("--out", required=True, help="new output directory; historical studies are never overwritten")
     args = parser.parse_args()
-    out = Path(args.out)
-    out.mkdir(parents=True, exist_ok=True)
+    out = reserve_output_dir(args.out)
 
     posterior = amortized.AmortizedPosterior.load(args.checkpoint)
     rng = np.random.default_rng(args.seed)
@@ -110,7 +110,8 @@ def main() -> None:
         print(f"{name}: PMMH {chains.n_particles} particles, R-hat {chains.rhat.max():.3f}, ESS {chains.ess_bulk.min():.0f}, "
               f"{chains.seconds:.0f} CPU-s | network max diff {np.abs(diff_net).max():.2f} sd ({record['network']['worst_target']}) | "
               f"IS eff {checked.efficiency:.1%}, max diff {np.abs(diff_is).max():.2f} sd, {checked.seconds:.0f} CPU-s")
-        (out / "agreement.json").write_text(json.dumps({"n_iter": args.n_iter, "burn_in": args.burn_in, "series": results}, indent=1))
+        (out / "agreement.json").write_text(json.dumps({"n_iter": args.n_iter, "burn_in": args.burn_in,
+            "seed": args.seed, "scientific_acceptance": False, "series": results}, indent=1))
 
     np.savez_compressed(
         out / "agreement_draws.npz",

@@ -1,7 +1,8 @@
 """VaR and ES backtests with a known truth on held-out simulated series (feasibility result 6).
 
-    pixi run svj-backtest                       # 500 series
+    pixi run svj-backtest --out /tmp/svj-backtest-new  # 500 series
     pixi run svj-backtest --n-series 100 --out /tmp/svj-backtest
+    pixi run svj-backtest --from-saved docs/results/svj-backtest --out /tmp/svj-backtest-replay
 
 On a simulated series the true parameters and today's true variance are known, so the probability that
 the next H-day loss exceeds a reported 99% VaR is computed from 50,000 simulated futures rather than
@@ -11,6 +12,9 @@ counted on one path. The expected Acerbi-Szekely Z2 score of the 97.5% ES uses t
 - predictive: 20 forward paths from each of 1,000 network posterior draws;
 - plug-in: parameters fixed at the posterior median, today's variance from a 2,000-particle filter there;
 - check: the true parameters with a filtered state, which tests the test itself.
+
+VaR/ES retain the historical negative cumulative percent-log-return definition.
+Saved replay reads its source and writes only a separate new output directory.
 """
 
 import argparse
@@ -21,7 +25,8 @@ from pathlib import Path
 import numpy as np
 from scipy.stats import binom
 
-from sbi4finance.svj import amortized, model, plots, risk
+from sbi4finance.training_workflow import reserve_output_dir
+from sbi4finance.svj import amortized, artifacts, model, plots, risk
 
 ROOT = Path(__file__).resolve().parents[1]
 HORIZONS = (1, 10)
@@ -46,14 +51,19 @@ def main() -> None:
     parser.add_argument("--n-series", type=int, default=500)
     parser.add_argument("--n-futures", type=int, default=50_000)
     parser.add_argument("--seed", type=int, default=4242)
-    parser.add_argument("--out", default=str(ROOT / "docs" / "results" / "svj-backtest"))
-    parser.add_argument("--from-saved", action="store_true", help="redo the summary and figures from backtest_series.npz")
+    parser.add_argument("--out", required=True, help="new output directory; existing studies are never overwritten")
+    parser.add_argument("--from-saved", type=Path, help="read-only input NPZ or directory for summary/figure replay")
     args = parser.parse_args()
-    out = Path(args.out)
-    out.mkdir(parents=True, exist_ok=True)
+    out = reserve_output_dir(args.out)
     if args.from_saved:
-        with np.load(out / "backtest_series.npz") as saved:
-            write_report(saved["p_exc"], saved["z2"], saved["es_low"], args.n_futures, out)
+        source = args.from_saved / "backtest_series.npz" if args.from_saved.is_dir() else args.from_saved
+        with np.load(source, allow_pickle=False) as saved:
+            if "risk_definition" in saved and str(saved["risk_definition"]) != risk.RISK_DEFINITION:
+                raise ValueError("saved backtest uses a different risk definition")
+            n_futures = int(saved["n_futures"]) if "n_futures" in saved else args.n_futures
+            write_report(saved["p_exc"], saved["z2"], saved["es_low"], n_futures, out,
+                         provenance={"source": str(source), "source_sha256": artifacts.sha256(source),
+                                     "mode": "saved_replay", "n_futures_from_archive": "n_futures" in saved})
         return
 
     posterior = amortized.AmortizedPosterior.load(args.checkpoint)
@@ -85,11 +95,12 @@ def main() -> None:
             print(f"{i + 1} series, {time.time() - start:.0f} s")
 
     np.savez_compressed(out / "backtest_series.npz", p_exc=p_exc, z2=z2, es_low=es_low,
-                        methods=np.array(METHODS), horizons=np.array(HORIZONS))
-    write_report(p_exc, z2, es_low, args.n_futures, out)
+                        methods=np.array(METHODS), horizons=np.array(HORIZONS), n_futures=args.n_futures,
+                        risk_definition=risk.RISK_DEFINITION, risk_unit=risk.RISK_UNIT, seed=args.seed)
+    write_report(p_exc, z2, es_low, args.n_futures, out, provenance={"mode": "new_simulation", "seed": args.seed})
 
 
-def write_report(p_exc, z2, es_low, n_futures, out):
+def write_report(p_exc, z2, es_low, n_futures, out, *, provenance=None):
     """Summary JSON, figures and a printed table from per-series exceedance, Z2 and ES-shortfall arrays."""
     n_series = len(p_exc)
 
@@ -97,7 +108,9 @@ def write_report(p_exc, z2, es_low, n_futures, out):
         se = x.std(ddof=1) / np.sqrt(len(x))
         return float(x.mean()), (float(x.mean() - 1.96 * se), float(x.mean() + 1.96 * se))
 
-    summary = {"n_series": n_series, "n_futures": n_futures, "horizons": {}}
+    summary = {"n_series": n_series, "n_futures": n_futures, "horizons": {},
+               "risk_definition": risk.RISK_DEFINITION, "risk_unit": risk.RISK_UNIT,
+               "scientific_acceptance": False, "provenance": provenance}
     levels_exc, levels_z2, paired_exc, paired_z2 = {}, {}, {}, {}
     for k, h in enumerate(HORIZONS):
         row = f"{h}-day"
@@ -136,7 +149,7 @@ def write_report(p_exc, z2, es_low, n_futures, out):
     rows = [f"{h}-day" for h in HORIZONS]
     plots.method_panels(
         [("expected exceedance of the 99% VaR (%)", 1.0, levels_exc), ("expected Z2 of the 97.5% ES", 0.0, levels_z2)],
-        rows, list(METHODS), f"VaR and ES backtest on {n_series} held-out series: levels, 95% intervals", colors=COLORS,
+        rows, list(METHODS), f"Percent-log-loss VaR/ES on {n_series} held-out series: levels, 95% intervals", colors=COLORS,
     ).savefig(out / "backtest_levels.png", dpi=150)
     plots.method_panels(
         [("99% VaR exceedance minus the check (pp)", 0.0, paired_exc), ("97.5% ES Z2 minus the check", 0.0, paired_z2)],

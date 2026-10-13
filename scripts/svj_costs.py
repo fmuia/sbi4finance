@@ -1,6 +1,6 @@
 """Cost per name of each route, from the recorded runs (feasibility result 4).
 
-    pixi run svj-costs
+    pixi run svj-costs --out /tmp/svj-costs-new
 
 The network pass is timed afresh: 1,000 draws for one simulated series, after one warm-up call that compiles
 the sampler. The other routes come from the runs already recorded in docs/results: the audit from the four
@@ -16,6 +16,7 @@ from pathlib import Path
 
 import numpy as np
 
+from sbi4finance.training_workflow import reserve_output_dir
 from sbi4finance.svj import amortized, model, plots
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -63,10 +64,9 @@ def main() -> None:
     parser.add_argument("--checkpoint", default=str(ROOT / "checkpoints" / "svj"))
     parser.add_argument("--repeats", type=int, default=10)
     parser.add_argument("--seed", type=int, default=11)
-    parser.add_argument("--out", default=str(RESULTS / "svj-costs"))
+    parser.add_argument("--out", required=True, help="new output directory; historical source results are read-only")
     args = parser.parse_args()
-    out = Path(args.out)
-    out.mkdir(parents=True, exist_ok=True)
+    out = reserve_output_dir(args.out)
 
     runs = {"network": network_runs(args.checkpoint, args.repeats, args.seed), **recorded_runs()}
     summary = {
@@ -84,6 +84,8 @@ def main() -> None:
         "pmmh_over_network": medians["pmmh"] / medians["network"],
         "pmmh_over_network_plus_audit": medians["pmmh"] / (medians["network"] + medians["audit"]),
     }
+    summary["provenance"] = {"historical_source_directory": str(RESULTS),
+        "freshly_measured": "network only", "seed": args.seed, "scientific_acceptance": False}
     (out / "costs.json").write_text(json.dumps(summary, indent=1))
 
     labels = {

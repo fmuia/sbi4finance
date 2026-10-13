@@ -1,7 +1,7 @@
 """Rolling amortized posteriors on real returns, with the misspecification test (feasibility result 7).
 
-    pixi run svj-rolling                           # VOO and SPMO from the bundled CSV, one window per week
-    pixi run svj-rolling --tickers VOO --step 1    # every trading day
+    pixi run svj-rolling --out /tmp/svj-rolling-new  # VOO and SPMO, one window per week
+    pixi run svj-rolling --tickers VOO --step 1 --out /tmp/svj-rolling-daily  # every trading day
 
 Every window holds the last 1,000 daily log returns; the network gives the joint posterior in about a
 second per window, and the misspecification test compares its learned summaries with simulated ones.
@@ -15,6 +15,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+from sbi4finance.training_workflow import reserve_output_dir
 from sbi4finance.svj import amortized, checks, data, model, plots
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -27,13 +28,13 @@ def main() -> None:
     parser.add_argument("--kind", choices=("simple", "log"), default="simple")
     parser.add_argument("--step", type=int, default=5, help="trading days between window ends")
     parser.add_argument("--checkpoint", default=str(ROOT / "checkpoints" / "svj"))
-    parser.add_argument("--out", default=str(ROOT / "docs" / "results" / "svj-rolling"))
+    parser.add_argument("--out", required=True, help="new output directory; historical studies are never overwritten")
     args = parser.parse_args()
-    out = Path(args.out)
-    out.mkdir(parents=True, exist_ok=True)
+    out = reserve_output_dir(args.out)
 
     posterior = amortized.AmortizedPosterior.load(args.checkpoint)
     test = checks.MisspecificationTest.load(Path(args.checkpoint) / "misspecification.npz")
+    test.assert_compatible(posterior)
     summary = {}
     for ticker in args.tickers:
         returns = data.load_returns(args.csv, ticker, args.kind)
@@ -70,6 +71,8 @@ def main() -> None:
             f"{ticker}: amortized posterior on rolling 1,000-day windows (one every {args.step} trading days)",
         ).savefig(out / f"{ticker}_rolling.png", dpi=150)
         summary[ticker] = {
+            "scientific_acceptance": False,
+            "inference_status": "network_only; summary-space screening is not a conditional posterior audit",
             "n_windows": len(ends),
             "first_end": str(ends[0].date()),
             "last_end": str(ends[-1].date()),

@@ -1,0 +1,145 @@
+{
+  "adapter_id": "svj_decimal_log_returns_to_native_features_v1",
+  "features": {
+    "channels": [
+      "percent_log_return",
+      "log_squared_percent_return_plus_offset"
+    ],
+    "dtype": "float32",
+    "squared_return_offset": 0.01
+  },
+  "files": {
+    "misspecification.npz": "d2740b384da70f99555bc6133abd43b57695f159e2e5a7861fb90464ea4155ef",
+    "model.keras": "02fd80d07babc73f7f454cf43c6390fe9dc0ad77b9f50af042264c378d6b81cf",
+    "training.json": "5e2379ac7a11885065b09355918c4a3a5e3033e08594ce8ef8d76a383f43f850"
+  },
+  "format": "svj_checkpoint_v1",
+  "provenance": {
+    "evidence": "initial SBC 8/9; replicate 9/9; conditional discrepancies and flagged importance cases retained; no new scientific acceptance",
+    "historical_unknowns": [
+      "exact Python/platform version",
+      "full original environment lock hash",
+      "per-example training identities",
+      "historical source/artifact manifest",
+      "misspecification reference generation seed not recorded in original artifact"
+    ],
+    "reference_sampler": "unchanged compiled 50-step Euler sampler",
+    "source": "Francesco SVJ contribution; original model.keras, training.json and misspecification.npz preserved",
+    "source_revision": "2e3165f7b8a25bfaaf2639fa6b759e20d1a7516b",
+    "training_mode": "online",
+    "training_selection": "final epoch explicitly saved by original training code"
+  },
+  "runtime_versions": {
+    "bayesflow": "2.0.14",
+    "jax": "0.11.1",
+    "keras": "3.15.1"
+  },
+  "sampler": {
+    "method": "euler",
+    "noise": "numpy_default_rng_float32_normal",
+    "steps": 50
+  },
+  "scientific_acceptance": false,
+  "standardization": {
+    "conditioning": "unstandardized_native_features",
+    "fit": "training_only",
+    "inference": "frozen_saved_statistics",
+    "state": "embedded_in_model.keras",
+    "variables": "inference_variables"
+  },
+  "status": "provisional; artifact compatibility is not scientific acceptance",
+  "target_coordinates": [
+    "drift",
+    "log_vol_lr",
+    "log_half_life",
+    "log_cv",
+    "atanh_rho",
+    "log_jumps_per_year",
+    "mean_jump",
+    "log_jump_sd",
+    "log_spot_vol"
+  ],
+  "task": {
+    "constants": {
+      "days_per_year": 252,
+      "jump_probability_cap": 0.5,
+      "rho_prior_probability_clip": 1e-09,
+      "variance_floor": 0.001
+    },
+    "dt_years": 0.003968253968253968,
+    "dynamics": {
+      "jumps": "one_bernoulli_gaussian_opportunity_per_day",
+      "return_drift": "additive_daily_log_return_intercept",
+      "variance": "previous_variance_euler_with_positive_floor"
+    },
+    "features": {
+      "channels": [
+        "percent_log_return",
+        "log_squared_percent_return_plus_offset"
+      ],
+      "dtype": "float32",
+      "squared_return_offset": 0.01
+    },
+    "initialization": {
+      "family": "floored_gamma",
+      "floor": 0.001,
+      "scale": "theta*exp(2*log_cv)",
+      "shape": "exp(-2*log_cv)"
+    },
+    "measure": "P",
+    "model_id": "daily_bernoulli_gaussian_jump_floored_euler_v1",
+    "n_observations": 1000,
+    "observation_unit": "decimal_log_return",
+    "parameter_coordinates": [
+      "drift",
+      "log_vol_lr",
+      "log_half_life",
+      "log_cv",
+      "atanh_rho",
+      "log_jumps_per_year",
+      "mean_jump",
+      "log_jump_sd"
+    ],
+    "prior": {
+      "cv": 0.6,
+      "cv_sd": 0.35,
+      "drift_loc": 8.0,
+      "drift_sd": 10.0,
+      "half_life": 30.0,
+      "half_life_sd": 0.7,
+      "jump_sd": 3.0,
+      "jump_sd_sd": 0.45,
+      "jumps_per_year": 2.5,
+      "jumps_per_year_sd": 0.75,
+      "mean_jump_loc": -1.0,
+      "mean_jump_sd": 2.5,
+      "rho_a": 2.0,
+      "rho_b": 4.0,
+      "vol_lr": 0.25,
+      "vol_lr_sd": 0.4
+    },
+    "reference_sampler": {
+      "method": "euler",
+      "steps": 50
+    },
+    "substeps": 1,
+    "target_coordinates": [
+      "drift",
+      "log_vol_lr",
+      "log_half_life",
+      "log_cv",
+      "atanh_rho",
+      "log_jumps_per_year",
+      "mean_jump",
+      "log_jump_sd",
+      "log_spot_vol"
+    ],
+    "task_id": "svj_daily_parameter_state_v1",
+    "terminal_state": {
+      "name": "terminal_variance",
+      "unit": "percent_squared_per_trading_day"
+    }
+  },
+  "task_sha256": "aa84f9dd77b8a516e1c2ecf743517183808645ea6f75c54b1dcbd376de53b86b",
+  "terminal_target": "log(sqrt(252 * terminal_variance) / 100)"
+}

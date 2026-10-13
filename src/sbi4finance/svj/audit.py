@@ -35,14 +35,21 @@ class AuditResult:
     seconds: float
 
     def flagged(self, threshold=DEFAULT_THRESHOLD):
-        return self.efficiency < threshold
+        return (not np.isfinite(self.efficiency) or not np.isfinite(self.loglik_sd)
+                or self.efficiency < threshold)
 
     def weighted_mean(self):
         return np.exp(self.log_weights) @ self.proposals
 
 
 def fit_proposal(draws, df=5, scale_inflation=1.2):
-    coords = np.asarray(draws)[:, : model.N_PARAMS]
+    draws = np.asarray(draws, dtype=float)
+    if (draws.ndim != 2 or draws.shape[1] != model.N_TARGETS
+            or len(draws) < 2 or not np.isfinite(draws).all()):
+        raise ValueError("audit needs at least two finite joint parameter/state draws")
+    if df <= 0 or scale_inflation <= 0:
+        raise ValueError("proposal degrees of freedom and scale must be positive")
+    coords = draws[:, : model.N_PARAMS]
     shape = np.cov(coords.T) * scale_inflation**2 + 1e-9 * np.eye(model.N_PARAMS)
     return multivariate_t(loc=coords.mean(axis=0), shape=shape, df=df)
 
@@ -59,6 +66,12 @@ def audit(
     n_out=1_000,
 ):
     """Importance-sampling audit of amortized draws (n, 9) for one window of returns (T,)."""
+    if (type(n_proposals) is not int or n_proposals < 2
+            or type(n_out) is not int or n_out < 1):
+        raise ValueError("audit requires at least two proposals and one output draw")
+    returns = np.asarray(returns, dtype=float)
+    if returns.ndim != 1 or not len(returns) or not np.isfinite(returns).all():
+        raise ValueError("audit returns must be a nonempty finite history")
     start = time.process_time()
     rng = np.random.default_rng(seed)
     proposal = fit_proposal(draws, df, scale_inflation)
@@ -69,7 +82,10 @@ def audit(
     coords = proposal.rvs(size=n_proposals, random_state=rng)
     loglik, v_t = loglik_batch(model.model_params(coords), returns, seed + 1, n_particles)
     log_w = model.log_prior(coords) + loglik - proposal.logpdf(coords)
-    log_w = np.where(np.isfinite(log_w), log_w, -np.inf)
+    if np.isnan(log_w).any() or np.isposinf(log_w).any() or not np.isfinite(log_w).any():
+        raise ValueError("importance audit failed: invalid or all-zero proposal weights")
+    if not np.isfinite(v_t).all() or np.any(v_t < model.V_MIN):
+        raise ValueError("importance audit failed: invalid terminal variance")
     log_w -= logsumexp(log_w)
     w = np.exp(log_w)
     ess = 1.0 / np.sum(w**2)

@@ -18,7 +18,6 @@ sigma_T = sqrt(252 v_T) / 100, so one network pass returns what a forecast needs
 from dataclasses import dataclass
 
 import numpy as np
-import pandas as pd
 from scipy.special import betaln, log_expit
 from scipy.stats import beta
 
@@ -94,6 +93,8 @@ PRIOR = Prior()
 
 def prior_table(prior=PRIOR):
     """The prior in the coordinates of the design document, with 95% ranges."""
+    import pandas as pd
+
     z = 1.959964
     rows = [
         ("Drift", "252 mu, % per year", f"Normal({prior.drift_loc:g}, {prior.drift_sd:g}²)",
@@ -198,22 +199,69 @@ def run_daily_model(params, v_start, n_days, rng):
 
     Returns the returns (n, n_days), the variance path v_1..v_n_days (n, n_days) and the jump indicators.
     """
-    mu, theta, kappa, sigma_v, rho, lam, mu_j, sigma_j = (np.asarray(params)[:, i] for i in range(N_PARAMS))
     n = len(v_start)
     eps1 = rng.standard_normal((n_days, n))
     eps2 = rng.standard_normal((n_days, n))
-    jumps = rng.random((n_days, n)) < lam
-    sizes = mu_j + sigma_j * rng.standard_normal((n_days, n))
+    uniforms = rng.random((n_days, n))
+    jump_normals = rng.standard_normal((n_days, n))
+    result = daily_model_from_innovations(
+        params, v_start, eps1, eps2, uniforms, jump_normals, retain_auxiliary=True
+    )
+    return result["returns"], result["variance"], result["jumps"]
+
+
+def daily_model_from_innovations(
+    params, v_start, eps1, eps2, jump_uniforms, jump_normals, *, retain_auxiliary=False
+):
+    """Advance the same daily law with explicit random inputs [time,batch].
+
+    The saved-bank path assigns independent random streams to each example,
+    then advances a whole batch together. By default only returns and the
+    terminal variance are retained, avoiding full latent-path storage. The
+    legacy generator above keeps its original draw order and auxiliary output.
+    No parameter or state here is an observed neural conditioning input.
+    """
+    params = np.asarray(params, dtype=np.float64)
+    v_start = np.asarray(v_start, dtype=np.float64)
+    inputs = [np.asarray(a, dtype=np.float64) for a in
+              (eps1, eps2, jump_uniforms, jump_normals)]
+    if (params.ndim != 2 or params.shape[1] != N_PARAMS
+            or v_start.shape != (len(params),) or not len(params)
+            or inputs[0].ndim != 2 or not inputs[0].shape[0]
+            or any(a.shape != inputs[0].shape for a in inputs)
+            or inputs[0].shape[1] != len(params)):
+        raise ValueError("daily inputs require params [batch,8], state [batch], and shocks [time,batch]")
+    if (not np.isfinite(params).all() or not np.isfinite(v_start).all()
+            or any(not np.isfinite(a).all() for a in inputs)
+            or np.any(v_start < 0)):
+        raise ValueError("daily inputs must be finite, with nonnegative starting variance")
+    mu, theta, kappa, sigma_v, rho, lam, mu_j, sigma_j = (params[:, i] for i in range(N_PARAMS))
+    if (np.any(theta <= 0) or np.any(kappa <= 0) or np.any(sigma_v <= 0)
+            or np.any(np.abs(rho) >= 1) or np.any((lam < 0) | (lam > LAMBDA_MAX))
+            or np.any(sigma_j <= 0)):
+        raise ValueError("daily model parameters outside supported domains")
+    eps1, eps2, jump_uniforms, jump_normals = inputs
+    if np.any((jump_uniforms < 0) | (jump_uniforms >= 1)):
+        raise ValueError("jump uniforms must lie in [0,1)")
+    jumps = jump_uniforms < lam
+    sizes = mu_j + sigma_j * jump_normals
+    n_days, n = eps1.shape
     rho_bar = np.sqrt(1 - rho**2)
     returns = np.empty((n_days, n))
-    variance = np.empty((n_days, n))
-    v = np.asarray(v_start, dtype=float)
+    variance = np.empty((n_days, n)) if retain_auxiliary else None
+    v = v_start
     for t in range(n_days):
         sd = np.sqrt(v)
         returns[t] = mu + sd * eps1[t] + jumps[t] * sizes[t]
         v = np.maximum(v + kappa * (theta - v) + sigma_v * sd * (rho * eps1[t] + rho_bar * eps2[t]), V_MIN)
-        variance[t] = v
-    return returns.T, variance.T, jumps.T
+        if retain_auxiliary:
+            variance[t] = v
+    if not np.isfinite(returns).all() or not np.isfinite(v).all():
+        raise ValueError("nonfinite daily model trajectory; failed inputs are not redrawn")
+    result = {"returns": returns.T, "terminal_state": v[:, None]}
+    if retain_auxiliary:
+        result.update(variance=variance.T, jumps=jumps.T)
+    return result
 
 
 def simulate_from_coordinates(coords, rng, n_days=WINDOW):

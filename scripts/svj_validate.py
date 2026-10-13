@@ -1,11 +1,10 @@
 """Validate a trained SVJ network on held-out simulations and build its misspecification reference.
 
-    pixi run svj-validate                                         # 1,000 held-out series, 500 draws each
+    pixi run svj-validate --out /tmp/svj-validation-new           # 1,000 held-out series, 500 draws each
     pixi run svj-validate --n-series 200 --out /tmp/svj-check     # quick look
 
-Writes docs/results/svj-validation/{validation.json, sbc.png, recovery.png, contraction.png} and
-<checkpoint>/misspecification.npz (summaries of 2,000 + 500 simulated series), which the daily
-pipeline loads. Checks: SBC rank ECDFs inside the 95% simultaneous band for all nine targets,
+Writes validation.json, figures and a bound misspecification.npz under a NEW explicit output
+directory. The checkpoint and its original reference remain untouched. Checks: SBC ranks,
 interval coverage near nominal, and contraction (what four years of returns identify).
 """
 
@@ -16,7 +15,8 @@ from pathlib import Path
 
 import numpy as np
 
-from sbi4finance.svj import amortized, checks, model, plots
+from sbi4finance import training_workflow
+from sbi4finance.svj import amortized, artifacts, checks, model, plots
 
 ROOT = Path(__file__).resolve().parents[1]
 # Contraction reported by the design document's reference run (feasibility result 2), for comparison.
@@ -29,15 +29,14 @@ def main() -> None:
     parser.add_argument("--n-series", type=int, default=1_000)
     parser.add_argument("--n-draws", type=int, default=500)
     parser.add_argument("--seed", type=int, default=20261013)
-    parser.add_argument("--out", default=str(ROOT / "docs" / "results" / "svj-validation"))
+    parser.add_argument("--out", required=True, help="new output directory; checkpoint/reference are immutable")
     args = parser.parse_args()
-    out = Path(args.out)
-    out.mkdir(parents=True, exist_ok=True)
-
     posterior = amortized.AmortizedPosterior.load(args.checkpoint)
+    out = training_workflow.reserve_output_dir(args.out)
     start = time.time()
     test = checks.MisspecificationTest.build(posterior, seed=args.seed)
-    test.save(Path(args.checkpoint) / "misspecification.npz")
+    test.save(out / "misspecification.npz")
+    reference_binding = artifacts.bind_reference(out / "misspecification.npz", checkpoint=args.checkpoint, seed=args.seed)
     fresh = model.simulate(500, seed=args.seed + 1)["returns"]
     false_alarm = float(np.mean(test.pvalue(posterior.summaries(fresh)) < 0.05))
     misspec_seconds = time.time() - start
@@ -68,6 +67,9 @@ def main() -> None:
         "n_series": args.n_series,
         "n_draws": args.n_draws,
         "seed": args.seed,
+        "checkpoint_sha256": artifacts.sha256(Path(args.checkpoint) / "model.keras"),
+        "reference_binding": reference_binding,
+        "scientific_acceptance": False,
         "sampling_seconds_per_series": sample_seconds / args.n_series,
         "sbc_band_half_width_at_centre": sbc["band_half_width_at_centre"],
         "sbc_all_inside": bool(sbc["inside"].all()),

@@ -1,7 +1,7 @@
 """Check the backtest itself: with the true parameters and a filtered state, the 99% VaR must be exceeded 1% of the time.
 
-    pixi run python scripts/svj_backtest_check.py                     # 2,000 fresh series
-    pixi run python scripts/svj_backtest_check.py --n-series 500 --seed 4242   # the backtest's own series
+    pixi run svj-backtest-check --out /tmp/svj-exact-check-new.json  # 2,000 fresh series
+    pixi run svj-backtest-check --n-series 500 --seed 4242 --out /tmp/svj-exact-check-backtest.json
 
 For the one-day horizon both sides are exact: the reported VaR is the 1% quantile of the mixture averaged
 over the particle filter's cloud for v_T, and its exceedance probability is the mixture CDF at the true
@@ -27,8 +27,14 @@ def main() -> None:
     parser.add_argument("--n-series", type=int, default=2_000)
     parser.add_argument("--n-particles", type=int, default=1_000)
     parser.add_argument("--seed", type=int, default=101)
-    parser.add_argument("--out", default=str(ROOT / "docs" / "results" / "svj-backtest" / "check_exact_1day.json"))
+    parser.add_argument("--out", required=True, help="new JSON file; existing reports are never overwritten")
     args = parser.parse_args()
+    out = Path(args.out)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    # Reserve before expensive work. An interrupted run leaves its own empty
+    # file; retry with a new path after inspecting that interruption.
+    with out.open("x"):
+        pass
 
     sims = model.simulate(args.n_series, seed=args.seed)
     p_exc, ranks = np.empty(args.n_series), np.empty(args.n_series)
@@ -42,6 +48,8 @@ def main() -> None:
     se = p_exc.std(ddof=1) / np.sqrt(args.n_series)
     batches = [float(b.mean()) for b in np.array_split(p_exc, max(1, args.n_series // 500))]
     result = {
+        "risk_definition": risk.RISK_DEFINITION, "risk_unit": risk.RISK_UNIT,
+        "scientific_acceptance": False,
         "n_series": args.n_series,
         "seed": args.seed,
         "n_particles": args.n_particles,
@@ -56,8 +64,7 @@ def main() -> None:
             "share_above_95pct": float(np.mean(ranks > 0.95)),
         },
     }
-    Path(args.out).parent.mkdir(parents=True, exist_ok=True)
-    Path(args.out).write_text(json.dumps(result, indent=1))
+    out.write_text(json.dumps(result, indent=1))
     print(f"exact 1-day check on {args.n_series} series: {100 * p_exc.mean():.3f}% "
           f"(95% CI {100 * result['ci95'][0]:.3f} to {100 * result['ci95'][1]:.3f}); median {100 * result['median_exceedance']:.3f}%; "
           f"batch means {[round(100 * b, 3) for b in batches]}; filter rank of the true v_T: KS p "

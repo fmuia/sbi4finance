@@ -80,6 +80,16 @@ class MisspecificationTest:
     reference: np.ndarray  # (R, 32)
     null: np.ndarray  # (n_null, 32) summaries of further simulated series
     scale: float  # l, the median squared distance between 200 reference summaries
+    binding: dict | None = None  # checkpoint/task identity for application use
+
+    def assert_compatible(self, posterior):
+        """A summary-space reference belongs to one saved summary network/task."""
+        checkpoint = getattr(posterior, "artifact", None)
+        if not isinstance(checkpoint, dict) or not isinstance(self.binding, dict):
+            raise ValueError("a bound posterior and diagnostic reference are required")
+        if (self.binding.get("checkpoint_sha256") != checkpoint["files"]["model.keras"]
+                or self.binding.get("task_sha256") != checkpoint["task_sha256"]):
+            raise ValueError("misspecification reference belongs to a different checkpoint/task")
 
     def statistic(self, summaries):
         s = np.atleast_2d(summaries)
@@ -105,6 +115,17 @@ class MisspecificationTest:
         np.savez_compressed(path, reference=self.reference, null=self.null, scale=self.scale)
 
     @classmethod
-    def load(cls, path):
-        with np.load(Path(path)) as data:
-            return cls(data["reference"], data["null"], float(data["scale"]))
+    def load(cls, path, *, checkpoint=None):
+        """Load a validated reference; external references need their checkpoint."""
+        from .artifacts import validate_reference
+        path = Path(path)
+        binding = validate_reference(path, checkpoint=path.parent if checkpoint is None else checkpoint)
+        with np.load(path, allow_pickle=False) as data:
+            result = cls(data["reference"], data["null"], float(data["scale"]), binding)
+        if (result.reference.ndim != 2 or result.null.ndim != 2
+                or result.reference.shape[1] != 32 or result.null.shape[1] != 32
+                or len(result.reference) == 0 or len(result.null) == 0
+                or not np.isfinite(result.reference).all() or not np.isfinite(result.null).all()
+                or not np.isfinite(result.scale) or result.scale <= 0):
+            raise ValueError("invalid SVJ misspecification reference arrays")
+        return result

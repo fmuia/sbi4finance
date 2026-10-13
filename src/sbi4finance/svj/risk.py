@@ -4,7 +4,9 @@ The predictive distribution of the H-day return averages the model's forecast ov
 of the parameters and today's variance. It is simulated: from every posterior draw (theta, v_T) the daily
 model runs H days forward with fresh shocks and jumps, and the pooled returns are draws from the
 predictive law. The VaR is minus its (1 - level) quantile and the ES minus the average beyond the ES
-quantile, both as positive losses in percent of the position.
+quantile, both in percent log-loss units (minus cumulative percent log return).
+These are not percent-of-position losses. Historical results use this v1
+functional; a position-loss functional requires transforming each future draw.
 
 The plug-in forecast fixes the parameters at a point (here the posterior median) and keeps only the
 uncertainty about today's variance, filtered at that point. The conditional VaR, VaR(theta, v_T), is the
@@ -21,11 +23,17 @@ from .filtering import filtered_variance, variance_clouds
 VAR_LEVEL = 0.99
 ES_LEVEL = 0.975
 HORIZONS = (1, 10)
+RISK_DEFINITION = "negative_cumulative_percent_log_return_v1"
+RISK_UNIT = "percent_log_loss"
 
 
 def var_es(returns, var_level=VAR_LEVEL, es_level=ES_LEVEL):
-    """VaR at var_level and ES at es_level of a return sample, as positive losses."""
+    """VaR and ES in percent log-loss units; retain the historical v1 functional."""
     r = np.asarray(returns, dtype=float).ravel()
+    if not len(r) or not np.isfinite(r).all():
+        raise ValueError("risk requires a nonempty finite percent-log-return sample")
+    if not (0 < var_level < 1 and 0 < es_level < 1):
+        raise ValueError("risk levels must be strictly between zero and one")
     q_es = np.quantile(r, 1 - es_level)
     return float(-np.quantile(r, 1 - var_level)), float(-r[r <= q_es].mean())
 
@@ -119,6 +127,8 @@ def forecast(posterior, returns, seed=0, horizons=HORIZONS, n_paths=20, split=Tr
     plugin = risk_numbers(plugin_draws(posterior, returns, seed), horizons, 1, seed + 1)
     cvar = conditional_var(posterior)
     out = {
+        "definition": RISK_DEFINITION,
+        "unit": RISK_UNIT,
         "predictive": predictive,
         "plugin_at_posterior_median": plugin,
         "conditional_var_1d": {
