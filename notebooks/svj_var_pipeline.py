@@ -6,57 +6,78 @@ app = marimo.App(width="medium")
 
 @app.cell
 def _():
-    import logging
+    import json
     import os
-    import time
-    import warnings
 
     import marimo as mo
     import matplotlib.pyplot as plt
     import numpy as np
-    import pandas as pd
 
-    os.environ.setdefault("KERAS_BACKEND", "jax")  # must precede the bayesflow import
-    warnings.filterwarnings("ignore")
-    logging.getLogger("jax._src.xla_bridge").setLevel(logging.ERROR)
-
-    from sbi4finance.svj import amortized, audit, checks, data, filtering, model, plots, risk
+    from sbi4finance.svj import model, plots, teaching
 
     ROOT = mo.notebook_dir().parent
     plots.style()
-    return ROOT, amortized, audit, checks, data, filtering, mo, model, np, pd, plt, plots, risk, time
+    return ROOT, json, mo, model, np, os, plots, plt, teaching
 
 
 @app.cell
 def _(mo):
     mo.md(r"""
-    # Advanced example: from four years of returns to VaR and ES with parameter uncertainty
+    # Daily SVJ: the same inference workflow, a different financial question
 
-    A risk team reports the 10-day 99% VaR and 97.5% ES of thousands of names every morning. A stochastic-volatility
-    model with jumps (SVJ) describes daily equity returns well, but four years of data hold only about ten jumps, so its
-    tail parameters are uncertain, and that uncertainty moves the expected shortfall. The exact posterior needs particle
-    MCMC, minutes per name. Amortized inference pays that cost once, in training, and then returns the joint posterior
-    of the parameters and today's volatility in about a second; an importance-sampling audit with the particle filter
-    checks it name by name.
+    **Task → prior predictive checks → train and select → condition and diagnose →
+    correct or fall back → propagate uncertainty → evaluate.** This is the same
+    lifecycle as the HKDE option example. Here the question is physical-measure
+    (**P**) return risk, with eight parameters and a latent terminal variance.
+    The architecture, particle likelihood and downstream risk calculation serve
+    this application.
 
-    Every step below calls `src/sbi4finance/svj`; the scripts in `scripts/svj_*.py` run the same steps at full scale.
+    The default lesson reads a verified **synthetic** illustration. It needs no
+    market file, network access, neural-backend initialization, training or live
+    particle MCMC. Its small cached run is a workflow demonstration, **not a
+    calibration or scientific acceptance study**.
     """)
     return
 
 
 @app.cell
+def _(ROOT, teaching):
+    bundle, synthetic_window, cached, cached_report = teaching.load_bundle(
+        ROOT / "data/synthetic/svj-workflow", checkpoint=ROOT / "checkpoints/svj"
+    )
+    return bundle, cached, cached_report, synthetic_window
+
+
+@app.cell
 def _(mo):
     mo.md(r"""
-    ## 1. The model
+    ## 1. Specify observations, unknowns and the generative model
 
-    Daily log returns in percent follow the Bates model in the daily form of Eraker, Johannes and Polson (2003):
+    The observation is one complete history of **1,000 daily log returns**.
+    Saved data use decimal returns and an explicit `dt_years = 1/252` grid.
+    The SVJ adapter converts to percent once, preserving the checkpoint's input
+    channels `[y, log(y² + 0.01)]`. It never rescales each history to unit variance.
 
-    $$y_t = \mu + \sqrt{v_{t-1}}\,\varepsilon^1_t + B_t\,\xi_t, \qquad B_t \sim \mathrm{Bernoulli}(\lambda),\ \ \xi_t \sim \mathcal N(\mu_J, \sigma_J^2),$$
+    In the contributed daily model, percent log returns and percent-squared
+    daily variance obey
 
-    $$v_t = \max\!\big(v_{t-1} + \kappa(\theta - v_{t-1}) + \sigma_v\sqrt{v_{t-1}}\,(\rho\,\varepsilon^1_t + \sqrt{1-\rho^2}\,\varepsilon^2_t),\ v_{\min}\big).$$
+    $$y_t=\mu+\sqrt{v_{t-1}}\,\varepsilon_t^1+B_t\xi_t,
+    \qquad B_t\sim\mathrm{Bernoulli}(\lambda),\quad
+    \xi_t\sim\mathcal N(\mu_J,\sigma_J^2),$$
 
-    The variance is latent and mean-reverting, jumps are rare and large, and only the diffusive shock moves the variance.
-    The eight parameters are drawn in coordinates a risk manager can judge:
+    $$v_t=\max\!\left\{v_{t-1}+\kappa(\theta-v_{t-1})+
+    \sigma_v\sqrt{v_{t-1}}\left(\rho\varepsilon_t^1+
+    \sqrt{1-\rho^2}\varepsilon_t^2\right),\;10^{-3}\right\}.$$
+
+    The Gamma initial distribution, daily Bernoulli jump opportunity, variance
+    floor and prior are part of this finite model. A continuous-time analogy
+    does not make it interchangeable with the repository's substepped Heston
+    kernel. The ninth inference target is
+    $\log\sigma_T=\log(\sqrt{252v_T}/100)$, so forecasts can continue from the
+    **matched parameter and terminal-state draw**.
+
+    The [original design](https://github.com/fmuia/sbi4finance/blob/main/docs/design/svj-design-document.md) develops the
+    model and adapted particle filter in more detail.
     """)
     return
 
@@ -68,27 +89,18 @@ def _(model):
 
 
 @app.cell
-def _(model, np):
-    example_coords = np.array([8.0, np.log(0.18), np.log(35), np.log(0.55), np.arctanh(-0.6), np.log(2.0), -2.5, np.log(3.5)])
-    example = model.simulate_from_coordinates(example_coords[None], np.random.default_rng(3))
-    example_y = example["returns"][0]
-    return example, example_coords, example_y
-
-
-@app.cell
-def _(example, example_y, model, np, plots, plt):
-    _fig, (_top, _bottom) = plt.subplots(2, 1, figsize=(9.6, 4.6), sharex=True, constrained_layout=True)
-    _days = np.arange(1, len(example_y) + 1)
-    _jumps = example["jumps"][0]
-    _top.plot(_days, example_y, color=plots.SERIES[0], linewidth=0.7)
-    _top.scatter(_days[_jumps], example_y[_jumps], s=28, color=plots.SERIES[1], edgecolor=plots.SURFACE, zorder=3, label="jump day")
-    _top.set_ylabel("daily return (%)")
-    _top.legend(loc="lower right")
-    _bottom.plot(_days, model.spot_vol_from_variance(example["variance"][0]), color=plots.SERIES[0], linewidth=1.2)
-    _bottom.set_ylabel("spot volatility (latent)")
-    _bottom.set_xlabel("trading day")
-    _fig.suptitle("One simulated four-year path: what a risk manager sees, and the volatility that drove it",
-                  x=0.01, ha="left", fontweight="bold", fontsize=10.5)
+def _(cached, model, np, plots, plt):
+    _fig, (_top, _bottom) = plt.subplots(2, 1, figsize=(9.4, 4.8), sharex=True, constrained_layout=True)
+    _days = np.arange(1, model.WINDOW + 1)
+    _top.plot(_days, cached["returns"], color=plots.SERIES[0], linewidth=0.75)
+    _top.scatter(_days[cached["jumps"]], cached["returns"][cached["jumps"]],
+                 s=24, color=plots.SERIES[1], label="synthetic jump truth", zorder=3)
+    _top.set_ylabel("Daily log return (%)")
+    _top.legend(loc="lower left")
+    _bottom.plot(_days, model.spot_vol_from_variance(cached["variance"]), color=plots.SERIES[0])
+    _bottom.set_ylabel("Annualized spot volatility\n(synthetic truth)")
+    _bottom.set_xlabel("Trading day")
+    _fig.suptitle("Seed-3 illustration: observed returns and latent variance", x=0.01, ha="left", fontsize=11)
     _fig
     return
 
@@ -96,148 +108,213 @@ def _(example, example_y, model, np, plots, plt):
 @app.cell
 def _(mo):
     mo.md(r"""
-    ## 2. Why the likelihood is intractable
+    ## 2. Check the prior predictive implications before fitting
 
-    The likelihood integrates over the whole latent variance path, a 1,001-dimensional integral with no closed form.
-    The fully adapted particle filter estimates it without bias: weight particles by the density of today's return,
-    resample, and move each particle with the exact law of the next variance given that return. The estimate is noisy,
-    and the noise falls with the number of particles; the deterministic grid filter gives the reference value.
+    The path above has hand-chosen illustrative parameters. It is **not** a
+    prior-predictive sample. The small independent panel below draws 24 complete
+    histories from the declared prior. Inspect return scales, jump frequency
+    and variance-floor contact before deciding whether the model/prior fits the
+    intended application. These descriptive checks have no automatic pass rule.
+
+    Synthetic variance, jump labels and true parameters are available for
+    checking the simulator and evaluating recovery. They are **auxiliary truth**;
+    only observed returns and known task context enter inference.
     """)
     return
 
 
 @app.cell
-def _(example_coords, example_y, filtering, model, np, pd, time):
-    _params = model.model_params(example_coords)
-    _rows = []
-    for _n in (50, 100, 400):
-        _start = time.perf_counter()
-        _ll, _ = filtering.loglik_batch(np.repeat(_params[None], 64, 0), example_y, seed=_n, n_particles=_n, chunk=64)
-        _rows.append({"particles": _n, "mean log L-hat": _ll.mean(), "sd of log L-hat": _ll.std(),
-                      "seconds for 64 runs": time.perf_counter() - _start})
-    _grid = float(filtering.grid_loglik(_params, example_y, n_cells=200))
-    pd.DataFrame(_rows).set_index("particles").round(3).assign(**{"grid log L": round(_grid, 3)})
+def _(mo, model, np):
+    _prior = model.simulate(24, seed=20261013)
+    _jump_counts = _prior["jumps"].sum(axis=1)
+    _daily_sd = _prior["returns"].std(axis=1)
+    _floor_fraction = (_prior["variance"] == model.V_MIN).mean(axis=1)
+    mo.ui.table([
+        {"quantity across 24 prior histories": "Daily log-return standard deviation (%)",
+         "10%": round(float(np.quantile(_daily_sd, .1)), 3), "median": round(float(np.median(_daily_sd)), 3),
+         "90%": round(float(np.quantile(_daily_sd, .9)), 3)},
+        {"quantity across 24 prior histories": "Jump days in 1,000 days",
+         "10%": round(float(np.quantile(_jump_counts, .1)), 3), "median": round(float(np.median(_jump_counts)), 3),
+         "90%": round(float(np.quantile(_jump_counts, .9)), 3)},
+        {"quantity across 24 prior histories": "Fraction of days at variance floor",
+         "10%": round(float(np.quantile(_floor_fraction, .1)), 4), "median": round(float(np.median(_floor_fraction)), 4),
+         "90%": round(float(np.quantile(_floor_fraction, .9)), 4)},
+    ], selection=None)
     return
 
 
 @app.cell
-def _(mo):
-    mo.md(r"""
-    ## 3. Amortized posterior
-
-    The network was trained once on 2.56 million simulated series (`pixi run svj-train`; about an hour on a few CPU cores).
-    A summary network turns the 1,000 days into 32 statistics, and 50 Euler steps of a flow-matching network carry noise to
-    1,000 joint draws of the eight parameters and today's spot volatility. On the example path, the truth is known:
-    """)
-    return
-
-
-@app.cell
-def _(ROOT, amortized, checks):
-    checkpoint = ROOT / "checkpoints" / "svj"
-    posterior = amortized.AmortizedPosterior.load(checkpoint)
-    misspecification = checks.MisspecificationTest.load(checkpoint / "misspecification.npz")
-    return misspecification, posterior
-
-
-@app.cell
-def _(example, example_y, model, np, pd, posterior, time):
-    _start = time.perf_counter()
-    example_draws = posterior.sample(example_y, num_samples=1_000, seed=0)[0]
-    _seconds = time.perf_counter() - _start
-    _q = model.quantities(example_draws)
-    _truth = model.quantities(example["targets"][0])
-    pd.DataFrame(
-        {"truth": _truth, "5%": np.quantile(_q, 0.05, 0), "median": np.median(_q, 0), "95%": np.quantile(_q, 0.95, 0)},
-        index=model.QUANTITY_LABELS,
-    ).round(3).rename_axis(f"posterior in {_seconds:.1f} s")
-    return (example_draws,)
-
-
-@app.cell
-def _(mo):
-    mo.md(r"""
-    ## 4. A real window: VOO, the last 1,000 trading days of the bundled CSV
-
-    Before trusting the network on real data, two checks. The misspecification test asks whether the window looks like
-    the training data in the space of the 32 learned summaries (a small p-value flags it). The audit draws proposals from
-    a Student t fitted to the network's draws and reweights them with the particle filter's likelihood estimate; the share
-    of effective draws is the audit score, and a low score sends the name to particle MCMC.
-    """)
-    return
-
-
-@app.cell
-def _(mo):
-    ticker = mo.ui.dropdown(options=["VOO", "SPMO"], value="VOO", label="ticker")
-    ticker
-    return (ticker,)
-
-
-@app.cell
-def _(ROOT, audit, data, misspecification, posterior, ticker, time):
-    window = data.window(data.load_returns(ROOT / "data" / "SPMO_VOO_2020-01-01_2026-09-04.csv", ticker.value))
-    real_y = window.to_numpy()
-    real_draws = posterior.sample(real_y, num_samples=1_000, seed=0)[0]
-    pvalue = float(misspecification.pvalue(posterior.summaries(real_y))[0])
-    _start = time.perf_counter()
-    checked = audit.audit(real_draws, real_y, seed=0, n_proposals=1_000, n_particles=100)
-    audit_seconds = time.perf_counter() - _start
-    return audit_seconds, checked, pvalue, real_draws, real_y, window
-
-
-@app.cell
-def _(audit_seconds, checked, mo, pvalue, window):
+def _(ROOT, bundle, json, mo):
+    _training = json.loads((ROOT / "checkpoints/svj/training.json").read_text())
     mo.md(f"""
-    **{window.index[0].date()} to {window.index[-1].date()}**: misspecification p-value **{pvalue:.2f}**;
-    audit efficiency **{checked.efficiency:.1%}** ({checked.ess:.0f} effective draws of 1,000 proposals,
-    {checked.n_particles} particles, {audit_seconds:.0f} s). The full-scale audit uses 3,000 proposals and picks the particle
-    count from the noise of the likelihood estimate (`pixi run svj-daily`).
+    ## 3. Train, select and bind an inference artifact
+
+    New training uses the common lifecycle: independent training and validation
+    examples, training-only normalization, validation-based checkpoint selection,
+    then save/reload checks. Online simulation and saved banks feed the same SVJ
+    network and target adapter. The test split stays reserved for evaluation.
+
+    This illustration retains Francesco's **historical checkpoint**: its record
+    reports **{_training['simulated_series']:,} simulated histories** over
+    **{_training['epochs']} epochs**, with a 32-dimensional sequence summary and
+    **50 Euler steps** in the flow sampler. Historical checkpoint-selection
+    provenance is preserved as recorded; the integration does not retrospectively
+    certify it under the new training lifecycle.
+
+    The cache binds the checkpoint, observation, full task and inference sources.
+    Task fingerprint: `{bundle['task_fingerprint'][:16]}…`.
+    Architecture and summary-network choices belong to the application; validation,
+    artifact compatibility and evidence reporting belong to the shared workflow.
     """)
     return
 
 
 @app.cell
-def _(mo):
-    mo.md(r"""
-    ## 5. From posterior to VaR and ES
+def _(mo, os):
+    live_demo = mo.ui.checkbox(
+        value=os.environ.get("SBI4FINANCE_SVJ_DEMO") == "1",
+        label="Recompute this synthetic case with the pinned neural environment (optional)",
+    )
+    live_demo
+    return (live_demo,)
 
-    From every posterior draw the daily model runs forward 10 days, 20 paths per draw; the pooled returns are the
-    predictive distribution. The plug-in forecast fixes the parameters at the posterior median and keeps only the
-    uncertainty about today's variance. The conditional VaR is the number an analyst would report if parameters and
-    today's variance were known: its posterior shows how uncertain the risk number itself is.
+
+@app.cell
+def _(ROOT, cached, cached_report, live_demo, synthetic_window, teaching):
+    active_report = cached_report
+    active_draws = cached["posterior"]
+    active_conditional_var = cached["conditional_var"]
+    if live_demo.value:
+        from sbi4finance.svj import amortized as _amortized, checks as _checks, pipeline as _pipeline
+
+        _checkpoint = ROOT / "checkpoints/svj"
+        _posterior = _amortized.AmortizedPosterior.load(_checkpoint)
+        _reference = _checks.MisspecificationTest.load(_checkpoint / "misspecification.npz")
+        active_report, active_draws = _pipeline.run_prepared_window(
+            synthetic_window, _posterior, _reference, teaching.demo_config()
+        )
+        active_conditional_var = _pipeline.risk.conditional_var(active_draws)
+    return active_conditional_var, active_draws, active_report
+
+
+@app.cell
+def _(active_report, live_demo, mo):
+    _workflow = active_report["workflow"]
+    _reasons = ", ".join(_workflow["diagnostic_reasons"]) or "No active diagnostic flags; this does not establish calibration."
+    mo.md(f"""
+    ## 4. Condition, diagnose, correct and choose a response
+
+    **{'Live' if live_demo.value else 'Cached'} synthetic run · reliability:
+    `{_workflow['reliability']}` · decision: `{_workflow['decision']}`**
+
+    Selected estimator: `{_workflow['method']}`. Diagnostic reasons: **{_reasons}**
+
+    The neural posterior proposes joint parameter/state draws. The particle
+    importance stage fits a parameter proposal, evaluates a particle likelihood
+    and supplies terminal states through that filter. It is not simply a
+    reweighting of nine unchanged neural coordinates. Weight concentration and
+    likelihood noise are checked against declared thresholds.
+
+    The summary-space model check has a different role: an observation mismatch
+    cannot be repaired just by changing the posterior estimator. When inference
+    is flagged, the shared policy can report the flagged result, run a declared
+    fallback, or decline downstream calculation. This bounded demo uses
+    **report-only** and does not run PMMH. A PMMH run must pass its own mixing and
+    noise diagnostics before its result is labelled locally checked.
+
+    Budget: **128 neural draws, 256 proposals, 128 audit particles, 4 forward paths
+    per joint draw**. Scientific acceptance: `{_workflow['scientific_acceptance']}`.
     """)
     return
 
 
 @app.cell
-def _(checked, pd, real_y, risk):
-    forecast = risk.forecast(checked.posterior, real_y, seed=0, split=True)
-    pd.DataFrame(
-        {
-            (f"{h}-day", name): [forecast[key][h]["var"], forecast[key][h]["es"]]
-            for h in (1, 10)
-            for name, key in (("predictive", "predictive"), ("plug-in", "plugin_at_posterior_median"))
-        },
-        index=["99% VaR (%)", "97.5% ES (%)"],
-    ).round(2)
-    return (forecast,)
+def _(active_report, mo):
+    _rows = []
+    for _stage in active_report["workflow"]["stages"]:
+        for _diagnostic in _stage["diagnostics"]:
+            _metrics = ", ".join(
+                f"{_name}={_value:.4g}" if isinstance(_value, (int, float)) else f"{_name}={_value}"
+                for _name, _value in _diagnostic["metrics"].items()
+            )
+            _thresholds = ", ".join(
+                f"{_name}={_value:.4g}" if isinstance(_value, (int, float)) else f"{_name}={_value}"
+                for _name, _value in _diagnostic["thresholds"].items()
+            )
+            _rows.append({"stage": _stage["stage"], "method": _stage["method"],
+                          "diagnostic": _diagnostic["name"], "status": _diagnostic["status"],
+                          "scope": _diagnostic["scope"], "metrics": _metrics,
+                          "declared thresholds": _thresholds})
+    mo.ui.table(_rows, selection=None)
+    return
 
 
 @app.cell
-def _(checked, forecast, np, plots, plt, risk):
-    _cvar = risk.conditional_var(checked.posterior)
-    _c = forecast["conditional_var_1d"]
-    _fig, _ax = plt.subplots(figsize=(7.2, 3.0), constrained_layout=True)
-    _ax.hist(_cvar, bins=40, color=plots.SERIES[0], alpha=0.85, edgecolor=plots.SURFACE, linewidth=0.6)
-    _ax.axvline(forecast["predictive"][1]["var"], color=plots.INK, linewidth=1.2, label="predictive VaR")
-    _ax.axvline(forecast["plugin_at_posterior_median"][1]["var"], color=plots.SERIES[1], linewidth=1.2, label="plug-in VaR")
-    _ax.set_xlabel("1-day 99% conditional VaR (%)")
-    _ax.legend(loc="upper right")
-    _ax.set_title(
-        f"Posterior of the risk number: today's variance carries {_c['state_share']:.0%} of its variance, "
-        f"the parameters {_c['parameter_share']:.0%}", loc="left")
+def _(active_draws, cached, mo, model, np):
+    _quantities = model.quantities(active_draws)
+    _truth = model.quantities(cached["truth"])
+    mo.ui.table([
+        {"quantity": _name, "synthetic truth (comparison only)": round(float(_truth[_j]), 4),
+         "posterior 5%": round(float(np.quantile(_quantities[:, _j], .05)), 4),
+         "posterior median": round(float(np.median(_quantities[:, _j])), 4),
+         "posterior 95%": round(float(np.quantile(_quantities[:, _j], .95)), 4)}
+        for _j, _name in enumerate(model.QUANTITY_LABELS)
+    ], selection=None)
+    return
+
+
+@app.cell
+def _(active_report, mo):
+    mo.md(f"""
+    ## 5. Propagate joint uncertainty to the financial estimand
+
+    Continue each **paired parameter and terminal-state row** into future returns.
+    Weighted draws are jointly resampled before path simulation; weights and
+    parameter/state dependence cannot be discarded. The plug-in comparison fixes
+    parameters at their posterior median and re-filters terminal-state uncertainty.
+
+    The retained risk definition is **percent log loss**: minus the cumulative
+    percent log return. It preserves the meaning of the historical evidence.
+    Percent-of-position losses would instead transform each future return as
+    `100 * (1 - exp(R / 100))` before calculating quantiles and tail averages.
+    The two ES definitions cannot be converted by transforming a final ES number.
+
+    **Forecast reliability: `{active_report['risk']['reliability']}`.** The tiny
+    forward sample illustrates uncertainty propagation; it is insufficient for
+    precise tail-risk estimation. These synthetic outputs are not a risk limit
+    or a claim of market performance.
+    """)
+    return
+
+
+@app.cell
+def _(active_report, mo):
+    _rows = []
+    for _method, _label in (("predictive", "joint predictive"), ("plugin_at_posterior_median", "plug-in parameters")):
+        for _horizon, _numbers in active_report["risk"][_method].items():
+            _rows.append({"horizon (trading days)": int(_horizon), "forecast": _label,
+                          "99% VaR (percent log loss)": round(_numbers["var"], 3),
+                          "97.5% ES (percent log loss)": round(_numbers["es"], 3),
+                          "reliability": active_report["risk"]["reliability"]})
+    mo.ui.table(_rows, selection=None)
+    return
+
+
+@app.cell
+def _(active_conditional_var, active_report, plots, plt):
+    _forecast = active_report["risk"]
+    _predictive = _forecast["predictive"].get("1", _forecast["predictive"].get(1))
+    _plugin = _forecast["plugin_at_posterior_median"].get("1", _forecast["plugin_at_posterior_median"].get(1))
+    _fig, _ax = plt.subplots(figsize=(8.3, 3.5), constrained_layout=True)
+    _ax.hist(active_conditional_var, bins=24, color=plots.SERIES[0], alpha=.85,
+             edgecolor=plots.SURFACE, linewidth=.6)
+    _ax.axvline(_predictive["var"], color=plots.INK, label="predictive VaR (small Monte Carlo sample)")
+    _ax.axvline(_plugin["var"], color=plots.SERIES[1], label="plug-in VaR")
+    _ax.set_xlabel("1-day 99% conditional VaR (percent log loss)")
+    _ax.set_ylabel("Joint posterior draws")
+    _ax.set_title(f"Uncertainty about the risk number · {_forecast['reliability']}", loc="left")
     _ax.grid(axis="y", visible=False)
+    _ax.legend(fontsize=8)
     _fig
     return
 
@@ -245,21 +322,62 @@ def _(checked, forecast, np, plots, plt, risk):
 @app.cell
 def _(mo):
     mo.md(r"""
-    ## What this establishes, and what runs at full scale
+    ## 6. Evaluate inference beyond a single illustration
 
-    One forward pass gives the joint posterior of the parameters and today's volatility; the audit checks it with the
-    exact likelihood estimate; the forecast carries both into VaR and ES. The evidence behind the two claims of the
-    advanced segment runs as scripts, with results under `docs/results/`:
+    A truth comparison on one hand-chosen synthetic case does not establish
+    population calibration or conditional accuracy. Keep the original evidence
+    visible: **initial SBC: 8/9 targets inside the simultaneous bands; replicate:
+    9/9**. The original conditional PMMH comparison was mixed, with flagged
+    importance cases and timing limitations. A replicate pass does not erase
+    the initial excursion, and a local diagnostic pass is not scientific acceptance.
 
-    | Script | Question |
-    |---|---|
-    | `pixi run svj-validate` | Is the network calibrated (SBC), and what do four years of returns identify? |
-    | `pixi run svj-agreement` | Does it agree with particle MCMC on single series, before and after the audit? |
-    | `pixi run svj-backtest` | Do predictive and plug-in VaR / ES hold up against a known truth? |
-    | `pixi run svj-rolling` | How do rolling posteriors and the misspecification test behave on real data? |
+    Read the [preserved pipeline study](https://github.com/fmuia/sbi4finance/blob/main/docs/svj-pipeline.md),
+    [initial validation](https://github.com/fmuia/sbi4finance/blob/main/docs/results/svj-validation/validation.json),
+    [SBC replicate](https://github.com/fmuia/sbi4finance/blob/main/docs/results/svj-validation/sbc_replicate.json), and
+    [conditional reference comparison](https://github.com/fmuia/sbi4finance/blob/main/docs/results/svj-agreement/agreement.json).
+    Those historical findings retain their original checkpoint and log-loss
+    estimand; this lesson does not rerun or upgrade their scientific status.
 
-    Exercises: change the jump-frequency prior in `model.Prior` and retrain the laptop variant
-    (`pixi run svj-train --preset laptop`, about ten minutes); compare its contraction with the reference network.
+    For the common workflow, ask separately: are inference ranks calibrated over
+    independent prior examples, do individual cases agree with suitable reference
+    methods, and are downstream predictions accurate on held-out futures? Real
+    return windows are optional inputs through the same declared schedule and
+    prepared-data adapter. They provide no true parameter/state labels, and one
+    market window cannot establish repeated-outcome performance.
+    """)
+    return
+
+
+@app.cell
+def _(mo):
+    mo.md(r"""
+    ## Exercise: trace a saved bank through the same training lifecycle
+
+    Run these commands manually in the pinned environment, choosing **new output
+    directories**. The tiny run checks training/save/reload plumbing and does not
+    replace the preserved checkpoint or establish posterior quality.
+
+    ```sh
+    pixi run python scripts/generate_svj_bank.py --config configs/tasks/svj_daily_smoke.json --out /tmp/my-svj-bank
+    pixi run python scripts/check_svj_bank.py --bank /tmp/my-svj-bank
+    pixi run svj-train --bank /tmp/my-svj-bank --epochs 1 --batch-size 8 --out /tmp/my-svj-training
+    ```
+
+    Inspect `manifest.json` for observation, target and identity roles, then
+    `training.json` for validation-based selection. Confirm that test examples
+    were reserved, and that changing synthetic truth or future outcomes cannot
+    change the conditioning features. Compare the task fingerprint before
+    attempting to load a checkpoint.
+
+    To regenerate this lesson's bounded evidence explicitly, use:
+
+    ```sh
+    pixi run python scripts/prepare_svj_teaching.py --checkpoint checkpoints/svj --out /tmp/my-svj-lesson
+    ```
+
+    Extending the prior, window design, network or solver creates a new candidate
+    needing its own validation. Increasing the particle or forecast budget is an
+    explicit experiment; opening this notebook does not start one.
     """)
     return
 

@@ -1,0 +1,748 @@
+{
+  "config": {
+    "n_draws": 128,
+    "run_audit": true,
+    "n_proposals": 256,
+    "audit_threshold": 0.02,
+    "audit_particles": 128,
+    "loglik_sd_threshold": 1.5,
+    "misspecification_threshold": 0.05,
+    "pmmh_on_flag": false,
+    "pmmh_iterations": 12500,
+    "pmmh_burn_in": 2000,
+    "pmmh_max_rhat": 1.01,
+    "pmmh_min_ess": 400.0,
+    "on_flag": null,
+    "horizons": [
+      1,
+      10
+    ],
+    "n_paths": 4,
+    "variance_split": false,
+    "seed": 7301
+  },
+  "network_posterior": {
+    "drift (%/yr)": {
+      "median": 15.370882511138916,
+      "q05": 6.948469448089599,
+      "q95": 25.07901239395141
+    },
+    "long-run vol": {
+      "median": 0.19192807912256893,
+      "q05": 0.17584754771417904,
+      "q95": 0.2196630151294483
+    },
+    "half-life (days)": {
+      "median": 23.60883598434526,
+      "q05": 11.890989653939016,
+      "q95": 55.56380264498606
+    },
+    "CV of variance": {
+      "median": 0.4918941917590387,
+      "q05": 0.4041082828185979,
+      "q95": 0.6386256258267735
+    },
+    "leverage rho": {
+      "median": -0.6479110124388175,
+      "q05": -0.8095553299079065,
+      "q95": -0.3876183208830733
+    },
+    "jumps per year": {
+      "median": 2.2351196952001535,
+      "q05": 0.9025976603419006,
+      "q95": 4.655887150147562
+    },
+    "mean jump (%)": {
+      "median": -2.5499267578125,
+      "q05": -5.876740503311157,
+      "q95": 0.0009496285114435083
+    },
+    "jump sd (%)": {
+      "median": 4.1049890297105485,
+      "q05": 2.537947608511795,
+      "q95": 6.231781937922645
+    },
+    "spot vol": {
+      "median": 0.16423644107765833,
+      "q05": 0.11888207458095496,
+      "q95": 0.21541795276378592
+    }
+  },
+  "misspecification_pvalue": 0.6467065868263473,
+  "audit": {
+    "efficiency": 0.06643171160755637,
+    "ess": 17.00651817153443,
+    "n_particles": 128,
+    "loglik_sd": 0.7469540873259238,
+    "flagged": false,
+    "threshold": 0.02,
+    "loglik_sd_threshold": 1.5
+  },
+  "network_risk": {
+    "1": {
+      "var": 2.8470558188361945,
+      "es": 3.210893942085171
+    },
+    "10": {
+      "var": 10.22013223282735,
+      "es": 10.485964846006912
+    }
+  },
+  "route": "network + importance sampling",
+  "posterior": {
+    "drift (%/yr)": {
+      "median": 19.906430612837426,
+      "q05": 7.263332530333552,
+      "q95": 25.083446113131114
+    },
+    "long-run vol": {
+      "median": 0.18410492599662096,
+      "q05": 0.1727711191645532,
+      "q95": 0.20327665765845995
+    },
+    "half-life (days)": {
+      "median": 27.059030791418426,
+      "q05": 15.728142466631954,
+      "q95": 47.79898588892718
+    },
+    "CV of variance": {
+      "median": 0.46918075475505344,
+      "q05": 0.3655540966445769,
+      "q95": 0.5897811215356772
+    },
+    "leverage rho": {
+      "median": -0.49318547333803,
+      "q05": -0.7101848601705345,
+      "q95": -0.33674956564381886
+    },
+    "jumps per year": {
+      "median": 2.0275389076538053,
+      "q05": 0.8972670956811971,
+      "q95": 4.467085651160381
+    },
+    "mean jump (%)": {
+      "median": -2.6913759973668823,
+      "q05": -5.196190068755955,
+      "q95": -1.3020298670904098
+    },
+    "jump sd (%)": {
+      "median": 4.071486540827358,
+      "q05": 3.0656163047916842,
+      "q95": 6.108986231268768
+    },
+    "spot vol": {
+      "median": 0.16388514466456894,
+      "q05": 0.12680478027295225,
+      "q95": 0.193417562711394
+    }
+  },
+  "workflow": {
+    "schema_version": "inference_workflow_v1",
+    "application": "svj_daily_returns_v1",
+    "provenance": {
+      "config": {
+        "n_draws": 128,
+        "run_audit": true,
+        "n_proposals": 256,
+        "audit_threshold": 0.02,
+        "audit_particles": 128,
+        "loglik_sd_threshold": 1.5,
+        "misspecification_threshold": 0.05,
+        "pmmh_on_flag": false,
+        "pmmh_iterations": 12500,
+        "pmmh_burn_in": 2000,
+        "pmmh_max_rhat": 1.01,
+        "pmmh_min_ess": 400.0,
+        "on_flag": null,
+        "horizons": [
+          1,
+          10
+        ],
+        "n_paths": 4,
+        "variance_split": false,
+        "seed": 7301
+      },
+      "checkpoint": {
+        "adapter_id": "svj_decimal_log_returns_to_native_features_v1",
+        "features": {
+          "channels": [
+            "percent_log_return",
+            "log_squared_percent_return_plus_offset"
+          ],
+          "dtype": "float32",
+          "squared_return_offset": 0.01
+        },
+        "files": {
+          "misspecification.npz": "d2740b384da70f99555bc6133abd43b57695f159e2e5a7861fb90464ea4155ef",
+          "model.keras": "02fd80d07babc73f7f454cf43c6390fe9dc0ad77b9f50af042264c378d6b81cf",
+          "training.json": "5e2379ac7a11885065b09355918c4a3a5e3033e08594ce8ef8d76a383f43f850"
+        },
+        "format": "svj_checkpoint_v1",
+        "provenance": {
+          "evidence": "initial SBC 8/9; replicate 9/9; conditional discrepancies and flagged importance cases retained; no new scientific acceptance",
+          "historical_unknowns": [
+            "exact Python/platform version",
+            "full original environment lock hash",
+            "per-example training identities",
+            "historical source/artifact manifest",
+            "misspecification reference generation seed not recorded in original artifact"
+          ],
+          "reference_sampler": "unchanged compiled 50-step Euler sampler",
+          "source": "Francesco SVJ contribution; original model.keras, training.json and misspecification.npz preserved",
+          "source_revision": "2e3165f7b8a25bfaaf2639fa6b759e20d1a7516b",
+          "training_mode": "online",
+          "training_selection": "final epoch explicitly saved by original training code"
+        },
+        "runtime_versions": {
+          "bayesflow": "2.0.14",
+          "jax": "0.11.1",
+          "keras": "3.15.1"
+        },
+        "sampler": {
+          "method": "euler",
+          "noise": "numpy_default_rng_float32_normal",
+          "steps": 50
+        },
+        "scientific_acceptance": false,
+        "standardization": {
+          "conditioning": "unstandardized_native_features",
+          "fit": "training_only",
+          "inference": "frozen_saved_statistics",
+          "state": "embedded_in_model.keras",
+          "variables": "inference_variables"
+        },
+        "status": "provisional; artifact compatibility is not scientific acceptance",
+        "target_coordinates": [
+          "drift",
+          "log_vol_lr",
+          "log_half_life",
+          "log_cv",
+          "atanh_rho",
+          "log_jumps_per_year",
+          "mean_jump",
+          "log_jump_sd",
+          "log_spot_vol"
+        ],
+        "task": {
+          "constants": {
+            "days_per_year": 252,
+            "jump_probability_cap": 0.5,
+            "rho_prior_probability_clip": 1e-09,
+            "variance_floor": 0.001
+          },
+          "dt_years": 0.003968253968253968,
+          "dynamics": {
+            "jumps": "one_bernoulli_gaussian_opportunity_per_day",
+            "return_drift": "additive_daily_log_return_intercept",
+            "variance": "previous_variance_euler_with_positive_floor"
+          },
+          "features": {
+            "channels": [
+              "percent_log_return",
+              "log_squared_percent_return_plus_offset"
+            ],
+            "dtype": "float32",
+            "squared_return_offset": 0.01
+          },
+          "initialization": {
+            "family": "floored_gamma",
+            "floor": 0.001,
+            "scale": "theta*exp(2*log_cv)",
+            "shape": "exp(-2*log_cv)"
+          },
+          "measure": "P",
+          "model_id": "daily_bernoulli_gaussian_jump_floored_euler_v1",
+          "n_observations": 1000,
+          "observation_unit": "decimal_log_return",
+          "parameter_coordinates": [
+            "drift",
+            "log_vol_lr",
+            "log_half_life",
+            "log_cv",
+            "atanh_rho",
+            "log_jumps_per_year",
+            "mean_jump",
+            "log_jump_sd"
+          ],
+          "prior": {
+            "cv": 0.6,
+            "cv_sd": 0.35,
+            "drift_loc": 8.0,
+            "drift_sd": 10.0,
+            "half_life": 30.0,
+            "half_life_sd": 0.7,
+            "jump_sd": 3.0,
+            "jump_sd_sd": 0.45,
+            "jumps_per_year": 2.5,
+            "jumps_per_year_sd": 0.75,
+            "mean_jump_loc": -1.0,
+            "mean_jump_sd": 2.5,
+            "rho_a": 2.0,
+            "rho_b": 4.0,
+            "vol_lr": 0.25,
+            "vol_lr_sd": 0.4
+          },
+          "reference_sampler": {
+            "method": "euler",
+            "steps": 50
+          },
+          "substeps": 1,
+          "target_coordinates": [
+            "drift",
+            "log_vol_lr",
+            "log_half_life",
+            "log_cv",
+            "atanh_rho",
+            "log_jumps_per_year",
+            "mean_jump",
+            "log_jump_sd",
+            "log_spot_vol"
+          ],
+          "task_id": "svj_daily_parameter_state_v1",
+          "terminal_state": {
+            "name": "terminal_variance",
+            "unit": "percent_squared_per_trading_day"
+          }
+        },
+        "task_sha256": "aa84f9dd77b8a516e1c2ecf743517183808645ea6f75c54b1dcbd376de53b86b",
+        "terminal_target": "log(sqrt(252 * terminal_variance) / 100)"
+      },
+      "diagnostic_reference": {
+        "reference_sha256": "d2740b384da70f99555bc6133abd43b57695f159e2e5a7861fb90464ea4155ef",
+        "checkpoint_sha256": "02fd80d07babc73f7f454cf43c6390fe9dc0ad77b9f50af042264c378d6b81cf",
+        "task_sha256": "aa84f9dd77b8a516e1c2ecf743517183808645ea6f75c54b1dcbd376de53b86b"
+      },
+      "observation": {
+        "sha256": "101d41d7bc52f7d82279a34ea4b7b083c544199be0d96b68b43e2d499eb632f8",
+        "shape": [
+          1000
+        ],
+        "measure": "P",
+        "units": "percent_log_return",
+        "calendar": "252_trading_days_per_year",
+        "local_artifact": {
+          "artifact_id": "svj_synthetic_illustration_seed3",
+          "task_id": "svj_daily_parameter_state_v1",
+          "scientific_task": {
+            "task_id": "svj_daily_parameter_state_v1",
+            "model_id": "daily_bernoulli_gaussian_jump_floored_euler_v1",
+            "measure": "P",
+            "n_observations": 1000,
+            "dt_years": 0.003968253968253968,
+            "substeps": 1,
+            "observation_unit": "decimal_log_return",
+            "parameter_coordinates": [
+              "drift",
+              "log_vol_lr",
+              "log_half_life",
+              "log_cv",
+              "atanh_rho",
+              "log_jumps_per_year",
+              "mean_jump",
+              "log_jump_sd"
+            ],
+            "target_coordinates": [
+              "drift",
+              "log_vol_lr",
+              "log_half_life",
+              "log_cv",
+              "atanh_rho",
+              "log_jumps_per_year",
+              "mean_jump",
+              "log_jump_sd",
+              "log_spot_vol"
+            ],
+            "terminal_state": {
+              "name": "terminal_variance",
+              "unit": "percent_squared_per_trading_day"
+            },
+            "prior": {
+              "drift_loc": 8.0,
+              "drift_sd": 10.0,
+              "vol_lr": 0.25,
+              "vol_lr_sd": 0.4,
+              "half_life": 30.0,
+              "half_life_sd": 0.7,
+              "cv": 0.6,
+              "cv_sd": 0.35,
+              "rho_a": 2.0,
+              "rho_b": 4.0,
+              "jumps_per_year": 2.5,
+              "jumps_per_year_sd": 0.75,
+              "mean_jump_loc": -1.0,
+              "mean_jump_sd": 2.5,
+              "jump_sd": 3.0,
+              "jump_sd_sd": 0.45
+            },
+            "constants": {
+              "days_per_year": 252,
+              "variance_floor": 0.001,
+              "jump_probability_cap": 0.5,
+              "rho_prior_probability_clip": 1e-09
+            },
+            "initialization": {
+              "family": "floored_gamma",
+              "shape": "exp(-2*log_cv)",
+              "scale": "theta*exp(2*log_cv)",
+              "floor": 0.001
+            },
+            "dynamics": {
+              "return_drift": "additive_daily_log_return_intercept",
+              "variance": "previous_variance_euler_with_positive_floor",
+              "jumps": "one_bernoulli_gaussian_opportunity_per_day"
+            },
+            "features": {
+              "channels": [
+                "percent_log_return",
+                "log_squared_percent_return_plus_offset"
+              ],
+              "squared_return_offset": 0.01,
+              "dtype": "float32"
+            },
+            "reference_sampler": {
+              "method": "euler",
+              "steps": 50
+            }
+          },
+          "measure": "P",
+          "data_origin": "synthetic",
+          "purpose": "conditioning",
+          "conventions": {
+            "currency": "not_applicable",
+            "adjustment_policy": "synthetic_no_adjustment",
+            "calendar": "synthetic_weekdays",
+            "time_basis": "252_trading_days_per_year",
+            "return_kind": "log",
+            "return_unit": "decimal",
+            "normalization_version": 1,
+            "conditioning_cutoff": "2023-11-01",
+            "window_start": "2020-01-01",
+            "n_returns": 1000
+          },
+          "provenance": {
+            "source": "daily_svj_simulator",
+            "series_id": "illustration:3",
+            "seed": 3,
+            "evidence_scope": "S",
+            "selection": "contributed_illustration_not_calibration_sample"
+          },
+          "truth": {
+            "target_names": [
+              "drift",
+              "log_vol_lr",
+              "log_half_life",
+              "log_cv",
+              "atanh_rho",
+              "log_jumps_per_year",
+              "mean_jump",
+              "log_jump_sd",
+              "log_spot_vol"
+            ],
+            "targets": [
+              8.0,
+              -1.7147984280919266,
+              3.5553480614894135,
+              -0.5978370007556204,
+              -0.6931471805599453,
+              0.6931471805599453,
+              -2.5,
+              1.252762968495368,
+              -2.122537493800917
+            ]
+          },
+          "artifact_type": "return_window",
+          "representation": "log_returns",
+          "schema_version": 1,
+          "columns": [
+            {
+              "name": "row_id",
+              "dtype": "str",
+              "role": "id"
+            },
+            {
+              "name": "interval_start",
+              "dtype": "str",
+              "role": "auxiliary"
+            },
+            {
+              "name": "interval_end",
+              "dtype": "str",
+              "role": "auxiliary"
+            },
+            {
+              "name": "dt_years",
+              "dtype": "float",
+              "role": "context",
+              "unit": "years"
+            },
+            {
+              "name": "return",
+              "dtype": "float",
+              "role": "observation",
+              "unit": "decimal"
+            },
+            {
+              "name": "observed",
+              "dtype": "bool",
+              "role": "auxiliary"
+            },
+            {
+              "name": "source_value",
+              "dtype": "float",
+              "role": "auxiliary",
+              "unit": "percent"
+            }
+          ],
+          "preparation": {
+            "source_kind": "log_returns",
+            "source_unit": "percent",
+            "input_rows": 1000,
+            "selected_rows": 1000,
+            "excluded_before_window": 0,
+            "excluded_after_cutoff": 0,
+            "selected_source_sha256": "5d2e39d15e49d430bfe7717c7bcbfafd2b254d95428158b276971eb5201fcb16"
+          }
+        }
+      }
+    },
+    "policy": {
+      "on_flag": "report"
+    },
+    "stages": [
+      {
+        "stage": "amortized",
+        "method": "amortized_flow",
+        "posterior": {
+          "names": [
+            "drift",
+            "log_vol_lr",
+            "log_half_life",
+            "log_cv",
+            "atanh_rho",
+            "log_jumps_per_year",
+            "mean_jump",
+            "log_jump_sd",
+            "log_spot_vol"
+          ],
+          "count": 128,
+          "representation": "equal_weight_joint_rows",
+          "mean": [
+            15.264071052893996,
+            -1.642577463760972,
+            3.2115976810455322,
+            -0.7050563571974635,
+            -0.7669999251374975,
+            0.7607371558769955,
+            -2.6657829541145475,
+            1.4097805586643517,
+            -1.8263742802664638
+          ]
+        },
+        "diagnostics": [
+          {
+            "name": "summary_space_misspecification",
+            "status": "passed",
+            "scope": "observation",
+            "metrics": {
+              "pvalue": 0.6467065868263473
+            },
+            "thresholds": {
+              "min_pvalue": 0.05
+            },
+            "explanation": "Summary-space compatibility only; changing the posterior estimator cannot cure model misspecification."
+          },
+          {
+            "name": "amortized_accuracy",
+            "status": "not_run",
+            "scope": "estimator",
+            "metrics": {},
+            "thresholds": {},
+            "explanation": "No particle likelihood audit or independent conditional check has established local accuracy."
+          }
+        ],
+        "details": {}
+      },
+      {
+        "stage": "correction",
+        "method": "particle_importance_sampling",
+        "posterior": {
+          "names": [
+            "drift",
+            "log_vol_lr",
+            "log_half_life",
+            "log_cv",
+            "atanh_rho",
+            "log_jumps_per_year",
+            "mean_jump",
+            "log_jump_sd",
+            "log_spot_vol"
+          ],
+          "count": 256,
+          "representation": "weighted_joint_rows",
+          "mean": [
+            17.468583606906623,
+            -1.6855176644392234,
+            3.3814069492106142,
+            -0.7372567534428144,
+            -0.5643773901360211,
+            0.6882306005042096,
+            -2.8357795866372326,
+            1.4365499314572021,
+            -1.8046025009011717
+          ]
+        },
+        "diagnostics": [
+          {
+            "name": "particle_importance_concentration_and_noise",
+            "status": "passed",
+            "scope": "estimator",
+            "metrics": {
+              "efficiency": 0.06643171160755637,
+              "ess": 17.00651817153443,
+              "loglik_sd": 0.7469540873259238
+            },
+            "thresholds": {
+              "min_efficiency": 0.02,
+              "max_loglik_sd": 1.5
+            },
+            "explanation": "Finite weighted-pool concentration and estimated likelihood noise; does not establish posterior accuracy or calibration."
+          }
+        ],
+        "details": {
+          "efficiency": 0.06643171160755637,
+          "ess": 17.00651817153443,
+          "n_particles": 128,
+          "loglik_sd": 0.7469540873259238,
+          "flagged": false,
+          "threshold": 0.02,
+          "loglik_sd_threshold": 1.5
+        }
+      }
+    ],
+    "selected_stage": "correction",
+    "method": "particle_importance_sampling",
+    "reliability": "locally_checked",
+    "diagnostic_reasons": [],
+    "decision": "retained",
+    "scientific_acceptance": "not_assessed_by_this_run",
+    "scope": "Local numerical diagnostics are not a calibration, model-adequacy or scientific-acceptance certificate.",
+    "posterior": {
+      "names": [
+        "drift",
+        "log_vol_lr",
+        "log_half_life",
+        "log_cv",
+        "atanh_rho",
+        "log_jumps_per_year",
+        "mean_jump",
+        "log_jump_sd",
+        "log_spot_vol"
+      ],
+      "count": 256,
+      "representation": "weighted_joint_rows",
+      "mean": [
+        17.468583606906623,
+        -1.6855176644392234,
+        3.3814069492106142,
+        -0.7372567534428144,
+        -0.5643773901360211,
+        0.6882306005042096,
+        -2.8357795866372326,
+        1.4365499314572021,
+        -1.8046025009011717
+      ]
+    },
+    "downstream": {
+      "estimand": "P_conditional_return_risk",
+      "risk": {
+        "definition": "negative_cumulative_percent_log_return_v1",
+        "unit": "percent_log_loss",
+        "predictive": {
+          "1": {
+            "var": 3.0982312846583784,
+            "es": 3.2912894956478977
+          },
+          "10": {
+            "var": 10.71023130969626,
+            "es": 10.719844508064835
+          }
+        },
+        "plugin_at_posterior_median": {
+          "1": {
+            "var": 2.5404842729410833,
+            "es": 2.910204418622145
+          },
+          "10": {
+            "var": 9.221361521483797,
+            "es": 9.449816833771598
+          }
+        },
+        "conditional_var_1d": {
+          "median": 2.617580567612455,
+          "interval_90": [
+            1.921068568751529,
+            3.0306953319713266
+          ],
+          "prob_above_plugin_var": 0.6015625
+        }
+      },
+      "weight_handling": "joint_resampling_before_path_simulation",
+      "propagated_draw_count": 128,
+      "reliability": "locally_checked",
+      "diagnostic_reasons": [],
+      "scientific_acceptance": "not_assessed_by_this_run"
+    }
+  },
+  "status": "locally_checked",
+  "diagnostic_reasons": [],
+  "scientific_acceptance": "not_assessed_by_this_run",
+  "network_risk_status": {
+    "reliability": "unassessed",
+    "diagnostic_reasons": [],
+    "method": "amortized_flow",
+    "scientific_acceptance": "not_assessed_by_this_run",
+    "definition": "negative_cumulative_percent_log_return_v1",
+    "unit": "percent_log_loss"
+  },
+  "risk": {
+    "definition": "negative_cumulative_percent_log_return_v1",
+    "unit": "percent_log_loss",
+    "predictive": {
+      "1": {
+        "var": 3.0982312846583784,
+        "es": 3.2912894956478977
+      },
+      "10": {
+        "var": 10.71023130969626,
+        "es": 10.719844508064835
+      }
+    },
+    "plugin_at_posterior_median": {
+      "1": {
+        "var": 2.5404842729410833,
+        "es": 2.910204418622145
+      },
+      "10": {
+        "var": 9.221361521483797,
+        "es": 9.449816833771598
+      }
+    },
+    "conditional_var_1d": {
+      "median": 2.617580567612455,
+      "interval_90": [
+        1.921068568751529,
+        3.0306953319713266
+      ],
+      "prob_above_plugin_var": 0.6015625
+    },
+    "reliability": "locally_checked",
+    "diagnostic_reasons": [],
+    "scientific_acceptance": "not_assessed_by_this_run"
+  },
+  "timings": {
+    "network_cpu_s": 0.62,
+    "misspecification_cpu_s": 0.53,
+    "audit_cpu_s": 6.43,
+    "forecast_cpu_s": 1.11
+  }
+}

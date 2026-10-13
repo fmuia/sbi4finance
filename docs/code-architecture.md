@@ -19,6 +19,13 @@ records exact input heads and combined verification. The user selected the
 Q/options provisional HKDE route through #26; P returns remains a separate example.
 Having a module or checkpoint does not mean its scientific validation passed.
 
+The [shared inference workflow](shared-inference-workflow.md) now provides
+executable training/selection/reload and conditional-inference orchestration for
+SVJ and HKDE. `inference_workflow.py` owns joint draws/weights, diagnostic routing
+and reports; `training_workflow.py` owns online/offline fitting and selection.
+`svj/` retains the daily model, particle references and risk-specific components.
+Existing historical study runners remain available for reproduction.
+
 ## 1. Organizing idea
 
 The repository is a small Python package with explicit task configurations,

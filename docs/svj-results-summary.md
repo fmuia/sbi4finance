@@ -1,5 +1,7 @@
 # SVJ pipeline: results summary
 
+> Historical contribution evidence at `2e3165f`. Numerical results and flags below are preserved. VaR/ES values use **percent log-loss**, not percent-of-position losses. Current runnable interfaces, explicit output directories and diagnostic policies are documented in the [shared workflow guide](shared-inference-workflow.md). Integration does not grant scientific acceptance.
+
 This branch implements the [design document](design/svj-design-document.md) for the SVJ advanced example end to end: a stochastic-volatility model with jumps, calibrated from the last 1,000 daily returns of one name by an amortized posterior, audited name by name with a particle filter, and carried into VaR and ES. It trains the reference network on CPU and re-runs the document's seven feasibility checks. This page gives the results in brief, with the main figures. [The pipeline document](svj-pipeline.md) has the full results, the code layout and every deviation, and [`results/`](results/) holds every output the numbers come from.
 
 ## In brief

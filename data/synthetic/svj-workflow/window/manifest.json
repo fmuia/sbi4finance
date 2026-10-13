@@ -1,0 +1,187 @@
+{
+  "artifact_id": "svj_synthetic_illustration_seed3",
+  "artifact_type": "return_window",
+  "columns": [
+    {
+      "dtype": "str",
+      "name": "row_id",
+      "role": "id"
+    },
+    {
+      "dtype": "str",
+      "name": "interval_start",
+      "role": "auxiliary"
+    },
+    {
+      "dtype": "str",
+      "name": "interval_end",
+      "role": "auxiliary"
+    },
+    {
+      "dtype": "float",
+      "name": "dt_years",
+      "role": "context",
+      "unit": "years"
+    },
+    {
+      "dtype": "float",
+      "name": "return",
+      "role": "observation",
+      "unit": "decimal"
+    },
+    {
+      "dtype": "bool",
+      "name": "observed",
+      "role": "auxiliary"
+    },
+    {
+      "dtype": "float",
+      "name": "source_value",
+      "role": "auxiliary",
+      "unit": "percent"
+    }
+  ],
+  "conventions": {
+    "adjustment_policy": "synthetic_no_adjustment",
+    "calendar": "synthetic_weekdays",
+    "conditioning_cutoff": "2023-11-01",
+    "currency": "not_applicable",
+    "n_returns": 1000,
+    "normalization_version": 1,
+    "return_kind": "log",
+    "return_unit": "decimal",
+    "time_basis": "252_trading_days_per_year",
+    "window_start": "2020-01-01"
+  },
+  "data_origin": "synthetic",
+  "measure": "P",
+  "preparation": {
+    "excluded_after_cutoff": 0,
+    "excluded_before_window": 0,
+    "input_rows": 1000,
+    "selected_rows": 1000,
+    "selected_source_sha256": "5d2e39d15e49d430bfe7717c7bcbfafd2b254d95428158b276971eb5201fcb16",
+    "source_kind": "log_returns",
+    "source_unit": "percent"
+  },
+  "provenance": {
+    "evidence_scope": "S",
+    "seed": 3,
+    "selection": "contributed_illustration_not_calibration_sample",
+    "series_id": "illustration:3",
+    "source": "daily_svj_simulator"
+  },
+  "purpose": "conditioning",
+  "representation": "log_returns",
+  "schema_version": 1,
+  "scientific_task": {
+    "constants": {
+      "days_per_year": 252,
+      "jump_probability_cap": 0.5,
+      "rho_prior_probability_clip": 1e-09,
+      "variance_floor": 0.001
+    },
+    "dt_years": 0.003968253968253968,
+    "dynamics": {
+      "jumps": "one_bernoulli_gaussian_opportunity_per_day",
+      "return_drift": "additive_daily_log_return_intercept",
+      "variance": "previous_variance_euler_with_positive_floor"
+    },
+    "features": {
+      "channels": [
+        "percent_log_return",
+        "log_squared_percent_return_plus_offset"
+      ],
+      "dtype": "float32",
+      "squared_return_offset": 0.01
+    },
+    "initialization": {
+      "family": "floored_gamma",
+      "floor": 0.001,
+      "scale": "theta*exp(2*log_cv)",
+      "shape": "exp(-2*log_cv)"
+    },
+    "measure": "P",
+    "model_id": "daily_bernoulli_gaussian_jump_floored_euler_v1",
+    "n_observations": 1000,
+    "observation_unit": "decimal_log_return",
+    "parameter_coordinates": [
+      "drift",
+      "log_vol_lr",
+      "log_half_life",
+      "log_cv",
+      "atanh_rho",
+      "log_jumps_per_year",
+      "mean_jump",
+      "log_jump_sd"
+    ],
+    "prior": {
+      "cv": 0.6,
+      "cv_sd": 0.35,
+      "drift_loc": 8.0,
+      "drift_sd": 10.0,
+      "half_life": 30.0,
+      "half_life_sd": 0.7,
+      "jump_sd": 3.0,
+      "jump_sd_sd": 0.45,
+      "jumps_per_year": 2.5,
+      "jumps_per_year_sd": 0.75,
+      "mean_jump_loc": -1.0,
+      "mean_jump_sd": 2.5,
+      "rho_a": 2.0,
+      "rho_b": 4.0,
+      "vol_lr": 0.25,
+      "vol_lr_sd": 0.4
+    },
+    "reference_sampler": {
+      "method": "euler",
+      "steps": 50
+    },
+    "substeps": 1,
+    "target_coordinates": [
+      "drift",
+      "log_vol_lr",
+      "log_half_life",
+      "log_cv",
+      "atanh_rho",
+      "log_jumps_per_year",
+      "mean_jump",
+      "log_jump_sd",
+      "log_spot_vol"
+    ],
+    "task_id": "svj_daily_parameter_state_v1",
+    "terminal_state": {
+      "name": "terminal_variance",
+      "unit": "percent_squared_per_trading_day"
+    }
+  },
+  "table": {
+    "n_rows": 1000,
+    "sha256": "a4d38925d2cd3f7fbcad88bfb5264cce3c6d66ab06d78a52d0adfcc096ba66a6"
+  },
+  "task_id": "svj_daily_parameter_state_v1",
+  "truth": {
+    "target_names": [
+      "drift",
+      "log_vol_lr",
+      "log_half_life",
+      "log_cv",
+      "atanh_rho",
+      "log_jumps_per_year",
+      "mean_jump",
+      "log_jump_sd",
+      "log_spot_vol"
+    ],
+    "targets": [
+      8.0,
+      -1.7147984280919266,
+      3.5553480614894135,
+      -0.5978370007556204,
+      -0.6931471805599453,
+      0.6931471805599453,
+      -2.5,
+      1.252762968495368,
+      -2.122537493800917
+    ]
+  }
+}

@@ -1,0 +1,361 @@
+{
+  "checked_at_utc": "2026-10-13T12:13:00.458946+00:00",
+  "comparisons": {
+    "contributed_design_images": {
+      "byte_identical_count": 29,
+      "file_count": 29,
+      "files": {
+        "docs/design/images/01-hkde-option-prices.png": {
+          "byte_identical": true,
+          "sha256": "34d8903d38ead77b5cde557d8853b2d7323a0c8a28164e40448cab9880131ca6"
+        },
+        "docs/design/images/02-prior-predictive-check.png": {
+          "byte_identical": true,
+          "sha256": "367df152e5387ce65d9f5d48d7ceab47d755f41d020b91d0caafba6e6d4c6fd9"
+        },
+        "docs/design/images/03-example-path.png": {
+          "byte_identical": true,
+          "sha256": "24b6911ecf4af8626304b4addb3187d2c862f8d50b6107eeca808c190d0b5a64"
+        },
+        "docs/design/images/04-forward-simulation.png": {
+          "byte_identical": true,
+          "sha256": "16bbbac52160fc0da84a325bac8213e16ab023de2d147df6643f8a3f32f5d6eb"
+        },
+        "docs/design/images/05-particle-filter-one-day.png": {
+          "byte_identical": true,
+          "sha256": "cebcd3f61a05baa5de4512f04b19fb03f00a9500ca2389fd2427266798edeb54"
+        },
+        "docs/design/images/06-filtered-example-path.png": {
+          "byte_identical": true,
+          "sha256": "5ef7d17f4e1c95d5287e94f4b73c7e42869bb718e0bc60689a4d1b88e7e408e2"
+        },
+        "docs/design/images/07-loglik-noise-vs-particles.png": {
+          "byte_identical": true,
+          "sha256": "aed9bf853ff6b01a5c0fe6b24ebbdad7bfcb31636f7f9fcfe66dc23845d1d30f"
+        },
+        "docs/design/images/08-jump-frequency-profile-likelihood.png": {
+          "byte_identical": true,
+          "sha256": "fed00cf84ddcee5e7be04ef7e369326142764c36f4bf9dccf60822f0e6aa395b"
+        },
+        "docs/design/images/09-input-channels.png": {
+          "byte_identical": true,
+          "sha256": "95ad86ce346e9331b5896847ac3dfceb70b5cab2861a2c9f68583bb2b8a8a645"
+        },
+        "docs/design/images/10-flow-matching-1d.png": {
+          "byte_identical": true,
+          "sha256": "dea081fd5616f811c044d494d9f3ada835a6e1735ee1c4a78b6d6c29947a7170"
+        },
+        "docs/design/images/11-sbc-toy-examples.png": {
+          "byte_identical": true,
+          "sha256": "482529efb044e7c57a0b905f4b99b882775160006a6b122b2b4c27c0b2710f80"
+        },
+        "docs/design/images/12-var-es-10-day.png": {
+          "byte_identical": true,
+          "sha256": "dea14c5c339891dab4124830106e8daef588414918102d4114c8319b6fcca8f9"
+        },
+        "docs/design/images/13-training-loss.png": {
+          "byte_identical": true,
+          "sha256": "b2fb0caac107b383d2fb679de3718574656bf535eff4def6f98adb2e29b31c56"
+        },
+        "docs/design/images/14-contraction.png": {
+          "byte_identical": true,
+          "sha256": "7ee68b2f13333760ad354d2cd2f389317b6662353e89c1b066656ecbddee16e4"
+        },
+        "docs/design/images/15-sbc.png": {
+          "byte_identical": true,
+          "sha256": "f36592fd7681616c9fa82da5f7a1db2d76d61c991eb680e4f08ad4c2d28f0241"
+        },
+        "docs/design/images/16-recovery.png": {
+          "byte_identical": true,
+          "sha256": "977c27022a71663e5af9d0c85f9fd34411769ad6c02f241980f4406a172a52f5"
+        },
+        "docs/design/images/17-agreement-with-pmmh.png": {
+          "byte_identical": true,
+          "sha256": "b8eda0c6bbdb8024ae8401a4b0fbb220464f86001314f4bc2c27577977730033"
+        },
+        "docs/design/images/18-cost-per-route.png": {
+          "byte_identical": true,
+          "sha256": "e3a7caa60a8278adf9cdd231a4057a7607c85439c0907387e5f3c6455f880498"
+        },
+        "docs/design/images/19-coverage-95.png": {
+          "byte_identical": true,
+          "sha256": "4e4022bfeeb238961d143aaeb6016e9dc4b19310a15d761a75dd2c02074dd92e"
+        },
+        "docs/design/images/20-jump-parameter-intervals.png": {
+          "byte_identical": true,
+          "sha256": "b3d2ef2f900d5766610b37017b14a51c1abf5bc39ced7bfd644405a6e7cf11ab"
+        },
+        "docs/design/images/21-backtest-var-exceedances.png": {
+          "byte_identical": true,
+          "sha256": "f4aa553597aa3f9178312f3037d91bb20eec30abbe3d36a6644369a46dc1a525"
+        },
+        "docs/design/images/22-backtest-es-z2.png": {
+          "byte_identical": true,
+          "sha256": "216b0d49352202cfbfb8cba3aa2b24fcf6c33bdf3af113eb2b3ec1c2cc0f23a0"
+        },
+        "docs/design/images/23-sp500-rolling-posterior.png": {
+          "byte_identical": true,
+          "sha256": "427f94237c8925056a5aaa919d0c24e608d31261b6b5aed0a70dd121e0d3c8e2"
+        },
+        "docs/design/images/24-conditional-var-posterior.png": {
+          "byte_identical": true,
+          "sha256": "a9eb88ad34fa7797483b76264137d9cfdffd2a1c0b6784b636d545eef17a597a"
+        },
+        "docs/design/images/25-appendix-a-example-path.png": {
+          "byte_identical": true,
+          "sha256": "e692a14972a46ea8e189349455ffd798f86ad3a1b13edd4858d854e4925f9ba1"
+        },
+        "docs/design/images/26-appendix-a-exceedances.png": {
+          "byte_identical": true,
+          "sha256": "cd2e5a5ee142b0832f19a6cb505b657dbdb5309dc7b012a24f35645a818c054d"
+        },
+        "docs/design/images/27-appendix-b-discretization-error.png": {
+          "byte_identical": true,
+          "sha256": "03189f0d03a37b793171cc40771a4ef19570900b83f7ca06354c503132db3c17"
+        },
+        "docs/design/images/diagram-daily-pipeline.svg": {
+          "byte_identical": true,
+          "sha256": "b8191ad46ea624ffc0b6d1fcd6b7a7f5ff5020a41cfcc96b73040632de998b04"
+        },
+        "docs/design/images/diagram-three-routes.svg": {
+          "byte_identical": true,
+          "sha256": "631c012c8cd73a053303756ab90d949b5f7229f8e81dc7f51b5c4bf398d14db5"
+        }
+      },
+      "reference_revision": "2e3165f7b8a25bfaaf2639fa6b759e20d1a7516b"
+    },
+    "environment_lock": {
+      "byte_identical_count": 1,
+      "file_count": 1,
+      "files": {
+        "pixi.lock": {
+          "byte_identical": true,
+          "sha256": "749dac2b9ae02df22ddaa8ae298d18804c53d7a040103a8f1df0dffc488d8933"
+        }
+      },
+      "reference_revision": "b2a575149bf5035a95ac1da6d60749ba10b61c5f"
+    },
+    "frozen_svj_checkpoint": {
+      "byte_identical_count": 3,
+      "file_count": 3,
+      "files": {
+        "checkpoints/svj/misspecification.npz": {
+          "byte_identical": true,
+          "sha256": "d2740b384da70f99555bc6133abd43b57695f159e2e5a7861fb90464ea4155ef"
+        },
+        "checkpoints/svj/model.keras": {
+          "byte_identical": true,
+          "sha256": "02fd80d07babc73f7f454cf43c6390fe9dc0ad77b9f50af042264c378d6b81cf"
+        },
+        "checkpoints/svj/training.json": {
+          "byte_identical": true,
+          "sha256": "5e2379ac7a11885065b09355918c4a3a5e3033e08594ce8ef8d76a383f43f850"
+        }
+      },
+      "reference_revision": "2e3165f7b8a25bfaaf2639fa6b759e20d1a7516b"
+    },
+    "historical_svj_results": {
+      "byte_identical_count": 26,
+      "file_count": 26,
+      "files": {
+        "docs/results/svj-agreement/agreement.json": {
+          "byte_identical": true,
+          "sha256": "8885e56911286f9ea67f0c06103dd3f15a4f593421407954f93b8ab604a64fa9"
+        },
+        "docs/results/svj-agreement/agreement.png": {
+          "byte_identical": true,
+          "sha256": "7b1d2fc1dcbe8bff42d354f15f1ea95aca59bf33b91d7d6a8f4bd506cf05e9fa"
+        },
+        "docs/results/svj-backtest/backtest.json": {
+          "byte_identical": true,
+          "sha256": "d0948e8bf3d129fb855100f39f0173db48dba8fe141f68dc6b4f18636a7baf27"
+        },
+        "docs/results/svj-backtest/backtest_levels.png": {
+          "byte_identical": true,
+          "sha256": "ab49215127942c2ebf74737cd71c454d18a63af1cffcc85de7ac6628d8eab44d"
+        },
+        "docs/results/svj-backtest/backtest_paired.png": {
+          "byte_identical": true,
+          "sha256": "3e77e610cb0a85c800707719d4c7993ddbad3c88226817f7585ae74db181e60d"
+        },
+        "docs/results/svj-backtest/backtest_series.npz": {
+          "byte_identical": true,
+          "sha256": "7f9f2048083d8847730010f6d8c98e38c43b62543b725167d28d042fb0ae90a6"
+        },
+        "docs/results/svj-backtest/check_exact_1day.json": {
+          "byte_identical": true,
+          "sha256": "bcd50e5472ce0a20da3c4f57a0f694722b6eb508e6308c1c9de5a190053429a6"
+        },
+        "docs/results/svj-classical/classical.json": {
+          "byte_identical": true,
+          "sha256": "31dd976626d69376e48c4ae0b54fce5c4fdcd47b9de2cb5f72f644f5e14ec401"
+        },
+        "docs/results/svj-classical/classical_series_0_of_2.json": {
+          "byte_identical": true,
+          "sha256": "821d278028f30bcf3187f776b42baae91e5fd87d35ef1b5f5a0b741ce3345dee"
+        },
+        "docs/results/svj-classical/classical_series_1_of_2.json": {
+          "byte_identical": true,
+          "sha256": "acf789ef47c3c117f80140da5b0c37657eea8686a7606497de9a19ce7d8d2850"
+        },
+        "docs/results/svj-classical/coverage.png": {
+          "byte_identical": true,
+          "sha256": "0955ea1c974620d659de5ef26d142aacffb9c940d0cff9e4e5b684d658fcfdf8"
+        },
+        "docs/results/svj-costs/cost_per_name.png": {
+          "byte_identical": true,
+          "sha256": "7f13d2723ceddc9366008057572f4c786a555f543d27bbff1fc2e96d6de9fb04"
+        },
+        "docs/results/svj-costs/costs.json": {
+          "byte_identical": true,
+          "sha256": "d837a4b39d42a966c5347101b7b640180f26e88b490ff6283d6baedbc10fc675"
+        },
+        "docs/results/svj-daily/SPMO_2026-09-03.json": {
+          "byte_identical": true,
+          "sha256": "3493cf4b0a54b55684b53a3cb6cfac273b1f169766f9be835c4202f44c910197"
+        },
+        "docs/results/svj-daily/VOO_2026-09-03.json": {
+          "byte_identical": true,
+          "sha256": "56bb80aca1bfae9d8af2ba400f0904eeaaee390b16f98659e02c980f5be0d5d3"
+        },
+        "docs/results/svj-daily/VOO_2026-09-03_pmmh.json": {
+          "byte_identical": true,
+          "sha256": "a33e2cb3cd44cef71eeb0e7be8770973205e6aeb9478c731863b56779febd121"
+        },
+        "docs/results/svj-rolling/SPMO_rolling.csv": {
+          "byte_identical": true,
+          "sha256": "d579c2dee10647f1810519df86b83bb2eb7b632d3708c44d247d066b569e69e8"
+        },
+        "docs/results/svj-rolling/SPMO_rolling.png": {
+          "byte_identical": true,
+          "sha256": "4d2e0e5f60656fd1814afcaa0f022ed95249d5bdb5ef6ecfd53820aeb4d5232b"
+        },
+        "docs/results/svj-rolling/VOO_rolling.csv": {
+          "byte_identical": true,
+          "sha256": "2e3012690b2bb42b723dd10a89ccc8f22b387ed98e10a08bff2328fae9252404"
+        },
+        "docs/results/svj-rolling/VOO_rolling.png": {
+          "byte_identical": true,
+          "sha256": "5c86117d7cfbb8e296bbdd5d0cb4e67fe87ff20c3e0e01a59e526768fcb9d947"
+        },
+        "docs/results/svj-rolling/rolling.json": {
+          "byte_identical": true,
+          "sha256": "7aefa0dcecf4bc2395e8ffad52ad53204bce5e60c3e350b563cdea1c2ddd74eb"
+        },
+        "docs/results/svj-validation/contraction.png": {
+          "byte_identical": true,
+          "sha256": "c6ec3689819779bd7f4588cc7cea1621d64bb0d2af7d1d7985a2ee99b9a0a327"
+        },
+        "docs/results/svj-validation/recovery.png": {
+          "byte_identical": true,
+          "sha256": "bd5f74f30e7865787992a8f527078f5bab1141f551ae1a6d1b26da9fdf0e6e0c"
+        },
+        "docs/results/svj-validation/sbc.png": {
+          "byte_identical": true,
+          "sha256": "75c66ec54ed8e35c9676fb31e40eeb7327eb8636051fefba4811ff622377f59a"
+        },
+        "docs/results/svj-validation/sbc_replicate.json": {
+          "byte_identical": true,
+          "sha256": "d9ea95972c982d2ceda909f8bea6a080e5a8cdc15b2495c7eb81a7c8c0a4768e"
+        },
+        "docs/results/svj-validation/validation.json": {
+          "byte_identical": true,
+          "sha256": "dad30ef100a14846ae5b1ddab80d01c0b8b26c1b2f54cae8558451b8ea84cf9b"
+        }
+      },
+      "reference_revision": "2e3165f7b8a25bfaaf2639fa6b759e20d1a7516b"
+    }
+  },
+  "hkde_participant_dependency_check": {
+    "decision_id": "hkde_2048_provisional_scope_2026_10_12",
+    "frozen_dependency_sha256": {
+      "checkpoints/hkde-theta-intensity-provisional/model.keras": "fee8e8a04aee1d7789754f0b9a239d0dd09dbd05baba1f78233d41a6b8a0a8b3",
+      "checkpoints/hkde-theta-intensity-provisional/task.json": "859f6e25cbeff0dc6d85bfaa223e44c575fdb9d0f7d9e54b67da7445abca245d",
+      "checkpoints/hkde-theta-intensity-provisional/training.json": "057a86ca0802c5b8ad51a47cf499f0fd360685b4f76c3c722978d973d1411379",
+      "configs/hkde_correction_boundary_protocol.json": "12b7e422bfd89c8e072db1229e9df9b880e2f03fc0a79d5d1057564991d96b1d",
+      "configs/hkde_inference_protocol.json": "8ab6b9d87204f1b9a1ef55bb2a89877e7be81a24cfb9e9adba09e9dd319aae0d",
+      "configs/tasks/hkde_inference_bank.json": "10a3ef098db7fb11c3b14d708a08cfbb656aa3c9052bab2b79c843278420870f",
+      "docs/hkde-calibration-gate-audit.md": "bbcf302288f85e2516d004cd00766d266fe8fa038662a7044cd956a36fafd73a",
+      "docs/hkde-correction-boundary-protocol.md": "d66058e49afcd4cb822aa81f5d9ccfd5404757b1b7ce2d7144dff0f8a4e4a7fb",
+      "docs/hkde-correction-protocol.md": "508fa40932bf7b259f3902d23932fca42c3191eeb436ce39fadba5f213fe83e7",
+      "docs/hkde-joint-inference.md": "6a868aeefa481729b55f39b9f6462762317db88a2379693399c23d00dbd908c7",
+      "docs/hkde-price-surrogate.md": "bb028902ecf0323113008620105806b10b74c9224cc656361ca42d880411dd44",
+      "docs/results/hkde-correction-v1/validation.json": "80ad72e44f01f0e08cee1e9021ee16c3b57a66a8c9cd65dd625577efd57c620e",
+      "docs/results/hkde-correction/new-test-panels.npz": "e7bc3eae57dbdb7fdf4e3ffe60d9e01f7a7231bc26a7b5d7244b54a73acc510f",
+      "docs/results/hkde-correction/plots/price-errors.png": "c178b4fe1bbe50976f5d79556cff0d967a47e5dce08c4e3ea78eb7c65dbf7441",
+      "docs/results/hkde-correction/plots/reference-pit.png": "e097bccc771ebd41826ebf5df087968ca12dde777c7b1a5b2bccb2ec3f30e38e",
+      "docs/results/hkde-correction/test-checks.npz": "d95dfdb943a65a11d6bb22efd22ecd9ed24a4996ae14b86dc49dda75472c9309",
+      "docs/results/hkde-correction/test-independent-audit.json": "4505a9a77577cb17096f7c03a97629a435a356c6f50e40d978eee83785222b23",
+      "docs/results/hkde-correction/test-reference-pit.npz": "699fa8a84411bcadb2c26c4133a0d17bf9e7a22f29bcb13cc8371eeb823ca281",
+      "docs/results/hkde-correction/test.json": "e192f9c4029f0b2a16480d58ed671dfe6d2e6a11d594330d714e58917e66c090",
+      "docs/results/hkde-correction/validation-checks.npz": "2ee4b825ff5503a6ff73cf45f96e694f050e33c5fb477e20a6248a2bad7de67f",
+      "docs/results/hkde-correction/validation.json": "024cb9f0131866e28cec940e0d6cb58ee93e79379c72325e26fd49a6ea371e87",
+      "docs/results/hkde-gate-audit/checks.npz": "ade1cde3922b8ea51ebbc32df4ebce766c0e026dbd9aaecc59845180db518d5c",
+      "docs/results/hkde-gate-audit/conditional-cdf-errors.png": "bc55821dddaa952d30d7b8189c225f04d72f289a3d89a07247b0fea7bf1589c0",
+      "docs/results/hkde-gate-audit/oracle-rank-control.png": "91647552ae27d7d8155d56634201dde43b4ae01e502a8ca04c37938cf5639690",
+      "docs/results/hkde-gate-audit/paired-rank-errors.png": "fd3198dbdbc97f78362dd508f8f65234778d766a9123555822f761aadd3fd1f8",
+      "docs/results/hkde-gate-audit/report.json": "87f92ec98ebb6c5969c502232fa93c7df5e3c6bef6942ece249068be2c411dee",
+      "docs/results/hkde-inference/neural-validation.json": "743500b877feabe5b4476f9a8ea66c61eb61038872e23c61cf651279d0cbc636",
+      "docs/results/hkde-inference/reference-grid.npz": "532d8ad4a7ae0321f6d1ae1a25fcb5124859b3884d6c7cc90d62abfb0401d0b2",
+      "docs/results/hkde-inference/reference.json": "8bc2851856e4171012718eed2d3bd57e71c0f93d71ac5cf03af18812370ea569",
+      "docs/results/hkde-inference/validation-checks.npz": "c25e83ed45c5f890c120f56de04db8e50fd540279f79cdbec9c4c4a280fdf653",
+      "docs/results/hkde-surrogate/model.npz": "b342b2850f8973af77cc572dc1dde7c7bbe47737c2c3fd6d6a15362907d07681",
+      "docs/results/hkde-surrogate/report.json": "3783b67ee97ca58c286849dc237c6b76b0a84f636e07548b563593e0278858ed",
+      "scripts/audit_hkde_calibration_gate.py": "684253bc54995ca394426bb9e7c87e672e41678158d899739368430972832eed",
+      "scripts/check_hkde_reference.py": "e7a5a724a0af492564676ca76041f571c4669bf025bcea4e81474d933c083668",
+      "scripts/evaluate_hkde.py": "23e60a0eccb02c620f9f425d6ef86134c209bc435bf68103381151f9b26ef504",
+      "scripts/evaluate_hkde_correction.py": "c665327828de97c61702d4744f6a43df38e725f10899a704aafbca4ccdf055b3",
+      "scripts/plot_hkde_correction.py": "b8612d45c543b61ceb1257c3e7d049c61f290f92b71c2031c4d7dc637f41a47f",
+      "src/sbi4finance/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/sbi4finance/bergomi.py": "39234a7e8443a3d27fa9b460c3e9e584e41e8780bd084b6113648c78f1dd3c1d",
+      "src/sbi4finance/gbm.py": "8d491f019326712a4a6e985b491658146fa3da9f57f513a6fed421259d55cb5d",
+      "src/sbi4finance/gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
+      "src/sbi4finance/gbm_inference.py": "6ed129797ed45d612f39bead2a4823958629bff577c05f69a0a767f9f0f18a00",
+      "src/sbi4finance/heston.py": "f85237a6f223689bb83fb2837d6f6cba855867f5da9f919667163ae4a4c8996c",
+      "src/sbi4finance/heston_bank.py": "3281382cf1d153f1d67be9412ff5c77e027c259a1353baef114a97b78817a9f1",
+      "src/sbi4finance/heston_forecast.py": "bee57c2e8294407418a4ddd3105e70f0d4ea6cdc845e8824636e4b40f2b6c091",
+      "src/sbi4finance/heston_inference.py": "9c5133fde58817fb28b1fb9f48f34fcd1f6de8f0ea31deebbd7fddd9a2e976eb",
+      "src/sbi4finance/heston_reference.py": "18480ee7c42ebace4b3b7f53b26fa08d4d1f36ccac500cbc5a20a356b57f68e0",
+      "src/sbi4finance/heston_transforms.py": "d930f4dd25189b60f348f554e09b36ff9850edcf0e277f7ddd8c6d66fa56d042",
+      "src/sbi4finance/hkde.py": "c6618b6bd54eae169b4fc0e90201b8582b8e7da14ff41a305c27e4e2bd06e503",
+      "src/sbi4finance/hkde_correction.py": "304916bb3892181dcfdc8afbf2796e19ade6513e5b515802882268ec7dd5ea29",
+      "src/sbi4finance/hkde_diagnostics.py": "31d240ab6f5a592b253e63a9bc830770a5b8b9818a2532c3c4cc3b249eba9687",
+      "src/sbi4finance/hkde_inference.py": "616014c460d6d0d164a08590d6ac47114cdabfb030584574854dc4ecfd061beb",
+      "src/sbi4finance/hkde_reference.py": "159194818b1f8b5a6194e1340568264271bad895474e5e1c9c8ce6cfdb71074b",
+      "src/sbi4finance/hkde_surrogate.py": "ddaea17ea2230acaeadf61a47af45187983200967bb395d1d1c67c9aaa605859",
+      "src/sbi4finance/mmar/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/sbi4finance/mmar/univariate.py": "1989f8a9eb7e057436220d45971b6effadbcfe2555b678c23f43fa52890c6e34",
+      "src/sbi4finance/option_bank.py": "8d41e6cecf115f6aa96475295c8291b9c6474e0c1e44ead001539129f3ba3d0a",
+      "src/sbi4finance/option_panel.py": "b37400bfc7f7ec91d208e8637cee1fcb53885b76ca0b00c016574b495fa035f2",
+      "src/sbi4finance/rough_bergomi.py": "ab47c3bcd3292fde093b4aaaf4fb668101793997dc25afe11a485ec8f2537b8f"
+    },
+    "frozen_manifest_dependency_count": 59,
+    "functions": [
+      "inputs(root, scope=\"participant\")",
+      "verify_participant(root, names)"
+    ],
+    "git_revision_pin_checked": false,
+    "i4_status": "deferred",
+    "input_inventory_count": 184,
+    "integrated_interface_sha256": {
+      "notebooks/10_hkde_corrected_workflow.py": "401f09ed04babfc6bfe9e1e04dc23a14cba7cbadd37561c52bf60176e8384683",
+      "pixi.lock": "749dac2b9ae02df22ddaa8ae298d18804c53d7a040103a8f1df0dffc488d8933",
+      "pyproject.toml": "6da1899b8e6b9177789c7f2885b4347fe387d24029e38d5374f3b6aa737f2f63"
+    },
+    "mode_tasks_verified": [
+      "demo-hkde-corrected",
+      "hkde-data-walkthrough",
+      "review-foundations",
+      "review-hkde-calibration",
+      "review-hkde-corrected"
+    ],
+    "note": "Interfaces inspected on the current working tree; this helper call does not certify pinned delivery or execution.",
+    "passed": true,
+    "scientific_status": "provisional",
+    "verifier": "scripts/check_tutorial_delivery.py",
+    "verifier_sha256": "e5bfe477e2c541822895fd2c70596c652d58cf8b72061d7756d84609a9efd50c"
+  },
+  "passed": true,
+  "schema_version": 1,
+  "scope": "Byte preservation and read-only frozen HKDE dependency verification; no notebook execution or scientific reevaluation."
+}

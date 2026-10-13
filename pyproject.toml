@@ -99,6 +99,12 @@ svj-rolling = "python scripts/svj_rolling.py"
 svj-classical = "python scripts/svj_classical.py"
 svj-costs = "python scripts/svj_costs.py"
 svj-daily = "python scripts/svj_daily.py"
+svj-bank = "python scripts/generate_svj_bank.py"
+svj-bank-check = "python scripts/check_svj_bank.py"
+svj-teaching = "python scripts/prepare_svj_teaching.py"
+review-svj = "marimo edit notebooks/svj_var_pipeline.py --no-token"
+demo-svj = { cmd = "marimo edit notebooks/svj_var_pipeline.py --no-token", env = { SBI4FINANCE_SVJ_DEMO = "1" } }
+test-workflow = "python -m unittest discover -s tests -p 'test_*workflow.py' -v"
 
 # GPU environment for Oscar (linux-64 only): `pixi install -e gpu` on a login node.
 [tool.pixi.feature.cuda]

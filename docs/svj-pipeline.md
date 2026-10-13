@@ -1,5 +1,7 @@
 # SVJ pipeline: from 1,000 daily returns to VaR and ES
 
+> Historical contribution evidence at `2e3165f`. Numerical results and flags below are preserved. VaR/ES values use **percent log-loss**, not percent-of-position losses. Current runnable interfaces, explicit output directories and diagnostic policies are documented in the [shared workflow guide](shared-inference-workflow.md). Integration does not grant scientific acceptance.
+
 This branch implements the end-to-end pipeline of the design document *SVJ advanced example: technical design and narrative* (10 Oct 2026) in `src/sbi4finance/svj`, trains the reference network on CPU, and re-runs the document's feasibility checks against it. The results section compares every check with the document's numbers.
 
 ## The daily process

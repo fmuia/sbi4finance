@@ -15,9 +15,9 @@ claim about market performance; formal HKDE I4 remains deferred.
 The [combined integration review](docs/stack-integration-review.md) records exact
 source heads, conflict choices and verification for issue #27.
 The [13 October main-merge review](docs/main-merge-review.md) adds the completed
-Heston decision and final verification. Francesco's separate draft
-[SVJ contribution](docs/svj-contribution-compatibility.md) is reviewed for
-compatibility and remains outside this merge.
+Heston decision and final verification. Francesco's [SVJ application](docs/svj-integration-review.md) is incorporated as an optional P/returns companion.
+SVJ and HKDE share an [executable inference and training workflow](docs/shared-inference-workflow.md),
+with task-specific networks, references and downstream quantities.
 The [participant route card](docs/tutorial-participant-route.md) specifies the
 sections, exercises, inputs, assets and modes. The schedule below totals **120
 minutes including exercises**; lead assignments carry forward the original
@@ -207,22 +207,37 @@ Export for people without marimo: `pixi run marimo export ipynb notebooks/01_mma
 
 `.claude/skills/marimo-pair/` is the [marimo-pair](https://github.com/marimo-team/marimo-pair) skill (Apache-2.0, vendored at commit 6cecaff). With `pixi run edit` running and the notebook open in the browser, an agent runs code in the live kernel and commits cell changes through marimo rather than editing the `.py` file. See the skill for the rules; the short version is that during a live session the kernel, not the file, is the source of truth.
 
-## SVJ advanced example: the end-to-end pipeline
+## Shared inference workflow and optional SVJ application
 
-A proposal for item 5: calibrate a stochastic-volatility model with jumps (SVJ, Bates 1996 in the daily form of Eraker, Johannes and Polson 2003) from the last 1,000 daily returns of one name, and carry the posterior into VaR and ES. `src/sbi4finance/svj/` holds the whole daily process; [`docs/svj-pipeline.md`](docs/svj-pipeline.md) describes the design, how each piece was checked, and the results. [`docs/svj-results-summary.md`](docs/svj-results-summary.md) summarizes the results with the main figures, and [`docs/design/svj-design-document.md`](docs/design/svj-design-document.md) reproduces the design document the branch implements.
+The [shared workflow guide](docs/shared-inference-workflow.md) follows the same
+sequence for SVJ and HKDE: task and simulation checks, separate training and
+validation, selected-checkpoint reload, compatible observation preparation,
+joint inference, diagnostics and correction/fallback, then downstream analysis.
+Both applications execute the same inference runner and training lifecycle.
+Architectures, summary networks, numerical references and risk/pricing targets
+remain specific to the financial question.
+
+Francesco's daily SVJ application infers eight parameter coordinates and terminal
+volatility from 1,000 daily returns. Its particle audit, PMMH and conditional
+forecasting extend the P route; its finite model remains distinct from the
+smaller Heston diagnostic example. The optional lesson defaults to a complete
+cached synthetic case, with no market CSV or network access. Reported VaR/ES is
+**percent log-loss**, and local diagnostic status accompanies forecasts.
 
 ```bash
-pixi run test-svj                  # unit tests: simulator, particle vs grid filter, MCMC diagnostics, risk, checks, audit
-pixi run svj-daily --ticker VOO    # one window, end to end: posterior -> misspecification -> audit -> VaR / ES
-pixi run svj-train                 # reference network, 2.56 million simulated series (about 1.5 h on 4 CPU cores)
-pixi run svj-validate              # SBC, coverage, recovery, contraction; builds the misspecification reference
-pixi run svj-agreement             # network and audit against particle MCMC on four series spanning the prior
-pixi run svj-backtest              # VaR and ES backtests with a known truth
-pixi run svj-backtest-check        # exact one-day check of the backtest itself, and of the filter's law of v_T
-pixi run svj-classical             # approximate ML and Wald intervals against posterior intervals on 40 series
-pixi run svj-rolling               # rolling posteriors and misspecification p-values on VOO and SPMO
-pixi run svj-costs                 # cost per name of each route, from the recorded runs; times the network pass
+pixi run review-svj
+pixi run demo-svj                 # bounded synthetic live inference, no PMMH
+pixi run svj-bank --config configs/tasks/svj_daily_smoke.json --out /tmp/svj-bank
+pixi run svj-bank-check --bank /tmp/svj-bank
+pixi run svj-train --bank /tmp/svj-bank --epochs 1 --batch-size 8 --out /tmp/svj-trained
 ```
+
+Training and validation require new explicit output directories. The contributed
+network, training record, diagnostic reference and numerical results remain
+preserved; [historical results](docs/svj-results-summary.md) retain mixed SBC and
+conditional-reference evidence. A tiny train/reload or a successful illustration
+is not scientific acceptance. The [integration record](docs/svj-integration-review.md)
+separates software, cluster, teaching and scientific evidence.
 
 ## Cluster (Oscar)
 

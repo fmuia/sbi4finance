@@ -45,6 +45,11 @@ def _(mo):
     nine option quotes, and what prices do those plausible pairs imply for
     two other contracts?
 
+    SVJ and HKDE now execute the same **prepare → infer → diagnose → correct/fallback →
+    propagate** runner and share the train/validation/checkpoint lifecycle. The
+    likelihood, networks and downstream estimand stay specific to each application.
+    See the [shared workflow guide](../docs/shared-inference-workflow.md).
+
     This notebook supplies the **provisional HKDE segment** of the selected
     [two-hour Q/options route](../docs/tutorial-participant-route.md), following
     GBM foundations and the local-data walkthrough.
@@ -441,22 +446,44 @@ def _(ROOT, candidate_accepted, load_script, local_observation, mo, np, protocol
         _workflow = _runner.inference.build_workflow(_task)
         _workflow.load_approximator(ROOT / _protocol["checkpoint"] / "model.keras")
         _loaded = time.perf_counter()
-        _proposal = _runner.correction.propose(
-            _workflow, _task, _observation,
-            num_samples=_protocol["conditional"]["participant_samples"], seed=_seed,
-            prior_fraction=_protocol["proposal"]["prior_fraction"],
-            boundary_fraction=_protocol["proposal"]["boundary_fraction"])
-        _proposed = time.perf_counter()
-        _corrected = _runner.correction.correct(_proposal["parameters"], _proposal["log_proposal"], _observation, _task)
-        _weighted = time.perf_counter()
-        _target_prices = _runner.surrogate.predict(_model, _proposal["parameters"], task=_task, contracts=_baseline_protocol["targets"])
-        _target_ready = time.perf_counter()
+        from sbi4finance.hkde_workflow import HKDEWorkflowConfig, run_panel
+        from sbi4finance.inference_workflow import Diagnostic
         _reference_weights = _runner.reference.posterior(_grid, _observation, _task["context"]["quote_noise_std"])
         _reference_summary = _runner.reference.summarize(_grid, _reference_weights, _protocol["quantiles"])
-        _summary = _runner.correction.summarize(
-            _proposal["parameters"], _corrected["weights"], _target_prices,
-            reference_summary=_reference_summary, probabilities=_protocol["quantiles"],
-            blocks=_protocol["conditional"]["uncertainty_blocks"])
+        _case = {}
+
+        def _target_fn(rows):
+            return _runner.surrogate.predict(_model, rows, task=_task, contracts=_baseline_protocol["targets"])
+
+        def _reference_diagnostics(prepared, estimate):
+            if estimate.method != "defensive_importance_sampling":
+                return []
+            _case["target_prices"] = _target_fn(estimate.draws.values)
+            _case["summary"] = _runner.correction.summarize(
+                estimate.draws.values, estimate.draws.normalized_weights, _case["target_prices"],
+                reference_summary=_reference_summary, probabilities=_protocol["quantiles"],
+                blocks=_protocol["conditional"]["uncertainty_blocks"])
+            metrics = _runner.aggregate([_case["summary"]])
+            return [Diagnostic("conditional_numerical_reference",
+                "passed" if all(value <= _protocol["gates"][name] for name, value in metrics.items()) else "flagged",
+                metrics=metrics, thresholds=_protocol["gates"],
+                explanation="Same frozen conditional parameter/joint/target-price reference gates; this one case does not accept population calibration.")]
+
+        _common = run_panel(_observation, _workflow, _task, checkpoint_task=_task,
+            config=HKDEWorkflowConfig(n_draws=128, n_proposals=_protocol["conditional"]["participant_samples"],
+                seed=_seed, prior_fraction=_protocol["proposal"]["prior_fraction"],
+                boundary_fraction=_protocol["proposal"]["boundary_fraction"],
+                min_ess_fraction=_protocol["conditional"]["min_ess_fraction"],
+                max_weight=_protocol["conditional"]["max_weight"]),
+            target_contracts=_baseline_protocol["targets"], target_price_fn=_target_fn,
+            diagnostic_fn=_reference_diagnostics,
+            provenance={"case_id": "validation:257", "historical_scientific_acceptance": False})
+        _completed = time.perf_counter()
+        _details = _common.report["stages"][-1]["details"]
+        _proposal = {"parameters": _common.posterior.values}
+        _corrected = {"weights": _common.posterior.normalized_weights,
+                      **{name: _details[name] for name in ("ess", "ess_fraction", "max_weight")}}
+        _target_prices, _summary = _case["target_prices"], _case["summary"]
         _metrics = _runner.aggregate([_summary])
         _gates = {_name: _value <= _protocol["gates"][_name] for _name, _value in _metrics.items()}
         _gates.update(proposal_ess=_corrected["ess_fraction"] >= _protocol["conditional"]["min_ess_fraction"],
@@ -470,18 +497,14 @@ def _(ROOT, candidate_accepted, load_script, local_observation, mo, np, protocol
             "grid": _grid, "reference_weights": _reference_weights, "reference_summary": _reference_summary,
             "summary": _summary, "metrics": _metrics, "gates": _gates, "passed": all(_gates.values()),
             "ess": _corrected["ess"], "ess_fraction": _corrected["ess_fraction"],
-            "max_weight": _corrected["max_weight"], "prior_rows": int(_proposal["is_prior"].sum()),
-            "boundary_rows": int(_proposal["is_boundary"].sum()),
+            "max_weight": _corrected["max_weight"], "prior_rows": _details["prior_rows"],
+            "boundary_rows": _details["boundary_rows"], "workflow": _common.report,
             "timing_seconds": {"imports_bindings_checkpoint_load": _loaded - _started,
-                               "proposal_sample": _proposal["timing_seconds"]["sample"],
-                               "proposal_density": _proposal["timing_seconds"]["density"],
-                               "proposal_total": _proposed - _loaded,
-                               "nine_price_likelihood_and_weights": _weighted - _proposed,
-                               "two_target_surrogate": _target_ready - _weighted,
-                               "reference_comparison_and_summary": time.perf_counter() - _target_ready,
+                               "common_workflow_and_reference": _completed - _loaded,
                                "live_total": time.perf_counter() - _started},
         }
         _display = mo.md(f"{'Provisional live demonstration' if provisional_demo else 'Live correction'} completed with **{len(_proposal['parameters']):,} proposals** and ESS **{_corrected['ess']:.0f}**. "
+                         f"Shared workflow status: **{_common.report['reliability']}**. "
                          "The tables below report this execution separately from the cached scientific study.")
     else:
         _display = mo.callout("Cached review: no live correction was requested. The opt-in provisional demo is separate from formal scientific acceptance.", kind="info")
@@ -583,7 +606,7 @@ def _(live_result, mo):
     if live_result is not None:
         _items.append(mo.ui.table([{"Stage": _stage, "Current-machine seconds": _seconds}
                                    for _stage, _seconds in live_result["timing_seconds"].items()], selection=None))
-        _items.append(mo.md("`proposal_total` includes sampling and density; `live_total` includes all stages. These overlapping rows must not be summed."))
+        _items.append(mo.md("`common_workflow_and_reference` includes amortized sampling, correction, conditional diagnostics and target propagation; `live_total` also includes setup. These overlapping rows must not be summed."))
     mo.vstack(_items)
     return
 
