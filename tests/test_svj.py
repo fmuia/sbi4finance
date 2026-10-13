@@ -8,12 +8,13 @@ import unittest
 
 os.environ.setdefault("KERAS_BACKEND", "jax")
 
+import jax
 import jax.numpy as jnp
 import numpy as np
 from scipy.special import logsumexp
 from scipy.stats import beta, norm
 
-from sbi4finance.svj import audit, checks, filtering, model, pmmh, risk
+from sbi4finance.svj import audit, checks, classical, filtering, model, pmmh, risk
 
 EXAMPLE = np.array([8.0, np.log(0.18), np.log(35), np.log(0.55), np.arctanh(-0.6), np.log(2.0), -2.5, np.log(3.5)])
 
@@ -169,6 +170,22 @@ class TestChecks(unittest.TestCase):
         test = checks.MisspecificationTest(rng.standard_normal((500, 4)), rng.standard_normal((200, 4)), 8.0)
         self.assertGreater(test.pvalue(rng.standard_normal((1, 4)))[0], 0.01)
         self.assertLess(test.pvalue(np.full((1, 4), 6.0))[0], 0.01)
+
+
+class TestClassical(unittest.TestCase):
+    def test_bounds_and_exact_gradient(self):
+        lo, hi = classical.prior_bounds()
+        self.assertTrue(np.all((lo < classical.prior_mean()) & (classical.prior_mean() < hi)))
+        y = example_series()["returns"][0]
+        value_and_grad, _ = classical._objective(40)
+        with jax.enable_x64(True):
+            value, grad = value_and_grad(jnp.asarray(EXAMPLE), jnp.asarray(y))
+            for k in (1, 5, 7):
+                e = np.zeros(8)
+                e[k] = 1e-5
+                plus = float(value_and_grad(jnp.asarray(EXAMPLE + e), jnp.asarray(y))[0])
+                minus = float(value_and_grad(jnp.asarray(EXAMPLE - e), jnp.asarray(y))[0])
+                self.assertAlmostEqual(float(grad[k]), (plus - minus) / 2e-5, delta=1e-3 * max(1, abs(float(grad[k]))))
 
 
 class TestAudit(unittest.TestCase):

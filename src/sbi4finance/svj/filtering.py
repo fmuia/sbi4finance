@@ -166,21 +166,27 @@ def choose_particle_count(params, y, seed, candidates=(50, 100, 200, 400), targe
 
 
 def _grid_loglik(params, y, n_cells):
-    params = params.astype(jnp.float32)
+    """Runs in the dtype of `params` and `y`: float32 for tests, float64 under jax.enable_x64 for the optimizer."""
+    params = jnp.asarray(params)
+    y = jnp.asarray(y, params.dtype)
     theta, kappa, sigma_v = params[1], params[2], params[3]
     c = sigma_v / jnp.sqrt(2 * kappa * theta)
-    edges_sqrt = jnp.linspace(0.0, jnp.sqrt(theta * (2 + 6 * c)), n_cells + 1)
+    edges_sqrt = jnp.linspace(0.0, 1.0, n_cells + 1, dtype=params.dtype) * jnp.sqrt(theta * (2 + 6 * c))
     centres = (0.5 * (edges_sqrt[:-1] + edges_sqrt[1:])) ** 2
     inner = edges_sqrt[1:-1] ** 2
     shape, scale = 1 / c**2, theta * c**2
-    cdf0 = jnp.concatenate([jnp.zeros(1), gammainc(shape, inner / scale), jnp.ones(1)])
+    cdf0 = jnp.concatenate([jnp.zeros(1, params.dtype), gammainc(shape, inner / scale), jnp.ones(1, params.dtype)])
     alpha = jnp.diff(cdf0)
-    edges = jnp.concatenate([jnp.full(1, -jnp.inf), inner, jnp.full(1, jnp.inf)])
+    zeros = jnp.zeros((n_cells, 1), params.dtype)
 
     def cell_masses(mean, var):
-        z = (edges[None, :] - mean[:, None]) / jnp.sqrt(var)[:, None]
-        lower, upper = ndtr(z), ndtr(-z)
-        return jnp.where(z[:, :-1] > 0, upper[:, :-1] - upper[:, 1:], lower[:, 1:] - lower[:, :-1])
+        # mass of each cell under N(mean_j, var_j); the outer cells extend to -inf and +inf, which mirrors the floor.
+        # The CDF is evaluated at the finite inner edges only, so gradients stay finite.
+        z = (inner[None, :] - mean[:, None]) / jnp.sqrt(var)[:, None]
+        lower = jnp.concatenate([zeros, ndtr(z), zeros + 1], axis=1)
+        upper = jnp.concatenate([zeros + 1, ndtr(-z), zeros], axis=1)
+        z_left = jnp.concatenate([zeros - 1, z], axis=1)  # left edge of each cell; -inf for the first
+        return jnp.where(z_left > 0, upper[:, :-1] - upper[:, 1:], lower[:, 1:] - lower[:, :-1])
 
     def day(alpha, y_t):
         log_no_jump, log_jump, mean0, var0, mean1, var1 = _branches(params, centres, y_t)
@@ -192,7 +198,7 @@ def _grid_loglik(params, y, n_cells):
         transition = (1 - p_jump)[:, None] * cell_masses(mean0, var0) + p_jump[:, None] * cell_masses(mean1, var1)
         return (w / total) @ transition, shift + jnp.log(total)
 
-    _, daily = jax.lax.scan(day, alpha, y.astype(jnp.float32))
+    _, daily = jax.lax.scan(day, alpha, y)
     return jnp.sum(daily)
 
 

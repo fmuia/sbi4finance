@@ -43,12 +43,18 @@ def risk_numbers(targets, horizons=HORIZONS, n_paths=20, seed=0):
     return {h: dict(zip(("var", "es"), var_es(r))) for h, r in pooled.items()}
 
 
-def plugin_draws(posterior, returns, seed=0, n_state=20_000, n_particles=2_000):
-    """Draws for the plug-in forecast: parameters fixed at the posterior median, v_T from a filter at that point."""
-    point = np.median(np.asarray(posterior)[:, : model.N_PARAMS], axis=0)
+def point_forecast_draws(point, returns, seed=0, n_state=20_000, n_particles=2_000):
+    """Draws for a forecast at a point estimate (8 coordinates): v_T from a particle filter at that point."""
+    point = np.asarray(point, dtype=float)[: model.N_PARAMS]
     _, cloud = filtered_variance(model.model_params(point), returns, seed, n_particles)
     v_t = np.random.default_rng(seed).choice(cloud, n_state)
     return np.column_stack([np.repeat(point[None], n_state, axis=0), model.log_spot_vol(v_t)])
+
+
+def plugin_draws(posterior, returns, seed=0, n_state=20_000, n_particles=2_000):
+    """Draws for the plug-in forecast: parameters fixed at the posterior median, v_T filtered at that point."""
+    point = np.median(np.asarray(posterior)[:, : model.N_PARAMS], axis=0)
+    return point_forecast_draws(point, returns, seed, n_state, n_particles)
 
 
 def mixture_quantile(params, v, prob):

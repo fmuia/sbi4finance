@@ -1,0 +1,110 @@
+"""The classical baseline against the posterior: Wald coverage on held-out series (feasibility result 5).
+
+    pixi run svj-classical                        # 40 series, two starts each; a few hours on 4 CPU cores
+    pixi run svj-classical --n-series 8 --out /tmp/svj-classical
+
+For each series, approximate ML maximizes the grid-filter likelihood with L-BFGS-B from the prior mean and
+from the amortized posterior median, inside bounds at the prior mean +/- 6 prior sd, and builds 95% Wald
+intervals in the unbounded coordinates. The same series get 95% posterior intervals from the network.
+The script also scores the plug-in forecast at the MLE (today's variance filtered at the estimate) with the
+known-truth backtest of `svj_backtest.py`.
+"""
+
+import argparse
+import json
+from pathlib import Path
+
+import numpy as np
+
+from sbi4finance.svj import amortized, classical, model, plots, risk
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    parser.add_argument("--checkpoint", default=str(ROOT / "checkpoints" / "svj"))
+    parser.add_argument("--n-series", type=int, default=40)
+    parser.add_argument("--n-cells", type=int, default=100)
+    parser.add_argument("--seed", type=int, default=555)
+    parser.add_argument("--out", default=str(ROOT / "docs" / "results" / "svj-classical"))
+    args = parser.parse_args()
+    out = Path(args.out)
+    out.mkdir(parents=True, exist_ok=True)
+
+    posterior = amortized.AmortizedPosterior.load(args.checkpoint)
+    sims = model.simulate(args.n_series, seed=args.seed)
+    draws = posterior.sample(sims["returns"], num_samples=1_000, seed=args.seed + 1)
+    truths = sims["targets"][:, : model.N_PARAMS]
+    records = []
+    for i in range(args.n_series):
+        y, truth = sims["returns"][i], truths[i]
+        starts = [classical.prior_mean(), np.median(draws[i, :, : model.N_PARAMS], axis=0)]
+        fit = classical.fit_mle(y, starts, n_cells=args.n_cells)
+        lo, hi = np.quantile(draws[i, :, : model.N_PARAMS], [0.025, 0.975], axis=0)
+        # plug-in at the MLE, scored against 50,000 futures from the true parameters and today's true variance
+        plugin = risk.point_forecast_draws(fit.coords, y, seed=i)
+        futures = {h: -r for h, r in risk.horizon_returns(sims["targets"][i][None], (1, 10), 50_000, seed=i + 1).items()}
+        scores = {}
+        for h, r in risk.horizon_returns(plugin, (1, 10), 1, seed=i + 2).items():
+            var99, _ = risk.var_es(r)
+            var975, es975 = risk.var_es(r, var_level=0.975)
+            loss = futures[h]
+            scores[str(h)] = {
+                "exceedance_99": float(np.mean(loss > var99)),
+                "z2_975": float(1 - np.mean(loss * (loss > var975)) / (0.025 * es975)),
+            }
+        records.append({
+            "mle": fit.coords.tolist(),
+            "se": fit.se.tolist(),
+            "wald_covers": ((fit.lower <= truth) & (truth <= fit.upper)).tolist(),
+            "wald_width": (fit.upper - fit.lower).tolist(),
+            "posterior_covers": ((lo <= truth) & (truth <= hi)).tolist(),
+            "posterior_width": (hi - lo).tolist(),
+            "on_bound": fit.on_bound.tolist(),
+            "hessian_positive_definite": fit.hessian_positive_definite,
+            "loglik": fit.loglik,
+            "cpu_s": fit.cpu_s,
+            "truth": truth.tolist(),
+            "plugin_at_mle": scores,
+        })
+        print(f"series {i + 1}/{args.n_series}: {fit.cpu_s:.0f} CPU-s, Hessian PD {fit.hessian_positive_definite}, "
+              f"on bound {[model.QUANTITY_LABELS[j] for j in np.flatnonzero(fit.on_bound)]}")
+        (out / "classical_series.json").write_text(json.dumps(records, indent=1))
+
+    wald = np.array([r["wald_covers"] for r in records])
+    post = np.array([r["posterior_covers"] for r in records])
+    bound = np.array([r["on_bound"] for r in records])
+    pd_ok = np.array([r["hessian_positive_definite"] for r in records])
+    jsd_width = np.exp(np.array([r["wald_width"] for r in records])[:, 7])  # ratio upper / lower of the jump-size sd
+    summary = {
+        "n_series": args.n_series,
+        "median_cpu_s_per_fit": float(np.median([r["cpu_s"] for r in records])),
+        "fits_with_a_parameter_on_a_bound": int(bound.any(axis=1).sum()),
+        "bound_hits_by_parameter": dict(zip(model.QUANTITY_LABELS, bound.sum(0).tolist())),
+        "hessians_not_positive_definite": int((~pd_ok).sum()),
+        "wald_coverage_95": dict(zip(model.QUANTITY_LABELS, wald.mean(0).round(3).tolist())),
+        "posterior_coverage_95": dict(zip(model.QUANTITY_LABELS, post.mean(0).round(3).tolist())),
+        "jump_sd_wald_intervals_spanning_factor_100": int(np.sum(np.nan_to_num(jsd_width, nan=np.inf) > 100)),
+        "plugin_at_mle": {
+            h: {
+                "expected_exceedance_99": float(np.mean([r["plugin_at_mle"][h]["exceedance_99"] for r in records])),
+                "z2_975": float(np.mean([r["plugin_at_mle"][h]["z2_975"] for r in records])),
+            }
+            for h in ("1", "10")
+        },
+    }
+    (out / "classical.json").write_text(json.dumps(summary, indent=1))
+    n = args.n_series
+    binomial = lambda p: 1.96 * np.sqrt(np.clip(p * (1 - p), 1e-12, None) / n)
+    rows = []
+    for j, label in enumerate(model.QUANTITY_LABELS[: model.N_PARAMS]):
+        for name, cover in (("Wald", wald[:, j].mean()), ("posterior", post[:, j].mean())):
+            rows.append((f"{label} · {name}", 100 * cover, (100 * (cover - binomial(cover)), 100 * (cover + binomial(cover)))))
+    plots.interval_dots(rows, 95.0, "coverage of 95% intervals (%), with 95% binomial intervals",
+                        f"Wald against posterior intervals on {n} held-out series").savefig(out / "coverage.png", dpi=150)
+    print(json.dumps(summary, indent=1))
+
+
+if __name__ == "__main__":
+    main()

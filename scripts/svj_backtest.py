@@ -22,7 +22,6 @@ import numpy as np
 from scipy.stats import binom
 
 from sbi4finance.svj import amortized, model, plots, risk
-from sbi4finance.svj.filtering import filtered_variance
 
 ROOT = Path(__file__).resolve().parents[1]
 HORIZONS = (1, 10)
@@ -38,12 +37,6 @@ def risk_report(targets, n_paths, seed):
         var975, es975 = risk.var_es(r, var_level=0.975)
         out[h] = (var99, var975, es975)
     return out
-
-
-def filtered_targets(coords, returns, seed, n_state=20_000, n_particles=2_000):
-    _, cloud = filtered_variance(model.model_params(coords), returns, seed, n_particles)
-    v_t = np.random.default_rng(seed).choice(cloud, n_state)
-    return np.column_stack([np.repeat(coords[None], n_state, 0), model.log_spot_vol(v_t)])
 
 
 def main() -> None:
@@ -68,7 +61,7 @@ def main() -> None:
         y, truth = sims["returns"][i], sims["targets"][i]
         seed = args.seed + 10 * i
         reports = (
-            risk_report(filtered_targets(truth[: model.N_PARAMS], y, seed), 1, seed + 1),
+            risk_report(risk.point_forecast_draws(truth, y, seed), 1, seed + 1),
             risk_report(draws[i], 20, seed + 2),
             risk_report(risk.plugin_draws(draws[i], y, seed + 3), 1, seed + 4),
         )

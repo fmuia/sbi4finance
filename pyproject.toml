@@ -49,6 +49,7 @@ svj-validate = "python scripts/svj_validate.py"
 svj-agreement = "python scripts/svj_agreement.py"
 svj-backtest = "python scripts/svj_backtest.py"
 svj-rolling = "python scripts/svj_rolling.py"
+svj-classical = "python scripts/svj_classical.py"
 svj-daily = "python scripts/svj_daily.py"
 
 # GPU environment for Oscar (linux-64 only): `pixi install -e gpu` on a login node.
