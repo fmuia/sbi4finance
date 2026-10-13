@@ -1,0 +1,135 @@
+{
+ "n_series": 40,
+ "median_cpu_s_per_fit": 646.8400096154992,
+ "fits_with_a_parameter_on_a_bound": 20,
+ "bound_hits_by_parameter": {
+  "drift (%/yr)": 1,
+  "long-run vol": 0,
+  "half-life (days)": 0,
+  "CV of variance": 0,
+  "leverage rho": 4,
+  "jumps per year": 1,
+  "mean jump (%)": 0,
+  "jump sd (%)": 17
+ },
+ "hessians_not_positive_definite": 6,
+ "wald_coverage_95": {
+  "drift (%/yr)": 0.775,
+  "long-run vol": 0.775,
+  "half-life (days)": 0.675,
+  "CV of variance": 0.8,
+  "leverage rho": 0.75,
+  "jumps per year": 0.65,
+  "mean jump (%)": 0.425,
+  "jump sd (%)": 0.75
+ },
+ "posterior_coverage_95": {
+  "drift (%/yr)": 0.9,
+  "long-run vol": 0.95,
+  "half-life (days)": 0.975,
+  "CV of variance": 0.925,
+  "leverage rho": 0.95,
+  "jumps per year": 0.975,
+  "mean jump (%)": 0.975,
+  "jump sd (%)": 0.9
+ },
+ "jump_sd_wald_intervals_spanning_factor_100": 15,
+ "forecasts_on_these_series": {
+  "check": {
+   "1": {
+    "expected_exceedance_99": 0.009372,
+    "z2_975": 0.04592395104182441
+   },
+   "10": {
+    "expected_exceedance_99": 0.0097655,
+    "z2_975": 0.013468469415536016
+   }
+  },
+  "predictive": {
+   "1": {
+    "expected_exceedance_99": 0.010526500000000001,
+    "z2_975": -0.07238086084890834
+   },
+   "10": {
+    "expected_exceedance_99": 0.0113065,
+    "z2_975": -0.1377293349729452
+   }
+  },
+  "plugin_at_mle": {
+   "1": {
+    "expected_exceedance_99": 0.0109115,
+    "z2_975": -0.08721652590729947
+   },
+   "10": {
+    "expected_exceedance_99": 0.012554500000000001,
+    "z2_975": -0.20346067430968762
+   }
+  }
+ },
+ "plugin_at_mle_minus_check": {
+  "1": {
+   "exceedance_99": {
+    "mean": 0.0015395,
+    "se": 0.000523283267652548
+   },
+   "z2_975": {
+    "mean": -0.13314047694912387,
+    "se": 0.04765374321552606
+   }
+  },
+  "10": {
+   "exceedance_99": {
+    "mean": 0.002789,
+    "se": 0.0008172480243679597
+   },
+   "z2_975": {
+    "mean": -0.21692914372522365,
+    "se": 0.06666685191094729
+   }
+  }
+ },
+ "plugin_at_mle_minus_predictive": {
+  "1": {
+   "exceedance_99": {
+    "mean": 0.0003849999999999999,
+    "se": 0.0007798154778453551
+   },
+   "z2_975": {
+    "mean": -0.014835665058391123,
+    "se": 0.06171728488526122
+   }
+  },
+  "10": {
+   "exceedance_99": {
+    "mean": 0.0012480000000000002,
+    "se": 0.0008384664878705953
+   },
+   "z2_975": {
+    "mean": -0.06573133933674238,
+    "se": 0.06541619556646759
+   }
+  }
+ },
+ "predictive_minus_check": {
+  "1": {
+   "exceedance_99": {
+    "mean": 0.0011544999999999997,
+    "se": 0.0006326310495634837
+   },
+   "z2_975": {
+    "mean": -0.11830481189073275,
+    "se": 0.05397188719345735
+   }
+  },
+  "10": {
+   "exceedance_99": {
+    "mean": 0.001541,
+    "se": 0.000703567447972228
+   },
+   "z2_975": {
+    "mean": -0.15119780438848124,
+    "se": 0.05847497431219005
+   }
+  }
+ }
+}

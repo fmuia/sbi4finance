@@ -199,12 +199,30 @@ for export commands, evidence boundaries and the current inference results.
 | Notebook | Schedule item | What it shows |
 |---|---|---|
 | `notebooks/01_mmar_univariate.py` | Optional companion | Univariate multifractal model of asset returns (MMAR): simulator, prior predictive check, adapter and networks, pretrained checkpoint or CPU toy fit, recovery and calibration, posterior on SPMO and VOO |
+| `notebooks/svj_var_pipeline.py` | Optional P companion | Daily SVJ joint inference, particle audit and conditional log-loss forecasts |
 
 Export for people without marimo: `pixi run marimo export ipynb notebooks/01_mmar_univariate.py -o /tmp/01.ipynb --include-outputs`.
 
 ### Pairing with an agent
 
 `.claude/skills/marimo-pair/` is the [marimo-pair](https://github.com/marimo-team/marimo-pair) skill (Apache-2.0, vendored at commit 6cecaff). With `pixi run edit` running and the notebook open in the browser, an agent runs code in the live kernel and commits cell changes through marimo rather than editing the `.py` file. See the skill for the rules; the short version is that during a live session the kernel, not the file, is the source of truth.
+
+## SVJ advanced example: the end-to-end pipeline
+
+A proposal for item 5: calibrate a stochastic-volatility model with jumps (SVJ, Bates 1996 in the daily form of Eraker, Johannes and Polson 2003) from the last 1,000 daily returns of one name, and carry the posterior into VaR and ES. `src/sbi4finance/svj/` holds the whole daily process; [`docs/svj-pipeline.md`](docs/svj-pipeline.md) describes the design, how each piece was checked, and the results. [`docs/svj-results-summary.md`](docs/svj-results-summary.md) summarizes the results with the main figures, and [`docs/design/svj-design-document.md`](docs/design/svj-design-document.md) reproduces the design document the branch implements.
+
+```bash
+pixi run test-svj                  # unit tests: simulator, particle vs grid filter, MCMC diagnostics, risk, checks, audit
+pixi run svj-daily --ticker VOO    # one window, end to end: posterior -> misspecification -> audit -> VaR / ES
+pixi run svj-train                 # reference network, 2.56 million simulated series (about 1.5 h on 4 CPU cores)
+pixi run svj-validate              # SBC, coverage, recovery, contraction; builds the misspecification reference
+pixi run svj-agreement             # network and audit against particle MCMC on four series spanning the prior
+pixi run svj-backtest              # VaR and ES backtests with a known truth
+pixi run svj-backtest-check        # exact one-day check of the backtest itself, and of the filter's law of v_T
+pixi run svj-classical             # approximate ML and Wald intervals against posterior intervals on 40 series
+pixi run svj-rolling               # rolling posteriors and misspecification p-values on VOO and SPMO
+pixi run svj-costs                 # cost per name of each route, from the recorded runs; times the network pass
+```
 
 ## Cluster (Oscar)
 

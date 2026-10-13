@@ -88,6 +88,17 @@ rough-train = "python scripts/train_rough.py"
 rough-evaluate = "python scripts/evaluate_rough.py"
 rough-heldout-test = "python scripts/evaluate_rough_test.py"
 review-rough-inference = "marimo edit notebooks/09_rough_inference.py --no-token"
+svj-selfcheck = "python src/sbi4finance/svj/model.py"
+test-svj = "python -m unittest discover -s tests -p 'test_svj*.py' -v"
+svj-train = "python scripts/svj_train.py"
+svj-validate = "python scripts/svj_validate.py"
+svj-agreement = "python scripts/svj_agreement.py"
+svj-backtest = "python scripts/svj_backtest.py"
+svj-backtest-check = "python scripts/svj_backtest_check.py"
+svj-rolling = "python scripts/svj_rolling.py"
+svj-classical = "python scripts/svj_classical.py"
+svj-costs = "python scripts/svj_costs.py"
+svj-daily = "python scripts/svj_daily.py"
 
 # GPU environment for Oscar (linux-64 only): `pixi install -e gpu` on a login node.
 [tool.pixi.feature.cuda]
