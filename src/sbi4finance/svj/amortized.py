@@ -79,17 +79,32 @@ def build_workflow(seed=None, checkpoint_dir=None):
     )
 
 
-def train(out_dir, epochs, batches_per_epoch, batch_size, seed=2026, n_validation=512, *, bank=None):
+def train(out_dir, epochs, batches_per_epoch=None, batch_size=None, seed=2026, n_validation=None, *, bank=None):
     """Train online or from a finite bank in a NEW run directory.
 
     Both modes select the minimum-validation-loss epoch and verify a saved
     reload. A bank's test split is read for storage validation only; its arrays
     never reach fitting, normalization, epoch selection or smoke sampling.
+    Online mode requires batches_per_epoch and defaults to 512 validation
+    examples. Offline mode requires explicit epochs/batch_size and rejects
+    batches_per_epoch/n_validation: each epoch uses the complete training
+    split, and the bank supplies the complete validation split.
     """
     if Path(out_dir).exists():
         raise FileExistsError(f"training output already exists: {out_dir}")
-    if type(n_validation) is not int or n_validation <= 0:
-        raise ValueError("n_validation must be a positive integer")
+    for name, value in (("epochs", epochs), ("batch_size", batch_size)):
+        if type(value) is not int or value <= 0:
+            raise ValueError(f"{name} must be an explicit positive integer")
+    if type(seed) is not int or seed < 0:
+        raise ValueError("seed must be a nonnegative integer")
+    if bank is None:
+        if type(batches_per_epoch) is not int or batches_per_epoch <= 0:
+            raise ValueError("online training requires positive batches_per_epoch")
+        n_validation = 512 if n_validation is None else n_validation
+        if type(n_validation) is not int or n_validation <= 0:
+            raise ValueError("n_validation must be a positive integer")
+    elif batches_per_epoch is not None or n_validation is not None:
+        raise ValueError("offline training rejects batches_per_epoch and n_validation; bank splits define both budgets")
     task = banks.default_task()
     manifest = None
     if bank is None:

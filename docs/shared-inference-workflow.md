@@ -114,6 +114,9 @@ For offline fitting, records distinguish unique histories from repeated training
 exposures. Online batches are freshly simulated; its budget does not silently
 become a finite-bank epoch count. New candidates are selected/reloaded explicitly,
 then separately evaluated. A tiny train/reload run demonstrates plumbing only.
+Saved-bank commands require explicit `--epochs` and `--batch-size`. They reject
+the online-only `--preset`, `--batches-per-epoch` and `--n-validation` options;
+each offline epoch uses the training split and validation uses its reserved split.
 
 The shipped SVJ checkpoint remains byte-identical to the contribution, including
 its original training record and misspecification reference. Its new sidecar

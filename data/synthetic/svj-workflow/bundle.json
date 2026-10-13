@@ -18,11 +18,11 @@
     "training_workflow.py": "5a53bdd43996797133812e7ec578b08f191e7ed20b4f6b7059d28edaf9bb711c",
     "datasets/local.py": "eb98d430431e748755ad4c915860c90b661debae5cd25c18c14068eff402b244",
     "datasets/returns.py": "c8e8f559be1b7d2a6b0c19804feccbbe046db7c7f378b661f33dc6ff851d38d0",
-    "svj/model.py": "e7efb64088c591fd308c9133e4e2a5ae6d511c5fc960450c3cadecf6f059914b",
+    "svj/model.py": "9b39014080d81762a4531b9a9795d7289d7ccb9401c74f2c683284ad845c081e",
     "svj/bank.py": "8bd9a389a5724885f72ef56f29061cf53e47b06ef3db603658cd24b05d3c0e8a",
     "svj/adapters.py": "e776d28c14ed73d06e2d554bd314a80698e5dcf107ec2db4129eec37ef0174aa",
     "svj/artifacts.py": "52fd6af64ec1a4aa95549b9c685f4c35e5ee8f61fc06f7d64366cba502fb6a35",
-    "svj/amortized.py": "6c09be55cf18d400175c9603969172b9d4e160bfea6ed7dcb5d47c6ee39d17b9",
+    "svj/amortized.py": "7cdfa5d0708881e9acc9c8f2f01ddfeebd5392dbd92d1cc7242205ad7d2596f3",
     "svj/checks.py": "be94d48f3b91524832a2dc684ac068d02a8af4daf0fb1f48175b70e5b93540f1",
     "svj/filtering.py": "23fc5ba54c86654b9f4fb2856015a3a81bb7d069b93fb143381eaebff7f7ac51",
     "svj/audit.py": "a2cd6bc3a23c9dd6a49187806ddc5571f37089e7e2238574bbd86a0890657fd4",
@@ -33,7 +33,7 @@
   },
   "files": {
     "illustration.npz": "9915557eb09b713947dd1ded2f5ba9b87686f556158f49f0f7a89865019c5004",
-    "report.json": "42fbe9b07da55bea85961636dcfcb4ee2bff5bdf3cedd180e0c2b69c1d61e0ba",
+    "report.json": "7dd7e0240b7b52d3eef48b24bc5dbb3c5130aa98ec17a6f3ae4cb044f75708a1",
     "window/manifest.json": "9d2d200596bbdd3a3bf1babc34d54bbb5edebe6220c5de1d185a9658cc25586a",
     "window/observations.csv": "a4d38925d2cd3f7fbcad88bfb5264cce3c6d66ab06d78a52d0adfcc096ba66a6"
   },
