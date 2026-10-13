@@ -1,0 +1,969 @@
+{
+  "schema_version": 1,
+  "scope": "Byte inventory for the frozen synthetic Q HKDE decision at 2048 proposals. Hash identity is reproducibility evidence, not scientific acceptance.",
+  "base_commit": "b588df33d8fa1456c05bae67438d130d5b00ee1a",
+  "base_branch": "feat/hkde-offline-tutorial",
+  "hash_algorithm": "SHA256",
+  "path_root": "repository root; POSIX relative paths",
+  "workflow": {
+    "experiment_id": "hkde_boundary_defensive_importance_v2",
+    "evidence_scope": "S",
+    "measure": "Q",
+    "task": "configs/tasks/hkde_inference_bank.json",
+    "protocol": "configs/hkde_correction_boundary_protocol.json",
+    "checkpoint": "checkpoints/hkde-theta-intensity-provisional/model.keras",
+    "surrogate": "docs/results/hkde-surrogate/model.npz",
+    "parameter_names": [
+      "theta",
+      "jump_intensity"
+    ],
+    "prior_bounds": [
+      [
+        0.025,
+        0.065
+      ],
+      [
+        0.25,
+        1.0
+      ]
+    ],
+    "prior": "independent uniforms in raw parameter units",
+    "observation_shape": "[batch,9,1]",
+    "quote_noise_std_currency": 0.25,
+    "likelihood": "Independent Gaussian quote errors around all nine Fourier HKDE prices; fixed ordered puts in task.context.contracts.",
+    "participant_proposals": 2048,
+    "precision_proposals": 8192,
+    "precision_scope": "First 2048 rows and full 8192 are nested pools on each conditional panel; the larger pool is separate precision evidence and does not replace the participant budget.",
+    "proposal_weights": {
+      "frozen_flow": 0.8,
+      "uniform_prior": 0.1,
+      "product_arcsine": 0.1
+    },
+    "proposal_component_selection": "Independent categorical choice for each row",
+    "importance_weight": "p(y|a) p(a) / (0.8 q_phi(a|y) + 0.1 p(a) + 0.1 h(a)), normalized jointly; full raw-unit mixture density for every row",
+    "joint_parameters_and_normalized_weights_preserved": true,
+    "calibration_proposals": 2048,
+    "sir_draws": 512,
+    "calibration_scope": "Complete finite-pool SIR algorithm; 512 resamples share a pool and are not IID exact posterior draws.",
+    "targets": [
+      {
+        "strike": 95.0,
+        "maturity": 0.75,
+        "option_type": "put"
+      },
+      {
+        "strike": 80.0,
+        "maturity": 1.0,
+        "option_type": "put"
+      }
+    ],
+    "target_quantile_probabilities": [
+      0.05,
+      0.5,
+      0.95
+    ],
+    "reference_grid_nodes_per_axis": [
+      65,
+      129
+    ],
+    "correction_seed_root": 95021,
+    "used_test_root_seed": 95026,
+    "used_test_cases": 256,
+    "raw_neural_test_root_seed": 62026,
+    "raw_neural_test_accessed_by_this_inventory": false,
+    "selected_live_case": "validation:257",
+    "selected_live_example_scope": "Previously selected development example; no fresh population evidence."
+  },
+  "files": {
+    "checkpoints/hkde-theta-intensity-provisional/README.md": "d2c4fee996ba33c7f57961fedcdfe22f8a88b0f2ada710a8ab0ba59eee9ad1e3",
+    "checkpoints/hkde-theta-intensity-provisional/model.keras": "fee8e8a04aee1d7789754f0b9a239d0dd09dbd05baba1f78233d41a6b8a0a8b3",
+    "checkpoints/hkde-theta-intensity-provisional/protocol.json": "8ab6b9d87204f1b9a1ef55bb2a89877e7be81a24cfb9e9adba09e9dd319aae0d",
+    "checkpoints/hkde-theta-intensity-provisional/task.json": "859f6e25cbeff0dc6d85bfaa223e44c575fdb9d0f7d9e54b67da7445abca245d",
+    "checkpoints/hkde-theta-intensity-provisional/training.json": "057a86ca0802c5b8ad51a47cf499f0fd360685b4f76c3c722978d973d1411379",
+    "configs/hkde_correction_boundary_protocol.json": "12b7e422bfd89c8e072db1229e9df9b880e2f03fc0a79d5d1057564991d96b1d",
+    "configs/hkde_correction_protocol.json": "19ce380dc98f851c0d0ddbf671416f7387bbe6a3228dc71de32ce6ad2bf52be2",
+    "configs/hkde_inference_protocol.json": "8ab6b9d87204f1b9a1ef55bb2a89877e7be81a24cfb9e9adba09e9dd319aae0d",
+    "configs/hkde_surrogate_protocol.json": "2207029963df4e0d8de80d2a46c9735c4f91151a45b0061ad5fd4c60f5d81058",
+    "configs/tasks/hkde_inference_bank.json": "10a3ef098db7fb11c3b14d708a08cfbb656aa3c9052bab2b79c843278420870f",
+    "docs/hkde-calibration-gate-audit.md": "bbcf302288f85e2516d004cd00766d266fe8fa038662a7044cd956a36fafd73a",
+    "docs/hkde-correction-boundary-protocol.md": "d66058e49afcd4cb822aa81f5d9ccfd5404757b1b7ce2d7144dff0f8a4e4a7fb",
+    "docs/hkde-correction-protocol.md": "508fa40932bf7b259f3902d23932fca42c3191eeb436ce39fadba5f213fe83e7",
+    "docs/hkde-joint-inference.md": "6a868aeefa481729b55f39b9f6462762317db88a2379693399c23d00dbd908c7",
+    "docs/hkde-price-surrogate.md": "bb028902ecf0323113008620105806b10b74c9224cc656361ca42d880411dd44",
+    "docs/results/hkde-correction-v1/plots/manifest.json": "f8dc7cc2fa05fa600bf27be7679179f5cf6f0f151bd4550b53aabb3814ee5684",
+    "docs/results/hkde-correction-v1/plots/price-errors.png": "5b2d1e2930423a83b7b5ed3ac5b72bcc61bd41ea8701ddf5456c980b922597af",
+    "docs/results/hkde-correction-v1/plots/price-errors.svg": "ab61e7869bed4feaca415b63ba98235dd262e8f17a3e72059b9483633ce9661b",
+    "docs/results/hkde-correction-v1/plots/proposal-efficiency.png": "6d06aec51898ffcf206f1a4647a2da27a5477ec476a872e7f3ad477884e23e77",
+    "docs/results/hkde-correction-v1/plots/proposal-efficiency.svg": "6390c28983b4f21333c60eb050c1ecbc161c35fd9137f00be11fb030cc8f14be",
+    "docs/results/hkde-correction-v1/validation-checks.npz": "b75470a506e3cc14e9f927d36a5102ad8538c3e62fa5a9acadd6d314cb2b75f2",
+    "docs/results/hkde-correction-v1/validation.json": "80ad72e44f01f0e08cee1e9021ee16c3b57a66a8c9cd65dd625577efd57c620e",
+    "docs/results/hkde-correction/combined-stack-verification.json": "dc80b970099cdb13f61134ece21fb2dc5e48c68bf6a15a0ae8912f84dad1e04d",
+    "docs/results/hkde-correction/new-test-panels.npz": "e7bc3eae57dbdb7fdf4e3ffe60d9e01f7a7231bc26a7b5d7244b54a73acc510f",
+    "docs/results/hkde-correction/notebook-verification.json": "a20397e7bdeead12cf0692aa1d36cb1902a38daabb715c80312305bcfbcc11b8",
+    "docs/results/hkde-correction/plots/calibration.png": "847b3fb874fe5e5f80d17c90ef89b20be1d2bbae4284fbddb8f5b87f2cea7eb2",
+    "docs/results/hkde-correction/plots/calibration.svg": "0bf588dd6eb81539e96f6aec2ec2879c791444c2e43f50fa510277ea1c2b2419",
+    "docs/results/hkde-correction/plots/manifest.json": "28d09ff41ab712b19196d0f8eb04cf06dae35fc6653529a2fa38f9d51b95ce6c",
+    "docs/results/hkde-correction/plots/price-errors.png": "c178b4fe1bbe50976f5d79556cff0d967a47e5dce08c4e3ea78eb7c65dbf7441",
+    "docs/results/hkde-correction/plots/price-errors.svg": "e09c81a11733e28f17a8c08cac24c047d1f4d036294400210ec92af2421576b3",
+    "docs/results/hkde-correction/plots/proposal-efficiency.png": "c34324cd4e45e498f6a40d45eb58ac7fdf74ed250ede5c2e0ae5aeced290d296",
+    "docs/results/hkde-correction/plots/proposal-efficiency.svg": "13e6711f6bb9917e1cdd46abcb9c40ff8fd8ce4d36add0f502ba5920d98826ee",
+    "docs/results/hkde-correction/plots/reference-pit.png": "e097bccc771ebd41826ebf5df087968ca12dde777c7b1a5b2bccb2ec3f30e38e",
+    "docs/results/hkde-correction/plots/reference-pit.svg": "ea8980e711a80918f7e1b7c32954dcc07f6058ded2e76021d2dcb39cd5474478",
+    "docs/results/hkde-correction/software-verification.json": "ec5615dc57087ffa830bd894ec1de005d03fb40df56534241436124b7346b5c0",
+    "docs/results/hkde-correction/test-checks.npz": "d95dfdb943a65a11d6bb22efd22ecd9ed24a4996ae14b86dc49dda75472c9309",
+    "docs/results/hkde-correction/test-independent-audit.json": "4505a9a77577cb17096f7c03a97629a435a356c6f50e40d978eee83785222b23",
+    "docs/results/hkde-correction/test-reference-pit.npz": "699fa8a84411bcadb2c26c4133a0d17bf9e7a22f29bcb13cc8371eeb823ca281",
+    "docs/results/hkde-correction/test.json": "e192f9c4029f0b2a16480d58ed671dfe6d2e6a11d594330d714e58917e66c090",
+    "docs/results/hkde-correction/validation-checks.npz": "2ee4b825ff5503a6ff73cf45f96e694f050e33c5fb477e20a6248a2bad7de67f",
+    "docs/results/hkde-correction/validation-independent-audit.json": "5f855b940a86b5aad0c60b236c7b99c9b875b804328655e6a430db0144cd38d0",
+    "docs/results/hkde-correction/validation.json": "024cb9f0131866e28cec940e0d6cb58ee93e79379c72325e26fd49a6ea371e87",
+    "docs/results/hkde-gate-audit/checks.npz": "ade1cde3922b8ea51ebbc32df4ebce766c0e026dbd9aaecc59845180db518d5c",
+    "docs/results/hkde-gate-audit/conditional-cdf-errors.png": "bc55821dddaa952d30d7b8189c225f04d72f289a3d89a07247b0fea7bf1589c0",
+    "docs/results/hkde-gate-audit/input-consistency.json": "316ddd3b52559aa79d7eda40380210760f013d19b2d58d08931368e15363f4da",
+    "docs/results/hkde-gate-audit/oracle-rank-control.png": "91647552ae27d7d8155d56634201dde43b4ae01e502a8ca04c37938cf5639690",
+    "docs/results/hkde-gate-audit/paired-rank-errors.png": "fd3198dbdbc97f78362dd508f8f65234778d766a9123555822f761aadd3fd1f8",
+    "docs/results/hkde-gate-audit/report.json": "87f92ec98ebb6c5969c502232fa93c7df5e3c6bef6942ece249068be2c411dee",
+    "docs/results/hkde-gate-audit/verification.json": "6a7aeb6f9a2adaebe15d487da8a49eda898e3c73040a4a9612fa738ef4939b30",
+    "docs/results/hkde-inference/bank-manifest.json": "04c35fd11291c4f10ace19a3989bd61125c4832b74e3c80da70e7014af027447",
+    "docs/results/hkde-inference/bank-verification.json": "6aa79a673556420c9cd349adb8fe03e32750120de540cfe95314386beae881e8",
+    "docs/results/hkde-inference/figures/joint-posterior-case-257.png": "932bd652af413c07fa796b0f370b6b6dbbf96824192de556b601a6972c268f8d",
+    "docs/results/hkde-inference/figures/joint-posterior-case-257.svg": "4fb348aaa4fc73435a2de7146d11abdc3e0510247b439b290e92d8cde23badb6",
+    "docs/results/hkde-inference/figures/manifest.json": "240322a1ec22251c009b0f5a037813bf43e05de701b4a44de4ccfe7211c8f7b8",
+    "docs/results/hkde-inference/figures/prior-to-posterior.png": "cd59b8f9f1512a813bb93de24273eb09fbf8880362c202057c529d5d381b8751",
+    "docs/results/hkde-inference/figures/prior-to-posterior.svg": "da2771b5c7a4998e5ccb6d21003ff9e52b973617edd730bd28ea44e6a387ff7c",
+    "docs/results/hkde-inference/figures/sbc-ranks.png": "19e856c994719282481750441e833e0ffc1652951ce53a50aa2d8d9ca262e4d4",
+    "docs/results/hkde-inference/figures/sbc-ranks.svg": "9d78170e3c5d7036ccf0a5043e382c32837483c13bde71abede4a32991aa9117",
+    "docs/results/hkde-inference/figures/target-price-errors.png": "e7e65881b191651f2742201d53e78d313e1e7d3c73c30de98e8d826f17e269e3",
+    "docs/results/hkde-inference/figures/target-price-errors.svg": "d14aca7e9ad7937fa41e3effb5744b487235eed0fd507302c88672d89eab64be",
+    "docs/results/hkde-inference/neural-validation.json": "743500b877feabe5b4476f9a8ea66c61eb61038872e23c61cf651279d0cbc636",
+    "docs/results/hkde-inference/notebook-verification.json": "87f83e158f48a6f75159d0a86e940b39c0e5b8d220d9e6bbbc1f26d3650876bd",
+    "docs/results/hkde-inference/reference-grid.npz": "532d8ad4a7ae0321f6d1ae1a25fcb5124859b3884d6c7cc90d62abfb0401d0b2",
+    "docs/results/hkde-inference/reference.json": "8bc2851856e4171012718eed2d3bd57e71c0f93d71ac5cf03af18812370ea569",
+    "docs/results/hkde-inference/run-provenance.json": "ea98c5325ff37ab5594292fa861bdaad4e81e7880115b201f5cc40a95a1c313c",
+    "docs/results/hkde-inference/training.json": "057a86ca0802c5b8ad51a47cf499f0fd360685b4f76c3c722978d973d1411379",
+    "docs/results/hkde-inference/validation-checks.npz": "c25e83ed45c5f890c120f56de04db8e50fd540279f79cdbec9c4c4a280fdf653",
+    "docs/results/hkde-live-demo/live-joint.png": "2da4ba1e655e796c076417644ec169ca111bd2fb0e7c8e7bb8a1d77845e22af3",
+    "docs/results/hkde-live-demo/live-target-prices.png": "5abeb8ecf19401d2c91a49a1c24d7626a11accdd60429317adae8afca40d1b7c",
+    "docs/results/hkde-live-demo/verification.json": "d38c850337106c473d0c26bb5d7036e80367439cee988240b2c100134549c598",
+    "docs/results/hkde-surrogate/bank-test.npz": "d474b248a1ddd2911f92b3e441f6777ffb8f85826e5c22a20d38b5375451fd33",
+    "docs/results/hkde-surrogate/bank-train.npz": "f63352a946c3d3aeef0379d55c9f32f4c4e905ad25351c4474fe1a7098e9a8fb",
+    "docs/results/hkde-surrogate/bank-validation.npz": "92f0516600e64e278ea9856d5742998ddef087300d6bcce2277632174f57ab0b",
+    "docs/results/hkde-surrogate/checks.npz": "03a0e1fd685a92ae03d538a57ee543f97bc7c94ce815260cd0e205784c9f3405",
+    "docs/results/hkde-surrogate/model.npz": "b342b2850f8973af77cc572dc1dde7c7bbe47737c2c3fd6d6a15362907d07681",
+    "docs/results/hkde-surrogate/notebook-verification.json": "20adbecdfff59a76d9e8e092348e0c52eb720b009395caba58c5c34dbd89dd01",
+    "docs/results/hkde-surrogate/plots/manifest.json": "3fea4904d7faa91209a7e4a837802a441a1a8bedfe28a12cd2cfce357e2ab722",
+    "docs/results/hkde-surrogate/plots/paired-errors.png": "23d37e0412a580e7d6bf2a43587e00f612bbbcce1eca05b25fcb48610af413e4",
+    "docs/results/hkde-surrogate/plots/paired-errors.svg": "c0b210fd8d91ba3fefb5681142fa0dd82bc8d1ac05568a0ccb430dab24e2ed41",
+    "docs/results/hkde-surrogate/plots/parameter-errors.png": "5b7f0d1c4798daa29972859874d6b11f5a5c29172ce707dc14cefc88dda638c4",
+    "docs/results/hkde-surrogate/plots/parameter-errors.svg": "14ef8a3eeb3415cf59797881ad3f7829cecbc92421bb66edb4135a6e1c75302b",
+    "docs/results/hkde-surrogate/plots/timing.png": "de6ff9b8045c773eada7f66a2c333f9431dffbb8e1e037dcce93ee903e3c2b78",
+    "docs/results/hkde-surrogate/plots/timing.svg": "8813ba4ca94ba83f168b36c274e104e0430a96049c68e63635a8decb338cfd08",
+    "docs/results/hkde-surrogate/report.json": "3783b67ee97ca58c286849dc237c6b76b0a84f636e07548b563593e0278858ed",
+    "notebooks/10_hkde_corrected_workflow.py": "11b49eb7b6c4f673b3d705472bab290e2764de5b3e7d5fca3392d868a81cbebf",
+    "pixi.lock": "749dac2b9ae02df22ddaa8ae298d18804c53d7a040103a8f1df0dffc488d8933",
+    "pyproject.toml": "3517fb05e0b69734d00ea7a498a3432cb26aa77cb154ff0dee53afbab43e1fc8",
+    "scripts/audit_hkde_calibration_gate.py": "684253bc54995ca394426bb9e7c87e672e41678158d899739368430972832eed",
+    "scripts/check_hkde_reference.py": "e7a5a724a0af492564676ca76041f571c4669bf025bcea4e81474d933c083668",
+    "scripts/check_hkde_saved_inputs.py": "4c967edc31ebcc5e1bca9bd29e78ec5e76347b0e163157228534df8063c27e7b",
+    "scripts/evaluate_hkde.py": "23e60a0eccb02c620f9f425d6ef86134c209bc435bf68103381151f9b26ef504",
+    "scripts/evaluate_hkde_correction.py": "c665327828de97c61702d4744f6a43df38e725f10899a704aafbca4ccdf055b3",
+    "scripts/plot_hkde_correction.py": "b8612d45c543b61ceb1257c3e7d049c61f290f92b71c2031c4d7dc637f41a47f",
+    "scripts/plot_hkde_inference.py": "b6175f77b251b3fad7c37fc43cbe8988742298ed134d78d49fd474543f0940b7",
+    "scripts/plot_hkde_surrogate.py": "d00997da7d1b3e25e1af7c99c2defa5e0c8af4175115fe36d9bb5e5134f926d5",
+    "scripts/run_hkde_surrogate.py": "6bcea4a28d7a9ed52a78647162b4f48d0cdabc13103e70730df2e7c8f9705a6e",
+    "scripts/train_hkde.py": "62a8c7bc6b6a11048a033c339713222ca19a5633a8b066b8a944ed64d6931fab",
+    "src/sbi4finance/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/sbi4finance/bergomi.py": "39234a7e8443a3d27fa9b460c3e9e584e41e8780bd084b6113648c78f1dd3c1d",
+    "src/sbi4finance/gbm.py": "8d491f019326712a4a6e985b491658146fa3da9f57f513a6fed421259d55cb5d",
+    "src/sbi4finance/gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
+    "src/sbi4finance/gbm_inference.py": "6ed129797ed45d612f39bead2a4823958629bff577c05f69a0a767f9f0f18a00",
+    "src/sbi4finance/heston.py": "f85237a6f223689bb83fb2837d6f6cba855867f5da9f919667163ae4a4c8996c",
+    "src/sbi4finance/heston_bank.py": "3281382cf1d153f1d67be9412ff5c77e027c259a1353baef114a97b78817a9f1",
+    "src/sbi4finance/heston_forecast.py": "bee57c2e8294407418a4ddd3105e70f0d4ea6cdc845e8824636e4b40f2b6c091",
+    "src/sbi4finance/heston_inference.py": "9c5133fde58817fb28b1fb9f48f34fcd1f6de8f0ea31deebbd7fddd9a2e976eb",
+    "src/sbi4finance/heston_reference.py": "18480ee7c42ebace4b3b7f53b26fa08d4d1f36ccac500cbc5a20a356b57f68e0",
+    "src/sbi4finance/heston_transforms.py": "d930f4dd25189b60f348f554e09b36ff9850edcf0e277f7ddd8c6d66fa56d042",
+    "src/sbi4finance/hkde.py": "c6618b6bd54eae169b4fc0e90201b8582b8e7da14ff41a305c27e4e2bd06e503",
+    "src/sbi4finance/hkde_correction.py": "304916bb3892181dcfdc8afbf2796e19ade6513e5b515802882268ec7dd5ea29",
+    "src/sbi4finance/hkde_diagnostics.py": "31d240ab6f5a592b253e63a9bc830770a5b8b9818a2532c3c4cc3b249eba9687",
+    "src/sbi4finance/hkde_inference.py": "616014c460d6d0d164a08590d6ac47114cdabfb030584574854dc4ecfd061beb",
+    "src/sbi4finance/hkde_reference.py": "159194818b1f8b5a6194e1340568264271bad895474e5e1c9c8ce6cfdb71074b",
+    "src/sbi4finance/hkde_surrogate.py": "ddaea17ea2230acaeadf61a47af45187983200967bb395d1d1c67c9aaa605859",
+    "src/sbi4finance/mmar/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/sbi4finance/mmar/univariate.py": "1989f8a9eb7e057436220d45971b6effadbcfe2555b678c23f43fa52890c6e34",
+    "src/sbi4finance/option_bank.py": "8d41e6cecf115f6aa96475295c8291b9c6474e0c1e44ead001539129f3ba3d0a",
+    "src/sbi4finance/option_panel.py": "b37400bfc7f7ec91d208e8637cee1fcb53885b76ca0b00c016574b495fa035f2",
+    "src/sbi4finance/rough_bergomi.py": "ab47c3bcd3292fde093b4aaaf4fb668101793997dc25afe11a485ec8f2537b8f",
+    "tests/test_hkde.py": "3418fe49330e4bc8e0a0c17062415696b3c736375620f9396b4763de89687b95",
+    "tests/test_hkde_correction.py": "872928b7692e0bb7a457eeef8b0d342834e518e853884123032da9980fc24f42",
+    "tests/test_hkde_correction_run.py": "555da4b0a7fed0f172dcec96646ed4f26699f172d4523113319a69dda3bf068b",
+    "tests/test_hkde_diagnostics.py": "833890fa47a0ea297b9968dc196c2a9cd58d7bef29612f7b0e1eb389000d4705",
+    "tests/test_hkde_gate_audit.py": "314dc95171262eb44b81007d04c814f3e76a2b66451b8e8568e26a291fdb8962",
+    "tests/test_hkde_inference.py": "25c03d0043b147be9c81e197cc33a6d98f1cbd1c01dcfdd56ec85512e985d797",
+    "tests/test_hkde_reference.py": "03a81cf6d9451913713a5fa943e037e34aff1f54966435e333f6f6f3f4df7d1e",
+    "tests/test_hkde_surrogate.py": "7dc3c51bd98438907cb830e2c81a91909550dcf6da30e09c3f8e488750c020d3",
+    "tests/test_hkde_surrogate_run.py": "2fe18ad6c4cd9e89dc5af01c2ee8d838889cec75b61688f20ec5eb14fdf88403"
+  },
+  "categories": {
+    "environment_specification": [
+      "pixi.lock",
+      "pyproject.toml"
+    ],
+    "frozen_checkpoint": [
+      "checkpoints/hkde-theta-intensity-provisional/README.md",
+      "checkpoints/hkde-theta-intensity-provisional/model.keras",
+      "checkpoints/hkde-theta-intensity-provisional/protocol.json",
+      "checkpoints/hkde-theta-intensity-provisional/task.json",
+      "checkpoints/hkde-theta-intensity-provisional/training.json"
+    ],
+    "frozen_protocols": [
+      "configs/hkde_correction_boundary_protocol.json",
+      "configs/hkde_correction_protocol.json",
+      "configs/hkde_inference_protocol.json",
+      "configs/hkde_surrogate_protocol.json",
+      "configs/tasks/hkde_inference_bank.json"
+    ],
+    "historical_boundary_correction": [
+      "docs/results/hkde-correction/combined-stack-verification.json",
+      "docs/results/hkde-correction/new-test-panels.npz",
+      "docs/results/hkde-correction/notebook-verification.json",
+      "docs/results/hkde-correction/plots/calibration.png",
+      "docs/results/hkde-correction/plots/calibration.svg",
+      "docs/results/hkde-correction/plots/manifest.json",
+      "docs/results/hkde-correction/plots/price-errors.png",
+      "docs/results/hkde-correction/plots/price-errors.svg",
+      "docs/results/hkde-correction/plots/proposal-efficiency.png",
+      "docs/results/hkde-correction/plots/proposal-efficiency.svg",
+      "docs/results/hkde-correction/plots/reference-pit.png",
+      "docs/results/hkde-correction/plots/reference-pit.svg",
+      "docs/results/hkde-correction/software-verification.json",
+      "docs/results/hkde-correction/test-checks.npz",
+      "docs/results/hkde-correction/test-independent-audit.json",
+      "docs/results/hkde-correction/test-reference-pit.npz",
+      "docs/results/hkde-correction/test.json",
+      "docs/results/hkde-correction/validation-checks.npz",
+      "docs/results/hkde-correction/validation-independent-audit.json",
+      "docs/results/hkde-correction/validation.json"
+    ],
+    "historical_delivery_support": [
+      "docs/hkde-calibration-gate-audit.md",
+      "docs/hkde-correction-boundary-protocol.md",
+      "docs/hkde-correction-protocol.md",
+      "docs/hkde-joint-inference.md",
+      "docs/hkde-price-surrogate.md",
+      "src/sbi4finance/bergomi.py",
+      "src/sbi4finance/gbm_inference.py",
+      "src/sbi4finance/heston_bank.py",
+      "src/sbi4finance/heston_forecast.py",
+      "src/sbi4finance/heston_inference.py",
+      "src/sbi4finance/heston_reference.py",
+      "src/sbi4finance/heston_transforms.py",
+      "src/sbi4finance/mmar/__init__.py",
+      "src/sbi4finance/mmar/univariate.py",
+      "src/sbi4finance/rough_bergomi.py"
+    ],
+    "historical_gate_audit": [
+      "docs/results/hkde-gate-audit/checks.npz",
+      "docs/results/hkde-gate-audit/conditional-cdf-errors.png",
+      "docs/results/hkde-gate-audit/input-consistency.json",
+      "docs/results/hkde-gate-audit/oracle-rank-control.png",
+      "docs/results/hkde-gate-audit/paired-rank-errors.png",
+      "docs/results/hkde-gate-audit/report.json",
+      "docs/results/hkde-gate-audit/verification.json"
+    ],
+    "historical_live_delivery": [
+      "docs/results/hkde-live-demo/live-joint.png",
+      "docs/results/hkde-live-demo/live-target-prices.png",
+      "docs/results/hkde-live-demo/verification.json"
+    ],
+    "historical_predecessor_correction": [
+      "docs/results/hkde-correction-v1/plots/manifest.json",
+      "docs/results/hkde-correction-v1/plots/price-errors.png",
+      "docs/results/hkde-correction-v1/plots/price-errors.svg",
+      "docs/results/hkde-correction-v1/plots/proposal-efficiency.png",
+      "docs/results/hkde-correction-v1/plots/proposal-efficiency.svg",
+      "docs/results/hkde-correction-v1/validation-checks.npz",
+      "docs/results/hkde-correction-v1/validation.json"
+    ],
+    "hkde_tests": [
+      "tests/test_hkde.py",
+      "tests/test_hkde_correction.py",
+      "tests/test_hkde_correction_run.py",
+      "tests/test_hkde_diagnostics.py",
+      "tests/test_hkde_gate_audit.py",
+      "tests/test_hkde_inference.py",
+      "tests/test_hkde_reference.py",
+      "tests/test_hkde_surrogate.py",
+      "tests/test_hkde_surrogate_run.py"
+    ],
+    "numerical_reference_and_neural_baseline": [
+      "docs/results/hkde-inference/bank-manifest.json",
+      "docs/results/hkde-inference/bank-verification.json",
+      "docs/results/hkde-inference/figures/joint-posterior-case-257.png",
+      "docs/results/hkde-inference/figures/joint-posterior-case-257.svg",
+      "docs/results/hkde-inference/figures/manifest.json",
+      "docs/results/hkde-inference/figures/prior-to-posterior.png",
+      "docs/results/hkde-inference/figures/prior-to-posterior.svg",
+      "docs/results/hkde-inference/figures/sbc-ranks.png",
+      "docs/results/hkde-inference/figures/sbc-ranks.svg",
+      "docs/results/hkde-inference/figures/target-price-errors.png",
+      "docs/results/hkde-inference/figures/target-price-errors.svg",
+      "docs/results/hkde-inference/neural-validation.json",
+      "docs/results/hkde-inference/notebook-verification.json",
+      "docs/results/hkde-inference/reference-grid.npz",
+      "docs/results/hkde-inference/reference.json",
+      "docs/results/hkde-inference/run-provenance.json",
+      "docs/results/hkde-inference/training.json",
+      "docs/results/hkde-inference/validation-checks.npz"
+    ],
+    "scientific_package_source": [
+      "src/sbi4finance/__init__.py",
+      "src/sbi4finance/gbm.py",
+      "src/sbi4finance/gbm_bank.py",
+      "src/sbi4finance/heston.py",
+      "src/sbi4finance/hkde.py",
+      "src/sbi4finance/hkde_correction.py",
+      "src/sbi4finance/hkde_diagnostics.py",
+      "src/sbi4finance/hkde_inference.py",
+      "src/sbi4finance/hkde_reference.py",
+      "src/sbi4finance/hkde_surrogate.py",
+      "src/sbi4finance/option_bank.py",
+      "src/sbi4finance/option_panel.py"
+    ],
+    "scientific_runner_and_audit_source": [
+      "scripts/audit_hkde_calibration_gate.py",
+      "scripts/check_hkde_reference.py",
+      "scripts/check_hkde_saved_inputs.py",
+      "scripts/evaluate_hkde.py",
+      "scripts/evaluate_hkde_correction.py",
+      "scripts/plot_hkde_correction.py",
+      "scripts/plot_hkde_inference.py",
+      "scripts/plot_hkde_surrogate.py",
+      "scripts/run_hkde_surrogate.py",
+      "scripts/train_hkde.py"
+    ],
+    "unchanged_participant_notebook": [
+      "notebooks/10_hkde_corrected_workflow.py"
+    ],
+    "validated_surrogate": [
+      "docs/results/hkde-surrogate/bank-test.npz",
+      "docs/results/hkde-surrogate/bank-train.npz",
+      "docs/results/hkde-surrogate/bank-validation.npz",
+      "docs/results/hkde-surrogate/checks.npz",
+      "docs/results/hkde-surrogate/model.npz",
+      "docs/results/hkde-surrogate/notebook-verification.json",
+      "docs/results/hkde-surrogate/plots/manifest.json",
+      "docs/results/hkde-surrogate/plots/paired-errors.png",
+      "docs/results/hkde-surrogate/plots/paired-errors.svg",
+      "docs/results/hkde-surrogate/plots/parameter-errors.png",
+      "docs/results/hkde-surrogate/plots/parameter-errors.svg",
+      "docs/results/hkde-surrogate/plots/timing.png",
+      "docs/results/hkde-surrogate/plots/timing.svg",
+      "docs/results/hkde-surrogate/report.json"
+    ]
+  },
+  "verification": {
+    "method": "Read-only SHA256 over file bytes; compare recorded maps/scalars to resolved current paths. For mismatches locate an exact historical git blob. Compare all inventory bytes with base_commit.",
+    "file_count": 128,
+    "all_inventory_files_match_base_commit": true,
+    "frozen_loader": {
+      "function": "scripts/evaluate_hkde_correction.py:load_inputs",
+      "passed": true,
+      "validation_input_map_equals_loader": true,
+      "test_input_map_equals_loader": true,
+      "validation_and_test_source_maps_match_current": true,
+      "validation_and_test_checks_hashes_match": true,
+      "neural_checkpoint_loaded_for_inference": false,
+      "new_model_panels": 0,
+      "new_estimator_proposals": 0
+    },
+    "historical_binding_checks": [
+      {
+        "report": "docs/results/hkde-correction/validation.json",
+        "field": "input_sha256",
+        "resolution": "repository_relative",
+        "checked": 12,
+        "matched": 12,
+        "scope": "active_frozen_workflow"
+      },
+      {
+        "report": "docs/results/hkde-correction/validation.json",
+        "field": "source_sha256",
+        "resolution": "script_or_package_basename",
+        "checked": 8,
+        "matched": 8,
+        "scope": "active_frozen_workflow"
+      },
+      {
+        "report": "docs/results/hkde-correction/validation.json",
+        "field": "checks_sha256",
+        "resolution": "repository_relative",
+        "checked": 1,
+        "matched": 1,
+        "scope": "active_frozen_workflow",
+        "path_overrides": {
+          "checks_sha256": "docs/results/hkde-correction/validation-checks.npz"
+        }
+      },
+      {
+        "report": "docs/results/hkde-correction/test.json",
+        "field": "input_sha256",
+        "resolution": "repository_relative",
+        "checked": 12,
+        "matched": 12,
+        "scope": "active_frozen_workflow"
+      },
+      {
+        "report": "docs/results/hkde-correction/test.json",
+        "field": "source_sha256",
+        "resolution": "script_or_package_basename",
+        "checked": 8,
+        "matched": 8,
+        "scope": "active_frozen_workflow"
+      },
+      {
+        "report": "docs/results/hkde-correction/test.json",
+        "field": "checks_sha256",
+        "resolution": "repository_relative",
+        "checked": 1,
+        "matched": 1,
+        "scope": "active_frozen_workflow",
+        "path_overrides": {
+          "checks_sha256": "docs/results/hkde-correction/test-checks.npz"
+        }
+      },
+      {
+        "report": "docs/results/hkde-correction/test.json",
+        "field": "test_panels_sha256",
+        "resolution": "repository_relative",
+        "checked": 1,
+        "matched": 1,
+        "scope": "active_frozen_workflow",
+        "path_overrides": {
+          "test_panels_sha256": "docs/results/hkde-correction/new-test-panels.npz"
+        }
+      },
+      {
+        "report": "docs/results/hkde-correction/test.json",
+        "field": "validation_report_sha256",
+        "resolution": "repository_relative",
+        "checked": 1,
+        "matched": 1,
+        "scope": "active_frozen_workflow",
+        "path_overrides": {
+          "validation_report_sha256": "docs/results/hkde-correction/validation.json"
+        }
+      },
+      {
+        "report": "docs/results/hkde-correction/test-independent-audit.json",
+        "field": "reference_pit_checks_sha256",
+        "resolution": "repository_relative",
+        "checked": 1,
+        "matched": 1,
+        "scope": "active_frozen_workflow",
+        "path_overrides": {
+          "reference_pit_checks_sha256": "docs/results/hkde-correction/test-reference-pit.npz"
+        }
+      },
+      {
+        "report": "docs/results/hkde-inference/reference.json",
+        "field": "source_sha256",
+        "resolution": "script_or_package_basename",
+        "checked": 8,
+        "matched": 8,
+        "scope": "active_frozen_workflow"
+      },
+      {
+        "report": "docs/results/hkde-inference/reference.json",
+        "field": "protocol_sha256",
+        "resolution": "repository_relative",
+        "checked": 1,
+        "matched": 1,
+        "scope": "active_frozen_workflow",
+        "path_overrides": {
+          "protocol_sha256": "configs/hkde_inference_protocol.json"
+        }
+      },
+      {
+        "report": "docs/results/hkde-inference/reference.json",
+        "field": "bank_config_sha256",
+        "resolution": "repository_relative",
+        "checked": 1,
+        "matched": 1,
+        "scope": "active_frozen_workflow",
+        "path_overrides": {
+          "bank_config_sha256": "configs/tasks/hkde_inference_bank.json"
+        }
+      },
+      {
+        "report": "docs/results/hkde-inference/reference.json",
+        "field": "reference_grid_sha256",
+        "resolution": "repository_relative",
+        "checked": 1,
+        "matched": 1,
+        "scope": "active_frozen_workflow",
+        "path_overrides": {
+          "reference_grid_sha256": "docs/results/hkde-inference/reference-grid.npz"
+        }
+      },
+      {
+        "report": "checkpoints/hkde-theta-intensity-provisional/training.json",
+        "field": "source_sha256",
+        "resolution": "script_or_package_basename",
+        "checked": 2,
+        "matched": 1,
+        "scope": "original_training_snapshot"
+      },
+      {
+        "report": "checkpoints/hkde-theta-intensity-provisional/training.json",
+        "field": "protocol_sha256",
+        "resolution": "repository_relative",
+        "checked": 1,
+        "matched": 1,
+        "scope": "active_frozen_workflow",
+        "path_overrides": {
+          "protocol_sha256": "configs/hkde_inference_protocol.json"
+        }
+      },
+      {
+        "report": "checkpoints/hkde-theta-intensity-provisional/training.json",
+        "field": "reference_report_sha256",
+        "resolution": "repository_relative",
+        "checked": 1,
+        "matched": 1,
+        "scope": "active_frozen_workflow",
+        "path_overrides": {
+          "reference_report_sha256": "docs/results/hkde-inference/reference.json"
+        }
+      },
+      {
+        "report": "checkpoints/hkde-theta-intensity-provisional/training.json",
+        "field": "bank_manifest_sha256",
+        "resolution": "repository_relative",
+        "checked": 1,
+        "matched": 1,
+        "scope": "active_frozen_workflow",
+        "path_overrides": {
+          "bank_manifest_sha256": "docs/results/hkde-inference/bank-manifest.json"
+        }
+      },
+      {
+        "report": "checkpoints/hkde-theta-intensity-provisional/training.json",
+        "field": "checkpoint_sha256",
+        "resolution": "repository_relative",
+        "checked": 1,
+        "matched": 1,
+        "scope": "active_frozen_workflow",
+        "path_overrides": {
+          "checkpoint_sha256": "checkpoints/hkde-theta-intensity-provisional/model.keras"
+        }
+      },
+      {
+        "report": "docs/results/hkde-surrogate/report.json",
+        "field": "input_sha256",
+        "resolution": "repository_relative",
+        "checked": 7,
+        "matched": 7,
+        "scope": "active_frozen_workflow",
+        "path_overrides": {
+          "reference.json": "docs/results/hkde-inference/reference.json",
+          "reference-grid.npz": "docs/results/hkde-inference/reference-grid.npz",
+          "neural-validation.json": "docs/results/hkde-inference/neural-validation.json",
+          "validation-checks.npz": "docs/results/hkde-inference/validation-checks.npz"
+        }
+      },
+      {
+        "report": "docs/results/hkde-surrogate/report.json",
+        "field": "source_sha256",
+        "resolution": "script_or_package_basename",
+        "checked": 4,
+        "matched": 4,
+        "scope": "active_frozen_workflow"
+      },
+      {
+        "report": "docs/results/hkde-surrogate/report.json",
+        "field": "artifact_sha256",
+        "resolution": "report_directory",
+        "checked": 5,
+        "matched": 5,
+        "scope": "active_frozen_workflow"
+      },
+      {
+        "report": "docs/results/hkde-gate-audit/report.json",
+        "field": "input_sha256",
+        "resolution": "repository_relative",
+        "checked": 26,
+        "matched": 26,
+        "scope": "active_frozen_workflow"
+      },
+      {
+        "report": "docs/results/hkde-gate-audit/report.json",
+        "field": "source_sha256",
+        "resolution": "repository_relative",
+        "checked": 1,
+        "matched": 1,
+        "scope": "active_frozen_workflow"
+      },
+      {
+        "report": "docs/results/hkde-gate-audit/report.json",
+        "field": "artifact_sha256",
+        "resolution": "report_directory",
+        "checked": 4,
+        "matched": 4,
+        "scope": "active_frozen_workflow"
+      },
+      {
+        "report": "docs/results/hkde-gate-audit/input-consistency.json",
+        "field": "artifact_sha256",
+        "resolution": "repository_relative",
+        "checked": 4,
+        "matched": 4,
+        "scope": "active_frozen_workflow"
+      },
+      {
+        "report": "docs/results/hkde-gate-audit/input-consistency.json",
+        "field": "audit_script_sha256",
+        "resolution": "repository_relative",
+        "checked": 1,
+        "matched": 1,
+        "scope": "active_frozen_workflow",
+        "path_overrides": {
+          "audit_script_sha256": "scripts/check_hkde_saved_inputs.py"
+        }
+      },
+      {
+        "report": "docs/results/hkde-gate-audit/input-consistency.json",
+        "field": "source_checks/*/saved_sha256",
+        "resolution": "repository_relative",
+        "checked": 8,
+        "matched": 8,
+        "scope": "active_frozen_workflow"
+      },
+      {
+        "report": "docs/results/hkde-gate-audit/input-consistency.json",
+        "field": "source_checks/*/current_sha256",
+        "resolution": "repository_relative",
+        "checked": 8,
+        "matched": 8,
+        "scope": "active_frozen_workflow"
+      },
+      {
+        "report": "docs/results/hkde-gate-audit/input-consistency.json",
+        "field": "input_checks/*/saved_sha256",
+        "resolution": "repository_relative",
+        "checked": 12,
+        "matched": 12,
+        "scope": "active_frozen_workflow"
+      },
+      {
+        "report": "docs/results/hkde-gate-audit/input-consistency.json",
+        "field": "input_checks/*/current_sha256",
+        "resolution": "repository_relative",
+        "checked": 12,
+        "matched": 12,
+        "scope": "active_frozen_workflow"
+      },
+      {
+        "report": "docs/results/hkde-correction-v1/validation.json",
+        "field": "input_sha256",
+        "resolution": "repository_relative",
+        "checked": 11,
+        "matched": 11,
+        "scope": "predecessor_v1_snapshot"
+      },
+      {
+        "report": "docs/results/hkde-correction-v1/validation.json",
+        "field": "source_sha256",
+        "resolution": "script_or_package_basename",
+        "checked": 8,
+        "matched": 6,
+        "scope": "predecessor_v1_snapshot"
+      },
+      {
+        "report": "docs/results/hkde-correction-v1/validation.json",
+        "field": "checks_sha256",
+        "resolution": "repository_relative",
+        "checked": 1,
+        "matched": 1,
+        "scope": "predecessor_v1_snapshot",
+        "path_overrides": {
+          "checks_sha256": "docs/results/hkde-correction-v1/validation-checks.npz"
+        }
+      },
+      {
+        "report": "docs/results/hkde-inference/neural-validation.json",
+        "field": "source_sha256",
+        "resolution": "script_or_package_basename",
+        "checked": 4,
+        "matched": 3,
+        "scope": "raw_neural_snapshot"
+      },
+      {
+        "report": "docs/results/hkde-inference/neural-validation.json",
+        "field": "protocol_sha256",
+        "resolution": "repository_relative",
+        "checked": 1,
+        "matched": 1,
+        "scope": "raw_neural_snapshot",
+        "path_overrides": {
+          "protocol_sha256": "configs/hkde_inference_protocol.json"
+        }
+      },
+      {
+        "report": "docs/results/hkde-inference/neural-validation.json",
+        "field": "checkpoint_sha256",
+        "resolution": "repository_relative",
+        "checked": 1,
+        "matched": 1,
+        "scope": "raw_neural_snapshot",
+        "path_overrides": {
+          "checkpoint_sha256": "checkpoints/hkde-theta-intensity-provisional/model.keras"
+        }
+      },
+      {
+        "report": "docs/results/hkde-inference/neural-validation.json",
+        "field": "reference_report_sha256",
+        "resolution": "repository_relative",
+        "checked": 1,
+        "matched": 1,
+        "scope": "raw_neural_snapshot",
+        "path_overrides": {
+          "reference_report_sha256": "docs/results/hkde-inference/reference.json"
+        }
+      },
+      {
+        "report": "docs/results/hkde-inference/neural-validation.json",
+        "field": "bank_manifest_sha256",
+        "resolution": "repository_relative",
+        "checked": 1,
+        "matched": 1,
+        "scope": "raw_neural_snapshot",
+        "path_overrides": {
+          "bank_manifest_sha256": "docs/results/hkde-inference/bank-manifest.json"
+        }
+      },
+      {
+        "report": "docs/results/hkde-inference/neural-validation.json",
+        "field": "checks_sha256",
+        "resolution": "repository_relative",
+        "checked": 1,
+        "matched": 1,
+        "scope": "raw_neural_snapshot",
+        "path_overrides": {
+          "checks_sha256": "docs/results/hkde-inference/validation-checks.npz"
+        }
+      },
+      {
+        "report": "docs/results/hkde-inference/run-provenance.json",
+        "field": "artifacts_sha256",
+        "resolution": "repository_relative",
+        "checked": 8,
+        "matched": 8,
+        "scope": "raw_neural_snapshot"
+      },
+      {
+        "report": "docs/results/hkde-live-demo/verification.json",
+        "field": "source_and_artifact_sha256",
+        "resolution": "repository_relative",
+        "checked": 50,
+        "matched": 50,
+        "scope": "historical_live_export",
+        "excluded_keys": [
+          "notebooks/11_hkde_calibration_audit.py"
+        ]
+      },
+      {
+        "report": "docs/results/hkde-live-demo/verification.json",
+        "field": "artifact_sha256",
+        "resolution": "report_directory",
+        "checked": 2,
+        "matched": 2,
+        "scope": "historical_live_export"
+      },
+      {
+        "report": "docs/results/hkde-correction/notebook-verification.json",
+        "field": "source_and_artifact_sha256",
+        "resolution": "repository_relative",
+        "checked": 49,
+        "matched": 48,
+        "scope": "superseded_cached_notebook10_export"
+      },
+      {
+        "report": "docs/results/hkde-gate-audit/verification.json",
+        "field": "source_and_artifact_sha256",
+        "resolution": "repository_relative",
+        "checked": 6,
+        "matched": 6,
+        "scope": "historical_cached_notebook11_export",
+        "excluded_keys": [
+          "notebooks/11_hkde_calibration_audit.py"
+        ]
+      },
+      {
+        "report": "docs/results/hkde-correction/plots/manifest.json",
+        "field": "input_sha256",
+        "resolution": "repository_relative",
+        "checked": 8,
+        "matched": 8,
+        "scope": "active_frozen_workflow",
+        "path_overrides": {
+          "validation.json": "docs/results/hkde-correction/validation.json",
+          "validation-checks.npz": "docs/results/hkde-correction/validation-checks.npz",
+          "test.json": "docs/results/hkde-correction/test.json",
+          "test-checks.npz": "docs/results/hkde-correction/test-checks.npz",
+          "reference_pit": "docs/results/hkde-correction/test-reference-pit.npz",
+          "independent_test_audit": "docs/results/hkde-correction/test-independent-audit.json",
+          "protocol": "configs/hkde_correction_boundary_protocol.json",
+          "baseline": "docs/results/hkde-inference/neural-validation.json"
+        }
+      },
+      {
+        "report": "docs/results/hkde-correction/plots/manifest.json",
+        "field": "artifact_sha256",
+        "resolution": "report_directory",
+        "checked": 8,
+        "matched": 8,
+        "scope": "active_frozen_workflow"
+      },
+      {
+        "report": "docs/results/hkde-correction/plots/manifest.json",
+        "field": "plot_script_sha256",
+        "resolution": "repository_relative",
+        "checked": 1,
+        "matched": 1,
+        "scope": "active_frozen_workflow",
+        "path_overrides": {
+          "plot_script_sha256": "scripts/plot_hkde_correction.py"
+        }
+      },
+      {
+        "report": "docs/results/hkde-surrogate/plots/manifest.json",
+        "field": "input_sha256",
+        "resolution": "repository_relative",
+        "checked": 3,
+        "matched": 3,
+        "scope": "active_frozen_workflow",
+        "path_overrides": {
+          "report.json": "docs/results/hkde-surrogate/report.json",
+          "checks.npz": "docs/results/hkde-surrogate/checks.npz",
+          "model.npz": "docs/results/hkde-surrogate/model.npz"
+        }
+      },
+      {
+        "report": "docs/results/hkde-surrogate/plots/manifest.json",
+        "field": "artifact_sha256",
+        "resolution": "report_directory",
+        "checked": 6,
+        "matched": 6,
+        "scope": "active_frozen_workflow"
+      },
+      {
+        "report": "docs/results/hkde-surrogate/plots/manifest.json",
+        "field": "plot_script_sha256",
+        "resolution": "repository_relative",
+        "checked": 1,
+        "matched": 1,
+        "scope": "active_frozen_workflow",
+        "path_overrides": {
+          "plot_script_sha256": "scripts/plot_hkde_surrogate.py"
+        }
+      }
+    ],
+    "bindings_checked": 325,
+    "bindings_matched": 320,
+    "active_frozen_workflow_mismatches": 0,
+    "historical_snapshot_mismatches": [
+      {
+        "report": "checkpoints/hkde-theta-intensity-provisional/training.json",
+        "field": "source_sha256",
+        "key": "train_hkde.py",
+        "path": "scripts/train_hkde.py",
+        "saved_sha256": "9320ba9eb1eca4b2ff8c7ae715bb963ad5e4eda23e23f43137a363930e85e55b",
+        "current_sha256": "62a8c7bc6b6a11048a033c339713222ca19a5633a8b066b8a944ed64d6931fab",
+        "scope": "original_training_snapshot",
+        "preserved_revision": "45d94fb24b037f71e74c1775ffc38a23de5d7b2f",
+        "preserved_revision_hash_matches": true
+      },
+      {
+        "report": "docs/results/hkde-correction-v1/validation.json",
+        "field": "source_sha256",
+        "key": "evaluate_hkde_correction.py",
+        "path": "scripts/evaluate_hkde_correction.py",
+        "saved_sha256": "662aa98493724dd88dd8fc0200c1895c1d54ac91ddf6aa805b7dca6fde607a33",
+        "current_sha256": "c665327828de97c61702d4744f6a43df38e725f10899a704aafbca4ccdf055b3",
+        "scope": "predecessor_v1_snapshot",
+        "preserved_revision": "6fd281c3699aee37fa1803284b9f131b70cac08b",
+        "preserved_revision_hash_matches": true
+      },
+      {
+        "report": "docs/results/hkde-correction-v1/validation.json",
+        "field": "source_sha256",
+        "key": "hkde_correction.py",
+        "path": "src/sbi4finance/hkde_correction.py",
+        "saved_sha256": "cd8f4b9bc73f76d5fea4139d4acb3e8e1316aa8470c3c56e434fee9f1cb8e6ad",
+        "current_sha256": "304916bb3892181dcfdc8afbf2796e19ade6513e5b515802882268ec7dd5ea29",
+        "scope": "predecessor_v1_snapshot",
+        "preserved_revision": "6fd281c3699aee37fa1803284b9f131b70cac08b",
+        "preserved_revision_hash_matches": true
+      },
+      {
+        "report": "docs/results/hkde-inference/neural-validation.json",
+        "field": "source_sha256",
+        "key": "evaluate_hkde.py",
+        "path": "scripts/evaluate_hkde.py",
+        "saved_sha256": "4f3b9fcbf34256bbb82a53c6feb2baf8480ba4b9ea03a23a7125a0cd568ffa21",
+        "current_sha256": "23e60a0eccb02c620f9f425d6ef86134c209bc435bf68103381151f9b26ef504",
+        "scope": "raw_neural_snapshot",
+        "preserved_revision": "45d94fb24b037f71e74c1775ffc38a23de5d7b2f",
+        "preserved_revision_hash_matches": true
+      },
+      {
+        "report": "docs/results/hkde-correction/notebook-verification.json",
+        "field": "source_and_artifact_sha256",
+        "key": "notebooks/10_hkde_corrected_workflow.py",
+        "path": "notebooks/10_hkde_corrected_workflow.py",
+        "saved_sha256": "43787ac91dde5496db738f71d940b4f552061cb6efc864a326434ccc9827ba93",
+        "current_sha256": "11b49eb7b6c4f673b3d705472bab290e2764de5b3e7d5fca3392d868a81cbebf",
+        "scope": "superseded_cached_notebook10_export",
+        "preserved_revision": "564f6a7a491ac8d72eef4f3bf56a2190059b1559",
+        "preserved_revision_hash_matches": true
+      }
+    ],
+    "historical_snapshot_explanations": [
+      "Original training and raw-neural evaluation runner hashes predate script-only provenance guards; docs/results/hkde-inference/run-provenance.json preserves their exact executed source revision.",
+      "The failed v1 report binds the predecessor runner and correction implementation before v2 introduced the boundary component. Its stored inputs, arrays and failure remain unchanged.",
+      "The original cached notebook10 export precedes the current live lesson. The current notebook10 hash matches docs/results/hkde-live-demo/verification.json exactly.",
+      "Each reported mismatch was independently matched to the saved SHA256 in its recorded preserved_revision; none is an unexplained drift in the v2 workflow."
+    ],
+    "excluded_historical_notebook_bindings": [
+      {
+        "report": "docs/results/hkde-live-demo/verification.json",
+        "field": "source_and_artifact_sha256",
+        "key": "notebooks/11_hkde_calibration_audit.py",
+        "reason": "Notebook11 is extended for this decision; its historical export binds the base notebook, not the edited review. New export evidence is separate.",
+        "matches_base_commit": true
+      },
+      {
+        "report": "docs/results/hkde-gate-audit/verification.json",
+        "field": "source_and_artifact_sha256",
+        "key": "notebooks/11_hkde_calibration_audit.py",
+        "reason": "Notebook11 is extended for this decision; its historical export binds the base notebook, not the edited review. New export evidence is separate.",
+        "matches_base_commit": true
+      }
+    ],
+    "unchanged_historical_outcomes": {
+      "v1_validation_passed": false,
+      "v2_validation_passed": true,
+      "v2_test_passed": false,
+      "live_delivery_scientific_acceptance": false
+    }
+  },
+  "limits": [
+    "Notebook11, this manifest and the new decision/review artifacts are bound separately by the new decision and export verification, avoiding self-referential hashes.",
+    "This inventory does not rerun a historical cohort, train a model, generate a new experiment or independently reconstruct missing all-cohort proposal clouds and SIR draws.",
+    "HTML exports, old temporary network guards, verification harnesses and logs referenced only by digest in historical reports are not retained as repository files; their historical digest alone is not a current execution claim.",
+    "The original full training bank is not required for the frozen loader and is not inventoried; its recorded manifest is retained. Surrogate label banks and saved correction/audit arrays are inventoried.",
+    "Environment files identify the pinned dependency specification. Reusing an existing pinned environment does not certify a fresh installation.",
+    "Hash identity does not independently validate continuum Fourier pricing, population calibration or empirical market adequacy."
+  ]
+}

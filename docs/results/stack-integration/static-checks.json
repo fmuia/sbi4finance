@@ -1,0 +1,16 @@
+{
+  "commit": "ca63424a140c2e512db97e40f0bb30010da3956a",
+  "strict_marimo_notebooks": [
+    "01_gbm_foundations.py",
+    "hkde_data_walkthrough.py",
+    "09_rough_inference.py",
+    "10_hkde_corrected_workflow.py",
+    "11_hkde_calibration_audit.py",
+    "01_mmar_univariate.py"
+  ],
+  "strict_marimo_passed": true,
+  "relative_links_checked": 185,
+  "missing_relative_links": [],
+  "diff_check_non_result_paths_passed": true,
+  "historical_svg_whitespace": "Preserved generated SVG trailing whitespace in inherited docs/results; scientific asset bytes are unchanged."
+}

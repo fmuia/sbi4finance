@@ -1,0 +1,2127 @@
+{
+  "experiment_id": "rough_hurst_eta_finite_mc_pilot_v1",
+  "evidence_scope": "S",
+  "measure": "Q",
+  "scope": "Cluster bank generation, transfer integrity and two-row local numerical portability; no inference or market-adequacy acceptance.",
+  "protocol_sha256": "3b7ac94285efd3010c6222aede83d1b5bf2e246f576bf36a9ad633c0ca85eabd",
+  "generator_commit": "b8ee2f3e1862fcf4b1f57c8dd9b31946002e3d53",
+  "source_archive": {
+    "name": "source.tar",
+    "sha256": "dc53ab2498401c3b23f61b61db27d119c09173adb351a39e6f677bfc6b948003",
+    "bytes": 24289280
+  },
+  "transfer_archive": {
+    "name": "banks.tar",
+    "sha256": "1075fcd32182b18cf19e0b4bcd3f566c75d6ddacf6c99abf8a70b1166fe971a9",
+    "bytes": 6205440,
+    "sha256_verified": true
+  },
+  "job_map_sha256": "91febd5068f3f1d68c88fb7da9f17747aebe46f3f602de303e8ebb97b98d24ba",
+  "accounting_sha256": "10303a5e71491f52dcb2d8c5dfee8dc6d55f91b0155fd93c287d9986ee874a05",
+  "allocation": {
+    "account": "carney-mjfrank-condo2",
+    "partition": "batch",
+    "qos": "carney-condo2",
+    "discovered_cpu_cap": 208,
+    "discovered_memory_G": 2500,
+    "array_job_id": 7299850,
+    "array_tasks": 98,
+    "max_concurrent_tasks_requested": 96,
+    "observed_max_concurrent_tasks": 96,
+    "cpus_per_task": 1,
+    "memory_per_task": "4G",
+    "time_limit_per_task": "00:45:00"
+  },
+  "accounting": {
+    "all_task_states": {
+      "COMPLETED": 98
+    },
+    "all_step_states": {
+      "COMPLETED": 294
+    },
+    "first_start": "2026-10-11T17:29:24",
+    "last_end": "2026-10-11T18:03:41",
+    "timestamp_scope": "Raw scheduler timestamps; timezone not supplied by the accounting export.",
+    "wall_span_seconds": 2057.0,
+    "allocated_cpu_seconds": 114032,
+    "allocated_cpu_hours": 31.675555555555555,
+    "cpu_cost_scope": "Sum of parent-task elapsed wall seconds times allocated CPUs; allocated CPU time, not measured utilized CPU time. Steps are not double-counted.",
+    "elapsed_seconds": {
+      "min": 20,
+      "median": 1148.5,
+      "max": 2057
+    },
+    "max_task_batch_rss_bytes": 223113216,
+    "rss_scope": "Maximum batch-step MaxRSS, scheduler K/M/G units interpreted as powers of 1024; not sum of simultaneous memory.",
+    "nodes": [
+      "node1802",
+      "node1807",
+      "node1810",
+      "node1814",
+      "node1817",
+      "node1820",
+      "node1829",
+      "node1830",
+      "node1833",
+      "node1834",
+      "node1835",
+      "node1836",
+      "node1837",
+      "node1838",
+      "node1839",
+      "node1843",
+      "node1845",
+      "node1850",
+      "node1851",
+      "node2333",
+      "node2336",
+      "node2338",
+      "node2341",
+      "node2348",
+      "node2349",
+      "node2350"
+    ],
+    "jobs": [
+      {
+        "array_index": 0,
+        "job_id": "7299850_0",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T17:48:01",
+        "elapsed_seconds": 1117,
+        "allocated_cpus": 1,
+        "node": "node1830",
+        "max_batch_rss_bytes": 209960960,
+        "generation": {
+          "config": "configs/tasks/rough_inference_bank.json",
+          "split": "train",
+          "start": 0,
+          "stop": 64,
+          "group": "pilot"
+        }
+      },
+      {
+        "array_index": 1,
+        "job_id": "7299850_1",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T17:50:48",
+        "elapsed_seconds": 1284,
+        "allocated_cpus": 1,
+        "node": "node1807",
+        "max_batch_rss_bytes": 211570688,
+        "generation": {
+          "config": "configs/tasks/rough_inference_bank.json",
+          "split": "train",
+          "start": 64,
+          "stop": 128,
+          "group": "pilot"
+        }
+      },
+      {
+        "array_index": 2,
+        "job_id": "7299850_2",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T17:47:51",
+        "elapsed_seconds": 1107,
+        "allocated_cpus": 1,
+        "node": "node1810",
+        "max_batch_rss_bytes": 204046336,
+        "generation": {
+          "config": "configs/tasks/rough_inference_bank.json",
+          "split": "train",
+          "start": 128,
+          "stop": 192,
+          "group": "pilot"
+        }
+      },
+      {
+        "array_index": 3,
+        "job_id": "7299850_3",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T17:46:52",
+        "elapsed_seconds": 1048,
+        "allocated_cpus": 1,
+        "node": "node1814",
+        "max_batch_rss_bytes": 223113216,
+        "generation": {
+          "config": "configs/tasks/rough_inference_bank.json",
+          "split": "train",
+          "start": 192,
+          "stop": 256,
+          "group": "pilot"
+        }
+      },
+      {
+        "array_index": 4,
+        "job_id": "7299850_4",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T17:46:22",
+        "elapsed_seconds": 1018,
+        "allocated_cpus": 1,
+        "node": "node1817",
+        "max_batch_rss_bytes": 222822400,
+        "generation": {
+          "config": "configs/tasks/rough_inference_bank.json",
+          "split": "train",
+          "start": 256,
+          "stop": 320,
+          "group": "pilot"
+        }
+      },
+      {
+        "array_index": 5,
+        "job_id": "7299850_5",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T17:47:40",
+        "elapsed_seconds": 1096,
+        "allocated_cpus": 1,
+        "node": "node1820",
+        "max_batch_rss_bytes": 207503360,
+        "generation": {
+          "config": "configs/tasks/rough_inference_bank.json",
+          "split": "train",
+          "start": 320,
+          "stop": 384,
+          "group": "pilot"
+        }
+      },
+      {
+        "array_index": 6,
+        "job_id": "7299850_6",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T17:48:25",
+        "elapsed_seconds": 1141,
+        "allocated_cpus": 1,
+        "node": "node2333",
+        "max_batch_rss_bytes": 171843584,
+        "generation": {
+          "config": "configs/tasks/rough_inference_bank.json",
+          "split": "train",
+          "start": 384,
+          "stop": 448,
+          "group": "pilot"
+        }
+      },
+      {
+        "array_index": 7,
+        "job_id": "7299850_7",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T17:48:46",
+        "elapsed_seconds": 1162,
+        "allocated_cpus": 1,
+        "node": "node2333",
+        "max_batch_rss_bytes": 170127360,
+        "generation": {
+          "config": "configs/tasks/rough_inference_bank.json",
+          "split": "train",
+          "start": 448,
+          "stop": 512,
+          "group": "pilot"
+        }
+      },
+      {
+        "array_index": 8,
+        "job_id": "7299850_8",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T17:48:34",
+        "elapsed_seconds": 1150,
+        "allocated_cpus": 1,
+        "node": "node2333",
+        "max_batch_rss_bytes": 173121536,
+        "generation": {
+          "config": "configs/tasks/rough_inference_bank.json",
+          "split": "train",
+          "start": 512,
+          "stop": 576,
+          "group": "pilot"
+        }
+      },
+      {
+        "array_index": 9,
+        "job_id": "7299850_9",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T17:48:43",
+        "elapsed_seconds": 1159,
+        "allocated_cpus": 1,
+        "node": "node2333",
+        "max_batch_rss_bytes": 177020928,
+        "generation": {
+          "config": "configs/tasks/rough_inference_bank.json",
+          "split": "train",
+          "start": 576,
+          "stop": 640,
+          "group": "pilot"
+        }
+      },
+      {
+        "array_index": 10,
+        "job_id": "7299850_10",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T18:02:06",
+        "elapsed_seconds": 1962,
+        "allocated_cpus": 1,
+        "node": "node2333",
+        "max_batch_rss_bytes": 161566720,
+        "generation": {
+          "config": "configs/tasks/rough_inference_bank.json",
+          "split": "train",
+          "start": 640,
+          "stop": 704,
+          "group": "pilot"
+        }
+      },
+      {
+        "array_index": 11,
+        "job_id": "7299850_11",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T17:49:23",
+        "elapsed_seconds": 1199,
+        "allocated_cpus": 1,
+        "node": "node2336",
+        "max_batch_rss_bytes": 160387072,
+        "generation": {
+          "config": "configs/tasks/rough_inference_bank.json",
+          "split": "train",
+          "start": 704,
+          "stop": 768,
+          "group": "pilot"
+        }
+      },
+      {
+        "array_index": 12,
+        "job_id": "7299850_12",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T17:49:21",
+        "elapsed_seconds": 1197,
+        "allocated_cpus": 1,
+        "node": "node2336",
+        "max_batch_rss_bytes": 159887360,
+        "generation": {
+          "config": "configs/tasks/rough_inference_bank.json",
+          "split": "train",
+          "start": 768,
+          "stop": 832,
+          "group": "pilot"
+        }
+      },
+      {
+        "array_index": 13,
+        "job_id": "7299850_13",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T17:49:21",
+        "elapsed_seconds": 1197,
+        "allocated_cpus": 1,
+        "node": "node2336",
+        "max_batch_rss_bytes": 158601216,
+        "generation": {
+          "config": "configs/tasks/rough_inference_bank.json",
+          "split": "train",
+          "start": 832,
+          "stop": 896,
+          "group": "pilot"
+        }
+      },
+      {
+        "array_index": 14,
+        "job_id": "7299850_14",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T17:49:42",
+        "elapsed_seconds": 1218,
+        "allocated_cpus": 1,
+        "node": "node2336",
+        "max_batch_rss_bytes": 153194496,
+        "generation": {
+          "config": "configs/tasks/rough_inference_bank.json",
+          "split": "train",
+          "start": 896,
+          "stop": 960,
+          "group": "pilot"
+        }
+      },
+      {
+        "array_index": 15,
+        "job_id": "7299850_15",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T17:49:09",
+        "elapsed_seconds": 1185,
+        "allocated_cpus": 1,
+        "node": "node2338",
+        "max_batch_rss_bytes": 159830016,
+        "generation": {
+          "config": "configs/tasks/rough_inference_bank.json",
+          "split": "train",
+          "start": 960,
+          "stop": 1024,
+          "group": "pilot"
+        }
+      },
+      {
+        "array_index": 16,
+        "job_id": "7299850_16",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T17:48:20",
+        "elapsed_seconds": 1136,
+        "allocated_cpus": 1,
+        "node": "node2338",
+        "max_batch_rss_bytes": 161116160,
+        "generation": {
+          "config": "configs/tasks/rough_inference_bank.json",
+          "split": "validation",
+          "start": 0,
+          "stop": 64,
+          "group": "pilot"
+        }
+      },
+      {
+        "array_index": 17,
+        "job_id": "7299850_17",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T17:47:32",
+        "elapsed_seconds": 1088,
+        "allocated_cpus": 1,
+        "node": "node2338",
+        "max_batch_rss_bytes": 153403392,
+        "generation": {
+          "config": "configs/tasks/rough_inference_bank.json",
+          "split": "validation",
+          "start": 64,
+          "stop": 128,
+          "group": "pilot"
+        }
+      },
+      {
+        "array_index": 18,
+        "job_id": "7299850_18",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T17:48:53",
+        "elapsed_seconds": 1169,
+        "allocated_cpus": 1,
+        "node": "node2338",
+        "max_batch_rss_bytes": 160862208,
+        "generation": {
+          "config": "configs/tasks/rough_inference_bank.json",
+          "split": "validation",
+          "start": 128,
+          "stop": 192,
+          "group": "pilot"
+        }
+      },
+      {
+        "array_index": 19,
+        "job_id": "7299850_19",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T17:48:31",
+        "elapsed_seconds": 1147,
+        "allocated_cpus": 1,
+        "node": "node2338",
+        "max_batch_rss_bytes": 166359040,
+        "generation": {
+          "config": "configs/tasks/rough_inference_bank.json",
+          "split": "validation",
+          "start": 192,
+          "stop": 256,
+          "group": "pilot"
+        }
+      },
+      {
+        "array_index": 20,
+        "job_id": "7299850_20",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T17:48:47",
+        "elapsed_seconds": 1163,
+        "allocated_cpus": 1,
+        "node": "node2338",
+        "max_batch_rss_bytes": 161665024,
+        "generation": {
+          "config": "configs/tasks/rough_inference_bank.json",
+          "split": "validation",
+          "start": 256,
+          "stop": 320,
+          "group": "pilot"
+        }
+      },
+      {
+        "array_index": 21,
+        "job_id": "7299850_21",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T17:48:34",
+        "elapsed_seconds": 1150,
+        "allocated_cpus": 1,
+        "node": "node2338",
+        "max_batch_rss_bytes": 159748096,
+        "generation": {
+          "config": "configs/tasks/rough_inference_bank.json",
+          "split": "validation",
+          "start": 320,
+          "stop": 384,
+          "group": "pilot"
+        }
+      },
+      {
+        "array_index": 22,
+        "job_id": "7299850_22",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T17:49:37",
+        "elapsed_seconds": 1213,
+        "allocated_cpus": 1,
+        "node": "node2338",
+        "max_batch_rss_bytes": 158564352,
+        "generation": {
+          "config": "configs/tasks/rough_inference_bank.json",
+          "split": "validation",
+          "start": 384,
+          "stop": 448,
+          "group": "pilot"
+        }
+      },
+      {
+        "array_index": 23,
+        "job_id": "7299850_23",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T17:49:16",
+        "elapsed_seconds": 1192,
+        "allocated_cpus": 1,
+        "node": "node2338",
+        "max_batch_rss_bytes": 167010304,
+        "generation": {
+          "config": "configs/tasks/rough_inference_bank.json",
+          "split": "validation",
+          "start": 448,
+          "stop": 512,
+          "group": "pilot"
+        }
+      },
+      {
+        "array_index": 24,
+        "job_id": "7299850_24",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T17:49:23",
+        "elapsed_seconds": 1199,
+        "allocated_cpus": 1,
+        "node": "node2338",
+        "max_batch_rss_bytes": 161415168,
+        "generation": {
+          "config": "configs/tasks/rough_inference_bank.json",
+          "split": "validation",
+          "start": 512,
+          "stop": 576,
+          "group": "pilot"
+        }
+      },
+      {
+        "array_index": 25,
+        "job_id": "7299850_25",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T17:49:53",
+        "elapsed_seconds": 1229,
+        "allocated_cpus": 1,
+        "node": "node2338",
+        "max_batch_rss_bytes": 161611776,
+        "generation": {
+          "config": "configs/tasks/rough_inference_bank.json",
+          "split": "validation",
+          "start": 576,
+          "stop": 640,
+          "group": "pilot"
+        }
+      },
+      {
+        "array_index": 26,
+        "job_id": "7299850_26",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T17:49:38",
+        "elapsed_seconds": 1214,
+        "allocated_cpus": 1,
+        "node": "node2338",
+        "max_batch_rss_bytes": 160202752,
+        "generation": {
+          "config": "configs/tasks/rough_inference_bank.json",
+          "split": "validation",
+          "start": 640,
+          "stop": 704,
+          "group": "pilot"
+        }
+      },
+      {
+        "array_index": 27,
+        "job_id": "7299850_27",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T17:48:03",
+        "elapsed_seconds": 1119,
+        "allocated_cpus": 1,
+        "node": "node2338",
+        "max_batch_rss_bytes": 160219136,
+        "generation": {
+          "config": "configs/tasks/rough_inference_bank.json",
+          "split": "validation",
+          "start": 704,
+          "stop": 768,
+          "group": "pilot"
+        }
+      },
+      {
+        "array_index": 28,
+        "job_id": "7299850_28",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T17:49:11",
+        "elapsed_seconds": 1187,
+        "allocated_cpus": 1,
+        "node": "node2338",
+        "max_batch_rss_bytes": 164110336,
+        "generation": {
+          "config": "configs/tasks/rough_inference_bank.json",
+          "split": "test",
+          "start": 0,
+          "stop": 64,
+          "group": "pilot"
+        }
+      },
+      {
+        "array_index": 29,
+        "job_id": "7299850_29",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T17:49:46",
+        "elapsed_seconds": 1222,
+        "allocated_cpus": 1,
+        "node": "node2338",
+        "max_batch_rss_bytes": 163307520,
+        "generation": {
+          "config": "configs/tasks/rough_inference_bank.json",
+          "split": "test",
+          "start": 64,
+          "stop": 128,
+          "group": "pilot"
+        }
+      },
+      {
+        "array_index": 30,
+        "job_id": "7299850_30",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T17:49:07",
+        "elapsed_seconds": 1183,
+        "allocated_cpus": 1,
+        "node": "node2338",
+        "max_batch_rss_bytes": 164610048,
+        "generation": {
+          "config": "configs/tasks/rough_inference_bank.json",
+          "split": "test",
+          "start": 128,
+          "stop": 192,
+          "group": "pilot"
+        }
+      },
+      {
+        "array_index": 31,
+        "job_id": "7299850_31",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T17:51:29",
+        "elapsed_seconds": 1325,
+        "allocated_cpus": 1,
+        "node": "node2338",
+        "max_batch_rss_bytes": 153690112,
+        "generation": {
+          "config": "configs/tasks/rough_inference_bank.json",
+          "split": "test",
+          "start": 192,
+          "stop": 256,
+          "group": "pilot"
+        }
+      },
+      {
+        "array_index": 32,
+        "job_id": "7299850_32",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T17:45:22",
+        "elapsed_seconds": 958,
+        "allocated_cpus": 1,
+        "node": "node2341",
+        "max_batch_rss_bytes": 222347264,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 0,
+          "stop": 64,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 33,
+        "job_id": "7299850_33",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T17:45:29",
+        "elapsed_seconds": 965,
+        "allocated_cpus": 1,
+        "node": "node2348",
+        "max_batch_rss_bytes": 177709056,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 64,
+          "stop": 128,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 34,
+        "job_id": "7299850_34",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T17:45:49",
+        "elapsed_seconds": 985,
+        "allocated_cpus": 1,
+        "node": "node2348",
+        "max_batch_rss_bytes": 197812224,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 128,
+          "stop": 192,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 35,
+        "job_id": "7299850_35",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T17:46:52",
+        "elapsed_seconds": 1048,
+        "allocated_cpus": 1,
+        "node": "node2349",
+        "max_batch_rss_bytes": 169594880,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 192,
+          "stop": 256,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 36,
+        "job_id": "7299850_36",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T17:46:42",
+        "elapsed_seconds": 1038,
+        "allocated_cpus": 1,
+        "node": "node2349",
+        "max_batch_rss_bytes": 166854656,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 256,
+          "stop": 320,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 37,
+        "job_id": "7299850_37",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T17:50:50",
+        "elapsed_seconds": 1286,
+        "allocated_cpus": 1,
+        "node": "node2349",
+        "max_batch_rss_bytes": 168177664,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 320,
+          "stop": 384,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 38,
+        "job_id": "7299850_38",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T17:51:25",
+        "elapsed_seconds": 1321,
+        "allocated_cpus": 1,
+        "node": "node2349",
+        "max_batch_rss_bytes": 190517248,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 384,
+          "stop": 448,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 39,
+        "job_id": "7299850_39",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T17:49:35",
+        "elapsed_seconds": 1211,
+        "allocated_cpus": 1,
+        "node": "node2350",
+        "max_batch_rss_bytes": 160346112,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 448,
+          "stop": 512,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 40,
+        "job_id": "7299850_40",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T17:49:29",
+        "elapsed_seconds": 1205,
+        "allocated_cpus": 1,
+        "node": "node2350",
+        "max_batch_rss_bytes": 162275328,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 512,
+          "stop": 576,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 41,
+        "job_id": "7299850_41",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T17:58:44",
+        "elapsed_seconds": 1760,
+        "allocated_cpus": 1,
+        "node": "node2350",
+        "max_batch_rss_bytes": 170606592,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 576,
+          "stop": 640,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 42,
+        "job_id": "7299850_42",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T18:03:41",
+        "elapsed_seconds": 2057,
+        "allocated_cpus": 1,
+        "node": "node2350",
+        "max_batch_rss_bytes": 168964096,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 640,
+          "stop": 704,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 43,
+        "job_id": "7299850_43",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T18:01:24",
+        "elapsed_seconds": 1920,
+        "allocated_cpus": 1,
+        "node": "node2350",
+        "max_batch_rss_bytes": 179429376,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 704,
+          "stop": 768,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 44,
+        "job_id": "7299850_44",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T17:47:28",
+        "elapsed_seconds": 1084,
+        "allocated_cpus": 1,
+        "node": "node1833",
+        "max_batch_rss_bytes": 165474304,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 768,
+          "stop": 832,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 45,
+        "job_id": "7299850_45",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T17:47:27",
+        "elapsed_seconds": 1083,
+        "allocated_cpus": 1,
+        "node": "node1833",
+        "max_batch_rss_bytes": 163913728,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 832,
+          "stop": 896,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 46,
+        "job_id": "7299850_46",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T17:47:36",
+        "elapsed_seconds": 1092,
+        "allocated_cpus": 1,
+        "node": "node1833",
+        "max_batch_rss_bytes": 177569792,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 896,
+          "stop": 960,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 47,
+        "job_id": "7299850_47",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T17:47:38",
+        "elapsed_seconds": 1094,
+        "allocated_cpus": 1,
+        "node": "node1833",
+        "max_batch_rss_bytes": 170491904,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 960,
+          "stop": 1024,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 48,
+        "job_id": "7299850_48",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T17:47:39",
+        "elapsed_seconds": 1095,
+        "allocated_cpus": 1,
+        "node": "node1833",
+        "max_batch_rss_bytes": 165056512,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 1024,
+          "stop": 1088,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 49,
+        "job_id": "7299850_49",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:24",
+        "end": "2026-10-11T17:47:34",
+        "elapsed_seconds": 1090,
+        "allocated_cpus": 1,
+        "node": "node1833",
+        "max_batch_rss_bytes": 158535680,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 1088,
+          "stop": 1152,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 50,
+        "job_id": "7299850_50",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:55",
+        "end": "2026-10-11T17:48:02",
+        "elapsed_seconds": 1087,
+        "allocated_cpus": 1,
+        "node": "node1833",
+        "max_batch_rss_bytes": 159199232,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 1152,
+          "stop": 1216,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 51,
+        "job_id": "7299850_51",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:55",
+        "end": "2026-10-11T17:48:09",
+        "elapsed_seconds": 1094,
+        "allocated_cpus": 1,
+        "node": "node1833",
+        "max_batch_rss_bytes": 161353728,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 1216,
+          "stop": 1280,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 52,
+        "job_id": "7299850_52",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:55",
+        "end": "2026-10-11T17:47:42",
+        "elapsed_seconds": 1067,
+        "allocated_cpus": 1,
+        "node": "node1833",
+        "max_batch_rss_bytes": 157093888,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 1280,
+          "stop": 1344,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 53,
+        "job_id": "7299850_53",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:55",
+        "end": "2026-10-11T17:47:31",
+        "elapsed_seconds": 1056,
+        "allocated_cpus": 1,
+        "node": "node1833",
+        "max_batch_rss_bytes": 158015488,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 1344,
+          "stop": 1408,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 54,
+        "job_id": "7299850_54",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:55",
+        "end": "2026-10-11T17:47:34",
+        "elapsed_seconds": 1059,
+        "allocated_cpus": 1,
+        "node": "node1833",
+        "max_batch_rss_bytes": 157413376,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 1408,
+          "stop": 1472,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 55,
+        "job_id": "7299850_55",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:55",
+        "end": "2026-10-11T17:47:49",
+        "elapsed_seconds": 1074,
+        "allocated_cpus": 1,
+        "node": "node1833",
+        "max_batch_rss_bytes": 158175232,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 1472,
+          "stop": 1536,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 56,
+        "job_id": "7299850_56",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:55",
+        "end": "2026-10-11T17:48:27",
+        "elapsed_seconds": 1112,
+        "allocated_cpus": 1,
+        "node": "node1834",
+        "max_batch_rss_bytes": 178769920,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 1536,
+          "stop": 1600,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 57,
+        "job_id": "7299850_57",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:55",
+        "end": "2026-10-11T17:48:23",
+        "elapsed_seconds": 1108,
+        "allocated_cpus": 1,
+        "node": "node1834",
+        "max_batch_rss_bytes": 179888128,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 1600,
+          "stop": 1664,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 58,
+        "job_id": "7299850_58",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:55",
+        "end": "2026-10-11T17:48:38",
+        "elapsed_seconds": 1123,
+        "allocated_cpus": 1,
+        "node": "node1834",
+        "max_batch_rss_bytes": 174555136,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 1664,
+          "stop": 1728,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 59,
+        "job_id": "7299850_59",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:55",
+        "end": "2026-10-11T17:51:52",
+        "elapsed_seconds": 1317,
+        "allocated_cpus": 1,
+        "node": "node1835",
+        "max_batch_rss_bytes": 182341632,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 1728,
+          "stop": 1792,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 60,
+        "job_id": "7299850_60",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:55",
+        "end": "2026-10-11T17:52:01",
+        "elapsed_seconds": 1326,
+        "allocated_cpus": 1,
+        "node": "node1835",
+        "max_batch_rss_bytes": 179249152,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 1792,
+          "stop": 1856,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 61,
+        "job_id": "7299850_61",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:55",
+        "end": "2026-10-11T17:51:53",
+        "elapsed_seconds": 1318,
+        "allocated_cpus": 1,
+        "node": "node1835",
+        "max_batch_rss_bytes": 177463296,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 1856,
+          "stop": 1920,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 62,
+        "job_id": "7299850_62",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:55",
+        "end": "2026-10-11T17:47:46",
+        "elapsed_seconds": 1071,
+        "allocated_cpus": 1,
+        "node": "node1836",
+        "max_batch_rss_bytes": 178925568,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 1920,
+          "stop": 1984,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 63,
+        "job_id": "7299850_63",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:55",
+        "end": "2026-10-11T17:48:07",
+        "elapsed_seconds": 1092,
+        "allocated_cpus": 1,
+        "node": "node1836",
+        "max_batch_rss_bytes": 174944256,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 1984,
+          "stop": 2048,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 64,
+        "job_id": "7299850_64",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:55",
+        "end": "2026-10-11T17:47:50",
+        "elapsed_seconds": 1075,
+        "allocated_cpus": 1,
+        "node": "node1836",
+        "max_batch_rss_bytes": 175910912,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 2048,
+          "stop": 2112,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 65,
+        "job_id": "7299850_65",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:55",
+        "end": "2026-10-11T17:48:05",
+        "elapsed_seconds": 1090,
+        "allocated_cpus": 1,
+        "node": "node1837",
+        "max_batch_rss_bytes": 169365504,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 2112,
+          "stop": 2176,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 66,
+        "job_id": "7299850_66",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:55",
+        "end": "2026-10-11T17:48:04",
+        "elapsed_seconds": 1089,
+        "allocated_cpus": 1,
+        "node": "node1837",
+        "max_batch_rss_bytes": 172052480,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 2176,
+          "stop": 2240,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 67,
+        "job_id": "7299850_67",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:55",
+        "end": "2026-10-11T17:48:11",
+        "elapsed_seconds": 1096,
+        "allocated_cpus": 1,
+        "node": "node1837",
+        "max_batch_rss_bytes": 176160768,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 2240,
+          "stop": 2304,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 68,
+        "job_id": "7299850_68",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:55",
+        "end": "2026-10-11T17:48:15",
+        "elapsed_seconds": 1100,
+        "allocated_cpus": 1,
+        "node": "node1837",
+        "max_batch_rss_bytes": 174321664,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 2304,
+          "stop": 2368,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 69,
+        "job_id": "7299850_69",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:55",
+        "end": "2026-10-11T17:48:37",
+        "elapsed_seconds": 1122,
+        "allocated_cpus": 1,
+        "node": "node1838",
+        "max_batch_rss_bytes": 172060672,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 2368,
+          "stop": 2432,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 70,
+        "job_id": "7299850_70",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:55",
+        "end": "2026-10-11T17:48:36",
+        "elapsed_seconds": 1121,
+        "allocated_cpus": 1,
+        "node": "node1838",
+        "max_batch_rss_bytes": 172126208,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 2432,
+          "stop": 2496,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 71,
+        "job_id": "7299850_71",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:55",
+        "end": "2026-10-11T17:48:33",
+        "elapsed_seconds": 1118,
+        "allocated_cpus": 1,
+        "node": "node1838",
+        "max_batch_rss_bytes": 160288768,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 2496,
+          "stop": 2560,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 72,
+        "job_id": "7299850_72",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:55",
+        "end": "2026-10-11T17:49:06",
+        "elapsed_seconds": 1151,
+        "allocated_cpus": 1,
+        "node": "node1838",
+        "max_batch_rss_bytes": 167456768,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 2560,
+          "stop": 2624,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 73,
+        "job_id": "7299850_73",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:55",
+        "end": "2026-10-11T17:48:58",
+        "elapsed_seconds": 1143,
+        "allocated_cpus": 1,
+        "node": "node1838",
+        "max_batch_rss_bytes": 169439232,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 2624,
+          "stop": 2688,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 74,
+        "job_id": "7299850_74",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:55",
+        "end": "2026-10-11T17:49:45",
+        "elapsed_seconds": 1190,
+        "allocated_cpus": 1,
+        "node": "node1838",
+        "max_batch_rss_bytes": 173252608,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 2688,
+          "stop": 2752,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 75,
+        "job_id": "7299850_75",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:55",
+        "end": "2026-10-11T17:49:41",
+        "elapsed_seconds": 1186,
+        "allocated_cpus": 1,
+        "node": "node1838",
+        "max_batch_rss_bytes": 162955264,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 2752,
+          "stop": 2816,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 76,
+        "job_id": "7299850_76",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:55",
+        "end": "2026-10-11T17:49:36",
+        "elapsed_seconds": 1181,
+        "allocated_cpus": 1,
+        "node": "node1839",
+        "max_batch_rss_bytes": 188018688,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 2816,
+          "stop": 2880,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 77,
+        "job_id": "7299850_77",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:55",
+        "end": "2026-10-11T17:49:26",
+        "elapsed_seconds": 1171,
+        "allocated_cpus": 1,
+        "node": "node1839",
+        "max_batch_rss_bytes": 185712640,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 2880,
+          "stop": 2944,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 78,
+        "job_id": "7299850_78",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:55",
+        "end": "2026-10-11T17:49:45",
+        "elapsed_seconds": 1190,
+        "allocated_cpus": 1,
+        "node": "node1843",
+        "max_batch_rss_bytes": 167280640,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 2944,
+          "stop": 3008,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 79,
+        "job_id": "7299850_79",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:55",
+        "end": "2026-10-11T17:49:12",
+        "elapsed_seconds": 1157,
+        "allocated_cpus": 1,
+        "node": "node1843",
+        "max_batch_rss_bytes": 163807232,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 3008,
+          "stop": 3072,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 80,
+        "job_id": "7299850_80",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:55",
+        "end": "2026-10-11T17:49:28",
+        "elapsed_seconds": 1173,
+        "allocated_cpus": 1,
+        "node": "node1843",
+        "max_batch_rss_bytes": 167006208,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 3072,
+          "stop": 3136,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 81,
+        "job_id": "7299850_81",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:55",
+        "end": "2026-10-11T17:49:39",
+        "elapsed_seconds": 1184,
+        "allocated_cpus": 1,
+        "node": "node1843",
+        "max_batch_rss_bytes": 170188800,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 3136,
+          "stop": 3200,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 82,
+        "job_id": "7299850_82",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:55",
+        "end": "2026-10-11T17:49:31",
+        "elapsed_seconds": 1176,
+        "allocated_cpus": 1,
+        "node": "node1843",
+        "max_batch_rss_bytes": 168325120,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 3200,
+          "stop": 3264,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 83,
+        "job_id": "7299850_83",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:55",
+        "end": "2026-10-11T17:52:51",
+        "elapsed_seconds": 1376,
+        "allocated_cpus": 1,
+        "node": "node1845",
+        "max_batch_rss_bytes": 173191168,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 3264,
+          "stop": 3328,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 84,
+        "job_id": "7299850_84",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:55",
+        "end": "2026-10-11T17:52:45",
+        "elapsed_seconds": 1370,
+        "allocated_cpus": 1,
+        "node": "node1845",
+        "max_batch_rss_bytes": 183640064,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 3328,
+          "stop": 3392,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 85,
+        "job_id": "7299850_85",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:55",
+        "end": "2026-10-11T17:52:44",
+        "elapsed_seconds": 1369,
+        "allocated_cpus": 1,
+        "node": "node1845",
+        "max_batch_rss_bytes": 178130944,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 3392,
+          "stop": 3456,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 86,
+        "job_id": "7299850_86",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:55",
+        "end": "2026-10-11T17:51:33",
+        "elapsed_seconds": 1298,
+        "allocated_cpus": 1,
+        "node": "node1850",
+        "max_batch_rss_bytes": 171626496,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 3456,
+          "stop": 3520,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 87,
+        "job_id": "7299850_87",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:55",
+        "end": "2026-10-11T17:51:39",
+        "elapsed_seconds": 1304,
+        "allocated_cpus": 1,
+        "node": "node1850",
+        "max_batch_rss_bytes": 173256704,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 3520,
+          "stop": 3584,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 88,
+        "job_id": "7299850_88",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:55",
+        "end": "2026-10-11T17:51:38",
+        "elapsed_seconds": 1303,
+        "allocated_cpus": 1,
+        "node": "node1850",
+        "max_batch_rss_bytes": 168599552,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 3584,
+          "stop": 3648,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 89,
+        "job_id": "7299850_89",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:55",
+        "end": "2026-10-11T17:51:23",
+        "elapsed_seconds": 1288,
+        "allocated_cpus": 1,
+        "node": "node1850",
+        "max_batch_rss_bytes": 170205184,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 3648,
+          "stop": 3712,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 90,
+        "job_id": "7299850_90",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:55",
+        "end": "2026-10-11T17:48:20",
+        "elapsed_seconds": 1105,
+        "allocated_cpus": 1,
+        "node": "node1851",
+        "max_batch_rss_bytes": 160317440,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 3712,
+          "stop": 3776,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 91,
+        "job_id": "7299850_91",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:55",
+        "end": "2026-10-11T17:48:22",
+        "elapsed_seconds": 1107,
+        "allocated_cpus": 1,
+        "node": "node1851",
+        "max_batch_rss_bytes": 162504704,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 3776,
+          "stop": 3840,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 92,
+        "job_id": "7299850_92",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:55",
+        "end": "2026-10-11T17:48:33",
+        "elapsed_seconds": 1118,
+        "allocated_cpus": 1,
+        "node": "node1851",
+        "max_batch_rss_bytes": 173953024,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 3840,
+          "stop": 3904,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 93,
+        "job_id": "7299850_93",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:55",
+        "end": "2026-10-11T17:48:04",
+        "elapsed_seconds": 1089,
+        "allocated_cpus": 1,
+        "node": "node1851",
+        "max_batch_rss_bytes": 167079936,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 3904,
+          "stop": 3968,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 94,
+        "job_id": "7299850_94",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:55",
+        "end": "2026-10-11T17:48:04",
+        "elapsed_seconds": 1089,
+        "allocated_cpus": 1,
+        "node": "node1851",
+        "max_batch_rss_bytes": 172339200,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 3968,
+          "stop": 4032,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 95,
+        "job_id": "7299850_95",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:29:55",
+        "end": "2026-10-11T17:48:02",
+        "elapsed_seconds": 1087,
+        "allocated_cpus": 1,
+        "node": "node1851",
+        "max_batch_rss_bytes": 175366144,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "train",
+          "start": 4032,
+          "stop": 4096,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 96,
+        "job_id": "7299850_96",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:45:39",
+        "end": "2026-10-11T17:46:03",
+        "elapsed_seconds": 24,
+        "allocated_cpus": 1,
+        "node": "node1829",
+        "max_batch_rss_bytes": 203243520,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "validation",
+          "start": 0,
+          "stop": 1,
+          "group": "reference"
+        }
+      },
+      {
+        "array_index": 97,
+        "job_id": "7299850_97",
+        "state": "COMPLETED",
+        "start": "2026-10-11T17:45:39",
+        "end": "2026-10-11T17:45:59",
+        "elapsed_seconds": 20,
+        "allocated_cpus": 1,
+        "node": "node1802",
+        "max_batch_rss_bytes": 216711168,
+        "generation": {
+          "config": "configs/tasks/rough_reference_bank.json",
+          "split": "test",
+          "start": 0,
+          "stop": 1,
+          "group": "reference"
+        }
+      }
+    ]
+  },
+  "total_generated_panels": 6146,
+  "banks": {
+    "pilot": {
+      "path": "banks/pilot",
+      "files": {
+        "manifest.json": {
+          "sha256": "8401b258e5ff3c95c32ef756de8a0ff3bc4163517cd1eed48e1245911e1ad2f3",
+          "bytes": 15483
+        },
+        "test.npz": {
+          "sha256": "84402bb04fc484dbf2748303cdbfbccfe24fcaf025bb18cac1519bf30599f784",
+          "bytes": 253770
+        },
+        "train.npz": {
+          "sha256": "f60a260a3d5e5b62b47cb02b6be98a76847077b27c5ed5f4a938edfee5a980e2",
+          "bytes": 1017674
+        },
+        "validation.npz": {
+          "sha256": "29bdd1445698b7696f975fef218da7810173c360ab08dae8d3d978eb7ac5c2c9",
+          "bytes": 776010
+        }
+      },
+      "manifest_sha256": "8401b258e5ff3c95c32ef756de8a0ff3bc4163517cd1eed48e1245911e1ad2f3",
+      "configuration_sha256": "d1b23ca45a42b2a8f06e874debe35f78e30b0bb7359946e722e52f17da6c3b24",
+      "task_fingerprint": "a4ce0976b4f459c29e0ce88d2554cb98fa2aef34da0d14721b4d8bd2586ec84a",
+      "root_seed": 83026,
+      "split_examples": {
+        "test": 256,
+        "train": 1024,
+        "validation": 768
+      },
+      "total_examples": 2048,
+      "stored_bytes": 2062937,
+      "generation_versions": {
+        "numpy": "2.5.3",
+        "python": "3.12.8",
+        "scipy": "1.18.1"
+      },
+      "source_sha256": {
+        "gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
+        "option_panel.py": "b37400bfc7f7ec91d208e8637cee1fcb53885b76ca0b00c016574b495fa035f2",
+        "option_bank.py": "8d41e6cecf115f6aa96475295c8291b9c6474e0c1e44ead001539129f3ba3d0a",
+        "bergomi.py": "39234a7e8443a3d27fa9b460c3e9e584e41e8780bd084b6113648c78f1dd3c1d",
+        "rough_bergomi.py": "ab47c3bcd3292fde093b4aaaf4fb668101793997dc25afe11a485ec8f2537b8f"
+      },
+      "shard_writer_sha256": "a1b1959f7684fd56df1ce1e3d03f3201fadb3c2394c73ea49d312af1da762af7",
+      "roles": {
+        "context": "known synthetic contracts/spot/rates/quote sigma; model_context also known; stored in configuration",
+        "example_id": "auxiliary split-qualified base-panel identity; future augmentations must keep base grouping",
+        "observations": "conditioning: noisy currency prices [batch,contract,1]",
+        "parameters": "ordered synthetic training targets only; never observed conditioning",
+        "pricing_covariance": "auxiliary covariance of MC price MEANS; zero for Fourier",
+        "pricing_standard_errors": "auxiliary MC standard errors (zero for deterministic Fourier)",
+        "reference_prices": "auxiliary numerical expectation estimates, not exact market truth",
+        "refinement_difference": "auxiliary refined-minus-base Fourier estimate; MC zeros mean not calculated"
+      },
+      "truth_available": [
+        "hurst",
+        "eta"
+      ],
+      "future_outcomes_in_conditioning": false,
+      "integrity": {
+        "loader_hash_shapes_covariance_checked": true,
+        "copied_exact_file_bytes": true,
+        "max_marginal_mcse_currency": 0.01872207992348859,
+        "mcse_limit_currency": 0.025,
+        "max_mcse_over_quote_sigma": 0.07488831969395436,
+        "covariance_max_asymmetry": 0.0,
+        "covariance_max_se_squared_diagonal_difference": 5.421010862427522e-20,
+        "covariance_min_eigenvalue": 3.256982611643553e-08,
+        "mcse_excludes_numerical_bias": true
+      },
+      "local_replay": {
+        "split": "train",
+        "ids": [
+          0
+        ],
+        "elapsed_seconds": 6.208620916120708,
+        "arrays": {
+          "observations": {
+            "max_absolute_difference": 8.881784197001252e-15,
+            "absolute_tolerance": 1e-10,
+            "relative_tolerance": 0.0,
+            "bitwise_equal": false,
+            "passed": true
+          },
+          "parameters": {
+            "max_absolute_difference": 0.0,
+            "absolute_tolerance": 1e-14,
+            "relative_tolerance": 0.0,
+            "bitwise_equal": true,
+            "passed": true
+          },
+          "reference_prices": {
+            "max_absolute_difference": 8.881784197001252e-15,
+            "absolute_tolerance": 1e-10,
+            "relative_tolerance": 0.0,
+            "bitwise_equal": false,
+            "passed": true
+          },
+          "pricing_standard_errors": {
+            "max_absolute_difference": 6.071532165918825e-18,
+            "absolute_tolerance": 1e-10,
+            "relative_tolerance": 0.0,
+            "bitwise_equal": false,
+            "passed": true
+          },
+          "pricing_covariance": {
+            "max_absolute_difference": 1.0842021724855044e-19,
+            "absolute_tolerance": 1e-10,
+            "relative_tolerance": 0.0,
+            "bitwise_equal": false,
+            "passed": true
+          },
+          "refinement_difference": {
+            "max_absolute_difference": 0.0,
+            "absolute_tolerance": 1e-10,
+            "relative_tolerance": 0.0,
+            "bitwise_equal": true,
+            "passed": true
+          },
+          "example_id": {
+            "comparison": "exact string identity",
+            "passed": true
+          }
+        },
+        "scope": "One seeded training row per bank; portability tolerance check, not all-row replay or inference validation."
+      }
+    },
+    "reference": {
+      "path": "banks/reference",
+      "files": {
+        "manifest.json": {
+          "sha256": "b3c312f13fca8ea3588b8e56cd364ae111fcc34df3307e468a7d3cc17e5cfa5d",
+          "bytes": 26456
+        },
+        "test.npz": {
+          "sha256": "57a447cf4839b052380b8c44e3bc32846e022ccfd62808420f722f980c17c1ba",
+          "bytes": 2842
+        },
+        "train.npz": {
+          "sha256": "7cf5cfa7fadc54cad633c25295e382cd3cf4133379d4a1c2dab706bdb0f8654e",
+          "bytes": 4065098
+        },
+        "validation.npz": {
+          "sha256": "411be4af224515ad64e38fb1fcb5a5611c0a5e58dc5eea247a8d83ae6eb28acf",
+          "bytes": 2866
+        }
+      },
+      "manifest_sha256": "b3c312f13fca8ea3588b8e56cd364ae111fcc34df3307e468a7d3cc17e5cfa5d",
+      "configuration_sha256": "2273f150288e29cd3815e2385117ed73c2b5910684d460d40b15ee1e25fee36f",
+      "task_fingerprint": "a4ce0976b4f459c29e0ce88d2554cb98fa2aef34da0d14721b4d8bd2586ec84a",
+      "root_seed": 83027,
+      "split_examples": {
+        "test": 1,
+        "train": 4096,
+        "validation": 1
+      },
+      "total_examples": 4098,
+      "stored_bytes": 4097262,
+      "generation_versions": {
+        "numpy": "2.5.3",
+        "python": "3.12.8",
+        "scipy": "1.18.1"
+      },
+      "source_sha256": {
+        "gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
+        "option_panel.py": "b37400bfc7f7ec91d208e8637cee1fcb53885b76ca0b00c016574b495fa035f2",
+        "option_bank.py": "8d41e6cecf115f6aa96475295c8291b9c6474e0c1e44ead001539129f3ba3d0a",
+        "bergomi.py": "39234a7e8443a3d27fa9b460c3e9e584e41e8780bd084b6113648c78f1dd3c1d",
+        "rough_bergomi.py": "ab47c3bcd3292fde093b4aaaf4fb668101793997dc25afe11a485ec8f2537b8f"
+      },
+      "shard_writer_sha256": "a1b1959f7684fd56df1ce1e3d03f3201fadb3c2394c73ea49d312af1da762af7",
+      "roles": {
+        "context": "known synthetic contracts/spot/rates/quote sigma; model_context also known; stored in configuration",
+        "example_id": "auxiliary split-qualified base-panel identity; future augmentations must keep base grouping",
+        "observations": "conditioning: noisy currency prices [batch,contract,1]",
+        "parameters": "ordered synthetic training targets only; never observed conditioning",
+        "pricing_covariance": "auxiliary covariance of MC price MEANS; zero for Fourier",
+        "pricing_standard_errors": "auxiliary MC standard errors (zero for deterministic Fourier)",
+        "reference_prices": "auxiliary numerical expectation estimates, not exact market truth",
+        "refinement_difference": "auxiliary refined-minus-base Fourier estimate; MC zeros mean not calculated"
+      },
+      "truth_available": [
+        "hurst",
+        "eta"
+      ],
+      "future_outcomes_in_conditioning": false,
+      "integrity": {
+        "loader_hash_shapes_covariance_checked": true,
+        "copied_exact_file_bytes": true,
+        "max_marginal_mcse_currency": 0.018710437802285092,
+        "mcse_limit_currency": 0.025,
+        "max_mcse_over_quote_sigma": 0.07484175120914037,
+        "covariance_max_asymmetry": 0.0,
+        "covariance_max_se_squared_diagonal_difference": 5.421010862427522e-20,
+        "covariance_min_eigenvalue": 3.214358853355639e-08,
+        "mcse_excludes_numerical_bias": true
+      },
+      "local_replay": {
+        "split": "train",
+        "ids": [
+          0
+        ],
+        "elapsed_seconds": 6.0601731250062585,
+        "arrays": {
+          "observations": {
+            "max_absolute_difference": 8.881784197001252e-15,
+            "absolute_tolerance": 1e-10,
+            "relative_tolerance": 0.0,
+            "bitwise_equal": false,
+            "passed": true
+          },
+          "parameters": {
+            "max_absolute_difference": 0.0,
+            "absolute_tolerance": 1e-14,
+            "relative_tolerance": 0.0,
+            "bitwise_equal": true,
+            "passed": true
+          },
+          "reference_prices": {
+            "max_absolute_difference": 8.881784197001252e-15,
+            "absolute_tolerance": 1e-10,
+            "relative_tolerance": 0.0,
+            "bitwise_equal": false,
+            "passed": true
+          },
+          "pricing_standard_errors": {
+            "max_absolute_difference": 4.336808689942018e-18,
+            "absolute_tolerance": 1e-10,
+            "relative_tolerance": 0.0,
+            "bitwise_equal": false,
+            "passed": true
+          },
+          "pricing_covariance": {
+            "max_absolute_difference": 1.1519648082658485e-19,
+            "absolute_tolerance": 1e-10,
+            "relative_tolerance": 0.0,
+            "bitwise_equal": false,
+            "passed": true
+          },
+          "refinement_difference": {
+            "max_absolute_difference": 0.0,
+            "absolute_tolerance": 1e-10,
+            "relative_tolerance": 0.0,
+            "bitwise_equal": true,
+            "passed": true
+          },
+          "example_id": {
+            "comparison": "exact string identity",
+            "passed": true
+          }
+        },
+        "scope": "One seeded training row per bank; portability tolerance check, not all-row replay or inference validation."
+      }
+    }
+  },
+  "local_versions": {
+    "python": "3.12.15",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1"
+  },
+  "local_replay_environment": {
+    "system": "Darwin",
+    "machine": "arm64",
+    "external_network_connections_blocked": true,
+    "guard_scope": "External socket connect/connect_ex blocked; local kernel communication permitted."
+  },
+  "reserved_test_evaluated": false,
+  "test_scope": "Reserved files receive only integrity/schema/numerical-diagnostic checks; no fitting, selection, posterior inference or forecast scoring.",
+  "limits": [
+    "Monte Carlo SE screens do not bound time-grid bias.",
+    "Only train:0 from each bank is regenerated locally.",
+    "Generation cost excludes independent target-pricing reference calculations and neural training.",
+    "Synthetic Q option panels do not supply P risk probabilities or market-model adequacy evidence."
+  ]
+}

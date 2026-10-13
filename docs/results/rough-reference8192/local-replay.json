@@ -1,0 +1,52 @@
+{
+  "example_id": "train:4096",
+  "passed": true,
+  "elapsed_seconds": 6.341784082818776,
+  "checks": {
+    "observations": {
+      "bitwise_equal": false,
+      "max_absolute_difference": 1.2434497875801753e-14,
+      "absolute_tolerance": 1e-10
+    },
+    "parameters": {
+      "bitwise_equal": false,
+      "max_absolute_difference": 2.7755575615628914e-17,
+      "absolute_tolerance": 1e-15
+    },
+    "reference_prices": {
+      "bitwise_equal": false,
+      "max_absolute_difference": 1.2434497875801753e-14,
+      "absolute_tolerance": 1e-10
+    },
+    "pricing_standard_errors": {
+      "bitwise_equal": false,
+      "max_absolute_difference": 5.204170427930421e-18,
+      "absolute_tolerance": 1e-10
+    },
+    "pricing_covariance": {
+      "bitwise_equal": false,
+      "max_absolute_difference": 8.131516293641283e-20,
+      "absolute_tolerance": 1e-10
+    },
+    "refinement_difference": {
+      "bitwise_equal": true,
+      "max_absolute_difference": 0.0,
+      "absolute_tolerance": 1e-10
+    },
+    "example_id": {
+      "exact": true
+    }
+  },
+  "cluster_shard_manifest_sha256": "4b06da43c214f65fcfe1b1bdf962115f54867c768d9c3d778986c9eb92f1eed5",
+  "scope": "One full seeded generator replay across Linux cluster and local Mac. Numerical portability, not inference acceptance.",
+  "initial_strict_parameter_check": "Failed bitwise equality: H differs by one ULP (2.7755575615628914e-17). Portability comparison uses 1e-15 parameter tolerance; original prefix still must remain bitwise unchanged.",
+  "local_versions": {
+    "python": "3.12.15",
+    "numpy": "2.5.3"
+  },
+  "cluster_versions": {
+    "numpy": "2.5.3",
+    "python": "3.12.8",
+    "scipy": "1.18.1"
+  }
+}

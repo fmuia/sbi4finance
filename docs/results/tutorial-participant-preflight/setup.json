@@ -1,0 +1,52 @@
+{
+  "scope": "Fresh locked installation on the #19-based curriculum worktree; preliminary, not H26.3 combined-tree acceptance",
+  "date": "2026-10-12",
+  "source_base_commit": "c762d7613b57d3ea2632671e773498ae8734b701",
+  "combined_revision": null,
+  "command": "pixi install --locked",
+  "pixi_version": "0.70.2",
+  "exit_code": 0,
+  "stdout": "\u2714 The default environment has been installed.\n",
+  "environment_existed_before_install": false,
+  "environment_is_symlink": false,
+  "environment_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-tutorial-followup/.pixi/envs/default",
+  "package_cache": "Normal existing Pixi/Rattler package caches permitted; this is a new environment, not a cold-cache download test.",
+  "attempts": [
+    {
+      "result": "sandbox cache write denied before dependency installation",
+      "error": "failed to acquire global cache lock: Operation not permitted"
+    },
+    {
+      "result": "passed",
+      "execution": "same pixi install --locked with package/cache access permitted"
+    }
+  ],
+  "installation_elapsed_seconds": null,
+  "timing_note": "Installation duration was not instrumented; export and live component timings are recorded separately.",
+  "python": "3.12.15 (main, Oct  6 2026, 23:42:14) [Clang 21.1.8 ]",
+  "python_executable": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-tutorial-followup/.pixi/envs/default/bin/python",
+  "platform": "macOS-26.4.1-arm64-arm-64bit",
+  "machine": "arm64",
+  "packages": {
+    "bayesflow": "2.0.14",
+    "keras": "3.15.1",
+    "jax": "0.11.1",
+    "jaxlib": "0.11.1",
+    "marimo": "0.25.1",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "numba": "0.68.0",
+    "pandas": "3.0.6",
+    "matplotlib": "3.11.2"
+  },
+  "sha256": {
+    "pyproject.toml": "3517fb05e0b69734d00ea7a498a3432cb26aa77cb154ff0dee53afbab43e1fc8",
+    "pixi.lock": "749dac2b9ae02df22ddaa8ae298d18804c53d7a040103a8f1df0dffc488d8933"
+  },
+  "remaining_limitations": [
+    "No #27 combined revision available",
+    "Only macOS arm64 installation exercised; Linux lock target not installed",
+    "Fresh environment can reuse package caches",
+    "Repeat fresh locked setup on the actual pinned combined revision"
+  ]
+}

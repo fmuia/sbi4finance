@@ -1,0 +1,35 @@
+{
+  "experiment_id": "hkde_two_put_chebyshev_v1",
+  "evidence_scope": "S",
+  "measure": "Q",
+  "task_config": "configs/tasks/hkde_inference_bank.json",
+  "baseline_protocol": "configs/hkde_inference_protocol.json",
+  "baseline_results": "docs/results/hkde-inference",
+  "targets": [
+    {"strike": 95.0, "maturity": 0.75, "option_type": "put"},
+    {"strike": 80.0, "maturity": 1.0, "option_type": "put"}
+  ],
+  "root_seed": 94021,
+  "splits": {"train": 512, "validation": 256, "test": 256},
+  "model": {"basis": "tensor_chebyshev", "degree": 6, "fit": "float64 unregularized least squares, full rank required", "scaling": "fixed prior bounds to [-1,1]^2", "outputs": "two fixed-contract currency expectation labels"},
+  "labels": {"nodes": 1024, "upper_limit": 400.0, "refinement_nodes": 2048, "refinement_upper_limit": 800.0, "refinement_axis_points": 5},
+  "checks": {
+    "stress_grid": "existing 129x129 endpoint-inclusive reference grid; never used for fitting",
+    "propagation": "same cached 20x4096 joint neural draws and 20 weighted reference-grid posteriors; no new inference and no posterior final-test access",
+    "quantiles": [0.05, 0.5, 0.95],
+    "relative_error_denominator_floor_currency": 0.1,
+    "benchmark_repeats": 3,
+    "benchmark_draws": 4096,
+    "gates": {
+      "max_abs_price_error_currency": 0.003,
+      "price_rmse_currency": 0.001,
+      "max_abs_paired_mean_error_currency": 0.003,
+      "max_abs_paired_quantile_error_currency": 0.003,
+      "max_label_refinement_difference_currency": 0.00001,
+      "max_design_condition_number": 1000.0,
+      "max_put_bound_violation_currency": 0.0000000001
+    }
+  },
+  "test_access": "Generate and evaluate the NEW surrogate test split only after all frozen validation, stress, refinement and propagation gates pass. Never use or unlock the old posterior's final test.",
+  "stop_rule": "One fixed degree and fit, no architecture/degree/seed sweep. Preserve failures. Surrogate acceptance does not accept or repair the provisional HKDE posterior. Fixed two contracts and known context only; no arbitrary payoff or continuum-uniform accuracy claim."
+}

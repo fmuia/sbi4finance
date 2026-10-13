@@ -1,0 +1,898 @@
+[
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 4096,
+    "stop": 4128,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 4128,
+    "stop": 4160,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 4160,
+    "stop": 4192,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 4192,
+    "stop": 4224,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 4224,
+    "stop": 4256,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 4256,
+    "stop": 4288,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 4288,
+    "stop": 4320,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 4320,
+    "stop": 4352,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 4352,
+    "stop": 4384,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 4384,
+    "stop": 4416,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 4416,
+    "stop": 4448,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 4448,
+    "stop": 4480,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 4480,
+    "stop": 4512,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 4512,
+    "stop": 4544,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 4544,
+    "stop": 4576,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 4576,
+    "stop": 4608,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 4608,
+    "stop": 4640,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 4640,
+    "stop": 4672,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 4672,
+    "stop": 4704,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 4704,
+    "stop": 4736,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 4736,
+    "stop": 4768,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 4768,
+    "stop": 4800,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 4800,
+    "stop": 4832,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 4832,
+    "stop": 4864,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 4864,
+    "stop": 4896,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 4896,
+    "stop": 4928,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 4928,
+    "stop": 4960,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 4960,
+    "stop": 4992,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 4992,
+    "stop": 5024,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 5024,
+    "stop": 5056,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 5056,
+    "stop": 5088,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 5088,
+    "stop": 5120,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 5120,
+    "stop": 5152,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 5152,
+    "stop": 5184,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 5184,
+    "stop": 5216,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 5216,
+    "stop": 5248,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 5248,
+    "stop": 5280,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 5280,
+    "stop": 5312,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 5312,
+    "stop": 5344,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 5344,
+    "stop": 5376,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 5376,
+    "stop": 5408,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 5408,
+    "stop": 5440,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 5440,
+    "stop": 5472,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 5472,
+    "stop": 5504,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 5504,
+    "stop": 5536,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 5536,
+    "stop": 5568,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 5568,
+    "stop": 5600,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 5600,
+    "stop": 5632,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 5632,
+    "stop": 5664,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 5664,
+    "stop": 5696,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 5696,
+    "stop": 5728,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 5728,
+    "stop": 5760,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 5760,
+    "stop": 5792,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 5792,
+    "stop": 5824,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 5824,
+    "stop": 5856,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 5856,
+    "stop": 5888,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 5888,
+    "stop": 5920,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 5920,
+    "stop": 5952,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 5952,
+    "stop": 5984,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 5984,
+    "stop": 6016,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 6016,
+    "stop": 6048,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 6048,
+    "stop": 6080,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 6080,
+    "stop": 6112,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 6112,
+    "stop": 6144,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 6144,
+    "stop": 6176,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 6176,
+    "stop": 6208,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 6208,
+    "stop": 6240,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 6240,
+    "stop": 6272,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 6272,
+    "stop": 6304,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 6304,
+    "stop": 6336,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 6336,
+    "stop": 6368,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 6368,
+    "stop": 6400,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 6400,
+    "stop": 6432,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 6432,
+    "stop": 6464,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 6464,
+    "stop": 6496,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 6496,
+    "stop": 6528,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 6528,
+    "stop": 6560,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 6560,
+    "stop": 6592,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 6592,
+    "stop": 6624,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 6624,
+    "stop": 6656,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 6656,
+    "stop": 6688,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 6688,
+    "stop": 6720,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 6720,
+    "stop": 6752,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 6752,
+    "stop": 6784,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 6784,
+    "stop": 6816,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 6816,
+    "stop": 6848,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 6848,
+    "stop": 6880,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 6880,
+    "stop": 6912,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 6912,
+    "stop": 6944,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 6944,
+    "stop": 6976,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 6976,
+    "stop": 7008,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 7008,
+    "stop": 7040,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 7040,
+    "stop": 7072,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 7072,
+    "stop": 7104,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 7104,
+    "stop": 7136,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 7136,
+    "stop": 7168,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 7168,
+    "stop": 7200,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 7200,
+    "stop": 7232,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 7232,
+    "stop": 7264,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 7264,
+    "stop": 7296,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 7296,
+    "stop": 7328,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 7328,
+    "stop": 7360,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 7360,
+    "stop": 7392,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 7392,
+    "stop": 7424,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 7424,
+    "stop": 7456,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 7456,
+    "stop": 7488,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 7488,
+    "stop": 7520,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 7520,
+    "stop": 7552,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 7552,
+    "stop": 7584,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 7584,
+    "stop": 7616,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 7616,
+    "stop": 7648,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 7648,
+    "stop": 7680,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 7680,
+    "stop": 7712,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 7712,
+    "stop": 7744,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 7744,
+    "stop": 7776,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 7776,
+    "stop": 7808,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 7808,
+    "stop": 7840,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 7840,
+    "stop": 7872,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 7872,
+    "stop": 7904,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 7904,
+    "stop": 7936,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 7936,
+    "stop": 7968,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 7968,
+    "stop": 8000,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 8000,
+    "stop": 8032,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 8032,
+    "stop": 8064,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 8064,
+    "stop": 8096,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 8096,
+    "stop": 8128,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 8128,
+    "stop": 8160,
+    "group": "reference"
+  },
+  {
+    "config": "source/configs/tasks/rough_reference8192_bank.json",
+    "split": "train",
+    "start": 8160,
+    "stop": 8192,
+    "group": "reference"
+  }
+]

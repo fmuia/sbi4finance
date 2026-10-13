@@ -1,0 +1,30 @@
+{
+  "scope": "cached synthetic Q correction diagnostics; no new inference/test access",
+  "input_sha256": {
+    "validation.json": "024cb9f0131866e28cec940e0d6cb58ee93e79379c72325e26fd49a6ea371e87",
+    "validation-checks.npz": "2ee4b825ff5503a6ff73cf45f96e694f050e33c5fb477e20a6248a2bad7de67f",
+    "test.json": "e192f9c4029f0b2a16480d58ed671dfe6d2e6a11d594330d714e58917e66c090",
+    "test-checks.npz": "d95dfdb943a65a11d6bb22efd22ecd9ed24a4996ae14b86dc49dda75472c9309",
+    "reference_pit": "699fa8a84411bcadb2c26c4133a0d17bf9e7a22f29bcb13cc8371eeb823ca281",
+    "independent_test_audit": "4505a9a77577cb17096f7c03a97629a435a356c6f50e40d978eee83785222b23",
+    "protocol": "12b7e422bfd89c8e072db1229e9df9b880e2f03fc0a79d5d1057564991d96b1d",
+    "baseline": "743500b877feabe5b4476f9a8ea66c61eb61038872e23c61cf651279d0cbc636"
+  },
+  "plot_script_sha256": "b8612d45c543b61ceb1257c3e7d049c61f290f92b71c2031c4d7dc637f41a47f",
+  "artifact_sha256": {
+    "price-errors.png": "c178b4fe1bbe50976f5d79556cff0d967a47e5dce08c4e3ea78eb7c65dbf7441",
+    "price-errors.svg": "e09c81a11733e28f17a8c08cac24c047d1f4d036294400210ec92af2421576b3",
+    "proposal-efficiency.png": "c34324cd4e45e498f6a40d45eb58ac7fdf74ed250ede5c2e0ae5aeced290d296",
+    "proposal-efficiency.svg": "13e6711f6bb9917e1cdd46abcb9c40ff8fd8ce4d36add0f502ba5920d98826ee",
+    "calibration.png": "847b3fb874fe5e5f80d17c90ef89b20be1d2bbae4284fbddb8f5b87f2cea7eb2",
+    "calibration.svg": "0bf588dd6eb81539e96f6aec2ec2879c791444c2e43f50fa510277ea1c2b2419",
+    "reference-pit.png": "e097bccc771ebd41826ebf5df087968ca12dde777c7b1a5b2bccb2ec3f30e38e",
+    "reference-pit.svg": "ea8980e711a80918f7e1b7c32954dcc07f6058ded2e76021d2dcb39cd5474478"
+  },
+  "figures": [
+    "price-errors",
+    "proposal-efficiency",
+    "calibration",
+    "reference-pit"
+  ]
+}

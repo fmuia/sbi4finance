@@ -1,0 +1,11 @@
+{
+  "report": "docs/results/bergomi-coupled-refinement.json",
+  "report_sha256": "96ebccd8c7dd00f6fba056420040fd4e85c495f12041781b51b4cc2eb04b927d",
+  "script_sha256": "1b61b9b29cccbf03e6dd74385a5566bd72cedab6333168c02118e40b2ec825f0",
+  "outputs": {
+    "coupled-grid-differences.png": "d6320bcb7511c928c927da1dcaab832ac4d04f82374dc81fef8679e90ed32e44",
+    "coupled-grid-differences.svg": "4fc0783b43728c2841b10aec4a4c546d3bd29789db304f211ae0ed7456d0be4a",
+    "pairing-precision.png": "0dfe61b339c2ba51acfa52c2f0952a4e4cc1147151134a3de647cd8a717e1e44",
+    "pairing-precision.svg": "95bcc7c5784657e1f34208da5e901cdcce00ee4cac224a4ff8c95d3a88eb9d8d"
+  }
+}

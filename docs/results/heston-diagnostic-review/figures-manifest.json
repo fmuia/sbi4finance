@@ -1,0 +1,38 @@
+{
+  "purpose": "saved bounded-time Heston development diagnostics; no inference, simulation or test evaluation",
+  "split": "validation",
+  "reserved_test_accessed": false,
+  "bank_manifest_sha256": "5a874a03faac8282ac531da8cdd533a95de9355e8cd024d3b567003da12bb452",
+  "reference_report_sha256": "ef58b568f9de059a21596cf6c7026d32d30cd78a3a5e8ede9ab082a74f2e5ca6",
+  "checkpoint_sha256": "bd20d8dde5afd890713811ad6a53ffd03d66491d46139ae221b5b6de5a03aff6",
+  "source_sha256": {
+    "docs/results/heston-time-context/neural-validation.json": "1fe0fd7bd0b1702fa4e2b2a0c2c0deba9f4511e331bb56fea8819a57db276c3b",
+    "docs/results/heston-inference-followup/neural-validation.json": "602a0a52c9a70f1fc673edb630ab0836601d1b84cf2030c1d78a346d7b1b9e3d",
+    "docs/results/heston-time-context/validation-checks.npz": "e1fa709c3a19e7eda1b01e323493c40f16231c0cd42c14b6637b66fd353fb920",
+    "docs/results/heston-time-context/summary-legacy.json": "be9b0fb76837b21bacbeea5826f6032b2db648f5cf2eb4637589a75552ba1d5b",
+    "docs/results/heston-time-context/summary-explicit-time.json": "aed55a359c0a1987cbbc20946025768dbc9f8fa30014ba4c08a895ce19991d48",
+    "docs/results/heston-diagnostic-review/prior-comparison.json": "afb2c73ee9076ca35ec40b8de640425b89a5ca07de1552c34bb0e4c51d57ea1e"
+  },
+  "plot_script_sha256": "2abd861b8735a33622385d7426f6a19b007aaf6e3aece4a88f0ceb5600c0f472",
+  "artifacts_sha256": {
+    "sbc-rank-ecdf.png": "7db745ec03b528f8e4e59f1da3c5918ea78dbd01f1a79f1dfaf09bf703a3d8c3",
+    "conditional-reference-errors.png": "d2cb9b7dc100a7db854632b9397924254ab438ab6ce13c028a274d2dd24ccc5d",
+    "gru-gate-saturation.png": "f19c31aa798d6124900aa6ecaaba81d0355b737289c713956552e2be64f4c2cb",
+    "prior-posterior-comparison.png": "843a57419d5846e4c1131b162a457c94ee7e301c7610da64635adc1484cfbdd3"
+  },
+  "versions": {
+    "numpy": "2.5.3",
+    "matplotlib": "3.11.2"
+  },
+  "rank_reconstruction": {
+    "jitter_seed": 874,
+    "draws": 2048,
+    "cases": 256,
+    "max_ecdf_errors": [
+      0.047264763712408286,
+      0.07599239883605124
+    ],
+    "dkw_bound": 0.09251294920629989
+  },
+  "limits": "Validation was reused for selection; marginal SBC diagnostics are not an independent certificate. Conditional errors use a finite reference; gate saturation is an engineering diagnostic."
+}

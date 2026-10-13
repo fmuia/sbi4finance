@@ -1,0 +1,177 @@
+{
+  "scope": "Arithmetic review of saved validation evidence; no scientific rerun or acceptance",
+  "decision": "retain optional diagnostic lesson; defer further acceptance experiments for the selected Q/options curriculum (#26/#30)",
+  "scientific_status": "provisional",
+  "scientific_acceptance": false,
+  "training_performed": false,
+  "reserved_test_accessed": false,
+  "raw_banks_accessed": false,
+  "new_scientific_examples": 0,
+  "reference_cases_with_recorded_stability_pass": 16,
+  "candidates": {
+    "v2": {
+      "adapter_id": "heston_returns_time_and_window_moments_v2",
+      "conditional_cases": [
+        "validation:0",
+        "validation:1",
+        "validation:2",
+        "validation:3",
+        "validation:4",
+        "validation:5",
+        "validation:6",
+        "validation:7",
+        "validation:8",
+        "validation:9",
+        "validation:10",
+        "validation:11",
+        "validation:12",
+        "validation:13",
+        "validation:14",
+        "validation:15"
+      ],
+      "metrics": {
+        "mean_rmse_in_reference_sd": 0.17319687218590424,
+        "maximum_abs_mean_error_in_reference_sd": 0.45537562286843286,
+        "maximum_relative_std_error": 0.28862657451759133,
+        "maximum_correlation_error": 0.07073671123006245,
+        "maximum_predictive_std_relative_error": 0.08809232133086042,
+        "maximum_predictive_interval_error_in_sd": 0.20989016501369626
+      },
+      "thresholds": {
+        "mean_rmse_in_reference_sd": 0.2,
+        "maximum_abs_mean_error_in_reference_sd": 0.4,
+        "maximum_relative_std_error": 0.3,
+        "maximum_correlation_error": 0.2,
+        "maximum_predictive_std_relative_error": 0.15,
+        "maximum_predictive_interval_error_in_sd": 0.15
+      },
+      "failed_conditional_gates": [
+        "maximum_abs_mean_error_in_reference_sd",
+        "maximum_predictive_interval_error_in_sd"
+      ],
+      "coverage_90": [
+        0.91796875,
+        0.8671875
+      ],
+      "predictive_coverage_90": 0.90234375,
+      "development_sbc_ecdf_error": [
+        0.047264763712408286,
+        0.07599239883605124
+      ],
+      "development_sbc_bound": 0.09251294920629989,
+      "scientific_acceptance": false
+    },
+    "v3": {
+      "adapter_id": "heston_returns_time_asinh_state_v3",
+      "conditional_cases": [
+        "validation:0",
+        "validation:1",
+        "validation:2",
+        "validation:3",
+        "validation:4",
+        "validation:5",
+        "validation:6",
+        "validation:7",
+        "validation:8",
+        "validation:9",
+        "validation:10",
+        "validation:11",
+        "validation:12",
+        "validation:13",
+        "validation:14",
+        "validation:15"
+      ],
+      "metrics": {
+        "mean_rmse_in_reference_sd": 0.1864991720238676,
+        "maximum_abs_mean_error_in_reference_sd": 0.5268085925114759,
+        "maximum_relative_std_error": 0.3212078608300264,
+        "maximum_correlation_error": 0.08780580187531964,
+        "maximum_predictive_std_relative_error": 0.10167518239286988,
+        "maximum_predictive_interval_error_in_sd": 0.24033810638212405
+      },
+      "thresholds": {
+        "mean_rmse_in_reference_sd": 0.2,
+        "maximum_abs_mean_error_in_reference_sd": 0.4,
+        "maximum_relative_std_error": 0.3,
+        "maximum_correlation_error": 0.2,
+        "maximum_predictive_std_relative_error": 0.15,
+        "maximum_predictive_interval_error_in_sd": 0.15
+      },
+      "failed_conditional_gates": [
+        "maximum_abs_mean_error_in_reference_sd",
+        "maximum_relative_std_error",
+        "maximum_predictive_interval_error_in_sd"
+      ],
+      "coverage_90": [
+        0.9140625,
+        0.87890625
+      ],
+      "predictive_coverage_90": 0.8984375,
+      "development_sbc_ecdf_error": [
+        0.028344299226391853,
+        0.06585397161863654
+      ],
+      "development_sbc_bound": 0.09251294920629989,
+      "scientific_acceptance": false
+    }
+  },
+  "prior_copy_mean_rmse_in_reference_sd": 3.26494047007214,
+  "precision_case0": {
+    "neural_seed": 11101,
+    "reference_filter_seed": 27102,
+    "weighted_reference_mean": [
+      0.02617372178192026,
+      0.006469399996981831
+    ],
+    "neural_mean": [
+      0.027675556548456427,
+      0.007754540307246316
+    ],
+    "mean_error_in_reference_sd": [
+      0.2697616716033005,
+      0.4347270886389832
+    ],
+    "loss_q05_median_q95_percent_initial_wealth": {
+      "neural": [
+        -3.053042040865638,
+        -0.30586306052798423,
+        2.959179166804692
+      ],
+      "reference": [
+        -2.8372935472524508,
+        -0.3055385551626073,
+        2.737474061002085
+      ]
+    },
+    "upper_loss_endpoint_difference_percentage_points": 0.22170510580260716,
+    "negative_state_draw_counts": {
+      "neural": 9,
+      "reference": 0
+    }
+  },
+  "limits": [
+    "Mean/SD errors use saved moments; coverage and SBC use saved validation arrays, not regenerated draws.",
+    "Correlation/predictive maxima aggregate saved per-case errors; full historical draws are unavailable.",
+    "Reference stability flags/inequalities checked from summaries, not reconstructed particle filters.",
+    "Precision neural moments and both loss distributions recomputed from saved draws. Reference moments are full weighted-particle summaries, not sample moments.",
+    "State-prior moments are the saved training estimate; no training bank was opened.",
+    "Validation is reused development evidence. Finite reference precision and marginal SBC do not establish joint or held-out accuracy."
+  ],
+  "source_sha256": {
+    "configs/tasks/heston_inference_followup.json": "34cd457425207401574d777853e36b3f515c7a45f454cfa66a48f8d2c46bda75",
+    "docs/results/heston-inference-followup/bank-manifest.json": "5a874a03faac8282ac531da8cdd533a95de9355e8cd024d3b567003da12bb452",
+    "docs/results/heston-inference-followup/reference-validation.json": "ef58b568f9de059a21596cf6c7026d32d30cd78a3a5e8ede9ab082a74f2e5ca6",
+    "docs/results/heston-time-context/neural-validation.json": "1fe0fd7bd0b1702fa4e2b2a0c2c0deba9f4511e331bb56fea8819a57db276c3b",
+    "checkpoints/heston-time-context-provisional/model.keras": "bd20d8dde5afd890713811ad6a53ffd03d66491d46139ae221b5b6de5a03aff6",
+    "checkpoints/heston-time-context-provisional/task.json": "405669a0dd9cb74f9749b649f91d0d129d7a8cd70acf86db438f3109f630b42d",
+    "docs/results/heston-time-context/validation-checks.npz": "e1fa709c3a19e7eda1b01e323493c40f16231c0cd42c14b6637b66fd353fb920",
+    "docs/results/heston-state-transform/neural-validation.json": "7d3f1943437bf964303ced1021d4e9098fe612ecbbc823534fad4aeb3dcd9d9e",
+    "checkpoints/heston-asinh-state-provisional/model.keras": "c21fe517c6fab643c63a34377bf13dcd6f3a56e10db9daf1764192dd55c1a7ac",
+    "checkpoints/heston-asinh-state-provisional/task.json": "57df45be741167eb7403c7f757d861285e6be830bfd63c3179c0bd05153214e7",
+    "docs/results/heston-state-transform/validation-checks.npz": "2778bdcb31bf27f22ef88487fba4aec65259edd98415f133b432e51540b3d3f7",
+    "docs/results/heston-diagnostic-review/prior-comparison.json": "afb2c73ee9076ca35ec40b8de640425b89a5ca07de1552c34bb0e4c51d57ea1e",
+    "docs/results/heston-precision/report.json": "1daaf8e7bda43de1136056bb461d40bcf1b3b8749ecb88c734b14d029ef3f7d1",
+    "docs/results/heston-precision/case-0-draws.npz": "d2ccd62f8265bd97982cd2a4af243b61e55653419dfb62a1d9b1ed57347e5f3a"
+  },
+  "checker_sha256": "0e4126f19167da800d8550172e544840553ac2f715b12f9e4e79a4240294ca8e"
+}

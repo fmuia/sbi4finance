@@ -1,0 +1,1 @@
+Isolated src imports and external Python socket/DNS guards verified; local IPC allowed.

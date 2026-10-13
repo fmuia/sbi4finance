@@ -1,0 +1,155 @@
+{
+  "steps": [
+    {
+      "label": "guard-preflight",
+      "arguments": [
+        "-c",
+        "import socket, sitecustomize, sbi4finance\nfor method in ('connect', 'connect_ex'):\n    with socket.socket() as sock:\n        try: getattr(sock, method)(('192.0.2.1', 9))\n        except RuntimeError: pass\n        else: raise AssertionError(method + ' guard inactive')\nwith socket.socket(type=socket.SOCK_DGRAM) as sock:\n    try: sock.sendto(b'probe', ('192.0.2.1', 9))\n    except RuntimeError: pass\n    else: raise AssertionError('UDP guard inactive')\ntry: socket.getaddrinfo('example.com', 443)\nexcept RuntimeError: pass\nelse: raise AssertionError('DNS guard inactive')\nwith socket.socket() as server:\n    server.bind(('127.0.0.1', 0)); server.listen()\n    with socket.create_connection(server.getsockname()) as client:\n        connection, _ = server.accept(); connection.close()\nassert socket.getaddrinfo('127.0.0.1', 0)\nprint('External TCP/UDP/DNS blocked; loopback connection and isolated source imports passed.')\n"
+      ],
+      "mode": "cached",
+      "seconds": 0.5613525840453804,
+      "returncode": 0
+    },
+    {
+      "label": "01_gbm_foundations-check",
+      "arguments": [
+        "-m",
+        "marimo",
+        "check",
+        "--strict",
+        "notebooks/01_gbm_foundations.py"
+      ],
+      "mode": "analytic-live",
+      "seconds": 5.579022750258446,
+      "returncode": 0
+    },
+    {
+      "label": "01_gbm_foundations-export",
+      "arguments": [
+        "-m",
+        "marimo",
+        "export",
+        "html",
+        "notebooks/01_gbm_foundations.py",
+        "-o",
+        "/private/tmp/sbi4finance-participant-final/01_gbm_foundations.html"
+      ],
+      "mode": "analytic-live",
+      "seconds": 28.267182582989335,
+      "returncode": 0
+    },
+    {
+      "label": "hkde_data_walkthrough-check",
+      "arguments": [
+        "-m",
+        "marimo",
+        "check",
+        "--strict",
+        "notebooks/hkde_data_walkthrough.py"
+      ],
+      "mode": "cached",
+      "seconds": 0.8823130000382662,
+      "returncode": 0
+    },
+    {
+      "label": "hkde_data_walkthrough-export",
+      "arguments": [
+        "-m",
+        "marimo",
+        "export",
+        "html",
+        "notebooks/hkde_data_walkthrough.py",
+        "-o",
+        "/private/tmp/sbi4finance-participant-final/hkde_data_walkthrough.html"
+      ],
+      "mode": "cached",
+      "seconds": 1.6750091249123216,
+      "returncode": 0
+    },
+    {
+      "label": "10_hkde_corrected_workflow-cached-check",
+      "arguments": [
+        "-m",
+        "marimo",
+        "check",
+        "--strict",
+        "notebooks/10_hkde_corrected_workflow.py"
+      ],
+      "mode": "cached",
+      "seconds": 0.5645492090843618,
+      "returncode": 0
+    },
+    {
+      "label": "10_hkde_corrected_workflow-cached-export",
+      "arguments": [
+        "-m",
+        "marimo",
+        "export",
+        "html",
+        "notebooks/10_hkde_corrected_workflow.py",
+        "-o",
+        "/private/tmp/sbi4finance-participant-final/10_hkde_corrected_workflow-cached.html"
+      ],
+      "mode": "cached",
+      "seconds": 25.470714582595974,
+      "returncode": 0
+    },
+    {
+      "label": "10_hkde_corrected_workflow-live-check",
+      "arguments": [
+        "-m",
+        "marimo",
+        "check",
+        "--strict",
+        "notebooks/10_hkde_corrected_workflow.py"
+      ],
+      "mode": "provisional-live",
+      "seconds": 0.7716020001098514,
+      "returncode": 0
+    },
+    {
+      "label": "10_hkde_corrected_workflow-live-export",
+      "arguments": [
+        "-m",
+        "marimo",
+        "export",
+        "html",
+        "notebooks/10_hkde_corrected_workflow.py",
+        "-o",
+        "/private/tmp/sbi4finance-participant-final/10_hkde_corrected_workflow-live.html"
+      ],
+      "mode": "provisional-live",
+      "seconds": 25.76491704210639,
+      "returncode": 0
+    },
+    {
+      "label": "11_hkde_calibration_audit-check",
+      "arguments": [
+        "-m",
+        "marimo",
+        "check",
+        "--strict",
+        "notebooks/11_hkde_calibration_audit.py"
+      ],
+      "mode": "cached",
+      "seconds": 0.8183156251907349,
+      "returncode": 0
+    },
+    {
+      "label": "11_hkde_calibration_audit-export",
+      "arguments": [
+        "-m",
+        "marimo",
+        "export",
+        "html",
+        "notebooks/11_hkde_calibration_audit.py",
+        "-o",
+        "/private/tmp/sbi4finance-participant-final/11_hkde_calibration_audit.html"
+      ],
+      "mode": "cached",
+      "seconds": 1.1674147909507155,
+      "returncode": 0
+    }
+  ],
+  "elapsed_since_start_seconds": 91.7131582503207
+}

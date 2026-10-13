@@ -1,0 +1,346 @@
+{
+  "evidence_scope": "S development record; earlier trial sources/checkpoints are historical and not shipped",
+  "selection": "All development used validation histories; the first four cases and numeric gates were unchanged.",
+  "trials": [
+    {
+      "trial": 1,
+      "development_decision": "Raw-return GRU only; conditional and rank gates failed.",
+      "train_histories": 8192,
+      "validation_histories": 1024,
+      "checkpoint_sha256": "b79a54449b067dd418f6397d6ed77f14b9fad9a98968a00ff80fc97d617dca76",
+      "source_sha256": {
+        "train_heston.py": "740aa6532ae22d35bffcfe313a2c97b70e800b4d284935321819a4c702e7b39c",
+        "heston_inference.py": "f142255026efbdf62ec5a0c30d767a23cc779332b0c4a7607be87300adc0f930",
+        "heston_forecast.py": "d0284d3555e1ae5cf8b1048cff7e2a81365745a3ca5375c9fbf78913d9b037c1"
+      },
+      "epochs": 40,
+      "batch_size": 128,
+      "training_seconds": 42.61309937480837,
+      "validation_metrics": {
+        "mean_rmse_in_reference_sd": 0.646927874234861,
+        "maximum_abs_mean_error_in_reference_sd": 1.3012486649790302,
+        "maximum_relative_std_error": 0.32526535319046657,
+        "maximum_correlation_error": 0.1042592948585428,
+        "maximum_predictive_std_relative_error": 0.1308288283628981,
+        "maximum_predictive_interval_error_in_sd": 0.23616061442462907
+      },
+      "validation_rank_errors": [
+        0.040608687961129486,
+        0.18025206418373318
+      ],
+      "validation_passed": false
+    },
+    {
+      "trial": 2,
+      "development_decision": "Added eight observed-history moments; mean RMSE and state rank gates still failed.",
+      "train_histories": 8192,
+      "validation_histories": 1024,
+      "checkpoint_sha256": "f2def31bd4fc6c27e5dad294e8c9f2a66618d6ce2c58eed89a00ce6149db3aad",
+      "source_sha256": {
+        "train_heston.py": "b22ccacbd60b41bde9a256d5d0a839c4489ca35e90e1706bf3e9c50e0002e9b2",
+        "heston_inference.py": "e7d14fb3d01c08a93ba84c83c152d2147f0f50f2dad41bd3d2c15681d961b813",
+        "heston_forecast.py": "bee57c2e8294407418a4ddd3105e70f0d4ea6cdc845e8824636e4b40f2b6c091"
+      },
+      "epochs": 80,
+      "batch_size": 128,
+      "training_seconds": 83.11051820917055,
+      "validation_metrics": {
+        "mean_rmse_in_reference_sd": 0.23581182513100374,
+        "maximum_abs_mean_error_in_reference_sd": 0.3638179339175715,
+        "maximum_relative_std_error": 0.2146686183473845,
+        "maximum_correlation_error": 0.09477578204273651,
+        "maximum_predictive_std_relative_error": 0.052160581171173614,
+        "maximum_predictive_interval_error_in_sd": 0.1322479297192067
+      },
+      "validation_rank_errors": [
+        0.051360757917682354,
+        0.09642416177168606
+      ],
+      "validation_passed": false
+    },
+    {
+      "trial": 3,
+      "development_decision": "Same feature/network design, larger independent training and validation splits; validation passed.",
+      "train_histories": 32768,
+      "validation_histories": 2048,
+      "checkpoint_sha256": "947ba17680d4b5acd25564bcd724f66cd91b27e4ae5574a5b3eec7eafaad1860",
+      "source_sha256": {
+        "train_heston.py": "b22ccacbd60b41bde9a256d5d0a839c4489ca35e90e1706bf3e9c50e0002e9b2",
+        "heston_inference.py": "e7d14fb3d01c08a93ba84c83c152d2147f0f50f2dad41bd3d2c15681d961b813",
+        "heston_forecast.py": "bee57c2e8294407418a4ddd3105e70f0d4ea6cdc845e8824636e4b40f2b6c091"
+      },
+      "epochs": 80,
+      "batch_size": 256,
+      "training_seconds": 320.49834970897064,
+      "validation_metrics": {
+        "mean_rmse_in_reference_sd": 0.19266492743919275,
+        "maximum_abs_mean_error_in_reference_sd": 0.30603569319289464,
+        "maximum_relative_std_error": 0.1376384652330147,
+        "maximum_correlation_error": 0.05620424473473595,
+        "maximum_predictive_std_relative_error": 0.045760482547232195,
+        "maximum_predictive_interval_error_in_sd": 0.09628079456390215
+      },
+      "validation_rank_errors": [
+        0.05037734813552519,
+        0.05593537796842174
+      ],
+      "validation_passed": true
+    }
+  ],
+  "solver_probe": {
+    "seed": 873,
+    "draws": 2048,
+    "cases": [
+      {
+        "case": 0,
+        "reference": {
+          "mean": [
+            0.03328118354310221,
+            0.02560757815676268
+          ],
+          "std": [
+            0.010298747142675833,
+            0.0076258836306025484
+          ],
+          "correlation": 0.24541989847580908
+        },
+        "mean_16": [
+          0.03355112740454612,
+          0.025336687001981772
+        ],
+        "mean_64": [
+          0.03355112768387588,
+          0.025336688663628593
+        ],
+        "mean_shift_in_reference_sd": [
+          2.712269150862517e-08,
+          2.1789564339416062e-07
+        ],
+        "paired_mean_shift_mcse_in_reference_sd": [
+          1.1119556513468979e-08,
+          1.577522619751277e-08
+        ],
+        "std_16": [
+          0.010402082303007185,
+          0.009102330019727496
+        ],
+        "std_64": [
+          0.010402082411598379,
+          0.009102328999615522
+        ],
+        "std_shift_in_reference_sd": [
+          1.0544116854669362e-08,
+          -1.3376967489586204e-07
+        ],
+        "interval_width_90_shift_in_reference_sd": [
+          -6.770228103689803e-07,
+          -6.472705173310475e-07
+        ],
+        "mean_error_16_in_reference_sd": [
+          0.026211330145714574,
+          -0.035522592253286855
+        ],
+        "mean_error_64_in_reference_sd": [
+          0.026211357268407932,
+          -0.03552237435764346
+        ],
+        "maximum_pair_shift_in_reference_sd": [
+          2.6082454021244584e-06,
+          2.442530255452879e-06
+        ]
+      },
+      {
+        "case": 1,
+        "reference": {
+          "mean": [
+            0.05773518058013523,
+            0.038443871992378996
+          ],
+          "std": [
+            0.013883448728156344,
+            0.01122145121387851
+          ],
+          "correlation": 0.3075450554503863
+        },
+        "mean_16": [
+          0.0567069907722555,
+          0.03451434408998466
+        ],
+        "mean_64": [
+          0.0567069903144743,
+          0.03451434405269538
+        ],
+        "mean_shift_in_reference_sd": [
+          -3.297317113724358e-08,
+          -3.323035680676602e-09
+        ],
+        "paired_mean_shift_mcse_in_reference_sd": [
+          9.874574888130381e-09,
+          1.2950366045513985e-08
+        ],
+        "std_16": [
+          0.014480911579982122,
+          0.010844961663026603
+        ],
+        "std_64": [
+          0.014480910875890637,
+          0.010844960620097863
+        ],
+        "std_shift_in_reference_sd": [
+          -5.071445132652241e-08,
+          -9.294062951566551e-08
+        ],
+        "interval_width_90_shift_in_reference_sd": [
+          -4.065523343022945e-07,
+          -8.133494549410911e-07
+        ],
+        "mean_error_16_in_reference_sd": [
+          -0.07405867432596237,
+          -0.3501800103657144
+        ],
+        "mean_error_64_in_reference_sd": [
+          -0.07405870729912421,
+          -0.35018001368875007
+        ],
+        "maximum_pair_shift_in_reference_sd": [
+          1.8921710411588406e-06,
+          2.655834955717339e-06
+        ]
+      },
+      {
+        "case": 2,
+        "reference": {
+          "mean": [
+            0.06370326244736269,
+            0.07629397666311442
+          ],
+          "std": [
+            0.011820512970787114,
+            0.01428632228346655
+          ],
+          "correlation": 0.2024850313077442
+        },
+        "mean_16": [
+          0.05940274784048506,
+          0.07223363805769623
+        ],
+        "mean_64": [
+          0.059402746224579216,
+          0.07223363519187842
+        ],
+        "mean_shift_in_reference_sd": [
+          -1.3670353169510485e-07,
+          -2.0059870892056563e-07
+        ],
+        "paired_mean_shift_mcse_in_reference_sd": [
+          1.0686533172843935e-08,
+          1.3997598395187058e-08
+        ],
+        "std_16": [
+          0.014358006158383322,
+          0.014638728832962964
+        ],
+        "std_64": [
+          0.014358005413144654,
+          0.014638727677624138
+        ],
+        "std_shift_in_reference_sd": [
+          -6.304622053994515e-08,
+          -8.087027601790349e-08
+        ],
+        "interval_width_90_shift_in_reference_sd": [
+          -1.9767282005704154e-07,
+          -1.0560748539143461e-06
+        ],
+        "mean_error_16_in_reference_sd": [
+          -0.3638179339175715,
+          -0.28421160637802473
+        ],
+        "mean_error_64_in_reference_sd": [
+          -0.3638180706211012,
+          -0.28421180697673365
+        ],
+        "maximum_pair_shift_in_reference_sd": [
+          2.41240381832133e-06,
+          3.1291106762499658e-06
+        ]
+      },
+      {
+        "case": 3,
+        "reference": {
+          "mean": [
+            0.03896810898112027,
+            0.02231288427684579
+          ],
+          "std": [
+            0.011953326824889669,
+            0.006491510656620386
+          ],
+          "correlation": 0.35657308046861225
+        },
+        "mean_16": [
+          0.03680905052496857,
+          0.024018476557102986
+        ],
+        "mean_64": [
+          0.03680904988434444,
+          0.024018477391109627
+        ],
+        "mean_shift_in_reference_sd": [
+          -5.3593790331303665e-08,
+          1.284765111916147e-07
+        ],
+        "paired_mean_shift_mcse_in_reference_sd": [
+          9.823766220205087e-09,
+          1.975638917882232e-08
+        ],
+        "std_16": [
+          0.010858231865326752,
+          0.007626259865703165
+        ],
+        "std_64": [
+          0.010858231330911591,
+          0.007626258665660651
+        ],
+        "std_shift_in_reference_sd": [
+          -4.4708487374135186e-08,
+          -1.8486336657568722e-07
+        ],
+        "interval_width_90_shift_in_reference_sd": [
+          -1.9414724336669447e-06,
+          -9.612340756764573e-07
+        ],
+        "mean_error_16_in_reference_sd": [
+          -0.18062406288900468,
+          0.2627419672365078
+        ],
+        "mean_error_64_in_reference_sd": [
+          -0.18062411648279822,
+          0.262742095713019
+        ],
+        "maximum_pair_shift_in_reference_sd": [
+          2.102848530878207e-06,
+          4.59096872271192e-06
+        ]
+      }
+    ],
+    "timing_seconds": {
+      "16": 1.1159434588626027,
+      "64": 1.0585949160158634
+    },
+    "target_order": [
+      "theta",
+      "signed_terminal_auxiliary"
+    ],
+    "integration": {
+      "method": "tsit5",
+      "steps": 16
+    },
+    "maximum_absolute_mean_shift_in_reference_sd": 2.1789564339416062e-07,
+    "maximum_absolute_std_shift_in_reference_sd": 1.8486336657568722e-07,
+    "maximum_absolute_interval_width_90_shift_in_reference_sd": 1.9414724336669447e-06,
+    "mean_rmse_16_in_reference_sd": 0.23581182513100374,
+    "mean_rmse_64_in_reference_sd": 0.2358119029263654
+  },
+  "frozen_test_decision": "Trial 3 failed independent conditional test gates. No retraining or threshold changes after this test. Checkpoint remains provisional; M3.3 inference acceptance pending."
+}

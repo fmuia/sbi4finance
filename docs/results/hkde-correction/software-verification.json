@@ -1,0 +1,16 @@
+{
+  "scope": "Software execution and cached diagnostic rendering, separate from the failed scientific test",
+  "source_commit": "9875da8b7657405242cf22d1aff92f2e5f14936c",
+  "command": "PYTHONPATH=src KERAS_BACKEND=jax python -m unittest discover -s tests -v",
+  "tests": 133,
+  "elapsed_seconds": 21.604,
+  "passed": true,
+  "log_sha256": "dcb7bee0aba3baf7bc75e220c78b4036952f212348a36139838ba48c24d3d1f6",
+  "plots_inspected": [
+    "price-errors",
+    "proposal-efficiency",
+    "calibration",
+    "reference-pit"
+  ],
+  "test_scientific_acceptance": false
+}

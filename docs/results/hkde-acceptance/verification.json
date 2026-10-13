@@ -1,0 +1,88 @@
+{
+  "scope": "Cached scientific decision lesson; no new acceptance experiment",
+  "notebook": "notebooks/11_hkde_calibration_audit.py",
+  "strict_marimo_check": "passed",
+  "output_cells": 15,
+  "error_outputs": 0,
+  "displayed_figures": 5,
+  "visible_status_checks": [
+    "scientific status: provisional",
+    "participant budget: 2,048 proposals",
+    "i4: deferred"
+  ],
+  "decision_checks": {
+    "conditional_thresholds_unchanged": true,
+    "reference_thresholds_unchanged": true,
+    "conditional_weights_unchanged": true,
+    "calibration_limits_unchanged": true,
+    "budgets_unchanged": true,
+    "status_provisional_i4_deferred": true,
+    "failed_historical_acceptance_retained": true,
+    "no_fresh_experiment": true
+  },
+  "visual_inspection": {
+    "status": "five_bound_figures_inspected",
+    "figures": [
+      "docs/results/hkde-gate-audit/oracle-rank-control.png",
+      "docs/results/hkde-gate-audit/paired-rank-errors.png",
+      "docs/results/hkde-gate-audit/conditional-cdf-errors.png",
+      "docs/results/hkde-correction/plots/price-errors.png",
+      "docs/results/hkde-correction/plots/reference-pit.png"
+    ],
+    "result": "All five figures visually inspected directly: readable axes, legends, budget distinctions and unchanged failure/tolerance annotations. Export embeds the identical PNG bytes.",
+    "html_status_check": "Rendered marimo session output checked programmatically for visible provisional status, 2,048 proposals and I4 deferred; full browser layout was not inspected."
+  },
+  "new_scientific_panels": 0,
+  "neural_inference_executed": false,
+  "scientific_imports_blocked": [
+    "sbi4finance",
+    "bayesflow",
+    "keras",
+    "jax"
+  ],
+  "copied_src_checkpoints_raw_banks_market_fixtures": false,
+  "network_guard_scope": "Python socket connect/connect_ex and DNS; loopback/Unix IPC permitted; not an OS sandbox",
+  "network_guard_sha256": "120bc0c2bf4f60b32dc9b389eae55569831c7d10e982a06e855e47c3b61c2698",
+  "manifest_files_verified": 128,
+  "source_and_artifact_sha256": {
+    "notebooks/11_hkde_calibration_audit.py": "5681dc4b92f0c5eb3d552781965db1d1bcb15010e840c6393611f0a8971840aa",
+    "docs/results/hkde-acceptance/decision.json": "b18243ec62c4822ef4a8ccd5dc79c3b778f4e85eeae8538897c560d2d5c989e6",
+    "docs/results/hkde-acceptance/artifact-manifest.json": "444c2261ff08944d3fcd0bff077b0dd43d53ea9e0c1e5d57ad05f4bd8377966b",
+    "docs/results/hkde-gate-audit/report.json": "87f92ec98ebb6c5969c502232fa93c7df5e3c6bef6942ece249068be2c411dee",
+    "docs/results/hkde-gate-audit/checks.npz": "ade1cde3922b8ea51ebbc32df4ebce766c0e026dbd9aaecc59845180db518d5c",
+    "docs/results/hkde-gate-audit/oracle-rank-control.png": "91647552ae27d7d8155d56634201dde43b4ae01e502a8ca04c37938cf5639690",
+    "docs/results/hkde-gate-audit/paired-rank-errors.png": "fd3198dbdbc97f78362dd508f8f65234778d766a9123555822f761aadd3fd1f8",
+    "docs/results/hkde-gate-audit/conditional-cdf-errors.png": "bc55821dddaa952d30d7b8189c225f04d72f289a3d89a07247b0fea7bf1589c0",
+    "docs/results/hkde-correction/test.json": "e192f9c4029f0b2a16480d58ed671dfe6d2e6a11d594330d714e58917e66c090",
+    "docs/results/hkde-correction/plots/price-errors.png": "c178b4fe1bbe50976f5d79556cff0d967a47e5dce08c4e3ea78eb7c65dbf7441",
+    "docs/results/hkde-correction/plots/reference-pit.png": "e097bccc771ebd41826ebf5df087968ca12dde777c7b1a5b2bccb2ec3f30e38e",
+    "configs/hkde_correction_boundary_protocol.json": "12b7e422bfd89c8e072db1229e9df9b880e2f03fc0a79d5d1057564991d96b1d",
+    "configs/hkde_inference_protocol.json": "8ab6b9d87204f1b9a1ef55bb2a89877e7be81a24cfb9e9adba09e9dd319aae0d"
+  },
+  "verifier_sha256": "f3269747a8ba18f5cabb0eed6e2b60c93826d7559a1f0b700332291d7ff82342",
+  "python_executable": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-offline-tutorial/.pixi/envs/default/bin/python",
+  "python_version": "3.12.15",
+  "package_versions": {
+    "marimo": "0.25.1",
+    "numpy": "2.5.3"
+  },
+  "environment_scope": "Existing environment, fresh isolated input copy/process; no dependency installation certification",
+  "isolated_copy": "/tmp/hkde-acceptance-review-cnkxjs8z",
+  "html_path": "/tmp/hkde-acceptance-review-cnkxjs8z/review.html",
+  "html_sha256": "2340c4d47524240ed13dc97defa6aa7959cfb3e86a7989986077e92ca0d02ff7",
+  "export_elapsed_seconds": 0.8829649579711258,
+  "unit_tests": {
+    "command": "KERAS_BACKEND=jax PYTHONPATH=src python -m unittest discover -s tests -p 'test_hkde*.py' -v",
+    "tests": 57,
+    "passed": true,
+    "elapsed_seconds": 18.493,
+    "log_sha256": "ece6f32b5aef463cc8f9b3501a1b90d4962ef1df6b449d9dd3f868c97d8d4eab"
+  },
+  "verification_execution": {
+    "successful_run": "Fresh offline export after allowing local kernel IPC; Python external socket/DNS guard and scientific-import guard active.",
+    "initial_attempt": "Sandbox blocked the local kernel socket before notebook execution. No scientific run occurred; retried the export with local IPC permission."
+  },
+  "scientific_acceptance": false,
+  "historical_test_passed": false,
+  "i4_status": "deferred"
+}

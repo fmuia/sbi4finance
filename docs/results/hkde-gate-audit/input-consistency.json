@@ -1,0 +1,302 @@
+{
+  "scope": "Independent saved-input consistency audit; no new acceptance decision",
+  "scientific_acceptance_changed": false,
+  "historical_test_passed": false,
+  "new_model_panels": 0,
+  "new_estimator_proposals": 0,
+  "training_runs": 0,
+  "audit_script_sha256": "4c967edc31ebcc5e1bca9bd29e78ec5e76347b0e163157228534df8063c27e7b",
+  "versions": {
+    "python": "3.12.15",
+    "numpy": "2.5.3"
+  },
+  "artifact_sha256": {
+    "docs/results/hkde-correction/test.json": "e192f9c4029f0b2a16480d58ed671dfe6d2e6a11d594330d714e58917e66c090",
+    "docs/results/hkde-correction/new-test-panels.npz": "e7bc3eae57dbdb7fdf4e3ffe60d9e01f7a7231bc26a7b5d7244b54a73acc510f",
+    "docs/results/hkde-inference/reference-grid.npz": "532d8ad4a7ae0321f6d1ae1a25fcb5124859b3884d6c7cc90d62abfb0401d0b2",
+    "configs/hkde_correction_boundary_protocol.json": "12b7e422bfd89c8e072db1229e9df9b880e2f03fc0a79d5d1057564991d96b1d"
+  },
+  "checks": {
+    "task_equals_report_task": true,
+    "parameter_order_theta_jump_intensity": true,
+    "saved_ids_exactly_test_0_through_255": true,
+    "prior_replay_exact": true,
+    "quote_replay_exact": true,
+    "selected_saved_truth_prices_exact": true,
+    "selected_saved_grid_prices_exact": true,
+    "grid_tensor_order_exact": true,
+    "uniform_prior_quadrature_exact": true,
+    "case_seeds_unique": true,
+    "recorded_source_hashes_match": true,
+    "recorded_input_hashes_match": true
+  },
+  "consistency_checks_passed": true,
+  "model_scope": {
+    "measure": "Q",
+    "parameter_names": [
+      "theta",
+      "jump_intensity"
+    ],
+    "prior": "independent uniforms",
+    "prior_bounds": [
+      [
+        0.025,
+        0.065
+      ],
+      [
+        0.25,
+        1.0
+      ]
+    ],
+    "quote_noise_std_currency": 0.25,
+    "contract_order": [
+      {
+        "strike": 90.0,
+        "maturity": 0.25,
+        "option_type": "put"
+      },
+      {
+        "strike": 100.0,
+        "maturity": 0.25,
+        "option_type": "put"
+      },
+      {
+        "strike": 110.0,
+        "maturity": 0.25,
+        "option_type": "put"
+      },
+      {
+        "strike": 90.0,
+        "maturity": 0.5,
+        "option_type": "put"
+      },
+      {
+        "strike": 100.0,
+        "maturity": 0.5,
+        "option_type": "put"
+      },
+      {
+        "strike": 110.0,
+        "maturity": 0.5,
+        "option_type": "put"
+      },
+      {
+        "strike": 90.0,
+        "maturity": 1.0,
+        "option_type": "put"
+      },
+      {
+        "strike": 100.0,
+        "maturity": 1.0,
+        "option_type": "put"
+      },
+      {
+        "strike": 110.0,
+        "maturity": 1.0,
+        "option_type": "put"
+      }
+    ],
+    "pricing_controls": {
+      "nodes": 512,
+      "upper_limit": 200.0,
+      "refined_nodes": 1024,
+      "refined_upper_limit": 400.0,
+      "max_refinement_over_quote_sigma": 0.001
+    }
+  },
+  "replay": {
+    "test_root_seed": 95026,
+    "split_code": 2,
+    "cases": 256,
+    "prior_purpose": 0,
+    "quote_purpose": 2,
+    "parameter_max_abs_delta": 0.0,
+    "observation_max_abs_delta": 0.0
+  },
+  "reprice": {
+    "saved_truth_row_ids": [
+      0,
+      17,
+      64,
+      128,
+      255
+    ],
+    "truth_price_max_abs_delta": 0.0,
+    "saved_grid_row_ids": [
+      0,
+      128,
+      8320,
+      16512,
+      16640
+    ],
+    "grid_price_max_abs_delta": 0.0,
+    "uniform_quadrature_max_abs_delta": 0.0
+  },
+  "case_seed_audit": {
+    "root": 95021,
+    "namespace": "root,split,phase,index",
+    "counts": [
+      {
+        "split": "validation",
+        "split_index": 0,
+        "phase_counts": {
+          "0_conditional_proposal": 20,
+          "1_calibration_proposal": 512,
+          "2_calibration_resampling": 512,
+          "3_joint_rank_randomization": 1
+        },
+        "total": 1045
+      },
+      {
+        "split": "test",
+        "split_index": 1,
+        "phase_counts": {
+          "0_conditional_proposal": 16,
+          "1_calibration_proposal": 256,
+          "2_calibration_resampling": 256,
+          "3_joint_rank_randomization": 1
+        },
+        "total": 529
+      }
+    ],
+    "total": 1574,
+    "distinct": 1574
+  },
+  "cohort_noise_description": {
+    "standardized_means_by_contract": [
+      -0.022759387153002023,
+      -0.03914454733880408,
+      -0.027190827258732963,
+      -0.0793315240002709,
+      -0.05749155352387072,
+      -0.1385783224200761,
+      -0.019012900533437044,
+      -0.032738407359110024,
+      -0.03308752001398442
+    ],
+    "standardized_sd_by_contract": [
+      0.9102268116202451,
+      0.9452935298581109,
+      0.9876657011913126,
+      0.9885229048706327,
+      1.022519120219136,
+      1.0381293983658155,
+      1.0424015460313598,
+      1.0747779332073575,
+      0.9709722520159854
+    ],
+    "standardized_overall_mean": -0.0499261099556987,
+    "all_nine_means_negative": true,
+    "scope": "Post-hoc descriptive cohort property, not a selected test or causal attribution"
+  },
+  "source_checks": {
+    "scripts/evaluate_hkde_correction.py": {
+      "saved_sha256": "c665327828de97c61702d4744f6a43df38e725f10899a704aafbca4ccdf055b3",
+      "current_sha256": "c665327828de97c61702d4744f6a43df38e725f10899a704aafbca4ccdf055b3",
+      "match": true
+    },
+    "scripts/check_hkde_reference.py": {
+      "saved_sha256": "e7a5a724a0af492564676ca76041f571c4669bf025bcea4e81474d933c083668",
+      "current_sha256": "e7a5a724a0af492564676ca76041f571c4669bf025bcea4e81474d933c083668",
+      "match": true
+    },
+    "scripts/evaluate_hkde.py": {
+      "saved_sha256": "23e60a0eccb02c620f9f425d6ef86134c209bc435bf68103381151f9b26ef504",
+      "current_sha256": "23e60a0eccb02c620f9f425d6ef86134c209bc435bf68103381151f9b26ef504",
+      "match": true
+    },
+    "src/sbi4finance/hkde_correction.py": {
+      "saved_sha256": "304916bb3892181dcfdc8afbf2796e19ade6513e5b515802882268ec7dd5ea29",
+      "current_sha256": "304916bb3892181dcfdc8afbf2796e19ade6513e5b515802882268ec7dd5ea29",
+      "match": true
+    },
+    "src/sbi4finance/hkde_inference.py": {
+      "saved_sha256": "616014c460d6d0d164a08590d6ac47114cdabfb030584574854dc4ecfd061beb",
+      "current_sha256": "616014c460d6d0d164a08590d6ac47114cdabfb030584574854dc4ecfd061beb",
+      "match": true
+    },
+    "src/sbi4finance/hkde_reference.py": {
+      "saved_sha256": "159194818b1f8b5a6194e1340568264271bad895474e5e1c9c8ce6cfdb71074b",
+      "current_sha256": "159194818b1f8b5a6194e1340568264271bad895474e5e1c9c8ce6cfdb71074b",
+      "match": true
+    },
+    "src/sbi4finance/hkde_surrogate.py": {
+      "saved_sha256": "ddaea17ea2230acaeadf61a47af45187983200967bb395d1d1c67c9aaa605859",
+      "current_sha256": "ddaea17ea2230acaeadf61a47af45187983200967bb395d1d1c67c9aaa605859",
+      "match": true
+    },
+    "src/sbi4finance/hkde_diagnostics.py": {
+      "saved_sha256": "31d240ab6f5a592b253e63a9bc830770a5b8b9818a2532c3c4cc3b249eba9687",
+      "current_sha256": "31d240ab6f5a592b253e63a9bc830770a5b8b9818a2532c3c4cc3b249eba9687",
+      "match": true
+    }
+  },
+  "input_checks": {
+    "configs/hkde_correction_boundary_protocol.json": {
+      "saved_sha256": "12b7e422bfd89c8e072db1229e9df9b880e2f03fc0a79d5d1057564991d96b1d",
+      "current_sha256": "12b7e422bfd89c8e072db1229e9df9b880e2f03fc0a79d5d1057564991d96b1d",
+      "match": true
+    },
+    "configs/hkde_inference_protocol.json": {
+      "saved_sha256": "8ab6b9d87204f1b9a1ef55bb2a89877e7be81a24cfb9e9adba09e9dd319aae0d",
+      "current_sha256": "8ab6b9d87204f1b9a1ef55bb2a89877e7be81a24cfb9e9adba09e9dd319aae0d",
+      "match": true
+    },
+    "configs/tasks/hkde_inference_bank.json": {
+      "saved_sha256": "10a3ef098db7fb11c3b14d708a08cfbb656aa3c9052bab2b79c843278420870f",
+      "current_sha256": "10a3ef098db7fb11c3b14d708a08cfbb656aa3c9052bab2b79c843278420870f",
+      "match": true
+    },
+    "docs/results/hkde-inference/reference.json": {
+      "saved_sha256": "8bc2851856e4171012718eed2d3bd57e71c0f93d71ac5cf03af18812370ea569",
+      "current_sha256": "8bc2851856e4171012718eed2d3bd57e71c0f93d71ac5cf03af18812370ea569",
+      "match": true
+    },
+    "docs/results/hkde-inference/reference-grid.npz": {
+      "saved_sha256": "532d8ad4a7ae0321f6d1ae1a25fcb5124859b3884d6c7cc90d62abfb0401d0b2",
+      "current_sha256": "532d8ad4a7ae0321f6d1ae1a25fcb5124859b3884d6c7cc90d62abfb0401d0b2",
+      "match": true
+    },
+    "docs/results/hkde-inference/neural-validation.json": {
+      "saved_sha256": "743500b877feabe5b4476f9a8ea66c61eb61038872e23c61cf651279d0cbc636",
+      "current_sha256": "743500b877feabe5b4476f9a8ea66c61eb61038872e23c61cf651279d0cbc636",
+      "match": true
+    },
+    "checkpoints/hkde-theta-intensity-provisional/model.keras": {
+      "saved_sha256": "fee8e8a04aee1d7789754f0b9a239d0dd09dbd05baba1f78233d41a6b8a0a8b3",
+      "current_sha256": "fee8e8a04aee1d7789754f0b9a239d0dd09dbd05baba1f78233d41a6b8a0a8b3",
+      "match": true
+    },
+    "checkpoints/hkde-theta-intensity-provisional/training.json": {
+      "saved_sha256": "057a86ca0802c5b8ad51a47cf499f0fd360685b4f76c3c722978d973d1411379",
+      "current_sha256": "057a86ca0802c5b8ad51a47cf499f0fd360685b4f76c3c722978d973d1411379",
+      "match": true
+    },
+    "checkpoints/hkde-theta-intensity-provisional/task.json": {
+      "saved_sha256": "859f6e25cbeff0dc6d85bfaa223e44c575fdb9d0f7d9e54b67da7445abca245d",
+      "current_sha256": "859f6e25cbeff0dc6d85bfaa223e44c575fdb9d0f7d9e54b67da7445abca245d",
+      "match": true
+    },
+    "docs/results/hkde-surrogate/report.json": {
+      "saved_sha256": "3783b67ee97ca58c286849dc237c6b76b0a84f636e07548b563593e0278858ed",
+      "current_sha256": "3783b67ee97ca58c286849dc237c6b76b0a84f636e07548b563593e0278858ed",
+      "match": true
+    },
+    "docs/results/hkde-surrogate/model.npz": {
+      "saved_sha256": "b342b2850f8973af77cc572dc1dde7c7bbe47737c2c3fd6d6a15362907d07681",
+      "current_sha256": "b342b2850f8973af77cc572dc1dde7c7bbe47737c2c3fd6d6a15362907d07681",
+      "match": true
+    },
+    "docs/results/hkde-correction-v1/validation.json": {
+      "saved_sha256": "80ad72e44f01f0e08cee1e9021ee16c3b57a66a8c9cd65dd625577efd57c620e",
+      "current_sha256": "80ad72e44f01f0e08cee1e9021ee16c3b57a66a8c9cd65dd625577efd57c620e",
+      "match": true
+    }
+  },
+  "limits": [
+    "Repricing reuses the existing numerical engine; checks consistency, not independent continuum pricing accuracy.",
+    "Distinct named pseudorandom streams do not prove mathematical independence.",
+    "Raw calibration proposal clouds and SIR draws were not saved; this audit does not regenerate them.",
+    "Consistency checks do not override the historical SBC failure or establish population calibration."
+  ]
+}

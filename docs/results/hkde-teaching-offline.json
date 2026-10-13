@@ -1,0 +1,23 @@
+{
+  "passed": true,
+  "evidence_scope": "offline cached execution only",
+  "case_id": "validation:257",
+  "n_contracts": 9,
+  "cached_draw_count": 4096,
+  "notebook_outputs": 8,
+  "network_operations_blocked": true,
+  "rendered_plots": 2,
+  "market_files_present": false,
+  "checkpoint_weights_present": false,
+  "simulator_code_present": false,
+  "reserved_test_evaluated": false,
+  "checkpoint_status": "provisional",
+  "scientific_validation_passed": false,
+  "seconds": 8.087628750130534,
+  "source_sha256": {
+    "notebooks/hkde_data_walkthrough.py": "31cfa8d0ae4b34e7d62e25f62ededc26bbed86ee40182969ff80e23bb376d0bd",
+    "src/sbi4finance/datasets/hkde_teaching.py": "1b92ff97a15f4999fbd6ad2f322ca45ed208af6b44c9da6be135262deb1eead2",
+    "scripts/check_hkde_teaching.py": "20a0a0ed6e7c8c5aae7a81bc877e993129fe66909c13c22a1397a4192a9f1f3e",
+    "data/synthetic/hkde-walkthrough/bundle.json": "5d76bc5935d806e553057b14d4fe9581641936de9f5ff5b8c614b95e55617ae8"
+  }
+}

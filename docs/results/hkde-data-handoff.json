@@ -1,0 +1,37 @@
+{
+  "passed": true,
+  "evidence_scope": "synthetic data/adapter interoperability only",
+  "source_commit": "729ac26067a1a3e34112d6b153b5783dae4219f5",
+  "data_source_sha256": {
+    "src/sbi4finance/datasets/local.py": "eb98d430431e748755ad4c915860c90b661debae5cd25c18c14068eff402b244",
+    "src/sbi4finance/datasets/options.py": "99b36c4b68d6994381c33e6423351fc43152ea365679ebff8f69661dfa0a1dda",
+    "scripts/check_hkde_data.py": "145f0dbe701221df0fadf97ba66054b4dd987683ba33259205f8932691b219ea"
+  },
+  "checkpoint_sha256": "fee8e8a04aee1d7789754f0b9a239d0dd09dbd05baba1f78233d41a6b8a0a8b3",
+  "task_sha256": "859f6e25cbeff0dc6d85bfaa223e44c575fdb9d0f7d9e54b67da7445abca245d",
+  "checks_sha256": "c25e83ed45c5f890c120f56de04db8e50fd540279f79cdbec9c4c4a280fdf653",
+  "adapter_sha256": "616014c460d6d0d164a08590d6ac47114cdabfb030584574854dc4ecfd061beb",
+  "adapter_id": "hkde_ordered_currency_panel_v1",
+  "case_ids": [
+    "validation:256",
+    "validation:257"
+  ],
+  "draws_per_case": 32,
+  "seed": 71026,
+  "conditions_exact": true,
+  "seeded_draws_exact": true,
+  "truth_and_auxiliary_excluded": true,
+  "rejected_incompatibilities": [
+    "order",
+    "contract",
+    "context",
+    "noise",
+    "prior",
+    "representation",
+    "unit"
+  ],
+  "reserved_test_evaluated": false,
+  "checkpoint_status": "provisional",
+  "original_scientific_validation_passed": false,
+  "limits": "This checks transport and conditioning, not posterior accuracy or real-market fit."
+}
