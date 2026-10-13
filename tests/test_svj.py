@@ -140,6 +140,14 @@ class TestRisk(unittest.TestCase):
         pooled = risk.horizon_returns(targets, horizons=(1,), n_paths=400_000, seed=0)[1]
         self.assertAlmostEqual(risk.var_es(pooled)[0] / risk.conditional_var(targets)[0], 1, delta=0.02)
 
+    def test_cloud_quantile_matches_single_state_quantile(self):
+        params = model.model_params(EXAMPLE)
+        v = model.variance_from_log_spot_vol(np.log(0.25))
+        q_cloud = risk.cloud_quantile(params, np.array([v]), 0.01)
+        q_mix = risk.mixture_quantile(params[None], np.array([v]), 0.01)[0]
+        self.assertAlmostEqual(q_cloud, q_mix, places=6)
+        self.assertAlmostEqual(risk.one_day_cdf(params, v, q_cloud), 0.01, places=6)
+
     def test_mixture_var_exceeds_average_var(self):
         # Appendix H.2: equal mixture of N(0, 1) and N(0, 2²) has 99% VaR 4.11 against an average of 3.49
         r = np.concatenate([np.random.default_rng(0).standard_normal(1_000_000), 2 * np.random.default_rng(1).standard_normal(1_000_000)])

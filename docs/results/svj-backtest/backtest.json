@@ -1,0 +1,112 @@
+{
+ "n_series": 500,
+ "n_futures": 50000,
+ "horizons": {
+  "1": {
+   "check: true parameters, filtered state": {
+    "expected_exceedance_99": 0.009088480000000001,
+    "expected_exceedance_99_ci95": [
+     0.008407877615942184,
+     0.009769082384057819
+    ],
+    "expected_exceptions_in_250_days": 2.27212,
+    "prob_leave_green_zone_in_250_days": 0.14053898309096405,
+    "z2_975": 0.07153539468784273,
+    "z2_975_ci95": [
+     0.012467050108977085,
+     0.13060373926670837
+    ],
+    "share_es_more_than_10pct_low": 0.094
+   },
+   "predictive (amortized posterior)": {
+    "expected_exceedance_99": 0.009183,
+    "expected_exceedance_99_ci95": [
+     0.008387808342133572,
+     0.009978191657866429
+    ],
+    "expected_exceptions_in_250_days": 2.29575,
+    "prob_leave_green_zone_in_250_days": 0.1446674947001764,
+    "z2_975": 0.07339290215648796,
+    "z2_975_ci95": [
+     0.007663651595752621,
+     0.13912215271722328
+    ],
+    "share_es_more_than_10pct_low": 0.13
+   },
+   "plug-in at posterior median": {
+    "expected_exceedance_99": 0.00976428,
+    "expected_exceedance_99_ci95": [
+     0.00896375630996751,
+     0.01056480369003249
+    ],
+    "expected_exceptions_in_250_days": 2.44107,
+    "prob_leave_green_zone_in_250_days": 0.16174875822617543,
+    "z2_975": 0.024919219572284677,
+    "z2_975_ci95": [
+     -0.04083240404860159,
+     0.09067084319317095
+    ],
+    "share_es_more_than_10pct_low": 0.168
+   },
+   "plugin_minus_predictive": {
+    "exceedance_pp": 0.058127999999999985,
+    "exceedance_pp_se": 0.012701227089188754,
+    "z2": -0.0484736825842033,
+    "z2_se": 0.010167502471962051
+   }
+  },
+  "10": {
+   "check: true parameters, filtered state": {
+    "expected_exceedance_99": 0.0093696,
+    "expected_exceedance_99_ci95": [
+     0.00878201774334768,
+     0.009957182256652321
+    ],
+    "expected_exceptions_in_250_days": 2.3424,
+    "prob_leave_green_zone_in_250_days": 0.14248221093436927,
+    "z2_975": 0.057168239623575944,
+    "z2_975_ci95": [
+     0.008631653287369541,
+     0.10570482595978234
+    ],
+    "share_es_more_than_10pct_low": 0.096
+   },
+   "predictive (amortized posterior)": {
+    "expected_exceedance_99": 0.009336839999999999,
+    "expected_exceedance_99_ci95": [
+     0.008645693944631366,
+     0.010027986055368632
+    ],
+    "expected_exceptions_in_250_days": 2.3342099999999997,
+    "prob_leave_green_zone_in_250_days": 0.1571298362441757,
+    "z2_975": 0.05951181846032378,
+    "z2_975_ci95": [
+     0.002602082482839191,
+     0.11642155443780837
+    ],
+    "share_es_more_than_10pct_low": 0.146
+   },
+   "plug-in at posterior median": {
+    "expected_exceedance_99": 0.010234919999999998,
+    "expected_exceedance_99_ci95": [
+     0.009529436628800857,
+     0.010940403371199139
+    ],
+    "expected_exceptions_in_250_days": 2.5587299999999997,
+    "prob_leave_green_zone_in_250_days": 0.18089753724965627,
+    "z2_975": -0.007094072313120752,
+    "z2_975_ci95": [
+     -0.06418809828273889,
+     0.049999953656497384
+    ],
+    "share_es_more_than_10pct_low": 0.166
+   },
+   "plugin_minus_predictive": {
+    "exceedance_pp": 0.089808,
+    "exceedance_pp_se": 0.010972530753398166,
+    "z2": -0.06660589077344453,
+    "z2_se": 0.008129756848030655
+   }
+  }
+ }
+}

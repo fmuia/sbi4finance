@@ -72,6 +72,22 @@ def mixture_quantile(params, v, prob):
     return 0.5 * (lo + hi)
 
 
+def one_day_cdf(params, v, x):
+    """P(y_{T+1} <= x) given parameters (8,) and today's variance v (any shape): the two-component mixture."""
+    mu, lam, mu_j, sigma_j = params[0], params[5], params[6], params[7]
+    v = np.asarray(v, dtype=float)
+    return (1 - lam) * ndtr((x - mu) / np.sqrt(v)) + lam * ndtr((x - mu - mu_j) / np.sqrt(v + sigma_j**2))
+
+
+def cloud_quantile(params, cloud, prob):
+    """prob-quantile of the one-day predictive at fixed parameters, averaging the mixture over a v_T cloud."""
+    lo, hi = -200.0, 200.0
+    for _ in range(100):
+        mid = 0.5 * (lo + hi)
+        lo, hi = (mid, hi) if np.mean(one_day_cdf(params, cloud, mid)) < prob else (lo, mid)
+    return 0.5 * (lo + hi)
+
+
 def conditional_var(targets, level=VAR_LEVEL):
     """One-day VaR(theta, v_T) for each draw (m, 9): minus the (1 - level) quantile of the return mixture."""
     targets = np.atleast_2d(targets)

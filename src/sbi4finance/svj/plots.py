@@ -129,7 +129,7 @@ def contraction_bars(values, labels, title, reference=None, reference_label=None
 def interval_dots(rows, nominal, xlabel, title):
     """Dot-and-whisker plot: rows = [(label, estimate, (lo, hi))], with a reference line at the nominal value."""
     style()
-    fig, ax = plt.subplots(figsize=(6.4, 0.42 * len(rows) + 1.0), constrained_layout=True)
+    fig, ax = plt.subplots(figsize=(8.4, 0.42 * len(rows) + 1.2), constrained_layout=True)
     y = np.arange(len(rows))
     ax.axvline(nominal, color=INK_2, linewidth=0.8)
     for yi, (label, est, (lo, hi)) in zip(y, rows):
@@ -140,6 +140,37 @@ def interval_dots(rows, nominal, xlabel, title):
     ax.grid(axis="y", visible=False)
     ax.set_xlabel(xlabel)
     ax.set_title(title, loc="left")
+    return fig
+
+
+def method_panels(panels, row_labels, methods, title, height_per_row=0.9):
+    """Side-by-side panels comparing methods per row, each value with a 95% interval.
+
+    panels = [(xlabel, reference, {(row, method): (estimate, lo, hi)})]; one color per method, with a legend.
+    """
+    style()
+    fig, axes = plt.subplots(
+        1, len(panels), figsize=(9.6, height_per_row * len(row_labels) + 1.6), sharey=True, constrained_layout=True
+    )
+    y = np.arange(len(row_labels))
+    offsets = np.linspace(-0.15, 0.15, len(methods)) if len(methods) > 1 else [0.0]
+    for ax, (xlabel, reference, values) in zip(np.atleast_1d(axes), panels):
+        ax.axvline(reference, color=INK_2, linewidth=0.8)
+        for k, (method, offset) in enumerate(zip(methods, offsets)):
+            for r, row in enumerate(row_labels):
+                if (row, method) not in values:
+                    continue
+                est, lo, hi = values[(row, method)]
+                ax.hlines(y[r] + offset, lo, hi, color=SERIES[k], linewidth=1.5)
+                ax.scatter([est], [y[r] + offset], s=36, color=SERIES[k], edgecolor=SURFACE, linewidth=1.2, zorder=3,
+                           label=method if r == 0 else None)
+        ax.set_yticks(y, row_labels)
+        ax.grid(axis="y", visible=False)
+        ax.set_xlabel(xlabel)
+    np.atleast_1d(axes)[0].invert_yaxis()  # shared y: inverting one inverts all
+    handles, names = np.atleast_1d(axes)[0].get_legend_handles_labels()
+    fig.legend(handles, names, loc="outside upper left", ncols=len(methods))
+    fig.suptitle(title, x=0.01, ha="left", color=INK, fontsize=10.5, fontweight="bold")
     return fig
 
 

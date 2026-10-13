@@ -78,12 +78,17 @@ def main() -> None:
         if (i + 1) % 50 == 0:
             print(f"{i + 1} series, {time.time() - start:.0f} s")
 
+    np.savez_compressed(out / "backtest_series.npz", p_exc=p_exc, z2=z2, es_low=es_low,
+                        methods=np.array(METHODS), horizons=np.array(HORIZONS))
+
     def mean_ci(x):
-        return float(x.mean()), (float(x.mean() - 1.96 * x.std(ddof=1) / np.sqrt(len(x))), float(x.mean() + 1.96 * x.std(ddof=1) / np.sqrt(len(x))))
+        se = x.std(ddof=1) / np.sqrt(len(x))
+        return float(x.mean()), (float(x.mean() - 1.96 * se), float(x.mean() + 1.96 * se))
 
     summary = {"n_series": args.n_series, "n_futures": args.n_futures, "horizons": {}}
-    exc_rows, z2_rows = [], []
+    levels_exc, levels_z2, paired_exc, paired_z2 = {}, {}, {}, {}
     for k, h in enumerate(HORIZONS):
+        row = f"{h}-day"
         block = {}
         for m, method in enumerate(METHODS):
             rate, rate_ci = mean_ci(p_exc[:, m, k])
@@ -97,8 +102,15 @@ def main() -> None:
                 "z2_975_ci95": score_ci,
                 "share_es_more_than_10pct_low": float(es_low[:, m, k].mean()),
             }
-            exc_rows.append((f"{h}-day · {method}", 100 * rate, tuple(100 * np.array(rate_ci))))
-            z2_rows.append((f"{h}-day · {method}", score, score_ci))
+            levels_exc[(row, method)] = (100 * rate, 100 * rate_ci[0], 100 * rate_ci[1])
+            levels_z2[(row, method)] = (score, *score_ci)
+            if m > 0:  # paired against the check on the same series
+                d_rate, d_rate_ci = mean_ci(p_exc[:, m, k] - p_exc[:, 0, k])
+                d_score, d_score_ci = mean_ci(z2[:, m, k] - z2[:, 0, k])
+                block[method]["minus_check"] = {"exceedance_pp": 100 * d_rate, "exceedance_pp_ci95": [100 * v for v in d_rate_ci],
+                                                "z2": d_score, "z2_ci95": list(d_score_ci)}
+                paired_exc[(row, method)] = (100 * d_rate, 100 * d_rate_ci[0], 100 * d_rate_ci[1])
+                paired_z2[(row, method)] = (d_score, *d_score_ci)
         diff = p_exc[:, 2, k] - p_exc[:, 1, k]
         dz = z2[:, 2, k] - z2[:, 1, k]
         block["plugin_minus_predictive"] = {
@@ -109,10 +121,15 @@ def main() -> None:
         }
         summary["horizons"][str(h)] = block
     (out / "backtest.json").write_text(json.dumps(summary, indent=1))
-    plots.interval_dots(exc_rows, 1.0, "expected exceedance rate of the 99% VaR (%), 95% interval",
-                        f"VaR backtest on {args.n_series} held-out series (nominal 1%)").savefig(out / "var_exceedance.png", dpi=150)
-    plots.interval_dots(z2_rows, 0.0, "expected Z2 score of the 97.5% ES (0 = correct, negative = too low)",
-                        f"ES backtest on {args.n_series} held-out series").savefig(out / "es_z2.png", dpi=150)
+    rows = [f"{h}-day" for h in HORIZONS]
+    plots.method_panels(
+        [("expected exceedance of the 99% VaR (%)", 1.0, levels_exc), ("expected Z2 of the 97.5% ES", 0.0, levels_z2)],
+        rows, list(METHODS), f"VaR and ES backtest on {args.n_series} held-out series: levels, 95% intervals",
+    ).savefig(out / "backtest_levels.png", dpi=150)
+    plots.method_panels(
+        [("99% VaR exceedance minus the check (pp)", 0.0, paired_exc), ("97.5% ES Z2 minus the check", 0.0, paired_z2)],
+        rows, list(METHODS[1:]), "Paired against the true-parameter check on the same series, 95% intervals",
+    ).savefig(out / "backtest_paired.png", dpi=150)
 
     for k, h in enumerate(HORIZONS):
         print(f"{h}-day horizon:")
