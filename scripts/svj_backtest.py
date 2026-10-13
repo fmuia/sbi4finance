@@ -26,6 +26,7 @@ from sbi4finance.svj import amortized, model, plots, risk
 ROOT = Path(__file__).resolve().parents[1]
 HORIZONS = (1, 10)
 METHODS = ("check: true parameters, filtered state", "predictive (amortized posterior)", "plug-in at posterior median")
+COLORS = dict(zip(METHODS, (plots.INK_2, plots.SERIES[0], plots.SERIES[1])))
 
 
 def risk_report(targets, n_paths, seed):
@@ -46,9 +47,14 @@ def main() -> None:
     parser.add_argument("--n-futures", type=int, default=50_000)
     parser.add_argument("--seed", type=int, default=4242)
     parser.add_argument("--out", default=str(ROOT / "docs" / "results" / "svj-backtest"))
+    parser.add_argument("--from-saved", action="store_true", help="redo the summary and figures from backtest_series.npz")
     args = parser.parse_args()
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
+    if args.from_saved:
+        with np.load(out / "backtest_series.npz") as saved:
+            write_report(saved["p_exc"], saved["z2"], saved["es_low"], args.n_futures, out)
+        return
 
     posterior = amortized.AmortizedPosterior.load(args.checkpoint)
     sims = model.simulate(args.n_series, seed=args.seed)
@@ -80,12 +86,18 @@ def main() -> None:
 
     np.savez_compressed(out / "backtest_series.npz", p_exc=p_exc, z2=z2, es_low=es_low,
                         methods=np.array(METHODS), horizons=np.array(HORIZONS))
+    write_report(p_exc, z2, es_low, args.n_futures, out)
+
+
+def write_report(p_exc, z2, es_low, n_futures, out):
+    """Summary JSON, figures and a printed table from per-series exceedance, Z2 and ES-shortfall arrays."""
+    n_series = len(p_exc)
 
     def mean_ci(x):
         se = x.std(ddof=1) / np.sqrt(len(x))
         return float(x.mean()), (float(x.mean() - 1.96 * se), float(x.mean() + 1.96 * se))
 
-    summary = {"n_series": args.n_series, "n_futures": args.n_futures, "horizons": {}}
+    summary = {"n_series": n_series, "n_futures": n_futures, "horizons": {}}
     levels_exc, levels_z2, paired_exc, paired_z2 = {}, {}, {}, {}
     for k, h in enumerate(HORIZONS):
         row = f"{h}-day"
@@ -124,11 +136,11 @@ def main() -> None:
     rows = [f"{h}-day" for h in HORIZONS]
     plots.method_panels(
         [("expected exceedance of the 99% VaR (%)", 1.0, levels_exc), ("expected Z2 of the 97.5% ES", 0.0, levels_z2)],
-        rows, list(METHODS), f"VaR and ES backtest on {args.n_series} held-out series: levels, 95% intervals",
+        rows, list(METHODS), f"VaR and ES backtest on {n_series} held-out series: levels, 95% intervals", colors=COLORS,
     ).savefig(out / "backtest_levels.png", dpi=150)
     plots.method_panels(
         [("99% VaR exceedance minus the check (pp)", 0.0, paired_exc), ("97.5% ES Z2 minus the check", 0.0, paired_z2)],
-        rows, list(METHODS[1:]), "Paired against the true-parameter check on the same series, 95% intervals",
+        rows, list(METHODS[1:]), "Paired against the true-parameter check on the same series, 95% intervals", colors=COLORS,
     ).savefig(out / "backtest_paired.png", dpi=150)
 
     for k, h in enumerate(HORIZONS):

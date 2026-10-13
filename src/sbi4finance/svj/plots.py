@@ -143,11 +143,13 @@ def interval_dots(rows, nominal, xlabel, title):
     return fig
 
 
-def method_panels(panels, row_labels, methods, title, height_per_row=0.9):
+def method_panels(panels, row_labels, methods, title, height_per_row=0.9, colors=None):
     """Side-by-side panels comparing methods per row, each value with a 95% interval.
 
-    panels = [(xlabel, reference, {(row, method): (estimate, lo, hi)})]; one color per method, with a legend.
+    panels = [(xlabel, reference, {(row, method): (estimate, lo, hi)})]; one color per method (`colors` maps a
+    method to its color, so the same method keeps its color across figures), with a legend under the plots.
     """
+    colors = colors or {}
     style()
     fig, axes = plt.subplots(
         1, len(panels), figsize=(9.6, height_per_row * len(row_labels) + 1.6), sharey=True, constrained_layout=True
@@ -157,19 +159,20 @@ def method_panels(panels, row_labels, methods, title, height_per_row=0.9):
     for ax, (xlabel, reference, values) in zip(np.atleast_1d(axes), panels):
         ax.axvline(reference, color=INK_2, linewidth=0.8)
         for k, (method, offset) in enumerate(zip(methods, offsets)):
+            color = colors.get(method, SERIES[k % len(SERIES)])
             for r, row in enumerate(row_labels):
                 if (row, method) not in values:
                     continue
                 est, lo, hi = values[(row, method)]
-                ax.hlines(y[r] + offset, lo, hi, color=SERIES[k], linewidth=1.5)
-                ax.scatter([est], [y[r] + offset], s=36, color=SERIES[k], edgecolor=SURFACE, linewidth=1.2, zorder=3,
+                ax.hlines(y[r] + offset, lo, hi, color=color, linewidth=1.5)
+                ax.scatter([est], [y[r] + offset], s=36, color=color, edgecolor=SURFACE, linewidth=1.2, zorder=3,
                            label=method if r == 0 else None)
         ax.set_yticks(y, row_labels)
         ax.grid(axis="y", visible=False)
         ax.set_xlabel(xlabel)
     np.atleast_1d(axes)[0].invert_yaxis()  # shared y: inverting one inverts all
     handles, names = np.atleast_1d(axes)[0].get_legend_handles_labels()
-    fig.legend(handles, names, loc="outside upper left", ncols=len(methods))
+    fig.legend(handles, names, loc="outside lower center", ncols=len(methods))
     fig.suptitle(title, x=0.01, ha="left", color=INK, fontsize=10.5, fontweight="bold")
     return fig
 
