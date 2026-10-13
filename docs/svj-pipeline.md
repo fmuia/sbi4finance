@@ -39,10 +39,10 @@ The reference network reproduces the design document's calibration and identific
 | 1 | Training cost on CPU | 64 min on 2 cores, 2.56 million series; validation loss 0.79 over the last ten epochs | 79 min on 4 cores, 2.56 million series; validation loss 0.80 over the last ten epochs | Passed |
 | 2 | Calibration on 1,000 held-out series | SBC 9 of 9 inside the band; 95% intervals cover 94% to 96% | SBC 8 of 9 (mean jump size leaves the band near rank 0.05), 9 of 9 on a replicate set; 95% intervals cover 93% to 96% | Passed |
 | 3 | Agreement with particle MCMC on 4 series | Network alone off by 0.47 to 1.57 sd; within 0.4 sd after importance sampling | Pending: the agreement study runs after the real-data checks | Pending |
-| 4 | Cost per name | Network 1.4 CPU-s; audit 18 to 146 CPU-s; particle MCMC 285 to 1,733 CPU-s | Network 0.5 s wall for 500 draws, 1.1 s for 1,000; audit 100 and 157 CPU-s on the two real windows; particle MCMC pending | Measured |
+| 4 | Cost per name | Network 1.4 CPU-s; audit 18 to 146 CPU-s; particle MCMC 285 to 1,733 CPU-s | Network 0.5 s wall for 500 draws, 1.1 s for 1,000; audit 100 and 157 CPU-s on the two real windows; particle MCMC 2,295 CPU-s on VOO (bulk ESS 296) | Measured |
 | 5 | Wald against posterior coverage | Wald 0.68 and 0.60 for jump frequency and mean jump; posterior 0.88 and 0.98 | Pending: `pixi run svj-classical` | Pending |
 | 6 | VaR and ES backtest with a known truth | 10-day exceedance: predictive 1.03%, plug-in 1.14%; 10-day Z2: predictive −0.02, plug-in −0.10 | Pending: `pixi run svj-backtest` is running | Pending |
-| 7 | Real data | S&P 500 and WTI: sensible rolling posteriors, 9 of 807 windows flagged | VOO and SPMO, 136 weekly windows each: spot vol tracks realized vol (correlation 0.73 and 0.80), no window flagged; VOO's last window flagged by the audit | Mixed |
+| 7 | Real data | S&P 500 and WTI: sensible rolling posteriors, 9 of 807 windows flagged | VOO and SPMO, 136 weekly windows each: spot vol tracks realized vol (correlation 0.73 and 0.80), no window flagged; VOO's last window flagged by the audit and sent to particle MCMC, which lowers its 1-day VaR from 1.99% to 1.85% | Mixed |
 
 ### 1. Training
 
@@ -83,7 +83,18 @@ How to read the figure: each point is one of 300 held-out series at its true val
 | VOO | 0.9% (27 of 3,000, 200 particles): flagged | 12.3% [7.5%, 14.9%] | 1.99% / 2.17% | 7.51% / 7.62% | 7.08% / 7.18% | 92% |
 | SPMO | 8.4% (253 of 3,000, 400 particles) | 19.8% [11.9%, 29.8%] | 3.36% / 3.43% | 10.88% / 11.15% | 10.59% / 10.81% | 94% |
 
-On VOO the correction moves the parameters, leverage from −0.87 to −0.77 and jumps per year from 1.4 to 2.5, but barely the risk numbers (10-day VaR 7.49% from the network, 7.51% after the correction), because spot volatility agrees and today's variance carries 92% of the uncertainty of the 1-day conditional VaR. This is the pattern of the document's S&P 500 window. With 27 effective draws the corrected figure is approximate, and the window goes to particle MCMC: its particle-MCMC run is pending.
+On VOO the correction moves the parameters, leverage from −0.87 to −0.77 and jumps per year from 1.4 to 2.5, but barely the risk numbers (10-day VaR 7.49% from the network, 7.51% after the correction), because spot volatility agrees and today's variance carries 92% of the uncertainty of the 1-day conditional VaR. This is the pattern of the document's S&P 500 window. With 27 effective draws the corrected figure is approximate, and the window goes to particle MCMC (`--pmmh-on-flag`; 4 chains of 12,500 iterations with 200 particles, R-hat at most 1.008, bulk ESS at least 296, 2,295 CPU-s):
+
+| VOO window | Network | Network + importance sampling | Particle MCMC (exact) |
+|---|---|---|---|
+| Leverage | −0.87 | −0.77 | −0.79 |
+| Jumps per year | 1.4 | 2.5 | 2.3 |
+| Half-life (days) | 22 | 17 | 17 |
+| Spot volatility | 12.4% | 12.3% | 11.0% |
+| 1-day VaR99 / ES97.5 | 1.99% / 2.14% | 1.99% / 2.17% | 1.85% / 2.07% |
+| 10-day VaR99 / ES97.5 | 7.49% / 7.58% | 7.51% / 7.62% | 7.23% / 7.45% |
+
+The audit moves leverage, jump frequency and half-life most of the way to the exact posterior. The network's 1-day VaR is 0.14 points above the exact one, mostly through spot volatility, the same gap as the document's S&P 500 window (3.90% against 3.76%); the daily process therefore reports the particle-MCMC figures for this name.
 
 ### 4. Rolling posteriors on real data
 
