@@ -38,8 +38,8 @@ The reference network reproduces the design document's calibration and identific
 |---|---|---|---|---|
 | 1 | Training cost on CPU | 64 min on 2 cores, 2.56 million series; validation loss 0.79 over the last ten epochs | 79 min on 4 cores, 2.56 million series; validation loss 0.80 over the last ten epochs | Passed |
 | 2 | Calibration on 1,000 held-out series | SBC 9 of 9 inside the band; 95% intervals cover 94% to 96% | SBC 8 of 9 (mean jump size leaves the band near rank 0.05), 9 of 9 on a replicate set; 95% intervals cover 93% to 96% | Passed |
-| 3 | Agreement with particle MCMC on 4 series | Network alone off by 0.47 to 1.57 sd; within 0.4 sd after importance sampling | Pending: the agreement study runs after the real-data checks | Pending |
-| 4 | Cost per name | Network 1.4 CPU-s; audit 18 to 146 CPU-s; particle MCMC 285 to 1,733 CPU-s | Network 0.5 s wall for 500 draws, 1.1 s for 1,000; audit 100 and 157 CPU-s on the two real windows; particle MCMC 2,295 CPU-s on VOO (bulk ESS 296) | Measured |
+| 3 | Agreement with particle MCMC on 4 series | Network alone off by 0.47 to 1.57 sd; within 0.4 sd after importance sampling, at 4 to 7 times less CPU on 3 series | Network alone off by 0.61 to 1.00 sd; after importance sampling 0.14 to 0.40 sd, 3 of 4 inside the criterion at 5 to 9 times less CPU, the fourth flagged by the audit | Mixed |
+| 4 | Cost per name | Network 1.4 CPU-s; audit 18 to 146 CPU-s; particle MCMC 285 to 1,733 CPU-s per 400 effective draws | Network about 1 s wall for 1,000 draws; audit 31 to 157 CPU-s; particle MCMC 715 to 2,174 CPU-s per 400 effective draws | Measured |
 | 5 | Wald against posterior coverage | Wald 0.68 and 0.60 for jump frequency and mean jump; posterior 0.88 and 0.98 | Pending: `pixi run svj-classical` | Pending |
 | 6 | VaR and ES backtest with a known truth | Plug-in minus predictive: exceedance +0.05 / +0.12 pp, Z2 −0.05 / −0.08 at 1 / 10 days | Plug-in minus predictive: exceedance +0.06 / +0.09 pp, Z2 −0.05 / −0.07; the predictive matches the true-parameter check | Passed |
 | 7 | Real data | S&P 500 and WTI: sensible rolling posteriors, 9 of 807 windows flagged | VOO and SPMO, 136 weekly windows each: spot vol tracks realized vol (correlation 0.73 and 0.80), no window flagged; VOO's last window flagged by the audit and sent to particle MCMC, which lowers its 1-day VaR from 1.99% to 1.85% | Mixed |
@@ -108,6 +108,23 @@ Spot volatility tracks realized volatility (correlation 0.73 for VOO, 0.80 for S
 
 
 
+
+### Agreement with particle MCMC
+
+SBC and recovery average over many series; `pixi run svj-agreement` compares the network with the exact posterior of single series. Four held-out series span the prior: rare or frequent jumps (15% and 85% prior quantiles of the jump frequency), crossed with low or high vol-of-variance (same quantiles of c). Particle MCMC runs four chains of 12,500 iterations (2,000 discarded), started at network draws with the network's covariance as proposal, which favours it. The criterion, from the document: for every target, the posterior means differ by less than 0.3 posterior sd and the 90% widths agree within 25%.
+
+| Series | Network alone: largest difference | After importance sampling | Audit efficiency | Particle MCMC: particles, R-hat, bulk ESS | CPU-s per 400 effective draws: particle MCMC / importance sampling |
+|---|---|---|---|---|---|
+| Rare jumps, low vol-of-variance | 0.61 sd (leverage) | 0.14 sd: passes | 10.2% | 100, 1.007, 851 | 755 / 87 |
+| Rare jumps, high vol-of-variance | 0.83 sd (leverage) | 0.26 sd: passes | 2.8% | 200, 1.018, 436 | 2,074 / 397 |
+| Frequent jumps, low vol-of-variance | 0.87 sd (leverage) | 0.15 sd: passes | 4.2% | 50, 1.010, 558 | 715 / 99 |
+| Frequent jumps, high vol-of-variance | 1.00 sd (drift) | 0.40 sd: fails | 0.7%: flagged | 100, 1.014, 294 | 2,174 / 877 |
+
+![Agreement](results/svj-agreement/agreement.png)
+
+How to read the figure: each panel is one series and each row one target, with medians as dots and 90% intervals as lines, standardized by the particle-MCMC posterior of that target (grey, centred on 0 with sd 1). Blue is the network, green the network corrected by importance sampling, and the star the true value. A blue interval shifted from the grey one is a disagreement; the green intervals remove most of them.
+
+As in the document, the network is calibrated on average but off for single series, mostly in leverage, and the importance-sampling audit repairs three of the four at 5 to 9 times less CPU than particle MCMC. The fourth series keeps a 0.40 sd error after the correction, and its efficiency of 0.7% is below the 2% threshold, so the daily process would send it to particle MCMC: the audit flags exactly the series it cannot fix. Particle MCMC's acceptance rates (9% to 16%) sit below the 23% optimum because the network's covariance is a rough proposal; its cost per 400 effective draws is therefore an upper bound for a tuned sampler, unlike the document's favourable set-up.
 
 ### 5. VaR and ES backtests with a known truth
 

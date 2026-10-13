@@ -215,6 +215,12 @@ def agreement_panels(panels, labels):
     fig, axes = plt.subplots(2, 2, figsize=(9.6, 7.6), sharex=True, constrained_layout=True)
     methods = (("particle MCMC", INK_2, -0.22), ("network", SERIES[0], 0.0), ("network + importance sampling", SERIES[2], 0.22))
     y = np.arange(len(labels))
+    extent = 3.0
+    for _, reference, network, corrected, truth in panels:
+        centre, scale = reference.mean(0), reference.std(0)
+        for draws in (network, corrected):
+            extent = max(extent, np.abs(np.quantile((draws - centre) / scale, [0.05, 0.95], axis=0)).max())
+        extent = max(extent, np.abs((truth - centre) / scale).max())
     for ax, (title, reference, network, corrected, truth) in zip(axes.ravel(), panels):
         centre, scale = reference.mean(0), reference.std(0)
         for (name, color, offset), draws in zip(methods, (reference, network, corrected)):
@@ -227,7 +233,7 @@ def agreement_panels(panels, labels):
         ax.set_yticks(y, labels)
         ax.invert_yaxis()
         ax.grid(axis="y", visible=False)
-        ax.set_xlim(-6, 6)
+        ax.set_xlim(-1.1 * extent, 1.1 * extent)
         ax.set_title(title, loc="left")
     for ax in axes[1]:
         ax.set_xlabel("standardized by the particle-MCMC posterior (mean 0, sd 1)")

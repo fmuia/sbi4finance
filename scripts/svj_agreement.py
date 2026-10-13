@@ -112,6 +112,14 @@ def main() -> None:
               f"IS eff {checked.efficiency:.1%}, max diff {np.abs(diff_is).max():.2f} sd, {checked.seconds:.0f} CPU-s")
         (out / "agreement.json").write_text(json.dumps({"n_iter": args.n_iter, "burn_in": args.burn_in, "series": results}, indent=1))
 
+    np.savez_compressed(
+        out / "agreement_draws.npz",
+        names=np.array([p[0] for p in panels]),
+        pmmh=np.stack([p[1][:: max(1, len(p[1]) // 4_000)][:4_000] for p in panels]),  # thinned across all chains
+        network=np.stack([p[2] for p in panels]),
+        corrected=np.stack([p[3] for p in panels]),
+        truth=np.stack([p[4] for p in panels]),
+    )
     plots.agreement_panels(panels, model.QUANTITY_LABELS).savefig(out / "agreement.png", dpi=150)
 
 
