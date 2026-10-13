@@ -41,7 +41,7 @@ The reference network reproduces the design document's calibration and identific
 | 3 | Agreement with particle MCMC on 4 series | Network alone off by 0.47 to 1.57 sd; within 0.4 sd after importance sampling | Pending: the agreement study runs after the real-data checks | Pending |
 | 4 | Cost per name | Network 1.4 CPU-s; audit 18 to 146 CPU-s; particle MCMC 285 to 1,733 CPU-s | Network 0.5 s wall for 500 draws, 1.1 s for 1,000; audit 100 and 157 CPU-s on the two real windows; particle MCMC 2,295 CPU-s on VOO (bulk ESS 296) | Measured |
 | 5 | Wald against posterior coverage | Wald 0.68 and 0.60 for jump frequency and mean jump; posterior 0.88 and 0.98 | Pending: `pixi run svj-classical` | Pending |
-| 6 | VaR and ES backtest with a known truth | 10-day exceedance: predictive 1.03%, plug-in 1.14%; 10-day Z2: predictive −0.02, plug-in −0.10 | Pending: `pixi run svj-backtest` is running | Pending |
+| 6 | VaR and ES backtest with a known truth | Plug-in minus predictive: exceedance +0.05 / +0.12 pp, Z2 −0.05 / −0.08 at 1 / 10 days | Plug-in minus predictive: exceedance +0.06 / +0.09 pp, Z2 −0.05 / −0.07; the predictive matches the true-parameter check | Passed |
 | 7 | Real data | S&P 500 and WTI: sensible rolling posteriors, 9 of 807 windows flagged | VOO and SPMO, 136 weekly windows each: spot vol tracks realized vol (correlation 0.73 and 0.80), no window flagged; VOO's last window flagged by the audit and sent to particle MCMC, which lowers its 1-day VaR from 1.99% to 1.85% | Mixed |
 
 ### 1. Training
@@ -108,6 +108,23 @@ Spot volatility tracks realized volatility (correlation 0.73 for VOO, 0.80 for S
 
 
 
+
+### 5. VaR and ES backtests with a known truth
+
+`pixi run svj-backtest` scores three forecasts on 500 held-out series, where the true parameters and today's true variance are known: the probability that the next loss exceeds the reported 99% VaR comes from 50,000 simulated futures, and the expected Acerbi–Szekely Z2 score of the 97.5% ES (0 when correct, negative when too low) from the same futures. The check forecasts with the true parameters and a filtered state.
+
+![Backtest, paired](results/svj-backtest/backtest_paired.png)
+
+How to read the figure: each dot is the average difference between a method and the true-parameter check on the same 500 series, with a paired 95% interval; the vertical line marks no difference. Blue is the predictive forecast from the amortized posterior, orange the plug-in at the posterior median.
+
+| Paired against the check | 1-day exceedance | 10-day exceedance | 1-day Z2 | 10-day Z2 |
+|---|---|---|---|---|
+| Predictive (amortized posterior) | +0.01 pp [−0.03, +0.05] | −0.00 pp [−0.04, +0.03] | +0.00 [−0.03, +0.03] | +0.00 [−0.03, +0.03] |
+| Plug-in at posterior median | +0.07 pp [+0.04, +0.10] | +0.09 pp [+0.05, +0.12] | −0.05 [−0.07, −0.02] | −0.06 [−0.09, −0.04] |
+
+The predictive forecast is indistinguishable from knowing the parameters. The plug-in forecast, which drops parameter uncertainty, exceeds its VaR more often and understates the ES, more at 10 days than at 1 day; its ES is more than 10% below the true ES in 17% of series, against 13% to 15% for the predictive. These gaps match the document's (+0.05 and +0.12 pp, −0.05 and −0.08 against the predictive).
+
+The levels themselves sit below nominal on these 500 series: the check is exceeded 0.91% of the time at 1 day and 0.94% at 10 days, with Z2 of +0.07 and +0.06 (`backtest_levels.png`). That is the sample, not the test: the per-series exceedance is right-skewed (median 0.81%), and `scripts/svj_backtest_check.py` computes the one-day check exactly, with no Monte Carlo, on 2,000 fresh series: 0.99% (95% CI 0.95% to 1.03%), batch means of 500 series between 0.97% and 1.02%. The particle filter's law of today's variance is also calibrated: the rank of the true v_T in the filter's cloud is uniform over 300 series (KS p = 0.98). Comparisons are therefore paired against the check, as in the document.
 
 ## Deviations from the design document
 
