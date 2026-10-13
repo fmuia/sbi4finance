@@ -86,8 +86,8 @@ Export time totalled 22.12 seconds; complete verification took 25.06 seconds.
 The browser mirror's 482 assets and 585 local targets passed static checks.
 `marimo check --strict notebooks` also passed for the full notebook collection.
 See the [delivery record](results/svj-integration/delivery.json) for source,
-artifact and export hashes and individual results. Later closeout changes add
-only this evidence and documentation. These checks establish integration
+artifact and export hashes and individual results. PR #35's final closeout commit
+added only this evidence and documentation. These checks establish integration
 behavior; they do not expand the selected route's scientific acceptance or claim
 a browser-wide offline certification.
 
@@ -132,3 +132,47 @@ them under a declared conditional, calibration and downstream protocol. Full
 population validation, larger tail-risk budgets and empirical market evaluation
 are separate experiments. GBM and Heston retain their existing runners; this
 integration's first executable convergence is SVJ/HKDE.
+
+## Reconciliation with the six-package plan
+
+The user's clarification expanded the initial boundary-focused proposal to a
+shared executable inference and training core. The package mapping is:
+
+| Package | Delivered work | Evidence |
+|---|---|---|
+| H1: compose and protect | Contribution ancestry, locked environment, checkpoint/reference sidecar, protected output destinations | Preservation inventory; full suite; original PRs #33/#34 included by #35 |
+| H2: observations and forecasts | Strict prepared windows, native feature/target adapter, joint draws, explicit diagnostic/fallback status and log-loss units | Adapter/artifact/workflow tests; real frozen sampler and forecast checks |
+| H3: banks | Stable split/example streams, batched stepping, strict storage and replay | Bank tests and Oscar/local reproduction |
+| H4: training | Online and saved-bank inputs, shared fitting/selection/reload, reserved test split and separate exposure accounting | Real offline/online smoke and training tests |
+| H5: lesson | Cached synthetic default, bounded live opt-in, training exercise, unchanged selected Q course | Isolated exports, figure/browser review, final memory measurements |
+| H6: cluster and merge | Actual CPU bank job, returned-bank verification, combined checks and ancestry-preserving main merge | Oscar job 7345295, pinned delivery record, merged PR #35 |
+
+A literal checklist review after #35 found small omissions in its closeout:
+the collaborator handover still described SVJ as outside main; two simulator
+docstrings called the declared Gamma starting law stationary; local lesson peak
+memory had not been recorded; and saved-bank training still accepted online-only
+budget arguments that it ignored. The follow-up corrects those descriptions,
+records the memory measurement, and enforces explicit offline budgets at both
+the CLI and training API. The teaching cache is regenerated against the updated
+source identities and compared with its predecessor. Original scientific
+artifacts are preserved.
+
+The [closeout evidence](results/svj-integration/plan-closeout.json) records exact
+legacy/prepared equality for features, nine targets, seeded checkpoint draws
+and matched one-/ten-day continuation outputs. All six refreshed teaching arrays
+are bitwise identical and its report is identical apart from timing fields.
+The isolated cached export took 2.19 seconds with 228.5 MiB peak RSS; bounded
+live export took 8.66 seconds with 983.02 MiB peak RSS. These are whole-export
+measurements from Darwin `/usr/bin/time -l`, including startup and rendering;
+the OS high-water statistic is not a simultaneous sum across the process tree.
+The follow-up's full suite passed **297 tests in 45.124 seconds**, all notebooks
+passed strict marimo checks, and the original artifact inventory and 59 frozen
+HKDE dependencies were rechecked.
+
+The cluster record remains bound to its original submitted source. The changed
+model file differs only in docstrings; an AST comparison after removing docstrings
+confirms identical executable simulation code. This is recorded explicitly rather
+than relabelling the original Oscar run as execution of the later source bytes.
+
+Position-loss v2, new scientific acceptance studies, larger campaigns and any
+change of the primary curriculum remain the plan's separately scoped follow-ups.

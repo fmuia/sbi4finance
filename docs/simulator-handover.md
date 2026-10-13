@@ -1,20 +1,20 @@
 # Collaborator handover: finance simulator ladder
 
-**Current closeout: 13 October 2026.** Repository: [fmuia/sbi4finance](https://github.com/fmuia/sbi4finance).
-The scoped simulator/bank implementation workstream is complete. The final
-participant tutorial is **not yet scientifically accepted**. This note hands
-over code, evidence and decisions; it does not claim that every model has a
-validated neural posterior. Remaining review and scientific decisions are
-tracked in the [follow-up issues below](#tracked-follow-ups). The user has now
-requested the main merge; the [closeout review](main-merge-review.md) records
-its composition and checks. Earlier no-merge notes describe their original
-snapshots, not a restriction on this authorized closeout.
+**Current handover: 13 October 2026.** Repository: [fmuia/sbi4finance](https://github.com/fmuia/sbi4finance).
+The simulator/bank stack and Francesco's daily SVJ application are on `main`.
+[PR #35](https://github.com/fmuia/sbi4finance/pull/35), merged at `4b0b9cc`,
+incorporates the contribution from #33 and the shared SVJ/HKDE inference and
+training workflow. The [SVJ integration review](svj-integration-review.md)
+records its implementation, measured verification and preserved evidence;
+the earlier [main closeout](main-merge-review.md) records the preceding stack.
 
-**Latest additions:** [PR #32's Heston decision](heston-validation-decision.md)
-is included: keep the optional diagnostic lesson and defer new experiments.
-[Francesco's draft PR #33](svj-contribution-compatibility.md) is a separate
-returns application outside this merge; it does not replace the selected
-Q/options curriculum or our model/task conventions.
+The participant tutorial remains **scientifically provisional**. This note
+hands over runnable code, evidence and decisions; integration does not accept
+every neural posterior scientifically. [PR #32's Heston decision](heston-validation-decision.md)
+retains its optional diagnostic lesson and defers new experiments. SVJ is now
+an optional P/returns companion, while the selected Q/options curriculum is
+unchanged. Earlier draft, open-stack and no-merge statements below describe
+their explicitly marked historical snapshots.
 
 **Curriculum update, 12 October 2026:** the user has selected **Q/options with
 GBM foundations and a provisional corrected-HKDE diagnostic lesson**. Use the
@@ -30,18 +30,20 @@ browser layout, interaction and offline runtime remain unverified.
 
 ## Start here
 
-**Combined integration checkpoint:** the [issue #27 review](stack-integration-review.md)
-now composes the simulator, data, rough held-out and #29 decision work in one
-checkout. The [selected participant route](tutorial-participant-route.md) is
-GBM foundations followed by provisional Q/HKDE. Notebook10 retains #22's local
-panel, **cached default** and explicit `demo-hkde-corrected` mode. Scientific
-acceptance remains false; I4 remains deferred. Exact input heads and fresh
-combined verification are recorded in the integration review; older counts
-below describe their original snapshots.
+Start from `main`, including [PR #35](https://github.com/fmuia/sbi4finance/pull/35).
+The [shared workflow guide](shared-inference-workflow.md) explains the executable
+core, task-specific components and current commands. The [selected participant
+route](tutorial-participant-route.md) remains GBM foundations followed by
+provisional Q/HKDE. Notebook10 retains #22's local panel, **cached default** and
+explicit `demo-hkde-corrected` mode; its live path now uses the shared runner.
+The optional [SVJ lesson](../notebooks/svj_var_pipeline.py) has a synthetic cached
+default and a bounded live opt-in. Scientific acceptance remains separate and
+HKDE I4 remains deferred. The [#27 review](stack-integration-review.md) and older
+counts below retain their original verification snapshots.
 
 For a module map, data-flow diagrams and extension points, read the companion
-[code architecture guide](code-architecture.md). It describes the implemented
-layout and distinguishes additions that still live on separate branches.
+[code architecture guide](code-architecture.md). It describes the current
+layout, shared execution stages and specialized financial applications.
 
 1. Read the [plan and mathematical reading guide](https://github.com/fmuia/sbi4finance/blob/docs/simulator-plan/docs/simulator-plan/README.md)
    in [plan PR #3](https://github.com/fmuia/sbi4finance/pull/3).
@@ -56,13 +58,19 @@ layout and distinguishes additions that still live on separate branches.
    and notebook09 in [PR #28](https://github.com/fmuia/sbi4finance/pull/28).
    The [passed development validation](https://github.com/fmuia/sbi4finance/blob/feat/rough-bergomi-option-bank/docs/rough-reference-expansion.md)
    and [original stopped study](https://github.com/fmuia/sbi4finance/blob/feat/rough-bergomi-option-bank/docs/rough-joint-inference.md)
-   remain unchanged in PR #14. The latest rough-inference additions are not all in
-   the HKDE/tutorial branch ancestry; see the branch boundary below.
+   remain unchanged in PR #14. Their former branch relationships are recorded
+   in the historical map below; the integrated implementation is now on main.
+5. For SVJ, read the [integration review](svj-integration-review.md), open
+   `pixi run review-svj`, and inspect the [bound synthetic example](../data/synthetic/svj-workflow/bundle.json).
+   The [compatibility assessment](svj-contribution-compatibility.md) records the
+   pre-implementation comparison; the shared workflow guide is the current contract.
 
-The project should stay easy to change. Prefer the existing functions, explicit
-task dictionaries, NPZ/JSON banks, Pixi environment and thin cluster scripts.
-No additional registry, service, storage framework or general-purpose trainer
-is needed to continue this tutorial work.
+The project uses explicit task dictionaries, NPZ/JSON banks, the pinned Pixi
+environment and thin cluster scripts. Shared `inference_workflow.py` and
+`training_workflow.py` now execute the common lifecycle for SVJ and HKDE.
+Applications supply their adapters, architectures, likelihood references and
+downstream calculations; there is no simulator registry or requirement to make
+unlike observation models use the same network.
 
 ## What we are building, and what is available
 
@@ -70,13 +78,17 @@ The original objective was reusable simulation building blocks, pre-simulated
 training banks and cluster generation for a finance SBI tutorial. We preserved
 two distinct applications: **P returns inference and conditional forecasting**,
 and **Q option calibration and downstream model pricing**. The selected participant
-running example is provisional Q/HKDE; P returns remains available separately. The existing MMAR example is
-preserved. This work is not a reproduction/import of Francesco's full SVJ study.
+running example is provisional Q/HKDE; the incorporated daily SVJ application
+provides a complete optional P/returns workflow. The existing MMAR example is
+preserved. Francesco's original checkpoint and study artifacts are included,
+with their limitations retained; integration did not rerun or newly accept the
+full scientific study.
 
 | Component | Delivered | Acceptance boundary |
 |---|---|---|
 | M0–M2: conventions, GBM, banks, cluster | Exact GBM simulation, analytic inference/prediction references, bank generation/loading, training/reload, cluster smoke and notebook01 | The small analytic task is the foundation; its success does not validate other models. |
-| M3: Heston and Gaussian price jumps | Reference/Numba trajectory kernels, continuation, numerical checks, banks, joint parameter/state inference and notebooks04–05 | Restricted Heston neural candidates learn from the data but retain conditional failures. Full SVJ/SVCJ inference is not accepted. |
+| M3: Heston and Gaussian price jumps | Reference/Numba trajectory kernels, continuation, numerical checks, banks, joint parameter/state inference and notebooks04–05 | Restricted Heston neural candidates retain conditional failures. These kernels remain distinct from the incorporated daily SVJ model. |
+| Francesco's daily SVJ application, #35 | Eight-parameter/terminal-state inference, adapted particle filter, PMMH, compiled sampler, audit, conditional forecasts, online/saved-bank training, deterministic local/cluster banks and synthetic offline lesson | Original checkpoint/results preserved; initial 8/9 SBC, 9/9 replicate, conditional discrepancies and flagged cases remain visible. Risk is explicitly percent log-loss. Integration grants no new scientific acceptance. |
 | M4: HKDE and option panels | Double-exponential price jumps, direct Fourier European pricing, fixed noisy-panel tasks, common option banks and notebook06 | This uses numerical Fourier quadrature, not an imported PROJ implementation. Wider domains and American/exotic products need separate work. |
 | M5: HKDE inference and learned pricing | Frozen neural checkpoint, refined numerical posterior grid, two-contract price surrogate, importance correction and notebook07 | The surrogate passes. The raw flow and corrected pipeline remain provisional for different recorded reasons. |
 | M6: one-factor Bergomi | Forward-variance context, exact OU/asset covariance, complete continuation, European Monte Carlo prices, banks and notebook08 | No two-factor implementation or accepted neural posterior is claimed. |
@@ -94,9 +106,11 @@ to rewrite every simulator in Numba or Cython.
 |---|---|
 | Models | `src/sbi4finance/{gbm,heston,hkde,bergomi,rough_bergomi}.py` |
 | Returns banks/inference | `gbm_bank.py`, `gbm_inference.py`, `heston_bank.py`, `heston_inference.py`, `heston_reference.py`, `heston_forecast.py` |
+| Shared inference and training | [`inference_workflow.py`](../src/sbi4finance/inference_workflow.py), [`training_workflow.py`](../src/sbi4finance/training_workflow.py); real SVJ and HKDE consumers |
+| Daily SVJ task/application | [`svj/`](../src/sbi4finance/svj/), including `bank.py`, `adapters.py`, `artifacts.py`, `pipeline.py`; [`svj_daily_bank.json`](../configs/tasks/svj_daily_bank.json) |
 | Shared option observations/banks | `option_panel.py`, `option_bank.py`, `configs/tasks/*.json`, `scripts/generate_option_bank.py` |
-| HKDE inverse/forward calculations | `hkde_inference.py`, `hkde_reference.py`, `hkde_surrogate.py`, `hkde_correction.py` |
-| Cluster | `cluster/simulate.sbatch`, `cluster/option_bank.sbatch`; latest rough array workflow is in PR #14 |
+| HKDE inverse/forward calculations | `hkde_inference.py`, `hkde_reference.py`, `hkde_surrogate.py`, `hkde_correction.py`, [`hkde_workflow.py`](../src/sbi4finance/hkde_workflow.py) |
+| Cluster | `cluster/simulate.sbatch`, `cluster/option_bank.sbatch`, the rough array workflow, and [`cluster/svj_bank.sbatch`](../cluster/svj_bank.sbatch) |
 | Evidence | `docs/results/`, checkpoint metadata, frozen `configs/*protocol*.json`, milestone review notebooks |
 
 A returns observation is an ordered decimal log-return array
@@ -104,6 +118,13 @@ A returns observation is an ordered decimal log-return array
 retain the model's required state and its dependence with parameters. For the
 full-truncation Heston task this includes its declared signed auxiliary state;
 rough memory cannot be replaced by current scalar variance.
+
+The daily SVJ bank fixes 1,000 observations at `1/252` years and keeps its native
+eight parameter coordinates and floored terminal variance as targets. The
+adapter converts decimal log returns to percent once, then reconstructs the
+original two feature channels. Its checkpoint sidecar binds the complete task,
+features, solver and reference hashes. This daily law and its continuation state
+are not interchangeable with the substepped Heston law.
 
 An options observation is an ordered noisy premium panel
 `[batch,contract,1]`, with contracts, carry, spot and other known model inputs
@@ -131,16 +152,20 @@ independent base draws/splits and group all augmentations of a surface together.
 Do not replace failed numerical draws silently or feed simulator-only labels
 into conditioning. [Bank details and commands](option-banks.md) are the contract.
 
-## Where the work lives
+## Historical pre-integration branch map
+
+This section records the earlier review layout and then-open PRs. It is not the
+current checkout recommendation: the implementation stacks and #35's SVJ/shared
+workflow are now on `main`. Keep these heads and counts to interpret historical
+reports rather than reconstructing the old stacks for ordinary use.
 
 The implementation PRs use **N/10-simulator-plan-…**. Numbering describes planned
 scope; it is not necessarily Git dependency order. The actual PR bases determine
 review/integration order. The plan itself is outside that count.
 
-Remote state was checked for this note: `main` is still `b892fae`, containing
-the merged scaffold PR #2. At the pre-integration snapshot, the following implementation PRs were **open**;
-only #19 is draft. A collaborator starting from `main` will not find this
-implementation stack there yet.
+At the pre-integration snapshot, `main` was `b892fae`, containing the merged
+scaffold PR #2. The following implementation PRs were then **open**;
+only #19 was draft. They were not yet available from main at that time.
 
 | Increment / subject | PR | Actual base |
 |---|---|---|
@@ -216,8 +241,8 @@ composition check; no data-side worktree was changed for this handover.
 
 ## First review session
 
-In a dedicated checkout of the pinned combined revision recorded in the
-[integration review](stack-integration-review.md), use the locked environment.
+Use a current main checkout containing #35 and the locked environment. For exact
+historical replay, use the particular revision named by its verification record.
 Installation needs package access; execution of the review needs no market
 files or provider credentials.
 
@@ -225,6 +250,7 @@ files or provider credentials.
 pixi install --locked
 PYTHONPATH=src pixi run review-hkde-corrected
 PYTHONPATH=src pixi run review-hkde-surrogate
+PYTHONPATH=src pixi run review-svj
 PYTHONPATH=src pixi run test-simulators
 ```
 
@@ -237,6 +263,29 @@ It displays the joint correction and two target-price distributions as a
 **provisional demonstration**. No real observations or generating truth enter
 conditioning. A passing single-case check does not change the used test or
 establish population calibration.
+
+The SVJ lesson likewise starts from a saved synthetic case. `demo-svj` opts into
+its bounded shared-workflow calculation. The following separate commands
+exercise saved-bank generation, checking and a tiny offline fit; choose new
+output paths for each run. The fit verifies plumbing and does not validate a
+new scientific candidate.
+
+```bash
+PYTHONPATH=src pixi run demo-svj
+PYTHONPATH=src pixi run svj-bank --config configs/tasks/svj_daily_smoke.json --out /tmp/svj-handover-bank
+PYTHONPATH=src pixi run svj-bank-check --bank /tmp/svj-handover-bank
+PYTHONPATH=src pixi run svj-train --bank /tmp/svj-handover-bank --epochs 1 --batch-size 8 --out /tmp/svj-handover-checkpoint
+PYTHONPATH=src pixi run svj-daily --artifact data/synthetic/svj-workflow/window --out /tmp/svj-handover-case.json
+```
+
+Online training remains available with `svj-train --preset smoke --out NEW_DIR`.
+Both applications execute the same fit/validation-selection/reload lifecycle.
+The [SVJ Slurm wrapper](../cluster/svj_bank.sbatch) calls the same generator as
+the local command. Its [Oscar record](results/svj-integration/oscar-bank.json)
+and the [integration review](svj-integration-review.md) contain actual cluster
+reproduction, training/reload, notebook and preserved-artifact checks. They
+supersede older engineering counts for this integration, without replacing
+the historical scientific studies discussed next.
 
 The [live execution record](results/hkde-live-demo/verification.json) separates
 technical execution and single-case checks from `scientific_acceptance=false`.
@@ -320,18 +369,19 @@ state these limitations.
 
 ## Tracked follow-ups
 
-For assignment to multiple agents, use the [parallel handover index](parallel-agent-handover.md).
-It links the individual briefs, covers every open PR, and separates work that
-can proceed now from conditional scientific/participant steps.
+The [parallel handover index](parallel-agent-handover.md) preserves the original
+agent briefs and PR ownership. Read its branch/open-work statements as that
+earlier handover snapshot; current implementation status is above and in the
+[SVJ integration review](svj-integration-review.md).
 
 Review and integration can proceed without accepting every model scientifically.
-Each issue has an ordered subplan, source/result links and explicit completion
-criteria. Start with the integration map and existing results, choose the
-teaching route, and schedule only the scientific work that decision needs.
+The linked issues retain subplans, source/result links and explicit completion
+criteria. The Q/options teaching route is already selected. Schedule additional
+scientific work only for a new claim that needs it.
 
 | Issue | Concrete outcome | Boundary |
 |---|---|---|
-| [#27 — review and consolidate the PR stacks](https://github.com/fmuia/sbi4finance/issues/27) | Review dependencies, integrate the intended revisions, verify the actual combined code/notebooks and record the reviewed/merged disposition. | Existing snapshot test counts do not certify the resulting tree. Merging does not change scientific acceptance. |
+| [#27 — review and consolidate the PR stacks](https://github.com/fmuia/sbi4finance/issues/27) | The original stacks are on main; [main closeout](main-merge-review.md) records that integration. [#35](https://github.com/fmuia/sbi4finance/pull/35) subsequently incorporates SVJ and the shared workflow with its own [verification](svj-integration-review.md). | Each evidence record certifies its named revision and scope. Merging does not change scientific acceptance. |
 | [#26 — tutorial and participant review](https://github.com/fmuia/sbi4finance/issues/26) | Q/options selected; [fresh setup, five isolated exports, 19 figure appearances and exercise review](tutorial-delivery-verification.md) complete on `ca63424`. | Browser layout, interaction and offline runtime unverified; full selected-route verification remains false. Formal I4 deferred. |
 | [#23 — rough reserved-test evaluation](https://github.com/fmuia/sbi4finance/issues/23) | **Study completed in [PR #28](https://github.com/fmuia/sbi4finance/pull/28):** frozen checkpoint evaluated once; reference, conditional/joint, SBC and target-mean results audited and taught in notebook09. | All 256 cases used and closed. Reference passes; one conditional eta-spread gate fails, so candidate remains provisional. No retry, tuning or reference expansion followed. |
 | [#24 — HKDE scientific acceptance decision](https://github.com/fmuia/sbi4finance/issues/24) | **Decision recorded:** [retain provisional selected-case teaching at 2,048 proposals](hkde-acceptance-decision.md); unchanged tolerances, explicit shared-alarm policy, no new replication. Notebook11 teaches the decision. | Historical test remains failed and closed; broader acceptance is deferred. Formal data-teaching I4 stays deferred; I4a already runs. |
@@ -355,9 +405,13 @@ no further run is prescribed by #23, and this is not an HKDE I4 prerequisite.
 
 An explicit negative or deferred scientific decision is a valid issue outcome;
 the aim is not to keep experimenting until every status is green. Two-factor
-Bergomi, full collaborator SVJ parity, direct-price posteriors, American/exotic
+Bergomi, variance-jump SVCJ models, direct-price posteriors, American/exotic
 pricing, rough P-memory inference and P/Q linkage remain optional extensions.
 They are not hidden closeout requirements.
+
+Francesco's daily SVJ application is already incorporated. Position-loss v2,
+new population calibration and held-out market evaluation are separate future
+studies; the current reported risk functional remains percent log-loss.
 
 The latest [analysis note](https://github.com/fmuia/sbi4finance/blob/feat/rough-bergomi-option-bank/docs/simulator-analysis-next-steps.md)
 preserves older decisions; its chronological “next” sections can describe work
@@ -373,10 +427,11 @@ training. **E: empirical evaluation** needs separately withheld future outcomes
 or excluded quotes, usually many origins/dates for broader claims. Acquisition
 cannot block S, and synthetic validity does not certify market adequacy.
 
-On the current workstation, the useful worktrees under
-`/Users/afengler/Projects/proj_sbi4finance` are:
+The following historical worktree inventory records the earlier review sessions
+under `/Users/afengler/Projects/proj_sbi4finance`. It is not a list of branches
+still needing integration; a fresh checkout of current main is the handover entry point.
 
-- `sbi4finance-offline-tutorial`: this handover and draft PR #19.
+- `sbi4finance-offline-tutorial`: the original handover and draft PR #19 snapshot.
 - `sbi4finance-hkde-inference`: PR #15's scientific implementation/evidence.
 - `sbi4finance-option-banks`: PR #14 rough development work.
 - `sbi4finance-rough-heldout`: separate PR #28 test evaluation and current rough review.

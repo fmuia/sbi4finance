@@ -740,9 +740,9 @@
     "scientific_acceptance": "not_assessed_by_this_run"
   },
   "timings": {
-    "network_cpu_s": 0.62,
-    "misspecification_cpu_s": 0.53,
-    "audit_cpu_s": 6.43,
-    "forecast_cpu_s": 1.11
+    "network_cpu_s": 0.68,
+    "misspecification_cpu_s": 0.59,
+    "audit_cpu_s": 6.68,
+    "forecast_cpu_s": 1.16
   }
 }

@@ -188,7 +188,11 @@ def variance_from_log_spot_vol(log_sigma):
 
 
 def initial_variance(coords, rng):
-    """v_0 from the stationary Gamma law, floored like every later variance."""
+    """v_0 from the declared Gamma starting law, floored at V_MIN.
+
+    This initialization is not an established stationary distribution of the
+    clipped daily recursion.
+    """
     theta = model_params(coords)[..., 1]
     c2 = np.exp(2 * np.asarray(coords)[..., 3])
     return np.maximum(rng.gamma(shape=1 / c2, scale=theta * c2), V_MIN)
@@ -265,7 +269,7 @@ def daily_model_from_innovations(
 
 
 def simulate_from_coordinates(coords, rng, n_days=WINDOW):
-    """One series per coordinate vector, started from the stationary law.
+    """One series per coordinate vector, using the declared Gamma starting law.
 
     Returns a dict with the returns (n, n_days), the nine targets (n, 9), the variance path and the jump days.
     """
