@@ -71,7 +71,7 @@ passed/failed respectively.
 
 The SVJ default exported in an isolated directory without market files or raw
 banks, with neural imports and external Python socket access blocked. The measured
-export took 2.23 seconds before final presentation-only rounding/link edits.
+final export took 2.41 seconds after presentation rounding/link edits.
 Its two figures were visually inspected. Chrome interaction with the running
 lesson verified that the checkbox recomputes a live synthetic case and retains
 the diagnostic and scientific-status explanation. The bounded case uses 128
@@ -79,8 +79,15 @@ neural draws, 256 importance proposals, 128 particles and four forward paths per
 joint draw. It reports ESS 17.01/256, efficiency 6.64% and log-likelihood SD 0.747:
 `locally_checked`, with scientific acceptance `not_assessed_by_this_run`.
 
-The final revision-bound participant-route export record is added alongside
-these checks in `docs/results/svj-integration/`. These checks establish integration
+The final participant-route verifier passed on clean revision
+`9e262d11bdbc9f44cea51595d8698b46c033f103`: five strict checks and exports,
+19 figure appearances, zero cell errors, and all eight live HKDE checks passing.
+Export time totalled 22.12 seconds; complete verification took 25.06 seconds.
+The browser mirror's 482 assets and 585 local targets passed static checks.
+`marimo check --strict notebooks` also passed for the full notebook collection.
+See the [delivery record](results/svj-integration/delivery.json) for source,
+artifact and export hashes and individual results. Later closeout changes add
+only this evidence and documentation. These checks establish integration
 behavior; they do not expand the selected route's scientific acceptance or claim
 a browser-wide offline certification.
 
