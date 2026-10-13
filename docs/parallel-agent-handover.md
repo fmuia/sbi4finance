@@ -1,5 +1,12 @@
 # Distributing the remaining work to agents
 
+**Closeout update, 13 October 2026:** the [main-merge review](main-merge-review.md)
+incorporates the completed HKDE, curriculum/delivery and Heston decisions.
+Original assignments below retain provenance; they do not request repeating
+completed work. New Heston experiments and formal HKDE I4 remain deferred.
+The user's current merge request supersedes the original no-merge scope;
+Francesco's separate draft remains under its own review.
+
 Prepared 12 October 2026. These are assignment briefs, not launched jobs.
 The existing simulator and data implementations are largely complete and await
 review. The remaining implementation should follow the actual outstanding
@@ -38,7 +45,7 @@ briefs below retain their provenance; no new study or GitHub merge is authorized
 | Agent | Handover | Work that can start now | Dependency for later work |
 |---|---|---|---|
 | A — HKDE science | [#24 acceptance decision](hkde-acceptance-handover.md) | Review the shared calibration alarm; define the claim and prospective decision rule at 2,048 proposals. | A fresh study is optional and must be justified/frozen first. A provisional decision is a valid outcome. |
-| B — Heston science | [#25 state/forecast decision](heston-validation-handover.md) | Review the signed-state conditional failure and identify defer / diagnostic lesson / bounded investigation options. | Additional experiments should serve the chosen teaching route; coordinate priority with C. Do not open the reserved test for selection. |
+| B — Heston science | [#25 completed decision](heston-validation-decision.md) | Retain optional diagnostic teaching; PR #32 completes the bounded decision and review update. | Further experiments are deferred. Both candidates remain provisional; root-43022 stays reserved. |
 | C — Curriculum and delivery | [#26 tutorial selection](tutorial-selection-handover.md) | Compare P returns and Q options, inspect graphs, propose the smallest paced lesson and get the user/team's choice. | Final clean-environment/offline participant verification uses D's pinned combined revision and current scientific labels. |
 | D — Integration coordinator | [#27 PR-stack integration](stack-integration-handover.md) | Inventory all current PR heads, compose existing code in an isolated checkout, resolve conflicts and verify the combined tree. | Incorporate explicitly selected agent follow-ups at recorded commits. GitHub merges remain the user's decision. |
 | E — Conditional data I4 | [Formal participant acceptance](participant-acceptance-handover.md) | Readiness review and interface check only; existing I1–I3/I4a are already delivered. | Formal HKDE delivery must remain in the selected scope or be explicitly requested. A must supply acceptance for the actual 2,048-proposal route; use D's agreed integration base. Otherwise I4 stays deferred. |

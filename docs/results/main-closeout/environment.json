@@ -1,0 +1,20 @@
+{
+  "python_executable": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-inference/.pixi/envs/default/bin/python",
+  "python_version": "3.12.15",
+  "platform": "macOS-26.4.1-arm64-arm-64bit",
+  "package_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-main-closeout/src/sbi4finance/__init__.py",
+  "package_versions": {
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "marimo": "0.25.1",
+    "keras": "3.15.1",
+    "bayesflow": "2.0.14",
+    "jax": "0.11.1",
+    "numba": "0.68.0",
+    "pandas": "3.0.6",
+    "matplotlib": "3.11.2"
+  },
+  "environment_scope": "Reused pinned environment; no clean installation tested",
+  "training_scope": "No new scientific candidate; unittest suite includes small existing synthetic checkpoint round-trip training fixtures",
+  "heldout_scope": "No reserved holdout evaluation; notebook replays only historical root43021 illustrations"
+}

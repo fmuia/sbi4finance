@@ -1,5 +1,12 @@
 # Combined simulator and data integration review
 
+**13 October closeout:** the [main-merge review](main-merge-review.md) adds
+PR #32's completed Heston decision and fresh combined verification, and preserves
+PR #30's original final evidence commit as an ancestor without changing tree
+content. The user has now requested merging our work. Earlier no-merge notes
+below describe this review's original scope. Francesco's separate draft PR #33
+remains outside the merge, with its [compatibility assessment](svj-contribution-compatibility.md).
+
 This is the composition record for [issue #27](https://github.com/fmuia/sbi4finance/issues/27).
 Published for review in [PR #31](https://github.com/fmuia/sbi4finance/pull/31).
 The review branch is `integration/issue-27-combined-review`, created in its own
@@ -225,10 +232,10 @@ shows their actual composed behavior.
 - **#29:** include the provisional decision and notebook11. #24's broader
   calibration question and formal I4 remain deferred; integration resolves
   neither by changing a Boolean.
-- **#25:** no new follow-up PR was published at the input snapshot. Heston
-  scientific investigation is deliberately outside this batch; existing
-  implementation and retained failures are included. The selected options
-  route needs no new Heston study.
+- **#25 / PR #32:** subsequently incorporated at closeout. The completed
+  [decision](heston-validation-decision.md) retains optional diagnostic teaching
+  and defers new scientific experiments. The selected options route needs no
+  accepted Heston posterior; the reserved test remains untouched.
 - **#26 / PR #30:** selected curriculum, fresh setup and isolated execution
   evidence are included. Browser layout/interaction/offline runtime remain
   unverified; full selected-route verification is false. Optional M market

@@ -1,12 +1,20 @@
 # Collaborator handover: finance simulator ladder
 
-**Snapshot: 12 October 2026.** Repository: [fmuia/sbi4finance](https://github.com/fmuia/sbi4finance).
+**Current closeout: 13 October 2026.** Repository: [fmuia/sbi4finance](https://github.com/fmuia/sbi4finance).
 The scoped simulator/bank implementation workstream is complete. The final
 participant tutorial is **not yet scientifically accepted**. This note hands
 over code, evidence and decisions; it does not claim that every model has a
 validated neural posterior. Remaining review and scientific decisions are
-tracked in the [follow-up issues below](#tracked-follow-ups). No PR was merged
-in this workstream; issue creation launches no further experiments.
+tracked in the [follow-up issues below](#tracked-follow-ups). The user has now
+requested the main merge; the [closeout review](main-merge-review.md) records
+its composition and checks. Earlier no-merge notes describe their original
+snapshots, not a restriction on this authorized closeout.
+
+**Latest additions:** [PR #32's Heston decision](heston-validation-decision.md)
+is included: keep the optional diagnostic lesson and defer new experiments.
+[Francesco's draft PR #33](svj-contribution-compatibility.md) is a separate
+returns application outside this merge; it does not replace the selected
+Q/options curriculum or our model/task conventions.
 
 **Curriculum update, 12 October 2026:** the user has selected **Q/options with
 GBM foundations and a provisional corrected-HKDE diagnostic lesson**. Use the
@@ -327,7 +335,7 @@ teaching route, and schedule only the scientific work that decision needs.
 | [#26 — tutorial and participant review](https://github.com/fmuia/sbi4finance/issues/26) | Q/options selected; [fresh setup, five isolated exports, 19 figure appearances and exercise review](tutorial-delivery-verification.md) complete on `ca63424`. | Browser layout, interaction and offline runtime unverified; full selected-route verification remains false. Formal I4 deferred. |
 | [#23 — rough reserved-test evaluation](https://github.com/fmuia/sbi4finance/issues/23) | **Study completed in [PR #28](https://github.com/fmuia/sbi4finance/pull/28):** frozen checkpoint evaluated once; reference, conditional/joint, SBC and target-mean results audited and taught in notebook09. | All 256 cases used and closed. Reference passes; one conditional eta-spread gate fails, so candidate remains provisional. No retry, tuning or reference expansion followed. |
 | [#24 — HKDE scientific acceptance decision](https://github.com/fmuia/sbi4finance/issues/24) | **Decision recorded:** [retain provisional selected-case teaching at 2,048 proposals](hkde-acceptance-decision.md); unchanged tolerances, explicit shared-alarm policy, no new replication. Notebook11 teaches the decision. | Historical test remains failed and closed; broader acceptance is deferred. Formal data-teaching I4 stays deferred; I4a already runs. |
-| [#25 — Heston conditional state/forecast decision](https://github.com/fmuia/sbi4finance/issues/25) | Decide defer, retain as a diagnostic lesson, or investigate one mechanism with a bounded protocol and notebook05 update. | Optional unless the returns route needs it. Both v2 and v3 remain provisional; root-43022 stays reserved. |
+| [#25 — Heston conditional state/forecast decision](https://github.com/fmuia/sbi4finance/issues/25) | **Decision completed in PR #32:** [retain optional diagnostic teaching and defer new experiments](heston-validation-decision.md), with updated notebook05 and saved-evidence audit. | Both v2 and v3 remain provisional; root-43022 stays reserved. The selected options course needs no new Heston study. |
 
 The dedicated [#24 agent handover](hkde-acceptance-handover.md) preserves the
 original briefing and links the completed decision. Reopen scientific work only

@@ -14,6 +14,10 @@ claim about market performance; formal HKDE I4 remains deferred.
 
 The [combined integration review](docs/stack-integration-review.md) records exact
 source heads, conflict choices and verification for issue #27.
+The [13 October main-merge review](docs/main-merge-review.md) adds the completed
+Heston decision and final verification. Francesco's separate draft
+[SVJ contribution](docs/svj-contribution-compatibility.md) is reviewed for
+compatibility and remains outside this merge.
 The [participant route card](docs/tutorial-participant-route.md) specifies the
 sections, exercises, inputs, assets and modes. The schedule below totals **120
 minutes including exercises**; lead assignments carry forward the original
@@ -61,7 +65,7 @@ The next increment adds a [saved synthetic bank and BayesFlow training/reload ex
 
 [Heston and Gaussian-price-jump kernels](docs/heston-svj-kernels.md) add hidden variance, leverage, signed-state continuation and serial Numba stepping. Run `pixi run test-heston`, `pixi run heston-validate`, and `pixi run heston-benchmark` for the synthetic numerical/timing pilots.
 
-The [joint Heston inference pilot](docs/heston-joint-inference.md) adds a synthetic bank, a same-model particle reference, BayesFlow training/reload and conditional futures. Its saved checkpoint **failed conditional test checks** and remains provisional; the working pipeline and full reports are available for the next inference iteration. No market data are needed.
+The [joint Heston inference pilot](docs/heston-joint-inference.md) adds a synthetic bank, a same-model particle reference, BayesFlow training/reload and conditional futures. Its saved checkpoint **failed conditional test checks** and remains provisional. The [completed Heston decision](docs/heston-validation-decision.md) retains its optional diagnostic lesson and defers further experiments for the selected options course. No market data are needed.
 
 [HKDE paths and European Fourier pricing](docs/hkde-reference.md) now supply
 [fixed synthetic option-panel banks](docs/option-banks.md). Run `pixi run option-bank
@@ -165,7 +169,8 @@ illustrations are labeled separately. The joint-inference notebook keeps the
 original provisional checkpoint visible during further development.
 Notebook 10's original 30-minute pacing is a standalone review suggestion.
 For the selected curriculum, follow the schedule and exercises in the route
-card above; the combined lesson is still awaiting #27 verification.
+card above; combined execution is verified in the linked integration records,
+with the remaining browser limits stated separately.
 Opening it reviews cached evidence; `pixi run demo-hkde-corrected` runs
 the bounded 2,048-proposal correction and target-price calculation
 offline while keeping the historical failure visible. The fixed example is a
@@ -185,8 +190,8 @@ explains SBC versus conditional checks, demonstrates prior-to-posterior updating
 and records the frozen-weight sampling/reference precision follow-up.
 The subsequent [signed-state transform experiment](docs/heston-state-transform.md)
 also failed validation. Its result is retained in the review notebook; the
-predeclared stop rule leaves Heston inference provisional and moves the next
-implementation increment to HKDE law and reference pricing.
+predeclared stop rule leaves Heston inference provisional. The completed
+decision defers new Heston experiments while retaining this optional lesson.
 
 See the [review guide and verification record](docs/milestone-review-notebooks.md)
 for export commands, evidence boundaries and the current inference results.

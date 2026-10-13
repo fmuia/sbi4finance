@@ -1,0 +1,74 @@
+{
+  "scope": "Bounded final software and notebook verification of local PR31+PR32 integration; no new scientific acceptance experiment",
+  "source_commit": "3f651df4d6bc23b3b892ff33512ad0442e4fe2e8",
+  "source_tree": "1cb941efe646d70b020da2afcdc9a1aacc03dd05",
+  "source_inputs_unchanged_at_end": true,
+  "environment": {
+    "python_executable": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-inference/.pixi/envs/default/bin/python",
+    "python_version": "3.12.15",
+    "platform": "macOS-26.4.1-arm64-arm-64bit",
+    "package_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-main-closeout/src/sbi4finance/__init__.py",
+    "package_versions": {
+      "numpy": "2.5.3",
+      "scipy": "1.18.1",
+      "marimo": "0.25.1",
+      "keras": "3.15.1",
+      "bayesflow": "2.0.14",
+      "jax": "0.11.1",
+      "numba": "0.68.0",
+      "pandas": "3.0.6",
+      "matplotlib": "3.11.2"
+    },
+    "environment_scope": "Reused pinned environment; no clean installation tested",
+    "training_scope": "No new scientific candidate; unittest suite includes small existing synthetic checkpoint round-trip training fixtures",
+    "heldout_scope": "No reserved holdout evaluation; notebook replays only historical root43021 illustrations"
+  },
+  "tests": {
+    "passed": true,
+    "count": 225,
+    "test_runner_seconds": 37.393,
+    "command_seconds": 39.4518272918649,
+    "log": "tests.log"
+  },
+  "saved_heston_arithmetic_audit": {
+    "passed": true,
+    "seconds": 0.15402950020506978,
+    "scientific_acceptance": false,
+    "report": "heston-arithmetic-audit.json"
+  },
+  "notebook05": {
+    "strict_marimo": "passed",
+    "output_cells": 39,
+    "error_outputs": 0,
+    "displayed_figures": 10,
+    "all_figures_visually_inspected": true,
+    "guard_preflight_seconds": 0.019945957697927952,
+    "strict_check_seconds": 0.5946181672625244,
+    "export_seconds": 13.015111583285034,
+    "full_verifier_seconds": 13.74511216674,
+    "verification": "heston-notebook-ipc/verification.json",
+    "html": "heston-notebook-ipc/isolated/review.html",
+    "browser_interaction_performed": false
+  },
+  "preserved_failure": {
+    "command": "review-command.json",
+    "exit_code": 1,
+    "cause": "OS sandbox rejected localhost socket.bind before notebook execution",
+    "log": "heston-notebook/export.log",
+    "resolution": "Rerun fresh isolated export with local IPC escalation; external Python socket/DNS guard retained"
+  },
+  "boundaries": [
+    "No repository files edited by verifier agent",
+    "No new scientific candidate training; existing unittest fixtures include tiny offline checkpoint round-trip training",
+    "No reserved root43022 test accessed",
+    "Only four historical root43021 notebook illustration cases regenerated",
+    "No cluster submission",
+    "Existing pinned environment reused; fresh installation not tested"
+  ],
+  "command_records": [
+    "tests",
+    "audit",
+    "review",
+    "review-ipc"
+  ]
+}
