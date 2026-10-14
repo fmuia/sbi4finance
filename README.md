@@ -198,6 +198,7 @@ for export commands, evidence boundaries and the current inference results.
 
 | Notebook | Schedule item | What it shows |
 |---|---|---|
+| `notebooks/tutorial_4_bayesflow_basics.py` | Slot 4: basic BayesFlow example | Drift and volatility from 1,000 daily returns: simulator, adapter, flow matching, online training, diagnostics, a check against the exact posterior, predictive VaR / ES, and learned summary statistics |
 | `notebooks/01_mmar_univariate.py` | Optional companion | Univariate multifractal model of asset returns (MMAR): simulator, prior predictive check, adapter and networks, pretrained checkpoint or CPU toy fit, recovery and calibration, posterior on SPMO and VOO |
 | `notebooks/svj_var_pipeline.py` | Optional P companion | Daily SVJ joint inference, particle audit and conditional log-loss forecasts |
 

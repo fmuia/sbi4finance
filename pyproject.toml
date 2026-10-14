@@ -99,6 +99,7 @@ svj-rolling = "python scripts/svj_rolling.py"
 svj-classical = "python scripts/svj_classical.py"
 svj-costs = "python scripts/svj_costs.py"
 svj-daily = "python scripts/svj_daily.py"
+tutorial-4-train = { cmd = "marimo export html notebooks/tutorial_4_bayesflow_basics.py -o /tmp/tutorial_4_bayesflow_basics.html", env = { SBI4FINANCE_TUTORIAL_RETRAIN = "1" } }
 svj-bank = "python scripts/generate_svj_bank.py"
 svj-bank-check = "python scripts/check_svj_bank.py"
 svj-teaching = "python scripts/prepare_svj_teaching.py"
