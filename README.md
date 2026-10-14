@@ -200,6 +200,7 @@ for export commands, evidence boundaries and the current inference results.
 |---|---|---|
 | `notebooks/01_mmar_univariate.py` | Optional companion | Univariate multifractal model of asset returns (MMAR): simulator, prior predictive check, adapter and networks, pretrained checkpoint or CPU toy fit, recovery and calibration, posterior on SPMO and VOO |
 | `notebooks/svj_var_pipeline.py` | Optional P companion | Daily SVJ joint inference, particle audit and conditional log-loss forecasts |
+| `notebooks/tutorial_5_svj_advanced.py` | Slot 5: advanced example | Stochastic volatility with jumps: why the likelihood is intractable, the slot-4 BayesFlow code with the SVJ simulator, the importance-sampling audit, predictive VaR / ES with backtest evidence, and VOO |
 
 Export for people without marimo: `pixi run marimo export ipynb notebooks/01_mmar_univariate.py -o /tmp/01.ipynb --include-outputs`.
 
