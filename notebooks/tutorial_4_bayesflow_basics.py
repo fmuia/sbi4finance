@@ -59,6 +59,128 @@ def _(mo):
     return
 
 
+@app.cell(hide_code=True)
+def _(mo):
+    mo.accordion({
+        "The model in detail: from prices to posterior and risk": mo.md(r"""
+        #### 1 · From prices to returns
+
+        The model is geometric Brownian motion, the price process behind Black–Scholes:
+
+        $$\frac{dS_t}{S_t} = m\,dt + \sigma\,dW_t .$$
+
+        By Itô's lemma the log price is a Brownian motion with drift $m - \sigma^2/2$, so log returns
+        are normal and independent across days. Over one trading day (a year has 252), in percent:
+
+        $$y_t = 100\,\log\frac{S_t}{S_{t-1}} = \frac{\mu}{252} + \frac{100\,\sigma}{\sqrt{252}}\,\varepsilon_t,
+        \qquad \varepsilon_t \overset{\text{iid}}{\sim} \mathcal N(0, 1),$$
+
+        where $\mu = 100\,(m - \sigma^2/2)$ is the drift of the **log** price, in percent a year. It is
+        what returns measure directly, and it differs from $m$ by $\sigma^2/2$: about 3% a year at 25%
+        volatility.
+
+        #### 2 · The two unknowns
+
+        | Symbol | In the code | Meaning | Units |
+        |:---|:---|:---|:---|
+        | $\mu$ | `drift` | expected log return | % a year |
+        | $\log\sigma$ | `log_vol` | log of the annualized volatility | $\sigma = 0.25$ means 25% a year |
+
+        One day's return has mean $\mu/252$ and standard deviation $100\,\sigma/\sqrt{252}$, about 1.6%
+        at $\sigma = 25\%$. The network learns $\log\sigma$ rather than $\sigma$: it is unconstrained, its
+        prior is symmetric, and its posterior is close to normal, which is what a flow learns most easily.
+
+        #### 3 · The prior
+
+        $$\mu \sim \mathcal N(8,\ 10^2), \qquad \log\sigma \sim \mathcal N(\log 0.25,\ 0.40^2),
+        \qquad \text{independent.}$$
+
+        A drift of 8% a year, 95% between −12% and +28%. A volatility with median 25%, 95% between 11%
+        and 55%: wide enough for a quiet index and for a volatile single stock. These are the first two
+        coordinates of slot 5's prior, so both notebooks ask the same question.
+
+        #### 4 · The likelihood, and why two numbers are enough
+
+        Write $m_d = \mu/252$ and $s_d = 100\,\sigma/\sqrt{252}$ for the daily mean and standard deviation.
+        For $T = 1{,}000$ returns with sample mean $\bar y$ and sample standard deviation $\hat s$,
+
+        $$\log p(y \mid \mu, \sigma) = -T\log s_d - \frac{T\,\hat s^{\,2} + T\,(\bar y - m_d)^2}{2\,s_d^2} + \text{const}.$$
+
+        The 1,000 returns enter only through $(\bar y, \hat s)$. These two numbers are **sufficient**: a
+        method that sees them and nothing else loses no information. Part A hands the network exactly
+        these two numbers; Part B asks a network to find them in the raw series.
+
+        #### 5 · The exact posterior
+
+        $$p(\mu, \log\sigma \mid y) \;\propto\; p(y \mid \mu, \sigma)\; p(\mu)\; p(\log\sigma).$$
+
+        With this prior there is no textbook closed form, and in two dimensions none is needed:
+        `gbm_volatility.exact_posterior` evaluates the right-hand side on a 201 × 201 grid centered on the
+        data and normalizes it. Every BayesFlow answer in this notebook is checked against that grid.
+
+        #### 6 · What 1,000 days can and cannot tell you
+
+        With this much data the posterior is close to normal, and its spread follows from the Fisher
+        information:
+
+        * **Volatility is pinned down.** $\operatorname{sd}(\log\sigma \mid y) \approx 1/\sqrt{2T} = 0.022$:
+          volatility is known to about 2% of its value, 25% ± 0.6 points.
+        * **The drift is not.** On their own, the data give $\operatorname{sd}(\mu) \approx
+          100\,\sigma\sqrt{252/T}$, about 12.5% a year at 25% volatility. That is wider than the prior's
+          10%, so the prior keeps about 60% of the weight and the posterior sd is about 7.8% a year. The
+          precision of a drift estimate grows with the calendar span, as $100\,\sigma/\sqrt{\text{years}}$,
+          not with the number of observations: sampling more often does not help (Merton, 1980).
+
+        So expect tight volatility posteriors and drift posteriors close to the prior. That is the model
+        speaking, not a weak network.
+
+        #### 7 · From parameters to risk
+
+        Given the parameters, the $h$-day log return is normal, $R_h \sim \mathcal N(h\,m_d,\ h\,s_d^2)$.
+        Risk is quoted as a loss, $-R_h$, in percent:
+
+        * **99% VaR**, the loss exceeded with probability 1%: $-q_{0.01}(R_h)$.
+        * **97.5% ES**, the average loss in the worst 2.5% of outcomes:
+          $-\mathbb E[R_h \mid R_h \le q_{0.025}(R_h)]$.
+
+        For one normal, $\text{VaR} = -h\,m_d + 2.326\,\sqrt{h}\,s_d$ and
+        $\text{ES} = -h\,m_d + 2.338\,\sqrt{h}\,s_d$. The two nearly coincide, which is why Basel's FRTB
+        could replace 99% VaR with 97.5% ES.
+
+        A **plug-in** forecast inserts one estimate of $(\mu, \sigma)$. The **predictive** forecast
+        averages over the posterior:
+
+        $$p(R_h \mid y) = \int \mathcal N\!\left(R_h;\ h\,m_d,\ h\,s_d^2\right) p(\mu, \sigma \mid y)\;
+        d\mu\, d\sigma .$$
+
+        This is a mixture of normals, with heavier tails than any one of them: uncertainty about the
+        parameters is itself a risk. With 1,000 days of history the difference is small; with a few weeks
+        it is not, as the slider in *From posterior to risk* shows.
+
+        #### 8 · What the model leaves out, on purpose
+
+        Real returns break the model in three ways. Volatility **clusters**: calm and turbulent periods
+        alternate. Large moves arrive as **jumps**, so tails are fatter than normal. And volatility tends
+        to rise when prices fall, the **leverage** effect. The VOO section at the end shows the first
+        failure on real data. Slot 5 replaces this model with stochastic volatility and jumps, and keeps
+        the BayesFlow code.
+
+        #### 9 · What the simulator returns
+
+        | Key | Content | Used by |
+        |:---|:---|:---|
+        | `returns` | the daily returns $y_1, \dots, y_{1000}$ | Part B's summary network |
+        | `log_sq` | $\log(y_t^2 + 0.01)$ | Part B's summary network |
+        | `stats` | $(\bar y,\ \log\hat s)$, the sufficient statistics | Part A's network |
+
+        Why log squares: since $y_t \approx s_d\,\varepsilon_t$, we have
+        $\log y_t^2 \approx 2\log s_d + \log\varepsilon_t^2$, so volatility becomes a shift in level that a
+        network can read off. The 0.01 keeps the logarithm finite on days with almost no move.
+        """),
+    })
+    return
+
+
 @app.cell
 def _(ROOT, data):
     voo = data.window(data.load_returns(ROOT / "data" / "SPMO_VOO_2020-01-01_2026-09-04.csv", "VOO"))
