@@ -131,7 +131,7 @@ passes its reference and six of seven neural gates, but eta's posterior SD is
 failure despite passing SBC and target means. The candidate remains provisional;
 all 256 test cases are now used. No retraining or bank expansion followed.
 
-One environment, managed by [pixi](https://pixi.sh) from `pyproject.toml`:
+The default environment is managed by [pixi](https://pixi.sh) from `pyproject.toml`:
 
 ```bash
 pixi install --locked   # BayesFlow 2.0.14 on the jax backend, marimo, python 3.12
@@ -206,6 +206,20 @@ Export for people without marimo: `pixi run marimo export ipynb notebooks/01_mma
 ### Pairing with an agent
 
 `.claude/skills/marimo-pair/` is the [marimo-pair](https://github.com/marimo-team/marimo-pair) skill (Apache-2.0, vendored at commit 6cecaff). With `pixi run edit` running and the notebook open in the browser, an agent runs code in the live kernel and commits cell changes through marimo rather than editing the `.py` file. See the skill for the rules; the short version is that during a live session the kernel, not the file, is the source of truth.
+
+For a lesson view with visual annotations and an MCP endpoint, use the optional
+[marimo collaboration setup](docs/marimo-collaboration.md):
+
+```bash
+pixi install --locked -e collaboration
+pixi run -e collaboration studio-build
+pixi run -e collaboration studio-svj
+```
+
+Open the printed localhost URL and keep the browser tab open. Studio presents
+the existing SVJ notebook's live outputs; Lens lets you point to a result or
+follow a guided walkthrough, and Pair controls the same computation. The guide
+covers session selection, the `mcp-check` task and other tutorial notebooks.
 
 ## Shared inference workflow and optional SVJ application
 
