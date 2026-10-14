@@ -62,7 +62,7 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(mo):
     mo.accordion({
-        "The model in detail: from prices to posterior and risk": mo.md(r"""
+        "**The model in detail** (click to open): from prices to posterior and risk": mo.md(r"""
         #### 1 · From prices to returns
 
         The model is geometric Brownian motion, the price process behind Black–Scholes:
