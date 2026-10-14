@@ -81,8 +81,7 @@ def _(mo):
     $$y_t = \mu + \sqrt{v_{t-1}}\,\varepsilon^1_t + B_t\,\xi_t,\qquad
     B_t\sim\text{Bernoulli}(\lambda),\quad \xi_t\sim\mathcal N(\mu_J,\sigma_J^2),$$
 
-    $$v_t = v_{t-1} + \kappa(\theta - v_{t-1})
-    + \sigma_v\sqrt{v_{t-1}}\,\big(\rho\,\varepsilon^1_t + \sqrt{1-\rho^2}\,\varepsilon^2_t\big).$$
+    $$v_t = v_{t-1} + \kappa(\theta - v_{t-1}) + \sigma_v\sqrt{v_{t-1}}\,\big(\rho\,\varepsilon^1_t + \sqrt{1-\rho^2}\,\varepsilon^2_t\big).$$
 
     This is the Bates (1996) model in the daily form of Eraker, Johannes and Polson (2003). A risk manager
     reads it like this:
@@ -648,8 +647,8 @@ def _(mo):
     mo.md(r"""
     ## 10 · Real data: VOO
 
-    The same network, unchanged, on the last 1,000 trading days of VOO (an S&P 500 ETF), to 3 September
-    2026. No truth is available now, so the audit and particle MCMC are the only checks.
+    The same network, unchanged, on the last 1,000 trading days of VOO (an S&P 500 ETF), to
+    3 September 2026. No truth is available now, so the audit and particle MCMC are the only checks.
     """)
     return
 
