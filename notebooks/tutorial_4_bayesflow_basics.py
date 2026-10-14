@@ -42,13 +42,13 @@ def _(mo):
     trains a network once, on simulated data, and from then on answers for any name in a single
     forward pass.
 
-    This notebook is about the **software**. We use the simplest volatility model there is, constant
-    volatility, because its exact posterior is known: every step of the BayesFlow workflow can be
-    checked against the truth. In slot 5 the code stays, the model becomes realistic, and the exact
-    answer disappears.
+    This notebook is about the **software**: what BayesFlow does, and the code that does it, shown in
+    full. We use the simplest volatility model there is, constant volatility, because its exact
+    posterior is known: every step of the workflow can be checked against the truth. In slot 5 the code
+    stays, the model becomes realistic, and the exact answer disappears.
 
     | Step | BayesFlow | What it does |
-    |---|---|---|
+    |:---|:---|:---|
     | 1 | `make_simulator` | how the data are generated: no likelihood needed |
     | 2 | `Adapter` | which arrays are data and which are unknowns |
     | 3 | `FlowMatching` (+ a summary network) | turns noise into posterior draws, given the data |
@@ -198,12 +198,146 @@ def _(mo, plots, plt, voo):
         mo.md(r"""
         ## The question
 
-        Here are 1,000 daily returns of a real fund. **What is its volatility, how sure can we be, and
-        what is its 10-day 99% value-at-risk?** We build the answer step by step and return to VOO at
-        the end.
+        **VOO** is Vanguard's S&P 500 ETF, an exchange-traded fund that holds the roughly 500 large US
+        companies of the S&P 500 index, weighted by market value. Its daily returns are, to a good
+        approximation, those of the US stock market. The repository caches its daily returns, computed
+        from adjusted closing prices so that dividends and splits are accounted for, in `data/`. We turn
+        them into log returns in percent, $y_t = 100\,\log(P_t / P_{t-1})$, and keep the last 1,000
+        trading days, about four years:
         """),
         _fig,
+        mo.md(r"""
+        **What is VOO's volatility, how sure can we be, and what is its 10-day 99% value-at-risk**, the
+        loss over the next two weeks that is exceeded with only 1% probability? We build the answer step
+        by step, and return to VOO at the end.
+        """),
     ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo, plots, plt):
+    def _diagram():
+        _fig, _ax = plt.subplots(figsize=(9.6, 4.0))
+        _ax.set_xlim(0, 1)
+        _ax.set_ylim(0, 1.12)
+        _ax.axis("off")
+        _train, _use = plots.SERIES[0], plots.SERIES[1]
+
+        def _box(x, y, text, color):
+            return _ax.text(x, y, text, ha="center", va="center", fontsize=9, color=plots.INK, linespacing=1.5,
+                            bbox=dict(boxstyle="round,pad=0.55", fc=plots.SURFACE, ec=color, lw=1.3))
+
+        def _arrow(a, b, label=None):
+            _ax.annotate("", xy=(0, 0.5), xycoords=b.get_bbox_patch(), xytext=(1, 0.5),
+                         textcoords=a.get_bbox_patch(), arrowprops=dict(arrowstyle="-|>", color=plots.INK_2, lw=1.2))
+            if label:
+                (_xa, _ya), (_xb, _) = a.get_position(), b.get_position()
+                _ax.text((_xa + _xb) / 2, _ya + 0.035, label, ha="center", va="bottom", fontsize=9, color=plots.INK_2)
+
+        _y_train, _y_use = 0.62, 0.2
+        _ax.text(0.0, 1.1, "Train once, on simulated stocks", fontsize=10, fontweight="bold", color=_train, va="top")
+        _ax.text(0.0, 0.43, "Use every day, on real data", fontsize=10, fontweight="bold", color=_use, va="top")
+        _prior = _box(0.09, _y_train, "prior\n$p(\\theta)$", _train)
+        _sim = _box(0.31, _y_train, "simulator\n$p(y \\mid \\theta)$", _train)
+        _summary = _box(0.53, _y_train, "summary\n$s(y)$", _train)
+        _net = _box(0.78, _y_train, "inference network\n$q_\\phi(\\theta \\mid s)$", _train)
+        _arrow(_prior, _sim, "$\\theta$")
+        _arrow(_sim, _summary, "$y$")
+        _arrow(_summary, _net, "$s$")
+        _top, _bracket = _y_train + 0.085, 0.86
+        _ax.plot([0.09, 0.09, 0.78], [_top, _bracket, _bracket], color=_train, lw=1.1, linestyle=(0, (4, 3)))
+        _ax.annotate("", xy=(0.78, _top), xytext=(0.78, _bracket),
+                     arrowprops=dict(arrowstyle="-|>", color=_train, lw=1.1, linestyle=(0, (4, 3))))
+        _ax.text(0.435, _bracket + 0.025, "the true $\\theta$: the target the network learns to reproduce",
+                 ha="center", va="bottom", fontsize=8.5, color=_train)
+        _data = _box(0.31, _y_use, "VOO's 1,000 returns\n$y_{\\mathrm{obs}}$", _use)
+        _summary_obs = _box(0.53, _y_use, "summary\n$s(y_{\\mathrm{obs}})$", _use)
+        _net_obs = _box(0.78, _y_use, "trained network\n$q_\\phi(\\theta \\mid s_{\\mathrm{obs}})$", _use)
+        _arrow(_data, _summary_obs)
+        _arrow(_summary_obs, _net_obs)
+        _ax.annotate("", xy=(0.915, _y_use), xytext=(1, 0.5), textcoords=_net_obs.get_bbox_patch(),
+                     arrowprops=dict(arrowstyle="-|>", color=plots.INK_2, lw=1.2))
+        _ax.text(0.925, _y_use, "posterior draws\n$\\to$ VaR, ES", ha="left", va="center", fontsize=9,
+                 color=plots.INK, linespacing=1.5)
+        _ax.annotate("", xy=(0.78, _y_use + 0.085), xytext=(0.78, _y_train - 0.085),
+                     arrowprops=dict(arrowstyle="-|>", color=plots.MUTED, lw=1.0, linestyle=(0, (2, 2))))
+        _ax.text(0.79, (_y_use + _y_train) / 2, "same network,\ntrained once", ha="left", va="center",
+                 fontsize=8, color=plots.MUTED, linespacing=1.4)
+        return _fig
+
+    _intro = mo.md(r"""
+    ## How BayesFlow answers it
+
+    Bayes' rule, $p(\theta \mid y) \propto p(y \mid \theta)\, p(\theta)$, answers for one data set at a
+    time: a new stock, or a new day, means a new computation, here on a grid, in general with a Markov
+    chain. **Amortized inference** splits the work in two:
+
+    * **Train once.** Draw parameters $\theta$ from the prior, simulate data $y$ from the model, and
+      train a neural network to produce the parameters from the data. It learns a whole conditional
+      distribution $q_\phi(\theta \mid y)$, not a single best guess.
+    * **Use many times.** For any new data set, simulated or real, one pass through the trained network
+      returns thousands of posterior draws.
+    """)
+    _why = mo.md(r"""
+    Why is the result the posterior? Training rewards the network for putting probability on the true
+    $\theta$ of each simulated data set. Across all data sets, the distribution that does this best is
+    the posterior itself, so a network with enough capacity and training converges to
+    $p(\theta \mid y)$ for every $y$ at once. At no point does BayesFlow evaluate the likelihood
+    $p(y \mid \theta)$: it only **simulates** from the model. That is what makes it work for models like
+    slot 5's, whose likelihood nobody can write down.
+
+    | Piece | In BayesFlow | Role |
+    |:---|:---|:---|
+    | Simulator | `bf.make_simulator` | draws pairs $(\theta, y)$ from the prior and the model |
+    | Adapter | `bf.Adapter` | names the unknowns and the data, and shapes the arrays |
+    | Summary network (optional) | e.g. `bf.networks.TimeSeriesNetwork` | compresses each data set into a few learned statistics |
+    | Inference network | `bf.networks.FlowMatching` | the conditional distribution $q_\phi(\theta \mid y)$ |
+    | Workflow | `bf.BasicWorkflow` | ties them together: training, diagnostics, sampling |
+    """)
+    _folds = mo.accordion({
+        "**Why the trained network is the posterior** (the math)": mo.md(r"""
+        BayesFlow trains on pairs drawn from the joint distribution $p(\theta, y) = p(\theta)\, p(y \mid \theta)$.
+        For a network that outputs a density, the natural objective is the negative log probability it
+        assigns to the true parameters:
+
+        $$\mathcal L(\phi) = \mathbb E_{p(\theta, y)}\big[-\log q_\phi(\theta \mid y)\big] = \mathbb E_{p(y)}\Big[\mathrm{KL}\big(p(\theta \mid y)\,\big\|\,q_\phi(\theta \mid y)\big)\Big] + \text{const}.$$
+
+        The constant does not depend on $\phi$, and the Kullback–Leibler divergence is zero only when the
+        two distributions agree, so the best network reproduces the posterior for (almost) every data set
+        the model can produce. This is neural posterior estimation; flow matching, in the next panel,
+        reaches the same target through a different loss.
+
+        Two consequences matter in practice. The network learns from data simulated by the model, so on
+        real data it is only as good as the model (the VOO section at the end). And it is most accurate
+        where simulations are plentiful, so the prior should cover the data you will meet (the prior
+        check in step 1).
+        """),
+        "**How flow matching turns noise into posterior draws**": mo.md(r"""
+        A flow moves a cloud of points. Start from standard normal noise $z_0 \sim \mathcal N(0, I)$, with
+        one coordinate per unknown (here 2), and let it flow for one unit of time,
+        $dz_t / dt = v_\phi(z_t, t, y)$. If the velocity field $v_\phi$ is right, the points arrive at
+        $t = 1$ distributed as the posterior $p(\theta \mid y)$.
+
+        **Training.** Take a simulated pair $(\theta, y)$, fresh noise $z_0$ and a random time $t$, and
+        mix them: $z_t = t\,\theta + (1 - t)\,z_0$. Along this straight line from noise to the truth the
+        velocity is constant, $\theta - z_0$, and the network learns to predict it by least squares:
+
+        $$\mathcal L(\phi) = \mathbb E\,\big\|\,v_\phi(z_t, t, y) - (\theta - z_0)\,\big\|^2.$$
+
+        No single straight line is the answer: many pairs pass through the same point $z_t$, and the best
+        prediction averages their velocities. That average is exactly the velocity field whose flow
+        carries the noise onto the posterior (Lipman et al., 2023; Wildberger et al., 2023, for
+        simulation-based inference). BayesFlow draws the training times as $t = u^{1.5}$ with $u$
+        uniform, which spends more effort near the noise end.
+
+        **Sampling.** Draw $z_0$, integrate the flow from $t = 0$ to $t = 1$ (here with 50 Euler steps),
+        and read off $\theta$: one posterior draw per noise draw, thousands in parallel. During training
+        the unknowns are standardized with their simulation mean and sd, so the network works with
+        numbers of order one, and BayesFlow undoes this on the way out.
+        """),
+    })
+    mo.vstack([_intro, _diagram(), _why, _folds])
     return
 
 
@@ -213,25 +347,29 @@ def _(mo):
     ## Step 1 · Write down how the data are generated
 
     The simplest volatility model: daily log returns, in percent, are independent normals with an
-    annual drift $\mu$ and an annual volatility $\sigma$,
+    annual drift $\mu$ and an annual volatility $\sigma$ (the panel at the top derives it),
 
-    $$y_t = \frac{\mu}{252} + \frac{100\,\sigma}{\sqrt{252}}\;\varepsilon_t,
-    \qquad \varepsilon_t\sim\mathcal N(0,1),\quad t = 1,\dots,1000.$$
+    $$y_t = \frac{\mu}{252} + \frac{100\,\sigma}{\sqrt{252}}\;\varepsilon_t, \qquad \varepsilon_t\sim\mathcal N(0,1),\quad t = 1,\dots,1000.$$
 
     The prior is stated in units a risk manager can judge, the same as slot 5's prior for these two
     quantities: a drift of 8% a year give or take 10%, and a volatility around 25%, with a 95% range of
     roughly 11% to 55%.
 
-    BayesFlow never asks for a likelihood. It needs two plain functions that **draw**: one from the
-    prior, one from the model given the parameters. The simulator may return more than the raw data.
-    Here it also returns the log squared returns, where volatility is easier to see, and two summary
-    numbers we will use first.
+    BayesFlow needs two plain functions that **draw**. `prior()` returns one parameter set, and
+    `observation(drift, log_vol)` returns one simulated data set for those parameters; its argument
+    names match the keys `prior` returns, which is how `bf.make_simulator` chains them.
+    `simulator.sample(n)` then returns a dictionary of arrays with one row per simulated stock: the
+    parameters, and everything `observation` returns. Ours returns the data in three forms:
+
+    * `returns`: the 1,000 daily returns themselves;
+    * `log_sq`: their log squares, $\log(y_t^2 + 0.01)$, in which volatility shows up as a shift in level (used in Part B);
+    * `stats`: two numbers, the mean and the log standard deviation of the returns (used first; step 2 explains why).
     """)
     return
 
 
-@app.cell
-def _(bf, np):
+@app.cell(hide_code=True)
+def _(bf, mo, np):
     def make_simulator(seed):
         rng = np.random.default_rng(seed)
 
@@ -249,11 +387,12 @@ def _(bf, np):
         return bf.make_simulator([prior, observation])
 
     simulator = make_simulator(seed=2026)
+    mo.show_code()
     return make_simulator, simulator
 
 
-@app.cell
-def _(np):
+@app.cell(hide_code=True)
+def _(mo, np):
     def conditions(returns):
         """Prepare any return series (simulated or real, in percent) exactly as the simulator does."""
         returns = np.atleast_2d(np.asarray(returns, dtype=float))
@@ -263,6 +402,10 @@ def _(np):
             "stats": np.stack([returns.mean(axis=1), np.log(returns.std(axis=1))], axis=1),
         }
 
+    mo.show_code(mo.md(
+        "Real data must reach the network in exactly the form the simulator produces. This helper prepares "
+        "any return series, simulated or real, the same way:"
+    ))
     return (conditions,)
 
 
@@ -293,9 +436,14 @@ def _(mo, np, plots, plt, prior_draws, voo):
     _right.set_title("Realized volatility of 2,000 of them", loc="left")
     _right.grid(visible=False)
     mo.vstack([
-        mo.md("**Check the prior before training: does it generate plausible stocks?**"),
+        mo.md(
+            "**Check the prior before training.** A prior predictive check simulates stocks from the prior "
+            "and the model before any training. If they looked absurd, say volatilities of 300%, the network "
+            "would spend its effort on data that never occur, and where the data are weak the prior would "
+            "pull the posterior toward nonsense."
+        ),
         _fig,
-        mo.md("Volatilities from about 10% to 60%, with VOO comfortably inside. The prior is wide, but not absurd."),
+        mo.md("Volatilities from about 10% to 60%, with VOO comfortably inside: wide, but plausible."),
     ])
     return
 
@@ -303,19 +451,40 @@ def _(mo, np, plots, plt, prior_draws, voo):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## Steps 2 and 3 · Tell BayesFlow what is data and what is unknown, and pick a network
+    ## Steps 2 and 3 · What the network sees, and which network
 
-    For this model two numbers carry **all** the information in the 1,000 returns: their mean and their
-    standard deviation. Statisticians call them sufficient statistics. So the shortest path is to hand
-    the network these two numbers directly, as conditions. The **adapter** routes each array to its role,
-    and **flow matching** is the inference network: it learns to move standard normal noise to posterior
-    draws, given the conditions.
+    ### What the network conditions on: summary statistics
+
+    The inference network needs a fixed-size input that carries the information about the unknowns.
+    There are three options: the raw series (1,000 numbers per stock), a few **statistics we compute
+    ourselves**, or statistics that a **summary network learns** from the raw series (Part B).
+
+    For this model the second option is perfect. The likelihood depends on the 1,000 returns only
+    through their mean $\bar y$ and their standard deviation $\hat s$ (section 4 of the panel at the top
+    derives this), so two stocks with the same $\bar y$ and $\hat s$ have exactly the same posterior.
+    Such statistics are called **sufficient**: conditioning on them loses nothing. The first network
+    therefore sees two numbers per stock, $(\bar y, \log\hat s)$, and only has to learn how they map to
+    a posterior. Part B takes this help away.
+
+    ### The adapter and the inference network
+
+    The **adapter** turns the simulator's dictionary into the three roles BayesFlow knows:
+
+    | Role | Meaning | Here |
+    |:---|:---|:---|
+    | `inference_variables` | the unknowns, whose posterior we want | `drift`, `log_vol` |
+    | `inference_conditions` | fixed-size inputs handed straight to the inference network | `stats` |
+    | `summary_variables` | raw data for a summary network to compress | none yet (Part B) |
+
+    The **inference network** is flow matching with a small velocity network, two hidden layers of 64
+    units, and 50 Euler steps at sampling time. `standardize` rescales the unknowns and the conditions
+    to mean 0 and sd 1 with simulation statistics, so the network works with numbers of order one.
     """)
     return
 
 
-@app.cell
-def _(bf, simulator):
+@app.cell(hide_code=True)
+def _(bf, mo, simulator):
     stats_adapter = (
         bf.Adapter()
         .drop(["returns", "log_sq"])                                      # this first network sees two numbers only
@@ -334,7 +503,7 @@ def _(bf, simulator):
             standardize=["inference_variables", "inference_conditions"],
         )
 
-    stats_adapter
+    mo.show_code()
     return (make_stats_workflow,)
 
 
@@ -343,9 +512,12 @@ def _(mo):
     mo.md(r"""
     ## Step 4 · Train once, on fresh simulations
 
-    `fit_online` draws a new batch from the simulator at every step, so the network never sees the same
-    series twice and cannot overfit. 320,000 simulated stocks took about a minute on a 4-core machine.
-    The network below was trained exactly this way before the session; press the button to train it live.
+    `fit_online` simulates new data at every training step. Each step draws a **batch** of 64 stocks
+    from the simulator and nudges the network to reduce the flow-matching loss on them; 50 steps make an
+    **epoch**, and 100 epochs see 320,000 different simulated stocks. Because every batch is new, the
+    network cannot memorize its training data, and a validation set of 512 further simulations tracks the
+    loss on stocks it never trained on. On a 4-core machine this takes about a minute. The network below
+    was trained exactly this way before the session; press the button to train it live.
     """)
     return
 
@@ -357,33 +529,47 @@ def _(mo):
     return (train_stats_button,)
 
 
-@app.cell
-def _(CHECKPOINTS, RETRAIN, gv, json, keras, make_stats_workflow, time, train_stats_button, warnings):
+@app.cell(hide_code=True)
+def _(CHECKPOINTS, gv, json, warnings):
+    def load_trained(workflow, name):
+        """Load a network trained before the session, with its training record."""
+        with warnings.catch_warnings():
+            warnings.filterwarnings("ignore", message="Skipping variable loading for optimizer")
+            workflow.load_approximator(CHECKPOINTS / f"{name}.keras")
+        return json.loads((CHECKPOINTS / f"{name}.json").read_text()) | {"source": "trained before the session"}
+
+    def record_training(workflow, name, history, seconds, series, save):
+        """The training record; with save=True also store the network (pixi run tutorial-4-train)."""
+        record = {"seconds": round(seconds, 1), "series": series,
+                  "loss": history.history["loss"], "val_loss": history.history["val_loss"]}
+        if save:
+            CHECKPOINTS.mkdir(parents=True, exist_ok=True)
+            gv.save_network(workflow.approximator, CHECKPOINTS / f"{name}.keras")
+            (CHECKPOINTS / f"{name}.json").write_text(json.dumps(record, indent=1))
+        return record | {"source": "trained just now"}
+
+    return load_trained, record_training
+
+
+@app.cell(hide_code=True)
+def _(RETRAIN, keras, load_trained, make_stats_workflow, mo, record_training, time, train_stats_button):
     stats_workflow = make_stats_workflow()
-    if RETRAIN or train_stats_button.value:
+    if train_stats_button.value or RETRAIN:          # train live: 100 epochs x 50 batches x 64 fresh stocks
         keras.utils.set_random_seed(2026)
         _start = time.time()
         _history = stats_workflow.fit_online(
             epochs=100, num_batches_per_epoch=50, batch_size=64, validation_data=512, verbose=0
         )
-        stats_record = {"seconds": round(time.time() - _start, 1), "series": 100 * 50 * 64,
-                        "loss": _history.history["loss"], "val_loss": _history.history["val_loss"]}
-        if RETRAIN:
-            CHECKPOINTS.mkdir(parents=True, exist_ok=True)
-            gv.save_network(stats_workflow.approximator, CHECKPOINTS / "statistics.keras")
-            (CHECKPOINTS / "statistics.json").write_text(json.dumps(stats_record, indent=1))
-        stats_source = "trained just now"
-    else:
-        with warnings.catch_warnings():
-            warnings.filterwarnings("ignore", message="Skipping variable loading for optimizer")
-            stats_workflow.load_approximator(CHECKPOINTS / "statistics.keras")
-        stats_record = json.loads((CHECKPOINTS / "statistics.json").read_text())
-        stats_source = "trained before the session"
-    return stats_record, stats_source, stats_workflow
+        stats_record = record_training(stats_workflow, "statistics", _history, time.time() - _start,
+                                       series=100 * 50 * 64, save=RETRAIN)
+    else:                                            # or load the same network, trained this way before the session
+        stats_record = load_trained(stats_workflow, "statistics")
+    mo.show_code()
+    return stats_record, stats_workflow
 
 
 @app.cell(hide_code=True)
-def _(mo, np, plots, plt, stats_record, stats_source):
+def _(mo, np, plots, plt, stats_record):
     _fig, _ax = plt.subplots(figsize=(9.6, 2.6), constrained_layout=True)
     _epochs = np.arange(1, len(stats_record["loss"]) + 1)
     _ax.plot(_epochs, stats_record["loss"], color=plots.SERIES[0], linewidth=1.2, label="training loss")
@@ -391,11 +577,12 @@ def _(mo, np, plots, plt, stats_record, stats_source):
     _ax.set_xlabel("epoch (3,200 fresh simulations each)")
     _ax.set_ylabel("flow-matching loss")
     _ax.set_title(f"Training: {stats_record['series']:,} simulated stocks in {stats_record['seconds']:.0f} s "
-                  f"({stats_source})", loc="left")
+                  f"({stats_record['source']})", loc="left")
     _ax.legend(loc="upper right", fontsize=8)
     mo.vstack([_fig, mo.md(
-        "Training and validation losses agree: every batch is new, so there is nothing to overfit. "
-        "The loss does not tell us whether the posterior is right. The next step does."
+        "The loss falls quickly and levels off, and training and validation agree: with a new batch at every "
+        "step there is nothing to overfit. Its value has no direct meaning (it is a regression error on "
+        "velocities), and a low loss does not prove that the posterior is right. Step 5 checks that."
     )])
     return
 
@@ -405,41 +592,75 @@ def _(mo):
     mo.md(r"""
     ## Step 5 · Check before you trust
 
-    Simulate 300 new stocks whose drift and volatility we know, ask the network for each posterior, and
-    compare. BayesFlow does this in one call:
+    A trained network can be wrong in two ways: **biased**, with the posterior in the wrong place, or
+    **miscalibrated**, with a posterior too narrow or too wide. Both can be tested without any exact
+    posterior: simulate 300 new stocks whose parameters we know, ask the network for 500 posterior draws
+    for each, and compare the draws with the truth. `plot_default_diagnostics` does this in one call
+    and draws four standard plots:
     """)
     return
 
 
-@app.cell
-def _(make_simulator):
-    test_set = make_simulator(seed=7).sample(300)
-    return (test_set,)
-
-
-@app.cell
-def _(stats_workflow, test_set):
+@app.cell(hide_code=True)
+def _(make_simulator, mo, stats_workflow):
+    test_set = make_simulator(seed=7).sample(300)    # 300 new stocks whose parameters we know
     stats_diagnostics = stats_workflow.plot_default_diagnostics(
         test_data=test_set, num_samples=500, variable_names=["drift (%/yr)", "log volatility"]
     )
-    return (stats_diagnostics,)
+    mo.show_code()
+    return stats_diagnostics, test_set
 
 
 @app.cell(hide_code=True)
 def _(mo, stats_diagnostics):
     mo.vstack([
-        mo.md("**Recovery:** posterior medians against the true values, with posterior spread."),
+        mo.md(r"""
+        **1 · Recovery.** One dot per test stock: the true value (horizontal) against the posterior
+        median (vertical), with a bar for the 95% credible interval; $r$ is their correlation. Accurate
+        posteriors put the dots on the diagonal. Volatility sits on it. The drift's medians are pulled
+        toward the prior mean of 8%: with little information in the data the posterior leans on the
+        prior, which is the correct Bayesian answer, not an error.
+        """),
         stats_diagnostics["recovery"],
-        mo.md(
-            "**Calibration:** if the posterior is right, the true value's rank among the posterior draws is "
-            "uniform, and the curve stays inside the grey band."
-        ),
+        mo.md(r"""
+        **2 · Calibration** (simulation-based calibration). For each test stock, take the fraction of
+        posterior draws that lie below the true value: its **rank**, between 0 and 1. If the posterior is
+        right, the truth is statistically just one more draw from it, so the ranks are uniformly
+        distributed. The plot shows the empirical distribution function of the ranks minus that of the
+        uniform distribution. A flat line at zero is perfect, and the grey band is where the whole curve
+        stays 95% of the time under perfect calibration. Reading the shapes: a curve above zero means the
+        posterior sits too high (the truth ranks low), below zero too low; a wave that is positive on the
+        left and negative on the right means the posterior is too narrow (truths fall in its tails), and
+        the opposite wave too wide.
+        """),
         stats_diagnostics["calibration_ecdf"],
-        mo.md(
-            "**Contraction:** how much of the prior's uncertainty the data remove (right is better), against "
-            "how far the truth falls from the posterior mean, in posterior sd (centre is better)."
-        ),
+        mo.md(r"""
+        **3 · Coverage.** For each nominal level, the share of test stocks whose central credible
+        interval of that level contains the truth. Calibrated posteriors follow the diagonal: 90%
+        intervals contain the truth 90% of the time. Below the diagonal the intervals are too narrow,
+        above it too wide; the grey ribbon shows the sampling uncertainty with 300 stocks.
+        """),
+        stats_diagnostics["coverage"],
+        mo.md(r"""
+        **4 · Contraction and z-scores.** One dot per test stock. Horizontally, the **posterior
+        contraction**, $1 - \text{posterior variance} / \text{prior variance}$: 0 means the data taught
+        nothing, 1 that they pin the parameter down. Vertically, the **z-score**,
+        $(\text{posterior mean} - \text{truth}) / \text{posterior sd}$: how many posterior sds the truth
+        sits from the posterior mean; calibrated posteriors keep most dots within ±2. The ideal is a cloud
+        on the right, centered on zero.
+        """),
         stats_diagnostics["z_score_contraction"],
+        mo.accordion({"**Why the ranks are uniform when the posterior is right**": mo.md(r"""
+        Draw $\theta^* \sim p(\theta)$, simulate $y \sim p(y \mid \theta^*)$, and draw
+        $\theta^{(1)}, \dots, \theta^{(M)}$ from the posterior $p(\theta \mid y)$. Given $y$, the true
+        $\theta^*$ is itself distributed as $p(\theta \mid y)$: that is Bayes' rule. So
+        $\theta^*, \theta^{(1)}, \dots, \theta^{(M)}$ are $M + 1$ independent draws from one
+        distribution, and the rank of $\theta^*$ among them is equally likely to take each of its
+        $M + 1$ values. A network posterior that differs from $p(\theta \mid y)$ breaks this symmetry,
+        and the direction of the break says how (Talts et al., 2018). The test looks at one parameter at
+        a time and is necessary rather than sufficient for a correct posterior, which is why we also
+        compare with the exact answer below.
+        """)}),
     ])
     return
 
@@ -447,26 +668,30 @@ def _(mo, stats_diagnostics):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    Two lessons in one picture. **Volatility is recovered almost perfectly**: 1,000 returns pin it down
-    to within a few percent. **The drift is not**: the posterior is only somewhat narrower than the
-    prior. Four years of returns say little about a stock's expected return, a classic result in
-    finance (Merton, 1980). Both are correct answers, and the calibration panels say the network reports
-    its uncertainty honestly.
+    **What the four plots say.** Volatility is recovered almost perfectly: its contraction is close to
+    1, because 1,000 returns pin it down to within a few percent. The drift is not: its contraction is
+    about 0.4, so the data remove only about 40% of the prior's variance. Four years of returns say
+    little about a stock's expected return, a classic result in finance (Merton, 1980), and section 6 of
+    the panel at the top shows why. Both answers are correct, and the calibration and coverage plots say
+    the network reports its uncertainty honestly.
 
     ### The ultimate check: the exact answer
 
-    For this model we can compute the exact posterior on a grid, because the likelihood is known.
-    Take a stock we invent, with a drift of 6% and a volatility of 22%:
+    Calibration holds on average over many stocks; it does not prove that each single posterior is
+    right. For this model we can compute the exact posterior of any one stock on a grid, because the
+    likelihood is known. Take a stock we invent, with a drift of 6% and a volatility of 22%, and ask
+    the trained network for its posterior with `sample`:
     """)
     return
 
 
-@app.cell
-def _(conditions, gv, np, stats_workflow):
-    stock_returns = gv.simulate_returns(6.0, np.log(0.22), 1_000, np.random.default_rng(42))
-    stock_exact = gv.exact_posterior(stock_returns)
-    _draws = stats_workflow.sample(conditions=conditions(stock_returns), num_samples=4_000)
-    stock_stats_draws = np.concatenate([_draws["drift"][0], _draws["log_vol"][0]], axis=-1)
+@app.cell(hide_code=True)
+def _(conditions, gv, mo, np, stats_workflow):
+    stock_returns = gv.simulate_returns(6.0, np.log(0.22), 1_000, np.random.default_rng(42))  # the invented stock
+    stock_exact = gv.exact_posterior(stock_returns)                                            # exact, on a grid
+    _draws = stats_workflow.sample(conditions=conditions(stock_returns), num_samples=4_000)   # amortized
+    stock_stats_draws = np.concatenate([_draws["drift"][0], _draws["log_vol"][0]], axis=-1)    # (4000, 2)
+    mo.show_code()
     return stock_exact, stock_returns, stock_stats_draws
 
 
@@ -500,11 +725,16 @@ def _(mo, np, plots, plt, stock_exact, stock_stats_draws):
         _fig,
         mo.md("\n".join([
             "| | Exact: mean ± sd | Network: mean ± sd | Error in exact sd | Spread ratio |",
-            "|---|---|---|---|---|",
+            "|:---|:---|:---|:---|:---|",
             *_rows,
             "",
-            "The criterion we will meet again in slot 5: mean error below **0.3 posterior sd** and a "
-            "spread within 25% of the exact one. There, the exact answer comes from particle MCMC.",
+            "**Error**: (network mean − exact mean) / exact sd, how far off the network is in units of the "
+            "posterior's own width. **Spread ratio**: network sd / exact sd, which is 1 when the network's "
+            "uncertainty is right.",
+            "",
+            "The criterion we will meet again in slot 5: error below **0.3 posterior sd** and a spread "
+            "within 25% of the exact one, so that the network's mistakes are small next to the uncertainty "
+            "the posterior reports anyway. There, the exact answer comes from particle MCMC.",
         ])),
     ], widths=[1.1, 1])
     return
@@ -516,7 +746,14 @@ def _(mo):
     ## Step 6 · Use it: the amortization payoff
 
     Training is paid once. After that, a posterior costs one pass through the network, for any number
-    of stocks at once:
+    of stocks at once. With one row of returns per stock,
+
+    ```python
+    draws = stats_workflow.sample(conditions=conditions(returns), num_samples=1_000)
+    ```
+
+    and `draws["drift"]` and `draws["log_vol"]` hold 1,000 posterior draws for every stock. Timed on
+    this machine:
     """)
     return
 
@@ -539,7 +776,7 @@ def _(conditions, make_simulator, stats_workflow, time):
 def _(many_names_seconds, mo, one_name_seconds):
     mo.md(f"""
     | Task | Time on this machine |
-    |---|---|
+    |:---|:---|
     | posterior of one stock, 1,000 draws | **{one_name_seconds:.2f} s** |
     | posteriors of 100 stocks at once, 1,000 draws each | **{many_names_seconds:.1f} s**, {many_names_seconds / 100:.2f} s per stock |
 
@@ -555,21 +792,29 @@ def _(mo):
     mo.md(r"""
     ## From posterior to risk
 
-    A forecast should average over what we do not know. Push each posterior draw forward 10 days and
-    pool the outcomes: that is the **predictive** distribution. The shortcut, the **plug-in** forecast,
-    fixes the parameters at a point estimate. Losses are percent log losses: minus the 10-day log return.
+    **Value-at-risk and expected shortfall.** Let $L$ be the loss over the next 10 trading days, in
+    percent: minus the 10-day log return. The **99% VaR** is the loss exceeded with probability 1%. The
+    **97.5% ES**, the expected shortfall, is the average loss in the worst 2.5% of outcomes, so it also
+    measures how bad the bad days are. Banks report both; the ES is the Basel standard for market risk.
+
+    **Two ways to forecast.** The **plug-in** forecast picks one value of the parameters, here the
+    posterior median, and treats it as the truth. The **predictive** forecast averages over what we do
+    not know: it takes the model's 10-day return distribution for every posterior draw and pools them.
+    It is the Bayesian answer, and it is wider whenever the parameters are uncertain. For this model both
+    have closed forms, a normal and a mixture of normals; in slot 5 they are simulated.
     """)
     return
 
 
-@app.cell
-def _(gv, np, stock_exact, stock_stats_draws):
+@app.cell(hide_code=True)
+def _(gv, mo, np, stock_exact, stock_stats_draws):
     _median = np.median(stock_stats_draws, axis=0)
-    stock_risk = {
+    stock_risk = {                                                   # 10-day 99% VaR and 97.5% ES, in %
         "predictive, network": gv.predictive_var_es(stock_stats_draws[:, 0], stock_stats_draws[:, 1], horizon=10),
         "predictive, exact": gv.exact_predictive_var_es(stock_exact, horizon=10),
         "plug-in at the posterior median": gv.predictive_var_es(_median[0], _median[1], horizon=10),
     }
+    mo.show_code()
     return (stock_risk,)
 
 
@@ -578,12 +823,13 @@ def _(mo, stock_risk):
     _rows = "\n".join(f"| {_name} | {_var:.2f}% | {_es:.2f}% |" for _name, (_var, _es) in stock_risk.items())
     mo.md("\n".join([
         "| 10-day forecast for the invented stock | 99% VaR | 97.5% ES |",
-        "|---|---|---|",
+        "|:---|:---|:---|",
         _rows,
         "",
         "Practically identical. With two parameters and 1,000 days, parameter uncertainty is a rounding "
-        "error. **When does it matter?** When data are scarce. Move the slider to shorten the history: "
-        "the exact posterior widens, and the plug-in forecast starts to understate the risk.",
+        "error. **When does it matter?** When data are scarce. The slider shortens the history: for each "
+        "length we simulate 25 histories of the invented stock, compute each one's exact posterior, and "
+        "compare the plug-in ES with the predictive ES.",
     ]))
     return
 
@@ -638,18 +884,30 @@ def _(es_gap_by_window, mo, plots, plt, window_lengths, window_slider):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## When nobody tells you what matters: learned summary statistics
+    ## Part B · When nobody tells you the sufficient statistics
 
-    We cheated a little: we knew that the mean and the standard deviation say it all. For stochastic
-    volatility with jumps no finite set of numbers is sufficient, and nobody can tell us which ones to
-    compute. So let a **summary network** read the raw 1,000 × 2 series, the returns and their log
-    squares, and learn its own statistics. Two things change:
+    Part A had help: we knew that the mean and the standard deviation say everything. In slot 5's model
+    no small set of numbers is sufficient. The information sits in how volatility moves through time and
+    in rare jumps, and nobody can say which statistics to compute. The general solution is to **learn**
+    them. A **summary network** $s = h_\psi(y)$ reads the raw series and outputs a few numbers, and the
+    inference network conditions on those, $q_\phi(\theta \mid h_\psi(y))$. The two are trained together,
+    on the same loss, so the summary network learns whatever features of the series help pin down the
+    parameters.
+
+    Our summary network, `TimeSeriesNetwork`, reads two channels per day, the return and its log square.
+    Convolutions slide windows of 8 and then 5 days along the series to pick up local patterns, a
+    recurrent layer (a GRU) reads the result from start to end, and a final layer outputs **8 learned
+    statistics**. Three things change in the code:
+
+    * the adapter sends the series to `summary_variables` and drops the two hand-made statistics;
+    * the workflow gets a `summary_network`;
+    * only the unknowns are standardized, never the returns: their scale is the volatility.
     """)
     return
 
 
-@app.cell
-def _(bf, simulator):
+@app.cell(hide_code=True)
+def _(bf, mo, simulator):
     series_adapter = (
         bf.Adapter()
         .drop("stats")                                                    # no hints this time
@@ -672,6 +930,7 @@ def _(bf, simulator):
             standardize="inference_variables",  # never rescale the returns: their scale *is* the volatility
         )
 
+    mo.show_code()
     return (make_series_workflow,)
 
 
@@ -688,26 +947,20 @@ def _(mo):
     return (train_series_button,)
 
 
-@app.cell
-def _(CHECKPOINTS, RETRAIN, gv, json, keras, make_series_workflow, time, train_series_button, warnings):
+@app.cell(hide_code=True)
+def _(RETRAIN, keras, load_trained, make_series_workflow, mo, record_training, time, train_series_button):
     series_workflow = make_series_workflow()
-    if RETRAIN or train_series_button.value:
+    if train_series_button.value or RETRAIN:         # train live: 40 epochs x 100 batches x 64 fresh stocks
         keras.utils.set_random_seed(2027)
         _start = time.time()
         _history = series_workflow.fit_online(
             epochs=40, num_batches_per_epoch=100, batch_size=64, validation_data=512, verbose=0
         )
-        series_record = {"seconds": round(time.time() - _start, 1), "series": 40 * 100 * 64,
-                         "loss": _history.history["loss"], "val_loss": _history.history["val_loss"]}
-        if RETRAIN:
-            CHECKPOINTS.mkdir(parents=True, exist_ok=True)
-            gv.save_network(series_workflow.approximator, CHECKPOINTS / "summary_network.keras")
-            (CHECKPOINTS / "summary_network.json").write_text(json.dumps(series_record, indent=1))
-    else:
-        with warnings.catch_warnings():
-            warnings.filterwarnings("ignore", message="Skipping variable loading for optimizer")
-            series_workflow.load_approximator(CHECKPOINTS / "summary_network.keras")
-        series_record = json.loads((CHECKPOINTS / "summary_network.json").read_text())
+        series_record = record_training(series_workflow, "summary_network", _history, time.time() - _start,
+                                        series=40 * 100 * 64, save=RETRAIN)
+    else:                                            # or load the same network, trained this way before the session
+        series_record = load_trained(series_workflow, "summary_network")
+    mo.show_code()
     return series_record, series_workflow
 
 
@@ -745,7 +998,9 @@ def _(comparison, mo, np, plots, plt, series_record):
     _share = {_label: np.mean(np.abs(_r["error"][:, 1]) > 1) for _label, _r in comparison.items()}
     _median = {_label: np.median(np.abs(_r["error"][:, 1])) for _label, _r in comparison.items()}
     mo.vstack([
-        mo.md(f"**Both networks against the exact posterior on 100 new test stocks** (summary network: "
+        mo.md(f"**How good is the learned summary?** For 100 test stocks we compare each network's posterior "
+              f"mean with the exact posterior mean, in units of the exact posterior sd. The histograms count "
+              f"stocks by that error; the dashed line marks the 0.3 criterion (summary network: "
               f"{series_record['series']:,} simulations, {series_record['seconds'] / 60:.0f} minutes):"),
         _fig,
         mo.md(f"""
@@ -753,6 +1008,60 @@ def _(comparison, mo, np, plots, plt, series_record):
         {_median['learned summary']:.2f} posterior sd, against {_median['two statistics']:.2f} with the two
         statistics), but on **{_share['learned summary']:.0%} of them it is off by more than one posterior
         sd**. Without the exact posterior you would not know which stocks those are.
+        """),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(conditions, make_simulator, mo, np, series_workflow):
+    probe_stocks = make_simulator(seed=5).sample(1_000)                                     # 1,000 new stocks
+    learned_stats = series_workflow.approximator.summarize(conditions(probe_stocks["returns"]))  # (1000, 8)
+    _design = np.column_stack([np.ones(len(learned_stats)), learned_stats])
+    readout = {}
+    for _j, _name in enumerate(("mean", "log sd")):       # best linear read-out of each sufficient statistic
+        _target = probe_stocks["stats"][:, _j]
+        _fit = _design @ np.linalg.lstsq(_design, _target, rcond=None)[0]
+        readout[_name] = {"target": _target, "fit": _fit, "r2": 1 - np.var(_target - _fit) / np.var(_target)}
+    mo.show_code()
+    return (readout,)
+
+
+@app.cell(hide_code=True)
+def _(mo, np, plots, plt, readout):
+    _fig, _axes = plt.subplots(1, 2, figsize=(9.6, 3.2), constrained_layout=True)
+    for _ax, (_name, _label) in zip(_axes, (("log sd", "log standard deviation, $\\log\\hat s$"),
+                                            ("mean", "mean return, $\\bar y$ (%)"))):
+        _r = readout[_name]
+        _ax.scatter(_r["target"], _r["fit"], s=5, alpha=0.4, color=plots.SERIES[0], linewidth=0)
+        _lims = np.quantile(_r["target"], [0.001, 0.999])
+        _ax.plot(_lims, _lims, color=plots.INK_2, linewidth=0.9)
+        _ax.set_xlim(_lims)
+        _ax.set_ylim(_lims)
+        _ax.set_xlabel(f"true {_label}")
+        _ax.set_ylabel("linear read-out of the 8 learned statistics")
+        _ax.set_title(f"{_name}: $R^2$ = {_r['r2']:.3f}", loc="left")
+    _resid = np.std(readout["log sd"]["target"] - readout["log sd"]["fit"])
+    _post_sd = 1 / np.sqrt(2 * 1_000)
+    mo.vstack([
+        mo.md(r"""
+        **What did the summary network learn?** We never told it about means or standard deviations.
+        Feed it 1,000 new stocks and try to read the two sufficient statistics off its 8 outputs with a
+        plain linear regression:
+        """),
+        _fig,
+        mo.md(f"""
+        It rediscovered the volatility statistic on its own ($R^2$ = {readout['log sd']['r2']:.3f}) and,
+        roughly, the mean ($R^2$ = {readout['mean']['r2']:.2f}), which matters less here because the drift's
+        posterior leans on the prior anyway.
+
+        Why, then, the errors above? Because "almost" is judged against the posterior, and the posterior is
+        narrow. The part of $\\log\\hat s$ that the linear read-out misses has a standard deviation of
+        {_resid:.3f}, while the posterior sd of $\\log\\sigma$ is about {_post_sd:.3f}: the leftover is
+        {_resid / _post_sd:.1f} posterior sds. The flow decodes the summaries non-linearly and does better
+        than this read-out, but the scale of the problem is the same: **a learned summary must be accurate
+        to a fraction of the posterior's width**, and that width shrinks as the data grow. More simulations
+        and longer training close the gap; slot 5's network saw ten times as many.
 
         That is precisely the situation in slot 5: the model needs a learned summary, and no exact
         posterior exists to check single names against. The answer there is an **audit** that uses the
@@ -762,52 +1071,87 @@ def _(comparison, mo, np, plots, plt, series_record):
     return
 
 
-@app.cell
-def _(conditions, gv, np, stats_workflow, voo):
+@app.cell(hide_code=True)
+def _(conditions, gv, mo, np, stats_workflow, voo):
     _draws = stats_workflow.sample(conditions=conditions(voo.to_numpy()), num_samples=4_000)
     voo_draws = np.concatenate([_draws["drift"][0], _draws["log_vol"][0]], axis=-1)
-    voo_risk = gv.predictive_var_es(voo_draws[:, 0], voo_draws[:, 1], horizon=10)
+    voo_risk = {_h: gv.predictive_var_es(voo_draws[:, 0], voo_draws[:, 1], horizon=_h) for _h in (1, 10)}
+    mo.show_code()
     return voo_draws, voo_risk
 
 
 @app.cell(hide_code=True)
-def _(ROOT, json, mo, np, plots, plt, voo, voo_draws, voo_risk):
+def _(ROOT, gv, json, mo, np, plots, plt, voo, voo_draws, voo_risk):
     _vol = 100 * np.exp(voo_draws[:, 1])
     _lo, _mid, _hi = np.quantile(_vol, [0.05, 0.5, 0.95])
-    _drift_lo, _drift_hi = np.quantile(voo_draws[:, 0], [0.05, 0.95])
+    _drift_lo, _drift_mid, _drift_hi = np.quantile(voo_draws[:, 0], [0.05, 0.5, 0.95])
     _realized = voo.rolling(20).std() * np.sqrt(252)
-    _svj = json.loads((ROOT / "docs" / "results" / "svj-daily" / "VOO_2026-09-03.json").read_text())
-    _svj_spot = 100 * _svj["network_posterior"]["spot vol"]["median"]
-    _fig, _ax = plt.subplots(figsize=(9.6, 3.0), constrained_layout=True)
-    _ax.plot(_realized.index, _realized.to_numpy(), color=plots.INK_2, linewidth=0.9,
-             label="realized volatility, last 20 days")
-    _ax.axhspan(_lo, _hi, color=plots.SERIES[0], alpha=0.25, linewidth=0, label="constant-volatility posterior, 90%")
-    _ax.axhline(_mid, color=plots.SERIES[0], linewidth=1.4)
-    _ax.set_ylabel("annualized volatility (%)")
-    _ax.set_title("VOO: a precise answer to the wrong question", loc="left")
-    _ax.legend(loc="upper left", fontsize=8)
-    _ax.grid(axis="x", visible=False)
+    _now, _peak, _peak_day = _realized.iloc[-1], _realized.max(), _realized.idxmax()
+    _var1, _var10 = voo_risk[1][0], voo_risk[10][0]
+    _normal_var10 = {_k: gv.predictive_var_es(_drift_mid, np.log(_v / 100), horizon=10)[0]
+                     for _k, _v in (("now", _now), ("peak", _peak))}
+    _loss = -voo
+    _breach = _loss > _var1
+    _n_peak = int(_breach[(_breach.index.year == _peak_day.year) & (_breach.index.month == _peak_day.month)].sum())
+    _n_first = int(_breach[_breach.index.year == voo.index[0].year].sum())
+    _exact = json.loads((ROOT / "docs" / "results" / "svj-daily" / "VOO_2026-09-03_pmmh.json").read_text())
+    _spot = {_k: 100 * _exact["posterior"]["spot vol"][_k] for _k in ("median", "q05", "q95")}
+
+    _fig, (_top, _bottom) = plt.subplots(2, 1, figsize=(9.6, 5.2), sharex=True, constrained_layout=True)
+    _top.plot(_realized.index, _realized.to_numpy(), color=plots.INK_2, linewidth=0.9,
+              label="realized volatility, last 20 days")
+    _top.axhspan(_lo, _hi, color=plots.SERIES[0], alpha=0.25, linewidth=0, label="constant-volatility posterior, 90%")
+    _top.axhline(_mid, color=plots.SERIES[0], linewidth=1.4)
+    _top.set_ylabel("annualized volatility (%)")
+    _top.set_title("What the model assumes, against what VOO did", loc="left")
+    _top.legend(loc="upper left", fontsize=8)
+    _bottom.plot(_loss.index, _loss.to_numpy(), color=plots.MUTED, linewidth=0.6, label="daily loss")
+    _bottom.axhline(_var1, color=plots.SERIES[0], linewidth=1.2, label=f"1-day 99% VaR, {_var1:.2f}%")
+    _bottom.scatter(_loss.index[_breach], _loss[_breach], s=26, color=plots.SERIES[1], zorder=3,
+                    edgecolor=plots.SURFACE, linewidth=0.6, label=f"breaches: {int(_breach.sum())}")
+    _bottom.set_ylabel("daily loss (%)")
+    _bottom.set_title("Breaches of the constant-volatility VaR come in clusters", loc="left")
+    _bottom.legend(loc="upper left", fontsize=8, ncols=3)
+    for _ax in (_top, _bottom):
+        _ax.grid(axis="x", visible=False)
     mo.vstack([
         mo.md(f"""
-        ## Back to VOO
+        ## Back to VOO: the answer, and why it is not enough
 
-        The network answers the opening question in a fraction of a second. **Volatility {_mid:.1f}%
-        (90% interval {_lo:.1f}% to {_hi:.1f}%)**, drift between {_drift_lo:.0f}% and {_drift_hi:.0f}% a
-        year, and a **10-day 99% VaR of {voo_risk[0]:.1f}%** (97.5% ES {voo_risk[1]:.1f}%).
+        **The answer.** One pass through the two-statistics network gives VOO's posterior: volatility
+        **{_mid:.1f}%** (90% interval {_lo:.1f}% to {_hi:.1f}%), drift between {_drift_lo:.0f}% and
+        {_drift_hi:.0f}% a year, and a **10-day 99% VaR of {_var10:.1f}%** (97.5% ES
+        {voo_risk[10][1]:.1f}%). The amortized part works.
 
-        Now look at the data the model was asked to explain:
+        **Is the model right for VOO?** The posterior is conditional on the model, and the model says VOO
+        had one volatility for four years. Here is that assumption next to the data:
         """),
         _fig,
         mo.md(f"""
-        The posterior is tight, and the model is wrong. Over these four years VOO's 20-day volatility
-        ranged from {_realized.min():.0f}% to {_realized.max():.0f}% (in {_realized.idxmax():%B %Y}). A
-        constant-volatility model reports the same risk on calm and stormy days,
-        and its narrow interval is certainty about an average that never happens. Slot 5's model, with
-        moving volatility and jumps, puts VOO's volatility **today** at about **{_svj_spot:.0f}%**, not
-        {_mid:.0f}%.
+        **What goes wrong.** VOO's 20-day volatility ranged from {_realized.min():.0f}% to {_peak:.0f}%
+        (in {_peak_day:%B %Y}), and it is about {_now:.0f}% today. A constant volatility cannot follow
+        that, so the risk numbers are wrong in both directions:
 
-        - **Slot 5:** the same code, with a model where volatility moves and prices jump.
-        - **Slot 6:** how to notice when the model, not the network, is wrong.
+        * **Today**, at about {_now:.0f}% volatility, a normal 10-day VaR is about
+          {_normal_var10['now']:.1f}%; the model's {_var10:.1f}% is {_var10 / _normal_var10['now']:.1f}
+          times that.
+        * **In {_peak_day:%B %Y}**, at {_peak:.0f}%, it would have been about
+          {_normal_var10['peak']:.0f}%; the model understated it by a factor of
+          {_normal_var10['peak'] / _var10:.1f}.
+        * The 1-day 99% VaR was breached on {int(_breach.sum())} days where about
+          {0.01 * len(voo):.0f} were expected, and the breaches cluster: {_n_peak} in
+          {_peak_day:%B %Y} alone, and {_n_first} in the autumn-{voo.index[0].year} sell-off. Under a
+          correct model they would fall at random times.
+
+        **The lesson.** A posterior is only as good as the model behind it. Its narrow interval is
+        uncertainty about a four-year average volatility **given** the model, and it cannot tell you that
+        the model is wrong. Two remedies follow:
+
+        * **Slot 5** keeps the code and changes the model: volatility moves, prices jump, and today's
+          volatility is one of the unknowns. For VOO on {voo.index[-1].day} {voo.index[-1]:%B %Y} it puts today's
+          volatility at about **{_spot['median']:.0f}%** (90%: {_spot['q05']:.0f}% to
+          {_spot['q95']:.0f}%), not {_mid:.0f}%.
+        * **Slot 6** shows how to notice when the model, not the network, is wrong.
         """),
     ])
     return
@@ -912,13 +1256,15 @@ def _(mo):
     ## What you can now do, and what changes in slot 5
 
     You have built the full amortized workflow: simulator, adapter, networks, online training,
-    diagnostics, exact check, and a forecast that carries parameter uncertainty into VaR and ES.
+    diagnostics, an exact check, and a forecast that carries parameter uncertainty into VaR and ES. You
+    have also met its two limits: a learned summary must be accurate to a fraction of the posterior's
+    width, and no network can repair a wrong model.
 
     | | This notebook | Slot 5 |
-    |---|---|---|
+    |:---|:---|:---|
     | Model | constant volatility | volatility that moves, plus jumps |
     | Unknowns | drift, volatility | 8 parameters and **today's volatility** |
-    | Summary | two statistics, or a small time-series network | a larger time-series network (32 statistics) |
+    | What the network sees | two sufficient statistics, or 8 learned ones | 32 learned statistics |
     | Training | 1 to 5 minutes | 79 minutes, once |
     | Is it right? | compare with the exact posterior | no exact posterior: the particle filter, particle MCMC and an audit |
     | Parameter uncertainty in VaR / ES | negligible with 1,000 days | matters in the tail, because of the jumps |
