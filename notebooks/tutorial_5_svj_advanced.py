@@ -73,6 +73,183 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
+    mo.accordion({
+        "**The model in detail** (click to open): from prices to posterior and risk": mo.md(r"""
+        #### 1 · From prices to returns
+
+        In continuous time this is the Bates (1996) model: Heston's mean-reverting stochastic variance
+        plus Merton's normal jumps in the price. We work with its one-day Euler form (Eraker, Johannes and
+        Polson, 2003) and treat that form as the model itself: the simulator, the particle filter, the
+        network and the forecast all use exactly these equations. With $y_t$ the daily log return in
+        percent and $v_t$ the variance in %² per day,
+
+        $$y_t = \mu + \sqrt{v_{t-1}}\,\varepsilon^1_t + B_t\,\xi_t, \qquad B_t \sim \text{Bernoulli}(\lambda), \quad \xi_t \sim \mathcal N(\mu_J, \sigma_J^2),$$
+
+        $$v_t = \max\big(v_{t-1} + \kappa(\theta - v_{t-1}) + \sigma_v\sqrt{v_{t-1}}\,(\rho\,\varepsilon^1_t + \sqrt{1-\rho^2}\,\varepsilon^2_t),\ v_{\min}\big),$$
+
+        with $\varepsilon^1_t$ and $\varepsilon^2_t$ independent standard normals. Read it in four parts:
+
+        * **Return = drift + diffusion + jump.** Yesterday's variance sets the scale of today's move; on a
+          fraction $\lambda$ of days a normal jump $\xi_t$ is added.
+        * **The variance mean-reverts** to its long-run level $\theta$ at rate $\kappa$ a day, so a shock
+          to it halves in $\ln 2/\kappa$ days.
+        * **The variance is itself random**, with volatility of variance $\sigma_v$, and its shock shares
+          $\varepsilon^1_t$ with the return: with $\rho < 0$, falling prices push volatility up
+          (**leverage**).
+        * **The floor** $v_{\min} = 10^{-3}$, a volatility of 0.5% a year, keeps the variance positive when
+          a daily step would overshoot below zero.
+
+        The window starts from $v_0 \sim \text{Gamma}(1/c^2,\ \theta c^2)$ with $c = \sigma_v/\sqrt{2\kappa\theta}$:
+        the stationary law of the continuous-time variance, with mean $\theta$ and coefficient of
+        variation $c$.
+
+        #### 2 · The nine unknowns
+
+        Eight parameters, each drawn and inferred in units a risk manager can judge and mapped to an
+        unbounded scale for the network (logs and atanh), plus one hidden state:
+
+        | Quantity | Definition | In the code |
+        |:---|:---|:---|
+        | Drift | $252\,\mu$, % a year | `drift` |
+        | Long-run volatility | $\sqrt{252\,\theta}/100$ | `log_vol_lr` |
+        | Half-life of variance shocks | $\ln 2/\kappa$, trading days | `log_half_life` |
+        | CV of variance | $c = \sigma_v/\sqrt{2\kappa\theta}$ | `log_cv` |
+        | Leverage | $\rho$ | `atanh_rho` |
+        | Jump frequency | $252\,\lambda$, jumps a year | `log_jumps_per_year` |
+        | Mean jump | $\mu_J$, % | `mean_jump` |
+        | Jump size sd | $\sigma_J$, % | `log_jump_sd` |
+        | **Today's volatility** | $\sigma_T = \sqrt{252\,v_T}/100$ | `log_spot_vol` |
+
+        Two choices deserve a word. The **CV of variance** replaces $\sigma_v$ because it reads directly:
+        $c = 0.6$ means the variance's typical deviation from its long-run level is 60% of that level,
+        and $c < 1$ is exactly the Feller condition $2\kappa\theta > \sigma_v^2$, under which the
+        continuous-time variance never touches zero. **Today's volatility** is not a parameter but the
+        end of the hidden path; it is a target because every forecast starts from it (section 2).
+
+        #### 3 · The prior
+
+        | Quantity | Prior | 95% range | What it encodes |
+        |:---|:---|:---|:---|
+        | Drift | $\mathcal N(8,\ 10^2)$ | −12% to 28% a year | as in slot 4 |
+        | Long-run volatility | log-normal, median 25%, log-sd 0.40 | 11% to 55% | as in slot 4 |
+        | Half-life | log-normal, median 30 days, log-sd 0.70 | 8 to 118 days | shocks fade over weeks to months |
+        | CV of variance | log-normal, median 0.6, log-sd 0.35 | 0.30 to 1.19 | volatility is volatile; above 1, Feller fails |
+        | Leverage | $(\rho + 1)/2 \sim \text{Beta}(2, 4)$ | −0.89 to 0.43 | mostly negative, mean −1/3 |
+        | Jump frequency | log-normal, median 2.5 a year, log-sd 0.75 | 0.6 to 11 a year | a few jumps a year |
+        | Mean jump | $\mathcal N(-1,\ 2.5^2)$, % | −5.9% to 3.9% | on average down: crashes outnumber spikes |
+        | Jump size sd | log-normal, median 3%, log-sd 0.45 | 1.2% to 7.3% | jumps of a few percent |
+
+        The eight priors are independent, and the daily jump probability is capped at 0.5, a cap reached
+        only far in the prior's tail. Today's volatility has no prior of its own: it is whatever the model
+        produces after 1,000 days.
+
+        #### 4 · Why the likelihood has no closed form
+
+        The variance path is hidden, so the likelihood integrates it out:
+
+        $$p(y_{1:T} \mid \vartheta) = \int p(v_0 \mid \vartheta) \prod_{t=1}^{T} p(y_t \mid v_{t-1}, \vartheta)\, p(v_t \mid v_{t-1}, y_t, \vartheta)\; dv_{0:T},$$
+
+        a 1,000-dimensional integral with no closed form, where $\vartheta$ collects the eight parameters.
+        Each day's factor is simple. Given yesterday's variance, today's return is a two-component mixture,
+
+        $$p(y_t \mid v, \vartheta) = (1 - \lambda)\, \mathcal N(y_t;\ \mu,\ v) + \lambda\, \mathcal N(y_t;\ \mu + \mu_J,\ v + \sigma_J^2),$$
+
+        and given the return and whether a jump occurred, today's variance is normal before the floor. On a
+        day without a jump, $\sqrt{v_{t-1}}\,\varepsilon^1_t = y_t - \mu$ is known, so
+
+        $$v_t \mid v_{t-1}, y_t \;\sim\; \mathcal N\big(v_{t-1} + \kappa(\theta - v_{t-1}) + \sigma_v \rho\, (y_t - \mu),\ \ \sigma_v^2 (1 - \rho^2)\, v_{t-1}\big):$$
+
+        with $\rho < 0$, a down day raises tomorrow's variance. Two consequences:
+
+        * **No sufficient statistics.** Every return matters, and so does their order. Slot 4 compressed
+          1,000 returns into two numbers without loss; here a summary network learns 32.
+        * **The particle filter estimates the integral** (section 3). Particles of $v$ are weighted by
+          $p(y_t \mid v)$, resampled, and moved with the exact law above. The product of the daily average
+          weights is an **unbiased** estimate of the likelihood: noisy, but never biased.
+
+        #### 5 · The exact posterior, and what it costs
+
+        $$p(\vartheta, v_T \mid y_{1:T}) = p(v_T \mid y_{1:T}, \vartheta)\; p(\vartheta \mid y_{1:T}), \qquad p(\vartheta \mid y_{1:T}) \propto p(y_{1:T} \mid \vartheta)\, p(\vartheta).$$
+
+        **Particle MCMC** runs a Metropolis–Hastings chain on $\vartheta$ with a fresh particle-filter
+        estimate in place of the likelihood at every proposal. Because that estimate is unbiased, the
+        chain still targets the exact posterior (Andrieu, Doucet and Holenstein, 2010), and keeping one
+        final particle of each accepted run adds $v_T$. It is exact but slow: about **35 CPU-minutes per
+        name** (median of five windows, between 12 and 52 minutes), even with chains started at the
+        network's draws. For 2,000 names that is about 1,150 CPU-hours a day.
+
+        Between the network and particle MCMC sits the **audit** (section 7): importance sampling with the
+        same unbiased likelihood, from a Student t fitted to the network's draws. Its efficiency, the
+        effective sample size over the number of proposals, is the trust score; below 2% the name goes to
+        particle MCMC. It costs about 75 CPU-seconds.
+
+        #### 6 · What 1,000 days can and cannot tell you
+
+        Contraction measures how much the data shrink the prior, $1 - \text{posterior variance} / \text{prior variance}$,
+        averaged over held-out simulated series (section 6):
+
+        | Quantity | Contraction |
+        |:---|:---|
+        | long-run volatility | 0.94 |
+        | CV of variance | 0.82 |
+        | leverage | 0.82 |
+        | today's volatility | 0.76 |
+        | mean jump | 0.58 |
+        | half-life | 0.57 |
+        | drift | 0.40 |
+        | jump size sd | 0.39 |
+        | jump frequency | 0.35 |
+
+        The volatility process is learned well. The drift learns exactly as little as in slot 4: 0.40 in
+        both. The jumps are learned least: four years at a few jumps a year give a handful of jump days,
+        too few to pin down how often jumps come, how large they are and how much they vary. That is where
+        the parameter uncertainty lives, and the tail of the forecast depends on exactly those parameters.
+
+        #### 7 · From parameters to risk
+
+        As in slot 4, risk is quoted as a loss in percent: the 99% VaR and the 97.5% ES of the $h$-day log
+        return. Now no formula gives them. The predictive distribution
+
+        $$p(R_{T,h} \mid y_{1:T}) = \int p(R_{T,h} \mid v_T, \vartheta)\; p(v_T, \vartheta \mid y_{1:T})\; dv_T\, d\vartheta$$
+
+        is simulated: from every posterior draw $(\vartheta, v_T)$ the daily model runs $h$ days forward with
+        fresh shocks and jumps, and the pooled paths are draws from the predictive law. The **plug-in**
+        forecast fixes $\vartheta$ at the posterior median and keeps only the uncertainty about $v_T$,
+        filtered at that point. Each posterior draw also gives a **conditional VaR**, the number an analyst
+        would quote if $(\vartheta, v_T)$ were known; their spread shows how uncertain the risk number
+        itself is.
+
+        On 500 simulated series (section 8), the predictive forecast scores like a forecast made with the
+        true parameters, while the plug-in breaches its VaR more often and understates the ES.
+
+        #### 8 · What the model still leaves out
+
+        Even this model simplifies. Its parameters are constant over the four-year window, the variance has
+        a single factor, jump sizes are normal and arrive independently, volatility itself never jumps,
+        and only daily closes are used. When real data break these assumptions, the network still returns
+        a posterior, but for a model that does not describe the data. The misspecification test in
+        section 10 asks whether VOO's learned summaries look like simulated ones, and slot 6 takes up
+        priors and misspecification.
+
+        #### 9 · What the network sees and returns
+
+        | Piece | Content |
+        |:---|:---|
+        | Input | two channels per day for 1,000 days, as in slot 4: $y_t$ and $\log(y_t^2 + 0.01)$ |
+        | Summary network | convolutions 8, 5 and 5 days wide (strides 4, 2, 2), read by forward and backward GRUs, plus a skip branch: 32 learned statistics |
+        | Inference network | flow matching, integrated in 50 Euler steps |
+        | Output | joint draws of the nine targets, in the code's coordinates |
+        | Training | once, online, on 2.56 million simulated series (79 minutes) |
+
+        A new name costs one pass of the summary network and 50 Euler steps: about 3 CPU-seconds for its
+        posterior, against about 35 CPU-minutes for particle MCMC.
+        """),
+    })
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
     mo.md(r"""
     ## 1 · The model: volatility moves, prices jump
 
