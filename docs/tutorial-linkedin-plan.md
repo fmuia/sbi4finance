@@ -50,21 +50,40 @@ in the notebook PR (`docs/tutorial-intro-design.md`) has the reasoning and the e
 4. **After the conference, post the answers.** Every question post gets a second wave of
    activity.
 
-## 3. Rules for every question post
+## 3. How the posts should read
 
-- **Hook in the first lines**, which are all that shows before "…see more": the question,
-  concrete and a little surprising.
-- **Setup in 3–6 short lines**, with one number or figure from our own results.
-- **No solution.** End on two or three open questions and an invitation to answer in the
-  comments.
-- **Call to action**: "Part *n* of our ICAIF '26 tutorial, Milan, [day]". Put the link in the
-  first comment, not the body, because posts with links in the body reach fewer people.
-- **Series marker** on the first line: "Question *n*/6 · ICAIF '26 tutorial". Use the same three
-  to five hashtags each time: #ICAIF2026, then two to four of #BayesianInference, #QuantFinance,
-  #RiskManagement, #BayesFlow, #SimulationBasedInference.
-- **One visual**, preferably portrait 1080×1350, with large type, our plot style and alt text.
-- **Length** of 700–1,500 characters (the limit is 3,000). No jargon in the hook; one technical
-  term at most per paragraph.
+The first drafts followed the usual LinkedIn template: a hook line, a series marker, short
+dramatic fragments, a rhetorical question answered in the next line, options behind arrows and a
+call to action. That template is what makes a post read as machine-written, so the drafts below
+drop it.
+
+- **Write as the person posting**, in the first person, the way you would explain it to a
+  colleague. Each author should put the draft in their own words; the drafts fix the facts and
+  the question, not the voice.
+- **One question per post, asked plainly near the end.** Leave the answer for the session.
+- **Avoid the patterns of machine-written text** catalogued in Wikipedia's ["Signs of AI
+  writing"](https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing): one-line dramatic
+  fragments, "not X but Y" contrasts, a question answered by the next line, lists of three for
+  their own sake, arrows and decorative symbols, em dashes, and a stock call to action.
+- **Mention the tutorial once**, in passing ("part 3 of our ICAIF tutorial"). Put the link in the
+  first comment, because posts with links in the body reach fewer people.
+- **Two or three hashtags**, at the end: #ICAIF2026 and one or two of #BayesianInference,
+  #QuantFinance, #RiskManagement, #BayesFlow, #SimulationBasedInference.
+- **One visual** where it helps, portrait 1080×1350, with large type, our plot style and alt text.
+- **Length** of 600–1,200 characters (the limit is 3,000).
+
+Two open-source tools help with the check, and neither replaces reading the post aloud:
+
+- [humanizer](https://github.com/blader/humanizer) (MIT) is an agent skill for Claude Code and
+  similar tools, built on the Wikipedia guide. It marks 26 patterns and rewrites the text without
+  changing its claims. Give it two or three paragraphs of your own writing and it matches your
+  voice.
+- [dslop](https://pypi.org/project/dslop/) (Apache-2.0) is a command-line linter
+  (`pip install dslop`, then `dslop post.txt`). It flags dashes, "not X, it's Y" and runs of
+  short sentences. Its negation rule flags every "not", so treat that one as a hint.
+
+Word-list linters such as [defluff](https://pypi.org/project/defluff/) found nothing in the first
+drafts: their vocabulary was clean, and the giveaway was the structure.
 
 ## 4. Calendar
 
@@ -89,31 +108,18 @@ post should come from the person presenting that slot.
 The numbers come from committed results or the open PRs; each draft names its sources. Re-check
 every number against the final notebooks before posting.
 
-### P0 — Announcement (Wed 21 Oct)
+### P0: Announcement (Wed 21 Oct)
 
 ```text
-We're giving a tutorial at ACM ICAIF '26 in Milan: amortized Bayesian inference for volatility models.
+Stefan Radev, Jerry Huang, Alexander Fengler and I are giving a tutorial at ACM ICAIF '26 in Milan, "Amortized Bayesian Calibration of Volatility Models", on [day] at Bocconi.
 
-Every morning a risk desk needs three numbers for each of thousands of names: a volatility estimate, how sure it is, and a VaR / ES that accounts for both.
+If you run a risk process, you need a volatility model fitted to every name you hold, every morning, and you should also know how uncertain each fit is, since that uncertainty belongs in the VaR. Bayesian methods have handled the uncertainty part for stochastic volatility since the 90s. They are slow, though. In our runs an exact posterior for a stochastic-volatility model with jumps took about 35 CPU-minutes per name, which for 2,000 names comes to roughly 1,150 CPU-hours a day.
 
-Bayesian methods have answered "how sure" for stochastic-volatility models since the 1990s. What they lacked was speed. In our runs, one exact posterior for a stochastic-volatility model with jumps costs about 35 CPU-minutes. Multiply by 2,000 names. Every day.
+The tutorial is about amortized inference: you train a network once on simulated markets, and it then gives a full posterior for each new name in a few seconds. We'll build this in Python with the open-source BayesFlow library, check it against exact answers where we can compute them, and carry the uncertainty through to VaR and expected shortfall. Everything runs on a laptop CPU.
 
-Amortized inference changes the trade-off. A neural network is trained once, on simulated markets, and then returns the full posterior for a new name in seconds. We'll show how to build one, how to check it name by name, and how to carry its uncertainty into the risk numbers.
+Over the next three weeks we'll post one question from each of the six parts of the tutorial, without the answers. If you have a view, leave it in the comments and we'll pick some up in the session.
 
-Hands-on, in Python, with the open-source BayesFlow library, one layer at a time:
-1. Why a point estimate is not enough for tail risk
-2. How amortized inference works
-3. [slot 3 title]
-4. Your first amortized posterior, checked against the exact answer
-5. Stochastic volatility with jumps: amortized and audited
-6. When the model, not the network, is wrong
-
-With Stefan Radev, Jerry Huang and Alexander Fengler.
-ICAIF '26 · Bocconi University, Milan · [day, time, room]
-
-Over the next three weeks we'll post one question from each part, without the answer. Bring yours to Milan.
-
-#ICAIF2026 #BayesianInference #QuantFinance #RiskManagement #BayesFlow
+#ICAIF2026 #BayesianInference #QuantFinance
 ```
 
 First comment: the ICAIF '26 page and, once public, the repository. Sources: 35 CPU-minutes is
@@ -121,36 +127,35 @@ the median particle-MCMC cost and "seconds" about 3 CPU-seconds per name
 (`docs/results/svj-costs/costs.json`). "Since the 1990s" refers to Jacquier, Polson and Rossi
 (1994).
 
-### P1 — Question 1/6, slot 1 (Tue 27 Oct)
+### P1: Question 1/6, slot 1 (Tue 27 Oct)
+
+Provisional: this draft follows the current intro example (#41). If the intro switches to
+another example, P1 changes with it.
 
 ```text
-Question 1/6 · ICAIF '26 tutorial
+First of six questions from our ICAIF tutorial, this one from the intro.
 
-How likely is a −7% day in the next year?
+How likely is a day with a loss of 7% or more on the S&P 500 in the next twelve months?
 
-The last four years of an S&P 500 ETF contain none. Count them, and the answer is zero. Fit a normal distribution, and it is once in about 9 billion years. March 2020 had three in six trading days.
+The last four years of VOO, an S&P 500 ETF, don't contain one, so counting gives zero. A normal distribution fitted to the same four years says about once in 9 billion years, which is hard to take seriously after March 2020, when there were three such days within six trading days.
 
-So allow for jumps, and ask the data again. Two readings are both consistent with the same four years: many small jumps, which put the chance of a −7% day next year at about 0.5%, or fewer, larger ones, which put it at about 28%.
+A model with jumps does better, but the data struggle to tell two versions of it apart: frequent small jumps, which put the chance at about 0.5%, and fewer large ones, which put it at about 28%. Both pass a likelihood-ratio test on those four years. A standard maximum-likelihood fit lands in between, at 3%.
 
-The usual fit picks a single reading and reports its number: 3%. Is that safe? Across 300 simulated histories where we knew the answer, the usual fit understated the chance by a factor of 10 or more in nearly one in five. Its bootstrap interval, built to contain the truth 90% of the time, missed it in about one in four.
+We tried this on 300 simulated histories where we knew the true answer. The maximum-likelihood number was too low by a factor of 10 or more in 18% of them, and a bootstrap 90% interval missed the truth about a quarter of the time.
 
-So what goes in the risk report?
-→ the best fit?
-→ the worst case?
-→ something else?
+What would you put in the risk report, and why? We'll go through our answer in Milan, but I'm curious how people here would handle it.
 
-Tell us in the comments. Part 1 of our tutorial in Milan answers it.
-
-#ICAIF2026 #QuantFinance #RiskManagement #BayesianInference
+#ICAIF2026 #RiskManagement #QuantFinance
 ```
 
 Sources:
 
-- VOO: the repository's data. The hook figures are on daily log returns, as in the notebooks.
+- VOO: the repository's data. The figures in the second paragraph are on daily log returns, as in
+  the notebooks.
 - The two readings: the lowest and highest crash probability inside the 95% likelihood region
   of the jump model on VOO's last 1,000 days, about 19 jumps a year of ±1.8% against about 10 of
-  ±3.6% (slot-1 notebook, "Back to VOO"). "Consistent with" means that a likelihood-ratio test
-  at the 5% level rejects neither.
+  ±3.6% (slot-1 notebook, "Back to VOO"). "Both pass a likelihood-ratio test" means a test at
+  the 5% level rejects neither.
 - The usual fit: the maximum-likelihood plug-in on the same window, 3.2%.
 - The error rates: the slot-1 study, `docs/results/intro-crash-risk/`, 300 histories with
   truths drawn from the prior, a 7% loss. The maximum-likelihood plug-in was below a tenth of
@@ -161,117 +166,73 @@ Kept for the session: the Bayesian answer and its calibration; what fixes the pl
 over what the data allow, and a prior) and why the bootstrap does not; and why no method can be
 both informative and valid at every truth here.
 
-### P2 — Question 2/6, slot 2 (Thu 29 Oct)
+### P2: Question 2/6, slot 2 (Thu 29 Oct)
 
 ```text
-Question 2/6 · ICAIF '26 tutorial
+Part 2 of our ICAIF tutorial is about how amortized inference works, and the training loop fits in a sentence: draw parameters from a prior, simulate a data set with them, show the data set to a network, and train the network to put high probability on the parameters that generated it. Then repeat a few million times.
 
-Can a neural network learn Bayes' rule?
+At no point do you write down a likelihood or run a sampler. Even so, if training goes well, the network returns the Bayesian posterior for a new data set in a single forward pass.
 
-Here is the whole training recipe:
-1. Draw parameters from a prior.
-2. Simulate a data set from the model.
-3. Show the data set to a network, and reward it for putting high probability on the parameters that produced it.
-4. Repeat a few million times.
+I'd like to hear how people would explain why that works, as opposed to the network just learning a good point estimate. And for anyone who has used this kind of model in production: what would you want to check before trusting it on real data?
 
-Nobody writes down a likelihood. Nobody runs a sampler.
-
-Yet the claim is that, for a data set it has never seen, the trained network returns the Bayesian posterior, in one forward pass.
-
-Two questions:
-1. Why would this recipe give the posterior, and not just a good point estimate?
-2. What would have to be true before you trusted it on real data?
-
-Your answers in the comments. Part 2 of our ICAIF '26 tutorial takes both apart.
-
-#ICAIF2026 #SimulationBasedInference #BayesianInference #MachineLearning
+#ICAIF2026 #SimulationBasedInference #BayesianInference
 ```
 
 Kept for the session: the expected-KL argument, the amortization gap, the role of the prior
-and simulation budget, and misspecification. If slot 2 leads with summary networks, use this
-hook instead: "You must compress 1,000 daily returns into 8 numbers for a volatility model.
-Which 8? And if the model has jumps and moving volatility?"
+and simulation budget, and misspecification. If slot 2 leads with summary networks, ask instead
+which eight numbers people would compress 1,000 daily returns into for a volatility model, and
+whether the answer changes once the model has jumps and moving volatility.
 
-### P3 — Question 3/6, slot 3 (Tue 3 Nov)
+### P3: Question 3/6, slot 3 (Tue 3 Nov)
 
 This draft assumes slot 3 is validation; adjust it if not.
 
 ```text
-Question 3/6 · ICAIF '26 tutorial
+For most models a risk desk uses, nobody can compute the exact posterior, so there is nothing to compare a fast approximation against. There is still a check that any correct Bayesian procedure has to pass, and all it needs is a simulator: generate a thousand stocks with known parameters, compute each one's posterior, and look at where the true values fall.
 
-How do you check a posterior you can't compute?
+That check is the subject of part 3 of our ICAIF tutorial. If the posteriors were too narrow, or biased, what would you expect to see?
 
-For the models a risk desk actually runs, there is no exact posterior to compare against. Yet there is a test every correct Bayesian procedure must pass, and it needs nothing but the ability to simulate.
+There is a harder question we'll spend time on in Milan. A posterior can pass this test and still be wrong for the particular stock you care about. How can that happen?
 
-Hint: simulate 1,000 stocks with known parameters, and ask for each one's posterior.
-
-What would you look at?
-What pattern would tell you the posterior is too narrow? Biased?
-
-And the harder one: why can a posterior pass that test and still be wrong for the one stock you care about?
-
-Tell us below. Part 3 of our tutorial in Milan works through it.
-
-#ICAIF2026 #BayesianInference #ModelRisk #BayesFlow
+#ICAIF2026 #BayesianInference #ModelRisk
 ```
 
 Kept for the session: rank uniformity (SBC), how to read the band, and calibration "on
 average" against "for this name" (slot 5's audit). If slot 3 is instead "why and where it
-matters for finance", use this hook: "Training once costs about 5 CPU-hours (79 minutes on 4
-cores). An exact posterior costs about 35 CPU-minutes per name, the trained network about 3
-CPU-seconds. After how many names does training pay for itself, and what would make you
-distrust the cheap answer?" The answer is about ten names (`costs.json`; results summary).
+matters for finance", ask after how many names training pays for itself, and what would make
+people distrust the cheap answer. Training once costs about 5 CPU-hours (79 minutes on 4 cores),
+an exact posterior about 35 CPU-minutes per name and the trained network about 3 CPU-seconds,
+so the answer is about ten names (`costs.json`; results summary).
 
-### P4 — Question 4/6, slot 4 (Thu 5 Nov)
+### P4: Question 4/6, slot 4 (Thu 5 Nov)
 
 ```text
-Question 4/6 · ICAIF '26 tutorial
+A result from part 4 of our ICAIF tutorial.
 
-R² = 0.99. And still off on 30% of stocks.
+We trained a small network on 256,000 simulated stocks to estimate volatility from 1,000 daily returns, without telling it anything about standard deviations. A linear regression on the eight features it learned recovers the sample log standard deviation with an R² of 0.99. But when we compare its volatility estimates with the exact posterior, they are off by more than one posterior standard deviation for about 30% of the test stocks.
 
-We trained a small network on 256,000 simulated stocks to read volatility from 1,000 daily returns. Nobody told it what a standard deviation is.
+Both numbers are correct. I'd be interested in how people reconcile them, and in the follow-up: for a model where you don't have an exact posterior, how would you notice a problem like this at all?
 
-A plain linear read-out of its 8 learned features recovers the sample (log) standard deviation with R² = 0.99.
-
-And yet, against the exact posterior, its volatility estimate is off by more than one posterior standard deviation on about 30% of test stocks.
-
-Both numbers are right. How?
-
-And the question that matters for everything after: for a model with no exact posterior, how would you even notice?
-
-Part 4 of our ICAIF '26 tutorial is hands-on: you build this workflow in BayesFlow and check every step against the exact answer.
-
-#ICAIF2026 #BayesFlow #QuantFinance #MachineLearning
+#ICAIF2026 #BayesFlow #MachineLearning
 ```
 
 Sources: PR #37's executed-notebook results and `checkpoints/tutorial_gbm/` on that branch
 (256,000 series, 279 s). Kept for the session: the posterior's width (sd of log σ ≈ 0.022 at
-1,000 days), so a learned summary must be accurate to a fraction of it. An optional companion
-poll for the same week: "Four years of daily returns on a stock with 25% volatility. How
-precisely do they pin down its expected annual return (±1 sd)?" with options ±1% / ±3% / ±6% /
-±12%. The answer is about 12.5% from the data alone (Merton 1980; #37 panel §6).
+1,000 days), so a learned summary must be accurate to a fraction of it. An optional poll for
+the same week: how precisely do four years of daily returns pin down the expected annual return
+of a stock with 25% volatility (±1 sd)? Options ±1%, ±3%, ±6% and ±12%; the answer is about
+12.5% from the data alone (Merton 1980; #37 panel §6).
 
-### P5 — Question 5/6, slot 5 (Tue 10 Nov)
+### P5: Question 5/6, slot 5 (Tue 10 Nov)
 
 ```text
-Question 5/6 · ICAIF '26 tutorial
+Part 5 of our ICAIF tutorial uses a stochastic-volatility model with jumps, fitted to 1,000 daily returns. The volatility on any given day is never observed, jump days aren't labelled, and there are nine parameters to estimate. On a recent window of an S&P 500 ETF, uncertainty about today's volatility accounts for about 90% of the uncertainty in the next day's risk number.
 
-The number that drives tomorrow's risk is one you never observe.
+You can get the exact Bayesian answer with particle MCMC, but in our runs it took about 35 CPU-minutes per name, so roughly 1,150 CPU-hours a day for 2,000 names. Approximate maximum likelihood is faster (about 11 CPU-minutes per name) and gives a point estimate with Hessian-based intervals. On 40 simulated series, those 95% intervals contained the true jump frequency 26 times and the true mean jump 17 times.
 
-In a stochastic-volatility model with jumps, today's volatility is hidden, jump days carry no label, and nine unknowns must be inferred jointly from 1,000 daily returns. On a real S&P 500 ETF window, today's volatility alone accounts for about 90% of the uncertainty in the 1-day risk number.
+If you ran that desk, which would you use, or would you do something else? And whichever you pick, how would you know, name by name, when not to trust it?
 
-The exact Bayesian answer exists. In our runs, particle MCMC delivers it in about 35 CPU-minutes per name. A desk following 2,000 names would need about 1,150 CPU-hours every morning.
-
-The fast classical route, approximate maximum likelihood with a Hessian, takes about 11 CPU-minutes per name and returns one point. On 40 simulated series, its 95% intervals contained the true jump frequency 26 times and the true mean jump 17 times.
-
-You run the desk. What do you do?
-A) pay for exactness
-B) take the shortcut
-C) something else, and then: how do you know when to trust it, name by name?
-
-Part 5 of our tutorial builds our answer, live.
-
-#ICAIF2026 #QuantFinance #RiskManagement #BayesianInference
+#ICAIF2026 #QuantFinance #RiskManagement
 ```
 
 Sources: `docs/results/svj-costs/costs.json` (median 2,074 CPU-s; 1,152 CPU-hours; approximate
@@ -279,38 +240,28 @@ ML 647 CPU-s), `docs/results/svj-classical/classical.json` (26/40 and 17/40), an
 (the 90% share). Kept for the session: amortization, the importance-sampling audit with its 2%
 flag, and the predictive ES against the plug-in.
 
-### P6 — Question 6/6, slot 6 (Thu 12 Nov)
+### P6: Question 6/6, slot 6 (Thu 12 Nov)
 
 ```text
-Question 6/6 · ICAIF '26 tutorial
+In April 2025 the realized volatility of an S&P 500 ETF reached 49%, while our model's posterior for spot volatility peaked at around 32%. The network had passed its checks on simulated data, and the misspecification test we ran on those windows didn't flag anything.
 
-April 2025. Realized volatility on an S&P 500 ETF hit 49%. Our model's posterior for spot volatility peaked near 32%.
+So was it the network, the model or the prior? That's the subject of the last part of our ICAIF tutorial. The practical side is harder: if you run this every morning on 2,000 names with one prior meant for a typical stock, how do you find the names the model doesn't fit before the risk report goes out? I'd like to know what people would check first.
 
-The network had passed its checks on simulated data. The misspecification test on those windows flagged nothing.
-
-So who was wrong: the network, the model, or the prior?
-
-And the practical version: you'll run this every morning on 2,000 names, each with its own quirks, using one prior chosen for "a typical stock". How do you find the names the model doesn't describe, before the risk report goes out?
-
-That is the last part of our ICAIF '26 tutorial in Milan. What would you check first?
-
-#ICAIF2026 #ModelRisk #BayesianInference #QuantFinance
+#ICAIF2026 #ModelRisk #BayesianInference
 ```
 
 Sources: `docs/svj-results-summary.md` (real data) and PR #38 section 10. Slot 6 is not built
 yet; the post commits us to address both the model and the prior.
 
-### P7 — Logistics (optional, Fri 13 Nov)
+### P7: Logistics (optional, Fri 13 Nov)
 
 ```text
-This weekend at ICAIF '26: "[title]" · [day, time, room], Bocconi University.
+Our ICAIF tutorial, "Amortized Bayesian Calibration of Volatility Models", is on [day] at [time] in [room] at Bocconi. If you want to follow along, bring a laptop: setup is one command, and after that everything runs offline on a CPU. The instructions are in the first comment.
 
-To follow along, bring a laptop. Setup takes one command and then everything runs offline on CPU: [instructions or link in comments].
-
-Thanks for every answer to our six questions. We'll discuss some of them live, and we'll credit you.
+Thanks to everyone who answered the six questions over the last few weeks. We'll go through some of the answers in the session and, with your permission, credit the people who wrote them.
 ```
 
-### P8 — The answers (optional, after the conference)
+### P8: The answers (optional, after the conference)
 
 A carousel with one slide per question: the question, our answer in two sentences, and the
 notebook it lives in. Under each original post, reply with the short answer and, once the
