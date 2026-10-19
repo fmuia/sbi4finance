@@ -26,19 +26,20 @@ are reconstructed from the proposal.
 
 | Slot | Working title | Status |
 |---|---|---|
-| 1 | Intro: what a point estimate hides (how likely is a crash day?) | notebook in its own PR, with its design and evidence |
+| 1 | Intro: one beta, then five hundred (Bayes' rule across stocks) | draft [#41](https://github.com/fmuia/sbi4finance/pull/41), with its design and evidence |
 | 2 | Amortized inference: normalizing flows and flow matching, summary networks, trade-offs | *assumed* |
 | 3 | Validation in a Bayesian workflow, or "why and where it matters for finance" | *assumed* |
 | 4 | Basic worked-out example in BayesFlow: constant volatility, exact posterior | draft [#37](https://github.com/fmuia/sbi4finance/pull/37) |
 | 5 | Advanced: stochastic volatility with jumps, amortized and audited | draft [#38](https://github.com/fmuia/sbi4finance/pull/38) |
-| 6 | Priors and misspecification: when the model, not the network, is wrong | promised by #37/#38; not built |
+| 6 | Priors and misspecification: when the model, not the network, is wrong | promised by #37/#38; a seed in [#42](https://github.com/fmuia/sbi4finance/pull/42) (the crash-day example) |
 
-**Slot 1 changed after review.** Its question is now a decision, not a parameter: *how likely
-is a day with a loss of 7% or more in the next year?* Four years of returns cannot tell "a few
-large jumps" from "many small ones", and the two readings disagree about that probability by
-orders of magnitude. The notebook compares the Bayesian answer with every frequentist option we
-could think of, on a second tail model too. P1 below follows that framing. The design document
-in the notebook PR (`docs/tutorial-intro-design.md`) has the reasoning and the evidence.
+**Slot 1 changed after review.** The first intro asked how often jumps happen; the second asked
+how likely a 7% loss day is next year. Both depended on a model the data barely identify, and the
+second moved to slot 6 as a seed (#42). The intro now starts from the simplest Bayesian example
+in finance, a stock's beta, and adds a result no frequentist disputes: estimating every stock's
+beta on its own is beaten by shrinking the estimates together, which is why data vendors adjust
+betas toward 1. P1 follows it. The design document in #41 (`docs/tutorial-intro-design.md`) has
+the reasoning and the evidence.
 
 ## 2. Goals
 
@@ -94,7 +95,7 @@ post should come from the person presenting that slot.
 | Date | Post | Proposed author | Visual |
 |---|---|---|---|
 | Wed 21 Oct | P0 Announcement | Francesco; the others reshare with a personal line | title card, or #37's "train once, use every day" diagram |
-| Tue 27 Oct | P1 Question 1/6: how likely is a −7% day next year? | Francesco | the slot-1 notebook's likelihood ridge with the crash-probability lines (left panel only) |
+| Tue 27 Oct | P1 Question 1/6: why do vendors adjust every beta? | Francesco | the slot-1 scatter of estimated against true betas, with the 50 highest marked (left panel) |
 | Thu 29 Oct | P2 Question 2/6: can a network learn Bayes' rule? | Stefan | the "train once" half of the diagram |
 | Tue 3 Nov | P3 Question 3/6: how do you check a posterior you can't compute? | Jerry or Alexander | `docs/results/svj-validation/sbc.png`, uncaptioned |
 | Thu 5 Nov | P4 Question 4/6: R² = 0.99, and still off on 30% of stocks | Alexander | slot 4's read-out scatter and error histogram (to export) |
@@ -129,42 +130,35 @@ the median particle-MCMC cost and "seconds" about 3 CPU-seconds per name
 
 ### P1: Question 1/6, slot 1 (Tue 27 Oct)
 
-Provisional: this draft follows the current intro example (#41). If the intro switches to
-another example, P1 changes with it.
-
 ```text
 First of six questions from our ICAIF tutorial, this one from the intro.
 
-How likely is a day with a loss of 7% or more on the S&P 500 in the next twelve months?
+If you look up a stock's beta on Bloomberg, you get the regression estimate and an "adjusted beta", which is 0.67 times the estimate plus 0.33. Every beta is moved a third of the way toward 1, deliberately.
 
-The last four years of VOO, an S&P 500 ETF, don't contain one, so counting gives zero. A normal distribution fitted to the same four years says about once in 9 billion years, which is hard to take seriously after March 2020, when there were three such days within six trading days.
+Why would a data vendor bias every number it shows you, and is a third the right amount?
 
-A model with jumps does better, but the data struggle to tell two versions of it apart: frequent small jumps, which put the chance at about 0.5%, and fewer large ones, which put it at about 28%. Both pass a likelihood-ratio test on those four years. A standard maximum-likelihood fit lands in between, at 3%.
+Some context for the second part. We simulated 500 stocks with known betas and two years of weekly returns, Bloomberg's default window. The 50 highest regression estimates were 0.16 too high on average, so hedging those stocks with them left the book net short the market by about 16% of its size. On 20 real defensive stocks from 1999 to 2026, whose betas average about 0.5, the adjustment didn't help at all.
 
-We tried this on 300 simulated histories where we knew the true answer. The maximum-likelihood number was too low by a factor of 10 or more in 18% of them, and a bootstrap 90% interval missed the truth about a quarter of the time.
+We'll go through our answer in Milan. In the meantime I'd like to know what people here use for betas, and why.
 
-What would you put in the risk report, and why? We'll go through our answer in Milan, but I'm curious how people here would handle it.
-
-#ICAIF2026 #RiskManagement #QuantFinance
+#ICAIF2026 #QuantFinance #RiskManagement
 ```
 
 Sources:
 
-- VOO: the repository's data. The figures in the second paragraph are on daily log returns, as in
-  the notebooks.
-- The two readings: the lowest and highest crash probability inside the 95% likelihood region
-  of the jump model on VOO's last 1,000 days, about 19 jumps a year of ±1.8% against about 10 of
-  ±3.6% (slot-1 notebook, "Back to VOO"). "Both pass a likelihood-ratio test" means a test at
-  the 5% level rejects neither.
-- The usual fit: the maximum-likelihood plug-in on the same window, 3.2%.
-- The error rates: the slot-1 study, `docs/results/intro-crash-risk/`, 300 histories with
-  truths drawn from the prior, a 7% loss. The maximum-likelihood plug-in was below a tenth of
-  the true probability in 18% of them, and the bootstrap's 90% percentile interval covered the
-  truth in 74%.
+- Bloomberg's adjusted beta and its default window (two years of weekly returns against the
+  S&P 500): university library guides to the terminal; the weights go back to Blume (1971).
+- The simulation: the slot-1 study (#41, `docs/results/intro-betas/summary.json`), 200 universes
+  of 500 stocks with true betas around 1 ± 0.3 and two years of weekly returns. The 50 highest
+  least-squares betas were too high by 0.16; the hedged book was net short the market by 8.1 of
+  its 50 positions on average, in every universe.
+- The real stocks: Blume's test on weekly returns of 20 large US stocks from defensive sectors
+  (average beta 0.53), 1999–2026. The adjustment changed the squared error of next period's
+  beta by +1% (one-year windows) and +0% (two-year windows) against least squares.
 
-Kept for the session: the Bayesian answer and its calibration; what fixes the plug-in (averaging
-over what the data allow, and a prior) and why the bootstrap does not; and why no method can be
-both informative and valid at every truth here.
+Kept for the session: why the highest estimates are too high (the winner's curse), Stein's
+theorem, how Bayes' rule sets the amount of shrinkage stock by stock, and why a fixed third is
+right for one data frequency at most.
 
 ### P2: Question 2/6, slot 2 (Thu 29 Oct)
 
@@ -273,8 +267,8 @@ repository is public, the link.
   objection, a reference or a sub-question. "Great post" is not enough. Early real comments carry
   a post further than anything else.
 - Reshare with one personal sentence, not a bare repost.
-- Reply to every comment within a day, without giving away the answer. "Close; what happens if
-  the jump days were labelled?" works.
+- Reply to every comment within a day, without giving away the answer. "Close; does a third
+  still work with daily data?" works.
 - Keep a running list of the answers and objections worth discussing, with links. Before the
   session, pick two or three per slot and credit their authors.
 - After the tutorial, reply under each question post with the short answer and, once public, the
@@ -287,7 +281,7 @@ repository is public, the link.
 | Post | Asset | Work needed |
 |---|---|---|
 | P0 | title card | names, title, venue, date; no ICAIF logo without permission |
-| P1 | slot-1 likelihood ridge with crash-probability lines | export the left panel from the notebook; enlarge the type |
+| P1 | slot-1 scatter of estimated against true betas | export the left panel from the notebook; enlarge the type |
 | P2 | "train once / use every day" diagram | export from the #37 notebook |
 | P3 | SBC ECDF figure | already in `docs/results/svj-validation/sbc.png` |
 | P4 | read-out scatter and error histogram | export from the #37 notebook |
