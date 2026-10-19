@@ -1,324 +1,1045 @@
 {
  "population": {
+  "label": "normal betas, noise unrelated to beta",
   "beta_mean": 1.0,
   "beta_sd": 0.3,
-  "idio_dispersion": 0.35
+  "idio_vol": 0.25,
+  "idio_dispersion": 0.35,
+  "skew": 0.0,
+  "vol_on_beta": 0.0,
+  "vol_on_distance": 0.0,
+  "fringe": 0.0,
+  "fringe_distance": 0.0,
+  "fringe_vol": 0.0
  },
  "settings": {
   "daily": {
    "label": "daily returns, 1 year",
    "n_obs": 250,
-   "market_sd": 0.010079052613579392,
-   "idio_sd": 0.0157485197087178
+   "per_year": 252,
+   "market_vol": 0.16
   },
   "weekly": {
    "label": "weekly returns, 2 years",
    "n_obs": 104,
-   "market_sd": 0.022188007849009168,
-   "idio_sd": 0.03466876226407682
+   "per_year": 52,
+   "market_vol": 0.16
   },
   "monthly": {
    "label": "monthly returns, 5 years",
    "n_obs": 60,
-   "market_sd": 0.046188021535170064,
-   "idio_sd": 0.07216878364870323
+   "per_year": 12,
+   "market_vol": 0.16
   }
  },
  "simulated": {
   "daily": {
    "setting": "daily returns, 1 year",
+   "population": "normal betas, noise unrelated to beta",
    "n_universes": 200,
    "n_stocks": 500,
    "top": 50,
-   "median_se": 0.10557384156705922,
-   "median_weight_on_estimate": 0.9014217095933676,
+   "median_se": 0.0987646425607666,
+   "best_fixed_weight": 0.8760842024792277,
+   "mean_weight_on_estimate": 0.8824374185186374,
    "estimated_prior_sd": 0.29920085815426395,
+   "prior_sd_at_floor": 0,
    "rmse": {
-    "least_squares": 0.11256612301920552,
+    "least_squares": 0.11256612301920554,
     "bloomberg": 0.12434500128368074,
     "bayes": 0.10231274297719159,
-    "oracle": 0.10225233376721665
+    "bayes_by_volatility": 0.10260333820674582,
+    "oracle": 0.10225233376721667
    },
    "mse_vs_least_squares": {
     "least_squares": 1.0,
-    "bloomberg": 1.2202287278915078,
-    "bayes": 0.8261217176894465,
-    "oracle": 0.825146460338778
+    "bloomberg": 1.2202287278915074,
+    "bayes": 0.8261217176894462,
+    "bayes_by_volatility": 0.8308211901129539,
+    "oracle": 0.8251464603387778
    },
    "universes_beating_least_squares": {
     "least_squares": 0,
     "bloomberg": 6,
     "bayes": 200,
+    "bayes_by_volatility": 200,
     "oracle": 200
    },
    "top_bias": {
-    "least_squares": 0.06979897345856728,
+    "least_squares": 0.0697989734585673,
     "bloomberg": -0.11536088583417003,
-    "bayes": -0.0011625041755486082,
-    "oracle": -0.0007692380168713578
+    "bayes": -0.0011625041755486123,
+    "bayes_by_volatility": -0.0006648778253142372,
+    "oracle": -0.0007692380168713625
    },
    "hedge_exposure": {
     "least_squares": {
-     "mean": -3.4899486729283637,
-     "sd": 0.9725545443987773
+     "mean": -3.489948672928365,
+     "sd": 0.9725545443987775,
+     "universes_short": 200
     },
     "bloomberg": {
-     "mean": 5.768044291708502,
-     "sd": 0.9353075850335346
+     "mean": 5.768044291708501,
+     "sd": 0.9353075850335345,
+     "universes_short": 0
     },
     "bayes": {
-     "mean": 0.05812520877743041,
-     "sd": 0.7967565428462867
+     "mean": 0.05812520877743062,
+     "sd": 0.7967565428462867,
+     "universes_short": 94
+    },
+    "bayes_by_volatility": {
+     "mean": 0.03324389126571186,
+     "sd": 0.8295989565068874,
+     "universes_short": 92
     },
     "oracle": {
-     "mean": 0.03846190084356789,
-     "sd": 0.758747790254165
+     "mean": 0.038461900843568125,
+     "sd": 0.7587477902541653,
+     "universes_short": 96
     }
    },
+   "random_hedge_exposure": {
+    "least_squares": {
+     "mean": 0.03773307543753053,
+     "sd": 0.7310465609947511
+    },
+    "bloomberg": {
+     "mean": 0.06522027698670059,
+     "sd": 0.8742771824365921
+    },
+    "bayes": {
+     "mean": 0.05778674548080565,
+     "sd": 0.693185378881875
+    },
+    "bayes_by_volatility": {
+     "mean": 0.054880664023429324,
+     "sd": 0.6914796358319574
+    },
+    "oracle": {
+     "mean": 0.057389988882835176,
+     "sd": 0.68747914470757
+    }
+   },
+   "book_idio_risk": 2.0774403095519665,
    "coverage": {
-    "least_squares": 0.9010900000000001,
-    "bayes": 0.89973
+    "least_squares": {
+     "all": 0.90109,
+     "top": 0.8552,
+     "extreme": 0.8968771062682543
+    },
+    "bayes": {
+     "all": 0.89973,
+     "top": 0.8961,
+     "extreme": 0.8374148131506028
+    }
    },
    "median_width": {
-    "least_squares": 0.32847380187441244,
-    "bayes": 0.3103834676126291
+    "least_squares": 0.3261250004533186,
+    "bayes": 0.30835851181563473
    }
   },
   "weekly": {
    "setting": "weekly returns, 2 years",
+   "population": "normal betas, noise unrelated to beta",
    "n_universes": 200,
    "n_stocks": 500,
    "top": 50,
-   "median_se": 0.1612568674007676,
-   "median_weight_on_estimate": 0.7928228809498665,
+   "median_se": 0.15386791579443532,
+   "best_fixed_weight": 0.7429208287942263,
+   "mean_weight_on_estimate": 0.7656652817700056,
    "estimated_prior_sd": 0.2994676523754235,
+   "prior_sd_at_floor": 0,
    "rmse": {
     "least_squares": 0.1769342191177561,
     "bloomberg": 0.15420235385196637,
     "bayes": 0.1453992013394704,
+    "bayes_by_volatility": 0.14631655676331162,
     "oracle": 0.14521764102718768
    },
    "mse_vs_least_squares": {
     "least_squares": 1.0,
     "bloomberg": 0.7595534468618282,
     "bayes": 0.6753056365355099,
+    "bayes_by_volatility": 0.6838538204108877,
     "oracle": 0.6736201781527312
    },
    "universes_beating_least_squares": {
     "least_squares": 0,
     "bloomberg": 200,
     "bayes": 200,
+    "bayes_by_volatility": 200,
     "oracle": 200
    },
    "top_bias": {
     "least_squares": 0.161846898274947,
     "bloomberg": -0.03993501563575565,
-    "bayes": -0.0005021449817077449,
+    "bayes": -0.0005021449817077448,
+    "bayes_by_volatility": 8.713059706473985e-05,
     "oracle": 0.0005734862303488321
    },
    "hedge_exposure": {
     "least_squares": {
      "mean": -8.092344913747349,
-     "sd": 1.7490252308934133
+     "sd": 1.7490252308934133,
+     "universes_short": 200
     },
     "bloomberg": {
      "mean": 1.9967507817877823,
-     "sd": 1.5566890267442568
+     "sd": 1.556689026744257,
+     "universes_short": 23
     },
     "bayes": {
-     "mean": 0.025107249085387223,
-     "sd": 1.232721521298156
+     "mean": 0.02510724908538723,
+     "sd": 1.232721521298156,
+     "universes_short": 101
+    },
+    "bayes_by_volatility": {
+     "mean": -0.004356529853236983,
+     "sd": 1.3241081964748727,
+     "universes_short": 98
     },
     "oracle": {
-     "mean": -0.028674311517441608,
-     "sd": 1.1165426964728684
+     "mean": -0.028674311517441594,
+     "sd": 1.1165426964728684,
+     "universes_short": 106
     }
    },
+   "random_hedge_exposure": {
+    "least_squares": {
+     "mean": 0.08344634370172996,
+     "sd": 1.1815052699051125
+    },
+    "bloomberg": {
+     "mean": 4.968500381028918e-05,
+     "sd": 1.1139372915573431
+    },
+    "bayes": {
+     "mean": 0.07820162062252445,
+     "sd": 1.0570912317158339
+    },
+    "bayes_by_volatility": {
+     "mean": 0.08320279995447968,
+     "sd": 1.0777183841993427
+    },
+    "oracle": {
+     "mean": 0.04810160594798961,
+     "sd": 1.0429598706355676
+    }
+   },
+   "book_idio_risk": 2.1555574847333223,
    "coverage": {
-    "least_squares": 0.89951,
-    "bayes": 0.89783
+    "least_squares": {
+     "all": 0.89951,
+     "top": 0.8071,
+     "extreme": 0.8977982743231181
+    },
+    "bayes": {
+     "all": 0.89783,
+     "top": 0.8971,
+     "extreme": 0.7839928592680749
+    }
    },
    "median_width": {
-    "least_squares": 0.5156223043490287,
-    "bayes": 0.4527293635385446
+    "least_squares": 0.510819931534526,
+    "bayes": 0.44910448265632336
    }
   },
   "monthly": {
    "setting": "monthly returns, 5 years",
+   "population": "normal betas, noise unrelated to beta",
    "n_universes": 200,
    "n_stocks": 500,
    "top": 50,
-   "median_se": 0.22880165159468618,
-   "median_weight_on_estimate": 0.6773418847016848,
+   "median_se": 0.20744075639221582,
+   "best_fixed_weight": 0.6188788003732015,
+   "mean_weight_on_estimate": 0.6578896227637767,
    "estimated_prior_sd": 0.29834339591454884,
+   "prior_sd_at_floor": 0,
    "rmse": {
-    "least_squares": 0.23639393874214337,
+    "least_squares": 0.23639393874214334,
     "bloomberg": 0.18672690451590837,
     "bayes": 0.17574908144596896,
-    "oracle": 0.17543393482688094
+    "bayes_by_volatility": 0.17774724667715824,
+    "oracle": 0.1754339348268809
    },
    "mse_vs_least_squares": {
     "least_squares": 1.0,
-    "bloomberg": 0.6239375478506435,
-    "bayes": 0.5527305307786117,
-    "oracle": 0.55075003699617
+    "bloomberg": 0.6239375478506436,
+    "bayes": 0.5527305307786118,
+    "bayes_by_volatility": 0.565370430578091,
+    "oracle": 0.5507500369961701
    },
    "universes_beating_least_squares": {
     "least_squares": 0,
     "bloomberg": 200,
     "bayes": 200,
+    "bayes_by_volatility": 200,
     "oracle": 200
    },
    "top_bias": {
-    "least_squares": 0.263773698490123,
-    "bloomberg": 0.041471788211567565,
-    "bayes": 0.0018736148552130735,
-    "oracle": 0.0034091823272188572
+    "least_squares": 0.26377369849012294,
+    "bloomberg": 0.04147178821156755,
+    "bayes": 0.0018736148552130872,
+    "bayes_by_volatility": 0.00030973965311660177,
+    "oracle": 0.0034091823272188685
    },
    "hedge_exposure": {
     "least_squares": {
      "mean": -13.188684924506148,
-     "sd": 2.5970013089458
+     "sd": 2.5970013089457997,
+     "universes_short": 200
     },
     "bloomberg": {
-     "mean": -2.073589410578378,
-     "sd": 2.1698167809962072
+     "mean": -2.073589410578377,
+     "sd": 2.169816780996207,
+     "universes_short": 169
     },
     "bayes": {
-     "mean": -0.09368074276065372,
-     "sd": 1.52131669401607
+     "mean": -0.09368074276065436,
+     "sd": 1.5213166940160698,
+     "universes_short": 108
+    },
+    "bayes_by_volatility": {
+     "mean": -0.015486982655830095,
+     "sd": 1.7196283665667738,
+     "universes_short": 99
     },
     "oracle": {
-     "mean": -0.17045911636094285,
-     "sd": 1.2916775650186196
+     "mean": -0.17045911636094346,
+     "sd": 1.2916775650186194,
+     "universes_short": 102
     }
    },
+   "random_hedge_exposure": {
+    "least_squares": {
+     "mean": -0.1230147259708406,
+     "sd": 1.6262561080795017
+    },
+    "bloomberg": {
+     "mean": -0.10690305036218105,
+     "sd": 1.3285054449930005
+    },
+    "bayes": {
+     "mean": -0.09611856314277115,
+     "sd": 1.2449225274814695
+    },
+    "bayes_by_volatility": {
+     "mean": -0.11080994812464957,
+     "sd": 1.2501327350854663
+    },
+    "oracle": {
+     "mean": -0.09302865991895169,
+     "sd": 1.2355480057090198
+    }
+   },
+   "book_idio_risk": 2.192512279082627,
    "coverage": {
-    "least_squares": 0.9003299999999999,
-    "bayes": 0.89531
+    "least_squares": {
+     "all": 0.90033,
+     "top": 0.7669,
+     "extreme": 0.900451467268623
+    },
+    "bayes": {
+     "all": 0.89531,
+     "top": 0.8895,
+     "extreme": 0.7205417607223477
+    }
    },
    "median_width": {
-    "least_squares": 0.6925375587069615,
-    "bayes": 0.5575867790914457
+    "least_squares": 0.6934963387862676,
+    "bayes": 0.5581885205060553
+   }
+  }
+ },
+ "misspecified": {
+  "skewed": {
+   "setting": "weekly returns, 2 years",
+   "population": "right-skewed betas",
+   "n_universes": 200,
+   "n_stocks": 500,
+   "top": 50,
+   "median_se": 0.1536166341020242,
+   "best_fixed_weight": 0.7469777666420273,
+   "mean_weight_on_estimate": 0.7690668726289377,
+   "estimated_prior_sd": 0.29954158624352134,
+   "prior_sd_at_floor": 0,
+   "rmse": {
+    "least_squares": 0.17559893508771646,
+    "bloomberg": 0.15397510990882632,
+    "bayes": 0.1451425409361558,
+    "bayes_by_volatility": 0.14581968684233165,
+    "oracle": 0.1450147670324647
+   },
+   "mse_vs_least_squares": {
+    "least_squares": 1.0,
+    "bloomberg": 0.7688777438850053,
+    "bayes": 0.6831965867184707,
+    "bayes_by_volatility": 0.6895862079547777,
+    "oracle": 0.6819942339131565
+   },
+   "universes_beating_least_squares": {
+    "least_squares": 0,
+    "bloomberg": 199,
+    "bayes": 200,
+    "bayes_by_volatility": 200,
+    "oracle": 200
+   },
+   "top_bias": {
+    "least_squares": 0.13385066350883953,
+    "bloomberg": -0.08735966624249623,
+    "bayes": -0.035744276985098564,
+    "bayes_by_volatility": -0.03505663586458176,
+    "oracle": -0.03531443836528896
+   },
+   "hedge_exposure": {
+    "least_squares": {
+     "mean": -6.692533175441977,
+     "sd": 1.6256394795453473,
+     "universes_short": 200
+    },
+    "bloomberg": {
+     "mean": 4.367983312124812,
+     "sd": 1.5313560843861662,
+     "universes_short": 1
+    },
+    "bayes": {
+     "mean": 1.7872138492549283,
+     "sd": 1.2297919261480332,
+     "universes_short": 19
+    },
+    "bayes_by_volatility": {
+     "mean": 1.7528317932290884,
+     "sd": 1.3405424515148943,
+     "universes_short": 23
+    },
+    "oracle": {
+     "mean": 1.7657219182644486,
+     "sd": 1.1981480298924503,
+     "universes_short": 13
+    }
+   },
+   "random_hedge_exposure": {
+    "least_squares": {
+     "mean": 0.0856769921015374,
+     "sd": 1.240969509273589
+    },
+    "bloomberg": {
+     "mean": 0.12465077830267543,
+     "sd": 1.0802538663367915
+    },
+    "bayes": {
+     "mean": 0.11661080128965029,
+     "sd": 1.0268792904743513
+    },
+    "bayes_by_volatility": {
+     "mean": 0.12029902572990828,
+     "sd": 1.0404836908314234
+    },
+    "oracle": {
+     "mean": 0.10882382565476478,
+     "sd": 1.010203057726366
+    }
+   },
+   "book_idio_risk": 2.128650615353867,
+   "coverage": {
+    "least_squares": {
+     "all": 0.89858,
+     "top": 0.8239,
+     "extreme": 0.9007196739790168
+    },
+    "bayes": {
+     "all": 0.89587,
+     "top": 0.8443,
+     "extreme": 0.7603398942165959
+    }
+   },
+   "median_width": {
+    "least_squares": 0.5099857115072344,
+    "bayes": 0.448836749472021
+   },
+   "population_parameters": {
+    "label": "right-skewed betas",
+    "beta_mean": 1.0,
+    "beta_sd": 0.3,
+    "idio_vol": 0.25,
+    "idio_dispersion": 0.35,
+    "skew": 0.25,
+    "vol_on_beta": 0.0,
+    "vol_on_distance": 0.0,
+    "fringe": 0.0,
+    "fringe_distance": 0.0,
+    "fringe_vol": 0.0
+   }
+  },
+  "vol_on_beta": {
+   "setting": "weekly returns, 2 years",
+   "population": "right-skewed betas, noise rises with beta",
+   "n_universes": 200,
+   "n_stocks": 500,
+   "top": 50,
+   "median_se": 0.15334471445956008,
+   "best_fixed_weight": 0.7458058501105148,
+   "mean_weight_on_estimate": 0.7687377712564089,
+   "estimated_prior_sd": 0.29921816141144975,
+   "prior_sd_at_floor": 0,
+   "rmse": {
+    "least_squares": 0.17612022466899704,
+    "bloomberg": 0.15433977009540872,
+    "bayes": 0.15767966431054187,
+    "bayes_by_volatility": 0.14737879452050368,
+    "oracle": 0.15760435937866543
+   },
+   "mse_vs_least_squares": {
+    "least_squares": 1.0,
+    "bloomberg": 0.7679575888349215,
+    "bayes": 0.8015542326624528,
+    "bayes_by_volatility": 0.7002474535934362,
+    "oracle": 0.800788800119245
+   },
+   "universes_beating_least_squares": {
+    "least_squares": 0,
+    "bloomberg": 199,
+    "bayes": 197,
+    "bayes_by_volatility": 200,
+    "oracle": 198
+   },
+   "top_bias": {
+    "least_squares": 0.16984535487716498,
+    "bloomberg": -0.05943640798894588,
+    "bayes": -0.09083151196319196,
+    "bayes_by_volatility": -0.031573272908577275,
+    "oracle": -0.0902616036927663
+   },
+   "hedge_exposure": {
+    "least_squares": {
+     "mean": -8.492267743858248,
+     "sd": 1.85491661525783,
+     "universes_short": 200
+    },
+    "bloomberg": {
+     "mean": 2.9718203994472936,
+     "sd": 1.551882198191349,
+     "universes_short": 7
+    },
+    "bayes": {
+     "mean": 4.541575598159598,
+     "sd": 1.5807117999374092,
+     "universes_short": 0
+    },
+    "bayes_by_volatility": {
+     "mean": 1.5786636454288638,
+     "sd": 1.7768162237804461,
+     "universes_short": 38
+    },
+    "oracle": {
+     "mean": 4.513080184638315,
+     "sd": 1.6097738295731887,
+     "universes_short": 1
+    }
+   },
+   "random_hedge_exposure": {
+    "least_squares": {
+     "mean": 0.07003483369373606,
+     "sd": 1.2485228050735457
+    },
+    "bloomberg": {
+     "mean": 0.11417053216944854,
+     "sd": 1.092386377900757
+    },
+    "bayes": {
+     "mean": 1.0159992946767302,
+     "sd": 1.1211522697325855
+    },
+    "bayes_by_volatility": {
+     "mean": 0.22790245312321936,
+     "sd": 1.0472452688033642
+    },
+    "oracle": {
+     "mean": 1.0087002348017804,
+     "sd": 1.1047763153438026
+    }
+   },
+   "book_idio_risk": 2.767899912915343,
+   "coverage": {
+    "least_squares": {
+     "all": 0.89858,
+     "top": 0.8285,
+     "extreme": 0.9007196739790168
+    },
+    "bayes": {
+     "all": 0.88845,
+     "top": 0.8118,
+     "extreme": 0.6984305904794936
+    }
+   },
+   "median_width": {
+    "least_squares": 0.5090829763760718,
+    "bayes": 0.44684518283512165
+   },
+   "population_parameters": {
+    "label": "right-skewed betas, noise rises with beta",
+    "beta_mean": 1.0,
+    "beta_sd": 0.3,
+    "idio_vol": 0.25,
+    "idio_dispersion": 0.35,
+    "skew": 0.25,
+    "vol_on_beta": 0.5,
+    "vol_on_distance": 0.0,
+    "fringe": 0.0,
+    "fringe_distance": 0.0,
+    "fringe_vol": 0.0
+   }
+  },
+  "vol_on_distance": {
+   "setting": "weekly returns, 2 years",
+   "population": "noise rises with distance from 1",
+   "n_universes": 200,
+   "n_stocks": 500,
+   "top": 50,
+   "median_se": 0.15287331290037812,
+   "best_fixed_weight": 0.7453437003316554,
+   "mean_weight_on_estimate": 0.7690323840395831,
+   "estimated_prior_sd": 0.2994176356318075,
+   "prior_sd_at_floor": 0,
+   "rmse": {
+    "least_squares": 0.1763160205277415,
+    "bloomberg": 0.1543370919376987,
+    "bayes": 0.1604125333743531,
+    "bayes_by_volatility": 0.1542217942258667,
+    "oracle": 0.1603164862548632
+   },
+   "mse_vs_least_squares": {
+    "least_squares": 1.0,
+    "bloomberg": 0.7662263365543823,
+    "bayes": 0.8277382887341653,
+    "bayes_by_volatility": 0.7650819435450072,
+    "oracle": 0.8267473676914114
+   },
+   "universes_beating_least_squares": {
+    "least_squares": 0,
+    "bloomberg": 200,
+    "bayes": 198,
+    "bayes_by_volatility": 200,
+    "oracle": 200
+   },
+   "top_bias": {
+    "least_squares": 0.16680976374890533,
+    "bloomberg": -0.03789294741184328,
+    "bayes": -0.04007803947430845,
+    "bayes_by_volatility": 0.001368592550718638,
+    "oracle": -0.03956521856125327
+   },
+   "hedge_exposure": {
+    "least_squares": {
+     "mean": -8.340488187445267,
+     "sd": 1.6632034135592564,
+     "universes_short": 200
+    },
+    "bloomberg": {
+     "mean": 1.8946473705921643,
+     "sd": 1.3092005736677943,
+     "universes_short": 13
+    },
+    "bayes": {
+     "mean": 2.0039019737154224,
+     "sd": 1.3466434193289412,
+     "universes_short": 12
+    },
+    "bayes_by_volatility": {
+     "mean": -0.0684296275359319,
+     "sd": 1.4978911740583603,
+     "universes_short": 103
+    },
+    "oracle": {
+     "mean": 1.978260928062664,
+     "sd": 1.252325483517005,
+     "universes_short": 12
+    }
+   },
+   "random_hedge_exposure": {
+    "least_squares": {
+     "mean": 0.06220288527408901,
+     "sd": 1.2244791012304321
+    },
+    "bloomberg": {
+     "mean": 0.11344260071253207,
+     "sd": 1.0726677828035822
+    },
+    "bayes": {
+     "mean": 0.12203740306972084,
+     "sd": 1.1114413042233013
+    },
+    "bayes_by_volatility": {
+     "mean": 0.11064106155590832,
+     "sd": 1.0799285944674815
+    },
+    "oracle": {
+     "mean": 0.1106445691595112,
+     "sd": 1.1068196688793488
+    }
+   },
+   "book_idio_risk": 2.5188313058471072,
+   "coverage": {
+    "least_squares": {
+     "all": 0.89858,
+     "top": 0.8275,
+     "extreme": 0.9001120657452372
+    },
+    "bayes": {
+     "all": 0.88092,
+     "top": 0.8838,
+     "extreme": 0.7013821441912589
+    }
+   },
+   "median_width": {
+    "least_squares": 0.5075179892184613,
+    "bayes": 0.4472329104871987
+   },
+   "population_parameters": {
+    "label": "noise rises with distance from 1",
+    "beta_mean": 1.0,
+    "beta_sd": 0.3,
+    "idio_vol": 0.25,
+    "idio_dispersion": 0.35,
+    "skew": 0.0,
+    "vol_on_beta": 0.0,
+    "vol_on_distance": 0.5,
+    "fringe": 0.0,
+    "fringe_distance": 0.0,
+    "fringe_vol": 0.0
+   }
+  },
+  "fringe": {
+   "setting": "weekly returns, 2 years",
+   "population": "a quiet core and a noisy fringe",
+   "n_universes": 200,
+   "n_stocks": 500,
+   "top": 50,
+   "median_se": 0.09372029793650757,
+   "best_fixed_weight": 0.7194104921675382,
+   "mean_weight_on_estimate": 0.7857550695061772,
+   "estimated_prior_sd": 0.2127346544340066,
+   "prior_sd_at_floor": 0,
+   "rmse": {
+    "least_squares": 0.13322647219004435,
+    "bloomberg": 0.11297641701216123,
+    "bayes": 0.15237123660288132,
+    "bayes_by_volatility": 0.11493703679112645,
+    "oracle": 0.15269165857012298
+   },
+   "mse_vs_least_squares": {
+    "least_squares": 1.0,
+    "bloomberg": 0.7191086922967759,
+    "bayes": 1.3080517564780254,
+    "bayes_by_volatility": 0.7442844346845334,
+    "oracle": 1.3135589535025731
+   },
+   "universes_beating_least_squares": {
+    "least_squares": 0,
+    "bloomberg": 200,
+    "bayes": 8,
+    "bayes_by_volatility": 196,
+    "oracle": 3
+   },
+   "top_bias": {
+    "least_squares": 0.10051034214976387,
+    "bloomberg": -0.045867850935073055,
+    "bayes": -0.12306862573143959,
+    "bayes_by_volatility": -0.06103583497418372,
+    "oracle": -0.12396639364511775
+   },
+   "hedge_exposure": {
+    "least_squares": {
+     "mean": -5.025517107488192,
+     "sd": 1.5205235436126614,
+     "universes_short": 200
+    },
+    "bloomberg": {
+     "mean": 2.293392546753653,
+     "sd": 1.3229906330628716,
+     "universes_short": 6
+    },
+    "bayes": {
+     "mean": 6.15343128657198,
+     "sd": 1.7821110010559789,
+     "universes_short": 0
+    },
+    "bayes_by_volatility": {
+     "mean": 3.051791748709186,
+     "sd": 1.3792058235584141,
+     "universes_short": 3
+    },
+    "oracle": {
+     "mean": 6.198319682255885,
+     "sd": 1.8131461376881115,
+     "universes_short": 0
+    }
+   },
+   "random_hedge_exposure": {
+    "least_squares": {
+     "mean": 0.005237935657165856,
+     "sd": 0.9354089675206919
+    },
+    "bloomberg": {
+     "mean": 0.02024389180781921,
+     "sd": 0.7648167190591972
+    },
+    "bayes": {
+     "mean": 0.039814108066767696,
+     "sd": 0.9728408692778612
+    },
+    "bayes_by_volatility": {
+     "mean": 0.016434518013641222,
+     "sd": 0.785269175697972
+    },
+    "oracle": {
+     "mean": 0.03943615872951891,
+     "sd": 1.0055046335854467
+    }
+   },
+   "book_idio_risk": 2.4836122055769705,
+   "coverage": {
+    "least_squares": {
+     "all": 0.8997,
+     "top": 0.7764,
+     "extreme": 0.8974333662388944
+    },
+    "bayes": {
+     "all": 0.84079,
+     "top": 0.505,
+     "extreme": 0.1543928923988154
+    }
+   },
+   "median_width": {
+    "least_squares": 0.31113826380335996,
+    "bayes": 0.2821504665622574
+   },
+   "population_parameters": {
+    "label": "a quiet core and a noisy fringe",
+    "beta_mean": 1.0,
+    "beta_sd": 0.1,
+    "idio_vol": 0.15,
+    "idio_dispersion": 0.0,
+    "skew": 0.0,
+    "vol_on_beta": 0.0,
+    "vol_on_distance": 0.0,
+    "fringe": 0.1,
+    "fringe_distance": 0.6,
+    "fringe_vol": 0.5
    }
   }
  },
  "utilities": {
   "setting": "weekly returns, 2 years",
+  "population": "utilities",
   "n_universes": 200,
   "n_stocks": 60,
   "top": 10,
-  "median_se": 0.14463027998402778,
-  "median_weight_on_estimate": 0.6088164056281646,
+  "median_se": 0.1525550276542077,
+  "best_fixed_weight": 0.5694369492534601,
+  "mean_weight_on_estimate": 0.5919815389574807,
   "estimated_prior_sd": 0.19220213657760635,
+  "prior_sd_at_floor": 0,
   "rmse": {
    "least_squares": 0.1741425295720092,
    "bloomberg": 0.18677518713732194,
    "bayes": 0.12564597773707276,
+   "bayes_by_volatility": 0.1360341798802464,
    "oracle": 0.12330216700191493
   },
   "mse_vs_least_squares": {
    "least_squares": 1.0,
-   "bloomberg": 1.1503464672238506,
+   "bloomberg": 1.1503464672238508,
    "bayes": 0.5205800048332019,
+   "bayes_by_volatility": 0.6102199304105828,
    "oracle": 0.5013392663921735
   },
   "universes_beating_least_squares": {
    "least_squares": 0,
    "bloomberg": 48,
    "bayes": 199,
+   "bayes_by_volatility": 191,
    "oracle": 200
   },
   "top_bias": {
    "least_squares": 0.16403420289330517,
    "bloomberg": 0.16867004809346725,
    "bayes": -0.006283521002248933,
+   "bayes_by_volatility": -0.0032189603569195233,
    "oracle": 0.0002147680145871049
   },
   "hedge_exposure": {
    "least_squares": {
     "mean": -1.6403420289330515,
-    "sd": 0.5657581634796731
+    "sd": 0.5657581634796731,
+    "universes_short": 200
    },
    "bloomberg": {
     "mean": -1.6867004809346726,
-    "sd": 0.4688269226370016
+    "sd": 0.4688269226370016,
+    "universes_short": 200
    },
    "bayes": {
     "mean": 0.06283521002248933,
-    "sd": 0.4960297996809136
+    "sd": 0.4960297996809136,
+    "universes_short": 92
+   },
+   "bayes_by_volatility": {
+    "mean": 0.03218960356919524,
+    "sd": 0.5419333584131166,
+    "universes_short": 94
    },
    "oracle": {
-    "mean": -0.0021476801458710417,
-    "sd": 0.3862443985413467
+    "mean": -0.002147680145871039,
+    "sd": 0.3862443985413467,
+    "universes_short": 105
    }
   },
+  "random_hedge_exposure": {
+   "least_squares": {
+    "mean": -0.021355926479848873,
+    "sd": 0.5399806282827702
+   },
+   "bloomberg": {
+    "mean": -1.3023708253406305,
+    "sd": 0.4074704078372562
+   },
+   "bayes": {
+    "mean": 0.02417172305026204,
+    "sd": 0.39011839502494633
+   },
+   "bayes_by_volatility": {
+    "mean": 0.01843228580893792,
+    "sd": 0.43022394823666466
+   },
+   "oracle": {
+    "mean": 0.020831025289411328,
+    "sd": 0.3710249583269483
+   }
+  },
+  "book_idio_risk": 0.9450722170494263,
   "coverage": {
-   "least_squares": 0.90075,
-   "bayes": 0.8825833333333333
+   "least_squares": {
+    "all": 0.90075,
+    "top": 0.8155,
+    "extreme": 0.8934210526315789
+   },
+   "bayes": {
+    "all": 0.8825833333333334,
+    "top": 0.874,
+    "extreme": 0.6592105263157895
+   }
   },
   "median_width": {
-   "least_squares": 0.5104810503159498,
-   "bayes": 0.3901174105033613
+   "least_squares": 0.5064613267764064,
+   "bayes": 0.3898751367760791
   }
  },
  "five_stocks": {
   "setting": "weekly returns, 2 years",
+  "population": "normal betas, noise unrelated to beta",
   "n_universes": 400,
   "n_stocks": 5,
   "top": 1,
-  "median_se": 0.19091250436233587,
-  "median_weight_on_estimate": 0.7181364852810188,
+  "median_se": 0.15493245263868446,
+  "best_fixed_weight": 0.7511917791614274,
+  "mean_weight_on_estimate": 0.6029731508004549,
   "estimated_prior_sd": 0.2414261756334745,
+  "prior_sd_at_floor": 45,
   "rmse": {
    "least_squares": 0.1750133080405106,
    "bloomberg": 0.15158822875588018,
    "bayes": 0.16186725306138527,
+   "bayes_by_volatility": 0.16186725306138527,
    "oracle": 0.1401251637555607
   },
   "mse_vs_least_squares": {
    "least_squares": 1.0,
    "bloomberg": 0.7502202964161399,
    "bayes": 0.8554129994234827,
+   "bayes_by_volatility": 0.8554129994234827,
    "oracle": 0.641047364064951
   },
   "universes_beating_least_squares": {
    "least_squares": 0,
    "bloomberg": 242,
    "bayes": 248,
+   "bayes_by_volatility": 248,
    "oracle": 270
   },
   "top_bias": {
    "least_squares": 0.11074066663709324,
    "bloomberg": -0.02564974724985195,
    "bayes": -0.028894060755849507,
+   "bayes_by_volatility": -0.028894060755849507,
    "oracle": 0.005891086896064668
   },
   "hedge_exposure": {
    "least_squares": {
     "mean": -0.11074066663709324,
-    "sd": 0.17395826974158837
+    "sd": 0.17395826974158837,
+    "universes_short": 289
    },
    "bloomberg": {
     "mean": 0.02564974724985195,
-    "sd": 0.1589117072452661
+    "sd": 0.1589117072452661,
+    "universes_short": 163
    },
    "bayes": {
     "mean": 0.028894060755849507,
-    "sd": 0.1795779434741439
+    "sd": 0.1795779434741439,
+    "universes_short": 173
+   },
+   "bayes_by_volatility": {
+    "mean": 0.028894060755849507,
+    "sd": 0.1795779434741439,
+    "universes_short": 173
    },
    "oracle": {
     "mean": -0.005891086896064668,
-    "sd": 0.14520944778372002
+    "sd": 0.14520944778372002,
+    "universes_short": 191
    }
   },
+  "random_hedge_exposure": {
+   "least_squares": {
+    "mean": -0.001379547063528268,
+    "sd": 0.17346849590321103
+   },
+   "bloomberg": {
+    "mean": -0.009164356955651787,
+    "sd": 0.14769594063465863
+   },
+   "bayes": {
+    "mean": -0.006854555072754081,
+    "sd": 0.15781945784995588
+   },
+   "bayes_by_volatility": {
+    "mean": -0.006854555072754081,
+    "sd": 0.15781945784995588
+   },
+   "oracle": {
+    "mean": -0.006782755700034314,
+    "sd": 0.13826967512391486
+   }
+  },
+  "book_idio_risk": 0.2741596142937832,
   "coverage": {
-   "least_squares": 0.9015,
-   "bayes": 0.7375
+   "least_squares": {
+    "all": 0.9015,
+    "top": 0.86,
+    "extreme": 0.9187279151943463
+   },
+   "bayes": {
+    "all": 0.7375,
+    "top": 0.7075,
+    "extreme": 0.734982332155477
+   }
   },
   "median_width": {
-   "least_squares": 0.520790775307825,
-   "bayes": 0.3680717931976906
+   "least_squares": 0.5143540447711139,
+   "bayes": 0.39511969624389726
   }
  },
  "real": {
@@ -344,79 +1065,89 @@
    "VZ",
    "WMT"
   ],
-  "first_week": "1999-11-19",
-  "last_week": "2026-10-09",
-  "mean_beta": 0.5309168225,
+  "first_week": "1999-11-26",
+  "last_week": "2026-10-16",
+  "mean_beta": 0.5224536525,
   "blume": {
    "52": {
+    "first_week": "1999-11-26",
+    "last_week": "2026-10-16",
     "window_pairs": 26,
     "pairs": 520,
     "mse": {
-     "least_squares": 0.12000594852979232,
-     "bloomberg": 0.12156953489400789,
-     "bayes": 0.09634103981360334,
-     "cross_section_mean": 0.1032499261577802
+     "least_squares": 0.11635525266217117,
+     "bloomberg": 0.12142385503732221,
+     "bayes": 0.09460610183113105,
+     "cross_section_mean": 0.10304096303292355
     },
     "window_pairs_beating_least_squares": {
      "least_squares": 0,
      "bloomberg": 13,
      "bayes": 23,
-     "cross_section_mean": 17
+     "cross_section_mean": 16
     },
-    "slope_next_on_current": 0.46527225881292494,
-    "constant_beta_slope": 0.5408990332575637,
+    "slope_next_on_current": 0.41226110492243534,
+    "constant_beta_slope": 0.6110284712909654,
+    "change_over_noise": 1.9118131364296802,
+    "bloomberg_moved_away": 0.5673076923076923,
+    "share_below_one": 0.9173076923076923,
     "relative_change_interval": {
      "least_squares": [
       0.0,
       0.0
      ],
      "bloomberg": [
-      -0.1604914901571755,
-      0.19303504514623257
+      -0.14952717304979943,
+      0.23381113542245738
      ],
      "bayes": [
-      -0.24935472690242425,
-      -0.1455304459670955
+      -0.24298985528834446,
+      -0.12190139503679377
      ],
      "cross_section_mean": [
-      -0.24712729301193578,
-      -0.008020719670324744
+      -0.25804716383661497,
+      0.10853639595811511
      ]
     }
    },
    "104": {
+    "first_week": "2000-11-24",
+    "last_week": "2026-10-16",
     "window_pairs": 12,
     "pairs": 240,
     "mse": {
-     "least_squares": 0.09209220281422083,
-     "bloomberg": 0.09241218047236825,
-     "bayes": 0.08117986791558739,
-     "cross_section_mean": 0.08055680467452228
+     "least_squares": 0.07935508622477917,
+     "bloomberg": 0.09453918494503251,
+     "bayes": 0.06930344378869593,
+     "cross_section_mean": 0.07180668345162458
     },
     "window_pairs_beating_least_squares": {
      "least_squares": 0,
-     "bloomberg": 7,
-     "bayes": 10,
-     "cross_section_mean": 8
+     "bloomberg": 4,
+     "bayes": 9,
+     "cross_section_mean": 7
     },
-    "slope_next_on_current": 0.33777328395562506,
-    "constant_beta_slope": 0.6866674141198607,
+    "slope_next_on_current": 0.42854020407288385,
+    "constant_beta_slope": 0.7502947592656528,
+    "change_over_noise": 2.9443884233783524,
+    "bloomberg_moved_away": 0.6625,
+    "share_below_one": 0.9375,
     "relative_change_interval": {
      "least_squares": [
       0.0,
       0.0
      ],
      "bloomberg": [
-      -0.24757170959903022,
-      0.3361382520086848
+      -0.07930308392451091,
+      0.36766301145356345
      ],
      "bayes": [
-      -0.1867781587409138,
-      -0.047903682506551484
+      -0.17247753679798772,
+      -0.02353455192027043
      ],
      "cross_section_mean": [
-      -0.31951710796666305,
-      0.17293407514918183
+      -0.27673629686576173,
+      0.25074591908749877
      ]
     }
    }

@@ -43,9 +43,10 @@ def _(mo):
     | 4 | Five hundred stocks: the winner's curse, and where the prior comes from |
     | 5 | Bloomberg's rule against Bayes' rule, at three data frequencies |
     | 6 | What the estimates do to a hedge |
-    | 7 | Intervals |
-    | 8 | On real stocks: Blume's test |
-    | 9 | The catch: the same idea for a volatility model, at scale |
+    | 7 | Intervals: which question each one answers |
+    | 8 | When the prior is wrong |
+    | 9 | On real stocks: Blume's test |
+    | 10 | The catch: the same idea for a volatility model, at scale |
     """)
     return
 
@@ -65,9 +66,10 @@ def _(mo):
     toward 1 in the next. MSCI's Barra equity risk model applies a "Bayesian shrinkage" step to
     each stock's specific risk for a related reason.
 
-    So data vendors deliberately bias every estimate they show you. **Why would that make the
-    estimates better, and is a third the right amount?** This notebook answers both questions
-    with Bayes' rule, first for one stock and then for five hundred.
+    So data vendors deliberately pull every estimate toward 1. **Why would that make the estimates
+    better, and is a third the right amount?** This notebook answers both questions with Bayes' rule,
+    first for one stock and then for five hundred, and then looks for the cases where the answer
+    breaks.
     """)
     return
 
@@ -150,9 +152,14 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(ROOT, bs, data, mo, np):
     _csv = ROOT / "data" / "SPMO_VOO_2020-01-01_2026-09-04.csv"
-    _weekly = lambda _ticker: data.load_returns(_csv, _ticker).resample("W-FRI").sum() / 100  # weekly log returns
-    _pair = _weekly("SPMO").to_frame("SPMO").join(_weekly("VOO").to_frame("VOO")).dropna().iloc[-104:]
+    _daily = data.load_returns(_csv, "SPMO").to_frame("SPMO").join(data.load_returns(_csv, "VOO").to_frame("VOO"), how="inner")
+    _weekly = _daily.resample("W-FRI").sum(min_count=1).dropna() / 100  # weekly log returns
+    _pair = _weekly.iloc[-104:]
     spmo_b, spmo_se = bs.least_squares(_pair["SPMO"].to_numpy(), _pair["VOO"].to_numpy())
+    _before = _weekly.iloc[-208:-104]  # the two years before, for the drift note further down
+    _b, _se = bs.least_squares(_before["SPMO"].to_numpy(), _before["VOO"].to_numpy())
+    spmo_drift = {"before": (float(_b[0]), float(_se[0]), _before.index[0].strftime("%B %Y"), _before.index[-1].strftime("%B %Y")),
+                  "last": (float(spmo_b[0]), float(spmo_se[0]))}
 
     _rng = np.random.default_rng(42)  # a single stock: true beta 1.3, idiosyncratic volatility 40% a year
     _market = _rng.normal(0.0, bs.SETTINGS["weekly"].market_sd, 104)
@@ -163,7 +170,7 @@ def _(ROOT, bs, data, mo, np):
     spmo_post, spmo_post_sd, spmo_w = bs.posterior(spmo_b, spmo_se, prior_mean, prior_sd)
     stock_post, stock_post_sd, stock_w = bs.posterior(stock_b, stock_se, prior_mean, prior_sd)
     mo.show_code()
-    return (spmo_b, spmo_post, spmo_post_sd, spmo_se, spmo_w, stock_b, stock_post, stock_post_sd, stock_se,
+    return (spmo_b, spmo_drift, spmo_post, spmo_post_sd, spmo_se, spmo_w, stock_b, stock_post, stock_post_sd, stock_se,
             stock_w, prior_mean, prior_sd)
 
 
@@ -249,18 +256,24 @@ def _(eb, ls_beta, mo, np, plots, plt, top50, universe):
     estimated as extreme drift back toward the middle in the next period.
 
     The prior learned from the cross-section has mean {eb["prior_mean"]:.2f} and spread {eb["prior_sd"]:.2f}, close to the
-    true 1.00 and 0.30. The raw estimates spread more, by {np.std(ls_beta):.2f}, because they include the noise;
-    using their spread as the prior is a known mistake (Lally 1998). With this prior, the same 50
-    stocks get Bayesian estimates averaging **{_eb_top:.2f}**, on target.
+    population's 1.00 and 0.30. The raw estimates spread more, {np.std(ls_beta):.2f}, because each carries its own
+    noise; using their spread for the prior would be a known mistake (Lally 1998). With this prior, the
+    same 50 stocks get Bayesian estimates averaging **{_eb_top:.2f}**, on target.
 
-    **This is not a matter of taste.** Charles Stein proved in 1956 that when you estimate three or
-    more means at once, estimating each one separately is beaten. James and Stein (1961) gave an
-    estimator that shrinks every estimate toward a common point and has a lower total squared error,
-    whatever the true values; with four or more, the common point can be the average of the estimates
-    themselves (Lindley 1962). Efron and Morris (1973) showed that this is Bayes' rule with the prior
-    estimated from the data. The theorem is frequentist, since it holds at every truth, and it is
-    stated for Gaussian errors with known variances. Our estimates have estimated, unequal variances;
-    the study below shows the same result for them.
+    **Pooling is not a matter of taste.** Charles Stein proved in 1956 that when three or more means are
+    estimated at once, each with normal noise of one common, known variance, estimating each one
+    separately is beaten in expected total squared error, whatever the true values. James and Stein
+    (1961) gave an estimator that shrinks every estimate toward a fixed point; with four or more, the
+    point can be the estimates' own average (Lindley 1962). Efron and Morris (1973) showed that this is
+    Bayes' rule with the prior estimated from the data. The theorem is frequentist, since it holds at
+    every truth, and a frequentist reaches our estimator too, as the best linear unbiased predictor of a
+    random-coefficients model (Robinson 1991). The contrast is one stock at a time against all stocks
+    together, not Bayes against frequentism.
+
+    One condition matters: our standard errors differ from stock to stock, and then the theorem no
+    longer covers this estimator (Bock 1975 gives estimators it does cover). What it gains depends on
+    its prior describing the stocks. Sections 5 to 7 measure the gain when it does; section 8 shows
+    what happens when it does not.
     """)])
     return
 
@@ -292,27 +305,31 @@ def _(bs, mo, studies):
     _rows = []
     for _key in ("daily", "weekly", "monthly"):
         _s = studies[_key]
-        for _m in bs.POINT_METHODS:
+        for _m in ("least_squares", "bloomberg", "bayes", "oracle"):
             _bias = _s['top_bias'][_m] if abs(_s['top_bias'][_m]) >= 0.005 else 0.0
             _rows.append(f"| {_s['setting'] if _m == 'least_squares' else ''} | {_names[_m]} | {_s['mse_vs_least_squares'][_m]:.2f} | "
                          f"{_s['universes_beating_least_squares'][_m]} of {_s['n_universes']} | {_bias:+.2f} |")
-    _w = {_k: studies[_k]["median_weight_on_estimate"] for _k in studies}
+    _w = {_k: studies[_k]["best_fixed_weight"] for _k in studies}
     mo.md("\n".join([
         "| Data | Estimator | Squared error, relative to least squares | Universes where it beats least squares | Bias of the 50 highest |",
         "|:---|:---|:---|:---|:---|",
         *_rows,
         "",
-        f"With daily data the estimates are precise: Bayes keeps about {100 * _w['daily']:.0f}% of each one, and Bloomberg's fixed third "
-        f"**over-shrinks**, so it does worse than least squares. With weekly data, Bloomberg's default setting, Bayes keeps about "
-        f"{100 * _w['weekly']:.0f}% and the fixed rule is close to right. With monthly data Bayes keeps {100 * _w['monthly']:.0f}% and the "
-        "fixed rule under-shrinks. Bayes' rule adapts to each stock and each frequency; a fixed rule can be right for one at most. "
-        "And learning the prior from the 500 stocks costs almost nothing against knowing the true population.",
+        "How far to shrink depends on how noisy the estimates are against how much the true betas vary. The fixed weight on "
+        "the estimate with the smallest expected error is $\\tau^2/(\\tau^2 + \\overline{s^2})$, with $\\tau$ the spread of the true betas "
+        f"and $\\overline{{s^2}}$ the average squared standard error. In this population it is {100 * _w['daily']:.0f}% with daily data, "
+        f"{100 * _w['weekly']:.0f}% with weekly and {100 * _w['monthly']:.0f}% with monthly. Bloomberg's rule keeps 67% everywhere: far too little "
+        "with daily data, where it **over-shrinks** and does worse than least squares, a little too little with weekly data, and "
+        "about the best a fixed weight can do with monthly. The frequency matters only through that ratio, so the same daily "
+        "data need more shrinkage in a population whose betas are closer together. Bayes' rule does better than any fixed "
+        "weight here because it gives each stock its own, and learning its prior from the 500 stocks costs almost nothing "
+        "against knowing the true population.",
     ]))
     return
 
 
 @app.cell(hide_code=True)
-def _(mo, np, plots, plt, studies):
+def _(bs, mo, np, plots, plt, studies):
     _draws = studies["weekly"]["hedge_exposure_draws"]
     _fig, _ax = plt.subplots(figsize=(9.6, 2.8), constrained_layout=True)
     _bins = np.linspace(-14, 9, 47)
@@ -325,7 +342,9 @@ def _(mo, np, plots, plt, studies):
     _ax.grid(visible=False)
     _ax.legend(fontsize=7.5, loc="upper left")
     _ax.set_title("200 universes: hold the 50 highest-beta stocks, sell each estimated beta in the market", loc="left", fontsize=9)
-    _ls, _bb, _ba = (studies["weekly"]["hedge_exposure"][_m]["mean"] for _m in ("least_squares", "bloomberg", "bayes"))
+    _s = studies["weekly"]
+    _ls, _bb, _ba = (_s["hedge_exposure"][_m]["mean"] for _m in ("least_squares", "bloomberg", "bayes"))
+    _idio, _market = _s["book_idio_risk"], -_ls * bs.SETTINGS["weekly"].market_vol
     mo.vstack([mo.md(r"""
     ## 6 · What the estimates do to a hedge
 
@@ -334,35 +353,104 @@ def _(mo, np, plots, plt, studies):
     of weekly data:
     """), _fig, mo.md(f"""
     With least-squares betas the book is over-hedged by **{-_ls:.1f} positions** on average, about
-    **\\${-_ls:.0f}m net short the market** on a \\$50m book, in every one of the 200 universes. At a
-    market volatility of 16% a year, that unintended position adds about \\${-_ls * 0.16:.1f}m a year of P&L
-    volatility that the risk report does not show. Bloomberg's rule leaves {_bb:+.1f} positions and Bayes
-    {_ba:+.1f}: the Bayesian hedge is right on average, with a spread that comes only from the
-    remaining uncertainty about each beta.
+    **\\${-_ls:.0f}m net short the market** on a \\$50m book, and short in {_s['hedge_exposure']['least_squares']['universes_short']} of the 200 universes.
+    Pick the 50 stocks at random instead and the same hedge is right on average
+    ({_s['random_hedge_exposure']['least_squares']['mean']:+.1f} positions): the bias comes from choosing stocks by their estimates.
+
+    The risk report, which takes the book as hedged, shows its idiosyncratic risk, about \\${_idio:.1f}m a
+    year. The hidden short is a market position worth \\${_market:.1f}m a year on its own, so the book's true P&L
+    volatility is about \\${(_idio**2 + _market**2) ** 0.5:.1f}m, and it loses money whenever the market rallies.
+    Bloomberg's rule leaves {_bb:+.1f} positions and Bayes {_ba:+.1f}: in this population the Bayesian hedge is right
+    on average. Section 8 shows populations where it is not.
     """)])
     return
 
 
 @app.cell(hide_code=True)
 def _(mo, studies):
+    _pct = lambda _k, _m, _subset: f"{100 * studies[_k]['coverage'][_m][_subset]:.0f}%"
     _rows = "\n".join(
-        f"| {studies[_k]['setting']} | {100 * studies[_k]['coverage']['least_squares']:.0f}% | {studies[_k]['median_width']['least_squares']:.2f} | "
-        f"{100 * studies[_k]['coverage']['bayes']:.0f}% | {studies[_k]['median_width']['bayes']:.2f} | "
+        f"| {studies[_k]['setting']} | {_pct(_k, 'least_squares', 'all')} | {_pct(_k, 'least_squares', 'top')} | {_pct(_k, 'least_squares', 'extreme')} | "
+        f"{_pct(_k, 'bayes', 'all')} | {_pct(_k, 'bayes', 'top')} | {_pct(_k, 'bayes', 'extreme')} | "
         f"{100 * (1 - studies[_k]['median_width']['bayes'] / studies[_k]['median_width']['least_squares']):.0f}% |"
         for _k in ("daily", "weekly", "monthly"))
     mo.md(f"""
-    ## 7 · Intervals
+    ## 7 · Intervals: which question each one answers
 
-    | Data | Least squares: covers the truth | Width | Bayes: covers the truth | Width | Bayes narrower by |
-    |:---|:---|:---|:---|:---|:---|
+    The share of true betas inside each 90% interval, over all stocks, over the 50 with the highest
+    estimates, and over the stocks whose true beta lies beyond 1 ± 0.45 (1.5 population sds, about one
+    stock in eight):
+
+    | Data | Least squares: all | 50 highest | beyond 1 ± 0.45 | Bayes: all | 50 highest | beyond 1 ± 0.45 | Bayes narrower by |
+    |:---|:---|:---|:---|:---|:---|:---|:---|
     {_rows}
 
-    Both 90% intervals cover the true betas about 90% of the time, and they promise different things.
-    The least-squares interval is exact for each stock, whatever its true beta. The Bayesian interval
-    covers 90% on average over the stocks of the universe, and it is narrower because it also uses
-    what the other 499 stocks say. The classical intervals do not fail here; the gain is the
-    information the stock-by-stock view leaves on the table.
+    Over all stocks, both intervals cover about 90%, and they answer different questions. The
+    least-squares interval is exact for any stock fixed in advance, but the 50 stocks a desk picks for
+    their high estimates are not fixed in advance, and it misses more of them. The Bayesian interval
+    conditions on the data, so the selection does not hurt it. For a stock whose true beta is far from
+    the centre the roles turn: the Bayesian interval pulls it toward the middle and misses more often,
+    while the least-squares interval stays exact. Neither interval fails; each is calibrated for its own
+    question, and the Bayesian one is narrower because it uses what the other 499 stocks say.
     """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ## 8 · When the prior is wrong
+
+    Everything so far used a population that matches the prior: betas from one normal distribution,
+    and noise that says nothing about a stock's beta. Real stocks need not match it. The cross-section
+    of betas can be skewed, and a stock's noise can be tied to its beta: small, volatile companies are
+    the noisiest, and their betas can be far from 1. The weekly study runs again below on four
+    populations like that. One more estimator joins: Bayes with a separate prior for each fifth of the
+    stocks, ranked by their standard error, so that the prior can see what the pooled one ignores.
+    """)
+    return
+
+
+@app.cell
+def _(bs):
+    robustness = {_key: bs.study(bs.SETTINGS["weekly"], _population, n_universes=200, seed=2)
+                  for _key, _population in bs.MISSPECIFIED.items()}
+    return (robustness,)
+
+
+@app.cell(hide_code=True)
+def _(mo, robustness, studies):
+    _rows = []
+    for _s in (studies["weekly"], *robustness.values()):
+        _r, _h = _s["mse_vs_least_squares"], _s["hedge_exposure"]
+        _rows.append(f"| {_s['population']} | {_r['bloomberg']:.2f} | {_r['bayes']:.2f} | {_r['bayes_by_volatility']:.2f} | "
+                     f"{_h['bayes']['mean']:+.1f} | {_h['bayes_by_volatility']['mean']:+.1f} |")
+    _skew, _beta, _fringe = robustness["skewed"], robustness["vol_on_beta"], robustness["fringe"]
+    mo.md("\n".join([
+        "| Population | Bloomberg's rule | Bayes, one prior | Bayes, a prior per volatility group | Hedge, one prior | Hedge, a prior per group |",
+        "|:---|:---|:---|:---|:---|:---|",
+        *_rows,
+        "",
+        "Squared error relative to least squares, and the hedge's market exposure in positions, as in section 6.",
+        "",
+        f"* **Skewed betas** cost little. The normal prior's tails are too thin, so the highest betas are pulled a little "
+        f"too far ({_skew['top_bias']['bayes']:+.2f}), but one prior still beats Bloomberg's rule.",
+        f"* **When noise rises with beta, or with distance from 1,** one prior shrinks hardest exactly the stocks whose betas "
+        f"are extreme. Bloomberg's rule, which shrinks every stock alike, now does as well or better, and the Bayesian hedge "
+        f"is net long by up to {max(_beta['hedge_exposure']['bayes']['mean'], robustness['vol_on_distance']['hedge_exposure']['bayes']['mean']):.1f} "
+        "positions.",
+        f"* **A quiet core and a noisy fringe** (nine stocks in ten with betas near 1 and 15% volatility, one in ten at 0.4 "
+        f"or 1.6 with 50%) is the worst case: least squares beats one prior in "
+        f"{_fringe['n_universes'] - _fringe['universes_beating_least_squares']['bayes']} of {_fringe['n_universes']} universes. "
+        "Stein's theorem does not forbid this; it assumes every estimate has the same noise.",
+        "",
+        f"A normal prior with the true population's mean and spread fails the same way ({_fringe['mse_vs_least_squares']['oracle']:.2f} with the "
+        "noisy fringe), so the problem is the prior's shape, not learning it from the data. The repair is a better prior, not a "
+        "fixed rule: a prior per volatility group beats Bloomberg's rule where noise rises with beta, matches it where noise "
+        "rises with distance from 1, and comes close with the noisy fringe. Commercial betas condition on more than "
+        "volatility; Rosenberg and Guy (1976) predicted them from company fundamentals. Noticing that a prior does not fit "
+        "is the subject of slot 6.",
+    ]))
     return
 
 
@@ -371,52 +459,66 @@ def _(RESULTS, bs, mo, pd):
     _table = pd.read_csv(RESULTS / "intro-betas" / "window_betas.csv")
     _tests = {_w: bs.blume_test(_g.to_dict("records"), n_boot=2000, seed=0) for _w, _g in _table.groupby("window_weeks")}
     _pct = lambda _v: f"{100 * _v:+.0f}%"
+    _cell = lambda _t, _m: (f"{_pct(_t['mse'][_m] / _t['mse']['least_squares'] - 1)} "
+                            f"({_pct(_t['relative_change_interval'][_m][0])} to {_pct(_t['relative_change_interval'][_m][1])})")
     _rows = "\n".join(
-        f"| {_w // 52} year{'s' if _w > 52 else ''} | {_t['window_pairs']} | "
-        f"{_pct(_t['mse']['bayes'] / _t['mse']['least_squares'] - 1)} | {_pct(_t['relative_change_interval']['bayes'][0])} to {_pct(_t['relative_change_interval']['bayes'][1])} | "
-        f"{_t['window_pairs_beating_least_squares']['bayes']} of {_t['window_pairs']} | "
-        f"{_pct(_t['mse']['bloomberg'] / _t['mse']['least_squares'] - 1)} | {_pct(_t['relative_change_interval']['bloomberg'][0])} to {_pct(_t['relative_change_interval']['bloomberg'][1])} |"
+        f"| {_w // 52} year{'s' if _w > 52 else ''} | {_t['window_pairs']} | {_cell(_t, 'bayes')} | {_cell(_t, 'bloomberg')} | "
+        f"{_cell(_t, 'cross_section_mean')} | {_t['window_pairs_beating_least_squares']['bayes']} of {_t['window_pairs']} |"
         for _w, _t in sorted(_tests.items()))
-    _two = _tests[104]
+    _one, _two = _tests[52], _tests[104]
     mo.md(f"""
-    ## 8 · On real stocks
+    ## 9 · On real stocks
 
-    The simulations show the mechanism with betas that stay put. Real betas also drift, so the real test
-    is Blume's: estimate every beta in one window, then check how well each estimate predicts the next
-    window's. We ran it on weekly returns of {_table.stock.nunique()} large US stocks against SPY, from November 1999
-    to October 2026. They are utilities, consumer staples, health care and telecoms, because our free
-    data quota ran out there. `docs/results/intro-betas/window_betas.csv` holds every window's beta; the
-    prices are not in the repository.
+    The simulations hold each beta fixed. Real betas also move, so the real test is Blume's: estimate
+    every beta in one window, then check how well each estimate predicts the next window's. We ran it on
+    weekly returns of {_table.stock.nunique()} large US stocks against SPY, from November 1999 to October 2026, in
+    windows that end at the latest week. `docs/results/intro-betas/window_betas.csv` holds every window's
+    beta; the prices are not in the repository.
 
-    | Windows | Pairs of windows | Bayes, change in error | 90% interval | Bayes better in | Bloomberg's rule, change in error | 90% interval |
-    |:---|:---|:---|:---|:---|:---|:---|
+    | Windows | Pairs of windows | Bayes | Bloomberg's rule | Every beta set to the average | Bayes better than least squares in |
+    |:---|:---|:---|:---|:---|:---|
     {_rows}
 
-    Errors are squared errors against the next window's least-squares beta, relative to least squares;
-    the intervals come from a bootstrap over pairs of windows. Bayes' rule predicts the next period's
-    betas better. Bloomberg's rule does not help here: these defensive stocks have betas around
-    {_table.beta.mean():.2f}, so it pulls nine estimates in ten upward, and that moved them away from the next
-    window's beta more often than toward it, as in exercise 1. Over two
-    years the betas also drift: next-window betas regress on current ones with a slope of
-    {_two['slope_next_on_current']:.2f}, where estimation noise alone would give {_two['constant_beta_slope']:.2f}. That drift is why Levi and
-    Welch (2017) shrink a second time.
+    Each cell is the change in squared error against the next window's least-squares beta, relative to
+    least squares, with a 90% interval from a bootstrap over blocks of consecutive pairs of windows
+    (consecutive pairs share a window). With one-year windows, Bayes' rule predicts next year's betas
+    clearly better. With two-year windows there are only {_two['window_pairs']} pairs: the gain is smaller and less
+    certain, and setting every beta to the average does about as well.
+
+    Bloomberg's rule makes no measurable difference. These are defensive stocks with betas around
+    {_table.beta.mean():.2f}, so it pulls {_one['share_below_one']:.0%} of the estimates upward, and that moved them away from the
+    next window's beta in {_one['bloomberg_moved_away']:.0%} of cases with one-year windows and {_two['bloomberg_moved_away']:.0%} with two-year
+    windows, as in exercise 1.
+
+    The betas also move between windows by more than their standard errors allow. Within each pair of
+    windows, net of the pair's average, next-window betas regress on current ones with a slope of
+    {_one['slope_next_on_current']:.2f} (one year) and {_two['slope_next_on_current']:.2f} (two years), where estimation noise alone would give
+    {_one['constant_beta_slope']:.2f} and {_two['constant_beta_slope']:.2f}. Standard errors robust to changing volatility explain only a
+    small part of the gap, so the betas drift; Levi and Welch (2017) shrink a second time for this.
+
+    One caution: these are {_table.stock.nunique()} stocks from defensive sectors (utilities, consumer staples, health care
+    and telecoms) that survived to 2026, the ones our free data quota reached. They illustrate the
+    test; Blume (1975) and Levi and Welch (2017) ran it on thousands of stocks.
     """)
     return
 
 
 @app.cell(hide_code=True)
-def _(mo):
+def _(mo, spmo_drift):
+    _b0, _se0, _from, _to = spmo_drift["before"]
+    _b1, _se1 = spmo_drift["last"]
     mo.accordion({
-        "**Is this Bayesian or frequentist?** (click to open) What a careful frequentist would say, and what remains": mo.md(r"""
-        * **Shrinkage is not exclusively Bayesian.** The James–Stein estimator is a frequentist estimator, and
-          its advantage is a frequentist theorem. Ledoit–Wolf shrinkage of covariance matrices is the same
-          idea. What the Bayesian view adds is a reason for the amount, each estimate's own noise against the
-          spread of the population, and a full distribution to carry into decisions.
+        "**Is this Bayesian or frequentist?** (click to open) What a careful frequentist would say, and what remains": mo.md(f"""
+        * **Shrinkage is not exclusively Bayesian.** The James–Stein estimator is a frequentist estimator, its
+          advantage is a frequentist theorem, and our estimator is also the best linear unbiased predictor of a
+          random-coefficients model. Ledoit–Wolf shrinkage of covariance matrices is the same idea. What the
+          Bayesian view adds is a reason for the amount, each estimate's own noise against the spread of the
+          population, and a full distribution to carry into decisions.
         * **The prior is estimated, not assumed.** Here it comes from the cross-section of 500 stocks:
-          empirical Bayes. The only care needed is to remove the sampling noise from the spread of the
-          estimates (Lally 1998).
-        * **Real betas drift.** SPMO's beta to VOO was about 0.85 in 2022–23 and 1.30 in 2024–26, against
-          standard errors near 0.05. A forecast of next year's beta therefore needs more shrinkage than
+          empirical Bayes. The care needed is to remove the sampling noise from the spread of the estimates
+          (Lally 1998), and to check that the prior's picture of the stocks fits them (section 8).
+        * **Real betas drift.** SPMO's beta to VOO was {_b0:.2f} ± {_se0:.2f} from {_from} to {_to} and {_b1:.2f} ± {_se1:.2f}
+          in the two years after. A forecast of next year's beta therefore needs more shrinkage than
           estimation noise alone would suggest; Levi and Welch (2017) recommend Vasicek-adjusted betas from
           one to four years of daily returns, shrunk again for this drift.
         * **What it does not fix.** If the market model or the population is wrong, both answers inherit the
@@ -428,9 +530,10 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(RESULTS, json, mo):
-    _costs = json.loads((RESULTS / "svj-costs" / "costs.json").read_text())
+    _costs = json.loads((RESULTS / "svj-costs" / "costs.json").read_text())["pmmh"]
+    _hours = _costs["cpu_hours_for_2000_names_at_median"]
     mo.md(f"""
-    ## 9 · The catch
+    ## 10 · The catch
 
     Everything above was a weighted average: the posterior of 500 betas takes microseconds, because
     the market model with a normal prior has a closed-form posterior. The same structure, one model
@@ -439,9 +542,10 @@ def _(RESULTS, json, mo):
 
     * **A hidden path.** In a stochastic-volatility model with jumps (slot 5), the likelihood of
       1,000 days is an integral over the whole volatility path, with no closed form. Particle MCMC
-      computes the exact posterior, at about **{_costs['pmmh']['median_cpu_s'] / 60:.0f} CPU-minutes per name** in our runs.
-    * **Many names, every day.** For 2,000 names that is about
-      **{_costs['pmmh']['cpu_hours_for_2000_names_at_median']:,.0f} CPU-hours every morning.**
+      computes the exact posterior; with our basic sampler it took **{_costs['range_cpu_s'][0] / 60:.0f} to
+      {_costs['range_cpu_s'][1] / 60:.0f} CPU-minutes per name** (median {_costs['median_cpu_s'] / 60:.0f}).
+    * **Many names, every day.** For 2,000 names at the median that is about
+      **{round(_hours, -1):,.0f} CPU-hours every morning**, or {_hours / 24:.0f} cores running all day.
 
     Amortized inference keeps the structure and drops the cost: train a network once on names
     simulated from the population prior, then get each real name's posterior in seconds. That is
@@ -457,9 +561,8 @@ def _(mo):
 
     1. **A utilities universe.** Utilities have betas around 0.6. Bloomberg's rule pulls them toward 1;
        Bayes' rule pulls them toward the universe's own average. Which hedges better?
-    2. **Five stocks.** Stein's theorem needs only four stocks to shrink toward their own average.
-       With five, the prior is learned from very little: does shrinkage still pay, and does it pay in
-       every universe?
+    2. **Five stocks.** With five, the prior's centre and spread are learned from five estimates. Does
+       shrinkage still pay, does it pay in every universe, and how does Bloomberg's fixed rule do?
     """)
     return
 
@@ -475,14 +578,15 @@ def _(mo):
 @app.cell
 def _(bs, mo, utilities_button):
     mo.stop(not utilities_button.value)
-    _population = {"beta_mean": 0.6, "beta_sd": 0.2, "idio_dispersion": 0.35}
-    _s = bs.study(bs.SETTINGS["weekly"], n_universes=200, n_stocks=60, top=10, seed=5, population=_population)
+    _s = bs.study(bs.SETTINGS["weekly"], bs.UTILITIES, n_universes=200, n_stocks=60, top=10, seed=5)
+    _h = {_m: _s["hedge_exposure"][_m]["mean"] for _m in ("least_squares", "bloomberg", "bayes")}
     mo.md(f"""
     Sixty utilities with betas around 0.6, two years of weekly data, 200 universes. Squared error relative
     to least squares: Bloomberg's rule **{_s['mse_vs_least_squares']['bloomberg']:.2f}**, Bayes
     **{_s['mse_vs_least_squares']['bayes']:.2f}**. The ten highest estimates are too high by
     {_s['top_bias']['least_squares']:+.2f} with least squares, {_s['top_bias']['bloomberg']:+.2f} with Bloomberg's
-    rule and {_s['top_bias']['bayes']:+.2f} with Bayes. Bloomberg's rule assumes the average stock has a beta of 1;
+    rule and {_s['top_bias']['bayes']:+.2f} with Bayes, so hedging those ten leaves {_h['least_squares']:+.1f}, {_h['bloomberg']:+.1f}
+    and {_h['bayes']:+.1f} positions of market exposure. Bloomberg's rule assumes the average stock has a beta of 1;
     for utilities it pulls every estimate toward 1, which on average is the wrong way. The prior should
     describe the population you are estimating.
     """)
@@ -490,21 +594,25 @@ def _(bs, mo, utilities_button):
 
 
 @app.cell
-def _(bs, five_button, mo):
+def _(bs, five_button, mo, studies):
     mo.stop(not five_button.value)
     _s = bs.study(bs.SETTINGS["weekly"], n_universes=400, n_stocks=5, top=1, seed=5)
+    _r, _n = _s["mse_vs_least_squares"], _s["universes_beating_least_squares"]
     mo.md(f"""
     Five stocks, two years of weekly data, 400 universes. Squared error relative to least squares: Bayes
-    with the prior learned from the five **{_s['mse_vs_least_squares']['bayes']:.2f}**, Bayes with the true population
-    {_s['mse_vs_least_squares']['oracle']:.2f}. Bayes beats least squares in {_s['universes_beating_least_squares']['bayes']} of
-    400 universes. Shrinkage still pays on average, but with five stocks the population is estimated from
-    very little, so it does not pay every time. With 500 stocks it paid in all 200.
+    with the prior learned from the five **{_r['bayes']:.2f}**, Bayes with the true population {_r['oracle']:.2f},
+    Bloomberg's rule **{_r['bloomberg']:.2f}**. Bayes beats least squares in {_n['bayes']} of 400 universes, and even the
+    true prior only in {_n['oracle']}: the gain holds on average, and five errors make a noisy total. With 500
+    stocks, Bayes won in {studies['weekly']['universes_beating_least_squares']['bayes']} of 200.
 
-    Bloomberg's rule does better here ({_s['mse_vs_least_squares']['bloomberg']:.2f}): its target, 1, happens to be this
-    population's true centre, and five stocks cannot estimate the centre as well as that. When data on
-    the population are scarce, a prior from outside the data (here, the knowledge that betas centre on
-    1) is worth more than one learned from the data. Exercise 1 showed the cost when that outside
-    knowledge is wrong.
+    Bloomberg's rule beats the learned prior here because it needs nothing from the data: its centre, 1,
+    is this population's true centre, and its amount is close to the best fixed amount for weekly data (it keeps
+    67% of each estimate; the best fixed weight is {100 * studies['weekly']['best_fixed_weight']:.0f}%). Empirical Bayes has to learn
+    both from five numbers, and the amount is the hard part: in {_s['prior_sd_at_floor']} of 400 universes the
+    estimated spread of the true betas came out at zero, and all five estimates were pooled to their
+    average. Its 90% intervals cover only {100 * _s['coverage']['bayes']['all']:.0f}% of the true betas, because they treat the
+    estimated prior as exact. With few stocks, a prior from outside the data beats one learned from it,
+    as long as the outside prior is right; exercise 1 showed what it costs when it is not.
     """)
     return
 
@@ -516,16 +624,17 @@ def _(mo):
 
     1. **One regression per stock ignores what the other stocks tell you.** The extreme estimates are
        the least reliable: the highest betas are too high and the lowest too low.
-    2. **Bayes' rule with a prior learned from the cross-section fixes this**, by each estimate's own
-       noise. It is provably better in total (Stein), and it is what data vendors approximate with a
-       fixed rule.
+    2. **Bayes' rule with a prior learned from the cross-section fixes this**, shrinking each estimate
+       by its own noise. Stein's theorem explains why pooling pays when every estimate has the same
+       noise. With unequal noise the prior has to describe the stocks; when it does not, a fixed rule
+       can do as well or better, and the remedy is a better prior.
     3. **You get a distribution, not just a better number.** Carry it into the decision: here, the
        hedge.
     4. **Here the posterior is a weighted average. For the volatility models in slots 4 and 5 it is
        not,** and computing it for every name, every day, is the problem the rest of the tutorial
        solves.
 
-    **Next, slot 2:** how a neural network learns to return a posterior in one pass.
+    **Next, slot 2:** how a neural network learns to return a posterior in seconds.
     """)
     return
 
