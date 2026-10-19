@@ -199,6 +199,7 @@ for export commands, evidence boundaries and the current inference results.
 | Notebook | Schedule item | What it shows |
 |---|---|---|
 | `notebooks/01_mmar_univariate.py` | Optional companion | Univariate multifractal model of asset returns (MMAR): simulator, prior predictive check, adapter and networks, pretrained checkpoint or CPU toy fit, recovery and calibration, posterior on SPMO and VOO |
+| `notebooks/tutorial_1_why_bayesian.py` | Slot 1: intro | One beta, then five hundred: the Bayesian market model, the winner's curse among estimated betas, a prior learned from the cross-section, Bloomberg's rule against Bayes' rule, the hedge, Blume's test on real stocks, and why the closed form disappears for volatility models |
 | `notebooks/svj_var_pipeline.py` | Optional P companion | Daily SVJ joint inference, particle audit and conditional log-loss forecasts |
 
 Export for people without marimo: `pixi run marimo export ipynb notebooks/01_mmar_univariate.py -o /tmp/01.ipynb --include-outputs`.
