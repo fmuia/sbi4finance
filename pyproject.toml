@@ -105,6 +105,8 @@ svj-teaching = "python scripts/prepare_svj_teaching.py"
 review-svj = "marimo edit notebooks/svj_var_pipeline.py --no-token"
 demo-svj = { cmd = "marimo edit notebooks/svj_var_pipeline.py --no-token", env = { SBI4FINANCE_SVJ_DEMO = "1" } }
 test-workflow = "python -m unittest discover -s tests -p 'test_*workflow.py' -v"
+test-crash-risk = "python -m unittest discover -s tests -p test_crash_risk.py -v"
+crash-risk-study = "python scripts/crash_risk_study.py"
 
 # GPU environment for Oscar (linux-64 only): `pixi install -e gpu` on a login node.
 [tool.pixi.feature.cuda]
