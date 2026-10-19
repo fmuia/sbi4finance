@@ -395,7 +395,8 @@ def _(RESULTS, bs, mo, pd):
     Errors are squared errors against the next window's least-squares beta, relative to least squares;
     the intervals come from a bootstrap over pairs of windows. Bayes' rule predicts the next period's
     betas better. Bloomberg's rule does not help here: these defensive stocks have betas around
-    {_table.beta.mean():.2f}, so pulling them toward 1 moves most of them the wrong way, as in exercise 1. Over two
+    {_table.beta.mean():.2f}, so it pulls nine estimates in ten upward, and that moved them away from the next
+    window's beta more often than toward it, as in exercise 1. Over two
     years the betas also drift: next-window betas regress on current ones with a slope of
     {_two['slope_next_on_current']:.2f}, where estimation noise alone would give {_two['constant_beta_slope']:.2f}. That drift is why Levi and
     Welch (2017) shrink a second time.
@@ -482,8 +483,8 @@ def _(bs, mo, utilities_button):
     **{_s['mse_vs_least_squares']['bayes']:.2f}**. The ten highest estimates are too high by
     {_s['top_bias']['least_squares']:+.2f} with least squares, {_s['top_bias']['bloomberg']:+.2f} with Bloomberg's
     rule and {_s['top_bias']['bayes']:+.2f} with Bayes. Bloomberg's rule assumes the average stock has a beta of 1;
-    for utilities it pushes every estimate the wrong way. The prior should describe the population you
-    are estimating.
+    for utilities it pulls every estimate toward 1, which on average is the wrong way. The prior should
+    describe the population you are estimating.
     """)
     return
 

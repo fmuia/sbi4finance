@@ -68,8 +68,10 @@ Other candidates we considered:
 - **"Your simulation assumes the answer."** The theorem does not need the simulation, and the
   real-data test agrees with it.
 - **"Bloomberg's rule is good enough."** It is close to Bayes for weekly data on a universe centred
-  at 1. It is worse than least squares with daily data, and for a low-beta universe it pushes every
-  estimate the wrong way, in simulation (exercise 1) and on the real defensive stocks (§5.5).
+  at 1. It is worse than least squares with daily data. For a low-beta universe it pulls the
+  estimates the wrong way on average: it is worse than least squares in simulation (exercise 1), and
+  no better on the real defensive stocks, where it moved the estimate away from the next window's
+  beta in 56% (one-year windows) and 60% (two-year windows) of cases (§5.5).
 - **"Errors average out over many stocks."** Not in a selected portfolio. The hedge example takes
   the 50 highest estimates, and their errors share a sign.
 - **"Betas drift, and the market model is too simple."** The drift is measured (§5.5) and the
