@@ -159,17 +159,18 @@ Sources:
   least-squares betas were too high by 0.16. With $1m in each, the hedged book was net short the
   market by $8.1m on average, and short in all 200 universes.
 - The real stocks: Blume's test on weekly returns of 20 large US stocks from defensive sectors
-  (average beta 0.53), 1999–2026. The adjustment changed the squared error of next period's
-  beta by +1% with one-year windows (90% interval −16% to +19%) and +0% with two-year windows
-  (−25% to +34%) against least squares, and beat it in 13 of 26 and 7 of 12 window pairs: no
+  (average beta 0.52), 1999–2026. The adjustment changed the squared error of next period's
+  beta by +4% with one-year windows (90% interval −15% to +23%) and +19% with two-year windows
+  (−8% to +37%) against least squares, and beat it in 13 of 26 and 4 of 12 window pairs: no
   measurable difference. The sample is what a free data quota allowed, all survivors from
   defensive sectors, so it speaks to the target (1 against the stocks' own average), not to the
   amount.
 
 Kept for the session: why the highest estimates are too high (the winner's curse), Stein's
-theorem and its conditions, how Bayes' rule sets the amount of shrinkage stock by stock, and why
-no fixed fraction suits every stock: the amount depends on each estimate's noise relative to the
-spread of true betas, and the target on the population.
+theorem and its conditions, how Bayes' rule sets the amount of shrinkage stock by stock, why no
+fixed fraction suits every stock (the amount depends on each estimate's noise relative to the
+spread of true betas, and the target on the population), and when one pooled prior does worse
+than Bloomberg's rule: when a stock's noise is tied to its beta.
 
 ### P2: Question 2/6, slot 2 (Thu 29 Oct)
 
