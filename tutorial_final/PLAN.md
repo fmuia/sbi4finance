@@ -1,313 +1,285 @@
-# Plan: from the drafts to `tutorial_final/`
+# Plan: `tutorial_final/` for ICAIF '26
 
-Draft for team review, 21 October 2026. Owner: Francesco Muia.
+Revision 2, 21 October 2026. Owner: Francesco Muia. Supersedes revision 1 (same day),
+which built slot 5 on SVJ from returns.
 
-`tutorial_final/` will hold only what we present at ICAIF '26 (Milan, 14–15 November): the
-notebooks, the studies that produce their numbers and the results they load. The rest of the
-repository stays where it is, as a research archive. This file is the plan to get there; at
-release a participant README replaces it.
+`tutorial_final/` will hold what we present in Milan on 14–15 November: the notebooks, the
+studies that produce their numbers, and the results they load. The rest of the repository stays
+as the research archive. This file is the working plan; a participant README replaces it at
+release.
 
-## 1. Goals and constraints
+## 1. The decision
 
-**Goals**
+**Slot 5 is Bayesian calibration of a simulation-only volatility model to the option smile,
+carried into the price of a product the smile does not pin down.** Rough Bergomi calibrated to a
+vanilla surface; the posterior propagated into a forward-start option, with the variance swap as
+the control; the 90% quantile of the price range as the model-risk reserve. Heston, which has an
+exact likelihood through its Fourier pricer, plays the role GBM plays in slot 4: the model on
+which the network is checked against the exact answer.
 
-1. Decide the intro (slot 1), which Francesco presents.
-2. Finalize slot 4, BayesFlow basics on constant volatility
-   ([#37](https://github.com/fmuia/sbi4finance/pull/37)).
-3. Finalize slot 5, stochastic volatility with jumps
-   ([#38](https://github.com/fmuia/sbi4finance/pull/38)), which Francesco presents.
-4. Collect the parts that meet the bar in §7 into `tutorial_final/`.
+The route is GBM (slot 4, under P, from returns) → the smile (slot 5, under Q, from quotes). The
+tutorial's title, *Amortized Bayesian Calibration of Volatility Models*, now describes it.
 
-**Constraints**
+The SVJ-from-returns lesson becomes an optional companion. Its audit and its validation design
+are reused in slot 5 (§6).
 
-- **C1, relevance.** Slots 1, 4 and 5 each answer a question that quants, risk managers and ML
-  researchers at ICAIF already ask.
-- **C2, necessity.** For every claim we can say when Bayesian inference is needed and when
-  simulation-based, amortized inference is needed. We compare against the strongest alternative a
-  skeptic would name, not the weakest.
-- **C3, route.** GBM, then SVJ. No options for now. HKDE, Heston, Bergomi, rough Bergomi and MMAR
-  stay in the archive; the options material can come back later as an optional extra.
+## 2. The thesis
 
-Slots 2, 3 and 6 are outside this plan, except where they set an interface (§10).
+1. **Bayes pays when the decision needs a quantile of what the data do not pin down.** A vanilla
+   surface identifies the skew (ρη) and its term structure (H) far better than the vol-of-vol η
+   alone; the products a desk marks with the calibrated model depend on η alone. The posterior
+   turns bid-ask widths into a price range and a reserve. A point calibration returns one number;
+   a multi-start returns the modes, not the ridge.
+2. **Simulation-based, amortized inference pays when the model is priced by simulation.** For a
+   Monte-Carlo-priced model the exact posterior costs hours per surface; the amortized posterior,
+   trained once on simulated surfaces, returns it in seconds per underlying, every day, and can
+   be validated on thousands of synthetic surfaces.
+3. **Where neither holds, we say so.** Heston with a Fourier pricer needs neither; it is the
+   check. GBM with 1,000 days of returns needs neither; slot 4 says so.
 
-## 2. The thesis we defend
+## 3. Constraints
 
-Every section is judged against three sentences.
+- **C1, relevance.** Every desk recalibrates daily; exotic marks, hedge ratios and reserves depend
+  on the calibration. Prudent valuation (Regulation (EU) 2016/101, Art. 11) asks for a range of
+  plausible calibrations with a 90% point; IFRS 13 asks for Level 3 sensitivity ranges; SR 11-7
+  asks for model-risk assessment. Rough and path-dependent volatility are the research frontier
+  this audience knows, and deep calibration is the method it knows for them.
+- **C2, necessity.** Each claim is stated against the strongest alternative: multi-start least
+  squares, regularized calibration, deep calibration (a neural pricer with least squares), a
+  neural pricer with MCMC, model-free bounds, across-model ranges. §7 lists what each gives and
+  lacks, and which study faces it.
+- **C3, route.** GBM → the smile. SVJ, HKDE jumps, MMAR and the one-factor Bergomi model are
+  archive or companions.
 
-1. **Bayesian inference pays when the decision depends on what the data identify poorly:** rare
-   events such as jumps, hidden states such as today's volatility, short windows, and many noisy
-   estimates followed by a selection.
-2. **Simulation-based, amortized inference pays when the likelihood is intractable or costly and
-   many posteriors are needed** (names × days), or when the method itself must be validated on
-   thousands of cases.
-3. **When neither holds, we say so.** GBM with 1,000 days has an exact answer, and its plug-in
-   forecast is as good as the predictive one.
+## 4. The slot-5 lesson
 
-The route has one case where neither holds (slot 4, used as a check) and one where both hold
-(slot 5).
+Working title: **Ten calibrations fit the smile. Which price do you mark?** About 40 minutes
+(decision D2 fixes it). Francesco presents.
 
-## 3. Where we stand
-
-| Piece | Where | State | Gaps against C1–C3 |
+| Min | Section | On screen | Live or cached |
 |---|---|---|---|
-| Intro, "one beta, then five hundred" | [#41](https://github.com/fmuia/sbi4finance/pull/41), draft | Built; two adversarial reviews; 15 tests; runs in about 10 s | About betas, not volatility, and slots 4–5 do not reuse its population prior. The real-data section rests on 20 survivor defensive stocks from Alpha Vantage, licence open. Long for an intro. |
-| Crash-day example | [#42](https://github.com/fmuia/sbi4finance/pull/42), draft | Built | Now the seed of slot 6; its results are about the prior. Not an intro candidate. |
-| Slot 4 | #37, draft, based on `bb3571d` | Runs in under 2 minutes with the saved networks | Quotes "about 35 CPU-minutes per name" for exact SVJ inference (§6). Part B says the network was never told about standard deviations, but it reads log squares. Long for a slot. Needs current `main`. |
-| Slot 5 | #38, draft, based on `bb3571d` | Runs in under a minute with cached evidence | The best exact sampler is not measured. No real-data comparison with GARCH or filtered historical simulation. Classical intervals are Wald only. The plug-in comparison uses the posterior median; the MLE plug-in has only 40 series. The audit threshold is our own choice. |
-| SVJ evidence | `main`, `docs/results/svj-*` | The design document's seven checks, re-run | See §6. |
-| LinkedIn series | [#40](https://github.com/fmuia/sbi4finance/pull/40), draft | The decisions in its §8 were due 20 October; P0 is planned for today | P0 and P5 quote the particle-MCMC cost. P1 depends on the intro. P4 and P5 need frozen slot 4 and slot 5 numbers. |
-| Environment | `pyproject.toml` | Locked for osx-arm64 and linux-64 | Windows and Intel-Mac laptops cannot install the locked environment. |
+| 0–4 | The question. A desk calibrates to today's smile and marks a forward-start option. Ten calibrations fit equally well. Which price, and what reserve? | The SPY smile; the regulation's words | cached |
+| 4–9 | GBM under Q. Black–Scholes gives one volatility for every strike; the market does not. P and Q in one slide: slot 4's posterior forecasts, this one prices. | Flat line against the SPY smile; the ATM-skew term structure and its power law | live, seconds |
+| 9–16 | Heston: the smile explained. Fourier likelihood, exact posterior by MCMC, and the slot-4 workflow with a new simulator. The network against the exact posterior. | Posterior pairs, exact against network | MCMC cached, network live |
+| 16–21 | Rough Bergomi: why rough (skew ∝ T^(H−1/2)), why Monte Carlo only, why no exact posterior. | Skew term structure under both models; one priced surface and its cost | cached |
+| 21–26 | The amortized posterior for the SPY surface. The ρ–η ridge; H from the term structure. | Posterior pairs over H, η, ρ | live, seconds |
+| 26–31 | Is it right? SBC on 1,000 synthetic surfaces; the audit of this surface against the Monte Carlo likelihood; agreement with MCMC on a neural pricer, the deep-calibration route. | SBC; audit efficiency; two posteriors overlaid | SBC cached, audit live |
+| 31–35 | The classical route on the same surface: multi-start least squares and a regularized fit; what they return and what they miss. | The modes on the ridge | cached |
+| 35–39 | From posterior to prices: variance swap (zero range), volatility swap, forward-start option; the 90% quantile against the point calibration: the reserve. | Three price distributions; the reserve | price map live |
+| 39–40 | Across models: Heston and rough Bergomi on the same smile price the forward-start differently. Within-model is a lower bound. Hand-over to slot 6. Where it leads: path-dependent volatility, joint SPX–VIX. | Two price distributions | cached |
 
-## 4. Decisions
+Exercises: change the quote-noise model and watch the reserve; drop the two shortest maturities
+and watch H; calibrate Heston to the rough-Bergomi surface (misspecification, for slot 6).
 
-| # | Decision | Recommendation | Needed by | Because |
-|---|---|---|---|---|
-| D1 | Intro topic (§5) | Option D: the volatility question as the spine, with a short beta example | Fri 23 Oct | P1's assets are due Mon 26 Oct |
-| D2 | Tutorial length, slot durations, presenters (who presents slot 4?), owners of slots 2, 3 and 6 | From the acceptance mail | Fri 23 Oct | Trimming slots 4 and 5 needs a time budget |
-| D3 | Record the route on [#26](https://github.com/fmuia/sbi4finance/issues/26): GBM → SVJ, options deferred; the `main` README points to `tutorial_final/` | Yes | Fri 23 Oct | The README still advertises the options route |
-| D4 | Laptop support: add win-64 (and osx-64) to the lock, or offer a hosted notebook | Try win-64 first | Fri 30 Oct | The clean-machine install test is on Thu 5 Nov |
-| D5 | Repository public, and data licences (the VOO/SPMO CSV, the Alpha Vantage betas, the E2 universe) | Public before P7, with no raw prices committed | Fri 30 Oct | The posts cannot link a private repository |
-| D6 | Present from marimo (app view or Studio), or from slides with the notebook beside them | Notebooks for slots 4 and 5; the intro either way | Fri 30 Oct | It sets the rehearsal format |
-| D7 | Message changes triggered by E1–E3 (§6) | Apply the decision rules | Fri 30 Oct (E1, E3), Mon 2 Nov (E2) | Slot 5 freezes on Fri 6 Nov |
+## 5. Task specification v0
 
-## 5. Workstream A: the intro
+Starting values, to be frozen in `configs/calibration_protocol.json` on Fri 23 Oct. The repo's
+rough pilot (`rough_option_panel_v1`: nine put prices, ρ fixed at −0.6, flat forward variance,
+H ∈ [0.1, 0.3], η ∈ [0.4, 1.2]) is the base; everything below generalizes it.
 
-**Criteria**
+| Item | v0 |
+|---|---|
+| Observation | Implied volatilities on a grid of 7 maturities × 9 strikes, in maturity-major order. Maturities 1w, 2w, 1m, 2m, 3m, 6m, 1y. Strikes at log-moneyness k = δ σ_ATM √T for δ ∈ {−2, −1.5, −1, −0.5, 0, 0.5, 1, 1.5, 2}, so every maturity is quoted in its liquid region. |
+| Quote noise | Gaussian in implied vol, SD 0.3 vol points at δ = 0 rising linearly to 1.0 at \|δ\| = 2, times a per-surface scale drawn log-normally (median 1, log-sd 0.3) and given to the network as context. |
+| Rough Bergomi unknowns | H ~ U(0.02, 0.35); η ~ log-normal(median 1.5, log-sd 0.45); ρ ~ U(−0.99, −0.2). |
+| Forward-variance curve ξ₀ | Context, not inferred: piecewise-constant on the 7 maturities; for training, level σ₀ ~ log-normal(median 20%, log-sd 0.35) and a slope factor so that σ(1y)/σ(1w) ∈ [0.7, 1.6]. For the real surface, built from the chain by log-contract replication per maturity. |
+| Heston (check model) | v₀, θ, κ, σ_v, ρ with priors in the units of slot 4's prior where they overlap; Fourier pricer from `hkde.py` with jump intensity zero. Heston's forward-variance curve is parametric, θ + (v₀ − θ)e^(−κt): the contrast with Bergomi is a teaching point. |
+| Pricing numerics | Hybrid scheme (`rough_bergomi.py`), steps per maturity fixed at 256 regardless of T, 2^17 paths with antithetic variates and the Black–Scholes control variate; MC standard error below 0.1 quote-noise SD on every quote (the pilot's rule). |
+| Products under the posterior | Variance swap 3m (control: fixed by ξ₀); volatility swap 3m; ATM forward-start call, strike set at 3m, expiry 6m; one vanilla outside the grid (2y, 90% put) as the extrapolation warm-up. Priced by MC per posterior draw with common random numbers; a learned price map (the `hkde_surrogate.py` design) validated against MC makes the live cell fast. |
+| Reserve | 90% quantile of the posterior price distribution minus the point-calibration price, per product. |
+| Summary network | Stage B: a small MLP/CNN over the 7 × 9 grid plus context. Stage D: `bf.networks.SetTransformer` over tokens (k/√T, T, iv, noise sd, mask) with random masking in training, so a real chain with missing strikes is handled as trained. |
+| Inference network | `bf.networks.FlowMatching`, slot 4's class; three unknowns. |
+| Bank | 100,000 training surfaces, 5,000 validation, 5,000 test, generated on Oscar with the existing shard/assemble scripts; 2,000 further surfaces reserved for SBC. |
 
-1. Relevance (C1): the room already asks the question.
-2. Route (C3): it leads into GBM → SVJ without a detour.
-3. Honesty (C2): it says when Bayes is not needed and when SBI is not needed.
-4. Comfort: Francesco can give it without notes and answer the five questions below.
-5. Cost: it is ready by Wed 4 Nov while slots 4 and 5 finish.
+## 6. What exists and what is built
 
-**Options**
+**Reused from the archive.** Rough Bergomi simulator and FFT hybrid driver; option-bank schema,
+shard generation and assembler; Oscar array scripts; Fourier pricer for Heston (via `hkde.py`);
+importance correction with an exact likelihood (`hkde_correction.py`); fixed-contract learned
+price map (`hkde_surrogate.py`); the SVJ audit (`svj/audit.py`: Student-t proposal, reweighting,
+efficiency flag); shared inference and training workflows; the 9 October HKDE figure
+(`docs/design/images/01-hkde-option-prices.png`), which previews the lesson's result on a
+Heston-with-jumps surface.
 
-| | Option | Relevance | Route | Honesty | Work left |
-|---|---|---|---|---|---|
-| A | #41 as it is, trimmed | High for quants: Bloomberg's beta, a hedge | Weak: betas | Strong: Stein's scope, the BLUP equivalence | Trim; settle or drop the real-data section |
-| B | Crash day (#42) | High | Good: jumps | The prior decides most of the answer | Moved to slot 6; not recommended |
-| C | Volatility first: "tomorrow's risk number for 2,000 names: what we don't know, and what it costs to know it" | High for risk | Direct | Built on the thesis | New, about 3 days |
-| D | C's spine with a 6-minute beta example from #41 | High | Direct | Strong | About 2 days; reuses #41's verified results |
+**Library work** (`src/sbi4finance/calibration/`, with tests):
 
-C's "Bayes in one example" could itself stay on the route: counts of extreme loss days across 500
-names, pooled with a Gamma–Poisson prior. That is the betas' winner's-curse structure applied to
-tail events. It is new, so it would need its own check.
+| Module | Content |
+|---|---|
+| `surface.py` | Grid definition, implied-vol inversion, noise model, ξ₀ from a chain by log-contract replication, ATM-skew term structure |
+| `heston_q.py` | Heston Q task: prior, Fourier likelihood (JAX), NUTS/adaptive-MH sampler, simulator for BayesFlow |
+| `rough_q.py` | Rough Bergomi Q task: prior, ξ₀ context, MC surface pricer with CRN, simulator for BayesFlow, bank adapter |
+| `products.py` | Variance swap, volatility swap, forward-start call, out-of-grid vanilla; MC pricers with CRN; learned price map |
+| `classical.py` | Multi-start least squares (L-BFGS on the MC pricer with CRN, and on the neural pricer), Jacobian standard errors, Tikhonov-regularized fit |
+| `pricer_net.py` | Neural pricer (parameters + ξ₀ → 63 implied vols), the deep-calibration route; MCMC on it |
+| `audit.py` | Per-surface importance reweighting of the network's draws with the MC likelihood; efficiency and PSIS k̂ |
 
-**Recommendation: D.** It keeps #41's strongest verified result (the winner's curse and the
-mis-sized hedge), makes the volatility question the spine (C3), puts the thesis of §2 on screen
-by minute 10 (C2) and leaves LinkedIn P1 valid. The full #41 notebook becomes an optional
-companion in `extras/`. Choose A if the intro gets 25 minutes or more and the team wants a single
-closed-form story. Choose C if the beta example feels like a detour in the dry talk.
+**Studies** (`tutorial_final/studies/`, each writes to `results/` and is a `pixi` task):
 
-Outline for D, about 18 minutes (to adjust after D2):
+| ID | Study | Output | Feeds |
+|---|---|---|---|
+| S1 | Generate the rough-Bergomi bank (Oscar) | `results/calibration/bank-manifest.json` | S2, S4, S5 |
+| S2 | Train the amortized posterior; SBC, recovery, coverage, contraction on held-out surfaces | `checkpoints/rough_bergomi/`, `results/calibration/validation/` | §4 min 26–31 |
+| S3 | Heston check: exact MCMC against the network on 50 synthetic surfaces and the real one | `results/calibration/heston-check/` | §4 min 9–16 |
+| S4 | Neural pricer; MCMC on it against the amortized posterior on 50 surfaces and the real one | `results/calibration/pricer-route/` | C2 row "deep calibration" |
+| S5 | Audit: efficiency and k̂ on 500 validation surfaces; flag rate; the real surface | `results/calibration/audit/` | §4 min 26–31 |
+| S6 | Classical route: multi-start LS and regularized fit on 200 synthetic surfaces and the real one; coverage of Jacobian intervals; where the modes sit on the ridge | `results/calibration/classical/` | §4 min 31–35 |
+| S7 | Products under the posterior: price distributions, reserves, price-map validation against MC; Heston against rough Bergomi on the same surface | `results/calibration/products/` | §4 min 35–40 |
+| S8 | Real surface: SPY end-of-day chain for one date through the Alpha Vantage connector (`HISTORICAL_OPTIONS`); cleaning rules; implied vols, ξ₀, skew term structure; derived data only in the repository, provenance recorded | `data/spy-surface/`, `data/SOURCES.md` | §4 throughout |
+| S9 | Costs on one machine: one MC likelihood evaluation; the exact MCMC with MC pricing inside, run on one surface to a fixed CPU budget and extrapolated to 400 effective draws; network; audit; neural pricer + MCMC; multi-start LS | `results/calibration/costs.json` | §4 min 16–21, 26–31 |
 
-1. **The question** (2 min). Every morning, VaR and ES for 2,000 names. Three unknowns: today's
-   volatility (hidden), the parameters (tails poorly identified) and the model.
-2. **Bayes in one example** (6 min). Of 500 betas, the 50 highest are too high by 0.16, and their
-   hedge is left about $8m net short on a $50m book. The posterior is a weighted average of the
-   estimate and the cross-section. Say up front that empirical Bayes and BLUP give the same
-   estimator.
-3. **When it matters, and when it doesn't** (4 min). GBM: the plug-in against the predictive ES by
-   window length, from slot 4 (negligible at 1,000 days, 2.4% at 60, 6% at 20). SVJ: jump
-   parameters that four years cannot pin down, from slot 5.
-4. **When simulation-based, amortized inference matters** (4 min). A 2 × 2 map: likelihood
-   tractable or not, one posterior or thousands a day. Each cell gets its tool and, for SVJ, its
-   measured cost (from E1).
-5. **The route** (2 min). GBM, where every step can be checked, then SVJ, where it cannot.
+**Build order.** Each stage is a presentable lesson on its own.
 
-**Steps**
+- **Stage A, Heston only.** S3 and S7 on Heston: exact posterior, network, forward-start range,
+  reserve. The lesson's whole arc on a model with an exact check.
+- **Stage B, rough Bergomi on the fixed grid.** S1, S2, S4, S5, S6, S7, S9. The headline.
+- **Stage C, the real surface.** S8 feeding every section.
+- **Stage D, varying quote sets.** The set-based summary network; the real chain used as quoted.
 
-- Wed 21–Thu 22 Oct: storyboard D (eight frames) and a trimmed A. Francesco gives each as a
-  5-minute dry talk. Scan the ICAIF '26 programme for overlapping talks and tutorials (30 min).
-- Fri 23 Oct: decide (D1); adjust #40's P1 if needed.
-- Mon 26–Thu 29 Oct: build the intro notebook, closed form only and under 30 s, from
-  `beta_shrinkage.py` (#41) and slot 4's `gbm_volatility.py`.
-- Wed 4 Nov: freeze.
+## 7. The C2 table: alternatives, and the study that faces each
 
-**Five questions the intro must survive**
+| Alternative | Gives | Lacks | Faced by |
+|---|---|---|---|
+| Point calibration with multi-start (desk practice) | The optima | No weights, no range; finds modes, not the ridge | S6 |
+| Regularized calibration (Tikhonov; Cont & Tankov) | One stable answer | The uncertainty hides in the penalty | S6 |
+| Deep calibration (Horvath, Muguruza & Tomas 2021; Bayer et al. 2019): neural pricer + least squares | A point, fast | No range | S4, S6 |
+| Neural pricer + MCMC | A posterior; any noise model; any quote set | A sampler per surface; it is simulation-based inference too | S4: the two posteriors agree, and the lesson says which to use when |
+| Exact MCMC with the MC pricer inside | The exact posterior | Hours per surface | S9 measures it |
+| Model-free bounds (martingale optimal transport) | Bounds across all models | Too wide to act on | Stated; the posterior says how much of the bound one model occupies |
+| Across-model ranges (Cont 2006; Schoutens, Simons & Tistaert 2004) | Model risk | Not within reach of one model's posterior | S7's Heston-against-rough comparison; slot 6 |
+| "The posterior width is your noise model" | — | — | Exercise 1 shows it; the lesson states the within-model range as a lower bound |
 
-1. "This is James–Stein, or empirical Bayes." Yes. Bayes adds the amount of shrinkage per name and
-   a distribution to decide with.
-2. "Why not GARCH or filtered historical simulation for VaR?" They are slot 5's benchmarks (E2).
-3. "Why not Stan for each name?" Measured in slot 5 (E1).
-4. "A network can be wrong for my name." Slot 3 (calibration) and slot 5 (the audit).
-5. "Your prior decides the answer." Where the data are weak, yes; that is slot 6.
+## 8. Claims (seed of `CLAIMS.md`)
 
-## 6. The C2 check: the alternatives we must face
+Each claim is on screen only when its study has written the number it quotes.
 
-| Slot | Claim | The alternative a skeptic will name | What we have | Action |
-|---|---|---|---|---|
-| 1 | Pulling betas toward the cross-section improves a hedge | James–Stein, empirical Bayes, BLUP; Blume's and Vasicek's adjustments; better data (Dimson betas, daily returns) | #41 covers all of them and says empirical Bayes gives the same estimator | None for the vignette. Drop the real-data part or settle its licence (D5). |
-| 4 | The network reproduces the exact posterior | The MLE with its standard error; the conjugate posterior | A grid check against the exact posterior | Add one line: the network's interval for σ next to MLE ± 1.645 se. Say that at 1,000 days Bayes adds nothing and the slot checks the workflow. |
-| 5 | The exact posterior costs about 35 CPU-minutes per name | NUTS on the variance path with the jumps summed out (Stan or NumPyro); particle MCMC with a tuned or correlated proposal (Deligiannidis, Doucet and Pitt 2018); particle Gibbs. Plain SV without jumps fits in seconds to a minute with specialised samplers (stochvol), so "SV is slow" is no argument on its own. | One particle-MCMC set-up that accepts 9–16% of moves: 12–52 minutes per name. The design document's run had a median of 6 minutes. | **E1** |
-| 5 | Classical intervals fail for the jump parameters | Profile-likelihood intervals, the bootstrap, sets robust to weak identification. #42's own design note calls Wald "the weakest frequentist answer". | Wald only, on 40 series | **E3b** |
-| 5 | Posterior intervals cover the truth in 39 of 40 series | "Only on average over your own prior" | Simulation-based calibration; coverage with truths drawn from the prior | **E3a** |
-| 5 | Parameter uncertainty belongs in VaR and ES | The plug-in at the MLE; GARCH with bootstrap bands (Christoffersen and Gonçalves 2005) | 500 series: the plug-in at the posterior median breaches +0.06/+0.09 pp more and its Z2 is −0.05/−0.07, both significant. At the MLE: 40 series only, not significant against the predictive. | **E3c** |
-| 5 | An SVJ risk number is worth computing | Historical simulation, filtered historical simulation, GARCH(1,1)-t, GJR-GARCH-t ("does anything beat a GARCH(1,1)?", Hansen and Lunde 2005). Realized-volatility models need intraday data; we say they are out of scope. | Historical and filtered historical simulation, on simulated SVJ data only (design document, Appendix A) | **E2** |
-| 5 | The audit makes the network trustworthy name by name | Pareto-smoothed importance sampling (PSIS k̂) with a fallback to NUTS, as in the amortized Bayesian workflow (Schmitt et al. 2024) | An efficiency threshold of 2%, chosen by us; 31–157 CPU-s per name | **E4** |
-| 5 | The prior suits a typical stock | A prior predictive check against real names | A prior predictive check on simulations only | **E5** |
+| Claim | Study |
+|---|---|
+| The SPY ATM skew follows a power law in T with exponent H − ½ ≈ −0.4 | S8 |
+| The surface identifies ρη and H; η alone has a posterior ridge truncated at ρ = −1 | S2, S6 |
+| The variance swap's posterior range is zero; the volatility swap's and the forward-start's are not; the reserve for the forward-start is X% of its price | S7 |
+| Multi-start least squares lands on N distinct modes along the ridge; the regularized fit picks one by its penalty | S6 |
+| The amortized posterior agrees with the exact Heston posterior to within 0.1 posterior sd | S3 |
+| The amortized posterior and MCMC on the neural pricer agree within 0.2 posterior sd on 50 surfaces | S4 |
+| SBC passes on 2,000 held-out surfaces; the audit flags Y% of validation surfaces and passes the real one | S2, S5 |
+| One exact MC-likelihood evaluation costs A CPU-s; the exact posterior extrapolates to B CPU-hours per surface; the network answers in C s; the audit in D s | S9 |
+| Heston and rough Bergomi calibrated to the same smile price the forward-start Z% apart | S7 |
 
-**Experiments.** E1–E3 are required; E4 and E5 are worth doing if time allows. New study code goes
-in `tutorial_final/studies/` and library code in `src/sbi4finance/svj/`. Study-only dependencies
-(Stan or NumPyro, `arch`) go in a separate pixi feature, outside the participant environment.
+## 9. Slot 4: what changes
 
-| ID | Question | Method | How the result changes the message | Effort | Due |
-|---|---|---|---|---|---|
-| E1 | What does the best exact posterior cost per name? | NUTS on the daily SVJ model, with the jump summed out each day, the variance path sampled in a non-centred form and the floor as a constraint. Check agreement with particle MCMC on the four agreement series. Rerun particle MCMC with a tuned proposal. Report CPU-s per 400 effective draws (the minimum over the nine targets), R-hat and agreement in posterior sd. | **5 minutes or more:** keep the message with the new number. **1 to 5 minutes:** lead with scale (2,000 names every day) and with validation on thousands of cases. **Under a minute:** NUTS becomes the exact route and the fallback for flagged names; the case for amortization is the daily universe and cheap validation. In every case, replace "35 CPU-minutes" everywhere. | 1.5 days | Wed 28 Oct |
-| E2 | Does SVJ add anything on real data? | Rolling 1- and 10-day 99% VaR and 97.5% ES on a universe of daily series (Kenneth French's industry portfolios, VOO and SPMO, and single stocks if a licensed source exists): historical simulation (250 days), filtered historical simulation (EWMA 0.94), GARCH(1,1)-t, GJR-GARCH-t, the SVJ predictive and the SVJ plug-in, with weekly SVJ refits. Scores: exceedances with Kupiec's and Christoffersen's tests, the Acerbi–Székely Z2 and the FZ0 joint loss (Patton, Ziegel and Chen 2019) with Diebold–Mariano tests. | **SVJ better than GARCH-t:** say so. **Comparable:** claim comparable accuracy, plus what GARCH does not give (parameter and state uncertainty, the split between jumps and volatility). **Worse:** drop accuracy claims, present SVJ as a challenger and validation model, and hand the gap to slot 6. | 2–3 days, Oscar | Mon 2 Nov |
-| E3 | Is the comparison of Bayes with the classical route fair? | (a) Coverage at four or five fixed truths, 200 series each, including truths in the prior's tails: minutes with the network. (b) Profile-likelihood intervals for the jump frequency and the mean jump on the 40 classical series, with the grid filter, on Oscar. (c) The plug-in at the MLE against the predictive on 300 or more series, on Oscar. | Rewrite slot 5's first claim with its conditions: calibrated on average over the prior, and where it is not at fixed truths; Wald fails, the profile interval is honest but wide; the plug-in at the MLE against the predictive, on enough series to tell. | 1–2 days, Oscar | Fri 30 Oct |
-| E4 | How should the audit decide? | PSIS k̂ next to the efficiency, on the agreement series and the rolling windows; fewer proposals; the grid filter in place of the particle filter. | Adopt k̂ < 0.7 if the two agree. Set the daily policy (audit every name, flagged names only, or a sample) and its cost. | 0.5 day | Fri 30 Oct |
-| E5 | Does the prior cover real names? | The prior predictive distribution of volatility, kurtosis, skewness, autocorrelation of absolute returns and the largest loss, against the E2 universe. | One figure in slot 5, or handed to slot 6. | 0.5 day | Mon 2 Nov |
+Slot 4 (#37) stays the BayesFlow lesson on GBM from returns. Edits:
 
-**Known and not planned.** If asked, we say so: realized-volatility models with intraday data;
-hand-made summary statistics against the learned summary; jumps in volatility (SVCJ);
-dependence between names; the options route.
+- Merge current `main`.
+- Say plainly that at 1,000 days the plug-in forecast equals the predictive one and Bayes adds
+  nothing: the slot checks the workflow.
+- Show the network's 90% interval for σ next to MLE ± 1.645 se.
+- Part B: the network reads log squares, which carry the volatility; report its R² and its error
+  share as a range over three seeds.
+- Replace the closing table: slot 5 changes the data (a smile, not returns), the measure (Q), the
+  unknowns (H, η, ρ), what the network sees (a surface), the check (Heston exact, then the audit)
+  and the quantity (a price range and a reserve). Remove the SVJ cost line.
+- The VOO ending stays: volatility moves. Add one sentence: the smile is the other rejection of
+  this model, and it is slot 5's data.
+- Freeze **Fri 30 Oct**.
 
-## 7. `tutorial_final/`: layout and the bar for "final"
+## 10. The intro
+
+Francesco presents. Decision D1 by **Fri 23 Oct**, after a 5-minute dry talk of each option.
+
+| | Option | Bayes in one example | Fit with the route |
+|---|---|---|---|
+| E | **One quote, then the smile** (recommended) | One option quote with its bid-ask gives a posterior for σ under Black–Scholes; price a second strike: a range. Two strikes: no σ fits both. The smile is the data that rejects the model. | Direct: closed form, Q-measure, leads into slot 4's model and slot 5's data |
+| D | Volatility spine with the beta vignette from #41 | The 50 highest of 500 betas are too high by 0.16; the hedge is $8m short | Strong example, P-measure, a detour from the smile |
+
+Outline for E, about 18 minutes:
+
+1. **The question** (2). A model, a market, and what the market does not tell you. The desk's
+   forward-start option and the regulation's "range of plausible valuations".
+2. **Bayes in one example** (6). One quote → posterior for σ → price range for another strike.
+   Then two quotes: the smile. P against Q in one slide.
+3. **When Bayes changes the decision** (4). GBM from 1,000 returns: it does not (slot 4). Heston
+   from 63 quotes: the identified directions are narrow and the others are not; the product
+   decides whether it matters (slot 5).
+4. **When simulation is needed** (4). The 2 × 2 map: likelihood tractable or not × one posterior
+   or thousands. Black–Scholes and Heston against rough Bergomi and path-dependent volatility.
+5. **The route** (2). Slot 4 under P, slot 5 under Q.
+
+Build Mon 26–Thu 29 Oct from `gbm_volatility.py` and `calibration/surface.py`; freeze
+**Wed 4 Nov**. The full beta notebook (#41) goes to `extras/`.
+
+## 11. Decisions
+
+| # | Decision | Recommendation | By |
+|---|---|---|---|
+| D1 | Intro option | E | Fri 23 Oct |
+| D2 | Slot durations, presenters (slot 4), owners of slots 2, 3 and 6, from the acceptance mail | — | Fri 23 Oct |
+| D3 | Record the route on #26 and point the `main` README at `tutorial_final/` | Yes | Fri 23 Oct |
+| D4 | Freeze the task protocol v0 (§5) | As written, after one review | Fri 23 Oct |
+| D5 | Headline product | ATM forward-start call; variance swap as control; volatility swap second | Fri 23 Oct |
+| D6 | Real surface: SPY through the Alpha Vantage connector; derived implied vols committed, raw quotes not | Yes; record provenance in `data/SOURCES.md` | Fri 23 Oct |
+| D7 | SVJ material: optional companion in `extras/`; #38 closes when harvested there | Yes | Fri 30 Oct |
+| D8 | LinkedIn: P5's question becomes "ten calibrations fit the smile; which price do you mark?"; P6 becomes Heston against rough on the same smile; P0 and P5 drop the particle-MCMC cost line | Yes | before P0 |
+| D9 | Laptop support: add win-64 to the lock or offer a hosted notebook | Try win-64 first | Fri 30 Oct |
+| D10 | Presentation format: marimo app view, Studio, or slides with the notebook beside | Notebooks for 4 and 5 | Fri 30 Oct |
+
+## 12. `tutorial_final/`: layout and the bar for "final"
 
 ```
 tutorial_final/
-  README.md        participant guide: schedule, setup, what runs live, what is cached (written at freeze)
+  README.md        participant guide (at freeze)
   PLAN.md          this file; removed at release
-  CLAIMS.md        every number said on stage or posted: value, source file, command, status
-  MANIFEST.md      what was harvested, from which commit or pull request, with sha256 of copied files
-  notebooks/       slot1_intro.py, slot4_bayesflow_basics.py, slot5_svj.py
-  extras/          optional companions: the full beta notebook, the original SVJ pipeline notebook
-  studies/         scripts that write results/ (E1–E5, and wrappers for the existing SVJ studies)
+  CLAIMS.md        every number on stage or posted: value, source, command, status
+  MANIFEST.md      what was harvested from where, with sha256 of copied files
+  notebooks/       slot1_intro.py, slot4_bayesflow_basics.py, slot5_calibration.py
+  extras/          beta notebook (#41); SVJ lesson and pipeline notebook
+  studies/         S1–S9
   results/         only the files the notebooks load
-  checkpoints/     gbm/ and svj/ networks, with their training records
-  data/            returns used live, with SOURCES.md (provenance and licence)
-  tests/           each notebook runs headless within its budget; CLAIMS.md values match results/
+  checkpoints/     gbm/, heston/, rough_bergomi/, pricer/
+  data/            spy-surface/ (derived), returns CSV, SOURCES.md
+  tests/           each notebook runs headless within budget; CLAIMS.md matches results/
 ```
 
-**Rules**
+Rules: library code lives in `src/sbi4finance/` once, with tests; artifacts are copied, not
+moved, with their hashes in `MANIFEST.md`; notebooks resolve paths from `tutorial_final/`.
 
-- Library code stays in `src/sbi4finance/`, in one copy, with its tests. `tutorial_final/` holds
-  the lessons and their evidence. `MANIFEST.md` lists the modules each notebook imports.
-- Notebooks resolve paths from `tutorial_final/` (`mo.notebook_dir().parent`), so the folder needs
-  nothing from the repository except the installed package.
-- Artifacts are copied, not moved, with their sha256 in `MANIFEST.md` and a test that checks the
-  copies. The archive keeps working.
+A slot is final when: it runs headless from a clean `pixi install --locked`, offline, within
+budget, on osx-arm64 and linux-64 (win-64 after D9); `marimo check --strict` and its tests pass;
+every number on screen is live or loaded from `results/` and listed in `CLAIMS.md`; its rows in
+§7 are closed or the claim is gone; core and optional sections are marked; a co-presenter has
+reviewed it and the presenter has rehearsed it with a timer; its data's provenance and licence
+are recorded.
 
-**A slot is final when all of these hold**
+One pull request per slot ("harvest: slot N"). After a freeze, fixes only.
 
-1. It runs headless from a clean `pixi install --locked`, offline and within its time budget, on
-   osx-arm64 and linux-64 (and win-64 after D4).
-2. `marimo check --strict` and its tests pass.
-3. Every number on screen is computed live or loaded from `results/`, and is listed in `CLAIMS.md`
-   as verified.
-4. Its rows in §6 are closed, or the claim is gone.
-5. Core and optional sections are marked, and the core fits the slot.
-6. A co-presenter has reviewed it, and the presenter has rehearsed it once with a timer.
-7. The provenance and licence of its data are recorded.
+## 13. Interfaces with slots 2, 3 and 6
 
-**Process.** One pull request per slot ("harvest: slot N") adds the notebook, its results, its
-checkpoints and its `CLAIMS.md` rows. After a freeze, only fixes. #37, #38 and #41 close when
-harvested; #42 stays open for slot 6.
+One paragraph per owner by Fri 30 Oct: what the slot explains, its key figure, what it assumes.
+Until then: slot 2 explains flows, flow matching and summary networks (the set-based summary over
+quotes is its natural example of why summaries are learned); slot 3 explains simulation-based
+calibration and coverage (slot 5's SBC on synthetic surfaces is its finance example); slot 6
+takes priors and misspecification (Heston calibrated to a rough surface; the quote-noise model;
+the prior on H; the crash-day seed from #42).
 
-**Triage of the repository**
+## 14. Timeline
 
-| Item | Today | Goes to |
-|---|---|---|
-| `tutorial_4_bayesflow_basics.py`, `gbm_volatility.py`, `checkpoints/tutorial_gbm/` | #37 | `notebooks/slot4_bayesflow_basics.py`, `checkpoints/gbm/` |
-| `tutorial_5_svj_advanced.py`, `svj/tutorial.py`, `checkpoints/svj/`, `docs/results/svj-{validation,agreement,classical,backtest,costs,daily,rolling}/` | #38 and `main` | `notebooks/slot5_svj.py`, `checkpoints/svj/`, `results/svj/` (the loaded files only) |
-| `tutorial_1_why_bayesian.py`, `beta_shrinkage.py`, `docs/results/intro-betas/` | #41 | After D1: the vignette in `notebooks/slot1_intro.py`, the full notebook in `extras/` |
-| `notebooks/svj_var_pipeline.py`, `data/synthetic/svj-workflow/` | `main` | `extras/`, as a reference; not presented |
-| `data/SPMO_VOO_2020-01-01_2026-09-04.csv` | `main` | `data/`, after the provenance check (D5) |
-| `docs/design/svj-design-document.md`, `docs/svj-results-summary.md` | `main` | Linked from the README as background reading |
-| `tutorial_6_crash_risk.py`, `crash_risk.py` | #42 | Not harvested now; the seed of slot 6 |
-| Notebooks 01 (GBM foundations, MMAR), 04–11 and `hkde_data_walkthrough.py`; the HKDE, Heston, Bergomi and rough-Bergomi modules and results | `main` | Archive, not part of the tutorial |
-
-## 8. Slot 4: what is left
-
-- [ ] Merge current `main` into `feat/tutorial-slot4-bayesflow-basics`, which is based on `bb3571d`.
-- [ ] With D2's budget, mark the core (steps 1–6, risk, VOO) and the optional parts (Part B's
-      details, the exercises, the folds). The core runs live in under 2 minutes.
-- [ ] C2: show the network's 90% interval for σ next to MLE ± 1.645 se, and say that at 1,000 days
-      Bayes adds nothing and the slot checks the workflow.
-- [ ] Replace "about 35 CPU-minutes per name" in step 6 with E1's number, read from `results/`
-      rather than typed.
-- [ ] Part B: say that the network reads log squares, which carry the volatility (the LinkedIn
-      review flagged the current wording). Report R² and the share of stocks off by more than one
-      posterior sd as a range over two or three training seeds.
-- [ ] Make the references to slot 6 match whatever slot 6 becomes.
-- [ ] Time the live-training button on a laptop; keep the saved networks as the default.
-- [ ] Ask the owners of slots 2 and 3 what they cover (flows, flow matching, simulation-based
-      calibration) and shorten the folds to match.
-- [ ] Tests, `marimo check --strict`, a co-presenter's review, a rehearsal and the harvest pull
-      request. **Freeze Fri 30 Oct.**
-
-## 9. Slot 5: what is left
-
-- [ ] Merge current `main` (and slot 4's harvest) into `feat/tutorial-slot5-svj-advanced`.
-- [ ] A core path for 40 minutes, the design document's length (to confirm with D2): the hidden
-      volatility → why there is no formula → the classical answer and its limits (after E3) → the
-      same code with a new simulator → calibration on average → the audit (after E4) → the risk
-      numbers → the cost (after E1) → real data, with the comparison against standard practice
-      (E2) → the hand-over to slot 6. Live: one network posterior, one audit with 1,000 proposals
-      and the forecast. Everything else cached.
-- [ ] Rewrite the three claims with the results of E1–E3, following the decision rules in §6.
-- [ ] One cost table measured on one machine: the network, the audit, the MLE, particle MCMC and
-      NUTS, in CPU-seconds and wall time, with the hardware; the training cost and the break-even
-      number of names.
-- [ ] State the conditions of every simulated result: the daily SVJ model, truths drawn from the
-      prior.
-- [ ] Keep April 2025 (realized volatility 49%, the posterior near 32%) as the hand-over to slot 6.
-- [ ] The VOO data's provenance and licence (D5).
-- [ ] Tests, `marimo check --strict`, a co-presenter's review, a rehearsal and the harvest pull
-      request. **Freeze Fri 6 Nov.**
-
-## 10. Interfaces with slots 2, 3 and 6
-
-Each owner writes one paragraph by Fri 30 Oct: what the slot explains, its key figure, and what it
-assumes the audience has already seen. Until then:
-
-- Slot 2 explains amortized posterior estimation, flows and flow matching, and summary networks.
-  Slot 4 shows the code and keeps the mathematics in folds.
-- Slot 3 explains simulation-based calibration and coverage. Slot 4 uses BayesFlow's default
-  diagnostics; slot 5 adds the audit name by name.
-- Slot 6 takes priors and misspecification, including April 2025 and the crash-day seed (#42).
-  Slots 4 and 5 promise it; if it has no owner by Fri 30 Oct, they hand over to "what we did not
-  cover" instead.
-
-## 11. Timeline
-
-| Week | Intro | Slot 4 | Slot 5 and studies | Folder and logistics | LinkedIn (#40) |
+| Week | Slot 5 and studies | Intro | Slot 4 | Folder and logistics | LinkedIn |
 |---|---|---|---|---|---|
-| Wed 21–Fri 23 Oct | Storyboards A and D, dry talks, D1 | Merge `main`; time budget | Start E1 and E3a; get E2's data | Create the folder skeleton and seed `CLAIMS.md` from §12; D2, D3 | P0: drop its particle-MCMC cost line, or post after E1 |
-| Mon 26–Fri 30 Oct | Build | Edits; **freeze Fri 30** | E1 Wed 28; E3 and E4 Fri 30; E2 running | Harvest slot 4; D4–D6; try a win-64 lock | P1 Tue 27, P2 Thu 29 |
-| Mon 2–Fri 6 Nov | **Freeze Wed 4** | Harvested | E2 and E5 Mon 2; rewrite; **freeze Fri 6** | Clean-machine install test Thu 5; harvest the intro and slot 5 | P3 Tue 3, P4 Thu 5 (slot 4's numbers) |
-| Mon 9–Fri 13 Nov | Rehearse | Rehearse | Rehearse | Full run-through with a timer Mon 9; fixes only; tag a release Wed 11; participant README | P5 Tue 10 (slot 5's numbers), P6 Thu 12, P7 Fri 13 |
+| Wed 21–Fri 23 Oct | D4 protocol freeze; S1 bank generation starts on Oscar; `heston_q.py` and the exact sampler (Stage A); S8 fetch | Storyboards E and D; dry talks; D1 | Merge `main` | Folder skeleton; `CLAIMS.md` seeded from §8; D2, D3, D5, D6 | D8 edits; P0 |
+| Mon 26–Fri 30 Oct | S3 Heston check; S2 training and SBC; S4 pricer net; S5 audit; S6 classical; S7 products on Heston and rough; S9 timings (Stage B) | Build | Edits; **freeze Fri 30** | Harvest slot 4; D7, D9, D10; win-64 lock | P1 Tue 27, P2 Thu 29 |
+| Mon 2–Fri 6 Nov | S8 real-surface results through every section (Stage C); S7 across-model; set-based network (Stage D); notebook complete; **freeze Fri 6** | **Freeze Wed 4** | Harvested | Clean-machine install Thu 5; harvest intro and slot 5 | P3 Tue 3, P4 Thu 5 |
+| Mon 9–Fri 13 Nov | Rehearse | Rehearse | Rehearse | Full timed run-through Mon 9; fixes only; release tag Wed 11; participant README | P5 Tue 10, P6 Thu 12, P7 Fri 13 |
 | Sat 14–Sun 15 Nov | Tutorial | | | | |
 
-## 12. Claims at risk (the seed of `CLAIMS.md`)
+Proposed owners, pending D2: Francesco, slot 5 and the intro; Alexander, bank generation,
+Oscar and the harvest process; Stefan, the set-based summary network and the BayesFlow
+architecture; Jerry, slot 3's interface and the SBC study. Everyone reviews one slot they do not
+present.
 
-| Claim, and where it appears | Status | Action |
-|---|---|---|
-| The exact posterior costs about 35 CPU-minutes per name, and 2,000 names cost 1,152 CPU-hours a day (slot 4, step 6; slot 5, §3 and takeaways; P0, P5) | At risk: one sampler that accepts 9–16% of moves; the design document's run had a median of 6 minutes | E1 |
-| The network is about 700 times cheaper than particle MCMC, 26 times with an audit, and training pays for itself within about ten names (slot 5) | At risk; follows E1 | E1, E4 |
-| Wald intervals cover the jump frequency in 26 of 40 series and the mean jump in 17; the posterior covers both in 39 (slot 5, §4; P5) | Correct, but against Wald only, and the posterior's coverage is over truths drawn from the prior | E3a, E3b; state the conditions |
-| The plug-in breaches its VaR more (+0.06/+0.09 pp) and understates the ES (Z2 −0.05/−0.07) (slot 5, §8) | Correct for the plug-in at the posterior median; at the MLE, not significant on 40 series | E3c |
-| Today's volatility carries about 90% of the uncertainty of VOO's 1-day risk number (slot 5, §2; P5) | Source and definition still to record | Add to `CLAIMS.md` with its source |
-| The learned summary has R² 0.99 and is still off by more than one posterior sd on about 30% of stocks (slot 4, Part B; P4) | Computed live; depends on the training seed | Report a range over seeds |
-| Bloomberg's rule makes no measurable difference on 20 real stocks (slot 1; P1) | A small survivor sample; licence open | The vignette uses simulation; cite Levi and Welch (2017) for real data |
+## 15. This week
 
-## 13. Risks
-
-| Risk | Effect | Mitigation |
-|---|---|---|
-| E1 finds NUTS at about the cost of the audit | The per-name cost argument weakens | Lead with scale, daily refits and cheap validation; NUTS becomes the fallback. Decided by Fri 30 Oct. |
-| E2 finds GARCH-t as good as SVJ on real data, or better | "Why SVJ?" | Say it. Present SVJ as a challenger and uncertainty model; slot 6 takes misspecification. |
-| Slots 2, 3 and 6 have no owner | Slots 4 and 5 explain too much or too little, and promise a slot that does not exist | D2; the interface paragraphs of §10 |
-| Windows laptops | Participants cannot install | D4; a hosted notebook as the fallback |
-| Data licences | We cannot publish the repository or the posts' figures | Commit derived results only; download raw data at run time |
-| E2 or E3 compute runs late | Slot 5 freezes without them | Run on Oscar from day one; cut the universe or the refit frequency first |
-| New ideas | The schedule slips | Anything outside this plan goes on a list for after ICAIF |
-
-## 14. This week
-
-1. Francesco: storyboard intro options A and D, give both as dry talks, and decide by Fri 23 Oct.
-2. Team: D2 and D3 (a comment on #26), and owners for slots 2, 3 and 6.
-3. Start E1 and E3a; collect E2's data.
-4. Create the folder skeleton: a README stub, `CLAIMS.md` seeded from §12, and `MANIFEST.md`.
-5. Decide whether P0 goes out without its particle-MCMC cost line, or after E1.
+1. Francesco: review §5 and freeze the protocol (D4); storyboard intro options E and D and give
+   both as dry talks; decide D1.
+2. Team: D2, D3, D5, D6, D8; owners for slots 2, 3 and 6.
+3. Start Stage A: `heston_q.py`, the exact sampler, the network on Heston, the forward-start
+   range. Start S1 on Oscar. Fetch the SPY chain (S8).
+4. Create the folder skeleton, `CLAIMS.md` and `MANIFEST.md`.
+5. Rewrite P0 and P5 in #40 to the calibration question before P0 goes out.
