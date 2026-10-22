@@ -704,7 +704,7 @@ The study answers nine questions with explicit criteria. The table tracks them; 
 | 4 | S4 | Agreement with the neural-pricer route | Same criterion, on 50 rough-Bergomi surfaces; pricer error below 0.5 σ\_c on held-out surfaces | Heston rehearsal: pricer error 0.03 σ\_c; the pricer route agrees with the exact posterior on 50 of 50 smiles, and with the network on 84% (v\_0 86%). Rough: ⟨S4⟩ | Heston rehearsal met; rough pending |
 | 5 | S5 | The audit | Distribution of efficiency and k̂ on 500 surfaces; flag rate at k̂ > 0.7 reported; cost per surface | ⟨S5⟩ | pending |
 | 6 | S6 | The classical route | Coverage of Gauss–Newton 90% intervals against posterior 90% intervals on 200 surfaces; number of distinct multi-start modes; sensitivity of the regularized point to λ | Heston: Gauss–Newton coverage 87% to 92% against posterior 87% to 90% on 200 smiles; one optimum on 97%; no interval on 11 smiles at the prior's edge. Rough: ⟨S6⟩ | Heston done; rough pending |
-| 7 | S7 | Products and reserves | Variance-swap range zero; volatility-swap, forward-start and out-of-grid ranges and reserves, with each price's Monte Carlo standard error; Heston-against-rough gap | ⟨S7⟩ | pending |
+| 7 | S7 | Products and reserves | Variance-swap range zero; volatility-swap, forward-start and out-of-grid ranges and reserves, with each price's Monte Carlo standard error; Heston-against-rough gap | Heston, 3 smiles: every product carries a range, the variance swap's 1.0% to 2.6%; forward-start reserve 0.7% to 1.7% of its price. Rough: ⟨S7⟩ | Heston done; rough pending |
 | 8 | S8 | The real smile | Skew term-structure exponent; posterior; audit score; posterior predictive residuals with at most ⟨proposed: 10%⟩ of quotes beyond two standard deviations | ⟨S8⟩ | pending |
 | 9 | S9 | Costs | One table on one machine: Monte Carlo likelihood evaluation; exact chain extrapolated to 400 effective draws; network; audit; neural pricer with MCMC; multi-start least squares | ⟨S9⟩ | pending |
 
@@ -806,7 +806,22 @@ The exceptions are at the edges of the prior box. On 15 smiles the best fit sits
 
 ### 7. Products and reserves (S7)
 
-Figure ⟨S7-1⟩ above, the variance-explained table, each price's Monte Carlo standard error, and the Heston-against-rough table:
+Heston first. On three test smiles (rows 2,300 to 2,302), each product is priced at 400 posterior draws and at the least-squares point, with 8,192 paths and common random numbers, at about 0.5 CPU-seconds per parameter set:
+
+| Heston, 3 test smiles | 90% range, share of the posterior mean | Short-side reserve, share of the point price | Parameter that explains most of the price variance (single-parameter R²) |
+| --- | --- | --- | --- |
+| Variance swap 63 d | 1.0% to 2.6% | 0.3% to 1.2% | v\_0 (0.40 to 0.54) |
+| Volatility swap 63 d | 0.6% to 1.6% | 0.2% to 0.8% | v\_0, σ\_v and ρ, in proportions that vary by smile |
+| Forward-start 63 → 126 d | 1.6% to 3.7% | 0.7% to 1.7% | σ\_v and ρ on two smiles, θ\_H on the third |
+| 2-year 90% put | 1.7% to 6.2% | 0.6% to 2.2% | θ\_H (0.76 to 0.91) |
+
+Under Heston every product carries a range, the variance swap included: its strike is the average of Heston's forward-variance curve θ\_H + (v\_0 − θ\_H) e^(−κt), which moves with v\_0 and θ\_H (claim C10). The out-of-grid put has the widest range, and the long-run variance θ\_H drives it, the parameter the smile's one-year quotes pin least. Under rough Bergomi the forward-variance curve is an input, so the variance swap's range is zero and the other products' ranges come from (H, η, ρ) alone.
+
+![Heston product prices under the posterior on three test smiles, with the least-squares price and the 90% quantile.](images/calibration-10-heston-products.png)
+
+*Figure S7-1 (Heston): price distributions of the four products under the posterior of three test smiles.* How to read the figure: each row is one smile and each panel one product; the histogram is the price under 400 posterior draws, the orange line the least-squares price and the dashed line the 90% quantile, whose distance from the orange line is the short-side reserve.
+
+For rough Bergomi: figure ⟨S7-1⟩ above, the variance-explained table, each price's Monte Carlo standard error, and the Heston-against-rough table:
 
 | Product | Rough Bergomi: point, 90% range, reserve | Heston: point, 90% range, reserve | Gap between points |
 | --- | --- | --- | --- |

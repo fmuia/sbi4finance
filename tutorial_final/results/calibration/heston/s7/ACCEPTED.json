@@ -1,0 +1,10 @@
+{
+  "accepted": "2026-10-22T08:22:48+00:00",
+  "source": "/tmp/claude-0/-home-user-sbi4finance/9c138712-55c5-5f30-b0b0-9fce83e4ceb1/scratchpad/runs/heston-s7",
+  "source_sha256": {
+    "price-distributions.png": "9128d62a947953f46dd7fc2ed56c13f7b4f5298cfaa730077b06144cd3d16413",
+    "price-draws.npz": "90ce4d7231bf823104cb1d8b1a455051d0b6aafefc64dc0ec90cb43a7a103569",
+    "products.json": "bb84fb90477a9ec40033eeb1994890b471e258c92832fb5cfe8cc198a0121db0"
+  },
+  "changes": []
+}
