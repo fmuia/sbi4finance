@@ -433,7 +433,7 @@ For short maturities the at-the-money skew of the rough Bergomi smile, ψ(T) = �
 \psi(T) \;\approx\; \frac{\rho\,\eta\,\sqrt{2H}}{2\,\big(H+\tfrac12\big)\big(H+\tfrac32\big)}\; T^{\,H-\frac12}, \qquad T \to 0 .
 ```
 
-Two facts follow. The slope of log|ψ| against log T is H − ½ at short maturities, so the term structure of the skew identifies H on its own; over the design's one week to one year the fitted slope is steeper than H − ½ at the centre of the prior, −0.39 against −0.32, so reading H off a real smile as the exponent plus ½ tends to understate it. The prior predictive study measures the gap across the prior. On the pilot's 400 test surfaces the fitted exponent lies below H − ½ on 93% of them, by a median of 0.05 (90%: from 0.17 below to 0.002 above), and its correlation with H is 0.77: the exponent carries H, with a bias that the network learns and a reader of the exponent does not. The level of the skew at any maturity is proportional to ρη, so the smile identifies the product, not the factors. Equity-index markets show skew term structures with exponents near −0.4, which is the empirical case for roughness and the reason the design grid starts at one week. The curvature of the smile, the second derivative in k, depends on η² (with H and ρ), at order T^(2H−1); it is the quantity that separates η from ρ, and it lives in the wings, where the quotes are noisiest. Appendix D states the expansions; study S2 measures how well each direction is recovered.
+Two facts follow. The slope of log|ψ| against log T is H − ½ at short maturities, so the term structure of the skew identifies H on its own; over the design's one week to one year the fitted slope is steeper than H − ½ at the centre of the prior, −0.39 against −0.32, so reading H off a real smile as the exponent plus ½ tends to understate it. The prior predictive study measures the gap across the prior. On the pilot's 400 test surfaces the fitted exponent lies below H − ½ on 93% of them, by a median of 0.05 (90%: from 0.17 below to 0.002 above), and its correlation with H is 0.77: the exponent carries H, with a bias that the network learns and a reader of the exponent does not. The level of the skew at any maturity is proportional to ρη, so the skew identifies the product, not the factors; the curvature separates them, and how well depends on the quote noise in the wings (on the pilot, well: S2). Equity-index markets show skew term structures with exponents near −0.4, which is the empirical case for roughness and the reason the design grid starts at one week. The curvature of the smile, the second derivative in k, depends on η² (with H and ρ), at order T^(2H−1); it is the quantity that separates η from ρ, and it lives in the wings, where the quotes are noisiest. Appendix D states the expansions; study S2 measures how well each direction is recovered.
 
 ![The same plot for Heston at the centre of its prior (v0 = θ = 0.085, σ_v = 0.8, ρ = −0.525, κ = 2).](images/calibration-02-example-surface-heston.png)
 
@@ -699,7 +699,7 @@ The study answers nine questions with explicit criteria. The table tracks them; 
 | # | Study | Question | Criterion | Result | Status |
 | --- | --- | --- | --- | --- | --- |
 | 1 | S1 | Cost and quality of the training bank | 100,000 surfaces with s\_c ≤ 0.25 σ\_c on every quote, or ≤ 0.5 σ\_c at the top of the ladder on a reported share of surfaces; path counts used and CPU-hours per 1,000 surfaces reported | Heston: 60,000 surfaces, quadrature error at most 0.056 σ\_c against a budget of 0.1, 0.013 CPU-hours per 1,000 surfaces. Rough pilot: 2,200 surfaces, every quote within the budget (median 0.04 σ\_c, largest 0.25), 3.3 CPU-hours per 1,000 surfaces. Full rough bank: ⟨S1⟩ | Heston and rough pilot met; full rough bank pending |
-| 2 | S2 | Statistical calibration and identification | SBC rank ECDFs inside the simultaneous DKW band (family-wise 5%) for all 3 targets on 2,000 surfaces; 95% coverage between 93% and 97% | Heston: all 4 targets inside the band on 2,000 smiles; 95% coverage 93.5% to 95.2%. Rough: ⟨S2⟩ | Heston met; rough pending |
+| 2 | S2 | Statistical calibration and identification | SBC rank ECDFs inside the simultaneous DKW band (family-wise 5%) for all 3 targets on 2,000 surfaces; 95% coverage between 93% and 97% | Heston: all 4 targets inside the band on 2,000 smiles; 95% coverage 93.5% to 95.2%. Rough pilot, 250 smiles: H and η inside the band, ρ and ρη outside (bias toward more negative ρ); 95% coverage 92.0% to 96.4%. Full rough bank: ⟨S2⟩ | Heston met; rough pilot not met; full rough bank pending |
 | 3 | S3 | Agreement with the exact Heston posterior | Means within 0.3 posterior sd and 90% widths within 25%, on 50 surfaces, all targets | Network alone: 40 of 50 smiles on all four targets (v\_0 82%, θ\_H 96%, σ\_v 100%, ρ 98%). Network corrected by its audit: agrees with independent chains on 4 of 4 | Met by the network with its audit; not met by the network alone (v\_0) |
 | 4 | S4 | Agreement with the neural-pricer route | Same criterion, on 50 rough-Bergomi surfaces; pricer error below 0.5 σ\_c on held-out surfaces | Heston rehearsal: pricer error 0.03 σ\_c; the pricer route agrees with the exact posterior on 50 of 50 smiles, and with the network on 84% (v\_0 86%). Rough: ⟨S4⟩ | Heston rehearsal met; rough pending |
 | 5 | S5 | The audit | Distribution of efficiency and k̂ on 500 surfaces; flag rate at k̂ > 0.7 reported; cost per surface | ⟨S5⟩ | pending |
@@ -733,14 +733,26 @@ The far puts at δ = −2 set the path counts: their boxes reach the budget at e
 
 ### 2. Statistical calibration and identification (S2)
 
-Figures ⟨S2-1⟩ to ⟨S2-4⟩ above, plus the contraction table:
+Figures ⟨S2-1⟩ to ⟨S2-4⟩ above, plus the contraction table. The values below are the pilot's: 250 test smiles and a network trained on the pilot bank's 1,600 surfaces; the full bank's replace them.
 
 | Target | Contraction | 95% coverage | Note |
 | --- | --- | --- | --- |
-| H | ⟨S2⟩ | ⟨S2⟩ | from the skew's term structure |
-| η | ⟨S2⟩ | ⟨S2⟩ | bounded below by \|ρη\| / 0.99 |
-| ρ | ⟨S2⟩ | ⟨S2⟩ | follows η at fixed ρη |
-| ρη | ⟨S2⟩ | ⟨S2⟩ | from the skew level |
+| H | 0.91 (pilot) | 92.4% (pilot) | from the skew's term structure |
+| η | 0.95 (pilot) | 96.4% (pilot) | bounded below by \|ρη\| / 0.99 |
+| ρ | 0.94 (pilot) | 92.0% (pilot) | follows η at fixed ρη |
+| ρη | 0.98 (pilot) | 95.2% (pilot) | from the skew level |
+
+Pilot reading. The smile identifies all three parameters, not only ρη. The posterior's standard deviation relative to its mean has a median of 10% for H, 5% for η and 6% for ρ and for ρη. Within a smile the correlation of η and ρ, in logit coordinates, has a median of 0.34 (10% to 90%: −0.20 to 0.75): the ridge of the identification picture exists, but it is short, because the 63 quotes measure the curvature that separates η from ρ well enough at this noise level. H, not η, is the least identified parameter. Whether this holds for real quotes depends on the noise in the wings: real short-dated far-from-the-money options are often quoted wider than the noise model's one volatility point, and the real chain of S8 measures that. ⟨S2⟩
+
+SBC passes for H and η and fails for ρ and ρη. The pilot network places ρ too negative, and with it ρη, by a median of 0.3 posterior standard deviations; its 95% intervals still cover the truth on 92% to 96% of smiles. A bias of this size is what a training set of 1,600 surfaces can leave, and the full bank tests whether it goes; meanwhile the audit (S5) corrects it smile by smile.
+
+![SBC for the rough-Bergomi pilot network on 250 held-out smiles: H and η inside the band, ρ and ρη outside it.](images/calibration-11-rough-pilot-sbc.png)
+
+*Figure S2-3 (rough Bergomi, pilot): SBC rank ECDF differences on 250 held-out smiles.* How to read the figure: as above; the dips of ρ and ρη in the middle of the rank range mean the truth ranks high among the draws more often than it should, so the posterior sits too low, too negative, for these two targets.
+
+![Recovery of H, η, ρ and ρη by the rough-Bergomi pilot network on 250 held-out smiles.](images/calibration-12-rough-pilot-recovery.png)
+
+*Figure S2-4 (rough Bergomi, pilot): recovery on 250 held-out smiles*, read as above.
 
 ### 3. The Heston check (S3)
 
