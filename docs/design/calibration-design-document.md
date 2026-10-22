@@ -119,7 +119,7 @@ This document is both the design of the tutorial's advanced example and a short 
 | Lesson | Sections | What it teaches | Derivations |
 | --- | --- | --- | --- |
 | 1. The problem | [The practitioner problem](#the-practitioner-problem) | Why a desk's daily calibration carries a range, who asks for it, and what current practice does about it | [Appendix A](#appendix-a-calibration-practice-and-what-the-rules-ask-for) |
-| 2. The models | [Executive summary of the model](#executive-summary-of-the-model), [Notation and key terms](#notation-and-key-terms), [The model](#the-model) | Black–Scholes and the implied volatility, Heston, rough Bergomi, the forward-variance curve, the prior, one surface step by step | [Appendix B](#appendix-b-blackscholes-implied-volatility-and-the-variance-swap), [Appendix C](#appendix-c-heston-and-the-fourier-pricer), [Appendix D](#appendix-d-rough-bergomi) |
+| 2. The models | [Executive summary of the model](#executive-summary-of-the-model), [Notation and key terms](#notation-and-key-terms), [The model](#the-model) | Black–Scholes and the implied volatility, Heston, rough Bergomi, the forward-variance curve, the prior, one surface step by step | [Appendix B](#appendix-b-blackscholes-implied-volatility-and-the-variance-swap), [Appendix C](#appendix-c-heston-and-the-fourier-pricer), [Appendix D](#appendix-d-rough-bergomi), [Appendix J](#appendix-j-fourier-pricing-and-why-the-example-moves-from-heston-to-rough-bergomi) |
 | 3. The observation and the likelihood | [The observation model](#the-observation-model), [Why the likelihood is expensive](#why-the-likelihood-is-expensive) | What a quote is, how noisy it is, what the smile identifies, and why one likelihood evaluation is a Monte Carlo run | [Appendix B](#appendix-b-blackscholes-implied-volatility-and-the-variance-swap), [Appendix D](#appendix-d-rough-bergomi) |
 | 4. Classical calibration | [Classical calibration and where it fails](#classical-calibration-and-where-it-fails) | Least squares, its weights, its intervals, multi-start, regularization, deep calibration, and the exact but slow Bayesian route | [Appendix E](#appendix-e-calibration-as-estimation) |
 | 5. Amortized inference | [Amortized design](#amortized-design) | How a network trained on simulated surfaces returns the posterior in seconds; the neural-pricer route as the alternative | [Appendix F](#appendix-f-amortized-inference) |
@@ -160,6 +160,8 @@ Heston (1993) is the model every quant has calibrated. Its characteristic functi
 That is exactly what makes Heston valuable here, in a different role. Slot 4 teaches the amortized workflow on GBM because GBM has an exact posterior to check every step against. Slot 5 needs the same thing for a smile: a model whose exact posterior exists. Heston is that model. The network is trained and checked on Heston surfaces first; the lesson shows the exact posterior and the amortized posterior side by side, and only then moves to rough Bergomi, where the exact posterior is out of reach. Heston also supplies the across-model comparison at the end: the same smile, two models, two forward-start prices.
 
 Rough Bergomi is the example because it is the model where the method is needed. It has no characteristic function; its variance is a log-normal functional of the entire past of the Brownian motion; its vanilla prices are Monte Carlo expectations. The industry's answer to its cost is a neural pricer trained on simulated surfaces, which is itself simulation-based, and which returns a point calibration. The lesson goes one step further and returns the posterior.
+
+Appendix J sets out the two sides in detail: the Fourier pricers that make Heston fast, including the PROJ method used in the 9 October study, the two places where Heston's smile has the wrong shape, and why rough Bergomi repairs them at the price of having no characteristic function.
 
 One slide from the 9 October study stays in the tutorial, as a preview on a Heston-with-jumps surface.
 
@@ -1256,6 +1258,87 @@ For each expiration, w(T) is computed by the trapezoid sum of Appendix B.3 over 
 
 The real smile is the running example of the lesson: the flat line that fails, the skew term structure and its exponent, the posterior, the audit, the products and the reserve. It is one date and one underlying; the lesson says so. The prior predictive check places its smile statistics among the surfaces the network was trained for, but its forward-variance curve is outside the curve prior: S8 states the gap and what it implies for the full bank.
 
+## Appendix J. Fourier pricing, and why the example moves from Heston to rough Bergomi
+
+This appendix collects three facts in one place: why Heston is priced in milliseconds, why that speed does not carry over to rough Bergomi, and what rough Bergomi gives in exchange. It uses the forward units of Appendix B.1. The Black–Scholes figures of the main text (the price against σ, k and T, and the implied-volatility inversion) are the starting point. The figures of this appendix are drawn by `scripts/plot_design_fourier_heston.py`.
+
+### J.1 One characteristic function, several inversions
+
+Heston has no closed-form price. It has a closed-form characteristic function, φ\_T(u) = E[e^(iuX\_T)] with X\_T = ln(S\_T / F\_T) (Appendix C.1). A Fourier pricer recovers a price from φ\_T by inverting a Fourier transform. The published pricers differ only in how they write that inversion.
+
+Heston (1993) writes the call as two probabilities:
+
+```math
+c = P_1 - e^{k}P_2, \qquad P_2 = \frac12 + \frac1\pi\int_0^\infty \mathrm{Re}\Big[\frac{e^{-iuk}\,\varphi_T(u)}{iu}\Big]du, \qquad P_1 = \frac12 + \frac1\pi\int_0^\infty \mathrm{Re}\Big[\frac{e^{-iuk}\,\varphi_T(u-i)}{iu}\Big]du .
+```
+
+P\_2 = Q(X\_T > k) is the probability that the call ends in the money. P\_1 is the same probability under the share measure, whose characteristic function is φ\_T(u − i) because E[e^(X\_T)] = 1 (Appendix B.1). Each P\_j is the inversion formula of Gil-Pelaez (1951) for a distribution function.
+
+Lewis (2001) moves the contour of integration to Im(u) = −½ (Appendix C.2). This line lies midway between the contour of P\_2, Im(u) = 0, and the line Im(u) = −1, along which P\_1 evaluates φ\_T. The integrands are analytic in the strip −1 ≤ Im(u) ≤ 0, so Cauchy's theorem allows the contour to move, and the two integrals merge into one. The two forms therefore return the same price. They differ numerically in three ways:
+
+| | Heston (1993) | Lewis (2001) |
+| --- | --- | --- |
+| Integrals per price | Two | One |
+| Decay of the integrand, before φ\_T decays | 1/u | 1/(u² + ¼) |
+| Behaviour at u = 0 | Removable singularity | Regular |
+
+![Left: envelopes of the integrands of Heston's two probabilities and of Lewis's integral, for Heston at the centre of the task's prior and a one-week maturity. Right: the one-week smile from the two forms.](images/calibration-20-fourier-inversions.png)
+
+How to read the figure: the left panel shows the size of each integrand against the frequency u, on log–log axes, for the one-week maturity where the integrands decay slowest. The two Heston curves lie on top of each other. At u = 10 the Lewis integrand is about ten times smaller than the Heston ones, because of its extra factor of u; all three then fall off steeply once φ\_T decays. A quadrature can therefore stop earlier for the Lewis form. The right panel shows the implied volatilities of 13 one-week calls priced by both forms. The largest price difference is 2 × 10⁻¹⁰ of the forward, far below the quote noise: the two forms are the same pricer.
+
+Three other inversions rest on the same φ\_T:
+
+- **Carr and Madan (1999)** multiply the call by e^(αk) so that it has a Fourier transform in k, and invert it with the fast Fourier transform. One transform prices a whole grid of strikes. The damping α is a free parameter that affects accuracy.
+- **The COS method (Fang and Oosterlee 2008)** expands the density of X\_T on a truncated interval in a cosine series. The series coefficients are read off φ\_T directly. This is a Fourier series rather than a Fourier integral.
+- **PROJ (Kirkby 2015)** projects the density onto a basis of B-splines and computes the coefficients from φ\_T with the fast Fourier transform. With the variance discretized as a Markov chain, PROJ steps through monitoring dates and prices path-dependent products such as barrier, Asian and Bermudan options. The fypy library implements it. Agazzotti et al. (2025) calibrated Heston with Kou jumps (HKDE) with it, and the 9 October 2026 study used it as the HKDE pricer.
+
+All of these methods need φ\_T in closed form, or at least cheaply computable. Section J.3 returns to this condition.
+
+### J.2 What Heston's smile gets wrong
+
+Pricing is not Heston's weakness. Its weakness is the shape of the smile it can produce, in two places.
+
+**The short-maturity skew.** Heston is Markovian: the state (S\_t, V\_t) determines the future. Its at-the-money skew therefore tends to a constant as the maturity shrinks (Appendix D.5):
+
+```math
+\psi(T) \;\longrightarrow\; \frac{\rho_H\,\sigma_v}{4\sqrt{v_0}}, \qquad T \to 0 .
+```
+
+Equity-index smiles do not flatten at short maturities. Their skew keeps steepening, approximately as T^(−0.4) (Gatheral, Jaisson and Rosenbaum 2018).
+
+![At-the-money skew against maturity on log–log axes: Heston at the centre of its prior with three values of the vol-of-vol, its short-maturity limits, and the leading-order rough-Bergomi power law at the centre of its prior.](images/calibration-21-skew-term-structure.png)
+
+How to read the figure: each solid line is Heston's at-the-money skew, computed by finite differences of Fourier implied volatilities, from two trading days to one year. Each dotted line is the limit ρ\_H σ\_v / (4√v\_0) for the same σ\_v. Every Heston curve is flat up to about one month and falls beyond it. Raising σ\_v shifts the whole curve up and does not tilt the flat part. The dashed line is the rough-Bergomi leading-order skew, proportional to T^(H−½) with H = 0.185; on these axes it is a straight line with slope −0.315. No value of σ\_v makes a Heston curve follow it at both one week and one year.
+
+**The term structure of variance.** Heston's expected variance is a single exponential between v\_0 and θ\_H (Appendix C.3):
+
+```math
+\mathbb{E}[V_t] = \theta_H + (v_0 - \theta_H)\,e^{-\kappa t} .
+```
+
+This curve is monotone in t. It cannot follow a hump, a kink at an event date, or any other shape that a real forward-variance curve shows.
+
+![Left: a forward-variance curve drawn from the training prior, against the Heston curves fitted to its variance-swap strikes, with κ fixed at 2 and with κ free. Right: the error of the fitted variance-swap strikes at the 7 design maturities, in volatility points.](images/calibration-22-heston-variance-curve.png)
+
+How to read the figure: the black steps in the left panel are one draw of ξ\_0(t) from the prior of the main text (σ\_0 = 25%, s = 0.15, random perturbations). The coloured curves are the Heston curves E[V\_t] whose variance-swap strikes best match those of ξ\_0 at the 7 design maturities. The right panel shows the remaining errors in the square root of the variance-swap strike. They reach 0.8 volatility points with κ fixed at 2, and 0.86 with κ free (where the fit chooses κ ≈ 15), against an at-the-money quote noise of 0.3 volatility points. Rough Bergomi takes ξ\_0 as an input, so its error is zero at every maturity.
+
+Desks repair both defects by adding structure: a very large vol-of-vol (which violates the Feller condition), price jumps (Bates 1996; the four Kou jump parameters of HKDE), time-dependent parameters, or a second variance factor. Each repair adds parameters, and each added parameter is another direction the smile may leave unidentified, as the 9 October HKDE study found.
+
+### J.3 What rough Bergomi does better, and its price
+
+Rough Bergomi repairs both defects with fewer parameters:
+
+1. **The skew.** Its at-the-money skew is ψ(T) ∝ ρη T^(H−½) (Appendix D.5). One parameter, H, sets the exponent of the power law, and H ≈ 0.1 reproduces the market's steepening.
+2. **The term structure.** Its expected variance is the input curve, E[V\_t] = ξ\_0(t) exactly (Appendix D.1). The variance-swap strikes are matched at every maturity, and the three parameters describe only the shape of the smile around them.
+
+The cost comes from the same feature that produces the skew. The power kernel (t − s)^(H−½) weights the whole past of W, so the model has no state of finite dimension. It is not affine either: its variance is the exponential of a Gaussian process. It therefore has no closed-form φ\_T, and none of the pricers of J.1 applies; nor does a PDE. Monte Carlo is the only pricer, at about 5 CPU-seconds per surface (see [Why the likelihood is expensive](#why-the-likelihood-is-expensive)).
+
+Roughness alone does not remove the characteristic function. Rough Heston (El Euch and Rosenbaum 2019) keeps an affine structure, and its φ\_T solves a fractional Riccati equation that is computed numerically. Rough Bergomi is log-normal in the variance and has no such structure.
+
+### J.4 Consequence for the tutorial
+
+For Heston, one likelihood evaluation is a Fourier surface of about 20 milliseconds, so MCMC gives the exact posterior in minutes. Simulation-based inference would only speed up a method that already works. Heston is therefore the model on which the amortized workflow is checked against the exact answer (see [Why Heston is the check and not the example](#why-heston-is-the-check-and-not-the-example)). For rough Bergomi, the model fits the smile's term structure better, and the exact posterior costs about 17 CPU-hours per surface. That is where amortization is needed.
+
 ## References
 
 Bibliographic details were checked on 22 Oct 2026, against publisher, arXiv or regulator pages where they could be reached, and otherwise against library catalogues and the reference lists of citing papers. Magazine articles and working papers without a link to a DOI have none, or none could be confirmed.
@@ -1263,6 +1346,7 @@ Bibliographic details were checked on 22 Oct 2026, against publisher, arXiv or r
 **Volatility models and the smile**
 
 - Heston, S. L. (1993). A closed-form solution for options with stochastic volatility with applications to bond and currency options. *Review of Financial Studies* 6(2), 327–343. [doi](https://doi.org/10.1093/rfs/6.2.327)
+- Bates, D. S. (1996). Jumps and stochastic volatility: exchange rate processes implicit in Deutsche Mark options. *Review of Financial Studies* 9(1), 69–107. [doi](https://doi.org/10.1093/rfs/9.1.69)
 - Dupire, B. (1994). Pricing with a smile. *Risk*, January 1994, 18–20. [Risk.net](https://www.risk.net/derivatives/equity-derivatives/1500211/pricing-with-a-smile)
 - Bergomi, L. (2004). Smile dynamics. *Risk*, September 2004, 117–123. [Risk.net](https://risk.net/node/1530377)
 - Bergomi, L. (2005). Smile dynamics II. *Risk*, October 2005, 67–73. [Risk.net](https://www.risk.net/derivatives/equity-derivatives/1500225/smile-dynamics-ii)
@@ -1277,6 +1361,7 @@ Bibliographic details were checked on 22 Oct 2026, against publisher, arXiv or r
 - Fukasawa, M. (2011). Asymptotic analysis for stochastic volatility: martingale expansion. *Finance and Stochastics* 15(4), 635–654. [doi](https://doi.org/10.1007/s00780-010-0136-6)
 - El Euch, O., Fukasawa, M., Gatheral, J., Rosenbaum, M. (2019). Short-term at-the-money asymptotics under stochastic volatility models. *SIAM Journal on Financial Mathematics* 10(2), 491–511. [doi](https://doi.org/10.1137/18M1167565)
 - Bennedsen, M., Lunde, A., Pakkanen, M. S. (2017). Hybrid scheme for Brownian semistationary processes. *Finance and Stochastics* 21(4), 931–965. [doi](https://doi.org/10.1007/s00780-017-0335-5)
+- El Euch, O., Rosenbaum, M. (2019). The characteristic function of rough Heston models. *Mathematical Finance* 29(1), 3–38. [arXiv](https://arxiv.org/abs/1609.02108)
 - McCrickerd, R., Pakkanen, M. S. (2018). Turbocharging Monte Carlo pricing for the rough Bergomi model. *Quantitative Finance* 18(11), 1877–1886. [doi](https://doi.org/10.1080/14697688.2018.1459812)
 
 **Monte Carlo and numerical methods**
@@ -1284,6 +1369,10 @@ Bibliographic details were checked on 22 Oct 2026, against publisher, arXiv or r
 - Romano, M., Touzi, N. (1997). Contingent claims and market completeness in a stochastic volatility model. *Mathematical Finance* 7(4), 399–412. [doi](https://doi.org/10.1111/1467-9965.00038)
 - Willard, G. A. (1997). Calculating prices and sensitivities for path-independent derivative securities in multifactor models. *Journal of Derivatives* 5(1), 45–61. [SSRN](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7997)
 - Lewis, A. L. (2001). A simple option formula for general jump-diffusion and other exponential Lévy processes. Working paper. [RePEc](https://ideas.repec.org/p/vsv/svpubs/explevy.html)
+- Gil-Pelaez, J. (1951). Note on the inversion theorem. *Biometrika* 38(3–4), 481–482.
+- Carr, P., Madan, D. B. (1999). Option valuation using the fast Fourier transform. *Journal of Computational Finance* 2(4), 61–73. [Risk.net](https://www.risk.net/journal-of-computational-finance/2160495/option-valuation-using-the-fast-fourier-transform)
+- Fang, F., Oosterlee, C. W. (2008). A novel pricing method for European options based on Fourier-cosine series expansions. *SIAM Journal on Scientific Computing* 31(2), 826–848. [CWI](https://ir.cwi.nl/pub/13283)
+- Kirkby, J. L. (2015). Efficient option pricing by frame duality with the fast Fourier transform. *SIAM Journal on Financial Mathematics* 6(1), 713–747. [doi](https://doi.org/10.1137/140989480)
 - Albrecher, H., Mayer, P., Schoutens, W., Tistaert, J. (2007). The little Heston trap. *Wilmott Magazine*, no. 1, 83–92. [Serval](https://serval.unil.ch/notice/serval:BIB_7042C88010EE)
 
 **Calibration practice and model risk**
