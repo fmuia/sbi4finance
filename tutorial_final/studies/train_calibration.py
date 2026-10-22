@@ -154,7 +154,7 @@ def main():
                      "quote_noise": ("fresh standard-normal error per batch" if args.fresh_noise
                                      else f"{args.augmentations} fixed draws per surface"),
                      "augmentations": None if args.fresh_noise else args.augmentations,
-                     "seed": args.seed, "subnet_widths": list(widths), "sampler": f"{inference.EULER_STEPS} Euler steps",
+                     "seed": args.seed, "subnet_widths": list(widths), "sampler": inference.SAMPLER_DESCRIPTION,
                      "selected_epoch": int(np.argmin(losses)) + 1, "selection": "minimum validation loss",
                      "optimizer": "AdamW, weight decay 5e-3, clipnorm 1.5; 5% warm-up to 5e-4, cosine decay to 0 "
                                   "over all epochs (BayesFlow's offline default)",
