@@ -10,6 +10,10 @@ the likelihood adds each price's Monte Carlo variance to the quote noise
 (design document, Appendix G.3); the weights give the efficiency and k-hat.
 Reported: their distributions, the flag rate at k-hat > 0.7, the cost per
 surface, and the network's error against the reweighted posterior.
+
+Each finished surface is appended to OUT.partial.jsonl, next to the output
+directory; rerunning the same command after an interruption audits only the
+surfaces still missing, and the file is removed once audit.json is written.
 """
 
 import argparse
@@ -72,16 +76,28 @@ def main():
     rows = np.arange(args.first, min(args.first + args.surfaces, len(test["parameters"])))
     args.out.mkdir(parents=True, exist_ok=False)
     network = posterior_draws(workflow, task, test, rows, args.draws, args.seed)
-    jobs = [(task, test["observations"][r, :, 0], test["context_values"][r], network[i], args.proposals, args.paths,
-             args.seed + int(r)) for i, r in enumerate(rows)]
-    with ProcessPoolExecutor(args.workers, mp_context=multiprocessing.get_context("spawn")) as pool:
-        results = list(pool.map(audit_job, jobs))
-    efficiency = np.array([r["efficiency"] for r in results])
-    khat = np.array([r["khat"] for r in results])
-    error = np.array([max(r["network_vs_audited"]["standardized_mean_error"]) for r in results])
+    partial = args.out.with_name(args.out.name + ".partial.jsonl")
+    done = {}
+    if partial.exists():
+        for line in partial.read_text().splitlines():
+            record = json.loads(line)
+            done[record["test_row"]] = record["result"]
+    pending = [i for i, r in enumerate(rows) if int(r) not in done]
+    jobs = [(task, test["observations"][rows[i], :, 0], test["context_values"][rows[i]], network[i], args.proposals,
+             args.paths, args.seed + int(rows[i])) for i in pending]
+    with ProcessPoolExecutor(args.workers, mp_context=multiprocessing.get_context("spawn")) as pool, \
+            partial.open("a") as log:
+        for i, result in zip(pending, pool.map(audit_job, jobs)):
+            done[int(rows[i])] = json.loads(json.dumps(jsonable(result)))
+            log.write(json.dumps({"test_row": int(rows[i]), "result": done[int(rows[i])]}) + "\n")
+            log.flush()
+    results = [done[int(r)] for r in rows]
+    efficiency = np.array([r["efficiency"] for r in results], dtype=float)
+    khat = np.array([np.nan if r["khat"] is None else r["khat"] for r in results], dtype=float)
+    error = np.array([max(r["network_vs_audited"]["standardized_mean_error"]) for r in results], dtype=float)
     summary = {"surfaces": len(rows), "proposals": args.proposals, "paths": args.paths,
                "efficiency_quantiles": dict(zip(("q05", "q50", "q95"), np.quantile(efficiency, [0.05, 0.5, 0.95]).tolist())),
-               "flag_rate_khat_above_0_7": float(np.mean(khat > 0.7)),
+               "flag_rate_khat_above_0_7": float(np.mean(np.nan_to_num(khat, nan=0.0) > 0.7)),
                "flag_rate_efficiency_below_0_02": float(np.mean(efficiency < 0.02)),
                "cpu_seconds_per_surface_median": float(np.median([r["cpu_seconds"] for r in results])),
                "network_error_vs_audited_sd_quantiles": dict(zip(("q50", "q90", "max"),
@@ -89,6 +105,7 @@ def main():
     report = {"study": "S5", "task_fingerprint": manifest["task_fingerprint"], "summary": summary,
               "surfaces": [{"test_row": int(r), **res} for r, res in zip(rows, results)]}
     (args.out / "audit.json").write_text(json.dumps(jsonable(report), indent=2, allow_nan=False) + "\n")
+    partial.unlink(missing_ok=True)
     print(json.dumps(jsonable(summary), indent=1))
 
 
