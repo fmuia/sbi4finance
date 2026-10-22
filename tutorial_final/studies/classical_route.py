@@ -141,7 +141,8 @@ def main():
              test["context_values"][r] if test["context_values"].shape[1] else None,
              classical.latin_starts(task, args.starts, args.seed + int(r)), i < 5, mc_paths) for i, r in enumerate(rows)]
     with ProcessPoolExecutor(args.workers, mp_context=multiprocessing.get_context("spawn")) as pool:
-        results = list(pool.map(fit_job, jobs, chunksize=4))
+        # chunks of 4 cut the overhead of 200 cheap Fourier fits; a few costly Monte Carlo fits need one per worker
+        results = list(pool.map(fit_job, jobs, chunksize=4 if len(jobs) >= 8 * args.workers else 1))
     truth = test["parameters"][rows]
     names = task["parameter_names"]
     gauss_newton, posterior, records = [], [], []
