@@ -277,6 +277,19 @@ class InferenceAndCorrectionTests(unittest.TestCase):
         self.assertLess(correction.pareto_khat(rng.normal(0, 0.3, 4000)), 0.5)
         self.assertGreater(correction.pareto_khat(np.log(rng.pareto(0.8, 4000) + 1)), 0.7)
 
+    def test_contraction_of_rho_eta_uses_its_own_prior_variance(self):
+        from sbi4finance.calibration import validation
+        rng = np.random.default_rng(5)
+        # A posterior equal to the prior contracts by nothing.
+        assert_allclose(validation.contraction(rng.uniform(0, 1, (200, 4000, 1)), np.array([[0.0, 1.0]])), [0.0],
+                        atol=0.02)
+        # rho * eta is not uniform on its range; with the uniform target's variance its prior would seem to contract.
+        product = (rng.uniform(-0.99, -0.2, (200, 4000)) * rng.uniform(0.5, 3.5, (200, 4000)))[..., None]
+        product_bounds = [-0.99 * 3.5, -0.2 * 0.5]
+        variance = validation.product_prior_variance([-0.99, -0.2], [0.5, 3.5], product_bounds)
+        self.assertGreater(validation.contraction(product, np.array([product_bounds]))[0], 0.5)
+        assert_allclose(validation.contraction(product, np.array([product_bounds]), [variance]), [0.0], atol=0.02)
+
 
 if __name__ == "__main__":
     unittest.main()

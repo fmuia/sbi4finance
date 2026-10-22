@@ -71,15 +71,18 @@ def main():
     single_seconds = time.perf_counter() - single
     truth = test["parameters"][rows]
     labels, bounds = [LABELS[n] for n in names], np.asarray(task["prior_bounds"])
+    prior_variance = None
     if task["model"] == "rough":
         h, e, r = (names.index(n) for n in ("hurst", "eta", "rho"))
         draws = np.concatenate([draws, (draws[..., r] * draws[..., e])[..., None]], axis=-1)
         truth = np.concatenate([truth, (truth[:, r] * truth[:, e])[:, None]], axis=1)
         names, labels = names + ["rho_eta"], labels + [LABELS["rho_eta"]]
-        bounds = np.vstack([bounds, [bounds[r, 0] * bounds[e, 1], bounds[r, 1] * bounds[e, 0]]])
+        product = [bounds[r, 0] * bounds[e, 1], bounds[r, 1] * bounds[e, 0]]
+        bounds = np.vstack([bounds, product])
+        prior_variance = [None] * (len(names) - 1) + [validation.product_prior_variance(bounds[r], bounds[e], product)]
     result = validation.sbc(draws, truth, seed=args.seed)
     cover = validation.coverage(draws, truth)
-    shrink = validation.contraction(draws, bounds)
+    shrink = validation.contraction(draws, bounds, prior_variance)
     recovered = validation.recovery(draws, truth)
     report = {
         "study": "S2", "task_id": task["task_id"], "task_fingerprint": manifest["task_fingerprint"],
@@ -90,7 +93,11 @@ def main():
         "coverage": cover, "contraction": dict(zip(names, shrink)),
         "recovery_correlation": dict(zip(names, recovered["correlation"])),
         "seconds_per_surface": {"batched": batch_seconds, "single": single_seconds},
-        "note": "rho_eta bounds for contraction are its range over the prior box; its prior is not uniform",
+        "contraction_prior_variance_logit": dict(zip(names, [np.pi**2 / 3 if v is None else v
+                                                             for v in (prior_variance or [None] * len(names))])),
+        "note": ("contraction in the logit coordinates of each target's range; rho_eta's prior is not uniform on "
+                 "its range, so its prior variance there is computed from the prior box by Monte Carlo"
+                 if prior_variance else "contraction in the logit coordinates of the prior box"),
     }
     (args.out / "validation.json").write_text(json.dumps(report, indent=2, allow_nan=False) + "\n")
     np.savez_compressed(args.out / "draws.npz", draws=draws[:300], truth=truth[:300])

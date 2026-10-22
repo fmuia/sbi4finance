@@ -61,13 +61,31 @@ def coverage(draws, truth, levels=(0.5, 0.8, 0.9, 0.95), confidence=0.95):
     return result
 
 
-def contraction(draws, prior_bounds):
-    """1 - mean posterior variance / prior variance, in the logit coordinates of the prior box."""
+def contraction(draws, prior_bounds, prior_variance=None):
+    """1 - mean posterior variance / prior variance, in the logit coordinates of the prior box.
+
+    A target uniform on its bounds has the logistic variance pi^2/3 in these coordinates. A
+    derived target whose prior is not uniform on its range, such as rho * eta, needs its own
+    prior variance in prior_variance (one entry per target; None keeps pi^2/3), else its
+    contraction is overstated or understated.
+    """
     draws = np.asarray(draws, dtype=float)
     bounds = np.asarray(prior_bounds, dtype=float)
     unit = np.clip((draws - bounds[:, 0]) / (bounds[:, 1] - bounds[:, 0]), 1e-12, 1 - 1e-12)
     posterior_variance = logit(unit).var(axis=1).mean(axis=0)
-    return (1 - posterior_variance / (np.pi**2 / 3)).tolist()
+    prior = np.full(draws.shape[-1], np.pi**2 / 3)
+    if prior_variance is not None:
+        prior = np.array([np.pi**2 / 3 if v is None else v for v in prior_variance], dtype=float)
+    return (1 - posterior_variance / prior).tolist()
+
+
+def product_prior_variance(bounds_a, bounds_b, product_bounds, draws=1_000_000, seed=0):
+    """Prior variance of a * b, for independent uniforms a and b, in the logit coordinates of product_bounds."""
+    rng = np.random.default_rng(seed)
+    product = rng.uniform(*bounds_a, draws) * rng.uniform(*bounds_b, draws)
+    low, high = product_bounds
+    unit = np.clip((product - low) / (high - low), 1e-12, 1 - 1e-12)
+    return float(logit(unit).var())
 
 
 def recovery(draws, truth):
