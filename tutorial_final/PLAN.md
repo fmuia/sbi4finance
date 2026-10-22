@@ -1,7 +1,7 @@
 # Plan: `tutorial_final/` for ICAIF '26
 
-Revision 2, 21 October 2026. Owner: Francesco Muia. Supersedes revision 1 (same day),
-which built slot 5 on SVJ from returns.
+Revision 3, 22 October 2026. Owner: Francesco Muia. Revision 2 (21 Oct) chose the application;
+this revision bends the design to the code that already exists and maps every component to it.
 
 `tutorial_final/` will hold what we present in Milan on 14–15 November: the notebooks, the
 studies that produce their numbers, and the results they load. The rest of the repository stays
@@ -14,14 +14,13 @@ release.
 carried into the price of a product the smile does not pin down.** Rough Bergomi calibrated to a
 vanilla surface; the posterior propagated into a forward-start option, with the variance swap as
 the control; the 90% quantile of the price range as the model-risk reserve. Heston, which has an
-exact likelihood through its Fourier pricer, plays the role GBM plays in slot 4: the model on
-which the network is checked against the exact answer.
+exact likelihood through the Fourier pricer already in the repository, plays the role GBM plays
+in slot 4: the model on which the network is checked against the exact answer.
 
 The route is GBM (slot 4, under P, from returns) → the smile (slot 5, under Q, from quotes). The
-tutorial's title, *Amortized Bayesian Calibration of Volatility Models*, now describes it.
+tutorial's title, *Amortized Bayesian Calibration of Volatility Models*, describes it.
 
-The SVJ-from-returns lesson becomes an optional companion. Its audit and its validation design
-are reused in slot 5 (§6).
+The SVJ-from-returns lesson becomes an optional companion. Its audit design is reused (§6).
 
 ## 2. The thesis
 
@@ -44,12 +43,11 @@ are reused in slot 5 (§6).
   plausible calibrations with a 90% point; IFRS 13 asks for Level 3 sensitivity ranges; SR 11-7
   asks for model-risk assessment. Rough and path-dependent volatility are the research frontier
   this audience knows, and deep calibration is the method it knows for them.
-- **C2, necessity.** Each claim is stated against the strongest alternative: multi-start least
-  squares, regularized calibration, deep calibration (a neural pricer with least squares), a
-  neural pricer with MCMC, model-free bounds, across-model ranges. §7 lists what each gives and
-  lacks, and which study faces it.
+- **C2, necessity.** Each claim is stated against the strongest alternative (§7).
 - **C3, route.** GBM → the smile. SVJ, HKDE jumps, MMAR and the one-factor Bergomi model are
   archive or companions.
+- **C4, reuse.** Every component is built from the existing option-bank, pricing, inference,
+  correction and surrogate code unless §6 says otherwise. New code is listed and sized there.
 
 ## 4. The slot-5 lesson
 
@@ -60,79 +58,125 @@ Working title: **Ten calibrations fit the smile. Which price do you mark?** Abou
 |---|---|---|---|
 | 0–4 | The question. A desk calibrates to today's smile and marks a forward-start option. Ten calibrations fit equally well. Which price, and what reserve? | The SPY smile; the regulation's words | cached |
 | 4–9 | GBM under Q. Black–Scholes gives one volatility for every strike; the market does not. P and Q in one slide: slot 4's posterior forecasts, this one prices. | Flat line against the SPY smile; the ATM-skew term structure and its power law | live, seconds |
-| 9–16 | Heston: the smile explained. Fourier likelihood, exact posterior by MCMC, and the slot-4 workflow with a new simulator. The network against the exact posterior. | Posterior pairs, exact against network | MCMC cached, network live |
+| 9–16 | Heston: the smile explained. Fourier likelihood, exact posterior, and the slot-4 workflow with a new simulator. The network against the exact posterior. | Posterior pairs, exact against network | exact cached, network live |
 | 16–21 | Rough Bergomi: why rough (skew ∝ T^(H−1/2)), why Monte Carlo only, why no exact posterior. | Skew term structure under both models; one priced surface and its cost | cached |
 | 21–26 | The amortized posterior for the SPY surface. The ρ–η ridge; H from the term structure. | Posterior pairs over H, η, ρ | live, seconds |
-| 26–31 | Is it right? SBC on 1,000 synthetic surfaces; the audit of this surface against the Monte Carlo likelihood; agreement with MCMC on a neural pricer, the deep-calibration route. | SBC; audit efficiency; two posteriors overlaid | SBC cached, audit live |
+| 26–31 | Is it right? SBC on 2,000 synthetic surfaces; the audit of this surface against the Monte Carlo likelihood; agreement with MCMC on a neural pricer, the deep-calibration route. | SBC; audit efficiency; two posteriors overlaid | SBC cached, audit live |
 | 31–35 | The classical route on the same surface: multi-start least squares and a regularized fit; what they return and what they miss. | The modes on the ridge | cached |
 | 35–39 | From posterior to prices: variance swap (zero range), volatility swap, forward-start option; the 90% quantile against the point calibration: the reserve. | Three price distributions; the reserve | price map live |
 | 39–40 | Across models: Heston and rough Bergomi on the same smile price the forward-start differently. Within-model is a lower bound. Hand-over to slot 6. Where it leads: path-dependent volatility, joint SPX–VIX. | Two price distributions | cached |
 
-Exercises: change the quote-noise model and watch the reserve; drop the two shortest maturities
-and watch H; calibrate Heston to the rough-Bergomi surface (misspecification, for slot 6).
+Exercises: change the quote-noise model and watch the reserve (a reweighting, no retraining);
+drop the two shortest maturities and watch H; calibrate Heston to the rough-Bergomi surface
+(misspecification, for slot 6).
 
-## 5. Task specification v0
+## 5. Task specification v0, in the existing bank schema
 
-Starting values, to be frozen in `configs/calibration_protocol.json` on Fri 23 Oct. The repo's
-rough pilot (`rough_option_panel_v1`: nine put prices, ρ fixed at −0.6, flat forward variance,
-H ∈ [0.1, 0.3], η ∈ [0.4, 1.2]) is the base; everything below generalizes it.
+Everything below is expressed as two task JSONs in the `option_bank_v1` schema
+(`configs/tasks/calibration_rough_bank.json`, `configs/tasks/calibration_heston_bank.json`)
+plus one frozen protocol (`configs/calibration_protocol.json`), so that the existing generator,
+shard scripts, assembler, loader, adapter and correction code run on them. The three schema
+extensions it needs are marked **[ext]** and listed in §6. The rough pilot
+(`rough_option_panel_v1`: nine put prices, ρ fixed, flat curve, H ∈ [0.1, 0.3], η ∈ [0.4, 1.2])
+is the base. Freeze on Fri 23 Oct (D4).
 
 | Item | v0 |
 |---|---|
-| Observation | Implied volatilities on a grid of 7 maturities × 9 strikes, in maturity-major order. Maturities 1w, 2w, 1m, 2m, 3m, 6m, 1y. Strikes at log-moneyness k = δ σ_ATM √T for δ ∈ {−2, −1.5, −1, −0.5, 0, 0.5, 1, 1.5, 2}, so every maturity is quoted in its liquid region. |
-| Quote noise | Gaussian in implied vol, SD 0.3 vol points at δ = 0 rising linearly to 1.0 at \|δ\| = 2, times a per-surface scale drawn log-normally (median 1, log-sd 0.3) and given to the network as context. |
-| Rough Bergomi unknowns | H ~ U(0.02, 0.35); η ~ log-normal(median 1.5, log-sd 0.45); ρ ~ U(−0.99, −0.2). |
-| Forward-variance curve ξ₀ | Context, not inferred: piecewise-constant on the 7 maturities; for training, level σ₀ ~ log-normal(median 20%, log-sd 0.35) and a slope factor so that σ(1y)/σ(1w) ∈ [0.7, 1.6]. For the real surface, built from the chain by log-contract replication per maturity. |
-| Heston (check model) | v₀, θ, κ, σ_v, ρ with priors in the units of slot 4's prior where they overlap; Fourier pricer from `hkde.py` with jump intensity zero. Heston's forward-variance curve is parametric, θ + (v₀ − θ)e^(−κt): the contrast with Bergomi is a teaching point. |
-| Pricing numerics | Hybrid scheme (`rough_bergomi.py`), steps per maturity fixed at 256 regardless of T, 2^17 paths with antithetic variates and the Black–Scholes control variate; MC standard error below 0.1 quote-noise SD on every quote (the pilot's rule). |
-| Products under the posterior | Variance swap 3m (control: fixed by ξ₀); volatility swap 3m; ATM forward-start call, strike set at 3m, expiry 6m; one vanilla outside the grid (2y, 90% put) as the extrapolation warm-up. Priced by MC per posterior draw with common random numbers; a learned price map (the `hkde_surrogate.py` design) validated against MC makes the live cell fast. |
-| Reserve | 90% quantile of the posterior price distribution minus the point-calibration price, per product. |
-| Summary network | Stage B: a small MLP/CNN over the 7 × 9 grid plus context. Stage D: `bf.networks.SetTransformer` over tokens (k/√T, T, iv, noise sd, mask) with random masking in training, so a real chain with missing strikes is handled as trained. |
-| Inference network | `bf.networks.FlowMatching`, slot 4's class; three unknowns. |
-| Bank | 100,000 training surfaces, 5,000 validation, 5,000 test, generated on Oscar with the existing shard/assemble scripts; 2,000 further surfaces reserved for SBC. |
+| Observation | A currency-price panel `[B, 63, 1]`, as every bank today. Spot 1.0, rate and dividend 0, so prices are fractions of the forward; a real quote is divided by its maturity's forward. The adapter converts prices to implied vols deterministically for conditioning and plots. |
+| Contracts (fixed, as the schema requires) | 7 maturities in trading days {5, 10, 21, 42, 63, 126, 252}/252 × 9 strikes K = exp(δ σ_ref √T), δ ∈ {−2, …, 2} in steps of 0.5, σ_ref = 20%. Puts below the forward, calls above (both supported). Maturity-major order. |
+| Quote noise | Gaussian in price, per contract **[ext 1]**: `quote_noise_std` becomes a list of 63 values, each the Black–Scholes vega at (σ_ref, K, T) times an implied-vol noise of 0.3 vol points at δ = 0 rising linearly to 1.0 at \|δ\| = 2. Fixed per task; changing it is a reweighting exercise. |
+| Rough Bergomi unknowns | Uniform, as `generate_examples` draws: H ∈ (0.02, 0.35), η ∈ (0.5, 3.5), ρ ∈ (−0.99, −0.2). No fixed parameters. |
+| Forward-variance curve ξ₀ | Piecewise-linear on knots {0, the 7 maturities} through the existing `curve_values`. Drawn per example **[ext 2]**: level σ₀ ~ U(10%, 40%) and slope s ~ U(−0.3, 0.6) with ξ₀(T) = σ₀²(1 + sT); the 8 knot values are stored in the bank and conditioned on. For the real surface the knots come from log-contract replication per maturity. |
+| Heston check task | `model: "hkde"` with `jump_intensity` fixed at 0 (the pricer's explicit no-jump branch); unknowns `initial_variance` **[ext 3]**, `theta`, `vol_of_vol`, `rho`, uniform; `kappa` fixed at 2. Heston's forward-variance curve θ + (v₀ − θ)e^(−κt) is parametric: the contrast with Bergomi is a teaching point. Same contracts and noise. |
+| Pricing numerics | Rough: the existing conditional-put estimator, hybrid driver, 2^17 paths, in two maturity blocks **(part of ext 2's config)**: maturities ≤ 63 d with 504 steps (8 per day) and {126, 252} d with 504 steps (2 per day); the bank's rule MC SE ≤ 0.1 quote SD on every quote. Heston: the bank's Fourier refinement rule, unchanged. |
+| Products under the posterior | Variance swap 63 d (control: fixed by ξ₀); volatility swap 63 d; ATM forward-start call, strike set at 63 d, expiry 126 d; one vanilla outside the grid (2 y, 90% put). Priced from `simulate_rough` / `hkde.simulate` paths with common random numbers; a learned price map, validated by the surrogate protocol, serves the live cell on synthetic surfaces; the real surface is priced by MC per posterior draw and cached. |
+| Reserve | 90% quantile of the posterior price distribution minus the point-calibration price. |
+| Network | Stage B: `bf.networks.FlowMatching` (slot 4's class) on `inference_conditions` = 63 implied vols + 8 curve knots; the existing bounds-constraining adapter. Stage D: `bf.networks.SetTransformer` over tokens (k/√T, T, iv, noise sd, mask) with random masking, so a real chain with missing quotes is handled as trained. |
+| Bank | 100,000 train, 5,000 validation, 5,000 test, plus 2,000 reserved for SBC; the existing quote-noise augmentation (×4 per epoch) multiplies the training set at no pricing cost. |
 
-## 6. What exists and what is built
+## 6. Reuse map
 
-**Reused from the archive.** Rough Bergomi simulator and FFT hybrid driver; option-bank schema,
-shard generation and assembler; Oscar array scripts; Fourier pricer for Heston (via `hkde.py`);
-importance correction with an exact likelihood (`hkde_correction.py`); fixed-contract learned
-price map (`hkde_surrogate.py`); the SVJ audit (`svj/audit.py`: Student-t proposal, reweighting,
-efficiency flag); shared inference and training workflows; the 9 October HKDE figure
-(`docs/design/images/01-hkde-option-prices.png`), which previews the lesson's result on a
-Heston-with-jumps surface.
+What exists, what each lesson component takes from it, and the change needed. "As is" means
+no code change; "extend" means a small change inside the existing function; "generalize" means
+removing a hard-coded task shape; "new" is listed with its size.
 
-**Library work** (`src/sbi4finance/calibration/`, with tests):
+### 6.1 Component by component
 
-| Module | Content |
-|---|---|
-| `surface.py` | Grid definition, implied-vol inversion, noise model, ξ₀ from a chain by log-contract replication, ATM-skew term structure |
-| `heston_q.py` | Heston Q task: prior, Fourier likelihood (JAX), NUTS/adaptive-MH sampler, simulator for BayesFlow |
-| `rough_q.py` | Rough Bergomi Q task: prior, ξ₀ context, MC surface pricer with CRN, simulator for BayesFlow, bank adapter |
-| `products.py` | Variance swap, volatility swap, forward-start call, out-of-grid vanilla; MC pricers with CRN; learned price map |
-| `classical.py` | Multi-start least squares (L-BFGS on the MC pricer with CRN, and on the neural pricer), Jacobian standard errors, Tikhonov-regularized fit |
-| `pricer_net.py` | Neural pricer (parameters + ξ₀ → 63 implied vols), the deep-calibration route; MCMC on it |
-| `audit.py` | Per-surface importance reweighting of the network's draws with the MC likelihood; efficiency and PSIS k̂ |
+| Component | Existing code | Change |
+|---|---|---|
+| Task and bank schema, prior draws, seed streams, manifests, fingerprints | `option_bank.py` (`validate_config`, `generate_examples`, `write_bank`, `load_bank`) | **ext 1–3** (§6.2); otherwise as is |
+| Shard generation on Oscar, assembly with checksums | `scripts/generate_option_bank_shard.py`, `assemble_option_bank.py`, `cluster/option_bank_array.sbatch` | as is; two new task JSONs and a job map |
+| Rough Bergomi paths | `rough_bergomi.simulate_rough`, `rough_driver` (FFT hybrid), `bergomi.curve_values` | as is |
+| Rough European panel pricing with MC covariance | `bergomi.option_panel`, `conditional_put_payoffs` (conditional Black–Scholes estimator, call parity) | as is; called once per maturity block |
+| Heston pricing and paths | `hkde.characteristic_function`, `european_price` (no-jump branch exists and is tested), `hkde.simulate` | as is |
+| Batch Fourier pricing of parameter rows | `hkde_reference.price_parameters` | generalize: P parameters from the task, v₀ from the row |
+| Batch MC pricing of parameter rows (audit likelihood) | `scripts/check_rough_reference.price_parameters` | generalize: 3 parameters, per-row curve; move into the package |
+| Quote-noise model | `option_panel.validate_context`, `noisy_panel`; `rough_reference.importance_weights` already takes σ `[C]` | **ext 1** |
+| Adapter and workflow builder | `rough_inference.py` (`conditioning_data`, `training_data`, `augmented_training_data`, `build_workflow`) | generalize into `calibration/inference.py`: parameter names, bounds and contract count from the task; curve knots concatenated into the conditions; price→implied-vol transform; `FlowMatching` in place of `CouplingFlow` |
+| Training with selection and reload check | `training_workflow.fit_and_select`, `verify_reload`, `reserve_output_dir`; `scripts/train_rough.py` | as is; the script's accepted-inputs check updated to the new task |
+| Exact check by importance reweighting (the audit) | `hkde_correction.propose` (defensive mixture: network + prior + boundary), `correct`, `summarize`, `resample` | generalize into `calibration/correction.py`: P parameters, C contracts, σ `[C]`, a pluggable `price_fn(rows) → [N, C]` (Fourier for Heston, MC for rough). The SVJ `audit.fit_proposal`'s Student-t proposal and `AuditResult.flagged` are the pattern for the per-surface flag |
+| Reference diagnostics, weighted summaries, SBC | `rough_reference.weighted_summary`, `reference_diagnostics`, `conditional_metrics`, `randomized_sbc`; `scripts/evaluate_rough.py` (`validation_gates`, `aggregate`) | generalize to P parameters; otherwise as is |
+| Per-surface pipeline (prepare → infer → diagnose → correct → fallback → downstream) | `inference_workflow.run_workflow` with `WorkflowHooks`; `hkde_workflow.run_panel` and `HKDEWorkflowConfig` | generalize `run_panel` into `calibration/workflow.py`: downstream = product prices under the weighted draws |
+| Learned price map and its validation protocol | `hkde_surrogate.py` (fit, predict, save, load; bound checks) and `scripts/run_hkde_surrogate.py` (held-out error against MC SE, paired propagation, timing) | replace the 2-D Chebyshev basis by a small Keras MLP on 5 inputs (H, η, ρ, σ₀, s); keep the validation protocol and script structure |
+| Posterior plots: raw / weighted / reference, efficiency, target-price distributions, PIT | `scripts/plot_hkde_correction.py`, `plot_rough_inference.py`, `svj/plots.py` (style) | as is with new inputs |
+| MCMC diagnostics (R-hat, ESS) for the neural-pricer route | `svj/pmmh.rhat_ess` | as is; the random-walk sampler is 60 lines (new, N3) |
+| Multi-start calibration structure (starts, bounds, Hessian, bound hits) | `svj/classical.fit_mle`, `wald_standard_errors` | pattern only; the objective is new (N4) |
+| Local option-panel artifact (columns, conventions, provenance) | `datasets/options.py`, `datasets/local.py` (`write_artifact`, `load_artifact`) | extend: bid, ask and forward columns as auxiliary; generalize `prepare_hkde_panel` to any task's contract list |
+| Cost measurement | `scripts/svj_costs.py` | pattern |
+| Notebook text and structure | notebook 10 (local observation → network → why correct → correction → target prices → SBC), notebook 06 (Fourier pricing and bank roles), notebook 08/09 (forward-variance curve, memory kernel, why no continuation state, importance reference, SBC), slot 4 (#37: BayesFlow explanation and diagnostics), slot 5 draft (#38: audit explanation, page structure) | lifted section by section |
+| End-to-end template that runs today | notebook 10 with `demo-hkde-corrected`: network proposal → exact Fourier reweighting → two target-price distributions, on the HKDE (θ, λ) task | Stage A0: run it unchanged as the reference implementation while the Heston task is wired |
 
-**Studies** (`tutorial_final/studies/`, each writes to `results/` and is a `pixi` task):
+Not reused: the trained rough checkpoint (`rough-hurst-eta-reference8192-provisional`, nine
+puts, two parameters) and the HKDE (θ, λ) checkpoint, except as smoke tests of the loaders; the
+SVJ particle filter; the one-factor Bergomi model.
 
-| ID | Study | Output | Feeds |
+### 6.2 Schema extensions (in `option_bank.py` and `option_panel.py`)
+
+| | Change | Where | Size |
 |---|---|---|---|
-| S1 | Generate the rough-Bergomi bank (Oscar) | `results/calibration/bank-manifest.json` | S2, S4, S5 |
-| S2 | Train the amortized posterior; SBC, recovery, coverage, contraction on held-out surfaces | `checkpoints/rough_bergomi/`, `results/calibration/validation/` | §4 min 26–31 |
-| S3 | Heston check: exact MCMC against the network on 50 synthetic surfaces and the real one | `results/calibration/heston-check/` | §4 min 9–16 |
-| S4 | Neural pricer; MCMC on it against the amortized posterior on 50 surfaces and the real one | `results/calibration/pricer-route/` | C2 row "deep calibration" |
-| S5 | Audit: efficiency and k̂ on 500 validation surfaces; flag rate; the real surface | `results/calibration/audit/` | §4 min 26–31 |
-| S6 | Classical route: multi-start LS and regularized fit on 200 synthetic surfaces and the real one; coverage of Jacobian intervals; where the modes sit on the ridge | `results/calibration/classical/` | §4 min 31–35 |
-| S7 | Products under the posterior: price distributions, reserves, price-map validation against MC; Heston against rough Bergomi on the same surface | `results/calibration/products/` | §4 min 35–40 |
-| S8 | Real surface: SPY end-of-day chain for one date through the Alpha Vantage connector (`HISTORICAL_OPTIONS`); cleaning rules; implied vols, ξ₀, skew term structure; derived data only in the repository, provenance recorded | `data/spy-surface/`, `data/SOURCES.md` | §4 throughout |
-| S9 | Costs on one machine: one MC likelihood evaluation; the exact MCMC with MC pricing inside, run on one surface to a fixed CPU budget and extrapolated to 400 effective draws; network; audit; neural pricer + MCMC; multi-start LS | `results/calibration/costs.json` | §4 min 16–21, 26–31 |
+| ext 1 | `quote_noise_std` scalar **or** list `[C]`; `noisy_panel` broadcasts; the MC-SE and refinement budgets compare per contract | `option_panel.validate_context`, `noisy_panel`; `option_bank.generate_examples` | ~20 lines |
+| ext 2 | Per-example model context: `task.curve_prior` (knots, level and slope bounds) drawn from the example's prior stream; `curve_values [B, K]` and `curve_parameters [B, 2]` stored and validated; `task.numerics.blocks` prices the panel in maturity blocks by repeated `option_panel` calls | `option_bank.price_panel`, `generate_examples`, `write_bank`, `load_bank` | ~60 lines |
+| ext 3 | `initial_variance` allowed in `parameter_names` for `hkde`; `price_panel` and `price_parameters` read it from the row | `option_bank.price_panel`, `hkde_reference.price_parameters` | ~10 lines |
 
-**Build order.** Each stage is a presentable lesson on its own.
+### 6.3 New code
 
-- **Stage A, Heston only.** S3 and S7 on Heston: exact posterior, network, forward-start range,
-  reserve. The lesson's whole arc on a model with an exact check.
-- **Stage B, rough Bergomi on the fixed grid.** S1, S2, S4, S5, S6, S7, S9. The headline.
-- **Stage C, the real surface.** S8 feeding every section.
+| | Module | Content | Size |
+|---|---|---|---|
+| N1 | `calibration/surface.py` | Black–Scholes price/vega/implied-vol inversion; design grid; per-maturity smile fit (cubic spline in δ) to read the grid from a chain; forward from put–call parity; ξ₀ by log-contract replication; ATM-skew term structure | ~250 lines |
+| N2 | `calibration/products.py` | Payoffs from `simulate_rough` / `hkde.simulate` outputs: variance swap (integrated variance), volatility swap, forward-start call, out-of-grid vanilla via `option_panel`; CRN across posterior draws; MLP price map with the surrogate protocol | ~200 lines |
+| N3 | `calibration/pricer_net.py` | Keras MLP (H, η, ρ, σ₀, s) → 63 prices trained on the bank's clean `reference_prices` (deep calibration's pricer, free given the bank); random-walk MH on it; `pmmh.rhat_ess` for diagnostics | ~150 lines |
+| N4 | `calibration/classical.py` | Multi-start L-BFGS-B on weighted price residuals with the MC pricer at a fixed seed (CRN) and with the neural pricer; Jacobian standard errors; Tikhonov variant; bound-hit and mode reports | ~150 lines |
+| N5 | `scripts/fetch_spy_surface.py` | One SPY end-of-day chain for one date (Alpha Vantage `HISTORICAL_OPTIONS`), cleaning rules, artifact via N1; raw quotes stay out of the repository | ~120 lines |
+
+### 6.4 Studies
+
+Each study is a `pixi` task in `tutorial_final/studies/`, writes to `results/calibration/`, and
+starts from the script named.
+
+| ID | Study | Starts from | Output |
+|---|---|---|---|
+| S1 | Generate the rough and Heston banks on Oscar | `generate_option_bank_shard.py`, `assemble_option_bank.py`, `option_bank_array.sbatch` with the two task JSONs | `bank-manifest.json` |
+| S2 | Train the amortized posterior; SBC, recovery, coverage, contraction | `train_rough.py`, `evaluate_rough.py` | `checkpoints/rough_bergomi/`, `validation/` |
+| S3 | Heston check: exact posterior (Fourier reweighting of a defensive proposal, and an independent MH chain) against the network on 50 synthetic surfaces and the real one | `evaluate_hkde_correction.py`, `hkde_workflow.run_panel` | `heston-check/` |
+| S4 | Neural pricer; MH on it against the amortized posterior on 50 surfaces and the real one | N3, `pmmh.rhat_ess` | `pricer-route/` |
+| S5 | Audit: efficiency and max weight on 500 validation surfaces; flag rate; the real surface | `calibration/correction.py`, `check_rough_reference.price_parameters` | `audit/` |
+| S6 | Classical route on 200 synthetic surfaces and the real one; Jacobian-interval coverage; modes on the ridge | N4 | `classical/` |
+| S7 | Products under the posterior: price distributions, reserves, price-map validation; Heston against rough on the same surface | N2, `run_hkde_surrogate.py` (protocol), `hkde_correction.summarize` | `products/` |
+| S8 | Real surface: SPY chain, implied vols, ξ₀, skew term structure; derived data only | N5, N1, `datasets/local.write_artifact` | `data/spy-surface/`, `data/SOURCES.md` |
+| S9 | Costs on one machine: one MC likelihood evaluation; exact MCMC with MC pricing inside to a fixed CPU budget, extrapolated to 400 effective draws; network; audit; neural pricer + MH; multi-start | `svj_costs.py` pattern | `costs.json` |
+
+### 6.5 Build order
+
+Each stage is a presentable lesson on its own.
+
+- **Stage A0 (today).** Run notebook 10's pipeline unchanged on the HKDE (θ, λ) task: the
+  end-to-end template for proposal → exact reweighting → target prices.
+- **Stage A, Heston.** ext 1 and ext 3; the Heston task JSON; `calibration/inference.py` and
+  `correction.py` generalized; S3 and S7 on Heston. The lesson's whole arc on a model with an
+  exact check.
+- **Stage B, rough Bergomi on the grid.** ext 2; the rough task JSON; S1, S2, S4, S5, S6, S7, S9.
+  The headline.
+- **Stage C, the real surface.** N1, N5, S8 feeding every section.
 - **Stage D, varying quote sets.** The set-based summary network; the real chain used as quoted.
 
 ## 7. The C2 table: alternatives, and the study that faces each
@@ -187,7 +231,7 @@ Francesco presents. Decision D1 by **Fri 23 Oct**, after a 5-minute dry talk of 
 
 | | Option | Bayes in one example | Fit with the route |
 |---|---|---|---|
-| E | **One quote, then the smile** (recommended) | One option quote with its bid-ask gives a posterior for σ under Black–Scholes; price a second strike: a range. Two strikes: no σ fits both. The smile is the data that rejects the model. | Direct: closed form, Q-measure, leads into slot 4's model and slot 5's data |
+| E | **One quote, then the smile** (recommended) | One option quote with its bid-ask gives a posterior for σ under Black–Scholes; price a second strike: a range. Two strikes: no σ fits both. The smile is the data that rejects the model. | Direct: closed form, Q-measure, leads into slot 4's model and slot 5's data; built from `calibration/surface.py` and slot 4's `gbm_volatility.py` |
 | D | Volatility spine with the beta vignette from #41 | The 50 highest of 500 betas are too high by 0.16; the hedge is $8m short | Strong example, P-measure, a detour from the smile |
 
 Outline for E, about 18 minutes:
@@ -203,8 +247,7 @@ Outline for E, about 18 minutes:
    or thousands. Black–Scholes and Heston against rough Bergomi and path-dependent volatility.
 5. **The route** (2). Slot 4 under P, slot 5 under Q.
 
-Build Mon 26–Thu 29 Oct from `gbm_volatility.py` and `calibration/surface.py`; freeze
-**Wed 4 Nov**. The full beta notebook (#41) goes to `extras/`.
+Build Mon 26–Thu 29 Oct; freeze **Wed 4 Nov**. The full beta notebook (#41) goes to `extras/`.
 
 ## 11. Decisions
 
@@ -213,9 +256,9 @@ Build Mon 26–Thu 29 Oct from `gbm_volatility.py` and `calibration/surface.py`;
 | D1 | Intro option | E | Fri 23 Oct |
 | D2 | Slot durations, presenters (slot 4), owners of slots 2, 3 and 6, from the acceptance mail | — | Fri 23 Oct |
 | D3 | Record the route on #26 and point the `main` README at `tutorial_final/` | Yes | Fri 23 Oct |
-| D4 | Freeze the task protocol v0 (§5) | As written, after one review | Fri 23 Oct |
+| D4 | Freeze the two task JSONs and the protocol (§5) | As written, after one review | Fri 23 Oct |
 | D5 | Headline product | ATM forward-start call; variance swap as control; volatility swap second | Fri 23 Oct |
-| D6 | Real surface: SPY through the Alpha Vantage connector; derived implied vols committed, raw quotes not | Yes; record provenance in `data/SOURCES.md` | Fri 23 Oct |
+| D6 | Real surface: SPY through the Alpha Vantage connector; derived implied vols committed, raw quotes not | Yes; provenance in `data/SOURCES.md` | Fri 23 Oct |
 | D7 | SVJ material: optional companion in `extras/`; #38 closes when harvested there | Yes | Fri 30 Oct |
 | D8 | LinkedIn: P5's question becomes "ten calibrations fit the smile; which price do you mark?"; P6 becomes Heston against rough on the same smile; P0 and P5 drop the particle-MCMC cost line | Yes | before P0 |
 | D9 | Laptop support: add win-64 to the lock or offer a hosted notebook | Try win-64 first | Fri 30 Oct |
@@ -238,8 +281,9 @@ tutorial_final/
   tests/           each notebook runs headless within budget; CLAIMS.md matches results/
 ```
 
-Rules: library code lives in `src/sbi4finance/` once, with tests; artifacts are copied, not
-moved, with their hashes in `MANIFEST.md`; notebooks resolve paths from `tutorial_final/`.
+Rules: library code lives in `src/sbi4finance/` once, with tests (`src/sbi4finance/calibration/`
+for the new modules); artifacts are copied, not moved, with their hashes in `MANIFEST.md`;
+notebooks resolve paths from `tutorial_final/`.
 
 A slot is final when: it runs headless from a clean `pixi install --locked`, offline, within
 budget, on osx-arm64 and linux-64 (win-64 after D9); `marimo check --strict` and its tests pass;
@@ -263,23 +307,26 @@ the prior on H; the crash-day seed from #42).
 
 | Week | Slot 5 and studies | Intro | Slot 4 | Folder and logistics | LinkedIn |
 |---|---|---|---|---|---|
-| Wed 21–Fri 23 Oct | D4 protocol freeze; S1 bank generation starts on Oscar; `heston_q.py` and the exact sampler (Stage A); S8 fetch | Storyboards E and D; dry talks; D1 | Merge `main` | Folder skeleton; `CLAIMS.md` seeded from §8; D2, D3, D5, D6 | D8 edits; P0 |
-| Mon 26–Fri 30 Oct | S3 Heston check; S2 training and SBC; S4 pricer net; S5 audit; S6 classical; S7 products on Heston and rough; S9 timings (Stage B) | Build | Edits; **freeze Fri 30** | Harvest slot 4; D7, D9, D10; win-64 lock | P1 Tue 27, P2 Thu 29 |
-| Mon 2–Fri 6 Nov | S8 real-surface results through every section (Stage C); S7 across-model; set-based network (Stage D); notebook complete; **freeze Fri 6** | **Freeze Wed 4** | Harvested | Clean-machine install Thu 5; harvest intro and slot 5 | P3 Tue 3, P4 Thu 5 |
+| Wed 21–Fri 23 Oct | Stage A0; ext 1–3; `calibration/inference.py`, `correction.py`; task JSONs and protocol (D4); S1 job map and first shards on Oscar; N5 fetch | Storyboards E and D; dry talks; D1 | Merge `main` | Folder skeleton; `CLAIMS.md` seeded from §8; D2, D3, D5, D6 | D8 edits; P0 |
+| Mon 26–Fri 30 Oct | Stage A: S3, S7 on Heston. Stage B: S2 training and SBC; N3 and S4; S5; N4 and S6; N2 and S7; S9 | Build | Edits; **freeze Fri 30** | Harvest slot 4; D7, D9, D10; win-64 lock | P1 Tue 27, P2 Thu 29 |
+| Mon 2–Fri 6 Nov | Stage C: N1, S8 through every section; S7 across-model; Stage D set-based network; notebook complete; **freeze Fri 6** | **Freeze Wed 4** | Harvested | Clean-machine install Thu 5; harvest intro and slot 5 | P3 Tue 3, P4 Thu 5 |
 | Mon 9–Fri 13 Nov | Rehearse | Rehearse | Rehearse | Full timed run-through Mon 9; fixes only; release tag Wed 11; participant README | P5 Tue 10, P6 Thu 12, P7 Fri 13 |
 | Sat 14–Sun 15 Nov | Tutorial | | | | |
 
-Proposed owners, pending D2: Francesco, slot 5 and the intro; Alexander, bank generation,
-Oscar and the harvest process; Stefan, the set-based summary network and the BayesFlow
-architecture; Jerry, slot 3's interface and the SBC study. Everyone reviews one slot they do not
-present.
+Proposed owners, pending D2: Francesco, slot 5 and the intro; Alexander, ext 1–3, bank
+generation, Oscar and the harvest process; Stefan, the set-based summary network and the
+BayesFlow architecture; Jerry, slot 3's interface and the SBC study. Everyone reviews one slot
+they do not present.
 
 ## 15. This week
 
-1. Francesco: review §5 and freeze the protocol (D4); storyboard intro options E and D and give
-   both as dry talks; decide D1.
+1. Francesco: review §5 and freeze the two task JSONs and the protocol (D4); storyboard intro
+   options E and D and give both as dry talks; decide D1.
 2. Team: D2, D3, D5, D6, D8; owners for slots 2, 3 and 6.
-3. Start Stage A: `heston_q.py`, the exact sampler, the network on Heston, the forward-start
-   range. Start S1 on Oscar. Fetch the SPY chain (S8).
-4. Create the folder skeleton, `CLAIMS.md` and `MANIFEST.md`.
-5. Rewrite P0 and P5 in #40 to the calibration question before P0 goes out.
+3. Stage A0: run notebook 10's pipeline as the template. Then ext 1–3, `calibration/inference.py`
+   and `correction.py`, the Heston task, and S3 on synthetic Heston surfaces.
+4. S1: write the job map and start the first rough shards on Oscar; measure the per-surface cost
+   first and size the array from it.
+5. N5: fetch one SPY chain through the connector and build the first artifact.
+6. Create the folder skeleton, `CLAIMS.md` and `MANIFEST.md`.
+7. Rewrite P0 and P5 in #40 to the calibration question before P0 goes out.
