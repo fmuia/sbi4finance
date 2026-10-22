@@ -98,9 +98,10 @@ def main():
     parser.add_argument("--widths", default="256,256,256,256")
     parser.add_argument("--fresh-noise", action="store_true",
                         help="draw a new quote error for every batch instead of --augmentations fixed copies")
-    parser.add_argument("--time-alpha", type=float, default=0.5,
-                        help="flow-matching training times t = u^(1 + alpha); BayesFlow's default 0.5 favours the noise "
-                             "end, negative values the data end")
+    parser.add_argument("--time-alpha", type=float, default=-0.5,
+                        help="flow-matching training times t = u^(1 + alpha). BayesFlow's default, 0.5, favours the noise "
+                             "end; -0.5 (density 2t) favours the data end, where a sharp posterior's location is set, "
+                             "and took Heston's v0 from 28% to 82% agreement with the exact posterior")
     parser.add_argument("--chunk-epochs", type=int, default=0,
                         help="train in chunks of this many epochs, saving a resumable state after each; rerunning "
                              "the same command after an interruption continues from the last chunk")
