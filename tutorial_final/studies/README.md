@@ -14,6 +14,7 @@ come from these outputs. Library code is in `src/sbi4finance/calibration/`.
 | S5 | `audit.py` (Stage B) | The audit of rough-Bergomi surfaces with the Monte Carlo likelihood |
 | S6 | `classical_route.py` | Multi-start least squares, Gauss–Newton intervals and their coverage, distinct optima, Tikhonov |
 | S7 | `products_study.py` | Product prices under the posterior, ranges, reserves and their drivers |
+| S7 | `across_models.py` | The same rough-Bergomi smiles under Heston: the Heston posterior (the network corrected with the Fourier likelihood), both least-squares fits with their chi-square, and the products under both posteriors |
 | S8 | `scripts/build_surface.py` (Stage C) | The real smile on the design grid, from a chain file |
 | S9 | `costs.py` | CPU-seconds per route on one machine |
 | S2-1, S2-2 | `smile_facts.py` (`example`, `prior-predictive`) | The example surfaces at the centre of the prior, and the prior predictive check of four smile statistics |
@@ -69,6 +70,8 @@ python tutorial_final/studies/products_study.py --bank PILOT --checkpoint RUN --
     --starts 4 --least-squares-paths 8192 --workers 4
 python tutorial_final/studies/classical_route.py --bank PILOT --checkpoint RUN --out S6 --first 293 --surfaces 8 --starts 10 \
     --least-squares-paths 8192 --landscape-points 21 --workers 4
+python tutorial_final/studies/across_models.py --rough-bank PILOT --rough-products S7 --heston-checkpoint HESTON-RUN \
+    --out S7-ACROSS
 ```
 
 `accept.py` then copies a finished run into `results/calibration/` (`--keep-surfaces 20`

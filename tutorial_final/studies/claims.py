@@ -168,10 +168,21 @@ def c8():
 
 
 def c9():
-    heston, rough = load("heston/s7/products.json"), load("rough/s7/products.json")
-    if heston is None or rough is None:
-        return "—", "pending: rough bank"
-    return "see S7 across-model table", "verified"
+    for prefix, label in (("rough", "full"), ("rough-pilot", "pilot")):
+        a = load(f"{prefix}/s7-across/across-models.json")
+        if a is None:
+            continue
+        forward = [s["products"]["forward_start_call"] for s in a["surfaces"]]
+        gaps = [f["gap_between_points_relative"] for f in forward]
+        apart = sum(not f["ranges_overlap"] for f in forward)
+        value = (f"forward-start, Heston minus rough at the least-squares points: {pct(min(gaps), 1)} to "
+                 f"{pct(max(gaps), 1)} of the rough price on {len(forward)} rough-Bergomi smiles; the two 90% "
+                 f"posterior ranges are disjoint on {apart} of {len(forward)}")
+        met = apart == len(forward)
+        status = ("verified" if met else "not met: the ranges overlap") if label == "full" else \
+            f"pilot ({'apart' if met else 'ranges overlap'} on the pilot's smiles)"
+        return value, status
+    return "—", "pending: rough bank"
 
 
 def c10():
@@ -215,7 +226,7 @@ CLAIMS_LIST = [
     ("C8", "One Monte Carlo likelihood evaluation costs seconds, the exact posterior hours, the network about a "
            "second", "S9", "costs/costs.json", c8),
     ("C9", "Heston and rough Bergomi calibrated to the same smile price the forward-start apart", "S7",
-     "*/s7/products.json", c9),
+     "rough*/s7-across/across-models.json", c9),
     ("C10", "Under Heston every product carries a range, the variance swap included, because Heston's "
             "forward-variance curve depends on its parameters", "S7", "heston/s7/products.json", c10),
     ("C11", "Gauss–Newton intervals and posterior intervals cover the truth at the stated rates on Heston smiles",
