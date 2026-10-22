@@ -45,7 +45,7 @@ design document; its placeholders ⟨S1⟩–⟨S9⟩ are filled by the studies 
 - **C1, relevance.** Every desk recalibrates daily; exotic marks, hedge ratios and reserves depend
   on the calibration. Prudent valuation (Regulation (EU) 2016/101, Art. 11) asks for a range of
   plausible calibrations with a 90% point; IFRS 13 asks for Level 3 sensitivity ranges; SR 11-7
-  asks for model-risk assessment. Rough and path-dependent volatility are the research frontier
+  (replaced by SR 26-2 in April 2026) asks for model-risk assessment. Rough and path-dependent volatility are the research frontier
   this audience knows, and deep calibration is the method it knows for them.
 - **C2, necessity.** Each claim is stated against the strongest alternative (§7).
 - **C3, route.** GBM → the smile. SVJ, HKDE jumps, MMAR and the one-factor Bergomi model are

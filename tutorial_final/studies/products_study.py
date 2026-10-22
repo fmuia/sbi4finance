@@ -86,7 +86,7 @@ def main():
     network = posterior_draws(workflow, task, test, rows, args.draws, args.seed)
     names = task["parameter_names"]
     has_context = test["context_values"].shape[1] > 0
-    records = []
+    records, saved = [], {}
     style()
     fig, axes = plt.subplots(len(rows), len(products.PRODUCTS), figsize=(11, 2.3 * len(rows)), constrained_layout=True,
                              squeeze=False)
@@ -124,6 +124,9 @@ def main():
                 ax.grid(axis="y", visible=False)
             entry["pricing_cpu_seconds"] = cpu
             records.append(entry)
+            saved.update({f"prices_{int(row)}": draws_prices, f"point_prices_{int(row)}": point_prices,
+                          f"draws_{int(row)}": network[i], f"least_squares_{int(row)}": point,
+                          f"truth_{int(row)}": test["parameters"][row]})
     axes[0, 0].legend(loc="upper left", fontsize=7.5)
     model = "rough Bergomi" if task["model"] == "rough" else "Heston"
     fig.suptitle(f"{model}: product prices under the posterior, {args.draws} draws per surface", x=0.01, ha="left",
@@ -133,6 +136,7 @@ def main():
               "specification": spec, "settings": {k: str(v) if isinstance(v, Path) else v for k, v in vars(args).items()},
               "parameters": names, "labels": [LABELS[n] for n in names], "surfaces": records}
     (args.out / "products.json").write_text(json.dumps(jsonable(report), indent=2, allow_nan=False) + "\n")
+    np.savez_compressed(args.out / "price-draws.npz", products=np.array(products.PRODUCTS), **saved)
     print(json.dumps(jsonable([{p: {k: round(v, 5) if isinstance(v, float) else v
                                     for k, v in r["products"][p].items() if k != "variance_share_by_parameter"}
                                 for p in products.PRODUCTS} for r in records]), indent=1))

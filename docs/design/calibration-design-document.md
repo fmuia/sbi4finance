@@ -135,7 +135,7 @@ The advanced example should calibrate the rough Bergomi model to a vanilla smile
 
 The example meets the three selection criteria:
 
-- **Users' pain.** Every derivatives desk recalibrates its models to the smile daily, marks exotics with the result, and must hold a reserve for the calibrations it did not pick. The rules name the object: a range of plausible calibrations with a 90% point (Regulation (EU) 2016/101, Art. 11), Level 3 sensitivity ranges (IFRS 13), model-risk assessment (SR 11-7).
+- **Users' pain.** Every derivatives desk recalibrates its models to the smile daily, marks exotics with the result, and must hold a reserve for the calibrations it did not pick. The rules name the object: a range of plausible calibrations with a 90% point (Regulation (EU) 2016/101, Art. 11), Level 3 sensitivity ranges (IFRS 13), model-risk assessment (SR 11-7, replaced by SR 26-2 in April 2026).
 - **Widely used model class.** Stochastic volatility calibrated to vanillas is the standard way to price equity exotics; rough volatility is the research frontier the audience knows, and deep calibration (Horvath, Muguruza and Tomas 2021) is the method it knows for it.
 - **The classical route fails.** Least squares returns one point. Its local interval cannot follow the ρ–η valley. The exact Bayesian route exists but, for a model priced by Monte Carlo, costs ⟨S9⟩ CPU-hours per surface.
 
@@ -171,13 +171,13 @@ How to read the figure: each panel is one option surface, and each column one ex
 
 A derivatives desk prices and hedges products that are not quoted, with a model calibrated to products that are. The calibration runs every morning, and intraday for liquid underlyings. Its output is used three times: to mark the book, to compute hedge ratios, and, at a slower pace, to set the reserves that the valuation rules require. The current tools meet the daily constraint by returning one calibration and leaving its uncertainty to judgment.
 
-Calibration risk has a literature of its own. Schoutens, Simons and Tistaert (2004) calibrated seven models to the same Eurostoxx smile, each within market precision, and found exotic prices that differed by tens of percent. Detlefsen and Härdle (2007) showed that, within one model, the choice of objective function (prices or implied volatilities, absolute or relative errors) moves the calibrated parameters and the exotic prices. Guillaume and Schoutens (2012) measured the same effect under Heston. Cont (2006) gave the general frame: the set of models and calibrations consistent with the vanillas defines a range of prices, and the width of that range is model uncertainty.
+Calibration risk has a literature of its own. Schoutens, Simons and Tistaert (2004) calibrated seven models to the same Eurostoxx smile, each within market precision, and found that their prices for barrier, lookback and cliquet options differed substantially. Detlefsen and Härdle (2007) showed that, within one model, the choice of objective function (prices or implied volatilities, absolute or relative errors) moves the calibrated parameters and the exotic prices. Guillaume and Schoutens (2012) measured the same effect under Heston. Cont (2006) gave the general frame: the set of models and calibrations consistent with the vanillas defines a range of prices, and the width of that range is model uncertainty.
 
 Supervisors ask for that range:
 
 - **Prudent valuation.** Banks in the EU deduct additional valuation adjustments from capital. The model-risk adjustment covers "the potential existence of a range of different models or model calibrations". Where possible, the bank determines "a range of plausible valuations produced from alternative appropriate modelling and calibration approaches" and takes a point in the range at which it is 90% confident it could exit the position at that price or better (Regulation (EU) 2016/101, Article 11).
 - **Fair-value disclosure.** For Level 3 instruments, IFRS 13 requires a description of the sensitivity of the fair value to unobservable inputs and, for financial instruments, the effect of changing those inputs to reasonably possible alternatives (IFRS 13, paragraph 93(h)).
-- **Model risk management.** SR 11-7 asks banks to assess model risk, including the uncertainty of inputs and assumptions, and to hold the resulting limitations against the model's use. PRA SS1/23 defines model uncertainty as "the inherent uncertainty in the parameter estimates and results of statistical models".
+- **Model risk management.** SR 11-7 asked banks to assess model risk, including the uncertainty of inputs and assumptions, and to hold the resulting limitations against the model's use; SR 26-2 replaced it on 17 April 2026. PRA SS1/23 defines model uncertainty as "the inherent uncertainty in the parameter estimates and results of statistical models".
 
 The rules name the object, a range of calibrations with a quantile, and leave its construction to the bank. In practice the range is built by rerunning the calibration with alternative objectives, weights or starting points, and reading the spread, or by expert judgment. Appendix A gives the sources.
 
@@ -515,7 +515,7 @@ Model calibration in practice is a least-squares problem, solved once per surfac
 | Multi-start least squares | The set of local optima | Standard practice | The ends of the valley, with no weights; the "range of plausible calibrations" without probabilities |
 | Regularized (Tikhonov) calibration | One stable point | Crépey (2003); Cont and Tankov (2004) | The answer depends on the penalty and on the reference point |
 | Deep calibration: neural pricer and least squares | One point, fast | Hernandez (2017); Bayer et al. (2019); Horvath, Muguruza and Tomas (2021) | Fast, but still one point |
-| Neural pricer with MCMC | A posterior | Natural extension of the above | Correct up to the pricer's error; a sampler per surface |
+| Neural pricer with MCMC | A posterior | Bayer et al. (2019) sample it by MCMC on their pricer | Correct up to the pricer's error; a sampler per surface |
 | MCMC with the Monte Carlo pricer inside | The exact posterior | Gupta and Reisinger (2014) for Bayesian calibration in general | ⟨S9⟩ CPU-hours per surface |
 
 ### Least squares and its weights
@@ -835,20 +835,20 @@ A pricing library calibrates each model to the vanilla surface of each underlyin
 
 | Claim | What the source shows | Source |
 | --- | --- | --- |
-| Calibration is not unique and the choice matters for exotics | Seven models calibrated to one smile within market precision price barriers, cliquets and lookbacks tens of percent apart | Schoutens, Simons and Tistaert (2004), "A perfect calibration! Now what?" |
+| Calibration is not unique and the choice matters for exotics | Seven models calibrated to one smile within market precision price barriers, cliquets and lookbacks far apart | Schoutens, Simons and Tistaert (2004), "A perfect calibration! Now what?" |
 | Within one model, the objective function moves the exotic prices | Heston and Bates calibrated with price and implied-volatility objectives give different parameters and different exotic prices | Detlefsen and Härdle (2007), J. Derivatives; Guillaume and Schoutens (2012), Rev. Deriv. Res. |
 | Model uncertainty is a range of prices consistent with the vanillas | A coherent measure of model uncertainty from the set of models consistent with market prices | Cont (2006), Math. Finance |
-| Banks must deduct a model-risk adjustment built from a range of plausible calibrations | Art. 11(1): a range of different models or model calibrations; Art. 11(2): a range of plausible valuations and a point at 90% confidence; Art. 11(3): an expert-based approach where (2) is impossible | [Regulation (EU) 2016/101](https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32016R0101) |
+| Banks must deduct a model-risk adjustment built from a range of plausible calibrations | Art. 11(1): a range of different models or model calibrations; Art. 11(3): a range of plausible valuations and a point at 90% confidence; Art. 11(4): an expert-based approach where (3) is impossible | [Regulation (EU) 2016/101](https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32016R0101) |
 | Level 3 fair values need sensitivity ranges | Narrative sensitivity to unobservable inputs and, for financial instruments, the effect of reasonably possible alternative assumptions | IFRS 13, paragraph 93(h) |
-| Supervisors expect model risk to be assessed, including input uncertainty | Model risk increases with higher uncertainty about inputs and assumptions; sensitivity analysis and benchmarking against alternative models | [SR 11-7](https://www.federalreserve.gov/supervisionreg/srletters/sr1107.htm); [PRA SS1/23](https://www.bankofengland.co.uk/-/media/boe/files/prudential-regulation/supervisory-statement/2023/ss123.pdf) |
-| Bayesian calibration addresses the ill-posedness directly | Posterior over parameters of local-volatility and Heston models, with exotic prices under the posterior | Gupta and Reisinger (2014), J. Comput. Finance |
+| Supervisors expect model risk to be assessed, including input uncertainty | Model risk increases with higher uncertainty about inputs and assumptions; sensitivity analysis and benchmarking against alternative models | [SR 11-7](https://www.federalreserve.gov/supervisionreg/srletters/sr1107.htm), replaced by [SR 26-2](https://www.federalreserve.gov/supervisionreg/srletters/SR2602.htm) in April 2026; [PRA SS1/23](https://www.bankofengland.co.uk/-/media/boe/files/prudential-regulation/supervisory-statement/2023/ss123.pdf) |
+| Bayesian calibration addresses the ill-posedness directly | Posterior over the parameters of a local-volatility model, with exotic prices under the posterior | Gupta and Reisinger (2014), J. Comput. Finance |
 | Rough volatility fits the smile's term structure and is calibrated with neural pricers | The power-law ATM skew; rough Bergomi calibrated to SPX; deep calibration | Gatheral, Jaisson and Rosenbaum (2018); Bayer, Friz and Gatheral (2016); Horvath, Muguruza and Tomas (2021) |
 
 No source shows a desk computing a posterior over its calibration every morning. That step is the tutorial's proposal. The documented gap is a range of calibrations that the rules ask for and that practice builds by rerunning optimizers, and amortized Bayesian calibration is one way to fill it.
 
 ### A.3 What the approach adds, and what it does not
 
-The posterior turns the bid-ask widths into a probability-weighted range of calibrations and a quantile, which is the object Art. 11(2) describes, and it propagates to any product and any hedge ratio the model can price. It does not cover the choice of model, which Cont's definition and Art. 11(1) include; the across-model comparison and the model-free bounds place it. It does not replace independent price verification, which uses market observables the model does not see.
+The posterior turns the bid-ask widths into a probability-weighted range of calibrations and a quantile, which is the object Art. 11(3) describes, and it propagates to any product and any hedge ratio the model can price. It does not cover the choice of model, which Cont's definition and Art. 11(1) include; the across-model comparison and the model-free bounds place it. It does not replace independent price verification, which uses market observables the model does not see.
 
 ## Appendix B. Black–Scholes, implied volatility and the variance swap
 
@@ -902,7 +902,7 @@ d = \sqrt{b^2 + \sigma_v^2\,(u^2 + iu)}, \qquad a = \frac{b - d}{\sigma_v^2} = -
 \ln\varphi(u) = \kappa\theta_H\Big[aT - \frac{2}{\sigma_v^2}\ln\frac{1 - g e^{-dT}}{1 - g}\Big] + v_0\,a\,\frac{1 - e^{-dT}}{1 - g e^{-dT}} .
 ```
 
-This is the form that stays on the principal branch of the logarithm for all T (the "little Heston trap"), and the form the repository implements, with the removable limits at u = 0 and σ\_v = 0 handled explicitly. The equation a = −(u² + iu) / (b + d) is the same number as (b − d) / σ\_v², computed without cancellation.
+This is the form that stays on the principal branch of the logarithm for all T (the "little Heston trap" of Albrecher et al. 2007), and the form the repository implements, with the removable limits at u = 0 and σ\_v = 0 handled explicitly. The equation a = −(u² + iu) / (b + d) is the same number as (b − d) / σ\_v², computed without cancellation.
 
 ### C.2 The Lewis half-shift integral
 
@@ -990,11 +990,11 @@ Tikhonov regularization minimizes the objective plus λ ‖θ − θ\_ref‖², 
 
 ### E.4 Deep calibration
 
-Two-step deep calibration (Horvath, Muguruza and Tomas 2021) fits a network f\_ψ: (θ, ξ\_0) → implied-volatility grid on a bank of simulated surfaces, with a mean-squared error in implied volatility, then minimizes Σ\_c w\_c (f\_ψ,c(θ) − y\_c)² by Levenberg–Marquardt. The pricer's accuracy is checked on held-out surfaces and bounds the calibration's error. One-step deep calibration (Bayer et al. 2019) fits the inverse map from surfaces to parameters directly, which is amortized point estimation and returns no interval. The study's neural-pricer route is the two-step pricer with the Gaussian noise model, sampled by MCMC rather than optimized.
+Two-step deep calibration (Horvath, Muguruza and Tomas 2021) fits a network f\_ψ: (θ, ξ\_0) → implied-volatility grid on a bank of simulated surfaces, with a mean-squared error in implied volatility, then minimizes Σ\_c w\_c (f\_ψ,c(θ) − y\_c)² by Levenberg–Marquardt. The pricer's accuracy is checked on held-out surfaces and bounds the calibration's error. One-step deep calibration (Hernandez 2017) fits the inverse map from surfaces to parameters directly, which is amortized point estimation and returns no interval. The study's neural-pricer route is the two-step pricer with the Gaussian noise model, sampled by MCMC rather than optimized.
 
 ### E.5 Model-free bounds
 
-Given the vanilla prices at the relevant maturities and nothing else, the price of a product consistent with them lies in an interval given by martingale optimal transport (Beiglböck, Henry-Labordère and Penkner 2013; Hobson 1998 for lookbacks and barriers). The bounds are attained by extreme models and are usually too wide to act on, but they are the outer limit of model uncertainty and the natural reference for how much of it one model occupies.
+Given the vanilla prices at the relevant maturities and nothing else, the price of a product consistent with them lies in an interval given by martingale optimal transport (Beiglböck, Henry-Labordère and Penkner 2013; Hobson 1998 for lookbacks; Brown, Hobson and Rogers 2001 for barriers). The bounds are attained by extreme models and are usually too wide to act on, but they are the outer limit of model uncertainty and the natural reference for how much of it one model occupies.
 
 ## Appendix F. Amortized inference
 
@@ -1097,3 +1097,74 @@ For each expiration, w(T) is computed by the trapezoid sum of Appendix B.3 over 
 ### I.5 What the real smile is used for
 
 The real smile is the running example of the lesson: the flat line that fails, the skew term structure and its exponent, the posterior, the audit, the products and the reserve. It is one date and one underlying; the lesson says so, and the prior predictive check places it among the surfaces the network was trained for.
+
+## References
+
+Bibliographic details were checked on 22 Oct 2026, against publisher, arXiv or regulator pages where they could be reached, and otherwise against library catalogues and the reference lists of citing papers. Magazine articles and working papers without a link to a DOI have none, or none could be confirmed.
+
+**Volatility models and the smile**
+
+- Heston, S. L. (1993). A closed-form solution for options with stochastic volatility with applications to bond and currency options. *Review of Financial Studies* 6(2), 327–343. [doi](https://doi.org/10.1093/rfs/6.2.327)
+- Dupire, B. (1994). Pricing with a smile. *Risk*, January 1994, 18–20. [Risk.net](https://www.risk.net/derivatives/equity-derivatives/1500211/pricing-with-a-smile)
+- Bergomi, L. (2004). Smile dynamics. *Risk*, September 2004, 117–123. [Risk.net](https://risk.net/node/1530377)
+- Bergomi, L. (2005). Smile dynamics II. *Risk*, October 2005, 67–73. [Risk.net](https://www.risk.net/derivatives/equity-derivatives/1500225/smile-dynamics-ii)
+- Gatheral, J. (2006). The volatility surface: a practitioner's guide. Wiley, Hoboken, NJ. [Wiley](https://www.wiley-vch.de/en/areas-interest/finance-economics-law/the-volatility-surface-978-0-471-79251-2)
+- Guyon, J., Lekeufack, J. (2023). Volatility is (mostly) path-dependent. *Quantitative Finance* 23(9), 1221–1258. [doi](https://doi.org/10.1080/14697688.2023.2221281)
+- Agazzotti, G., Aguilar, J.-P., Aglieri Rinella, C., Kirkby, J. L. (2025). Calibration and option pricing with stochastic volatility and double exponential jumps. *Journal of Computational and Applied Mathematics* 465, 116563. [doi](https://doi.org/10.1016/j.cam.2025.116563); [arXiv](https://arxiv.org/abs/2502.13824)
+
+**Rough volatility and its simulation**
+
+- Gatheral, J., Jaisson, T., Rosenbaum, M. (2018). Volatility is rough. *Quantitative Finance* 18(6), 933–949. [doi](https://doi.org/10.1080/14697688.2017.1393551)
+- Bayer, C., Friz, P., Gatheral, J. (2016). Pricing under rough volatility. *Quantitative Finance* 16(6), 887–904. [doi](https://doi.org/10.1080/14697688.2015.1099717)
+- Fukasawa, M. (2011). Asymptotic analysis for stochastic volatility: martingale expansion. *Finance and Stochastics* 15(4), 635–654. [doi](https://doi.org/10.1007/s00780-010-0136-6)
+- El Euch, O., Fukasawa, M., Gatheral, J., Rosenbaum, M. (2019). Short-term at-the-money asymptotics under stochastic volatility models. *SIAM Journal on Financial Mathematics* 10(2), 491–511. [doi](https://doi.org/10.1137/18M1167565)
+- Bennedsen, M., Lunde, A., Pakkanen, M. S. (2017). Hybrid scheme for Brownian semistationary processes. *Finance and Stochastics* 21(4), 931–965. [doi](https://doi.org/10.1007/s00780-017-0335-5)
+- McCrickerd, R., Pakkanen, M. S. (2018). Turbocharging Monte Carlo pricing for the rough Bergomi model. *Quantitative Finance* 18(11), 1877–1886. [doi](https://doi.org/10.1080/14697688.2018.1459812)
+
+**Monte Carlo and numerical methods**
+
+- Romano, M., Touzi, N. (1997). Contingent claims and market completeness in a stochastic volatility model. *Mathematical Finance* 7(4), 399–412. [doi](https://doi.org/10.1111/1467-9965.00038)
+- Willard, G. A. (1997). Calculating prices and sensitivities for path-independent derivative securities in multifactor models. *Journal of Derivatives* 5(1), 45–61. [SSRN](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7997)
+- Lewis, A. L. (2001). A simple option formula for general jump-diffusion and other exponential Lévy processes. Working paper. [RePEc](https://ideas.repec.org/p/vsv/svpubs/explevy.html)
+- Albrecher, H., Mayer, P., Schoutens, W., Tistaert, J. (2007). The little Heston trap. *Wilmott Magazine*, no. 1, 83–92. [Serval](https://serval.unil.ch/notice/serval:BIB_7042C88010EE)
+
+**Calibration practice and model risk**
+
+- Schoutens, W., Simons, E., Tistaert, J. (2004). A perfect calibration! Now what? *Wilmott Magazine*, March 2004, 66–78. [Semantic Scholar](https://www.semanticscholar.org/paper/A-perfect-calibration!-now-what-Schoutens-Simons/7a513dd70934fc50e8a465e45feeb922594a7d49)
+- Detlefsen, K., Härdle, W. K. (2007). Calibration risk for exotic options. *Journal of Derivatives* 14(4), 47–63. [SFB 649 discussion paper](https://edoc.hu-berlin.de/18452/4580)
+- Guillaume, F., Schoutens, W. (2012). Calibration risk: illustrating the impact of calibration risk under the Heston model. *Review of Derivatives Research* 15(1), 57–79. [doi](https://doi.org/10.1007/s11147-011-9069-2)
+- Cont, R. (2006). Model uncertainty and its impact on the pricing of derivative instruments. *Mathematical Finance* 16(3), 519–547. [doi](https://doi.org/10.1111/j.1467-9965.2006.00281.x)
+- Crépey, S. (2003). Calibration of the local volatility in a generalized Black–Scholes model using Tikhonov regularization. *SIAM Journal on Mathematical Analysis* 34(5), 1183–1206. [doi](https://doi.org/10.1137/S0036141001400202)
+- Cont, R., Tankov, P. (2004). Non-parametric calibration of jump–diffusion option pricing models. *Journal of Computational Finance* 7(3), 1–49. [doi](https://doi.org/10.21314/JCF.2004.123)
+- Hernandez, A. (2017). Model calibration with neural networks. *Risk*, June 2017. [Risk.net](https://www.risk.net/derivatives/5288126/model-calibration-with-neural-networks)
+- Bayer, C., Horvath, B., Muguruza, A., Stemper, B., Tomas, M. (2019). On deep calibration of (rough) stochastic volatility models. [arXiv:1908.08806](https://arxiv.org/abs/1908.08806)
+- Horvath, B., Muguruza, A., Tomas, M. (2021). Deep learning volatility: a deep neural network perspective on pricing and calibration in (rough) volatility models. *Quantitative Finance* 21(1), 11–27. [doi](https://doi.org/10.1080/14697688.2020.1817974)
+- Gupta, A., Reisinger, C. (2014). Robust calibration of financial models using Bayesian estimators. *Journal of Computational Finance* 17(4), 3–36. [doi](https://doi.org/10.21314/JCF.2014.285)
+
+**Simulation-based inference and validation**
+
+- Lipman, Y., Chen, R. T. Q., Ben-Hamu, H., Nickel, M., Le, M. (2023). Flow matching for generative modeling. *ICLR 2023*. [arXiv](https://arxiv.org/abs/2210.02747)
+- Liu, X., Gong, C., Liu, Q. (2023). Flow straight and fast: learning to generate and transfer data with rectified flow. *ICLR 2023*. [arXiv](https://arxiv.org/abs/2209.03003)
+- Wildberger, J., Dax, M., Buchholz, S., Green, S. R., Macke, J. H., Schölkopf, B. (2023). Flow matching for scalable simulation-based inference. *NeurIPS 36*, 16837–16864. [proceedings](https://proceedings.neurips.cc/paper_files/paper/2023/hash/3663ae53ec078860bb0b9c6606e092a0-Abstract.html)
+- Lee, J., Lee, Y., Kim, J., Kosiorek, A., Choi, S., Teh, Y. W. (2019). Set transformer: a framework for attention-based permutation-invariant neural networks. *ICML 2019*, PMLR 97, 3744–3753. [proceedings](https://proceedings.mlr.press/v97/lee19d.html)
+- Talts, S., Betancourt, M., Simpson, D., Vehtari, A., Gelman, A. (2018). Validating Bayesian inference algorithms with simulation-based calibration. [arXiv:1804.06788](https://arxiv.org/abs/1804.06788)
+- Säilynoja, T., Bürkner, P.-C., Vehtari, A. (2022). Graphical test for discrete uniformity and its applications in goodness-of-fit evaluation and multiple sample comparison. *Statistics and Computing* 32(2), 32. [doi](https://doi.org/10.1007/s11222-022-10090-6)
+- Dax, M., Green, S. R., Gair, J., Pürrer, M., Wildberger, J., Macke, J. H., Buonanno, A., Schölkopf, B. (2023). Neural importance sampling for rapid and reliable gravitational-wave inference. *Physical Review Letters* 130(17), 171403. [doi](https://doi.org/10.1103/PhysRevLett.130.171403)
+- Vehtari, A., Simpson, D., Gelman, A., Yao, Y., Gabry, J. (2024). Pareto smoothed importance sampling. *Journal of Machine Learning Research* 25(72), 1–58. [JMLR](https://jmlr.org/papers/v25/19-556.html)
+
+**Variance swaps and model-free bounds**
+
+- Carr, P., Madan, D. (1998). Towards a theory of volatility trading. In Jarrow, R. (ed.), *Volatility: new estimation techniques for pricing derivatives*, 417–427. Risk Books, London. [Google Books](https://books.google.com/books/about/Volatility.html?id=8NPuAAAAMAAJ)
+- Neuberger, A. (1994). The log contract. *Journal of Portfolio Management* 20(2), 74–80. [doi](https://doi.org/10.3905/jpm.1994.409478)
+- Demeterfi, K., Derman, E., Kamal, M., Zou, J. (1999). A guide to volatility and variance swaps. *Journal of Derivatives* 6(4), 9–32. [doi](https://doi.org/10.3905/jod.1999.319129)
+- Brockhaus, O., Long, D. (2000). Volatility swaps made simple. *Risk*, January 2000, 92–95. [Risk.net](https://www.risk.net/infrastructure/1530370/volatility-swaps-made-simple)
+- Beiglböck, M., Henry-Labordère, P., Penkner, F. (2013). Model-independent bounds for option prices: a mass transport approach. *Finance and Stochastics* 17(3), 477–501. [doi](https://doi.org/10.1007/s00780-013-0205-8)
+- Hobson, D. (1998). Robust hedging of the lookback option. *Finance and Stochastics* 2(4), 329–347. [doi](https://doi.org/10.1007/s007800050044)
+- Brown, H., Hobson, D., Rogers, L. C. G. (2001). Robust hedging of barrier options. *Mathematical Finance* 11(3), 285–314. [doi](https://doi.org/10.1111/1467-9965.00116)
+
+**Regulation and accounting standards**
+
+- Commission Delegated Regulation (EU) 2016/101, Article 11 (model risk AVA). [EUR-Lex](https://eur-lex.europa.eu/eli/reg/2016/101/oj)
+- International Accounting Standards Board (2011). IFRS 13 Fair value measurement, paragraph 93(h). [IFRS Foundation](https://www.ifrs.org/issued-standards/list-of-standards/ifrs-13-fair-value-measurement/)
+- Board of Governors of the Federal Reserve System, OCC (2011). SR 11-7: Guidance on model risk management. [Federal Reserve](https://www.federalreserve.gov/supervisionreg/srletters/sr1107.htm); superseded on 17 April 2026 by SR 26-2: Revised guidance on model risk management. [Federal Reserve](https://www.federalreserve.gov/supervisionreg/srletters/SR2602.htm)
+- Prudential Regulation Authority (2023). SS1/23 Model risk management principles for banks, footnote 20. [PDF](https://www.bankofengland.co.uk/-/media/boe/files/prudential-regulation/supervisory-statement/2023/ss123.pdf)

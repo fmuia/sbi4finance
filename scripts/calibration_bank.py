@@ -7,13 +7,16 @@
     python scripts/calibration_bank.py assemble --config CONFIG --shards /scratch/shards --out /scratch/bank
     python scripts/calibration_bank.py local --config CONFIG --chunk 25 --workers 4 --out /tmp/bank
 
-Every output directory must be new. Shards are independent and can run on any
-machine with the same sources; assembly checks identities, coverage and arrays.
+Every output directory must be new, except that `local --resume` keeps the
+finished shards of an interrupted local run and redoes the rest. Shards are
+independent and can run on any machine with the same sources; assembly checks
+identities, coverage and arrays.
 """
 
 import argparse
 from concurrent.futures import ProcessPoolExecutor
 import json
+import shutil
 from pathlib import Path
 import sys
 import time
@@ -71,11 +74,24 @@ def _local(args):
     config = json.loads(config_path.read_text())
     out = Path(args.out)
     shard_root = out.with_name(out.name + "-shards")
-    if out.exists() or shard_root.exists():
+    if out.exists() or (shard_root.exists() and not args.resume):
         raise FileExistsError(out)
-    shard_root.mkdir(parents=True)
+    shard_root.mkdir(parents=True, exist_ok=True)
     jobs = [dict(job, config=str(config_path)) for job in bank.job_map(config, args.chunk)]
     started, cpu = time.time(), 0.0
+    if args.resume:
+        # A shard is finished when its manifest exists (written last); anything else is redone.
+        pending = []
+        for job in jobs:
+            destination = shard_root / f"{job['split']}-{job['start']:07d}-{job['stop']:07d}"
+            if (destination / "manifest.json").exists():
+                cpu += json.loads((destination / "manifest.json").read_text())["generation_cpu_seconds"]
+                continue
+            if destination.exists():
+                shutil.rmtree(destination)
+            pending.append(job)
+        print(f"resume: {len(jobs) - len(pending)} of {len(jobs)} shards already finished", flush=True)
+        jobs = pending
     with ProcessPoolExecutor(max_workers=args.workers) as pool:
         for done, (_, seconds, _) in enumerate(pool.map(_run_job, jobs, [shard_root] * len(jobs)), 1):
             cpu += seconds
@@ -116,6 +132,7 @@ def main():
     p.add_argument("--chunk", type=int, default=25)
     p.add_argument("--workers", type=int, default=4)
     p.add_argument("--out", required=True)
+    p.add_argument("--resume", action="store_true", help="keep finished shards of an interrupted run")
     p.set_defaults(run=_local)
     args = parser.parse_args()
     args.run(args)
