@@ -85,13 +85,19 @@ def products_claim(prefix):
 
 
 def c3():
-    found = products_claim("rough")
-    if found is None:
-        return "—", "pending: rough bank"
-    var, fwd, vol = found
-    value = (f"variance-swap range ≤ {pct(var, 2)}; forward-start reserve {pct(min(fwd), 1)} to {pct(max(fwd), 1)} "
-             f"of price; volatility-swap range {pct(min(vol), 1)} to {pct(max(vol), 1)}")
-    return value, ("verified" if var < 1e-3 and min(vol) > 0 else "not met")
+    for prefix, label in (("rough", "full"), ("rough-pilot", "pilot")):
+        found = products_claim(prefix)
+        if found is None:
+            continue
+        var, fwd, vol = found
+        value = (f"variance-swap range ≤ {pct(var, 2)}; forward-start reserve {pct(min(fwd), 1)} to {pct(max(fwd), 1)} "
+                 f"of price; volatility-swap range {pct(min(vol), 1)} to {pct(max(vol), 1)}")
+        met = var < 1e-3 and min(vol) > 0
+        status = "verified" if met else "not met"
+        if label == "pilot":
+            status = f"pilot, {status} (ranges from the pilot network, whose intervals are too wide: S5)"
+        return value, status
+    return "—", "pending: rough bank"
 
 
 def c4():

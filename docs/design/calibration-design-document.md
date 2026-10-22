@@ -704,7 +704,7 @@ The study answers nine questions with explicit criteria. The table tracks them; 
 | 4 | S4 | Agreement with the neural-pricer route | Same criterion, on 50 rough-Bergomi surfaces; pricer error below 0.5 σ\_c on held-out surfaces | Heston rehearsal: pricer error 0.03 σ\_c; the pricer route agrees with the exact posterior on 50 of 50 smiles, and with the network on 84% (v\_0 86%). Rough: ⟨S4⟩ | Heston rehearsal met; rough pending |
 | 5 | S5 | The audit | Distribution of efficiency and k̂ on 500 surfaces; flag rate at k̂ > 0.7 reported; cost per surface | Rough pilot, 40 smiles: efficiency median 14%; 23% flagged at k̂ > 0.7; 425 CPU-seconds per smile; the pilot network's means 0.4 to 0.6 sd off and its intervals 1.3 to 1.6 times too wide. Full: ⟨S5⟩ | pilot reported; full pending |
 | 6 | S6 | The classical route | Coverage of Gauss–Newton 90% intervals against posterior 90% intervals on 200 surfaces; number of distinct multi-start modes; sensitivity of the regularized point to λ | Heston: Gauss–Newton coverage 87% to 92% against posterior 87% to 90% on 200 smiles; one optimum on 97%; no interval on 11 smiles at the prior's edge. Rough: ⟨S6⟩ | Heston done; rough pending |
-| 7 | S7 | Products and reserves | Variance-swap range zero; volatility-swap, forward-start and out-of-grid ranges and reserves, with each price's Monte Carlo standard error; Heston-against-rough gap | Heston, 3 smiles: every product carries a range, the variance swap's 1.0% to 2.6%; forward-start reserve 0.7% to 1.7% of its price. Rough: ⟨S7⟩ | Heston done; rough pending |
+| 7 | S7 | Products and reserves | Variance-swap range zero; volatility-swap, forward-start and out-of-grid ranges and reserves, with each price's Monte Carlo standard error; Heston-against-rough gap | Heston, 3 smiles: every product carries a range, the variance swap's 1.0% to 2.6%; forward-start reserve 0.7% to 1.7% of its price. Rough pilot, 3 smiles: variance-swap range zero; forward-start reserve 1.0% to 6.1%, driven by η (pilot network too wide, S5). Full rough: ⟨S7⟩ | Heston done; rough pilot reported; full pending |
 | 8 | S8 | The real smile | Skew term-structure exponent; posterior; audit score; posterior predictive residuals with at most ⟨proposed: 10%⟩ of quotes beyond two standard deviations | SPY, 21 October 2026: exponent −0.32; every grid point read from quotes; real spreads below the design noise; the forward-variance curve outside the curve prior. Posterior, audit and residuals: ⟨S8⟩ | data done; posterior pending |
 | 9 | S9 | Costs | One table on one machine: Monte Carlo likelihood evaluation; exact chain extrapolated to 400 effective draws; network; audit; neural pricer with MCMC; multi-start least squares | ⟨S9⟩ | pending |
 
@@ -837,7 +837,22 @@ Under Heston every product carries a range, the variance swap included: its stri
 
 *Figure S7-1 (Heston): price distributions of the four products under the posterior of three test smiles.* How to read the figure: each row is one smile and each panel one product; the histogram is the price under 400 posterior draws, the orange line the least-squares price and the dashed line the 90% quantile, whose distance from the orange line is the short-side reserve.
 
-For rough Bergomi: figure ⟨S7-1⟩ above, the variance-explained table, each price's Monte Carlo standard error, and the Heston-against-rough table:
+Rough Bergomi, pilot: three test smiles of the pilot bank (rows 290 to 292), 400 posterior draws of the pilot network each, least squares by Monte Carlo at 2^13 paths per block with four starts:
+
+| Rough Bergomi pilot, 3 smiles | 90% range, share of the posterior mean | Short-side reserve, share of the point price | Parameter that explains most of the price variance (single-parameter R²) |
+| --- | --- | --- | --- |
+| Variance swap 63 d | zero | zero | none: the price is the curve's average |
+| Volatility swap 63 d | 1.0% to 3.3% | 0.3% to 2.3% | η (0.77 to 0.96), then ρ |
+| Forward-start 63 → 126 d | 2.2% to 9.3% | 1.0% to 6.1% | η (0.94 to 0.97), then ρ |
+| 2-year 90% put | 2.5% to 17.7% | 1.9% to 9.7% | η (0.68 to 0.94), then H on two smiles |
+
+The variance swap's range is zero, and every other product's range comes from the volatility of variance η: the smile pins η to about 5%, and these products amplify what is left. The pilot network's intervals are 1.3 to 1.6 times too wide (S5), so these ranges overstate the posterior's; the full bank's network, or the audited draws, set the reported numbers. Pricing 401 parameter sets costs about 340 CPU-seconds per smile, and the Monte Carlo least squares about 240.
+
+![Rough-Bergomi product prices under the pilot network's posterior on three test smiles, with the least-squares price and the 90% quantile.](images/calibration-15-rough-pilot-products.png)
+
+*Figure S7-1 (rough Bergomi, pilot): price distributions of the four products on three test smiles*, read as the Heston figure above; the variance swap's panel is a single bar.
+
+For rough Bergomi, full bank: figure ⟨S7-1⟩ above, the variance-explained table, each price's Monte Carlo standard error, and the Heston-against-rough table:
 
 | Product | Rough Bergomi: point, 90% range, reserve | Heston: point, 90% range, reserve | Gap between points |
 | --- | --- | --- | --- |

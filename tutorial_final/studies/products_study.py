@@ -148,6 +148,8 @@ def main():
                 }
                 ax = axes[i, j]
                 ax.hist(values, bins=40, color=SERIES[0], alpha=0.75)
+                if np.ptp(values) == 0:  # the variance swap under rough Bergomi: one price for every draw
+                    ax.set_xlim(values[0] * 0.98, values[0] * 1.02)
                 ax.axvline(point_prices[j], color=SERIES[1], linewidth=1.6, label="least squares")
                 ax.axvline(np.quantile(values, 0.9), color=INK, linewidth=1.0, linestyle="--", label="90% quantile")
                 if i == 0:

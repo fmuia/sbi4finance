@@ -1,0 +1,281 @@
+{
+  "study": "S7",
+  "task_id": "rough_calibration_v1",
+  "task_fingerprint": "c99b0dd131896d89d8483a1668a3fde0fb7a0f28794c3db7fe14635cbbd52b65",
+  "least_squares_pricer": "Monte Carlo, 8192 paths, fixed seed",
+  "specification": {
+    "variance_swap": {
+      "maturity": 0.25
+    },
+    "volatility_swap": {
+      "maturity": 0.25
+    },
+    "forward_start_call": {
+      "start": 0.25,
+      "end": 0.5,
+      "moneyness": 1.0
+    },
+    "put_out_of_grid": {
+      "strike": 0.9,
+      "maturity": 2.0
+    },
+    "steps_per_year": 252
+  },
+  "settings": {
+    "bank": "/tmp/claude-0/-home-user-sbi4finance/9c138712-55c5-5f30-b0b0-9fce83e4ceb1/scratchpad/banks/rough-pilot",
+    "checkpoint": "/tmp/claude-0/-home-user-sbi4finance/9c138712-55c5-5f30-b0b0-9fce83e4ceb1/scratchpad/runs/rough-pilot-net",
+    "out": "/tmp/claude-0/-home-user-sbi4finance/9c138712-55c5-5f30-b0b0-9fce83e4ceb1/scratchpad/runs/rough-pilot-s7",
+    "pricer": null,
+    "first": 290,
+    "surfaces": 3,
+    "draws": 400,
+    "paths": 8192,
+    "starts": 4,
+    "least_squares_paths": 8192,
+    "workers": 4,
+    "seed": 0
+  },
+  "parameters": [
+    "hurst",
+    "eta",
+    "rho"
+  ],
+  "labels": [
+    "H",
+    "\u03b7",
+    "\u03c1"
+  ],
+  "surfaces": [
+    {
+      "test_row": 290,
+      "truth": [
+        0.23272934379278004,
+        0.794095157416103,
+        -0.442269477995467
+      ],
+      "least_squares": [
+        0.20640989493449874,
+        0.7612864806237222,
+        -0.47996346371328336
+      ],
+      "products": {
+        "variance_swap": {
+          "point": 0.03644709543275701,
+          "mean": 0.036447095432757017,
+          "q05": 0.03644709543275701,
+          "q95": 0.03644709543275701,
+          "range_90_relative": 0.0,
+          "reserve_short": 0.0,
+          "reserve_short_relative": 0.0,
+          "variance_share_by_parameter": {
+            "hurst": 1.295951344545925e-32,
+            "eta": 4.505385575173867e-31,
+            "rho": 8.057273705101121e-32
+          },
+          "mc_se_typical": 0.0
+        },
+        "volatility_swap": {
+          "point": 0.18816530016394942,
+          "mean": 0.18882721908460376,
+          "q05": 0.18768162771683097,
+          "q95": 0.18954097370322567,
+          "range_90_relative": 0.0098468112563879,
+          "reserve_short": 0.0013064729593115498,
+          "reserve_short_relative": 0.006943219383027652,
+          "variance_share_by_parameter": {
+            "hurst": 0.0620991410287743,
+            "eta": 0.9212619360169935,
+            "rho": 0.5615765600713167
+          },
+          "mc_se_typical": 1.1559177840093193e-05
+        },
+        "forward_start_call": {
+          "point": 0.03468969068049463,
+          "mean": 0.03496577774324237,
+          "q05": 0.034517849426891796,
+          "q95": 0.035295103380762395,
+          "range_90_relative": 0.02222899086009361,
+          "reserve_short": 0.0005533959916270634,
+          "reserve_short_relative": 0.015952750825138598,
+          "variance_share_by_parameter": {
+            "hurst": 0.0011122258251633971,
+            "eta": 0.9379471461407558,
+            "rho": 0.4659097846824403
+          },
+          "mc_se_typical": 0.00011437478298101257
+        },
+        "put_out_of_grid": {
+          "point": 0.06252101762716467,
+          "mean": 0.0631627164478277,
+          "q05": 0.062198823521475904,
+          "q95": 0.06380601451697869,
+          "range_90_relative": 0.025445248176276948,
+          "reserve_short": 0.001202902195059391,
+          "reserve_short_relative": 0.019239965066351443,
+          "variance_share_by_parameter": {
+            "hurst": 0.14237418897673024,
+            "eta": 0.7637882632002386,
+            "rho": 0.42356854834600116
+          },
+          "mc_se_typical": 0.00019193789436964794
+        }
+      },
+      "pricing_cpu_seconds": 354.52774496999984,
+      "least_squares_cpu_seconds": 289.57770832299997
+    },
+    {
+      "test_row": 291,
+      "truth": [
+        0.19167336566112395,
+        1.0928539160444486,
+        -0.919118361498391
+      ],
+      "least_squares": [
+        0.17712065811459615,
+        1.0993568576893584,
+        -0.9027137887629431
+      ],
+      "products": {
+        "variance_swap": {
+          "point": 0.13027756586303202,
+          "mean": 0.130277565863032,
+          "q05": 0.13027756586303202,
+          "q95": 0.13027756586303202,
+          "range_90_relative": 0.0,
+          "reserve_short": 0.0,
+          "reserve_short_relative": 0.0,
+          "variance_share_by_parameter": {
+            "hurst": 5.8057599169776374e-33,
+            "eta": 3.0463534740183213e-31,
+            "rho": 1.5615605948611788e-29
+          },
+          "mc_se_typical": 0.0
+        },
+        "volatility_swap": {
+          "point": 0.34985975240897793,
+          "mean": 0.34876239454156827,
+          "q05": 0.3459204163723486,
+          "q95": 0.35145128742407666,
+          "range_90_relative": 0.015858564851861764,
+          "reserve_short": 0.001023561947417373,
+          "reserve_short_relative": 0.0029256350305217524,
+          "variance_share_by_parameter": {
+            "hurst": 0.005970440011223869,
+            "eta": 0.9590538451035655,
+            "rho": 0.5006704952565042
+          },
+          "mc_se_typical": 7.728906969289502e-05
+        },
+        "forward_start_call": {
+          "point": 0.07285343417859183,
+          "mean": 0.07224588381668763,
+          "q05": 0.07050272819505386,
+          "q95": 0.07393344744775623,
+          "range_90_relative": 0.04748670888167515,
+          "reserve_short": 0.0007005246610148619,
+          "reserve_short_relative": 0.009615533830534415,
+          "variance_share_by_parameter": {
+            "hurst": 0.1082837750953542,
+            "eta": 0.9670718080987568,
+            "rho": 0.38767616836646035
+          },
+          "mc_se_typical": 0.0005199251152576551
+        },
+        "put_out_of_grid": {
+          "point": 0.14137733031331934,
+          "mean": 0.14008617913114346,
+          "q05": 0.13400526251523534,
+          "q95": 0.14522964142740688,
+          "range_90_relative": 0.08012481303857745,
+          "reserve_short": 0.002738506548927433,
+          "reserve_short_relative": 0.01937019565200712,
+          "variance_share_by_parameter": {
+            "hurst": 0.5203841713089782,
+            "eta": 0.6755379659131564,
+            "rho": 0.1937722128437749
+          },
+          "mc_se_typical": 0.0008336600967321058
+        }
+      },
+      "pricing_cpu_seconds": 333.6770097169999,
+      "least_squares_cpu_seconds": 208.89269590499998
+    },
+    {
+      "test_row": 292,
+      "truth": [
+        0.3297111780059374,
+        1.913276631567868,
+        -0.564016208372234
+      ],
+      "least_squares": [
+        0.26289750107436055,
+        1.8667703671257743,
+        -0.5615278104831067
+      ],
+      "products": {
+        "variance_swap": {
+          "point": 0.014838516671504364,
+          "mean": 0.014838516671504367,
+          "q05": 0.014838516671504364,
+          "q95": 0.014838516671504364,
+          "range_90_relative": 0.0,
+          "reserve_short": 0.0,
+          "reserve_short_relative": 0.0,
+          "variance_share_by_parameter": {
+            "hurst": 4.880135095793751e-32,
+            "eta": 1.1740738661212603e-30,
+            "rho": 5.763253221059885e-31
+          },
+          "mc_se_typical": 0.0
+        },
+        "volatility_swap": {
+          "point": 0.11327450862797755,
+          "mean": 0.1143976871568936,
+          "q05": 0.11251977343072397,
+          "q95": 0.11625003430365292,
+          "range_90_relative": 0.032607834700477734,
+          "reserve_short": 0.002642956624794024,
+          "reserve_short_relative": 0.023332315953575832,
+          "variance_share_by_parameter": {
+            "hurst": 0.020095204227011783,
+            "eta": 0.771330833471654,
+            "rho": 0.48832156625009115
+          },
+          "mc_se_typical": 4.4994570564609234e-05
+        },
+        "forward_start_call": {
+          "point": 0.020907279138015898,
+          "mean": 0.02136173974464055,
+          "q05": 0.02040373672910625,
+          "q95": 0.022398508382881325,
+          "range_90_relative": 0.0933805803095014,
+          "reserve_short": 0.0012639555655953837,
+          "reserve_short_relative": 0.060455287235206115,
+          "variance_share_by_parameter": {
+            "hurst": 0.043026617639325325,
+            "eta": 0.9616874307872458,
+            "rho": 0.3268288057283566
+          },
+          "mc_se_typical": 7.199958910628007e-05
+        },
+        "put_out_of_grid": {
+          "point": 0.03035230317886828,
+          "mean": 0.031206284482993008,
+          "q05": 0.028591428320657343,
+          "q95": 0.03411041126102078,
+          "range_90_relative": 0.17685485573815132,
+          "reserve_short": 0.002957786156727024,
+          "reserve_short_relative": 0.09744849144714259,
+          "variance_share_by_parameter": {
+            "hurst": 0.3073764992866807,
+            "eta": 0.9394022348523173,
+            "rho": 0.29506276790480884
+          },
+          "mc_se_typical": 0.00013432789585787001
+        }
+      },
+      "pricing_cpu_seconds": 326.5103264800002,
+      "least_squares_cpu_seconds": 216.15907153400008
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "accepted": "2026-10-22T10:50:16+00:00",
+  "source": "/tmp/claude-0/-home-user-sbi4finance/9c138712-55c5-5f30-b0b0-9fce83e4ceb1/scratchpad/runs/rough-pilot-s7",
+  "source_sha256": {
+    "price-distributions.png": "3689deba112a75468b9837e01a74778050f7ba190e6451e160e3e6c6e9ab4df4",
+    "price-draws.npz": "d750522532331547f08389748a26754f882270171fffb80f36fafe71d5deb0e8",
+    "products.json": "f60f86889158e216bc5c457ab52c78c9a5637816c4b62abab3ff020070f0d658"
+  },
+  "changes": []
+}
