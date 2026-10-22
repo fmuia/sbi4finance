@@ -151,7 +151,8 @@ def offline_optimizer(total_steps, initial_learning_rate=5e-4):
     return keras.optimizers.AdamW(schedule, weight_decay=5e-3, clipnorm=1.5)
 
 
-def build_workflow(task, checkpoint_dir=None, *, subnet_widths=(256, 256, 256, 256), optimizer=None):
+def build_workflow(task, checkpoint_dir=None, *, subnet_widths=(256, 256, 256, 256), optimizer=None,
+                   time_power_law_alpha=0.5):
     """FlowMatching on logit-constrained targets; conditions standardized with training statistics."""
     _checked_task(task)
     import bayesflow as bf
@@ -167,7 +168,8 @@ def build_workflow(task, checkpoint_dir=None, *, subnet_widths=(256, 256, 256, 2
     return bf.BasicWorkflow(
         adapter=adapter,
         inference_network=bf.networks.FlowMatching(subnet_kwargs={"widths": list(subnet_widths)},
-                                                   integrate_kwargs={"method": "euler", "steps": EULER_STEPS}),
+                                                   integrate_kwargs={"method": "euler", "steps": EULER_STEPS},
+                                                   time_power_law_alpha=time_power_law_alpha),
         standardize=["inference_variables", "inference_conditions"],
         optimizer=optimizer,
         checkpoint_filepath=None if checkpoint_dir is None else str(checkpoint_dir),

@@ -51,7 +51,7 @@ def train_in_chunks(args, task, train, validation, augment, widths, resume_path)
                 self.model.save(self.path)
 
     batches = int(np.ceil(len(train["observations"]) / args.batch_size))
-    workflow = inference.build_workflow(task, subnet_widths=widths,
+    workflow = inference.build_workflow(task, subnet_widths=widths, time_power_law_alpha=args.time_alpha,
                                         optimizer=inference.offline_optimizer(args.epochs * batches))
     state = json.loads(resume_path.read_text()) if resume_path.exists() else None
     history = {"loss": [], "val_loss": []}
@@ -98,6 +98,9 @@ def main():
     parser.add_argument("--widths", default="256,256,256,256")
     parser.add_argument("--fresh-noise", action="store_true",
                         help="draw a new quote error for every batch instead of --augmentations fixed copies")
+    parser.add_argument("--time-alpha", type=float, default=0.5,
+                        help="flow-matching training times t = u^(1 + alpha); BayesFlow's default 0.5 favours the noise "
+                             "end, negative values the data end")
     parser.add_argument("--chunk-epochs", type=int, default=0,
                         help="train in chunks of this many epochs, saving a resumable state after each; rerunning "
                              "the same command after an interruption continues from the last chunk")
@@ -129,7 +132,7 @@ def main():
     ready = time.perf_counter()
     resumed_at = []
     if not resumable:
-        workflow = inference.build_workflow(task, args.out, subnet_widths=widths)
+        workflow = inference.build_workflow(task, args.out, subnet_widths=widths, time_power_law_alpha=args.time_alpha)
         history = workflow.fit_offline(data=train, validation_data=validation, epochs=args.epochs,
                                        batch_size=args.batch_size, augmentations=augment, verbose=0).history
         workflow.load_approximator()
@@ -158,7 +161,8 @@ def main():
                      "selected_epoch": int(np.argmin(losses)) + 1, "selection": "minimum validation loss",
                      "optimizer": "AdamW, weight decay 5e-3, clipnorm 1.5; 5% warm-up to 5e-4, cosine decay to 0 "
                                   "over all epochs (BayesFlow's offline default)",
-                     "chunk_epochs": args.chunk_epochs or None, "resumed_at_epochs": resumed_at},
+                     "chunk_epochs": args.chunk_epochs or None, "resumed_at_epochs": resumed_at,
+                     "time_power_law_alpha": args.time_alpha},
         "training_surfaces": len(splits["train"]["parameters"]), "training_rows": len(train["observations"]),
         "validation_surfaces": len(validation["observations"]), "reserved_test_evaluated": False,
         "same_seed_reload_exact": True,
