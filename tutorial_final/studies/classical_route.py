@@ -8,8 +8,10 @@ For each test surface: weighted least squares from --starts stratified starts
 amortized posterior's 90% interval, and the number of distinct optima within
 one unit of chi-square of the best. Coverage of the truth is reported for both
 interval types. Heston uses the exact Fourier pricer; rough Bergomi uses the
-neural pricer of S4 (deep calibration), since a Monte Carlo objective per
-iterate is the cost the lesson is about. A Tikhonov fit toward the prior centre
+neural pricer of S4 (deep calibration) when --pricer is given, since a Monte
+Carlo objective per iterate is the cost the lesson is about, and otherwise the
+Monte Carlo pricer itself at --least-squares-paths paths with a fixed seed
+(common random numbers), affordable for a few surfaces. A Tikhonov fit toward the prior centre
 is run at four penalties on the first surfaces to show how the answer moves.
 """
 
@@ -34,17 +36,24 @@ PENALTIES = (0.01, 0.1, 1.0, 10.0)
 _STATE = {}
 
 
-def _price_fn(task, pricer_dir, context):
+def _price_fn(task, pricer_dir, context, mc_paths=None, seed=0):
     if task["model"] == "hkde":
         return lambda theta: exact_prices(task, theta)
+    if pricer_dir is None:
+        from sbi4finance.calibration import pricing
+
+        curve = tasks.curve(task, context)
+        contracts, blocks, sigma = task["context"]["contracts"], task["numerics"]["blocks"], tasks.sigma(task)
+        return lambda theta: pricing.rough_surface(tasks.model_parameters(task, theta), curve, contracts, blocks,
+                                                   [mc_paths], sigma, np.inf, seed)[0]
     pricer = _STATE.setdefault(str(pricer_dir), pricer_net.Pricer.load(pricer_dir))
     sigma = tasks.sigma(task)
     return lambda theta: pricer(pricer_net.features(task, theta, context))[0] * sigma
 
 
 def fit_job(job):
-    task, pricer_dir, observation, context, starts, tikhonov = job
-    price_fn = _price_fn(task, pricer_dir, context)
+    task, pricer_dir, observation, context, starts, tikhonov, mc_paths = job
+    price_fn = _price_fn(task, pricer_dir, context, mc_paths)
     started = time.process_time()
     fits = classical.fit(task, observation, price_fn, starts)
     best = min(fits, key=lambda f: f["chi2"])
@@ -118,18 +127,19 @@ def main():
     parser.add_argument("--draws", type=int, default=1000)
     parser.add_argument("--workers", type=int, default=4)
     parser.add_argument("--seed", type=int, default=0)
+    parser.add_argument("--least-squares-paths", type=int, default=8192)
+    parser.add_argument("--landscape-points", type=int, default=45)
     args = parser.parse_args()
     manifest, splits = bank.load_bank(args.bank)
     task, workflow, _ = load_network(args.checkpoint)
-    if task["model"] == "rough" and args.pricer is None:
-        raise ValueError("rough Bergomi needs the S4 pricer (--pricer)")
+    mc_paths = args.least_squares_paths if task["model"] == "rough" and args.pricer is None else None
     test = splits["test"]
     rows = np.arange(args.first, args.first + args.surfaces)
     args.out.mkdir(parents=True, exist_ok=False)
     network = posterior_draws(workflow, task, test, rows, args.draws, args.seed)
     jobs = [(task, args.pricer, test["observations"][r, :, 0],
              test["context_values"][r] if test["context_values"].shape[1] else None,
-             classical.latin_starts(task, args.starts, args.seed + int(r)), i < 5) for i, r in enumerate(rows)]
+             classical.latin_starts(task, args.starts, args.seed + int(r)), i < 5, mc_paths) for i, r in enumerate(rows)]
     with ProcessPoolExecutor(args.workers, mp_context=multiprocessing.get_context("spawn")) as pool:
         results = list(pool.map(fit_job, jobs, chunksize=4))
     truth = test["parameters"][rows]
@@ -157,7 +167,8 @@ def main():
                   "share_with_two_or_more": float(np.mean([r["modes"] >= 2 for r in records]))},
         "best_on_bound_share": float(np.mean([r["on_bound"] for r in records])),
         "cpu_seconds_per_surface_median": float(np.median([r["cpu_seconds"] for r in records])),
-        "pricer": "exact Fourier" if task["model"] == "hkde" else "neural pricer (S4)",
+        "pricer": ("exact Fourier" if task["model"] == "hkde" else "neural pricer (S4)" if args.pricer
+                   else f"Monte Carlo, {mc_paths} paths, fixed seed"),
     }
     report = {"study": "S6", "task_id": task["task_id"], "task_fingerprint": manifest["task_fingerprint"],
               "settings": {k: str(v) if isinstance(v, Path) else v for k, v in vars(args).items()},
@@ -166,8 +177,8 @@ def main():
     np.savez_compressed(args.out / "network-draws.npz", draws=network[:20], rows=rows[:20])
     pair = [names.index("eta"), names.index("rho")] if task["model"] == "rough" else [names.index("vol_of_vol"), names.index("rho")]
     context = test["context_values"][rows[0]] if test["context_values"].shape[1] else None
-    landscape(task, test["observations"][rows[0], :, 0], _price_fn(task, args.pricer, context), results[0], network[0],
-              pair, [LABELS[n] for n in names], args.out / "landscape.png")
+    landscape(task, test["observations"][rows[0], :, 0], _price_fn(task, args.pricer, context, mc_paths), results[0],
+              network[0], pair, [LABELS[n] for n in names], args.out / "landscape.png", points=args.landscape_points)
     print(json.dumps(jsonable(summary), indent=1))
 
 

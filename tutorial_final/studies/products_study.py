@@ -6,7 +6,10 @@
 For each surface: posterior draws from the network; each draw prices the
 variance swap, the volatility swap, the forward-start call and the 2-year 90%
 put by Monte Carlo with common random numbers (the same normals for every draw);
-the least-squares point (best of a multi-start) prices them too. Reported per
+the least-squares point (best of a multi-start) prices them too. For rough
+Bergomi the least-squares objective uses the S4 neural pricer (--pricer) or,
+without one, the Monte Carlo pricer at --least-squares-paths paths with a fixed
+seed (common random numbers), its starts run in parallel. Reported per
 product: the point price, the posterior mean and 90% range, the reserve on the
 short side (90% quantile minus the point price), and the share of the price
 variance explained linearly by each parameter.
@@ -51,6 +54,21 @@ def price_job(job):
     return products.price_draw(model, model_parameters(task, row), curve, spec, paths, seed)
 
 
+def _mc_price_fn(task, context, paths, seed):
+    """Rough-Bergomi design prices by Monte Carlo with a fixed seed, so the objective is deterministic."""
+    from sbi4finance.calibration import pricing
+
+    curve = tasks.curve(task, context)
+    contracts, blocks, sigma = task["context"]["contracts"], task["numerics"]["blocks"], tasks.sigma(task)
+    return lambda theta: pricing.rough_surface(tasks.model_parameters(task, theta), curve, contracts, blocks, [paths],
+                                               sigma, np.inf, seed)[0]
+
+
+def mc_fit_job(job):
+    task, observation, context, paths, seed, start = job
+    return classical.fit(task, observation, _mc_price_fn(task, context, paths, seed), [start])[0]
+
+
 def variance_shares(parameters, prices):
     """R^2 of a single-parameter linear fit of the price, per parameter (shares need not sum to one)."""
     shares = []
@@ -74,6 +92,7 @@ def main():
     parser.add_argument("--draws", type=int, default=400)
     parser.add_argument("--paths", type=int, default=8192)
     parser.add_argument("--starts", type=int, default=10)
+    parser.add_argument("--least-squares-paths", type=int, default=8192)
     parser.add_argument("--workers", type=int, default=4)
     parser.add_argument("--seed", type=int, default=0)
     args = parser.parse_args()
@@ -93,8 +112,12 @@ def main():
     with ProcessPoolExecutor(args.workers, mp_context=multiprocessing.get_context("spawn")) as pool:
         for i, row in enumerate(rows):
             context = test["context_values"][row] if has_context else None
-            fits = classical.fit(task, test["observations"][row, :, 0], _price_fn(task, args.pricer, context),
-                                 classical.latin_starts(task, args.starts, args.seed + int(row)))
+            starts = classical.latin_starts(task, args.starts, args.seed + int(row))
+            if task["model"] == "rough" and args.pricer is None:
+                fits = list(pool.map(mc_fit_job, [(task, test["observations"][row, :, 0], context,
+                                                   args.least_squares_paths, args.seed, s) for s in starts]))
+            else:
+                fits = classical.fit(task, test["observations"][row, :, 0], _price_fn(task, args.pricer, context), starts)
             point = min(fits, key=lambda f: f["chi2"])["theta"]
             started = time.process_time()
             jobs = [(task, theta, context, spec, args.paths, args.seed) for theta in [point, *network[i]]]
@@ -132,7 +155,10 @@ def main():
     fig.suptitle(f"{model}: product prices under the posterior, {args.draws} draws per surface", x=0.01, ha="left",
                  color=INK, fontsize=10.5, fontweight="bold")
     fig.savefig(args.out / "price-distributions.png", dpi=160)
+    least_squares = ("exact Fourier" if task["model"] != "rough" else
+                     "neural pricer (S4)" if args.pricer else f"Monte Carlo, {args.least_squares_paths} paths, fixed seed")
     report = {"study": "S7", "task_id": task["task_id"], "task_fingerprint": manifest["task_fingerprint"],
+              "least_squares_pricer": least_squares,
               "specification": spec, "settings": {k: str(v) if isinstance(v, Path) else v for k, v in vars(args).items()},
               "parameters": names, "labels": [LABELS[n] for n in names], "surfaces": records}
     (args.out / "products.json").write_text(json.dumps(jsonable(report), indent=2, allow_nan=False) + "\n")
