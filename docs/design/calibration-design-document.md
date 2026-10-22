@@ -332,7 +332,7 @@ Under Black–Scholes the forward-normalized price is a geometric Brownian motio
 c(k, T;\sigma) = N(d_1) - e^{k}\,N(d_2), \qquad d_{1,2} = \frac{-k \pm \tfrac12 \sigma^2 T}{\sigma\sqrt{T}}, \qquad p(k,T;\sigma) = c(k,T;\sigma) - 1 + e^{k}.
 ```
 
-The second equation is put–call parity. The implied volatility of a quote is the σ that solves this equation for the quoted price; it exists and is unique because c is increasing in σ, and the vega ∂c/∂σ = √T φ(d\_1) is the slope of that map. Under the model the implied volatility is the same number at every strike and maturity. The market's is not: equity-index smiles slope down in k (the skew), curve up in the wings, and the slope is steepest at the shortest maturities. The smile is the data that rejects the model, and the first thing slot 5 shows. Appendix B has the formulas and the variance-swap replication that the forward-variance curve rests on.
+Here N is the cumulative distribution function of the standard normal, N(x) = P(Z ≤ x) for Z ~ N(0, 1), and φ = N′ is its density. The second equation is put–call parity. The implied volatility of a quote is the σ that solves this equation for the quoted price; it exists and is unique because c is increasing in σ, and the vega ∂c/∂σ = √T φ(d\_1) is the slope of that map. Under the model the implied volatility is the same number at every strike and maturity. The market's is not: equity-index smiles slope down in k (the skew), curve up in the wings, and the slope is steepest at the shortest maturities. The smile is the data that rejects the model, and the first thing slot 5 shows. Appendix B has the formulas and the variance-swap replication that the forward-variance curve rests on.
 
 ### Heston
 
