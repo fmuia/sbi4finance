@@ -191,7 +191,9 @@ def c11():
     gn = s["gauss_newton_coverage_90"] or {}
     post = s["posterior_coverage_90"]
     value = (f"90% coverage, Gauss–Newton {min(gn.values()) * 100:.0f}–{max(gn.values()) * 100:.0f}% "
-             f"against posterior {min(post.values()) * 100:.0f}–{max(post.values()) * 100:.0f}% on {s['surfaces']} smiles"
+             f"against posterior {min(post.values()) * 100:.0f}–{max(post.values()) * 100:.0f}% on {s['surfaces']} smiles; "
+             f"no Gauss–Newton interval on {s['gauss_newton_singular']} (singular information matrix); one optimum on "
+             f"{pct(1 - s['modes']['share_with_two_or_more'])} of smiles"
              if gn else "no Gauss–Newton interval computed")
     return value, "verified"
 

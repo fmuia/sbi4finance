@@ -699,7 +699,7 @@ The study answers nine questions with explicit criteria. The table tracks them; 
 | 3 | S3 | Agreement with the exact Heston posterior | Means within 0.3 posterior sd and 90% widths within 25%, on 50 surfaces, all targets | Network alone: 40 of 50 smiles on all four targets (v\_0 82%, θ\_H 96%, σ\_v 100%, ρ 98%). Network corrected by its audit: agrees with independent chains on 4 of 4 | Met by the network with its audit; not met by the network alone (v\_0) |
 | 4 | S4 | Agreement with the neural-pricer route | Same criterion, on 50 rough-Bergomi surfaces; pricer error below 0.5 σ\_c on held-out surfaces | Heston rehearsal: pricer error 0.03 σ\_c; the pricer route agrees with the exact posterior on 50 of 50 smiles, and with the network on 84% (v\_0 86%). Rough: ⟨S4⟩ | Heston rehearsal met; rough pending |
 | 5 | S5 | The audit | Distribution of efficiency and k̂ on 500 surfaces; flag rate at k̂ > 0.7 reported; cost per surface | ⟨S5⟩ | pending |
-| 6 | S6 | The classical route | Coverage of Gauss–Newton 90% intervals against posterior 90% intervals on 200 surfaces; number of distinct multi-start modes; sensitivity of the regularized point to λ | ⟨S6⟩ | pending |
+| 6 | S6 | The classical route | Coverage of Gauss–Newton 90% intervals against posterior 90% intervals on 200 surfaces; number of distinct multi-start modes; sensitivity of the regularized point to λ | Heston: Gauss–Newton coverage 87% to 92% against posterior 87% to 90% on 200 smiles; one optimum on 97%; no interval on 11 smiles at the prior's edge. Rough: ⟨S6⟩ | Heston done; rough pending |
 | 7 | S7 | Products and reserves | Variance-swap range zero; price-map error below Monte Carlo error; volatility-swap, forward-start and out-of-grid ranges and reserves; Heston-against-rough gap | ⟨S7⟩ | pending |
 | 8 | S8 | The real smile | Skew term-structure exponent; posterior; audit score; posterior predictive residuals with at most ⟨proposed: 10%⟩ of quotes beyond two standard deviations | ⟨S8⟩ | pending |
 | 9 | S9 | Costs | One table on one machine: Monte Carlo likelihood evaluation; exact chain extrapolated to 400 effective draws; network; audit; neural pricer with MCMC; multi-start least squares | ⟨S9⟩ | pending |
@@ -771,7 +771,21 @@ Reading: on the smiles of S3, MCMC on the pricer reproduces the exact posterior 
 
 *Pending figure ⟨S6-1⟩: the least-squares objective over (η, ρ) at the best H for one surface, with the multi-start optima, the Gauss–Newton 90% ellipse and the posterior 90% region.* How to read the figure: the contours are the objective, lower is better; the valley runs along ρη = constant and is cut by ρ = −1 on the left; the orange dots are the multi-start optima, the dashed ellipse is the Gauss–Newton region at the best optimum, and the blue region holds 90% of the posterior.
 
-The table reports Gauss–Newton against posterior coverage per target, the mean number of distinct modes, and the movement of the regularized point over a decade of λ.
+The table reports Gauss–Newton against posterior coverage per target, the mean number of distinct modes, and the movement of the regularized point over a decade of λ. ⟨S6⟩
+
+Heston is the contrast: the smile identifies every Heston parameter (contraction 0.93 to 0.99, S2), and there the classical route works. On 200 test smiles (rows 2,100 to 2,299), ten starts with the Fourier pricer find a single optimum on 97% of them, at a median 10 CPU-seconds per smile.
+
+| Heston, 200 smiles | v\_0 | θ\_H | σ\_v | ρ |
+| --- | --- | --- | --- | --- |
+| Gauss–Newton 90% interval covers the truth (189 smiles with an interval) | 90% | 87% | 92% | 90% |
+| Posterior 90% interval covers the truth | 90% | 89% | 90% | 87% |
+| Gauss–Newton width over posterior width, median (10% to 90%) | 1.03 (0.96 to 1.11) | 1.02 (0.96 to 1.09) | 1.03 (0.95 to 1.47) | 1.02 (0.90 to 1.34) |
+
+The exceptions are at the edges of the prior box. On 15 smiles the best fit sits at a bound, more than 8 logit units from the centre, and on 11 of them the information matrix is singular, so no interval exists. Tikhonov regularization toward the prior centre leaves a well-identified smile where it is and moves a weakly identified one. On test smile 2,102, whose σ\_v is 0.21, ρ moves from −0.94 to −0.59 and σ\_v from 0.20 to 0.34 as λ goes from 0.01 to 10. Their product stays at −0.19 to −0.20, because at low volatility of variance the smile pins only ρσ\_v. The figure shows the well-identified case: elliptical contours, one optimum, and a Gauss–Newton region that holds the posterior draws. The rough-Bergomi figure ⟨S6-1⟩ is drawn the same way.
+
+![The Heston least-squares objective over (σ_v, ρ) at the best v_0 and θ for test smile 2,100, with the multi-start optimum, the Gauss–Newton 90% region and the posterior draws.](images/calibration-07-heston-landscape.png)
+
+*Figure S6-1 (Heston): the least-squares objective over (σ\_v, ρ) for test smile 2,100, with v\_0 and θ\_H at their best values.* How to read the figure: as figure ⟨S6-1⟩; here the valley is a bowl, the ten starts land on one point, and the dashed Gauss–Newton region holds the posterior draws.
 
 ### 7. Products and reserves (S7)
 
