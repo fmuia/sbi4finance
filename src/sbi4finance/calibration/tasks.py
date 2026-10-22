@@ -234,8 +234,11 @@ def curve(task, context_values):
     return pricing.step_curve(knots(task), context_values)
 
 
-def price(task, parameter_values, context_values, seed):
-    """(prices, standard errors, covariance, refinement difference, paths per block) for one example."""
+def price(task, parameter_values, context_values, seed, diagnostics=None):
+    """(prices, standard errors, covariance, refinement difference, paths per block) for one example.
+
+    diagnostics, a list, receives the rough pricer's per-block control-variate variances.
+    """
     parameters = model_parameters(task, parameter_values)
     contracts = task["context"]["contracts"]
     numerics = task["numerics"]
@@ -247,7 +250,7 @@ def price(task, parameter_values, context_values, seed):
     prices, errors, covariance, used = pricing.rough_surface(
         parameters, curve(task, context_values), contracts, numerics["blocks"], numerics["paths_ladder"],
         sigma(task), numerics["max_mc_se_over_quote_sigma"], seed,
-        cap=numerics.get("max_mc_se_over_quote_sigma_last_rung"))
+        cap=numerics.get("max_mc_se_over_quote_sigma_last_rung"), diagnostics=diagnostics)
     return prices, errors, covariance, np.zeros(n), used
 
 

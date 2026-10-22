@@ -57,11 +57,13 @@ def _block_contracts(contracts, horizon, n_steps):
     return dt, indices
 
 
-def rough_block(parameters, curve, contracts, *, horizon, n_steps, n_pairs, seed):
+def rough_block(parameters, curve, contracts, *, horizon, n_steps, n_pairs, seed, diagnostics=None):
     """Prices, standard errors and covariance of the price means for one block.
 
     contracts all have maturity <= horizon on the grid horizon / n_steps.
-    n_pairs antithetic pairs are drawn from default_rng(seed).
+    n_pairs antithetic pairs are drawn from default_rng(seed). Given a dict,
+    diagnostics receives, per contract, the variance of the antithetic pair
+    means with and without the control variates: their ratio is 1 - R^2.
     """
     dt, indices = _block_contracts(contracts, horizon, n_steps)
     maturities = sorted(set(indices.tolist()))
@@ -98,11 +100,14 @@ def rough_block(parameters, curve, contracts, *, horizon, n_steps, n_pairs, seed
     dof = len(adjusted) - controls.shape[1] - 1
     covariance = residual.T @ residual / dof / len(adjusted)
     covariance = 0.5 * (covariance + covariance.T)
+    if diagnostics is not None:
+        diagnostics["plain_variance"] = payoffs.var(axis=0, ddof=1)
+        diagnostics["controlled_variance"] = np.sum(residual**2, axis=0) / dof
     prices = prices + np.array([1.0 - c["strike"] if c["option_type"] == "call" else 0.0 for c in contracts])
     return prices, np.sqrt(np.diag(covariance)), covariance
 
 
-def rough_surface(parameters, curve, contracts, blocks, paths_ladder, sigma, budget, seed, cap=None):
+def rough_surface(parameters, curve, contracts, blocks, paths_ladder, sigma, budget, seed, cap=None, diagnostics=None):
     """Price every contract in its block; escalate a block's paths until max SE / sigma <= budget.
 
     Each rung of the ladder uses a fresh stream SeedSequence([seed, block, rung]),
@@ -110,7 +115,9 @@ def rough_surface(parameters, curve, contracts, blocks, paths_ladder, sigma, bud
     budget on the last rung is kept only if its max SE / sigma is within cap
     (when a cap is given), and raises otherwise; nothing is redrawn silently.
     Returns prices, standard errors, the block-diagonal covariance of the price
-    means, and the path count used per block.
+    means, and the path count used per block. Given a list, diagnostics receives
+    one entry per block for the rung used: its contracts and rough_block's
+    variances with and without the control variates.
     """
     sigma = np.broadcast_to(np.asarray(sigma, dtype=float), (len(contracts),))
     maturities = np.array([c["maturity"] for c in contracts])
@@ -129,9 +136,10 @@ def rough_surface(parameters, curve, contracts, blocks, paths_ladder, sigma, bud
             continue
         for rung, n_paths in enumerate(paths_ladder):
             stream = np.random.SeedSequence([seed, b, rung])
+            found = {} if diagnostics is not None else None
             p, s, c = rough_block(parameters, curve, [contracts[i] for i in chosen],
                                   horizon=block["horizon"], n_steps=block["n_steps"],
-                                  n_pairs=n_paths // 2, seed=stream)
+                                  n_pairs=n_paths // 2, seed=stream, diagnostics=found)
             if np.all(s <= budget * sigma[chosen]):
                 break
         else:
@@ -142,6 +150,8 @@ def rough_surface(parameters, curve, contracts, blocks, paths_ladder, sigma, bud
         prices[chosen], errors[chosen] = p, s
         covariance[np.ix_(chosen, chosen)] = c
         used.append(int(n_paths))
+        if diagnostics is not None:
+            diagnostics.append({"block": b, "contracts": chosen.tolist(), "paths": int(n_paths), **found})
     return prices, errors, covariance, np.array(used, dtype=float)
 
 

@@ -70,8 +70,9 @@ def example(args):
     task = task_for(args.model)
     theta = np.asarray(task["prior_bounds"], dtype=float).mean(axis=1)
     context = np.full(tasks.context_size(task), 0.25**2)
+    diagnostics = [] if args.model == "rough" else None
     started = time.process_time()
-    prices, errors, _, difference, used = tasks.price(task, theta, context, args.seed)
+    prices, errors, _, difference, used = tasks.price(task, theta, context, args.seed, diagnostics)
     cpu = time.process_time() - started
     sigma = tasks.sigma(task)
     noisy = prices + sigma * np.random.default_rng([args.seed, 0x534D494C]).standard_normal(len(prices))
@@ -95,6 +96,15 @@ def example(args):
     }
     if args.model == "rough":
         report["short_maturity_formula_skew"] = rough_skew_formula(parameters, clean_stats["maturities"]).tolist()
+        ratio = np.empty(len(prices))
+        for block in diagnostics:
+            ratio[block["contracts"]] = block["controlled_variance"] / block["plain_variance"]
+        report["control_variates"] = {
+            "variance_ratio_with_over_without": ratio.tolist(),
+            "quantiles": dict(zip(("min", "q25", "median", "q75", "max"),
+                                  np.quantile(ratio, [0, 0.25, 0.5, 0.75, 1]).tolist())),
+            "note": "per quote, the variance of the antithetic pair means with the two controls per maturity over "
+                    "the variance without them (1 - R^2), at the paths used"}
     args.out.mkdir(parents=True, exist_ok=False)
     (args.out / "example.json").write_text(json.dumps(jsonable(report), indent=2, allow_nan=False) + "\n")
     example_figure(task, report, args.out / "example-surface.png")
