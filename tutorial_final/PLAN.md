@@ -134,13 +134,25 @@ Not reused: the trained rough checkpoint (`rough-hurst-eta-reference8192-provisi
 puts, two parameters) and the HKDE (θ, λ) checkpoint, except as smoke tests of the loaders; the
 SVJ particle filter; the one-factor Bergomi model.
 
-### 6.2 Schema extensions (in `option_bank.py` and `option_panel.py`)
+### 6.2 Schema extensions (as built: `calibration/bank.py`, not edits to `option_bank.py`)
 
-| | Change | Where | Size |
-|---|---|---|---|
-| ext 1 | `quote_noise_std` scalar **or** list `[C]`; `noisy_panel` broadcasts; the MC-SE and refinement budgets compare per contract | `option_panel.validate_context`, `noisy_panel`; `option_bank.generate_examples` | ~20 lines |
-| ext 2 | Per-example model context: `task.curve_prior` (knots, level and slope bounds) drawn from the example's prior stream; `curve_values [B, K]` and `curve_parameters [B, 2]` stored and validated; `task.numerics.blocks` prices the panel in maturity blocks by repeated `option_panel` calls | `option_bank.price_panel`, `generate_examples`, `write_bank`, `load_bank` | ~60 lines |
-| ext 3 | `initial_variance` allowed in `parameter_names` for `hkde`; `price_panel` and `price_parameters` read it from the row | `option_bank.price_panel`, `hkde_reference.price_parameters` | ~10 lines |
+Archived results pin the SHA-256 of `option_bank.py`, `option_panel.py` and
+`option_bank_shards.py` (for example `docs/results/hkde-inference/bank-manifest.json`), and
+the archive's tests refuse to run when they change. The three extensions therefore live in a
+mirror module that reuses the archived pricers, seed streams and fail-closed rules by import,
+and the archived files are unchanged (a test checks the hashes).
+
+| | Change | Where |
+|---|---|---|
+| ext 1 | One quote-noise standard deviation per contract; the precision budgets compare per contract | `calibration/tasks.validate_context`, `calibration/bank.generate_examples`, `check_precision` |
+| ext 2 | Per-example forward-variance curve: 7 piecewise-constant levels sigma0^2 (1 + s t_mid) e^u, drawn from stream purpose 3 and stored as `context_values [B, 7]`, `context_parameters [B, 2]`; maturity blocks with their own grids; a paths ladder that escalates until MC SE <= 0.25 sigma_c, recorded in `pricing_paths [B, blocks]` | `calibration/tasks.py`, `calibration/pricing.py` |
+| ext 3 | `initial_variance` as an inferred Heston parameter; jump intensity fixed at zero | `calibration/tasks.py` |
+
+Banks are written as `calibration_bank_v1`: the option_bank_v1 arrays and roles plus the three
+arrays above, compressed. `scripts/calibration_bank.py` (config, job-map, shard, assemble,
+local) and `cluster/calibration_bank_array.sbatch` replace the option-bank scripts for them.
+The rough pricer adds antithetic paths and two zero-mean control variates per maturity to the
+archived conditional estimator; at the prior median this cuts the Monte Carlo error tenfold.
 
 ### 6.3 New code
 
