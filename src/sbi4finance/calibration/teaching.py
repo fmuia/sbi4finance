@@ -193,6 +193,21 @@ def price_histograms(price_draws, row, level, title):
     return fig
 
 
+def agreement_rows(report, labels=("v₀", "θ", "σ_v", "ρ"), mean_limit=0.3, width_limit=0.25):
+    """Per parameter, from the S3 report: the network against the exact (reweighted) posterior."""
+    errors = np.array([s["network_vs_reweighted"]["standardized_mean_error"] for s in report["surfaces"]])
+    widths = np.array([s["network_vs_reweighted"]["width_ratio"] for s in report["surfaces"]])
+    passed = (errors < mean_limit) & (np.abs(widths - 1) < width_limit)
+    rows = [{"parameter": label,
+             "mean error, median (posterior sd)": f"{np.median(errors[:, j]):.2f}",
+             "90% width ratio, median": f"{np.median(widths[:, j]):.2f}",
+             "smiles within the criterion": f"{100 * passed[:, j].mean():.0f}%"}
+            for j, label in enumerate(labels)]
+    rows.append({"parameter": "all together", "mean error, median (posterior sd)": "",
+                 "90% width ratio, median": "", "smiles within the criterion": f"{100 * passed.all(axis=1).mean():.0f}%"})
+    return rows
+
+
 def cost_rows(costs):
     """The S9 table: one likelihood evaluation, the exact route and the amortized route, per model."""
     rows = []

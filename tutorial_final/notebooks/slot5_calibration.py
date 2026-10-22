@@ -177,7 +177,14 @@ def _(RESULTS, mo, pending, teaching):
         _out = pending("study S3 (`tutorial_final/studies/heston_check.py`).")
     else:
         _s = _report["summary"]
-        _out = mo.ui.table([
+        _chains = _s["chain_checks"]
+        _out = mo.vstack([
+            mo.md(f"**The network alone against the exact posterior**, on {len(_report['surfaces'])} held-out smiles "
+                  "(criterion: mean within 0.3 posterior sd, 90% width within 25%):"),
+            mo.ui.table(teaching.agreement_rows(_report), selection=None, pagination=False),
+            mo.md(f"**The network corrected by importance sampling** with the exact likelihood agrees with exact "
+                  f"MCMC on {sum(c['reweighted_vs_chain'] for c in _chains)} of {len(_chains)} smiles."),
+            mo.ui.table([
             {"check": "surfaces where network and exact posterior agree (means within 0.3 sd, 90% widths within 25%)",
              "value": f"{100 * _s['network_vs_reweighted_pass_rate']:.0f}% of {len(_report['surfaces'])}"},
             {"check": "median importance-sampling efficiency of the network's proposal",
@@ -187,7 +194,7 @@ def _(RESULTS, mo, pending, teaching):
              "value": f"{_s['chain_rhat_max']:.3f}, {_s['chain_ess_min']:.0f}"},
             {"check": "network: seconds per smile for 1,000 draws", "value": f"{_s['network_seconds_per_surface']:.2f}"},
             {"check": "exact reweighting: CPU-seconds per smile", "value": f"{_s['audit_cpu_seconds_median']:.0f}"},
-        ], selection=None, pagination=False)
+        ], selection=None, pagination=False)])
     _out
     return
 

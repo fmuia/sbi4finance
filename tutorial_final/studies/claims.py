@@ -87,13 +87,21 @@ def c5():
     r = load("heston/s3/heston-check.json")
     if r is None:
         return "—", "pending"
-    s = r["summary"]
-    chains = s["chain_checks"]
-    chain_pass = sum(c["network_vs_chain"] for c in chains)
-    value = (f"{pct(s['network_vs_reweighted_pass_rate'])} of {len(r['surfaces'])} smiles agree with the reweighted "
-             f"exact posterior; {chain_pass} of {len(chains)} agree with exact MCMC; median audit efficiency "
-             f"{pct(s['audit_efficiency_median'])}")
-    return value, ("verified" if s["network_vs_reweighted_pass_rate"] >= 0.9 else "not met")
+    import numpy as np
+
+    errors = np.array([s["network_vs_reweighted"]["standardized_mean_error"] for s in r["surfaces"]])
+    widths = np.array([s["network_vs_reweighted"]["width_ratio"] for s in r["surfaces"]])
+    passed = (errors < 0.3) & (np.abs(widths - 1) < 0.25)
+    labels = ("v₀", "θ", "σ_v", "ρ")
+    chains = r["summary"]["chain_checks"]
+    value = (f"network alone, share of {len(r['surfaces'])} smiles within the criterion: "
+             + ", ".join(f"{l} {pct(passed[:, j].mean())}" for j, l in enumerate(labels))
+             + f" (all four {pct(passed.all(axis=1).mean())}); median mean error "
+             + ", ".join(f"{l} {np.median(errors[:, j]):.2f}" for j, l in enumerate(labels))
+             + f" sd; network plus importance sampling agrees with exact MCMC on "
+               f"{sum(c['reweighted_vs_chain'] for c in chains)} of {len(chains)}")
+    status = "verified" if passed.all(axis=1).mean() >= 0.9 else "not met for the network alone"
+    return value, status
 
 
 def c6():
