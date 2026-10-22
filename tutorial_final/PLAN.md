@@ -168,20 +168,21 @@ archived conditional estimator; at the prior median this cuts the Monte Carlo er
 
 ### 6.4 Studies
 
-Each study is a `pixi` task in `tutorial_final/studies/`, writes to `results/calibration/`, and
-starts from the script named.
+Each study is a script in `tutorial_final/studies/` (commands and test-row ranges in its
+README), writes one new run directory, and enters `results/calibration/<model>/` through
+`accept.py`. The "Starts from" column is the archived code each one reuses.
 
-| ID | Study | Starts from | Output |
-|---|---|---|---|
-| S1 | Generate the rough and Heston banks on Oscar | `generate_option_bank_shard.py`, `assemble_option_bank.py`, `option_bank_array.sbatch` with the two task JSONs | `bank-manifest.json` |
-| S2 | Train the amortized posterior; SBC, recovery, coverage, contraction | `train_rough.py`, `evaluate_rough.py` | `checkpoints/rough_bergomi/`, `validation/` |
-| S3 | Heston check: exact posterior (Fourier reweighting of a defensive proposal, and an independent MH chain) against the network on 50 synthetic surfaces and the real one | `evaluate_hkde_correction.py`, `hkde_workflow.run_panel` | `heston-check/` |
-| S4 | Neural pricer; MH on it against the amortized posterior on 50 surfaces and the real one | N3, `pmmh.rhat_ess` | `pricer-route/` |
-| S5 | Audit: efficiency and max weight on 500 validation surfaces; flag rate; the real surface | `calibration/correction.py`, `check_rough_reference.price_parameters` | `audit/` |
-| S6 | Classical route on 200 synthetic surfaces and the real one; Jacobian-interval coverage; modes on the ridge | N4 | `classical/` |
-| S7 | Products under the posterior: price distributions, reserves, price-map validation; Heston against rough on the same surface | N2, `run_hkde_surrogate.py` (protocol), `hkde_correction.summarize` | `products/` |
-| S8 | Real surface: SPY chain, implied vols, ξ₀, skew term structure; derived data only | N5, N1, `datasets/local.write_artifact` | `data/spy-surface/`, `data/SOURCES.md` |
-| S9 | Costs on one machine: one MC likelihood evaluation; exact MCMC with MC pricing inside to a fixed CPU budget, extrapolated to 400 effective draws; network; audit; neural pricer + MH; multi-start | `svj_costs.py` pattern | `costs.json` |
+| ID | Study | As built | Starts from | Status (22 Oct) |
+|---|---|---|---|---|
+| S1 | Generate the rough and Heston banks; their numerical error and cost | `scripts/calibration_bank.py`, `cluster/calibration_bank_array.sbatch`, `bank_quality.py` | `generate_option_bank_shard.py`, `assemble_option_bank.py`, `option_bank_array.sbatch` | Heston accepted (60,000 surfaces); rough pilot generating; full rough bank: Oscar job map ready |
+| S2 | Train the amortized posterior; SBC, recovery, coverage, contraction | `train_calibration.py`, `evaluate_calibration.py`; `smile_facts.py` for the prior predictive check | `train_rough.py`, `evaluate_rough.py` | Heston accepted (SBC passes, 4 of 4); rough pilot queued |
+| S3 | Heston check: exact posterior (Fourier reweighting of a defensive proposal, and independent random-walk chains) against the network on 50 synthetic surfaces | `heston_check.py` | `evaluate_hkde_correction.py`, `hkde_workflow.run_panel` | Accepted |
+| S4 | Neural pricer; random-walk Metropolis on it against the amortized posterior on 50 surfaces | `pricer_route.py` | N3, `pmmh.rhat_ess` | Heston running |
+| S5 | Audit: efficiency and k̂ on held-out surfaces; flag rate; cost | `audit.py` | `calibration/correction.py`, `check_rough_reference.price_parameters` | Rough pilot queued (40 surfaces) |
+| S6 | Classical route: multi-start, Gauss–Newton interval coverage, modes on the ridge, Tikhonov | `classical_route.py` | N4 | Heston queued (200 surfaces); rough pilot queued (8) |
+| S7 | Products under the posterior: price distributions, reserves, drivers; Heston against rough on the same surface | `products_study.py` | N2, `run_hkde_surrogate.py` (protocol), `hkde_correction.summarize` | Heston queued; rough pilot queued |
+| S8 | Real surface: SPY chain, implied vols, ξ₀, skew term structure; derived data only | `scripts/build_surface.py` | N5, N1, `datasets/local.write_artifact` | Blocked: no reachable chain source |
+| S9 | Costs on one machine: one MC likelihood evaluation; exact MCMC extrapolated to 400 effective draws; network; audit; neural pricer + MH; multi-start | `costs.py`, with the per-surface costs recorded by S3 to S7 | `svj_costs.py` pattern | Runs last, on an idle machine |
 
 ### 6.5 Build order
 

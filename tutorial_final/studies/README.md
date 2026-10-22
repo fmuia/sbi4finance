@@ -23,30 +23,59 @@ come from these outputs. Library code is in `src/sbi4finance/calibration/`.
 
 Every study uses its own range of test surfaces, so no surface serves two checks:
 
-| Study | Test rows |
-|---|---|
-| S2 | 0–1999 |
-| S3 | 2000–2049 (Heston) |
-| S4 | held-out pricer error on 0–2049; chains on 2050–2099 |
-| S6 | 2100–2299 |
-| S7 | 2300 onwards |
-| S5 | 2500 onwards (rough) |
+| Study | Heston and full rough bank: test rows | Rough pilot bank (400 test surfaces): test rows |
+|---|---|---|
+| S2 | 0–1999 | 0–249 |
+| S3 | 2000–2049 (Heston) | – |
+| S4 | held-out pricer error on 0–2049; chains on 2050–2099 | – |
+| S5 | 2500 onwards (rough) | 250–289 |
+| S6 | 2100–2299 | 293–300 |
+| S7 | 2300 onwards | 290–292 |
 
 ## Commands
 
-Heston (Stage A), on one machine:
+These are the commands behind the accepted results; each run directory's JSON
+records its settings again.
+
+Heston (Stage A), on one machine (4 cores):
 
 ```bash
 python scripts/calibration_bank.py local --config configs/tasks/calibration_heston_bank.json --chunk 500 --workers 4 --out BANK
-python tutorial_final/studies/train_calibration.py --bank BANK --out RUN --epochs 40
-python tutorial_final/studies/evaluate_calibration.py --bank BANK --checkpoint RUN --out S2
-python tutorial_final/studies/heston_check.py --bank BANK --checkpoint RUN --out S3
+python tutorial_final/studies/bank_quality.py --bank BANK --shards BANK-shards --out S1
+python tutorial_final/studies/smile_facts.py prior-predictive --bank BANK --out PRIOR-PREDICTIVE
+python tutorial_final/studies/train_calibration.py --bank BANK --out RUN --epochs 500 --batch-size 256 \
+    --fresh-noise --seed 0 --chunk-epochs 25 --time-alpha -0.5
+python tutorial_final/studies/heston_check.py --bank BANK --checkpoint RUN --out S3 --first 2000 --surfaces 50 \
+    --proposals 2048 --chain-surfaces 4 --chains 4 --steps 6000 --burn 1000 --workers 4
+python tutorial_final/studies/evaluate_calibration.py --bank BANK --checkpoint RUN --out S2 --surfaces 2000 --draws 1000
 python tutorial_final/studies/pricer_route.py --bank BANK --checkpoint RUN --out S4
-python tutorial_final/studies/classical_route.py --bank BANK --checkpoint RUN --out S6
-python tutorial_final/studies/products_study.py --bank BANK --checkpoint RUN --out S7
+python tutorial_final/studies/classical_route.py --bank BANK --checkpoint RUN --out S6 --surfaces 200
+python tutorial_final/studies/products_study.py --bank BANK --checkpoint RUN --out S7 --surfaces 3 --draws 400
+python tutorial_final/studies/costs.py --out COSTS --heston-checkpoint RUN --heston-bank BANK --heston-check S3/heston-check.json
 ```
 
-Rough Bergomi (Stage B), bank on Oscar:
+Rough Bergomi pilot (2,200 surfaces, `configs/tasks/calibration_rough_pilot.json`), on the same machine:
+
+```bash
+python scripts/calibration_bank.py local --config configs/tasks/calibration_rough_pilot.json --chunk 25 --workers 2 --out PILOT --resume
+python tutorial_final/studies/bank_quality.py --bank PILOT --shards PILOT-shards --out S1
+python tutorial_final/studies/smile_facts.py prior-predictive --bank PILOT --out PRIOR-PREDICTIVE --split test --surfaces 400
+python tutorial_final/studies/train_calibration.py --bank PILOT --out RUN --epochs 1000 --batch-size 128 \
+    --fresh-noise --seed 0 --chunk-epochs 100 --time-alpha -0.5
+python tutorial_final/studies/evaluate_calibration.py --bank PILOT --checkpoint RUN --out S2 --surfaces 250 --draws 1000
+python tutorial_final/studies/audit.py --bank PILOT --checkpoint RUN --out S5 --first 250 --surfaces 40 --proposals 256 \
+    --paths 8192 --workers 4
+python tutorial_final/studies/products_study.py --bank PILOT --checkpoint RUN --out S7 --first 290 --surfaces 3 --draws 400 \
+    --starts 4 --least-squares-paths 8192 --workers 4
+python tutorial_final/studies/classical_route.py --bank PILOT --checkpoint RUN --out S6 --first 293 --surfaces 8 --starts 10 \
+    --least-squares-paths 8192 --landscape-points 21 --workers 4
+```
+
+`accept.py` then copies a finished run into `results/calibration/` (`--keep-surfaces 20`
+trims the stored draws), and `claims.py` and `manifest.py` regenerate the claims table and
+the artifact table.
+
+Rough Bergomi (Stage B), bank on Oscar (112,000 surfaces in 2,240 single-core jobs of 50):
 
 ```bash
 python scripts/calibration_bank.py job-map --config configs/tasks/calibration_rough_bank.json --chunk 50 --out jobs.json
@@ -54,4 +83,4 @@ sbatch --array=0-2239%200 [account/partition flags] cluster/calibration_bank_arr
 python scripts/calibration_bank.py assemble --config configs/tasks/calibration_rough_bank.json --shards /scratch/$USER/rough-shards --out /scratch/$USER/rough-bank
 ```
 
-then the same study commands with `--pricer S4/pricer` for S6 and S7.
+then the Heston study commands with the full bank's test rows, and `--pricer S4/pricer` for S6 and S7.
