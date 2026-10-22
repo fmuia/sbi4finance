@@ -283,7 +283,7 @@ A quote is reported in forward units: the option price divided by the discount f
 | v\_0, θ\_H, κ, σ\_v, ρ\_H | Heston's initial variance, long-run variance, mean reversion, vol-of-vol and correlation | variance, variance, per year, –, – | κ fixed at 2 |
 | φ(u) | Characteristic function of ln(S\_T / F\_T) | – | – |
 | N, n | Monte Carlo paths and time steps per maturity block | – | 2^15 paths, doubled up to 2^21 until the error budget holds; 80 steps over 10 days, 504 over 3 months, 504 over a year |
-| M, L | Audit proposals; posterior draws per surface | – | ⟨decision⟩; 1,000 |
+| M, L | Audit proposals; posterior draws per surface | – | M = 256 at 2^13 paths per block for rough Bergomi (the pilot's setting; the full study sets M from the pilot's efficiencies), 2,048 with the Fourier likelihood for Heston; L = 1,000 |
 | Π, p\_Π | A product's payoff and price | forward units | – |
 | T\_1, T\_2 | Forward-start dates: strike set at T\_1, expiry T\_2 | years | 63 and 126 days |
 
