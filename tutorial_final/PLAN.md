@@ -22,6 +22,10 @@ tutorial's title, *Amortized Bayesian Calibration of Volatility Models*, describ
 
 The SVJ-from-returns lesson becomes an optional companion. Its audit design is reused (§6).
 
+The [technical design document](../docs/design/calibration-design-document.md) states the
+method, the mathematics, the validation plan and the planned evidence in the form of the SVJ
+design document; its placeholders ⟨S1⟩–⟨S9⟩ are filled by the studies of §6.4.
+
 ## 2. The thesis
 
 1. **Bayes pays when the decision needs a quantile of what the data do not pin down.** A vanilla
@@ -82,7 +86,7 @@ is the base. Freeze on Fri 23 Oct (D4).
 
 | Item | v0 |
 |---|---|
-| Observation | A currency-price panel `[B, 63, 1]`, as every bank today. Spot 1.0, rate and dividend 0, so prices are fractions of the forward; a real quote is divided by its maturity's forward. The adapter converts prices to implied vols deterministically for conditioning and plots. |
+| Observation | A currency-price panel `[B, 63, 1]`, as every bank today. Spot 1.0, rate and dividend 0, so prices are fractions of the forward; a real quote is divided by its maturity's forward. The network conditions on each price divided by its quote-noise standard deviation, which is defined for any value including negative noisy quotes; implied vols are computed for plots and for reading the real chain. |
 | Contracts (fixed, as the schema requires) | 7 maturities in trading days {5, 10, 21, 42, 63, 126, 252}/252 × 9 strikes K = exp(δ σ_ref √T), δ ∈ {−2, …, 2} in steps of 0.5, σ_ref = 20%. Puts below the forward, calls above (both supported). Maturity-major order. |
 | Quote noise | Gaussian in price, per contract **[ext 1]**: `quote_noise_std` becomes a list of 63 values, each the Black–Scholes vega at (σ_ref, K, T) times an implied-vol noise of 0.3 vol points at δ = 0 rising linearly to 1.0 at \|δ\| = 2. Fixed per task; changing it is a reweighting exercise. |
 | Rough Bergomi unknowns | Uniform, as `generate_examples` draws: H ∈ (0.02, 0.35), η ∈ (0.5, 3.5), ρ ∈ (−0.99, −0.2). No fixed parameters. |
@@ -112,7 +116,7 @@ removing a hard-coded task shape; "new" is listed with its size.
 | Batch Fourier pricing of parameter rows | `hkde_reference.price_parameters` | generalize: P parameters from the task, v₀ from the row |
 | Batch MC pricing of parameter rows (audit likelihood) | `scripts/check_rough_reference.price_parameters` | generalize: 3 parameters, per-row curve; move into the package |
 | Quote-noise model | `option_panel.validate_context`, `noisy_panel`; `rough_reference.importance_weights` already takes σ `[C]` | **ext 1** |
-| Adapter and workflow builder | `rough_inference.py` (`conditioning_data`, `training_data`, `augmented_training_data`, `build_workflow`) | generalize into `calibration/inference.py`: parameter names, bounds and contract count from the task; curve knots concatenated into the conditions; price→implied-vol transform; `FlowMatching` in place of `CouplingFlow` |
+| Adapter and workflow builder | `rough_inference.py` (`conditioning_data`, `training_data`, `augmented_training_data`, `build_workflow`) | generalize into `calibration/inference.py`: parameter names, bounds and contract count from the task; curve knots concatenated into the conditions; prices scaled by their noise standard deviations (implied vols for plots); `FlowMatching` in place of `CouplingFlow` |
 | Training with selection and reload check | `training_workflow.fit_and_select`, `verify_reload`, `reserve_output_dir`; `scripts/train_rough.py` | as is; the script's accepted-inputs check updated to the new task |
 | Exact check by importance reweighting (the audit) | `hkde_correction.propose` (defensive mixture: network + prior + boundary), `correct`, `summarize`, `resample` | generalize into `calibration/correction.py`: P parameters, C contracts, σ `[C]`, a pluggable `price_fn(rows) → [N, C]` (Fourier for Heston, MC for rough). The SVJ `audit.fit_proposal`'s Student-t proposal and `AuditResult.flagged` are the pattern for the per-surface flag |
 | Reference diagnostics, weighted summaries, SBC | `rough_reference.weighted_summary`, `reference_diagnostics`, `conditional_metrics`, `randomized_sbc`; `scripts/evaluate_rough.py` (`validation_gates`, `aggregate`) | generalize to P parameters; otherwise as is |
