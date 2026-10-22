@@ -101,11 +101,20 @@ def c3():
 
 
 def c4():
-    p = load("rough/s6/classical.json")
-    if p is None:
-        return "—", "pending: rough bank"
-    m = p["summary"]["modes"]
-    return f"mean {m['mean']:.1f} distinct optima; {pct(m['share_with_two_or_more'])} of smiles with two or more", "verified"
+    for prefix, label in (("rough", "full"), ("rough-pilot", "pilot")):
+        p = load(f"{prefix}/s6/classical.json")
+        if p is None:
+            continue
+        s = p["summary"]
+        m = s["modes"]
+        gn = s["gauss_newton_coverage_90"] or {}
+        value = (f"mean {m['mean']:.1f} distinct optima; {pct(m['share_with_two_or_more'])} of {s['surfaces']} smiles with "
+                 "two or more; Gauss–Newton 90% coverage "
+                 + ", ".join(f"{SYMBOLS.get(k, k)} {pct(v)}" for k, v in gn.items())
+                 + f"; no interval on {s['gauss_newton_singular']} (optimum at the prior's edge)")
+        status = "verified" if m["share_with_two_or_more"] >= 0.5 else "not met: one optimum on most smiles"
+        return value, (status if label == "full" else f"pilot, {status}")
+    return "—", "pending: rough bank"
 
 
 def c5():

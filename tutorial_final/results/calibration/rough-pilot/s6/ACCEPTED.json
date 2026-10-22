@@ -1,0 +1,10 @@
+{
+  "accepted": "2026-10-22T11:30:46+00:00",
+  "source": "/tmp/claude-0/-home-user-sbi4finance/9c138712-55c5-5f30-b0b0-9fce83e4ceb1/scratchpad/runs/rough-pilot-s6",
+  "source_sha256": {
+    "classical.json": "742e280d71d9d1cb7cdd1bd1cc70a8929faefdb5aa234c40faf70caca162f460",
+    "landscape.png": "929766486bf0a88cf2cb9e0690700f595bde9ae781025a3e3b08d0a41373e474",
+    "network-draws.npz": "422dca9946bb9c8b05089a0c8965165b4ae6703d4a1b1822df1520ae69ba12c6"
+  },
+  "changes": []
+}
