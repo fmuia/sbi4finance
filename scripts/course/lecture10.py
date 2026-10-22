@@ -554,7 +554,16 @@ def fig_products(draws, t_hat):
     common = np.array([price(t, 2026) for t in pick])
     independent = np.array([price(t, 3000 + i) for i, t in enumerate(pick[:150])])
     point = price(t_hat, 2026)
+    params_hat = dict(FIXED, initial_variance=t_hat[0], theta=t_hat[1], vol_of_vol=t_hat[2], rho=t_hat[3])
+    point_se = products.price_draw("heston", params_hat, None, spec, 8192, 2026)[1]
     truth_price = price(np.array(TRUTH_H), 2026)
+    # independent checks of the point prices: exact variance-swap formula, Fourier put, quadrature forward start
+    import lecture08 as L8
+    kappa = FIXED["kappa"]
+    T = 63 / 252
+    exact_point = [t_hat[1] + (t_hat[0] - t_hat[1]) * (1 - np.exp(-kappa * T)) / (kappa * T), float("nan"),
+                   L8.heston_forward_start(*t_hat, 63 / 252, 126 / 252),
+                   L8.heston_call(np.log(0.9), 2.0, *t_hat) - 1 + 0.9]
     seconds = time.time() - t0
     names = ["variance swap 63 d", "volatility swap 63 d", "forward-start 63 → 126 d", "2-year 90% put"]
     fig, axes = plt.subplots(1, 4, figsize=(16, 4.0))
@@ -575,7 +584,8 @@ def fig_products(draws, t_hat):
                                                / common[:, j].mean()),
                              reserve_short_rel=float((q90 - point[j]) / point[j]),
                              reserve_long_rel=float((point[j] - q10) / point[j]),
-                             truth=float(truth_price[j]),
+                             truth=float(truth_price[j]), point_mc_se=float(point_se[j]),
+                             point_mc_se_rel=float(point_se[j] / point[j]), point_check=float(exact_point[j]),
                              sd_common=float(common[:150, j].std()), sd_independent=float(independent[:, j].std()))
     axes[0].legend(frameon=False, fontsize=8)
     axes[0].set_ylabel("density")

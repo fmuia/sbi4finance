@@ -405,6 +405,8 @@ def fig_sweeps(base):
             if key not in cache:
                 cache[key] = base if key == (0.185, 2.0, -0.595) else surface(p, seed=0)[:2]
     out = {}
+    s_iv = sf.implied_vol_noise(DELTAS)
+    centre_iv = implied_grid(cache[(0.185, 2.0, -0.595)][0])
     for name, values in sets.items():
         fig, axes = plt.subplots(1, 3, figsize=(15, 4.2))
         res = {}
@@ -421,7 +423,11 @@ def fig_sweeps(base):
             expo = sf.skew_power_law(DAYS / 252, skew)[0]
             res[str(v)] = dict(atm=[float(x) for x in lev], skew=[float(x) for x in skew], curv=[float(x) for x in curv],
                                skew_exponent=float(expo), iv_1w=[float(x) for x in iv[0]], iv_1y=[float(x) for x in iv[6]],
-                               max_iv_se_pts=float(np.nanmax(se) * 100))
+                               max_iv_se_pts=float(np.nanmax(se) * 100),
+                               diff_from_centre_over_s_iv=dict(
+                                   max_abs=float(np.nanmax(np.abs((iv - centre_iv) / s_iv[None, :]))),
+                                   atm_1y=float((iv[6, 4] - centre_iv[6, 4]) / s_iv[4]),
+                                   rms=float(np.sqrt(np.nanmean(((iv - centre_iv) / s_iv[None, :]) ** 2)))))
         for ax, title in zip(axes[:2], ("1 week", "1 year")):
             ax.set_xlabel(r"standardized moneyness $\delta$")
             ax.set_ylabel("implied volatility, %")

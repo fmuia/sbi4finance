@@ -208,7 +208,7 @@ def fig_objectives(spy):
     objectives = {}
     objectives["price, weights $1/\\sigma_c^2$\n(maximum likelihood)"] = fit_sigma(y, 1 / sd**2)
     objectives["price, equal weights"] = fit_sigma(y, np.ones(63))
-    objectives["price, weights $1/\\mathrm{vega}_c^2$\n(≈ implied vol, equal)"] = fit_sigma(y, 1 / bs_grid_vega(0.2) ** 2)
+    objectives["price, weights $1/\\mathrm{vega}_c(20\\%)^2$\n(≈ implied vol, equal)"] = fit_sigma(y, 1 / bs_grid_vega(0.2) ** 2)
     objectives["implied vol, equal weights"] = float(np.mean(iv))
     s_iv = sf.implied_vol_noise(np.tile(DELTAS, len(DAYS)))
     objectives["implied vol, weights $1/s_{iv}^2$"] = float(np.sum(iv / s_iv**2) / np.sum(1 / s_iv**2))
@@ -226,7 +226,7 @@ def fig_objectives(spy):
     ax.set_xlabel(r"fitted Black–Scholes $\hat\sigma$, %")
     ax.set_title("SPY, one $\\sigma$ for all 63 quotes: the weights choose the answer")
     ax = axes[1]
-    weights = {"ML $1/\\sigma_c^2$": 1 / sd**2, "price, equal": np.ones(63), "$1/\\mathrm{vega}^2$": 1 / bs_grid_vega(0.2) ** 2}
+    weights = {"ML $1/\\sigma_c^2$": 1 / sd**2, "price, equal": np.ones(63), "$1/\\mathrm{vega}(20\\%)^2$": 1 / bs_grid_vega(0.2) ** 2}
     bottom = np.zeros(len(weights))
     shares = {}
     for color, j in zip(COLORS, range(len(DAYS))):
@@ -248,6 +248,25 @@ def fig_objectives(spy):
     tidy(*axes)
     save(fig, "l09-objectives.png")
     REPORT["objectives"] = {n.replace("\n", " "): float(v) for n, v in objectives.items()}
+    # exact identity: (y - P(s)) / sigma_c = [secant vega / vega(20%)] (iv - s) / s_iv, secant = (y - P(s)) / (iv - s)
+    s_ml = objectives["price, weights $1/\\sigma_c^2$\n(maximum likelihood)"]
+    secant = (y - bs_grid_prices(s_ml)) / (iv - s_ml)
+    v20, v_ml = bs_grid_vega(0.2), bs_grid_vega(s_ml)
+    REPORT["objective_conversion"] = dict(
+        sigma=float(s_ml), factor_min=float(np.min(secant / v20)), factor_max=float(np.max(secant / v20)),
+        vega_ratio_at_delta2=float(np.max(v20 / v_ml)), secant_over_vega_min=float(np.min(secant / v_ml)),
+        secant_over_vega_max=float(np.max(secant / v_ml)), iv_min=float(np.min(iv)), iv_max=float(np.max(iv)))
+
+    # the two parts of the factor, one at a time, in the implied-volatility objective
+    def iv_fit(weight):
+        res = minimize_scalar(lambda x: np.sum(weight(x) * (iv - x) ** 2), bounds=(0.10, 0.20), method="bounded",
+                              options=dict(xatol=1e-9))
+        return float(res.x)
+    sec = lambda x: (y - bs_grid_prices(x)) / (iv - x)
+    REPORT["objective_conversion"].update(
+        exact_identity_fit=iv_fit(lambda x: (sec(x) / v20) ** 2 / s_iv**2),
+        reference_vega_only_fit=iv_fit(lambda x: (bs_grid_vega(x) / v20) ** 2 / s_iv**2),
+        secant_only_fit=iv_fit(lambda x: (sec(x) / bs_grid_vega(x)) ** 2 / s_iv**2))
     REPORT["objective_shares"] = shares
 
 
@@ -612,7 +631,7 @@ def fig_deep_calibration():
     ax.set_title("One-step inverse map: a point, no interval")
     tidy(*axes)
     save(fig, "l09-deep-calibration.png")
-    REPORT["deep"] = dict(n_train=n_train, bank_seconds=t_bank, train_seconds=t_train, epochs=int(net.n_iter_),
+    REPORT["deep"] = dict(n_train=n_train, n_test=n_test, box_shrink_per_edge=float((lo_d[0] - lo[0]) / (hi[0] - lo[0])), bank_seconds=t_bank, train_seconds=t_train, epochs=int(net.n_iter_),
                           rms_median=float(np.median(rms_by_contract)), rms_max=float(rms_by_contract.max()),
                           abs_q99=float(np.quantile(np.abs(err), 0.99)),
                           diff_median_abs=[float(v) for v in np.median(np.abs(diffs), axis=0)],

@@ -220,7 +220,10 @@ def fig_forward_start_stochastic():
     REPORT["fs_stochastic"] = dict(xi=xis.tolist(), exact=[float(v) for v in exact], naive=[float(v) for v in naive],
                                    atm_T1=atm1, atm_T2=atm2, gap_pct=[float(v) for v in (exact / naive - 1) * 100],
                                    mc_check_xi_0_9=[float(mc), float(mc_se), float(exact[8])],
-                                   bs_flat_20=float(call(0.0, 0.04 * tau)))
+                                   bs_flat_20=float(call(0.0, 0.04 * tau)),
+                                   conditional_at_v_0_04={str(xi): float(heston_call(0.0, tau, 0.04, theta, xi, rho))
+                                                          for xi in (0.3, 0.9)},
+                                   rule_0_4_sqrt_v_tau=float(0.4 * np.sqrt(0.04 * tau)))
 
 
 def fig_cliquet():
@@ -304,8 +307,11 @@ def fig_profile():
     for color, (k, name) in zip(COLORS, names.items()):
         vals = np.array([r_[k] for r_ in rows])
         ax.plot(xis, (vals / best[k] - 1) * 100, "o-", color=color, ms=3.5, label=name)
-    inside = xis[d <= 2.71]
-    ax.axvspan(inside.min(), inside.max(), color="0.9", zorder=0, label=r"$\Delta\chi^2 \leq 2.71$")
+    from scipy.interpolate import CubicSpline
+    fine = np.linspace(xis[0], xis[-1], 4001)
+    inside_f = fine[CubicSpline(xis, d)(fine) <= 2.71]
+    lo_x, hi_x = float(inside_f.min()), float(inside_f.max())
+    ax.axvspan(lo_x, hi_x, color="0.9", zorder=0, label=r"$\Delta\chi^2 \leq 2.71$ (interpolated)")
     ax.axhline(0, color="0.6", lw=0.8)
     ax.set_xlabel(r"$\sigma_v$")
     ax.set_ylabel("price relative to the best fit, %")
@@ -313,11 +319,14 @@ def fig_profile():
     ax.legend(frameon=False, fontsize=8.5)
     tidy(*axes)
     save(fig, "l08-heston-profile.png")
-    band = [r_ for r_, dd in zip(rows, d) if dd <= 2.71]
+    band_range = {}
+    for k in names:
+        rel = CubicSpline(xis, np.array([r_[k] for r_ in rows]) / best[k] - 1)(inside_f) * 100
+        band_range[k] = [float(rel.min()), float(rel.max())]
+    rho_f = CubicSpline(xis, np.array([r_["rho"] for r_ in rows]))([lo_x, hi_x])
     REPORT["profile"] = dict(truth=truth, best_full=[float(v) for v in full.x], chi2_best=float(chi_best), rows=rows,
-                             band_xi=[float(inside.min()), float(inside.max())],
-                             band_range_pct={k: [float(min(r_[k] for r_ in band) / best[k] - 1) * 100,
-                                                 float(max(r_[k] for r_ in band) / best[k] - 1) * 100] for k in names})
+                             band_xi_interpolated=[lo_x, hi_x], band_rho_at_edges=[float(v) for v in rho_f],
+                             band_range_pct_interpolated=band_range)
 
 
 def fig_cached_products():
@@ -344,11 +353,11 @@ def fig_cached_products():
     ax.set_yticklabels(labels, fontsize=8)
     ax.axvline(0, color="0.6", lw=0.8)
     ax.set_xlabel("price relative to the least-squares price, %")
-    ax.plot([], [], color=COLORS[0], lw=5, alpha=0.5, label="5% to 95% of the price under the posterior")
+    ax.plot([], [], color=COLORS[0], lw=5, alpha=0.5, label="5% to 95% of the price under the network posterior")
     ax.plot([], [], "|", color="k", ms=12, label="least-squares (point) price")
     ax.plot([], [], "v", color=COLORS[3], label="90% quantile: point + short-side reserve")
     ax.legend(frameon=False, fontsize=8.5, loc="upper center", bbox_to_anchor=(0.4, -0.13), ncol=3)
-    ax.set_title("Heston, three test smiles (cached S7): range, point and reserve")
+    ax.set_title("Heston, three test smiles (cached S7, network posterior): range, point and reserve")
     tidy(ax)
     save(fig, "l08-reserve.png")
     REPORT["cached_products"] = out
@@ -369,7 +378,13 @@ def fig_across_models():
                 lo, hi = (p["q05"] / ref - 1) * 100, (p["q95"] / ref - 1) * 100
                 ax.plot([lo, hi], [-i + dy] * 2, color=color, lw=6, alpha=0.6, solid_capstyle="butt")
                 ax.plot((p["point"] / ref - 1) * 100, -i + dy, "o", color=color, ms=5)
-            out[f"{srf['test_row']}/{k}"] = srf["products"][k]["gap_between_points_relative"]
+            P = srf["products"][k]
+            out[f"{srf['test_row']}/{k}"] = dict(
+                gap=P["gap_between_points_relative"],
+                range_rough=(P["rough"]["q95"] - P["rough"]["q05"]) / P["rough"]["mean"],
+                range_heston=(P["heston"]["q95"] - P["heston"]["q05"]) / P["heston"]["mean"],
+                reserve_rough=P["rough"]["reserve_short_relative"], reserve_heston=P["heston"]["reserve_short_relative"],
+                overlap=bool(not (P["rough"]["q95"] < P["heston"]["q05"] or P["heston"]["q95"] < P["rough"]["q05"])))
         ax.axvline(0, color="0.6", lw=0.8)
         ax.set_yticks([0, -1, -2, -3])
         ax.set_yticklabels(list(names.values()), fontsize=8.5)
@@ -377,14 +392,43 @@ def fig_across_models():
         ax.set_title(f"Rough-pilot smile {srf['test_row']}: χ² {srf['rough_least_squares']['chi2']:.1f} (rough), "
                      f"{srf['heston_least_squares']['chi2']:.1f} (Heston)", fontsize=10)
         tidy(ax)
-    axes[0].plot([], [], color=COLORS[0], lw=6, alpha=0.6, label="rough Bergomi posterior, 5% to 95%")
-    axes[0].plot([], [], color=COLORS[4], lw=6, alpha=0.6, label="Heston posterior, 5% to 95%")
+    axes[0].plot([], [], color=COLORS[0], lw=6, alpha=0.6, label="rough Bergomi pilot-network posterior, 5% to 95%")
+    axes[0].plot([], [], color=COLORS[4], lw=6, alpha=0.6, label="Heston network posterior (reweighted), 5% to 95%")
     axes[0].plot([], [], "o", color="0.4", label="least-squares point")
     fig.legend(frameon=False, fontsize=8.5, loc="lower center", ncol=3)
     fig.tight_layout(rect=(0, 0.07, 1, 1))
     fig.savefig(sf.__file__.split("/src/")[0] + "/docs/course/images/l08-across-models.png", dpi=160)
     plt.close(fig)
     REPORT["across"] = out
+
+
+def leverage_bias():
+    """Daily monitoring under rough Bergomi: E[sum r_i^2] exceeds the integral of xi0 by a leverage term.
+
+    First order in eta, per day of length D, flat curve xi:
+    -rho eta sqrt(2H) sqrt(xi) D^(H+1/2) / ((H+1/2)(H+3/2)) + xi D / 4, relative to xi D.
+    The Monte Carlo check simulates 63 days with 16 steps per day and averages the exact conditional
+    expectation of the daily squared log return given the variance path.
+    """
+    from sbi4finance.rough_bergomi import simulate_rough
+    D, xi, days, per_day, n = 1 / 252, 0.04, 63, 16, 8192
+    out = {}
+    for label, (H, eta, rho) in {"prior centre": (0.185, 2.0, -0.595),
+                                 "pilot smile 293, best fit": (0.0684, 1.3235, -0.6632),
+                                 "steep skew": (0.07, 1.9, -0.9)}.items():
+        first = (-rho * eta * np.sqrt(2 * H) * np.sqrt(xi) * D ** (H + 0.5) / ((H + 0.5) * (H + 1.5))
+                 + 0.25 * xi * D)
+        z = np.random.default_rng(0).standard_normal((n, days * per_day, 3))
+        sim = simulate_rough({"hurst": H, "eta": eta, "rho": rho}, {"times": [0.0, 1.0], "values": [xi, xi]},
+                             D / per_day, z)
+        left = sim["variance"][:, :-1]
+        dw = np.sqrt(left * D / per_day) * z[..., 0]
+        A = (left * D / per_day).reshape(n, days, per_day).sum(-1)
+        X = dw.reshape(n, days, per_day).sum(-1)
+        est = (0.25 * A**2 - rho * X * A).sum(1) / (xi * D * days)
+        out[label] = dict(parameters=[H, eta, rho], first_order_pct=float(first * 100),
+                          monte_carlo_pct=float(est.mean() * 100), monte_carlo_se_pct=float(est.std() / np.sqrt(n) * 100))
+    REPORT["variance_swap_daily_monitoring"] = out
 
 
 def main():
@@ -397,6 +441,7 @@ def main():
     fig_profile()
     fig_cached_products()
     fig_across_models()
+    leverage_bias()
     REPORT["seconds"] = time.time() - t0
     print(json.dumps(REPORT, indent=1, default=float))
 

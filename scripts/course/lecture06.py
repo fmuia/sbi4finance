@@ -65,6 +65,31 @@ def lewis(k, T, p, phi=cf, nodes=4096, U=3000.0):
     return 1 - np.exp(-x / 2) / np.pi * (integrand @ w)
 
 
+def decay_cutoff(p, T, digits=30.0):
+    """Cutoff where the exponential tail exp(-c u) of the Lewis integrand has fallen by e^-digits."""
+    rate = (p["v0"] + p["kappa"] * p["theta"] * T) * np.sqrt(1 - p["rho"] ** 2) / p["xi"]
+    return digits / rate
+
+
+def lewis_composite(k, T, p, U=None, width=1.5, order=64):
+    """Reference Lewis price: composite Gauss-Legendre, panels of width <= `width`, 64 nodes each.
+
+    Single Gauss-Legendre rules with many nodes are off by 1e-11 to 1e-10 of the forward here (the report
+    keys inversions_reference_check); panels of moderate order converge to about 1e-15.
+    """
+    U = decay_cutoff(p, T) if U is None else U
+    panels = int(np.ceil(U / width))
+    r, w = roots_legendre(order)
+    edges = np.linspace(0.0, U, panels + 1)
+    a, b = edges[:-1, None], edges[1:, None]
+    u = (0.5 * (b - a) * (r[None, :] + 1) + a).ravel()
+    wt = (0.5 * (b - a) * w[None, :]).ravel()
+    x = -np.atleast_1d(np.asarray(k, dtype=float))
+    f = cf(u - 0.5j, T, p)
+    integrand = np.real(np.exp(1j * np.outer(x, u)) * f) / (u**2 + 0.25)
+    return 1 - np.exp(-x / 2) / np.pi * (integrand @ wt)
+
+
 def gil_pelaez(k, T, p):
     def prob(shift):
         f = lambda u: (np.exp(-1j * u * k) * cf(u + shift, T, p) / (1j * u)).real
@@ -335,21 +360,29 @@ def fig_inversions():
     T = 21 / 252
     ks = np.linspace(-0.25, 0.2, 10)
     t0 = time.process_time()
-    ref = lewis(ks, T, p, nodes=16384, U=8000.0)
+    # Reference: composite Gauss-Legendre Lewis integral to the exponential cutoff (converged to about 1e-15)
+    ref = lewis_composite(ks, T, p)
+    REPORT["inversions_reference_check"] = dict(
+        reference_cutoff=float(decay_cutoff(p, T)),
+        cos_1024_vs_reference=float(np.max(np.abs(np.array([cos_put(k, T, p, N=1024) for k in ks]) + 1 - np.exp(ks) - ref))),
+        old_reference_16384_8000_vs_reference=float(np.max(np.abs(lewis(ks, T, p, nodes=16384, U=8000.0) - ref))),
+        lewis_32768_400_vs_reference=float(np.max(np.abs(lewis(ks, T, p, nodes=32768, U=400.0) - ref))),
+        composite_halved_width_change=float(np.max(np.abs(lewis_composite(ks, T, p, width=0.75) - ref))))
     methods = {}
     t0 = time.process_time(); lw = lewis(ks, T, p); methods["Lewis (Gauss–Legendre, 4096 nodes)"] = (lw, time.process_time() - t0)
     t0 = time.process_time(); gp = np.array([gil_pelaez(k, T, p) for k in ks]); methods["Heston 1993 (two integrals)"] = (gp, time.process_time() - t0)
     t0 = time.process_time(); cm = np.array([carr_madan(k, T, p) for k in ks]); methods[r"Carr–Madan, $\alpha$ = 0.75"] = (cm, time.process_time() - t0)
     t0 = time.process_time(); co = np.array([cos_put(k, T, p) for k in ks]) + 1 - np.exp(ks); methods["COS, 256 terms"] = (co, time.process_time() - t0)
-    fig, axes = plt.subplots(1, 2, figsize=(11, 4.3))
+    fig, axes = plt.subplots(1, 2, figsize=(11, 5.3))
     ivref = sf.implied_vol(ref, ks, T, "call")
-    axes[0].plot(ks, ivref * 100, color="0.2", lw=2, label="reference (Lewis, 16384 nodes)")
+    axes[0].plot(ks, ivref * 100, color="0.2", lw=2, label="reference (Lewis, composite quadrature)")
     marks = ["o", "x", "s", "^"]
     out = {}
     for color, m, (name, (pr, sec)) in zip(COLORS, marks, methods.items()):
         axes[0].plot(ks, sf.implied_vol(pr, ks, T, "call") * 100, m, color=color, ms=5, mfc="none", label=name)
         axes[1].semilogy(ks, np.maximum(np.abs(pr - ref), 1e-17), m + "-", color=color, ms=4, label=name)
-        out[name] = dict(max_abs_error=float(np.max(np.abs(pr - ref))), cpu_s_10_prices=float(sec))
+        out[name] = dict(max_abs_error=float(np.max(np.abs(pr - ref))), min_abs_error=float(np.min(np.abs(pr - ref))),
+                         cpu_s_10_prices=float(sec))
     axes[0].set_xlabel(r"log-moneyness $k$")
     axes[0].set_ylabel("implied volatility, %")
     axes[0].set_title("Four inversions of one characteristic function, $T$ = 1 month")
@@ -357,15 +390,29 @@ def fig_inversions():
     sig = np.array(sf.quote_noise(contracts_for(ks, T)))
     axes[1].semilogy(ks, sig, color=GREY, ls=":", label=r"quote noise $\sigma_c$ at that strike")
     axes[1].set_xlabel(r"log-moneyness $k$")
-    axes[1].set_ylabel("absolute price error, fraction of the forward")
+    axes[1].set_ylabel("|difference from the reference|, fraction of forward")
     axes[1].set_title("All agree far below the quote noise")
-    axes[1].legend(frameon=False, fontsize=8)
+    axes[1].legend(frameon=False, fontsize=8, ncol=2, loc="upper center", bbox_to_anchor=(0.5, -0.16))
     tidy(*axes)
     save(fig, "l06-four-inversions.png")
     REPORT["inversions"] = out
     REPORT["inversions_min_quote_noise"] = float(sig.min())
     REPORT["inversions_min_quote_noise_at_k"] = float(ks[np.argmin(sig)])
     REPORT["design_grid_k_range_1m"] = float(grid_k(21).max())
+
+
+DECAY = {}
+REF_CHECK = {}
+
+
+def decay_rate(p, T):
+    """Predicted and fitted exponential decay rate of |phi_T(u - i/2)| beyond the crossover frequency."""
+    rate = (p["v0"] + p["kappa"] * p["theta"] * T) * np.sqrt(1 - p["rho"] ** 2) / p["xi"]
+    cross = 1.0 / (p["xi"] * np.sqrt(1 - p["rho"] ** 2) * T)
+    u = np.linspace(5 * cross, 5 * cross + 200.0 / rate, 400)     # well past the crossover, before underflow
+    fitted = -np.polyfit(u, np.log(np.abs(cf(u - 0.5j, T, p))), 1)[0]
+    return dict(predicted_rate=float(rate), fitted_rate=float(fitted), crossover_u=float(cross),
+                fit_range=[float(u[0]), float(u[-1])], reference_cutoff=float(45.0 / rate))
 
 
 def fig_ladder():
@@ -381,7 +428,9 @@ def fig_ladder():
         T = day / 252
         ks = grid_k(day)
         sig = np.array(sf.quote_noise(contracts_for(ks, np.full(9, T))))
-        ref = lewis(ks, T, p, nodes=32768, U=12000.0)
+        rate = (p["v0"] + p["kappa"] * p["theta"] * T) * np.sqrt(1 - p["rho"] ** 2) / p["xi"]
+        ref = lewis_composite(ks, T, p)
+        REF_CHECK[name] = float(np.max(np.abs(lewis_composite(ks, T, p, width=0.75) - ref) / sig))
         otm_ref = np.where(ks <= 0, ref - 1 + np.exp(ks), ref)
         errs, viol = [], []
         for n, U in ladder:
@@ -390,9 +439,11 @@ def fig_ladder():
             errs.append(float(np.max(np.abs(otm_c - otm_ref) / sig)))
             viol.append(int(np.sum(otm_c < 0)))
         axes[0].semilogy(range(1, 6), np.maximum(errs, 1e-16), "o-", color=color, ms=4, label=name)
-        u = np.linspace(0.1, 6000, 3000)
+        u = np.geomspace(0.1, 6000, 3000)
         env = np.abs(cf(u - 0.5j, T, p)) / (u**2 + 0.25)
         axes[1].loglog(u, env, color=color, label=name)
+        axes[1].loglog(u, np.exp(-rate * u) / (u**2 + 0.25), ":", color=color, lw=1.2)
+        DECAY[name] = decay_rate(p, T)
         out[name] = dict(max_error_over_sigma=errs, negative_otm_prices=viol,
                          rung_agreement=[float(abs(a - b)) for a, b in zip(errs[:-1], errs[1:])])
     axes[0].axhline(0.1, color=GREY, ls=":", lw=1)
@@ -402,14 +453,16 @@ def fig_ladder():
     axes[0].set_xlabel("rung: Gauss–Legendre nodes / cutoff $U$")
     axes[0].set_ylabel(r"largest error over the 9 strikes / $\sigma_c$")
     axes[0].set_title("Price error along the quadrature ladder")
-    axes[0].legend(frameon=False, fontsize=7.5, loc="upper right")
+    axes[0].legend(frameon=False, fontsize=7.5, loc="center left", bbox_to_anchor=(0.0, 0.45))
     axes[1].set_xlabel("frequency $u$")
     axes[1].set_ylabel(r"$|\varphi_T(u - i/2)|/(u^2 + 1/4)$")
     axes[1].set_ylim(1e-14, 10)
-    axes[1].set_title("A short, low-variance contract decays slowly in $u$")
+    axes[1].set_title(r"Exponential tail $e^{-cu}$ (dotted), $c = (v_0 + \kappa\theta T)\sqrt{1-\rho^2}/\sigma_v$", fontsize=10)
     tidy(*axes)
     save(fig, "l06-quadrature-ladder.png")
     REPORT["ladder"] = out
+    REPORT["ladder_decay"] = DECAY
+    REPORT["ladder_reference_halved_width_change_over_sigma"] = REF_CHECK
     hard = dict(v0=0.01, theta=0.01, kappa=2.0, xi=1.5, rho=-0.95)
     T = 5 / 252
     con = contracts_for(grid_k(5), np.full(9, T))
