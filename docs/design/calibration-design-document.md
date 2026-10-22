@@ -856,10 +856,16 @@ For rough Bergomi, full bank: figure ⟨S7-1⟩ above, the variance-explained ta
 
 | Product | Rough Bergomi: point, 90% range, reserve | Heston: point, 90% range, reserve | Gap between points |
 | --- | --- | --- | --- |
-| Variance swap 63 d | ⟨S7⟩, zero, zero | ⟨S7⟩ | ⟨S7⟩ |
-| Volatility swap 63 d | ⟨S7⟩ | ⟨S7⟩ | ⟨S7⟩ |
-| Forward-start 63 → 126 d | ⟨S7⟩ | ⟨S7⟩ | ⟨S7⟩ |
-| 2-year 90% put | ⟨S7⟩ | ⟨S7⟩ | ⟨S7⟩ |
+| Variance swap 63 d | 0.0364, zero, zero | 0.0344, 0.0340 to 0.0350, 1.2% | -5.5% |
+| Volatility swap 63 d | 0.1882, 0.1877 to 0.1895, 0.7% | 0.1815, 0.1803 to 0.1832, 0.8% | -3.5% |
+| Forward-start 63 → 126 d | 0.0347, 0.0345 to 0.0353, 1.6% | 0.0374, 0.0368 to 0.0382, 1.6% | +7.9% |
+| 2-year 90% put | 0.0625, 0.0622 to 0.0638, 1.9% | 0.0669, 0.0651 to 0.0683, 1.9% | +6.9% |
+
+The table is the pilot's first smile (test row 290; prices in forward units; reserve as a share of the point price); the full bank and the real smile replace it. Heston's posterior for a rough-Bergomi smile is the Heston network's draws corrected by importance sampling with the Fourier likelihood. On this smile and on the third, Heston fits nearly as well as rough Bergomi (χ² 67.7 and 73.1 against 59.3 and 59.7, on 63 quotes), and still prices the forward-start 8.0% above and 4.1% below it at the least-squares points. On this one the two models' 90% ranges are disjoint for every product. That includes the variance swap: Heston's forward-variance curve is implied by its parameters, while rough Bergomi takes the market's. On the second smile Heston cannot fit at all (χ² 1,347): its audit's efficiency is zero and its posterior collapses to a point, the signal that the model, not its parameters, is wrong. The gap between the models, 4% to 8% of the forward-start's price, is larger than either model's own reserve, and it is what slot 6 takes up.
+
+![The same three rough-Bergomi smiles under rough Bergomi and Heston: product prices under each model's posterior, with the least-squares prices.](images/calibration-16-rough-pilot-across-models.png)
+
+*Figure S7-2 (pilot): the same smiles under two models.* How to read the figure: each row is one smile and each panel one product; blue is the rough-Bergomi posterior, green the Heston posterior, and the lines the two least-squares prices; on the second row Heston's posterior is a single point because Heston cannot fit that smile.
 
 ### 8. The real smile (S8)
 
