@@ -41,20 +41,33 @@ def c1():
 
 
 def identification(prefix):
+    """S2's contraction, and the within-smile correlation of eta and rho: a ridge shows as a correlation near 1."""
     v = load(f"{prefix}/s2/validation.json")
     if v is None:
         return None
     c = v["contraction"]
-    return (f"contraction: ρη {c['rho_eta']:.2f}, H {c['hurst']:.2f}, η {c['eta']:.2f}, ρ {c['rho']:.2f}",
-            c["rho_eta"] > max(c["eta"], c["rho"]))
+    corr = (v.get("posterior_correlation_logit") or {}).get("eta|rho")
+    value = f"contraction: ρη {c['rho_eta']:.2f}, η {c['eta']:.2f}, ρ {c['rho']:.2f}, H {c['hurst']:.2f}"
+    if corr:
+        value += (f"; within-smile correlation of η and ρ (logit coordinates) median {corr['median']:.2f}, "
+                  f"10% to 90%: {corr['q10']:.2f} to {corr['q90']:.2f}")
+    best = c["rho_eta"] > max(c["eta"], c["rho"])
+    ridge = corr is not None and corr["median"] > 0.8
+    return value, best, ridge
 
 
 def c2():
-    for prefix, label in (("rough", "verified"), ("rough-pilot", "pilot")):
+    for prefix, label in (("rough", "full"), ("rough-pilot", "pilot")):
         found = identification(prefix)
         if found:
-            value, ok = found
-            return value, (label if ok else "not met")
+            value, best, ridge = found
+            if best and ridge:
+                status = "verified"
+            elif best:
+                status = "partly: ρη is identified best, but η and ρ are identified individually too (no long ridge)"
+            else:
+                status = "not met"
+            return value, (status if label == "full" else f"pilot, {status}")
     return "—", "pending: rough bank"
 
 
@@ -140,19 +153,19 @@ def c7():
             continue
         passed = v["sbc"]["passed"]
         cover = v["coverage"]["0.95"]["coverage"]
+        failed = [SYMBOLS.get(n, "ρη" if n == "rho_eta" else n) for n, ok in zip(v["targets"], passed) if not ok]
         parts.append(f"{label}: SBC {sum(passed)}/{len(passed)} targets inside the band on {v['surfaces']:,} smiles; "
                      f"95% coverage {min(cover) * 100:.1f}–{max(cover) * 100:.1f}%")
-        statuses.append(all(passed))
+        statuses.append(f"{label} " + ("verified" if all(passed) else f"not met ({', '.join(failed)} outside the band)"))
     audit = load("rough-pilot/s5/audit.json") or load("rough/s5/audit.json")
     if audit:
         parts.append(f"audit flags {pct(audit['summary']['flag_rate_khat_above_0_7'])} of {audit['summary']['surfaces']} "
                      "rough smiles at k̂ > 0.7")
     if not parts:
         return "—", "pending"
-    status = "verified" if statuses and all(statuses) else "not met"
     if load("rough/s2/validation.json") is None:
-        status += " (Heston); rough: pilot only"
-    return "; ".join(parts), status
+        statuses.append("full rough bank pending")
+    return "; ".join(parts), "; ".join(statuses)
 
 
 def c8():

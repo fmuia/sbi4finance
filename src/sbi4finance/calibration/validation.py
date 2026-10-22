@@ -79,6 +79,27 @@ def contraction(draws, prior_bounds, prior_variance=None):
     return (1 - posterior_variance / prior).tolist()
 
 
+def posterior_correlations(draws, prior_bounds):
+    """Within-surface correlation of every pair of targets, in the logit coordinates of the prior box.
+
+    A ridge in the posterior shows as a correlation near +1 or -1 on most surfaces.
+    Returns {(a, b): {"median", "q10", "q90"}} over surfaces.
+    """
+    draws = np.asarray(draws, dtype=float)
+    bounds = np.asarray(prior_bounds, dtype=float)
+    unit = np.clip((draws - bounds[:, 0]) / (bounds[:, 1] - bounds[:, 0]), 1e-12, 1 - 1e-12)
+    z = logit(unit)
+    z = z - z.mean(axis=1, keepdims=True)
+    sd = z.std(axis=1)
+    out = {}
+    for a in range(z.shape[-1]):
+        for b in range(a + 1, z.shape[-1]):
+            values = np.mean(z[..., a] * z[..., b], axis=1) / (sd[:, a] * sd[:, b])
+            out[(a, b)] = {"median": float(np.median(values)), "q10": float(np.quantile(values, 0.1)),
+                           "q90": float(np.quantile(values, 0.9))}
+    return out
+
+
 def product_prior_variance(bounds_a, bounds_b, product_bounds, draws=1_000_000, seed=0):
     """Prior variance of a * b, for independent uniforms a and b, in the logit coordinates of product_bounds."""
     rng = np.random.default_rng(seed)

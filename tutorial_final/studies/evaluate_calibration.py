@@ -84,6 +84,8 @@ def main():
     cover = validation.coverage(draws, truth)
     shrink = validation.contraction(draws, bounds, prior_variance)
     recovered = validation.recovery(draws, truth)
+    model_targets = list(task["parameter_names"])
+    correlation = validation.posterior_correlations(draws[..., : len(model_targets)], bounds[: len(model_targets)])
     report = {
         "study": "S2", "task_id": task["task_id"], "task_fingerprint": manifest["task_fingerprint"],
         "bank_manifest_sha256": sha256(args.bank / "manifest.json"),
@@ -92,6 +94,7 @@ def main():
         "targets": names, "sbc": {k: v for k, v in result.items() if k != "fractional_ranks"},
         "coverage": cover, "contraction": dict(zip(names, shrink)),
         "recovery_correlation": dict(zip(names, recovered["correlation"])),
+        "posterior_correlation_logit": {f"{model_targets[a]}|{model_targets[b]}": v for (a, b), v in correlation.items()},
         "seconds_per_surface": {"batched": batch_seconds, "single": single_seconds},
         "contraction_prior_variance_logit": dict(zip(names, [np.pi**2 / 3 if v is None else v
                                                              for v in (prior_variance or [None] * len(names))])),

@@ -277,6 +277,15 @@ class InferenceAndCorrectionTests(unittest.TestCase):
         self.assertLess(correction.pareto_khat(rng.normal(0, 0.3, 4000)), 0.5)
         self.assertGreater(correction.pareto_khat(np.log(rng.pareto(0.8, 4000) + 1)), 0.7)
 
+    def test_posterior_correlation_is_measured_in_logit_coordinates(self):
+        from sbi4finance.calibration import validation
+        rng = np.random.default_rng(6)
+        x = rng.standard_normal((3, 5000))
+        y = 0.8 * x + 0.6 * rng.standard_normal((3, 5000))
+        unit = 1 / (1 + np.exp(-np.stack([x, y], axis=-1)))
+        found = validation.posterior_correlations(2 + 3 * unit, [[2.0, 5.0], [2.0, 5.0]])[(0, 1)]
+        assert_allclose(found["median"], 0.8, atol=0.02)
+
     def test_contraction_of_rho_eta_uses_its_own_prior_variance(self):
         from sbi4finance.calibration import validation
         rng = np.random.default_rng(5)
