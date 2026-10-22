@@ -55,6 +55,31 @@ def audit_job(job):
             "network_vs_audited": agree, "cpu_seconds": time.process_time() - started}
 
 
+def figure(report, path):
+    """Figure S5-1: each surface's audit efficiency against the network's largest standardized error."""
+    from sbi4finance.calibration.plots import BASELINE, INK, SERIES, plt, style
+
+    style()
+    surfaces = report["surfaces"]
+    error = np.array([max(v for v in s["network_vs_audited"]["standardized_mean_error"] if v is not None)
+                      for s in surfaces])
+    efficiency = np.array([s["efficiency"] for s in surfaces])
+    flagged = np.array([s["khat"] is None or s["khat"] > 0.7 for s in surfaces])
+    fig, ax = plt.subplots(figsize=(6.4, 4.2), constrained_layout=True)
+    grid = np.linspace(0, max(4.0, float(np.quantile(error, 0.95))), 200)
+    ax.plot(grid, np.exp(-grid**2), color=BASELINE, linestyle="--", label="e^(−δ²)")
+    ax.scatter(error[~flagged], efficiency[~flagged], s=22, color=SERIES[0], label="k̂ ≤ 0.7")
+    ax.scatter(error[flagged], efficiency[flagged], s=22, color=SERIES[1], label="k̂ > 0.7, flagged")
+    ax.set_yscale("log")
+    ax.set_xlim(0, grid[-1])
+    ax.set_ylim(max(1e-4, float(efficiency.min()) / 3), 1.2)
+    ax.set_xlabel("network's largest standardized error against the audited posterior, δ")
+    ax.set_ylabel("audit efficiency")
+    ax.legend(fontsize=8)
+    ax.set_title(f"The audit on {len(surfaces)} held-out surfaces", loc="left", color=INK, fontsize=10)
+    fig.savefig(path, dpi=160)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--bank", type=Path, required=True)
@@ -105,6 +130,7 @@ def main():
     report = {"study": "S5", "task_fingerprint": manifest["task_fingerprint"], "summary": summary,
               "surfaces": [{"test_row": int(r), **res} for r, res in zip(rows, results)]}
     (args.out / "audit.json").write_text(json.dumps(jsonable(report), indent=2, allow_nan=False) + "\n")
+    figure(json.loads((args.out / "audit.json").read_text()), args.out / "audit.png")
     partial.unlink(missing_ok=True)
     print(json.dumps(jsonable(summary), indent=1))
 
