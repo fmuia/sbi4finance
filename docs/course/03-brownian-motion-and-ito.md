@@ -49,7 +49,7 @@ The proof is two lines. Each $(\Delta W_i)^2$ has mean $\Delta t$ and variance $
 
 ![Left: the quadratic variation of Brownian paths on [0, 1] against the number of steps, with its 5–95% range over 400 paths. Right: the total variation against the number of steps, with the theoretical growth.](images/l03-quadratic-variation.png)
 
-*Figure 3.2.* How to read the figure: in the left panel, the sum of squared increments is centred on 1 for every number of steps, and its spread shrinks like $\sqrt{2/n}$: with 10 steps it ranges from about 0.4 to 1.9, with 100,000 steps it is 1 to the third decimal. In the right panel, the length of the path grows without bound, exactly as $\sqrt{2n/\pi}$.
+*Figure 3.2.* How to read the figure: in the left panel, the sum of squared increments is centred on 1 for every number of steps, and its spread shrinks like $\sqrt{2/n}$: with 10 steps it ranges from about 0.4 to 1.9, with 100,000 steps 90% of the paths give a value between 0.993 and 1.007. In the right panel, the length of the path grows without bound, exactly as $\sqrt{2n/\pi}$.
 
 The quadratic-variation result is summarized by the **rules of Itô calculus**, which say how small increments combine:
 
@@ -81,7 +81,7 @@ $$
 \sum_{i=1}^{n} W_{t_{i-1}}\,\Delta W_i = \tfrac12 W_T^2 - \tfrac12 \sum_{i=1}^{n} (\Delta W_i)^2 \;\longrightarrow\; \tfrac12 W_T^2 - \tfrac12 T .
 $$
 
-Ordinary calculus would give $\int_0^T W\,dW = \tfrac12 W_T^2$. The extra $-\tfrac12 T$ is the quadratic variation. If the integrand is instead evaluated at the midpoint of each interval (the **Stratonovich** integral), the sum is $\tfrac12 W_T^2$ exactly, at every $n$, and ordinary calculus holds; but the holding then depends on the future move.
+Ordinary calculus would give $\int_0^T W\,dW = \tfrac12 W_T^2$. The extra $-\tfrac12 T$ is the quadratic variation. If the integrand is instead the average of its values at the two ends of each interval, $\tfrac12(W_{t_{i-1}} + W_{t_i})$, the same identity gives a sum of exactly $\tfrac12 W_T^2$ at every $n$, and ordinary calculus holds. This trapezoid rule, like evaluation at the midpoint in time, converges to the **Stratonovich** integral. In both, the holding over an interval depends on the move during that interval.
 
 ![Left: for one path, the left-point and trapezoid sums of W dW against the number of steps, with their limits. Right: the distribution of the two integrals over 20,000 paths.](images/l03-ito-integral.png)
 
@@ -194,7 +194,7 @@ Itô's lemma for a function $f(t, X_t, Y_t)$ of two processes gains a cross term
 
 ![Left: simulated increments of two Brownian motions with correlation 0 and −0.7. Right: for VOO, the change in volatility over the following month, grouped by the size of today's return measured in units of recent volatility.](images/l03-correlation.png)
 
-*Figure 3.7.* How to read the figure: the left panel shows the construction above for 2,000 increments; with $\rho = -0.7$ the cloud tilts downward and the sample correlation is −0.69. The right panel looks for the same structure in VOO. Each day's return is divided by the volatility of the previous 21 days, the days are sorted into ten groups by this standardized return, and each bar is the average log change between the volatility of the next 21 days and that of the previous 21. Large moves in either direction are followed by higher volatility, which is the clustering of Lecture 1. The response is asymmetric: after the worst tenth of days (an average of −2.1 standard deviations) volatility rises by 23%, while after the best tenth (+1.8 standard deviations) it rises by 8%. The correlation between the standardized return and the change in volatility is −0.14.
+*Figure 3.7.* How to read the figure: the left panel shows the construction above for 2,000 increments; with $\rho = -0.7$ the cloud tilts downward and the sample correlation is −0.69. The right panel looks for the same structure in VOO. Each day's return is divided by the volatility of the previous 21 days, the days are sorted into ten groups by this standardized return, and each bar is the average log change between the volatility of the next 21 days and that of the previous 21. Large moves in either direction are followed by higher volatility, which is the clustering of Lecture 1. The response is asymmetric: after the worst tenth of days (an average of −2.1 standard deviations) the log of the ratio averages +0.23, a rise of about 25%; after the best tenth (+1.8 standard deviations) it averages +0.08, a rise of about 8%. The correlation between the standardized return and the change in volatility is −0.14.
 
 **Interpretation.** Falls in equity prices are followed by rises in volatility. This is called the **leverage effect**. A stochastic-volatility model captures it with a negative correlation $\rho$ between the shocks to the price and the shocks to the variance. Lecture 5 shows that this negative correlation is what produces the skew of option prices.
 
@@ -244,7 +244,7 @@ The estimator depends on the path only through its endpoints, so sampling more o
 
 For VOO, 6.65 years of data give a drift standard error of $0.203/\sqrt{6.65} = 7.9\%$ a year, against an estimated mean log return of 14.5%. This is Merton's (1980) observation: expected returns are hard to estimate even with long histories.
 
-**Why this matters for the course.** Lecture 4 shows that option prices do not depend on $\mu$ at all, only on $\sigma$. The quantity options depend on is the one a path measures well, and the one they do not depend on is the one a path barely measures. In the tutorial's first example (the proposal's Figure 1), a Bayesian posterior shows the same thing: one year of returns pins down the current variance and leaves the drift almost as uncertain as the prior.
+**Why this matters for the course.** Lecture 4 shows that option prices do not depend on $\mu$ at all, only on $\sigma$. The quantity options depend on is the one a path measures well, and the one they do not depend on is the one a path barely measures. Lecture 10 shows the same asymmetry in a Bayesian posterior: with one year of daily returns from a GBM, the posterior standard deviation of $\sigma$ is close to the 0.9 volatility points above, and that of $\mu$ close to 20 percentage points.
 
 ## 3.10 Summary
 

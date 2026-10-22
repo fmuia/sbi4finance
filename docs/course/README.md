@@ -42,7 +42,7 @@ The lectures follow one line of argument in four parts. Each part needs the one 
 
 ## Conventions
 
-- **Units.** Time is in years, with 252 trading days per year. Volatility is annualized and written as a fraction (0.20) or a percentage (20%). "One volatility point" is 0.01.
+- **Units.** Time is in years. Real maturities are counted in business days (weekdays; exchange holidays are not removed) and divided by 252, which is the repository's convention: the "one-year" design maturity of 252 business days from 21 October 2026 ends on 8 October 2027, 352 calendar days later. Lecture 2, Section 2.3 shows the one place where this choice visibly changes a number. Volatility is annualized and written as a fraction (0.20) or a percentage (20%). "One volatility point" is 0.01.
 - **Forward units.** From Lecture 2 on, option prices are divided by the discount factor and by the forward, so that the forward is 1 and a price is a fraction of it. Lecture 2 explains why this removes interest rates and dividends from every formula.
 - **Notation.** The symbols follow the design document. Each lecture defines a symbol when it first appears, and the [design document's symbols table](../design/calibration-design-document.md#symbols) collects them.
 - **Data.** Real data come from two files in the repository: the daily returns of VOO, an S&P 500 index fund, from 3 January 2020 to 4 September 2026 (`data/SPMO_VOO_2020-01-01_2026-09-04.csv`), and the SPY option surface of 21 October 2026 on the tutorial's design grid (`tutorial_final/results/calibration/spy/surface.json`, study S8 of the design document).

@@ -182,16 +182,24 @@ def fig_replication():
     g = -2 * np.log(X)
 
     def strip(dx):
-        strikes = np.arange(dx, 3.0 + 1e-9, dx)
-        weights = 2 / strikes**2 * dx  # g''(K) dK
-        rep = -2 * (X - 1)  # g(1) + g'(1)(X - 1), with g(1) = 0 and g'(1) = -2
-        for K, wgt in zip(strikes, weights):
-            if K < 1 - 1e-12:
-                rep = rep + wgt * np.maximum(K - X, 0)
-            elif K > 1 + 1e-12:
-                rep = rep + wgt * np.maximum(X - K, 0)
+        """Forward + options with weights equal to the change in slope of g between neighbouring strikes.
+
+        This is the discrete version of g''(K) dK; the strip reproduces g exactly at every strike
+        and is linear between strikes.
+        """
+        G = lambda x: -2 * np.log(x)
+        strikes = np.arange(2 * dx, 3.0 + 1e-9, dx)
+        slope = lambda a, b: (G(b) - G(a)) / (b - a)
+        right = slope(1.0, 1.0 + dx)                    # the forward part uses the chord slope to the right of 1
+        rep = G(1.0) + right * (X - 1)
+        for K in strikes:
+            jump = slope(K, K + dx) - slope(K - dx, K)
+            if abs(K - 1) < 1e-12:
+                rep = rep + jump * np.maximum(K - X, 0)   # put at the money corrects the slope to the left of 1
+            elif K < 1:
+                rep = rep + jump * np.maximum(K - X, 0)
             else:
-                rep = rep + 0.5 * wgt * (np.maximum(K - X, 0) + np.maximum(X - K, 0))
+                rep = rep + jump * np.maximum(X - K, 0)
         return rep
 
     fig, axes = plt.subplots(1, 3, figsize=(15, 4.2))
@@ -208,11 +216,13 @@ def fig_replication():
     for color, dx in zip(COLORS, (0.2, 0.1, 0.05)):
         err = strip(dx) - g
         ax.plot(X, err, color=color, label=f"strike spacing {dx}")
+        Ks = np.arange(0.6, 1.6001, dx)
+        ax.plot(Ks, np.interp(Ks, X, err), "o", color=color, ms=3)
         errors[dx] = float(np.max(np.abs(err)[(X > 0.7) & (X < 1.4)]))
     ax.axhline(0, color="0.85")
     ax.set_xlabel(r"$X_T$")
     ax.set_ylabel("replication error")
-    ax.set_title("The error falls with the square of the spacing")
+    ax.set_title("Zero at the strikes, and falling with the square of the spacing")
     ax.legend(frameon=False, fontsize=8.5)
     ax = axes[2]
     K = np.linspace(0.3, 2.5, 400)

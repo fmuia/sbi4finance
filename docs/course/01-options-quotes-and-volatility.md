@@ -8,7 +8,7 @@
 
 ## 1.1 The underlying asset and its returns
 
-An option is written on an **underlying asset**, a traded asset whose price at time $t$ is written $S_t$. In this course the underlying is the S&P 500 index of large US companies, held through an exchange-traded fund. The tutorial's options are written on SPY, the oldest S&P 500 fund. The return data in this lecture come from VOO, another S&P 500 fund whose daily returns are in the repository.
+An option is written on an **underlying asset**, a traded asset whose price at time $t$ is written $S_t$. In this course the underlying is the S&P 500 index of large US companies, held through an exchange-traded fund. The tutorial's options are written on SPY, the oldest S&P 500 exchange-traded fund. The return data in this lecture come from VOO, another S&P 500 fund whose daily returns are in the repository.
 
 A price series is studied through its returns. Over a step $\Delta t$, the **simple return** and the **log return** are
 
@@ -41,13 +41,13 @@ $$
 Two conventions in this definition need a reason.
 
 1. **The factor 252 annualizes.** If daily returns are independent with variance $s^2$, the variance of a sum of $n$ of them is $n s^2$. A year has 252 trading days, so the annual variance is $252\,s^2$ and the annual volatility is $\sqrt{252}\,s$. Volatility grows with the square root of time, variance linearly. This square-root law is the scaling of Brownian motion in Lecture 3.
-2. **The mean is not subtracted.** The daily mean is about 22 times smaller than the daily standard deviation (Section 1.1), so subtracting it changes $Q$ by less than 0.3%. The variance swap of Section 1.7 uses the same convention.
+2. **The mean is not subtracted.** Over the whole sample, the daily mean is about 22 times smaller than the daily standard deviation (Section 1.1), so subtracting it would change $Q$ by about $(1/22)^2$, less than 0.3%. Over a short window the sample mean is mostly noise, and subtracting it would remove part of the genuine variance: for 21-day windows it would lower the smallest value below by 13%. The variance swap of Section 1.7 uses the same convention, for the same reason.
 
 Over the whole sample, VOO's realized volatility is 20.3%. A single number hides most of the structure.
 
 ![Left: VOO's realized volatility over rolling 21-day windows (red) and over each calendar year (black). Right: histogram of standardized daily log returns against the standard normal density, on a log scale.](images/l01-voo-realized-vol.png)
 
-*Figure 1.2.* How to read the figure: the left panel computes $\sigma_{\text{realized}}$ over the last 21 trading days, one month, at every date. It ranges from 5.4% to 98% (6 April 2020). The yearly values are 34.7% in 2020, 12.9% in 2021, 24.2% in 2022, 13.0% in 2023, 12.6% in 2024, 18.4% in 2025 and 13.4% in 2026 to September. The right panel standardizes each daily return by the sample mean and standard deviation and compares the histogram with the standard normal density. The vertical axis is logarithmic, so the tails are visible.
+*Figure 1.2.* How to read the figure: the left panel computes $\sigma_{\text{realized}}$ over the last 21 trading days, one month, at every date. It ranges from 6.2% to 96% (6 April 2020). The yearly values are 34.7% in 2020, 13.0% in 2021, 24.2% in 2022, 13.1% in 2023, 12.7% in 2024, 18.4% in 2025 and 13.4% in 2026 to September. The right panel standardizes each daily return by the sample mean and standard deviation and compares the histogram with the standard normal density. The vertical axis is logarithmic, so the tails are visible.
 
 The figure shows two facts that every model in Part I must confront.
 
@@ -136,15 +136,15 @@ The second measure expresses the distance from the forward in units of a typical
 
 An options exchange lists, for each underlying, contracts at a grid of maturities and strikes: the **option chain**. For each contract, market makers post a **bid**, the highest price at which someone will buy, and an **ask**, the lowest price at which someone will sell. The **mid** $(\text{bid} + \text{ask})/2$ is the usual estimate of the price, and the **half-spread** $(\text{ask} - \text{bid})/2$ is the natural scale of its uncertainty. Lecture 9 turns this into the noise model of the calibration.
 
-A raw chain contains quotes that carry no information: zero bids, crossed markets where the bid exceeds the ask, and stale quotes. These are removed before use (Lecture 5 lists the cleaning rules). The SPY chain of the 21 October 2026 close, from Cboe's delayed quotes, has 13,114 options in 35 expirations; 32 expirations keep at least 8 quotes after cleaning.
+A raw chain contains quotes that carry no information: zero bids, crossed markets where the bid exceeds the ask, and stale quotes. These are removed before use (Lecture 5 lists the cleaning rules). The SPY chain of the 21 October 2026 close, from Cboe's delayed quotes, has 13,114 options in 35 expirations; 32 expirations keep at least 8 quotes after cleaning (counts from study S8 of the design document; the raw chain is not stored in the repository).
 
 At a given strike and maturity, a call and a put carry the same information, by put–call parity (Lecture 2). The course therefore keeps only **out-of-the-money** options: puts below the forward and calls above. They are the more liquid ones, and their price is all time value, the part that carries information about volatility.
 
-The tutorial reads the chain on a fixed **design grid** of 63 contracts: 7 maturities, $T \in \{5, 10, 21, 42, 63, 126, 252\}$ trading days, times 9 standardized moneyness values, $\delta \in \{-2, -1.5, \dots, 2\}$. Lecture 5 explains how the grid prices are read off the chain.
+The tutorial reads the chain on a fixed **design grid** of 63 contracts: 7 maturities, $T \in \lbrace 5, 10, 21, 42, 63, 126, 252\rbrace$ business days, times 9 standardized moneyness values, $\delta \in \lbrace -2, -1.5, \dots, 2\rbrace$. Lecture 5 explains how the grid prices are read off the chain.
 
 ![Left: strikes of the 63 design contracts in dollars against maturity, with the SPY forward curve. Right: their prices as a fraction of the forward, by maturity, on a log scale.](images/l01-spy-design-grid.png)
 
-*Figure 1.6.* How to read the figure: the left panel places each contract by maturity and strike. Puts are below the forward, calls above it. The strikes fan out with maturity because $\delta$ scales with $\sqrt{T}$: from \$731–\$819 at one week, around a forward of \$773.8, to \$536–\$1,193 at one year, around a forward of \$799.8. The forward rises with maturity, for a reason Lecture 2 explains. The right panel shows the prices as a fraction of the forward. They peak at the money ($\delta = 0$): 0.0069 at one week and 0.067 at one year. They grow with maturity at every $\delta$. They fall fastest on the call side.
+*Figure 1.6.* How to read the figure: the left panel places each contract by maturity and strike. Puts are below the forward, calls above it. The strikes fan out with maturity because $\delta$ scales with $\sqrt{T}$: from 731 to 819 US dollars at one week, around a forward of 773.8, to 536 to 1,193 dollars at one year, around a forward of 799.8. The forward rises with maturity, for a reason Lecture 2 explains. The right panel shows the prices as a fraction of the forward. They peak at the money ($\delta = 0$): 0.0069 at one week and 0.067 at one year. They grow with maturity at every $\delta$. They fall fastest on the call side.
 
 The asymmetry between the two sides is the first appearance of the skew. At one year, the put at $\delta = -2$ costs 0.0086 of the forward, and the call at $\delta = +2$ costs 0.00019, a ratio of 45. A symmetric benchmark makes the comparison fair. Under Black–Scholes with 20% volatility (Lecture 4), the same put would cost 0.67 times the same call, because of a factor $e^{k}$ that Lecture 4 derives. The market prices the downside far above any symmetric model.
 
@@ -158,7 +158,7 @@ An **exotic** product is any payoff that is not a listed vanilla. Its payoff dep
 | --- | --- | --- |
 | Forward-start call, struck at the money at $T_1$, maturing at $T_2$ | $\big(S_{T_2}/S_{T_1} - 1\big)^+$ | The return over $[T_1, T_2]$, as seen at $T_1$ |
 | Cliquet | $\sum_i \big(S_{t_i}/S_{t_{i-1}} - 1\big)^+$, usually with caps and floors | A chain of forward-start periods |
-| Up-and-out barrier call | $(S_T - K)^+\,\mathbf{1}\{\max_{t \le T} S_t < B\}$ | The whole path, through its maximum |
+| Up-and-out barrier call | $(S_T - K)^+\,\mathbf{1}\lbrace\max_{t \le T} S_t < B\rbrace$ | The whole path, through its maximum |
 | Variance swap and volatility swap | $N\,(Q_T - K_{\text{var}})$ and $N\,(\sqrt{Q_T} - K_{\text{vol}})$, with $Q_T$ the realized variance of Section 1.2 over $[0, T]$ | Every daily return up to $T$ |
 
 The strikes $K_{\text{var}}$ and $K_{\text{vol}}$ are set so that the swap costs nothing to enter. Lecture 5 shows that $K_{\text{var}}$ can be read off vanilla prices, and Lecture 8 shows that $K_{\text{vol}}$ cannot.

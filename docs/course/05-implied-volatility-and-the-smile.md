@@ -36,7 +36,7 @@ Near the solution, the error is squared at each step, so a few steps reach machi
 
 ![Left: the price of three one-month contracts against volatility, with a quote and its implied volatility. Right: the error of bisection and of Newton's method against the iteration, for an at-the-money quote and a wing quote.](images/l05-inversion.png)
 
-*Figure 5.1.* How to read the figure: in the left panel, each curve is a price as a function of $\sigma$, increasing, so a horizontal line at the quoted price crosses it once. The one-month put at $\delta = -1$ ($k = -0.058$) quoted at 0.0080 of the forward has an implied volatility of 24.5%. In the right panel, the true volatility is 25%. Newton's method from 60% reaches $10^{-15}$ in 3 steps at the money and in 6 steps for the call at $\delta = 2$. Started from 10%, Newton's first step for the same wing call jumps to 43 (4,300%), and the next ones diverge. Bisection takes about 40 steps for either quote and never fails. Production code combines the two, or uses an algorithm designed for the problem, such as that of Jäckel (2015), which reaches machine precision in two Newton-type steps from a carefully built starting point.
+*Figure 5.1.* How to read the figure: in the left panel, each curve is a price as a function of $\sigma$, increasing, so a horizontal line at the quoted price crosses it once. The one-month put at $\delta = -1$ ($k = -0.058$) quoted at 0.0080 of the forward has an implied volatility of 24.5%. In the right panel, the true volatility is 25%. Newton's method from 60% reaches $10^{-15}$ in 3 steps at the money and in 6 steps for the call at $\delta = 2$. Started from 10%, Newton's first step for the same wing call jumps to 43.5 (4,350%), and the next ones diverge. Bisection takes about 40 steps for either quote and never fails. Production code combines the two, or uses an algorithm designed for the problem, such as that of Jäckel (2015), which reaches machine precision in two Newton-type steps from a carefully built starting point.
 
 ## 5.3 How precisely a quote determines its implied volatility
 
@@ -52,21 +52,21 @@ The vega is largest at the money and small in the wings and at short maturities 
 
 *Figure 5.2.* How to read the figure: the left panel shows the vega on the design grid. At one week it is 0.056 at the money and 0.0078 at $\delta = 2$, seven times smaller; at one year it is 0.40 at the money. The right panel divides a price error of $10^{-4}$ of the forward by the vega. The error is 0.025 volatility points for the one-year at-the-money option and 1.3 points for the one-week option at $\delta = 2$, fifty times more.
 
-**Consequence for calibration.** A noise model stated in price units would treat a wing quote as far more informative about volatility than it is, or a short at-the-money quote as far less. The tutorial therefore states the quote noise in volatility units, $s_{\text{iv}}(\delta)$, rising from 0.3 points at the money to 1 point at $|\delta| = 2$, and translates it into price units with the vega: $\sigma_c = \text{vega}_c(\sigma_{\text{ref}}) \times s_{\text{iv}}(\delta_c)$. Lecture 9 develops this noise model and the likelihood built on it.
+**Consequence for calibration.** A noise model with one price error for every quote would misstate how much each quote says about volatility. With an error of $10^{-4}$ of the forward, it would credit the one-year at-the-money quote with a volatility error of 0.025 points, far below its real uncertainty, and the one-week wing quote with 1.3 points. The real uncertainty of a quote is closer to constant in volatility units: a fraction of a point near the money and about a point in the wings, as the bid-ask spreads show. The tutorial therefore states the quote noise in volatility units, $s_{\text{iv}}(\delta)$, rising from 0.3 points at the money to 1 point at $|\delta| = 2$, and translates it into price units with the vega: $\sigma_c = \text{vega}_c(\sigma_{\text{ref}}) \times s_{\text{iv}}(\delta_c)$. Lecture 9 develops this noise model and the likelihood built on it.
 
 ## 5.4 Reading a real chain onto the design grid
 
-A raw chain is noisy and irregular, so the tutorial cleans it and reads it at the 63 design points of Lecture 1. The steps, from Appendix I of the design document, are these.
+A raw chain is noisy and irregular, so the tutorial cleans it and reads it at the 63 design points of Lecture 1. The steps are those of [Appendix I of the design document](../design/calibration-design-document.md#appendix-i-the-real-surface), which describes how the tutorial's SPY surface was built.
 
 **Cleaning.**
 
 1. Keep out-of-the-money quotes only: puts below the forward, calls above.
 2. Drop quotes with a zero bid, with a relative spread $(\text{ask} - \text{bid})/\text{mid}$ above 50%, or with a mid below intrinsic value (no implied volatility exists).
-3. Within each maturity, drop an implied volatility more than 25% away from the moving average of its five neighbours: an isolated outlier is a stale or erroneous quote.
+3. Within each maturity, drop an implied volatility more than 25% away from the five-point moving average centred on it: an isolated outlier is a stale or erroneous quote.
 4. Count maturities in business days from the session of the underlying's last trade, not from the file's timestamp. A file fetched before the open carries the next day's date; counting from it would shorten the one-week maturity by a fifth.
 5. Take the discount factor from Treasury yields and the forward from parity near the money (Lecture 2, Section 2.4).
 
-**Reading the grid.** For each expiration, a cubic smoothing spline is fitted to implied volatility against $\delta$, weighted by the inverse half-spread. For each design point, the two expirations nearest the design maturity on either side whose strikes reach the point are read at its log-moneyness, and the total variance $\sigma_{\text{imp}}^2 T$ is interpolated linearly in $T$. An expiration whose strikes stop short of the point is skipped, because reading it would extrapolate its spline: on 21 October 2026, SPY's end-of-month expirations listed fewer strikes, and reading them would have given 9.3% instead of 14.8% for the one-year point at $\delta = 2$. Of the 63 points, 35 were read from two expirations and 28 from one; none needed extrapolation. The noise of each point is the vega times the local half-spread in volatility, floored at the design's $s_{\text{iv}}(\delta)$. On SPY the real half-spreads are below the design noise at every point, so the floor applies everywhere.
+**Reading the grid.** For each expiration, a cubic smoothing spline is fitted to implied volatility against $\delta$, weighted by the inverse half-spread. For each design point, the two expirations nearest the design maturity on either side whose strikes reach the point are read at its log-moneyness, and the total variance $\sigma_{\text{imp}}^2 T$ is interpolated linearly in $T$. An expiration whose strikes stop short of the point is skipped, because reading it would extrapolate its spline: on 21 October 2026, SPY's end-of-month expirations listed fewer strikes, and reading them would have given 9.3% instead of 14.8% for the one-year point at $\delta = 2$ (design document, Appendix I). Of the 63 points, 35 were read from two expirations and 28 from one; none needed extrapolation. The noise of each point is the vega times the local half-spread in volatility, floored at the design's $s_{\text{iv}}(\delta)$. On SPY the real half-spreads are below the design noise at every point, so the floor applies everywhere.
 
 ## 5.5 The SPY implied-volatility surface
 
@@ -143,13 +143,13 @@ $$
 \frac{\partial w(k, T)}{\partial T} \ge 0 \quad\text{at fixed } k .
 $$
 
-**Butterfly constraint.** Within a maturity, prices must be convex in the strike, so the implied density must be non-negative. Expressed through $w$ and its derivatives in $k$ (written $w'$ and $w''$), Gatheral and Jacquier (2014) show that the risk-neutral density of $k$ is proportional to
+**Butterfly constraint.** Within a maturity, prices must be convex in the strike, so the implied density must be non-negative. Expressed through $w$ and its derivatives in $k$ (written $w'$ and $w''$), Gatheral and Jacquier (2014) show that the risk-neutral density of $k$ equals $g(k)\,\varphi(d_2)/\sqrt{w}$, with $d_2$ evaluated at $k$ and $w(k)$, where
 
 $$
 g(k) = \Big(1 - \frac{k\,w'}{2w}\Big)^2 - \frac{(w')^2}{4}\Big(\frac{1}{w} + \frac14\Big) + \frac{w''}{2},
 $$
 
-so a smile is free of butterfly arbitrage if and only if $g(k) \ge 0$ at every $k$ (and the call price vanishes as $k \to \infty$). The constraint limits how steeply a smile can slope (the negative term in $(w')^2$) and requires enough curvature to compensate.
+so the density has the sign of $g$, and a smile is free of butterfly arbitrage if and only if $g(k) \ge 0$ at every $k$ (and the call price vanishes as $k \to \infty$). The constraint limits how steeply a smile can slope (the negative term in $(w')^2$) and requires enough curvature to compensate.
 
 **Wing constraint.** Lee (2004) shows that the total implied variance can grow at most linearly in the wings, with slope at most 2: $\limsup_{k \to \pm\infty} w(k, T)/|k| \le 2$. The slope is linked to how many moments of the price distribution are finite. It matters when a smile is extrapolated beyond the quoted strikes, as in the variance-swap replication below.
 
@@ -167,24 +167,24 @@ $$
 d\ln X_t = \frac{dX_t}{X_t} - \tfrac12 V_t\,dt, \qquad\text{so}\qquad \int_0^T V_t\,dt = 2\int_0^T \frac{dX_t}{X_t} - 2\ln X_T .
 $$
 
-**Step 2: take expectations.** The first term on the right is the gain from holding $2/X_t$ units of a martingale; it has mean zero (Lecture 3). What remains is
+**Step 2: take expectations.** The first term on the right is the gain from holding $2/X_t$ units of a martingale; it has mean zero (Lecture 3). What remains is the variance-swap total variance, written $w_{\text{var}}(T)$ to distinguish it from the total implied variance $w(k, T)$ of Section 5.5:
 
 $$
-w(T) := \mathbb{E}^{\mathbb{Q}}\Big[\int_0^T V_t\,dt\Big] = \mathbb{E}^{\mathbb{Q}}\big[-2\ln X_T\big] .
+w_{\text{var}}(T) := \mathbb{E}^{\mathbb{Q}}\Big[\int_0^T V_t\,dt\Big] = \mathbb{E}^{\mathbb{Q}}\big[-2\ln X_T\big] .
 $$
 
 **Step 3: price the log contract with vanillas.** Lecture 2 replicated $-2\ln X_T$ with out-of-the-money puts and calls weighted by $2/K^2$:
 
 $$
-w(T) = 2\int_{-\infty}^{0} p(k, T)\,e^{-k}\,dk + 2\int_{0}^{\infty} c(k, T)\,e^{-k}\,dk .
+w_{\text{var}}(T) = 2\int_{-\infty}^{0} p(k, T)\,e^{-k}\,dk + 2\int_{0}^{\infty} c(k, T)\,e^{-k}\,dk .
 $$
 
-The realized variance over $[0, T]$ is $Q_T \approx \frac1T\int_0^T V_t\,dt$, so the fair variance-swap strike is $K_{\text{var}}(T) = w(T)/T$ (Neuberger 1994; Demeterfi, Derman, Kamal and Zou 1999). This is how the VIX index is built from S&P 500 options.
+The realized variance over $[0, T]$ is $Q_T \approx \frac1T\int_0^T V_t\,dt$, so the fair variance-swap strike is $K_{\text{var}}(T) = w_{\text{var}}(T)/T$ (Neuberger 1994; Demeterfi, Derman, Kamal and Zou 1999). This is how the VIX index is built from S&P 500 options.
 
-**Step 4: the forward-variance curve.** Since $w(T) = \int_0^T \mathbb{E}^{\mathbb{Q}}[V_t]\,dt$, its derivative in $T$ is the expected instantaneous variance at each future date:
+**Step 4: the forward-variance curve.** Since $w_{\text{var}}(T) = \int_0^T \mathbb{E}^{\mathbb{Q}}[V_t]\,dt$, its derivative in $T$ is the expected instantaneous variance at each future date:
 
 $$
-\xi_0(t) = \mathbb{E}^{\mathbb{Q}}[V_t] = \frac{\partial w(t)}{\partial t}, \qquad \xi_0 \approx \frac{w(T_{j}) - w(T_{j-1})}{T_{j} - T_{j-1}} \text{ on } [T_{j-1}, T_{j}) .
+\xi_0(t) = \mathbb{E}^{\mathbb{Q}}[V_t] = \frac{\partial w_{\text{var}}(t)}{\partial t}, \qquad \xi_0 \approx \frac{w_{\text{var}}(T_{j}) - w_{\text{var}}(T_{j-1})}{T_{j} - T_{j-1}} \text{ on } [T_{j-1}, T_{j}) .
 $$
 
 The tutorial uses this **forward-variance curve**, constant on each of the 7 intervals between design maturities, as the input of rough Bergomi (Lecture 7), which matches it exactly by construction.
@@ -195,9 +195,9 @@ The tutorial uses this **forward-variance curve**, constant on each of the 7 int
 
 *Figure 5.7.* How to read the figure:
 
-- **Left.** The integrand $2\,\text{OTM}(k)\,e^{-k}$ peaks at the money and decays into the wings, more slowly on the put side. The area under each curve is $w(T)$ restricted to the grid's range.
-- **Centre.** Red dots are the 17 expirations, out of 32, whose strikes reach $\delta \le -8$; grey crosses are those cut short, which come out low. The squares integrate only the 9 design points, $|\delta| \le 2$: at one week they agree with the full strip (13.6%), but at one year they give 18.9% against 21.8%, because the missing far puts carry about a quarter of the variance. The triangles are the at-the-money implied volatilities, below every variance-swap volatility.
-- **Right.** The forward-variance curve in volatility units, $\sqrt{\xi_0}$, rises from 13.6% over the first week to 23.4% between 6 months and 1 year. The squares are the running averages $\sqrt{w(T)/T}$, which rise more slowly because each averages all the intervals before it.
+- **Left.** The integrand $2\,\text{OTM}(k)\,e^{-k}$ peaks at the money and decays into the wings, more slowly on the put side. The area under each curve is $w_{\text{var}}(T)$ restricted to the grid's range.
+- **Centre.** Red dots are the 17 expirations, out of 32, whose strikes reach $\delta \le -8$; grey crosses are those cut short, which mostly come out low. The exception, at 587 days, is cut on the call side, where the replication weight is small. The squares integrate only the 9 design points, $|\delta| \le 2$: at one week they agree with the full strip (13.6%), but at one year they give 18.9% against 21.8%, because the missing far puts carry about a quarter of the variance. The triangles are the at-the-money implied volatilities, below every variance-swap volatility.
+- **Right.** The forward-variance curve in volatility units, $\sqrt{\xi_0}$, rises from 13.6% over the first week to 23.4% between 6 months and 1 year. The squares are the running averages $\sqrt{w_{\text{var}}(T)/T}$, which rise more slowly because each averages all the intervals before it.
 
 ## 5.10 Four volatility objects
 

@@ -217,11 +217,12 @@ def fig_exotics():
 
 def fig_realized_vol():
     _, logr = load_voo()
-    roll = logr.rolling(21).std() * np.sqrt(252)
+    rv = lambda x: np.sqrt(252 * np.mean(np.asarray(x) ** 2))  # realized volatility, mean not subtracted
+    roll = logr.rolling(21).apply(rv, raw=True)
     fig, axes = plt.subplots(1, 2, figsize=(12, 4.2))
     ax = axes[0]
     ax.plot(roll.index, roll.values * 100, color=COLORS[3], lw=1)
-    yearly = logr.groupby(logr.index.year).std() * np.sqrt(252)
+    yearly = logr.groupby(logr.index.year).apply(rv)
     for year, v in yearly.items():
         ax.hlines(v * 100, np.datetime64(f"{year}-01-01"), np.datetime64(f"{year}-12-31"), color="0.3", lw=2)
     ax.set_ylabel("annualized volatility, %")

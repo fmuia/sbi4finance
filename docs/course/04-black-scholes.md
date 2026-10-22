@@ -126,7 +126,7 @@ $$
 Split the expectation into the two parts of the payoff:
 
 $$
-c = \mathbb{E}\big[X_T\,\mathbf{1}\{X_T > e^k\}\big] - e^k\,\mathbb{Q}\big(X_T > e^k\big).
+c = \mathbb{E}\big[X_T\,\mathbf{1}\lbrace X_T > e^k\rbrace\big] - e^k\,\mathbb{Q}\big(X_T > e^k\big).
 $$
 
 **The second term.** The call ends in the money when $-\tfrac12 w + \sqrt{w} Z > k$, that is when $Z > (k + \tfrac12 w)/\sqrt{w}$. Define
@@ -140,7 +140,7 @@ By the symmetry of the normal law, $\mathbb{Q}(Z > -d_2) = N(d_2)$, where $N$ is
 **The first term.** Write it as an integral over $z$ and combine the exponents:
 
 $$
-\mathbb{E}\big[X_T\,\mathbf{1}\{Z > -d_2\}\big] = \int_{-d_2}^{\infty} e^{-\frac12 w + \sqrt{w} z}\,\varphi(z)\,dz = \int_{-d_2}^{\infty} \frac{1}{\sqrt{2\pi}}\, e^{-\frac12 (z - \sqrt{w})^2}\,dz ,
+\mathbb{E}\big[X_T\,\mathbf{1}\lbrace Z > -d_2\rbrace\big] = \int_{-d_2}^{\infty} e^{-\frac12 w + \sqrt{w} z}\,\varphi(z)\,dz = \int_{-d_2}^{\infty} \frac{1}{\sqrt{2\pi}}\, e^{-\frac12 (z - \sqrt{w})^2}\,dz ,
 $$
 
 because $-\tfrac12 w + \sqrt{w}z - \tfrac12 z^2 = -\tfrac12(z - \sqrt w)^2$ (completing the square). The integrand is the normal density shifted by $\sqrt w$, so the integral is $\mathbb{Q}(Z > -d_2 - \sqrt{w}) = N(d_2 + \sqrt w)$. Define $d_1 = d_2 + \sqrt{w}$. The **Black–Scholes formula** in forward units is
@@ -171,7 +171,15 @@ $$
 p(k) = e^{k}\, c(-k) .
 $$
 
-**Interpretation.** Under Black–Scholes, the law of $\ln X_T$ is symmetric around $-\tfrac12 w$, and the only asymmetry between a put at $k$ and a call at $-k$ is the factor $e^{k}$ that converts strike units. At $k = -0.4$ the put costs $e^{-0.4} = 0.67$ times the call at $k = +0.4$. Lecture 1 found the market's ratio for SPY at one year and $\delta = \mp 2$ to be 45: the market's distribution is far from this symmetric benchmark. Lecture 5 measures the asymmetry as the skew.
+**Where the symmetry comes from.** Write the put under the share measure $\mathbb{Q}^S$ of Section 4.7, which reweights each path by $X_T$, and set $Y_T = 1/X_T$:
+
+$$
+p(k) = \mathbb{E}^{\mathbb{Q}}\big[(e^k - X_T)^+\big] = \mathbb{E}^{\mathbb{Q}}\big[X_T\,(e^k Y_T - 1)^+\big] = \mathbb{E}^{\mathbb{Q}^S}\big[(e^k Y_T - 1)^+\big] = e^{k}\,\mathbb{E}^{\mathbb{Q}^S}\big[(Y_T - e^{-k})^+\big].
+$$
+
+Under $\mathbb{Q}^S$, $\ln X_T \sim \mathcal{N}(+\tfrac12 w, w)$, so $\ln Y_T = -\ln X_T \sim \mathcal{N}(-\tfrac12 w, w)$: $Y_T$ under $\mathbb{Q}^S$ has exactly the law of $X_T$ under $\mathbb{Q}$. The last expectation is therefore $c(-k)$.
+
+**Interpretation.** Under Black–Scholes, the law of the price seen in units of cash ($\mathbb{Q}$) and the law of cash seen in units of the asset ($\mathbb{Q}^S$) are the same log-normal, and the only asymmetry between a put at $k$ and a call at $-k$ is the factor $e^{k}$ that converts strike units. At $k = -0.4$ the put costs $e^{-0.4} = 0.67$ times the call at $k = +0.4$. Lecture 1 found the market's ratio for SPY at one year and $\delta = \mp 2$ to be 45: the market's distribution is far from this symmetric benchmark. Lecture 5 measures the asymmetry as the skew.
 
 ## 4.9 What the price depends on, and its limits
 
@@ -179,7 +187,7 @@ The formula depends on $\sigma$ and $T$ only through the total variance $w = \si
 
 ![Out-of-the-money Black–Scholes prices (puts for k below 0, calls above) against log-moneyness. Left: four volatilities at one month. Right: four maturities at 20%, with the 9 design strikes of each maturity.](images/l04-prices.png)
 
-*Figure 4.4.* How to read the figure: each curve peaks at the money and falls in both wings. In the left panel, a higher volatility raises the price at every strike; at the money the price is close to $0.4\,\sigma\sqrt{T}$, almost proportional to $\sigma$ (1.15% of the forward at 10%, 4.6% at 40%). In the right panel, a longer maturity raises the price and widens the curve, both as $\sqrt T$. The dots are the design strikes $\delta \in \{-2, \dots, 2\}$ of Lecture 1: because $\delta$ scales $k$ by $\sqrt T$, they sample the same part of every curve. For SPY's real prices (Lecture 1, Figure 1.6), the left side is far above this symmetric shape.
+*Figure 4.4.* How to read the figure: each curve peaks at the money and falls in both wings. In the left panel, a higher volatility raises the price at every strike; at the money the price is close to $0.4\,\sigma\sqrt{T}$, almost proportional to $\sigma$ (1.15% of the forward at 10%, 4.6% at 40%). In the right panel, a longer maturity raises the price and widens the curve, both as $\sqrt T$. The dots are the design strikes $\delta \in \lbrace -2, \dots, 2\rbrace$ of Lecture 1: because $\delta$ scales $k$ by $\sqrt T$, they sample the same part of every curve. For SPY's real prices (Lecture 1, Figure 1.6), the left side is far above this symmetric shape.
 
 **Limits.** As $w \to 0$, $d_1$ and $d_2$ go to $+\infty$ if $k < 0$ and to $-\infty$ if $k > 0$, so $c \to (1 - e^k)^+$, the intrinsic value: with no uncertainty the option is worth its sure payoff. As $w \to \infty$, $d_1 \to +\infty$ and $d_2 \to -\infty$, so $c \to 1$, the upper bound of Lecture 2. Between these limits, $c$ is strictly increasing in $w$ (Section 4.10), so the price moves continuously from the lower to the upper no-arbitrage bound as the volatility goes from zero to infinity. Lecture 5 relies on this to define implied volatility.
 
@@ -191,7 +199,7 @@ $$
 
 ![Left: call prices against log-moneyness for four values of the total standard deviation, inside the no-arbitrage region. Right: the exact at-the-money price, its linear approximation, and the relative error.](images/l04-bounds-and-atm.png)
 
-*Figure 4.5.* How to read the figure: in the left panel, with $\sigma\sqrt T = 0.02$ the price is nearly the intrinsic value; with $\sigma\sqrt T = 3$ it is close to the upper bound 1 at every strike. In the right panel, the linear approximation overstates the at-the-money price by a relative error of $w/24$: 0.17% at $\sigma\sqrt T = 0.2$ (20% volatility over one year), and 4% only at $\sigma\sqrt T = 1$. For the design grid, the approximation is accurate to better than 0.2%.
+*Figure 4.5.* How to read the figure: in the left panel, with $\sigma\sqrt T = 0.02$ the price is nearly the intrinsic value; with $\sigma\sqrt T = 3$ it is between 0.74 and 0.94 across the strikes shown, approaching the upper bound 1. In the right panel, the linear approximation overstates the at-the-money price by a relative error of $w/24$: 0.17% at $\sigma\sqrt T = 0.2$ (20% volatility over one year), and 4% only at $\sigma\sqrt T = 1$. For the design grid, the approximation is accurate to better than 0.2%.
 
 ## 4.10 The sensitivities (Greeks)
 
@@ -241,9 +249,9 @@ The derivation is exact under its assumptions. Each assumption is contradicted b
 
 | Assumption | Evidence against it | Where |
 | --- | --- | --- |
-| Constant volatility | Realized volatility of VOO between 5% and 98% over 21-day windows, and between 12.6% and 34.7% over calendar years | Lecture 1, Figure 1.2 |
+| Constant volatility | Realized volatility of VOO between 6% and 96% over 21-day windows, and between 12.7% and 34.7% over calendar years | Lecture 1, Figure 1.2 |
 | Normal log returns | 14 daily moves beyond four standard deviations where a normal law predicts 0.11; kurtosis 17.9 | Lecture 1, Figure 1.2 |
-| Volatility independent of the price | Volatility rises by 23% after the worst tenth of days and by 8% after the best tenth | Lecture 3, Figure 3.7 |
+| Volatility independent of the price | Volatility rises by about 25% after the worst tenth of days and by about 8% after the best tenth | Lecture 3, Figure 3.7 |
 | Continuous, costless hedging | Daily hedging leaves a P&L with a standard deviation of a tenth of the premium | Figure 4.1 |
 | Symmetric law of the log price | SPY's one-year put at $\delta = -2$ costs 45 times the call at $\delta = +2$, against 0.67 under the model | Lecture 1, Figure 1.6; Section 4.8 |
 
