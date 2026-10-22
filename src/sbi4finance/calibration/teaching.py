@@ -8,6 +8,7 @@ load a network, through load_network, which initializes the neural backend.
 
 import json
 from pathlib import Path
+import warnings
 
 import numpy as np
 
@@ -282,5 +283,8 @@ def load_network(checkpoint):
     task = json.loads((checkpoint / "task.json").read_text())
     record = json.loads((checkpoint / "training.json").read_text())
     workflow = inference.build_workflow(task, subnet_widths=tuple(record["training"]["subnet_widths"]))
-    workflow.load_approximator(checkpoint / "model.keras")
+    with warnings.catch_warnings():
+        # accepted checkpoints carry no optimizer state (studies/accept.py); sampling never needs it
+        warnings.filterwarnings("ignore", message="Skipping variable loading for optimizer")
+        workflow.load_approximator(checkpoint / "model.keras")
     return task, workflow
