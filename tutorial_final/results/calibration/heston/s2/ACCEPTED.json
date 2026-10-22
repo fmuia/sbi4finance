@@ -1,0 +1,14 @@
+{
+  "accepted": "2026-10-22T07:12:13+00:00",
+  "source": "/tmp/claude-0/-home-user-sbi4finance/9c138712-55c5-5f30-b0b0-9fce83e4ceb1/scratchpad/runs/heston-s2",
+  "source_sha256": {
+    "contraction.png": "46254e7763a31bc93c3c6f9dca54785e716b39cb1a4a9dfeaf3f815587bfe1d2",
+    "draws.npz": "b1a082b726e142bfd39f8dfdfdf551216e385e7d1fd840731093c055121864cb",
+    "recovery.png": "b7ec5bceef83defbb50bdc0ef8714af7a8225d0ec4f1dad047ee426d03648847",
+    "sbc.png": "ad54ff6eb0f6219d59317ac8af27ed9ae322d79bd5de9a7f7c6eb00a0b229df6",
+    "validation.json": "bd7b23da795c0fddb56e7c072305fa1df8e78f447d0ae7d08e1d35e5f6ac2381"
+  },
+  "changes": [
+    "draws.npz: kept the first 20 surfaces of ['draws', 'truth']"
+  ]
+}
