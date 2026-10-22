@@ -87,6 +87,28 @@ def augmented_training_data(split, task, *, augmentations, seed):
     return result
 
 
+def clean_training_data(split, task):
+    """Clean prices over their noise sd as conditions, with the targets; train with fresh_noise.
+
+    The conditions are y / sigma, so the quote error of the declared model is a
+    standard normal in these units, and adding one per batch (fresh_noise)
+    gives every training step new quotes around the same priced surfaces.
+    """
+    return training_data({**split, "observations": np.asarray(split["reference_prices"], dtype=np.float64)}, task)
+
+
+def fresh_noise(seed):
+    """BayesFlow batch augmentation: a new standard-normal quote error on every scaled quote of every batch."""
+    rng = np.random.default_rng(np.random.SeedSequence([0x46524553, _integer(seed, "noise seed")]))
+
+    def augment(batch):
+        batch = dict(batch)
+        batch["observations"] = batch["observations"] + rng.standard_normal(np.shape(batch["observations"]))
+        return batch
+
+    return augment
+
+
 def build_workflow(task, checkpoint_dir=None, *, subnet_widths=(256, 256, 256, 256)):
     """FlowMatching on logit-constrained targets; conditions standardized with training statistics."""
     _checked_task(task)

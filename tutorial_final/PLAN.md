@@ -98,7 +98,7 @@ on Fri 23 Oct (D4).
 | Products under the posterior | Variance swap 63 d (control: fixed by ξ₀); volatility swap 63 d; ATM forward-start call, strike set at 63 d, expiry 126 d; one vanilla outside the grid (2 y, 90% put). Priced from `simulate_rough` / `hkde.simulate` paths with common random numbers; a learned price map, validated by the surrogate protocol, serves the live cell on synthetic surfaces; the real surface is priced by MC per posterior draw and cached. |
 | Reserve | 90% quantile of the posterior price distribution minus the point-calibration price. |
 | Network | Stage B: `bf.networks.FlowMatching` (slot 4's class, TimeMLP 4 × 256, 50 Euler steps) on `inference_conditions` = 63 prices divided by their noise sd + 7 log curve levels (63 for Heston); the existing bounds-constraining adapter. Stage D: `bf.networks.SetTransformer` over tokens (k/√T, T, iv, noise sd, mask) with random masking, so a real chain with missing quotes is handled as trained. |
-| Bank | 100,000 train, 5,000 validation, 5,000 test, plus 2,000 reserved for SBC; the existing quote-noise augmentation (×4 per epoch) multiplies the training set at no pricing cost. |
+| Bank | 100,000 train, 5,000 validation, 5,000 test, plus 2,000 reserved for SBC; a fresh quote error in every training batch reuses the priced surfaces at no pricing cost (four fixed draws per surface left the first Heston network overconfident). |
 
 ## 6. Reuse map
 

@@ -204,6 +204,22 @@ class InferenceAndCorrectionTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "levels"):
             inference.conditioning_data(arrays["observations"], None, task)
 
+    def test_fresh_noise_adds_a_new_unit_normal_error_to_clean_scaled_quotes(self):
+        task = small_rough_task()
+        arrays = bank.generate_examples(config(task), "train", [0, 1])
+        clean = inference.clean_training_data(arrays, task)
+        assert_allclose(clean["observations"], arrays["reference_prices"] / tasks.sigma(task))
+        assert_allclose(clean["context"], np.log(arrays["context_values"]))
+        augment = inference.fresh_noise(seed=4)
+        big = {"observations": np.zeros((4000, 9)), "eta": np.ones((4000, 1))}
+        first, second = augment(big), augment(big)
+        self.assertFalse(np.shares_memory(first["observations"], big["observations"]))
+        self.assertTrue(np.all(big["observations"] == 0))  # the batch itself is not modified
+        self.assertFalse(np.allclose(first["observations"], second["observations"]))  # new draw per batch
+        self.assertAlmostEqual(first["observations"].std(), 1.0, delta=0.02)
+        np.testing.assert_array_equal(first["eta"], big["eta"])
+        np.testing.assert_array_equal(inference.fresh_noise(seed=4)(big)["observations"], first["observations"])
+
     def test_logit_coordinates_and_proposal_density(self):
         task = tasks.heston_task()
         bounds = correction.bounds_of(task)

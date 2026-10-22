@@ -1,10 +1,12 @@
 """Train the amortized calibration posterior on a calibration bank (studies S2 and S3).
 
     python tutorial_final/studies/train_calibration.py --bank BANK --out NEW_DIR \
-        [--epochs 40 --batch-size 256 --augmentations 4 --seed 0]
+        [--epochs 40 --batch-size 256 --augmentations 4 --seed 0] [--fresh-noise]
 
-Training rows are fresh quote errors around each training surface's clean
-prices; validation is unaugmented and only selects the epoch. The test split
+Training quotes are the clean prices of each training surface plus quote
+errors of the declared noise model: --augmentations fixed draws per surface,
+or with --fresh-noise a new draw for every batch, so no noisy surface is seen
+twice. Validation keeps the bank's stored noise and only selects the epoch. The test split
 is not read. The run directory receives model.keras, task.json and
 training.json, and the reload is checked with same-seed draws.
 """
@@ -37,11 +39,19 @@ def main():
     parser.add_argument("--augmentations", type=int, default=4)
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--widths", default="256,256,256,256")
+    parser.add_argument("--fresh-noise", action="store_true",
+                        help="draw a new quote error for every batch instead of --augmentations fixed copies")
     args = parser.parse_args()
     started = time.perf_counter()
     manifest, splits = bank.load_bank(args.bank)
     task = manifest["configuration"]["task"]
-    train = inference.augmented_training_data(splits["train"], task, augmentations=args.augmentations, seed=args.seed)
+    if args.fresh_noise:
+        train = inference.clean_training_data(splits["train"], task)
+        augment = inference.fresh_noise(args.seed)
+    else:
+        train = inference.augmented_training_data(splits["train"], task, augmentations=args.augmentations,
+                                                  seed=args.seed)
+        augment = None
     validation = inference.training_data(splits["validation"], task)
     args.out.mkdir(parents=True, exist_ok=False)
 
@@ -54,7 +64,7 @@ def main():
     workflow = inference.build_workflow(task, args.out, subnet_widths=widths)
     ready = time.perf_counter()
     history = workflow.fit_offline(data=train, validation_data=validation, epochs=args.epochs,
-                                   batch_size=args.batch_size, verbose=0)
+                                   batch_size=args.batch_size, augmentations=augment, verbose=0)
     trained = time.perf_counter()
     workflow.load_approximator()
     observations = splits["validation"]["observations"][:2]
@@ -71,7 +81,10 @@ def main():
         "task_id": task["task_id"], "task_fingerprint": manifest["task_fingerprint"],
         "bank_manifest_sha256": sha256(args.bank / "manifest.json"),
         "checkpoint_sha256": sha256(args.out / "model.keras"),
-        "training": {"epochs": args.epochs, "batch_size": args.batch_size, "augmentations": args.augmentations,
+        "training": {"epochs": args.epochs, "batch_size": args.batch_size,
+                     "quote_noise": ("fresh standard-normal error per batch" if args.fresh_noise
+                                     else f"{args.augmentations} fixed draws per surface"),
+                     "augmentations": None if args.fresh_noise else args.augmentations,
                      "seed": args.seed, "subnet_widths": list(widths), "sampler": f"{inference.EULER_STEPS} Euler steps",
                      "selected_epoch": int(np.argmin(losses)) + 1, "selection": "minimum validation loss"},
         "training_surfaces": len(splits["train"]["parameters"]), "training_rows": len(train["observations"]),
