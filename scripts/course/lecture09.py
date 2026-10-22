@@ -162,7 +162,7 @@ def fig_bs_ml():
     ax.plot((grid - truth) * 100, info * (grid - s_hat) ** 2, color=COLORS[1], ls="--",
             label=r"quadratic: $(\sigma - \hat\sigma)^2\,J^\top W J$")
     ax.axhline(norm.ppf(0.95) ** 2, color="0.5", ls=":", lw=1)
-    ax.text(-0.48, norm.ppf(0.95) ** 2 + 0.3, r"$1.645^2$: 90% interval", fontsize=8.5, color="0.4")
+    ax.text(-0.37, norm.ppf(0.95) ** 2 + 0.3, r"$1.645^2$: 90% interval", fontsize=8.5, color="0.4")
     ax.set_xlabel(r"$\sigma$ minus the true 20%, volatility points")
     ax.set_ylabel(r"increase of the objective")
     ax.set_title("One synthetic smile: objective and its quadratic approximation")
@@ -287,7 +287,7 @@ def fig_toy_landscape():
     ends = np.array(ends)
     ax.plot([], [], "o", color=COLORS[1], label="end points of the 10 starts")
     ax.set_title("Levenberg–Marquardt from ten starts: one optimum, a long valley")
-    ax.legend(frameon=False, fontsize=8.5, loc="upper right")
+    ax.legend(frameon=False, fontsize=8.5, loc="upper center", bbox_to_anchor=(0.5, -0.12), ncol=3)
     ax = axes[1]
     cov, _ = toy_gn_cov(*best)
     vals, vecs = np.linalg.eigh(cov)
@@ -385,7 +385,7 @@ def fig_toy_coverage():
     ax.set_ylim(0, 105)
     ax.set_ylabel("coverage of the Gauss–Newton 90% interval, %")
     ax.set_title("Toy smile, 2,000 data sets per case")
-    ax.legend(frameon=False, fontsize=9, loc="lower right")
+    ax.legend(frameon=False, fontsize=9, loc="upper center", bbox_to_anchor=(0.5, -0.1), ncol=2)
     ax = axes[1]
     # coverage of eta as a function of the true rho*eta "valley position": true rho
     bins = np.linspace(*RHO_BOX, 9)

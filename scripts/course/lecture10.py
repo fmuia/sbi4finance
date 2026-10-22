@@ -606,7 +606,7 @@ def fig_products(draws, t_hat):
     ax.set_xlabel(r"$\sigma_v$ of the posterior draw")
     ax.set_ylabel("forward-start price")
     ax.set_title("Common random numbers isolate the parameter effect")
-    ax.legend(frameon=False, fontsize=8)
+    ax.legend(frameon=False, fontsize=8, loc="upper right")
     tidy(*axes2)
     save(fig, "l10-products-variance-and-crn.png")
     REPORT["products"] = dict(seconds=seconds, results=out,

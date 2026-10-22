@@ -48,7 +48,7 @@ The prior states which parameter values are possible before the quotes are seen.
 | | $\sigma_v$ | Uniform(0.1, 1.5) | Volatility of variance |
 | | $\rho$ | Uniform(−0.95, −0.1) | Negative correlation only |
 
-The forward-variance curve $\xi_0$ is not in the table. It is read from the chain and held fixed (Lecture 5); the posterior is conditional on it.
+The forward-variance curve $\xi_0$ of rough Bergomi is not in the table. It is read from the chain and held fixed (Lecture 5), and the rough-Bergomi posterior is conditional on it; the simulations that train the network of Lecture 12 draw curves from a separate prior, which describes the curves the network must be ready for, not a belief about today's curve (design document, "The prior"). Heston has no such input: its forward-variance curve is a function of $v_0$ and $\theta_H$ (Lecture 6), and the conditioning on $\xi_0$ in the formulas of this lecture is empty for it.
 
 **Why uniform.** A uniform prior on a box makes the posterior proportional to the likelihood inside the box and zero outside:
 
@@ -166,7 +166,7 @@ The first equality uses $p(y \mid \theta^*)\,p(\theta^*) = p(\theta^* \mid y)\,p
 
 ## 10.7 Sampling a posterior: Metropolis–Hastings
 
-A grid works in one or two dimensions. In four, a grid of 100 points per parameter has $10^8$ points; at a millisecond per Heston surface that is 28 hours. A posterior in more than two dimensions is represented instead by draws $\theta^{(1)}, \dots, \theta^{(M)}$, and any posterior expectation is estimated by an average, $\mathbb E[f(\theta) \mid y] \approx \frac1M\sum_m f(\theta^{(m)})$.
+A grid works in one or two dimensions. In four, a grid of 100 points per parameter has $10^8$ points; at the 24 milliseconds per Heston surface measured in Section 10.8, that is about 28 days. A posterior in more than two dimensions is represented instead by draws $\theta^{(1)}, \dots, \theta^{(M)}$, and any posterior expectation is estimated by an average, $\mathbb E[f(\theta) \mid y] \approx \frac1M\sum_m f(\theta^{(m)})$.
 
 **The algorithm.** Write $\pi(\theta)$ for the unnormalized posterior, $p(y \mid \theta)\,p(\theta)$. The **Metropolis–Hastings** algorithm (Metropolis et al. 1953; Hastings 1970) builds a Markov chain whose long-run distribution is $\pi$. From the current state $\theta$:
 
@@ -196,19 +196,19 @@ which is symmetric in $\theta$ and $\theta'$. Detailed balance holds. With a pro
 
 ![Left and centre: four Metropolis chains for the toy posterior's eta, with steps too small and with steps scaled by the posterior covariance. Right: the pooled draws of the second run against the exact grid posterior.](images/l10-toy-mcmc.png)
 
-*Figure 10.6.* How to read the figure: each panel shows four chains of 4,000 steps from four starts spread over the box, with the first 1,000 steps (left of the dotted line) discarded. In the left panel the proposal has standard deviations of 0.02 in $\eta$ and 0.01 in $\rho$: ⟦toy_small⟧. In the centre panel the proposal covariance is the posterior covariance computed on the grid, times $2.38^2/2$: ⟦toy_tuned⟧. The right panel compares the 12,000 retained draws of the second run with the grid posterior of Figure 10.4.
+*Figure 10.6.* How to read the figure: each panel shows four chains of 4,000 steps from four starts spread over the box, with the first 1,000 steps (left of the dotted line) discarded. In the left panel the proposal has standard deviations of 0.02 in $\eta$ and 0.01 in $\rho$: the acceptance rate is 77%, but each step is short, so the chains wander slowly, still remember their starts after 1,000 steps and disagree with one another: $\hat R = 1.50$, and the 12,000 retained draws are worth 23 independent ones. In the centre panel the proposal covariance is the posterior covariance computed on the grid, times $2.38^2/2$: the acceptance rate is 24%, the chains forget their starts within a few hundred steps, $\hat R = 1.003$, and the effective sample size is 779. The right panel compares the 12,000 retained draws of the second run with the grid posterior of Figure 10.4.
 
 ## 10.8 A Heston posterior by Markov chain Monte Carlo
 
-The Heston task has four parameters, $(v_0, \theta_H, \sigma_v, \rho)$ with $\kappa = 2$ fixed, the prior box of Section 10.2 and the 63 contracts of the design grid. Each posterior evaluation is one Heston surface priced by the Fourier integral of Lecture 6. The test smile is the synthetic one of Lecture 8, Figure 8.6: the truth is $(v_0, \theta_H, \sigma_v, \rho) = (0.04, 0.05, 0.4, -0.7)$, a spot volatility of 20% and a long-run volatility of 22.4%, with the design noise added once.
+The Heston task has four parameters, $(v_0, \theta_H, \sigma_v, \rho)$ with $\kappa = 2$ fixed, the prior box of Section 10.2 and the 63 contracts of the design grid. Each posterior evaluation is one Heston surface priced by the Fourier integral of Lecture 6, on the quadrature rung of 1,024 nodes up to $u = 600$, with the repository's full quadrature ladder as the fallback where that rung violates the price bounds. The test smile is the synthetic one of Lecture 8, Figure 8.6: the truth is $(v_0, \theta_H, \sigma_v, \rho) = (0.04, 0.05, 0.4, -0.7)$, a spot volatility of 20% and a long-run volatility of 22.4%, with the design noise added once.
 
-The sampler works in logit coordinates with the log-Jacobian of Section 10.2. It runs in two stages. In the first, four chains start from points scattered around the least-squares optimum and use a proposal built from the Gauss–Newton covariance in logit coordinates, scaled by $2.38^2/4$; these ⟦n_adapt⟧ steps per chain are discarded. In the second, the proposal covariance is the covariance of the first stage's draws, scaled the same way, and each chain runs ⟦n_keep⟧ more steps, which are kept.
+The sampler works in logit coordinates with the log-Jacobian of Section 10.2. It runs in two stages. In the first, four chains start from points scattered around the least-squares optimum and use a proposal built from the Gauss–Newton covariance in logit coordinates, scaled by $2.38^2/4$; these 1,500 steps per chain are discarded. In the second, the proposal covariance is the covariance of the first stage's draws, scaled the same way, and each chain runs 4,000 more steps, which are kept.
 
 ![Top: four Metropolis chains per Heston parameter on one synthetic smile, with the end of the adaptation stage marked. Bottom: the posterior marginals against the Gauss–Newton normal densities, with the true values.](images/l10-heston-mcmc.png)
 
-*Figure 10.7.* How to read the figure: ⟦heston_fig⟧
+*Figure 10.7.* How to read the figure: the top row shows the four chains of each parameter over 5,500 steps; the 1,500 adaptation steps, left of the dotted line, are discarded. The chains mix: $\hat R$ is 1.002 for $v_0$ and $\theta_H$, 1.004 for $\sigma_v$ and 1.003 for $\rho$, the 16,000 kept draws are worth 1,017, 1,052, 764 and 705 independent draws, and the acceptance rate is 25% to 28%. The bottom row compares each marginal posterior (histogram) with the normal density of the Gauss–Newton interval at the least-squares point (dashed), and marks the truth (dotted). For $v_0$, $\theta_H$ and $\sigma_v$ the two agree: posterior standard deviations of 0.00044, 0.00135 and 0.034 against Gauss–Newton values of 0.00042, 0.00132 and 0.034. For $\rho$ the posterior is skewed toward the bound at −0.95: its 90% interval is −0.882 to −0.652, against the Gauss–Newton −0.855 to −0.637, and its standard deviation is 0.069 against 0.066. Every true value lies inside its posterior 90% interval: $v_0$ from 0.0392 to 0.0406, $\theta_H$ from 0.0473 to 0.0517, $\sigma_v$ from 0.317 to 0.429.
 
-⟦heston_interp⟧
+**Interpretation.** The Heston smile is well identified, and its posterior is close to the Gauss–Newton normal, as Bernstein–von Mises predicts and as study S6 found on 200 smiles (Lecture 9, Section 9.8). The posterior adds two things the point estimate hides. First, $\sigma_v$ and $\rho$ are correlated at 0.92 under the posterior: a larger vol of vol with a less negative correlation gives nearly the same skew. This is the ridge of Lecture 8's profile (Figure 8.6), where the refitted $\rho$ moved from −0.85 to −0.67 across the band $0.325 \leq \sigma_v \leq 0.425$; the posterior 90% interval of $\sigma_v$, 0.317 to 0.429, matches that band. Second, $v_0$ and $\theta_H$ are correlated at −0.54: the shortest quotes pin $v_0$, and the longer ones pin an average of $v_0$ and $\theta_H$. The run cost 22,000 posterior evaluations in 525 seconds, 24 milliseconds per Heston surface, on the course's two-core machine while other jobs shared it.
 
 The tutorial's study S3 ran the same check on four held-out Heston test smiles, with four chains of 6,000 steps after 1,000 of burn-in per smile: $\hat R$ was at most 1.011, every parameter had at least 413 effective draws, and the four chains of one smile cost about 400 CPU-seconds (design document, study S3). Those chains are the exact posterior against which the amortized network of Lecture 12 is checked.
 
@@ -238,9 +238,18 @@ the posterior variance of the price plus the Monte Carlo variance $s^2$: the noi
 
 ![The prices of four products under 300 posterior draws of the synthetic Heston smile, relative to the least-squares price, with the 90% quantile and the price at the true parameters.](images/l10-heston-products.png)
 
-*Figure 10.8.* How to read the figure: ⟦products_fig⟧
+*Figure 10.8.* How to read the figure: each panel is one product; the histogram is its price at 300 posterior draws, relative to the least-squares price (solid line); the dashed line is the 90% quantile and the dotted line the price at the true parameters. Every price uses the same 8,192 paths, at about 0.43 seconds per parameter set. The table gives the numbers.
 
-⟦products_interp⟧
+| Product | Least-squares price | 90% range, % of the posterior mean | Short reserve, % of the point | Long reserve, % of the point | Price at the truth, relative to the point |
+| --- | --- | --- | --- | --- | --- |
+| Variance swap 63 d | 0.04191 | 2.56% | 0.94% | 1.03% | +0.53% |
+| Volatility swap 63 d | 0.19992 | 1.71% | 0.69% | 0.57% | −0.03% |
+| Forward-start 63 → 126 d | 0.03949 | 3.17% | 1.52% | 1.13% | −0.32% |
+| 2-year 90% put | 0.07157 | 4.39% | 1.77% | 1.76% | +0.29% |
+
+Prices are in forward units, the volatility swap in volatility units. The ranges are a few percent, the size of the cached ranges of study S7 on three other Heston test smiles (Figure 8.8), and every price at the truth lies inside its range. The variance swap's range, 2.56%, is much wider than the ±0.4% of Lecture 8's profile, and the put's, 4.39%, much wider than ±0.13%. The profile moved $\sigma_v$ and refitted the rest to their best values; these two prices move with $v_0$ and $\theta_H$, which the profile did not vary (Section 10.10). A range read off one direction of the parameter space misses the others; the posterior includes all of them.
+
+**The effect of common random numbers.** On the first 150 draws, the forward-start's standard deviation across draws is 0.000434 (1.10% of its price) with common random numbers and 0.000505 (1.28%) with an independent stream per draw. By the formula above, the Monte Carlo noise per price is $\sqrt{0.000505^2 - 0.000434^2} \approx 0.00026$, and it inflates the apparent spread by 16%. For the put the inflation is 3%. For the volatility swap it is within sampling error, because its control variate removes most of the noise; for the variance swap, priced from the exact mean, it is zero.
 
 ## 10.10 Which parameter each range comes from
 
@@ -254,7 +263,7 @@ $S_i$ is the share of the price's variance that knowing $\theta_i$ alone would r
 
 ![Left: for each product, the share of its posterior price variance explained by each Heston parameter alone. Right: the forward-start price against the vol of vol of each posterior draw, with common and with independent random numbers.](images/l10-products-variance-and-crn.png)
 
-*Figure 10.9.* How to read the figure: ⟦shares_fig⟧
+*Figure 10.9.* How to read the figure: in the left panel, each group of bars is one product and each bar the $R^2$ of its price on one parameter across the 300 draws. The 2-year put's range comes from the long-run variance: $\theta_H$ alone explains 91% of it, $v_0$ 29%, $\sigma_v$ and $\rho$ under 1%. The forward-start's comes from the vol of vol and the correlation: $\sigma_v$ explains 52% and $\rho$ 43%, and because the two are correlated at 0.92 these shares overlap. The volatility swap is a mix: $\sigma_v$ 42%, $\rho$ 34%, $v_0$ 25%. The variance swap is the instructive case: no single parameter explains more than 42% ($v_0$), because its strike is the combination $0.787\,v_0 + 0.213\,\theta_H$ (Section 10.11) of two parameters whose posterior correlation is −0.54, and each alone is a poor predictor of the combination; the two together explain all of it. The design document's study S7 found the same pattern on three other Heston smiles: $v_0$ explaining 0.40 to 0.54 of the variance swap and $\theta_H$ 0.76 to 0.91 of the put. The right panel shows the forward-start price against the $\sigma_v$ of each of 150 draws: with common random numbers (blue) the points trace the parameter effect; with independent streams (grey) the Monte Carlo noise scatters them.
 
 ## 10.11 The variance swap: Heston against rough Bergomi
 
@@ -270,7 +279,7 @@ and its posterior range is that of the linear combination $\frac{1 - e^{-\kappa 
 
 ![The 90% posterior range of four products on three Heston test smiles and three rough-Bergomi pilot smiles, from the cached results of study S7.](images/l10-cached-ranges.png)
 
-*Figure 10.10.* How to read the figure: each group of bars is one product; the green bars are three Heston test smiles and the blue bars three rough-Bergomi smiles of the pilot study; the height is the 90% range as a share of the posterior mean (`tutorial_final/results/calibration/heston/s7/products.json`, `tutorial_final/results/calibration/rough-pilot/s7/products.json`). Under Heston the variance swap's range is 1.57%, 0.97% and 2.59% on the three smiles; under rough Bergomi it is zero on all three. The other products have ranges under both models: the volatility swap 0.61% to 1.64% under Heston and 0.98% to 3.26% under rough Bergomi, the forward-start 1.65% to 3.65% and 2.22% to 9.34%, the two-year put 1.68% to 6.15% and 2.54% to 17.69%. The rough-Bergomi ranges come from the pilot network's posterior, whose intervals are 1.3 to 1.6 times too wide (design document, study S5), so they overstate the exact posterior's ranges; the full study replaces them with ⟨S7⟩.
+*Figure 10.10.* How to read the figure: each group of bars is one product; the green bars are three Heston test smiles (rows 2,300 to 2,302) and the blue bars three rough-Bergomi smiles of the pilot study (rows 290 to 292), one shade per smile; the height is the 90% range as a share of the posterior mean (`tutorial_final/results/calibration/heston/s7/products.json`, `tutorial_final/results/calibration/rough-pilot/s7/products.json`). Under Heston the variance swap's range is 1.57%, 0.97% and 2.59% on the three smiles; under rough Bergomi it is zero on all three. The other products have ranges under both models: the volatility swap 0.61% to 1.64% under Heston and 0.98% to 3.26% under rough Bergomi, the forward-start 1.65% to 3.65% and 2.22% to 9.34%, the two-year put 1.68% to 6.15% and 2.54% to 17.69%. The rough-Bergomi ranges come from the pilot network's posterior, whose intervals are 1.3 to 1.6 times too wide (design document, study S5), so they overstate the exact posterior's ranges; the full study replaces them with ⟨S7⟩.
 
 Under rough Bergomi, every product's range comes from $(H, \eta, \rho)$ alone, and in the pilot study the volatility of variance $\eta$ explains most of it: a single-parameter $R^2$ of 0.77 to 0.96 for the volatility swap and 0.94 to 0.97 for the forward-start (design document, study S7).
 
@@ -279,10 +288,10 @@ Under rough Bergomi, every product's range comes from $(H, \eta, \rho)$ alone, a
 The posterior is exact for the model, the prior and the observation model it is given. It does not cover what it is not given.
 
 1. **The choice of model.** The posterior range is within-model. The gap between rough Bergomi and Heston calibrated to the same smile, 4% to 8% of the forward-start's price in the pilot, is larger than either model's reserve (Lecture 8, Section 8.10; design document, study S7). Across-model and model-free bounds remain separate numbers.
-2. **The observation model.** The noise scale $s_{\text{iv}}(\delta)$, its independence across contracts and its Gaussian shape are assumptions (Lecture 9, Section 9.1). A noise scale twice as large would make every posterior about twice as wide.
+2. **The observation model.** The noise scale $s_{\text{iv}}(\delta)$, its independence across contracts and its Gaussian shape are assumptions (Lecture 9, Section 9.1). A noise scale twice as large would make the posterior about twice as wide in every direction where it is close to normal, since the Gauss–Newton covariance $(J^\top W J)^{-1}$ scales with $\sigma_c^2$.
 3. **The prior box.** Values outside the box have zero posterior probability, whatever the quotes say. The posterior predictive check and the position of the posterior against the bounds show when the box binds.
 4. **The forward-variance curve.** $\xi_0$ is read from the chain and held fixed. Its uncertainty, which comes from the same quotes, is not propagated.
-5. **Numerical error.** The Fourier ladder and the Monte Carlo pricer have errors of their own, kept below 0.1 and 0.25 quote-noise units by construction (design document, "Heston" and "Rough Bergomi: a Monte Carlo run"). The Monte Carlo error of each product price is reported beside its range.
+5. **Numerical error.** The pricers have errors of their own. The Fourier ladder accepts a rung when it agrees with the next one to 0.1 quote-noise units on every contract, and the rough-Bergomi Monte Carlo doubles its paths until every standard error is below 0.25 quote-noise units, with up to 0.5 tolerated at the corner of the prior box (design document, "Heston" and "Rough Bergomi: a Monte Carlo run"). The Monte Carlo error of each product price is reported beside its range.
 6. **Approximate inference.** A sampler that has not converged, or a network that approximates the posterior (Lecture 12), adds its own error. $\hat R$, the effective sample size, simulation-based calibration and the audit of Lecture 13 measure it.
 
 ## 10.13 Summary
@@ -296,7 +305,7 @@ The posterior is exact for the model, the prior and the observation model it is 
 7. Metropolis–Hastings samples any posterior whose density can be evaluated up to a constant; $\hat R$ and the effective sample size check the run.
 8. Product prices at posterior draws, with common random numbers, give the range, the 90% quantile and the reserve, and the law of total variance names the parameter each range comes from. Under Heston the variance swap has a range; under rough Bergomi it has none.
 
-Each posterior evaluation here was one priced surface: microseconds for Black–Scholes and ⟦ms_per_eval⟧ for Heston. For rough Bergomi it is a Monte Carlo run of 5.0 CPU-seconds, and an exact posterior by these chains costs about 17 CPU-hours per smile (design document, "The cost of the exact posterior"). Lecture 11 explains why that cost cannot be avoided by a better pricer, and what can be done instead.
+Each posterior evaluation here was one priced surface: microseconds for Black–Scholes and 24 milliseconds for Heston. For rough Bergomi it is a Monte Carlo run of 5.0 CPU-seconds, and an exact posterior by these chains costs about 17 CPU-hours per smile (design document, "The cost of the exact posterior"). Lecture 11 explains where that cost comes from and what the alternatives to the exact chain are.
 
 ## References
 

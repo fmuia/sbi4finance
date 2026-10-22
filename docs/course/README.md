@@ -27,18 +27,18 @@ The lectures follow one line of argument in four parts. Each part needs the one 
 | 3 | [Brownian motion, stochastic differential equations and Itô's lemma](03-brownian-motion-and-ito.md) | The mathematics of continuous-time randomness, why volatility is measurable and the drift is not | Written |
 | 4 | [The Black–Scholes model](04-black-scholes.md) | Hedging, the disappearance of the drift, the risk-neutral measure, the pricing formula, the sensitivities, and the model's limits | Written |
 | 5 | [Implied volatility and the smile](05-implied-volatility-and-the-smile.md) | How quotes are read, what the market's smile looks like, what it says about the distribution of returns, and the variance swap | Written |
-| 6 | Stochastic volatility: the Heston model | A random variance correlated with the price, the characteristic function, Fourier pricing, and where Heston's smile has the wrong shape | Planned |
-| 7 | Rough volatility: the rough Bergomi model | Roughness, the power-law skew, the forward-variance curve as an input, and Monte Carlo as the only pricer | Planned |
+| 6 | [Stochastic volatility: the Heston model](06-heston.md) | A random variance correlated with the price, the characteristic function, Fourier pricing, how each parameter shapes the smile, a fit to SPY, and where Heston's smile has the wrong shape | Written |
+| 7 | [Rough volatility: the rough Bergomi model](07-rough-bergomi.md) | Evidence of roughness, the Volterra driver, the forward-variance curve as an input, the hybrid scheme and the Monte Carlo pricer, the power-law skew, and what the smile identifies | Written |
 | **Part II** | **Why the problem matters** | | |
-| 8 | Calibration on a derivatives desk | Daily calibration, marking exotics, calibration risk in the literature, the products that the smile does not pin down, and what the rules ask for | Planned |
+| 8 | [Calibration on a derivatives desk](08-calibration-on-a-desk.md) | Daily calibration, the products the smile does not pin down (variance swap, volatility swap, forward start, cliquet), one model with several calibrations, the literature on calibration risk, and what the rules ask for | Written |
 | **Part III** | **What Bayesian inference adds** | | |
-| 9 | Calibration as estimation | The observation model of a quote, the likelihood, least squares as maximum likelihood, standard errors, multi-start, regularization and deep calibration | Planned |
-| 10 | Bayesian calibration | The posterior, identification read off the posterior, propagation to product prices and reserves, posterior predictive checks and misspecification, on Black–Scholes and Heston | Planned |
+| 9 | [Calibration as estimation](09-calibration-as-estimation.md) | The observation model of a quote, the likelihood, least squares as maximum likelihood, the Gauss–Newton interval and where it fails, multi-start, regularization and deep calibration | Written |
+| 10 | [Bayesian calibration](10-bayesian-calibration.md) | The prior and the posterior, Black–Scholes on SPY as a misspecified model, identification, credible against confidence intervals, Metropolis–Hastings, a Heston posterior, and propagation to product prices and reserves | Written |
 | **Part IV** | **Making the posterior affordable** | | |
-| 11 | Why the exact posterior is expensive | The rough-Bergomi likelihood as a Monte Carlo run, and the cost of MCMC | Planned |
-| 12 | Amortized inference | Neural posterior estimation, flow matching, the training bank, the network, and the neural-pricer alternative | Planned |
-| 13 | Validating an amortized posterior | Simulation-based calibration, agreement with exact posteriors, the importance-sampling audit, the posterior predictive check on a real smile | Planned |
-| 14 | The study and the tutorial | The nine feasibility studies, their results, the costs, the real SPY smile, and the tutorial's narrative and risks | Planned |
+| 11 | [Why the exact posterior is expensive](11-why-the-exact-posterior-is-expensive.md) | The rough-Bergomi likelihood as a Monte Carlo run, the effect of Monte Carlo error on it, the cost of an exact chain, and the alternatives | Written |
+| 12 | [Amortized inference](12-amortized-inference.md) | Why simulated pairs carry the posterior, neural posterior estimation, flow matching and its sampler, the tutorial's network and training bank, and the neural-pricer alternative | Written |
+| 13 | [Validating an amortized posterior](13-validating-an-amortized-posterior.md) | The prior predictive check, simulation-based calibration, contraction and coverage, agreement with exact posteriors, the importance-sampling audit, and the posterior predictive check | Written |
+| 14 | [The study and the tutorial](14-the-study-and-the-tutorial.md) | The two claims, the nine feasibility studies and where they stand, the costs, the real SPY smile, products and reserves, and the tutorial's narrative and risks | Written |
 
 ## Conventions
 
@@ -51,7 +51,7 @@ The lectures follow one line of argument in four parts. Each part needs the one 
 
 ## Where each section of the design document is covered
 
-The table lists every main section of the design document and the lecture that covers it. A lecture marked *planned* will cover the section when it is written.
+The table lists every main section of the design document and the lecture that covers it.
 
 | Design-document section | Lecture |
 | --- | --- |
@@ -64,9 +64,9 @@ The table lists every main section of the design document and the lecture that c
 | Notation and key terms: symbols; statistical vocabulary | Defined where first used across 1–14 |
 | The model: Black–Scholes and the smile | 4, 5 |
 | The model: Heston | 6 |
-| The model: rough Bergomi; the prior; prior predictive check; computing the 63 model prices; the example surface; the skew's term structure | 7 (model, pricing, skew), 9 (prior), 13 (prior predictive check) |
+| The model: rough Bergomi; the prior; prior predictive check; computing the 63 model prices; the example surface; the skew's term structure | 7 (model, pricing, skew), 10 (prior), 13 (prior predictive check) |
 | The model: from parameters to a product price | 8 |
-| The observation model (quotes, design grid, noise model, identification) | 5 (design grid), 9 (quote and noise), 10 (identification) |
+| The observation model (quotes, design grid, noise model, identification) | 5 (design grid), 9 (quote and noise), 7 and 10 (identification) |
 | Why the likelihood is expensive | 11 |
 | Classical calibration and where it fails | 9 |
 | Amortized design | 12 |

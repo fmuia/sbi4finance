@@ -1,6 +1,6 @@
 # Lecture 5. Implied volatility and the smile
 
-[Course index](README.md) · Previous: [Lecture 4](04-black-scholes.md) · Next: Lecture 6. Stochastic volatility: the Heston model (planned)
+[Course index](README.md) · Previous: [Lecture 4](04-black-scholes.md) · Next: [Lecture 6. Stochastic volatility: the Heston model](06-heston.md)
 
 **What this lecture is for.** This lecture turns option prices into the quantity the market actually trades and quotes: implied volatility. It defines implied volatility, shows how to compute it and how precisely a quote determines it, reads the real SPY chain of 21 October 2026 onto the tutorial's design grid, and describes the pattern the market shows: the **smile**, with its skew and its term structure. It then explains what the smile says about the distribution of future prices, which mechanisms produce it, which constraints no-arbitrage puts on it, and how the variance swap and the forward-variance curve are read from it.
 
