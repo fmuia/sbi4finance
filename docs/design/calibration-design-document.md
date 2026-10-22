@@ -57,7 +57,7 @@ Bayes' rule needs the likelihood. Under the quote-noise model each quote is the 
 \log p(y \mid \theta, \xi_0) = -\frac{1}{2}\sum_{c=1}^{C}\left(\frac{y_c - P_c(\theta;\xi_0)}{\sigma_c}\right)^{2} + \text{const}.
 ```
 
-For Heston, P\_c is a Fourier integral and this line costs milliseconds; an exact posterior by MCMC costs minutes per surface. For rough Bergomi, P\_c is a Monte Carlo expectation over 2^17 paths of 504 steps, so one evaluation of the likelihood is one priced surface, ⟨S9⟩ CPU-seconds, and an MCMC chain of 20,000 evaluations costs ⟨S9⟩ CPU-hours. For a desk with many underlyings, every morning, that is not available.
+For Heston, P\_c is a Fourier integral and this line costs milliseconds; an exact posterior by MCMC costs minutes per surface. For rough Bergomi, P\_c is a Monte Carlo expectation over at least 2^15 paths per maturity block, up to 504 steps each, so one evaluation of the likelihood is one priced surface, 5.0 CPU-seconds, and an MCMC chain of 20,000 evaluations costs 28 CPU-hours. For a desk with many underlyings, every morning, that is not available.
 
 Details: [Why the likelihood is expensive](#why-the-likelihood-is-expensive).
 
@@ -108,7 +108,7 @@ Details: [Validation plan](#validation-plan), [From posterior to prices](#from-p
 ### The two claims
 
 1. The smile does not pin down the parameters a desk needs for products outside it. The posterior shows which directions it leaves open (η at fixed ρη), and turns the bid-ask widths into a price range and a reserve. The variance swap's range is zero by construction, the volatility swap's and the forward-start's are not: ⟨S7⟩% of the price at the 90% quantile.
-2. Amortization makes the Bayesian answer affordable for a Monte-Carlo-priced model: ⟨S9⟩ seconds per surface against ⟨S9⟩ CPU-hours for the exact posterior, validated by simulation-based calibration on thousands of synthetic surfaces and audited surface by surface.
+2. Amortization makes the Bayesian answer affordable for a Monte-Carlo-priced model: 1.4 seconds per surface against about 17 CPU-hours for the exact posterior, validated by simulation-based calibration on thousands of synthetic surfaces and audited surface by surface.
 
 Details: [Planned feasibility study](#planned-feasibility-study).
 
@@ -137,11 +137,11 @@ The example meets the three selection criteria:
 
 - **Users' pain.** Every derivatives desk recalibrates its models to the smile daily, marks exotics with the result, and must hold a reserve for the calibrations it did not pick. The rules name the object: a range of plausible calibrations with a 90% point (Regulation (EU) 2016/101, Art. 11), Level 3 sensitivity ranges (IFRS 13), model-risk assessment (SR 11-7, replaced by SR 26-2 in April 2026).
 - **Widely used model class.** Stochastic volatility calibrated to vanillas is the standard way to price equity exotics; rough volatility is the research frontier the audience knows, and deep calibration (Horvath, Muguruza and Tomas 2021) is the method it knows for it.
-- **The classical route fails.** Least squares returns one point. Its local interval cannot follow the ρ–η valley. The exact Bayesian route exists but, for a model priced by Monte Carlo, costs ⟨S9⟩ CPU-hours per surface.
+- **The classical route fails.** Least squares returns one point. Its local interval cannot follow the ρ–η valley. The exact Bayesian route exists but, for a model priced by Monte Carlo, costs about 17 CPU-hours per surface.
 
-Amortized inference trains a network once on simulated surfaces priced on the cluster. The network then returns the joint posterior of H, η and ρ for a new smile in ⟨S9⟩ seconds. Heston, which has a Fourier likelihood, is used to check the network against the exact posterior, in the role the exact grid posterior plays for GBM in slot 4.
+Amortized inference trains a network once on simulated surfaces priced on the cluster. The network then returns the joint posterior of H, η and ρ for a new smile in 1.4 seconds. Heston, which has a Fourier likelihood, is used to check the network against the exact posterior, in the role the exact grid posterior plays for GBM in slot 4.
 
-The network is calibrated on average but can be off for a single surface. An importance-sampling audit with the Monte Carlo pricer checks each surface, corrects its posterior, and flags surfaces that need the slow exact route. The audit costs ⟨S9⟩ CPU-seconds per surface.
+The network is calibrated on average but can be off for a single surface. An importance-sampling audit with the Monte Carlo pricer checks each surface, corrects its posterior, and flags surfaces that need the slow exact route. The audit costs about 425 CPU-seconds per surface.
 
 The posterior gives, for each product, a price distribution. The variance swap's is a point, because the forward-variance curve fixes it. The volatility swap's and the forward-start's are not, and their 90% quantiles against the point calibration are the within-model reserves. Heston and rough Bergomi calibrated to the same smile price the forward-start ⟨S7⟩% apart, which bounds the within-model range from above and hands over to the tutorial's final segment on misspecification.
 
@@ -151,7 +151,7 @@ The tutorial therefore makes two separate claims, stated under [The two claims](
 
 *Pending figure ⟨S9-0⟩: three routes from one smile to a product price, with measured costs per surface.* Drawn as the SVJ diagram: each row one route from the same input, the 63 quotes of one smile, to a price for the forward-start option. The boxes give the method, what it returns and the risk number it supports; the line under each row gives the measured cost and the main finding. The highlighted row is the route the tutorial teaches.
 
-How to read the figure: the first row is multi-start least squares, which returns one price per start in ⟨S9⟩ CPU-seconds and no range. The second row is MCMC with the Monte Carlo pricer inside, which returns the exact posterior and the exact range in ⟨S9⟩ CPU-hours. The third row is the amortized posterior with its audit: the range in ⟨S9⟩ seconds, checked against the Monte Carlo likelihood in ⟨S9⟩ CPU-seconds. A fourth, dashed row is the neural-pricer route (deep calibration with MCMC on the pricer), which the study uses as an independent check.
+How to read the figure: the first row is multi-start least squares, which returns one price per start in about 60 CPU-seconds and no range. The second row is MCMC with the Monte Carlo pricer inside, which returns the exact posterior and the exact range in about 17 CPU-hours. The third row is the amortized posterior with its audit: the range in 1.4 seconds, checked against the Monte Carlo likelihood in about 425 CPU-seconds. A fourth, dashed row is the neural-pricer route (deep calibration with MCMC on the pricer), which the study uses as an independent check.
 
 ## Why Heston is the check and not the example
 
@@ -183,7 +183,7 @@ The rules name the object, a range of calibrations with a quantile, and leave it
 
 The rough Bergomi model supplies a realistic case. It fits equity-index smiles with three parameters, its short-maturity skew follows the power law the market shows, and it is the model the deep-calibration literature calibrates. Its weak point is the one the lesson is about: the smile constrains the product ρη and the exponent H, and leaves η alone wide; the products a desk marks with the model depend on η alone.
 
-The Bayesian answer exists, but its cost does not scale. One likelihood evaluation is one Monte Carlo surface, ⟨S9⟩ CPU-seconds, and an exact posterior by MCMC costs ⟨S9⟩ CPU-hours per surface. The amortized posterior costs ⟨S9⟩ seconds per surface. The audit adds ⟨S9⟩ CPU-seconds for each surface it checks.
+The Bayesian answer exists, but its cost does not scale. One likelihood evaluation is one Monte Carlo surface, 5.0 CPU-seconds, and an exact posterior by MCMC costs about 17 CPU-hours per surface. The amortized posterior costs 1.4 seconds per surface. The audit adds about 425 CPU-seconds for each surface it checks.
 
 ## Executive summary of the model
 
@@ -231,7 +231,7 @@ The posterior predictive check on the real smile shows where the model misses: q
 2. Clean it: out-of-the-money quotes only, positive bids, relative spread below a threshold, no violations of monotonicity or convexity in strike. Compute the forward per maturity from put–call parity and the discount factor from the chosen curve.
 3. Build the forward-variance curve ξ\_0 by log-contract replication at each quoted maturity, and difference the total variances between maturities.
 4. Read the design grid: for each of the 7 maturities, fit a smooth smile in δ-moneyness through the cleaned quotes and read 9 prices at δ ∈ {−2, …, 2}; derive each quote's noise standard deviation from the bid-ask width at that point.
-5. Run the inference network, conditioned on the 63 prices scaled by their noise standard deviations and on the logarithms of the 7 forward-variance levels of ξ\_0. It returns 1,000 draws of (H, η, ρ) in ⟨S9⟩ seconds.
+5. Run the inference network, conditioned on the 63 prices scaled by their noise standard deviations and on the logarithms of the 7 forward-variance levels of ξ\_0. It returns 1,000 draws of (H, η, ρ) in 1.4 seconds.
 6. Audit the draws. Fit a Student t proposal to them, draw M proposals, price each proposal's surface by Monte Carlo and reweight. The efficiency and the Pareto k̂ are the audit score; a flagged surface goes to the exact route (MCMC with the Monte Carlo pricer, or the neural-pricer route).
 7. Price the products from each posterior draw with common random numbers: variance swap, volatility swap, forward-start call, and any vanilla outside the grid.
 8. Report, for each product, the point price, the 90% range and the reserve: the distance from the point calibration's price to the 90% quantile on the side that hurts the position.
@@ -490,7 +490,7 @@ The likelihood is the probability density of the 63 observed quotes, given the p
 
 ### Heston: a formula
 
-For Heston each P\_c is the Lewis integral, and the 63 prices of a surface share the characteristic function across strikes within a maturity: at the first rung of the quadrature ladder a surface costs about 15 CPU-milliseconds, at the second about 35. One likelihood evaluation costs ⟨S9⟩ milliseconds, a random-walk chain of 20,000 evaluations ⟨S9⟩ minutes. This is why Heston has an exact posterior to show.
+For Heston each P\_c is the Lewis integral, and the 63 prices of a surface share the characteristic function across strikes within a maturity: at the first rung of the quadrature ladder a surface costs about 15 CPU-milliseconds, at the second about 35. One likelihood evaluation costs 20 milliseconds, a random-walk chain of 20,000 evaluations 7 minutes. This is why Heston has an exact posterior to show.
 
 ### Rough Bergomi: a Monte Carlo run
 
@@ -504,7 +504,7 @@ With Monte Carlo prices the log-likelihood is evaluated at P̂\_c rather than P\
 
 ### The cost of the exact posterior
 
-A random-walk chain needs on the order of 10^4 likelihood evaluations to reach a few hundred effective draws in three dimensions; Hamiltonian methods need gradients, which Monte Carlo pricing does not give cheaply. Study S9 runs one chain with the Monte Carlo pricer inside to a fixed CPU budget and extrapolates: ⟨S9⟩ CPU-hours per surface to 400 effective draws. For one desk's universe, every morning, that is the cost amortization removes.
+A random-walk chain needs on the order of 10^4 likelihood evaluations to reach a few hundred effective draws in three dimensions; Hamiltonian methods need gradients, which Monte Carlo pricing does not give cheaply. Study S9 extrapolates rather than runs it: the Heston chains of S3 needed a median of 12,300 evaluations for 400 effective draws, and at 5.0 CPU-seconds per rough evaluation that is about 17 CPU-hours per surface. For one desk's universe, every morning, that is the cost amortization removes.
 
 ## Classical calibration and where it fails
 
@@ -520,7 +520,7 @@ Model calibration in practice is a least-squares problem, solved once per surfac
 | Regularized (Tikhonov) calibration | One stable point | Crépey (2003); Cont and Tankov (2004) | The answer depends on the penalty and on the reference point |
 | Deep calibration: neural pricer and least squares | One point, fast | Hernandez (2017); Bayer et al. (2019); Horvath, Muguruza and Tomas (2021) | Fast, but still one point |
 | Neural pricer with MCMC | A posterior | Bayer et al. (2019) sample it by MCMC on their pricer | Correct up to the pricer's error; a sampler per surface |
-| MCMC with the Monte Carlo pricer inside | The exact posterior | Gupta and Reisinger (2014) for Bayesian calibration in general | ⟨S9⟩ CPU-hours per surface |
+| MCMC with the Monte Carlo pricer inside | The exact posterior | Gupta and Reisinger (2014) for Bayesian calibration in general | about 17 CPU-hours per surface (extrapolated, S9) |
 
 ### Least squares and its weights
 
@@ -590,7 +590,7 @@ Many lines pass through the same point at the same time, from different noise dr
 
 ### Training
 
-The targets are standardized with their training mean and standard deviation, and the conditions as well, both frozen after training. The reference run uses ⟨S2⟩ epochs over the 100,000 surfaces, with a fresh quote error in every batch of 256. The optimizer is BayesFlow's default for offline training: AdamW with weight decay 5 × 10⁻³ and gradient norms clipped at 1.5; the learning rate warms up from 5 × 10⁻⁵ to 5 × 10⁻⁴ over the first 5% of steps and then decays to zero along a cosine. The checkpoint kept is the epoch with the smallest validation loss, and its reload is checked by drawing twice with the same seed. Training runs on ⟨S2⟩ CPU cores in ⟨S2⟩ minutes. The study samples with this fixed Euler grid, compiled once, at ⟨S9⟩ seconds per surface for 1,000 draws.
+The targets are standardized with their training mean and standard deviation, and the conditions as well, both frozen after training. The reference run uses ⟨S2⟩ epochs over the 100,000 surfaces, with a fresh quote error in every batch of 256. The optimizer is BayesFlow's default for offline training: AdamW with weight decay 5 × 10⁻³ and gradient norms clipped at 1.5; the learning rate warms up from 5 × 10⁻⁵ to 5 × 10⁻⁴ over the first 5% of steps and then decays to zero along a cosine. The checkpoint kept is the epoch with the smallest validation loss, and its reload is checked by drawing twice with the same seed. Training runs on ⟨S2⟩ CPU cores in ⟨S2⟩ minutes. The study samples with this fixed Euler grid, compiled once, at 1.4 seconds per surface for 1,000 draws (3.6 CPU-seconds), after 5.9 seconds to load the network and compile the sampler.
 
 ### Where the likelihood enters
 
@@ -649,7 +649,7 @@ The audit corrects the amortized posterior for a given surface and is part of th
 4. Give each proposal the weight w = p(θ) L̂(θ) / q(θ), in the logit coordinates with the Jacobian included.
 5. Use the weighted proposals as the posterior. Their efficiency, and the Pareto k̂ of the largest weights (Vehtari et al. 2024), are the audit score.
 
-A proposal close to the posterior gives nearly equal weights, a high efficiency and a small k̂; a network that is off by δ posterior standard deviations gives an efficiency that falls roughly like e^(−δ²). The cost is M priced surfaces at reduced path counts, ⟨S9⟩ CPU-seconds. The flag threshold is an open decision: the SVJ study used 2% efficiency; this study reports the distribution of efficiencies and k̂ on 500 held-out test surfaces and proposes k̂ < 0.7 as the rule.
+A proposal close to the posterior gives nearly equal weights, a high efficiency and a small k̂; a network that is off by δ posterior standard deviations gives an efficiency that falls roughly like e^(−δ²). The cost is M priced surfaces at reduced path counts: about 425 CPU-seconds for M = 256 in the pilot. The flag threshold is an open decision: the SVJ study used 2% efficiency; this study reports the distribution of efficiencies and k̂ on 500 held-out test surfaces and proposes k̂ < 0.7 as the rule.
 
 ### Posterior predictive check on a real smile
 
@@ -706,7 +706,7 @@ The study answers nine questions with explicit criteria. The table tracks them; 
 | 6 | S6 | The classical route | Coverage of Gauss–Newton 90% intervals against posterior 90% intervals on 200 surfaces; number of distinct multi-start modes; sensitivity of the regularized point to λ | Heston: Gauss–Newton coverage 87% to 92% against posterior 87% to 90% on 200 smiles; one optimum on 97%; no interval on 11 smiles at the prior's edge. Rough pilot, 8 smiles: one optimum on every smile; Gauss–Newton coverage 71% to 100%, no interval on the smile at ρ = −0.99; a curved η–ρ valley the ellipse cannot follow on one smile. Full rough: ⟨S6⟩ | Heston done; rough pilot reported; full pending |
 | 7 | S7 | Products and reserves | Variance-swap range zero; volatility-swap, forward-start and out-of-grid ranges and reserves, with each price's Monte Carlo standard error; Heston-against-rough gap | Heston, 3 smiles: every product carries a range, the variance swap's 1.0% to 2.6%; forward-start reserve 0.7% to 1.7% of its price. Rough pilot, 3 smiles: variance-swap range zero; forward-start reserve 1.0% to 6.1%, driven by η (pilot network too wide, S5). Full rough: ⟨S7⟩ | Heston done; rough pilot reported; full pending |
 | 8 | S8 | The real smile | Skew term-structure exponent; posterior; audit score; posterior predictive residuals with at most ⟨proposed: 10%⟩ of quotes beyond two standard deviations | SPY, 21 October 2026: exponent −0.32; every grid point read from quotes; real spreads below the design noise; the forward-variance curve outside the curve prior. Posterior, audit and residuals: ⟨S8⟩ | data done; posterior pending |
-| 9 | S9 | Costs | One table on one machine: Monte Carlo likelihood evaluation; exact chain extrapolated to 400 effective draws; network; audit; neural pricer with MCMC; multi-start least squares | ⟨S9⟩ | pending |
+| 9 | S9 | Costs | One table on one machine: Monte Carlo likelihood evaluation; exact chain extrapolated to 400 effective draws; network; audit; neural pricer with MCMC; multi-start least squares | One rough likelihood evaluation 5.0 CPU-s; exact rough posterior about 17 CPU-h (extrapolated); amortized posterior 1.4 s for 1,000 draws; audit 425 CPU-s; Monte Carlo least squares 600 CPU-s; Heston exact posterior 250 CPU-s | done (pilot networks) |
 
 ### Setup
 
@@ -896,14 +896,14 @@ The forward-variance curve lies outside the training prior. The prior writes eac
 
 | Route | Per surface | Notes |
 | --- | --- | --- |
-| One Monte Carlo likelihood evaluation, 2^15 paths per block | ⟨S9⟩ CPU-s | the unit everything else is counted in |
-| Exact MCMC with the Monte Carlo pricer, to 400 effective draws | ⟨S9⟩ CPU-h | extrapolated from a fixed-budget run |
-| Amortized posterior, 1,000 draws | ⟨S9⟩ s | plus ⟨S9⟩ s to load the network once |
-| Audit, M proposals at 2^13 paths per block | ⟨S9⟩ CPU-s | |
-| Neural pricer with MCMC, 4 chains | ⟨S9⟩ s | plus the pricer's training, once |
-| Multi-start least squares, 10 starts, Monte Carlo pricer with common random numbers | ⟨S9⟩ CPU-s | |
-| Heston: exact MCMC with the Fourier likelihood | ⟨S9⟩ CPU-s | the check model |
-| Training bank and network, once | ⟨S1⟩ CPU-h and ⟨S2⟩ min | break-even against the exact route after ⟨S9⟩ surfaces |
+| One Monte Carlo likelihood evaluation, 2^15 paths per block | 5.0 CPU-s (3.9 s on the clock) | the unit everything else is counted in |
+| Exact MCMC with the Monte Carlo pricer, to 400 effective draws | 17 CPU-h | extrapolated: 12,300 evaluations, the median the Heston chains of S3 needed |
+| Amortized posterior, 1,000 draws | 1.4 s on the clock (3.6 CPU-s) | plus 5.9 s to load the network and compile the sampler once |
+| Audit, M proposals at 2^13 paths per block | 425 CPU-s for M = 256 | pilot, median over 40 smiles (S5) |
+| Neural pricer with MCMC, 4 chains | 12 CPU-s (Heston) | plus the pricer's training, once: 370 CPU-s on the Heston bank (S4) |
+| Multi-start least squares, 10 starts, Monte Carlo pricer with common random numbers | 600 CPU-s | pilot, 2^13 paths per block, median over 8 smiles (S6) |
+| Heston: exact MCMC with the Fourier likelihood | 250 CPU-s | the check model: 12,300 evaluations at 20 ms |
+| Training bank and network, once | about 370 CPU-h for the full bank (the pilot's rate) and ⟨S2⟩ min of training | break-even against the exact route after about 22 surfaces |
 
 ## Tutorial narrative
 
