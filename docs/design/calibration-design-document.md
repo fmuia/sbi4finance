@@ -119,7 +119,7 @@ This document is both the design of the tutorial's advanced example and a short 
 | Lesson | Sections | What it teaches | Derivations |
 | --- | --- | --- | --- |
 | 1. The problem | [The practitioner problem](#the-practitioner-problem) | Why a desk's daily calibration carries a range, who asks for it, and what current practice does about it | [Appendix A](#appendix-a-calibration-practice-and-what-the-rules-ask-for) |
-| 2. The models | [Executive summary of the model](#executive-summary-of-the-model), [Notation and key terms](#notation-and-key-terms), [The model](#the-model) | Black–Scholes and the implied volatility, Heston, rough Bergomi, the forward-variance curve, the prior, one surface step by step | [Appendix B](#appendix-b-blackscholes-implied-volatility-and-the-variance-swap), [Appendix C](#appendix-c-heston-and-the-fourier-pricer), [Appendix D](#appendix-d-rough-bergomi), [Appendix J](#appendix-j-fourier-pricing-and-why-the-example-moves-from-heston-to-rough-bergomi) |
+| 2. The models | [Executive summary of the model](#executive-summary-of-the-model), [Notation and key terms](#notation-and-key-terms), [The model](#the-model) | Black–Scholes and the implied volatility, Heston, rough Bergomi, the forward-variance curve, the prior, the Monte Carlo computation of the 63 model prices | [Appendix B](#appendix-b-blackscholes-implied-volatility-and-the-variance-swap), [Appendix C](#appendix-c-heston-and-the-fourier-pricer), [Appendix D](#appendix-d-rough-bergomi), [Appendix J](#appendix-j-fourier-pricing-and-why-the-example-moves-from-heston-to-rough-bergomi) |
 | 3. The observation and the likelihood | [The observation model](#the-observation-model), [Why the likelihood is expensive](#why-the-likelihood-is-expensive) | What a quote is, how noisy it is, what the smile identifies, and why one likelihood evaluation is a Monte Carlo run | [Appendix B](#appendix-b-blackscholes-implied-volatility-and-the-variance-swap), [Appendix D](#appendix-d-rough-bergomi) |
 | 4. Classical calibration | [Classical calibration and where it fails](#classical-calibration-and-where-it-fails) | Least squares, its weights, its intervals, multi-start, regularization, deep calibration, and the exact but slow Bayesian route | [Appendix E](#appendix-e-calibration-as-estimation) |
 | 5. Amortized inference | [Amortized design](#amortized-design) | How a network trained on simulated surfaces returns the posterior in seconds; the neural-pricer route as the alternative | [Appendix F](#appendix-f-amortized-inference) |
@@ -417,7 +417,23 @@ The rough-Bergomi version below uses the 400 test surfaces of the pilot bank; th
 
 How to read the figure: each panel is one statistic. The filled histogram shows the clean model smiles and the dashed line their median; the outline shows the same statistic read from the noisy quotes. The real values will be marked when study S8 has a chain; the dotted line in the third panel is the SPX exponent of about −0.4 reported by Bayer, Friz and Gatheral (2016). A good prior covers the real values and leaves room on both sides for other underlyings and other days. Two things show already. The Heston prior reaches an exponent of −0.4 only in its tail: 90% of its clean smiles lie between −0.38 and −0.05, because Heston's skew flattens at short maturities. And the 1-month curvature read from noisy quotes is spread far wider than the clean one, from −5.1 to 13.3 against −2.3 to 12.3 for the central 90%, which is the noise that keeps η loosely identified.
 
-### One surface, step by step
+### Computing the 63 model prices for one parameter value by Monte Carlo
+
+This section computes the model prices of the 63 design contracts for one parameter value θ = (H, η, ρ) and one curve ξ\_0:
+
+```math
+(\theta,\ \xi_0)\ \longmapsto\ P_c(\theta;\xi_0) = \mathbb{E}^{\mathbb{Q}}\big[(K_c - S_{T_c})^+\big], \qquad c = 1, \dots, 63,
+```
+
+written here for a put; a call is the same with the payoff (S\_{T\_c} − K\_c)⁺. This map from parameters to prices is the forward model of the whole method: the simulator, in the language of simulation-based inference. Heston computes the same 63 numbers with a Fourier integral (Appendix C). Rough Bergomi has no characteristic function (Appendix J), so each expectation is estimated by an average over N simulated paths of the model:
+
+```math
+P_c(\theta;\xi_0) \;\approx\; \frac{1}{N}\sum_{n=1}^{N}\big(K_c - S^{(n)}_{T_c}\big)^+ .
+```
+
+Steps 1 to 4 below simulate the N paths: first the variance, then the price, which moves with √V. Step 5 forms the average, with two refinements. It averages a Black–Scholes formula per path instead of the raw payoff, and it doubles N until the Monte Carlo error is small against the quote noise. The result is one priced surface, 63 numbers, at about 5 CPU-seconds. Adding the quote noise of [The observation model](#the-observation-model), y\_c = P\_c(θ; ξ\_0) + σ\_c ε\_c, turns it into one simulated observation.
+
+The method uses this computation in three places. It runs 100,000 times to build the training bank of (θ, y) pairs ([Amortized design](#amortized-design)). It runs M = 256 times per real surface in the audit ([Validation plan](#validation-plan)). It would run once per step of an exact MCMC chain, about 12,300 steps and 17 CPU-hours per surface ([Why the likelihood is expensive](#why-the-likelihood-is-expensive)). Its cost is why the exact posterior is slow, and why the amortized method pays it once, in training.
 
 The hybrid scheme turns three streams of standard normals, one per path and time step, into one surface. The numbers below use the prior median: H = 0.185, η = 2.0, ρ = −0.595, a flat curve at σ\_0 = 25%, and the 63-day maturity block with 504 steps, Δ = 63 / (252 × 504) years.
 
