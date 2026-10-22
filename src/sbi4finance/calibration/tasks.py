@@ -133,14 +133,16 @@ def validate_task(task):
     if task["model"] == "hkde":
         if task["model_context"] != {} or prior != {}:
             raise ValueError("the Heston check has no curve context")
-        if set(numerics) != {"nodes", "upper_limit", "refined_nodes", "refined_upper_limit",
-                             "max_refinement_over_quote_sigma"}:
-            raise ValueError("Heston requires base and refined Fourier settings")
-        for key in ("nodes", "refined_nodes"):
-            _positive_int(numerics[key], key)
-        if numerics["refined_nodes"] <= numerics["nodes"] or numerics["refined_upper_limit"] <= numerics["upper_limit"] \
-                or numerics["upper_limit"] <= 0:
-            raise ValueError("refinement requires more nodes and a larger upper limit")
+        if set(numerics) != {"quadrature_ladder", "max_refinement_over_quote_sigma"}:
+            raise ValueError("Heston requires a quadrature ladder and a refinement budget")
+        ladder = numerics["quadrature_ladder"]
+        if not isinstance(ladder, list) or len(ladder) < 2:
+            raise ValueError("the quadrature ladder needs at least a base and a refined rung")
+        for (nodes, cutoff), (next_nodes, next_cutoff) in zip(ladder, ladder[1:]):
+            _positive_int(nodes, "nodes")
+            _positive_int(next_nodes, "nodes")
+            if not (next_nodes > nodes and next_cutoff > cutoff > 0):
+                raise ValueError("each rung needs more nodes and a larger upper limit than the last")
         budget = numerics["max_refinement_over_quote_sigma"]
     else:
         grid = knots(task)
@@ -199,6 +201,31 @@ def draw_context(task, rng):
     return levels, np.array([level, slope])
 
 
+def heston_prices(task, parameters, v0, contracts=None):
+    """Refined Fourier prices and refined-minus-base differences, escalating the quadrature.
+
+    Rung r is accepted when rungs r and r + 1 both price inside the no-arbitrage
+    bounds and agree within the budget; the refined rung's prices are returned.
+    Low variance at one week with a steep skew needs the higher rungs.
+    """
+    contracts = task["context"]["contracts"] if contracts is None else contracts
+    numerics = task["numerics"]
+    limit = numerics["max_refinement_over_quote_sigma"] * sigma(task)
+    ladder = numerics["quadrature_ladder"]
+    failure = None
+    for (nodes, cutoff), (next_nodes, next_cutoff) in zip(ladder, ladder[1:]):
+        try:
+            base = pricing.heston_surface(parameters, v0, contracts, nodes=nodes, upper_limit=cutoff)
+            refined = pricing.heston_surface(parameters, v0, contracts, nodes=next_nodes, upper_limit=next_cutoff)
+        except ValueError as error:
+            failure = error
+            continue
+        if len(contracts) != len(limit) or np.all(np.abs(refined - base) <= limit):
+            return refined, refined - base
+        failure = ValueError("Fourier refinement budget failed")
+    raise ValueError(f"{failure} on every quadrature rung")
+
+
 def curve(task, context_values):
     return pricing.step_curve(knots(task), context_values)
 
@@ -211,13 +238,8 @@ def price(task, parameter_values, context_values, seed):
     n = len(contracts)
     if task["model"] == "hkde":
         parameters, v0 = _heston_split(parameters)
-        base = pricing.heston_surface(parameters, v0, contracts, nodes=numerics["nodes"],
-                                      upper_limit=numerics["upper_limit"])
-        refined = pricing.heston_surface(parameters, v0, contracts, nodes=numerics["refined_nodes"],
-                                         upper_limit=numerics["refined_upper_limit"])
-        if np.any(np.abs(refined - base) > numerics["max_refinement_over_quote_sigma"] * sigma(task)):
-            raise ValueError("Fourier refinement budget failed")
-        return refined, np.zeros(n), np.zeros((n, n)), refined - base, np.empty(0)
+        prices, difference = heston_prices(task, parameters, v0)
+        return prices, np.zeros(n), np.zeros((n, n)), difference, np.empty(0)
     prices, errors, covariance, used = pricing.rough_surface(
         parameters, curve(task, context_values), contracts, numerics["blocks"], numerics["paths_ladder"],
         sigma(task), numerics["max_mc_se_over_quote_sigma"], seed)
@@ -258,7 +280,8 @@ def rough_task(*, days=surface.DESIGN_DAYS, deltas=surface.DESIGN_DELTAS, sigma_
 def heston_task(*, days=surface.DESIGN_DAYS, deltas=surface.DESIGN_DELTAS, sigma_ref=surface.SIGMA_REF,
                 noise_atm=surface.NOISE_ATM, noise_wing=surface.NOISE_WING,
                 prior_bounds=((0.01, 0.16), (0.01, 0.16), (0.1, 1.5), (-0.95, -0.1)), kappa=2.0,
-                nodes=512, upper_limit=400.0, refined_nodes=1024, refined_upper_limit=600.0, budget=0.1):
+                quadrature_ladder=((512, 400.0), (1024, 600.0), (2048, 1500.0), (4096, 3000.0), (8192, 6000.0)),
+                budget=0.1):
     contracts = surface.design_grid(days, deltas, sigma_ref)
     task = {
         "task_id": "hkde" + FAMILY, "model": "hkde", "measure": "Q",
@@ -268,8 +291,8 @@ def heston_task(*, days=surface.DESIGN_DAYS, deltas=surface.DESIGN_DELTAS, sigma
         "prior_bounds": [list(b) for b in prior_bounds],
         "fixed_parameters": {"kappa": kappa, "jump_intensity": 0.0, "jump_up_probability": 0.5,
                              "jump_up_rate": 10.0, "jump_down_rate": 10.0},
-        "numerics": {"nodes": nodes, "upper_limit": upper_limit, "refined_nodes": refined_nodes,
-                     "refined_upper_limit": refined_upper_limit, "max_refinement_over_quote_sigma": budget},
+        "numerics": {"quadrature_ladder": [list(rung) for rung in quadrature_ladder],
+                     "max_refinement_over_quote_sigma": budget},
     }
     validate_task(task)
     return task

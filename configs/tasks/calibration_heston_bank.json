@@ -424,10 +424,28 @@
    "jump_down_rate": 10.0
   },
   "numerics": {
-   "nodes": 512,
-   "upper_limit": 400.0,
-   "refined_nodes": 1024,
-   "refined_upper_limit": 600.0,
+   "quadrature_ladder": [
+    [
+     512,
+     400.0
+    ],
+    [
+     1024,
+     600.0
+    ],
+    [
+     2048,
+     1500.0
+    ],
+    [
+     4096,
+     3000.0
+    ],
+    [
+     8192,
+     6000.0
+    ]
+   ],
    "max_refinement_over_quote_sigma": 0.1
   }
  },

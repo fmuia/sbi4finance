@@ -163,6 +163,17 @@ class TaskAndBankTests(unittest.TestCase):
                     for key in arrays[split]:
                         np.testing.assert_array_equal(arrays[split][key], assembled[split][key])
 
+    def test_heston_quadrature_ladder_rescues_low_variance_short_maturity_wings(self):
+        # This surface's one-week deep call violates the price bounds at 512 nodes up to 400.
+        task = tasks.heston_task()
+        parameters, v0 = tasks._heston_split(tasks.model_parameters(task, [0.0149, 0.1281, 0.7626, -0.7694]))
+        with self.assertRaisesRegex(ValueError, "bounds"):
+            pricing.heston_surface(parameters, v0, task["context"]["contracts"], nodes=512, upper_limit=400.0)
+        prices, difference = tasks.heston_prices(task, parameters, v0)
+        self.assertTrue(np.all(np.abs(difference) <= 0.1 * tasks.sigma(task)))
+        k, T, kind = surface.contract_arrays(task["context"]["contracts"])
+        self.assertTrue(np.all(np.isfinite(surface.implied_vol(prices, k, T, kind))))
+
     def test_precision_budget_fails_closed(self):
         c = config(small_rough_task(budget=1e-6, ladder=(256,)))
         with self.assertRaisesRegex(ValueError, "train:0.*budget failed"):
@@ -234,3 +245,88 @@ class InferenceAndCorrectionTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ProductsPricerClassicalChainTests(unittest.TestCase):
+    def test_products_in_the_black_scholes_limit(self):
+        from sbi4finance.calibration import products
+        curve = products.extend_curve(pricing.step_curve([0, 0.25, 0.5], [0.04, 0.04]), 2.0)
+        spec = dict(products.default_specification())
+        prices, errors = products.price_draw("rough", {"hurst": 0.2, "eta": 1e-8, "rho": -0.5}, curve, spec, 4096, seed=1)
+        expected = [0.04, 0.2, float(surface.bs_call(0.0, 0.25, 0.2)), float(surface.bs_put(np.log(0.9), 2.0, 0.2))]
+        for got, se, want in zip(prices, errors, expected):
+            self.assertLess(abs(got - want), 4 * se + 1e-9)
+        self.assertEqual(errors[0], 0.0)
+        self.assertGreater(products.reserve([1.0, 1.1, 1.2, 1.3], 1.05), 0.0)
+
+    def test_heston_euler_paths_match_the_fourier_price(self):
+        from sbi4finance.calibration import products
+        task = tasks.heston_task()
+        parameters, v0 = tasks._heston_split(tasks.model_parameters(task, [0.04, 0.05, 0.6, -0.6]))
+        paths = products.heston_paths(parameters, v0, 0.5, 504, 2**15, seed=2)
+        mc, se = products.vanilla(paths, parameters["rho"], 0.95, 0.5, "put")
+        exact = pricing.heston_surface(parameters, v0, [{"strike": 0.95, "maturity": 0.5, "option_type": "put"}],
+                                       nodes=1024, upper_limit=600.0)[0]
+        self.assertLess(abs(mc - exact), 4 * se + 2e-5)
+
+    def test_pricer_learns_a_small_heston_bank_and_its_chain_runs(self):
+        from sbi4finance.calibration import pricer_net
+        task = tasks.heston_task(days=(10, 63), deltas=(-1.0, 0.0, 1.0))
+        arrays = bank.generate_examples(config(task, (400, 100, 50)), "train", range(400))
+        validation_arrays = bank.generate_examples(config(task, (400, 100, 50)), "validation", range(100))
+        pricer, record = pricer_net.train(task, arrays, validation_arrays, widths=(64, 64), epochs=60, patience=60)
+        error = pricer_net.errors(pricer, task, validation_arrays)
+        self.assertLess(np.sqrt(np.mean(error**2)), 25.0)  # tiny bank and network: only the plumbing is tested
+        target = pricer_net.log_posterior(pricer, task, validation_arrays["observations"][0, :, 0])
+        z0 = correction.to_unbounded(validation_arrays["parameters"][:2], correction.bounds_of(task))
+        chains, acceptance = pricer_net.metropolis(target, z0, 0.01 * np.eye(4), 50, seed=0)
+        self.assertEqual(chains.shape, (2, 50, 4))
+        with tempfile.TemporaryDirectory() as tmp:
+            pricer.save(Path(tmp) / "p")
+            np.testing.assert_allclose(pricer_net.Pricer.load(Path(tmp) / "p")(np.zeros((1, 4))), pricer(np.zeros((1, 4))))
+
+    def test_least_squares_recovers_a_noise_free_heston_surface(self):
+        from sbi4finance.calibration import classical
+        task = tasks.heston_task(days=(10, 21, 63, 126), deltas=(-1.5, -0.5, 0.0, 0.5, 1.5))
+        truth = np.array([0.05, 0.07, 0.7, -0.6])
+
+        def price_fn(theta):
+            parameters, v0 = tasks._heston_split(tasks.model_parameters(task, theta))
+            return pricing.heston_surface(parameters, v0, task["context"]["contracts"], nodes=512, upper_limit=400.0)
+
+        observation = price_fn(truth)
+        fits = classical.fit(task, observation, price_fn, [[0.04, 0.04, 0.5, -0.5]])
+        assert_allclose(fits[0]["theta"], truth, rtol=1e-3, atol=1e-4)
+        self.assertLess(fits[0]["chi2"], 1e-6)
+        interval = classical.wald_interval(fits[0])
+        self.assertTrue(np.all(interval[:, 0] < truth) and np.all(truth < interval[:, 1]))
+        self.assertEqual(len(classical.distinct_modes(fits)), 1)
+        starts = classical.latin_starts(task, 5, seed=0)
+        self.assertEqual(starts.shape, (5, 4))
+
+    def test_chain_pipeline_recovers_a_black_scholes_chain(self):
+        from datetime import date
+        from sbi4finance.calibration import chain
+        valuation = date(2026, 10, 16)
+        spot, rate, sigma = 600.0, 0.04, 0.2
+        rows = []
+        for expiry in (date(2026, 10, 22), date(2026, 11, 20), date(2027, 1, 15), date(2027, 4, 16), date(2027, 12, 17)):
+            T = chain.trading_days(valuation, expiry) / 252
+            D, F = np.exp(-rate * T), spot * np.exp(rate * T)
+            for K in np.linspace(F * np.exp(-3.5 * sigma * np.sqrt(T)), F * np.exp(3.5 * sigma * np.sqrt(T)), 61):
+                k = np.log(K / F)
+                for kind in ("call", "put"):
+                    price = D * F * float(surface.bs_price(k, T, sigma, kind))
+                    half = max(0.01, 0.002 * price)
+                    if price > 2 * half:
+                        rows.append({"expiration": expiry, "strike": float(K), "type": kind,
+                                     "bid": price - half, "ask": price + half, "date": valuation})
+        result = chain.build_surface(rows, design_days=(5, 21, 63, 126, 252))
+        expirations = result["diagnostics"]["expirations"]
+        for e in expirations:
+            T = e["days"] / 252
+            self.assertAlmostEqual(e["forward"], spot * np.exp(rate * T), delta=0.05)
+            self.assertAlmostEqual(e["discount"], np.exp(-rate * T), delta=1e-3)
+            self.assertAlmostEqual(e["w_replicated"] / T, sigma**2, delta=0.004)
+        assert_allclose(result["implied_vol_grid"] if "implied_vol_grid" in result else result["diagnostics"]["implied_vol_grid"], sigma, atol=0.003)
+        assert_allclose(result["forward_variance_levels"], sigma**2, atol=0.004)
