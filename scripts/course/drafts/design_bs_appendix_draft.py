@@ -1,3 +1,4 @@
+# Draft kept for Lecture 10 (Bayesian calibration of Black-Scholes on SPY, figure 29). Not run by the course; paths are those of the original draft.
 """Draw the Appendix B figures of the calibration design document (Black-Scholes in detail).
 
 Figure 23: the law of X_T = S_T / F_T, and the call price as an area under it.
