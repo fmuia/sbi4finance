@@ -14,6 +14,10 @@ be computed in two independent ways and compared with the network's:
 Test surfaces from --first onwards are used, so they do not overlap the S2 set.
 Agreement uses the design document's criterion: means within 0.3 posterior sd
 and 90% widths within 25%, for every parameter.
+
+Each finished audit and chain is saved in OUT.partial/, next to the output
+directory; rerunning the same command after an interruption runs only the
+missing jobs, and the folder is removed once the report is written.
 """
 
 import argparse
@@ -21,6 +25,8 @@ from concurrent.futures import ProcessPoolExecutor
 import hashlib
 import json
 import multiprocessing
+import pickle
+import shutil
 from pathlib import Path
 import sys
 import time
@@ -125,10 +131,25 @@ def main():
     network = posterior_draws(workflow, task, test, rows, args.draws, args.seed)
     network_seconds = (time.perf_counter() - started) / len(rows)
     observations = test["observations"][rows, :, 0]
+    partial = args.out.with_name(args.out.name + ".partial")
+    partial.mkdir(exist_ok=True)
+
+    def resumable(pool, function, jobs, names):
+        """pool.map over the jobs not yet saved in partial/, saving each result as it arrives."""
+        results = {name: pickle.loads((partial / name).read_bytes()) for name in names if (partial / name).exists()}
+        todo = [k for k, name in enumerate(names) if name not in results]
+        for k, result in zip(todo, pool.map(function, [jobs[k] for k in todo])):
+            temporary = partial / (names[k] + ".tmp")
+            temporary.write_bytes(pickle.dumps(result))
+            temporary.replace(partial / names[k])
+            results[names[k]] = result
+        return [results[name] for name in names]
+
     with ProcessPoolExecutor(args.workers, mp_context=multiprocessing.get_context("spawn")) as pool:
-        audits = list(pool.map(audit_job, [(task, observations[i], network[i], args.proposals, args.seed + i)
-                                           for i in range(len(rows))]))
-        chain_jobs, owners = [], []
+        audits = resumable(pool, audit_job, [(task, observations[i], network[i], args.proposals, args.seed + i)
+                                             for i in range(len(rows))],
+                           [f"audit-{int(r)}.pkl" for r in rows])
+        chain_jobs, owners, names = [], [], []
         bounds = correction.bounds_of(task)
         for i in range(min(args.chain_surfaces, len(rows))):
             z = correction.to_unbounded(network[i], bounds)
@@ -137,7 +158,8 @@ def main():
             for c in range(args.chains):
                 chain_jobs.append((task, observations[i], starts[c], scale, args.steps, 1000 * i + c))
                 owners.append(i)
-        chains = list(pool.map(chain_job, chain_jobs))
+                names.append(f"chain-{int(rows[i])}-{c}.pkl")
+        chains = resumable(pool, chain_job, chain_jobs, names)
     surfaces, panels, saved = [], [], {}
     for i, row in enumerate(rows):
         entry = {"test_row": int(row), "truth": test["parameters"][row].tolist(),
@@ -188,6 +210,7 @@ def main():
     if panels:
         plots.agreement(panels, LABELS, "exact (Fourier MCMC)").savefig(args.out / "agreement.png", dpi=160)
         np.savez_compressed(args.out / "posterior-draws.npz", **saved)
+    shutil.rmtree(partial)
     print(json.dumps(jsonable(summary), indent=1))
 
 
