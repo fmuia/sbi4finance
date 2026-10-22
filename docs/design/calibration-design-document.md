@@ -990,7 +990,21 @@ The posterior turns the bid-ask widths into a probability-weighted range of cali
 
 ### B.1 The formulas in forward units
 
-With F the forward, D the discount factor, K the strike and k = ln(K / F), a European call with maturity T costs C = D F c(k, T; σ) with
+Under Q, with interest rate r and dividend yield q, the price follows dS\_t / S\_t = (r − q) dt + σ dW\_t: the change of measure replaces the real-world drift with r − q. The forward for delivery at T is F\_t(T) = S\_t e^((r−q)(T−t)), and Itô's formula gives
+
+```math
+\frac{dF_t(T)}{F_t(T)} = \frac{dS_t}{S_t} - (r-q)\,dt = \sigma\,dW_t .
+```
+
+The derivative of e^((r−q)(T−t)) in t cancels the drift, so the forward is a martingale under Q. At maturity S\_T = F\_T(T). Dividing the call price C = D E[(S\_T − K)⁺] by the discount factor D and by today's forward F = F\_0(T) therefore gives
+
+```math
+\frac{C}{D\,F} = \mathbb{E}\big[(X_T - e^{k})^+\big], \qquad \frac{dX_t}{X_t} = \sigma\,dW_t, \quad X_0 = 1, \quad k = \ln\frac{K}{F} .
+```
+
+Rates and dividends are absorbed in D and F, which are read off the chain (B.2), and E[X\_T] = 1, which B.3 uses. The price in forward units depends on σ alone, and X\_T is log-normal, so the expectation has a closed form.
+
+With F the forward, D the discount factor, K the strike and k = ln(K / F), a European call with maturity T therefore costs C = D F c(k, T; σ) with
 
 ```math
 c(k,T;\sigma) = N(d_1) - e^{k}N(d_2), \qquad d_1 = \frac{-k + \tfrac12\sigma^2 T}{\sigma\sqrt T}, \qquad d_2 = d_1 - \sigma\sqrt T,
