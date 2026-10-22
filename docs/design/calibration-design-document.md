@@ -231,7 +231,7 @@ The posterior predictive check on the real smile shows where the model misses: q
 2. Clean it: out-of-the-money quotes only, positive bids, relative spread below a threshold, no violations of monotonicity or convexity in strike. Compute the forward per maturity from put–call parity and the discount factor from the chosen curve.
 3. Build the forward-variance curve ξ\_0 by log-contract replication at each quoted maturity, and difference the total variances between maturities.
 4. Read the design grid: for each of the 7 maturities, fit a smooth smile in δ-moneyness through the cleaned quotes and read 9 prices at δ ∈ {−2, …, 2}; derive each quote's noise standard deviation from the bid-ask width at that point.
-5. Run the inference network, conditioned on the 63 prices scaled by their noise standard deviations and on the 8 knots of ξ\_0. It returns 1,000 draws of (H, η, ρ) in ⟨S9⟩ seconds.
+5. Run the inference network, conditioned on the 63 prices scaled by their noise standard deviations and on the logarithms of the 7 forward-variance levels of ξ\_0. It returns 1,000 draws of (H, η, ρ) in ⟨S9⟩ seconds.
 6. Audit the draws. Fit a Student t proposal to them, draw M proposals, price each proposal's surface by Monte Carlo and reweight. The efficiency and the Pareto k̂ are the audit score; a flagged surface goes to the exact route (MCMC with the Monte Carlo pricer, or the neural-pricer route).
 7. Price the products from each posterior draw with common random numbers: variance swap, volatility swap, forward-start call, and any vanilla outside the grid.
 8. Report, for each product, the point price, the 90% range and the reserve: the distance from the point calibration's price to the 90% quantile on the side that hurts the position.
@@ -275,14 +275,14 @@ A quote is reported in forward units: the option price divided by the discount f
 | η | Volatility of variance | per year^H | 2.0, uniform on (0.5, 3.5) |
 | ρ | Correlation between price and variance shocks | – | −0.595, uniform on (−0.99, −0.2) |
 | θ | The three parameters (H, η, ρ), in the unbounded coordinates of the adapter | – | – |
-| ξ\_0(t) | Forward-variance curve, piecewise linear on the 8 knots {0, T\_1, …, T\_7} | variance per year | level σ\_0 = 25% a year, slope s = 0.15 |
-| σ\_0, s | Level and slope of the training curves, ξ\_0(T) = σ\_0² (1 + sT) | fraction per year, per year | σ\_0 ~ U(10%, 40%), s ~ U(−0.3, 0.6) |
+| ξ\_0(t) | Forward-variance curve, constant on each of the 7 intervals [T\_{j−1}, T\_j) between design maturities, with T\_0 = 0 | variance per year | level σ\_0 = 25% a year, slope s = 0.15 |
+| σ\_0, s, u\_j | Level, slope and log perturbations of the training curves: the level on interval j is σ\_0² (1 + s t\_j) e^(u\_j), with t\_j the interval's midpoint | fraction per year, per year, – | σ\_0 ~ U(10%, 40%), s ~ U(−0.3, 0.6), u\_j ~ U(−0.2, 0.2) independently |
 | W\_t, W^⊥\_t | Brownian motion driving the variance and the correlated price shock; independent Brownian motion for the rest of the price shock | – | – |
 | Y\_t | The Volterra driver, √(2H) ∫₀ᵗ (t − s)^(H−½) dW\_s, with Var(Y\_t) = t^(2H) | – | – |
 | V\_t, Q\_T | Instantaneous and realized variance | variance per year | – |
 | v\_0, θ\_H, κ, σ\_v, ρ\_H | Heston's initial variance, long-run variance, mean reversion, vol-of-vol and correlation | variance, variance, per year, –, – | κ fixed at 2 |
 | φ(u) | Characteristic function of ln(S\_T / F\_T) | – | – |
-| N, n | Monte Carlo paths and time steps per surface | – | 2^17 paths; 504 steps per maturity block |
+| N, n | Monte Carlo paths and time steps per surface | – | 2^15 paths, doubled up to 2^18 until the error budget holds; 504 steps per maturity block |
 | M, L | Audit proposals; posterior draws per surface | – | ⟨decision⟩; 1,000 |
 | Π, p\_Π | A product's payoff and price | forward units | – |
 | T\_1, T\_2 | Forward-start dates: strike set at T\_1, expiry T\_2 | years | 63 and 126 days |
@@ -351,7 +351,7 @@ Each term has a plain meaning: κ(θ\_H − V\_t) dt pulls the variance to its l
 c(k,T) = 1 - \frac{e^{-x/2}}{\pi}\int_0^\infty \mathrm{Re}\!\left[e^{iux}\,\varphi_T\!\big(u - \tfrac{i}{2}\big)\right]\frac{du}{u^2 + \tfrac14}, \qquad x = \ln\frac{F_T}{K} = -k .
 ```
 
-The repository evaluates it by Gauss–Legendre quadrature with 512 nodes and a frequency cutoff of 200, and records a refined evaluation to bound the quadrature error, separately from the quote noise. Heston's forward-variance curve is parametric, E[V\_t] = θ\_H + (v\_0 − θ\_H) e^(−κt), so its variance-swap prices depend on the calibration; this is the contrast with Bergomi-type models.
+The repository evaluates it by Gauss–Legendre quadrature on [0, U] and climbs a ladder of (nodes, cutoff U) pairs: (512, 400), (1024, 600), (2048, 1500), (4096, 3000), (8192, 6000). A rung is accepted when it and the next one both price inside the no-arbitrage bounds and differ by at most 0.1 σ\_c on every contract; the finer rung's prices are kept and the difference is stored as a numerical diagnostic, separate from the quote noise. Low variance with a steep skew at one week needs the upper rungs, because the integrand then decays slowly in u; every one of the 60,000 Heston surfaces of the bank passed. Heston's forward-variance curve is parametric, E[V\_t] = θ\_H + (v\_0 − θ\_H) e^(−κt), so its variance-swap prices depend on the calibration; this is the contrast with Bergomi-type models.
 
 The lesson's Heston task infers (v\_0, θ\_H, σ\_v, ρ\_H) with κ fixed at 2, on the same 63 contracts and the same quote noise as the rough task. The model is simulated, where paths are needed, with the repository's Heston kernels.
 
@@ -386,17 +386,22 @@ The parameters are drawn uniformly on bounded ranges, which is what the reposito
 | η | Uniform(0.5, 3.5) | Mild to violent volatility of variance; SPX fits report values near 2 |
 | ρ | Uniform(−0.99, −0.2) | Negative correlation only: the equity skew. Positive values are left out on purpose |
 | σ\_0 (curve level) | Uniform(10%, 40%) | A quiet index to a volatile single stock |
-| s (curve slope) | Uniform(−0.3, 0.6) | Inverted to upward-sloping term structures: σ(1y) / σ(1w) between 0.7 and 1.6 |
+| s (curve slope) | Uniform(−0.3, 0.6) | Inverted to upward-sloping term structures: before the perturbations, the last interval's forward variance is between 0.78 and 1.44 times the first's |
+| u\_1, …, u\_7 (curve perturbations) | Uniform(−0.2, 0.2) each, independently | Kinks and humps: each interval's level moves by up to 22% around the smooth curve, as event dates and real term structures do |
 
-The curve is context, not a target: the network conditions on its 8 knots and does not infer them. For a real smile the knots come from the chain. The prior on the curve therefore describes the surfaces the network must be ready for, not a belief about ξ\_0.
+The curve is context, not a target: the network conditions on the logarithms of its 7 levels and does not infer them. For a real smile the levels come from the chain. The prior on the curve therefore describes the surfaces the network must be ready for, not a belief about ξ\_0. The perturbations are there so that the network does not learn that every curve is a straight line in t, which a real chain would contradict on the first day.
 
 A uniform prior is the simplest honest choice, and it makes the posterior proportional to the likelihood inside the box, so that the posterior and the least-squares objective can be compared directly. The exercises change it.
 
 ### Prior predictive check
 
-A prior predictive check asks whether the prior produces smiles that look like real ones. The check draws ⟨S2⟩ parameter vectors and curves from the prior, prices each surface, and computes four statistics per surface: the ATM implied volatility at 1 month, the ATM skew at 1 month, the exponent of the skew's term structure, and the curvature at 1 month. It compares their distribution with the same statistics computed on the SPY chain and on ⟨S8⟩ further dates.
+A prior predictive check asks whether the prior produces smiles that look like real ones. The check takes 2,000 held-out surfaces of the bank, each priced from a draw of the prior, and computes four statistics per surface: the ATM implied volatility at 1 month, the ATM skew at 1 month, the exponent of the skew's term structure, and the curvature at 1 month, each from a quadratic fitted to the five quotes nearest the money. It computes them twice, from the clean model prices and from the noisy quotes, and compares their distribution with the same statistics computed on the SPY chain and on ⟨S8⟩ further dates. A real design grid is read off a smoothing spline, so its statistics compare with the clean distribution; the noisy one shows how much of each statistic the quote noise hides.
 
-*Pending figure ⟨S2-1⟩: prior predictive check, four smile statistics over the simulated bank against the real values.* How to read the figure: each panel is one statistic. The blue histogram shows the simulated surfaces and the blue dashed line their median. The orange marks are the real values. A good prior covers the real values and leaves room on both sides for other underlyings and other days.
+*Pending figure ⟨S2-1⟩: the same check for rough Bergomi, with the real values of ⟨S8⟩.* The Heston version, without real values, is below.
+
+![Prior predictive check for the Heston task: four smile statistics over 2,000 held-out surfaces, from the clean model prices (filled) and the noisy quotes (outline).](images/calibration-03-prior-predictive-heston.png)
+
+How to read the figure: each panel is one statistic. The filled histogram shows the clean model smiles and the dashed line their median; the outline shows the same statistic read from the noisy quotes. The real values will be marked when study S8 has a chain; the dotted line in the third panel is the SPX exponent of about −0.4 reported by Bayer, Friz and Gatheral (2016). A good prior covers the real values and leaves room on both sides for other underlyings and other days. Two things show already. The Heston prior reaches an exponent of −0.4 only in its tail: 90% of its clean smiles lie between −0.38 and −0.05, because Heston's skew flattens at short maturities. And the 1-month curvature read from noisy quotes is spread far wider than the clean one, from −5.1 to 13.3 against −2.3 to 12.3 for the central 90%, which is the noise that keeps η loosely identified.
 
 ### One surface, step by step
 
@@ -406,23 +411,29 @@ The hybrid scheme turns three streams of standard normals, one per path and time
 2. **Build the driver.** Y at step i is the sum of an exact term for the most recent interval, which is a Gaussian correlated with ΔW\_i, and a convolution of the older increments with the kernel (t\_i − t\_k)^(H−½) evaluated at the optimal points of Bennedsen, Lunde and Pakkanen. The convolution of 504 steps is one FFT per path batch.
 3. **Build the variance.** V\_i = ξ\_0(t\_i) exp(η Y\_i − ½ η² Var(Y\_i)), with Var(Y\_i) the discrete variance of the scheme, so that E[V\_i] = ξ\_0(t\_i) holds in the discretized model as well.
 4. **Build the price.** The log price advances by −½ V\_{i−1} Δ + √(V\_{i−1} Δ) (ρ z\_i + √(1 − ρ²) z^⊥\_i), the left-point Euler step. Along the way the scheme accumulates ∫ V ds and ∫ √V dW, which the pricer needs.
-5. **Price the contracts.** Conditional on the path of (V, W), the price at maturity is log-normal with a known mean and variance, so each put is a Black–Scholes formula per path (Appendix D). Average over 2^17 paths; the standard error of each price is recorded and must stay below a tenth of its quote-noise standard deviation.
+5. **Price the contracts.** Conditional on the path of (V, W), the price at maturity is log-normal with a known mean and variance, so each put is a Black–Scholes formula per path (Appendix D). Every normal draw is used twice, with its sign flipped (antithetic pairs), and two quantities with known mean zero are subtracted in proportion, per maturity (control variates, Appendix D.4). The average starts at 2^15 paths; the standard error of each price is recorded, and the path count doubles, up to 2^18, until every standard error is below a quarter of its quote-noise standard deviation.
 
-At the prior median the 1-month ATM implied volatility is ⟨S2⟩%, the 1-month ATM skew ⟨S2⟩ per unit of log-moneyness, and the 1-week skew ⟨S2⟩: the skew steepens as T^(H−½) = T^(−0.315) toward short maturities.
+At the prior median the 1-month ATM implied volatility is 22.8%, below the curve's flat 25%: with negative correlation and a large vol-of-vol the at-the-money level sits under the variance-swap level. The 1-month ATM skew is −0.59 per unit of log-moneyness and the 1-week skew −0.97: the skew steepens toward short maturities, as T^(H−½) = T^(−0.315) in the limit. The surface costs 6.4 CPU-seconds at 2^15 paths per block; its largest Monte Carlo standard error is 0.18 σ\_c and its median 0.044 σ\_c, so the first rung of the ladder suffices.
 
 ### An example surface
 
-*Pending figure ⟨S2-2⟩: one simulated surface at the prior median, as implied volatilities against δ for the 7 maturities, with the 63 noisy quotes and their noise bars; and the ATM skew against maturity on log–log axes with the fitted slope.* How to read the figure: the left panel shows what a desk sees, the implied volatilities of the 63 quotes, with error bars of one quote-noise standard deviation, and the clean model smile through them. The right panel shows the absolute ATM skew at the 7 maturities on log–log axes; the slope of the fitted line is H − ½, which is how the smile identifies H.
+![One simulated rough-Bergomi surface at the centre of the prior (H = 0.185, η = 2.0, ρ = −0.595, flat 25% curve). Left: implied volatilities against δ at the 7 maturities, the model smile and the 63 noisy quotes. Right: the absolute ATM skew against maturity on log–log axes, with the fitted power law and the short-maturity formula.](images/calibration-01-example-surface-rough.png)
+
+How to read the figure: the left panel shows what a desk sees, the implied volatilities of the 63 quotes, with error bars of one quote-noise standard deviation, and the clean model smile through them. The bars are widest in the long-dated wings, where vega is smallest, and the noise is Gaussian in price, not in volatility: the low quote at one year and δ = 1.5 is 2.4 standard deviations below the model in price and almost 4 in volatility. The right panel shows the absolute ATM skew at the 7 maturities on log–log axes. The short-maturity formula (dotted) is within 11% of the simulated skew at one and two weeks and drifts above it at longer maturities, by 47% at one year. The power law fitted from one week to one year has exponent −0.38, against H − ½ = −0.32: over a year of maturities the term structure is steeper than its short-maturity limit when η is large. The smile identifies H through the whole simulated map, which the network learns, rather than through the fitted exponent alone. The crosses are the skews read from the noisy quotes; at one year they are as uncertain as the skew itself is small.
 
 ### The skew's term structure
 
 For short maturities the at-the-money skew of the rough Bergomi smile, ψ(T) = ∂σ\_imp / ∂k at k = 0, follows a power law (Bayer, Friz and Gatheral 2016; El Euch, Fukasawa, Gatheral and Rosenbaum 2019):
 
 ```math
-\psi(T) \;\approx\; \frac{\rho\,\eta\,\sqrt{2H}}{\big(H+\tfrac12\big)\big(H+\tfrac32\big)}\; T^{\,H-\frac12}, \qquad T \to 0 .
+\psi(T) \;\approx\; \frac{\rho\,\eta\,\sqrt{2H}}{2\,\big(H+\tfrac12\big)\big(H+\tfrac32\big)}\; T^{\,H-\frac12}, \qquad T \to 0 .
 ```
 
-Two facts follow. The slope of log|ψ| against log T is H − ½, so the term structure of the skew identifies H on its own. The level of the skew at any maturity is proportional to ρη, so the smile identifies the product, not the factors. Equity-index markets show skew term structures with exponents near −0.4, which is the empirical case for roughness and the reason the design grid starts at one week. The curvature of the smile, the second derivative in k, depends on η² (with H and ρ), at order T^(2H−1); it is the quantity that separates η from ρ, and it lives in the wings, where the quotes are noisiest. Appendix D states the expansions; study S2 measures how well each direction is recovered.
+Two facts follow. The slope of log|ψ| against log T is H − ½ at short maturities, so the term structure of the skew identifies H on its own; over the design's one week to one year the fitted slope is steeper than H − ½ at the centre of the prior, so reading H off a real smile as the exponent plus ½ tends to understate it. The prior predictive study measures the gap across the prior: ⟨S2⟩. The level of the skew at any maturity is proportional to ρη, so the smile identifies the product, not the factors. Equity-index markets show skew term structures with exponents near −0.4, which is the empirical case for roughness and the reason the design grid starts at one week. The curvature of the smile, the second derivative in k, depends on η² (with H and ρ), at order T^(2H−1); it is the quantity that separates η from ρ, and it lives in the wings, where the quotes are noisiest. Appendix D states the expansions; study S2 measures how well each direction is recovered.
+
+![The same plot for Heston at the centre of its prior (v0 = θ = 0.085, σ_v = 0.8, ρ = −0.525, κ = 2).](images/calibration-02-example-surface-heston.png)
+
+How to read the figure: Heston's skew is nearly flat from one week to one month, at −0.36 to −0.35, and falls only beyond; no power law fits it (the dashed line, exponent −0.18 over the year). A Markovian model of this kind produces a skew that tends to a constant as T → 0, which is the short-maturity behaviour index smiles do not show and the reason the lesson moves on to a rough model.
 
 ### From parameters to a product price
 
@@ -431,7 +442,7 @@ Given θ and ξ\_0, any product the model can simulate has a price, by Monte Car
 - **Variance swap** on [0, T]: fair strike K\_var = E[Q\_T] = (1/T) ∫₀ᵀ ξ\_0(t) dt. No parameter enters: this is the control.
 - **Volatility swap** on [0, T]: fair strike K\_vol = E[√Q\_T], which lies below √K\_var by a convexity correction of about Var(Q\_T) / (8 K\_var^{3/2}). Var(Q\_T) grows with η and depends on H.
 - **Forward-start call** with strike set at T\_1 and expiry T\_2: price E[(S\_{T\_2} / S\_{T\_1} − 1)⁺]. Under Black–Scholes it depends on σ alone; under stochastic volatility it depends on the law of the variance at T\_1 and on the forward smile, so on η, H and ρ. It is the textbook product for calibration and model risk (Bergomi 2004; Schoutens, Simons and Tistaert 2004).
-- **A vanilla outside the grid**, the 2-year 90% put: an extrapolation in maturity, which also needs ξ\_0 beyond the last quoted knot.
+- **A vanilla outside the grid**, the 2-year 90% put: an extrapolation in maturity, which also needs ξ\_0 beyond the last quoted maturity. The study holds the last level flat out to two years and says so; the extrapolation is stated, not inferred.
 
 The forecast of the SVJ lesson becomes the pricing step here: nothing is re-estimated, the draw supplies θ, the market supplies ξ\_0, and only the Monte Carlo paths are new. [From posterior to prices](#from-posterior-to-prices) turns the prices under all draws into a range and a reserve.
 
@@ -475,17 +486,17 @@ The likelihood is the probability density of the 63 observed quotes, given the p
 
 ### Heston: a formula
 
-For Heston each P\_c is the Lewis integral, 512 quadrature nodes, about a millisecond; the 63 prices share the characteristic function across strikes within a maturity. One likelihood evaluation costs ⟨S9⟩ milliseconds, a random-walk chain of 20,000 evaluations ⟨S9⟩ minutes. This is why Heston has an exact posterior to show.
+For Heston each P\_c is the Lewis integral, and the 63 prices of a surface share the characteristic function across strikes within a maturity: at the first rung of the quadrature ladder a surface costs about 15 CPU-milliseconds, at the second about 35. One likelihood evaluation costs ⟨S9⟩ milliseconds, a random-walk chain of 20,000 evaluations ⟨S9⟩ minutes. This is why Heston has an exact posterior to show.
 
 ### Rough Bergomi: a Monte Carlo run
 
-For rough Bergomi each P\_c is an expectation over the Volterra path. The study estimates it with N = 2^17 paths on two time grids: 504 steps to 63 days for the five short maturities, 504 steps to one year for the two long ones. The estimator is the conditional Black–Scholes price (Appendix D): conditional on the variance path and the correlated part of the price shock, the terminal price is log-normal with mean and variance known from the path, so the put price is a formula per path and the Monte Carlo averages formulas rather than payoffs. Its variance is small and bounded, which is what makes the standard error reliable; antithetic paths and the call-parity bound reduce it further (McCrickerd and Pakkanen 2018).
+For rough Bergomi each P\_c is an expectation over the Volterra path. The study estimates it on two time grids, 504 steps to 63 days for the five short maturities and 504 steps to one year for the two long ones, each with its own random stream; each grid starts at N = 2^15 paths and doubles, up to 2^18, until its standard errors meet the budget below. The estimator is the conditional Black–Scholes price (Appendix D): conditional on the variance path and the correlated part of the price shock, the terminal price is log-normal with mean and variance known from the path, so the put price is a formula per path and the Monte Carlo averages formulas rather than payoffs. Its variance is small and bounded, which is what makes the standard error reliable; antithetic paths and two control variates reduce it further (McCrickerd and Pakkanen 2018; Appendix D.4).
 
-One priced surface costs ⟨S9⟩ CPU-seconds. The standard errors s\_c are recorded with every price and the bank requires s\_c ≤ 0.1 σ\_c for every quote, so that the Monte Carlo noise is at most 1% of the quote-noise variance when the two are added.
+One priced surface costs ⟨S9⟩ CPU-seconds. The standard errors s\_c are recorded with every price and the bank requires s\_c ≤ 0.25 σ\_c for every quote, so that the Monte Carlo noise adds at most 6.25% to the quote-noise variance, and ⟨S1⟩% at the bank's median. A surface that misses the budget at 2^18 paths stops the bank with an error; nothing is redrawn silently, because redrawing would remove the hardest parameters from the prior.
 
 ### The likelihood is only estimated
 
-With Monte Carlo prices the log-likelihood is evaluated at P̂\_c rather than P\_c. The Gaussian form is not linear in the price, so the estimate of the likelihood is not unbiased, unlike the particle filter's in the SVJ lesson. Two facts keep this harmless: the bank's rule bounds the Monte Carlo error at a tenth of the quote noise, and the estimator covariance across contracts is stored, so the exact chain of study S9 can add it to the noise covariance. Common random numbers make the likelihood a smooth deterministic function of θ for a fixed seed, which the classical optimizer needs; they introduce a fixed-sample bias that a second seed measures. Appendix G quantifies the second-order bias.
+With Monte Carlo prices the log-likelihood is evaluated at P̂\_c rather than P\_c. The Gaussian form is not linear in the price, so the estimate of the likelihood is not unbiased, unlike the particle filter's in the SVJ lesson. Two facts keep this harmless: the bank's rule bounds the Monte Carlo error at a quarter of the quote noise, and the estimator covariance across contracts is stored, so the exact chain of study S9 can add it to the noise covariance. Common random numbers make the likelihood a smooth deterministic function of θ for a fixed seed, which the classical optimizer needs; they introduce a fixed-sample bias that a second seed measures. Appendix G quantifies the second-order bias.
 
 ### The cost of the exact posterior
 
@@ -551,31 +562,31 @@ The model is cheap to simulate per surface relative to an MCMC chain, even thoug
 
 | Item | Content | Size per surface |
 | --- | --- | --- |
-| Input | The 63 quotes, each divided by its noise standard deviation, and the 8 knots of the forward-variance curve | 71 |
+| Input | The 63 quotes, each divided by its noise standard deviation, and the logarithms of the 7 forward-variance levels | 70 |
 | Targets | H, η, ρ in the logit coordinates of their ranges | 3 |
 | Output | Random draws from the joint posterior of the 3 targets | 1,000 × 3 in the study; any number on request |
 
-There is no summary network in Stage B: 71 numbers go straight into the inference network, as in the repository's rough pilot. The curve enters as context, so one network serves every term structure the prior covers. In Stage D the input becomes a set of tokens (δ, T, y\_c / σ\_c, present-or-missing) read by a set transformer, so that a real chain with missing strikes or maturities is handled by the same network; Appendix F explains why training with random masks is the right way to teach it.
+There is no summary network in Stage B: 70 numbers go straight into the inference network, as in the repository's rough pilot. The Heston check network has the same input without the curve, 63 numbers, because Heston's curve is a function of its parameters. The curve enters as context, so one network serves every term structure the prior covers. In Stage D the input becomes a set of tokens (δ, T, y\_c / σ\_c, present-or-missing) read by a set transformer, so that a real chain with missing strikes or maturities is handled by the same network; Appendix F explains why training with random masks is the right way to teach it.
 
 ### The simulator and the training bank
 
-Training is offline, on a bank generated once. Each of 100,000 training surfaces is one draw of (H, η, ρ, σ\_0, s), one Monte Carlo pricing of the 63 contracts at 2^17 paths, and one draw of quote noise. The bank stores the clean prices, the noisy observations, the parameters, the curve knots, the Monte Carlo standard errors and the estimator covariance, under the repository's `option_bank_v1` schema with its seed streams and manifests. Generation runs as an array of single-core jobs on the cluster and costs ⟨S1⟩ CPU-hours; the assembler verifies every shard.
+Training is offline, on a bank generated once. Each of 100,000 training surfaces is one draw of (H, η, ρ), one draw of a curve (σ\_0, s, u\_1, …, u\_7), one Monte Carlo pricing of the 63 contracts on the path ladder, and one draw of quote noise. The bank stores the clean prices, the noisy observations, the parameters, the 7 curve levels with their (σ\_0, s), the Monte Carlo standard errors, the estimator covariance and the path count each maturity block needed. Its format, `calibration_bank_v1`, is the repository's `option_bank_v1` with these context arrays added, and keeps its seed streams, shards and manifests; the archived option-bank modules are imported rather than edited, because archived evidence pins their source hashes. Each example has four independent streams, for the prior, the pricing, the quotes and the curve, so any surface can be regenerated alone. Generation runs as an array of single-core jobs on the cluster and costs ⟨S1⟩ CPU-hours; the assembler verifies every shard.
 
 At training time each epoch draws fresh quote noise around the clean prices of every training surface (the repository's augmentation), so that the network sees four noise realizations per priced surface at no pricing cost, and never the same noisy surface twice. Validation uses 5,000 surfaces with their stored noise; 5,000 test surfaces and 2,000 SBC surfaces are never used for selection.
 
 ### The inference network: from noise to posterior draws
 
-The inference network is BayesFlow's FlowMatching, the class slot 4 uses, with three targets and 71 conditions. Training uses straight lines, as in the SVJ lesson. From here on θ stands for the 3 standardized targets. For one training triple, take its targets θ, draw a noise vector z from a standard normal in 3 dimensions, and draw a time τ between 0 and 1. The point at time τ on the straight line from z to θ is x\_τ = (1 − τ) z + τ θ, and its velocity along the line is θ − z. The velocity network u\_φ sees x\_τ, τ and the 71 conditions, and is trained to predict that velocity:
+The inference network is BayesFlow's FlowMatching, the class slot 4 uses, with three targets and 70 conditions. Training uses straight lines, as in the SVJ lesson. From here on θ stands for the 3 standardized targets. For one training triple, take its targets θ, draw a noise vector z from a standard normal in 3 dimensions, and draw a time τ between 0 and 1. The point at time τ on the straight line from z to θ is x\_τ = (1 − τ) z + τ θ, and its velocity along the line is θ − z. The velocity network u\_φ sees x\_τ, τ and the 70 conditions, and is trained to predict that velocity:
 
 ```math
 \mathcal{L}(\phi) = \mathbb{E}\,\Big\| u_\phi\big((1-\tau)\, z + \tau\,\theta,\ \tau,\ y/\sigma,\ \xi_0\big) - (\theta - z) \Big\|^2, \qquad z \sim \mathcal{N}(0, I),\quad \tau = u^{1.5},\ u \sim \mathcal{U}(0,1).
 ```
 
-Many lines pass through the same point at the same time, from different noise draws and different targets. The squared-error loss makes the network learn their average velocity, and following the average velocity from noise at τ = 0 lands on the posterior at τ = 1; Appendix F proves it. Sampling draws z and takes 50 Euler steps of size 0.02. The velocity network is BayesFlow's default TimeMLP, as in the SVJ design, with the 71 conditions in place of the 32 learned summaries.
+Many lines pass through the same point at the same time, from different noise draws and different targets. The squared-error loss makes the network learn their average velocity, and following the average velocity from noise at τ = 0 lands on the posterior at τ = 1; Appendix F proves it. Sampling draws z and takes 50 Euler steps of size 0.02. The velocity network is BayesFlow's TimeMLP with four hidden layers of 256 units, with the 70 conditions in place of the SVJ design's 32 learned summaries.
 
 ### Training
 
-The targets are standardized with their training mean and standard deviation, and the conditions as well, both frozen after training. The reference run uses ⟨S2⟩ epochs over the 100,000 surfaces with four noise draws each, Adam with a cosine schedule, and selects the epoch with the smallest validation loss (the repository's `fit_and_select`), on ⟨S2⟩ CPU cores in ⟨S2⟩ minutes. The study samples with the fixed-step Euler solver, compiled once, at ⟨S9⟩ seconds per surface for 1,000 draws.
+The targets are standardized with their training mean and standard deviation, and the conditions as well, both frozen after training. The reference run uses ⟨S2⟩ epochs over the 100,000 surfaces with four noise draws each, in batches of 256. The optimizer is BayesFlow's default for offline training: AdamW with weight decay 5 × 10⁻³ and gradient norms clipped at 1.5; the learning rate warms up from 5 × 10⁻⁵ to 5 × 10⁻⁴ over the first 5% of steps and then decays to zero along a cosine. The checkpoint kept is the epoch with the smallest validation loss, and its reload is checked by drawing twice with the same seed. Training runs on ⟨S2⟩ CPU cores in ⟨S2⟩ minutes. The study samples with the fixed-step Euler solver, compiled once, at ⟨S9⟩ seconds per surface for 1,000 draws.
 
 ### Where the likelihood enters
 
@@ -600,9 +611,9 @@ A learned posterior can be wrong in ways that the training loss does not reveal,
 
 ### Simulation-based calibration
 
-SBC (Talts et al. 2018) checks the posterior against the one thing simulation provides for free: the true parameters. Draw θ\* and a curve from the prior, price and add noise to get y, draw L = 1,000 posterior draws from the network given (y, ξ\_0), record the fractional rank of θ\* among the draws for each of the three targets, and repeat for 2,000 held-out surfaces. If the posterior is exact, θ\* is one more draw from it, so the ranks are uniform (Appendix G). The study uses the ECDF-difference form with the 95% simultaneous band of Säilynoja, Bürkner and Vehtari (2022), and requires all three curves to stay inside it; with three targets a correct posterior leaves one band by chance in up to 14% of studies, so a single excursion is a warning, not a verdict. SBC averages over the prior and passes a posterior that ignores the data, so the next checks cover what it misses.
+SBC (Talts et al. 2018) checks the posterior against the one thing simulation provides for free: the true parameters. Draw θ\* and a curve from the prior, price and add noise to get y, draw L = 1,000 posterior draws from the network given (y, ξ\_0), record the fractional rank of θ\* among the draws for each of the three targets, and repeat for 2,000 held-out surfaces. If the posterior is exact, θ\* is one more draw from it, so the ranks are uniform (Appendix G). The study plots the ranks in the ECDF-difference form of Säilynoja, Bürkner and Vehtari (2022) and judges them with a simultaneous Dvoretzky–Kiefer–Wolfowitz band, union-adjusted over the targets: the largest distance between the rank ECDF and the uniform CDF must stay below √(ln(2P/α) / (2B)), which is 0.035 for P = 3 targets, B = 2,000 surfaces and α = 5%. A correct posterior then fails the test in at most 5% of studies, counting all targets together. Ties between θ\* and a draw are broken at random. The DKW band does not use the structure of ranks, so it is wider than Säilynoja's and conservative: it can miss a mild miscalibration that the tailored band would catch, and the coverage table and the audit take over there. SBC averages over the prior and passes a posterior that ignores the data, so the next checks cover what it misses.
 
-*Pending figure ⟨S2-3⟩: SBC rank ECDF differences for H, η and ρ on 2,000 surfaces, with the 95% simultaneous band.* How to read the figure: each panel is one target; a flat curve at zero inside the grey band is a calibrated posterior; a sideways S is an overconfident one; a hump is a biased one.
+*Pending figure ⟨S2-3⟩: SBC rank ECDF differences for H, η and ρ on 2,000 surfaces, with the simultaneous DKW band.* How to read the figure: each panel is one target; a flat curve at zero inside the grey band is a calibrated posterior; a sideways S is an overconfident one; a hump is a biased one.
 
 ### Recovery, contraction and coverage
 
@@ -624,11 +635,11 @@ The audit corrects the amortized posterior for a given surface and is part of th
 
 1. Fit a multivariate Student t law with 5 degrees of freedom to the network's draws in the logit coordinates, with covariance inflated by 1.2², and mix it with 10% of the prior. This is the proposal q(θ).
 2. Draw M proposals from q.
-3. Price each proposal's 63 contracts by Monte Carlo at 2^15 paths with common random numbers across proposals, and evaluate the Gaussian log-likelihood with the Monte Carlo standard errors added to the noise variances.
+3. Price each proposal's 63 contracts by Monte Carlo at 2^13 paths per maturity block, with common random numbers across proposals, and evaluate the Gaussian log-likelihood with the Monte Carlo variances added to the noise variances. A quarter of the bank's path count is enough here, because the common random numbers make most of the Monte Carlo error a shift shared by all proposals, which the self-normalized weights do not see.
 4. Give each proposal the weight w = p(θ) L̂(θ) / q(θ), in the logit coordinates with the Jacobian included.
 5. Use the weighted proposals as the posterior. Their efficiency, and the Pareto k̂ of the largest weights (Vehtari et al. 2024), are the audit score.
 
-A proposal close to the posterior gives nearly equal weights, a high efficiency and a small k̂; a network that is off by δ posterior standard deviations gives an efficiency that falls roughly like e^(−δ²). The cost is M priced surfaces at reduced path counts, ⟨S9⟩ CPU-seconds. The flag threshold is an open decision: the SVJ study used 2% efficiency; this study reports the distribution of efficiencies and k̂ on 500 validation surfaces and proposes k̂ < 0.7 as the rule.
+A proposal close to the posterior gives nearly equal weights, a high efficiency and a small k̂; a network that is off by δ posterior standard deviations gives an efficiency that falls roughly like e^(−δ²). The cost is M priced surfaces at reduced path counts, ⟨S9⟩ CPU-seconds. The flag threshold is an open decision: the SVJ study used 2% efficiency; this study reports the distribution of efficiencies and k̂ on 500 held-out test surfaces and proposes k̂ < 0.7 as the rule.
 
 ### Posterior predictive check on a real smile
 
@@ -677,8 +688,8 @@ The study answers nine questions with explicit criteria. The table tracks them; 
 
 | # | Study | Question | Criterion | Result | Status |
 | --- | --- | --- | --- | --- | --- |
-| 1 | S1 | Cost and quality of the training bank | 100,000 surfaces with s\_c ≤ 0.1 σ\_c on every quote; CPU-hours per 1,000 surfaces reported | ⟨S1⟩ | pending |
-| 2 | S2 | Statistical calibration and identification | SBC curves inside the 95% simultaneous band for all 3 targets on 2,000 surfaces; 95% coverage between 93% and 97% | ⟨S2⟩ | pending |
+| 1 | S1 | Cost and quality of the training bank | 100,000 surfaces with s\_c ≤ 0.25 σ\_c on every quote; path counts used and CPU-hours per 1,000 surfaces reported | ⟨S1⟩ | pending |
+| 2 | S2 | Statistical calibration and identification | SBC rank ECDFs inside the simultaneous DKW band (family-wise 5%) for all 3 targets on 2,000 surfaces; 95% coverage between 93% and 97% | ⟨S2⟩ | pending |
 | 3 | S3 | Agreement with the exact Heston posterior | Means within 0.3 posterior sd and 90% widths within 25%, on 50 surfaces, all targets | ⟨S3⟩ | pending |
 | 4 | S4 | Agreement with the neural-pricer route | Same criterion, on 50 rough-Bergomi surfaces; pricer error below 0.5 σ\_c on held-out surfaces | ⟨S4⟩ | pending |
 | 5 | S5 | The audit | Distribution of efficiency and k̂ on 500 surfaces; flag rate at k̂ > 0.7 reported; cost per surface | ⟨S5⟩ | pending |
@@ -693,9 +704,9 @@ All timings are reported for one named machine, in CPU-seconds that count every 
 
 ### 1. The training bank (S1)
 
-The bank's manifest records the task fingerprint, the shard map, the per-surface Monte Carlo standard errors and the generation cost. The study reports the CPU-hours per 1,000 surfaces, the share of surfaces that failed the standard-error rule and were regenerated at a higher path count (never silently replaced), and the distribution of the ATM skew exponent across the bank.
+The bank's manifest records the task fingerprint, the shard map, the per-surface Monte Carlo standard errors and the generation cost. The study reports the CPU-hours per 1,000 surfaces, the share of maturity blocks that needed each rung of the path ladder, and the distribution of the ATM skew exponent across the bank. A surface that fails the rule at 2^18 paths stops its shard with an error naming the contract, and is never silently replaced.
 
-*Pending figure ⟨S1-1⟩: Monte Carlo standard error over quote-noise standard deviation across the bank, by maturity and δ.* How to read the figure: each panel is one maturity; the boxes show the ratio s\_c / σ\_c across surfaces at each δ; everything must sit below the dashed line at 0.1.
+*Pending figure ⟨S1-1⟩: Monte Carlo standard error over quote-noise standard deviation across the bank, by maturity and δ.* How to read the figure: each panel is one maturity; the boxes show the ratio s\_c / σ\_c across surfaces at each δ; everything must sit below the dashed line at 0.25.
 
 ### 2. Statistical calibration and identification (S2)
 
@@ -720,7 +731,7 @@ The pricer's held-out error in units of σ\_c, its training cost, and the agreem
 
 ### 5. The audit (S5)
 
-*Pending figure ⟨S5-1⟩: efficiency and k̂ of the audit on 500 validation surfaces, against the network's standardized error on the same surfaces.* How to read the figure: each point is one surface; the horizontal axis is the largest standardized error of the network's posterior mean against the audited posterior, the vertical axis the audit efficiency on a log scale; the dashed curve is e^(−δ²); points in the lower right are the surfaces the audit must flag, and the colour marks k̂ above 0.7.
+*Pending figure ⟨S5-1⟩: efficiency and k̂ of the audit on 500 held-out test surfaces, against the network's standardized error on the same surfaces.* How to read the figure: each point is one surface; the horizontal axis is the largest standardized error of the network's posterior mean against the audited posterior, the vertical axis the audit efficiency on a log scale; the dashed curve is e^(−δ²); points in the lower right are the surfaces the audit must flag, and the colour marks k̂ above 0.7.
 
 ### 6. The classical route (S6)
 
@@ -749,10 +760,10 @@ The SPY chain of ⟨date⟩: number of quotes before and after cleaning, the for
 
 | Route | Per surface | Notes |
 | --- | --- | --- |
-| One Monte Carlo likelihood evaluation, 2^17 paths | ⟨S9⟩ CPU-s | the unit everything else is counted in |
+| One Monte Carlo likelihood evaluation, 2^15 paths per block | ⟨S9⟩ CPU-s | the unit everything else is counted in |
 | Exact MCMC with the Monte Carlo pricer, to 400 effective draws | ⟨S9⟩ CPU-h | extrapolated from a fixed-budget run |
 | Amortized posterior, 1,000 draws | ⟨S9⟩ s | plus ⟨S9⟩ s to load the network once |
-| Audit, M proposals at 2^15 paths | ⟨S9⟩ CPU-s | |
+| Audit, M proposals at 2^13 paths per block | ⟨S9⟩ CPU-s | |
 | Neural pricer with MCMC, 4 chains | ⟨S9⟩ s | plus the pricer's training, once |
 | Multi-start least squares, 10 starts, Monte Carlo pricer with common random numbers | ⟨S9⟩ CPU-s | |
 | Heston: exact MCMC with the Fourier likelihood | ⟨S9⟩ CPU-s | the check model |
@@ -796,7 +807,7 @@ The main risks are of method rather than of schedule: a posterior whose width is
 | The posterior width is the noise model's | The reserve is as arbitrary as σ\_c | State it; derive σ\_c from bid-ask widths; show the exercise that doubles σ\_c; report the range in units of the quote noise as well |
 | The model cannot produce the real smile | A confident, wrong posterior; the audit passes because the likelihood is evaluated under the wrong model | Prior and posterior predictive checks on the real smile; the Heston comparison; hand over to slot 6 |
 | ξ\_0 from the chain carries its own error | A biased level at every maturity | Report the replication error; treat the level as conditioned on; show the sensitivity of H, η, ρ to a bumped curve |
-| Monte Carlo noise in the audit likelihood | Weights biased where s\_c is not small | The 0.1 rule; add the estimator covariance to the noise; raise the path count on flagged surfaces |
+| Monte Carlo noise in the audit likelihood | Weights biased where s\_c is not small | Common random numbers across proposals; add the Monte Carlo variances to the noise; raise the path count on flagged surfaces |
 | The valley makes the network's job hard | Posterior too narrow along the valley | SBC on the product ρη and on η separately; the audit catches single surfaces; the pricer route is the cross-check |
 | The design grid is not the real chain | Interpolation error enters as data | Report the smile-fit residuals; Stage D reads the chain as quoted |
 | The forward-start depends on ξ\_0 beyond the data | The out-of-grid product's range mixes calibration and extrapolation | Keep the forward-start inside one year; state the extrapolation of the 2-year put |
@@ -901,7 +912,7 @@ Lewis (2001) writes the call as the forward minus an integral of the characteris
 c(k,T) = 1 - \frac{e^{-x/2}}{\pi}\int_0^\infty \mathrm{Re}\!\left[e^{iux}\,\varphi\!\big(u - \tfrac{i}{2}\big)\right]\frac{du}{u^2 + \tfrac14}, \qquad x = -k .
 ```
 
-Under Black–Scholes φ(u − i/2) = exp(−½σ²T(u² + ¼)) is real and the integral reproduces the formula of Appendix B, which is the pricer's first test. The integrand decays exponentially in u, so Gauss–Legendre quadrature on [0, 200] with 512 nodes is accurate to far below the quote noise for the design grid; the repository evaluates a refined rule as well and stores the difference as a numerical diagnostic, separate from the quote noise. Puts follow by parity.
+Under Black–Scholes φ(u − i/2) = exp(−½σ²T(u² + ¼)) is real and the integral reproduces the formula of Appendix B, which is the pricer's first test. The integrand decays like exp(−½ w u²), with w the total variance to the maturity, so a cutoff U and a node count that resolve it are accurate to far below the quote noise. For the design grid w ranges from about 2 × 10⁻⁴ (10% volatility over one week) to about 0.16, and the needed cutoff from a few hundred to a few thousand, which is why the pricer climbs the ladder of the main text and accepts a rung only when the next one agrees with it within 0.1 σ\_c; the difference is stored as a numerical diagnostic, separate from the quote noise. Puts follow by parity.
 
 ### C.3 The no-jump branch and the forward-variance curve
 
@@ -939,15 +950,29 @@ Write the price shock as ρ dW + √(1 − ρ²) dW^⊥. Conditional on the path
 
 So, conditional on the driver, the put price is the Black–Scholes put with an effective forward F exp(ρ ∫√V dW − ½ρ² ∫V ds) and total variance (1 − ρ²) ∫V ds (Romano and Touzi 1997; Willard 1997). The Monte Carlo averages this formula over paths. Each term lies in [0, K], so the estimator has finite variance even where raw call payoffs do not have a second moment, and its standard error is reliable. The repository's pricer accumulates ∫V ds and ∫√V dW along each path, prices puts this way, and obtains calls by parity; McCrickerd and Pakkanen (2018) add antithetic paths and a control variate on the same idea.
 
-### D.4 The short-maturity skew
+### D.4 Antithetic pairs and control variates
+
+The pricer reduces the variance of the conditional estimator in two ways (McCrickerd and Pakkanen 2018 use the same two ideas).
+
+**Antithetic pairs.** Each block of standard normals z that drives the scheme is used twice, as z and as −z. The two estimates of a price are averaged within the pair, and the pair averages are the independent units from which means and standard errors are computed. The put price responds to the driver mostly through smooth, roughly monotone functions of it, so the two halves of a pair are negatively correlated and the pair average typically has less than half the variance of a single path.
+
+**Control variates.** For each maturity T\_i of a block, two path quantities with known mean zero are recorded:
+
+```math
+C^{(1)} = \exp\!\Big(\rho\sum_{j\le i}\sqrt{V_{j-1}}\,\Delta W_j - \tfrac12\rho^2\sum_{j\le i} V_{j-1}\Delta\Big) - 1, \qquad C^{(2)} = \sum_{j\le i} V_{j-1}\Delta \;-\; \sum_{j\le i}\xi_0(t_{j-1})\,\Delta .
+```
+
+The first is the effective forward of Appendix D.3 minus one. Each factor exp(ρ √V\_{j−1} ΔW\_j − ½ρ² V\_{j−1} Δ) has conditional mean one, because ΔW\_j is Gaussian and independent of V\_{j−1} in the left-point scheme, so C^(1) has mean zero exactly, not only in the limit. The second is the integrated variance minus its mean, which is known exactly because the hybrid scheme keeps E[V\_j] = ξ\_0(t\_j). The conditional Black–Scholes put is a smooth function of exactly these two quantities, through its forward and its total variance, so to first order they explain its variation from path to path. Within a block, the vector of put payoffs is regressed on the 2 × (number of maturities) controls by least squares, and the price is the mean of the payoffs minus the fitted linear part; the standard error comes from the residuals, with the degrees of freedom reduced by the number of controls. Estimating the coefficients on the same sample adds a bias of order 1/N, negligible at the path counts used. The variance falls by the factor 1 − R² of the regression, ⟨S1⟩ at the prior median.
+
+### D.5 The short-maturity skew
 
 For the rough Bergomi model the at-the-money skew ψ(T) = ∂σ\_imp(k, T)/∂k at k = 0 has the short-maturity expansion
 
 ```math
-\psi(T) = \frac{\rho\,\eta\,\sqrt{2H}}{\big(H+\tfrac12\big)\big(H+\tfrac32\big)}\;T^{\,H-\frac12}\,\big(1 + o(1)\big), \qquad T\to 0,
+\psi(T) = \frac{\rho\,\eta\,\sqrt{2H}}{2\,\big(H+\tfrac12\big)\big(H+\tfrac32\big)}\;T^{\,H-\frac12}\,\big(1 + o(1)\big), \qquad T\to 0,
 ```
 
-(Bayer, Friz and Gatheral 2016, from the general result of Fukasawa 2011; El Euch, Fukasawa, Gatheral and Rosenbaum 2019 give the next terms and the at-the-money curvature). For H = ½ the exponent is zero and the skew is flat in T, as in Markovian models; for H < ½ it explodes as T → 0, which is what index smiles do. The at-the-money implied variance itself is, to leading order, the integrated forward variance (1/T) ∫ξ\_0 with a correction of order η², and the curvature is of order η² T^(2H−1) with a coefficient that depends on H and ρ. Study S2 checks the exponent and the constant against the Monte Carlo surfaces of the bank, maturity by maturity; the identification statements of the lesson rest on that check rather than on the expansion alone.
+(Bayer, Friz and Gatheral 2016, from the general result of Fukasawa 2011; El Euch, Fukasawa, Gatheral and Rosenbaum 2019 give the next terms and the at-the-money curvature). The constant follows in three lines from the first-order expansion in the volatility of volatility. Write √V\_t ≈ √ξ\_0 (1 + ½ η Y\_t) for a flat curve. The third cumulant of the log return is then 6 ρ ξ\_0^(3/2) ∫₀ᵀ∫₀ᵗ ½ η √(2H) (t − s)^(H−½) ds dt, the double integral is T^(H+3/2) / ((H + ½)(H + 3/2)), and the implied-volatility skew at the money is the standardized skewness divided by 6√T. The same steps for Heston with κ = 0 give ρσ\_v / (4√v\_0), the textbook short-maturity Heston skew (Gatheral 2006), which checks the constant. For H = ½ the exponent is zero and the skew is flat in T, as in Markovian models; for H < ½ it explodes as T → 0, which is what index smiles do. The at-the-money implied variance itself is, to leading order, the integrated forward variance (1/T) ∫ξ\_0 with a correction of order η², and the curvature is of order η² T^(2H−1) with a coefficient that depends on H and ρ. Study S2 checks the exponent and the constant against the Monte Carlo surfaces of the bank, maturity by maturity; the identification statements of the lesson rest on that check rather than on the expansion alone.
 
 ## Appendix E. Calibration as estimation
 
@@ -1011,7 +1036,7 @@ For proposals θ^(m) ~ q and weights w^(m) ∝ p(θ^(m)) L(θ^(m)) / q(θ^(m)), 
 
 ### G.3 Monte Carlo noise in the likelihood
 
-With P̂\_c = P\_c + s\_c ζ\_c, ζ\_c ~ N(0, 1) independent of the quote noise, the plug-in log-likelihood −½ Σ ((y\_c − P̂\_c) / σ\_c)² has expectation −½ Σ ((y\_c − P\_c) / σ\_c)² − ½ Σ s\_c² / σ\_c², and exp of it is biased relative to the likelihood by a factor that depends on θ only through s\_c(θ). With s\_c ≤ 0.1 σ\_c the shift is at most 0.005 per quote, 0.3 over 63 quotes, and nearly constant in θ; using σ\_c² + s\_c² as the variance removes the first-order dependence. The exact chain of study S9 uses the stored estimator covariance and a second seed to check that its posterior is insensitive to the Monte Carlo noise.
+With P̂\_c = P\_c + s\_c ζ\_c, ζ\_c ~ N(0, 1) independent of the quote noise, the plug-in log-likelihood −½ Σ ((y\_c − P̂\_c) / σ\_c)² has expectation −½ Σ ((y\_c − P\_c) / σ\_c)² − ½ Σ s\_c² / σ\_c², and exp of it is biased relative to the likelihood by a factor that depends on θ only through s\_c(θ). With the bank's bound s\_c ≤ 0.25 σ\_c the shift is at most 0.031 per quote, 2 over 63 quotes, and with the typical s\_c ≈ 0.05 σ\_c it is 0.08 over 63 quotes; it is nearly constant in θ, and using σ\_c² + s\_c² as the variance removes the first-order dependence. The same error enters training: the bank's clean prices carry it, so the network learns the posterior for a noise variance σ\_c² + s\_c², which is at most 3% wider in standard deviation than the declared one, and in the typical case 0.1%. The exact chain of study S9 uses the stored estimator covariance and a second seed to check that its posterior is insensitive to the Monte Carlo noise.
 
 ### G.4 Agreement metrics
 
@@ -1051,23 +1076,23 @@ Let p̂ be the point price and q\_α the α-quantile of the price distribution u
 
 ### I.1 The chain
 
-The SPY end-of-day chain for one date is fetched through the Alpha Vantage connector's historical options endpoint: strike, expiration, type, bid, ask, last, volume, open interest and the vendor's implied volatility and Greeks. Only derived quantities are committed to the repository: the forward and discount per maturity, the forward-variance knots, the 63 design-grid prices with their noise standard deviations, and the cleaned implied volatilities. The raw quotes and the provenance (vendor, date, time of capture, licence terms) are recorded in `data/SOURCES.md` and the raw file stays outside the repository.
+The SPY end-of-day chain for one date comes from a vendor file: Alpha Vantage's historical options endpoint (a premium endpoint, CSV) or Cboe's delayed-quotes page (JSON, with OCC option symbols). Either gives strike, expiration, type, bid and ask, and the reader `scripts/build_surface.py` parses both. Only derived quantities are committed to the repository: the forward and discount per maturity, the 7 forward-variance levels, the 63 design-grid prices with their noise standard deviations, the implied-volatility grid, the cleaning counts and the SHA-256 of the raw file. The raw quotes and the provenance (vendor, date, time of capture, licence terms) are recorded in `data/SOURCES.md` and the raw file stays outside the repository.
 
 ### I.2 Cleaning rules
 
 1. Keep out-of-the-money quotes only: puts below the forward, calls above.
 2. Drop quotes with zero bid, with a relative spread (ask − bid) / mid above 50%, or with a mid below intrinsic value.
 3. Within each maturity, enforce monotonicity of call prices in strike and of put prices in strike, and convexity, by dropping the offending quote rather than adjusting it.
-4. Maturities: use the expirations nearest the 7 design maturities in trading days; record the actual days to expiry and interpolate ξ\_0 linearly between them.
-5. The forward and the discount factor per maturity from the parity regression of Appendix B.2 on the five pairs nearest the money; SPY's early-exercise premium on short-dated out-of-the-money options is treated as quote noise.
+4. Maturities: count business days from the valuation date to each expiration (exchange holidays are not removed), keep every expiration with at least 8 cleaned quotes, and require the expirations to bracket the 7 design maturities; values at a design maturity are interpolated between the two bracketing expirations, in total variance.
+5. The forward and the discount factor per maturity from the parity regression of Appendix B.2 on the six pairs nearest the money; SPY's early-exercise premium on short-dated out-of-the-money options is treated as quote noise.
 
 ### I.3 Reading the design grid
 
-For each maturity, fit a cubic smoothing spline to implied volatility against δ on the cleaned quotes, read σ\_imp at δ ∈ {−2, …, 2}, convert to the forward-unit price of the out-of-the-money option, and set the quote's noise standard deviation to the vega at that point times the local half-spread in implied volatility, floored at the design's s\_iv(δ). The smile-fit residuals are reported; quotes beyond the last cleaned strike on either side are not extrapolated, and a grid point outside the quoted range is marked missing, which Stage B treats by imputing the design noise and Stage D by masking.
+For each expiration, fit a cubic smoothing spline to implied volatility against δ on the cleaned quotes, weighted by the inverse half-spread. For each design point, read the spline of each bracketing expiration at the same log-moneyness, interpolate the total variance σ\_imp² T linearly in T, convert to the forward-unit price of the out-of-the-money option, and set the quote's noise standard deviation to the vega at σ\_ref times the local half-spread in implied volatility, floored at the design's s\_iv(δ), so that a real quote is never treated as more precise than the design assumes. A design point outside the quoted strikes of either bracketing expiration is flagged as missing and counted: Stage B uses the spline's extrapolated value there and the audit's likelihood leaves the flagged points out; Stage D masks them. The network itself conditions on the design noise in Stage B; where the chain's noise is wider, the audit's likelihood uses the chain's, and the weights say how much the difference matters.
 
 ### I.4 The forward-variance curve
 
-For each quoted maturity, w(T) is computed by the trapezoid sum of Appendix B.3 over the cleaned out-of-the-money quotes, with the forward-unit prices and the e^(−k) weights, truncated at the last quoted strikes. ξ\_0 is the difference quotient between successive maturities, set to the first interval's value on [0, T\_1]. The truncation error is estimated by extending the strip with a flat extrapolation of the last implied volatility, and reported.
+For each expiration, w(T) is computed by the trapezoid sum of Appendix B.3 over the cleaned out-of-the-money quotes, with the forward-unit prices and the e^(−k) weights, truncated at the last quoted strikes. w is interpolated linearly in T at the 7 design maturities, and the level on each design interval is the difference quotient (w(T\_j) − w(T\_{j−1})) / (T\_j − T\_{j−1}), with w(0) = 0. The truncation error is estimated by extending the strip with a flat extrapolation of the last implied volatility, and reported.
 
 ### I.5 What the real smile is used for
 

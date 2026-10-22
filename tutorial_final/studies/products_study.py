@@ -15,6 +15,7 @@ variance explained linearly by each parameter.
 import argparse
 from concurrent.futures import ProcessPoolExecutor
 import json
+import multiprocessing
 from pathlib import Path
 import sys
 import time
@@ -89,7 +90,7 @@ def main():
     style()
     fig, axes = plt.subplots(len(rows), len(products.PRODUCTS), figsize=(11, 2.3 * len(rows)), constrained_layout=True,
                              squeeze=False)
-    with ProcessPoolExecutor(args.workers) as pool:
+    with ProcessPoolExecutor(args.workers, mp_context=multiprocessing.get_context("spawn")) as pool:
         for i, row in enumerate(rows):
             context = test["context_values"][row] if has_context else None
             fits = classical.fit(task, test["observations"][row, :, 0], _price_fn(task, args.pricer, context),

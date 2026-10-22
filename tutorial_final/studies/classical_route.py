@@ -16,6 +16,7 @@ is run at four penalties on the first surfaces to show how the answer moves.
 import argparse
 from concurrent.futures import ProcessPoolExecutor
 import json
+import multiprocessing
 from pathlib import Path
 import sys
 import time
@@ -58,6 +59,53 @@ def fit_job(job):
     return result
 
 
+def landscape(task, observation, price_fn, result, draws, pair, labels, path, points=45):
+    """chi-square over a parameter pair at the best values of the others, with optima, ellipse and posterior."""
+    from sbi4finance.calibration.plots import BASELINE, INK, SERIES, plt, style
+
+    style()
+    best = result["best"]["theta"]
+    bounds = correction.bounds_of(task)
+    a, b = pair
+    span_a = np.quantile(draws[:, a], [0.001, 0.999])
+    span_b = np.quantile(draws[:, b], [0.001, 0.999])
+    pad_a, pad_b = 0.6 * np.diff(span_a)[0], 0.6 * np.diff(span_b)[0]
+    grid_a = np.linspace(max(bounds[a, 0], span_a[0] - pad_a), min(bounds[a, 1], span_a[1] + pad_a), points)
+    grid_b = np.linspace(max(bounds[b, 0], span_b[0] - pad_b), min(bounds[b, 1], span_b[1] + pad_b), points)
+    sigma = tasks.sigma(task)
+    chi2 = np.empty((points, points))
+    for i, x in enumerate(grid_a):
+        for j, y in enumerate(grid_b):
+            theta = best.copy()
+            theta[a], theta[b] = x, y
+            chi2[j, i] = np.sum(((price_fn(theta) - observation) / sigma) ** 2)
+    fig, ax = plt.subplots(figsize=(6.4, 4.8), constrained_layout=True)
+    levels = result["best"]["chi2"] + np.array([1, 2.3, 4.6, 9.2, 20, 50, 100])
+    contours = ax.contour(grid_a, grid_b, chi2, levels=levels, colors=BASELINE, linewidths=0.8)
+    ax.clabel(contours, fmt=lambda v: f"+{v - result['best']['chi2']:.0f}", fontsize=6.5)
+    ax.scatter(draws[:, a], draws[:, b], s=3, color=SERIES[0], alpha=0.25, label="posterior draws")
+    for k, mode in enumerate(result["fits"]):
+        ax.scatter(mode["theta"][a], mode["theta"][b], s=28, color=SERIES[1], edgecolor="white", linewidth=0.6,
+                   zorder=4, label="multi-start optima" if k == 0 else None)
+    covariance = result["best"]["covariance"]
+    if covariance is not None:
+        sub = covariance[np.ix_([a, b], [a, b])]
+        values, vectors = np.linalg.eigh(sub)
+        angle = np.linspace(0, 2 * np.pi, 200)
+        circle = np.stack([np.cos(angle), np.sin(angle)])
+        ellipse = vectors @ (np.sqrt(np.maximum(values, 0) * 4.605)[:, None] * circle)
+        ax.plot(best[a] + ellipse[0], best[b] + ellipse[1], color=INK, linewidth=1.2, linestyle="--",
+                label="Gauss–Newton 90% region")
+    ax.set_xlim(grid_a[0], grid_a[-1])
+    ax.set_ylim(grid_b[0], grid_b[-1])
+    ax.set_xlabel(labels[a])
+    ax.set_ylabel(labels[b])
+    ax.legend(loc="lower left", fontsize=7.5)
+    ax.set_title("least-squares objective (chi-square above its minimum), other parameters at their best values",
+                 loc="left", fontsize=8.5)
+    fig.savefig(path, dpi=160)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--bank", type=Path, required=True)
@@ -82,7 +130,7 @@ def main():
     jobs = [(task, args.pricer, test["observations"][r, :, 0],
              test["context_values"][r] if test["context_values"].shape[1] else None,
              classical.latin_starts(task, args.starts, args.seed + int(r)), i < 5) for i, r in enumerate(rows)]
-    with ProcessPoolExecutor(args.workers) as pool:
+    with ProcessPoolExecutor(args.workers, mp_context=multiprocessing.get_context("spawn")) as pool:
         results = list(pool.map(fit_job, jobs, chunksize=4))
     truth = test["parameters"][rows]
     names = task["parameter_names"]
@@ -116,6 +164,10 @@ def main():
               "parameters": names, "labels": [LABELS[n] for n in names], "summary": summary, "surfaces": records}
     (args.out / "classical.json").write_text(json.dumps(jsonable(report), indent=2, allow_nan=False) + "\n")
     np.savez_compressed(args.out / "network-draws.npz", draws=network[:20], rows=rows[:20])
+    pair = [names.index("eta"), names.index("rho")] if task["model"] == "rough" else [names.index("vol_of_vol"), names.index("rho")]
+    context = test["context_values"][rows[0]] if test["context_values"].shape[1] else None
+    landscape(task, test["observations"][rows[0], :, 0], _price_fn(task, args.pricer, context), results[0], network[0],
+              pair, [LABELS[n] for n in names], args.out / "landscape.png")
     print(json.dumps(jsonable(summary), indent=1))
 
 

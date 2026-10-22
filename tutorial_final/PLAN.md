@@ -74,28 +74,30 @@ Exercises: change the quote-noise model and watch the reserve (a reweighting, no
 drop the two shortest maturities and watch H; calibrate Heston to the rough-Bergomi surface
 (misspecification, for slot 6).
 
-## 5. Task specification v0, in the existing bank schema
+## 5. Task specification v1, as built
 
-Everything below is expressed as two task JSONs in the `option_bank_v1` schema
-(`configs/tasks/calibration_rough_bank.json`, `configs/tasks/calibration_heston_bank.json`)
-plus one frozen protocol (`configs/calibration_protocol.json`), so that the existing generator,
-shard scripts, assembler, loader, adapter and correction code run on them. The three schema
-extensions it needs are marked **[ext]** and listed in §6. The rough pilot
-(`rough_option_panel_v1`: nine put prices, ρ fixed, flat curve, H ∈ [0.1, 0.3], η ∈ [0.4, 1.2])
-is the base. Freeze on Fri 23 Oct (D4).
+Everything below is expressed as task JSONs (`configs/tasks/calibration_rough_bank.json`,
+`calibration_heston_bank.json`, `calibration_rough_pilot.json`) in `calibration_bank_v1`, a
+mirror of the `option_bank_v1` schema that keeps its seed streams, shards, assembler and
+fail-closed rules and adds the three extensions marked **[ext]** (§6.2). The archived
+option-bank modules are imported, not edited. The rough pilot (`rough_option_panel_v1`: nine
+put prices, ρ fixed, flat curve, H ∈ [0.1, 0.3], η ∈ [0.4, 1.2]) was the starting point. v0
+differed in three places, all replaced after measurement: a piecewise-linear curve on 8 knots,
+2^17 plain Monte Carlo paths with a 0.1 budget, and implied volatilities as conditions. Freeze
+on Fri 23 Oct (D4).
 
-| Item | v0 |
+| Item | v1 |
 |---|---|
 | Observation | A currency-price panel `[B, 63, 1]`, as every bank today. Spot 1.0, rate and dividend 0, so prices are fractions of the forward; a real quote is divided by its maturity's forward. The network conditions on each price divided by its quote-noise standard deviation, which is defined for any value including negative noisy quotes; implied vols are computed for plots and for reading the real chain. |
 | Contracts (fixed, as the schema requires) | 7 maturities in trading days {5, 10, 21, 42, 63, 126, 252}/252 × 9 strikes K = exp(δ σ_ref √T), δ ∈ {−2, …, 2} in steps of 0.5, σ_ref = 20%. Puts below the forward, calls above (both supported). Maturity-major order. |
 | Quote noise | Gaussian in price, per contract **[ext 1]**: `quote_noise_std` becomes a list of 63 values, each the Black–Scholes vega at (σ_ref, K, T) times an implied-vol noise of 0.3 vol points at δ = 0 rising linearly to 1.0 at \|δ\| = 2. Fixed per task; changing it is a reweighting exercise. |
 | Rough Bergomi unknowns | Uniform, as `generate_examples` draws: H ∈ (0.02, 0.35), η ∈ (0.5, 3.5), ρ ∈ (−0.99, −0.2). No fixed parameters. |
-| Forward-variance curve ξ₀ | Piecewise-linear on knots {0, the 7 maturities} through the existing `curve_values`. Drawn per example **[ext 2]**: level σ₀ ~ U(10%, 40%) and slope s ~ U(−0.3, 0.6) with ξ₀(T) = σ₀²(1 + sT); the 8 knot values are stored in the bank and conditioned on. For the real surface the knots come from log-contract replication per maturity. |
+| Forward-variance curve ξ₀ | Piecewise constant on the 7 intervals between design maturities, through the existing `curve_values`. Drawn per example **[ext 2]**: level σ₀ ~ U(10%, 40%), slope s ~ U(−0.3, 0.6) and a log perturbation u_j ~ U(−0.2, 0.2) per interval, with level σ₀²(1 + s t_mid,j) e^(u_j); the 7 levels are stored in the bank and conditioned on as logarithms. For the real surface the levels come from log-contract replication per expiration, interpolated in total variance at the design maturities. |
 | Heston check task | `model: "hkde"` with `jump_intensity` fixed at 0 (the pricer's explicit no-jump branch); unknowns `initial_variance` **[ext 3]**, `theta`, `vol_of_vol`, `rho`, uniform; `kappa` fixed at 2. Heston's forward-variance curve θ + (v₀ − θ)e^(−κt) is parametric: the contrast with Bergomi is a teaching point. Same contracts and noise. |
-| Pricing numerics | Rough: the existing conditional-put estimator, hybrid driver, 2^17 paths, in two maturity blocks **(part of ext 2's config)**: maturities ≤ 63 d with 504 steps (8 per day) and {126, 252} d with 504 steps (2 per day); the bank's rule MC SE ≤ 0.1 quote SD on every quote. Heston: the bank's Fourier refinement rule, unchanged. |
+| Pricing numerics | Rough: the existing conditional-put estimator and hybrid driver, with antithetic pairs and two zero-mean control variates per maturity, in two maturity blocks **(part of ext 2's config)**: maturities ≤ 63 d with 504 steps (8 per day) and {126, 252} d with 504 steps (2 per day). Paths ladder 2^15, 2^16, 2^17, 2^18 per block until MC SE ≤ 0.25 quote SD on every quote; a block failing at 2^18 stops the shard. Heston: the Fourier refinement rule on a quadrature ladder (512, 400) … (8192, 6000), refined-minus-base ≤ 0.1 quote SD. |
 | Products under the posterior | Variance swap 63 d (control: fixed by ξ₀); volatility swap 63 d; ATM forward-start call, strike set at 63 d, expiry 126 d; one vanilla outside the grid (2 y, 90% put). Priced from `simulate_rough` / `hkde.simulate` paths with common random numbers; a learned price map, validated by the surrogate protocol, serves the live cell on synthetic surfaces; the real surface is priced by MC per posterior draw and cached. |
 | Reserve | 90% quantile of the posterior price distribution minus the point-calibration price. |
-| Network | Stage B: `bf.networks.FlowMatching` (slot 4's class) on `inference_conditions` = 63 implied vols + 8 curve knots; the existing bounds-constraining adapter. Stage D: `bf.networks.SetTransformer` over tokens (k/√T, T, iv, noise sd, mask) with random masking, so a real chain with missing quotes is handled as trained. |
+| Network | Stage B: `bf.networks.FlowMatching` (slot 4's class, TimeMLP 4 × 256, 50 Euler steps) on `inference_conditions` = 63 prices divided by their noise sd + 7 log curve levels (63 for Heston); the existing bounds-constraining adapter. Stage D: `bf.networks.SetTransformer` over tokens (k/√T, T, iv, noise sd, mask) with random masking, so a real chain with missing quotes is handled as trained. |
 | Bank | 100,000 train, 5,000 validation, 5,000 test, plus 2,000 reserved for SBC; the existing quote-noise augmentation (×4 per epoch) multiplies the training set at no pricing cost. |
 
 ## 6. Reuse map
@@ -160,9 +162,9 @@ archived conditional estimator; at the prior median this cuts the Monte Carlo er
 |---|---|---|---|
 | N1 | `calibration/surface.py` | Black–Scholes price/vega/implied-vol inversion; design grid; per-maturity smile fit (cubic spline in δ) to read the grid from a chain; forward from put–call parity; ξ₀ by log-contract replication; ATM-skew term structure | ~250 lines |
 | N2 | `calibration/products.py` | Payoffs from `simulate_rough` / `hkde.simulate` outputs: variance swap (integrated variance), volatility swap, forward-start call, out-of-grid vanilla via `option_panel`; CRN across posterior draws; MLP price map with the surrogate protocol | ~200 lines |
-| N3 | `calibration/pricer_net.py` | Keras MLP (H, η, ρ, σ₀, s) → 63 prices trained on the bank's clean `reference_prices` (deep calibration's pricer, free given the bank); random-walk MH on it; `pmmh.rhat_ess` for diagnostics | ~150 lines |
-| N4 | `calibration/classical.py` | Multi-start L-BFGS-B on weighted price residuals with the MC pricer at a fixed seed (CRN) and with the neural pricer; Jacobian standard errors; Tikhonov variant; bound-hit and mode reports | ~150 lines |
-| N5 | `scripts/fetch_spy_surface.py` | One SPY end-of-day chain for one date (Alpha Vantage `HISTORICAL_OPTIONS`), cleaning rules, artifact via N1; raw quotes stay out of the repository | ~120 lines |
+| N3 | `calibration/pricer_net.py` | NumPy MLP (logit θ, log curve levels) → 63 prices in units of σ_c, trained on the bank's clean `reference_prices` (deep calibration's pricer, free given the bank); vectorized random-walk Metropolis on it; `pmmh.rhat_ess` for diagnostics | ~200 lines |
+| N4 | `calibration/classical.py` | Multi-start weighted least squares (trust-region, in logit coordinates) with the exact Heston pricer or the neural pricer; Gauss–Newton covariance and Wald intervals; Tikhonov variant; bound-hit and mode reports | ~150 lines |
+| N5 | `calibration/chain.py`, `scripts/build_surface.py` | One SPY end-of-day chain for one date from a vendor file (Alpha Vantage `HISTORICAL_OPTIONS` CSV, a premium endpoint, or Cboe delayed-quotes JSON), cleaning rules, artifact via N1; raw quotes stay out of the repository | ~300 lines |
 
 ### 6.4 Studies
 

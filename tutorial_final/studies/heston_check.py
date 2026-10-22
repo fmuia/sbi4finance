@@ -20,6 +20,7 @@ import argparse
 from concurrent.futures import ProcessPoolExecutor
 import hashlib
 import json
+import multiprocessing
 from pathlib import Path
 import sys
 import time
@@ -124,7 +125,7 @@ def main():
     network = posterior_draws(workflow, task, test, rows, args.draws, args.seed)
     network_seconds = (time.perf_counter() - started) / len(rows)
     observations = test["observations"][rows, :, 0]
-    with ProcessPoolExecutor(args.workers) as pool:
+    with ProcessPoolExecutor(args.workers, mp_context=multiprocessing.get_context("spawn")) as pool:
         audits = list(pool.map(audit_job, [(task, observations[i], network[i], args.proposals, args.seed + i)
                                            for i in range(len(rows))]))
         chain_jobs, owners = [], []
@@ -137,7 +138,7 @@ def main():
                 chain_jobs.append((task, observations[i], starts[c], scale, args.steps, 1000 * i + c))
                 owners.append(i)
         chains = list(pool.map(chain_job, chain_jobs))
-    surfaces, panels = [], []
+    surfaces, panels, saved = [], [], {}
     for i, row in enumerate(rows):
         entry = {"test_row": int(row), "truth": test["parameters"][row].tolist(),
                  "audit": {k: audits[i][k] for k in ("efficiency", "khat", "max_weight", "cpu_seconds")}}
@@ -159,6 +160,9 @@ def main():
                 entry[name] = validation.agreement(draws, pooled)
                 entry[name]["passed"] = passes(entry[name])
             panels.append((f"surface {int(row)}", pooled, network[i], audits[i]["draws"], test["parameters"][row]))
+            saved.update({f"chain_{int(row)}": pooled, f"network_{int(row)}": network[i],
+                          f"reweighted_{int(row)}": audits[i]["draws"], f"truth_{int(row)}": test["parameters"][row],
+                          f"observation_{int(row)}": observations[i]})
         surfaces.append(entry)
     summary = {
         "network_vs_reweighted_pass_rate": float(np.mean([s["network_vs_reweighted"]["passed"] for s in surfaces])),
@@ -183,6 +187,7 @@ def main():
     (args.out / "heston-check.json").write_text(json.dumps(jsonable(report), indent=2, allow_nan=False) + "\n")
     if panels:
         plots.agreement(panels, LABELS, "exact (Fourier MCMC)").savefig(args.out / "agreement.png", dpi=160)
+        np.savez_compressed(args.out / "posterior-draws.npz", **saved)
     print(json.dumps(jsonable(summary), indent=1))
 
 

@@ -15,6 +15,7 @@ surface, and the network's error against the reweighted posterior.
 import argparse
 from concurrent.futures import ProcessPoolExecutor
 import json
+import multiprocessing
 from pathlib import Path
 import sys
 import time
@@ -73,7 +74,7 @@ def main():
     network = posterior_draws(workflow, task, test, rows, args.draws, args.seed)
     jobs = [(task, test["observations"][r, :, 0], test["context_values"][r], network[i], args.proposals, args.paths,
              args.seed + int(r)) for i, r in enumerate(rows)]
-    with ProcessPoolExecutor(args.workers) as pool:
+    with ProcessPoolExecutor(args.workers, mp_context=multiprocessing.get_context("spawn")) as pool:
         results = list(pool.map(audit_job, jobs))
     efficiency = np.array([r["efficiency"] for r in results])
     khat = np.array([r["khat"] for r in results])

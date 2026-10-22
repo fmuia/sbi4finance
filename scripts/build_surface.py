@@ -42,7 +42,9 @@ def main():
         "forward_variance_levels": result["forward_variance_levels"].tolist(),
         "grid_points_outside_quoted_strikes": result["missing"].tolist(),
         "atm_implied_vol": atm.tolist(), "atm_skew": skew.tolist(), "atm_curvature": curvature.tolist(),
-        "skew_power_law": {"exponent": exponent, "scale": scale, "implied_H": exponent + 0.5},
+        "skew_power_law": {"exponent": exponent, "scale": scale,
+                           "note": "fitted from one week to one year; under rough Bergomi it is steeper than "
+                                   "H - 1/2 when the vol-of-vol is large, so exponent + 1/2 tends to understate H"},
         "diagnostics": result["diagnostics"],
     }
     (args.out / "surface.json").write_text(json.dumps(artifact, indent=2, default=str) + "\n")
