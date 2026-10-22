@@ -106,10 +106,28 @@ def fresh_noise(seed):
         batch["observations"] = batch["observations"] + rng.standard_normal(np.shape(batch["observations"]))
         return batch
 
+    augment.rng = rng  # its state is saved with a resumable training run
     return augment
 
 
-def build_workflow(task, checkpoint_dir=None, *, subnet_widths=(256, 256, 256, 256)):
+def offline_optimizer(total_steps, initial_learning_rate=5e-4):
+    """BayesFlow 2.0's default for offline training, built once for a run of total_steps.
+
+    AdamW (weight decay 5e-3, gradient norm clipped at 1.5); the learning rate
+    warms up from a tenth of its peak over the first 5% of steps, then decays to
+    zero along a cosine. Built explicitly so that a run trained in chunks keeps
+    one schedule across the chunks and across restarts.
+    """
+    import keras
+
+    warmup = int(0.05 * total_steps)
+    schedule = keras.optimizers.schedules.CosineDecay(
+        initial_learning_rate=0.1 * initial_learning_rate, warmup_target=initial_learning_rate,
+        warmup_steps=warmup, decay_steps=total_steps - warmup, alpha=0)
+    return keras.optimizers.AdamW(schedule, weight_decay=5e-3, clipnorm=1.5)
+
+
+def build_workflow(task, checkpoint_dir=None, *, subnet_widths=(256, 256, 256, 256), optimizer=None):
     """FlowMatching on logit-constrained targets; conditions standardized with training statistics."""
     _checked_task(task)
     import bayesflow as bf
@@ -127,6 +145,7 @@ def build_workflow(task, checkpoint_dir=None, *, subnet_widths=(256, 256, 256, 2
         inference_network=bf.networks.FlowMatching(subnet_kwargs={"widths": list(subnet_widths)},
                                                    integrate_kwargs={"method": "euler", "steps": EULER_STEPS}),
         standardize=["inference_variables", "inference_conditions"],
+        optimizer=optimizer,
         checkpoint_filepath=None if checkpoint_dir is None else str(checkpoint_dir),
         save_weights_only=False, save_best_only=True,
     )
