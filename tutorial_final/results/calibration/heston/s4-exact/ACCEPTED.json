@@ -1,0 +1,9 @@
+{
+  "accepted": "2026-10-22T07:44:16+00:00",
+  "source": "/tmp/claude-0/-home-user-sbi4finance/9c138712-55c5-5f30-b0b0-9fce83e4ceb1/scratchpad/runs/heston-s4-exact",
+  "source_sha256": {
+    "agreement.png": "1b5ca1f0d6a439b6f24cc2572f49f73824cc8539e51babe3dad573d10c327b7c",
+    "pricer-route.json": "8841b4ebff2dec3b6ff2528ffc727f7b36f91aafab3ca8d19d36efc0ef9a05dd"
+  },
+  "changes": []
+}

@@ -697,7 +697,7 @@ The study answers nine questions with explicit criteria. The table tracks them; 
 | 1 | S1 | Cost and quality of the training bank | 100,000 surfaces with s\_c ≤ 0.25 σ\_c on every quote, or ≤ 0.5 σ\_c at the top of the ladder on a reported share of surfaces; path counts used and CPU-hours per 1,000 surfaces reported | Heston: 60,000 surfaces, quadrature error at most 0.056 σ\_c against a budget of 0.1, 0.013 CPU-hours per 1,000 surfaces. Rough: ⟨S1⟩ | Heston met; rough pending |
 | 2 | S2 | Statistical calibration and identification | SBC rank ECDFs inside the simultaneous DKW band (family-wise 5%) for all 3 targets on 2,000 surfaces; 95% coverage between 93% and 97% | Heston: all 4 targets inside the band on 2,000 smiles; 95% coverage 93.5% to 95.2%. Rough: ⟨S2⟩ | Heston met; rough pending |
 | 3 | S3 | Agreement with the exact Heston posterior | Means within 0.3 posterior sd and 90% widths within 25%, on 50 surfaces, all targets | Network alone: 40 of 50 smiles on all four targets (v\_0 82%, θ\_H 96%, σ\_v 100%, ρ 98%). Network corrected by its audit: agrees with independent chains on 4 of 4 | Met by the network with its audit; not met by the network alone (v\_0) |
-| 4 | S4 | Agreement with the neural-pricer route | Same criterion, on 50 rough-Bergomi surfaces; pricer error below 0.5 σ\_c on held-out surfaces | ⟨S4⟩ | pending |
+| 4 | S4 | Agreement with the neural-pricer route | Same criterion, on 50 rough-Bergomi surfaces; pricer error below 0.5 σ\_c on held-out surfaces | Heston rehearsal: pricer error 0.03 σ\_c; the pricer route agrees with the exact posterior on 50 of 50 smiles, and with the network on 84% (v\_0 86%). Rough: ⟨S4⟩ | Heston rehearsal met; rough pending |
 | 5 | S5 | The audit | Distribution of efficiency and k̂ on 500 surfaces; flag rate at k̂ > 0.7 reported; cost per surface | ⟨S5⟩ | pending |
 | 6 | S6 | The classical route | Coverage of Gauss–Newton 90% intervals against posterior 90% intervals on 200 surfaces; number of distinct multi-start modes; sensitivity of the regularized point to λ | ⟨S6⟩ | pending |
 | 7 | S7 | Products and reserves | Variance-swap range zero; price-map error below Monte Carlo error; volatility-swap, forward-start and out-of-grid ranges and reserves; Heston-against-rough gap | ⟨S7⟩ | pending |
@@ -754,8 +754,10 @@ Heston first, as a rehearsal where the exact answer is known. The pricer is a mu
 | Comparison on 50 smiles: share within the criterion | v\_0 | θ\_H | σ\_v | ρ | All four |
 | --- | --- | --- | --- | --- | --- |
 | Network against MCMC on the pricer (test rows 2,050 to 2,099) | 86% | 98% | 96% | 100% | 84% |
-| MCMC on the pricer against the exact posterior (the smiles of S3) | ⟨S4⟩ | ⟨S4⟩ | ⟨S4⟩ | ⟨S4⟩ | ⟨S4⟩ |
+| MCMC on the pricer against the exact posterior (the smiles of S3) | 100% | 100% | 100% | 100% | 100% |
 | Network against the exact posterior (S3, for comparison) | 82% | 96% | 100% | 98% | 80% |
+
+Reading: on the smiles of S3, MCMC on the pricer reproduces the exact posterior on all 50, with mean errors of a median 0.03 to 0.045 posterior standard deviations (0.27 at the largest) and 90% widths within 0.79 to 1.11 of the exact ones. On the same smiles the network meets the criterion against the pricer route on 80% of them, as it does against the exact posterior. The pricer route therefore reaches the same verdict on the network as the exact posterior, which is what it is used for on rough Bergomi, where no exact posterior is affordable. Its own condition is the pricer's error, 0.03 σ\_c here against the 0.5 σ\_c the criterion allows; for rough Bergomi the pricer's error has to be measured again, because it learns from Monte Carlo prices whose own error is up to 0.25 σ\_c.
 
 ![MCMC on the neural pricer against the amortized posterior on four Heston test smiles, standardized by the pricer route's posterior.](images/calibration-06-heston-pricer-route.png)
 
