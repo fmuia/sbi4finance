@@ -657,7 +657,7 @@ The posterior becomes a product price in three steps: price the product from eve
 
 ### From posterior draws to price distributions
 
-For a product with payoff Π, the price under draw m is p\_Π^(m) = p\_Π(θ^(m); ξ\_0), a Monte Carlo expectation with common random numbers across draws, so that the differences between draws are differences between parameters and not Monte Carlo noise. The pooled values {p\_Π^(m)} are draws from the price distribution p(p\_Π ∣ y, ξ\_0) of the executive summary's step 3. For the live notebook the pricing of each draw is replaced, on synthetic surfaces, by a learned price map validated against Monte Carlo (the surrogate protocol of the repository); the real surface is priced by Monte Carlo and cached.
+For a product with payoff Π, the price under draw m is p\_Π^(m) = p\_Π(θ^(m); ξ\_0), a Monte Carlo expectation with common random numbers across draws, so that the differences between draws are differences between parameters and not Monte Carlo noise. The pooled values {p\_Π^(m)} are draws from the price distribution p(p\_Π ∣ y, ξ\_0) of the executive summary's step 3. Every product price in the study is such a Monte Carlo price, and the notebook reads the cached prices of study S7 rather than repricing live. A learned price map, validated against Monte Carlo by the repository's surrogate protocol, would make the repricing live; it is an extension and no claim rests on it.
 
 Three products and one control, with the dependence the model implies:
 
@@ -700,7 +700,7 @@ The study answers nine questions with explicit criteria. The table tracks them; 
 | 4 | S4 | Agreement with the neural-pricer route | Same criterion, on 50 rough-Bergomi surfaces; pricer error below 0.5 σ\_c on held-out surfaces | Heston rehearsal: pricer error 0.03 σ\_c; the pricer route agrees with the exact posterior on 50 of 50 smiles, and with the network on 84% (v\_0 86%). Rough: ⟨S4⟩ | Heston rehearsal met; rough pending |
 | 5 | S5 | The audit | Distribution of efficiency and k̂ on 500 surfaces; flag rate at k̂ > 0.7 reported; cost per surface | ⟨S5⟩ | pending |
 | 6 | S6 | The classical route | Coverage of Gauss–Newton 90% intervals against posterior 90% intervals on 200 surfaces; number of distinct multi-start modes; sensitivity of the regularized point to λ | Heston: Gauss–Newton coverage 87% to 92% against posterior 87% to 90% on 200 smiles; one optimum on 97%; no interval on 11 smiles at the prior's edge. Rough: ⟨S6⟩ | Heston done; rough pending |
-| 7 | S7 | Products and reserves | Variance-swap range zero; price-map error below Monte Carlo error; volatility-swap, forward-start and out-of-grid ranges and reserves; Heston-against-rough gap | ⟨S7⟩ | pending |
+| 7 | S7 | Products and reserves | Variance-swap range zero; volatility-swap, forward-start and out-of-grid ranges and reserves, with each price's Monte Carlo standard error; Heston-against-rough gap | ⟨S7⟩ | pending |
 | 8 | S8 | The real smile | Skew term-structure exponent; posterior; audit score; posterior predictive residuals with at most ⟨proposed: 10%⟩ of quotes beyond two standard deviations | ⟨S8⟩ | pending |
 | 9 | S9 | Costs | One table on one machine: Monte Carlo likelihood evaluation; exact chain extrapolated to 400 effective draws; network; audit; neural pricer with MCMC; multi-start least squares | ⟨S9⟩ | pending |
 
@@ -789,7 +789,7 @@ The exceptions are at the edges of the prior box. On 15 smiles the best fit sits
 
 ### 7. Products and reserves (S7)
 
-Figure ⟨S7-1⟩ above, the variance-explained table, the price-map validation (error against Monte Carlo error on held-out draws, paired propagation of the 90% quantile), and the Heston-against-rough table:
+Figure ⟨S7-1⟩ above, the variance-explained table, each price's Monte Carlo standard error, and the Heston-against-rough table:
 
 | Product | Rough Bergomi: point, 90% range, reserve | Heston: point, 90% range, reserve | Gap between points |
 | --- | --- | --- | --- |
