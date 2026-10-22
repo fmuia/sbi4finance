@@ -3,14 +3,17 @@
     python tutorial_final/studies/costs.py --out NEW_DIR [--rough-paths 32768 --repeats 3]
         [--rough-checkpoint RUN --rough-bank BANK] [--heston-checkpoint RUN --heston-bank BANK]
 
-Measured here: one rough-Bergomi likelihood evaluation (one priced design
-surface at the ladder's first rung, with antithetic paths and control
-variates), one Heston likelihood evaluation (the Fourier surface), and, when
-checkpoints are given, one amortized posterior of 1,000 draws. The exact rough
-posterior is not run: its cost is extrapolated as evaluations x cost per
-evaluation, with the number of evaluations a random-walk chain needs for 400
-effective draws in three dimensions taken from the Heston chains of study S3
-when their report is given (--heston-check), else stated as an assumption.
+Measured here, in CPU-seconds and in wall-clock seconds: one rough-Bergomi
+likelihood evaluation (one priced design surface at the ladder's first rung,
+with antithetic paths and control variates), one Heston likelihood evaluation
+(the Fourier surface), and, when checkpoints are given, loading the network
+with its first call (which compiles the sampler) and one amortized posterior
+of 1,000 draws after that. The exact posteriors are not run here: their cost is
+extrapolated as evaluations x cost per evaluation, with the number of
+evaluations a random-walk chain needs for 400 effective draws taken from the
+Heston chains of study S3 when their report is given (--heston-check), else
+stated as an assumption. The costs of the audit, the pricer route and the
+least-squares fits are recorded per surface by studies S5, S4 and S6.
 """
 
 import argparse
@@ -27,12 +30,15 @@ from sbi4finance.calibration import pricing, tasks  # noqa: E402
 
 
 def cpu(fn, repeats):
-    times = []
+    """CPU-seconds (every thread) and wall-clock seconds of repeated calls."""
+    times, walls = [], []
     for _ in range(repeats):
-        started = time.process_time()
+        started, clock = time.process_time(), time.perf_counter()
         fn()
         times.append(time.process_time() - started)
-    return {"median": float(np.median(times)), "runs": times}
+        walls.append(time.perf_counter() - clock)
+    return {"median": float(np.median(times)), "runs": times,
+            "wall_median": float(np.median(walls)), "wall_runs": walls}
 
 
 def main():
@@ -75,6 +81,9 @@ def main():
     unit = report["rough_likelihood_evaluation_cpu_s"]["median"]
     report["exact_rough_posterior"] = {"evaluations_for_400_effective_draws": evaluations, "source": source,
                                        "cpu_hours": evaluations * unit / 3600}
+    report["exact_heston_posterior"] = {
+        "evaluations_for_400_effective_draws": evaluations, "source": source,
+        "cpu_seconds": evaluations * report["heston_likelihood_evaluation_cpu_s"]["median"]}
     sys.path.insert(0, str(Path(__file__).resolve().parent))
     for name, checkpoint, bank_path in (("rough", args.rough_checkpoint, args.rough_bank),
                                         ("heston", args.heston_checkpoint, args.heston_bank)):
@@ -82,10 +91,13 @@ def main():
             continue
         from evaluate_calibration import load_network
         from sbi4finance.calibration import bank, inference
-        task, workflow, _ = load_network(checkpoint)
         _, splits = bank.load_bank(bank_path)
         test = splits["test"]
+        started, clock = time.process_time(), time.perf_counter()
+        task, workflow, _ = load_network(checkpoint)
         inference.sample(workflow, task, test["observations"][:1], test["context_values"][:1], 1000, seed=0)
+        report[f"{name}_network_load_and_first_call"] = {"cpu_s": time.process_time() - started,
+                                                         "wall_s": time.perf_counter() - clock}
 
         def one():
             inference.sample(workflow, task, test["observations"][1:2], test["context_values"][1:2], 1000, seed=1)
