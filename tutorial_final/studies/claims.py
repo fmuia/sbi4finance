@@ -37,7 +37,10 @@ def c1():
     s = load("spy/surface.json")
     if s is None:
         return "—", "blocked: no chain source reachable (premium endpoints; Cboe and Yahoo hosts not allowed)"
-    return f"exponent {s['skew_power_law']['exponent']:.2f}", "verified"
+    exponent = s["skew_power_law"]["exponent"]
+    value = (f"exponent {exponent:.2f} from one week to one year, SPY on {s['diagnostics']['valuation']} "
+             f"(the SPX literature's −0.4 is the reference)")
+    return value, ("verified (within 0.1 of −0.4)" if abs(exponent + 0.4) <= 0.1 else "not met")
 
 
 def identification(prefix):

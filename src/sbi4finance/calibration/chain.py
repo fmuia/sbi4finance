@@ -50,10 +50,16 @@ def parse_alpha_vantage_csv(text):
 
 
 def parse_cboe_json(text):
-    """Cboe delayed quotes: OCC symbols ROOT YYMMDD C/P strike*1000 (8 digits)."""
+    """Cboe delayed quotes: OCC symbols ROOT YYMMDD C/P strike*1000 (8 digits).
+
+    The valuation date is the session of the underlying's last trade: a file
+    fetched before the open carries the next day's timestamp but the previous
+    session's closing quotes, and counting maturities from the timestamp would
+    shorten every one of them by a trading day.
+    """
     payload = json.loads(text)
     data = payload.get("data", payload)
-    valuation = _day(payload.get("timestamp", data.get("last_trade_time", "")))
+    valuation = _day(data.get("last_trade_time") or payload.get("timestamp", ""))
     rows = []
     for option in data["options"]:
         symbol = option["option"]
@@ -75,6 +81,32 @@ def forward_and_discount(rows, spot_guess=None, pairs=6):
     centre = common[int(np.argmin(np.abs(differences)))] if spot_guess is None else spot_guess
     chosen = sorted(common, key=lambda k: abs(k - centre))[:pairs]
     return surface.parity_forward(chosen, [calls[k] for k in chosen], [puts[k] for k in chosen])
+
+
+def forward_given_discount(rows, discount, pairs=6):
+    """Parity with a known discount: F = K + (C - P) / D, the median over the pairs nearest the money.
+
+    For American options (SPY) the regression of forward_and_discount is tilted by the
+    early-exercise value of the in-the-money puts, which grows with the strike, and
+    returns discounts above one; a discount from the rate curve avoids it.
+    """
+    calls = {r["strike"]: 0.5 * (r["bid"] + r["ask"]) for r in rows if r["type"] == "call" and r["bid"] > 0}
+    puts = {r["strike"]: 0.5 * (r["bid"] + r["ask"]) for r in rows if r["type"] == "put" and r["bid"] > 0}
+    common = sorted(set(calls) & set(puts))
+    if len(common) < 3:
+        return None
+    differences = np.array([calls[k] - puts[k] for k in common])
+    centre = common[int(np.argmin(np.abs(differences)))]
+    chosen = sorted(common, key=lambda k: abs(k - centre))[:pairs]
+    return float(np.median([k + (calls[k] - puts[k]) / discount for k in chosen]))
+
+
+def rate_curve(points):
+    """Continuously compounded rate r(T) from (T, bond-equivalent yield) points, linear in T, flat outside."""
+    points = sorted(points)
+    times = np.array([p[0] for p in points], dtype=float)
+    rates = 2 * np.log1p(np.array([p[1] for p in points], dtype=float) / 2)
+    return lambda T: float(np.interp(T, times, rates))
 
 
 def clean_expiration(rows, forward, discount, maturity, max_spread=0.5):
@@ -115,8 +147,19 @@ def smile_spline(quotes, maturity, sigma_ref=surface.SIGMA_REF):
 
 
 def build_surface(rows, *, valuation=None, design_days=surface.DESIGN_DAYS, deltas=surface.DESIGN_DELTAS,
-                  sigma_ref=surface.SIGMA_REF, max_spread=0.5):
-    """The 63 design prices, their noise sds and the 7 forward-variance levels, with diagnostics."""
+                  sigma_ref=surface.SIGMA_REF, max_spread=0.5, rate=None, replication_deltas=(-8.0, 1.8)):
+    """The 63 design prices, their noise sds and the 7 forward-variance levels, with diagnostics.
+
+    rate, a function of T (see rate_curve), sets each expiration's discount; the forward then
+    comes from parity on the pairs nearest the money. Without it both come from the parity
+    regression, which suits European options only.
+
+    The variance-swap term structure, and with it the forward-variance levels, uses only the
+    expirations whose cleaned strip reaches the standardized moneyness replication_deltas on
+    both sides: a strip cut short in the put wing misses the tail's variance, which on SPY's
+    end-of-month expirations is three to four volatility points. Every expiration serves the
+    smile itself.
+    """
     valuation = valuation or rows[0]["date"]
     by_expiry = {}
     for r in rows:
@@ -128,36 +171,64 @@ def build_surface(rows, *, valuation=None, design_days=surface.DESIGN_DAYS, delt
         fd = forward_and_discount(chain)
         if days < 1 or fd is None:
             continue
-        forward, discount = fd
         T = days / surface.TRADING_DAYS
+        parity_discount = fd[1]
+        if rate is None:
+            forward, discount = fd
+        else:
+            discount = float(np.exp(-rate(T) * T))
+            forward = forward_given_discount(chain, discount)
         quotes = clean_expiration(chain, forward, discount, T, max_spread)
         if len(quotes) < 8:
             continue
         k = np.array([q["k"] for q in quotes])
         w = surface.total_variance_by_replication(k, [q["price"] for q in quotes])
+        reach = (float(k.min() / (sigma_ref * np.sqrt(T))), float(k.max() / (sigma_ref * np.sqrt(T))))
         expirations.append({"expiration": expiry.isoformat(), "days": days, "T": T, "forward": forward,
-                            "discount": discount, "quotes": quotes, "w_replicated": w})
+                            "discount": discount, "parity_regression_discount": parity_discount, "quotes": quotes,
+                            "w_replicated": w, "strip_deltas": reach,
+                            "replication_covered": reach[0] <= replication_deltas[0] and reach[1] >= replication_deltas[1]})
     if not expirations:
         raise ValueError("no usable expiration after cleaning")
     Ts = np.array([e["T"] for e in expirations])
-    ws = np.array([e["w_replicated"] for e in expirations])
+    covered = [e for e in expirations if e["replication_covered"]]
+    T_covered = np.array([e["T"] for e in covered])
+    w_covered = np.array([e["w_replicated"] for e in covered])
     design_T = np.array(design_days) / surface.TRADING_DAYS
     if design_T[0] < Ts[0] or design_T[-1] > Ts[-1]:
         raise ValueError("the chain does not bracket every design maturity")
-    w_design = np.interp(design_T, Ts, ws)
+    if not len(covered) or design_T[0] < T_covered[0] - 1e-12 or design_T[-1] > T_covered[-1]:
+        raise ValueError("the expirations whose strips cover the tails do not bracket every design maturity")
+    w_design = np.interp(design_T, T_covered, w_covered)
     levels = surface.forward_variances(design_T, w_design)
     splines = [smile_spline(e["quotes"], e["T"], sigma_ref) for e in expirations]
     prices, noise, implied, missing = [], [], [], []
+    def covers(idx, T, delta):
+        _, (dmin, dmax), _ = splines[idx]
+        return dmin <= delta * np.sqrt(T / Ts[idx]) <= dmax
+
+    readings = {"two expirations": 0, "one expiration": 0, "extrapolated": 0}
     for T in design_T:
         j = int(np.searchsorted(Ts, T))
-        lo, hi = (j, j) if np.isclose(Ts[min(j, len(Ts) - 1)], T) else (j - 1, j)
-        lo, hi = max(lo, 0), min(hi, len(Ts) - 1)
+        nearest = (j, j) if np.isclose(Ts[min(j, len(Ts) - 1)], T) else (j - 1, j)
+        nearest = (max(nearest[0], 0), min(nearest[1], len(Ts) - 1))
         for delta in deltas:
-            values, halves, inside = [], [], True
+            # The nearest expirations on each side whose quotes reach this point: an expiration whose
+            # strip stops short would extrapolate its spline, which is not data.
+            below = [i for i in range(len(Ts)) if Ts[i] <= T + 1e-12 and covers(i, T, delta)]
+            above = [i for i in range(len(Ts)) if Ts[i] >= T - 1e-12 and covers(i, T, delta)]
+            inside = bool(below or above)
+            if below and above:
+                lo, hi = below[-1], above[0]
+            elif inside:
+                lo = hi = below[-1] if below else above[0]
+            else:
+                lo, hi = nearest
+            readings["extrapolated" if not inside else "two expirations" if lo != hi else "one expiration"] += 1
+            values, halves = [], []
             for idx in sorted({lo, hi}):
-                spline, (dmin, dmax), (deltas_q, half_q) = splines[idx]
+                spline, _, (deltas_q, half_q) = splines[idx]
                 d = delta * np.sqrt(T / Ts[idx])  # the same log-moneyness at the expiration's own maturity
-                inside &= dmin <= d <= dmax
                 values.append(float(spline(d)) ** 2 * Ts[idx])
                 halves.append(float(np.interp(d, deltas_q, half_q)))
             if len(values) == 2:
@@ -165,7 +236,7 @@ def build_surface(rows, *, valuation=None, design_days=surface.DESIGN_DAYS, delt
                 total = (1 - weight) * values[0] + weight * values[1]
                 half = (1 - weight) * halves[0] + weight * halves[1]
             else:
-                total, half = values[0], halves[0]
+                total, half = values[0] * T / Ts[lo], halves[0]  # the expiration's volatility at this log-moneyness
             iv = np.sqrt(total / T)
             k = delta * sigma_ref * np.sqrt(T)
             kind = "put" if delta <= 0 else "call"
@@ -176,10 +247,15 @@ def build_surface(rows, *, valuation=None, design_days=surface.DESIGN_DAYS, delt
             missing.append(not inside)
     diagnostics = {
         "valuation": valuation.isoformat(),
-        "expirations": [{key: e[key] for key in ("expiration", "days", "forward", "discount", "w_replicated")}
+        "discount_source": "rate curve" if rate is not None else "parity regression",
+        "replication_deltas": list(replication_deltas),
+        "expirations": [{key: e[key] for key in ("expiration", "days", "forward", "discount",
+                                                 "parity_regression_discount", "w_replicated", "strip_deltas",
+                                                 "replication_covered")}
                         | {"quotes_kept": len(e["quotes"])} for e in expirations],
         "design_total_variance": w_design.tolist(),
         "grid_points_outside_quoted_strikes": int(np.sum(missing)),
+        "grid_point_readings": readings,
         "implied_vol_grid": implied,
     }
     return {"prices": np.array(prices), "noise_sd": np.array(noise), "forward_variance_levels": levels,

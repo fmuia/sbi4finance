@@ -361,6 +361,17 @@ class ProductsPricerClassicalChainTests(unittest.TestCase):
         starts = classical.latin_starts(task, 5, seed=0)
         self.assertEqual(starts.shape, (5, 4))
 
+    def test_cboe_valuation_is_the_underlyings_last_session(self):
+        from sbi4finance.calibration import chain
+        import json as _json
+        payload = {"timestamp": "2026-10-22 07:46:24",
+                   "data": {"last_trade_time": "2026-10-21T16:00:00",
+                            "options": [{"option": "SPY261023P00770000", "bid": 1.0, "ask": 1.1}]}}
+        rows = chain.parse_cboe_json(_json.dumps(payload))
+        self.assertEqual(rows[0]["date"].isoformat(), "2026-10-21")
+        self.assertEqual(chain.trading_days(rows[0]["date"], rows[0]["expiration"]), 2)
+        self.assertEqual((rows[0]["type"], rows[0]["strike"]), ("put", 770.0))
+
     def test_chain_pipeline_recovers_a_black_scholes_chain(self):
         from datetime import date
         from sbi4finance.calibration import chain
@@ -378,8 +389,19 @@ class ProductsPricerClassicalChainTests(unittest.TestCase):
                     if price > 2 * half:
                         rows.append({"expiration": expiry, "strike": float(K), "type": kind,
                                      "bid": price - half, "ask": price + half, "date": valuation})
-        result = chain.build_surface(rows, design_days=(5, 21, 63, 126, 252))
+        # The synthetic strips reach 2.4 to 3.1 standardized units on each side; a European chain needs no
+        # rate curve, so forward and discount come from the parity regression.
+        result = chain.build_surface(rows, design_days=(5, 21, 63, 126, 252), replication_deltas=(-2.3, 2.3))
         expirations = result["diagnostics"]["expirations"]
+        self.assertTrue(all(e["replication_covered"] for e in expirations))
+        with self.assertRaises(ValueError):
+            chain.build_surface(rows, design_days=(5, 21, 63, 126, 252), replication_deltas=(-8.0, 1.8))
+        with_rate = chain.build_surface(rows, design_days=(5, 21, 63, 126, 252), replication_deltas=(-2.3, 2.3),
+                                        rate=chain.rate_curve([(0.25, 2 * np.expm1(rate / 2)), (2.0, 2 * np.expm1(rate / 2))]))
+        for e in with_rate["diagnostics"]["expirations"]:
+            T = e["days"] / 252
+            self.assertAlmostEqual(e["discount"], np.exp(-rate * T), delta=1e-9)
+            self.assertAlmostEqual(e["forward"], spot * np.exp(rate * T), delta=0.05)
         for e in expirations:
             T = e["days"] / 252
             self.assertAlmostEqual(e["forward"], spot * np.exp(rate * T), delta=0.05)
