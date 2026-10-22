@@ -70,6 +70,8 @@ def _(RESULTS, mo, teaching):
         ("Heston: neural-pricer route (S4)", RESULTS / "heston/s4/pricer-route.json"),
         ("Heston: classical route (S6)", RESULTS / "heston/s6/classical.json"),
         ("Heston: products and reserves (S7)", RESULTS / "heston/s7/products.json"),
+        ("Rough Bergomi pilot: classical route (S6)", RESULTS / "rough-pilot/s6/classical.json"),
+        ("Rough Bergomi pilot: products and reserves (S7)", RESULTS / "rough-pilot/s7/products.json"),
         ("Rough Bergomi pilot: SBC and recovery (S2)", RESULTS / "rough-pilot/s2/validation.json"),
         ("Rough Bergomi pilot: Monte Carlo audit (S5)", RESULTS / "rough-pilot/s5/audit.json"),
         ("Costs on one machine (S9)", RESULTS / "costs/costs.json"),
@@ -430,26 +432,40 @@ def _(mo):
 
 
 @app.cell
-def _(RESULTS, image, mo, pending, teaching):
-    _report = teaching.load_json(RESULTS / "heston/s6/classical.json")
-    if _report is None:
-        _table = pending("study S6 (`tutorial_final/studies/classical_route.py`).")
+def _(RESULTS, mo, teaching):
+    _models = {name: key for name, key in (("rough Bergomi", "rough"), ("rough Bergomi (pilot)", "rough-pilot"),
+                                           ("Heston", "heston"))
+               if teaching.existing(RESULTS / key / "s6" / "classical.json")}
+    classical_model = mo.ui.dropdown(options=_models, value=next(iter(_models)) if _models else None, label="model")
+    classical_model if _models else mo.md("")
+    return (classical_model,)
+
+
+@app.cell
+def _(RESULTS, classical_model, image, mo, pending, teaching):
+    if classical_model.value is None:
+        _out = pending("study S6 (`tutorial_final/studies/classical_route.py`).")
     else:
+        _report = teaching.load_json(RESULTS / classical_model.value / "s6" / "classical.json")
         _s = _report["summary"]
-        _names = _report["parameters"]
         _rows = []
-        for _n, _label in zip(_names, _report["labels"]):
+        for _n, _label in zip(_report["parameters"], _report["labels"]):
             _gn = (_s["gauss_newton_coverage_90"] or {}).get(_n)
             _rows.append({"parameter": _label,
                           "Gauss–Newton 90% interval covers the truth": "–" if _gn is None else f"{100 * _gn:.0f}%",
                           "posterior 90% interval covers the truth": f"{100 * _s['posterior_coverage_90'][_n]:.0f}%"})
-        _table = mo.vstack([mo.md(f"Heston, {_s['surfaces']} smiles, {_s['starts']} starts each: "
-                                  f"{100 * _s['best_on_bound_share']:.0f}% of best fits on a bound; "
-                                  f"{_s['gauss_newton_singular']} singular Gauss–Newton matrices."),
-                            mo.ui.table(_rows, selection=None, pagination=False)])
-    mo.vstack([_table, image(RESULTS / "heston/s6/landscape.png",
-                             "The least-squares objective over two parameters, the multi-start optima, the Gauss–Newton "
-                             "90% region and the posterior draws, for one smile.")])
+        _out = mo.vstack([
+            mo.md(f"{classical_model.selected_key}, {_s['surfaces']} smiles, {_s['starts']} starts each, pricer: "
+                  f"{_s['pricer']}. Distinct optima per smile: {_s['modes']['mean']:.1f} on average, two or more on "
+                  f"{100 * _s['modes']['share_with_two_or_more']:.0f}% of smiles; best fit on a bound for "
+                  f"{100 * _s['best_on_bound_share']:.0f}%; {_s['gauss_newton_singular']} singular Gauss–Newton "
+                  "matrices."),
+            mo.ui.table(_rows, selection=None, pagination=False),
+            image(RESULTS / classical_model.value / "s6" / "landscape.png",
+                  "The least-squares objective over two parameters at the best values of the others, the multi-start "
+                  "optima, the Gauss–Newton 90% region and the posterior draws, for one smile."),
+        ])
+    _out
     return
 
 
@@ -468,17 +484,28 @@ def _(mo):
 
 @app.cell
 def _(RESULTS, mo, teaching):
-    products = teaching.load_npz(RESULTS / "heston/s7/price-draws.npz")
-    product_rows = sorted(int(k.split("_")[1]) for k in (products or {}) if k.startswith("prices_"))
+    _models = {name: key for name, key in (("rough Bergomi", "rough"), ("rough Bergomi (pilot)", "rough-pilot"),
+                                           ("Heston", "heston"))
+               if teaching.existing(RESULTS / key / "s7" / "price-draws.npz")}
+    product_model = mo.ui.dropdown(options=_models, value=next(iter(_models)) if _models else None, label="model")
     level = mo.ui.slider(0.80, 0.99, step=0.01, value=0.90, label="confidence level", show_value=True)
-    product_surface = mo.ui.dropdown(options=[str(r) for r in product_rows],
-                                     value=str(product_rows[0]) if product_rows else None, label="Heston test smile")
-    mo.hstack([level, product_surface]) if product_rows else mo.md("")
-    return level, product_rows, product_surface, products
+    mo.hstack([product_model, level]) if _models else mo.md("")
+    return level, product_model
 
 
 @app.cell
-def _(level, mo, pending, product_rows, product_surface, products, teaching):
+def _(RESULTS, mo, product_model, teaching):
+    products = (teaching.load_npz(RESULTS / product_model.value / "s7" / "price-draws.npz")
+                if product_model.value else None)
+    product_rows = sorted(int(k.split("_")[1]) for k in (products or {}) if k.startswith("prices_"))
+    product_surface = mo.ui.dropdown(options=[str(r) for r in product_rows],
+                                     value=str(product_rows[0]) if product_rows else None, label="test smile")
+    product_surface if product_rows else mo.md("")
+    return product_rows, product_surface, products
+
+
+@app.cell
+def _(level, mo, pending, product_model, product_rows, product_surface, products, teaching):
     if not product_rows:
         _out = pending("the product prices of study S7.")
     else:
@@ -486,7 +513,8 @@ def _(level, mo, pending, product_rows, product_surface, products, teaching):
         _out = mo.vstack([
             mo.ui.table(teaching.reserve_rows(products, _row, level.value), selection=None, pagination=False),
             teaching.price_histograms(products, _row, level.value,
-                                      f"Heston, test smile {_row}: product prices under the posterior"),
+                                      f"{product_model.selected_key}, test smile {_row}: product prices under the "
+                                      "posterior"),
         ])
     _out
     return
