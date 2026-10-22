@@ -27,7 +27,9 @@ def fig_costs(costs):
     n_eval = costs["exact_rough_posterior"]["evaluations_for_400_effective_draws"]
     h_post = costs["exact_heston_posterior"]["cpu_seconds"]
     r_post = costs["exact_rough_posterior"]["cpu_hours"] * 3600
-    fig, axes = plt.subplots(1, 2, figsize=(11, 4.3))
+    bank_unit = load("rough-pilot/s1/bank-quality.json")["generation"]["cpu_seconds_per_surface"]
+    r_post_bank = n_eval * bank_unit
+    fig, axes = plt.subplots(1, 2, figsize=(11.5, 4.3))
     ax = axes[0]
     ax.bar([0, 1], [h_eval, r_eval], color=[COLORS[0], COLORS[3]], width=0.55, alpha=0.85)
     ax.scatter(np.zeros(len(heston_runs)) + np.linspace(-0.12, 0.12, len(heston_runs)), heston_runs,
@@ -43,20 +45,25 @@ def fig_costs(costs):
         ax.text(x, v * 1.6, f"{v:.3g} s", ha="center", fontsize=9)
     ax.legend(frameon=False, fontsize=8.5, loc="upper left")
     ax = axes[1]
-    ax.bar([0, 1], [h_post, r_post], color=[COLORS[0], COLORS[3]], width=0.55, alpha=0.85)
+    ax.bar([0, 1, 2], [h_post, r_post, r_post_bank], color=[COLORS[0], COLORS[3], COLORS[3]], width=0.55,
+           alpha=0.85)
+    ax.bar([2], [r_post_bank], color="none", edgecolor="k", hatch="//", width=0.55, lw=0)
     ax.set_yscale("log")
-    ax.set_xticks([0, 1])
-    ax.set_xticklabels(["Heston", "rough Bergomi\n(extrapolated)"])
+    ax.set_xticks([0, 1, 2])
+    ax.set_xticklabels(["Heston", "rough Bergomi:\nprior centre, first rung\n(lower bound)",
+                        "rough Bergomi:\npilot bank's average\ncost per surface"], fontsize=8.5)
     ax.set_ylabel("CPU-seconds per surface")
     ax.set_title(f"Exact posterior: {n_eval:,.0f} evaluations, 400 effective draws")
     ax.text(0, h_post * 1.6, f"{h_post:.0f} s = {h_post / 60:.1f} min", ha="center", fontsize=9)
-    ax.text(1, r_post * 1.6, f"{r_post:,.0f} s = {r_post / 3600:.1f} h", ha="center", fontsize=9)
-    ax.set_ylim(top=r_post * 12)
+    ax.text(1, r_post * 1.6, f"{r_post / 3600:.1f} h", ha="center", fontsize=9)
+    ax.text(2, r_post_bank * 1.6, f"{r_post_bank / 3600:.1f} h", ha="center", fontsize=9)
+    ax.set_ylim(top=r_post_bank * 12)
     axes[0].set_ylim(top=r_eval * 12)
     tidy(*axes)
     save(fig, "l11-likelihood-and-posterior-cost.png")
     REPORT["costs"] = dict(heston_eval=h_eval, rough_eval=r_eval, ratio=r_eval / h_eval, evaluations=n_eval,
-                           heston_post_s=h_post, rough_post_h=r_post / 3600,
+                           heston_post_s=h_post, rough_post_h=r_post / 3600, bank_unit=bank_unit,
+                           rough_post_bank_h=r_post_bank / 3600, per_effective_draw=n_eval / 400,
                            heston_run_range=[float(heston_runs.min()), float(heston_runs.max())],
                            rough_run_range=[float(rough_runs.min()), float(rough_runs.max())])
 
@@ -292,6 +299,8 @@ def fig_pseudo_marginal():
 # Figure 11.5 -----------------------------------------------------------------
 def fig_universe(costs):
     exact_h = costs["exact_rough_posterior"]["cpu_hours"]
+    bank_unit = load("rough-pilot/s1/bank-quality.json")["generation"]["cpu_seconds_per_surface"]
+    exact_bank_h = costs["exact_rough_posterior"]["evaluations_for_400_effective_draws"] * bank_unit / 3600
     net_s = costs["rough_amortized_posterior_1000_draws_cpu_s"]["median"]
     audit_s = 425.35490193349995  # rough-pilot/s5/audit.json, median CPU-seconds per surface
     heston_s = costs["exact_heston_posterior"]["cpu_seconds"]
@@ -299,33 +308,54 @@ def fig_universe(costs):
     n = np.array([1, 2, 5, 10, 20, 50, 100, 200, 500, 1000])
     fig, axes = plt.subplots(1, 2, figsize=(11, 4.3))
     ax = axes[0]
-    ax.loglog(n, n * exact_h, "o-", color=COLORS[3], ms=4, label="exact rough-Bergomi MCMC")
+    ax.loglog(n, n * exact_h, "o-", color=COLORS[3], ms=4, label="exact rough-Bergomi MCMC, lower bound")
+    ax.loglog(n, n * exact_bank_h, "o--", color=COLORS[3], ms=3.5, alpha=0.7,
+              label="exact rough-Bergomi MCMC, bank's average surface cost")
     ax.loglog(n, n * (net_s + audit_s) / 3600, "o-", color=COLORS[0], ms=4, label="amortized posterior + audit")
     ax.loglog(n, n * net_s / 3600, "o--", color=COLORS[0], ms=3.5, alpha=0.7, label="amortized posterior alone")
     ax.loglog(n, n * heston_s / 3600, "s-", color=COLORS[2], ms=3.5, label="exact Heston MCMC (Fourier)")
     ax.set_xlabel("smiles calibrated in one morning")
     ax.set_ylabel("CPU-hours each morning")
     ax.set_title("Daily cost across a desk's underlyings")
+    ax.set_ylim(5e-4, 1e10)
     ax.legend(frameon=False, fontsize=8.5, loc="upper left")
     ax = axes[1]
     m = np.linspace(0, 60, 601)
-    ax.plot(m, m * exact_h, color=COLORS[3], label="exact MCMC, no set-up cost")
-    ax.plot(m, train_h + m * (net_s + audit_s) / 3600, color=COLORS[0], label="bank and training once, then network + audit")
+    ax.plot(m, m * exact_h, color=COLORS[3], label="exact MCMC, lower bound")
+    ax.plot(m, m * exact_bank_h, color=COLORS[3], ls="--", alpha=0.7, label="exact MCMC, bank's average surface cost")
+    ax.plot(m, train_h + m * (net_s + audit_s) / 3600, color=COLORS[0],
+            label="bank once (training ⟨S2⟩ not included),\nthen network + audit")
     be = train_h / (exact_h - (net_s + audit_s) / 3600)
-    ax.axvline(be, color="0.5", ls=":", lw=1)
-    ax.text(be + 1, 120, f"break-even at {be:.0f} smiles", fontsize=9, color="0.3")
+    be_bank = train_h / (exact_bank_h - (net_s + audit_s) / 3600)
+    for x in (be, be_bank):
+        ax.axvline(x, color="0.5", ls=":", lw=1)
+    ax.text(31, 120, f"break-even: {be_bank:.0f} smiles against the dashed line,\n{be:.0f} against the solid one",
+            fontsize=9, color="0.3")
+    ax.set_ylim(0, 1500)
     ax.set_xlabel("smiles calibrated in total")
     ax.set_ylabel("cumulative CPU-hours")
-    ax.set_title("The training bank pays for itself after a few dozen smiles")
-    ax.legend(frameon=False, fontsize=8.5, loc="upper left")
+    ax.set_title("The training bank pays for itself after 9 to 22 smiles")
+    ax.legend(frameon=False, fontsize=8.5, loc="upper center", bbox_to_anchor=(0.5, -0.17), ncol=2)
     tidy(*axes)
     save(fig, "l11-desk-scaling.png")
-    REPORT["universe"] = dict(break_even=float(be), per_smile_amortized_audit_s=float(net_s + audit_s),
+    REPORT["universe"] = dict(break_even=float(be), break_even_bank=float(be_bank), exact_bank_h=float(exact_bank_h),
+                              hundred_exact_bank_h=float(100 * exact_bank_h), per_smile_amortized_audit_s=float(net_s + audit_s),
                               hundred_exact_h=float(100 * exact_h), hundred_amortized_audit_h=float(100 * (net_s + audit_s) / 3600))
+
+
+def typical_noise():
+    """Log-likelihood noise sd sqrt(C (a^2 + a^4 / 2)) if every quote had the bank's median or 90% error."""
+    q = load("rough-pilot/s1/bank-quality.json")["error_quantiles_all_quotes"]
+    out = {}
+    for key in ("q50", "q90", "max"):
+        a = q[key]
+        out[key] = dict(a=a, bias=-0.5 * 63 * a**2, sd=float(np.sqrt(63 * (a**2 + 0.5 * a**4))))
+    REPORT["typical_noise"] = out
 
 
 def main():
     costs = load("costs/costs.json")
+    typical_noise()
     fig_costs(costs)
     fig_mc_noise()
     fig_rwm(costs)

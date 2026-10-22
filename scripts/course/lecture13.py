@@ -417,9 +417,10 @@ def fig_importance_toy():
     axes[1].set_title("A network of the wrong width", fontsize=10)
     axes[1].legend(frameon=False, fontsize=7.5, loc="upper right")
     ax = axes[2]
-    for level, text in ((0.5, "0.5: reliable below"), (0.7, "0.7: unreliable above")):
+    for level in (0.5, khat_threshold(256), 0.7):
         ax.axhline(level, color=COLORS[3], ls=":", lw=1)
-        ax.text(2.9, level + 0.02, text, ha="right", fontsize=8, color=COLORS[3])
+    ax.text(0.95, 0.76, "dotted: 0.5, 0.58 (threshold for M = 256), 0.7", ha="left", va="bottom", fontsize=7.5,
+            color=COLORS[3])
     ax.set_xlabel(r"network's width over the true width, $\lambda$")
     ax.set_ylabel(r"Pareto $\hat k$ of the weights (10% to 90% shaded)")
     ax.set_title("Too narrow a network gives heavy-tailed weights", fontsize=10)
@@ -436,6 +437,11 @@ def fig_importance_toy():
     REPORT["importance_toy"] = out
 
 
+def khat_threshold(m):
+    """Sample-size dependent k-hat threshold of Vehtari et al. (2024): min(1 - 1 / log10 M, 0.7)."""
+    return float(min(1 - 1 / np.log10(m), 0.7))
+
+
 # Figure 13.8: the audit on the rough-Bergomi pilot ---------------------------------
 def fig_rough_audit():
     data = load("rough-pilot/s5/audit.json")
@@ -448,9 +454,13 @@ def fig_rough_audit():
     heston_khat = np.array([s["audit"]["khat"] for s in load("heston/s3/heston-check.json")["surfaces"]])
     fig, axes = plt.subplots(1, 2, figsize=(12, 4.5))
     ax = axes[0]
+    threshold = khat_threshold(256)
     flagged = khat > 0.7
-    ax.semilogy(worst[~flagged], eff[~flagged], "o", color=COLORS[0], ms=5, label=r"$\hat k \leq 0.7$")
-    ax.semilogy(worst[flagged], eff[flagged], "o", color=COLORS[3], ms=5, label=r"$\hat k > 0.7$: flagged")
+    middle = (khat > threshold) & ~flagged
+    ok = khat <= threshold
+    ax.semilogy(worst[ok], eff[ok], "o", color=COLORS[0], ms=5, label=rf"$\hat k \leq {threshold:.2f}$")
+    ax.semilogy(worst[middle], eff[middle], "o", color=COLORS[1], ms=5, label=rf"${threshold:.2f} < \hat k \leq 0.7$")
+    ax.semilogy(worst[flagged], eff[flagged], "o", color=COLORS[3], ms=5, label=r"$\hat k > 0.7$")
     dd = np.linspace(0, 4, 200)
     ax.semilogy(dd, np.exp(-dd**2), "k--", lw=1, label=r"$e^{-\delta^2}$")
     ax.axhline(0.02, color=COLORS[3], ls=":", lw=1)
@@ -466,7 +476,7 @@ def fig_rough_audit():
     bins = np.linspace(-0.6, 1.6, 23)
     ax.hist(np.clip(heston_khat, -0.6, 1.6), bins, color=COLORS[0], alpha=0.5, label="Heston, 50 smiles, M = 2,048")
     ax.hist(np.clip(khat, -0.6, 1.6), bins, histtype="step", color=COLORS[1], lw=2, label="rough pilot, 40 smiles, M = 256")
-    for level in (0.5, 0.7):
+    for level in (0.5, threshold, 0.7):
         ax.axvline(level, color=COLORS[3], ls=":", lw=1)
     ax.set_xlabel(r"Pareto $\hat k$ of the audit's weights")
     ax.set_ylabel("smiles")
@@ -476,7 +486,11 @@ def fig_rough_audit():
     save(fig, "l13-rough-audit.png")
     reliable = (eff > 0.05) & (khat < 0.7)
     REPORT["rough_audit"] = dict(surfaces=len(surfaces), efficiency_q05_q50_q95=np.quantile(eff, [0.05, 0.5, 0.95]).tolist(),
-                                 flagged_khat=int(flagged.sum()), below_2pct=int((eff < 0.02).sum()),
+                                 flagged_khat=int(flagged.sum()), threshold_256=threshold,
+                                 flagged_khat_threshold=int((khat > threshold).sum()),
+                                 heston_threshold_2048=khat_threshold(2048),
+                                 heston_flagged_threshold=int((heston_khat > khat_threshold(2048)).sum()),
+                                 below_2pct=int((eff < 0.02).sum()),
                                  reliable=int(reliable.sum()),
                                  reliable_median_error=np.median(err[reliable], 0).tolist(),
                                  reliable_median_width=np.median(width[reliable], 0).tolist(),

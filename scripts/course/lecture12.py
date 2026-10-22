@@ -561,7 +561,8 @@ def fig_pricer():
     ax.set_xticks(range(3))
     ax.set_xticklabels(labels, fontsize=8.5)
     ax.set_ylabel(r"pricer error in units of $\sigma_c$")
-    ax.set_title("Heston neural pricer on 2,000 held-out surfaces")
+    held_out = load("heston/s4/pricer-route.json")["settings"]["first"]  # errors are measured on test[:first]
+    ax.set_title(f"Heston neural pricer on {held_out:,} held-out test surfaces")
     ax = axes[1]
     e = np.linspace(0, 0.6, 61)
     ax.plot(e, 0.5 * 63 * e**2, color=COLORS[3], label=r"systematic shift $\frac{1}{2}\sum_c e_c^2$")

@@ -27,16 +27,16 @@ def load(path):
 
 # Figure 14.1: where each study stands (design document, "Planned feasibility study") --
 STATUS_COLORS = {"met": COLORS[4], "reported": COLORS[0], "partly met": COLORS[1], "not met": COLORS[3],
-                 "pending": "0.88", "": "white"}
+                 "pending": "0.88", "data done": "0.70", "": "white"}
 STATUS = [  # (study, question, Heston, rough pilot, rough full bank, real smile)
     ("S1", "training bank", "met", "met", "pending", ""),
     ("S2", "calibration (SBC, coverage)", "met", "not met", "pending", ""),
     ("S3", "agreement with exact Heston", "partly met", "", "", ""),
-    ("S4", "agreement with pricer route", "met", "", "pending", ""),
-    ("S5", "audit", "", "reported", "pending", "pending"),
+    ("S4", "agreement with pricer route", "partly met", "", "pending", ""),
+    ("S5", "audit", "", "reported", "pending", ""),
     ("S6", "classical route", "reported", "reported", "pending", ""),
-    ("S7", "products and reserves", "reported", "reported", "pending", "pending"),
-    ("S8", "the real smile", "", "", "", "partly met"),
+    ("S7", "products and reserves", "reported", "reported", "pending", ""),
+    ("S8", "the real smile", "", "", "", "data done"),
     ("S9", "costs", "reported", "reported", "pending", ""),
 ]
 
@@ -49,8 +49,8 @@ def fig_status():
         for j, status in enumerate(row[2:]):
             ax.add_patch(Rectangle((j, y), 0.95, 0.9, color=STATUS_COLORS[status], lw=0))
             if status:
-                ax.text(j + 0.475, y + 0.45, status if status != "pending" else f"⟨{row[0]}⟩ pending",
-                        ha="center", va="center", fontsize=8.5,
+                label = {"pending": f"⟨{row[0]}⟩ pending", "data done": f"data done,\ncriteria ⟨{row[0]}⟩"}.get(status, status)
+                ax.text(j + 0.475, y + 0.45, label, ha="center", va="center", fontsize=8.5,
                         color="white" if status not in ("pending",) else "0.3")
         ax.text(-0.1, y + 0.45, f"{row[0]}  {row[1]}", ha="right", va="center", fontsize=9)
     for j, c in enumerate(columns):
@@ -70,9 +70,12 @@ def fig_costs():
     pricer_chain = load("heston/s4/pricer-route.json")["summary"]["chain_cpu_seconds_median"]
     heston_multistart = load("heston/s6/classical.json")["surfaces"]
     heston_ms = float(np.median([s["cpu_seconds"] for s in heston_multistart]))
+    bank_unit = load("rough-pilot/s1/bank-quality.json")["generation"]["cpu_seconds_per_surface"]
+    exact_bank_s = costs["exact_rough_posterior"]["evaluations_for_400_effective_draws"] * bank_unit
     rows = [
         ("rough: one likelihood evaluation", costs["rough_likelihood_evaluation_cpu_s"]["median"], "one priced surface", COLORS[2]),
-        ("rough: exact posterior by MCMC (extrapolated)", costs["exact_rough_posterior"]["cpu_hours"] * 3600, "exact posterior", COLORS[3]),
+        ("rough: exact posterior, bank's average surface cost", exact_bank_s, "exact posterior (extrapolated)", COLORS[3]),
+        ("rough: exact posterior, prior-centre surface cost", costs["exact_rough_posterior"]["cpu_hours"] * 3600, "exact posterior (extrapolated, lower bound)", COLORS[3]),
         ("rough: multi-start least squares, 10 starts", multistart, "points, no range", COLORS[2]),
         ("rough: audit, 256 proposals", audit, "checks and corrects one smile", COLORS[1]),
         ("rough: amortized posterior, 1,000 draws", costs["rough_amortized_posterior_1000_draws_cpu_s"]["median"], "posterior", COLORS[0]),
@@ -93,12 +96,19 @@ def fig_costs():
     ax.set_xlim(1, 3e7)
     ax.set_xlabel("CPU-seconds per smile (log scale), one machine")
     ax.axhline(3.5, color=GREY, lw=0.6)
+    ax.set_xlim(1, 1e9)
     tidy(ax)
     save(fig, "l14-costs.png")
     REPORT["costs"] = {r[0]: r[1] for r in rows} | {
         "rough_amortized_wall": costs["rough_amortized_posterior_1000_draws_cpu_s"]["wall_median"],
         "rough_load_wall": costs["rough_network_load_and_first_call"]["wall_s"],
         "ratio_exact_to_amortized_cpu": costs["exact_rough_posterior"]["cpu_hours"] * 3600 / costs["rough_amortized_posterior_1000_draws_cpu_s"]["median"],
+        "ratio_exact_bank_to_amortized_cpu": exact_bank_s / costs["rough_amortized_posterior_1000_draws_cpu_s"]["median"],
+        "ratio_exact_to_audited": costs["exact_rough_posterior"]["cpu_hours"] * 3600 / (audit + costs["rough_amortized_posterior_1000_draws_cpu_s"]["median"]),
+        "ratio_exact_bank_to_audited": exact_bank_s / (audit + costs["rough_amortized_posterior_1000_draws_cpu_s"]["median"]),
+        "exact_bank_h": exact_bank_s / 3600,
+        "break_even_bank": 370 / (exact_bank_s / 3600 - (audit + costs["rough_amortized_posterior_1000_draws_cpu_s"]["median"]) / 3600),
+        "per_effective_draw": costs["exact_rough_posterior"]["evaluations_for_400_effective_draws"] / 400,
         "break_even_smiles": 370 / (costs["exact_rough_posterior"]["cpu_hours"] - (audit + costs["rough_amortized_posterior_1000_draws_cpu_s"]["median"]) / 3600)}
 
 
@@ -175,8 +185,8 @@ def fig_products():
     rough = load("rough-pilot/s7/products.json")["surfaces"]
     fig, axes = plt.subplots(1, 2, figsize=(13, 4.4))
     report = {}
-    for ax, key, title in ((axes[0], "range_90_relative", "90% range of the price, share of the posterior mean"),
-                           (axes[1], "reserve_short_relative", "short-side reserve, share of the point price")):
+    for ax, key, title in ((axes[0], "range_90_relative", "90% range of the price under the network posterior,\nshare of its mean"),
+                           (axes[1], "reserve_short_relative", "short-side reserve under the network posterior,\nshare of the least-squares price")):
         for k, (surfaces, color, marker, name) in enumerate(((heston, COLORS[0], "o", "Heston, test rows 2,300 to 2,302"),
                                                              (rough, COLORS[1], "s", "rough-Bergomi pilot, test rows 290 to 292"))):
             for i, p in enumerate(PRODUCTS):
@@ -218,17 +228,17 @@ def fig_across_models():
         pad = 0.08 * (hi - lo)
         bins = np.linspace(lo - pad, hi + pad, 40)
         if np.ptp(r) > 0:
-            ax.hist(r, bins, density=True, color=COLORS[0], alpha=0.5, label="rough Bergomi posterior")
+            ax.hist(r, bins, density=True, color=COLORS[0], alpha=0.5, label="rough Bergomi, network posterior")
         else:
-            ax.axvline(r[0], color=COLORS[0], lw=3, alpha=0.6, label="rough Bergomi posterior (one value)")
-        ax.hist(h, bins, density=True, color=COLORS[4], alpha=0.5, label="Heston posterior")
+            ax.axvline(r[0], color=COLORS[0], lw=3, alpha=0.6, label="rough Bergomi, network posterior (one value)")
+        ax.hist(h, bins, density=True, color=COLORS[4], alpha=0.5, label="Heston, network reweighted by Fourier likelihood")
         ax.axvline(rough_draws[f"point_prices_{row}"][i], color=COLORS[0], ls="--", lw=1.2, label="rough least squares")
         ax.axvline(heston_draws[f"heston_point_prices_{row}"][i], color=COLORS[4], ls="--", lw=1.2, label="Heston least squares")
         gap = across[0]["products"][p]["gap_between_points_relative"]
         ax.set_title(f"{PRODUCT_LABELS[i].replace(chr(10), ', ')}\nHeston − rough: {100 * gap:+.1f}%", fontsize=9.5)
         ax.set_xlabel("price, forward units")
         ax.set_yticks([])
-        ax.set_ylim(0, ax.get_ylim()[1] * 1.7)
+        ax.set_ylim(0, ax.get_ylim()[1] * 2.0)
         ax.locator_params(axis="x", nbins=4)
     axes[0].legend(frameon=False, fontsize=7.5, loc="upper left")
     tidy(*axes)
@@ -249,7 +259,7 @@ ACTS = [  # (start, end, act, evidence, status)
     (9, 16, "Heston", "exact against amortized posterior (S3)", "available"),
     (16, 21, "Rough Bergomi", "one priced surface and its cost (S9)", "available"),
     (21, 26, "The amortized posterior", "posterior pairs for the SPY smile (S8)", "pending"),
-    (26, 31, "Is it right?", "SBC, audit, pricer route (S2, S4, S5)", "pilot only"),
+    (26, 31, "Is it right?", "SBC (S2), audit (S5; on SPY, S8), pricer route (S4)", "pilot only"),
     (31, 35, "The classical route", "objective landscape, Gauss–Newton region (S6)", "pilot only"),
     (35, 39, "From posterior to prices", "price distributions and reserves (S7)", "pilot only"),
     (39, 40, "Across models", "Heston against rough Bergomi (S7)", "pilot only"),
