@@ -61,7 +61,7 @@ For Heston, P\_c is a Fourier integral and this line costs milliseconds; an exac
 
 Details: [Why the likelihood is expensive](#why-the-likelihood-is-expensive).
 
-### 5. The classical shortcut and its failure
+### 5. Least squares returns one point, not a range
 
 The usual route is weighted least squares, θ̂ = argmin Σ\_c w\_c (P\_c(θ) − y\_c)², with a neural pricer in place of Monte Carlo when the model has no formula (deep calibration). It returns one point:
 
@@ -85,7 +85,7 @@ The minimizer transports N(0, I) to p(θ ∣ y, ξ\_0) for every surface the pri
 
 Details: [Amortized design](#amortized-design).
 
-### 7. Trust, then price
+### 7. Checking the network's posterior before pricing products
 
 The network gives only an approximation of the posterior, so three checks guard it.
 
@@ -147,13 +147,17 @@ The posterior gives, for each product, a price distribution. The variance swap's
 
 The tutorial therefore makes two separate claims, stated under [The two claims](#the-two-claims). The section [Planned feasibility study](#planned-feasibility-study) holds the criteria for both and the figures each study produces.
 
-## At a glance
+## Three routes from one smile to a product price, with their costs
+
+This section compares, in one figure, the three ways of going from today's smile to a product price that the rest of the document develops: least squares ([Classical calibration and where it fails](#classical-calibration-and-where-it-fails)), the exact posterior by MCMC ([Why the likelihood is expensive](#why-the-likelihood-is-expensive)) and the amortized posterior ([Amortized design](#amortized-design)).
 
 *Pending figure ⟨S9-0⟩: three routes from one smile to a product price, with measured costs per surface.* Drawn as the SVJ diagram: each row one route from the same input, the 63 quotes of one smile, to a price for the forward-start option. The boxes give the method, what it returns and the risk number it supports; the line under each row gives the measured cost and the main finding. The highlighted row is the route the tutorial teaches.
 
 How to read the figure: the first row is multi-start least squares, which returns one price per start in about 60 CPU-seconds and no range. The second row is MCMC with the Monte Carlo pricer inside, which returns the exact posterior and the exact range in about 17 CPU-hours. The third row is the amortized posterior with its audit: the range in 1.4 seconds, checked against the Monte Carlo likelihood in about 425 CPU-seconds. A fourth, dashed row is the neural-pricer route (deep calibration with MCMC on the pricer), which the study uses as an independent check.
 
 ## Why Heston is the check and not the example
+
+This section explains the role of the two stochastic-volatility models in the tutorial. Heston has an exact posterior, so it is used to check the method. Rough Bergomi's exact posterior is too expensive, so it is where the method is needed. Appendix J gives the technical reasons.
 
 Heston (1993) is the model every quant has calibrated. Its characteristic function is known in closed form, so a European price is a one-dimensional Fourier integral that costs about a millisecond, a full calibration costs about a second, and an exact posterior by MCMC costs minutes per surface. The 9 October 2026 experiment on the HKDE model (Heston with Kou jumps, [Agazzotti et al. 2025](https://arxiv.org/abs/2502.13824)) showed the phenomenon this lesson is about: thirty optimizer starts ended at two optima with almost equal fit and different exotic prices, and the posterior exposed the directions the surface does not identify. It also showed that a desk would not need simulation-based inference for it. The Fourier likelihood is available, a multi-start exposes the two optima, and an MCMC chain on the Fourier likelihood gives the range. SBI would speed up a working method rather than replace a missing one.
 
@@ -170,6 +174,8 @@ One slide from the 9 October study stays in the tutorial, as a preview on a Hest
 How to read the figure: each panel is one option surface, and each column one exotic product, priced relative to its price under the true parameters. The blue violin shows the spread of prices under the HKDE posterior, with its 90% interval as a thick line. The orange and green dots are the two optimizer end points, and the grey bar is the spread across the four models of the paper's Table 7. On the SHOP-like surface the posterior range of each barrier option is wider than the grey bar, and the variance swap ranges from −18% to +67%. In rough Bergomi the variance swap's range will be zero, because the forward-variance curve is an input rather than a parametric consequence; the comparison is one of the lesson's teaching points.
 
 ## The practitioner problem
+
+This section expands step 1 of the executive summary. It describes what a desk computes every morning, which number the regulations ask for, and why current practice does not produce it. It is lesson 1 of the course.
 
 A derivatives desk prices and hedges products that are not quoted, with a model calibrated to products that are. The calibration runs every morning, and intraday for liquid underlyings. Its output is used three times: to mark the book, to compute hedge ratios, and, at a slower pace, to set the reserves that the valuation rules require. The current tools meet the daily constraint by returning one calibration and leaving its uncertainty to judgment.
 
@@ -188,6 +194,8 @@ The rough Bergomi model supplies a realistic case. It fits equity-index smiles w
 The Bayesian answer exists, but its cost does not scale. One likelihood evaluation is one Monte Carlo surface, 5.0 CPU-seconds, and an exact posterior by MCMC costs about 17 CPU-hours per surface. The amortized posterior costs 1.4 seconds per surface. The audit adds about 425 CPU-seconds for each surface it checks.
 
 ## Executive summary of the model
+
+This section describes the finished pipeline as a desk would run it, before the lessons explain how each part is built. It states the inputs and outputs, what the model captures and misses, and the daily run in order.
 
 The model turns today's smile of one underlying into a posterior over its three parameters, and the posterior into a price distribution for any product the model can price. The price, the range and the reserve read off that distribution include the uncertainty about the calibration itself.
 
@@ -227,7 +235,7 @@ Each feature of the smile comes from one mechanism of the model, governed by a f
 
 The posterior predictive check on the real smile shows where the model misses: quotes whose standardized residual under the posterior exceeds two.
 
-### The daily process, step by step
+### The daily calibration and pricing run
 
 1. Take the end-of-day chain of the underlying: strike, expiry, type, bid, ask.
 2. Clean it: out-of-the-money quotes only, positive bids, relative spread below a threshold, no violations of monotonicity or convexity in strike. Compute the forward per maturity from put–call parity and the discount factor from the chosen curve.
@@ -242,11 +250,13 @@ Training happens once, before any of these steps: 100,000 surfaces priced on the
 
 *Pending figure: the daily pipeline, as the SVJ diagram.* The upper band runs once (prior → simulator and Monte Carlo pricer → training bank → networks); the lower band runs every morning for every underlying (chain → cleaning, forward, ξ\_0 → design grid → network → audit → products → report). The two accented boxes are the trained networks, and only the audit evaluates the Monte Carlo likelihood.
 
-### An example of the output
+### The output for one real smile (SPY)
 
 *Pending ⟨S8⟩.* For the SPY smile of ⟨date⟩, the network's posterior puts H at ⟨S8⟩ (90%: ⟨S8⟩ to ⟨S8⟩), η at ⟨S8⟩ (⟨S8⟩ to ⟨S8⟩) and ρ at ⟨S8⟩ (⟨S8⟩ to ⟨S8⟩); the product ρη is known to ⟨S8⟩% and η alone to ⟨S8⟩%. The audit passes with efficiency ⟨S8⟩%. The 3-month variance swap strike is ⟨S8⟩% with zero range; the 3-month volatility swap is ⟨S8⟩% (90%: ⟨S8⟩ to ⟨S8⟩); the 3-month-into-6-month forward-start call is ⟨S8⟩% of notional (90%: ⟨S8⟩ to ⟨S8⟩), against ⟨S8⟩% at the least-squares calibration, so the within-model reserve for a short position is ⟨S8⟩% of the price. Heston calibrated to the same smile prices the forward-start at ⟨S8⟩%.
 
 ## Notation and key terms
+
+This section fixes the symbols and terms used in the rest of the document. It can be skipped and consulted when a symbol is unclear.
 
 Implied volatility is the number that makes the Black–Scholes formula reproduce an option price. It is a quoting convention, not a forecast: a smile is the set of implied volatilities across strikes and maturities, and its shape is the data. The document quotes implied volatility annualized, as a fraction that reads as a percentage.
 
@@ -323,6 +333,8 @@ The word *calibration* has two meanings in this document, and the lesson must ke
 | Common random numbers | Pricing every posterior draw with the same Monte Carlo noise, so that differences between draws are not Monte Carlo noise | 7 |
 
 ## The model
+
+This section expands step 2 of the executive summary. It defines the three pricing models, the prior on the rough-Bergomi parameters, and the Monte Carlo computation of the model prices P\_c(θ; ξ\_0), which is the simulator the whole method relies on. It is lesson 2 of the course.
 
 Three models appear in the lesson, in order of difficulty: Black–Scholes, whose smile is flat; Heston, whose smile has the right shape and an exact pricer; and rough Bergomi, whose smile has the right term structure and no exact pricer. All three are stated under the pricing measure Q, with the price in forward units so that rates and dividends drop out.
 
@@ -445,7 +457,7 @@ The hybrid scheme turns three streams of standard normals, one per path and time
 
 At the prior median the 1-month ATM implied volatility is 22.8%, below the curve's flat 25%: with negative correlation and a large vol-of-vol the at-the-money level sits under the variance-swap level. The 1-month ATM skew is −0.59 per unit of log-moneyness and the 1-week skew −0.97: the skew steepens toward short maturities, as T^(H−½) = T^(−0.315) in the limit. The surface costs 4.7 CPU-seconds at 2^15 paths on each of its three grids; its largest Monte Carlo standard error is 0.21 σ\_c and its median 0.048 σ\_c, so the first rung of the ladder suffices.
 
-### An example surface
+### The 63 prices at the centre of the prior, plotted as smiles
 
 ![One simulated rough-Bergomi surface at the centre of the prior (H = 0.185, η = 2.0, ρ = −0.595, flat 25% curve). Left: implied volatilities against δ at the 7 maturities, the model smile and the 63 noisy quotes. Right: the absolute ATM skew against maturity on log–log axes, with the fitted power law and the short-maturity formula.](images/calibration-01-example-surface-rough.png)
 
@@ -477,6 +489,8 @@ Given θ and ξ\_0, any product the model can simulate has a price, by Monte Car
 The forecast of the SVJ lesson becomes the pricing step here: nothing is re-estimated, the draw supplies θ, the market supplies ξ\_0, and only the Monte Carlo paths are new. [From posterior to prices](#from-posterior-to-prices) turns the prices under all draws into a range and a reserve.
 
 ## The observation model
+
+This section defines the data: what one quote y\_c is, which 63 contracts are used, and the noise σ\_c attached to each quote. Together with the model prices of the previous section, the noise model gives the likelihood p(y ∣ θ, ξ\_0) of step 4 of the executive summary. The section ends with the parameter directions the smile can and cannot identify, which is what the posterior will show.
 
 ### What a quote is
 
@@ -512,6 +526,8 @@ Study S2's recovery and contraction figures test each line; study S6 shows the v
 
 ## Why the likelihood is expensive
 
+This section expands step 4 of the executive summary. It explains why, for rough Bergomi, one evaluation of the likelihood costs one Monte Carlo surface, and why an exact posterior therefore costs hours per surface. This cost is what the amortized method removes.
+
 The likelihood is the probability density of the 63 observed quotes, given the parameters and the curve. Under the noise model it is the Gaussian of the executive summary's step 4. The cost is entirely in the model prices P\_c(θ; ξ\_0).
 
 ### Heston: a formula
@@ -534,9 +550,11 @@ A random-walk chain needs on the order of 10^4 likelihood evaluations to reach a
 
 ## Classical calibration and where it fails
 
+This section expands step 5 of the executive summary. It describes the calibration methods desks use today, what each returns, and why none returns the range the rules ask for. These methods are the baselines that study S6 compares with the amortized posterior.
+
 Model calibration in practice is a least-squares problem, solved once per surface by a local optimizer. For this model it fixes the skew and its term structure well, and it returns no usable statement about the vol-of-vol. The exact Bayesian route gives the right statement, at hours per surface.
 
-### The routes
+### Classical calibration routes and what each returns
 
 | Route | Output | Key references | Where it fails for a smile |
 | --- | --- | --- | --- |
@@ -582,9 +600,11 @@ Bayesian inference treats the parameters as uncertain and updates the prior with
 
 ## Amortized design
 
+This section expands step 6 of the executive summary. It explains how the network that returns the posterior is built, trained and used. It is the core of the method; the next section checks the network, and the one after uses it to price products.
+
 Amortized inference pays the cost of inference once, in training. A network is trained on simulated surfaces whose parameters are known, and it then maps any new smile to its posterior in seconds. The network never evaluates the likelihood: it learns the posterior from simulations alone. The Monte Carlo pricing, which is the expensive part, is done once per training surface and never again.
 
-### The idea
+### Why simulations from the prior yield the posterior
 
 The model is cheap to simulate per surface relative to an MCMC chain, even though its likelihood is expensive. Drawing θ and a curve from the prior and then a noisy surface y from the pricer and the noise model produces triples (θ, ξ\_0, y) from the joint distribution p(θ) p(ξ\_0) p(y ∣ θ, ξ\_0). The same joint distribution factors as p(y, ξ\_0) p(θ ∣ y, ξ\_0). Among simulated surfaces that resemble the observed one, with the same curve, the parameters are therefore distributed as the posterior. A network trained on many triples learns to return p(θ ∣ y, ξ\_0) for any smile; this is neural posterior estimation.
 
@@ -614,7 +634,7 @@ The inference network is BayesFlow's FlowMatching, the class slot 4 uses, with t
 
 Many lines pass through the same point at the same time, from different noise draws and different targets. The squared-error loss makes the network learn their average velocity, and following the average velocity from noise at τ = 0 lands on the posterior at τ = 1; Appendix F proves it. Sampling draws z and follows the learned field from τ = 0 to τ = 1 with 100 Euler steps on the grid τ\_i = 1 − (1 − i/100)², which is dense where the flow ends; Appendix F.2 explains why uniform steps are not enough. The velocity network is BayesFlow's TimeMLP with four hidden layers of 256 units, with the 70 conditions in place of the SVJ design's 32 learned summaries.
 
-### Training
+### Training settings and cost
 
 The targets are standardized with their training mean and standard deviation, and the conditions as well, both frozen after training. The reference run uses ⟨S2⟩ epochs over the 100,000 surfaces, with a fresh quote error in every batch of 256. The optimizer is BayesFlow's default for offline training: AdamW with weight decay 5 × 10⁻³ and gradient norms clipped at 1.5; the learning rate warms up from 5 × 10⁻⁵ to 5 × 10⁻⁴ over the first 5% of steps and then decays to zero along a cosine. The checkpoint kept is the epoch with the smallest validation loss, and its reload is checked by drawing twice with the same seed. Training runs on ⟨S2⟩ CPU cores in ⟨S2⟩ minutes. The study samples with this fixed Euler grid, compiled once, at 1.4 seconds per surface for 1,000 draws (3.6 CPU-seconds), after 5.9 seconds to load the network and compile the sampler.
 
@@ -627,6 +647,8 @@ The likelihood enters at no point of training or sampling. Within the amortized 
 The same bank trains the other neural object of the literature: a pricer f\_ψ(θ, ξ\_0) that returns the 63 clean prices, fitted by least squares in units of σ\_c on the stored reference prices. With it, the approximate likelihood p̃(y ∣ θ, ξ\_0) = N(y; f\_ψ(θ, ξ\_0), diag(σ\_c²)) costs microseconds, and a Markov chain on it gives a posterior in seconds. This route is neural likelihood estimation; it is correct up to the pricer's error, which is measured once on held-out surfaces and must stay below the quote noise. The two routes should agree, and study S4 checks that they do; the lesson then says which to use when: the amortized posterior where surfaces arrive in quantity and the design is fixed, the pricer route where the noise model or the quote set changes from day to day. Appendix F states both objectives.
 
 ## Validation plan
+
+This section expands the first half of step 7 of the executive summary: the checks that must pass before the network's posterior is used to price anything.
 
 A learned posterior can be wrong in ways that the training loss does not reveal, so the amortized posterior is accepted only after five checks, each against a known answer, plus one check that runs on every real surface.
 
@@ -683,6 +705,8 @@ All the checks above use simulated surfaces, where the model is true. A real smi
 
 ## From posterior to prices
 
+This section expands step 3 and the second half of step 7 of the executive summary. It turns the validated posterior draws into a price distribution for each product, and reads off it the point price, the range and the reserve that step 1 asks for.
+
 The posterior becomes a product price in three steps: price the product from every posterior draw, pool the prices into the price distribution, and read the point, the range and the reserve off it. The same draws also show which parameter the price range owes most to.
 
 ### From posterior draws to price distributions
@@ -720,6 +744,8 @@ Each posterior draw also gives the product's sensitivities to the forward-varian
 
 ## Planned feasibility study
 
+This section lists the studies that produce the numbers and figures on which the document's two claims rest. Each placeholder ⟨Sn⟩ elsewhere in the document is filled by study Sn.
+
 The study answers nine questions with explicit criteria. The table tracks them; the subsections state the setup, the figures and the placeholders each study fills. Criteria marked *proposed* are decisions for the organizers.
 
 | # | Study | Question | Criterion | Result | Status |
@@ -734,7 +760,7 @@ The study answers nine questions with explicit criteria. The table tracks them; 
 | 8 | S8 | The real smile | Skew term-structure exponent; posterior; audit score; posterior predictive residuals with at most ⟨proposed: 10%⟩ of quotes beyond two standard deviations | SPY, 21 October 2026: exponent −0.32; every grid point read from quotes; real spreads below the design noise; the forward-variance curve outside the curve prior. Posterior, audit and residuals: ⟨S8⟩ | data done; posterior pending |
 | 9 | S9 | Costs | One table on one machine: Monte Carlo likelihood evaluation; exact chain extrapolated to 400 effective draws; network; audit; neural pricer with MCMC; multi-start least squares | One rough likelihood evaluation 5.0 CPU-s; exact rough posterior about 17 CPU-h (extrapolated); amortized posterior 1.4 s for 1,000 draws; audit 425 CPU-s; Monte Carlo least squares 600 CPU-s; Heston exact posterior 250 CPU-s | done (pilot networks) |
 
-### Setup
+### Hardware, software and timing conventions of the study
 
 All timings are reported for one named machine, in CPU-seconds that count every thread, as in the SVJ study. The software is the repository's locked environment: Python 3.12, BayesFlow 2.0.14 with Keras on the JAX CPU backend, NumPy, SciPy. The bank is generated on Oscar with single-core array jobs and assembled with checksums. Every random stream is seeded from the task fingerprint and the example identity, so any surface can be regenerated alone.
 
@@ -933,6 +959,8 @@ The forward-variance curve lies outside the training prior. The prior writes eac
 
 ## Tutorial narrative
 
+This section and the next are design notes for the organizers. This one sets out how the material above is presented in the tutorial's advanced segment; the next lists what could go wrong.
+
 The 40-minute advanced segment makes the two claims of the executive summary. Francesco presents it. The schedule is the plan's §4; the table repeats it with the evidence each act shows.
 
 | Minutes | Act | Message | Evidence on screen |
@@ -989,6 +1017,8 @@ The main risks are of method rather than of schedule: a posterior whose width is
 
 ## Appendix A. Calibration practice and what the rules ask for
 
+This appendix gives the sources behind [The practitioner problem](#the-practitioner-problem): what desks do today, and the wording of the rules that ask for a range of calibrations.
+
 ### A.1 What desks do
 
 A pricing library calibrates each model to the vanilla surface of each underlying at least daily. Local volatility (Dupire 1994) matches the vanillas exactly and prices path-dependent products with the wrong dynamics; stochastic and local-stochastic volatility models match the vanillas approximately and are used where forward smiles matter: cliquets, barriers, volatility products. The calibration is a least-squares fit, in prices or in implied volatilities, often with a penalty toward yesterday's parameters for stability. The result is one parameter set, used to mark the book and to compute hedge ratios. Model risk is handled outside the calibration: by pricing with alternative models, by reserves set at independent price verification, and by expert judgment.
@@ -1013,6 +1043,8 @@ No source shows a desk computing a posterior over its calibration every morning.
 The posterior turns the bid-ask widths into a probability-weighted range of calibrations and a quantile, which is the object Art. 11(3) describes, and it propagates to any product and any hedge ratio the model can price. It does not cover the choice of model, which Cont's definition and Art. 11(1) include; the across-model comparison and the model-free bounds place it. It does not replace independent price verification, which uses market observables the model does not see.
 
 ## Appendix B. Black–Scholes, implied volatility and the variance swap
+
+This appendix derives the Black–Scholes formulas in forward units, the forward and the discount factor from the chain, and the replication of the variance swap from which the forward-variance curve ξ\_0 is built. It supports [The model](#the-model) and [The observation model](#the-observation-model).
 
 ### B.1 The formulas in forward units
 
@@ -1066,6 +1098,8 @@ a weighted integral of out-of-the-money prices (Neuberger 1994; Demeterfi, Derma
 
 ## Appendix C. Heston and the Fourier pricer
 
+This appendix states Heston's characteristic function and the Fourier integral that prices a surface in milliseconds. It is the exact pricer behind the Heston check of study S3.
+
 ### C.1 The characteristic function
 
 For an affine model the log-forward X\_T = ln(S\_T / F\_T) has a characteristic function of the form φ(u) = exp(C(u, T) + D(u, T) v\_0), where C and D solve Riccati equations. For Heston, with b = κ − iρ\_H σ\_v u,
@@ -1095,6 +1129,8 @@ Under Black–Scholes φ(u − i/2) = exp(−½σ²T(u² + ¼)) is real and the 
 The repository's HKDE pricer adds Kou double-exponential jumps to Heston; with jump intensity zero its characteristic function is the Heston one above, and the branch is tested. Heston's expected variance is E[V\_t] = θ\_H + (v\_0 − θ\_H) e^(−κt), so its total variance is w(T) = θ\_H T + (v\_0 − θ\_H)(1 − e^(−κT)) / κ and its variance-swap strike depends on three parameters. Calibrated to the same smile as rough Bergomi, Heston therefore carries a variance-swap range where rough Bergomi carries none; the lesson shows the two side by side.
 
 ## Appendix D. Rough Bergomi
+
+This appendix gives the mathematics of rough Bergomi that the Monte Carlo pricer uses: the variance of the driver, the hybrid scheme that simulates it, the conditional Black–Scholes estimator and its variance reduction, and the short-maturity skew on which the identification argument rests.
 
 ### D.1 The Volterra driver and its variance
 
@@ -1152,6 +1188,8 @@ For the rough Bergomi model the at-the-money skew ψ(T) = ∂σ\_imp(k, T)/∂k 
 
 ## Appendix E. Calibration as estimation
 
+This appendix relates the classical routes of [Classical calibration and where it fails](#classical-calibration-and-where-it-fails) to statistical estimation: least squares as maximum likelihood, its covariance, regularization as a prior, deep calibration, and the model-free bounds that limit any model's range.
+
 ### E.1 Least squares is maximum likelihood
 
 Under y\_c = P\_c(θ) + σ\_c ε\_c with independent standard normal ε\_c, the log-likelihood is −½ Σ\_c ((y\_c − P\_c(θ)) / σ\_c)² up to a constant, so weighted least squares with w\_c = 1/σ\_c² is maximum likelihood and, under a flat prior on the box, the posterior mode. Changing the weights changes the estimator and the implied noise model at once; stating σ\_c makes the choice explicit.
@@ -1173,6 +1211,8 @@ Two-step deep calibration (Horvath, Muguruza and Tomas 2021) fits a network f\_�
 Given the vanilla prices at the relevant maturities and nothing else, the price of a product consistent with them lies in an interval given by martingale optimal transport (Beiglböck, Henry-Labordère and Penkner 2013; Hobson 1998 for lookbacks; Brown, Hobson and Rogers 2001 for barriers). The bounds are attained by extreme models and are usually too wide to act on, but they are the outer limit of model uncertainty and the natural reference for how much of it one model occupies.
 
 ## Appendix F. Amortized inference
+
+This appendix derives why the network of [Amortized design](#amortized-design) returns the posterior: the training objectives of neural posterior estimation and flow matching, the coordinate maps, the extension to variable quote sets, and the neural-likelihood alternative.
 
 ### F.1 The objective of neural posterior estimation
 
@@ -1202,6 +1242,8 @@ A pricer f\_ψ trained by least squares on the clean prices approximates the con
 
 ## Appendix G. Validation
 
+This appendix derives the tools of the [Validation plan](#validation-plan): why simulation-based calibration works, how the importance-sampling audit is scored, how Monte Carlo noise affects the likelihood, and how two posteriors are compared.
+
 ### G.1 Why exact posteriors give uniform ranks
 
 Draw θ\* ~ p(θ), y ~ p(y ∣ θ\*), and θ^(1), …, θ^(L) ~ p(θ ∣ y). Given y, θ\* is itself distributed as p(θ ∣ y), by Bayes' rule, so θ\*, θ^(1), …, θ^(L) are L + 1 exchangeable draws from one distribution and the rank of θ\* among them is uniform on {0, …, L}. A posterior that differs from p(θ ∣ y) breaks the exchangeability, and the direction of the break says how (Talts et al. 2018). The test is marginal, one target at a time, so it is necessary rather than sufficient; the SVJ design document's toy figure shows the four shapes.
@@ -1219,6 +1261,8 @@ With P̂\_c = P\_c + s\_c ζ\_c, ζ\_c ~ N(0, 1) independent of the quote noise,
 Two posteriors are compared target by target: the difference of their means in units of the reference posterior's standard deviation, and the ratio of their 90% interval widths. The SVJ criterion, 0.3 standard deviations and 25%, is kept so that the two lessons report the same thing. For the product ρη the metrics are computed on the joint draws.
 
 ## Appendix H. Products under the posterior
+
+This appendix derives the prices of the three products under the model and defines the reserve, as used in [From posterior to prices](#from-posterior-to-prices).
 
 ### H.1 The variance swap
 
@@ -1250,7 +1294,9 @@ Let p̂ be the point price and q\_α the α-quantile of the price distribution u
 
 ## Appendix I. The real surface
 
-### I.1 The chain
+This appendix describes how a real option chain becomes the network's input: the chain, the cleaning rules, the reading of the design grid and the construction of ξ\_0. It supports study S8.
+
+### I.1 The SPY option chain and where it comes from
 
 The SPY end-of-day chain for one date comes from a vendor file: Alpha Vantage's historical options endpoint (a premium endpoint, CSV) or Cboe's delayed-quotes page (JSON, with OCC option symbols). Either gives strike, expiration, type, bid and ask, and the reader `scripts/build_surface.py` parses both. Only derived quantities are committed to the repository, in `tutorial_final/results/calibration/spy/surface.json`: the forward and discount per maturity, the 7 forward-variance levels, the 63 design-grid prices with their noise standard deviations, the implied-volatility grid, the cleaning counts, the provenance (vendor, endpoint, time of capture, the rate curve and its source) and the SHA-256 of the raw file, which stays outside the repository. The study's chain is Cboe's delayed quotes for SPY, fetched on 22 October 2026 before the open: 13,114 options in 35 expirations, quoted at the close of 21 October.
 
