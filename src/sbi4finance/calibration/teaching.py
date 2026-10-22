@@ -216,25 +216,41 @@ def agreement_rows(report, labels=("v₀", "θ", "σ_v", "ρ"), key="network_vs_
 
 
 def cost_rows(costs):
-    """The S9 table: one likelihood evaluation, the exact route and the amortized route, per model."""
+    """The S9 table: one likelihood evaluation, the exact route and the amortized route, per model.
+
+    CPU time counts every thread; wall time is what a user waits, where it was recorded.
+    """
+    def wall(entry):
+        return f"{entry['wall_median']:.2f} s" if "wall_median" in entry else "–"
+
     rows = []
     rough = costs.get("rough_likelihood_evaluation_cpu_s")
     if rough:
         rows.append({"route": f"Rough Bergomi: one likelihood evaluation (63 prices, {costs['rough_paths']:,} paths per block)",
-                     "CPU cost": f"{rough['median']:.1f} s"})
+                     "CPU time": f"{rough['median']:.1f} s", "wall time": wall(rough)})
     exact = costs.get("exact_rough_posterior")
     if exact:
         rows.append({"route": f"Rough Bergomi: exact posterior by MCMC, 400 effective draws "
                               f"({exact['evaluations_for_400_effective_draws']:,.0f} evaluations, extrapolated)",
-                     "CPU cost": f"{exact['cpu_hours']:.1f} h"})
+                     "CPU time": f"{exact['cpu_hours']:.1f} h", "wall time": "–"})
     for name, label in (("rough", "Rough Bergomi"), ("heston", "Heston")):
         amortized = costs.get(f"{name}_amortized_posterior_1000_draws_cpu_s")
         if amortized:
-            rows.append({"route": f"{label}: amortized posterior, 1,000 draws", "CPU cost": f"{amortized['median']:.2f} s"})
+            rows.append({"route": f"{label}: amortized posterior, 1,000 draws",
+                         "CPU time": f"{amortized['median']:.2f} s", "wall time": wall(amortized)})
+        loaded = costs.get(f"{name}_network_load_and_first_call")
+        if loaded:
+            rows.append({"route": f"{label}: loading the network and its first call, once per session",
+                         "CPU time": f"{loaded['cpu_s']:.1f} s", "wall time": f"{loaded['wall_s']:.1f} s"})
     heston = costs.get("heston_likelihood_evaluation_cpu_s")
     if heston:
         rows.append({"route": "Heston: one likelihood evaluation (63 Fourier prices)",
-                     "CPU cost": f"{1000 * heston['median']:.0f} ms"})
+                     "CPU time": f"{1000 * heston['median']:.0f} ms",
+                     "wall time": f"{1000 * heston['wall_median']:.0f} ms" if "wall_median" in heston else "–"})
+    exact = costs.get("exact_heston_posterior")
+    if exact:
+        rows.append({"route": "Heston: exact posterior by MCMC, 400 effective draws (extrapolated)",
+                     "CPU time": f"{exact['cpu_seconds']:.0f} s", "wall time": "–"})
     return rows
 
 
