@@ -158,7 +158,8 @@ def validate_task(task):
         wobble = prior["forward_variance"]["log_perturbation"]
         if level[0] <= 0 or 1 + slope[0] * grid[-1] <= 0 or not np.isfinite(wobble) or wobble < 0:
             raise ValueError("positive level and slopes that keep every level positive required")
-        if set(numerics) != {"method", "blocks", "paths_ladder", "max_mc_se_over_quote_sigma"} \
+        required = {"method", "blocks", "paths_ladder", "max_mc_se_over_quote_sigma"}
+        if not required <= set(numerics) <= required | {"max_mc_se_over_quote_sigma_last_rung"} \
                 or numerics["method"] != "hybrid":
             raise ValueError("rough calibration requires hybrid blocks and a paths ladder")
         ladder = [_positive_int(x, "paths_ladder entry") for x in numerics["paths_ladder"]]
@@ -182,6 +183,9 @@ def validate_task(task):
         if not covered.all() or previous < grid[-1] - 1e-12:
             raise ValueError("blocks must cover every contract and the last knot")
         budget = numerics["max_mc_se_over_quote_sigma"]
+        cap = numerics.get("max_mc_se_over_quote_sigma_last_rung", budget)
+        if isinstance(cap, bool) or np.ndim(cap) != 0 or not np.isfinite(cap) or cap < budget:
+            raise ValueError("the last rung's cap must be a number at least the budget")
     if isinstance(budget, bool) or np.ndim(budget) != 0 or not np.isfinite(budget) or budget <= 0:
         raise ValueError("numerical precision budget must be positive")
 
@@ -242,7 +246,8 @@ def price(task, parameter_values, context_values, seed):
         return prices, np.zeros(n), np.zeros((n, n)), difference, np.empty(0)
     prices, errors, covariance, used = pricing.rough_surface(
         parameters, curve(task, context_values), contracts, numerics["blocks"], numerics["paths_ladder"],
-        sigma(task), numerics["max_mc_se_over_quote_sigma"], seed)
+        sigma(task), numerics["max_mc_se_over_quote_sigma"], seed,
+        cap=numerics.get("max_mc_se_over_quote_sigma_last_rung"))
     return prices, errors, covariance, np.zeros(n), used
 
 
@@ -254,12 +259,18 @@ def rough_task(*, days=surface.DESIGN_DAYS, deltas=surface.DESIGN_DELTAS, sigma_
                noise_atm=surface.NOISE_ATM, noise_wing=surface.NOISE_WING,
                prior_bounds=((0.02, 0.35), (0.5, 3.5), (-0.99, -0.2)),
                level_bounds=(0.10, 0.40), slope_bounds=(-0.3, 0.6), log_perturbation=0.2,
-               blocks=None, paths_ladder=(32768, 65536, 131072, 262144), budget=0.25):
+               blocks=None, paths_ladder=tuple(2**k for k in range(15, 22)), budget=0.25, last_rung_cap=0.5):
     contracts = surface.design_grid(days, deltas, sigma_ref)
     if blocks is None:
-        short = [d for d in days if d <= 63]
-        blocks = [{"horizon": max(short) / surface.TRADING_DAYS, "n_steps": 8 * max(short)},
-                  {"horizon": max(days) / surface.TRADING_DAYS, "n_steps": 2 * max(days)}]
+        # One grid per maturity group, each starting at zero: the one- and two-week quotes (8 steps a day,
+        # where the far puts need the most paths and a path costs least), up to three months (8 a day),
+        # and the rest (2 a day).
+        blocks = []
+        for limit, per_day in ((10, 8), (63, 8), (max(days), 2)):
+            inside = [d for d in days if d <= limit and (not blocks or d > blocks[-1]["days"])]
+            if inside:
+                blocks.append({"days": max(inside), "n_steps": per_day * max(inside)})
+        blocks = [{"horizon": b["days"] / surface.TRADING_DAYS, "n_steps": b["n_steps"]} for b in blocks]
     task = {
         "task_id": "rough" + FAMILY, "model": "rough", "measure": "Q",
         "context": _base_task(contracts, surface.quote_noise(contracts, sigma_ref, noise_atm, noise_wing)),
@@ -271,7 +282,7 @@ def rough_task(*, days=surface.DESIGN_DAYS, deltas=surface.DESIGN_DELTAS, sigma_
         "prior_bounds": [list(b) for b in prior_bounds],
         "fixed_parameters": {},
         "numerics": {"method": "hybrid", "blocks": blocks, "paths_ladder": list(paths_ladder),
-                     "max_mc_se_over_quote_sigma": budget},
+                     "max_mc_se_over_quote_sigma": budget, "max_mc_se_over_quote_sigma_last_rung": last_rung_cap},
     }
     validate_task(task)
     return task

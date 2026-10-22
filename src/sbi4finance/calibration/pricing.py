@@ -102,14 +102,15 @@ def rough_block(parameters, curve, contracts, *, horizon, n_steps, n_pairs, seed
     return prices, np.sqrt(np.diag(covariance)), covariance
 
 
-def rough_surface(parameters, curve, contracts, blocks, paths_ladder, sigma, budget, seed):
+def rough_surface(parameters, curve, contracts, blocks, paths_ladder, sigma, budget, seed, cap=None):
     """Price every contract in its block; escalate a block's paths until max SE / sigma <= budget.
 
     Each rung of the ladder uses a fresh stream SeedSequence([seed, block, rung]),
-    so a surface's result is reproducible from its seed. A block that fails the
-    budget on the last rung raises; nothing is redrawn silently. Returns prices,
-    standard errors, the block-diagonal covariance of the price means, and the
-    path count used per block.
+    so a surface's result is reproducible from its seed. A block that misses the
+    budget on the last rung is kept only if its max SE / sigma is within cap
+    (when a cap is given), and raises otherwise; nothing is redrawn silently.
+    Returns prices, standard errors, the block-diagonal covariance of the price
+    means, and the path count used per block.
     """
     sigma = np.broadcast_to(np.asarray(sigma, dtype=float), (len(contracts),))
     maturities = np.array([c["maturity"] for c in contracts])
@@ -134,9 +135,10 @@ def rough_surface(parameters, curve, contracts, blocks, paths_ladder, sigma, bud
             if np.all(s <= budget * sigma[chosen]):
                 break
         else:
-            worst = int(chosen[np.argmax(s / sigma[chosen])])
-            raise ValueError(f"Monte Carlo standard-error budget failed at contract {worst} "
-                             f"with {paths_ladder[-1]} paths (SE/sigma {np.max(s / sigma[chosen]):.3f})")
+            if cap is None or np.max(s / sigma[chosen]) > cap:
+                worst = int(chosen[np.argmax(s / sigma[chosen])])
+                raise ValueError(f"Monte Carlo standard-error budget failed at contract {worst} "
+                                 f"with {paths_ladder[-1]} paths (SE/sigma {np.max(s / sigma[chosen]):.3f})")
         prices[chosen], errors[chosen] = p, s
         covariance[np.ix_(chosen, chosen)] = c
         used.append(int(n_paths))

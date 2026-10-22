@@ -10,10 +10,11 @@ from sbi4finance.bergomi import option_panel
 from sbi4finance.calibration import bank, correction, inference, pricing, surface, tasks
 
 
-def small_rough_task(budget=10.0, ladder=(256, 512)):
+def small_rough_task(budget=10.0, ladder=(256, 512), cap=None):
     """Three maturities and three strikes, one block: fast enough for unit tests."""
     return tasks.rough_task(days=(5, 10, 21), deltas=(-1.0, 0.0, 1.0),
-                            blocks=[{"horizon": 21 / 252, "n_steps": 42}], paths_ladder=ladder, budget=budget)
+                            blocks=[{"horizon": 21 / 252, "n_steps": 42}], paths_ladder=ladder, budget=budget,
+                            last_rung_cap=budget if cap is None else cap)
 
 
 def config(task, splits=(3, 2, 2)):
@@ -115,7 +116,7 @@ class TaskAndBankTests(unittest.TestCase):
         self.assertEqual(tasks.context_size(rough), 7)
         self.assertEqual(tasks.context_size(heston), 0)
         bad = copy.deepcopy(rough)
-        bad["numerics"]["blocks"][0]["n_steps"] = 500
+        bad["numerics"]["blocks"][0]["n_steps"] = 81  # five days would fall between grid points
         with self.assertRaisesRegex(ValueError, "grid"):
             tasks.validate_task(bad)
         bad = copy.deepcopy(heston)
@@ -178,6 +179,24 @@ class TaskAndBankTests(unittest.TestCase):
         c = config(small_rough_task(budget=1e-6, ladder=(256,)))
         with self.assertRaisesRegex(ValueError, "train:0.*budget failed"):
             bank.generate_examples(c, "train", [0])
+
+    def test_last_rung_cap_keeps_surfaces_between_the_budget_and_the_cap(self):
+        task = small_rough_task(budget=1e-6, ladder=(256,), cap=1e3)
+        arrays = bank.generate_examples(config(task), "train", [0])
+        ratio = arrays["pricing_standard_errors"][0] / tasks.sigma(task)
+        self.assertTrue(np.all(ratio > 1e-6) and np.all(ratio <= 1e3))
+        np.testing.assert_array_equal(arrays["pricing_paths"][0], [256])
+        with self.assertRaisesRegex(ValueError, "at least the budget"):
+            small_rough_task(budget=0.3, cap=0.2)
+
+    def test_default_rough_task_prices_one_and_two_weeks_on_their_own_short_grid(self):
+        task = tasks.rough_task()
+        blocks = task["numerics"]["blocks"]
+        assert_allclose([b["horizon"] * surface.TRADING_DAYS for b in blocks], [10, 63, 252])
+        self.assertEqual([b["n_steps"] for b in blocks], [80, 504, 504])
+        self.assertEqual(task["numerics"]["paths_ladder"], [2**k for k in range(15, 22)])
+        self.assertEqual((task["numerics"]["max_mc_se_over_quote_sigma"],
+                          task["numerics"]["max_mc_se_over_quote_sigma_last_rung"]), (0.25, 0.5))
 
     def test_archived_fixed_panel_modules_are_not_modified(self):
         # Archived evidence pins these hashes; the calibration family must reuse them by import only.

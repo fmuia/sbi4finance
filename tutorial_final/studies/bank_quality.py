@@ -37,16 +37,19 @@ def main():
     if rough:
         error = np.concatenate([s["pricing_standard_errors"] for s in splits.values()]) / sigma
         budget = task["numerics"]["max_mc_se_over_quote_sigma"]
+        cap = task["numerics"].get("max_mc_se_over_quote_sigma_last_rung", budget)
         label = "Monte Carlo standard error / quote-noise sd"
     else:
         error = np.abs(np.concatenate([s["refinement_difference"] for s in splits.values()])) / sigma
         budget = task["numerics"]["max_refinement_over_quote_sigma"]
+        cap = budget
         label = "|refined − base quadrature price| / quote-noise sd"
     count = len(error)
     k, maturity, _ = surface.contract_arrays(task["context"]["contracts"])
     delta = surface.standardized_moneyness(k, maturity)
     report = {"study": "S1", "task_id": task["task_id"], "task_fingerprint": manifest["task_fingerprint"],
-              "surfaces": count, "error_measure": label, "budget": budget,
+              "surfaces": count, "error_measure": label, "budget": budget, "last_rung_cap": cap,
+              "share_of_surfaces_with_a_quote_above_budget": float(np.mean(np.any(error > budget, axis=1))),
               "error_quantiles_all_quotes": dict(zip(("q50", "q90", "q99", "max"),
                                                      np.quantile(error, [0.5, 0.9, 0.99, 1.0]).tolist())),
               "share_of_quotes_above_0_1": float(np.mean(error > 0.1)),
@@ -79,13 +82,16 @@ def main():
         ax.boxplot([error[:, c] for c in columns], positions=range(len(deltas)), widths=0.6, showfliers=False,
                    patch_artist=True, boxprops={"facecolor": SERIES[0], "alpha": 0.6}, medianprops={"color": INK})
         ax.axhline(budget, color=INK, linestyle="--", linewidth=1)
+        if cap > budget:
+            ax.axhline(cap, color=INK, linestyle=":", linewidth=1)
         ax.set_xticks(range(len(deltas))[::2], [f"{x:g}" for x in deltas[::2]])
         ax.set_title(TENORS.get(d, f"{d}d"), loc="left", fontsize=9)
         ax.set_xlabel("δ")
     axes[0].set_ylabel(label, fontsize=8)
     model = "rough Bergomi" if rough else "Heston"
     fig.suptitle(f"{model} bank: numerical error per quote over {count:,} surfaces (boxes: quartiles and 1.5 IQR; "
-                 f"dashed: the budget, {budget:g})", x=0.01, ha="left", fontsize=9.5)
+                 f"dashed: the budget, {budget:g}" + (f"; dotted: the last rung's cap, {cap:g})" if cap > budget else ")"),
+                 x=0.01, ha="left", fontsize=9.5)
     fig.savefig(args.out / "numerical-error.png", dpi=160)
     print(json.dumps(report, indent=1))
 

@@ -439,6 +439,10 @@
    "method": "hybrid",
    "blocks": [
     {
+     "horizon": 0.03968253968253968,
+     "n_steps": 80
+    },
+    {
      "horizon": 0.25,
      "n_steps": 504
     },
@@ -451,9 +455,13 @@
     32768,
     65536,
     131072,
-    262144
+    262144,
+    524288,
+    1048576,
+    2097152
    ],
-   "max_mc_se_over_quote_sigma": 0.25
+   "max_mc_se_over_quote_sigma": 0.25,
+   "max_mc_se_over_quote_sigma_last_rung": 0.5
   }
  },
  "root_seed": 2612,

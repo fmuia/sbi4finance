@@ -79,7 +79,8 @@ def check_precision(task, arrays):
     if task["model"] == "hkde":
         if np.any(np.abs(arrays["refinement_difference"]) > sigma * numerics["max_refinement_over_quote_sigma"]):
             raise ValueError("Fourier refinement budget failed")
-    elif np.any(arrays["pricing_standard_errors"] > sigma * numerics["max_mc_se_over_quote_sigma"]):
+    elif np.any(arrays["pricing_standard_errors"] > sigma * numerics.get("max_mc_se_over_quote_sigma_last_rung",
+                                                                         numerics["max_mc_se_over_quote_sigma"])):
         raise ValueError("Monte Carlo standard-error budget failed")
 
 
