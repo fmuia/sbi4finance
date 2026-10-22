@@ -46,12 +46,15 @@ def model_parameters(task, row):
 
 
 def price_job(job):
+    """Prices, standard errors and the CPU-seconds of this worker for one parameter set."""
     task, row, context, spec, paths, seed = job
+    started = time.process_time()
     model = "rough" if task["model"] == "rough" else "heston"
     curve = None
     if model == "rough":
         curve = products.extend_curve(tasks.curve(task, context), spec["put_out_of_grid"]["maturity"])
-    return products.price_draw(model, model_parameters(task, row), curve, spec, paths, seed)
+    prices, errors = products.price_draw(model, model_parameters(task, row), curve, spec, paths, seed)
+    return prices, errors, time.process_time() - started
 
 
 def _mc_price_fn(task, context, paths, seed):
@@ -66,7 +69,9 @@ def _mc_price_fn(task, context, paths, seed):
 
 def mc_fit_job(job):
     task, observation, context, paths, seed, start = job
-    return classical.fit(task, observation, _mc_price_fn(task, context, paths, seed), [start])[0]
+    started = time.process_time()
+    fit = classical.fit(task, observation, _mc_price_fn(task, context, paths, seed), [start])[0]
+    return {**fit, "cpu_seconds": time.process_time() - started}
 
 
 def variance_shares(parameters, prices):
@@ -116,13 +121,15 @@ def main():
             if task["model"] == "rough" and args.pricer is None:
                 fits = list(pool.map(mc_fit_job, [(task, test["observations"][row, :, 0], context,
                                                    args.least_squares_paths, args.seed, s) for s in starts]))
+                fit_cpu = sum(f["cpu_seconds"] for f in fits)
             else:
+                started = time.process_time()
                 fits = classical.fit(task, test["observations"][row, :, 0], _price_fn(task, args.pricer, context), starts)
+                fit_cpu = time.process_time() - started
             point = min(fits, key=lambda f: f["chi2"])["theta"]
-            started = time.process_time()
             jobs = [(task, theta, context, spec, args.paths, args.seed) for theta in [point, *network[i]]]
             priced = list(pool.map(price_job, jobs, chunksize=8))
-            cpu = time.process_time() - started
+            cpu = sum(p[2] for p in priced)
             point_prices = priced[0][0]
             draws_prices = np.stack([p[0] for p in priced[1:]])
             entry = {"test_row": int(row), "truth": test["parameters"][row].tolist(), "least_squares": point.tolist(),
@@ -146,6 +153,7 @@ def main():
                     ax.set_title(PRODUCT_LABELS[product], loc="left", fontsize=8.5)
                 ax.grid(axis="y", visible=False)
             entry["pricing_cpu_seconds"] = cpu
+            entry["least_squares_cpu_seconds"] = fit_cpu
             records.append(entry)
             saved.update({f"prices_{int(row)}": draws_prices, f"point_prices_{int(row)}": point_prices,
                           f"draws_{int(row)}": network[i], f"least_squares_{int(row)}": point,
