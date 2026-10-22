@@ -1,6 +1,6 @@
 # Studies
 
-Each study writes one directory of results; every directory must be new. The
+Each study writes one directory of results; every directory must be new. The one exception is `scripts/calibration_bank.py local --resume`, which keeps the finished shards of an interrupted local bank build. The
 numbers in `tutorial_final/CLAIMS.md` and in the [design document](../../docs/design/calibration-design-document.md)
 come from these outputs. Library code is in `src/sbi4finance/calibration/`.
 
@@ -15,6 +15,8 @@ come from these outputs. Library code is in `src/sbi4finance/calibration/`.
 | S7 | `products_study.py` | Product prices under the posterior, ranges, reserves and their drivers |
 | S8 | `scripts/build_surface.py` (Stage C) | The real smile on the design grid, from a chain file |
 | S9 | `costs.py` | CPU-seconds per route on one machine |
+| S2-1, S2-2 | `smile_facts.py` (`example`, `prior-predictive`) | The example surfaces at the centre of the prior, and the prior predictive check of four smile statistics |
+| – | `manifest.py` | Regenerates the artifact table of `tutorial_final/MANIFEST.md` from the files in `results/` and `checkpoints/` |
 
 ## Order and test-split use
 

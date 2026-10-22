@@ -277,6 +277,24 @@ def _(mo):
 
 
 @app.cell
+def _(mo):
+    rough_h = mo.ui.slider(0.02, 0.35, step=0.01, value=0.10, label="H", show_value=True)
+    rough_eta = mo.ui.slider(0.5, 3.5, step=0.1, value=2.0, label="η", show_value=True)
+    rough_rho = mo.ui.slider(-0.99, -0.2, step=0.01, value=-0.70, label="ρ", show_value=True)
+    run_rough = mo.ui.run_button(label="Live: price this smile by Monte Carlo (a few seconds)")
+    mo.vstack([mo.hstack([rough_h, rough_eta, rough_rho]), run_rough])
+    return rough_eta, rough_h, rough_rho, run_rough
+
+
+@app.cell
+def _(mo, rough_eta, rough_h, rough_rho, run_rough, teaching):
+    mo.stop(not run_rough.value, mo.md("*Choose H, η and ρ, then press the button: 63 prices from 8,192 paths per "
+                                       "maturity block, on a flat 20% forward-variance curve.*"))
+    teaching.live_smile_figure(teaching.price_rough_smile(rough_h.value, rough_eta.value, rough_rho.value))
+    return
+
+
+@app.cell
 def _(RESULTS, image):
     image(RESULTS / "smile/example-rough.png",
           "One simulated rough-Bergomi smile at the centre of the prior: the 63 noisy quotes and the model smile (left); "

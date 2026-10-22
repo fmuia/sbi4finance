@@ -787,16 +787,16 @@ The 40-minute advanced segment makes the two claims of the executive summary. Fr
 
 ### Notebook outline
 
-The segment runs on one marimo notebook. Expensive steps are precomputed and loaded; the live cells fit a laptop CPU.
+The segment runs on one marimo notebook, `tutorial_final/notebooks/slot5_calibration.py`. It reads the accepted results in `tutorial_final/results/calibration` and marks any that are missing as pending, so it runs at every stage of the study. Three cells compute live, each in seconds on a laptop CPU; everything else is cached.
 
-1. **The smile.** Load the SPY surface artifact; plot the smile and the skew term structure; fit the Black–Scholes flat line. Live, seconds.
-2. **Heston.** Price the smile at one parameter set by Fourier; show the exact posterior (cached) and sample the network (live); overlay. Live part under 10 s.
-3. **Rough Bergomi.** Simulate one surface at 2^14 paths to show the cost; load the cached cost table.
-4. **Amortized posterior.** Load the network; sample 1,000 draws for the SPY smile; pair plots. Live, seconds.
-5. **Diagnostics.** SBC figure (cached); audit with M = 500 proposals at 2^14 paths (live, ⟨S9⟩ s); the pricer-route overlay (cached).
-6. **Classical route.** The objective's contours and the multi-start optima (cached); one live optimizer run from a chosen start.
-7. **Products.** Price the three products from the posterior draws through the price map (live, seconds); the range and the reserve; the Heston comparison (cached).
-8. **Exercises.** Double σ\_c and reweight; drop the two shortest maturities; calibrate Heston to a rough surface.
+1. **The smile.** The example surfaces: one maturity's smile against the one Black–Scholes volatility, with a maturity selector, and the skew term structures of both models on log–log axes. The SPY smile replaces the simulated one when study S8 has a chain.
+2. **Heston.** The exact-posterior check (table and figure); exact against network posterior for a chosen surface, as pair plots. Live: load the network and draw 1,000 samples for that surface.
+3. **Rough Bergomi.** Live: sliders for H, η and ρ price one smile at 2^13 paths per block, about 2 CPU-seconds, and redraw its skew term structure against the slope H − ½. Then the cost table of S9.
+4. **Amortized posterior.** Posterior pairs for held-out surfaces, with the ρη ridge, and the recovery figure.
+5. **Diagnostics.** The SBC figures, the audit summary and the neural-pricer overlay. A live audit is not affordable on a laptop: M proposals priced at 2^13 paths cost minutes, which is the audit's row in the cost table.
+6. **Classical route.** The coverage table, and the objective's landscape with the multi-start optima, the Gauss–Newton region and the posterior draws.
+7. **Products.** Price distributions under the posterior, with a live confidence-level slider: the reserve table recomputes from the stored per-draw prices.
+8. **Across models, and exercises.** Heston against rough Bergomi on the same smile; double σ\_c and reweight; drop the two shortest maturities; calibrate Heston to a rough surface.
 
 ## Risks and open decisions
 
