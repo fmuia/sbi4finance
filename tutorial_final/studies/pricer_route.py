@@ -1,7 +1,7 @@
 """The neural-likelihood route against the amortized posterior (study S4).
 
     python tutorial_final/studies/pricer_route.py --bank BANK --checkpoint RUN --out NEW_DIR \
-        [--first 2050 --surfaces 50 --chains 4 --steps 20000 --burn 4000]
+        [--first 2050 --surfaces 50 --chains 4 --steps 20000 --burn 4000] [--pricer S4/pricer] [--exact S3.json]
 
 1. Train the neural pricer (deep calibration's forward map) on the bank's clean
    training prices, select by validation, and measure its error on test surfaces
@@ -13,6 +13,11 @@
 
 The two routes share the bank and nothing else, so their agreement bounds the
 systematic error of either one by the pricer's error.
+
+With --pricer, an earlier run's trained pricer is loaded instead of trained.
+With --exact (study S3's heston-check.json), the pricer chains are also compared
+with the exact Heston posterior on the test rows S3 covers: the check that the
+pricer route can stand in for an exact posterior where none is affordable.
 """
 
 import argparse
@@ -46,16 +51,29 @@ def main():
     parser.add_argument("--burn", type=int, default=4000)
     parser.add_argument("--epochs", type=int, default=300)
     parser.add_argument("--seed", type=int, default=0)
+    parser.add_argument("--pricer", type=Path, help="load this trained pricer (an earlier run's pricer/) instead of "
+                                                    "training one")
+    parser.add_argument("--exact", type=Path, help="study S3's heston-check.json: on the rows it covers, also compare "
+                                                   "the pricer chains with the exact posterior")
     args = parser.parse_args()
     manifest, splits = bank.load_bank(args.bank)
     task, workflow, _ = load_network(args.checkpoint)
     if task != manifest["configuration"]["task"]:
         raise ValueError("checkpoint and bank tasks differ")
     args.out.mkdir(parents=True, exist_ok=False)
-    started = time.process_time()
-    pricer, record = pricer_net.train(task, splits["train"], splits["validation"], epochs=args.epochs, seed=args.seed)
-    train_cpu = time.process_time() - started
+    if args.pricer:
+        pricer, train_cpu = pricer_net.Pricer.load(args.pricer), None
+        record = {"loaded_from": str(args.pricer),
+                  "pricer_sha256": hashlib.sha256((args.pricer / "pricer.npz").read_bytes()).hexdigest()}
+    else:
+        started = time.process_time()
+        pricer, record = pricer_net.train(task, splits["train"], splits["validation"], epochs=args.epochs, seed=args.seed)
+        train_cpu = time.process_time() - started
     pricer.save(args.out / "pricer")
+    pricer_net.save_record(args.out / "pricer", {**record, "train_cpu_seconds": train_cpu})
+    exact = {}
+    if args.exact:
+        exact = {s["test_row"]: s["reweighted"] for s in json.loads(args.exact.read_text())["surfaces"]}
     test = splits["test"]
     held_out = pricer_net.errors(pricer, task, {k: v[: args.first] for k, v in test.items()})
     rows = np.arange(args.first, args.first + args.surfaces)
@@ -80,6 +98,12 @@ def main():
         surfaces.append({"test_row": int(row), "truth": test["parameters"][row].tolist(), "agreement": agree,
                          "rhat": [d[0] for d in diagnostics], "ess": [d[1] for d in diagnostics],
                          "acceptance": acceptance.tolist(), "chain_cpu_seconds": chain_cpu})
+        if int(row) in exact:
+            e = exact[int(row)]
+            versus = validation.agreement(pooled, reference_mean=e["mean"], reference_sd=e["sd"],
+                                          reference_q05=e["q05"], reference_q95=e["q95"])
+            versus["passed"] = passes(versus)
+            surfaces[-1]["pricer_vs_exact"] = versus
         if len(panels) < 4:
             panels.append((f"surface {int(row)}", pooled, network[i], None, test["parameters"][row]))
     rms = np.sqrt(np.mean(held_out**2, axis=0))
@@ -94,9 +118,18 @@ def main():
         "rhat_max": float(np.max([s["rhat"] for s in surfaces])), "ess_min": float(np.min([s["ess"] for s in surfaces])),
         "chain_cpu_seconds_median": float(np.median([s["chain_cpu_seconds"] for s in surfaces])),
     }
+    compared = [s["pricer_vs_exact"] for s in surfaces if "pricer_vs_exact" in s]
+    if compared:
+        summary["pricer_vs_exact"] = {
+            "surfaces": len(compared), "pass_rate": float(np.mean([c["passed"] for c in compared])),
+            "max_standardized_mean_error": np.max([c["standardized_mean_error"] for c in compared], axis=0).tolist(),
+            "median_standardized_mean_error": np.median([c["standardized_mean_error"] for c in compared], axis=0).tolist(),
+            "width_ratio_range": [np.min([c["width_ratio"] for c in compared], axis=0).tolist(),
+                                  np.max([c["width_ratio"] for c in compared], axis=0).tolist()]}
     report = {"study": "S4", "task_id": task["task_id"], "task_fingerprint": manifest["task_fingerprint"],
               "checkpoint_sha256": hashlib.sha256((args.checkpoint / "model.keras").read_bytes()).hexdigest(),
-              "settings": {k: v for k, v in vars(args).items() if k not in ("bank", "checkpoint", "out")},
+              "settings": {k: str(v) if isinstance(v, Path) else v for k, v in vars(args).items()
+                           if k not in ("bank", "checkpoint", "out")},
               "parameters": names, "summary": summary, "surfaces": surfaces}
     (args.out / "pricer-route.json").write_text(json.dumps(jsonable(report), indent=2, allow_nan=False) + "\n")
     labels = [LABELS[n] for n in names]

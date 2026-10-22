@@ -193,10 +193,17 @@ def price_histograms(price_draws, row, level, title):
     return fig
 
 
-def agreement_rows(report, labels=("v₀", "θ", "σ_v", "ρ"), mean_limit=0.3, width_limit=0.25):
-    """Per parameter, from the S3 report: the network against the exact (reweighted) posterior."""
-    errors = np.array([s["network_vs_reweighted"]["standardized_mean_error"] for s in report["surfaces"]])
-    widths = np.array([s["network_vs_reweighted"]["width_ratio"] for s in report["surfaces"]])
+def agreement_rows(report, labels=("v₀", "θ", "σ_v", "ρ"), key="network_vs_reweighted", mean_limit=0.3,
+                   width_limit=0.25):
+    """Per parameter, one posterior against a reference over a study's smiles.
+
+    key names the comparison in each surface record: "network_vs_reweighted" in S3 (the
+    network against the exact posterior), "agreement" in S4 (the network against MCMC on the
+    neural pricer) and "pricer_vs_exact" in S4 run on S3's smiles.
+    """
+    surfaces = [s for s in report["surfaces"] if key in s]
+    errors = np.array([s[key]["standardized_mean_error"] for s in surfaces])
+    widths = np.array([s[key]["width_ratio"] for s in surfaces])
     passed = (errors < mean_limit) & (np.abs(widths - 1) < width_limit)
     rows = [{"parameter": label,
              "mean error, median (posterior sd)": f"{np.median(errors[:, j]):.2f}",

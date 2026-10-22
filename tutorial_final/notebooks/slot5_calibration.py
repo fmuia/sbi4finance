@@ -68,6 +68,8 @@ def _(RESULTS, mo, teaching):
         ("Heston: SBC and recovery (S2)", RESULTS / "heston/s2/validation.json"),
         ("Heston: exact posterior check (S3)", RESULTS / "heston/s3/heston-check.json"),
         ("Heston: neural-pricer route (S4)", RESULTS / "heston/s4/pricer-route.json"),
+        ("Heston: neural-pricer route against the exact posterior (S4 on the S3 smiles)",
+         RESULTS / "heston/s4-exact/pricer-route.json"),
         ("Heston: classical route (S6)", RESULTS / "heston/s6/classical.json"),
         ("Heston: products and reserves (S7)", RESULTS / "heston/s7/products.json"),
         ("Rough Bergomi pilot: classical route (S6)", RESULTS / "rough-pilot/s6/classical.json"),
@@ -418,10 +420,25 @@ def _(RESULTS, mo, pending, teaching):
 
 
 @app.cell
-def _(RESULTS, image):
-    image(RESULTS / "heston/s4/agreement.png",
-          "Heston: MCMC on a neural pricer against the amortized posterior; two simulation-based routes that share "
-          "only the bank.")
+def _(RESULTS, image, mo, teaching):
+    _route = teaching.load_json(RESULTS / "heston/s4/pricer-route.json")
+    _exact = teaching.load_json(RESULTS / "heston/s4-exact/pricer-route.json")
+    _parts = [image(RESULTS / "heston/s4/agreement.png",
+                    "Heston: MCMC on a neural pricer against the amortized posterior; two simulation-based routes "
+                    "that share only the bank.")]
+    if _route is not None:
+        _error = _route["summary"]["pricer"]["held_out_rms_error_in_noise_sd"]
+        _parts += [
+            mo.md(f"The neural pricer's held-out error is {_error['median_over_contracts']:.3f} quote-noise sd (RMS, "
+                  f"median contract; {_error['max']:.3f} at the worst). **The network against MCMC on the pricer**, "
+                  f"on {len(_route['surfaces'])} other held-out smiles:"),
+            mo.ui.table(teaching.agreement_rows(_route, key="agreement"), selection=None, pagination=False)]
+    if _exact is not None:
+        _parts += [
+            mo.md("**MCMC on the pricer against the exact posterior**, on the smiles of section 2: the check that "
+                  "the pricer route can stand in for the exact posterior where none is affordable."),
+            mo.ui.table(teaching.agreement_rows(_exact, key="pricer_vs_exact"), selection=None, pagination=False)]
+    mo.vstack(_parts)
     return
 
 

@@ -26,6 +26,9 @@ def load(relative):
     return json.loads(path.read_text()) if path.exists() else None
 
 
+SYMBOLS = {"initial_variance": "v₀", "theta": "θ", "vol_of_vol": "σ_v", "rho": "ρ", "hurst": "H", "eta": "η"}
+
+
 def pct(x, digits=0):
     return f"{100 * x:.{digits}f}%"
 
@@ -105,6 +108,8 @@ def c5():
 
 
 def c6():
+    import numpy as np
+
     rows = []
     status = "pending"
     for prefix in ("heston", "rough", "rough-pilot"):
@@ -112,9 +117,18 @@ def c6():
         if r is None:
             continue
         s = r["summary"]
-        rows.append(f"{prefix}: {pct(s['pass_rate'])} of {len(r['surfaces'])} agree; pricer RMS error "
-                    f"{s['pricer']['held_out_rms_error_in_noise_sd']['median_over_contracts']:.2f} σ_c (median contract)")
-        status = "verified" if s["pass_rate"] >= 0.9 else "not met"
+        errors = np.array([x["agreement"]["standardized_mean_error"] for x in r["surfaces"]])
+        widths = np.array([x["agreement"]["width_ratio"] for x in r["surfaces"]])
+        passed = (errors < 0.3) & (np.abs(widths - 1) < 0.25)
+        shares = ", ".join(f"{SYMBOLS.get(n, n)} {pct(passed[:, j].mean())}" for j, n in enumerate(r["parameters"]))
+        rows.append(f"{prefix}: {pct(s['pass_rate'])} of {len(r['surfaces'])} agree on all parameters ({shares}); "
+                    f"pricer RMS error {s['pricer']['held_out_rms_error_in_noise_sd']['median_over_contracts']:.2f} σ_c "
+                    "(median contract)")
+        status = "verified" if s["pass_rate"] >= 0.9 else "not met for the network alone"
+    exact = load("heston/s4-exact/pricer-route.json")
+    if exact is not None:
+        e = exact["summary"]["pricer_vs_exact"]
+        rows.append(f"Heston pricer route against the exact posterior: {pct(e['pass_rate'])} of {e['surfaces']} agree")
     return ("; ".join(rows) or "—"), status
 
 

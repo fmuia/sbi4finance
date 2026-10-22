@@ -747,7 +747,19 @@ Reading: the workflow's output for a smile, the network corrected by its audit, 
 
 ### 4. The two neural routes (S4)
 
-The pricer's held-out error in units of σ\_c, its training cost, and the agreement table between MCMC on the pricer and the amortized posterior, as in S3. The figure overlays the two posteriors on the real smile.
+For rough Bergomi: the pricer's held-out error in units of σ\_c, its training cost, and the agreement table between MCMC on the pricer and the amortized posterior, as in S3. The figure overlays the two posteriors on the real smile. ⟨S4⟩
+
+Heston first, as a rehearsal where the exact answer is known. The pricer is a multilayer perceptron with four layers of 256 units. It was trained for 300 epochs on the clean prices of the 50,000 training surfaces, in 370 CPU-seconds. Its held-out RMS error is 0.029 σ\_c at the median contract and 0.041 σ\_c at the worst, and 99% of its errors on 2,000 test surfaces are below 0.11 σ\_c. Four random-walk chains of 20,000 steps on its likelihood cost a median 12 CPU-seconds per smile, with R̂ at most 1.007 and at least 948 effective draws per target.
+
+| Comparison on 50 smiles: share within the criterion | v\_0 | θ\_H | σ\_v | ρ | All four |
+| --- | --- | --- | --- | --- | --- |
+| Network against MCMC on the pricer (test rows 2,050 to 2,099) | 86% | 98% | 96% | 100% | 84% |
+| MCMC on the pricer against the exact posterior (the smiles of S3) | ⟨S4⟩ | ⟨S4⟩ | ⟨S4⟩ | ⟨S4⟩ | ⟨S4⟩ |
+| Network against the exact posterior (S3, for comparison) | 82% | 96% | 100% | 98% | 80% |
+
+![MCMC on the neural pricer against the amortized posterior on four Heston test smiles, standardized by the pricer route's posterior.](images/calibration-06-heston-pricer-route.png)
+
+*Figure S4-1 (Heston): MCMC on the neural pricer (grey) against the amortized posterior (blue) on the first four of the 50 smiles, standardized by the pricer route's posterior; the star is the true value.* How to read the figure: as figure S3-1, with the pricer route in place of the exact posterior.
 
 ### 5. The audit (S5)
 
