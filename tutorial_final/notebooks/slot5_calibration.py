@@ -142,7 +142,7 @@ def _(mo):
     line flattens). **Rough Bergomi** drives the log-variance with a fractional process of
     Hurst exponent $H$; its skew grows like $T^{H-1/2}$ as $T \to 0$, which is what index
     smiles do. At the centre of its prior, $H = 0.185$, the fitted exponent over one week to one
-    year is −0.38, steeper than the limit $H - \tfrac12 = -0.32$: the power law is a
+    year is −0.39, steeper than the limit $H - \tfrac12 = -0.32$: the power law is a
     short-maturity statement.
     """)
     return
@@ -271,7 +271,7 @@ def _(mo):
     * The variance depends on the whole past of $W$: there is no finite state, so no Fourier
       or PDE pricer. **Every price is a Monte Carlo run.**
 
-    One smile costs 6.4 CPU-seconds at $2^{15}$ paths per maturity block, with antithetic
+    One smile costs about 5 CPU-seconds at $2^{15}$ paths per maturity grid, with antithetic
     paths and two control variates. An exact posterior needs about $10^4$ likelihood
     evaluations, so roughly a CPU-day per smile, every morning, per underlying.
     """)
