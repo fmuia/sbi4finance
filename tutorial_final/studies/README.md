@@ -7,6 +7,7 @@ come from these outputs. Library code is in `src/sbi4finance/calibration/`.
 | ID | Script | What it produces |
 |---|---|---|
 | S1 | `scripts/calibration_bank.py` (`config`, `job-map`, `shard`, `assemble`, `local`), `cluster/calibration_bank_array.sbatch` | Calibration banks: the option_bank_v1 arrays plus the forward-variance context and the paths used per block |
+| S1 | `bank_quality.py` | A bank's numerical error per quote against its budget, the paths-ladder rungs used, and the generation cost |
 | S2 | `train_calibration.py`, `evaluate_calibration.py` | The amortized posterior; SBC, coverage, recovery and contraction on held-out surfaces |
 | S3 | `heston_check.py` | The Heston network against the exact posterior: importance reweighting with the Fourier likelihood and random-walk chains |
 | S4 | `pricer_route.py` | The neural pricer (deep calibration's forward map), its held-out error, and MCMC on it against the amortized posterior |
