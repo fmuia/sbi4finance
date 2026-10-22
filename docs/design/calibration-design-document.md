@@ -208,6 +208,30 @@ The input is today's cleaned end-of-day option chain of one underlying, reduced 
 3. The point price, the 90% range and the reserve for each product, with the within-model range labelled as such.
 4. An audit score for the surface, which says whether the network's posterior can be trusted for this smile.
 
+### Data: what is observed and what is simulated
+
+This subsection lists every dataset the method uses, and says which are observed and which are simulated. The method uses one observed dataset and four simulated ones.
+
+| Dataset | Observed or simulated | Size | Role in the method | Where |
+| --- | --- | --- | --- | --- |
+| SPY option chain, close of 21 October 2026, from Cboe's delayed quotes | Observed | 13,114 options in 35 expirations, reduced to 63 quotes y\_c, their 63 noise levels σ\_c and the 7 levels of ξ\_0 | The smile whose posterior is computed and whose products are priced | S8, Appendix I |
+| Rough-Bergomi training bank | Simulated | 100,000 training surfaces, plus 5,000 for validation, 5,000 for test and 2,000 for SBC: 112,000 in total | Trains the network; the test and SBC surfaces check it | [Amortized design](#amortized-design), S1, S2 |
+| Rough-Bergomi pilot bank | Simulated | 2,200 surfaces | Measures the cost of the generator and gives the first checks reported in this draft | S1 |
+| Heston bank | Simulated | 60,000 surfaces | Trains the Heston network and checks it against the exact posterior | S3 |
+| Product prices under the posterior | Simulated | 1,000 posterior draws, each priced for 4 products | The price distribution, the range and the reserve | [From posterior to prices](#from-posterior-to-prices), S7 |
+
+Each simulated surface of a bank is generated in three steps, from the prior, the model and the noise model:
+
+```math
+\theta \sim p(\theta), \quad \xi_0 \sim p(\xi_0); \qquad P_c(\theta;\xi_0) = \mathbb{E}^{\mathbb{Q}}\big[\text{payoff}_c\big]; \qquad y_c = P_c(\theta;\xi_0) + \sigma_c\,\varepsilon_c, \quad \varepsilon_c \sim \mathcal{N}(0,1) .
+```
+
+The model prices P\_c are Monte Carlo averages over simulated paths of (V\_t, S\_t) for rough Bergomi, and Fourier integrals for Heston. The Heston bank has no ξ\_0, because Heston's curve is a function of its parameters.
+
+All data, observed and simulated, are option prices on a single day, under the pricing measure Q. No time series of returns is used, and the real-world measure P does not enter. This is the main difference from the SVJ example, which calibrated to daily returns under P.
+
+The observed and the simulated data meet in one place. The network is trained only on simulated pairs (θ, ξ\_0, y), and is then applied to the real (y, ξ\_0) of SPY. Whether the real smile resembles the smiles the model and the prior produce is checked twice: by the posterior predictive check and by the audit ([Validation plan](#validation-plan)).
+
 ### When it is used
 
 The model runs every morning for each underlying a desk calibrates. It serves as the source of the calibration range for prudent valuation and Level 3 disclosure, as a challenger to the desk's point calibration, and as a diagnostic of what today's smile does and does not identify. It does not replace the desk's pricing library: it prices with the same model and the same Monte Carlo engine, many times instead of once. The tutorial network is trained for the fixed design grid; the extension to arbitrary quote sets is Stage D of the plan.
