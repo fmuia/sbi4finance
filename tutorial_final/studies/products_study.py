@@ -23,6 +23,7 @@ from pathlib import Path
 import sys
 import time
 
+from matplotlib.ticker import MaxNLocator
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
@@ -152,6 +153,7 @@ def main():
                 if i == 0:
                     ax.set_title(PRODUCT_LABELS[product], loc="left", fontsize=8.5)
                 ax.grid(axis="y", visible=False)
+                ax.xaxis.set_major_locator(MaxNLocator(4))
             entry["pricing_cpu_seconds"] = cpu
             entry["least_squares_cpu_seconds"] = fit_cpu
             records.append(entry)
