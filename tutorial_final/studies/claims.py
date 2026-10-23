@@ -174,6 +174,9 @@ def c7():
         failed = [SYMBOLS.get(n, "ρη" if n == "rho_eta" else n) for n, ok in zip(v["targets"], passed) if not ok]
         parts.append(f"{label}: SBC {sum(passed)}/{len(passed)} targets inside the band on {v['surfaces']:,} smiles; "
                      f"95% coverage {min(cover) * 100:.1f}–{max(cover) * 100:.1f}%")
+        if prefix == "heston" and "contraction" in v:
+            parts.append("Heston contraction " + ", ".join(f"{SYMBOLS.get(n, n)} {x:.2f}"
+                                                         for n, x in v["contraction"].items()))
         statuses.append(f"{label} " + ("verified" if all(passed) else f"not met ({', '.join(failed)} outside the band)"))
     audit = load("rough-pilot/s5/audit.json") or load("rough/s5/audit.json")
     if audit:
@@ -198,6 +201,19 @@ def c8():
         which = "rough" if "rough_amortized_posterior_1000_draws_cpu_s" in c else "Heston"
         value += (f"; the {which} network {amortized['wall_median']:.1f} s on the clock "
                   f"({amortized['median']:.1f} CPU-s) for 1,000 draws")
+    if "heston_likelihood_evaluation_cpu_s" in c:
+        value += (f"; Heston likelihood {1000 * c['heston_likelihood_evaluation_cpu_s']['median']:.0f} ms at one "
+                  f"quadrature rung, exact Heston posterior about {c['exact_heston_posterior']['cpu_seconds']:.0f} "
+                  "CPU-s at one rung")
+    bank_quality = load("heston/s1/bank-quality.json")
+    if bank_quality:
+        g = bank_quality["generation"]
+        value += f"; Heston bank {g['surfaces']:,} smiles in {g['cpu_seconds'] / 60:.0f} CPU-min"
+    training = FINAL / "checkpoints" / "heston" / "training.json"
+    if training.exists():
+        t = json.loads(training.read_text())
+        value += (f"; Heston network {t['training']['epochs']} epochs in "
+                  f"{t['timing_seconds']['training_including_compile'] / 60:.0f} min on {t['cpu_count']} cores")
     return value, "verified"
 
 

@@ -29,12 +29,12 @@ TEXT = {"live": "white", "cached": "#1E1E1E", "slide": "#1E1E1E"}
 # (label, minutes, presenter, mode); mode is "live" (computed on stage), "cached" (loaded from
 # results/) or "slide" (static text or code on screen).
 TUTORIAL = ("The tutorial: one smile, three models, 115 minutes", [
-    ("1  The problem:\nBayes for\nvolatility models", 15, "F", "slide"),
-    ("2  What is\namortized Bayes?", 15, "A", "slide"),
-    ("3  Network\narchitectures", 10, "S", "slide"),
+    ("1  The problem:\nBayes for\nvolatility models", 15, "F", "live"),
+    ("2  What is\namortized Bayes?", 15, "A", "live"),
+    ("3  Network\narchitectures", 10, "S", "cached"),
     ("4  Heston on the\nSPY smile, in\nBayesFlow", 20, "S", "live"),
     ("5  Rough Bergomi on the SPY smile:\nfrom the posterior to a reserve", 40, "FA", "live"),
-    ("6  Priors and\nmisspecification", 15, "S", "slide"),
+    ("6  Priors and\nmisspecification", 15, "S", "live"),
 ])
 
 SLOTS = {
@@ -87,7 +87,7 @@ SLOTS = {
         ("What the answer\ndepends on", 1, "S", "slide"),
         ("Changing the prior\nwithout retraining", 5, "S", "live"),
         ("The noise\nmodel", 2, "S", "live"),
-        ("When the model is wrong:\nthree detectors", 5, "S", "cached"),
+        ("When the model is wrong:\nfour detectors", 5, "S", "cached"),
         ("Across\nmodels", 1, "S", "cached"),
         ("Close", 1, "S", "slide"),
     ]),
@@ -165,8 +165,8 @@ def ladder(path):
     ax.axhline(audit, color="#B33E43", linewidth=1.2, linestyle=":")
     ax.text(-0.45, audit * 1.35, "audit of one rough-Bergomi smile: about 425 CPU-s (pilot)", fontsize=8,
             color="#B33E43")
-    labels_eval = ["10 µs (one quote)", f"{1000 * heston_eval:.0f} ms", f"{rough_eval:.1f} s"]
-    labels_exact = ["0.2 ms (grid)", f"{heston_exact / 60:.0f} min", f"at least {rough_exact / 3600:.0f} h"]
+    labels_eval = ["10 µs (one quote)", f"{1000 * heston_eval:.0f} ms (one rung)", f"{rough_eval:.1f} s"]
+    labels_exact = ["0.2 ms (vectorized grid)", f"{heston_exact / 60:.0f} min (one rung)", f"at least {rough_exact / 3600:.0f} h"]
     for i in x:
         ax.text(i - w / 2, evals[i] * 1.5, labels_eval[i], ha="center", fontsize=7.6)
         inside = i == 1  # the Heston label would sit on the audit line; write it inside the bar

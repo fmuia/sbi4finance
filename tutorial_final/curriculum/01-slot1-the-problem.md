@@ -24,15 +24,15 @@ Francesco · 15 minutes · first slot of the afternoon. Part of the [curriculum]
 
 Each slide states its title as it appears on screen, what is on screen, what is said, and how it leads to the next slide. The words "said" are a script to adapt, not to read.
 
-### Slide 1. Bayes for volatility models (20 seconds)
+### Slide 1. Bayes for volatility models (30 seconds)
 
 - **On screen.** The tutorial's title and the four organizers, one line each: hedge-fund research, BayesFlow's lead developer, BayesFlow's core developers, Bayesian consulting.
 - **Said.** The afternoon answers one question that every derivatives desk faces every morning. It answers it on one real option smile, with three models of increasing realism.
 
 ### Slide 2. What a desk does every morning (1.5 minutes)
 
-- **On screen.** Left: the SPY smile of 21 October 2026, implied volatility against strike for the 7 maturities from one week to one year (`results/calibration/spy/surface.png`). Right: three boxes joined by arrows: "63 quotes" → "a model, fitted" → "prices of products nobody quotes: a forward-start option, a volatility swap".
-- **Said.** These are 63 SPY option quotes at the close of 21 October. Each morning a desk fits a model to quotes like these. It then uses the fitted model to price products that are not quoted, such as an option whose strike is set in one year's time. The quotes are noisy, so the fit is uncertain. The question of the afternoon is how uncertain the price of the unquoted product is.
+- **On screen.** Left: the SPY smile of 21 October 2026, implied volatility against strike for the 7 maturities from one week to one year (`results/calibration/spy/surface.png`). Right: three boxes joined by arrows: "63 prices" → "a model, fitted" → "prices of products nobody quotes: a forward-start option, a volatility swap".
+- **Said.** These are 63 SPY option prices from the close of 21 October, read onto a fixed grid of 7 maturities and 9 moneyness points. Each morning a desk fits a model to prices like these. It then uses the fitted model to price products that are not quoted, such as an option whose strike is set in one year's time. The quotes are noisy, so the fit is uncertain. The question of the afternoon is how uncertain the price of the unquoted product is.
 - **Leads to.** An example where the uncertainty is large.
 
 ### Slide 3. Two calibrations, two prices (1.5 minutes)
@@ -44,7 +44,7 @@ Each slide states its title as it appears on screen, what is on screen, what is 
 ### Slide 4. The rules ask for the range (1 minute)
 
 - **On screen.** Three quotations, one line each:
-  - Regulation (EU) 2016/101, Art. 11: "a range of plausible valuations", and a point in it at 90% confidence. The difference from the fair value is a valuation adjustment deducted from capital.
+  - Regulation (EU) 2016/101, Art. 9 (market price uncertainty) and Art. 11 (model risk): a range of plausible values and a point in it at 90% confidence. Art. 9 covers the parameters calibrated to market quotes; Art. 11 covers the choice among models and calibration approaches. The difference from the fair value is a valuation adjustment deducted from capital.
   - IFRS 13 §93(h): the sensitivity of a Level 3 fair value to reasonably possible alternative inputs.
   - PRA SS1/23: model uncertainty is "the inherent uncertainty in the parameter estimates and results of statistical models".
 - **Said.** Supervisors already ask for this range. Least squares returns one parameter vector and one price. The rules ask for a distribution of prices and a point in it.
@@ -73,7 +73,7 @@ The notebook `slot1_intro.py` runs three cells, each in under a second.
 ### Slide 8. Richer models, costlier posteriors (2 minutes)
 
 - **On screen.** The ladder figure ([images/ladder.png](images/ladder.png)): for each model, the cost of one likelihood evaluation and of one exact posterior, on a log scale.
-- **Said.** Heston adds a random variance that moves against the price. It has four parameters here, and a smile is priced by a Fourier integral in 20 milliseconds, so its exact posterior takes about 4 CPU-minutes. Rough Bergomi reproduces the shape of the SPY skew across maturities, but its prices exist only by Monte Carlo: 5 CPU-seconds per smile, and at least 17 CPU-hours per exact posterior.
+- **Said.** Heston adds a random variance that moves against the price. It has four parameters here, and a smile is priced by a Fourier integral in 20 milliseconds at one quadrature rung, so its exact posterior takes about 4 CPU-minutes, or twice that with the accuracy checks. Rough Bergomi's skew follows a power law in maturity, the shape SPY's skew has, but its prices exist only by Monte Carlo: 5 CPU-seconds per smile, and at least 17 CPU-hours per exact posterior.
 - **Leads to.** What those costs mean for a desk.
 
 ### Slide 9. Every smile, every morning (1.5 minutes)
@@ -82,10 +82,10 @@ The notebook `slot1_intro.py` runs three cells, each in under a second.
 
   | | One posterior | 500 smiles every morning |
   | --- | --- | --- |
-  | Cheap likelihood (Black–Scholes, Heston) | Milliseconds to minutes | Heston: about 35 CPU-hours a day |
+  | Cheap likelihood (Black–Scholes, Heston) | Milliseconds to minutes | Heston: 35 CPU-hours a day or more |
   | Likelihood only by simulation (rough Bergomi) | At least 17 CPU-hours | At least 8,500 CPU-hours a day: 350 cores for 24 hours |
 
-- **Said.** For one smile, Heston's posterior is affordable. For a book of 500 smiles every morning it costs about 35 CPU-hours a day, and rough Bergomi's is out of reach. This is why desks stop at least squares.
+- **Said.** For one smile, Heston's posterior is affordable. For a book of 500 smiles every morning it costs 35 CPU-hours a day or more, and rough Bergomi's is out of reach. This is why desks stop at least squares.
 - **Leads to.** The way around the cost.
 
 ### Slide 10. Amortized inference: pay once, then seconds (1.5 minutes)
@@ -126,11 +126,12 @@ The notebook's text changes with the data. On SPY the posterior from both quotes
 
 | Number | Source | Status |
 | --- | --- | --- |
-| 63 quotes, 7 maturities, 9 strikes, SPY on 21 Oct 2026 | `spy/surface.json` (S8) | verified |
+| 63 prices on a grid of 7 maturities × 9 moneyness points, read from SPY's quotes of 21 Oct 2026 | `spy/surface.json` (S8) | verified |
 | HKDE: +83%, −16%, posterior 90% interval −18% to +67% | HKDE study, 9 Oct; `docs/design/images/01-hkde-option-prices.png` | to register as C12, with the two optima's fit in noise units |
 | σ = 12.8% ± 0.3; put range 0.05–0.14 bp; quote 14.1 bp (24.4%); miss 9.5 sd; five times the noise | computed live from `spy/surface.json` | verified by construction (live) |
-| Heston 20 ms and about 4 CPU-min; rough Bergomi 5.0 CPU-s and at least 17 CPU-h; network 1.4 s (3.6 CPU-s) | `costs/costs.json` (C8) | verified |
-| 500 smiles: Heston about 35 CPU-h; rough at least 8,500 CPU-h | arithmetic on C8 | verified |
+| Heston 20 ms and about 4 CPU-min, both at one quadrature rung; rough Bergomi 5.0 CPU-s and at least 17 CPU-h; network 1.4 s (3.6 CPU-s) | `costs/costs.json` (C8) | verified |
+| 500 smiles: Heston 35 CPU-h or more; rough at least 8,500 CPU-h | arithmetic on C8 | verified |
+| Black–Scholes: 10 µs per price, 0.2 ms per vectorized grid posterior | timed on 23 Oct with `sbi4finance.calibration.surface` | illustrative, not a study result |
 
 ## What may be said, and what may not
 
@@ -140,7 +141,8 @@ The notebook's text changes with the data. On SPY the posterior from both quotes
 | "Two parameter sets fit almost equally well." | "Least squares is broken." | Both fit within the noise; the point is that the quotes cannot tell them apart. |
 | "At least 17 CPU-hours." | "17 CPU-hours." | A lower bound (design document, S9). |
 | "1.4 seconds for 1,000 draws." | "Milliseconds." | Not what was measured. |
-| "Rough Bergomi reproduces the shape of the SPY skew across maturities." | "Heston cannot fit SPY." | Heston fits SPY within the noise, with extreme parameters (slot 4). |
+| "Rough Bergomi's skew follows a power law in maturity, the shape SPY's has." | "Heston cannot fit SPY", or "rough Bergomi fits SPY" before gate G4. | Heston fits SPY with extreme parameters (slot 4); rough Bergomi's fit to SPY is ⟨S8⟩. |
+| "Art. 9 for the calibrated parameters, Art. 11 for the choice of model." | "Art. 11 asks for the range of calibrations." | Art. 11(1) excludes calibrations from market-derived parameters, which Art. 9 covers (Lecture 8, Section 8.9). |
 
 ## Hard questions
 

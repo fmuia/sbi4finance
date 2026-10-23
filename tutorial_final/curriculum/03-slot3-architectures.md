@@ -23,9 +23,9 @@ Slot 2 ends on the object to build, $q_\phi(\theta \mid y)$. Slot 3 says which n
 | Min | Section | On screen | Live or cached | What is said |
 | --- | --- | --- | --- | --- |
 | 0–1 | 1. Two networks, two jobs | A diagram: data $y$ → summary network $h_\psi$ (optional) → inference network $q_\phi(\theta \mid h_\psi(y))$ → posterior draws | slide | One network represents the posterior; the other, when needed, reads the data. They are trained together on slot 2's loss. |
-| 1–5 | 2. Flows and flow matching | Five snapshots of a cloud of standard-normal points carried by the trained Heston network to SPY's posterior in the $(\sigma_v, \rho)$ plane, at $\tau$ = 0, 0.25, 0.5, 0.75 and 1; the flow-matching loss in one line; a coupling layer in one diagram | cached (drawn from the slot-4 network) | A normalizing flow is an invertible map with an exact density. Flow matching learns a velocity field by regression and integrates it: in slots 4 and 5, 100 Euler steps, denser near the data end. It scales to many parameters and odd shapes, and it is BayesFlow's default for this reason. |
+| 1–5 | 2. Flows and flow matching | Five snapshots of a cloud of standard-normal points carried by the trained Heston network to SPY's posterior in the $(\sigma_v, \rho)$ plane, at $\tau$ = 0, 0.25, 0.5, 0.75 and 1; the flow-matching loss in one line; a coupling layer in one diagram | cached (drawn from the slot-4 network) | A normalizing flow is an invertible map with an exact density. Flow matching learns a velocity field by regression and integrates it: in slots 4 and 5, 100 Euler steps, denser near the data end. It scales to many parameters and odd shapes, and the tutorial's networks use it. |
 | 5–8 | 3. Reading the data | Three data shapes and their networks, in a table (below) | slide | The 63 quotes on a fixed grid need no summary network: they enter as conditions, standardized. A real chain is a set of quotes of varying size, which a set network reads directly. A return series needs a time-series network. Learned summaries rediscover sufficient statistics where these exist. |
-| 8–10 | 4. Details that matter | The twelve lines of `build_workflow` in `src/sbi4finance/calibration/inference.py`, annotated | code | Each line answers a practical problem: bounds, scales, noise, sampling. Slot 4 trains exactly this. |
+| 8–10 | 4. Details that matter | The twelve lines of `build_workflow` in `src/sbi4finance/calibration/inference.py`, annotated | code | Each line answers a practical problem: bounds, scales, noise, sampling. Slot 4 trains this configuration. |
 
 ## Flow matching, in the form slots 4 and 5 use
 
@@ -33,7 +33,7 @@ For a simulated pair $(\theta, y)$, noise $z \sim \mathcal N(0, I)$ and a time $
 
 $$\mathcal L(\phi) = \mathbb E\,\big\| u_\phi\big((1 - \tau)\,z + \tau\,\theta,\ \tau,\ y\big) - (\theta - z) \big\|^2 .$$
 
-Sampling integrates $dz/d\tau = u_\phi(z, \tau, y)$ from $\tau = 0$ to 1. Slots 4 and 5 use 100 Euler steps on the grid $\tau_i = 1 - (1 - i/100)^2$, which is dense near $\tau = 1$, and draw training times with a power law (`time_power_law_alpha` in the workflow).
+Sampling integrates $dz/d\tau = u_\phi(z, \tau, y)$ from $\tau = 0$ to 1. Slots 4 and 5 use 100 Euler steps on the grid $\tau_i = 1 - (1 - i/100)^2$, which is dense near $\tau = 1$, and draw training times with a power law (`time_power_law_alpha`, −0.5 for the trained Heston network). The configuration stored with a network has 50 uniform steps; `inference.sample` sets the 100-step grid before sampling, so slots 4 and 5 sample through it.
 
 ## Data shapes and their networks
 
@@ -52,7 +52,9 @@ The workflow of `inference.build_workflow` has five decisions, each tied to a pr
 2. **Scales.** Parameters and quotes are standardized with training statistics, because SPY's 63 prices range from about $1.5 \times 10^{-5}$ to $0.07$ of the forward.
 3. **Noise.** Quote noise is drawn fresh in every batch, so the network sees new noise each epoch and cannot memorize it.
 4. **Capacity.** Four dense layers of 256 inside the flow-matching velocity network.
-5. **Sampler.** 100 Euler steps on the non-uniform grid above; fewer steps are faster and less accurate.
+5. **Sampler.** 100 Euler steps on the non-uniform grid above, set by `inference.sample`; fewer steps are faster and less accurate.
+
+Slot 4 trains this configuration with `time_power_law_alpha=-0.5`, the value of the trained checkpoint (`checkpoints/heston/training.json`); `build_workflow`'s default is 0.5.
 
 ## Concepts slot 3 owns
 

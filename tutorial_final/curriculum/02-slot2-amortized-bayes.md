@@ -23,10 +23,10 @@ Slot 1 ends on a cost: the posterior is affordable for one smile under Heston an
 | Min | Section | On screen | Live or cached | What is said |
 | --- | --- | --- | --- | --- |
 | 0–2 | 1. Two ways to pay | Two timelines: "infer per data set" (MCMC, sequential Monte Carlo, ABC, particle MCMC) against "train once, infer per data set in one pass" | slide | Every posterior so far was paid for data set by data set. Amortized inference pays once, up front, and then answers any data set in one pass. |
-| 2–5 | 2. A network learns slot 1's posterior | The toy of §"The live demonstration" below: 20,000 simulated quotes, 20 seconds of training, the network's posterior of σ for the SPY quote over slot 1's grid posterior; then 10,000 quotes at once | live | The network never saw the likelihood. It saw only pairs of a volatility and a noisy price, and it returns the same posterior as slot 1's grid. Then it answers 10,000 quotes in one call. |
+| 2–5 | 2. A network learns slot 1's posterior | The toy of §"The live demonstration" below: 20,000 simulated quotes, under half a minute of training, the network's posterior of σ for the SPY quote over slot 1's grid posterior; then 10,000 quotes at once | live | The network never saw the likelihood. It saw only pairs of a volatility and a noisy price, and it returns the same posterior as slot 1's grid. Then it answers 10,000 quotes in one call. |
 | 5–8 | 3. Why the minimizer is the posterior | The identity below, in one line, with its three consequences | slide | The loss is an average Kullback–Leibler divergence to the true posterior, so its minimizer is the posterior for every data set the prior can produce. |
-| 8–10.5 | 4. When it pays | The break-even table below, and the cost of validation | cached | Amortization pays after a few dozen smiles for Heston and after about ten to twenty for rough Bergomi. Validation alone needs thousands of posteriors, which only amortization makes affordable. |
-| 10.5–13.5 | 5. The workflow, and SBC | The workflow as a checklist; SBC run live on the toy, 1,000 simulated quotes in a second | live | The workflow is what slots 4 and 5 follow. SBC checks that the network's posteriors are calibrated on average: the rank of the true parameter among the draws must be uniform. |
+| 8–10.5 | 4. When it pays | The break-even table below, and the cost of validation | cached | Amortization pays after a few tens of smiles for Heston and after about ten to twenty for rough Bergomi. Validation alone needs thousands of posteriors, which only amortization makes affordable. |
+| 10.5–13.5 | 5. The workflow, and SBC | The workflow as a checklist; SBC run live on the toy, 500 simulated quotes with 100 draws each | live, budget to be timed; cached fallback | The workflow is what slots 4 and 5 follow. SBC checks that the network's posteriors are calibrated on average: the rank of the true parameter among the draws must be uniform. |
 | 13.5–15 | 6. Roots, and the handoff | A one-slide history and the finance alternatives | slide | The handoff to slot 3: the network must represent a conditional distribution $q_\phi(\theta \mid y)$ and read the data $y$. Which networks do that? |
 
 ## The live demonstration
@@ -36,11 +36,11 @@ The toy is slot 1's problem, so the audience knows its exact answer.
 - **Simulator.** $\sigma \sim \mathcal U(0.05, 0.60)$, the prior of slot 1. The data is the at-the-money one-month Black–Scholes price at $\sigma$ plus Gaussian noise with slot 1's standard deviation.
 - **Bank.** 20,000 pairs, simulated in milliseconds.
 - **Network.** BayesFlow's `FlowMatching` with a small dense network (two layers of 64), one target ($\sigma$) and one condition (the price). The same class slot 4 and slot 5 use, at a toy size.
-- **Training.** About 20 seconds on a laptop CPU; a saved checkpoint loads if training runs long.
+- **Training.** A target of under 30 seconds on a laptop CPU, to be timed on the presenter's machine; a saved checkpoint loads if training runs long.
 - **Outputs.**
   1. The network's posterior of $\sigma$ for the SPY quote, over slot 1's grid posterior (12.8% ± 0.3 points).
   2. The posteriors of 10,000 different quotes in one call, with the time it takes.
-  3. SBC on 1,000 simulated quotes: the ranks of the true $\sigma$ among 200 draws each, as an empirical distribution against the uniform, with its 95% band.
+  3. SBC on 500 simulated quotes: the ranks of the true $\sigma$ among 100 draws each, as an empirical distribution against the uniform, with its 95% band. The sampler draws 50,000 values through 100 Euler steps, so the cell's time must be measured; fewer steps or a cached result are the fallbacks.
 - **Optional extension.** Two quotes as data, the at-the-money quote and slot 1's put, with simulated quotes from Black–Scholes. The network learns a posterior that slot 1's grid also gives, and it shows that the condition can be a vector.
 
 The demonstration needs a BayesFlow environment on the presenter's machine. It is the first live training of the afternoon, so it doubles as the check that the environment works before slot 4.
@@ -63,12 +63,12 @@ All costs are on one 4-core machine, from `costs/costs.json`, `heston/s1/bank-qu
 
 | | Heston | Rough Bergomi |
 | --- | --- | --- |
-| One exact posterior | about 4 CPU-min (251 CPU-s) | at least 17 CPU-h (41 at the bank's average pricing cost) |
+| One exact posterior | about 4 CPU-min (251 CPU-s) at one quadrature rung; twice that with the accuracy checks | at least 17 CPU-h (41 at the bank's average pricing cost) |
 | The training bank | 60,000 smiles in 46 CPU-min | 112,000 smiles in about 370 CPU-h at the pilot's rate (⟨S1⟩) |
 | Training the network | 32 minutes on 4 cores (500 epochs) | ⟨S2⟩ |
-| Break-even | about 40 smiles | about 9 to 22 smiles, plus training |
+| Break-even | about 20 to 40 smiles: the bank's 2,787 CPU-s plus 32 minutes of training counted on one to four cores, against 247 CPU-s saved per smile | about 9 to 22 smiles, plus training |
 | One posterior after training | 1.5 s on the clock (3.8 CPU-s) for 1,000 draws | 1.4 s on the clock (3.6 CPU-s) for 1,000 draws |
-| SBC on 2,000 smiles, exact | about 140 CPU-h | at least 34,000 CPU-h |
+| SBC on 2,000 smiles, exact | about 140 CPU-h at one rung | at least 34,000 CPU-h |
 | SBC on 2,000 smiles, amortized | about 2 CPU-h | about 2 CPU-h |
 
 The last two rows carry the slot's sharpest point: a posterior method is validated by running it thousands of times, and only an amortized posterior makes that affordable.
@@ -87,7 +87,7 @@ The last two rows carry the slot's sharpest point: a posterior method is validat
 
 ## Roots and alternatives, one slide
 
-- **Simulation-based inference:** approximate Bayesian computation (Pritchard et al. 1999; Beaumont, Zhang and Balding 2002); synthetic likelihood (Wood 2010); neural posterior estimation (Papamakarios and Murray 2016; Greenberg, Nonnenmacher and Macke 2019); BayesFlow (Radev et al. 2020); flow matching for simulation-based inference (Wildberger et al. 2023). The proposal's references [7]–[10] and [18]–[22].
+- **Simulation-based inference:** approximate Bayesian computation (Pritchard et al. 1999; Beaumont, Zhang and Balding 2002); synthetic likelihood (Wood 2010); Markov chain Monte Carlo without likelihoods (Marjoram et al. 2003); neural posterior estimation (Papamakarios and Murray 2016; Greenberg, Nonnenmacher and Macke 2019); BayesFlow (Radev et al. 2022, *IEEE Transactions on Neural Networks and Learning Systems*); flow matching for simulation-based inference (Wildberger et al. 2023). The proposal's references [7]–[10] and [18]–[22].
 - **The alternatives finance knows:** closed-form likelihood expansions (Aït-Sahalia 2002; Aït-Sahalia and Kimmel 2007), indirect inference and the method of moments (Gouriéroux, Monfort and Renault 1993; Andersen and Sørensen 1996), particle MCMC (Andrieu, Doucet and Holenstein 2010). Each infers one data set at a time.
 
 ## Concepts slot 2 owns

@@ -19,7 +19,7 @@ The folder replaces `CURRICULUM.md` (revision 1, same day) and, where they diffe
 
 **What the tutorial teaches.** A calibrated volatility model is an estimate, and the prices it gives for products nobody quotes inherit its uncertainty. The posterior is that uncertainty, and pricing under each posterior draw turns it into the range a desk must report. Amortized inference makes the posterior affordable for every smile, every morning, even for a model priced only by simulation, and a chain of checks says when to trust it.
 
-**The arc: one smile, three models.** The whole afternoon works on one data set, the SPY option smile of 21 October 2026 (63 quotes, 7 maturities, 9 strikes), and one question: which price to mark for a product the smile does not quote, and with what range. Three models of increasing realism carry it, each more expensive to invert:
+**The arc: one smile, three models.** The whole afternoon works on one data set, the SPY option smile of 21 October 2026 (63 prices read from the closing quotes onto a fixed grid of 7 maturities × 9 moneyness points), and one question: which price to mark for a product the smile does not quote, and with what range. Three models of increasing realism carry it, each more expensive to invert:
 
 1. **Black–Scholes** in slot 1: one parameter, a posterior on a grid in a fraction of a millisecond, and a model the smile rejects.
 2. **Heston** in slot 4: four parameters, an exact likelihood by Fourier integral, so the network can be checked against the exact posterior. It fits SPY, but only with extreme parameters.
@@ -62,15 +62,15 @@ The audience should leave able to say three things about their own model: whethe
 
 ![The three models of the tutorial and what one likelihood evaluation and one exact posterior cost under each](images/ladder.png)
 
-How to read the figure: for each model, the grey bar is the cost of one likelihood evaluation (pricing the quotes once) and the green bar the cost of one exact posterior, in CPU-seconds on a log scale, on one 4-core machine. The hatched bar is a lower bound. The dashed orange line is the amortized network's cost for 1,000 draws, and the dotted red line the cost of auditing one rough-Bergomi smile (a pilot value). Sources: `costs/costs.json`; Black–Scholes timed with `sbi4finance.calibration.surface` on 23 October.
+How to read the figure: for each model, the grey bar is the cost of one likelihood evaluation (pricing the quotes once) and the green bar the cost of one exact posterior, in CPU-seconds on a log scale, on one 4-core machine. The hatched bar is a lower bound. Heston's bars are at one rung of its quadrature ladder; a checked evaluation costs at least twice as much. The dashed orange line is the amortized network's cost for 1,000 draws, and the dotted red line the cost of auditing one rough-Bergomi smile (a pilot value). Sources: `costs/costs.json` (C8); the Black–Scholes bars were timed once with `sbi4finance.calibration.surface` on 23 October and are illustrative, not a study result.
 
 | | Black–Scholes | Heston | Rough Bergomi |
 | --- | --- | --- | --- |
 | Slot | 1 | 4 | 5 |
 | Parameters | σ | $v_0$, $\theta$, $\sigma_v$, $\rho$ ($\kappa$ fixed) | $H$, $\eta$, $\rho$, with the curve $\xi_0$ as an input |
-| One likelihood evaluation | about 10 µs per quote | 20 ms per smile | 5.0 CPU-s per smile |
-| One exact posterior | 0.2 ms (grid) | about 4 CPU-min | at least 17 CPU-h |
-| What it does on SPY | Cannot fit two quotes | Fits within the noise, with a vol-of-vol five times the Feller limit and variance swaps below the market | Reproduces the skew's power law; its variance swaps match the market by construction |
+| One likelihood evaluation | about 10 µs per price | 20 ms per smile at one quadrature rung | 5.0 CPU-s per smile |
+| One exact posterior | 0.2 ms (vectorized grid) | about 4 CPU-min at one rung, twice that with the accuracy checks | at least 17 CPU-h |
+| What it does on SPY | Cannot fit two quotes | A root-mean-square residual of about one noise unit (the noise is loose in the wings), with a vol-of-vol about twice its Feller limit and variance swaps below SPY's | Its skew follows a power law in maturity, the shape of SPY's; its variance swaps match the market by construction; its fit to SPY is ⟨S8⟩ |
 | The check of the network | — (slot 2's toy, against the grid) | The exact posterior by MCMC | SBC, a second method, and an audit of each smile |
 
 ## 3. The six slots
@@ -115,7 +115,7 @@ flowchart LR
 | Concept | Owner | Used in |
 | --- | --- | --- |
 | Calibration as estimation; the posterior; propagation by pricing each draw; conditionality on the model | 1 | 2, 4, 5, 6 |
-| The rules: Art. 11, IFRS 13, PRA SS1/23 | 1 | 5 |
+| The rules: Regulation (EU) 2016/101 Art. 9 and Art. 11, IFRS 13, PRA SS1/23 | 1 | 5 |
 | The cost ladder and the 2×2 table | 1 | 2, 5 |
 | The amortization identity; the economics and the break-even | 2 | 4, 5 |
 | The amortized workflow; SBC, coverage and contraction as concepts | 2 | 4, 5 |
@@ -129,12 +129,13 @@ flowchart LR
 
 ## 6. The take-home track
 
-The proposal calibrates from returns and propagates into value-at-risk. The afternoon no longer does, so the repository carries that material as take-home notebooks, each already built on a branch:
+The proposal calibrates from returns and propagates into value-at-risk. The afternoon no longer does, so the repository carries that material as take-home notebooks. Each is drafted on a branch or in the archive and moves into `extras/`, which does not exist yet:
 
 | Notebook | What it teaches | Source |
 | --- | --- | --- |
 | `extras/returns_bayesflow_basics.py` | BayesFlow on 1,000 VOO returns under GBM: the same workflow as slot 4, with VaR and expected shortfall | Branch `feat/tutorial-slot4-bayesflow-basics`, edited |
-| `extras/svj_from_returns.py` | Stochastic volatility with jumps from returns, with a particle-filter audit | The SVJ lesson (#38) |
+| `extras/svj_from_returns.py` | Stochastic volatility with jumps from returns, with a particle-filter audit | The SVJ lesson (#38), branch `feat/tutorial-slot5-svj-advanced` |
+| `extras/multifractal_returns.py` | The multifractal model of asset returns | `notebooks/01_mmar_univariate.py` in the archive |
 | `extras/crash_day_priors.py` | How much the prior decides the probability of a 7% loss day | Branch `feat/tutorial-slot6-crash-risk` (#42) |
 | `extras/betas_across_stocks.py` | Cross-sectional shrinkage of betas | Branch `feat/tutorial-slot1-intro` (option D) |
 
@@ -149,8 +150,8 @@ The message is shown in every slot and said in only two places.
 - real data end to end: the SPY chain of 21 October 2026;
 - documentation to a validator's standard: the design document and the fourteen-lecture course in `docs/course/`, take-home;
 - a ledger of claims: every number on screen traced to a study and a file;
-- failures shown and handled: the Heston network short of the exact posterior on one smile in five, the rough pilot's SBC failure, the audit's flag rate, the places where the classical route is as good;
-- infrastructure: a bank of 112,000 Monte-Carlo-priced smiles built on a cluster, and trained networks shipped as checkpoints;
+- failures shown and handled: the Heston network alone short of the exact-likelihood reference on one smile in five, the rough pilot's SBC failure, the audit's flag rate, the places where the classical route is as good;
+- infrastructure: a bank of 112,000 Monte-Carlo-priced smiles generated on a cluster (gate G1), and trained networks shipped as checkpoints (Heston's now, rough Bergomi's after gate G2);
 - the people: BayesFlow's lead developer and core developers, and hedge-fund experience on the team; slot 1 spends twenty seconds on this.
 
 **Said, twice:**
@@ -166,11 +167,15 @@ The audience has read the proposal. Each promise the curriculum does not keep ne
 | --- | --- | --- |
 | Calibration from return series (its Figure 1, "simulated pairs (parameters, return series)"), with joint returns-and-options calibration named as the follow-on edition | Every slot works on an option smile | Decision D16. Slot 1 says in one line why the afternoon uses options and that returns go home; the take-home track (§6) carries returns |
 | Propagation into volatility forecasts and value-at-risk (learning outcome 4) | Propagation into product prices and a reserve | Partly kept; VaR and volatility forecasts are in the take-home track |
-| Five model families: Heston, jump diffusion, GARCH, rough, multifractal | Black–Scholes, Heston, rough Bergomi; Heston with jumps as one slide | Name the take-home notebooks on slot 1's last slide; GARCH has no notebook: say so, or drop it from the slide |
-| Two notebooks live and one taken home, in student and solved versions, runnable on Colab | Live notebooks in slots 1, 2, 4, 5 and 6 | Decision D10; the student versions and the hosted option are decision D9 of PLAN.md |
+| Five model families: Heston, jump diffusion, GARCH, rough, multifractal | Black–Scholes, Heston, rough Bergomi; Heston with jumps as one slide | Name the take-home notebooks on slot 1's last slide, the SVJ and multifractal notebooks included; GARCH has no notebook: say so, or drop it from the slide |
+| Two notebooks live and one taken home, in student and solved versions, runnable on Colab | Live notebooks in slots 1, 2, 4, 5 and 6 | Decision D10 for the number; decision D17 for the student and solved versions; decision D9 of PLAN.md for the hosted option |
+| Half a day, 3.5 hours: principles (1 h with a break), a worked example hands-on (1.5 h with a break), advanced concepts and a second example (1 h with a 15-minute Q&A) | 115 minutes of talks; about 95 minutes of the 3.5 hours unassigned | Decision D12: assign the time to breaks, the Q&A and exercises after slots 4 and 5 |
+| A close with "a broader view of the field and recent developments" | Slot 6's last minute | Slot 6's close names recent developments in one slide, or the Q&A opens with them |
+| "Trained checkpoints for every example" | Heston's network exists; the rough network and slot 6's networks are pending | Ship each by its slot's freeze, or say which examples train at home |
+| Four organizers teaching | Jerry Huang has no slot | Decision D18: a role for Jerry, for example the hands-on support, slot 6's networks or the SBC study, as PLAN.md §14 proposed |
 | "Attendees calibrate real market data and sign off on the diagnostics" | Presenters do it on SPY | Decision D12: exercises after slots 4 and 5 |
 | LLM-based verification agents, used hands-on | Not in any slot | Decision D11: a two-minute demonstration in slot 4's check step, or drop it and say so |
-| Learning from series of different lengths and with missing values; autoregressive samplers | Not in any slot | Slot 3 names them in one sentence each, or they leave the slides |
+| "Special emphasis" on learning from series of different scales, dimensions, lengths and degrees of missingness; autoregressive samplers | Not in any slot; the smile is a fixed grid | The largest content gap after returns. Slot 3 can show the set network for real chains as the answer for quotes; time series stay in the take-home track. Say so rather than imply coverage |
 | "Full posterior distributions in milliseconds" | 1.4 s for 1,000 draws | Say seconds |
 | Mis-specification diagnostics (learning outcome 2) | Slot 6 | Kept |
 | Read identifiability off the posterior (learning outcome 3) | Slots 4 and 5 | Kept |
@@ -202,6 +207,8 @@ The audience has read the proposal. Each promise the curriculum does not keep ne
 | D13 | Slot 5's title and presenter split | "The smile fits many calibrations. Which price do you mark?"; Alex takes sections 4 and 5 | Fri 30 Oct |
 | D14 | Threshold for gate G3 | One smile in three flagged | Fri 30 Oct |
 | D15 | Slot 6's sensitivity-aware network and summary-space detector | Build the first; the second if time allows | Fri 30 Oct |
+| D17 | Student and solved versions of the notebooks | Solved versions on stage; student versions with the exercises blanked, generated from the solved ones | Fri 30 Oct |
+| D18 | Jerry Huang's role | To agree with Jerry | Fri 30 Oct |
 
 ## 11. Sources
 
