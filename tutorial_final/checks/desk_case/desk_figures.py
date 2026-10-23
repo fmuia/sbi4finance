@@ -370,7 +370,11 @@ def key_numbers(data, scale=1.0):
     res = reserves(data, scale, 0.9)
     pct = {n: {m: (100 * e[m][0] / e["mark"], 100 * e[m][1] / e["mark"])
                for m in ("posterior", "delta", "profile", "h_fixed_delta")} for n, e in res.items()}
+    e_post, e_gn = p["eta"]["posterior_q05_q50_q95"], p["eta"]["gauss_newton_90"]
     out = {"h_post": (h_post[0], h_post[2]), "h_gn": tuple(h_gn), "rho_post": (r_post[0], r_post[2]),
+           "eta_post": (e_post[0], e_post[2]), "eta_gn": tuple(e_gn),
+           "width_diff": sorted(100 * abs((q[2] - q[0]) / (g[1] - g[0]) - 1) for q, g in
+                                ((h_post, h_gn), (e_post, e_gn), (r_post, r_gn))),
            "rho_gn": tuple(r_gn), "rho_ratio": (r_post[2] - r_post[0]) / (r_gn[1] - r_gn[0]),
            "ls": rep["fit_front"]["theta"], "ls_chi2": rep["fit_front"]["chi2"], "khat": s["importance"]["khat"],
            "ess": s["importance"]["ess"], "proposals": rep["proposals"], "fs": pct["forward_start"],
