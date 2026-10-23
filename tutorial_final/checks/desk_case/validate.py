@@ -11,7 +11,8 @@ marks the four products and sets one-sided 90% reserves from that chain alone:
   Gauss–Newton and the delta method (least squares started at the best priced proposal);
   desk practice, H fixed at 0.10 (least squares on eta and rho);
   the profile-likelihood range (chi-square within 1.64 of its minimum), read off the desk-case proposals;
-  the posterior, by importance sampling of the desk-case proposals (priced once, reweighted per chain).
+  the posterior, by importance sampling of the desk-case proposals (priced once, reweighted per chain; both rounds,
+  desk_case_combined.npz, by default).
 A breach is a true price below the long prudent value (mark - long reserve) or above the short one (mark + short
 reserve). A correct 90% one-sided reserve is breached 10% of the time on each side.
 """
@@ -37,8 +38,8 @@ DATA_SEED = 7
 CASE = {}
 
 
-def _load(out_dir):
-    case = np.load(out_dir / "desk_case.npz")
+def _load(out_dir, name):
+    case = np.load(out_dir / name)
     CASE.update(theta=case["theta"], log_q=case["log_q"], prices=case["prices"], products=case["products"])
 
 
@@ -101,9 +102,10 @@ def main():
     parser.add_argument("--workers", type=int, default=2)
     parser.add_argument("--truths", choices=("thin", "full"), default="thin")
     parser.add_argument("--batch", type=int, default=0, help="independent batches of replicas, combined afterwards")
+    parser.add_argument("--case", default="desk_case_combined.npz", help="the priced proposals to reweight")
     args = parser.parse_args()
     out_dir = Path(args.out_dir)
-    _load(out_dir)
+    _load(out_dir, args.case)
     started = time.time()
     if args.truths == "full":
         full = np.load(HERE.parent / "rough_spy_is" / "rough_spy_is_seed0.npz")
