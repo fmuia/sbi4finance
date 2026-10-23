@@ -1,75 +1,102 @@
 {
- "pilot_acceptance": [
-  0.4693333333333333,
-  0.49666666666666665,
-  0.5,
-  0.48333333333333334
- ],
- "acceptance": [
-  0.271,
-  0.259,
-  0.2633333333333333,
-  0.24433333333333335
- ],
- "cpu_seconds": 403.860987756,
- "draws": 10000,
+ "what": "Feasibility run of 23 Oct 2026 for the curriculum: exact Heston posterior (kappa = 2 fixed, the prior box of configs/tasks/calibration_heston_bank.json) on the SPY smile of 21 Oct 2026. Not an accepted study; study S8-H replaces it.",
+ "script": "scripts/curriculum/heston_spy_exact.py",
+ "likelihood": "Fourier, one quadrature rung (1,024 nodes), full ladder where that rung fails",
+ "multi_start": {
+  "starts": 8,
+  "distinct_optima": 2,
+  "optima": [
+   {
+    "theta": [
+     0.01817762111277809,
+     0.06565718589949454,
+     1.1367673205860798,
+     -0.6309174663784429
+    ],
+    "loglik": 397.79549177166115
+   },
+   {
+    "theta": [
+     0.01885917273802292,
+     0.07202827763191819,
+     1.4999999974621159,
+     -0.5501671509954493
+    ],
+    "loglik": 368.98004363516
+   }
+  ],
+  "all_endpoints_loglik": [
+   397.79549177166115,
+   368.98004363516,
+   397.7954915771852,
+   397.79549169278494,
+   397.79549174512465,
+   397.79549179355513,
+   397.795491781848,
+   397.795491756999
+  ]
+ },
+ "chains": {
+  "pilot_steps": 1500,
+  "main_steps": 4000,
+  "burn_in": 1000,
+  "chains": 4,
+  "starts": "best optimum plus 3 pilot standard deviations of noise, in logit coordinates",
+  "acceptance": [
+   0.241,
+   0.247,
+   0.25775,
+   0.2415
+  ]
+ },
+ "cpu_seconds": 530.817273226,
+ "draws": 12000,
  "summary": {
   "initial_variance": {
-   "mean": 0.01818398860528679,
-   "sd": 0.0003875216219523754,
-   "q05": 0.017545750306783,
-   "q50": 0.018173509967754096,
-   "q95": 0.018838732823841433
+   "mean": 0.018152976323382645,
+   "sd": 0.00038831837692770077,
+   "q05": 0.017501071868864564,
+   "q50": 0.01817218090470967,
+   "q95": 0.01878953271151869,
+   "rhat": 1.0051323269584715,
+   "ess": 732.7903756427867
   },
   "theta": {
-   "mean": 0.0656544920515539,
-   "sd": 0.0014589120953383947,
-   "q05": 0.06325636160218794,
-   "q50": 0.06566828837188322,
-   "q95": 0.06812661390412383
+   "mean": 0.06567648735654198,
+   "sd": 0.0014999885079697458,
+   "q05": 0.0631156038079594,
+   "q50": 0.06565262651378563,
+   "q95": 0.06813503289366997,
+   "rhat": 1.0065560881417461,
+   "ess": 672.6469800171503
   },
   "vol_of_vol": {
-   "mean": 1.1390627016442851,
-   "sd": 0.04436072807036359,
-   "q05": 1.0659039682191125,
-   "q50": 1.139360400304165,
-   "q95": 1.213968448886271
+   "mean": 1.1393740072979484,
+   "sd": 0.04358138386673123,
+   "q05": 1.0685673800726136,
+   "q50": 1.1404505700332077,
+   "q95": 1.2109641707389476,
+   "rhat": 1.0054203075297572,
+   "ess": 1031.4958933797732
   },
   "rho": {
-   "mean": -0.6312658263451404,
-   "sd": 0.021400867016984054,
-   "q05": -0.6668911868557527,
-   "q50": -0.6306796177958316,
-   "q95": -0.597174876370093
+   "mean": -0.6318396282832401,
+   "sd": 0.02159406628487486,
+   "q05": -0.6675800163885564,
+   "q50": -0.6311408611222802,
+   "q95": -0.5974886597179025,
+   "rhat": 1.0046255411013087,
+   "ess": 1212.6051707388094
   }
  },
- "feller_ratio_median": 4.9379710850175265,
- "chain_means": [
-  [
-   0.018186235662516904,
-   0.06576681512212491,
-   1.143004507509715,
-   -0.6292450158540199
-  ],
-  [
-   0.018221562644878654,
-   0.06559348893693594,
-   1.140970065106177,
-   -0.6322461077532858
-  ],
-  [
-   0.01818784580272924,
-   0.06551062237599542,
-   1.133063651645764,
-   -0.6333058744537148
-  ],
-  [
-   0.0181403103110224,
-   0.06574704177115889,
-   1.1392125823155053,
-   -0.6302663073195433
-  ]
- ],
+ "feller_ratio": {
+  "definition": "vol_of_vol^2 / (2 kappa theta)",
+  "min": 3.777510251994681,
+  "median": 4.957260844021965,
+  "max": 6.2602829675490135,
+  "share_at_most_1": 0.0
+ },
+ "feller_limit_vol_of_vol_median": 0.5124553698178432,
  "variance_swap_vol_pct": {
   "days": [
    5,
@@ -81,31 +108,31 @@
    252
   ],
   "q05": [
-   13.603,
-   13.939,
-   14.617,
-   15.732,
-   16.648,
-   18.649,
-   20.932
+   13.589,
+   13.927,
+   14.607,
+   15.717,
+   16.636,
+   18.644,
+   20.916
   ],
   "q50": [
-   13.822,
-   14.146,
-   14.805,
-   15.897,
-   16.82,
+   13.821,
+   14.143,
+   14.803,
+   15.894,
+   16.818,
    18.878,
-   21.242
+   21.248
   ],
   "q95": [
-   14.048,
-   14.362,
-   15.001,
-   16.077,
-   17.001,
+   14.033,
+   14.342,
+   14.979,
+   16.059,
+   16.988,
    19.103,
-   21.555
+   21.552
   ],
   "spy_replicated": [
    13.6,
@@ -116,8 +143,6 @@
    20.1,
    21.8
   ],
-  "spy_source": "docs/design/calibration-design-document.md, S8 table (replication with strikes down to delta = -8)"
- },
- "what": "Feasibility run of 23 Oct 2026 for the curriculum: exact Heston posterior (kappa = 2 fixed, prior box of configs/tasks/calibration_heston_bank.json) on the SPY smile of 21 Oct 2026, random-walk Metropolis with the Fourier likelihood, 4 chains of 3,000 steps after 1,500-step pilots, 500 burn-in. Not an accepted study result; to be redone as study S8-H through tutorial_final/studies/.",
- "script": "scripts/curriculum/heston_spy_exact.py"
+  "spy_source": "docs/design/calibration-design-document.md, S8 table: replication from the whole chain, strikes down to delta = -8"
+ }
 }

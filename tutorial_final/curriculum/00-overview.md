@@ -25,7 +25,7 @@ The folder replaces `CURRICULUM.md` (revision 1, same day) and, where they diffe
 2. **Heston** in slot 4: four parameters, an exact likelihood by Fourier integral, so the network can be checked against the exact posterior. It fits SPY, but only with extreme parameters.
 3. **Rough Bergomi** in slot 5: three parameters and the market's forward-variance curve, priced only by Monte Carlo, so the exact posterior costs at least 17 CPU-hours and the network is checked by an audit of each smile.
 
-Slots 2 and 3 explain the machine between them. Slot 6 changes what the answer depends on: the prior, the noise model and the model.
+Slots 2 and 3 explain the machine between them. Slot 6 changes the prior and the noise model, and tests the model.
 
 **What changed from revision 1, and why.**
 
@@ -34,7 +34,7 @@ Slots 2 and 3 explain the machine between them. Slot 6 changes what the answer d
 - **Slot 1 is rewritten slide by slide**, with one line of argument: what a desk does, an example of the problem, what the rules ask for, the posterior in one live example, why richer models make it expensive, and the way around.
 - **Slots 2, 3 and 6 have proposals**, each built on the same smile, for Alex's and Stefan's review.
 
-**A feasibility run supports the new slot 4.** The exact Heston posterior on SPY (κ = 2 fixed, the bank's prior box) was computed on 23 October: four chains, 404 CPU-seconds. It is unimodal, well inside the prior box, and tight: $\sigma_v$ = 1.14 ± 0.04 and $\rho$ = −0.63 ± 0.02. Its Feller ratio is never below 3.9. It prices variance swaps 0.6 to 1.7 volatility points below SPY's from two weeks to one year, with 90% bands about half a point wide. This gives slot 4 a real-data ending and slot 5 its reason to change model. Details are in the slot 4 file; the run is redone as study S8-H before its numbers go on screen.
+**A feasibility run supports the new slot 4.** The exact Heston posterior on SPY ($\kappa$ = 2 fixed, the bank's prior box) was computed on 23 October in 531 CPU-seconds. Seven of eight optimizer starts spread over the prior box reach the same optimum, and four chains from overdispersed starts agree ($\hat R \le 1.007$). The posterior is tight: $\sigma_v$ = 1.14 ± 0.04 and $\rho$ = −0.63 ± 0.02. No draw satisfies the Feller condition: the vol-of-vol is about twice its Feller limit. The posterior prices variance swaps 0.6 to 1.7 volatility points below SPY's replicated strikes from two weeks to one year, with 90% bands 0.3 to 0.6 points wide. This gives slot 4 a real-data ending and slot 5 its reason to change model. Details are in the slot 4 file; the run is redone as study S8-H before its numbers go on screen.
 
 **What has to happen now.**
 
@@ -98,7 +98,7 @@ flowchart LR
   S4 -->|"same smile and code, new simulator"| S5["5. Rough Bergomi on SPY<br/>Francesco and Alex, 40 min<br/>posterior, audit, reserve"]
   S5 -->|"every range is conditional"| S6["6. Priors and misspecification<br/>Stefan, 15 min"]
   S1 -.->|"the posterior is conditional on the model"| S6
-  S4 -.->|"Heston's variance swaps below the market"| S6
+  S4 -.->|"Heston's variance swaps below SPY's"| S6
 ```
 
 ## 4. Rules for every slot

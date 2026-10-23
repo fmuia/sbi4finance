@@ -12,7 +12,7 @@ Stefan · 20 minutes. A proposal for Stefan's review. Part of the [curriculum](0
 
 1. Heston is priced by a Fourier integral in 20 ms per smile, so the BayesFlow workflow can be built on it and its posterior compared with an exact Markov chain on the same smile.
 2. The network passes simulation-based calibration on 2,000 held-out smiles, comes close to the exact posterior smile by smile, and gives SPY's posterior in about 1.5 seconds.
-3. That posterior is precise and tells something about Heston itself: on SPY it needs a vol-of-vol of about 1.14, five times what the Feller condition allows, and it prices variance swaps 0.6 to 1.7 volatility points below the market, which is why slot 5 moves to rough Bergomi.
+3. That posterior is precise and tells something about Heston itself: on SPY it needs a vol-of-vol of about 1.14, twice its Feller limit, and it prices variance swaps 0.6 to 1.7 volatility points below SPY's replicated strikes, which is why slot 5 moves to rough Bergomi.
 
 ## Why Heston, and why here
 
@@ -22,7 +22,7 @@ Heston fits the role of the model with an exact answer:
 
 - every quant in the room has calibrated it;
 - its likelihood is exact, so its posterior can be computed by MCMC in minutes and compared with the network's;
-- it fits the SPY smile within the noise, so the example is real data, not a toy;
+- it fits the SPY smile with a root-mean-square residual of about one noise unit (Lecture 6, Section 6.10), under a noise that is loose in the wings, so the example is real data, not a toy;
 - its fit has visible defects, which motivate slot 5.
 
 The returns notebook moves to the take-home track (overview, §6).
@@ -33,10 +33,10 @@ The task is `configs/tasks/calibration_heston_bank.json` (`hkde_calibration_v1`,
 
 | | |
 | --- | --- |
-| Data | The 63 prices of the design grid: 7 maturities (5, 10, 21, 42, 63, 126 and 252 business days) × 9 strikes, in forward units |
+| Data | The 63 prices of the design grid, read from SPY's quotes: 7 maturities (5, 10, 21, 42, 63, 126 and 252 business days) × 9 moneyness points, in forward units |
 | Noise | Gaussian, the design's standard deviation per quote: a third of a volatility point at the money and a full point in the wings, at the reference volatility of 20% |
 | Unknowns | $v_0 \in [0.01, 0.16]$, $\theta \in [0.01, 0.16]$, $\sigma_v \in [0.1, 1.5]$, $\rho \in [-0.95, -0.1]$, uniform; $\kappa = 2$ fixed |
-| Pricer | The repository's Fourier pricer, about 20 ms per smile |
+| Pricer | The repository's Fourier pricer, about 20 ms per smile at one quadrature rung |
 | Bank | 50,000 training, 5,000 validation and 5,000 test smiles, generated in 46 CPU-minutes (S1) |
 | Network | `FlowMatching`, four dense layers of 256; parameters mapped to their bounds by the adapter; quotes standardized; fresh quote noise in every batch (`src/sbi4finance/calibration/inference.py`) |
 | Training | 500 epochs, 32 minutes on 4 cores (`checkpoints/heston/training.json`) |
@@ -46,30 +46,35 @@ The task is `configs/tasks/calibration_heston_bank.json` (`hkde_calibration_v1`,
 | Min | Step | On screen | Live or cached | What is said |
 | --- | --- | --- | --- | --- |
 | 0–2 | Heston and the question | The Heston equations in two lines; the four unknowns and their prior box; slot 1's question, now for Heston | slide | Heston adds a random variance correlated with the price. Four unknowns, a prior box a quant can judge, and the same 63 SPY quotes as slot 1. |
-| 2–5 | Step 1: simulator and prior | `prior()` and `smile(v0, theta, vol_of_vol, rho)` wrapped by `bf.make_simulator`; 200 smiles drawn from the prior, plotted as implied volatilities, with SPY's smile over them | live, about 4 s | BayesFlow needs only functions that draw. The prior predictive check comes first: SPY's smile must lie inside the cloud the prior produces, or the network would extrapolate. The exact posterior on SPY sits well inside the prior box, which says it does. |
+| 2–5 | Step 1: simulator and prior | `prior()` and `smile(v0, theta, vol_of_vol, rho)` wrapped by `bf.make_simulator`; 200 smiles drawn from the prior, plotted as implied volatilities, with SPY's smile over them | live, about 4 s | BayesFlow needs only functions that draw. The prior predictive check comes first: SPY's smile must lie inside the cloud the prior produces, or the network would extrapolate. Parameters inside the prior box reproduce SPY's smile to about one noise unit, so SPY lies within the prior's reach; the check itself is part of S8-H. |
 | 5–7 | Step 2: bank, adapter, network | The bank's manifest (50,000 smiles in 46 CPU-minutes); the adapter and network code from `inference.py`, twelve lines | code | The bank is simulated once. The adapter maps each parameter to its bounds and standardizes the quotes; the network is slot 3's flow matching. |
 | 7–9 | Step 3: train | `fit_offline` for about 15 epochs, with the loss falling on screen; then the 500-epoch checkpoint is loaded | live, about 1 minute, with the checkpoint as fallback | One epoch over 50,000 smiles takes about 4 seconds on 4 cores. The full network trained for 32 minutes. |
-| 9–13 | Step 4: check | (a) SBC, coverage, contraction and recovery on 2,000 held-out smiles; (b) the network's posterior against the exact posterior on one test smile, with the agreement table over 50 smiles | cached draws, plots drawn live | SBC passes for all four parameters, and the 95% intervals cover 93.5% to 95.2% of truths. Smile by smile, the network meets the agreement criterion for all four parameters on 80% of the 50 smiles, so it is close but not exact. With importance sampling on the exact likelihood, all four smiles checked agree with the chain. |
+| 9–13 | Step 4: check | (a) SBC, coverage, contraction and recovery on 2,000 held-out smiles; (b) the network's posterior against the exact-likelihood reference on one test smile, with the agreement table over 50 smiles (the reference is importance sampling with the exact likelihood on 46 smiles and MCMC on 4) | cached draws, plots drawn live | SBC passes for all four parameters, and the 95% intervals cover 93.5% to 95.2% of truths. Smile by smile, the network meets the agreement criterion for all four parameters on 80% of the 50 smiles, so it is close but not exact. With importance sampling on the exact likelihood, the four smiles with chains agree with them. |
 | 13–17 | Step 5: use on SPY | SPY's posterior from the network in one call, as pairs; the exact posterior beside it; 200 draws re-priced over SPY's quotes | live: network about 1.5 s, re-pricing about 4 s; exact chain cached | The network and the chain agree on SPY (⟨S8-H⟩). The posterior is tight: $\sigma_v$ = 1.14 ± 0.04, $\rho$ = −0.63 ± 0.02. The re-priced smiles cover the quotes. |
-| 17–19 | What the posterior says about Heston | The figure below: the posterior's variance-swap curve against SPY's; the Feller ratio | live (closed form over the draws) | Heston fits SPY only with a vol-of-vol five times what the Feller condition allows. Its variance-swap curve is tied to its smile parameters, and the posterior is confident about a curve that the market prices 0.6 to 1.7 points higher from two weeks to one year. Precise, and wrong for a product the smile does not pin down. |
+| 17–19 | What the posterior says about Heston | The figure below: the posterior's variance-swap curve against SPY's; the Feller ratio | live (closed form over the draws) | Heston fits SPY only with a vol-of-vol about twice its Feller limit: no posterior draw satisfies the Feller condition. Its variance-swap curve is tied to its smile parameters, and the posterior is confident about a curve that lies 0.6 to 1.7 points below SPY's replicated variance-swap strikes from two weeks to one year. Precise, and wrong for a product the smile does not pin down. |
 | 19–20 | To slot 5 | The handoff table below | slide | Slot 5 keeps the data and the code, and changes the simulator. |
 
 ![The exact Heston posterior's variance-swap curve on SPY against SPY's replicated curve](images/heston-spy-variance-swaps.png)
 
-How to read the figure: the grey band is the 90% interval of the variance-swap volatility under the exact Heston posterior on SPY, and the line its median. The red dots are SPY's variance-swap volatilities replicated from the whole chain, with strikes down to δ = −8, which the 63 quotes do not reach. The labels are the median minus the market, in volatility points. The band is 0.4 to 0.6 points wide; the gaps from two weeks to six months are 0.9 to 1.7 points.
+How to read the figure: the grey band is the 90% interval of the variance-swap volatility under the exact Heston posterior on SPY, and the line its median. The red dots are SPY's variance-swap volatilities replicated from the whole chain, with strikes down to δ = −8, which the 63 quotes do not reach. The labels are the median minus the market, in volatility points. The band is 0.3 to 0.6 points wide; the gaps from two weeks to six months are 0.9 to 1.7 points.
 
 ## Feasibility: the exact Heston posterior on SPY
 
-Run on 23 October 2026 to check that slot 4 works on real data (`scripts/curriculum/heston_spy_exact.py`, output in [data/heston-spy-exact.json](data/heston-spy-exact.json)). Random-walk Metropolis on the Fourier likelihood, four chains of 3,000 steps after 1,500-step pilots, 404 CPU-seconds in all.
+Run on 23 October 2026 to check that slot 4 works on real data (`scripts/curriculum/heston_spy_exact.py`; output and draws in [data/](data/heston-spy-exact.json)). The likelihood is the repository's Fourier likelihood at one quadrature rung, and the run took 531 CPU-seconds.
+
+- **Multi-start.** Nelder–Mead from 8 points drawn over the prior box: 7 reach the same optimum. The eighth stops at the prior's upper bound $\sigma_v = 1.5$ with a log-likelihood 29 lower, so it is not a competing calibration.
+- **Chains.** Four random-walk Metropolis chains of 4,000 steps, started at overdispersed points around the optimum, with the first 1,000 steps discarded. Split $\hat R$ is at most 1.007 and the bulk effective sample size is 670 to 1,210 per parameter.
 
 | | Posterior mean ± sd | 90% interval | In volatility |
 | --- | --- | --- | --- |
 | $v_0$ | 0.0182 ± 0.0004 | 0.0175 to 0.0188 | 13.5% |
-| $\theta$ | 0.0657 ± 0.0015 | 0.0633 to 0.0681 | 25.6% |
+| $\theta$ | 0.0657 ± 0.0015 | 0.0631 to 0.0681 | 25.6% |
 | $\sigma_v$ | 1.14 ± 0.04 | 1.07 to 1.21 | |
-| $\rho$ | −0.631 ± 0.021 | −0.667 to −0.597 | |
+| $\rho$ | −0.632 ± 0.022 | −0.668 to −0.597 | |
 
-The four chains agree to within 0.01 in each mean. The posterior is unimodal and well inside the prior box. The Feller ratio $\sigma_v^2 / (2\kappa\theta)$ has a median of 4.9. The posterior mean equals the least-squares fit with $\kappa = 2$ of Lecture 6, Section 6.10. This run is not an accepted study; it is redone as study S8-H through `tutorial_final/studies/` before its numbers go on screen.
+The posterior lies well inside the prior box. Its mean equals the least-squares fit with $\kappa = 2$ of Lecture 6, Section 6.10. The Feller ratio $\sigma_v^2 / (2\kappa\theta)$ ranges from 3.8 to 6.3 over the draws (median 5.0): no draw satisfies the Feller condition. Equivalently, the vol-of-vol is about twice its Feller limit $\sqrt{2\kappa\theta} \approx 0.51$.
+
+This run is not an accepted study. It is redone as study S8-H through `tutorial_final/studies/` before its numbers go on screen.
 
 ## The notebook, cell by cell
 
@@ -81,11 +86,11 @@ The four chains agree to within 0.01 in each mean. The posterior is unimodal and
 | Simulator | `prior()`, `smile(...)` with the Fourier pricer; `bf.make_simulator` | < 1 s | — |
 | Prior predictive | 200 prior smiles as implied volatilities, with SPY over them | about 4 s | cached figure |
 | Bank | Reads the bank's manifest; shows sizes and generation cost | < 1 s | — |
-| Workflow | `inference.build_workflow(task)`, shown in full | < 1 s | — |
+| Workflow | `inference.build_workflow(task, time_power_law_alpha=-0.5)`, the trained checkpoint's configuration, shown in full | < 1 s | — |
 | Train | 15 epochs on the bank with the loss plotted; then loads `checkpoints/heston/model.keras` | about 60 s | load the checkpoint directly |
 | Diagnostics | SBC, coverage, contraction and recovery from the cached S2 draws (`heston/s2/draws.npz`) | < 5 s | cached figures (`heston/s2/*.png`) |
 | Exact check | Network against exact chain on one S3 smile; the S3 agreement table | < 2 s | cached figure |
-| SPY | Network posterior for SPY; pairs plot with the exact chain's draws | about 1.5 s after a warm-up call | cached draws |
+| SPY | Network posterior for SPY through `inference.sample` (which sets the 100-step sampler); pairs plot with the exact chain's draws | about 1.5 s after a warm-up call | cached draws |
 | Re-pricing | 200 draws re-priced, as implied-volatility bands over SPY's quotes | about 4 s | cached figure |
 | What it says | Variance-swap curve over the draws (closed form) against SPY's; Feller ratio | < 1 s | — |
 | Handoff | The table below | — | — |
@@ -96,12 +101,10 @@ The network-loading cell runs once before the slot starts, because loading and c
 
 | Number | Source | Status |
 | --- | --- | --- |
-| Bank 60,000 smiles in 46 CPU-min | `heston/s1/bank-quality.json` (S1) | verified |
-| Training 500 epochs, 32 min on 4 cores | `checkpoints/heston/training.json` | verified |
-| SBC 4 of 4 parameters on 2,000 smiles; 95% coverage 93.5–95.2% | C7 | verified |
-| Contraction: $v_0$ 0.99, $\theta$ 0.99, $\sigma_v$ 0.95, $\rho$ 0.93 | `heston/s2/validation.json` | verified |
+| Bank 60,000 smiles in 46 CPU-min; training 500 epochs, 32 min on 4 cores; Fourier likelihood 20 ms at one rung | C8 | verified |
+| SBC 4 of 4 parameters on 2,000 smiles; 95% coverage 93.5–95.2%; contraction $v_0$ 0.99, $\theta$ 0.99, $\sigma_v$ 0.95, $\rho$ 0.93 | C7 | verified |
 | Network alone within the criterion on 80% of 50 smiles; with importance sampling, 4 of 4 | C5 | not met for the network alone: shown as such |
-| SPY: the exact posterior's numbers above; variance-swap gaps 0.9 to 1.7 points from two weeks to six months | feasibility run of 23 Oct | to redo as S8-H, then register |
+| SPY: the exact posterior's numbers above; the Feller ratio; variance-swap gaps 0.9 to 1.7 points from two weeks to six months | feasibility run of 23 Oct | to redo as S8-H, then register |
 | SPY: the network's posterior | ⟨S8-H⟩ | pending |
 
 ## What changes from the existing slot-4 notebook
@@ -118,13 +121,13 @@ The VOO notebook itself moves, edited, to the take-home track as `extras/returns
 
 | | Slot 4 | Slot 5 |
 | --- | --- | --- |
-| Data | The SPY smile, 63 quotes | The same |
+| Data | The SPY smile: 63 prices on the design grid | The same |
 | Model | Heston: 4 parameters, $\kappa$ fixed | Rough Bergomi: $H$, $\eta$, $\rho$, and the forward-variance curve $\xi_0$ as an input |
 | One smile priced by | A Fourier integral, 20 ms | Monte Carlo, 5 CPU-seconds |
 | The bank | 60,000 smiles in 46 CPU-minutes, on a laptop | 112,000 smiles in about 370 CPU-hours, on a cluster |
 | The network | Flow matching on the quotes | The same, with $\xi_0$ as an extra condition |
 | The final check | The exact posterior by MCMC | No exact posterior: an audit of each smile with a Monte Carlo likelihood |
-| What it shows on SPY | A fit with extreme parameters and variance swaps below the market | A skew that follows a power law, and variance swaps that match the market by construction |
+| What it shows on SPY | A fit with extreme parameters and variance swaps below SPY's | A skew that follows a power law, and variance swaps that match the market by construction |
 
 ## To build, by the freeze on Fri 30 Oct
 
