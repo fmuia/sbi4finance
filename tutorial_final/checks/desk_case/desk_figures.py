@@ -404,7 +404,7 @@ def key_numbers(data, scale=1.0):
     v = validation_summary(data, scale)
     if v is None:
         out["replicas"] = 0
-        out["validation_claim"] = "The reserves' coverage is tested on simulated thin chains (section 5, pending)."
+        out["validation_claim"] = "**The reserves' coverage is tested on simulated thin chains** (section 5, pending)."
     else:
         out["replicas"] = v["replicas"]
         prods = ("forward_start", "put_1y_80", "cliquet")
@@ -413,9 +413,26 @@ def key_numbers(data, scale=1.0):
             return 100 * np.mean([v["rates"][m][side][q] for side in ("long", "short") for q in prods])
 
         out["validation_rates"] = {m: mean_rate(m) for m in v["rates"]}
+        post = [100 * v["rates"]["posterior"][side][q] for side in ("long", "short") for q in prods]
+        gn_long = [100 * v["rates"]["gauss_newton"]["long"][q] for q in ("forward_start", "put_1y_80")]
+        gn_short = [100 * v["rates"]["gauss_newton"]["short"][q] for q in ("forward_start", "put_1y_80")]
+        prof_long = [100 * v["rates"]["profile"]["long"][q] for q in prods]
+        widths = {m: np.mean([data["validation"][b]["mean_interval_width_over_truth"][m]["forward_start"]
+                              for b in data["validation"] if data["validation"][b].get("truths") == "thin"
+                              and abs(data["validation"][b]["noise_scale"] - scale) < 1e-9])
+                  for m in ("posterior", "gauss_newton")}
+        out["validation"] = {"posterior_range": (min(post), max(post)), "posterior_mean": np.mean(post),
+                             "gn_long": (min(gn_long), max(gn_long)), "gn_short": (min(gn_short), max(gn_short)),
+                             "profile_long": (min(prof_long), max(prof_long)),
+                             "h_fixed_fs_long": 100 * v["rates"]["h_fixed"]["long"]["forward_start"],
+                             "h_fixed_put_long": 100 * v["rates"]["h_fixed"]["long"]["put_1y_80"],
+                             "narrower": 100 * (1 - widths["posterior"] / widths["gauss_newton"])}
+        x = out["validation"]
         out["validation_claim"] = (
-            f"On {v['replicas']} simulated thin chains, the posterior's 90% reserves are breached "
-            f"{out['validation_rates']['posterior']:.0f}% of the time, as they should be. Gauss–Newton's are breached "
-            f"{out['validation_rates']['gauss_newton']:.0f}% and fixed-H's {out['validation_rates']['h_fixed']:.0f}%, "
-            f"averaged over three products and both sides.")
+            f"**The posterior's reserves hold; the others do not.** On {v['replicas']} simulated thin chains, the "
+            f"posterior's 90% reserves are breached {x['posterior_range'][0]:.0f}% to {x['posterior_range'][1]:.0f}% "
+            f"of the time. Gauss–Newton's long reserves for the forward start and the put are breached "
+            f"{x['gn_long'][0]:.0f}% to {x['gn_long'][1]:.0f}% of the time, and its short ones "
+            f"{x['gn_short'][1]:.0f}%. With H fixed, the forward start's long reserve is breached "
+            f"{x['h_fixed_fs_long']:.0f}% of the time.")
     return out

@@ -50,7 +50,7 @@ def _(key, mo):
        {key['fs']['posterior'][0]:.0f}% of the mark (long) and {key['fs']['posterior'][1]:.0f}% (short) under the
        posterior. The delta method gives {key['fs']['delta'][0]:.0f}% on both sides. Fixing $H$ at 0.10, as desks
        do, gives {key['fs']['h_fixed_delta'][0]:.0f}%.
-    3. **{key['validation_claim']}**
+    3. {key['validation_claim']}
 
     One caveat comes with the real data. The full SPY surface prices the forward start
     {key['full_gap']:.0f}% above the front-month mark, outside every range above. That gap is model error, not
@@ -216,8 +216,11 @@ def _(F, data, mo, noise):
     - **The delta method is symmetric; the posterior is not.** The 80% put's posterior reserve is
       {_k['put']['posterior'][0]:.0f}% long and {_k['put']['posterior'][1]:.0f}% short. The delta method gives
       {_k['put']['delta'][0]:.0f}% on both sides.
-    - **The profile likelihood is the closest frequentist answer.** It also reads the ridge. But it is a range, not a
-      probability. Its width depends on the threshold, and it has no coverage statement.
+    - **The profile likelihood comes closest in size.** It also reads the ridge. But it is a range, not a probability.
+      Its width depends on the threshold, and section 5 shows that its long reserves are breached too often.
+
+    The autocallable's reserve is below 0.1% of notional for every method. With the forward-variance curve given, its
+    value hardly depends on $H$, $\eta$ or $\rho$.
     """)
     return
 
@@ -238,6 +241,30 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(F, data, mo):
     F.validation_view(data, mo)
+    return
+
+
+@app.cell(hide_code=True)
+def _(key, mo):
+    _v = key.get("validation")
+    mo.stop(_v is None)
+    mo.md(rf"""
+    What the breach rates say:
+
+    - **The posterior's reserves hold.** They are breached {_v['posterior_range'][0]:.0f}% to
+      {_v['posterior_range'][1]:.0f}% of the time, {_v['posterior_mean']:.0f}% on average, so they are slightly
+      conservative here. For the forward start its interval is also {_v['narrower']:.0f}% narrower than Gauss–Newton's.
+    - **Gauss–Newton is right on average and wrong on each side.** Its long reserves for the forward start and the put
+      are breached {_v['gn_long'][0]:.0f}% to {_v['gn_long'][1]:.0f}% of the time. Its short reserves are breached
+      {_v['gn_short'][1]:.0f}% of the time. The delta method is symmetric, and the uncertainty is not.
+    - **The profile likelihood under-reserves too.** Its long reserves are breached {_v['profile_long'][1]:.0f}% of
+      the time.
+    - **Fixing $H$ fails outright.** The forward start's long reserve is breached {_v['h_fixed_fs_long']:.0f}% of the
+      time, and the put's {_v['h_fixed_put_long']:.0f}%.
+
+    The true parameters here come from the front-month posterior. So the test asks a desk's question: for the markets
+    the desk cannot tell apart from this one, which reserve holds? It is not a guarantee for every market.
+    """)
     return
 
 
