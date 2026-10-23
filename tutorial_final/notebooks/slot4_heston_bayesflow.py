@@ -1,10 +1,7 @@
 import marimo
 
 __generated_with = "0.25.2"
-app = marimo.App(
-    width="medium",
-    app_title="Slot 4 · Heston on the SPY smile, in BayesFlow",
-)
+app = marimo.App(width="medium", app_title="Slot 4 · Heston in BayesFlow")
 
 
 @app.cell(hide_code=True)
@@ -25,9 +22,11 @@ def _():
     RESULTS = ROOT / "results" / "calibration"
     CHECKPOINTS = ROOT / "checkpoints"
     CURRICULUM = ROOT / "curriculum"
+    CHECKS = ROOT / "checks"
     plots.style()
     return (
         CHECKPOINTS,
+        CHECKS,
         CURRICULUM,
         RESULTS,
         bf,
@@ -49,19 +48,22 @@ def _(mo):
 
     **The whole amortized workflow, on a model whose exact posterior can check every step**
 
-    Slot 1 asked how sure a calibration is, and answered it for Black–Scholes on a grid. Black–Scholes
-    cannot fit the smile, so desks use a model that can. This notebook calibrates **Heston** to the same
-    63 SPY prices with BayesFlow, step by step. Heston is priced by a Fourier integral in 20 ms, so its
-    exact posterior can be computed by MCMC and every step of the network can be compared with it.
+    Slot 1 showed why a desk wants the posterior, and that on a liquid surface the classical interval
+    should agree with it. Black–Scholes cannot fit the smile, so desks use a model that can. This notebook
+    calibrates **Heston** to the same 63 SPY prices with BayesFlow, step by step. Heston is priced by a
+    Fourier integral in 20 ms, so its exact posterior can be computed by MCMC and every step of the network
+    can be compared with it. That is what makes Heston the right first example: the answer is known.
 
     Three claims, each backed by evidence below:
 
     1. **The BayesFlow workflow is a few objects**: a simulator, an adapter, a network, a training call,
        diagnostics. Five calls take a prior and a pricer to a posterior.
     2. **The checks earn the trust.** The network passes simulation-based calibration on 2,000 held-out
-       smiles and, on SPY, agrees with the exact posterior.
+       smiles. On SPY it agrees with the exact posterior, and both agree with the Gauss–Newton interval, as
+       they should on a liquid surface.
     3. **The posterior also judges the model.** On SPY, Heston needs a vol-of-vol about twice its Feller
-       limit, and it prices variance swaps below the market. That is why slot 5 changes the model.
+       limit, prices variance swaps below the market, and prefers a mean reversion other than the fixed
+       one. That is why slot 5 changes the model.
     """)
     return
 
@@ -295,9 +297,9 @@ def _(
 
 
 @app.cell
-def _(CHECKPOINTS, teaching):
+def _(CHECKPOINTS, mo, teaching):
     _task, heston_workflow = teaching.load_network(CHECKPOINTS / "heston")
-    heston_workflow  # the network trained before the session, 500 epochs on 50,000 smiles
+    mo.md("Loaded the network trained before the session: 500 epochs on 50,000 smiles.")
     return (heston_workflow,)
 
 
@@ -429,6 +431,40 @@ def _(NAMES, exact_spy, mo, network_seconds, network_spy, teaching):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
+    **And the desk's route?** Least squares from several starts, with the Gauss–Newton interval at the
+    optimum, on the same smile. On a liquid surface it should agree with the posterior, because the
+    likelihood of 63 informative quotes is close to Gaussian in the parameters (slot 1, section 3).
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(CHECKS, NAMES, exact_spy, mo, network_spy, np, teaching):
+    heston_checks = teaching.load_json(CHECKS / "heston_checks.json")
+    _gn = heston_checks["cases"]["full grid, kappa fixed"]["parameters"]
+    _rows = []
+    for _j, _name in enumerate(NAMES):
+        _e = np.quantile(exact_spy[:, _j], [0.05, 0.95])
+        _n = np.quantile(network_spy[:, _j], [0.05, 0.95])
+        _g = _gn[_name]["gauss_newton_90"]
+        _rows.append({"parameter": teaching.LABELS[_name], "exact posterior, 90%": f"{_e[0]:.4f} to {_e[1]:.4f}",
+                      "network, 90%": f"{_n[0]:.4f} to {_n[1]:.4f}", "Gauss–Newton, 90%": f"{_g[0]:.4f} to {_g[1]:.4f}",
+                      "Gauss–Newton width / exact": round((_g[1] - _g[0]) / (_e[1] - _e[0]), 2)})
+    mo.vstack([
+        mo.ui.table(_rows, selection=None, pagination=False),
+        mo.md("""
+        Three routes, one answer. Here the network's value is not a different interval: it is the same interval
+        for any smile in a second, with a check of its own calibration (SBC above). Where the answers part, with
+        few quotes or inputs the quotes do not pin, is slot 1's first case and slot 5's long end.
+        *Source of the Gauss–Newton column:* `tutorial_final/checks/heston_checks.py`.
+        """),
+    ])
+    return (heston_checks,)
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
     **Does the posterior fit the quotes?** Re-price 200 posterior draws and compare them with SPY's prices:
     the posterior predictive check.
     """)
@@ -480,7 +516,7 @@ def _(mo):
     mo.md(r"""
     ## 6 · What the posterior says about Heston
 
-    The posterior is precise. Two of its consequences are not what the market says.
+    The posterior is precise. Three of its consequences deserve a desk's attention.
     """)
     return
 
@@ -539,6 +575,51 @@ def _(
 
 
 @app.cell(hide_code=True)
+def _(heston_checks, mo, np, plots, plt):
+    _free = heston_checks["cases"]["full grid, kappa free"]
+    _fixed = heston_checks["cases"]["full grid, kappa fixed"]
+    _kq = _free["parameters"]["kappa"]["posterior_q05_q50_q95"]
+    _profile = heston_checks["kappa_profile"]
+    _kap = np.array([p["kappa"] for p in _profile])
+    _chi2 = np.array([p["chi2"] for p in _profile])
+    _names = {"variance_swap": "63-day variance swap", "volatility_swap": "63-day volatility swap",
+              "forward_start_call": "forward start, 3 to 6 months", "put_out_of_grid": "2-year 90% put"}
+    _shift_rows = []
+    for _p, _label in _names.items():
+        _a = _fixed["products"][_p]["posterior_q05_q50_q95"]
+        _b = _free["products"][_p]["posterior_q05_q50_q95"]
+        _shift_rows.append({"product": _label, "κ = 2: median and 90% range": f"{_a[1]:.4f} ({_a[0]:.4f} to {_a[2]:.4f})",
+                            "κ free: median and 90% range": f"{_b[1]:.4f} ({_b[0]:.4f} to {_b[2]:.4f})",
+                            "shift of the median": f"{100 * (_b[1] / _a[1] - 1):+.1f}%",
+                            "ranges overlap": "yes" if (_b[0] <= _a[2] and _a[0] <= _b[2]) else "no"})
+    _fig, _ax = plt.subplots(figsize=(6.6, 3.2), constrained_layout=True)
+    _ax.plot(_kap, _chi2, "o-", color=plots.INK)
+    _ax.axvspan(_kq[0], _kq[2], color=plots.SERIES[0], alpha=0.25, label="posterior of κ, 90%")
+    _ax.axvline(2.0, color=plots.SERIES[1], linestyle="--", label="κ fixed in slot 4")
+    _ax.set_xscale("log")
+    _ax.set_xticks(_kap, [f"{k:g}" for k in _kap])
+    _ax.minorticks_off()
+    _ax.set_xlabel("mean reversion κ (fixed in each least-squares fit)")
+    _ax.set_ylabel("χ² on 63 quotes")
+    _ax.legend(fontsize=8)
+    _ax.set_title("the smile's verdict on κ", loc="left")
+    mo.vstack([
+        mo.md(f"""
+        **κ = 2 is a choice, and the smile disagrees with it.** Freed, the mean reversion is pinned by the
+        smile: the exact posterior puts it at **{_kq[1]:.1f}**, from {_kq[0]:.1f} to {_kq[2]:.1f} (90%), and the fit
+        improves from χ² {_fixed['best_chi2']:.1f} to {_free['best_chi2']:.1f} on 63 quotes. Fixing a parameter is a
+        prior of zero width: the posterior above is conditional on it, and so is every product price.
+        """),
+        _fig,
+        mo.ui.table(_shift_rows, selection=None, pagination=False),
+        mo.md("Product prices in forward units, under the exact posteriors with κ fixed and free "
+              "(`tutorial_final/checks/heston_checks.py`). The training bank of this notebook keeps κ = 2; a bank "
+              "with κ free is one line in the task's prior."),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
     ## Takeaways
@@ -547,8 +628,11 @@ def _(mo):
        training call, and diagnostics.
     2. **Check before you trust.** SBC on 2,000 smiles passes; smile by smile the network is close to the
        exact posterior, and on SPY it agrees with it.
-    3. **The posterior judges the model.** Heston fits SPY only with a vol-of-vol twice its Feller limit,
-       and its variance swaps disagree with the market.
+    3. **On a liquid surface, three routes agree**: the network, the exact posterior and the Gauss–Newton
+       interval. The network's value here is speed and a calibration check, not a different answer.
+    4. **The posterior judges the model.** Heston fits SPY only with a vol-of-vol twice its Feller limit,
+       its variance swaps disagree with the market, and the smile prefers a mean reversion near 3.8 to the
+       fixed 2.
 
     **Next, slot 5:** keep the data and the code, change the simulator.
 
@@ -562,7 +646,7 @@ def _(mo):
 
     *Evidence and code:* the [curriculum](../curriculum/04-slot4-heston-in-bayesflow.md); studies S1–S3
     in `results/calibration/heston/`; the exact SPY posterior in `curriculum/data/` (a feasibility run, to be
-    redone as study S8-H).
+    redone as study S8-H); the Gauss–Newton and κ checks in `checks/` (quick checks, not yet accepted studies).
     """)
     return
 

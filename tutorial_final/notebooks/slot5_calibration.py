@@ -3,13 +3,14 @@ import marimo
 __generated_with = "0.25.2"
 app = marimo.App(
     width="medium",
-    app_title="Slot 5 · Rough Bergomi on the SPY smile",
+    app_title="Slot 5 · Rough Bergomi to a reserve",
 )
 
 
 @app.cell(hide_code=True)
 def _():
     import os
+    import sys
     import time
 
     os.environ.setdefault("KERAS_BACKEND", "jax")
@@ -24,6 +25,10 @@ def _():
     RESULTS = ROOT / "results" / "calibration"
     CHECKPOINTS = ROOT / "checkpoints"
     CURRICULUM = ROOT / "curriculum"
+    CHECKS = ROOT / "checks"
+    sys.path.insert(0, str(CHECKS / "long_end"))
+    import long_end  # noqa: E402  (the long-end check: tutorial_final/checks/long_end/long_end.py)
+
     plots.style()
 
 
@@ -43,9 +48,11 @@ def _():
 
     return (
         CHECKPOINTS,
+        CHECKS,
         CURRICULUM,
         RESULTS,
         image,
+        long_end,
         mo,
         np,
         pending,
@@ -62,23 +69,27 @@ def _(mo):
     mo.md(r"""
     # Slot 5 · Rough Bergomi on the SPY smile: from the posterior to a reserve
 
-    **The smile fits many calibrations. Which price do you mark?**
+    **A long-dated mark rests on inputs no quote pins. The posterior prices them; amortization makes it affordable.**
 
     Slot 4 calibrated Heston to the SPY smile and checked every step against the exact posterior. The
     posterior was precise, and it said Heston fits SPY only with a vol-of-vol about twice its Feller limit
     and variance swaps below the market. This notebook keeps the smile and the code and changes the model
-    to one built for index smiles, **rough Bergomi**. That change removes the exact posterior, and it is
-    where amortized inference pays.
+    to one built for index smiles, **rough Bergomi**, the kind of forward-variance model equity desks use
+    for long-dated exotics. That change removes the exact posterior, and it is where amortized inference
+    pays.
 
     Three claims, each backed by evidence below:
 
     1. **Rough Bergomi is priced only by Monte Carlo**, so its exact posterior costs at least 17 CPU-hours
-       per smile.
-    2. **The amortized posterior takes 1.4 seconds**, and without an exact answer it is checked three ways:
-       simulation-based calibration, a second method, and an audit of each smile.
-    3. **Under the posterior, the products the smile does not quote carry a range**, and the forward-start's
-       90% quantile against the least-squares mark is the reserve the rules ask for. The range is
-       conditional on the prior, the noise model, the forward-variance curve and the model.
+       per smile. The amortized posterior takes 1.4 seconds, and without an exact answer it is checked three
+       ways: simulation-based calibration, a second method, and an audit of each smile.
+    2. **On SPY's full surface the smile pins $H$, $\eta$ and $\rho$**, even with the forward-variance curve
+       uncertain. There the Gauss–Newton interval is a good approximation, and the posterior's value is speed
+       and a coverage check.
+    3. **Long-dated products depend on the forward-variance curve beyond the last quote.** Held flat, as
+       desks hold it, the curve gives a 3-year variance swap no range at all. With a stated prior and the
+       long-dated quotes as data, the posterior gives it a 90% range of about a quarter of its price, and
+       gives a 5-year put three times the desk's range. That gap is a reserve nobody reports.
     """)
     return
 
@@ -119,7 +130,7 @@ def _(mo):
     | The bank | 60,000 smiles in 46 CPU-minutes | 112,000 smiles in about 370 CPU-hours, on a cluster |
     | The network | flow matching on the prices | the same, with $\xi_0$ as an extra condition |
     | Is it right? | the exact posterior by MCMC | SBC, a second method, and an audit of each smile |
-    | The number at the end | a posterior, and what it says about Heston | a price range and a reserve |
+    | The number at the end | a posterior, and what it says about Heston | a price range and a reserve, out to the long end |
     """)
     return
 
@@ -146,8 +157,10 @@ def _(mo):
         #### 2 · What the smile identifies
 
         The short skew sets the product $\rho\eta$. The skew's term structure sets $H$. $\eta$ is separated
-        from $\rho$ mainly by the long-dated at-the-money level measured against $\xi_0$, so that separation
-        is only as good as $\xi_0$, which the posterior treats as exact.
+        from $\rho$ by the curvature of the wings and by the long-dated at-the-money level measured against
+        $\xi_0$. On SPY the wings suffice: with each level of $\xi_0$ 20% uncertain, $\eta$'s local 90%
+        interval stays within a tenth of its prior range (section 6). The network takes $\xi_0$ as given up
+        to one year; beyond the last quote it is an assumption (section 8).
 
         #### 3 · The likelihood
 
@@ -166,10 +179,11 @@ def _(mo):
     ## 1 · The desk's question
 
     SPY on 21 October 2026: the 63 prices of slots 1 and 4, read from the chain onto the design grid. A
-    desk marks products the smile does not quote: a forward-start call (one period of a cliquet) and a
-    volatility swap. Least squares gives one parameter vector and one mark. The rules ask for the range
+    desk marks products the smile does not quote: a forward-start call (one period of a cliquet), a
+    volatility swap, and long-dated exotics such as autocallables and cliquets that run for years past the
+    last liquid quote. Least squares gives one parameter vector and one mark. The rules ask for the range
     and a 90% point in it: Regulation (EU) 2016/101, Art. 9 for the calibrated parameters and Art. 11 for
-    the choice of model.
+    the choice of model, and IFRS 13 for the sensitivity of marks that rest on unobservable inputs.
     """)
     return
 
@@ -204,7 +218,7 @@ def _(CHECKPOINTS, CURRICULUM, RESULTS, np, surface, teaching):
     _heston_iv = teaching.implied_vol_grid(teaching.heston_smile(_heston_task, _heston_mean))
     heston_skew = np.abs(surface.smile_statistics(_heston_iv, _k, _maturity)[2])
     skew_days = np.asarray(surface.DESIGN_DAYS)
-    return heston_skew, power_law, skew_days, spy_skew
+    return heston_skew, power_law, skew_days, spy, spy_skew
 
 
 @app.cell(hide_code=True)
@@ -402,11 +416,44 @@ def _(mo):
 
     The desk's tool is weighted least squares from several starting points, with an interval from the
     Gauss–Newton approximation $(J^\top W J)^{-1}$. On Heston that interval covers the truth as often as the
-    posterior does: it is the honest baseline, and good where the objective is close to a quadratic. What
-    the posterior adds is the shape where the objective is not quadratic (near $\rho = -1$, at small $H$), a
-    coverage statement tested on thousands of smiles, and prices for any product from the same draws without
-    the product's gradient.
+    posterior does (slot 1, section 3). For rough Bergomi on SPY, the local analysis below is the same
+    approximation at SPY's least-squares fit, with Monte Carlo derivatives: the 63 quotes pin every
+    parameter, and they still do when each level of $\xi_0$ is 20% uncertain. The quotes stop pinning the
+    parameters only when they are few: on 15 quotes, $\rho$'s interval runs past the bound. On the full
+    surface, then, the posterior's value is speed and a coverage check, not a different interval; it
+    differs where the quotes are thin, and for the inputs they do not reach (section 8).
     """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(CHECKS, mo, np, plots, plt, teaching):
+    _r = teaching.load_json(CHECKS / "rough_checks.json")
+    _width = np.diff(np.asarray(_r["prior_bounds"]), axis=1)[:, 0]
+    _sets = list(dict.fromkeys(s["quotes"] for s in _r["scenarios"]))
+    _fig, _axes = plt.subplots(1, 3, figsize=(11.6, 3.2), constrained_layout=True, sharey=True)
+    for _k, _q in enumerate(_sets):
+        _rows = [s for s in _r["scenarios"] if s["quotes"] == _q]
+        _x = [100 * s["xi0_log_sd"] for s in _rows]
+        for _i, _name in enumerate(["H", "η", "ρ"]):
+            _axes[_i].plot(_x, [2 * 1.645 * s["seed1"]["sd"][_i] / _width[_i] for s in _rows], marker="o",
+                           color=plots.SERIES[_k], label=_q)
+    for _i, _name in enumerate(["H", "η", "ρ"]):
+        _axes[_i].axhline(1.0, color=plots.INK, linestyle="--", linewidth=0.8)
+        _axes[_i].set_title(f"{_name}: local 90% interval / prior range", loc="left", fontsize=9)
+        _axes[_i].set_xlabel("uncertainty of each ξ0 level (% sd)")
+    _axes[0].set_ylim(0, 1.2)
+    _axes[0].legend(fontsize=7, loc="upper left")
+    _b = _r["best"]["theta"]
+    mo.vstack([
+        _fig,
+        mo.md(f"""
+        Rough Bergomi at SPY's least-squares fit ($H$ = {_b[0]:.3f}, $\\eta$ = {_b[1]:.2f}, $\\rho$ = {_b[2]:.2f};
+        four starts reach the same optimum, χ² {_r['best']['chi2']:.0f} on 63 quotes). The dashed line is an
+        interval as wide as the prior box. Local only: it shows where a direction is weak, not the posterior's
+        shape. *Source:* `tutorial_final/checks/rough_checks.py`, a quick check.
+        """),
+    ])
     return
 
 
@@ -518,7 +565,168 @@ def _(
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## 8 · Heston against rough Bergomi on the same smile
+    ## 8 · The long end: where the reserve comes from
+
+    Long-dated exotics run past the last quote. An autocallable observes the index every year for three
+    years; a cliquet sums capped annual returns; a five-year put depends on the whole variance path. Under
+    rough Bergomi their prices depend on $(H, \eta, \rho)$ and on the forward-variance curve $\xi_0$ over
+    their life. SPY's quotes pin $\xi_0$ to one year. Four LEAP expirations, from 1.2 to 2.2 years, give its
+    replicated variance with a wider error. Beyond 2.2 years nothing is quoted.
+
+    A desk holds $\xi_0$ flat beyond the last liquid maturity and reports the range from the calibrated
+    parameters alone. The posterior treats the curve beyond one year as unknown: a random walk in
+    $\log \xi_0$ from the one-year level, flat on average (the desk's assumption) with a stated width per
+    square root of a year, updated by the LEAPs, and propagated with $(H, \eta, \rho)$ through the Monte
+    Carlo pricer. The products: a 3-year autocallable (annual calls at 100%, an 8% coupon a year, a 60%
+    barrier at maturity), a 3-year cliquet (annual returns capped at 8% and floored at 0), a forward start
+    from 2 to 3 years, a 5-year 80% put and a 3-year variance swap.
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    long_prior = mo.ui.slider(0.05, 0.40, step=0.05, value=0.20, label="prior width beyond the data (sd of log ξ0 per √year)",
+                              show_value=True)
+    long_noise = mo.ui.slider(0.25, 1.50, step=0.25, value=0.50, label="LEAP variance-swap noise (vol points)", show_value=True)
+    mo.hstack([long_prior, long_noise], justify="start")
+    return long_noise, long_prior
+
+
+@app.cell
+def _(CHECKS, long_end, long_noise, long_prior, np, teaching):
+    long_report = teaching.load_json(CHECKS / "long_end" / "long_end.json")
+    long_extra = teaching.load_json(CHECKS / "long_end" / "long_end_extra.json")
+    long_desk, long_post, long_shares, _ = long_end.ranges(long_report, long_prior.value, long_noise.value / 100)
+    long_mean, long_cov = long_end.posterior(np.log(np.asarray(long_report["xi_flat"])), long_prior.value,
+                                             long_noise.value / 100)
+    return (
+        long_cov,
+        long_desk,
+        long_extra,
+        long_mean,
+        long_post,
+        long_report,
+        long_shares,
+    )
+
+
+@app.cell(hide_code=True)
+def _(
+    long_cov,
+    long_desk,
+    long_end,
+    long_extra,
+    long_mean,
+    long_noise,
+    long_post,
+    long_report,
+    long_shares,
+    mo,
+    np,
+    plots,
+    plt,
+    spy,
+):
+    _tt = np.linspace(0.02, 5.0, 200)
+    _knots = long_end.KNOTS
+    _overlap = np.array([[long_end.overlap(t, _knots[j], _knots[j + 1]) for j in range(len(_knots) - 1)] for t in _tt])
+    _draws = np.random.default_rng(1).multivariate_normal(long_mean[3:], long_cov[3:, 3:], 400)
+    _curves = 100 * np.sqrt((np.exp(_draws) @ _overlap.T) / _tt)
+    _lo, _hi = np.quantile(_curves, [0.05, 0.95], axis=0)
+    _flat = 100 * np.sqrt((np.asarray(long_report["xi_flat"]) @ _overlap.T) / _tt)
+    _fig, (_a, _b, _c) = plt.subplots(1, 3, figsize=(13.0, 4.0), constrained_layout=True,
+                                      gridspec_kw={"width_ratios": [1.35, 1.25, 1.0]})
+    _a.fill_between(_tt, _lo, _hi, color=plots.SERIES[0], alpha=0.2, label="rough Bergomi posterior, 90%")
+    _a.plot(_tt, _flat, color=plots.INK, linestyle="--", linewidth=1.2, label="desk: flat beyond one year")
+    _T = np.asarray(long_extra["T"])
+    _hq = np.asarray(long_extra["heston_kappa_free_vs_vol_q"])
+    _a.fill_between(_T, _hq[0], _hq[2], color=plots.SERIES[1], alpha=0.35, label="Heston posterior (fitted to ≤ 1 year), 90%")
+    _days = np.asarray(spy["design"]["days"]) / 252
+    _wd = np.asarray(spy["diagnostics"]["design_total_variance"])
+    _a.plot(_days, 100 * np.sqrt(_wd / _days), "o", color=plots.INK, markersize=3.5, label="SPY replicated, to one year")
+    _lt = np.array([t for t, _ in long_end.LEAPS])
+    _lv = np.array([100 * np.sqrt(w / t) for t, w in long_end.LEAPS])
+    _a.errorbar(_lt, _lv, yerr=1.645 * long_noise.value, fmt="s", color=plots.SERIES[2], markersize=4, capsize=3,
+                label="SPY replicated LEAPs, 90% noise")
+    _a.axvspan(_lt.max(), 5.0, color=plots.BASELINE, alpha=0.12)
+    _a.set_ylim(12, 28)
+    _a.set_xlabel("maturity (years)")
+    _a.set_ylabel("variance-swap volatility (%)")
+    _a.set_title("SPY's variance term structure; shaded: no quotes", loc="left", fontsize=9)
+    _a.legend(fontsize=6.3, loc="lower right")
+    _names = ["autocallable 3y", "cliquet 3y", "forward start 2y→3y", "put 5y 80%", "variance swap 3y"]
+    _x = np.arange(len(_names))
+    _scale = np.array([10.0, 1, 1, 1, 1])
+    _b.bar(_x - 0.2, 100 * long_desk * _scale, 0.38, color=plots.BASELINE, label="desk: H, η, ρ only, ξ0 flat")
+    _b.bar(_x + 0.2, 100 * long_post * _scale, 0.38, color=plots.SERIES[0], label="posterior: all inputs")
+    _b.set_xticks(_x, [n.replace(" ", "\n", 1) for n in _names], fontsize=7)
+    _b.set_ylabel("90% range, % of price (autocallable: bp of notional ÷ 10)")
+    _b.set_title("the 90% range of each product", loc="left", fontsize=9)
+    _b.legend(fontsize=7, loc="upper left")
+    _bottom = np.zeros(len(_names))
+    for (_g, _sh), _col in zip(long_shares.items(), [plots.SERIES[0], plots.SERIES[2], plots.INK]):
+        _c.bar(_x, 100 * _sh, 0.6, bottom=_bottom, color=_col, alpha=0.85, label=_g)
+        _bottom += 100 * _sh
+    _c.set_xticks(_x, [n.split(" ")[0] for n in _names], fontsize=7, rotation=20)
+    _c.set_ylim(0, 135)
+    _c.set_ylabel("share of the posterior variance (%)")
+    _c.set_title("where the range comes from", loc="left", fontsize=9)
+    _c.legend(fontsize=6.3, loc="upper left")
+    _rows = []
+    for _j, _n in enumerate(_names):
+        _fmt = (lambda v: f"{1e4 * v:.0f} bp of notional") if _j == 0 else (lambda v: f"{100 * v:.0f}%")
+        _rows.append({"product": _n, "desk 90% range": _fmt(long_desk[_j]), "posterior 90% range": _fmt(long_post[_j]),
+                      **{f"share: {g}": f"{100 * s[_j]:.0f}%" for g, s in long_shares.items()}})
+    _gap = [_lv[i] - _hq[2][list(np.round(_T, 2)).index(round(t, 2))] for i, t in enumerate(_lt)]
+    _mc = np.asarray(long_report["range90_posterior_mc"]) / np.asarray(long_report["posterior_mc_quantiles"])[1]
+    _mc_text = ", ".join([f"{1e4 * _mc[0]:.0f} bp"] + [f"{100 * v:.0f}%" for v in _mc[1:]])
+    mo.vstack([
+        _fig,
+        mo.ui.table(_rows, selection=None, pagination=False),
+        mo.md(f"*Delta-method ranges, recomputed live from the stored Monte Carlo gradients. At the default settings "
+              f"(0.2 and 0.5), full Monte Carlo propagation through 400 posterior draws gives {_mc_text}.*"),
+        mo.md(f"""
+        **What this says.** For the products that live past the quotes (the forward start, the 5-year put, the
+        variance swap), the desk's range misses most of the uncertainty, and most of the posterior's comes
+        from the curve beyond 2.2 years: {100 * long_shares['ξ0 2.25 to 5 years (prior only)'][2]:.0f}%,
+        {100 * long_shares['ξ0 2.25 to 5 years (prior only)'][3]:.0f}% and
+        {100 * long_shares['ξ0 2.25 to 5 years (prior only)'][4]:.0f}% of the variance, from an input no quote
+        observes. For the autocallable and the cliquet, most comes from $(H, \\eta, \\rho)$ and the short end. The
+        prior's width matters, and the slider shows how much; the desk's implicit prior has width zero, which
+        no rule accepts for an unobservable input. The LEAPs also move the prices: under the posterior's inputs
+        the forward start, the put and the variance swap are 2–3% dearer than under the flat curve.
+
+        **Heston is confidently wrong at the long end.** Fitted to the first year, its posterior puts the four
+        LEAP variance-swap volatilities {min(_gap):.1f} to {max(_gap):.1f} points above the top of its 90% band: a
+        parametric curve makes the long end look known.
+        """),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    **Where amortized inference comes in.** Every number in this section needs the Monte Carlo pricer: the
+    surface's likelihood, and the products. The posterior over the 14 inputs ($H$, $\eta$, $\rho$ and eleven
+    levels of $\xi_0$) is what an amortized network returns in a second. This quick check used its Gaussian
+    (Laplace) approximation at the least-squares fit, which matched full Monte Carlo propagation through 400
+    posterior draws within 1–5%. The network makes the same computation routine, every morning and for every
+    index, and simulation-based calibration checks that its 90% is 90%. Where the posterior stops being
+    Gaussian, with sparse long-dated smiles instead of replicated variance swaps, or with a model whose
+    vol-of-vol term structure the vanilla smile cannot pin, the network is the only affordable route (not
+    tested here).
+
+    *Source:* `tutorial_final/checks/long_end/` (a quick check of 23 October 2026, not yet an accepted study).
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ## 9 · Heston against rough Bergomi on the same smile
 
     The posterior's range is the parameter part of model risk; the choice of model is the other part. Both
     models, calibrated to the same smile, price the forward-start differently, and the gap is judged smile
@@ -557,10 +765,11 @@ def _(RESULTS, image, mo, pending, pilot_banner, teaching):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## 9 · What the answer assumes, and what it takes on a desk
+    ## 10 · What the answer assumes, and what it takes on a desk
 
     The answer is conditional on four things: **the model**, **the prior**, **the quote-noise model**, and
-    **$\xi_0$**, read off the same smile and treated as exact. Each is a lever; slot 6 pulls them.
+    **$\xi_0$**, read off the same smile up to one year and treated as exact there, with its long end priced
+    as in section 8. Each is a lever; slot 6 pulls them.
 
     On a desk the chain is:
 
@@ -578,11 +787,14 @@ def _(mo):
     ## Takeaways
 
     1. **Rough Bergomi has no exact posterior worth computing every morning**: at least 17 CPU-hours per
-       smile.
-    2. **The amortized posterior takes seconds**, and the audit checks it smile by smile, at minutes.
-    3. **The products the smile does not quote carry a range**, and the forward-start's reserve is the
-       number the rules ask for.
-    4. **The range is conditional**, and the gap across models is judged smile by smile.
+       smile. The amortized posterior takes seconds, and the audit checks it smile by smile, at minutes.
+    2. **On SPY's full surface the classical interval is a good approximation**; the posterior differs where
+       the quotes are thin, and for the inputs they do not reach.
+    3. **Long-dated products rest on the curve beyond the quotes.** Held flat, it gives the desk a range of
+       0–10%; priced with a stated prior and the LEAPs, the posterior gives about a quarter to a third of the
+       price for the forward start, the 5-year put and the variance swap.
+    4. **The range is conditional on the model.** Heston's long end is confidently wrong, and the gap across
+       models is judged smile by smile.
 
     **Next, slot 6:** what changes when the prior or the model is wrong, and how to find out.
 
