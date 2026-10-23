@@ -1,0 +1,416 @@
+{
+ "proposals": 1024,
+ "components": [
+  467,
+  465,
+  92
+ ],
+ "max_se_over_sigma": 0.9826131651084912,
+ "cases": {
+  "A": {
+   "label": "15 quotes (3 maturities x 5 strikes), design noise",
+   "quotes": 15,
+   "noise_scale": 1.0,
+   "fit": {
+    "theta": [
+     0.0824854026953801,
+     2.8355468753694684,
+     -0.7861263919464015
+    ],
+    "chi2": 14.286378554781718
+   },
+   "gauss_newton_covariance": [
+    [
+     0.0007712498222637285,
+     -0.00335430109700832,
+     0.0034597950530931036
+    ],
+    [
+     -0.0033543010970083185,
+     0.018866743945192388,
+     -0.013838279594101974
+    ],
+    [
+     0.0034597950530931044,
+     -0.013838279594101983,
+     0.01730320381222496
+    ]
+   ],
+   "gaussian_mass_outside_box": {
+    "total": 0.06064999999999998,
+    "per_parameter_below": [
+     0.01135,
+     0.0,
+     0.0605
+    ],
+    "per_parameter_above": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "importance": {
+    "efficiency": 0.13447812200806594,
+    "ess": 137.70559693625952,
+    "max_weight": 0.013662773932686577,
+    "khat": -0.5498234458833954
+   },
+   "parameters": {
+    "hurst": {
+     "least_squares": 0.0824854026953801,
+     "gauss_newton_sd": 0.02777138495400848,
+     "gauss_newton_90": [
+      0.03680553942831371,
+      0.12816526596244648
+     ],
+     "gauss_newton_90_leaves_box": false,
+     "posterior_q05_q50_q95": [
+      0.060403389305212885,
+      0.08843602484441081,
+      0.12604998285897664
+     ],
+     "posterior_bootstrap_sd": [
+      0.001751211337122156,
+      0.0020691764629059404,
+      0.00613345877214043
+     ],
+     "truncated_gaussian_q05_q50_q95": [
+      0.04888226468287886,
+      0.08799000279603683,
+      0.13232431200500297
+     ],
+     "width_ratio_gn_over_posterior": 1.391690285640035,
+     "lower_ratio_gn_over_posterior": 2.0686457552555844,
+     "upper_ratio_gn_over_posterior": 1.0485551127894814
+    },
+    "eta": {
+     "least_squares": 2.8355468753694684,
+     "gauss_newton_sd": 0.13735626649407878,
+     "gauss_newton_90": [
+      2.60961592224217,
+      3.0614778284967668
+     ],
+     "gauss_newton_90_leaves_box": false,
+     "posterior_q05_q50_q95": [
+      2.684080596119866,
+      2.820767381095197,
+      2.9960075663939247
+     ],
+     "posterior_bootstrap_sd": [
+      0.007977894190211035,
+      0.007551964665039338,
+      0.01724279628326495
+     ],
+     "truncated_gaussian_q05_q50_q95": [
+      2.588014946947446,
+      2.8186871949430174,
+      3.0236659741960557
+     ],
+     "width_ratio_gn_over_posterior": 1.4486144172066673,
+     "lower_ratio_gn_over_posterior": 1.4916254247916487,
+     "upper_ratio_gn_over_posterior": 1.4080143347560647
+    },
+    "rho": {
+     "least_squares": -0.7861263919464015,
+     "gauss_newton_sd": 0.13154164288249162,
+     "gauss_newton_90": [
+      -1.0024931403368231,
+      -0.5697596435559799
+     ],
+     "gauss_newton_90_leaves_box": true,
+     "posterior_q05_q50_q95": [
+      -0.9314496037739336,
+      -0.7626964493133315,
+      -0.6638721517757502
+     ],
+     "posterior_bootstrap_sd": [
+      0.009891379873991043,
+      0.007368135849469707,
+      0.007864021287025475
+     ],
+     "truncated_gaussian_q05_q50_q95": [
+      -0.9396250724867915,
+      -0.7608108964647313,
+      -0.5483893770683121
+     ],
+     "width_ratio_gn_over_posterior": 1.6172270628534917,
+     "lower_ratio_gn_over_posterior": 1.4888657198631365,
+     "upper_ratio_gn_over_posterior": 1.769809767648151
+    }
+   },
+   "products": {
+    "variance_swap": {
+     "mark": 0.033846993359286794,
+     "reserve_long": {
+      "posterior": 0.0,
+      "truncated_gaussian": 0.0,
+      "delta": 0.0,
+      "posterior_bootstrap_sd": 0.0,
+      "gaussian_bootstrap_sd": 0.0
+     },
+     "reserve_short": {
+      "posterior": 0.0,
+      "truncated_gaussian": 0.0,
+      "delta": 0.0,
+      "posterior_bootstrap_sd": 0.0,
+      "gaussian_bootstrap_sd": 0.0
+     }
+    },
+    "volatility_swap": {
+     "mark": 0.14607332376265902,
+     "reserve_long": {
+      "posterior": 0.003790787198229062,
+      "truncated_gaussian": 0.004567174280788289,
+      "delta": 0.004819369870481039,
+      "posterior_bootstrap_sd": 0.00048819765266606816,
+      "gaussian_bootstrap_sd": 0.0002172904974690253
+     },
+     "reserve_short": {
+      "posterior": 0.0036608832770350097,
+      "truncated_gaussian": 0.00559934734677342,
+      "delta": 0.004819369870481039,
+      "posterior_bootstrap_sd": 0.0002570074404946618,
+      "gaussian_bootstrap_sd": 0.00029497086256126924
+     }
+    },
+    "forward_start_call": {
+     "mark": 0.02758864701707083,
+     "reserve_long": {
+      "posterior": 0.0010147310380091354,
+      "truncated_gaussian": 0.0007409651047137235,
+      "delta": 0.0009419030800890498,
+      "posterior_bootstrap_sd": 8.24071596705807e-05,
+      "gaussian_bootstrap_sd": 5.51311549680042e-05
+     },
+     "reserve_short": {
+      "posterior": 0.0008503531567680758,
+      "truncated_gaussian": 0.0013331034589621725,
+      "delta": 0.0009419030800890498,
+      "posterior_bootstrap_sd": 5.906252321966682e-05,
+      "gaussian_bootstrap_sd": 4.957628161739236e-05
+     }
+    },
+    "put_out_of_grid": {
+     "mark": 0.05192186253603548,
+     "reserve_long": {
+      "posterior": 0.004087740233229109,
+      "truncated_gaussian": 0.0029374585122869945,
+      "delta": 0.004759831010382396,
+      "posterior_bootstrap_sd": 0.0003091139048227235,
+      "gaussian_bootstrap_sd": 0.0001404939316787185
+     },
+     "reserve_short": {
+      "posterior": 0.0027460438877242588,
+      "truncated_gaussian": 0.004943967187876042,
+      "delta": 0.004759831010382396,
+      "posterior_bootstrap_sd": 0.0001834065951709393,
+      "gaussian_bootstrap_sd": 0.00029996759770222907
+     }
+    }
+   }
+  },
+  "B": {
+   "label": "63 quotes, 3x the design noise",
+   "quotes": 63,
+   "noise_scale": 3.0,
+   "fit": {
+    "theta": [
+     0.08877799951063454,
+     2.6388657028075286,
+     -0.7327264034346579
+    ],
+    "chi2": 9.250854655089679
+   },
+   "gauss_newton_covariance": [
+    [
+     0.0010684853085391158,
+     -0.0042222495773826425,
+     0.003425011890056107
+    ],
+    [
+     -0.004222249577382642,
+     0.03312051640524797,
+     -0.010438996817043364
+    ],
+    [
+     0.0034250118900561073,
+     -0.01043899681704337,
+     0.015248906548238057
+    ]
+   ],
+   "gaussian_mass_outside_box": {
+    "total": 0.028000000000000025,
+    "per_parameter_below": [
+     0.0178,
+     0.0,
+     0.01885
+    ],
+    "per_parameter_above": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "importance": {
+    "efficiency": 0.22272461147606934,
+    "ess": 228.070002151495,
+    "max_weight": 0.011569469082433304,
+    "khat": -0.24385808920231994
+   },
+   "parameters": {
+    "hurst": {
+     "least_squares": 0.08877799951063454,
+     "gauss_newton_sd": 0.0326876935334862,
+     "gauss_newton_90": [
+      0.03501152824540158,
+      0.14254447077586752
+     ],
+     "gauss_newton_90_leaves_box": false,
+     "posterior_q05_q50_q95": [
+      0.05983718977216383,
+      0.0968005055230551,
+      0.15376746993372425
+     ],
+     "posterior_bootstrap_sd": [
+      0.000981971329413655,
+      0.0021590166309618897,
+      0.006269703947395463
+     ],
+     "truncated_gaussian_q05_q50_q95": [
+      0.04026773016115533,
+      0.09144830944908978,
+      0.1432478576557344
+     ],
+     "width_ratio_gn_over_posterior": 1.1448165846573533,
+     "lower_ratio_gn_over_posterior": 1.85780811771005,
+     "upper_ratio_gn_over_posterior": 0.8273104999195472
+    },
+    "eta": {
+     "least_squares": 2.6388657028075286,
+     "gauss_newton_sd": 0.1819904294331105,
+     "gauss_newton_90": [
+      2.3395180848840207,
+      2.9382133207310366
+     ],
+     "gauss_newton_90_leaves_box": false,
+     "posterior_q05_q50_q95": [
+      2.3320784821608584,
+      2.608951640556331,
+      2.8678728103248625
+     ],
+     "posterior_bootstrap_sd": [
+      0.011733663168968041,
+      0.01082612292057143,
+      0.008333681204214873
+     ],
+     "truncated_gaussian_q05_q50_q95": [
+      2.329260256320222,
+      2.627487915433759,
+      2.915671655402282
+     ],
+     "width_ratio_gn_over_posterior": 1.1173974870143795,
+     "lower_ratio_gn_over_posterior": 0.9757499588559118,
+     "upper_ratio_gn_over_posterior": 1.3071542676938526
+    },
+    "rho": {
+     "least_squares": -0.7327264034346579,
+     "gauss_newton_sd": 0.12348646301614626,
+     "gauss_newton_90": [
+      -0.9358435600061749,
+      -0.5296092468631409
+     ],
+     "gauss_newton_90_leaves_box": false,
+     "posterior_q05_q50_q95": [
+      -0.8979517885329452,
+      -0.7300720549229208,
+      -0.5922821668756698
+     ],
+     "posterior_bootstrap_sd": [
+      0.010943768139368374,
+      0.012335079554588199,
+      0.005638223771477346
+     ],
+     "truncated_gaussian_q05_q50_q95": [
+      -0.896478695646597,
+      -0.7275444289623318,
+      -0.5270089593441651
+     ],
+     "width_ratio_gn_over_posterior": 1.328997991166143,
+     "lower_ratio_gn_over_posterior": 1.2293338366298194,
+     "upper_ratio_gn_over_posterior": 1.446247717585802
+    }
+   },
+   "products": {
+    "variance_swap": {
+     "mark": 0.033846993359286794,
+     "reserve_long": {
+      "posterior": 0.0,
+      "truncated_gaussian": 0.0,
+      "delta": 0.0,
+      "posterior_bootstrap_sd": 0.0,
+      "gaussian_bootstrap_sd": 0.0
+     },
+     "reserve_short": {
+      "posterior": 0.0,
+      "truncated_gaussian": 0.0,
+      "delta": 0.0,
+      "posterior_bootstrap_sd": 0.0,
+      "gaussian_bootstrap_sd": 0.0
+     }
+    },
+    "volatility_swap": {
+     "mark": 0.15105034161243136,
+     "reserve_long": {
+      "posterior": 0.0054753422806931296,
+      "truncated_gaussian": 0.006114318560910381,
+      "delta": 0.006257297085347994,
+      "posterior_bootstrap_sd": 0.00026852080779136495,
+      "gaussian_bootstrap_sd": 0.0003187639989203437
+     },
+     "reserve_short": {
+      "posterior": 0.006659747256260895,
+      "truncated_gaussian": 0.006793362094082572,
+      "delta": 0.006257297085347994,
+      "posterior_bootstrap_sd": 0.00026984981428934056,
+      "gaussian_bootstrap_sd": 0.0003845161260921248
+     }
+    },
+    "forward_start_call": {
+     "mark": 0.029136039053677884,
+     "reserve_long": {
+      "posterior": 0.0017377833390863177,
+      "truncated_gaussian": 0.0015325469992428092,
+      "delta": 0.0017740131111350602,
+      "posterior_bootstrap_sd": 6.881864743031679e-05,
+      "gaussian_bootstrap_sd": 6.178745147723568e-05
+     },
+     "reserve_short": {
+      "posterior": 0.001991120477839236,
+      "truncated_gaussian": 0.002514734425718951,
+      "delta": 0.0017740131111350602,
+      "posterior_bootstrap_sd": 8.773177024473373e-05,
+      "gaussian_bootstrap_sd": 0.00036548472000388677
+     }
+    },
+    "put_out_of_grid": {
+     "mark": 0.054299049352300455,
+     "reserve_long": {
+      "posterior": 0.005273527491303387,
+      "truncated_gaussian": 0.004275337885808361,
+      "delta": 0.0057971373095301055,
+      "posterior_bootstrap_sd": 0.00030229268531179636,
+      "gaussian_bootstrap_sd": 0.00020196447924402297
+     },
+     "reserve_short": {
+      "posterior": 0.004839818678080476,
+      "truncated_gaussian": 0.007579151834279263,
+      "delta": 0.0057971373095301055,
+      "posterior_bootstrap_sd": 0.00026225631946884286,
+      "gaussian_bootstrap_sd": 0.0011368610203229936
+     }
+    }
+   }
+  }
+ },
+ "wall_seconds": 3182.643812417984
+}
