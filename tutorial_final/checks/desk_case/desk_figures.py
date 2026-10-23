@@ -335,11 +335,14 @@ def validation_panel(axes, data, scale=1.0, products=("forward_start", "put_1y_8
             ax.errorbar(100 * rates, y, xerr=100 * se, fmt="o", color=colors[m], label=labels[m], markersize=5,
                         capsize=2)
         ax.axvline(10, color=INK, linewidth=0.8, linestyle="--")
+        ax.text(10.5, len(products) - 0.45, "nominal 10%", fontsize=7, color=INK)
         ax.set_yticks(np.arange(len(products))[::-1])
         ax.set_yticklabels([PRODUCT_LABELS[p] for p in products], fontsize=8)
-        ax.set_xlim(-2, 70)
+        ax.set_xlim(-2, 90)
+        ax.set_ylim(-0.6, len(products) - 0.3)
         ax.set_xlabel(f"breach rate of the {side} 90% reserve, %")
-        ax.set_title(f"{side} positions: how often the true price falls past the prudent value", loc="left",
+        move = "falls below" if side == "long" else "rises above"
+        ax.set_title(f"{side} positions: how often the true price {move} the prudent value", loc="left",
                      fontsize=8.5)
     axes[0].legend(fontsize=7, loc="lower right")
 
