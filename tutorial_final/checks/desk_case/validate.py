@@ -2,8 +2,10 @@
 
     python validate.py OUT_DIR [--replicas 80] [--scale 1.0]
 
-Truths: parameter sets resampled from the full 63-quote SPY posterior (rough_spy_is.py, seed 0), the values this
-market is believed to have. For each truth, a thin chain is simulated: the 27 front-month quotes priced by an
+Truths (--truths): "thin" (default) resamples parameter sets from the posterior of the real front-month quotes
+(desk_case.py, at the same noise scale), the values the desk cannot rule out from what it sees; "full" resamples
+them from the full 63-quote SPY posterior (rough_spy_is.py, seed 0), the values the full market points to. For each
+truth, a thin chain is simulated: the 27 front-month quotes priced by an
 independent Monte Carlo (seed 7, 32,768 paths) plus Gaussian quote noise at the given scale. Each method then
 marks the four products and sets one-sided 90% reserves from that chain alone:
   Gauss–Newton and the delta method (least squares started at the best priced proposal);
@@ -97,13 +99,20 @@ def main():
     parser.add_argument("--replicas", type=int, default=80)
     parser.add_argument("--scale", type=float, default=1.0)
     parser.add_argument("--workers", type=int, default=2)
+    parser.add_argument("--truths", choices=("thin", "full"), default="thin")
+    parser.add_argument("--batch", type=int, default=0, help="independent batches of replicas, combined afterwards")
     args = parser.parse_args()
     out_dir = Path(args.out_dir)
     _load(out_dir)
     started = time.time()
-    full = np.load(HERE.parent / "rough_spy_is" / "rough_spy_is_seed0.npz")
-    truths = correction.resample(full["theta"], full["w_post"], args.replicas, 101)
-    rng = np.random.default_rng(np.random.SeedSequence([DATA_SEED, int(100 * args.scale)]))
+    if args.truths == "full":
+        full = np.load(HERE.parent / "rough_spy_is" / "rough_spy_is_seed0.npz")
+        truths = correction.resample(full["theta"], full["w_post"], args.replicas, 101 + 1000 * args.batch)
+    else:
+        c2 = np.sum(((CASE["prices"][:, dc.FRONT] - base.Y[dc.FRONT]) / base.SIGMA[dc.FRONT]) ** 2, axis=1)
+        w_thin = correction.correct(-0.5 * c2 / args.scale**2, CASE["log_q"], base.TASK)["weights"]
+        truths = correction.resample(CASE["theta"], w_thin, args.replicas, 101 + 1000 * args.batch)
+    rng = np.random.default_rng(np.random.SeedSequence([DATA_SEED, int(100 * args.scale), args.batch]))
     noise = rng.standard_normal((args.replicas, len(base.Y)))
     theta, log_q, prices, prod = CASE["theta"], CASE["log_q"], CASE["prices"], CASE["products"]
     rows = dc.FRONT
@@ -143,7 +152,8 @@ def main():
                 breaches[m]["long"][r, j] = truth_p[j] < lows[m]
                 breaches[m]["short"][r, j] = truth_p[j] > highs[m]
                 widths[m][r, j] = (lows[m], highs[m])
-    report = {"replicas": args.replicas, "noise_scale": args.scale, "products": list(names),
+    report = {"replicas": args.replicas, "noise_scale": args.scale, "truths": args.truths, "batch": args.batch,
+              "products": list(names),
               "ess": {"median": float(np.median(ess)), "min": float(ess.min()), "share_below_50": float(np.mean(ess < 50))},
               "breach_rate": {}, "mean_interval_width_over_truth": {}, "wall_seconds": time.time() - started}
     truth_all = np.array([res["truth_products"] for res in results])
@@ -152,10 +162,11 @@ def main():
                                     for side in ("long", "short")}
         report["mean_interval_width_over_truth"][m] = {
             n: float(np.mean((widths[m][:, j, 1] - widths[m][:, j, 0]) / truth_all[:, j])) for j, n in enumerate(names)}
-    np.savez_compressed(out_dir / f"validate_x{args.scale:g}.npz", truths=truths, ys=ys, ess=ess,
+    tag = f"validate_{args.truths}_x{args.scale:g}_batch{args.batch}"
+    np.savez_compressed(out_dir / f"{tag}.npz", truths=truths, ys=ys, ess=ess,
                         **{f"breach_{m}_{s}": breaches[m][s] for m in breaches for s in ("long", "short")},
                         **{f"interval_{m}": widths[m] for m in widths}, truth_products=truth_all)
-    (out_dir / f"validate_x{args.scale:g}.json").write_text(json.dumps({"report": report, "replicas_detail": results},
+    (out_dir / f"{tag}.json").write_text(json.dumps({"report": report, "replicas_detail": results},
                                                                        indent=1))
     print(json.dumps(report, indent=1), flush=True)
 
