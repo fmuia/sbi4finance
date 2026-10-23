@@ -55,7 +55,7 @@ design document; its placeholders ⟨S1⟩–⟨S9⟩ are filled by the studies 
 
 ## 4. The slot-5 lesson
 
-*Superseded on 23 October by [CURRICULUM.md](CURRICULUM.md), §5, where the two differ.*
+*Superseded on 23 October by [curriculum/05-slot5-rough-bergomi-to-a-reserve.md](curriculum/05-slot5-rough-bergomi-to-a-reserve.md), where the two differ.*
 
 Working title: **Ten calibrations fit the smile. Which price do you mark?** About 40 minutes
 (decision D2 fixes it). Francesco presents.
@@ -231,7 +231,7 @@ Each claim is on screen only when its study has written the number it quotes.
 
 ## 9. Slot 4: what changes
 
-*Superseded on 23 October by [CURRICULUM.md](CURRICULUM.md), §4, where the two differ.*
+*Superseded on 23 October by [curriculum/04-slot4-heston-in-bayesflow.md](curriculum/04-slot4-heston-in-bayesflow.md), where the two differ.*
 
 Slot 4 (#37) stays the BayesFlow lesson on GBM from returns. Edits:
 
@@ -250,7 +250,7 @@ Slot 4 (#37) stays the BayesFlow lesson on GBM from returns. Edits:
 
 ## 10. The intro
 
-*Superseded on 23 October by [CURRICULUM.md](CURRICULUM.md), §3, where the two differ.*
+*Superseded on 23 October by [curriculum/01-slot1-the-problem.md](curriculum/01-slot1-the-problem.md), where the two differ.*
 
 Francesco presents. Decision D1 by **Fri 23 Oct**, after a 5-minute dry talk of each option.
 
@@ -321,7 +321,7 @@ One pull request per slot ("harvest: slot N"). After a freeze, fixes only.
 
 ## 13. Interfaces with slots 2, 3 and 6
 
-*Superseded on 23 October by [CURRICULUM.md](CURRICULUM.md), §6, where the two differ.*
+*Superseded on 23 October by [curriculum/00-overview.md](curriculum/00-overview.md), where the two differ.*
 
 One paragraph per owner by Fri 30 Oct: what the slot explains, its key figure, what it assumes.
 Until then: slot 2 explains flows, flow matching and summary networks (the set-based summary over
