@@ -1,4 +1,4 @@
-"""Loaders and figures for the slot-5 notebook. Everything reads accepted results; nothing trains.
+"""Loaders, figures and small helpers for the tutorial notebooks (slots 1 to 5). Everything reads accepted results.
 
 The notebook lives in tutorial_final/notebooks and its results in
 tutorial_final/results/calibration. A missing result returns None, so the
@@ -326,3 +326,36 @@ def load_network(checkpoint):
         warnings.filterwarnings("ignore", message="Skipping variable loading for optimizer")
         workflow.load_approximator(checkpoint / "model.keras")
     return task, workflow
+
+
+# ---------------------------------------------------------------------------------------------------
+# Helpers of the slot 1-4 notebooks (tutorial_final/notebooks/slot1_intro.py ... slot4_heston_bayesflow.py)
+
+
+def implied_vol_grid(prices):
+    """Implied volatilities of the 63 design-grid prices (forward units), in task order."""
+    k, maturity, kind, _ = design_arrays()
+    prices = np.asarray(prices, dtype=float)
+    return np.array([surface.implied_vol(p, kk, t, c) for p, kk, t, c in zip(prices, k, maturity, kind)])
+
+
+def heston_smile(task, row):
+    """The 63 Fourier prices of one Heston parameter row (v0, theta, vol_of_vol, rho), kappa from the task.
+
+    One quadrature rung of 1,024 nodes, the full ladder of the task where that rung fails, as in study S3.
+    """
+    from . import pricing, tasks
+
+    parameters, v0 = tasks._heston_split(tasks.model_parameters(task, np.asarray(row, dtype=float)))
+    try:
+        return pricing.heston_surface(parameters, v0, task["context"]["contracts"], nodes=1024, upper_limit=600.0)
+    except ValueError:
+        return tasks.heston_prices(task, parameters, v0)[0]
+
+
+def heston_variance_swap_vol(v0, theta, kappa, days):
+    """Heston variance-swap volatility (%) for maturities in business days: sqrt of the mean expected variance."""
+    t = np.asarray(days, dtype=float) / surface.TRADING_DAYS
+    v0, theta = np.asarray(v0, dtype=float)[..., None], np.asarray(theta, dtype=float)[..., None]
+    w = theta + (v0 - theta) * (1 - np.exp(-kappa * t)) / (kappa * t)
+    return 100 * np.sqrt(w)
