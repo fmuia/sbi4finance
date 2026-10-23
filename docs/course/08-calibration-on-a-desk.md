@@ -108,7 +108,7 @@ $$
 
 *Figure 8.3.* How to read the figure: term structure A is flat at 20%. Term structure B is 25% for three months and then 13.2%, chosen so that the total variance to six months is the same, $0.2^2 \times 0.5 = 0.02$. On the six-month quotes the two are indistinguishable: the at-the-money call costs 0.0564 of the forward under both, and the variance swap strike is 0.04 under both. The three-month call tells them apart, 0.0399 against 0.0498. The forward-start call prices at 0.0399 under A and 0.0264 under B, 34% lower. A desk that quotes only the six-month smile cannot price the forward-start; a desk that also quotes three months can, in this deterministic world, because the two maturities fix the forward variance.
 
-**Under stochastic volatility.** In Heston the pair $(S_t, V_t)$ is Markov, and the forward-start payoff in units of $S_{T_1}$ depends only on the return after $T_1$. Conditional on the information at $T_1$, its value is therefore the Heston at-the-money call over $\tau$ started from the variance $V_{T_1}$, written $c_H(0, \tau; V_{T_1})$. Averaging over the law of $V_{T_1}$:
+**Under stochastic volatility.** In Heston the pair $(S_t, V_t)$ is Markov, and the forward-start payoff, a function of the ratio $S_{T_2}/S_{T_1}$, depends only on the return after $T_1$. Conditional on the information at $T_1$, its value is therefore the Heston at-the-money call over $\tau$ started from the variance $V_{T_1}$, written $c_H(0, \tau; V_{T_1})$. Averaging over the law of $V_{T_1}$:
 
 $$
 p_{\text{FS}}^{\text{Heston}} = \mathbb{E}^{\mathbb{Q}}\big[\,c_H(0, \tau;\ V_{T_1})\,\big] = \int_0^\infty c_H(0, \tau;\ v)\; q_{V_{T_1}}(v)\,dv .
