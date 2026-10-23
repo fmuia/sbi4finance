@@ -201,7 +201,7 @@ $$
 \exp\!\Big(-\tfrac12\chi^2(\theta) - \tfrac{\lambda}{2}\|\theta - \theta_{\text{ref}}\|^2\Big) \;\propto\; p(y \mid \theta)\;\times\;\mathcal{N}\!\Big(\theta;\ \theta_{\text{ref}},\ \tfrac{1}{\lambda}I\Big),
 $$
 
-so $\hat\theta_\lambda$ is the mode of a posterior under a Gaussian prior centred on $\theta_{\text{ref}}$ with variance $1/\lambda$ in each coordinate. (The design document's Appendix E.3 states $1/(2\lambda)$, which corresponds to an objective of $\tfrac12\chi^2$ plus the penalty; with the objective $\chi^2$ used here and in the design document's least-squares section, the variance is $1/\lambda$.) Regularization returns the posterior's mode and discards its width.
+so $\hat\theta_\lambda$ is the mode of a posterior under a Gaussian prior centred on $\theta_{\text{ref}}$ with variance $1/\lambda$ in each coordinate. With the objective $\tfrac12\chi^2$ plus the same penalty the prior variance would be $1/(2\lambda)$; the factor depends on how the objective is scaled. Regularization returns the posterior's mode and discards its width.
 
 ![Left: the toy smile's regularized point as the penalty grows, moving from the least-squares optimum toward the centre of the box. Right: Heston test smile 2,102 of study S6, the regularized vol of vol and correlation and their product, against the penalty.](images/l09-tikhonov.png)
 
@@ -251,7 +251,7 @@ An inverse problem is **ill-posed**, in the sense of Hadamard, if its solution d
 - Bayer, C., Horvath, B., Muguruza, A., Stemper, B., Tomas, M. (2019). On deep calibration of (rough) stochastic volatility models. [arXiv:1908.08806](https://arxiv.org/abs/1908.08806)
 - Cont, R., Tankov, P. (2004). Non-parametric calibration of jump–diffusion option pricing models. *Journal of Computational Finance* 7(3), 1–49. [doi](https://doi.org/10.21314/JCF.2004.123)
 - Crépey, S. (2003). Calibration of the local volatility in a generalized Black–Scholes model using Tikhonov regularization. *SIAM Journal on Mathematical Analysis* 34(5), 1183–1206. [doi](https://doi.org/10.1137/S0036141001400202)
-- Detlefsen, K., Härdle, W. K. (2006). Calibration risk for exotic options. SFB 649 Discussion Paper 2006-001, Humboldt-Universität zu Berlin; DAX implied-volatility surfaces from April 2003 to March 2004. [doi](https://doi.org/10.18452/3928). A journal version (*Journal of Derivatives*, 2007) is cited elsewhere, including in the design document, but could not be confirmed.
+- Detlefsen, K., Härdle, W. K. (2006). Calibration risk for exotic options. SFB 649 Discussion Paper 2006-001, Humboldt-Universität zu Berlin; DAX implied-volatility surfaces from April 2003 to March 2004. [doi](https://doi.org/10.18452/3928). A journal version (*Journal of Derivatives*, 2007) is cited elsewhere but could not be confirmed.
 - Engl, H. W., Hanke, M., Neubauer, A. (1996). *Regularization of inverse problems*. Kluwer.
 - Hernandez, A. (2017). Model calibration with neural networks. *Risk*, June 2017.
 - Horvath, B., Muguruza, A., Tomas, M. (2021). Deep learning volatility: a deep neural network perspective on pricing and calibration in (rough) volatility models. *Quantitative Finance* 21(1), 11–27. [doi](https://doi.org/10.1080/14697688.2020.1817974)

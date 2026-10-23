@@ -6,10 +6,14 @@
 For each surface: the network's draws give a Student t proposal (mixed with
 10% of the prior); each proposal's design surface is priced by Monte Carlo
 (antithetic paths, control variates; common random numbers across proposals);
-the likelihood adds each price's Monte Carlo variance to the quote noise
-(design document, Appendix G.3); the weights give the efficiency and k-hat.
-Reported: their distributions, the flag rate at k-hat > 0.7, the cost per
-surface, and the network's error against the reweighted posterior.
+the likelihood is the unbiased estimate N(y; P_hat, sigma^2 - s^2) of the exact
+likelihood (design document, Appendix G.3); the weights give the efficiency and k-hat.
+Results computed before 23 October 2026 used sigma^2 + s^2, which targets a noise
+variance sigma^2 + 2 s^2 and must be rerun.
+Reported: their distributions, the flag rates at k-hat above 0.7 and above the
+sample-size threshold min(1 - 1/log10 M, 0.7), the surfaces whose proposals cannot
+be priced within the Monte Carlo cap, the cost per surface, and the network's
+error against the reweighted posterior.
 
 Each finished surface is appended to OUT.partial.jsonl, next to the output
 directory; rerunning the same command after an interruption audits only the
@@ -34,6 +38,10 @@ from evaluate_calibration import load_network, posterior_draws  # noqa: E402
 from heston_check import jsonable  # noqa: E402
 
 
+MC_BUDGET = 0.5  # target Monte Carlo SE / quote-noise sd per block; the paths double up to 4x to meet it
+MC_CAP = 0.9     # above this the unbiased likelihood N(y; P_hat, sigma^2 - s^2) is too noisy to weight with
+
+
 def audit_job(job):
     task, observation, context, draws, proposals, paths, seed = job
     curve = tasks.curve(task, context)
@@ -41,18 +49,26 @@ def audit_job(job):
     started = time.process_time()
     theta, log_q, _ = correction.propose(draws, task, proposals, seed)
     prices, variances = [], []
+    ladder = [paths, 2 * paths, 4 * paths]
     for row in theta:
-        p, se, _, _ = pricing.rough_surface(tasks.model_parameters(task, row), curve, contracts,
-                                            task["numerics"]["blocks"], [paths], tasks.sigma(task), np.inf, seed)
+        try:
+            p, se, _, _ = pricing.rough_surface(tasks.model_parameters(task, row), curve, contracts,
+                                                task["numerics"]["blocks"], ladder, tasks.sigma(task),
+                                                MC_BUDGET, seed, cap=MC_CAP)
+        except ValueError as error:  # a proposal the audit cannot price precisely enough: flag the surface
+            return {"efficiency": 0.0, "khat": None, "max_weight": None, "auditable": False,
+                    "reason": str(error), "network_vs_audited": None,
+                    "cpu_seconds": time.process_time() - started}
         prices.append(p)
         variances.append(se**2)
-    log_lik = correction.gaussian_loglik(task, observation, np.array(prices), np.array(variances))
+    log_lik = correction.gaussian_loglik(task, observation, np.array(prices), mc_variance=np.array(variances),
+                                         max_ratio=MC_CAP)
     result = correction.correct(log_lik, log_q, task)
     summary = correction.weighted_summary(theta, result["weights"])
     agree = validation.agreement(draws, reference_mean=summary["mean"], reference_sd=summary["sd"],
                                  reference_q05=summary["quantiles"][:, 0], reference_q95=summary["quantiles"][:, 2])
     return {"efficiency": result["efficiency"], "khat": result["khat"], "max_weight": result["max_weight"],
-            "network_vs_audited": agree, "cpu_seconds": time.process_time() - started}
+            "auditable": True, "network_vs_audited": agree, "cpu_seconds": time.process_time() - started}
 
 
 def figure(report, path):
@@ -60,7 +76,7 @@ def figure(report, path):
     from sbi4finance.calibration.plots import BASELINE, INK, SERIES, plt, style
 
     style()
-    surfaces = report["surfaces"]
+    surfaces = [s for s in report["surfaces"] if s.get("auditable", True)]
     error = np.array([max(v for v in s["network_vs_audited"]["standardized_mean_error"] if v is not None)
                       for s in surfaces])
     efficiency = np.array([s["efficiency"] for s in surfaces])
@@ -118,11 +134,17 @@ def main():
             log.flush()
     results = [done[int(r)] for r in rows]
     efficiency = np.array([r["efficiency"] for r in results], dtype=float)
-    khat = np.array([np.nan if r["khat"] is None else r["khat"] for r in results], dtype=float)
-    error = np.array([max(r["network_vs_audited"]["standardized_mean_error"]) for r in results], dtype=float)
+    khat = np.array([np.inf if r["khat"] is None else r["khat"] for r in results], dtype=float)
+    auditable = [r for r in results if r.get("auditable", True)]
+    error = np.array([max(r["network_vs_audited"]["standardized_mean_error"]) for r in auditable], dtype=float)
+    threshold = min(1 - 1 / np.log10(args.proposals), 0.7)  # PSIS sample-size-dependent threshold
     summary = {"surfaces": len(rows), "proposals": args.proposals, "paths": args.paths,
+               "likelihood": "unbiased N(y; P_hat, sigma^2 - s^2)", "mc_budget": MC_BUDGET, "mc_cap": MC_CAP,
+               "not_auditable": len(results) - len(auditable),
+               "khat_threshold": float(threshold),
+               "flag_rate_khat_above_threshold": float(np.mean(khat > threshold)),
                "efficiency_quantiles": dict(zip(("q05", "q50", "q95"), np.quantile(efficiency, [0.05, 0.5, 0.95]).tolist())),
-               "flag_rate_khat_above_0_7": float(np.mean(np.nan_to_num(khat, nan=0.0) > 0.7)),
+               "flag_rate_khat_above_0_7": float(np.mean(khat > 0.7)),
                "flag_rate_efficiency_below_0_02": float(np.mean(efficiency < 0.02)),
                "cpu_seconds_per_surface_median": float(np.median([r["cpu_seconds"] for r in results])),
                "network_error_vs_audited_sd_quantiles": dict(zip(("q50", "q90", "max"),

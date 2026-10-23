@@ -7,8 +7,15 @@ logit coordinates of the prior box; densities carry the logit Jacobian, so the
 weights are computed for the posterior in natural units.
 
 The likelihood is the task's quote-noise model: independent Gaussians with
-standard deviation sigma_c around the model prices. A Monte Carlo pricer adds
-its own standard error in quadrature (design document, Appendix G.3).
+standard deviation sigma_c around the model prices. With a Monte Carlo pricer the
+weights need an unbiased estimate of that likelihood, not of its logarithm
+(importance sampling with an unbiased likelihood estimate targets the exact
+posterior). If the estimated price is P_hat = P + s * zeta with zeta standard
+normal, independent across quotes and of the quote noise, then
+E[N(y; P_hat, sigma^2 - s^2)] = N(y; P, sigma^2) for s < sigma. The plug-in
+N(y; P_hat, sigma^2) is instead unbiased for N(y; P, sigma^2 + s^2), and
+N(y; P_hat, sigma^2 + s^2) for N(y; P, sigma^2 + 2 s^2): adding the Monte Carlo
+variance counts it twice (design document, Appendix G.3).
 """
 
 import time
@@ -45,11 +52,29 @@ def log_prior(task):
     return -float(np.sum(np.log(np.diff(bounds_of(task), axis=1))))
 
 
-def gaussian_loglik(task, observation, prices, extra_variance=None):
-    """log p(y | theta) for each row of model prices [N, C]; extra_variance [N, C] or None."""
+def gaussian_loglik(task, observation, prices, mc_variance=None, max_ratio=0.9):
+    """log of an unbiased estimate of p(y | theta) for each row of model prices [N, C].
+
+    With exact prices (mc_variance None) this is the Gaussian quote-noise
+    log-likelihood. With Monte Carlo prices whose errors have variance
+    mc_variance [N, C], the Gaussian variance is sigma^2 - mc_variance, which
+    makes exp(result) an unbiased estimate of the exact likelihood when the
+    Monte Carlo errors are Gaussian and independent across quotes. Raises if a
+    Monte Carlo standard error exceeds max_ratio * sigma: the estimate then has
+    a variance too large to weight with.
+    """
     sigma2 = tasks.sigma(task) ** 2
     prices = np.atleast_2d(np.asarray(prices, dtype=float))
-    variance = sigma2 if extra_variance is None else sigma2 + np.asarray(extra_variance, dtype=float)
+    if mc_variance is None:
+        variance = np.broadcast_to(sigma2, prices.shape)
+    else:
+        mc_variance = np.broadcast_to(np.asarray(mc_variance, dtype=float), prices.shape)
+        if np.any(mc_variance < 0) or not np.isfinite(mc_variance).all():
+            raise ValueError("Monte Carlo variances must be finite and non-negative")
+        if np.any(mc_variance > max_ratio**2 * sigma2):
+            worst = float(np.sqrt(np.max(mc_variance / sigma2)))
+            raise ValueError(f"Monte Carlo SE / sigma = {worst:.3f} exceeds {max_ratio}: price with more paths")
+        variance = sigma2 - mc_variance
     y = np.asarray(observation, dtype=float).reshape(-1)
     return -0.5 * np.sum((prices - y) ** 2 / variance + np.log(2 * np.pi * variance), axis=-1)
 

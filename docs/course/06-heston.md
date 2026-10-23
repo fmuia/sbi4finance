@@ -224,7 +224,7 @@ $$
 \big|\varphi_T\big(u - \tfrac i2\big)\big| \approx e^{-c\,u}, \qquad c = \frac{(v_0 + \kappa\theta T)\sqrt{1 - \rho^2}}{\sigma_v}, \qquad u \gg \frac{1}{\sigma_v\sqrt{1 - \rho^2}\,T} .
 $$
 
-Beyond this crossover the decay is only exponential, and its rate $c$ is small when $v_0$ is small, $\sigma_v$ is large and $|\rho|$ is near 1. These are the contracts that need a large cutoff. The design document's Appendix C.2 describes the decay as $\exp(-\tfrac12 w u^2)$, which holds only below the crossover.
+Beyond this crossover the decay is only exponential, and its rate $c$ is small when $v_0$ is small, $\sigma_v$ is large and $|\rho|$ is near 1. These are the contracts that need a large cutoff. The Gaussian form $\exp(-\tfrac12 w u^2)$ holds only below the crossover.
 
 The repository therefore climbs a ladder of (nodes, cutoff) pairs: (512, 400), (1024, 600), (2048, 1500), (4096, 3000), (8192, 6000). A rung is accepted when it and the next rung both price every contract inside the no-arbitrage bounds of Lecture 2 (to $10^{-9}$ of the forward) and differ by at most $0.1\,\sigma_c$ on every contract, where $\sigma_c$ is the quote noise of Lecture 5. The finer rung's prices are kept, and their difference from the coarser rung is stored as a numerical diagnostic, separate from the quote noise.
 

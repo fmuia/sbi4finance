@@ -272,6 +272,26 @@ class InferenceAndCorrectionTests(unittest.TestCase):
         flat = correction.correct(-0.5 * ((theta[:, 0] - 0.085) / 0.005) ** 2, log_q, task)
         self.assertGreater(flat["khat"], 0.7)
 
+    def test_monte_carlo_likelihood_is_an_unbiased_estimate_of_the_exact_likelihood(self):
+        # Two quotes; Monte Carlo prices P + s * zeta. The average of exp(log-likelihood) over many
+        # Monte Carlo draws must equal the exact likelihood with sigma^2, not sigma^2 + s^2 or + 2 s^2.
+        task = tasks.heston_task(days=(21,), deltas=(-1.0, 1.0))
+        sigma = tasks.sigma(task)
+        rng = np.random.default_rng(11)
+        exact_prices = np.array([0.01, 0.004])
+        y = exact_prices + sigma * rng.standard_normal(2)
+        s = 0.4 * sigma
+        draws = exact_prices + s * rng.standard_normal((400_000, 2))
+        estimate = np.mean(np.exp(correction.gaussian_loglik(task, y, draws, mc_variance=s**2)))
+        exact = float(np.exp(correction.gaussian_loglik(task, y, exact_prices[None, :])[0]))
+        self.assertAlmostEqual(estimate / exact, 1.0, delta=0.01)
+        plug_in = np.mean(np.exp(correction.gaussian_loglik(task, y, draws)))
+        widened = float(np.exp(-0.5 * np.sum((y - exact_prices) ** 2 / (sigma**2 + s**2)
+                                            + np.log(2 * np.pi * (sigma**2 + s**2)))))
+        self.assertAlmostEqual(plug_in / widened, 1.0, delta=0.01)  # the plug-in targets sigma^2 + s^2
+        with self.assertRaises(ValueError):
+            correction.gaussian_loglik(task, y, draws[:2], mc_variance=(0.95 * sigma) ** 2)
+
     def test_pareto_khat_separates_light_and_heavy_tails(self):
         rng = np.random.default_rng(4)
         self.assertLess(correction.pareto_khat(rng.normal(0, 0.3, 4000)), 0.5)

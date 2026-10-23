@@ -39,7 +39,7 @@ Details: [The model](#the-model).
 
 ### 3. The price needs a posterior
 
-A product price depends on the parameters, p\_Π(θ; ξ\_0). The smile does not determine θ uniquely: it pins the skew, which is proportional to ρη, and the term structure of the skew, which fixes H, far better than it pins η alone. The honest price is therefore an average over everything the smile allows, and the honest range is the spread of that average's ingredients:
+A product price depends on the parameters, p\_Π(θ; ξ\_0). The smile does not determine θ exactly. Its short-maturity skew pins only the product ρη, and the term structure of the skew pins H. The rest of the surface also separates η from ρ, mainly through the long-dated at-the-money level measured against the forward-variance curve ξ\_0, so that separation is only as good as ξ\_0. The honest price is therefore an average over everything the smile allows, and the honest range is the spread of that average's ingredients:
 
 ```math
 p(p_{\Pi} \mid y) = \int \underbrace{\delta\big(p_{\Pi} - p_{\Pi}(\theta;\xi_0)\big)}_{\text{price the product}}\ \underbrace{p(\theta \mid y, \xi_0)}_{\text{posterior of the calibration}}\ d\theta .
@@ -57,7 +57,7 @@ Bayes' rule needs the likelihood. Under the quote-noise model each quote is the 
 \log p(y \mid \theta, \xi_0) = -\frac{1}{2}\sum_{c=1}^{C}\left(\frac{y_c - P_c(\theta;\xi_0)}{\sigma_c}\right)^{2} + \text{const}.
 ```
 
-For Heston, P\_c is a Fourier integral and this line costs milliseconds; an exact posterior by MCMC costs minutes per surface. For rough Bergomi, P\_c is a Monte Carlo expectation over at least 2^15 paths per maturity block, up to 504 steps each, so one evaluation of the likelihood is one priced surface, 5.0 CPU-seconds, and an MCMC chain of 20,000 evaluations costs 28 CPU-hours. For a desk with many underlyings, every morning, that is not available.
+For Heston, P\_c is a Fourier integral and this line costs milliseconds; an exact posterior by MCMC costs minutes per surface. For rough Bergomi, P\_c is a Monte Carlo expectation over at least 2^15 paths per maturity block, up to 504 steps each, so one evaluation of the likelihood is one priced surface: 5.0 CPU-seconds at the centre of the prior with 2^15 paths, and 11.9 CPU-seconds on average over the pilot bank, where hard surfaces need more paths. An MCMC chain of 20,000 evaluations costs 28 to 66 CPU-hours. For a desk with many underlyings, every morning, that is not available.
 
 Details: [Why the likelihood is expensive](#why-the-likelihood-is-expensive).
 
@@ -69,7 +69,7 @@ The usual route is weighted least squares, θ̂ = argmin Σ\_c w\_c (P\_c(θ) �
 p_{\Pi}\big(\hat\theta;\xi_0\big) \qquad \text{in place of} \qquad p\big(p_{\Pi}\mid y\big).
 ```
 
-Its interval, when one is computed, comes from the curvature of the objective at θ̂ (the Gauss–Newton covariance (JᵀWJ)⁻¹) and is local and symmetric. Along a curved valley of the objective, the ρ–η ridge truncated at ρ = −1, it is wrong in shape and in width. A multi-start finds several ends of the valley but gives them no weights, and a regularized fit picks one of them by a penalty. None of them produces the range the rules ask for. The study measures this on ⟨S6⟩ synthetic surfaces.
+Its interval, when one is computed, comes from the curvature of the objective at θ̂ (the Gauss–Newton covariance (JᵀWJ)⁻¹) and is local and symmetric. Where the objective is close to a quadratic, as on most Heston smiles (S6), the interval is about right. Where it is not, it fails: along a curved valley, such as the ρ–η valley that appears when the quotes constrain mainly ρη, and at the edge of the prior box, where on some smiles no interval exists. A multi-start, the desk's way to build a range, returns the distinct optima without weights; in the pilot studies it found a single optimum on 97% of Heston smiles and on every rough-Bergomi smile, so it returns no range at all. A regularized fit picks a point by a penalty. None of them produces the probability-weighted range the rules ask for. The study measures how often the local interval is wrong on ⟨S6⟩ synthetic surfaces.
 
 Details: [Classical calibration and where it fails](#classical-calibration-and-where-it-fails).
 
@@ -99,7 +99,7 @@ The network gives only an approximation of the posterior, so three checks guard 
 w^{(m)} = \frac{p(\theta^{(m)})\,\hat L(\theta^{(m)})}{q(\theta^{(m)})}, \qquad \text{efficiency} = \frac{\big(\sum_m w^{(m)}\big)^2}{M\sum_m \big(w^{(m)}\big)^2}.
 ```
 
-The weighted draws approximate the exact posterior; a low efficiency, or a Pareto shape parameter k̂ above 0.7, flags a surface for the slow exact route.
+Here L̂ is an unbiased estimate of the likelihood, obtained from Monte Carlo prices by reducing the Gaussian variance by the Monte Carlo variance (Appendix G.3). The weighted draws approximate the exact posterior; a low efficiency, or a Pareto shape parameter k̂ above min(1 − 1/log₁₀ M, 0.7), which is 0.58 for M = 256, flags a surface for the slow exact route.
 
 The products are then priced from each posterior draw, with common random numbers, and the range, the 90% quantile and the reserve are read off the pooled prices.
 
@@ -107,8 +107,8 @@ Details: [Validation plan](#validation-plan), [From posterior to prices](#from-p
 
 ### The two claims
 
-1. The smile does not pin down the parameters a desk needs for products outside it. The posterior shows which directions it leaves open (η at fixed ρη), and turns the bid-ask widths into a price range and a reserve. The variance swap's range is zero by construction, the volatility swap's and the forward-start's are not: ⟨S7⟩% of the price at the 90% quantile.
-2. Amortization makes the Bayesian answer affordable for a Monte-Carlo-priced model: 1.4 seconds per surface against about 17 CPU-hours for the exact posterior, validated by simulation-based calibration on thousands of synthetic surfaces and audited surface by surface.
+1. The smile does not pin down the parameters exactly, and products outside the smile inherit what it leaves open. The posterior shows how much is left open and in which direction: the short skew fixes only ρη, η is separated from ρ only through the long-dated level against the forward-variance curve, and near the edges of the prior some directions are barely constrained. The posterior turns the bid-ask widths into a price range and a reserve. The variance swap's range is zero by construction, for continuous monitoring and a fixed curve, which makes it a consistency check of the curve input rather than a result; the volatility swap's and the forward-start's ranges are not zero: ⟨S7⟩% of the price at the 90% quantile. All these ranges are conditional on the model and on ξ\_0.
+2. Amortization makes the Bayesian answer affordable for a Monte-Carlo-priced model: 1.4 seconds per surface against at least 17 CPU-hours for the exact posterior (about 41 at the pilot bank's average pricing cost), validated by simulation-based calibration on thousands of synthetic surfaces (met for Heston; ⟨S2⟩ for rough Bergomi, whose pilot network fails it for ρ) and audited surface by surface.
 
 Details: [Planned feasibility study](#planned-feasibility-study).
 
@@ -137,13 +137,13 @@ The example meets the three selection criteria:
 
 - **Users' pain.** Every derivatives desk recalibrates its models to the smile daily, marks exotics with the result, and must hold a reserve for the calibrations it did not pick. The rules name the object: a range of plausible calibrations with a 90% point (Regulation (EU) 2016/101, Art. 11), Level 3 sensitivity ranges (IFRS 13), model-risk assessment (SR 11-7, replaced by SR 26-2 in April 2026).
 - **Widely used model class.** Stochastic volatility calibrated to vanillas is the standard way to price equity exotics; rough volatility is the research frontier the audience knows, and deep calibration (Horvath, Muguruza and Tomas 2021) is the method it knows for it.
-- **The classical route fails.** Least squares returns one point. Its local interval cannot follow the ρ–η valley. The exact Bayesian route exists but, for a model priced by Monte Carlo, costs about 17 CPU-hours per surface.
+- **The classical route falls short.** Least squares returns one point. Its local interval is right where the objective is close to a quadratic and wrong along a curved valley or at the edge of the prior box, and a multi-start, which usually finds a single optimum, returns no range. The exact Bayesian route exists but, for a model priced by Monte Carlo, costs at least 17 CPU-hours per surface.
 
 Amortized inference trains a network once on simulated surfaces priced on the cluster. The network then returns the joint posterior of H, η and ρ for a new smile in 1.4 seconds. Heston, which has a Fourier likelihood, is used to check the network against the exact posterior, in the role the exact grid posterior plays for GBM in slot 4.
 
-The network is calibrated on average but can be off for a single surface. An importance-sampling audit with the Monte Carlo pricer checks each surface, corrects its posterior, and flags surfaces that need the slow exact route. The audit costs about 425 CPU-seconds per surface.
+A network can be calibrated on average and still be off for a single surface. The Heston network passes the average check; the rough pilot network passes it for H and η and is biased for ρ (S2). An importance-sampling audit with the Monte Carlo pricer checks each surface, corrects its posterior, and flags surfaces that need the slow exact route. The audit costs about 425 CPU-seconds per surface.
 
-The posterior gives, for each product, a price distribution. The variance swap's is a point, because the forward-variance curve fixes it. The volatility swap's and the forward-start's are not, and their 90% quantiles against the point calibration are the within-model reserves. Heston and rough Bergomi calibrated to the same smile price the forward-start ⟨S7⟩% apart, which bounds the within-model range from above and hands over to the tutorial's final segment on misspecification.
+The posterior gives, for each product, a price distribution. The variance swap's is a point, because the forward-variance curve fixes it under continuous monitoring. The volatility swap's and the forward-start's are not, and their 90% quantiles against the point calibration are the within-model reserves. Heston and rough Bergomi calibrated to the same smile price the forward-start ⟨S7⟩% apart. On one pilot smile that gap is five times either model's reserve; on another it is smaller than either model's 90% range. The comparison hands over to the tutorial's final segment on misspecification.
 
 The tutorial therefore makes two separate claims, stated under [The two claims](#the-two-claims). The section [Planned feasibility study](#planned-feasibility-study) holds the criteria for both and the figures each study produces.
 
@@ -153,7 +153,7 @@ This section compares, in one figure, the three ways of going from today's smile
 
 *Pending figure ⟨S9-0⟩: three routes from one smile to a product price, with measured costs per surface.* Drawn as the SVJ diagram: each row one route from the same input, the 63 quotes of one smile, to a price for the forward-start option. The boxes give the method, what it returns and the risk number it supports; the line under each row gives the measured cost and the main finding. The highlighted row is the route the tutorial teaches.
 
-How to read the figure: the first row is multi-start least squares, which returns one price per start in about 60 CPU-seconds and no range. The second row is MCMC with the Monte Carlo pricer inside, which returns the exact posterior and the exact range in about 17 CPU-hours. The third row is the amortized posterior with its audit: the range in 1.4 seconds, checked against the Monte Carlo likelihood in about 425 CPU-seconds. A fourth, dashed row is the neural-pricer route (deep calibration with MCMC on the pricer), which the study uses as an independent check.
+How to read the figure: the first row is multi-start least squares, which returns one price per start in about 60 CPU-seconds and no range. The second row is MCMC with the Monte Carlo pricer inside, which returns the exact posterior and the exact range in at least 17 CPU-hours. The third row is the amortized posterior with its audit: the range in 1.4 seconds, checked against the Monte Carlo likelihood in about 425 CPU-seconds. A fourth, dashed row is the neural-pricer route (deep calibration with MCMC on the pricer), which the study uses as an independent check.
 
 ## Why Heston is the check and not the example
 
@@ -179,7 +179,7 @@ This section expands step 1 of the executive summary. It describes what a desk c
 
 A derivatives desk prices and hedges products that are not quoted, with a model calibrated to products that are. The calibration runs every morning, and intraday for liquid underlyings. Its output is used three times: to mark the book, to compute hedge ratios, and, at a slower pace, to set the reserves that the valuation rules require. The current tools meet the daily constraint by returning one calibration and leaving its uncertainty to judgment.
 
-Calibration risk has a literature of its own. Schoutens, Simons and Tistaert (2004) calibrated seven models to the same Eurostoxx smile, each within market precision, and found that their prices for barrier, lookback and cliquet options differed substantially. Detlefsen and Härdle (2007) showed that, within one model, the choice of objective function (prices or implied volatilities, absolute or relative errors) moves the calibrated parameters and the exotic prices. Guillaume and Schoutens (2012) measured the same effect under Heston. Cont (2006) gave the general frame: the set of models and calibrations consistent with the vanillas defines a range of prices, and the width of that range is model uncertainty.
+Calibration risk has a literature of its own. Schoutens, Simons and Tistaert (2004) calibrated seven models to the same Eurostoxx smile, each within market precision, and found that their prices for barrier, lookback and cliquet options differed substantially. Detlefsen and Härdle (2006) showed that, within one model, the choice of objective function (prices or implied volatilities, absolute or relative errors) moves the calibrated parameters and the exotic prices. Guillaume and Schoutens (2012) measured the same effect under Heston. Cont (2006) gave the general frame: the set of models and calibrations consistent with the vanillas defines a range of prices, and the width of that range is model uncertainty.
 
 Supervisors ask for that range:
 
@@ -189,9 +189,9 @@ Supervisors ask for that range:
 
 The rules name the object, a range of calibrations with a quantile, and leave its construction to the bank. In practice the range is built by rerunning the calibration with alternative objectives, weights or starting points, and reading the spread, or by expert judgment. Appendix A gives the sources.
 
-The rough Bergomi model supplies a realistic case. It fits equity-index smiles with three parameters, its short-maturity skew follows the power law the market shows, and it is the model the deep-calibration literature calibrates. Its weak point is the one the lesson is about: the smile constrains the product ρη and the exponent H, and leaves η alone wide; the products a desk marks with the model depend on η alone.
+The rough Bergomi model supplies a realistic case. It fits equity-index smiles with three parameters, its short-maturity skew follows the power law the market shows, and it is the model the deep-calibration literature calibrates. Its parameters are not equally well determined by the smile: the short-maturity skew constrains only the product ρη, the term structure of the skew constrains H, and η is separated from ρ mainly by the long-dated at-the-money level against the forward-variance curve. The products a desk marks with the model depend on η itself, so their prices inherit how well that separation works and how well the curve is read.
 
-The Bayesian answer exists, but its cost does not scale. One likelihood evaluation is one Monte Carlo surface, 5.0 CPU-seconds, and an exact posterior by MCMC costs about 17 CPU-hours per surface. The amortized posterior costs 1.4 seconds per surface. The audit adds about 425 CPU-seconds for each surface it checks.
+The Bayesian answer exists, but its cost does not scale. One likelihood evaluation is one Monte Carlo surface, 5.0 CPU-seconds, and an exact posterior by MCMC costs at least 17 CPU-hours per surface. The amortized posterior costs 1.4 seconds per surface. The audit adds about 425 CPU-seconds for each surface it checks.
 
 ## Executive summary of the model
 
@@ -242,11 +242,11 @@ Each feature of the smile comes from one mechanism of the model, governed by a f
 
 | Feature of the smile | How the model produces it | Quantities in charge |
 | --- | --- | --- |
-| The level of implied volatility at each maturity | The forward-variance curve sets the expected variance over each horizon | ξ\_0(t), an input |
+| The level of implied volatility at each maturity | The forward-variance curve sets the expected variance over each horizon; the gap between the at-the-money and the variance-swap level is set by the parameters | ξ\_0(t), an input; the gap mostly η, also H and ρ |
 | The skew: puts dearer than calls | Negative correlation between returns and variance shocks; a fall in price raises variance | ρη, the product |
 | The skew's term structure: steeper at short maturities, flattening as T^(H−½) | The roughness of the variance path: shocks to variance decay as a power of time, not exponentially | H |
 | The curvature: both wings above the centre | Randomness of the realized variance, which mixes log-normal laws | η², with H |
-| Variance-swap prices | Matched exactly: the model's expected variance over [0, T] is the integral of ξ\_0 | ξ\_0(t) only |
+| Variance-swap prices | Matched exactly for continuous monitoring: the model's expected variance over [0, T] is the integral of ξ\_0 | ξ\_0(t) only; daily monitoring adds a small term in (H, η, ρ) |
 | Volatility-swap and forward-start prices | The spread of future realized variance and the forward smile | η, H, ρ |
 
 ### What it misses
@@ -333,7 +333,7 @@ The word *calibration* has two meanings in this document, and the lesson must ke
 | Prior p(θ) | The distribution of the parameters before the smile is seen; uniform on the ranges of the symbols table | 2 |
 | Posterior p(θ ∣ y, ξ\_0) | The distribution of the parameters after the smile is seen; proportional to likelihood times prior | 4 to 7 |
 | Posterior draw | One parameter vector sampled from the posterior; 1,000 draws stand for the whole posterior | 4 to 7 |
-| Identified, weakly identified | A direction in parameter space the data pin down, or leave wide; the ρ–η valley is the weakly identified direction of this problem | 3 |
+| Identified, weakly identified | A direction in parameter space the data pin down, or leave wide; the ρ–η direction is the weakly identified one when the quotes constrain mainly the short skew | 3 |
 | Ridge, valley | A curve in parameter space along which the likelihood (or the least-squares objective) is almost flat | 3, 4 |
 | Ill-posed | An inverse problem whose solution is not unique or not stable; model calibration to a smile is the textbook case | 4 |
 | Regularization | Adding a penalty to the objective to make the solution unique and stable; the solution then depends on the penalty | 4 |
@@ -540,13 +540,13 @@ Negative noisy prices are retained, as in every bank of the repository: they are
 
 Combining the skew formula with the noise model gives the identification picture the posterior will show:
 
-- the **level** of each maturity's smile is fixed by ξ\_0, so the curve carries no parameter information and is conditioned on, not inferred;
+- the **level** of each maturity's smile is set mainly by ξ\_0, which is conditioned on, not inferred; the gap between the at-the-money level and the variance-swap level is not fixed by ξ\_0, and moves with η most and with H and ρ (Lecture 7 of the course: at fixed ρη, η moves the one-year at-the-money quote by up to about 10 noise units);
 - the **skew** level fixes ρη to a few percent, because it is read from the best-quoted region of every maturity;
-- the **skew's term structure** fixes H, from seven maturities between one week and one year;
-- the **curvature** fixes η² and therefore η given ρη, but from the wings, where the noise is three times larger, so η alone stays wide and ρ = (ρη) / η with it;
-- the range ρ ∈ (−0.99, −0.2) truncates the valley: at fixed ρη, η cannot be below |ρη| / 0.99 nor above |ρη| / 0.2.
+- the **skew's term structure** fixes H at leading order, from seven maturities between one week and one year; over this range η also steepens the fitted exponent;
+- the **curvature** measures η² given ρη, but from the wings, where the noise is three times larger; on its own it would leave η wide, and in the pilot it is the at-the-money level that separates η from ρ (S2: the posterior standard deviation of η is a median 5% of its mean);
+- the range ρ ∈ (−0.99, −0.2) truncates the ρ–η direction: at fixed ρη, η cannot be below |ρη| / 0.99 nor above |ρη| / 0.2.
 
-Study S2's recovery and contraction figures test each line; study S6 shows the valley as the set of least-squares modes.
+Study S2's recovery and contraction figures test each line. The separation of η through the at-the-money level holds only if ξ\_0 is right. ξ\_0 is replicated from strikes that stop at δ = −8 or before (Appendix I.4); Lecture 5 of the course shows that stopping at |δ| = 2 instead lowers the one-year variance-swap volatility from 21.8% to 18.9%, and the remaining truncation is smaller but not measured. An error in ξ\_0 becomes an error in η that the posterior, conditional on ξ\_0, does not show. Study S6 measures how often a ρ–η valley appears in the least-squares objective.
 
 ## Why the likelihood is expensive
 
@@ -570,25 +570,25 @@ With Monte Carlo prices the log-likelihood is evaluated at P̂\_c rather than P\
 
 ### The cost of the exact posterior
 
-A random-walk chain needs on the order of 10^4 likelihood evaluations to reach a few hundred effective draws in three dimensions; Hamiltonian methods need gradients, which Monte Carlo pricing does not give cheaply. Study S9 extrapolates rather than runs it: the Heston chains of S3 needed a median of 12,300 evaluations for 400 effective draws, and at 5.0 CPU-seconds per rough evaluation that is about 17 CPU-hours per surface. For one desk's universe, every morning, that is the cost amortization removes.
+A random-walk chain needs on the order of 10^4 likelihood evaluations to reach a few hundred effective draws in three dimensions; Hamiltonian methods need gradients, which Monte Carlo pricing does not give cheaply. Study S9 extrapolates rather than runs it: the Heston chains of S3 needed a median of 12,300 evaluations for 400 effective draws, and at 5.0 CPU-seconds per rough evaluation that is about 17 CPU-hours per surface, or about 41 at the pilot bank's average of 11.9 CPU-seconds. Both are lower bounds: a likelihood estimated by Monte Carlo is noisy, and a chain on a noisy likelihood needs more evaluations than one on an exact likelihood. For one desk's universe, every morning, that is the cost amortization removes.
 
 ## Classical calibration and where it fails
 
 This section expands step 5 of the executive summary. It describes the calibration methods desks use today, what each returns, and why none returns the range the rules ask for. These methods are the baselines that study S6 compares with the amortized posterior.
 
-Model calibration in practice is a least-squares problem, solved once per surface by a local optimizer. For this model it fixes the skew and its term structure well, and it returns no usable statement about the vol-of-vol. The exact Bayesian route gives the right statement, at hours per surface.
+Model calibration in practice is a least-squares problem, solved once per surface by a local optimizer. For this model it fixes the skew and its term structure well, and returns one point with, at best, a local interval. The exact Bayesian route gives the right statement, at hours per surface.
 
 ### Classical calibration routes and what each returns
 
 | Route | Output | Key references | Where it fails for a smile |
 | --- | --- | --- | --- |
-| Weighted least squares with a local optimizer | One parameter vector | Standard practice; Gatheral (2006) | One point on a valley; the result depends on the start and on the weights |
+| Weighted least squares with a local optimizer | One parameter vector | Standard practice; Gatheral (2006) | One point; where a valley exists, the result depends on the start and on the weights |
 | Least squares with Gauss–Newton standard errors | A point and a local covariance | Nonlinear regression textbooks | Symmetric, local; wrong in shape along a curved, truncated valley |
-| Multi-start least squares | The set of local optima | Standard practice | The ends of the valley, with no weights; the "range of plausible calibrations" without probabilities |
+| Multi-start least squares | The set of local optima | Standard practice | The distinct optima, with no weights; in the pilot studies usually a single optimum, so no range |
 | Regularized (Tikhonov) calibration | One stable point | Crépey (2003); Cont and Tankov (2004) | The answer depends on the penalty and on the reference point |
 | Deep calibration: neural pricer and least squares | One point, fast | Hernandez (2017); Bayer et al. (2019); Horvath, Muguruza and Tomas (2021) | Fast, but still one point |
 | Neural pricer with MCMC | A posterior | Bayer et al. (2019) sample it by MCMC on their pricer | Correct up to the pricer's error; a sampler per surface |
-| MCMC with the Monte Carlo pricer inside | The exact posterior | Gupta and Reisinger (2014) for Bayesian calibration in general | about 17 CPU-hours per surface (extrapolated, S9) |
+| MCMC with the Monte Carlo pricer inside | The exact posterior | Gupta and Reisinger (2014) for Bayesian calibration in general | at least 17 CPU-hours per surface (extrapolated, S9) |
 
 ### Least squares and its weights
 
@@ -598,7 +598,7 @@ The calibration objective is
 \hat\theta = \arg\min_{\theta}\ \sum_{c=1}^{C} w_c\,\big(P_c(\theta;\xi_0) - y_c\big)^2 .
 ```
 
-With w\_c = 1 / σ\_c² the objective is minus twice the log-likelihood, so least squares is maximum likelihood under the noise model, and, with the uniform prior, the posterior mode. Desks often minimize errors in implied volatility instead, with equal weights or vega weights; to first order a vega-weighted price error is an implied-volatility error, so the two agree near the optimum and differ in the wings. Detlefsen and Härdle (2007) measured how much the choice moves the answer. The study uses w\_c = 1 / σ\_c² throughout, so that the classical and the Bayesian route use the same information and differ only in what they return.
+With w\_c = 1 / σ\_c² the objective is minus twice the log-likelihood, so least squares is maximum likelihood under the noise model, and, with the uniform prior, the posterior mode. Desks often minimize errors in implied volatility instead, with equal weights or vega weights; to first order a vega-weighted price error is an implied-volatility error, so the two agree near the optimum and differ in the wings. Detlefsen and Härdle (2006) measured how much the choice moves the answer. The study uses w\_c = 1 / σ\_c² throughout, so that the classical and the Bayesian route use the same information and differ only in what they return.
 
 ### The Gauss–Newton interval
 
@@ -608,11 +608,11 @@ Near the optimum the objective is approximately quadratic, with curvature JᵀWJ
 \widehat{\mathrm{Cov}}(\hat\theta) = \big(J^{\top} W J\big)^{-1}, \qquad \widehat{\mathrm{Var}}\big(p_{\Pi}(\hat\theta)\big) \approx \nabla_\theta p_{\Pi}^{\top}\,\widehat{\mathrm{Cov}}(\hat\theta)\,\nabla_\theta p_{\Pi} .
 ```
 
-Three conditions make the interval right: many informative quotes for each direction, an optimum inside the parameter space, and an objective close to a quadratic over the width of the interval. The ρ–η valley breaks the first and the third, and ρ near −1 breaks the second. Along the valley JᵀWJ has a small eigenvalue, so the interval is long in a direction that is only approximately the valley's, and it extends past ρ = −1 into values the model does not allow. Study S6 measures its coverage on 200 synthetic surfaces, against the posterior interval's. For Monte Carlo pricers the Jacobian itself is a finite difference of noisy prices and needs common random numbers to exist.
+Three conditions make the interval right: many informative quotes for each direction, an optimum inside the parameter space, and an objective close to a quadratic over the width of the interval. A ρ–η valley, where it exists, breaks the first and the third, and ρ near −1 breaks the second. Along the valley JᵀWJ has a small eigenvalue, so the interval is long in a direction that is only approximately the valley's, and it extends past ρ = −1 into values the model does not allow. Study S6 measures its coverage on 200 synthetic surfaces, against the posterior interval's. For Monte Carlo pricers the Jacobian itself is a finite difference of noisy prices and needs common random numbers to exist.
 
 ### Multi-start and regularization
 
-A multi-start runs the optimizer from several points and keeps the distinct optima. On a valley it returns points spread along it, each with an objective value within the noise of the others. It is the desk's practical way to build a range of plausible calibrations, and the range it builds depends on how many starts, how far apart, and how different two optima must be to count. Tikhonov regularization adds λ ‖θ − θ\_ref‖² to the objective and returns one point; the point moves with λ and with θ\_ref, typically yesterday's calibration, which makes the calibration stable from day to day at the cost of hiding the valley. Study S6 reports the number of distinct modes and the sensitivity of the regularized point to λ.
+A multi-start runs the optimizer from several points and keeps the distinct optima. On a valley it can return points spread along it, each with an objective value within the noise of the others; in the pilot studies it found a single optimum on 97% of Heston smiles and on all 8 rough-Bergomi smiles (S6), so the range it builds is often a single point. It is the desk's practical way to build a range of plausible calibrations, and the range it builds depends on how many starts, how far apart, and how different two optima must be to count. Tikhonov regularization adds λ ‖θ − θ\_ref‖² to the objective and returns one point; the point moves with λ and with θ\_ref, typically yesterday's calibration, which makes the calibration stable from day to day at the cost of hiding the valley. Study S6 reports the number of distinct modes and the sensitivity of the regularized point to λ.
 
 ### Deep calibration
 
@@ -715,13 +715,13 @@ On rough Bergomi surfaces no exact posterior is affordable, but a second simulat
 
 The audit corrects the amortized posterior for a given surface and is part of the daily process. It follows neural importance sampling (Dax et al. 2023) and the SVJ audit:
 
-1. Fit a multivariate Student t law with 5 degrees of freedom to the network's draws in the logit coordinates, with covariance inflated by 1.2², and mix it with 10% of the prior. This is the proposal q(θ).
+1. Fit a multivariate Student t law with 5 degrees of freedom to the network's draws in the logit coordinates, with its shape matrix set to 1.2² times the draws' covariance (a covariance of 5/3 × 1.44 ≈ 2.4 times the draws'), and mix it with 10% of the prior. This is the proposal q(θ).
 2. Draw M proposals from q.
-3. Price each proposal's 63 contracts by Monte Carlo at 2^13 paths per maturity block, with common random numbers across proposals, and evaluate the Gaussian log-likelihood with the Monte Carlo variances added to the noise variances. A quarter of the bank's path count is enough here, because the common random numbers make most of the Monte Carlo error a shift shared by all proposals, which the self-normalized weights do not see.
+3. Price each proposal's 63 contracts by Monte Carlo at 2^13 paths per maturity block, doubling up to 2^15 for a block whose standard error exceeds 0.5 σ\_c, with common random numbers across proposals. Evaluate the Gaussian likelihood with variance σ\_c² − s\_c², which makes it an unbiased estimate of the exact likelihood (Appendix G.3). A surface with a proposal whose standard error stays above 0.9 σ\_c is flagged as not auditable. The pilot of S5 used σ\_c² + s\_c² instead, which counts the Monte Carlo variance twice; it is rerun with the corrected likelihood.
 4. Give each proposal the weight w = p(θ) L̂(θ) / q(θ), in the logit coordinates with the Jacobian included.
 5. Use the weighted proposals as the posterior. Their efficiency, and the Pareto k̂ of the largest weights (Vehtari et al. 2024), are the audit score.
 
-A proposal close to the posterior gives nearly equal weights, a high efficiency and a small k̂; a network that is off by δ posterior standard deviations gives an efficiency that falls roughly like e^(−δ²). The cost is M priced surfaces at reduced path counts: about 425 CPU-seconds for M = 256 in the pilot. The flag threshold is an open decision: the SVJ study used 2% efficiency; this study reports the distribution of efficiencies and k̂ on 500 held-out test surfaces and proposes k̂ < 0.7 as the rule.
+A proposal close to the posterior gives nearly equal weights, a high efficiency and a small k̂; a network that is off by δ posterior standard deviations gives an efficiency that falls roughly like e^(−δ²). The cost is M priced surfaces at reduced path counts: about 425 CPU-seconds for M = 256 in the pilot. The flag threshold is an open decision: the SVJ study used 2% efficiency; this study reports the distribution of efficiencies and k̂ on 500 held-out test surfaces and proposes the sample-size-dependent threshold of Pareto-smoothed importance sampling, k̂ < min(1 − 1/log₁₀ M, 0.7), 0.58 for M = 256, as the rule. The defensive mixture bounds the weights' variance; it does not prevent a few draws from carrying most of the weight.
 
 ### Posterior predictive check on a real smile
 
@@ -760,7 +760,7 @@ The law of total variance splits the variance of a product price into the part d
 
 ### Within-model against across-model
 
-The posterior range is a within-model range: it says what one model, with the calibration uncertainty the quotes allow, implies. Model risk in Cont's sense is wider: it includes the choice of model. The study calibrates Heston to the same smile and prices the same products; the gap between the two forward-start prices, ⟨S7⟩%, is a lower bound on the across-model range, and the model-free bounds of martingale optimal transport (Beiglböck, Henry-Labordère and Penkner 2013), which use the vanillas and nothing else, are its upper bound. The lesson places the posterior range between the two and says so.
+The posterior range is a within-model range: it says what one model, with the calibration uncertainty the quotes allow, implies. Model risk in Cont's sense is wider: it includes the choice of model. The study calibrates Heston to the same smile and prices the same products; the gap between the two forward-start prices, ⟨S7⟩%, is a lower bound on the across-model range, and the model-free bounds of martingale optimal transport (Beiglböck, Henry-Labordère and Penkner 2013), which use the vanillas and nothing else, are its upper bound. The lesson compares the posterior range with both, smile by smile: in the pilot the within-model range is below the across-model gap on one smile and above it on another (S7).
 
 ### Hedge ratios under the posterior
 
@@ -776,13 +776,13 @@ The study answers nine questions with explicit criteria. The table tracks them; 
 | --- | --- | --- | --- | --- | --- |
 | 1 | S1 | Cost and quality of the training bank | 100,000 surfaces with s\_c ≤ 0.25 σ\_c on every quote, or ≤ 0.5 σ\_c at the top of the ladder on a reported share of surfaces; path counts used and CPU-hours per 1,000 surfaces reported | Heston: 60,000 surfaces, quadrature error at most 0.056 σ\_c against a budget of 0.1, 0.013 CPU-hours per 1,000 surfaces. Rough pilot: 2,200 surfaces, every quote within the budget (median 0.04 σ\_c, largest 0.25), 3.3 CPU-hours per 1,000 surfaces. Full rough bank: ⟨S1⟩ | Heston and rough pilot met; full rough bank pending |
 | 2 | S2 | Statistical calibration and identification | SBC rank ECDFs inside the simultaneous DKW band (family-wise 5%) for all 3 targets on 2,000 surfaces; 95% coverage between 93% and 97% | Heston: all 4 targets inside the band on 2,000 smiles; 95% coverage 93.5% to 95.2%. Rough pilot, 250 smiles: H and η inside the band, ρ and ρη outside (bias toward more negative ρ); 95% coverage 92.0% to 96.4%. Full rough bank: ⟨S2⟩ | Heston met; rough pilot not met; full rough bank pending |
-| 3 | S3 | Agreement with the exact Heston posterior | Means within 0.3 posterior sd and 90% widths within 25%, on 50 surfaces, all targets | Network alone: 40 of 50 smiles on all four targets (v\_0 82%, θ\_H 96%, σ\_v 100%, ρ 98%). Network corrected by its audit: agrees with independent chains on 4 of 4 | Met by the network with its audit; not met by the network alone (v\_0) |
-| 4 | S4 | Agreement with the neural-pricer route | Same criterion, on 50 rough-Bergomi surfaces; pricer error below 0.5 σ\_c on held-out surfaces | Heston rehearsal: pricer error 0.03 σ\_c; the pricer route agrees with the exact posterior on 50 of 50 smiles, and with the network on 84% (v\_0 86%). Rough: ⟨S4⟩ | Heston rehearsal met; rough pending |
-| 5 | S5 | The audit | Distribution of efficiency and k̂ on 500 surfaces; flag rate at k̂ > 0.7 reported; cost per surface | Rough pilot, 40 smiles: efficiency median 14%; 23% flagged at k̂ > 0.7; 425 CPU-seconds per smile; the pilot network's means 0.4 to 0.6 sd off and its intervals 1.3 to 1.6 times too wide. Full: ⟨S5⟩ | pilot reported; full pending |
+| 3 | S3 | Agreement with the exact Heston posterior | Means within 0.3 posterior sd and 90% widths within 25%, on 50 surfaces, all targets | Network alone: 40 of 50 smiles on all four targets (v\_0 82%, θ\_H 96%, σ\_v 100%, ρ 98%). Network corrected by its audit: agrees with independent chains on 4 of 4 | Partly met: the network with its audit agrees with independent chains on 4 of 4 smiles (on the other 46 the audit is its own reference); the network alone meets it on 80% |
+| 4 | S4 | Agreement with the neural-pricer route | Same criterion, on 50 rough-Bergomi surfaces; pricer error below 0.5 σ\_c on held-out surfaces | Heston rehearsal: pricer error 0.03 σ\_c; the pricer route agrees with the exact posterior on 50 of 50 smiles, and with the network on 84% (v\_0 86%). Rough: ⟨S4⟩ | Heston rehearsal: pricer route met (50 of 50 against the exact posterior), network against pricer route 84%; rough pending |
+| 5 | S5 | The audit | Distribution of efficiency and k̂ on 500 surfaces; flag rate at k̂ > 0.7 reported; cost per surface | Rough pilot, 40 smiles: efficiency median 14%; 23% flagged at k̂ > 0.7 and 33% at the sample-size threshold 0.58; 425 CPU-seconds per smile; the pilot network's means 0.4 to 0.6 sd off and its intervals 1.3 to 1.6 times too wide; computed with a likelihood that counts the Monte Carlo variance twice. Full: ⟨S5⟩ | pilot reported, to be rerun with the corrected likelihood; full pending |
 | 6 | S6 | The classical route | Coverage of Gauss–Newton 90% intervals against posterior 90% intervals on 200 surfaces; number of distinct multi-start modes; sensitivity of the regularized point to λ | Heston: Gauss–Newton coverage 87% to 92% against posterior 87% to 90% on 200 smiles; one optimum on 97%; no interval on 11 smiles at the prior's edge. Rough pilot, 8 smiles: one optimum on every smile; Gauss–Newton coverage 71% to 100%, no interval on the smile at ρ = −0.99; a curved η–ρ valley the ellipse cannot follow on one smile. Full rough: ⟨S6⟩ | Heston done; rough pilot reported; full pending |
-| 7 | S7 | Products and reserves | Variance-swap range zero; volatility-swap, forward-start and out-of-grid ranges and reserves, with each price's Monte Carlo standard error; Heston-against-rough gap | Heston, 3 smiles: every product carries a range, the variance swap's 1.0% to 2.6%; forward-start reserve 0.7% to 1.7% of its price. Rough pilot, 3 smiles: variance-swap range zero; forward-start reserve 1.0% to 6.1%, driven by η (pilot network too wide, S5). Full rough: ⟨S7⟩ | Heston done; rough pilot reported; full pending |
+| 7 | S7 | Products and reserves | Variance-swap range zero; volatility-swap, forward-start and out-of-grid ranges and reserves, with each price's Monte Carlo standard error; Heston-against-rough gap | Heston, 3 smiles: every product carries a range, the variance swap's 1.0% to 2.6%; forward-start reserve 0.7% to 1.7% of its price. Rough pilot, 3 smiles: variance-swap range zero by construction (continuous monitoring, fixed curve); forward-start reserve 1.0% to 6.1%, driven by η (pilot network too wide, S5); Heston-against-rough forward-start gap −4.1% to +7.9%, larger than both reserves on one smile and inside both ranges on another. Full rough: ⟨S7⟩ | Heston done; rough pilot reported; full pending |
 | 8 | S8 | The real smile | Skew term-structure exponent; posterior; audit score; posterior predictive residuals with at most ⟨proposed: 10%⟩ of quotes beyond two standard deviations | SPY, 21 October 2026: exponent −0.32; every grid point read from quotes; real spreads below the design noise; the forward-variance curve outside the curve prior. Posterior, audit and residuals: ⟨S8⟩ | data done; posterior pending |
-| 9 | S9 | Costs | One table on one machine: Monte Carlo likelihood evaluation; exact chain extrapolated to 400 effective draws; network; audit; neural pricer with MCMC; multi-start least squares | One rough likelihood evaluation 5.0 CPU-s; exact rough posterior about 17 CPU-h (extrapolated); amortized posterior 1.4 s for 1,000 draws; audit 425 CPU-s; Monte Carlo least squares 600 CPU-s; Heston exact posterior 250 CPU-s | done (pilot networks) |
+| 9 | S9 | Costs | One table on one machine: Monte Carlo likelihood evaluation; exact chain extrapolated to 400 effective draws; network; audit; neural pricer with MCMC; multi-start least squares | One rough likelihood evaluation 5.0 CPU-s; exact rough posterior at least 17 CPU-h (extrapolated; about 41 at the pilot bank's average pricing cost); amortized posterior 1.4 s for 1,000 draws; audit 425 CPU-s; Monte Carlo least squares 600 CPU-s; Heston exact posterior 250 CPU-s | done (pilot networks) |
 
 ### Hardware, software and timing conventions of the study
 
@@ -818,7 +818,7 @@ Figures ⟨S2-1⟩ to ⟨S2-4⟩ above, plus the contraction table. The values b
 | ρ | 0.94 (pilot) | 92.0% (pilot) | follows η at fixed ρη |
 | ρη | 0.98 (pilot) | 95.2% (pilot) | from the skew level |
 
-Pilot reading. The smile identifies all three parameters, not only ρη. The posterior's standard deviation relative to its mean has a median of 10% for H, 5% for η and 6% for ρ and for ρη. Within a smile the correlation of η and ρ, in logit coordinates, has a median of 0.34 (10% to 90%: −0.20 to 0.75): the ridge of the identification picture exists, but it is short, because the 63 quotes measure the curvature that separates η from ρ well enough at this noise level. H, not η, is the least identified parameter. Whether this holds for real quotes depends on the noise in the wings: real short-dated far-from-the-money options are often quoted wider than the noise model's one volatility point, and the real chain of S8 measures that. ⟨S2⟩
+Pilot reading. The smile identifies all three parameters, not only ρη. The posterior's standard deviation relative to its mean has a median of 10% for H, 5% for η and 6% for ρ and for ρη. Within a smile the correlation of η and ρ, in logit coordinates, has a median of 0.34 (10% to 90%: −0.20 to 0.75): the ridge of the identification picture exists, but it is short, because the 63 quotes separate η from ρ well enough at this noise level, mainly through the long-dated at-the-money level against ξ\_0 (Lecture 7 of the course), which makes the separation depend on ξ\_0 being read correctly. H, not η, is the least identified parameter. Whether this holds for real quotes depends on the noise in the wings: real short-dated far-from-the-money options are often quoted wider than the noise model's one volatility point, and the real chain of S8 measures that. ⟨S2⟩
 
 SBC passes for H and η and fails for ρ and ρη. The pilot network places ρ too negative, and with it ρη, by a median of 0.3 posterior standard deviations; its 95% intervals still cover the truth on 92% to 96% of smiles. A bias of this size is what a training set of 1,600 surfaces can leave, and the full bank tests whether it goes; meanwhile the audit (S5) corrects it smile by smile.
 
@@ -834,7 +834,7 @@ SBC passes for H and η and fails for ρ and ρη. The pilot network places ρ t
 
 ![Exact against amortized posterior on the four Heston test smiles with independent chains, target by target, standardized by the exact posterior.](images/calibration-04-heston-agreement.png)
 
-*Figure S3-1: exact against amortized posterior on the four Heston test smiles that also have independent chains (test rows 2,000 to 2,003), target by target, standardized by the exact posterior.* How to read the figure: as the SVJ agreement figure: dots are medians and lines 90% intervals, standardized by the chains' posterior (grey, mean 0 and sd 1); blue is the network alone, green the network corrected by importance reweighting with the Fourier likelihood, and the star the true value. A star outside the grey interval, as for σ\_v and ρ on surface 2001, is a true value in the tail of the exact posterior: 3.2 and 3.4 standard deviations below its means, along the ridge where σ\_v and ρ trade off at a fixed skew. The network follows the exact posterior there; whether such tails occur as often as they should is the question SBC answers on 2,000 smiles (S2).
+*Figure S3-1: exact against amortized posterior on the four Heston test smiles that also have independent chains (test rows 2,000 to 2,003), target by target, standardized by the exact posterior.* How to read the figure: as the SVJ agreement figure: dots are medians and lines 90% intervals, standardized by the chains' posterior (grey, mean 0 and sd 1); blue is the network alone, green the network corrected by importance reweighting with the Fourier likelihood, and the star the true value. A star outside the grey interval, as for σ\_v and ρ on surface 2001, is a true value in the tail of the exact posterior: 3.0 and 3.3 standard deviations below the chains' means (3.2 and 3.4 below the reweighted posterior's), along the ridge where σ\_v and ρ trade off at a fixed skew. The network follows the exact posterior there; whether such tails occur as often as they should is the question SBC answers on 2,000 smiles (S2).
 
 Setup: the 50 test smiles at rows 2,000 to 2,049, which no training or selection step used; 1,000 network draws per smile; the exact posterior by importance reweighting of 2,048 proposals with the Fourier likelihood (the audit of S5 with the exact likelihood), and, on the first four smiles, by four random-walk chains of 6,000 steps each after 1,000 of burn-in.
 
@@ -846,15 +846,15 @@ Setup: the 50 test smiles at rows 2,000 to 2,049, which no training or selection
 | ρ | 0.09 (0.31) | 0.79 to 1.16 | 98% |
 | All four | | | 80% (40 of 50) |
 
-The network alone misses the criterion on 10 of the 50 smiles, nine of them by v\_0's mean, 0.32 to 0.55 posterior standard deviations off. v\_0 has the sharpest posterior of the four, because the one-week quotes pin the initial variance, so a small error of the network in absolute terms is a visible one against the posterior's width. The reweighted posterior agrees with the chains on all four smiles that have them: means within 0.17 posterior standard deviations and 90% widths within 21%, with R̂ at most 1.011, at least 413 effective draws per target and about 400 CPU-seconds for the four chains of one smile. The audit's efficiency has a median of 32% and a range of 4.5% to 65%; its k̂ exceeds 0.7 on 4 of the 50 smiles, two of them among the ten that miss. On the one chain smile with k̂ above 0.7 (surface 2001, k̂ 0.74), the reweighted v\_0 interval is 21% wider than the chains', which is the inflation the rule expects of a heavy-tailed weight distribution. The audit costs a median 32 CPU-seconds per smile with the Fourier likelihood.
+The network alone misses the criterion on 10 of the 50 smiles, nine of them by v\_0's mean, 0.32 to 0.55 posterior standard deviations off. v\_0 has the sharpest posterior of the four, because the one-week quotes pin the initial variance, so a small error of the network in absolute terms is a visible one against the posterior's width. The reweighted posterior agrees with the chains on all four smiles that have them: means within 0.17 posterior standard deviations and 90% widths within 21%, with R̂ at most 1.011 (on surface 2001, just above the 1.01 threshold; at most 1.004 on the other three), at least 413 effective draws per target and about 400 CPU-seconds for the four chains of one smile. The audit's efficiency has a median of 32% and a range of 4.5% to 65%; its k̂ exceeds 0.7 on 4 of the 50 smiles, two of them among the ten that miss. On the one chain smile with k̂ above 0.7 (surface 2001, k̂ 0.74), the reweighted v\_0 interval is 21% wider than the chains', which is the inflation the rule expects of a heavy-tailed weight distribution. The audit costs a median 32 CPU-seconds per smile with the Fourier likelihood.
 
-Reading: the workflow's output for a smile, the network corrected by its audit, meets the criterion; the network alone meets it on 80% of smiles, all four targets together, and on 96% or more for θ\_H, σ\_v and ρ. The lesson shows both numbers and says which one a desk would rely on. The three networks behind this result, and what each change bought, are in the training section and Appendix F.2.
+Reading: the workflow's output for a smile, the network corrected by its audit, meets the criterion on the four smiles that have independent chains (on the other 46 the audit is its own reference); the network alone meets it on 80% of smiles, all four targets together, and on 96% or more for θ\_H, σ\_v and ρ. The lesson shows both numbers and says which one a desk would rely on. The three networks behind this result, and what each change bought, are in the training section and Appendix F.2.
 
 ### 4. The two neural routes (S4)
 
 For rough Bergomi: the pricer's held-out error in units of σ\_c, its training cost, and the agreement table between MCMC on the pricer and the amortized posterior, as in S3. The figure overlays the two posteriors on the real smile. ⟨S4⟩
 
-Heston first, as a rehearsal where the exact answer is known. The pricer is a multilayer perceptron with four layers of 256 units. It was trained for 300 epochs on the clean prices of the 50,000 training surfaces, in 370 CPU-seconds. Its held-out RMS error is 0.029 σ\_c at the median contract and 0.041 σ\_c at the worst, and 99% of its errors on 2,000 test surfaces are below 0.11 σ\_c. Four random-walk chains of 20,000 steps on its likelihood cost a median 12 CPU-seconds per smile, with R̂ at most 1.007 and at least 948 effective draws per target.
+Heston first, as a rehearsal where the exact answer is known. The pricer is a multilayer perceptron with four layers of 256 units. It was trained for 300 epochs on the clean prices of the 50,000 training surfaces, in 370 CPU-seconds. Its held-out RMS error is 0.029 σ\_c at the median contract and 0.041 σ\_c at the worst, and 99% of its errors on 2,050 test surfaces (rows 0 to 2,049) are below 0.11 σ\_c. Four random-walk chains of 20,000 steps on its likelihood cost a median 12 CPU-seconds per smile, with R̂ at most 1.007 and at least 948 effective draws per target.
 
 | Comparison on 50 smiles: share within the criterion | v\_0 | θ\_H | σ\_v | ρ | All four |
 | --- | --- | --- | --- | --- | --- |
@@ -874,7 +874,7 @@ Reading: on the smiles of S3, MCMC on the pricer reproduces the exact posterior 
 
 *Figure S5-1 (rough Bergomi, pilot): efficiency and k̂ of the audit on 40 held-out test smiles (rows 250 to 289), against the network's standardized error on the same smiles; the full study uses 500.* How to read the figure: each point is one surface; the horizontal axis is the largest standardized error of the network's posterior mean against the audited posterior, the vertical axis the audit efficiency on a log scale; the dashed curve is e^(−δ²); points in the lower right are the surfaces the audit must flag, and the colour marks k̂ above 0.7.
 
-Pilot reading. With 256 proposals at 2^13 paths per block, one audit costs a median 425 CPU-seconds. The efficiency has a median of 14% (5% to 95%: 1.9% to 24%), and its ceiling near 25% even where the network is right is the price of the defensive proposal, a t law with inflated covariance and 10% of the prior. The audit flags 23% of the smiles at k̂ > 0.7 and 10% at an efficiency below 2%. On the 30 smiles with a reliable audit (efficiency above 5%, k̂ below 0.7), the pilot network's means are a median 0.37, 0.62 and 0.42 audited standard deviations from the audited ones for H, η and ρ, and its 90% intervals are 1.3, 1.6 and 1.4 times as wide: a network trained on 1,600 surfaces is calibrated on average and too wide for each smile, and the audit is what makes its answer usable. Two cautions read the figure: an audited posterior from a few dozen effective draws is itself coarse, so the largest errors are partly the audit's, and the points far above e^(−δ²) at large δ are the smiles where that is so. ⟨S5⟩
+Pilot reading. With 256 proposals at 2^13 paths per block, one audit costs a median 425 CPU-seconds. The efficiency has a median of 14% (5% to 95%: 1.9% to 24%), and its ceiling near 25% even where the network is right is the price of the defensive proposal, a t law with inflated covariance and 10% of the prior, and of the pilot network being too wide. The audit flags 23% of the smiles (9 of 40) at k̂ > 0.7, 33% (13 of 40) at the sample-size threshold 0.58, and 10% at an efficiency below 2%. On the 30 smiles with a reliable audit (efficiency above 5%, k̂ below 0.7), the pilot network's means are a median 0.37, 0.62 and 0.42 audited standard deviations from the audited ones for H, η and ρ, and its 90% intervals are 1.3, 1.6 and 1.4 times as wide: a network trained on 1,600 surfaces is calibrated on average for H and η, biased for ρ (S2), and too wide for each smile, and the audit is what makes its answer usable. Two cautions read the figure: an audited posterior from a few dozen effective draws is itself coarse, so the largest errors are partly the audit's, and the points far above e^(−δ²) at large δ are the smiles where that is so. These numbers were computed with the likelihood variance σ\_c² + s\_c², which counts the Monte Carlo variance twice and targets a noise variance σ\_c² + 2s\_c². With a = s\_c/σ\_c it widens the audited posterior by about a² in standard deviation, about 1% where a = 0.1 and 4% where a = 0.2, and more on the hard surfaces whose blocks needed extra paths in the bank. The conclusions above survive an error of that size; the rerun with the corrected likelihood replaces the numbers. ⟨S5⟩
 
 ### 6. The classical route (S6)
 
@@ -911,7 +911,7 @@ Heston first. On three test smiles (rows 2,300 to 2,302), each product is priced
 | Forward-start 63 → 126 d | 1.6% to 3.7% | 0.7% to 1.7% | σ\_v and ρ on two smiles, θ\_H on the third |
 | 2-year 90% put | 1.7% to 6.2% | 0.6% to 2.2% | θ\_H (0.76 to 0.91) |
 
-Under Heston every product carries a range, the variance swap included: its strike is the average of Heston's forward-variance curve θ\_H + (v\_0 − θ\_H) e^(−κt), which moves with v\_0 and θ\_H (claim C10). The out-of-grid put has the widest range, and the long-run variance θ\_H drives it, the parameter the smile's one-year quotes pin least. Under rough Bergomi the forward-variance curve is an input, so the variance swap's range is zero and the other products' ranges come from (H, η, ρ) alone.
+Under Heston every product carries a range, the variance swap included: its strike is the average of Heston's forward-variance curve θ\_H + (v\_0 − θ\_H) e^(−κt), which moves with v\_0 and θ\_H (claim C10). The out-of-grid put has the widest range, and the long-run variance θ\_H drives it, because it sets the long end of Heston's variance curve: the expected average variance over two years is θ\_H + 0.25 (v\_0 − θ\_H) at κ = 2. Under rough Bergomi the forward-variance curve is an input, so the variance swap's range is zero by construction (continuous monitoring, fixed curve) and the other products' ranges come from (H, η, ρ) alone.
 
 ![Heston product prices under the posterior on three test smiles, with the least-squares price and the 90% quantile.](images/calibration-10-heston-products.png)
 
@@ -926,7 +926,7 @@ Rough Bergomi, pilot: three test smiles of the pilot bank (rows 290 to 292), 400
 | Forward-start 63 → 126 d | 2.2% to 9.3% | 1.0% to 6.1% | η (0.94 to 0.97), then ρ |
 | 2-year 90% put | 2.5% to 17.7% | 1.9% to 9.7% | η (0.68 to 0.94), then H on two smiles |
 
-The variance swap's range is zero, and every other product's range comes from the volatility of variance η: the smile pins η to about 5%, and these products amplify what is left. The pilot network's intervals are 1.3 to 1.6 times too wide (S5), so these ranges overstate the posterior's; the full bank's network, or the audited draws, set the reported numbers. Pricing 401 parameter sets costs about 340 CPU-seconds per smile, and the Monte Carlo least squares about 240.
+The variance swap's range is zero by construction, and every other product's range comes mostly from the volatility of variance η: the smile pins η to about 5%, and these products amplify what is left. The pilot network's intervals are 1.3 to 1.6 times too wide (S5), so these ranges overstate the posterior's; the full bank's network, or the audited draws, set the reported numbers. Pricing 401 parameter sets costs about 340 CPU-seconds per smile, and the Monte Carlo least squares about 240.
 
 ![Rough-Bergomi product prices under the pilot network's posterior on three test smiles, with the least-squares price and the 90% quantile.](images/calibration-15-rough-pilot-products.png)
 
@@ -941,7 +941,7 @@ For rough Bergomi, full bank: figure ⟨S7-1⟩ above, the variance-explained ta
 | Forward-start 63 → 126 d | 0.0347, 0.0345 to 0.0353, 1.6% | 0.0374, 0.0368 to 0.0382, 1.6% | +7.9% |
 | 2-year 90% put | 0.0625, 0.0622 to 0.0638, 1.9% | 0.0669, 0.0651 to 0.0683, 1.9% | +6.9% |
 
-The table is the pilot's first smile (test row 290; prices in forward units; reserve as a share of the point price); the full bank and the real smile replace it. Heston's posterior for a rough-Bergomi smile is the Heston network's draws corrected by importance sampling with the Fourier likelihood. On this smile and on the third, Heston fits nearly as well as rough Bergomi (χ² 67.7 and 73.1 against 59.3 and 59.7, on 63 quotes), and still prices the forward-start 8.0% above and 4.1% below it at the least-squares points. On this one the two models' 90% ranges are disjoint for every product. That includes the variance swap: Heston's forward-variance curve is implied by its parameters, while rough Bergomi takes the market's. On the second smile Heston cannot fit at all (χ² 1,347): its audit's efficiency is zero and its posterior collapses to a point, the signal that the model, not its parameters, is wrong. The gap between the models, 4% to 8% of the forward-start's price, is larger than either model's own reserve, and it is what slot 6 takes up.
+The table is the pilot's first smile (test row 290; prices in forward units; reserve as a share of the point price); the full bank and the real smile replace it. Heston's posterior for a rough-Bergomi smile is the Heston network's draws corrected by importance sampling with the Fourier likelihood. On this smile and on the third, Heston fits nearly as well as rough Bergomi (χ² 67.7 and 73.1 against 59.3 and 59.7, on 63 quotes), and still prices the forward-start 7.9% above and 4.1% below it at the least-squares points. On this one the two models' 90% ranges are disjoint for every product. That includes the variance swap: Heston's forward-variance curve is implied by its parameters, while rough Bergomi takes the market's. On the second smile Heston cannot fit at all (χ² 1,347): its audit's efficiency is zero and its posterior collapses to a point, the signal that the model, not its parameters, is wrong. On smile 290 the gap between the models' forward-start prices, 7.9%, is about five times either model's reserve (1.6%) and larger than both 90% ranges (3.8% and 2.2%). On smile 292 the gap, −4.1%, is smaller than both models' 90% ranges (8.1% and 9.3%), and the ranges overlap. The across-model gap can therefore exceed the within-model range or fall inside it, and that comparison, smile by smile, is what slot 6 takes up.
 
 ![The same three rough-Bergomi smiles under rough Bergomi and Heston: product prices under each model's posterior, with the least-squares prices.](images/calibration-16-rough-pilot-across-models.png)
 
@@ -973,7 +973,7 @@ The forward-variance curve lies outside the training prior. The prior writes eac
 | Route | Per surface | Notes |
 | --- | --- | --- |
 | One Monte Carlo likelihood evaluation, 2^15 paths per block | 5.0 CPU-s (3.9 s on the clock) | the unit everything else is counted in |
-| Exact MCMC with the Monte Carlo pricer, to 400 effective draws | 17 CPU-h | extrapolated: 12,300 evaluations, the median the Heston chains of S3 needed |
+| Exact MCMC with the Monte Carlo pricer, to 400 effective draws | at least 17 CPU-h (41 at the bank's average pricing cost) | extrapolated: 12,300 evaluations, the median the Heston chains of S3 needed, at 5.0 and at 11.9 CPU-seconds per evaluation |
 | Amortized posterior, 1,000 draws | 1.4 s on the clock (3.6 CPU-s) | plus 5.9 s to load the network and compile the sampler once |
 | Audit, M proposals at 2^13 paths per block | 425 CPU-s for M = 256 | pilot, median over 40 smiles (S5) |
 | Neural pricer with MCMC, 4 chains | 12 CPU-s (Heston) | plus the pricer's training, once: 370 CPU-s on the Heston bank (S4) |
@@ -993,9 +993,9 @@ The 40-minute advanced segment makes the two claims of the executive summary. Fr
 | 4–9 | GBM under Q | Black–Scholes gives one volatility; the market gives a smile with a skew that steepens as T^(H−½). Slot 4's posterior forecasts, this one prices. | Flat line against the smile; the skew term structure on log–log axes |
 | 9–16 | Heston | The smile explained; the Fourier likelihood; the exact posterior; the slot-4 workflow with a new simulator; the network against the exact answer | Figure S3-1 |
 | 16–21 | Rough Bergomi | Why rough; why Monte Carlo only; why no exact posterior | One priced surface and its cost; the skew term structure under both models |
-| 21–26 | The amortized posterior | The posterior for the SPY smile in seconds; the ρ–η valley; H from the term structure | Posterior pairs over H, η, ρ |
+| 21–26 | The amortized posterior | The posterior for the SPY smile in seconds; ρη from the skew, H from its term structure, η from the level against ξ\_0 | Posterior pairs over H, η, ρ |
 | 26–31 | Is it right? | SBC on 2,000 surfaces; the audit of this surface; the neural-pricer route agrees | ⟨S2-3⟩, ⟨S5-1⟩, the overlay of S4 |
-| 31–35 | The classical route | Multi-start finds the valley's ends and weighs none; the Gauss–Newton ellipse cannot follow the valley; regularization picks a point by λ | ⟨S6-1⟩ |
+| 31–35 | The classical route | Multi-start usually finds one optimum and weighs nothing; the Gauss–Newton ellipse is right on a quadratic objective and wrong along a curved valley or at the prior's edge; regularization picks a point by λ | ⟨S6-1⟩ |
 | 35–39 | From posterior to prices | Variance swap: zero range. Volatility swap and forward-start: a range and a reserve. | ⟨S7-1⟩ |
 | 39–40 | Across models | Heston and rough Bergomi price the forward-start ⟨S7⟩% apart; within-model is a lower bound; slot 6 | the Heston-against-rough table |
 
@@ -1023,6 +1023,7 @@ The main risks are of method rather than of schedule: a posterior whose width is
 | ξ\_0 from the chain carries its own error | A biased level at every maturity | Report the replication error; treat the level as conditioned on; show the sensitivity of H, η, ρ to a bumped curve |
 | Monte Carlo noise in the audit likelihood | Weights biased where s\_c is not small | Common random numbers across proposals; add the Monte Carlo variances to the noise; raise the path count on flagged surfaces |
 | The valley makes the network's job hard | Posterior too narrow along the valley | SBC on the product ρη and on η separately; the audit catches single surfaces; the pricer route is the cross-check |
+| η is identified through ξ\_0, which enters as exact | The posterior of η, and every product range, is conditional on a curve read from truncated strikes; an error in ξ\_0 becomes an error in η the posterior does not show | Measure the replication error of ξ\_0 on the chain; rerun the network on perturbed curves within that error, or condition on a posterior for ξ\_0; report each product's sensitivity to ξ\_0 |
 | The design grid is not the real chain | Interpolation error enters as data | Report the smile-fit residuals; Stage D reads the chain as quoted |
 | The forward-start depends on ξ\_0 beyond the data | The out-of-grid product's range mixes calibration and extrapolation | Keep the forward-start inside one year; state the extrapolation of the 2-year put |
 | The classical critique sounds overstated | Loss of credibility with quants | Use the same weights for both routes; report the Gauss–Newton coverage as measured; name the neural-pricer route as the strong competitor |
@@ -1034,7 +1035,8 @@ The main risks are of method rather than of schedule: a posterior whose width is
 - [ ] The noise scale: 0.3 to 1.0 volatility points across δ, or a scale read from the real chain's bid-ask widths.
 - [ ] The prior ranges of H, η and ρ, and whether to allow positive ρ.
 - [ ] The real underlying: SPY (listed, liquid, chain available through the connector) or SPX (the index desks quote).
-- [ ] The audit flag: k̂ above 0.7, an efficiency floor, or both.
+- [ ] The audit flag: k̂ above the sample-size threshold min(1 − 1/log₁₀ M, 0.7), an efficiency floor, or both.
+- [ ] Whether to propagate the uncertainty of ξ\_0 into the posterior, which now takes the curve as exact.
 - [ ] Heston in the lesson: seven minutes as the exact check, or four.
 - [ ] Stage D in the tutorial: the set-based network shown, or mentioned.
 - [ ] Hosting of the bank and the networks: GitHub release or Hugging Face.
@@ -1052,7 +1054,7 @@ A pricing library calibrates each model to the vanilla surface of each underlyin
 | Claim | What the source shows | Source |
 | --- | --- | --- |
 | Calibration is not unique and the choice matters for exotics | Seven models calibrated to one smile within market precision price barriers, cliquets and lookbacks far apart | Schoutens, Simons and Tistaert (2004), "A perfect calibration! Now what?" |
-| Within one model, the objective function moves the exotic prices | Heston and Bates calibrated with price and implied-volatility objectives give different parameters and different exotic prices | Detlefsen and Härdle (2007), J. Derivatives; Guillaume and Schoutens (2012), Rev. Deriv. Res. |
+| Within one model, the objective function moves the exotic prices | Heston and Bates calibrated with price and implied-volatility objectives give different parameters and different exotic prices | Detlefsen and Härdle (2006), J. Derivatives; Guillaume and Schoutens (2012), Rev. Deriv. Res. |
 | Model uncertainty is a range of prices consistent with the vanillas | A coherent measure of model uncertainty from the set of models consistent with market prices | Cont (2006), Math. Finance |
 | Banks must deduct a model-risk adjustment built from a range of plausible calibrations | Art. 11(1): a range of different models or model calibrations; Art. 11(3): a range of plausible valuations and a point at 90% confidence; Art. 11(4): an expert-based approach where (3) is impossible | [Regulation (EU) 2016/101](https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32016R0101) |
 | Level 3 fair values need sensitivity ranges | Narrative sensitivity to unobservable inputs and, for financial instruments, the effect of reasonably possible alternative assumptions | IFRS 13, paragraph 93(h) |
@@ -1146,7 +1148,7 @@ Lewis (2001) writes the call as the forward minus an integral of the characteris
 c(k,T) = 1 - \frac{e^{-x/2}}{\pi}\int_0^\infty \mathrm{Re}\!\left[e^{iux}\,\varphi\!\big(u - \tfrac{i}{2}\big)\right]\frac{du}{u^2 + \tfrac14}, \qquad x = -k .
 ```
 
-Under Black–Scholes φ(u − i/2) = exp(−½σ²T(u² + ¼)) is real and the integral reproduces the formula of Appendix B, which is the pricer's first test. The integrand decays like exp(−½ w u²), with w the total variance to the maturity, so a cutoff U and a node count that resolve it are accurate to far below the quote noise. For the design grid w ranges from about 2 × 10⁻⁴ (10% volatility over one week) to about 0.16, and the needed cutoff from a few hundred to a few thousand, which is why the pricer climbs the ladder of the main text and accepts a rung only when the next one agrees with it within 0.1 σ\_c; the difference is stored as a numerical diagnostic, separate from the quote noise. Puts follow by parity.
+Under Black–Scholes φ(u − i/2) = exp(−½σ²T(u² + ¼)) is real and the integral reproduces the formula of Appendix B, which is the pricer's first test. For small u the integrand decays like exp(−½ w u²), with w the total variance to the maturity. Beyond u ≈ 1/(σ\_v √(1 − ρ\_H²) T) Heston's characteristic function decays only exponentially, about like exp(−c u) with c = (v\_0 + κθ\_H T) √(1 − ρ\_H²) / σ\_v, so the cutoff is set by c: it is small at the centre of the prior and reaches a few thousand in the corner of the prior where v\_0 is small, σ\_v large and |ρ\_H| near 1, whatever the maturity (Lecture 6 of the course derives the rate and measures it). That is why the pricer climbs the ladder of the main text and accepts a rung only when the next one agrees with it within 0.1 σ\_c; the difference is stored as a numerical diagnostic, separate from the quote noise. Puts follow by parity.
 
 ### C.3 The no-jump branch and the forward-variance curve
 
@@ -1224,7 +1226,7 @@ Near the optimum, P\_c(θ) ≈ P\_c(θ̂) + J\_c (θ − θ̂), with J the Jacob
 
 ### E.3 Regularization
 
-Tikhonov regularization minimizes the objective plus λ ‖θ − θ\_ref‖², which is maximum a posteriori under a Gaussian prior centred on θ\_ref with variance 1/(2λ) in each coordinate. The regularized point is a compromise between the data and θ\_ref decided by λ; as λ → 0 it is the least-squares point, as λ → ∞ it is θ\_ref. Crépey (2003) and Cont and Tankov (2004) develop this for local volatility and for Lévy models. The Bayesian posterior under the same Gaussian prior is the distribution of which the regularized point is the mode; what regularization discards is its width.
+Tikhonov regularization minimizes the objective plus λ ‖θ − θ\_ref‖², which, for the objective χ² (minus twice the log-likelihood) plus λ ‖θ − θ\_ref‖², is maximum a posteriori under a Gaussian prior centred on θ\_ref with variance 1/λ in each coordinate. The regularized point is a compromise between the data and θ\_ref decided by λ; as λ → 0 it is the least-squares point, as λ → ∞ it is θ\_ref. Crépey (2003) and Cont and Tankov (2004) develop this for local volatility and for Lévy models. The Bayesian posterior under the same Gaussian prior is the distribution of which the regularized point is the mode; what regularization discards is its width.
 
 ### E.4 Deep calibration
 
@@ -1274,11 +1276,11 @@ Draw θ\* ~ p(θ), y ~ p(y ∣ θ\*), and θ^(1), …, θ^(L) ~ p(θ ∣ y). Giv
 
 ### G.2 Importance sampling, efficiency and k̂
 
-For proposals θ^(m) ~ q and weights w^(m) ∝ p(θ^(m)) L(θ^(m)) / q(θ^(m)), the self-normalized estimate Σ w^(m) h(θ^(m)) / Σ w^(m) converges to E[h ∣ y] as M grows, for any q that is positive where the posterior is. Its variance is governed by the variance of the weights; the effective sample size (Σw)² / Σw² counts how many equal-weight draws the sample is worth. Pareto-smoothed importance sampling (Vehtari et al. 2024) fits a generalized Pareto law to the largest weights; its shape parameter k̂ estimates how heavy the weight tail is, the estimate is reliable for k̂ below 0.5, usable below 0.7, and unreliable above, whatever the efficiency says. The defensive mixture with the prior keeps the ratio bounded where the network's law is too narrow.
+For proposals θ^(m) ~ q and weights w^(m) ∝ p(θ^(m)) L(θ^(m)) / q(θ^(m)), the self-normalized estimate Σ w^(m) h(θ^(m)) / Σ w^(m) converges to E[h ∣ y] as M grows, for any q that is positive where the posterior is. Its variance is governed by the variance of the weights; the effective sample size (Σw)² / Σw² counts how many equal-weight draws the sample is worth. Pareto-smoothed importance sampling (Vehtari et al. 2024) fits a generalized Pareto law to the largest weights; its shape parameter k̂ estimates how heavy the weight tail is, and the estimate is unreliable when k̂ exceeds min(1 − 1/log₁₀ M, 0.7), which is 0.58 for M = 256 and 0.7 for M ≥ 2,048 (Vehtari et al. 2024), whatever the efficiency says. The defensive mixture with the prior bounds the ratio p/q, and with it the variance of the weights, where the network's law is too narrow; it does not prevent a few draws from carrying most of the weight.
 
 ### G.3 Monte Carlo noise in the likelihood
 
-With P̂\_c = P\_c + s\_c ζ\_c, ζ\_c ~ N(0, 1) independent of the quote noise, the plug-in log-likelihood −½ Σ ((y\_c − P̂\_c) / σ\_c)² has expectation −½ Σ ((y\_c − P\_c) / σ\_c)² − ½ Σ s\_c² / σ\_c², and exp of it is biased relative to the likelihood by a factor that depends on θ only through s\_c(θ). With the bank's budget s\_c ≤ 0.25 σ\_c the shift is at most 0.031 per quote, 2 over 63 quotes (0.125 per quote for the few quotes at the cap of 0.5 σ\_c), and with the typical s\_c ≈ 0.05 σ\_c it is 0.08 over 63 quotes; it is nearly constant in θ, and using σ\_c² + s\_c² as the variance removes the first-order dependence. The same error enters training: the bank's clean prices carry it, so the network learns the posterior for a noise variance σ\_c² + s\_c², which is at most 3% wider in standard deviation than the declared one within the budget, 12% for the few quotes at the cap, and in the typical case 0.1%. The exact chain of study S9 uses the stored estimator covariance and a second seed to check that its posterior is insensitive to the Monte Carlo noise.
+Write P̂\_c = P\_c + s\_c ζ\_c, with ζ\_c ~ N(0, 1) independent across quotes and of the quote noise. Importance weights need an unbiased estimate of the likelihood, not of its logarithm: self-normalized importance sampling with an unbiased likelihood estimate targets the exact posterior, as pseudo-marginal methods do (Andrieu and Roberts 2009). Averaging a Gaussian density over a Gaussian error convolves the two, E[N(y\_c; P̂\_c, v)] = N(y\_c; P\_c, v + s\_c²). Three consequences follow. The plug-in N(y\_c; P̂\_c, σ\_c²) is unbiased for a likelihood with noise variance σ\_c² + s\_c². N(y\_c; P̂\_c, σ\_c² + s\_c²) is unbiased for σ\_c² + 2 s\_c², which counts the Monte Carlo variance twice. N(y\_c; P̂\_c, σ\_c² − s\_c²) is unbiased for the exact likelihood whenever s\_c < σ\_c, and the audit uses it. Its variance grows as s\_c approaches σ\_c, which is why the audit doubles a block's paths above 0.5 σ\_c and flags a surface above 0.9 σ\_c. The identity assumes errors independent across quotes; within a maturity block they share paths and are correlated, and the full version replaces σ\_c² − s\_c² by the matrix σ² I − S, with S the block's estimator covariance, when that matrix is positive definite. For the log-likelihood, the plug-in has expectation −½ Σ ((y\_c − P\_c) / σ\_c)² − ½ Σ s\_c² / σ\_c²: with the bank's budget s\_c ≤ 0.25 σ\_c the shift is at most 0.031 per quote, 2 over 63 quotes (0.125 per quote for the few quotes at the cap of 0.5 σ\_c), and with the typical s\_c ≈ 0.05 σ\_c it is 0.08 over 63 quotes, nearly constant in θ. The same error enters training: the bank's clean prices carry it, so the network learns the posterior for a noise variance σ\_c² + s\_c², which is at most 3% wider in standard deviation than the declared one within the budget, 12% for the few quotes at the cap, and in the typical case 0.1%. The exact chain of study S9 uses the stored estimator covariance and a second seed to check that its posterior is insensitive to the Monte Carlo noise.
 
 ### G.4 Agreement metrics
 
@@ -1290,7 +1292,7 @@ This appendix derives the prices of the three products under the model and defin
 
 ### H.1 The variance swap
 
-For continuous paths the realized variance Q\_T = (1/T) ∫₀ᵀ V\_t dt has expectation (1/T) ∫₀ᵀ ξ\_0(t) dt under rough Bergomi, by E[V\_t] = ξ\_0(t), whatever (H, η, ρ). The daily-sampled variance swap differs by a discretization term of order Δ; the model's price is reported for the continuous payoff and the discrete correction stated. The posterior range is zero by construction, which makes the product the control of the pipeline.
+For continuous paths the realized variance Q\_T = (1/T) ∫₀ᵀ V\_t dt has expectation (1/T) ∫₀ᵀ ξ\_0(t) dt under rough Bergomi, by E[V\_t] = ξ\_0(t), whatever (H, η, ρ). The daily-sampled variance swap differs by a discretization term of order Δ; the model's price is reported for the continuous payoff and the discrete correction stated. The posterior range is therefore zero by construction, for continuous monitoring and a fixed curve. In the code the price is the integral of ξ\_0 itself, so the zero is a consistency check of the curve input, not a test of the Monte Carlo pricer. Daily monitoring adds a term that depends on (H, η, ρ): for ξ\_0 = 0.04 Lecture 8 of the course derives it to first order and measures 0.38% to 0.94% of the strike by Monte Carlo on three parameter sets. The uncertainty of ξ\_0 itself is not propagated.
 
 ### H.2 The volatility swap
 
@@ -1376,7 +1378,7 @@ Three other inversions rest on the same φ\_T:
 
 - **Carr and Madan (1999)** multiply the call by e^(αk) so that it has a Fourier transform in k, and invert it with the fast Fourier transform. One transform prices a whole grid of strikes. The damping α is a free parameter that affects accuracy.
 - **The COS method (Fang and Oosterlee 2008)** expands the density of X\_T on a truncated interval in a cosine series. The series coefficients are read off φ\_T directly. This is a Fourier series rather than a Fourier integral.
-- **PROJ (Kirkby 2015)** projects the density onto a basis of B-splines and computes the coefficients from φ\_T with the fast Fourier transform. With the variance discretized as a Markov chain, PROJ steps through monitoring dates and prices path-dependent products such as barrier, Asian and Bermudan options. The fypy library implements it. Agazzotti et al. (2025) calibrated Heston with Kou jumps (HKDE) with it, and the 9 October 2026 study used it as the HKDE pricer.
+- **PROJ (Kirkby 2015)** projects the density onto a basis of B-splines and computes the coefficients from φ\_T with the fast Fourier transform. Later work extends it, with the variance discretized as a Markov chain, to path-dependent products such as barrier and Bermudan options under stochastic volatility (Kirkby, Nguyen and Cui 2017). The fypy library implements it. Agazzotti et al. (2025) calibrated Heston with Kou jumps (HKDE) with it, and the 9 October 2026 study used it as the HKDE pricer.
 
 All of these methods need φ\_T in closed form, or at least cheaply computable. Section J.3 returns to this condition.
 
@@ -1423,7 +1425,7 @@ Roughness alone does not remove the characteristic function. Rough Heston (El Eu
 
 ### J.4 Consequence for the tutorial
 
-For Heston, one likelihood evaluation is a Fourier surface of about 20 milliseconds, so MCMC gives the exact posterior in minutes. Simulation-based inference would only speed up a method that already works. Heston is therefore the model on which the amortized workflow is checked against the exact answer (see [Why Heston is the check and not the example](#why-heston-is-the-check-and-not-the-example)). For rough Bergomi, the model fits the smile's term structure better, and the exact posterior costs about 17 CPU-hours per surface. That is where amortization is needed.
+For Heston, one likelihood evaluation is a Fourier surface of about 20 milliseconds, so MCMC gives the exact posterior in minutes. Simulation-based inference would only speed up a method that already works. Heston is therefore the model on which the amortized workflow is checked against the exact answer (see [Why Heston is the check and not the example](#why-heston-is-the-check-and-not-the-example)). For rough Bergomi, the model fits the smile's term structure better, and the exact posterior costs at least 17 CPU-hours per surface. That is where amortization is needed.
 
 ## References
 
@@ -1438,7 +1440,7 @@ Bibliographic details were checked on 22 Oct 2026, against publisher, arXiv or r
 - Bergomi, L. (2005). Smile dynamics II. *Risk*, October 2005, 67–73. [Risk.net](https://www.risk.net/derivatives/equity-derivatives/1500225/smile-dynamics-ii)
 - Gatheral, J. (2006). The volatility surface: a practitioner's guide. Wiley, Hoboken, NJ. [Wiley](https://www.wiley-vch.de/en/areas-interest/finance-economics-law/the-volatility-surface-978-0-471-79251-2)
 - Guyon, J., Lekeufack, J. (2023). Volatility is (mostly) path-dependent. *Quantitative Finance* 23(9), 1221–1258. [doi](https://doi.org/10.1080/14697688.2023.2221281)
-- Agazzotti, G., Aguilar, J.-P., Aglieri Rinella, C., Kirkby, J. L. (2025). Calibration and option pricing with stochastic volatility and double exponential jumps. *Journal of Computational and Applied Mathematics* 465, 116563. [doi](https://doi.org/10.1016/j.cam.2025.116563); [arXiv](https://arxiv.org/abs/2502.13824)
+- Agazzotti, G., Aglieri Rinella, C., Aguilar, J.-P., Kirkby, J. L. (2025). Calibration and option pricing with stochastic volatility and double exponential jumps. *Journal of Computational and Applied Mathematics* 465, 116563. [doi](https://doi.org/10.1016/j.cam.2025.116563); [arXiv](https://arxiv.org/abs/2502.13824)
 
 **Rough volatility and its simulation**
 
@@ -1452,6 +1454,7 @@ Bibliographic details were checked on 22 Oct 2026, against publisher, arXiv or r
 
 **Monte Carlo and numerical methods**
 
+- Andrieu, C., Roberts, G. O. (2009). The pseudo-marginal approach for efficient Monte Carlo computations. *Annals of Statistics* 37(2), 697–725. [doi](https://doi.org/10.1214/07-AOS574)
 - Romano, M., Touzi, N. (1997). Contingent claims and market completeness in a stochastic volatility model. *Mathematical Finance* 7(4), 399–412. [doi](https://doi.org/10.1111/1467-9965.00038)
 - Willard, G. A. (1997). Calculating prices and sensitivities for path-independent derivative securities in multifactor models. *Journal of Derivatives* 5(1), 45–61. [SSRN](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7997)
 - Lewis, A. L. (2001). A simple option formula for general jump-diffusion and other exponential Lévy processes. Working paper. [RePEc](https://ideas.repec.org/p/vsv/svpubs/explevy.html)
@@ -1459,12 +1462,13 @@ Bibliographic details were checked on 22 Oct 2026, against publisher, arXiv or r
 - Carr, P., Madan, D. B. (1999). Option valuation using the fast Fourier transform. *Journal of Computational Finance* 2(4), 61–73. [Risk.net](https://www.risk.net/journal-of-computational-finance/2160495/option-valuation-using-the-fast-fourier-transform)
 - Fang, F., Oosterlee, C. W. (2008). A novel pricing method for European options based on Fourier-cosine series expansions. *SIAM Journal on Scientific Computing* 31(2), 826–848. [CWI](https://ir.cwi.nl/pub/13283)
 - Kirkby, J. L. (2015). Efficient option pricing by frame duality with the fast Fourier transform. *SIAM Journal on Financial Mathematics* 6(1), 713–747. [doi](https://doi.org/10.1137/140989480)
+- Kirkby, J. L., Nguyen, D., Cui, Z. (2017). A unified approach to Bermudan and barrier options under stochastic volatility models with jumps. *Journal of Economic Dynamics and Control* 80, 75–100. [doi](https://doi.org/10.1016/j.jedc.2017.05.001)
 - Albrecher, H., Mayer, P., Schoutens, W., Tistaert, J. (2007). The little Heston trap. *Wilmott Magazine*, no. 1, 83–92. [Serval](https://serval.unil.ch/notice/serval:BIB_7042C88010EE)
 
 **Calibration practice and model risk**
 
 - Schoutens, W., Simons, E., Tistaert, J. (2004). A perfect calibration! Now what? *Wilmott Magazine*, March 2004, 66–78. [Semantic Scholar](https://www.semanticscholar.org/paper/A-perfect-calibration!-now-what-Schoutens-Simons/7a513dd70934fc50e8a465e45feeb922594a7d49)
-- Detlefsen, K., Härdle, W. K. (2007). Calibration risk for exotic options. *Journal of Derivatives* 14(4), 47–63. [SFB 649 discussion paper](https://edoc.hu-berlin.de/18452/4580)
+- Detlefsen, K., Härdle, W. K. (2006). Calibration risk for exotic options. SFB 649 Discussion Paper 2006-001, Humboldt-Universität zu Berlin. [doi](https://doi.org/10.18452/3928)
 - Guillaume, F., Schoutens, W. (2012). Calibration risk: illustrating the impact of calibration risk under the Heston model. *Review of Derivatives Research* 15(1), 57–79. [doi](https://doi.org/10.1007/s11147-011-9069-2)
 - Cont, R. (2006). Model uncertainty and its impact on the pricing of derivative instruments. *Mathematical Finance* 16(3), 519–547. [doi](https://doi.org/10.1111/j.1467-9965.2006.00281.x)
 - Crépey, S. (2003). Calibration of the local volatility in a generalized Black–Scholes model using Tikhonov regularization. *SIAM Journal on Mathematical Analysis* 34(5), 1183–1206. [doi](https://doi.org/10.1137/S0036141001400202)
