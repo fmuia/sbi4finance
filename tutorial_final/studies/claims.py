@@ -191,10 +191,13 @@ def c8():
     if c is None:
         return "—", "pending"
     value = (f"one rough likelihood evaluation {c['rough_likelihood_evaluation_cpu_s']['median']:.1f} CPU-s; exact rough "
-             f"posterior about {c['exact_rough_posterior']['cpu_hours']:.0f} CPU-h (extrapolated)")
-    amortized = c.get("heston_amortized_posterior_1000_draws_cpu_s") or c.get("rough_amortized_posterior_1000_draws_cpu_s")
+             f"posterior at least {c['exact_rough_posterior']['cpu_hours']:.0f} CPU-h (extrapolated, a lower bound)")
+    # The claim is about the rough-Bergomi network; the Heston network is the fallback only when it is missing.
+    amortized = c.get("rough_amortized_posterior_1000_draws_cpu_s") or c.get("heston_amortized_posterior_1000_draws_cpu_s")
     if amortized:
-        value += f"; the network {amortized['median']:.1f} CPU-s for 1,000 draws"
+        which = "rough" if "rough_amortized_posterior_1000_draws_cpu_s" in c else "Heston"
+        value += (f"; the {which} network {amortized['wall_median']:.1f} s on the clock "
+                  f"({amortized['median']:.1f} CPU-s) for 1,000 draws")
     return value, "verified"
 
 

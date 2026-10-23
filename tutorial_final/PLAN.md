@@ -55,6 +55,8 @@ design document; its placeholders ⟨S1⟩–⟨S9⟩ are filled by the studies 
 
 ## 4. The slot-5 lesson
 
+*Superseded on 23 October by [CURRICULUM.md](CURRICULUM.md), §5, where the two differ.*
+
 Working title: **Ten calibrations fit the smile. Which price do you mark?** About 40 minutes
 (decision D2 fixes it). Francesco presents.
 
@@ -229,6 +231,8 @@ Each claim is on screen only when its study has written the number it quotes.
 
 ## 9. Slot 4: what changes
 
+*Superseded on 23 October by [CURRICULUM.md](CURRICULUM.md), §4, where the two differ.*
+
 Slot 4 (#37) stays the BayesFlow lesson on GBM from returns. Edits:
 
 - Merge current `main`.
@@ -245,6 +249,8 @@ Slot 4 (#37) stays the BayesFlow lesson on GBM from returns. Edits:
 - Freeze **Fri 30 Oct**.
 
 ## 10. The intro
+
+*Superseded on 23 October by [CURRICULUM.md](CURRICULUM.md), §3, where the two differ.*
 
 Francesco presents. Decision D1 by **Fri 23 Oct**, after a 5-minute dry talk of each option.
 
@@ -314,6 +320,8 @@ are recorded.
 One pull request per slot ("harvest: slot N"). After a freeze, fixes only.
 
 ## 13. Interfaces with slots 2, 3 and 6
+
+*Superseded on 23 October by [CURRICULUM.md](CURRICULUM.md), §6, where the two differ.*
 
 One paragraph per owner by Fri 30 Oct: what the slot explains, its key figure, what it assumes.
 Until then: slot 2 explains flows, flow matching and summary networks (the set-based summary over
