@@ -8,6 +8,12 @@
 All costs are in CPU-hours on this project's 2-core container; Oscar's cores may be up to about 30% faster or
 slower. Every script that takes `--out` needs a new directory, except the S10 array, which appends to its own.
 
+**For the weekend of 24–25 October.** Run R0 to R4 first, in order. If an acceptance check fails, stop and report
+it to Francesco Muia with the run's JSON; do not change the code in the run checkout. Every new or changed Python
+command below was run end to end on a 68-surface test bank, with networks trained for three epochs. The numbers of
+those runs mean nothing, but the commands, outputs and summaries work. The `sbatch` wrappers could not be tested
+off Oscar.
+
 ## The runs at a glance
 
 | Run | Study | What it produces | Cost | Needs |
