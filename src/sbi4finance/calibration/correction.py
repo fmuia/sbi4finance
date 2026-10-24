@@ -160,6 +160,9 @@ def price_for_likelihood(price, sigma, paths, *, budget=0.5, max_doublings=3, pi
     ratio = relative_mc_eigenvalue(sigma, covariance)
     trace = float(np.sum(np.diag(covariance) / sigma**2))
     needed = n0 * max((worst / budget) ** 2, ratio / MAX_RELATIVE_EIGENVALUE, trace / MAX_RELATIVE_TRACE)
+    if not np.isfinite(needed) or needed > largest:
+        return None, None, (f"needs about {needed:,.0f} paths (pilot at {n0}: largest SE/sigma {worst:.2f}, "
+                            f"eigenvalue {ratio:.2f}, trace {trace:.2f})")
     n = int(paths)
     while n < needed:
         n *= 2

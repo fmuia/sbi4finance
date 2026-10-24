@@ -46,6 +46,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from sbi4finance.calibration import bank, correction, pricing, tasks, validation  # noqa: E402
 from evaluate_calibration import load_network, posterior_draws  # noqa: E402
 from heston_check import jsonable  # noqa: E402
+from thin_coverage import end_with_newline, read_jsonl  # noqa: E402
 
 
 MC_BUDGET = 0.5  # largest Monte Carlo SE / quote-noise sd per quote; the paths double up to 8x to meet it
@@ -180,10 +181,9 @@ def main():
     partial = args.out / "surfaces.jsonl"
     done = {}
     if partial.exists():
-        for line in partial.read_text().splitlines():
-            if line.strip():
-                record = json.loads(line)
-                done[record["test_row"]] = record["result"]
+        for record in read_jsonl(partial):  # a line cut short by a killed job is skipped and run again
+            done[record["test_row"]] = record["result"]
+        end_with_newline(partial)
     pending = [i for i, r in enumerate(rows) if int(r) not in done]
     # the network's draws for every row of the range, so a row's draws do not depend on which rows are pending
     network = posterior_draws(workflow, task, test, rows, args.draws, args.seed) if pending else None

@@ -8,7 +8,8 @@
 All costs are in CPU-hours on this project's 2-core container; Oscar's cores may be up to about 30% faster or
 slower. Every script that takes `--out` needs a new directory, so a rerun goes to a new one, except three that
 continue in their own: the S10 runs (R8, R9), the S5 audit (R5) and a chunked training run (R3, R4), each only
-when rerun with the same settings.
+when rerun with the same settings. Each of these records its settings and refuses a rerun with other ones, so chains
+or surfaces of two configurations are never pooled.
 
 **For the weekend of 24–25 October.** Run R0 to R4 first, in order. If an acceptance check fails, stop and report
 it to Francesco Muia with the run's JSON; do not change the code in the run checkout. Every new or changed Python
@@ -26,7 +27,7 @@ off Oscar.
 | R3 | S2 | The liquid network (the curve given) and its SBC on 2,000 surfaces | 1 GPU job, 1 CPU-h | R1 |
 | R4 | S2-T | The thin network on EWG's layout (the curve inferred) and its SBC at three noise scales | 1 GPU job, 2 CPU-h | R1 |
 | R5 | S5 | The audit of the liquid network on 200 surfaces | about 300 CPU-h | R3 |
-| R6 | S8 | SPY's posterior, audit, predictive check and products | about 2 CPU-h | R3 |
+| R6 | S8 | SPY's posterior, audit, predictive check and products | about 3 CPU-h | R3 |
 | R7 | S11 | EWG's posterior, products, classical fits and predictive check, at three noise scales | about 3 CPU-h | R4 |
 | R8 | S10 | Breach rates of every method's reserves on 1,000 simulated chains with EWG's layout | about 180 CPU-h | R4 |
 | R9 | S10-E | The same on 300 chains whose truths come from EWG's posterior | about 55 CPU-h | R7 |
@@ -244,6 +245,9 @@ python tutorial_final/studies/accept.py --run $RUNS/s2 --to results/calibration/
 #   -> results/calibration/rough/<name>; s8 -> results/calibration/spy/s8; s11 -> results/calibration/ewg/s11
 python tutorial_final/studies/claims.py && python tutorial_final/studies/manifest.py
 ```
+
+Where a run was redone into a new directory (`s2-train-600`, `s8-4096`, `s11-4096`), accept that directory instead,
+and use it in every later command.
 
 The bank and the shards stay on Oscar. Never commit raw quote files (`data/SOURCES.md`).
 

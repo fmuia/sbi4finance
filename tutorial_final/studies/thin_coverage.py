@@ -54,8 +54,10 @@ chains and on the chains whose audit is reliable (final k-hat at most 0.7 and ev
 import argparse
 from concurrent.futures import ProcessPoolExecutor
 from functools import partial
+import hashlib
 import json
 import multiprocessing
+import os
 from pathlib import Path
 import sys
 import time
@@ -76,6 +78,45 @@ COLOURS = {"network": "#2a78d6", "posterior": "#eb6834", "gauss_newton": "#1baf7
            "h_fixed": "#555555"}  # the first three are the course's validated series colours
 ARMS = ("prior", "flat", "wide")
 LONG_PRODUCT = "forward_start_6m_1y"
+
+
+def read_jsonl(path):
+    """The records of a JSON-lines file; a line cut short by a killed job is skipped and reported."""
+    records = []
+    for number, line in enumerate(Path(path).read_text().splitlines(), 1):
+        if line.strip():
+            try:
+                records.append(json.loads(line))
+            except json.JSONDecodeError:
+                print(f"{path}: line {number} is incomplete (a job was killed while writing it) and is skipped",
+                      file=sys.stderr, flush=True)
+    return records
+
+
+def end_with_newline(path):
+    """Before appending: a file cut short mid-line gets a newline, so the next record starts on its own line."""
+    path = Path(path)
+    if path.exists() and path.stat().st_size:
+        with path.open("rb") as f:
+            f.seek(-1, 2)
+            last = f.read(1)
+        if last != b"\n":
+            with path.open("a") as f:
+                f.write("\n")
+
+
+def check_settings(out, settings):
+    """A directory pools chains of one configuration only: the first run writes settings.json, later runs compare."""
+    path = Path(out) / "settings.json"
+    if path.exists():
+        stored = json.loads(path.read_text())
+        if stored != settings:
+            changed = sorted(k for k in set(stored) | set(settings) if stored.get(k) != settings.get(k))
+            raise ValueError(f"{out} holds chains run with other settings ({', '.join(changed)}): use a new --out")
+        return
+    temporary = path.with_name(f"settings.{os.getpid()}.tmp")
+    temporary.write_text(json.dumps(settings, indent=1) + "\n")
+    temporary.replace(path)
 
 
 def chain_seed(seed, row, purpose):
@@ -230,11 +271,19 @@ def run(args):
 
     task, layout, workflow, record = load_thin_network(args.checkpoint)
     args.out.mkdir(parents=True, exist_ok=True)
+    digest = lambda path: hashlib.sha256(Path(path).read_bytes()).hexdigest()  # noqa: E731
+    check_settings(args.out, {
+        "checkpoint_sha256": digest(args.checkpoint / "model.keras"),
+        "truths_sha256": digest(args.truths) if args.truths else None,
+        "bank": None if args.truths else str(args.bank.resolve()),
+        **{k: getattr(args, k) for k in ("draws", "proposals", "rounds", "audit_paths", "product_draws",
+                                         "product_paths", "fit_paths", "screen", "seed_check_every", "seed")}})
     tag = "truths-" if args.truths else ""
     log_path = args.out / f"rows-{tag}{args.start}-{args.stop}.jsonl"
     done = set()
     if log_path.exists():
-        done = {json.loads(line)["test_row"] for line in log_path.read_text().splitlines() if line.strip()}
+        done = {r["test_row"] for r in read_jsonl(log_path)}
+        end_with_newline(log_path)
     idx, noise = thin.layout_arrays(layout)
     if args.truths:
         rows, truth, clean, clean_cov = posterior_truths(task, layout, args.truths, args.start, args.stop, args.seed,
@@ -345,7 +394,7 @@ def truth_clusters(records):
 def summarize(args):
     records = []
     for path in sorted(args.out.glob("rows-*.jsonl")):
-        records += [json.loads(line) for line in path.read_text().splitlines() if line.strip()]
+        records += read_jsonl(path)
     failed = [r for r in records if "failed" in r]
     records = [r for r in records if "failed" not in r]
     if not records:

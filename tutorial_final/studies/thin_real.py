@@ -189,6 +189,8 @@ def main():
         result, arr = analyse(task, layout, workflow, observation, y, contracts, noise, days, scale, args, pool)
         results.append(result)
         arrays.update({f"{k}_scale_{scale:g}": v for k, v in arr.items()})
+        # after every scale, so a later failure keeps the s = 1 draws that R9 needs
+        np.savez_compressed(args.out / "draws.npz", **arrays)
 
     # the posterior predictive check at every quote, at the chain's own noise (s = 1)
     base = arrays["targets_scale_1"], arrays["weights_scale_1"]
@@ -216,7 +218,7 @@ def main():
                                                          "seed")},
               "by_scale": results, "posterior_predictive": predictive,
               "wall_seconds": time.perf_counter() - started}
-    np.savez_compressed(args.out / "draws.npz", **arrays)  # first: R9 needs it even if the report fails
+    np.savez_compressed(args.out / "draws.npz", **arrays)  # again before the report, which could still fail
     (args.out / "real.json").write_text(json.dumps(finite(report), indent=2, allow_nan=False) + "\n")
     figures(results[0], report, y, low, high, days, args.out)
     print(json.dumps({"khat_by_scale": [r["khat"] for r in results],
