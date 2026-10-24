@@ -55,7 +55,7 @@ def main():
     parser.add_argument("--draws", type=int, default=1000)
     parser.add_argument("--seed", type=int, default=0)
     args = parser.parse_args()
-    manifest, splits = bank.load_bank(args.bank)
+    manifest, splits = bank.load_bank(args.bank, splits=("test",))
     task, workflow, record = load_network(args.checkpoint)
     if task != manifest["configuration"]["task"] or record["task_fingerprint"] != manifest["task_fingerprint"]:
         raise ValueError("checkpoint and bank tasks differ")

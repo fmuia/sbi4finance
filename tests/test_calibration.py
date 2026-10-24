@@ -21,6 +21,11 @@ def config(task, splits=(3, 2, 2)):
     return {"task": task, "root_seed": 7, "splits": dict(zip(("train", "validation", "test"), splits))}
 
 
+def json_config(name):
+    import json
+    return json.loads((Path(__file__).resolve().parents[1] / "configs" / "tasks" / name).read_text())
+
+
 class SurfaceTests(unittest.TestCase):
     def test_black_scholes_parity_vega_and_implied_vol(self):
         k = np.array([-0.3, -0.05, 0.0, 0.1, 0.4])
@@ -141,6 +146,68 @@ class TaskAndBankTests(unittest.TestCase):
         mid = 0.5 * (knots[1:] + knots[:-1])
         ratio = a["context_values"][0] / (level**2 * (1 + slope * mid))
         self.assertTrue(np.all(np.abs(np.log(ratio)) <= 0.2 + 1e-12))
+
+    def test_power_law_walk_curve_prior(self):
+        """The full bank's prior: positive levels inside vol_bounds, reproducible, and the pilot left unchanged."""
+        pilot = json_config("calibration_rough_pilot.json")["task"]
+        self.assertEqual(tasks.rough_task(), pilot)  # the default builder still gives the pilot's task
+        full = json_config("calibration_rough_bank.json")["task"]
+        prior = full["context_prior"]["forward_variance"]
+        self.assertEqual(prior["kind"], "power_law_walk")
+        draws = np.array([tasks.draw_context(full, np.random.default_rng(i))[0] for i in range(2000)])
+        vol = np.sqrt(draws)
+        self.assertTrue(np.all(vol >= prior["vol_bounds"][0]) and np.all(vol <= prior["vol_bounds"][1]))
+        again = np.array([tasks.draw_context(full, np.random.default_rng(i))[0] for i in range(2000)])
+        np.testing.assert_array_equal(draws, again)
+        # SPY's curve of 21 October 2026 lies inside the prior's central 90% at every level, relative to level 1
+        import json
+        spy = np.array(json.loads((Path(__file__).resolve().parents[1] / "tutorial_final" / "results" / "calibration"
+                                   / "spy" / "surface.json").read_text())["forward_variance_levels"])
+        rel = np.log(draws) - np.log(draws[:, :1])
+        low, high = np.quantile(rel, [0.05, 0.95], axis=0)
+        target = np.log(spy) - np.log(spy[0])
+        self.assertTrue(np.all((target >= low) & (target <= high)))
+        c = config(small_rough_task(), splits=(2, 1, 1))
+        c["task"]["context_prior"] = {"forward_variance": dict(prior)}
+        a = bank.generate_examples(c, "train", [0, 1])
+        sigma0, exponent = a["context_parameters"][0]
+        self.assertTrue(prior["level_bounds"][0] <= sigma0 <= prior["level_bounds"][1])
+        self.assertTrue(prior["exponent_bounds"][0] <= exponent <= prior["exponent_bounds"][1])
+        bad = copy.deepcopy(c["task"])
+        bad["context_prior"]["forward_variance"]["vol_bounds"] = [0.1, 0.5]  # does not contain the level bounds
+        with self.assertRaisesRegex(ValueError, "vol_bounds"):
+            tasks.validate_task(bad)
+        self.assertEqual(tasks.FULL_BANK_CURVE_PRIOR, prior)  # the builder's constant and the committed config agree
+
+    def test_monte_carlo_likelihood_is_unbiased_with_correlated_errors(self):
+        """E[N(y; P_hat, V - S)] = N(y; P, V) when P_hat = P + e, e ~ N(0, S), even with strongly correlated e."""
+        rng = np.random.default_rng(3)
+        n = 6
+        sigma = np.linspace(1.0, 2.0, n)
+        a = 0.25 * sigma
+        correlation = 0.8 * np.ones((n, n)) + 0.2 * np.eye(n)
+        S = correlation * np.outer(a, a)
+        C = 0.05 * np.diag(sigma**2)
+        P = rng.normal(size=n)
+        y = P + rng.normal(size=n) * sigma
+        exact = correction.gaussian_loglik_mc(y, P, sigma, np.zeros((n, n)), data_covariance=C)
+        e = rng.multivariate_normal(np.zeros(n), S, size=200_000)
+        values = np.array([correction.gaussian_loglik_mc(y, P + x, sigma, S, data_covariance=C) for x in e[:20_000]])
+        ratio = np.exp(values - exact)
+        self.assertLess(abs(ratio.mean() - 1.0), 4 * ratio.std() / np.sqrt(len(ratio)))
+        with self.assertRaisesRegex(ValueError, "eigenvalue"):
+            correction.gaussian_loglik_mc(y, P, sigma, 4 * S)
+
+    def test_trading_days_with_nyse_holidays(self):
+        from datetime import date
+        from sbi4finance.calibration import chain
+        start = date(2026, 10, 22)
+        self.assertEqual(chain.trading_days(start, date(2026, 11, 20)), 21)
+        self.assertEqual(chain.trading_days(start, date(2027, 4, 16)), 126)  # weekdays, as SPY's surface
+        self.assertEqual(chain.trading_days(start, date(2026, 12, 18), chain.NYSE_HOLIDAYS), 40)  # Thanksgiving
+        self.assertEqual(chain.trading_days(start, date(2027, 4, 16), chain.NYSE_HOLIDAYS), 120)
+        with self.assertRaisesRegex(ValueError, "published"):
+            chain.trading_days(start, date(2029, 1, 19), chain.NYSE_HOLIDAYS)
 
     def test_bank_roundtrip_and_shards_for_both_models(self):
         for task in (tasks.heston_task(days=(10, 63), deltas=(-1.0, 0.0, 1.0)), small_rough_task()):

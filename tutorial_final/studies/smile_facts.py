@@ -183,7 +183,7 @@ def _quantiles(values, names):
 
 
 def prior_predictive(args):
-    manifest, splits = bank.load_bank(args.bank)
+    manifest, splits = bank.load_bank(args.bank, splits=(args.split,))
     task = manifest["configuration"]["task"]
     split = splits[args.split]
     rows = np.arange(min(args.surfaces, len(split["parameters"])))

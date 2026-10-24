@@ -4,9 +4,11 @@
 
 For rough Bergomi: the Monte Carlo standard error of every clean price over its
 quote-noise standard deviation, by maturity and delta, against the bank's
-budget; the share of maturity blocks that needed each rung of the paths ladder;
-and, given the shard directory, the generation cost in CPU-hours per 1,000
-surfaces. For Heston the numerical error is the refined-minus-base quadrature
+budget; the largest eigenvalue of each surface's Monte Carlo covariance in units
+of the quote noise (quotes priced on the same paths have correlated errors, so the
+per-quote ratio understates their joint effect); the share of maturity blocks that
+needed each rung of the paths ladder; and, given the shard directory, the
+generation cost in CPU-hours per 1,000 surfaces. For Heston the numerical error is the refined-minus-base quadrature
 difference instead, against its own budget.
 """
 
@@ -60,6 +62,12 @@ def main():
         report["paths_ladder"] = ladder
         report["share_of_blocks_by_rung"] = {
             f"block {b}": {str(int(n)): float(np.mean(paths[:, b] == n)) for n in ladder} for b in range(paths.shape[1])}
+        scale = 1.0 / np.outer(sigma, sigma)
+        eigen = np.concatenate([np.linalg.eigvalsh(s["pricing_covariance"] * scale)[:, -1] for s in splits.values()])
+        report["mc_covariance_largest_eigenvalue_over_noise_variance"] = {
+            "q50": float(np.median(eigen)), "q90": float(np.quantile(eigen, 0.9)), "q99": float(np.quantile(eigen, 0.99)),
+            "max": float(eigen.max()), "share_above_0_25": float(np.mean(eigen > 0.25)),
+            "note": "of diag(1/sigma) C diag(1/sigma); the per-quote (SE/sigma)^2 is its diagonal"}
     if args.shards:
         records = [json.loads(p.read_text()) for p in sorted(args.shards.glob("*/manifest.json"))]
         cpu = sum(r["generation_cpu_seconds"] for r in records)

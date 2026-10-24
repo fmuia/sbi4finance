@@ -1,4 +1,5 @@
 import json, sys
+from pathlib import Path
 import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "src"))
 from sbi4finance.calibration.plots import BASELINE, INK, SERIES, plt, style
@@ -21,7 +22,7 @@ draws = np.random.default_rng(1).multivariate_normal(mean[3:], cov[3:, 3:], 400)
 curves = np.array([vs_curve(d) for d in draws])
 lo, hi = np.quantile(curves, [0.05, 0.95], axis=0)
 ax.fill_between(tt, lo, hi, color=SERIES[0], alpha=0.2, label="rough Bergomi posterior, 90%")
-ax.plot(tt, vs_curve(np.log(np.array(r["xi_flat"]))), color=INK, linewidth=1.2, linestyle="--", label="desk: flat beyond one year")
+ax.plot(tt, vs_curve(np.log(np.array(r["xi_flat"]))), color=INK, linewidth=1.2, linestyle="--", label="flat beyond one year")
 T = np.array(x["T"]); hq = np.array(x["heston_kappa_free_vs_vol_q"])
 ax.fill_between(T, hq[0], hq[2], color=SERIES[1], alpha=0.35, label="Heston posterior (fitted to ≤ 1 year), 90%")
 days = np.array(spy["design"]["days"]) / 252; wd = np.array(spy["diagnostics"]["design_total_variance"])
@@ -33,7 +34,7 @@ ax.text(3.6, 26.2, "no quotes beyond 2.2 years", ha="center", fontsize=8, color=
 ax.set_xlabel("maturity (years)"); ax.set_ylabel("variance-swap vol (%)"); ax.set_ylim(12, 27)
 ax.set_title("SPY's variance term structure and its long end", loc="left", fontsize=9)
 ax.legend(fontsize=6.3, loc="lower right", bbox_to_anchor=(1.0, 0.0))
-# B: 90% ranges, desk vs posterior, with the prior/noise sensitivity as whiskers
+# B: 90% ranges, flat extrapolation vs posterior, with the prior/noise sensitivity as whiskers
 ax = fig.add_subplot(gs[1])
 names = r["products"]; p = np.array(r["price_posterior_mean_inputs"]); pd = np.array(r["price_desk_point"])
 desk = 100 * np.array(r["range90_desk_delta"]) / pd
@@ -42,7 +43,7 @@ sens = np.array(list(x["sensitivity_range90_percent"].values()))
 labels = ["autocallable 3y\n(bp of notional ÷ 10)", "cliquet 3y", "forward start\n2y→3y", "put 5y 80%", "variance\nswap 3y"]
 scale = np.array([10, 1, 1, 1, 1.0])  # autocallable shown in bp of notional / 10
 xs = np.arange(len(names))
-ax.bar(xs - 0.2, desk * scale, 0.38, color=BASELINE, label="desk: H, η, ρ only, ξ0 flat")
+ax.bar(xs - 0.2, desk * scale, 0.38, color=BASELINE, label="flat extrapolation: H, η, ρ only, ξ0 flat")
 ax.bar(xs + 0.2, post * scale, 0.38, color=SERIES[0], label="posterior: all inputs (prior sd 0.2)")
 ax.vlines(xs + 0.2, sens.min(0) * scale, sens.max(0) * scale, color=INK, linewidth=1.2, label="prior sd 0.1–0.3, LEAP sd 0.25–1 pt")
 ax.set_xticks(xs); ax.set_xticklabels(labels, fontsize=7)

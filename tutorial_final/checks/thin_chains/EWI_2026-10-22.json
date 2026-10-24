@@ -1,4 +1,6 @@
 {
+ "ticker": "EWI",
+ "name": "iShares MSCI Italy ETF",
  "source": "Cboe delayed quotes for EWI, file timestamp 2026-10-22 23:21:36; quotes of the 2026-10-22 close",
  "raw_quotes_committed": false,
  "spot": 55.02,
@@ -10,6 +12,22 @@
   ],
   [
    "2027-06-14",
+   1.17
+  ],
+  [
+   "2027-12-15",
+   0.7
+  ],
+  [
+   "2028-06-14",
+   1.17
+  ],
+  [
+   "2028-12-15",
+   0.7
+  ],
+  [
+   "2029-06-14",
    1.17
   ]
  ],
@@ -25,7 +43,9 @@
    "discount": 0.9966527379020058,
    "out_of_the_money": 22,
    "two_sided": 7,
+   "two_sided_near_money": 7,
    "median_iv_spread": 0.3632152417211907,
+   "median_iv_spread_near_money": 0.3632152417211907,
    "strip_vol_on_bids": 0.14167712176679642,
    "strip_vol_on_asks": 0.5189338866855467,
    "strike_range_log_moneyness": [
@@ -312,7 +332,9 @@
    "discount": 0.9934315303434297,
    "out_of_the_money": 24,
    "two_sided": 9,
+   "two_sided_near_money": 8,
    "median_iv_spread": 0.228034777989005,
+   "median_iv_spread_near_money": 0.22634832757341916,
    "strip_vol_on_bids": 0.14202696585609756,
    "strip_vol_on_asks": 0.46510713213763183,
    "strike_range_log_moneyness": [
@@ -623,7 +645,9 @@
    "discount": 0.9830343328165175,
    "out_of_the_money": 24,
    "two_sided": 12,
+   "two_sided_near_money": 11,
    "median_iv_spread": 0.24121400115211916,
+   "median_iv_spread_near_money": 0.24208125611057882,
    "strip_vol_on_bids": 0.13193692402725243,
    "strip_vol_on_asks": 0.42760136419807526,
    "strike_range_log_moneyness": [
@@ -934,7 +958,9 @@
    "discount": 0.9728584236877721,
    "out_of_the_money": 24,
    "two_sided": 17,
+   "two_sided_near_money": 11,
    "median_iv_spread": 0.21145650828864856,
+   "median_iv_spread_near_money": 0.20146659669004666,
    "strip_vol_on_bids": 0.13661527229805634,
    "strip_vol_on_asks": 0.37591195873142674,
    "strike_range_log_moneyness": [
@@ -1237,5 +1263,21 @@
     }
    ]
   }
- ]
+ ],
+ "summary": {
+  "near_money_definition": "two-sided out-of-the-money quotes with |log-moneyness| <= 0.1",
+  "expiries_to_one_year_with_five_near_money_quotes": 4,
+  "their_days": [
+   29,
+   57,
+   148,
+   238
+  ],
+  "their_median_near_money_width_vol_points": [
+   36.32152417211907,
+   22.634832757341915,
+   24.20812561105788,
+   20.146659669004666
+  ]
+ }
 }

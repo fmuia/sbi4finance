@@ -7,7 +7,8 @@ additions are per-contract quote noise and three arrays:
 
 * context_values [B, K]: the forward-variance levels the example was priced with
   (conditioning; K = 0 for the Heston check);
-* context_parameters [B, 2]: the level and slope that drew them (auxiliary);
+* context_parameters [B, 2]: the auxiliary draws behind the curve, (sigma0, slope) for linear_wobble and
+  (sigma0, exponent b) for power_law_walk;
 * pricing_paths [B, blocks]: Monte Carlo paths used per maturity block (auxiliary).
 
 Stream purposes: 0 prior, 1 pricing, 2 quotes (as in option_bank), 3 curve context.
@@ -165,7 +166,7 @@ def _manifest(config, identity, generation_versions):
                   "refinement_difference": "auxiliary refined-minus-base Fourier estimate; MC zeros mean not calculated",
                   "example_id": "auxiliary split-qualified surface identity; augmentations must keep base grouping",
                   "context_values": "known per-example forward-variance levels on the knot intervals; conditioning",
-                  "context_parameters": "auxiliary level and slope that drew the curve; never conditioning",
+                  "context_parameters": "auxiliary draws behind the curve (sigma0 and the slope or exponent); never conditioning",
                   "pricing_paths": "auxiliary Monte Carlo paths used per maturity block"},
         "truth_available": task["parameter_names"], "future_outcomes_in_conditioning": False,
         "prior": "independent uniforms in explicit parameter_names order; curve context from context_prior",
@@ -209,7 +210,9 @@ def write_bank(path, config):
     return manifest
 
 
-def load_bank(path):
+def load_bank(path, splits=None):
+    """The manifest and the checked arrays of every split, or only of the splits named (the full bank's train split
+    holds a [100000, 63, 63] covariance: a study of the test split should not load it)."""
     path = Path(path)
     manifest = json.loads((path / "manifest.json").read_text())
     config = manifest["configuration"]
@@ -220,6 +223,8 @@ def load_bank(path):
         raise ValueError("incompatible or changed manifest")
     result = {}
     for split, count in config["splits"].items():
+        if splits is not None and split not in splits:
+            continue
         record = manifest["splits"][split]
         if record["file"] != f"{split}.npz" or record["examples"] != count:
             raise ValueError(f"{split}: inconsistent manifest")

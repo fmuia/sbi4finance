@@ -9,8 +9,12 @@ variance path, log(S_T2 / S_T1) is Gaussian with
     var   (1 - rho^2) (I(T2) - I(T1)),
 
 so every product below is a Black–Scholes formula per path (design document,
-Appendix D.3 and H). Two zero-mean controls per horizon (the effective forward
-minus one, and I minus its mean) remove the linear part of the remaining noise.
+Appendix D.3 and H). Two zero-mean controls per horizon remove the linear part of
+the remaining noise: the effective forward minus one, and I minus its mean where
+the scheme's mean of I is exact (rough Bergomi's left-point hybrid scheme). Under
+Heston's full-truncation Euler scheme the continuous-time mean of I is not the
+scheme's (1.8% off at vol-of-vol 1.5), so the second control is the increment of
+J, whose mean is zero under any scheme.
 
 The same normals are used for every posterior draw (common random numbers), so
 the spread of prices across draws is the spread due to the parameters.
@@ -83,10 +87,12 @@ def _controlled_mean(values, controls):
 
 
 def _conditional(paths, rho, start, end):
+    """The conditional law of log(S_end / S_start) and the second control for the interval."""
     i, j = _index(paths, start), _index(paths, end)
     di, dj = paths["I"][:, j] - paths["I"][:, i], paths["J"][:, j] - paths["J"][:, i]
     log_forward = rho * dj - 0.5 * rho**2 * di
-    return log_forward, (1 - rho**2) * di, di, paths["mean_I"][j] - paths["mean_I"][i]
+    control = di - (paths["mean_I"][j] - paths["mean_I"][i]) if paths.get("mean_I_is_exact", True) else dj
+    return log_forward, (1 - rho**2) * di, control
 
 
 def _bs_call(log_forward, log_strike, total_variance):
@@ -97,16 +103,16 @@ def _bs_call(log_forward, log_strike, total_variance):
 
 def forward_start_call(paths, rho, start, end, moneyness=1.0):
     """E[(S_end / S_start - moneyness)^+], the strike set at start as moneyness times S_start."""
-    log_forward, variance, di, mean_di = _conditional(paths, rho, start, end)
+    log_forward, variance, control = _conditional(paths, rho, start, end)
     payoff = _bs_call(log_forward, np.log(moneyness), variance)
-    controls = np.column_stack([np.exp(log_forward) - 1.0, di - mean_di])
+    controls = np.column_stack([np.exp(log_forward) - 1.0, control])
     return _controlled_mean(payoff, controls)
 
 
 def vanilla(paths, rho, strike, maturity, kind):
-    log_forward, variance, di, mean_di = _conditional(paths, rho, 0.0, maturity)
+    log_forward, variance, control = _conditional(paths, rho, 0.0, maturity)
     call = _bs_call(log_forward, np.log(strike), variance)
-    controls = np.column_stack([np.exp(log_forward) - 1.0, di - mean_di])
+    controls = np.column_stack([np.exp(log_forward) - 1.0, control])
     price, se = _controlled_mean(call, controls)
     return (price - 1.0 + strike if kind == "put" else price), se
 
@@ -115,7 +121,8 @@ def volatility_swap(paths, maturity):
     """E[sqrt(I(T) / T)]: the fair strike of a volatility swap on continuous realized variance."""
     i = _index(paths, maturity)
     realized = paths["I"][:, i] / maturity
-    return _controlled_mean(np.sqrt(realized), (realized - paths["mean_I"][i] / maturity)[:, None])
+    control = realized - paths["mean_I"][i] / maturity if paths.get("mean_I_is_exact", True) else paths["J"][:, i]
+    return _controlled_mean(np.sqrt(realized), control[:, None])
 
 
 def variance_swap(paths, maturity):

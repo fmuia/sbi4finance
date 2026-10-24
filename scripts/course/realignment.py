@@ -1,22 +1,27 @@
-"""Figures of the course realignment plan (docs/course/v2-plan.md), drawn from the quick checks of 23-24 October.
+"""Figures of the course's version-2 plan (docs/course/v2-plan.md), drawn from the quick checks of 23-24 October.
 
     python scripts/course/realignment.py
 
+Only evidence that survived the review of 24 October is drawn. The front-month case, its 80-chain validation and
+the 15-quote and three-times-noise cases gave every method SPY's curve read from the full chain; they are
+withdrawn (docs/course/v2-plan.md, Section 4) and not drawn here.
+
 Inputs (all committed): tutorial_final/checks/heston_checks.json, rough_spy_is/rough_spy_is_seed0.json,
-rough_spy_is/rough_spy_is_cases.json, desk_case/desk_case_combined.json, desk_case/validate_thin_x1_batch{0,1}.json,
-long_end/long_end.json, bs_hierarchy.json, thin_chains/ewi_2026-10-22.json.
-Outputs: docs/course/images/v2-classical-vs-posterior.png, v2-coverage.png, v2-thin-chain.png, and
-v2-evidence-numbers.json with every plotted number, so that the plan's text can be checked against it.
+long_end/long_end.json, bs_hierarchy.json, thin_chains/{EWI,EWG,EWQ}_2026-10-22.json, thin_chains/FEZ_2026-10-23.json.
+Outputs: docs/course/images/v2-classical-vs-posterior.png, v2-pooling.png, v2-thin-chain.png,
+v2-thin-candidates.png, and v2-evidence-numbers.json with every plotted number, so that the plan's text can be
+checked against it (scripts/course/check_v2_plan.py).
 """
 
 import json
 
 import numpy as np
-from scipy.stats import binom
 
 from common import COLORS, GREY, OUT, ROOT, plt, save, tidy
 
 CHECKS = ROOT / "tutorial_final" / "checks"
+CANDIDATES = (("EWI", "EWI_2026-10-22.json"), ("EWG", "EWG_2026-10-22.json"), ("EWQ", "EWQ_2026-10-22.json"),
+              ("FEZ", "FEZ_2026-10-23.json"))
 
 
 def load(name):
@@ -27,8 +32,6 @@ def classical_vs_posterior(numbers):
     """Ratio of the classical 90% range or one-sided reserve to the posterior's, case by case."""
     heston = load("heston_checks.json")["cases"]
     seed0 = load("rough_spy_is/rough_spy_is_seed0.json")["products"]
-    cases = load("rough_spy_is/rough_spy_is_cases.json")["cases"]
-    desk = load("desk_case/desk_case_combined.json")["scales"]["1.0"]["products"]
     long_end = load("long_end/long_end.json")
 
     columns = []  # (label, group, [(product, side, ratio)])
@@ -39,45 +42,26 @@ def classical_vs_posterior(numbers):
     for key, label in hlabels.items():
         pts = [(p, "both", v["delta_over_posterior_range"]) for p, v in heston[key]["products"].items()]
         columns.append((label, "Heston on SPY: delta-method range / posterior range", pts))
-
-    def reserve_points(products, method):
-        pts = []
-        for p, v in products.items():
-            if p == "variance_swap":
-                continue
-            for side in ("long", "short"):
-                post = v[f"reserve_{side}"]["posterior"]
-                pts.append((p, side, v[f"reserve_{side}"][method] / post))
-        return pts
-
-    columns.append(("rough\n63 quotes", "rough Bergomi: delta-method reserve / posterior reserve",
-                    reserve_points(seed0, "delta")))
-    columns.append(("rough\n63 quotes\n3× noise", "rough Bergomi: delta-method reserve / posterior reserve",
-                    reserve_points(cases["B"]["products"], "delta")))
-    columns.append(("rough\n15 quotes", "rough Bergomi: delta-method reserve / posterior reserve",
-                    reserve_points(cases["A"]["products"], "delta")))
-    pts, pts_fixed = [], []
-    for p, v in desk.items():
+    pts = []
+    for p, v in seed0.items():
+        if p == "variance_swap":  # zero for both under rough Bergomi with the curve given
+            continue
         for side in ("long", "short"):
-            pts.append((p, side, v["delta"][side] / v["posterior"][side]))
-            pts_fixed.append((p, side, v["h_fixed_delta"][side] / v["posterior"][side]))
-    columns.append(("rough\nfront months\n27 quotes", "rough Bergomi: delta-method reserve / posterior reserve", pts))
-    columns.append(("rough\nfront months\nH fixed (desk)", "desk convention: reserve with H = 0.10 / posterior", pts_fixed))
-    lpts = []
-    for p, d, q in zip(long_end["products"], long_end["range90_desk_delta"], long_end["range90_posterior_mc"]):
-        lpts.append((p, "both", d / q))
-    columns.append(("rough\nlong end\nξ0 flat (desk)", "desk convention: range with ξ0 flat / posterior range", lpts))
+            pts.append((p, side, v[f"reserve_{side}"]["delta"] / v[f"reserve_{side}"]["posterior"]))
+    columns.append(("rough Bergomi\n63 quotes", "rough Bergomi on SPY: delta-method reserve / posterior reserve", pts))
+    lpts = [(p, "both", d / q) for p, d, q in zip(long_end["products"], long_end["range90_desk_delta"],
+                                                   long_end["range90_posterior_mc"])]
+    columns.append(("rough Bergomi\nto five years\ncurve flat", "flat extrapolation's range / posterior range", lpts))
 
-    markers = {"variance_swap": "s", "volatility_swap": "D", "forward_start_call": "o", "forward_start": "o",
-               "put_out_of_grid": "v", "put_1y_80": "v", "cliquet": "P", "autocallable": "X",
+    markers = {"variance_swap": "s", "volatility_swap": "D", "forward_start_call": "o", "put_out_of_grid": "v",
                "autocallable 3y": "X", "cliquet 3y": "P", "forward-start 2y-3y": "o", "put 5y 80%": "v",
                "variance swap 3y": "s"}
     floor = 0.04
-    fig, ax = plt.subplots(figsize=(11.5, 4.6))
+    fig, ax = plt.subplots(figsize=(9.5, 4.4))
     ax.axhspan(0.8, 1.25, color="0.9", zorder=0)
     ax.axhline(1.0, color="0.3", lw=0.8)
     for i, (label, group, pts) in enumerate(columns):
-        colour = COLORS[0] if label.startswith("Heston") else (COLORS[3] if "desk" in label else COLORS[1])
+        colour = COLORS[0] if label.startswith("Heston") else (COLORS[3] if "flat" in label else COLORS[1])
         for j, (p, side, r) in enumerate(pts):
             x = i + (j - (len(pts) - 1) / 2) * 0.06
             y = max(r, floor)
@@ -95,8 +79,7 @@ def classical_vs_posterior(numbers):
     ax.set_xticks(range(len(columns)))
     ax.set_xticklabels([c[0] for c in columns], fontsize=8)
     ax.set_ylabel("classical / posterior")
-    ax.set_title("Where the classical answer and the posterior part: from a liquid smile (left) to what the "
-                 "quotes do not see (right)", loc="left", fontsize=10)
+    ax.set_title("SPY, 21 October 2026: the classical answer against the posterior's", loc="left", fontsize=10)
     handles = [plt.Line2D([], [], marker=m, ls="", color="0.3", label=lab) for lab, m in
                [("forward start", "o"), ("put beyond the grid", "v"), ("volatility swap", "D"),
                 ("variance swap", "s"), ("cliquet", "P"), ("autocallable", "X")]]
@@ -109,64 +92,64 @@ def classical_vs_posterior(numbers):
     save(fig, "v2-classical-vs-posterior.png")
 
 
-def coverage(numbers):
-    b0 = load("desk_case/validate_thin_x1_batch0.json")["report"]
-    b1 = load("desk_case/validate_thin_x1_batch1.json")["report"]
-    n = b0["replicas"] + b1["replicas"]
-    methods = [("posterior", "posterior"), ("gauss_newton", "Gauss–Newton"), ("profile", "profile"),
-               ("h_fixed", "desk: H = 0.10")]
-    products = b0["products"]
-    lo, hi = binom.ppf(0.025, n, 0.1) / n, binom.ppf(0.975, n, 0.1) / n
-    fig, (ax, bx) = plt.subplots(1, 2, figsize=(11.5, 4.0), gridspec_kw={"width_ratios": [1.6, 1]})
-    ax.axhspan(lo, hi, color="0.9", zorder=0)
-    ax.axhline(0.1, color="0.3", lw=0.8)
-    marks = ["X", "o", "v", "P"]
-    rows = []
-    for i, (key, label) in enumerate(methods):
-        for s, side in enumerate(("long", "short")):
-            for j, p in enumerate(products):
-                rate = (b0["breach_rate"][key][side][p] * b0["replicas"]
-                        + b1["breach_rate"][key][side][p] * b1["replicas"]) / n
-                x = i + (s - 0.5) * 0.36 + (j - 1.5) * 0.06
-                ax.scatter(x, rate, marker=marks[j], s=36, zorder=3, edgecolor=COLORS[i], lw=1.2,
-                           facecolor=COLORS[i] if side == "long" else "white")
-                rows.append({"method": label, "side": side, "product": p, "breach_rate": rate})
-    ax.set_xticks(range(len(methods)))
-    ax.set_xticklabels([m[1] for m in methods])
-    ax.set_ylabel("share of chains whose truth breaches the 90% point")
-    ax.set_title(f"Thin chains (SPY's front months), {n} simulated: one-sided 90% reserves", loc="left", fontsize=10)
-    names = {"autocallable": "autocallable", "forward_start": "forward start", "put_1y_80": "1-year 80% put",
-             "cliquet": "cliquet"}
-    ax.legend(handles=[plt.Line2D([], [], marker=m, ls="", color="0.3", label=names.get(p, p.replace("_", " ")))
-                       for m, p in zip(marks, products)]
-              + [plt.Line2D([], [], marker="o", ls="", color="0.3", label="long side filled, short side open")],
-              fontsize=7, frameon=False, loc="upper left")
-    tidy(ax)
-    numbers["desk_case_breach_rates"] = {"chains": n, "binomial_95_band": [lo, hi], "rows": rows}
-
+def pooling(numbers):
     h = load("bs_hierarchy.json")["sectors"]
     labels = list(h)
     meth = ["per name", "proxy", "empirical Bayes", "hierarchical Bayes"]
     width = 0.19
+    fig, bx = plt.subplots(figsize=(6.4, 3.8))
     for k, m in enumerate(meth):
         vals = [h[s]["scores"][m]["coverage_90"] for s in labels]
-        bx.bar(np.arange(len(labels)) + (k - 1.5) * width, vals, width, color=[GREY, COLORS[4], COLORS[1], COLORS[0]][k],
-               label=m)
+        bx.bar(np.arange(len(labels)) + (k - 1.5) * width, vals, width,
+               color=[GREY, COLORS[4], COLORS[1], COLORS[0]][k], label=m)
     bx.axhline(0.9, color="0.3", lw=0.8, ls="--")
     bx.set_ylim(0.5, 1.0)
     bx.set_xticks(range(len(labels)))
     bx.set_xticklabels(labels)
     bx.set_ylabel("coverage of 90% intervals, illiquid names")
-    bx.set_title("Black–Scholes marks for thin names in one sector", loc="left", fontsize=10)
+    bx.set_title("Black–Scholes marks for thin names in one simulated sector", loc="left", fontsize=10)
     bx.legend(fontsize=7, frameon=False, loc="upper center", ncol=2)
     tidy(bx)
     numbers["bs_hierarchy_coverage"] = {s: {m: h[s]["scores"][m]["coverage_90"] for m in meth} for s in labels}
     numbers["bs_hierarchy_width"] = {s: {m: h[s]["scores"][m]["mean_width_vol_points"] for m in meth} for s in labels}
-    save(fig, "v2-coverage.png")
+    save(fig, "v2-pooling.png")
+
+
+def thin_candidates(numbers):
+    """Median near-money bid-ask width per expiry to one year, for the four candidate chains."""
+    fig, ax = plt.subplots(figsize=(7.6, 4.0))
+    rows = {}
+    for i, (ticker, name) in enumerate(CANDIDATES):
+        chain = load(f"thin_chains/{name}")
+        days, width, count = [], [], []
+        for e in chain["expiries"]:
+            if e["days"] > 366 or e["median_iv_spread_near_money"] is None:
+                continue
+            days.append(e["days"])
+            width.append(100 * e["median_iv_spread_near_money"])
+            count.append(e["two_sided_near_money"])
+        ax.plot(days, width, "-", color=COLORS[i], lw=1)
+        ax.scatter(days, width, s=[12 * c for c in count], color=COLORS[i], zorder=3, label=ticker)
+        rows[ticker] = {"name": chain["name"], "asof": chain["source"], "volume_total": chain["volume_total"],
+                        "open_interest_total": chain["open_interest_total"],
+                        "expiries": [{"calendar_days": d, "median_near_money_width_vol_points": w,
+                                      "two_sided_near_money": c} for d, w, c in zip(days, width, count)]}
+    ax.axhline(2 * 0.3, color="0.3", lw=0.8, ls="--")
+    ax.annotate("SPY's design noise at the money, as a bid-ask width (0.6 points)", (5, 0.62), fontsize=7,
+                color="0.3", va="bottom")
+    ax.set_yscale("log")
+    ax.set_xlabel("calendar days to expiry")
+    ax.set_ylabel("median bid-ask width near the money (vol points)")
+    ax.set_title("Four candidate thin chains, 22 and 23 October 2026 (marker area: two-sided quotes near the money)",
+                 loc="left", fontsize=9)
+    ax.legend(fontsize=8, frameon=False, loc="upper right")
+    tidy(ax)
+    numbers["thin_candidates"] = rows
+    save(fig, "v2-thin-candidates.png")
 
 
 def thin_chain(numbers):
-    ewi = load("thin_chains/ewi_2026-10-22.json")
+    ewi = load("thin_chains/EWI_2026-10-22.json")
     fig, axes = plt.subplots(1, 4, figsize=(12.5, 3.8), sharey=True)
     summary = []
     for ax, e in zip(axes, ewi["expiries"]):
@@ -203,7 +186,8 @@ def thin_chain(numbers):
 if __name__ == "__main__":
     numbers = {}
     classical_vs_posterior(numbers)
-    coverage(numbers)
+    pooling(numbers)
     thin_chain(numbers)
+    thin_candidates(numbers)
     (OUT / "v2-evidence-numbers.json").write_text(json.dumps(numbers, indent=1))
     print(json.dumps(numbers, indent=1)[:6000])

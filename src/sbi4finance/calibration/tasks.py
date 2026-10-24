@@ -6,9 +6,11 @@ pricers, priors and seed streams apply, and differ from them in four ways:
 * its task_id ends in "_calibration_v1" and it carries a "context_prior" key;
 * quote noise is one standard deviation per contract;
 * rough Bergomi draws its forward-variance curve per example: n piecewise-
-  constant levels on the intervals between the design maturities, built as
-  sigma0^2 (1 + s * midpoint) * exp(u_j) with sigma0, s and u_j uniform;
-  the levels are stored per example and conditioned on, never inferred;
+  constant levels on the intervals between the design maturities, from one
+  of two context priors (CURVE_KINDS): the pilot's "linear_wobble",
+  sigma0^2 (1 + s * midpoint) * exp(u_j) with sigma0, s and u_j uniform, and
+  the full bank's "power_law_walk", a power law in time times a Gaussian
+  random walk in log time (draw_context); the levels are stored per example;
 * the Heston check is the HKDE model with jump intensity fixed at zero and
   the initial variance as an inferred parameter.
 
@@ -27,6 +29,14 @@ HKDE_PARAMETERS = {"kappa", "theta", "vol_of_vol", "rho", "jump_intensity",
 UNIVERSE = {"rough": {"hurst", "eta", "rho"}, "hkde": HKDE_PARAMETERS | {"initial_variance"}}
 TASK_KEYS = {"task_id", "model", "measure", "context", "model_context", "parameter_names",
              "prior_bounds", "fixed_parameters", "numerics", "context_prior"}
+# The keys of each forward-variance prior. A prior without "kind" is the pilot's linear_wobble, so the pilot's
+# configuration, fingerprint and draws are unchanged.
+CURVE_KINDS = {"linear_wobble": {"level_bounds", "slope_bounds", "log_perturbation"},
+               "power_law_walk": {"kind", "level_bounds", "exponent_bounds", "walk_sd", "vol_bounds"}}
+MAX_CURVE_DRAWS = 1000  # rejection draws of a power_law_walk curve before a surface fails
+# The full bank's forward-variance prior (configs/tasks/calibration_rough_bank.json; docs/course/v2-plan.md, G0').
+FULL_BANK_CURVE_PRIOR = {"kind": "power_law_walk", "level_bounds": [0.08, 0.60], "exponent_bounds": [-0.6, 0.6],
+                         "walk_sd": 0.15, "vol_bounds": [0.06, 0.60]}
 
 
 def is_calibration_task(task):
@@ -150,14 +160,9 @@ def validate_task(task):
                 or grid[0] != 0 or np.any(np.diff(grid) <= 0) \
                 or not np.all(np.isclose(maturities[:, None], grid[None, 1:], rtol=0, atol=1e-12).any(axis=1)):
             raise ValueError("forward-variance knots start at zero, increase, and include every maturity")
-        if set(prior) != {"forward_variance"} or set(prior["forward_variance"]) != {
-                "level_bounds", "slope_bounds", "log_perturbation"}:
+        if set(prior) != {"forward_variance"} or not isinstance(prior["forward_variance"], dict):
             raise ValueError("rough calibration needs a forward-variance context prior")
-        level = _interval(prior["forward_variance"]["level_bounds"], "level_bounds")
-        slope = _interval(prior["forward_variance"]["slope_bounds"], "slope_bounds")
-        wobble = prior["forward_variance"]["log_perturbation"]
-        if level[0] <= 0 or 1 + slope[0] * grid[-1] <= 0 or not np.isfinite(wobble) or wobble < 0:
-            raise ValueError("positive level and slopes that keep every level positive required")
+        validate_curve_prior(prior["forward_variance"], grid)
         required = {"method", "blocks", "paths_ladder", "max_mc_se_over_quote_sigma"}
         if not required <= set(numerics) <= required | {"max_mc_se_over_quote_sigma_last_rung"} \
                 or numerics["method"] != "hybrid":
@@ -190,19 +195,71 @@ def validate_task(task):
         raise ValueError("numerical precision budget must be positive")
 
 
+def curve_kind(prior):
+    return prior.get("kind", "linear_wobble")
+
+
+def validate_curve_prior(prior, grid):
+    """The forward-variance prior's keys and values; grid is the knot vector starting at zero."""
+    kind = curve_kind(prior)
+    if kind not in CURVE_KINDS or set(prior) != CURVE_KINDS[kind]:
+        raise ValueError(f"forward-variance prior needs exactly {sorted(CURVE_KINDS.get(kind, ()))}")
+    level = _interval(prior["level_bounds"], "level_bounds")
+    if level[0] <= 0:
+        raise ValueError("the level bounds must be positive")
+    if kind == "linear_wobble":
+        slope = _interval(prior["slope_bounds"], "slope_bounds")
+        wobble = prior["log_perturbation"]
+        if 1 + slope[0] * grid[-1] <= 0 or not np.isfinite(wobble) or wobble < 0:
+            raise ValueError("slopes that keep every level positive and a non-negative perturbation required")
+        return
+    _interval(prior["exponent_bounds"], "exponent_bounds")
+    vol = _interval(prior["vol_bounds"], "vol_bounds")
+    walk = prior["walk_sd"]
+    if isinstance(walk, bool) or np.ndim(walk) != 0 or not np.isfinite(walk) or walk < 0:
+        raise ValueError("walk_sd must be a non-negative number")
+    if vol[0] <= 0 or not (vol[0] <= level[0] and level[1] <= vol[1]):
+        raise ValueError("vol_bounds must be positive and contain the level bounds")
+
+
+def interval_midpoints(task):
+    grid = knots(task)
+    return 0.5 * (grid[1:] + grid[:-1])
+
+
 def draw_context(task, rng):
-    """Per-example forward-variance levels and their (sigma0, slope) for rough; empty for Heston."""
+    """Per-example forward-variance levels and their two summary values for rough; empty for Heston.
+
+    linear_wobble (the pilot): levels sigma0^2 (1 + s tbar_j) exp(u_j), with sigma0 ~ U(level_bounds),
+    s ~ U(slope_bounds), u_j ~ U(-a, a); returns (sigma0, s).
+
+    power_law_walk (the full bank): with tbar_j the midpoint of interval j and x_j = log tbar_j - log tbar_1,
+        log xi_j = 2 log sigma0 + b x_j + W_j,   W_1 = 0,   W_{j+1} - W_j ~ N(0, walk_sd^2 (x_{j+1} - x_j)),
+    sigma0 log-uniform on level_bounds, b ~ U(exponent_bounds); a curve with any level's volatility sqrt(xi_j)
+    outside vol_bounds is drawn again (the prior is truncated to vol_bounds); returns (sigma0, b).
+    """
     if task["model"] != "rough":
         return np.empty(0), np.empty(0)
     prior = task["context_prior"]["forward_variance"]
-    grid = knots(task)
-    level = rng.uniform(*prior["level_bounds"])
-    slope = rng.uniform(*prior["slope_bounds"])
-    wobble = prior["log_perturbation"]
-    midpoints = 0.5 * (grid[1:] + grid[:-1])
-    log_noise = rng.uniform(-wobble, wobble, len(midpoints)) if wobble > 0 else np.zeros(len(midpoints))
-    levels = level**2 * (1.0 + slope * midpoints) * np.exp(log_noise)
-    return levels, np.array([level, slope])
+    midpoints = interval_midpoints(task)
+    if curve_kind(prior) == "linear_wobble":
+        level = rng.uniform(*prior["level_bounds"])
+        slope = rng.uniform(*prior["slope_bounds"])
+        wobble = prior["log_perturbation"]
+        log_noise = rng.uniform(-wobble, wobble, len(midpoints)) if wobble > 0 else np.zeros(len(midpoints))
+        levels = level**2 * (1.0 + slope * midpoints) * np.exp(log_noise)
+        return levels, np.array([level, slope])
+    x = np.log(midpoints) - np.log(midpoints[0])
+    low, high = np.log(prior["vol_bounds"][0]), np.log(prior["vol_bounds"][1])
+    for _ in range(MAX_CURVE_DRAWS):
+        level = np.exp(rng.uniform(np.log(prior["level_bounds"][0]), np.log(prior["level_bounds"][1])))
+        exponent = rng.uniform(*prior["exponent_bounds"])
+        steps = rng.standard_normal(len(x) - 1) * prior["walk_sd"] * np.sqrt(np.diff(x))
+        log_levels = 2 * np.log(level) + exponent * x + np.concatenate([[0.0], np.cumsum(steps)])
+        log_vol = 0.5 * log_levels
+        if np.all((log_vol >= low) & (log_vol <= high)):
+            return np.exp(log_levels), np.array([level, exponent])
+    raise ValueError("no forward-variance curve inside vol_bounds")
 
 
 def heston_prices(task, parameters, v0, contracts=None):
@@ -261,9 +318,13 @@ def _base_task(contracts, sigmas):
 def rough_task(*, days=surface.DESIGN_DAYS, deltas=surface.DESIGN_DELTAS, sigma_ref=surface.SIGMA_REF,
                noise_atm=surface.NOISE_ATM, noise_wing=surface.NOISE_WING,
                prior_bounds=((0.02, 0.35), (0.5, 3.5), (-0.99, -0.2)),
-               level_bounds=(0.10, 0.40), slope_bounds=(-0.3, 0.6), log_perturbation=0.2,
+               level_bounds=(0.10, 0.40), slope_bounds=(-0.3, 0.6), log_perturbation=0.2, curve_prior=None,
                blocks=None, paths_ladder=tuple(2**k for k in range(15, 22)), budget=0.25, last_rung_cap=0.5):
+    """The rough-Bergomi calibration task; curve_prior, if given, replaces the pilot's linear_wobble prior."""
     contracts = surface.design_grid(days, deltas, sigma_ref)
+    if curve_prior is None:
+        curve_prior = {"level_bounds": list(level_bounds), "slope_bounds": list(slope_bounds),
+                       "log_perturbation": log_perturbation}
     if blocks is None:
         # One grid per maturity group, each starting at zero: the one- and two-week quotes (8 steps a day,
         # where the far puts need the most paths and a path costs least), up to three months (8 a day),
@@ -278,9 +339,7 @@ def rough_task(*, days=surface.DESIGN_DAYS, deltas=surface.DESIGN_DELTAS, sigma_
         "task_id": "rough" + FAMILY, "model": "rough", "measure": "Q",
         "context": _base_task(contracts, surface.quote_noise(contracts, sigma_ref, noise_atm, noise_wing)),
         "model_context": {"forward_variance_knots": [0.0] + [d / surface.TRADING_DAYS for d in days]},
-        "context_prior": {"forward_variance": {"level_bounds": list(level_bounds),
-                                               "slope_bounds": list(slope_bounds),
-                                               "log_perturbation": log_perturbation}},
+        "context_prior": {"forward_variance": dict(curve_prior)},
         "parameter_names": ["hurst", "eta", "rho"],
         "prior_bounds": [list(b) for b in prior_bounds],
         "fixed_parameters": {},

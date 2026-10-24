@@ -404,15 +404,20 @@
   },
   "context_prior": {
    "forward_variance": {
+    "kind": "power_law_walk",
     "level_bounds": [
-     0.1,
-     0.4
-    ],
-    "slope_bounds": [
-     -0.3,
+     0.08,
      0.6
     ],
-    "log_perturbation": 0.2
+    "exponent_bounds": [
+     -0.6,
+     0.6
+    ],
+    "walk_sd": 0.15,
+    "vol_bounds": [
+     0.06,
+     0.6
+    ]
    }
   },
   "parameter_names": [

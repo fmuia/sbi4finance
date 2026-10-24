@@ -1,23 +1,29 @@
 """The audit of rough-Bergomi surfaces with the Monte Carlo likelihood (study S5).
 
     python tutorial_final/studies/audit.py --bank ROUGH_BANK --checkpoint RUN --out NEW_DIR \
-        [--first 2500 --surfaces 500 --proposals 512 --paths 8192 --workers 4]
+        [--first 2500 --surfaces 200 --proposals 512 --paths 32768 --workers 4]
 
-For each surface: the network's draws give a Student t proposal (mixed with
-10% of the prior); each proposal's design surface is priced by Monte Carlo
-(antithetic paths, control variates; common random numbers across proposals);
-the likelihood is the unbiased estimate N(y; P_hat, sigma^2 - s^2) of the exact
-likelihood (design document, Appendix G.3); the weights give the efficiency and k-hat.
-Results computed before 23 October 2026 used sigma^2 + s^2, which targets a noise
-variance sigma^2 + 2 s^2 and must be rerun.
-Reported: their distributions, the flag rates at k-hat above 0.7 and above the
-sample-size threshold min(1 - 1/log10 M, 0.7), the surfaces whose proposals cannot
-be priced within the Monte Carlo cap, the cost per surface, and the network's
-error against the reweighted posterior.
+For each surface: the network's draws give a Student t proposal (mixed with 10% of the prior). Each proposal's
+design surface is priced by Monte Carlo on its own seed, so the Monte Carlo errors are independent across
+proposals (antithetic paths and control variates within a proposal). The likelihood is the unbiased estimate
+N(y; P_hat, diag(sigma^2) + C - S) of the exact likelihood N(y; P, diag(sigma^2) + C): S is the proposal's
+Monte Carlo covariance (quotes priced on the same paths have correlated errors) and C the bank's own Monte Carlo
+covariance of the surface's reference prices, since y = P_ref + noise (correction.gaussian_loglik_mc). A
+proposal is priced again on a fresh stream with twice the paths, up to eight times, while a quote's error exceeds
+half its noise sd, the covariance's largest eigenvalue exceeds half the noise variance, or the sum of (SE/sigma)^2
+exceeds 1; one that still fails gets zero weight and is counted, instead of the whole surface being dropped. The weights give the efficiency and k-hat.
 
-Each finished surface is appended to OUT.partial.jsonl, next to the output
-directory; rerunning the same command after an interruption audits only the
-surfaces still missing, and the file is removed once audit.json is written.
+Earlier versions priced every proposal of a surface with one seed (common random numbers), with which this
+estimate is not unbiased: the weights converge to the posterior given that seed's error field, which is shifted
+and too narrow. Results computed with them (the pilot's S5 of 22 October 2026) must be rerun.
+
+Reported: the distributions of efficiency and k-hat, the flag rates at k-hat above 0.7 and above the
+sample-size threshold min(1 - 1/log10 M, 0.7), the proposals that could not be priced, the cost per surface, and
+the network's error against the reweighted posterior, on all surfaces and on those with k-hat at most 0.7 (the
+reliable audits). Each surface's record keeps its parameters and curve, so flag rates can be read by region.
+
+Each finished surface is appended to OUT.partial.jsonl, next to the output directory; rerunning the same command
+after an interruption audits only the surfaces still missing, and the file is removed once audit.json is written.
 """
 
 import argparse
@@ -38,37 +44,66 @@ from evaluate_calibration import load_network, posterior_draws  # noqa: E402
 from heston_check import jsonable  # noqa: E402
 
 
-MC_BUDGET = 0.5  # target Monte Carlo SE / quote-noise sd per block; the paths double up to 4x to meet it
-MC_CAP = 0.9     # above this the unbiased likelihood N(y; P_hat, sigma^2 - s^2) is too noisy to weight with
+MC_BUDGET = 0.5  # largest Monte Carlo SE / quote-noise sd per quote; the paths double up to 8x to meet it
+_TAG = 0x53354155  # "S5AU"
+
+
+def price_proposal(row, seed, task, curve, contracts, paths, max_doublings=3):
+    """(prices, covariance, paths) on the proposal's own seed, or (None, None, reason).
+
+    Prices at paths, then 2, 4 and 8 times as many, each on a fresh stream, until every quote's SE is at most
+    MC_BUDGET of its noise sd, the covariance's largest eigenvalue relative to the noise variance is at most
+    correction.MAX_RELATIVE_EIGENVALUE and its trace at most correction.MAX_RELATIVE_TRACE; the decision uses the
+    estimated errors only, so it does not bias the likelihood estimate.
+    """
+    sigma = tasks.sigma(task)
+    model = tasks.model_parameters(task, row)
+    reason = None
+    for rung in range(max_doublings + 1):
+        n = paths * 2**rung
+        stream = int(np.random.SeedSequence([_TAG, int(seed), rung]).generate_state(1, dtype=np.uint32)[0])
+        try:
+            prices, errors, cov, _ = pricing.rough_surface(model, curve, contracts, task["numerics"]["blocks"], [n],
+                                                           sigma, np.inf, stream, cap=None)
+        except ValueError as error:
+            reason = str(error)
+            continue
+        ratio = correction.relative_mc_eigenvalue(sigma, cov)
+        worst = float(np.max(errors / sigma))
+        trace = float(np.sum((errors / sigma) ** 2))
+        if worst <= MC_BUDGET and ratio <= correction.MAX_RELATIVE_EIGENVALUE and trace <= correction.MAX_RELATIVE_TRACE:
+            return prices, cov, int(n)
+        reason = f"at {n} paths: largest SE/sigma {worst:.2f}, covariance eigenvalue {ratio:.2f}, trace {trace:.2f}"
+    return None, None, reason
 
 
 def audit_job(job):
-    task, observation, context, draws, proposals, paths, seed = job
+    task, observation, context, bank_covariance, draws, proposals, paths, seed = job
     curve = tasks.curve(task, context)
     contracts = task["context"]["contracts"]
+    sigma = tasks.sigma(task)
     started = time.process_time()
-    theta, log_q, _ = correction.propose(draws, task, proposals, seed)
-    prices, variances = [], []
-    ladder = [paths, 2 * paths, 4 * paths]
-    for row in theta:
-        try:
-            p, se, _, _ = pricing.rough_surface(tasks.model_parameters(task, row), curve, contracts,
-                                                task["numerics"]["blocks"], ladder, tasks.sigma(task),
-                                                MC_BUDGET, seed, cap=MC_CAP)
-        except ValueError as error:  # a proposal the audit cannot price precisely enough: flag the surface
-            return {"efficiency": 0.0, "khat": None, "max_weight": None, "auditable": False,
-                    "reason": str(error), "network_vs_audited": None,
-                    "cpu_seconds": time.process_time() - started}
-        prices.append(p)
-        variances.append(se**2)
-    log_lik = correction.gaussian_loglik(task, observation, np.array(prices), mc_variance=np.array(variances),
-                                         max_ratio=MC_CAP)
+    theta, log_q, from_prior = correction.propose(draws, task, proposals, seed)
+    log_lik = np.full(len(theta), -np.inf)
+    unpriced, unpriced_prior, reasons, escalated = 0, 0, [], 0
+    for j, row in enumerate(theta):
+        proposal_seed = int(np.random.SeedSequence([_TAG, int(seed), 1, j]).generate_state(1, dtype=np.uint32)[0])
+        prices, cov, info = price_proposal(row, proposal_seed, task, curve, contracts, paths)
+        if prices is None:
+            unpriced += 1
+            unpriced_prior += int(from_prior[j])
+            reasons.append(info)
+            continue
+        escalated += int(info > paths)
+        log_lik[j] = correction.gaussian_loglik_mc(observation, prices, sigma, cov, data_covariance=bank_covariance)
     result = correction.correct(log_lik, log_q, task)
     summary = correction.weighted_summary(theta, result["weights"])
     agree = validation.agreement(draws, reference_mean=summary["mean"], reference_sd=summary["sd"],
                                  reference_q05=summary["quantiles"][:, 0], reference_q95=summary["quantiles"][:, 2])
     return {"efficiency": result["efficiency"], "khat": result["khat"], "max_weight": result["max_weight"],
-            "auditable": True, "network_vs_audited": agree, "cpu_seconds": time.process_time() - started}
+            "unpriced_proposals": unpriced, "unpriced_from_prior": unpriced_prior, "unpriced_reasons": reasons[:3],
+            "escalated_proposals": escalated, "network_vs_audited": agree,
+            "cpu_seconds": time.process_time() - started}
 
 
 def figure(report, path):
@@ -76,7 +111,7 @@ def figure(report, path):
     from sbi4finance.calibration.plots import BASELINE, INK, SERIES, plt, style
 
     style()
-    surfaces = [s for s in report["surfaces"] if s.get("auditable", True)]
+    surfaces = report["surfaces"]
     error = np.array([max(v for v in s["network_vs_audited"]["standardized_mean_error"] if v is not None)
                       for s in surfaces])
     efficiency = np.array([s["efficiency"] for s in surfaces])
@@ -96,23 +131,34 @@ def figure(report, path):
     fig.savefig(path, dpi=160)
 
 
+def error_quantiles(results):
+    error = np.array([max(v for v in r["network_vs_audited"]["standardized_mean_error"] if v is not None)
+                      for r in results], dtype=float)
+    if not len(error):
+        return None
+    return dict(zip(("q50", "q90", "max"), [float(np.median(error)), float(np.quantile(error, 0.9)),
+                                            float(error.max())]))
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--bank", type=Path, required=True)
     parser.add_argument("--checkpoint", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--first", type=int, default=2500)
-    parser.add_argument("--surfaces", type=int, default=500)
+    parser.add_argument("--surfaces", type=int, default=200)
     parser.add_argument("--draws", type=int, default=1000)
     parser.add_argument("--proposals", type=int, default=512)
-    parser.add_argument("--paths", type=int, default=8192)
+    parser.add_argument("--paths", type=int, default=32768)
     parser.add_argument("--workers", type=int, default=4)
     parser.add_argument("--seed", type=int, default=0)
     args = parser.parse_args()
-    manifest, splits = bank.load_bank(args.bank)
+    manifest, splits = bank.load_bank(args.bank, splits=("test",))
     task, workflow, _ = load_network(args.checkpoint)
     if task["model"] != "rough":
         raise ValueError("the Monte Carlo audit is for rough Bergomi; Heston's exact audit is study S3")
+    if task != manifest["configuration"]["task"]:
+        raise ValueError("checkpoint and bank tasks differ")
     test = splits["test"]
     rows = np.arange(args.first, min(args.first + args.surfaces, len(test["parameters"])))
     args.out.mkdir(parents=True, exist_ok=False)
@@ -124,8 +170,9 @@ def main():
             record = json.loads(line)
             done[record["test_row"]] = record["result"]
     pending = [i for i, r in enumerate(rows) if int(r) not in done]
-    jobs = [(task, test["observations"][rows[i], :, 0], test["context_values"][rows[i]], network[i], args.proposals,
-             args.paths, args.seed + int(rows[i])) for i in pending]
+    jobs = [(task, test["observations"][rows[i], :, 0], test["context_values"][rows[i]],
+             test["pricing_covariance"][rows[i]], network[i], args.proposals, args.paths, args.seed + int(rows[i]))
+            for i in pending]
     with ProcessPoolExecutor(args.workers, mp_context=multiprocessing.get_context("spawn")) as pool, \
             partial.open("a") as log:
         for i, result in zip(pending, pool.map(audit_job, jobs)):
@@ -135,22 +182,26 @@ def main():
     results = [done[int(r)] for r in rows]
     efficiency = np.array([r["efficiency"] for r in results], dtype=float)
     khat = np.array([np.inf if r["khat"] is None else r["khat"] for r in results], dtype=float)
-    auditable = [r for r in results if r.get("auditable", True)]
-    error = np.array([max(r["network_vs_audited"]["standardized_mean_error"]) for r in auditable], dtype=float)
+    reliable = [r for r, k in zip(results, khat) if k <= 0.7]
     threshold = min(1 - 1 / np.log10(args.proposals), 0.7)  # PSIS sample-size-dependent threshold
     summary = {"surfaces": len(rows), "proposals": args.proposals, "paths": args.paths,
-               "likelihood": "unbiased N(y; P_hat, sigma^2 - s^2)", "mc_budget": MC_BUDGET, "mc_cap": MC_CAP,
-               "not_auditable": len(results) - len(auditable),
+               "likelihood": "unbiased N(y; P_hat, diag(sigma^2) + C_bank - S), one seed per proposal",
+               "mc_budget": MC_BUDGET, "max_relative_eigenvalue": correction.MAX_RELATIVE_EIGENVALUE,
+               "unpriced_proposals_total": int(sum(r["unpriced_proposals"] for r in results)),
+               "surfaces_with_unpriced_proposals": int(sum(r["unpriced_proposals"] > 0 for r in results)),
                "khat_threshold": float(threshold),
                "flag_rate_khat_above_threshold": float(np.mean(khat > threshold)),
                "efficiency_quantiles": dict(zip(("q05", "q50", "q95"), np.quantile(efficiency, [0.05, 0.5, 0.95]).tolist())),
                "flag_rate_khat_above_0_7": float(np.mean(khat > 0.7)),
                "flag_rate_efficiency_below_0_02": float(np.mean(efficiency < 0.02)),
                "cpu_seconds_per_surface_median": float(np.median([r["cpu_seconds"] for r in results])),
-               "network_error_vs_audited_sd_quantiles": dict(zip(("q50", "q90", "max"),
-                                                                  [float(np.median(error)), float(np.quantile(error, 0.9)), float(error.max())]))}
+               "network_error_vs_audited_sd_quantiles_reliable": error_quantiles(reliable),
+               "network_error_vs_audited_sd_quantiles_all": error_quantiles(results),
+               "reliable_surfaces": len(reliable)}
     report = {"study": "S5", "task_fingerprint": manifest["task_fingerprint"], "summary": summary,
-              "surfaces": [{"test_row": int(r), **res} for r, res in zip(rows, results)]}
+              "surfaces": [{"test_row": int(r), "parameters": test["parameters"][r].tolist(),
+                            "forward_variance_levels": test["context_values"][r].tolist(), **res}
+                           for r, res in zip(rows, results)]}
     (args.out / "audit.json").write_text(json.dumps(jsonable(report), indent=2, allow_nan=False) + "\n")
     figure(json.loads((args.out / "audit.json").read_text()), args.out / "audit.png")
     partial.unlink(missing_ok=True)

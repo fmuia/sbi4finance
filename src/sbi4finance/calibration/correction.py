@@ -16,11 +16,21 @@ E[N(y; P_hat, sigma^2 - s^2)] = N(y; P, sigma^2) for s < sigma. The plug-in
 N(y; P_hat, sigma^2) is instead unbiased for N(y; P, sigma^2 + s^2), and
 N(y; P_hat, sigma^2 + s^2) for N(y; P, sigma^2 + 2 s^2): adding the Monte Carlo
 variance counts it twice (design document, Appendix G.3).
+
+Two conditions make the weights target the exact posterior. The Monte Carlo errors
+must be independent across proposals: each proposal priced with its own seed. With
+one seed for every proposal (common random numbers) the weights converge to the
+posterior given that seed's error field, which is shifted, and narrower with
+sigma^2 - s^2. And quotes priced on the same paths have correlated errors, so the
+estimate must use their covariance S: E[N(y; P_hat, diag(sigma^2) - S)] =
+N(y; P, diag(sigma^2)). gaussian_loglik_mc computes it; the caller supplies the
+independent seeds.
 """
 
 import time
 
 import numpy as np
+import scipy.linalg
 from scipy.special import expit, logit, logsumexp
 from scipy.stats import multivariate_t
 
@@ -77,6 +87,41 @@ def gaussian_loglik(task, observation, prices, mc_variance=None, max_ratio=0.9):
         variance = sigma2 - mc_variance
     y = np.asarray(observation, dtype=float).reshape(-1)
     return -0.5 * np.sum((prices - y) ** 2 / variance + np.log(2 * np.pi * variance), axis=-1)
+
+
+MAX_RELATIVE_EIGENVALUE = 0.5  # validity: diag(sigma^2) - S must stay a covariance (eigenvalue below 1)
+MAX_RELATIVE_TRACE = 1.0       # efficiency: the log-likelihood estimate's variance is about sum (s_i / sigma_i)^2
+
+
+def relative_mc_eigenvalue(sigma, covariance):
+    """Largest eigenvalue of the Monte Carlo covariance in units of the quote noise: diag(1/sigma) S diag(1/sigma)."""
+    sigma = np.asarray(sigma, dtype=float).reshape(-1)
+    return float(np.linalg.eigvalsh(np.asarray(covariance, dtype=float) / np.outer(sigma, sigma))[-1])
+
+
+def gaussian_loglik_mc(observation, prices, sigma, covariance, max_eigenvalue=MAX_RELATIVE_EIGENVALUE,
+                       data_covariance=None):
+    """log of an unbiased estimate of N(y; P, V) with V = diag(sigma^2) + data_covariance, from one Monte Carlo
+    price vector.
+
+    For P_hat = P + e with e ~ N(0, S), S the covariance of the price means (pricing.rough_surface returns it),
+    E[N(y; P_hat, V - S)] = N(y; P, V), the convolution of two Gaussians. data_covariance is the error the data
+    carry besides the quote noise: for a bank surface, the Monte Carlo error of its reference prices (the bank's
+    pricing_covariance), since y = P_ref + noise; None for real quotes. Raises when the largest eigenvalue of S
+    relative to diag(sigma^2) exceeds max_eigenvalue: the estimate is then too noisy to weight with.
+    """
+    y = np.asarray(observation, dtype=float).reshape(-1)
+    p = np.asarray(prices, dtype=float).reshape(-1)
+    sigma = np.asarray(sigma, dtype=float).reshape(-1)
+    S = np.asarray(covariance, dtype=float)
+    ratio = relative_mc_eigenvalue(sigma, S)
+    if not np.isfinite(ratio) or ratio > max_eigenvalue:
+        raise ValueError(f"Monte Carlo covariance / noise eigenvalue {ratio:.3f} exceeds {max_eigenvalue}: "
+                         "price with more paths")
+    V = np.diag(sigma**2) if data_covariance is None else np.diag(sigma**2) + np.asarray(data_covariance, float)
+    chol = np.linalg.cholesky(V - S)
+    r = scipy.linalg.solve_triangular(chol, y - p, lower=True)
+    return float(-0.5 * r @ r - np.sum(np.log(np.diag(chol))) - 0.5 * len(y) * np.log(2 * np.pi))
 
 
 def fit_proposal(draws, task, *, df=5, inflation=1.2):

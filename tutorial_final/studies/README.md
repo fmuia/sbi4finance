@@ -17,6 +17,11 @@ come from these outputs. Library code is in `src/sbi4finance/calibration/`.
 | S7 | `across_models.py` | The same rough-Bergomi smiles under Heston: the Heston posterior (the network corrected with the Fourier likelihood), both least-squares fits with their chi-square, and the products under both posteriors |
 | S8 | `scripts/build_surface.py` (Stage C) | The real smile on the design grid, from a chain file |
 | S9 | `costs.py` | CPU-seconds per route on one machine |
+| S1-G | `grid_bias.py` | The bank's time-grid bias: each surface priced on the bank's grid and on one twice as fine |
+| S2-T | `train_calibration.py --thin-layout`, `evaluate_thin.py` | The thin-chain network on a real chain's layout and noise (EWG), which infers the forward-variance curve; its SBC at a noise scale |
+| S8 | `real_smile.py` | SPY under the liquid network: posterior, audit, predictive check, products |
+| S10 | `thin_coverage.py` (`run`, `summarize`), `cluster/thin_coverage_array.sbatch` | Breach rates of every method's one-sided 90% bounds on simulated chains with the thin layout; with `--truths`, truths drawn from S11's posterior (S10-E) |
+| S11 | `thin_real.py` | A real thin chain (EWG): the audited posterior, products, classical fits, the predictive check, at several noise scales |
 | S2-1, S2-2 | `smile_facts.py` (`example`, `prior-predictive`) | The example surfaces at the centre of the prior, and the prior predictive check of four smile statistics |
 | – | `manifest.py` | Regenerates the artifact table of `tutorial_final/MANIFEST.md` from the files in `results/` and `checkpoints/` |
 
@@ -29,14 +34,22 @@ Every study uses its own range of test surfaces, so no surface serves two checks
 | S2 | 0–1999 | 0–249 |
 | S3 | 2000–2049 (Heston) | – |
 | S4 | held-out pricer error on 0–2049; chains on 2050–2099 | – |
-| S5 | 2500 onwards (rough) | 250–289 |
+| S5 | 2500–2699 (rough) | 250–289 |
 | S6 | 2100–2299 | 293–300 |
-| S7 | 2300 onwards | 290–292 |
+| S7 | 2300–2499 | 290–292 |
+| S10 | 3000–3999 (rough) | – |
+| S2-T | 4000–5999 (rough) | – |
+| S1-G | 6000–6049 (rough) | – |
+
+S4's pricer error on rows 0–2049 overlaps S2's rows; it is a different estimator, so no result is biased. The
+prior predictive check (`smile_facts.py`) also reads rows 0–999, for description only.
 
 ## Commands
 
-These are the commands behind the accepted results; each run directory's JSON
-records its settings again.
+The runs still missing on the full bank, with their exact commands, costs and acceptance checks, are in
+[`../CLUSTER-RUNS.md`](../CLUSTER-RUNS.md). The commands below are the ones behind the accepted results; each run
+directory's JSON records its settings again. The pilot's S5 (22 October) priced all proposals of a surface on one
+seed and must be rerun with the current `audit.py`.
 
 Heston (Stage A), on one machine (4 cores):
 

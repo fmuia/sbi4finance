@@ -35,9 +35,28 @@ def _day(text):
     return date.fromisoformat(str(text)[:10])
 
 
-def trading_days(valuation, expiration):
-    """Business days from valuation to expiration (weekends excluded; exchange holidays are not)."""
-    return int(np.busday_count(valuation, expiration))
+# NYSE full-day closures as published by the exchange: "NYSE Group Announces 2026, 2027 and 2028 Holiday and
+# Early Closings Calendar", Intercontinental Exchange press release, 2025
+# (https://ir.theice.com/press/news-details/2025/NYSE-Group-Announces-2026-2027-and-2028-Holiday-and-Early-Closings-Calendar/).
+NYSE_HOLIDAYS = tuple(date.fromisoformat(d) for d in (
+    "2026-01-01", "2026-01-19", "2026-02-16", "2026-04-03", "2026-05-25", "2026-06-19", "2026-07-03", "2026-09-07",
+    "2026-11-26", "2026-12-25",
+    "2027-01-01", "2027-01-18", "2027-02-15", "2027-03-26", "2027-05-31", "2027-06-18", "2027-07-05", "2027-09-06",
+    "2027-11-25", "2027-12-24",
+    "2028-01-17", "2028-02-21", "2028-04-14", "2028-05-29", "2028-06-19", "2028-07-04", "2028-09-04", "2028-11-23",
+    "2028-12-25"))
+NYSE_HOLIDAYS_THROUGH = date(2028, 12, 31)
+
+
+def trading_days(valuation, expiration, holidays=None):
+    """Business days from valuation to expiration: weekends excluded, and the given exchange holidays.
+
+    holidays=None counts weekdays (SPY's surface of 21 October 2026 was read so); NYSE_HOLIDAYS removes the NYSE
+    closures, which makes a calendar year about 252 days, the model's clock. Beyond NYSE_HOLIDAYS_THROUGH the
+    published list ends and the count falls back to weekdays."""
+    if holidays is not None and expiration > NYSE_HOLIDAYS_THROUGH and holidays is NYSE_HOLIDAYS:
+        raise ValueError(f"no published NYSE holidays after {NYSE_HOLIDAYS_THROUGH}")
+    return int(np.busday_count(valuation, expiration, holidays=[] if holidays is None else list(holidays)))
 
 
 def parse_alpha_vantage_csv(text):

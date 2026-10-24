@@ -11,11 +11,12 @@ Data (all SPY, 21 Oct 2026):
   replicated variance-swap vols of the four covered LEAP expirations (1.20, 1.30, 1.71, 2.23 years),
   each with a stated sd in vol points (VS_SD).
 Prior on the long xi0 levels: a random walk in log xi from the one-year level, sd S_PRIOR per sqrt(year)
-between interval midpoints (flat extrapolation is its mean; the desk's practice is its zero-width limit).
+between interval midpoints (flat extrapolation is its mean and its zero-width limit).
 Posterior: Gaussian (Laplace) in (H, eta, rho, log xi_1..11). Products by Monte Carlo (16,384 antithetic paths,
 weekly steps to five years, common random numbers): gradients by central differences give the delta-method
 ranges; 400 posterior draws give the Monte Carlo ranges.
-Ranges compared: desk (H, eta, rho uncertain; xi0 fixed: short replicated, long flat) against the posterior
+Ranges compared: flat extrapolation, keyed "desk" in the JSON (H, eta, rho uncertain; xi0 fixed: short replicated,
+long flat) against the posterior
 (everything uncertain), with the posterior's variance split by input group.
 """
 
