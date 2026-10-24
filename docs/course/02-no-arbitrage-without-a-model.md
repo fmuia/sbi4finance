@@ -1,10 +1,10 @@
 # Lecture 2. No-arbitrage without a model
 
-[Course index](README.md) · Previous: [Lecture 1](01-options-quotes-and-volatility.md) · Next: [Lecture 3. Brownian motion, stochastic differential equations and Itô's lemma](03-brownian-motion-and-ito.md)
+[Course index](README.md) · Previous: [Lecture 1. Options, quotes and volatility](01-options-quotes-and-volatility.md) · Next: [Lecture 3. Brownian motion, SDEs and Itô's lemma](03-brownian-motion-and-ito.md)
 
 **What this lecture is for.** This lecture derives everything that follows from one assumption: a liquid market offers no riskless profit. From it come the forward price, put–call parity, the bounds on an option price, the shape of option prices across strikes and maturities, and the link between option prices and the probability distribution of the future price. No model of the price's dynamics is used.
 
-**Where it sits in the course.** Lecture 1 defined the contracts and the quotes. This lecture extracts from the quotes what the market says without any model. Its last section lists what no-arbitrage leaves open, which is what the models of Lectures 3 to 7 supply. The forward, the discount factor and the forward units defined here are used in every later lecture.
+**Where it sits in the course.** Lecture 1 defined the contracts and the quotes. This lecture extracts from the quotes what the market says without any model. Its last section lists what no-arbitrage leaves open, which is what the models of Lectures 3 to 5, 10 and 13 supply. The forward, the discount factor and the forward units defined here are used in every later lecture.
 
 ## 2.1 Interest and discounting
 
@@ -54,7 +54,7 @@ If a forward traded at a higher strike, selling it and doing the trades above wo
 
 *Figure 2.2.* How to read the figure: the left panel shows the SPY forward, read from the option chain by put–call parity (Section 2.4), against the spot close of 773.09 US dollars. It rises to 773.77 at 5 business days, 799.76 at one year and 836.57 at 587 business days. The right panel converts each forward into its carry $\ln(F_0(T)/S_0)/T$, which by the formula above equals $r - q$. Beyond 100 days the carry is about 3.4% a year, against a rate of about 4.4%, which implies a dividend yield of about 1.05%. Below 30 days the implied dividend yield is close to zero (between −0.3% and +0.2%). SPY pays dividends quarterly, and the next ex-dividend date, in mid-December, falls after those maturities, so no dividend is paid before them. The continuous-yield formula is an approximation that the data correct maturity by maturity.
 
-**A limit: the day count.** These numbers use the repository's clock, business days divided by 252, with interest rates that are quoted per calendar year. On a calendar clock (calendar days divided by 365) the same forwards imply a long-maturity dividend yield of about 0.92%, and short-maturity values between −0.9% and +0.2%. Option prices in forward units do not depend on the clock, because the forward and the discount factor are read from the market at each expiration. The clock matters wherever a time-based quantity is compared with a market rate, as here, and Lecture 7 states the convention used for the model's maturities.
+**A limit: the day count.** These numbers use the repository's clock, business days divided by 252, with interest rates that are quoted per calendar year. On a calendar clock (calendar days divided by 365) the same forwards imply a long-maturity dividend yield of about 0.92%, and short-maturity values between −0.9% and +0.2%. Option prices in forward units do not depend on the clock, because the forward and the discount factor are read from the market at each expiration. The clock matters wherever a time-based quantity is compared with a market rate, as here, and Lecture 13 states the convention used for the model's maturities.
 
 **Why the forward is the reference.** The forward is the price for delivery at $T$ that the market agrees on today. Strikes are therefore measured relative to the forward of the same maturity, not to the spot: an option struck at the forward is at the money for that maturity. This is the choice made in Lecture 1 when moneyness was defined as $k = \ln(K/F_T)$.
 
@@ -79,6 +79,8 @@ Parity has three uses in the course.
 3. **Data quality.** A pair that violates parity by more than its bid-ask spread signals a bad quote.
 
 **A limit: American exercise.** SPY options are American. An American put can be worth more than a European put, because exercising a deep in-the-money put early returns the strike $K$ in cash, which then earns interest. This early-exercise premium grows with the strike, so it tilts the line $C - P$ against $K$ and biases the regression's slope. The right panel of Figure 2.1 shows the result: the regression returns a discount factor above 1, which is impossible with a positive rate, for 30 of the 32 expirations, up to 1.044 at 562 days. The tutorial therefore takes the discount factor from Treasury yields and uses parity only for the forward, $F = K + (C - P)/D$, as the median over the six strike pairs nearest the money, where the early-exercise premium is smallest.
+
+**Calls before an ex-dividend date, and the forward of a thin chain.** A call can also carry early-exercise value, because a holder who exercises just before an ex-dividend date receives the dividend. EWI, a thin chain of Lecture 1, Section 1.6, is assumed to pay the amounts it paid a year earlier: about 0.70 US dollars a share before its December expiry and 1.17 before its June expiry. A binomial tree with escrowed dividends then gives an early-exercise premium of 0.18 on the December call struck at 57, more than that quote's half-spread of 0.125. On the June call struck at 55 it gives 0.50, inside that quote's half-spread of 1.75. On the same chain, a parity regression returns implied rates from −4.6% to 56% across the four expiries, so the rate must come from Treasury yields, as for SPY. EWG paid no December distribution in 2024 or 2025, so no dividend is assumed before June 2027. Its carry forward is then the spot carried at the Treasury rate, $S_0 e^{rT}$. Parity on its pairs nearest the money gives a forward 0.15% to 0.46% lower, because the puts in those pairs carry early-exercise value. Lecture 16 therefore uses the carry forward. The numbers are in `tutorial_final/checks/thin_chains/`.
 
 ## 2.5 Forward units and the pricing measure
 
@@ -114,7 +116,7 @@ $$
 c(x) = \mathbb{E}^{\mathbb{Q}}\big[(X_T - x)^+\big], \qquad p(x) = \mathbb{E}^{\mathbb{Q}}\big[(x - X_T)^+\big].
 $$
 
-**Why the course works in forward units.** Interest rates and dividends have disappeared: they sit in $D$ and $F$, which are read off the market. Prices at different maturities and on different dates become comparable, because each is a fraction of its own forward. The only object left to model is the distribution of $X_T$ under $\mathbb{Q}$, which is exactly what the volatility models of Lectures 4 to 7 describe. In the tutorial's code the spot is 1 and the rates are zero, which is the same convention.
+**Why the course works in forward units.** Interest rates and dividends have disappeared: they sit in $D$ and $F$, which are read off the market. Prices at different maturities and on different dates become comparable, because each is a fraction of its own forward. The only object left to model is the distribution of $X_T$ under $\mathbb{Q}$, which is exactly what the volatility models of Lectures 4, 10 and 13 describe. In the tutorial's code the spot is 1 and the rates are zero, which is the same convention.
 
 ## 2.6 Bounds on option prices
 
@@ -232,7 +234,7 @@ A **model** closes these gaps by specifying how the price evolves in time. Lectu
 
 1. The discount factor $D(T)$ is the price of a unit paid at $T$; the tutorial takes it from Treasury yields.
 2. The forward price is $F_0(T) = S_0 e^{(r-q)T}$, by replication. SPY's forwards imply a dividend yield of about 1% at long maturities and near zero before the next dividend.
-3. Put–call parity, $C - P = D(F - K)$, makes calls and puts redundant and gives the forward. American puts bias a parity regression for the discount factor.
+3. Put–call parity, $C - P = D(F - K)$, makes calls and puts redundant and gives the forward. American puts bias a parity regression for the discount factor. On a thin chain the rate cannot come from parity. Before an ex-dividend date, calls can also carry early-exercise value.
 4. In forward units, $c(x) = \mathbb{E}^{\mathbb{Q}}[(X_T - x)^+]$ with $\mathbb{E}^{\mathbb{Q}}[X_T] = 1$, and rates and dividends disappear.
 5. Prices lie within $(1-x)^+ \le c \le 1$, decrease and are convex in the strike, and increase with maturity at fixed forward-moneyness.
 6. The second derivative of the call price in the strike is the risk-neutral density, and any payoff of $X_T$ is a strip of vanillas. The log contract gives the variance swap of Lecture 5.

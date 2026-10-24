@@ -1,10 +1,10 @@
 # Lecture 4. The Black–Scholes model
 
-[Course index](README.md) · Previous: [Lecture 3](03-brownian-motion-and-ito.md) · Next: [Lecture 5. Implied volatility and the smile](05-implied-volatility-and-the-smile.md)
+[Course index](README.md) · Previous: [Lecture 3. Brownian motion, SDEs and Itô's lemma](03-brownian-motion-and-ito.md) · Next: [Lecture 5. Implied volatility and the smile](05-implied-volatility-and-the-smile.md)
 
-**What this lecture is for.** This lecture prices options under the simplest model of a price, geometric Brownian motion with a constant volatility. It shows that an option can be replicated by trading the underlying, that the replication cost does not depend on the expected return, and that the price is therefore an expectation under the pricing measure $\mathbb{Q}$ of Lecture 2, constructed here explicitly. It then derives the Black–Scholes formula step by step, studies how the price depends on its inputs and how it responds to them (the Greeks), and lists where the model's assumptions fail.
+**What this lecture is for.** This lecture prices options under the simplest model of a price, geometric Brownian motion with a constant volatility. It shows that an option can be replicated by trading the underlying, that the replication cost does not depend on the expected return, and that the price is therefore an expectation under the pricing measure $\mathbb{Q}$ of Lecture 2, constructed here explicitly. It then derives the Black–Scholes formula step by step, studies how the price depends on its inputs and how it responds to them (the Greeks), and lists where the model's assumptions fail. Section 4.12 lets the volatility depend on time and prices a forward-start call under it.
 
-**Where it sits in the course.** Lectures 2 and 3 supplied the no-arbitrage results and the stochastic calculus. This lecture combines them into the first complete pricing model. Lecture 5 uses its formula as the market's quoting convention, implied volatility, and shows that real prices reject the model's constant volatility. Every later model is built to fix that failure, and every later price is still reported through this formula.
+**Where it sits in the course.** Lectures 2 and 3 supplied the no-arbitrage results and the stochastic calculus. This lecture combines them into the first complete pricing model. Lecture 5 uses its formula as the market's quoting convention, implied volatility, and shows that real prices reject the model's constant volatility. Every later model is built to fix that failure, and every later price is still reported through this formula. Part II (Lectures 6 to 9) uses it to introduce calibration and Bayesian inference.
 
 ## 4.1 The model and its assumptions
 
@@ -15,7 +15,7 @@ The Black–Scholes model (Black and Scholes 1973; Merton 1973) assumes:
 3. **Trading is continuous and frictionless**: any quantity can be bought or sold at any time, with no transaction costs and no restrictions on short selling.
 4. **There is no arbitrage.**
 
-Each assumption is relaxed somewhere. Deterministic rates and dividends that vary with maturity only change $D$ and $F$, which Lecture 2 reads off the market, so assumption 2 costs nothing in forward units. Assumption 3 fails in practice, and Section 4.3 measures the cost. Assumption 1 is the one the course is about: Lecture 1 showed that real volatility is not constant, and Lectures 6 and 7 replace it.
+Each assumption is relaxed somewhere. Deterministic rates and dividends that vary with maturity only change $D$ and $F$, which Lecture 2 reads off the market, so assumption 2 costs nothing in forward units. Assumption 3 fails in practice, and Section 4.3 measures the cost. Assumption 1 is the one the course is about: Lecture 1 showed that real volatility is not constant, and Lectures 10 and 13 replace it.
 
 ## 4.2 Pricing by replication: the Black–Scholes equation
 
@@ -203,7 +203,7 @@ $$
 
 ## 4.10 The sensitivities (Greeks)
 
-A trader holding an option needs its sensitivities to the market inputs, to hedge them. They follow from one identity. Since $d_1^2 - d_2^2 = (d_1 - d_2)(d_1 + d_2) = \sqrt{w}\cdot(-2k/\sqrt{w}) = -2k$,
+The holder of an option needs its sensitivities to the market inputs, to hedge them. They follow from one identity. Since $d_1^2 - d_2^2 = (d_1 - d_2)(d_1 + d_2) = \sqrt{w}\cdot(-2k/\sqrt{w}) = -2k$,
 
 $$
 \varphi(d_1) = e^{k}\,\varphi(d_2) .
@@ -255,9 +255,27 @@ The derivation is exact under its assumptions. Each assumption is contradicted b
 | Continuous, costless hedging | Daily hedging leaves a P&L with a standard deviation of a tenth of the premium | Figure 4.1 |
 | Symmetric law of the log price | SPY's one-year put at $\delta = -2$ costs 45 times the call at $\delta = +2$, against 0.67 under the model | Lecture 1, Figure 1.6; Section 4.8 |
 
-The last line is the decisive one for calibration. No single value of $\sigma$ reproduces the market's option prices across strikes and maturities. Lecture 5 makes this precise by inverting the formula quote by quote, and the resulting pattern, the smile, is the data that the models of Lectures 6 and 7 are built to explain.
+The last line is the decisive one for calibration. No single value of $\sigma$ reproduces the market's option prices across strikes and maturities. Lecture 5 makes this precise by inverting the formula quote by quote, and the resulting pattern, the smile, is the data that the models of Lectures 10 and 13 are built to explain.
 
-## 4.12 Summary
+## 4.12 A term structure of volatility and the forward start
+
+A forward-start call with strike-setting date $T_1$ and maturity $T_2$ pays $(S_{T_2}/S_{T_1} - 1)^+$ at $T_2$: it is a call struck at the money on the day $T_1$. Write $\tau = T_2 - T_1$. The tutorial's product has $T_1 = 63$ and $T_2 = 126$ business days.
+
+**Under Black–Scholes.** The payoff $(S_{T_2}/S_{T_1} - 1)^+$ is a number, paid at $T_2$ per unit of notional. At $T_1$ it is the payoff of a call with strike 1 on the ratio $S_t/S_{T_1}$, which starts at 1. With zero carry its value at $T_1$ is the forward-unit price $c(0, \tau; \sigma)$ of Section 4.7, a constant that does not depend on $S_{T_1}$, and a constant known at $T_1$ is worth the same today:
+
+$$
+p_{\text{FS}} = c(0, \tau; \sigma) = 2N\Big(\tfrac12\sigma\sqrt{\tau}\Big) - 1 \;\approx\; 0.4\,\sigma\sqrt{\tau} .
+$$
+
+**With a deterministic volatility $\sigma(t)$.** The same argument holds with the total variance over $[T_1, T_2]$ in place of $\sigma^2\tau$. The forward-start price depends on $\int_{T_1}^{T_2}\sigma(t)^2\,dt$, the forward variance, while a vanilla at $T_2$ depends on $\int_0^{T_2}\sigma(t)^2\,dt$.
+
+![Left: two deterministic volatility term structures with the same total variance to six months. Right: the prices they give for a six-month at-the-money call, a six-month variance swap, a three-month at-the-money call and a forward-start call from three to six months.](images/l08-forward-start-deterministic.png)
+
+*Figure 4.7.* How to read the figure: term structure A is flat at 20%. Term structure B is 25% for three months and then 13.2%, chosen so that the total variance to six months is the same, $0.2^2 \times 0.5 = 0.02$. On the six-month quotes the two are indistinguishable: the at-the-money call costs 0.0564 of the forward under both, and the variance swap strike is 0.04 under both. The three-month call tells them apart, 0.0399 against 0.0498. The forward-start call prices at 0.0399 under A and 0.0264 under B, 34% lower. A bank that quotes only the six-month smile cannot price the forward-start; a bank that also quotes three months can, in this deterministic world, because the two maturities fix the forward variance.
+
+Lecture 10, Section 10.10 prices the forward-start call under Heston, where it also depends on the dispersion of the variance at $T_1$.
+
+## 4.13 Summary
 
 1. A delta-hedged option is riskless under continuous trading, which gives the Black–Scholes equation; the expected return $\mu$ drops out.
 2. Discrete hedging leaves an error proportional to $1/\sqrt{n}$. A hedged option earns the gap between the model's variance and the realized variance, weighted by gamma.
@@ -266,7 +284,8 @@ The last line is the decisive one for calibration. No single value of $\sigma$ r
 5. Puts follow by parity and satisfy $p(k) = e^k c(-k)$.
 6. The price depends on $w$ and $k$ only, rises from the intrinsic value to 1 as $w$ grows, and is about $0.4\,\sigma\sqrt{T}$ at the money.
 7. Delta is $N(d_1)$, vega is $\sqrt T\varphi(d_1) > 0$, and vomma is positive in the wings, which links random volatility to the smile.
-8. Real volatility is random, clustered and correlated with returns, and real option prices are asymmetric. The model fails in exactly the way the next lectures address.
+8. Real volatility is random, clustered and correlated with returns, and real option prices are asymmetric. The model fails in exactly the way Lectures 5, 10 and 13 address.
+9. Under Black–Scholes a forward-start call from $T_1$ to $T_2$ costs $c(0, \tau; \sigma)$, an at-the-money call over $\tau = T_2 - T_1$. With a deterministic $\sigma(t)$ it depends on the forward variance $\int_{T_1}^{T_2}\sigma(t)^2\,dt$, which quotes at $T_2$ alone do not fix.
 
 ## References
 
@@ -276,4 +295,4 @@ The last line is the decisive one for calibration. No single value of $\sigma$ r
 - Shreve, S. E. (2004). *Stochastic calculus for finance II: continuous-time models*. Springer. Chapters 4 and 5.
 - Gatheral, J. (2006). *The volatility surface: a practitioner's guide*. Wiley. Chapter 1.
 
-Figures: `scripts/course/lecture04.py`.
+Figures: `scripts/course/lecture04.py`, except Figure 4.7, which `scripts/course/lecture08.py` draws.

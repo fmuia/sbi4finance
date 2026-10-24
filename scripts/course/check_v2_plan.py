@@ -87,6 +87,19 @@ def section_2():
     rough = [p["ratio"] for c in cases if c["case"] == "rough Bergomi 63 quotes" for p in c["points"]]
     check("rough 63 quotes, lowest", min(rough), 0.93, 0.005)
     check("rough 63 quotes, highest", max(rough), 1.16, 0.005)
+    # the same ratios at the course's reserve, the 10% and 90% quantiles, from the stored draws
+    arrays = np.load(CHECKS / "rough_spy_is/rough_spy_is_seed0.npz")
+    prod, weights, mark = arrays["products"], arrays["w_post"], arrays["product_mark"]
+    grad, cov = arrays["product_gradient"], arrays["cov"]
+    sd = np.sqrt(np.einsum("pi,ij,pj->p", grad, cov, grad))
+    ratios90 = []
+    for k in np.flatnonzero(sd > 0):
+        order = np.argsort(prod[:, k])
+        cdf = np.cumsum(weights[order]) / np.sum(weights)
+        q10, q90 = (prod[order[min(np.searchsorted(cdf, a), len(cdf) - 1)], k] for a in (0.10, 0.90))
+        ratios90 += [1.2815516 * sd[k] / (mark[k] - q10), 1.2815516 * sd[k] / (q90 - mark[k])]
+    check("rough 63 quotes at the 90% quantile, lowest", min(ratios90), 0.94, 0.005)
+    check("rough 63 quotes at the 90% quantile, highest", max(ratios90), 1.13, 0.005)
     flat = next(c for c in cases if "flat" in c["case"])
     nonzero = [p["ratio"] for p in flat["points"] if p["ratio"] > 0]
     check("long end, flat: lowest non-zero", min(nonzero), 0.30, 0.005)

@@ -1,16 +1,17 @@
-"""Figures of Lecture 14: the study and the tutorial.
+"""Figures of version 1's Lecture 14, used by Lectures 6 and 15 of version 2: SPY's curve against the pilot's prior,
+the product ranges, and Heston against rough Bergomi. (Version 1's status, cost, timeline, risk and course-map
+figures left the course with that lecture.)
 
 Usage: python scripts/course/lecture14.py   (writes docs/course/images/l14-*.png and prints the numbers quoted in the text)
 
 Every number comes from the cached study results in tutorial_final/results/calibration, from the
 SPY surface file, or from the design document's tables (cited in the lecture); the only new
-computation is the fit of the curve prior to the SPY forward-variance curve in Figure 14.3.
+computation is the fit of the curve prior to the SPY forward-variance curve (Lecture 15, Figure 15.6).
 """
 
 import json
 
 import numpy as np
-from matplotlib.patches import Patch, Rectangle
 
 from common import COLORS, DAYS, GREY, ROOT, load_spy, plt, save, tidy
 from sbi4finance.calibration import tasks
@@ -39,77 +40,6 @@ STATUS = [  # (study, question, Heston, rough pilot, rough full bank, real smile
     ("S8", "the real smile", "", "", "", "data done"),
     ("S9", "costs", "reported", "reported", "pending", ""),
 ]
-
-
-def fig_status():
-    columns = ["Heston\nrehearsal", "rough Bergomi\npilot bank", "rough Bergomi\nfull bank", "real smile\n(SPY)"]
-    fig, ax = plt.subplots(figsize=(10, 5.4))
-    for i, row in enumerate(STATUS):
-        y = len(STATUS) - 1 - i
-        for j, status in enumerate(row[2:]):
-            ax.add_patch(Rectangle((j, y), 0.95, 0.9, color=STATUS_COLORS[status], lw=0))
-            if status:
-                label = {"pending": f"⟨{row[0]}⟩ pending", "data done": f"data done,\ncriteria ⟨{row[0]}⟩"}.get(status, status)
-                ax.text(j + 0.475, y + 0.45, label, ha="center", va="center", fontsize=8.5,
-                        color="white" if status not in ("pending",) else "0.3")
-        ax.text(-0.1, y + 0.45, f"{row[0]}  {row[1]}", ha="right", va="center", fontsize=9)
-    for j, c in enumerate(columns):
-        ax.text(j + 0.475, len(STATUS) + 0.2, c, ha="center", va="bottom", fontsize=9)
-    ax.set_xlim(-2.6, 4)
-    ax.set_ylim(-0.2, len(STATUS) + 1.1)
-    ax.axis("off")
-    save(fig, "l14-study-status.png")
-    REPORT["status"] = STATUS
-
-
-# Figure 14.2: the cost of each route (S9) ------------------------------------------
-def fig_costs():
-    costs = load("costs/costs.json")
-    audit = load("rough-pilot/s5/audit.json")["summary"]["cpu_seconds_per_surface_median"]
-    multistart = load("rough-pilot/s6/classical.json")["summary"]["cpu_seconds_per_surface_median"]
-    pricer_chain = load("heston/s4/pricer-route.json")["summary"]["chain_cpu_seconds_median"]
-    heston_multistart = load("heston/s6/classical.json")["surfaces"]
-    heston_ms = float(np.median([s["cpu_seconds"] for s in heston_multistart]))
-    bank_unit = load("rough-pilot/s1/bank-quality.json")["generation"]["cpu_seconds_per_surface"]
-    exact_bank_s = costs["exact_rough_posterior"]["evaluations_for_400_effective_draws"] * bank_unit
-    rows = [
-        ("rough: one likelihood evaluation", costs["rough_likelihood_evaluation_cpu_s"]["median"], "one priced surface", COLORS[2]),
-        ("rough: exact posterior, bank's average surface cost", exact_bank_s, "exact posterior (extrapolated)", COLORS[3]),
-        ("rough: exact posterior, prior-centre surface cost", costs["exact_rough_posterior"]["cpu_hours"] * 3600, "exact posterior (extrapolated, lower bound)", COLORS[3]),
-        ("rough: multi-start least squares, 10 starts", multistart, "points, no range", COLORS[2]),
-        ("rough: audit, 256 proposals", audit, "checks and corrects one smile", COLORS[1]),
-        ("rough: amortized posterior, 1,000 draws", costs["rough_amortized_posterior_1000_draws_cpu_s"]["median"], "posterior", COLORS[0]),
-        ("Heston: exact posterior by MCMC", costs["exact_heston_posterior"]["cpu_seconds"], "exact posterior", COLORS[3]),
-        ("Heston: multi-start least squares, 10 starts", heston_ms, "points, no range", COLORS[2]),
-        ("Heston: neural pricer and 4 chains", pricer_chain, "posterior, pricer's error", COLORS[5]),
-        ("Heston: amortized posterior, 1,000 draws", costs["heston_amortized_posterior_1000_draws_cpu_s"]["median"], "posterior", COLORS[0]),
-    ]
-    fig, ax = plt.subplots(figsize=(11, 4.8))
-    for i, (label, value, returns, color) in enumerate(rows):
-        y = len(rows) - 1 - i
-        ax.barh(y, value, color=color, height=0.6)
-        text = f"{value / 3600:.1f} CPU-h" if value > 7200 else f"{value:,.0f} CPU-s" if value >= 10 else f"{value:.1f} CPU-s"
-        ax.text(value * 1.15, y, f"{text}: {returns}", va="center", fontsize=8.5)
-    ax.set_yticks(range(len(rows)))
-    ax.set_yticklabels([r[0] for r in rows][::-1], fontsize=9)
-    ax.set_xscale("log")
-    ax.set_xlim(1, 3e7)
-    ax.set_xlabel("CPU-seconds per smile (log scale), one machine")
-    ax.axhline(3.5, color=GREY, lw=0.6)
-    ax.set_xlim(1, 1e9)
-    tidy(ax)
-    save(fig, "l14-costs.png")
-    REPORT["costs"] = {r[0]: r[1] for r in rows} | {
-        "rough_amortized_wall": costs["rough_amortized_posterior_1000_draws_cpu_s"]["wall_median"],
-        "rough_load_wall": costs["rough_network_load_and_first_call"]["wall_s"],
-        "ratio_exact_to_amortized_cpu": costs["exact_rough_posterior"]["cpu_hours"] * 3600 / costs["rough_amortized_posterior_1000_draws_cpu_s"]["median"],
-        "ratio_exact_bank_to_amortized_cpu": exact_bank_s / costs["rough_amortized_posterior_1000_draws_cpu_s"]["median"],
-        "ratio_exact_to_audited": costs["exact_rough_posterior"]["cpu_hours"] * 3600 / (audit + costs["rough_amortized_posterior_1000_draws_cpu_s"]["median"]),
-        "ratio_exact_bank_to_audited": exact_bank_s / (audit + costs["rough_amortized_posterior_1000_draws_cpu_s"]["median"]),
-        "exact_bank_h": exact_bank_s / 3600,
-        "break_even_bank": 370 / (exact_bank_s / 3600 - (audit + costs["rough_amortized_posterior_1000_draws_cpu_s"]["median"]) / 3600),
-        "per_effective_draw": costs["exact_rough_posterior"]["evaluations_for_400_effective_draws"] / 400,
-        "break_even_smiles": 370 / (costs["exact_rough_posterior"]["cpu_hours"] - (audit + costs["rough_amortized_posterior_1000_draws_cpu_s"]["median"]) / 3600)}
 
 
 # Figure 14.3: the SPY forward-variance curve against the curve prior -----------------
@@ -267,23 +197,6 @@ ACTS = [  # (start, end, act, evidence, status)
 ACT_COLORS = {"available": COLORS[4], "pilot only": COLORS[1], "pending": "0.75"}
 
 
-def fig_timeline():
-    fig, ax = plt.subplots(figsize=(12, 4.4))
-    for i, (a, b, act, evidence, status) in enumerate(ACTS):
-        y = len(ACTS) - 1 - i
-        ax.barh(y, b - a, left=a, color=ACT_COLORS[status], height=0.65)
-        ax.text(41, y, f"{act}: {evidence}", va="center", fontsize=8.5)
-        ax.text(a - 0.4, y, f"{a}–{b}", va="center", ha="right", fontsize=8)
-    ax.set_xlim(-3, 75)
-    ax.set_xticks(range(0, 41, 5))
-    ax.set_yticks([])
-    ax.set_xlabel("minutes into the advanced segment")
-    ax.spines[["left", "top", "right"]].set_visible(False)
-    ax.legend(handles=[Patch(color=c, label=f"evidence {s}") for s, c in ACT_COLORS.items()],
-              frameon=False, fontsize=8.5, loc="lower right")
-    save(fig, "l14-tutorial-timeline.png")
-
-
 # Figure 14.7: which check guards which risk (design document, "Risks and open decisions") --
 RISKS = [
     ("posterior width is the noise model's", ["stated, exercise"]),
@@ -298,24 +211,6 @@ RISKS = [
 ]
 CHECKS = ["prior predictive", "SBC (S2)", "pricer route (S4)", "audit (S5)", "classical route (S6)",
           "across models (S7)", "posterior predictive (S8)", "costs (S9)", "stated, exercise"]
-
-
-def fig_risks():
-    fig, ax = plt.subplots(figsize=(12, 4.8))
-    for i, (risk, guards) in enumerate(RISKS):
-        y = len(RISKS) - 1 - i
-        for g in guards:
-            ax.plot(CHECKS.index(g), y, "o", color=COLORS[0] if g != "stated, exercise" else GREY, ms=11)
-    ax.set_yticks(range(len(RISKS)))
-    ax.set_yticklabels([r[0] for r in RISKS][::-1], fontsize=9)
-    ax.set_xticks(range(len(CHECKS)))
-    ax.set_xticklabels(CHECKS, rotation=30, ha="right", fontsize=9)
-    ax.set_xlim(-0.6, len(CHECKS) - 0.4)
-    ax.set_ylim(-0.6, len(RISKS) - 0.4)
-    ax.grid(color="0.92")
-    ax.set_axisbelow(True)
-    tidy(ax)
-    save(fig, "l14-risks-and-checks.png")
 
 
 # Figure 14.8: what each lecture contributes to the tutorial ------------------------
@@ -337,34 +232,10 @@ LECTURE_ACTS = {
 }
 
 
-def fig_course_map():
-    acts = [a[2] for a in ACTS]
-    fig, ax = plt.subplots(figsize=(11, 5.6))
-    for lecture, names in LECTURE_ACTS.items():
-        for n in names:
-            ax.plot(acts.index(n), 14 - lecture, "s", color=COLORS[0] if lecture < 14 else GREY, ms=10)
-    ax.set_yticks(range(14))
-    ax.set_yticklabels([f"Lecture {k}" for k in range(14, 0, -1)], fontsize=9)
-    ax.set_xticks(range(len(acts)))
-    ax.set_xticklabels([f"{a}\n{ACTS[i][0]}–{ACTS[i][1]} min" for i, a in enumerate(acts)], rotation=35, ha="right",
-                       fontsize=8.5)
-    ax.grid(color="0.92")
-    ax.set_axisbelow(True)
-    ax.set_xlim(-0.6, len(acts) - 0.4)
-    ax.set_ylim(-0.6, 13.6)
-    tidy(ax)
-    save(fig, "l14-course-map.png")
-
-
 def main():
-    fig_status()
-    fig_costs()
     fig_spy_curve()
     fig_products()
     fig_across_models()
-    fig_timeline()
-    fig_risks()
-    fig_course_map()
     print(json.dumps(REPORT, indent=1, default=lambda o: o.tolist() if hasattr(o, "tolist") else float(o)))
 
 

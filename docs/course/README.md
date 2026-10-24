@@ -1,89 +1,103 @@
 # Amortized Bayesian calibration of volatility models: a lecture series
 
-Oct 22, 2026 · AI & Analytics Solutions SAS di Muia Francesco
+Version 2, 24 October 2026 · AI & Analytics Solutions SAS di Muia Francesco
 
-> **Version 2 in preparation (24 October 2026).** [The version-2 plan](v2-plan.md) reassesses these fourteen lectures and plans a realigned course in 21 lectures. Black–Scholes carries the simple concepts, Heston the BayesFlow workflow, and rough Bergomi the full amortized examples. The plan also lists the studies still to run, with instructions, budgets and dates. Until version 2 is written, the lectures below remain the reference.
+This folder is a course in sixteen lectures. It builds, from the basics, everything needed to understand and teach
+the advanced example of the ICAIF '26 tutorial: the calibration of a rough volatility model to option quotes, with
+a posterior, and the propagation of that posterior into the prices of products the quotes do not determine.
 
-This folder is a course in fourteen lectures. It builds, from the basics, everything needed to understand and teach the advanced example of the ICAIF '26 tutorial: the calibration of a rough volatility model to an option smile, with a posterior, and the propagation of that posterior into the prices of products the smile does not pin down.
-
-The course is a superset of the [calibration design document](../design/calibration-design-document.md). The design document states the method and the planned evidence for the organizers. The course explains every concept the design document uses, from what an option is to how an amortized posterior is validated, and adds the derivations, figures, limits and interpretations that a first reading needs. The design document is unchanged; the [map at the end of this page](#where-each-section-of-the-design-document-is-covered) says where each of its sections is covered here.
+The course is a superset of the tutorial and of the [calibration design document](../design/calibration-design-document.md).
+[The version-2 plan](v2-plan.md) says what the course argues and why; [the outline](v2-outline.md) says where each
+section of version 1 went; [practice-sources.md](practice-sources.md) lists the practices the course may describe,
+with their sources; [status.md](status.md) gives the state of every study. Version 1 (fourteen lectures) is at
+commit 19a6ea4.
 
 ## Who the course is for
 
-The reader knows probability (random variables, densities, conditional expectations, the normal distribution), calculus and some Python. The reader is not assumed to know finance, option pricing, stochastic calculus, rough volatility or neural networks. Each of these is introduced from zero and developed to the level a quantitative practitioner works at.
+The reader knows probability (random variables, densities, conditional expectations, the normal distribution),
+calculus and some Python. The reader is not assumed to know finance, option pricing, stochastic calculus, rough
+volatility or neural networks. Each of these is introduced from zero and developed to the level a quantitative
+practitioner works at.
 
 ## How the course is organized
 
-The lectures follow one line of argument in four parts. Each part needs the one before it.
+Each part needs the one before it. Black–Scholes carries the simple concepts, Heston the BayesFlow workflow, and
+rough Bergomi the full examples.
 
-1. **Part I builds the models.** It explains what is traded and quoted, what can be said without a model, the mathematics of continuous-time randomness, and then three models of increasing realism: Black–Scholes, Heston and rough Bergomi.
-2. **Part II explains why the problem matters.** It describes what a derivatives desk does every morning with these models, where the calibration is uncertain, and what the regulations ask for.
-3. **Part III explains what Bayesian inference adds.** It treats calibration as statistical inference, first by least squares and then by the posterior, and shows on simple models what the posterior reveals that a point estimate hides.
-4. **Part IV explains how to make the posterior affordable.** It shows why the exact posterior of rough Bergomi costs hours per surface, how simulation-based amortized inference reduces that to seconds, and how the result is validated.
-
-| Lecture | Title | What it establishes | Status |
-| --- | --- | --- | --- |
-| **Part I** | **The models** | | |
-| 1 | [Options, quotes and volatility](01-options-quotes-and-volatility.md) | What an option is, what a market quotes, what a desk must price, and what volatility means in data | Written |
-| 2 | [No-arbitrage without a model](02-no-arbitrage-without-a-model.md) | Discounting, the forward, put–call parity, forward units, the bounds and shape constraints on option prices, and the link between prices and the distribution of the future price | Written |
-| 3 | [Brownian motion, stochastic differential equations and Itô's lemma](03-brownian-motion-and-ito.md) | The mathematics of continuous-time randomness, why volatility is measurable and the drift is not | Written |
-| 4 | [The Black–Scholes model](04-black-scholes.md) | Hedging, the disappearance of the drift, the risk-neutral measure, the pricing formula, the sensitivities, and the model's limits | Written |
-| 5 | [Implied volatility and the smile](05-implied-volatility-and-the-smile.md) | How quotes are read, what the market's smile looks like, what it says about the distribution of returns, and the variance swap | Written |
-| 6 | [Stochastic volatility: the Heston model](06-heston.md) | A random variance correlated with the price, the characteristic function, Fourier pricing, how each parameter shapes the smile, a fit to SPY, and where Heston's smile has the wrong shape | Written |
-| 7 | [Rough volatility: the rough Bergomi model](07-rough-bergomi.md) | Evidence of roughness, the Volterra driver, the forward-variance curve as an input, the hybrid scheme and the Monte Carlo pricer, the power-law skew, and what the smile identifies | Written |
-| **Part II** | **Why the problem matters** | | |
-| 8 | [Calibration on a derivatives desk](08-calibration-on-a-desk.md) | Daily calibration, the products the smile does not pin down (variance swap, volatility swap, forward start, cliquet), one model with several calibrations, the literature on calibration risk, and what the rules ask for | Written |
-| **Part III** | **What Bayesian inference adds** | | |
-| 9 | [Calibration as estimation](09-calibration-as-estimation.md) | The observation model of a quote, the likelihood, least squares as maximum likelihood, the Gauss–Newton interval and where it fails, multi-start, regularization and deep calibration | Written |
-| 10 | [Bayesian calibration](10-bayesian-calibration.md) | The prior and the posterior, Black–Scholes on SPY as a misspecified model, identification, credible against confidence intervals, Metropolis–Hastings, a Heston posterior, and propagation to product prices and reserves | Written |
-| **Part IV** | **Making the posterior affordable** | | |
-| 11 | [Why the exact posterior is expensive](11-why-the-exact-posterior-is-expensive.md) | The rough-Bergomi likelihood as a Monte Carlo run, the effect of Monte Carlo error on it, the cost of an exact chain, and the alternatives | Written |
-| 12 | [Amortized inference](12-amortized-inference.md) | Why simulated pairs carry the posterior, neural posterior estimation, flow matching and its sampler, the tutorial's network and training bank, and the neural-pricer alternative | Written |
-| 13 | [Validating an amortized posterior](13-validating-an-amortized-posterior.md) | The prior predictive check, simulation-based calibration, contraction and coverage, agreement with exact posteriors, the importance-sampling audit, and the posterior predictive check | Written |
-| 14 | [The study and the tutorial](14-the-study-and-the-tutorial.md) | The two claims, the nine feasibility studies and where they stand, the costs, the real SPY smile, products and reserves, and the tutorial's narrative and risks | Written |
+| Lecture | Title | What it establishes |
+| --- | --- | --- |
+| **Part I** | **Markets and the first model** | |
+| 1 | [Options, quotes and volatility](01-options-quotes-and-volatility.md) | What an option is, what a market quotes on a liquid and a thin chain, and what volatility means in data |
+| 2 | [No-arbitrage without a model](02-no-arbitrage-without-a-model.md) | Discounting, the forward, put–call parity, forward units, the bounds on option prices, American exercise and dividends |
+| 3 | [Brownian motion, SDEs and Itô's lemma](03-brownian-motion-and-ito.md) | The mathematics of continuous-time randomness; why volatility is measurable and the drift is not |
+| 4 | [The Black–Scholes model](04-black-scholes.md) | Hedging, the risk-neutral measure, the pricing formula, the sensitivities, a term structure and the forward start |
+| 5 | [Implied volatility and the smile](05-implied-volatility-and-the-smile.md) | How quotes are read, the smile and what it says, the design grid, and the variance swap |
+| **Part II** | **Calibration and Bayes on Black–Scholes** | |
+| 6 | [Marking a product the smile does not quote](06-marking-a-product-the-smile-does-not-quote.md) | The marking procedure, the products, one smile with several calibrations, what the rules ask for, and the baselines that fix what the quotes do not |
+| 7 | [Calibration as estimation](07-calibration-as-estimation.md) | The observation model, the likelihood, least squares, the Gauss–Newton interval and where it fails, multi-start and regularization |
+| 8 | [Bayesian calibration](08-bayesian-calibration.md) | The prior and the posterior, identification, credible against confidence intervals, propagation to products, Metropolis–Hastings, importance sampling, pooling across names |
+| 9 | [Amortized inference](09-amortized-inference.md) | Why simulated pairs carry the posterior, neural posterior estimation, flow matching, simulation-based calibration and contraction |
+| **Part III** | **Heston and the BayesFlow workflow** | |
+| 10 | [The Heston model](10-heston.md) | A random variance correlated with the price, Fourier pricing, how each parameter shapes the smile, Heston's products |
+| 11 | [Calibrating Heston](11-calibrating-heston.md) | Least squares on SPY, the profile, the exact posterior, and why on SPY it agrees with the classical interval |
+| 12 | [The amortized workflow on Heston](12-the-amortized-workflow-on-heston.md) | The BayesFlow code, the bank, every check against an exact posterior, the audit, the predictive check, changing the prior |
+| **Part IV** | **Rough Bergomi: the full examples** | |
+| 13 | [The rough Bergomi model](13-rough-bergomi.md) | Roughness, the Volterra driver, the forward-variance curve, the hybrid scheme, the power-law skew, what the smile identifies |
+| 14 | [Why the exact posterior is expensive](14-why-the-exact-posterior-is-expensive.md) | The Monte Carlo likelihood, the cost of an exact chain and of importance sampling, and who needs many posteriors |
+| 15 | [A liquid smile: SPY](15-a-liquid-smile-spy.md) | The rough network, its checks, SPY's posterior, where it agrees with Gauss–Newton, products, the long end |
+| 16 | [A thin chain: EWG](16-a-thin-chain-ewg.md) | Why a thin chain and which one, the procedure on EWG, coverage on simulated chains, EWG's posterior, model error |
 
 ## Conventions
 
-- **Units.** Time is in years. Real maturities are counted in business days (weekdays; exchange holidays are not removed) and divided by 252, which is the repository's convention: the "one-year" design maturity of 252 business days from 21 October 2026 ends on 8 October 2027, 352 calendar days later. Lecture 2, Section 2.3 shows the one place where this choice visibly changes a number. Volatility is annualized and written as a fraction (0.20) or a percentage (20%). "One volatility point" is 0.01.
-- **Forward units.** From Lecture 2 on, option prices are divided by the discount factor and by the forward, so that the forward is 1 and a price is a fraction of it. Lecture 2 explains why this removes interest rates and dividends from every formula.
-- **Notation.** The symbols follow the design document. Each lecture defines a symbol when it first appears, and the [design document's symbols table](../design/calibration-design-document.md#symbols) collects them.
-- **Data.** Real data come from two files in the repository: the daily returns of VOO, an S&P 500 index fund, from 3 January 2020 to 4 September 2026 (`data/SPMO_VOO_2020-01-01_2026-09-04.csv`), and the SPY option surface of 21 October 2026 on the tutorial's design grid (`tutorial_final/results/calibration/spy/surface.json`, study S8 of the design document).
-- **Numbers that need further runs.** A number written as ⟨Sn⟩ is left blank on purpose. It is produced by study Sn of the design document's planned feasibility study, and it is filled in when that study has run.
-- **Figures.** Every figure is drawn by a script in `scripts/course/`, one per lecture, from closed-form formulas, simulations with fixed seeds, or the data files above. Each figure has a paragraph that says how to read it.
+- **Units.** Time is in years. Real maturities are trading days over 252. SPY's surface of 21 October 2026 counts
+  weekdays (exchange holidays not removed), as version 1 did; the thin chains count NYSE trading days, which makes
+  a calendar year about 252 days (Lecture 16). Volatility is annualized and written as a fraction (0.20) or a
+  percentage (20%). "One volatility point" is 0.01.
+- **Forward units.** From Lecture 2 on, option prices are divided by the discount factor and by the forward, so
+  that the forward is 1 and a price is a fraction of it.
+- **Notation.** The symbols follow the design document. Each lecture defines a symbol when it first appears, and
+  the [design document's symbols table](../design/calibration-design-document.md#symbols) collects them.
+- **Data.** The daily returns of VOO from 3 January 2020 to 4 September 2026
+  (`data/SPMO_VOO_2020-01-01_2026-09-04.csv`); SPY's surface of 21 October 2026 on the design grid
+  (`tutorial_final/results/calibration/spy/surface.json`); four thin chains of 22 and 23 October 2026, derived data
+  only (`tutorial_final/checks/thin_chains/`). Raw quote files are not committed; `data/SOURCES.md` gives their
+  URLs.
+- **Numbers that need further runs.** A number written as ⟨Sn⟩ is left blank on purpose. Study Sn produces it;
+  [`tutorial_final/CLUSTER-RUNS.md`](../../tutorial_final/CLUSTER-RUNS.md) says how.
+- **Figures.** Every figure is drawn by a script in `scripts/course/` (named by version 1's lecture numbers) or by
+  a check in `tutorial_final/checks/`, from closed-form formulas, simulations with fixed seeds, or the data above.
+  Each figure has a paragraph that says how to read it.
 
 ## Where each section of the design document is covered
 
-The table lists every main section of the design document and the lecture that covers it.
-
 | Design-document section | Lecture |
 | --- | --- |
-| Executive summary, steps 1–7 | 1, 8 (step 1); 4–7 (step 2); 10 (step 3); 11 (step 4); 9 (step 5); 12 (step 6); 13 (step 7) |
-| The two claims; Summary; Three routes from one smile to a product price | 14 |
-| Why Heston is the check and not the example | 6, 7, 11 |
-| The practitioner problem | 1 (exotics and marking), 8 |
-| Executive summary of the model (inputs and outputs, data, what it captures and misses, the daily run, the output for SPY) | 8, 14; the data subsection in 1, 5, 9 and 12 |
-| Notation and key terms: four volatility objects | 1 (realized), 5 (implied, forward variance), 7 (instantaneous) |
-| Notation and key terms: symbols; statistical vocabulary | Defined where first used across 1–14 |
+| Executive summary, steps 1–7 | 1, 6 (step 1); 4, 5, 10, 13 (step 2); 8 (step 3); 14 (step 4); 7 (step 5); 9, 12, 15 (step 6); 12, 15 (step 7) |
+| The two claims; Summary; Three routes from one smile to a product price | 14, 15 |
+| Why Heston is the check and not the example | 10, 11, 14 |
+| The practitioner problem | 1 (exotics and marking), 6 |
+| Executive summary of the model (inputs and outputs, data, what it captures and misses, the output for SPY) | 6, 15; the data in 1, 5, 7 and 12 |
+| Notation and key terms: four volatility objects | 1 (realized), 5 (implied, forward variance), 13 (instantaneous) |
 | The model: Black–Scholes and the smile | 4, 5 |
-| The model: Heston | 6 |
-| The model: rough Bergomi; the prior; prior predictive check; computing the 63 model prices; the example surface; the skew's term structure | 7 (model, pricing, skew), 10 (prior), 13 (prior predictive check) |
-| The model: from parameters to a product price | 8 |
-| The observation model (quotes, design grid, noise model, identification) | 5 (design grid), 9 (quote and noise), 7 and 10 (identification) |
-| Why the likelihood is expensive | 11 |
-| Classical calibration and where it fails | 9 |
-| Amortized design | 12 |
-| Validation plan | 13 |
-| From posterior to prices | 10 (method), 14 (results) |
-| Planned feasibility study (S1–S9) | 14, with each study also cited where its subject is taught |
-| Tutorial narrative; risks and open decisions | 14 |
-| Appendix A. Calibration practice and the rules | 8 |
-| Appendix B. Black–Scholes, implied volatility, variance swap | 2 (forward, discount, parity), 4 (formulas in forward units), 5 (implied volatility, log contract, variance swap) |
-| Appendix C. Heston and the Fourier pricer | 6 |
-| Appendix D. Rough Bergomi | 7 |
-| Appendix E. Calibration as estimation | 9 |
-| Appendix F. Amortized inference | 12 |
-| Appendix G. Validation | 13 |
-| Appendix H. Products under the posterior | 1 (payoffs), 8 (prices), 10 (reserve) |
-| Appendix I. The real surface | 2 (forward and discount), 5 (design grid, forward-variance curve), 14 (use in the tutorial) |
-| Appendix J. Fourier pricing, Heston against rough Bergomi | 6, 7 |
+| The model: Heston | 10 |
+| The model: rough Bergomi; the prior; the prior predictive check; the 63 model prices; the skew's term structure | 13 (model, pricing, skew), 8 (prior), 12 and 15 (prior predictive check) |
+| The model: from parameters to a product price | 6, 8 |
+| The observation model (quotes, design grid, noise model, identification) | 5 (design grid), 7 (quote and noise), 8 and 13 (identification) |
+| Why the likelihood is expensive | 14 |
+| Classical calibration and where it fails | 7, 11 |
+| Amortized design | 9, 12, 15 |
+| Validation plan | 9, 12, 15, 16 |
+| From posterior to prices | 8 (method), 15 and 16 (results) |
+| Planned feasibility study (S1–S9) | [status.md](status.md), with each study cited where its subject is taught |
+| Tutorial narrative; risks and open decisions | 16, `tutorial_final/curriculum/` |
+| Appendix A. Calibration practice and the rules | 6 |
+| Appendix B. Black–Scholes, implied volatility, variance swap | 2, 4, 5 |
+| Appendix C. Heston and the Fourier pricer | 10 |
+| Appendix D. Rough Bergomi | 13 |
+| Appendix E. Calibration as estimation | 7 |
+| Appendix F. Amortized inference | 9, 12 |
+| Appendix G. Validation | 9, 12 |
+| Appendix H. Products under the posterior | 1 (payoffs), 6 (definitions), 8 (method), 15 (results) |
+| Appendix I. The real surface | 2 (forward and discount), 5 (design grid, forward-variance curve), 15 |
+| Appendix J. Fourier pricing, Heston against rough Bergomi | 10, 13, 15 |
 | References | Each lecture lists the references it uses |

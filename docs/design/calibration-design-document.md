@@ -4,6 +4,13 @@ Oct 22, 2026 · AI & Analytics Solutions SAS di Muia Francesco
 
 > **Draft for study.** This document follows the structure and depth of the [SVJ design document](svj-design-document.md), for the application chosen on 21 October 2026 (plan, [`tutorial_final/PLAN.md`](../../tutorial_final/PLAN.md)). It states the method, the mathematics and the planned evidence before the simulations run. A number written as ⟨S7⟩ is a placeholder: it names the study in the plan's §6.4 that produces it, and it is replaced when that study has run. A figure marked *pending* is specified here, with its reading guide, and drawn when its study runs. Everything that does not depend on a run (the models, the derivations, the criteria, the narrative) is final subject to review.
 
+> **Superseded in part, 24 October 2026.** Version 2 of the [course](../course/README.md) and its [plan](../course/v2-plan.md) correct this document where they differ:
+> 1. This document describes a desk's daily routine and roles. The course states only the marking procedure (Lecture 6), and does not claim that a posterior is needed every morning: the uses of many posteriors are a valuation across a book, for example at month-end, and the validation of a method.
+> 2. Fixing $H$ at 0.10 and holding the curve flat beyond the last quote are the course's baselines, not documented practice ([practice-sources.md](../course/practice-sources.md)).
+> 3. The thin example is EWG, with the forward-variance curve inferred, not SPY's front months (Lecture 16).
+> 4. The exact rough-Bergomi posterior costs at least 16.9 CPU-hours by a random-walk chain, and about 85 CPU-minutes by importance sampling from a Gauss–Newton proposal on SPY, with common random numbers (Lecture 14).
+> 5. The audit's Monte Carlo likelihood needs a seed per proposal, the full Monte Carlo covariance and a path count chosen on a separate pilot pricing (Lecture 8, Section 8.9).
+
 The advanced example of the ICAIF '26 tutorial should calibrate a volatility model to today's option smile and carry the posterior of the calibration into the price of a product the smile does not pin down. The model is rough Bergomi, which is priced by Monte Carlo only; Heston, which has an exact likelihood through a Fourier pricer, is the model on which the method is checked against the exact answer.
 
 ## Executive summary

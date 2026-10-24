@@ -7,7 +7,6 @@ import json
 import time
 
 import numpy as np
-from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
 from scipy.optimize import least_squares
 from scipy.stats import ncx2, norm
 
@@ -52,39 +51,6 @@ def heston_forward_start(v0, theta, xi, rho, T1, T2, kappa=KAPPA, n=80):
 
 
 # -------------------------------------------------------------------------------------------------
-def box(ax, xy, w, h, text, color):
-    ax.add_patch(FancyBboxPatch(xy, w, h, boxstyle="round,pad=0.02,rounding_size=0.03", fc=color, ec="0.3",
-                                alpha=0.9, lw=0.8))
-    ax.text(xy[0] + w / 2, xy[1] + h / 2, text, ha="center", va="center", fontsize=8.6)
-
-
-def arrow(ax, a, b):
-    ax.add_patch(FancyArrowPatch(a, b, arrowstyle="-|>", mutation_scale=12, color="0.3", lw=1))
-
-
-def fig_workflow():
-    fig, ax = plt.subplots(figsize=(12, 4.3))
-    ax.set_xlim(0, 12)
-    ax.set_ylim(0, 4.3)
-    ax.axis("off")
-    light, mid, dark = "#E6F2F3", "#FBE9DD", "#F1E3E4"
-    box(ax, (0.2, 1.8), 1.9, 1.0, "option chain:\nbid and ask\nfor every listed\nstrike and maturity", light)
-    box(ax, (2.6, 1.8), 1.9, 1.0, "clean, forward,\ndiscount,\nimplied vols\n(Lectures 2, 5)", light)
-    box(ax, (5.0, 1.8), 1.9, 1.0, r"calibrate: one $\hat\theta$" + "\nthat reproduces\nthe quotes\n(Lecture 9)", mid)
-    box(ax, (7.6, 3.05), 2.2, 0.95, "mark: price every\nexotic in the book\nat " + r"$\hat\theta$", dark)
-    box(ax, (7.6, 1.8), 2.2, 0.95, "hedge: sensitivities\nof each position\nat " + r"$\hat\theta$", dark)
-    box(ax, (7.6, 0.4), 2.2, 1.05, "reserve: a range of\nplausible values and\nits 90% point\n(monthly or quarterly)", dark)
-    box(ax, (10.2, 1.8), 1.6, 1.0, "P&L, risk,\ncapital,\ndisclosure", light)
-    for a, b in (((2.1, 2.3), (2.6, 2.3)), ((4.5, 2.3), (5.0, 2.3)), ((6.9, 2.5), (7.6, 3.4)),
-                 ((6.9, 2.3), (7.6, 2.3)), ((6.9, 2.1), (7.6, 0.95)), ((9.8, 3.5), (10.2, 2.6)),
-                 ((9.8, 2.3), (10.2, 2.3)), ((9.8, 0.9), (10.2, 2.0))):
-        arrow(ax, a, b)
-    ax.text(6.0, 4.15, "every morning, for every underlying", ha="center", fontsize=9.5, color="0.25")
-    ax.text(5.95, 1.45, "the step whose uncertainty\nthe course measures", ha="center", fontsize=8.5,
-            color=COLORS[3])
-    save(fig, "l08-desk-workflow.png")
-
-
 def fig_swaps():
     v0 = theta = 0.04
     T = 63 / 252
@@ -433,7 +399,6 @@ def leverage_bias():
 
 def main():
     t0 = time.time()
-    fig_workflow()
     fig_swaps()
     fig_forward_start_deterministic()
     fig_forward_start_stochastic()

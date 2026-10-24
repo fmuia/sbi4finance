@@ -19,9 +19,9 @@ tutorial.
    coverage on a thousand simulated chains.
 3. **The example.** EWG (iShares MSCI Germany): a real thin chain, informative but sparse, chosen on merit from
    four candidates (Section 3).
-4. **The review found ten errors.** The most serious ones are a curve leaked from SPY's full chain and an audit that
-   was not unbiased. All are fixed in the code (Section 4).
-5. **What is missing.** Every result on the full rough-Bergomi bank: about 790 CPU-hours and two GPU jobs
+4. **Two reviews found nineteen errors.** The most serious ones are a curve leaked from SPY's full chain, an audit
+   that was not unbiased, and adaptive rounds that did not adapt. All are fixed in the code (Section 4).
+5. **What is missing.** Every result on the full rough-Bergomi bank: about 930 CPU-hours and two GPU jobs
    (the runbook).
 
 ## 1. The marking procedure
@@ -71,15 +71,16 @@ the bias on the full bank.
 *Figure 1.* Each column is one case and each marker one product. The vertical axis is the classical answer over
 the posterior's, on a log scale; the grey band runs from 0.8 to 1.25.
 - *Heston:* the delta-method 90% range over the exact posterior's.
-- *Rough Bergomi, 63 quotes:* the delta-method one-sided 90% reserve over the posterior's (filled: long side; open:
-  short side). The variance swap is left out, because both answers are zero when the curve is given.
+- *Rough Bergomi, 63 quotes:* the delta-method reserve over the posterior's, at the 5% quantile for the long side
+  (filled) and the 95% for the short side (open). The variance swap is left out, because both answers are zero when
+  the curve is given.
 - *Right-hand column:* the range with the curve held flat beyond the LEAPs over the posterior's.
 
 The numbers are in `images/v2-evidence-numbers.json`, drawn by `scripts/course/realignment.py`.
 
 - **Heston on SPY** with 63, 36 or 15 quotes, κ fixed or free: the ratios lie between 0.92 and 1.21.
 - **Rough Bergomi on SPY's 63 quotes**, with the curve read from SPY's own strip and the same pricer for both
-  methods: 0.93 to 1.16.
+  methods: 0.93 to 1.16, and 0.94 to 1.13 at the course's reserve, the 10% and 90% quantiles.
 
 With three or four parameters and these quotes the posterior is close to the Gauss–Newton normal, as the
 Bernstein–von Mises theorem predicts. The course presents this as a strength: the method returns the classical
@@ -116,13 +117,14 @@ small, its hyperparameters are uncertain, and only the hierarchical model carrie
 | Route to one rough-Bergomi posterior | Cost | Source |
 | --- | --- | --- |
 | Random-walk Metropolis on the Monte Carlo likelihood | at least 16.9 CPU-hours (extrapolated) | S9 |
-| Importance sampling from a Gauss–Newton proposal, SPY's 63 quotes | 1,024 evaluations at 5.0 CPU-seconds: about 85 CPU-minutes | S9, `checks/rough_spy_is.py` |
+| Importance sampling from a Gauss–Newton proposal, SPY's 63 quotes | 1,024 evaluations at 5.0 CPU-seconds: about 85 CPU-minutes, on a pricer with common random numbers; more with a seed per proposal, as the unbiased likelihood needs | S9, `checks/rough_spy_is.py` |
 | The network, 1,000 draws | 3.6 CPU-seconds (1.4 seconds on the clock) | S9 |
-| The network's audit on EWG's 27 layout quotes | 512 evaluations at 0.39 CPU-seconds: about 3 CPU-minutes | `checks/thin_chains/timing.json` |
+| The network's audit on SPY's 63 quotes | 512 evaluations at 5.0 CPU-seconds, each after a pilot pricing at a quarter of the paths: about 55 CPU-minutes | S9; measured by S5 |
+| The network's audit on EWG's quotes | 512 evaluations at about 0.4 CPU-seconds, with the same pilot: about 4 CPU-minutes | `checks/thin_chains/timing.json` |
 
 A validation needs many posteriors. Simulation-based calibration on 2,000 smiles costs about 2 CPU-hours with the
 network. At 85 CPU-minutes a smile it would cost about 2,800 CPU-hours. Study S10's 1,000 audited thin chains will
-cost an estimated 160 CPU-hours with the network as proposal. The case for amortization is therefore that the exact posterior,
+cost an estimated 180 CPU-hours with the network as proposal. The case for amortization is therefore that the exact posterior,
 and the check of its coverage, become affordable. The course never claims milliseconds.
 
 ### 2.5 What is not shown yet, and what would weaken the argument
@@ -180,9 +182,14 @@ infers the curve. The audit then uses EWG's 61 cleaned quotes at their own strik
 | Classical fits started at the network's median | The classical route borrowed from the network | Started from the quotes and the prior box |
 | Thin-chain noise used the vega at 20% volatility; the forward came from parity; maturities counted holidays | EWG's quotes were weighted and placed wrongly, by up to a few half-spreads | Section 1, steps 2 to 5 |
 | Shards could not be rerun, and a running bank could pick up an edited config | Lost CPU-hours, or a mixed bank | Idempotent shards; the job map records the config's hash |
+| The audit's path count was chosen from the same pricing whose prices enter the likelihood | A price and its estimated error are correlated, so accepted prices were shifted by up to 0.37 of their Monte Carlo sd | A pilot pricing chooses the count; the prices come from an independent pricing |
+| The thin audit's second round shrank its proposal toward the spread of all points, prior draws included | Round 2 added nothing; the gates on reliable audits would fail more often | It shrinks toward the previous round's proposal |
+| The thin audit's defensive prior lacked its truncation constant (0.734) | Prior draws got 1.36 times too much weight | The constant is included |
+| R4's chunked training crashed; S11 could lose its draws; the thin checkpoint could not be accepted; a resumed training with other epochs ran at a learning rate of zero; the S5 audit could not be resumed in place | Lost runs | Fixed and tested on the test bank (the runbook lists all nine findings of the second review) |
 
 Smaller fixes: the S10 truth is priced on the methods' seed; Heston's control variate is exact under the Euler
-scheme; studies load only the splits they use.
+scheme; studies load only the splits they use; an audit counts as reliable only if every proposal was priced; S10-E
+reports its distinct truths and a bootstrap over them.
 
 ## 5. The studies still to run
 

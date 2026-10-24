@@ -1,10 +1,10 @@
-# Lecture 3. Brownian motion, stochastic differential equations and Itô's lemma
+# Lecture 3. Brownian motion, SDEs and Itô's lemma
 
-[Course index](README.md) · Previous: [Lecture 2](02-no-arbitrage-without-a-model.md) · Next: [Lecture 4. The Black–Scholes model](04-black-scholes.md)
+[Course index](README.md) · Previous: [Lecture 2. No-arbitrage without a model](02-no-arbitrage-without-a-model.md) · Next: [Lecture 4. The Black–Scholes model](04-black-scholes.md)
 
 **What this lecture is for.** This lecture builds the mathematics in which every volatility model of the course is written. It constructs Brownian motion as the limit of a random walk, shows that its paths are rough, defines the stochastic integral and stochastic differential equations, derives Itô's lemma, and solves the simplest price model, geometric Brownian motion. It then covers three tools the later lectures need: correlated Brownian motions, the change of probability measure, and what can and cannot be estimated from one observed path.
 
-**Where it sits in the course.** Lecture 2 showed that option prices pin down the distribution of the future price at each date, and that a model must supply how prices move through time. A model in this course is a stochastic differential equation. Lecture 4 uses this lecture's tools to price options under the simplest one, Black–Scholes; Lectures 6 and 7 use them for stochastic and rough volatility. Two results of this lecture recur throughout: Itô's lemma, which creates the $-\tfrac12\sigma^2$ terms of every pricing formula, and the fact that volatility is measurable from a path while the drift is not.
+**Where it sits in the course.** Lecture 2 showed that option prices pin down the distribution of the future price at each date, and that a model must supply how prices move through time. A model in this course is a stochastic differential equation. Lecture 4 uses this lecture's tools to price options under the simplest one, Black–Scholes; Lectures 10 and 13 use them for stochastic and rough volatility. Two results of this lecture recur throughout: Itô's lemma, which creates the $-\tfrac12\sigma^2$ terms of every pricing formula, and the fact that volatility is measurable from a path while the drift is not.
 
 ## 3.1 From a random walk to Brownian motion
 
@@ -63,7 +63,7 @@ The first rule is the limit just proved. The other two say that products of orde
 
 ![Fractional Brownian motion for four values of the Hurst exponent, driven by the same random numbers.](images/l03-roughness-exponent.png)
 
-*Figure 3.3.* How to read the figure: the four paths are built from the same 400 standard normal numbers, so they share their large-scale shape. With $H = 0.75$ the path is smooth; with $H = 0.5$ it is Brownian; with $H = 0.3$ and $H = 0.1$ it is increasingly jagged, because short-range increments are larger relative to long-range ones. Lecture 7 shows that the logarithm of equity volatility behaves like a process with $H \approx 0.1$, the top path, and that this roughness is what produces the steep short-maturity skew of Lecture 5. The asset price itself stays Brownian-like.
+*Figure 3.3.* How to read the figure: the four paths are built from the same 400 standard normal numbers, so they share their large-scale shape. With $H = 0.75$ the path is smooth; with $H = 0.5$ it is Brownian; with $H = 0.3$ and $H = 0.1$ it is increasingly jagged, because short-range increments are larger relative to long-range ones. Lecture 13 shows that the logarithm of equity volatility behaves like a process with $H \approx 0.1$, the top path, and that this roughness is what produces the steep short-maturity skew of Lecture 5. The asset price itself stays Brownian-like.
 
 ## 3.3 The Itô integral
 
@@ -116,7 +116,7 @@ $$
 
 ![The average path-by-path error of the Euler–Maruyama scheme for geometric Brownian motion against the number of steps per year, on log–log axes.](images/l03-euler.png)
 
-*Figure 3.5.* How to read the figure: the scheme is applied to the price model of Section 3.6 with a high volatility of 60%, and compared with the exact solution driven by the same Brownian path. The error falls from 0.108 with 4 steps to 0.0035 with 4,096: a factor of about 31 for a factor of 1,024 in steps, which is a slope of $-\tfrac12$. The Euler scheme has **strong order** $\tfrac12$: halving the error costs four times as many steps. Lecture 7 meets this cost when rough Bergomi is priced by simulation, and uses a scheme (the hybrid scheme) built to reduce it.
+*Figure 3.5.* How to read the figure: the scheme is applied to the price model of Section 3.6 with a high volatility of 60%, and compared with the exact solution driven by the same Brownian path. The error falls from 0.108 with 4 steps to 0.0035 with 4,096: a factor of about 31 for a factor of 1,024 in steps, which is a slope of $-\tfrac12$. The Euler scheme has **strong order** $\tfrac12$: halving the error costs four times as many steps. Lecture 13 meets this cost when rough Bergomi is priced by simulation, and uses a scheme (the hybrid scheme) built to reduce it.
 
 ## 3.5 Itô's lemma
 
@@ -190,7 +190,7 @@ $$
 dW_t\, dB_t = \rho\, dt, \qquad dW_t\, dW^\perp_t = 0 .
 $$
 
-Itô's lemma for a function $f(t, X_t, Y_t)$ of two processes gains a cross term, $f_{xy}\, dX\, dY$, which brings $\rho$ into every formula of Lectures 6 and 7.
+Itô's lemma for a function $f(t, X_t, Y_t)$ of two processes gains a cross term, $f_{xy}\, dX\, dY$, which brings $\rho$ into every formula of Lectures 10 and 13.
 
 ![Left: simulated increments of two Brownian motions with correlation 0 and −0.7. Right: for VOO, the change in volatility over the following month, grouped by the size of today's return measured in units of recent volatility.](images/l03-correlation.png)
 
@@ -244,7 +244,7 @@ The estimator depends on the path only through its endpoints, so sampling more o
 
 For VOO, 6.65 years of data give a drift standard error of $0.203/\sqrt{6.65} = 7.9\%$ a year, against an estimated mean log return of 14.5%. This is Merton's (1980) observation: expected returns are hard to estimate even with long histories.
 
-**Why this matters for the course.** Lecture 4 shows that option prices do not depend on $\mu$ at all, only on $\sigma$. The quantity options depend on is the one a path measures well, and the one they do not depend on is the one a path barely measures. Lecture 10 shows the same asymmetry in a Bayesian posterior: with one year of daily returns from a GBM, the posterior standard deviation of $\sigma$ is close to the 0.9 volatility points above, and that of $\mu$ close to 20 percentage points.
+**Why this matters for the course.** Lecture 4 shows that option prices do not depend on $\mu$ at all, only on $\sigma$. The quantity options depend on is the one a path measures well, and the one they do not depend on is the one a path barely measures.
 
 ## 3.10 Summary
 

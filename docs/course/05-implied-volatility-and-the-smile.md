@@ -1,10 +1,10 @@
 # Lecture 5. Implied volatility and the smile
 
-[Course index](README.md) · Previous: [Lecture 4](04-black-scholes.md) · Next: [Lecture 6. Stochastic volatility: the Heston model](06-heston.md)
+[Course index](README.md) · Previous: [Lecture 4. The Black–Scholes model](04-black-scholes.md) · Next: [Lecture 6. Marking a product the smile does not quote](06-marking-a-product-the-smile-does-not-quote.md)
 
 **What this lecture is for.** This lecture turns option prices into the quantity the market actually trades and quotes: implied volatility. It defines implied volatility, shows how to compute it and how precisely a quote determines it, reads the real SPY chain of 21 October 2026 onto the tutorial's design grid, and describes the pattern the market shows: the **smile**, with its skew and its term structure. It then explains what the smile says about the distribution of future prices, which mechanisms produce it, which constraints no-arbitrage puts on it, and how the variance swap and the forward-variance curve are read from it.
 
-**Where it sits in the course.** Lecture 4 derived the Black–Scholes formula and showed that its assumption of a constant volatility contradicts the data on returns. This lecture shows that option prices contradict it too, in a precise and stable way. The smile measured here is the data that the models of Lectures 6 and 7 must reproduce, and the 63 SPY quotes read here are the observation the tutorial calibrates to in Parts III and IV. The forward-variance curve built in Section 5.9 is an input of the rough Bergomi model of Lecture 7.
+**Where it sits in the course.** Lecture 4 derived the Black–Scholes formula and showed that its assumption of a constant volatility contradicts the data on returns. This lecture shows that option prices contradict it too, in a precise and stable way. The smile measured here is the data that the models of Lectures 10 and 13 must reproduce, and the 63 SPY quotes read here are the observation the tutorial calibrates to in Parts II to IV. The forward-variance curve built in Section 5.9 is an input of the rough Bergomi model of Lecture 13. Section 5.11 states what the smile does not determine, which is the starting point of Lecture 6.
 
 ## 5.1 Implied volatility
 
@@ -52,7 +52,7 @@ The vega is largest at the money and small in the wings and at short maturities 
 
 *Figure 5.2.* How to read the figure: the left panel shows the vega on the design grid. At one week it is 0.056 at the money and 0.0078 at $\delta = 2$, seven times smaller; at one year it is 0.40 at the money. The right panel divides a price error of $10^{-4}$ of the forward by the vega. The error is 0.025 volatility points for the one-year at-the-money option and 1.3 points for the one-week option at $\delta = 2$, fifty times more.
 
-**Consequence for calibration.** A noise model with one price error for every quote would misstate how much each quote says about volatility. With an error of $10^{-4}$ of the forward, it would credit the one-year at-the-money quote with a volatility error of 0.025 points, far below its real uncertainty, and the one-week wing quote with 1.3 points. The real uncertainty of a quote is closer to constant in volatility units: a fraction of a point near the money and about a point in the wings, as the bid-ask spreads show. The tutorial therefore states the quote noise in volatility units, $s_{\text{iv}}(\delta)$, rising from 0.3 points at the money to 1 point at $|\delta| = 2$, and translates it into price units with the vega: $\sigma_c = \text{vega}_c(\sigma_{\text{ref}}) \times s_{\text{iv}}(\delta_c)$. Lecture 9 develops this noise model and the likelihood built on it.
+**Consequence for calibration.** A noise model with one price error for every quote would misstate how much each quote says about volatility. With an error of $10^{-4}$ of the forward, it would credit the one-year at-the-money quote with a volatility error of 0.025 points, far below its real uncertainty, and the one-week wing quote with 1.3 points. The real uncertainty of a quote is closer to constant in volatility units: a fraction of a point near the money and about a point in the wings, as the bid-ask spreads show. The tutorial therefore states the quote noise in volatility units, $s_{\text{iv}}(\delta)$, rising from 0.3 points at the money to 1 point at $|\delta| = 2$, and translates it into price units with the vega: $\sigma_c = \text{vega}_c(\sigma_{\text{ref}}) \times s_{\text{iv}}(\delta_c)$. Lecture 7 develops this noise model and the likelihood built on it.
 
 ## 5.4 Reading a real chain onto the design grid
 
@@ -102,9 +102,9 @@ The tutorial estimates them by fitting a quadratic in $k$ to the five quotes nea
 
 *Figure 5.4.* How to read the figure: on log–log axes a power law $a\,T^{b}$ is a straight line with slope $b$. The absolute skew falls from 0.86 at one week to 0.24 at one year, close to the line $|\psi(T)| \approx 0.265\,T^{-0.32}$. The curvature falls from 28.3 to 0.62, close to $T^{-0.96}$. As maturity shortens, both the slope and the curvature of the smile grow without bound, at well-defined rates.
 
-**Why the power law matters.** Lecture 6 shows that the classical stochastic-volatility model (Heston) produces a skew that tends to a constant as $T \to 0$: it cannot follow this line at short maturities. Lecture 7 shows that a model whose volatility is rough, with Hurst exponent $H$ (Lecture 3), produces $\psi(T) \propto T^{H - 1/2}$. An exponent of −0.32 corresponds to $H \approx 0.18$. Equity-index skews show exponents near −0.4 in the literature (Gatheral, Jaisson and Rosenbaum 2018). The term structure of the skew is therefore the feature of the data that decides between model classes, and the reason the design grid starts at one week.
+**Why the power law matters.** Lecture 10 shows that the classical stochastic-volatility model (Heston) produces a skew that tends to a constant as $T \to 0$: it cannot follow this line at short maturities. Lecture 13 shows that a model whose volatility is rough, with Hurst exponent $H$ (Lecture 3), produces $\psi(T) \propto T^{H - 1/2}$. An exponent of −0.32 corresponds to $H \approx 0.18$. Equity-index skews show exponents near −0.4 in the literature (Gatheral, Jaisson and Rosenbaum 2018). The term structure of the skew is therefore the feature of the data that decides between model classes, and the reason the design grid starts at one week.
 
-**A limit of the estimate.** Seven maturities and a quadratic through five points give a rough measurement, and Lecture 7 shows that the exponent of a fitted power law is a biased estimate of $H - \tfrac12$ over a finite range of maturities. The tutorial's posterior uses all 63 quotes, not the fitted exponent.
+**A limit of the estimate.** Seven maturities and a quadratic through five points give a rough measurement, and Lecture 13 shows that the exponent of a fitted power law is a biased estimate of $H - \tfrac12$ over a finite range of maturities. The tutorial's posterior uses all 63 quotes, not the fitted exponent.
 
 ## 5.7 What the smile means
 
@@ -128,7 +128,7 @@ Lecture 4 showed that the Black–Scholes price is convex in $\sigma$ in the win
 *Figure 5.5.* How to read the figure: all panels are at one month.
 
 - **Left.** Averaging the prices at 15% and 25% with equal weights gives a symmetric smile: 20.0% at the money, rising to 23.9% at $k = \pm 0.25$. The at-the-money level is the average volatility, 20%, because the at-the-money price is nearly linear in $\sigma$ (Lecture 4: $c \approx 0.4\sigma\sqrt T$). It is below the root-mean-square volatility $\sqrt{\mathbb{E}[\sigma^2]} = 20.6\%$.
-- **Centre.** The Heston model of Lecture 6, at the centre of the tutorial's prior (initial and long-run variance 0.085, vol-of-vol 0.8, correlation −0.525), has a random variance negatively correlated with the price. Its smile falls from 37% at $k = -0.25$ through 28.4% at the money and flattens on the call side: a skew.
+- **Centre.** The Heston model of Lecture 10, at the centre of the tutorial's prior (initial and long-run variance 0.085, vol-of-vol 0.8, correlation −0.525), has a random variance negatively correlated with the price. Its smile falls from 37% at $k = -0.25$ through 28.4% at the money and flattens on the call side: a skew.
 - **Right.** The same model's density of $\ln X_T$, recovered from its prices by Breeden–Litzenberger, against the log-normal with the same at-the-money volatility. At $\ln X_T = -0.25$ the model's density is 3.2 times the log-normal's; at $+0.2$ it is half of it. The skew of the centre panel is this heavier left tail.
 
 **Why the variance-swap volatility exceeds the at-the-money volatility.** The left panel contains the explanation of Figure 5.3's last point. The at-the-money implied volatility measures the average volatility $\mathbb{E}[\sigma]$, while the variance swap (Section 5.9) pays the average variance, whose square root is $\sqrt{\mathbb{E}[\sigma^2]} \ge \mathbb{E}[\sigma]$ by Jensen's inequality. The skew widens the gap further, because the variance swap's replication weights low strikes, where implied volatility is high, most heavily (Lecture 2: weights $2/K^2$).
@@ -187,7 +187,7 @@ $$
 \xi_0(t) = \mathbb{E}^{\mathbb{Q}}[V_t] = \frac{\partial w_{\text{var}}(t)}{\partial t}, \qquad \xi_0 \approx \frac{w_{\text{var}}(T_{j}) - w_{\text{var}}(T_{j-1})}{T_{j} - T_{j-1}} \text{ on } [T_{j-1}, T_{j}) .
 $$
 
-The tutorial uses this **forward-variance curve**, constant on each of the 7 intervals between design maturities, as the input of rough Bergomi (Lecture 7), which matches it exactly by construction.
+The tutorial uses this **forward-variance curve**, constant on each of the 7 intervals between design maturities, as the input of rough Bergomi (Lecture 13), which matches it exactly by construction.
 
 **Limits.** Three sources of error affect a real computation. (i) **Jumps**: with jumps in the price, $-2\ln X_T$ no longer equals the integrated variance; the difference is of third order in the jump sizes. (ii) **Discretization**: the integral becomes a trapezoid sum over the quoted strikes. (iii) **Truncation**: the chain stops at its lowest and highest strikes, and the omitted wings carry variance, mostly on the put side where the weight $e^{-k}$ is large. The tutorial uses only expirations whose cleaned strikes reach $\delta \le -8$ and $\delta \ge 1.8$.
 
@@ -199,6 +199,8 @@ The tutorial uses this **forward-variance curve**, constant on each of the 7 int
 - **Centre.** Red dots are the 17 expirations, out of 32, whose strikes reach $\delta \le -8$; grey crosses are those cut short, which mostly come out low. The exception, at 587 days, is cut on the call side, where the replication weight is small. The squares integrate only the 9 design points, $|\delta| \le 2$: at one week they agree with the full strip (13.6%), but at one year they give 18.9% against 21.8%, because the missing far puts carry about a quarter of the variance. The triangles are the at-the-money implied volatilities, below every variance-swap volatility.
 - **Right.** The forward-variance curve in volatility units, $\sqrt{\xi_0}$, rises from 13.6% over the first week to 23.4% between 6 months and 1 year. The squares are the running averages $\sqrt{w_{\text{var}}(T)/T}$, which rise more slowly because each averages all the intervals before it.
 
+**A thin chain.** On a thin chain the strip over the quoted strikes is wide. Computed over EWI's quoted strikes on 22 October 2026 (Lecture 1, Figure 1.7), the strip's variance-swap volatility is 14% on the bids and 52% on the asks at the first expiry, and 14% and 38% at the last (`tutorial_final/checks/thin_chains/EWI_2026-10-22.json`). Both values leave out the wings beyond the quoted strikes.
+
 ## 5.10 Four volatility objects
 
 The course now has all four objects that the word "volatility" refers to. They are different and must be kept apart:
@@ -208,15 +210,15 @@ The course now has all four objects that the word "volatility" refers to. They a
 | Realized volatility $\sqrt{Q_T}$ | $\sqrt{(252/n)\sum r_i^2}$ over a period; the payoff of a volatility swap | Only after the fact | Lecture 1; the payoff of variance and volatility swaps |
 | Implied volatility $\sigma_{\text{imp}}(k, T)$ | The Black–Scholes volatility that matches a quote | Yes, from quotes | The data; the smile is its shape |
 | Forward variance $\xi_0(t)$ | The market's expected instantaneous variance at $t$, $\mathbb{E}^{\mathbb{Q}}[V_t]$, read by replication | Derived from quotes | The curve input of rough Bergomi; it fixes variance-swap prices |
-| Instantaneous variance $V_t$ | The model's variance at time $t$, a random process | No, a model object | What the models of Lectures 6 and 7 specify |
+| Instantaneous variance $V_t$ | The model's variance at time $t$, a random process | No, a model object | What the models of Lectures 10 and 13 specify |
 
 ## 5.11 What the smile does not tell
 
 The surface determines, at each quoted maturity, the risk-neutral distribution of $X_T$, and with it every payoff of $X_T$ and the variance-swap strike. It does not determine how the smile itself will move.
 
-The forward-start call of Lecture 1, struck at the money at $T_1$ and maturing at $T_2$, is priced at $T_1$ by the smile that will prevail then for maturity $T_2 - T_1$: the **forward smile**. Today's surface does not contain it. Two models that reproduce today's surface exactly can imply different forward smiles, and therefore different forward-start, cliquet and volatility-swap prices. A model of how volatility moves (Lectures 6 and 7) is needed to price them, and the uncertainty in that model's parameters (Part III) is the uncertainty in those prices.
+The forward-start call of Lecture 1, struck at the money at $T_1$ and maturing at $T_2$, is priced at $T_1$ by the smile that will prevail then for maturity $T_2 - T_1$: the **forward smile**. Today's surface does not contain it. Two models that reproduce today's surface exactly can imply different forward smiles, and therefore different forward-start, cliquet and volatility-swap prices. A model of how volatility moves (Lectures 10 and 13) is needed to price them, and the uncertainty in that model's parameters (Parts II to IV) is the uncertainty in those prices.
 
-This lecture has also shown that the Black–Scholes model cannot reproduce today's surface. Its single $\sigma$ gives one flat line per maturity, while SPY's smiles slope by 14 points from $\delta = -2$ to $\delta = +2$ at one year. Part III fits Black–Scholes to the 63 SPY quotes and shows what a Bayesian analysis reveals about a model that is wrong.
+This lecture has also shown that the Black–Scholes model cannot reproduce today's surface. Its single $\sigma$ gives one flat line per maturity, while SPY's smiles slope by 14 points from $\delta = -2$ to $\delta = +2$ at one year. Part II fits Black–Scholes to the 63 SPY quotes and shows what a Bayesian analysis reveals about a model that is wrong.
 
 ## 5.12 Summary
 
@@ -227,8 +229,8 @@ This lecture has also shown that the Black–Scholes model cannot reproduce toda
 5. The at-the-money skew follows $|\psi(T)| \approx 0.265\,T^{-0.32}$ and the curvature $T^{-0.96}$: both explode as maturity shortens.
 6. A random volatility makes a smile through the convexity of option prices in $\sigma$; a negative correlation between volatility and price makes a skew, which is a heavier left tail of the risk-neutral law.
 7. The total implied variance must rise with maturity and satisfy a butterfly condition; SPY's grid does.
-8. The variance-swap strike is a model-free integral of out-of-the-money prices, and its derivative in maturity is the forward-variance curve $\xi_0(t)$, an input of rough Bergomi. Truncated strikes bias it down.
-9. The surface does not determine the forward smile, which exotics depend on. Pricing them needs a dynamic model, the subject of Lectures 6 and 7.
+8. The variance-swap strike is a model-free integral of out-of-the-money prices, and its derivative in maturity is the forward-variance curve $\xi_0(t)$, an input of rough Bergomi. Truncated strikes bias it down. On a thin chain the spreads leave it wide: over EWI's quoted strikes, its volatility lies between 14% and 52% at the first expiry.
+9. The surface does not determine the forward smile, which exotics depend on. Pricing them needs a dynamic model, the subject of Lectures 10 and 13.
 
 ## References
 

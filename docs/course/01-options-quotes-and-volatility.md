@@ -2,13 +2,20 @@
 
 [Course index](README.md) · Next: [Lecture 2. No-arbitrage without a model](02-no-arbitrage-without-a-model.md)
 
-**What this lecture is for.** This lecture introduces the objects the whole course is about. It defines the underlying asset and its returns, measures volatility in real data, defines the option contracts, explains why they are traded and how a market quotes them, and separates the contracts a market quotes (vanillas) from those a bank must price with a model (exotics). It uses no model. Lecture 2 adds what can be deduced without a model, and Lectures 3 to 7 build the models.
+**What this lecture is for.** This lecture introduces the objects the whole course is about. It defines the underlying asset and its returns, measures volatility in real data, defines the option contracts, explains why they are traded and how a market quotes them, and separates the contracts a market quotes (vanillas) from those a bank must price with a model (exotics). It uses no model. Lecture 2 adds what can be deduced without a model, and Lectures 3 to 5, 10 and 13 build the models.
 
-**Where it sits in the course.** The tutorial calibrates a model to the quotes described in Section 1.6 and uses it to price the products described in Section 1.7. The gap between the two is the problem the course solves.
+**Where it sits in the course.** The tutorial calibrates a model to the quotes described in Section 1.6 and uses it to price the products described in Section 1.7. The gap between the two is the problem the course solves. The course has sixteen lectures in four parts. Black–Scholes carries the simple concepts, Heston the workflow, and rough Bergomi the full examples.
+
+| Part | Lectures |
+| --- | --- |
+| I. Markets and the first model | 1 Options, quotes and volatility · 2 No-arbitrage without a model · 3 Brownian motion, SDEs and Itô's lemma · 4 The Black–Scholes model · 5 Implied volatility and the smile |
+| II. Calibration and Bayes on Black–Scholes | 6 Marking a product the smile does not quote · 7 Calibration as estimation · 8 Bayesian calibration · 9 Amortized inference |
+| III. Heston and the BayesFlow workflow | 10 The Heston model · 11 Calibrating Heston · 12 The amortized workflow on Heston |
+| IV. Rough Bergomi: the full examples | 13 The rough Bergomi model · 14 Why the exact posterior is expensive · 15 A liquid smile: SPY · 16 A thin chain: EWG |
 
 ## 1.1 The underlying asset and its returns
 
-An option is written on an **underlying asset**, a traded asset whose price at time $t$ is written $S_t$. In this course the underlying is the S&P 500 index of large US companies, held through an exchange-traded fund. The tutorial's options are written on SPY, the oldest S&P 500 exchange-traded fund. The return data in this lecture come from VOO, another S&P 500 fund whose daily returns are in the repository.
+An option is written on an **underlying asset**, a traded asset whose price at time $t$ is written $S_t$. In this course the main underlying is the S&P 500 index of large US companies, held through an exchange-traded fund. The tutorial's options are written on SPY, the oldest S&P 500 exchange-traded fund. The return data in this lecture come from VOO, another S&P 500 fund whose daily returns are in the repository.
 
 A price series is studied through its returns. Over a step $\Delta t$, the **simple return** and the **log return** are
 
@@ -49,9 +56,9 @@ Over the whole sample, VOO's realized volatility is 20.3%. A single number hides
 
 *Figure 1.2.* How to read the figure: the left panel computes $\sigma_{\text{realized}}$ over the last 21 trading days, one month, at every date. It ranges from 6.2% to 96% (6 April 2020). The yearly values are 34.7% in 2020, 13.0% in 2021, 24.2% in 2022, 13.1% in 2023, 12.7% in 2024, 18.4% in 2025 and 13.4% in 2026 to September. The right panel standardizes each daily return by the sample mean and standard deviation and compares the histogram with the standard normal density. The vertical axis is logarithmic, so the tails are visible.
 
-The figure shows two facts that every model in Part I must confront.
+The figure shows two facts that every model of the course must confront.
 
-1. **Volatility changes over time, and high volatility clusters.** A volatile day is usually followed by another volatile day. A model with one constant volatility, such as Black–Scholes (Lecture 4), cannot produce this. Stochastic-volatility models (Lectures 6 and 7) make volatility itself a random process.
+1. **Volatility changes over time, and high volatility clusters.** A volatile day is usually followed by another volatile day. A model with one constant volatility, such as Black–Scholes (Lecture 4), cannot produce this. Stochastic-volatility models (Lectures 10 and 13) make volatility itself a random process.
 2. **Returns have heavy tails.** Fourteen daily returns lie beyond four standard deviations. A normal law would produce 0.11 such days in a sample of this size. The sample kurtosis is 17.9, against 3 for a normal law. Part of this comes from fact 1: a mixture of normal laws with different variances has heavier tails than any one of them. Lecture 5 shows that the same mixing mechanism produces the option smile.
 
 **A limit of realized volatility.** Realized volatility is an estimate with its own error. For independent normal returns, the sample variance of $n$ returns has standard deviation $\sigma^2\sqrt{2/n}$, so the relative error of the volatility is about $1/\sqrt{2n}$. For a 21-day window this is $1/\sqrt{42} \approx 15\%$. A month of data measures volatility only roughly, and it measures the past. An option is a bet on volatility in the future, which Lecture 5 reads off option prices.
@@ -134,7 +141,7 @@ The second measure expresses the distance from the forward in units of a typical
 
 ## 1.6 What a market quotes
 
-An options exchange lists, for each underlying, contracts at a grid of maturities and strikes: the **option chain**. For each contract, market makers post a **bid**, the highest price at which someone will buy, and an **ask**, the lowest price at which someone will sell. The **mid** $(\text{bid} + \text{ask})/2$ is the usual estimate of the price, and the **half-spread** $(\text{ask} - \text{bid})/2$ is the natural scale of its uncertainty. Lecture 9 turns this into the noise model of the calibration.
+An options exchange lists, for each underlying, contracts at a grid of maturities and strikes: the **option chain**. For each contract, market makers post a **bid**, the highest price at which someone will buy, and an **ask**, the lowest price at which someone will sell. The **mid** $(\text{bid} + \text{ask})/2$ is the usual estimate of the price, and the **half-spread** $(\text{ask} - \text{bid})/2$ is the natural scale of its uncertainty. Lecture 7 turns this into the noise model of the calibration.
 
 A raw chain contains quotes that carry no information: zero bids, crossed markets where the bid exceeds the ask, and stale quotes. These are removed before use (Lecture 5 lists the cleaning rules). The SPY chain of the 21 October 2026 close, from Cboe's delayed quotes, has 13,114 options in 35 expirations; 32 expirations keep at least 8 quotes after cleaning (counts from study S8 of the design document; the raw chain is not stored in the repository).
 
@@ -147,6 +154,12 @@ The tutorial reads the chain on a fixed **design grid** of 63 contracts: 7 matur
 *Figure 1.6.* How to read the figure: the left panel places each contract by maturity and strike. Puts are below the forward, calls above it. The strikes fan out with maturity because $\delta$ scales with $\sqrt{T}$: from 731 to 819 US dollars at one week, around a forward of 773.8, to 536 to 1,193 dollars at one year, around a forward of 799.8. The forward rises with maturity, for a reason Lecture 2 explains. The right panel shows the prices as a fraction of the forward. They peak at the money ($\delta = 0$): 0.0069 at one week and 0.067 at one year. They grow with maturity at every $\delta$. They fall fastest on the call side.
 
 The asymmetry between the two sides is the first appearance of the skew. At one year, the put at $\delta = -2$ costs 0.0086 of the forward, and the call at $\delta = +2$ costs 0.00019, a ratio of 45. A symmetric benchmark makes the comparison fair. Under Black–Scholes with 20% volatility (Lecture 4), the same put would cost 0.67 times the same call, because of a factor $e^{k}$ that Lecture 4 derives. The market prices the downside far above any symmetric model.
+
+**A thin chain.** Figure 1.7 shows a thin chain, EWI (iShares MSCI Italy), from Cboe's delayed quotes at the close of 22 October 2026 (`tutorial_final/checks/thin_chains/`). Of its 94 out-of-the-money quotes, 45 were two-sided, with a bid as well as an ask. The whole chain traded 132 contracts that day. Measured in implied volatility (Lecture 5), the median bid–ask width of the two-sided quotes was 36, 23, 24 and 21 volatility points at its four expiries, 29, 57, 148 and 238 calendar days away. EWG (iShares MSCI Germany) is also thin, with narrower spreads. On the same day it had four expiries to six months, at 29, 57, 85 and 176 calendar days. Each had 7 to 9 two-sided quotes within 0.1 of the money in log-moneyness, and their median widths were 4.0, 2.5, 2.3 and 3.5 volatility points. SPY's design noise, the quote noise the tutorial assumes, is 0.3 volatility points at the money, above SPY's own half-spreads (Lecture 5, Sections 5.3 and 5.4). Lecture 16 uses EWG as the course's thin chain.
+
+![EWI's out-of-the-money quotes at the close of 22 October 2026, from bid to ask in implied volatility, at each of its four expiries.](images/v2-thin-chain.png)
+
+*Figure 1.7.* How to read the figure: each panel is one of EWI's four expiries, and each vertical bar one out-of-the-money quote, placed at its log-moneyness. A teal bar runs from the implied volatility of the bid to that of the ask. A grey bar is a quote with no bid and runs from zero to the ask. The dots are the mids. The short orange bar at the money shows, for scale, SPY's design noise of ±0.3 volatility points. The title of each panel gives the variance-swap strip over the quoted strikes, computed on the bids and on the asks (Lecture 5, Section 5.9).
 
 **Vanillas.** Listed European and American calls and puts are called **vanilla** options. They are the data the models are calibrated to.
 
@@ -161,13 +174,13 @@ An **exotic** product is any payoff that is not a listed vanilla. Its payoff dep
 | Up-and-out barrier call | $(S_T - K)^+\,\mathbf{1}\lbrace\max_{t \le T} S_t < B\rbrace$ | The whole path, through its maximum |
 | Variance swap and volatility swap | $N\,(Q_T - K_{\text{var}})$ and $N\,(\sqrt{Q_T} - K_{\text{vol}})$, with $Q_T$ the realized variance of Section 1.2 over $[0, T]$ | Every daily return up to $T$ |
 
-The strikes $K_{\text{var}}$ and $K_{\text{vol}}$ are set so that the swap costs nothing to enter. Lecture 5 shows that $K_{\text{var}}$ can be read off vanilla prices, and Lecture 8 shows that $K_{\text{vol}}$ cannot.
+The strikes $K_{\text{var}}$ and $K_{\text{vol}}$ are set so that the swap costs nothing to enter. Lecture 5 shows that $K_{\text{var}}$ can be read off vanilla prices, and Lecture 6 shows that $K_{\text{vol}}$ cannot.
 
 ![Three simulated paths and three exotic payoffs: a forward-start call (left), an up-and-out call with barrier 115 (centre), and the running realized volatility that a variance swap pays on (right).](images/l01-exotic-payoffs.png)
 
-*Figure 1.7.* How to read the figure: the same three simulated paths, with 25% volatility over half a year, are used in all three panels. In the left panel, each path's strike is fixed at its own price on day 63 (dotted line), and the payoff is the return from there to day 126, if positive. In the centre panel, two paths touch the barrier at 115 and lose all value, even though one of them ends far above the strike. The third never touches it and pays 1.9. In the right panel, the running realized volatility starts erratic and settles near the 25% used to simulate the paths. The variance swap pays the final value, squared, minus its strike.
+*Figure 1.8.* How to read the figure: the same three simulated paths, with 25% volatility over half a year, are used in all three panels. In the left panel, each path's strike is fixed at its own price on day 63 (dotted line), and the payoff is the return from there to day 126, if positive. In the centre panel, two paths touch the barrier at 115 and lose all value, even though one of them ends far above the strike. The third never touches it and pays 1.9. In the right panel, the running realized volatility starts erratic and settles near the 25% used to simulate the paths. The variance swap pays the final value, squared, minus its strike.
 
-**Why exotics need a model.** A vanilla with maturity $T$ depends on $S_T$ alone, so its price depends only on the distribution of $S_T$. Lecture 2 shows that the vanilla prices at maturity $T$ determine that distribution and nothing more. An exotic depends on the joint behaviour of the price at several dates, and the vanillas say nothing about how the distributions at different dates are linked. A model supplies that link. Two models can agree on every vanilla and disagree on every exotic, which Lecture 8 documents.
+**Why exotics need a model.** A vanilla with maturity $T$ depends on $S_T$ alone, so its price depends only on the distribution of $S_T$. Lecture 2 shows that the vanilla prices at maturity $T$ determine that distribution and nothing more. An exotic depends on the joint behaviour of the price at several dates, and the vanillas say nothing about how the distributions at different dates are linked. A model supplies that link. Two models can agree on every vanilla and disagree on every exotic, which Lecture 6 documents.
 
 **Marking a book.** A bank values every position at the end of each day; this is called **marking**. A vanilla is marked at its market mid (mark-to-market). An exotic has no market price, so it is marked at a model price (mark-to-model):
 
@@ -175,14 +188,14 @@ $$
 \text{mark}_t(\Pi) = p_\Pi(\hat\theta_t),
 $$
 
-where $\hat\theta_t$ are the model's parameters calibrated that morning to the vanillas. The parameters are uncertain, because many values of $\theta$ reproduce the vanilla quotes within their bid-ask spreads. The mark inherits this uncertainty. Measuring it, and making the measurement affordable every morning, is the subject of Parts II to IV.
+where $\hat\theta_t$ are the model's parameters calibrated to the vanillas. The parameters are uncertain, because many values of $\theta$ reproduce the vanilla quotes within their bid-ask spreads. The mark inherits this uncertainty. Lecture 6 describes the marking procedure step by step.
 
 ## 1.8 Summary
 
 1. The underlying's log returns add over time, and their standard deviation per year is the volatility.
 2. Real volatility changes over time and clusters, and real returns have heavy tails.
 3. A call pays $(S_T - K)^+$ and a put $(K - S_T)^+$. The convexity of these payoffs makes their value increase with the uncertainty of $S_T$, so option prices measure volatility.
-4. Markets quote vanillas with a bid and an ask. The course uses out-of-the-money options on a design grid of 63 contracts. The SPY prices already show that puts are expensive relative to calls: the skew.
+4. Markets quote vanillas with a bid and an ask. The course uses out-of-the-money options on a design grid of 63 contracts. The SPY prices already show that puts are expensive relative to calls: the skew. A thin chain, such as EWI or EWG, has fewer expiries and far wider spreads.
 5. Exotics depend on the path, have no quote, and are marked with a calibrated model. The uncertainty of the calibration is the uncertainty of the mark.
 
 Lecture 2 shows what the absence of arbitrage alone implies for these prices: the forward, put–call parity, the bounds on an option price, and the link between vanilla prices and the distribution of $S_T$.
@@ -193,4 +206,4 @@ Lecture 2 shows what the absence of arbitrage alone implies for these prices: th
 - Cont, R. (2001). Empirical properties of asset returns: stylized facts and statistical issues. *Quantitative Finance* 1(2), 223–236. [doi](https://doi.org/10.1080/713665670)
 - Gatheral, J. (2006). *The volatility surface: a practitioner's guide*. Wiley.
 
-Figures: `scripts/course/lecture01.py`.
+Figures: `scripts/course/lecture01.py`, except Figure 1.7, which `scripts/course/realignment.py` draws.

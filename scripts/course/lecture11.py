@@ -296,51 +296,66 @@ def fig_pseudo_marginal():
                                      acceptance=[float(a) for a in accs])
 
 
-# Figure 11.5 -----------------------------------------------------------------
-def fig_universe(costs):
+# Figure 11.5 (Lecture 14, Figure 14.4 in version 2) -------------------------------------------
+def fig_many_posteriors(costs):
+    """Cost of many rough-Bergomi posteriors, for a book at month-end or a validation, on one machine."""
     exact_h = costs["exact_rough_posterior"]["cpu_hours"]
     bank_unit = load("rough-pilot/s1/bank-quality.json")["generation"]["cpu_seconds_per_surface"]
     exact_bank_h = costs["exact_rough_posterior"]["evaluations_for_400_effective_draws"] * bank_unit / 3600
+    evaluation_s = costs["rough_likelihood_evaluation_cpu_s"]["median"]
     net_s = costs["rough_amortized_posterior_1000_draws_cpu_s"]["median"]
-    audit_s = 425.35490193349995  # rough-pilot/s5/audit.json, median CPU-seconds per surface
+    # The audit of studies S5 and S8: 512 proposals, each priced after a pilot at a quarter of the paths
+    # (correction.price_for_likelihood); more where proposals need more paths, which S5 measures.
+    audit_s = 512 * 1.25 * evaluation_s
+    # Importance sampling from a Gauss-Newton proposal on SPY's 63 quotes (checks/rough_spy_is.py): 1,024 proposals,
+    # priced with common random numbers; with a seed per proposal it costs more.
+    gauss_newton_is_s = 1024 * evaluation_s
     heston_s = costs["exact_heston_posterior"]["cpu_seconds"]
     train_h = 370.0  # design document, "The simulator and the training bank": 112,000 surfaces at 3.3 CPU-h per 1,000
-    n = np.array([1, 2, 5, 10, 20, 50, 100, 200, 500, 1000])
-    fig, axes = plt.subplots(1, 2, figsize=(11, 4.3))
+    n = np.array([1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000])
+    fig, axes = plt.subplots(1, 2, figsize=(11, 5.2))
     ax = axes[0]
-    ax.loglog(n, n * exact_h, "o-", color=COLORS[3], ms=4, label="exact rough-Bergomi MCMC, lower bound")
-    ax.loglog(n, n * exact_bank_h, "o--", color=COLORS[3], ms=3.5, alpha=0.7,
-              label="exact rough-Bergomi MCMC, bank's average surface cost")
-    ax.loglog(n, n * (net_s + audit_s) / 3600, "o-", color=COLORS[0], ms=4, label="amortized posterior + audit")
-    ax.loglog(n, n * net_s / 3600, "o--", color=COLORS[0], ms=3.5, alpha=0.7, label="amortized posterior alone")
-    ax.loglog(n, n * heston_s / 3600, "s-", color=COLORS[2], ms=3.5, label="exact Heston MCMC (Fourier)")
-    ax.set_xlabel("smiles calibrated in one morning")
-    ax.set_ylabel("CPU-hours each morning")
-    ax.set_title("Daily cost across a desk's underlyings")
-    ax.set_ylim(5e-4, 1e10)
-    ax.legend(frameon=False, fontsize=8.5, loc="upper left")
+    ax.loglog(n, n * exact_h, "o-", color=COLORS[3], ms=4, label="exact chain, lower bound")
+    ax.loglog(n, n * exact_bank_h, "o--", color=COLORS[3], ms=3.5, alpha=0.7, label="exact chain, bank's average cost")
+    ax.loglog(n, n * gauss_newton_is_s / 3600, "^-", color=COLORS[1], ms=4,
+              label="importance sampling, Gauss–Newton proposal")
+    ax.loglog(n, n * (net_s + audit_s) / 3600, "o-", color=COLORS[0], ms=4, label="network + audit")
+    ax.loglog(n, n * net_s / 3600, "o--", color=COLORS[0], ms=3.5, alpha=0.7, label="network alone")
+    ax.loglog(n, n * heston_s / 3600, "s-", color=COLORS[2], ms=3.5, label="exact Heston chain (Fourier)")
+    ax.set_xlabel("posteriors in one run (a book at month-end, a validation)")
+    ax.set_ylabel("CPU-hours")
+    ax.set_title("Cost of many posteriors, rough Bergomi")
+    ax.set_ylim(5e-4, 1e8)
+    ax.legend(frameon=False, fontsize=7.5, loc="upper left")
     ax = axes[1]
-    m = np.linspace(0, 60, 601)
-    ax.plot(m, m * exact_h, color=COLORS[3], label="exact MCMC, lower bound")
-    ax.plot(m, m * exact_bank_h, color=COLORS[3], ls="--", alpha=0.7, label="exact MCMC, bank's average surface cost")
+    m = np.linspace(0, 800, 801)
+    ax.plot(m, m * exact_h, color=COLORS[3], label="exact chain, lower bound")
+    ax.plot(m, m * gauss_newton_is_s / 3600, color=COLORS[1], label="importance sampling, Gauss–Newton proposal")
     ax.plot(m, train_h + m * (net_s + audit_s) / 3600, color=COLORS[0],
-            label="bank once (training ⟨S2⟩ not included),\nthen network + audit")
-    be = train_h / (exact_h - (net_s + audit_s) / 3600)
-    be_bank = train_h / (exact_bank_h - (net_s + audit_s) / 3600)
-    for x in (be, be_bank):
+            label="bank once (training ⟨S2⟩ not included), then network + audit")
+    ax.plot(m, train_h + m * net_s / 3600, color=COLORS[0], ls="--", alpha=0.7,
+            label="bank once, then network alone")
+    be_chain = train_h / (exact_h - (net_s + audit_s) / 3600)
+    be_is_audit = train_h / ((gauss_newton_is_s - net_s - audit_s) / 3600)
+    be_is_alone = train_h / ((gauss_newton_is_s - net_s) / 3600)
+    for x in (be_chain, be_is_alone, be_is_audit):
         ax.axvline(x, color="0.5", ls=":", lw=1)
-    ax.text(31, 120, f"break-even: {be_bank:.0f} smiles against the dashed line,\n{be:.0f} against the solid one",
-            fontsize=9, color="0.3")
-    ax.set_ylim(0, 1500)
-    ax.set_xlabel("smiles calibrated in total")
+    ax.set_xlim(0, 800)
+    ax.set_ylim(0, 1300)
+    ax.set_xlabel("posteriors in total")
     ax.set_ylabel("cumulative CPU-hours")
-    ax.set_title("The training bank pays for itself after 9 to 22 smiles")
-    ax.legend(frameon=False, fontsize=8.5, loc="upper center", bbox_to_anchor=(0.5, -0.17), ncol=2)
+    ax.set_title(f"The bank pays after {be_chain:.0f} smiles against the chain,\n"
+                 f"{be_is_alone:.0f} to {be_is_audit:.0f} against importance sampling", fontsize=10)
+    ax.legend(frameon=False, fontsize=7.5, loc="upper center", bbox_to_anchor=(0.5, -0.16), ncol=1)
     tidy(*axes)
-    save(fig, "l11-desk-scaling.png")
-    REPORT["universe"] = dict(break_even=float(be), break_even_bank=float(be_bank), exact_bank_h=float(exact_bank_h),
-                              hundred_exact_bank_h=float(100 * exact_bank_h), per_smile_amortized_audit_s=float(net_s + audit_s),
-                              hundred_exact_h=float(100 * exact_h), hundred_amortized_audit_h=float(100 * (net_s + audit_s) / 3600))
+    save(fig, "l11-many-posteriors.png")
+    REPORT["many_posteriors"] = dict(
+        evaluation_s=float(evaluation_s), audit_s=float(audit_s), gauss_newton_is_s=float(gauss_newton_is_s),
+        break_even_chain=float(be_chain), break_even_chain_bank_cost=float(train_h / (exact_bank_h - (net_s + audit_s) / 3600)),
+        break_even_is_network_alone=float(be_is_alone), break_even_is_network_and_audit=float(be_is_audit),
+        hundred_exact_h=float(100 * exact_h), hundred_exact_bank_h=float(100 * exact_bank_h),
+        hundred_is_h=float(100 * gauss_newton_is_s / 3600), hundred_network_audit_h=float(100 * (net_s + audit_s) / 3600),
+        hundred_network_h=float(100 * net_s / 3600))
 
 
 def typical_noise():
@@ -360,7 +375,7 @@ def main():
     fig_mc_noise()
     fig_rwm(costs)
     fig_pseudo_marginal()
-    fig_universe(costs)
+    fig_many_posteriors(costs)
     print(json.dumps(REPORT, indent=1, default=float))
 
 
