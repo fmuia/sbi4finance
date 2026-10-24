@@ -74,22 +74,24 @@ def _(mo):
     Slot 4 calibrated Heston to the SPY smile and checked every step against the exact posterior. The
     posterior was precise, and it said Heston fits SPY only with a vol-of-vol about twice its Feller limit
     and variance swaps below the market. This notebook keeps the smile and the code and changes the model
-    to one built for index smiles, **rough Bergomi**, the kind of forward-variance model equity desks use
-    for long-dated exotics. That change removes the exact posterior, and it is where amortized inference
-    pays.
+    to one built for index smiles, **rough Bergomi**, a rough version of Bergomi's (2005) forward-variance
+    model. That change removes the exact posterior, and it is where amortized inference pays.
 
     Three claims, each backed by evidence below:
 
     1. **Rough Bergomi is priced only by Monte Carlo**, so its exact posterior costs at least 17 CPU-hours
-       per smile. The amortized posterior takes 1.4 seconds, and without an exact answer it is checked three
-       ways: simulation-based calibration, a second method, and an audit of each smile.
+       per smile by random-walk Metropolis. Importance sampling from a Gauss–Newton proposal takes about 85
+       CPU-minutes on SPY's 63 quotes (1,024 evaluations at 5.0 CPU-seconds). One smile is affordable either
+       way; a book at month-end or a validation on thousands of simulated smiles is not. The amortized
+       posterior takes 1.4 seconds, and without an exact answer it is checked three ways: simulation-based
+       calibration, a second method, and an audit of each smile.
     2. **On SPY's full surface the smile pins $H$, $\eta$ and $\rho$**, even with the forward-variance curve
        uncertain. There the Gauss–Newton interval is a good approximation, and the posterior's value is speed
        and a coverage check.
-    3. **Long-dated products depend on the forward-variance curve beyond the last quote.** Held flat, as
-       desks hold it, the curve gives a 3-year variance swap no range at all. With a stated prior and the
-       long-dated quotes as data, the posterior gives it a 90% range of about a quarter of its price, and
-       gives a 5-year put three times the desk's range. That gap is a reserve nobody reports.
+    3. **Long-dated products depend on the forward-variance curve beyond the last quote.** Held flat, as in
+       the tutorial's baseline, the curve gives a 3-year variance swap no range at all. With a stated prior and
+       the long-dated quotes as data, the posterior gives it a 90% range of about a quarter of its price, and
+       gives a 5-year put three times the baseline's range. That gap is a reserve the baseline does not report.
     """)
     return
 
@@ -176,10 +178,10 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## 1 · The desk's question
+    ## 1 · The question
 
     SPY on 21 October 2026: the 63 prices of slots 1 and 4, read from the chain onto the design grid. A
-    desk marks products the smile does not quote: a forward-start call (one period of a cliquet), a
+    bank marks products the smile does not quote: a forward-start call (one period of a cliquet), a
     volatility swap, and long-dated exotics such as autocallables and cliquets that run for years past the
     last liquid quote. Least squares gives one parameter vector and one mark. The rules ask for the range
     and a 90% point in it: Regulation (EU) 2016/101, Art. 9 for the calibrated parameters and Art. 11 for
@@ -274,13 +276,15 @@ def _(mo, rough_eta, rough_h, rough_rho, run_rough, teaching):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## 3 · Why the exact posterior is out of reach
+    ## 3 · What the exact posterior costs
 
-    One likelihood evaluation is one Monte Carlo surface. An exact chain needs about 12,300 evaluations for
-    400 effective draws, so it costs at least 17 CPU-hours per smile. That is a lower bound: it assumes the
-    cheapest pricing cost (the pilot bank's average gives 41 CPU-hours), and a chain on a noisy likelihood
-    needs more evaluations than the exact Heston chains it is extrapolated from. Slot 4's exact check is not
-    available here.
+    One likelihood evaluation is one Monte Carlo surface. An exact chain by random-walk Metropolis needs about
+    12,300 evaluations for 400 effective draws, so it costs at least 17 CPU-hours per smile. That is a lower
+    bound: it assumes the cheapest pricing cost (the pilot bank's average gives 41 CPU-hours), and a chain on
+    a noisy likelihood needs more evaluations than the exact Heston chains it is extrapolated from.
+    Importance sampling from a Gauss–Newton proposal takes about 85 CPU-minutes on SPY's 63 quotes (1,024
+    evaluations at 5.0 CPU-seconds). One smile is affordable either way; a book at month-end or a validation
+    on thousands of simulated smiles is not. Slot 4's exact check is not available here.
     """)
     return
 
@@ -289,7 +293,8 @@ def _(mo):
 def _(CURRICULUM, RESULTS, image, mo, teaching):
     _costs = teaching.load_json(RESULTS / "costs" / "costs.json")
     mo.vstack([
-        image(CURRICULUM / "images" / "ladder.png", "One likelihood evaluation and one exact posterior under each model."),
+        image(CURRICULUM / "images" / "ladder.png", "One likelihood evaluation and one exact posterior under each model "
+                                                    "(the rough-Bergomi posterior, by random-walk Metropolis, is a lower bound)."),
         mo.ui.table(teaching.cost_rows(_costs), selection=None, pagination=False),
     ])
     return
@@ -414,7 +419,7 @@ def _(mo):
     mo.md(r"""
     ## 6 · The classical route on the same smiles
 
-    The desk's tool is weighted least squares from several starting points, with an interval from the
+    The classical route is weighted least squares from several starting points, with an interval from the
     Gauss–Newton approximation $(J^\top W J)^{-1}$. On Heston that interval covers the truth as often as the
     posterior does (slot 1, section 3). For rough Bergomi on SPY, the local analysis below is the same
     approximation at SPY's least-squares fit, with Monte Carlo derivatives: the 63 quotes pin every
@@ -573,9 +578,10 @@ def _(mo):
     their life. SPY's quotes pin $\xi_0$ to one year. Four LEAP expirations, from 1.2 to 2.2 years, give its
     replicated variance with a wider error. Beyond 2.2 years nothing is quoted.
 
-    A desk holds $\xi_0$ flat beyond the last liquid maturity and reports the range from the calibrated
-    parameters alone. The posterior treats the curve beyond one year as unknown: a random walk in
-    $\log \xi_0$ from the one-year level, flat on average (the desk's assumption) with a stated width per
+    Extrapolation beyond the last quote has no single convention. The tutorial's baseline holds $\xi_0$ flat
+    beyond the last liquid maturity and reports the range from the calibrated parameters alone. The posterior
+    treats the curve beyond one year as unknown: a random walk in
+    $\log \xi_0$ from the one-year level, flat on average (the baseline's assumption) with a stated width per
     square root of a year, updated by the LEAPs, and propagated with $(H, \eta, \rho)$ through the Monte
     Carlo pricer. The products: a 3-year autocallable (annual calls at 100%, an 8% coupon a year, a 60%
     barrier at maturity), a 3-year cliquet (annual returns capped at 8% and floored at 0), a forward start
@@ -638,7 +644,7 @@ def _(
     _fig, (_a, _b, _c) = plt.subplots(1, 3, figsize=(13.0, 4.0), constrained_layout=True,
                                       gridspec_kw={"width_ratios": [1.35, 1.25, 1.0]})
     _a.fill_between(_tt, _lo, _hi, color=plots.SERIES[0], alpha=0.2, label="rough Bergomi posterior, 90%")
-    _a.plot(_tt, _flat, color=plots.INK, linestyle="--", linewidth=1.2, label="desk: flat beyond one year")
+    _a.plot(_tt, _flat, color=plots.INK, linestyle="--", linewidth=1.2, label="baseline: flat beyond one year")
     _T = np.asarray(long_extra["T"])
     _hq = np.asarray(long_extra["heston_kappa_free_vs_vol_q"])
     _a.fill_between(_T, _hq[0], _hq[2], color=plots.SERIES[1], alpha=0.35, label="Heston posterior (fitted to ≤ 1 year), 90%")
@@ -658,7 +664,7 @@ def _(
     _names = ["autocallable 3y", "cliquet 3y", "forward start 2y→3y", "put 5y 80%", "variance swap 3y"]
     _x = np.arange(len(_names))
     _scale = np.array([10.0, 1, 1, 1, 1])
-    _b.bar(_x - 0.2, 100 * long_desk * _scale, 0.38, color=plots.BASELINE, label="desk: H, η, ρ only, ξ0 flat")
+    _b.bar(_x - 0.2, 100 * long_desk * _scale, 0.38, color=plots.BASELINE, label="baseline: H, η, ρ only, ξ0 flat")
     _b.bar(_x + 0.2, 100 * long_post * _scale, 0.38, color=plots.SERIES[0], label="posterior: all inputs")
     _b.set_xticks(_x, [n.replace(" ", "\n", 1) for n in _names], fontsize=7)
     _b.set_ylabel("90% range, % of price (autocallable: bp of notional ÷ 10)")
@@ -676,7 +682,7 @@ def _(
     _rows = []
     for _j, _n in enumerate(_names):
         _fmt = (lambda v: f"{1e4 * v:.0f} bp of notional") if _j == 0 else (lambda v: f"{100 * v:.0f}%")
-        _rows.append({"product": _n, "desk 90% range": _fmt(long_desk[_j]), "posterior 90% range": _fmt(long_post[_j]),
+        _rows.append({"product": _n, "baseline 90% range": _fmt(long_desk[_j]), "posterior 90% range": _fmt(long_post[_j]),
                       **{f"share: {g}": f"{100 * s[_j]:.0f}%" for g, s in long_shares.items()}})
     _gap = [_lv[i] - _hq[2][list(np.round(_T, 2)).index(round(t, 2))] for i, t in enumerate(_lt)]
     _mc = np.asarray(long_report["range90_posterior_mc"]) / np.asarray(long_report["posterior_mc_quantiles"])[1]
@@ -688,12 +694,12 @@ def _(
               f"(0.2 and 0.5), full Monte Carlo propagation through 400 posterior draws gives {_mc_text}.*"),
         mo.md(f"""
         **What this says.** For the products that live past the quotes (the forward start, the 5-year put, the
-        variance swap), the desk's range misses most of the uncertainty, and most of the posterior's comes
+        variance swap), the baseline's range misses most of the uncertainty, and most of the posterior's comes
         from the curve beyond 2.2 years: {100 * long_shares['ξ0 2.25 to 5 years (prior only)'][2]:.0f}%,
         {100 * long_shares['ξ0 2.25 to 5 years (prior only)'][3]:.0f}% and
         {100 * long_shares['ξ0 2.25 to 5 years (prior only)'][4]:.0f}% of the variance, from an input no quote
         observes. For the autocallable and the cliquet, most comes from $(H, \\eta, \\rho)$ and the short end. The
-        prior's width matters, and the slider shows how much; the desk's implicit prior has width zero, which
+        prior's width matters, and the slider shows how much; the baseline's implicit prior has width zero, which
         no rule accepts for an unobservable input. The LEAPs also move the prices: under the posterior's inputs
         the forward start, the put and the variance swap are 2–3% dearer than under the flat curve.
 
@@ -712,10 +718,11 @@ def _(mo):
     surface's likelihood, and the products. The posterior over the 14 inputs ($H$, $\eta$, $\rho$ and eleven
     levels of $\xi_0$) is what an amortized network returns in a second. This quick check used its Gaussian
     (Laplace) approximation at the least-squares fit, which matched full Monte Carlo propagation through 400
-    posterior draws within 1–5%. The network makes the same computation routine, every morning and for every
-    index, and simulation-based calibration checks that its 90% is 90%. Where the posterior stops being
-    Gaussian, with sparse long-dated smiles instead of replicated variance swaps, or with a model whose
-    vol-of-vol term structure the vanilla smile cannot pin, the network is the only affordable route (not
+    posterior draws within 1–5%. The network makes the same computation routine, for every index in a
+    valuation across a book, for example at month-end, and simulation-based calibration checks that its 90%
+    is 90%. Where the posterior stops being Gaussian, with sparse long-dated smiles instead of replicated
+    variance swaps, or with a model whose vol-of-vol term structure the vanilla smile cannot pin, a
+    Gauss–Newton proposal can fail, and the network's draws are the proposal that stays affordable (not
     tested here).
 
     *Source:* `tutorial_final/checks/long_end/` (a quick check of 23 October 2026, not yet an accepted study).
@@ -765,34 +772,37 @@ def _(RESULTS, image, mo, pending, pilot_banner, teaching):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## 10 · What the answer assumes, and what it takes on a desk
+    ## 10 · What the answer assumes, and what it takes
 
     The answer is conditional on four things: **the model**, **the prior**, **the quote-noise model**, and
     **$\xi_0$**, read off the same smile up to one year and treated as exact there, with its long end priced
     as in section 8. Each is a lever; slot 6 pulls them.
 
-    On a desk the chain is:
+    The chain is:
 
-    1. the model, and a prior agreed with the desk;
+    1. the model, and a stated prior;
     2. the noise model, from the chain's spreads;
     3. a simulated bank on a cluster, and the network;
     4. the validation: SBC, an exact sibling model, a second method;
     5. the audit of each smile, with a fallback to the exact route;
     6. the products, priced under the posterior with common random numbers;
-    7. the reserve and its diagnostics, reported to model validation.
+    7. the reserve, reported with its diagnostics.
 
-    Everything shown is in the repository. A model only simulation can price, or a validator asking for
-    these ranges? Talk to the authors: ⟨contacts⟩.
+    Everything shown is in the repository. A model only simulation can price, or a range you must report?
+    Talk to the authors: ⟨contacts⟩.
 
     ## Takeaways
 
-    1. **Rough Bergomi has no exact posterior worth computing every morning**: at least 17 CPU-hours per
-       smile. The amortized posterior takes seconds, and the audit checks it smile by smile, at minutes.
+    1. **Rough Bergomi's exact posterior is affordable for one smile, not for many**: at least 17 CPU-hours
+       per smile by random-walk Metropolis, and about 85 CPU-minutes by importance sampling from a
+       Gauss–Newton proposal on SPY's 63 quotes (1,024 evaluations at 5.0 CPU-seconds). A book at month-end
+       or a validation on thousands of simulated smiles is not affordable either way. The amortized posterior
+       takes seconds, and the audit checks it smile by smile, at about 55 CPU-minutes on SPY's 63 quotes.
     2. **On SPY's full surface the classical interval is a good approximation**; the posterior differs where
        the quotes are thin, and for the inputs they do not reach.
-    3. **Long-dated products rest on the curve beyond the quotes.** Held flat, it gives the desk a range of
-       0–10%; priced with a stated prior and the LEAPs, the posterior gives about a quarter to a third of the
-       price for the forward start, the 5-year put and the variance swap.
+    3. **Long-dated products rest on the curve beyond the quotes.** Held flat, as in the baseline, it gives a
+       range of 0–10%; priced with a stated prior and the LEAPs, the posterior gives about a quarter to a
+       third of the price for the forward start, the 5-year put and the variance swap.
     4. **The range is conditional on the model.** Heston's long end is confidently wrong, and the gap across
        models is judged smile by smile.
 

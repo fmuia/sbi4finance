@@ -11,12 +11,12 @@ Alex · 15 minutes. A proposal for Alex's review. Part of the [curriculum](00-ov
 **The answer.**
 
 1. A network trained to predict parameters from data simulated under the prior converges to the posterior for every data set the prior can produce, without ever evaluating the likelihood.
-2. The cost moves from each data set to one training run, so it pays when many posteriors are needed: a book every morning, or the thousands that validation needs.
+2. The cost moves from each data set to one training run, so it pays when many posteriors are needed: a book at month-end, or the thousands that validation needs.
 3. The network is an approximation, so the workflow wraps it in checks: a prior predictive check before training, simulation-based calibration (SBC) after it, and a correction of each real data set where its likelihood can be computed or estimated.
 
 ## Why this slot comes here
 
-Slot 1 ends on a cost: the posterior is affordable for one smile under Heston and out of reach under rough Bergomi. Slot 2 explains the idea that removes the cost, on slot 1's own example, before slot 3 explains the networks and slot 4 builds one.
+Slot 1 ends on a cost: the posterior is affordable for one smile under Heston, and under rough Bergomi it costs at least 17 CPU-hours by a random-walk chain or about 85 CPU-minutes by importance sampling, which a book at month-end or a validation multiplies by hundreds or thousands. Slot 2 explains the idea that removes the cost, on slot 1's own example, before slot 3 explains the networks and slot 4 builds one.
 
 ## Minute plan
 
@@ -25,7 +25,7 @@ Slot 1 ends on a cost: the posterior is affordable for one smile under Heston an
 | 0–2 | 1. Two ways to pay | Two timelines: "infer per data set" (MCMC, sequential Monte Carlo, ABC, particle MCMC) against "train once, infer per data set in one pass" | slide | Every posterior so far was paid for data set by data set. Amortized inference pays once, up front, and then answers any data set in one pass. |
 | 2–5 | 2. A network learns slot 1's posterior | The toy of §"The live demonstration" below: 20,000 simulated quotes, under half a minute of training, the network's posterior of σ for the SPY quote over slot 1's grid posterior; then 10,000 quotes at once | live | The network never saw the likelihood. It saw only pairs of a volatility and a noisy price, and it returns the same posterior as slot 1's grid. Then it answers 10,000 quotes in one call. |
 | 5–8 | 3. Why the minimizer is the posterior | The identity below, in one line, with its three consequences | slide | The loss is an average Kullback–Leibler divergence to the true posterior, so its minimizer is the posterior for every data set the prior can produce. |
-| 8–10.5 | 4. When it pays | The break-even table below, and the cost of validation | cached | Amortization pays after a few tens of smiles for Heston and after about ten to twenty for rough Bergomi. Validation alone needs thousands of posteriors, which only amortization makes affordable. |
+| 8–10.5 | 4. When it pays | The break-even table below, and the cost of validation | cached | Amortization pays after a few tens of smiles for Heston, and for rough Bergomi after about ten to twenty against a random-walk chain or about 260 against importance sampling. Validation alone needs thousands of posteriors, which only amortization makes affordable. |
 | 10.5–13.5 | 5. The workflow, and SBC | The workflow as a checklist; SBC run live on the toy, 500 simulated quotes with 100 draws each | live, budget to be timed; cached fallback | The workflow is what slots 4 and 5 follow. SBC checks that the network's posteriors are calibrated on average: the rank of the true parameter among the draws must be uniform. |
 | 13.5–15 | 6. Roots, and the handoff | A one-slide history and the finance alternatives | slide | The handoff to slot 3: the network must represent a conditional distribution $q_\phi(\theta \mid y)$ and read the data $y$. Which networks do that? |
 
@@ -59,16 +59,16 @@ where the constant does not depend on $\phi$. Flow matching (slot 3) reaches the
 
 ## When it pays
 
-All costs are on one 4-core machine, from `costs/costs.json`, `heston/s1/bank-quality.json`, `checkpoints/heston/training.json` and the design document's S9.
+All costs are on one 4-core machine, from `costs/costs.json`, `heston/s1/bank-quality.json`, `checkpoints/heston/training.json`, the design document's S9 and, for importance sampling, [v2-plan](../../docs/course/v2-plan.md), Section 2.4.
 
 | | Heston | Rough Bergomi |
 | --- | --- | --- |
-| One exact posterior | about 4 CPU-min (251 CPU-s) at one quadrature rung; twice that with the accuracy checks | at least 17 CPU-h (41 at the bank's average pricing cost) |
+| One exact posterior | about 4 CPU-min (251 CPU-s) at one quadrature rung; twice that with the accuracy checks | at least 17 CPU-h by a random-walk chain (41 at the bank's average pricing cost); about 85 CPU-min by importance sampling from a Gauss–Newton proposal on SPY's 63 quotes |
 | The training bank | 60,000 smiles in 46 CPU-min | 112,000 smiles in about 370 CPU-h at the pilot's rate (⟨S1⟩) |
 | Training the network | 32 minutes on 4 cores (500 epochs) | ⟨S2⟩ |
-| Break-even | about 20 to 40 smiles: the bank's 2,787 CPU-s plus 32 minutes of training counted on one to four cores, against 247 CPU-s saved per smile | about 9 to 22 smiles, plus training |
+| Break-even | about 20 to 40 smiles: the bank's 2,787 CPU-s plus 32 minutes of training counted on one to four cores, against 247 CPU-s saved per smile | about 9 to 22 smiles against the chain, about 260 against importance sampling, plus training |
 | One posterior after training | 1.5 s on the clock (3.8 CPU-s) for 1,000 draws | 1.4 s on the clock (3.6 CPU-s) for 1,000 draws |
-| SBC on 2,000 smiles, exact | about 140 CPU-h at one rung | at least 34,000 CPU-h |
+| SBC on 2,000 smiles, exact | about 140 CPU-h at one rung | at least 34,000 CPU-h by the chain; about 2,800 CPU-h by importance sampling |
 | SBC on 2,000 smiles, amortized | about 2 CPU-h | about 2 CPU-h |
 
 The last two rows carry the slot's sharpest point: a posterior method is validated by running it thousands of times, and only an amortized posterior makes that affordable.

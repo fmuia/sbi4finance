@@ -47,7 +47,7 @@ def _(mo):
     **A network that learns the posterior from simulations, once, for every data set**
 
     Slot 1 ended on a cost. The posterior needs the likelihood evaluated thousands of times for every
-    smile, and for the models desks use each evaluation is a Fourier integral or a Monte Carlo run. This
+    smile, and for the models of slots 4 and 5 each evaluation is a Fourier integral or a Monte Carlo run. This
     notebook shows the idea that removes the cost, on slot 1's own example, where the exact answer is
     known.
 
@@ -56,7 +56,7 @@ def _(mo):
     1. **A network trained on simulated pairs returns the posterior.** It never evaluates the likelihood;
        it only sees parameters and the data they produce.
     2. **The cost moves from each data set to one training run.** That pays when many posteriors are
-       needed: a book every morning, or the thousands that validation needs.
+       needed: a valuation across a book, for example at month-end, or the thousands that validation needs.
     3. **The network is an approximation, so the workflow checks it.** Simulation-based calibration (SBC)
        checks it on average; an exact posterior, where one exists, or an audit checks it data set by data set.
     """)
@@ -356,7 +356,7 @@ def _(RESULTS, ROOT, np, teaching):
     cumulative = {
         "Heston, exact": smiles * _heston_exact,
         "Heston, amortized (bank and 32 minutes of training on 4 cores)": _bank + 4 * _training + smiles * _heston_net,
-        "rough Bergomi, exact (lower bound)": smiles * _rough_exact,
+        "rough Bergomi, exact by random-walk Metropolis (lower bound)": smiles * _rough_exact,
         "rough Bergomi, amortized (bank at the pilot's rate, training not counted)": _rough_bank + smiles * _rough_net,
     }
     break_even = {"Heston": (_bank + 4 * _training) / (_heston_exact - _heston_net),
@@ -378,8 +378,11 @@ def _(break_even, cumulative, heston_unit_costs, mo, plots, plt, smiles):
     _ax.set_title("exact against amortized, cumulative cost", loc="left")
     mo.vstack([_fig, mo.md(f"""
     Amortization pays after about **{break_even['Heston']:.0f} Heston smiles** (training counted on 4 cores)
-    and about **{break_even['rough Bergomi']:.0f} rough-Bergomi smiles** (against the 17 CPU-hour lower bound;
-    training not counted yet). Validation alone needs thousands: SBC on 2,000 smiles is 2,000 posteriors,
+    and about **{break_even['rough Bergomi']:.0f} rough-Bergomi smiles** (against the 17 CPU-hour lower bound of
+    random-walk Metropolis; training not counted yet). By importance sampling from a Gauss–Newton proposal, the
+    exact rough-Bergomi posterior takes about 85 CPU-minutes on SPY's 63 quotes (1,024 evaluations at 5.0
+    CPU-seconds); against that, the training bank pays after about 260 smiles. One smile is affordable either way; a book at month-end or a validation on thousands of
+    simulated smiles is not. Validation alone needs thousands: SBC on 2,000 smiles is 2,000 posteriors,
     about {2000 * heston_unit_costs['exact'] / 3600:.0f} CPU-hours of exact Heston chains against
     {2000 * heston_unit_costs['network'] / 3600:.0f} for the network.
     """)])
@@ -448,7 +451,8 @@ def _(mo):
     1. **The network learns the posterior from simulations alone**, and on slot 1's quote it matches the
        exact posterior.
     2. **One call answers many data sets.** The cost of inference moves into training.
-    3. **Amortization pays after a few tens of smiles**, and it is what makes validation by SBC affordable.
+    3. **Amortization pays after a few tens of smiles against a random-walk chain, and a few hundred against
+       importance sampling**, and it is what makes validation by SBC affordable.
     4. **The network is checked, not trusted**: SBC on average, an exact posterior or an audit one data set
        at a time.
 

@@ -22,7 +22,7 @@ Heston fits the role of the model with an exact answer:
 
 - every quant in the room has calibrated it;
 - its likelihood is exact, so its posterior can be computed by MCMC in minutes and compared with the network's;
-- it fits the SPY smile with a root-mean-square residual of about one noise unit (Lecture 6, Section 6.10), under a noise that is loose in the wings, so the example is real data, not a toy;
+- it fits the SPY smile with a root-mean-square residual of about one noise unit (Lecture 11, Section 11.1), under a noise that is loose in the wings, so the example is real data, not a toy;
 - its fit has visible defects, which motivate slot 5.
 
 The returns notebook moves to the take-home track (overview, §6).
@@ -72,7 +72,7 @@ Run on 23 October 2026 to check that slot 4 works on real data (`scripts/curricu
 | $\sigma_v$ | 1.14 ± 0.04 | 1.07 to 1.21 | |
 | $\rho$ | −0.632 ± 0.022 | −0.668 to −0.597 | |
 
-The posterior lies well inside the prior box. Its mean equals the least-squares fit with $\kappa = 2$ of Lecture 6, Section 6.10. The Feller ratio $\sigma_v^2 / (2\kappa\theta)$ ranges from 3.8 to 6.3 over the draws (median 5.0): no draw satisfies the Feller condition. Equivalently, the vol-of-vol is about twice its Feller limit $\sqrt{2\kappa\theta} \approx 0.51$.
+The posterior lies well inside the prior box. Its mean equals the least-squares fit with $\kappa = 2$ of Lecture 11, Section 11.1. The Feller ratio $\sigma_v^2 / (2\kappa\theta)$ ranges from 3.8 to 6.3 over the draws (median 5.0): no draw satisfies the Feller condition. Equivalently, the vol-of-vol is about twice its Feller limit $\sqrt{2\kappa\theta} \approx 0.51$.
 
 This run is not an accepted study. It is redone as study S8-H through `tutorial_final/studies/` before its numbers go on screen.
 
@@ -138,4 +138,4 @@ The VOO notebook itself moves, edited, to the take-home track as `extras/returns
 
 ## Course lectures behind slot 4
 
-Lecture 6 (Heston, the Fourier pricer, the fit to SPY), 10 (posterior, Metropolis–Hastings), 12 (amortized inference), 13 (SBC, coverage, contraction, agreement).
+Lectures 10 and 11 (Heston, the Fourier pricer, the fit to SPY), 8 (posterior, Metropolis–Hastings), 9 (amortized inference) and 12 (the workflow on Heston: SBC, coverage, contraction, agreement).

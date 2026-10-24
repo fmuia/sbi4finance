@@ -39,12 +39,12 @@ TUTORIAL = ("The tutorial: one smile, three models, 115 minutes", [
 
 SLOTS = {
     1: ("Slot 1, 15 minutes", [
-        ("What a desk\ndoes", 2, "F", "cached"),
-        ("Two fits,\ntwo prices", 1.5, "F", "cached"),
+        ("The marking\nprocedure", 2, "F", "cached"),
+        ("Two calibrations,\ntwo prices", 1.5, "F", "cached"),
         ("The rules", 1, "F", "slide"),
         ("The posterior in one example:\nBlack–Scholes on two SPY quotes", 4, "F", "live"),
         ("Richer models,\ncostlier posteriors", 2, "F", "cached"),
-        ("Every smile,\nevery morning", 1.5, "F", "slide"),
+        ("Every name at month-end,\nevery validation run", 1.5, "F", "slide"),
         ("Amortized\ninference", 1.5, "F", "slide"),
         ("The\nafternoon", 1.5, "F", "slide"),
     ]),
@@ -73,15 +73,16 @@ SLOTS = {
         ("To\nslot 5", 1, "S", "slide"),
     ]),
     5: ("Slot 5, 40 minutes", [
-        ("The desk's\nquestion", 3, "F", "cached"),
+        ("The\nquestion", 3, "F", "cached"),
         ("Why rough\nBergomi", 4, "F", "live"),
-        ("Why no exact\nposterior", 3, "F", "cached"),
+        ("What the exact\nposterior costs", 3, "F", "cached"),
         ("The amortized\nposterior for SPY", 6, "A", "live"),
         ("Is it right without\nan exact answer?", 7, "A", "cached"),
         ("The classical\nroute", 4, "F", "cached"),
-        ("Prices, range\nand reserve", 7, "F", "live"),
-        ("Heston against\nrough on SPY", 3, "F", "cached"),
-        ("What it\nassumes", 3, "F", "slide"),
+        ("Prices, range\nand reserve", 5, "F", "live"),
+        ("Two\nmodels", 1, "F", "cached"),
+        ("Where the quotes stop:\nEWG, a thin chain", 5, "F", "cached"),
+        ("What it\nassumes", 2, "F", "slide"),
     ]),
     6: ("Slot 6, 15 minutes", [
         ("What the answer\ndepends on", 1, "S", "slide"),
@@ -105,8 +106,8 @@ def draw_row(ax, y, segments, height=0.62):
         face = "white" if mode == "slide" else colour
         ax.add_patch(Rectangle(*box, facecolor=face, alpha=ALPHA[mode], edgecolor="none"))
         ax.add_patch(Rectangle(*box, facecolor="none", edgecolor=colour, linewidth=1.4))
-        ax.text(start + width / 2, y + height / 2, label, ha="center", va="center", fontsize=7.0,
-                color=TEXT[mode], linespacing=1.15)
+        ax.text(start + width / 2, y + height / 2, label, ha="center", va="center",
+                fontsize=7.0 if width >= 0.035 else 5.6, color=TEXT[mode], linespacing=1.15)
         shown = f"{minutes:g} min"
         ax.text(start + width / 2, y - 0.07, shown, ha="center", va="top", fontsize=6.3, color="0.35")
         start += width
@@ -145,7 +146,8 @@ def ladder(path):
     rough_eval = costs["rough_likelihood_evaluation_cpu_s"]["median"]
     rough_exact = costs["exact_rough_posterior"]["cpu_hours"] * 3600
     network = costs["rough_amortized_posterior_1000_draws_cpu_s"]["median"]
-    audit = 425.0  # pilot, design document S5; replaced by the full study's value
+    audit = 512 * 1.25 * rough_eval  # the full audit: 512 proposals, each after a pilot at a quarter of the paths
+    importance = 1024 * rough_eval  # importance sampling from a Gauss-Newton proposal on SPY (checks/rough_spy_is.py)
     # Black-Scholes: one quote's price takes about 10 microseconds and its grid posterior about
     # 0.2 milliseconds (measured with sbi4finance.calibration.surface, 23 Oct 2026).
     models = ["Black–Scholes\n1 parameter, closed form", "Heston\n4 parameters, Fourier integral",
@@ -163,10 +165,15 @@ def ladder(path):
     ax.text(-0.45, network * 1.35, f"amortized network: {network:.1f} CPU-s for 1,000 draws (1.4 s on the clock)",
             fontsize=8, color="#D97732")
     ax.axhline(audit, color="#B33E43", linewidth=1.2, linestyle=":")
-    ax.text(-0.45, audit * 1.35, "audit of one rough-Bergomi smile: about 425 CPU-s (pilot)", fontsize=8,
-            color="#B33E43")
+    ax.text(-0.45, audit * 1.35, f"audit of one rough-Bergomi smile: about {audit / 60:.0f} CPU-min (512 proposals)",
+            fontsize=8, color="#B33E43")
+    ax.plot([2 + w / 2], [importance], marker="D", color="#7A4E9C", markersize=6, zorder=5)
+    ax.annotate(f"importance sampling,\nGauss–Newton proposal:\nabout {importance / 60:.0f} min (one SPY smile)",
+                xy=(2 + w / 2, importance), xytext=(1.42, 20), fontsize=7.4, color="#7A4E9C",
+                arrowprops={"arrowstyle": "->", "color": "#7A4E9C", "lw": 0.9})
     labels_eval = ["10 µs (one quote)", f"{1000 * heston_eval:.0f} ms (one rung)", f"{rough_eval:.1f} s"]
-    labels_exact = ["0.2 ms (vectorized grid)", f"{heston_exact / 60:.0f} min (one rung)", f"at least {rough_exact / 3600:.0f} h"]
+    labels_exact = ["0.2 ms (vectorized grid)", f"{heston_exact / 60:.0f} min (one rung)",
+                    f"chain: at least {rough_exact / 3600:.0f} h"]
     for i in x:
         ax.text(i - w / 2, evals[i] * 1.5, labels_eval[i], ha="center", fontsize=7.6)
         inside = i == 1  # the Heston label would sit on the audit line; write it inside the bar

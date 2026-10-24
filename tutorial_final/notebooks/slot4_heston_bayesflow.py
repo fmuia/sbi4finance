@@ -48,8 +48,8 @@ def _(mo):
 
     **The whole amortized workflow, on a model whose exact posterior can check every step**
 
-    Slot 1 showed why a desk wants the posterior, and that on a liquid surface the classical interval
-    should agree with it. Black–Scholes cannot fit the smile, so desks use a model that can. This notebook
+    Slot 1 showed why a bank wants the posterior, and that on a liquid surface the classical interval
+    should agree with it. Black–Scholes cannot fit the smile, so the tutorial uses a model that can. This notebook
     calibrates **Heston** to the same 63 SPY prices with BayesFlow, step by step. Heston is priced by a
     Fourier integral in 20 ms, so its exact posterior can be computed by MCMC and every step of the network
     can be compared with it. That is what makes Heston the right first example: the answer is known.
@@ -431,7 +431,7 @@ def _(NAMES, exact_spy, mo, network_seconds, network_spy, teaching):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    **And the desk's route?** Least squares from several starts, with the Gauss–Newton interval at the
+    **And the classical route?** Least squares from several starts, with the Gauss–Newton interval at the
     optimum, on the same smile. On a liquid surface it should agree with the posterior, because the
     likelihood of 63 informative quotes is close to Gaussian in the parameters (slot 1, section 3).
     """)
@@ -516,7 +516,7 @@ def _(mo):
     mo.md(r"""
     ## 6 · What the posterior says about Heston
 
-    The posterior is precise. Three of its consequences deserve a desk's attention.
+    The posterior is precise. Three of its consequences deserve attention.
     """)
     return
 

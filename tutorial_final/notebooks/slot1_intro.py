@@ -50,7 +50,7 @@ def _(mo):
 
     **Every mark rests on a calibration. How sure is it, and when does that change the number?**
 
-    A derivatives desk fits a volatility model to the day's option quotes. It then uses the model to price
+    A bank fits a volatility model to the day's option quotes. It then uses the model to price
     what nobody quotes: a forward start, a cliquet, an autocallable, a long-dated put. The quotes are noisy
     and often thin, so the fit is an estimate, and so is every mark computed from it. Banks must report how
     uncertain those marks are, at a stated confidence.
@@ -62,8 +62,8 @@ def _(mo):
     2. **The classical interval is the posterior's Gaussian approximation.** On a liquid surface the two
        agree. They part when the quotes do not pin the parameters, and when a name must borrow information
        from its peers. Two synthetic cases show why; SPY data show where.
-    3. **The posterior is rarely computed because it is expensive** under the models desks use: microseconds
-       under Black–Scholes, hours under rough Bergomi. That cost is the problem this tutorial solves.
+    3. **The posterior's cost grows with the model**: microseconds under Black–Scholes, hours under rough
+       Bergomi. That cost is the problem this tutorial solves.
     """)
     return
 
@@ -71,7 +71,7 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    | | Least squares: what desks do | Bayesian calibration |
+    | | Least squares | Bayesian calibration |
     |:---|:---|:---|
     | Output | one parameter vector $\hat\theta$ | a distribution $p(\theta \mid y)$ |
     | Uncertainty | the Gauss–Newton ellipse $(J^\top W J)^{-1}$ around $\hat\theta$ | the posterior, whatever its shape |
@@ -345,7 +345,7 @@ def _(
         The two likelihoods do not overlap. The posterior from both quotes stays at the at-the-money value and
         misses the put by **{misses['put']:.1f} noise units**. It takes {noise_needed:.2g} times the assumed noise
         to bring both misses under two. That misfit is the smile: the posterior is precise, and the model is wrong.
-        Desks therefore use models that produce a smile, Heston (slot 4) and rough Bergomi (slot 5). The
+        The tutorial therefore uses models that produce a smile, Heston (slot 4) and rough Bergomi (slot 5). The
         question for the rest of this notebook is what the posterior adds once the model fits.
         """),
     ])
@@ -574,8 +574,9 @@ def _(mo):
     mo.md(r"""
     ## 5 · Why Bayes, case 2: names that must borrow from their peers
 
-    A valuation desk marks implied volatilities for every name in a sector. A few names are liquid, with a
-    full smile. Most quote one wide option, if any. Desks then **proxy**: they mark the illiquid name at a
+    A bank marks implied volatilities for every name in a sector. A few names are liquid, with a
+    full smile. Most quote one wide option, if any. The prudent-valuation rules allow an illiquid name to be
+    marked from a **proxy**, without giving a recipe. The tutorial's proxy marks the illiquid name at a
     peer average. A hierarchical model makes the proxy precise: each name's volatility is drawn from a sector
     distribution, $\log \sigma_i \sim \mathcal N(\mu, \tau^2)$, whose centre and spread are learned from all
     names at once. Each name's posterior then combines its own quote with what the sector says, weighted by
@@ -681,8 +682,8 @@ def _(mo):
     error as if it were known.
 
     The truth here is drawn from the model's own sector distribution, which flatters the hierarchy. A name
-    that really differs from its peers is pulled too far toward them, so on a desk the pooled marks come
-    with a check of each name against the sector.
+    that really differs from its peers is pulled too far toward them, so the pooled marks need a check of
+    each name against the sector.
     """)
     return
 
@@ -690,14 +691,15 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## 6 · What the posterior buys a desk
+    ## 6 · What the posterior buys a bank
 
     Both cases end in the same object: a range for every mark, at a stated confidence, from one set of
     draws. The reserve for a sold position is the distance from the mark to the 90% point of that range.
 
     The same logic decides the long end of an index surface, where long-dated exotics live. Listed SPY quotes
-    stop at about two years; the forward variance beyond is an assumption. A desk holds it flat and reports
-    the range from the calibrated parameters alone. The posterior makes the assumption a stated prior,
+    stop at about two years; the forward variance beyond is an assumption. The tutorial's baseline holds it
+    flat and reports the range from the calibrated parameters alone. Extrapolation beyond the last quote has
+    no single convention. The posterior makes the assumption a stated prior,
     narrows it with the long-dated quotes, and reports what follows (slot 5):
     """)
     return
@@ -713,7 +715,7 @@ def _(CHECKS, mo, np, teaching):
     _rows = []
     for _j, _name in enumerate(_le["products"]):
         _unit = (lambda v: f"{100 * v:.0f} bp of notional") if _name.startswith("autocallable") else (lambda v: f"{v:.0f}%")
-        _rows.append({"product on SPY, rough Bergomi": _name, "desk: calibrated parameters, flat long end": _unit(_desk[_j]),
+        _rows.append({"product on SPY, rough Bergomi": _name, "baseline: calibrated parameters, flat long end": _unit(_desk[_j]),
                       "posterior: all inputs": _unit(_post[_j]),
                       "posterior, prior width 0.1 to 0.3": f"{_unit(_sens[:, _j].min())} to {_unit(_sens[:, _j].max())}"})
     mo.vstack([mo.ui.table(_rows, selection=None, pagination=False),
@@ -724,12 +726,14 @@ def _(CHECKS, mo, np, teaching):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## 7 · Why desks do not compute the posterior
+    ## 7 · What the exact posterior costs
 
     The posterior needs the likelihood thousands of times. Under Black–Scholes that is a grid of closed-form
     prices. Under Heston each smile is a Fourier integral, so the exact posterior takes minutes, and slot 4
     uses it to check a network. Under rough Bergomi each smile is a Monte Carlo run, so the exact posterior
-    takes at least 17 CPU-hours: no desk computes it every morning, for every underlying.
+    takes at least 17 CPU-hours by random-walk Metropolis. Importance sampling from a Gauss–Newton proposal
+    takes about 85 CPU-minutes on SPY's 63 quotes (1,024 evaluations at 5.0 CPU-seconds). One smile is
+    affordable either way; a book at month-end or a validation on thousands of simulated smiles is not.
     """)
     return
 
@@ -740,7 +744,8 @@ def _(RESULTS, ROOT, mo, teaching):
     mo.vstack([
         mo.image(src=ROOT / "curriculum" / "images" / "ladder.png",
                  caption="One likelihood evaluation and one exact posterior under each model, CPU-seconds on a log scale "
-                         "(Heston at one quadrature rung; the rough-Bergomi posterior is a lower bound)."),
+                         "(Heston at one quadrature rung; the rough-Bergomi posterior, by random-walk Metropolis, is a "
+                         "lower bound)."),
         mo.md(f"The measured costs, on one {costs['cpu_count']}-core machine (study S9):"),
         mo.ui.table(teaching.cost_rows(costs), selection=None, pagination=False),
     ])
@@ -749,7 +754,7 @@ def _(RESULTS, ROOT, mo, teaching):
 
 @app.cell(hide_code=True)
 def _(mo):
-    smiles_per_morning = mo.ui.slider(1, 2000, step=1, value=500, label="smiles per morning", show_value=True)
+    smiles_per_morning = mo.ui.slider(1, 2000, step=1, value=500, label="smiles in one valuation run", show_value=True)
     smiles_per_morning
     return (smiles_per_morning,)
 
@@ -762,11 +767,11 @@ def _(costs, mo, smiles_per_morning):
     _network = costs["rough_amortized_posterior_1000_draws_cpu_s"]["median"]
     morning = [
         {"route": "Heston, exact posterior (one quadrature rung)", "CPU-hours": _n * _heston_exact / 3600},
-        {"route": "Rough Bergomi, exact posterior (lower bound)", "CPU-hours": _n * _rough_exact / 3600},
+        {"route": "Rough Bergomi, exact posterior by random-walk Metropolis (lower bound)", "CPU-hours": _n * _rough_exact / 3600},
         {"route": "Rough Bergomi, amortized network", "CPU-hours": _n * _network / 3600},
     ]
     for _row in morning:
-        _row["cores for a four-hour morning"] = round(_row["CPU-hours"] / 4, 1)
+        _row["cores for a four-hour run"] = round(_row["CPU-hours"] / 4, 1)
         _row["CPU-hours"] = round(_row["CPU-hours"], 1)
     mo.ui.table(morning, selection=None, pagination=False)
     return
@@ -810,7 +815,7 @@ def _(mo):
     4. **Two reasons to want the posterior:** quotes that do not pin the parameters, where the posterior
        follows a shape no ellipse has, and names that must borrow from their peers, where only the full
        posterior keeps its coverage with few peers.
-    5. **The posterior is expensive** under the models desks use for exotics, which is why the rest of the
+    5. **The posterior is expensive** under Heston and rough Bergomi, which is why the rest of the
        afternoon amortizes it.
 
     **Next, slot 2:** how a network trained on simulations returns the posterior, and when that pays.
