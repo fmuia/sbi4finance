@@ -294,24 +294,32 @@ A thin underlying quotes too little to be calibrated on its own, while other nam
 **Four methods** give a mark and a 90% interval for the volatility of each illiquid name.
 
 1. **Per name.** Least squares on the name's own quotes, with the Gauss–Newton 90% interval of Lecture 7.
-2. **Proxy.** The mean of the liquid names' marks, plus or minus 1.645 times their cross-sectional standard deviation. It ignores the illiquid name's own quote.
+2. **Proxy.** The mean of the liquid names' marks, plus or minus 1.645 times their cross-sectional standard deviation. It ignores the illiquid name's own quote. It is one simple proxy of the course's own: the prudent-valuation rules allow "proxy data based on similar instruments" without giving a recipe (Regulation (EU) 2016/101, Art. 3(3)(a)).
 3. **Empirical Bayes.** The normal hierarchical model $\log\sigma_i \sim \mathcal N(\mu, \tau^2)$, with its two hyperparameters $(\mu, \tau)$ at the maximum of the marginal likelihood of the sector's quotes. Each name's posterior combines its own quote with this estimated law of the sector.
 4. **Hierarchical Bayes.** The same model with priors on $(\mu, \tau)$, flat on $\mu$ and half-normal with scale 0.3 on $\tau$, whose uncertainty is integrated out.
 
-![Coverage of 90% intervals for illiquid names in a simulated Black–Scholes sector.](images/v2-pooling.png)
+![Left: the 90% intervals of the four methods for the six illiquid names of one simulated sector, with each name's true volatility. Centre: coverage against mean width over all simulated sectors. Right: the error of each method's mark for a six-month at-the-money call.](images/v2-pooling.png)
 
-*Figure 8.8.* How to read the figure: each group of bars is one sector, 8 liquid and 32 illiquid names on the left and 2 liquid and 6 illiquid names on the right. Each bar is one method. Its height is the share of the illiquid names' 90% intervals that contain the true volatility, over 300 simulated sectors on the left and 600 on the right. The dashed line is the nominal 90%. With 2 liquid and 6 illiquid names the four methods give the following coverage and mean width.
+*Figure 8.8.* How to read the figure:
 
-| Method | Coverage | Mean width (vol points) |
-| --- | --- | --- |
-| Per name | 89.7% | 9.9 |
-| Proxy: the liquid names' mean | 59.5% | 8.2 |
-| Empirical Bayes | 69.7% | 5.5 |
-| Hierarchical Bayes | 88.0% | 7.6 |
+- **Left: how the methods differ, on one sector.** This is the first of the 600 simulated sectors with 2 liquid and 6 illiquid names; it was not chosen. Each row is one illiquid name, with one bar per method: its 90% interval and its mark (dot). The black tick is the true volatility, and a faded bar misses it. The dotted lines are the two liquid names' marks, 28.7% and 30.6%, both below the six illiquid names' true volatilities of 31.3% to 35.4%. The proxy gives every name the same interval, centred on the two liquid marks, and covers 1 truth of 6. Fitting each name alone gives wide intervals around a noisy quote: name 5's quote reads 24.4% for a true 32.4%. Empirical Bayes pulls each name toward its estimate of the sector, with too narrow a sector law, and covers 4 of 6. The hierarchical model pulls less, because it is unsure of the sector law, and covers 5 of 6.
+- **Centre: coverage against width, over all sectors.** Each point is one method; filled squares are the sector with 2 liquid and 6 illiquid names (600 simulated sectors), open circles the sector with 8 and 32 (300). The dashed line is the nominal 90%. A good method sits on the line and as far left as it can.
+- **Right: the error of the mark.** The root-mean-square error of each method's price for a six-month at-the-money call, which no illiquid name quotes, as a share of the true price.
 
-With 8 liquid and 32 illiquid names the four methods cover 89.6%, 83.3%, 87.5% and 89.4%.
+With 2 liquid and 6 illiquid names the four methods give:
 
-**Interpretation.** When the sector is small, its hyperparameters are uncertain, and only the hierarchical model carries that uncertainty into each name. Empirical Bayes treats its estimated $(\mu, \tau)$ as known, which gives the narrowest intervals and too low a coverage. The per-name intervals cover at their nominal rate, but each rests on one quote and is the widest. In the larger sector the hyperparameters are better determined, and empirical Bayes comes close to the hierarchical model.
+| Method | Coverage of 90% intervals | Mean width (vol points) | Error of the 6-month call's mark |
+| --- | --- | --- | --- |
+| Per name | 89.7% | 9.9 | 10.2% |
+| Proxy: the liquid names' mean | 59.5% | 8.2 | 12.4% |
+| Empirical Bayes | 69.7% | 5.5 | 8.5% |
+| Hierarchical Bayes | 88.0% | 7.6 | 7.9% |
+
+With 8 liquid and 32 illiquid names the four methods cover 89.6%, 83.3%, 87.5% and 89.4%, with mean widths of 9.9, 9.4, 6.8 and 7.1 volatility points.
+
+**Interpretation.** The hierarchical model gives the most accurate mark and an interval that covers close to its nominal rate. Fitting each name alone also covers, but in the small sector its interval is 30% wider and the error of its mark 28% larger, because each name rests on one quote. The proxy and empirical Bayes are overconfident when the sector is small. The proxy ignores each name's own quote and inherits the error of two liquid marks. Empirical Bayes treats its estimated $(\mu, \tau)$ as known; its median estimate of the sector's dispersion $\tau$ is 0.086 against a true 0.10, so its sector law is too narrow. The hierarchical model carries the uncertainty of $(\mu, \tau)$ into each name. In the larger sector the hyperparameters are better determined, and empirical Bayes comes close to the hierarchical model.
+
+**What this example does not show.** The sector is simulated and every name follows Black–Scholes, so the model is right by construction. Pooling real thin chains needs the same hierarchical step on rough-Bergomi posteriors of several real names, which the course has not run (`docs/course/argument.md`, option D).
 
 ## 8.11 What the posterior does not cover
 
@@ -335,7 +343,7 @@ The posterior is exact for the model, the prior and the observation model it is 
 7. Product prices at posterior draws, with common random numbers, give the range, the 90% quantile and the reserve.
 8. Metropolis–Hastings samples any posterior whose density can be evaluated up to a constant; $\hat R$ and the effective sample size check the run.
 9. Importance sampling reweights draws from a proposal with the likelihood, and the weighted draws are a sample of the exact posterior. Its efficiency falls like $e^{-\delta^2}$ for a proposal $\delta$ standard deviations off, and $\hat k$ flags heavy-tailed weights that a finite sample hides. A defensive mixture keeps the weights' variance finite but does not stop a few draws from dominating. With a Monte Carlo likelihood, each proposal is priced with its own random numbers, and the estimate $\mathcal N(y;\ \hat P,\ \mathrm{diag}(\sigma^2) - S)$ uses the Monte Carlo covariance.
-10. In a simulated Black–Scholes sector of 2 liquid and 6 illiquid names, the 90% intervals of the illiquid names cover 88.0% under hierarchical Bayes, against 69.7% under empirical Bayes and 59.5% for the proxy. Only the hierarchical model carries the uncertainty of the sector's hyperparameters into each name.
+10. In a simulated Black–Scholes sector of 2 liquid and 6 illiquid names, the 90% intervals of the illiquid names cover 88.0% under hierarchical Bayes, against 69.7% under empirical Bayes and 59.5% for the proxy. Fitting each name alone covers 89.7%, with intervals 31% wider and a mark 29% less accurate than the hierarchical model's. Only the hierarchical model carries the uncertainty of the sector's hyperparameters into each name.
 
 Each posterior evaluation here was one priced surface: microseconds for Black–Scholes, and about 25 milliseconds for Heston (Lecture 11, Section 11.3). For rough Bergomi it is a Monte Carlo run of about 5.0 CPU-seconds at the first rung of the path ladder (4.96 measured in study S9), and 11.9 CPU-seconds on average over the pilot bank (Lecture 13, Section 13.8). Lecture 14 gives what the exact rough-Bergomi posterior then costs, by a Metropolis chain and by importance sampling, and explains where that cost comes from.
 

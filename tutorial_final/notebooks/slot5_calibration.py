@@ -797,7 +797,7 @@ def _(mo):
        per smile by random-walk Metropolis, and about 85 CPU-minutes by importance sampling from a
        Gauss–Newton proposal on SPY's 63 quotes (1,024 evaluations at 5.0 CPU-seconds). A book at month-end
        or a validation on thousands of simulated smiles is not affordable either way. The amortized posterior
-       takes seconds, and the audit checks it smile by smile, at about 55 CPU-minutes on SPY's 63 quotes.
+       takes seconds, and the audit checks it smile by smile, at about 53 CPU-minutes on SPY's 63 quotes.
     2. **On SPY's full surface the classical interval is a good approximation**; the posterior differs where
        the quotes are thin, and for the inputs they do not reach.
     3. **Long-dated products rest on the curve beyond the quotes.** Held flat, as in the baseline, it gives a

@@ -2,7 +2,8 @@
 
 24 October 2026. For whoever runs Oscar jobs next. Every run below is missing: nothing in
 `tutorial_final/results/` comes from the full bank yet. The plan behind the runs is
-[`docs/course/v2-plan.md`](../docs/course/v2-plan.md); the scripts are described in
+[`docs/course/v2-plan.md`](../docs/course/v2-plan.md), and what the results decide is in
+[`docs/course/argument.md`](../docs/course/argument.md); the scripts are described in
 [`studies/README.md`](studies/README.md).
 
 All costs are in CPU-hours on this project's 2-core container; Oscar's cores may be up to about 30% faster or

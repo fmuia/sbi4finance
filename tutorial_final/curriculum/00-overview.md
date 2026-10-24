@@ -44,14 +44,14 @@ Slots 2 and 3 explain the machine between them. Slot 6 changes the prior and the
 
 ## 1. The message
 
-**In three sentences.** On a liquid smile the posterior and the classical interval agree, as theory predicts. They part where the quotes do not determine what the product needs: a thin chain, and maturities beyond the last quote. Amortization makes the posterior cheap enough to compute on every chain, and to test its coverage on a thousand simulated chains.
+**In three sentences.** On a liquid smile the posterior and the classical interval agree, as theory predicts. They part where the quotes do not determine what the product needs: a thin chain, maturities beyond the last quote, and names that quote almost nothing. Amortization does not make one posterior much cheaper than a good classical proposal does; it makes the method checkable, by coverage on a thousand simulated chains, and usable across many names. The argument, what supports it today and the options to strengthen it are in [docs/course/argument.md](../../docs/course/argument.md).
 
 The message has three beats, each carried by named slots.
 
 | Beat | Set up in | Delivered in |
 | --- | --- | --- |
 | The range matters, and the rules ask for it. | Slot 1 | Slot 5, as a reserve |
-| Amortization makes the range affordable: pay once in training, then seconds per smile. | Slot 1, as a cost problem | Slots 2 and 3 explain it; slot 4 builds it; slot 5 measures it |
+| Amortization makes the range checkable and affordable across many names: pay once in training, then seconds per smile, and an audit where one smile matters. | Slot 1, as a cost problem | Slots 2 and 3 explain it; slot 4 builds it; slot 5 measures it |
 | Trust comes from checks, not from the network. | Slot 2, as a workflow | Slot 4 against an exact posterior; slot 5 by audit; slot 6 on priors and misspecification |
 
 The audience should leave able to say three things about their own model: whether they need this, what it costs, and how they would check it.

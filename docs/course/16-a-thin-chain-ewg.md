@@ -158,6 +158,8 @@ Two results bear on these risks. The pilot's curve prior did not cover SPY's cur
 - If Gauss–Newton covers at its nominal rate on EWG-like chains, the case for Bayes rests on the long end (Lecture 15, Section 15.6) and on pooling (Lecture 8, Section 8.10).
 - If rough Bergomi fails EWG's predictive check, model error exceeds every within-model range (Section 16.6).
 
+The rules for reading S10, S10-E and S11, and the options that would strengthen the argument, are in [argument.md](argument.md).
+
 ## 16.8 Summary
 
 1. A thin chain is one whose quotes leave a product's inputs open but say something. Among four candidates, EWG of 22 October 2026 meets the course's rule: four usable expiries to six months, median half-spreads near the money 4 to 7 times SPY's design noise, and no dividend before June 2027.

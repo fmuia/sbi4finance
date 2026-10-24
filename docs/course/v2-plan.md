@@ -24,6 +24,7 @@ tutorial.
    that was not unbiased, and adaptive rounds that did not adapt. All are fixed in the code (Section 4).
 5. **What is missing.** Every result on the full rough-Bergomi bank: about 930 CPU-hours and two GPU jobs
    (the runbook).
+6. **The argument in one page,** with what decides it and the options to strengthen it: [argument.md](argument.md).
 
 ## 1. The marking procedure
 
@@ -97,21 +98,25 @@ therefore be stated and tested. Study S10 tests it with two other laws for the u
 
 ### 2.3 Pooling helps thin names
 
-![Coverage of 90% intervals for illiquid names in a simulated Black–Scholes sector.](images/v2-pooling.png)
+![Pooling in a simulated Black–Scholes sector: one sector's intervals, coverage against width, and the error of the mark.](images/v2-pooling.png)
 
 *Figure 2.* A simulated Black–Scholes sector (`tutorial_final/checks/bs_hierarchy.py`). The liquid names quote the
-full grid, and the illiquid names one at-the-money option with 3 volatility points of noise. With 2 liquid and 6
-illiquid names, the 90% intervals of the illiquid names cover the truth as follows.
+full grid, and the illiquid names one at-the-money option with 3 volatility points of noise. Left: the first
+simulated sector of 2 liquid and 6 illiquid names, each method's 90% interval per name, and the truth. Centre:
+coverage against mean width over all sectors. Right: the error of each method's mark for a six-month call that no
+illiquid name quotes. With 2 liquid and 6 illiquid names:
 
-| Method | Coverage | Mean width (vol points) |
-| --- | --- | --- |
-| Per name | 89.7% | 9.9 |
-| Proxy: the liquid names' mean | 59.5% | 8.2 |
-| Empirical Bayes | 69.7% | 5.5 |
-| Hierarchical Bayes | 88.0% | 7.6 |
+| Method | Coverage | Mean width (vol points) | Error of the mark |
+| --- | --- | --- | --- |
+| Per name | 89.7% | 9.9 | 10.2% |
+| Proxy: the liquid names' mean | 59.5% | 8.2 | 12.4% |
+| Empirical Bayes | 69.7% | 5.5 | 8.5% |
+| Hierarchical Bayes | 88.0% | 7.6 | 7.9% |
 
 With 8 liquid and 32 illiquid names the four methods cover 89.6%, 83.3%, 87.5% and 89.4%. When the sector is
 small, its hyperparameters are uncertain, and only the hierarchical model carries that uncertainty into each name.
+It also gives the most accurate mark. The sector is simulated and the model is right by construction; pooling real
+thin chains is option D of [argument.md](argument.md).
 
 ### 2.4 Why simulation-based inference
 
@@ -120,7 +125,7 @@ small, its hyperparameters are uncertain, and only the hierarchical model carrie
 | Random-walk Metropolis on the Monte Carlo likelihood | at least 16.9 CPU-hours (extrapolated) | S9 |
 | Importance sampling from a Gauss–Newton proposal, SPY's 63 quotes | 1,024 evaluations at 5.0 CPU-seconds: about 85 CPU-minutes, on a pricer with common random numbers; more with a seed per proposal, as the unbiased likelihood needs | S9, `checks/rough_spy_is.py` |
 | The network, 1,000 draws | 3.6 CPU-seconds (1.4 seconds on the clock) | S9 |
-| The network's audit on SPY's 63 quotes | 512 evaluations at 5.0 CPU-seconds, each after a pilot pricing at a quarter of the paths: about 55 CPU-minutes | S9; measured by S5 |
+| The network's audit on SPY's 63 quotes | 512 evaluations at 5.0 CPU-seconds, each after a pilot pricing at a quarter of the paths: about 53 CPU-minutes | S9; measured by S5 |
 | The network's audit on EWG's quotes | 512 evaluations at about 0.4 CPU-seconds, with the same pilot: about 4 CPU-minutes | `checks/thin_chains/timing.json` |
 
 A validation needs many posteriors. Simulation-based calibration on 2,000 smiles costs about 2 CPU-hours with the
@@ -137,6 +142,9 @@ report them if they occur.
 - If Gauss–Newton covers at its nominal rate on EWG-like chains, the case for Bayes rests on the long end and on
   pooling.
 - If rough Bergomi fails EWG's predictive check, model error exceeds every within-model range.
+
+[argument.md](argument.md) states the argument in one page, the rules for reading the pending runs, and the options
+that would make it solid.
 
 ## 3. The example: why EWG
 

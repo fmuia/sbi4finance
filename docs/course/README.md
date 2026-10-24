@@ -7,6 +7,7 @@ the advanced example of the ICAIF '26 tutorial: the calibration of a rough volat
 a posterior, and the propagation of that posterior into the prices of products the quotes do not determine.
 
 The course is a superset of the tutorial and of the [calibration design document](../design/calibration-design-document.md).
+[The argument](argument.md) states in one page what the course claims, what supports it, and what is pending.
 [The version-2 plan](v2-plan.md) says what the course argues and why; [the outline](v2-outline.md) says where each
 section of version 1 went; [practice-sources.md](practice-sources.md) lists the practices the course may describe,
 with their sources; [status.md](status.md) gives the state of every study. Version 1 (fourteen lectures) is at

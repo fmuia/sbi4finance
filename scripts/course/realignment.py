@@ -93,25 +93,69 @@ def classical_vs_posterior(numbers):
 
 
 def pooling(numbers):
+    """Pooling across names in a simulated Black-Scholes sector: one sector's intervals, coverage against width, and
+    the error of the mark of a product no illiquid name quotes."""
     h = load("bs_hierarchy.json")["sectors"]
     labels = list(h)
     meth = ["per name", "proxy", "empirical Bayes", "hierarchical Bayes"]
-    width = 0.19
-    fig, bx = plt.subplots(figsize=(6.4, 3.8))
-    for k, m in enumerate(meth):
-        vals = [h[s]["scores"][m]["coverage_90"] for s in labels]
-        bx.bar(np.arange(len(labels)) + (k - 1.5) * width, vals, width,
-               color=[GREY, COLORS[4], COLORS[1], COLORS[0]][k], label=m)
+    colour = dict(zip(meth, [GREY, COLORS[4], COLORS[1], COLORS[0]]))
+    small = "2 liquid + 6 illiquid"
+    fig, (ax, bx, cx) = plt.subplots(1, 3, figsize=(13.2, 4.3), gridspec_kw={"width_ratios": [1.35, 1, 1]})
+
+    # (a) the first simulated small sector: each illiquid name's 90% interval under each method, and its truth
+    ex = h[small]["example"]
+    truth = 100 * np.array(ex["truth"])
+    for i, tv in enumerate(truth):
+        for k, m in enumerate(meth):
+            mark, lo, hi = (100 * v for v in ex[m][i])
+            y = i + (k - 1.5) * 0.17
+            covered = lo <= tv <= hi
+            ax.plot([lo, hi], [y, y], color=colour[m], lw=2.2, solid_capstyle="butt", alpha=1.0 if covered else 0.45)
+            ax.plot([mark], [y], "o", color=colour[m], ms=3.2)
+        ax.plot([tv, tv], [i - 0.38, i + 0.38], color=COLORS[6], lw=1.4)
+    for x in 100 * np.array(ex["liquid_marks"]):
+        ax.axvline(x, color="0.75", lw=0.9, ls=":")
+    ax.set_yticks(range(len(truth)), [f"name {i + 1}" for i in range(len(truth))])
+    ax.invert_yaxis()
+    ax.set_xlabel("implied volatility (%)")
+    ax.set_title("One sector of 2 liquid and 6 illiquid names:\n90% intervals, truth (black), liquid marks (dotted)",
+                 loc="left", fontsize=9.5)
+
+    # (b) coverage against width, over all simulated sectors
+    for s, marker in zip(labels, ("o", "s")):
+        for m in meth:
+            sc = h[s]["scores"][m]
+            bx.plot(sc["mean_width_vol_points"], sc["coverage_90"], marker, color=colour[m], ms=8,
+                    mfc=colour[m] if s == small else "white", mew=1.6)
     bx.axhline(0.9, color="0.3", lw=0.8, ls="--")
-    bx.set_ylim(0.5, 1.0)
-    bx.set_xticks(range(len(labels)))
-    bx.set_xticklabels(labels)
+    bx.set_xlabel("mean width of the 90% interval (vol points)")
     bx.set_ylabel("coverage of 90% intervals, illiquid names")
-    bx.set_title("Black–Scholes marks for thin names in one simulated sector", loc="left", fontsize=10)
-    bx.legend(fontsize=7, frameon=False, loc="upper center", ncol=2)
-    tidy(bx)
+    bx.set_ylim(0.5, 1.06)
+    bx.set_title("Coverage against width\nfilled: 2 + 6 names (600 sectors); open: 8 + 32 (300)", loc="left",
+                 fontsize=9.5)
+    from matplotlib.lines import Line2D
+    bx.legend(handles=[Line2D([], [], color=colour[m], marker="o", ls="", label=m) for m in meth], fontsize=7,
+              frameon=False, loc="upper center", ncol=2)
+
+    # (c) the error of the mark of a 6-month at-the-money call, which no illiquid name quotes
+    width = 0.19
+    for k, m in enumerate(meth):
+        vals = [h[s]["scores"][m]["product_rmse_percent"] for s in labels]
+        cx.bar(np.arange(len(labels)) + (k - 1.5) * width, vals, width, color=colour[m], label=m)
+    cx.set_xticks(range(len(labels)), labels)
+    cx.set_ylabel("root-mean-square error of the mark (% of price)")
+    cx.set_title("Error of the mark: a 6-month at-the-money call", loc="left", fontsize=9.5)
+    tidy(ax, bx, cx)
+    fig.tight_layout()
     numbers["bs_hierarchy_coverage"] = {s: {m: h[s]["scores"][m]["coverage_90"] for m in meth} for s in labels}
     numbers["bs_hierarchy_width"] = {s: {m: h[s]["scores"][m]["mean_width_vol_points"] for m in meth} for s in labels}
+    numbers["bs_hierarchy_product_rmse_percent"] = {s: {m: h[s]["scores"][m]["product_rmse_percent"] for m in meth}
+                                                    for s in labels}
+    numbers["bs_hierarchy_example_covered"] = {
+        m: int(sum(100 * lo <= 100 * tv <= 100 * hi for (_, lo, hi), tv in zip(ex[m], ex["truth"]))) for m in meth}
+    numbers["bs_hierarchy_tau"] = {s: {"truth": 0.10, "empirical_Bayes_median": h[s]["tau_eb_median"],
+                                       "hierarchical_posterior_mean_median": h[s]["tau_hb_mean_median"]}
+                                   for s in labels}
     save(fig, "v2-pooling.png")
 
 

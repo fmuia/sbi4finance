@@ -200,6 +200,38 @@
    "hierarchical Bayes": 7.5637329854818
   }
  },
+ "bs_hierarchy_product_rmse_percent": {
+  "8 liquid + 32 illiquid": {
+   "per name": 10.138467319533296,
+   "proxy": 10.569011715898762,
+   "empirical Bayes": 7.284288791182917,
+   "hierarchical Bayes": 7.231393909788933
+  },
+  "2 liquid + 6 illiquid": {
+   "per name": 10.15389860998265,
+   "proxy": 12.427950905805089,
+   "empirical Bayes": 8.455127000626081,
+   "hierarchical Bayes": 7.944896917672765
+  }
+ },
+ "bs_hierarchy_example_covered": {
+  "per name": 5,
+  "proxy": 1,
+  "empirical Bayes": 4,
+  "hierarchical Bayes": 5
+ },
+ "bs_hierarchy_tau": {
+  "8 liquid + 32 illiquid": {
+   "truth": 0.1,
+   "empirical_Bayes_median": 0.09576271186440677,
+   "hierarchical_posterior_mean_median": 0.10303919565064258
+  },
+  "2 liquid + 6 illiquid": {
+   "truth": 0.1,
+   "empirical_Bayes_median": 0.08567796610169491,
+   "hierarchical_posterior_mean_median": 0.11853116048117375
+  }
+ },
  "ewi": {
   "volume_total": 132.0,
   "expiries": [
