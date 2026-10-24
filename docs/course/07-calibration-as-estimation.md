@@ -6,6 +6,8 @@
 
 **Where it sits in the course.** Lecture 6 showed that the products a bank marks depend on how far the parameters can move while the model still fits the quotes. This lecture measures that distance the classical way, with one optimum and a local covariance. Lecture 8 measures it with a posterior and compares the two. The observation model and the likelihood defined here are the ones every later lecture uses: Lecture 14 explains why this likelihood is expensive for rough Bergomi, and Lectures 9, 12 and 15 build and check a network that bypasses it. Lecture 11 reports how the classical route performed in the tutorial's studies, and describes deep calibration.
 
+**Its part in the argument.** This lecture builds the classical answer that the argument of the course compares with the posterior (Lecture 6, Section 6.8). Its interval is right when three conditions hold, and it gives no range to what the fit holds fixed (Section 7.6).
+
 ## 7.1 A quote as an observation
 
 The data of a calibration are the 63 out-of-the-money prices $y = (y_1, \dots, y_{63})$ read from the chain on the design grid (Lecture 5, Section 5.4), in forward units. Each $y_c$ is a mid price: an estimate of the price at which the contract would trade, uncertain by roughly its half-spread. The model gives a price $P_c(\theta; \xi_0)$ for each contract, for parameters $\theta$ and the forward-variance curve $\xi_0$, which is read from the same chain and held fixed.
@@ -139,6 +141,8 @@ A product whose gradient points along a poorly identified direction inherits tha
 
 Black–Scholes on Black–Scholes data meets all three (Figure 7.2). The next section builds a case that breaks the first and the third, and near the boundary the second.
 
+**What the interval leaves out.** The covariance covers only the parameters that are fitted. An input held fixed enters the delta method with zero variance. That is harmless when the quotes determine the input, and it is not when they leave it open. Two such inputs recur in the course: a parameter fixed at a chosen value, and a curve extended flat beyond the last quote. These are the baselines of Lecture 6, Section 6.7. A product that depends on such an input gets a range that omits the input's uncertainty, however good the fit. A third case is the forward-variance curve $\xi_0$ read from the chain and given to the fit. On a liquid smile the quotes determine it, and the course's posterior is given it too (Lecture 15). On a thin chain they do not, and every method of Lecture 16 must infer it. These omissions are the main case of the course against the classical range (Lecture 6, Section 6.8).
+
 ## 7.7 Where it fails: a toy smile with a curved, truncated valley
 
 Lecture 13 shows that rough Bergomi's short-dated skew identifies only the product $\rho\eta$, and that the full surface separates $\eta$ from $\rho$, mainly through the long-dated at-the-money level relative to the forward-variance curve and more weakly through the curvature of the wings (Section 13.11). A two-parameter toy keeps only the first mechanism and the weak one: a skew that carries $\rho\eta$ and a small, noisy curvature that carries $\eta^2$. It stands for a smile without long-dated quotes, or for a curve $\xi_0$ too uncertain to read $\eta$ from the at-the-money level, and it isolates the failure of the classical interval in that case. Nine "quotes" at $x_j \in \lbrace -1, -0.75, \dots, 1\rbrace$ are
@@ -215,6 +219,7 @@ An inverse problem is **ill-posed**, in the sense of Hadamard, if its solution d
 4. Gauss–Newton and Levenberg–Marquardt solve the normal equations $J^\top J\Delta = J^\top r$; the same linearization gives $\widehat{\mathrm{Cov}}(\hat\theta) = (J^\top W J)^{-1}$ and, by the delta method, the variance of any product price.
 5. The interval is right when the information is ample, the optimum interior and the objective nearly quadratic. Black–Scholes meets all three; a curved, truncated valley breaks them, and the ellipse then includes impossible values and misses the curvature.
 6. A multi-start finds separate optima but not the width of one, and attaches no weights. Regularization is the mode of a Gaussian-prior posterior and discards its width.
+7. The interval gives no range to an input the fit holds fixed, such as a fixed parameter or a flat extension beyond the last quote. That omission, more than the shape of the interval, is the main case of the course against the classical range.
 
 ## References
 

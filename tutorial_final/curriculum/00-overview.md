@@ -44,7 +44,7 @@ Slots 2 and 3 explain the machine between them. Slot 6 changes the prior and the
 
 ## 1. The message
 
-**In three sentences.** On a liquid smile the posterior and the classical interval agree, as theory predicts. They part where the quotes do not determine what the product needs: a thin chain, maturities beyond the last quote, and names that quote almost nothing. Amortization does not make one posterior much cheaper than a good classical proposal does; it makes the method checkable, by coverage on a thousand simulated chains, and usable across many names. The argument, what supports it today and the options to strengthen it are in [docs/course/argument.md](../../docs/course/argument.md).
+**In three sentences.** On a liquid smile the posterior and the classical interval agree, as theory predicts. They part where the quotes do not determine what the product needs: a thin chain, maturities beyond the last quote, and names that quote almost nothing. Amortization does not make one posterior much cheaper than a good classical proposal does; it makes the method checkable, by coverage on a thousand simulated chains, and usable across many names. The course states the argument in Lecture 6, Section 6.8, and gathers its evidence in [Lecture 16, Section 16.8](../../docs/course/16-a-thin-chain-ewg.md); the plan's Section 2.6 lists the options to strengthen it.
 
 The message has three beats, each carried by named slots.
 

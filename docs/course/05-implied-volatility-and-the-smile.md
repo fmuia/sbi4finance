@@ -6,6 +6,8 @@
 
 **Where it sits in the course.** Lecture 4 derived the Black–Scholes formula and showed that its assumption of a constant volatility contradicts the data on returns. This lecture shows that option prices contradict it too, in a precise and stable way. The smile measured here is the data that the models of Lectures 10 and 13 must reproduce, and the 63 SPY quotes read here are the observation the tutorial calibrates to in Parts II to IV. The forward-variance curve built in Section 5.9 is an input of the rough Bergomi model of Lecture 13. Section 5.11 states what the smile does not determine, which is the starting point of Lecture 6.
 
+**Its part in the argument.** Section 5.9 reads the forward-variance curve from the quotes, and shows that on a thin chain the spreads leave it wide. Section 5.11 states what no smile determines: the forward smile. Both are inputs the argument of the course is about (Lecture 6, Section 6.8).
+
 ## 5.1 Implied volatility
 
 The Black–Scholes formula of Lecture 4 maps a volatility to a price. The market works the other way round: it observes a price and asks which volatility would produce it. For a quoted out-of-the-money option with price $y$ in forward units, log-moneyness $k$ and maturity $T$, the **implied volatility** $\sigma_{\text{imp}}$ is the solution of

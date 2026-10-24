@@ -6,6 +6,8 @@
 
 **Where it sits in the course.** Lecture 13 built rough Bergomi, and Lecture 14 measured what its exact posterior costs. Lecture 9 introduced the amortized posterior, and Lecture 12 ran its workflow and its checks on Heston, where every result has an exact reference. This lecture applies the same workflow to rough Bergomi on a smile with many tight quotes; Lecture 16 applies it to a thin chain. Numbers that need the full rough-Bergomi bank or SPY's posterior are written ⟨Sn⟩, and the runs that fill them are listed in `tutorial_final/CLUSTER-RUNS.md`.
 
+**Its part in the argument.** This lecture gives two claims of the argument on rough Bergomi and real quotes (Lecture 6, Section 6.8). On SPY's 63 quotes the posterior and Gauss–Newton agree (Section 15.4). Beyond the last quote they part, by an amount the prior sets (Section 15.6).
+
 ## 15.1 The network and the bank for rough Bergomi
 
 **What the network reads and returns.** The tutorial's network for rough Bergomi is BayesFlow's flow-matching network (Radev et al. 2022, version 2.0.14 in the repository), with a velocity network of four hidden layers of 256 units (design document, "The inference network").
@@ -189,6 +191,8 @@ A quick check measures what the flat curve leaves out (`tutorial_final/checks/lo
 
 **Results.** With the curve unquoted beyond SPY's LEAPs, flat extrapolation gives 0.30 to 0.67 of the posterior's 90% range for products to five years. For the three-year variance swap it gives zero. The posterior's range depends on the width of the random-walk prior beyond the last quote: the forward start's 90% range goes from 19.4% to 36.8% of its price as the prior's sd goes from 0.1 to 0.3 per square-root year. The prior must therefore be stated and tested. Study S10 tests it with two other laws for the unquoted level (Lecture 16, Section 16.4).
 
+**Status.** This is a quick check, not a study. Its posterior is a Laplace approximation, and its curve to one year is known to 5% per level by assumption. The plan proposes to repeat it with SPY's audited posterior from study S8 (v2-plan, Section 2.6, option C).
+
 ## 15.7 Heston against rough Bergomi
 
 The range of Section 15.5 is a range within one model. A bank can also use other models, and their prices can differ by more than either model's range. The study calibrates Heston to the same three rough-Bergomi smiles. Heston's posterior for each smile is the Heston network's draws corrected by importance sampling with the Fourier likelihood; rough Bergomi's is the pilot network posterior of Section 15.5, without correction (`tutorial_final/studies/across_models.py`; design document, "Products and reserves (S7)").
@@ -213,6 +217,7 @@ The range of Section 15.5 is a range within one model. A bank can also use other
 6. On the pilot smiles every rough product's range comes mostly from $\eta$; the forward-start's 90% range is 2.2% to 9.3% of its mean, overstated by a pilot network that is too wide.
 7. Beyond the last quote the two answers part: flat extrapolation gives 0.30 to 0.67 of the posterior's 90% range for products to five years, and zero for the three-year variance swap. The posterior's range depends on the prior's width: 19.4% to 36.8% of the forward start's price for a prior sd of 0.1 to 0.3 per square-root year.
 8. On pilot smile 290, Heston and rough Bergomi both fit and price the forward-start 7.9% apart, about five times either model's own reserve; on smile 292 the gap is within rough Bergomi's reserve, and on smile 291 Heston is rejected.
+9. For the argument of the course: on a liquid smile the method returns the classical answer, and beyond the last quote it gives the open input a range that flat extrapolation does not. Beyond SPY's LEAPs the curve's share of that range comes from the prior alone, so the prior must be stated and tested.
 
 ## References
 

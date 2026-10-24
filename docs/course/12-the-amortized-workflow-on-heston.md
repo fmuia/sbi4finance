@@ -6,6 +6,8 @@
 
 **Where it sits in the course.** Lecture 9 built amortized inference and derived its averaged checks on toys. Lecture 10 built Heston, and Lecture 11 computed its exact posteriors. This lecture trains a network on Heston surfaces and compares it with those exact posteriors. Part IV repeats the workflow on rough Bergomi, whose exact posterior is expensive: Lecture 13 builds the model, Lecture 14 explains the cost, and Lectures 15 and 16 apply the network to SPY and to a thin chain.
 
+**Its part in the argument.** This lecture checks the method, not a claim about markets. On Heston the exact posterior is known, so the network, its audit and its checks can be compared with it. Part IV relies on the same workflow where no exact chain is affordable (Lecture 6, Section 6.8).
+
 ## 12.1 What the network reads and returns
 
 The tutorial's network for Heston is BayesFlow's flow-matching network (Radev et al. 2022, version 2.0.14 in the repository), with a velocity network of four hidden layers of 256 units (`tutorial_final/checkpoints/heston/training.json`).

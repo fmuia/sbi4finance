@@ -6,6 +6,8 @@
 
 **Where it sits in the course.** Lecture 5 showed two mechanisms behind the smile: a random volatility makes the smile curve up, and a negative correlation between volatility and price makes it slope down. Heston is the simplest model that contains both, with a pricing formula fast enough for exact Bayesian inference. It opens Part III, which applies the calibration, the posterior and the amortized workflow of Part II to it. Lecture 11 calibrates it to the SPY smile of Lecture 5, classically and by its exact posterior. In the tutorial it plays the role of the check: Lecture 12 compares the amortized posterior on Heston surfaces with the exact posterior (study S3). Lecture 13 replaces it with rough Bergomi, which fits the term structure of the skew better and has no pricing formula. The tools of this lecture (characteristic functions, Fourier inversion, the short-maturity skew) are used again there.
 
+**Its part in the argument.** Heston has a Fourier pricer, so its exact posterior is cheap and it does not need simulation-based inference (Section 10.11). It is the model on which the first claim of the argument, and the amortized method, are checked against an exact answer (Lectures 11 and 12; Lecture 6, Section 6.8).
+
 ## 10.1 From a constant volatility to a random variance
 
 Lecture 4 assumed a constant volatility $\sigma$. Lectures 1 and 3 showed that real volatility changes over time, clusters, and rises after falls in the price. Lecture 5 showed that each of these facts leaves a mark on option prices. A model of option prices therefore needs an instantaneous variance $V_t$ that is itself a random process, with three properties:

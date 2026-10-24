@@ -2,9 +2,11 @@
 
 [Course index](README.md) · Previous: [Lecture 8. Bayesian calibration](08-bayesian-calibration.md) · Next: [Lecture 10. The Heston model](10-heston.md)
 
-**What this lecture is for.** This lecture builds the method that makes the rough-Bergomi posterior affordable. It shows why parameters simulated from the prior, paired with the surfaces they generate, already contain the posterior of every surface; how a network is trained to extract it (neural posterior estimation); and how the tutorial's network represents a posterior, by flow matching. It then shows how the number of sampling steps and the distribution of training times affect a sharp posterior. It ends with two checks that a learned posterior is right on average over simulated surfaces: simulation-based calibration, and contraction, coverage and recovery.
+**What this lecture is for.** This lecture builds the method that makes many rough-Bergomi posteriors affordable, and with them the checks of a posterior's coverage. It shows why parameters simulated from the prior, paired with the surfaces they generate, already contain the posterior of every surface; how a network is trained to extract it (neural posterior estimation); and how the tutorial's network represents a posterior, by flow matching. It then shows how the number of sampling steps and the distribution of training times affect a sharp posterior. It ends with two checks that a learned posterior is right on average over simulated surfaces: simulation-based calibration, and contraction, coverage and recovery.
 
 **Where it sits in the course.** Lecture 8 computed exact posteriors for models whose likelihood is cheap. For rough Bergomi every evaluation of the likelihood is a Monte Carlo run, and Lecture 14 shows what the exact posterior then costs. This lecture moves that cost into a training bank priced once. It closes Part II with the theory and with toys. Lecture 12 applies the workflow to Heston, where every result has an exact check, and Lectures 15 and 16 apply it to rough Bergomi.
+
+**Its part in the argument.** This lecture supplies the method of the third claim of the argument (Lecture 6, Section 6.8). Simulation-based calibration (Section 9.7) and coverage (Section 9.8) need posteriors on thousands of simulated smiles. For rough Bergomi only an amortized network makes that affordable (Lecture 14, Section 14.4).
 
 ## 9.1 Simulated pairs carry the posterior
 

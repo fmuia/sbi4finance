@@ -13,6 +13,8 @@
 | III. Heston and the BayesFlow workflow | 10 The Heston model · 11 Calibrating Heston · 12 The amortized workflow on Heston |
 | IV. Rough Bergomi: the full examples | 13 The rough Bergomi model · 14 Why the exact posterior is expensive · 15 A liquid smile: SPY · 16 A thin chain: EWG |
 
+**The argument of the course.** A bank must mark products that no option quotes, and report how uncertain each mark is. Where the quotes determine what a product depends on, the classical calibration gives the right range, and the course's Bayesian method returns the same one. Where they do not, the classical route fixes the missing inputs and gives them no range. A posterior gives them a stated range that can be tested. This happens beyond the last quoted maturity, on a thin chain, and for a name that quotes almost nothing. For a model priced only by simulation, simulation-based inference is what makes such posteriors checkable across many chains. This lecture sets up the problem: Section 1.6 shows a liquid and a thin chain, and Section 1.7 the products that need a model. Lecture 6, Section 6.8 states the argument in full, and Lecture 16, Section 16.8 gathers its evidence.
+
 ## 1.1 The underlying asset and its returns
 
 An option is written on an **underlying asset**, a traded asset whose price at time $t$ is written $S_t$. In this course the main underlying is the S&P 500 index of large US companies, held through an exchange-traded fund. The tutorial's options are written on SPY, the oldest S&P 500 exchange-traded fund. The return data in this lecture come from VOO, another S&P 500 fund whose daily returns are in the repository.

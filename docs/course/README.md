@@ -7,11 +7,33 @@ the advanced example of the ICAIF '26 tutorial: the calibration of a rough volat
 a posterior, and the propagation of that posterior into the prices of products the quotes do not determine.
 
 The course is a superset of the tutorial and of the [calibration design document](../design/calibration-design-document.md).
-[The argument](argument.md) states in one page what the course claims, what supports it, and what is pending.
-[The version-2 plan](v2-plan.md) says what the course argues and why; [the outline](v2-outline.md) says where each
+[The version-2 plan](v2-plan.md) says what the course argues and why, and which options would strengthen it; [the outline](v2-outline.md) says where each
 section of version 1 went; [practice-sources.md](practice-sources.md) lists the practices the course may describe,
 with their sources; [status.md](status.md) gives the state of every study. Version 1 (fourteen lectures) is at
 commit 19a6ea4.
+
+## The argument of the course
+
+The course makes one argument in four claims. [Lecture 6, Section 6.8](06-marking-a-product-the-smile-does-not-quote.md#68-the-argument-of-the-course)
+states it, each lecture's opening says which part it serves, and
+[Lecture 16, Section 16.8](16-a-thin-chain-ewg.md#168-the-argument-claim-by-claim) gathers the evidence and says
+what the pending runs decide.
+
+1. **Where the quotes determine what a product depends on, the classical answer is right**, and the posterior
+   returns it (Lectures 7, 8, 11 and 15).
+2. **Where they do not, the two answers part.** The classical route fixes the open input and gives it no range; the
+   posterior gives it a stated prior and carries it into the range. Three cases: beyond the last quote (Lecture 15),
+   a thin chain (Lecture 16), and a name that quotes almost nothing, in a sector of names that quote more
+   (Lecture 8).
+3. **Simulation-based inference makes the posterior checkable** for a model priced only by simulation. One
+   posterior is affordable without it when a classical fit gives a good proposal; a check of coverage on thousands
+   of simulated chains is not (Lectures 9 and 14).
+4. **The posterior is exact for its model, its prior and its noise model, and for nothing else**, so each is stated
+   and tested (Lectures 8 and 16).
+
+Today claim 1 is shown on SPY, and claim 2 beyond the last quote and on a simulated sector. The thin chain, and the
+network as a proposal where a classical fit fails, wait for the runs of
+[`tutorial_final/CLUSTER-RUNS.md`](../../tutorial_final/CLUSTER-RUNS.md).
 
 ## Who the course is for
 
@@ -34,9 +56,9 @@ rough Bergomi the full examples.
 | 4 | [The Black–Scholes model](04-black-scholes.md) | Hedging, the risk-neutral measure, the pricing formula, the sensitivities, a term structure and the forward start |
 | 5 | [Implied volatility and the smile](05-implied-volatility-and-the-smile.md) | How quotes are read, the smile and what it says, the design grid, and the variance swap |
 | **Part II** | **Calibration and Bayes on Black–Scholes** | |
-| 6 | [Marking a product the smile does not quote](06-marking-a-product-the-smile-does-not-quote.md) | The marking procedure, the products, one smile with several calibrations, what the rules ask for, and the baselines that fix what the quotes do not |
+| 6 | [Marking a product the smile does not quote](06-marking-a-product-the-smile-does-not-quote.md) | The marking procedure, the products, one smile with several calibrations, what the rules ask for, the baselines that fix what the quotes do not, and the argument of the course |
 | 7 | [Calibration as estimation](07-calibration-as-estimation.md) | The observation model, the likelihood, least squares, the Gauss–Newton interval and where it fails, multi-start and regularization |
-| 8 | [Bayesian calibration](08-bayesian-calibration.md) | The prior and the posterior, identification, credible against confidence intervals, propagation to products, Metropolis–Hastings, importance sampling, pooling across names |
+| 8 | [Bayesian calibration](08-bayesian-calibration.md) | The prior and the posterior, identification, credible against confidence intervals, propagation to products, Metropolis–Hastings, importance sampling, pooling across names, where the posterior and the classical answer part |
 | 9 | [Amortized inference](09-amortized-inference.md) | Why simulated pairs carry the posterior, neural posterior estimation, flow matching, simulation-based calibration and contraction |
 | **Part III** | **Heston and the BayesFlow workflow** | |
 | 10 | [The Heston model](10-heston.md) | A random variance correlated with the price, Fourier pricing, how each parameter shapes the smile, Heston's products |
@@ -46,7 +68,7 @@ rough Bergomi the full examples.
 | 13 | [The rough Bergomi model](13-rough-bergomi.md) | Roughness, the Volterra driver, the forward-variance curve, the hybrid scheme, the power-law skew, what the smile identifies |
 | 14 | [Why the exact posterior is expensive](14-why-the-exact-posterior-is-expensive.md) | The Monte Carlo likelihood, the cost of an exact chain and of importance sampling, and who needs many posteriors |
 | 15 | [A liquid smile: SPY](15-a-liquid-smile-spy.md) | The rough network, its checks, SPY's posterior, where it agrees with Gauss–Newton, products, the long end |
-| 16 | [A thin chain: EWG](16-a-thin-chain-ewg.md) | Why a thin chain and which one, the procedure on EWG, coverage on simulated chains, EWG's posterior, model error |
+| 16 | [A thin chain: EWG](16-a-thin-chain-ewg.md) | Why a thin chain and which one, the procedure on EWG, coverage on simulated chains, EWG's posterior, model error, and the argument claim by claim |
 
 ## Conventions
 

@@ -6,6 +6,8 @@
 
 **Where it sits in the course.** Lecture 6 asked for a range of plausible prices for products the smile does not pin down. Lecture 7 built that range from one optimum and a local covariance, and showed where the construction breaks. This lecture builds it from the posterior, which is exact under the stated model and the stated prior, whatever the shape of the plausible set. Its one drawback is cost: every evaluation of the posterior density is one priced surface. For Black–Scholes and Heston that is cheap. For rough Bergomi it is a Monte Carlo run, which is the subject of Lecture 14. Lecture 9 learns the posterior from simulations instead, and Lecture 11 applies the methods of this lecture to Heston.
 
+**Its part in the argument.** This lecture shows the first two claims of the argument (Lecture 6, Section 6.8) in their simplest form. The posterior returns the classical interval when the conditions of Lecture 7 hold (Section 8.3). It differs where a direction is weakly informed (Section 8.5) and where a name quotes almost nothing (Section 8.10). Section 8.11 sorts the cases.
+
 ## 8.1 Bayes' rule for a calibration
 
 The quotes $y$ and the parameters $\theta$ have a joint distribution, written two ways by the product rule of probability:
@@ -48,7 +50,7 @@ The prior states which parameter values are possible before the quotes are seen.
 | | $\sigma_v$ | Uniform(0.1, 1.5) | Volatility of variance |
 | | $\rho$ | Uniform(−0.95, −0.1) | Negative correlation only |
 
-The forward-variance curve $\xi_0$ of rough Bergomi is not in the table. It is read from the chain and held fixed (Lecture 5), and the rough-Bergomi posterior is conditional on it; the simulations that train the network of Lecture 15 draw curves from a separate prior, which describes the curves the network must be ready for, not a belief about today's curve (design document, "The prior"). Heston has no such input: its forward-variance curve is a function of $v_0$ and $\theta_H$ (Lecture 10), and the conditioning on $\xi_0$ in the formulas of this lecture is empty for it.
+The forward-variance curve $\xi_0$ of rough Bergomi is not in the table. On a liquid smile it is read from the chain and held fixed (Lecture 5), and the rough-Bergomi posterior is conditional on it; the simulations that train the network of Lecture 15 draw curves from a separate prior, which describes the curves the network must be ready for, not a belief about today's curve (design document, "The prior"). Beyond the last quote (Lecture 15, Section 15.6) and on a thin chain (Lecture 16, Section 16.2), the curve is inferred instead, and that prior becomes part of the posterior. Heston has no such input: its forward-variance curve is a function of $v_0$ and $\theta_H$ (Lecture 10), and the conditioning on $\xi_0$ in the formulas of this lecture is empty for it.
 
 **Why uniform.** A uniform prior on a box makes the posterior proportional to the likelihood inside the box and zero outside:
 
@@ -319,20 +321,33 @@ With 8 liquid and 32 illiquid names the four methods cover 89.6%, 83.3%, 87.5% a
 
 **Interpretation.** The hierarchical model gives the most accurate mark and an interval that covers close to its nominal rate. Fitting each name alone also covers, but in the small sector its interval is 30% wider and the error of its mark 28% larger, because each name rests on one quote. The proxy and empirical Bayes are overconfident when the sector is small. The proxy ignores each name's own quote and inherits the error of two liquid marks. Empirical Bayes treats its estimated $(\mu, \tau)$ as known; its median estimate of the sector's dispersion $\tau$ is 0.086 against a true 0.10, so its sector law is too narrow. The hierarchical model carries the uncertainty of $(\mu, \tau)$ into each name. In the larger sector the hyperparameters are better determined, and empirical Bayes comes close to the hierarchical model.
 
-**What this example does not show.** The sector is simulated and every name follows Black–Scholes, so the model is right by construction. Pooling real thin chains needs the same hierarchical step on rough-Bergomi posteriors of several real names, which the course has not run (`docs/course/argument.md`, option D).
+**What this example does not show.** The sector is simulated and every name follows Black–Scholes, so the model is right by construction. Pooling real thin chains needs the same hierarchical step on rough-Bergomi posteriors of several real names, which the course has not run (v2-plan, Section 2.6, option D).
 
-## 8.11 What the posterior does not cover
+## 8.11 Where the posterior and the classical answer part
+
+The results of this lecture sort into the cases of the argument of the course (Lecture 6, Section 6.8).
+
+| Case | Classical answer | Posterior | Where it is shown |
+| --- | --- | --- | --- |
+| The quotes determine the parameters | The Gauss–Newton interval | The same interval | Section 8.3 on Black–Scholes; on SPY, Lecture 11 (Heston) and Lecture 15 (rough Bergomi) |
+| A direction is weakly informed | A symmetric interval, which can cross the bounds | Follows the curved, truncated valley | Section 8.5, the toy smile |
+| An input is not quoted | The input fixed, with no range | A prior on the input, carried into the range | Lecture 15, Section 15.6, the long end; Lecture 16, a thin chain |
+| A name quotes almost nothing | Its own fit, wide, or a proxy, overconfident | Strength borrowed from the sector | Section 8.10, a simulated sector |
+
+In the third case the posterior's range depends on the width of the prior. The posterior is then right if its prior is, and not otherwise. The course therefore tests other laws for the unquoted input (Lecture 16, Section 16.4).
+
+## 8.12 What the posterior does not cover
 
 The posterior is exact for the model, the prior and the observation model it is given. It does not cover what it is not given.
 
 1. **The choice of model.** The posterior range is within-model. On pilot smile 290, Heston and rough Bergomi both fit, and their forward-start prices differ by 7.9%, more than either model's 90% range (3.8% and 2.2%) or reserve (1.6%); on smile 292 they differ by 4.1%, less than either range (8.1% and 9.3%) (Lecture 6, Section 6.7; design document, study S7). The across-model gap can therefore exceed the within-model range, and the posterior does not measure it. Across-model and model-free bounds remain separate numbers.
 2. **The observation model.** The noise scale $s_{\text{iv}}(\delta)$, its independence across contracts and its Gaussian shape are assumptions (Lecture 7, Section 7.1). A noise scale twice as large would make the posterior about twice as wide in every direction where it is close to normal, since the Gauss–Newton covariance $(J^\top W J)^{-1}$ scales with $\sigma_c^2$.
 3. **The prior box.** Values outside the box have zero posterior probability, whatever the quotes say. The posterior predictive check and the position of the posterior against the bounds show when the box binds.
-4. **The forward-variance curve and the monitoring.** $\xi_0$ is read from the chain and held fixed. Its uncertainty, which comes from the same quotes, is not propagated, and the rough-Bergomi identification of $\eta$ through the long-dated at-the-money level relies on it (Lecture 13, Section 13.11). The products are priced with continuous monitoring; daily monitoring adds a leverage term (Lecture 13).
+4. **The forward-variance curve and the monitoring.** On a liquid smile $\xi_0$ is read from the chain and held fixed. Its uncertainty, which comes from the same quotes, is then not propagated, and the rough-Bergomi identification of $\eta$ through the long-dated at-the-money level relies on it (Lecture 13, Section 13.11). On a thin chain the curve is inferred (Lecture 16). The products are priced with continuous monitoring; daily monitoring adds a leverage term (Lecture 13).
 5. **Numerical error.** The pricers have errors of their own. The Fourier ladder accepts a rung when it agrees with the next one to 0.1 quote-noise units on every contract, and the rough-Bergomi Monte Carlo doubles its paths until every standard error is below 0.25 quote-noise units, with up to 0.5 tolerated at the corner of the prior box (design document, "Heston" and "Rough Bergomi: a Monte Carlo run"). In the Heston example of Lecture 11, the Monte Carlo standard error of each point price is at most 0.55% of the price, against 90% ranges of 1.7% to 4.4%.
 6. **Approximate inference.** A sampler that has not converged, or a network that approximates the posterior (Lecture 9), adds its own error. $\hat R$, the effective sample size, simulation-based calibration (Lecture 9, Section 9.7) and the importance-sampling audit (Section 8.9) measure it.
 
-## 8.12 Summary
+## 8.13 Summary
 
 1. Bayes' rule turns the least-squares objective into a distribution: $\log p(\theta \mid y, \xi_0) = -\tfrac12\chi^2(\theta) + \log p(\theta) + \text{const}$. The posterior gives the whole plausible set with weights, and a distribution for any product price.
 2. The tutorial's priors are uniform boxes, sampled in logit coordinates with the log-Jacobian $\sum_i \log(u_i(1 - u_i))$. Uniform is a choice, not an absence of information.
@@ -343,7 +358,8 @@ The posterior is exact for the model, the prior and the observation model it is 
 7. Product prices at posterior draws, with common random numbers, give the range, the 90% quantile and the reserve.
 8. Metropolis–Hastings samples any posterior whose density can be evaluated up to a constant; $\hat R$ and the effective sample size check the run.
 9. Importance sampling reweights draws from a proposal with the likelihood, and the weighted draws are a sample of the exact posterior. Its efficiency falls like $e^{-\delta^2}$ for a proposal $\delta$ standard deviations off, and $\hat k$ flags heavy-tailed weights that a finite sample hides. A defensive mixture keeps the weights' variance finite but does not stop a few draws from dominating. With a Monte Carlo likelihood, each proposal is priced with its own random numbers, and the estimate $\mathcal N(y;\ \hat P,\ \mathrm{diag}(\sigma^2) - S)$ uses the Monte Carlo covariance.
-10. In a simulated Black–Scholes sector of 2 liquid and 6 illiquid names, the 90% intervals of the illiquid names cover 88.0% under hierarchical Bayes, against 69.7% under empirical Bayes and 59.5% for the proxy. Fitting each name alone covers 89.7%, with intervals 31% wider and a mark 29% less accurate than the hierarchical model's. Only the hierarchical model carries the uncertainty of the sector's hyperparameters into each name.
+10. In a simulated Black–Scholes sector of 2 liquid and 6 illiquid names, the 90% intervals of the illiquid names cover 88.0% under hierarchical Bayes, against 69.7% under empirical Bayes and 59.5% for the proxy. Fitting each name alone covers 89.7%, with intervals 30% wider and a mark error 28% larger than the hierarchical model's. Only the hierarchical model carries the uncertainty of the sector's hyperparameters into each name.
+11. The posterior returns the classical interval where the quotes determine the parameters. It differs where a direction is weakly informed, where an input is not quoted, and where a name quotes almost nothing (Section 8.11). Where an input is not quoted, the prior sets the range, so the prior must be tested.
 
 Each posterior evaluation here was one priced surface: microseconds for Black–Scholes, and about 25 milliseconds for Heston (Lecture 11, Section 11.3). For rough Bergomi it is a Monte Carlo run of about 5.0 CPU-seconds at the first rung of the path ladder (4.96 measured in study S9), and 11.9 CPU-seconds on average over the pilot bank (Lecture 13, Section 13.8). Lecture 14 gives what the exact rough-Bergomi posterior then costs, by a Metropolis chain and by importance sampling, and explains where that cost comes from.
 

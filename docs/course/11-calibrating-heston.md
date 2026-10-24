@@ -6,6 +6,8 @@
 
 **Where it sits in the course.** Lectures 7 and 8 developed calibration as estimation and as a posterior, on Black–Scholes and on a toy smile. Lecture 10 built Heston, whose Fourier likelihood makes the exact posterior affordable. This lecture applies both routes to Heston. On SPY's smile the posterior and the classical interval agree, as the Bernstein–von Mises theorem of Lecture 8 predicts. The exact posteriors computed here are the reference against which Lecture 12 checks the amortized network.
 
+**Its part in the argument.** This lecture gives the first claim of the argument on real quotes (Lecture 6, Section 6.8): on SPY's smile, where the quotes determine Heston's parameters, the exact posterior and the classical interval agree (Section 11.4).
+
 ## 11.1 Fitting Heston to the SPY smile
 
 **The fit.** The model is fitted to the 63 SPY quotes of Lecture 5 by weighted least squares,

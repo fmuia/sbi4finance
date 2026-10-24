@@ -6,6 +6,8 @@
 
 **Where it sits in the course.** Lecture 2 showed that option prices pin down the distribution of the future price at each date, and that a model must supply how prices move through time. A model in this course is a stochastic differential equation. Lecture 4 uses this lecture's tools to price options under the simplest one, Black–Scholes; Lectures 10 and 13 use them for stochastic and rough volatility. Two results of this lecture recur throughout: Itô's lemma, which creates the $-\tfrac12\sigma^2$ terms of every pricing formula, and the fact that volatility is measurable from a path while the drift is not.
 
+**Its part in the argument.** This lecture supplies tools only. Lectures 4, 10 and 13 use them to build the models whose calibration the argument of the course is about (Lecture 6, Section 6.8).
+
 ## 3.1 From a random walk to Brownian motion
 
 A price moves in many small, unpredictable steps. The simplest model of such motion is a **random walk**: flip a fair coin $n$ times per unit of time and move up or down by a fixed step each time. Let $Z_1, Z_2, \dots$ be independent, each $+1$ or $-1$ with probability $\tfrac12$, so $\mathbb{E}[Z_i] = 0$ and $\mathrm{Var}(Z_i) = 1$. Define

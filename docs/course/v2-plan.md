@@ -14,8 +14,8 @@ tutorial.
    (6–9); Heston and the BayesFlow workflow (10–12); rough Bergomi, with a liquid smile and a thin chain (13–16).
    Simple concepts use Black–Scholes, the workflow uses Heston, and the full examples use rough Bergomi.
 2. **The argument.** On a liquid smile the posterior and the classical interval agree, as theory predicts.
-   They part where the quotes do not determine what the product needs: a thin chain, and maturities beyond the
-   last quote. Amortization, with an audit of each chain, makes the exact posterior affordable on every chain and
+   They part where the quotes do not determine what the product needs: maturities beyond the last quote, a thin
+   chain, and names that quote almost nothing. Amortization, with an audit of each chain, makes the exact posterior affordable on every chain and
    its coverage testable on a thousand simulated chains. On one liquid smile its saving over importance sampling
    from a Gauss–Newton proposal is small; in validation it is decisive (Section 2.4).
 3. **The example.** EWG (iShares MSCI Germany): a real thin chain, informative but sparse, chosen on merit from
@@ -24,7 +24,9 @@ tutorial.
    that was not unbiased, and adaptive rounds that did not adapt. All are fixed in the code (Section 4).
 5. **What is missing.** Every result on the full rough-Bergomi bank: about 930 CPU-hours and two GPU jobs
    (the runbook).
-6. **The argument in one page,** with what decides it and the options to strengthen it: [argument.md](argument.md).
+6. **Where the course states it.** Lecture 6, Section 6.8 states the argument; each lecture's opening says which part
+   it serves; Lecture 16, Section 16.8 gathers the evidence and says what the pending runs decide. Section 2.6 below
+   lists the options that would make it solid.
 
 ## 1. The marking procedure
 
@@ -116,7 +118,7 @@ illiquid name quotes. With 2 liquid and 6 illiquid names:
 With 8 liquid and 32 illiquid names the four methods cover 89.6%, 83.3%, 87.5% and 89.4%. When the sector is
 small, its hyperparameters are uncertain, and only the hierarchical model carries that uncertainty into each name.
 It also gives the most accurate mark. The sector is simulated and the model is right by construction; pooling real
-thin chains is option D of [argument.md](argument.md).
+thin chains is option D of Section 2.6.
 
 ### 2.4 Why simulation-based inference
 
@@ -143,8 +145,31 @@ report them if they occur.
   pooling.
 - If rough Bergomi fails EWG's predictive check, model error exceeds every within-model range.
 
-[argument.md](argument.md) states the argument in one page, the rules for reading the pending runs, and the options
-that would make it solid.
+Lecture 16, Section 16.8 gives the rule for reading each outcome of S10, S10-E and S11.
+
+### 2.6 Options to make the argument solid
+
+| Option | What it would show | Work and cost | Recommendation |
+| --- | --- | --- | --- |
+| A. Run R0 to R10 as planned | The network's calibration (S2, S2-T), the audit's reliability (S5), SPY's posterior (S8), and the thin-chain evidence (S10, S10-E, S11) | About 930 CPU-hours and two GPU jobs; code ready and reviewed | Necessary: the weekend's runs |
+| B. A Gauss–Newton-proposal arm in S10 | Whether a classical fit can replace the network as the proposal on a thin chain. If it can, claim 3b of Lecture 16, Section 16.8 is dropped, and simulation-based inference rests on validation | About a day of code and a test; 20 to 30 CPU-hours on 200 of S10's chains | Do next: the cheapest way to make the claim on proposals specific |
+| C. The long end as an accepted study | The long-end result of Lecture 15, Section 15.6 with SPY's audited posterior (S8) in place of the Laplace approximation, with the prior's sd from 0.1 to 0.3 | A few CPU-hours after R6; small changes to `checks/long_end/` | Do after R6: it turns a quick check into a result |
+| D. Pooling on real thin chains | Pooling on market data: EWI and EWQ, which say almost nothing alone, borrowing from EWG | Two more thin networks (EWI's and EWQ's layouts, two GPU jobs), their audited posteriors (a few CPU-hours), and a hierarchical step on $(H, \eta, \rho)$ by reweighting each name's draws; two to three days of work | Only if time allows before the freeze of slot 5 on 6 November |
+| E. A second liquid smile, SPX | That the agreement on a liquid smile is not specific to SPY | A new chain, and a network trained on its layout | Not needed for the argument; after the tutorial |
+
+**Option B in more detail.** For each of 200 of S10's chains, build a proposal from the Gauss–Newton fit: a Student-$t$
+on its normal approximation in the fit's coordinates. The fit ties some forward-variance levels and says nothing
+about the last one, so draw the tied and unquoted levels from the curve prior given the fitted levels. Mix with 10%
+of the prior, as the network's proposal is. Price and weight exactly as the network's audit does. Compare $\hat k$,
+the effective sample size and the coverage of the two arms on the same chains.
+
+**Option D in more detail.** Run S11 on EWI and EWQ with a thin network trained on each layout. Each name's posterior
+is then available under the common prior. The hierarchical model puts $(H, \eta, \rho)$ of the three names in one
+law with unknown centre and spread. Its posterior follows by reweighting each name's draws by the ratio of the
+hierarchical density to the common prior, as in Lecture 8, Section 8.10. EWI and EWQ quote with median widths of 8
+to 36 volatility points, so pooling will decide most of their marks: that is the point, and it must be said. Their
+expiries (29, 57, 148 and 238 calendar days) match fewer design maturities than EWG's, so their layouts are smaller.
+Their dividends must be checked against rule 3 of Section 3 before they are used.
 
 ## 3. The example: why EWG
 

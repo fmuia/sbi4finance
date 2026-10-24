@@ -6,6 +6,8 @@
 
 **Where it sits in the course.** Part I ended with the observation that today's smile does not determine the forward smile (Lecture 5). This lecture opens Part II and turns that observation into the practitioner's problem. Lecture 7 then treats calibration as estimation and shows where the classical tools fall short, Lecture 8 shows what a posterior adds, and Lecture 9 shows how a network learns the posterior from simulations. Heston and rough Bergomi, which appear in some of this lecture's figures, are built in Lectures 10 and 13. The four products defined here are the products priced under the posterior in Lectures 11 and 15.
 
+**Its part in the argument.** This lecture states the problem and the argument of the course (Section 6.8). Every later lecture tests a part of that argument.
+
 ## 6.1 The marking procedure
 
 A product the smile does not quote is marked in six steps.
@@ -179,7 +181,23 @@ A reserve built from one model's posterior measures one kind of uncertainty. Thr
 
 **Baselines that fix what the quotes do not.** A calibration must also say something about the inputs the quotes do not determine: a parameter the smile does not identify, and the forward-variance curve beyond the last quoted maturity. Two simple ways are to fix the parameter and to extrapolate the curve flat. Fixing a parameter the smile does not identify is documented for SABR's $\beta$ (Hagan et al. 2002) and for Heston's $\kappa$ (Bergomi 2003; Janek et al. 2011). For the Hurst exponent $H$ of rough Bergomi (Lecture 13) no source documents it. The course's $H = 0.10$ is a baseline chosen by analogy, at the order of magnitude that Gatheral, Jaisson and Rosenbaum (2018) estimate from realized volatility. Extrapolation beyond the last maturity has no single convention. The course's flat continuation of the last forward-variance level is its second baseline, one simple rule among several. Each of these choices is a prior of zero width. Lecture 8 replaces such a choice by a prior with a stated width: its Section 8.2 gives $H$ a uniform prior from 0.02 to 0.35. Lectures 15 and 16 measure what that changes.
 
-## 6.8 Summary
+## 6.8 The argument of the course
+
+The rest of the course tests one argument about the range of Section 6.6. It has four claims.
+
+1. **Where the quotes determine what a product depends on, the classical answer is right.** Least squares with its Gauss–Newton interval and the delta method (Lecture 7) then give the same range as the posterior (Lecture 8, Section 8.3). The course shows this rather than hiding it: on Black–Scholes (Lecture 8), and on SPY's smile under Heston (Lecture 11) and rough Bergomi (Lecture 15).
+2. **Where they do not, the two answers part.** The classical route fixes the input the quotes leave open, by a baseline of Section 6.7, and gives it no range. The posterior gives that input a prior with a stated width, carries it into the range, and lets the prior be tested. Three cases carry this claim:
+   - **beyond the last quote:** a product that needs the forward-variance curve past the last quoted maturity (Lecture 15, Section 15.6);
+   - **a thin chain:** quotes so few and so wide that they leave the curve and $H$ open. The baselines fix $H$ or the curve beyond the last quote, and fit the rest of the curve along weakly informed directions (Lecture 16);
+   - **a name that quotes almost nothing,** in a sector of names that quote more (Lecture 8, Section 8.10).
+
+   A direction that the quotes inform only weakly has the same effect in a milder form. The Gauss–Newton interval then has the wrong shape (Lecture 7, Section 7.7), or a single fit misses a second optimum (Section 6.4).
+3. **Simulation-based inference makes the posterior checkable for a model priced only by simulation.** One posterior of such a model is affordable without it when a classical fit gives a good proposal (Lecture 14, Section 14.5). A check of the posterior's coverage needs posteriors on thousands of simulated chains, and only an amortized network makes that affordable (Lecture 9; Lecture 14, Section 14.4). The network also gives a proposal where a classical fit fails; the course has not yet shown that on a thin chain (Lecture 16).
+4. **The posterior is exact for its model, its prior and its noise model, and for nothing else.** The course states each of them and tests it (Lecture 8, Section 8.12; Lecture 16, Sections 16.6 and 16.7).
+
+Lecture 16, Section 16.8 gathers the evidence for each claim, and says what the pending runs decide.
+
+## 6.9 Summary
 
 1. A product the smile does not quote is marked in six steps: read the chain, smooth the smile, read the forward-variance curve, calibrate the remaining parameters, price the product, and report how uncertain the mark is. The reserve needs a range, which a single calibration does not give.
 2. The smile prices every payoff of $X_T$ at a quoted maturity, including the variance swap. Rough Bergomi reproduces the variance-swap curve by construction; Heston's depends on $v_0$ and $\theta_H$ (Lectures 10 and 13).
@@ -190,6 +208,7 @@ A reserve built from one model's posterior measures one kind of uncertainty. Thr
 7. EU prudent valuation asks for a range of plausible values and its 90% point; IFRS 13 asks for sensitivities to reasonably possible alternative inputs; SR 26-2 and SS1/23 ask for an understanding of model and parameter uncertainty.
 8. The within-model range is the posterior's; the across-model and model-free ranges are wider. The posterior covers the first only.
 9. Inputs the quotes do not determine need a choice. Fixing a parameter the smile does not identify is documented for SABR's $\beta$ and Heston's $\kappa$, but not for $H$. The course's $H = 0.10$ and its flat curve beyond the last quote are baselines, each a prior of zero width.
+10. The argument of the course: where the quotes determine a product's inputs, the classical range is right and the posterior returns it; where they do not, the posterior gives the open input a stated, testable range; simulation-based inference makes such posteriors checkable for a model priced only by simulation.
 
 ## References
 

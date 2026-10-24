@@ -6,6 +6,8 @@
 
 **Where it sits in the course.** Lecture 1 defined the contracts and the quotes. This lecture extracts from the quotes what the market says without any model. Its last section lists what no-arbitrage leaves open, which is what the models of Lectures 3 to 5, 10 and 13 supply. The forward, the discount factor and the forward units defined here are used in every later lecture.
 
+**Its part in the argument.** Section 2.10 names what the quotes leave open: prices beyond the last quoted maturity, and the link between dates. These are the inputs the argument of the course is about (Lecture 6, Section 6.8).
+
 ## 2.1 Interest and discounting
 
 A unit of currency today and a unit at a future date $T$ are different goods, because money today can earn interest. With a continuously compounded interest rate $r$, one unit invested today grows to $e^{rT}$ at $T$. The **discount factor**

@@ -6,6 +6,8 @@
 
 **Where it sits in the course.** Lectures 2 and 3 supplied the no-arbitrage results and the stochastic calculus. This lecture combines them into the first complete pricing model. Lecture 5 uses its formula as the market's quoting convention, implied volatility, and shows that real prices reject the model's constant volatility. Every later model is built to fix that failure, and every later price is still reported through this formula. Part II (Lectures 6 to 9) uses it to introduce calibration and Bayesian inference.
 
+**Its part in the argument.** Section 4.12 shows the argument's first contrast in a world without random volatility. With only the six-month smile, two term structures leave a forward-start call 34% apart; with the three-month smile as well, the quotes fix it. Part II shows each claim of the argument on Black–Scholes first (Lecture 6, Section 6.8).
+
 ## 4.1 The model and its assumptions
 
 The Black–Scholes model (Black and Scholes 1973; Merton 1973) assumes:
