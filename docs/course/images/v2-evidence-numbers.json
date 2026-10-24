@@ -1,0 +1,605 @@
+{
+ "classical_vs_posterior": [
+  {
+   "case": "Heston 63 quotes \u03ba = 2",
+   "measure": "Heston on SPY: delta-method range / posterior range",
+   "points": [
+    {
+     "product": "variance_swap",
+     "side": "both",
+     "ratio": 0.9635734016905529
+    },
+    {
+     "product": "volatility_swap",
+     "side": "both",
+     "ratio": 0.9439474572173097
+    },
+    {
+     "product": "forward_start_call",
+     "side": "both",
+     "ratio": 0.9920462498614148
+    },
+    {
+     "product": "put_out_of_grid",
+     "side": "both",
+     "ratio": 0.920163995122665
+    }
+   ]
+  },
+  {
+   "case": "Heston 63 quotes \u03ba free",
+   "measure": "Heston on SPY: delta-method range / posterior range",
+   "points": [
+    {
+     "product": "variance_swap",
+     "side": "both",
+     "ratio": 1.0233808680881937
+    },
+    {
+     "product": "volatility_swap",
+     "side": "both",
+     "ratio": 1.014021485497214
+    },
+    {
+     "product": "forward_start_call",
+     "side": "both",
+     "ratio": 0.9593893760374371
+    },
+    {
+     "product": "put_out_of_grid",
+     "side": "both",
+     "ratio": 1.035017735702123
+    }
+   ]
+  },
+  {
+   "case": "Heston 36 quotes \u2264 42 days",
+   "measure": "Heston on SPY: delta-method range / posterior range",
+   "points": [
+    {
+     "product": "variance_swap",
+     "side": "both",
+     "ratio": 1.0630934065939979
+    },
+    {
+     "product": "volatility_swap",
+     "side": "both",
+     "ratio": 1.0597105600689687
+    },
+    {
+     "product": "forward_start_call",
+     "side": "both",
+     "ratio": 1.0169434385534897
+    },
+    {
+     "product": "put_out_of_grid",
+     "side": "both",
+     "ratio": 1.0233432551239203
+    }
+   ]
+  },
+  {
+   "case": "Heston 15 quotes \u03ba free",
+   "measure": "Heston on SPY: delta-method range / posterior range",
+   "points": [
+    {
+     "product": "variance_swap",
+     "side": "both",
+     "ratio": 1.0633523610939128
+    },
+    {
+     "product": "volatility_swap",
+     "side": "both",
+     "ratio": 1.0668686361327198
+    },
+    {
+     "product": "forward_start_call",
+     "side": "both",
+     "ratio": 1.1233796824311826
+    },
+    {
+     "product": "put_out_of_grid",
+     "side": "both",
+     "ratio": 1.2125842725338993
+    }
+   ]
+  },
+  {
+   "case": "rough 63 quotes",
+   "measure": "rough Bergomi: delta-method reserve / posterior reserve",
+   "points": [
+    {
+     "product": "volatility_swap",
+     "side": "long",
+     "ratio": 0.981536070948945
+    },
+    {
+     "product": "volatility_swap",
+     "side": "short",
+     "ratio": 0.9943648292266638
+    },
+    {
+     "product": "forward_start_call",
+     "side": "long",
+     "ratio": 0.995445387607695
+    },
+    {
+     "product": "forward_start_call",
+     "side": "short",
+     "ratio": 0.9317122239296762
+    },
+    {
+     "product": "put_out_of_grid",
+     "side": "long",
+     "ratio": 1.1622432278843873
+    },
+    {
+     "product": "put_out_of_grid",
+     "side": "short",
+     "ratio": 1.0811393900576267
+    }
+   ]
+  },
+  {
+   "case": "rough 63 quotes 3\u00d7 noise",
+   "measure": "rough Bergomi: delta-method reserve / posterior reserve",
+   "points": [
+    {
+     "product": "volatility_swap",
+     "side": "long",
+     "ratio": 1.1428138670731423
+    },
+    {
+     "product": "volatility_swap",
+     "side": "short",
+     "ratio": 0.939569753111193
+    },
+    {
+     "product": "forward_start_call",
+     "side": "long",
+     "ratio": 1.0208482675796577
+    },
+    {
+     "product": "forward_start_call",
+     "side": "short",
+     "ratio": 0.8909622149334827
+    },
+    {
+     "product": "put_out_of_grid",
+     "side": "long",
+     "ratio": 1.0992902415110584
+    },
+    {
+     "product": "put_out_of_grid",
+     "side": "short",
+     "ratio": 1.197800515912987
+    }
+   ]
+  },
+  {
+   "case": "rough 15 quotes",
+   "measure": "rough Bergomi: delta-method reserve / posterior reserve",
+   "points": [
+    {
+     "product": "volatility_swap",
+     "side": "long",
+     "ratio": 1.2713374870350145
+    },
+    {
+     "product": "volatility_swap",
+     "side": "short",
+     "ratio": 1.3164500219696436
+    },
+    {
+     "product": "forward_start_call",
+     "side": "long",
+     "ratio": 0.9282292990042255
+    },
+    {
+     "product": "forward_start_call",
+     "side": "short",
+     "ratio": 1.107661061280617
+    },
+    {
+     "product": "put_out_of_grid",
+     "side": "long",
+     "ratio": 1.1644162150250847
+    },
+    {
+     "product": "put_out_of_grid",
+     "side": "short",
+     "ratio": 1.733341201013008
+    }
+   ]
+  },
+  {
+   "case": "rough front months 27 quotes",
+   "measure": "rough Bergomi: delta-method reserve / posterior reserve",
+   "points": [
+    {
+     "product": "autocallable",
+     "side": "long",
+     "ratio": 1.2887157125150281
+    },
+    {
+     "product": "autocallable",
+     "side": "short",
+     "ratio": 0.8150281966613875
+    },
+    {
+     "product": "forward_start",
+     "side": "long",
+     "ratio": 0.8565810667761432
+    },
+    {
+     "product": "forward_start",
+     "side": "short",
+     "ratio": 1.3151300617449064
+    },
+    {
+     "product": "put_1y_80",
+     "side": "long",
+     "ratio": 0.7787888841781758
+    },
+    {
+     "product": "put_1y_80",
+     "side": "short",
+     "ratio": 1.4362703399512602
+    },
+    {
+     "product": "cliquet",
+     "side": "long",
+     "ratio": 0.8675843536902581
+    },
+    {
+     "product": "cliquet",
+     "side": "short",
+     "ratio": 1.0355783742374554
+    }
+   ]
+  },
+  {
+   "case": "rough front months H fixed (desk)",
+   "measure": "desk convention: reserve with H = 0.10 / posterior",
+   "points": [
+    {
+     "product": "autocallable",
+     "side": "long",
+     "ratio": 1.0970494179058479
+    },
+    {
+     "product": "autocallable",
+     "side": "short",
+     "ratio": 0.6938118314544887
+    },
+    {
+     "product": "forward_start",
+     "side": "long",
+     "ratio": 0.19802982629329705
+    },
+    {
+     "product": "forward_start",
+     "side": "short",
+     "ratio": 0.30404008188112136
+    },
+    {
+     "product": "put_1y_80",
+     "side": "long",
+     "ratio": 0.2677591731602438
+    },
+    {
+     "product": "put_1y_80",
+     "side": "short",
+     "ratio": 0.4938110526137742
+    },
+    {
+     "product": "cliquet",
+     "side": "long",
+     "ratio": 0.7754372015415514
+    },
+    {
+     "product": "cliquet",
+     "side": "short",
+     "ratio": 0.9255883800577797
+    }
+   ]
+  },
+  {
+   "case": "rough long end \u03be0 flat (desk)",
+   "measure": "desk convention: range with \u03be0 flat / posterior range",
+   "points": [
+    {
+     "product": "autocallable 3y",
+     "side": "both",
+     "ratio": 0.6011440030351436
+    },
+    {
+     "product": "cliquet 3y",
+     "side": "both",
+     "ratio": 0.6686193084126356
+    },
+    {
+     "product": "forward-start 2y-3y",
+     "side": "both",
+     "ratio": 0.3192356031330535
+    },
+    {
+     "product": "put 5y 80%",
+     "side": "both",
+     "ratio": 0.29636810945623204
+    },
+    {
+     "product": "variance swap 3y",
+     "side": "both",
+     "ratio": 0.0
+    }
+   ]
+  }
+ ],
+ "desk_case_breach_rates": {
+  "chains": 80,
+  "binomial_95_band": [
+   0.0375,
+   0.175
+  ],
+  "rows": [
+   {
+    "method": "posterior",
+    "side": "long",
+    "product": "autocallable",
+    "breach_rate": 0.0375
+   },
+   {
+    "method": "posterior",
+    "side": "long",
+    "product": "forward_start",
+    "breach_rate": 0.0625
+   },
+   {
+    "method": "posterior",
+    "side": "long",
+    "product": "put_1y_80",
+    "breach_rate": 0.0625
+   },
+   {
+    "method": "posterior",
+    "side": "long",
+    "product": "cliquet",
+    "breach_rate": 0.0875
+   },
+   {
+    "method": "posterior",
+    "side": "short",
+    "product": "autocallable",
+    "breach_rate": 0.1
+   },
+   {
+    "method": "posterior",
+    "side": "short",
+    "product": "forward_start",
+    "breach_rate": 0.0125
+   },
+   {
+    "method": "posterior",
+    "side": "short",
+    "product": "put_1y_80",
+    "breach_rate": 0.05
+   },
+   {
+    "method": "posterior",
+    "side": "short",
+    "product": "cliquet",
+    "breach_rate": 0.0875
+   },
+   {
+    "method": "Gauss\u2013Newton",
+    "side": "long",
+    "product": "autocallable",
+    "breach_rate": 0.0125
+   },
+   {
+    "method": "Gauss\u2013Newton",
+    "side": "long",
+    "product": "forward_start",
+    "breach_rate": 0.175
+   },
+   {
+    "method": "Gauss\u2013Newton",
+    "side": "long",
+    "product": "put_1y_80",
+    "breach_rate": 0.15
+   },
+   {
+    "method": "Gauss\u2013Newton",
+    "side": "long",
+    "product": "cliquet",
+    "breach_rate": 0.1
+   },
+   {
+    "method": "Gauss\u2013Newton",
+    "side": "short",
+    "product": "autocallable",
+    "breach_rate": 0.1
+   },
+   {
+    "method": "Gauss\u2013Newton",
+    "side": "short",
+    "product": "forward_start",
+    "breach_rate": 0.0125
+   },
+   {
+    "method": "Gauss\u2013Newton",
+    "side": "short",
+    "product": "put_1y_80",
+    "breach_rate": 0.0125
+   },
+   {
+    "method": "Gauss\u2013Newton",
+    "side": "short",
+    "product": "cliquet",
+    "breach_rate": 0.075
+   },
+   {
+    "method": "profile",
+    "side": "long",
+    "product": "autocallable",
+    "breach_rate": 0.05
+   },
+   {
+    "method": "profile",
+    "side": "long",
+    "product": "forward_start",
+    "breach_rate": 0.1625
+   },
+   {
+    "method": "profile",
+    "side": "long",
+    "product": "put_1y_80",
+    "breach_rate": 0.1625
+   },
+   {
+    "method": "profile",
+    "side": "long",
+    "product": "cliquet",
+    "breach_rate": 0.1625
+   },
+   {
+    "method": "profile",
+    "side": "short",
+    "product": "autocallable",
+    "breach_rate": 0.175
+   },
+   {
+    "method": "profile",
+    "side": "short",
+    "product": "forward_start",
+    "breach_rate": 0.0125
+   },
+   {
+    "method": "profile",
+    "side": "short",
+    "product": "put_1y_80",
+    "breach_rate": 0.025
+   },
+   {
+    "method": "profile",
+    "side": "short",
+    "product": "cliquet",
+    "breach_rate": 0.0875
+   },
+   {
+    "method": "desk: H = 0.10",
+    "side": "long",
+    "product": "autocallable",
+    "breach_rate": 0.0625
+   },
+   {
+    "method": "desk: H = 0.10",
+    "side": "long",
+    "product": "forward_start",
+    "breach_rate": 0.8125
+   },
+   {
+    "method": "desk: H = 0.10",
+    "side": "long",
+    "product": "put_1y_80",
+    "breach_rate": 0.7125
+   },
+   {
+    "method": "desk: H = 0.10",
+    "side": "long",
+    "product": "cliquet",
+    "breach_rate": 0.2625
+   },
+   {
+    "method": "desk: H = 0.10",
+    "side": "short",
+    "product": "autocallable",
+    "breach_rate": 0.4125
+   },
+   {
+    "method": "desk: H = 0.10",
+    "side": "short",
+    "product": "forward_start",
+    "breach_rate": 0.05
+   },
+   {
+    "method": "desk: H = 0.10",
+    "side": "short",
+    "product": "put_1y_80",
+    "breach_rate": 0.05
+   },
+   {
+    "method": "desk: H = 0.10",
+    "side": "short",
+    "product": "cliquet",
+    "breach_rate": 0.0875
+   }
+  ]
+ },
+ "bs_hierarchy_coverage": {
+  "8 liquid + 32 illiquid": {
+   "per name": 0.8959375,
+   "proxy": 0.8334375,
+   "empirical Bayes": 0.8752083333333334,
+   "hierarchical Bayes": 0.8942708333333333
+  },
+  "2 liquid + 6 illiquid": {
+   "per name": 0.8969444444444444,
+   "proxy": 0.595,
+   "empirical Bayes": 0.6966666666666667,
+   "hierarchical Bayes": 0.88
+  }
+ },
+ "bs_hierarchy_width": {
+  "8 liquid + 32 illiquid": {
+   "per name": 9.870252360258078,
+   "proxy": 9.420803650910914,
+   "empirical Bayes": 6.751030066645762,
+   "hierarchical Bayes": 7.096288912995064
+  },
+  "2 liquid + 6 illiquid": {
+   "per name": 9.870271197564184,
+   "proxy": 8.210012637542327,
+   "empirical Bayes": 5.539649065279311,
+   "hierarchical Bayes": 7.5637329854818
+  }
+ },
+ "ewi": {
+  "volume_total": 132.0,
+  "expiries": [
+   {
+    "expiry": "2026-11-20",
+    "out_of_the_money": 22,
+    "two_sided": 7,
+    "median_iv_spread_points": 36.32152417211907,
+    "strip_vol_on_bids": 0.14167712176679642,
+    "strip_vol_on_asks": 0.5189338866855467
+   },
+   {
+    "expiry": "2026-12-18",
+    "out_of_the_money": 24,
+    "two_sided": 9,
+    "median_iv_spread_points": 22.803477798900502,
+    "strip_vol_on_bids": 0.14202696585609756,
+    "strip_vol_on_asks": 0.46510713213763183
+   },
+   {
+    "expiry": "2027-03-19",
+    "out_of_the_money": 24,
+    "two_sided": 12,
+    "median_iv_spread_points": 24.121400115211916,
+    "strip_vol_on_bids": 0.13193692402725243,
+    "strip_vol_on_asks": 0.42760136419807526
+   },
+   {
+    "expiry": "2027-06-17",
+    "out_of_the_money": 24,
+    "two_sided": 17,
+    "median_iv_spread_points": 21.145650828864856,
+    "strip_vol_on_bids": 0.13661527229805634,
+    "strip_vol_on_asks": 0.37591195873142674
+   }
+  ]
+ }
+}

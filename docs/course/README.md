@@ -2,6 +2,8 @@
 
 Oct 22, 2026 · AI & Analytics Solutions SAS di Muia Francesco
 
+> **Version 2 in preparation (24 October 2026).** [The version-2 plan](v2-plan.md) reassesses these fourteen lectures and plans a realigned course in 21 lectures. Black–Scholes carries the simple concepts, Heston the BayesFlow workflow, and rough Bergomi the full amortized examples. The plan also lists the studies still to run, with instructions, budgets and dates. Until version 2 is written, the lectures below remain the reference.
+
 This folder is a course in fourteen lectures. It builds, from the basics, everything needed to understand and teach the advanced example of the ICAIF '26 tutorial: the calibration of a rough volatility model to an option smile, with a posterior, and the propagation of that posterior into the prices of products the smile does not pin down.
 
 The course is a superset of the [calibration design document](../design/calibration-design-document.md). The design document states the method and the planned evidence for the organizers. The course explains every concept the design document uses, from what an option is to how an amortized posterior is validated, and adds the derivations, figures, limits and interpretations that a first reading needs. The design document is unchanged; the [map at the end of this page](#where-each-section-of-the-design-document-is-covered) says where each of its sections is covered here.
