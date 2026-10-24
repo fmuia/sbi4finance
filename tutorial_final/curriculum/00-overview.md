@@ -148,7 +148,7 @@ The message is shown in every slot and said in only two places.
 **Shown:**
 
 - real data end to end: the SPY chain of 21 October 2026;
-- documentation to a validator's standard: the design document and the fourteen-lecture course in `docs/course/`, take-home;
+- documentation to a validator's standard: the design document and the sixteen-lecture course in `docs/course/`, take-home;
 - a ledger of claims: every number on screen traced to a study and a file;
 - failures shown and handled: the Heston network alone short of the exact-likelihood reference on one smile in five, the rough pilot's SBC failure, the audit's flag rate, the places where the classical route is as good;
 - infrastructure: a bank of 112,000 Monte-Carlo-priced smiles generated on a cluster (gate G1), and trained networks shipped as checkpoints (Heston's now, rough Bergomi's after gate G2);
