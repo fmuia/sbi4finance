@@ -108,6 +108,14 @@ def classical_bounds(task, fit, product_fn, row_fn=None):
 
 
 def chain_job(job):
+    """One chain; an error is recorded with the chain's row instead of stopping the run."""
+    try:
+        return chain_job_inner(job)
+    except Exception as error:  # noqa: BLE001 - every failure is reported in the summary
+        return {"test_row": int(job[2]), "failed": f"{type(error).__name__}: {error}"}
+
+
+def chain_job_inner(job):
     (task, layout, row, truth, clean, clean_cov, draws, args, seed) = job
     started = time.process_time()
     timings = {}
@@ -258,8 +266,11 @@ def run(args):
         for result in pool.map(chain_job, jobs):
             log.write(json.dumps(result) + "\n")
             log.flush()
-            print(f"row {result['test_row']}: {result['cpu_seconds']['total']:.0f} CPU-s, "
-                  f"k-hat {result['posterior']['khat']:.2f}", flush=True)
+            if "failed" in result:
+                print(f"row {result['test_row']}: FAILED {result['failed']}", flush=True)
+            else:
+                print(f"row {result['test_row']}: {result['cpu_seconds']['total']:.0f} CPU-s, "
+                      f"k-hat {result['posterior']['khat']:.2f}", flush=True)
 
 
 def finite(value):
@@ -305,12 +316,15 @@ def summarize(args):
     records = []
     for path in sorted(args.out.glob("rows-*.jsonl")):
         records += [json.loads(line) for line in path.read_text().splitlines() if line.strip()]
+    failed = [r for r in records if "failed" in r]
+    records = [r for r in records if "failed" not in r]
     if not records:
-        raise ValueError("no chains found")
+        raise ValueError("no finished chains found")
     records.sort(key=lambda r: r["test_row"])
     khat = np.array([np.inf if r["posterior"]["khat"] is None else r["posterior"]["khat"] for r in records], dtype=float)
     reliable = [r for r, k in zip(records, khat) if k <= KHAT_RELIABLE]
     report = {"study": "S10", "chains": len(records), "reliable_chains": len(reliable),
+              "failed_chains": [{"test_row": r["test_row"], "error": r["failed"]} for r in failed],
               "test_rows": [records[0]["test_row"], records[-1]["test_row"] + 1],
               "products": list(thin_products.NAMES), "nominal_breach_rate": 0.1, "arms": list(ARMS),
               "reliable_means": f"final k-hat at most {KHAT_RELIABLE}", "all": {}, "reliable": {}}

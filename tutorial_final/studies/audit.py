@@ -78,6 +78,15 @@ def price_proposal(row, seed, task, curve, contracts, paths, max_doublings=3):
 
 
 def audit_job(job):
+    """One surface; an error is recorded instead of stopping the run (and its row is not retried on resume)."""
+    try:
+        return audit_job_inner(job)
+    except Exception as error:  # noqa: BLE001 - reported in the summary
+        return {"failed": f"{type(error).__name__}: {error}", "efficiency": 0.0, "khat": None,
+                "unpriced_proposals": 0, "cpu_seconds": 0.0}
+
+
+def audit_job_inner(job):
     task, observation, context, bank_covariance, draws, proposals, paths, seed = job
     curve = tasks.curve(task, context)
     contracts = task["context"]["contracts"]
@@ -179,12 +188,13 @@ def main():
             done[int(rows[i])] = json.loads(json.dumps(jsonable(result)))
             log.write(json.dumps({"test_row": int(rows[i]), "result": done[int(rows[i])]}) + "\n")
             log.flush()
-    results = [done[int(r)] for r in rows]
+    failed = [int(r) for r in rows if "failed" in done[int(r)]]
+    results = [done[int(r)] for r in rows if "failed" not in done[int(r)]]
     efficiency = np.array([r["efficiency"] for r in results], dtype=float)
     khat = np.array([np.inf if r["khat"] is None else r["khat"] for r in results], dtype=float)
     reliable = [r for r, k in zip(results, khat) if k <= 0.7]
     threshold = min(1 - 1 / np.log10(args.proposals), 0.7)  # PSIS sample-size-dependent threshold
-    summary = {"surfaces": len(rows), "proposals": args.proposals, "paths": args.paths,
+    summary = {"surfaces": len(results), "failed_surfaces": failed, "proposals": args.proposals, "paths": args.paths,
                "likelihood": "unbiased N(y; P_hat, diag(sigma^2) + C_bank - S), one seed per proposal",
                "mc_budget": MC_BUDGET, "max_relative_eigenvalue": correction.MAX_RELATIVE_EIGENVALUE,
                "unpriced_proposals_total": int(sum(r["unpriced_proposals"] for r in results)),
@@ -200,8 +210,8 @@ def main():
                "reliable_surfaces": len(reliable)}
     report = {"study": "S5", "task_fingerprint": manifest["task_fingerprint"], "summary": summary,
               "surfaces": [{"test_row": int(r), "parameters": test["parameters"][r].tolist(),
-                            "forward_variance_levels": test["context_values"][r].tolist(), **res}
-                           for r, res in zip(rows, results)]}
+                            "forward_variance_levels": test["context_values"][r].tolist(), **done[int(r)]}
+                           for r in rows if "failed" not in done[int(r)]]}
     (args.out / "audit.json").write_text(json.dumps(jsonable(report), indent=2, allow_nan=False) + "\n")
     figure(json.loads((args.out / "audit.json").read_text()), args.out / "audit.png")
     partial.unlink(missing_ok=True)

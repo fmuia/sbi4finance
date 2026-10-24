@@ -30,6 +30,13 @@ _TAG = 0x53314742  # "S1GB"
 
 
 def job(args):
+    try:
+        return job_inner(args)
+    except Exception as error:  # noqa: BLE001 - reported in the summary
+        return {"test_row": int(args[1]), "failed": f"{type(error).__name__}: {error}"}
+
+
+def job_inner(args):
     task, row, parameters, context, paths, refine, seed = args
     started = time.process_time()
     curve = tasks.curve(task, context)
@@ -99,10 +106,12 @@ def main():
     jobs = [(task, r, test["parameters"][r], test["context_values"][r], args.paths, args.refine, args.seed) for r in rows]
     with ProcessPoolExecutor(args.workers, mp_context=multiprocessing.get_context("spawn")) as pool:
         records = list(pool.map(job, jobs))
+    failed = [r for r in records if "failed" in r]
+    records = [r for r in records if "failed" not in r]
     diff = np.array([r["difference_over_sigma"] for r in records])
     se = np.array([r["se_over_sigma"] for r in records])
     chi2 = np.sum(diff**2, axis=1) - np.sum(se**2, axis=1)  # minus the Monte Carlo part of the expected sum
-    summary = {"surfaces": len(records), "paths": args.paths, "refine": args.refine,
+    summary = {"surfaces": len(records), "failed": failed, "paths": args.paths, "refine": args.refine,
                "abs_difference_over_sigma_quantiles": dict(zip(("q50", "q90", "q99", "max"),
                                                                np.quantile(np.abs(diff), [0.5, 0.9, 0.99, 1.0]).tolist())),
                "share_of_quotes_with_abs_z_above_3": float(np.mean(np.abs(diff) > 3 * se)),
