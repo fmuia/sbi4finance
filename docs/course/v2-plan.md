@@ -15,8 +15,9 @@ tutorial.
    Simple concepts use Black–Scholes, the workflow uses Heston, and the full examples use rough Bergomi.
 2. **The argument.** On a liquid smile the posterior and the classical interval agree, as theory predicts.
    They part where the quotes do not determine what the product needs: a thin chain, and maturities beyond the
-   last quote. Amortization makes the exact posterior cheap enough to compute on every chain, and to test its
-   coverage on a thousand simulated chains.
+   last quote. Amortization, with an audit of each chain, makes the exact posterior affordable on every chain and
+   its coverage testable on a thousand simulated chains. On one liquid smile its saving over importance sampling
+   from a Gauss–Newton proposal is small; in validation it is decisive (Section 2.4).
 3. **The example.** EWG (iShares MSCI Germany): a real thin chain, informative but sparse, chosen on merit from
    four candidates (Section 3).
 4. **Two reviews found nineteen errors.** The most serious ones are a curve leaked from SPY's full chain, an audit
@@ -124,8 +125,10 @@ small, its hyperparameters are uncertain, and only the hierarchical model carrie
 
 A validation needs many posteriors. Simulation-based calibration on 2,000 smiles costs about 2 CPU-hours with the
 network. At 85 CPU-minutes a smile it would cost about 2,800 CPU-hours. Study S10's 1,000 audited thin chains will
-cost an estimated 180 CPU-hours with the network as proposal. The case for amortization is therefore that the exact posterior,
-and the check of its coverage, become affordable. The course never claims milliseconds.
+cost an estimated 180 CPU-hours with the network as proposal. Against importance sampling from a Gauss–Newton
+proposal, the training bank pays only after about 260 posteriors if they are not audited, or 700 if each is
+(Lecture 14, Figure 14.4). The case for amortization is therefore that the exact posterior, and the check of its
+coverage, become affordable, not that one posterior becomes much cheaper. The course never claims milliseconds.
 
 ### 2.5 What is not shown yet, and what would weaken the argument
 
