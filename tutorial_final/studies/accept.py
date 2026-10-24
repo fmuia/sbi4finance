@@ -82,6 +82,9 @@ def strip_optimizer(source, destination):
 
 
 def same_draws(original, stripped):
+    record = json.loads((Path(original) / "training.json").read_text())
+    if record["training"].get("thin_layout"):
+        return same_thin_draws(original, stripped)
     from sbi4finance.calibration import inference, tasks, teaching
 
     task, workflow = teaching.load_network(original)
@@ -96,6 +99,26 @@ def same_draws(original, stripped):
     return bool(np.array_equal(a, b))
 
 
+def same_thin_draws(original, stripped):
+    """As same_draws, for a thin-chain checkpoint (study S2-T): the layout's quotes and the noise scale 1."""
+    import warnings
+
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from evaluate_thin import load_thin_network
+    from sbi4finance.calibration import thin
+
+    task, layout, workflow, _ = load_thin_network(original)
+    with warnings.catch_warnings():
+        warnings.filterwarnings("ignore", message="Skipping variable loading for optimizer")
+        _, _, copy, _ = load_thin_network(stripped)
+    _, noise = thin.layout_arrays(layout)
+    rng = np.random.default_rng(0)
+    quotes = 0.05 + 5.0 * noise * rng.standard_normal((2, len(noise)))
+    a = thin.sample_thin(workflow, task, layout, quotes, 64, seed=3)
+    b = thin.sample_thin(copy, task, layout, quotes, 64, seed=3)
+    return bool(np.array_equal(a, b))
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     source_kind = parser.add_mutually_exclusive_group(required=True)
@@ -106,22 +129,30 @@ def main():
     args = parser.parse_args()
     source = (args.run or args.checkpoint).resolve()
     destination = FINAL / args.to
-    destination.mkdir(parents=True, exist_ok=False)
+    if destination.exists():
+        raise FileExistsError(f"{destination} exists: the destination must be new")
+    # Everything is built in a staging directory and moved into place only when every check has passed, so a
+    # failed acceptance leaves nothing behind and can simply be rerun.
+    staging = destination.with_name(destination.name + ".staging")
+    if staging.exists():
+        shutil.rmtree(staging)  # left by a failed earlier attempt
+    staging.mkdir(parents=True)
     record = {"accepted": datetime.now(timezone.utc).isoformat(timespec="seconds"), "source": str(source),
               "source_sha256": {p.name: sha256(p) for p in sorted(source.iterdir()) if p.is_file()}}
     if args.run:
-        record["changes"] = accept_run(source, destination, args.keep_surfaces)
+        record["changes"] = accept_run(source, staging, args.keep_surfaces)
     else:
         for name in ("task.json", "training.json"):
-            shutil.copy2(source / name, destination / name)
-        strip_optimizer(source / "model.keras", destination / "model.keras")
-        if not same_draws(source, destination):
-            shutil.rmtree(destination)
+            shutil.copy2(source / name, staging / name)
+        strip_optimizer(source / "model.keras", staging / "model.keras")
+        if not same_draws(source, staging):
+            shutil.rmtree(staging)
             raise RuntimeError("the stripped checkpoint does not reproduce the original's draws")
         record["changes"] = ["model.keras: optimizer state removed; same-seed draws checked identical to the "
                              "original's, whose SHA-256 the study reports cite as checkpoint_sha256"]
-    (destination / "ACCEPTED.json").write_text(json.dumps(record, indent=2) + "\n")
-    print(json.dumps({"to": str(destination.relative_to(FINAL)), "files": sorted(p.name for p in destination.iterdir()),
+    (staging / "ACCEPTED.json").write_text(json.dumps(record, indent=2) + "\n")
+    staging.rename(destination)
+    print(json.dumps({"to": str(destination.relative_to(FINAL) if destination.is_relative_to(FINAL) else destination), "files": sorted(p.name for p in destination.iterdir()),
                       "changes": record["changes"]}, indent=1))
 
 

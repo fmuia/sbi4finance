@@ -104,6 +104,18 @@ class ThinTests(unittest.TestCase):
         self.assertAlmostEqual(mean, 0.15, delta=0.004)
         self.assertLess(result["khat"], 0.7)
 
+    def test_proposal_mixture_is_a_normalized_density(self):
+        """E_q[pi / q] = 1 for the normalized prior pi: the mixture's prior part carries the truncation constant."""
+        task = json.loads((ROOT / "configs" / "tasks" / "calibration_rough_bank.json").read_text())["task"]
+        mass = thin.curve_prior_mass(task)
+        self.assertGreater(mass, 0.70)
+        self.assertLess(mass, 0.77)  # the full bank's prior is truncated: about 27% of curves are drawn again
+        draws = thin.draw_prior(task, np.random.default_rng(6), 2000)
+        proposal = thin.Proposal(draws, task, prior_fraction=0.5)
+        targets, _ = proposal.sample(4000, np.random.default_rng(7))
+        ratio = np.exp(thin.log_prior(targets, task) - np.log(mass) - proposal.log_density(targets))
+        self.assertAlmostEqual(ratio.mean(), 1.0, delta=4 * ratio.std() / np.sqrt(len(ratio)))
+
     def test_power_law_extension_and_curve_map(self):
         task = json.loads((ROOT / "configs" / "tasks" / "calibration_rough_bank.json").read_text())["task"]
         days = [21, 40, 58, 120]
@@ -143,6 +155,17 @@ class ThinTests(unittest.TestCase):
             report = json.loads((root / "run" / "training.json").read_text())
             self.assertTrue(report["same_seed_reload_exact"])
             self.assertEqual(report["training"]["thin_layout"]["contracts"], 6)
+            # chunked training (the cluster's resumable mode), and the refusal to resume with other epochs
+            command = [sys.executable, str(ROOT / "tutorial_final" / "studies" / "train_calibration.py"),
+                       "--bank", str(root / "bank"), "--out", str(root / "chunked"), "--batch-size", "8",
+                       "--thin-layout", str(layout_path), "--widths", "16,16", "--chunk-epochs", "1"]
+            env = {**__import__("os").environ, "KERAS_BACKEND": "jax"}
+            run = subprocess.run(command + ["--epochs", "2"], capture_output=True, text=True, env=env)
+            self.assertEqual(run.returncode, 0, run.stderr[-2000:])
+            self.assertEqual(json.loads((root / "chunked" / "resume.json").read_text())["epochs_done"], 2)
+            run = subprocess.run(command + ["--epochs", "3"], capture_output=True, text=True, env=env)
+            self.assertNotEqual(run.returncode, 0)
+            self.assertIn("use a new --out", run.stderr)
 
 
 if __name__ == "__main__":

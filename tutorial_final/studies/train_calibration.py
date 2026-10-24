@@ -54,7 +54,8 @@ def train_in_chunks(args, task, train, validation, augment, widths, resume_path,
                 self.best, self.epoch = float(value), epoch + 1
                 self.model.save(self.path)
 
-    batches = int(np.ceil(len(train["observations"]) / args.batch_size))
+    rows = train["clean_scaled"] if "clean_scaled" in train else train["observations"]  # thin data: clean_scaled
+    batches = int(np.ceil(len(rows) / args.batch_size))
     workflow = builder(task, subnet_widths=widths, time_power_law_alpha=args.time_alpha,
                        optimizer=inference.offline_optimizer(args.epochs * batches))
     state = json.loads(resume_path.read_text()) if resume_path.exists() else None
@@ -62,6 +63,11 @@ def train_in_chunks(args, task, train, validation, augment, widths, resume_path,
     resumed_at, done = [], 0
     best = BestCheckpoint(args.out / "model.keras", np.inf, 0)
     if state:
+        planned = {"epochs": args.epochs, "batch_size": args.batch_size, "rows": len(rows)}
+        if state.get("planned", planned) != planned:
+            # The learning-rate schedule is fixed by the first run's epochs and batches; resuming with others would
+            # continue the old schedule (at a learning rate of 0 past its end). Train into a new --out instead.
+            raise ValueError(f"this run was started with {state.get('planned')}, not {planned}: use a new --out")
         workflow.approximator = keras.saving.load_model(args.out / "last.keras")
         workflow.optimizer = workflow.approximator.optimizer
         workflow._needs_compile = False
@@ -82,6 +88,7 @@ def train_in_chunks(args, task, train, validation, augment, widths, resume_path,
         workflow.approximator.save(args.out / "last.keras")
         record = {"epochs_done": done, "best_val_loss": best.best, "best_epoch": best.epoch, "history": history,
                   "resumed_at_epochs": resumed_at,
+                  "planned": {"epochs": args.epochs, "batch_size": args.batch_size, "rows": len(rows)},
                   "noise_rng": augment.rng.bit_generator.state if augment is not None else None}
         temporary = resume_path.with_suffix(".tmp")
         temporary.write_text(json.dumps(record) + "\n")

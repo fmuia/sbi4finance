@@ -124,6 +124,55 @@ def gaussian_loglik_mc(observation, prices, sigma, covariance, max_eigenvalue=MA
     return float(-0.5 * r @ r - np.sum(np.log(np.diag(chol))) - 0.5 * len(y) * np.log(2 * np.pi))
 
 
+def price_for_likelihood(price, sigma, paths, *, budget=0.5, max_doublings=3, pilot_paths=None):
+    """One proposal priced for gaussian_loglik_mc without letting the path count or S depend on its prices.
+
+    price(n, purpose, attempt) returns (prices, errors, covariance) at n paths, on a stream fixed by
+    (purpose, attempt, n) and independent of every other; it raises ValueError on a non-finite price.
+
+    Choosing the path count from the same pricing whose prices enter the likelihood biases the estimate, because a
+    Monte Carlo price and its estimated error are correlated (large payoffs raise both). So a pilot pricing at
+    pilot_paths (default paths / 4, at least 1,024) estimates the covariance S0, and the path count n, paths times a
+    power of two, is the smallest at which S0 * pilot_paths / n meets the three criteria: every SE at most budget
+    times sigma, the largest eigenvalue relative to the noise at most MAX_RELATIVE_EIGENVALUE, the trace at most
+    MAX_RELATIVE_TRACE. The final pricing at n runs on its own stream, and the covariance returned is the pilot's,
+    scaled to n (Monte Carlo covariances fall like 1/n). Neither n nor S then depends on the final prices, so
+    N(y; P_hat, V - S) is an unbiased estimate up to the pilot's error in estimating S.
+
+    Returns (prices, covariance, n), or (None, None, reason) when more than paths * 2**max_doublings paths would be
+    needed or a price is not finite.
+    """
+    sigma = np.asarray(sigma, dtype=float).reshape(-1)
+    largest = int(paths) * 2**int(max_doublings)
+    n0 = int(pilot_paths) if pilot_paths is not None else max(int(paths) // 4, 1024)
+    attempt, reason = 0, None
+    while True:  # the pilot; a non-finite price there only asks for more paths (it is independent of the final)
+        try:
+            _, errors, covariance = price(n0, "pilot", attempt)
+            break
+        except ValueError as error:
+            reason = f"pilot at {n0} paths: {error}"
+            attempt, n0 = attempt + 1, 2 * n0
+            if n0 > largest:
+                return None, None, reason
+    covariance = np.asarray(covariance, dtype=float)
+    worst = float(np.max(np.asarray(errors, dtype=float) / sigma))
+    ratio = relative_mc_eigenvalue(sigma, covariance)
+    trace = float(np.sum(np.diag(covariance) / sigma**2))
+    needed = n0 * max((worst / budget) ** 2, ratio / MAX_RELATIVE_EIGENVALUE, trace / MAX_RELATIVE_TRACE)
+    n = int(paths)
+    while n < needed:
+        n *= 2
+    if n > largest:
+        return None, None, (f"needs about {needed:,.0f} paths (pilot at {n0}: largest SE/sigma {worst:.2f}, "
+                            f"eigenvalue {ratio:.2f}, trace {trace:.2f})")
+    try:
+        prices, _, _ = price(n, "final", 0)
+    except ValueError as error:
+        return None, None, f"final at {n} paths: {error}"
+    return np.asarray(prices, dtype=float), covariance * (n0 / n), n
+
+
 def fit_proposal(draws, task, *, df=5, inflation=1.2):
     """Student t fitted to network draws [N, P] in logit coordinates."""
     z = to_unbounded(draws, bounds_of(task))

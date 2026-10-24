@@ -359,6 +359,37 @@ class InferenceAndCorrectionTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             correction.gaussian_loglik(task, y, draws[:2], mc_variance=(0.95 * sigma) ** 2)
 
+    def test_choosing_the_path_count_does_not_bias_the_prices(self):
+        # A pricer whose estimated error grows with its price error, as with heavy-tailed payoffs. Accepting the
+        # first path count whose own estimate passes the budget keeps the draws with small errors, which here are
+        # the low prices; correction.price_for_likelihood chooses the count on a pilot and prices independently.
+        rng = np.random.default_rng(5)
+        sigma = np.array([1.0])
+
+        def price(n, purpose, attempt):
+            sd = 0.6 * np.sqrt(4096 / n)
+            z = rng.standard_normal()
+            estimated = sd * max(1.0 + 0.5 * z, 0.05)
+            return np.array([sd * z]), np.array([estimated]), np.array([[estimated**2]])
+
+        chosen = [correction.price_for_likelihood(price, sigma, 4096, budget=0.5, max_doublings=4)
+                  for _ in range(20_000)]
+        prices = np.array([p[0][0] for p in chosen if p[0] is not None])
+        sds = np.array([0.6 * np.sqrt(4096 / p[2]) for p in chosen if p[0] is not None])
+        self.assertGreater(len(prices), 19_000)
+        self.assertLess(abs(prices.mean()), 4 * np.sqrt(np.mean(sds**2) / len(prices)))
+        for p in chosen[:50]:  # the covariance returned is the pilot's, scaled to the count chosen
+            if p[0] is not None:
+                self.assertLessEqual(p[1][0, 0], 0.5**2 + 1e-12)
+        selected = []  # the old rule, for contrast: accept the first count whose own estimate passes
+        for _ in range(20_000):
+            for k in range(5):
+                prices_k, errors_k, _ = price(4096 * 2**k, "final", k)
+                if errors_k[0] <= 0.5:
+                    selected.append(prices_k[0])
+                    break
+        self.assertLess(np.mean(selected), -0.05)
+
     def test_pareto_khat_separates_light_and_heavy_tails(self):
         rng = np.random.default_rng(4)
         self.assertLess(correction.pareto_khat(rng.normal(0, 0.3, 4000)), 0.5)

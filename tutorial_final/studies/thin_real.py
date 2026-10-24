@@ -39,7 +39,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from sbi4finance.calibration import correction, surface, thin, thin_products  # noqa: E402
-from thin_coverage import COLOURS, truth_arms  # noqa: E402
+from thin_coverage import COLOURS, finite, truth_arms  # noqa: E402
 
 ONE_SIDED = 1.2815515655446004
 H_FIXED = 0.10
@@ -216,8 +216,8 @@ def main():
                                                          "seed")},
               "by_scale": results, "posterior_predictive": predictive,
               "wall_seconds": time.perf_counter() - started}
-    (args.out / "real.json").write_text(json.dumps(report, indent=2, allow_nan=False) + "\n")
-    np.savez_compressed(args.out / "draws.npz", **arrays)
+    np.savez_compressed(args.out / "draws.npz", **arrays)  # first: R9 needs it even if the report fails
+    (args.out / "real.json").write_text(json.dumps(finite(report), indent=2, allow_nan=False) + "\n")
     figures(results[0], report, y, low, high, days, args.out)
     print(json.dumps({"khat_by_scale": [r["khat"] for r in results],
                       "predictive_share_inside_90": predictive["share_inside_90"]}, indent=1))

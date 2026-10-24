@@ -8,10 +8,13 @@ design surface is priced by Monte Carlo on its own seed, so the Monte Carlo erro
 proposals (antithetic paths and control variates within a proposal). The likelihood is the unbiased estimate
 N(y; P_hat, diag(sigma^2) + C - S) of the exact likelihood N(y; P, diag(sigma^2) + C): S is the proposal's
 Monte Carlo covariance (quotes priced on the same paths have correlated errors) and C the bank's own Monte Carlo
-covariance of the surface's reference prices, since y = P_ref + noise (correction.gaussian_loglik_mc). A
-proposal is priced again on a fresh stream with twice the paths, up to eight times, while a quote's error exceeds
-half its noise sd, the covariance's largest eigenvalue exceeds half the noise variance, or the sum of (SE/sigma)^2
-exceeds 1; one that still fails gets zero weight and is counted, instead of the whole surface being dropped. The weights give the efficiency and k-hat.
+covariance of the surface's reference prices, since y = P_ref + noise (correction.gaussian_loglik_mc). A pilot
+pricing at a quarter of the paths chooses each proposal's path count (up to 32 times the paths) so that no
+quote's error exceeds half its noise sd, the covariance's largest eigenvalue stays below half the noise variance
+and the sum of (SE/sigma)^2 below 1; the prices come from an independent pricing at that count, with the pilot's
+covariance scaled to it, so the choice does not bias the estimate (correction.price_for_likelihood). A proposal
+that would need more paths gets zero weight and is counted, instead of the whole surface being dropped. The
+weights give the efficiency and k-hat.
 
 Earlier versions priced every proposal of a surface with one seed (common random numbers), with which this
 estimate is not unbiased: the weights converge to the posterior given that seed's error field, which is shifted
@@ -22,8 +25,9 @@ sample-size threshold min(1 - 1/log10 M, 0.7), the proposals that could not be p
 the network's error against the reweighted posterior, on all surfaces and on those with k-hat at most 0.7 (the
 reliable audits). Each surface's record keeps its parameters and curve, so flag rates can be read by region.
 
-Each finished surface is appended to OUT.partial.jsonl, next to the output directory; rerunning the same command
-after an interruption audits only the surfaces still missing, and the file is removed once audit.json is written.
+Each finished surface is appended to OUT/surfaces.jsonl, which is kept. Rerunning the same command after an
+interruption audits only the surfaces still missing; rerunning it with a larger --surfaces extends a finished
+audit, and audit.json then summarizes rows [first, first + surfaces). A rerun with other settings is refused.
 """
 
 import argparse
@@ -48,33 +52,27 @@ MC_BUDGET = 0.5  # largest Monte Carlo SE / quote-noise sd per quote; the paths 
 _TAG = 0x53354155  # "S5AU"
 
 
-def price_proposal(row, seed, task, curve, contracts, paths, max_doublings=3):
+def price_proposal(row, seed, task, curve, contracts, paths, max_doublings=5):
     """(prices, covariance, paths) on the proposal's own seed, or (None, None, reason).
 
-    Prices at paths, then 2, 4 and 8 times as many, each on a fresh stream, until every quote's SE is at most
-    MC_BUDGET of its noise sd, the covariance's largest eigenvalue relative to the noise variance is at most
-    correction.MAX_RELATIVE_EIGENVALUE and its trace at most correction.MAX_RELATIVE_TRACE; the decision uses the
-    estimated errors only, so it does not bias the likelihood estimate.
+    correction.price_for_likelihood: a pilot pricing at paths / 4 chooses the path count (paths times 1, 2, 4, ...,
+    up to 32) at which every quote's SE is at most MC_BUDGET of its noise sd, the covariance's largest
+    eigenvalue relative to the noise variance at most correction.MAX_RELATIVE_EIGENVALUE and its trace at most
+    correction.MAX_RELATIVE_TRACE. The prices come from an independent pricing at that count and the covariance is
+    the pilot's, scaled to it, so the choice does not bias the likelihood estimate.
     """
     sigma = tasks.sigma(task)
     model = tasks.model_parameters(task, row)
-    reason = None
-    for rung in range(max_doublings + 1):
-        n = paths * 2**rung
-        stream = int(np.random.SeedSequence([_TAG, int(seed), rung]).generate_state(1, dtype=np.uint32)[0])
-        try:
-            prices, errors, cov, _ = pricing.rough_surface(model, curve, contracts, task["numerics"]["blocks"], [n],
-                                                           sigma, np.inf, stream, cap=None)
-        except ValueError as error:
-            reason = str(error)
-            continue
-        ratio = correction.relative_mc_eigenvalue(sigma, cov)
-        worst = float(np.max(errors / sigma))
-        trace = float(np.sum((errors / sigma) ** 2))
-        if worst <= MC_BUDGET and ratio <= correction.MAX_RELATIVE_EIGENVALUE and trace <= correction.MAX_RELATIVE_TRACE:
-            return prices, cov, int(n)
-        reason = f"at {n} paths: largest SE/sigma {worst:.2f}, covariance eigenvalue {ratio:.2f}, trace {trace:.2f}"
-    return None, None, reason
+    codes = {"pilot": 1, "final": 2}
+
+    def price(n, purpose, attempt):
+        stream = int(np.random.SeedSequence([_TAG, int(seed), codes[purpose], int(attempt), int(n)])
+                     .generate_state(1, dtype=np.uint32)[0])
+        prices, errors, cov, _ = pricing.rough_surface(model, curve, contracts, task["numerics"]["blocks"], [n],
+                                                       sigma, np.inf, stream, cap=None)
+        return prices, errors, cov
+
+    return correction.price_for_likelihood(price, sigma, paths, budget=MC_BUDGET, max_doublings=max_doublings)
 
 
 def audit_job(job):
@@ -170,18 +168,28 @@ def main():
         raise ValueError("checkpoint and bank tasks differ")
     test = splits["test"]
     rows = np.arange(args.first, min(args.first + args.surfaces, len(test["parameters"])))
-    args.out.mkdir(parents=True, exist_ok=False)
-    network = posterior_draws(workflow, task, test, rows, args.draws, args.seed)
-    partial = args.out.with_name(args.out.name + ".partial.jsonl")
+    # Every finished surface is kept in OUT/surfaces.jsonl. A rerun with the same settings audits only the surfaces
+    # still missing: after an interruption, or with a larger --surfaces to extend a finished run.
+    settings = {"bank_task_fingerprint": manifest["task_fingerprint"], "checkpoint": str(args.checkpoint.resolve()),
+                "draws": args.draws, "proposals": args.proposals, "paths": args.paths, "seed": args.seed}
+    args.out.mkdir(parents=True, exist_ok=True)
+    settings_path = args.out / "settings.json"
+    if settings_path.exists() and json.loads(settings_path.read_text()) != settings:
+        raise ValueError(f"{args.out} holds an audit with other settings: use a new --out")
+    settings_path.write_text(json.dumps(settings, indent=1) + "\n")
+    partial = args.out / "surfaces.jsonl"
     done = {}
     if partial.exists():
         for line in partial.read_text().splitlines():
-            record = json.loads(line)
-            done[record["test_row"]] = record["result"]
+            if line.strip():
+                record = json.loads(line)
+                done[record["test_row"]] = record["result"]
     pending = [i for i, r in enumerate(rows) if int(r) not in done]
+    # the network's draws for every row of the range, so a row's draws do not depend on which rows are pending
+    network = posterior_draws(workflow, task, test, rows, args.draws, args.seed) if pending else None
     jobs = [(task, test["observations"][rows[i], :, 0], test["context_values"][rows[i]],
-             test["pricing_covariance"][rows[i]], network[i], args.proposals, args.paths, args.seed + int(rows[i]))
-            for i in pending]
+             test["pricing_covariance"][rows[i]], network[i], args.proposals, args.paths,
+             args.seed + int(rows[i])) for i in pending]
     with ProcessPoolExecutor(args.workers, mp_context=multiprocessing.get_context("spawn")) as pool, \
             partial.open("a") as log:
         for i, result in zip(pending, pool.map(audit_job, jobs)):
@@ -192,7 +200,8 @@ def main():
     results = [done[int(r)] for r in rows if "failed" not in done[int(r)]]
     efficiency = np.array([r["efficiency"] for r in results], dtype=float)
     khat = np.array([np.inf if r["khat"] is None else r["khat"] for r in results], dtype=float)
-    reliable = [r for r, k in zip(results, khat) if k <= 0.7]
+    # Reliable: a usable tail and every proposal priced (an unpriced proposal's zero weight biases the audit).
+    reliable = [r for r, k in zip(results, khat) if k <= 0.7 and r["unpriced_proposals"] == 0]
     threshold = min(1 - 1 / np.log10(args.proposals), 0.7)  # PSIS sample-size-dependent threshold
     summary = {"surfaces": len(results), "failed_surfaces": failed, "proposals": args.proposals, "paths": args.paths,
                "likelihood": "unbiased N(y; P_hat, diag(sigma^2) + C_bank - S), one seed per proposal",
@@ -207,14 +216,14 @@ def main():
                "cpu_seconds_per_surface_median": float(np.median([r["cpu_seconds"] for r in results])),
                "network_error_vs_audited_sd_quantiles_reliable": error_quantiles(reliable),
                "network_error_vs_audited_sd_quantiles_all": error_quantiles(results),
-               "reliable_surfaces": len(reliable)}
+               "reliable_surfaces": len(reliable),
+               "reliable_means": "k-hat at most 0.7 and no unpriced proposal"}
     report = {"study": "S5", "task_fingerprint": manifest["task_fingerprint"], "summary": summary,
               "surfaces": [{"test_row": int(r), "parameters": test["parameters"][r].tolist(),
                             "forward_variance_levels": test["context_values"][r].tolist(), **done[int(r)]}
                            for r in rows if "failed" not in done[int(r)]]}
     (args.out / "audit.json").write_text(json.dumps(jsonable(report), indent=2, allow_nan=False) + "\n")
     figure(json.loads((args.out / "audit.json").read_text()), args.out / "audit.png")
-    partial.unlink(missing_ok=True)
     print(json.dumps(jsonable(summary), indent=1))
 
 

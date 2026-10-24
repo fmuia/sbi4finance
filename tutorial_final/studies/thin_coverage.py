@@ -39,13 +39,15 @@ posterior's prior is not changed.
 
 With --truths (thin_real.py's draws.npz), the truths are resampled from EWG's audited posterior instead, and their
 layout quotes are priced as the bank prices; the posterior's prior is then not the truths' law, so its coverage
-is not guaranteed by construction: the run tests every method near the real chain. Run summarize on its own
-directory.
+is not guaranteed by construction: the run tests every method near the real chain. Resampled truths repeat when
+the posterior's effective sample size is small; summarize reports the number of distinct truths and a bootstrap
+over them, since chains sharing a truth are not independent. Run summarize on its own directory.
 
 A long breach is a true price below the lower bound, a short breach one above the upper bound; a correct method
 breaches each side 10% of the time. Each finished chain is appended to DIR/rows-START-STOP.jsonl, so a rerun
 continues where it stopped; summarize pools every rows-*.jsonl in DIR into coverage.json and coverage.png, on all
-chains and on the chains whose audit is reliable (final k-hat at most 0.7). Test rows 3000 to 3999 are S10's
+chains and on the chains whose audit is reliable (final k-hat at most 0.7 and every proposal priced). Test rows
+3000 to 3999 are S10's
 (tutorial_final/studies/README.md).
 """
 
@@ -283,6 +285,8 @@ def finite(value):
         return float(value) if np.isfinite(value) else None
     if isinstance(value, np.integer):
         return int(value)
+    if isinstance(value, np.ndarray):
+        return finite(value.tolist())
     return value
 
 
@@ -295,7 +299,23 @@ def wilson(k, n, z=1.959964):
     return [float(centre - half), float(centre + half)]
 
 
-def breach_table(records, truth):
+def cluster_interval(breached, clusters, draws=2000, seed=0):
+    """95% interval of the breach rate per product by a bootstrap over clusters (chains sharing a truth).
+
+    Truths resampled from a posterior repeat, and chains with the same truth are not independent, so the Wilson
+    interval, which assumes independent chains, is too narrow; resampling whole clusters keeps their dependence."""
+    breached = np.asarray(breached, dtype=float)
+    labels, inverse = np.unique(clusters, return_inverse=True)
+    sums = np.zeros((len(labels), breached.shape[1]))
+    np.add.at(sums, inverse, breached)
+    sizes = np.bincount(inverse).astype(float)
+    rng = np.random.default_rng(seed)
+    pick = rng.integers(0, len(labels), (draws, len(labels)))
+    rates = sums[pick].sum(axis=1) / sizes[pick].sum(axis=1)[:, None]
+    return np.quantile(rates, [0.025, 0.975], axis=0).T.tolist()
+
+
+def breach_table(records, truth, clusters=None):
     n = len(records)
     table = {}
     for m in METHODS:
@@ -309,7 +329,17 @@ def breach_table(records, truth):
                     "median_width_over_price": np.median((upper - lower) / np.abs(truth), axis=0).tolist(),
                     "median_abs_centre_error_over_price": np.median(np.abs(centre - truth) / np.abs(truth),
                                                                     axis=0).tolist()}
+        if clusters is not None and len(set(clusters)) < n:
+            table[m]["long_cluster_bootstrap"] = cluster_interval(truth < lower, clusters)
+            table[m]["short_cluster_bootstrap"] = cluster_interval(truth > upper, clusters)
     return table
+
+
+def truth_clusters(records):
+    """One label per chain; chains whose truths are identical share it."""
+    keys = [tuple(np.round(r["truth"]["targets"], 12)) for r in records]
+    index = {k: i for i, k in enumerate(dict.fromkeys(keys))}
+    return [index[k] for k in keys]
 
 
 def summarize(args):
@@ -322,17 +352,25 @@ def summarize(args):
         raise ValueError("no finished chains found")
     records.sort(key=lambda r: r["test_row"])
     khat = np.array([np.inf if r["posterior"]["khat"] is None else r["posterior"]["khat"] for r in records], dtype=float)
-    reliable = [r for r, k in zip(records, khat) if k <= KHAT_RELIABLE]
+    # Reliable: a usable tail (k-hat) and every proposal priced (an unpriced proposal's zero weight biases the audit).
+    reliable = [r for r, k in zip(records, khat)
+                if k <= KHAT_RELIABLE and r["posterior"]["unpriced_proposals"] == 0]
+    clusters = truth_clusters(records)
     report = {"study": "S10", "chains": len(records), "reliable_chains": len(reliable),
+              "distinct_truths": len(set(clusters)),
               "failed_chains": [{"test_row": r["test_row"], "error": r["failed"]} for r in failed],
               "test_rows": [records[0]["test_row"], records[-1]["test_row"] + 1],
               "products": list(thin_products.NAMES), "nominal_breach_rate": 0.1, "arms": list(ARMS),
-              "reliable_means": f"final k-hat at most {KHAT_RELIABLE}", "all": {}, "reliable": {}}
+              "reliable_means": f"final k-hat at most {KHAT_RELIABLE} and no unpriced proposal",
+              "intervals": ("Wilson 95% intervals assume independent chains; when truths repeat (truths resampled "
+                            "from a posterior), the cluster bootstrap over distinct truths is the one to read"),
+              "all": {}, "reliable": {}}
     for label, subset in (("all", records), ("reliable", reliable)):
+        subset_clusters = truth_clusters(subset) if subset else None
         for arm in ARMS:
             if subset:
                 truth = np.array([r["truth"]["products"][arm] for r in subset])
-                report[label][arm] = breach_table(subset, truth)
+                report[label][arm] = breach_table(subset, truth, subset_clusters)
     report["audit"] = {"khat_quantiles": dict(zip(("q50", "q90", "max"), np.quantile(khat, [0.5, 0.9, 1.0]).tolist())),
                        "share_khat_above_0_7": float(np.mean(khat > KHAT_RELIABLE)),
                        "share_with_second_round": float(np.mean([len(r["posterior"]["rounds"]) > 1 for r in records])),

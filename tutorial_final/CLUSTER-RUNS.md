@@ -6,7 +6,9 @@
 [`studies/README.md`](studies/README.md).
 
 All costs are in CPU-hours on this project's 2-core container; Oscar's cores may be up to about 30% faster or
-slower. Every script that takes `--out` needs a new directory, except the S10 array, which appends to its own.
+slower. Every script that takes `--out` needs a new directory, so a rerun goes to a new one, except three that
+continue in their own: the S10 runs (R8, R9), the S5 audit (R5) and a chunked training run (R3, R4), each only
+when rerun with the same settings.
 
 **For the weekend of 24–25 October.** Run R0 to R4 first, in order. If an acceptance check fails, stop and report
 it to Francesco Muia with the run's JSON; do not change the code in the run checkout. Every new or changed Python
@@ -23,14 +25,14 @@ off Oscar.
 | R2 | S1, S1-G | The bank's quality, its prior predictive check, its time-grid bias | about 2 CPU-h | R1 |
 | R3 | S2 | The liquid network (the curve given) and its SBC on 2,000 surfaces | 1 GPU job, 1 CPU-h | R1 |
 | R4 | S2-T | The thin network on EWG's layout (the curve inferred) and its SBC at three noise scales | 1 GPU job, 2 CPU-h | R1 |
-| R5 | S5 | The audit of the liquid network on 200 surfaces | about 190 CPU-h | R3 |
+| R5 | S5 | The audit of the liquid network on 200 surfaces | about 300 CPU-h | R3 |
 | R6 | S8 | SPY's posterior, audit, predictive check and products | about 2 CPU-h | R3 |
 | R7 | S11 | EWG's posterior, products, classical fits and predictive check, at three noise scales | about 3 CPU-h | R4 |
-| R8 | S10 | Breach rates of every method's reserves on 1,000 simulated chains with EWG's layout | about 160 CPU-h | R4 |
-| R9 | S10-E | The same on 300 chains whose truths come from EWG's posterior | about 50 CPU-h | R7 |
+| R8 | S10 | Breach rates of every method's reserves on 1,000 simulated chains with EWG's layout | about 180 CPU-h | R4 |
+| R9 | S10-E | The same on 300 chains whose truths come from EWG's posterior | about 55 CPU-h | R7 |
 | R10 | S4, S6, S7, S9 | The neural-pricer route, the classical route, products, costs | under 20 CPU-h | R3 |
 
-The total is about 790 CPU-hours and two GPU jobs. R3 and R4 can run together, and so can R5 to R8.
+The total is about 930 CPU-hours and two GPU jobs. R3 and R4 can run together, and so can R5 to R8.
 
 ## Before anything
 
@@ -78,6 +80,9 @@ sbatch --array=0-2239%200 cluster/calibration_bank_array.sbatch "$(pixi run whic
 - If `scontrol show config | grep MaxArraySize` is below 2,240, submit in parts with the offset argument, for
   example `--array=0-999` with offset 0, then `--array=0-999` with offset 1000, then `--array=0-239` with offset 2000.
 - A requeued or resubmitted task keeps a finished shard and redoes a partial one.
+- A task that fails the same way on every resubmission has hit a surface it cannot price (the log names it). The
+  worst corner of the prior passed on the container, so this is not expected. Stop and report it; do not change the
+  seed or the config, which would change the bank.
 - When every task has finished, assemble in a job with enough memory (about 7 GB in use):
   ```bash
   sbatch --cpus-per-task=2 --mem=32G --time=02:00:00 cluster/study.sbatch python scripts/calibration_bank.py \
@@ -118,7 +123,10 @@ sbatch --mem=16G --time=02:00:00 cluster/study.sbatch python tutorial_final/stud
 ```
 
 - Look at the validation loss in `training.json`. If it still falls over the last tenth of the epochs, train
-  again with `--epochs 600`.
+  again into a new directory, `--out $RUNS/s2-train-600 --epochs 600`, and use that directory below. A rerun into
+  the same directory with other epochs is refused: it would continue the old learning-rate schedule, which ends at
+  zero.
+- An interrupted training resumes from its last chunk: resubmit the same command.
 - Accept (gate G2) when `validation.json` has every target of the SBC inside the simultaneous band: H, η, ρ and
   ρη, on test rows 0 to 1999.
 
@@ -135,24 +143,30 @@ done
 
 The network infers H, η, ρ and the seven forward-variance levels from EWG's 27 layout quotes. Its noise is EWG's
 own half-spreads, times a scale s drawn in training from 0.5 to 2. Accept (gate G2-T) when, at s = 1, all eleven
-quantities of the SBC (the ten targets and ρη) lie inside the band. Report s = 0.5 and s = 2 as they come.
+quantities of the SBC (the ten targets and ρη) lie inside the band. Report s = 0.5 and s = 2 as they come. As for
+R3, a longer training goes to a new directory, and the later commands then use it.
 
 ## R5. S5: the audit of the liquid network
 
 ```bash
-sbatch --cpus-per-task=32 --mem=32G --time=12:00:00 cluster/study.sbatch python tutorial_final/studies/audit.py \
-    --bank $BANK --checkpoint $RUNS/s2-train --out $RUNS/s5 --first 2500 --surfaces 200 --proposals 512 \
-    --paths 32768 --workers 32
+sbatch --cpus-per-task=48 --mem=48G --time=12:00:00 cluster/study.sbatch python tutorial_final/studies/audit.py \
+    --bank $BANK --checkpoint $RUNS/s2-train --out $RUNS/s5 --first 2500 --surfaces 50 --proposals 512 \
+    --paths 32768 --workers 48
+# after a look at the first 50 surfaces: the same command with --surfaces 200 audits the other 150
 ```
 
 - Each proposal is priced on its own seed. The pilot's audit priced all of a surface's proposals on one seed,
   which biases the reweighted posterior.
-- An interrupted run resumes from `s5.partial.jsonl`: resubmit the same command after deleting the empty `s5`
-  directory.
-- Start with `--surfaces 50`, about 45 CPU-hours, and look at `unpriced_proposals_total` and the cost per surface
-  before running the rest.
-- Accept when fewer than 1% of proposals are unpriced. The flag rate and the network's error on the reliable audits
-  are the results.
+- A pilot pricing at a quarter of the paths chooses each proposal's path count, up to 32 times `--paths`. The
+  prices come from an independent pricing, so the choice cannot bias the likelihood.
+- The first 50 surfaces cost about 75 CPU-hours. Look at `unpriced_proposals_total` and
+  `cpu_seconds_per_surface_median` in `s5/audit.json` before extending. A review measured about 1.6 pricings per
+  proposal on the test bank, so the 200 surfaces cost about 300 CPU-hours.
+- Every finished surface is kept in `s5/surfaces.jsonl`. An interrupted run resumes when the same command is
+  resubmitted. A rerun with other settings is refused; use a new `--out` for that.
+- Accept when fewer than 1% of proposals are unpriced. A surface with an unpriced proposal is not counted as
+  reliable: its zero weight biases the audit. The flag rate and the network's error on the reliable audits are
+  the results.
 
 ## R6. S8: SPY
 
@@ -162,7 +176,8 @@ sbatch --time=04:00:00 cluster/study.sbatch python tutorial_final/studies/real_s
     --workers 16
 ```
 
-Accept (gate G4) when the audit's k-hat is at most 0.7. Otherwise rerun with `--proposals 4096`. The predictive
+Accept (gate G4) when the audit's k-hat is at most 0.7. Otherwise rerun with `--proposals 4096` into a new `--out`
+(`$RUNS/s8-4096`). The predictive
 check is a result, not a gate: SPY's grid values are spline readings that the likelihood treats as independent
 quotes.
 
@@ -174,7 +189,8 @@ sbatch --time=04:00:00 cluster/study.sbatch python tutorial_final/studies/thin_r
     --out $RUNS/s11 --scales 1,0.5,2 --workers 16
 ```
 
-Accept when k-hat at s = 1 is at most 0.5 after at most four rounds. Otherwise rerun with `--proposals 4096`.
+Accept when k-hat at s = 1 is at most 0.5 after at most four rounds. Otherwise rerun with `--proposals 4096` into
+a new `--out` (`$RUNS/s11-4096`), and give R9 that directory's `draws.npz`.
 The data are EWG's 61 cleaned quotes of 22 October 2026 at their own strikes and trading days, with the carry
 forward and NYSE trading days (`checks/thin_chains/build_layout.py`).
 
@@ -187,11 +203,12 @@ sbatch --array=5-9 cluster/thin_coverage_array.sbatch $BANK $RUNS/s2t-train $RUN
 pixi run python tutorial_final/studies/thin_coverage.py summarize --out $RUNS/s10
 ```
 
-- About 9.5 CPU-minutes a chain, so one task of 100 chains takes about an hour on 16 cores.
+- About 11 CPU-minutes a chain (9.5 on the test bank, plus the audit's pilot pricings), so one task of 100 chains
+  takes a little over an hour on 16 cores.
 - Methods compared: the network alone, the audited posterior, Gauss–Newton with the curve flat or power-law beyond
   the last quote, and H fixed at 0.10.
-- Accept when at least 90% of chains have a reliable audit (`reliable_chains`), and when the product seed check
-  moves the bounds by less than a tenth of their width.
+- Accept when at least 90% of chains have a reliable audit (`reliable_chains`: k-hat at most 0.7 and every
+  proposal priced), and when the product seed check moves the bounds by less than a tenth of their width.
 
 ## R9. S10-E: coverage near EWG
 
@@ -205,7 +222,10 @@ pixi run python tutorial_final/studies/thin_coverage.py summarize --out $RUNS/s1
 ```
 
 The truths are drawn from EWG's audited posterior, not from the prior. The posterior's coverage is then not
-guaranteed by construction, which makes R9 the robustness check of R8. Accept as for R8.
+guaranteed by construction, which makes R9 the robustness check of R8. Accept as for R8. The truths are resampled
+with replacement, so some repeat when EWG's effective sample size is small. `coverage.json` reports
+`distinct_truths`, and its `*_cluster_bootstrap` intervals, which resample distinct truths, are the ones to read;
+the Wilson intervals assume independent chains.
 
 ## R10. S4, S6, S7, S9 on the full bank
 
@@ -243,6 +263,28 @@ A review on 24 October found the following errors in earlier runs and scripts. A
 6. **Maturities counted holidays as trading days**, which made EWG's April expiry 126 days instead of 120. NYSE
    holidays are now removed.
 7. **The truth's products were priced on another seed than the methods'.** They now share the seed.
-8. **A failed proposal dropped its whole surface from the audit.** It is now priced again with more paths, or
-   counted.
+8. **A failed proposal dropped its whole surface from the audit.** It is now priced with more paths, or counted,
+   and its surface is then not counted as reliable.
 9. **Shards were not safe to rerun, and the config was not frozen.** Both are fixed.
+
+A second review, of the code written for these runs, found nine more problems. All are fixed, with a test or a
+rerun on the test bank.
+
+10. **R4 crashed.** Chunked training of the thin network read a key its data do not have.
+11. **The adaptive rounds did not adapt.** The second round's proposal shrank toward the spread of all pooled
+    points, prior draws included, and came out 12 to 19 times too wide. It now shrinks toward the previous
+    round's proposal; on a synthetic audit the median effective sample size after two rounds went from 1.5 to 5.1
+    and from 4.2 to 25.7.
+12. **Choosing the path count from the same pricing biased the likelihood.** A Monte Carlo price and its
+    estimated error are correlated, so accepting a pricing whose own error estimate passed shifted the accepted
+    prices by up to 0.37 of their Monte Carlo sd. A pilot pricing now chooses the count.
+13. **The defensive prior in the thin audit's proposal lacked its truncation constant**, which gave points drawn
+    from the prior 1.36 times too much weight. The constant, 0.734, is now included.
+14. **S11 could lose its draws.** An infinite k-hat made the report fail before `draws.npz` was written. The draws
+    are now written first, and non-finite numbers become null.
+15. **Accepting the thin checkpoint failed**, and left a directory that blocked a rerun. It now checks the thin
+    network with its own loader and builds the copy in a staging directory.
+16. **Resuming a training run with other epochs trained at a learning rate of zero.** That is now refused.
+17. **The S5 audit could not be resumed or extended in place.** It now keeps every surface and continues.
+18. **Truths resampled from EWG's posterior repeat**, and the Wilson intervals ignored it. The summary now reports
+    the distinct truths and a bootstrap over them.

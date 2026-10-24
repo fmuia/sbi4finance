@@ -15,7 +15,8 @@ constrained by a logit to its prior support (the box, and the curve prior's vol_
 The prior density of the curve (needed by the importance-sampling audit) is curve_log_prior: the power law in log
 time times a Gaussian random walk of tasks.draw_context, with sigma0 fixed by the first level and the exponent b
 integrated out on a grid. The truncation to vol_bounds only cuts the support, so its normalizing constant cancels
-in self-normalized weights.
+in self-normalized weights; the defensive mixture of the proposal, where it does not cancel, divides by it
+(curve_prior_mass).
 """
 
 import json
@@ -107,8 +108,33 @@ def curve_log_prior(log_levels, task):
     return np.where(inside, log_mix - np.log(hi_l - lo_l), -np.inf)
 
 
+_CURVE_MASS = {}
+
+
+def curve_prior_mass(task, draws=400_000):
+    """Z, the probability that an untruncated power_law_walk curve has every level inside vol_bounds: the
+    acceptance rate of tasks.draw_context. The truncated prior density is exp(curve_log_prior) / Z. Z cancels in
+    self-normalized weights, but not where the prior is mixed with another density (Proposal.log_density).
+    Estimated once per prior on a fixed seed; its relative standard error is about 0.1%."""
+    prior = curve_prior(task)
+    mid = tasks.interval_midpoints(task)
+    key = json.dumps(prior, sort_keys=True) + json.dumps(np.asarray(mid, dtype=float).tolist())
+    if key not in _CURVE_MASS:
+        rng = np.random.default_rng(np.random.SeedSequence([_TAG, 10]))
+        x = np.log(mid) - np.log(mid[0])
+        level = np.exp(rng.uniform(*np.log(prior["level_bounds"]), draws))
+        exponent = rng.uniform(*prior["exponent_bounds"], draws)
+        steps = rng.standard_normal((draws, len(x) - 1)) * prior["walk_sd"] * np.sqrt(np.diff(x))
+        log_vol = 0.5 * (2 * np.log(level)[:, None] + exponent[:, None] * x[None, :]
+                         + np.concatenate([np.zeros((draws, 1)), np.cumsum(steps, axis=1)], axis=1))
+        low, high = np.log(prior["vol_bounds"])
+        _CURVE_MASS[key] = float(np.mean(np.all((log_vol >= low) & (log_vol <= high), axis=1)))
+    return _CURVE_MASS[key]
+
+
 def log_prior(targets, task):
-    """log prior density of rows [N, P + K] in natural units: the uniform box times the curve prior."""
+    """log prior density of rows [N, P + K] in natural units: the uniform box times the curve prior, up to the
+    truncation constant (curve_prior_mass)."""
     targets = np.atleast_2d(np.asarray(targets, dtype=float))
     p = len(task["parameter_names"])
     box = np.asarray(task["prior_bounds"], dtype=float)
@@ -242,9 +268,10 @@ class Proposal:
     """(1 - f) Student t fitted to draws in logit coordinates + f joint prior; draws and log densities in natural
     units. As correction.propose, with the joint prior of the parameters and the curve as the defensive part."""
 
-    def __init__(self, draws, task, *, prior_fraction=0.1, df=5, inflation=1.2, weights=None):
+    def __init__(self, draws, task, *, prior_fraction=0.1, df=5, inflation=1.2, weights=None, shrink_to=None):
         self.task, self.prior_fraction = task, float(prior_fraction)
         self.bounds = target_bounds(task)
+        self.log_prior_mass = np.log(curve_prior_mass(task))
         width = self.bounds[:, 1] - self.bounds[:, 0]
         draws = np.clip(np.asarray(draws, dtype=float), self.bounds[:, 0] + 1e-9 * width,
                         self.bounds[:, 1] - 1e-9 * width)
@@ -256,14 +283,18 @@ class Proposal:
         unbias = 1.0 - np.sum(w**2)
         cov = (z - mean).T @ ((z - mean) * w[:, None]) / unbias if unbias > 1e-6 else np.zeros((z.shape[1],) * 2)
         if weights is not None:
-            # Few effective points make the weighted covariance unreliable (one point makes it zero): shrink it
-            # towards the unweighted spread of the points, in proportion to the effective sample size.
+            # Few effective points make the weighted covariance unreliable (one point makes it zero): shrink it, in
+            # proportion to the effective sample size, towards shrink_to (the previous round's covariance) or, if
+            # none is given, the unweighted spread of the points. The unweighted spread of pooled points includes
+            # the defensive prior draws and is far too wide to adapt with.
             ess = 1.0 / np.sum(w**2)
             alpha = ess / (ess + z.shape[1])
-            cov = alpha * cov + (1.0 - alpha) * np.cov(z.T)
+            target = np.cov(z.T) if shrink_to is None else np.asarray(shrink_to, dtype=float)
+            cov = alpha * cov + (1.0 - alpha) * target
         values, vectors = np.linalg.eigh(0.5 * (cov + cov.T))
         values = np.maximum(values, 1e-8 * max(values.max(), 1e-12) + 1e-10)
         cov = (vectors * values) @ vectors.T
+        self.covariance = cov  # before the inflation; the next round shrinks towards it
         self.t = multivariate_t(loc=mean, shape=cov * inflation**2, df=df)
 
     def sample(self, num_samples, rng):
@@ -278,7 +309,7 @@ class Proposal:
         z = to_unbounded(targets, self.bounds)
         log_t = self.t.logpdf(z) - log_jacobian(z, self.bounds)
         return np.logaddexp(np.log1p(-self.prior_fraction) + log_t,
-                            np.log(self.prior_fraction) + log_prior(targets, self.task))
+                            np.log(self.prior_fraction) + log_prior(targets, self.task) - self.log_prior_mass)
 
 
 def propose(draws, task, num_samples, seed, *, prior_fraction=0.1, df=5, inflation=1.2):
@@ -360,31 +391,23 @@ def price_contracts(task, row, contracts, noise, paths_ladder, seed, budget=0.25
 def priced_for_audit(row, seed, *, task, contracts, noise, paths, max_doublings=4, budget=0.5):
     """One proposal priced for the audit on its own seed: (prices, covariance, paths) or (None, None, reason).
 
-    Prices at paths, then 2, 4, ... times as many (up to 2**max_doublings), each on a fresh stream, until every
-    quote's Monte Carlo SE is at most budget times its noise sd, the covariance's largest eigenvalue relative to the
-    noise is at most correction.MAX_RELATIVE_EIGENVALUE (the estimate stays valid) and its trace at most
-    correction.MAX_RELATIVE_TRACE (the estimate's noise does not swamp the weights). The decision depends on the
-    estimated error sizes, not on the prices, so it does not bias the likelihood estimate.
+    correction.price_for_likelihood: a pilot pricing chooses the path count (paths times a power of two, up to
+    2**max_doublings) at which every quote's Monte Carlo SE is at most budget times its noise sd, the covariance's
+    largest eigenvalue relative to the noise at most correction.MAX_RELATIVE_EIGENVALUE (the estimate stays valid)
+    and its trace at most correction.MAX_RELATIVE_TRACE (the estimate's noise does not swamp the weights); the
+    prices come from an independent pricing at that count, with the pilot's covariance scaled to it, so neither
+    the count nor the covariance depends on the prices that enter the likelihood.
     """
     from . import correction
 
-    reason = None
-    for rung in range(max_doublings + 1):
-        n = paths * 2**rung
-        stream = int(np.random.SeedSequence([_TAG, 9, int(seed), rung]).generate_state(1, dtype=np.uint32)[0])
-        try:
-            prices, errors, cov = price_contracts(task, row, contracts, noise, [n], stream, budget=np.inf, cap=None,
-                                                  covariance=True)
-        except ValueError as error:  # a non-finite price
-            reason = str(error)
-            continue
-        ratio = correction.relative_mc_eigenvalue(noise, cov)
-        worst = float(np.max(errors / noise))
-        trace = float(np.sum((errors / noise) ** 2))
-        if worst <= budget and ratio <= correction.MAX_RELATIVE_EIGENVALUE and trace <= correction.MAX_RELATIVE_TRACE:
-            return prices, cov, int(n)
-        reason = f"at {n} paths: largest SE/noise {worst:.2f}, covariance eigenvalue {ratio:.2f}, trace {trace:.2f}"
-    return None, None, reason
+    codes = {"pilot": 10, "final": 11}
+
+    def price(n, purpose, attempt):
+        stream = int(np.random.SeedSequence([_TAG, 9, int(seed), codes[purpose], int(attempt), int(n)])
+                     .generate_state(1, dtype=np.uint32)[0])
+        return price_contracts(task, row, contracts, noise, [n], stream, budget=np.inf, cap=None, covariance=True)
+
+    return correction.price_for_likelihood(price, noise, paths, budget=budget, max_doublings=max_doublings)
 
 
 def importance_rounds(draws, task, price_one, observation, noise, num_proposals, seed, *, max_rounds=1,
@@ -402,9 +425,9 @@ def importance_rounds(draws, task, price_one, observation, noise, num_proposals,
     from . import correction
 
     proposals, samples, log_lik, rounds = [], [], [], []
-    fit_draws, fit_weights = draws, None
+    fit_draws, fit_weights, shrink_to = draws, None, None
     for r in range(max_rounds):
-        proposal = Proposal(fit_draws, task, weights=fit_weights)
+        proposal = Proposal(fit_draws, task, weights=fit_weights, shrink_to=shrink_to)
         rng = np.random.default_rng(np.random.SeedSequence([_TAG, 7, int(seed), r]))
         targets, _ = proposal.sample(num_proposals, rng)
         seeds = [int(np.random.SeedSequence([_TAG, 8, int(seed), r, j]).generate_state(1, dtype=np.uint32)[0])
@@ -429,7 +452,7 @@ def importance_rounds(draws, task, price_one, observation, noise, num_proposals,
                        "unpriced_reasons": unpriced[:3]})
         if result["khat"] <= khat_target:
             break
-        fit_draws, fit_weights = pooled, result["weights"]
+        fit_draws, fit_weights, shrink_to = pooled, result["weights"], proposal.covariance
     return {"targets": pooled, "weights": result["weights"], "ess": result["ess"], "efficiency": result["efficiency"],
             "khat": result["khat"], "rounds": rounds, "unpriced": int(sum(x["unpriced"] for x in rounds))}
 
