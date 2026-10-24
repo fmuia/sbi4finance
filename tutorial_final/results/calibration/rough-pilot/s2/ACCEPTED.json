@@ -1,0 +1,14 @@
+{
+  "accepted": "2026-10-22T08:36:48+00:00",
+  "source": "/tmp/claude-0/-home-user-sbi4finance/9c138712-55c5-5f30-b0b0-9fce83e4ceb1/scratchpad/runs/rough-pilot-s2b",
+  "source_sha256": {
+    "contraction.png": "ba0c4fe4eab7fe39539fda8d64b79f75e489fbed1941225cf426d96502f2ff7b",
+    "draws.npz": "30d2fc9c1b0822fd4fe0e695d217c6a3b2973bb49f1e73ad1bcd2a7158ad2c46",
+    "recovery.png": "bf443aa74d1a5086163e698e9f1669df944ba8d3d94cbb215848da1e1c88fdc3",
+    "sbc.png": "d698ea01ad6e1801b780be64762d723964fdb2c2acd3a388dcceddecc359c9a8",
+    "validation.json": "de109ee84aaff0fdb6f14fdc371c608764f26173c0da9d636a656b926bdbae15"
+  },
+  "changes": [
+    "draws.npz: kept the first 20 surfaces of ['draws', 'truth']"
+  ]
+}

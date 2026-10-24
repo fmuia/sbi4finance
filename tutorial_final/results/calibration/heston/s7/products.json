@@ -1,0 +1,301 @@
+{
+  "study": "S7",
+  "task_id": "hkde_calibration_v1",
+  "task_fingerprint": "5e499526ff8f29a72f49785a1a36006b1d769d26bca8a6f83f7a8c8ac4d431fa",
+  "least_squares_pricer": "exact Fourier",
+  "specification": {
+    "variance_swap": {
+      "maturity": 0.25
+    },
+    "volatility_swap": {
+      "maturity": 0.25
+    },
+    "forward_start_call": {
+      "start": 0.25,
+      "end": 0.5,
+      "moneyness": 1.0
+    },
+    "put_out_of_grid": {
+      "strike": 0.9,
+      "maturity": 2.0
+    },
+    "steps_per_year": 252
+  },
+  "settings": {
+    "bank": "/tmp/claude-0/-home-user-sbi4finance/9c138712-55c5-5f30-b0b0-9fce83e4ceb1/scratchpad/banks/heston",
+    "checkpoint": "/tmp/claude-0/-home-user-sbi4finance/9c138712-55c5-5f30-b0b0-9fce83e4ceb1/scratchpad/runs/heston-net-v3",
+    "out": "/tmp/claude-0/-home-user-sbi4finance/9c138712-55c5-5f30-b0b0-9fce83e4ceb1/scratchpad/runs/heston-s7",
+    "pricer": null,
+    "first": 2300,
+    "surfaces": 3,
+    "draws": 400,
+    "paths": 8192,
+    "starts": 10,
+    "least_squares_paths": 8192,
+    "workers": 4,
+    "seed": 0
+  },
+  "parameters": [
+    "initial_variance",
+    "theta",
+    "vol_of_vol",
+    "rho"
+  ],
+  "labels": [
+    "v\u2080",
+    "\u03b8",
+    "\u03c3_v",
+    "\u03c1"
+  ],
+  "surfaces": [
+    {
+      "test_row": 2300,
+      "truth": [
+        0.08204632535725649,
+        0.023255076324864635,
+        0.21414417124073348,
+        -0.16555462873639248
+      ],
+      "least_squares": [
+        0.0822412399266553,
+        0.02361202495443162,
+        0.20688662190499463,
+        -0.22848875633942556
+      ],
+      "products": {
+        "variance_swap": {
+          "point": 0.06974962202780571,
+          "mean": 0.06965719717630446,
+          "q05": 0.06902909991299351,
+          "q95": 0.0701213269281428,
+          "range_90_relative": 0.01568003105816656,
+          "reserve_short": 0.00027795270287607476,
+          "reserve_short_relative": 0.003985006582046693,
+          "variance_share_by_parameter": {
+            "initial_variance": 0.5408481419594611,
+            "theta": 0.08146145678646102,
+            "vol_of_vol": 0.013982743790875515,
+            "rho": 0.00019554819611815221
+          },
+          "mc_se_typical": 0.0
+        },
+        "volatility_swap": {
+          "point": 0.26304083154177876,
+          "mean": 0.26304581286763173,
+          "q05": 0.26184647981540593,
+          "q95": 0.2641786740084507,
+          "range_90_relative": 0.008866114110009989,
+          "reserve_short": 0.0008692270449986994,
+          "reserve_short_relative": 0.003304532759814668,
+          "variance_share_by_parameter": {
+            "initial_variance": 0.3923978018392331,
+            "theta": 0.027906995763342806,
+            "vol_of_vol": 0.25394321012889065,
+            "rho": 0.2286068688669796
+          },
+          "mc_se_typical": 6.7027300746618045e-06
+        },
+        "forward_start_call": {
+          "point": 0.0443312762458571,
+          "mean": 0.04439835135197646,
+          "q05": 0.04372471711154063,
+          "q95": 0.045088442891917976,
+          "range_90_relative": 0.03071568512907498,
+          "reserve_short": 0.0006054311873648632,
+          "reserve_short_relative": 0.01365697626224877,
+          "variance_share_by_parameter": {
+            "initial_variance": 0.009766739793088937,
+            "theta": 0.2595962047866423,
+            "vol_of_vol": 0.5691568032262307,
+            "rho": 0.38792412790458725
+          },
+          "mc_se_typical": 2.517436786609547e-05
+        },
+        "put_out_of_grid": {
+          "point": 0.06129933052620984,
+          "mean": 0.06115567693994135,
+          "q05": 0.059307357043999635,
+          "q95": 0.06307065170368487,
+          "range_90_relative": 0.06153630943176409,
+          "reserve_short": 0.0013516905542305113,
+          "reserve_short_relative": 0.022050657692787804,
+          "variance_share_by_parameter": {
+            "initial_variance": 0.10988229417490462,
+            "theta": 0.91144768659379,
+            "vol_of_vol": 0.01863834846265322,
+            "rho": 0.022364032890725243
+          },
+          "mc_se_typical": 3.968213735506504e-05
+        }
+      },
+      "pricing_cpu_seconds": 203.17932575799995,
+      "least_squares_cpu_seconds": 6.6559106720000045
+    },
+    {
+      "test_row": 2301,
+      "truth": [
+        0.1229196411205539,
+        0.13250554059869785,
+        0.6901694154344482,
+        -0.8066696775947005
+      ],
+      "least_squares": [
+        0.12279817236951067,
+        0.13395855341254387,
+        0.6854269601402472,
+        -0.8165093207453658
+      ],
+      "products": {
+        "variance_swap": {
+          "point": 0.12517601787982807,
+          "mean": 0.12507137894380022,
+          "q05": 0.12444156044135152,
+          "q95": 0.12565740249585097,
+          "range_90_relative": 0.009721185332463503,
+          "reserve_short": 0.0003615899311727455,
+          "reserve_short_relative": 0.0028886518144384523,
+          "variance_share_by_parameter": {
+            "initial_variance": 0.3976502412977903,
+            "theta": 0.16386368785874464,
+            "vol_of_vol": 0.19691962262019155,
+            "rho": 0.11825245558140011
+          },
+          "mc_se_typical": 0.0
+        },
+        "volatility_swap": {
+          "point": 0.34452783361481076,
+          "mean": 0.34451348181569513,
+          "q05": 0.34346506296024115,
+          "q95": 0.34558234933984955,
+          "range_90_relative": 0.006145728661907879,
+          "reserve_short": 0.0007874096510175899,
+          "reserve_short_relative": 0.0022854747111605797,
+          "variance_share_by_parameter": {
+            "initial_variance": 0.14034678914809426,
+            "theta": 0.0004871905715597343,
+            "vol_of_vol": 0.45117697024779424,
+            "rho": 0.47487081105055884
+          },
+          "mc_se_typical": 5.8170306131264124e-05
+        },
+        "forward_start_call": {
+          "point": 0.06581233066181899,
+          "mean": 0.06583228007076265,
+          "q05": 0.06531222340117934,
+          "q95": 0.06639992539886927,
+          "range_90_relative": 0.016522320000473385,
+          "reserve_short": 0.00046925171920669806,
+          "reserve_short_relative": 0.007130148932393521,
+          "variance_share_by_parameter": {
+            "initial_variance": 0.08049921298734117,
+            "theta": 0.06477699733841827,
+            "vol_of_vol": 0.643126393072885,
+            "rho": 0.650373018459821
+          },
+          "mc_se_typical": 0.00040324551564231443
+        },
+        "put_out_of_grid": {
+          "point": 0.13554082609405393,
+          "mean": 0.13544915770158963,
+          "q05": 0.13432866038759342,
+          "q95": 0.13659947987370008,
+          "range_90_relative": 0.016765105997259454,
+          "reserve_short": 0.0008089024712907844,
+          "reserve_short_relative": 0.005967961791301715,
+          "variance_share_by_parameter": {
+            "initial_variance": 0.23068037965079383,
+            "theta": 0.7593163241064088,
+            "vol_of_vol": 0.017705097753071736,
+            "rho": 0.03255424503568952
+          },
+          "mc_se_typical": 0.000604471670707864
+        }
+      },
+      "pricing_cpu_seconds": 199.95522269800006,
+      "least_squares_cpu_seconds": 8.385097799
+    },
+    {
+      "test_row": 2302,
+      "truth": [
+        0.04421852710742882,
+        0.06831987601163589,
+        1.4287323966556373,
+        -0.3354093707540833
+      ],
+      "least_squares": [
+        0.04451396052547111,
+        0.06817693263185792,
+        1.438177294964042,
+        -0.3368640183629812
+      ],
+      "products": {
+        "variance_swap": {
+          "point": 0.04955562458398117,
+          "mean": 0.04965374468810012,
+          "q05": 0.04901106914905471,
+          "q95": 0.05029525721562527,
+          "range_90_relative": 0.02586286441510473,
+          "reserve_short": 0.0005786750337798338,
+          "reserve_short_relative": 0.01167728262205962,
+          "variance_share_by_parameter": {
+            "initial_variance": 0.4012956542175461,
+            "theta": 0.23226781328599536,
+            "vol_of_vol": 0.275756729893156,
+            "rho": 0.004250756931721551
+          },
+          "mc_se_typical": 0.0
+        },
+        "volatility_swap": {
+          "point": 0.18238021269077634,
+          "mean": 0.18265546567156674,
+          "q05": 0.1811470916232756,
+          "q95": 0.1841423843458277,
+          "range_90_relative": 0.016398593447720464,
+          "reserve_short": 0.0015034712555698215,
+          "reserve_short_relative": 0.008243609508883185,
+          "variance_share_by_parameter": {
+            "initial_variance": 0.09707792273802092,
+            "theta": 0.012937375198242434,
+            "vol_of_vol": 0.32561624247294674,
+            "rho": 0.042574656669541064
+          },
+          "mc_se_typical": 0.00032962993899115584
+        },
+        "forward_start_call": {
+          "point": 0.0319798102801936,
+          "mean": 0.032067535941360754,
+          "q05": 0.031473415940202906,
+          "q95": 0.032643767835691756,
+          "range_90_relative": 0.03649647099886238,
+          "reserve_short": 0.0005362902885817644,
+          "reserve_short_relative": 0.01676965197363634,
+          "variance_share_by_parameter": {
+            "initial_variance": 0.16002883316586092,
+            "theta": 0.4060777896109672,
+            "vol_of_vol": 0.16891223073782244,
+            "rho": 0.03977612384194232
+          },
+          "mc_se_typical": 0.00013551666893398895
+        },
+        "put_out_of_grid": {
+          "point": 0.07168072785767499,
+          "mean": 0.07182840927162042,
+          "q05": 0.07030569347488011,
+          "q95": 0.0733021977925746,
+          "range_90_relative": 0.041717536947855245,
+          "reserve_short": 0.0012732530924285806,
+          "reserve_short_relative": 0.0177628371039518,
+          "variance_share_by_parameter": {
+            "initial_variance": 0.17020468599474572,
+            "theta": 0.8262929547485237,
+            "vol_of_vol": 0.00028869676338999387,
+            "rho": 0.029968708621058375
+          },
+          "mc_se_typical": 0.00015111592467838758
+        }
+      },
+      "pricing_cpu_seconds": 213.7506297019999,
+      "least_squares_cpu_seconds": 9.364636390999998
+    }
+  ]
+}

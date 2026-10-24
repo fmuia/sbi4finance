@@ -1,0 +1,12 @@
+{
+ "_about": "Per-ticker inputs of thin_chain.py. Spot: the file's close. Rate: the 3-month Treasury constant-maturity yield of 2026-10-22 (Alpha Vantage TREASURY_YIELD; the 2026-10-23 value was not yet published), flat. Dividends: the last amount paid in each month of the last twelve (Alpha Vantage DIVIDENDS), on assumed ex-dates one year later, repeated each year for repeat_years. Raw files: data/SOURCES.md.",
+ "EWI": {"name": "iShares MSCI Italy ETF", "asof": "2026-10-22", "spot": 55.02, "rate": 0.0422,
+         "dividends": [["2026-12-15", 0.70], ["2027-06-14", 1.17]], "repeat_years": 3},
+ "EWG": {"name": "iShares MSCI Germany ETF", "asof": "2026-10-22", "spot": 41.35, "rate": 0.0422,
+         "dividends": [["2027-06-14", 0.83]], "repeat_years": 3},
+ "EWQ": {"name": "iShares MSCI France ETF", "asof": "2026-10-22", "spot": 41.79, "rate": 0.0422,
+         "dividends": [["2026-12-15", 0.23], ["2027-06-14", 1.09]], "repeat_years": 3},
+ "FEZ": {"name": "SPDR EURO STOXX 50 ETF", "asof": "2026-10-23", "spot": 64.56, "rate": 0.0422,
+         "dividends": [["2026-12-21", 0.51], ["2027-03-22", 0.09], ["2027-06-21", 1.11], ["2027-09-20", 0.11]],
+         "repeat_years": 3}
+}

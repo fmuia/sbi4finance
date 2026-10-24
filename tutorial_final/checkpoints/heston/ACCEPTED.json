@@ -1,0 +1,14 @@
+{
+  "accepted": "2026-10-22T06:16:25+00:00",
+  "source": "/tmp/claude-0/-home-user-sbi4finance/9c138712-55c5-5f30-b0b0-9fce83e4ceb1/scratchpad/runs/heston-net-v3",
+  "source_sha256": {
+    "last.keras": "1adbb13ae499ea34a9e5ea8deccabbe477bb3ee16c5b08719709ebe1171d1118",
+    "model.keras": "fbfc4b24376882993144b35072b957fe84fb14fe9732ec18d5ed435211967caf",
+    "resume.json": "2d0746a4a802f37d60e942296a0532a913868e82baa8fc8215e7576d0b1070db",
+    "task.json": "49b79f2febd35f0aa54bd294e770199fe1fbff238843dd49ef56f49a4953041a",
+    "training.json": "360fe4da4493ce1545f4256429a0888a9ee679d9fd52bf4737514c6883140916"
+  },
+  "changes": [
+    "model.keras: optimizer state removed; same-seed draws checked identical to the original's, whose SHA-256 the study reports cite as checkpoint_sha256"
+  ]
+}

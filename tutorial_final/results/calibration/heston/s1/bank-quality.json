@@ -1,0 +1,26 @@
+{
+  "study": "S1",
+  "task_id": "hkde_calibration_v1",
+  "task_fingerprint": "5e499526ff8f29a72f49785a1a36006b1d769d26bca8a6f83f7a8c8ac4d431fa",
+  "surfaces": 60000,
+  "error_measure": "|refined \u2212 base quadrature price| / quote-noise sd",
+  "budget": 0.1,
+  "error_quantiles_all_quotes": {
+    "q50": 1.2613923775739334e-08,
+    "q90": 7.210681818017153e-08,
+    "q99": 0.00013930789397377207,
+    "max": 0.056019143041338586
+  },
+  "share_of_quotes_above_0_1": 0.0,
+  "noise_variance_added_by_numerics": {
+    "median": 1.5911107302016205e-16,
+    "max": 0.0031381443870859534
+  },
+  "generation": {
+    "shards": 120,
+    "surfaces": 60000,
+    "cpu_seconds": 2786.779848162,
+    "cpu_seconds_per_surface": 0.0464463308027,
+    "cpu_hours_per_1000_surfaces": 0.012901758556305555
+  }
+}

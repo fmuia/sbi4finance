@@ -1,0 +1,1130 @@
+{
+ "ticker": "EWG",
+ "asof": "2026-10-22",
+ "source": "Cboe delayed quotes for EWG (data/SOURCES.md), chain sha256 e89bbc9febfb57748a6c8fa7215839404f72aaabe7a1ef13f03165ff470fb52c; quotes of the 2026-10-22 close",
+ "forward": "carry",
+ "prices_forward_units": [
+  0.003846820755581515,
+  0.005233443483963374,
+  0.008164258703771354,
+  0.013789178953132919,
+  0.02371157643852362,
+  0.010274215973482326,
+  0.00275860621078515,
+  0.006125613871131197,
+  0.00848818625203529,
+  0.012593755191400047,
+  0.01998991307019571,
+  0.033294979603087915,
+  0.014119922467201229,
+  0.004052795647064372,
+  0.008555034705183595,
+  0.011305561291613198,
+  0.015615234820364199,
+  0.023526754829124363,
+  0.03903853904784493,
+  0.016256318653138202,
+  0.0055745160458648135,
+  0.010950386074634832,
+  0.019201649036730162,
+  0.031925912953204794,
+  0.05457455047672122,
+  0.022391192986463915,
+  0.00748352546832913
+ ],
+ "implied_vol": [
+  0.3083845078262993,
+  0.27376549507777265,
+  0.2467737432238912,
+  0.22497200496518588,
+  0.20592303300218714,
+  0.18718958003542607,
+  0.16633439876543346,
+  0.32064048097419795,
+  0.28790801445068875,
+  0.2572109370996372,
+  0.22919081565812885,
+  0.2044892168632497,
+  0.18374770745208552,
+  0.1676078541617221,
+  0.33463415109464756,
+  0.2975953595939345,
+  0.25962022766660686,
+  0.22444061026408477,
+  0.19578836233778846,
+  0.17739533883913808,
+  0.17299339471955388,
+  0.2659919582416365,
+  0.24708604494122982,
+  0.22045627546252572,
+  0.19361284138116436,
+  0.17406593427278572,
+  0.16932574571302994
+ ],
+ "quotes": [
+  {
+   "expiry": "2026-11-20",
+   "trading_days": 21,
+   "design_days": 21,
+   "k": -0.14187147671113168,
+   "kind": "put",
+   "price_forward_units": 0.007255139056831924,
+   "implied_vol": 0.4296492017304705,
+   "half_spread_vol": 0.10861867102011877
+  },
+  {
+   "expiry": "2026-11-20",
+   "trading_days": 21,
+   "design_days": 21,
+   "k": -0.11447250252301734,
+   "kind": "put",
+   "price_forward_units": 0.003627569528415962,
+   "implied_vol": 0.3016627322752774,
+   "half_spread_vol": 0.026404111432569245
+  },
+  {
+   "expiry": "2026-11-20",
+   "trading_days": 21,
+   "design_days": 21,
+   "k": -0.087804255440856,
+   "kind": "put",
+   "price_forward_units": 0.0048367593712212815,
+   "implied_vol": 0.26971493900468957,
+   "half_spread_vol": 0.020736143849823047
+  },
+  {
+   "expiry": "2026-11-20",
+   "trading_days": 21,
+   "design_days": 21,
+   "k": -0.06182876903759533,
+   "kind": "put",
+   "price_forward_units": 0.007859733978234583,
+   "implied_vol": 0.2533514935981589,
+   "half_spread_vol": 0.023236718959197846
+  },
+  {
+   "expiry": "2026-11-20",
+   "trading_days": 21,
+   "design_days": 21,
+   "k": -0.03651096105330544,
+   "kind": "put",
+   "price_forward_units": 0.012091898428053204,
+   "implied_vol": 0.2318052865290819,
+   "half_spread_vol": 0.012416278898489607
+  },
+  {
+   "expiry": "2026-11-20",
+   "trading_days": 21,
+   "design_days": 21,
+   "k": -0.011818348462933925,
+   "kind": "put",
+   "price_forward_units": 0.019347037484885126,
+   "implied_vol": 0.2164745629622457,
+   "half_spread_vol": 0.010757715255012547
+  },
+  {
+   "expiry": "2026-11-20",
+   "trading_days": 21,
+   "design_days": 21,
+   "k": 0.012279203116126482,
+   "kind": "call",
+   "price_forward_units": 0.016324062877871828,
+   "implied_vol": 0.18945622725239947,
+   "half_spread_vol": 0.016058625104392203
+  },
+  {
+   "expiry": "2026-11-20",
+   "trading_days": 21,
+   "design_days": 21,
+   "k": 0.03580970052632072,
+   "kind": "call",
+   "price_forward_units": 0.007859733978234583,
+   "implied_vol": 0.1817603778197181,
+   "half_spread_vol": 0.019533650250427654
+  },
+  {
+   "expiry": "2026-11-20",
+   "trading_days": 21,
+   "design_days": 21,
+   "k": 0.05879921875101937,
+   "kind": "call",
+   "price_forward_units": 0.003022974607013301,
+   "implied_vol": 0.17302957625912374,
+   "half_spread_vol": 0.030587543912917188
+  },
+  {
+   "expiry": "2026-12-18",
+   "trading_days": 40,
+   "design_days": 42,
+   "k": -0.3273966136268505,
+   "kind": "put",
+   "price_forward_units": 0.004232164449818621,
+   "implied_vol": 0.5191500992258762,
+   "half_spread_vol": 0.07882856336118403
+  },
+  {
+   "expiry": "2026-12-18",
+   "trading_days": 40,
+   "design_days": 42,
+   "k": -0.29460679080385965,
+   "kind": "put",
+   "price_forward_units": 0.0024183796856106408,
+   "implied_vol": 0.4250548210821744,
+   "half_spread_vol": 0.04017666486416004
+  },
+  {
+   "expiry": "2026-12-18",
+   "trading_days": 40,
+   "design_days": 42,
+   "k": -0.2320864338225257,
+   "kind": "put",
+   "price_forward_units": 0.003627569528415962,
+   "implied_vol": 0.379358214952337,
+   "half_spread_vol": 0.027856188723138657
+  },
+  {
+   "expiry": "2026-12-18",
+   "trading_days": 40,
+   "design_days": 42,
+   "k": -0.20223347067284456,
+   "kind": "put",
+   "price_forward_units": 0.003627569528415962,
+   "implied_vol": 0.3397325731140872,
+   "half_spread_vol": 0.02575867083526721
+  },
+  {
+   "expiry": "2026-12-18",
+   "trading_days": 40,
+   "design_days": 42,
+   "k": -0.17324593379959227,
+   "kind": "put",
+   "price_forward_units": 0.0048367593712212815,
+   "implied_vol": 0.322632301810279,
+   "half_spread_vol": 0.020617386822473636
+  },
+  {
+   "expiry": "2026-12-18",
+   "trading_days": 40,
+   "design_days": 42,
+   "k": -0.11767608264478141,
+   "kind": "put",
+   "price_forward_units": 0.008464328899637242,
+   "implied_vol": 0.2867562030898584,
+   "half_spread_vol": 0.013737153574021013
+  },
+  {
+   "expiry": "2026-12-18",
+   "trading_days": 40,
+   "design_days": 42,
+   "k": -0.0910078355626201,
+   "kind": "put",
+   "price_forward_units": 0.010882708585247884,
+   "implied_vol": 0.265332569818425,
+   "half_spread_vol": 0.011549579035345784
+  },
+  {
+   "expiry": "2026-12-18",
+   "trading_days": 40,
+   "design_days": 42,
+   "k": -0.06503234915935945,
+   "kind": "put",
+   "price_forward_units": 0.014510278113663847,
+   "implied_vol": 0.2468715897076989,
+   "half_spread_vol": 0.009791139033848331
+  },
+  {
+   "expiry": "2026-12-18",
+   "trading_days": 40,
+   "design_days": 42,
+   "k": -0.03971454117506958,
+   "kind": "put",
+   "price_forward_units": 0.019951632406287785,
+   "implied_vol": 0.23194936916997788,
+   "half_spread_vol": 0.012780248368378327
+  },
+  {
+   "expiry": "2026-12-18",
+   "trading_days": 40,
+   "design_days": 42,
+   "k": -0.015021928584698094,
+   "kind": "put",
+   "price_forward_units": 0.02720677146311971,
+   "implied_vol": 0.21650982115033074,
+   "half_spread_vol": 0.011684157329824627
+  },
+  {
+   "expiry": "2026-12-18",
+   "trading_days": 40,
+   "design_days": 42,
+   "k": 0.009075622994362396,
+   "kind": "call",
+   "price_forward_units": 0.02720677146311971,
+   "implied_vol": 0.19768797244362218,
+   "half_spread_vol": 0.026703736585508495
+  },
+  {
+   "expiry": "2026-12-18",
+   "trading_days": 40,
+   "design_days": 42,
+   "k": 0.0326061204045565,
+   "kind": "call",
+   "price_forward_units": 0.015114873035066504,
+   "implied_vol": 0.17763344540311,
+   "half_spread_vol": 0.012491984750756703
+  },
+  {
+   "expiry": "2026-12-18",
+   "trading_days": 40,
+   "design_days": 42,
+   "k": 0.055595638629255234,
+   "kind": "call",
+   "price_forward_units": 0.008464328899637242,
+   "implied_vol": 0.17340069706834993,
+   "half_spread_vol": 0.01023458577645425
+  },
+  {
+   "expiry": "2026-12-18",
+   "trading_days": 40,
+   "design_days": 42,
+   "k": 0.07806849448131382,
+   "kind": "call",
+   "price_forward_units": 0.007255139056831922,
+   "implied_vol": 0.20083430115695605,
+   "half_spread_vol": 0.03535782470537873
+  },
+  {
+   "expiry": "2026-12-18",
+   "trading_days": 40,
+   "design_days": 42,
+   "k": 0.10004740120008905,
+   "kind": "call",
+   "price_forward_units": 0.0048367593712212815,
+   "implied_vol": 0.2083046334582469,
+   "half_spread_vol": 0.044937015032423186
+  },
+  {
+   "expiry": "2027-01-15",
+   "trading_days": 58,
+   "design_days": 63,
+   "k": -0.3645017454242958,
+   "kind": "put",
+   "price_forward_units": 0.006045949214026602,
+   "implied_vol": 0.5092725051820022,
+   "half_spread_vol": 0.09296760506511662
+  },
+  {
+   "expiry": "2027-01-15",
+   "trading_days": 58,
+   "design_days": 63,
+   "k": -0.3306001937486145,
+   "kind": "put",
+   "price_forward_units": 0.0024183796856106408,
+   "implied_vol": 0.3890291038782989,
+   "half_spread_vol": 0.03594168519586943
+  },
+  {
+   "expiry": "2027-01-15",
+   "trading_days": 58,
+   "design_days": 63,
+   "k": -0.2978103709256236,
+   "kind": "put",
+   "price_forward_units": 0.003627569528415962,
+   "implied_vol": 0.38603495191831094,
+   "half_spread_vol": 0.02682908615671815
+  },
+  {
+   "expiry": "2027-01-15",
+   "trading_days": 58,
+   "design_days": 63,
+   "k": -0.26606167261104335,
+   "kind": "put",
+   "price_forward_units": 0.004232164449818621,
+   "implied_vol": 0.36398165489932666,
+   "half_spread_vol": 0.0346904697756033
+  },
+  {
+   "expiry": "2027-01-15",
+   "trading_days": 58,
+   "design_days": 63,
+   "k": -0.23529001394428967,
+   "kind": "put",
+   "price_forward_units": 0.007255139056831922,
+   "implied_vol": 0.3765797361619967,
+   "half_spread_vol": 0.049988704935838096
+  },
+  {
+   "expiry": "2027-01-15",
+   "trading_days": 58,
+   "design_days": 63,
+   "k": -0.20543705079460853,
+   "kind": "put",
+   "price_forward_units": 0.008464328899637242,
+   "implied_vol": 0.3546741762321971,
+   "half_spread_vol": 0.04369294882607751
+  },
+  {
+   "expiry": "2027-01-15",
+   "trading_days": 58,
+   "design_days": 63,
+   "k": -0.1764495139213561,
+   "kind": "put",
+   "price_forward_units": 0.009068923821039902,
+   "implied_vol": 0.3238017237670533,
+   "half_spread_vol": 0.03298362788244621
+  },
+  {
+   "expiry": "2027-01-15",
+   "trading_days": 58,
+   "design_days": 63,
+   "k": -0.14827863695465981,
+   "kind": "put",
+   "price_forward_units": 0.009068923821039902,
+   "implied_vol": 0.2860140115375194,
+   "half_spread_vol": 0.018342524231014897
+  },
+  {
+   "expiry": "2027-01-15",
+   "trading_days": 58,
+   "design_days": 63,
+   "k": -0.12087966276654538,
+   "kind": "put",
+   "price_forward_units": 0.011487303506650545,
+   "implied_vol": 0.2698595322609414,
+   "half_spread_vol": 0.015599967346835586
+  },
+  {
+   "expiry": "2027-01-15",
+   "trading_days": 58,
+   "design_days": 63,
+   "k": -0.09421141568438408,
+   "kind": "put",
+   "price_forward_units": 0.015114873035066504,
+   "implied_vol": 0.2575580792631129,
+   "half_spread_vol": 0.013310202061929857
+  },
+  {
+   "expiry": "2027-01-15",
+   "trading_days": 58,
+   "design_days": 63,
+   "k": -0.06823592928112343,
+   "kind": "put",
+   "price_forward_units": 0.018742442563482464,
+   "implied_vol": 0.2384755460134847,
+   "half_spread_vol": 0.011733670448988062
+  },
+  {
+   "expiry": "2027-01-15",
+   "trading_days": 58,
+   "design_days": 63,
+   "k": -0.042918121296833575,
+   "kind": "put",
+   "price_forward_units": 0.024788391777509067,
+   "implied_vol": 0.2271483964897843,
+   "half_spread_vol": 0.010478702004154909
+  },
+  {
+   "expiry": "2027-01-15",
+   "trading_days": 58,
+   "design_days": 63,
+   "k": -0.018225508706462088,
+   "kind": "put",
+   "price_forward_units": 0.032648125755743655,
+   "implied_vol": 0.21652641820822766,
+   "half_spread_vol": 0.012966672299599451
+  },
+  {
+   "expiry": "2027-01-15",
+   "trading_days": 58,
+   "design_days": 63,
+   "k": 0.00587204287259851,
+   "kind": "call",
+   "price_forward_units": 0.03204353083434099,
+   "implied_vol": 0.18191882287958439,
+   "half_spread_vol": 0.009479454643560918
+  },
+  {
+   "expiry": "2027-01-15",
+   "trading_days": 58,
+   "design_days": 63,
+   "k": 0.029402540282792614,
+   "kind": "call",
+   "price_forward_units": 0.02539298669891173,
+   "implied_vol": 0.19821784286342992,
+   "half_spread_vol": 0.0326893406176747
+  },
+  {
+   "expiry": "2027-01-15",
+   "trading_days": 58,
+   "design_days": 63,
+   "k": 0.05239205850749134,
+   "kind": "call",
+   "price_forward_units": 0.013905683192261183,
+   "implied_vol": 0.17460023493240023,
+   "half_spread_vol": 0.011236136260132874
+  },
+  {
+   "expiry": "2027-01-15",
+   "trading_days": 58,
+   "design_days": 63,
+   "k": 0.07486491435954992,
+   "kind": "call",
+   "price_forward_units": 0.008464328899637242,
+   "implied_vol": 0.17184364972798216,
+   "half_spread_vol": 0.009199206467787132
+  },
+  {
+   "expiry": "2027-01-15",
+   "trading_days": 58,
+   "design_days": 63,
+   "k": 0.09684382107832515,
+   "kind": "call",
+   "price_forward_units": 0.006650544135429263,
+   "implied_vol": 0.18634760960008212,
+   "half_spread_vol": 0.027085014753433875
+  },
+  {
+   "expiry": "2027-01-15",
+   "trading_days": 58,
+   "design_days": 63,
+   "k": 0.13940343549712106,
+   "kind": "call",
+   "price_forward_units": 0.0024183796856106408,
+   "implied_vol": 0.18584724633285765,
+   "half_spread_vol": 0.02002482045480168
+  },
+  {
+   "expiry": "2027-04-16",
+   "trading_days": 120,
+   "design_days": 126,
+   "k": -0.21584868619034178,
+   "kind": "put",
+   "price_forward_units": 0.010278113663845224,
+   "implied_vol": 0.2707688278336051,
+   "half_spread_vol": 0.043098015496690026
+  },
+  {
+   "expiry": "2027-04-16",
+   "trading_days": 120,
+   "design_days": 126,
+   "k": -0.1868611493170895,
+   "kind": "put",
+   "price_forward_units": 0.010278113663845224,
+   "implied_vol": 0.24385774432359753,
+   "half_spread_vol": 0.05827424544327385
+  },
+  {
+   "expiry": "2027-04-16",
+   "trading_days": 120,
+   "design_days": 126,
+   "k": -0.1586902723503932,
+   "kind": "put",
+   "price_forward_units": 0.013301088270858526,
+   "implied_vol": 0.23709287496255732,
+   "half_spread_vol": 0.04581872279621568
+  },
+  {
+   "expiry": "2027-04-16",
+   "trading_days": 120,
+   "design_days": 126,
+   "k": -0.13129129816227877,
+   "kind": "put",
+   "price_forward_units": 0.016928657799274483,
+   "implied_vol": 0.229644765728929,
+   "half_spread_vol": 0.03978948306005843
+  },
+  {
+   "expiry": "2027-04-16",
+   "trading_days": 120,
+   "design_days": 126,
+   "k": -0.10462305108011746,
+   "kind": "put",
+   "price_forward_units": 0.02539298669891173,
+   "implied_vol": 0.24126583899977783,
+   "half_spread_vol": 0.016974195514259962
+  },
+  {
+   "expiry": "2027-04-16",
+   "trading_days": 120,
+   "design_days": 126,
+   "k": -0.07864756467685681,
+   "kind": "put",
+   "price_forward_units": 0.029625151148730353,
+   "implied_vol": 0.22690918051451825,
+   "half_spread_vol": 0.023393648605743847
+  },
+  {
+   "expiry": "2027-04-16",
+   "trading_days": 120,
+   "design_days": 126,
+   "k": -0.05332975669256695,
+   "kind": "put",
+   "price_forward_units": 0.035671100362756954,
+   "implied_vol": 0.2164551580104398,
+   "half_spread_vol": 0.02169596007805706
+  },
+  {
+   "expiry": "2027-04-16",
+   "trading_days": 120,
+   "design_days": 126,
+   "k": -0.02863714410219546,
+   "kind": "put",
+   "price_forward_units": 0.04171704957678355,
+   "implied_vol": 0.20163017092307095,
+   "half_spread_vol": 0.02965346654265752
+  },
+  {
+   "expiry": "2027-04-16",
+   "trading_days": 120,
+   "design_days": 126,
+   "k": -0.004539592523134856,
+   "kind": "put",
+   "price_forward_units": 0.0532043530834341,
+   "implied_vol": 0.2020022717921443,
+   "half_spread_vol": 0.026492090205597018
+  },
+  {
+   "expiry": "2027-04-16",
+   "trading_days": 120,
+   "design_days": 126,
+   "k": 0.01899090488705914,
+   "kind": "call",
+   "price_forward_units": 0.04232164449818621,
+   "implied_vol": 0.1848468385164943,
+   "half_spread_vol": 0.013224768021112955
+  },
+  {
+   "expiry": "2027-04-16",
+   "trading_days": 120,
+   "design_days": 126,
+   "k": 0.04198042311175787,
+   "kind": "call",
+   "price_forward_units": 0.03143893591293832,
+   "implied_vol": 0.17786774949184125,
+   "half_spread_vol": 0.009137518376167969
+  },
+  {
+   "expiry": "2027-04-16",
+   "trading_days": 120,
+   "design_days": 126,
+   "k": 0.06445327896381646,
+   "kind": "call",
+   "price_forward_units": 0.022974607013301087,
+   "implied_vol": 0.1733771525364315,
+   "half_spread_vol": 0.009852024947869084
+  },
+  {
+   "expiry": "2027-04-16",
+   "trading_days": 120,
+   "design_days": 126,
+   "k": 0.08643218568259169,
+   "kind": "call",
+   "price_forward_units": 0.016928657799274483,
+   "implied_vol": 0.1723125078591483,
+   "half_spread_vol": 0.010976321251115025
+  },
+  {
+   "expiry": "2027-04-16",
+   "trading_days": 120,
+   "design_days": 126,
+   "k": 0.10793839090355546,
+   "kind": "call",
+   "price_forward_units": 0.012091898428053204,
+   "implied_vol": 0.17063674279638902,
+   "half_spread_vol": 0.012691226130022961
+  },
+  {
+   "expiry": "2027-04-16",
+   "trading_days": 120,
+   "design_days": 126,
+   "k": 0.1289918001013878,
+   "kind": "call",
+   "price_forward_units": 0.009673518742442563,
+   "implied_vol": 0.1766515148025945,
+   "half_spread_vol": 0.014443228625684236
+  },
+  {
+   "expiry": "2027-04-16",
+   "trading_days": 120,
+   "design_days": 126,
+   "k": 0.14961108730412345,
+   "kind": "call",
+   "price_forward_units": 0.008464328899637243,
+   "implied_vol": 0.18701174815528204,
+   "half_spread_vol": 0.031990645364223524
+  },
+  {
+   "expiry": "2027-04-16",
+   "trading_days": 120,
+   "design_days": 126,
+   "k": 0.1698137946216429,
+   "kind": "call",
+   "price_forward_units": 0.003627569528415961,
+   "implied_vol": 0.16426073053150875,
+   "half_spread_vol": 0.024826151106150867
+  },
+  {
+   "expiry": "2027-04-16",
+   "trading_days": 120,
+   "design_days": 126,
+   "k": 0.1896164219178226,
+   "kind": "call",
+   "price_forward_units": 0.003022974607013301,
+   "implied_vol": 0.17172054796558123,
+   "half_spread_vol": 0.02159637456333559
+  }
+ ],
+ "diagnostics": {
+  "forward_other": "parity",
+  "forward_by_design_maturity": {
+   "21": {
+    "carry": 41.48742690411555,
+    "parity": 41.42473853934219
+   },
+   "42": {
+    "carry": 41.62054831895666,
+    "parity": 41.46890133883862
+   },
+   "63": {
+    "carry": 41.75409688275376,
+    "parity": 41.56014088808442
+   },
+   "126": {
+    "carry": 42.19109630748163,
+    "parity": 42.0301278243346
+   }
+  },
+  "other_forward_moves_layout_readings_in_half_widths": [
+   0.026109227145955632,
+   -0.1540983051544184,
+   -0.20228901610925493,
+   -0.2710592513144871,
+   -0.033417002217381225,
+   0.18368120751926137,
+   0.25661310350344274,
+   -0.15306780311627557,
+   -0.2978251693804564,
+   -0.43167605834878814,
+   -0.2939724095298781,
+   -0.033556906741895445,
+   0.4197977957993907,
+   0.371008585255597,
+   -0.20544391326881292,
+   -0.3844598001952157,
+   -0.3204406142870485,
+   -0.047935051294281834,
+   0.334002130010858,
+   0.49100361723966185,
+   0.30495483883704716,
+   -0.10436021736584501,
+   -0.07178163523921191,
+   0.11126013550423743,
+   0.5541225609389616,
+   0.17548966447940076
+  ],
+  "other_forward_moves_quotes": [
+   {
+    "expiry": "2026-11-20",
+    "kind": "put",
+    "vol_points": -0.3077489935937816,
+    "half_spreads": -0.02833297357659432
+   },
+   {
+    "expiry": "2026-11-20",
+    "kind": "put",
+    "vol_points": -0.28707411489421464,
+    "half_spreads": -0.10872326290068265
+   },
+   {
+    "expiry": "2026-11-20",
+    "kind": "put",
+    "vol_points": -0.3147154390111595,
+    "half_spreads": -0.1517714389379321
+   },
+   {
+    "expiry": "2026-11-20",
+    "kind": "put",
+    "vol_points": -0.3652385530891922,
+    "half_spreads": -0.15718163727440485
+   },
+   {
+    "expiry": "2026-11-20",
+    "kind": "put",
+    "vol_points": -0.4365124022331468,
+    "half_spreads": -0.3515645917765643
+   },
+   {
+    "expiry": "2026-11-20",
+    "kind": "put",
+    "vol_points": -0.556695690602238,
+    "half_spreads": -0.5174850583099847
+   },
+   {
+    "expiry": "2026-11-20",
+    "kind": "call",
+    "vol_points": 0.5630845125942585,
+    "half_spreads": 0.3506430400696315
+   },
+   {
+    "expiry": "2026-11-20",
+    "kind": "call",
+    "vol_points": 0.41646806894244937,
+    "half_spreads": 0.21320544987915485
+   },
+   {
+    "expiry": "2026-11-20",
+    "kind": "call",
+    "vol_points": 0.31798776892415503,
+    "half_spreads": 0.10395988963006215
+   },
+   {
+    "expiry": "2026-12-18",
+    "kind": "put",
+    "vol_points": -0.435887988117023,
+    "half_spreads": -0.055295690994624745
+   },
+   {
+    "expiry": "2026-12-18",
+    "kind": "put",
+    "vol_points": -0.41255588546953437,
+    "half_spreads": -0.10268544859669489
+   },
+   {
+    "expiry": "2026-12-18",
+    "kind": "put",
+    "vol_points": -0.45027080073380965,
+    "half_spreads": -0.1616412084255423
+   },
+   {
+    "expiry": "2026-12-18",
+    "kind": "put",
+    "vol_points": -0.46001915637311486,
+    "half_spreads": -0.1785880798411712
+   },
+   {
+    "expiry": "2026-12-18",
+    "kind": "put",
+    "vol_points": -0.4915778679307148,
+    "half_spreads": -0.23842879418398388
+   },
+   {
+    "expiry": "2026-12-18",
+    "kind": "put",
+    "vol_points": -0.5751090737042275,
+    "half_spreads": -0.4186522852826248
+   },
+   {
+    "expiry": "2026-12-18",
+    "kind": "put",
+    "vol_points": -0.6305981088176704,
+    "half_spreads": -0.5459922884529539
+   },
+   {
+    "expiry": "2026-12-18",
+    "kind": "put",
+    "vol_points": -0.7085404990612165,
+    "half_spreads": -0.7236548236234474
+   },
+   {
+    "expiry": "2026-12-18",
+    "kind": "put",
+    "vol_points": -0.8210303083651393,
+    "half_spreads": -0.6424212462072199
+   },
+   {
+    "expiry": "2026-12-18",
+    "kind": "put",
+    "vol_points": -0.9849986163595947,
+    "half_spreads": -0.8430206719703415
+   },
+   {
+    "expiry": "2026-12-18",
+    "kind": "call",
+    "vol_points": 1.0687849910022473,
+    "half_spreads": 0.40023799200530324
+   },
+   {
+    "expiry": "2026-12-18",
+    "kind": "call",
+    "vol_points": 0.8365280959853505,
+    "half_spreads": 0.6696518709204138
+   },
+   {
+    "expiry": "2026-12-18",
+    "kind": "call",
+    "vol_points": 0.6785224035967374,
+    "half_spreads": 0.6629700687620892
+   },
+   {
+    "expiry": "2026-12-18",
+    "kind": "call",
+    "vol_points": 0.620076783065654,
+    "half_spreads": 0.1753718698003857
+   },
+   {
+    "expiry": "2026-12-18",
+    "kind": "call",
+    "vol_points": 0.551772254227334,
+    "half_spreads": 0.12278791856317481
+   },
+   {
+    "expiry": "2027-01-15",
+    "kind": "put",
+    "vol_points": -0.4785724739754693,
+    "half_spreads": -0.0514773370401729
+   },
+   {
+    "expiry": "2027-01-15",
+    "kind": "put",
+    "vol_points": -0.43193560129176634,
+    "half_spreads": -0.12017678050928067
+   },
+   {
+    "expiry": "2027-01-15",
+    "kind": "put",
+    "vol_points": -0.4613375204510328,
+    "half_spreads": -0.17195424315095853
+   },
+   {
+    "expiry": "2027-01-15",
+    "kind": "put",
+    "vol_points": -0.478955680596338,
+    "half_spreads": -0.13806549282684324
+   },
+   {
+    "expiry": "2027-01-15",
+    "kind": "put",
+    "vol_points": -0.5273885232639164,
+    "half_spreads": -0.10550153758550743
+   },
+   {
+    "expiry": "2027-01-15",
+    "kind": "put",
+    "vol_points": -0.552618293104068,
+    "half_spreads": -0.1264776830018499
+   },
+   {
+    "expiry": "2027-01-15",
+    "kind": "put",
+    "vol_points": -0.5740220693098652,
+    "half_spreads": -0.17403242340584316
+   },
+   {
+    "expiry": "2027-01-15",
+    "kind": "put",
+    "vol_points": -0.592615450148315,
+    "half_spreads": -0.32308282256281656
+   },
+   {
+    "expiry": "2027-01-15",
+    "kind": "put",
+    "vol_points": -0.6406089628541611,
+    "half_spreads": -0.4106476306080904
+   },
+   {
+    "expiry": "2027-01-15",
+    "kind": "put",
+    "vol_points": -0.7050833886453001,
+    "half_spreads": -0.5297315437922582
+   },
+   {
+    "expiry": "2027-01-15",
+    "kind": "put",
+    "vol_points": -0.7800169765593834,
+    "half_spreads": -0.6647680961814074
+   },
+   {
+    "expiry": "2027-01-15",
+    "kind": "put",
+    "vol_points": -0.8899068729756543,
+    "half_spreads": -0.8492529634135959
+   },
+   {
+    "expiry": "2027-01-15",
+    "kind": "put",
+    "vol_points": -1.0407026500720284,
+    "half_spreads": -0.8025980961238424
+   },
+   {
+    "expiry": "2027-01-15",
+    "kind": "call",
+    "vol_points": 1.1714074994065127,
+    "half_spreads": 1.235733007280341
+   },
+   {
+    "expiry": "2027-01-15",
+    "kind": "call",
+    "vol_points": 0.9867998849536375,
+    "half_spreads": 0.30187206786914744
+   },
+   {
+    "expiry": "2027-01-15",
+    "kind": "call",
+    "vol_points": 0.7999210301465665,
+    "half_spreads": 0.7119182356169708
+   },
+   {
+    "expiry": "2027-01-15",
+    "kind": "call",
+    "vol_points": 0.6794746685911235,
+    "half_spreads": 0.7386231312129372
+   },
+   {
+    "expiry": "2027-01-15",
+    "kind": "call",
+    "vol_points": 0.6207277625927876,
+    "half_spreads": 0.22917756118781177
+   },
+   {
+    "expiry": "2027-01-15",
+    "kind": "call",
+    "vol_points": 0.4950272910532738,
+    "half_spreads": 0.24720685619659225
+   },
+   {
+    "expiry": "2027-04-16",
+    "kind": "put",
+    "vol_points": -0.3232607750448535,
+    "half_spreads": -0.07500595359655952
+   },
+   {
+    "expiry": "2027-04-16",
+    "kind": "put",
+    "vol_points": -0.331734145566398,
+    "half_spreads": -0.056926373399260814
+   },
+   {
+    "expiry": "2027-04-16",
+    "kind": "put",
+    "vol_points": -0.3565833665034157,
+    "half_spreads": -0.07782481587043868
+   },
+   {
+    "expiry": "2027-04-16",
+    "kind": "put",
+    "vol_points": -0.38510203515653707,
+    "half_spreads": -0.09678488020949211
+   },
+   {
+    "expiry": "2027-04-16",
+    "kind": "put",
+    "vol_points": -0.4309573869430039,
+    "half_spreads": -0.2538897272515555
+   },
+   {
+    "expiry": "2027-04-16",
+    "kind": "put",
+    "vol_points": -0.46687780841747073,
+    "half_spreads": -0.19957460090378468
+   },
+   {
+    "expiry": "2027-04-16",
+    "kind": "put",
+    "vol_points": -0.5142819493645701,
+    "half_spreads": -0.2370404202046382
+   },
+   {
+    "expiry": "2027-04-16",
+    "kind": "put",
+    "vol_points": -0.5733944430932392,
+    "half_spreads": -0.19336506315994853
+   },
+   {
+    "expiry": "2027-04-16",
+    "kind": "put",
+    "vol_points": -0.6531364975005727,
+    "half_spreads": -0.2465401908387673
+   },
+   {
+    "expiry": "2027-04-16",
+    "kind": "call",
+    "vol_points": 0.6401980749514036,
+    "half_spreads": 0.484090211585826
+   },
+   {
+    "expiry": "2027-04-16",
+    "kind": "call",
+    "vol_points": 0.5559831887975264,
+    "half_spreads": 0.6084619104543907
+   },
+   {
+    "expiry": "2027-04-16",
+    "kind": "call",
+    "vol_points": 0.4873913391058915,
+    "half_spreads": 0.4947118401393314
+   },
+   {
+    "expiry": "2027-04-16",
+    "kind": "call",
+    "vol_points": 0.43411814227752865,
+    "half_spreads": 0.39550422436244653
+   },
+   {
+    "expiry": "2027-04-16",
+    "kind": "call",
+    "vol_points": 0.38949248475854126,
+    "half_spreads": 0.3068990188718957
+   },
+   {
+    "expiry": "2027-04-16",
+    "kind": "call",
+    "vol_points": 0.3614868949490535,
+    "half_spreads": 0.25028122472992315
+   },
+   {
+    "expiry": "2027-04-16",
+    "kind": "call",
+    "vol_points": 0.3438461438050655,
+    "half_spreads": 0.10748334079862078
+   },
+   {
+    "expiry": "2027-04-16",
+    "kind": "call",
+    "vol_points": 0.29190634595187004,
+    "half_spreads": 0.11758018579027663
+   },
+   {
+    "expiry": "2027-04-16",
+    "kind": "call",
+    "vol_points": 0.2794603994201894,
+    "half_spreads": 0.12940153385496123
+   }
+  ],
+  "vega_at_own_vol_over_vega_at_sigma_ref": [
+   3.1842447997224417,
+   1.689134115147147,
+   1.186918471136835,
+   1.0264430130860338,
+   0.9999749555686086,
+   0.982512074694137,
+   0.8003141546969221,
+   3.3890831788980433,
+   1.7882276393014038,
+   1.2179218614509133,
+   1.0299934485129476,
+   0.9999621707194338,
+   0.9773013719697058,
+   0.8092167840874974,
+   3.6086633212008645,
+   1.8503402226710528,
+   1.224361500138016,
+   1.025743237066,
+   1.000052092518427,
+   0.9669394552457645,
+   0.8453669980894657,
+   1.6275097625919255,
+   1.1865999998906724,
+   1.0218184488791493,
+   1.0001571415737134,
+   0.9613507930335708,
+   0.8213090098307616
+  ],
+  "clock": "NYSE trading days over 252 (sbi4finance.calibration.chain.NYSE_HOLIDAYS)",
+  "weekdays_to_each_expiry": {
+   "2026-11-20": 21,
+   "2026-12-18": 41,
+   "2027-01-15": 61,
+   "2027-04-16": 126
+  }
+ },
+ "note": "prices_forward_units: the chain read onto its own layout, the network's input. quotes: the cleaned out-of-the-money quotes of the matched expirations at their own strikes and trading days, the audit's likelihood data (price and half-spread in forward units follow from implied_vol and half_spread_vol with the Black formula)"
+}
