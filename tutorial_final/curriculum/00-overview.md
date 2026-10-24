@@ -17,13 +17,13 @@ The folder replaces `CURRICULUM.md` (revision 1, same day) and, where they diffe
 
 ## Executive summary
 
-**What the tutorial teaches.** A calibrated volatility model is an estimate, and the prices it gives for products nobody quotes inherit its uncertainty. The posterior is that uncertainty, and pricing under each posterior draw turns it into the range the prudent-valuation rules ask for. On a liquid smile the posterior and the classical interval agree, as theory predicts. They part where the quotes do not determine what the product needs: a thin chain, and maturities beyond the last quote. Amortization makes the posterior cheap enough to compute on every chain, and to test its coverage on a thousand simulated chains, even for a model priced only by simulation. A chain of checks says when to trust it.
+**What the tutorial teaches.** A calibrated volatility model is an estimate, and the prices it gives for products nobody quotes inherit its uncertainty. The posterior is that uncertainty, and pricing under each posterior draw turns it into the range the prudent-valuation rules ask for. On a liquid smile the posterior and the classical interval agree, as theory predicts. They can part where the quotes do not determine what the product needs: beyond the last quote, which a quick check on SPY shows; on a thin chain, which slot 5 tests; and for names that quote almost nothing, which a simulated sector shows. For a model priced only by simulation, amortization makes the posterior checkable: its coverage can be tested on a thousand simulated chains, and each real chain gets a proposal for an audit. A chain of checks says when to trust it.
 
-**The arc: one smile, three models.** The whole afternoon works on one data set, the SPY option smile of 21 October 2026 (63 prices read from the closing quotes onto a fixed grid of 7 maturities × 9 moneyness points), and one question: which price to mark for a product the smile does not quote, and with what range. Slot 5 ends on a thin chain, EWG of 22 October 2026, whose 27 quotes cover four maturities up to about six months. Three models of increasing realism carry it, each more expensive to invert:
+**The arc: one smile, three models.** The whole afternoon works on one data set, the SPY option smile of 21 October 2026 (63 prices read from the closing quotes onto a fixed grid of 7 maturities × 9 moneyness points), and one question: which price to mark for a product the smile does not quote, and with what range. Slot 5 ends on a thin chain, EWG of 22 October 2026, whose 61 quotes, read at 27 design points, cover four maturities up to about six months. Three models of increasing realism carry it, each more expensive to invert:
 
 1. **Black–Scholes** in slot 1: one parameter, a posterior on a grid in a fraction of a millisecond, and a model the smile rejects.
 2. **Heston** in slot 4: four parameters, an exact likelihood by Fourier integral, so the network can be checked against the exact posterior. It fits SPY, but only with extreme parameters.
-3. **Rough Bergomi** in slot 5: three parameters and the market's forward-variance curve, priced only by Monte Carlo, so the exact posterior costs at least 17 CPU-hours by a random-walk chain, or about 85 CPU-minutes by importance sampling from a Gauss–Newton proposal, and the network is checked by an audit of each smile.
+3. **Rough Bergomi** in slot 5: three parameters and the market's forward-variance curve, priced only by Monte Carlo, so the exact posterior costs at least 17 CPU-hours by a random-walk chain, or about 85 CPU-minutes by importance sampling from a Gauss–Newton proposal on a fixed-seed pricer, and the network is checked by an audit of each smile.
 
 Slots 2 and 3 explain the machine between them. Slot 6 changes the prior and the noise model, and tests the model.
 
@@ -51,7 +51,7 @@ The message has three beats, each carried by named slots.
 | Beat | Set up in | Delivered in |
 | --- | --- | --- |
 | The range matters, and the rules ask for it. | Slot 1 | Slot 5, as a reserve |
-| Amortization makes the range checkable and affordable across many names: pay once in training, then seconds per smile, and an audit where one smile matters. | Slot 1, as a cost problem | Slots 2 and 3 explain it; slot 4 builds it; slot 5 measures it |
+| Amortization makes the range checkable: pay once in training, then seconds per smile for the thousands of posteriors a validation needs, and an audit where one smile matters. | Slot 1, as a cost problem | Slots 2 and 3 explain it; slot 4 builds it; slot 5 measures it |
 | Trust comes from checks, not from the network. | Slot 2, as a workflow | Slot 4 against an exact posterior; slot 5 by audit; slot 6 on priors and misspecification |
 
 The audience should leave able to say three things about their own model: whether they need this, what it costs, and how they would check it.
@@ -108,7 +108,7 @@ flowchart LR
 3. **One code path.** Slots 4 and 5 follow the same steps: simulator, adapter, network, training, checks, use. Slot 5 changes the simulator and the checks, and nothing else.
 4. **Numbers.** A number goes on screen only from CLAIMS.md, and only from a final run. A final result that misses its criterion is shown as missed ("not met"). A pilot value is never quoted as a result; until the final run exists the slide shows ⟨Sn⟩.
 5. **Live cells.** Every live cell has a cached fallback that loads from `results/` if the computation fails or runs past its time budget. A cell that loads a network runs once before the slot starts.
-6. **Wording.** Seconds, never milliseconds, for the network; "at least 17 CPU-hours" for the exact rough posterior by a random-walk chain, always with "about 85 CPU-minutes by importance sampling" beside it; "the design's noise", never "SPY's bid–ask". Slot 5's file lists the rest.
+6. **Wording.** Seconds, never milliseconds, for the network; "at least 17 CPU-hours" for the exact rough posterior by a random-walk chain, always with "about 85 CPU-minutes by importance sampling" beside it, a figure measured on a fixed-seed pricer (more with a seed per proposal); "the design's noise", never "SPY's bid–ask". Slot 5's file lists the rest.
 
 ## 5. Who owns which concept
 

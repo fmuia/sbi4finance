@@ -48,7 +48,7 @@ def _(mo):
 
     Slot 1 ended on a cost. The posterior needs the likelihood evaluated thousands of times for every
     smile, and for the models of slots 4 and 5 each evaluation is a Fourier integral or a Monte Carlo run. This
-    notebook shows the idea that removes the cost, on slot 1's own example, where the exact answer is
+    notebook shows the idea that removes most of that cost for a validation, on slot 1's own example, where the exact answer is
     known.
 
     Three claims, each backed by a computation below:
@@ -380,8 +380,8 @@ def _(break_even, cumulative, heston_unit_costs, mo, plots, plt, smiles):
     Amortization pays after about **{break_even['Heston']:.0f} Heston smiles** (training counted on 4 cores)
     and about **{break_even['rough Bergomi']:.0f} rough-Bergomi smiles** (against the 17 CPU-hour lower bound of
     random-walk Metropolis; training not counted yet). By importance sampling from a Gauss–Newton proposal, the
-    exact rough-Bergomi posterior takes about 85 CPU-minutes on SPY's 63 quotes (1,024 evaluations at 5.0
-    CPU-seconds); against that, the training bank pays after about 260 smiles. One smile is affordable either way; a book at month-end or a validation on thousands of
+    rough-Bergomi posterior of a fixed-seed pricer takes about 85 CPU-minutes on SPY's 63 quotes (1,024 evaluations at 5.0
+    CPU-seconds); against that, the training bank pays after about 260 smiles. Where that proposal works, one smile and a book are affordable; a validation on thousands of
     simulated smiles is not. Validation alone needs thousands: SBC on 2,000 smiles is 2,000 posteriors,
     about {2000 * heston_unit_costs['exact'] / 3600:.0f} CPU-hours of exact Heston chains against
     {2000 * heston_unit_costs['network'] / 3600:.0f} for the network.

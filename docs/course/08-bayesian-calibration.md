@@ -6,7 +6,7 @@
 
 **Where it sits in the course.** Lecture 6 asked for a range of plausible prices for products the smile does not pin down. Lecture 7 built that range from one optimum and a local covariance, and showed where the construction breaks. This lecture builds it from the posterior, which is exact under the stated model and the stated prior, whatever the shape of the plausible set. Its one drawback is cost: every evaluation of the posterior density is one priced surface. For Black–Scholes and Heston that is cheap. For rough Bergomi it is a Monte Carlo run, which is the subject of Lecture 14. Lecture 9 learns the posterior from simulations instead, and Lecture 11 applies the methods of this lecture to Heston.
 
-**Its part in the argument.** This lecture shows the first two claims of the argument (Lecture 6, Section 6.8) in their simplest form. The posterior returns the classical interval when the conditions of Lecture 7 hold (Section 8.3). It differs where a direction is weakly informed (Section 8.5) and where a name quotes almost nothing (Section 8.10). Section 8.11 sorts the cases.
+**Its part in the argument.** This lecture shows the first two claims of the argument (Lecture 6, Section 6.8) in their simplest form. The posterior returns the classical interval when the conditions of Lecture 7 hold (Section 8.3). It differs where a direction is weakly informed (Section 8.5) and where a name quotes almost nothing (Section 8.10). Section 8.11 sorts the cases. Section 8.12 states the fourth claim: what the posterior does not cover.
 
 ## 8.1 Bayes' rule for a calibration
 
@@ -330,8 +330,8 @@ The results of this lecture sort into the cases of the argument of the course (L
 | Case | Classical answer | Posterior | Where it is shown |
 | --- | --- | --- | --- |
 | The quotes determine the parameters | The Gauss–Newton interval | The same interval | Section 8.3 on Black–Scholes; on SPY, Lecture 11 (Heston) and Lecture 15 (rough Bergomi) |
-| A direction is weakly informed | A symmetric interval, which can cross the bounds | Follows the curved, truncated valley | Section 8.5, the toy smile |
-| An input is not quoted | The input fixed, with no range | A prior on the input, carried into the range | Lecture 15, Section 15.6, the long end; Lecture 16, a thin chain |
+| A direction is weakly informed | A linear, symmetric interval, which can cross the bounds | Follows the curved, truncated valley | Section 8.5, the toy smile; on a thin chain, Lecture 16 (pending) |
+| An input is not quoted | The input fixed, with no range | A prior on the input, carried into the range | Lecture 15, Section 15.6, the long end; on a thin chain, $H$ and the last curve level (Lecture 16, pending) |
 | A name quotes almost nothing | Its own fit, wide, or a proxy, overconfident | Strength borrowed from the sector | Section 8.10, a simulated sector |
 
 In the third case the posterior's range depends on the width of the prior. The posterior is then right if its prior is, and not otherwise. The course therefore tests other laws for the unquoted input (Lecture 16, Section 16.4).

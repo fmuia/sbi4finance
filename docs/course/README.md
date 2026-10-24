@@ -21,19 +21,21 @@ what the pending runs decide.
 
 1. **Where the quotes determine what a product depends on, the classical answer is right**, and the posterior
    returns it (Lectures 7, 8, 11 and 15).
-2. **Where they do not, the two answers part.** The classical route fixes the open input and gives it no range; the
-   posterior gives it a stated prior and carries it into the range. Three cases: beyond the last quote (Lecture 15),
-   a thin chain (Lecture 16), and a name that quotes almost nothing, in a sector of names that quote more
-   (Lecture 8).
+2. **Where they do not, the two answers can part.** The classical route fixes the open input and gives it no range,
+   or fits it along a weakly informed direction where its linear range can be wrong. The posterior gives the input a
+   stated prior and carries it into the range. Three cases: beyond the last quote (Lecture 15), a thin chain
+   (Lecture 16), and a name that quotes almost nothing, in a sector of names that quote more (Lecture 8).
 3. **Simulation-based inference makes the posterior checkable** for a model priced only by simulation. One
-   posterior is affordable without it when a classical fit gives a good proposal; a check of coverage on thousands
-   of simulated chains is not (Lectures 9 and 14).
+   posterior is affordable without it when a classical fit gives a good proposal. A check of coverage on thousands
+   of simulated smiles is not: for 2,000 smiles, about 2,800 CPU-hours by importance sampling, against about 2 with a
+   network after a training bank of about 370 (Lectures 9 and 14).
 4. **The posterior is exact for its model, its prior and its noise model, and for nothing else**, so each is stated
-   and tested (Lectures 8 and 16).
+   and tested (Lectures 8, 15 and 16).
 
-Today claim 1 is shown on SPY, and claim 2 beyond the last quote and on a simulated sector. The thin chain, and the
-network as a proposal where a classical fit fails, wait for the runs of
-[`tutorial_final/CLUSTER-RUNS.md`](../../tutorial_final/CLUSTER-RUNS.md).
+Today quick checks show claim 1 on SPY and claim 2 beyond SPY's last quote, the latter with a Laplace
+approximation and a size set by the prior. A simulated sector shows claim 2 for pooling, and pilot smiles show part of
+claim 4. The thin chain, the network's own checks, and the network as a proposal where a classical fit fails, wait
+for the runs of [`tutorial_final/CLUSTER-RUNS.md`](../../tutorial_final/CLUSTER-RUNS.md).
 
 ## Who the course is for
 

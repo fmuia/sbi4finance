@@ -69,25 +69,26 @@ def _(mo):
     mo.md(r"""
     # Slot 5 · Rough Bergomi on the SPY smile: from the posterior to a reserve
 
-    **A long-dated mark rests on inputs no quote pins. The posterior prices them; amortization makes it affordable.**
+    **A long-dated mark rests on inputs no quote pins. The posterior prices them; amortization makes it checkable.**
 
     Slot 4 calibrated Heston to the SPY smile and checked every step against the exact posterior. The
     posterior was precise, and it said Heston fits SPY only with a vol-of-vol about twice its Feller limit
     and variance swaps below the market. This notebook keeps the smile and the code and changes the model
     to one built for index smiles, **rough Bergomi**, a rough version of Bergomi's (2005) forward-variance
-    model. That change removes the exact posterior, and it is where amortized inference pays.
+    model. That change makes the exact posterior expensive, and its validation far more so: that is where
+    amortized inference pays.
 
     Three claims, each backed by evidence below:
 
     1. **Rough Bergomi is priced only by Monte Carlo**, so its exact posterior costs at least 17 CPU-hours
        per smile by random-walk Metropolis. Importance sampling from a Gauss–Newton proposal takes about 85
-       CPU-minutes on SPY's 63 quotes (1,024 evaluations at 5.0 CPU-seconds). One smile is affordable either
-       way; a book at month-end or a validation on thousands of simulated smiles is not. The amortized
+       CPU-minutes on SPY's 63 quotes (1,024 evaluations at 5.0 CPU-seconds). Where that proposal works, one
+       smile and a book are affordable; a validation on thousands of simulated smiles is not. The amortized
        posterior takes 1.4 seconds, and without an exact answer it is checked three ways: simulation-based
        calibration, a second method, and an audit of each smile.
     2. **On SPY's full surface the smile pins $H$, $\eta$ and $\rho$**, even with the forward-variance curve
-       uncertain. There the Gauss–Newton interval is a good approximation, and the posterior's value is speed
-       and a coverage check.
+       uncertain. There the Gauss–Newton interval is a good approximation, and the posterior's value is a
+       coverage check.
     3. **Long-dated products depend on the forward-variance curve beyond the last quote.** Held flat, as in
        the tutorial's baseline, the curve gives a 3-year variance swap no range at all. With a stated prior and
        the long-dated quotes as data, the posterior gives it a 90% range of about a quarter of its price, and
@@ -283,8 +284,8 @@ def _(mo):
     bound: it assumes the cheapest pricing cost (the pilot bank's average gives 41 CPU-hours), and a chain on
     a noisy likelihood needs more evaluations than the exact Heston chains it is extrapolated from.
     Importance sampling from a Gauss–Newton proposal takes about 85 CPU-minutes on SPY's 63 quotes (1,024
-    evaluations at 5.0 CPU-seconds). One smile is affordable either way; a book at month-end or a validation
-    on thousands of simulated smiles is not. Slot 4's exact check is not available here.
+    evaluations at 5.0 CPU-seconds). Where that proposal works, one smile and a book are affordable; a
+    validation on thousands of simulated smiles is not. Slot 4's exact check is not available here.
     """)
     return
 
@@ -793,10 +794,10 @@ def _(mo):
 
     ## Takeaways
 
-    1. **Rough Bergomi's exact posterior is affordable for one smile, not for many**: at least 17 CPU-hours
+    1. **Rough Bergomi's posterior is affordable for one smile, not for a validation**: at least 17 CPU-hours
        per smile by random-walk Metropolis, and about 85 CPU-minutes by importance sampling from a
-       Gauss–Newton proposal on SPY's 63 quotes (1,024 evaluations at 5.0 CPU-seconds). A book at month-end
-       or a validation on thousands of simulated smiles is not affordable either way. The amortized posterior
+       Gauss–Newton proposal on SPY's 63 quotes (1,024 evaluations at 5.0 CPU-seconds). Where that proposal
+       works a book is affordable too; a validation on thousands of simulated smiles is not. The amortized posterior
        takes seconds, and the audit checks it smile by smile, at about 53 CPU-minutes on SPY's 63 quotes.
     2. **On SPY's full surface the classical interval is a good approximation**; the posterior differs where
        the quotes are thin, and for the inputs they do not reach.

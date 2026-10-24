@@ -12,7 +12,7 @@ Francesco · 15 minutes · first slot of the afternoon. Part of the [curriculum]
 
 1. A calibration is an estimate from noisy quotes, so the prices it gives for products nobody quotes are uncertain, and the rules ask banks to report that range.
 2. The posterior is that uncertainty: pricing a product under every posterior draw turns it into the range.
-3. For richer models, one posterior costs minutes to hours, which adds up for every name in a valuation across a book, for example at month-end, and for the thousands of simulated smiles that a validation of the method needs; amortized inference removes that cost, and the rest of the afternoon shows how and how to check it.
+3. For richer models, one posterior costs minutes to hours. That adds up for every name in a valuation across a book, for example at month-end, and much more for the thousands of simulated smiles that a validation of the method needs. Amortized inference makes those thousands affordable, and the rest of the afternoon shows how, and how to check it.
 
 ## What the audience leaves with
 
@@ -94,7 +94,7 @@ The notebook `slot1_intro.py` runs three cells, each in under a second.
   | Cheap likelihood (Black–Scholes, Heston) | Milliseconds to minutes | Heston: 35 CPU-hours or more |
   | Likelihood only by simulation (rough Bergomi) | At least 17 CPU-hours by a chain; about 85 CPU-minutes by importance sampling | At least 8,500 CPU-hours by the chain; about 710 by importance sampling |
 
-- **Said.** For one smile, Heston's posterior is affordable. A valuation across a book needs a posterior for every name, for example at month-end. For 500 smiles in one valuation run, Heston's posteriors cost 35 CPU-hours or more, and rough Bergomi's at least 8,500 CPU-hours by the chain, or about 710 by importance sampling where a Gauss–Newton proposal works. A validation of the method needs more: a posterior on each of thousands of simulated smiles.
+- **Said.** For one smile, Heston's posterior is affordable. A valuation across a book needs a posterior for every name, for example at month-end. For 500 smiles in one valuation run, Heston's posteriors cost 35 CPU-hours or more, and rough Bergomi's at least 8,500 CPU-hours by the chain, or about 710 by importance sampling where a Gauss–Newton proposal works. A validation of the method needs more: a posterior on each of thousands of simulated smiles. Importance sampling keeps a book affordable where the Gauss–Newton proposal works; a validation is what it cannot afford.
 - **Leads to.** The way around the cost.
 
 ### Slide 10. Amortized inference: pay once, then seconds (1.5 minutes)

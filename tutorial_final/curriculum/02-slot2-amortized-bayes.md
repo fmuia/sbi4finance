@@ -11,12 +11,12 @@ Alex · 15 minutes. A proposal for Alex's review. Part of the [curriculum](00-ov
 **The answer.**
 
 1. A network trained to predict parameters from data simulated under the prior converges to the posterior for every data set the prior can produce, without ever evaluating the likelihood.
-2. The cost moves from each data set to one training run, so it pays when many posteriors are needed: a book at month-end, or the thousands that validation needs.
+2. The cost moves from each data set to one training run, so it pays when many posteriors are needed without an audit of each: above all the thousands that validation needs.
 3. The network is an approximation, so the workflow wraps it in checks: a prior predictive check before training, simulation-based calibration (SBC) after it, and a correction of each real data set where its likelihood can be computed or estimated.
 
 ## Why this slot comes here
 
-Slot 1 ends on a cost: the posterior is affordable for one smile under Heston, and under rough Bergomi it costs at least 17 CPU-hours by a random-walk chain or about 85 CPU-minutes by importance sampling, which a book at month-end or a validation multiplies by hundreds or thousands. Slot 2 explains the idea that removes the cost, on slot 1's own example, before slot 3 explains the networks and slot 4 builds one.
+Slot 1 ends on a cost: the posterior is affordable for one smile under Heston, and under rough Bergomi it costs at least 17 CPU-hours by a random-walk chain or about 85 CPU-minutes by importance sampling, which a book at month-end or a validation multiplies by hundreds or thousands. Slot 2 explains the idea that removes most of that cost for a validation, on slot 1's own example, before slot 3 explains the networks and slot 4 builds one.
 
 ## Minute plan
 

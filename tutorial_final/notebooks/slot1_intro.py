@@ -732,8 +732,8 @@ def _(mo):
     prices. Under Heston each smile is a Fourier integral, so the exact posterior takes minutes, and slot 4
     uses it to check a network. Under rough Bergomi each smile is a Monte Carlo run, so the exact posterior
     takes at least 17 CPU-hours by random-walk Metropolis. Importance sampling from a Gauss–Newton proposal
-    takes about 85 CPU-minutes on SPY's 63 quotes (1,024 evaluations at 5.0 CPU-seconds). One smile is
-    affordable either way; a book at month-end or a validation on thousands of simulated smiles is not.
+    takes about 85 CPU-minutes on SPY's 63 quotes (1,024 evaluations at 5.0 CPU-seconds). Where that
+    proposal works, one smile and a book are affordable; a validation on thousands of simulated smiles is not.
     """)
     return
 

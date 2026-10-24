@@ -72,7 +72,7 @@ The fourth detector is the one slot 3 names. It needs a summary network, which s
 ### Optional slide: the prior beyond the last quote
 
 - **On screen.** [`long_end.png`](../checks/long_end/long_end.png): SPY's variance term structure, with no quotes beyond 2.2 years; the 90% range of five long-dated products under flat extrapolation and under the posterior; where the posterior's variance comes from.
-- **Said.** SPY's chain ends with its LEAPs, at 2.2 years. Beyond them, rough Bergomi's forward-variance curve is not quoted. Holding it flat is a choice of zero width. For products to five years it gives 0.30 to 0.67 of the posterior's 90% range, and zero for the three-year variance swap. The posterior's range there depends on the width of the random-walk prior beyond the last quote. For the forward start from two to three years, the 90% range is 19.4% of its price with a prior sd of 0.1 per square-root year, and 36.8% with 0.3. No quote informs that prior, so it must be stated and tested. Study S10 tests it on EWG-like chains with two other laws for the unquoted level (slot 5, section 9).
+- **Said.** SPY's chain ends with its LEAPs, at 2.2 years. Beyond them, rough Bergomi's forward-variance curve is not quoted. Holding it flat is a choice of zero width. For the three products that depend mostly on the curve beyond 2.25 years, a forward start from two to three years, a five-year put and a three-year variance swap, it gives 0.32, 0.30 and 0 of the posterior's 90% range. The posterior's range there depends on the width of the random-walk prior beyond the last quote. For the forward start from two to three years, the 90% range is 19.4% of its price with a prior sd of 0.1 per square-root year, and 36.8% with 0.3. No quote informs that prior, so it must be stated and tested. Study S10 tests it on EWG-like chains with two other laws for the unquoted level (slot 5, section 9).
 
 ## Numbers on screen, and their status
 
@@ -84,7 +84,7 @@ The fourth detector is the one slot 3 names. It needs a summary network, which s
 | The reweighted $H$ posterior and reserve | Slot 5's SPY draws | ⟨S8⟩ |
 | The sensitivity-aware network's sliders | New network | to build |
 | Pooling, 2 liquid and 6 illiquid names: coverage 89.7%, 59.5%, 69.7%, 88.0%; widths 9.9 and 7.6 vol points; 8 and 32 names: 89.6%, 83.3%, 87.5%, 89.4% (optional slide) | `tutorial_final/checks/bs_hierarchy.json`; v2-plan, Section 2.3 | quick check; register as a claim before it goes on screen |
-| Long end: flat extrapolation 0.30 to 0.67 of the posterior's 90% range, zero for the variance swap; forward start 19.4% to 36.8% of its price for a prior sd of 0.1 to 0.3 (optional slide) | `tutorial_final/checks/long_end/long_end.json` and `long_end_extra.json`; v2-plan, Section 2.2 | quick check, with a Laplace posterior at SPY's fit; register as a claim before it goes on screen |
+| Long end: flat extrapolation 0.32, 0.30 and 0 of the posterior's 90% range for the forward start from two to three years, the five-year put and the variance swap; forward start 19.4% to 36.8% of its price for a prior sd of 0.1 to 0.3 (optional slide) | `tutorial_final/checks/long_end/long_end.json` and `long_end_extra.json`; v2-plan, Section 2.2 | quick check, with a Laplace posterior at SPY's fit; register as a claim before it goes on screen |
 
 ## To build, by the freeze on Fri 6 Nov
 

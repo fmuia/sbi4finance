@@ -34,9 +34,9 @@ EWI and EWQ say almost nothing beyond the smile's level, so their posterior woul
 
 **Where the posterior and the baselines can part on EWG.** Three mechanisms can make the classical bounds too narrow on a thin chain. The course has not yet measured any of them on EWG.
 
-1. **The curve and the parameters trade off.** With few quotes, much of what the quotes say about $\rho$ passes through the curve. Locally, on 15 SPY quotes with the curve uncertain to 10% per level, the contraction of $\rho$ falls from 0.61–0.65 to 0.12–0.16 (Lecture 13, Section 13.11). A delta-method interval along such directions can misstate the range.
+1. **The curve and the parameters trade off.** With few quotes, much of what the quotes say about $\rho$ passes through the curve. The local (Laplace) check of Lecture 13, Section 13.11 shows it on 15 SPY quotes with SPY's design noise, which is 2 to 15 times smaller than EWG's: with the curve uncertain to 10% per level, the contraction of $\rho$ falls from 0.61–0.65 to 0.12–0.16. The baselines fit the curve along such directions, where a delta-method interval can misstate the range.
 2. **$H$ is weakly identified.** The baseline that fixes $H$ at 0.10 gives it no range (Lecture 6, Section 6.7).
-3. **The last level is unquoted.** EWG's quotes end at 120 trading days. A product that needs the curve beyond them depends on the prior, or on the flat extension, alone (Section 16.5).
+3. **The last level is unquoted.** EWG's quotes end at 120 trading days. A product that needs the curve beyond them depends on the prior, or on a flat or power-law extension, alone (Section 16.5).
 
 ## 16.2 The procedure on a thin chain
 
@@ -63,7 +63,7 @@ The prior support of a level is a volatility of 6% to 60%, the truncation of the
 
 ## 16.3 A first attempt, and what was wrong with it
 
-The first thin example was SPY with its later quotes hidden: the 27 quotes of SPY's three front monthly smiles, at 21, 42 and 63 days, nine strikes each (`tutorial_final/checks/desk_case/`). It is withdrawn, and none of its results is quoted as evidence, for three reasons (v2-plan, Section 4).
+The first thin example was SPY with its later quotes hidden: the 27 quotes of SPY's three front monthly smiles, at 21, 42 and 63 days, nine strikes each (`tutorial_final/checks/desk_case/`). It is withdrawn as evidence on thin chains, for three reasons (v2-plan, Section 4).
 
 1. It hid SPY's later quotes but kept SPY's tight noise, so it was not a thin chain in the sense of Section 16.1.
 2. It gave every method SPY's curve to one year, read from the full chain. A thin chain cannot supply that curve, so every method knew more than a thin chain allows.
@@ -71,7 +71,7 @@ The first thin example was SPY with its later quotes hidden: the 27 quotes of SP
 
 Two other checks had the same leak: rough Bergomi on 15 sparse SPY quotes, and on 63 quotes with three times the noise (`tutorial_final/checks/rough_spy_is_cases.py`). Every method was given the same full-chain curve, so they described a market that knows its variance-swap curve, and they are withdrawn as well. The local check of Lecture 13, Section 13.11 is a different one: it makes the curve uncertain. The front-month case stays in the repository for the record and for its costs (Lecture 14, Section 14.5). EWG's layout and noise, with the curve inferred, replace it (Sections 16.2, 16.4 and 16.5).
 
-**What the case still shows.** The third reason is itself a lesson. Fitted to the front three months alone, rough Bergomi has a $\chi^2$ of 216 on the 36 later quotes, which that fit did not use. The fit to all 63 quotes has a $\chi^2$ of 48 on the same 36 quotes (`tutorial_final/checks/desk_case/real_market.json`). The parameters that fit the front months misprice the later maturities by far more than the quote noise allows, and no range computed within the model from the front months shows it. Only quotes that the fit did not use reveal it. EWG has no later quotes to hold out, so its test is the posterior predictive check at its own quotes (Section 16.6).
+**What the case still shows.** The third reason is itself a lesson, and the course keeps it as an illustration of model error, not as evidence on thin chains. Fitted to the front three months alone, rough Bergomi has a $\chi^2$ of 216 on the 36 later quotes, which that fit did not use. The fit to all 63 quotes has a $\chi^2$ of 48 on the same 36 quotes (`tutorial_final/checks/desk_case/real_market.json`). The parameters that fit the front months misprice the later maturities by far more than the quote noise allows, and no range computed within the model from the front months shows it. Only quotes that the fit did not use reveal it. EWG has no later quotes to hold out, so its test is the posterior predictive check at its own quotes (Section 16.6).
 
 ## 16.4 Reserves and their coverage on simulated thin chains
 
@@ -84,7 +84,7 @@ A one-sided 90% bound is correct when the truth falls beyond it 10% of the time.
 **The five methods.** Each method gives a centre and one-sided 90% bounds for each product.
 
 1. The thin network alone: the products at 256 of its draws.
-2. The audited posterior: importance sampling from the network's draws, through a Student-$t$ fit mixed with 10% of the prior. Each proposal is priced on the layout on its own seed, with the unbiased likelihood $\mathcal{N}\big(y;\ \hat P,\ \mathrm{diag}(\sigma^2) + C - S\big)$ of Lecture 15, Section 15.2, and a second round is refitted to the weights when $\hat k$ exceeds 0.7. The bounds are the 10% and 90% quantiles of the products at draws resampled by the weights.
+2. The audited posterior: importance sampling with 512 proposals from the network's draws, through a Student-$t$ fit mixed with 10% of the prior. Each proposal is priced on the layout on its own seed, with the unbiased likelihood $\mathcal{N}\big(y;\ \hat P,\ \mathrm{diag}(\sigma^2) + C - S\big)$ of Lecture 15, Section 15.2, and a second round is refitted to the weights when $\hat k$ exceeds 0.7. The bounds are the 10% and 90% quantiles of the products at draws resampled by the weights.
 3. Gauss–Newton on $(H, \eta, \rho)$ and one forward-variance level per quoted interval, flat beyond the last quote, with delta-method bounds at the fit's price $\mp 1.2816$ standard deviations (Lecture 7, Section 7.6).
 4. The same fit, with the levels beyond the last quote extrapolated by a power law in time fitted to the quoted levels.
 5. The Gauss–Newton fit with $H$ fixed at 0.10.
@@ -93,9 +93,9 @@ The classical fits start from the quotes and the prior box, not from the network
 
 **Breaches.** A long breach is a true price below the lower bound, and a short breach one above the upper bound. A correct method breaches each side 10% of the time. The truth and every method price the products on one seed per chain and the same path count, so product Monte Carlo error does not blur the comparison. One chain in 50 also gives the posterior's bounds on a second product seed, which measures that error.
 
-**Three laws for the unquoted level.** The quotes end at 126 days, and only the forward start from six months to one year depends on the curve beyond them. Its truth is therefore priced under three laws for the last level, with the quotes unchanged: the prior's law; the level held flat; and the prior's increment over the last interval doubled in log variance. The first arm is correct for the posterior by construction, because a posterior's coverage holds on average over truths drawn from its prior (Lecture 8, Section 8.6). The second is correct for the flat Gauss–Newton fit by construction. The third is correct for neither, so it tests both methods when their assumption about the unquoted level is wrong. The posterior's prior is not changed.
+**Three laws for the unquoted level.** The layout's quotes end at 126 days, and only the forward start from six months to one year depends on the curve beyond them. Its truth is therefore priced under three laws for the last level, with the quotes unchanged: the prior's law; the level held flat; and the prior's increment over the last interval doubled in log variance. The first arm is correct for the posterior by construction, because a posterior's coverage holds on average over truths drawn from its prior (Lecture 8, Section 8.6). The second is correct for the flat Gauss–Newton fit by construction. The third is correct for neither, so it tests both methods when their assumption about the unquoted level is wrong. The posterior's prior is not changed.
 
-**Reliable audits.** The summary reports every method on all chains and on the chains whose audit is reliable: a final $\hat k$ of at most 0.7 and every proposal priced, since a proposal left unpriced gets zero weight and biases the audit. The run is accepted when at least 90% of chains have a reliable audit, and when the second product seed moves the bounds by less than a tenth of their width. It costs about 11 CPU-minutes a chain, about 180 CPU-hours in all (run R8).
+**Reliable audits.** The summary reports every method on all chains and on the chains whose audit is reliable: a final $\hat k$ of at most 0.7 and every proposal priced, since a proposal left unpriced gets zero weight and biases the audit. The threshold 0.7 is the design document's large-sample rule. The sample-size threshold of Lecture 8, Section 8.9 is stricter: 0.63 for 512 proposals, and 0.67 for the 1,024 of two pooled rounds. Each chain's $\hat k$ is stored, so the summary can also be read under the stricter rule. The run is accepted when at least 90% of chains have a reliable audit, and when the second product seed moves the bounds by less than a tenth of their width. It costs about 11 CPU-minutes a chain, about 180 CPU-hours in all (run R8).
 
 **Truths near EWG.** Study S10-E repeats S10 on 300 chains whose truths are drawn from EWG's audited posterior (Section 16.5), with their layout quotes priced as the bank prices them. The posterior's prior is then not the truths' law, so its coverage is not guaranteed by construction: S10-E tests every method near the real chain (run R9, about 55 CPU-hours). The truths are resampled from weighted draws, so some repeat when the posterior's effective sample size is small, and chains that share a truth are not independent. The summary therefore counts the distinct truths and gives intervals from a bootstrap over them.
 
@@ -157,9 +157,9 @@ The prudent-valuation rules keep the two kinds of uncertainty apart (Lecture 6, 
 | The design grid is not the real chain | Interpolation error enters as data | Report the smile-fit residuals; on EWG the audit's likelihood uses the chain's own quotes (S11); a network that reads the chain as quoted (Lecture 12, Section 12.10) |
 | Products depend on $\xi_0$ beyond the data | The out-of-grid product's range mixes calibration and extrapolation | State the extrapolation; give the curve beyond the last quote a stated prior and test other laws (Lecture 15, Section 15.6; S10) |
 | The classical critique sounds overstated | Loss of credibility with quants | Same weights for both routes; report Gauss–Newton coverage as measured; show where the posterior returns the classical answer (Lecture 15, Section 15.4); name the pricer route as the strong competitor |
-| The cost claim sounds overstated | Loss of credibility with practitioners | One machine, CPU-seconds; the exact posterior measured by importance sampling on SPY (Lecture 14, Section 14.5) |
+| The cost claim sounds overstated | Loss of credibility with practitioners | One machine, CPU-seconds; one posterior measured by importance sampling on SPY, on a fixed-seed pricer (Lecture 14, Section 14.5) |
 
-Two results bear on these risks. The pilot's curve prior did not cover SPY's curve, and the full bank's does (Lecture 15, Sections 15.1 and 15.3). The exact rough-Bergomi posterior has been measured on SPY by importance sampling (Lecture 14, Section 14.5), while the random-walk chain is still extrapolated.
+Two results bear on these risks. The pilot's curve prior did not cover SPY's curve, and the full bank's does (Lecture 15, Sections 15.1 and 15.3). A rough-Bergomi posterior has been computed on SPY by importance sampling, on a fixed-seed pricer (Lecture 14, Section 14.5), while the random-walk chain is still extrapolated.
 
 ## 16.8 The argument, claim by claim
 
@@ -167,20 +167,20 @@ This section gathers the evidence for each claim of the argument of the course (
 
 | Claim | Evidence so far | Status |
 | --- | --- | --- |
-| 1. On a liquid smile the posterior returns the classical answer | Heston on SPY, with 63, 36 or 15 quotes: delta-method 90% ranges 0.92 to 1.21 times the exact posterior's (Lecture 11, Figure 11.5). Rough Bergomi on SPY's 63 quotes, curve given: delta-method reserves 0.94 to 1.13 times the posterior's at the 10% and 90% quantiles (Lecture 15, Figure 15.7) | Shown by quick checks, as theory predicts |
-| 2a. Beyond the last quote they part | Flat extrapolation gives 0.30 to 0.67 of the posterior's 90% range for SPY's products to five years, and zero for the three-year variance swap. The forward start's range goes from 19.4% to 36.8% of its price as the prior's sd goes from 0.1 to 0.3 (Lecture 15, Figure 15.10) | Shown by a quick check with a Laplace approximation; the prior sets the size |
-| 2b. On a thin chain they part | Locally, on 15 SPY quotes with an uncertain curve, the contraction of $\rho$ falls from 0.61–0.65 to 0.12–0.16 (Lecture 13, Figure 13.13). On EWG: ⟨S10⟩, ⟨S10-E⟩, ⟨S11⟩ | Not yet shown |
+| 1. On a liquid smile the posterior returns the classical answer | Heston on SPY, with 63, 36 or 15 quotes: delta-method 90% ranges 0.92 to 1.21 times the exact posterior's (Lecture 11, Section 11.4; the case with $\kappa = 2$ on 63 quotes reuses a feasibility run to be redone as study S8-H). Rough Bergomi on SPY's 63 quotes, curve given, on a fixed-seed pricer: delta-method reserves 0.94 to 1.13 times the posterior's at the 10% and 90% quantiles (Lecture 15, Section 15.4) | Shown by quick checks, as theory predicts |
+| 2a. Beyond the last quote they part | For the three SPY products that depend mostly on the curve beyond 2.25 years (a forward start from two to three years, a five-year put and a three-year variance swap), flat extrapolation gives 0.32, 0.30 and 0 of the posterior's 90% range. The forward start's range goes from 19.4% to 36.8% of its price as the prior's sd goes from 0.1 to 0.3 (Lecture 15, Section 15.6) | Shown by a quick check with a Laplace approximation; the prior sets the size |
+| 2b. On a thin chain they part | The local (Laplace) check, on 15 SPY quotes with SPY's design noise and an uncertain curve: the contraction of $\rho$ falls from 0.61–0.65 to 0.12–0.16 (Lecture 13, Figure 13.13). On EWG: ⟨S10⟩, ⟨S10-E⟩, ⟨S11⟩ | Not yet shown |
 | 2c. Pooling helps a name that quotes almost nothing | A simulated Black–Scholes sector of 2 liquid and 6 illiquid names: hierarchical Bayes covers 88.0%, the proxy 59.5%, empirical Bayes 69.7%; fitting each name alone covers 89.7%, with intervals 30% wider (Lecture 8, Figure 8.8) | Shown on simulated data, with the model right by construction |
 | 2d. A weakly informed direction | On the toy smile the Gauss–Newton interval of $\eta$, 0.24 to 1.79, crosses the box; the posterior's is 0.88 to 1.58 (Lecture 8, Figure 8.4). Heston with jumps has two optima with different exotic prices (Lecture 6, Figure 6.2) | Shown on synthetic data |
-| 3a. Simulation-based inference makes the posterior checkable | One rough-Bergomi posterior: at least 16.9 CPU-hours by a chain, about 85 CPU-minutes by importance sampling from Gauss–Newton on SPY, and 3.6 CPU-seconds by the network plus about 53 CPU-minutes for its audit. Simulation-based calibration on 2,000 smiles: about 2 CPU-hours with the network, about 2,800 by importance sampling (Lecture 14, Figure 14.4) | Costs measured or extrapolated; the network's own checks are ⟨S2⟩ and ⟨S5⟩ |
-| 3b. The network proposes where a classical fit fails | On SPY's front three months the Gauss–Newton proposal failed, but that case is withdrawn (Section 16.3). Not measured on EWG | Not yet shown |
-| 4. The posterior is exact for its model only | On pilot smile 290, Heston and rough Bergomi price the forward start 7.9% apart, about five times either model's reserve (Lecture 15, Section 15.7). EWG's predictive check: ⟨S11⟩ | Partly shown; the test on EWG is pending |
+| 3a. Simulation-based inference makes the posterior checkable | One rough-Bergomi posterior: at least 16.9 CPU-hours by a chain, about 85 CPU-minutes by importance sampling from Gauss–Newton on SPY with a fixed-seed pricer, and 3.6 CPU-seconds by the network plus about 53 CPU-minutes for its audit. Simulation-based calibration on 2,000 smiles: about 2 CPU-hours with the network after a training bank of about 370 CPU-hours, against about 2,800 by importance sampling (Lecture 14, Section 14.4) | Costs measured or extrapolated; the network's own checks are ⟨S2⟩ and ⟨S5⟩ |
+| 3b. The network proposes where a classical fit fails | On SPY's front three months the Gauss–Newton proposal failed, but that case is withdrawn (Section 16.3). Not measured on EWG | Not yet shown; S10 can refute it, and showing it needs a classical-proposal arm (v2-plan, Section 2.6, option B) |
+| 4. The posterior is exact for its model only | On pilot smile 290, under the pilot network's posterior, Heston and rough Bergomi price the forward start 7.9% apart, about five times either model's reserve (Lecture 15, Section 15.7). EWG's predictive check: ⟨S11⟩ | Partly shown, on pilot smiles; the test on EWG is pending |
 
-**What the pending runs decide.** Studies S10, S10-E and S11 settle claims 2b and 3b. The course reports every outcome.
+**What the pending runs decide.** Studies S10, S10-E and S11 settle claim 2b. They can refute claim 3b, through unreliable audits, but cannot show it: that needs a classical-proposal arm (v2-plan, Section 2.6, option B). The course reports every outcome.
 
 | If, on EWG-like chains | Then the course says |
 | --- | --- |
-| A baseline's one-sided bounds are breached clearly more than 10% of the time (the 95% interval of its breach rate lies above 10%), while the audited posterior's are not | The thin chain is the main example: where the quotes leave the inputs open, the classical range is too narrow and the posterior's is not |
+| A baseline's one-sided bounds are breached clearly more than 10% of the time (the 95% interval of its breach rate lies above 10%), while the audited posterior's are not. On S10, whose truths come from the prior, the posterior covers by construction if its audit is right; S10-E, whose truths come from EWG's posterior, is the test without that advantage | The thin chain is the main example: where the quotes leave the inputs open, the classical range is too narrow and the posterior's is not |
 | Gauss–Newton covers at its nominal rate too | The case for Bayes rests on the long end and on pooling; on a thin chain the method agrees with the classical answer as well |
 | The posterior is breached too, under the law of the unquoted level that is correct for neither method | The posterior is right only under its own prior; the lesson is to state and test the prior |
 | More than 10% of chains have an unreliable audit | The network is not good enough as a proposal on thin chains, and claim 3b is not made |
@@ -192,7 +192,7 @@ This section gathers the evidence for each claim of the argument of the course (
 - That the network makes one posterior much cheaper than importance sampling from a good classical proposal (Lecture 14, Section 14.4).
 - That the network takes milliseconds. It takes 1.4 seconds for 1,000 draws, and its audit about 53 CPU-minutes on SPY (Lecture 14, Section 14.5).
 - That banks use rough volatility in production, or that fixing $H$ at 0.10 is practice (Lecture 6, Section 6.7).
-- Any result of SPY's front three months, or of the 15-quote and three-times-noise checks (Section 16.3).
+- Any result of SPY's front three months as evidence on thin chains, or of the importance-sampling checks on 15 sparse SPY quotes and on three times the noise (Section 16.3).
 
 The plan lists the options that would make claims 2b, 2c and 3b solid (v2-plan, Section 2.6).
 
@@ -205,7 +205,7 @@ The plan lists the options that would make claims 2b, 2c and 3b solid (v2-plan, 
 5. Study S10 counts breaches of five methods' one-sided 90% bounds on 1,000 simulated EWG chains, with three laws for the unquoted level, and S10-E repeats it near EWG. Study S11 computes EWG's posterior at three noise scales. All three are pending.
 6. Model error is tested by the predictive check at EWG's quotes, and the claim that rough models fit SPX smiles best is disputed.
 7. Two outcomes would weaken the argument: Gauss–Newton covering at its nominal rate on EWG-like chains, and rough Bergomi failing EWG's predictive check.
-8. The argument stands as follows (Section 16.8). On a liquid smile the posterior returns the classical answer. Beyond the last quote the two part, by an amount the prior sets. Pooling helps on simulated data. Simulation-based inference makes the posterior's coverage checkable. The thin chain, and the network as a proposal where a classical fit fails, are not yet shown.
+8. The argument stands as follows (Section 16.8). Quick checks show that on a liquid smile the posterior returns the classical answer, and that beyond the last quote the two part, by an amount the prior sets. Pooling helps on simulated data. The costs show that amortization would make the posterior's coverage checkable; the network's own checks are pending. Pilot smiles show that the posterior is exact for its model only. The thin chain, and the network as a proposal where a classical fit fails, are not yet shown.
 
 ## References
 

@@ -6,7 +6,7 @@
 
 **Where it sits in the course.** Lecture 8 computed exact posteriors for models whose likelihood is cheap. For rough Bergomi every evaluation of the likelihood is a Monte Carlo run, and Lecture 14 shows what the exact posterior then costs. This lecture moves that cost into a training bank priced once. It closes Part II with the theory and with toys. Lecture 12 applies the workflow to Heston, where every result has an exact check, and Lectures 15 and 16 apply it to rough Bergomi.
 
-**Its part in the argument.** This lecture supplies the method of the third claim of the argument (Lecture 6, Section 6.8). Simulation-based calibration (Section 9.7) and coverage (Section 9.8) need posteriors on thousands of simulated smiles. For rough Bergomi only an amortized network makes that affordable (Lecture 14, Section 14.4).
+**Its part in the argument.** This lecture supplies the method of the third claim of the argument (Lecture 6, Section 6.8). Simulation-based calibration (Section 9.7) and coverage (Section 9.8) need posteriors on thousands of simulated smiles. For rough Bergomi an amortized network makes simulation-based calibration affordable, once its training bank is paid (Lecture 14, Section 14.4).
 
 ## 9.1 Simulated pairs carry the posterior
 

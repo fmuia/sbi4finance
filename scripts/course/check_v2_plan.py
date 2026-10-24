@@ -1,4 +1,5 @@
-"""Check the numbers of docs/course/v2-plan.md against the stored results.
+"""Check the numbers of docs/course/v2-plan.md, and of the lectures' statement of the argument, against the stored
+results.
 
     python scripts/course/check_v2_plan.py
 
@@ -199,11 +200,44 @@ def section_5():
           1, 0)
 
 
+def lectures():
+    """Numbers that the lectures' statement of the argument quotes (Lectures 15 and 16, v2-plan Section 2.2)."""
+    end = load(CHECKS / "long_end/long_end.json")
+    names = end["products"]
+    flat, post = np.array(end["range90_desk_delta"]), np.array(end["range90_posterior_mc"])
+    beyond = np.array(end["variance_shares"]["ξ0 2.25 to 5 years (prior only)"])
+    for name, ratio, share in (("forward-start 2y-3y", 0.32, 0.64), ("put 5y 80%", 0.30, 0.76),
+                               ("variance swap 3y", 0.0, 0.59), ("autocallable 3y", 0.60, 0.02),
+                               ("cliquet 3y", 0.67, 0.14)):
+        i = names.index(name)
+        check(f"long end, {name}: flat range over the posterior's", flat[i] / post[i], ratio, 0.005)
+        check(f"long end, {name}: variance share beyond 2.25 years", beyond[i], share, 0.005)
+    seeds = [load(CHECKS / f"rough_spy_is/rough_spy_is_seed{s}.json")["parameters"] for s in (0, 1)]
+    shift = [abs(seeds[0][k]["posterior_mean"] - seeds[1][k]["posterior_mean"]) / seeds[0][k]["posterior_sd"]
+             for k in seeds[0]]
+    check("SPY importance sampling: second seed's shift of the means, smallest (sd)", min(shift), 0.07, 0.005)
+    check("SPY importance sampling: second seed's shift of the means, largest (sd)", max(shift), 0.21, 0.005)
+    rows = load(RESULTS / "rough-pilot/s7-across/across-models.json")["surfaces"]
+    fs = rows[2]["products"]["forward_start_call"]
+    check("pilot smile 292: forward-start reserve under rough Bergomi (%)", 100 * fs["rough"]["reserve_short_relative"],
+          6.0, 0.05)
+    check("pilot smile 292: forward-start reserve under Heston (%)", 100 * fs["heston"]["reserve_short_relative"], 3.2,
+          0.05)
+    for m, printed in ((512, 0.63), (1024, 0.67)):
+        check(f"k-hat sample-size threshold at {m} proposals", min(1 - 1 / np.log10(m), 0.7), printed, 0.005)
+    local = {s["xi0_log_sd"]: s for s in load(CHECKS / "rough_checks.json")["scenarios"] if s["n_quotes"] == 15}
+    for sd, lo, hi in ((0.0, 0.61, 0.65), (0.1, 0.12, 0.16)):
+        c = sorted(local[sd][seed]["contraction"][2] for seed in ("seed1", "seed2"))
+        check(f"local check, 15 quotes, curve sd {sd}: contraction of rho, lower seed", c[0], lo, 0.005)
+        check(f"local check, 15 quotes, curve sd {sd}: contraction of rho, higher seed", c[1], hi, 0.005)
+
+
 def main():
     grid = section_1()
     section_2()
     section_3()
     section_5()
+    lectures()
     print(f"grid bias (for the plan's Section 1): {json.dumps(grid)}")
     if FAILED:
         print(f"{len(FAILED)} checks failed")

@@ -15,9 +15,10 @@ tutorial.
    Simple concepts use Black–Scholes, the workflow uses Heston, and the full examples use rough Bergomi.
 2. **The argument.** On a liquid smile the posterior and the classical interval agree, as theory predicts.
    They part where the quotes do not determine what the product needs: maturities beyond the last quote, a thin
-   chain, and names that quote almost nothing. Amortization, with an audit of each chain, makes the exact posterior affordable on every chain and
-   its coverage testable on a thousand simulated chains. On one liquid smile its saving over importance sampling
-   from a Gauss–Newton proposal is small; in validation it is decisive (Section 2.4).
+   chain, and names that quote almost nothing. Amortization makes the posterior checkable: its coverage can be
+   tested on a thousand simulated chains, and each real chain gets a proposal for an audit. On one audited smile
+   its saving over importance sampling from a Gauss–Newton proposal is small; in validation it is decisive
+   (Section 2.4).
 3. **The example.** EWG (iShares MSCI Germany): a real thin chain, informative but sparse, chosen on merit from
    four candidates (Section 3).
 4. **Two reviews found nineteen errors.** The most serious ones are a curve leaked from SPY's full chain, an audit
@@ -30,7 +31,8 @@ tutorial.
 
 ## 1. The marking procedure
 
-The course marks a product the smile does not quote in seven steps. Each convention below was checked, and each
+The course marks a product the smile does not quote by the six steps of Lecture 6, Section 6.1. On a real chain they
+rest on the seven conventions below. Each convention was checked, and each
 check is reproducible from a committed file.
 
 1. **Quotes.** Cboe delayed quotes at the close, out of the money, with a bid below the ask. Raw files are not
@@ -78,13 +80,14 @@ the posterior's, on a log scale; the grey band runs from 0.8 to 1.25.
 - *Rough Bergomi, 63 quotes:* the delta-method reserve over the posterior's, at the 5% quantile for the long side
   (filled) and the 95% for the short side (open). The variance swap is left out, because both answers are zero when
   the curve is given.
-- *Right-hand column:* the range with the curve held flat beyond the LEAPs over the posterior's.
+- *Right-hand column:* the range with the curve held flat beyond one year, and only $(H, \eta, \rho)$ uncertain, over
+  the posterior's.
 
 The numbers are in `images/v2-evidence-numbers.json`, drawn by `scripts/course/realignment.py`.
 
 - **Heston on SPY** with 63, 36 or 15 quotes, κ fixed or free: the ratios lie between 0.92 and 1.21.
-- **Rough Bergomi on SPY's 63 quotes**, with the curve read from SPY's own strip and the same pricer for both
-  methods: 0.93 to 1.16, and 0.94 to 1.13 at the course's reserve, the 10% and 90% quantiles.
+- **Rough Bergomi on SPY's 63 quotes**, with the curve read from SPY's own strip and the same fixed-seed pricer for
+  both methods: 0.93 to 1.16, and 0.94 to 1.13 at the course's reserve, the 10% and 90% quantiles.
 
 With three or four parameters and these quotes the posterior is close to the Gauss–Newton normal, as the
 Bernstein–von Mises theorem predicts. The course presents this as a strength: the method returns the classical
@@ -92,8 +95,12 @@ answer where that answer is right.
 
 ### 2.2 Beyond the last quote they part, and the prior decides
 
-With the curve unquoted beyond SPY's LEAPs, flat extrapolation gives 0.30 to 0.67 of the posterior's 90% range for
-products to five years. For the three-year variance swap it gives zero. The posterior's range depends on the width
+Flat extrapolation varies only $(H, \eta, \rho)$ and holds the curve flat beyond one year. The posterior also varies the
+curve to one year (5% per level), the segment to 2.25 years that SPY's LEAPs inform, and the segment beyond, which
+only the prior constrains. For the three products that depend mostly on that last segment (a forward start from two
+to three years, a five-year put and a three-year variance swap), it explains 59% to 76% of the posterior variance,
+and flat extrapolation gives 0.32, 0.30 and 0 of the posterior's 90% range. For the other two products, an
+autocallable and a cliquet, the ratio is 0.60 and 0.67, and the gap is not the long end. The posterior's range depends on the width
 of the random-walk prior beyond the last quote. The forward start's 90% range goes from 19.4% to 36.8% of its price
 as the prior's sd goes from 0.1 to 0.3 per square-root year (`tutorial_final/checks/long_end/`). The prior must
 therefore be stated and tested. Study S10 tests it with two other laws for the unquoted level (Section 5).
@@ -131,11 +138,13 @@ thin chains is option D of Section 2.6.
 | The network's audit on EWG's quotes | 512 evaluations at about 0.4 CPU-seconds, with the same pilot: about 4 CPU-minutes | `checks/thin_chains/timing.json` |
 
 A validation needs many posteriors. Simulation-based calibration on 2,000 smiles costs about 2 CPU-hours with the
-network. At 85 CPU-minutes a smile it would cost about 2,800 CPU-hours. Study S10's 1,000 audited thin chains will
-cost an estimated 180 CPU-hours with the network as proposal. Against importance sampling from a Gauss–Newton
+network, after a training bank of about 370 CPU-hours. At 85 CPU-minutes a smile it would cost about 2,800
+CPU-hours. Study S10's 1,000 audited thin chains will cost an estimated 180 CPU-hours with the network as proposal.
+With a Gauss–Newton proposal they would cost the same order, so there the network matters only if the classical
+proposal fails (option B of Section 2.6). Against importance sampling from a Gauss–Newton
 proposal, the training bank pays only after about 260 posteriors if they are not audited, or 700 if each is
-(Lecture 14, Figure 14.4). The case for amortization is therefore that the exact posterior, and the check of its
-coverage, become affordable, not that one posterior becomes much cheaper. The course never claims milliseconds.
+(Lecture 14, Figure 14.4). The case for amortization is therefore that the check of the posterior's coverage
+becomes affordable, not that one posterior becomes much cheaper. The course never claims milliseconds.
 
 ### 2.5 What is not shown yet, and what would weaken the argument
 
