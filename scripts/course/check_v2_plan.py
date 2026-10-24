@@ -88,6 +88,19 @@ def main():
     check("sector: hierarchical width", width["hierarchical Bayes"], 7.6, 0.05)
     check("sector: per-name width", width["per name"], 9.9, 0.05)
 
+    # Section 1.3, conclusion 5: model error on the front-month case
+    combined = load(CHECKS / "desk_case/desk_case_combined.json")
+    fs = combined["scales"]["1.0"]["products"]["forward_start"]
+    full_median = combined["full_surface"]["forward_start"][2]
+    check("full surface over front-month mark, forward start (%)", 100 * (full_median / fs["mark"] - 1), 27, 0.5)
+    upper = max(fs["mark"] + fs["posterior"]["short"], fs["mark"] + fs["delta"]["short"],
+                fs["mark"] + fs["profile"]["short"], fs["mark"] + fs["truncated_gaussian"]["short"],
+                fs["mark_h_fixed"] + fs["h_fixed_delta"]["short"])
+    check("full-surface price above every method's 90% point", float(full_median > upper), 1, 0)
+    market = load(CHECKS / "desk_case/real_market.json")
+    check("front-month fit: chi-square on the 36 later quotes", market["front_months"]["chi2_other_36"], 216, 0.5)
+    check("full-surface fit: chi-square on the 36 later quotes", market["full_surface"]["chi2_other_36"], 48, 0.5)
+
     # Section 1.4: costs
     costs = load(RESULTS / "costs/costs.json")
     check("exact rough chain (CPU-hours)", costs["exact_rough_posterior"]["cpu_hours"], 16.9, 0.05)

@@ -99,12 +99,13 @@ The note ends by asking whether the target is index exotics and structured notes
 - The convention $H = 0.10$ breaches 81% (forward start) and 71% (put) on the long side.
 - In the sector with 2 liquid and 6 illiquid names, the proxy's band covers 59.5% of the illiquid names, empirical Bayes 69.7% and hierarchical Bayes 88.0%. The hierarchical band is narrower than each name's own (7.6 against 9.9 volatility points).
 
-Four conclusions follow.
+Five conclusions follow.
 
 1. **Where the quotes inform the parameters, the two answers agree,** as the Bernstein–von Mises theorem predicts ([Lecture 10, Sections 10.3 and 10.8](10-bayesian-calibration.md)). The course should present this as a strength: the method returns the classical answer where the classical answer is right.
 2. **They part where the quotes are silent**: beyond the quoted maturities, on thin layouts, and wherever a convention fills the gap. There the conventions under-reserve badly, and the classical interval breaches up to 17.5% on one side.
 3. **Pooling across names helps thin names.** In the Black–Scholes sector the hierarchical interval covers close to its nominal rate and is narrower than each name's own. It is also the cheapest example of all: Black–Scholes on a grid.
 4. **These are quick checks on one date.** The front-month case also gave every method a variance curve to one year read from SPY's full smile, which a thin market would not have. Work package WP4 corrects this (Section 6.5).
+5. **Model error can exceed every within-model range.** Calibrated to SPY's full surface, rough Bergomi prices the one-year forward start 27% above its front-month mark. That is outside every method's 90% range on the front months. One parameter set does not fit both ends: the front-month fit has a $\chi^2$ of 216 on the 36 later quotes, against 48 for the full-surface fit (`checks/desk_case/real_market.json`). D4 and S11 report this, and D5 discusses it.
 
 ### 1.4 What the evidence says about simulation-based inference
 
@@ -244,6 +245,7 @@ Version 1's Section 14.2 (the studies' status) becomes a status page linked to `
 | Desk conventions under-reserve | `desk_case` ($H$ fixed), `long_end` (flat extrapolation) | Quick checks | B1, D4 |
 | Posterior reserves cover; Gauss–Newton breaches on one side | `desk_case/validate.py`, 80 chains (Figure 2) | Quick check; S10 at scale | D4 |
 | Pooling helps thin names | `bs_hierarchy` (Figure 2) | Quick check | B3 |
+| Model error can exceed every within-model range | `desk_case/real_market.py`: front months against the full surface | Quick check; S11 on a real thin chain | D4, D5 |
 | The amortized posterior is calibrated | Heston: S2, SBC inside the band for 4 of 4 targets on 2,000 smiles. Rough: the pilot's SBC fails for $\rho$ and $\rho\eta$ (C7) | Heston verified; rough pending (S2, S2-T) | C4, D3, D4 |
 | The network agrees with the exact posterior | Heston: S3 (C5) and S4 (C6). The network alone meets the criterion on all four parameters for 80% of 50 smiles; with the importance-sampling correction it agrees on 4 of 4 smiles tried; the neural-pricer route agrees on 50 of 50 | Not met by the network alone; met with the correction | C4 |
 | The audit corrects the network on each smile | S5 pilot: 22% of 40 rough smiles flagged at $\hat k > 0.7$ (C7) | Pending the full study | C4, D3 |
