@@ -24,7 +24,9 @@ material, with only the concepts needed for the live task introduced on stage.
 
 ## Follow-up self-review: keep the tutorial small
 
-The plan had accumulated three programmes: a tutorial release, a broad architecture benchmark and direct rough-inference research. Separate them. The selected teaching path is full/sparse Heston, followed by full/sparse rough Bergomi with six jointly inferred parameters and a Heston-shaped initial mean-variance curve. Retain the bounded four-family/encoder screen, confirm only selected configurations, and use fixed layouts. Supplied-curve rough fits, runner-up campaigns, direct rough MCMC and broad reserve-coverage claims are optional extensions. One bounded check against the published hump-capable curve family precedes substantial rough generation.
+The plan had accumulated a tutorial release, a broad architecture benchmark, sparse-chain support and direct rough-inference research. Separate them. The selected core teaching path is complete-grid Heston with four inferred parameters, followed by complete-grid rough Bergomi with six jointly inferred parameters and a Heston-shaped initial mean-variance curve. Retain the bounded four-family/encoder screen and confirm only the two selected configurations across three seeds. Complete data, training, reload, inference, numerical/reference checks, product uncertainty and participant packaging before starting sparse-chain work. No quote-subset adapter, mask-conditioned training or arbitrary-chain support is a prerequisite. One bounded check against the published hump-capable curve family precedes substantial rough generation.
+
+Sparse-chain inference is a separate downstream unit of work that needs its own input/layout, missingness, training and validation specification before implementation. Preserve the existing [case plan](SPARSE-QUOTE-CASE-PLAN.md) as its starting point, rather than promising a sparse lesson in this release. Supplied-curve rough fits, runner-up campaigns, direct rough MCMC and broad reserve-coverage claims remain separate extensions.
 
 The incremental-bank and recovery safeguards address real duplicate-ID, interrupted-write, memory and changed-dataset failure modes. Keep the tested primitives rather than rewriting them to reduce line count, and stop expanding the infrastructure unless a pilot exposes a concrete need. Collection/recovery machinery belongs in instructor tools; participants should use supplied data/checkpoints and follow the inference workflow. The infrastructure's passing mocked tests are not scientific validation. Prioritize actual pricing refinement, independent holdouts, calibrated/conditionally checked posteriors, matched baselines and an honest product/cost figure over more framework work.
 
@@ -83,10 +85,11 @@ necessary.” A campaign that can reach either conclusion is more convincing.
 
 ## Make the information available to each method visible
 
-The new plan has full/sparse Heston with four targets and full/sparse rough
-Bergomi with the same six targets in each arm. The rough model has H, eta, rho
-and three coefficients of an initial Heston-shaped variance curve. Both primary
-rough arms receive quotes, not a supplied curve. Heston already determines its
+The core plan has complete-grid Heston with four targets and complete-grid rough
+Bergomi with six targets. Each receives all 63 declared contract prices and its
+noise information; missing or invalid entries are not silently filled to pass
+this input contract. The rough model has H, eta, rho and three coefficients of
+an initial Heston-shaped variance curve, with no supplied curve. Heston already determines its
 mean curve from its parameters; using that functional family in rough Bergomi
 does not make the stochastic variance processes equivalent. Heston currently
 fixes kappa at 2 while rough curve decay is inferred, so match those assumptions
@@ -107,12 +110,16 @@ plausible curve perturbations change the result before interpreting the interval
 as a full description of calibration uncertainty.
 
 Use matched priors, observed information, noise and numerical accuracy when
-comparing methods. The alternative laws for the unquoted curve level in
+comparing methods. Include a small prior/noise sensitivity check in the core
+full-grid examples. In the separate sparse-chain unit, the alternative laws for the unquoted curve level in
 [Lecture 16, Sections 16.4–16.5](../docs/course/16-a-thin-chain-ewg.md)
 are important. Keep the favourable prior-generated case and the deliberately
 misspecified cases together; neither alone settles comparative performance.
 
-The option-noise model deserves an early, short explanation. Independent noise
+The option-noise model deserves an early, short explanation. A complete synthetic
+design is not a guarantee that a raw market chain supplies every contract.
+Any retained market example must label how its complete grid was constructed.
+Independent noise
 on interpolated grid values is a modelling choice, not a property of the source
 quotes. The likelihood should not gain artificial precision merely because a
 smoother was read at many points. The actual-quote EWG audit and noise-scale
@@ -156,13 +163,13 @@ needs an explicit allocation. One workable proposal is 60 minutes of exercises,
 | Slot 5 | Predict which product or curve component is weakly identified; inspect the result and its diagnostics | Several products, several market cases and every audit variant at once |
 | Slot 6 | Change one prior or noise assumption and explain the effect | A second full workflow or several additional trained detectors |
 
-Use one primary downstream product and one primary market case to carry the
-story. A second product can be a control. Frame the identification lesson as
-**Calibration from sparse option quotes**, beginning with controlled thinning
-of synthetic surfaces and selecting its market illustration separately. Infer
-the curve in both the full and sparse controls to isolate the effect of missing
-quotes. EWG is the current implemented candidate; retain its named historical
-evidence while using the [case plan](SPARSE-QUOTE-CASE-PLAN.md) to assess alternatives.
+Use one primary downstream product to carry the complete-grid inference story;
+a second product can be a control. Teach identification through posterior
+dependence and prior/noise sensitivity while keeping every declared quote
+available. A suitable market case can illustrate the workflow if its preprocessing
+and observation assumptions are explicit; it is not required to introduce sparse
+support. EWG remains historical evidence for the downstream sparse-chain unit,
+whose specification starts from the [case plan](SPARSE-QUOTE-CASE-PLAN.md).
 Keep architecture comparisons in a compact results
 panel and the take-home material. Each participant should finish with one
 sentence naming the data, unknowns, inference approximation, validation result
@@ -176,8 +183,7 @@ is worth its cost. Require reproducible checkpoints, scoped reference comparison
 numerical-error checks, explicit assumptions, a timed rehearsal and a cached
 fallback for each expensive demonstration.
 
-If the thin-chain studies do not support the hoped-for advantage, retain their
-measured outcome and teach the limitation. If the full rough checkpoint misses
+Sparse-chain outcomes do not gate this release. If the full rough checkpoint misses
 its checks, label the advanced material as an unfinished research case and narrow
-the advertised hands-on scope. Neither outcome requires replacing the broad
-learning path; both require changing the claims made about it.
+the advertised hands-on scope. That does not require replacing the broad
+learning path; it requires changing the claims made about it.
