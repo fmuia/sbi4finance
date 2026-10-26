@@ -30,7 +30,8 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from sbi4finance.calibration import bank, surface, tasks  # noqa: E402
+from sbi4finance.calibration import bank_collection as bank  # noqa: E402
+from sbi4finance.calibration import surface, tasks  # noqa: E402
 from heston_check import jsonable  # noqa: E402
 
 ONE_MONTH = 21 / surface.TRADING_DAYS
@@ -183,7 +184,7 @@ def _quantiles(values, names):
 
 
 def prior_predictive(args):
-    manifest, splits = bank.load_bank(args.bank, splits=(args.split,))
+    manifest, splits = bank.load_bank(args.bank, splits=(args.split,), roles=bank.TRAINING_ROLES)
     task = manifest["configuration"]["task"]
     split = splits[args.split]
     rows = np.arange(min(args.surfaces, len(split["parameters"])))

@@ -2,6 +2,8 @@
 
 For the proposed next campaign, start with the [numerical experiment plan](NUMERICAL-EXPERIMENT-PLAN.md) and [protocol](EXPERIMENT-PROTOCOL.md). They add the BayesFlow 2.1 migration, safe resumes, architecture comparisons and reference checks. The baseline commands below need the planned environment/API/test updates before they are used for that campaign; the planning PR does not submit these jobs.
 
+For new generation that should grow beyond the initial 100k training surfaces, use the [incremental collection and snapshot guide](../docs/incremental-calibration-banks.md). It plans only missing IDs, reuses compatible finished shards and fixes holdouts. The legacy R1 commands below describe the original fixed-size bank, not the append-only workflow.
+
 **Prefer PyMC where it fits naturally.** The reference and course scripts below include custom samplers, which can remain for specialized examples or where migration would add disproportionate cost. Document the actual method, reason, validation and limitations; see [the MCMC policy](../docs/mcmc-policy.md). Assess a bounded core PyMC route without making wholesale migration a prerequisite for the campaign. Historical results keep their original provenance.
 
 24 October 2026. For whoever runs Oscar jobs next. Every run below is missing: nothing in

@@ -1,6 +1,6 @@
 # Studies
 
-Each study writes one directory of results; every directory must be new. The one exception is `scripts/calibration_bank.py local --resume`, which keeps the finished shards of an interrupted local bank build. The
+Use the [incremental bank guide](../../docs/incremental-calibration-banks.md) for append-only generation, legacy-shard reuse and immutable training snapshots. Standard study outputs get a new directory; chunked training supports checked same-run recovery, while a larger dataset starts a new training run. The legacy `scripts/calibration_bank.py local --resume` also keeps finished shards of an interrupted fixed-size bank build. The
 numbers in `tutorial_final/CLAIMS.md` and in the [design document](../../docs/design/calibration-design-document.md)
 come from these outputs. Library code is in `src/sbi4finance/calibration/`.
 

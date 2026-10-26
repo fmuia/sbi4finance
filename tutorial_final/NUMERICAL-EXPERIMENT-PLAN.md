@@ -6,7 +6,7 @@ The aim is a tutorial in which we can explain **what the network learned, how we
 
 **Prefer PyMC where it fits naturally**, aiming for a reusable core reference/emulator workflow. Specialized teaching or particle/pseudo-marginal samplers can retain documented custom implementations, and adoption can be deferred when its cost outweighs its value. This guidance is recorded in [AGENTS.md](../AGENTS.md) and [the MCMC policy](../docs/mcmc-policy.md); wholesale sampler migration is not a prerequisite for the campaign.
 
-The recommendation is to generate two numerical banks once, compare networks through one training and evaluation workflow, and spend expensive reference computation on a shared collection of cases. A bank is a collection of synthetic option surfaces with their generating parameters and numerical error records. Every network can learn from the same bank.
+The recommendation is to grow two reusable numerical banks in stages, compare networks through one training and evaluation workflow, and spend expensive reference computation on a shared collection of cases. A bank is a collection of synthetic option surfaces with their generating parameters and numerical error records. Every network can learn from the same checked snapshot; expansions reuse earlier surfaces without repricing them.
 
 This is a proposal for the next campaign. [The protocol](EXPERIMENT-PROTOCOL.md) specifies the comparisons and acceptance rules. [The tutorial review](TUTORIAL-REVIEW.md) explains the educational strengths and the claims that still need evidence. The existing [cluster runbook](CLUSTER-RUNS.md) remains the source of implementation commands; its environment and checks need updating before this campaign starts.
 
@@ -63,12 +63,16 @@ Assess one bounded PyMC reference route, starting with deterministic Heston or t
 
 ### Generate enough data without generating it repeatedly
 
-| Bank | Training surfaces | Validation surfaces | Existing test allocation |
+| Bank | Initial training tranche | Validation surfaces | Existing test allocation |
 | --- | ---: | ---: | ---: |
 | Heston | 50,000 | 5,000 | 5,000 |
 | Rough Bergomi | 100,000 | 5,000 | 7,000 |
 
-These are starting budgets, not guarantees of accuracy. Test learning curves on nested training subsets before paying for expansion: 5k/20k/50k for Heston and 10k/30k/100k for rough. The rough bank can also supply the fixed thin-layout experiment.
+These counts are inherited starting allocations, not empirically established sufficient sample sizes. Prepare for one million unique training surfaces per model, with learning curves at 50k/200k/1M for Heston and 100k/300k/1M for rough; smaller subsets remain useful for software and architecture screens. Heston generation is cheap enough to expand readily. Rough expansion is decided from development accuracy and measured Oscar throughput. Do not run every architecture at every size: establish data curves with credible baselines, then confirm finalists at the selected size. The rough bank can also supply the fixed thin-layout experiment.
+
+Use the [incremental-bank workflow](../docs/incremental-calibration-banks.md): one frozen collection per task/root seed/generator identity, append only missing split-qualified surface IDs, and publish immutable snapshots referring to checked shards. Keep the root seed fixed as IDs increase. Existing compatible shards can be adopted without repricing. Validate exact coverage, reject overlapping IDs, and audit the actual derived 64-bit pricing seeds across all included splits. Scheduling, chunk size and worker count must not change a surface. Keep validation/test IDs fixed throughout expansion and record each training run's exact snapshot hash.
+
+Dataset growth starts a new training run; interruption recovery requires the identical snapshot and settings. The projected loader excludes covariance tensors during fitting, avoiding their roughly 32 GB per million surfaces in training memory. It still materializes selected training arrays. Use the validation/development split for learning curves, preserve final acceptance, and distinguish insufficient optimizer training or sampler accuracy from insufficient unique surfaces. Judge conditional agreement, calibration, difficult prior/curve regions and downstream quantities as well as validation loss.
 
 Keep clean prices and numerical-error/covariance records. Add fresh quote noise during training, keeping every version of a base surface in the same split. Additional noisy copies are not independent new surfaces.
 
@@ -127,13 +131,14 @@ On the liquid example, agreement with classical uncertainty is a good outcome. O
 | Work | Current planning basis |
 | --- | --- |
 | Oscar pilot | About 0.6 CPU-hours for 200 rough surfaces. |
-| Full rough bank | About 360 CPU-hours; benchmark on Oscar and scale the estimate. |
+| Initial rough bank, 112k including holdouts | About 360–370 CPU-hours; benchmark on Oscar and scale the estimate. |
+| Expansion capacity | About 13 CPU-hours per million Heston surfaces and 3,200–3,315 per million rough surfaces, extrapolated from stored timings; add holdouts. At 200/400/800 continuously busy cores, one million rough surfaces imply roughly 16–17/8–8.5/4–4.25 hours before queueing, startup, stragglers and assembly. |
 | Existing full study programme | About 930 CPU-hours and two baseline GPU jobs, including the bank and thin-chain studies. |
 | Architecture comparison | Additional GPU fits; reserve a capped pilot allocation, then budget from measured training throughput. |
 | Direct rough references | Additional CPU allocation, decided after one measured pilot. |
 | Fresh acceptance data if needed | Additional generation cost; separate from the existing bank budget. |
 
-These costs overlap: the 360 bank hours are already within the 930-hour programme. The broader architecture campaign and direct rough references are additions, not work covered by the two baseline GPU jobs. CPU-hours describe total work, not elapsed time under an assumed queue allocation.
+These costs overlap: the initial bank's roughly 360 hours are already within the 930-hour programme. Bank expansion, the broader architecture campaign and direct rough references are additions, not work covered by the two baseline GPU jobs. Growing from 100k to 1M training surfaces adds roughly 2,880–2,985 CPU-hours at the stored rough rates, without repeating the original tranche. CPU-hours describe total work, not elapsed time under an assumed queue allocation. The core-count examples are arithmetic scenarios, not confirmed Oscar allocations or measured cluster throughput.
 
 The curriculum currently targets 30 October for slot 4, 4 November for slots 1–3, 6 November for slots 5–6, a 9 November rehearsal and an 11 November release. Use those as **claim-freeze dates**: ship the conclusions the results support at that date. Preserve a checked Heston lesson as the fallback. If rough or EWG evidence misses its gate, narrow that section to a clearly labelled illustration or remove the unsupported claim; do not relax the criterion to finish the story.
 

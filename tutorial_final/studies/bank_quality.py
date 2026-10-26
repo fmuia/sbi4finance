@@ -21,7 +21,8 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
 
-from sbi4finance.calibration import bank, surface, tasks  # noqa: E402
+from sbi4finance.calibration import bank_collection as bank  # noqa: E402
+from sbi4finance.calibration import surface, tasks  # noqa: E402
 
 TENORS = {5: "1w", 10: "2w", 21: "1m", 42: "2m", 63: "3m", 126: "6m", 252: "1y"}
 

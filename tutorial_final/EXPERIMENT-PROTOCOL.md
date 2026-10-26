@@ -39,7 +39,11 @@ Seeded reproducibility is checked within a recorded device/environment; CPU and 
 
 ## Data and holdouts
 
-Reuse compatible training and validation data. The existing designs are Heston 50k/5k/5k and rough 100k/5k/7k train/validation/test surfaces. Preserve clean prices, covariance/error records, context and stable surface IDs. Every noise or mask augmentation of one base surface stays in its original split.
+Reuse compatible training and validation data. The initial designs are Heston 50k/5k/5k and rough 100k/5k/7k train/validation/test surfaces; these counts do not establish sufficiency. Use the [incremental-bank workflow](../docs/incremental-calibration-banks.md) to expand training through nested 50k/200k/1M Heston and 100k/300k/1M rough snapshots. Preserve clean prices, covariance/error records, context and stable surface IDs. Every noise or mask augmentation of one base surface stays in its original split.
+
+A collection freezes the task, root seed, generation sources/runtime and seed protocol independently of training size. New tranches use only missing IDs; fixed validation/test prefixes never migrate into training. Adopt compatible old shards after checking identity, bytes, arrays and numerical budgets. Snapshot publication checks exact nonoverlapping coverage and collisions in the actual reduced pricing seeds. Record the immutable snapshot manifest digest in every run and retain the referenced shards. A task, root or numerical implementation change requires a distinct collection; do not merge independent roots behind ambiguous local IDs.
+
+Learning curves use validation/development data, not final test data. Evaluate conditional-reference accuracy, calibration, difficult parameter/curve strata and product quantities with adequate optimization at each size. A flat curve with failed accuracy gates calls for diagnosis, not an automatic declaration of sufficiency. Dataset growth requires a new training directory and declared schedule; exact interruption recovery binds the original snapshot and settings. Warm-start training across snapshots is outside this implementation.
 
 Create a data-use ledger before screens:
 

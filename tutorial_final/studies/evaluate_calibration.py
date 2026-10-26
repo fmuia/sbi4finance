@@ -1,10 +1,11 @@
 """Statistical calibration and identification of the amortized posterior (study S2).
 
     python tutorial_final/studies/evaluate_calibration.py --bank BANK --checkpoint RUN --out NEW_DIR \
-        [--surfaces 2000 --draws 1000 --seed 0]
+        [--split test|validation --surfaces 2000 --draws 1000 --seed 0]
 
-Uses the first --surfaces test surfaces; later test surfaces stay free for the
-exact checks and the products. Writes validation.json, sbc.png, recovery.png
+Defaults to the first --surfaces test surfaces; later test surfaces stay free for the
+exact checks and the products. Use --split validation for model selection and learning curves.
+Writes validation.json, sbc.png, recovery.png
 and contraction.png. For rough Bergomi the product rho * eta is reported too.
 """
 
@@ -19,7 +20,8 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
 
-from sbi4finance.calibration import bank, inference, plots, validation  # noqa: E402
+from sbi4finance.calibration import bank_collection as bank  # noqa: E402
+from sbi4finance.calibration import inference, plots, validation  # noqa: E402
 
 LABELS = {"hurst": "H", "eta": "η", "rho": "ρ", "initial_variance": "v₀", "theta": "θ",
           "vol_of_vol": "σ_v", "rho_eta": "ρη"}
@@ -51,16 +53,19 @@ def main():
     parser.add_argument("--bank", type=Path, required=True)
     parser.add_argument("--checkpoint", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True)
+    parser.add_argument("--split", choices=("validation", "test"), default="test")
     parser.add_argument("--surfaces", type=int, default=2000)
     parser.add_argument("--draws", type=int, default=1000)
     parser.add_argument("--seed", type=int, default=0)
     args = parser.parse_args()
-    manifest, splits = bank.load_bank(args.bank, splits=("test",))
+    manifest, splits = bank.load_bank(args.bank, splits=(args.split,), roles=bank.TRAINING_ROLES)
     task, workflow, record = load_network(args.checkpoint)
     if task != manifest["configuration"]["task"] or record["task_fingerprint"] != manifest["task_fingerprint"]:
         raise ValueError("checkpoint and bank tasks differ")
-    test = splits["test"]
+    test = splits[args.split]
     rows = np.arange(min(args.surfaces, len(test["parameters"])))
+    if not len(rows) or args.draws < 1:
+        raise ValueError("positive --surfaces and --draws required")
     names = list(task["parameter_names"])
     args.out.mkdir(parents=True, exist_ok=False)
     started = time.perf_counter()
@@ -90,7 +95,9 @@ def main():
         "study": "S2", "task_id": task["task_id"], "task_fingerprint": manifest["task_fingerprint"],
         "bank_manifest_sha256": sha256(args.bank / "manifest.json"),
         "checkpoint_sha256": sha256(args.checkpoint / "model.keras"),
-        "surfaces": int(len(rows)), "test_rows": [0, int(len(rows))], "draws_per_surface": args.draws,
+        "surfaces": int(len(rows)), f"{args.split}_rows": [0, int(len(rows))], "draws_per_surface": args.draws,
+        "evaluated_split": args.split, "reserved_test_evaluated": args.split == "test",
+        "example_ids": test["example_id"][rows].tolist(),
         "targets": names, "sbc": {k: v for k, v in result.items() if k != "fractional_ranks"},
         "coverage": cover, "contraction": dict(zip(names, shrink)),
         "recovery_correlation": dict(zip(names, recovered["correlation"])),
