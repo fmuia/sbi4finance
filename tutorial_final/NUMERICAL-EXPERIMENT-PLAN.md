@@ -4,7 +4,7 @@ Proposed on 26 October 2026 for the course in [PR 44](https://github.com/fmuia/s
 
 The aim is a tutorial in which we can explain **what the network learned, how we checked it, when it saves work, and what its uncertainty means**. We need reusable simulated data, trained networks, trusted comparison posteriors, and a small set of clear figures. More architectures are useful only if they answer those questions.
 
-**All new MCMC runs must use PyMC**, including reference chains, emulator comparisons, pilots and teaching examples. This is a repository-wide requirement in [AGENTS.md](../AGENTS.md) and [the MCMC policy](../docs/mcmc-policy.md). Existing custom samplers must be migrated before they are used for new runs.
+**Prefer PyMC where it fits naturally**, aiming for a reusable core reference/emulator workflow. Specialized teaching or particle/pseudo-marginal samplers can retain documented custom implementations, and adoption can be deferred when its cost outweighs its value. This guidance is recorded in [AGENTS.md](../AGENTS.md) and [the MCMC policy](../docs/mcmc-policy.md); wholesale sampler migration is not a prerequisite for the campaign.
 
 The recommendation is to generate two numerical banks once, compare networks through one training and evaluation workflow, and spend expensive reference computation on a shared collection of cases. A bank is a collection of synthetic option surfaces with their generating parameters and numerical error records. Every network can learn from the same bank.
 
@@ -59,7 +59,7 @@ Make the observation encoder and posterior family configurable components of the
 
 Before cluster training, fix two concrete problems in [the training script](studies/train_calibration.py): an existing directory without a resume file can have its files deleted, and resume checks do not bind all data/task/settings identities. Update the runbook's test command: it invokes pytest, which is absent from the current lock; the existing tests use unittest.
 
-Prepare a locked PyMC reference environment and migrate the relevant MCMC callers and tests. Choose NUTS only for targets with validated deterministic gradients; use an appropriate PyMC method for black-box targets. Particle/pseudo-marginal work needs its own correct state handling, not a stochastic log-density plugged into ordinary sampling.
+Assess one bounded PyMC reference route, starting with deterministic Heston or the price emulator. Prepare its locked environment and migrate only the callers/tests that benefit from it. Choose NUTS only for targets with validated deterministic gradients; use an appropriate gradient-free method for black-box targets. Record the reason when retaining a specialized sampler or deferring adoption. Particle/pseudo-marginal work needs correct state handling in any framework; it can remain a separate implementation.
 
 ### Generate enough data without generating it repeatedly
 
@@ -148,6 +148,6 @@ This planning PR records those proposals. Job submission and spending are a late
 
 ## First implementation work
 
-The first implementation PR should provide the BayesFlow 2.1 environment, safe run/resume identities, configurable encoder/posterior factories, family-specific sampling and the tiny save/reload tests. Add the locked PyMC reference environment and migrate the reference runners and MCMC-executing tests before any new chains. In parallel, freeze the numerical task and holdout ledger. Then run the Oscar pilot, create Heston development references, and start data generation and bounded architecture screens.
+The first implementation PR should provide the BayesFlow 2.1 environment, safe run/resume identities, configurable encoder/posterior factories, family-specific sampling and the tiny save/reload tests. In parallel, freeze the numerical task and holdout ledger, and assess one core PyMC route with a locked environment, target-equivalence checks and a small validated reference case. Keep that adoption task bounded; if integration is disproportionate, document the existing sampler and defer PyMC without blocking the campaign. Then run the Oscar pilot, create Heston development references, and start data generation and bounded architecture screens.
 
 The execution report should link the exact code revision, task/bank/checkpoint identities, compute use, failures and the claims each result supports. Update [study status](../docs/course/status.md), [claims](CLAIMS.md) and the runbook together when results are accepted for teaching.

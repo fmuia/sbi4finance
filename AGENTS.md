@@ -4,12 +4,13 @@ These instructions apply throughout the repository. More specific instructions m
 
 ## MCMC framework
 
-**Use PyMC for every new MCMC run.** This includes reference posteriors, emulator-based inference, numerical pilots, course figures, toy examples, tests that execute MCMC, and particle/pseudo-marginal experiments.
+**Prefer PyMC where it is a natural fit.** Aim for a reusable PyMC workflow for standard reference posteriors and emulator-based inference. Adoption is a practical goal, not a prerequisite for every experiment.
 
-- Define and execute new MCMC through PyMC. Use its built-in step methods where appropriate; do not introduce or run standalone hand-written acceptance loops or silently substitute another MCMC framework.
-- Choose the step method for the target. NUTS requires a deterministic differentiable log density; black-box or noisy likelihoods need an appropriate, validated PyMC implementation.
-- Preserve historical chains, reports and source provenance. Their existence does not authorize starting their legacy sampler for a new run, and they must not be relabelled as PyMC results.
-- Migrate the relevant legacy entry point and any tests that execute it before running it again. If the required method is not correctly supported yet, report that implementation gap instead of falling back to a legacy loop.
+- Use PyMC's built-in step methods where they suit the target. NUTS requires a deterministic differentiable log density with validated gradients.
+- Custom or other-framework samplers are allowed for specialized teaching examples, particle/pseudo-marginal methods, or workflows where migration would add disproportionate complexity or cost. Record the method, reason and limitations in the relevant documentation or run record; a custom PyMC step is not required just for framework consistency.
+- Preserve the intended target, transformation Jacobians and stochastic sampler state in any implementation. A framework exception does not relax correctness or evidence requirements.
+- Scope migration to workflows that benefit from it; existing samplers and their tests need not all be rewritten before work continues. PyMC adoption may be deferred if its cost outweighs its value.
+- Preserve historical chains, reports and actual sampler provenance. Describe PyMC as an implemented part of the stack only once a working, validated route exists.
 - Persist chain/draw structure, sampler diagnostics, seeds, target identity and exact framework/environment versions.
 
-The human-readable requirements and migration checklist are in [the MCMC policy](docs/mcmc-policy.md). This rule records the user's framework requirement; implementation migration is separate work.
+The rationale, exceptions and validation requirements are in [the MCMC policy](docs/mcmc-policy.md).
