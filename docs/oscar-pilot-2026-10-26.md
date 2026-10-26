@@ -4,6 +4,8 @@
 
 Sparse-chain support remains a separate downstream unit. No notebooks were executed or changed for these runs.
 
+**Next-step clarification, 27 October:** the [review plan](../tutorial_final/NUMERICAL-EXPERIMENT-PLAN.md) extends Francesco's existing approximate-price workflow with bounded posterior/product refinement checks. His runbook's descriptive grid study does not define a separate inference philosophy for the whole course. Further execution is on hold for review; the numerical records below are unchanged.
+
 ## What ran in parallel
 
 | Work | Result |
@@ -97,7 +99,7 @@ After choosing the monotone curve family, twelve additional Oscar components iso
 
 Selective refinement is affordable, but the high-variance short-call movement remains clearly resolved. This does not establish the error relative to the continuous model or make 16× a truth. Case 6 also misses the panel-wide MC target at this moderate path count. Indices 18–62 are independent MC controls on unchanged grids, not evidence of convergence at longer maturities. Total recorded pricing cost is 1,054 CPU-seconds (0.293 CPU-hours), with peak RSS about 1 GiB. [Raw components](pilot-results/2026-10-26/rough-short-block/), [checked reductions and extraction](pilot-results/2026-10-26/rough-short-block-reduced/).
 
-The [numerical-options discussion](rough-numerical-pilot.md#numerical-options-after-choosing-the-monotone-curve) separates additional paths, grid allocation, a focused teaching domain, an explicitly finite-simulator target, and algorithm/emulator work. No large rough bank is approved by this diagnostic.
+The [numerical-options discussion](rough-numerical-pilot.md#numerical-options-after-choosing-the-monotone-curve) separates additional paths, grid allocation, application scope, clear numerical conventions and algorithm/emulator work. The next step is the shared workflow's bounded refinement check, not a separate finite-simulator track. No large rough bank is approved by this diagnostic.
 
 The twelve components plus the conditioned Heston reference and its precision check all completed. Their separate [continuation accounting](pilot-results/2026-10-26/continuation-accounting-summary.json) records 0.69 CPU-hours; it does not overwrite the earlier accounting or estimate future bank throughput.
 
@@ -122,8 +124,8 @@ The integrated focused suite passes 139 tests, including default API preservatio
 ## Decisions before scaling rough generation
 
 1. The curve-family scope is agreed: use the monotone exponential as a simplified subfamily of the published five-coefficient specification. Keep the hump challenge as a visible limitation. The parameter prior still needs a numerical check; the hump study does not establish market-shape frequencies or general market adequacy.
-2. Choose a defensible grid/precision policy or explicitly restrict the numerical/model target. More Monte Carlo paths alone do not remove time-discretization bias.
-3. Improve Heston reference initialization/proposal conditioning using standard PyMC methods and independent data-based starts before expanding the reference library. Check conditional agreement, numerical sensitivity and product uncertainty before declaring the neural estimator accurate. Preserve failed, timed-out and inconclusive cases.
+2. Review the proposed working/refinement grids and bounded numerical-cost panel. More Monte Carlo paths alone do not remove time-discretization bias; assess materiality for the declared posterior/product conclusions.
+3. Complete the bounded Heston reference follow-up using the already implemented data-only initialization/proposal conditioning before expanding the reference library. Check conditional agreement, numerical sensitivity and product uncertainty before declaring the neural estimator accurate. Preserve failed, timed-out and inconclusive cases.
 4. Expand only selected learning curves and configurations. The data-growth tools are ready; million-surface banks are capacity, not an immediate requirement.
 
 The [central plan](../tutorial_final/NUMERICAL-EXPERIMENT-PLAN.md) still governs the full tutorial campaign. These results justify targeted scientific follow-ups and Heston development; they do not complete the campaign or approve a large rough bank.

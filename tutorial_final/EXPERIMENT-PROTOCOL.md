@@ -1,6 +1,6 @@
 # Protocol for the numerical experiment campaign
 
-Proposed on 26 October 2026. Read the [human overview](NUMERICAL-EXPERIMENT-PLAN.md) first. This protocol defines the decisions needed to turn that plan into reproducible runs. New criteria below are proposals to freeze before execution; they do not change historical acceptance records.
+**Review draft, 27 October 2026. No new runs are authorized by this update; review the plan before execution.** Read the [human overview](NUMERICAL-EXPERIMENT-PLAN.md) first. This protocol defines the decisions needed to turn that plan into reproducible runs. New criteria below are proposals to freeze before execution; they do not change historical acceptance records.
 
 **Scope:** complete the full-surface Heston and joint rough workflows, applying the numerical/statistical checks to the retained claims. All sparse-chain support is a separate downstream unit, beginning with specification; no sparse adapter, checkpoint, mask training, market example or reserve-coverage study gates this release. The wider architecture benchmark and direct rough MCMC remain optional extensions. Infrastructure unit tests do not substitute for numerical and inferential checks.
 
@@ -92,11 +92,35 @@ Final tutorial evaluation uses the two selected full-surface configurations and 
 
 ## Numerical precision
 
-Freeze whether each task concerns ideal expected model prices or the finite numerical simulator used in the bank. Specify quadrature, time grids, adaptive path rules and all pricing randomness.
+Continue Francesco's approximate model-price workflow: generate prices numerically, infer from noisy quotes, check the resulting posterior, and propagate uncertainty into products. Numerical refinement measures whether those conclusions depend materially on the approximation. This is one tutorial workflow with progressively checked approximations; it does not require a second full bank or a separate continuous-model inference campaign. Preserve the existing finite-model results and their stated scope.
 
-Heston generation uses the checked Fourier quadrature ladder and its existing refinement budget of 0.1 quote-noise standard deviations. For rough generation, retain the paths ladder and the 0.25 target for Monte Carlo standard error divided by quote noise. The existing final-rung allowance of 0.5 is an exception to report and review, not evidence that every surface met 0.25.
+Keep three errors separate:
 
-Assess time-grid bias at representative prior points, difficult low-Hurst/high-vol-of-vol corners and development posterior locations. The [new-task pilots](../docs/rough-numerical-pilot.md) found repeatable multi-quote-SD shifts in some cases, with residual grid dependence after refinement; the historical mini-pilot is not evidence that the new task is accurate. Freeze the precision-control cases before production. Proposed refinement limits on those cases are posterior-mean movement at most 0.1 refined-reference SD, 90% interval-width movement at most 10%, and product-quantile movement at most one quarter of the product-error tolerance below. Measure Monte Carlo uncertainty tightly enough to resolve those limits. If a case exceeds them, refine the numerical model or explicitly restrict the claim to the frozen discretization before generating a production bank. Record which of these targets the scientific owner accepts.
+| Error | How to check it | What does not resolve it |
+| --- | --- | --- |
+| Time-grid or quadrature bias | Compare prices and posterior/product conclusions under declared refinements, reporting uncertainty in the difference. | More paths on the same time grid. A finer grid is a comparison, not exact truth. |
+| Pricing Monte Carlo noise | Independent pricing repetitions, covariance of the price means and a declared path budget. | A small empirical SE does not bound discretization bias. |
+| Reference, emulator and posterior-sampling approximation | Match the data, prior, observation noise and numerical-price convention; validate independent labels, chain mixing and uncertainty of the reported summaries. | Agreement between methods using the same biased labels, or converged chains for a different likelihood target. |
+
+Heston generation uses the checked Fourier quadrature ladder and its existing refinement budget of 0.1 quote-noise standard deviations. For rough generation, retain the paths ladder and the 0.25 target for Monte Carlo standard error divided by quote noise. The existing final-rung allowance of 0.5 is an exception to report and review, not evidence that every surface met 0.25. Record quadrature, grids, curve discretization, adaptive path rules and pricing randomness in the task. Describe the bank's residual pricing noise when comparing its amortizer to a deterministic emulator likelihood; matching time grids alone does not make their observation laws identical.
+
+The [historical mini-pilot and new-task pilots](../docs/rough-numerical-pilot.md) already document resolved price shifts, including residual grid dependence after refinement. These results call for a bounded check of inference and product sensitivity. They neither certify the whole candidate prior nor prescribe a replacement grid, higher noise or narrower financial domain. Do not silently alter those choices or begin a large rough bank while its production settings remain under review.
+
+The immediate reviewed pilot is specified in the [central plan, workstream B](NUMERICAL-EXPERIMENT-PLAN.md#b-measure-rough-numerical-quality-and-realistic-campaign-cost): two explicit block-step policies, 32 adaptive calls plus 12 fixed-path anchor calls, declared per-component limits and a 20-allocated-CPU-hour ceiling. It is separate from the later posterior/product panel below. No new pilot calls, fits or jobs are launched by this document update.
+
+### Bounded posterior and product refinement panel
+
+Propose **six development observations**, using the existing center, falling, nearly flat, low-H/high-eta, high-variance and steep-rise definitions (pilot cases 0/2/3/4/6/7). Freeze the six parameter vectors, complete 63-contract observations, fresh observation/pricing seeds, products and numerical settings before looking at posterior movements. These are inspected development cases, not a fresh acceptance sample or a representative market population.
+
+1. Generate each observation once, retaining its generating grid and pricing uncertainty. Compare coarse and refined inference on **the same stored prices, prior and quote-noise model**; do not regenerate the observation at each grid. Use independent pricing randomness for observation generation and the reference checks.
+2. Start with two cases, center and high variance, to establish reference feasibility, refinement-label cost and precision. Complete the remaining four only within the reviewed allocation. The panel contains at most **twelve reference fits: six observations at two declared price resolutions**, using the lean emulator route below where needed. A third resolution, extra cases, additional seeds or a second full training bank require a separate decision; unresolved cases remain unresolved.
+3. Register the base/refined block settings and product-pricing settings explicitly. First-block-only refinement diagnoses only the affected short quotes; it is not a check of all 63 quotes or long-horizon products. Compare both inference resolutions through the same independently checked product pricer to isolate posterior movement, then assess that product pricer's own grid/path sensitivity on fixed parameter draws. Analytic variance and forward-variance rates are inexpensive controls; retain at least one selected path-dependent product for the tutorial's nontrivial propagation claim.
+4. For each case report all six parameter means and 90% widths, curve bands and the selected product's q10/q90. Proposed sensitivity limits are **0.1 refined-reference SD** for each parameter mean, **10% of the refined 90% width** for each width, and **T/4** for each product quantile, with `T` defined below. Freeze each product's absolute tolerance and units before evaluation. Nearly unidentifiable coefficients remain reported; curve/product stability may support a narrower claim when coefficient stability does not.
+5. Report approximate 95% uncertainty intervals for the movements, accounting for posterior sampling, pricing and product estimation. Aim for interval half-widths at most half the corresponding sensitivity limit. Mark a comparison within tolerance only when its uncertainty upper bound is within that limit; mark a resolved excess or an inconclusive result separately. Estimated surrogate error also needs an independent bound or sensitivity check; chain MCSE alone is insufficient. These are casewise diagnostics, not a simultaneous guarantee across the prior.
+
+The usual ESS ≥400 convergence floor does not guarantee enough precision for a 0.1-SD movement check. For independent equal-precision reference means, a 95% half-width around 0.05 posterior SD needs roughly 3,000 effective draws per resolution. Quantiles and product pricing need their own uncertainty estimates. Increase precision only within the declared component/total budget; otherwise retain an inconclusive result rather than relaxing a tolerance.
+
+Before any submission, record the component counts, pricing paths, grids, threads, per-component memory/time limits and a total CPU/wall allocation based on the optimized-kernel timings. Retain all failed components and all declared seeds. Review the result before changing production settings. If movement is material, the next choice is a targeted numerical improvement or refinement correction with a stated claim limit; prior restriction is not automatic. A numerical limitation may also be taught explicitly without presenting it as accurate market calibration.
 
 Use full price-error covariance when quotes share paths. Coupled random numbers help measure numerical differences; independent pilot and final streams are needed where an estimator relies on independent precision selection. Keep unpriced surfaces/proposals visible. Do not replace failed seeds or treat a surface with unpriced proposals as a reliable audit.
 
@@ -149,13 +173,17 @@ Proposed reference requirements are rank-normalized split R-hat at most 1.01, bu
 
 ### Rough Bergomi
 
-Use a reference ladder:
+Begin with a lean deterministic forward emulator, extending the existing price-emulation approach. The staged route is:
 
-1. Train a separate forward price emulator on clean training labels. Validate it globally and in development posterior regions using independent, higher-precision pricing. Compare emulator-MCMC on about 50 final panels. Shared bank errors mean agreement is a cross-check, not ground truth.
-2. Run independent Monte Carlo audits on 50 final panels; extend to 200 only after inspecting reliability and cost under a frozen expansion rule. Report ESS, largest weight, Pareto k-hat, unpriced proposals and approximation sensitivity. Weight concentration alone does not establish conditional accuracy.
-3. Optional research: pilot direct Monte Carlo-based MCMC on one declared case. Measure likelihood variability, mixing, ESS and path/grid dependence. Extend to 3–5 fixed anchor cases only if justified by the pilot and the intended claim. This is outside the tutorial critical path unless a direct-MCMC agreement claim is included; that claim requires completed, converged anchors.
+1. **Baseline emulator.** Reuse the new joint task's clean training prices and train one forward map from its six parameters to the 63 expected-price approximations. Record label grids and pricing covariance. Select its checkpoint on its training-validation split, then measure prediction errors relative to quote noise and the joint noise covariance on independent check points and development posterior regions. Keep those independent check labels out of fitting and checkpoint selection. This needs one additional small forward-network fit, not another posterior architecture screen.
+2. **Targeted refinement, only where needed.** For the bounded panel, price a small set of parameter points at both resolutions, with independent final precision runs or correctly coupled innovations and reported difference uncertainty. Freeze the selection rule: a mixture of prior-supported points and coarse-posterior draws, followed by checks under the corrected posterior. A small correction surrogate may learn the refined-minus-base price difference and be added to the frozen baseline emulator. Keep independent refined labels to check it, predeclare its point/compute cap, and stop if the corrected posterior visits an unchecked region or a second region remains unresolved. Report interpolation and pricing error. This is a local development tool; do not describe it as a globally accurate refined pricer or expand it automatically into a second bank.
+3. **Deterministic reference inference.** Run PyMC on the frozen baseline and, when independently validated, corrected forward maps with the same observation/prior/noise. Use NUTS only after gradient checks; otherwise use an appropriate gradient-free step. Record four dispersed chains, convergence and summary uncertainty. Independently reprice held-out draws from both posterior regions to check likelihood-relevant discrepancies; a fit to posterior means alone is insufficient. If the emulator changes the likelihood materially at those checks, the reference is inconclusive until the declared correction passes. Compare the amortizer to the baseline numerical target, and use the coarse/refined reference difference to assess numerical sensitivity; do not conflate these two comparisons.
 
-Keep the likelihood targets distinct:
+Once this development route is checked, compare emulator-MCMC on about 50 final panels. Shared bank errors mean agreement is a cross-check, not ground truth. Run independent Monte Carlo audits on 50 final panels; extend to 200 only under a frozen expansion rule after reviewing reliability and cost. Report ESS, largest weight, Pareto k-hat, unpriced proposals and approximation sensitivity. Weight concentration alone does not establish conditional accuracy.
+
+Direct Monte Carlo-based MCMC remains optional research. If that claim is retained, pilot one declared case and measure likelihood variability, mixing, ESS and path/grid dependence before considering 3–5 fixed anchors. It is outside the tutorial critical path otherwise. **Do not pass a freshly randomized Monte Carlo log likelihood to an ordinary PyMC sampler.** Prefer the deterministic, checked emulator for the core reference comparison; a stochastic likelihood requires a separately validated method with the appropriate auxiliary state.
+
+Keep the following technical target distinctions in the run records. They explain approximation and reference consistency within the shared workflow; they are not separate proposed core teaching tracks:
 
 | Target | Interpretation |
 | --- | --- |
@@ -170,6 +198,15 @@ The current covariance-subtraction estimator `N(y; P_hat, V - S)` has the claime
 ## Metrics and decisions
 
 Register tolerances before final evaluation. For product comparisons define `W = q95 - q05` of the reference posterior product price. Register a positive absolute tolerance `epsilon` in each product's units; deterministic controls in any optional supplied-curve benchmark need that absolute rule. In the primary joint rough task, variance-swap prices vary with the inferred curve and are not deterministic controls. Define product tolerance `T = max(0.10 * W, epsilon)` and require numerical/reference uncertainty at most `T / 2`. Refinement tests use at most `T / 4`. The following are proposed starting rules, preserving historical conditional tolerances where applicable:
+
+The proposed core products and floors for review are:
+
+| Product | Definition and units | Proposed epsilon |
+| --- | --- | ---: |
+| ATM forward-start call, 63 → 126 trading days | Primary zero-carry, spot-one task: price `E_Q[max(S_126d - S_63d, 0)]`, in initial-spot units. Reuse and validate the existing product pricer with the joint task. | 0.0001 initial-spot units (one basis point of spot) |
+| Continuously monitored one-year variance-swap rate | `E_Q[integral_0^1 V_t dt] / 1 year`, in annualized return-variance units. Analytic curve-uncertainty control; not a volatility-swap price or a test of leverage/vol-of-vol by itself. | 0.0001 annualized variance units |
+
+These floors are proposals, not established market materiality thresholds. With `T/4`, the corresponding minimum refinement limits are 0.000025 spot units and 0.000025 variance units. Benchmark the path-product pricing/quantile precision first and include it in the stage budget; do not promise a passing result at a fixed path count. Keep posterior-refinement sensitivity separate from product-pricer sensitivity. Neither the tolerance units nor the observations may be changed after inspecting movements.
 
 | Question | Measurement and proposed rule |
 | --- | --- |
