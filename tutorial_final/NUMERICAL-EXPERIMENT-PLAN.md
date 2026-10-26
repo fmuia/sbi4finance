@@ -93,7 +93,7 @@ Use **BayesFlow 2.1.0** for new candidates. It was released on 23 October and in
 
 Use a small configurable encoder/posterior factory and shared training/inference functions for the selected cases. Reuse existing checkpoint selection, reload checks and metadata rather than building a general workflow framework. The new calibration path currently has its own training/resume implementation; converge the behaviour needed by these examples. Sampling settings must belong to the chosen network family.
 
-Before cluster training, fix two concrete problems in [the training script](studies/train_calibration.py): an existing directory without a resume file can have its files deleted, and resume checks do not bind all data/task/settings identities. Update the runbook's test command: it invokes pytest, which is absent from the current lock; the existing tests use unittest.
+Use the output-protection and resume-identity safeguards implemented in the [incremental-bank PR](https://github.com/fmuia/sbi4finance/pull/47): reject nonempty incomplete runs and bind recovery to the original data/task/settings. Preserve and exercise those safeguards when introducing BayesFlow 2.1. Update the runbook's test command: it invokes pytest, which is absent from the current lock; the existing tests use unittest.
 
 Assess one bounded PyMC reference route, starting with deterministic Heston or the price emulator. Prepare its locked environment and migrate only the callers/tests that benefit from it. Choose NUTS only for targets with validated deterministic gradients; use an appropriate gradient-free method for black-box targets. Record the reason when retaining a specialized sampler or deferring adoption. Particle/pseudo-marginal work needs correct state handling in any framework; it can remain a separate implementation.
 
@@ -177,7 +177,7 @@ The curriculum currently targets 30 October for slot 4, 4 November for slots 1â€
 
 The organizers should agree on four decisions before the campaign is queued:
 
-1. Whether the sparse-quote lesson and a population coverage claim are required for this release; select its market illustration separately.
+1. The claims to retain for the four planned full/sparse configurations, narrowing the release if scientific gates fail. Decide separately whether to add the optional population reserve-coverage study; select the market illustration afterward.
 2. The named leads for numerical generation, training, references and delivery.
 3. Initial CPU/GPU allocations and the maximum expansion allowed after each pilot.
 4. The statistical/numerical target and proposed acceptance rules in the protocol.
