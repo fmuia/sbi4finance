@@ -106,6 +106,8 @@ The existing audit fits a Student-t proposal to neural draws and mixes it with t
 
 ## Reference posteriors
 
+Every new chain must be run through **PyMC**, following [the repository policy](../docs/mcmc-policy.md). This includes development references, final references, emulator-MCMC, direct rough pilots, course examples and tests. Resolve the PyMC environment and migrate the current standalone samplers before execution. Use a step method appropriate to the target rather than assuming all models support NUTS. Historical chains retain their original sampler labels and provenance.
+
 ### Heston
 
 Create development panels first. After selection is frozen, create a 50-case synthetic reference library plus SPY, with refined Fourier pricing and four dispersed chains per case. Starts must not all come from the neural candidate.
@@ -128,7 +130,7 @@ Keep the likelihood targets distinct:
 | Gaussian noise around prices with a fixed simulation seed | A deterministic numerical approximation; different seed targets must not be pooled as chains of one posterior. |
 | The finite simulator, averaged over its pricing randomness | A legitimate numerical generative model that can match bank generation, including its adaptive pricing rules. |
 
-For the last target, with `y = P_hat(theta, U) + noise`, `N(y; P_hat(theta, U), Sigma)` is nonnegative and unbiased for that simulator-marginal likelihood. A valid pseudo-marginal chain retains its current likelihood/randomness on rejection. This does not make it exact for ideal expected prices. [Andrieu and Roberts](https://arxiv.org/abs/0903.5480)
+For the last target, with `y = P_hat(theta, U) + noise`, `N(y; P_hat(theta, U), Sigma)` is nonnegative and unbiased for that simulator-marginal likelihood. A valid pseudo-marginal chain retains its current likelihood/randomness on rejection. Its PyMC implementation must preserve that auxiliary state; a black-box operation returning a fresh random log likelihood is not a sufficient implementation. This does not make it exact for ideal expected prices. [Andrieu and Roberts](https://arxiv.org/abs/0903.5480)
 
 The current covariance-subtraction estimator `N(y; P_hat, V - S)` has the claimed ideal-price expectation under Gaussian pricing error with known covariance. Estimated covariance and finite Monte Carlo errors do not establish general unbiasedness. Label this approximation and test it; do not call the rough audit an unconditional exact reference.
 

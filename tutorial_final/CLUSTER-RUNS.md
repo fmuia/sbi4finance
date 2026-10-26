@@ -2,6 +2,8 @@
 
 For the proposed next campaign, start with the [numerical experiment plan](NUMERICAL-EXPERIMENT-PLAN.md) and [protocol](EXPERIMENT-PROTOCOL.md). They add the BayesFlow 2.1 migration, safe resumes, architecture comparisons and reference checks. The baseline commands below need the planned environment/API/test updates before they are used for that campaign; the planning PR does not submit these jobs.
 
+**New MCMC runs must use PyMC.** The reference and course scripts below still include legacy custom samplers, and some tests execute them. Migrate those paths and lock the PyMC environment before starting new chains; see [the MCMC policy](../docs/mcmc-policy.md). Historical results keep their original provenance.
+
 24 October 2026. For whoever runs Oscar jobs next. Every run below is missing: nothing in
 `tutorial_final/results/` comes from the full bank yet. The plan behind the runs is
 [`docs/course/v2-plan.md`](../docs/course/v2-plan.md), and what the results decide is in Lecture 16, Section 16.8
