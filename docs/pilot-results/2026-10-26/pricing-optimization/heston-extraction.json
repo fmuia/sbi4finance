@@ -1,0 +1,6 @@
+{
+  "scope": "JSON extracted without changing values from retained Slurm stdout; source/runtime/job identity in jobs.json",
+  "raw_stdout_sha256": "593cd0f27e4a9f071d1ca02b73e064a32c85dba5766293673fe3adb1114bc726",
+  "job_id": "7996873",
+  "revision": "180e358c8288b249104a5a895e654eb8281a9a15"
+}

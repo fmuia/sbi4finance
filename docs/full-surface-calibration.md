@@ -6,6 +6,22 @@ The tutorial workflow is observation → posterior → diagnostics/reference com
 
 Actual Oscar readiness, development training and bounded scientific pilots are recorded in the [26 October development report](oscar-pilot-2026-10-26.md). The monotone exponential curve is now the agreed simplified teaching family; its prior and numerical settings remain development candidates. Read that report before choosing a large rough-bank configuration.
 
+## Relationship to the existing rough examples
+
+This increment builds on substantial completed simulation and inference work. It is not the repository's first rough bank or trained network:
+
+| Existing route | Completed work and scope |
+| --- | --- |
+| [Earlier main example](rough-reference-expansion.md) | Nine puts, inferred H/eta, fixed rho and known flat curve; 1,024 training bases with eight quote augmentations, an 8,192-row reference bank, and an 80-epoch trained spline checkpoint. All development gates passed; [one held-out spread gate failed](rough-heldout-test.md), so it remains provisional. |
+| [Course-v2 rough pilot](course/status.md) | 2,200 surfaces, 1,600 for training; infer H/eta/rho from 63 quotes given seven curve levels. Actual neural evaluation, MC error/covariance checks, adaptive path generation, variance reduction, grid checks, audits and products exist. Its SBC criterion was partly unmet; the full 112k-bank programme is explicitly pending. |
+| Current joint task | Infer H/eta/rho and three analytic curve coefficients from complete quotes, without supplying the generating curve. This changes the task and needs compatible prices and a new fitted estimator; old prices cannot be relabelled or projected into that distribution. |
+
+Francesco's [runbook, R2](../tutorial_final/CLUSTER-RUNS.md), explicitly treats its bank as a **discretized model** and reports a grid study without a pass/fail threshold. That study already found a resolved five-day wing shift of about one quote SD. A rigorous numerical-simulator lesson and a claim of accurate continuous-model prices are different estimands. Our numerical discussion must choose the intended claim before imposing a stronger gate or narrowing the financial domain. Reuse the existing kernel, bank/provenance machinery, diagnostics, exposition and compatible artifacts; retain original checks and finite-model results with their original scope.
+
+The [committed course Heston estimator](../tutorial_final/checkpoints/heston/training.json) was trained on 50k surfaces and has the same task as the new Heston development route. It remains a useful baseline in its archived BayesFlow 2.0.14 environment; the new 20k BayesFlow 2.1 development fits do not replace its evidence. The course rough evaluation records a checkpoint hash, but that model and both raw course banks are not tracked. Recover those artifacts if available before rerunning their old tasks; the recorded ephemeral paths are not verified live Oscar locations.
+
+The [performance pass](oscar-pilot-2026-10-26.md#pricing-performance-pass) measures optimizations on Oscar without changing the pricing target. Reproduce the focused comparisons with `pixi run --locked -e core python scripts/benchmark_rough_conditional.py --out /tmp/rough-performance` and, with BLAS/OpenMP threads set to one, `pixi run --locked -e core python tests/test_hkde_maturity_reuse.py --benchmark`. Use a new output directory for each rough benchmark. These commands run pricing checks, not participant notebooks.
+
 ## Work completed in parallel
 
 | Piece | Implementation |

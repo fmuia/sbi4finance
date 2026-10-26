@@ -1,8 +1,10 @@
 # Rough Bergomi numerical pilot
 
-**Initial finding:** the current base grid cannot be accepted as uniformly accurate over the candidate six-parameter prior. Several declared cases show repeatable price movements of multiple quote-noise standard deviations when the grid is refined. This blocks substantial rough-bank generation. It does not establish that the 4× grid is accurate, choose a replacement grid, or justify changing the prior automatically.
+**Initial finding:** the current base grid cannot be accepted as uniformly accurate over the candidate six-parameter prior. Several declared cases show repeatable price movements of multiple quote-noise standard deviations when the grid is refined. Large new-task generation is on hold while its numerical estimand is chosen: these results constrain claims about accurate continuous-model prices, but do not invalidate a clearly declared finite-simulator inference problem. They do not establish that 4× is accurate, choose a replacement grid, or justify changing the prior automatically.
 
 These are development results for complete synthetic option surfaces, not posterior validation, market evidence or accepted tutorial checkpoints. The [core implementation guide](full-surface-calibration.md) and [scientific protocol](../tutorial_final/EXPERIMENT-PROTOCOL.md#numerical-precision) describe the remaining gates.
+
+This is an extension of existing work, not the repository's first numerical check. The [earlier course runbook, R2](../tutorial_final/CLUSTER-RUNS.md), already treats its bank as a discretized model and its grid study as descriptive, without a pass/fail threshold. That 12-surface study reports a resolved five-day wing movement around one quote SD. The [existing examples and their validation](full-surface-calibration.md#relationship-to-the-existing-rough-examples) remain useful with their original scope. Requiring tighter continuous-model accuracy for the new joint task is an additional claim decision.
 
 ## What was run
 
@@ -84,9 +86,39 @@ The simulator already uses a one-cell hybrid approximation of the singular Volte
 
 The conditional pricer also constructs full asset-path outputs that its conditional payoff does not use, including an independent asset channel that has already been integrated out. A focused implementation optimization might reduce time or memory after equivalence checks. It would be a performance improvement, not evidence that a coarser grid is accurate; a changed generator would carry a new source identity.
 
-## Next bounded diagnostic: the first maturity block
+### Spend and the meaning of a realistic teaching domain
 
-The next panel isolates the confirmed short-maturity issue before choosing a global grid. It uses cases 2 and 6, 131,072 fixed paths, and two independent repetitions per setting:
+**Do not equate numerically difficult cases with unrealistic markets.** Case 6 has a flat variance curve of 0.15, equivalent to about 38.7% forward-variance volatility; this is not its at-the-money option implied volatility. The [published curve training domain](https://arxiv.org/html/2306.11061v2#S4.SS3), Table 2, includes long variance levels up to 0.16. Its Table 5 includes rough Bergomi `H` from 0.025 to 0.50 and `eta` from 0.50 to 4.00. These are training/calibration domains, not empirical probabilities. [Rømer's empirical SPX study](https://doi.org/10.1080/14697688.2022.2081592), Section 4.1, reports an average fitted rough Bergomi H around 0.09; removing low H merely for computational convenience could remove important market behavior.
+
+A narrower domain can be a realistic **subset**, such as a declared low/moderate-volatility equity-index regime, while deliberately excluding stressed markets. Low H or extreme correlation need not themselves indicate financial stress. Exact cutoffs and a restricted domain have not been adopted. The present independent-uniform endpoint-variance prior is a design choice, not an empirical market distribution: on `[0.01, 0.16]`, the median endpoint volatility is about 29.2%, and about 71.6% of draws have at least one endpoint above 30% volatility. A financially motivated regime/prior could change how much training effort goes to high-volatility curves, but its support still needs numerical checks. Empirical fits with more flexible curves do not directly validate the new monotone family's joint prior.
+
+Measured fixed-path costs show the scale of the numerical trade-off:
+
+| Declared price call | Mean CPU-seconds at full 4× | Mean CPU-seconds at full 8× | Interpretation |
+| --- | ---: | ---: | --- |
+| Falling case 2, 131,072 paths | 69 | 428 | MC target met; grid stability assessed separately. |
+| High-variance case 6, 524,288 paths | 274 | 884 | MC target met, but material short-call grid movement remains. |
+| Low-H/high-eta case 4, 1,048,576 paths | 563 | No completed result | Both 8× components reached 20-minute limits. |
+
+At 32,768 paths, the eight-case median costs were 4.46 / 8.02 / 19.63 CPU-seconds for full 1× / 2× / 4× grids. The inexpensive calls do not establish adequate prices: three difficult cases miss the MC caps and the coarse grids show material bias. Node/working-set effects matter too; observed full 8×/4× cost ratios are not a universal scaling law. Selective short-block refinement cost only 17.6 CPU-minutes for its whole twelve-component panel, but it did not close the numerical gate.
+
+For planning only, this arithmetic illustrates a **100,000-training-surface** bank:
+
+| Assumed average generation cost | CPU-hours | Ideal elapsed time with 200 continuously busy cores |
+| --- | ---: | ---: |
+| 30 CPU-seconds/surface | 833 | 4.2 hours |
+| 120 CPU-seconds/surface | 3,333 | 16.7 hours |
+| 600 CPU-seconds/surface | 16,667 | 83.3 hours, about 3.5 days |
+
+These are sensitivity scenarios, not measured moderate-versus-broad-domain forecasts or an approved allocation. Add holdouts, independent validation/audits, queues and overheads. Pilot calls use the same fixed path count in every block; actual bank generation selects paths by block and also pays for earlier ladder rungs. Corner cases are deliberately overrepresented here. A representative throughput pilot at the chosen grid/prior is necessary before quoting the bank's mean cost or a savings factor from narrowing it. No dollar rate has been established.
+
+The subsequent [performance pass](oscar-pilot-2026-10-26.md#pricing-performance-pass) reduced CPU work by 15–18% on its measured Oscar rough blocks with identical estimates. That is useful savings, not evidence of a bank-wide savings factor or a remedy for grid bias. The older fixed-call timings above retain their original source/runtime identities.
+
+The domain decision remains open for scientific review. Continue the independent Heston work; do not silently narrow rough support, relax observation noise or start a large rough bank while that decision is pending.
+
+## Targeted diagnostic: the first maturity block
+
+This panel isolated the confirmed short-maturity issue before choosing a global grid. It used cases 2 and 6, 131,072 fixed paths, and two independent repetitions per setting:
 
 | Setting | First block: through 10 trading days | Other two blocks |
 | --- | ---: | ---: |
@@ -96,8 +128,27 @@ The next panel isolates the confirmed short-maturity issue before choosing a glo
 
 All 63 quotes remain in each output. **Only indices 0–17, the five- and ten-day options, diagnose the changed grid.** Indices 18–62 are MC controls on unchanged grids; their independent random price differences cannot establish convergence of their maturity blocks. In particular, a maximum taken over all 63 differences could select noise from those controls and misdescribe this experiment.
 
-This is a new declared block-allocation experiment with a separate seed namespace. All blocks are repriced with independent streams at each setting, so the independent-error comparison remains valid; there is no hidden sharing of noisy prices. Twelve independent components allow parallel execution. The `rough-short-block` array mapping selects case 2 then case 6, with 4×/8×/16× and repetitions 0/1 for each. Other historical array mappings and seeds remain unchanged.
+This is a new declared block-allocation experiment with a separate seed namespace. All blocks were repriced with independent streams at each setting, so the independent-error comparison remains valid; there is no hidden sharing of noisy prices. Twelve independent components allowed parallel execution. The `rough-short-block` array mapping selects case 2 then case 6, with 4×/8×/16× and repetitions 0/1 for each. Other historical array mappings and seeds remain unchanged.
 
-Measured full-4× calls at 131,072 paths cost about 70 CPU-seconds each. On that basis, roughly 15–25 CPU-minutes across the twelve selected-block components is a planning estimate, not a guaranteed rate; only the smaller first block grows. The per-component request is one CPU, 8 GiB and a ten-minute limit. This panel does not retry the timed-out low-H case or claim a global MC precision pass at the moderate path count.
+Measured full-4× calls at 131,072 paths cost about 70 CPU-seconds each. On that basis, roughly 15–25 CPU-minutes across the twelve selected-block components was the planning estimate, not a guaranteed rate; only the smaller first block grows. The per-component request was one CPU, 8 GiB and a ten-minute limit. This panel did not retry the timed-out low-H case or claim a global MC precision pass at the moderate path count.
 
-The decision afterward is whether short-block refinement is becoming stable enough to support a proposed allocation, or whether a change of numerical method, teaching domain or explicitly finite-simulator target needs discussion. No large rough bank follows automatically. Price, posterior and product accuracy remain separate gates.
+### Observed short-block outcome
+
+All twelve components completed, and both six-component reductions passed their declaration, source/runtime, coverage and seed checks. The retained [raw components](pilot-results/2026-10-26/rough-short-block) and [checked reductions and analysis summary](pilot-results/2026-10-26/rough-short-block-reduced) preserve the complete observations. The table follows the previously identified **index-8 five-day call, strike 1.057961**, rather than selecting an unrelated full-surface maximum. Each signed change and its parenthesized MCSE is in that quote's noise-SD units.
+
+| Case | Short-block 4× → 8× | Short-block 8× → 16× | Short-block 4× → 16× |
+| --- | ---: | ---: | ---: |
+| [2: falling curve](pilot-results/2026-10-26/rough-short-block-reduced/case-2/report.json) | −0.0677 (0.0111) | −0.0313 (0.0108) | −0.0990 (0.0110) |
+| [6: high variance](pilot-results/2026-10-26/rough-short-block-reduced/case-6/report.json) | −0.9666 (0.0800) | −0.5001 (0.0693) | −1.4667 (0.0765) |
+
+High-variance case 6 still has clear short-price grid dependence. Its index-8 call's 8× → 16× approximate pointwise interval is **−0.636 to −0.364 quote SD**, and its 4× → 16× interval is **−1.617 to −1.317**. The decreasing size of successive shifts is useful evidence, but does not identify a convergence rate or establish 16× as truth. The 8× grid is not accepted as uniformly accurate over the candidate prior.
+
+Falling-curve case 2 shows a smaller residual movement at the same call. Its 8× → 16× interval is approximately **−0.0525 to −0.0102 quote SD**; the 4× → 16× interval is **−0.1206 to −0.0774**. Practical acceptance still depends on posterior and product sensitivity, not statistical detection alone.
+
+The largest affected-quote change can be less informative than this precise endpoint. For case 6, the affected 8× → 16× maximum is **+0.784 at the index-0 five-day put**, with MCSE **0.365** and a wide pointwise interval of +0.069 to +1.499. It must not be substituted for the index-8 call result or read as accurately resolved positive bias. Likewise, unchanged-grid control quotes in case 6 have a maximum absolute 4× → 16× difference of about 0.613 quote SD from MC noise; those quotes were not refined in this experiment.
+
+All six case-2 calls meet the 0.25 MCSE target, with maximum affected-quote ratios of 0.099–0.102 per call. For case 6, all six calls exceed the target, with maxima 0.363–0.374, although they remain below the existing 0.5 exception cap. Pooling two repetitions yields maximum affected-quote MCSEs of about 0.070–0.072 for case 2 and 0.258–0.263 for case 6. The particular index-8 call is more precise: its pooled errors are about 0.0075–0.0080 and 0.046–0.061 respectively. This explains how a clear wing-price movement can coexist with unresolved MC precision elsewhere on the same surface.
+
+The twelve components used **1,054 CPU-seconds (17.6 CPU-minutes, or 0.293 CPU-hours)** in total and about **1.00 GiB** peak process RSS. The selective design completed within its planned compute envelope without repeating the timed-out low-H jobs. These results isolate the short block; they do not validate the fixed later blocks, the full prior, posterior inference or product valuation.
+
+The next scientific decision is whether to change the numerical method, teaching domain or explicitly declared finite-simulator target, or authorize a further bounded precision check. No new grid/prior or large rough bank follows automatically. Price, posterior and product accuracy remain separate gates.
