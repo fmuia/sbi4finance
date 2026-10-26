@@ -12,7 +12,7 @@ This is a proposal for the next campaign. [The protocol](EXPERIMENT-PROTOCOL.md)
 
 ## Tutorial scope after self-review
 
-The deliverable is a small set of trustworthy, reproducible teaching examples. First complete one Heston workflow and one rough-Bergomi workflow through data, training, reload, inference, scientific checks and one downstream product. Add one controlled sparse-quote contrast after those work. Participants load supplied checkpoints and follow inference → diagnostics → product uncertainty; bank generation, cluster scheduling and recovery remain instructor tools.
+The deliverable is a small set of trustworthy, reproducible teaching examples. First complete one Heston workflow and one rough-Bergomi workflow through data, training, reload, inference, scientific checks and one downstream product. Include a sparse-quote Heston control, then carry the same controlled thinning question to rough Bergomi. Participants load supplied checkpoints and follow inference → diagnostics → product uncertainty; bank generation, cluster scheduling and recovery remain instructor tools.
 
 Keep numerical error checks, independent holdouts, converged references, calibration plus conditional checks, matched comparison inputs and honest cost/approximation labels. The passing infrastructure tests establish data/recovery behaviour; they do not establish pricing accuracy or posterior correctness. The next evidence must come from the numerical pilot and actual end-to-end examples.
 
@@ -23,22 +23,27 @@ Use the existing tested shard/snapshot and output-protection tools, then stop in
 ## What we should have at the end
 
 - A reproducible BayesFlow 2.1 training environment, with safe checkpointing and one configurable workflow.
-- One selected checkpoint for each retained teaching configuration, with results across three training seeds. Heston and liquid rough require six confirmation fits; any retained full/sparse joint-inference layouts are additional configurations and must be counted explicitly. Preserve completed screen results without requiring runner-up confirmation campaigns.
+- One selected checkpoint for each retained teaching configuration, with results across three training seeds. Full-grid Heston and conditional-curve rough require six confirmation fits; sparse Heston adds three. Full/sparse joint rough layouts add six if both are retained. Preserve completed screen results without requiring runner-up confirmation campaigns.
 - A reference collection that lets us compare neural posteriors, MCMC and importance sampling on the same observations.
 - Calibration, conditional accuracy, pricing uncertainty and cost figures with clear provenance.
 - A bounded live demonstration and a cached version of every result used on stage.
 
-There are three tasks under two models:
+There are four teaching tasks under two models:
 
 | Task | What is observed | What is inferred | Why it is useful |
 | --- | --- | --- | --- |
 | Heston | A 63-price option surface | Four parameters; mean reversion is fixed | An inexpensive likelihood makes the neural answer checkable against MCMC. |
-| Liquid rough Bergomi | The same option design and a supplied forward-variance curve | Hurst parameter, vol-of-vol and correlation | Tests amortization when pricing requires simulation. |
+| Sparse-quote Heston | A declared subset of the same grid, with its quote-noise model | The same four parameters, with the same prior and fixed mean reversion | Isolates the effect of missing quotes while retaining a cheap numerical likelihood. |
+| Conditional-curve rough Bergomi | The option design and a supplied forward-variance curve: known in simulation, estimated and held fixed in the market example | Hurst parameter, vol-of-vol and correlation, conditional on that curve | Tests amortization when pricing requires simulation, with the curve approximation made explicit. |
 | Sparse-quote rough Bergomi | A declared subset of option quotes, with their coordinates and noise levels | Those three parameters and seven curve levels jointly | Tests what incomplete coverage leaves uncertain and how that affects product valuation. |
 
-Call the third lesson **Calibration from sparse option quotes**. EWG is the current implemented market candidate, not the task definition or a required final ticker. Start with controlled full-versus-sparse synthetic comparisons, inferring the curve in both arms, then choose a market illustration by data quality and teaching suitability. The [sparse-quote case plan](SPARSE-QUOTE-CASE-PLAN.md) defines the learning goal, controls and selection criteria.
+Call the sparse lesson **Calibration from sparse option quotes**. Start with paired full/sparse Heston surfaces: subset the existing bank's prices, keep the same four targets/prior, and compare neural inference with converged Fourier-likelihood MCMC on exactly the observed subset. No new clean-price generation or extra curve targets are needed. Implement a small Heston quote-subset adapter; the current rough-specific thin workflow cannot be assumed to provide this route already.
+
+Then perform the rough comparison with the curve inferred in both arms. EWG is a current market candidate, not the task definition or a required final ticker. The [sparse-quote case plan](SPARSE-QUOTE-CASE-PLAN.md) defines the controls and market-selection criteria.
 
 If the sparse-quote task remains live, it needs a checked checkpoint for its declared layout. Claims about population coverage require the corresponding studies. A curve inferred from a fuller surface must not be supplied to that task as though it were observed. The supplied-curve liquid example is a separate conditional benchmark; comparing it directly with joint sparse inference changes more than quote availability.
+
+The forward-variance curve is `xi_0(t) = E^Q[v_t]`, the risk-neutral expected instantaneous variance at future time t. In market work it is usually estimated from variance-swap term structures or replicated from option strips, then interpolated/differenced into interval levels. It is not an additional exact, independent observation. Our current market pipeline derives it from the option chain and holds it fixed, omitting its estimation uncertainty. Call this a **conditional calibration using a market-implied curve estimate**. The [protocol](EXPERIMENT-PROTOCOL.md#what-the-forward-variance-curve-input-means) describes the construction and limitations.
 
 The tutorial release and the wider benchmark have different completion criteria:
 
@@ -114,7 +119,7 @@ Compare these four posterior families:
 
 MeanFlow is the method confirmed in discussion; it is experimental in BayesFlow 2.1. Compare its 1/2/4/8-step settings after training the same network. [MeanFlow](https://github.com/bayesflow-org/bayesflow/pull/802)
 
-First get one checked baseline per core model. Then screen all four families on Heston with one encoder, compare DeepSet and SetTransformer against the direct-vector baseline with one fixed family, and carry two promising configurations to an intermediate rough bank. This is at most eight short screen fits, reusing identical runs where possible. Confirm only selected teaching configurations on the chosen bank sizes with three seeds. The core two-model programme therefore budgets up to eight screens plus six confirmation fits, before selected-baseline learning curves. Additional sparse layouts have explicit extra fits. The [training matrix](EXPERIMENT-PROTOCOL.md#training-comparisons) records this smaller programme; a full benchmark is optional.
+First get one checked baseline per core model. Then screen all four families on Heston with one encoder, compare DeepSet and SetTransformer against the direct-vector baseline with one fixed family, and carry two promising configurations to an intermediate rough bank. This is at most eight short screen fits, reusing identical runs where possible. Confirm only selected teaching configurations on the chosen bank sizes with three seeds. The initial two-model baselines require six confirmation fits; sparse Heston adds three using the selected Heston family, without repeating the architecture screen. Additional full/sparse joint rough layouts have explicit extra fits. The [training matrix](EXPERIMENT-PROTOCOL.md#training-comparisons) records this smaller programme; a full benchmark is optional.
 
 ### Make the MCMC comparison credible
 

@@ -1,6 +1,6 @@
 # Calibration from sparse option quotes
 
-The illustrative goal is **joint model and forward-variance curve inference from incomplete option data, followed by uncertainty propagation into an unquoted product**. This is a property of the inference problem, not of a particular ticker. EWG is the current implemented market example; the final example remains to be selected.
+The illustrative goal is **inference from incomplete option data, followed by uncertainty propagation into an unquoted product**. Heston provides a numerically checkable full/sparse control; rough Bergomi adds joint model and forward-variance curve inference. This is a property of the inference problem, not of a particular ticker. EWG is the current implemented rough market example; the final market illustration remains to be selected.
 
 Use **Calibration from sparse option quotes** as the learner-facing name. “Thin” can remain a short internal name for existing modules and studies. Here sparse means insufficient strike/maturity coverage for the question being asked; the noise and reliability of the quotes matter too. Quote count alone does not define the problem.
 
@@ -12,7 +12,9 @@ The comparison asks how much information survives when useful quotes are unavail
 
 ## Start with controlled experiments
 
-Use paired synthetic surfaces from the same rough-Bergomi bank, with known parameters and curves. The first lesson needs the full grid and one declared sparse layout, preferably missing later maturities for a curve/product illustration. The other patterns below are optional development or take-home extensions:
+Start with paired synthetic surfaces from the Heston bank. Hold the four parameter targets, prior, fixed mean reversion and noise model constant; remove the same declared quote subset from the neural conditions and Fourier-likelihood MCMC. Heston's expected variance curve is determined by its parameters, so there is no separate supplied curve or seven added curve targets. A small fixed-layout quote-subset adapter and a selected-family checkpoint are enough; the current rough-specific thin trainer is not already that implementation. No new clean-price generation is needed.
+
+Then use paired surfaces from the rough bank. Both models need the full grid and one declared sparse layout. Prefer missing later maturities for a curve/product illustration; optional patterns are listed below. Reuse the same contract pattern across models when supported, while generating/validating each within its own model and prior. This checks quote handling in Heston before attributing a rough result to an expensive simulator or curve uncertainty.
 
 | Layout | What it isolates |
 | --- | --- |
@@ -23,11 +25,11 @@ Use paired synthetic surfaces from the same rough-Bergomi bank, with known param
 
 Vary quote-noise scale separately at 0.5/1/2 where supported. Choose one clear contrast for the live lesson; keep the other layouts as development checks or take-home material. Prefer a controlled subset of the supported grid initially, so the existing clean prices can be reused without new pricing.
 
-**Infer the curve in both the full and sparse arms.** Keep the joint model/curve prior, numerical model and downstream products fixed. Otherwise moving from a supplied-curve liquid task to an unknown-curve sparse task changes both the observations and the inference target. The supplied-curve task remains a useful separate conditional benchmark; it does not isolate the effect of thinning.
+**For rough Bergomi, infer the curve in both the full and sparse arms.** Keep the joint model/curve prior, numerical model and downstream products fixed. Otherwise moving from a supplied-curve liquid task to an unknown-curve sparse task changes both the observations and the inference target. The supplied-curve task remains a useful separate conditional benchmark; it does not isolate the effect of thinning. A curve estimated from market options and held fixed is a plug-in input, not an additional exact independent observation; see the [curve explanation](EXPERIMENT-PROTOCOL.md#what-the-forward-variance-curve-input-means).
 
 Check posterior contraction, conditional reference agreement, coverage, parameter/curve dependence and product uncertainty, including prior sensitivity and deliberately changed continuation assumptions. Use one product affected by the missing information and a well-supported quantity as a control. Choose product horizons from the declared layout; a six-month-to-one-year forward start is a current example, not a universal requirement.
 
-Reusing the bank does not make every layout supported by a trained network. The current thin workflow has a fixed layout and layout-bound checkpoint. Use two fixed-layout estimators for the first full/sparse contrast, with the same joint prior. A mask-conditioned joint estimator is an optional later comparison, not required infrastructure. Budget the richer-data joint control and sparse fits explicitly.
+Reusing a bank does not make every layout supported by a trained network. Use the full Heston baseline plus one sparse Heston estimator, and two fixed-layout estimators for the rough full/sparse joint contrast. Keep each model's prior matched within its own comparison. A mask-conditioned estimator is optional later work, not required infrastructure. Budget the sparse Heston and richer-data joint rough controls explicitly, without repeating the architecture matrix.
 
 ## Choose a market illustration afterward
 
