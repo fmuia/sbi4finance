@@ -24,11 +24,13 @@ def command(kind, index, out, bank=None, replay_report=None, references=None):
         case = ("flat", "monotone", "hump")[index]
         return [sys.executable, str(root / "scripts/check_curve_adequacy.py"), "--case", case,
                 "--out", str(out / case)]
-    if kind == "heston" and index < 3 and bank is not None:
-        return [sys.executable, str(root / "scripts/calibration_reference.py"), "--bank", str(bank),
+    if kind in ("heston", "heston-parallel") and index < 3 and bank is not None:
+        result = [sys.executable, str(root / "scripts/calibration_reference.py"), "--bank", str(bank),
                 "--split", "validation", "--index", str(index), "--out", str(out / f"case-{index}"),
                 "--draws", "2000", "--tune", "2000", "--chains", "4", "--seed", str(271026 + index),
                 "--no-progress"]
+        return result + (["--cores", "4", "--mp-context", "spawn", "--checkpoint-every", "100"]
+                         if kind == "heston-parallel" else [])
     if kind == "rough-fine" and index < 12:
         case = (4, 6, 2)[index // 4]
         grid = (4, 8)[(index % 4) // 2]
@@ -56,7 +58,7 @@ def command(kind, index, out, bank=None, replay_report=None, references=None):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("kind", choices=("rough-grid", "curve", "heston", "rough-fine", "curve-followup", "heston-precision"))
+    parser.add_argument("kind", choices=("rough-grid", "curve", "heston", "heston-parallel", "rough-fine", "curve-followup", "heston-precision"))
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--bank", type=Path)
     parser.add_argument("--replay-report", type=Path)
