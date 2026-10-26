@@ -12,36 +12,32 @@ This is a proposal for the next campaign. [The protocol](EXPERIMENT-PROTOCOL.md)
 
 ## Tutorial scope after self-review
 
-The deliverable is a small set of trustworthy, reproducible teaching examples: full and sparse Heston, followed by full and sparse rough Bergomi with a jointly inferred Heston-shaped initial forward-variance curve. First complete one workflow per model through data, training, reload, inference, scientific checks and one downstream product, then apply the fixed sparse layout. Participants load supplied checkpoints and follow inference → diagnostics → product uncertainty; bank generation, cluster scheduling and recovery remain instructor tools.
+The core deliverable is two trustworthy, reproducible teaching examples: full-surface Heston, followed by full-surface rough Bergomi with a jointly inferred Heston-shaped initial forward-variance curve. Complete both workflows through data, training, reload, inference, scientific checks and one downstream product. Participants load supplied checkpoints and follow inference → diagnostics → product uncertainty; bank generation, cluster scheduling and recovery remain instructor tools.
+
+**Sparse option chains are a separate downstream unit of work.** The core tutorial does not implement, train or claim support for missing quotes, sparse layouts, changing masks or arbitrary raw chains. Its input is the complete declared 63-contract design, with valid prices and noise metadata. Reject missing/nonfinite entries and unsupported designs explicitly. Market gridding/interpolation, if used, remains a labelled preprocessing approximation; it does not establish missing-data support. The [sparse-quote follow-up](SPARSE-QUOTE-CASE-PLAN.md) starts with specification after the core tutorial is complete.
 
 Keep numerical error checks, independent holdouts, converged references, calibration plus conditional checks, matched comparison inputs and honest cost/approximation labels. The passing infrastructure tests establish data/recovery behaviour; they do not establish pricing accuracy or posterior correctness. The next evidence must come from the numerical pilot and actual end-to-end examples.
 
 Keep architecture variety as a bounded screen: four posterior families with one encoder on Heston, two additional encoder comparisons with one family, and two promising configurations on an intermediate rough bank. Confirm only the selected teaching configurations across three seeds. Million-surface banks are expansion capacity, not a requirement to train every candidate at every size. The full Cartesian benchmark, runner-up seed campaigns and direct rough MCMC are optional follow-ups.
 
-Use the existing tested shard/snapshot and output-protection tools, then stop infrastructure work unless the pilot reveals a concrete problem. Implement only the BayesFlow 2.1 components needed for the chosen examples. Fixed layouts are sufficient for the sparse lesson; generalized missing-data/raw-contract support and warm-start machinery are outside the immediate scope. PyMC adoption remains useful where natural and can be deferred. One central execution plan and the existing run metadata are sufficient; the protocol and case guide are references, not separate software projects.
+Use the existing tested shard/snapshot and output-protection tools, then stop infrastructure work unless the pilot reveals a concrete problem. Implement only the BayesFlow 2.1 components needed for the complete-surface examples. Sparse adapters, mask-conditioned training, generalized raw-contract support and warm-start machinery are outside the core scope. PyMC adoption remains useful where natural and can be deferred. One central execution plan and the existing run metadata are sufficient; the protocol and deferred case guide are references, not separate software projects.
 
 ## What we should have at the end
 
 - A reproducible BayesFlow 2.1 training environment, with safe checkpointing and one configurable workflow.
-- One selected checkpoint for each of the four full/sparse teaching configurations, with results across three training seeds: twelve confirmation fits in total. The primary rough configurations jointly infer six unknowns; supplied-curve rough inference is an optional conditional comparison. Preserve completed screen results without requiring runner-up confirmation campaigns.
+- One selected full-surface checkpoint per model, with results across three training seeds: six confirmation fits in total. The primary rough configuration jointly infers six unknowns; supplied-curve rough inference is an optional conditional comparison. Preserve completed screen results without requiring runner-up confirmation campaigns.
 - A reference collection that lets us compare neural posteriors, MCMC and importance sampling on the same observations.
 - Calibration, conditional accuracy, pricing uncertainty and cost figures with clear provenance.
 - A bounded live demonstration and a cached version of every result used on stage.
 
-There are four teaching tasks under two models:
+There are two core teaching tasks:
 
 | Task | What is observed | What is inferred | Why it is useful |
 | --- | --- | --- | --- |
 | Heston | A 63-price option surface | Four parameters; mean reversion is fixed | An inexpensive likelihood makes the neural answer checkable against MCMC. |
-| Sparse-quote Heston | A declared subset of the same grid, with its quote-noise model | The same four parameters, with the same prior and fixed mean reversion | Isolates the effect of missing quotes while retaining a cheap numerical likelihood. |
 | Joint rough Bergomi | A 63-price option surface, with no supplied variance curve | H, eta, rho and three coefficients of a Heston-shaped initial curve: six unknowns | Tests amortization while propagating model and curve uncertainty together. |
-| Sparse-quote rough Bergomi | A declared subset of the same quotes, with their noise levels | The same six unknowns, prior and numerical model | Tests what incomplete coverage leaves uncertain and how that affects product valuation. |
 
-Call the sparse lesson **Calibration from sparse option quotes**. Start with paired full/sparse Heston surfaces: subset the existing bank's prices, keep the same four targets/prior, and compare neural inference with converged Fourier-likelihood MCMC on exactly the observed subset. No new clean-price generation or extra curve targets are needed. Implement a small Heston quote-subset adapter; the current rough-specific thin workflow cannot be assumed to provide this route already.
-
-Then perform the rough comparison with the same six unknowns inferred in both arms. Reuse the new rough bank across its two layouts. EWG is a current market candidate, not the task definition or a required final ticker. The [sparse-quote case plan](SPARSE-QUOTE-CASE-PLAN.md) defines the controls and market-selection criteria.
-
-If the sparse-quote task remains live, it needs a checked checkpoint for its declared layout. Claims about population coverage require the corresponding studies. A curve inferred from a fuller surface must not be supplied to that task as though it were observed. The supplied-curve liquid example is a separate conditional benchmark; comparing it directly with joint sparse inference changes more than quote availability.
+Complete inputs do not guarantee that every parameter or product is well identified. Teach posterior dependence, prior/noise sensitivity and downstream uncertainty within these full-surface tasks. Joint curve inference remains part of rough Bergomi; postponing sparse chains does not turn the curve into supplied context. Existing sparse/EWG studies retain their historical labels and do not gate this release.
 
 The forward-variance curve is `xi_0(t) = E^Q[v_t]`, the risk-neutral expected instantaneous variance at future time t. The existing market pipeline estimates it from option strips and holds it fixed, omitting its estimation uncertainty. That remains a **conditional calibration using a market-implied curve estimate**, not an additional exact independent observation. It is now optional rather than the primary rough lesson. The [protocol](EXPERIMENT-PROTOCOL.md#what-the-forward-variance-curve-input-means) describes that construction and the new joint approach.
 
@@ -62,7 +58,7 @@ The literature supports this as a transparent simplifying baseline, not a univer
 
 Before a large rough bank, compare the baseline with that published hump-capable family on one small, predeclared development panel. Check quote fit and downstream valuation/uncertainty against numerical error, using the same observations and error model. Use a suitable numerical pricer or an emulator validated for the candidate family; a baseline-only emulator does not cover a new hump parameter automatically. This is one adequacy check, not another architecture campaign. If the monotone baseline materially distorts the lesson, promote the published family (eight joint unknowns) and freeze that task instead before scaling; otherwise keep the six-unknown baseline and report the restriction.
 
-Heston's current mean-reversion speed is fixed at 2, whereas rough curve decay is inferred. Their full/sparse comparisons are matched within each model, but cross-model differences also reflect those assumptions and the different variance processes. Use matched curve values/decay for any deliberately controlled cross-model diagnostic; do not attribute every difference solely to roughness. Product values beyond quoted maturities also depend on the chosen curve extrapolation.
+Heston's current mean-reversion speed is fixed at 2, whereas rough curve decay is inferred. Cross-model differences also reflect those assumptions and the different variance processes. Use matched curve values/decay for any deliberately controlled cross-model diagnostic; do not attribute every difference solely to roughness. Product values beyond quoted maturities also depend on the chosen curve extrapolation.
 
 The tutorial release and the wider benchmark have different completion criteria:
 
@@ -70,7 +66,7 @@ The tutorial release and the wider benchmark have different completion criteria:
 | --- | --- |
 | One checked production configuration per retained task, references, diagnostics and participant packaging | The basic tutorial release. |
 | The four-family and encoder comparison, including runner-up configurations | The architecture benchmark; unfinished comparisons can remain take-home work. |
-| Sparse-quote population coverage studies under declared layouts and continuation laws | Any claim that the corresponding valuation bounds have demonstrated coverage or outperform the alternatives. |
+| Sparse-chain specification, implementation and evaluation | A separate downstream unit; no sparse checkpoint, market case or reserve-coverage study gates the core tutorial. |
 | Direct rough Monte Carlo-based MCMC anchors | A claim of agreement with that direct reference. The pilot may remain research if only emulator-MCMC comparisons are presented and labelled. |
 
 ## The work in order
@@ -99,14 +95,14 @@ Assess one bounded PyMC reference route, starting with deterministic Heston or t
 
 ### Generate enough data without generating it repeatedly
 
-**Freeze and implement the new rough task before substantial generation.** It needs a new task identity, curve-coefficient prior and pricing definition. Current rough configs, banks and checkpoints use supplied/seven-level curves and do not implement this six-target task. Keep them as historical or optional comparisons; projecting their curves onto the new family does not preserve their option prices. Reuse Heston data and the incremental-generation machinery, then generate a new rough collection whose complete prices can serve both full and sparse layouts. Treat existing throughput estimates as planning references until the new-task pilot measures them.
+**Freeze and implement the new rough task before substantial generation.** It needs a new task identity, curve-coefficient prior and pricing definition. Current rough configs, banks and checkpoints use supplied/seven-level curves and do not implement this six-target task. Keep them as historical or optional comparisons; projecting their curves onto the new family does not preserve their option prices. Reuse Heston data and the incremental-generation machinery, then generate the new complete-surface rough collection. Preserve all clean contract prices so a later sparse study can reuse compatible data without adding sparse support now. Treat existing throughput estimates as planning references until the new-task pilot measures them.
 
 | Bank | Initial training tranche | Validation surfaces | Test allocation |
 | --- | ---: | ---: | ---: |
 | Heston | 50,000 | 5,000 | 5,000 |
 | Rough Bergomi | 100,000 | 5,000 | 7,000 |
 
-These counts are inherited starting allocations, not empirically established sufficient sample sizes. Prepare for one million unique training surfaces per model, with learning curves at 50k/200k/1M for Heston and 100k/300k/1M for rough; smaller subsets remain useful for software and architecture screens. Heston generation is cheap enough to expand readily. Rough expansion is decided from development accuracy and measured Oscar throughput. Do not run every architecture at every size: establish data curves with credible baselines, then confirm finalists at the selected size. The rough bank can also supply the fixed thin-layout experiment.
+These counts are inherited starting allocations, not empirically established sufficient sample sizes. Prepare for one million unique training surfaces per model, with learning curves at 50k/200k/1M for Heston and 100k/300k/1M for rough; smaller subsets remain useful for software and architecture screens. Heston generation is cheap enough to expand readily. Rough expansion is decided from development accuracy and measured Oscar throughput. Do not run every architecture at every size: establish data curves with credible baselines, then confirm finalists at the selected size. A later sparse study may reuse compatible clean prices after its observation/training contract is specified.
 
 Use the [incremental-bank workflow](../docs/incremental-calibration-banks.md): one frozen collection per task/root seed/generator identity, append only missing split-qualified surface IDs, and publish immutable snapshots referring to checked shards. Keep the root seed fixed as IDs increase. Existing compatible shards can be adopted without repricing. Validate exact coverage, reject overlapping IDs, and audit the actual derived 64-bit pricing seeds across all included splits. Scheduling, chunk size and worker count must not change a surface. Keep validation/test IDs fixed throughout expansion and record each training run's exact snapshot hash.
 
@@ -123,11 +119,11 @@ There are two separate choices: how quotes are represented, and how the conditio
 | Observation representation | What we want to learn |
 | --- | --- |
 | Fixed vector without learned compression | Whether a small, complete surface needs a summary network at all. |
-| DeepSet | Whether a lightweight set encoder handles missing/subsampled quotes well. |
+| DeepSet | Whether permutation-invariant compression of complete quote records helps inference. |
 | SetTransformer | Whether attention across strikes and maturities improves inference. |
 | Small surface CNN, optional | Whether local grid structure helps enough to justify another comparison. |
 
-Set inputs contain prices together with contract coordinates, quote noise and masks. Tests must show that reordering complete quote records and adding padding leave the answer unchanged. Recurrent networks belong more naturally in the returns track. Supporting arbitrary new strikes and maturities requires corresponding training designs; a set encoder alone does not provide that support.
+Set inputs contain all 63 prices together with contract coordinates and quote noise. Test invariance to reordering complete quote records. The encoder comparison concerns representation of complete surfaces; mask/padding support and missingness augmentation are deferred. Recurrent networks belong more naturally in the returns track. A set encoder alone does not establish support for incomplete chains or new strikes/maturities.
 
 Compare these four posterior families:
 
@@ -140,7 +136,7 @@ Compare these four posterior families:
 
 MeanFlow is the method confirmed in discussion; it is experimental in BayesFlow 2.1. Compare its 1/2/4/8-step settings after training the same network. [MeanFlow](https://github.com/bayesflow-org/bayesflow/pull/802)
 
-First get one checked baseline per model. Then screen all four families on Heston with one encoder, compare DeepSet and SetTransformer against the direct-vector baseline with one fixed family, and carry two promising configurations to an intermediate rough bank. This is at most eight short screen fits, reusing identical runs where possible. Confirm only the four selected full/sparse configurations on the chosen banks with three seeds: twelve confirmation fits, or at most twenty posterior fits including screens before selected-baseline learning curves. Forward-emulator training is additional. Do not repeat the architecture matrix for sparse layouts or add mandatory supplied-curve rough fits. The [training matrix](EXPERIMENT-PROTOCOL.md#training-comparisons) records this programme.
+First get one checked baseline per model. Then screen all four families on Heston with one encoder, compare DeepSet and SetTransformer against the direct-vector baseline with one fixed family, and carry two promising configurations to an intermediate rough bank. This is at most eight short screen fits, reusing identical runs where possible. Confirm the two selected full-surface configurations with three seeds: six confirmation fits, or at most fourteen posterior fits including screens before selected-baseline learning curves. Forward-emulator training is additional. Sparse fits and mandatory supplied-curve rough fits are outside this programme. The [training matrix](EXPERIMENT-PROTOCOL.md#training-comparisons) records it.
 
 ### Make the MCMC comparison credible
 
@@ -162,7 +158,7 @@ Report raw neural results and corrected results separately. Assess conditional p
 
 Measure the competing workflows on the same recurring task: for example, 100, 1,000 and 10,000 compatible smiles/scenarios. Include bank generation, training, compilation and any required per-smile audit. Compare against classical-proposal importance sampling and price-emulator MCMC. Validation is a useful workload, but should not be the sole reason offered for introducing an amortizer.
 
-On the liquid example, agreement with classical uncertainty is a good outcome. On the thin example, wider intervals alone do not establish better inference. Examine coverage and sensitivity to the assumed prior, quote noise and unquoted curve behaviour.
+Agreement with classical uncertainty is a good outcome. Examine calibration, conditional agreement and sensitivity to prior, quote noise and product extrapolation even with complete inputs; wider intervals alone do not establish better inference. Missing-quote comparisons belong to the downstream sparse unit.
 
 ## Budget and release decisions
 
@@ -180,11 +176,11 @@ These are historical planning references: the 360 bank hours were included in th
 
 At the historical rough rate, growth from 100k to 1M would add about 2,880–2,985 CPU-hours while reusing the first tranche. Use this only as an expansion scenario until the new task is benchmarked. The core-count examples are not confirmed Oscar allocations or measured cluster throughput.
 
-The curriculum currently targets 30 October for slot 4, 4 November for slots 1–3, 6 November for slots 5–6, a 9 November rehearsal and an 11 November release. Use those as **claim-freeze dates**: ship the conclusions the results support at that date. Preserve a checked Heston lesson as the fallback. If rough or sparse-quote evidence misses its gate, narrow that section to a clearly labelled illustration or remove the unsupported claim; do not relax the criterion to finish the story.
+The curriculum currently targets 30 October for slot 4, 4 November for slots 1–3, 6 November for slots 5–6, a 9 November rehearsal and an 11 November release. Use those as **claim-freeze dates**: ship the conclusions the results support at that date. Preserve a checked Heston lesson as the fallback. If rough evidence misses its gate, narrow that section to a clearly labelled illustration or remove the unsupported claim; do not relax the criterion to finish the story. Sparse-chain work is deferred regardless of those dates.
 
 The organizers should agree on four decisions before the campaign is queued:
 
-1. The claims to retain for the four planned full/sparse configurations, narrowing the release if scientific gates fail. Decide separately whether to add the optional population reserve-coverage study; select the market illustration afterward.
+1. The claims and complete-input contract for the two full-surface configurations, narrowing the release if scientific gates fail. Sparse-chain support is excluded and will be specified separately downstream.
 2. The named leads for numerical generation, training, references and delivery.
 3. Initial CPU/GPU allocations and the maximum expansion allowed after each pilot.
 4. The statistical/numerical target and proposed acceptance rules in the protocol.
@@ -193,6 +189,6 @@ This planning PR records those proposals. Job submission and spending are a late
 
 ## First implementation work
 
-The next implementation work should freeze the Heston-shaped curve prior and implement the six-target rough generator/adapter and numerically consistent curve handling, checking the bounded hump alternative before large generation. Complete the BayesFlow 2.1 environment and minimal factory/sampling route for the selected examples. Reuse the data/recovery safeguards in the [incremental-bank PR](https://github.com/fmuia/sbi4finance/pull/47); do not expand them into a production framework. Freeze task settings and holdout IDs, run the new-task Oscar numerical/throughput pilot, and complete one checked example per model before adding its sparse view. Assess a bounded PyMC route where useful, then widen data and architecture comparisons only as needed.
+The next implementation work should freeze the Heston-shaped curve prior and implement the six-target rough generator/adapter and numerically consistent curve handling, checking the bounded hump alternative before large generation. Complete the BayesFlow 2.1 environment and minimal factory/sampling route for the complete-input examples, including explicit rejection of incomplete inputs. Reuse the data/recovery safeguards in the [incremental-bank PR](https://github.com/fmuia/sbi4finance/pull/47); do not expand them into a production framework. Freeze task settings and holdout IDs, run the new-task Oscar numerical/throughput pilot, and complete and package one checked full-surface example per model. Assess a bounded PyMC route where useful, then widen data and architecture comparisons only as needed. Start the separately specified sparse unit after core completion, unless an explicit scope decision changes that order.
 
 The execution report should link the exact code revision, task/bank/checkpoint identities, compute use, failures and the claims each result supports. Update [study status](../docs/course/status.md), [claims](CLAIMS.md) and the runbook together when results are accepted for teaching.

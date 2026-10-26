@@ -2,7 +2,9 @@
 
 For the proposed next campaign, start with the [numerical experiment plan](NUMERICAL-EXPERIMENT-PLAN.md) and [protocol](EXPERIMENT-PROTOCOL.md). They add the BayesFlow 2.1 migration, safe resumes, architecture comparisons and reference checks. The baseline commands below need the planned environment/API/test updates before they are used for that campaign; the planning PR does not submit these jobs.
 
-**Rough task change:** the new primary full/sparse rough examples jointly infer H, eta, rho and three Heston-shaped curve coefficients. The commands/configs below still describe the earlier supplied/seven-level curve programme. Do not queue its full bank as the new task's first tranche: complete the bounded curve-family check, freeze its prior/numerical definition, implement the new generator/adapter and run its pilot first. Existing rough data/results retain their original labels. Heston bank reuse and incremental shard machinery remain useful.
+**Current campaign scope:** complete-grid Heston and complete-grid joint rough Bergomi only. Finish their checked training/inference/product workflows and tutorial packaging first. Sparse-chain support is a separate downstream unit requiring further specification; **R4 and R7–R9 below are deferred**, and their thin checkpoint acceptance is not a core release requirement. Mask-conditioned training and missing-quote adapters are not prerequisites.
+
+**Rough task change:** the new primary complete-grid rough example jointly infers H, eta, rho and three Heston-shaped curve coefficients. The commands/configs below still describe the earlier supplied/seven-level curve programme. Do not queue its full bank as the new task's first tranche: complete the bounded curve-family check, freeze its prior/numerical definition, implement the new generator/adapter and run its pilot first. Existing rough data/results retain their original labels. Heston bank reuse and incremental shard machinery remain useful.
 
 For generation that should grow beyond the initial training allocation, use the [incremental collection and snapshot guide](../docs/incremental-calibration-banks.md) with the chosen task's compatible configuration. It plans only missing IDs, reuses compatible finished shards and fixes holdouts. The legacy R1 commands below describe the original fixed-size bank, not the append-only workflow or the new six-target task.
 
@@ -20,7 +22,7 @@ continue in their own: the S10 runs (R8, R9), the S5 audit (R5) and a chunked tr
 when rerun with the same settings. Each of these records its settings and refuses a rerun with other ones, so chains
 or surfaces of two configurations are never pooled.
 
-**For the weekend of 24–25 October.** Run R0 to R4 first, in order. If an acceptance check fails, stop and report
+**Historical instructions for the weekend of 24–25 October; not the current campaign queue.** Run R0 to R4 first, in order. If an acceptance check fails, stop and report
 it to Francesco Muia with the run's JSON; do not change the code in the run checkout. Every new or changed Python
 command below was run end to end on a 68-surface test bank, with networks trained for three epochs. The numbers of
 those runs mean nothing, but the commands, outputs and summaries work. The `sbatch` wrappers could not be tested
@@ -34,15 +36,15 @@ off Oscar.
 | R1 | S1 | The full rough-Bergomi bank: 112,000 surfaces | about 360 CPU-h | R0 |
 | R2 | S1, S1-G | The bank's quality, its prior predictive check, its time-grid bias | about 2 CPU-h | R1 |
 | R3 | S2 | The liquid network (the curve given) and its SBC on 2,000 surfaces | 1 GPU job, 1 CPU-h | R1 |
-| R4 | S2-T | The thin network on EWG's layout (the curve inferred) and its SBC at three noise scales | 1 GPU job, 2 CPU-h | R1 |
+| R4 — deferred | S2-T | The thin network on EWG's layout (the curve inferred) and its SBC at three noise scales | 1 GPU job, 2 CPU-h | R1 |
 | R5 | S5 | The audit of the liquid network on 200 surfaces | about 300 CPU-h | R3 |
 | R6 | S8 | SPY's posterior, audit, predictive check and products | about 3 CPU-h | R3 |
-| R7 | S11 | EWG's posterior, products, classical fits and predictive check, at three noise scales | about 3 CPU-h | R4 |
-| R8 | S10 | Breach rates of every method's reserves on 1,000 simulated chains with EWG's layout | about 180 CPU-h | R4 |
-| R9 | S10-E | The same on 300 chains whose truths come from EWG's posterior | about 55 CPU-h | R7 |
+| R7 — deferred | S11 | EWG's posterior, products, classical fits and predictive check, at three noise scales | about 3 CPU-h | R4 |
+| R8 — deferred | S10 | Breach rates of every method's reserves on 1,000 simulated chains with EWG's layout | about 180 CPU-h | R4 |
+| R9 — deferred | S10-E | The same on 300 chains whose truths come from EWG's posterior | about 55 CPU-h | R7 |
 | R10 | S4, S6, S7, S9 | The neural-pricer route, the classical route, products, costs | under 20 CPU-h | R3 |
 
-The total is about 930 CPU-hours and two GPU jobs. R3 and R4 can run together, and so can R5 to R8.
+The historical programme totals about 930 CPU-hours and two GPU jobs. Its original parallel schedule allowed R3/R4 together and R5–R8 together; this is not the new complete-grid campaign's allocation or submission order.
 
 ## Before anything
 

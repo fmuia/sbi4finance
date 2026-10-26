@@ -4,6 +4,8 @@ The Heston and rough-Bergomi training banks can grow in stages. Keep one collect
 
 This implements the data-growth part of the [numerical experiment plan](../tutorial_final/NUMERICAL-EXPERIMENT-PLAN.md). It does not submit jobs, change the numerical task, migrate BayesFlow, or certify that a particular bank size is sufficient.
 
+**Tutorial scope:** first complete the full-surface Heston and joint rough examples. Sparse-chain support, adapters, checkpoints and studies are a separate downstream unit that starts with specification. Existing storage or study-runner support does not establish missing-quote support for the core estimator.
+
 **Current rough-task status:** the plan now calls for a six-target joint rough model with a Heston-shaped initial curve. The rough config and CLI examples below still describe the earlier seven-level task and illustrate storage mechanics only. Do not queue that old full bank as data for the new model. Complete the [curve-family check and task/prior freeze](../tutorial_final/NUMERICAL-EXPERIMENT-PLAN.md#rough-curve-baseline-and-bounded-flexibility-check), implement the new generator/adapter, then use its compatible config. Existing Heston data and this incremental machinery remain reusable.
 
 ## What makes a surface unique

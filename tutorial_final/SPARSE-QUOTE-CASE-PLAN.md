@@ -1,56 +1,43 @@
-# Calibration from sparse option quotes
+# Calibration from sparse option quotes: deferred follow-up
 
-The illustrative goal is **inference from incomplete option data, followed by uncertainty propagation into an unquoted product**. Heston provides a numerically checkable full/sparse control. Rough Bergomi initially uses a Heston-shaped mean-variance curve and jointly infers six unknowns: H, eta, rho, short variance, long variance and curve decay. This is a property of the inference problem, not of a particular ticker. EWG is the current historical rough market example; the final market illustration remains to be selected.
+**Status: separate downstream unit, specification first.** Complete and package the full-surface Heston and six-target joint rough Bergomi tutorial before starting this work, unless explicitly reprioritized. Sparse adapters, checkpoints, mask training, market-case selection and sparse coverage studies are not core release requirements. This document records questions and a candidate starting experiment, not an implemented missing-data support contract.
 
-Use **Calibration from sparse option quotes** as the learner-facing name. “Thin” can remain a short internal name for existing modules and studies. Here sparse means insufficient strike/maturity coverage for the question being asked; the noise and reliability of the quotes matter too. Quote count alone does not define the problem.
+The core uses all 63 declared contract prices with valid noise/design metadata and explicitly rejects incomplete or unsupported inputs. Keep complete clean-price banks and their provenance so compatible data can be reused later. Existing thin-chain code, EWG observations and seven-level results remain historical evidence; they do not implement sparse Heston or the new six-target rough task.
 
-## What the lesson should establish
+## Specify the problem before implementing it
 
-A participant should be able to identify which model or curve components the quotes constrain, which remain sensitive to the prior or continuation assumptions, and how that distinction affects a product value. A broader posterior is not itself evidence of better inference. An unobserved curve segment does not become learned information just because a neural estimator returns draws for it. Quotes can update that segment indirectly through prior correlations; separate that effect from direct identification of its remaining increment.
+The follow-up should first agree a short specification covering these decisions:
 
-The comparison asks how much information survives when useful quotes are unavailable. It does not presume that SBI must outperform a good classical proposal or a price emulator with MCMC. All methods receive the same quotes, noise model and supplied context; posterior methods also use the same joint prior.
-
-## Start with controlled experiments
-
-Start with paired synthetic surfaces from the Heston bank. Hold the four parameter targets, prior, fixed mean reversion and noise model constant; remove the same declared quote subset from the neural conditions and Fourier-likelihood MCMC. Heston's expected variance curve is determined by its parameters, so there is no separate supplied curve or seven added curve targets. A small fixed-layout quote-subset adapter and a selected-family checkpoint are enough; the current rough-specific thin trainer is not already that implementation. No new clean-price generation is needed.
-
-Then use paired surfaces from the new six-target rough bank, after the [curve-family adequacy check](NUMERICAL-EXPERIMENT-PLAN.md#rough-curve-baseline-and-bounded-flexibility-check) and task/prior freeze. The old seven-level bank is not this task's data and cannot be projected/relabelled without changing prices. Both models need the full grid and one declared sparse layout. Prefer missing later maturities; other patterns below are optional. Reuse the same contract pattern across models when supported, while generating/validating each within its own model/prior. This checks quote handling in Heston before the more expensive rough inference.
-
-| Layout | What it isolates |
+| Decision | What must be explicit |
 | --- | --- |
-| Full declared grid | The richer-data reference. |
-| Missing later maturities | Uncertainty about an unquoted curve segment and products depending on it. |
-| Narrow strike coverage or missing wings | Loss of information about smile shape and model parameters. |
-| Dispersed missing quotes, with comparable count | Whether coverage matters beyond the number of quotes. |
+| Learning question | Which missing information affects which parameter, curve quantity or downstream product? Quote count alone does not define thinness. |
+| Supported observations | One fixed subset, a declared family of masks, or variable-length raw quotes? Declare strikes, maturities, option types, valid noise metadata and behavior for unsupported inputs. |
+| Observation provenance | Actual quotes versus interpolated grid values; coverage flags, forward/discount/exercise conventions and dependence introduced by preprocessing. Never count extrapolated values as newly observed evidence. |
+| Missingness and noise | Fixed missingness by design versus liquidity/selection-dependent missingness; which mechanism is simulated or conditioned on, and what reliability/selection claims are justified. Vary missingness and noise separately. |
+| Training and input contract | Separate fixed-layout checkpoints versus one estimator trained across masks/designs. Declare coordinate/noise encoding, missing/padded representation and the training support; an encoder choice alone is not a support guarantee. |
+| Matched comparisons | The same available quotes, surviving quote errors, prior, numerical model and inferred targets for neural inference, MCMC and audits. A forward emulator may predict a full surface, but the likelihood uses only the observed subset and its relevant covariance. |
+| Acceptance and cost | Conditional reference agreement, calibration, invariance checks where relevant, prior/curve sensitivity and downstream product error; separate development from fresh acceptance evidence and declare a bounded compute budget. |
 
-Vary quote-noise scale separately at 0.5/1/2 where supported. Choose one clear contrast for the live lesson; keep the other layouts as development checks or take-home material. Prefer a controlled subset of the supported grid initially, so the existing clean prices can be reused without new pricing.
+Absent quotes must contribute no artificial observation or likelihood term. If zero or another placeholder is used internally, a validated mask must exclude its value; it is not a zero-price observation. Any interpolation remains a declared preprocessing approximation rather than a missing-data solution. If missingness depends on prices or spreads, random masking alone does not demonstrate robustness to that selection process.
 
-**For rough Bergomi, infer the same six coordinates in both full and sparse arms.** Keep the joint prior, curve family, numerical model and products fixed. A shared initial mean-curve family does not insert Heston's variance dynamics into rough Bergomi; the whole processes remain different. Moving from a supplied-curve task to unknown-curve sparse inference changes more than quote availability. Supplied-curve calibration remains an optional conditional benchmark; its market-derived curve is a plug-in estimate, not an exact independent observation. See the [curve explanation](EXPERIMENT-PROTOCOL.md#what-the-forward-variance-curve-input-means).
+## Candidate first experiment, after specification
 
-Check posterior contraction, conditional reference agreement, coverage, parameter/curve dependence and product uncertainty. The compact curve adds global shape/extrapolation assumptions; a small sparse posterior is not automatically more informative. Near-flat curves may leave decay weakly identified. Use one product affected by missing information and a well-supported quantity as a control. Variance-swap prices now vary with posterior curve coefficients rather than being deterministic supplied-curve controls. Choose product horizons from the layout; a six-month-to-one-year forward start is a current example, not a universal requirement. Existing flat/widened-last-increment studies do not transfer unchanged from the old seven-level prior: any continuation/family sensitivity needs a declared alternative and a correctly labelled target.
+A small controlled full-versus-sparse comparison on the supported grid is the simplest starting point. Begin with Heston, where refined Fourier-likelihood MCMC can check the neural answer. One predeclared subset missing later maturities is a candidate; narrow wings or dispersed missing quotes are alternatives, not mandatory extra layouts. A fixed-layout adapter/checkpoint may be sufficient if that is the agreed support contract. Do not assume the current rough-only thin trainer already provides Heston support.
 
-Reusing a bank does not make every layout supported by a trained network. Use four selected fixed-layout estimators: full/sparse Heston and full/sparse joint rough, with three training seeds each. The current rough-only thin code is seven-level specific and requires a six-target adapter/prior implementation; no supplied generating curve may leak into conditions. Keep each model's prior matched within its comparison. A mask-conditioned estimator is optional later work. Do not repeat the architecture matrix for sparse layouts.
+Use paired synthetic base surfaces, preserving the generating parameters and quote errors for surviving contracts. Refine complete clean prices under the original numerical checks, then select prices, noise and covariance consistently. Subsetting must not bypass pricing-precision checks. Reusing compatible prices avoids new generation, but does not make a full-surface checkpoint support sparse inputs.
 
-## Choose a market illustration afterward
+Extend to rough Bergomi only after that control is useful. Match the full task's joint prior, numerical model and unknowns; with the current baseline these are H, eta, rho, short variance, long variance and decay. Both full and sparse comparisons infer the curve. Do not supply a curve reconstructed from additional, withheld quotes. If the core promotes another curve family, the sparse specification must follow that actual task rather than silently keep six targets. Old seven-level curves/prices cannot be projected or relabelled as the new task without repricing.
 
-Use an available well-documented dated chain if it meets the criteria below. EWG remains a candidate; another suitable example can replace it. Keep this selection bounded rather than building a market-data screening pipeline. Select before inspecting final method rankings. No replacement ticker is selected by this plan.
+Judge what the data identify through posterior contraction, conditional reference agreement, calibration and product uncertainty. Weakly quoted curve regions may be constrained mainly by the compact curve family and prior. Wider intervals alone do not prove better inference; narrow intervals can reflect restrictive shape/extrapolation assumptions. Select one affected downstream product and one well-supported control before inspecting final results.
 
-Select and freeze one dated chain/layout with:
+For a mask-conditioned or variable-length approach, train over the declared support and verify that changing masked values or adding padding leaves inference unchanged. Set encoders must also preserve permutation invariance of complete quote records. Arbitrary new strikes/maturities need corresponding simulation and validation designs. These are follow-up requirements only if that representation is chosen, not work to add to the core now.
 
-- Clear missing coverage relevant to the learning question, while retaining enough informative quotes for a nontrivial posterior.
-- Reproducible data provenance and coherent treatment of timestamps, forwards, dividends, exercise conventions and quote-noise assumptions.
-- A plausible numerical model and feasible reference/audit path, so the example can distinguish weak identification from obvious data or model failure.
-- A downstream product that exposes the missing information and a control quantity supported by the quoted region.
-- A manageable live story and reproducible cached artifacts.
+## Market illustration and historical evidence
 
-Record the candidate assessment and selected layout/product before final accuracy comparisons. Choose for an interpretable problem, not for a favourable SBI result. A real chain has no known generating parameter truth; use synthetic experiments for coverage and identification claims. A posterior-conditioned local sensitivity study is not population or broad market validation.
+Choose a market case only after the controlled design and claim are fixed. EWG is a historical candidate, not the task definition or a required final ticker. Select for relevant coverage, reproducible dated quotes, coherent preprocessing/noise conventions, feasible reference/audit checks and a clear product story, before inspecting method rankings. A synthetic experiment is sufficient if no suitable market case is available.
 
-If no market snapshot meets the requirements, the controlled synthetic lesson is still a complete illustration. A market panel is an application of that lesson rather than a prerequisite for it.
+Preserve EWG's original observations, seven-level outcomes, source labels, 27-point proposal layout and distinct 61-quote audit. A new curve family, observation design or ticker requires reviewing the checkpoint, audit, product horizons and continuation assumptions, not just swapping a layout file. Existing flat/widened-last-increment studies do not transfer unchanged to the compact curve prior.
 
-## What changes if EWG is replaced
+A real market chain has no known parameter truth. EWG-posterior-conditioned experiments establish local sensitivity, not broad market performance. Population reserve-coverage and wrong-extrapolation studies require their own declared truths, continuation laws, products and acceptance criteria; do not inherit them as mandatory work. Keep successful prior-generated cases and misspecified alternatives together when making robustness claims.
 
-Preserve existing EWG data, figures, source labels and historical study outcomes. They remain evidence about that dated example. The current proposal layout and actual-quote audit are distinct objects and must retain their own coordinates and noise definitions.
-
-Review the new case's layout, preprocessing, quote noise, joint checkpoint, observation audit, products and coverage-study assumptions. Current product/coverage scripts contain old-prior and curve-continuation assumptions; both the new curve family and a changed ticker require review beyond swapping a layout file. Preserve EWG's original seven-level outcomes as historical evidence. Quotes outside the new bank's supported grid may require additional pricing or a new task. Reassess cost before submitting replacement studies.
-
-The full/sparse comparisons are part of the planned four-configuration teaching path. Freeze their claims and narrow the release if the scientific gates fail; the broader population reserve-coverage study remains optional unless its claim is retained. Final ticker selection comes after the controlled design. See the [central experiment plan](NUMERICAL-EXPERIMENT-PLAN.md) and [protocol](EXPERIMENT-PROTOCOL.md).
+The deliverable of the first downstream step is an agreed support contract and bounded experiment, followed by its implementation and evidence. No sparse jobs are requested by this plan. See the [central experiment plan](NUMERICAL-EXPERIMENT-PLAN.md) and [core protocol](EXPERIMENT-PROTOCOL.md).
