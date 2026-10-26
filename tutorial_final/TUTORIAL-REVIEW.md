@@ -24,7 +24,7 @@ material, with only the concepts needed for the live task introduced on stage.
 
 ## Follow-up self-review: keep the tutorial small
 
-The plan had accumulated three programmes: a tutorial release, a broad architecture benchmark and direct rough-inference research. The main scope correction is to separate them. First complete one checked Heston example and one rough example; retain the four-family/two-extra-encoder comparison as a bounded screen, and confirm only selected teaching configurations. One controlled sparse-quote contrast can follow. Fixed layouts suffice for that lesson. Runner-up campaigns, direct rough MCMC, general raw-contract/mask support and broad reserve-coverage claims are optional extensions.
+The plan had accumulated three programmes: a tutorial release, a broad architecture benchmark and direct rough-inference research. Separate them. The selected teaching path is full/sparse Heston, followed by full/sparse rough Bergomi with six jointly inferred parameters and a Heston-shaped initial mean-variance curve. Retain the bounded four-family/encoder screen, confirm only selected configurations, and use fixed layouts. Supplied-curve rough fits, runner-up campaigns, direct rough MCMC and broad reserve-coverage claims are optional extensions. One bounded check against the published hump-capable curve family precedes substantial rough generation.
 
 The incremental-bank and recovery safeguards address real duplicate-ID, interrupted-write, memory and changed-dataset failure modes. Keep the tested primitives rather than rewriting them to reduce line count, and stop expanding the infrastructure unless a pilot exposes a concrete need. Collection/recovery machinery belongs in instructor tools; participants should use supplied data/checkpoints and follow the inference workflow. The infrastructure's passing mocked tests are not scientific validation. Prioritize actual pricing refinement, independent holdouts, calibrated/conditionally checked posteriors, matched baselines and an honest product/cost figure over more framework work.
 
@@ -83,18 +83,23 @@ necessary.” A campaign that can reach either conclusion is more convincing.
 
 ## Make the information available to each method visible
 
-The move from Heston to rough Bergomi changes more than the simulator. Heston
-infers four parameters. The liquid rough example infers three parameters while
-conditioning on a supplied curve. The thin-chain example infers those three
-parameters and seven curve levels jointly. Show this three-task distinction at
-the transition, together with the common workflow that survives it.
+The new plan has full/sparse Heston with four targets and full/sparse rough
+Bergomi with the same six targets in each arm. The rough model has H, eta, rho
+and three coefficients of an initial Heston-shaped variance curve. Both primary
+rough arms receive quotes, not a supplied curve. Heston already determines its
+mean curve from its parameters; using that functional family in rough Bergomi
+does not make the stochastic variance processes equivalent. Heston currently
+fixes kappa at 2 while rough curve decay is inferred, so match those assumptions
+in any controlled cross-model diagnostic and avoid attributing all differences
+solely to roughness.
 
-For the liquid example, a curve reconstructed from the same market chain is
-treated as known context. The resulting interval is conditional on that choice;
-it does not include all uncertainty in reconstructing the curve. For the thin
-example, an unquoted curve segment can remain prior-driven. This is an excellent
-lesson about identification, provided it is presented as the consequence of an
-assumption rather than information learned from quotes.
+The existing course's supplied-curve and seven-level examples remain historical
+or optional comparisons. Holding a market-reconstructed curve fixed gives
+conditional intervals that omit curve-estimation uncertainty. In the new joint
+task an unquoted segment is constrained globally by the coefficient prior and
+exponential shape. Explain that source of information, including extrapolation;
+it is not direct evidence learned from unavailable quotes. Near-flat curves can
+leave decay weakly identified even when curve bands and product values are stable.
 
 A plug-in curve reconstructed from the same quotes is a conditional modelling
 approximation. Do not describe it as additional independent data. Show how
