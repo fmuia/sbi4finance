@@ -4,6 +4,8 @@ The first implementation covers **complete-surface Heston and joint rough Bergom
 
 The tutorial workflow is observation → posterior → diagnostics/reference comparison → product uncertainty. This PR builds the generation, training, reload, sample-based evaluation and first PyMC reference pieces. It does not yet deliver scientifically accepted checkpoints or participant notebooks.
 
+Actual Oscar readiness, development training and bounded scientific pilots are recorded in the [26 October development report](oscar-pilot-2026-10-26.md). Read that report before choosing a large rough-bank configuration: the candidate grid and curve family have unresolved limitations.
+
 ## Work completed in parallel
 
 | Piece | Implementation |
@@ -60,14 +62,15 @@ For generation that grows later, use the existing [incremental collection/snapsh
 pixi install --locked -e core-reference
 pixi run --locked -e core-reference python scripts/calibration_reference.py \
   --bank /tmp/heston-core-bank --split validation --index 0 \
-  --out /tmp/heston-core-reference --draws 2000 --tune 2000 --chains 4 --seed 0
+  --out /tmp/heston-core-reference --draws 2000 --tune 2000 --chains 4 \
+  --cores 4 --mp-context spawn --checkpoint-every 100 --seed 0
 ```
 
-This uses all observed contracts and the task's declared independent Gaussian quote noise and uniform prior. Fourier precision failures abort rather than being mistaken for zero posterior density. DEMetropolisZ is gradient-free; PyMC applies the bounded-variable transforms and their Jacobians. Starts are independent prior draws, not neural posterior draws. The route is intended for offline CPU reference jobs; pilot its mixing and cost before generating a reference collection.
+This uses all observed contracts and the task's declared independent Gaussian quote noise and uniform prior. Fourier precision failures abort rather than being mistaken for zero posterior density. DEMetropolisZ is gradient-free; PyMC applies the bounded-variable transforms and their Jacobians. Starts are independent prior draws, not neural posterior draws. Request at least four CPUs for the example above; the command enforces allocation limits. Spawn/forkserver supports native parallel chains without forking an initialized JAX process. Pilot mixing and cost before generating a reference collection.
 
-Outputs include `chains.npz` with explicit chain/draw/parameter axes and sampler statistics, `reference.json` with observation/task/data/source/environment identities, and `diagnostics.json` with R-hat/ESS/MCSE. Passing statistical diagnostics alone does not establish scientific acceptance: numerical refinement, product precision and reference uncertainty must also pass. Short smoke chains are explicitly inconclusive. The rough emulator-MCMC route remains to be implemented and independently checked; this wrapper must not receive a fresh random Monte Carlo log likelihood.
+Outputs include `chains.npz` with explicit chain/draw/parameter axes and sampler statistics, `reference.json` with observation/task/data/source/environment identities, and `diagnostics.json` with R-hat/ESS/MCSE. Atomic files in `partial/` retain physical draws and tuning flags during sampling; they are not resumable sampler/adaptation/RNG state. Passing statistical diagnostics alone does not establish scientific acceptance: numerical refinement, product precision and reference uncertainty must also pass. Short or incomplete chains are explicitly inconclusive. The rough emulator-MCMC route remains to be implemented and independently checked; this wrapper must not receive a fresh random Monte Carlo log likelihood.
 
-On Oscar, install `core-gpu` for training and run `core-check --require-gpu` before submitting a GPU job. Only Linux GPU dependency resolution has been checked locally; GPU execution and shared-filesystem behavior still need the bounded Oscar pilot. Existing historical training wrappers should not be assumed to invoke the new trainer/environment.
+On Oscar, install `core-gpu` for training. Run `core-check --require-gpu` **inside an allocated GPU job**; the new [GPU launcher](../cluster/core_gpu.sbatch) does this automatically. The [CPU launcher](../cluster/core_cpu.sbatch) explicitly selects `core` or `core-reference`. Both accept an absolute Pixi executable and resource overrides. The [readiness command](../scripts/check_core_cluster.py) tests actual generation, shared-storage operations and interrupted training/reload. CPU/GPU readiness now passes on Oscar, with the scope and evidence linked above. Historical training wrappers still select archived environments and should not be used for these candidates.
 
 ## Scientific work still required
 
@@ -76,4 +79,4 @@ On Oscar, install `core-gpu` for training and run `core-check --require-gpu` bef
 3. Expand immutable banks as justified by development learning curves, train selected configurations, and build converged conditional references and independently checked rough price-emulator comparisons.
 4. Evaluate the frozen candidates on untouched acceptance data, propagate posterior draws into the selected product, and package/rehearse the full-surface notebooks with cached fallbacks.
 
-The [central experiment plan](../tutorial_final/NUMERICAL-EXPERIMENT-PLAN.md) and [scientific protocol](../tutorial_final/EXPERIMENT-PROTOCOL.md) remain the source of sequencing and acceptance proposals. No large bank, cluster training job or scientific acceptance campaign is submitted by this implementation.
+The [central experiment plan](../tutorial_final/NUMERICAL-EXPERIMENT-PLAN.md) and [scientific protocol](../tutorial_final/EXPERIMENT-PROTOCOL.md) remain the source of sequencing and acceptance proposals. Bounded development runs are documented in the pilot report; no large rough bank or final acceptance campaign is approved by those runs.

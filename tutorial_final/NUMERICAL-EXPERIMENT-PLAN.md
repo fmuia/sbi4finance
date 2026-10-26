@@ -12,6 +12,8 @@ This is a proposal for the next campaign. [The protocol](EXPERIMENT-PROTOCOL.md)
 
 Implementation has started in a separate worktree: the [full-surface guide](../docs/full-surface-calibration.md) records the available commands and remaining scientific gates. Small generation/training/reload checks are implementation evidence, not completion of this campaign or approval to scale the candidate rough prior.
 
+The [26 October Oscar report](../docs/oscar-pilot-2026-10-26.md) records actual CPU/GPU readiness, the first Heston development bank/fits, and unresolved numerical, curve-family and MCMC gates. In particular, do not scale the candidate rough bank from software readiness alone.
+
 ## Tutorial scope after self-review
 
 The core deliverable is two trustworthy, reproducible teaching examples: full-surface Heston, followed by full-surface rough Bergomi with a jointly inferred Heston-shaped initial forward-variance curve. Complete both workflows through data, training, reload, inference, scientific checks and one downstream product. Participants load supplied checkpoints and follow inference → diagnostics → product uncertainty; bank generation, cluster scheduling and recovery remain instructor tools.
@@ -97,7 +99,7 @@ Assess one bounded PyMC reference route, starting with deterministic Heston or t
 
 ### Generate enough data without generating it repeatedly
 
-**Freeze and implement the new rough task before substantial generation.** It needs a new task identity, curve-coefficient prior and pricing definition. Current rough configs, banks and checkpoints use supplied/seven-level curves and do not implement this six-target task. Keep them as historical or optional comparisons; projecting their curves onto the new family does not preserve their option prices. Reuse Heston data and the incremental-generation machinery, then generate the new complete-surface rough collection. Preserve all clean contract prices so a later sparse study can reuse compatible data without adding sparse support now. Treat existing throughput estimates as planning references until the new-task pilot measures them.
+**Freeze the rough task before substantial generation.** A new six-target candidate generator and tiny configuration are now implemented in the [full-surface guide](../docs/full-surface-calibration.md), but its curve/prior/precision choices are not yet accepted. Historical supplied/seven-level rough banks and checkpoints remain separate: projecting their curves onto the new family does not preserve their option prices. Reuse compatible Heston data and the incremental-generation machinery, then generate the chosen complete-surface rough collection after its gates pass. Preserve all clean contract prices for a later compatible sparse study without adding sparse support now. Treat historical throughput estimates as references until the selected task is benchmarked.
 
 | Bank | Initial training tranche | Validation surfaces | Test allocation |
 | --- | ---: | ---: | ---: |
