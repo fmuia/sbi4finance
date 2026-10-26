@@ -115,7 +115,7 @@ def rough_block(parameters, curve, contracts, *, horizon, n_steps, n_pairs, seed
         z = rng.standard_normal((m, n_steps, 3))
         pair = []
         for sign in (1.0, -1.0):
-            paths = simulate_rough(parameters, curve, dt, sign * z, method="hybrid")
+            paths = simulate_rough(parameters, curve, dt, sign * z, method="hybrid", conditional_only=True)
             payoff = conditional_put_payoffs(paths, parameters, puts, indices, spot=1.0, rate=0.0, dividend=0.0)
             controls = []
             for i in maturities:
