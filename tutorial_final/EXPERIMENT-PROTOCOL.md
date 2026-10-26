@@ -4,7 +4,9 @@ Proposed on 26 October 2026. Read the [human overview](NUMERICAL-EXPERIMENT-PLAN
 
 ## Tasks and common implementation
 
-Keep Heston, liquid rough Bergomi and thin rough Bergomi as distinct tasks. Record the complete prior, observation design, quote-noise model, supplied context, inferred coordinates, numerical pricing algorithm and downstream quantities for each. The liquid rough task conditions on seven curve levels. The thin task infers them; its baseline receives exactly the same observed information as the neural method.
+Keep Heston, liquid rough Bergomi and sparse-quote rough Bergomi (the existing “thin” workflow) as distinct tasks. Record the complete prior, observation design, quote-noise model, supplied context, inferred coordinates, numerical pricing algorithm and downstream quantities for each. The liquid rough task conditions on seven curve levels. The sparse-quote task infers them; its baseline receives exactly the same observed information as the neural method. EWG is a current case fixture, not the definition of this task. Follow the [case plan](SPARSE-QUOTE-CASE-PLAN.md) for controlled layouts and market-case selection.
+
+For a paired full-versus-sparse information comparison, infer the curve in both arms with the same joint prior and numerical model. Vary quote coverage and noise separately, use shared latent surfaces, and predeclare downstream quantities. Budget the richer-data joint control and extra layout fits explicitly unless a validated mask-conditioned joint estimator covers both arms; the current fixed-layout matrix does not already include them. A supplied-curve versus unknown-curve comparison answers a different question.
 
 Use a common application lifecycle: prepare observation, infer, diagnose, correct or stop, then propagate joint draws. The training lifecycle selects a validation checkpoint, reloads it and verifies the restored estimator. Application-specific prices, curve priors, adapters and audit methods remain components. Extending the shared core should preserve the historical SVJ/HKDE contracts and their source-bound evidence.
 
@@ -82,7 +84,7 @@ For ten-target thin inference, compare 32 and 64 summary dimensions during devel
 
 Each token contains a forward-unit price, log-moneyness, maturity, option type, quote-noise/spread information and mask. Include noise itself when it varies; a noise-scaled price alone does not identify the observation law. Avoid requiring implied volatility for synthetic noisy quotes where inversion is undefined. Keep supplied curve context separate from inferred targets.
 
-Begin with subsets/masks of the declared contract grid. Generalization to arbitrary raw chains requires simulation designs covering those contracts. The EWG network's 27-point proposal layout and the actual 61-quote audit are distinct objects; document both.
+Begin with subsets/masks of the declared contract grid. Generalization to arbitrary raw chains requires simulation designs covering those contracts. The current EWG network's 27-point proposal layout and actual 61-quote audit are distinct objects; document both and preserve their historical labels. A replacement market case requires its own declared layout, noise model, checkpoint/audit validation and product-horizon review.
 
 The proposed capped screen is:
 
@@ -150,7 +152,7 @@ Register tolerances before final evaluation. For product comparisons define `W =
 
 A blanket claim that the raw network agrees across the final reference collection requires that the stated criteria hold across that collection. Otherwise report its scope and failure rate, and assess the corrected result separately. Do not let correction conceal a poor raw amortizer. Numerical audits, model adequacy and empirical market performance remain different claims.
 
-For thin-chain coverage, retain the existing five-method comparison, wrong-extrapolation arms and noise sensitivity at 0.5/1/2. A prior-predictive success under the same prior is expected in a correctly specified Bayesian experiment; it does not establish robustness when the unquoted curve law is wrong. EWG-conditioned truths provide a local sensitivity study, not broad market validation.
+For sparse-quote coverage, retain the existing five-method comparison, wrong-extrapolation arms and noise sensitivity at 0.5/1/2 as the starting design, adapting product horizons and continuation assumptions to each declared layout. A prior-predictive success under the same prior is expected in a correctly specified Bayesian experiment; it does not establish robustness when the unquoted curve law is wrong. Truths conditioned on the selected market case, including the existing EWG study, provide a local sensitivity study, not broad market validation. Choose the market case by coverage, data quality and teaching suitability before final method comparisons; retain the controlled synthetic lesson if no suitable case is available.
 
 Measure cold load/compilation, warm draws, density evaluation when used, audits, products, memory and total training cost. Price-emulator MCMC and classical-proposal importance sampling are required competitors. The bank/training cost is amortized over explicitly compatible tasks; a changed prior/design/noise law may require new validation or training.
 
@@ -162,4 +164,4 @@ Submit only the agreed phase allocation. The existing 930 CPU-hour estimate incl
 
 Update environment/API/test commands in [CLUSTER-RUNS.md](CLUSTER-RUNS.md) before use. The existing scripts are starting points, not validated BayesFlow 2.1 commands. Refresh the [status](../docs/course/status.md), [claims](CLAIMS.md) and accepted-artifact manifest together after results are reviewed.
 
-Release one selected checkpoint per retained task, the complete comparison report, scoped reference plots, failures, participant exercises and cached fallbacks. A broad architecture benchmark can finish after the tutorial release; one reliable selected configuration is enough for the live workflow. If EWG reserve-coverage or full rough-accuracy claims are retained, their corresponding studies remain required.
+Release one selected checkpoint per retained task, the complete comparison report, scoped reference plots, failures, participant exercises and cached fallbacks. A broad architecture benchmark can finish after the tutorial release; one reliable selected configuration is enough for the live workflow. If sparse-quote population coverage or full rough-accuracy claims are retained, their corresponding studies remain required. A real market illustration alone does not establish those coverage claims.
