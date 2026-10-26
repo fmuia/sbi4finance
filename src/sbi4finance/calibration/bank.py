@@ -11,6 +11,11 @@ additions are per-contract quote noise and three arrays:
   (sigma0, exponent b) for power_law_walk;
 * pricing_paths [B, blocks]: Monte Carlo paths used per maturity block (auxiliary).
 
+For the new six-target joint rough task, context_values are analytic interval
+averages derived from the targets and context_parameters contain its three
+curve coefficients. Both arrays are auxiliary, never inference conditions;
+the simulator prices the curve on its finer grids rather than those buckets.
+
 Stream purposes: 0 prior, 1 pricing, 2 quotes (as in option_bank), 3 curve context.
 """
 
@@ -106,7 +111,9 @@ def generate_examples(config, split, example_ids):
         context_rng = np.random.Generator(np.random.PCG64(streams[3]))
         seed = int(streams[1].generate_state(1, dtype=np.uint64)[0])
         parameters = prior_rng.uniform(bounds[:, 0], bounds[:, 1])
-        context_values, context_parameters = tasks.draw_context(task, context_rng)
+        context_values, context_parameters = (tasks.derived_context(task, parameters)
+                                               if tasks.is_joint_curve_task(task)
+                                               else tasks.draw_context(task, context_rng))
         try:
             prices, se, covariance, difference, used = tasks.price(task, parameters, context_values, seed)
             values = {"reference_prices": prices, "pricing_standard_errors": se, "pricing_covariance": covariance,
@@ -141,6 +148,12 @@ def check_arrays(arrays, config, split, start, stop):
     bounds = np.asarray(task["prior_bounds"])
     if np.any(arrays["parameters"] < bounds[:, 0]) or np.any(arrays["parameters"] > bounds[:, 1]):
         raise ValueError(f"{split}: parameters outside prior")
+    if tasks.is_joint_curve_task(task):
+        for row, parameters in enumerate(arrays["parameters"]):
+            levels, coefficients = tasks.derived_context(task, parameters)
+            if (not np.allclose(arrays["context_values"][row], levels, rtol=1e-12, atol=1e-14)
+                    or not np.array_equal(arrays["context_parameters"][row], coefficients)):
+                raise ValueError(f"{split}: joint curve auxiliaries differ from parameter targets")
     covariance, se = arrays["pricing_covariance"], arrays["pricing_standard_errors"]
     if (np.any(se < 0) or not np.allclose(covariance, covariance.swapaxes(-1, -2), rtol=0, atol=1e-12)
             or not np.allclose(se**2, np.diagonal(covariance, axis1=-2, axis2=-1), rtol=1e-10, atol=1e-14)
@@ -151,7 +164,7 @@ def check_arrays(arrays, config, split, start, stop):
 
 def _manifest(config, identity, generation_versions):
     task = config["task"]
-    return {
+    manifest = {
         "format": FORMAT, "configuration": config,
         "configuration_sha256": identity["configuration_sha256"],
         "task_fingerprint": identity["task_fingerprint"], "data_origin": "synthetic",
@@ -177,6 +190,15 @@ def _manifest(config, identity, generation_versions):
                "purposes 0 prior, 1 pricing, 2 quotes, 3 curve context",
         "versions": generation_versions, "source_sha256": identity["source_sha256"], "splits": {},
     }
+    if tasks.is_joint_curve_task(task):
+        manifest["roles"].update(
+            context_values="auxiliary analytic interval-average forward variances derived from targets; never conditioning",
+            context_parameters="auxiliary short_variance, long_variance, decay copied from targets; never conditioning")
+        manifest["prior"] = "six independent uniforms in explicit parameter_names order; curve is derived from targets"
+        manifest["numerical_scope"]["curve_evaluation"] = (
+            "analytic heston_exponential_v1 at every simulator node; left-cell integration and matching discrete "
+            "expected-integrated-variance controls; stored interval averages are auxiliary only")
+    return manifest
 
 
 def _identity(config):

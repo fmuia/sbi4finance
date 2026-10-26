@@ -10,6 +10,8 @@ The recommendation is to grow two reusable numerical banks in stages, compare ne
 
 This is a proposal for the next campaign. [The protocol](EXPERIMENT-PROTOCOL.md) specifies the comparisons and acceptance rules. [The tutorial review](TUTORIAL-REVIEW.md) explains the educational strengths and the claims that still need evidence. The existing [cluster runbook](CLUSTER-RUNS.md) remains the source of implementation commands; its environment and checks need updating before this campaign starts.
 
+Implementation has started in a separate worktree: the [full-surface guide](../docs/full-surface-calibration.md) records the available commands and remaining scientific gates. Small generation/training/reload checks are implementation evidence, not completion of this campaign or approval to scale the candidate rough prior.
+
 ## Tutorial scope after self-review
 
 The core deliverable is two trustworthy, reproducible teaching examples: full-surface Heston, followed by full-surface rough Bergomi with a jointly inferred Heston-shaped initial forward-variance curve. Complete both workflows through data, training, reload, inference, scientific checks and one downstream product. Participants load supplied checkpoints and follow inference → diagnostics → product uncertainty; bank generation, cluster scheduling and recovery remain instructor tools.
