@@ -22,6 +22,14 @@ The [curriculum overview](curriculum/00-overview.md) provides a coherent sequenc
 The sixteen-lecture [course](../docs/course/README.md) should remain supporting
 material, with only the concepts needed for the live task introduced on stage.
 
+## Follow-up self-review: keep the tutorial small
+
+The plan had accumulated three programmes: a tutorial release, a broad architecture benchmark and direct rough-inference research. The main scope correction is to separate them. First complete one checked Heston example and one rough example; retain the four-family/two-extra-encoder comparison as a bounded screen, and confirm only selected teaching configurations. One controlled sparse-quote contrast can follow. Fixed layouts suffice for that lesson. Runner-up campaigns, direct rough MCMC, general raw-contract/mask support and broad reserve-coverage claims are optional extensions.
+
+The incremental-bank and recovery safeguards address real duplicate-ID, interrupted-write, memory and changed-dataset failure modes. Keep the tested primitives rather than rewriting them to reduce line count, and stop expanding the infrastructure unless a pilot exposes a concrete need. Collection/recovery machinery belongs in instructor tools; participants should use supplied data/checkpoints and follow the inference workflow. The infrastructure's passing mocked tests are not scientific validation. Prioritize actual pricing refinement, independent holdouts, calibrated/conditionally checked posteriors, matched baselines and an honest product/cost figure over more framework work.
+
+The [central plan](NUMERICAL-EXPERIMENT-PLAN.md#tutorial-scope-after-self-review) and [protocol](EXPERIMENT-PROTOCOL.md#training-comparisons) reflect the reduced programme. No new tracking system or additional planning document is needed.
+
 ## What already works well
 
 - **One financial question links the examples.** Inferring a calibration and

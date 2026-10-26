@@ -12,7 +12,7 @@ The comparison asks how much information survives when useful quotes are unavail
 
 ## Start with controlled experiments
 
-Use paired synthetic surfaces from the same rough-Bergomi bank, with known parameters and curves. Declare a small development panel of observation layouts before comparing methods:
+Use paired synthetic surfaces from the same rough-Bergomi bank, with known parameters and curves. The first lesson needs the full grid and one declared sparse layout, preferably missing later maturities for a curve/product illustration. The other patterns below are optional development or take-home extensions:
 
 | Layout | What it isolates |
 | --- | --- |
@@ -27,11 +27,11 @@ Vary quote-noise scale separately at 0.5/1/2 where supported. Choose one clear c
 
 Check posterior contraction, conditional reference agreement, coverage, parameter/curve dependence and product uncertainty, including prior sensitivity and deliberately changed continuation assumptions. Use one product affected by the missing information and a well-supported quantity as a control. Choose product horizons from the declared layout; a six-month-to-one-year forward start is a current example, not a universal requirement.
 
-Reusing the bank does not make every layout supported by a trained network. The current thin workflow has a fixed layout and layout-bound checkpoint. Either fit declared layouts separately or implement and validate a mask-conditioned joint estimator over the supported layouts. Budget the richer-data joint control and any extra layout fits explicitly; they are additional to the current fixed-layout training matrix unless one validated estimator covers them.
+Reusing the bank does not make every layout supported by a trained network. The current thin workflow has a fixed layout and layout-bound checkpoint. Use two fixed-layout estimators for the first full/sparse contrast, with the same joint prior. A mask-conditioned joint estimator is an optional later comparison, not required infrastructure. Budget the richer-data joint control and sparse fits explicitly.
 
 ## Choose a market illustration afterward
 
-Compare a small candidate set on data quality and teaching suitability before inspecting final method rankings. EWG stays in that set, alongside any better-documented dated chain that satisfies the criteria. No replacement ticker is selected by this plan.
+Use an available well-documented dated chain if it meets the criteria below. EWG remains a candidate; another suitable example can replace it. Keep this selection bounded rather than building a market-data screening pipeline. Select before inspecting final method rankings. No replacement ticker is selected by this plan.
 
 Select and freeze one dated chain/layout with:
 

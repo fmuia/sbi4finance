@@ -10,10 +10,20 @@ The recommendation is to generate two numerical banks once, compare networks thr
 
 This is a proposal for the next campaign. [The protocol](EXPERIMENT-PROTOCOL.md) specifies the comparisons and acceptance rules. [The tutorial review](TUTORIAL-REVIEW.md) explains the educational strengths and the claims that still need evidence. The existing [cluster runbook](CLUSTER-RUNS.md) remains the source of implementation commands; its environment and checks need updating before this campaign starts.
 
+## Tutorial scope after self-review
+
+The deliverable is a small set of trustworthy, reproducible teaching examples. First complete one Heston workflow and one rough-Bergomi workflow through data, training, reload, inference, scientific checks and one downstream product. Add one controlled sparse-quote contrast after those work. Participants load supplied checkpoints and follow inference → diagnostics → product uncertainty; bank generation, cluster scheduling and recovery remain instructor tools.
+
+Keep numerical error checks, independent holdouts, converged references, calibration plus conditional checks, matched comparison inputs and honest cost/approximation labels. The passing infrastructure tests establish data/recovery behaviour; they do not establish pricing accuracy or posterior correctness. The next evidence must come from the numerical pilot and actual end-to-end examples.
+
+Keep architecture variety as a bounded screen: four posterior families with one encoder on Heston, two additional encoder comparisons with one family, and two promising configurations on an intermediate rough bank. Confirm only the selected teaching configurations across three seeds. Million-surface banks are expansion capacity, not a requirement to train every candidate at every size. The full Cartesian benchmark, runner-up seed campaigns and direct rough MCMC are optional follow-ups.
+
+Use the existing tested shard/snapshot and output-protection tools, then stop infrastructure work unless the pilot reveals a concrete problem. Implement only the BayesFlow 2.1 components needed for the chosen examples. Fixed layouts are sufficient for the sparse lesson; generalized missing-data/raw-contract support and warm-start machinery are outside the immediate scope. PyMC adoption remains useful where natural and can be deferred. One central execution plan and the existing run metadata are sufficient; the protocol and case guide are references, not separate software projects.
+
 ## What we should have at the end
 
 - A reproducible BayesFlow 2.1 training environment, with safe checkpointing and one configurable workflow.
-- One selected checkpoint for each inference task retained in the tutorial, with results across three training seeds and the alternatives preserved. This is nine confirmation fits if all three tasks are retained.
+- One selected checkpoint for each retained teaching configuration, with results across three training seeds. Heston and liquid rough require six confirmation fits; any retained full/sparse joint-inference layouts are additional configurations and must be counted explicitly. Preserve completed screen results without requiring runner-up confirmation campaigns.
 - A reference collection that lets us compare neural posteriors, MCMC and importance sampling on the same observations.
 - Calibration, conditional accuracy, pricing uncertainty and cost figures with clear provenance.
 - A bounded live demonstration and a cached version of every result used on stage.
@@ -46,8 +56,8 @@ The tutorial release and the wider benchmark have different completion criteria:
 | 1. Prepare | Freeze the statistical tasks, introduce BayesFlow 2.1, repair output/resume handling and test the common workflow. | A tiny run builds, trains, saves, reloads and samples correctly. | Training and infrastructure |
 | 2. Check the numerics | Run the Oscar pilot; measure quadrature, time-grid and Monte Carlo errors against quote noise. | The simulations are accurate enough for the intended claims, with difficult regions identified. | Numerical methods |
 | 3. Generate the data | Produce or verify the Heston bank and generate the full rough bank. Record independent data splits and fresh quote-noise rules. | Every architecture receives the same financial experiments. | Numerical methods and infrastructure |
-| 4. Compare networks | Screen observation encoders and four posterior families, then train the finalists with three seeds. | We can choose a reliable tutorial configuration and explain the trade-offs. | Training |
-| 5. Build the references | Create Heston MCMC references; rough neural-pricer MCMC and simulation audits; pilot direct rough MCMC. | Agreement plots have a checked comparison target, rather than another unchecked network. | Reference methods |
+| 4. Compare networks | After checked baselines, run the bounded family/encoder screen and confirm the selected configurations with three seeds. | We can choose reliable tutorial configurations and explain measured trade-offs. | Training |
+| 5. Build the references | Create Heston MCMC references; rough neural-pricer MCMC and independent pricing checks. | Agreement plots have a checked, accurately labelled comparison target. Direct rough MCMC is a separate research extension. | Reference methods |
 | 6. Freeze and evaluate | Lock the shortlist, thresholds and inference settings; evaluate on untouched acceptance data. | We know which accuracy and calibration claims are supported. | Scientific review |
 | 7. Package the lesson | Bind checkpoints and results to notebooks; rehearse the exercises, latency and cached fallbacks. | Collaborators and participants can reproduce the teaching path. | Tutorial delivery |
 
@@ -57,7 +67,7 @@ Steps can overlap after their inputs are fixed. Heston development and reference
 
 Use **BayesFlow 2.1.0** for new candidates. It was released on 23 October and introduces MeanFlow, masking changes and inference fixes. Its saved networks are incompatible with 2.0.x, so archived 2.0.14 checkpoints keep their existing environment and the new tutorial candidates are retrained. Numerical data can be reused when their task and generation protocol match. [Release notes](https://github.com/bayesflow-org/bayesflow/releases/tag/v2.1.0)
 
-Make the observation encoder and posterior family configurable components of the shared training and inference lifecycle. The new calibration path currently has its own training/resume implementation; convergence should include checkpoint selection, reload verification, provenance, diagnostics and failure handling. Sampling settings must belong to the chosen network family.
+Use a small configurable encoder/posterior factory and shared training/inference functions for the selected cases. Reuse existing checkpoint selection, reload checks and metadata rather than building a general workflow framework. The new calibration path currently has its own training/resume implementation; converge the behaviour needed by these examples. Sampling settings must belong to the chosen network family.
 
 Before cluster training, fix two concrete problems in [the training script](studies/train_calibration.py): an existing directory without a resume file can have its files deleted, and resume checks do not bind all data/task/settings identities. Update the runbook's test command: it invokes pytest, which is absent from the current lock; the existing tests use unittest.
 
@@ -100,17 +110,17 @@ Compare these four posterior families:
 
 MeanFlow is the method confirmed in discussion; it is experimental in BayesFlow 2.1. Compare its 1/2/4/8-step settings after training the same network. [MeanFlow](https://github.com/bayesflow-org/bayesflow/pull/802)
 
-Start with small encoder screens, then compare all four families on Heston and an intermediate rough bank. Train the two strongest configurations per retained task on the full banks with three seeds. That is roughly 30–40 fits including screens, before optional learning curves. The [training matrix](EXPERIMENT-PROTOCOL.md#training-comparisons) makes the counts explicit. The tutorial ships selected configurations; the comparison report keeps all completed runs and failures.
+First get one checked baseline per core model. Then screen all four families on Heston with one encoder, compare DeepSet and SetTransformer against the direct-vector baseline with one fixed family, and carry two promising configurations to an intermediate rough bank. This is at most eight short screen fits, reusing identical runs where possible. Confirm only selected teaching configurations on the chosen bank sizes with three seeds. The core two-model programme therefore budgets up to eight screens plus six confirmation fits, before selected-baseline learning curves. Additional sparse layouts have explicit extra fits. The [training matrix](EXPERIMENT-PROTOCOL.md#training-comparisons) records this smaller programme; a full benchmark is optional.
 
 ### Make the MCMC comparison credible
 
 **Heston:** build a development reference set first, then a final set of 50 predeclared synthetic cases plus SPY. Use a refined Fourier likelihood and four dispersed chains. Check chain convergence and numerical-price stability before treating a posterior as a reference.
 
-**Rough Bergomi:** use three complementary checks:
+**Rough Bergomi:** use two teaching-path checks and one optional research extension:
 
 1. MCMC through a separately trained and validated price emulator on about 50 cases. This is a broad approximation cross-check; shared bank bias can affect both methods.
 2. Simulation-based likelihood audits on 50 fixed cases, extending to 200 after checking reliability and cost.
-3. A direct Monte Carlo-based MCMC pilot on one case, followed by 3–5 predeclared anchor cases if the pilot is feasible.
+3. Optional research: a direct Monte Carlo-based MCMC pilot on one case, followed by 3–5 predeclared anchor cases only if the tutorial intends to claim agreement with that direct target. Emulator-MCMC results can be taught with their approximation stated and independent pricing checks; they do not require completing this extension.
 
 The current “16.9 CPU-hours per rough posterior” is an extrapolation from Heston mixing, not a measured rough-chain cost. At the stored cost of about five CPU-seconds per price-vector evaluation, four chains of 20,000 steps would use about 111 CPU-hours per case before additional refinement. Pilot mixing and likelihood noise before fixing the larger budget.
 
@@ -132,7 +142,7 @@ On the liquid example, agreement with classical uncertainty is a good outcome. O
 | Full rough bank | About 360 CPU-hours; benchmark on Oscar and scale the estimate. |
 | Existing full study programme | About 930 CPU-hours and two baseline GPU jobs, including the bank and thin-chain studies. |
 | Architecture comparison | Additional GPU fits; reserve a capped pilot allocation, then budget from measured training throughput. |
-| Direct rough references | Additional CPU allocation, decided after one measured pilot. |
+| Direct rough references, optional research | Separate allocation only if that extension and its direct-agreement claim are retained. |
 | Fresh acceptance data if needed | Additional generation cost; separate from the existing bank budget. |
 
 These costs overlap: the 360 bank hours are already within the 930-hour programme. The broader architecture campaign and direct rough references are additions, not work covered by the two baseline GPU jobs. CPU-hours describe total work, not elapsed time under an assumed queue allocation.
@@ -150,6 +160,6 @@ This planning PR records those proposals. Job submission and spending are a late
 
 ## First implementation work
 
-The first implementation PR should provide the BayesFlow 2.1 environment, safe run/resume identities, configurable encoder/posterior factories, family-specific sampling and the tiny save/reload tests. In parallel, freeze the numerical task and holdout ledger, and assess one core PyMC route with a locked environment, target-equivalence checks and a small validated reference case. Keep that adoption task bounded; if integration is disproportionate, document the existing sampler and defer PyMC without blocking the campaign. Then run the Oscar pilot, create Heston development references, and start data generation and bounded architecture screens.
+The next implementation work should complete the BayesFlow 2.1 environment and the minimal factory/sampling route needed for one Heston baseline and one rough baseline. Reuse the data/recovery safeguards already available in the [incremental-bank PR](https://github.com/fmuia/sbi4finance/pull/47); do not expand them into a production framework. Freeze task settings and holdout IDs in the existing metadata, run the Oscar numerical/throughput pilot, then complete one checked end-to-end example for each core model. Assess a bounded PyMC route where useful. Widen data and architecture comparisons only after those examples work.
 
 The execution report should link the exact code revision, task/bank/checkpoint identities, compute use, failures and the claims each result supports. Update [study status](../docs/course/status.md), [claims](CLAIMS.md) and the runbook together when results are accepted for teaching.
