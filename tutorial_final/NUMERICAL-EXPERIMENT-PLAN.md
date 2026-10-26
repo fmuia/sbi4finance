@@ -24,9 +24,11 @@ There are three tasks under two models:
 | --- | --- | --- | --- |
 | Heston | A 63-price option surface | Four parameters; mean reversion is fixed | An inexpensive likelihood makes the neural answer checkable against MCMC. |
 | Liquid rough Bergomi | The same option design and a supplied forward-variance curve | Hurst parameter, vol-of-vol and correlation | Tests amortization when pricing requires simulation. |
-| Thin rough Bergomi | EWG-layout quotes with their noise levels | Those three parameters and seven curve levels jointly | Tests what changes when the data do not supply the curve. |
+| Sparse-quote rough Bergomi | A declared subset of option quotes, with their coordinates and noise levels | Those three parameters and seven curve levels jointly | Tests what incomplete coverage leaves uncertain and how that affects product valuation. |
 
-If EWG remains a live inference example, its third task needs a checked checkpoint. Claims about its population coverage require the corresponding coverage studies. A curve inferred from a fuller surface must not be supplied to that task as though it were observed.
+Call the third lesson **Calibration from sparse option quotes**. EWG is the current implemented market candidate, not the task definition or a required final ticker. Start with controlled full-versus-sparse synthetic comparisons, inferring the curve in both arms, then choose a market illustration by data quality and teaching suitability. The [sparse-quote case plan](SPARSE-QUOTE-CASE-PLAN.md) defines the learning goal, controls and selection criteria.
+
+If the sparse-quote task remains live, it needs a checked checkpoint for its declared layout. Claims about population coverage require the corresponding studies. A curve inferred from a fuller surface must not be supplied to that task as though it were observed. The supplied-curve liquid example is a separate conditional benchmark; comparing it directly with joint sparse inference changes more than quote availability.
 
 The tutorial release and the wider benchmark have different completion criteria:
 
@@ -34,7 +36,7 @@ The tutorial release and the wider benchmark have different completion criteria:
 | --- | --- |
 | One checked production configuration per retained task, references, diagnostics and participant packaging | The basic tutorial release. |
 | The four-family and encoder comparison, including runner-up configurations | The architecture benchmark; unfinished comparisons can remain take-home work. |
-| EWG population reserve-coverage studies | Any claim that the thin-chain bounds have demonstrated coverage or outperform the alternatives. |
+| Sparse-quote population coverage studies under declared layouts and continuation laws | Any claim that the corresponding valuation bounds have demonstrated coverage or outperform the alternatives. |
 | Direct rough Monte Carlo-based MCMC anchors | A claim of agreement with that direct reference. The pilot may remain research if only emulator-MCMC comparisons are presented and labelled. |
 
 ## The work in order
@@ -140,11 +142,11 @@ On the liquid example, agreement with classical uncertainty is a good outcome. O
 
 These costs overlap: the initial bank's roughly 360 hours are already within the 930-hour programme. Bank expansion, the broader architecture campaign and direct rough references are additions, not work covered by the two baseline GPU jobs. Growing from 100k to 1M training surfaces adds roughly 2,880–2,985 CPU-hours at the stored rough rates, without repeating the original tranche. CPU-hours describe total work, not elapsed time under an assumed queue allocation. The core-count examples are arithmetic scenarios, not confirmed Oscar allocations or measured cluster throughput.
 
-The curriculum currently targets 30 October for slot 4, 4 November for slots 1–3, 6 November for slots 5–6, a 9 November rehearsal and an 11 November release. Use those as **claim-freeze dates**: ship the conclusions the results support at that date. Preserve a checked Heston lesson as the fallback. If rough or EWG evidence misses its gate, narrow that section to a clearly labelled illustration or remove the unsupported claim; do not relax the criterion to finish the story.
+The curriculum currently targets 30 October for slot 4, 4 November for slots 1–3, 6 November for slots 5–6, a 9 November rehearsal and an 11 November release. Use those as **claim-freeze dates**: ship the conclusions the results support at that date. Preserve a checked Heston lesson as the fallback. If rough or sparse-quote evidence misses its gate, narrow that section to a clearly labelled illustration or remove the unsupported claim; do not relax the criterion to finish the story.
 
 The organizers should agree on four decisions before the campaign is queued:
 
-1. Whether EWG and its coverage claim are required for this release.
+1. Whether the sparse-quote lesson and a population coverage claim are required for this release; select its market illustration separately.
 2. The named leads for numerical generation, training, references and delivery.
 3. Initial CPU/GPU allocations and the maximum expansion allowed after each pilot.
 4. The statistical/numerical target and proposed acceptance rules in the protocol.

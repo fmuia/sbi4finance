@@ -144,8 +144,13 @@ needs an explicit allocation. One workable proposal is 60 minutes of exercises,
 | Slot 6 | Change one prior or noise assumption and explain the effect | A second full workflow or several additional trained detectors |
 
 Use one primary downstream product and one primary market case to carry the
-story. A second product can be a control; EWG can provide the planned
-identification stress test. Keep architecture comparisons in a compact results
+story. A second product can be a control. Frame the identification lesson as
+**Calibration from sparse option quotes**, beginning with controlled thinning
+of synthetic surfaces and selecting its market illustration separately. Infer
+the curve in both the full and sparse controls to isolate the effect of missing
+quotes. EWG is the current implemented candidate; retain its named historical
+evidence while using the [case plan](SPARSE-QUOTE-CASE-PLAN.md) to assess alternatives.
+Keep architecture comparisons in a compact results
 panel and the take-home material. Each participant should finish with one
 sentence naming the data, unknowns, inference approximation, validation result
 and downstream quantity.
