@@ -138,7 +138,7 @@ def comparison(coarse, fine, sigma):
 
 
 def run_case(task, case, *, paths=32768, replicates=2, multipliers=(1, 2, 4),
-             root_seed=271026, progress=None):
+             root_seed=271026, only_grid=None, only_replicate=None, progress=None):
     """Run every predeclared grid/replicate, retaining failures without replacements."""
     tasks.validate_task(task)
     if not tasks.is_joint_curve_task(task):
@@ -148,6 +148,10 @@ def run_case(task, case, *, paths=32768, replicates=2, multipliers=(1, 2, 4),
     multipliers = tuple(_integer(x, "multiplier", minimum=1) for x in multipliers)
     if paths % 2 or multipliers != tuple(sorted(set(multipliers))) or len(multipliers) < 2:
         raise ValueError("even paths and at least two increasing unique grid multipliers required")
+    if only_grid is not None and (type(only_grid) is not int or only_grid not in multipliers):
+        raise ValueError("selected grid must belong to the declared multiplier list")
+    if only_replicate is not None and (type(only_replicate) is not int or not 0 <= only_replicate < replicates):
+        raise ValueError("selected replicate must belong to the declared replicate range")
     values = np.asarray(case["parameters"], dtype=float)
     bounds = np.asarray(task["prior_bounds"])
     if (not case.get("name") or values.shape != (6,) or not np.isfinite(values).all()
@@ -156,6 +160,8 @@ def run_case(task, case, *, paths=32768, replicates=2, multipliers=(1, 2, 4),
     sigma = tasks.sigma(task)
     report = {"format": FORMAT, "case": case, "paths_per_grid_replicate": paths,
               "replicates": replicates, "grid_multipliers": list(multipliers),
+              "task_sha256": hashlib.sha256(_json(task).encode()).hexdigest(),
+              "component_selection": {"grid_multiplier": only_grid, "replicate": only_replicate},
               "root_seed": root_seed, "streams": "independent across cases, grids, replicates and blocks",
               "runs": [], "comparisons": [], "scientific_acceptance": "not_assessed",
               "mc_target_over_quote_sigma": task["numerics"]["max_mc_se_over_quote_sigma"],
@@ -165,7 +171,11 @@ def run_case(task, case, *, paths=32768, replicates=2, multipliers=(1, 2, 4),
                                      ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS")}}
     all_seeds = []
     for multiplier in multipliers:
+        if only_grid is not None and multiplier != only_grid:
+            continue
         for replicate in range(replicates):
+            if only_replicate is not None and replicate != only_replicate:
+                continue
             seeds = [stream_seed(task, case, root_seed, multiplier, replicate, b)
                      for b in range(len(task["numerics"]["blocks"]))]
             if any(seed in all_seeds for seed in seeds):
@@ -189,6 +199,13 @@ def run_case(task, case, *, paths=32768, replicates=2, multipliers=(1, 2, 4),
             report["runs"].append(row)
             if progress is not None:
                 progress(report)
+    return _summarize(report, sigma)
+
+
+def _summarize(report, sigma):
+    """Shared serial/component-reduction summaries; no re-pricing or dropped runs."""
+    multipliers, replicates = report["grid_multipliers"], report["replicates"]
+    report["comparisons"] = []
     for coarse, fine in zip(multipliers, multipliers[1:]):
         rows0 = [r for r in report["runs"] if r["grid_multiplier"] == coarse and r["status"] == "priced"]
         rows1 = [r for r in report["runs"] if r["grid_multiplier"] == fine and r["status"] == "priced"]
@@ -198,7 +215,9 @@ def run_case(task, case, *, paths=32768, replicates=2, multipliers=(1, 2, 4),
         else:
             item.update(status="reported", **comparison(rows0, rows1, sigma))
         report["comparisons"].append(item)
-    report["status"] = "completed" if all(r["status"] == "priced" for r in report["runs"]) else "incomplete"
+    selected = any(value is not None for value in report["component_selection"].values())
+    report["status"] = (("component_completed" if selected else "completed")
+                        if all(r["status"] == "priced" for r in report["runs"]) else "incomplete")
     report["runs_exceeding_mc_target"] = sum(r["status"] == "priced" and not r["mc_budget_met"]
                                              for r in report["runs"])
     report["runs_exceeding_existing_exception_cap"] = sum(
@@ -207,3 +226,58 @@ def run_case(task, case, *, paths=32768, replicates=2, multipliers=(1, 2, 4),
     report["total_wall_seconds"] = sum(r["wall_seconds"] for r in report["runs"])
     report["memory_scope"] = "Process high-water RSS, not incremental allocation per price call."
     return report
+
+
+def combine_components(task, case, components):
+    """Check exact component coverage and seeds, then reuse the serial comparisons.
+
+    Every component must be one independently executed declared (grid,replicate)
+    slot. Failures remain rows; missing or duplicated slots are rejected.
+    """
+    tasks.validate_task(task)
+    if not tasks.is_joint_curve_task(task) or not components:
+        raise ValueError("joint rough task and nonempty component reports required")
+    first = components[0]
+    keys = ("format", "case", "paths_per_grid_replicate", "replicates", "grid_multipliers",
+            "root_seed", "task_sha256", "mc_target_over_quote_sigma",
+            "existing_generation_exception_cap_over_quote_sigma")
+    expected_task = hashlib.sha256(_json(task).encode()).hexdigest()
+    if (first.get("format") != FORMAT or first.get("case") != case
+            or first.get("task_sha256") != expected_task):
+        raise ValueError("component task/case identity differs from the declaration")
+    grids, repetitions = first["grid_multipliers"], first["replicates"]
+    expected = {(grid, rep) for grid in grids for rep in range(repetitions)}
+    found, seeds, rows = set(), set(), []
+    for component in components:
+        if any(component.get(key) != first.get(key) for key in keys):
+            raise ValueError("component task/case/path/settings identities differ")
+        selected = component.get("component_selection", {})
+        slot = (selected.get("grid_multiplier"), selected.get("replicate"))
+        if slot not in expected or slot in found or len(component.get("runs", [])) != 1:
+            raise ValueError("each component must cover one unique declared grid/replicate slot")
+        row = component["runs"][0]
+        actual = [stream_seed(task, case, first["root_seed"], slot[0], slot[1], b)
+                  for b in range(len(task["numerics"]["blocks"]))]
+        if ((row.get("grid_multiplier"), row.get("replicate")) != slot
+                or row.get("pricing_seeds") != actual or any(seed in seeds for seed in actual)):
+            raise ValueError("component pricing seed or slot changed/collided")
+        if row.get("status") not in ("priced", "failed"):
+            raise ValueError("invalid component outcome")
+        if row["status"] == "priced":
+            c = len(task["context"]["contracts"])
+            prices, errors = np.asarray(row.get("prices")), np.asarray(row.get("standard_errors"))
+            if (prices.shape != (c,) or errors.shape != (c,) or not np.isfinite(prices).all()
+                    or not np.isfinite(errors).all() or np.any(errors < 0)):
+                raise ValueError("invalid component price/error arrays")
+        found.add(slot)
+        seeds.update(actual)
+        rows.append(copy.deepcopy(row))
+    if found != expected:
+        raise ValueError("component coverage is incomplete; no missing slot may be silently omitted")
+    result = copy.deepcopy(first)
+    result["component_selection"] = {"grid_multiplier": None, "replicate": None}
+    result["runs"] = sorted(rows, key=lambda row: (row["grid_multiplier"], row["replicate"]))
+    result.pop("declaration_sha256", None)
+    result["combined_component_count"] = len(components)
+    result["thread_environment"] = [component["thread_environment"] for component in components]
+    return _summarize(result, tasks.sigma(task))

@@ -147,8 +147,24 @@ def _product_values(total_variance):
             "forward_variance_0.5_to_1y": float((total_variance(1.0)-total_variance(0.5))/0.5)}
 
 
+def _replay_observations(task, case, source, seed):
+    """Reuse an exact development observation; only parameter bounds may change."""
+    if (not isinstance(source, dict) or source.get("format") != "curve_family_price_challenge_v1"
+            or source.get("status") != "completed_price_screen" or source.get("case") != case
+            or source.get("root_seed") != seed):
+        raise ValueError("replay requires a completed report with the same truth case and root seed")
+    if ({k: v for k, v in task.items() if k != "prior_bounds"}
+            != {k: v for k, v in source["task"].items() if k != "prior_bounds"}):
+        raise ValueError("replay must preserve the exact observation design, noise and numerical grid")
+    observed = np.asarray(source.get("observations"), dtype=np.float64)
+    if observed.shape != (63,) or not np.isfinite(observed).all():
+        raise ValueError("replay requires the original complete finite 63-price observation")
+    return observed
+
+
 def run_case(task, case, *, seed=271026, fit_paths=2048, audit_paths=32768,
-             fit_evaluations=80, audit_replicates=2, grid_factor=1):
+             fit_evaluations=80, audit_replicates=2, grid_factor=1,
+             replay_report=None, initial_parameters=None, audit_namespace=""):
     """Fit all six baseline parameters, then audit with new independent prices.
 
     Fitting reuses one fixed Monte Carlo stream for a deterministic objective.
@@ -167,11 +183,22 @@ def run_case(task, case, *, seed=271026, fit_paths=2048, audit_paths=32768,
     task = copy.deepcopy(task)
     for block in task["numerics"]["blocks"]:
         block["n_steps"] *= grid_factor
+    if not isinstance(audit_namespace, str) or len(audit_namespace) > 128:
+        raise ValueError("audit_namespace must be a string of at most 128 characters")
+    replayed = None if replay_report is None else _replay_observations(task, case, replay_report, seed)
+    bounds = np.asarray(task["prior_bounds"], dtype=np.float64)
+    supplied_initial = None
+    if initial_parameters is not None:
+        supplied_initial = np.asarray(initial_parameters, dtype=np.float64)
+        if supplied_initial.shape != (6,) or not np.isfinite(supplied_initial).all():
+            raise ValueError("six finite physical initial parameters required")
+        initial_unit = (supplied_initial-bounds[:, 0])/(bounds[:, 1]-bounds[:, 0])
+        if np.any(initial_unit < 1e-6) or np.any(initial_unit > 1-1e-6):
+            raise ValueError("initial parameters must lie inside the finite numerical optimizer bounds")
     coefficients = _coefficients(case["curve_coefficients"])
     minimum = positive_hump_minimum(coefficients, 1.0)
     target_curve = hump_curve(coefficients, task["numerics"]["blocks"])
     sigma = tasks.sigma(task)
-    bounds = np.asarray(task["prior_bounds"], dtype=np.float64)
     name = case["name"]
     started, cpu_started = time.perf_counter(), time.process_time()
     record = {"format": "curve_family_price_challenge_v1", "case": case, "task": task,
@@ -179,27 +206,48 @@ def run_case(task, case, *, seed=271026, fit_paths=2048, audit_paths=32768,
               "versions": bank.versions(),
               "settings": {"fit_paths": fit_paths, "audit_paths": audit_paths,
                            "fit_evaluations": fit_evaluations, "audit_replicates": audit_replicates,
-                           "grid_factor": grid_factor},
+                           "grid_factor": grid_factor, "audit_namespace": audit_namespace},
               "scope": "bounded price-fit challenge only; no posterior or product-uncertainty acceptance",
               "status": "started"}
+    prefix = f"{audit_namespace}:" if audit_namespace else ""
     streams = {"target_label": seed_for(seed, name, "target_label"),
                "quote_noise": seed_for(seed, name, "quote_noise"),
                "fit_objective": seed_for(seed, name, "fit_objective"),
-               "audit_truth": [seed_for(seed, name, "audit_truth", r) for r in range(audit_replicates)],
-               "audit_fit": [seed_for(seed, name, "audit_fit", r) for r in range(audit_replicates)]}
+               "audit_truth": [seed_for(seed, name, prefix+"audit_truth", r) for r in range(audit_replicates)],
+               "audit_fit": [seed_for(seed, name, prefix+"audit_fit", r) for r in range(audit_replicates)]}
+    if replay_report is not None:
+        streams["target_label"] = replay_report["streams"]["target_label"]
+        streams["quote_noise"] = replay_report["streams"]["quote_noise"]
+        record["replay"] = {"source_report_canonical_sha256": hashlib.sha256(_json(replay_report).encode()).hexdigest(),
+                            "observation_vector_exactly_reused": True,
+                            "source_target_label_paths": replay_report["settings"]["audit_paths"],
+                            "source_prior_bounds": replay_report["task"]["prior_bounds"],
+                            "parameter_bounds_changed": task["prior_bounds"] != replay_report["task"]["prior_bounds"],
+                            "limitations": "changed normalized bounds also change optimizer geometry; no global optimum claim"}
     record["streams"] = streams
     try:
-        target, target_se, _, _ = price_curve(task, case["rough_parameters"], target_curve,
-                                              audit_paths, streams["target_label"])
-        y = target + sigma*np.random.default_rng(streams["quote_noise"]).standard_normal(len(target))
+        if replayed is None:
+            target, target_se, _, _ = price_curve(task, case["rough_parameters"], target_curve,
+                                                  audit_paths, streams["target_label"])
+            y = target + sigma*np.random.default_rng(streams["quote_noise"]).standard_normal(len(target))
+            record["target_label_max_mc_se_over_quote_sigma"] = float(np.max(target_se/sigma))
+        else:
+            y = replayed.copy()
+            record["target_label_max_mc_se_over_quote_sigma"] = replay_report["target_label_max_mc_se_over_quote_sigma"]
         record["observations"] = y.tolist()
-        record["target_label_max_mc_se_over_quote_sigma"] = float(np.max(target_se/sigma))
 
-        times = tasks.knots(task)
-        projection = least_squares(lambda x: pricing.heston_variance_values(times, *x)-hump_values(times, coefficients),
-                                   np.mean(bounds[3:], axis=1), bounds=(bounds[3:, 0], bounds[3:, 1]))
-        initial = np.r_[[case["rough_parameters"][n] for n in ("hurst", "eta", "rho")], projection.x]
-        unit = np.clip((initial-bounds[:, 0])/(bounds[:, 1]-bounds[:, 0]), 1e-5, 1-1e-5)
+        if supplied_initial is None:
+            times = tasks.knots(task)
+            projection = least_squares(lambda x: pricing.heston_variance_values(times, *x)-hump_values(times, coefficients),
+                                       np.mean(bounds[3:], axis=1), bounds=(bounds[3:, 0], bounds[3:, 1]))
+            initial = np.r_[[case["rough_parameters"][n] for n in ("hurst", "eta", "rho")], projection.x]
+            unit = np.clip((initial-bounds[:, 0])/(bounds[:, 1]-bounds[:, 0]), 1e-5, 1-1e-5)
+            initial_source = "curve projection plus generating rough parameters"
+        else:
+            unit = (supplied_initial-bounds[:, 0])/(bounds[:, 1]-bounds[:, 0])
+            initial_source = "supplied physical parameters"
+        record["initial_parameters"] = (bounds[:, 0]+unit*(bounds[:, 1]-bounds[:, 0])).tolist()
+        record["initial_source"] = initial_source
         evaluation_count = 0
         best = {"rms": np.inf}
 

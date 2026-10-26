@@ -27,6 +27,9 @@ def main():
     parser.add_argument("--paths", type=int, default=32768)
     parser.add_argument("--replicates", type=int, default=2)
     parser.add_argument("--seed", type=int, default=271026)
+    parser.add_argument("--grids", default="1,2,4", help="Global increasing grid multipliers, e.g. 4,8.")
+    parser.add_argument("--only-grid", type=int, help="Run only this globally declared grid.")
+    parser.add_argument("--only-replicate", type=int, help="Run only this global zero-based replicate ID.")
     args = parser.parse_args()
     config = json.loads(args.config.read_text())
     task = full_surface.validate_task(config["task"])
@@ -34,7 +37,7 @@ def main():
     if not 0 <= args.case < len(panel):
         raise ValueError("case must select a predeclared panel index")
     settings = {"paths": args.paths, "replicates": args.replicates,
-                "multipliers": [1, 2, 4], "root_seed": args.seed}
+                "multipliers": [int(value) for value in args.grids.split(",")], "root_seed": args.seed}
     seed_table = [{"case": case["name"], "grid_multiplier": grid, "replicate": replicate,
                    "pricing_seeds": [numerical_pilot.stream_seed(task, case, args.seed, grid, replicate, b)
                                      for b in range(len(task["numerics"]["blocks"]))]}
@@ -44,6 +47,7 @@ def main():
         raise ValueError("actual reduced pricing-seed collision in the declared panel")
     declaration = {"format": numerical_pilot.FORMAT, "task": task, "cases": panel,
                    "settings": settings, "case_index": args.case,
+                   "component_selection": {"grid_multiplier": args.only_grid, "replicate": args.only_replicate},
                    "actual_seed_collision_audit_passed": True, "pricing_seed_table": seed_table,
                    "source_sha256": {**bank.source_hashes(task),
                        "calibration/numerical_pilot.py": hashlib.sha256(Path(numerical_pilot.__file__).read_bytes()).hexdigest(),
@@ -60,7 +64,8 @@ def main():
         row = report["runs"][-1]
         print(json.dumps({key: row.get(key) for key in
                           ("grid_multiplier", "replicate", "status", "cpu_seconds", "max_mc_se_over_quote_sigma")}), flush=True)
-    report = numerical_pilot.run_case(task, panel[args.case], progress=progress, **settings)
+    report = numerical_pilot.run_case(task, panel[args.case], progress=progress,
+                                      only_grid=args.only_grid, only_replicate=args.only_replicate, **settings)
     report["declaration_sha256"] = declaration["declaration_sha256"]
     _write_json(args.out / "report.json", report)
     print(json.dumps({"case": panel[args.case]["name"], "status": report["status"],

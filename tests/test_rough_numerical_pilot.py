@@ -81,6 +81,41 @@ class RoughNumericalPilotTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "outside"):
             pilot.cases(changed)
 
+    def test_components_preserve_seed_identity_and_match_serial_comparison(self):
+        c = len(self.task["context"]["contracts"])
+        def price(*args, **kwargs):
+            # Depends on the declared slot's seed, never on call order.
+            value = np.random.default_rng(kwargs["seeds"][0]).normal()
+            return np.full(c, value), np.full(c, .001)
+        settings = dict(paths=64, multipliers=(4, 8), replicates=2, root_seed=37)
+        with patch.object(pilot, "fixed_surface", side_effect=price):
+            serial = pilot.run_case(self.task, self.case, **settings)
+            parts = [pilot.run_case(self.task, self.case, only_grid=grid, only_replicate=rep, **settings)
+                     for grid in (4, 8) for rep in (0, 1)]
+        combined = pilot.combine_components(self.task, self.case, list(reversed(parts)))
+        self.assertEqual(combined["comparisons"], serial["comparisons"])
+        self.assertEqual(combined["status"], "completed")
+        for old, new in zip(serial["runs"], combined["runs"]):
+            self.assertEqual(old["pricing_seeds"], new["pricing_seeds"])
+            self.assertEqual(old["prices"], new["prices"])
+        for invalid in (parts[:-1], parts + [parts[0]]):
+            with self.assertRaises(ValueError):
+                pilot.combine_components(self.task, self.case, invalid)
+        changed = copy.deepcopy(parts)
+        changed[0]["runs"][0]["pricing_seeds"][0] += 1
+        with self.assertRaisesRegex(ValueError, "seed"):
+            pilot.combine_components(self.task, self.case, changed)
+        changed = copy.deepcopy(parts)
+        changed[0]["paths_per_grid_replicate"] *= 2
+        with self.assertRaisesRegex(ValueError, "settings"):
+            pilot.combine_components(self.task, self.case, changed)
+        failed = copy.deepcopy(parts)
+        failed[0]["runs"][0].update(status="failed", error="recorded numerical failure")
+        result = pilot.combine_components(self.task, self.case, failed)
+        self.assertEqual(result["status"], "incomplete")
+        self.assertEqual(result["comparisons"][0]["status"], "incomplete")
+        self.assertEqual(len(result["runs"]), 4)
+
 
 if __name__ == "__main__":
     unittest.main()
