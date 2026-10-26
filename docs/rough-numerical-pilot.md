@@ -64,3 +64,40 @@ For low-H/high-eta case 4, both [4× repetition 0](pilot-results/2026-10-26/roug
 The completed case-6 and case-2 components used about 2,317 and 995 CPU-seconds respectively; successful refined components reached about 1.46 GiB process peak RSS. Scheduler accounting also retains the unfinished low-H runs rather than treating them as zero-cost successes.
 
 This targeted follow-up resolves some of the initial MC uncertainty but does not establish a converged pricing scheme. Further refinement, path increases, numerical-target changes or prior restrictions need an explicit scientific decision. A converged pricing panel must still be followed by posterior and product-refinement checks before the tutorial's inference claims are accepted.
+
+## Numerical options after choosing the monotone curve
+
+The core curve family is now the positive monotone exponential. The remaining choice is how accurately and over what domain to represent its rough variance dynamics. The curve's simplicity does not remove the rough time-grid problem.
+
+| Choice | Benefit | Cost or limitation |
+| --- | --- | --- |
+| Increase paths at a fixed grid | Reduces Monte Carlo noise and makes grid comparisons easier to interpret. Under ordinary MC scaling, four times the paths roughly halves the standard error. | Does not remove grid bias. High-variance case 6 already meets the MC target at both 4× and 8×, yet its short call moves 0.85 quote SD. Scaling and error estimates still need empirical checks in difficult regions. |
+| Refine every block | Directly investigates the time-discretization approximation while retaining the model/prior. | Expensive; the full 8× low-H runs hit their time limits. Neither 8× nor an assumed convergence rate can be treated as truth. Refining all blocks can spend effort away from the observed discrepancy. |
+| Allocate finer steps to the affected block | Can resolve a short-maturity problem without multiplying the whole one-year simulation cost. | Establishes only the selected block's stability. Remaining maturities and downstream products still need their own checks. |
+| Declare a fixed finite-simulator teaching target | Provides a reproducible numerical inference problem without claiming continuous-model accuracy. | The tutorial must say that its target is the specified discretized simulator. References must match its pricing randomness and numerical observation law; agreement under that target does not establish accurate calibration of ideal rough Bergomi prices. |
+| Restrict the teaching prior or horizons | Can make a limited, well-checked example affordable. | Changes the financial question and scope of amortization. Restrictions need a substantive explanation and explicit validation; shrinking the prior merely to discard failed cases is not a numerical fix. Shortening the final horizon does not resolve a bias already present in five-day options. |
+| Change the simulation algorithm or use an emulator | A better simulator may improve the accuracy/cost trade-off; an emulator can make repeated reference inference much faster. | Requires separate implementation and validation. An emulator trained on biased labels learns that numerical target; it does not repair its grid bias. |
+
+The current MC target, 0.25 quote SD, is a development compromise, not a claim that numerical error is negligible. For perspective, an independent centered error with that SD adds 6.25% of the quote variance; at 0.5 it adds 25%. These per-quote variance calculations do not account for bias or the shared-path covariance across quotes. Raising the numerical tolerance or the observation noise changes what is being checked and must not silently substitute for resolving a detected price shift.
+
+The simulator already uses a one-cell hybrid approximation of the singular Volterra kernel and normalizes the variance by the approximation's own Gaussian variance. That preserves its mean variance curve; it does not make the asset-integral approximation exact. The [hybrid-scheme paper](https://doi.org/10.1007/s00780-017-0335-5) studies driver approximation error and rough-option pricing, with discretization of the asset dynamics still present. Its results do not supply a universal option-price error bound for our candidate prior. The small-grid covariance reference in the code is capped at 128 steps, so it is a diagnostic rather than a drop-in replacement for all fine grids.
+
+The conditional pricer also constructs full asset-path outputs that its conditional payoff does not use, including an independent asset channel that has already been integrated out. A focused implementation optimization might reduce time or memory after equivalence checks. It would be a performance improvement, not evidence that a coarser grid is accurate; a changed generator would carry a new source identity.
+
+## Next bounded diagnostic: the first maturity block
+
+The next panel isolates the confirmed short-maturity issue before choosing a global grid. It uses cases 2 and 6, 131,072 fixed paths, and two independent repetitions per setting:
+
+| Setting | First block: through 10 trading days | Other two blocks |
+| --- | ---: | ---: |
+| Short-block 4× | 320 steps | 2,016 / 2,016 steps |
+| Short-block 8× | 640 steps | 2,016 / 2,016 steps |
+| Short-block 16× | 1,280 steps | 2,016 / 2,016 steps |
+
+All 63 quotes remain in each output. **Only indices 0–17, the five- and ten-day options, diagnose the changed grid.** Indices 18–62 are MC controls on unchanged grids; their independent random price differences cannot establish convergence of their maturity blocks. In particular, a maximum taken over all 63 differences could select noise from those controls and misdescribe this experiment.
+
+This is a new declared block-allocation experiment with a separate seed namespace. All blocks are repriced with independent streams at each setting, so the independent-error comparison remains valid; there is no hidden sharing of noisy prices. Twelve independent components allow parallel execution. The `rough-short-block` array mapping selects case 2 then case 6, with 4×/8×/16× and repetitions 0/1 for each. Other historical array mappings and seeds remain unchanged.
+
+Measured full-4× calls at 131,072 paths cost about 70 CPU-seconds each. On that basis, roughly 15–25 CPU-minutes across the twelve selected-block components is a planning estimate, not a guaranteed rate; only the smaller first block grows. The per-component request is one CPU, 8 GiB and a ten-minute limit. This panel does not retry the timed-out low-H case or claim a global MC precision pass at the moderate path count.
+
+The decision afterward is whether short-block refinement is becoming stable enough to support a proposed allocation, or whether a change of numerical method, teaching domain or explicitly finite-simulator target needs discussion. No large rough bank follows automatically. Price, posterior and product accuracy remain separate gates.

@@ -1,8 +1,8 @@
 """Compare a core estimator with one completed full-surface PyMC reference.
 
 Failed or incomplete reference diagnostics are inconclusive and never produce
-an accuracy verdict for the neural estimator. Passing parameter-level checks
-is development evidence, not global scientific acceptance or product evidence.
+an accuracy verdict for the neural estimator. Parameter checks and descriptive
+analytic variance products are development evidence, not scientific acceptance.
 """
 
 import argparse
@@ -18,7 +18,7 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from sbi4finance.calibration import full_surface, validation  # noqa: E402
+from sbi4finance.calibration import full_surface, validation, variance_functionals  # noqa: E402
 from sbi4finance.gbm_bank import _json, _write_json  # noqa: E402
 
 
@@ -39,6 +39,44 @@ def _reference_issues(diagnostics, names):
                         or (value > bound if upper else value < bound)):
                     issues.append(f"{name}: missing or failing {key}")
     return issues
+
+
+def _variance_product_comparison(task, neural, chains, diagnostics):
+    """Describe two analytic curve functionals; no unregistered acceptance rule."""
+    reference_values = variance_functionals.heston_variance_functionals(task, chains)
+    neural_values = variance_functionals.heston_variance_functionals(task, neural)
+    product_diagnostics = diagnostics.get("variance_functionals", {})
+    rows = {}
+    for name, values in reference_values.items():
+        reference = values.reshape(-1)
+        estimated = neural_values[name]
+        q05, q10, q90, q95 = np.quantile(reference, [.05, .10, .90, .95])
+        neural_q10, neural_q90 = np.quantile(estimated, [.10, .90])
+        row = product_diagnostics.get("names", {}).get(name, {})
+        diagnostic_pass = all(
+            isinstance(row.get(key), (int, float)) and not isinstance(row.get(key), bool)
+            and np.isfinite(row[key]) and (row[key] <= bound if upper else row[key] >= bound)
+            for key, bound, upper in (("r_hat", 1.01, True), ("ess_bulk", 400, False), ("ess_tail", 400, False)))
+        rows[name] = {
+            "reference_diagnostics_passed": diagnostic_pass, "reference_diagnostics": row,
+            "reference_mean": float(reference.mean()), "neural_mean": float(estimated.mean()),
+            "reference_sd": float(reference.std()),
+            "reference_q05": float(q05), "reference_q10": float(q10),
+            "reference_q90": float(q90), "reference_q95": float(q95),
+            "neural_q10": float(neural_q10), "neural_q90": float(neural_q90),
+            "absolute_q10_error": float(abs(neural_q10-q10)),
+            "absolute_q90_error": float(abs(neural_q90-q90)),
+            "reference_90_percent_width": float(q95-q05),
+            "reference_quantile_mcse": None,
+        }
+    return {
+        "status": "descriptive_development_comparison" if all(
+            row["reference_diagnostics_passed"] for row in rows.values()) else "inconclusive_product_reference",
+        "scientific_acceptance": False, "units": "annualized variance, spot-normalized, continuous monitoring",
+        "products": rows,
+        "limitations": "Analytic mean-curve functionals only; no vol-of-vol/leverage or path-dependent-price check. "
+                       "Absolute product tolerances and reference quantile MCSE are unassessed; no acceptance verdict.",
+    }
 
 
 def compare(checkpoint_directory, reference_directory, *, precision=None, draws=10000, seed=0):
@@ -104,7 +142,7 @@ def compare(checkpoint_directory, reference_directory, *, precision=None, draws=
     report = {
         "format": "full_surface_reference_comparison_v1", "scientific_acceptance": False,
         "status": "inconclusive_reference" if issues else "started",
-        "scope": "one development conditional comparison; no global acceptance, coverage or product claim",
+        "scope": "one development conditional comparison; no global acceptance or coverage claim",
         "task_fingerprint": fingerprint, "task": task, "parameter_names": names,
         "surface_id": reference.get("surface_id"), "reference_split": reference.get("split"),
         "observed_prices": quotes.tolist(), "sampling_seed": seed, "neural_draws_requested": draws,
@@ -120,9 +158,11 @@ def compare(checkpoint_directory, reference_directory, *, precision=None, draws=
             "posterior_stability_assessed": precision_report.get("posterior_stability_assessed"),
             "issues": precision_issues, "scope": "pointwise numerical sensitivity only; not posterior stability"},
         "proposed_parameter_agreement": None,
+        "variance_product_comparison": None,
         "source_sha256": {"scripts/compare_full_surface_reference.py": _digest(__file__),
                           "calibration/full_surface.py": _digest(full_surface.__file__),
-                          "calibration/validation.py": _digest(validation.__file__)},
+                          "calibration/validation.py": _digest(validation.__file__),
+                          "calibration/variance_functionals.py": _digest(variance_functionals.__file__)},
         "versions": {n: metadata.version(n) for n in ("bayesflow", "keras", "jax", "numpy", "scipy")},
     }
     neural = None
@@ -162,7 +202,8 @@ def compare(checkpoint_directory, reference_directory, *, precision=None, draws=
                 "parameters": parameters,
                 "all_checks_passed": all(p["mean_error_within_0_3_reference_sd"]
                                           and p["relative_width_error_within_25_percent"] for p in parameters.values()),
-                "limitations": "proposed parameter-only rules; reference quantile MCSE, numerical posterior stability and products remain unassessed"}
+                "limitations": "proposed parameter-only rules; reference quantile MCSE, numerical posterior stability and product acceptance remain unassessed"}
+            report["variance_product_comparison"] = _variance_product_comparison(task, neural, chains, diagnostics)
     report["sampling_and_comparison_seconds"] = time.perf_counter()-started
     for filename, digest in reference_hashes.items():
         if _digest(root/filename) != digest:

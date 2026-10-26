@@ -86,6 +86,9 @@ def main():
     parser.add_argument("--cores", type=int, default=1, help="Parallel chains, at most the allocated CPU count.")
     parser.add_argument("--mp-context", choices=("spawn", "forkserver"), default="spawn")
     parser.add_argument("--checkpoint-every", type=int, default=100, help="Persist partial per-chain draws at this interval.")
+    parser.add_argument("--initialization", choices=("prior", "data-fit"), default="prior")
+    parser.add_argument("--fit-starts", type=int, default=None, help="Data-fit multistarts; default min(4, chains).")
+    parser.add_argument("--fit-budget", type=int, default=2000, help="Total maximum Powell function evaluations across starts.")
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--no-progress", action="store_true")
     args = parser.parse_args()
@@ -106,7 +109,8 @@ def main():
         "bank_manifest_sha256": hashlib.sha256((args.bank / "manifest.json").read_bytes()).hexdigest(),
         "surface_id": str(split["example_id"][args.index]), "split": args.split,
         "observed_prices": quotes[0, :, 0].tolist(),
-        "settings": {key: getattr(args, key) for key in ("draws", "tune", "chains", "cores", "mp_context", "checkpoint_every", "seed")},
+        "settings": {key: getattr(args, key) for key in ("draws", "tune", "chains", "cores", "mp_context", "checkpoint_every",
+                                                        "initialization", "fit_starts", "fit_budget", "seed")},
         "initialization": reference.reference_initialization(task["prior_bounds"], args.chains, args.seed),
         "partial_trace": {"directory": "partial", "sampler_resumable": False,
                           "scope": "draw persistence only; never pool warmup or substitute for convergence checks"},
@@ -114,27 +118,41 @@ def main():
                      **{key: metadata.version(key) for key in ("pymc", "pytensor", "arviz-stats", "numpy", "scipy")}},
         "source_sha256": {"reference.py": hashlib.sha256(Path(reference.__file__).read_bytes()).hexdigest(),
                           "pymc_reference_op.py": hashlib.sha256((Path(reference.__file__).parent / "pymc_reference_op.py").read_bytes()).hexdigest(),
+                          "reference_initialization.py": hashlib.sha256((Path(reference.__file__).parent / "reference_initialization.py").read_bytes()).hexdigest(),
+                          "variance_functionals.py": hashlib.sha256((Path(reference.__file__).parent / "variance_functionals.py").read_bytes()).hexdigest(),
                           "calibration_reference.py": hashlib.sha256(Path(__file__).read_bytes()).hexdigest()},
         "generator_source_sha256": manifest.get("source_sha256"),
         "reference_pricing_source_sha256": bank.source_hashes(task),
         "environment_sha256": {name: hashlib.sha256((Path(__file__).resolve().parents[1] / name).read_bytes()).hexdigest()
                                for name in ("pyproject.toml", "pixi.lock")},
     }
+    if args.initialization == "data-fit":
+        record["initialization"] = {"kind": "data-fit", "status": "pending",
+                                    "fit_starts": args.fit_starts, "optimizer_evaluation_budget": args.fit_budget,
+                                    "scope": "transformed-space MAP initialization has not completed"}
     _write_json(args.out / "reference.json", record)
     started = time.perf_counter()
     try:
+        initialization = None
+        if args.initialization == "data-fit":
+            initialization = reference.data_fit_initialization(
+                log_likelihood, task["prior_bounds"], args.chains, args.seed,
+                fit_starts=args.fit_starts, fit_budget=args.fit_budget)
+            record["initialization"] = initialization
+            _write_json(args.out / "reference.json", record)
         partial = PartialDrawWriter(args.out / "partial", chains=args.chains, tune=args.tune,
                                     draws=args.draws, every=args.checkpoint_every)
         idata = reference.sample_deterministic_reference(
             log_likelihood, task["prior_bounds"], task["parameter_names"], draws=args.draws,
             tune=args.tune, chains=args.chains, seed=args.seed, progressbar=not args.no_progress,
-            cores=args.cores, mp_context=args.mp_context, callback=partial)
+            cores=args.cores, mp_context=args.mp_context, callback=partial, initialization=initialization)
         arrays = {"parameters": idata["posterior"]["parameters"].transpose("chain", "draw", "parameter").values}
         for name, value in idata["sample_stats"].data_vars.items():
             if set(value.dims) == {"chain", "draw"}:
                 arrays[f"sample_stats_{name}"] = value.transpose("chain", "draw").values
         np.savez_compressed(args.out / "chains.npz", **arrays)
         diagnostics = reference.chain_diagnostics(idata)
+        diagnostics["variance_functionals"] = reference.variance_functional_diagnostics(idata, task)
         diagnostics["elapsed_seconds"] = time.perf_counter() - started
         _write_json(args.out / "diagnostics.json", diagnostics)
         print(json.dumps({"out": str(args.out), "shape": list(arrays["parameters"].shape),

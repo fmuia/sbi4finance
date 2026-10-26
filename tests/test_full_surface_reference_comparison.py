@@ -11,7 +11,7 @@ from unittest.mock import patch
 
 import numpy as np
 
-from sbi4finance.calibration import tasks
+from sbi4finance.calibration import tasks, variance_functionals
 from sbi4finance.gbm_bank import _json
 
 SCRIPT = Path(__file__).resolve().parents[1]/"scripts/compare_full_surface_reference.py"
@@ -66,6 +66,7 @@ class ReferenceComparisonTests(unittest.TestCase):
             report, neural = self._compare()
         self.assertEqual(report["status"], "inconclusive_reference")
         self.assertIsNone(report["proposed_parameter_agreement"])
+        self.assertIsNone(report["variance_product_comparison"])
         self.assertIsNone(neural)
         sample.assert_not_called()
 
@@ -89,6 +90,12 @@ class ReferenceComparisonTests(unittest.TestCase):
         self.assertEqual(rho["standardized_mean_error"], 0)
         self.assertEqual(rho["width_ratio_90"], 1)
         self.assertEqual(rho["reference_mcse_mean"], 1e-5)
+        products = report["variance_product_comparison"]
+        self.assertEqual(products["status"], "inconclusive_product_reference")
+        self.assertFalse(products["scientific_acceptance"])
+        for row in products["products"].values():
+            self.assertEqual(row["absolute_q10_error"], 0)
+            self.assertEqual(row["absolute_q90_error"], 0)
         self.assertEqual(sample.call_args.kwargs["seed"], 9)
         np.testing.assert_array_equal(actual, neural)
         with np.load(self.reference/"chains.npz") as saved:
@@ -130,6 +137,50 @@ class ReferenceComparisonTests(unittest.TestCase):
         path.write_text(json.dumps(precision))
         with self.assertRaisesRegex(ValueError, "precision report"):
             self._compare(precision=path)
+
+
+class VarianceFunctionalsTests(unittest.TestCase):
+    def test_masked_parameters_cannot_be_silently_unmasked(self):
+        draws = np.ma.array([.04, .04, .5, -.7], mask=[False, True, False, False])
+        with self.assertRaisesRegex(ValueError, "unmasked"):
+            variance_functionals.heston_variance_functionals(tasks.heston_task(), draws)
+
+    def test_constant_curve_and_draw_axes(self):
+        task = tasks.heston_task()
+        draws = np.broadcast_to([.04, .04, .5, -.7], (4, 20, 4))
+        values = variance_functionals.heston_variance_functionals(task, draws)
+        for value in values.values():
+            self.assertEqual(value.shape, (4, 20))
+            np.testing.assert_allclose(value, .04, rtol=1e-14)
+
+    def test_rates_match_independent_quadrature_and_parameter_order(self):
+        from scipy.integrate import quad
+
+        task = tasks.heston_task(kappa=3.2)
+        order = [3, 1, 2, 0]
+        task["parameter_names"] = [task["parameter_names"][i] for i in order]
+        task["prior_bounds"] = [task["prior_bounds"][i] for i in order]
+        row = np.asarray([.15, .02, .5, -.7])[order]
+        values = variance_functionals.heston_variance_functionals(task, row)
+        curve = lambda t: .02 + (.15-.02)*np.exp(-3.2*t)
+        self.assertAlmostEqual(float(values["variance_swap_1y"]), quad(curve, 0, 1)[0], places=13)
+        self.assertAlmostEqual(float(values["forward_variance_0_5_to_1y"]), 2*quad(curve, .5, 1)[0], places=13)
+        # Taking a square root would be a different quantity, not a volatility-swap price.
+        self.assertLess(float(values["forward_variance_0_5_to_1y"]), float(values["variance_swap_1y"]))
+
+    def test_parameter_convergence_does_not_imply_product_convergence(self):
+        task = tasks.heston_task()
+        rng = np.random.default_rng(209)
+        bounds = np.asarray(task["prior_bounds"])
+        chains = rng.uniform(bounds[:, 0], bounds[:, 1], size=(4, 100, 4))
+        rows = {name: {"r_hat": 1.001, "ess_bulk": 800, "ess_tail": 700}
+                for name in variance_functionals.heston_variance_functionals(task, chains)}
+        diagnostics = {"variance_functionals": {"names": rows, "mcmc_diagnostics_passed": True}}
+        report = comparison._variance_product_comparison(task, chains.reshape(-1, 4), chains, diagnostics)
+        self.assertEqual(report["status"], "descriptive_development_comparison")
+        rows["variance_swap_1y"]["ess_tail"] = 20
+        report = comparison._variance_product_comparison(task, chains.reshape(-1, 4), chains, diagnostics)
+        self.assertEqual(report["status"], "inconclusive_product_reference")
 
 
 if __name__ == "__main__":

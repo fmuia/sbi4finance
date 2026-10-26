@@ -82,14 +82,27 @@ def validate_parallelism(cores, chains, mp_context):
         raise ValueError("use an available spawn or forkserver multiprocessing context; fork is unsupported")
 
 
+def data_fit_initialization(log_likelihood, bounds, chains, seed, **settings):
+    """Opt-in data-only MAP starts and proposal geometry, with native chain seeds."""
+    from .reference_initialization import data_fit_initialization as fit
+
+    result = fit(log_likelihood, bounds, chains, seed, **settings)
+    seeds = reference_initialization(bounds, chains, seed)
+    result.update({key: value for key, value in seeds.items()
+                   if key in ("pymc_random_seed", "pymc_chain_rng_protocol", "chains")})
+    return result
+
+
 def sample_deterministic_reference(log_likelihood, bounds, parameter_names, *, draws=2000,
                                    tune=2000, chains=4, seed=0, progressbar=True, cores=1,
-                                   mp_context="spawn", callback=None):
+                                   mp_context="spawn", callback=None, initialization=None):
     """Sample a bounded independent-uniform prior with a deterministic likelihood.
 
     Retains chain/draw structure in PyMC 6's xarray DataTree. PyMC handles
-    bounded-variable transforms and their Jacobians. Each chain starts at a
-    separate prior draw; no neural estimator supplies its initialization.
+    bounded-variable transforms and their Jacobians. Default starts remain
+    independent prior draws. An explicit data-only initialization record can
+    supply dispersed starts and a covariance in those same value coordinates.
+    No neural estimator supplies starts or proposal geometry.
     Cores are explicit and bounded by the allocation. Spawn/forkserver avoids
     forking a process that may already have initialized JAX threads. A native
     PyMC callback can retain partial draws; it does not preserve sampler state.
@@ -104,11 +117,25 @@ def sample_deterministic_reference(log_likelihood, bounds, parameter_names, *, d
     if type(seed) is not int or seed < 0:
         raise ValueError("seed must be a nonnegative integer")
     validate_parallelism(cores, chains, mp_context)
-    starts = np.asarray(reference_initialization(bounds, chains, seed)["prior_starts"])
+    covariance = None
+    if initialization is None:
+        starts = np.asarray(reference_initialization(bounds, chains, seed)["prior_starts"])
+    else:
+        if (initialization.get("kind") != "data-fit" or initialization.get("bounds") != bounds.tolist()
+                or initialization.get("seed") != seed):
+            raise ValueError("data-only initialization must match the sampler bounds and root seed")
+        starts = np.asarray(initialization["chain_starts"], dtype=float)
+        covariance = np.asarray(initialization["proposal"]["S"], dtype=float)
+        if (starts.shape != (chains, len(names)) or not np.isfinite(starts).all()
+                or np.any(starts <= bounds[:, 0]) or np.any(starts >= bounds[:, 1])
+                or covariance.shape != (len(names), len(names)) or not np.isfinite(covariance).all()
+                or not np.allclose(covariance, covariance.T, rtol=0, atol=1e-12)
+                or np.linalg.eigvalsh(covariance).min() <= 0):
+            raise ValueError("finite interior starts and positive definite value-coordinate covariance required")
     for start in starts:
         first, repeated = float(log_likelihood(start)), float(log_likelihood(start))
         if not math.isfinite(first) or first != repeated:
-            raise ValueError("reference log likelihood must be finite and deterministic at prior starts")
+            raise ValueError("reference log likelihood must be finite and deterministic at chain starts")
 
     import pymc as pm
     from .pymc_reference_op import DeterministicLikelihoodOp
@@ -118,7 +145,12 @@ def sample_deterministic_reference(log_likelihood, bounds, parameter_names, *, d
         parameters = pm.Uniform("parameters", lower=bounds[:, 0], upper=bounds[:, 1],
                                 dims="parameter")
         pm.Potential("quote_log_likelihood", likelihood_op(parameters))
-        step = pm.DEMetropolisZ(vars=[parameters])
+        if covariance is None:
+            step = pm.DEMetropolisZ(vars=[parameters])
+        else:
+            from pymc.step_methods.metropolis import MultivariateNormalProposal
+            step = pm.DEMetropolisZ(vars=[parameters], S=covariance, proposal_dist=MultivariateNormalProposal,
+                                    scaling=1.0, tune="scaling")
         return pm.sample(draws=draws, tune=tune, chains=chains, cores=cores, step=step,
                          initvals=[{"parameters": row} for row in starts],
                          random_seed=seed, progressbar=progressbar,
@@ -144,3 +176,25 @@ def chain_diagnostics(inference_data):
             "scientific_acceptance": "not_assessed",
             "requirements": {"r_hat_max": 1.01, "ess_bulk_min": 400, "ess_tail_min": 400},
             "limitations": "Also assess numerical-price refinement, products and reference uncertainty."}
+
+
+def variance_functional_diagnostics(inference_data, task):
+    """Independent MCMC diagnostics for analytic Heston variance products."""
+    import arviz_stats as az
+    import xarray as xr
+    from .variance_functionals import heston_variance_functionals
+
+    draws = inference_data["posterior"]["parameters"].transpose("chain", "draw", "parameter").values
+    values = heston_variance_functionals(task, draws)
+    tree = xr.DataTree.from_dict({"posterior": xr.Dataset({name: (("chain", "draw"), value)
+                                                        for name, value in values.items()})})
+    frame = az.summary(tree, var_names=list(values), kind="diagnostics", round_to="none")
+    names = {str(name): {str(key): float(value) if np.isfinite(value) else None
+                         for key, value in row.items()} for name, row in frame.iterrows()}
+    passed = bool(names) and all(
+        row.get("r_hat") is not None and row["r_hat"] <= 1.01
+        and row.get("ess_bulk") is not None and row["ess_bulk"] >= 400
+        and row.get("ess_tail") is not None and row["ess_tail"] >= 400 for row in names.values())
+    return {"names": names, "mcmc_diagnostics_passed": passed,
+            "requirements": {"r_hat_max": 1.01, "ess_bulk_min": 400, "ess_tail_min": 400},
+            "scope": "analytic variance-unit functionals; a product pass does not imply parameter or scientific acceptance"}
