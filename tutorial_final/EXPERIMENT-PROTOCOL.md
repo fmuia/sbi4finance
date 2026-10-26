@@ -2,6 +2,8 @@
 
 Proposed on 26 October 2026. Read the [human overview](NUMERICAL-EXPERIMENT-PLAN.md) first. This protocol defines the decisions needed to turn that plan into reproducible runs. New criteria below are proposals to freeze before execution; they do not change historical acceptance records.
 
+**Scope:** apply the numerical/statistical checks to the examples and claims actually retained. First complete Heston and one rough workflow. The wider architecture benchmark, direct rough MCMC, generalized contract/mask support and broad sparse-quote reserve-coverage studies are optional extensions, not prerequisites for a labelled, checked tutorial. Infrastructure unit tests do not substitute for numerical and inferential checks.
+
 ## Tasks and common implementation
 
 Keep Heston, liquid rough Bergomi and sparse-quote rough Bergomi (the existing “thin” workflow) as distinct tasks. Record the complete prior, observation design, quote-noise model, supplied context, inferred coordinates, numerical pricing algorithm and downstream quantities for each. The liquid rough task conditions on seven curve levels. The sparse-quote task infers them; its baseline receives exactly the same observed information as the neural method. EWG is a current case fixture, not the definition of this task. Follow the [case plan](SPARSE-QUOTE-CASE-PLAN.md) for controlled layouts and market-case selection.
@@ -29,7 +31,7 @@ Use the estimator API (`workflow.estimator`, `load_estimator`) and network-speci
 
 Both continuous families place data at time zero in 2.1, but their training-time sampling formulas and default alpha values differ. Do not copy the old Euler grid or pass a single common alpha blindly. MeanFlow starts with `density_head=False`; learned density heads are an optional later experiment. [FlowMatching](https://github.com/bayesflow-org/bayesflow/blob/v2.1.0/bayesflow/networks/inference/flow_matching/flow_matching.py), [MeanFlow](https://github.com/bayesflow-org/bayesflow/blob/v2.1.0/bayesflow/experimental/mean_flow/mean_flow.py)
 
-Before full runs, test all 4 families × 3 encoders × 3 tasks on tiny data. These 36 software checks are not production fits. Verify:
+Before using a configuration in a screen or teaching fit, test that actual family/encoder/task combination on tiny data. Do not implement or validate a 36-combination Cartesian product as a prerequisite. Verify the applicable properties:
 
 - A finite training update, correct support and outputs shaped `[batch, draws, targets]`; token input axes must not become parameter-sample axes accidentally.
 - Adapter transformations and density Jacobians on a tractable toy problem.
@@ -60,7 +62,7 @@ Existing inspected Heston and pilot test results are historical/development evid
 
 Prepare development reference panels separately from the final reference library. Predeclare typical, weakly identified and boundary cases rather than choosing attractive examples after seeing neural errors. The same untouched rough surfaces can support paired liquid/thin comparisons; report that dependence instead of counting them as independent experiments.
 
-Final tutorial acceptance evaluates the production configuration chosen on development data and all three of its seed replicas. Include 2,000 synthetic observations per retained task for SBC/coverage, a fixed conditional-reference collection, and disjoint audit panels. The architecture benchmark can evaluate the runner-up configurations under a separately registered comparison, without using acceptance to choose the deployed model. Register IDs, noise seeds, candidate/checkpoint identities, metrics and simultaneous calibration bands before opening acceptance results. Do not reuse the same test outputs to tune architecture choices. A changed candidate or criterion needs a new declared evaluation, with earlier outcomes retained.
+Final tutorial evaluation uses the selected teaching configurations and all three of their training-seed replicas. Include 2,000 synthetic observations per retained task for SBC/coverage, a fixed conditional-reference collection, and disjoint audit panels. This is relatively inexpensive compared with rough generation, so retain it while reducing the number of models being certified. Runner-up benchmark evaluation is optional. Record IDs, noise seeds, checkpoints and the chosen metrics/bands in the existing run metadata before opening acceptance results; no new registry system is required. Do not use acceptance outputs to choose the model. A changed candidate or criterion needs a declared fresh evaluation, with earlier outcomes retained.
 
 ## Numerical precision
 
@@ -90,25 +92,25 @@ Each token contains a forward-unit price, log-moneyness, maturity, option type, 
 
 Begin with subsets/masks of the declared contract grid. Generalization to arbitrary raw chains requires simulation designs covering those contracts. The current EWG network's 27-point proposal layout and actual 61-quote audit are distinct objects; document both and preserve their historical labels. A replacement market case requires its own declared layout, noise model, checkpoint/audit validation and product-horizon review.
 
-The proposed capped screen is:
+After the first checked core examples, use this bounded comparison:
 
 | Stage | Configurations | Fits |
 | --- | --- | ---: |
-| Encoder pilots | 3 encoders × Heston/liquid rough with one fixed posterior family | 6 small fits |
-| Thin encoder pilots, if retained | Direct vector and best set encoder | 2 small fits |
-| Heston family screen | 4 posterior families × direct vector/best set encoder | 8 fits |
-| Rough family screen | 4 families with the selected encoder on an intermediate bank | 4 fits |
-| Confirmation | 2 shortlisted configurations × 3 seeds × each of 3 retained tasks | 18 full fits |
+| Heston family screen | 4 posterior families with the direct vector | 4 short fits |
+| Encoder comparison | DeepSet and SetTransformer with one fixed family on one representative task; reuse its direct-vector baseline | 2 additional short fits |
+| Rough transfer screen | 2 promising configurations on an intermediate bank | 2 fits |
+| Core confirmation | 1 selected configuration × 3 seeds × Heston/liquid rough | 6 teaching fits |
+| Sparse lesson, if retained | Chosen fixed full/sparse joint-inference layouts; add their selected configurations explicitly | 3 fits per additional teaching configuration |
 
-This is at most 38 scheduled fits before optional learning curves; reuse identical configurations rather than rerunning duplicates. Each screen uses one declared seed and a fixed tuning budget. Confirmation quantifies seed variability. One selected configuration per task with three seeds is the tutorial-release requirement (nine full fits if all tasks remain); the other nine confirmation fits and uncompleted screens belong to the benchmark. If thin inference is removed from release, reduce its rows explicitly. Add a small targeted encoder/family interaction check only if development results justify it.
+This budgets at most eight screen fits plus six selected core fits, before learning curves; reuse identical runs where possible. Each screen uses one declared seed and a fixed tuning budget. Confirmation quantifies seed variability. If full and sparse joint-inference controls require two additional fixed-layout estimators, add six confirmation fits rather than hiding them in a three-task count. The full family × encoder × task matrix, runner-up three-seed campaigns, CNN/capacity sweeps and additional interaction studies are optional research. Do not run them merely to complete a table.
 
-Use deterministic nested learning-curve subsets: Heston 5k/20k/50k and rough 10k/30k/100k. Select each run's checkpoint by its own validation objective. Compare different families using common external diagnostics, not the magnitude of unlike training losses. Report parameter counts, data exposure, convergence, GPU-hours and hyperparameter-search effort; identical epoch counts alone do not establish fairness.
+Use small nested subsets for software and short architecture screens. Measure larger data-sufficiency curves only for selected credible baselines, using the expandable-bank sizes in the central plan; one million is capacity, not an automatic fit requirement. Select each run's checkpoint by its own validation objective. Compare families using common external diagnostics, not unlike training losses. Report parameter counts, data exposure, convergence and compute effort; identical epoch counts alone do not establish fairness.
 
 Fix the production checkpoint/seed selection rule using development results before final acceptance. Preserve all confirmation seeds. Do not select the best-looking acceptance replicate.
 
-Evaluate MeanFlow at 1/2/4/8 steps from one trained checkpoint. Check FlowMatching solver tolerance/step refinement. For direct FlowMatching density evaluations in these small target dimensions, start with exact Jacobian traces where supported. MeanFlow's default uses map Jacobian log-determinants; validate its round trips and sampling/density consistency before using its density as an importance denominator.
+Evaluate MeanFlow at 1/2/4/8 steps from one trained checkpoint. Check FlowMatching solver tolerance/step refinement. Direct neural-density proposals are optional research: FlowMatching density evaluation needs validated trace/solver handling, and MeanFlow needs validated map Jacobians and round trips before its density is used as an importance denominator. These mechanisms are not needed for sample-based teaching or the existing fitted-proposal audit.
 
-The existing audit fits a Student-t proposal to neural draws and mixes it with the prior. Because its proposal density is known, it works for every family without requiring the network density. Compare direct neural-density proposals separately; a fitted Student-t can lose multimodal structure. [Current correction](../src/sbi4finance/calibration/correction.py)
+The existing audit fits a Student-t proposal to neural draws and mixes it with the prior. Because its proposal density is known, it works for every family without requiring network density. Use it first and report its diagnostics/failures; a fitted Student-t can lose multimodal structure. Add another proposal only if an observed failure requires it. [Current correction](../src/sbi4finance/calibration/correction.py)
 
 ## Reference posteriors
 
@@ -126,7 +128,7 @@ Use a reference ladder:
 
 1. Train a separate forward price emulator on clean training labels. Validate it globally and in development posterior regions using independent, higher-precision pricing. Compare emulator-MCMC on about 50 final panels. Shared bank errors mean agreement is a cross-check, not ground truth.
 2. Run independent Monte Carlo audits on 50 final panels; extend to 200 only after inspecting reliability and cost under a frozen expansion rule. Report ESS, largest weight, Pareto k-hat, unpriced proposals and approximation sensitivity. Weight concentration alone does not establish conditional accuracy.
-3. Pilot direct Monte Carlo-based MCMC on one declared case. Measure likelihood variability, mixing, ESS and path/grid dependence. If feasible, extend to 3–5 fixed anchor cases including typical, weak-identification and market examples. This is reference research until a direct-MCMC agreement claim is included in the release; that claim requires completed, converged anchors.
+3. Optional research: pilot direct Monte Carlo-based MCMC on one declared case. Measure likelihood variability, mixing, ESS and path/grid dependence. Extend to 3–5 fixed anchor cases only if justified by the pilot and the intended claim. This is outside the tutorial critical path unless a direct-MCMC agreement claim is included; that claim requires completed, converged anchors.
 
 Keep the likelihood targets distinct:
 
@@ -156,7 +158,7 @@ Register tolerances before final evaluation. For product comparisons define `W =
 
 A blanket claim that the raw network agrees across the final reference collection requires that the stated criteria hold across that collection. Otherwise report its scope and failure rate, and assess the corrected result separately. Do not let correction conceal a poor raw amortizer. Numerical audits, model adequacy and empirical market performance remain different claims.
 
-For sparse-quote coverage, retain the existing five-method comparison, wrong-extrapolation arms and noise sensitivity at 0.5/1/2 as the starting design, adapting product horizons and continuation assumptions to each declared layout. A prior-predictive success under the same prior is expected in a correctly specified Bayesian experiment; it does not establish robustness when the unquoted curve law is wrong. Truths conditioned on the selected market case, including the existing EWG study, provide a local sensitivity study, not broad market validation. Choose the market case by coverage, data quality and teaching suitability before final method comparisons; retain the controlled synthetic lesson if no suitable case is available.
+For the sparse tutorial, start with one paired contrast and a small prior/noise sensitivity illustration. Run the existing five-method population reserve-coverage and wrong-extrapolation programme only if the corresponding population-performance claim is retained, adapting product horizons and continuation assumptions to each layout. A prior-predictive success under the same prior is expected in a correctly specified Bayesian experiment; it does not establish robustness when the unquoted curve law is wrong. Truths conditioned on a selected market case, including the existing EWG study, provide a local sensitivity study, not broad market validation. Choose the market case by coverage, data quality and teaching suitability before final method comparisons; retain the controlled synthetic lesson if no suitable case is available.
 
 Measure cold load/compilation, warm draws, density evaluation when used, audits, products, memory and total training cost. Price-emulator MCMC and classical-proposal importance sampling are required competitors. The bank/training cost is amortized over explicitly compatible tasks; a changed prior/design/noise law may require new validation or training.
 
