@@ -37,11 +37,15 @@ def main():
                            "report_sha256": hashlib.sha256((directory / "report.json").read_bytes()).hexdigest()})
     first = declarations[0]
     settings = first["settings"]
-    for report in reports:
+    for report, declaration in zip(reports, declarations, strict=True):
         if (report["paths_per_grid_replicate"] != settings["paths"]
                 or report["replicates"] != settings["replicates"]
                 or report["grid_multipliers"] != settings["multipliers"]
-                or report["root_seed"] != settings["root_seed"]):
+                or report["root_seed"] != settings["root_seed"]
+                or report.get("block_refinement", {"refine_block": None, "fixed_other_grid": None})
+                   != {key: settings.get(key) for key in ("refine_block", "fixed_other_grid")}
+                or ("declared_block_multipliers" in declaration
+                    and report.get("declared_block_multipliers") != declaration["declared_block_multipliers"])):
             raise ValueError("component settings differ from their declaration")
     result = numerical_pilot.combine_components(first["task"], first["cases"][first["case_index"]], reports)
     result["component_provenance"] = provenance

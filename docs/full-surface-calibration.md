@@ -4,7 +4,7 @@ The first implementation covers **complete-surface Heston and joint rough Bergom
 
 The tutorial workflow is observation → posterior → diagnostics/reference comparison → product uncertainty. This PR builds the generation, training, reload, sample-based evaluation and first PyMC reference pieces. It does not yet deliver scientifically accepted checkpoints or participant notebooks.
 
-Actual Oscar readiness, development training and bounded scientific pilots are recorded in the [26 October development report](oscar-pilot-2026-10-26.md). Read that report before choosing a large rough-bank configuration: the candidate grid and curve family have unresolved limitations.
+Actual Oscar readiness, development training and bounded scientific pilots are recorded in the [26 October development report](oscar-pilot-2026-10-26.md). The monotone exponential curve is now the agreed simplified teaching family; its prior and numerical settings remain development candidates. Read that report before choosing a large rough-bank configuration.
 
 ## Work completed in parallel
 
@@ -74,7 +74,7 @@ On Oscar, install `core-gpu` for training. Run `core-check --require-gpu` **insi
 
 ## Scientific work still required
 
-1. Complete the bounded exponential-versus-published-hump curve check and agree the curve/parameter prior and product horizon before substantial rough generation.
+1. Retain the completed hump challenge as evidence of the agreed monotone family's limitations; agree the parameter prior, numerical settings and product horizon before substantial rough generation.
 2. Measure time-grid bias and Monte Carlo error across representative and difficult prior/posterior regions on Oscar; freeze the numerical target and throughput budget. A few surfaces passing MC standard-error checks do not establish discretization accuracy.
 3. Expand immutable banks as justified by development learning curves, train selected configurations, and build converged conditional references and independently checked rough price-emulator comparisons.
 4. Evaluate the frozen candidates on untouched acceptance data, propagate posterior draws into the selected product, and package/rehearse the full-surface notebooks with cached fallbacks.

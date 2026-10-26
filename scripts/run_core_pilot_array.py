@@ -40,6 +40,17 @@ def command(kind, index, out, bank=None, replay_report=None, references=None):
                 str(root / "configs/tasks/calibration_rough_joint_pilot.json"), "--case", str(case),
                 "--paths", str(paths), "--grids", "4,8", "--only-grid", str(grid),
                 "--only-replicate", str(replicate), "--out", str(out / f"case-{case}" / f"grid-{grid}-rep-{replicate}")]
+    if kind == "rough-short-block" and index < 12:
+        # Twelve independent components: case 2 then 6, short-block grids 4/8/16,
+        # two repetitions. All other blocks stay at 4; no historical mapping changes.
+        case = (2, 6)[index // 6]
+        grid = (4, 8, 16)[(index % 6) // 2]
+        replicate = index % 2
+        return [sys.executable, str(root / "scripts/pilot_rough_numerics.py"), "--config",
+                str(root / "configs/tasks/calibration_rough_joint_pilot.json"), "--case", str(case),
+                "--paths", "131072", "--grids", "4,8,16", "--refine-block", "0", "--fixed-other-grid", "4",
+                "--only-grid", str(grid), "--only-replicate", str(replicate),
+                "--out", str(out / f"case-{case}" / f"grid-{grid}-rep-{replicate}")]
     if kind == "curve-followup" and index < 3 and replay_report is not None:
         original = json.loads(replay_report.read_text())
         if original["case"]["name"] != "hump":
@@ -58,7 +69,7 @@ def command(kind, index, out, bank=None, replay_report=None, references=None):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("kind", choices=("rough-grid", "curve", "heston", "heston-parallel", "rough-fine", "curve-followup", "heston-precision"))
+    parser.add_argument("kind", choices=("rough-grid", "curve", "heston", "heston-parallel", "rough-fine", "rough-short-block", "curve-followup", "heston-precision"))
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--bank", type=Path)
     parser.add_argument("--replay-report", type=Path)

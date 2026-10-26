@@ -30,6 +30,8 @@ def main():
     parser.add_argument("--grids", default="1,2,4", help="Global increasing grid multipliers, e.g. 4,8.")
     parser.add_argument("--only-grid", type=int, help="Run only this globally declared grid.")
     parser.add_argument("--only-replicate", type=int, help="Run only this global zero-based replicate ID.")
+    parser.add_argument("--refine-block", type=int, help="Refine only this zero-based block; requires --fixed-other-grid.")
+    parser.add_argument("--fixed-other-grid", type=int, help="Fixed multiplier for blocks other than --refine-block.")
     args = parser.parse_args()
     config = json.loads(args.config.read_text())
     task = full_surface.validate_task(config["task"])
@@ -37,9 +39,15 @@ def main():
     if not 0 <= args.case < len(panel):
         raise ValueError("case must select a predeclared panel index")
     settings = {"paths": args.paths, "replicates": args.replicates,
-                "multipliers": [int(value) for value in args.grids.split(",")], "root_seed": args.seed}
+                "multipliers": [int(value) for value in args.grids.split(",")], "root_seed": args.seed,
+                "refine_block": args.refine_block, "fixed_other_grid": args.fixed_other_grid}
+    allocations = {str(grid): numerical_pilot.block_scales(task, grid, refine_block=args.refine_block,
+                                                           fixed_other_grid=args.fixed_other_grid)
+                   for grid in settings["multipliers"]}
     seed_table = [{"case": case["name"], "grid_multiplier": grid, "replicate": replicate,
-                   "pricing_seeds": [numerical_pilot.stream_seed(task, case, args.seed, grid, replicate, b)
+                   "block_multipliers": allocations[str(grid)],
+                   "pricing_seeds": [numerical_pilot.stream_seed(task, case, args.seed, grid, replicate, b,
+                       block_multipliers=allocations[str(grid)] if args.refine_block is not None else None)
                                      for b in range(len(task["numerics"]["blocks"]))]}
                   for case in panel for grid in settings["multipliers"] for replicate in range(args.replicates)]
     reduced_seeds = [seed for row in seed_table for seed in row["pricing_seeds"]]
@@ -47,6 +55,7 @@ def main():
         raise ValueError("actual reduced pricing-seed collision in the declared panel")
     declaration = {"format": numerical_pilot.FORMAT, "task": task, "cases": panel,
                    "settings": settings, "case_index": args.case,
+                   "declared_block_multipliers": allocations,
                    "component_selection": {"grid_multiplier": args.only_grid, "replicate": args.only_replicate},
                    "actual_seed_collision_audit_passed": True, "pricing_seed_table": seed_table,
                    "source_sha256": {**bank.source_hashes(task),

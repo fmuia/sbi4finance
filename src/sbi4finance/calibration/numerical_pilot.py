@@ -45,29 +45,55 @@ def cases(task):
     return result
 
 
-def refined_task(task, multiplier):
+def block_scales(task, multiplier, *, refine_block=None, fixed_other_grid=None):
+    """Full block allocation for uniform refinement or one selected block.
+
+    Selected-block experiments reprice other blocks independently on their
+    fixed grids; no hidden reuse covariance enters the independent comparison.
+    """
+    multiplier = _integer(multiplier, "grid multiplier", minimum=1)
+    count = len(task["numerics"]["blocks"])
+    if refine_block is None and fixed_other_grid is None:
+        return [multiplier] * count
+    if (type(refine_block) is not int or not 0 <= refine_block < count
+            or fixed_other_grid is None):
+        raise ValueError("a valid selected block and fixed grid for other blocks are required")
+    fixed = _integer(fixed_other_grid, "fixed other-block multiplier", minimum=1)
+    result = [fixed] * count
+    result[refine_block] = multiplier
+    return result
+
+
+def refined_task(task, multiplier, *, block_multipliers=None):
     """Refine each block and rebuild its analytic input curve when pricing."""
     multiplier = _integer(multiplier, "grid multiplier", minimum=1)
     refined = copy.deepcopy(task)
-    for block in refined["numerics"]["blocks"]:
-        block["n_steps"] *= multiplier
+    scales = block_scales(task, multiplier) if block_multipliers is None else list(block_multipliers)
+    if len(scales) != len(refined["numerics"]["blocks"]):
+        raise ValueError("one multiplier per block is required")
+    for block, scale in zip(refined["numerics"]["blocks"], scales, strict=True):
+        block["n_steps"] *= _integer(scale, "block multiplier", minimum=1)
     tasks.validate_task(refined)
     return refined
 
 
-def stream_seed(task, case, root_seed, multiplier, replicate, block):
+def stream_seed(task, case, root_seed, multiplier, replicate, block, *, block_multipliers=None):
     """Stable under case selection/order, job arrays and worker counts."""
     root_seed = _integer(root_seed, "root seed")
     multiplier = _integer(multiplier, "grid multiplier", minimum=1)
     replicate = _integer(replicate, "replicate")
     block = _integer(block, "block")
-    digest = hashlib.sha256(_json({"task": task, "case": case}).encode()).hexdigest()
+    identity = {"task": task, "case": case}
+    if block_multipliers is not None:
+        # Additive namespace: unchanged legacy calls retain their exact seeds.
+        identity["selected_block_refinement_v1"] = list(block_multipliers)
+    digest = hashlib.sha256(_json(identity).encode()).hexdigest()
     words = [int(digest[i:i + 8], 16) for i in range(0, 64, 8)]
     return int(np.random.SeedSequence([0x52475049, root_seed, *words, multiplier,
                                       replicate, block]).generate_state(1, dtype=np.uint64)[0])
 
 
-def fixed_surface(task, values, *, multiplier, paths, seeds):
+def fixed_surface(task, values, *, multiplier, paths, seeds, block_multipliers=None):
     """Price a complete surface once at fixed paths; no precision-based redraw.
 
     Unlike production generation, an over-budget MCSE is returned and labelled
@@ -76,7 +102,7 @@ def fixed_surface(task, values, *, multiplier, paths, seeds):
     paths = _integer(paths, "paths", minimum=2)
     if paths % 2:
         raise ValueError("an even number of paths is required for antithetic pairs")
-    refined = refined_task(task, multiplier)
+    refined = refined_task(task, multiplier, block_multipliers=block_multipliers)
     contracts = refined["context"]["contracts"]
     blocks = refined["numerics"]["blocks"]
     if len(seeds) != len(blocks):
@@ -138,7 +164,8 @@ def comparison(coarse, fine, sigma):
 
 
 def run_case(task, case, *, paths=32768, replicates=2, multipliers=(1, 2, 4),
-             root_seed=271026, only_grid=None, only_replicate=None, progress=None):
+             root_seed=271026, only_grid=None, only_replicate=None, refine_block=None,
+             fixed_other_grid=None, progress=None):
     """Run every predeclared grid/replicate, retaining failures without replacements."""
     tasks.validate_task(task)
     if not tasks.is_joint_curve_task(task):
@@ -152,6 +179,8 @@ def run_case(task, case, *, paths=32768, replicates=2, multipliers=(1, 2, 4),
         raise ValueError("selected grid must belong to the declared multiplier list")
     if only_replicate is not None and (type(only_replicate) is not int or not 0 <= only_replicate < replicates):
         raise ValueError("selected replicate must belong to the declared replicate range")
+    allocation = {str(grid): block_scales(task, grid, refine_block=refine_block,
+                                         fixed_other_grid=fixed_other_grid) for grid in multipliers}
     values = np.asarray(case["parameters"], dtype=float)
     bounds = np.asarray(task["prior_bounds"])
     if (not case.get("name") or values.shape != (6,) or not np.isfinite(values).all()
@@ -161,6 +190,8 @@ def run_case(task, case, *, paths=32768, replicates=2, multipliers=(1, 2, 4),
     report = {"format": FORMAT, "case": case, "paths_per_grid_replicate": paths,
               "replicates": replicates, "grid_multipliers": list(multipliers),
               "task_sha256": hashlib.sha256(_json(task).encode()).hexdigest(),
+              "block_refinement": {"refine_block": refine_block, "fixed_other_grid": fixed_other_grid},
+              "declared_block_multipliers": allocation,
               "component_selection": {"grid_multiplier": only_grid, "replicate": only_replicate},
               "root_seed": root_seed, "streams": "independent across cases, grids, replicates and blocks",
               "runs": [], "comparisons": [], "scientific_acceptance": "not_assessed",
@@ -176,15 +207,20 @@ def run_case(task, case, *, paths=32768, replicates=2, multipliers=(1, 2, 4),
         for replicate in range(replicates):
             if only_replicate is not None and replicate != only_replicate:
                 continue
-            seeds = [stream_seed(task, case, root_seed, multiplier, replicate, b)
+            scales = allocation[str(multiplier)]
+            semantic_scales = scales if refine_block is not None else None
+            seeds = [stream_seed(task, case, root_seed, multiplier, replicate, b,
+                                 block_multipliers=semantic_scales)
                      for b in range(len(task["numerics"]["blocks"]))]
             if any(seed in all_seeds for seed in seeds):
                 raise ValueError("actual reduced pricing-seed collision")
             all_seeds.extend(seeds)
-            row = {"grid_multiplier": multiplier, "replicate": replicate, "pricing_seeds": seeds}
+            row = {"grid_multiplier": multiplier, "block_multipliers": scales,
+                   "replicate": replicate, "pricing_seeds": seeds}
             wall, cpu = time.perf_counter(), time.process_time()
             try:
-                prices, errors = fixed_surface(task, values, multiplier=multiplier, paths=paths, seeds=seeds)
+                prices, errors = fixed_surface(task, values, multiplier=multiplier, paths=paths,
+                                                seeds=seeds, block_multipliers=scales)
                 ratios = errors / sigma
                 row.update(status="priced", prices=prices.tolist(), standard_errors=errors.tolist(),
                            max_mc_se_over_quote_sigma=float(np.max(ratios)),
@@ -240,12 +276,17 @@ def combine_components(task, case, components):
     first = components[0]
     keys = ("format", "case", "paths_per_grid_replicate", "replicates", "grid_multipliers",
             "root_seed", "task_sha256", "mc_target_over_quote_sigma",
-            "existing_generation_exception_cap_over_quote_sigma")
+            "existing_generation_exception_cap_over_quote_sigma", "block_refinement",
+            "declared_block_multipliers")
     expected_task = hashlib.sha256(_json(task).encode()).hexdigest()
     if (first.get("format") != FORMAT or first.get("case") != case
             or first.get("task_sha256") != expected_task):
         raise ValueError("component task/case identity differs from the declaration")
     grids, repetitions = first["grid_multipliers"], first["replicates"]
+    mode = first.get("block_refinement", {"refine_block": None, "fixed_other_grid": None})
+    expected_allocations = {str(grid): block_scales(task, grid, **mode) for grid in grids}
+    if first.get("declared_block_multipliers", expected_allocations) != expected_allocations:
+        raise ValueError("declared block allocation differs from the selected refinement mode")
     expected = {(grid, rep) for grid in grids for rep in range(repetitions)}
     found, seeds, rows = set(), set(), []
     for component in components:
@@ -256,10 +297,14 @@ def combine_components(task, case, components):
         if slot not in expected or slot in found or len(component.get("runs", [])) != 1:
             raise ValueError("each component must cover one unique declared grid/replicate slot")
         row = component["runs"][0]
-        actual = [stream_seed(task, case, first["root_seed"], slot[0], slot[1], b)
+        scales = block_scales(task, slot[0], **mode)
+        semantic_scales = scales if mode["refine_block"] is not None else None
+        actual = [stream_seed(task, case, first["root_seed"], slot[0], slot[1], b,
+                              block_multipliers=semantic_scales)
                   for b in range(len(task["numerics"]["blocks"]))]
         if ((row.get("grid_multiplier"), row.get("replicate")) != slot
-                or row.get("pricing_seeds") != actual or any(seed in seeds for seed in actual)):
+                or row.get("pricing_seeds") != actual or any(seed in seeds for seed in actual)
+                or row.get("block_multipliers", scales) != scales):
             raise ValueError("component pricing seed or slot changed/collided")
         if row.get("status") not in ("priced", "failed"):
             raise ValueError("invalid component outcome")

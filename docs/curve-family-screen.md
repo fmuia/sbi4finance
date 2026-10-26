@@ -6,9 +6,30 @@ This development screen challenges the proposed Heston-shaped exponential initia
 xi(t) = b0 + b1 * exp(-t/tau1) + b2 * (t/tau2) * exp(-t/tau2)
 ```
 
-It uses actual rough Bergomi option prices on the complete 63-contract design. It is a first price-level diagnostic, **not completion of the curve-family adequacy gate** and not a new training-bank family. The candidate six-parameter baseline prior and numerical settings remain provisional.
+It uses actual rough Bergomi option prices on the complete 63-contract design. It is a price-level diagnostic, not a new training-bank family or validation of joint posterior/product uncertainty. The tutorial now deliberately retains the monotone exponential subfamily described below; its coefficient prior and numerical settings remain provisional.
 
-Three cases are declared before running: a flat control, an exponential monotone control, and a positive hump challenger. They share H=0.12, eta=1.5 and rho=-0.7. The generating coefficients are recorded in every request/report. Positivity is checked on the whole one-year horizon using endpoints and every possible interior stationary point, rather than checking endpoints or a discretized grid alone.
+## Chosen tutorial simplification
+
+Use the three-coefficient monotone exponential curve for the core rough Bergomi tutorial. Its exact relationship to the published five-coefficient family is:
+
+```text
+b2 = 0                         # remove the hump term
+b0 = long_variance
+b1 = short_variance - long_variance
+tau1 = 1 / decay
+tau2 is unused once b2 = 0
+
+curve(t) = long_variance
+           + (short_variance - long_variance) * exp(-decay * t)
+```
+
+This is an algebraic restriction of [Equation 4 in Baschetti, Bormetti and Rossi](https://arxiv.org/html/2306.11061v2#S4.SS3), not a claim that the paper validates our exact three-curve-coefficient Bayesian workflow. The paper distinguishes simple monotone exponential behavior from shapes requiring a hump term. We retain the simpler behavior to keep the joint tutorial at six unknowns: H, eta, rho and the three curve coefficients.
+
+Positive short/long variance levels and positive decay make the curve a positive weighted average of its two levels for every nonnegative time. It increases when the long level exceeds the short level, decreases in the opposite case, and is flat when they coincide. Its derivative has a constant sign, so it cannot form an interior hump. The same mean-curve shape occurs in Heston, but rough Bergomi retains its rough lognormal variance dynamics; this choice neither inserts Heston dynamics nor copies coefficients from a separate Heston fit.
+
+This decision accepts a restricted teaching model. It establishes neither general market adequacy nor equivalence to the wider family's joint posterior. The historical hump challenge below remains evidence of what the restriction can miss. It does not approve the current prior bounds, a decay cap of 8 or 32, numerical precision, posterior calibration or product uncertainty.
+
+Three cases are declared before running: a flat control, an exponential monotone control, and a positive hump challenger. They share H=0.12, eta=1.5 and rho=-0.7. The generating coefficients are recorded in every request/report; these constructed cases use the published functional form, not its reported training prior. Positivity is checked on the whole one-year horizon using endpoints and every possible interior stationary point, rather than checking endpoints or a discretized grid alone.
 
 For each case:
 
@@ -30,7 +51,7 @@ Repeat with `--case monotone` and `--case hump`. Options expose the fixed fittin
 
 If the monotone or flat control fits poorly, diagnose optimizer and numerical precision first. A poor fit to the hump challenger can motivate a more flexible curve, but a capped single-start fit cannot prove that the entire six-parameter family fails. A successful fit is likewise only local evidence on this small panel.
 
-Before choosing the production curve family, a limited sensitivity study must still compare relevant posterior curve/product uncertainty under explicit family-specific priors, the same observations/noise assumptions, and checked numerical targets. Narrower intervals alone do not establish superiority. The present screen always reports `scientific_acceptance: false`; it neither supplies a Bayes factor nor claims the two families yield equivalent joint posteriors.
+The chosen monotone task still requires checked numerical targets and joint posterior/product validation under its declared prior and observation law. A claim of robustness to the wider curve family would additionally require a limited posterior/product-uncertainty comparison under explicit family-specific priors and matching observations/noise; that broader claim is outside the simplified core scope. Narrower intervals alone do not establish superiority. The present screen always reports `scientific_acceptance: false`; it neither supplies a Bayes factor nor claims equivalent joint posteriors.
 
 ## Controlled follow-ups
 
@@ -59,4 +80,4 @@ Increasing fitting precision with cap 8 left a substantial discrepancy. The wide
 
 The challenger was deliberately constructed to rise and then fall. At one year its generating instantaneous variance is about 0.049, whereas the initial monotone fit is about 0.076. This illustrates the restriction of a monotone curve, not how often that restriction matters in market data. The screen has not measured posterior coverage, joint parameter/curve uncertainty or product-quantile sensitivity.
 
-**Recommendation:** keep the curve family and coefficient prior provisional; do not automatically adopt cap 32, promote the hump family or launch the large rough bank from this screen. Complete the numerical-grid checks and a bounded joint posterior/product-uncertainty sensitivity comparison on a declared panel before freezing the task. The exponential family remains a useful explicitly restricted teaching baseline, with these observed limitations retained in the evidence.
+**Decision and remaining gates:** retain the monotone exponential family for the simplified core tutorial, with these observed limitations explicit. Do not automatically adopt cap 32, promote the hump family or launch the large rough bank from this screen. Agree the coefficient prior and numerical settings, and validate joint posterior/product conclusions within that declared model. A wider-family uncertainty comparison remains necessary for any later claim of robustness to hump-shaped curves; it is not silently assumed by the teaching choice.

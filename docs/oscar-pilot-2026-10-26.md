@@ -1,6 +1,6 @@
 # Full-surface development on Oscar — 26 October 2026
 
-**The CPU/GPU workflow works, and the first Heston development bank and estimators exist. Scientific acceptance is still open.** The rough pilot found material time-grid effects in difficult regions of the candidate prior, and the constructed hump case exposes limitations of the monotone initial curve. Large rough-bank generation remains on hold while those choices are reviewed.
+**The CPU/GPU workflow works, and the first Heston development bank and estimators exist. Scientific acceptance is still open.** The rough pilot found material time-grid effects in difficult regions of the candidate prior. The monotone exponential initial curve is now the agreed simplified teaching family, with its relationship to the published hump family and its limitations documented. Large rough-bank generation remains on hold while numerical settings and the parameter prior are checked.
 
 Sparse-chain support remains a separate downstream unit. No notebooks were executed or changed for these runs.
 
@@ -77,7 +77,7 @@ Across the recorded development unit, 97 Slurm tasks completed and five timed ou
 
 ## Decisions before scaling rough generation
 
-1. Agree the intended curve-family scope and prior after the bounded challenge, rather than silently interpreting a monotone family as general market flexibility. The hump study is constructed development evidence, not a statement about the frequency of market shapes.
+1. The curve-family scope is agreed: use the monotone exponential as a simplified subfamily of the published five-coefficient specification. Keep the hump challenge as a visible limitation. The parameter prior still needs a numerical check; the hump study does not establish market-shape frequencies or general market adequacy.
 2. Choose a defensible grid/precision policy or explicitly restrict the numerical/model target. More Monte Carlo paths alone do not remove time-discretization bias.
 3. Improve Heston reference initialization/proposal conditioning using standard PyMC methods and independent data-based starts before expanding the reference library. Check conditional agreement, numerical sensitivity and product uncertainty before declaring the neural estimator accurate. Preserve failed, timed-out and inconclusive cases.
 4. Expand only selected learning curves and configurations. The data-growth tools are ready; million-surface banks are capacity, not an immediate requirement.

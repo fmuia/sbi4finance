@@ -1,12 +1,16 @@
 """Analytical and independent-stream checks for the fixed-budget grid pilot."""
 
 import copy
+import hashlib
+import importlib.util
+from pathlib import Path
 import unittest
 from unittest.mock import patch
 
 import numpy as np
 
 from sbi4finance.calibration import numerical_pilot as pilot, pricing, surface, tasks
+from sbi4finance.gbm_bank import _json
 
 
 class RoughNumericalPilotTests(unittest.TestCase):
@@ -115,6 +119,83 @@ class RoughNumericalPilotTests(unittest.TestCase):
         self.assertEqual(result["status"], "incomplete")
         self.assertEqual(result["comparisons"][0]["status"], "incomplete")
         self.assertEqual(len(result["runs"]), 4)
+
+    def test_selected_block_allocation_and_legacy_seed_protocol(self):
+        task = tasks.joint_rough_task()
+        self.assertEqual(pilot.block_scales(task, 16, refine_block=0, fixed_other_grid=4), [16, 4, 4])
+        fine = pilot.refined_task(task, 16, block_multipliers=[16, 4, 4])
+        self.assertEqual([b["n_steps"] for b in fine["numerics"]["blocks"]], [1280, 2016, 2016])
+        self.assertEqual([b["n_steps"] for b in task["numerics"]["blocks"]], [80, 504, 504])
+        # Pin the prior panel's public stream protocol, excluding optional mode metadata.
+        digest = hashlib.sha256(_json({"task": task, "case": self.case}).encode()).hexdigest()
+        words = [int(digest[i:i + 8], 16) for i in range(0, 64, 8)]
+        old_seed = int(np.random.SeedSequence([0x52475049, 17, *words, 4, 0, 0])
+                       .generate_state(1, dtype=np.uint64)[0])
+        self.assertEqual(pilot.stream_seed(task, self.case, 17, 4, 0, 0), old_seed)
+        self.assertNotEqual(pilot.stream_seed(task, self.case, 17, 4, 0, 0,
+                                             block_multipliers=[4, 4, 4]), old_seed)
+        with self.assertRaises(ValueError):
+            pilot.block_scales(task, 4, refine_block=3, fixed_other_grid=4)
+
+    def test_selected_block_components_reproduce_serial_and_have_disjoint_streams(self):
+        task = tasks.joint_rough_task()
+        def price(*args, **kwargs):
+            value = np.random.default_rng(kwargs["seeds"][0]).normal()
+            return np.full(63, value), np.full(63, .001)
+        settings = dict(paths=64, multipliers=(4, 8, 16), replicates=2, root_seed=37,
+                        refine_block=0, fixed_other_grid=4)
+        with patch.object(pilot, "fixed_surface", side_effect=price):
+            serial = pilot.run_case(task, self.case, **settings)
+            parts = [pilot.run_case(task, self.case, only_grid=g, only_replicate=r, **settings)
+                     for g in (4, 8, 16) for r in (0, 1)]
+        combined = pilot.combine_components(task, self.case, parts)
+        self.assertEqual(combined["comparisons"], serial["comparisons"])
+        old = {pilot.stream_seed(task, self.case, 37, g, r, b)
+               for g in (4, 8, 16) for r in (0, 1) for b in range(3)}
+        new = {seed for row in serial["runs"] for seed in row["pricing_seeds"]}
+        self.assertEqual(len(new), 18)
+        self.assertFalse(old & new)
+        self.assertEqual([row["block_multipliers"] for row in serial["runs"]],
+                         [[4, 4, 4], [4, 4, 4], [8, 4, 4], [8, 4, 4], [16, 4, 4], [16, 4, 4]])
+        changed = copy.deepcopy(parts)
+        changed[0]["runs"][0]["block_multipliers"] = [4, 8, 4]
+        with self.assertRaisesRegex(ValueError, "slot"):
+            pilot.combine_components(task, self.case, changed)
+
+    def test_selected_block_changes_short_prices_but_not_fixed_long_grid(self):
+        task = tasks.joint_rough_task(days=(21, 63), deltas=(-1, 0, 1),
+                  blocks=[{"horizon": 21/252, "n_steps": 8}, {"horizon": .25, "n_steps": 24}],
+                  paths_ladder=(128,))
+        values = [.1, 0., 0., .09, .01, 2.]
+        results = []
+        for g in (4, 8):
+            p, _ = pilot.fixed_surface(task, values, multiplier=g, paths=64, seeds=[13, 14],
+                                       block_multipliers=pilot.block_scales(task, g, refine_block=0,
+                                                                           fixed_other_grid=4))
+            results.append(p)
+        self.assertGreater(np.max(np.abs(results[0][:3] - results[1][:3])), 1e-8)
+        np.testing.assert_allclose(results[0][3:], results[1][3:], atol=1e-13, rtol=1e-12)
+
+    def test_short_block_array_slots_and_historical_mapping(self):
+        path = Path(__file__).resolve().parents[1] / "scripts/run_core_pilot_array.py"
+        spec = importlib.util.spec_from_file_location("pilot_array", path)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        slots, outputs = set(), set()
+        for index in range(12):
+            cmd = module.command("rough-short-block", index, Path("/tmp/output"))
+            args = {key: cmd[i + 1] for i, key in enumerate(cmd[:-1]) if key.startswith("--")}
+            slots.add((args["--case"], args["--only-grid"], args["--only-replicate"]))
+            outputs.add(args["--out"])
+            self.assertEqual(args["--paths"], "131072")
+            self.assertEqual(args["--refine-block"], "0")
+            self.assertEqual(args["--fixed-other-grid"], "4")
+        self.assertEqual(len(outputs), 12)
+        self.assertEqual(slots, {(case, grid, rep) for case in ("2", "6")
+                                 for grid in ("4", "8", "16") for rep in ("0", "1")})
+        legacy = module.command("rough-fine", 0, Path("/tmp/output"))
+        self.assertEqual(legacy[legacy.index("--case") + 1], "4")
+        self.assertEqual(legacy[legacy.index("--paths") + 1], "1048576")
 
 
 if __name__ == "__main__":
