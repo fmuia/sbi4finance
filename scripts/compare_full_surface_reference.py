@@ -3,6 +3,8 @@
 Failed or incomplete reference diagnostics are inconclusive and never produce
 an accuracy verdict for the neural estimator. Parameter checks and descriptive
 analytic variance products are development evidence, not scientific acceptance.
+Rough forward-emulator references remain approximate targets: agreement does
+not establish independent pricing accuracy or an exact-model posterior.
 """
 
 import argparse
@@ -39,6 +41,45 @@ def _reference_issues(diagnostics, names):
                         or (value > bound if upper else value < bound)):
                     issues.append(f"{name}: missing or failing {key}")
     return issues
+
+
+def _emulator_binding(reference, task, fingerprint):
+    """Verify the fixed emulator bytes, not its financial accuracy."""
+    from sbi4finance.calibration import reference as reference_helpers
+
+    expected_target = ("independent Gaussian quote noise around deterministic forward-pricer emulator; "
+                       "approximate price target")
+    identity = reference.get("emulator", {})
+    if (task["model"] != "rough" or reference.get("target") != expected_target
+            or reference.get("task_fingerprint") != fingerprint
+            or reference.get("scientific_acceptance") is not False
+            or identity.get("task_fingerprint") != fingerprint or not identity.get("directory")):
+        raise ValueError("a task-bound approximate rough-emulator reference is required")
+    _, actual = reference_helpers.load_forward_pricer(identity["directory"], task)
+    if any(identity.get(key) != actual[key] for key in ("input_sha256", "activation", "training_record")):
+        raise ValueError("fixed emulator input identities differ from the recorded reference")
+    return actual
+
+
+def _rough_derived_comparison(task, neural, chains, diagnostics):
+    names = task["parameter_names"]
+    eta, rho = names.index("eta"), names.index("rho")
+    reference = (chains[..., eta] * chains[..., rho]).reshape(-1)
+    estimated = neural[:, eta] * neural[:, rho]
+    result = validation.agreement(estimated[:, None], reference[:, None])
+    row = diagnostics["derived_quantities"]["parameters"]["parameters[rho_eta]"]
+    sd = reference.std()
+    return {"target": "rho_eta", "status": "descriptive_approximate_target_comparison",
+            "scientific_acceptance": False, "standardized_mean_error": result["standardized_mean_error"][0],
+            "width_ratio_90": result["width_ratio"][0], "reference_mean": float(reference.mean()),
+            "neural_mean": float(estimated.mean()), "reference_sd": float(sd),
+            "reference_q05_q95": np.quantile(reference, [.05, .95]).tolist(),
+            "neural_q05_q95": np.quantile(estimated, [.05, .95]).tolist(),
+            "reference_mcse_mean": row.get("mcse_mean"), "reference_mcse_sd": row.get("mcse_sd"),
+            "reference_mcse_mean_over_sd": (None if row.get("mcse_mean") is None else float(row["mcse_mean"]/sd)),
+            "reference_quantile_mcse": None, "reference_diagnostics": row,
+            "scope": "Derived parameter agreement with the approximate emulator target; not product pricing, "
+                     "an independent model-price check or an acceptance rule."}
 
 
 def _variance_product_comparison(task, neural, chains, diagnostics):
@@ -87,18 +128,42 @@ def compare(checkpoint_directory, reference_directory, *, precision=None, draws=
     record_path = root / "reference.json"
     reference_hashes = {"reference.json": _digest(record_path)}
     reference = json.loads(record_path.read_text())
+    approximate = reference.get("likelihood_kind") == "forward-pricer-emulator"
     if (reference.get("format") != "full_surface_pymc_reference_v1"
-            or reference.get("target") != "independent Gaussian quote noise around deterministic refined Fourier prices"):
-        raise ValueError("the recorded deterministic Fourier/Gaussian full-surface reference is required")
+            or (not approximate and reference.get("target") !=
+                "independent Gaussian quote noise around deterministic refined Fourier prices")):
+        raise ValueError("a recorded Fourier/Gaussian or approximate rough-emulator reference is required")
     task, workflow, training = full_surface.load_checkpoint(checkpoint)
     fingerprint = hashlib.sha256(_json(task).encode()).hexdigest()
     if task != reference["task"] or training["task_fingerprint"] != fingerprint:
         raise ValueError("reference/checkpoint tasks differ: exact contracts, noise, prior and numerics must match")
+    emulator = _emulator_binding(reference, task, fingerprint) if approximate else None
+    if not approximate and (task["model"] != "hkde" or reference.get("likelihood_kind", "fourier") != "fourier"):
+        raise ValueError("the deterministic Fourier reference requires the Heston task")
+    if approximate and precision is not None:
+        raise ValueError("Heston precision reports cannot be applied to rough-emulator references")
     quotes = np.asarray(reference["observed_prices"], dtype=np.float64)
     if quotes.shape != (63,) or not np.isfinite(quotes).all():
         raise ValueError("reference must record the complete finite observed 63-price vector")
     # Reuse the same strict complete-input contract as sampling.
     full_surface.observations(quotes[None, :], task)
+    if ("observation_sha256" in reference and reference["observation_sha256"] !=
+            hashlib.sha256(_json(reference["observed_prices"]).encode()).hexdigest()):
+        raise ValueError("recorded observation checksum differs")
+    curve = None
+    if approximate:
+        if full_surface.uses_known_curve(task):
+            curve = np.asarray(reference.get("known_curve_levels"), dtype=np.float64)
+            if curve.shape != (7,):
+                raise ValueError("known rough reference requires seven recorded curve levels")
+            curve = curve[None, :]
+            full_surface.conditioning_data(quotes[None, :], task, context_values=curve)
+        elif reference.get("known_curve_levels") is not None:
+            raise ValueError("joint rough references must not observe auxiliary curve levels")
+        expected_curve_hash = (None if curve is None else
+            hashlib.sha256(_json(reference["known_curve_levels"]).encode()).hexdigest())
+        if "known_curve_sha256" in reference and reference["known_curve_sha256"] != expected_curve_hash:
+            raise ValueError("recorded known-curve checksum differs")
     names = task["parameter_names"]
     diagnostics = None
     for filename in ("chains.npz", "diagnostics.json", "failure.json"):
@@ -107,6 +172,11 @@ def compare(checkpoint_directory, reference_directory, *, precision=None, draws=
     if "diagnostics.json" in reference_hashes:
         diagnostics = json.loads((root / "diagnostics.json").read_text())
     issues = _reference_issues(diagnostics, names)
+    if approximate:
+        if diagnostics is not None and diagnostics.get("parameter_mcmc_diagnostics_passed", True) is not True:
+            issues.append("source parameter MCMC diagnostics did not pass")
+        derived = None if diagnostics is None else diagnostics.get("derived_quantities")
+        issues += ["rho_eta: " + issue for issue in _reference_issues(derived, ["rho_eta"])]
     if "failure.json" in reference_hashes:
         issues.append("source reference retained a failure record")
     chains = None
@@ -165,6 +235,17 @@ def compare(checkpoint_directory, reference_directory, *, precision=None, draws=
                           "calibration/variance_functionals.py": _digest(variance_functionals.__file__)},
         "versions": {n: metadata.version(n) for n in ("bayesflow", "keras", "jax", "numpy", "scipy")},
     }
+    if approximate:
+        report.update(reference_target_kind="approximate_forward_pricer_emulator", emulator=emulator,
+            known_curve_levels=None if curve is None else curve[0].tolist(),
+            observation_sha256=reference.get("observation_sha256"), known_curve_sha256=reference.get("known_curve_sha256"),
+            independent_pricing_assessed=False, derived_parameter_comparison=None,
+            scope="One development comparison with a fixed approximate emulator posterior; no exact-model accuracy claim.",
+            approximation_scope="The reference uses a deterministic emulator mean with Gaussian quote noise only. "
+                "The amortized estimator trains on numerical Monte Carlo bank prices plus fresh quote noise. "
+                "Emulator bias and bank Monte Carlo randomness/covariance are not propagated by this reference. "
+                "Independent pricing/refinement and posterior/product checks remain unassessed; even perfect "
+                "emulator agreement need not be like-for-like agreement with the simulator posterior.")
     neural = None
     started = time.perf_counter()
     if not issues and precision_issues:
@@ -175,12 +256,14 @@ def compare(checkpoint_directory, reference_directory, *, precision=None, draws=
         reference_draws = chains.reshape(-1, len(names))
         reference_sd = reference_draws.std(axis=0)
         reference_q05, reference_q95 = np.quantile(reference_draws, [0.05, 0.95], axis=0)
-        if np.any(reference_sd <= 0) or np.any(reference_q95 <= reference_q05):
+        derived_degenerate = (approximate and np.std(chains[..., names.index("eta")] * chains[..., names.index("rho")]) <= 0)
+        if np.any(reference_sd <= 0) or np.any(reference_q95 <= reference_q05) or derived_degenerate:
             report["status"] = "inconclusive_reference"
             report["reference_issues"].append("reference posterior has zero spread")
         else:
+            sampling_kwargs = {} if curve is None else {"context_values": curve}
             neural = full_surface.sample(workflow, task, quotes[None, :], draws,
-                                           encoder=training["network"]["encoder"], seed=seed)[0]
+                                           encoder=training["network"]["encoder"], seed=seed, **sampling_kwargs)[0]
             agreement = validation.agreement(neural, reference_draws)
             parameters = {}
             for j, name in enumerate(names):
@@ -197,17 +280,24 @@ def compare(checkpoint_directory, reference_directory, *, precision=None, draws=
                     "reference_mcse_mean_over_sd": None if mcse_mean is None else float(mcse_mean/reference_sd[j]),
                     "reference_quantile_mcse": None,
                 }
-            report["status"] = "completed_development_comparison"
+            report["status"] = "completed_approximate_emulator_comparison" if approximate else "completed_development_comparison"
             report["proposed_parameter_agreement"] = {
                 "parameters": parameters,
                 "all_checks_passed": all(p["mean_error_within_0_3_reference_sd"]
                                           and p["relative_width_error_within_25_percent"] for p in parameters.values()),
                 "limitations": "proposed parameter-only rules; reference quantile MCSE, numerical posterior stability and product acceptance remain unassessed"}
-            report["variance_product_comparison"] = _variance_product_comparison(task, neural, chains, diagnostics)
+            if approximate:
+                report["proposed_parameter_agreement"]["limitations"] += (
+                    "; these rules describe agreement with an approximate emulator target only, not exact-model accuracy")
+                report["derived_parameter_comparison"] = _rough_derived_comparison(task, neural, chains, diagnostics)
+            else:
+                report["variance_product_comparison"] = _variance_product_comparison(task, neural, chains, diagnostics)
     report["sampling_and_comparison_seconds"] = time.perf_counter()-started
     for filename, digest in reference_hashes.items():
         if _digest(root/filename) != digest:
             raise ValueError("reference inputs changed during comparison")
+    if emulator is not None and any(_digest(p) != h for p, h in emulator["input_sha256"].items()):
+        raise ValueError("fixed emulator inputs changed during comparison")
     return report, neural
 
 
