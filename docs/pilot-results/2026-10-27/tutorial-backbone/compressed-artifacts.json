@@ -1,0 +1,14 @@
+{
+  "source-inventory.json": {
+    "stored_file": "source-inventory.json.gz",
+    "raw_sha256": "476626ffd40651b263650dcb7876fe90f56c2e4be65577e73cd6ed6bf164335e",
+    "stored_sha256": "d5aef18fce39e411e6e9af4d8ae6fcd69f94b6103a7232a2e5baa44e4582545f",
+    "raw_bytes": 556293
+  },
+  "seed-audit.json": {
+    "stored_file": "seed-audit.json.gz",
+    "raw_sha256": "2ff4d4e2b25ab59127080eef981040ec4843bf9cbf623225d087b186d42474fb",
+    "stored_sha256": "2f0a1eefa193e8bd4721dc6b0004d23d31579f3bde8f36533d0bc5c6a6daec23",
+    "raw_bytes": 238854
+  }
+}

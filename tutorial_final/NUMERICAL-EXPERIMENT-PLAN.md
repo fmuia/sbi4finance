@@ -35,11 +35,13 @@ The current new FlowMatching fit passes one of three conditional development cas
 
 Compare original and new estimators on the same recoverable observations, prior, quote law and metrics. If an old panel cannot be recovered, freeze a shared new comparison panel and evaluate both there. Keep coverage levels consistent and report paired differences and Monte Carlo uncertainty. Meeting the recent three-case screen alone does not deliver the replacement estimator.
 
+**Heston data milestone completed:** the 50k and 100k snapshots are checked, with the existing prefix and holdouts preserved. Generation/setup/snapshot checks used **1.0114 allocated CPU-hours**, no GPU. Known-curve software support is checked; its scientific fit and the matched Heston reproduction are still to run. See the [work order](../docs/tutorial-backbone-work-order.md) for artifact paths.
+
 ## Immediate work, in parallel
 
 | Workstream | Next concrete action | Completion condition |
 | --- | --- | --- |
-| Heston data and estimator | Append missing IDs to the existing bank using its frozen compatible producer. Publish 50k and 100k snapshots. Fit the matched 50k recipe first, using native BayesFlow sampling; retain the old checkpoint as a control. Then fit 100k under a separately costed limit. | Checked bank and a new estimator that meets the declared calibration/conditional/product standards and at least matches the original evidence on shared cases. |
+| Heston data and estimator | The append and 50k/100k snapshots are complete. Fit the matched 50k recipe first, using native BayesFlow sampling; retain the old checkpoint as a control. Then fit 100k under a separately costed limit. | Checked bank and a new estimator that meets the declared calibration/conditional/product standards and at least matches the original evidence on shared cases. |
 | Known-curve rough | Add the existing supplied-curve task to the shared BF2.1 trainer/evaluator. Recover the original model/bank if available; otherwise produce an explicitly labelled reproduction/control. Establish matched results before extending its bank. | A three-target estimator using the known curve, with improved calibration for rho and rho×eta as well as H/eta, independent reference checks and cached lesson examples. |
 | Joint rough | Preserve running work and successful shards in the current collection, within its existing ceiling. Finish the third lesson after the foundational Heston/known-curve work is established. | Checked snapshot, selected posterior/emulator and completed numerical/posterior/product checks. Bank generation alone is not the deliverable. |
 

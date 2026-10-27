@@ -1,0 +1,20 @@
+{
+  "format": "known_curve_route_verification_v1",
+  "source_revision": "8c26662",
+  "tests_command": "env KERAS_BACKEND=jax PYTHONPATH=src MPLCONFIGDIR=/private/tmp/sbi4finance-known-curve-mplconfig OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 .pixi/envs/core/bin/python -m unittest discover -s tests -p 'test_full_surface*.py' -v",
+  "full_surface_tests_passed": 32,
+  "full_surface_suite_seconds": 43.3,
+  "new_tests": 7,
+  "actual_tiny_BayesFlow_fit_save_reload_sample_passed": true,
+  "final_timing_field_adjustment_focused_batched_evaluation_test_passed": true,
+  "financial_pricing_calls": 0,
+  "notebooks_executed": false,
+  "scientific_acceptance": false,
+  "scope": "Software/input-contract checks only; no trained tutorial estimator or numerical superiority claim. Existing Heston/joint families, set encoders, native checkpoint and recovery/reference checks included.",
+  "source_sha256": {
+    "src/sbi4finance/calibration/full_surface.py": "f3ffbbb9d3a3440a2dfbeac78e4e84e867227d569cc28ce48d5d0fa3accc9e79",
+    "scripts/train_full_surface.py": "ce0fe607e1c7068c4942f7c62127b86285193fb7c95e241e310ed19b5fa57703",
+    "scripts/evaluate_full_surface.py": "d6c74029cdb573db4518d1d81e7076bb129ee517e1b380a875a0fc6604cad006",
+    "tests/test_full_surface_known_curve.py": "ff1a1e77e4fa055ab9aa888c6c030da1ff4d5521f857b20c16a9d07589b541f1"
+  }
+}

@@ -109,6 +109,23 @@ The running bank uses the separate [32k development configuration](../configs/ca
 
 For generation that grows later, use the existing [incremental collection/snapshot workflow](incremental-calibration-banks.md). Loading an old compatible Heston bank for training remains supported. Changed generator source hashes intentionally prevent silently adopting old shards into a new generator collection; do not bypass that check. Old seven-level rough data/checkpoints are not data for the new joint task.
 
+## Use the known-curve rough route
+
+Use the existing `--model rough` bank configuration and the shared trainer with `--encoder vector`; no new generator is needed. The stored `context_values` supply the known curve during training and batched evaluation. The original pilot configuration remains a reproduction target with its recorded numerical scope, rather than a newly accepted teaching bank.
+
+When sampling from a selected known-curve checkpoint, supply one curve row for each observed quote row:
+
+```python
+task, workflow, record = full_surface.load_checkpoint(checkpoint_directory)
+draws = full_surface.sample(
+    workflow, task, observed_quotes, 1000,
+    context_values=known_curve_levels,  # [batch, 7]
+    seed=0,
+)
+```
+
+Quote arrays have shape `[batch, 63]` or `[batch, 63, 1]`. Curve levels are positive annualized variances (0.04 corresponds to 20% volatility); their logarithms are taken internally. For the joint checkpoint, curve uncertainty is inferred and the stored auxiliary levels do not enter the conditions. Known-curve training/evaluation and exact seeded reload have software checks; a scientifically accepted known-curve checkpoint still needs the work order's numerical runs.
+
 ## PyMC Heston reference route
 
 ```sh

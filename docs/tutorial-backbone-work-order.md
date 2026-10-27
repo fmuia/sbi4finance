@@ -2,11 +2,13 @@
 
 **Scope correction, 27 October 2026.** The requested outcome is the bank/checkpoint/evidence/cache set that collaborators and participants use. The new 20k Heston runs were development runs below Francesco's existing 50k baseline. Correct that mismatch and restore the known-curve rough lesson before treating the six-target joint extension as the core deliverable. [Central plan](../tutorial_final/NUMERICAL-EXPERIMENT-PLAN.md).
 
+**Execution update:** the Heston extension and both checked snapshots are complete: **100k unique training surfaces**, with nested **50k/100k snapshots** and the original 5k validation/5k test pools preserved. All 32 append jobs and both full snapshot checks passed. This unit used **3,641 allocated CPU-seconds (1.0114 hours)** and no GPU, inside the separate six-hour ceiling. The known-curve BF2.1 route is implemented and its 32 full-surface software checks passed. New estimator fits and scientific acceptance remain the next milestone. [Evidence](pilot-results/2026-10-27/tutorial-backbone/README.md).
+
 ## Work that can proceed together
 
 | Work | Concrete next output | Boundary |
 | --- | --- | --- |
-| Heston data | Nested 50k and 100k training snapshots, retaining the current 20k prefix and 5k/5k validation/test pools. | Frozen original producer; append missing IDs only. A separate proposed **6 allocated CPU-hour** extension ceiling includes setup, workers, cleanup exposure and both integrity/freezes; no GPU. |
+| Heston data | Nested 50k and 100k training snapshots, retaining the current 20k prefix and 5k/5k validation/test pools. | Frozen original producer; append missing IDs only. The separate **6 allocated CPU-hour** extension ceiling includes setup, workers, cleanup exposure and both integrity/freezes; no GPU. |
 | Heston reproduction | One BF2.1 FlowMatching fit on 50k with Francesco's recorded recipe, native sampling, and comparison against the archived checkpoint. | Prepare the exact fit/evaluation manifest and cost before GPU submission. The 100k fit follows as a measured improvement experiment, not an automatic success claim. |
 | Known-curve rough software | The existing three-target task works in the shared BF2.1 train/reload/sample/evaluate route, including supplied curves and rho×eta diagnostics. | Reuse the existing task, bank and trainer. First vector baseline; no new storage framework or global fixed-curve task. |
 | Known-curve rough baseline | Recover the original compatible bank/model; if unavailable, use a clearly labelled reproduction/control and a shared comparison panel. Then produce the main bank and selected estimator. | Preserve task/prior/noise/numerical identities. Cost the chosen main bank and fits separately; do not charge them to the joint collection's generation ceiling. |
@@ -22,9 +24,16 @@ The live collection is at:
 
 Collection ID: `402230db66b9885b59524e7808eebf1b3882c4a271f97eccc7cf970581e85221`; root seed **271028**. Its producer remains frozen at source `9d903db` in the root's `repo/`. The current optimized source is not interchangeable with that producer for appending shards. Use the existing collection `plan → shard → freeze` commands without weakening identity checks.
 
+The checked snapshot paths are:
+
+```text
+/oscar/scratch/afengler/sbi4finance-heston-backbone-20261027/snapshot-50k/
+/oscar/scratch/afengler/sbi4finance-heston-backbone-20261027/snapshot-100k/
+```
+
 The original 60 shards contain 20k training, 5k validation and 5k test surfaces. Their recorded generation time totals 1,195.58 process CPU-seconds, around 39.85 ms/surface. Adding 80k training rows is an arithmetic **0.89 process CPU-hours**, before overhead. This supports a small bounded extension; it is not a completion guarantee or the actual allocated cost.
 
-Before pricing, verify frozen source/runtime, existing payload identities and missing ID ranges. Audit the added IDs' streams against the existing collection and retained historical inventories. Preserve the existing holdout bytes. Plan the extension so 50k is a shard boundary, publish both immutable snapshots and record hashes and actual accounting. A timeout or numerical failure remains visible with its original range; no replacement seeds or unrecorded recovery.
+The completed preflight verified frozen source/runtime, existing payload identities and missing ID ranges. The added IDs' stream audit passed against the existing collection and retained historical inventories. Preserve the existing holdout bytes. Plan the extension so 50k is a shard boundary, publish both immutable snapshots and record hashes and actual accounting. A timeout or numerical failure remains visible with its original range; no replacement seeds or unrecorded recovery.
 
 ## Reproduce the Heston estimator before changing the recipe
 

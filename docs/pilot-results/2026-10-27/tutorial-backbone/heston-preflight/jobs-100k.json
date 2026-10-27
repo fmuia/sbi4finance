@@ -1,0 +1,663 @@
+{
+  "collection_id": "402230db66b9885b59524e7808eebf1b3882c4a271f97eccc7cf970581e85221",
+  "configuration": {
+    "root_seed": 271028,
+    "splits": {
+      "test": 5000,
+      "train": 100000,
+      "validation": 5000
+    },
+    "task": {
+      "context": {
+        "contracts": [
+          {
+            "maturity": 0.01984126984126984,
+            "option_type": "put",
+            "strike": 0.9452142884010055
+          },
+          {
+            "maturity": 0.01984126984126984,
+            "option_type": "put",
+            "strike": 0.9586226994567999
+          },
+          {
+            "maturity": 0.01984126984126984,
+            "option_type": "put",
+            "strike": 0.9722213165740635
+          },
+          {
+            "maturity": 0.01984126984126984,
+            "option_type": "put",
+            "strike": 0.9860128379357256
+          },
+          {
+            "maturity": 0.01984126984126984,
+            "option_type": "put",
+            "strike": 1.0
+          },
+          {
+            "maturity": 0.01984126984126984,
+            "option_type": "call",
+            "strike": 1.014185578043342
+          },
+          {
+            "maturity": 0.01984126984126984,
+            "option_type": "call",
+            "strike": 1.0285723867111078
+          },
+          {
+            "maturity": 0.01984126984126984,
+            "option_type": "call",
+            "strike": 1.0431632805760247
+          },
+          {
+            "maturity": 0.01984126984126984,
+            "option_type": "call",
+            "strike": 1.0579611547045846
+          },
+          {
+            "maturity": 0.03968253968253968,
+            "option_type": "put",
+            "strike": 0.9234100296746439
+          },
+          {
+            "maturity": 0.03968253968253968,
+            "option_type": "put",
+            "strike": 0.9419892367120802
+          },
+          {
+            "maturity": 0.03968253968253968,
+            "option_type": "put",
+            "strike": 0.9609422613636284
+          },
+          {
+            "maturity": 0.03968253968253968,
+            "option_type": "put",
+            "strike": 0.9802766249195318
+          },
+          {
+            "maturity": 0.03968253968253968,
+            "option_type": "put",
+            "strike": 1.0
+          },
+          {
+            "maturity": 0.03968253968253968,
+            "option_type": "call",
+            "strike": 1.0201202136
+          },
+          {
+            "maturity": 0.03968253968253968,
+            "option_type": "call",
+            "strike": 1.0406452501953098
+          },
+          {
+            "maturity": 0.03968253968253968,
+            "option_type": "call",
+            "strike": 1.061583254911065
+          },
+          {
+            "maturity": 0.03968253968253968,
+            "option_type": "call",
+            "strike": 1.0829425367540593
+          },
+          {
+            "maturity": 0.08333333333333333,
+            "option_type": "put",
+            "strike": 0.8909472522884108
+          },
+          {
+            "maturity": 0.08333333333333333,
+            "option_type": "put",
+            "strike": 0.9170415101799084
+          },
+          {
+            "maturity": 0.08333333333333333,
+            "option_type": "put",
+            "strike": 0.9439000224008953
+          },
+          {
+            "maturity": 0.08333333333333333,
+            "option_type": "put",
+            "strike": 0.9715451725992442
+          },
+          {
+            "maturity": 0.08333333333333333,
+            "option_type": "put",
+            "strike": 1.0
+          },
+          {
+            "maturity": 0.08333333333333333,
+            "option_type": "call",
+            "strike": 1.029288218606067
+          },
+          {
+            "maturity": 0.08333333333333333,
+            "option_type": "call",
+            "strike": 1.0594342369612506
+          },
+          {
+            "maturity": 0.08333333333333333,
+            "option_type": "call",
+            "strike": 1.0904631784921235
+          },
+          {
+            "maturity": 0.08333333333333333,
+            "option_type": "call",
+            "strike": 1.1224009024456676
+          },
+          {
+            "maturity": 0.16666666666666666,
+            "option_type": "put",
+            "strike": 0.8493369300745177
+          },
+          {
+            "maturity": 0.16666666666666666,
+            "option_type": "put",
+            "strike": 0.8847284766100544
+          },
+          {
+            "maturity": 0.16666666666666666,
+            "option_type": "put",
+            "strike": 0.9215947754162442
+          },
+          {
+            "maturity": 0.16666666666666666,
+            "option_type": "put",
+            "strike": 0.9599972788587706
+          },
+          {
+            "maturity": 0.16666666666666666,
+            "option_type": "put",
+            "strike": 1.0
+          },
+          {
+            "maturity": 0.16666666666666666,
+            "option_type": "call",
+            "strike": 1.041669619302238
+          },
+          {
+            "maturity": 0.16666666666666666,
+            "option_type": "call",
+            "strike": 1.0850755957772693
+          },
+          {
+            "maturity": 0.16666666666666666,
+            "option_type": "call",
+            "strike": 1.1302902827674572
+          },
+          {
+            "maturity": 0.16666666666666666,
+            "option_type": "call",
+            "strike": 1.177389048551396
+          },
+          {
+            "maturity": 0.25,
+            "option_type": "put",
+            "strike": 0.8187307530779818
+          },
+          {
+            "maturity": 0.25,
+            "option_type": "put",
+            "strike": 0.8607079764250578
+          },
+          {
+            "maturity": 0.25,
+            "option_type": "put",
+            "strike": 0.9048374180359595
+          },
+          {
+            "maturity": 0.25,
+            "option_type": "put",
+            "strike": 0.951229424500714
+          },
+          {
+            "maturity": 0.25,
+            "option_type": "put",
+            "strike": 1.0
+          },
+          {
+            "maturity": 0.25,
+            "option_type": "call",
+            "strike": 1.0512710963760241
+          },
+          {
+            "maturity": 0.25,
+            "option_type": "call",
+            "strike": 1.1051709180756477
+          },
+          {
+            "maturity": 0.25,
+            "option_type": "call",
+            "strike": 1.161834242728283
+          },
+          {
+            "maturity": 0.25,
+            "option_type": "call",
+            "strike": 1.2214027581601699
+          },
+          {
+            "maturity": 0.5,
+            "option_type": "put",
+            "strike": 0.7536383164437648
+          },
+          {
+            "maturity": 0.5,
+            "option_type": "put",
+            "strike": 0.808857893484718
+          },
+          {
+            "maturity": 0.5,
+            "option_type": "put",
+            "strike": 0.8681234453945849
+          },
+          {
+            "maturity": 0.5,
+            "option_type": "put",
+            "strike": 0.9317314234233945
+          },
+          {
+            "maturity": 0.5,
+            "option_type": "put",
+            "strike": 1.0
+          },
+          {
+            "maturity": 0.5,
+            "option_type": "call",
+            "strike": 1.073270660257192
+          },
+          {
+            "maturity": 0.5,
+            "option_type": "call",
+            "strike": 1.151909910168909
+          },
+          {
+            "maturity": 0.5,
+            "option_type": "call",
+            "strike": 1.2363111098437878
+          },
+          {
+            "maturity": 0.5,
+            "option_type": "call",
+            "strike": 1.3268964411453439
+          },
+          {
+            "maturity": 1.0,
+            "option_type": "put",
+            "strike": 0.6703200460356393
+          },
+          {
+            "maturity": 1.0,
+            "option_type": "put",
+            "strike": 0.7408182206817179
+          },
+          {
+            "maturity": 1.0,
+            "option_type": "put",
+            "strike": 0.8187307530779818
+          },
+          {
+            "maturity": 1.0,
+            "option_type": "put",
+            "strike": 0.9048374180359595
+          },
+          {
+            "maturity": 1.0,
+            "option_type": "put",
+            "strike": 1.0
+          },
+          {
+            "maturity": 1.0,
+            "option_type": "call",
+            "strike": 1.1051709180756477
+          },
+          {
+            "maturity": 1.0,
+            "option_type": "call",
+            "strike": 1.2214027581601699
+          },
+          {
+            "maturity": 1.0,
+            "option_type": "call",
+            "strike": 1.3498588075760032
+          },
+          {
+            "maturity": 1.0,
+            "option_type": "call",
+            "strike": 1.4918246976412703
+          }
+        ],
+        "dividend": 0.0,
+        "quote_noise_std": [
+          7.393122257748389e-05,
+          0.00014734934969936199,
+          0.00021842402110031601,
+          0.0002338836145277794,
+          0.00016856715907419804,
+          0.00023720138879472198,
+          0.00022466491669818916,
+          0.00015370943102313063,
+          7.82163616067961e-05,
+          0.00010333131487679448,
+          0.00020654717174897207,
+          0.00030707070665308804,
+          0.0003297651437400239,
+          0.00023836631390862972,
+          0.0003364000888699078,
+          0.0003195516723526538,
+          0.00021926701887794902,
+          0.0001119018762588081,
+          0.0001470535520785712,
+          0.0002952606968936182,
+          0.00044092792100661605,
+          0.0004756382639001542,
+          0.00034535022356236905,
+          0.0004895688613506721,
+          0.0004671341355465552,
+          0.0003219709180184147,
+          0.00016505303956082854,
+          0.0002029661289650328,
+          0.0004099682159446388,
+          0.0006158977907659265,
+          0.0006683659690345338,
+          0.00048819551274953464,
+          0.0006962165245187742,
+          0.0006682956622532423,
+          0.00046338309072573556,
+          0.00023897009747029984,
+          0.0002439600928959136,
+          0.0004950371278750658,
+          0.0007471169572237573,
+          0.0008144916556710369,
+          0.0005976658711421461,
+          0.0008562515358464142,
+          0.0008256919335248641,
+          0.0005751510865871115,
+          0.0002979735303440804,
+          0.00033059924189120005,
+          0.0006778258107718836,
+          0.0010336325808796537,
+          0.0011385746299607095,
+          0.0008441713068195146,
+          0.0012219987448500187,
+          0.0011906516133887396,
+          0.0008380035803961523,
+          0.00043867095751078236,
+          0.00043983595980427227,
+          0.0009150968861055087,
+          0.0014160391507115786,
+          0.0015828168637360485,
+          0.0011908576424310355,
+          0.0017492831664407858,
+          0.001729554124341907,
+          0.001235251591494895,
+          0.000656158147746766
+        ],
+        "rate": 0.0,
+        "spot": 1.0
+      },
+      "context_prior": {},
+      "fixed_parameters": {
+        "jump_down_rate": 10.0,
+        "jump_intensity": 0.0,
+        "jump_up_probability": 0.5,
+        "jump_up_rate": 10.0,
+        "kappa": 2.0
+      },
+      "measure": "Q",
+      "model": "hkde",
+      "model_context": {},
+      "numerics": {
+        "max_refinement_over_quote_sigma": 0.1,
+        "quadrature_ladder": [
+          [
+            512,
+            400.0
+          ],
+          [
+            1024,
+            600.0
+          ],
+          [
+            2048,
+            1500.0
+          ],
+          [
+            4096,
+            3000.0
+          ],
+          [
+            8192,
+            6000.0
+          ]
+        ]
+      },
+      "parameter_names": [
+        "initial_variance",
+        "theta",
+        "vol_of_vol",
+        "rho"
+      ],
+      "prior_bounds": [
+        [
+          0.01,
+          0.16
+        ],
+        [
+          0.01,
+          0.16
+        ],
+        [
+          0.1,
+          1.5
+        ],
+        [
+          -0.95,
+          -0.1
+        ]
+      ],
+      "task_id": "hkde_calibration_v1"
+    }
+  },
+  "seed_audit": {
+    "protocol": "calibration_legacy_seedsequence_uint64_pricing_v1",
+    "configuration_sha256": "1dcc7a239ef0a4b85ca42f8a0cd0556c291bcd0b7d04146844d2fde70a373273",
+    "examples_checked": 110000,
+    "duplicate_pricing_seeds": 0
+  },
+  "jobs": [
+    {
+      "split": "train",
+      "start": 20000,
+      "stop": 22500,
+      "job_sha256": "f59fd464ca4a99b6d03e3aa50b3bd3cffb95b20dfdf60ef3f741e6be2fe4e7b8"
+    },
+    {
+      "split": "train",
+      "start": 22500,
+      "stop": 25000,
+      "job_sha256": "da181833f93cabeb42c8a8134081129422cffa5f729f09e570323d5fe5b8cfb5"
+    },
+    {
+      "split": "train",
+      "start": 25000,
+      "stop": 27500,
+      "job_sha256": "8686fd525d4320849c256a1e0124dade146cb94ca9198924475478a0dc08462f"
+    },
+    {
+      "split": "train",
+      "start": 27500,
+      "stop": 30000,
+      "job_sha256": "884e926de8491eff665addf0076c3505e2c885562b9a53994f8523fe03976bac"
+    },
+    {
+      "split": "train",
+      "start": 30000,
+      "stop": 32500,
+      "job_sha256": "a513a32e30b0b6dc0f39025d16c6252159db92599a96056f81a7747b11d046b7"
+    },
+    {
+      "split": "train",
+      "start": 32500,
+      "stop": 35000,
+      "job_sha256": "19fb8929123c76c1d01a3b64ecb08d2b32881927bf48bc5fa81db2fab71143aa"
+    },
+    {
+      "split": "train",
+      "start": 35000,
+      "stop": 37500,
+      "job_sha256": "d982a15ebe3af4e4bfbad8bf589e817ced53006655245b89bc3a20b516be339d"
+    },
+    {
+      "split": "train",
+      "start": 37500,
+      "stop": 40000,
+      "job_sha256": "2bff50202d7eb99b8188e2f1e462bac94dc5284205fb5b2d89a10d6099fcbf48"
+    },
+    {
+      "split": "train",
+      "start": 40000,
+      "stop": 42500,
+      "job_sha256": "680609d84c474b59b4dac093c904c389127bef4ac2a6e0706f58908cf745e5b2"
+    },
+    {
+      "split": "train",
+      "start": 42500,
+      "stop": 45000,
+      "job_sha256": "f4b908907a3b2ebbb0d6cfac5ef104df2681d67347177ce78a4ce2e62bf028ce"
+    },
+    {
+      "split": "train",
+      "start": 45000,
+      "stop": 47500,
+      "job_sha256": "2fbf53ff689a679c16e48be738a228df7e51803992f07d035eddcea0ff8042be"
+    },
+    {
+      "split": "train",
+      "start": 47500,
+      "stop": 50000,
+      "job_sha256": "f8e942c75fba85827cc4c16753ddcd777482b5b62f0f10ebdf76c394c26aa5b9"
+    },
+    {
+      "split": "train",
+      "start": 50000,
+      "stop": 52500,
+      "job_sha256": "5a248cd75121b1f512413e71ef42cbf436adf93074cd374851d6e6063481d38d"
+    },
+    {
+      "split": "train",
+      "start": 52500,
+      "stop": 55000,
+      "job_sha256": "aaccc6c721912387dc097ac062d565600bb9679a177140adb478102df4d45323"
+    },
+    {
+      "split": "train",
+      "start": 55000,
+      "stop": 57500,
+      "job_sha256": "5b9ab661bc233677bc21ea833546703ccdc3b7cb42c12a2432c635f267549a25"
+    },
+    {
+      "split": "train",
+      "start": 57500,
+      "stop": 60000,
+      "job_sha256": "91bde8fc468988a865f4705b09fad64e4e9b9efe6ba6e1523da65d7c037550b7"
+    },
+    {
+      "split": "train",
+      "start": 60000,
+      "stop": 62500,
+      "job_sha256": "a576a83a17d6ce4bc26d6206a17e6fabb10d15a2dc49753bfcdbaa919380e587"
+    },
+    {
+      "split": "train",
+      "start": 62500,
+      "stop": 65000,
+      "job_sha256": "1aa902c8193c615cb4f9cda95b1fe041a29c37ffa68883579539d127d8a0611b"
+    },
+    {
+      "split": "train",
+      "start": 65000,
+      "stop": 67500,
+      "job_sha256": "405d52411bfd39f02cafdb91c3db9272de1f58095e312954cf472d17816d7978"
+    },
+    {
+      "split": "train",
+      "start": 67500,
+      "stop": 70000,
+      "job_sha256": "8d52d84c7be9f4f3cc1ae4600b65583ce77f6a826b50fe745ada4c02dce5c521"
+    },
+    {
+      "split": "train",
+      "start": 70000,
+      "stop": 72500,
+      "job_sha256": "19c869df63c9c09dc9103ce2f3e6a9935359b2f567f28d5de5d03ce4861ae80f"
+    },
+    {
+      "split": "train",
+      "start": 72500,
+      "stop": 75000,
+      "job_sha256": "11ab2cd97b9db9e80b9900e553b6be98cf3d1a2481be8c511f4be9076ad9ce45"
+    },
+    {
+      "split": "train",
+      "start": 75000,
+      "stop": 77500,
+      "job_sha256": "13554d8c8e61451986a783b7dc36925ae700457dc5504fb2c78ada0bddf904ba"
+    },
+    {
+      "split": "train",
+      "start": 77500,
+      "stop": 80000,
+      "job_sha256": "35a5b9e23c11fd55b8e4e9501b8b8a3556a1b188d6bb1beffbf11fb7534e5989"
+    },
+    {
+      "split": "train",
+      "start": 80000,
+      "stop": 82500,
+      "job_sha256": "97c115edcb4258ed2362b9c1c2674141ae4139d4acdb4381dd73a393b0ee3f4b"
+    },
+    {
+      "split": "train",
+      "start": 82500,
+      "stop": 85000,
+      "job_sha256": "f02ea9e222d327addd6f28816c09aadbacb0225490d177fff8f4b435610b1c44"
+    },
+    {
+      "split": "train",
+      "start": 85000,
+      "stop": 87500,
+      "job_sha256": "c27eca7d42f587769d55fa1aa017331d057e40df54fe9c0fdfe7fee7de1a8336"
+    },
+    {
+      "split": "train",
+      "start": 87500,
+      "stop": 90000,
+      "job_sha256": "27ebfcbcf5fc48e3bf0ae24c8e70c38e1988f0d621fd0a08d5490809f530c095"
+    },
+    {
+      "split": "train",
+      "start": 90000,
+      "stop": 92500,
+      "job_sha256": "a28d6b40146249b7cfbc11f42d167be08e1bc8ec921767bedfb3e5745d926b0d"
+    },
+    {
+      "split": "train",
+      "start": 92500,
+      "stop": 95000,
+      "job_sha256": "80dc26ed75e01ac8e1076fa3d4303179aa48e6455c091f791e8f60348f5a2e5f"
+    },
+    {
+      "split": "train",
+      "start": 95000,
+      "stop": 97500,
+      "job_sha256": "e8e73f4cae05790fd9c3935442352d3909f7f9f18f0402290feb8bc37884633c"
+    },
+    {
+      "split": "train",
+      "start": 97500,
+      "stop": 100000,
+      "job_sha256": "e2354f7a690a56e7f8ae53df9b55fe5a9c250cfe7126e02c926203a972f555d5"
+    }
+  ],
+  "collection": "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/runs/heston-development/collection",
+  "collection_sha256": "8f9c4a5e6b3bebaa25215f720df02aee178b78bfce8483f0024679ffc869df1e"
+}
