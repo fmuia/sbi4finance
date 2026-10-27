@@ -3,7 +3,11 @@
   "checkpoint_sha256": "5319e81196e1bc36ca78643b144fd2817f4fee726bfae4986a92d3978422e09e",
   "training_metadata_sha256": "97c7f3effaafacde835e3595726ea2112658e000335bd55c014cfedadc09974b",
   "task_fingerprint": "5e499526ff8f29a72f49785a1a36006b1d769d26bca8a6f83f7a8c8ac4d431fa",
-  "case_indices": [0, 1, 2],
+  "case_indices": [
+    0,
+    1,
+    2
+  ],
   "draws_per_case": 10000,
   "seed_base": 271026,
   "euler_draw_sha256": [
@@ -12,8 +16,23 @@
     "5a7c58b1574968dad460b5907d828ce776d3fd3a36ce05ffc878c12841f722c6"
   ],
   "sampling_policy": "Installed BayesFlow2.1 native FlowMatching defaults; pass only method and steps to override the cached checkpoint's stored Euler100 settings. Read and record native min/max steps and sampling tolerances from installed source before sampling.",
-  "resources": {"cpus": 4, "gpus": 1, "memory_gib": 24, "wall_seconds": 900},
-  "internal_wall_seconds": 840,
+  "resources": {
+    "cpus": 4,
+    "gpus": 1,
+    "memory_gib": 24,
+    "wall_seconds": 630
+  },
+  "internal_wall_seconds": 570,
   "scope": "Three existing old-readiness observations only. No400Euler, alternate solver, fit, data generation, MCMC,500-case validation or test evaluation. Paired differences use the same integer seed and draw shape as retained Euler outputs.",
-  "stop_rule": "Retain completed cases and in-flight state on failure or allocation timeout; no automatic retry, additional policies or inference-accuracy claim."
+  "stop_rule": "Retain completed cases and in-flight state on failure or allocation timeout; no automatic retry, additional policies or inference-accuracy claim.",
+  "corrective_attempt": {
+    "preserved_failed_job_id": 8010024,
+    "failure": "Guard deep-copied Keras tracked dictionary before posterior sampling; corrected to a plain mapping and tested with actual tracked configuration.",
+    "original_allocated_seconds": 15,
+    "original_total_gpu_seconds_ceiling": 900,
+    "new_requested_seconds": 630,
+    "scheduler_kill_wait_seconds": 180,
+    "cleanup_allowance_seconds": 60,
+    "total_conservative_exposure_seconds": 885
+  }
 }

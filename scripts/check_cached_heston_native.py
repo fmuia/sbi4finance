@@ -7,7 +7,6 @@ case files remain development evidence when a solver call is interrupted.
 
 import argparse
 import ast
-import copy
 import hashlib
 from importlib import metadata
 import json
@@ -118,12 +117,14 @@ def checked_inputs(euler_run, references, recipe):
 
 
 def native_draws(workflow, task, quotes, count, seed):
-    stored = copy.deepcopy(workflow.inference_network.integrate_kwargs)
+    # Keras wraps this scalar mapping in TrackedDict. Copy its key/value pairs,
+    # not its layer-tracking owner, which can contain non-pickleable modules.
+    stored = dict(workflow.inference_network.integrate_kwargs)
     if stored.get("method") != "euler" or stored.get("steps") != 100:
         raise ValueError("the restored cached checkpoint must retain its stored Euler100 configuration")
     result = workflow.sample(num_samples=count, conditions=full_surface.conditioning_data(quotes[None, :], task),
                              sample_shape=(), seed=seed, method="tsit5", steps="adaptive")
-    if workflow.inference_network.integrate_kwargs != stored:
+    if dict(workflow.inference_network.integrate_kwargs) != stored:
         raise RuntimeError("call-time native overrides mutated the stored integrator configuration")
     draws = np.concatenate([np.asarray(result[name], dtype=np.float64) for name in task["parameter_names"]], axis=-1)
     bounds = np.asarray(task["prior_bounds"])

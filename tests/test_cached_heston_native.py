@@ -57,6 +57,22 @@ class CachedNativeTests(unittest.TestCase):
         self.assertNotIn("integrate_kwargs", kwargs)
         self.assertEqual(workflow.inference_network.integrate_kwargs, original)
 
+    def test_actual_bayesflow_tracked_config_with_posterior_call_mocked(self):
+        # Construct the real BF/Keras configuration container without building,
+        # training, loading a checkpoint or invoking any posterior sampler.
+        import bayesflow as bf
+        workflow = self.workflow()
+        workflow.inference_network = bf.networks.FlowMatching(
+            integrate_kwargs={"method": "euler", "steps": 100}, subnet_kwargs={"widths": [16, 16]})
+        self.assertIsNot(type(workflow.inference_network.integrate_kwargs), dict)
+        stored = dict(workflow.inference_network.integrate_kwargs)
+        result = native.native_draws(workflow, self.task, np.zeros(63), 2, 271027)
+        self.assertEqual(result.shape, (2, 4))
+        workflow.sample.assert_called_once()
+        self.assertEqual(workflow.sample.call_args.kwargs["method"], "tsit5")
+        self.assertEqual(workflow.sample.call_args.kwargs["steps"], "adaptive")
+        self.assertEqual(dict(workflow.inference_network.integrate_kwargs), stored)
+
     def test_mutated_stored_solver_and_invalid_draws_fail_closed(self):
         with self.assertRaisesRegex(RuntimeError, "mutated"):
             native.native_draws(self.workflow(mutate=True), self.task, np.zeros(63), 2, 271027)
