@@ -1,10 +1,31 @@
 # Implementing the complete-surface tutorial
 
-The first implementation covers **complete-surface Heston and joint rough Bergomi** on the declared 63-contract design. Sparse inputs are rejected. Sparse-chain specification and implementation remain a [separate downstream unit](../tutorial_final/SPARSE-QUOTE-CASE-PLAN.md).
+The tutorial backbone has three routes on the declared complete 63-contract design:
 
-The tutorial workflow is observation → posterior → diagnostics/reference comparison → product uncertainty. This PR builds the generation, training, reload, sample-based evaluation and first PyMC reference pieces. It does not yet deliver scientifically accepted checkpoints or participant notebooks.
+| Route | Unknowns | Information supplied to inference |
+| --- | --- | --- |
+| Heston | Initial variance, long-run variance, vol-of-vol and rho; mean reversion is fixed. | Quotes and the declared design/noise. |
+| Rough Bergomi with a known curve | H, eta and rho. | Quotes, design/noise and the seven declared forward-variance levels. |
+| Joint rough Bergomi | H, eta, rho, short variance, long variance and curve decay. | Quotes and design/noise; the generating curve is not supplied. |
+
+In the first rough lesson, the curve is **known and held fixed for each inference problem**. It can vary across training examples, as in Francesco's supplied-curve task. This is followed by the joint lesson, where curve uncertainty becomes part of the posterior. Sparse inputs are rejected; sparse-chain specification and implementation remain a [separate downstream unit](../tutorial_final/SPARSE-QUOTE-CASE-PLAN.md).
+
+The shared workflow is observation → posterior → diagnostics/reference comparison → product uncertainty. The deliverable for each route is a reusable bank and checked estimator that a live tutorial can load. This PR builds the generation, training, reload, sample-based evaluation and first PyMC reference pieces; the new development checkpoints have not yet met the tutorial acceptance requirements.
 
 Actual Oscar readiness, development training and bounded scientific pilots are recorded in the [26 October development report](oscar-pilot-2026-10-26.md). The [reviewed unit](reviewed-unit-2026-10-27.md) completed the Heston references and rough cost pilot; the [follow-up](followup-results-2026-10-27.md) checked empirical pricing errors and two further Heston fits. The [latest execution](native-default-and-bank-start.md) records the native FlowMatching sampling check and the authorized start of the first 32k joint-rough development bank. The monotone exponential curve and working numerical policy support development, with limits retained; no new estimator is accepted as a teaching checkpoint.
+
+Heston reproduction and the known-curve rough backbone now take priority. The running joint collection remains the third lesson's asset: preserve its completed and running work, frozen identities and spending ceiling. Joint generation alone does not complete either foundational lesson.
+
+## What a delivered backbone contains
+
+Each route needs the same small set of artifacts:
+
+1. An immutable bank snapshot with unique split-qualified IDs, clean numerical prices, the observation/noise law, numerical diagnostics and fixed holdouts.
+2. A selected, reloadable BayesFlow 2.1 estimator, its exact training/sampling recipe and the snapshot identity used for fitting.
+3. A comparison report covering calibration, conditional reference agreement, product uncertainty and measured generation/training/inference cost, with failures and numerical limits visible.
+4. Small cached notebook fixtures bound to the checked artifacts, plus instructor commands to regenerate the expensive results. Participant use must not require cluster generation or retraining.
+
+Existing bank, training and report formats supply these pieces. Software smoke checks and accumulating more rows are intermediate steps; the estimator and notebook artifacts must also be delivered.
 
 ## Relationship to the existing rough examples
 
@@ -14,25 +35,31 @@ This increment builds on substantial completed simulation and inference work. It
 | --- | --- |
 | [Earlier main example](rough-reference-expansion.md) | Nine puts, inferred H/eta, fixed rho and known flat curve; 1,024 training bases with eight quote augmentations, an 8,192-row reference bank, and an 80-epoch trained spline checkpoint. All development gates passed; [one held-out spread gate failed](rough-heldout-test.md), so it remains provisional. |
 | [Course-v2 rough pilot](course/status.md) | 2,200 surfaces, 1,600 for training; infer H/eta/rho from 63 quotes given seven curve levels. Actual neural evaluation, MC error/covariance checks, adaptive path generation, variance reduction, grid checks, audits and products exist. Its SBC criterion was partly unmet; the full 112k-bank programme is explicitly pending. |
+| Known-curve backbone | Reuse the course pilot's three-target task as the first complete-surface rough lesson, with the curve supplied for each case. Recover compatible data/checkpoints and reproduce its evidence before claiming an improvement. |
 | Current joint task | Infer H/eta/rho and three analytic curve coefficients from complete quotes, without supplying the generating curve. This changes the task and needs compatible prices and a new fitted estimator; old prices cannot be relabelled or projected into that distribution. |
 
 Francesco's [runbook, R2](../tutorial_final/CLUSTER-RUNS.md), calls the bank a **discretized model** and reports a grid study without a pass/fail threshold. That study already found a resolved five-day wing shift of about one quote SD. This is not a declaration that his whole course targets a separate finite-simulator problem: its exposition also discusses model prices and numerical approximation. The [27 October plan](../tutorial_final/NUMERICAL-EXPERIMENT-PLAN.md) extends the same approximate-price workflow with a bounded check of posterior/product sensitivity to refinement. Match the observation/noise and reference conventions, reuse existing components and retain historical checks with their original scope. Numerical difficulty alone does not justify narrowing the financial domain.
 
-The [committed course Heston estimator](../tutorial_final/checkpoints/heston/training.json) was trained on 50k surfaces and has the same task as the new Heston development route. It remains a useful baseline in its archived BayesFlow 2.0.14 environment; the new 20k BayesFlow 2.1 development fits do not replace its evidence. The course rough evaluation records a checkpoint hash, but that model and both raw course banks are not tracked. Recover those artifacts if available before rerunning their old tasks; the recorded ephemeral paths are not verified live Oscar locations.
+The [committed course Heston estimator](../tutorial_final/checkpoints/heston/training.json) was trained on **50k unique surfaces** and has the same task as the new Heston route. The new 20k bank was a development prefix, not an adequate replacement deliverable. The first reproduction uses **at least 50k training surfaces**; the reusable bank target is **100k training surfaces**, with nested 50k/100k snapshots that retain the existing 20k prefix and unchanged holdouts. Recover compatible original assets where available and extend only missing IDs through the frozen compatible producer. Training size alone does not establish estimator quality.
+
+Keep the archived BayesFlow 2.0.14 checkpoint as a control while reproducing its training recipe in the new workflow. The [original Heston evidence](course/status.md) includes 2,000-case SBC, 95% coverage of 93.5–95.2%, and conditional mean/90%-width agreement on 40 of 50 observations. The recent three-case comparison is a development diagnosis, not the full matching benchmark. Compare old and new on shared, task-matched observations where recoverable, then retain fresh final acceptance data. The original raw network also had conditional failures; report raw and corrected/reference results separately.
+
+The course rough evaluation records a checkpoint hash, but that model and both raw course banks are not tracked. Recover those artifacts if available before rerunning their old tasks; the recorded ephemeral paths are not verified live Oscar locations. A reproduction comparison must preserve the prior, curve contexts, quote law and numerical target. If a new rough estimator uses a finer grid, compare it with references for that grid and report the grid effect separately; agreement with the old coarse-grid posterior is not a pricing-accuracy criterion.
 
 The [performance pass](oscar-pilot-2026-10-26.md#pricing-performance-pass) measures optimizations on Oscar without changing the pricing target. Reproduce the focused comparisons with `pixi run --locked -e core python scripts/benchmark_rough_conditional.py --out /tmp/rough-performance` and, with BLAS/OpenMP threads set to one, `pixi run --locked -e core python tests/test_hkde_maturity_reuse.py --benchmark`. Use a new output directory for each rough benchmark. These commands run pricing checks, not participant notebooks.
 
-## Work completed in parallel
+## Shared implementation
 
 | Piece | Implementation |
 | --- | --- |
+| Known-curve rough task | Reuse `rough_calibration_v1`, with H, eta and rho as targets and seven positive curve levels as known context. The first BayesFlow 2.1 baseline uses vector conditions. |
 | New joint rough task | `rough_joint_calibration_v1`, with six ordered targets: H, eta, rho, short variance, long variance and curve decay. |
 | Curve/pricing consistency | Positive exponential initial curve evaluated at each simulator grid node; expected-integrated-variance controls use the same discrete left-cell sum. Analytic integrals provide curve summaries and a refinement check. Stored seven-interval averages are auxiliary, never supplied to inference. |
 | Training/inference | BayesFlow 2.1 factory for affine coupling, spline coupling, FlowMatching and MeanFlow; complete-vector, DeepSet and SetTransformer inputs. Fresh quote noise, validation checkpoint selection, protected recovery and checked reload. |
 | Environments | Isolated `core`, `core-gpu` and `core-reference`; archived default/GPU/collaboration environments retain BayesFlow 2.0.14. |
 | First classical reference | Deterministic Fourier Heston likelihood through PyMC's built-in DEMetropolisZ, preserving chains, sampler statistics and numeric diagnostics. No artificial gradients or stochastic likelihood calls. |
 
-Set encoders here compare representations of complete surfaces. They do not establish support for changing masks, arbitrary raw chains or new contracts. The primary rough estimator conditions on quotes and declared design/noise only; generating curve values and coefficients are not extra inputs.
+The known-curve vector baseline supplies log curve levels alongside the scaled quotes. Its four-quantity calibration screen is `evaluation.json["diagnostics_with_derived_targets"]["sbc"]`, covering H, eta, rho and rho×eta; top-level `sbc` remains parameter-only for compatibility. The joint route ignores stored auxiliary curve values and uses quotes/design/noise only. That distinction must survive training, reload, sampling and evaluation. Set encoders compare representations of complete surfaces; they do not establish support for changing masks, arbitrary raw chains or new contracts. Broader family/encoder comparisons follow delivered baselines.
 
 ## FlowMatching sampling defaults
 
@@ -82,7 +109,7 @@ The running bank uses the separate [32k development configuration](../configs/ca
 
 For generation that grows later, use the existing [incremental collection/snapshot workflow](incremental-calibration-banks.md). Loading an old compatible Heston bank for training remains supported. Changed generator source hashes intentionally prevent silently adopting old shards into a new generator collection; do not bypass that check. Old seven-level rough data/checkpoints are not data for the new joint task.
 
-## PyMC reference route
+## PyMC Heston reference route
 
 ```sh
 pixi install --locked -e core-reference
@@ -100,11 +127,11 @@ Outputs include `chains.npz` with explicit chain/draw/parameter axes and sampler
 
 On Oscar, install `core-gpu` for training. Run `core-check --require-gpu` **inside an allocated GPU job**; the new [GPU launcher](../cluster/core_gpu.sbatch) does this automatically. The [CPU launcher](../cluster/core_cpu.sbatch) explicitly selects `core` or `core-reference`. Both accept an absolute Pixi executable and resource overrides. The [readiness command](../scripts/check_core_cluster.py) tests actual generation, shared-storage operations and interrupted training/reload. CPU/GPU readiness now passes on Oscar, with the scope and evidence linked above. Historical training wrappers still select archived environments and should not be used for these candidates.
 
-## Scientific work still required
+## Work needed to deliver the tutorials
 
-1. Complete and check the authorized 32k joint-rough collection within its generation ceiling, preserving source/runtime identity, split-qualified IDs, seeds, covariance records and exceptions. The reported Monte Carlo precision policy remains empirical; completion does not certify absolute pricing bias or the continuous model.
-2. Fit one joint posterior and one forward price emulator, with validation selection, and establish a checked Heston baseline using the native-sampling evidence. Existing failed development fits remain visible; changing the solver is not an accuracy verdict.
-3. Carry out the predeclared numerical/posterior/product refinement panel, including difficult cases and independently checked emulator/reference errors. Retain the completed hump challenge as evidence of the monotone curve family's limitations. A small empirical MC error does not settle grid bias or market adequacy.
-4. Grow immutable training prefixes only when development evidence justifies it, then evaluate frozen candidates on untouched acceptance data, propagate uncertainty into the selected product, and package/rehearse the full-surface notebooks with cached fallbacks.
+1. **Restore the Heston baseline.** Extend the compatible bank to nested 50k/100k training snapshots, preserving its existing prefix and holdouts. Reproduce the original training recipe at 50k, diagnose the current accuracy gap and compare with the original broader calibration/conditional evidence before calling the new estimator a replacement.
+2. **Deliver known-curve rough inference.** Reuse the three-target course task, recover its assets where available, and provide a compatible bank plus selected BayesFlow 2.1 estimator. Match or improve the original calibration, conditional and product evidence using task-matched references. The original rho/rho×eta calibration failures remain issues to resolve, not acceptance standards to copy.
+3. **Complete the joint extension.** Preserve and check the authorized 32k collection within its existing generation ceiling, then fit one joint posterior and one forward price emulator under separately costed training limits. Carry out the predeclared numerical/posterior/product panel, including difficult cases and independently checked emulator/reference errors. The reported MCSE policy remains empirical; completion does not certify absolute pricing bias or continuous-model accuracy.
+4. **Bind the results to the notebooks.** Deliver the bank/checkpoint/recipe/evidence/cache set for each route, evaluate frozen candidates on untouched acceptance data and rehearse the participant workflow. Add data or architecture/summary comparisons where they answer a measured accuracy question; keep sparse-chain work downstream.
 
 The [central experiment plan](../tutorial_final/NUMERICAL-EXPERIMENT-PLAN.md) and [scientific protocol](../tutorial_final/EXPERIMENT-PROTOCOL.md) remain the source of sequencing and acceptance proposals. The [latest execution](native-default-and-bank-start.md) records the separately authorized first bank and its 1,500-allocated-CPU-hour generation ceiling. This is development generation, not approval of final scientific claims, wider architecture screens or sparse-chain work.

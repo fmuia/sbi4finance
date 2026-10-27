@@ -30,8 +30,10 @@ def evaluate(args):
         raise ValueError("requested panel exceeds the split; no silent truncation")
     args.out.mkdir(parents=True, exist_ok=False)
     started = time.perf_counter()
+    curves = split.get("context_values")
     draws = np.concatenate([full_surface.sample(workflow, task, split["observations"][start:min(start + args.batch_size, stop)],
-                                  args.draws, encoder=record["network"]["encoder"], seed=args.seed + start)
+                                  args.draws, encoder=record["network"]["encoder"], seed=args.seed + start,
+                                  context_values=None if curves is None else curves[start:min(start + args.batch_size, stop)])
                              for start in range(args.first, stop, args.batch_size)])
     truth = split["parameters"][args.first:stop]
     bounds = np.asarray(task["prior_bounds"])
@@ -48,8 +50,22 @@ def evaluate(args):
               "coverage": validation.coverage(draws, truth),
               "contraction_logit": dict(zip(task["parameter_names"], validation.contraction(draws, bounds))),
               "recovery_correlation": dict(zip(task["parameter_names"], correlations)),
-              "seconds": time.perf_counter() - started,
               "scope": "synthetic complete-design diagnostics; not conditional reference agreement or scientific acceptance"}
+    if task["model"] == "rough":
+        eta, rho = (task["parameter_names"].index(name) for name in ("eta", "rho"))
+        diagnostic_draws = np.concatenate([draws, (draws[..., eta] * draws[..., rho])[..., None]], axis=-1)
+        diagnostic_truth = np.column_stack([truth, truth[:, eta] * truth[:, rho]])
+        # Keep the existing parameter-only fields and saved arrays unchanged.
+        # This separate simultaneous family includes the derived rho*eta target,
+        # matching the original known-curve course calibration screen.
+        diagnostic_sbc = validation.sbc(diagnostic_draws, diagnostic_truth, seed=args.seed)
+        report["diagnostics_with_derived_targets"] = {
+            "targets": [*task["parameter_names"], "rho_eta"],
+            "sbc": {k: v for k, v in diagnostic_sbc.items() if k != "fractional_ranks"},
+            "coverage": validation.coverage(diagnostic_draws, diagnostic_truth),
+            "scope": "one simultaneous rank-screen family containing primary parameters and rho*eta; "
+                     "no uniform-prior assumption or logit contraction is applied to the derived target"}
+    report["seconds"] = time.perf_counter() - started
     (args.out / "evaluation.json").write_text(json.dumps(report, indent=2, allow_nan=False) + "\n")
     np.savez_compressed(args.out / "draws.npz", draws=draws, truth=truth)
     return report

@@ -1,7 +1,8 @@
 """Train a complete-surface BF2.1 estimator, preserving interrupted runs.
 
 Use the locked ``core`` / ``core-gpu`` environment. This reads only training
-and validation data; no test split, supplied curve or sparse layout is used.
+and validation data; known curves are conditions only for the explicit known-curve
+rough task. No test split or sparse layout is used.
 One run binds its immutable bank snapshot, architecture and full schedule.
 """
 
@@ -114,8 +115,12 @@ def run_training(args):
     restored = full_surface.build_workflow(task, **config)
     restored.load_estimator(args.out / "model.keras")
     quotes = splits["validation"]["observations"][:2]
-    before = full_surface.sample(workflow, task, quotes, 16, encoder=config["encoder"], seed=args.seed + 11)
-    after = full_surface.sample(restored, task, quotes, 16, encoder=config["encoder"], seed=args.seed + 11)
+    curves = splits["validation"].get("context_values")
+    curves = None if curves is None else curves[:2]
+    before = full_surface.sample(workflow, task, quotes, 16, encoder=config["encoder"], seed=args.seed + 11,
+                                 context_values=curves)
+    after = full_surface.sample(restored, task, quotes, 16, encoder=config["encoder"], seed=args.seed + 11,
+                                context_values=curves)
     if not np.array_equal(before, after):
         raise RuntimeError("checkpoint reload changed same-device, same-seed draws")
     report = {"format": "full_surface_training_v1", "task_fingerprint": manifest["task_fingerprint"],
@@ -126,7 +131,10 @@ def run_training(args):
                                                   if config["family"] == "flow_matching" else None),
               "resumed_at_epochs": resumed_at, "same_seed_reload_exact": True,
               "training_surfaces": len(train["observations"]), "validation_surfaces": len(validation["observations"]),
-              "reserved_test_evaluated": False, "conditioning": "complete quotes/design/noise only; no supplied curve",
+              "reserved_test_evaluated": False,
+              "conditioning": ("complete quotes/design/noise and supplied known curve levels"
+                               if full_surface.uses_known_curve(task)
+                               else "complete quotes/design/noise only; no supplied curve"),
               "scientific_validation": False, "timing_seconds": {"setup": ready - started,
                  "training_and_reload": time.perf_counter() - ready}}
     (args.out / "task.json").write_text(json.dumps(task, indent=2, allow_nan=False) + "\n")

@@ -1,135 +1,80 @@
-# Numerical experiment plan for Heston and rough Bergomi
+# Numerical backbone for the Heston and rough Bergomi tutorials
 
-**Execution update — 27 October 2026. Native BayesFlow FlowMatching sampling is adopted, its cached Heston check is complete, and the first joint rough development bank has started.** The implementation and completed runs are in [PR 48](https://github.com/fmuia/sbi4finance/pull/48); the course baseline is [Francesco's PR 44](https://github.com/fmuia/sbi4finance/pull/44), inspected at `cebfb1f`.
+**Delivery objective, revised 27 October 2026:** provide the reusable data, trained estimators and checked examples that the live tutorial actually loads. A working generator, a small development fit or a larger row count is an intermediate result. Each lesson needs a usable estimator and evidence that its posterior and product conclusions are trustworthy.
 
-The aim is a tutorial that shows **what the posterior learned, how we checked it, when amortization saves work, and how joint uncertainty affects a product**. We extend Francesco's existing simulation and inference workflow. For rough Bergomi, both his workflow and the new one use numerical time grids and Monte Carlo price estimates; Heston uses Fourier quadrature. We retain the existing precision controls and add a bounded check of whether numerical refinement changes the tutorial's posterior and product conclusions. The supported claims will match that evidence.
+The implementation is in [PR 48](https://github.com/fmuia/sbi4finance/pull/48). It extends Francesco's course and existing numerical studies, whose [recorded results](../docs/course/status.md) remain the baseline to reproduce and improve. The [implementation guide](../docs/full-surface-calibration.md) gives the shared workflow; the [backbone work order](../docs/tutorial-backbone-work-order.md) gives the immediate actions and spending boundaries.
 
-The reviewed A/B unit was deliberately small: **finish a Heston reference check and measure the new rough task's numerical/cost trade-offs in parallel**. It ended with results and a conditional first-bank cost scenario, within its **26-allocated-CPU-hour ceiling, with no GPU training**. The subsequent **7-CPU-hour plus 1-GPU-hour** follow-up is also [complete](../docs/followup-results-2026-10-27.md), using 1.24 allocated Oscar CPU-hours and 0.231 GPU-hours plus small local analysis. Its results support the empirical rough development policy; the new Heston fits still fail accuracy checks. The user subsequently authorized the [32k development-bank work order](../docs/rough-development-bank-work-order.md) within its separate **1,500 allocated CPU-hour ceiling**, and chose BayesFlow's native adaptive solver. The [new execution report](../docs/native-default-and-bank-start.md) records the completed native-only Heston check and staged bank generation. Native sampling still passes only one of the three conditional screens; it does not resolve the learned bias. No new fit or native 500-case calibration evaluation has run.
+## The three delivered routes
 
-**Result:** all three Heston references pass the declared mixing checks, while the BayesFlow 2.1 development checkpoint fails conditional agreement. The rough pilot returned 43 of 44 calls; one refined prior-point call timed out. Read the [completed unit, costs and next decision](../docs/reviewed-unit-2026-10-27.md) before stage C. The A/B specification below is retained to show what was reviewed and run; it does not authorize another round.
+| Lesson | What is inferred | What is supplied | Required backbone |
+| --- | --- | --- | --- |
+| Heston | Initial variance, theta, vol-of-vol and rho; kappa fixed. | Complete 63-quote observation and declared design/noise. | Reusable **100k training** bank with nested **50k/100k** snapshots and existing 5k validation/5k test pools. First reproduce the 50k baseline, then measure the benefit of 100k. |
+| Rough Bergomi: known curve | H, eta and rho. | Complete quotes and seven known curve levels, held fixed within each inference problem. Curves vary across training cases. | Reproduce the existing supplied-curve task, then deliver an adequately trained estimator and bank. Initial bank planning size is **20k training / 5k validation / 7k reserved test**, subject to its own measured generation budget. |
+| Rough Bergomi: joint curve | H, eta, rho and three curve coefficients. | Complete quotes and design/noise. The generating curve is not an inference input. | The existing **20k / 5k / 7k** joint collection, one posterior, one forward price emulator and the bounded refinement/reference panel. |
 
-## Scope already agreed
+The first rough lesson fixes the curve **for the inference problem**, not globally across the bank. This is the user's agreed interpretation and matches Francesco's original three-target task. The next lesson releases curve uncertainty into the posterior. The older two-target/nine-put flat-curve example remains a separate historical example, not a matched substitute.
 
-- Two core examples: complete-surface Heston and joint rough Bergomi, using the declared 63-contract design. Participants follow observation → posterior → diagnostics → product uncertainty.
-- Heston infers four parameters with mean reversion fixed. Rough Bergomi infers `H, eta, rho, short_variance, long_variance, decay`; its generating curve is not supplied as an inference input.
-- The rough curve is `long_variance + (short_variance - long_variance) * exp(-decay * t)`. Positive levels and decay allow rising, falling and flat curves, but no hump. It is the simplified subfamily of [Baschetti, Bormetti and Rossi, Section 4.3](https://arxiv.org/html/2306.11061v2#S4.SS3) obtained by removing the hump term. It shares Heston's mean-curve shape, not Heston's stochastic dynamics. The [completed hump challenge](../docs/curve-family-screen.md) remains a documented limitation.
-- Use BayesFlow 2.1.0 for new fits, with its native adaptive Tsit5 default for new FlowMatching workflows. Preserve recorded sampling settings on existing checkpoints; the posterior ODE does not change the financial simulator. Preserve archived 2.0.14 estimators in their original environment. Prefer PyMC where natural, following [AGENTS.md](../AGENTS.md) and [the MCMC policy](../docs/mcmc-policy.md). No wholesale sampler migration is required.
-- Sparse quotes, masks, arbitrary contract layouts and thin-chain market examples remain a [separate downstream unit](SPARSE-QUOTE-CASE-PLAN.md). Core inputs must be complete and finite.
-- Numerical difficulty alone does not justify excluding a financial regime. Keep the broad rough candidate prior for the pilot; any later restriction needs an application-based explanation and explicit review.
+## What counts as finished
 
-The candidate rough prior remains independent uniforms: H 0.02–0.35, eta 0.5–3.5, rho −0.99 to −0.2, each curve variance level 0.01–0.16, and decay 0.25–8 per year. These are working bounds under review, not an empirical distribution of market parameters.
+For each route, deliver these artifacts together:
 
-## What exists and what we reuse
+1. An immutable bank snapshot with unique IDs, fixed holdouts, clean numerical prices, the quote-noise law and numerical-error records.
+2. A selected, reloadable BayesFlow 2.1 checkpoint, with the exact bank identity, training recipe and sampling settings.
+3. A comparison report covering calibration, conditional references, product uncertainty and actual compute cost. Retain failures and state the numerical scope.
+4. Small cached observations, posterior draws and plots that the notebook can load, with an instructor regeneration command. A participant must not need cluster generation or retraining.
 
-| Existing work | How it enters this plan |
-| --- | --- |
-| Earlier rough bank, H/eta checkpoint, reference and held-out tests on main | Reuse its numerical foundation, checks and teaching material; retain its provisional status and original restricted task. |
-| Francesco's 2,200-surface rough pilot, with 1,600 training surfaces | A completed conditional-on-known-curve pilot, not a missing attempt. Reuse its methods and results with their limitations. Its model/raw bank are not tracked; recover them if available before recreating that old task. |
-| Committed 50k-trained Heston estimator | Keep it as the established BayesFlow 2.0.14 comparison baseline. Its scientific task matches our current Heston task. Raw bank availability still needs checking. |
-| New 20k/5k/5k Heston collection and BayesFlow 2.1 development fits | Reuse this data and the selected 300-epoch development checkpoint. Preserve fixed holdouts; grow training only if diagnostics justify it. These fits have not replaced the course baseline's evidence. |
-| New joint rough generator, incremental banks, training/reload and optimized pricing | Implemented and checked. The new six-target task still needs compatible bank data and trained estimators. Old supplied-curve prices cannot be relabelled or projected into it. |
+Use the existing bank, checkpoint and report formats. Wire the checked artifacts into the Heston and calibration lessons in [the course notebooks](notebooks/), with a known-curve rough step before the joint extension. Rehearse cached and live inference paths after the artifacts pass; notebook execution has not been requested in the current corrective unit.
 
-The [reuse inventory](../docs/full-surface-calibration.md#relationship-to-the-existing-rough-examples) gives artifact details. The [Oscar report](../docs/oscar-pilot-2026-10-26.md) retains failures, timeouts and inconclusive results. Pricing benchmarks show about 3.08× faster warm Heston calls and 15–18% less CPU on measured rough blocks, with identical outputs. These are not bank-wide throughput estimates. Infrastructure is sufficient; add machinery only for a concrete unmet need.
+## Why the Heston work needs correcting
 
-## Reviewed A/B unit: two parallel workstreams
+Francesco already trained on **50,000 unique surfaces**. Our 20k collection was a fresh development prefix; it was never a sufficient replacement target. It should now be extended, preserving the existing prices, IDs, root seed and holdouts.
 
-All cases below are **development evidence**, not untouched final acceptance data. Record exact observations, IDs, seeds, sources, runtime and settings before execution. Budgets are ceilings, not promises that every check will finish. Retain failed/incomplete outcomes; no replacement seeds or automatic budget doubling.
+The original and new course-style recipes already largely agree: four 256-unit layers, 500 epochs, batch 256, seed 0, fresh quote noise, AdamW with the recorded warm-up/cosine schedule and alpha -0.5. However, 500 epochs on 20k gives about **39,500 optimizer updates**, compared with **98,000 on 50k**. The smaller run reduced both data coverage and optimization. It does not establish whether 50k or 100k is sufficient.
 
-### A. Close the bounded Heston reference follow-up
+The current new FlowMatching fit passes one of three conditional development cases; the archived model passes two. These are useful diagnoses. The matching requirement also includes Francesco's broader evidence: **2,000-case SBC**, recorded **95% coverage of 93.5–95.2%**, and conditional mean/90%-width agreement on **40/50 observations**. The historical 50-case comparison principally uses importance reweighting, with four MCMC checks; it is not 50 converged PyMC chains. [Evidence and current comparison](../docs/followup-results-2026-10-27.md).
 
-**Question:** can the new PyMC route provide a trustworthy conditional comparison for the existing BayesFlow 2.1 development estimator?
+Compare original and new estimators on the same recoverable observations, prior, quote law and metrics. If an old panel cannot be recovered, freeze a shared new comparison panel and evaluate both there. Keep coverage levels consistent and report paired differences and Monte Carlo uncertainty. Meeting the recent three-case screen alone does not deliver the replacement estimator.
 
-1. Keep the same three development observations and deterministic Fourier likelihood. The difficult case's latest vol-of-vol R-hat is 1.024, so it remains inconclusive despite improvement. Fix the observed prices, prior, noise and initialization rule; new sampler settings go into new output directories.
-2. Start with that difficult case, using the optimized pricer, the recorded data-only initialization and PyMC's built-in sampler. Proposed single follow-up: four chains, 4,000 warmup and 8,000 retained draws per chain; four CPUs, at most 30 minutes. If it passes, apply the same recipe to the other two cases. Maximum allocation across three runs: **6 CPU-hours**.
-3. Keep R-hat ≤1.01 and bulk/tail ESS ≥400 for parameters and important products. Also check trace behavior, numerical sensitivity and uncertainty in reference summaries. No neural starts or post-hoc trimming. A remaining failure stops this reference unit; it does not trigger repeated longer chains.
-4. For valid references, compare the new neural posterior and its existing analytic variance summaries within the same allocation. Cost forward-start-call simulation separately with the later product stage. If neural accuracy fails, diagnose optimization/data/capacity before increasing the bank. Recover compatible old assets where possible; retain the archived Heston estimator as a control.
+## Immediate work, in parallel
 
-**Deliverable:** one short Heston comparison report, including failures, and a concrete list of what remains before notebook packaging. These three cases are development checks, not the final reference library.
-
-### B. Measure rough numerical quality and realistic campaign cost
-
-**Question:** which working numerical settings are useful and affordable for the six-target task, and which cases need further posterior/product checks?
-
-1. Reuse the existing eight declared stress-case definitions and recorded results. Add **16 fixed prior-drawn parameter points**, pricing each on both candidate policies: **32 adaptive price-vector calls**. Reserve root seed **271100** for this pilot, with separate recorded parameter/grid/repetition purposes and an audit of actual pricing streams. Do not select or redraw points after seeing timing or errors.
-2. Retain the current total-path ladder: **32,768 / 65,536 / 131,072 / 262,144 / 524,288 / 1,048,576 / 2,097,152**, selected separately by block. The MC standard-error target stays 0.25 quote SD; any final-rung 0.5 exception is separately counted and reviewed. Fixed-path stress timings alone are not representative bank costs.
-3. Add independent precision comparisons only at three existing anchors: central (case 0), low-H/high-eta (case 4), and high variance (case 6). Each gets two repetitions at each policy: **12 fixed-path calls**, using respectively **131,072 / 1,048,576 / 524,288 total paths per call**, not antithetic pairs. The historical eight-case panel is not regenerated wholesale.
-4. Freeze the following **44-call** manifest before submission. Use one CPU and 8 GiB per pricing component. Cap the whole pilot, including reduction/setup overhead, at **20 CPU-hours**. Report failures/timeouts and censored costs; do not estimate an unconditional bank average from completed cases alone.
-
-| Proposed policy | Through 10 trading days | Through 63 days | Through 252 days |
-| --- | ---: | ---: | ---: |
-| Working-grid candidate | 1,280 steps | 2,016 steps | 2,016 steps |
-| Refinement comparator | 2,560 steps | 4,032 steps | 4,032 steps |
-
-These are `(16,4,4)` and `(32,8,8)` refinements of the original `80/504/504` blocks, chosen from the observed short-end problem. Neither is already accepted as accurate. The comparator doubles every working block, so it checks more than short-maturity quotes.
-
-| Component group | Calls | Wall limit per one-CPU call | Maximum allocation |
-| --- | ---: | ---: | ---: |
-| Prior-point adaptive pricing | 32 | 20 minutes | 10 h 40 min |
-| Fixed-path precision, excluding refined case 4 | 10 | 30 minutes | 5 h |
-| Refined low-H/high-eta anchor | 2 | 90 minutes | 3 h |
-
-The component allocation totals **18 h 40 min**, leaving 1 h 20 min within the 20-hour ceiling for setup/reduction. If the limits prevent a conclusion, keep it inconclusive; do not replace a timed-out point or promise a complete cost distribution from this small panel.
-
-Run up to 32 independent pricing components concurrently as Oscar permits, with one numerical-library thread per CPU. Heston's first case can run alongside them; its other two cases follow only after that check passes. CPU-hours are allocation ceilings, not elapsed-time forecasts or confirmed cluster availability.
-
-**Deliverable:** a working-grid recommendation, a refinement comparator, identified difficult cases, and a costed first-bank work order. Include generation, fixed holdouts, training, references and independent checks. Use CPU-hours and measured queue/allocation assumptions, not an unsupported dollar quote or an idealized core-count promise.
-
-### Decision at the end of A/B
-
-Record the intended observation/noise law, rough prior, working grid, refinement grid and actual generation budget. A working grid is a development choice, not a certificate of continuous-model accuracy. Material price shifts flag cases for the posterior/product check below; they do not automatically justify narrowing the prior or abandoning the workflow. If the evidence or cost is insufficient, bring that specific issue back for review before substantial generation.
-
-## Following stages, in dependency order
-
-These stages describe the campaign after the initial results. **Stage C is authorized within its separate 1,500-CPU-hour ceiling and is running in stages.** Later fits, independent labels and GPU allocations still need their own costed limits; they are not included in the bank or original A/B ceilings.
-
-| Stage | Concrete work | Deliverable and stop rule |
+| Workstream | Next concrete action | Completion condition |
 | --- | --- | --- |
-| C. Freeze and generate the first joint bank | Authorized first snapshot: **20k training / 5k validation / 7k reserved test** surfaces: **32k price surfaces in total**. Use one frozen task, root seed and generator identity. | Checked immutable snapshot and actual cost. Stop on coverage, seed, source or precision failures; do not replace failed surface IDs. The reserved test pool remains unopened. |
-| D. Establish one rough baseline | Fit **one vector-input posterior** and **one forward price emulator** on the same training data. Select/reload using validation only. The emulator maps all six physical parameters to prices; it is not the posterior network. | A working inference → check → product example and independently measured emulator errors. No broad family/encoder sweep yet. Price-emulator agreement alone is not ground truth. |
-| E. Check numerical sensitivity of the conclusions | Run the six-case development panel below, starting with two feasibility cases. Use deterministic PyMC emulator references where natural, plus independent numerical pricing checks. | Casewise posterior/product refinement report. Stop or revise when references, overlap, emulator accuracy or numerical precision are inadequate; do not turn an inconclusive comparison into a pass. |
-| F. Grow only where useful | If development evidence calls for more unique data, grow training **20k → 50k → 100k**, preserving the prefix and holdouts. Give each fit an adequate, declared optimization budget. | Learning curves that distinguish data, training and reference limitations. Plateauing with failed checks is a diagnosis, not evidence of sufficiency. |
-| G. Confirm and package | Freeze configuration/selection rules, confirm training-seed variability, and evaluate untouched acceptance cases. Bind checked results/checkpoints to the notebooks and rehearse cached/live paths. | One reviewable tutorial lesson per model, with precisely scoped claims and retained failures. No notebook execution is part of the present plan-editing task. |
+| Heston data and estimator | Append missing IDs to the existing bank using its frozen compatible producer. Publish 50k and 100k snapshots. Fit the matched 50k recipe first, using native BayesFlow sampling; retain the old checkpoint as a control. Then fit 100k under a separately costed limit. | Checked bank and a new estimator that meets the declared calibration/conditional/product standards and at least matches the original evidence on shared cases. |
+| Known-curve rough | Add the existing supplied-curve task to the shared BF2.1 trainer/evaluator. Recover the original model/bank if available; otherwise produce an explicitly labelled reproduction/control. Establish matched results before extending its bank. | A three-target estimator using the known curve, with improved calibration for rho and rho×eta as well as H/eta, independent reference checks and cached lesson examples. |
+| Joint rough | Preserve running work and successful shards in the current collection, within its existing ceiling. Finish the third lesson after the foundational Heston/known-curve work is established. | Checked snapshot, selected posterior/emulator and completed numerical/posterior/product checks. Bank generation alone is not the deliverable. |
 
-Before stage D, adapt the existing small price-emulator helper: six joint parameters without auxiliary curve inputs, training/selection measured in quote-noise units, and matched Keras/NumPy predictions. The [execution report](../docs/native-default-and-bank-start.md#next-reuse-the-existing-emulator-with-three-small-correctness-fixes) records these concrete repairs and the existing PyMC route to reuse. No new emulator framework is needed.
+The live Heston collection can grow without regeneration. Its existing 30k total surfaces cost about **1,196 process CPU-seconds**. Adding 80k training rows to reach 100k is an arithmetic **0.89 process CPU-hours**, before setup/integrity overhead. This makes correcting the data-size mismatch inexpensive; the work order gives an allocated-hour limit rather than treating this extrapolation as a guarantee.
 
-Stage C prices the fixed holdouts up front because the existing immutable-snapshot workflow requires complete declared splits. The work order must include that cost; do not quote only the 20k training cost. Holdout prices are reserved for later evaluation and are not opened by training or model selection. Revisiting the initial split allocation is a review decision before freezing the collection, not a reason to add new snapshot infrastructure now.
+The current joint bank remains a valid asset for the third lesson. Do not relabel its prices as the known-curve bank: its analytic curve law differs from the original seven-interval step-curve law. Do not replenish joint work ahead of the missing foundational backbones merely to keep increasing its row count. Preserve already submitted jobs, IDs and the **1,500 allocated CPU-hour** ceiling.
 
-## The bounded posterior and product refinement check
+## Fair comparison for the first rough lesson
 
-Use six predeclared joint-rough development observations: central, falling curve, nearly flat curve, low-H/high-eta, high variance and steep rise (existing case definitions 0/2/3/4/6/7). Begin with **central and high variance** to establish feasibility; keep the other four fixed rather than selecting easier replacements. At most **six observations × two numerical resolutions = twelve reference fits** are planned. Cost the independent pricing labels and reference runs before submission.
+The original pilot has **1,600 training surfaces out of 2,200**, on 63 contracts with seven supplied curve levels. Its 250-case SBC passed H and eta but failed rho and rho×eta. Those failures are problems to improve, not release criteria to copy. Include the derived rho×eta diagnostic in the new evaluator.
 
-Compare the **same observed quote vector**, prior and quote-noise law under the working and refined pricing approximations. Do not regenerate observations when changing the reference grid. Account consistently for pricing randomness/covariance and emulator approximation. A fixed-seed likelihood, a simulator-marginal likelihood and an ideal-price approximation are distinct reference targets; label the one actually used. A standard MCMC call with a fresh random log likelihood is not a valid substitute.
+Use the pilot's declared parameter/curve prior, noise and numerical target for the reproduction control. The historical pilot grids are **80/504/504**; the current joint working grids are **1280/2016/2016**. A finer-grid known-curve model should agree with references for its own numerical target, with a paired refinement report. It should not be forced to reproduce coarse-grid bias. The original study already included adaptive paths, covariance/precision checks and grid evidence; reuse that work.
 
-Use one validated baseline forward emulator. If needed, add a small, separately checked local refinement correction rather than a full second bank or architecture campaign. Check it on independent higher-precision labels covering both posterior regions; stop if it is inaccurate or the refined posterior leaves that coverage. The [protocol](EXPERIMENT-PROTOCOL.md#bounded-posterior-and-product-refinement-panel) defines this route and its limits.
+Before the main known-curve bank, freeze whether it retains the pilot curve prior or adopts the broader planned curve prior needed by the chosen market example. Preserve the overlap reproduction comparison; a changed curve prior needs a distinct collection identity and a measured cost. Do not claim the pilot supports a market curve outside its prior. This is one known-curve lesson with explicit numerical/domain versions, not another tutorial route.
 
-Proposed checks for review:
+## Checks that support the teaching claims
 
-- Parameter posterior means move by at most **0.1 refined-reference SD**; 90% interval widths change by at most **10%**. Reference uncertainty must be small enough to resolve those changes; ESS 400 is a minimum, not a guarantee of that precision.
-- Main teaching product: an **at-the-money forward-start call resetting at three months and expiring at six months**, within the quoted horizon. Also check the **one-year continuously monitored variance-swap rate** as an analytic curve-uncertainty control. It does not check leverage or vol-of-vol by itself.
-- Proposed absolute tolerance floors: **0.0001 initial-spot units** for the call (one basis point of spot) and **0.0001 annualized variance units** for the variance-swap rate. These are review proposals, not accepted economic materiality thresholds.
-- With reference 90% product width `W`, define `T = max(0.10 * W, absolute floor)`. Product q10/q90 refinement changes must be at most `T/4`, with pricing/reference uncertainty resolved. Assess product-pricer refinement separately from changes in the parameter posterior.
+- Use BayesFlow **2.1.0** for new fits and its native adaptive Tsit5 default for FlowMatching. Preserve historical checkpoint sampling settings and archived 2.0.14 environments.
+- Use validation for model selection; retain **2,000 untouched acceptance surfaces per model/task** for final calibration, plus separate conditional reference cases. Previously inspected cases remain development evidence.
+- Compare raw amortized outputs with independent references and products. Report corrected/audited results separately. Prefer existing deterministic **PyMC** workflows where natural; never pass a fresh random Monte Carlo log likelihood to ordinary MCMC.
+- Fit one baseline per route before the small architecture/summary comparison. Reuse data across affine/spline/FlowMatching/MeanFlow and vector/set encoders; report unique surfaces and optimizer updates. A learning curve informs the delivered estimator rather than replacing delivery.
+- Keep reported Monte Carlo precision distinct from grid bias. A small reported MCSE is not an absolute-price-accuracy certificate, and matched emulator/neural predictions are not independent truth.
 
-An unresolved check is **inconclusive**. A resolved large change calls for a targeted numerical/model/claim revision. Passing this small panel supports statements about those cases; it does not establish accuracy over every prior point or empirical market adequacy. Final neural accuracy and calibration still require their own held-out checks.
+## Joint curve and bounded numerical refinement
 
-## Data growth and later architecture comparisons
+The joint curve is `long_variance + (short_variance - long_variance) * exp(-decay * t)`, the simplified subfamily of [Baschetti, Bormetti and Rossi, Section 4.3](https://arxiv.org/html/2306.11061v2#S4.SS3) with the hump term removed. It allows rising, falling and flat curves, but no hump; retain the [completed hump challenge](../docs/curve-family-screen.md). The existing broad candidate prior remains unchanged: H 0.02–0.35, eta 0.5–3.5, rho -0.99 to -0.2, each variance level 0.01–0.16 and decay 0.25–8/year. Numerical difficulty alone does not justify narrowing it.
 
-Append only missing split-qualified IDs; keep root seeds and holdouts fixed. Publish immutable snapshots and record the snapshot hash for each fit. Preserve numerical-error/covariance records. Existing producers remain frozen; do not bypass source checks to extend an old collection with changed code. A changed task/grid/prior needs a distinct collection, not relabelled old prices. Dataset growth starts a new training run; interruption recovery remains bound to the original snapshot/settings. The [incremental-bank guide](../docs/incremental-calibration-banks.md) is the implementation reference.
+Retain the six predeclared development cases (central, falling, nearly flat, low-H/high-eta, high variance and steep rise), starting with **central and high variance**. Compare the same observed quotes/prior/noise under working and doubled grids; at most twelve reference fits across the six cases and two resolutions. Cost independent labels and references before submission. Reuse one validated forward emulator and, if needed, a small checked local refinement correction rather than a full second bank.
 
-The wider comparison remains bounded and follows checked baselines:
+Main product: the ATM forward-start call resetting at three months and expiring at six months; analytic control: the one-year continuously monitored variance-swap rate. The proposed refinement tolerances, reference precision requirements and limitations remain in [EXPERIMENT-PROTOCOL.md](EXPERIMENT-PROTOCOL.md#bounded-posterior-and-product-refinement-panel). An unresolved comparison remains inconclusive; do not turn it into a pass or an endless prior-wide certification campaign.
 
-| Screen | Fits |
-| --- | ---: |
-| Heston vector input: affine coupling, spline coupling, FlowMatching, MeanFlow | Four short fits, reusing a compatible baseline |
-| DeepSet and SetTransformer with one fixed posterior family | Two additional fits, with complete quote sets |
-| Transfer two promising configurations to the joint rough task | Two fits |
-| Confirm one selected configuration per model across three seeds | Six total confirmation fits; reuse matching runs where possible |
+## Boundaries and history
 
-This is at most eight screen fits plus six confirmations, with data sizes and GPU limits chosen from measured development results. MeanFlow sampling-step and FlowMatching solver checks use existing checkpoints where possible. Million-surface capacity, extra architectures, direct rough Monte Carlo MCMC and additional products remain optional; they do not gate the core tutorial.
+Sparse quotes, masks, arbitrary chains and thin-market examples remain a [separate downstream unit](SPARSE-QUOTE-CASE-PLAN.md). Complete the usable complete-surface backbones first. Wider data growth and architecture comparisons are bounded by measured learning/accuracy needs; each new allocation has an explicit limit.
 
-Final validation includes prior-predictive calibration, conditional-reference agreement, product uncertainty, inference cost and fresh participant execution. Preserve **2,000 untouched acceptance surfaces per model** for the declared final SBC/coverage check and a separate final reference collection; inspected pilot/test results remain development evidence. Use matched observations/noise/prior for comparisons, report raw and corrected neural results separately, and retain original sampler provenance. The existing [claims registry](CLAIMS.md) and [course status](../docs/course/status.md) change only when the corresponding evidence supports a teaching claim.
+Keep producer/source/runtime identities and append only missing split-qualified IDs. Preserve successful shards, fixed holdouts, failures, covariance records and all spending. A changed task/grid/prior needs a distinct collection; training on a new snapshot starts a new fit. [Incremental-bank instructions](../docs/incremental-calibration-banks.md).
 
-## Next review
-
-Follow the [active bank work order](../docs/rough-development-bank-work-order.md) and [native/default execution report](../docs/native-default-and-bank-start.md). Complete and check the first immutable snapshot within the generation ceiling, then cost one joint posterior and one forward emulator before their runs. The configuration retains the same broad prior and working task for development; no narrower regime has been adopted. The six-case posterior/product panel remains necessary for teaching claims, rather than a requirement to certify every price before creating development data.
-
-Technical details live in [EXPERIMENT-PROTOCOL.md](EXPERIMENT-PROTOCOL.md); completed results in [the Oscar report](../docs/oscar-pilot-2026-10-26.md); runnable instructor commands in [the implementation guide](../docs/full-surface-calibration.md). The older [cluster runbook](CLUSTER-RUNS.md) remains historical/reusable guidance, not an instruction to run its entire older programme.
+Completed work remains in the [26 October report](../docs/oscar-pilot-2026-10-26.md), [reviewed A/B results](../docs/reviewed-unit-2026-10-27.md), [reliability/Heston follow-up](../docs/followup-results-2026-10-27.md) and [native-solver/bank report](../docs/native-default-and-bank-start.md). The older [cluster runbook](CLUSTER-RUNS.md) is historical/reusable guidance, not an instruction to launch its entire programme. Update [claims](CLAIMS.md) and course acceptance only when the corresponding backbone evidence supports them.

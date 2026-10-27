@@ -1,7 +1,7 @@
 """BayesFlow 2.1 inference on the complete 63-contract tutorial design.
 
-This is deliberately separate from the archived supplied-curve/2.0 workflow.
-The joint rough model's curve values are auxiliary labels, never conditions.
+The known-curve rough task conditions on its declared curve, as in the original
+course. The joint rough model's curve values are auxiliary labels, never conditions.
 Set encoders here represent complete surfaces, not missing-quote support.
 """
 
@@ -19,7 +19,7 @@ ENCODERS = ("vector", "deepset", "set_transformer")
 
 
 def validate_task(task):
-    """Accept only the declared complete-design Heston or joint rough task."""
+    """Accept the declared complete-design Heston, known-curve or joint rough task."""
     tasks.validate_task(task)
     contracts, canonical = task["context"]["contracts"], surface.design_grid()
     same_design = (len(contracts) == len(canonical)
@@ -32,9 +32,16 @@ def validate_task(task):
     joint = getattr(tasks, "is_joint_curve_task", lambda _: False)(task)
     heston = (task["model"] == "hkde"
               and task["parameter_names"] == ["initial_variance", "theta", "vol_of_vol", "rho"])
-    if not (heston or joint):
-        raise ValueError("core inference supports four-target Heston or joint-curve rough, not supplied curves")
+    known = (uses_known_curve(task) and task["parameter_names"] == ["hurst", "eta", "rho"]
+             and task["fixed_parameters"] == {})
+    if not (heston or joint or known):
+        raise ValueError("core inference supports four-target Heston, three-target known-curve rough or joint-curve rough")
     return task
+
+
+def uses_known_curve(task):
+    """Only this explicit task observes per-example curve levels; joint auxiliaries stay hidden."""
+    return task["task_id"] == "rough_calibration_v1"
 
 
 def observations(values, task):
@@ -50,13 +57,24 @@ def observations(values, task):
     return values
 
 
-def conditioning_data(values, task, encoder="vector"):
-    """Prices/noise and declared contract coordinates only; no generating curve."""
+def conditioning_data(values, task, encoder="vector", *, context_values=None):
+    """Quotes/design plus declared known curves only; joint generating curves are ignored."""
     if encoder not in ENCODERS:
         raise ValueError(f"encoder must be one of {ENCODERS}")
     prices = observations(values, task)
     noise = tasks.sigma(task)
     scaled = prices / noise
+    if uses_known_curve(task):
+        if encoder != "vector":
+            raise ValueError("known-curve rough currently supports the vector encoder only")
+        if ((np.ma.isMaskedArray(context_values) and np.any(np.ma.getmaskarray(context_values)))
+                or np.iscomplexobj(context_values)):
+            raise ValueError("known curve requires positive finite unmasked real levels [batch,7]")
+        levels = np.asarray(context_values, dtype=np.float64)
+        if (levels.shape != (len(prices), tasks.context_size(task))
+                or not np.isfinite(levels).all() or np.any(levels <= 0)):
+            raise ValueError("known curve requires positive finite levels [batch,7]")
+        return {"observations": scaled, "curve_context": np.log(levels)}
     if encoder == "vector":
         return {"observations": scaled}
     contracts = task["context"]["contracts"]
@@ -67,8 +85,9 @@ def conditioning_data(values, task, encoder="vector"):
 
 
 def training_data(split, task, encoder="vector", *, clean=False):
-    """Conditions plus ordered targets; stored context/curve arrays are ignored."""
-    data = conditioning_data(split["reference_prices" if clean else "observations"], task, encoder)
+    """Conditions plus ordered targets; only the known-curve task observes stored curve levels."""
+    data = conditioning_data(split["reference_prices" if clean else "observations"], task, encoder,
+                             context_values=split.get("context_values"))
     if ((np.ma.isMaskedArray(split["parameters"]) and np.any(np.ma.getmaskarray(split["parameters"])))
             or np.iscomplexobj(split["parameters"])):
         raise ValueError("masked or complex parameter targets are unsupported")
@@ -122,6 +141,8 @@ def build_workflow(task, checkpoint_dir=None, *, optimizer=None, **settings):
     """Small BF2.1 family/encoder factory; each family retains its time convention."""
     validate_task(task)
     config = configuration(**settings)
+    if uses_known_curve(task) and config["encoder"] != "vector":
+        raise ValueError("known-curve rough currently supports the vector encoder only")
     import bayesflow as bf
     if bf.__version__ != "2.1.0":
         raise RuntimeError("use the locked core environment (BayesFlow 2.1.0); archived environments remain separate")
@@ -131,9 +152,10 @@ def build_workflow(task, checkpoint_dir=None, *, optimizer=None, **settings):
     for name, (lower, upper) in zip(names, task["prior_bounds"], strict=True):
         adapter = adapter.constrain(name, lower=float(lower), upper=float(upper), inclusive="none")
     destination = "inference_conditions" if config["encoder"] == "vector" else "summary_variables"
+    conditions = ["observations"] + (["curve_context"] if uses_known_curve(task) else [])
     adapter = (adapter.convert_dtype("float64", "float32")
                .concatenate(list(names), into="inference_variables")
-               .concatenate(["observations"], into=destination))
+               .concatenate(conditions, into=destination))
     family = config["family"]
     subnet = {"widths": config["widths"]}
     if family in ("affine", "spline"):
@@ -157,7 +179,8 @@ def build_workflow(task, checkpoint_dir=None, *, optimizer=None, **settings):
                             save_weights_only=False, save_best_only=True)
 
 
-def sample(workflow, task, values, num_samples, *, encoder="vector", seed=0, mean_steps=None):
+def sample(workflow, task, values, num_samples, *, encoder="vector", seed=0, mean_steps=None,
+           context_values=None):
     """Joint draws [batch,draws,targets]; no contract axis becomes a sample axis."""
     count = _integer(num_samples, "num_samples", minimum=1)
     kwargs = {}
@@ -165,7 +188,7 @@ def sample(workflow, task, values, num_samples, *, encoder="vector", seed=0, mea
         if type(workflow.inference_network).__name__ != "MeanFlow":
             raise ValueError("mean_steps is only applicable to MeanFlow")
         kwargs["steps"] = _integer(mean_steps, "mean_steps", minimum=1)
-    conditions = conditioning_data(values, task, encoder)
+    conditions = conditioning_data(values, task, encoder, context_values=context_values)
     draws = workflow.sample(num_samples=count, conditions=conditions, sample_shape=(), seed=_integer(seed, "seed"),
                             **kwargs)
     result = np.concatenate([np.asarray(draws[name], dtype=np.float64) for name in task["parameter_names"]], axis=-1)

@@ -56,9 +56,13 @@ class FullSurfaceTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             full_surface.validate_task(changed)
 
-    def test_supplied_curve_task_not_core(self):
+    def test_unsupported_rough_targets_rejected(self):
+        task = tasks.rough_task()
+        task["parameter_names"] = task["parameter_names"][:2]
+        task["prior_bounds"] = task["prior_bounds"][:2]
+        task["fixed_parameters"] = {"rho": -0.6}
         with self.assertRaises(ValueError):
-            full_surface.validate_task(tasks.rough_task())
+            full_surface.validate_task(task)
 
     def test_target_or_auxiliary_changes_do_not_change_conditions(self):
         data = full_surface.training_data(self.split, self.task)
