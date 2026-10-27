@@ -100,6 +100,8 @@ def rough_block(parameters, curve, contracts, *, horizon, n_steps, n_pairs, seed
     n_pairs antithetic pairs are drawn from default_rng(seed). Given a dict,
     diagnostics receives, per contract, the variance of the antithetic pair
     means with and without the control variates: their ratio is 1 - R^2.
+    An opt-in diagnostics["capture_raw_control"] flag also records raw bounded
+    put and control summaries from those same paths, without changing the fit.
     """
     dt, indices = _block_contracts(contracts, horizon, n_steps)
     maturities = sorted(set(indices.tolist()))
@@ -139,6 +141,29 @@ def rough_block(parameters, curve, contracts, *, horizon, n_steps, n_pairs, seed
     if diagnostics is not None:
         diagnostics["plain_variance"] = payoffs.var(axis=0, ddof=1)
         diagnostics["controlled_variance"] = np.sum(residual**2, axis=0) / dof
+        if diagnostics.get("capture_raw_control", False):
+            raw_mean = payoffs.mean(axis=0)
+            raw_centered = payoffs - raw_mean
+            paired = adjusted - payoffs
+            paired_mean = paired.mean(axis=0)
+            paired_centered = paired - paired_mean
+            denominator = (len(payoffs) - 1) * len(payoffs)
+            diagnostics["raw_control"] = {
+                "antithetic_pairs": len(payoffs), "control_maturity_indices": maturities,
+                "control_order": "forward_martingale_then_integrated_variance_at_each_maturity",
+                "raw_put_mean": raw_mean,
+                "raw_put_upper_bound": np.array([c["strike"] for c in contracts]),
+                "raw_put_covariance_of_mean": raw_centered.T @ raw_centered / denominator,
+                "controlled_put_mean": prices.copy(), "fitted_coefficients": coefficients,
+                "control_mean": controls.mean(axis=0),
+                "control_covariance_of_mean": centered.T @ centered / denominator,
+                "raw_control_covariance_of_mean": raw_centered.T @ centered / denominator,
+                "raw_controlled_covariance_of_mean": raw_centered.T @ residual / denominator,
+                "sample_max_abs_control": np.max(np.abs(controls), axis=0),
+                "paired_controlled_minus_raw_mean": paired_mean,
+                "paired_controlled_minus_raw_covariance_of_mean": paired_centered.T @ paired_centered / denominator,
+                "scope": "Within-batch covariances use the fitted coefficients; independent-batch "
+                         "dispersion separately checks their nominal uncertainty."}
     prices = prices + np.array([1.0 - c["strike"] if c["option_type"] == "call" else 0.0 for c in contracts])
     return prices, np.sqrt(np.diag(covariance)), covariance
 
