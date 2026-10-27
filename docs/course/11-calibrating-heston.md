@@ -127,7 +127,7 @@ For models priced by Monte Carlo, each evaluation of $\chi^2$ is a Monte Carlo r
 
 Horvath, Muguruza and Tomas (2021) do this for rough Bergomi, mapping parameters to the implied-volatility grid. Hernandez (2017) trained instead the **one-step inverse map**, a network from the quotes directly to $\hat\theta$, which is amortized point estimation: it learns, from simulated pairs, the function that a least-squares fit would compute. Bayer et al. (2019) compare the two routes, prefer the two-step one (a neural pricer, then a classical optimizer) for its stability out of sample, and use their fast pricer for a Bayesian analysis of the calibrated model.
 
-The neural pricer's error enters the calibration as an extra error on every model price. It is harmless if it is small against the quote noise $\sigma_c$, and it must be measured on held-out surfaces.
+The neural pricer's error perturbs every model price in the calibration. Its size relative to the quote noise $\sigma_c$ is a useful first diagnostic, but coherent errors across quotes can still move the posterior. Check held-out and posterior-local pricing errors, then compare posterior and product summaries against the original pricer. The companion [forward pricing emulation note](forward-pricing-emulation.md) explains the training procedure, the approximate MCMC likelihood and fair comparisons when quotes are missing.
 
 ![Left: the held-out error of a small neural pricer for Heston, in units of the quote noise. Centre: the difference between least squares with the neural pricer and with the exact pricer, in Gauss–Newton standard deviations, on 25 noisy test smiles. Right: the one-step inverse map's estimate of the vol of vol against the truth on 300 test smiles.](images/l09-deep-calibration.png)
 
