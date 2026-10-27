@@ -11,6 +11,8 @@ The course is a superset of the tutorial and of the [calibration design document
 [practice-sources.md](practice-sources.md) lists the practices the course may describe, with their sources;
 [status.md](status.md) gives the state of every study.
 
+The proposed [numerical experiment plan](../../tutorial_final/NUMERICAL-EXPERIMENT-PLAN.md) covers the next data, training and reference campaign. The [tutorial review](../../tutorial_final/TUTORIAL-REVIEW.md) assesses how that evidence supports the live learning path.
+
 ## The argument of the course
 
 The course makes one argument in four claims. [Lecture 6, Section 6.8](06-marking-a-product-the-smile-does-not-quote.md#68-the-argument-of-the-course)

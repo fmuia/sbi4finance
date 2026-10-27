@@ -4,6 +4,8 @@ Draft for the organizers' review. 24 October 2026, revision 3. Owner: Francesco 
 
 This folder fixes what the tutorial teaches, in what order and why: this summary, and one file per slot.
 
+For the proposed next numerical campaign, read the [experiment plan](../NUMERICAL-EXPERIMENT-PLAN.md). The separate [tutorial review](../TUTORIAL-REVIEW.md) assesses the learning path, its SBI motivation and the claims that need stronger evidence.
+
 | File | Slot | Presenter | Minutes |
 | --- | --- | --- | --- |
 | [01-slot1-the-problem.md](01-slot1-the-problem.md) | 1. The problem: Bayes for volatility models | Francesco | 15 |
