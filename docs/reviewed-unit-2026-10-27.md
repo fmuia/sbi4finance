@@ -4,6 +4,8 @@
 
 This extends Francesco's existing numerical workflow and evidence. Both rough workflows approximate model prices; the added question is whether refinement materially changes the tutorial's posterior and product conclusions. The [central plan](../tutorial_final/NUMERICAL-EXPERIMENT-PLAN.md) still governs the subsequent campaign. All results here are development evidence, not final acceptance.
 
+**Subsequent execution:** the follow-up proposed below was authorized and is now [complete](followup-results-2026-10-27.md). The A/B results and original work order remain unchanged here as the review record.
+
 ## Heston: reference problem closed for these three cases
 
 The same three stored observations, priors and noise laws were retained. Each native PyMC DEMetropolisZ run used four chains, 4,000 warmup and 8,000 retained draws per chain, data-only initialization and conditioned proposals. The difficult case ran first; its numerical and visual review passed before the other two were submitted. No neural initialization, post-hoc trimming or relaxed convergence thresholds were used.

@@ -1,0 +1,77 @@
+{
+  "frozen_utc": "2026-10-27T10:53:04.912868+00:00",
+  "inputs": [
+    {
+      "logical_path": "declaration.json",
+      "uncompressed_sha256": "53e2a37b39339801c12933bd8a5bcfa0025dd506e28697156f8c5a344da52688"
+    },
+    {
+      "logical_path": "groups/group-0/report.json",
+      "uncompressed_sha256": "dc34e9e1b84a297f2e69503a617ce174cf51ce9b48abcacc5484a44ee7ee4ee2"
+    },
+    {
+      "logical_path": "groups/group-1/report.json",
+      "uncompressed_sha256": "ef017acdc32fd1caaebeefcb5c817f413091b8068560bd36aee0425742e39768"
+    },
+    {
+      "logical_path": "groups/group-2/report.json",
+      "uncompressed_sha256": "426289b6f15782ecff099c6f4ed44fc22a69723945b020153fd01db286cd5c53"
+    },
+    {
+      "logical_path": "groups/group-3/report.json",
+      "uncompressed_sha256": "239e5f60ff0713f72cc640112cbcc120e09349b0873721b40389adacd21fa72c"
+    }
+  ],
+  "method": {
+    "anchors": [
+      0,
+      4,
+      6
+    ],
+    "batch_pairs": [
+      [
+        0,
+        1
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        4,
+        5
+      ],
+      [
+        6,
+        7
+      ],
+      [
+        8,
+        9
+      ],
+      [
+        10,
+        11
+      ],
+      [
+        12,
+        13
+      ],
+      [
+        14,
+        15
+      ]
+    ],
+    "contrast": "same_sample_pair_mean - swapped_coefficient_pair_mean; equals -(Xbar_i-Xbar_j)@(beta_i-beta_j)/2, with parity cancelling",
+    "cross_fit": "For each adjacent pair i,j, use beta_j with raw/control means from i and beta_i with means from j; average the two prices. No coefficient refit.",
+    "preidentified_contract_indices": [
+      8,
+      49
+    ],
+    "reconstruction_absolute_price_tolerance": 1e-12,
+    "scope": "Diagnoses the same-sample coefficient-fitting effect. It cannot validate control centering, F-control L2/integrability, time-grid bias, or unbiased continuous-model prices. No verified pointwise/global coverage or formal acceptance.",
+    "status": "EXPLORATORY: specified after inspection of the first diagnostic, frozen before this calculation",
+    "uncertainty": "Sample SD of the eight independent paired contrasts divided by sqrt(8); heuristic descriptive t7 interval. No nominal within-batch SE is used."
+  },
+  "script_sha256": "d885ac33991964631d5615575c7d85801dc1d976503806df831998d8a9ef3d51"
+}
