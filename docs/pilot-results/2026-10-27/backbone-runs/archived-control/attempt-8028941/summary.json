@@ -1,0 +1,17 @@
+{
+  "format": "archived_control_failed_gpu_attempt_v1",
+  "status": "failed_before_sampling",
+  "slurm_job_id": "8028941",
+  "allocated_elapsed_seconds_top_level": 13,
+  "allocated_cpus": 4,
+  "allocated_cpu_seconds_top_level_once": 52,
+  "allocated_gpu_seconds": 13,
+  "completed_surfaces": 0,
+  "full_panel_completed": false,
+  "scientific_acceptance": false,
+  "failure": "JAX_PLATFORMS=cuda excluded CPU host required by jax.debug.callback. Needs cuda,cpu; no statistical/model issue established.",
+  "partial_arrays_downloaded": false,
+  "original_cpu_committed_surfaces_preserved": 500,
+  "run_sha256": "e51dec1cd27bb9b5458f4dd0682bbf9e61071bdaa08908f43a321073dd25392f",
+  "new_draws_produced": 0
+}

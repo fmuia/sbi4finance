@@ -1,0 +1,92 @@
+{
+  "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/runs/known-20k-native/pricer/checkpoint/pricer.json": {
+    "bytes": 9005,
+    "payload_transferred": false,
+    "sha256": "1a9cf45fcb9c38e44ab8c53943912935892ca30c07ff68147d440d04bdaef057"
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/runs/known-20k-native/pricer/checkpoint/pricer.npz": {
+    "bytes": 870334,
+    "payload_transferred": false,
+    "sha256": "d1dcefd7cb9a62ca864a46a461b66a4201e442cd5cd18c7fa3862ade6428460a"
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/runs/known-20k-native/pricer/checkpoint/task.json": {
+    "bytes": 10539,
+    "payload_transferred": false,
+    "sha256": "c99b0dd131896d89d8483a1668a3fde0fb7a0f28794c3db7fe14635cbbd52b65"
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/runs/case-0/chains.npz": {
+    "bytes": 466500,
+    "payload_transferred": false,
+    "sha256": "ee176993dba5337c6be9141ba10faa84e9426856a41588952aa77b8d69197b0d"
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/runs/case-0/partial/chain-000.npz": {
+    "bytes": 96157,
+    "payload_transferred": false,
+    "sha256": "061cfa05ecadacfcb50d2226c6c9bf6e547503a3549e00f245c95f0e2de98402"
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/runs/case-0/partial/chain-001.npz": {
+    "bytes": 100258,
+    "payload_transferred": false,
+    "sha256": "d67e03da82c673c3133bcfd11a74e5e0985e18bd630ab8b8bfd744ab2802797c"
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/runs/case-0/partial/chain-002.npz": {
+    "bytes": 94211,
+    "payload_transferred": false,
+    "sha256": "8df4b45fd70e9f29d9eecb45530014b8a4090448f2aa5101a107bef583c0c808"
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/runs/case-0/partial/chain-003.npz": {
+    "bytes": 100302,
+    "payload_transferred": false,
+    "sha256": "064eb3920790454f3bf46c3e0d0d7eafc74b4dff5118f9c51bdd0258f6f10626"
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/runs/case-1/chains.npz": {
+    "bytes": 458883,
+    "payload_transferred": false,
+    "sha256": "660e141d9bc98dff49f7243541bbf322f0bc91c993ec83b3af3e14472f50ca61"
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/runs/case-1/partial/chain-000.npz": {
+    "bytes": 96040,
+    "payload_transferred": false,
+    "sha256": "0bcb6473bbb463a33bdc0f612ca1665df83c4b498d2a2d46f448d507c61d033a"
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/runs/case-1/partial/chain-001.npz": {
+    "bytes": 93493,
+    "payload_transferred": false,
+    "sha256": "45d3909828127e1ac6f782866b86e57abe7547af5a0daf044560c382ee815101"
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/runs/case-1/partial/chain-002.npz": {
+    "bytes": 96162,
+    "payload_transferred": false,
+    "sha256": "122bff50244895b53026df0c4933332896335c5ceee1394ee426fbbe89f2a526"
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/runs/case-1/partial/chain-003.npz": {
+    "bytes": 94857,
+    "payload_transferred": false,
+    "sha256": "4480506488132375ef0f37164edd0cbd356068cd1f086b7aec96907dfa1c9207"
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/runs/case-2/chains.npz": {
+    "bytes": 450347,
+    "payload_transferred": false,
+    "sha256": "093b04b25db27f567cd59f30bdd95bd3f007537dede79ceac0bda58c07bde6cb"
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/runs/case-2/partial/chain-000.npz": {
+    "bytes": 87601,
+    "payload_transferred": false,
+    "sha256": "7c2bb13f22e4ce2205cfb8d06095c7c72808e1b8867e2d68b3df6d651659686e"
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/runs/case-2/partial/chain-001.npz": {
+    "bytes": 93689,
+    "payload_transferred": false,
+    "sha256": "a364e1f8c12e2c8acc27060ec9f929249645d679103ebcad0f03941515927496"
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/runs/case-2/partial/chain-002.npz": {
+    "bytes": 94923,
+    "payload_transferred": false,
+    "sha256": "e5fc30e28e0c1e2af2817cd1d138695dbaae05e696b5a1983565b750e580ce0e"
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/runs/case-2/partial/chain-003.npz": {
+    "bytes": 95451,
+    "payload_transferred": false,
+    "sha256": "d07cc2990525ef1b88b81a302bd6f4059428e1282a626607de0b335b09369030"
+  }
+}

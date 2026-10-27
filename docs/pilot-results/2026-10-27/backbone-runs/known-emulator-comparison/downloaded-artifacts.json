@@ -1,0 +1,66 @@
+{
+  "case-0/comparison.json": {
+    "source_path": "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/runs/comparisons/case-0/comparison.json",
+    "raw_bytes": 33621,
+    "raw_sha256": "bbe158afc817a970801b6e4858cad697f73e9dbe9443ce9b15f6c3233b268a67",
+    "stored_bytes": 33621,
+    "stored_sha256": "bbe158afc817a970801b6e4858cad697f73e9dbe9443ce9b15f6c3233b268a67",
+    "lossless_gzip": false
+  },
+  "case-0.log.gz": {
+    "source_path": "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/runs/comparisons/case-0.log",
+    "raw_bytes": 1236,
+    "raw_sha256": "778b3c1b5e6a2f1fb2a714d2bb0015e10b988b48f418905d988c500e4a8cdcd2",
+    "stored_bytes": 756,
+    "stored_sha256": "fbfef1685ea09c25ec03d1ba04893e44e053ffecc2c25bc99b0990c38eac99f2",
+    "lossless_gzip": true
+  },
+  "case-1/comparison.json": {
+    "source_path": "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/runs/comparisons/case-1/comparison.json",
+    "raw_bytes": 33558,
+    "raw_sha256": "8eb92214f8a9399447e31cf353108c4eb20071dc7bd035484bd7516047a9eb07",
+    "stored_bytes": 33558,
+    "stored_sha256": "8eb92214f8a9399447e31cf353108c4eb20071dc7bd035484bd7516047a9eb07",
+    "lossless_gzip": false
+  },
+  "case-1.log.gz": {
+    "source_path": "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/runs/comparisons/case-1.log",
+    "raw_bytes": 1022,
+    "raw_sha256": "2087b6eb52b59493d329004c991674c4bfb21a3f96373241fec4758812d87a44",
+    "stored_bytes": 643,
+    "stored_sha256": "c7d094dce04f3b56318fda7b8c4d7ba85859f13110ec791082493625fd07d658",
+    "lossless_gzip": true
+  },
+  "case-2/comparison.json": {
+    "source_path": "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/runs/comparisons/case-2/comparison.json",
+    "raw_bytes": 33568,
+    "raw_sha256": "c3d7d57effc56811e1bcf1cfb2578736dbbcd9d8d5c6d5ee76154f11a7e7584b",
+    "stored_bytes": 33568,
+    "stored_sha256": "c3d7d57effc56811e1bcf1cfb2578736dbbcd9d8d5c6d5ee76154f11a7e7584b",
+    "lossless_gzip": false
+  },
+  "case-2.log.gz": {
+    "source_path": "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/runs/comparisons/case-2.log",
+    "raw_bytes": 1022,
+    "raw_sha256": "41391dc4dd56297cce58893770e96e42907c62376b8d8b4b7b9d2daebdf9d500",
+    "stored_bytes": 643,
+    "stored_sha256": "a2d52d949e8c66079f7c75c687ff5816f78f7311dd1c23c52eeb41188d0dba6a",
+    "lossless_gzip": true
+  },
+  "run.json": {
+    "source_path": "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/runs/comparisons/run.json",
+    "raw_bytes": 13490,
+    "raw_sha256": "6337e7236973df41493be443ee7dc2f6e1e2c3003be4f0da0fe0afa388d9a5f3",
+    "stored_bytes": 13490,
+    "stored_sha256": "6337e7236973df41493be443ee7dc2f6e1e2c3003be4f0da0fe0afa388d9a5f3",
+    "lossless_gzip": false
+  },
+  "slurm-8030954.out": {
+    "source_path": "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/logs/comparison-8030954.out",
+    "raw_bytes": 514,
+    "raw_sha256": "b3d68dfd9ed134e7104a8c2fccf8d5c931ebe8dd077956732ba7777e63f00394",
+    "stored_bytes": 514,
+    "stored_sha256": "b3d68dfd9ed134e7104a8c2fccf8d5c931ebe8dd077956732ba7777e63f00394",
+    "lossless_gzip": false
+  }
+}

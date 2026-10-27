@@ -10,11 +10,13 @@ The tutorial backbone has three routes on the declared complete 63-contract desi
 
 In the first rough lesson, the curve is **known and held fixed for each inference problem**. It can vary across training examples, as in Francesco's supplied-curve task. This is followed by the joint lesson, where curve uncertainty becomes part of the posterior. Sparse inputs are rejected; sparse-chain specification and implementation remain a [separate downstream unit](../tutorial_final/SPARSE-QUOTE-CASE-PLAN.md).
 
+The current reproduction uses a seven-interval known curve; the joint extension uses an analytic monotone curve and finer grids. Assess each estimator against its own numerical target. A difference between their posterior widths does not isolate the effect of making the curve unknown; that would require a matched curve specification, observation and numerical target.
+
 The shared workflow is observation → posterior → diagnostics/reference comparison → product uncertainty. The deliverable for each route is a reusable bank and checked estimator that a live tutorial can load. This PR builds the generation, training, reload, sample-based evaluation and first PyMC reference pieces; the new development checkpoints have not yet met the tutorial acceptance requirements.
 
 Actual Oscar readiness, development training and bounded scientific pilots are recorded in the [26 October development report](oscar-pilot-2026-10-26.md). The [reviewed unit](reviewed-unit-2026-10-27.md) completed the Heston references and rough cost pilot; the [follow-up](followup-results-2026-10-27.md) checked empirical pricing errors and two further Heston fits. The [latest execution](native-default-and-bank-start.md) records the native FlowMatching sampling check and the authorized start of the first 32k joint-rough development bank. The monotone exponential curve and working numerical policy support development, with limits retained; no new estimator is accepted as a teaching checkpoint.
 
-Heston reproduction and the known-curve rough backbone now take priority. The running joint collection remains the third lesson's asset: preserve its completed and running work, frozen identities and spending ceiling. Joint generation alone does not complete either foundational lesson.
+Heston reproduction and the known-curve rough backbone now take priority. The [current Heston comparison](heston-backbone-comparison-2026-10-27.md) records the completed 100k evaluation and a remaining initial-variance gap despite a stable default readout. Known-curve rough now has a checked 32k bank, selected posterior/pricer and passing four-target rank screen; its three approximate-emulator comparisons also expose conditional failures requiring independent pricing checks. Joint recovery preserved the existing collection's **9,925 training rows** and old failures; its remaining bank is pending. No new estimator is accepted yet. The [work order](tutorial-backbone-work-order.md) gives current results, paths and focused next steps.
 
 ## What a delivered backbone contains
 
@@ -140,7 +142,48 @@ This uses all observed contracts and the task's declared independent Gaussian qu
 
 For the observed mixing problem, an opt-in bounded follow-up adds `--initialization data-fit --fit-starts 4 --fit-budget 2000` and uses a new output directory. It fits the transformed-space posterior from dispersed data-only starts, including the Uniform/logit Jacobian, then uses regularized local curvature for an explicit PyMC `MultivariateNormalProposal` inside DEMetropolisZ. The optimizer's finite logit search box restricts initialization only; sampling retains the full original prior. Fit budgets/results, separated supported fit locations, proposal covariance, seeds and dispersed chain starts are recorded. No neural estimate supplies initialization. This is a proposal/initialization change, not a new posterior target or a proof of global mode coverage.
 
-Outputs include `chains.npz` with explicit chain/draw/parameter axes and sampler statistics, `reference.json` with observation/task/data/source/environment identities, and `diagnostics.json` with R-hat/ESS/MCSE. Analytic one-year variance-swap and six-to-twelve-month forward-variance rates receive separate MCMC diagnostics. They are continuously monitored variance quantities, not volatility-swap prices or checks of leverage/vol-of-vol. The guarded comparison script describes their posterior means/quantiles without inventing absolute acceptance tolerances; parameter convergence does not substitute for product convergence. Atomic files in `partial/` retain physical draws and tuning flags during sampling; they are not resumable sampler/adaptation/RNG state. Passing statistical diagnostics alone does not establish scientific acceptance: numerical refinement, product precision and reference uncertainty must also pass. Short or incomplete chains are explicitly inconclusive. The rough emulator-MCMC route remains to be implemented and independently checked; this wrapper must not receive a fresh random Monte Carlo log likelihood.
+Outputs include `chains.npz` with explicit chain/draw/parameter axes and sampler statistics, `reference.json` with observation/task/data/source/environment identities, and `diagnostics.json` with R-hat/ESS/MCSE. Analytic one-year variance-swap and six-to-twelve-month forward-variance rates receive separate MCMC diagnostics. They are continuously monitored variance quantities, not volatility-swap prices or checks of leverage/vol-of-vol. The guarded comparison script describes their posterior means/quantiles without inventing absolute acceptance tolerances; parameter convergence does not substitute for product convergence. Atomic files in `partial/` retain physical draws and tuning flags during sampling; they are not resumable sampler/adaptation/RNG state. Passing statistical diagnostics alone does not establish scientific acceptance: numerical refinement, product precision and reference uncertainty must also pass. Short or incomplete chains are explicitly inconclusive. This wrapper must not receive a fresh random Monte Carlo log likelihood.
+
+## Forward price emulation and rough PyMC inference
+
+Train a forward emulator using the same bank's **clean numerical prices**, rather than noisy observations. This requires no new bank generation:
+
+```sh
+pixi run --locked -e core python scripts/train_full_surface_pricer.py \
+  --bank /path/to/checked-rough-snapshot --out /tmp/rough-pricer \
+  --widths 256,256,256,256 --epochs 300 --batch-size 512 --seed 0
+```
+
+The command reads training and validation only. It writes `checkpoint/pricer.npz`, `task.json` and `pricer.json`, binding the exported NumPy predictor to the task and bank. Epoch selection uses mean squared price error in **quote-noise units**, with exact-erf GELU matching Keras. It checks export differences and exact saved/reloaded predictions. Reports show per-quote errors and the norm across all 63 contracts; errors can accumulate in a likelihood. Label MCSE is reported separately and does not measure grid bias. Old unmarked NumPy pricers retain their original tanh activation convention.
+
+For a known-curve task, inputs are the three model parameters in logit coordinates plus seven supplied log curve levels. A joint pricer uses its six parameters and excludes auxiliary curve labels. Both outputs are the 63 numerical prices divided by their fixed quote standard deviations.
+
+Use that fixed, task-bound emulator in the existing PyMC command:
+
+```sh
+pixi run --locked -e core-reference python scripts/calibration_reference.py \
+  --bank /path/to/checked-rough-snapshot --pricer /tmp/rough-pricer/checkpoint \
+  --split validation --index 0 --out /tmp/rough-emulator-reference \
+  --draws 2000 --tune 2000 --chains 4 --cores 4 --mp-context spawn \
+  --initialization data-fit --fit-starts 4 --fit-budget 2000 --seed 0
+```
+
+PyMC supplies the physical independent-Uniform prior and bounded transforms once; the emulator callback supplies only the deterministic Gaussian quote likelihood. The known curve is copied from the selected observation and held fixed; the joint route receives no generating curve. DEMetropolisZ, data-only initialization, chain/draw storage and partial traces are shared with Heston. Rough diagnostics additionally check rho×eta. Record the fixed emulator hashes and approximation scope alongside convergence results.
+
+Compare a completed reference with a checkpoint through the same conditional-comparison command:
+
+```sh
+pixi run --locked -e core python scripts/compare_full_surface_reference.py \
+  --checkpoint /path/to/rough-posterior-checkpoint \
+  --reference /tmp/rough-emulator-reference --out /tmp/rough-emulator-comparison \
+  --draws 10000 --seed 0
+```
+
+The comparison rechecks the fixed emulator files and task/observation/curve identities, and requires passing parameter and rho×eta MCMC diagnostics. The recorded emulator files must remain accessible at their bound paths. It reports approximate-target agreement, including a separate rho×eta comparison; it does not apply Heston variance products or Fourier precision reports to rough models. Inconclusive references do not produce a neural-accuracy verdict.
+
+This is a posterior for the **fitted emulator**. Amortized training adds fresh quote noise to stored Monte Carlo price estimates; those labels also contain Monte Carlo randomness and covariance. The emulator likelihood instead centers the declared Gaussian quote law on the fitted mean prices and omits that extra pricing randomness. Even a perfect mean emulator need not reproduce the finite-Monte-Carlo simulator posterior. A fair model-price comparison therefore needs posterior-region checks showing the pricing randomness is negligible at the required accuracy, or an explicitly justified treatment of it.
+
+A converged chain or agreement with an amortized estimator trained on the same prices does not independently validate that pricing target. Held-out interpolation errors, independent price/refinement checks in relevant posterior regions, and product uncertainty remain scientific delivery requirements; shared grid bias can cancel in emulator validation errors. The new route has software checks; a full rough reference campaign and accepted tutorial artifacts remain pending. More detail on the financial workflow is in the [forward-pricing explanation](course/forward-pricing-emulation.md).
 
 On Oscar, install `core-gpu` for training. Run `core-check --require-gpu` **inside an allocated GPU job**; the new [GPU launcher](../cluster/core_gpu.sbatch) does this automatically. The [CPU launcher](../cluster/core_cpu.sbatch) explicitly selects `core` or `core-reference`. Both accept an absolute Pixi executable and resource overrides. The [readiness command](../scripts/check_core_cluster.py) tests actual generation, shared-storage operations and interrupted training/reload. CPU/GPU readiness now passes on Oscar, with the scope and evidence linked above. Historical training wrappers still select archived environments and should not be used for these candidates.
 

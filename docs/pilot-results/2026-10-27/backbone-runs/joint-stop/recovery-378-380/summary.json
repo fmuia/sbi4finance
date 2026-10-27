@@ -1,0 +1,93 @@
+{
+  "format": "reviewed_joint_three_timeout_recovery_summary_v1",
+  "status": "completed_validated_original_three_ranges",
+  "source_revision": "c773ceb26e7273612b15c69fd63715d131778083",
+  "collection_id": "817de3664968de0c605ae4c73e2c99c26465344294af2fc5412f39fffa4baa50",
+  "collection_sha256": "802a200f73bacddaa744abcfdcf2497b2d45a609c9039ed816baf1e3e9a5b12c",
+  "job_map_sha256": "a815c58087279fa7c2b5603d6bc3fee11ed92ec7965c0ac29c2827a665bbae0c",
+  "original_timeout_job_ids": [
+    "8019485_378",
+    "8019485_379",
+    "8019485_380"
+  ],
+  "recovery_worker_job_ids": [
+    "8030747_378",
+    "8030747_379",
+    "8030747_380"
+  ],
+  "preflight_job_id": "8030743",
+  "postcheck_job_id": "8030998",
+  "original_parts_byte_preserved": 394,
+  "original_orphan_staging_preserved": true,
+  "canonical_parts_added": 3,
+  "surface_ids_recovered": 75,
+  "total_training_surfaces": 9925,
+  "exact_frozen_prior_and_quote_noise_reconstruction": true,
+  "maximum_reported_mcse_over_quote_sigma": 0.24985947804442066,
+  "recovered_rows_above_nominal_025": 0,
+  "recovered_rows_above_hard_05": 0,
+  "full_32000_bank_complete": false,
+  "reserved_test_outcomes_evaluated": false,
+  "no_wider_refill_or_retry": true,
+  "final_accounting": {
+    "stages": {
+      "preflight": [
+        {
+          "job_id": "8030743",
+          "state": "COMPLETED",
+          "elapsed_seconds": 12,
+          "allocated_cpus": 1,
+          "allocated_cpu_seconds": 12,
+          "exit_code": "0:0"
+        }
+      ],
+      "workers": [
+        {
+          "job_id": "8030747_378",
+          "state": "COMPLETED",
+          "elapsed_seconds": 1723,
+          "allocated_cpus": 1,
+          "allocated_cpu_seconds": 1723,
+          "exit_code": "0:0"
+        },
+        {
+          "job_id": "8030747_379",
+          "state": "COMPLETED",
+          "elapsed_seconds": 1131,
+          "allocated_cpus": 1,
+          "allocated_cpu_seconds": 1131,
+          "exit_code": "0:0"
+        },
+        {
+          "job_id": "8030747_380",
+          "state": "COMPLETED",
+          "elapsed_seconds": 1210,
+          "allocated_cpus": 1,
+          "allocated_cpu_seconds": 1210,
+          "exit_code": "0:0"
+        }
+      ],
+      "postcheck": [
+        {
+          "job_id": "8030998",
+          "state": "COMPLETED",
+          "elapsed_seconds": 11,
+          "allocated_cpus": 1,
+          "allocated_cpu_seconds": 11,
+          "exit_code": "0:0"
+        }
+      ]
+    },
+    "unit_allocated_cpu_seconds": 4087,
+    "unit_allocated_cpu_hours": 1.1352777777777778,
+    "unit_full_authorized_cpu_seconds": 34200,
+    "bank_actual_allocated_cpu_seconds": 1020299,
+    "bank_actual_plus_original_final_snapshot_reserve_cpu_seconds": 1024259,
+    "no_additional_recovery_or_refill_reserved": true
+  },
+  "downloaded_remote_files_hash_verified": 15,
+  "parent_local_remote_ledger_bytes_equal": true,
+  "unit_local_remote_ledger_bytes_equal": true,
+  "parent_execution_sha256": "80580f8bdd4c8c9636571e94650b2e5168d347d30436a93fa14341cc0d819072",
+  "unit_execution_sha256": "97229122935b53955a9cb7f625cd56b60c0153b45941ffc8a511c6a2994df4a8"
+}

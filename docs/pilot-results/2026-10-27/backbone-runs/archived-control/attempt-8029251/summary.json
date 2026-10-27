@@ -1,0 +1,220 @@
+{
+  "format": "archived_heston_completed_mixed_panel_v1",
+  "status": "completed_checked_development_panel",
+  "slurm_job_id": "8029251",
+  "surfaces": 2000,
+  "draws_per_surface": 1000,
+  "cpu_committed_surfaces_reused": 500,
+  "gpu_continued_surfaces": 1500,
+  "cpu_batch_bytes_preserved_exactly": true,
+  "all_input_panel_hashes_match_cpu_declaration": true,
+  "example_ids_exact": true,
+  "source_driver_sha256": "07e0aefeb67c40b412638b04ce78134d2ab9d83ee3f33a2f579327dfa1aadb6d",
+  "allocated_elapsed_seconds_top_level": 53,
+  "allocated_cpu_seconds_top_level_once": 212,
+  "allocated_gpu_seconds": 53,
+  "process_cpu_seconds": 39.730407,
+  "internal_wall_seconds": 50.9051006892696,
+  "sbc": {
+    "surfaces": 2000,
+    "draws_per_surface": 1000,
+    "rank_ks": [
+      0.022148345997915375,
+      0.02757243813354282,
+      0.02188705591060458,
+      0.023870100062276953
+    ],
+    "dkw_bound": 0.03562012708860619,
+    "family_alpha": 0.05,
+    "passed": [
+      true,
+      true,
+      true,
+      true
+    ]
+  },
+  "coverage": {
+    "0.5": {
+      "coverage": [
+        0.4815,
+        0.5095,
+        0.514,
+        0.481
+      ],
+      "wilson": [
+        [
+          0.45965837761892475,
+          0.5034125531304815
+        ],
+        [
+          0.48759368309696793,
+          0.5313698930046881
+        ],
+        [
+          0.4920896789972676,
+          0.5358566436788574
+        ],
+        [
+          0.45916015609633803,
+          0.5029126917003495
+        ]
+      ]
+    },
+    "0.8": {
+      "coverage": [
+        0.78,
+        0.8005,
+        0.8085,
+        0.791
+      ],
+      "wilson": [
+        [
+          0.7613178846875146,
+          0.7976085688349837
+        ],
+        [
+          0.78241724767193,
+          0.817430606912037
+        ],
+        [
+          0.7906702069434384,
+          0.8251469748840286
+        ],
+        [
+          0.7726310318046226,
+          0.8082532466776882
+        ]
+      ]
+    },
+    "0.9": {
+      "coverage": [
+        0.896,
+        0.896,
+        0.9,
+        0.908
+      ],
+      "wilson": [
+        [
+          0.8818537493786969,
+          0.9086279491745508
+        ],
+        [
+          0.8818537493786969,
+          0.9086279491745508
+        ],
+        [
+          0.8860755875933475,
+          0.9123907745816502
+        ],
+        [
+          0.8945389556181023,
+          0.9198967338003954
+        ]
+      ]
+    },
+    "0.95": {
+      "coverage": [
+        0.95,
+        0.95,
+        0.9455,
+        0.954
+      ],
+      "wilson": [
+        [
+          0.9395558910656041,
+          0.9587187663812682
+        ],
+        [
+          0.9395558910656041,
+          0.9587187663812682
+        ],
+        [
+          0.9346702670259668,
+          0.9546216438464368
+        ],
+        [
+          0.9439163444279334,
+          0.9623429766406889
+        ]
+      ]
+    }
+  },
+  "analytic_variance_products": {
+    "targets": [
+      "variance_swap_1y",
+      "forward_variance_0_5_to_1y"
+    ],
+    "coverage": {
+      "0.5": {
+        "coverage": [
+          0.498,
+          0.501
+        ],
+        "wilson": [
+          [
+            0.47611195964707875,
+            0.5198957085420461
+          ],
+          [
+            0.4791060774040939,
+            0.5228900885013437
+          ]
+        ]
+      },
+      "0.8": {
+        "coverage": [
+          0.8035,
+          0.8045
+        ],
+        "wilson": [
+          [
+            0.7855107983788351,
+            0.8203255539214444
+          ],
+          [
+            0.786542328328027,
+            0.82129018987769
+          ]
+        ]
+      },
+      "0.9": {
+        "coverage": [
+          0.893,
+          0.894
+        ],
+        "wilson": [
+          [
+            0.8786914023121892,
+            0.905801798524746
+          ],
+          [
+            0.8797451436838335,
+            0.9067442230585392
+          ]
+        ]
+      },
+      "0.95": {
+        "coverage": [
+          0.9445,
+          0.946
+        ],
+        "wilson": [
+          [
+            0.9335871935538151,
+            0.9537085514131509
+          ],
+          [
+            0.9352121487009426,
+            0.9550778451241797
+          ]
+        ]
+      }
+    },
+    "scope": "Analytic mean-curve functionals only, not path-dependent products or a separate acceptance verdict."
+  },
+  "full_draws_sha256": "e815a12de94809d940f37f4f5d83b2cd09e2055eafab5c3dea7cd0b89a078404",
+  "full_draws_bytes": 59796794,
+  "full_payloads_transferred": false,
+  "scientific_acceptance": false,
+  "scope": "Same2kvalidationobservations/truth asnew50kcomparison;500committedCPU+1500GPU archivedBF2.0.14 readouts. No speedup claim, reweighting, truncation or new reference-MCMC verdict."
+}

@@ -1,0 +1,50 @@
+{
+  "status": "all_four_completed_metadata_only",
+  "polls": 7,
+  "utc": "2026-10-27T21:04:45.984441+00:00",
+  "states": {
+    "8028825_0": "COMPLETED",
+    "8028825_1": "COMPLETED",
+    "8028825_2": "COMPLETED",
+    "8028825_3": "COMPLETED"
+  },
+  "checked_payloads": false,
+  "no_pricing_calls": true,
+  "no_neural_evaluation": true,
+  "published_training_surfaces": 100,
+  "allocated_cpu_seconds": 974,
+  "parts": [
+    {
+      "path": "/oscar/scratch/afengler/sbi4finance-rough-known-backbone-20261027/collection/parts/train-0000000000-0000000025/manifest.json",
+      "manifest_sha256": "0a0e618875f120af5ba6af42553d7afdb2f586e524c31933ffbe5d7f9f1ddc5c"
+    },
+    {
+      "path": "/oscar/scratch/afengler/sbi4finance-rough-known-backbone-20261027/collection/parts/train-0000000025-0000000050/manifest.json",
+      "manifest_sha256": "3359a9f209f1993b1444a7504d79fb3300f30dac0a48545e111f95e62a720f8b"
+    },
+    {
+      "path": "/oscar/scratch/afengler/sbi4finance-rough-known-backbone-20261027/collection/parts/train-0000000050-0000000075/manifest.json",
+      "manifest_sha256": "3285d15be2f8555e81dc6eff11d86ebf077f2bfc44725df57b7443cd72b7bf8e"
+    },
+    {
+      "path": "/oscar/scratch/afengler/sbi4finance-rough-known-backbone-20261027/collection/parts/train-0000000075-0000000100/manifest.json",
+      "manifest_sha256": "23e1ab0875a5f6cafcafe58434ea17da8a7f253b2088f68b2bd97d3bb51f46b8"
+    }
+  ],
+  "failed_rows": [],
+  "failure_records": [],
+  "staging": [],
+  "progress_uncompressed_sha256": "5acbc453893f6e85d2aeef7bf897ddffabf13b0f9848c7fb13e5ec468ffd3d13",
+  "latest_snapshot": {
+    "stored_file": "latest.json.gz",
+    "raw_sha256": "3f1415397fde0660023ae1a1437cd0a9b7c6c6819f26d7db4f689afc473ceb47",
+    "stored_sha256": "164fa099a6a3440ea78895301d2298f31afcd32fd80f2b93d1239ff52753e460"
+  },
+  "cost_scenario": {
+    "all100_rows_included": true,
+    "allocated_seconds_per_surface": 9.74,
+    "arithmetic_full32000_cpu_hours": 86.57777777777778,
+    "scope": "First100trainingrows only; one observed cohort across two nodes, not a guaranteed forecast or bankwide precision claim."
+  },
+  "verification_next": "Root allocated initial-integrity driver must check payloads and exact prior/curve/quote-noise before expansion."
+}

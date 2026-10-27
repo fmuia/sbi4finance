@@ -1,0 +1,10 @@
+## SLURM PROLOG ###############################################################
+##    Job ID : 8019662
+##  Job Name : sbi4f-bank-workers-204-396
+##  Nodelist : node2338
+##      CPUs : 1
+##  Mem/Node : 8192 MB
+## Directory : /oscar/scratch/afengler/sbi4finance-native-bank-20261027/repo
+##   Job Started : Tue Oct 27 02:07:48 PM EDT 2026
+###############################################################################
+[2026-10-27T17:07:49.010] error: *** JOB 8019662 ON node2338 CANCELLED AT 2026-10-27T17:07:49 DUE TO TIME LIMIT ***

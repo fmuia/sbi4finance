@@ -1,0 +1,10 @@
+## SLURM PROLOG ###############################################################
+##    Job ID : 8030774
+##  Job Name : sbi4f-known-20k-fit
+##  Nodelist : gpu2708
+##      CPUs : 1
+##  Mem/Node : 24576 MB
+## Directory : /oscar/home/afengler
+##   Job Started : Tue Oct 27 06:06:05 PM EDT 2026
+###############################################################################
+{"status": "completed_development_checks", "scientific_acceptance": false}

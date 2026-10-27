@@ -1,0 +1,321 @@
+{
+  "extracted_from": "reference.json",
+  "initialization": {
+    "best_fit": 3,
+    "bounds": [
+      [
+        0.02,
+        0.35
+      ],
+      [
+        0.5,
+        3.5
+      ],
+      [
+        -0.99,
+        -0.2
+      ]
+    ],
+    "chain_start_checks": 4,
+    "chain_start_details": [
+      {
+        "attempts": 1,
+        "chain": 0,
+        "fit": 3,
+        "logit": [
+          0.2920660939101217,
+          -0.06697721310883828,
+          -1.0246895801134581
+        ],
+        "negative_log_posterior_logit": -392.23410102712694,
+        "spread": 2.0
+      },
+      {
+        "attempts": 1,
+        "chain": 1,
+        "fit": 3,
+        "logit": [
+          -0.5246611517778639,
+          -0.02061422646069235,
+          -1.1254916622381155
+        ],
+        "negative_log_posterior_logit": -390.7144011322484,
+        "spread": 2.0
+      },
+      {
+        "attempts": 1,
+        "chain": 2,
+        "fit": 3,
+        "logit": [
+          0.2372106886663969,
+          -0.026847962135010905,
+          -0.9627493441603563
+        ],
+        "negative_log_posterior_logit": -393.82259733890334,
+        "spread": 2.0
+      },
+      {
+        "attempts": 1,
+        "chain": 3,
+        "fit": 3,
+        "logit": [
+          -0.48327070986092646,
+          0.08712268698899123,
+          -0.6747868373813528
+        ],
+        "negative_log_posterior_logit": -392.23504725844185,
+        "spread": 2.0
+      }
+    ],
+    "chain_start_max_objective_gap": 25.0,
+    "chain_start_seed_protocol": "PCG64 SeedSequence([0x53544152, seed])",
+    "chain_starts": [
+      [
+        0.20892561760153316,
+        1.9497858602628322,
+        -0.7813492018900213
+      ],
+      [
+        0.14268177285626527,
+        1.984539877627462,
+        -0.7964546941815749
+      ],
+      [
+        0.20447863058015042,
+        1.9798652378341912,
+        -0.7717008261331298
+      ],
+      [
+        0.14588843060351853,
+        2.065300715790247,
+        -0.7234336038849314
+      ]
+    ],
+    "chains": [
+      {
+        "chain": 0,
+        "model_initialization_seed": 35487621,
+        "spawn_key": [
+          0
+        ]
+      },
+      {
+        "chain": 1,
+        "model_initialization_seed": 972010384,
+        "spawn_key": [
+          1
+        ]
+      },
+      {
+        "chain": 2,
+        "model_initialization_seed": 744514863,
+        "spawn_key": [
+          2
+        ]
+      },
+      {
+        "chain": 3,
+        "model_initialization_seed": 214004166,
+        "spawn_key": [
+          3
+        ]
+      }
+    ],
+    "cpu_seconds": 0.4411599129999999,
+    "curvature": {
+      "coordinates": "PyMC Uniform logit/value coordinates",
+      "covariance": [
+        [
+          0.026678740786855684,
+          0.0004964377630724793,
+          -0.002827920353371623
+        ],
+        [
+          0.0004964377630724795,
+          0.003917007222415745,
+          0.006443625490482386
+        ],
+        [
+          -0.0028279203533716235,
+          0.006443625490482386,
+          0.02084126302531375
+        ]
+      ],
+      "finite_difference_step": 0.01,
+      "hessian": [
+        [
+          39.49631495004269,
+          -28.12779667820564,
+          14.055646255286547
+        ],
+        [
+          -28.12779667820564,
+          539.5685827943453,
+          -170.63846074776734
+        ],
+        [
+          14.055646255286547,
+          -170.63846074776734,
+          102.6463022350299
+        ]
+      ],
+      "precision_eigenvalue_floor": 6.0004616743192815e-06,
+      "proposal_covariance_eigenvalue_bounds": [
+        1e-06,
+        4.0
+      ],
+      "proposal_covariance_eigenvalues": [
+        0.028020269403248702,
+        0.021750203197669318,
+        0.0016665384336671803
+      ],
+      "raw_hessian_eigenvalues": [
+        35.68845058584836,
+        45.97658196164148,
+        600.0461674319281
+      ],
+      "regularization_applied": false,
+      "scope": "local regularized proposal geometry; not posterior uncertainty or proof of unimodality"
+    },
+    "curvature_evaluations": 19,
+    "determinism_checks": 2,
+    "fit_start_seed_protocol": "PCG64 SeedSequence([0x464954, seed])",
+    "fits": [
+      {
+        "fit": 0,
+        "function_evaluations": 500,
+        "initial_logit": [
+          1.7806984601818676,
+          2.3194870487145645,
+          -2.7389331347954626
+        ],
+        "initial_parameters": [
+          0.30240841975470695,
+          3.2314344199729095,
+          -0.9420353739908666
+        ],
+        "logit": [
+          -0.09423001036586887,
+          0.0031080374408553766,
+          -0.8855955616402312
+        ],
+        "max_function_evaluations": 500,
+        "message": "Maximum number of function evaluations has been exceeded.",
+        "negative_log_posterior_logit": -396.13586687628987,
+        "optimizer_success": false
+      },
+      {
+        "fit": 1,
+        "function_evaluations": 387,
+        "initial_logit": [
+          -0.36491472502576183,
+          1.226140839479404,
+          2.4031926451764987
+        ],
+        "initial_parameters": [
+          0.15522422289141183,
+          2.8194272517686825,
+          -0.26551435642926813
+        ],
+        "logit": [
+          0.5524610722989,
+          -0.41702974768557677,
+          -7.678897252556887
+        ],
+        "max_function_evaluations": 500,
+        "message": "Optimization terminated successfully.",
+        "negative_log_posterior_logit": -355.3361337362714,
+        "optimizer_success": true
+      },
+      {
+        "fit": 2,
+        "function_evaluations": 285,
+        "initial_logit": [
+          0.2695039693781581,
+          1.73438330368633,
+          0.049118487379712916
+        ],
+        "initial_parameters": [
+          0.2071004716198092,
+          3.049916703626125,
+          -0.5853010486591228
+        ],
+        "logit": [
+          -0.08688759812466375,
+          0.008386937896078398,
+          -0.8750810875745554
+        ],
+        "max_function_evaluations": 500,
+        "message": "Optimization terminated successfully.",
+        "negative_log_posterior_logit": -396.1409108992351,
+        "optimizer_success": true
+      },
+      {
+        "fit": 3,
+        "function_evaluations": 214,
+        "initial_logit": [
+          2.1954151886410003,
+          -0.5375215925074993,
+          -0.9713648673001788
+        ],
+        "initial_parameters": [
+          0.31694622224848157,
+          1.606292933378151,
+          -0.7730592543390808
+        ],
+        "logit": [
+          -0.08648275589021517,
+          0.00848591800687776,
+          -0.8747810353586433
+        ],
+        "max_function_evaluations": 500,
+        "message": "Optimization terminated successfully.",
+        "negative_log_posterior_logit": -396.1409158924195,
+        "optimizer_success": true
+      }
+    ],
+    "kind": "data-fit",
+    "optimization_logit_box": [
+      -12.0,
+      12.0
+    ],
+    "optimizer": "scipy.optimize.minimize Powell; transformed log posterior includes Uniform logit Jacobian",
+    "optimizer_box_limits_sampling_support": false,
+    "optimizer_evaluation_budget": 2000,
+    "optimizer_evaluations": 1386,
+    "proposal": {
+      "S": [
+        [
+          0.026678740786855684,
+          0.0004964377630724793,
+          -0.002827920353371623
+        ],
+        [
+          0.0004964377630724795,
+          0.003917007222415745,
+          0.006443625490482386
+        ],
+        [
+          -0.0028279203533716235,
+          0.006443625490482386,
+          0.02084126302531375
+        ]
+      ],
+      "S_coordinates": "parameters_interval__",
+      "distribution": "PyMC MultivariateNormalProposal",
+      "initial_scaling": 1.0,
+      "tune": "scaling"
+    },
+    "pymc_chain_rng_protocol": "PyMC 6: default_rng(seed).spawn(chains); child model seed drawn before sampling",
+    "pymc_random_seed": 271400,
+    "scope": "initialization/proposal only; finite multistart search does not establish global mode coverage or posterior correctness",
+    "seed": 271400,
+    "separated_supported_fit_locations": [
+      3
+    ],
+    "start_protocol": "data-only transformed-space MAP fits plus seeded dispersed logit starts; no neural draws",
+    "supported_fit_max_objective_gap": 10.0,
+    "wall_seconds": 0.44902941584587097
+  },
+  "source_reference_sha256": "b393e6728d24af2e67c8d9748da259fa1249ce01a5471155f4f4bf4ec566bac4"
+}

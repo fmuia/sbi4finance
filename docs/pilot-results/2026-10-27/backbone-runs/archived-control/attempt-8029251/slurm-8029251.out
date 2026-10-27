@@ -1,0 +1,44 @@
+## SLURM PROLOG ###############################################################
+##    Job ID : 8029251
+##  Job Name : sbi4f-archived-gpu-host
+##  Nodelist : gpu2708
+##      CPUs : 1
+##  Mem/Node : 24576 MB
+## Directory : /oscar/scratch/afengler/sbi4finance-backbone-fit-20261027/repo
+##   Job Started : Tue Oct 27 05:19:16 PM EDT 2026
+###############################################################################
+INFO:bayesflow:Using backend 'jax'
+/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/lib/python3.12/site-packages/keras/src/saving/saving_lib.py:869: UserWarning: Skipping variable loading for optimizer 'adam_w', because it has 83 variables whereas the saved optimizer has 0 variables. 
+  saveable.load_own_variables(store)
+INFO:bayesflow:Approximator restored from '/oscar/scratch/afengler/sbi4finance-backbone-fit-20261027/repo/tutorial_final/checkpoints/heston/model.keras'.
+Sampling:   0%|          | 0/1 [00:00<?, ?batch/s]Sampling: 100%|██████████| 1/1 [00:07<00:00,  7.15s/batch]Sampling: 100%|██████████| 1/1 [00:07<00:00,  7.15s/batch]
+INFO:bayesflow:Sampling completed in 8.66 seconds.
+Sampling:   0%|          | 0/1 [00:00<?, ?batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  1.23batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  1.23batch/s]
+INFO:bayesflow:Sampling completed in 1.92 seconds.
+Sampling:   0%|          | 0/1 [00:00<?, ?batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  1.45batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  1.45batch/s]
+INFO:bayesflow:Sampling completed in 1.80 seconds.
+Sampling:   0%|          | 0/1 [00:00<?, ?batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  1.45batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  1.45batch/s]
+INFO:bayesflow:Sampling completed in 1.80 seconds.
+Sampling:   0%|          | 0/1 [00:00<?, ?batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  1.46batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  1.46batch/s]
+INFO:bayesflow:Sampling completed in 1.79 seconds.
+Sampling:   0%|          | 0/1 [00:00<?, ?batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  1.28batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  1.28batch/s]
+INFO:bayesflow:Sampling completed in 1.89 seconds.
+Sampling:   0%|          | 0/1 [00:00<?, ?batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  1.38batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  1.38batch/s]
+INFO:bayesflow:Sampling completed in 1.83 seconds.
+Sampling:   0%|          | 0/1 [00:00<?, ?batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  1.42batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  1.42batch/s]
+INFO:bayesflow:Sampling completed in 1.81 seconds.
+Sampling:   0%|          | 0/1 [00:00<?, ?batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  1.45batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  1.45batch/s]
+INFO:bayesflow:Sampling completed in 1.80 seconds.
+Sampling:   0%|          | 0/1 [00:00<?, ?batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  1.31batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  1.31batch/s]
+INFO:bayesflow:Sampling completed in 1.87 seconds.
+Sampling:   0%|          | 0/1 [00:00<?, ?batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  1.27batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  1.27batch/s]
+INFO:bayesflow:Sampling completed in 1.89 seconds.
+Sampling:   0%|          | 0/1 [00:00<?, ?batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  1.36batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  1.36batch/s]
+INFO:bayesflow:Sampling completed in 1.85 seconds.
+Sampling:   0%|          | 0/1 [00:00<?, ?batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  1.35batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  1.35batch/s]
+INFO:bayesflow:Sampling completed in 1.85 seconds.
+Sampling:   0%|          | 0/1 [00:00<?, ?batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  1.31batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  1.31batch/s]
+INFO:bayesflow:Sampling completed in 1.87 seconds.
+Sampling:   0%|          | 0/1 [00:00<?, ?batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  1.27batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  1.27batch/s]
+INFO:bayesflow:Sampling completed in 1.89 seconds.
+{"status": "completed_paired_development_panel", "completed_surfaces": 2000, "process_cpu_seconds": 39.730407, "wall_seconds": 50.9051006892696}
