@@ -101,8 +101,12 @@ def fresh_noise(seed, encoder="vector"):
 
 
 def configuration(*, family="spline", encoder="vector", widths=(128, 128), summary_dim=32,
-                  flow_steps=100, mean_steps=4):
-    """Serializable architecture and sampling choices, bound into run identity."""
+                  flow_steps=None, mean_steps=4):
+    """Bound architecture/sampling identity; None keeps BayesFlow's native solver.
+
+    A positive flow_steps value explicitly retains the earlier fixed-Euler
+    convention, including when an existing checkpoint is restored.
+    """
     if family not in FAMILIES or encoder not in ENCODERS:
         raise ValueError(f"family/encoder must be from {FAMILIES}/{ENCODERS}")
     widths = [_integer(w, "width", minimum=1) for w in widths]
@@ -110,7 +114,7 @@ def configuration(*, family="spline", encoder="vector", widths=(128, 128), summa
         raise ValueError("at least two subnet blocks required, including MeanFlow's velocity head")
     return {"family": family, "encoder": encoder, "widths": widths,
             "summary_dim": _integer(summary_dim, "summary_dim", minimum=1),
-            "flow_steps": _integer(flow_steps, "flow_steps", minimum=1),
+            "flow_steps": None if flow_steps is None else _integer(flow_steps, "flow_steps", minimum=1),
             "mean_steps": _integer(mean_steps, "mean_steps", minimum=1)}
 
 
@@ -135,9 +139,11 @@ def build_workflow(task, checkpoint_dir=None, *, optimizer=None, **settings):
     if family in ("affine", "spline"):
         network = bf.networks.CouplingFlow(transform=family, subnet_kwargs=subnet)
     elif family == "flow_matching":
-        # BF2.1 integrates noise at t=1 back to data at t=0 itself. No archived reversed grid.
-        network = bf.networks.FlowMatching(subnet_kwargs=subnet,
-                                          integrate_kwargs={"method": "euler", "steps": config["flow_steps"]})
+        # Omit the override for new workflows: BF2.1 owns its native adaptive
+        # solver and time convention. Explicit old step counts remain Euler.
+        integration = {} if config["flow_steps"] is None else {
+            "integrate_kwargs": {"method": "euler", "steps": config["flow_steps"]}}
+        network = bf.networks.FlowMatching(subnet_kwargs=subnet, **integration)
     else:
         network = bf.experimental.MeanFlow(subnet_kwargs=subnet, steps=config["mean_steps"], density_head=False)
     summary = None
@@ -185,6 +191,8 @@ def load_checkpoint(directory):
             or hashlib.sha256((directory / "model.keras").read_bytes()).hexdigest() != record["checkpoint_sha256"]):
         raise ValueError("incompatible core checkpoint or changed task/checkpoint/architecture metadata")
     workflow = build_workflow(task, **settings)
+    expected_integration = (dict(workflow.inference_network.integrate_kwargs)
+                            if settings["family"] == "flow_matching" else None)
     workflow.load_estimator(directory / "model.keras")
     family_class = {"affine": "CouplingFlow", "spline": "CouplingFlow",
                     "flow_matching": "FlowMatching", "mean_flow": "MeanFlow"}[settings["family"]]
@@ -195,4 +203,9 @@ def load_checkpoint(directory):
             or (settings["family"] in ("affine", "spline")
                 and workflow.inference_network.transform != settings["family"])):
         raise ValueError("saved estimator architecture differs from its recorded family/encoder")
+    if settings["family"] == "flow_matching":
+        actual_integration = dict(workflow.inference_network.integrate_kwargs)
+        if (actual_integration != expected_integration
+                or record.get("flow_matching_integrate_kwargs", actual_integration) != actual_integration):
+            raise ValueError("saved FlowMatching sampler differs from its recorded sampling settings")
     return task, workflow, record

@@ -377,10 +377,21 @@ def run_job(path, job):
                 if _existing(_range_conflicts(root, split, start, stop), split, start, stop) is not None:
                     raise ValueError("another immutable part appeared while this job ran")
                 os.rename(staged, destination)
-            return part["record"]
-        finally:
-            # Only this process's uniquely created staging directory is removed.
+        except BaseException as error:
+            # Keep the original failure.json (or interrupted partial work) apart
+            # from immutable finished parts. A retry gets a new staging name;
+            # failed work is never eligible for adoption or snapshot coverage.
+            try:
+                failures = root / "failures"
+                failures.mkdir(exist_ok=True)
+                os.rename(temporary, failures / temporary.name)
+            except OSError as preservation_error:
+                error.add_note(f"Could not preserve staging at {temporary}: {preservation_error}")
+            raise
+        else:
+            # Successful publication moved the part; remove its empty staging.
             shutil.rmtree(temporary)
+        return part["record"]
 
 
 def freeze_snapshot(path, train_count, out):

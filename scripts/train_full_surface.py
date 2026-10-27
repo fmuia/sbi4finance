@@ -122,6 +122,8 @@ def run_training(args):
               "task_id": task["task_id"], "network": config, "run_contract": contract,
               "checkpoint_sha256": sha256(args.out / "model.keras"), "history": history,
               "selected_epoch": best.epoch, "selection": "minimum validation loss within this family",
+              "flow_matching_integrate_kwargs": (dict(workflow.inference_network.integrate_kwargs)
+                                                  if config["family"] == "flow_matching" else None),
               "resumed_at_epochs": resumed_at, "same_seed_reload_exact": True,
               "training_surfaces": len(train["observations"]), "validation_surfaces": len(validation["observations"]),
               "reserved_test_evaluated": False, "conditioning": "complete quotes/design/noise only; no supplied curve",
@@ -140,7 +142,8 @@ def main():
     parser.add_argument("--encoder", choices=full_surface.ENCODERS, default="vector")
     parser.add_argument("--widths", default="128,128")
     parser.add_argument("--summary-dim", type=int, default=32)
-    parser.add_argument("--flow-steps", type=int, default=100)
+    parser.add_argument("--flow-steps", type=int, default=None,
+                        help="Explicit legacy Euler step count; omit for BayesFlow's native FlowMatching solver.")
     parser.add_argument("--mean-steps", type=int, default=4)
     parser.add_argument("--epochs", type=int, default=40)
     parser.add_argument("--batch-size", type=int, default=256)
