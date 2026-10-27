@@ -1,13 +1,18 @@
 """PyMC references for deterministic full-surface likelihoods.
 
-The first route is Heston with the checked Fourier price ladder. A black-box
-log likelihood has no supplied gradients, so use PyMC's DEMetropolisZ rather
-than NUTS. This is not a wrapper for stochastic Monte Carlo log likelihoods.
+Heston uses the checked Fourier price ladder. Rough tasks can optionally use a
+fixed, task-bound forward-pricer emulator. That reference targets the emulated
+price model and is not independent evidence of numerical model accuracy.
+Black-box likelihoods have no supplied gradients: use native DEMetropolisZ,
+not ordinary MCMC with a fresh stochastic Monte Carlo log likelihood.
 """
 
+import hashlib
+import json
 import math
 import multiprocessing
 import os
+from pathlib import Path
 
 import numpy as np
 
@@ -51,6 +56,108 @@ def heston_log_likelihood(task, quotes):
         return float(-0.5 * (residual @ residual + normalization))
 
     return log_likelihood
+
+
+def load_forward_pricer(directory, task):
+    """Load an explicitly bound rough pricer; legacy unbound files remain archival.
+
+    The binding establishes task/file identity, not emulator accuracy. Training
+    validation and an MCMC convergence pass do not make this an exact-model
+    reference without independent pricing and refinement checks.
+    """
+    from .full_surface import validate_task
+    from .pricer_net import Pricer
+    from ..gbm_bank import _json
+
+    validate_task(task)
+    if task["model"] != "rough":
+        raise ValueError("the optional forward-pricer reference supports rough tasks; Heston uses Fourier")
+    directory = Path(directory).resolve()
+    paths = {name: directory / name for name in ("pricer.npz", "pricer.json", "task.json")}
+    hashes = {name: hashlib.sha256(path.read_bytes()).hexdigest() for name, path in paths.items()}
+    recorded_task = json.loads(paths["task.json"].read_text())
+    record = json.loads(paths["pricer.json"].read_text())
+    fingerprint = hashlib.sha256(_json(task).encode()).hexdigest()
+    if (recorded_task != task or record.get("task_fingerprint") != fingerprint
+            or record.get("pricer_sha256") != hashes["pricer.npz"]):
+        raise ValueError("forward-pricer task/fingerprint/checkpoint binding differs from the reference task")
+    pricer = Pricer.load(directory)
+    return pricer, {"directory": str(directory), "task_fingerprint": fingerprint,
+                    "input_sha256": {str(paths[name]): digest for name, digest in hashes.items()},
+                    "activation": pricer.activation, "training_record": record,
+                    "interpreted_output_units": "forward prices divided by the task's quote-noise standard deviations",
+                    "target_scope": "approximate deterministic emulator likelihood; independent pricing accuracy not assessed by this run"}
+
+
+def pricer_log_likelihood(task, quotes, pricer, context_values=None):
+    """Physical Gaussian quote likelihood only, around a fixed rough emulator.
+
+    The pricer returns prices divided by quote sigma. Restore the Gaussian
+    normalization in physical quote units. No prior or logit Jacobian enters:
+    PyMC's physical Uniform variables supply those transformations once.
+    Emulator/training-pricer errors are not included in this approximate law.
+    """
+    from .full_surface import observations, uses_known_curve, validate_task
+    from .pricer_net import features, _log_known_curve
+
+    validate_task(task)
+    if task["model"] != "rough":
+        raise ValueError("the emulator likelihood requires a known-curve or joint rough task")
+    if np.iscomplexobj(quotes) or (np.ma.isMaskedArray(quotes) and np.any(np.ma.getmaskarray(quotes))):
+        raise ValueError("real complete unmasked quotes are required")
+    values = np.asarray(quotes, dtype=np.float64)
+    if values.shape == (63,):
+        values = values[None, :]
+    y = observations(values, task)
+    if len(y) != 1:
+        raise ValueError("one complete observed surface is required")
+    bounds = np.asarray(task["prior_bounds"], dtype=np.float64)
+    sigma = tasks.sigma(task)
+    scaled_quotes = y[0] / sigma
+    normalization = np.log(2 * np.pi * sigma**2).sum()
+    known_curve = None
+    if uses_known_curve(task):
+        # Freeze the observed curve. It is a condition, not another MCMC state.
+        _log_known_curve(task, context_values, 1)
+        known_curve = np.asarray(context_values, dtype=np.float64).reshape(1, -1).copy()
+    # Joint auxiliaries are deliberately ignored, even if they are supplied.
+    probe = np.asarray(pricer(features(task, bounds.mean(axis=1)[None, :], known_curve)))
+    if probe.shape != (1, 63) or np.iscomplexobj(probe) or not np.isfinite(probe).all():
+        raise ValueError("the bound forward pricer must return one finite 63-quote vector in noise units")
+
+    def log_likelihood(parameters):
+        if np.iscomplexobj(parameters) or (np.ma.isMaskedArray(parameters) and np.any(np.ma.getmaskarray(parameters))):
+            raise ValueError("one finite real unmasked physical parameter vector is required")
+        parameters = np.asarray(parameters, dtype=np.float64)
+        if parameters.shape != (len(bounds),) or not np.isfinite(parameters).all():
+            raise ValueError("one finite parameter vector in task order is required")
+        # Logit features are defined on the open interior. Boundaries have zero
+        # prior mass and PyMC's bounded transform stays in that interior.
+        if np.any(parameters <= bounds[:, 0]) or np.any(parameters >= bounds[:, 1]):
+            return -np.inf
+        predicted = np.asarray(pricer(features(task, parameters[None, :], known_curve)))
+        if predicted.shape != (1, 63) or np.iscomplexobj(predicted) or not np.isfinite(predicted).all():
+            raise FloatingPointError("forward-pricer evaluation failed; do not replace it with zero density")
+        residual = scaled_quotes - predicted[0]
+        return float(-0.5 * (residual @ residual + normalization))
+
+    return log_likelihood
+
+
+def rough_derived_diagnostics(inference_data, task):
+    """MCMC diagnostics for rho*eta, with chain/draw axes preserved."""
+    import xarray as xr
+
+    if task["model"] != "rough":
+        raise ValueError("rho*eta diagnostics require a rough task")
+    names = task["parameter_names"]
+    draws = inference_data["posterior"]["parameters"].transpose("chain", "draw", "parameter").values
+    product = draws[..., names.index("rho")] * draws[..., names.index("eta")]
+    tree = xr.DataTree.from_dict({"posterior": xr.Dataset(
+        {"parameters": (("chain", "draw", "parameter"), product[..., None])}, coords={"parameter": ["rho_eta"]})})
+    result = chain_diagnostics(tree)
+    result["scope"] = "derived rho*eta chain diagnostics; not product pricing or independent emulator validation"
+    return result
 
 
 def reference_initialization(bounds, chains, seed):
@@ -102,7 +209,7 @@ def sample_deterministic_reference(log_likelihood, bounds, parameter_names, *, d
     bounded-variable transforms and their Jacobians. Default starts remain
     independent prior draws. An explicit data-only initialization record can
     supply dispersed starts and a covariance in those same value coordinates.
-    No neural estimator supplies starts or proposal geometry.
+    No amortized posterior supplies starts or proposal geometry.
     Cores are explicit and bounded by the allocation. Spawn/forkserver avoids
     forking a process that may already have initialized JAX threads. A native
     PyMC callback can retain partial draws; it does not preserve sampler state.

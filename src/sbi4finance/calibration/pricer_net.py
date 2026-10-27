@@ -3,9 +3,10 @@
 A multilayer perceptron maps the parameters, in the logit coordinates of the
 prior box to the 63 clean prices divided by their quote-noise standard
 deviations. The known-curve task also supplies log forward-variance levels;
-the joint task uses its six parameters only, excluding auxiliary curve labels. Its error is therefore measured in
-the units of the likelihood: an error of 0.1 shifts each quote's log-likelihood
-by at most about 0.1 times the residual. It is trained on the bank's clean
+the joint task uses its six parameters only, excluding auxiliary curve labels.
+For a scaled quote residual r and emulator error d, the absolute log-likelihood
+change is bounded by abs(r*d) + d*d/2; these contributions accumulate across
+contracts. It is trained on the bank's clean
 reference prices, which cost nothing beyond the bank itself.
 
 The trained weights are mirrored in a NumPy forward pass, so the Metropolis

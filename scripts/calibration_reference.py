@@ -1,4 +1,7 @@
-"""A PyMC/Fourier Heston reference for one full-surface bank observation.
+"""PyMC reference for one full-surface observation.
+
+Heston defaults to deterministic Fourier pricing. Optional rough forward-pricer
+references target an approximate emulated model, not independent pricing truth.
 
 This is an offline instructor tool, not notebook execution or an accepted
 reference collection. Small smoke runs must not be presented as converged MCMC.
@@ -80,35 +83,56 @@ def main():
     parser.add_argument("--split", choices=["validation", "test"], default="validation")
     parser.add_argument("--index", type=int, default=0)
     parser.add_argument("--out", type=Path, required=True)
+    parser.add_argument("--pricer", type=Path,
+                        help="Optional task-bound rough emulator directory: pricer.npz, task.json and pricer.json. Approximate target.")
     parser.add_argument("--draws", type=int, default=2000)
     parser.add_argument("--tune", type=int, default=2000)
     parser.add_argument("--chains", type=int, default=4)
     parser.add_argument("--cores", type=int, default=1, help="Parallel chains, at most the allocated CPU count.")
     parser.add_argument("--mp-context", choices=("spawn", "forkserver"), default="spawn")
     parser.add_argument("--checkpoint-every", type=int, default=100, help="Persist partial per-chain draws at this interval.")
-    parser.add_argument("--initialization", choices=("prior", "data-fit"), default="prior")
+    parser.add_argument("--initialization", choices=("prior", "data-fit"), default=None,
+                        help="Default: prior starts for Fourier; data-only fitted starts for an emulator.")
     parser.add_argument("--fit-starts", type=int, default=None, help="Data-fit multistarts; default min(4, chains).")
     parser.add_argument("--fit-budget", type=int, default=2000, help="Total maximum Powell function evaluations across starts.")
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--no-progress", action="store_true")
     args = parser.parse_args()
+    args.initialization = args.initialization or ("data-fit" if args.pricer is not None else "prior")
     reference.validate_parallelism(args.cores, args.chains, args.mp_context)
+    declared_task = json.loads((args.bank / "manifest.json").read_text())["configuration"]["task"]
+    observed_curve = args.pricer is not None and declared_task["task_id"] == "rough_calibration_v1"
+    roles = ["observations", "example_id"] + (["context_values"] if observed_curve else [])
     manifest, data = bank_collection.load_bank(args.bank, splits=[args.split],
-                                               roles=["observations", "example_id"])
+                                               roles=roles)
     task = manifest["configuration"]["task"]
+    if task != declared_task:
+        raise ValueError("bank task changed while selecting the reference inputs")
     split = data[args.split]
     if not 0 <= args.index < len(split["example_id"]):
         raise ValueError("index must select an existing surface in the chosen split")
     quotes = split["observations"][args.index:args.index + 1]
-    log_likelihood = reference.heston_log_likelihood(task, quotes)
+    pricer_identity, known_curve = None, None
+    if args.pricer is None:
+        log_likelihood = reference.heston_log_likelihood(task, quotes)
+    else:
+        pricer, pricer_identity = reference.load_forward_pricer(args.pricer, task)
+        if task["task_id"] == "rough_calibration_v1":
+            known_curve = split["context_values"][args.index:args.index + 1].copy()
+        log_likelihood = reference.pricer_log_likelihood(task, quotes, pricer, known_curve)
     args.out.mkdir(parents=True, exist_ok=False)
     record = {
         "format": "full_surface_pymc_reference_v1", "task": task,
-        "target": "independent Gaussian quote noise around deterministic refined Fourier prices",
+        "target": ("independent Gaussian quote noise around deterministic refined Fourier prices"
+                   if args.pricer is None else
+                   "independent Gaussian quote noise around deterministic forward-pricer emulator; approximate price target"),
+        "likelihood_kind": "fourier" if args.pricer is None else "forward-pricer-emulator",
+        "scientific_acceptance": False,
         "sampler": "PyMC DEMetropolisZ; no gradients; native independent chains with explicit cores/context",
         "bank_manifest_sha256": hashlib.sha256((args.bank / "manifest.json").read_bytes()).hexdigest(),
         "surface_id": str(split["example_id"][args.index]), "split": args.split,
         "observed_prices": quotes[0, :, 0].tolist(),
+        "known_curve_levels": None if known_curve is None else known_curve[0].tolist(),
         "settings": {key: getattr(args, key) for key in ("draws", "tune", "chains", "cores", "mp_context", "checkpoint_every",
                                                         "initialization", "fit_starts", "fit_budget", "seed")},
         "initialization": reference.reference_initialization(task["prior_bounds"], args.chains, args.seed),
@@ -126,6 +150,22 @@ def main():
         "environment_sha256": {name: hashlib.sha256((Path(__file__).resolve().parents[1] / name).read_bytes()).hexdigest()
                                for name in ("pyproject.toml", "pixi.lock")},
     }
+    if pricer_identity is not None:
+        from sbi4finance.calibration import pricer_net
+        from sbi4finance.gbm_bank import _json
+
+        record["emulator"] = pricer_identity
+        record["task_fingerprint"] = bank.task_fingerprint(manifest["configuration"])
+        record["observation_sha256"] = hashlib.sha256(_json(record["observed_prices"]).encode()).hexdigest()
+        record["known_curve_sha256"] = (None if known_curve is None else
+            hashlib.sha256(_json(record["known_curve_levels"]).encode()).hexdigest())
+        record["source_sha256"]["pricer_net.py"] = hashlib.sha256(Path(pricer_net.__file__).read_bytes()).hexdigest()
+        record["reference_pricing_source_sha256"] = None
+        record["approximation_scope"] = (
+            "MCMC targets the fixed fitted emulator with declared Gaussian quote noise. "
+            "Emulator bias and training-pricer randomness/covariance are not propagated. "
+            "Independent pricing/refinement and posterior/product checks remain required; "
+            "convergence alone does not establish an exact-model reference.")
     if args.initialization == "data-fit":
         record["initialization"] = {"kind": "data-fit", "status": "pending",
                                     "fit_starts": args.fit_starts, "optimizer_evaluation_budget": args.fit_budget,
@@ -152,7 +192,19 @@ def main():
                 arrays[f"sample_stats_{name}"] = value.transpose("chain", "draw").values
         np.savez_compressed(args.out / "chains.npz", **arrays)
         diagnostics = reference.chain_diagnostics(idata)
-        diagnostics["variance_functionals"] = reference.variance_functional_diagnostics(idata, task)
+        if task["model"] == "hkde":
+            diagnostics["variance_functionals"] = reference.variance_functional_diagnostics(idata, task)
+        else:
+            diagnostics["derived_quantities"] = reference.rough_derived_diagnostics(idata, task)
+            diagnostics["parameter_mcmc_diagnostics_passed"] = diagnostics["mcmc_diagnostics_passed"]
+            diagnostics["mcmc_diagnostics_passed"] = bool(
+                diagnostics["parameter_mcmc_diagnostics_passed"]
+                and diagnostics["derived_quantities"]["mcmc_diagnostics_passed"])
+            diagnostics["target_scope"] = "approximate emulator posterior, not independently validated model prices"
+        if pricer_identity is not None:
+            for filename, expected in pricer_identity["input_sha256"].items():
+                if hashlib.sha256(Path(filename).read_bytes()).hexdigest() != expected:
+                    raise ValueError("bound emulator files changed during reference sampling")
         diagnostics["elapsed_seconds"] = time.perf_counter() - started
         _write_json(args.out / "diagnostics.json", diagnostics)
         print(json.dumps({"out": str(args.out), "shape": list(arrays["parameters"].shape),
