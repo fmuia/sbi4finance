@@ -1,0 +1,256 @@
+{
+  "format": "heston_native_solver_comparison_v1",
+  "native_effective_settings": {
+    "atol": 1e-06,
+    "max_steps": 10000,
+    "method": "tsit5",
+    "min_steps": 50,
+    "rtol": 0.0001,
+    "steps": "adaptive"
+  },
+  "observation_bank_manifest_sha256": "e5c12a5f405ca1273419c36b71e5ba77e4c7b63e73eba5ca63aad0bfe61a99bd",
+  "paired_analytic_product_changes_from_euler": {
+    "forward_variance_0_5_to_1y": {
+      "paired_rms_change": 2.649873879643266e-05,
+      "signed_mean_change": -9.332210643540923e-06,
+      "signed_q10_q90_change": [
+        -3.566292486847922e-05,
+        4.26319554147625e-06
+      ]
+    },
+    "variance_swap_1y": {
+      "paired_rms_change": 3.365183862805484e-05,
+      "signed_mean_change": -6.833223723132783e-06,
+      "signed_q10_q90_change": [
+        -3.3022823196310336e-05,
+        6.302801202118236e-06
+      ]
+    }
+  },
+  "paired_design": "same fresh integer seed, observation and10k draw shape as saved Euler; deterministic solvers",
+  "paired_parameter_changes_from_euler": {
+    "initial_variance": {
+      "paired_abs_change_q50_q90_over_reference_sd": [
+        0.10548032758428778,
+        0.24639213433363333
+      ],
+      "paired_rms_change_over_reference_sd": 0.15173475868170105,
+      "signed_mean_change_over_reference_sd": 0.0005771460059545538,
+      "signed_q05_q95_change_over_reference_sd": [
+        -0.23414348067437837,
+        0.2406418797456916
+      ]
+    },
+    "rho": {
+      "paired_abs_change_q50_q90_over_reference_sd": [
+        0.026559557136171485,
+        0.0678279293901371
+      ],
+      "paired_rms_change_over_reference_sd": 0.04462606487368705,
+      "signed_mean_change_over_reference_sd": -0.0071011901596842834,
+      "signed_q05_q95_change_over_reference_sd": [
+        -0.07741229140334839,
+        0.050280290447764005
+      ]
+    },
+    "theta": {
+      "paired_abs_change_q50_q90_over_reference_sd": [
+        0.006958519275385596,
+        0.03197337641603552
+      ],
+      "paired_rms_change_over_reference_sd": 0.018850187205098984,
+      "signed_mean_change_over_reference_sd": -0.008171897022696467,
+      "signed_q05_q95_change_over_reference_sd": [
+        -0.03918506840845292,
+        0.006487986092086151
+      ]
+    },
+    "vol_of_vol": {
+      "paired_abs_change_q50_q90_over_reference_sd": [
+        0.03143431741908294,
+        0.07313260274421376
+      ],
+      "paired_rms_change_over_reference_sd": 0.044667831017474596,
+      "signed_mean_change_over_reference_sd": 0.0033748888313720957,
+      "signed_q05_q95_change_over_reference_sd": [
+        -0.060997722078654344,
+        0.06969350494721893
+      ]
+    }
+  },
+  "proposed_parameter_agreement": {
+    "all_checks_passed": true,
+    "parameters": {
+      "initial_variance": {
+        "mean_error_within_0_3_reference_sd": true,
+        "neural_mean": 0.1389071784108877,
+        "neural_q05_q95": [
+          0.1379552036523819,
+          0.13981866985559463
+        ],
+        "reference_diagnostics": {
+          "ess_bulk": 2085.3961951672923,
+          "ess_tail": 2215.410347677147,
+          "eti89_lb": 0.13815653858871701,
+          "eti89_ub": 0.13964481518159452,
+          "mcse_mean": 1.0147336045407209e-05,
+          "mcse_sd": 6.2068777629622974e-06,
+          "mean": 0.1388957028497735,
+          "r_hat": 1.00335764577761,
+          "sd": 0.0004630889071816561
+        },
+        "reference_mean": 0.1388957028497735,
+        "reference_q05_q95": [
+          0.1381283809322682,
+          0.1396655250878725
+        ],
+        "reference_sd": 0.00046308167136095105,
+        "relative_width_error_within_25_percent": true,
+        "standardized_mean_error": 0.024780857939396432,
+        "width_ratio_90": 1.2122911155851535
+      },
+      "rho": {
+        "mean_error_within_0_3_reference_sd": true,
+        "neural_mean": -0.25424955666661264,
+        "neural_q05_q95": [
+          -0.29133974611759184,
+          -0.22385084033012392
+        ],
+        "reference_diagnostics": {
+          "ess_bulk": 1702.6143265822502,
+          "ess_tail": 2545.8707858714656,
+          "eti89_lb": -0.286894721678734,
+          "eti89_ub": -0.22376785822325995,
+          "mcse_mean": 0.0004852211912735582,
+          "mcse_sd": 0.00031929393560565735,
+          "mean": -0.25309014838975497,
+          "r_hat": 1.0018949991832045,
+          "sd": 0.020127316381429217
+        },
+        "reference_mean": -0.25309014838975497,
+        "reference_q05_q95": [
+          -0.288197196779372,
+          -0.22304835292754532
+        ],
+        "reference_sd": 0.020127001889653773,
+        "relative_width_error_within_25_percent": true,
+        "standardized_mean_error": 0.05760461906902876,
+        "width_ratio_90": 1.0359187024249183
+      },
+      "theta": {
+        "mean_error_within_0_3_reference_sd": true,
+        "neural_mean": 0.15743706468343735,
+        "neural_q05_q95": [
+          0.1547075092792511,
+          0.15964061990380288
+        ],
+        "reference_diagnostics": {
+          "ess_bulk": 1721.1062742069078,
+          "ess_tail": 1617.0610453832187,
+          "eti89_lb": 0.1547170300209844,
+          "eti89_ub": 0.15944905753782632,
+          "mcse_mean": 3.428449055062402e-05,
+          "mcse_sd": 1.9757138097027348e-05,
+          "mean": 0.15721196981961327,
+          "r_hat": 1.0012473160553212,
+          "sd": 0.001497951606000447
+        },
+        "reference_mean": 0.15721196981961327,
+        "reference_q05_q95": [
+          0.15461722162128863,
+          0.15949074099618968
+        ],
+        "reference_sd": 0.001497928200323745,
+        "relative_width_error_within_25_percent": true,
+        "standardized_mean_error": 0.15027079654089456,
+        "width_ratio_90": 1.0122275598118355
+      },
+      "vol_of_vol": {
+        "mean_error_within_0_3_reference_sd": true,
+        "neural_mean": 0.5778236341446638,
+        "neural_q05_q95": [
+          0.49853830188512804,
+          0.6506283342838287
+        ],
+        "reference_diagnostics": {
+          "ess_bulk": 2061.033384165268,
+          "ess_tail": 2789.5580002606685,
+          "eti89_lb": 0.5126701079543462,
+          "eti89_ub": 0.6564216493847318,
+          "mcse_mean": 0.0009959102797058655,
+          "mcse_sd": 0.0006083124450749535,
+          "mean": 0.585411216749046,
+          "r_hat": 1.0007990157177562,
+          "sd": 0.04515786922833393
+        },
+        "reference_mean": 0.585411216749046,
+        "reference_q05_q95": [
+          0.5109082790990447,
+          0.6577721891379554
+        ],
+        "reference_sd": 0.045157163631114716,
+        "relative_width_error_within_25_percent": true,
+        "standardized_mean_error": 0.1680261113467955,
+        "width_ratio_90": 1.0355847965535256
+      }
+    }
+  },
+  "sampling_seed": 271026,
+  "scientific_acceptance": false,
+  "seconds": 20.169513219036162,
+  "surface_id": "validation:0",
+  "variance_product_comparison": {
+    "limitations": "Analytic mean-curve functionals only; no vol-of-vol/leverage or path-dependent-price check. Absolute product tolerances and reference quantile MCSE are unassessed; no acceptance verdict.",
+    "products": {
+      "forward_variance_0_5_to_1y": {
+        "absolute_q10_error": 2.608143662166662e-05,
+        "absolute_q90_error": 0.00019263223219581627,
+        "neural_mean": 0.15312804788355913,
+        "neural_q10": 0.1515156080388218,
+        "neural_q90": 0.15457116491269987,
+        "reference_90_percent_width": 0.0036133519403405145,
+        "reference_diagnostics": {
+          "ess_bulk": 1736.6192244197096,
+          "ess_tail": 1617.3302663715253,
+          "mcse_mean": 2.5409670712740857e-05,
+          "mcse_sd": 1.4455751418019083e-05,
+          "r_hat": 1.001142105288042
+        },
+        "reference_diagnostics_passed": true,
+        "reference_mean": 0.15295262894060233,
+        "reference_q05": 0.15103099985675744,
+        "reference_q10": 0.15148952660220014,
+        "reference_q90": 0.15437853268050405,
+        "reference_q95": 0.15464435179709796,
+        "reference_quantile_mcse": null,
+        "reference_sd": 0.001112791021209332
+      },
+      "variance_swap_1y": {
+        "absolute_q10_error": 2.8083762748654095e-06,
+        "absolute_q90_error": 0.00017202863105025834,
+        "neural_mean": 0.1494259952506814,
+        "neural_q10": 0.14824486401831355,
+        "neural_q90": 0.15046954385315914,
+        "reference_90_percent_width": 0.0025924703941285487,
+        "reference_diagnostics": {
+          "ess_bulk": 1798.4212017997847,
+          "ess_tail": 1774.0559924028362,
+          "mcse_mean": 1.8060971377280007e-05,
+          "mcse_sd": 1.0122089291847151e-05,
+          "r_hat": 1.0011216857754806
+        },
+        "reference_diagnostics_passed": true,
+        "reference_mean": 0.14929325492379372,
+        "reference_q05": 0.1479119390480719,
+        "reference_q10": 0.14824205564203868,
+        "reference_q90": 0.15029751522210888,
+        "reference_q95": 0.15050440944220045,
+        "reference_quantile_mcse": null,
+        "reference_sd": 0.0007954180788299897
+      }
+    },
+    "scientific_acceptance": false,
+    "status": "descriptive_development_comparison",
+    "units": "annualized variance, spot-normalized, continuous monitoring"
+  }
+}

@@ -4,7 +4,7 @@ The first implementation covers **complete-surface Heston and joint rough Bergom
 
 The tutorial workflow is observation → posterior → diagnostics/reference comparison → product uncertainty. This PR builds the generation, training, reload, sample-based evaluation and first PyMC reference pieces. It does not yet deliver scientifically accepted checkpoints or participant notebooks.
 
-Actual Oscar readiness, development training and bounded scientific pilots are recorded in the [26 October development report](oscar-pilot-2026-10-26.md). The [reviewed unit](reviewed-unit-2026-10-27.md) completed the Heston references and rough cost pilot; the [latest follow-up](followup-results-2026-10-27.md) records empirical pricing checks, two further Heston fits and a separate bank-spending proposal. The monotone exponential curve is the agreed simplified teaching family. Working numerical settings support development, with limits retained; no new estimator is accepted as a teaching checkpoint. Read the latest results before choosing or generating a large rough bank.
+Actual Oscar readiness, development training and bounded scientific pilots are recorded in the [26 October development report](oscar-pilot-2026-10-26.md). The [reviewed unit](reviewed-unit-2026-10-27.md) completed the Heston references and rough cost pilot; the [follow-up](followup-results-2026-10-27.md) checked empirical pricing errors and two further Heston fits. The [latest execution](native-default-and-bank-start.md) records the native FlowMatching sampling check and the authorized start of the first 32k joint-rough development bank. The monotone exponential curve and working numerical policy support development, with limits retained; no new estimator is accepted as a teaching checkpoint.
 
 ## Relationship to the existing rough examples
 
@@ -33,6 +33,14 @@ The [performance pass](oscar-pilot-2026-10-26.md#pricing-performance-pass) measu
 | First classical reference | Deterministic Fourier Heston likelihood through PyMC's built-in DEMetropolisZ, preserving chains, sampler statistics and numeric diagnostics. No artificial gradients or stochastic likelihood calls. |
 
 Set encoders here compare representations of complete surfaces. They do not establish support for changing masks, arbitrary raw chains or new contracts. The primary rough estimator conditions on quotes and declared design/noise only; generating curve values and coefficients are not extra inputs.
+
+## FlowMatching sampling defaults
+
+New FlowMatching workflows use the native solver shipped with the pinned BayesFlow 2.1 environment: **adaptive Tsit5**. Omit `--flow-steps` in `scripts/train_full_surface.py` to retain that default. A positive count, such as `--flow-steps 100`, explicitly selects the earlier fixed-step Euler convention. New training reports record the resolved integration settings.
+
+This solver reads out the trained posterior network. It transports Gaussian noise toward parameter draws, conditioned on the observed quotes. Its flow time is an artificial interpolation coordinate, not option maturity or the financial simulator's time grid; posterior sampling makes no option-pricing calls. Changing this solver can alter sampling accuracy and runtime, but cannot by itself repair an inaccurate learned posterior.
+
+Loading an existing checkpoint preserves its recorded sampler, including explicit Euler counts. The loader checks the serialized integration settings against its metadata rather than silently upgrading a historical run. The native-solver check on the saved model uses a recorded call-time override and leaves the original checkpoint and comparison artifacts intact. Archived BayesFlow 2.0.14 estimators continue to use their original environment and sampling convention.
 
 ## Run the small instructor checks
 
@@ -68,7 +76,9 @@ pixi run --locked -e core python scripts/evaluate_full_surface.py \
 
 Those sizes check execution, not inference quality. Rerun the identical training command to exercise recovery; changing the snapshot, family, encoder, schedule, source or environment requires a new output directory. Recovery preserves a committed state but does not promise bitwise equivalence to uninterrupted training. Evaluation defaults to validation; final test data remain reserved for a frozen acceptance campaign.
 
-The checked-in [joint rough candidate config](../configs/tasks/calibration_rough_joint_pilot.json) contains only 8/2/2 surfaces. Use `--model rough-joint` to create another small configuration, or use that config with the same bank commands. Its independent-uniform level bounds are 0.01–0.16 in annualized variance units and decay is 0.25–8 per year; these are **development candidates**, not a scientifically approved prior. The full numerical ladder is retained, so difficult surfaces can cost more than a nominal price call. Do not multiply its counts into a large campaign yet.
+The checked-in [joint rough pilot config](../configs/tasks/calibration_rough_joint_pilot.json) contains only 8/2/2 surfaces on the older pilot grids. Use `--model rough-joint` to create another small configuration, or use that config for software checks. Its independent-uniform level bounds are 0.01–0.16 in annualized variance units and decay is 0.25–8 per year; these are development prior choices, not an empirically established market distribution. The full numerical ladder is retained, so difficult surfaces can cost more than a nominal price call.
+
+The running bank uses the separate [32k development configuration](../configs/calibration_rough_joint_development_20k.json): 20k training, 5k validation and 7k reserved test surfaces, root seed 271200, and working grids 1280/2016/2016. Its [execution record](native-default-and-bank-start.md) identifies the existing collection and staged submissions. Grow that collection through the incremental workflow; resizing the small pilot or creating another root would not extend this bank. Reserved test outcomes remain unopened for model selection.
 
 For generation that grows later, use the existing [incremental collection/snapshot workflow](incremental-calibration-banks.md). Loading an old compatible Heston bank for training remains supported. Changed generator source hashes intentionally prevent silently adopting old shards into a new generator collection; do not bypass that check. Old seven-level rough data/checkpoints are not data for the new joint task.
 
@@ -92,9 +102,9 @@ On Oscar, install `core-gpu` for training. Run `core-check --require-gpu` **insi
 
 ## Scientific work still required
 
-1. Retain the completed hump challenge as evidence of the agreed monotone family's limitations; agree the parameter prior, numerical settings and product horizon before substantial rough generation.
-2. Measure time-grid bias and Monte Carlo error across representative and difficult prior/posterior regions on Oscar; freeze the numerical target and throughput budget. A few surfaces passing MC standard-error checks do not establish discretization accuracy.
-3. Expand immutable banks as justified by development learning curves, train selected configurations, and build converged conditional references and independently checked rough price-emulator comparisons.
-4. Evaluate the frozen candidates on untouched acceptance data, propagate posterior draws into the selected product, and package/rehearse the full-surface notebooks with cached fallbacks.
+1. Complete and check the authorized 32k joint-rough collection within its generation ceiling, preserving source/runtime identity, split-qualified IDs, seeds, covariance records and exceptions. The reported Monte Carlo precision policy remains empirical; completion does not certify absolute pricing bias or the continuous model.
+2. Fit one joint posterior and one forward price emulator, with validation selection, and establish a checked Heston baseline using the native-sampling evidence. Existing failed development fits remain visible; changing the solver is not an accuracy verdict.
+3. Carry out the predeclared numerical/posterior/product refinement panel, including difficult cases and independently checked emulator/reference errors. Retain the completed hump challenge as evidence of the monotone curve family's limitations. A small empirical MC error does not settle grid bias or market adequacy.
+4. Grow immutable training prefixes only when development evidence justifies it, then evaluate frozen candidates on untouched acceptance data, propagate uncertainty into the selected product, and package/rehearse the full-surface notebooks with cached fallbacks.
 
-The [central experiment plan](../tutorial_final/NUMERICAL-EXPERIMENT-PLAN.md) and [scientific protocol](../tutorial_final/EXPERIMENT-PROTOCOL.md) remain the source of sequencing and acceptance proposals. Bounded development runs are documented in the pilot report; no large rough bank or final acceptance campaign is approved by those runs.
+The [central experiment plan](../tutorial_final/NUMERICAL-EXPERIMENT-PLAN.md) and [scientific protocol](../tutorial_final/EXPERIMENT-PROTOCOL.md) remain the source of sequencing and acceptance proposals. The [latest execution](native-default-and-bank-start.md) records the separately authorized first bank and its 1,500-allocated-CPU-hour generation ceiling. This is development generation, not approval of final scientific claims, wider architecture screens or sparse-chain work.

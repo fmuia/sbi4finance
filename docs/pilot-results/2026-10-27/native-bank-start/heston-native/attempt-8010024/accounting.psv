@@ -1,0 +1,4 @@
+JobID|JobIDRaw|JobName|Account|Partition|QOS|State|Elapsed|ElapsedRaw|Start|End|AllocCPUS|AllocTRES|TotalCPU|UserCPU|SystemCPU|MaxRSS|AveCPUFreq|ReqCPUFreq|NodeList|ExitCode
+8010024|8010024|sbi4f-native-heston|default|gpu-debug|gpu-debug|FAILED|00:00:15|15|2026-10-27T10:52:18|2026-10-27T10:52:33|4|billing=110,cpu=4,gres/gpu=1,mem=24G,node=1|00:07.379|00:05.572|00:01.807|||Unknown|gpu2708|1:0
+8010024.batch|8010024.batch|batch|default|||FAILED|00:00:15|15|2026-10-27T10:52:18|2026-10-27T10:52:33|4|cpu=4,gres/gpu=1,mem=24G,node=1|00:07.379|00:05.572|00:01.807|571100K|337.63M|0|gpu2708|1:0
+8010024.extern|8010024.extern|extern|default|||COMPLETED|00:00:15|15|2026-10-27T10:52:18|2026-10-27T10:52:33|4|billing=110,cpu=4,gres/gpu=1,mem=24G,node=1|00:00:00|00:00:00|00:00:00||0|0|gpu2708|0:0

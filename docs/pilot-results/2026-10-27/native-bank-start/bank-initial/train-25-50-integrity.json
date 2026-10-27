@@ -1,0 +1,129 @@
+{
+  "array_sha256": "6790d5d9492bf1f85ac841536b0f6ac390113cc7cb4169202b0a4f38135190d4",
+  "array_shapes": {
+    "context_parameters": [
+      25,
+      3
+    ],
+    "context_values": [
+      25,
+      7
+    ],
+    "example_id": [
+      25
+    ],
+    "observations": [
+      25,
+      63,
+      1
+    ],
+    "parameters": [
+      25,
+      6
+    ],
+    "pricing_covariance": [
+      25,
+      63,
+      63
+    ],
+    "pricing_paths": [
+      25,
+      3
+    ],
+    "pricing_standard_errors": [
+      25,
+      63
+    ],
+    "reference_prices": [
+      25,
+      63
+    ],
+    "refinement_difference": [
+      25,
+      63
+    ]
+  },
+  "authoritative_native_reconstruction": {
+    "array_sha256": "6790d5d9492bf1f85ac841536b0f6ac390113cc7cb4169202b0a4f38135190d4",
+    "exact_linux_prior_and_quote_noise_reconstruction": true,
+    "model_calls": 0,
+    "numpy": "2.5.3",
+    "passed": true,
+    "python": "3.12.16 (main, Oct 26 2026, 11:37:43) [GCC 15.3.0]",
+    "split": "train",
+    "start": 25,
+    "stop": 50
+  },
+  "collection_id": "817de3664968de0c605ae4c73e2c99c26465344294af2fc5412f39fffa4baa50",
+  "collection_sha256": "802a200f73bacddaa744abcfdcf2497b2d45a609c9039ed816baf1e3e9a5b12c",
+  "covariance_shape_symmetry_psd_se_consistency_passed": true,
+  "exact_id_prior_quote_noise_reconstruction_passed": true,
+  "examples": 25,
+  "format": "initial_rough_development_part_integrity_v1",
+  "generation_cpu_seconds": 2025.437039685,
+  "manifest_sha256": "e726f713f897528d9c92045c5fd362121e4b8df571ce9f871b84798c5c591430",
+  "max_ratio_quantiles_per_row": {
+    "q0": 0.01808751994397184,
+    "q100": 0.24591364523069523,
+    "q50": 0.1899873897132316,
+    "q90": 0.24068007774865077
+  },
+  "maximum_mc_se_over_quote_sigma": 0.24591364523069523,
+  "passed": true,
+  "paths_by_block": [
+    {
+      "1048576": 0,
+      "131072": 2,
+      "2097152": 0,
+      "262144": 3,
+      "32768": 16,
+      "524288": 0,
+      "65536": 4
+    },
+    {
+      "1048576": 0,
+      "131072": 2,
+      "2097152": 0,
+      "262144": 4,
+      "32768": 15,
+      "524288": 0,
+      "65536": 4
+    },
+    {
+      "1048576": 0,
+      "131072": 1,
+      "2097152": 0,
+      "262144": 5,
+      "32768": 16,
+      "524288": 0,
+      "65536": 3
+    }
+  ],
+  "portability_note": "Exact reconstruction verified in frozen Linux runtime; local Mac float operations may differ by ULPs. No production tolerance changed.",
+  "portable_local_bitexact_prior_rows": 6,
+  "portable_local_bitexact_quote_rows": 25,
+  "portable_local_max_prior_abs_difference": 4.440892098500626e-16,
+  "quotes_above_nominal_target_025": 0,
+  "root_seed": 271200,
+  "rows_above_final_cap_05": 0,
+  "rows_above_nominal_target_025": 0,
+  "scientific_scope": "Training-only integrity, seed/noise identity and nominalMCSE bookkeeping; no neural/test evaluation or continuous-model accuracy claim.",
+  "source_sha256": {
+    "bergomi.py": "8bffe12110dfb7b0de85fcf58cb7b848e4f5bc5f5af2f614ff2bd593d0edb6f5",
+    "calibration/bank.py": "9f0d512ba6f52df5c73c54599183159f535b2aa84ac4daa6a60cfd219afcc7db",
+    "calibration/pricing.py": "bf9b57f73f030670de2f3db37b298b56dc0070be2f99cf187188b817020f3b52",
+    "calibration/surface.py": "24c0476ce3000208438d440cbbb1bf21efd92494b8c634592029af384ee30388",
+    "calibration/tasks.py": "295d1ce59b409f8edb5edba89488fa87a5a4e7bab6f785a152ecb69db1528916",
+    "gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
+    "rough_bergomi.py": "0e8d31c8e18ca8bffd7f798988b22e8a73f75fb49da6eee336f8a106c186ba06"
+  },
+  "split": "train",
+  "start": 25,
+  "stop": 50,
+  "task_fingerprint": "29eca4e1b970c4f13b99573939aa3449c5280a3a4478f7d24beace6539a9889d",
+  "versions": {
+    "numpy": "2.5.3",
+    "python": "3.12.16",
+    "scipy": "1.18.1"
+  }
+}
