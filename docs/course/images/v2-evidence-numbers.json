@@ -1,0 +1,416 @@
+{
+ "classical_vs_posterior": [
+  {
+   "case": "Heston 63 quotes \u03ba = 2",
+   "measure": "Heston on SPY: delta-method range / posterior range",
+   "points": [
+    {
+     "product": "variance_swap",
+     "side": "both",
+     "ratio": 0.9635734016905529
+    },
+    {
+     "product": "volatility_swap",
+     "side": "both",
+     "ratio": 0.9439474572173097
+    },
+    {
+     "product": "forward_start_call",
+     "side": "both",
+     "ratio": 0.9920462498614148
+    },
+    {
+     "product": "put_out_of_grid",
+     "side": "both",
+     "ratio": 0.920163995122665
+    }
+   ]
+  },
+  {
+   "case": "Heston 63 quotes \u03ba free",
+   "measure": "Heston on SPY: delta-method range / posterior range",
+   "points": [
+    {
+     "product": "variance_swap",
+     "side": "both",
+     "ratio": 1.0233808680881937
+    },
+    {
+     "product": "volatility_swap",
+     "side": "both",
+     "ratio": 1.014021485497214
+    },
+    {
+     "product": "forward_start_call",
+     "side": "both",
+     "ratio": 0.9593893760374371
+    },
+    {
+     "product": "put_out_of_grid",
+     "side": "both",
+     "ratio": 1.035017735702123
+    }
+   ]
+  },
+  {
+   "case": "Heston 36 quotes \u2264 42 days",
+   "measure": "Heston on SPY: delta-method range / posterior range",
+   "points": [
+    {
+     "product": "variance_swap",
+     "side": "both",
+     "ratio": 1.0630934065939979
+    },
+    {
+     "product": "volatility_swap",
+     "side": "both",
+     "ratio": 1.0597105600689687
+    },
+    {
+     "product": "forward_start_call",
+     "side": "both",
+     "ratio": 1.0169434385534897
+    },
+    {
+     "product": "put_out_of_grid",
+     "side": "both",
+     "ratio": 1.0233432551239203
+    }
+   ]
+  },
+  {
+   "case": "Heston 15 quotes \u03ba free",
+   "measure": "Heston on SPY: delta-method range / posterior range",
+   "points": [
+    {
+     "product": "variance_swap",
+     "side": "both",
+     "ratio": 1.0633523610939128
+    },
+    {
+     "product": "volatility_swap",
+     "side": "both",
+     "ratio": 1.0668686361327198
+    },
+    {
+     "product": "forward_start_call",
+     "side": "both",
+     "ratio": 1.1233796824311826
+    },
+    {
+     "product": "put_out_of_grid",
+     "side": "both",
+     "ratio": 1.2125842725338993
+    }
+   ]
+  },
+  {
+   "case": "rough Bergomi 63 quotes",
+   "measure": "rough Bergomi on SPY: delta-method reserve / posterior reserve",
+   "points": [
+    {
+     "product": "volatility_swap",
+     "side": "long",
+     "ratio": 0.981536070948945
+    },
+    {
+     "product": "volatility_swap",
+     "side": "short",
+     "ratio": 0.9943648292266638
+    },
+    {
+     "product": "forward_start_call",
+     "side": "long",
+     "ratio": 0.995445387607695
+    },
+    {
+     "product": "forward_start_call",
+     "side": "short",
+     "ratio": 0.9317122239296762
+    },
+    {
+     "product": "put_out_of_grid",
+     "side": "long",
+     "ratio": 1.1622432278843873
+    },
+    {
+     "product": "put_out_of_grid",
+     "side": "short",
+     "ratio": 1.0811393900576267
+    }
+   ]
+  },
+  {
+   "case": "rough Bergomi to five years curve flat",
+   "measure": "flat extrapolation's range / posterior range",
+   "points": [
+    {
+     "product": "autocallable 3y",
+     "side": "both",
+     "ratio": 0.6011440030351436
+    },
+    {
+     "product": "cliquet 3y",
+     "side": "both",
+     "ratio": 0.6686193084126356
+    },
+    {
+     "product": "forward-start 2y-3y",
+     "side": "both",
+     "ratio": 0.3192356031330535
+    },
+    {
+     "product": "put 5y 80%",
+     "side": "both",
+     "ratio": 0.29636810945623204
+    },
+    {
+     "product": "variance swap 3y",
+     "side": "both",
+     "ratio": 0.0
+    }
+   ]
+  }
+ ],
+ "bs_hierarchy_coverage": {
+  "8 liquid + 32 illiquid": {
+   "per name": 0.8959375,
+   "proxy": 0.8334375,
+   "empirical Bayes": 0.8752083333333334,
+   "hierarchical Bayes": 0.8942708333333333
+  },
+  "2 liquid + 6 illiquid": {
+   "per name": 0.8969444444444444,
+   "proxy": 0.595,
+   "empirical Bayes": 0.6966666666666667,
+   "hierarchical Bayes": 0.88
+  }
+ },
+ "bs_hierarchy_width": {
+  "8 liquid + 32 illiquid": {
+   "per name": 9.870252360258078,
+   "proxy": 9.420803650910914,
+   "empirical Bayes": 6.751030066645762,
+   "hierarchical Bayes": 7.096288912995064
+  },
+  "2 liquid + 6 illiquid": {
+   "per name": 9.870271197564184,
+   "proxy": 8.210012637542327,
+   "empirical Bayes": 5.539649065279311,
+   "hierarchical Bayes": 7.5637329854818
+  }
+ },
+ "bs_hierarchy_product_rmse_percent": {
+  "8 liquid + 32 illiquid": {
+   "per name": 10.138467319533296,
+   "proxy": 10.569011715898762,
+   "empirical Bayes": 7.284288791182917,
+   "hierarchical Bayes": 7.231393909788933
+  },
+  "2 liquid + 6 illiquid": {
+   "per name": 10.15389860998265,
+   "proxy": 12.427950905805089,
+   "empirical Bayes": 8.455127000626081,
+   "hierarchical Bayes": 7.944896917672765
+  }
+ },
+ "bs_hierarchy_example_covered": {
+  "per name": 5,
+  "proxy": 1,
+  "empirical Bayes": 4,
+  "hierarchical Bayes": 5
+ },
+ "bs_hierarchy_tau": {
+  "8 liquid + 32 illiquid": {
+   "truth": 0.1,
+   "empirical_Bayes_median": 0.09576271186440677,
+   "hierarchical_posterior_mean_median": 0.10303919565064258
+  },
+  "2 liquid + 6 illiquid": {
+   "truth": 0.1,
+   "empirical_Bayes_median": 0.08567796610169491,
+   "hierarchical_posterior_mean_median": 0.11853116048117375
+  }
+ },
+ "ewi": {
+  "volume_total": 132.0,
+  "expiries": [
+   {
+    "expiry": "2026-11-20",
+    "out_of_the_money": 22,
+    "two_sided": 7,
+    "median_iv_spread_points": 36.32152417211907,
+    "strip_vol_on_bids": 0.14167712176679642,
+    "strip_vol_on_asks": 0.5189338866855467
+   },
+   {
+    "expiry": "2026-12-18",
+    "out_of_the_money": 24,
+    "two_sided": 9,
+    "median_iv_spread_points": 22.803477798900502,
+    "strip_vol_on_bids": 0.14202696585609756,
+    "strip_vol_on_asks": 0.46510713213763183
+   },
+   {
+    "expiry": "2027-03-19",
+    "out_of_the_money": 24,
+    "two_sided": 12,
+    "median_iv_spread_points": 24.121400115211916,
+    "strip_vol_on_bids": 0.13193692402725243,
+    "strip_vol_on_asks": 0.42760136419807526
+   },
+   {
+    "expiry": "2027-06-17",
+    "out_of_the_money": 24,
+    "two_sided": 17,
+    "median_iv_spread_points": 21.145650828864856,
+    "strip_vol_on_bids": 0.13661527229805634,
+    "strip_vol_on_asks": 0.37591195873142674
+   }
+  ]
+ },
+ "thin_candidates": {
+  "EWI": {
+   "name": "iShares MSCI Italy ETF",
+   "asof": "Cboe delayed quotes for EWI, file timestamp 2026-10-22 23:21:36; quotes of the 2026-10-22 close",
+   "volume_total": 132.0,
+   "open_interest_total": 2393.0,
+   "expiries": [
+    {
+     "calendar_days": 29,
+     "median_near_money_width_vol_points": 36.32152417211907,
+     "two_sided_near_money": 7
+    },
+    {
+     "calendar_days": 57,
+     "median_near_money_width_vol_points": 22.634832757341915,
+     "two_sided_near_money": 8
+    },
+    {
+     "calendar_days": 148,
+     "median_near_money_width_vol_points": 24.20812561105788,
+     "two_sided_near_money": 11
+    },
+    {
+     "calendar_days": 238,
+     "median_near_money_width_vol_points": 20.146659669004666,
+     "two_sided_near_money": 11
+    }
+   ]
+  },
+  "EWG": {
+   "name": "iShares MSCI Germany ETF",
+   "asof": "Cboe delayed quotes for EWG, file timestamp 2026-10-22 23:21:31; quotes of the 2026-10-22 close",
+   "volume_total": 570.0,
+   "open_interest_total": 51249.0,
+   "expiries": [
+    {
+     "calendar_days": 29,
+     "median_near_money_width_vol_points": 4.014704851766959,
+     "two_sided_near_money": 7
+    },
+    {
+     "calendar_days": 57,
+     "median_near_money_width_vol_points": 2.519770801029317,
+     "two_sided_near_money": 9
+    },
+    {
+     "calendar_days": 85,
+     "median_near_money_width_vol_points": 2.334982702539759,
+     "two_sided_near_money": 9
+    },
+    {
+     "calendar_days": 176,
+     "median_near_money_width_vol_points": 3.4726860027426683,
+     "two_sided_near_money": 8
+    }
+   ]
+  },
+  "EWQ": {
+   "name": "iShares MSCI France ETF",
+   "asof": "Cboe delayed quotes for EWQ, file timestamp 2026-10-22 23:21:26; quotes of the 2026-10-22 close",
+   "volume_total": 182.0,
+   "open_interest_total": 4036.0,
+   "expiries": [
+    {
+     "calendar_days": 29,
+     "median_near_money_width_vol_points": 8.010680517648991,
+     "two_sided_near_money": 5
+    },
+    {
+     "calendar_days": 57,
+     "median_near_money_width_vol_points": 17.662630777703317,
+     "two_sided_near_money": 4
+    },
+    {
+     "calendar_days": 148,
+     "median_near_money_width_vol_points": 26.52064182835478,
+     "two_sided_near_money": 2
+    },
+    {
+     "calendar_days": 238,
+     "median_near_money_width_vol_points": 35.69264380693714,
+     "two_sided_near_money": 2
+    }
+   ]
+  },
+  "FEZ": {
+   "name": "SPDR EURO STOXX 50 ETF",
+   "asof": "Cboe delayed quotes for FEZ, file timestamp 2026-10-23 23:34:24; quotes of the 2026-10-23 close",
+   "volume_total": 3830.0,
+   "open_interest_total": 113166.0,
+   "expiries": [
+    {
+     "calendar_days": 7,
+     "median_near_money_width_vol_points": 10.321115567340996,
+     "two_sided_near_money": 2
+    },
+    {
+     "calendar_days": 14,
+     "median_near_money_width_vol_points": 21.609029763037842,
+     "two_sided_near_money": 7
+    },
+    {
+     "calendar_days": 21,
+     "median_near_money_width_vol_points": 33.247661105930874,
+     "two_sided_near_money": 8
+    },
+    {
+     "calendar_days": 28,
+     "median_near_money_width_vol_points": 3.122408314273814,
+     "two_sided_near_money": 17
+    },
+    {
+     "calendar_days": 35,
+     "median_near_money_width_vol_points": 42.228071736976524,
+     "two_sided_near_money": 3
+    },
+    {
+     "calendar_days": 42,
+     "median_near_money_width_vol_points": 40.53760084050908,
+     "two_sided_near_money": 5
+    },
+    {
+     "calendar_days": 56,
+     "median_near_money_width_vol_points": 2.138563686111858,
+     "two_sided_near_money": 13
+    },
+    {
+     "calendar_days": 84,
+     "median_near_money_width_vol_points": 2.8311791403556748,
+     "two_sided_near_money": 12
+    },
+    {
+     "calendar_days": 119,
+     "median_near_money_width_vol_points": 10.321068288165675,
+     "two_sided_near_money": 13
+    },
+    {
+     "calendar_days": 210,
+     "median_near_money_width_vol_points": 18.683304717486465,
+     "two_sided_near_money": 13
+    }
+   ]
+  }
+ }
+}

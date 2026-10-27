@@ -1,0 +1,10 @@
+{
+  "accepted": "2026-10-22T08:00:11+00:00",
+  "source": "/tmp/claude-0/-home-user-sbi4finance/9c138712-55c5-5f30-b0b0-9fce83e4ceb1/scratchpad/runs/heston-s6",
+  "source_sha256": {
+    "classical.json": "8eb1cce7477b0e568ca557019af2ea8617ca794ca45096f83a8605fdd583e0a0",
+    "landscape.png": "3c6133ca6006495262d0ee0016d673c7d153b90a09a8768d2cef16982e5ac064",
+    "network-draws.npz": "73aaa2afc868b057c3794ef23fa75226776534e4fe1ed23a7ccdbf7ee2c7c69b"
+  },
+  "changes": []
+}

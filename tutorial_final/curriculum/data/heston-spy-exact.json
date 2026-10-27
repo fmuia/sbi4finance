@@ -1,0 +1,148 @@
+{
+ "what": "Feasibility run of 23 Oct 2026 for the curriculum: exact Heston posterior (kappa = 2 fixed, the prior box of configs/tasks/calibration_heston_bank.json) on the SPY smile of 21 Oct 2026. Not an accepted study; study S8-H replaces it.",
+ "script": "scripts/curriculum/heston_spy_exact.py",
+ "likelihood": "Fourier, one quadrature rung (1,024 nodes), full ladder where that rung fails",
+ "multi_start": {
+  "starts": 8,
+  "distinct_optima": 2,
+  "optima": [
+   {
+    "theta": [
+     0.01817762111277809,
+     0.06565718589949454,
+     1.1367673205860798,
+     -0.6309174663784429
+    ],
+    "loglik": 397.79549177166115
+   },
+   {
+    "theta": [
+     0.01885917273802292,
+     0.07202827763191819,
+     1.4999999974621159,
+     -0.5501671509954493
+    ],
+    "loglik": 368.98004363516
+   }
+  ],
+  "all_endpoints_loglik": [
+   397.79549177166115,
+   368.98004363516,
+   397.7954915771852,
+   397.79549169278494,
+   397.79549174512465,
+   397.79549179355513,
+   397.795491781848,
+   397.795491756999
+  ]
+ },
+ "chains": {
+  "pilot_steps": 1500,
+  "main_steps": 4000,
+  "burn_in": 1000,
+  "chains": 4,
+  "starts": "best optimum plus 3 pilot standard deviations of noise, in logit coordinates",
+  "acceptance": [
+   0.241,
+   0.247,
+   0.25775,
+   0.2415
+  ]
+ },
+ "cpu_seconds": 530.817273226,
+ "draws": 12000,
+ "summary": {
+  "initial_variance": {
+   "mean": 0.018152976323382645,
+   "sd": 0.00038831837692770077,
+   "q05": 0.017501071868864564,
+   "q50": 0.01817218090470967,
+   "q95": 0.01878953271151869,
+   "rhat": 1.0051323269584715,
+   "ess": 732.7903756427867
+  },
+  "theta": {
+   "mean": 0.06567648735654198,
+   "sd": 0.0014999885079697458,
+   "q05": 0.0631156038079594,
+   "q50": 0.06565262651378563,
+   "q95": 0.06813503289366997,
+   "rhat": 1.0065560881417461,
+   "ess": 672.6469800171503
+  },
+  "vol_of_vol": {
+   "mean": 1.1393740072979484,
+   "sd": 0.04358138386673123,
+   "q05": 1.0685673800726136,
+   "q50": 1.1404505700332077,
+   "q95": 1.2109641707389476,
+   "rhat": 1.0054203075297572,
+   "ess": 1031.4958933797732
+  },
+  "rho": {
+   "mean": -0.6318396282832401,
+   "sd": 0.02159406628487486,
+   "q05": -0.6675800163885564,
+   "q50": -0.6311408611222802,
+   "q95": -0.5974886597179025,
+   "rhat": 1.0046255411013087,
+   "ess": 1212.6051707388094
+  }
+ },
+ "feller_ratio": {
+  "definition": "vol_of_vol^2 / (2 kappa theta)",
+  "min": 3.777510251994681,
+  "median": 4.957260844021965,
+  "max": 6.2602829675490135,
+  "share_at_most_1": 0.0
+ },
+ "feller_limit_vol_of_vol_median": 0.5124553698178432,
+ "variance_swap_vol_pct": {
+  "days": [
+   5,
+   10,
+   21,
+   42,
+   63,
+   126,
+   252
+  ],
+  "q05": [
+   13.589,
+   13.927,
+   14.607,
+   15.717,
+   16.636,
+   18.644,
+   20.916
+  ],
+  "q50": [
+   13.821,
+   14.143,
+   14.803,
+   15.894,
+   16.818,
+   18.878,
+   21.248
+  ],
+  "q95": [
+   14.033,
+   14.342,
+   14.979,
+   16.059,
+   16.988,
+   19.103,
+   21.552
+  ],
+  "spy_replicated": [
+   13.6,
+   15.0,
+   16.2,
+   17.6,
+   18.4,
+   20.1,
+   21.8
+  ],
+  "spy_source": "docs/design/calibration-design-document.md, S8 table: replication from the whole chain, strikes down to delta = -8"
+ }
+}

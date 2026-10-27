@@ -1,0 +1,9 @@
+{
+  "accepted": "2026-10-22T08:19:31+00:00",
+  "source": "/tmp/claude-0/-home-user-sbi4finance/9c138712-55c5-5f30-b0b0-9fce83e4ceb1/scratchpad/runs/rough-pilot-prior-predictive",
+  "source_sha256": {
+    "prior-predictive.json": "d296796f649d19c889410b03b44fb47d355e43d6222bfa22ec897d27e2d9c3d3",
+    "prior-predictive.png": "54157ffae66309c30018791cbbc36e017d2022fed49bfc72a7182affd224917a"
+  },
+  "changes": []
+}

@@ -1,0 +1,74 @@
+{
+  "study": "S1",
+  "task_id": "rough_calibration_v1",
+  "task_fingerprint": "d338d49829889af5c95f89c02e840d293422a55221e8bb65cb999ff8db73b45a",
+  "surfaces": 200,
+  "error_measure": "Monte Carlo standard error / quote-noise sd",
+  "budget": 0.25,
+  "last_rung_cap": 0.5,
+  "share_of_surfaces_with_a_quote_above_budget": 0.0,
+  "error_quantiles_all_quotes": {
+    "q50": 0.03065297372080935,
+    "q90": 0.10082387452863793,
+    "q99": 0.2153284586367475,
+    "max": 0.24997067409962725
+  },
+  "share_of_quotes_above_0_1": 0.10253968253968254,
+  "noise_variance_added_by_numerics": {
+    "median": 0.0009396048010278273,
+    "max": 0.06248533790982206
+  },
+  "paths_ladder": [
+    32768,
+    65536,
+    131072,
+    262144,
+    524288,
+    1048576,
+    2097152
+  ],
+  "share_of_blocks_by_rung": {
+    "block 0": {
+      "32768": 0.76,
+      "65536": 0.11,
+      "131072": 0.07,
+      "262144": 0.045,
+      "524288": 0.01,
+      "1048576": 0.005,
+      "2097152": 0.0
+    },
+    "block 1": {
+      "32768": 0.75,
+      "65536": 0.12,
+      "131072": 0.095,
+      "262144": 0.01,
+      "524288": 0.025,
+      "1048576": 0.0,
+      "2097152": 0.0
+    },
+    "block 2": {
+      "32768": 0.725,
+      "65536": 0.125,
+      "131072": 0.085,
+      "262144": 0.045,
+      "524288": 0.015,
+      "1048576": 0.005,
+      "2097152": 0.0
+    }
+  },
+  "mc_covariance_largest_eigenvalue_over_noise_variance": {
+    "q50": 0.04869888716354576,
+    "q90": 0.15160223063332595,
+    "q99": 0.19822761432069494,
+    "max": 0.23930807398876874,
+    "share_above_0_25": 0.0,
+    "note": "of diag(1/sigma) C diag(1/sigma); the per-quote (SE/sigma)^2 is its diagonal"
+  },
+  "generation": {
+    "shards": 10,
+    "surfaces": 200,
+    "cpu_seconds": 2307.229599417,
+    "cpu_seconds_per_surface": 11.536147997085,
+    "cpu_hours_per_1000_surfaces": 3.2044855547458333
+  }
+}

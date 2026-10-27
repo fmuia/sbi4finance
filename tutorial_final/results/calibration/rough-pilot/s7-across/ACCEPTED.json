@@ -1,0 +1,10 @@
+{
+  "accepted": "2026-10-22T10:59:36+00:00",
+  "source": "/tmp/claude-0/-home-user-sbi4finance/9c138712-55c5-5f30-b0b0-9fce83e4ceb1/scratchpad/runs/rough-pilot-s7-across",
+  "source_sha256": {
+    "across-models.json": "87545ccb11c5f87fdb9d0017d6b94d7890bf42d50d49ad61a4963c053b7568de",
+    "across-models.png": "02368c780a5a8fd4d40b86bf7af4d774dfbd1320ac1a61731e6c5f9ab2efdd77",
+    "heston-price-draws.npz": "16b55f4bdce1c67a40b274a3f0078ba456ef8b044580c4677fc9f7f0957a682f"
+  },
+  "changes": []
+}

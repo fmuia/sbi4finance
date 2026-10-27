@@ -1,0 +1,10 @@
+{
+  "accepted": "2026-10-22T06:16:35+00:00",
+  "source": "/tmp/claude-0/-home-user-sbi4finance/9c138712-55c5-5f30-b0b0-9fce83e4ceb1/scratchpad/runs/heston-s3",
+  "source_sha256": {
+    "agreement.png": "589650e20c8a9426821a0e9d3a78dfd1c692014b0251ab816daf9d441676b99c",
+    "heston-check.json": "d459edc7619b46f54373c0d7c39731e60744e81263e500c23b35ef9639a2adf4",
+    "posterior-draws.npz": "3d196aa0aa2d1af5b1a8e321d576e5f83f2ba708a3a656a8ecbcc3475cf25739"
+  },
+  "changes": []
+}

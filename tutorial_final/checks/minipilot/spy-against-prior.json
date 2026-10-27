@@ -1,0 +1,39 @@
+{
+ "study": "G0' mini-pilot",
+ "bank_config": "configs/tasks/calibration_rough_minipilot.json",
+ "note": "SPY's four smile statistics (tutorial_final/results/calibration/spy/surface.json, read with smile_facts.statistics) against the clean prior predictive of the mini-pilot's 198 test surfaces; rank = share of prior surfaces below SPY. Accept when every rank lies in (0.025, 0.975).",
+ "statistics": {
+  "atm_vol_1m": {
+   "spy": 0.12830463616931212,
+   "q025": 0.07989663432396868,
+   "q50": 0.17449002573683234,
+   "q975": 0.4150509678786291,
+   "spy_rank": 0.2777777777777778,
+   "finite": 198
+  },
+  "atm_skew_1m": {
+   "spy": -0.6162530443840817,
+   "q025": -1.1237271925447472,
+   "q50": -0.37095931297540236,
+   "q975": -0.10939937458528388,
+   "spy_rank": 0.2474747474747475,
+   "finite": 198
+  },
+  "skew_exponent": {
+   "spy": -0.3178699909642879,
+   "q025": -0.5756596421545999,
+   "q50": -0.41139778290571305,
+   "q975": -0.17950173990004908,
+   "spy_rank": 0.7929292929292929,
+   "finite": 198
+  },
+  "atm_curvature_1m": {
+   "spy": 10.958085627707247,
+   "q025": -1.9113691528868488,
+   "q50": 3.004723770537759,
+   "q975": 19.887446857142855,
+   "spy_rank": 0.8333333333333334,
+   "finite": 198
+  }
+ }
+}
