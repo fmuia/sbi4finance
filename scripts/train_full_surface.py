@@ -63,6 +63,10 @@ def run_training(args):
     augment = full_surface.fresh_noise(args.seed, config["encoder"])
 
     import keras
+    # BayesFlow imports create initializers which consume Python RNG seeds.
+    # Finish those imports before resetting the training seed, so a cold CLI
+    # and a process that already imported BayesFlow initialize identically.
+    import bayesflow  # noqa: F401
     keras.utils.set_random_seed(args.seed)
     batches = int(np.ceil(len(train["observations"]) / args.batch_size))
     workflow = full_surface.build_workflow(task, optimizer=inference.offline_optimizer(args.epochs * batches), **config)

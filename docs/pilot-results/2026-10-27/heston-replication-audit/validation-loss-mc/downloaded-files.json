@@ -1,0 +1,10 @@
+{
+  "root": "/oscar/scratch/afengler/sbi4finance-heston-audit-20261027",
+  "downloaded_utc": "2026-10-27T23:28:07.985442+00:00",
+  "sha256": {
+    "heston_validation_loss_mc_20261028.py": "f039389d8d118caa755a6bfefc0da8671034dff9bbdcacda268e659c22d65f09",
+    "validation-loss-mc-execution.json": "9daddc2b43d59f1d4544e0ad78356f2c7047429a2f82b38abf0c394f3f18db14",
+    "results/validation-loss-mc/run.json": "3d94eab04782f8b97b56d1033d73189c11b7ddd0571873eccf607920f9d2ac58",
+    "logs/validation-loss-mc-8032144.out": "652eaf0d572c44c68f6e849415d4c3336346bc239138bd40ca72de2c869f32fb"
+  }
+}

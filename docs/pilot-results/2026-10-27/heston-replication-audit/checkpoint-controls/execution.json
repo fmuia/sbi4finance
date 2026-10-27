@@ -1,0 +1,47 @@
+{
+  "format": "heston_replication_audit_execution_v1",
+  "state": "completed",
+  "root": "/oscar/scratch/afengler/sbi4finance-heston-audit-20261027",
+  "attempted_utc": "2026-10-27T22:57:28.456882+00:00",
+  "authorization": "User requests rigorous audit of why archived Heston outperforms ours; frozen-checkpoint readouts only, no training, financial pricing, MCMC or test outcomes.",
+  "argv": [
+    "sbatch",
+    "--parsable",
+    "--nodes=1",
+    "--ntasks=1",
+    "--no-requeue",
+    "--account=default",
+    "--partition=gpu-debug",
+    "--qos=gpu-debug",
+    "--cpus-per-task=4",
+    "--gres=gpu:l40s:1",
+    "--mem=24G",
+    "--time=00:10:00",
+    "--chdir=/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo",
+    "--job-name=sbi4f-heston-audit",
+    "--output=/oscar/scratch/afengler/sbi4finance-heston-audit-20261027/logs/slurm-%A.out",
+    "--wrap=env PYTHONPATH=/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo/src KERAS_BACKEND=jax JAX_PLATFORMS=cuda,cpu OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 XLA_PYTHON_CLIENT_PREALLOCATE=false MPLCONFIGDIR=/oscar/scratch/afengler/sbi4finance-heston-audit-20261027/cache/mpl XDG_CACHE_HOME=/oscar/scratch/afengler/sbi4finance-heston-audit-20261027/cache /oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/bin/python /oscar/scratch/afengler/sbi4finance-heston-audit-20261027/run_heston_audit_unit_20261027.py"
+  ],
+  "source_sha256": {
+    "audit_heston_saved_readouts_20261027.py": "47d3177cb9e143412f25f7d7077d3c3d6f23eeb95c8fc95c74b30f766f0a72e8",
+    "run_heston_audit_unit_20261027.py": "a2a582551e3799513e9335b9637aec8405031ffa615195fc6186903ac66e6444"
+  },
+  "resources": {
+    "cpus": 4,
+    "gpus": 1,
+    "wall_seconds": 600,
+    "cleanup_seconds": 240,
+    "full_exposure_cpu_seconds": 3360,
+    "full_exposure_gpu_seconds": 840,
+    "separate_cpu_hour_ceiling": 2,
+    "separate_gpu_hour_ceiling": 0.25
+  },
+  "automatic_retry": false,
+  "scientific_acceptance": false,
+  "stdout": "8031924\n",
+  "stderr": "",
+  "job_id": "8031924",
+  "actual_elapsed_seconds": 168,
+  "actual_allocated_cpu_seconds": 672,
+  "actual_gpu_seconds": 168
+}

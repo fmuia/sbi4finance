@@ -1,5 +1,7 @@
 # Heston backbone comparison — 27 October 2026
 
+> **28 October audit correction:** the results below describe the minimum-loss selected checkpoints. The same 100k run's saved **final epoch 500** passes **4/4** rank screens on the unchanged 2k panel and **3/3** cached conditional screens, compared with **3/4 and 1/3** for selected epoch 402 and **4/4 and 2/3** for the archive. No retraining was needed. The [replication audit](heston-replication-audit.md) records the checkpoint finding, an import-order reproducibility fix and the remaining comparison limits. Checkpoint selection now takes priority over an architecture change; final 500 is a post-hoc development candidate, not an accepted tutorial estimator. The historical selected-checkpoint evidence below is retained unchanged.
+
 **The data-count mismatch is corrected, but the new estimators have not yet matched Francesco's archive.** On the same 2,000 validation observations, the archive passes four rank-calibration screens; the new 50k and 100k fits each pass three. Initial-variance KS improves from **0.06997 to 0.05084** at 100k, still above **0.03562**. Conditional agreement remains weaker than the archive. The completed readout/preprocessing diagnosis supports keeping BayesFlow's default sampler and focusing the next work on the learned posterior. No new Heston estimator is accepted.
 
 ## A matched calibration panel
