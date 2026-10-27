@@ -73,6 +73,8 @@ rough Bergomi the full examples.
 | 15 | [A liquid smile: SPY](15-a-liquid-smile-spy.md) | The rough network, its checks, SPY's posterior, where it agrees with Gauss–Newton, products, the long end |
 | 16 | [A thin chain: EWG](16-a-thin-chain-ewg.md) | Why a thin chain and which one, the procedure on EWG, coverage on simulated chains, EWG's posterior, model error, and the argument claim by claim |
 
+For a worked explanation of the neural-pricer alternative, see [forward pricing emulation and fair inference comparisons](forward-pricing-emulation.md), including training data, MCMC, missing quotes and the current implementation's limits.
+
 ## Conventions
 
 - **Units.** Time is in years. Real maturities are trading days over 252. SPY's surface of 21 October 2026 counts
