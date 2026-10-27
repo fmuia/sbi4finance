@@ -1,4 +1,4 @@
-"""One matched 50k Heston fit, validation panel and three cached references.
+"""One declared Heston backbone fit, validation panel and three cached references.
 
 Sequences existing commands in one bounded GPU allocation. No pricing, MCMC,
 reserved test evaluation, automatic continuation or scientific acceptance.
@@ -32,7 +32,11 @@ def validate_inputs(bank, references, recipe):
             or manifest["configuration"]["splits"] != recipe["splits"]
             or manifest["configuration"]["task"] != task
             or manifest["task_fingerprint"] != recipe["task_fingerprint"]):
-        raise ValueError("the checked50k/5k/5k snapshot and original Heston task are required")
+        raise ValueError("the checked declared snapshot and original Heston task are required")
+    settings = recipe["training"]
+    updates = settings["epochs"] * ((recipe["splits"]["train"] + settings["batch_size"] - 1) // settings["batch_size"])
+    if settings["expected_updates"] != updates:
+        raise ValueError("declared optimizer update count differs from rows/batch/epochs")
     environment = {name: digest(ROOT / name) for name in ("pyproject.toml", "pixi.lock")}
     runtime = {"python": platform.python_version(), "keras_backend_env": os.environ.get("KERAS_BACKEND"),
                **{name: metadata.version(name) for name in ("bayesflow", "keras", "jax", "numpy", "scipy")}}
@@ -101,12 +105,17 @@ def run(args):
         raise ValueError("one four-CPU GPU Slurm allocation is required")
     if any(os.environ.get(name) != "1" for name in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS", "NUMEXPR_NUM_THREADS")):
         raise ValueError("numerical-library thread variables must equal1")
-    recipe = json.loads(RECIPE.read_text()); started = time.perf_counter()
+    recipe_path = Path(getattr(args, "recipe", RECIPE)).resolve()
+    try:
+        recipe_name = str(recipe_path.relative_to(ROOT))
+    except ValueError as error:
+        raise ValueError("the recipe must be inside the frozen repository checkout") from error
+    recipe = json.loads(recipe_path.read_text()); started = time.perf_counter()
     deadline = started + recipe["execution_budget"]["total_seconds"]
     args.out.mkdir(parents=True, exist_ok=False)
-    sources = [RECIPE, Path(__file__), ROOT / "scripts/train_full_surface.py", ROOT / "scripts/evaluate_full_surface.py",
+    sources = [recipe_path, Path(__file__), ROOT / "scripts/run_heston_training_followup.py", ROOT / "scripts/train_full_surface.py", ROOT / "scripts/evaluate_full_surface.py",
                ROOT / "scripts/compare_full_surface_reference.py", ROOT / "src/sbi4finance/calibration/full_surface.py"]
-    state = {"format": "heston_backbone_fit_run_v1", "status": "preflight", "recipe": recipe,
+    state = {"format": "heston_backbone_fit_run_v1", "status": "preflight", "recipe": recipe, "recipe_path": recipe_name,
              "source_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
              "source_sha256": {str(p.relative_to(ROOT)): digest(p) for p in sources},
              "scientific_acceptance": False, "reserved_test_evaluated": False, "automatic_retry": False,
@@ -147,7 +156,8 @@ def run(args):
             raise ValueError("frozen source/config bytes changed during the unit")
         state["development_comparisons"] = {str(i): json.loads((args.out / f"comparisons/case-{i}/comparison.json").read_text())["proposed_parameter_agreement"] for i in recipe["reference_comparison"]["case_indices"]}
         state.update(status="completed_development_checks", seconds=time.perf_counter() - started,
-                     interpretation="Selected50k fit; failures retained.2000 development validation cases plus3conditional cases do not constitute full tutorial acceptance.")
+                     interpretation=f"Selected {recipe['splits']['train']}-surface fit; failures retained. "
+                                    "2000 development validation cases plus3conditional cases do not constitute full tutorial acceptance.")
         _write(path, state); return state
     except BaseException as error:
         state.update(status="incomplete" if isinstance(error, (TimeoutError, subprocess.TimeoutExpired, SystemExit)) else "failed", seconds=time.perf_counter() - started,
@@ -157,6 +167,7 @@ def run(args):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--recipe", type=Path, default=RECIPE, help="Reviewed recipe within the frozen checkout; default is the50k reproduction.")
     for name in ("bank", "references", "out"): parser.add_argument("--" + name, type=Path, required=True)
     args = parser.parse_args()
     for name in ("bank", "references", "out"): setattr(args, name, getattr(args, name).resolve())

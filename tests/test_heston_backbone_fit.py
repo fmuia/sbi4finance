@@ -58,6 +58,52 @@ class BackboneRunnerTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError,'case1'):
                 runner.validate_inputs(self.args.bank,self.args.references,self.recipe)
 
+    def test_100k_recipe_preserves_comparison_panel_and_declares_195500_updates(self):
+        path=runner.ROOT/'configs/heston_backbone_100k_fit.json'
+        recipe=json.loads(path.read_text());stages=runner.commands(self.args,recipe)
+        self.assertEqual(recipe['splits'],{'train':100000,'validation':5000,'test':5000})
+        self.assertEqual(recipe['training']['expected_updates'],195500)
+        self.assertEqual(recipe['training']['epochs'],self.recipe['training']['epochs'])
+        self.assertEqual(recipe['network'],self.recipe['network'])
+        self.assertEqual(recipe['evaluation'],self.recipe['evaluation'])
+        self.assertEqual(recipe['reference_comparison'],self.recipe['reference_comparison'])
+        self.assertNotIn('--flow-steps',stages[1][1])
+        self.assertEqual([name for name,_,_ in stages],[name for name,_,_ in runner.commands(self.args,self.recipe)])
+        resources=recipe['resources'];exposure=resources['wall_seconds']+resources['scheduler_cleanup_seconds']
+        self.assertEqual(exposure,2640);self.assertEqual(exposure*resources['cpus'],10560)
+        self.assertLessEqual(exposure,recipe['allocation_ceiling']['gpu_hours']*3600)
+        self.assertLessEqual(exposure*resources['cpus'],recipe['allocation_ceiling']['allocated_cpu_hours']*3600)
+        self.assertEqual(recipe['execution_budget']['total_seconds'],2370)
+        self.assertEqual(sum(cap for _,_,cap in stages),2340)
+
+    def test_actual_100k_snapshot_and_update_metadata_are_checked(self):
+        recipe=json.loads((runner.ROOT/'configs/heston_backbone_100k_fit.json').read_text())
+        self.args.bank.mkdir()
+        source=runner.ROOT/'docs/pilot-results/2026-10-27/tutorial-backbone/heston-snapshots/snapshot-100k-manifest.json'
+        shutil.copyfile(source,self.args.bank/'manifest.json');shutil.copytree(runner.ANCHORS,self.args.references)
+        contract=json.loads((runner.BASELINE/'training.json').read_text())['run_contract']
+        versions={n:contract['runtime'][n] for n in ('bayesflow','keras','jax','numpy','scipy')}
+        with (patch.dict('os.environ',{'KERAS_BACKEND':'jax'}),
+              patch.object(runner.platform,'python_version',return_value=contract['runtime']['python']),
+              patch.object(runner.metadata,'version',side_effect=versions.__getitem__)):
+            frozen=runner.validate_inputs(self.args.bank,self.args.references,recipe)
+            self.assertEqual(frozen['bank_manifest_sha256'],recipe['bank_manifest_sha256'])
+            recipe['training']['expected_updates']-=1
+            with self.assertRaisesRegex(ValueError,'update count'):
+                runner.validate_inputs(self.args.bank,self.args.references,recipe)
+
+    def test_recipe_option_records_selected_path_and_hash(self):
+        self.args.recipe=runner.ROOT/'configs/heston_backbone_100k_fit.json'
+        env={'SLURM_JOB_ID':'fixture','SLURM_CPUS_PER_TASK':'4',**{n:'1' for n in ('OMP_NUM_THREADS','OPENBLAS_NUM_THREADS','MKL_NUM_THREADS','NUMEXPR_NUM_THREADS')}}
+        with (patch.dict('os.environ',env),patch.object(runner.subprocess,'check_output',return_value='fixture'),
+              patch.object(runner,'validate_inputs',side_effect=ValueError('preflight fixture'))):
+            with self.assertRaisesRegex(ValueError,'preflight fixture'):runner.run(self.args)
+        state=json.loads((self.args.out/'run.json').read_text())
+        self.assertEqual(state['recipe_path'],'configs/heston_backbone_100k_fit.json')
+        self.assertEqual(state['recipe']['training']['expected_updates'],195500)
+        self.assertEqual(state['source_sha256'][state['recipe_path']],runner.digest(self.args.recipe))
+        self.assertNotIn('configs/heston_backbone_50k_fit.json',state['source_sha256'])
+
     def test_no_login_execution(self):
         with patch.dict('os.environ', {}, clear=True), self.assertRaisesRegex(ValueError, 'allocation'):
             runner.run(self.args)
