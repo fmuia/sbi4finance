@@ -1,0 +1,822 @@
+{
+  "adaptive_timing": {
+    "refined": {
+      "censored_prior_points": 1,
+      "completed_mean_scope": "Conditional on fifteen completions; the sixteenth component is censored. This completed-only mean is not an unconditional bank-cost estimate.",
+      "declared_prior_points": 16,
+      "instrumented_completed_cpu_seconds_max": 628.884182509,
+      "instrumented_completed_cpu_seconds_mean": 152.46671900233332,
+      "instrumented_completed_cpu_seconds_median": 104.42199697800001,
+      "instrumented_completed_cpu_seconds_sum": 2287.000785035,
+      "largest_completed_nominal_mc_se_over_quote_sigma": 0.247835809410968,
+      "nominal_mc_target_met": 15,
+      "priced_prior_points": 15,
+      "scheduler_allocated_cpu_seconds_all_16": 3604,
+      "scheduler_consumed_cpu_seconds_all_16_including_censor": 3515.714
+    },
+    "working": {
+      "censored_prior_points": 0,
+      "completed_mean_scope": "All sixteen reviewed prior points completed and are included, including the largest runtime. This small heterogeneous-node cohort does not establish a reliable prior-population cost mean.",
+      "declared_prior_points": 16,
+      "full_cohort_allocated_cpu_seconds_per_surface": 132.5,
+      "instrumented_completed_cpu_seconds_max": 1113.065776632,
+      "instrumented_completed_cpu_seconds_mean": 126.04050473487501,
+      "instrumented_completed_cpu_seconds_median": 41.3942418565,
+      "instrumented_completed_cpu_seconds_sum": 2016.6480757580002,
+      "largest_completed_nominal_mc_se_over_quote_sigma": 0.24476777262894706,
+      "nominal_mc_target_met": 16,
+      "priced_prior_points": 16,
+      "scheduler_allocated_cpu_seconds_all_16": 2120,
+      "scheduler_consumed_cpu_seconds_all_16_including_censor": 2041.556
+    }
+  },
+  "by_policy": {
+    "refined": {
+      "adaptive": {
+        "declared_components": 16,
+        "priced_components_above_exception_cap": 0,
+        "priced_components_above_target_within_exception": 0,
+        "priced_components_meeting_mc_target": 15,
+        "status_counts": {
+          "censored": 1,
+          "priced": 15
+        }
+      },
+      "fixed_anchor": {
+        "declared_components": 6,
+        "priced_components_above_exception_cap": 0,
+        "priced_components_above_target_within_exception": 0,
+        "priced_components_meeting_mc_target": 6,
+        "status_counts": {
+          "priced": 6
+        }
+      }
+    },
+    "working": {
+      "adaptive": {
+        "declared_components": 16,
+        "priced_components_above_exception_cap": 0,
+        "priced_components_above_target_within_exception": 0,
+        "priced_components_meeting_mc_target": 16,
+        "status_counts": {
+          "priced": 16
+        }
+      },
+      "fixed_anchor": {
+        "declared_components": 6,
+        "priced_components_above_exception_cap": 0,
+        "priced_components_above_target_within_exception": 0,
+        "priced_components_meeting_mc_target": 6,
+        "status_counts": {
+          "priced": 6
+        }
+      }
+    }
+  },
+  "cost_scenarios": {
+    "allocated_throughput_scenarios": [
+      {
+        "allocated_cpu_seconds_per_surface": 132.5,
+        "bank_allocated_cpu_hours": {
+          "112000": 4122.222222222223,
+          "32000": 1177.7777777777778,
+          "62000": 2281.9444444444443
+        },
+        "name": "observed_all_16_working_allocated_mean_including_startup_and_largest_runtime",
+        "scope": "Sum of scheduler elapsed time times allocated CPUs for all sixteen working components, divided by sixteen. Includes allocation startup/setup and observed runtime heterogeneity; excludes queue waiting. An arithmetic planning scenario, not an approved production budget or reliable population-mean forecast."
+      }
+    ],
+    "largest_working_component_index": 12,
+    "largest_working_instrumented_cpu_seconds": 1113.065776632,
+    "refined_censored_empirical_mix_consumed_cpu_seconds_per_point": 219.732125,
+    "refined_censored_scope": "Consumed work per16-point cohort is a lower bound on completing that same empirical cohort; it is not a lower bound for a fresh prior bank and gives no completed-cost mean.",
+    "scenarios": [
+      {
+        "bank_pricing_cpu_hours": {
+          "112000": 3921.2601473072227,
+          "32000": 1120.3600420877779,
+          "62000": 2170.6975815450696
+        },
+        "name": "observed_16_point_mean_including_largest_runtime",
+        "pricing_cpu_seconds_per_surface": 126.04050473487501
+      },
+      {
+        "bank_pricing_cpu_hours": {
+          "112000": 1287.8208577577777,
+          "32000": 367.94881650222226,
+          "62000": 712.9008319730556
+        },
+        "name": "hypothetical_all_surfaces_at_observed_median_runtime",
+        "pricing_cpu_seconds_per_surface": 41.3942418565
+      },
+      {
+        "bank_pricing_cpu_hours": {
+          "112000": 1874.0966204094814,
+          "32000": 535.4561772598519,
+          "62000": 1037.446343440963
+        },
+        "name": "sensitivity_only_omit_largest_runtime_not_a_prior_mean",
+        "pricing_cpu_seconds_per_surface": 60.23881994173333
+      }
+    ],
+    "scope": "Arithmetic sensitivity scenarios from only16 prior points and heterogeneous observed nodes, not approved production budgets or reliable prior-mean forecasts. Include all12k fixed validation/test surfaces; training, references, reliability diagnostics, I/O, queueing and any changed precision rule are additional.",
+    "surface_counts": {
+      "112000": "100k train +12k fixed holdouts",
+      "32000": "20k train +5k validation +7k test",
+      "62000": "50k train +12k fixed holdouts"
+    }
+  },
+  "declaration_sha256": "279cdbae6c899fd4c97513fd29ae7b03deea1aa14bf67945fb6cb5c0c28778f0",
+  "fixed_anchor_shifts": [
+    {
+      "all_four_calls_meet_nominal_mc_target": true,
+      "case_index": 0,
+      "five_day_call": {
+        "contract": {
+          "maturity": 0.01984126984126984,
+          "option_type": "call",
+          "strike": 1.0579611547045846
+        },
+        "contract_index": 8,
+        "nominal_mc_se_of_difference_over_quote_sigma": 0.0008848584089493576,
+        "nominal_pointwise_mc95_interval_over_quote_sigma": [
+          -0.005341630735970053,
+          -0.0018729857728885708
+        ],
+        "refined_minus_working_over_quote_sigma": -0.003607308254429312
+      },
+      "largest_observed_absolute_shift": {
+        "contract": {
+          "maturity": 0.08333333333333333,
+          "option_type": "put",
+          "strike": 0.8909472522884108
+        },
+        "contract_index": 18,
+        "nominal_mc_se_of_difference_over_quote_sigma": 0.07693361308365793,
+        "nominal_pointwise_mc95_interval_over_quote_sigma": [
+          -0.04548873998668204,
+          0.256091023301257
+        ],
+        "refined_minus_working_over_quote_sigma": 0.10530114165728749
+      },
+      "max_individual_mc_se_over_quote_sigma": {
+        "refined": 0.07704583399647535,
+        "working": 0.07760372120400028
+      },
+      "replicate_level_witnesses": [
+        {
+          "contract_index": 8,
+          "difference_over_quote_sigma": -0.0030987357854293227,
+          "nominal_mc_se_over_quote_sigma": 0.0012659555589110204,
+          "replicate": 0
+        },
+        {
+          "contract_index": 18,
+          "difference_over_quote_sigma": 0.13958032288419928,
+          "nominal_mc_se_over_quote_sigma": 0.1082438229531057,
+          "replicate": 0
+        },
+        {
+          "contract_index": 8,
+          "difference_over_quote_sigma": -0.0041158807234293006,
+          "nominal_mc_se_over_quote_sigma": 0.0012366301542562517,
+          "replicate": 1
+        },
+        {
+          "contract_index": 18,
+          "difference_over_quote_sigma": 0.0710219604303757,
+          "nominal_mc_se_over_quote_sigma": 0.10935446072712644,
+          "replicate": 1
+        }
+      ]
+    },
+    {
+      "all_four_calls_meet_nominal_mc_target": true,
+      "case_index": 4,
+      "five_day_call": {
+        "contract": {
+          "maturity": 0.01984126984126984,
+          "option_type": "call",
+          "strike": 1.0579611547045846
+        },
+        "contract_index": 8,
+        "nominal_mc_se_of_difference_over_quote_sigma": 0.05380072705494813,
+        "nominal_pointwise_mc95_interval_over_quote_sigma": [
+          -0.7246630583328635,
+          -0.5137642082774667
+        ],
+        "refined_minus_working_over_quote_sigma": -0.6192136333051651
+      },
+      "largest_observed_absolute_shift": {
+        "contract": {
+          "maturity": 0.5,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        "contract_index": 49,
+        "nominal_mc_se_of_difference_over_quote_sigma": 0.06716210958210066,
+        "nominal_pointwise_mc95_interval_over_quote_sigma": [
+          1.5226997987476223,
+          1.7859752683094567
+        ],
+        "refined_minus_working_over_quote_sigma": 1.6543375335285395
+      },
+      "max_individual_mc_se_over_quote_sigma": {
+        "refined": 0.12232389504172403,
+        "working": 0.16930368088829698
+      },
+      "replicate_level_witnesses": [
+        {
+          "contract_index": 8,
+          "difference_over_quote_sigma": -0.5963555963327172,
+          "nominal_mc_se_over_quote_sigma": 0.07659178274583488,
+          "replicate": 0
+        },
+        {
+          "contract_index": 49,
+          "difference_over_quote_sigma": 1.6389142737841245,
+          "nominal_mc_se_over_quote_sigma": 0.09627916480795984,
+          "replicate": 0
+        },
+        {
+          "contract_index": 8,
+          "difference_over_quote_sigma": -0.642071670277613,
+          "nominal_mc_se_over_quote_sigma": 0.0755762644113808,
+          "replicate": 1
+        },
+        {
+          "contract_index": 49,
+          "difference_over_quote_sigma": 1.6697607932729628,
+          "nominal_mc_se_over_quote_sigma": 0.09366599317764204,
+          "replicate": 1
+        }
+      ]
+    },
+    {
+      "all_four_calls_meet_nominal_mc_target": true,
+      "case_index": 6,
+      "five_day_call": {
+        "contract": {
+          "maturity": 0.01984126984126984,
+          "option_type": "call",
+          "strike": 1.0579611547045846
+        },
+        "contract_index": 8,
+        "nominal_mc_se_of_difference_over_quote_sigma": 0.03163372913946735,
+        "nominal_pointwise_mc95_interval_over_quote_sigma": [
+          -0.33461095988122036,
+          -0.21060674165450835
+        ],
+        "refined_minus_working_over_quote_sigma": -0.27260885076786434
+      },
+      "largest_observed_absolute_shift": {
+        "contract": {
+          "maturity": 0.08333333333333333,
+          "option_type": "call",
+          "strike": 1.1224009024456676
+        },
+        "contract_index": 26,
+        "nominal_mc_se_of_difference_over_quote_sigma": 0.034410780657164804,
+        "nominal_pointwise_mc95_interval_over_quote_sigma": [
+          -0.5100826531059524,
+          -0.3751923929298664
+        ],
+        "refined_minus_working_over_quote_sigma": -0.4426375230179094
+      },
+      "max_individual_mc_se_over_quote_sigma": {
+        "refined": 0.18437316809126011,
+        "working": 0.18307751674690098
+      },
+      "replicate_level_witnesses": [
+        {
+          "contract_index": 8,
+          "difference_over_quote_sigma": -0.3120047857015207,
+          "nominal_mc_se_over_quote_sigma": 0.04479338214034278,
+          "replicate": 0
+        },
+        {
+          "contract_index": 26,
+          "difference_over_quote_sigma": -0.47490693416470026,
+          "nominal_mc_se_over_quote_sigma": 0.04894386988754336,
+          "replicate": 0
+        },
+        {
+          "contract_index": 8,
+          "difference_over_quote_sigma": -0.23321291583420803,
+          "nominal_mc_se_over_quote_sigma": 0.04468024388368939,
+          "replicate": 1
+        },
+        {
+          "contract_index": 26,
+          "difference_over_quote_sigma": -0.4103681118711185,
+          "nominal_mc_se_over_quote_sigma": 0.04838289886078815,
+          "replicate": 1
+        }
+      ]
+    }
+  ],
+  "format": "reviewed_rough_pilot_analysis_v1",
+  "interpretation": "Both policies meet nominal MC targets on every completed call, but the low-H/high-eta anchor retains a large repeatable refinement shift. No working-grid uniform-accuracy acceptance or automatic prior restriction follows. Check MCSE/control-variate reliability and matched-node timing before a substantial bank; posterior and product sensitivity remain separate.",
+  "replicate_consistency": [
+    {
+      "case_index": 0,
+      "definition": "(replicate1-replicate0)/sqrt(SE0^2+SE1^2); descriptive across correlated quotes",
+      "max_abs_z": 2.4955227449431123,
+      "policy": "working",
+      "quotes_above_abs_z_3": 0,
+      "selected_contract_index": 16,
+      "selected_difference_over_quote_sigma": -0.008421213154150807,
+      "selected_nominal_mc_se_over_quote_sigma": 0.0033745287119564104,
+      "signed_z_at_selected_max": -2.4955227449431123,
+      "signed_z_by_contract": [
+        1.3000983991018555,
+        0.8396203934234341,
+        0.26034000392625384,
+        -0.2789709209376296,
+        -0.4927909769997119,
+        -0.4236232079295295,
+        -0.5676417091925943,
+        -1.2244836737305038,
+        -1.6529215530544092,
+        0.36441254977922827,
+        0.22600140246400505,
+        -0.16727230906283916,
+        -0.7769563024691956,
+        -1.3372267303464058,
+        -1.8021079653635572,
+        -2.387293290906901,
+        -2.4955227449431123,
+        -1.7113794949729948,
+        0.650758896304787,
+        0.8613616793220533,
+        1.1394971539445822,
+        1.3525149086979251,
+        1.361459721977151,
+        1.153284333095443,
+        0.8513860783828052,
+        0.4895117609215656,
+        0.19390002210198423,
+        0.5290336777283396,
+        1.145153082607506,
+        1.6148690450698981,
+        1.808369260860898,
+        1.7071357592782033,
+        1.3479865958507844,
+        0.8881314934046881,
+        0.4211726138612085,
+        0.14370686823360684,
+        0.25128000393704547,
+        0.3291012535440919,
+        0.33935485419642336,
+        0.2822400498603052,
+        0.16769188359483905,
+        -0.015151966080884304,
+        -0.11458650273791547,
+        0.07220765347820754,
+        0.277111879182054,
+        0.37671863265935923,
+        0.34463316792160825,
+        0.3250507686683695,
+        0.2899294186944548,
+        0.2175299870539137,
+        -0.011829119993496931,
+        -0.25505550726859866,
+        -0.27952523258335227,
+        -0.3266026806782345,
+        -0.36762742389772546,
+        -0.32913688479787523,
+        -0.2969218861469151,
+        -0.39014902349570457,
+        -0.7450834554080313,
+        -1.2340125413461585,
+        -1.4676104752188397,
+        -1.6201387069205029,
+        -1.5091627039639548
+      ]
+    },
+    {
+      "case_index": 0,
+      "definition": "(replicate1-replicate0)/sqrt(SE0^2+SE1^2); descriptive across correlated quotes",
+      "max_abs_z": 2.596943221078293,
+      "policy": "refined",
+      "quotes_above_abs_z_3": 0,
+      "selected_contract_index": 45,
+      "selected_difference_over_quote_sigma": -0.27004163430371336,
+      "selected_nominal_mc_se_over_quote_sigma": 0.10398441987945646,
+      "signed_z_at_selected_max": -2.596943221078293,
+      "signed_z_by_contract": [
+        0.7674622860319517,
+        1.3309592123694338,
+        1.8600422869027473,
+        1.9698008177170456,
+        1.5881557793888263,
+        0.8788758326220998,
+        -0.17065377302890444,
+        -1.4610858350646494,
+        -2.5534667886911446,
+        1.422735375672824,
+        1.3480325302718763,
+        1.0901761188020376,
+        0.6500273992388601,
+        0.2422474833880878,
+        -0.1419716308801162,
+        -0.7519700446504557,
+        -1.2635043165766129,
+        -1.3572778412602415,
+        0.019932499871218017,
+        -0.15333007983956673,
+        -0.5124716491263277,
+        -0.9962494940601888,
+        -1.399039118955917,
+        -1.6447403025603935,
+        -1.6836978814887726,
+        -1.2514764657598314,
+        -0.46268165515157433,
+        1.1607882266347407,
+        0.8601730325914648,
+        0.21307038776247453,
+        -0.7692470708654681,
+        -1.7255840449247744,
+        -2.1500861780465264,
+        -1.844639850940568,
+        -1.3490313016739373,
+        -1.3494602582980726,
+        2.384406464159806,
+        1.53775803625969,
+        0.36022780458889303,
+        -0.9393524943176421,
+        -1.9906339600456193,
+        -2.560322840818296,
+        -2.3990697604051223,
+        -1.486947009126016,
+        -0.9964663154018405,
+        -2.596943221078293,
+        -1.9914521872623596,
+        -1.2689799863219582,
+        -0.5296904874708723,
+        0.05605897754239819,
+        0.46463109227014726,
+        0.5758461939452636,
+        0.16603023545367843,
+        -0.1518661051369661,
+        -2.0478033648305396,
+        -1.673246839386984,
+        -1.1754430875040662,
+        -0.7263381766746265,
+        -0.4135595380851699,
+        -0.029557489382629303,
+        0.09934403601179252,
+        0.14354119460658252,
+        0.654250847135031
+      ]
+    },
+    {
+      "case_index": 4,
+      "definition": "(replicate1-replicate0)/sqrt(SE0^2+SE1^2); descriptive across correlated quotes",
+      "max_abs_z": 1.7653851893171497,
+      "policy": "working",
+      "quotes_above_abs_z_3": 0,
+      "selected_contract_index": 51,
+      "selected_difference_over_quote_sigma": -0.1396696107139882,
+      "selected_nominal_mc_se_over_quote_sigma": 0.07911565790806954,
+      "signed_z_at_selected_max": -1.7653851893171497,
+      "signed_z_by_contract": [
+        -0.8702921287275615,
+        -0.8970193532113352,
+        -0.812527455191606,
+        -0.9308202993991191,
+        -1.0162700422447857,
+        -0.54482832406622,
+        -0.04019894390698139,
+        0.24507105098785706,
+        0.4253005419480491,
+        -1.2647921190382785,
+        -1.1364843344712718,
+        -1.057919716298543,
+        -0.9102590968403522,
+        -0.35621435824262276,
+        0.22378168428277675,
+        0.311335961788115,
+        0.436656119421057,
+        0.495547117095431,
+        0.20256911641681163,
+        0.19586471366370298,
+        0.12628575965928351,
+        -0.002403243629317137,
+        0.021588780904786106,
+        0.25304408560516534,
+        0.5089934153520571,
+        0.3973615554085096,
+        0.399239171820848,
+        0.415745166532183,
+        0.3655092051755807,
+        0.026868523565788966,
+        -0.1681336267328957,
+        0.02553677365965287,
+        0.1907976951358838,
+        0.4265955742179438,
+        0.5699796800266406,
+        0.7116071366894372,
+        0.3985313200177912,
+        0.44626299057464885,
+        0.3248758243527846,
+        0.06370127241363292,
+        0.07657814220819427,
+        0.23436079041238334,
+        0.15121767045795473,
+        0.31725858729818074,
+        0.647149979808369,
+        -0.3906810502622582,
+        -0.4920500534962165,
+        -0.5550805665084482,
+        -0.8077756524667958,
+        -1.3450320551490853,
+        -1.7137838493290642,
+        -1.7653851893171497,
+        -1.7381263657688053,
+        -1.6321771114369301,
+        -0.10434368754326685,
+        -0.05385330142235253,
+        -0.0649686180826614,
+        -0.37552655531925183,
+        -0.8656036547846173,
+        -1.0501576936211134,
+        -1.0671574154145418,
+        -0.8120786062649027,
+        -0.6351044346476052
+      ]
+    },
+    {
+      "case_index": 4,
+      "definition": "(replicate1-replicate0)/sqrt(SE0^2+SE1^2); descriptive across correlated quotes",
+      "max_abs_z": 3.4576809415374754,
+      "policy": "refined",
+      "quotes_above_abs_z_3": 2,
+      "selected_contract_index": 45,
+      "selected_difference_over_quote_sigma": -0.5033788937255953,
+      "selected_nominal_mc_se_over_quote_sigma": 0.14558280600111279,
+      "signed_z_at_selected_max": -3.4576809415374754,
+      "signed_z_by_contract": [
+        0.3678605103948243,
+        0.15932551753758015,
+        0.19325224293488316,
+        0.28480768707708226,
+        0.2671474975288523,
+        0.19663434731732035,
+        0.1854698345548781,
+        -0.007327766018274108,
+        -0.1547436067959305,
+        1.3834367512784107,
+        1.1043233245806234,
+        0.7198133429835765,
+        0.46027421527616214,
+        0.3947944416588027,
+        0.22243735550540106,
+        -0.19390392732713393,
+        -0.23791834016911018,
+        0.02333508251711577,
+        0.3674362535482158,
+        0.40043574856538966,
+        0.5897804233271176,
+        0.7480170441903045,
+        0.6358247228549114,
+        0.4858357245106299,
+        0.3802401874179654,
+        0.35041276325486065,
+        0.38841397563563124,
+        -1.0704644977278588,
+        -0.951355535080002,
+        -0.769088570212559,
+        -0.37162795842967117,
+        0.0789571803839154,
+        0.36263466190822397,
+        0.3490103997225699,
+        0.027824414750512352,
+        -0.23406152744511338,
+        0.129717763783316,
+        0.14358741419048707,
+        0.07866418803872967,
+        0.29880944958258016,
+        0.8443279515333649,
+        0.8198570211019925,
+        0.47857807696598825,
+        0.4198720629299092,
+        0.3824448821705463,
+        -3.4576809415374754,
+        -3.2610721644283873,
+        -2.8152653001899908,
+        -2.0677416293023265,
+        -1.177144421001536,
+        -0.49506736379898225,
+        -0.26463985327728856,
+        -0.005952685286999729,
+        0.36261487259800196,
+        -0.5457079875672057,
+        -0.14643225133996673,
+        0.2853331852536489,
+        0.5753814167135218,
+        0.8454355724665508,
+        1.045513188894012,
+        1.3212959429651396,
+        1.679503528192512,
+        1.9592804724934274
+      ]
+    },
+    {
+      "case_index": 6,
+      "definition": "(replicate1-replicate0)/sqrt(SE0^2+SE1^2); descriptive across correlated quotes",
+      "max_abs_z": 3.0109937596068876,
+      "policy": "working",
+      "quotes_above_abs_z_3": 1,
+      "selected_contract_index": 56,
+      "selected_difference_over_quote_sigma": 0.2443141550197977,
+      "selected_nominal_mc_se_over_quote_sigma": 0.08114070453991745,
+      "signed_z_at_selected_max": 3.0109937596068876,
+      "signed_z_by_contract": [
+        -0.3560363652448547,
+        -0.2882927871325444,
+        -0.19764482896468158,
+        -0.10896554808022879,
+        -0.07678062502069065,
+        -0.08062192807849215,
+        -0.04663515649773144,
+        -0.16145680454998612,
+        -0.5546749815715312,
+        0.7038064939393315,
+        0.8232164101670627,
+        0.8298015676191494,
+        0.7138746584176294,
+        0.5672954622105613,
+        0.5649850025617809,
+        0.7096226783475533,
+        0.7386841711995843,
+        0.4586021544362115,
+        0.15204030292265702,
+        0.18985685794297844,
+        0.1410512408844254,
+        -0.007638670133412167,
+        -0.1950989029446073,
+        -0.32703839647376437,
+        -0.3697146721631293,
+        -0.4936940503722844,
+        -0.9290206276690934,
+        -1.4202980024933651,
+        -1.6005521257151658,
+        -1.6781465204314485,
+        -1.685120058661087,
+        -1.697651771222654,
+        -1.7566772236584534,
+        -1.6665780319254255,
+        -1.5311398916611285,
+        -1.7247864753955537,
+        -0.3676972395546918,
+        -0.6119356087573702,
+        -0.7947936553624005,
+        -0.955956183458799,
+        -1.1783184139685157,
+        -1.5273926785503085,
+        -1.7421647835619027,
+        -1.74801803316851,
+        -1.7962453385755848,
+        1.7562042711963775,
+        1.6641225447908872,
+        1.517843713625282,
+        1.3191307725137882,
+        1.0501986882531718,
+        0.6013465953525892,
+        -0.029361189111347247,
+        -0.2527948670873667,
+        -0.2972321327231283,
+        2.731542266012821,
+        2.9183957460923953,
+        3.0109937596068876,
+        2.9501975133189244,
+        2.63225721413059,
+        1.9575343937798602,
+        1.2047851009691732,
+        0.9391377989608107,
+        0.6766973164359114
+      ]
+    },
+    {
+      "case_index": 6,
+      "definition": "(replicate1-replicate0)/sqrt(SE0^2+SE1^2); descriptive across correlated quotes",
+      "max_abs_z": 2.3470341123328797,
+      "policy": "refined",
+      "quotes_above_abs_z_3": 0,
+      "selected_contract_index": 35,
+      "selected_difference_over_quote_sigma": 0.10727055367791895,
+      "selected_nominal_mc_se_over_quote_sigma": 0.045704727133810304,
+      "signed_z_at_selected_max": 2.3470341123328797,
+      "signed_z_by_contract": [
+        -0.47472577746830974,
+        -0.5489870798765321,
+        -0.6262627119057983,
+        -0.6387440495170278,
+        -0.5006752943319841,
+        -0.15931426862597303,
+        0.3217868743864726,
+        0.8657026584496984,
+        1.2245188553942106,
+        -1.1103627714491928,
+        -0.985228099287601,
+        -0.8085498412218572,
+        -0.556925622015012,
+        -0.21214992205890532,
+        0.18498698235593103,
+        0.3872406533223936,
+        0.2409141148708006,
+        -0.32713678972850785,
+        1.1925202186878032,
+        1.135989018078434,
+        1.027834003625111,
+        0.8840315860665608,
+        0.739986469361521,
+        0.5935407681328395,
+        0.500285489822461,
+        0.5636222367246994,
+        0.37600853064024453,
+        0.8357574602695115,
+        0.8294835302421096,
+        0.8689473728222687,
+        0.9513049357377938,
+        1.0361054653192487,
+        1.085401313538363,
+        1.1839078297017311,
+        1.7744793688341565,
+        2.3470341123328797,
+        0.795826593460983,
+        0.602892983328395,
+        0.3885664227574356,
+        0.21450503246705185,
+        0.17690431599250658,
+        0.2458441236430029,
+        0.40428807469146305,
+        0.8670894126948715,
+        1.340924847910911,
+        0.6327348163577005,
+        0.4109559408391706,
+        0.14940398541853034,
+        -0.0879695234213555,
+        -0.17248341344043713,
+        -0.09313344673534937,
+        -0.09310950336689226,
+        0.020567311940860363,
+        0.02650033630991723,
+        -0.5977556589253747,
+        -0.462341114189842,
+        -0.3272405311504592,
+        -0.19266157315160207,
+        -0.01905824170816804,
+        0.2537697095537781,
+        0.3663164186403678,
+        0.32987104727948857,
+        0.29938594529697815
+      ]
+    }
+  ],
+  "rough_pricing_accounting": {
+    "allocated_cpu_seconds": 13001,
+    "consumed_total_cpu_seconds": 12745.152,
+    "cpu_counting": "top-level rows only; batch/extern CPU not added again; batch MaxRSS retained",
+    "end_cluster_local": "2026-10-26T20:25:34",
+    "max_batch_peak_rss_bytes": 1118613504,
+    "start_cluster_local": "2026-10-26T20:03:24",
+    "top_level_allocations": 44
+  },
+  "source_revision": "65186b3dd2f8d1c49002e2cde0a33d525313feb7",
+  "status": "development_evidence_not_scientific_acceptance",
+  "timeout": {
+    "allocated_elapsed_seconds": 1216,
+    "completed_attempt_paths_in_block0": [
+      32768,
+      65536,
+      131072
+    ],
+    "completion_cost": "unknown, exceeds observed consumed work for this run; not imputed from completed-only calls",
+    "component_index": 13,
+    "consumed_total_cpu_seconds": 1205.215,
+    "interrupted_attempt_paths": 262144,
+    "policy": "refined",
+    "prior_point_id": 6,
+    "runtime_confound": "Working component12 and refined component13 used different nodes. System CPU fractions and reported frequency counters differ substantially on the same hardware class; see performance-note.json. Root cause and matched-node throughput are unresolved.",
+    "state": "TIMEOUT",
+    "status": "censored; no final surface or MC-budget verdict"
+  },
+  "uncertainty_scope": "All price/replicate SEs are nominal fitted-control residual estimates. Two independent replicates per grid do not establish SE reliability. Selected maxima across correlated contracts are descriptive, not simultaneous coverage or global bias bounds.",
+  "validation": {
+    "all_44_reports_present": true,
+    "checked_reducer_passed": true,
+    "current_source_hashes_match_declaration": true,
+    "local_parameter_seed_replay_bitwise_equal": false,
+    "local_parameter_seed_replay_max_abs_difference": 1.1102230246251565e-16,
+    "parameter_replay_scope": "Linux frozen parameter values are authoritative and unchanged; Mac regeneration differs by at most one floating-point ulp; no tolerance applied to identities or used parameters.",
+    "seed_audit": {
+      "all_possible_block_rung_streams": 708,
+      "observed_unique_block_rung_streams": 185,
+      "passed": true,
+      "unique_initialized_pcg64_states": 724,
+      "unique_reduced_uint64": 768
+    }
+  }
+}

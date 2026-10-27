@@ -1,10 +1,12 @@
 # Numerical experiment plan for Heston and rough Bergomi
 
-**Review draft — 27 October 2026. No further experiments start until this revision has been reviewed.** The implementation and completed runs are in [PR 48](https://github.com/fmuia/sbi4finance/pull/48); the course baseline is [Francesco's PR 44](https://github.com/fmuia/sbi4finance/pull/44), inspected at `cebfb1f`.
+**Execution update — 27 October 2026. The reviewed A/B unit is complete; it added no large rough bank or GPU training.** The implementation and completed runs are in [PR 48](https://github.com/fmuia/sbi4finance/pull/48); the course baseline is [Francesco's PR 44](https://github.com/fmuia/sbi4finance/pull/44), inspected at `cebfb1f`.
 
 The aim is a tutorial that shows **what the posterior learned, how we checked it, when amortization saves work, and how joint uncertainty affects a product**. We extend Francesco's existing simulation and inference workflow. For rough Bergomi, both his workflow and the new one use numerical time grids and Monte Carlo price estimates; Heston uses Fourier quadrature. We retain the existing precision controls and add a bounded check of whether numerical refinement changes the tutorial's posterior and product conclusions. The supported claims will match that evidence.
 
-The immediate next unit is deliberately small: **finish a Heston reference check and measure the new rough task's numerical/cost trade-offs in parallel**. It ends with results and a priced recommendation for the first rough bank. Its ceiling is **26 allocated CPU-hours in total, with no GPU training**; the later bank and training campaign is separately costed.
+The reviewed A/B unit was deliberately small: **finish a Heston reference check and measure the new rough task's numerical/cost trade-offs in parallel**. It ended with results and a conditional first-bank cost scenario, within its **26-allocated-CPU-hour ceiling, with no GPU training**. The proposed next follow-up is **7 allocated CPU-hours plus 1 GPU-hour** for rough reliability/timing checks and Heston diagnosis; it has not started. The later bank and training campaign remains separately costed.
+
+**Result:** all three Heston references pass the declared mixing checks, while the BayesFlow 2.1 development checkpoint fails conditional agreement. The rough pilot returned 43 of 44 calls; one refined prior-point call timed out. Read the [completed unit, costs and next decision](../docs/reviewed-unit-2026-10-27.md) before stage C. The A/B specification below is retained to show what was reviewed and run; it does not authorize another round.
 
 ## Scope already agreed
 
@@ -29,7 +31,7 @@ The candidate rough prior remains independent uniforms: H 0.02–0.35, eta 0.5�
 
 The [reuse inventory](../docs/full-surface-calibration.md#relationship-to-the-existing-rough-examples) gives artifact details. The [Oscar report](../docs/oscar-pilot-2026-10-26.md) retains failures, timeouts and inconclusive results. Pricing benchmarks show about 3.08× faster warm Heston calls and 15–18% less CPU on measured rough blocks, with identical outputs. These are not bank-wide throughput estimates. Infrastructure is sufficient; add machinery only for a concrete unmet need.
 
-## Next unit after review: two parallel workstreams
+## Reviewed A/B unit: two parallel workstreams
 
 All cases below are **development evidence**, not untouched final acceptance data. Record exact observations, IDs, seeds, sources, runtime and settings before execution. Budgets are ceilings, not promises that every check will finish. Retain failed/incomplete outcomes; no replacement seeds or automatic budget doubling.
 
@@ -124,8 +126,8 @@ This is at most eight screen fits plus six confirmations, with data sizes and GP
 
 Final validation includes prior-predictive calibration, conditional-reference agreement, product uncertainty, inference cost and fresh participant execution. Preserve **2,000 untouched acceptance surfaces per model** for the declared final SBC/coverage check and a separate final reference collection; inspected pilot/test results remain development evidence. Use matched observations/noise/prior for comparisons, report raw and corrected neural results separately, and retain original sampler provenance. The existing [claims registry](CLAIMS.md) and [course status](../docs/course/status.md) change only when the corresponding evidence supports a teaching claim.
 
-## What to review now
+## Next review
 
-Review the A/B sequence and its **6 + 20 CPU-hour ceiling**, the first-bank proposal, the six-case refinement panel, product choices and proposed tolerance floors. The broad rough prior remains a candidate; no narrower regime is being adopted implicitly. The review concerns whether this bounded evidence is sufficient to choose useful numerical settings and then complete the tutorial workflow.
+Review the [A/B results and follow-up work order](../docs/reviewed-unit-2026-10-27.md) before substantial generation. The first-bank proposal, six-case refinement panel, product choices and tolerance floors remain conditional on those findings. The broad rough prior remains a candidate; no narrower regime has been adopted implicitly.
 
 Technical details live in [EXPERIMENT-PROTOCOL.md](EXPERIMENT-PROTOCOL.md); completed results in [the Oscar report](../docs/oscar-pilot-2026-10-26.md); runnable instructor commands in [the implementation guide](../docs/full-surface-calibration.md). The older [cluster runbook](CLUSTER-RUNS.md) remains historical/reusable guidance, not an instruction to run its entire older programme.

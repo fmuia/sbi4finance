@@ -4,7 +4,7 @@
 
 Sparse-chain support remains a separate downstream unit. No notebooks were executed or changed for these runs.
 
-**Next-step clarification, 27 October:** the [review plan](../tutorial_final/NUMERICAL-EXPERIMENT-PLAN.md) extends Francesco's existing approximate-price workflow with bounded posterior/product refinement checks. His runbook's descriptive grid study does not define a separate inference philosophy for the whole course. Further execution is on hold for review; the numerical records below are unchanged.
+**Next-step clarification, 27 October:** the [review plan](../tutorial_final/NUMERICAL-EXPERIMENT-PLAN.md) extends Francesco's existing approximate-price workflow with bounded posterior/product refinement checks. His runbook's descriptive grid study does not define a separate inference philosophy for the whole course. The reviewed A/B unit subsequently ran; read the [27 October results](reviewed-unit-2026-10-27.md) for the now-passing Heston references and new rough pilot. The historical numerical records below are unchanged.
 
 ## What ran in parallel
 

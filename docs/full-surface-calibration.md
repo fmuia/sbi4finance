@@ -4,7 +4,7 @@ The first implementation covers **complete-surface Heston and joint rough Bergom
 
 The tutorial workflow is observation → posterior → diagnostics/reference comparison → product uncertainty. This PR builds the generation, training, reload, sample-based evaluation and first PyMC reference pieces. It does not yet deliver scientifically accepted checkpoints or participant notebooks.
 
-Actual Oscar readiness, development training and bounded scientific pilots are recorded in the [26 October development report](oscar-pilot-2026-10-26.md). The monotone exponential curve is now the agreed simplified teaching family; its prior and numerical settings remain development candidates. Read that report before choosing a large rough-bank configuration.
+Actual Oscar readiness, development training and bounded scientific pilots are recorded in the [26 October development report](oscar-pilot-2026-10-26.md). The subsequent [27 October reviewed unit](reviewed-unit-2026-10-27.md) records the completed Heston references, rough cost pilot and next decision. The monotone exponential curve is now the agreed simplified teaching family; its prior and numerical settings remain development candidates. Read that report before choosing a large rough-bank configuration.
 
 ## Relationship to the existing rough examples
 

@@ -1,0 +1,14 @@
+/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:234: UserWarning: Numba will use object mode to run DeterministicLikelihoodOp's perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+Multiprocess sampling (4 chains in 4 jobs)
+DEMetropolisZ: [parameters]
+/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:234: UserWarning: Numba will use object mode to run DeterministicLikelihoodOp's perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:234: UserWarning: Numba will use object mode to run DeterministicLikelihoodOp's perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:234: UserWarning: Numba will use object mode to run DeterministicLikelihoodOp's perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:234: UserWarning: Numba will use object mode to run DeterministicLikelihoodOp's perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+Sampling 4 chains for 4_000 tune and 8_000 draw iterations (16_000 + 32_000 draws total) took 348 seconds.
+{"out": "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-0/reference", "shape": [4, 8000, 4], "mcmc_diagnostics_passed": true}
