@@ -1,12 +1,21 @@
-"""The tutorial's runtime (tutorial/src/sbi4f_tutorial) returns the lab's numbers, and its copied assets are current.
+"""The tutorial's runtime (tutorial/src/sbi4f_tutorial) is the lab's code and returns the lab's numbers.
 
-The tutorial never imports the lab. This test reads the tutorial's code from the lab's side only: a change to
-either copy of a pricer, the network's conditioning or a quick check fails here before it reaches the stage.
+The tutorial never imports the lab: its runtime holds copies of the lab functions the notebooks need, under the
+same names, and its assets are copies of lab files. This test reads the tutorial from the lab's side only. A
+copied function that differs from the lab's, a name the runtime uses but does not define, a stored task that is
+not the lab's, or a stale asset fails here before it reaches the stage.
 """
 
+import ast
+import builtins
+import copy
+import dis
+import importlib
 import importlib.util
+import inspect
 import json
 from pathlib import Path
+import pkgutil
 import sys
 import unittest
 
@@ -18,7 +27,6 @@ REPO = LAB.parent
 sys.path.insert(0, str(REPO / "tutorial" / "src"))
 
 from sbi4f_tutorial import bs_hierarchy as t_sector  # noqa: E402
-from sbi4f_tutorial import heston as t_heston  # noqa: E402
 from sbi4f_tutorial import inference as t_inference  # noqa: E402
 from sbi4f_tutorial import long_end as t_long_end  # noqa: E402
 from sbi4f_tutorial import surface as t_surface  # noqa: E402
@@ -27,8 +35,68 @@ from sbi4f_tutorial import teaching as t_teaching  # noqa: E402
 
 from sbi4finance.calibration import inference, surface, tasks, teaching  # noqa: E402
 
+RUNTIME = REPO / "tutorial" / "src" / "sbi4f_tutorial"
 HESTON_TASK = json.loads((REPO / "tutorial" / "assets" / "checkpoints" / "heston" / "task.json").read_text())
 SPY = json.loads((REPO / "tutorial" / "assets" / "results" / "calibration" / "spy" / "surface.json").read_text())
+
+# The lab file each runtime module copies from. A definition there under the same name must be the same code,
+# statement for statement; docstrings, comments and import paths may differ.
+COPIED_FROM = {
+    "bergomi": "src/sbi4finance/bergomi.py",
+    "bs_hierarchy": "checks/bs_hierarchy.py",
+    "gbm": "src/sbi4finance/gbm.py",
+    "hkde": "src/sbi4finance/hkde.py",
+    "inference": "src/sbi4finance/calibration/inference.py",
+    "long_end": "checks/long_end/long_end.py",
+    "plots": "src/sbi4finance/svj/plots.py",
+    "pricing": "src/sbi4finance/calibration/pricing.py",
+    "rough_bergomi": "src/sbi4finance/rough_bergomi.py",
+    "surface": "src/sbi4finance/calibration/surface.py",
+    "tasks": "src/sbi4finance/calibration/tasks.py",
+    "teaching": "src/sbi4finance/calibration/teaching.py",
+}
+# Everything else in the runtime is written for the tutorial, for the reason given.
+WRITTEN_FOR_THE_TUTORIAL = {
+    "paths": "where tutorial/assets/ is",
+    "why_bayes": "slot 1's toy example; the lab no longer uses it (archived at 574b940)",
+    "tasks.rough_task": "reads the task the lab stored, instead of building it",
+    "inference._checked_task": "checks a task's keys; the lab validated the shipped tasks (test below)",
+    "long_end.ROUGH": "reads tutorial/assets/",
+    "long_end.SPY": "reads tutorial/assets/",
+    "long_end.TASK": "reads tutorial/assets/",
+}
+
+
+def definitions(path):
+    """Top-level functions, classes and single-name assignments of a file, by name."""
+    found = {}
+    for node in ast.parse(Path(path).read_text()).body:
+        if isinstance(node, (ast.FunctionDef, ast.ClassDef)):
+            found[node.name] = node
+        elif isinstance(node, ast.Assign) and len(node.targets) == 1 and isinstance(node.targets[0], ast.Name):
+            found[node.targets[0].id] = node
+    return found
+
+
+def code_of(node):
+    """The node without docstrings, with relative and package imports written alike."""
+    node = copy.deepcopy(node)
+    for inner in ast.walk(node):
+        if isinstance(inner, (ast.FunctionDef, ast.ClassDef)) and isinstance(inner.body[0], ast.Expr) \
+                and isinstance(inner.body[0].value, ast.Constant) and isinstance(inner.body[0].value.value, str):
+            inner.body = inner.body[1:] or [ast.Pass()]
+        elif isinstance(inner, ast.ImportFrom):
+            inner.module, inner.level = inner.module and inner.module.rsplit(".", 1)[-1], 0
+    return ast.dump(node)
+
+
+def global_names(code):
+    """The global names a function's code loads, nested functions included."""
+    names = {i.argval for i in dis.get_instructions(code) if i.opname == "LOAD_GLOBAL"}
+    for const in code.co_consts:
+        if inspect.iscode(const):
+            names |= global_names(const)
+    return names
 
 
 def lab_module(path, name):
@@ -36,6 +104,38 @@ def lab_module(path, name):
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
+
+
+class CopyTests(unittest.TestCase):
+    def test_copied_definitions_are_the_labs(self):
+        for module in sorted(p.stem for p in RUNTIME.glob("*.py") if p.stem != "__init__"):
+            if module in WRITTEN_FOR_THE_TUTORIAL:
+                continue
+            self.assertIn(module, COPIED_FROM, f"say where sbi4f_tutorial/{module}.py comes from")
+            lab = definitions(LAB / COPIED_FROM[module])
+            for name, node in definitions(RUNTIME / f"{module}.py").items():
+                with self.subTest(definition=f"{module}.{name}"):
+                    if f"{module}.{name}" in WRITTEN_FOR_THE_TUTORIAL:
+                        continue
+                    self.assertIn(name, lab, f"not in lab/{COPIED_FROM[module]}: copy it from there, "
+                                             "or list it in WRITTEN_FOR_THE_TUTORIAL")
+                    self.assertEqual(code_of(node), code_of(lab[name]),
+                                     f"differs from lab/{COPIED_FROM[module]}: copy the lab's version")
+
+    def test_every_global_name_the_runtime_uses_is_defined(self):
+        for info in pkgutil.iter_modules([str(RUNTIME)]):
+            module = importlib.import_module(f"sbi4f_tutorial.{info.name}")
+            for name, function in vars(module).items():
+                if inspect.isfunction(function) and function.__module__ == module.__name__:
+                    with self.subTest(function=f"{info.name}.{name}"):
+                        missing = {n for n in global_names(function.__code__)
+                                   if n not in vars(module) and not hasattr(builtins, n)}
+                        self.assertEqual(missing, set(), "copy these from the lab too")
+
+    def test_the_shipped_tasks_are_the_labs(self):
+        self.assertEqual(t_tasks.rough_task(), tasks.rough_task())
+        tasks.validate_task(t_tasks.rough_task())
+        tasks.validate_task(HESTON_TASK)
 
 
 class ParityTests(unittest.TestCase):
@@ -55,16 +155,6 @@ class ParityTests(unittest.TestCase):
         for row in rows:
             with self.subTest(row=row.tolist()):
                 assert_array_equal(t_teaching.heston_smile(HESTON_TASK, row), teaching.heston_smile(HESTON_TASK, row))
-
-    def test_rough_design_is_the_rough_task_and_the_pilot_configuration(self):
-        design, task = t_tasks.rough_design(), tasks.rough_task()
-        self.assertEqual(design["contracts"], task["context"]["contracts"])
-        assert_array_equal(design["sigma"], tasks.sigma(task))
-        assert_array_equal(design["knots"], tasks.knots(task))
-        self.assertEqual(design["blocks"], task["numerics"]["blocks"])
-        pilot = json.loads((LAB / "configs" / "tasks" / "calibration_rough_pilot.json").read_text())["task"]
-        assert_array_equal(design["sigma"], tasks.sigma(pilot))
-        assert_array_equal(design["knots"], tasks.knots(pilot))
 
     def test_one_rough_smile_is_priced_identically(self):
         for hurst, eta, rho in ((0.1, 2.0, -0.8), (0.3, 0.7, -0.3)):

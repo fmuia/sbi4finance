@@ -6,7 +6,7 @@ import unittest
 import numpy as np
 from numpy.testing import assert_allclose
 
-from sbi4f_tutorial import heston, inference, long_end, surface, tasks, teaching
+from sbi4f_tutorial import hkde, inference, long_end, surface, tasks, teaching
 from sbi4f_tutorial.paths import CHECKPOINTS, RESULTS
 
 
@@ -21,8 +21,13 @@ class PricingTests(unittest.TestCase):
     def test_heston_without_vol_of_vol_is_black_scholes_with_the_mean_variance(self):
         theta, v0, kappa, t = 0.04, 0.09, 2.0, 0.5
         w = theta * t + (v0 - theta) * (1 - np.exp(-kappa * t)) / kappa
-        price = heston.european_price(1.0, 1.1, 1.0, t, kappa, theta, 0.0, -0.5, v0, nodes=2048, upper_limit=400.0)
-        assert_allclose(price, surface.bs_call(np.log(1.1), t, np.sqrt(w / t)), atol=1e-9)
+        # At zero vol of vol the pricer returns Black's formula; at 0.001 the Fourier integral, which differs
+        # from it by about 0.01 times the vol of vol here.
+        for vol_of_vol, tolerance in ((0.0, 1e-12), (1e-3, 2e-5)):
+            parameters = dict(kappa=kappa, theta=theta, vol_of_vol=vol_of_vol, rho=-0.5, jump_intensity=0.0,
+                              jump_up_probability=0.5, jump_up_rate=10.0, jump_down_rate=10.0)
+            price = hkde.european_price(1.0, 1.1, 1.0, t, parameters, v0, nodes=2048, upper_limit=400.0)
+            assert_allclose(price, surface.bs_call(np.log(1.1), t, np.sqrt(w / t)), atol=tolerance)
 
     def test_heston_smile_of_the_checkpoint_task_lies_inside_the_bounds(self):
         task = json.loads((CHECKPOINTS / "heston" / "task.json").read_text())
@@ -36,11 +41,11 @@ class PricingTests(unittest.TestCase):
         self.assertTrue(np.all(np.asarray(result["skew"]) < 0))
         self.assertLess(result["exponent"], 0)
 
-    def test_rough_design_matches_the_design_grid(self):
-        design = tasks.rough_design()
-        self.assertEqual(len(design["contracts"]), 63)
-        assert_allclose(design["knots"][1:] * surface.TRADING_DAYS, surface.DESIGN_DAYS)
-        self.assertEqual([b["n_steps"] for b in design["blocks"]], [80, 504, 504])
+    def test_the_rough_task_is_on_the_design_grid(self):
+        task = tasks.rough_task()
+        self.assertEqual(task["context"]["contracts"], surface.design_grid())
+        assert_allclose(tasks.knots(task)[1:] * surface.TRADING_DAYS, surface.DESIGN_DAYS)
+        self.assertEqual([b["n_steps"] for b in task["numerics"]["blocks"]], [80, 504, 504])
 
 
 class LongEndAndNetworkTests(unittest.TestCase):

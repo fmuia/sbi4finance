@@ -23,7 +23,7 @@ come from these outputs. Library code is in `src/sbi4finance/calibration/`.
 | S10 | `thin_coverage.py` (`run`, `summarize`), `cluster/thin_coverage_array.sbatch` | Breach rates of every method's one-sided 90% bounds on simulated chains with the thin layout; with `--truths`, truths drawn from S11's posterior (S10-E) |
 | S11 | `thin_real.py` | A real thin chain (EWG): the audited posterior, products, classical fits, the predictive check, at several noise scales |
 | S2-1, S2-2 | `smile_facts.py` (`example`, `prior-predictive`) | The example surfaces at the centre of the prior, and the prior predictive check of four smile statistics |
-| – | `manifest.py` | Refreshes the copies of quick-check outputs and figures in `tutorial/assets/`, then regenerates the artifact table of `tutorial/MANIFEST.md` from every file there |
+| – | `manifest.py` | Refreshes the copies of quick-check outputs, task files and figures in `tutorial/assets/`, then regenerates the artifact table of `tutorial/MANIFEST.md` from every file there |
 
 ## Order and test-split use
 

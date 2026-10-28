@@ -50,8 +50,8 @@ Every computed cell has a cached fallback, so a notebook still runs if a live co
 | Path | What |
 |---|---|
 | `notebooks/` | The marimo notebooks: plain Python files, reactive, readable in any editor |
-| `src/sbi4f_tutorial/` | The code the notebooks run: Black–Scholes and implied volatility, the Heston Fourier pricer, a rough-Bergomi Monte Carlo pricer, the network's adapter and sampler. Short, and meant to be read |
-| `assets/` | The trained networks, the accepted study results, quick-check outputs, data and figures that the notebooks load |
+| `src/sbi4f_tutorial/` | The code the notebooks run, copied unchanged from the project's lab: Black–Scholes and implied volatility (`surface.py`), the Heston Fourier pricer (`hkde.py`), rough Bergomi by Monte Carlo (`rough_bergomi.py`, `bergomi.py`, `pricing.py`), the network's adapter and sampler (`inference.py`), and the notebooks' loaders and figures (`teaching.py`) |
+| `assets/` | The trained networks, the accepted study results, quick-check outputs, task files, data and figures that the notebooks load |
 | `MANIFEST.md` | Every file in `assets/`, with its size, SHA-256 and origin |
 | `CLAIMS.md` | Every number said on stage, with the study that produced it and its status |
 | `tests/` | `pixi run test` checks the files and the code; `pixi run test-notebooks` runs every notebook headless (a few minutes) |

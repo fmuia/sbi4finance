@@ -32,6 +32,7 @@ EXPORTS = {
     "quick-checks/long_end/long_end.json": "lab/checks/long_end/long_end.json",
     "quick-checks/long_end/long_end_extra.json": "lab/checks/long_end/long_end_extra.json",
     "quick-checks/rough_checks.json": "lab/checks/rough_checks.json",
+    "tasks/calibration_rough_pilot.json": "lab/configs/tasks/calibration_rough_pilot.json",
     "images/ladder.png": "tutorial/curriculum/images/ladder.png",
     "images/l10-credible-vs-confidence.png": "course/images/l10-credible-vs-confidence.png",
 }

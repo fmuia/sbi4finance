@@ -1,145 +1,121 @@
-"""Rough Bergomi prices by Monte Carlo, in forward units: the live smile of slot 5.
+"""Rough Bergomi paths by the hybrid scheme: the model of slot 5.
 
 The variance is v_t = xi0(t) exp(eta Y_t - eta^2 Var(Y_t) / 2), with Y_t = sqrt(2H) int_0^t (t-s)^(H-1/2) dW_s
 a Riemann-Liouville Volterra process and xi0 the forward-variance curve. The price is correlated with W by rho.
-Y is simulated by the hybrid scheme (the singular last cell exactly, older cells by their average kernel,
-the convolution by FFT). A put is priced conditionally on the variance path: given int v dt and
-int sqrt(v) dW, the price is lognormal, so the Black-Scholes formula integrates the independent noise out.
-Paths come in antithetic pairs; two control variates per maturity with known mean zero remove most of the
-Monte Carlo error. Calls follow by parity. This is the lab's rough_bergomi.py, bergomi.py and
-calibration/pricing.py, restricted to what one smile needs.
+The hybrid scheme simulates Y with the singular last cell exactly, older cells by their average kernel, and the
+convolution by FFT. method="covariance" is the lab's small exact reference, used in its tests; the notebooks
+use the hybrid scheme. These are the lab's sbi4finance/rough_bergomi.py functions, copied unchanged;
+lab/tests/test_tutorial_parity.py checks them.
 """
 
+from functools import lru_cache
+
 import numpy as np
-from scipy.special import log_ndtr, ndtr
+from scipy.integrate import quad
 
-_PAIR_CHUNK = 2048  # antithetic pairs per simulation chunk; memory, not results, depends on it
-
-
-def step_curve(knots, levels):
-    """Right-continuous piecewise-constant forward variance: xi0(t) = levels[j] on [knots[j], knots[j+1])."""
-    knots, levels = np.asarray(knots, dtype=float), np.asarray(levels, dtype=float)
-    if knots[0] != 0 or len(knots) != len(levels) + 1 or np.any(np.diff(knots) <= 0) or np.any(levels <= 0):
-        raise ValueError("knots from zero, one positive level per interval")
-    ramp = 1e-10
-    times, values = [0.0], [levels[0]]
-    for j in range(1, len(levels)):
-        times += [knots[j] - ramp, knots[j]]
-        values += [levels[j - 1], levels[j]]
-    times.append(knots[-1])
-    values.append(levels[-1])
-    return {"times": times, "values": values}
+from .bergomi import _asset_paths, _model_parameters, _normals, _positive_integer, _q_inputs, _scalar, curve_values
 
 
-def curve_values(curve, times):
-    """The curve, piecewise linear between its points, at the given times (no extrapolation)."""
-    x, y = np.asarray(curve["times"], float), np.asarray(curve["values"], float)
-    t = np.asarray(times, float)
-    if np.any(t < 0) or np.any(t > x[-1] + 1e-12):
-        raise ValueError("the curve must cover every time")
-    return np.interp(t, x, y)
-
-
-def hybrid_weights(hurst, dt, n_steps):
-    """Weights of the Brownian increments in Y and the loading of the independent last-cell residual."""
-    cells = np.arange(n_steps + 1, dtype=float)
-    weights = dt ** hurst * np.sqrt(2 * hurst) * np.diff(cells ** (hurst + 0.5)) / (hurst + 0.5)
-    bridge = dt ** hurst * np.sqrt(max(1 - 2 * hurst / (hurst + 0.5) ** 2, 0))
+def hybrid_weights(hurst, dt_years, n_steps):
+    """Brownian-increment coefficients and independent exact last-cell loading."""
+    h = _scalar(hurst, "hurst")
+    dt = _scalar(dt_years, "dt_years")
+    n = _positive_integer(n_steps, "n_steps")
+    if not 0 < h < 0.5 or dt <= 0:
+        raise ValueError("require 0 < hurst < .5 and dt_years > 0")
+    cells = np.arange(n + 1, dtype=float)
+    weights = dt ** h * np.sqrt(2 * h) * np.diff(cells ** (h + 0.5)) / (h + 0.5)
+    bridge = dt ** h * np.sqrt(max(1 - 2 * h / (h + 0.5) ** 2, 0))
     return weights, bridge
 
 
-def simulate(parameters, curve, dt, normals):
-    """Integrated variance and int sqrt(v) dW on a uniform grid; normals [paths, steps, 3] (W, residual, W-perp)."""
-    h, eta = parameters["hurst"], parameters["eta"]
-    n = normals.shape[1]
-    weights, bridge = hybrid_weights(h, dt, n)
-    fft_size = 1 << (2 * n - 1).bit_length()
-    convolution = np.fft.irfft(np.fft.rfft(normals[..., 0], n=fft_size, axis=1)
-                               * np.fft.rfft(weights, n=fft_size), n=fft_size, axis=1)[:, :n]
-    driver = np.column_stack((np.zeros(len(normals)), convolution + bridge * normals[..., 1]))
-    driver_variance = np.r_[0., np.cumsum(weights ** 2) + bridge ** 2]
-    xi = curve_values(curve, dt * np.arange(n + 1))
-    variance = xi * np.exp(eta * driver - 0.5 * eta ** 2 * driver_variance)
-    left = variance[:, :-1]
-    paths = {"integrated_variance": np.cumsum(left * dt, axis=1),
-             "volatility_driver_integral": np.cumsum(np.sqrt(left * dt) * normals[..., 0], axis=1)}
-    if not all(np.isfinite(a).all() for a in paths.values()):
-        raise ValueError("nonfinite trajectory; numerical support exceeded")
-    return paths
+@lru_cache(maxsize=16)
+def _reference_factors(hurst, dt_years, n_steps):
+    covariance, cross = rough_covariance(hurst, dt_years, n_steps)
+    residual = covariance - cross @ cross.T / dt_years
+    residual = (residual + residual.T) / 2
+    eigenvalues, eigenvectors = np.linalg.eigh(residual)
+    if eigenvalues.min() < -1e-10 * covariance.diagonal().max():
+        raise ValueError("reference covariance is not positive semidefinite at numerical precision")
+    factor = eigenvectors * np.sqrt(np.maximum(eigenvalues, 0))
+    return cross / np.sqrt(dt_years), factor, covariance.diagonal().copy()
 
 
-def conditional_puts(paths, rho, contracts, indices):
-    """Put prices conditional on each variance path, one column per contract; each lies in [0, K]."""
-    columns = []
-    for contract, index in zip(contracts, indices):
-        k = contract["strike"]
-        iv = paths["integrated_variance"][:, index - 1]
-        iw = paths["volatility_driver_integral"][:, index - 1]
-        log_forward = rho * iw - 0.5 * rho ** 2 * iv
-        residual_variance = (1 - rho ** 2) * iv
-        sd = np.sqrt(residual_variance)
-        d1 = (log_forward - np.log(k) + 0.5 * residual_variance) / sd
-        value = k * ndtr(-(d1 - sd)) - np.exp(log_forward + log_ndtr(-d1))
-        columns.append(np.maximum(value, 0))
-    return np.column_stack(columns)
+def rough_covariance(hurst, dt_years, n_steps):
+    """Continuum Gaussian grid covariance and joint dependence with W increments.
+
+    Off-diagonal integrals use independent adaptive quadrature after removing
+    the endpoint singularity; diagonals and C_Y,dW use analytic formulae.
+    Capped at 128 steps: an O(n^3) reference, not a production simulator.
+    """
+    h = _scalar(hurst, "hurst")
+    dt = _scalar(dt_years, "dt_years")
+    n = _positive_integer(n_steps, "n_steps")
+    if not 0 < h < 0.5 or dt <= 0 or n > 128:
+        raise ValueError("reference needs 0 < hurst < .5, positive dt and <=128 steps")
+    times = dt * np.arange(1, n + 1)
+    alpha = h - 0.5
+    covariance = np.diag(times ** (2 * h))
+    for i, t in enumerate(times):
+        for j in range(i + 1, n):
+            distance = times[j] - t
+            integral = quad(lambda z: (distance + t * z ** (1 / (alpha + 1))) ** alpha,
+                            0, 1, epsabs=2e-12, epsrel=2e-12)[0]
+            covariance[i, j] = covariance[j, i] = 2 * h * t ** (alpha + 1) * integral / (alpha + 1)
+    endpoints = dt * np.arange(n + 1)
+    upper = np.maximum(times[:, None] - endpoints[None, :-1], 0)
+    lower = np.maximum(times[:, None] - endpoints[None, 1:], 0)
+    cross = np.sqrt(2 * h) * (upper ** (h + 0.5) - lower ** (h + 0.5)) / (h + 0.5)
+    return covariance, cross
 
 
-def price_block(parameters, curve, contracts, *, horizon, n_steps, n_pairs, seed):
-    """Prices, standard errors and covariance of the price means for one block of contracts."""
-    dt = horizon / n_steps
-    indices = np.rint(np.array([c["maturity"] for c in contracts]) / dt).astype(int)
-    maturities = sorted(set(indices.tolist()))
-    xi = curve_values(curve, dt * np.arange(n_steps))
-    expected_iv = {i: float(np.sum(xi[:i]) * dt) for i in maturities}
-    puts = [dict(c, option_type="put") for c in contracts]
-    rho = parameters["rho"]
-    rng = np.random.default_rng(seed)
-    payoff_chunks, control_chunks = [], []
-    remaining = n_pairs
-    while remaining:
-        m = min(_PAIR_CHUNK, remaining)
-        z = rng.standard_normal((m, n_steps, 3))
-        pair = []
-        for sign in (1.0, -1.0):
-            paths = simulate(parameters, curve, dt, sign * z)
-            payoff = conditional_puts(paths, rho, puts, indices)
-            controls = []
-            for i in maturities:
-                iv = paths["integrated_variance"][:, i - 1]
-                iw = paths["volatility_driver_integral"][:, i - 1]
-                controls.append(np.exp(rho * iw - 0.5 * rho**2 * iv) - 1.0)  # the effective forward, mean 0
-                controls.append(iv - expected_iv[i])  # integrated variance, mean 0
-            pair.append((payoff, np.column_stack(controls)))
-        payoff_chunks.append(0.5 * (pair[0][0] + pair[1][0]))
-        control_chunks.append(0.5 * (pair[0][1] + pair[1][1]))
-        remaining -= m
-    payoffs, controls = np.concatenate(payoff_chunks), np.concatenate(control_chunks)
-    centered = controls - controls.mean(axis=0)
-    coefficients = np.linalg.lstsq(centered, payoffs - payoffs.mean(axis=0), rcond=None)[0]
-    adjusted = payoffs - controls @ coefficients
-    prices = adjusted.mean(axis=0)
-    residual = adjusted - prices
-    dof = len(adjusted) - controls.shape[1] - 1
-    covariance = residual.T @ residual / dof / len(adjusted)
-    covariance = 0.5 * (covariance + covariance.T)
-    prices = prices + np.array([1.0 - c["strike"] if c["option_type"] == "call" else 0.0 for c in contracts])
-    return prices, np.sqrt(np.diag(covariance)), covariance
+def rough_driver(hurst, dt_years, innovations, *, method="hybrid"):
+    """Generate the Gaussian field coupled to innovations[...,0]'s W increments."""
+    z = _normals(innovations)
+    n = z.shape[1]
+    if method == "hybrid":
+        weights, bridge = hybrid_weights(hurst, dt_years, n)
+        fft_size = 1 << (2 * n - 1).bit_length()
+        convolution = np.fft.irfft(np.fft.rfft(z[..., 0], n=fft_size, axis=1)
+                                   * np.fft.rfft(weights, n=fft_size), n=fft_size, axis=1)[:, :n]
+        driver = convolution + bridge * z[..., 1]
+        variance = np.cumsum(weights ** 2) + bridge ** 2
+    elif method == "covariance":
+        loading, residual, variance = _reference_factors(float(hurst), float(dt_years), n)
+        driver = z[..., 0] @ loading.T + z[..., 1] @ residual.T
+    else:
+        raise ValueError("method must be hybrid or covariance")
+    return driver, variance
 
 
-def surface_prices(parameters, curve, contracts, blocks, paths, seed):
-    """Every contract priced in its maturity block with the given number of paths: prices and standard errors."""
-    if not (0 < parameters["hurst"] < 0.5 and parameters["eta"] >= 0 and -1 < parameters["rho"] <= 0):
-        raise ValueError("require 0 < H < 0.5, eta >= 0 and -1 < rho <= 0")
-    maturities = np.array([c["maturity"] for c in contracts])
-    assignment = np.full(len(contracts), -1)
-    for b, block in reversed(list(enumerate(blocks))):
-        assignment[maturities <= block["horizon"] + 1e-12] = b
-    prices, errors = np.empty(len(contracts)), np.empty(len(contracts))
-    for b, block in enumerate(blocks):
-        chosen = np.flatnonzero(assignment == b)
-        if len(chosen):
-            stream = np.random.SeedSequence([seed, b, 0])
-            prices[chosen], errors[chosen], _ = price_block(
-                parameters, curve, [contracts[i] for i in chosen], horizon=block["horizon"],
-                n_steps=block["n_steps"], n_pairs=paths // 2, seed=stream)
-    return prices, errors
+def simulate_rough(parameters, curve, dt_years, innovations, *, method="hybrid",
+                   spot=1.0, rate=0.0, dividend=0.0):
+    """Simulate from the original Q origin on a uniform grid.
+
+    innovations [paths,steps,3] are independent standard normal channels for
+    W, Gaussian residual, W-perp. Outputs include the full Volterra driver;
+    current variance or current driver is NOT a sufficient continuation state.
+    No restart API or P risk forecast is claimed. The hybrid normalizer is its
+    discrete Var(Y_i), so E[v_i]=xi0(t_i) exactly for its Gaussian approximation.
+    The covariance reference uses t_i^(2H); both retain log Euler asset bias.
+    """
+    p = _model_parameters(parameters, "rough")
+    dt = _scalar(dt_years, "dt_years")
+    if dt <= 0:
+        raise ValueError("dt_years must be positive")
+    z = _normals(innovations)
+    spot, rate, dividend = _q_inputs(spot, rate, dividend)
+    times = dt * np.arange(z.shape[1] + 1)
+    xi = curve_values(curve, times)
+    driver, driver_variance = rough_driver(p["hurst"], dt, z, method=method)
+    driver = np.column_stack((np.zeros(len(z)), driver))
+    driver_variance = np.r_[0., driver_variance]
+    with np.errstate(over="raise", invalid="raise"):
+        try:
+            variance = xi * np.exp(p["eta"] * driver - 0.5 * p["eta"] ** 2 * driver_variance)
+        except FloatingPointError as error:
+            raise ValueError("variance overflow; numerical support exceeded") from error
+    result = _asset_paths(variance, dt, z, p["rho"], spot, rate, dividend)
+    result.update(volterra_driver=driver, driver_variance=driver_variance, times=times,
+                  continuation_state_available=False, driver_method=method)
+    return result

@@ -8,4 +8,5 @@ RESULTS = ASSETS / "results" / "calibration"  # accepted study results
 CHECKPOINTS = ASSETS / "checkpoints"  # trained networks
 QUICK_CHECKS = ASSETS / "quick-checks"  # outputs of the lab's quick checks, not accepted studies
 DATA = ASSETS / "data"  # the exact Heston posterior on SPY
+TASKS = ASSETS / "tasks"  # task files the lab stored
 IMAGES = ASSETS / "images"
