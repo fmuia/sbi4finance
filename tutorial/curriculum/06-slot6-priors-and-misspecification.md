@@ -1,6 +1,6 @@
 # Slot 6. Changing priors and dealing with misspecified models
 
-Stefan · 15 minutes · last slot of the afternoon. A proposal for Stefan's review. Part of the [curriculum](00-overview.md).
+Stefan and Jerry · 15 minutes · last slot of the afternoon. A proposal for Stefan and Jerry's review. Part of the [curriculum](00-overview.md).
 
 ![Minute map of slot 6](images/slot-6.png)
 
@@ -27,9 +27,9 @@ Slot 5 ends on four conditions: the prior, the noise model, the forward-variance
 | 6–8 | 3. The noise model is a choice | The Heston network of (c), with the noise multiplier $c$ as a second condition: $c$ from 0.5 to 3 on a slider, the posterior width and the variance-swap range following | live | The quotes' noise is an assumption, and the posterior's width scales with it. The noise model is stated, and the range is shown under alternatives. |
 | 8–13 | 4. When the model is wrong: four detectors | One example per detector, all on the tutorial's smiles: (i) the input check: SPY's forward-variance curve against the pilot's curve prior (outside it, gate G0); (ii) the posterior predictive check: Heston's re-priced smiles on SPY, with their over-curved short smiles, and slot 4's variance swaps; (iii) the audit: Heston on a rough-Bergomi pilot smile, $\chi^2$ of 1,347 on 63 quotes, $\hat k$ = 154; (iv) a learned summary space: the distance of SPY and of rough-Bergomi smiles from the Heston training set (Schmitt et al. 2024) | (i)–(iii) cached; (iv) cached if built | The network gives a confident posterior for any input. Each detector looks from outside: at the inputs, at the fit, at the likelihood, or at the summaries. |
 | 13–14 | 5. Across models | Slot 5's two forward-start distributions on SPY, Heston and rough Bergomi; if they are late, the pilot's three smiles | cached | When both models are wrong in different ways, report both and the spread between them, judged smile by smile. Model averaging and stacking are the formal versions. |
-| 14–15 | 6. Close | What the afternoon showed, in three lines; the take-home track; the repository | slide | The method needs a simulator, a prior and a noise model, and it is only as good as its checks. |
+| 14–15 | 6. Close | What the afternoon showed, in three lines; the repository | slide | The method needs a simulator, a prior and a noise model, and it is only as good as its checks. |
 
-**Optional slides.** The minute plan has no free minute, so two slides of the course's [version-2 plan](../../course/v2-plan.md) are optional: pooling across names (Section 2.3) and the prior beyond the last quote (Section 2.2). Both are specified below, at one minute each. Each can take the time of a piece that is not built (Open choices for Stefan).
+**Optional slides.** The minute plan has no free minute, so two slides of the course's [version-2 plan](../../course/v2-plan.md) are optional: pooling across names (Section 2.3) and the prior beyond the last quote (Section 2.2). Both are specified below, at one minute each. Each can take the time of a piece that is not built (Open choices for Stefan and Jerry).
 
 ## The pieces, specified
 
@@ -62,7 +62,7 @@ The bank of slot 4 is regenerated with $(m, w, c)$ drawn per smile: about 46 CPU
 | The audit | That the network's posterior survives reweighting by the likelihood | Heston on rough pilot smile 291: $\chi^2$ of 1,347 on 63 quotes, $\hat k$ = 154 | Seconds for Heston, about 7 CPU-minutes for rough Bergomi |
 | Learned summary space | That the data's learned summaries lie inside the training set's (Schmitt et al. 2024) | SPY and rough-Bergomi smiles against the Heston training set | Needs a Heston network with a summary network trained with the distance term |
 
-The fourth detector is the one slot 3 names. It needs a summary network, which slots 4 and 5 do not use: building it is a choice for Stefan (below).
+The fourth detector is the one slot 3 names. It needs a summary network, which slots 4 and 5 do not use: building it is a choice for Stefan and Jerry (below).
 
 ### Optional slide: pooling across names
 
@@ -92,12 +92,12 @@ The fourth detector is the one slot 3 names. It needs a summary network, which s
 2. The sensitivity-aware Heston network: a bank with $(s, c)$ per smile and one training run.
 3. Optionally, a Heston network with a summary network trained with the distance term of Schmitt et al. (2024), for the fourth detector.
 
-## Open choices for Stefan
+## Open choices for Stefan and Jerry
 
 - Whether the sensitivity-aware network is built, or section 2(c) and section 3 use reweighting only. Reweighting a narrower posterior to a wider one (a larger noise) is unreliable, so the noise slider needs the network.
 - Whether to build the summary-space detector, or show the first three detectors only.
 - Whether to show the two optional slides, at one minute each. The time could come from section 2(c) if the sensitivity-aware network is not built, or from detector (iv) if the summary-space detector is not.
-- Whether to keep a returns example. The crash-day example (branch `feat/tutorial-slot6-crash-risk`, #42), in which the prior decides much of the answer, is ready as a take-home notebook, and could replace section 2(a) if a returns example is preferred.
+- Whether to keep a returns example. The crash-day example (branch `feat/tutorial-slot6-crash-risk`, #42), in which the prior decides much of the answer, is drafted as a notebook, and could replace section 2(a) if a returns example is preferred.
 
 ## References for the slot
 

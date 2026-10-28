@@ -1,6 +1,6 @@
 # Slot 3. Network architectures for amortized inference
 
-Stefan · 10 minutes. A proposal for Stefan's review. Part of the [curriculum](00-overview.md).
+Stefan and Jerry · 10 minutes. A proposal for Stefan and Jerry's review. Part of the [curriculum](00-overview.md).
 
 ![Minute map of slot 3](images/slot-3.png)
 
@@ -41,7 +41,7 @@ Sampling integrates $dz/d\tau = u_\phi(z, \tau, y)$ from $\tau = 0$ to 1. Slots 
 | --- | --- | --- | --- |
 | A smile on the design grid | A fixed vector of 63 prices, plus the forward-variance curve as context in slot 5 | No summary network: standardized quotes as conditions | Slots 4 and 5 |
 | A real option chain | A set of (log-moneyness, maturity, price, noise) tuples, of varying size and order | A set network (DeepSet, set transformer), invariant to the order of the quotes | The extension that removes the design grid (Stage D) |
-| Daily returns | A series of 1,000 values | A time-series network (convolutions, then a recurrent or attention layer) | The take-home returns notebook |
+| Daily returns | A series of 1,000 values | A time-series network (convolutions, then a recurrent or attention layer) | Not in the tutorial |
 | Any data, for misspecification tests | Whatever shape | A summary network trained with a distance term in its output space (Schmitt et al. 2024) | Slot 6 |
 
 ## The configuration, line by line
@@ -65,7 +65,7 @@ Normalizing flows and flow matching; the choice of summary network by data shape
 1. The five-snapshot figure of the flow on SPY, from the slot-4 network, with intermediate states saved from a custom Euler loop.
 2. The coupling-layer diagram and the data-shapes table as slides.
 
-## Open choices for Stefan
+## Open choices for Stefan and Jerry
 
 - Whether to mention diffusion and consistency models, and autoregressive samplers, which the proposal lists among the advanced concepts. One sentence each meets the proposal.
 - Whether the set network for real chains is shown as a result or only named. It is not built yet.

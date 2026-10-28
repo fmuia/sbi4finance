@@ -115,8 +115,8 @@ The notebook `slot1_intro.py` runs three cells, each in under a second.
   | 5 | Rough Bergomi on the SPY smile, from the posterior to a reserve |
   | 6 | What changes when the prior or the model is wrong? |
 
-  A footer: everything shown is in the repository, with a ledger of where each number comes from; returns and value-at-risk notebooks go home.
-- **Said.** One smile, three models, one question. The same approach applies to a value-at-risk computed from returns, and the take-home notebooks do that.
+  A footer: everything shown is in the repository, with a ledger of where each number comes from.
+- **Said.** One smile, three models, one question. The same approach applies to a value-at-risk computed from returns.
 
 ## The live notebook
 
@@ -165,9 +165,9 @@ The notebook's text changes with the data. On SPY the posterior from both quotes
 
 ## What is left out, and why
 
-- **Option D, betas across stocks** (branch `feat/tutorial-slot1-intro`). Strong, reviewed, and about betas rather than volatility; no later slot uses cross-sectional shrinkage. It goes to the take-home track.
-- **The proposal's Figure 1, Heston from a year of returns.** Its source is not in `tutorial/`, and the afternoon no longer uses returns. It can return as one sentence on slide 11 if its source is committed.
-- **Returns and value-at-risk.** One sentence on slide 11; the take-home notebooks carry them (overview, §6).
+- **Option D, betas across stocks** (branch `feat/tutorial-slot1-intro`). Strong, reviewed, and about betas rather than volatility; no later slot uses cross-sectional shrinkage.
+- **The proposal's Figure 1, Heston from a year of returns.** Its source is not in `tutorial/`, and the afternoon does not use returns. It can return as one sentence on slide 11 if its source is committed.
+- **Returns and value-at-risk.** One sentence on slide 11 says the afternoon leaves them out (overview, §6).
 
 ## To build, by the freeze on Wed 4 Nov
 

@@ -10,10 +10,10 @@ For the proposed next numerical campaign, read the [experiment plan](../../lab/p
 | --- | --- | --- | --- |
 | [01-slot1-the-problem.md](01-slot1-the-problem.md) | 1. The problem: Bayes for volatility models | Francesco | 15 |
 | [02-slot2-amortized-bayes.md](02-slot2-amortized-bayes.md) | 2. What is amortized Bayes? | Alex | 15 |
-| [03-slot3-architectures.md](03-slot3-architectures.md) | 3. Network architectures | Stefan | 10 |
-| [04-slot4-heston-in-bayesflow.md](04-slot4-heston-in-bayesflow.md) | 4. A worked example in BayesFlow: Heston on the SPY smile | Stefan | 20 |
+| [03-slot3-architectures.md](03-slot3-architectures.md) | 3. Network architectures | Stefan, Jerry | 10 |
+| [04-slot4-heston-in-bayesflow.md](04-slot4-heston-in-bayesflow.md) | 4. A worked example in BayesFlow: Heston on the SPY smile | Stefan, Jerry | 20 |
 | [05-slot5-rough-bergomi-to-a-reserve.md](05-slot5-rough-bergomi-to-a-reserve.md) | 5. Rough Bergomi on the SPY smile: from the posterior to a reserve | Francesco, Alex | 40 |
-| [06-slot6-priors-and-misspecification.md](06-slot6-priors-and-misspecification.md) | 6. Changing priors and dealing with misspecified models | Stefan | 15 |
+| [06-slot6-priors-and-misspecification.md](06-slot6-priors-and-misspecification.md) | 6. Changing priors and dealing with misspecified models | Stefan, Jerry | 15 |
 
 A number written ⟨Sn⟩ comes from study Sn ([course/status.md](../../course/status.md)) and is not on screen until [CLAIMS.md](../CLAIMS.md) records the final run.
 
@@ -32,9 +32,9 @@ Slots 2 and 3 explain the machine between them. Slot 6 changes the prior and the
 **What changed from revision 1, and why.**
 
 - **Slot 4 moves from returns to the smile.** It was GBM on VOO returns, under the real-world measure P, followed in slot 5 by option quotes under the pricing measure Q. That switch changed the data, the measure, the model and the question at once. Slot 4 is now Heston on the SPY smile, so slot 5 changes only the simulator. The exact Heston check moves from slot 5 to slot 4.
-- **The returns material goes home.** The VOO notebook, the SVJ lesson and the crash-day prior example become a take-home track (§6). This widens the gap against the proposal, which calibrates from returns (§8).
+- **The returns material is left out.** The VOO notebook, the SVJ lesson and the crash-day prior example are not part of the release (decision D21, §6). This widens the gap against the proposal, which calibrates from returns (§8).
 - **Slot 1 is rewritten slide by slide**, with one line of argument: the marking procedure, an example of the problem, what the rules ask for, the posterior in one live example, why richer models make it expensive, and the way around.
-- **Slots 2, 3 and 6 have proposals**, each built on the same smile, for Alex's and Stefan's review.
+- **Slots 2, 3 and 6 have proposals**, each built on the same smile, for Alex's, Stefan's and Jerry's review.
 
 **A feasibility run supports the new slot 4.** The exact Heston posterior on SPY ($\kappa$ = 2 fixed, the bank's prior box) was computed on 23 October in 531 CPU-seconds. Seven of eight optimizer starts spread over the prior box reach the same optimum, and four chains from overdispersed starts agree ($\hat R \le 1.007$). The posterior is tight: $\sigma_v$ = 1.14 ± 0.04 and $\rho$ = −0.63 ± 0.02. No draw satisfies the Feller condition: the vol-of-vol is about twice its Feller limit. The posterior prices variance swaps 0.6 to 1.7 volatility points below SPY's replicated strikes from two weeks to one year, with 90% bands 0.3 to 0.6 points wide. This gives slot 4 a real-data ending and slot 5 its reason to change model. Details are in the slot 4 file; the run is redone as study S8-H before its numbers go on screen.
 
@@ -95,10 +95,10 @@ The argument runs as one chain. Solid arrows are the main handoffs; dashed arrow
 ```mermaid
 flowchart LR
   S1["1. The problem<br/>Francesco, 15 min<br/>Black-Scholes on two SPY quotes"] -->|"richer models make the posterior expensive"| S2["2. Amortized Bayes<br/>Alex, 15 min<br/>a network learns slot 1's posterior"]
-  S2 -->|"what q must be, how to check it"| S3["3. Architectures<br/>Stefan, 10 min<br/>flow matching, summary networks"]
-  S3 -->|"the configuration"| S4["4. Heston on SPY in BayesFlow<br/>Stefan, 20 min<br/>checked against the exact posterior"]
+  S2 -->|"what q must be, how to check it"| S3["3. Architectures<br/>Stefan and Jerry, 10 min<br/>flow matching, summary networks"]
+  S3 -->|"the configuration"| S4["4. Heston on SPY in BayesFlow<br/>Stefan and Jerry, 20 min<br/>checked against the exact posterior"]
   S4 -->|"same smile and code, new simulator"| S5["5. Rough Bergomi on SPY<br/>Francesco and Alex, 40 min<br/>posterior, audit, reserve"]
-  S5 -->|"every range is conditional"| S6["6. Priors and misspecification<br/>Stefan, 15 min"]
+  S5 -->|"every range is conditional"| S6["6. Priors and misspecification<br/>Stefan and Jerry, 15 min"]
   S1 -.->|"the posterior is conditional on the model"| S6
   S4 -.->|"Heston's variance swaps below SPY's"| S6
 ```
@@ -171,9 +171,9 @@ The audience has read the proposal. Each promise the curriculum does not keep ne
 
 | The proposal promises | The curriculum | Proposed handling |
 | --- | --- | --- |
-| Calibration from return series (its Figure 1, "simulated pairs (parameters, return series)"), with joint returns-and-options calibration named as the follow-on edition | Every slot works on an option smile | Decision D16. Slot 1 says in one line why the afternoon uses options and that returns go home; the take-home track (§6) carries returns |
-| Propagation into volatility forecasts and value-at-risk (learning outcome 4) | Propagation into product prices and a reserve | Partly kept; VaR and volatility forecasts are in the take-home track |
-| Five model families: Heston, jump diffusion, GARCH, rough, multifractal | Black–Scholes, Heston, rough Bergomi; Heston with jumps as one slide | Name the take-home notebooks on slot 1's last slide, the SVJ and multifractal notebooks included; GARCH has no notebook: say so, or drop it from the slide |
+| Calibration from return series (its Figure 1, "simulated pairs (parameters, return series)"), with joint returns-and-options calibration named as the follow-on edition | Every slot works on an option smile | Decision D16. Slot 1 says in one line why the afternoon uses options and that returns are left out (decision D21) |
+| Propagation into volatility forecasts and value-at-risk (learning outcome 4) | Propagation into product prices and a reserve | Partly kept; VaR and volatility forecasts are left out (decision D21) |
+| Five model families: Heston, jump diffusion, GARCH, rough, multifractal | Black–Scholes, Heston, rough Bergomi; Heston with jumps as one slide | GARCH and the multifractal model are not covered: say so on slot 1's last slide |
 | Two notebooks live and one taken home, in student and solved versions, runnable on Colab | Live notebooks in slots 1, 2, 4, 5 and 6 | Decision D10 for the number; decision D17 for the student and solved versions; on Colab, the tutorial installs with pip (`tutorial/README.md`) |
 | Half a day, 3.5 hours: principles (1 h with a break), a worked example hands-on (1.5 h with a break), advanced concepts and a second example (1 h with a 15-minute Q&A) | 115 minutes of talks; about 95 minutes of the 3.5 hours unassigned | Decision D12: assign the time to breaks, the Q&A and exercises after slots 4 and 5 |
 | A close with "a broader view of the field and recent developments" | Slot 6's last minute | Slot 6's close names recent developments in one slide, or the Q&A opens with them |
@@ -181,7 +181,7 @@ The audience has read the proposal. Each promise the curriculum does not keep ne
 | Four organizers teaching | Jerry Huang has the same role as Stefan | Decision D18 |
 | "Attendees calibrate real market data and sign off on the diagnostics" | Presenters do it on SPY | Decision D12: exercises after slots 4 and 5 |
 | LLM-based verification agents, used hands-on | Not in any slot | Decision D11: a two-minute demonstration in slot 4's check step, or drop it and say so |
-| "Special emphasis" on learning from series of different scales, dimensions, lengths and degrees of missingness; autoregressive samplers | Not in any slot; the smile is a fixed grid | The largest content gap after returns. Slot 3 can show the set network for real chains as the answer for quotes; time series stay in the take-home track. Say so rather than imply coverage |
+| "Special emphasis" on learning from series of different scales, dimensions, lengths and degrees of missingness; autoregressive samplers | Not in any slot; the smile is a fixed grid | The largest content gap after returns. Slot 3 can show the set network for real chains as the answer for quotes; time series are not covered. Say so rather than imply coverage |
 | "Full posterior distributions in milliseconds" | 1.4 s for 1,000 draws | Say seconds |
 | Mis-specification diagnostics (learning outcome 2) | Slot 6 | Kept |
 | Read identifiability off the posterior (learning outcome 3) | Slots 4 and 5 | Kept |
@@ -192,10 +192,10 @@ The audience has read the proposal. Each promise the curriculum does not keep ne
 | --- | --- | --- |
 | Sat 24 Oct | G0′ passed: the rough bank's curve prior covers SPY's curve | Done |
 | Wed 28 Oct | G1: the full rough bank and its quality (S1) | Alex |
-| Fri 30 Oct | G2: SBC of the rough network on the full bank (S2); freeze of slot 4; S8-H (Heston on SPY) accepted | Alex; Stefan |
+| Fri 30 Oct | G2: SBC of the rough network on the full bank (S2); freeze of slot 4; S8-H (Heston on SPY) accepted | Alex; Stefan and Jerry |
 | Tue 3 Nov | G3: the audit on held-out smiles, with the corrected likelihood (S5) | Alex |
-| Wed 4 Nov | G4: the posterior predictive check on SPY (S8); freezes of slots 1, 2 and 3 | Francesco; Alex; Stefan |
-| Fri 6 Nov | Freezes of slots 5 and 6 | Francesco, Alex, Stefan |
+| Wed 4 Nov | G4: the posterior predictive check on SPY (S8); freezes of slots 1, 2 and 3 | Francesco; Alex; Stefan and Jerry |
+| Fri 6 Nov | Freezes of slots 5 and 6 | Francesco, Alex, Stefan, Jerry |
 | Mon 9 Nov | Full timed run-through | All |
 | Wed 11 Nov | Release tag; participant README | Francesco |
 

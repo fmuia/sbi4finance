@@ -1,6 +1,6 @@
 # Slot 4. A worked example in BayesFlow: Heston on the SPY smile
 
-Stefan · 20 minutes. A proposal for Stefan's review. Part of the [curriculum](00-overview.md).
+Stefan and Jerry · 20 minutes. A proposal for Stefan and Jerry's review. Part of the [curriculum](00-overview.md).
 
 ![Minute map of slot 4](images/slot-4.png)
 
@@ -24,8 +24,6 @@ Heston fits the role of the model with an exact answer:
 - its likelihood is exact, so its posterior can be computed by MCMC in minutes and compared with the network's;
 - it fits the SPY smile with a root-mean-square residual of about one noise unit (Lecture 11, Section 11.1), under a noise that is loose in the wings, so the example is real data, not a toy;
 - its fit has visible defects, which motivate slot 5.
-
-The returns notebook moves to the take-home track (overview, §6).
 
 ## The model and the task
 
@@ -115,8 +113,6 @@ The notebook `notebooks/tutorial_4_bayesflow_basics.py` (branch `feat/tutorial-s
 2. the reading of the four diagnostic plots;
 3. the "check before you trust" structure, with the exact posterior as the final check.
 
-The VOO notebook itself moves, edited, to the take-home track as `extras/returns_bayesflow_basics.py`.
-
 ## The handoff to slot 5
 
 | | Slot 4 | Slot 5 |
@@ -133,8 +129,7 @@ The VOO notebook itself moves, edited, to the take-home track as `extras/returns
 
 1. `slot4_heston_bayesflow.py`, cell by cell as above.
 2. Study S8-H: the Heston network's posterior and the exact chain on SPY, through `lab/studies/`, with an `ACCEPTED.json`; register its numbers in CLAIMS.md.
-3. Move the VOO notebook to `extras/`.
-4. Time the training cell on the presenter's laptop with the locked environment; set the number of live epochs to fit one minute.
+3. Time the training cell on the presenter's laptop with the locked environment; set the number of live epochs to fit one minute.
 
 ## Course lectures behind slot 4
 

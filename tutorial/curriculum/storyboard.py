@@ -22,7 +22,7 @@ OUT = TUTORIAL_DIR / "curriculum" / "images"
 COSTS = TUTORIAL_DIR / "assets" / "results" / "calibration" / "costs" / "costs.json"
 
 PRESENTER = {"F": "#087F8C", "A": "#D97732", "S": "#738095", "FA": "#7A4E9C"}
-NAMES = {"F": "Francesco", "A": "Alex", "S": "Stefan", "FA": "Francesco and Alex"}
+NAMES = {"F": "Francesco", "A": "Alex", "S": "Stefan and Jerry", "FA": "Francesco and Alex"}
 ALPHA = {"live": 1.0, "cached": 0.45, "slide": 1.0}
 TEXT = {"live": "white", "cached": "#1E1E1E", "slide": "#1E1E1E"}
 

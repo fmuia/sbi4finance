@@ -138,7 +138,7 @@ def _(mo):
     |:---|:---|:---|:---|
     | A smile on the design grid | a fixed vector of 63 prices (and, in slot 5, the forward-variance curve as context) | no summary network: the standardized prices enter as conditions | slots 4 and 5 |
     | A real option chain | a set of (log-moneyness, maturity, price, noise) tuples, of varying size and order | a set network (DeepSet, set transformer), invariant to the order of the quotes | the extension that removes the design grid |
-    | Daily returns | a series of 1,000 values | a time-series network: convolutions, then a recurrent or attention layer | the take-home returns notebook |
+    | Daily returns | a series of 1,000 values | a time-series network: convolutions, then a recurrent or attention layer | not in the tutorial |
     | Any data, for misspecification tests | any | a summary network trained with a distance term in its output space (Schmitt et al. 2024) | slot 6 |
 
     In BayesFlow each is one line, and the rest of the workflow does not change:
@@ -149,8 +149,7 @@ def _(mo):
     bf.networks.TimeSeriesNetwork(summary_dim=32)          # a return series
     ```
 
-    Where sufficient statistics exist, a learned summary rediscovers them: the take-home returns notebook
-    shows a time-series network recovering the log standard deviation of the returns unaided.
+    Where sufficient statistics exist, a learned summary rediscovers them.
 
     ## 3 · The configuration slot 4 trains
 
