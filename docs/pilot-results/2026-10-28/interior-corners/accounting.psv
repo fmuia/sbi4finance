@@ -1,0 +1,4 @@
+JobIDRaw|State|ExitCode|ElapsedRaw|AllocCPUS|AllocTRES
+8032768|COMPLETED|0:0|476|4|billing=4,cpu=4,mem=16G,node=1
+8032768.batch|COMPLETED|0:0|476|4|cpu=4,mem=16G,node=1
+8032768.extern|COMPLETED|0:0|476|4|billing=4,cpu=4,mem=16G,node=1

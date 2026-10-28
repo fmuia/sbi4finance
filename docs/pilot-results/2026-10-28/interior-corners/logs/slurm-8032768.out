@@ -1,0 +1,31 @@
+## SLURM PROLOG ###############################################################
+##    Job ID : 8032768
+##  Job Name : sbi4f-heston-interior
+##  Nodelist : node1805
+##      CPUs : 1
+##  Mem/Node : 16384 MB
+## Directory : /oscar/home/afengler
+##   Job Started : Tue Oct 27 08:32:39 PM EDT 2026
+###############################################################################
+/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-reference/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:234: UserWarning: Numba will use object mode to run DeterministicLikelihoodOp's perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+Multiprocess sampling (4 chains in 4 jobs)
+DEMetropolisZ: [parameters]
+/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-reference/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:234: UserWarning: Numba will use object mode to run DeterministicLikelihoodOp's perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-reference/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:234: UserWarning: Numba will use object mode to run DeterministicLikelihoodOp's perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-reference/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:234: UserWarning: Numba will use object mode to run DeterministicLikelihoodOp's perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-reference/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:234: UserWarning: Numba will use object mode to run DeterministicLikelihoodOp's perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+Sampling 4 chains for 4_000 tune and 8_000 draw iterations (16_000 + 32_000 draws total) took 362 seconds.
+INFO:matplotlib.font_manager:Failed to extract font properties from /usr/share/fonts/google-noto-emoji/NotoColorEmoji.ttf: Non-scalable fonts are not supported
+INFO:matplotlib.font_manager:generated new fontManager
+INFO:bayesflow:Using backend 'jax'
+INFO:bayesflow:Estimator restored from '/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/model.keras'.
+INFO:bayesflow:Estimator restored from '/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/.resume/epoch-000500-_3f420vs/last.keras'.
+/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-reference/lib/python3.12/site-packages/keras/src/backend/jax/core.py:401: UserWarning: Explicitly requested dtype float64 requested in asarray is not available, and will be truncated to dtype float32. To enable more dtypes, set the jax_enable_x64 configuration option or the JAX_ENABLE_X64 shell environment variable. See https://github.com/jax-ml/jax#current-gotchas for more.
+  return jnp.asarray(x, dtype=dtype)
+INFO:bayesflow:Sampling completed in 43.52 seconds.
+{"status": "completed_development_case", "mcmc_passed": true, "interior_passed": true, "elapsed_seconds": 469.66859504394233}

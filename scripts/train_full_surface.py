@@ -36,6 +36,9 @@ def run_contract(args, manifest):
                                         mean_steps=args.mean_steps)
     if min(args.epochs, args.batch_size, args.chunk_epochs) < 1 or args.seed < 0:
         raise ValueError("positive epochs/batch/chunk sizes and nonnegative seed required")
+    selection = getattr(args, "checkpoint_selection", "validation_loss")
+    if selection not in ("validation_loss", "final"):
+        raise ValueError("checkpoint selection must be validation_loss or final")
     sources = [Path(__file__), Path(recovery.__file__), *sorted((ROOT / "src/sbi4finance/calibration").glob("*.py"))]
     return {"format": "full_surface_training_run_v1", "network": config,
             "dataset": {"manifest_sha256": sha256(args.bank / "manifest.json"),
@@ -44,7 +47,8 @@ def run_contract(args, manifest):
             "runtime": recovery.runtime_versions(),
             "environment_sha256": {name: sha256(ROOT / name) for name in ("pyproject.toml", "pixi.lock")},
             "settings": {"epochs": args.epochs, "batch_size": args.batch_size,
-                         "chunk_epochs": args.chunk_epochs, "seed": args.seed, "fresh_quote_noise": True},
+                         "chunk_epochs": args.chunk_epochs, "seed": args.seed, "fresh_quote_noise": True,
+                         "checkpoint_selection": selection},
             "source_sha256": {str(p.relative_to(ROOT)): sha256(p) for p in sources}}
 
 
@@ -112,9 +116,15 @@ def run_training(args):
                  "resumed_at_epochs": resumed_at, "noise_rng": augment.rng.bit_generator.state,
                  "planned": {"epochs": args.epochs, "batch_size": args.batch_size,
                              "rows": len(train["observations"])}, "run_contract": contract}
-        recovery.commit_resume_state(args.out, state, workflow.estimator.save)
+        state = recovery.commit_resume_state(args.out, state, workflow.estimator.save)
         print(f"epoch {done}/{args.epochs}: best validation loss {best.best:.4f}", flush=True)
 
+    policy = contract["settings"]["checkpoint_selection"]
+    # Protected best/last files remain unchanged. Publication follows the
+    # policy bound before training, including when a completed run is restored.
+    if policy == "final":
+        shutil.copyfile(args.out / state["checkpoint_files"]["last"], args.out / "model.keras")
+    selected_epoch = args.epochs if policy == "final" else best.epoch
     workflow.load_estimator(args.out / "model.keras")
     restored = full_surface.build_workflow(task, **config)
     restored.load_estimator(args.out / "model.keras")
@@ -130,7 +140,13 @@ def run_training(args):
     report = {"format": "full_surface_training_v1", "task_fingerprint": manifest["task_fingerprint"],
               "task_id": task["task_id"], "network": config, "run_contract": contract,
               "checkpoint_sha256": sha256(args.out / "model.keras"), "history": history,
-              "selected_epoch": best.epoch, "selection": "minimum validation loss within this family",
+              "selected_epoch": selected_epoch,
+              "selection": ("predeclared final epoch" if policy == "final"
+                            else "minimum validation loss within this family"),
+              "checkpoint_selection": policy,
+              "validation_best_epoch": best.epoch, "validation_best_loss": best.best,
+              "validation_best_checkpoint_sha256": sha256(args.out / state["checkpoint_files"]["best"]),
+              "final_checkpoint_sha256": sha256(args.out / state["checkpoint_files"]["last"]),
               "flow_matching_integrate_kwargs": (dict(workflow.inference_network.integrate_kwargs)
                                                   if config["family"] == "flow_matching" else None),
               "resumed_at_epochs": resumed_at, "same_seed_reload_exact": True,
@@ -161,6 +177,8 @@ def main():
     parser.add_argument("--batch-size", type=int, default=256)
     parser.add_argument("--chunk-epochs", type=int, default=10)
     parser.add_argument("--seed", type=int, default=0)
+    parser.add_argument("--checkpoint-selection", choices=("validation_loss", "final"), default="validation_loss",
+                        help="Predeclare the published model; validation-best and final recovery files are both retained.")
     args = parser.parse_args()
     with recovery.training_lock(args.out):
         report = run_training(args)
