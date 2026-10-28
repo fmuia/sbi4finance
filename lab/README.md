@@ -61,7 +61,8 @@ copy is stale.
   exceptions and what every chain must record.
 - Every result records the task fingerprint, the bank manifest's SHA-256 and, where a network was used, the
   checkpoint's SHA-256. Banks, model payloads and full posterior draws stay on Oscar, with their identities in git.
-  How much of each run's raw output belongs in git is an open decision (see the repository README).
+  How much of each run's raw output belongs in git is open (decision D22 in
+  [the curriculum overview](../tutorial/curriculum/00-overview.md#10-decisions)).
 - `course/scripts/` runs in this environment: `pixi run python ../course/scripts/lecture08.py` redraws a lecture's
   figures (the last figure of `lecture09.py` also needs scikit-learn, which the environment lacks), and
   `pixi run course-check` checks the course plan's numbers against the stored results.

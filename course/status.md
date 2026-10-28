@@ -29,3 +29,17 @@
 | Quick check: Black–Scholes sector | Pooling across names (`bs_hierarchy.py`) | With 2 liquid and 6 illiquid names, the 90% intervals cover 88.0% under hierarchical Bayes and 59.5% under the proxy (Lecture 8, Section 8.10) | Quick check | – | – |
 | Front-month case | SPY's front three months used as a thin market, with an 80-chain validation ([`desk_case/`](https://github.com/fmuia/sbi4finance/tree/574b940087cd66a7540c5aa080f64e8b33010314/tutorial_final/checks/desk_case), archived) | – | Withdrawn: SPY's tight noise, and every method given SPY's curve to one year from the full chain (Lecture 16, Section 16.3). Kept for the record and its costs | – | – |
 | 15-quote and three-times-noise cases | Rough Bergomi on SPY when the quotes say less ([`rough_spy_is_cases.py`](https://github.com/fmuia/sbi4finance/blob/574b940087cd66a7540c5aa080f64e8b33010314/tutorial_final/checks/rough_spy_is_cases.py), archived) | – | Withdrawn: every method given SPY's curve from the full chain (Lecture 16, Section 16.3) | – | – |
+
+## The networks and banks in training
+
+28 October 2026. The full-surface work of [PR #48](https://github.com/fmuia/sbi4finance/pull/48) trains the networks the
+studies above will run on; its detailed numerical status is
+[`docs/collaborator-numerical-status.md`](https://github.com/fmuia/sbi4finance/blob/feat/full-surface-calibration/docs/collaborator-numerical-status.md)
+on that branch.
+
+| Piece | State |
+| --- | --- |
+| Heston network | A BayesFlow 2.1 candidate (100,000 training smiles, epoch 500) passed its frozen calibration check on 2,000 unused smiles, and 12 of 12 variance-product checks. The notebooks load the BayesFlow 2.0 network trained on 50,000 smiles until it is exported. |
+| Rough Bergomi, known curve ($H$, $\eta$, $\rho$ given the 7-level forward-variance curve) | The 20,000-smile bank is complete and the first networks are trained. Comparisons with reference posteriors still disagree on some smiles, partly from the reference emulator's error and the time grid. The next step is a 50,000-smile bank and refits. |
+| Rough Bergomi, inferred curve (six unknowns) | 9,925 of 20,000 training smiles generated; paused while the known-curve checks run. |
+| Sparse option chains (EWG) | Deferred until after the release ([`lab/plans/SPARSE-QUOTE-CASE-PLAN.md`](../lab/plans/SPARSE-QUOTE-CASE-PLAN.md)). |

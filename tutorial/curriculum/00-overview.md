@@ -103,6 +103,10 @@ flowchart LR
   S4 -.->|"Heston's variance swaps below SPY's"| S6
 ```
 
+**State of the notebooks on 28 October.** The notebooks of slots 1 to 5 run headless and offline in the tutorial's
+environment. Slot 4 loads the BayesFlow 2.0 Heston network until the 2.1 candidate is exported (decision D20). Slot 5
+shows the pilot's results, with a "pending" card wherever the full study is missing. Slot 6 has no notebook yet.
+
 ## 4. Rules for every slot
 
 1. **One owner per concept.** The other slots refer back in one sentence (§5).
@@ -142,6 +146,8 @@ The proposal calibrates from returns and propagates into value-at-risk. The afte
 | `extras/betas_across_stocks.py` | Cross-sectional shrinkage of betas | Branch `feat/tutorial-slot1-intro` (option D) |
 
 Slot 1's last slide names the track in one line.
+
+Decision D21 (28 October): the track is not part of the release.
 
 ## 7. Where the consultancy message lands
 
@@ -211,6 +217,11 @@ The audience has read the proposal. Each promise the curriculum does not keep ne
 | D15 | Slot 6's sensitivity-aware network and summary-space detector | Build the first; the second if time allows | Fri 30 Oct |
 | D17 | Student and solved versions of the notebooks | Solved versions on stage; student versions with the exercises blanked, generated from the solved ones | Fri 30 Oct |
 | D18 | Jerry Huang's role | To agree with Jerry | Fri 30 Oct |
+| D19 | Slot 5's rough-Bergomi task: the known-curve task (three unknowns) or the inferred-curve task (six) | Open: the numerical results decide; the slot 5 notebook follows the known-curve pilot until then | Fri 6 Nov |
+| D20 | BayesFlow version of the shipped networks | Agreed on 28 Oct: every network shipped to participants moves to BayesFlow 2.1 (the Heston candidate once it is packaged, the rough-Bergomi network, slot 2's toy network retrained), and the tutorial's pin moves with them | Wed 11 Nov |
+| D21 | The take-home returns track (SVJ, the multifractal model, GBM from returns, crash-day priors, betas across stocks) | Agreed on 28 Oct: not part of the release | Done |
+| D22 | How much run evidence lives in git | Open: compact records only (README, summary JSON, key figures), or the raw per-case outputs and logs too; the pilot results of the full-surface work are about 41 MB | Before that work merges |
+| D23 | What participants receive | Agreed in principle on 28 Oct: a separate small repository holding `tutorial/` without the curriculum, created at the release. Six links need a public target first: the "Evidence and code" footers of the five notebooks point to the curriculum and the course, and the participants' README points to this repository, which is private. Either the course is published with the release, or the links go | Wed 11 Nov |
 
 ## 11. Sources
 
