@@ -12,11 +12,13 @@ The learning path has three stages. One training surface contains 63 simulated o
 | Rough Bergomi with a known variance curve | A complete 20,000-surface training bank and first trained posterior/pricing networks. Conditional reference comparisons still disagree in some cases. Independent checks found errors in the pricing network and sensitivity to the simulation grid; their full contribution to the posterior discrepancy remains unresolved. |
 | Rough Bergomi with an inferred variance curve | 9,925 training surfaces are preserved toward the initial 20,000 target. The remaining training data and holdouts, trained estimators and validation are unfinished. |
 
-The known-curve bank can grow without repeating existing simulations. The next proposed training milestone is 50,000 surfaces. At the current numerical settings, that addition is estimated at about 89 CPU-hours before headroom. No bank expansion is currently running. The 20,000-surface bank is an initial baseline, not a demonstrated final data requirement.
+The known-curve bank can grow without repeating existing simulations. The next training milestone is 50,000 surfaces, estimated at about 89 additional CPU-hours before headroom. Its append-only generation phase and completion of the original joint bank are now being prepared, with identity/seed/preservation checks before submission. They have separate bounded allocations; job IDs will be recorded once submission is confirmed. The 20,000-surface bank is an initial baseline, not a demonstrated final data requirement.
 
 ## Interesting posterior shapes
 
-Existing PyMC samples already show asymmetric posteriors near parameter bounds and strongly correlated parameters with modest curvature. Some Heston examples remain clearly non-Gaussian after the usual bounded-parameter transform. These demonstrations are mainly prior-boundary effects; we have not established strong interior curvature, dramatic banana shapes or multiple modes. In particular, rough eta's upper bound of 3.5 is our chosen prior limit, not a theoretical model limit. The nearly-flat joint-curve example is a natural future test of weak identification.
+The main showcase is now [complete corner plots from interior examples](interior-corner-plots.md), rather than selected projections or boundary cases. The complete three-parameter known-curve rough plot is available; its central 99% intervals are comfortably inside the prior bounds. A new four-parameter Heston reference at a predeclared interior truth is in progress as job 8032768; its complete plot is pending the reference checks. We will show the actual geometry even if it is nearly Gaussian.
+
+The older examples below demonstrate mainly prior-boundary skew, not strong interior curvature or multiple modes. In particular, rough eta's upper bound of 3.5 is our chosen prior limit, not a theoretical model limit. They are retained as supplementary diagnostics. The nearly-flat joint-curve example is a natural future test of weak identification.
 
 - [Heston: skewed marginals, Gaussian comparisons and a mildly curved ridge](pilot-results/2026-10-28/heston-posterior-geometry/heston-posterior-geometry.png).
 - [Rough Bergomi: the joint posterior near the eta boundary](pilot-results/2026-10-28/rough-posterior-geometry/rough-case2-reference-corner.png).
@@ -34,5 +36,7 @@ The rough figures use an approximate pricing-emulator reference. They illustrate
 ## What is on GitHub
 
 The shared implementation, compact numerical evidence, these figures and the updated plans are pushed in **[draft PR 48](https://github.com/fmuia/sbi4finance/pull/48)**. These changes are **not merged into main**. The large simulation banks, model payloads and full posterior draws remain on Oscar; GitHub records their identities and how they were produced. Notebook integration of the new backbones is not yet delivered.
+
+The [artifact handover](full-surface-artifact-handover.md) now gives runnable commands for a small offline Heston replay cache and optional live loading of the exported final-500 model. The initial cache is a previously inspected integration example, distinct from the new interior showcase. It requires neither the full bank nor a loaded model; current notebooks still use their historical artifacts until explicitly connected.
 
 For details, see the [latest numerical results](backbone-validation-2026-10-28.md), [current work order](tutorial-backbone-work-order.md) and [central experiment plan](../tutorial_final/NUMERICAL-EXPERIMENT-PLAN.md). Passing the Heston checks is a useful milestone, not complete scientific acceptance of every route or the finished tutorial.
