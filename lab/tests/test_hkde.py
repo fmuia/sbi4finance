@@ -61,6 +61,30 @@ class HKDETests(unittest.TestCase):
         assert_allclose(hkde.european_price(100, strikes, 1, 0, values, .04),
                         np.maximum(100-strikes, 0))
 
+    def test_small_vol_of_vol_is_black_plus_the_first_order_term(self):
+        # To first order in xi, log phi adds rho*xi*m*(s**3-s*s)/2 at s = i*u to Black's with the
+        # mean variance w, where m = int_0^T E[v_t](1-exp(-kappa(T-t)))/kappa dt, so a price adds
+        # rho*xi*m*d2C/(dlogF dw) = -rho*xi*m*D*F*n(d1)*d2/(2w). Both need a complex log1p that is
+        # accurate for tiny g: NumPy's rounds 1+z, which put these xi=1e-8 prices 4e-3 to 5e-3 too high.
+        kappa, theta, rho, v0, maturity, discount = 2.0, .04, -.5, .09, .5, .97
+        strikes = np.array([.8, .9, 1, 1.1, 1.25])
+        decay = np.exp(-kappa*maturity)
+        w = theta*maturity + (v0-theta)*(1-decay)/kappa
+        m = (theta*(maturity-(1-decay)/kappa) + (v0-theta)*((1-decay)/kappa-maturity*decay))/kappa
+        d1 = (np.log(1/strikes) + w/2)/np.sqrt(w)
+        vanna = -discount*np.exp(-d1*d1/2)/np.sqrt(2*np.pi)*(d1-np.sqrt(w))/(2*w)
+        black = gbm.european_price(1, strikes, discount, w)
+        for xi in (1e-8, 1e-6, 1e-4):
+            values = model(kappa=kappa, theta=theta, vol_of_vol=xi, rho=rho, jump_intensity=0)
+            # The xi**2 term is at most .012*xi**2 here, the quadrature error 3e-12.
+            assert_allclose(hkde.european_price(1, strikes, discount, maturity, values, v0),
+                            black + rho*xi*m*vanna, rtol=0, atol=1e-11 + .02*xi*xi)
+        u = np.array([.3, 2-.25j, 5-.5j, 9-1j])  # across the strip -1 <= Im(u) <= 0
+        s = 1j*u
+        values = model(kappa=kappa, theta=theta, vol_of_vol=1e-8, rho=rho, jump_intensity=0)
+        assert_allclose(hkde.characteristic_function(u, maturity, values, v0),
+                        np.exp((s*s-s)*w/2 + rho*1e-8*m*(s**3-s*s)/2), rtol=1e-13)
+
     def test_explicit_noise_identity_zero_jump_limit_and_restart(self):
         values = model(drift=.03)
         dt = [.1, .2, .3]

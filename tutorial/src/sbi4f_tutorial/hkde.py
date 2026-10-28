@@ -96,7 +96,8 @@ def characteristic_function(u, maturity, parameters, initial_variance):
         a = -(frequency**2 + iu)/(b+d)  # (b-d)/xi**2 without cancellation
         g = xi*xi*a/(b+d)
         decay = np.exp(-d*time)
-        log_ratio = np.log1p(-g*decay) - np.log1p(-g)
+        # g is O(xi**2), and the division below magnifies any error in log1p.
+        log_ratio = _log1p(-g*decay) - _log1p(-g)
         exponent = (kappa*theta*(a*time - 2*log_ratio/(xi*xi))
                     + v0*a*(-np.expm1(-d*time))/(1-g*decay))
     if lam > 0:
@@ -158,3 +159,14 @@ def european_price(forward, strike, discount, maturity, parameters, initial_vari
             or np.any(price > upper+tolerance)):
         raise ValueError("Fourier price violates bounds; refine controls or reject this domain")
     return price
+
+
+def _log1p(z):
+    """log(1+z) for complex z, accurate also for tiny |z|.
+
+    NumPy's complex log1p takes the modulus of the rounded 1+z, which loses
+    the real part's precision as |z| -> 0. Here Re log(1+z) is
+    log1p(x*(2+x) + y*y)/2, an exact identity; the imaginary part is NumPy's.
+    """
+    x, y = z.real, z.imag
+    return 0.5*np.log1p(x*(2+x) + y*y) + 1j*np.arctan2(y, 1+x)
