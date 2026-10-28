@@ -2,7 +2,7 @@
 
 [Course index](README.md)
 
-24 October 2026. Every result on the full rough-Bergomi bank is pending: runs R0 to R10 of [`tutorial_final/CLUSTER-RUNS.md`](../../tutorial_final/CLUSTER-RUNS.md) produce them, for about 930 CPU-hours and two GPU jobs. "Pilot" is the bank of 2,200 rough-Bergomi surfaces and a network trained on 1,600 of them. Claim IDs and their status are those of [`tutorial_final/CLAIMS.md`](../../tutorial_final/CLAIMS.md). A quick check is a script in `tutorial_final/checks/`, not an accepted study, and is not registered there.
+24 October 2026. Every result on the full rough-Bergomi bank is pending: runs R0 to R10 of [`lab/plans/CLUSTER-RUNS.md`](../lab/plans/CLUSTER-RUNS.md) produce them, for about 930 CPU-hours and two GPU jobs. "Pilot" is the bank of 2,200 rough-Bergomi surfaces and a network trained on 1,600 of them. Claim IDs and their status are those of [`tutorial/CLAIMS.md`](../tutorial/CLAIMS.md). A quick check is a script in `lab/checks/`, not an accepted study, and is not registered there.
 
 | Item | Question | Result so far | Status | Run | Claims |
 | --- | --- | --- | --- | --- | --- |
@@ -27,5 +27,5 @@
 | Quick check: local identification | The Laplace posterior with $\xi_0$ known or uncertain, on three quote sets (`rough_checks.py`) | Contraction of $\rho$ on 15 quotes: 0.61 to 0.65 with $\xi_0$ known, 0.12 to 0.16 at 10% per level (Lecture 13, Section 13.11) | Quick check | – | – |
 | Quick check: the long end | Flat extrapolation beyond one year against a Laplace posterior with a prior beyond SPY's LEAPs (`long_end/`) | For the three products that depend mostly on the curve beyond 2.25 years, flat gives 0.32, 0.30 and 0 of the posterior's 90% range (Lecture 15, Section 15.6) | Quick check | – | – |
 | Quick check: Black–Scholes sector | Pooling across names (`bs_hierarchy.py`) | With 2 liquid and 6 illiquid names, the 90% intervals cover 88.0% under hierarchical Bayes and 59.5% under the proxy (Lecture 8, Section 8.10) | Quick check | – | – |
-| Front-month case | SPY's front three months used as a thin market, with an 80-chain validation (`desk_case/`) | – | Withdrawn: SPY's tight noise, and every method given SPY's curve to one year from the full chain (Lecture 16, Section 16.3). Kept for the record and its costs | – | – |
-| 15-quote and three-times-noise cases | Rough Bergomi on SPY when the quotes say less (`rough_spy_is_cases.py`) | – | Withdrawn: every method given SPY's curve from the full chain (Lecture 16, Section 16.3) | – | – |
+| Front-month case | SPY's front three months used as a thin market, with an 80-chain validation ([`desk_case/`](https://github.com/fmuia/sbi4finance/tree/574b940087cd66a7540c5aa080f64e8b33010314/tutorial_final/checks/desk_case), archived) | – | Withdrawn: SPY's tight noise, and every method given SPY's curve to one year from the full chain (Lecture 16, Section 16.3). Kept for the record and its costs | – | – |
+| 15-quote and three-times-noise cases | Rough Bergomi on SPY when the quotes say less ([`rough_spy_is_cases.py`](https://github.com/fmuia/sbi4finance/blob/574b940087cd66a7540c5aa080f64e8b33010314/tutorial_final/checks/rough_spy_is_cases.py), archived) | – | Withdrawn: every method given SPY's curve from the full chain (Lecture 16, Section 16.3) | – | – |

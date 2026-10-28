@@ -6,12 +6,12 @@ This folder is a course in sixteen lectures. It builds, from the basics, everyth
 the advanced example of the ICAIF '26 tutorial: the calibration of a rough volatility model to option quotes, with
 a posterior, and the propagation of that posterior into the prices of products the quotes do not determine.
 
-The course is a superset of the tutorial and of the [calibration design document](../design/calibration-design-document.md).
+The course is a superset of the tutorial and of the [calibration design document](design-document/calibration-design-document.md).
 [The plan](v2-plan.md) says what the course argues and why, and which options would strengthen it;
 [practice-sources.md](practice-sources.md) lists the practices the course may describe, with their sources;
 [status.md](status.md) gives the state of every study.
 
-The proposed [numerical experiment plan](../../tutorial_final/NUMERICAL-EXPERIMENT-PLAN.md) covers the next data, training and reference campaign. The [tutorial review](../../tutorial_final/TUTORIAL-REVIEW.md) assesses how that evidence supports the live learning path.
+The proposed [numerical experiment plan](../lab/plans/NUMERICAL-EXPERIMENT-PLAN.md) covers the next data, training and reference campaign. The [tutorial review](../tutorial/curriculum/TUTORIAL-REVIEW.md) assesses how that evidence supports the live learning path.
 
 ## The argument of the course
 
@@ -36,7 +36,7 @@ what the pending runs decide.
 Today quick checks show claim 1 on SPY and claim 2 beyond SPY's last quote, the latter with a Laplace
 approximation and a size set by the prior. A simulated sector shows claim 2 for pooling, and pilot smiles show part of
 claim 4. The thin chain, the network's own checks, and the network as a proposal where a classical fit fails, wait
-for the runs of [`tutorial_final/CLUSTER-RUNS.md`](../../tutorial_final/CLUSTER-RUNS.md).
+for the runs of [`lab/plans/CLUSTER-RUNS.md`](../lab/plans/CLUSTER-RUNS.md).
 
 ## Who the course is for
 
@@ -84,16 +84,16 @@ For a worked explanation of the neural-pricer alternative, see [forward pricing 
 - **Forward units.** From Lecture 2 on, option prices are divided by the discount factor and by the forward, so
   that the forward is 1 and a price is a fraction of it.
 - **Notation.** The symbols follow the design document. Each lecture defines a symbol when it first appears, and
-  the [design document's symbols table](../design/calibration-design-document.md#symbols) collects them.
+  the [design document's symbols table](design-document/calibration-design-document.md#symbols) collects them.
 - **Data.** The daily returns of VOO from 3 January 2020 to 4 September 2026
-  (`data/SPMO_VOO_2020-01-01_2026-09-04.csv`); SPY's surface of 21 October 2026 on the design grid
-  (`tutorial_final/results/calibration/spy/surface.json`); four thin chains of 22 and 23 October 2026, derived data
-  only (`tutorial_final/checks/thin_chains/`). Raw quote files are not committed; `data/SOURCES.md` gives their
+  (`course/scripts/data/SPMO_VOO_2020-01-01_2026-09-04.csv`); SPY's surface of 21 October 2026 on the design grid
+  (`tutorial/assets/results/calibration/spy/surface.json`); four thin chains of 22 and 23 October 2026, derived data
+  only (`lab/checks/thin_chains/`). Raw quote files are not committed; `lab/data/SOURCES.md` gives their
   URLs.
 - **Numbers that need further runs.** A number written as ⟨Sn⟩ is left blank on purpose. Study Sn produces it;
-  [`tutorial_final/CLUSTER-RUNS.md`](../../tutorial_final/CLUSTER-RUNS.md) says how.
-- **Figures.** Every figure is drawn by a script in `scripts/course/` (named by an earlier numbering of the lectures) or by
-  a check in `tutorial_final/checks/`, from closed-form formulas, simulations with fixed seeds, or the data above.
+  [`lab/plans/CLUSTER-RUNS.md`](../lab/plans/CLUSTER-RUNS.md) says how.
+- **Figures.** Every figure is drawn by a script in `course/scripts/` (named by an earlier numbering of the lectures) or by
+  a check in `lab/checks/`, from closed-form formulas, simulations with fixed seeds, or the data above.
   Each figure has a paragraph that says how to read it.
 
 ## Where each section of the design document is covered
@@ -117,7 +117,7 @@ For a worked explanation of the neural-pricer alternative, see [forward pricing 
 | Validation plan | 9, 12, 15, 16 |
 | From posterior to prices | 8 (method), 15 and 16 (results) |
 | Planned feasibility study (S1–S9) | [status.md](status.md), with each study cited where its subject is taught |
-| Tutorial narrative; risks and open decisions | 16, `tutorial_final/curriculum/` |
+| Tutorial narrative; risks and open decisions | 16, `tutorial/curriculum/` |
 | Appendix A. Calibration practice and the rules | 6 |
 | Appendix B. Black–Scholes, implied volatility, variance swap | 2, 4, 5 |
 | Appendix C. Heston and the Fourier pricer | 10 |

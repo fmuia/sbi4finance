@@ -4,7 +4,7 @@
 
 This plan says what version 2 of the course argues, which example carries the argument, what was wrong in earlier
 runs, and what is still to run. The runs themselves, with commands and costs, are in
-[`tutorial_final/CLUSTER-RUNS.md`](../../tutorial_final/CLUSTER-RUNS.md). The practices the course may describe,
+[`lab/plans/CLUSTER-RUNS.md`](../lab/plans/CLUSTER-RUNS.md). The practices the course may describe,
 with their sources, are in [practice-sources.md](practice-sources.md). The course stays a superset of the ICAIF '26
 tutorial.
 
@@ -36,7 +36,7 @@ rest on the seven conventions below. Each convention was checked, and each
 check is reproducible from a committed file.
 
 1. **Quotes.** Cboe delayed quotes at the close, out of the money, with a bid below the ask. Raw files are not
-   committed; `data/SOURCES.md` gives their URLs.
+   committed; `lab/data/SOURCES.md` gives their URLs.
 2. **Clock.** Maturities are NYSE trading days over 252, the model's clock. Counting weekdays instead would make
    EWG's April expiry 126 days instead of 120. SPY's surface of 21 October still counts weekdays, which overstates
    its maturities by about 5% at three to six months and 4% at one year.
@@ -65,7 +65,7 @@ check is reproducible from a committed file.
 The model is rough Bergomi on the hybrid scheme's grids: 8 steps a day to 63 days and 2 a day beyond. On 12
 mini-pilot surfaces, a grid twice as fine moves a quote by a median of 0.02 of SPY's design noise sd. The 90th
 percentile is 0.15 and the largest move 1.0, on a surface with η = 3.4 and ρ = −0.96
-(`tutorial_final/checks/grid_bias_minipilot/`). EWG's noise is two to fifteen times larger. Study S1-G measures
+(`lab/checks/grid_bias_minipilot/`). EWG's noise is two to fifteen times larger. Study S1-G measures
 the bias on the full bank.
 
 ## 2. The argument and its evidence
@@ -83,7 +83,7 @@ the posterior's, on a log scale; the grey band runs from 0.8 to 1.25.
 - *Right-hand column:* the range with the curve held flat beyond one year, and only $(H, \eta, \rho)$ uncertain, over
   the posterior's.
 
-The numbers are in `images/v2-evidence-numbers.json`, drawn by `scripts/course/realignment.py`.
+The numbers are in `images/v2-evidence-numbers.json`, drawn by `course/scripts/realignment.py`.
 
 - **Heston on SPY** with 63, 36 or 15 quotes, κ fixed or free: the ratios lie between 0.92 and 1.21.
 - **Rough Bergomi on SPY's 63 quotes**, with the curve read from SPY's own strip and the same fixed-seed pricer for
@@ -102,14 +102,14 @@ to three years, a five-year put and a three-year variance swap), it explains 59%
 and flat extrapolation gives 0.32, 0.30 and 0 of the posterior's 90% range. For the other two products, an
 autocallable and a cliquet, the ratio is 0.60 and 0.67, and the gap is not the long end. The posterior's range depends on the width
 of the random-walk prior beyond the last quote. The forward start's 90% range goes from 19.4% to 36.8% of its price
-as the prior's sd goes from 0.1 to 0.3 per square-root year (`tutorial_final/checks/long_end/`). The prior must
+as the prior's sd goes from 0.1 to 0.3 per square-root year (`lab/checks/long_end/`). The prior must
 therefore be stated and tested. Study S10 tests it with two other laws for the unquoted level (Section 5).
 
 ### 2.3 Pooling helps thin names
 
 ![Pooling in a simulated Black–Scholes sector: one sector's intervals, coverage against width, and the error of the mark.](images/v2-pooling.png)
 
-*Figure 2.* A simulated Black–Scholes sector (`tutorial_final/checks/bs_hierarchy.py`). The liquid names quote the
+*Figure 2.* A simulated Black–Scholes sector (`lab/checks/bs_hierarchy.py`). The liquid names quote the
 full grid, and the illiquid names one at-the-money option with 3 volatility points of noise. Left: the first
 simulated sector of 2 liquid and 6 illiquid names, each method's 90% interval per name, and the truth. Centre:
 coverage against mean width over all sectors. Right: the error of each method's mark for a six-month call that no
@@ -132,10 +132,10 @@ thin chains is option D of Section 2.6.
 | Route to one rough-Bergomi posterior | Cost | Source |
 | --- | --- | --- |
 | Random-walk Metropolis on the Monte Carlo likelihood | at least 16.9 CPU-hours (extrapolated) | S9 |
-| Importance sampling from a Gauss–Newton proposal, SPY's 63 quotes | 1,024 evaluations at 5.0 CPU-seconds: about 85 CPU-minutes, on a pricer with common random numbers; more with a seed per proposal, as the unbiased likelihood needs | S9, `checks/rough_spy_is.py` |
+| Importance sampling from a Gauss–Newton proposal, SPY's 63 quotes | 1,024 evaluations at 5.0 CPU-seconds: about 85 CPU-minutes, on a pricer with common random numbers; more with a seed per proposal, as the unbiased likelihood needs | S9, `lab/checks/rough_spy_is.py` |
 | The network, 1,000 draws | 3.6 CPU-seconds (1.4 seconds on the clock) | S9 |
 | The network's audit on SPY's 63 quotes | 512 evaluations at 5.0 CPU-seconds, each after a pilot pricing at a quarter of the paths: about 53 CPU-minutes | S9; measured by S5 |
-| The network's audit on EWG's quotes | 512 evaluations at about 0.4 CPU-seconds, with the same pilot: about 4 CPU-minutes | `checks/thin_chains/timing.json` |
+| The network's audit on EWG's quotes | 512 evaluations at about 0.4 CPU-seconds, with the same pilot: about 4 CPU-minutes | `lab/checks/thin_chains/timing.json` |
 
 A validation needs many posteriors. Simulation-based calibration on 2,000 smiles costs about 2 CPU-hours with the
 network, after a training bank of about 370 CPU-hours. At 85 CPU-minutes a smile it would cost about 2,800
@@ -162,7 +162,7 @@ Lecture 16, Section 16.8 gives the rule for reading each outcome of S10, S10-E a
 | --- | --- | --- | --- |
 | A. Run R0 to R10 as planned | The network's calibration (S2, S2-T), the audit's reliability (S5), SPY's posterior (S8), and the thin-chain evidence (S10, S10-E, S11) | About 930 CPU-hours and two GPU jobs; code ready and reviewed | Necessary: the weekend's runs |
 | B. A Gauss–Newton-proposal arm in S10 | Whether a classical fit can replace the network as the proposal on a thin chain. If it can, claim 3b of Lecture 16, Section 16.8 is dropped, and simulation-based inference rests on validation | About a day of code and a test; 20 to 30 CPU-hours on 200 of S10's chains | Do next: the cheapest way to make the claim on proposals specific |
-| C. The long end as an accepted study | The long-end result of Lecture 15, Section 15.6 with SPY's audited posterior (S8) in place of the Laplace approximation, with the prior's sd from 0.1 to 0.3 | A few CPU-hours after R6; small changes to `checks/long_end/` | Do after R6: it turns a quick check into a result |
+| C. The long end as an accepted study | The long-end result of Lecture 15, Section 15.6 with SPY's audited posterior (S8) in place of the Laplace approximation, with the prior's sd from 0.1 to 0.3 | A few CPU-hours after R6; small changes to `lab/checks/long_end/` | Do after R6: it turns a quick check into a result |
 | D. Pooling on real thin chains | Pooling on market data: EWI and EWQ, which say almost nothing alone, borrowing from EWG | Two more thin networks (EWI's and EWQ's layouts, two GPU jobs), their audited posteriors (a few CPU-hours), and a hierarchical step on $(H, \eta, \rho)$ by reweighting each name's draws; two to three days of work | Only if time allows before the freeze of slot 5 on 6 November |
 | E. A second liquid smile, SPX | That the agreement on a liquid smile is not specific to SPY | A new chain, and a network trained on its layout | Not needed for the argument; after the tutorial |
 
@@ -186,7 +186,7 @@ Their dividends must be checked against rule 3 of Section 3 before they are used
 
 *Figure 3.* For each expiry to one year: the median bid–ask width of the two-sided out-of-the-money quotes with
 |log-moneyness| at most 0.1, in volatility points. The marker area is the number of such quotes. The dashed line is
-SPY's design noise at the money read as a bid–ask width. The data are `tutorial_final/checks/thin_chains/`.
+SPY's design noise at the money read as a bid–ask width. The data are `lab/checks/thin_chains/`.
 
 | Chain | Expiries to one year (calendar days) | Two-sided quotes near the money | Median width (vol points) |
 | --- | --- | --- | --- |
@@ -210,7 +210,7 @@ earnings and dividends that rough Bergomi ignores.
 
 **EWG's layout.** The design contracts EWG quotes are 27: seven each at 21, 42 and 63 days, and six at 126 days.
 They are read from the expiries at 21, 40, 58 and 120 trading days. Their noise is 2.0 to 15.0 times SPY's design
-noise, with a median of 3.8 (`configs/thin/ewg_layout.json`). The thin network S2-T is trained on this layout and
+noise, with a median of 3.8 (`lab/configs/thin/ewg_layout.json`). The thin network S2-T is trained on this layout and
 infers the curve. The audit then uses EWG's 61 cleaned quotes at their own strikes and maturities.
 
 ## 4. What was wrong, and what changed
@@ -285,7 +285,7 @@ limits of the checks close the thin-chain lecture. A single-stock lecture is lef
 | Model | Rough Bergomi on the bank's grids; bias measured (S1-G) | Refining the grid doubles every cost; all methods share the pricer |
 | Baselines | Gauss–Newton with flat or power-law extension; H fixed at 0.10 | Stated as the course's own |
 | Liquid smile | SPY for the tutorial; SPX later | The data in hand |
-| Raw quotes | Not committed; URLs in `data/SOURCES.md` | Francesco's instruction |
+| Raw quotes | Not committed; URLs in `lab/data/SOURCES.md` | Francesco's instruction |
 | The earlier status lecture | A status page and the curriculum | It was a status report |
 
 ## 8. Timeline
@@ -312,9 +312,9 @@ limits of the checks close the thin-chain lecture. A single-stock lecture is lef
 
 ## Sources
 
-- The earlier fourteen lectures, kept outside the repository, and [the design document](../design/calibration-design-document.md).
-- Quick checks: [`tutorial_final/checks/README.md`](../../tutorial_final/checks/README.md).
+- The earlier fourteen lectures, kept outside the repository, and [the design document](design-document/calibration-design-document.md).
+- Quick checks: [`lab/checks/README.md`](../lab/checks/README.md).
 - Practices and regulation: [practice-sources.md](practice-sources.md).
-- Chain data: `data/SOURCES.md`; NYSE holidays: the exchange's 2026–2028 calendar, cited in
-  `src/sbi4finance/calibration/chain.py`.
-- `scripts/course/check_v2_plan.py` checks every number of this plan against the stored files.
+- Chain data: `lab/data/SOURCES.md`; NYSE holidays: the exchange's 2026–2028 calendar, cited in
+  `lab/src/sbi4finance/calibration/chain.py`.
+- `course/scripts/check_v2_plan.py` checks every number of this plan against the stored files.

@@ -4,7 +4,7 @@
 
 **What this lecture is for.** This lecture applies the method to a thin chain: an option chain whose quotes are few and wide, so that they leave the inputs of a product open but still say something about them. It explains why such a chain is the example on which Bayes and simulation-based inference both matter, and why the course chose EWG, the iShares MSCI Germany ETF, among four candidates. It states the conventions the procedure needs on a thin chain, with their measured effects, and the thin network that infers the forward-variance curve instead of reading it. It explains why a first attempt, SPY's front three months, is withdrawn, and what it still shows about model error. It then sets out the two studies that test the method on thin chains, coverage on simulated chains and EWG's own posterior, whose results are pending. It ends with what the checks do not establish, and with the argument of the course claim by claim: its evidence, and what the pending runs decide.
 
-**Where it sits in the course.** Lecture 15 showed that on a liquid smile the posterior and the Gauss–Newton answer agree, as the Bernstein–von Mises theorem predicts, and that they part beyond the last quote, where the prior decides. This lecture takes the other case in which they can part: a chain whose quotes do not determine what the product needs. It uses the model of Lecture 13, the costs of Lecture 14 and the checks of Lectures 9, 12 and 15. It is the last lecture of the course. Numbers that need the full rough-Bergomi bank are written ⟨Sn⟩, and the runs that fill them are listed in `tutorial_final/CLUSTER-RUNS.md`.
+**Where it sits in the course.** Lecture 15 showed that on a liquid smile the posterior and the Gauss–Newton answer agree, as the Bernstein–von Mises theorem predicts, and that they part beyond the last quote, where the prior decides. This lecture takes the other case in which they can part: a chain whose quotes do not determine what the product needs. It uses the model of Lecture 13, the costs of Lecture 14 and the checks of Lectures 9, 12 and 15. It is the last lecture of the course. Numbers that need the full rough-Bergomi bank are written ⟨Sn⟩, and the runs that fill them are listed in `lab/plans/CLUSTER-RUNS.md`.
 
 **Its part in the argument.** This lecture tests the case on which the argument of the course most depends, a thin chain (Lecture 6, Section 6.8). It also closes the argument: Section 16.8 gathers the evidence for every claim, and says what the pending runs decide.
 
@@ -14,7 +14,7 @@ On a liquid smile the posterior returns the classical answer (Lecture 15, Sectio
 
 ![Median bid–ask width near the money per expiry, for the four candidate chains.](images/v2-thin-candidates.png)
 
-*Figure 16.1.* How to read the figure: for each expiry to one year, the median bid–ask width of the two-sided out-of-the-money quotes with $|\text{log-moneyness}|$ at most 0.1, in volatility points, on a log scale. The marker area is the number of such quotes. The dashed line is SPY's design noise at the money read as a bid–ask width, 0.6 points. The data are in `tutorial_final/checks/thin_chains/`. EWG's widths, 2.3 to 4.0 points, lie below EWI's and EWQ's at every expiry; FEZ is as tight in its monthly expiries and much wider in the others.
+*Figure 16.1.* How to read the figure: for each expiry to one year, the median bid–ask width of the two-sided out-of-the-money quotes with $|\text{log-moneyness}|$ at most 0.1, in volatility points, on a log scale. The marker area is the number of such quotes. The dashed line is SPY's design noise at the money read as a bid–ask width, 0.6 points. The data are in `lab/checks/thin_chains/`. EWG's widths, 2.3 to 4.0 points, lie below EWI's and EWQ's at every expiry; FEZ is as tight in its monthly expiries and much wider in the others.
 
 | Chain | Expiries to one year (calendar days) | Two-sided quotes near the money | Median width (vol points) |
 | --- | --- | --- | --- |
@@ -47,9 +47,9 @@ The marking procedure is that of Lecture 6, Section 6.1. On a thin chain four of
 3. **Exercise.** Out-of-the-money puts are priced as European. On EWG their early-exercise value is at most 0.31 of a half-spread, at the six-month expiry. The calls carry none, because no dividend falls before June 2027.
 4. **Noise.** Each quote's noise sd is its half-spread in price units, floored at the design noise. Converting the half-spread with the vega at 20% volatility, as SPY's pipeline does, would understate it up to 3.6 times in EWG's put wing. A noise scale $s$ of 0.5 and 2 tests the choice that the half-spread is one sd.
 
-**EWG's layout.** The design contracts EWG quotes are 27: seven each at 21, 42 and 63 days, with $\delta$ from −2 to 1, and six at 126 days, with $\delta$ from −1.5 to 1. They are read from the expiries at 21, 40, 58 and 120 trading days, through the smoothing spline of Lecture 5, Section 5.4. A design point belongs to the layout when its strike lies inside the strikes its expiry quotes. The layout's noise is 2.0 to 15.0 times SPY's design noise, with a median of 3.8 (`configs/thin/ewg_layout.json`, built by `tutorial_final/checks/thin_chains/build_layout.py`). These 27 readings are the network's input. The audit's likelihood uses EWG's 61 cleaned quotes at their own strikes and maturities instead (Section 16.5).
+**EWG's layout.** The design contracts EWG quotes are 27: seven each at 21, 42 and 63 days, with $\delta$ from −2 to 1, and six at 126 days, with $\delta$ from −1.5 to 1. They are read from the expiries at 21, 40, 58 and 120 trading days, through the smoothing spline of Lecture 5, Section 5.4. A design point belongs to the layout when its strike lies inside the strikes its expiry quotes. The layout's noise is 2.0 to 15.0 times SPY's design noise, with a median of 3.8 (`lab/configs/thin/ewg_layout.json`, built by `lab/checks/thin_chains/build_layout.py`). These 27 readings are the network's input. The audit's likelihood uses EWG's 61 cleaned quotes at their own strikes and maturities instead (Section 16.5).
 
-**The thin network S2-T.** The liquid network of Lecture 15 is given the forward-variance curve read from the chain. A thin chain's strip does not support a replicated curve (Lecture 5, Section 5.9), and giving an estimator a curve read from a fuller chain is the leak of Section 16.3. The thin network therefore infers the curve (`src/sbi4finance/calibration/thin.py`).
+**The thin network S2-T.** The liquid network of Lecture 15 is given the forward-variance curve read from the chain. A thin chain's strip does not support a replicated curve (Lecture 5, Section 5.9), and giving an estimator a curve read from a fuller chain is the leak of Section 16.3. The thin network therefore infers the curve (`lab/src/sbi4finance/calibration/thin.py`).
 
 | Item | Content | Size |
 | --- | --- | --- |
@@ -57,25 +57,25 @@ The marking procedure is that of Lecture 6, Section 6.1. On a thin chain four of
 | Targets | $H$, $\eta$, $\rho$ and the seven log forward-variance levels, each mapped to the real line by a logit of its prior support | 10 |
 | Output | Draws from the joint posterior of the ten targets | 1,000 per chain |
 
-The prior support of a level is a volatility of 6% to 60%, the truncation of the curve prior (Lecture 15, Section 15.1). Training draws the noise scale $s$ log-uniformly between 0.5 and 2 for every surface of every batch, with a fresh quote error, so one network serves the chain's own noise ($s = 1$) and the sensitivity to it. The network trains on the full bank's surfaces, with a velocity network of four layers of 512 units (run R4 of `tutorial_final/CLUSTER-RUNS.md`). Its gate, G2-T, asks that at $s = 1$ all eleven quantities of the SBC, the ten targets and $\rho\eta$, lie inside the simultaneous band (Lecture 9, Section 9.7); $s = 0.5$ and $s = 2$ are reported as they come. The audit needs the prior density of the curve: the power law times the random walk of Lecture 15, Section 15.1, with $\sigma_0$ fixed by the first level and the exponent $b$ integrated out on a grid (`thin.curve_log_prior`).
+The prior support of a level is a volatility of 6% to 60%, the truncation of the curve prior (Lecture 15, Section 15.1). Training draws the noise scale $s$ log-uniformly between 0.5 and 2 for every surface of every batch, with a fresh quote error, so one network serves the chain's own noise ($s = 1$) and the sensitivity to it. The network trains on the full bank's surfaces, with a velocity network of four layers of 512 units (run R4 of `lab/plans/CLUSTER-RUNS.md`). Its gate, G2-T, asks that at $s = 1$ all eleven quantities of the SBC, the ten targets and $\rho\eta$, lie inside the simultaneous band (Lecture 9, Section 9.7); $s = 0.5$ and $s = 2$ are reported as they come. The audit needs the prior density of the curve: the power law times the random walk of Lecture 15, Section 15.1, with $\sigma_0$ fixed by the first level and the exponent $b$ integrated out on a grid (`thin.curve_log_prior`).
 
 ⟨S2-T⟩: the thin network's SBC, coverage and contraction on 2,000 simulated EWG chains at $s$ = 1, 0.5 and 2, from study S2-T (run R4).
 
 ## 16.3 A first attempt, and what was wrong with it
 
-The first thin example was SPY with its later quotes hidden: the 27 quotes of SPY's three front monthly smiles, at 21, 42 and 63 days, nine strikes each (`tutorial_final/checks/desk_case/`). It is withdrawn as evidence on thin chains, for three reasons (v2-plan, Section 4).
+The first thin example was SPY with its later quotes hidden: the 27 quotes of SPY's three front monthly smiles, at 21, 42 and 63 days, nine strikes each ([`tutorial_final/checks/desk_case/`](https://github.com/fmuia/sbi4finance/tree/574b940087cd66a7540c5aa080f64e8b33010314/tutorial_final/checks/desk_case), archived). It is withdrawn as evidence on thin chains, for three reasons (v2-plan, Section 4).
 
 1. It hid SPY's later quotes but kept SPY's tight noise, so it was not a thin chain in the sense of Section 16.1.
 2. It gave every method SPY's curve to one year, read from the full chain. A thin chain cannot supply that curve, so every method knew more than a thin chain allows.
 3. Its real-data comparison was dominated by model error.
 
-Two other checks had the same leak: rough Bergomi on 15 sparse SPY quotes, and on 63 quotes with three times the noise (`tutorial_final/checks/rough_spy_is_cases.py`). Every method was given the same full-chain curve, so they described a market that knows its variance-swap curve, and they are withdrawn as well. The local check of Lecture 13, Section 13.11 is a different one: it makes the curve uncertain. The front-month case stays in the repository for the record and for its costs (Lecture 14, Section 14.5). EWG's layout and noise, with the curve inferred, replace it (Sections 16.2, 16.4 and 16.5).
+Two other checks had the same leak: rough Bergomi on 15 sparse SPY quotes, and on 63 quotes with three times the noise ([`tutorial_final/checks/rough_spy_is_cases.py`](https://github.com/fmuia/sbi4finance/blob/574b940087cd66a7540c5aa080f64e8b33010314/tutorial_final/checks/rough_spy_is_cases.py), archived). Every method was given the same full-chain curve, so they described a market that knows its variance-swap curve, and they are withdrawn as well. The local check of Lecture 13, Section 13.11 is a different one: it makes the curve uncertain. The front-month case stays in the repository for the record and for its costs (Lecture 14, Section 14.5). EWG's layout and noise, with the curve inferred, replace it (Sections 16.2, 16.4 and 16.5).
 
-**What the case still shows.** The third reason is itself a lesson, and the course keeps it as an illustration of model error, not as evidence on thin chains. Fitted to the front three months alone, rough Bergomi has a $\chi^2$ of 216 on the 36 later quotes, which that fit did not use. The fit to all 63 quotes has a $\chi^2$ of 48 on the same 36 quotes (`tutorial_final/checks/desk_case/real_market.json`). The parameters that fit the front months misprice the later maturities by far more than the quote noise allows, and no range computed within the model from the front months shows it. Only quotes that the fit did not use reveal it. EWG has no later quotes to hold out, so its test is the posterior predictive check at its own quotes (Section 16.6).
+**What the case still shows.** The third reason is itself a lesson, and the course keeps it as an illustration of model error, not as evidence on thin chains. Fitted to the front three months alone, rough Bergomi has a $\chi^2$ of 216 on the 36 later quotes, which that fit did not use. The fit to all 63 quotes has a $\chi^2$ of 48 on the same 36 quotes ([`tutorial_final/checks/desk_case/real_market.json`](https://github.com/fmuia/sbi4finance/blob/574b940087cd66a7540c5aa080f64e8b33010314/tutorial_final/checks/desk_case/real_market.json), archived). The parameters that fit the front months misprice the later maturities by far more than the quote noise allows, and no range computed within the model from the front months shows it. Only quotes that the fit did not use reveal it. EWG has no later quotes to hold out, so its test is the posterior predictive check at its own quotes (Section 16.6).
 
 ## 16.4 Reserves and their coverage on simulated thin chains
 
-A one-sided 90% bound is correct when the truth falls beyond it 10% of the time. Study S10 counts how often each method's bounds are breached on simulated chains with EWG's design (`tutorial_final/studies/thin_coverage.py`).
+A one-sided 90% bound is correct when the truth falls beyond it 10% of the time. Study S10 counts how often each method's bounds are breached on simulated chains with EWG's design (`lab/studies/thin_coverage.py`).
 
 **The chains.** Each of 1,000 test surfaces of the full bank, which no other study uses, becomes a thin chain: its clean prices on EWG's layout plus a fresh quote error with the layout's noise. The truth, $(H, \eta, \rho)$ and the forward-variance curve, is the surface's own, a draw from the prior. No method is given the curve.
 
@@ -105,9 +105,9 @@ The classical fits start from the quotes and the prior box, not from the network
 
 ## 16.5 EWG's own chain
 
-Study S11 computes EWG's posterior and its products (`tutorial_final/studies/thin_real.py`).
+Study S11 computes EWG's posterior and its products (`lab/studies/thin_real.py`).
 
-**The data.** EWG's 61 cleaned out-of-the-money quotes of 22 October 2026, 38 puts and 23 calls, at their own strikes and trading days: 9 at 21 days, 15 at 40, 19 at 58 and 18 at 120 (`tutorial_final/checks/thin_chains/EWG_observation.json`). They use the carry forward and the NYSE clock of Section 16.2. Each quote's noise sd is its half-spread in price units, floored at the design noise.
+**The data.** EWG's 61 cleaned out-of-the-money quotes of 22 October 2026, 38 puts and 23 calls, at their own strikes and trading days: 9 at 21 days, 15 at 40, 19 at 58 and 18 at 120 (`lab/checks/thin_chains/EWG_observation.json`). They use the carry forward and the NYSE clock of Section 16.2. Each quote's noise sd is its half-spread in price units, floored at the design noise.
 
 **The posterior.** The thin network reads the chain on its 27-contract layout and gives a proposal. Importance sampling with the Monte Carlo likelihood at the chain's own 61 quotes gives the posterior. Every proposal is priced on its own seed, and the likelihood is the unbiased estimate $\mathcal{N}\big(y;\ \hat P,\ \mathrm{diag}(\sigma^2) - S\big)$, with no bank term because the quotes are real. Rounds are refitted to the weights and pooled until $\hat k$ is at most 0.5 or four rounds have run. The design-grid readings only shape the proposal. The run is accepted when $\hat k$ at $s = 1$ is at most 0.5; otherwise it is rerun with 4,096 proposals.
 
@@ -163,7 +163,7 @@ Two results bear on these risks. The pilot's curve prior did not cover SPY's cur
 
 ## 16.8 The argument, claim by claim
 
-This section gathers the evidence for each claim of the argument of the course (Lecture 6, Section 6.8), as it stands before the runs of `tutorial_final/CLUSTER-RUNS.md`.
+This section gathers the evidence for each claim of the argument of the course (Lecture 6, Section 6.8), as it stands before the runs of `lab/plans/CLUSTER-RUNS.md`.
 
 | Claim | Evidence so far | Status |
 | --- | --- | --- |
@@ -212,6 +212,6 @@ The plan lists the options that would make claims 2b, 2c and 3b solid (v2-plan, 
 - Abi Jaber, E., Li, S. (2024). Volatility models in practice: rough, path-dependent or Markovian? [arXiv:2401.03345](https://arxiv.org/abs/2401.03345)
 - Commission Delegated Regulation (EU) 2016/101 (prudent valuation), Articles 9 and 11. [EUR-Lex](https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32016R0101)
 - Wilson, E. B. (1927). Probable inference, the law of succession, and statistical inference. *Journal of the American Statistical Association* 22(158), 209–212. [doi](https://doi.org/10.1080/01621459.1927.10502953)
-- Calibration design document of this repository: [docs/design/calibration-design-document.md](../design/calibration-design-document.md), section "Risks and open decisions".
+- Calibration design document of this repository: [course/design-document/calibration-design-document.md](design-document/calibration-design-document.md), section "Risks and open decisions".
 
-Figures: `scripts/course/realignment.py` (Figure 16.1).
+Figures: `course/scripts/realignment.py` (Figure 16.1).

@@ -2,11 +2,11 @@
 
 Oct 22, 2026 · AI & Analytics Solutions SAS di Muia Francesco
 
-> **Draft for study.** This document follows the structure and depth of the [SVJ design document](svj-design-document.md), for the application chosen on 21 October 2026 (plan, [`tutorial_final/PLAN.md`](../../tutorial_final/PLAN.md)). It states the method, the mathematics and the planned evidence before the simulations run. A number written as ⟨S7⟩ is a placeholder: it names the study in the plan's §6.4 that produces it, and it is replaced when that study has run. A figure marked *pending* is specified here, with its reading guide, and drawn when its study runs. Everything that does not depend on a run (the models, the derivations, the criteria, the narrative) is final subject to review.
+> **Draft for study.** This document follows the structure and depth of the [SVJ design document](https://github.com/fmuia/sbi4finance/blob/574b940087cd66a7540c5aa080f64e8b33010314/docs/design/svj-design-document.md), for the application chosen on 21 October 2026 (plan, [`tutorial_final/PLAN.md`](https://github.com/fmuia/sbi4finance/blob/574b940087cd66a7540c5aa080f64e8b33010314/tutorial_final/PLAN.md)). It states the method, the mathematics and the planned evidence before the simulations run. A number written as ⟨S7⟩ is a placeholder: it names the study in the plan's §6.4 that produces it, and it is replaced when that study has run. A figure marked *pending* is specified here, with its reading guide, and drawn when its study runs. Everything that does not depend on a run (the models, the derivations, the criteria, the narrative) is final subject to review.
 
-> **Superseded in part, 24 October 2026.** Version 2 of the [course](../course/README.md) and its [plan](../course/v2-plan.md) correct this document where they differ:
+> **Superseded in part, 24 October 2026.** Version 2 of the [course](../README.md) and its [plan](../v2-plan.md) correct this document where they differ:
 > 1. This document describes a desk's daily routine and roles. The course states only the marking procedure (Lecture 6), and does not claim that a posterior is needed every morning: the uses of many posteriors are a valuation across a book, for example at month-end, and the validation of a method.
-> 2. Fixing $H$ at 0.10 and holding the curve flat beyond the last quote are the course's baselines, not documented practice ([practice-sources.md](../course/practice-sources.md)).
+> 2. Fixing $H$ at 0.10 and holding the curve flat beyond the last quote are the course's baselines, not documented practice ([practice-sources.md](../practice-sources.md)).
 > 3. The thin example is EWG, with the forward-variance curve inferred, not SPY's front months (Lecture 16).
 > 4. The exact rough-Bergomi posterior costs at least 16.9 CPU-hours by a random-walk chain, and about 85 CPU-minutes by importance sampling from a Gauss–Newton proposal on SPY, with common random numbers (Lecture 14).
 > 5. The audit's Monte Carlo likelihood needs a seed per proposal, the full Monte Carlo covariance and a path count chosen on a separate pilot pricing (Lecture 8, Section 8.9).
@@ -385,7 +385,7 @@ How to read the figure: each curve is the price of the out-of-the-money option a
 
 ![Left: the price of three one-month contracts as a function of σ, with a quote of 0.0080 for the δ = −1 put and its implied volatility of 24.5%. Right: the vega against log-moneyness at four maturities, at 20% volatility.](images/calibration-19-implied-volatility.png)
 
-How to read the figure: the left panel shows the map σ ↦ price for one contract per curve. Each curve is increasing, so a horizontal line at a quoted price crosses it exactly once, and the crossing is the implied volatility: the put at δ = −1 quoted at 0.0080 of the forward has σ\_imp = 24.5%. The right panel shows the slope of that map, the vega. It is largest at the money and small in the wings, most of all at short maturities: at one week the vega at δ = 2 is about one seventh of the at-the-money vega. Where the vega is small, a small price error becomes a large volatility error. This is why the noise model of the observation section states the noise in price as vega × a volatility noise. The figures are drawn by `scripts/plot_design_black_scholes.py`.
+How to read the figure: the left panel shows the map σ ↦ price for one contract per curve. Each curve is increasing, so a horizontal line at a quoted price crosses it exactly once, and the crossing is the implied volatility: the put at δ = −1 quoted at 0.0080 of the forward has σ\_imp = 24.5%. The right panel shows the slope of that map, the vega. It is largest at the money and small in the wings, most of all at short maturities: at one week the vega at δ = 2 is about one seventh of the at-the-money vega. Where the vega is small, a small price error becomes a large volatility error. This is why the noise model of the observation section states the noise in price as vega × a volatility noise. The figures are drawn by `course/scripts/plot_design_black_scholes.py`.
 
 ### Heston
 
@@ -1008,7 +1008,7 @@ The 40-minute advanced segment makes the two claims of the executive summary. Fr
 
 ### Notebook outline
 
-The segment runs on one marimo notebook, `tutorial_final/notebooks/slot5_calibration.py`. It reads the accepted results in `tutorial_final/results/calibration` and marks any that are missing as pending, so it runs at every stage of the study. Three cells compute live, each in seconds on a laptop CPU; everything else is cached.
+The segment runs on one marimo notebook, `tutorial/notebooks/slot5_calibration.py`. It reads the accepted results in `tutorial/assets/results/calibration` and marks any that are missing as pending, so it runs at every stage of the study. Three cells compute live, each in seconds on a laptop CPU; everything else is cached.
 
 1. **The smile.** The example surfaces: one maturity's smile against the one Black–Scholes volatility, with a maturity selector, and the skew term structures of both models on log–log axes. The SPY smile replaces the simulated one when study S8 has a chain.
 2. **Heston.** The exact-posterior check (table and figure); exact against network posterior for a chosen surface, as pair plots. Live: load the network and draw 1,000 samples for that surface.
@@ -1331,7 +1331,7 @@ This appendix describes how a real option chain becomes the network's input: the
 
 ### I.1 The SPY option chain and where it comes from
 
-The SPY end-of-day chain for one date comes from a vendor file: Alpha Vantage's historical options endpoint (a premium endpoint, CSV) or Cboe's delayed-quotes page (JSON, with OCC option symbols). Either gives strike, expiration, type, bid and ask, and the reader `scripts/build_surface.py` parses both. Only derived quantities are committed to the repository, in `tutorial_final/results/calibration/spy/surface.json`: the forward and discount per maturity, the 7 forward-variance levels, the 63 design-grid prices with their noise standard deviations, the implied-volatility grid, the cleaning counts, the provenance (vendor, endpoint, time of capture, the rate curve and its source) and the SHA-256 of the raw file, which stays outside the repository. The study's chain is Cboe's delayed quotes for SPY, fetched on 22 October 2026 before the open: 13,114 options in 35 expirations, quoted at the close of 21 October.
+The SPY end-of-day chain for one date comes from a vendor file: Alpha Vantage's historical options endpoint (a premium endpoint, CSV) or Cboe's delayed-quotes page (JSON, with OCC option symbols). Either gives strike, expiration, type, bid and ask, and the reader `lab/scripts/build_surface.py` parses both. Only derived quantities are committed to the repository, in `tutorial/assets/results/calibration/spy/surface.json`: the forward and discount per maturity, the 7 forward-variance levels, the 63 design-grid prices with their noise standard deviations, the implied-volatility grid, the cleaning counts, the provenance (vendor, endpoint, time of capture, the rate curve and its source) and the SHA-256 of the raw file, which stays outside the repository. The study's chain is Cboe's delayed quotes for SPY, fetched on 22 October 2026 before the open: 13,114 options in 35 expirations, quoted at the close of 21 October.
 
 ### I.2 Cleaning rules
 
@@ -1355,7 +1355,7 @@ The real smile is the running example of the lesson: the flat line that fails, t
 
 ## Appendix J. Fourier pricing, and why the example moves from Heston to rough Bergomi
 
-This appendix collects three facts in one place: why Heston is priced in milliseconds, why that speed does not carry over to rough Bergomi, and what rough Bergomi gives in exchange. It uses the forward units of Appendix B.1. The Black–Scholes figures of the main text (the price against σ, k and T, and the implied-volatility inversion) are the starting point. The figures of this appendix are drawn by `scripts/plot_design_fourier_heston.py`.
+This appendix collects three facts in one place: why Heston is priced in milliseconds, why that speed does not carry over to rough Bergomi, and what rough Bergomi gives in exchange. It uses the forward units of Appendix B.1. The Black–Scholes figures of the main text (the price against σ, k and T, and the implied-volatility inversion) are the starting point. The figures of this appendix are drawn by `course/scripts/plot_design_fourier_heston.py`.
 
 ### J.1 One characteristic function, several inversions
 

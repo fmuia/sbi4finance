@@ -10,7 +10,7 @@
 
 ## 12.1 What the network reads and returns
 
-The tutorial's network for Heston is BayesFlow's flow-matching network (Radev et al. 2022, version 2.0.14 in the repository), with a velocity network of four hidden layers of 256 units (`tutorial_final/checkpoints/heston/training.json`).
+The tutorial's network for Heston is BayesFlow's flow-matching network (Radev et al. 2022, version 2.0.14 in the repository), with a velocity network of four hidden layers of 256 units (`tutorial/assets/checkpoints/heston/training.json`).
 
 | Item | Content | Size |
 | --- | --- | --- |
@@ -22,7 +22,7 @@ The tutorial's network for Heston is BayesFlow's flow-matching network (Radev et
 
 **Why logits.** A bounded parameter $\theta \in (a, b)$ is mapped to $z = \mathrm{logit}\big((\theta - a)/(b - a)\big) = \log\frac{\theta - a}{b - \theta}$. The flow then works on the whole real line and cannot produce a value outside the prior box. A uniform prior becomes a logistic law with variance $\pi^2/3 = 3.29$. Densities in the two coordinates differ by the Jacobian $d\theta/dz = (\theta - a)(b - \theta)/(b - a)$, which the audit of Section 12.7 includes.
 
-**The code.** `build_workflow` in `src/sbi4finance/calibration/inference.py` builds the network and its adapter:
+**The code.** `build_workflow` in `lab/src/sbi4finance/calibration/inference.py` builds the network and its adapter:
 
 ```python
 def build_workflow(task, checkpoint_dir=None, *, subnet_widths=(256, 256, 256, 256), optimizer=None,
@@ -51,7 +51,7 @@ def build_workflow(task, checkpoint_dir=None, *, subnet_widths=(256, 256, 256, 2
     )
 ```
 
-The adapter maps each target to the real line by the logit of its prior box (`constrain`), and gathers the targets into the inference variables and the scaled quotes into the conditions. The `context` condition holds the forward-variance levels of rough Bergomi; a Heston task has none. `standardize` scales the conditions and the targets by their training means and standard deviations, and `save_best_only=True` keeps the epoch with the smallest validation loss. The sampler stored with the network, `EULER_STEPS = 50` uniform steps, is replaced at sampling time by the 100 end-dense steps of Lecture 9, Section 9.5 (`use_sampler`, in the same file). BayesFlow draws training times as $\tau = u^{1+\alpha}$, with $\alpha$ the argument `time_power_law_alpha`. Its default, 0.5, gives $\tau = u^{1.5}$. The Heston network was trained with $\alpha = -0.5$, which gives the $\tau = u^{0.5}$ of Lecture 9, Section 9.6 (`tutorial_final/checkpoints/heston/training.json`).
+The adapter maps each target to the real line by the logit of its prior box (`constrain`), and gathers the targets into the inference variables and the scaled quotes into the conditions. The `context` condition holds the forward-variance levels of rough Bergomi; a Heston task has none. `standardize` scales the conditions and the targets by their training means and standard deviations, and `save_best_only=True` keeps the epoch with the smallest validation loss. The sampler stored with the network, `EULER_STEPS = 50` uniform steps, is replaced at sampling time by the 100 end-dense steps of Lecture 9, Section 9.5 (`use_sampler`, in the same file). BayesFlow draws training times as $\tau = u^{1+\alpha}$, with $\alpha$ the argument `time_power_law_alpha`. Its default, 0.5, gives $\tau = u^{1.5}$. The Heston network was trained with $\alpha = -0.5$, which gives the $\tau = u^{0.5}$ of Lecture 9, Section 9.6 (`tutorial/assets/checkpoints/heston/training.json`).
 
 The quote noise is drawn afresh in every batch by `fresh_noise`, in the same file:
 
@@ -69,13 +69,13 @@ def fresh_noise(seed):
     return augment
 ```
 
-The training data are the clean prices over their noise (`clean_training_data`), and the training script passes this function to BayesFlow's `fit_offline` as its augmentation (`tutorial_final/studies/train_calibration.py`). Section 12.2 explains why.
+The training data are the clean prices over their noise (`clean_training_data`), and the training script passes this function to BayesFlow's `fit_offline` as its augmentation (`lab/studies/train_calibration.py`). Section 12.2 explains why.
 
-**Training settings.** The network trains on the 50,000 training surfaces of the Heston bank in batches of 256, with a fresh quote error in every batch. The optimizer is AdamW with weight decay $5 \times 10^{-3}$ and gradient norms clipped at 1.5. The learning rate rises from $5 \times 10^{-5}$ to $5 \times 10^{-4}$ over the first 5% of steps and then decays to zero along a cosine (`offline_optimizer` in `inference.py`). Of the 500 epochs, the checkpoint kept is epoch 487, the one with the smallest validation loss. Training took 32 minutes on 4 cores (`tutorial_final/checkpoints/heston/training.json`). Lecture 15, Section 15.1 gives the settings of the rough-Bergomi network.
+**Training settings.** The network trains on the 50,000 training surfaces of the Heston bank in batches of 256, with a fresh quote error in every batch. The optimizer is AdamW with weight decay $5 \times 10^{-3}$ and gradient norms clipped at 1.5. The learning rate rises from $5 \times 10^{-5}$ to $5 \times 10^{-4}$ over the first 5% of steps and then decays to zero along a cosine (`offline_optimizer` in `inference.py`). Of the 500 epochs, the checkpoint kept is epoch 487, the one with the smallest validation loss. Training took 32 minutes on 4 cores (`tutorial/assets/checkpoints/heston/training.json`). Lecture 15, Section 15.1 gives the settings of the rough-Bergomi network.
 
 ## 12.2 The bank, fresh noise in every batch, and what three Heston networks taught
 
-**The bank.** The network learns from a bank of simulated surfaces, generated once. Each Heston surface is one draw of $(v_0, \theta_H, \sigma_v, \rho)$ from the prior box and one Fourier pricing of the 63 contracts on the quadrature ladder of Lecture 10, Section 10.12. The bank has 60,000 surfaces: 50,000 for training, 5,000 for validation and 5,000 for testing (`tutorial_final/curriculum/04-slot4-heston-in-bayesflow.md`). The quadrature errors of its stored prices are $10^{-8}$ noise standard deviations at the median and 0.056 at the largest, against a budget of 0.1 (`heston/s1/bank-quality.json`). The bank cost 0.046 CPU-seconds per surface, 0.013 CPU-hours per 1,000, or 46 CPU-minutes in all. The rough-Bergomi bank, priced by Monte Carlo, is described in Lecture 15, Section 15.1.
+**The bank.** The network learns from a bank of simulated surfaces, generated once. Each Heston surface is one draw of $(v_0, \theta_H, \sigma_v, \rho)$ from the prior box and one Fourier pricing of the 63 contracts on the quadrature ladder of Lecture 10, Section 10.12. The bank has 60,000 surfaces: 50,000 for training, 5,000 for validation and 5,000 for testing (`tutorial/curriculum/04-slot4-heston-in-bayesflow.md`). The quadrature errors of its stored prices are $10^{-8}$ noise standard deviations at the median and 0.056 at the largest, against a budget of 0.1 (`heston/s1/bank-quality.json`). The bank cost 0.046 CPU-seconds per surface, 0.013 CPU-hours per 1,000, or 46 CPU-minutes in all. The rough-Bergomi bank, priced by Monte Carlo, is described in Lecture 15, Section 15.1.
 
 **Fresh noise in every batch.** The bank stores clean prices. The quote noise is drawn at training time. Since the conditions are $y_c/\sigma_c = P_c/\sigma_c + \varepsilon_c$ with $\varepsilon_c \sim \mathcal{N}(0, 1)$, a fresh noise draw for every surface in every batch costs nothing. The network then never sees the same noisy surface twice, and its training expectation over the noise is exact rather than a sum over a few stored draws.
 
@@ -135,7 +135,7 @@ The at-the-money level is $c_0$, the skew is $\psi = c_1 = \partial\sigma/\parti
 
 **A caution on reading H from the exponent.** On 93% of the rough prior's clean smiles, the exponent fitted from one week to one year lies below $H - \tfrac12$, by a median of 0.046, and its correlation with $H$ is 0.77 (`rough-pilot/prior-predictive/prior-predictive.json`). The fitted exponent therefore tends to understate $H$ when read as $b + \tfrac12$. The posterior uses all 63 quotes and does not rely on this map.
 
-**Limits.** The SPY values come from one date. The SPY design grid is read through a smoothing spline (Lecture 5), so its statistics compare with the clean distribution rather than the noisy one. The design document plans to add further dates, ⟨S8⟩. Here ⟨S8⟩ stands for the same four statistics on further dates of SPY's chain, which the design document plans under study S8; no run in `tutorial_final/CLUSTER-RUNS.md` produces them yet.
+**Limits.** The SPY values come from one date. The SPY design grid is read through a smoothing spline (Lecture 5), so its statistics compare with the clean distribution rather than the noisy one. The design document plans to add further dates, ⟨S8⟩. Here ⟨S8⟩ stands for the same four statistics on further dates of SPY's chain, which the design document plans under study S8; no run in `lab/plans/CLUSTER-RUNS.md` produces them yet.
 
 ## 12.4 Simulation-based calibration, coverage and contraction on Heston
 
@@ -230,7 +230,7 @@ The study rehearses this on Heston, where the exact posterior is also available,
 
 **Interpretation.** Measured against the pricer route, the network gets the same verdict as against the exact posterior, and the same target, $v_0$, is the one it misses. This is what the pricer route is for on rough Bergomi. Its own condition is the pricer's error: for rough Bergomi the pricer learns from Monte Carlo prices whose errors reach 0.25 noise standard deviations, so its error must be measured again, ⟨S4⟩.
 
-Here ⟨S4⟩ stands for the held-out error of the rough-Bergomi neural pricer, from study S4 on the full rough bank (run R10 in `tutorial_final/CLUSTER-RUNS.md`).
+Here ⟨S4⟩ stands for the held-out error of the rough-Bergomi neural pricer, from study S4 on the full rough bank (run R10 in `lab/plans/CLUSTER-RUNS.md`).
 
 ## 12.7 The audit in practice
 
@@ -277,13 +277,13 @@ which is near 0 when the observed quotes are further from the model than its own
 *Figure 12.10.* How to read the figure: each heat map cell is one quote, by maturity (rows) and $\delta$ (columns), coloured by the median of its standardized residual over 200 posterior draws. The right panel plots, for each draw, the observed discrepancy against the replicated one; points above the diagonal are draws for which the observed quotes fit worse than replicated ones.
 
 - **Correct model (left).** Heston test smile 2,000, under its exact Heston posterior from the chains of Section 12.5. The residuals look like noise: 4 of the 63 quotes (6%) have a median beyond ±2, the largest is 2.8, and they show no pattern across maturities or strikes. The p-value is 0.24.
-- **Wrong model (centre).** The rough-Bergomi example smile under its exact Heston posterior. That posterior was computed for this figure by least squares from six starts followed by four random-walk chains of 3,000 steps with the Fourier likelihood, 500 steps of burn-in, $\hat R$ at most 1.010 and at least 663 effective draws per parameter, in about 250 CPU-seconds (`scripts/course/lecture13.py`). The residuals have a pattern. The one-week puts at $\delta = -2$ and $-1.5$ and the two-week put at $\delta = -2$ sit 7.3, 4.3 and 4.7 noise standard deviations above Heston's prices, while the one- and two-week at-the-money quotes sit 2.5 and 3.2 below. The short-dated smile is steeper and more curved than Heston can make it, which is the failure Lecture 10, Section 10.8 predicts for Heston's short-maturity skew. Nine quotes (14%) have a median beyond ±2, and the p-value is 0.00: the observed discrepancy, a median of 193, is above every replicated one.
+- **Wrong model (centre).** The rough-Bergomi example smile under its exact Heston posterior. That posterior was computed for this figure by least squares from six starts followed by four random-walk chains of 3,000 steps with the Fourier likelihood, 500 steps of burn-in, $\hat R$ at most 1.010 and at least 663 effective draws per parameter, in about 250 CPU-seconds (`course/scripts/lecture13.py`). The residuals have a pattern. The one-week puts at $\delta = -2$ and $-1.5$ and the two-week put at $\delta = -2$ sit 7.3, 4.3 and 4.7 noise standard deviations above Heston's prices, while the one- and two-week at-the-money quotes sit 2.5 and 3.2 below. The short-dated smile is steeper and more curved than Heston can make it, which is the failure Lecture 10, Section 10.8 predicts for Heston's short-maturity skew. Nine quotes (14%) have a median beyond ±2, and the p-value is 0.00: the observed discrepancy, a median of 193, is above every replicated one.
 
 **The check on the real smile.** The design document proposes that at most 10% of a real smile's quotes may lie beyond two standard deviations; under the correct model of Figure 12.10, 6% did. The check on SPY's smile under its rough-Bergomi posterior is part of study S8, in Lecture 15, Section 15.3.
 
 ## 12.9 Changing the prior and the noise without retraining
 
-Section 12.6 noted that the amortized posterior is retrained when the noise model, the prior or the design grid changes. For the prior and the noise there are two ways around retraining (`tutorial_final/curriculum/06-slot6-priors-and-misspecification.md`).
+Section 12.6 noted that the amortized posterior is retrained when the noise model, the prior or the design grid changes. For the prior and the noise there are two ways around retraining (`tutorial/curriculum/06-slot6-priors-and-misspecification.md`).
 
 **Reweighting to a new prior.** For draws $\theta^{(i)}$ from the posterior under the prior $p_0$, the posterior under a prior $p_1$ is approximated by the weights
 
@@ -322,7 +322,7 @@ The network of Sections 12.1 and 12.2 reads exactly 63 quotes on the design grid
 9. Draws can be moved to a new prior by weights when the new prior puts its mass where the draws are. Under the Feller condition no exact draw of SPY's Heston posterior survives, so the reweighting is undefined. A network trained with the prior and the noise as conditions (Elsemüller et al. 2024) is the planned alternative, and the only one for the noise.
 10. Masked training on token sets extends the network to real chains with missing quotes, provided the quotes are missing at random: the pattern of gaps must carry no information about the parameters beyond the observed quotes.
 
-**Status of the Heston checks.** `tutorial_final/CLAIMS.md` records three claims on Heston, each generated from its result file.
+**Status of the Heston checks.** `tutorial/CLAIMS.md` records three claims on Heston, each generated from its result file.
 
 - C7, verified: simulation-based calibration passes for all four targets on 2,000 held-out smiles (`heston/s2/validation.json`).
 - C5, not met for the network alone: the network alone meets the agreement criterion on all four parameters for 80% of 50 smiles. With the importance-sampling correction it agrees with the exact chains on 4 of the 4 smiles tried (`heston/s3/heston-check.json`).
@@ -340,4 +340,4 @@ The network of Sections 12.1 and 12.2 reads exactly 63 quotes on the design grid
 - Lee, J., Lee, Y., Kim, J., Kosiorek, A., Choi, S., Teh, Y. W. (2019). Set transformer: a framework for attention-based permutation-invariant neural networks. *ICML 2019*, PMLR 97, 3744–3753. [proceedings](https://proceedings.mlr.press/v97/lee19d.html)
 - Elsemüller, L., Olischläger, H., Schmitt, M., Bürkner, P.-C., Köthe, U., Radev, S. T. (2024). Sensitivity-aware amortized Bayesian inference. *Transactions on Machine Learning Research*. [arXiv:2310.11122](https://arxiv.org/abs/2310.11122)
 
-Figures: `scripts/course/lecture12.py` (Figures 12.1, 12.6 and 12.11) and `scripts/course/lecture13.py` (the others). The code is quoted from `src/sbi4finance/calibration/inference.py`.
+Figures: `course/scripts/lecture12.py` (Figures 12.1, 12.6 and 12.11) and `course/scripts/lecture13.py` (the others). The code is quoted from `lab/src/sbi4finance/calibration/inference.py`.

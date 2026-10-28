@@ -29,7 +29,7 @@ Slot 5 ends on four conditions: the prior, the noise model, the forward-variance
 | 13–14 | 5. Across models | Slot 5's two forward-start distributions on SPY, Heston and rough Bergomi; if they are late, the pilot's three smiles | cached | When both models are wrong in different ways, report both and the spread between them, judged smile by smile. Model averaging and stacking are the formal versions. |
 | 14–15 | 6. Close | What the afternoon showed, in three lines; the take-home track; the repository | slide | The method needs a simulator, a prior and a noise model, and it is only as good as its checks. |
 
-**Optional slides.** The minute plan has no free minute, so two slides of the course's [version-2 plan](../../docs/course/v2-plan.md) are optional: pooling across names (Section 2.3) and the prior beyond the last quote (Section 2.2). Both are specified below, at one minute each. Each can take the time of a piece that is not built (Open choices for Stefan).
+**Optional slides.** The minute plan has no free minute, so two slides of the course's [version-2 plan](../../course/v2-plan.md) are optional: pooling across names (Section 2.3) and the prior beyond the last quote (Section 2.2). Both are specified below, at one minute each. Each can take the time of a piece that is not built (Open choices for Stefan).
 
 ## The pieces, specified
 
@@ -66,12 +66,12 @@ The fourth detector is the one slot 3 names. It needs a summary network, which s
 
 ### Optional slide: pooling across names
 
-- **On screen.** Coverage of the 90% intervals of the illiquid names in a simulated Black–Scholes sector, for four methods ([`v2-pooling.png`](../../docs/course/images/v2-pooling.png)), with the table of v2-plan, Section 2.3.
+- **On screen.** Coverage of the 90% intervals of the illiquid names in a simulated Black–Scholes sector, for four methods ([`v2-pooling.png`](../../course/images/v2-pooling.png)), with the table of v2-plan, Section 2.3.
 - **Said.** The liquid names of the sector quote the full grid. Each illiquid name quotes one at-the-money option with 3 volatility points of noise. With 2 liquid and 6 illiquid names, the 90% intervals of the illiquid names cover the truth 89.7% of the time per name, 59.5% for the proxy (the liquid names' mean), 69.7% for empirical Bayes and 88.0% for hierarchical Bayes. The hierarchical intervals are 7.6 volatility points wide, against 9.9 per name. With 8 liquid and 32 illiquid names the four methods cover 89.6%, 83.3%, 87.5% and 89.4%. A small sector leaves its hyperparameters uncertain, and only the hierarchical model carries that uncertainty into each name. Pooling is a prior for each thin name, learned from the other names of its sector. The rules allow a proxy from similar instruments, without a recipe for it (Regulation (EU) 2016/101, Art. 3(3)(a)).
 
 ### Optional slide: the prior beyond the last quote
 
-- **On screen.** [`long_end.png`](../checks/long_end/long_end.png): SPY's variance term structure, with no quotes beyond 2.2 years; the 90% range of five long-dated products under flat extrapolation and under the posterior; where the posterior's variance comes from.
+- **On screen.** [`long_end.png`](../../lab/checks/long_end/long_end.png): SPY's variance term structure, with no quotes beyond 2.2 years; the 90% range of five long-dated products under flat extrapolation and under the posterior; where the posterior's variance comes from.
 - **Said.** SPY's chain ends with its LEAPs, at 2.2 years. Beyond them, rough Bergomi's forward-variance curve is not quoted. Holding it flat is a choice of zero width. For the three products that depend mostly on the curve beyond 2.25 years, a forward start from two to three years, a five-year put and a three-year variance swap, it gives 0.32, 0.30 and 0 of the posterior's 90% range. The posterior's range there depends on the width of the random-walk prior beyond the last quote. For the forward start from two to three years, the 90% range is 19.4% of its price with a prior sd of 0.1 per square-root year, and 36.8% with 0.3. No quote informs that prior, so it must be stated and tested. Study S10 tests it on EWG-like chains with two other laws for the unquoted level (slot 5, section 9).
 
 ## Numbers on screen, and their status
@@ -83,8 +83,8 @@ The fourth detector is the one slot 3 names. It needs a summary network, which s
 | Pilot smile 291: $\chi^2$ 1,347, $\hat k$ 154 | `rough-pilot/s7-across/across-models.json` | pilot |
 | The reweighted $H$ posterior and reserve | Slot 5's SPY draws | ⟨S8⟩ |
 | The sensitivity-aware network's sliders | New network | to build |
-| Pooling, 2 liquid and 6 illiquid names: coverage 89.7%, 59.5%, 69.7%, 88.0%; widths 9.9 and 7.6 vol points; 8 and 32 names: 89.6%, 83.3%, 87.5%, 89.4% (optional slide) | `tutorial_final/checks/bs_hierarchy.json`; v2-plan, Section 2.3 | quick check; register as a claim before it goes on screen |
-| Long end: flat extrapolation 0.32, 0.30 and 0 of the posterior's 90% range for the forward start from two to three years, the five-year put and the variance swap; forward start 19.4% to 36.8% of its price for a prior sd of 0.1 to 0.3 (optional slide) | `tutorial_final/checks/long_end/long_end.json` and `long_end_extra.json`; v2-plan, Section 2.2 | quick check, with a Laplace posterior at SPY's fit; register as a claim before it goes on screen |
+| Pooling, 2 liquid and 6 illiquid names: coverage 89.7%, 59.5%, 69.7%, 88.0%; widths 9.9 and 7.6 vol points; 8 and 32 names: 89.6%, 83.3%, 87.5%, 89.4% (optional slide) | `lab/checks/bs_hierarchy.json`; v2-plan, Section 2.3 | quick check; register as a claim before it goes on screen |
+| Long end: flat extrapolation 0.32, 0.30 and 0 of the posterior's 90% range for the forward start from two to three years, the five-year put and the variance swap; forward start 19.4% to 36.8% of its price for a prior sd of 0.1 to 0.3 (optional slide) | `lab/checks/long_end/long_end.json` and `long_end_extra.json`; v2-plan, Section 2.2 | quick check, with a Laplace posterior at SPY's fit; register as a claim before it goes on screen |
 
 ## To build, by the freeze on Fri 6 Nov
 

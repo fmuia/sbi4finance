@@ -29,7 +29,7 @@ The returns notebook moves to the take-home track (overview, §6).
 
 ## The model and the task
 
-The task is `configs/tasks/calibration_heston_bank.json` (`hkde_calibration_v1`, jumps switched off).
+The task is `lab/configs/tasks/calibration_heston_bank.json` (`hkde_calibration_v1`, jumps switched off).
 
 | | |
 | --- | --- |
@@ -38,7 +38,7 @@ The task is `configs/tasks/calibration_heston_bank.json` (`hkde_calibration_v1`,
 | Unknowns | $v_0 \in [0.01, 0.16]$, $\theta \in [0.01, 0.16]$, $\sigma_v \in [0.1, 1.5]$, $\rho \in [-0.95, -0.1]$, uniform; $\kappa = 2$ fixed |
 | Pricer | The repository's Fourier pricer, about 20 ms per smile at one quadrature rung |
 | Bank | 50,000 training, 5,000 validation and 5,000 test smiles, generated in 46 CPU-minutes (S1) |
-| Network | `FlowMatching`, four dense layers of 256; parameters mapped to their bounds by the adapter; quotes standardized; fresh quote noise in every batch (`src/sbi4finance/calibration/inference.py`) |
+| Network | `FlowMatching`, four dense layers of 256; parameters mapped to their bounds by the adapter; quotes standardized; fresh quote noise in every batch (`lab/src/sbi4finance/calibration/inference.py`) |
 | Training | 500 epochs, 32 minutes on 4 cores (`checkpoints/heston/training.json`) |
 
 ## Minute plan
@@ -60,7 +60,7 @@ How to read the figure: the grey band is the 90% interval of the variance-swap v
 
 ## Feasibility: the exact Heston posterior on SPY
 
-Run on 23 October 2026 to check that slot 4 works on real data (`scripts/curriculum/heston_spy_exact.py`; output and draws in [data/](data/heston-spy-exact.json)). The likelihood is the repository's Fourier likelihood at one quadrature rung, and the run took 531 CPU-seconds.
+Run on 23 October 2026 to check that slot 4 works on real data (`lab/checks/heston_spy_exact.py`; output and draws in [data/](../assets/data/heston-spy-exact.json)). The likelihood is the repository's Fourier likelihood at one quadrature rung, and the run took 531 CPU-seconds.
 
 - **Multi-start.** Nelder–Mead from 8 points drawn over the prior box: 7 reach the same optimum. The eighth stops at the prior's upper bound $\sigma_v = 1.5$ with a log-likelihood 29 lower, so it is not a competing calibration.
 - **Chains.** Four random-walk Metropolis chains of 4,000 steps, started at overdispersed points around the optimum, with the first 1,000 steps discarded. Split $\hat R$ is at most 1.007 and the bulk effective sample size is 670 to 1,210 per parameter.
@@ -74,11 +74,11 @@ Run on 23 October 2026 to check that slot 4 works on real data (`scripts/curricu
 
 The posterior lies well inside the prior box. Its mean equals the least-squares fit with $\kappa = 2$ of Lecture 11, Section 11.1. The Feller ratio $\sigma_v^2 / (2\kappa\theta)$ ranges from 3.8 to 6.3 over the draws (median 5.0): no draw satisfies the Feller condition. Equivalently, the vol-of-vol is about twice its Feller limit $\sqrt{2\kappa\theta} \approx 0.51$.
 
-This run is not an accepted study. It is redone as study S8-H through `tutorial_final/studies/` before its numbers go on screen.
+This run is not an accepted study. It is redone as study S8-H through `lab/studies/` before its numbers go on screen.
 
 ## The notebook, cell by cell
 
-`tutorial_final/notebooks/slot4_heston_bayesflow.py`, new.
+`tutorial/notebooks/slot4_heston_bayesflow.py`, new.
 
 | Cell | Does | Budget | Fallback |
 | --- | --- | --- | --- |
@@ -132,7 +132,7 @@ The VOO notebook itself moves, edited, to the take-home track as `extras/returns
 ## To build, by the freeze on Fri 30 Oct
 
 1. `slot4_heston_bayesflow.py`, cell by cell as above.
-2. Study S8-H: the Heston network's posterior and the exact chain on SPY, through `tutorial_final/studies/`, with an `ACCEPTED.json`; register its numbers in CLAIMS.md.
+2. Study S8-H: the Heston network's posterior and the exact chain on SPY, through `lab/studies/`, with an `ACCEPTED.json`; register its numbers in CLAIMS.md.
 3. Move the VOO notebook to `extras/`.
 4. Time the training cell on the presenter's laptop with the locked environment; set the number of live epochs to fit one minute.
 

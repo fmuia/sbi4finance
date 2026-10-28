@@ -31,11 +31,11 @@ The existing bank contains the main ingredients:
 
 “Clean” means before adding the observation noise used to simulate market quotes. Monte Carlo labels still have numerical uncertainty. Reusing these labels avoids another large pricing campaign for the initial grid emulator; independent higher-precision validation adds computation.
 
-Our current [implementation](../../src/sbi4finance/calibration/pricer_net.py) is a fully connected network with four hidden layers of 256 GELU units by default. Heston has four parameter inputs. The liquid rough task has three model parameters plus seven curve levels. Both predict the 63 design prices. Parameters are transformed into unconstrained coordinates, curve levels are logged, and training statistics standardize the inputs and outputs.
+Our current [implementation](../lab/src/sbi4finance/calibration/pricer_net.py) is a fully connected network with four hidden layers of 256 GELU units by default. Heston has four parameter inputs. The liquid rough task has three model parameters plus seven curve levels. Both predict the 63 design prices. Parameters are transformed into unconstrained coordinates, curve levels are logged, and training statistics standardize the inputs and outputs.
 
 Prices are first divided by the design quote-noise standard deviations. This makes held-out errors interpretable relative to the likelihood's precision. The implementation also standardizes those outputs during fitting, so the recorded standardized training loss is not itself a pricing error in quote-noise units. The `errors()` function reverses the learned standardization and reports the relevant scaled pricing errors.
 
-The source and recorded [Heston pricer comparison](../../tutorial_final/results/calibration/heston/s4-exact/pricer-route.json) already exist. The new full rough-bank emulator and its validation are work to perform; their accuracy does not follow from the Heston result.
+The source and recorded [Heston pricer comparison](../tutorial/assets/results/calibration/heston/s4-exact/pricer-route.json) already exist. The new full rough-bank emulator and its validation are work to perform; their accuracy does not follow from the Heston result.
 
 ## Using the emulator for a posterior
 
@@ -93,7 +93,7 @@ The current EWG neural proposal reads a 27-point layout derived on the design gr
 
 ## Current code and the adaptation still needed
 
-The present [S4 runner](../../tutorial_final/studies/pricer_route.py) uses a complete grid and, for liquid rough Bergomi, a supplied curve. Its `log_posterior()` wrapper has no general observed-indices argument and does not implement ten-dimensional curve inference. Missing-data-aware emulator MCMC is therefore an extension to build and test, rather than an existing capability of that wrapper.
+The present [S4 runner](../lab/studies/pricer_route.py) uses a complete grid and, for liquid rough Bergomi, a supplied curve. Its `log_posterior()` wrapper has no general observed-indices argument and does not implement ten-dimensional curve inference. Missing-data-aware emulator MCMC is therefore an extension to build and test, rather than an existing capability of that wrapper.
 
 The implementation returns `price / design_sigma`, not unscaled forward-unit prices. For another layout, reconstruct prices using the design scale, select observed contracts, then use that layout's actual noise. Tests should also enforce:
 
@@ -103,7 +103,7 @@ The implementation returns `price / design_sigma`, not unscaled forward-unit pri
 - Retain Gaussian normalization terms if the noise scale is inferred.
 - Use the correct joint prior and transformation Jacobians when the curve is inferred.
 
-The [thin-task code](../../src/sbi4finance/calibration/thin.py) supplies relevant priors, target definitions and noise conventions. The generic emulator wrapper still needs to connect them.
+The [thin-task code](../lab/src/sbi4finance/calibration/thin.py) supplies relevant priors, target definitions and noise conventions. The generic emulator wrapper still needs to connect them.
 
 ## What makes the comparison fair
 

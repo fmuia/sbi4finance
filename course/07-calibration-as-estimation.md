@@ -229,4 +229,4 @@ An inverse problem is **ill-posed**, in the sense of Hadamard, if its solution d
 - Levenberg, K. (1944). A method for the solution of certain non-linear problems in least squares. *Quarterly of Applied Mathematics* 2(2), 164–168.
 - Marquardt, D. W. (1963). An algorithm for least-squares estimation of nonlinear parameters. *Journal of the Society for Industrial and Applied Mathematics* 11(2), 431–441. [doi](https://doi.org/10.1137/0111030)
 
-Figures: `scripts/course/lecture09.py`.
+Figures: `course/scripts/lecture09.py`.

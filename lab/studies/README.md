@@ -1,7 +1,7 @@
 # Studies
 
 Each study writes one directory of results; every directory must be new. The one exception is `scripts/calibration_bank.py local --resume`, which keeps the finished shards of an interrupted local bank build. The
-numbers in `tutorial_final/CLAIMS.md` and in the [design document](../../docs/design/calibration-design-document.md)
+numbers in `tutorial/CLAIMS.md` and in the [design document](../../course/design-document/calibration-design-document.md)
 come from these outputs. Library code is in `src/sbi4finance/calibration/`.
 
 | ID | Script | What it produces |
@@ -23,7 +23,7 @@ come from these outputs. Library code is in `src/sbi4finance/calibration/`.
 | S10 | `thin_coverage.py` (`run`, `summarize`), `cluster/thin_coverage_array.sbatch` | Breach rates of every method's one-sided 90% bounds on simulated chains with the thin layout; with `--truths`, truths drawn from S11's posterior (S10-E) |
 | S11 | `thin_real.py` | A real thin chain (EWG): the audited posterior, products, classical fits, the predictive check, at several noise scales |
 | S2-1, S2-2 | `smile_facts.py` (`example`, `prior-predictive`) | The example surfaces at the centre of the prior, and the prior predictive check of four smile statistics |
-| – | `manifest.py` | Regenerates the artifact table of `tutorial_final/MANIFEST.md` from the files in `results/` and `checkpoints/` |
+| – | `manifest.py` | Refreshes the copies of quick-check outputs and figures in `tutorial/assets/`, then regenerates the artifact table of `tutorial/MANIFEST.md` from every file there |
 
 ## Order and test-split use
 
@@ -47,7 +47,7 @@ prior predictive check (`smile_facts.py`) also reads rows 0–999, for descripti
 ## Commands
 
 The runs still missing on the full bank, with their exact commands, costs and acceptance checks, are in
-[`../CLUSTER-RUNS.md`](../CLUSTER-RUNS.md). The commands below are the ones behind the accepted results; each run
+[`plans/CLUSTER-RUNS.md`](../plans/CLUSTER-RUNS.md). The commands below are the ones behind the accepted results; each run
 directory's JSON records its settings again. The pilot's S5 (22 October) priced all proposals of a surface on one
 seed and must be rerun with the current `audit.py`.
 
@@ -55,39 +55,39 @@ Heston (Stage A), on one machine (4 cores):
 
 ```bash
 python scripts/calibration_bank.py local --config configs/tasks/calibration_heston_bank.json --chunk 500 --workers 4 --out BANK
-python tutorial_final/studies/bank_quality.py --bank BANK --shards BANK-shards --out S1
-python tutorial_final/studies/smile_facts.py prior-predictive --bank BANK --out PRIOR-PREDICTIVE
-python tutorial_final/studies/train_calibration.py --bank BANK --out RUN --epochs 500 --batch-size 256 \
+python studies/bank_quality.py --bank BANK --shards BANK-shards --out S1
+python studies/smile_facts.py prior-predictive --bank BANK --out PRIOR-PREDICTIVE
+python studies/train_calibration.py --bank BANK --out RUN --epochs 500 --batch-size 256 \
     --fresh-noise --seed 0 --chunk-epochs 25 --time-alpha -0.5
-python tutorial_final/studies/heston_check.py --bank BANK --checkpoint RUN --out S3 --first 2000 --surfaces 50 \
+python studies/heston_check.py --bank BANK --checkpoint RUN --out S3 --first 2000 --surfaces 50 \
     --proposals 2048 --chain-surfaces 4 --chains 4 --steps 6000 --burn 1000 --workers 4
-python tutorial_final/studies/evaluate_calibration.py --bank BANK --checkpoint RUN --out S2 --surfaces 2000 --draws 1000
-python tutorial_final/studies/pricer_route.py --bank BANK --checkpoint RUN --out S4
-python tutorial_final/studies/classical_route.py --bank BANK --checkpoint RUN --out S6 --surfaces 200
-python tutorial_final/studies/products_study.py --bank BANK --checkpoint RUN --out S7 --surfaces 3 --draws 400
-python tutorial_final/studies/costs.py --out COSTS --heston-checkpoint RUN --heston-bank BANK --heston-check S3/heston-check.json
+python studies/evaluate_calibration.py --bank BANK --checkpoint RUN --out S2 --surfaces 2000 --draws 1000
+python studies/pricer_route.py --bank BANK --checkpoint RUN --out S4
+python studies/classical_route.py --bank BANK --checkpoint RUN --out S6 --surfaces 200
+python studies/products_study.py --bank BANK --checkpoint RUN --out S7 --surfaces 3 --draws 400
+python studies/costs.py --out COSTS --heston-checkpoint RUN --heston-bank BANK --heston-check S3/heston-check.json
 ```
 
 Rough Bergomi pilot (2,200 surfaces, `configs/tasks/calibration_rough_pilot.json`), on the same machine:
 
 ```bash
 python scripts/calibration_bank.py local --config configs/tasks/calibration_rough_pilot.json --chunk 25 --workers 2 --out PILOT --resume
-python tutorial_final/studies/bank_quality.py --bank PILOT --shards PILOT-shards --out S1
-python tutorial_final/studies/smile_facts.py prior-predictive --bank PILOT --out PRIOR-PREDICTIVE --split test --surfaces 400
-python tutorial_final/studies/train_calibration.py --bank PILOT --out RUN --epochs 1000 --batch-size 128 \
+python studies/bank_quality.py --bank PILOT --shards PILOT-shards --out S1
+python studies/smile_facts.py prior-predictive --bank PILOT --out PRIOR-PREDICTIVE --split test --surfaces 400
+python studies/train_calibration.py --bank PILOT --out RUN --epochs 1000 --batch-size 128 \
     --fresh-noise --seed 0 --chunk-epochs 100 --time-alpha -0.5
-python tutorial_final/studies/evaluate_calibration.py --bank PILOT --checkpoint RUN --out S2 --surfaces 250 --draws 1000
-python tutorial_final/studies/audit.py --bank PILOT --checkpoint RUN --out S5 --first 250 --surfaces 40 --proposals 256 \
+python studies/evaluate_calibration.py --bank PILOT --checkpoint RUN --out S2 --surfaces 250 --draws 1000
+python studies/audit.py --bank PILOT --checkpoint RUN --out S5 --first 250 --surfaces 40 --proposals 256 \
     --paths 8192 --workers 4
-python tutorial_final/studies/products_study.py --bank PILOT --checkpoint RUN --out S7 --first 290 --surfaces 3 --draws 400 \
+python studies/products_study.py --bank PILOT --checkpoint RUN --out S7 --first 290 --surfaces 3 --draws 400 \
     --starts 4 --least-squares-paths 8192 --workers 4
-python tutorial_final/studies/classical_route.py --bank PILOT --checkpoint RUN --out S6 --first 293 --surfaces 8 --starts 10 \
+python studies/classical_route.py --bank PILOT --checkpoint RUN --out S6 --first 293 --surfaces 8 --starts 10 \
     --least-squares-paths 8192 --landscape-points 21 --workers 4
-python tutorial_final/studies/across_models.py --rough-bank PILOT --rough-products S7 --heston-checkpoint HESTON-RUN \
+python studies/across_models.py --rough-bank PILOT --rough-products S7 --heston-checkpoint HESTON-RUN \
     --out S7-ACROSS
 ```
 
-`accept.py` then copies a finished run into `results/calibration/` (`--keep-surfaces 20`
+`accept.py` then copies a finished run into `tutorial/assets/results/calibration/` (`--keep-surfaces 20`
 trims the stored draws), and `claims.py` and `manifest.py` regenerate the claims table and
 the artifact table.
 

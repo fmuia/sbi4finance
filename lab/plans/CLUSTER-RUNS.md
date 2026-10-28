@@ -1,18 +1,20 @@
 # Cluster runs still missing
 
+**Paths.** Every command below runs from `lab/`, and cluster jobs are submitted from `lab/`; paths that start with `tutorial/` or `course/` are from the repository root.
+
 For the proposed next campaign, start with the [numerical experiment plan](NUMERICAL-EXPERIMENT-PLAN.md) and [protocol](EXPERIMENT-PROTOCOL.md). They add the BayesFlow 2.1 migration, safe resumes, architecture comparisons and reference checks. The baseline commands below need the planned environment/API/test updates before they are used for that campaign; the planning PR does not submit these jobs.
 
 **Current campaign scope:** complete-grid Heston and complete-grid joint rough Bergomi only. Finish their checked training/inference/product workflows and tutorial packaging first. Sparse-chain support is a separate downstream unit requiring further specification; **R4 and R7–R9 below are deferred**, and their thin checkpoint acceptance is not a core release requirement. Mask-conditioned training and missing-quote adapters are not prerequisites.
 
 **Rough task change:** the new primary complete-grid rough example jointly infers H, eta, rho and three Heston-shaped curve coefficients. The commands/configs below still describe the earlier supplied/seven-level curve programme. Do not queue its full bank as the new task's first tranche: complete the bounded curve-family check, freeze its prior/numerical definition, implement the new generator/adapter and run its pilot first. Existing rough data/results retain their original labels. Heston bank reuse and incremental shard machinery remain useful.
 
-**Prefer PyMC where it fits naturally.** The reference and course scripts below include custom samplers, which can remain for specialized examples or where migration would add disproportionate cost. Document the actual method, reason, validation and limitations; see [the MCMC policy](../docs/mcmc-policy.md). Assess a bounded core PyMC route without making wholesale migration a prerequisite for the campaign. Historical results keep their original provenance.
+**Prefer PyMC where it fits naturally.** The reference and course scripts below include custom samplers, which can remain for specialized examples or where migration would add disproportionate cost. Document the actual method, reason, validation and limitations; see [the MCMC policy](mcmc-policy.md). Assess a bounded core PyMC route without making wholesale migration a prerequisite for the campaign. Historical results keep their original provenance.
 
 24 October 2026. For whoever runs Oscar jobs next. Every run below is missing: nothing in
-`tutorial_final/results/` comes from the full bank yet. The plan behind the runs is
-[`docs/course/v2-plan.md`](../docs/course/v2-plan.md), and what the results decide is in Lecture 16, Section 16.8
-([`docs/course/16-a-thin-chain-ewg.md`](../docs/course/16-a-thin-chain-ewg.md)); the scripts are described in
-[`studies/README.md`](studies/README.md).
+`tutorial/assets/results/` comes from the full bank yet. The plan behind the runs is
+[`course/v2-plan.md`](../../course/v2-plan.md), and what the results decide is in Lecture 16, Section 16.8
+([`course/16-a-thin-chain-ewg.md`](../../course/16-a-thin-chain-ewg.md)); the scripts are described in
+[`studies/README.md`](../studies/README.md).
 
 All costs are in CPU-hours on this project's 2-core container; Oscar's cores may be up to about 30% faster or
 slower. Every script that takes `--out` needs a new directory, so a rerun goes to a new one, except three that
@@ -59,7 +61,7 @@ The historical programme totals about 930 CPU-hours and two GPU jobs. Its origin
    pixi run python -c "import json; from sbi4finance.calibration import bank; \
        print(bank.task_fingerprint(json.load(open('configs/tasks/calibration_rough_bank.json'))))"
    # must print d338d49829889af5c95f89c02e840d293422a55221e8bb65cb999ff8db73b45a
-   PYTHONPATH=src pixi run python -m pytest -q tests/test_calibration.py tests/test_thin.py
+   pixi run python -m unittest tests/test_calibration.py tests/test_thin.py
    ```
 4. **Paths used below.** `export RUNS=/oscar/data/<lab>/$USER/sbi4finance-runs` and `BANK=$RUNS/rough-bank`.
    Run every command from the checkout's root.
@@ -105,11 +107,11 @@ every array.
 ## R2. S1 and S1-G: checks of the bank
 
 ```bash
-sbatch --mem=48G --time=02:00:00 cluster/study.sbatch python tutorial_final/studies/bank_quality.py \
+sbatch --mem=48G --time=02:00:00 cluster/study.sbatch python studies/bank_quality.py \
     --bank $BANK --shards $RUNS/rough-shards --out $RUNS/s1
-sbatch --mem=16G --time=01:00:00 cluster/study.sbatch python tutorial_final/studies/smile_facts.py \
+sbatch --mem=16G --time=01:00:00 cluster/study.sbatch python studies/smile_facts.py \
     prior-predictive --bank $BANK --out $RUNS/s1-prior-predictive --split test --surfaces 1000
-sbatch --time=02:00:00 cluster/study.sbatch python tutorial_final/studies/grid_bias.py --bank $BANK \
+sbatch --time=02:00:00 cluster/study.sbatch python studies/grid_bias.py --bank $BANK \
     --out $RUNS/s1g --first 6000 --surfaces 50 --workers 16
 ```
 
@@ -128,7 +130,7 @@ the number.
 ```bash
 sbatch cluster/train_calibration.sbatch --bank $BANK --out $RUNS/s2-train --epochs 300 --batch-size 256 \
     --fresh-noise --chunk-epochs 25 --time-alpha -0.5 --seed 0
-sbatch --mem=16G --time=02:00:00 cluster/study.sbatch python tutorial_final/studies/evaluate_calibration.py \
+sbatch --mem=16G --time=02:00:00 cluster/study.sbatch python studies/evaluate_calibration.py \
     --bank $BANK --checkpoint $RUNS/s2-train --out $RUNS/s2 --surfaces 2000 --draws 1000
 ```
 
@@ -146,7 +148,7 @@ sbatch --mem=16G --time=02:00:00 cluster/study.sbatch python tutorial_final/stud
 sbatch cluster/train_calibration.sbatch --bank $BANK --out $RUNS/s2t-train --thin-layout configs/thin/ewg_layout.json \
     --widths 512,512,512,512 --epochs 300 --batch-size 256 --chunk-epochs 25 --time-alpha -0.5 --seed 0
 for s in 1 0.5 2; do
-  sbatch --mem=16G --time=02:00:00 cluster/study.sbatch python tutorial_final/studies/evaluate_thin.py \
+  sbatch --mem=16G --time=02:00:00 cluster/study.sbatch python studies/evaluate_thin.py \
       --bank $BANK --checkpoint $RUNS/s2t-train --out $RUNS/s2t-scale-$s --first 4000 --surfaces 2000 --scale $s
 done
 ```
@@ -159,7 +161,7 @@ R3, a longer training goes to a new directory, and the later commands then use i
 ## R5. S5: the audit of the liquid network
 
 ```bash
-sbatch --cpus-per-task=48 --mem=48G --time=12:00:00 cluster/study.sbatch python tutorial_final/studies/audit.py \
+sbatch --cpus-per-task=48 --mem=48G --time=12:00:00 cluster/study.sbatch python studies/audit.py \
     --bank $BANK --checkpoint $RUNS/s2-train --out $RUNS/s5 --first 2500 --surfaces 50 --proposals 512 \
     --paths 32768 --workers 48
 # after a look at the first 50 surfaces: the same command with --surfaces 200 audits the other 150
@@ -181,8 +183,8 @@ sbatch --cpus-per-task=48 --mem=48G --time=12:00:00 cluster/study.sbatch python 
 ## R6. S8: SPY
 
 ```bash
-sbatch --time=04:00:00 cluster/study.sbatch python tutorial_final/studies/real_smile.py \
-    --checkpoint $RUNS/s2-train --surface tutorial_final/results/calibration/spy/surface.json --out $RUNS/s8 \
+sbatch --time=04:00:00 cluster/study.sbatch python studies/real_smile.py \
+    --checkpoint $RUNS/s2-train --surface tutorial/assets/results/calibration/spy/surface.json --out $RUNS/s8 \
     --workers 16
 ```
 
@@ -194,8 +196,8 @@ quotes.
 ## R7. S11: EWG's own chain
 
 ```bash
-sbatch --time=04:00:00 cluster/study.sbatch python tutorial_final/studies/thin_real.py \
-    --checkpoint $RUNS/s2t-train --observation tutorial_final/checks/thin_chains/EWG_observation.json \
+sbatch --time=04:00:00 cluster/study.sbatch python studies/thin_real.py \
+    --checkpoint $RUNS/s2t-train --observation checks/thin_chains/EWG_observation.json \
     --out $RUNS/s11 --scales 1,0.5,2 --workers 16
 ```
 
@@ -210,7 +212,7 @@ forward and NYSE trading days (`checks/thin_chains/build_layout.py`).
 sbatch --array=0-4 cluster/thin_coverage_array.sbatch $BANK $RUNS/s2t-train $RUNS/s10 3000 100
 # after a look at the first 500 chains:
 sbatch --array=5-9 cluster/thin_coverage_array.sbatch $BANK $RUNS/s2t-train $RUNS/s10 3000 100
-pixi run python tutorial_final/studies/thin_coverage.py summarize --out $RUNS/s10
+pixi run python studies/thin_coverage.py summarize --out $RUNS/s10
 ```
 
 - About 11 CPU-minutes a chain (9.5 on the test bank, plus the audit's pilot pricings), so one task of 100 chains
@@ -224,11 +226,11 @@ pixi run python tutorial_final/studies/thin_coverage.py summarize --out $RUNS/s1
 
 ```bash
 for i in 0 1 2; do
-  sbatch --cpus-per-task=16 --time=04:00:00 cluster/study.sbatch python tutorial_final/studies/thin_coverage.py run \
+  sbatch --cpus-per-task=16 --time=04:00:00 cluster/study.sbatch python studies/thin_coverage.py run \
       --truths $RUNS/s11/draws.npz --checkpoint $RUNS/s2t-train --out $RUNS/s10e --start $((100*i)) \
       --stop $((100*i+100)) --workers 16
 done
-pixi run python tutorial_final/studies/thin_coverage.py summarize --out $RUNS/s10e
+pixi run python studies/thin_coverage.py summarize --out $RUNS/s10e
 ```
 
 The truths are drawn from EWG's audited posterior, not from the prior. The posterior's coverage is then not
@@ -247,12 +249,12 @@ Use the commands of `studies/README.md` (section "Rough Bergomi (Stage B)") with
 Copy each accepted run into the repository and regenerate the tables:
 
 ```bash
-python tutorial_final/studies/accept.py --checkpoint $RUNS/s2-train --to checkpoints/rough
-python tutorial_final/studies/accept.py --checkpoint $RUNS/s2t-train --to checkpoints/rough-thin-ewg
-python tutorial_final/studies/accept.py --run $RUNS/s2 --to results/calibration/rough/s2 --keep-surfaces 20
+python studies/accept.py --checkpoint $RUNS/s2-train --to checkpoints/rough
+python studies/accept.py --checkpoint $RUNS/s2t-train --to checkpoints/rough-thin-ewg
+python studies/accept.py --run $RUNS/s2 --to results/calibration/rough/s2 --keep-surfaces 20
 # likewise: s1, s1-prior-predictive, s1g, s2t-scale-1 (and 0.5, 2), s5, s10, s10e
 #   -> results/calibration/rough/<name>; s8 -> results/calibration/spy/s8; s11 -> results/calibration/ewg/s11
-python tutorial_final/studies/claims.py && python tutorial_final/studies/manifest.py
+python studies/claims.py && python studies/manifest.py
 ```
 
 Where a run was redone into a new directory (`s2-train-600`, `s8-4096`, `s11-4096`), accept that directory instead,

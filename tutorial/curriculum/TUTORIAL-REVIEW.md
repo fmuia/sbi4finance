@@ -18,19 +18,19 @@ neural posterior do not by themselves establish that amortized inference is the
 best tool for a particular workload. The tutorial will be stronger if it teaches
 that decision openly, including situations where another method is sufficient.
 
-The [curriculum overview](curriculum/00-overview.md) provides a coherent sequence.
-The sixteen-lecture [course](../docs/course/README.md) should remain supporting
+The [curriculum overview](00-overview.md) provides a coherent sequence.
+The sixteen-lecture [course](../../course/README.md) should remain supporting
 material, with only the concepts needed for the live task introduced on stage.
 
 ## Follow-up self-review: keep the tutorial small
 
 The plan had accumulated a tutorial release, a broad architecture benchmark, sparse-chain support and direct rough-inference research. Separate them. The selected core teaching path is complete-grid Heston with four inferred parameters, followed by complete-grid rough Bergomi with six jointly inferred parameters and a Heston-shaped initial mean-variance curve. Retain the bounded four-family/encoder screen and confirm only the two selected configurations across three seeds. Complete data, training, reload, inference, numerical/reference checks, product uncertainty and participant packaging before starting sparse-chain work. No quote-subset adapter, mask-conditioned training or arbitrary-chain support is a prerequisite. One bounded check against the published hump-capable curve family precedes substantial rough generation.
 
-Sparse-chain inference is a separate downstream unit of work that needs its own input/layout, missingness, training and validation specification before implementation. Preserve the existing [case plan](SPARSE-QUOTE-CASE-PLAN.md) as its starting point, rather than promising a sparse lesson in this release. Supplied-curve rough fits, runner-up campaigns, direct rough MCMC and broad reserve-coverage claims remain separate extensions.
+Sparse-chain inference is a separate downstream unit of work that needs its own input/layout, missingness, training and validation specification before implementation. Preserve the existing [case plan](../../lab/plans/SPARSE-QUOTE-CASE-PLAN.md) as its starting point, rather than promising a sparse lesson in this release. Supplied-curve rough fits, runner-up campaigns, direct rough MCMC and broad reserve-coverage claims remain separate extensions.
 
 The incremental-bank and recovery safeguards address real duplicate-ID, interrupted-write, memory and changed-dataset failure modes. Keep the tested primitives rather than rewriting them to reduce line count, and stop expanding the infrastructure unless a pilot exposes a concrete need. Collection/recovery machinery belongs in instructor tools; participants should use supplied data/checkpoints and follow the inference workflow. The infrastructure's passing mocked tests are not scientific validation. Prioritize actual pricing refinement, independent holdouts, calibrated/conditionally checked posteriors, matched baselines and an honest product/cost figure over more framework work.
 
-The [central plan](NUMERICAL-EXPERIMENT-PLAN.md#tutorial-scope-after-self-review) and [protocol](EXPERIMENT-PROTOCOL.md#training-comparisons) reflect the reduced programme. No new tracking system or additional planning document is needed.
+The [central plan](../../lab/plans/NUMERICAL-EXPERIMENT-PLAN.md#tutorial-scope-after-self-review) and [protocol](../../lab/plans/EXPERIMENT-PROTOCOL.md#training-comparisons) reflect the reduced programme. No new tracking system or additional planning document is needed.
 
 ## What already works well
 
@@ -46,7 +46,7 @@ The [central plan](NUMERICAL-EXPERIMENT-PLAN.md#tutorial-scope-after-self-review
   pricing makes the trade-off between simulation, training and repeated inference
   tangible. Training data, computation and accuracy all have visible costs.
 - **The evidence ledger is unusually useful.** The
-  [study status](../docs/course/status.md) and [claims ledger](CLAIMS.md) distinguish
+  [study status](../../course/status.md) and [claims ledger](../CLAIMS.md) distinguish
   completed studies, pilot results and pending evidence. Retain this discipline
   when new architectures and BayesFlow versions are added.
 
@@ -71,11 +71,11 @@ justification: many of those evaluations are needed to validate the amortizer we
 introduced. Put an operational workload and an honest break-even calculation
 beside it.
 
-[Slot 2](curriculum/02-slot2-amortized-bayes.md) should compare total costs against
+[Slot 2](02-slot2-amortized-bayes.md) should compare total costs against
 both a good classical proposal with importance sampling and a validated neural
 pricer with MCMC. The cost must include bank generation, training, warm-up and any
 audit applied to each query. The
-[course plan, Section 2.4](../docs/course/v2-plan.md#24-why-simulation-based-inference)
+[course plan, Section 2.4](../../course/v2-plan.md#24-why-simulation-based-inference)
 already acknowledges these competitors; make that comparison central on stage.
 
 If either competitor matches the accuracy and total cost of the intended
@@ -112,7 +112,7 @@ as a full description of calibration uncertainty.
 Use matched priors, observed information, noise and numerical accuracy when
 comparing methods. Include a small prior/noise sensitivity check in the core
 full-grid examples. In the separate sparse-chain unit, the alternative laws for the unquoted curve level in
-[Lecture 16, Sections 16.4–16.5](../docs/course/16-a-thin-chain-ewg.md)
+[Lecture 16, Sections 16.4–16.5](../../course/16-a-thin-chain-ewg.md)
 are important. Keep the favourable prior-generated case and the deliberately
 misspecified cases together; neither alone settles comparative performance.
 
@@ -132,7 +132,7 @@ market adequacy from one date.
   references. Label surrogate-MCMC and finite Monte Carlo targets precisely.
   The current rough-MCMC cost extrapolation is not a measured completed chain.
 - **Model criticism:** violating Heston's Feller condition does not invalidate
-  the model. [Lecture 10, Section 10.2](../docs/course/10-heston.md)
+  the model. [Lecture 10, Section 10.2](../../course/10-heston.md)
   correctly explains this. Carry that distinction into the live handoff and use
   product or predictive discrepancies as the substantive evidence. Fixing mean
   reversion at two also restricts the Heston comparison. Show the existing
@@ -140,7 +140,7 @@ market adequacy from one date.
   the mismatch to the whole Heston family or arguing that roughness is necessary.
 - **Uncertainty:** the proposed product quantile is a conditional, within-model
   uncertainty measure. The course's
-  [three ranges](../docs/course/06-marking-a-product-the-smile-does-not-quote.md#67-three-ranges-and-baselines-that-fix-what-the-quotes-do-not)
+  [three ranges](../../course/06-marking-a-product-the-smile-does-not-quote.md#67-three-ranges-and-baselines-that-fix-what-the-quotes-do-not)
   explain why it does not cover every source of valuation uncertainty. Avoid
   implying that one posterior quantile automatically establishes a complete
   prudent-valuation or regulatory-compliance procedure.
@@ -169,7 +169,7 @@ dependence and prior/noise sensitivity while keeping every declared quote
 available. A suitable market case can illustrate the workflow if its preprocessing
 and observation assumptions are explicit; it is not required to introduce sparse
 support. EWG remains historical evidence for the downstream sparse-chain unit,
-whose specification starts from the [case plan](SPARSE-QUOTE-CASE-PLAN.md).
+whose specification starts from the [case plan](../../lab/plans/SPARSE-QUOTE-CASE-PLAN.md).
 Keep architecture comparisons in a compact results
 panel and the take-home material. Each participant should finish with one
 sentence naming the data, unknowns, inference approximation, validation result
