@@ -1,11 +1,12 @@
 import json, sys
 from pathlib import Path
 import numpy as np
+HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
 from sbi4finance.calibration.plots import BASELINE, INK, SERIES, plt, style
 import long_end as L
 style()
-r = json.load(open("long_end.json")); x = json.load(open("long_end_extra.json"))
+r = json.load(open(HERE / "long_end.json")); x = json.load(open(HERE / "long_end_extra.json"))
 spy = L.SPY
 fig = plt.figure(figsize=(13.0, 4.4), constrained_layout=True)
 gs = fig.add_gridspec(1, 3, width_ratios=[1.35, 1.25, 1.0])
@@ -73,4 +74,4 @@ ax.set_ylabel("share of the posterior variance (%)")
 ax.set_title("where the range comes from", loc="left", fontsize=9)
 ax.legend(fontsize=6.3, loc="upper left")
 ax.set_ylim(0, 135)
-fig.savefig("long_end.png", dpi=160)
+fig.savefig(HERE / "long_end.png", dpi=160)

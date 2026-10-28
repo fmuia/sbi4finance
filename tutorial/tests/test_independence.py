@@ -34,9 +34,13 @@ class IndependenceTests(unittest.TestCase):
     def test_code_neither_edits_sys_path_nor_climbs_out_of_tutorial(self):
         for path in CODE:
             text = path.read_text()
+            levels = len(path.relative_to(TUTORIAL).parts) - 1  # parents[levels] is tutorial/ itself
             with self.subTest(path=str(path.relative_to(TUTORIAL))):
                 self.assertNotRegex(text, r"sys\.path\.(insert|append)")
-                self.assertNotRegex(text, r"ROOT\.parent|\.parent\.parent|notebook_dir\(\)\.parent\.parent")
+                self.assertNotRegex(text, r"ROOT\.parent|\.parent\.parent")
+                self.assertNotRegex(text, r"""["']\.\.(["'/\\]|$)""", "a parent-directory path component")
+                for level in re.findall(r"parents\[(\d+)\]", text):
+                    self.assertLessEqual(int(level), levels, f"parents[{level}] is above tutorial/")
 
     def test_every_asset_matches_the_manifest(self):
         rows = re.findall(r"^\| `([^`]+)` \| ([\d,]+) \| `([0-9a-f]{64})` \|", (TUTORIAL / "MANIFEST.md").read_text(), re.M)

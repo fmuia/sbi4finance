@@ -6,12 +6,12 @@ relative to `tutorial/assets/`.
 
 ## How a file enters `tutorial/assets/`
 
-Every file is written by a lab tool, never by hand:
+Every file is written by a tool, never by hand:
 
 | Folder | What | Written by |
 |---|---|---|
-| `results/calibration/` | Accepted study results (S1 to S9) | `lab/studies/accept.py`, which adds `ACCEPTED.json`: the source run, the SHA-256 of every source file and every change made |
-| `checkpoints/` | Trained networks | `lab/studies/accept.py`, with the optimizer state removed and same-seed draws checked identical |
+| `results/calibration/` | Accepted study results (S1 to S9) | `lab/studies/accept.py`, which adds `ACCEPTED.json`: the source run, the SHA-256 of every source file and every change made. Two folders predate that record: `smile/` and `heston/prior-predictive/`, written by `lab/studies/smile_facts.py` (S2-1, S2-2); their next run goes through `accept.py` |
+| `checkpoints/` | Trained networks | `lab/studies/accept.py`, with the optimizer state removed and same-seed draws checked identical. The exception is `slot2-toy/`, slot 2's small network: the notebook trains it (about 30 seconds) and saves it only when the file is missing, and a live run never replaces it. To retrain it, delete the file, run the notebook once, then run `pixi run manifest` in `lab/` |
 | `data/` | The exact Heston posterior on SPY (a feasibility run, not an accepted study) | `lab/checks/heston_spy_exact.py` |
 | `quick-checks/`, `tasks/`, `images/` | Outputs of the lab's quick checks, the rough-Bergomi task file and two figures | `lab/studies/manifest.py`, as copies of the files named in the last column of the table |
 

@@ -6,9 +6,7 @@ copied function that differs from the lab's, a name the runtime uses but does no
 not the lab's, or a stale asset fails here before it reaches the stage.
 """
 
-import ast
 import builtins
-import copy
 import dis
 import importlib
 import importlib.util
@@ -36,58 +34,18 @@ from sbi4f_tutorial import teaching as t_teaching  # noqa: E402
 from sbi4finance.calibration import inference, surface, tasks, teaching  # noqa: E402
 
 RUNTIME = REPO / "tutorial" / "src" / "sbi4f_tutorial"
+
+
+def lab_module(path, name):
+    spec = importlib.util.spec_from_file_location(name, path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+COPY = lab_module(LAB / "studies" / "copy_to_tutorial.py", "lab_copy_to_tutorial")
 HESTON_TASK = json.loads((REPO / "tutorial" / "assets" / "checkpoints" / "heston" / "task.json").read_text())
 SPY = json.loads((REPO / "tutorial" / "assets" / "results" / "calibration" / "spy" / "surface.json").read_text())
-
-# The lab file each runtime module copies from. A definition there under the same name must be the same code,
-# statement for statement; docstrings, comments and import paths may differ.
-COPIED_FROM = {
-    "bergomi": "src/sbi4finance/bergomi.py",
-    "bs_hierarchy": "checks/bs_hierarchy.py",
-    "gbm": "src/sbi4finance/gbm.py",
-    "hkde": "src/sbi4finance/hkde.py",
-    "inference": "src/sbi4finance/calibration/inference.py",
-    "long_end": "checks/long_end/long_end.py",
-    "plots": "src/sbi4finance/svj/plots.py",
-    "pricing": "src/sbi4finance/calibration/pricing.py",
-    "rough_bergomi": "src/sbi4finance/rough_bergomi.py",
-    "surface": "src/sbi4finance/calibration/surface.py",
-    "tasks": "src/sbi4finance/calibration/tasks.py",
-    "teaching": "src/sbi4finance/calibration/teaching.py",
-}
-# Everything else in the runtime is written for the tutorial, for the reason given.
-WRITTEN_FOR_THE_TUTORIAL = {
-    "paths": "where tutorial/assets/ is",
-    "why_bayes": "slot 1's toy example; the lab no longer uses it (archived at 574b940)",
-    "tasks.rough_task": "reads the task the lab stored, instead of building it",
-    "inference._checked_task": "checks a task's keys; the lab validated the shipped tasks (test below)",
-    "long_end.ROUGH": "reads tutorial/assets/",
-    "long_end.SPY": "reads tutorial/assets/",
-    "long_end.TASK": "reads tutorial/assets/",
-}
-
-
-def definitions(path):
-    """Top-level functions, classes and single-name assignments of a file, by name."""
-    found = {}
-    for node in ast.parse(Path(path).read_text()).body:
-        if isinstance(node, (ast.FunctionDef, ast.ClassDef)):
-            found[node.name] = node
-        elif isinstance(node, ast.Assign) and len(node.targets) == 1 and isinstance(node.targets[0], ast.Name):
-            found[node.targets[0].id] = node
-    return found
-
-
-def code_of(node):
-    """The node without docstrings, with relative and package imports written alike."""
-    node = copy.deepcopy(node)
-    for inner in ast.walk(node):
-        if isinstance(inner, (ast.FunctionDef, ast.ClassDef)) and isinstance(inner.body[0], ast.Expr) \
-                and isinstance(inner.body[0].value, ast.Constant) and isinstance(inner.body[0].value.value, str):
-            inner.body = inner.body[1:] or [ast.Pass()]
-        elif isinstance(inner, ast.ImportFrom):
-            inner.module, inner.level = inner.module and inner.module.rsplit(".", 1)[-1], 0
-    return ast.dump(node)
 
 
 def global_names(code):
@@ -99,28 +57,11 @@ def global_names(code):
     return names
 
 
-def lab_module(path, name):
-    spec = importlib.util.spec_from_file_location(name, path)
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    return module
 
 
 class CopyTests(unittest.TestCase):
     def test_copied_definitions_are_the_labs(self):
-        for module in sorted(p.stem for p in RUNTIME.glob("*.py") if p.stem != "__init__"):
-            if module in WRITTEN_FOR_THE_TUTORIAL:
-                continue
-            self.assertIn(module, COPIED_FROM, f"say where sbi4f_tutorial/{module}.py comes from")
-            lab = definitions(LAB / COPIED_FROM[module])
-            for name, node in definitions(RUNTIME / f"{module}.py").items():
-                with self.subTest(definition=f"{module}.{name}"):
-                    if f"{module}.{name}" in WRITTEN_FOR_THE_TUTORIAL:
-                        continue
-                    self.assertIn(name, lab, f"not in lab/{COPIED_FROM[module]}: copy it from there, "
-                                             "or list it in WRITTEN_FOR_THE_TUTORIAL")
-                    self.assertEqual(code_of(node), code_of(lab[name]),
-                                     f"differs from lab/{COPIED_FROM[module]}: copy the lab's version")
+        self.assertEqual(COPY.differences(), [], "run: pixi run copy-to-tutorial")
 
     def test_every_global_name_the_runtime_uses_is_defined(self):
         for info in pkgutil.iter_modules([str(RUNTIME)]):
@@ -130,7 +71,7 @@ class CopyTests(unittest.TestCase):
                     with self.subTest(function=f"{info.name}.{name}"):
                         missing = {n for n in global_names(function.__code__)
                                    if n not in vars(module) and not hasattr(builtins, n)}
-                        self.assertEqual(missing, set(), "copy these from the lab too")
+                        self.assertEqual(missing, set(), "run: pixi run copy-to-tutorial --add MODULE.NAME")
 
     def test_the_shipped_tasks_are_the_labs(self):
         self.assertEqual(t_tasks.rough_task(), tasks.rough_task())

@@ -109,12 +109,12 @@ pixi run -e gpu python -c "import jax; print(jax.devices())"   # prints CpuDevic
 ## Step 4: submit, then watch
 
 ```bash
-cd lab
+# from sbi4finance/lab, where Step 3 ended
 sbatch cluster/train_calibration.sbatch --bank $BANK --out $RUNS/s2-train --epochs 300 --batch-size 256
 sbatch --account=<acct> --partition=<part> cluster/study.sbatch python studies/evaluate_calibration.py ...
 squeue -u $USER
 sacct -j <job_id> --format=JobID,State,Elapsed,MaxRSS
-tail -f sbi4finance-train-<job_id>.out
+tail -f sbi4finance-train-calibration-<job_id>.out
 ```
 
 `sbatch` flags override `#SBATCH` lines; arguments after

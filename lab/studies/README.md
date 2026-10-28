@@ -24,6 +24,7 @@ come from these outputs. Library code is in `src/sbi4finance/calibration/`.
 | S11 | `thin_real.py` | A real thin chain (EWG): the audited posterior, products, classical fits, the predictive check, at several noise scales |
 | S2-1, S2-2 | `smile_facts.py` (`example`, `prior-predictive`) | The example surfaces at the centre of the prior, and the prior predictive check of four smile statistics |
 | – | `manifest.py` | Refreshes the copies of quick-check outputs, task files and figures in `tutorial/assets/`, then regenerates the artifact table of `tutorial/MANIFEST.md` from every file there |
+| – | `copy_to_tutorial.py` | Refreshes the tutorial's copies of lab code in `tutorial/src/sbi4f_tutorial/` (`pixi run copy-to-tutorial`; `--add MODULE.NAME` copies a new function, `--check` only reports the copies that differ) |
 
 ## Order and test-split use
 

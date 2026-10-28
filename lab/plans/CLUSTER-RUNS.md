@@ -64,7 +64,7 @@ The historical programme totals about 930 CPU-hours and two GPU jobs. Its origin
    pixi run python -m unittest tests/test_calibration.py tests/test_thin.py
    ```
 4. **Paths used below.** `export RUNS=/oscar/data/<lab>/$USER/sbi4finance-runs` and `BANK=$RUNS/rough-bank`.
-   Run every command from the checkout's root.
+   Run every command from `lab/` in the checkout.
 
 ## R0. Environment check: the mini-pilot
 
@@ -184,7 +184,7 @@ sbatch --cpus-per-task=48 --mem=48G --time=12:00:00 cluster/study.sbatch python 
 
 ```bash
 sbatch --time=04:00:00 cluster/study.sbatch python studies/real_smile.py \
-    --checkpoint $RUNS/s2-train --surface tutorial/assets/results/calibration/spy/surface.json --out $RUNS/s8 \
+    --checkpoint $RUNS/s2-train --surface ../tutorial/assets/results/calibration/spy/surface.json --out $RUNS/s8 \
     --workers 16
 ```
 

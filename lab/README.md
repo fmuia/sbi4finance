@@ -21,7 +21,7 @@ pixi run test                  # unit tests and the tutorial parity tests
 | `src/sbi4finance/` | The simulators the library uses: `rough_bergomi.py` and `bergomi.py` (hybrid scheme, conditional put estimator), `hkde.py` (the Heston Fourier pricer, used with jumps off) and `heston.py` (Heston paths) |
 | `configs/tasks/` | Task and bank configurations: Heston (50,000 / 5,000 / 5,000 smiles, seed 2610), rough Bergomi (100,000 / 5,000 / 7,000, seed 2611), the rough pilot (1,600 / 200 / 400, seed 2612) and the 200-smile mini-pilot |
 | `scripts/` | `calibration_bank.py` (`config`, `job-map`, `shard`, `assemble`, `local`): banks, locally or as Oscar arrays. `build_surface.py`: a real chain read onto the design grid (study S8) |
-| `studies/` | Studies S1 to S9 and the release tools `accept.py`, `manifest.py` and `claims.py`; [studies/README.md](studies/README.md) gives each study's command and test rows |
+| `studies/` | Studies S1 to S9 and the release tools `accept.py`, `manifest.py`, `claims.py` and `copy_to_tutorial.py`; [studies/README.md](studies/README.md) gives each study's command and test rows |
 | `checks/` | Quick checks behind the "why Bayes" material and the course: not accepted studies; [checks/README.md](checks/README.md) |
 | `cluster/` | Oscar: lane discovery, bank arrays, network training, one generic study job. Submit every job from `lab/` |
 | `tests/` | Unit tests, and `test_tutorial_parity.py`, which checks that the tutorial's copies of this code are unchanged and return the same numbers |
@@ -54,15 +54,17 @@ copy is stale.
 ## Rules
 
 - Library code lives here once, with tests. When a notebook needs a computation live, copy the functions unchanged
-  into the module of the same name in `tutorial/src/sbi4f_tutorial/`. `tests/test_tutorial_parity.py` fails when a
-  copy differs from the code here, or returns different numbers; after changing a copied function, copy it again.
+  into the module of the same name in `tutorial/src/sbi4f_tutorial/` with `pixi run copy-to-tutorial --add
+  MODULE.NAME`. `tests/test_tutorial_parity.py` fails when a copy differs from the code here, or returns different
+  numbers; after changing a copied function, `pixi run copy-to-tutorial` copies it again.
 - Prefer PyMC for reference MCMC where it fits naturally; the [MCMC policy](plans/mcmc-policy.md) lists the
   exceptions and what every chain must record.
 - Every result records the task fingerprint, the bank manifest's SHA-256 and, where a network was used, the
   checkpoint's SHA-256. Banks, model payloads and full posterior draws stay on Oscar, with their identities in git.
   How much of each run's raw output belongs in git is an open decision (see the repository README).
-- `course/scripts/` runs in this environment: `pixi run python ../course/scripts/lecture09.py` redraws a lecture's
-  figures, and `pixi run course-check` checks the course plan's numbers against the stored results.
+- `course/scripts/` runs in this environment: `pixi run python ../course/scripts/lecture08.py` redraws a lecture's
+  figures (the last figure of `lecture09.py` also needs scikit-learn, which the environment lacks), and
+  `pixi run course-check` checks the course plan's numbers against the stored results.
 
 ## Environments
 
@@ -80,13 +82,14 @@ lines stay separate until every shipped network is retrained.
 - **The sparse-chain code** (`calibration/thin.py`, `calibration/thin_products.py`, `studies/thin_coverage.py`,
   `studies/evaluate_thin.py`, `studies/thin_real.py`, `checks/thin_chains/`, `configs/thin/`,
   `cluster/thin_coverage_array.sbatch`, `tests/test_thin.py`) is deferred: sparse chains are a separate unit after
-  the release. It stays because `studies/train_calibration.py` and `studies/accept.py` still import it and PR #48
-  edits both. Cut it when the sparse follow-up is decided, after PR #48 lands. The course's Lecture 16 cites its
+  the release. It stays because `studies/train_calibration.py` and `studies/accept.py` still import it, and PR #48
+  edits `train_calibration.py`. Cut it when the sparse follow-up is decided, after PR #48 lands. The course's Lecture 16 cites its
   EWG results.
-- **Helpers borrowed from archived models.** `gbm.py`, `gbm_bank.py` (small utilities), `svj/plots.py` (the figure
-  style) and `svj/pmmh.py` with `svj/filtering.py` and `svj/model.py` (R-hat and ESS) stay only because the
-  library imports a few functions from them. Fold those functions into `calibration/` after the tutorial, and
-  delete the rest.
+- **Helpers borrowed from archived models.** `gbm.py`, `gbm_bank.py` (small utilities) and `svj/plots.py` (the
+  figure style) stay because the library imports a few functions from them; `svj/pmmh.py`, with the
+  `svj/filtering.py` and `svj/model.py` it imports, stays because `studies/heston_check.py` and
+  `studies/pricer_route.py` take R-hat and ESS from it. Fold those functions into `calibration/` after the
+  tutorial, and delete the rest.
 
 ## Oscar
 
