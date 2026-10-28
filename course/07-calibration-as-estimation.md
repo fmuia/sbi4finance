@@ -31,7 +31,7 @@ The observation model is a modelling choice, made explicit so that it can be che
 
 *Figure 7.1.* How to read the figure: the left panel shows the ratio $P_c/\sigma_c$, the signal-to-noise ratio of each quote, using SPY's prices of 21 October 2026. It is 55.8 for the one-year at-the-money option and 0.195 for the one-week call at $\delta = 2$; 21 of the 63 quotes have a ratio below 3, all on the call side. The right panel shows the consequence: under a Gaussian noise model, a quote whose price is small against its noise is negative with probability $N(-P_c/\sigma_c)$, up to 42% for the one-week wing call.
 
-**Negative noisy prices are kept.** A real price cannot be negative, but a simulated noisy quote can. The tutorial keeps such quotes in its simulations because they are valid draws from the declared observation model, and because the inference network reads the quotes as $y_c/\sigma_c$, which is defined for any value (design document, "The noise model"). Removing them would change the noise model into a truncated one without saying so. Implied volatilities, which do not exist for such quotes, are used only for plots and for the real chain, where cleaning removes quotes below intrinsic value.
+**Negative noisy prices are kept.** A real price cannot be negative, but a simulated noisy quote can. The tutorial keeps such quotes in its simulations because they are valid draws from the declared observation model, and because the inference network reads the quotes as $y_c/\sigma_c$, which is defined for any value. Removing them would change the noise model into a truncated one without saying so. Implied volatilities, which do not exist for such quotes, are used only for plots and for the real chain, where cleaning removes quotes below intrinsic value.
 
 ## 7.2 The likelihood
 
@@ -107,7 +107,7 @@ $$
 \big(J^\top J + \lambda\,\mathrm{diag}(J^\top J)\big)\Delta = J^\top r .
 $$
 
-A large $\lambda$ gives a short step along the gradient, which is safe; a small $\lambda$ gives the Gauss–Newton step, which is fast. The algorithm lowers $\lambda$ after a step that reduces $\chi^2$ and raises it after a step that does not. Parameter bounds are enforced by projecting each step back into the allowed box, or by a trust-region method that respects bounds (the course's scripts fit the multi-parameter models with the bounded trust-region solver of `scipy.optimize.least_squares`, the one Black–Scholes volatility with a bounded scalar search, and draw the paths of Figure 7.4 with a plain Levenberg–Marquardt loop). The derivatives $\partial P_c/\partial\theta_j$ come from the formula for Black–Scholes, from finite differences of the Fourier price for Heston (Lecture 10), and from finite differences of Monte Carlo prices for rough Bergomi, which need common random numbers to exist at all (Lecture 13; design document, "The Gauss–Newton interval").
+A large $\lambda$ gives a short step along the gradient, which is safe; a small $\lambda$ gives the Gauss–Newton step, which is fast. The algorithm lowers $\lambda$ after a step that reduces $\chi^2$ and raises it after a step that does not. Parameter bounds are enforced by projecting each step back into the allowed box, or by a trust-region method that respects bounds (the course's scripts fit the multi-parameter models with the bounded trust-region solver of `scipy.optimize.least_squares`, the one Black–Scholes volatility with a bounded scalar search, and draw the paths of Figure 7.4 with a plain Levenberg–Marquardt loop). The derivatives $\partial P_c/\partial\theta_j$ come from the formula for Black–Scholes, from finite differences of the Fourier price for Heston (Lecture 10), and from finite differences of Monte Carlo prices for rough Bergomi, which need common random numbers to exist at all (Lecture 13).
 
 ## 7.6 The Gauss–Newton covariance and the delta method
 
@@ -133,7 +133,7 @@ $$
 
 A product whose gradient points along a poorly identified direction inherits that direction's width; a product whose gradient is orthogonal to it does not. The variance swap under rough Bergomi has zero gradient and therefore zero width (Lecture 13).
 
-**Three conditions.** The interval is right when three conditions hold (design document, "The Gauss–Newton interval"):
+**Three conditions.** The interval is right when three conditions hold:
 
 1. **Information.** Every direction of the parameter space is informed by many quotes, so that $J^\top J$ has no small eigenvalue.
 2. **An interior optimum.** $\hat\theta$ lies inside the allowed parameter region, not on its boundary, so that the normal approximation is not cut off.
@@ -151,7 +151,7 @@ $$
 y_j = \rho\,\eta\,x_j + 0.05\,\eta^2\,x_j^2 + s_j\,\varepsilon_j, \qquad s_j = 0.01 + 0.1\,x_j^2, \qquad \eta \in (0.5,\ 3.5),\quad \rho \in (-0.99,\ -0.2).
 $$
 
-The odd part of the smile, the skew, carries $\rho\eta$ and is large against the noise: at $x = 0.5$ it is 0.435 in size against a noise of 0.035. The even part, the curvature, carries $\eta^2$, is small, and is largest in the wings, where the noise is largest: at $x = 1$ it is 0.05 against a noise of 0.11. The box is the rough-Bergomi range of $\eta$ and $\rho$ (design document, "The prior"). At the truth $(\eta, \rho) = (1.0, -0.87)$, the Gauss–Newton standard deviation of $\rho\eta$ is 0.028, 3% of its value, and that of $\eta$ is 0.48, nearly half of its value: the product is identified and the factors are not. The valley of the objective runs along the hyperbola $\rho = -0.87/\eta$ and is cut by $\rho = -0.99$ at $\eta = 0.88$.
+The odd part of the smile, the skew, carries $\rho\eta$ and is large against the noise: at $x = 0.5$ it is 0.435 in size against a noise of 0.035. The even part, the curvature, carries $\eta^2$, is small, and is largest in the wings, where the noise is largest: at $x = 1$ it is 0.05 against a noise of 0.11. The box is the rough-Bergomi prior range of $\eta$ and $\rho$ (Lecture 13, Section 13.4). At the truth $(\eta, \rho) = (1.0, -0.87)$, the Gauss–Newton standard deviation of $\rho\eta$ is 0.028, 3% of its value, and that of $\eta$ is 0.48, nearly half of its value: the product is identified and the factors are not. The valley of the objective runs along the hyperbola $\rho = -0.87/\eta$ and is cut by $\rho = -0.99$ at $\eta = 0.88$.
 
 ![Left: the toy objective with the paths of Levenberg–Marquardt from ten starts. Right: the Gauss–Newton 90% ellipse at the optimum against the exact region where the objective is within 4.6 of its minimum, inside the box.](images/l09-toy-landscape.png)
 

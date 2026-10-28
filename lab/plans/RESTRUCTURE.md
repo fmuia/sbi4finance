@@ -13,7 +13,7 @@ Delete it once they are ported.
 |---|---|
 | `src/sbi4finance/` (the calibration package and the modules it imports) | `lab/src/sbi4finance/` |
 | `scripts/calibration_bank.py`, `scripts/build_surface.py` | `lab/scripts/` |
-| `scripts/course/`, and `scripts/plot_design_*.py` | `course/scripts/` |
+| `scripts/course/` | `course/scripts/` |
 | `scripts/curriculum/heston_spy_exact.py` | `lab/checks/heston_spy_exact.py` |
 | `scripts/curriculum/storyboard.py` | `tutorial/curriculum/storyboard.py` |
 | `src/sbi4finance/calibration/why_bayes.py` (slot 1's toy example; only the tutorial uses it) | `tutorial/src/sbi4f_tutorial/why_bayes.py` |
@@ -30,7 +30,7 @@ Delete it once they are ported.
 | `tutorial_final/studies/` | `lab/studies/` |
 | `tutorial_final/checks/` | `lab/checks/`, except the withdrawn `desk_case/` and `rough_spy_is_cases*` (archived) |
 | `docs/course/` | `course/` |
-| `docs/design/calibration-design-document.md` and its images | `course/design-document/` |
+| `docs/design/calibration-design-document.md`, its images and `scripts/plot_design_*.py` | Archived at `574b940`; the course covers the document, and the four figures the lectures show are in `course/images/study-*.png` |
 | `docs/mcmc-policy.md` | `lab/plans/mcmc-policy.md` |
 | `data/SOURCES.md` | `lab/data/SOURCES.md` |
 | `data/SPMO_VOO_2020-01-01_2026-09-04.csv` | `course/scripts/data/` |

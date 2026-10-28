@@ -251,7 +251,7 @@ The runbook gives the commands, costs and acceptance checks. In order:
   level flat, and with the prior's last increment doubled. The first arm is correct for the posterior by
   construction, the second for the flat fit, and the third for neither.
 - **S10-E.** The same on 300 chains whose truths come from EWG's posterior, where the prior is not the truths' law.
-- **S4, S6, S7, S9.** The remaining studies of the design document, on the full bank.
+- **S4, S6, S7, S9.** The remaining studies, on the full bank.
 
 The curve prior of the bank passed gate G0′ on a 200-surface mini-pilot on 24 October.
 - It covers SPY's curve: inside the central 90% of prior curves at every level.
@@ -312,7 +312,7 @@ limits of the checks close the thin-chain lecture. A single-stock lecture is lef
 
 ## Sources
 
-- The earlier fourteen lectures, kept outside the repository, and [the design document](design-document/calibration-design-document.md).
+- The earlier fourteen lectures, kept outside the repository.
 - Quick checks: [`lab/checks/README.md`](../lab/checks/README.md).
 - Practices and regulation: [practice-sources.md](practice-sources.md).
 - Chain data: `lab/data/SOURCES.md`; NYSE holidays: the exchange's 2026–2028 calendar, cited in

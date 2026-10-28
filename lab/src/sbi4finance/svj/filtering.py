@@ -1,6 +1,6 @@
 """Likelihood of the daily SVJ model: the fully adapted particle filter and the grid filter.
 
-Both follow the filtering recursion over the latent variance (Appendix C of the design document).
+Both follow the filtering recursion over the latent variance (Appendix C of the SVJ design document, archived at 574b940).
 Given yesterday's variance v, today's return is a two-component normal mixture,
 
     p(y_t | v) = (1 - lam) N(y_t; mu, v) + lam N(y_t; mu + mu_J, v + sigma_J²),

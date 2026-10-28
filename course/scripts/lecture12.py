@@ -450,7 +450,7 @@ def fig_bank():
 
 # Figure 12.9: what the three Heston networks taught ----------------------------
 def fig_networks():
-    # design document, "The simulator and the training bank" and "Simulation-based calibration"
+    # studies S1 and S2: the training bank and simulation-based calibration
     band = 0.03562012708860619  # heston/s2/validation.json, dkw_bound
     v3 = load("heston/s2/validation.json")["sbc"]["rank_ks"]
     ks = {"network 1\n4 fixed noise draws,\n40 epochs": (0.086, 0.051),

@@ -105,7 +105,7 @@ def recovery_panels(truths, draws, labels, contraction, title, n_show=300):
 
 
 def contraction_bars(values, labels, title, reference=None, reference_label=None):
-    """Horizontal bars of contraction per target; an optional second series (e.g. the design document's values)."""
+    """Horizontal bars of contraction per target; an optional second series (e.g. the archived SVJ design document's values)."""
     style()
     y = np.arange(len(values))
     fig, ax = plt.subplots(figsize=(6.4, 0.34 * len(values) + 1.0), constrained_layout=True)

@@ -16,7 +16,7 @@ as known, as in training, so every result is conditional on the replicated curve
 3. The posterior predictive check: --predictive-draws resampled draws priced on their own seeds, replicated
    quotes with the quote noise, the share of the 63 quotes inside their 90% predictive band, standardized
    residuals by maturity, and the chi-square of the quotes at the posterior's best draw.
-4. The design document's products (sbi4finance.calibration.products) under the audited posterior and under the
+4. The tutorial's products (sbi4finance.calibration.products) under the audited posterior and under the
    network alone, common random numbers, with the curve held flat beyond one year (products.extend_curve).
 
 The grid values are smoothing-spline readings, not independent quotes (lab/studies/README.md); the

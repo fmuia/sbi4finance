@@ -45,7 +45,7 @@ where the factor $1/\eta$ comes from changing variables from $\rho$ to $\rho\eta
 *Figure 9.1.* How to read the figure: 400,000 pairs were simulated from the prior and the model.
 
 - **Left.** Each grey dot is one pair. The red band keeps the 4,214 pairs (1.05%) whose $y$ lies within 0.01 of $y_{\text{obs}} = -1$.
-- **Centre.** The parameters of the kept pairs lie along the curve $\rho\eta = -1$, inside the exact posterior's contours. The curve is the toy's version of the $\rho$–$\eta$ valley of the design document: the data fix the product and leave the factors free along it.
+- **Centre.** The parameters of the kept pairs lie along the curve $\rho\eta = -1$, inside the exact posterior's contours. The curve is the toy's version of rough Bergomi's $\rho$–$\eta$ valley (Lecture 15, Figure 15.8): the data fix the product and leave the factors free along it.
 - **Right.** The kept values of $\eta$ reproduce the exact marginal. Their 90% interval is 1.07 to 3.27, against 1.07 to 3.29 for the exact posterior. The marginal is cut sharply on the left at $|y_{\text{obs}}|/0.99 = 1.01$, because $\rho$ cannot be below −0.99, and decays slowly to the right, where it is cut by the prior's upper bound.
 
 **Interpretation and limit.** The figure contains the whole idea of amortized inference: the posterior of any observation is already inside the simulated pairs, and nothing about the likelihood has to be computed. The rejection step is what does not scale. With 63 quotes, the chance that a simulated surface falls within a small distance of the observed one on every quote is negligible. A network replaces the band: it learns, from all pairs at once, how the parameters vary with the data.
@@ -145,7 +145,7 @@ $$
 \mathbb{E}[x_\tau] = \tau\mu, \quad \mathrm{Var}(x_\tau) = (1 - \tau)^2 + \tau^2 s^2, \quad \mathrm{Cov}(x_\tau, \theta - z) = \tau s^2 - (1 - \tau),
 $$
 
-so the conditional mean is linear in $x$ (design document, Appendix F.2):
+so the conditional mean is linear in $x$:
 
 $$
 v(x, \tau) = \mu + k_\tau\,(x - \tau\mu), \qquad k_\tau = \frac{\tau s^2 - (1 - \tau)}{(1 - \tau)^2 + \tau^2 s^2} .
@@ -159,10 +159,10 @@ The deviation of a draw from the mean path obeys $d(\text{deviation})/d\tau = k_
 
 *Figure 9.5.* How to read the figure:
 
-- **Left.** With 50 uniform steps the sampled spread is 0.65 of the exact one at $s = 0.02$, 0.84 at $s = 0.05$ and 0.91 at $s = 0.1$. With 100 steps on the end-dense grid it is 0.96, 0.97 and 0.98. These are the numbers of the design document's Appendix F.2, reproduced here from the closed form. Two hundred uniform steps give 0.90, 0.96 and 0.98, close to 100 end-dense steps at twice the cost.
+- **Left.** With 50 uniform steps the sampled spread is 0.65 of the exact one at $s = 0.02$, 0.84 at $s = 0.05$ and 0.91 at $s = 0.1$. With 100 steps on the end-dense grid it is 0.96, 0.97 and 0.98. These numbers follow from the closed form. Two hundred uniform steps give 0.90, 0.96 and 0.98, close to 100 end-dense steps at twice the cost.
 - **Right.** On logarithmic axes with time running to the right, $|k_\tau|$ follows $1/(1 - \tau)$ until $1 - \tau \approx s$ and then returns to 1. The narrow dips are where $k_\tau$ changes sign. The steep stretch is long for $s = 0.02$ and absent for $s = 0.5$.
 
-**Why this matters for the tutorial.** In the network's standardized coordinates, Heston's initial variance $v_0$ has a posterior standard deviation near 0.02, because the one-week quotes pin it. With 50 uniform steps, the first two Heston networks returned $v_0$ intervals a median 25% too narrow against the exact posterior, and covered the truth on 73% to 78% of held-out smiles instead of 90% (design document, Appendix F.2). The tutorial samples with 100 end-dense steps.
+**Why this matters for the tutorial.** In the network's standardized coordinates, Heston's initial variance $v_0$ has a posterior standard deviation near 0.02, because the one-week quotes pin it. With 50 uniform steps, the first two Heston networks returned $v_0$ intervals a median 25% too narrow against the exact posterior, and covered the truth on 73% to 78% of held-out smiles instead of 90% (studies S2 and S3; Lecture 12, Section 12.2). The tutorial samples with 100 end-dense steps.
 
 ## 9.6 Where in time the loss is trained
 
@@ -200,7 +200,7 @@ $$
 \varepsilon = \sqrt{\frac{\ln(2P/\alpha)}{2B}} .
 $$
 
-With $\alpha = 5\%$ it is 0.0356 for $P = 4$ and $B = 2{,}000$, 0.1007 for $P = 4$ and $B = 250$, and 0.0304 for one target and $B = 2{,}000$. The band comes from an inequality that holds for every distribution and from a union bound over the targets, both conservative, so it is wider than the tailored band of Säilynoja, Bürkner and Vehtari (2022) and can miss a mild miscalibration (design document, "Simulation-based calibration").
+With $\alpha = 5\%$ it is 0.0356 for $P = 4$ and $B = 2{,}000$, 0.1007 for $P = 4$ and $B = 250$, and 0.0304 for one target and $B = 2{,}000$. The band comes from an inequality that holds for every distribution and from a union bound over the targets, both conservative, so it is wider than the tailored band of Säilynoja, Bürkner and Vehtari (2022) and can miss a mild miscalibration.
 
 ![Simulation-based calibration on a model with an exact posterior: rank histograms and ECDF differences for the exact posterior and four wrong ones.](images/l13-sbc-shapes.png)
 
@@ -224,7 +224,7 @@ $$
 \text{contraction} = 1 - \frac{\mathbb{E}_y\big[\mathrm{Var}(\theta \mid y)\big]}{\mathrm{Var}(\theta)} .
 $$
 
-It is 0 when the data teach nothing and 1 when they fix the target exactly. The tutorial computes it in the logit coordinates of the prior box (Lecture 8, Section 8.2), where a uniform prior has variance $\pi^2/3 = 3.29$. The product $\rho\eta$ is not uniform on its range, and its prior variance there is 1.42, computed by Monte Carlo from the box (design document, "Recovery, contraction and coverage"). Dividing by 3.29 instead would overstate how much the smile identifies $\rho\eta$.
+It is 0 when the data teach nothing and 1 when they fix the target exactly. The tutorial computes it in the logit coordinates of the prior box (Lecture 8, Section 8.2), where a uniform prior has variance $\pi^2/3 = 3.29$. The product $\rho\eta$ is not uniform on its range, and its prior variance there is 1.42, computed by Monte Carlo from the box. Dividing by 3.29 instead would overstate how much the smile identifies $\rho\eta$.
 
 In the toy of Figure 9.7 the exact posterior has variance 0.2 against a prior variance of 1, so its contraction is 0.80. The prior used as a posterior has contraction 0, although it passes simulation-based calibration.
 

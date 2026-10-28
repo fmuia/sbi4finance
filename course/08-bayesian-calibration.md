@@ -38,7 +38,7 @@ From the posterior follow three things least squares does not return.
 
 ## 8.2 The prior
 
-The prior states which parameter values are possible before the quotes are seen. The tutorial uses independent uniform distributions on boxes (design document, "The prior"; `lab/src/sbi4finance/calibration/tasks.py`).
+The prior states which parameter values are possible before the quotes are seen. The tutorial uses independent uniform distributions on boxes (`lab/src/sbi4finance/calibration/tasks.py`).
 
 | Model | Parameter | Prior | What it encodes |
 | --- | --- | --- | --- |
@@ -50,7 +50,7 @@ The prior states which parameter values are possible before the quotes are seen.
 | | $\sigma_v$ | Uniform(0.1, 1.5) | Volatility of variance |
 | | $\rho$ | Uniform(−0.95, −0.1) | Negative correlation only |
 
-The forward-variance curve $\xi_0$ of rough Bergomi is not in the table. On a liquid smile it is read from the chain and held fixed (Lecture 5), and the rough-Bergomi posterior is conditional on it; the simulations that train the network of Lecture 15 draw curves from a separate prior, which describes the curves the network must be ready for, not a belief about today's curve (design document, "The prior"). Beyond the last quote (Lecture 15, Section 15.6) and on a thin chain (Lecture 16, Section 16.2), the curve is inferred instead, and that prior becomes part of the posterior. Heston has no such input: its forward-variance curve is a function of $v_0$ and $\theta_H$ (Lecture 10), and the conditioning on $\xi_0$ in the formulas of this lecture is empty for it.
+The forward-variance curve $\xi_0$ of rough Bergomi is not in the table. On a liquid smile it is read from the chain and held fixed (Lecture 5), and the rough-Bergomi posterior is conditional on it; the simulations that train the network of Lecture 15 draw curves from a separate prior, which describes the curves the network must be ready for, not a belief about today's curve. Beyond the last quote (Lecture 15, Section 15.6) and on a thin chain (Lecture 16, Section 16.2), the curve is inferred instead, and that prior becomes part of the posterior. Heston has no such input: its forward-variance curve is a function of $v_0$ and $\theta_H$ (Lecture 10), and the conditioning on $\xi_0$ in the formulas of this lecture is empty for it.
 
 **Why uniform.** A uniform prior on a box makes the posterior proportional to the likelihood inside the box and zero outside:
 
@@ -120,7 +120,7 @@ It is sampled in two steps: draw $\theta^{(m)}$ from the posterior, then draw re
 
 *Figure 8.3.* How to read the figure: each panel is one maturity, in implied-volatility units. The blue band holds the central 90% of 400 replicated smiles; the red curve is the observed smile. At 5, 63 and 252 days, 5, 7 and 5 of the 9 observed quotes lie outside the band, against about 1 expected. The band is widest in the wings because the quote noise is set by the vega at 20% (Lecture 7, Section 7.1): at the posterior's 14.5% the vega at $|\delta| = 2$ is 6.2 times smaller, so the noise there is about 6.2 volatility points instead of 1.0. Between 12% and 13% of the replicated quotes have no implied volatility, almost all of them in the wings, where the noisy price falls below zero, and they are left out of the band.
 
-The check fails, as it should: Black–Scholes cannot produce a skew. The same check is run on the tutorial's real smile with rough Bergomi (design document, study S8; Lecture 15), where it is the test that the posterior's width can be trusted.
+The check fails, as it should: Black–Scholes cannot produce a skew. The same check is run on the tutorial's real smile with rough Bergomi (study S8; Lecture 15), where it is the test that the posterior's width can be trusted.
 
 ## 8.5 Identification read off the posterior
 
@@ -184,11 +184,13 @@ $$
 
 the posterior variance of the price plus the Monte Carlo variance $s^2$: the noise widens the range. If every draw uses the same stream $\omega$, the errors are nearly the same function of $\omega$ for nearby $\theta$, $e(\theta; \omega) \approx e(\bar\theta; \omega) + \nabla_\theta e(\bar\theta; \omega)^\top(\theta - \bar\theta)$. The first term is common to all draws: it shifts the whole price distribution by one Monte Carlo error and does not widen it. The range then measures the parameters, and the common shift is reported separately as the Monte Carlo standard error of the point price (Glasserman 2004). The repository's pricer uses, in addition, antithetic pairs and control variates (`lab/src/sbi4finance/calibration/products.py`), and prices the variance swap from the exact mean of the path law, so its Monte Carlo error is zero.
 
-**The point, the range and the reserve.** Three numbers are read off the price draws (design document, "The point price, the range and the reserve"; Lecture 6):
+**The point, the range and the reserve.** Three numbers are read off the price draws (Lecture 6):
 
 - the **point price** $\hat p_\Pi$, the price at the least-squares calibration;
 - the **90% range**, from the 5% to the 95% quantile of the draws;
 - the **reserve**: for a position the bank has sold, the prudent value is the 90% quantile $q_{0.9}$, and the reserve is $q_{0.9} - \hat p_\Pi$; for a position it holds, $\hat p_\Pi - q_{0.1}$.
+
+**Hedge ratios.** Each draw also gives the product's sensitivities, for example to the forward-variance curve, by bumping $\xi_0$ and repricing with common random numbers. The spread of a hedge ratio across the draws is the calibration uncertainty of the hedge. The tutorial does not compute them.
 
 Lecture 11 applies this method to a Heston posterior, where it also measures the effect of common random numbers, and Lecture 15 applies it to rough Bergomi on SPY's smile. Lecture 11, Section 11.5 shows which parameter each Heston price range comes from, by the law of total variance. Lecture 13 explains why the variance swap has a range under Heston and none under rough Bergomi with a fixed curve.
 
@@ -221,7 +223,7 @@ $$
 \hat R = \sqrt{\frac{\tfrac{n'-1}{n'}\,W + \tfrac{1}{n'}\,B}{W}} .
 $$
 
-If all sequences sample the same distribution, $B/n'$ is small and $\hat R \to 1$; if a chain is stuck or still drifting, $\hat R > 1$. Vehtari et al. (2021) recommend $\hat R < 1.01$ and propose a rank-normalized version; the course's scripts compute the classical split form, and the design document sets the same 1.01 threshold for its Heston chains.
+If all sequences sample the same distribution, $B/n'$ is small and $\hat R \to 1$; if a chain is stuck or still drifting, $\hat R > 1$. Vehtari et al. (2021) recommend $\hat R < 1.01$ and propose a rank-normalized version; the course's scripts compute the classical split form, and the tutorial's Heston chains use the same 1.01 threshold (study S3).
 
 **Effective sample size.** With $\rho_t$ the autocorrelation of the chain at lag $t$, the variance of a chain average of $N = mn$ draws is that of $N/\tau$ independent draws, with $\tau = 1 + 2\sum_{t \geq 1}\rho_t$. The **effective sample size** is $N/\tau$. The sum is truncated where the sums of adjacent pairs $\rho_{2k} + \rho_{2k+1}$ first turn negative (Geyer 1992). The Monte Carlo error of a posterior mean is the posterior standard deviation divided by $\sqrt{\text{ESS}}$; a few hundred effective draws give 90% quantiles good to a few percent of the posterior's width.
 
@@ -259,7 +261,7 @@ $$
 
 At the right width, $\lambda = 1$, the efficiency is $e^{-\delta^2}$: 0.37 at $\delta = 1$ and 0.018 at $\delta = 2$. For $\lambda^2 \le \frac12$ the integral diverges: the weights have infinite variance, and a proposal narrower than $1/\sqrt2$ of the posterior gives an estimate whose error does not shrink like $1/\sqrt{M}$.
 
-**The tail of the weights, $\hat k$.** A finite sample cannot show an infinite variance directly. Pareto-smoothed importance sampling fits a generalized Pareto law to the largest weights, the largest $\min(0.2M, 3\sqrt{M})$ of them, and reports its shape $\hat k$ (Zhang and Stephens 2009; Vehtari et al. 2024). A Pareto tail with shape $k$ has a finite variance only for $k < \frac12$ and a finite mean only for $k < 1$. Below 0.5 the estimate is reliable. Above it, Vehtari et al. (2024) set a threshold that depends on the sample size, $\min(1 - 1/\log_{10} M,\ 0.7)$: 0.58 for $M = 256$ proposals and 0.70 for $M = 2{,}048$. Above the threshold the estimate is unreliable, whatever the efficiency says. The design document's rule, $\hat k > 0.7$, is the large-sample value.
+**The tail of the weights, $\hat k$.** A finite sample cannot show an infinite variance directly. Pareto-smoothed importance sampling fits a generalized Pareto law to the largest weights, the largest $\min(0.2M, 3\sqrt{M})$ of them, and reports its shape $\hat k$ (Zhang and Stephens 2009; Vehtari et al. 2024). A Pareto tail with shape $k$ has a finite variance only for $k < \frac12$ and a finite mean only for $k < 1$. Below 0.5 the estimate is reliable. Above it, Vehtari et al. (2024) set a threshold that depends on the sample size, $\min(1 - 1/\log_{10} M,\ 0.7)$: 0.58 for $M = 256$ proposals and 0.70 for $M = 2{,}048$. Above the threshold the estimate is unreliable, whatever the efficiency says. The tutorial's rule, $\hat k > 0.7$, is the large-sample value.
 
 **The defensive proposal.** The audit's proposal $q$ is a Student $t$ law with 5 degrees of freedom, centred at the mean $\hat\mu$ of the network's draws in logit coordinates, with shape matrix $1.2^2\hat\Sigma$, where $\hat\Sigma$ is the draws' covariance, mixed with 10% of the prior (`sbi4finance.calibration.correction.fit_proposal` and `propose`). A $t$ law with $\nu$ degrees of freedom has covariance $\nu/(\nu - 2)$ times its shape matrix, so the proposal's $t$ part has covariance $\tfrac53 \times 1.44\,\hat\Sigma = 2.4\,\hat\Sigma$:
 
@@ -340,11 +342,11 @@ In the third case the posterior's range depends on the width of the prior. The p
 
 The posterior is exact for the model, the prior and the observation model it is given. It does not cover what it is not given.
 
-1. **The choice of model.** The posterior range is within-model. On pilot smile 290, Heston and rough Bergomi both fit, and their forward-start prices differ by 7.9%, more than either model's 90% range (3.8% and 2.2%) or reserve (1.6%); on smile 292 they differ by 4.1%, less than either range (8.1% and 9.3%) (Lecture 6, Section 6.7; design document, study S7). The across-model gap can therefore exceed the within-model range, and the posterior does not measure it. Across-model and model-free bounds remain separate numbers.
+1. **The choice of model.** The posterior range is within-model. On pilot smile 290, Heston and rough Bergomi both fit, and their forward-start prices differ by 7.9%, more than either model's 90% range (3.8% and 2.2%) or reserve (1.6%); on smile 292 they differ by 4.1%, less than either range (8.1% and 9.3%) (Lecture 6, Section 6.7; study S7). The across-model gap can therefore exceed the within-model range, and the posterior does not measure it. Across-model and model-free bounds remain separate numbers.
 2. **The observation model.** The noise scale $s_{\text{iv}}(\delta)$, its independence across contracts and its Gaussian shape are assumptions (Lecture 7, Section 7.1). A noise scale twice as large would make the posterior about twice as wide in every direction where it is close to normal, since the Gauss–Newton covariance $(J^\top W J)^{-1}$ scales with $\sigma_c^2$.
 3. **The prior box.** Values outside the box have zero posterior probability, whatever the quotes say. The posterior predictive check and the position of the posterior against the bounds show when the box binds.
 4. **The forward-variance curve and the monitoring.** On a liquid smile $\xi_0$ is read from the chain and held fixed. Its uncertainty, which comes from the same quotes, is then not propagated, and the rough-Bergomi identification of $\eta$ through the long-dated at-the-money level relies on it (Lecture 13, Section 13.11). On a thin chain the curve is inferred (Lecture 16). The products are priced with continuous monitoring; daily monitoring adds a leverage term (Lecture 13).
-5. **Numerical error.** The pricers have errors of their own. The Fourier ladder accepts a rung when it agrees with the next one to 0.1 quote-noise units on every contract, and the rough-Bergomi Monte Carlo doubles its paths until every standard error is below 0.25 quote-noise units, with up to 0.5 tolerated at the corner of the prior box (design document, "Heston" and "Rough Bergomi: a Monte Carlo run"). In the Heston example of Lecture 11, the Monte Carlo standard error of each point price is at most 0.55% of the price, against 90% ranges of 1.7% to 4.4%.
+5. **Numerical error.** The pricers have errors of their own. The Fourier ladder accepts a rung when it agrees with the next one to 0.1 quote-noise units on every contract, and the rough-Bergomi Monte Carlo doubles its paths until every standard error is below 0.25 quote-noise units, with up to 0.5 tolerated at the corner of the prior box (Lecture 10, Section 10.12; Lecture 13, Section 13.8). In the Heston example of Lecture 11, the Monte Carlo standard error of each point price is at most 0.55% of the price, against 90% ranges of 1.7% to 4.4%.
 6. **Approximate inference.** A sampler that has not converged, or a network that approximates the posterior (Lecture 9), adds its own error. $\hat R$, the effective sample size, simulation-based calibration (Lecture 9, Section 9.7) and the importance-sampling audit (Section 8.9) measure it.
 
 ## 8.13 Summary

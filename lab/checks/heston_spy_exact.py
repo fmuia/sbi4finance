@@ -39,7 +39,7 @@ Y = np.asarray(SPY["prices_forward_units"], dtype=float)
 B = correction.bounds_of(TASK)
 KAPPA = float(TASK["fixed_parameters"]["kappa"])
 DAYS = np.array([5, 10, 21, 42, 63, 126, 252])
-SPY_VARIANCE_SWAP_VOL = [13.6, 15.0, 16.2, 17.6, 18.4, 20.1, 21.8]  # design document, S8 table
+SPY_VARIANCE_SWAP_VOL = [13.6, 15.0, 16.2, 17.6, 18.4, 20.1, 21.8]  # study S8: from the replicated forward-variance levels in results/calibration/spy/surface.json
 
 
 # Rank-normalized split R-hat and bulk ESS, copied from sbi4finance.svj.pmmh, which imports jax.
@@ -167,7 +167,7 @@ def main(out):
         "variance_swap_vol_pct": {"days": DAYS.tolist(), "q05": vs[0].round(3).tolist(),
                                   "q50": vs[1].round(3).tolist(), "q95": vs[2].round(3).tolist(),
                                   "spy_replicated": SPY_VARIANCE_SWAP_VOL,
-                                  "spy_source": ("course/design-document/calibration-design-document.md, S8 table: "
+                                  "spy_source": ("study S8, tutorial/assets/results/calibration/spy/surface.json: "
                                                  "replication from the whole chain, strikes down to delta = -8")},
     }
     Path(out).write_text(json.dumps(report, indent=1))

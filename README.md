@@ -53,8 +53,8 @@ November. After a freeze, fixes only.
 ## How the repository is organized
 
 ```
-course/      The course: sixteen lectures, a superset of the tutorial, with the calibration design document
-             and the scripts that draw their figures.
+course/      The course: sixteen lectures, a superset of the tutorial, with the scripts that draw their
+             figures.
 tutorial/    What participants install and run: the slot notebooks, their runtime (src/sbi4f_tutorial),
              the frozen networks and results they load (assets/), their tests, and the organizers' curriculum.
 lab/         What produces the numbers: simulators and pricers, calibration banks, training, references,

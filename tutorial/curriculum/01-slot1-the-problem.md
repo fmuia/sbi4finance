@@ -46,7 +46,7 @@ Each slide states its title as it appears on screen, what is on screen, what is 
 
 ### Slide 3. Two calibrations, two prices (1.5 minutes)
 
-- **On screen.** The SHOP-like panel of the HKDE study of 9 October (`course/design-document/images/01-hkde-option-prices.png`), with the variance-swap column highlighted.
+- **On screen.** The SHOP-like panel of the HKDE study of 9 October (`course/images/study-hkde-option-prices.png`), with the variance-swap column highlighted.
 - **Said.** This is Heston's model with jumps, fitted to a synthetic smile whose true parameters are known. Thirty starts of the optimizer end at two parameter sets that fit the quotes almost equally well. One gives a one-year variance-swap volatility 83% above the true one, the other 16% below. The blue shape is the posterior: all parameter values consistent with the quotes, and the prices they give. Its 90% interval runs from −18% to +67%.
 - **Leads to.** What the rules say about such a range.
 
@@ -137,7 +137,7 @@ The notebook's text changes with the data. On SPY the posterior from both quotes
 | --- | --- | --- |
 | 63 prices on a grid of 7 maturities × 9 moneyness points, read from SPY's quotes of 21 Oct 2026 | `spy/surface.json` (S8) | verified |
 | The marking procedure: trading days over 252, a flat 3-month rate, half-spread noise floored at the design's, one-sided 90% bounds | [v2-plan](../../course/v2-plan.md), Section 1 | sourced; SPY's grid simplifies two steps: its quotes are grid readings, and its maturities count weekdays |
-| HKDE: +83%, −16%, posterior 90% interval −18% to +67% | HKDE study, 9 Oct; `course/design-document/images/01-hkde-option-prices.png` | to register as C12, with the two optima's fit in noise units |
+| HKDE: +83%, −16%, posterior 90% interval −18% to +67% | HKDE study, 9 Oct; `course/images/study-hkde-option-prices.png` | to register as C12, with the two optima's fit in noise units |
 | σ = 12.8% ± 0.3; put range 0.05–0.14 bp; quote 14.1 bp (24.4%); miss 9.5 sd; five times the noise | computed live from `spy/surface.json` | verified by construction (live) |
 | Heston 20 ms and about 4 CPU-min, both at one quadrature rung; rough Bergomi 5.0 CPU-s and at least 17 CPU-h by the chain; network 1.4 s (3.6 CPU-s) | `costs/costs.json` (C8) | verified |
 | Rough Bergomi by importance sampling from a Gauss–Newton proposal on SPY's 63 quotes: 1,024 evaluations at 5.0 CPU-s, about 85 CPU-min | `lab/checks/rough_spy_is.py`; [v2-plan](../../course/v2-plan.md), Section 2.4 | verified |
@@ -148,9 +148,9 @@ The notebook's text changes with the data. On SPY the posterior from both quotes
 
 | Say | Do not say | Why |
 | --- | --- | --- |
-| "The quote is known to a third of a volatility point, the noise the tutorial assumes." | "The quote's bid–ask is a third of a point." | The noise is the design's floor, wider than SPY's spreads on that day (design document, S8). |
+| "The quote is known to a third of a volatility point, the noise the tutorial assumes." | "The quote's bid–ask is a third of a point." | The noise is the design's floor, wider than SPY's spreads on that day (study S8; course, Lecture 5, Section 5.4). |
 | "Two parameter sets fit almost equally well." | "Least squares is broken." | Both fit within the noise; the point is that the quotes cannot tell them apart. |
-| "At least 17 CPU-hours by a random-walk chain, or about 85 CPU-minutes by importance sampling." | "17 CPU-hours", or the chain's cost alone. | The chain's cost is a lower bound (design document, S9); importance sampling targets the same exact posterior ([v2-plan](../../course/v2-plan.md), Section 2.4). |
+| "At least 17 CPU-hours by a random-walk chain, or about 85 CPU-minutes by importance sampling." | "17 CPU-hours", or the chain's cost alone. | The chain's cost is a lower bound (study S9); importance sampling targets the same exact posterior ([v2-plan](../../course/v2-plan.md), Section 2.4). |
 | "1.4 seconds for 1,000 draws." | "Milliseconds." | Not what was measured. |
 | "Rough Bergomi's skew follows a power law in maturity, the shape SPY's has." | "Heston cannot fit SPY", or "rough Bergomi fits SPY" before gate G4. | Heston fits SPY with extreme parameters (slot 4); rough Bergomi's fit to SPY is ⟨S8⟩. |
 | "Art. 9 for the calibrated parameters, Art. 11 for the choice of model." | "Art. 11 asks for the range of calibrations." | Art. 11(1) excludes calibrations from market-derived parameters, which Art. 9 covers (Lecture 6, Section 6.6). |

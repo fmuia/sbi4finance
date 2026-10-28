@@ -15,7 +15,7 @@ normal, independent across quotes and of the quote noise, then
 E[N(y; P_hat, sigma^2 - s^2)] = N(y; P, sigma^2) for s < sigma. The plug-in
 N(y; P_hat, sigma^2) is instead unbiased for N(y; P, sigma^2 + s^2), and
 N(y; P_hat, sigma^2 + s^2) for N(y; P, sigma^2 + 2 s^2): adding the Monte Carlo
-variance counts it twice (design document, Appendix G.3).
+variance counts it twice (course, Lecture 8, Section 8.9, and Lecture 14, Section 14.2).
 
 Two conditions make the weights target the exact posterior. The Monte Carlo errors
 must be independent across proposals: each proposal priced with its own seed. With

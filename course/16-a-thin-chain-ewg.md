@@ -95,7 +95,7 @@ The classical fits start from the quotes and the prior box, not from the network
 
 **Three laws for the unquoted level.** The layout's quotes end at 126 days, and only the forward start from six months to one year depends on the curve beyond them. Its truth is therefore priced under three laws for the last level, with the quotes unchanged: the prior's law; the level held flat; and the prior's increment over the last interval doubled in log variance. The first arm is correct for the posterior by construction, because a posterior's coverage holds on average over truths drawn from its prior (Lecture 8, Section 8.6). The second is correct for the flat Gauss–Newton fit by construction. The third is correct for neither, so it tests both methods when their assumption about the unquoted level is wrong. The posterior's prior is not changed.
 
-**Reliable audits.** The summary reports every method on all chains and on the chains whose audit is reliable: a final $\hat k$ of at most 0.7 and every proposal priced, since a proposal left unpriced gets zero weight and biases the audit. The threshold 0.7 is the design document's large-sample rule. The sample-size threshold of Lecture 8, Section 8.9 is stricter: 0.63 for 512 proposals, and 0.67 for the 1,024 of two pooled rounds. Each chain's $\hat k$ is stored, so the summary can also be read under the stricter rule. The run is accepted when at least 90% of chains have a reliable audit, and when the second product seed moves the bounds by less than a tenth of their width. It costs about 11 CPU-minutes a chain, about 180 CPU-hours in all (run R8).
+**Reliable audits.** The summary reports every method on all chains and on the chains whose audit is reliable: a final $\hat k$ of at most 0.7 and every proposal priced, since a proposal left unpriced gets zero weight and biases the audit. The threshold 0.7 is the tutorial's large-sample rule. The sample-size threshold of Lecture 8, Section 8.9 is stricter: 0.63 for 512 proposals, and 0.67 for the 1,024 of two pooled rounds. Each chain's $\hat k$ is stored, so the summary can also be read under the stricter rule. The run is accepted when at least 90% of chains have a reliable audit, and when the second product seed moves the bounds by less than a tenth of their width. It costs about 11 CPU-minutes a chain, about 180 CPU-hours in all (run R8).
 
 **Truths near EWG.** Study S10-E repeats S10 on 300 chains whose truths are drawn from EWG's audited posterior (Section 16.5), with their layout quotes priced as the bank prices them. The posterior's prior is then not the truths' law, so its coverage is not guaranteed by construction: S10-E tests every method near the real chain (run R9, about 55 CPU-hours). The truths are resampled from weighted draws, so some repeat when the posterior's effective sample size is small, and chains that share a truth are not independent. The summary therefore counts the distinct truths and gives intervals from a bootstrap over them.
 
@@ -145,7 +145,7 @@ The prudent-valuation rules keep the two kinds of uncertainty apart (Lecture 6, 
 5. **The posterior predictive check has limited power.** Two of the three rough smiles of Lecture 12, Figure 12.9 are fitted by Heston within noise. A model can pass the fit and still price a product differently: Lecture 15, Section 15.7 shows Heston and rough Bergomi pricing the forward-start call 7.9% apart on one of these two smiles.
 6. **Every check inherits the noise model.** The width of the posterior is set by the quote noise $\sigma_c$. If $\sigma_c$ is wrong, a calibrated posterior is calibrated for the wrong noise. The table below lists this as the first risk; S11's noise scales of 0.5 and 2 measure it on EWG.
 
-**Risks.** The main risks are of method rather than schedule (design document, "Risks and open decisions").
+**Risks.** The main risks are of method rather than schedule.
 
 | Risk | Effect | Mitigation |
 | --- | --- | --- |
@@ -212,6 +212,5 @@ The plan lists the options that would make claims 2b, 2c and 3b solid (v2-plan, 
 - Abi Jaber, E., Li, S. (2024). Volatility models in practice: rough, path-dependent or Markovian? [arXiv:2401.03345](https://arxiv.org/abs/2401.03345)
 - Commission Delegated Regulation (EU) 2016/101 (prudent valuation), Articles 9 and 11. [EUR-Lex](https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32016R0101)
 - Wilson, E. B. (1927). Probable inference, the law of succession, and statistical inference. *Journal of the American Statistical Association* 22(158), 209–212. [doi](https://doi.org/10.1080/01621459.1927.10502953)
-- Calibration design document of this repository: [course/design-document/calibration-design-document.md](design-document/calibration-design-document.md), section "Risks and open decisions".
 
 Figures: `course/scripts/realignment.py` (Figure 16.1).

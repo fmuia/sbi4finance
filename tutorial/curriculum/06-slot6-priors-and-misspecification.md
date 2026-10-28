@@ -78,7 +78,7 @@ The fourth detector is the one slot 3 names. It needs a summary network, which s
 
 | Number | Source | Status |
 | --- | --- | --- |
-| SPY's curve: 0.36 against the bound of 0.2 | Design document, S8 | stated in the design document; register as a claim |
+| SPY's curve: 0.36 against the bound of 0.2 | Study S8 | stated in the course (Lecture 15, Section 15.3); register as a claim |
 | Heston on SPY: Feller ratio 4.9; variance-swap gaps | Slot 4's feasibility run | to redo as S8-H |
 | Pilot smile 291: $\chi^2$ 1,347, $\hat k$ 154 | `rough-pilot/s7-across/across-models.json` | pilot |
 | The reweighted $H$ posterior and reserve | Slot 5's SPY draws | ⟨S8⟩ |

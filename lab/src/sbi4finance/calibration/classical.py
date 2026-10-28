@@ -2,7 +2,7 @@
 
 The residuals are (P_c(theta) - y_c) / sigma_c, so least squares is maximum
 likelihood under the quote-noise model and, with the uniform prior, the
-posterior mode (design document, Appendix E). The search runs in the logit
+posterior mode (course, Lecture 7). The search runs in the logit
 coordinates of the prior box, so every iterate is a valid parameter; the
 Gauss–Newton covariance is mapped back to natural units by the Jacobian of
 the logit. A Monte Carlo pricer must be called with a fixed seed (common

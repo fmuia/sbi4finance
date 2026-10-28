@@ -1,7 +1,7 @@
 # Studies
 
 Each study writes one directory of results; every directory must be new. The one exception is `scripts/calibration_bank.py local --resume`, which keeps the finished shards of an interrupted local bank build. The
-numbers in `tutorial/CLAIMS.md` and in the [design document](../../course/design-document/calibration-design-document.md)
+numbers in `tutorial/CLAIMS.md` and in the [course](../../course/README.md)
 come from these outputs. Library code is in `src/sbi4finance/calibration/`.
 
 | ID | Script | What it produces |

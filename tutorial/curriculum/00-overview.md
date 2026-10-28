@@ -15,7 +15,7 @@ For the proposed next numerical campaign, read the [experiment plan](../../lab/p
 | [05-slot5-rough-bergomi-to-a-reserve.md](05-slot5-rough-bergomi-to-a-reserve.md) | 5. Rough Bergomi on the SPY smile: from the posterior to a reserve | Francesco, Alex | 40 |
 | [06-slot6-priors-and-misspecification.md](06-slot6-priors-and-misspecification.md) | 6. Changing priors and dealing with misspecified models | Stefan | 15 |
 
-The folder replaces `CURRICULUM.md` (revision 1, same day) and, where they differ, §4, §9, §10 and §13 of [PLAN.md](https://github.com/fmuia/sbi4finance/blob/574b940087cd66a7540c5aa080f64e8b33010314/tutorial_final/PLAN.md). A number written ⟨Sn⟩ comes from study Sn of the [design document](../../course/design-document/calibration-design-document.md#planned-feasibility-study) and is not on screen until [CLAIMS.md](../CLAIMS.md) records the final run.
+The folder replaces `CURRICULUM.md` (revision 1, same day) and, where they differ, §4, §9, §10 and §13 of [PLAN.md](https://github.com/fmuia/sbi4finance/blob/574b940087cd66a7540c5aa080f64e8b33010314/tutorial_final/PLAN.md). A number written ⟨Sn⟩ comes from study Sn ([course/status.md](../../course/status.md)) and is not on screen until [CLAIMS.md](../CLAIMS.md) records the final run.
 
 ## Executive summary
 
@@ -150,7 +150,7 @@ The message is shown in every slot and said in only two places.
 **Shown:**
 
 - real data end to end: the SPY chain of 21 October 2026;
-- documentation: the design document and the sixteen-lecture course in `course/`, take-home;
+- documentation: the sixteen-lecture course in `course/`, take-home;
 - a ledger of claims: every number on screen traced to a study and a file;
 - failures shown and handled: the Heston network alone short of the exact-likelihood reference on one smile in five, the rough pilot's SBC failure, the audit's flag rate, the places where the classical route is as good;
 - infrastructure: a bank of 112,000 Monte-Carlo-priced smiles generated on a cluster (gate G1), and trained networks shipped as checkpoints (Heston's now, rough Bergomi's after gate G2);
@@ -215,7 +215,7 @@ The audience has read the proposal. Each promise the curriculum does not keep ne
 ## 11. Sources
 
 - [PLAN.md](https://github.com/fmuia/sbi4finance/blob/574b940087cd66a7540c5aa080f64e8b33010314/tutorial_final/PLAN.md): the decision, the studies, the timeline. [CLAIMS.md](../CLAIMS.md): the status of every number.
-- [The design document](../../course/design-document/calibration-design-document.md) and [the course](../../course/README.md): the long version of slots 1, 4 and 5.
+- [The course](../../course/README.md): the long version of slots 1, 4 and 5.
 - The proposal: *Amortized Bayesian Calibration of Volatility Models*, ICAIF '26 tutorial proposal.
 - The feasibility run of 23 October: `lab/checks/heston_spy_exact.py` and [data/heston-spy-exact.json](../assets/data/heston-spy-exact.json).
 - Branches with earlier slot drafts: `feat/tutorial-slot1-intro`, `feat/tutorial-slot4-bayesflow-basics`, `feat/tutorial-slot6-crash-risk`.

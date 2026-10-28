@@ -167,7 +167,7 @@ def _(mo):
         The 63 prices carry the design noise of slot 1. Monte Carlo prices carry their own error, of variance
         $s_c^2$, so the audit uses a Gaussian of variance $\sigma_c^2 - s_c^2$, which is unbiased for the exact
         likelihood if the Monte Carlo errors are independent across quotes; with paths shared within a maturity
-        it is approximate (design document, Appendix G.3).
+        it is approximate (course, Lecture 8, Section 8.9).
         """)
     })
     return
@@ -807,7 +807,7 @@ def _(mo):
     **Next, slot 6:** what changes when the prior or the model is wrong, and how to find out.
 
     *Evidence and code:* the [curriculum](../curriculum/05-slot5-rough-bergomi-to-a-reserve.md), the
-    [design document](../../course/design-document/calibration-design-document.md) and `src/sbi4f_tutorial/`.
+    [course](../../course/README.md) and `src/sbi4f_tutorial/`.
     Numbers marked pilot are not quoted on stage until the full studies replace them.
     """)
     return

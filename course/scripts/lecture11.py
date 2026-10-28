@@ -224,7 +224,7 @@ def fig_rwm(costs):
                              (COLORS[3], corr[dims.index(3)], "3 parameters, correlation 0.9")):
         ax.plot(ess_target, ess_target * per * per_draw_cost / 3600, "o-", color=color, ms=4, label=name)
     ax.axhline(costs["exact_rough_posterior"]["cpu_hours"], color="0.4", ls="--", lw=1)
-    ax.text(110, costs["exact_rough_posterior"]["cpu_hours"] * 1.12, "design document: 17 CPU-hours", fontsize=8.5,
+    ax.text(110, costs["exact_rough_posterior"]["cpu_hours"] * 1.12, "study S9: 17 CPU-hours", fontsize=8.5,
             color="0.3")
     ax.set_xscale("log")
     ax.set_yscale("log")
@@ -311,7 +311,7 @@ def fig_many_posteriors(costs):
     # priced with common random numbers; with a seed per proposal it costs more.
     gauss_newton_is_s = 1024 * evaluation_s
     heston_s = costs["exact_heston_posterior"]["cpu_seconds"]
-    train_h = 370.0  # design document, "The simulator and the training bank": 112,000 surfaces at 3.3 CPU-h per 1,000
+    train_h = 370.0  # study S1: 112,000 surfaces at the pilot bank's 3.3 CPU-h per 1,000
     n = np.array([1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000])
     fig, axes = plt.subplots(1, 2, figsize=(11, 5.2))
     ax = axes[0]

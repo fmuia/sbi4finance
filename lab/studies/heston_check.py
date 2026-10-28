@@ -12,7 +12,7 @@ be computed in two independent ways and compared with the network's:
   dispersed network draws, on the first --chain-surfaces of them.
 
 Test surfaces from --first onwards are used, so they do not overlap the S2 set.
-Agreement uses the design document's criterion: means within 0.3 posterior sd
+Agreement uses the tutorial's criterion: means within 0.3 posterior sd
 and 90% widths within 25%, for every parameter.
 
 Each finished audit and chain is saved in OUT.partial/, next to the output

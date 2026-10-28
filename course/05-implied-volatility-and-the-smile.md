@@ -58,7 +58,7 @@ The vega is largest at the money and small in the wings and at short maturities 
 
 ## 5.4 Reading a real chain onto the design grid
 
-A raw chain is noisy and irregular, so the tutorial cleans it and reads it at the 63 design points of Lecture 1. The steps are those of [Appendix I of the design document](design-document/calibration-design-document.md#appendix-i-the-real-surface), which describes how the tutorial's SPY surface was built.
+A raw chain is noisy and irregular, so the tutorial cleans it and reads it at the 63 design points of Lecture 1. These are the steps that built the tutorial's SPY surface (study S8; `lab/src/sbi4finance/calibration/chain.py`).
 
 **Cleaning.**
 
@@ -68,7 +68,7 @@ A raw chain is noisy and irregular, so the tutorial cleans it and reads it at th
 4. Count maturities in business days from the session of the underlying's last trade, not from the file's timestamp. A file fetched before the open carries the next day's date; counting from it would shorten the one-week maturity by a fifth.
 5. Take the discount factor from Treasury yields and the forward from parity near the money (Lecture 2, Section 2.4).
 
-**Reading the grid.** For each expiration, a cubic smoothing spline is fitted to implied volatility against $\delta$, weighted by the inverse half-spread. For each design point, the two expirations nearest the design maturity on either side whose strikes reach the point are read at its log-moneyness, and the total variance $\sigma_{\text{imp}}^2 T$ is interpolated linearly in $T$. An expiration whose strikes stop short of the point is skipped, because reading it would extrapolate its spline: on 21 October 2026, SPY's end-of-month expirations listed fewer strikes, and reading them would have given 9.3% instead of 14.8% for the one-year point at $\delta = 2$ (design document, Appendix I). Of the 63 points, 35 were read from two expirations and 28 from one; none needed extrapolation. The noise of each point is the vega times the local half-spread in volatility, floored at the design's $s_{\text{iv}}(\delta)$. On SPY the real half-spreads are below the design noise at every point, so the floor applies everywhere.
+**Reading the grid.** For each expiration, a cubic smoothing spline is fitted to implied volatility against $\delta$, weighted by the inverse half-spread. For each design point, the two expirations nearest the design maturity on either side whose strikes reach the point are read at its log-moneyness, and the total variance $\sigma_{\text{imp}}^2 T$ is interpolated linearly in $T$. An expiration whose strikes stop short of the point is skipped, because reading it would extrapolate its spline: on 21 October 2026, SPY's end-of-month expirations listed fewer strikes, and reading them would have given 9.3% instead of 14.8% for the one-year point at $\delta = 2$ (study S8). Of the 63 points, 35 were read from two expirations and 28 from one; none needed extrapolation. The noise of each point is the vega times the local half-spread in volatility, floored at the design's $s_{\text{iv}}(\delta)$. On SPY the real half-spreads are below the design noise at every point, so the floor applies everywhere.
 
 ## 5.5 The SPY implied-volatility surface
 

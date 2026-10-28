@@ -1,4 +1,4 @@
-"""Smile facts for the lesson's opening acts (figures S2-1 and S2-2 of the design document).
+"""Smile facts for the lesson's opening acts (studies S2-1 and S2-2).
 
     python lab/studies/smile_facts.py example --model rough --out NEW_DIR [--seed 0]
     python lab/studies/smile_facts.py example --model heston --out NEW_DIR [--seed 0]
@@ -9,7 +9,7 @@ example: one surface at the centre of the prior box (rough Bergomi with a flat
 one draw of quote noise. Reported: the implied volatilities of the clean and of
 the noisy quotes, the at-the-money level, skew and curvature per maturity, and
 the power law fitted to the skew across maturities; for rough Bergomi also the
-short-maturity formula of the design document, maturity by maturity.
+short-maturity formula of the course (Lecture 13), maturity by maturity.
 
 prior-predictive: four statistics over held-out surfaces of a bank, from the
 clean model prices and from the noisy quotes: the 1-month ATM implied

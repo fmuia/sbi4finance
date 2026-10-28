@@ -5,7 +5,7 @@ union-adjusted over parameters, as in rough_reference (which is fixed at two
 parameters). Coverage is reported at several central levels with Wilson
 intervals. Contraction is computed in the logit coordinates of the prior box,
 where a uniform prior has the logistic variance pi^2 / 3. Agreement with a
-reference posterior uses the design document's metrics: mean difference in
+reference posterior uses the tutorial's metrics: mean difference in
 reference standard deviations and the ratio of 90% interval widths.
 """
 

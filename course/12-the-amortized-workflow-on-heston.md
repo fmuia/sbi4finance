@@ -79,13 +79,13 @@ The training data are the clean prices over their noise (`clean_training_data`),
 
 **Fresh noise in every batch.** The bank stores clean prices. The quote noise is drawn at training time. Since the conditions are $y_c/\sigma_c = P_c/\sigma_c + \varepsilon_c$ with $\varepsilon_c \sim \mathcal{N}(0, 1)$, a fresh noise draw for every surface in every batch costs nothing. The network then never sees the same noisy surface twice, and its training expectation over the noise is exact rather than a sum over a few stored draws.
 
-**Three Heston networks.** The design document reports three Heston networks trained on the same bank, each changing one thing (design document, "The simulator and the training bank" and Appendix F.2).
+**Three Heston networks.** Studies S2 and S3 compared three Heston networks trained on the same bank, each changing one thing.
 
 ![Left: the largest distance between the SBC rank distribution and the uniform one, for v0 and θ, for three Heston networks, against the simultaneous band. Right: the median error of the v0 posterior mean, and the share of 50 test smiles meeting the agreement criterion, for the second and third networks.](images/l12-three-heston-networks.png)
 
 *Figure 12.1.* How to read the figure: simulation-based calibration, explained in Lecture 9, Section 9.7, measures whether the network's posteriors are calibrated over 2,000 held-out smiles; a distance below the dashed band of 0.036 passes.
 
-- **Left.** Network 1, trained for 40 epochs on four fixed noise draws per surface, fails for $v_0$ (0.086) and $\theta_H$ (0.051): its 90% intervals covered the truth on 78% and 85% of smiles. Network 2 changed two things at once, 500 epochs instead of 40 and fresh noise in every batch, and fails in the same way (0.110 and 0.043). The design document traces the failure to the sampler of Lecture 9, Section 9.5: 50 uniform steps undershoot $v_0$'s sharp posterior. Because network 2 changed both the training length and the noise augmentation, the study does not show what fresh noise alone does. Network 3, with the end-dense sampler and training times drawn as $\tau = u^{0.5}$, passes for all four targets, with distances 0.025 and 0.018 for $v_0$ and $\theta_H$ (`heston/s2/validation.json`).
+- **Left.** Network 1, trained for 40 epochs on four fixed noise draws per surface, fails for $v_0$ (0.086) and $\theta_H$ (0.051): its 90% intervals covered the truth on 78% and 85% of smiles. Network 2 changed two things at once, 500 epochs instead of 40 and fresh noise in every batch, and fails in the same way (0.110 and 0.043). The failure traces to the sampler of Lecture 9, Section 9.5: 50 uniform steps undershoot $v_0$'s sharp posterior. Because network 2 changed both the training length and the noise augmentation, the study does not show what fresh noise alone does. Network 3, with the end-dense sampler and training times drawn as $\tau = u^{0.5}$, passes for all four targets, with distances 0.025 and 0.018 for $v_0$ and $\theta_H$ (`heston/s2/validation.json`).
 - **Right.** With the sampler fixed, network 2's $v_0$ posterior had the right width but a mean a median 0.35 posterior standard deviations away from the exact one, and 28% of 50 test smiles met the agreement criterion of study S3 (Section 12.5) on all four parameters. Network 3, trained at $\tau = u^{0.5}$, reduced the error to 0.16 and raised the share to 80%.
 
 **Interpretation.** Each failure appeared where the posterior is sharpest, because a small absolute error is a large error relative to a narrow posterior. The lesson for the rough-Bergomi network is to check the sampler and the training-time distribution before blaming the bank or the architecture, and to measure each change with the checks of Sections 12.3 to 12.8.
@@ -104,7 +104,7 @@ The training data are the clean prices over their noise (`clean_training_data`),
 | Audit by importance sampling | Is the network right for this smile? | The Monte Carlo likelihood of this smile | Every smile | S5 | 12.7 |
 | Posterior predictive check | Can the model produce this smile? | The quotes and their noise | Every real smile | S8 | 12.8 |
 
-The table follows the design document's validation plan, with the prior predictive check added in front (design document, "Validation plan" and "Prior predictive check").
+The table is the tutorial's validation plan, with the prior predictive check in front.
 
 **Definition.** The prior predictive distribution is the distribution of data the model produces before any data are seen:
 
@@ -135,7 +135,7 @@ The at-the-money level is $c_0$, the skew is $\psi = c_1 = \partial\sigma/\parti
 
 **A caution on reading H from the exponent.** On 93% of the rough prior's clean smiles, the exponent fitted from one week to one year lies below $H - \tfrac12$, by a median of 0.046, and its correlation with $H$ is 0.77 (`rough-pilot/prior-predictive/prior-predictive.json`). The fitted exponent therefore tends to understate $H$ when read as $b + \tfrac12$. The posterior uses all 63 quotes and does not rely on this map.
 
-**Limits.** The SPY values come from one date. The SPY design grid is read through a smoothing spline (Lecture 5), so its statistics compare with the clean distribution rather than the noisy one. The design document plans to add further dates, ⟨S8⟩. Here ⟨S8⟩ stands for the same four statistics on further dates of SPY's chain, which the design document plans under study S8; no run in `lab/plans/CLUSTER-RUNS.md` produces them yet.
+**Limits.** The SPY values come from one date. The SPY design grid is read through a smoothing spline (Lecture 5), so its statistics compare with the clean distribution rather than the noisy one. Further dates are planned, ⟨S8⟩. Here ⟨S8⟩ stands for the same four statistics on further dates of SPY's chain, planned under study S8; no run in `lab/plans/CLUSTER-RUNS.md` produces them yet.
 
 ## 12.4 Simulation-based calibration, coverage and contraction on Heston
 
@@ -169,7 +169,7 @@ $$
 e_j = \frac{\big|\,\bar\theta_j^{\text{net}} - \bar\theta_j^{\text{exact}}\big|}{s_j^{\text{exact}}}, \qquad r_j = \frac{W_j^{\text{net}}}{W_j^{\text{exact}}},
 $$
 
-where $W$ is the width of the central 90% interval. A smile meets the criterion when $e_j < 0.3$ and $|r_j - 1| < 0.25$ for every target (design document, Appendix G.4, kept from the SVJ design).
+where $W$ is the width of the central 90% interval. A smile meets the criterion when $e_j < 0.3$ and $|r_j - 1| < 0.25$ for every target (a criterion kept from the earlier SVJ work).
 
 **What the criterion means.** Suppose the exact posterior is Gaussian and the network's has the right width but a mean 0.3 standard deviations off. Its 90% interval $\bar\theta^{\text{net}} \pm 1.645\,s$ contains a value drawn from the exact posterior with probability
 
@@ -179,7 +179,7 @@ $$
 
 A width ratio of 0.75 with the right mean gives $2\Phi(0.75 \times 1.645) - 1 = 0.783$, and a ratio of 1.25 gives 0.960. When both limits act together, a mean 0.3 standard deviations off and a width ratio of 0.75, the coverage is $\Phi(0.75 \times 1.645 - 0.3) - \Phi(-0.75 \times 1.645 - 0.3) = 0.762$. The criterion therefore allows 90% intervals that cover as little as 76% and as much as 96% under the exact posterior.
 
-**The exact posterior, computed twice.** On the 50 test smiles at rows 2,000 to 2,049, the exact posterior is obtained by importance reweighting of 2,048 proposals with the Fourier likelihood: the audit of Section 12.7, with an exact likelihood. On the first four smiles it is also obtained by four random-walk chains of 6,000 steps each, of which the first 1,000 are discarded as burn-in (design document, "The Heston check (S3)"). On the other 46 smiles the reweighted network is itself the reference, so the comparison there tests the network, not the reweighting.
+**The exact posterior, computed twice.** On the 50 test smiles at rows 2,000 to 2,049, the exact posterior is obtained by importance reweighting of 2,048 proposals with the Fourier likelihood: the audit of Section 12.7, with an exact likelihood. On the first four smiles it is also obtained by four random-walk chains of 6,000 steps each, of which the first 1,000 are discarded as burn-in (study S3). On the other 46 smiles the reweighted network is itself the reference, so the comparison there tests the network, not the reweighting.
 
 ![Left: standardized mean error against width ratio for each target on 50 Heston test smiles, with the criterion shaded. Right: 90% intervals of the exact chains, the network and the reweighted network on the four smiles with chains, in units of the exact posterior.](images/l13-heston-agreement.png)
 
@@ -190,7 +190,7 @@ A width ratio of 0.75 with the right mean gives $2\Phi(0.75 \times 1.645) - 1 = 
 
 **Why $v_0$.** $v_0$ has the sharpest posterior of the four, because the one-week quotes pin the initial variance (Lecture 9, Section 9.5). A small absolute error of the network is a large error relative to a narrow posterior.
 
-**The audit as a correction.** The audit's efficiency on these smiles has a median of 32% and a range of 4.5% to 65%. Its $\hat k$ exceeds 0.7 on 4 of the 50 smiles, two of them among the ten that miss; with 2,048 proposals the sample-size threshold of Lecture 8, Section 8.9 is also 0.70. The workflow's output for a smile is the network corrected by its audit, and that output meets the criterion against the chains on all four smiles that have them. Four smiles are a small test: on the other 46 the corrected output has no independent reference. The network alone meets it on 80% of smiles (design document, "The Heston check (S3)").
+**The audit as a correction.** The audit's efficiency on these smiles has a median of 32% and a range of 4.5% to 65%. Its $\hat k$ exceeds 0.7 on 4 of the 50 smiles, two of them among the ten that miss; with 2,048 proposals the sample-size threshold of Lecture 8, Section 8.9 is also 0.70. The workflow's output for a smile is the network corrected by its audit, and that output meets the criterion against the chains on all four smiles that have them. Four smiles are a small test: on the other 46 the corrected output has no independent reference. The network alone meets it on 80% of smiles (study S3).
 
 ## 12.6 Agreement with the neural-pricer route
 
@@ -208,15 +208,15 @@ $$
 \tilde\ell - \ell = \sum_c\Big[\varepsilon_c\,e_c - \tfrac12 e_c^2\Big] .
 $$
 
-This is the expression of Lecture 14, Section 14.2 with the Monte Carlo error replaced by the pricer's error, with one difference: $e_c$ is a fixed function of $\theta$, not a random draw. It does not average out across evaluations; it moves the posterior. Its systematic part is $-\tfrac12\sum_c e_c^2$: 0.125 per quote at $e_c = 0.5$, 7.9 over 63 quotes (design document, Appendix F.5).
+This is the expression of Lecture 14, Section 14.2 with the Monte Carlo error replaced by the pricer's error, with one difference: $e_c$ is a fixed function of $\theta$, not a random draw. It does not average out across evaluations; it moves the posterior. Its systematic part is $-\tfrac12\sum_c e_c^2$: 0.125 per quote at $e_c = 0.5$, 7.9 over 63 quotes.
 
 ![Left: the held-out error of the Heston neural pricer in units of the quote noise, against the allowance and the Monte Carlo budget. Right: the systematic shift and the spread of the log-likelihood caused by a pricer error of a given size on all 63 quotes.](images/l12-neural-pricer.png)
 
 *Figure 12.6.* How to read the figure: the left panel summarizes the Heston pricer of study S4, a network of four layers of 256 units trained for 300 epochs in 368 CPU-seconds on the clean prices of the training surfaces. On 2,050 held-out test surfaces its RMS error is 0.029 noise standard deviations at the median contract and 0.041 at the worst, and 99% of its absolute errors are below 0.11 (`heston/s4/pricer-route.json`). The right panel plots the two terms of $\tilde\ell - \ell$ for an error that is the same on all quotes: at the Heston pricer's median error both are below 0.25 log-likelihood units.
 
-**When to use which route.** On Heston, four chains of 20,000 steps on the pricer cost a median 12 CPU-seconds per smile and reproduce the exact posterior on all 50 test smiles of study S3 (Figure 12.7). The pricer route keeps the likelihood explicit, so a change of noise model or of quote set needs no retraining; it needs a chain per smile. The amortized posterior needs no chain and returns 1,000 draws in 1.4 seconds; it is retrained when the noise model, the prior or the design grid changes. The tutorial uses the amortized posterior as its route and the pricer route as an independent check (design document, "The neural-pricer route"). For rough Bergomi the pricer's error has to be measured again, because it learns from Monte Carlo prices whose own errors reach 0.25 noise standard deviations; that measurement is study S4, ⟨S4⟩.
+**When to use which route.** On Heston, four chains of 20,000 steps on the pricer cost a median 12 CPU-seconds per smile and reproduce the exact posterior on all 50 test smiles of study S3 (Figure 12.7). The pricer route keeps the likelihood explicit, so a change of noise model or of quote set needs no retraining; it needs a chain per smile. The amortized posterior needs no chain and returns 1,000 draws in 1.4 seconds; it is retrained when the noise model, the prior or the design grid changes. The tutorial uses the amortized posterior as its route and the pricer route as an independent check. For rough Bergomi the pricer's error has to be measured again, because it learns from Monte Carlo prices whose own errors reach 0.25 noise standard deviations; that measurement is study S4, ⟨S4⟩.
 
-**The agreement check.** For rough Bergomi an exact posterior is expensive (Lecture 14). The chain on the neural pricer's likelihood is then a second simulation-based route. The two routes share the training bank and nothing else: one network learns the posterior, the other learns the prices, and the chain uses the explicit Gaussian likelihood. If both agree, neither has a systematic error larger than the pricer's. If they disagree, the audit with the Monte Carlo likelihood decides (design document, "Agreement with the neural-pricer route").
+**The agreement check.** For rough Bergomi an exact posterior is expensive (Lecture 14). The chain on the neural pricer's likelihood is then a second simulation-based route. The two routes share the training bank and nothing else: one network learns the posterior, the other learns the prices, and the chain uses the explicit Gaussian likelihood. If both agree, neither has a systematic error larger than the pricer's. If they disagree, the audit with the Monte Carlo likelihood decides.
 
 The study rehearses this on Heston, where the exact posterior is also available, so the pricer route can itself be checked.
 
@@ -264,7 +264,7 @@ $$
 p(y^{\text{rep}} \mid y) = \int p(y^{\text{rep}} \mid \theta, \xi_0)\, p(\theta \mid y, \xi_0)\, d\theta .
 $$
 
-The check draws $\theta$ from the posterior, computes the model prices $P_c(\theta)$, and compares the observed quotes with them. Two summaries are used. The first is the standardized residual of each quote, $(y_c - P_c(\theta))/\sigma_c$, whose median over draws is mapped on the design grid; the design document flags quotes whose median exceeds 2 in absolute value. The second is the discrepancy $T(y, \theta) = \sum_c ((y_c - P_c(\theta))/\sigma_c)^2$, computed for the observed quotes and for a replicated smile at each draw. The posterior predictive p-value is
+The check draws $\theta$ from the posterior, computes the model prices $P_c(\theta)$, and compares the observed quotes with them. Two summaries are used. The first is the standardized residual of each quote, $(y_c - P_c(\theta))/\sigma_c$, whose median over draws is mapped on the design grid; the tutorial flags quotes whose median exceeds 2 in absolute value. The second is the discrepancy $T(y, \theta) = \sum_c ((y_c - P_c(\theta))/\sigma_c)^2$, computed for the observed quotes and for a replicated smile at each draw. The posterior predictive p-value is
 
 $$
 p_B = \mathbb{P}\big(T(y^{\text{rep}}, \theta) \ge T(y, \theta) \,\big|\, y\big),
@@ -279,7 +279,7 @@ which is near 0 when the observed quotes are further from the model than its own
 - **Correct model (left).** Heston test smile 2,000, under its exact Heston posterior from the chains of Section 12.5. The residuals look like noise: 4 of the 63 quotes (6%) have a median beyond ±2, the largest is 2.8, and they show no pattern across maturities or strikes. The p-value is 0.24.
 - **Wrong model (centre).** The rough-Bergomi example smile under its exact Heston posterior. That posterior was computed for this figure by least squares from six starts followed by four random-walk chains of 3,000 steps with the Fourier likelihood, 500 steps of burn-in, $\hat R$ at most 1.010 and at least 663 effective draws per parameter, in about 250 CPU-seconds (`course/scripts/lecture13.py`). The residuals have a pattern. The one-week puts at $\delta = -2$ and $-1.5$ and the two-week put at $\delta = -2$ sit 7.3, 4.3 and 4.7 noise standard deviations above Heston's prices, while the one- and two-week at-the-money quotes sit 2.5 and 3.2 below. The short-dated smile is steeper and more curved than Heston can make it, which is the failure Lecture 10, Section 10.8 predicts for Heston's short-maturity skew. Nine quotes (14%) have a median beyond ±2, and the p-value is 0.00: the observed discrepancy, a median of 193, is above every replicated one.
 
-**The check on the real smile.** The design document proposes that at most 10% of a real smile's quotes may lie beyond two standard deviations; under the correct model of Figure 12.10, 6% did. The check on SPY's smile under its rough-Bergomi posterior is part of study S8, in Lecture 15, Section 15.3.
+**The check on the real smile.** The tutorial's criterion is that at most 10% of a real smile's quotes lie beyond two standard deviations; under the correct model of Figure 12.10, 6% did. The check on SPY's smile under its rough-Bergomi posterior is part of study S8, in Lecture 15, Section 15.3.
 
 ## 12.9 Changing the prior and the noise without retraining
 
@@ -299,9 +299,9 @@ This works when $p_1$ puts its mass inside the posterior's support. The Pareto s
 
 ## 12.10 Real chains: quotes on a varying set
 
-The network of Sections 12.1 and 12.2 reads exactly 63 quotes on the design grid. A real chain has different strikes and maturities every day, so the tutorial reads it at the design grid through a smile fit (Lecture 5). The design document's Stage D removes that step: each quote becomes a token $(\delta, T, y_c/\sigma_c)$, a set transformer (Lee et al. 2019) pools any number of tokens into a fixed-size summary, and the result does not depend on the order of the tokens.
+The network of Sections 12.1 and 12.2 reads exactly 63 quotes on the design grid. A real chain has different strikes and maturities every day, so the tutorial reads it at the design grid through a smile fit (Lecture 5). A network that reads the quotes directly removes that step: each quote becomes a token $(\delta, T, y_c/\sigma_c)$, a set transformer (Lee et al. 2019) pools any number of tokens into a fixed-size summary, and the result does not depend on the order of the tokens.
 
-**Why training with masks gives the right posterior.** If each training surface loses a random subset $S$ of its quotes before it reaches the network, the training pairs are draws from $p(\theta)\,p(y_S \mid \theta)$ for random $S$. By Lecture 9, Section 9.2 the minimizer is then $p(\theta \mid y_S, \xi_0)$ for every subset the mask distribution covers: the posterior given exactly the quotes that are present. The mask distribution must therefore cover the patterns real chains show (design document, Appendix F.4).
+**Why training with masks gives the right posterior.** If each training surface loses a random subset $S$ of its quotes before it reaches the network, the training pairs are draws from $p(\theta)\,p(y_S \mid \theta)$ for random $S$. By Lecture 9, Section 9.2 the minimizer is then $p(\theta \mid y_S, \xi_0)$ for every subset the mask distribution covers: the posterior given exactly the quotes that are present. The mask distribution must therefore cover the patterns real chains show (`lab/plans/SPARSE-QUOTE-CASE-PLAN.md`).
 
 **The assumption behind it.** The masks are drawn independently of $\theta$ and $\xi_0$. A network trained this way returns $p(\theta \mid y_S, \xi_0)$. The posterior a real chain calls for is $p(\theta \mid y_S, S, \xi_0)$, which conditions also on which quotes are missing. The two coincide only if the pattern of missing quotes carries no information about $\theta$ beyond the observed quotes: in the language of missing data, the quotes are missing at random. Real gaps need not be. The cleaning rules drop quotes with zero bids or wide relative spreads (Lecture 5), and a far out-of-the-money option reaches a zero bid sooner when volatility is low, so how far a chain reaches in $\delta$ depends on the level of volatility, that is on $\xi_0$ and the parameters. Figure 12.11 shows SPY's call side stopping short of $\delta = 2$ at short maturities. Where the pattern depends on the parameters, independent masks give a posterior that ignores that information.
 

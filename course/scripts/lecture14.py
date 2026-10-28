@@ -4,7 +4,7 @@ the product ranges, and Heston against rough Bergomi.
 Usage: python course/scripts/lecture14.py   (writes course/images/l14-*.png and prints the numbers quoted in the text)
 
 Every number comes from the cached study results in tutorial/assets/results/calibration, from the
-SPY surface file, or from the design document's tables (cited in the lecture); the only new
+SPY surface file, or from the studies' reported values (cited in the lecture); the only new
 computation is the fit of the curve prior to the SPY forward-variance curve (Lecture 15, Figure 15.6).
 """
 
@@ -25,7 +25,7 @@ def load(path):
     return json.loads((RESULTS / path).read_text())
 
 
-# Figure 14.1: where each study stands (design document, "Planned feasibility study") --
+# Figure 14.1: where each study stands (course/status.md) --
 STATUS_COLORS = {"met": COLORS[4], "reported": COLORS[0], "partly met": COLORS[1], "not met": COLORS[3],
                  "pending": "0.88", "data done": "0.70", "": "white"}
 STATUS = [  # (study, question, Heston, rough pilot, rough full bank, real smile)
@@ -196,7 +196,7 @@ ACTS = [  # (start, end, act, evidence, status)
 ACT_COLORS = {"available": COLORS[4], "pilot only": COLORS[1], "pending": "0.75"}
 
 
-# Figure 14.7: which check guards which risk (design document, "Risks and open decisions") --
+# Figure 14.7: which check guards which risk (Lecture 16, Section 16.7) --
 RISKS = [
     ("posterior width is the noise model's", ["stated, exercise"]),
     ("model cannot produce the real smile", ["prior predictive", "posterior predictive (S8)", "across models (S7)"]),

@@ -8,8 +8,8 @@ variance path, log(S_T2 / S_T1) is Gaussian with
     mean  rho (J(T2) - J(T1)) - rho^2/2 (I(T2) - I(T1)) - (1 - rho^2)/2 (I(T2) - I(T1)),
     var   (1 - rho^2) (I(T2) - I(T1)),
 
-so every product below is a Black–Scholes formula per path (design document,
-Appendix D.3 and H). Two zero-mean controls per horizon remove the linear part of
+so every product below is a Black–Scholes formula per path (course, Lectures 6
+and 13). Two zero-mean controls per horizon remove the linear part of
 the remaining noise: the effective forward minus one, and I minus its mean where
 the scheme's mean of I is exact (rough Bergomi's left-point hybrid scheme). Under
 Heston's full-truncation Euler scheme the continuous-time mean of I is not the
@@ -131,7 +131,7 @@ def variance_swap(paths, maturity):
 
 
 def default_specification():
-    """The design document's products: 63-day swaps, a 63-to-126-day forward start, a 2-year 90% put."""
+    """The tutorial's products: 63-day swaps, a 63-to-126-day forward start, a 2-year 90% put."""
     return {"variance_swap": {"maturity": 63 / 252}, "volatility_swap": {"maturity": 63 / 252},
             "forward_start_call": {"start": 63 / 252, "end": 126 / 252, "moneyness": 1.0},
             "put_out_of_grid": {"strike": 0.9, "maturity": 2.0},

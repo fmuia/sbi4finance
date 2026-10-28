@@ -353,7 +353,7 @@ def _(ASSETS, RESULTS, np, teaching):
     _heston_net = costs["heston_amortized_posterior_1000_draws_cpu_s"]["median"]
     _rough_exact = 3600 * costs["exact_rough_posterior"]["cpu_hours"]
     _rough_net = costs["rough_amortized_posterior_1000_draws_cpu_s"]["median"]
-    _rough_bank = 112_000 * 11.9  # the pilot bank's average pricing cost per surface (design document, S9)
+    _rough_bank = 112_000 * 11.9  # the pilot bank's average pricing cost per surface (study S9)
     smiles = np.arange(0, 201)
     cumulative = {
         "Heston, exact": smiles * _heston_exact,

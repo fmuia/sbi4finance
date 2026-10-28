@@ -525,7 +525,7 @@ def _(mo):
 def _(exact_spy, np, surface, teaching):
     feller_ratio = exact_spy[:, 2] ** 2 / (2 * 2.0 * exact_spy[:, 1])
     variance_swap_vol = teaching.heston_variance_swap_vol(exact_spy[:, 0], exact_spy[:, 1], 2.0, surface.DESIGN_DAYS)
-    SPY_VARIANCE_SWAP_VOL = np.array([13.6, 15.0, 16.2, 17.6, 18.4, 20.1, 21.8])  # replicated from the chain (design document, S8)
+    SPY_VARIANCE_SWAP_VOL = np.array([13.6, 15.0, 16.2, 17.6, 18.4, 20.1, 21.8])  # replicated from the chain (study S8)
     return SPY_VARIANCE_SWAP_VOL, feller_ratio, variance_swap_vol
 
 

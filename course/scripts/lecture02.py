@@ -11,7 +11,7 @@ from scipy.stats import norm
 from common import COLORS, DAYS, DELTAS, GREY, load_spy, plt, save, sf, tidy
 
 REPORT = {}
-SPOT = 773.09  # SPY close of 21 October 2026 (design document, study S8)
+SPOT = 773.09  # SPY close of 21 October 2026 (study S8)
 
 
 def expirations(spy):

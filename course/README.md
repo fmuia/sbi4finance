@@ -6,7 +6,7 @@ This folder is a course in sixteen lectures. It builds, from the basics, everyth
 the advanced example of the ICAIF '26 tutorial: the calibration of a rough volatility model to option quotes, with
 a posterior, and the propagation of that posterior into the prices of products the quotes do not determine.
 
-The course is a superset of the tutorial and of the [calibration design document](design-document/calibration-design-document.md).
+The course is a superset of the tutorial.
 [The plan](v2-plan.md) says what the course argues and why, and which options would strengthen it;
 [practice-sources.md](practice-sources.md) lists the practices the course may describe, with their sources;
 [status.md](status.md) gives the state of every study.
@@ -83,8 +83,7 @@ For a worked explanation of the neural-pricer alternative, see [forward pricing 
   percentage (20%). "One volatility point" is 0.01.
 - **Forward units.** From Lecture 2 on, option prices are divided by the discount factor and by the forward, so
   that the forward is 1 and a price is a fraction of it.
-- **Notation.** The symbols follow the design document. Each lecture defines a symbol when it first appears, and
-  the [design document's symbols table](design-document/calibration-design-document.md#symbols) collects them.
+- **Notation.** Each lecture defines a symbol when it first appears; [the table below](#symbols) collects them.
 - **Data.** The daily returns of VOO from 3 January 2020 to 4 September 2026
   (`course/scripts/data/SPMO_VOO_2020-01-01_2026-09-04.csv`); SPY's surface of 21 October 2026 on the design grid
   (`tutorial/assets/results/calibration/spy/surface.json`); four thin chains of 22 and 23 October 2026, derived data
@@ -94,38 +93,35 @@ For a worked explanation of the neural-pricer alternative, see [forward pricing 
   [`lab/plans/CLUSTER-RUNS.md`](../lab/plans/CLUSTER-RUNS.md) says how.
 - **Figures.** Every figure is drawn by a script in `course/scripts/` (named by an earlier numbering of the lectures) or by
   a check in `lab/checks/`, from closed-form formulas, simulations with fixed seeds, or the data above.
-  Each figure has a paragraph that says how to read it.
+  Four figures are copied from study results instead (`images/study-*.png`: Figures 6.2, 15.4, 15.5 and 15.8),
+  and their captions say from which. Each figure has a paragraph that says how to read it.
 
-## Where each section of the design document is covered
+### Symbols
 
-| Design-document section | Lecture |
-| --- | --- |
-| Executive summary, steps 1–7 | 1, 6 (step 1); 4, 5, 10, 13 (step 2); 8 (step 3); 14 (step 4); 7 (step 5); 9, 12, 15 (step 6); 12, 15 (step 7) |
-| The two claims; Summary; Three routes from one smile to a product price | 14, 15 |
-| Why Heston is the check and not the example | 10, 11, 14 |
-| The practitioner problem | 1 (exotics and marking), 6 |
-| Executive summary of the model (inputs and outputs, data, what it captures and misses, the output for SPY) | 6, 15; the data in 1, 5, 7 and 12 |
-| Notation and key terms: four volatility objects | 1 (realized), 5 (implied, forward variance), 13 (instantaneous) |
-| The model: Black–Scholes and the smile | 4, 5 |
-| The model: Heston | 10 |
-| The model: rough Bergomi; the prior; the prior predictive check; the 63 model prices; the skew's term structure | 13 (model, pricing, skew), 8 (prior), 12 and 15 (prior predictive check) |
-| The model: from parameters to a product price | 6, 8 |
-| The observation model (quotes, design grid, noise model, identification) | 5 (design grid), 7 (quote and noise), 8 and 13 (identification) |
-| Why the likelihood is expensive | 14 |
-| Classical calibration and where it fails | 7, 11 |
-| Amortized design | 9, 12, 15 |
-| Validation plan | 9, 12, 15, 16 |
-| From posterior to prices | 8 (method), 15 and 16 (results) |
-| Planned feasibility study (S1–S9) | [status.md](status.md), with each study cited where its subject is taught |
-| Tutorial narrative; risks and open decisions | 16, `tutorial/curriculum/` |
-| Appendix A. Calibration practice and the rules | 6 |
-| Appendix B. Black–Scholes, implied volatility, variance swap | 2, 4, 5 |
-| Appendix C. Heston and the Fourier pricer | 10 |
-| Appendix D. Rough Bergomi | 13 |
-| Appendix E. Calibration as estimation | 7 |
-| Appendix F. Amortized inference | 9, 12 |
-| Appendix G. Validation | 9, 12 |
-| Appendix H. Products under the posterior | 1 (payoffs), 6 (definitions), 8 (method), 15 (results) |
-| Appendix I. The real surface | 2 (forward and discount), 5 (design grid, forward-variance curve), 15 |
-| Appendix J. Fourier pricing, Heston against rough Bergomi | 10, 13, 15 |
-| References | Each lecture lists the references it uses |
+The symbols of the advanced example, with their prior medians or design values. The row of the training curves gives the pilot's curve prior; Lecture 15, Section 15.1 gives the full bank's.
+
+| Symbol | Meaning | Units | Prior median or design value |
+| --- | --- | --- | --- |
+| S\_t, F\_T, D\_T | Price, forward for maturity T, discount factor | currency, currency, – | – |
+| k | Log-moneyness, ln(K / F\_T) | – | – |
+| δ | Standardized moneyness, k / (σ\_ref √T) | – | −2 to 2 in steps of 0.5 |
+| σ\_ref | Reference volatility of the design grid | fraction per year | 0.20 |
+| T | Maturity, in trading days over 252 | years | 5, 10, 21, 42, 63, 126, 252 days |
+| C | Number of quotes in the panel | – | 63 |
+| y\_c, P\_c(θ; ξ\_0), σ\_c | Observed quote, model price, quote-noise standard deviation of contract c | forward units | – |
+| c(k, T), p(k, T) | Black–Scholes call and put in forward units | – | – |
+| H | Hurst exponent of the variance driver; roughness | – | 0.185, uniform on (0.02, 0.35) |
+| η | Volatility of variance | per year^H | 2.0, uniform on (0.5, 3.5) |
+| ρ | Correlation between price and variance shocks | – | −0.595, uniform on (−0.99, −0.2) |
+| θ | The three parameters (H, η, ρ), in the unbounded coordinates of the adapter | – | – |
+| ξ\_0(t) | Forward-variance curve, constant on each of the 7 intervals [T\_{j−1}, T\_j) between design maturities, with T\_0 = 0 | variance per year | level σ\_0 = 25% a year, slope s = 0.15 |
+| σ\_0, s, u\_j | Level, slope and log perturbations of the training curves: the level on interval j is σ\_0² (1 + s t\_j) e^(u\_j), with t\_j the interval's midpoint | fraction per year, per year, – | σ\_0 ~ U(10%, 40%), s ~ U(−0.3, 0.6), u\_j ~ U(−0.2, 0.2) independently |
+| W\_t, W^⊥\_t | Brownian motion driving the variance and the correlated price shock; independent Brownian motion for the rest of the price shock | – | – |
+| Y\_t | The Volterra driver, √(2H) ∫₀ᵗ (t − s)^(H−½) dW\_s, with Var(Y\_t) = t^(2H) | – | – |
+| V\_t, Q\_T | Instantaneous and realized variance | variance per year | – |
+| v\_0, θ\_H, κ, σ\_v, ρ\_H | Heston's initial variance, long-run variance, mean reversion, vol-of-vol and correlation | variance, variance, per year, –, – | κ fixed at 2 |
+| φ(u) | Characteristic function of ln(S\_T / F\_T) | – | – |
+| N, n | Monte Carlo paths and time steps per maturity block | – | 2^15 paths, doubled up to 2^21 until the error budget holds; 80 steps over 10 days, 504 over 3 months, 504 over a year |
+| M, L | Audit proposals; posterior draws per surface | – | M = 256 at 2^13 paths per block for rough Bergomi (the pilot's setting; the full study sets M from the pilot's efficiencies), 2,048 with the Fourier likelihood for Heston; L = 1,000 |
+| Π, p\_Π | A product's payoff and price | forward units | – |
+| T\_1, T\_2 | Forward-start dates: strike set at T\_1, expiry T\_2 | years | 63 and 126 days |

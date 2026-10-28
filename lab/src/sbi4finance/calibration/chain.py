@@ -1,4 +1,4 @@
-"""From an end-of-day option chain to the design-grid observation (design document, Appendix I).
+"""From an end-of-day option chain to the design-grid observation (course, Lecture 5, Section 5.4).
 
 Steps, each recorded in the returned diagnostics:
 
