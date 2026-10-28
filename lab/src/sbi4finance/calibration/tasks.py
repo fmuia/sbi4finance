@@ -34,7 +34,7 @@ TASK_KEYS = {"task_id", "model", "measure", "context", "model_context", "paramet
 CURVE_KINDS = {"linear_wobble": {"level_bounds", "slope_bounds", "log_perturbation"},
                "power_law_walk": {"kind", "level_bounds", "exponent_bounds", "walk_sd", "vol_bounds"}}
 MAX_CURVE_DRAWS = 1000  # rejection draws of a power_law_walk curve before a surface fails
-# The full bank's forward-variance prior (configs/tasks/calibration_rough_bank.json; docs/course/v2-plan.md, G0').
+# The full bank's forward-variance prior (configs/tasks/calibration_rough_bank.json; course/v2-plan.md, G0').
 FULL_BANK_CURVE_PRIOR = {"kind": "power_law_walk", "level_bounds": [0.08, 0.60], "exponent_bounds": [-0.6, 0.6],
                          "walk_sd": 0.15, "vol_bounds": [0.06, 0.60]}
 

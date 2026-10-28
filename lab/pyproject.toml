@@ -17,7 +17,7 @@ packages = ["src/sbi4finance"]
 # pixi: run every command from lab/. `pixi install --locked` creates the lab
 # environment, `pixi shell` enters it. bayesflow is PyPI-only, so it and its
 # backend come from pypi-dependencies; everything else comes from conda-forge.
-# The tutorial has its own environment in tutorial/pixi.toml.
+# The tutorial has its own environment in tutorial/pyproject.toml.
 # ---------------------------------------------------------------------------
 [tool.pixi.workspace]
 channels = ["conda-forge"]
@@ -45,7 +45,8 @@ surface = "python scripts/build_surface.py"
 accept = "python studies/accept.py"
 manifest = "python studies/manifest.py"
 claims = "python studies/claims.py"
-release-check = "python studies/manifest.py --check && python studies/claims.py --check"
+copy-to-tutorial = "python studies/copy_to_tutorial.py"
+release-check = "python studies/manifest.py --check && python studies/claims.py --check && python studies/copy_to_tutorial.py --check"
 course-check = "python ../course/scripts/check_v2_plan.py"
 discover-cluster = "python cluster/discover_cluster.py"
 

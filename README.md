@@ -71,12 +71,14 @@ The boundaries are what keep the tutorial safe to change late and easy to hand t
 2. **Only files cross from the lab to the tutorial, through lab tools.** Trained networks and accepted study
    results enter `tutorial/assets/` through `lab/studies/accept.py`; quick-check outputs, task files and figures as
    copies made by `lab/studies/manifest.py`; the exact Heston posterior on SPY from `lab/checks/heston_spy_exact.py`.
+   The one exception is slot 2's toy network, which the notebook trains and saves when the file is missing.
    [`tutorial/MANIFEST.md`](tutorial/MANIFEST.md) lists every asset with its SHA-256 and source. Nobody copies files
    into `tutorial/assets/` by hand.
 3. **What the notebooks compute live is copied, not shared.** `tutorial/src/sbi4f_tutorial` (about 1,700 lines)
    holds the lab functions the notebooks run (the pricers, the network code, the loaders and figures), copied
-   unchanged into modules of the same names. About 25 lines are the tutorial's own: where the assets are, and
-   reading the tasks the lab stored. `lab/tests/test_tutorial_parity.py` fails when a copy differs from the lab's
+   unchanged into modules of the same names. About 120 lines are the tutorial's own: slot 1's toy example
+   (`why_bayes.py`, moved from the lab because only the tutorial uses it), where the assets are, and reading the
+   tasks the lab stored. `lab/tests/test_tutorial_parity.py` fails when a copy differs from the lab's
    code or returns different numbers, so the two cannot drift silently.
 4. **The course is documents.** Its figures are drawn by `course/scripts/` in the lab environment and committed
    as images; readers need nothing installed.
@@ -124,10 +126,11 @@ accepted and exported.
    `ROOT / "assets"`. Put every number on screen through `tutorial/CLAIMS.md`: its study, its file and its status.
    Give every live cell (loading a network, pricing, training) a cached fallback and a time budget.
 5. If a notebook needs a new computation, write it in the lab with a test, then copy the functions unchanged into
-   the module of the same name in `tutorial/src/sbi4f_tutorial/` (`COPIED_FROM` in
-   `lab/tests/test_tutorial_parity.py` maps each module to its lab file). Code only a notebook needs, such as a
-   figure, goes in the notebook, or in the runtime with an entry in `WRITTEN_FOR_THE_TUTORIAL` saying why. When you
-   change a copied lab function, copy it again; the parity test names the copies that differ.
+   the module of the same name in `tutorial/src/sbi4f_tutorial/`: in `lab/`, run
+   `pixi run copy-to-tutorial --add MODULE.NAME` (`COPIED_FROM` in `lab/studies/copy_to_tutorial.py` maps each
+   module to its lab file). Code only a notebook needs, such as a figure, goes in the notebook, or in the runtime
+   with an entry in `WRITTEN_FOR_THE_TUTORIAL` there saying why. When a copied lab function changes,
+   `pixi run test` in `lab/` fails and names it, and `pixi run copy-to-tutorial` copies it again.
 6. If a notebook needs a new number or figure, produce it in the lab, accept it into `tutorial/assets/` with
    `lab/studies/accept.py`, then run `pixi run manifest` and `pixi run claims` in `lab/` (next section).
 7. Before opening a pull request, run in `tutorial/`: `pixi run test`, `pixi run test-notebooks` (every notebook
@@ -163,8 +166,9 @@ records their identities and how they were produced.
 Bergomi on SPY and a thin chain. It is a superset of the tutorial: the presenters' long version, and take-home
 reading for participants. [`course/status.md`](course/status.md) gives the state of every study it cites. To redraw
 a lecture's figures, run its script in the lab environment, for example
-`cd lab && pixi run python ../course/scripts/lecture09.py`. `pixi run course-check` checks the numbers the course
-plan prints against the stored results.
+`cd lab && pixi run python ../course/scripts/lecture08.py`. Every script runs there except the last figure of
+`lecture09.py`, which needs scikit-learn; the environment has never included it. `pixi run course-check` checks the
+numbers the course plan prints against the stored results.
 
 ## Where the work stands on 28 October 2026
 
@@ -186,11 +190,14 @@ The detailed numerical status of the backbone work is `docs/collaborator-numeric
 2. **Agreed:** every network shipped to participants moves to BayesFlow 2.1: the Heston candidate once it is
    packaged, the rough-Bergomi network, and slot 2's toy network, retrained. The tutorial's pin moves with them.
 3. **Agreed:** the take-home returns track (SVJ, the multifractal model, GBM from returns, crash-day priors, betas
-   across stocks) is not part of the 14 November release. It stays in the archive and on its branches.
+   across stocks) is not part of the tutorial's release (tagged on 11 November). It stays in the archive and on its branches.
 4. **Open:** how much run evidence lives in git. Compact records only (README, summary JSON, key figures), or the
    raw per-case outputs and logs too. PR #48 currently commits about 41 MB of them.
 5. **Agreed in principle:** participants get a separate small repository holding `tutorial/` without the
-   curriculum, created at the release. It is self-contained, so the copy is mechanical.
+   curriculum, created at the release. It is self-contained, so the copy runs without changes, but six links need
+   a target first: the "Evidence and code" footers of the five notebooks point to `tutorial/curriculum/` and
+   `course/`, and `tutorial/README.md` points participants to this repository, which is private. Either the course
+   is published with the release and the links point there, or the links go.
 
 ## Open pull requests
 

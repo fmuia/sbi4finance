@@ -16,6 +16,7 @@ Delete it once they are ported.
 | `scripts/course/`, and `scripts/plot_design_*.py` | `course/scripts/` |
 | `scripts/curriculum/heston_spy_exact.py` | `lab/checks/heston_spy_exact.py` |
 | `scripts/curriculum/storyboard.py` | `tutorial/curriculum/storyboard.py` |
+| `src/sbi4finance/calibration/why_bayes.py` (slot 1's toy example; only the tutorial uses it) | `tutorial/src/sbi4f_tutorial/why_bayes.py` |
 | `configs/tasks/calibration_*.json`, `configs/thin/` | `lab/configs/` |
 | `cluster/calibration_bank_array.sbatch`, `train_calibration.sbatch`, `study.sbatch`, `thin_coverage_array.sbatch`, `discover_cluster.py` | `lab/cluster/` |
 | `tests/test_calibration.py`, `test_thin.py`, `test_bergomi.py`, `test_rough_bergomi.py`, `test_hkde.py`, `test_heston.py`, `test_gbm_bank.py` | `lab/tests/` |
@@ -27,13 +28,13 @@ Delete it once they are ported.
 | `tutorial_final/CLAIMS.md`, `tutorial_final/MANIFEST.md` | `tutorial/` |
 | `tutorial_final/NUMERICAL-EXPERIMENT-PLAN.md`, `EXPERIMENT-PROTOCOL.md`, `CLUSTER-RUNS.md`, `SPARSE-QUOTE-CASE-PLAN.md` | `lab/plans/` |
 | `tutorial_final/studies/` | `lab/studies/` |
-| `tutorial_final/checks/` | `lab/checks/`, except the withdrawn `desk_case/`, `rough_spy_is_cases*` and `heston_sparse_free_long.py` (archived) |
+| `tutorial_final/checks/` | `lab/checks/`, except the withdrawn `desk_case/` and `rough_spy_is_cases*` (archived) |
 | `docs/course/` | `course/` |
 | `docs/design/calibration-design-document.md` and its images | `course/design-document/` |
 | `docs/mcmc-policy.md` | `lab/plans/mcmc-policy.md` |
 | `data/SOURCES.md` | `lab/data/SOURCES.md` |
 | `data/SPMO_VOO_2020-01-01_2026-09-04.csv` | `course/scripts/data/` |
-| Everything else: `notebooks/`, `checkpoints/`, the other `docs/`, `data/synthetic/`, 40 library modules, 64 scripts, 39 test files, the other configs and cluster jobs, `tutorial_final/PLAN.md` | Archived at `574b940` |
+| Everything else: `notebooks/`, `checkpoints/`, the other `docs/`, `data/synthetic/`, 39 library modules, 62 scripts, 39 test files, the other configs and cluster jobs, `tutorial_final/PLAN.md` | Archived at `574b940` |
 
 New: `tutorial/src/sbi4f_tutorial/` (the notebooks' runtime), `tutorial/pyproject.toml` and `tutorial/pixi.lock`,
 `tutorial/tests/`, `tutorial/assets/quick-checks/`, `tutorial/assets/tasks/` and `tutorial/assets/images/` (copies
@@ -52,8 +53,10 @@ made by `lab/studies/manifest.py`), and `lab/tests/test_tutorial_parity.py`.
 
 ## Porting PR #47 and PR #48
 
-Whichever of the restructure and a pull request reaches `main` second takes the conflicts. A trial merge of PR #48
-at `a91851b` (which contains PR #47) into the restructure gave the following.
+Whichever of the restructure and a pull request reaches `main` second takes the conflicts. Merge with
+`-c merge.directoryRenames=true`: without it, git stops on about 900 "file location" conflicts, one for each file
+the pull request adds inside a folder the restructure moved. A trial merge of PR #48 at `f769ba6` (which contains
+PR #47) into the restructure, on 28 October 2026, gave the following.
 
 - **Placed automatically by git:** every change to a moved file, and the new files in `src/sbi4finance/`, `tests/`,
   `configs/` and `cluster/`. They land in `lab/`.
@@ -66,24 +69,41 @@ at `a91851b` (which contains PR #47) into the restructure gave the following.
   `[tool.pixi.feature.reference]` and the three environments into `lab/pyproject.toml`, delete the root copies, and
   re-lock with `cd lab && pixi lock`.
 - **Files git places wrongly or not at all.** Move them by hand:
-  - new scripts left in `scripts/` go to `lab/scripts/`;
+  - the 27 new scripts stay in `scripts/` (git reports a "directory rename split" for `scripts/` and
+    `scripts/curriculum/`, whose old files went to several places) and go to `lab/scripts/`;
   - PR #48's documents from `docs/` land at the repository root (`*.md`). Living plans, work orders and the status
     page go to `lab/plans/`, and dated result records to `lab/evidence/`;
-  - `docs/pilot-results/` lands at `pilot-results/` and goes to `lab/evidence/pilot-results/`;
+  - `docs/pilot-results/` lands at `pilot-results/` (898 files) and goes to `lab/evidence/pilot-results/`. PR #48's
+    new `.gitattributes` marks `docs/pilot-results/**` as generated; change its patterns to
+    `lab/evidence/pilot-results/**`;
   - `data/synthetic/full-surface-heston-final500/` goes to `lab/evidence/` until a notebook uses it. Then a lab tool
     exports it into `tutorial/assets/` and `lab/studies/manifest.py` records it. The tutorial reads nothing else.
+- **A module the restructure archived:** PR #48's known-pricing check
+  (`docs/pilot-results/2026-10-28/known-pricing-validation/known_rough_pricing_check_20261028.py`) imports
+  `sbi4finance.bergomi_refinement` and records its hash. Restore it and its test unchanged:
+  `git show 574b940:src/sbi4finance/bergomi_refinement.py > lab/src/sbi4finance/bergomi_refinement.py`, and
+  `git show 574b940:tests/test_bergomi_refinement.py > lab/tests/test_bergomi_refinement.py`.
+- **The tutorial's copies of lab code:** PR #48 edits six functions the tutorial copies (`bergomi._asset_paths`,
+  `hkde.european_price`, `pricing.rough_block`, `rough_bergomi.simulate_rough`, `tasks.model_parameters`,
+  `tasks.curve`), so `pixi run test` in `lab/` fails until the copies are refreshed. In `lab/`, run
+  `pixi run copy-to-tutorial`, then `pixi run copy-to-tutorial --add tasks.is_joint_curve_task tasks.JOINT_ROUGH_ID`
+  for the two helpers the new versions call. The edits are speed-ups and branches for the new joint-curve task:
+  in the trial merge the notebooks' Heston and rough-Bergomi smiles were bit-identical before and after, and the
+  lab's parity tests and the tutorial's tests passed.
 - **Then:** replace any remaining `tutorial_final`, `docs/` and root-relative paths in the new scripts and
-  documents. Run `pixi run test` and `pixi run release-check` in `lab/`, and `pixi run test` in `tutorial/`.
+  documents. Run `pixi run test` and `pixi run release-check` in `lab/`, and `pixi run test` and
+  `pixi run test-notebooks` in `tutorial/`.
 
 ```bash
 git switch feat/full-surface-calibration
-git merge origin/main                      # once the restructure is on main
+git -c merge.directoryRenames=true merge origin/main         # once the restructure is on main
 git status --short | grep -v ' \(lab\|course\|tutorial\)/'   # files that still need a place
 ```
 
 The notebook integration of the BayesFlow 2.1 Heston candidate follows the same path as any asset. Accept the
 exported checkpoint with `lab/studies/accept.py` (or an export tool writing the same `ACCEPTED.json` record). Copy
 the functions of `sbi4finance.calibration.full_surface` that rebuild and sample the network, unchanged, into
-`tutorial/src/sbi4f_tutorial/full_surface.py`, add that module to `COPIED_FROM` in
-`lab/tests/test_tutorial_parity.py`, and add a check that both return the same draws. Then move the tutorial's
+`tutorial/src/sbi4f_tutorial/full_surface.py` (add the module to `COPIED_FROM` in `lab/studies/copy_to_tutorial.py`,
+then `pixi run copy-to-tutorial --add full_surface.NAME`), and add a check to `lab/tests/test_tutorial_parity.py`
+that both return the same draws. Then move the tutorial's
 BayesFlow pin to 2.1.

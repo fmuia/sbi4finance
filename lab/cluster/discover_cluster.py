@@ -155,7 +155,7 @@ def main() -> int:
         print(text)
     else:
         args.output.write_text(text)
-        print(f"wrote {args.output}; copy account/partition into cluster/train.sbatch or pass them to sbatch", file=sys.stderr)
+        print(f"wrote {args.output}; copy account/partition into cluster/train_calibration.sbatch or pass them to sbatch", file=sys.stderr)
     return 0
 
 
