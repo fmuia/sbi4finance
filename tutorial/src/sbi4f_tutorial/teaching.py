@@ -8,6 +8,7 @@ initializes the neural backend.
 
 import json
 from pathlib import Path
+import warnings
 
 import numpy as np
 
@@ -257,14 +258,15 @@ def price_rough_smile(hurst, eta, rho, *, paths=8192, vol=0.20, seed=7):
     """One clean rough-Bergomi smile on the design grid at a flat curve: implied vols and skew statistics."""
     import time
 
-    from . import rough_bergomi, tasks
+    from . import pricing, tasks
 
-    design = tasks.rough_design()
+    task = tasks.rough_task()
     parameters = {"hurst": float(hurst), "eta": float(eta), "rho": float(rho)}
-    curve = rough_bergomi.step_curve(design["knots"], np.full(len(design["knots"]) - 1, vol**2))
-    contracts = design["contracts"]
+    curve = tasks.curve(task, np.full(tasks.context_size(task), vol**2))
+    contracts = task["context"]["contracts"]
     started = time.process_time()
-    prices, errors = rough_bergomi.surface_prices(parameters, curve, contracts, design["blocks"], paths, seed)
+    prices, errors, _, _ = pricing.rough_surface(parameters, curve, contracts, task["numerics"]["blocks"], [paths],
+                                                 tasks.sigma(task), np.inf, seed)
     cpu = time.process_time() - started
     k, maturity, kind = surface.contract_arrays(contracts)
     implied = surface.implied_vol(prices, k, maturity, kind)
@@ -272,7 +274,7 @@ def price_rough_smile(hurst, eta, rho, *, paths=8192, vol=0.20, seed=7):
     exponent, scale = surface.skew_power_law(maturities, skew)
     return {"parameters": parameters, "vol": vol, "implied": implied, "maturities": maturities, "atm": atm,
             "skew": skew, "exponent": exponent, "scale": scale, "cpu_seconds": cpu, "paths": paths,
-            "max_se_over_sigma": float(np.max(errors / design["sigma"]))}
+            "max_se_over_sigma": float(np.max(errors / tasks.sigma(task)))}
 
 
 def live_smile_figure(result):
@@ -312,10 +314,18 @@ def live_smile_figure(result):
 
 
 def load_network(checkpoint):
-    """(task, workflow) from a checkpoint directory with model.keras, task.json and training.json."""
+    """(task, workflow) from a run directory with model.keras, task.json and training.json."""
     from . import inference
 
-    return inference.load_network(checkpoint)
+    checkpoint = Path(checkpoint)
+    task = json.loads((checkpoint / "task.json").read_text())
+    record = json.loads((checkpoint / "training.json").read_text())
+    workflow = inference.build_workflow(task, subnet_widths=tuple(record["training"]["subnet_widths"]))
+    with warnings.catch_warnings():
+        # accepted checkpoints carry no optimizer state (studies/accept.py); sampling never needs it
+        warnings.filterwarnings("ignore", message="Skipping variable loading for optimizer")
+        workflow.load_approximator(checkpoint / "model.keras")
+    return task, workflow
 
 
 # ---------------------------------------------------------------------------------------------------
@@ -334,9 +344,13 @@ def heston_smile(task, row):
 
     One quadrature rung of 1,024 nodes, the full ladder of the task where that rung fails, as in study S3.
     """
-    from . import heston
+    from . import pricing, tasks
 
-    return heston.smile(task, row)
+    parameters, v0 = tasks._heston_split(tasks.model_parameters(task, np.asarray(row, dtype=float)))
+    try:
+        return pricing.heston_surface(parameters, v0, task["context"]["contracts"], nodes=1024, upper_limit=600.0)
+    except ValueError:
+        return tasks.heston_prices(task, parameters, v0)[0]
 
 
 def heston_variance_swap_vol(v0, theta, kappa, days):

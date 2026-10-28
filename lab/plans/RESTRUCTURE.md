@@ -36,8 +36,8 @@ Delete it once they are ported.
 | Everything else: `notebooks/`, `checkpoints/`, the other `docs/`, `data/synthetic/`, 40 library modules, 64 scripts, 39 test files, the other configs and cluster jobs, `tutorial_final/PLAN.md` | Archived at `574b940` |
 
 New: `tutorial/src/sbi4f_tutorial/` (the notebooks' runtime), `tutorial/pyproject.toml` and `tutorial/pixi.lock`,
-`tutorial/tests/`, `tutorial/assets/quick-checks/` and `tutorial/assets/images/` (copies made by
-`lab/studies/manifest.py`), and `lab/tests/test_tutorial_parity.py`.
+`tutorial/tests/`, `tutorial/assets/quick-checks/`, `tutorial/assets/tasks/` and `tutorial/assets/images/` (copies
+made by `lab/studies/manifest.py`), and `lab/tests/test_tutorial_parity.py`.
 
 ## Conventions that changed
 
@@ -47,7 +47,8 @@ New: `tutorial/src/sbi4f_tutorial/` (the notebooks' runtime), `tutorial/pyprojec
   more `parents` level per folder.
 - `accept.py --to` is relative to `tutorial/assets/`. `manifest.py` also refreshes the copies listed in its
   `EXPORTS`. `claims.py` reads `tutorial/assets/results/calibration/` and writes `tutorial/CLAIMS.md`.
-- The notebooks import `sbi4f_tutorial`, never `sbi4finance`, and read only `tutorial/assets/`.
+- The notebooks import `sbi4f_tutorial`, never `sbi4finance`, and read only `tutorial/assets/`. Its modules copy
+  lab functions unchanged, and `lab/tests/test_tutorial_parity.py` fails when a copy differs from the lab.
 
 ## Porting PR #47 and PR #48
 
@@ -81,6 +82,8 @@ git status --short | grep -v ' \(lab\|course\|tutorial\)/'   # files that still 
 ```
 
 The notebook integration of the BayesFlow 2.1 Heston candidate follows the same path as any asset. Accept the
-exported checkpoint with `lab/studies/accept.py` (or an export tool writing the same `ACCEPTED.json` record),
-extend `tutorial/src/sbi4f_tutorial/inference.py` to rebuild its architecture from the recorded settings, and add a
-parity test against `sbi4finance.calibration.full_surface`. Then move the tutorial's BayesFlow pin to 2.1.
+exported checkpoint with `lab/studies/accept.py` (or an export tool writing the same `ACCEPTED.json` record). Copy
+the functions of `sbi4finance.calibration.full_surface` that rebuild and sample the network, unchanged, into
+`tutorial/src/sbi4f_tutorial/full_surface.py`, add that module to `COPIED_FROM` in
+`lab/tests/test_tutorial_parity.py`, and add a check that both return the same draws. Then move the tutorial's
+BayesFlow pin to 2.1.

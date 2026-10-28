@@ -31,12 +31,12 @@ from .paths import QUICK_CHECKS, RESULTS
 
 ROUGH = json.loads((QUICK_CHECKS / "rough_checks.json").read_text())
 SPY = json.loads((RESULTS / "spy" / "surface.json").read_text())
-DESIGN = tasks.rough_design()
-SIGMA = DESIGN["sigma"]
+TASK = tasks.rough_task()
+SIGMA = tasks.sigma(TASK)
 THETA = np.asarray(ROUGH["best"]["theta"])  # H, eta, rho
 JAC = np.asarray(ROUGH["jacobian_seed1"])  # [63, 3 + 7]
 XI_SHORT = np.asarray(SPY["forward_variance_levels"])
-SHORT_KNOTS = list(DESIGN["knots"])  # 0 ... 1 year
+SHORT_KNOTS = list(TASK["model_context"]["forward_variance_knots"])  # 0 ... 1 year
 LONG_KNOTS = [1.5, 2.25, 3.0, 5.0]
 KNOTS = np.array(SHORT_KNOTS + LONG_KNOTS)
 LEAPS = [(e["days"] / 252, e["w_replicated"]) for e in SPY["diagnostics"]["expirations"]

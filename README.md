@@ -55,7 +55,7 @@ November. After a freeze, fixes only.
 ```
 course/      The course: sixteen lectures, a superset of the tutorial, with the calibration design document
              and the scripts that draw their figures.
-tutorial/    What participants install and run: the slot notebooks, their small runtime (src/sbi4f_tutorial),
+tutorial/    What participants install and run: the slot notebooks, their runtime (src/sbi4f_tutorial),
              the frozen networks and results they load (assets/), their tests, and the organizers' curriculum.
 lab/         What produces the numbers: simulators and pricers, calibration banks, training, references,
              studies, quick checks, Oscar jobs, tests and plans.
@@ -69,14 +69,15 @@ The boundaries are what keep the tutorial safe to change late and easy to hand t
    (`tutorial/pyproject.toml`, `tutorial/pixi.lock`). Its tests fail on any import of the lab, any `sys.path` edit
    and any path that climbs out of `tutorial/`.
 2. **Only files cross from the lab to the tutorial, through lab tools.** Trained networks and accepted study
-   results enter `tutorial/assets/` through `lab/studies/accept.py`; quick-check outputs and figures as copies made
-   by `lab/studies/manifest.py`; the exact Heston posterior on SPY from `lab/checks/heston_spy_exact.py`.
+   results enter `tutorial/assets/` through `lab/studies/accept.py`; quick-check outputs, task files and figures as
+   copies made by `lab/studies/manifest.py`; the exact Heston posterior on SPY from `lab/checks/heston_spy_exact.py`.
    [`tutorial/MANIFEST.md`](tutorial/MANIFEST.md) lists every asset with its SHA-256 and source. Nobody copies files
    into `tutorial/assets/` by hand.
-3. **What the notebooks compute live is copied, not shared.** `tutorial/src/sbi4f_tutorial` (about 1,300 lines)
-   holds readable copies of the lab's pricers and network code, the code participants read.
-   `lab/tests/test_tutorial_parity.py` checks that the copies return the lab's numbers exactly, so the two cannot
-   drift silently.
+3. **What the notebooks compute live is copied, not shared.** `tutorial/src/sbi4f_tutorial` (about 1,700 lines)
+   holds the lab functions the notebooks run (the pricers, the network code, the loaders and figures), copied
+   unchanged into modules of the same names. About 25 lines are the tutorial's own: where the assets are, and
+   reading the tasks the lab stored. `lab/tests/test_tutorial_parity.py` fails when a copy differs from the lab's
+   code or returns different numbers, so the two cannot drift silently.
 4. **The course is documents.** Its figures are drawn by `course/scripts/` in the lab environment and committed
    as images; readers need nothing installed.
 5. **A number goes on screen only from [`tutorial/CLAIMS.md`](tutorial/CLAIMS.md)**, which `lab/studies/claims.py`
@@ -122,8 +123,11 @@ accepted and exported.
 4. Inside a notebook, import only `sbi4f_tutorial` and third-party packages, and read files only under
    `ROOT / "assets"`. Put every number on screen through `tutorial/CLAIMS.md`: its study, its file and its status.
    Give every live cell (loading a network, pricing, training) a cached fallback and a time budget.
-5. If a notebook needs a new computation, add a small, readable function to `tutorial/src/sbi4f_tutorial/`. If it
-   repeats lab code, copy it, and add a check to `lab/tests/test_tutorial_parity.py`.
+5. If a notebook needs a new computation, write it in the lab with a test, then copy the functions unchanged into
+   the module of the same name in `tutorial/src/sbi4f_tutorial/` (`COPIED_FROM` in
+   `lab/tests/test_tutorial_parity.py` maps each module to its lab file). Code only a notebook needs, such as a
+   figure, goes in the notebook, or in the runtime with an entry in `WRITTEN_FOR_THE_TUTORIAL` saying why. When you
+   change a copied lab function, copy it again; the parity test names the copies that differ.
 6. If a notebook needs a new number or figure, produce it in the lab, accept it into `tutorial/assets/` with
    `lab/studies/accept.py`, then run `pixi run manifest` and `pixi run claims` in `lab/` (next section).
 7. Before opening a pull request, run in `tutorial/`: `pixi run test`, `pixi run test-notebooks` (every notebook

@@ -9,10 +9,6 @@ never conditioning variables. This is the lab's sbi4finance.calibration.inferenc
 without its training helpers; the lab trains the networks, the notebooks load them.
 """
 
-import json
-from pathlib import Path
-import warnings
-
 import numpy as np
 
 from . import tasks
@@ -102,16 +98,3 @@ def sample(workflow, task, observations, context_values, num_samples, seed=0):
     use_sampler(workflow)
     drawn = workflow.sample(num_samples=num_samples, conditions=conditions, seed=int(seed))
     return np.concatenate([np.asarray(drawn[name], dtype=np.float64) for name in task["parameter_names"]], axis=-1)
-
-
-def load_network(checkpoint):
-    """(task, workflow) from a checkpoint directory with model.keras, task.json and training.json."""
-    checkpoint = Path(checkpoint)
-    task = json.loads((checkpoint / "task.json").read_text())
-    record = json.loads((checkpoint / "training.json").read_text())
-    workflow = build_workflow(task, subnet_widths=tuple(record["training"]["subnet_widths"]))
-    with warnings.catch_warnings():
-        # shipped checkpoints carry no optimizer state; sampling never needs it
-        warnings.filterwarnings("ignore", message="Skipping variable loading for optimizer")
-        workflow.load_approximator(checkpoint / "model.keras")
-    return task, workflow

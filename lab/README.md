@@ -24,7 +24,7 @@ pixi run test                  # unit tests and the tutorial parity tests
 | `studies/` | Studies S1 to S9 and the release tools `accept.py`, `manifest.py` and `claims.py`; [studies/README.md](studies/README.md) gives each study's command and test rows |
 | `checks/` | Quick checks behind the "why Bayes" material and the course: not accepted studies; [checks/README.md](checks/README.md) |
 | `cluster/` | Oscar: lane discovery, bank arrays, network training, one generic study job. Submit every job from `lab/` |
-| `tests/` | Unit tests, and `test_tutorial_parity.py`, which checks that the tutorial's copies of this code return the same numbers |
+| `tests/` | Unit tests, and `test_tutorial_parity.py`, which checks that the tutorial's copies of this code are unchanged and return the same numbers |
 | `plans/` | The [numerical experiment plan](plans/NUMERICAL-EXPERIMENT-PLAN.md), its [protocol](plans/EXPERIMENT-PROTOCOL.md), the [cluster runbook](plans/CLUSTER-RUNS.md), the [sparse-chain follow-up](plans/SPARSE-QUOTE-CASE-PLAN.md), the [MCMC policy](plans/mcmc-policy.md) and the [porting guide for the restructure](plans/RESTRUCTURE.md) |
 | `data/SOURCES.md` | Where the raw option chains came from. Raw files are not committed; derived data are |
 
@@ -43,7 +43,7 @@ pixi run test                  # unit tests and the tutorial parity tests
 4. **Into the tutorial.** `pixi run accept --run RUN --to results/calibration/heston/s2` copies an accepted run
    into `tutorial/assets/` with `ACCEPTED.json` (`--checkpoint RUN --to checkpoints/heston` for a network, with the
    optimizer state removed and same-seed draws checked). Then `pixi run manifest` refreshes the tutorial's copies of
-   quick-check outputs and the hash table of `tutorial/MANIFEST.md`, and `pixi run claims` regenerates
+   quick-check outputs, task files and figures, and the hash table of `tutorial/MANIFEST.md`, and `pixi run claims` regenerates
    `tutorial/CLAIMS.md`.
 5. **Verify.** `pixi run test` and `pixi run release-check` here; `pixi run test` and `pixi run test-notebooks` in
    `tutorial/`.
@@ -53,8 +53,9 @@ copy is stale.
 
 ## Rules
 
-- Library code lives here once, with tests. When a notebook needs a computation live, the tutorial gets a small
-  copy in `tutorial/src/sbi4f_tutorial/`, and `tests/test_tutorial_parity.py` gets a check.
+- Library code lives here once, with tests. When a notebook needs a computation live, copy the functions unchanged
+  into the module of the same name in `tutorial/src/sbi4f_tutorial/`. `tests/test_tutorial_parity.py` fails when a
+  copy differs from the code here, or returns different numbers; after changing a copied function, copy it again.
 - Prefer PyMC for reference MCMC where it fits naturally; the [MCMC policy](plans/mcmc-policy.md) lists the
   exceptions and what every chain must record.
 - Every result records the task fingerprint, the bank manifest's SHA-256 and, where a network was used, the
