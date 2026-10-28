@@ -1,0 +1,85 @@
+{
+  "checked_utc": "2026-10-28T10:13:29.163828+00:00",
+  "known100k": {
+    "execution_path": "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/known-100k/execution.json",
+    "state": "generation_active",
+    "pid": 2533833,
+    "last_poll_utc": "2026-10-28T10:13:01.775898+00:00",
+    "budget": {
+      "actual_cpu_seconds": 57788,
+      "outstanding_cpu_seconds": 121440,
+      "final_reserve_cpu_seconds": 3840,
+      "exposure_cpu_seconds": 183068,
+      "nonterminal_workers": 46
+    },
+    "completed_workers": 201,
+    "missing_workers": 1753
+  },
+  "joint_recovery": {
+    "execution_path": "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/morning-recovery-20261028/execution.json",
+    "status": "started_reviewed_recovery",
+    "controller_pid": 2563401,
+    "last_poll_utc": "2026-10-28T10:12:33.181549+00:00",
+    "phases": {
+      "joint": {
+        "status": "generation_active",
+        "budget": {
+          "actual_allocated_cpu_seconds": 2384601,
+          "outstanding_full_cpu_seconds": 1324800,
+          "checks_reserve_cpu_seconds": 7200,
+          "exposure_cpu_seconds": 3716601,
+          "nonterminal_workers": 120
+        },
+        "submitted_workers": 120,
+        "completed_workers": 0,
+        "missing_workers": 189
+      }
+    }
+  },
+  "joint100k_gate": {
+    "execution_path": "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/joint-recovery-gate-20261028/waiter/execution.json",
+    "state": "armed",
+    "pid": 2629343,
+    "last_poll_utc": "2026-10-28T10:12:56.095155+00:00",
+    "routes": {
+      "joint": {
+        "state": "waiting"
+      }
+    }
+  },
+  "intermediate_models": {
+    "execution_path": "/oscar/scratch/afengler/sbi4finance-post-bank-baselines-recovery-v2-20261028/execution.json",
+    "state": "waiting_or_running",
+    "routes": {
+      "known": {
+        "state": "submitted",
+        "job_id": "8046588",
+        "last_accounting_utc": "2026-10-28T10:13:24.161939+00:00",
+        "scheduler_state": "RUNNING"
+      },
+      "joint": {
+        "state": "waiting"
+      }
+    },
+    "known_run": {
+      "status": "running",
+      "stages": [
+        {
+          "name": "posterior",
+          "seconds": 309.1093172430992
+        },
+        {
+          "name": "pricer",
+          "seconds": 78.64152307529002
+        }
+      ],
+      "active_stage": "validation"
+    }
+  },
+  "queue_counts": {
+    "COMPLETING:sbi4f-bank": 1,
+    "RUNNING:sbi4f-bank": 60,
+    "RUNNING:sbi4f-joint-workers": 120,
+    "RUNNING:sbi4f-known-baseline": 1
+  }
+}

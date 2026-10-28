@@ -1,6 +1,6 @@
 # Generate or extend a bank with one launch command
 
-The reusable launcher takes one campaign JSON and calls the existing collection, shard and snapshot code. It uses the same operator for a new task or an append; no new Python wrapper is needed for each experiment. **It has not been used to replace the active known/joint campaigns.** Those retain their own frozen operators and ledgers.
+The reusable launcher takes one campaign JSON and calls the existing collection, shard and snapshot code. It uses the same operator for a new task or an append; no new Python wrapper is needed for each experiment. The original generation phases retain their frozen operators and ledgers. The known-curve 100k append now uses a separately frozen copy of this launcher; see the [live recovery record](run-recovery-2026-10-28.md).
 
 On Oscar, use the locked numerical Python belonging to the frozen producer:
 
@@ -14,6 +14,8 @@ The command returns a PID and paths to `launch.json`, `operator.log` and `execut
 Copy and edit [the example JSON](../configs/campaigns/rough_known_append.example.json). The placeholder paths deliberately do not name an active collection. Parameters include the target training size, chunk size, maximum concurrent workers, each worker's wall/memory limit and the campaign CPU-hour ceiling. The final freeze job's full wall and cleanup allowance are reserved throughout generation. `prior_cpu_seconds` is zero for a new phase budget; specify existing spending only when the ceiling is cumulative. `python` defaults to the Python running the launcher; normally leave it unset.
 
 `producer_repo` can point to the older compatible frozen producer when the launcher itself comes from a newer checkout. This avoids modifying the numerical code of an existing collection. Optional `expected_git_revision` and `expected_runtime` provide extra declared startup assertions. Exact generation source hashes and package versions are always recorded by the native collection and checked by native workers.
+
+Optional `exclude_nodes` is a list of Slurm node names, for example `["node2339"]`. Use it when measured cluster failures or severe slowdowns justify excluding a node; it does not change simulation identities or seeds.
 
 ## Reuse data or change the experiment
 
