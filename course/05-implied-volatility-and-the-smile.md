@@ -58,7 +58,7 @@ The vega is largest at the money and small in the wings and at short maturities 
 
 ## 5.4 Reading a real chain onto the design grid
 
-A raw chain is noisy and irregular, so the tutorial cleans it and reads it at the 63 design points of Lecture 1. The steps are those of [Appendix I of the design document](../design/calibration-design-document.md#appendix-i-the-real-surface), which describes how the tutorial's SPY surface was built.
+A raw chain is noisy and irregular, so the tutorial cleans it and reads it at the 63 design points of Lecture 1. The steps are those of [Appendix I of the design document](design-document/calibration-design-document.md#appendix-i-the-real-surface), which describes how the tutorial's SPY surface was built.
 
 **Cleaning.**
 
@@ -201,7 +201,7 @@ The tutorial uses this **forward-variance curve**, constant on each of the 7 int
 - **Centre.** Red dots are the 17 expirations, out of 32, whose strikes reach $\delta \le -8$; grey crosses are those cut short, which mostly come out low. The exception, at 587 days, is cut on the call side, where the replication weight is small. The squares integrate only the 9 design points, $|\delta| \le 2$: at one week they agree with the full strip (13.6%), but at one year they give 18.9% against 21.8%, because the missing far puts carry about a quarter of the variance. The triangles are the at-the-money implied volatilities, below every variance-swap volatility.
 - **Right.** The forward-variance curve in volatility units, $\sqrt{\xi_0}$, rises from 13.6% over the first week to 23.4% between 6 months and 1 year. The squares are the running averages $\sqrt{w_{\text{var}}(T)/T}$, which rise more slowly because each averages all the intervals before it.
 
-**A thin chain.** On a thin chain the strip over the quoted strikes is wide. Computed over EWI's quoted strikes on 22 October 2026 (Lecture 1, Figure 1.7), the strip's variance-swap volatility is 14% on the bids and 52% on the asks at the first expiry, and 14% and 38% at the last (`tutorial_final/checks/thin_chains/EWI_2026-10-22.json`). Both values leave out the wings beyond the quoted strikes.
+**A thin chain.** On a thin chain the strip over the quoted strikes is wide. Computed over EWI's quoted strikes on 22 October 2026 (Lecture 1, Figure 1.7), the strip's variance-swap volatility is 14% on the bids and 52% on the asks at the first expiry, and 14% and 38% at the last (`lab/checks/thin_chains/EWI_2026-10-22.json`). Both values leave out the wings beyond the quoted strikes.
 
 ## 5.10 Four volatility objects
 
@@ -245,4 +245,4 @@ This lecture has also shown that the Black–Scholes model cannot reproduce toda
 - Demeterfi, K., Derman, E., Kamal, M., Zou, J. (1999). A guide to volatility and variance swaps. *Journal of Derivatives* 6(4), 9–32. [doi](https://doi.org/10.3905/jod.1999.319129)
 - Gatheral, J., Jaisson, T., Rosenbaum, M. (2018). Volatility is rough. *Quantitative Finance* 18(6), 933–949. [doi](https://doi.org/10.1080/14697688.2017.1393551)
 
-Figures: `scripts/course/lecture05.py`.
+Figures: `course/scripts/lecture05.py`.

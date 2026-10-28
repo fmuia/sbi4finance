@@ -297,4 +297,4 @@ Lecture 10, Section 10.10 prices the forward-start call under Heston, where it a
 - Shreve, S. E. (2004). *Stochastic calculus for finance II: continuous-time models*. Springer. Chapters 4 and 5.
 - Gatheral, J. (2006). *The volatility surface: a practitioner's guide*. Wiley. Chapter 1.
 
-Figures: `scripts/course/lecture04.py`, except Figure 4.7, which `scripts/course/lecture08.py` draws.
+Figures: `course/scripts/lecture04.py`, except Figure 4.7, which `course/scripts/lecture08.py` draws.

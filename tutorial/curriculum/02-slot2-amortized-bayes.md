@@ -59,7 +59,7 @@ where the constant does not depend on $\phi$. Flow matching (slot 3) reaches the
 
 ## When it pays
 
-All costs are on one 4-core machine, from `costs/costs.json`, `heston/s1/bank-quality.json`, `checkpoints/heston/training.json`, the design document's S9 and, for importance sampling, [v2-plan](../../docs/course/v2-plan.md), Section 2.4.
+All costs are on one 4-core machine, from `costs/costs.json`, `heston/s1/bank-quality.json`, `checkpoints/heston/training.json`, the design document's S9 and, for importance sampling, [v2-plan](../../course/v2-plan.md), Section 2.4.
 
 | | Heston | Rough Bergomi |
 | --- | --- | --- |

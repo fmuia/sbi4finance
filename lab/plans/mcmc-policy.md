@@ -1,6 +1,6 @@
 # MCMC framework policy
 
-Updated on 26 October 2026 following the user's clarification: **use PyMC where it is a natural fit, with flexibility for specialized cases or disproportionate integration cost**. The goal is a reusable inference workflow and a useful PyMC component in the tutorial's technology stack. Adoption can be deferred if it adds more trouble than value. The corresponding agent instructions are in [AGENTS.md](../AGENTS.md); [CLAUDE.md](../CLAUDE.md) points Claude-based collaborators to the same guidance.
+Updated on 26 October 2026 following the user's clarification: **use PyMC where it is a natural fit, with flexibility for specialized cases or disproportionate integration cost**. The goal is a reusable inference workflow and a useful PyMC component in the tutorial's technology stack. Adoption can be deferred if it adds more trouble than value. The corresponding agent instructions are in [AGENTS.md](../../AGENTS.md); [CLAUDE.md](../../CLAUDE.md) points Claude-based collaborators to the same guidance.
 
 ## Scope
 
@@ -41,9 +41,9 @@ PyMC and BayesFlow can use separate locked execution environments and exchange v
 PyMC adoption is planned, not implemented by this documentation. The inspected course branch has custom samplers, including:
 
 - [calibration/correction.py](../src/sbi4finance/calibration/correction.py), `random_walk_chain`, used for numerical references.
-- [calibration/pricer_net.py](../src/sbi4finance/calibration/pricer_net.py), `metropolis`, used by [the S4 runner](../tutorial_final/studies/pricer_route.py).
+- [calibration/pricer_net.py](../src/sbi4finance/calibration/pricer_net.py), `metropolis`, used by [the S4 runner](../studies/pricer_route.py).
 - [svj/pmmh.py](../src/sbi4finance/svj/pmmh.py), `run_pmmh`, and its application callers.
-- Course/check scripts with their own chain loops, including `scripts/course/lecture10.py` and `scripts/course/lecture11.py`.
+- Course/check scripts with their own chain loops, including `course/scripts/lecture10.py` and `course/scripts/lecture11.py`.
 - Tests that execute those implementations, including the pricer/chain test in `tests/test_calibration.py`.
 
 This list is a starting inventory, not a blanket certification of other entry points. Assess callers and figure/test generators as each workflow is reviewed; they can retain a documented custom implementation where appropriate. Start with one bounded core PyMC route, measure the benefit, and expand adoption where useful. Specialized PMMH migration is not a prerequisite for the core Heston/rough-Bergomi tutorial or the data/training campaign.

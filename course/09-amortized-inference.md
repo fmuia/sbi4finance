@@ -264,4 +264,4 @@ Lecture 12 reports coverage and contraction for the Heston network, and Lecture 
 - Massart, P. (1990). The tight constant in the Dvoretzky–Kiefer–Wolfowitz inequality. *Annals of Probability* 18(3), 1269–1283. [Project Euclid](https://projecteuclid.org/euclid.aop/1176990746)
 - Wilson, E. B. (1927). Probable inference, the law of succession, and statistical inference. *Journal of the American Statistical Association* 22(158), 209–212. [doi](https://doi.org/10.1080/01621459.1927.10502953)
 
-Figures: `scripts/course/lecture12.py`, except Figure 9.7, drawn by `scripts/course/lecture13.py`.
+Figures: `course/scripts/lecture12.py`, except Figure 9.7, drawn by `course/scripts/lecture13.py`.

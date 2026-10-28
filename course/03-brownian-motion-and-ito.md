@@ -268,4 +268,4 @@ For VOO, 6.65 years of data give a drift standard error of $0.203/\sqrt{6.65} = 
 - Merton, R. C. (1980). On estimating the expected return on the market: an exploratory investigation. *Journal of Financial Economics* 8(4), 323–361. [doi](https://doi.org/10.1016/0304-405X(80)90007-0)
 - Black, F. (1976). Studies of stock price volatility changes. *Proceedings of the 1976 Meetings of the American Statistical Association, Business and Economic Statistics Section*, 177–181. The first description of the leverage effect.
 
-Figures: `scripts/course/lecture03.py`.
+Figures: `course/scripts/lecture03.py`.

@@ -47,10 +47,10 @@ the line above, then retry. Do not loop on it.
 ## Step 1: discover the lanes
 
 ```bash
-pixi run python cluster/discover_cluster.py --ssh-host oscar
+pixi run python lab/cluster/discover_cluster.py --ssh-host oscar
 ```
 
-It writes `cluster/oscar.local.json` (gitignored) and prints one line per lane.
+It writes `lab/cluster/oscar.local.json` (gitignored) and prints one line per lane.
 A lane is one (account, partition, QOS) triple; its cap is `MaxTRESPU` on the
 QOS, applied per QOS, so lanes are independent budgets. **Show the user the
 summary and confirm it looks right before continuing.** A surprising lane

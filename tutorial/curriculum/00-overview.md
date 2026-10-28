@@ -4,7 +4,7 @@ Draft for the organizers' review. 24 October 2026, revision 3. Owner: Francesco 
 
 This folder fixes what the tutorial teaches, in what order and why: this summary, and one file per slot.
 
-For the proposed next numerical campaign, read the [experiment plan](../NUMERICAL-EXPERIMENT-PLAN.md). The separate [tutorial review](../TUTORIAL-REVIEW.md) assesses the learning path, its SBI motivation and the claims that need stronger evidence.
+For the proposed next numerical campaign, read the [experiment plan](../../lab/plans/NUMERICAL-EXPERIMENT-PLAN.md). The separate [tutorial review](TUTORIAL-REVIEW.md) assesses the learning path, its SBI motivation and the claims that need stronger evidence.
 
 | File | Slot | Presenter | Minutes |
 | --- | --- | --- | --- |
@@ -15,7 +15,7 @@ For the proposed next numerical campaign, read the [experiment plan](../NUMERICA
 | [05-slot5-rough-bergomi-to-a-reserve.md](05-slot5-rough-bergomi-to-a-reserve.md) | 5. Rough Bergomi on the SPY smile: from the posterior to a reserve | Francesco, Alex | 40 |
 | [06-slot6-priors-and-misspecification.md](06-slot6-priors-and-misspecification.md) | 6. Changing priors and dealing with misspecified models | Stefan | 15 |
 
-The folder replaces `CURRICULUM.md` (revision 1, same day) and, where they differ, §4, §9, §10 and §13 of [PLAN.md](../PLAN.md). A number written ⟨Sn⟩ comes from study Sn of the [design document](../../docs/design/calibration-design-document.md#planned-feasibility-study) and is not on screen until [CLAIMS.md](../CLAIMS.md) records the final run.
+The folder replaces `CURRICULUM.md` (revision 1, same day) and, where they differ, §4, §9, §10 and §13 of [PLAN.md](https://github.com/fmuia/sbi4finance/blob/574b940087cd66a7540c5aa080f64e8b33010314/tutorial_final/PLAN.md). A number written ⟨Sn⟩ comes from study Sn of the [design document](../../course/design-document/calibration-design-document.md#planned-feasibility-study) and is not on screen until [CLAIMS.md](../CLAIMS.md) records the final run.
 
 ## Executive summary
 
@@ -40,13 +40,13 @@ Slots 2 and 3 explain the machine between them. Slot 6 changes the prior and the
 
 **What has to happen now.**
 
-1. **The cluster runs** R0 to R10 of [`CLUSTER-RUNS.md`](../CLUSTER-RUNS.md), starting with the full rough bank (gate G1). The curve prior passed gate G0′ on 24 October.
+1. **The cluster runs** R0 to R10 of [`CLUSTER-RUNS.md`](../../lab/plans/CLUSTER-RUNS.md), starting with the full rough bank (gate G1). The curve prior passed gate G0′ on 24 October.
 2. **D1 and D16** (§10): confirm option E for slot 1 and the all-smile arc.
 3. **Build lists** are at the end of each slot file. Freezes: slot 4 by **Fri 30 Oct**; slots 1, 2 and 3 by **Wed 4 Nov**; slots 5 and 6 by **Fri 6 Nov**. Full timed run-through **Mon 9 Nov**.
 
 ## 1. The message
 
-**In three sentences.** On a liquid smile the posterior and the classical interval agree, as theory predicts. They part where the quotes do not determine what the product needs: a thin chain, maturities beyond the last quote, and names that quote almost nothing. Amortization does not make one posterior much cheaper than a good classical proposal does; it makes the method checkable, by coverage on a thousand simulated chains, and usable across many names. The course states the argument in Lecture 6, Section 6.8, and gathers its evidence in [Lecture 16, Section 16.8](../../docs/course/16-a-thin-chain-ewg.md); the plan's Section 2.6 lists the options to strengthen it.
+**In three sentences.** On a liquid smile the posterior and the classical interval agree, as theory predicts. They part where the quotes do not determine what the product needs: a thin chain, maturities beyond the last quote, and names that quote almost nothing. Amortization does not make one posterior much cheaper than a good classical proposal does; it makes the method checkable, by coverage on a thousand simulated chains, and usable across many names. The course states the argument in Lecture 6, Section 6.8, and gathers its evidence in [Lecture 16, Section 16.8](../../course/16-a-thin-chain-ewg.md); the plan's Section 2.6 lists the options to strengthen it.
 
 The message has three beats, each carried by named slots.
 
@@ -64,7 +64,7 @@ The audience should leave able to say three things about their own model: whethe
 
 ![The three models of the tutorial and what one likelihood evaluation and one exact posterior cost under each](images/ladder.png)
 
-How to read the figure: for each model, the grey bar is the cost of one likelihood evaluation (pricing the quotes once) and the green bar the cost of one exact posterior, in CPU-seconds on a log scale, on one 4-core machine. The hatched bar is a lower bound, for a random-walk chain; the purple diamond is importance sampling from a Gauss–Newton proposal on SPY's 63 quotes, with common random numbers. Heston's bars are at one rung of its quadrature ladder; a checked evaluation costs at least twice as much. The dashed orange line is the amortized network's cost for 1,000 draws, and the dotted red line the estimated cost of auditing one rough-Bergomi smile with 512 proposals, each after a pilot pricing (⟨S5⟩ measures it). Sources: `costs/costs.json` (C8) and `checks/rough_spy_is.py`; the Black–Scholes bars were timed once with `sbi4finance.calibration.surface` on 23 October and are illustrative, not a study result.
+How to read the figure: for each model, the grey bar is the cost of one likelihood evaluation (pricing the quotes once) and the green bar the cost of one exact posterior, in CPU-seconds on a log scale, on one 4-core machine. The hatched bar is a lower bound, for a random-walk chain; the purple diamond is importance sampling from a Gauss–Newton proposal on SPY's 63 quotes, with common random numbers. Heston's bars are at one rung of its quadrature ladder; a checked evaluation costs at least twice as much. The dashed orange line is the amortized network's cost for 1,000 draws, and the dotted red line the estimated cost of auditing one rough-Bergomi smile with 512 proposals, each after a pilot pricing (⟨S5⟩ measures it). Sources: `costs/costs.json` (C8) and `lab/checks/rough_spy_is.py`; the Black–Scholes bars were timed once with `sbi4finance.calibration.surface` on 23 October and are illustrative, not a study result.
 
 | | Black–Scholes | Heston | Rough Bergomi |
 | --- | --- | --- | --- |
@@ -79,7 +79,7 @@ How to read the figure: for each model, the grey bar is the cost of one likeliho
 
 ![Storyboard: the tutorial and the minute map of each slot, coloured by presenter](images/storyboard.png)
 
-How to read the figure: the top row is the tutorial, 115 minutes of talks in six slots, with widths proportional to minutes. The rows below are the minute maps of the six slots, from their files. Colour is the presenter. A solid block is computed on stage, a light block is loaded from `results/`, and a white block is a slide or code on screen. The figure is drawn by `scripts/curriculum/storyboard.py`.
+How to read the figure: the top row is the tutorial, 115 minutes of talks in six slots, with widths proportional to minutes. The rows below are the minute maps of the six slots, from their files. Colour is the presenter. A solid block is computed on stage, a light block is loaded from `results/`, and a white block is a slide or code on screen. The figure is drawn by `tutorial/curriculum/storyboard.py`.
 
 | Slot | The question it answers | Example | What it hands to the next slot |
 | --- | --- | --- | --- |
@@ -137,7 +137,7 @@ The proposal calibrates from returns and propagates into value-at-risk. The afte
 | --- | --- | --- |
 | `extras/returns_bayesflow_basics.py` | BayesFlow on 1,000 VOO returns under GBM: the same workflow as slot 4, with VaR and expected shortfall | Branch `feat/tutorial-slot4-bayesflow-basics`, edited |
 | `extras/svj_from_returns.py` | Stochastic volatility with jumps from returns, with a particle-filter audit | The SVJ lesson (#38), branch `feat/tutorial-slot5-svj-advanced` |
-| `extras/multifractal_returns.py` | The multifractal model of asset returns | `notebooks/01_mmar_univariate.py` in the archive |
+| `extras/multifractal_returns.py` | The multifractal model of asset returns | [`notebooks/01_mmar_univariate.py`](https://github.com/fmuia/sbi4finance/blob/574b940087cd66a7540c5aa080f64e8b33010314/notebooks/01_mmar_univariate.py) in the archive |
 | `extras/crash_day_priors.py` | How much the prior decides the probability of a 7% loss day | Branch `feat/tutorial-slot6-crash-risk` (#42) |
 | `extras/betas_across_stocks.py` | Cross-sectional shrinkage of betas | Branch `feat/tutorial-slot1-intro` (option D) |
 
@@ -150,7 +150,7 @@ The message is shown in every slot and said in only two places.
 **Shown:**
 
 - real data end to end: the SPY chain of 21 October 2026;
-- documentation: the design document and the sixteen-lecture course in `docs/course/`, take-home;
+- documentation: the design document and the sixteen-lecture course in `course/`, take-home;
 - a ledger of claims: every number on screen traced to a study and a file;
 - failures shown and handled: the Heston network alone short of the exact-likelihood reference on one smile in five, the rough pilot's SBC failure, the audit's flag rate, the places where the classical route is as good;
 - infrastructure: a bank of 112,000 Monte-Carlo-priced smiles generated on a cluster (gate G1), and trained networks shipped as checkpoints (Heston's now, rough Bergomi's after gate G2);
@@ -206,7 +206,7 @@ The audience has read the proposal. Each promise the curriculum does not keep ne
 | D10 | Presentation format | Marimo notebooks for slots 1, 2, 4, 5 and 6, slides for slot 3, a cached fallback in every live cell | Fri 30 Oct |
 | D11 | The LLM verification agent promised in the proposal | A two-minute demonstration in slot 4, or drop it and say so | Fri 30 Oct |
 | D12 | Hands-on time beyond the talks | Exercises after slots 4 and 5 | Fri 30 Oct |
-| D13 | Slot 5's title and presenter split | Proposed: "Where the quotes stop: which price do you mark?", in place of "The smile fits many calibrations" ([v2-plan](../../docs/course/v2-plan.md), Section 9); Alex takes sections 4 and 5 | Fri 30 Oct |
+| D13 | Slot 5's title and presenter split | Proposed: "Where the quotes stop: which price do you mark?", in place of "The smile fits many calibrations" ([v2-plan](../../course/v2-plan.md), Section 9); Alex takes sections 4 and 5 | Fri 30 Oct |
 | D14 | Threshold for gate G3 | One smile in three flagged | Fri 30 Oct |
 | D15 | Slot 6's sensitivity-aware network and summary-space detector | Build the first; the second if time allows | Fri 30 Oct |
 | D17 | Student and solved versions of the notebooks | Solved versions on stage; student versions with the exercises blanked, generated from the solved ones | Fri 30 Oct |
@@ -214,8 +214,8 @@ The audience has read the proposal. Each promise the curriculum does not keep ne
 
 ## 11. Sources
 
-- [PLAN.md](../PLAN.md): the decision, the studies, the timeline. [CLAIMS.md](../CLAIMS.md): the status of every number.
-- [The design document](../../docs/design/calibration-design-document.md) and [the course](../../docs/course/README.md): the long version of slots 1, 4 and 5.
+- [PLAN.md](https://github.com/fmuia/sbi4finance/blob/574b940087cd66a7540c5aa080f64e8b33010314/tutorial_final/PLAN.md): the decision, the studies, the timeline. [CLAIMS.md](../CLAIMS.md): the status of every number.
+- [The design document](../../course/design-document/calibration-design-document.md) and [the course](../../course/README.md): the long version of slots 1, 4 and 5.
 - The proposal: *Amortized Bayesian Calibration of Volatility Models*, ICAIF '26 tutorial proposal.
-- The feasibility run of 23 October: `scripts/curriculum/heston_spy_exact.py` and [data/heston-spy-exact.json](data/heston-spy-exact.json).
+- The feasibility run of 23 October: `lab/checks/heston_spy_exact.py` and [data/heston-spy-exact.json](../assets/data/heston-spy-exact.json).
 - Branches with earlier slot drafts: `feat/tutorial-slot1-intro`, `feat/tutorial-slot4-bayesflow-basics`, `feat/tutorial-slot6-crash-risk`.

@@ -38,7 +38,7 @@ From the posterior follow three things least squares does not return.
 
 ## 8.2 The prior
 
-The prior states which parameter values are possible before the quotes are seen. The tutorial uses independent uniform distributions on boxes (design document, "The prior"; `src/sbi4finance/calibration/tasks.py`).
+The prior states which parameter values are possible before the quotes are seen. The tutorial uses independent uniform distributions on boxes (design document, "The prior"; `lab/src/sbi4finance/calibration/tasks.py`).
 
 | Model | Parameter | Prior | What it encodes |
 | --- | --- | --- | --- |
@@ -182,7 +182,7 @@ $$
 \mathrm{Var}\big(\hat p_\Pi^{(m)}\big) = \mathrm{Var}_{\text{post}}\big(p_\Pi(\theta)\big) + \mathbb E\big[s^2(\theta)\big],
 $$
 
-the posterior variance of the price plus the Monte Carlo variance $s^2$: the noise widens the range. If every draw uses the same stream $\omega$, the errors are nearly the same function of $\omega$ for nearby $\theta$, $e(\theta; \omega) \approx e(\bar\theta; \omega) + \nabla_\theta e(\bar\theta; \omega)^\top(\theta - \bar\theta)$. The first term is common to all draws: it shifts the whole price distribution by one Monte Carlo error and does not widen it. The range then measures the parameters, and the common shift is reported separately as the Monte Carlo standard error of the point price (Glasserman 2004). The repository's pricer uses, in addition, antithetic pairs and control variates (`src/sbi4finance/calibration/products.py`), and prices the variance swap from the exact mean of the path law, so its Monte Carlo error is zero.
+the posterior variance of the price plus the Monte Carlo variance $s^2$: the noise widens the range. If every draw uses the same stream $\omega$, the errors are nearly the same function of $\omega$ for nearby $\theta$, $e(\theta; \omega) \approx e(\bar\theta; \omega) + \nabla_\theta e(\bar\theta; \omega)^\top(\theta - \bar\theta)$. The first term is common to all draws: it shifts the whole price distribution by one Monte Carlo error and does not widen it. The range then measures the parameters, and the common shift is reported separately as the Monte Carlo standard error of the point price (Glasserman 2004). The repository's pricer uses, in addition, antithetic pairs and control variates (`lab/src/sbi4finance/calibration/products.py`), and prices the variance swap from the exact mean of the path law, so its Monte Carlo error is zero.
 
 **The point, the range and the reserve.** Three numbers are read off the price draws (design document, "The point price, the range and the reserve"; Lecture 6):
 
@@ -277,7 +277,7 @@ The prior component bounds every weight by ten times the likelihood, so the weig
 - **Centre: a network of the wrong width.** The teal points follow the closed form for $\lambda \ge 0.8$. Left of $\lambda = 1/\sqrt2$ the weights have infinite variance, yet the measured efficiency stays between 0.11 and 0.39: a finite sample hides the problem. The defensive proposal keeps an efficiency of 0.55 even at $\lambda = 0.5$. At $\lambda = 1.5$, a network as much too wide as the rough pilot's (Lecture 15), the defensive proposal's efficiency is 0.35.
 - **Right: the tail of the weights.** For the plain proposal, $\hat k$ rises as the network gets narrower and reaches 0.74 at $\lambda = 0.5$. For the defensive proposal it stays far below 0.5 at every $\lambda \le 2$, because its weights are bounded and its covariance, 2.4 times the network's, covers the target. At $\lambda = 3$ both rise again, to 0.45 and 0.93: a proposal so wide that a handful of draws carry the weight is also flagged, because 256 draws are then too few. The dotted lines mark 0.5, the threshold 0.58 for $M = 256$, and 0.7.
 
-**A Monte Carlo likelihood.** When the prices are Monte Carlo estimates, as under rough Bergomi, the weights need an unbiased estimate of the likelihood itself, not of its logarithm. Importance sampling with such an estimate still targets the exact posterior (`src/sbi4finance/calibration/correction.py`). The plug-in density $\mathcal N(y;\ \hat P,\ \mathrm{diag}(\sigma^2))$ is not such an estimate: it is unbiased for a model with noise variance $\sigma^2 + s^2$ (Lecture 14, Section 14.2). Two conditions give an unbiased estimate. First, each proposal is priced with its own random numbers. With the common random numbers of Section 8.7, the weights would converge to the posterior given one set of Monte Carlo errors, which is shifted from the exact one and, with the variance $\sigma^2 - s^2$, narrower. Second, quotes priced on the same paths have correlated errors, so the estimate uses their Monte Carlo covariance $S$. If $\hat P = P + e$ with $e \sim \mathcal N(0, S)$, the convolution of two Gaussians gives
+**A Monte Carlo likelihood.** When the prices are Monte Carlo estimates, as under rough Bergomi, the weights need an unbiased estimate of the likelihood itself, not of its logarithm. Importance sampling with such an estimate still targets the exact posterior (`lab/src/sbi4finance/calibration/correction.py`). The plug-in density $\mathcal N(y;\ \hat P,\ \mathrm{diag}(\sigma^2))$ is not such an estimate: it is unbiased for a model with noise variance $\sigma^2 + s^2$ (Lecture 14, Section 14.2). Two conditions give an unbiased estimate. First, each proposal is priced with its own random numbers. With the common random numbers of Section 8.7, the weights would converge to the posterior given one set of Monte Carlo errors, which is shifted from the exact one and, with the variance $\sigma^2 - s^2$, narrower. Second, quotes priced on the same paths have correlated errors, so the estimate uses their Monte Carlo covariance $S$. If $\hat P = P + e$ with $e \sim \mathcal N(0, S)$, the convolution of two Gaussians gives
 
 $$
 \mathbb E\Big[\mathcal N\big(y;\ \hat P,\ \mathrm{diag}(\sigma^2) - S\big)\Big] = \mathcal N\big(y;\ P,\ \mathrm{diag}(\sigma^2)\big)
@@ -289,7 +289,7 @@ $$
 
 ## 8.10 Borrowing strength across names
 
-A thin underlying quotes too little to be calibrated on its own, while other names in its sector may quote a full smile. A hierarchical model lets each thin name borrow strength from the rest of the sector. A simulated Black–Scholes sector shows what this changes (`tutorial_final/checks/bs_hierarchy.py`).
+A thin underlying quotes too little to be calibrated on its own, while other names in its sector may quote a full smile. A hierarchical model lets each thin name borrow strength from the rest of the sector. A simulated Black–Scholes sector shows what this changes (`lab/checks/bs_hierarchy.py`).
 
 **The sector.** Each name has its own Black–Scholes volatility $\sigma_i$, and the log volatilities are drawn across names from $\mathcal N(\log 0.30,\ 0.10^2)$. The liquid names quote the 63 contracts of the design grid, with the design noise taken at a reference volatility of 30%. The illiquid names quote one 21-day at-the-money call, with 3 volatility points of noise. Every likelihood is the exact Gaussian likelihood of the quote noise, and the integrals are computed on grids, without sampling.
 
@@ -381,4 +381,4 @@ Each posterior evaluation here was one priced surface: microseconds for Black–
 - Vehtari, A., Simpson, D., Gelman, A., Yao, Y., Gabry, J. (2024). Pareto smoothed importance sampling. *Journal of Machine Learning Research* 25(72), 1–58. [JMLR](https://jmlr.org/papers/v25/19-556.html)
 - Zhang, J., Stephens, M. A. (2009). A new and efficient estimation method for the generalized Pareto distribution. *Technometrics* 51(3), 316–325. [doi](https://doi.org/10.1198/tech.2009.08017)
 
-Figures: `scripts/course/lecture10.py`, except Figure 8.7, drawn by `scripts/course/lecture13.py`, and Figure 8.8, drawn by `scripts/course/realignment.py`.
+Figures: `course/scripts/lecture10.py`, except Figure 8.7, drawn by `course/scripts/lecture13.py`, and Figure 8.8, drawn by `course/scripts/realignment.py`.
