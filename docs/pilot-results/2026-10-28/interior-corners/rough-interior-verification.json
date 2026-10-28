@@ -1,0 +1,48 @@
+{
+  "status": "passed",
+  "saved_reference_neural_hashes_match_previous_frozen_inputs": true,
+  "source_inputs": {
+    "reference": {
+      "oscar_path": "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/runs/case-0/chains.npz",
+      "sha256": "ee176993dba5337c6be9141ba10faa84e9426856a41588952aa77b8d69197b0d"
+    },
+    "neural": {
+      "oscar_path": "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/runs/comparisons/case-0/neural_draws.npz",
+      "sha256": "188c71eab40c2544bca8994fe1d0c83be7f1532ef80cbf369cae34554d01336e"
+    }
+  },
+  "reference_diagnostics_passed": true,
+  "complete_corner_dimensions": 3,
+  "reference_shape": [
+    4,
+    8000,
+    3
+  ],
+  "neural_shape": [
+    10000,
+    3
+  ],
+  "boundary_margin_rule": {
+    "criterion": "Each central99% marginal interval is strictly inside inner90% of prior range.",
+    "unit_prior_quantiles_005_995": [
+      [
+        0.3752539962544575,
+        0.45919352450829254,
+        0.2078028256599301
+      ],
+      [
+        0.5836779873882113,
+        0.541823390919565,
+        0.3655719705602161
+      ]
+    ],
+    "interior_passed": true,
+    "minimum_central99_interval_distance_from_prior_boundary_as_fraction_of_prior_width": 0.2078028256599301,
+    "fraction_of_draws_with_any_parameter_outside_inner90_prior_box": 0.0
+  },
+  "reserved_test_evaluated": false,
+  "scientific_acceptance": false,
+  "new_model_calls": 0,
+  "new_slurm_jobs_for_rough_plot": 0,
+  "visual_qa": "Complete three-dimensional corner inspected; clear labels, readable ticks after MaxNLocator fix, explicit approximate target and neural/reference distinction."
+}

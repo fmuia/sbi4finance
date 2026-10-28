@@ -1,0 +1,64 @@
+{
+  "format": "complete_interior_corner_v1",
+  "model": "rough",
+  "scientific_acceptance": false,
+  "reference_shape": [
+    4,
+    8000,
+    3
+  ],
+  "neural_shape": [
+    10000,
+    3
+  ],
+  "parameter_names": [
+    "hurst",
+    "eta",
+    "rho"
+  ],
+  "prior_bounds": [
+    [
+      0.02,
+      0.35
+    ],
+    [
+      0.5,
+      3.5
+    ],
+    [
+      -0.99,
+      -0.2
+    ]
+  ],
+  "truth": [
+    0.18643773611202394,
+    2.0037486292241846,
+    -0.7813343078420029
+  ],
+  "input_sha256": {
+    "/private/tmp/sbi4finance-interior-corners-20261028/chains.npz": "ee176993dba5337c6be9141ba10faa84e9426856a41588952aa77b8d69197b0d",
+    "/private/tmp/sbi4finance-interior-corners-20261028/reference.json": "b393e6728d24af2e67c8d9748da259fa1249ce01a5471155f4f4bf4ec566bac4",
+    "/private/tmp/sbi4finance-interior-corners-20261028/rough-case0-neural.npz": "188c71eab40c2544bca8994fe1d0c83be7f1532ef80cbf369cae34554d01336e"
+  },
+  "source_sha256": "f1076b42d4f1b48645ba74e0f85ca145f3609ebfcbdfdfe0fb3d33c788710cd9",
+  "reference_interior": {
+    "criterion": "Each central99% marginal interval is strictly inside inner90% of prior range.",
+    "unit_prior_quantiles_005_995": [
+      [
+        0.3752539962544575,
+        0.45919352450829254,
+        0.2078028256599301
+      ],
+      [
+        0.5836779873882113,
+        0.541823390919565,
+        0.3655719705602161
+      ]
+    ],
+    "interior_passed": true,
+    "minimum_central99_interval_distance_from_prior_boundary_as_fraction_of_prior_width": 0.2078028256599301,
+    "fraction_of_draws_with_any_parameter_outside_inner90_prior_box": 0.0
+  },
+  "plot_scope": "All inferred parameters and every pair shown. Reference uses all4chains; deterministic stride4 for pair display only; statistics use all32000draws. Axes zoom to posterior, not full prior range. Smoothed neural contours are descriptive.",
+  "figure_sha256": "0578b48c9c96fe75912e4e0cf2b115eb6852712669887b302900e69143d06aea"
+}
