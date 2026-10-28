@@ -1,0 +1,16 @@
+{
+  "checked_utc": "2026-10-28T13:58:53.981710+00:00",
+  "checked_host": "login010",
+  "execution_sha256": "7fbfdbdcb6eaa23f4b6a3acbac19b6ee4d2ac9b01fdb4691e2380894b4fdb67c",
+  "execution": {
+    "state": "waiting_for_native_recovery",
+    "started_utc": "2026-10-28T13:57:28.109965+00:00",
+    "pid": 3795047,
+    "host": "login010",
+    "plan_sha256": "4106b4079a4df4ea07ce342237fb1546c3c060b92d2c721254b2397a0a517dbd",
+    "automatic_retry": false,
+    "last_poll_utc": "2026-10-28T13:58:28.169633+00:00"
+  },
+  "operator_log": "",
+  "original_readiness_exists": false
+}
