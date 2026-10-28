@@ -2,7 +2,7 @@
 
 Updated 28 October 2026.
 
-**Overnight update:** generation is active, both append-only 100k extensions are durably armed, and intermediate posterior/emulator training is gated to start after checked snapshots. The [verified overnight handover](overnight-handover-2026-10-28.md) records targets, dependencies, budgets, process IDs and stop conditions.
+**Morning update:** the known-curve 50k bank completed overnight, but joint generation and both downstream waiters stalled. Two orchestration bugs are fixed and regression-tested. Both bank-generation routes are running again. The known-curve 50k posterior and pricing-emulator fits have completed and validation is running. See the [morning recovery and live records](run-recovery-2026-10-28.md) for the remaining joint work and the corrected dependencies. The overnight handover is retained as a historical launch record.
 
 We are building the data and trained models that the live finance tutorial will load. The aim is to infer plausible volatility-model parameters from option prices, then show how parameter uncertainty affects other prices. BayesFlow supplies the amortized neural inference; PyMC supplies reference calculations. The tutorial should run from prepared examples without asking participants to generate a large dataset or train a network.
 
@@ -11,10 +11,10 @@ The learning path has three stages. One training surface contains 63 simulated o
 | Lesson | Current position |
 | --- | --- |
 | Heston | A checked 100,000-surface training bank and a promising trained estimator. The frozen candidate passed its calibration checks on 2,000 previously unused cases, plus comparisons for simple variance products. It is ready for notebook packaging, with the limits below. |
-| Rough Bergomi with a known variance curve | A complete 20,000-surface training bank and first trained posterior/pricing networks. Conditional reference comparisons still disagree in some cases. Independent checks found errors in the pricing network and sensitivity to the simulation grid; their full contribution to the posterior discrepancy remains unresolved. |
-| Rough Bergomi with an inferred variance curve | 9,925 training surfaces are preserved toward the initial 20,000 target. The remaining training data and holdouts, trained estimators and validation are unfinished. |
+| Rough Bergomi with a known variance curve | A checked 50,000-surface training bank, plus 5,000 validation and 7,000 test surfaces. The append to 100k is running, with at least 52,350 training surfaces complete at 10:05 UTC. The new 50k posterior and pricing emulator have finished fitting; validation is running. Earlier 20k conditional reference comparisons disagreed in some cases; the new fit has not yet resolved or been accepted against those checks. |
+| Rough Bergomi with an inferred variance curve | 19,475 training and 4,800 validation surfaces are preserved. Recovering 309 missing original shards will finish the initial 20k bank and its 5k/7k holdouts. The larger bank, trained estimators and validation remain unfinished. |
 
-The delivery target is **at least 100,000 unique training surfaces for each rough route**, matching Heston; learning curves may justify more. The current 50k known-curve extension and first complete 20k joint bank are intermediate snapshots. Generation is active: arrays **8032877** and **8032878** began with 64 known-curve and 120 joint workers; the durable controller refills further missing ranges. Existing prices and holdouts are reused. The 100k follow-ons are now armed under separate **200 / 3,000 CPU-hour** limits, preserving the original phase caps and observing the resource dependencies in the overnight handover.
+The delivery target is **at least 100,000 unique training surfaces for each rough route**, matching Heston; learning curves may justify more. The 50k known-curve and first complete 20k joint banks are intermediate snapshots. Known-curve array **8046496** started with 64 workers; GPU job **8046588** is fitting its intermediate models. Existing prices, seeds and holdouts are reused. The 100k append phases retain their separate **200 / 3,000 CPU-hour** limits. The joint recovery and its follow-on use explicit completion receipts; the old failed journal is preserved. Consult the morning record for current job IDs rather than the historical overnight ones.
 
 ## Interesting posterior shapes
 

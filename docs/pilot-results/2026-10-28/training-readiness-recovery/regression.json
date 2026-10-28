@@ -1,0 +1,13 @@
+{
+  "format": "training_readiness_regression_v1",
+  "root_cause": "An ordinary finalizer status=running was treated as fatal; watcher then persisted blocked state and never reevaluated readiness.",
+  "regression": "test_running_finalizer_waits_then_the_same_route_submits_once_when_checked",
+  "before_fix": "failed: blocked != waiting",
+  "after_fix": "all4operator tests passed",
+  "after_seconds": 0.011,
+  "numerical_jobs_run_by_test": false,
+  "source_sha256": {
+    "cluster/submit_full_surface_backbones_20261028.py": "1ada0012f6deab62269d16bb8479b4a63e28d326bd215575096ad24dab5150dc",
+    "tests/test_full_surface_post_bank_operator.py": "1a1e0c149ce1a29bd34109bd45a1cea29f278e8c2f799901075334756f3db68a"
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "format": "post_bank_waiter_recovery_v2",
+  "status": "known_training_submitted_and_watcher_running",
+  "host": "login009",
+  "old_root": "/oscar/scratch/afengler/sbi4finance-post-bank-baselines-20261028",
+  "new_root": "/oscar/scratch/afengler/sbi4finance-post-bank-baselines-recovery-v2-20261028",
+  "new_source_revision": "c96a785fa1cc1a3e1ef234b8ddc81322776e5f4a",
+  "old_pid": 2843467,
+  "prepared_utc": "2026-10-28T09:58:22.465222+00:00",
+  "same_original_budget_pool": true,
+  "cpu_hour_ceiling": 9,
+  "gpu_hour_ceiling": 2.25,
+  "scientific_acceptance": false,
+  "automatic_retry": false,
+  "old_plan_sha256": "d935f11ae27053f228a1800e3b21620bcde9dd968bf0b62193fec8b4a79e0107",
+  "old_execution_before_sha256": "7a37d8efeb1275ad43206fa55024c615fe8bcd61ae9e5f9f3f0576d19fa9bb98",
+  "old_command": "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/bin/python /oscar/scratch/afengler/sbi4finance-overnight-20261028/repo/cluster/submit_full_surface_backbones_20261028.py watch --root /oscar/scratch/afengler/sbi4finance-post-bank-baselines-20261028 ",
+  "original_job_name_accounting_query": {
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "new_operator_sha256": "1ada0012f6deab62269d16bb8479b4a63e28d326bd215575096ad24dab5150dc",
+  "old_execution_stopped_sha256": "7a37d8efeb1275ad43206fa55024c615fe8bcd61ae9e5f9f3f0576d19fa9bb98",
+  "new_plan_sha256": "15e5d86393388c76fdf5df0cc262dbb4f8e4db8f10302ff96d7b4e1f91751761",
+  "new_execution_after_once": {
+    "format": "full_surface_post_bank_execution_v1",
+    "state": "waiting_or_running",
+    "plan_sha256": "15e5d86393388c76fdf5df0cc262dbb4f8e4db8f10302ff96d7b4e1f91751761",
+    "routes": {
+      "known": {
+        "state": "submitted",
+        "attempted_utc": "2026-10-28T09:58:23.476019+00:00",
+        "bank": {
+          "final_sha256": "5d4ee6853e40b8e758b6908b75e8584c591b6659e51ab9de9b895384856b2909",
+          "manifest_sha256": "412f3cf437895b4764fa981bedbc1f8ad0f532d6f5b18e1b1fb957297cb627c4",
+          "task_fingerprint": "c99b0dd131896d89d8483a1668a3fde0fb7a0f28794c3db7fe14635cbbd52b65"
+        },
+        "argv": [
+          "sbatch",
+          "--parsable",
+          "--nodes=1",
+          "--ntasks=1",
+          "--no-requeue",
+          "--account=default",
+          "--partition=gpu-debug",
+          "--qos=gpu-debug",
+          "--cpus-per-task=4",
+          "--gres=gpu:l40s:1",
+          "--mem=32G",
+          "--time=01:00:00",
+          "--job-name=sbi4f-known-baseline",
+          "--chdir=/oscar/scratch/afengler/sbi4finance-training-recovery-v2-20261028/repo",
+          "--output=/oscar/scratch/afengler/sbi4finance-post-bank-baselines-recovery-v2-20261028/logs/known-%A.out",
+          "--wrap=env PYTHONPATH=/oscar/scratch/afengler/sbi4finance-training-recovery-v2-20261028/repo/src KERAS_BACKEND=jax JAX_PLATFORMS=cuda,cpu OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 XLA_PYTHON_CLIENT_PREALLOCATE=false MPLCONFIGDIR=/oscar/scratch/afengler/sbi4finance-post-bank-baselines-recovery-v2-20261028/known/cache/mpl XDG_CACHE_HOME=/oscar/scratch/afengler/sbi4finance-post-bank-baselines-recovery-v2-20261028/known/cache /oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/bin/python3.12 /oscar/scratch/afengler/sbi4finance-training-recovery-v2-20261028/repo/cluster/submit_full_surface_backbones_20261028.py worker --root /oscar/scratch/afengler/sbi4finance-post-bank-baselines-recovery-v2-20261028 --route known"
+        ],
+        "stdout": "8046588\n",
+        "stderr": "",
+        "returncode": 0,
+        "job_id": "8046588"
+      },
+      "joint": {
+        "state": "waiting"
+      }
+    },
+    "scientific_acceptance": false,
+    "reserved_test_evaluated": false,
+    "updated_utc": "2026-10-28T09:58:23.512855+00:00"
+  },
+  "known_job_id": "8046588",
+  "new_watcher_pid": 2529399
+}
