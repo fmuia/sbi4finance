@@ -61,5 +61,29 @@ class PostBankOperatorTests(unittest.TestCase):
         self.assertLessEqual(2 * operator.CPUS * (operator.WALL + operator.CLEANUP), 9 * 3600)
         self.assertLessEqual(2 * (operator.WALL + operator.CLEANUP), 2.25 * 3600)
 
+    def test_running_finalizer_waits_then_the_same_route_submits_once_when_checked(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary); route, final = self.fixture(root); (root / "logs").mkdir()
+            plan = {"root": str(root), "repo": str(root), "python": "/python", "routes": {"known": route}}
+            operator.save(root / "plan.json", plan)
+            operator.save(root / "execution.json", {"plan_sha256": operator.sha(root / "plan.json"),
+                          "routes": {"known": {"state": "waiting"}}})
+            # The real finalizer publishes this receipt before it performs its
+            # potentially long full-bank integrity check. Manifest existence
+            # must not make that ordinary in-progress state fatal or ready.
+            operator.save(root / "final.json", {"status": "running", "stage": "final"})
+            with patch.object(operator, "source_check"), patch.object(operator.subprocess, "run") as submit:
+                operator.watch_locked(root, once=True)
+                self.assertEqual(operator.read(root / "execution.json")["routes"]["known"]["state"], "waiting")
+                self.assertFalse((root / "known").exists())
+                submit.assert_not_called()
+                operator.save(root / "final.json", final)
+                submit.return_value = subprocess.CompletedProcess([], 0, stdout="123456\n", stderr="")
+                operator.watch_locked(root, once=True)
+                recorded = operator.read(root / "execution.json")["routes"]["known"]
+                self.assertEqual(recorded["state"], "submitted")
+                self.assertEqual(recorded["job_id"], "123456")
+                self.assertEqual(submit.call_count, 1)
+
 
 if __name__ == "__main__": unittest.main()
