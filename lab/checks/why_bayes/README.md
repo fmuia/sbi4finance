@@ -185,6 +185,18 @@ in $(H, \eta, \rho)$, which is why the known-curve and Heston runs did not show 
 that point A is typical of its stratum (one smile, one noise draw); or that the joint task's prior on the long end
 is right. Section 4 suggests the one-exponential family is too rigid for SPY.
 
+**Reassessed the same day.** The long end is a case for a prior, not for simulation-based inference. The curve
+beyond the last quote depends on the curve family and its prior, not on the simulator: $(H, \eta, \rho)$ need the
+simulator, and they stay Gaussian here. The study above supports claim 2a of Lecture 6, Section 6.8 (a stated
+prior against a zero-width extrapolation) and is nearly free on PR #48's validation panels, so it stays worth
+running, as a result for Lecture 15, Section 15.6 and slot 6, not as the headline. The analysis that tests Bayes
+and the network together is the thin chain with the joint curve: EWG's 27-contract layout under the six-target
+task, which removes the curve leak that withdrew the earlier thin cases (Lecture 16, Section 16.3). One such
+surface prices in about 1 CPU-second at 8,192 paths, within the bank's precision budget (`thin_joint_timing.py`:
+largest Monte Carlo error 0.067 of the quote noise against a budget of 0.25), so a 100,000-surface bank costs about
+30 CPU-hours against about 370 for the full design. Runs R4 and R7 to R9 of the runbook then apply, with the
+classical baselines of `thin.py` ported from the seven-level curve to the three coefficients.
+
 ## Files
 
 | Script | Output | Runs on this branch |
@@ -194,6 +206,7 @@ is right. Section 4 suggests the one-exponential family is too rigid for SPY.
 | `joint_is_posterior.py`, `joint_is_products.py` | `joint_is_A.npz`, `joint_is_A-products.npz`, `joint_is_A.txt` | after PR #48's joint task is ported |
 | `joint_is_figure.py` | `joint_is_A.png` | yes, from the committed npz files |
 | `spy_curve_fit.py` | `spy_curve_fit.json` | yes |
+| `thin_joint_timing.py` | printed timings, quoted above | after PR #48's joint task is ported |
 
 Run every script from `lab/`; the commands are in each docstring. The recorded outputs were made on 28 October 2026
 with PR #48's source at `4281d4e`, outside the lab's locked environment: Python 3.13.17, NumPy 2.5.4, SciPy 1.18.1,
