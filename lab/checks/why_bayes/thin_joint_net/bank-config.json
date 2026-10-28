@@ -1,0 +1,253 @@
+{
+ "task": {
+  "task_id": "rough_joint_calibration_v1",
+  "model": "rough",
+  "measure": "Q",
+  "context": {
+   "spot": 1.0,
+   "rate": 0.0,
+   "dividend": 0.0,
+   "contracts": [
+    {
+     "strike": 0.8909472522884108,
+     "maturity": 0.08333333333333333,
+     "option_type": "put"
+    },
+    {
+     "strike": 0.9170415101799084,
+     "maturity": 0.08333333333333333,
+     "option_type": "put"
+    },
+    {
+     "strike": 0.9439000224008953,
+     "maturity": 0.08333333333333333,
+     "option_type": "put"
+    },
+    {
+     "strike": 0.9715451725992442,
+     "maturity": 0.08333333333333333,
+     "option_type": "put"
+    },
+    {
+     "strike": 1.0,
+     "maturity": 0.08333333333333333,
+     "option_type": "put"
+    },
+    {
+     "strike": 1.029288218606067,
+     "maturity": 0.08333333333333333,
+     "option_type": "call"
+    },
+    {
+     "strike": 1.0594342369612506,
+     "maturity": 0.08333333333333333,
+     "option_type": "call"
+    },
+    {
+     "strike": 0.8493369300745177,
+     "maturity": 0.16666666666666666,
+     "option_type": "put"
+    },
+    {
+     "strike": 0.8847284766100544,
+     "maturity": 0.16666666666666666,
+     "option_type": "put"
+    },
+    {
+     "strike": 0.9215947754162442,
+     "maturity": 0.16666666666666666,
+     "option_type": "put"
+    },
+    {
+     "strike": 0.9599972788587706,
+     "maturity": 0.16666666666666666,
+     "option_type": "put"
+    },
+    {
+     "strike": 1.0,
+     "maturity": 0.16666666666666666,
+     "option_type": "put"
+    },
+    {
+     "strike": 1.041669619302238,
+     "maturity": 0.16666666666666666,
+     "option_type": "call"
+    },
+    {
+     "strike": 1.0850755957772693,
+     "maturity": 0.16666666666666666,
+     "option_type": "call"
+    },
+    {
+     "strike": 0.8187307530779818,
+     "maturity": 0.25,
+     "option_type": "put"
+    },
+    {
+     "strike": 0.8607079764250578,
+     "maturity": 0.25,
+     "option_type": "put"
+    },
+    {
+     "strike": 0.9048374180359595,
+     "maturity": 0.25,
+     "option_type": "put"
+    },
+    {
+     "strike": 0.951229424500714,
+     "maturity": 0.25,
+     "option_type": "put"
+    },
+    {
+     "strike": 1.0,
+     "maturity": 0.25,
+     "option_type": "put"
+    },
+    {
+     "strike": 1.0512710963760241,
+     "maturity": 0.25,
+     "option_type": "call"
+    },
+    {
+     "strike": 1.1051709180756477,
+     "maturity": 0.25,
+     "option_type": "call"
+    },
+    {
+     "strike": 0.808857893484718,
+     "maturity": 0.5,
+     "option_type": "put"
+    },
+    {
+     "strike": 0.8681234453945849,
+     "maturity": 0.5,
+     "option_type": "put"
+    },
+    {
+     "strike": 0.9317314234233945,
+     "maturity": 0.5,
+     "option_type": "put"
+    },
+    {
+     "strike": 1.0,
+     "maturity": 0.5,
+     "option_type": "put"
+    },
+    {
+     "strike": 1.073270660257192,
+     "maturity": 0.5,
+     "option_type": "call"
+    },
+    {
+     "strike": 1.151909910168909,
+     "maturity": 0.5,
+     "option_type": "call"
+    }
+   ],
+   "quote_noise_std": [
+    0.0013765468605379154,
+    0.001260549721022053,
+    0.0017300285784533733,
+    0.001223404566126671,
+    0.0015376312239445986,
+    0.0018742491533188274,
+    0.0017298432032331421,
+    0.001333494277195247,
+    0.0012735126816254903,
+    0.0012597399213098701,
+    0.0018332301911821167,
+    0.003424897297528809,
+    0.0016738124291676838,
+    0.0030716071220372606,
+    0.003669755978504608,
+    0.0021358775697934117,
+    0.0019430815646267344,
+    0.0019048016415362267,
+    0.0020579131898485455,
+    0.002347584054374589,
+    0.0028523417169049737,
+    0.006023143323585005,
+    0.007928648134157293,
+    0.005599447928473614,
+    0.006735437172365824,
+    0.002515765670558693,
+    0.0037642894907308293
+   ]
+  },
+  "model_context": {
+   "forward_variance_knots": [
+    0.0,
+    0.08333333333333333,
+    0.16666666666666666,
+    0.25,
+    0.5
+   ],
+   "curve_family": "heston_exponential_v1"
+  },
+  "context_prior": {},
+  "parameter_names": [
+   "hurst",
+   "eta",
+   "rho",
+   "short_variance",
+   "long_variance",
+   "decay"
+  ],
+  "prior_bounds": [
+   [
+    0.02,
+    0.35
+   ],
+   [
+    0.5,
+    3.5
+   ],
+   [
+    -0.99,
+    -0.2
+   ],
+   [
+    0.01,
+    0.16
+   ],
+   [
+    0.01,
+    0.16
+   ],
+   [
+    0.25,
+    8.0
+   ]
+  ],
+  "fixed_parameters": {},
+  "numerics": {
+   "method": "hybrid",
+   "blocks": [
+    {
+     "horizon": 0.25,
+     "n_steps": 504
+    },
+    {
+     "horizon": 0.5,
+     "n_steps": 252
+    }
+   ],
+   "paths_ladder": [
+    4096,
+    8192,
+    16384,
+    32768,
+    65536,
+    131072
+   ],
+   "max_mc_se_over_quote_sigma": 0.25,
+   "max_mc_se_over_quote_sigma_last_rung": 0.5
+  }
+ },
+ "root_seed": 2616,
+ "splits": {
+  "train": 20000,
+  "validation": 2000,
+  "test": 2000
+ }
+}
