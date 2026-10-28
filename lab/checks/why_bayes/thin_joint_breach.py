@@ -17,10 +17,12 @@ breaches each side 10% of the time. Every product is priced with the same paths 
 spreads come from the parameters. Least squares starts from the prior box and the quotes only, never from the
 posterior: the best of the box's centre and 16 prior draws by chi-square, and a second start from the next best.
 
-Needs the joint task of PR #48. Run from lab/, in three steps:
+Needs the joint task of PR #48. Run from lab/; the classical arm needs no network and can run first:
+python checks/why_bayes/thin_joint_breach.py run --arm classical --bank BANK --out DIR --start 0 --stop 25
 python checks/why_bayes/thin_joint_breach.py sample --checkpoint RUN --bank BANK --out DIR --start 0 --stop 100
-python checks/why_bayes/thin_joint_breach.py run --bank BANK --out DIR --start 0 --stop 25   (one per core)
+python checks/why_bayes/thin_joint_breach.py run --arm posterior --bank BANK --out DIR --start 0 --stop 25
 python checks/why_bayes/thin_joint_breach.py summarize --out DIR
+(one run per core and row range)
 """
 
 import argparse
@@ -126,26 +128,38 @@ def delta_bounds(fit, fitter, product_fn, step=1e-2):
 def run(args):
     manifest, _ = bank.load_bank(args.bank, splits=())
     task = manifest["configuration"]["task"]
-    posterior_file = next(args.out.glob("posterior-*.npz"))
-    post = np.load(posterior_file)
-    index = {int(r): i for i, r in enumerate(post["rows"])}
-    out_file = args.out / f"rows-{args.start}-{args.stop}.jsonl"
+    out_file = args.out / f"rows-{args.arm}-{args.start}-{args.stop}.jsonl"
     done = {json.loads(line)["row"] for line in out_file.read_text().splitlines()} if out_file.exists() else set()
     box = thin_joint.bounds(task)
+    product = lambda theta, flat=None: thin_joint.products(task, theta, args.product_paths, args.seed + 1, flat)
+    if args.arm == "posterior":
+        post = np.load(next(args.out.glob("posterior-*.npz")))
+        index = {int(r): i for i, r in enumerate(post["rows"])}
+    else:
+        _, splits = bank.load_bank(args.bank, splits=(args.split,))
+        data = splits[args.split]
+    args.out.mkdir(parents=True, exist_ok=True)
     for row in range(args.start, args.stop):
-        if row in done or row not in index:
+        if row in done:
             continue
-        i = index[row]
         t0 = time.process_time()
-        quotes, truth, draws = post["quotes"][i], post["truth"][i], post["draws"][i][: args.draws]
-        product = lambda theta, flat=None: thin_joint.products(task, theta, args.product_paths, args.seed + 1, flat)
-        true_prices = product(truth)
-        priced = np.array([product(d) for d in draws])
-        record = {"row": row, "truth_parameters": truth.tolist(), "truth": true_prices.tolist(),
-                  "posterior": {"lower": np.quantile(priced, 0.1, axis=0).tolist(),
-                                "upper": np.quantile(priced, 0.9, axis=0).tolist(),
-                                "median": np.median(priced, axis=0).tolist()}}
-        timings = {"posterior": time.process_time() - t0}
+        if args.arm == "posterior":
+            if row not in index:
+                continue
+            i = index[row]
+            priced = np.array([product(d) for d in post["draws"][i][: args.draws]])
+            record = {"row": row, "posterior": {"lower": np.quantile(priced, 0.1, axis=0).tolist(),
+                                                "upper": np.quantile(priced, 0.9, axis=0).tolist(),
+                                                "median": np.median(priced, axis=0).tolist()},
+                      "cpu_seconds": {"posterior": time.process_time() - t0}}
+            with out_file.open("a") as handle:
+                handle.write(json.dumps(record) + "\n")
+            print(f"row {row}: posterior {record['cpu_seconds']['posterior']:.0f} CPU-s", flush=True)
+            continue
+        quotes = chain_quotes(data, task, row, args.seed)
+        truth = np.asarray(data["parameters"], dtype=float)[row]
+        record = {"row": row, "truth_parameters": truth.tolist(), "truth": product(truth).tolist()}
+        timings = {"truth": time.process_time() - t0}
         t0 = time.process_time()
         fitter = Fit(task, quotes, args.fit_paths, args.seed + 2)
         rng = np.random.default_rng(np.random.SeedSequence([args.seed, 3, row]))
@@ -179,7 +193,13 @@ def wilson(k, n, z=1.96):
 
 
 def summarize(args):
-    records = [json.loads(line) for f in sorted(args.out.glob("rows-*.jsonl")) for line in f.read_text().splitlines()]
+    """Joins the classical and posterior records by row; only rows with both enter the table."""
+    by_arm = {}
+    for arm in ("classical", "posterior"):
+        by_arm[arm] = {r["row"]: r for f in sorted(args.out.glob(f"rows-{arm}-*.jsonl"))
+                       for r in map(json.loads, f.read_text().splitlines())}
+    rows = sorted(set(by_arm["classical"]) & set(by_arm["posterior"]))
+    records = [{**by_arm["classical"][r], **by_arm["posterior"][r]} for r in rows]
     truth = np.array([r["truth"] for r in records])
     n = len(records)
     report = {"chains": n, "products": list(thin_products.NAMES), "nominal_breach_rate": 0.1, "methods": {}}
@@ -219,10 +239,13 @@ def main():
             p.add_argument("--stop", type=int, default=100)
             p.add_argument("--seed", type=int, default=0)
             p.add_argument("--draws", type=int, default=200)
+        if name != "summarize":
+            p.add_argument("--split", default="test")
         if name == "sample":
             p.add_argument("--checkpoint", type=Path, required=True)
-            p.add_argument("--split", default="test")
         if name == "run":
+            p.add_argument("--arm", choices=("classical", "posterior"), required=True,
+                           help="classical needs only the bank; posterior needs the sample step's draws")
             p.add_argument("--product-paths", type=int, default=8192)
             p.add_argument("--fit-paths", type=int, default=4096)
     args = parser.parse_args()
