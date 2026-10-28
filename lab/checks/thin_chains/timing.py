@@ -4,7 +4,7 @@
 
 At a parameter set near the middle of the prior (H 0.10, eta 1.8, rho -0.75, volatility levels 18% to 22%), after
 one warm-up call, each timing is the median of three calls. Writes timing.json next to this file. The figures
-plan the cluster runs (tutorial_final/CLUSTER-RUNS.md) and the costs of docs/course/v2-plan.md, Section 2.4.
+plan the cluster runs (lab/plans/CLUSTER-RUNS.md) and the costs of course/v2-plan.md, Section 2.4.
 """
 
 import json
@@ -16,8 +16,8 @@ import numpy as np
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[2]
-sys.path.insert(0, str(ROOT / "src"))
-sys.path.insert(0, str(ROOT / "tutorial_final" / "studies"))
+sys.path.insert(0, str(ROOT / "lab" / "src"))
+sys.path.insert(0, str(ROOT / "lab" / "studies"))
 from sbi4finance.calibration import correction, thin, thin_products  # noqa: E402
 from thin_real import chain_data  # noqa: E402
 
@@ -33,8 +33,8 @@ def timed(fn, repeats=3):
 
 
 def main():
-    task = json.loads((ROOT / "configs" / "tasks" / "calibration_rough_bank.json").read_text())["task"]
-    layout = thin.load_layout(ROOT / "configs" / "thin" / "ewg_layout.json", task)
+    task = json.loads((ROOT / "lab/configs" / "tasks" / "calibration_rough_bank.json").read_text())["task"]
+    layout = thin.load_layout(ROOT / "lab/configs" / "thin" / "ewg_layout.json", task)
     _, noise = thin.layout_arrays(layout)
     contracts = thin.layout_contracts(task, layout)
     quotes, _, quote_noise, _ = chain_data(json.loads((HERE / "EWG_observation.json").read_text()))

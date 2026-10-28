@@ -1,7 +1,7 @@
 """SPY under rough Bergomi with the liquid network (study S8): posterior, audit, predictive check, products.
 
-    python tutorial_final/studies/real_smile.py --checkpoint S2_RUN \
-        --surface tutorial_final/results/calibration/spy/surface.json --out NEW_DIR \
+    python lab/studies/real_smile.py --checkpoint S2_RUN \
+        --surface tutorial/assets/results/calibration/spy/surface.json --out NEW_DIR \
         [--draws 1000 --proposals 1024 --paths 32768 --product-draws 400 --product-paths 16384 \
          --predictive-draws 200 --workers 16 --seed 0]
 
@@ -19,7 +19,7 @@ as known, as in training, so every result is conditional on the replicated curve
 4. The design document's products (sbi4finance.calibration.products) under the audited posterior and under the
    network alone, common random numbers, with the curve held flat beyond one year (products.extend_curve).
 
-The grid values are smoothing-spline readings, not independent quotes (tutorial_final/studies/README.md); the
+The grid values are smoothing-spline readings, not independent quotes (lab/studies/README.md); the
 likelihood treats them as independent with the design noise, so the predictive check is the test of that model.
 Writes real-smile.json, draws.npz and predictive.png.
 """
@@ -35,7 +35,7 @@ import time
 
 import numpy as np
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from sbi4finance.calibration import correction, inference, products, tasks  # noqa: E402

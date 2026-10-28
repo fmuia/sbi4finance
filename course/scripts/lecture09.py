@@ -1,6 +1,6 @@
 """Figures of Lecture 9: calibration as estimation.
 
-Usage: python scripts/course/lecture09.py   (writes docs/course/images/l09-*.png and prints the numbers quoted in the text)
+Usage: python course/scripts/lecture09.py   (writes course/images/l09-*.png and prints the numbers quoted in the text)
 
 The toy "smile" model of Sections 9.6-9.9 is defined here and reused by lecture10.py:
 nine quotes y_j = rho*eta*x_j + 0.05*eta^2*x_j^2 + s_j*eps_j on x_j in [-1, 1], with wing noise
@@ -14,7 +14,7 @@ import numpy as np
 from scipy.optimize import least_squares
 from scipy.stats import norm
 
-from common import COLORS, DAYS, DELTAS, GREY, load_spy, plt, save, sf, tidy
+from common import COLORS, DAYS, DELTAS, GREY, ROOT, load_spy, plt, save, sf, tidy
 
 REPORT = {}
 ROOT_RESULTS = sf.__file__  # placeholder to keep the import used
@@ -427,7 +427,7 @@ def fig_toy_coverage():
 
 
 def fig_cached_classical():
-    base = sf.__file__.split("/src/")[0] + "/tutorial_final/results/calibration/"
+    base = str(ROOT / "tutorial" / "assets" / "results" / "calibration") + "/"
     heston = json.load(open(base + "heston/s6/classical.json"))
     rough = json.load(open(base + "rough-pilot/s6/classical.json"))
     fig, axes = plt.subplots(1, 2, figsize=(12, 4.3), gridspec_kw=dict(width_ratios=[1.3, 1]))
@@ -494,7 +494,7 @@ def fig_tikhonov():
                           bounds=([ETA_BOX[0], RHO_BOX[0]], [ETA_BOX[1], RHO_BOX[1]]))
         path.append(r.x)
     path = np.array(path)
-    base = sf.__file__.split("/src/")[0] + "/tutorial_final/results/calibration/"
+    base = str(ROOT / "tutorial" / "assets" / "results" / "calibration") + "/"
     heston = json.load(open(base + "heston/s6/classical.json"))
     s2102 = [s for s in heston["surfaces"] if s["test_row"] == 2102][0]
     pen = [t["penalty"] for t in s2102["tikhonov"]]

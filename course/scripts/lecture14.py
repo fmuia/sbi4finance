@@ -1,9 +1,9 @@
 """Figures used by Lectures 6 and 15 (the file keeps an earlier lecture number): SPY's curve against the pilot's prior,
 the product ranges, and Heston against rough Bergomi.
 
-Usage: python scripts/course/lecture14.py   (writes docs/course/images/l14-*.png and prints the numbers quoted in the text)
+Usage: python course/scripts/lecture14.py   (writes course/images/l14-*.png and prints the numbers quoted in the text)
 
-Every number comes from the cached study results in tutorial_final/results/calibration, from the
+Every number comes from the cached study results in tutorial/assets/results/calibration, from the
 SPY surface file, or from the design document's tables (cited in the lecture); the only new
 computation is the fit of the curve prior to the SPY forward-variance curve (Lecture 15, Figure 15.6).
 """
@@ -16,7 +16,7 @@ from common import COLORS, DAYS, GREY, ROOT, load_spy, plt, save, tidy
 from sbi4finance.calibration import tasks
 
 REPORT = {}
-RESULTS = ROOT / "tutorial_final" / "results" / "calibration"
+RESULTS = ROOT / "tutorial" / "assets" / "results" / "calibration"
 PRODUCTS = ["variance_swap", "volatility_swap", "forward_start_call", "put_out_of_grid"]
 PRODUCT_LABELS = ["variance swap\n63 d", "volatility swap\n63 d", "forward-start call\n63 → 126 d", "90% put\n2 years"]
 

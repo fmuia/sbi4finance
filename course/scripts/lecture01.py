@@ -1,6 +1,6 @@
 """Figures of Lecture 1: options, quotes and volatility.
 
-Usage: python scripts/course/lecture01.py   (writes docs/course/images/l01-*.png and prints the numbers quoted in the text)
+Usage: python course/scripts/lecture01.py   (writes course/images/l01-*.png and prints the numbers quoted in the text)
 """
 
 import json

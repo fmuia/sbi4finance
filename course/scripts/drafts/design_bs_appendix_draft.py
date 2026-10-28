@@ -25,8 +25,8 @@ import numpy as np
 from scipy.optimize import minimize_scalar
 from scipy.stats import norm
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "src"))
+ROOT = Path(__file__).resolve().parents[3]
+sys.path.insert(0, str(ROOT / "lab" / "src"))
 from sbi4finance import hkde  # noqa: E402
 from sbi4finance.calibration import surface as sf  # noqa: E402
 
@@ -36,7 +36,7 @@ DELTAS = np.array(sf.DESIGN_DELTAS)
 HESTON = dict(kappa=2.0, theta=0.085, vol_of_vol=0.8, rho=-0.525, jump_intensity=0.0,
               jump_up_probability=0.5, jump_up_rate=10.0, jump_down_rate=10.0)
 V0 = 0.085
-SPY = ROOT / "tutorial_final/results/calibration/spy/surface.json"
+SPY = ROOT / "tutorial/assets/results/calibration/spy/surface.json"
 REPORT = {}
 
 

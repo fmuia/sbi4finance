@@ -16,7 +16,7 @@ from pathlib import Path
 import numpy as np
 from scipy.stats import chi2, gaussian_kde, norm
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from sbi4finance.calibration.plots import BASELINE, INK, SERIES, plt, style  # noqa: E402
 
 HERE = Path(__file__).resolve().parent / "rough_spy_is"

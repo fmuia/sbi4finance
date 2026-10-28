@@ -1,7 +1,7 @@
 import json, sys
 from pathlib import Path
 import numpy as np
-sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
 from sbi4finance.calibration.plots import BASELINE, INK, SERIES, plt, style
 import long_end as L
 style()

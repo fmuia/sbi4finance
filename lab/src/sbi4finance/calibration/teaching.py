@@ -1,7 +1,7 @@
 """Loaders, figures and small helpers for the tutorial notebooks (slots 1 to 5). Everything reads accepted results.
 
 The notebook lives in tutorial_final/notebooks and its results in
-tutorial_final/results/calibration. A missing result returns None, so the
+tutorial/assets/results/calibration. A missing result returns None, so the
 notebook can say "pending" instead of failing. Only the explicit live cells
 load a network, through load_network, which initializes the neural backend.
 """
@@ -329,7 +329,7 @@ def load_network(checkpoint):
 
 
 # ---------------------------------------------------------------------------------------------------
-# Helpers of the slot 1-4 notebooks (tutorial_final/notebooks/slot1_intro.py ... slot4_heston_bayesflow.py)
+# Helpers of the slot 1-4 notebooks (tutorial/notebooks/slot1_intro.py ... slot4_heston_bayesflow.py)
 
 
 def implied_vol_grid(prices):

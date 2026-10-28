@@ -146,7 +146,7 @@ class ThinTests(unittest.TestCase):
             bank.write_bank(root / "bank", config)
             layout_path = root / "layout.json"
             layout_path.write_text(json.dumps(small_layout(task, config)))
-            run = subprocess.run([sys.executable, str(ROOT / "tutorial_final" / "studies" / "train_calibration.py"),
+            run = subprocess.run([sys.executable, str(ROOT / "studies" / "train_calibration.py"),
                                   "--bank", str(root / "bank"), "--out", str(root / "run"), "--epochs", "2",
                                   "--batch-size", "8", "--thin-layout", str(layout_path), "--widths", "16,16"],
                                  capture_output=True, text=True, env={**__import__("os").environ,
@@ -156,7 +156,7 @@ class ThinTests(unittest.TestCase):
             self.assertTrue(report["same_seed_reload_exact"])
             self.assertEqual(report["training"]["thin_layout"]["contracts"], 6)
             # chunked training (the cluster's resumable mode), and the refusal to resume with other epochs
-            command = [sys.executable, str(ROOT / "tutorial_final" / "studies" / "train_calibration.py"),
+            command = [sys.executable, str(ROOT / "studies" / "train_calibration.py"),
                        "--bank", str(root / "bank"), "--out", str(root / "chunked"), "--batch-size", "8",
                        "--thin-layout", str(layout_path), "--widths", "16,16", "--chunk-epochs", "1"]
             env = {**__import__("os").environ, "KERAS_BACKEND": "jax"}

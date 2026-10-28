@@ -1,6 +1,6 @@
 """Figures of Lecture 3: Brownian motion, stochastic differential equations and Itô's lemma.
 
-Usage: python scripts/course/lecture03.py   (writes docs/course/images/l03-*.png and prints the numbers quoted in the text)
+Usage: python course/scripts/lecture03.py   (writes course/images/l03-*.png and prints the numbers quoted in the text)
 """
 
 import json

@@ -1,6 +1,6 @@
 """The bank's time-grid bias: each surface priced on the bank's grid and on a finer one (study S1-G).
 
-    python tutorial_final/studies/grid_bias.py --bank BANK --out NEW_DIR \
+    python lab/studies/grid_bias.py --bank BANK --out NEW_DIR \
         [--first 6000 --surfaces 50 --paths 131072 --refine 2 --workers 4 --seed 0]
 
 The bank prices with the hybrid scheme on fixed grids (tasks.rough_task: 8 steps a day to 63 days, 2 a day beyond).
@@ -9,7 +9,7 @@ rows [first, first + surfaces), this study prices the 63 design contracts at the
 the bank's grid and on a grid refine times finer, each at paths paths on its own seed, and reports the difference
 in units of the quote noise sd, with its Monte Carlo standard error. The bank's model is the scheme on its grids;
 the difference says how far that model is from a finer discretization of rough Bergomi. Test rows 6000 to 6049 are
-S1-G's (tutorial_final/studies/README.md). Writes grid-bias.json and grid-bias.png.
+S1-G's (lab/studies/README.md). Writes grid-bias.json and grid-bias.png.
 """
 
 import argparse
@@ -22,7 +22,7 @@ import time
 
 import numpy as np
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from sbi4finance.calibration import bank, pricing, tasks  # noqa: E402
 

@@ -1,6 +1,6 @@
 """Statistical calibration and identification of the amortized posterior (study S2).
 
-    python tutorial_final/studies/evaluate_calibration.py --bank BANK --checkpoint RUN --out NEW_DIR \
+    python lab/studies/evaluate_calibration.py --bank BANK --checkpoint RUN --out NEW_DIR \
         [--surfaces 2000 --draws 1000 --seed 0]
 
 Uses the first --surfaces test surfaces; later test surfaces stay free for the
@@ -17,7 +17,7 @@ import time
 
 import numpy as np
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from sbi4finance.calibration import bank, inference, plots, validation  # noqa: E402
 

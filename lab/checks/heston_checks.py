@@ -21,17 +21,17 @@ import numpy as np
 from scipy.special import expit
 
 ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / "src"))
-sys.path.insert(0, str(ROOT / "tutorial_final" / "studies"))
-sys.path.insert(0, str(ROOT / "scripts" / "curriculum"))
+sys.path.insert(0, str(ROOT / "lab" / "src"))
+sys.path.insert(0, str(ROOT / "lab" / "studies"))
+sys.path.insert(0, str(ROOT / "lab" / "checks"))
 from sbi4finance.calibration import classical, correction, products, tasks  # noqa: E402
 import heston_check  # noqa: E402
 from heston_spy_exact import rhat_ess  # noqa: E402
 
-SPY = json.loads((ROOT / "tutorial_final/results/calibration/spy/surface.json").read_text())
+SPY = json.loads((ROOT / "tutorial/assets/results/calibration/spy/surface.json").read_text())
 Y_FULL = np.asarray(SPY["prices_forward_units"], dtype=float)
 FULL_CONTRACTS = tasks.heston_task()["context"]["contracts"]
-EXACT_DRAWS = ROOT / "tutorial_final/curriculum/data/heston-spy-exact.npy"
+EXACT_DRAWS = ROOT / "tutorial/assets/data/heston-spy-exact.npy"
 FULL = {"days": (5, 10, 21, 42, 63, 126, 252), "deltas": (-2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0)}
 SHORT = {"days": (5, 10, 21, 42), "deltas": FULL["deltas"]}
 SPARSE = {"days": (21, 63, 126), "deltas": (-1.0, -0.5, 0.0, 0.5, 1.0)}

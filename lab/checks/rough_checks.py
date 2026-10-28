@@ -19,11 +19,11 @@ from pathlib import Path
 import numpy as np
 
 ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT / "lab" / "src"))
 from sbi4finance.calibration import classical, correction, pricing, surface, tasks  # noqa: E402
 
-TASK = json.loads((ROOT / "configs/tasks/calibration_rough_pilot.json").read_text())["task"]
-SPY = json.loads((ROOT / "tutorial_final/results/calibration/spy/surface.json").read_text())
+TASK = json.loads((ROOT / "lab/configs/tasks/calibration_rough_pilot.json").read_text())["task"]
+SPY = json.loads((ROOT / "tutorial/assets/results/calibration/spy/surface.json").read_text())
 Y = np.asarray(SPY["prices_forward_units"], dtype=float)
 LOG_XI = np.log(np.asarray(SPY["forward_variance_levels"], dtype=float))
 SIGMA = tasks.sigma(TASK)

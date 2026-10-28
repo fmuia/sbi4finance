@@ -3,8 +3,8 @@
 #
 #   sbatch [--account=A --partition=P --cpus-per-task=N --time=T] cluster/study.sbatch python SCRIPT ARGS...
 #
-# The command runs in the pixi default environment, from the run checkout. Give the study --workers equal to
-# --cpus-per-task. tutorial_final/CLUSTER-RUNS.md gives each command with its cores and time.
+# The command runs in the pixi default environment, from lab/ of the run checkout. Give the study --workers equal to
+# --cpus-per-task. plans/CLUSTER-RUNS.md gives each command with its cores and time.
 #SBATCH --job-name=sbi4finance-study
 #SBATCH --account=carney-mjfrank-condo2
 #SBATCH --partition=batch
@@ -16,7 +16,7 @@
 
 set -euo pipefail
 export PATH="$HOME/.pixi/bin:$PATH"
-cd "${SLURM_SUBMIT_DIR:?Submit from the run checkout}"
+cd "${SLURM_SUBMIT_DIR:?Submit from lab/ of the run checkout}"
 export PYTHONPATH="$PWD/src" KERAS_BACKEND=jax
 export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1
 pixi run "$@"

@@ -36,7 +36,7 @@ import numpy as np
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[2]
-sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT / "lab" / "src"))
 from sbi4finance.calibration import bank, chain, surface, tasks, thin  # noqa: E402
 
 MATCH_DAYS = 7
@@ -131,7 +131,7 @@ def main():
     parser.add_argument("ticker")
     parser.add_argument("layout_out")
     parser.add_argument("observation_out")
-    parser.add_argument("--task", default=str(ROOT / "configs" / "tasks" / "calibration_rough_bank.json"))
+    parser.add_argument("--task", default=str(ROOT / "lab/configs" / "tasks" / "calibration_rough_bank.json"))
     parser.add_argument("--forward", choices=("carry", "parity"), default="carry")
     args = parser.parse_args()
     config = json.loads(Path(args.task).read_text())

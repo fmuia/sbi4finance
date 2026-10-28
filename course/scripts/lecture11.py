@@ -1,6 +1,6 @@
 """Figures of Lecture 11: why the exact posterior is expensive.
 
-Usage: python scripts/course/lecture11.py   (writes docs/course/images/l11-*.png and prints the numbers quoted in the text)
+Usage: python course/scripts/lecture11.py   (writes course/images/l11-*.png and prints the numbers quoted in the text)
 """
 
 import json
@@ -11,7 +11,7 @@ from scipy.stats import norm
 from common import COLORS, DAYS, DELTAS, GREY, ROOT, plt, save, sf, tidy
 
 REPORT = {}
-RESULTS = ROOT / "tutorial_final" / "results" / "calibration"
+RESULTS = ROOT / "tutorial" / "assets" / "results" / "calibration"
 
 
 def load(path):

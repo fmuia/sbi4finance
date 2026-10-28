@@ -1,6 +1,6 @@
 """Cost and numerical quality of a calibration bank (study S1, figure S1-1).
 
-    python tutorial_final/studies/bank_quality.py --bank BANK --out NEW_DIR [--shards SHARD_DIR]
+    python lab/studies/bank_quality.py --bank BANK --out NEW_DIR [--shards SHARD_DIR]
 
 For rough Bergomi: the Monte Carlo standard error of every clean price over its
 quote-noise standard deviation, by maturity and delta, against the bank's
@@ -19,7 +19,7 @@ import sys
 
 import numpy as np
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from sbi4finance.calibration import bank, surface, tasks  # noqa: E402
 

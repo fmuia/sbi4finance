@@ -1,6 +1,6 @@
 """Figures of Lecture 6: stochastic volatility, the Heston model.
 
-Usage: python scripts/course/lecture06.py   (writes docs/course/images/l06-*.png and prints the numbers quoted in the text)
+Usage: python course/scripts/lecture06.py   (writes course/images/l06-*.png and prints the numbers quoted in the text)
 """
 
 import json

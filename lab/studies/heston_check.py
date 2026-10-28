@@ -1,6 +1,6 @@
 """The Heston check: the amortized posterior against the exact posterior (study S3).
 
-    python tutorial_final/studies/heston_check.py --bank HESTON_BANK --checkpoint RUN --out NEW_DIR \
+    python lab/studies/heston_check.py --bank HESTON_BANK --checkpoint RUN --out NEW_DIR \
         [--first 2000 --surfaces 50 --proposals 2048 --chain-surfaces 4 --chains 4 --steps 6000 --workers 4]
 
 Heston has an exact likelihood through the Fourier pricer, so its posterior can
@@ -33,7 +33,7 @@ import time
 
 import numpy as np
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from sbi4finance.calibration import bank, correction, pricing, tasks, validation  # noqa: E402
 

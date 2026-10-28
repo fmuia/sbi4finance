@@ -1,6 +1,6 @@
 """Figures of Lecture 2: no-arbitrage without a model.
 
-Usage: python scripts/course/lecture02.py   (writes docs/course/images/l02-*.png and prints the numbers quoted in the text)
+Usage: python course/scripts/lecture02.py   (writes course/images/l02-*.png and prints the numbers quoted in the text)
 """
 
 import json

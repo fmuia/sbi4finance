@@ -1,11 +1,11 @@
 """Reserves on simulated thin chains and how often each method's reserve is breached (study S10).
 
-    python tutorial_final/studies/thin_coverage.py run --bank BANK --checkpoint S2T_RUN --out DIR \
+    python lab/studies/thin_coverage.py run --bank BANK --checkpoint S2T_RUN --out DIR \
         --start 3000 --stop 3100 [--proposals 512 --rounds 2 --audit-paths 4096 --product-draws 256 \
         --product-paths 8192 --fit-paths 8192 --screen 16 --seed-check-every 50 --workers 4 --seed 0]
-    python tutorial_final/studies/thin_coverage.py run --truths S11_DIR/draws.npz --checkpoint S2T_RUN --out DIR2 \
+    python lab/studies/thin_coverage.py run --truths S11_DIR/draws.npz --checkpoint S2T_RUN --out DIR2 \
         --start 0 --stop 100 [same options]
-    python tutorial_final/studies/thin_coverage.py summarize --out DIR
+    python lab/studies/thin_coverage.py summarize --out DIR
 
 Each test surface of rows [start, stop) becomes a thin chain: its clean prices on the network's layout (the EWG
 layout) plus a fresh quote error with the layout's noise. The truth (H, eta, rho and the forward-variance curve)
@@ -48,7 +48,7 @@ breaches each side 10% of the time. Each finished chain is appended to DIR/rows-
 continues where it stopped; summarize pools every rows-*.jsonl in DIR into coverage.json and coverage.png, on all
 chains and on the chains whose audit is reliable (final k-hat at most 0.7 and every proposal priced). Test rows
 3000 to 3999 are S10's
-(tutorial_final/studies/README.md).
+(lab/studies/README.md).
 """
 
 import argparse
@@ -64,7 +64,7 @@ import time
 
 import numpy as np
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from sbi4finance.calibration import bank, correction, thin, thin_products  # noqa: E402

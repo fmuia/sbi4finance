@@ -1,6 +1,6 @@
 """Calibration of the thin-chain posterior (study S2-T) on simulated thin chains.
 
-    python tutorial_final/studies/evaluate_thin.py --bank BANK --checkpoint RUN --out NEW_DIR \
+    python lab/studies/evaluate_thin.py --bank BANK --checkpoint RUN --out NEW_DIR \
         [--first 4000 --surfaces 2000 --draws 1000 --scale 1.0 --seed 0]
 
 Each of --surfaces test surfaces from row --first becomes a thin chain: its clean prices on the checkpoint's layout plus
@@ -8,7 +8,7 @@ a fresh quote error with the layout's noise times --scale (independent of the ba
 returns draws of (H, eta, rho) and the seven log forward-variance levels; rho * eta is added. Writes
 validation.json (SBC with a simultaneous band, coverage with Wilson intervals, contraction against each
 target's prior variance) and sbc.png. Test rows 4000 to 5999 are S2-T's and 3000 to 3999 are S10's
-(tutorial_final/studies/README.md).
+(lab/studies/README.md).
 """
 
 import argparse
@@ -21,7 +21,7 @@ import time
 import numpy as np
 from scipy.special import logit
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from sbi4finance.calibration import bank, plots, thin, validation  # noqa: E402
 

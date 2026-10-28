@@ -1,7 +1,7 @@
-"""Copy an accepted study run or checkpoint into tutorial_final, recording what was copied and changed.
+"""Copy an accepted study run or checkpoint into tutorial/assets, recording what was copied and changed.
 
-    python tutorial_final/studies/accept.py --run RUN_DIR --to results/calibration/heston/s2 [--keep-surfaces 20]
-    python tutorial_final/studies/accept.py --checkpoint RUN_DIR --to checkpoints/heston
+    python lab/studies/accept.py --run RUN_DIR --to results/calibration/heston/s2 [--keep-surfaces 20]
+    python lab/studies/accept.py --checkpoint RUN_DIR --to checkpoints/heston
 
 Results: every .json and .png is copied unchanged. A .npz is copied unchanged
 unless --keep-surfaces is given, in which case the arrays "draws", "truth" and
@@ -27,9 +27,9 @@ import zipfile
 
 import numpy as np
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-FINAL = Path(__file__).resolve().parents[1]
+ASSETS = Path(__file__).resolve().parents[2] / "tutorial" / "assets"
 SLICED = ("draws", "truth", "rows")
 
 
@@ -124,11 +124,11 @@ def main():
     source_kind = parser.add_mutually_exclusive_group(required=True)
     source_kind.add_argument("--run", type=Path)
     source_kind.add_argument("--checkpoint", type=Path)
-    parser.add_argument("--to", required=True, help="destination relative to tutorial_final/")
+    parser.add_argument("--to", required=True, help="destination relative to tutorial/assets/")
     parser.add_argument("--keep-surfaces", type=int)
     args = parser.parse_args()
     source = (args.run or args.checkpoint).resolve()
-    destination = FINAL / args.to
+    destination = ASSETS / args.to
     if destination.exists():
         raise FileExistsError(f"{destination} exists: the destination must be new")
     # Everything is built in a staging directory and moved into place only when every check has passed, so a
@@ -152,7 +152,7 @@ def main():
                              "original's, whose SHA-256 the study reports cite as checkpoint_sha256"]
     (staging / "ACCEPTED.json").write_text(json.dumps(record, indent=2) + "\n")
     staging.rename(destination)
-    print(json.dumps({"to": str(destination.relative_to(FINAL) if destination.is_relative_to(FINAL) else destination), "files": sorted(p.name for p in destination.iterdir()),
+    print(json.dumps({"to": str(destination.relative_to(ASSETS) if destination.is_relative_to(ASSETS) else destination), "files": sorted(p.name for p in destination.iterdir()),
                       "changes": record["changes"]}, indent=1))
 
 

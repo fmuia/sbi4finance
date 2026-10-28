@@ -33,11 +33,11 @@ from scipy.stats import multivariate_normal
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
-sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT / "lab" / "src"))
 from sbi4finance.calibration import classical, correction, pricing, products, tasks  # noqa: E402
 
-TASK = json.loads((ROOT / "configs/tasks/calibration_rough_pilot.json").read_text())["task"]
-SPY = json.loads((ROOT / "tutorial_final/results/calibration/spy/surface.json").read_text())
+TASK = json.loads((ROOT / "lab/configs/tasks/calibration_rough_pilot.json").read_text())["task"]
+SPY = json.loads((ROOT / "tutorial/assets/results/calibration/spy/surface.json").read_text())
 START = np.asarray(json.loads((HERE / "rough_checks.json").read_text())["best"]["theta"], dtype=float)
 Y = np.asarray(SPY["prices_forward_units"], dtype=float)
 CURVE = tasks.curve(TASK, np.asarray(SPY["forward_variance_levels"], dtype=float))
