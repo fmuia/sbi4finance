@@ -1,0 +1,1 @@
+sbatch: Job 8046564 to start at 2026-10-28T06:31:49 a using 4 processors on nodes gpu3002 in partition gpu-debug

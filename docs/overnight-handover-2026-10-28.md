@@ -1,5 +1,7 @@
 # Overnight setup: verified and armed
 
+**Historical record, superseded by the [morning recovery report](run-recovery-2026-10-28.md).** These processes were verified at launch, but joint generation later stopped and two orchestration bugs prevented downstream progress. The report below is not the current live status. Original receipts and failures are retained.
+
 Verified at **01:15 UTC on 28 October 2026**. The processes below run detached on Oscar and do not depend on this chat or an open local terminal. Fresh shared-filesystem heartbeats were checked; process IDs are local to Oscar's load-balanced login hosts.
 
 | Component | Verified state | Durable record |
