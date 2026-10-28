@@ -1,0 +1,76 @@
+{
+  "format": "rough_bank_100k_followon_plan_v1",
+  "root": "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/joint-tail-gate-20261028/waiter",
+  "python": "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python",
+  "launcher": "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/joint-tail-gate-20261028/run_bank_campaign.py",
+  "original_execution": "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/execution-v2.json",
+  "poll_seconds": 60,
+  "controller_wall_hours": 96,
+  "routes": {
+    "joint": {
+      "campaign_config": "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/joint-tail-gate-20261028/joint_100k_tail_20261028.json",
+      "collection": "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection",
+      "collection_id": "817de3664968de0c605ae4c73e2c99c26465344294af2fc5412f39fffa4baa50",
+      "collection_sha256": "802a200f73bacddaa744abcfdcf2497b2d45a609c9039ed816baf1e3e9a5b12c",
+      "root_seed": 271200,
+      "producer_revision": "c773ceb26e7273612b15c69fd63715d131778083",
+      "dependency_final": "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/tail-recovery-20261028/integrity-bridge/completion.json",
+      "dependency_snapshot": "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/snapshot-20k",
+      "dependency_splits": {
+        "train": 20000,
+        "validation": 5000,
+        "test": 7000
+      },
+      "dependency_execution": "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/tail-recovery-20261028/execution.json",
+      "after_campaign": {
+        "config": "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/configs/known_100k_20261028.json",
+        "collection_id": "da963f7294aee242a80ebf9b47d914294b439aef8b6ee8f7c6d1899766e546f1",
+        "splits": {
+          "train": 100000,
+          "validation": 5000,
+          "test": 7000
+        }
+      },
+      "native_recovery": {
+        "campaign_config": "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/tail-recovery-source-20261028/campaign.json",
+        "jobs": "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/tail-recovery-20261028/jobs.json",
+        "snapshot": "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/tail-recovery-20261028/native-snapshot-20k",
+        "expected_jobs": [
+          {
+            "split": "validation",
+            "start": 4925,
+            "stop": 4950,
+            "job_sha256": "dc8d453f2148053f8797005dad27861d456b183b9733988db10b62b34adad204"
+          },
+          {
+            "split": "test",
+            "start": 0,
+            "stop": 25,
+            "job_sha256": "b3084c283a030fd7c5ae21ae29db1201cb2f6c23eed7a77002dfc963c165c958"
+          }
+        ],
+        "cpu_hours": 1500,
+        "prior_cpu_seconds": 3141589,
+        "frozen_provenance": {
+          "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/execution-v2.json": "35925eec53f0152013b8c2782b635bf9862c7e74fdcc76d11e0866b15e28eb8e",
+          "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/morning-recovery-20261028/execution.json": "114788a8f72f91ba4f43a4848064d3090c99c58809661b4e389378d137a8f0db",
+          "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/tail-recovery-source-20261028/preserved-parts.json": "a230b44c6ab217fd1356d8da4e73edbd3c238d7070f381880886093905d3d3f6",
+          "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/tail-recovery-source-20261028/reconciliation.json": "61a755c36667810341218499a3b956accff9071394e7acd00a341ef2ed6bf03a",
+          "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/jobs-20k.json": "a815c58087279fa7c2b5603d6bc3fee11ed92ec7965c0ac29c2827a665bbae0c"
+        },
+        "completion_fields": {
+          "original_execution_sha256": "35925eec53f0152013b8c2782b635bf9862c7e74fdcc76d11e0866b15e28eb8e",
+          "prior_recovery_execution_sha256": "114788a8f72f91ba4f43a4848064d3090c99c58809661b4e389378d137a8f0db",
+          "preserved_inventory_sha256": "a230b44c6ab217fd1356d8da4e73edbd3c238d7070f381880886093905d3d3f6",
+          "preserved_parts_unchanged": 1278,
+          "original_job_map_sha256": "a815c58087279fa7c2b5603d6bc3fee11ed92ec7965c0ac29c2827a665bbae0c",
+          "reviewed_failed_allocations": [
+            "8046699_997",
+            "8046699_1000"
+          ]
+        }
+      }
+    }
+  },
+  "recovery_scope": "Joint-only gate: completed known100k; exact two-range native continuation and independent checked20k integrity. Original and morning stopped ledgers remain immutable with all failed allocated cost retained."
+}

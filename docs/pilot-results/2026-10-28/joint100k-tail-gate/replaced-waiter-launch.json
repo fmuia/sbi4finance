@@ -1,0 +1,9 @@
+{
+  "state": "armed_process_launched",
+  "pid": 2629343,
+  "utc": "2026-10-28T10:10:55.951462+00:00",
+  "plan_sha256": "241ef80836479e180d6da05a9a13ee990b1e613fc5942d323ffb7b7b3d1c18bb",
+  "waiter_sha256": "67c51efff22e2c3c7f0fce83cccbc41ed2ccfb0ccafedbf87393bb8210aa059f",
+  "execution": "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/joint-recovery-gate-20261028/waiter/execution.json",
+  "log": "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/joint-recovery-gate-20261028/waiter/waiter.log"
+}

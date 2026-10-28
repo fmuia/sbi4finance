@@ -141,5 +141,63 @@ class ExtensionsTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "resource_campaign_failed"):
             ext.external_campaign_ready(dep, self.scheduler)
 
+    def test_native_tail_recovery_requires_exact_ranges_full_cost_and_new_successes(self):
+        # Failed journals stay frozen; only two native missing ranges are rerun.
+        old = self.root / "stopped-recovery.json"
+        ext.save(old, {"status": "stopped_for_review", "failed": ["8046699_997", "8046699_1000"]})
+        config_path = self.root / "tail-config.json"
+        config = {"cpu_hours": 1500, "prior_cpu_seconds": 4000000}
+        ext.save(config_path, config)
+        jobs_path = self.root / "tail-jobs.json"
+        jobs = [{"split": "test", "start": 50, "stop": 75, "job_sha256": "range997"},
+                {"split": "test", "start": 125, "stop": 150, "job_sha256": "range1000"}]
+        ext.save(jobs_path, {"jobs": jobs})
+        attempts = [{"role": "workers", "state": "submitted", "job_id": "90", "indices": [0,1], "array_offset": 0},
+                    {"role": "final", "state": "submitted", "job_id": "91"}]
+        execution = self.root / "tail-execution.json"
+        manifest_sha = ext.sha(Path(self.route["dependency_snapshot"]) / "manifest.json")
+        native_snapshot = self.root / "native-snapshot"; native_snapshot.mkdir()
+        native_manifest = json.loads((Path(self.route["dependency_snapshot"]) / "manifest.json").read_text())
+        native_manifest["publication"] = "native tail snapshot precedes independent integrity snapshot"
+        ext.save(native_snapshot / "manifest.json", native_manifest)
+        native_sha = ext.sha(native_snapshot / "manifest.json")
+        self.assertNotEqual(native_sha, manifest_sha)
+        ext.save(execution, {"state": "completed_checked_snapshot", "started_utc": "2026-10-28",
+            "snapshot": str(native_snapshot), "snapshot_manifest_sha256": native_sha,
+            "source_sha256": {"numerics": "frozen"}, "runtime": {"numpy": "pinned"},
+            "producer_git_revision": "revision",
+            "collection_id": "id", "config": config, "planned_workers": 2, "attempts": attempts})
+        fields = {"prior_recovery_execution_sha256": ext.sha(old), "preserved_parts_unchanged": 1278,
+                  "reviewed_failed_allocations": ["8046699_997", "8046699_1000"]}
+        binding = {"jobs": str(jobs_path), "campaign_config": str(config_path), "expected_jobs": jobs,
+                   "cpu_hours": 1500, "prior_cpu_seconds": 4000000,
+                   "snapshot": str(native_snapshot),
+                   "frozen_provenance": {str(old): ext.sha(old)}, "completion_fields": fields}
+        report = json.loads(self.final.read_text())
+        report.update(fields, recovery_execution=str(execution), recovery_execution_sha256=ext.sha(execution),
+            recovery_jobs_sha256=ext.sha(jobs_path), recovery_config_sha256=ext.sha(config_path),
+            recovery_snapshot_manifest_sha256=native_sha,
+            integrity_attempts=[{"role": "final", "state": "submitted", "job_id": "92"}],
+            integrity_started_utc="2026-10-28")
+        ext.save(self.final, report)
+        self.route.update(native_recovery=binding, dependency_execution=str(execution))
+        self.rows = {i: {"state": "COMPLETED", "exit_code": "0:0"} for i in ["90_0", "90_1", "91", "92"]}
+        self.assertTrue(ext.readiness(self.plan, "known", self.states, self.scheduler)[0])
+        self.rows["90_1"]["state"] = "TIMEOUT"
+        self.assertFalse(ext.readiness(self.plan, "known", self.states, self.scheduler)[0])
+        self.rows["90_1"]["state"] = "COMPLETED"
+        del self.rows["92"]
+        self.assertFalse(ext.readiness(self.plan, "known", self.states, self.scheduler)[0])
+        self.rows["92"] = {"state": "COMPLETED", "exit_code": "0:0"}
+        config["prior_cpu_seconds"] = 0; ext.save(config_path, config)
+        report["recovery_config_sha256"] = ext.sha(config_path); ext.save(self.final, report)
+        with self.assertRaisesRegex(ValueError, "budget differs"):
+            ext.readiness(self.plan, "known", self.states, self.scheduler)
+        config["prior_cpu_seconds"] = 4000000; ext.save(config_path, config)
+        report["recovery_config_sha256"] = ext.sha(config_path); ext.save(self.final, report)
+        ext.save(old, {"status": "rewritten_as_success"})
+        with self.assertRaisesRegex(ValueError, "frozen provenance"):
+            ext.readiness(self.plan, "known", self.states, self.scheduler)
+
 
 if __name__ == "__main__": unittest.main()
