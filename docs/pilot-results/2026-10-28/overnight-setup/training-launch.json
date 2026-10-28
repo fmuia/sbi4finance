@@ -1,0 +1,7 @@
+{
+  "format": "post_bank_launch_v1",
+  "pid": 2843467,
+  "root": "/oscar/scratch/afengler/sbi4finance-post-bank-baselines-20261028",
+  "source_revision": "00faaefe946c8e8fef3b55ff3156c2d0db61ffb3",
+  "scope": "known50k/joint20k intermediate posterior/pricer/validation; no reserved test"
+}

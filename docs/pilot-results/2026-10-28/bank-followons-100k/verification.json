@@ -1,0 +1,14 @@
+{
+  "state": "armed_process_verified_on_login_host",
+  "observed_utc": "2026-10-28T01:15:11Z",
+  "host": "login010",
+  "pid": 3792953,
+  "parent_pid": 1,
+  "heartbeat_started_utc": "2026-10-28T01:12:46.270310+00:00",
+  "later_heartbeat_utc": "2026-10-28T01:14:46.319786+00:00",
+  "known_state": "waiting_for_predecessor_final_check",
+  "joint_state": "waiting_for_known_resource_dependency:waiting",
+  "new_slurm_submissions_by_deployer": 0,
+  "tests": "test_bank_extensions: five tests passed in 0.007 seconds",
+  "scope": "Host-specific observed process liveness and advancing shared-filesystem heartbeat; not a guarantee of future campaign completion."
+}

@@ -2,6 +2,8 @@
 
 Updated 28 October 2026. The objective is a usable bank, estimator, reference evidence and small replay bundle for each lesson. Larger architecture studies are not a prerequisite for this first delivery. The [collaborator summary](collaborator-numerical-status.md) and [artifact handover](full-surface-artifact-handover.md) are the short review entry points.
 
+**Overnight setup is verified and armed:** current generation continues, both 100k append campaigns wait on checked predecessors, and intermediate training is gated to start automatically. See the [overnight handover](overnight-handover-2026-10-28.md) for exact process IDs, new phase limits, dependencies and failure behavior.
+
 The delivery baseline is **100k unique training surfaces for each rough route**, matching Heston, subject to measured learning curves. The 50k known-curve and 20k joint snapshots below are intermediate milestones. They are not the final data-sufficiency targets. Larger tranches must retain the same identities and holdouts, and receive an explicit allocation rather than silently increasing the current caps.
 
 ## Work proceeding in parallel

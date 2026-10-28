@@ -1,6 +1,6 @@
 # First larger rough baselines: prepared post-bank phase
 
-This phase is **prepared, not submitted**. It runs one posterior and one forward price emulator for each completed rough bank. It does not evaluate reserved tests, run new MCMC, execute notebooks, choose a winning architecture or promote scientific acceptance.
+This phase is **armed**: detached watcher PID **2843467** is waiting for checked intermediate banks, with verified advancing heartbeats. Its numerical jobs have not yet been submitted because the banks are still generating. It will run one posterior and one forward price emulator for each completed rough bank. It does not evaluate reserved tests, run new MCMC, execute notebooks, choose a winning architecture or promote scientific acceptance. The [overnight handover](overnight-handover-2026-10-28.md) records the launch and scope.
 
 Each route starts independently, only after its bank controller publishes a successful `completed_checked_snapshot` record with the exact snapshot hash, split counts, producer and collection identities. A snapshot directory alone is not readiness.
 
