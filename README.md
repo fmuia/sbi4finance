@@ -2,7 +2,19 @@
 
 Tutorial material on amortized / simulation-based Bayesian inference for finance, built on [BayesFlow](https://github.com/bayesflow-org/bayesflow).
 
-## Selected participant route: Q/options
+## Current numerical backbone: Heston and rough Bergomi
+
+The current tutorial work uses Heston, then rough Bergomi with a known curve,
+then joint calibration of its variance curve. Start with the
+[rendered inference-performance report](docs/reports/inference-performance-2026-10-28.pdf),
+[parallel work order](docs/backbone-delivery-work-order.md) and
+[notebook review guide](docs/tutorial-backbone-review.md).
+The new review notebook loads small pinned examples by default; live inference
+is a separate explicit action. Scientific limitations and historical failures
+remain visible. The proposed course/tutorial/lab layout in
+[PR49](https://github.com/fmuia/sbi4finance/pull/49) is still a separate review.
+
+## Historical participant route: Q/options (12 October)
 
 On 12 October 2026 the user selected **GBM foundations followed by a provisional
 corrected-HKDE diagnostic lesson** for [issue #26](https://github.com/fmuia/sbi4finance/issues/26).

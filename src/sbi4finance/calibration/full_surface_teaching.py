@@ -1,4 +1,4 @@
-"""Small offline Heston replay bundles; importing this module initializes no backend.
+"""Small offline tutorial replay bundles; importing initializes no neural backend.
 
 The exported final-epoch checkpoint is a derived publication artifact. Original
 training metadata and historical checkpoint selection are preserved separately.
@@ -14,6 +14,9 @@ import numpy as np
 
 NAMES = ["initial_variance", "theta", "vol_of_vol", "rho"]
 CACHE_FILES = {"task.json", "posterior.npz", "reference.json", "diagnostics.json", "products.json"}
+ROUGH_NAMES = {"rough_calibration_v1": ["hurst", "eta", "rho"],
+               "rough_joint_calibration_v1": ["hurst", "eta", "rho", "short_variance", "long_variance", "decay"]}
+NEURAL_FILES = {"task.json", "posterior.npz", "evaluation.json", "training.json"}
 
 
 def digest(path):
@@ -265,6 +268,148 @@ def load_cache(path, *, expected_task=None, expected_checkpoint_sha256=None):
     return task, report, arrays
 
 
+def rough_task(task):
+    names = ROUGH_NAMES.get(task.get("task_id"))
+    require(task.get("model") == "rough" and names is not None and task.get("parameter_names") == names,
+            "expected complete known-curve or joint-curve rough task")
+    context = task.get("context", {}); contracts = context.get("contracts", [])
+    noise = np.asarray(context.get("quote_noise_std"), dtype=float)
+    bounds = np.asarray(task.get("prior_bounds"), dtype=float)
+    require(len(contracts) == 63 and noise.shape == (63,) and np.isfinite(noise).all() and np.all(noise > 0)
+            and bounds.shape == (len(names), 2) and np.isfinite(bounds).all()
+            and np.all(bounds[:, 0] < bounds[:, 1]), "invalid full-surface rough task")
+    return task
+
+
+def prepare_rough_replay(run_root, snapshot, out):
+    """Copy fixed validation:0 from completed outputs; no model load or new inference.
+
+    This is a software replay fixture, not a selected interior example or a
+    conditional reference. Only the first validation part's payload is read.
+    """
+    run_root, snapshot, out = map(Path, (run_root, snapshot, out))
+    require(not out.exists(), "output must be a new directory")
+    task = rough_task(json.loads((run_root / "posterior/task.json").read_text()))
+    training = json.loads((run_root / "posterior/training.json").read_text())
+    evaluation = json.loads((run_root / "validation/evaluation.json").read_text())
+    run = json.loads((run_root / "run.json").read_text())
+    manifest = json.loads((snapshot / "manifest.json").read_text())
+    require(run.get("status") == "completed" and run.get("frozen_inputs_verified") is True
+            and run.get("reserved_test_evaluated") is False and run.get("scientific_acceptance") is False,
+            "completed development run with frozen inputs required")
+    require(manifest["configuration"]["task"] == task
+            and digest(snapshot / "manifest.json") == run["bank"]["manifest_sha256"]
+            and training["task_fingerprint"] == fingerprint(task) == evaluation["task_fingerprint"]
+            and training["checkpoint_sha256"] == evaluation["checkpoint_sha256"] == run["posterior_sha256"]
+            and evaluation.get("evaluated_split") == "validation" and evaluation.get("reserved_test_evaluated") is False
+            and evaluation["example_ids"][0] == "validation:0", "bank/model/validation identity differs")
+    selected = [p for p in manifest["parts"] if p["split"] == "validation" and p["start"] == 0]
+    require(len(selected) == 1, "fixed validation:0 part missing")
+    part = selected[0]; part_root = (snapshot / part["path"]).resolve()
+    collection = (snapshot / manifest["collection"]["path"]).resolve()
+    require(part_root == collection / "parts" / f"validation-{part['start']:010d}-{part['stop']:010d}"
+            and digest(part_root / "manifest.json") == part["manifest_sha256"]
+            and digest(part_root / "arrays.npz") == part["array_sha256"], "validation part identity differs")
+    with np.load(part_root / "arrays.npz", allow_pickle=False) as saved:
+        require(str(saved["example_id"][0]) == "validation:0", "validation row identity differs")
+        arrays = {"observations": saved["observations"][0, :, 0].copy(), "truth": saved["parameters"][0].copy()}
+        if task["task_id"] == "rough_calibration_v1": arrays["context_values"] = saved["context_values"][0].copy()
+    partial = run_root / "validation-partial/batch-0000.npz"
+    with np.load(partial, allow_pickle=False) as saved:
+        require(int(saved["first"]) == 0, "saved draw batch starts at a different validation row")
+        arrays["neural_draws"] = saved["draws"][0].copy()
+    # Read truth only: NumPy does not decode the large combined draw member.
+    with np.load(run_root / "validation/draws.npz", allow_pickle=False) as saved:
+        require(np.array_equal(saved["truth"][0], arrays["truth"]), "saved evaluation truth differs from bank row")
+    out.mkdir(parents=True)
+    for name, source in (("task.json", "posterior/task.json"), ("training.json", "posterior/training.json"),
+                         ("evaluation.json", "validation/evaluation.json")):
+        shutil.copyfile(run_root / source, out / name)
+    np.savez_compressed(out / "posterior.npz", **arrays)
+    sources = [run_root / n for n in ("run.json", "posterior/task.json", "posterior/training.json",
+               "validation/evaluation.json")] + [snapshot / "manifest.json", part_root / "manifest.json",
+               part_root / "arrays.npz", partial]
+    report = {"format": "full_surface_neural_replay_v1", "role": "cached_development_neural_replay",
+        "case_id": "validation:0", "selection": "fixed first development validation row; no case search",
+        "task_fingerprint": fingerprint(task), "parameter_names": task["parameter_names"],
+        "checkpoint_sha256": training["checkpoint_sha256"], "selected_epoch": training["selected_epoch"],
+        "bank_manifest_sha256": digest(snapshot / "manifest.json"), "neural_draw_count": len(arrays["neural_draws"]),
+        "known_curve_is_observed": task["task_id"] == "rough_calibration_v1",
+        "scientific_acceptance": False, "reserved_test_evaluated": False, "conditional_reference_available": False,
+        "source_sha256": {str(p): digest(p) for p in sources},
+        "builder_source_sha256": digest(__file__),
+        "files": {name: digest(out / name) for name in sorted(NEURAL_FILES)},
+        "limitations": "Fixed development replay only, possibly prior-truncated. No interior-case selection, "
+            "PyMC agreement, independent pricing/refinement, or downstream-product acceptance. "
+            "Joint generating curves are intentionally absent from inference inputs."}
+    write(out / "bundle.json", report); load_neural_replay(out)
+    return report
+
+
+def load_neural_replay(path, *, expected_task=None, expected_checkpoint_sha256=None):
+    """Offline rough replay; never fabricate missing reference chains or products."""
+    path = Path(path); report = json.loads((path / "bundle.json").read_text())
+    require(report.get("format") == "full_surface_neural_replay_v1" and set(report.get("files", {})) == NEURAL_FILES,
+            "expected complete rough neural replay")
+    for name, sha in report["files"].items(): require(digest(path / name) == sha, "replay checksum mismatch: " + name)
+    task = rough_task(json.loads((path / "task.json").read_text()))
+    training = json.loads((path / "training.json").read_text()); evaluation = json.loads((path / "evaluation.json").read_text())
+    require(report["task_fingerprint"] == fingerprint(task) == training["task_fingerprint"] == evaluation["task_fingerprint"]
+            and report["parameter_names"] == task["parameter_names"]
+            and training.get("format") == "full_surface_training_v1"
+            and report["selected_epoch"] == training["selected_epoch"]
+            and report["checkpoint_sha256"] == training["checkpoint_sha256"] == evaluation["checkpoint_sha256"]
+            and report["bank_manifest_sha256"] == evaluation["bank_manifest_sha256"], "replay task/model/bank identity differs")
+    require(expected_task is None or task == expected_task, "replay differs from expected complete task")
+    require(expected_checkpoint_sha256 is None or report["checkpoint_sha256"] == expected_checkpoint_sha256,
+            "replay differs from expected checkpoint")
+    require(report.get("role") == "cached_development_neural_replay" and report.get("case_id") == "validation:0"
+            and report.get("scientific_acceptance") is False and report.get("reserved_test_evaluated") is False
+            and report.get("conditional_reference_available") is False and evaluation.get("evaluated_split") == "validation"
+            and evaluation.get("reserved_test_evaluated") is False, "development replay scope changed")
+    with np.load(path / "posterior.npz", allow_pickle=False) as saved: arrays = dict(saved)
+    count, dimension = report["neural_draw_count"], len(task["parameter_names"])
+    known = task["task_id"] == "rough_calibration_v1"
+    require(report.get("known_curve_is_observed") == known, "known/joint curve boundary changed")
+    shapes = {"observations": (63,), "truth": (dimension,), "neural_draws": (count, dimension)}
+    if known: shapes["context_values"] = (7,)
+    require(type(count) is int and count > 1 and set(arrays) == set(shapes), "invalid replay arrays or draw count")
+    for name, shape in shapes.items():
+        require(arrays[name].shape == shape and np.isfinite(arrays[name]).all(), "invalid replay array: " + name)
+    if known: require(np.all(arrays["context_values"] > 0), "observed curve levels must be positive")
+    bounds = np.asarray(task["prior_bounds"])
+    for name in ("truth", "neural_draws"):
+        require(np.all(arrays[name] >= bounds[:, 0]) and np.all(arrays[name] <= bounds[:, 1]), "replay parameters outside prior")
+    return task, report, arrays
+
+
+def load_tutorial_artifact(manifest, name):
+    """Pinned cached role for the review notebook; does not download or load models."""
+    manifest = Path(manifest); catalogue = json.loads(manifest.read_text())
+    require(catalogue.get("format") == "full_surface_tutorial_artifacts_v1"
+            and catalogue.get("scientific_acceptance") is False, "invalid tutorial artifact catalogue")
+    entry = catalogue["artifacts"][name]; path = (manifest.parent / entry["cache"]).resolve()
+    require(digest(path / "bundle.json") == entry["bundle_sha256"], "catalogue/cache identity differs")
+    require(entry["cache_format"] in ("full_surface_teaching_v1", "full_surface_neural_replay_v1"),
+            "unknown tutorial cache format")
+    loader = load_cache if entry["cache_format"] == "full_surface_teaching_v1" else load_neural_replay
+    task, report, arrays = loader(path, expected_checkpoint_sha256=entry["checkpoint_sha256"])
+    require(fingerprint(task) == entry["task_fingerprint"], "catalogue/task identity differs")
+    if loader is load_cache:
+        arrays["truth"] = np.asarray(json.loads((path / "reference.json").read_text())["generating_parameters"])
+    return task, {**report, "artifact_role": "cached", "model_source": entry["model_source"]}, arrays
+
+
+def load_tutorial_checkpoint(manifest, name, directory):
+    """Explicit live role; BF2.1 initializes only when this function is called."""
+    task, report, _ = load_tutorial_artifact(manifest, name)
+    from . import full_surface
+    live_task, workflow, record = full_surface.load_checkpoint(directory)
+    require(live_task == task and record["checkpoint_sha256"] == report["checkpoint_sha256"],
+            "live checkpoint differs from the selected tutorial artifact")
+    return live_task, workflow, record
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
@@ -275,9 +420,12 @@ def main():
     p.add_argument("--case-index", type=int, default=0)
     p = sub.add_parser("cache-development")
     for name in ("checkpoint", "case-root", "out"): p.add_argument("--" + name, type=Path, required=True)
+    p = sub.add_parser("rough-replay")
+    for name in ("run-root", "snapshot", "out"): p.add_argument("--" + name, type=Path, required=True)
     args = vars(parser.parse_args()); command = args.pop("command")
     if command == "export-checkpoint": result = export_checkpoint(**args)
     elif command == "cache-development": result = prepare_development_cache(**args)
+    elif command == "rough-replay": result = prepare_rough_replay(**args)
     else: result = prepare_cache(**args)
     print(json.dumps({"format": result["format"], "scientific_acceptance": False}))
 

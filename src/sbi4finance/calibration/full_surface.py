@@ -64,9 +64,8 @@ def conditioning_data(values, task, encoder="vector", *, context_values=None):
     prices = observations(values, task)
     noise = tasks.sigma(task)
     scaled = prices / noise
+    context = {}
     if uses_known_curve(task):
-        if encoder != "vector":
-            raise ValueError("known-curve rough currently supports the vector encoder only")
         if ((np.ma.isMaskedArray(context_values) and np.any(np.ma.getmaskarray(context_values)))
                 or np.iscomplexobj(context_values)):
             raise ValueError("known curve requires positive finite unmasked real levels [batch,7]")
@@ -74,14 +73,14 @@ def conditioning_data(values, task, encoder="vector", *, context_values=None):
         if (levels.shape != (len(prices), tasks.context_size(task))
                 or not np.isfinite(levels).all() or np.any(levels <= 0)):
             raise ValueError("known curve requires positive finite levels [batch,7]")
-        return {"observations": scaled, "curve_context": np.log(levels)}
+        context["curve_context"] = np.log(levels)
     if encoder == "vector":
-        return {"observations": scaled}
+        return {"observations": scaled, **context}
     contracts = task["context"]["contracts"]
     coordinates = np.asarray([[np.log(c["strike"]), c["maturity"], float(c["option_type"] == "call"), sd]
                               for c, sd in zip(contracts, noise, strict=True)])
     tokens = np.concatenate([scaled[..., None], np.broadcast_to(coordinates, (*prices.shape, 4))], axis=-1)
-    return {"observations": tokens}
+    return {"observations": tokens, **context}
 
 
 def training_data(split, task, encoder="vector", *, clean=False):
@@ -141,8 +140,6 @@ def build_workflow(task, checkpoint_dir=None, *, optimizer=None, **settings):
     """Small BF2.1 family/encoder factory; each family retains its time convention."""
     validate_task(task)
     config = configuration(**settings)
-    if uses_known_curve(task) and config["encoder"] != "vector":
-        raise ValueError("known-curve rough currently supports the vector encoder only")
     import bayesflow as bf
     if bf.__version__ != "2.1.0":
         raise RuntimeError("use the locked core environment (BayesFlow 2.1.0); archived environments remain separate")
@@ -152,10 +149,16 @@ def build_workflow(task, checkpoint_dir=None, *, optimizer=None, **settings):
     for name, (lower, upper) in zip(names, task["prior_bounds"], strict=True):
         adapter = adapter.constrain(name, lower=float(lower), upper=float(upper), inclusive="none")
     destination = "inference_conditions" if config["encoder"] == "vector" else "summary_variables"
-    conditions = ["observations"] + (["curve_context"] if uses_known_curve(task) else [])
     adapter = (adapter.convert_dtype("float64", "float32")
                .concatenate(list(names), into="inference_variables")
-               .concatenate(conditions, into=destination))
+               .concatenate(["observations"] + (["curve_context"] if uses_known_curve(task)
+                             and config["encoder"] == "vector" else []), into=destination))
+    standardize = ["inference_variables", destination]
+    if uses_known_curve(task) and config["encoder"] != "vector":
+        # One observed seven-level curve per case remains global context.
+        # It bypasses the quote-set summary and is never a parameter target.
+        adapter = adapter.concatenate(["curve_context"], into="inference_conditions")
+        standardize.append("inference_conditions")
     family = config["family"]
     subnet = {"widths": config["widths"]}
     if family in ("affine", "spline"):
@@ -174,7 +177,7 @@ def build_workflow(task, checkpoint_dir=None, *, optimizer=None, **settings):
     elif config["encoder"] == "set_transformer":
         summary = bf.networks.SetTransformer(summary_dim=config["summary_dim"], dropout=0.0)
     return bf.BasicWorkflow(adapter=adapter, inference_network=network, summary_network=summary,
-                            standardize=["inference_variables", destination], optimizer=optimizer,
+                            standardize=standardize, optimizer=optimizer,
                             checkpoint_filepath=None if checkpoint_dir is None else str(checkpoint_dir),
                             save_weights_only=False, save_best_only=True)
 

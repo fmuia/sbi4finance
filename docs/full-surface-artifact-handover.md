@@ -1,5 +1,9 @@
 # Loading the new tutorial artifacts
 
+The [backbone review guide](tutorial-backbone-review.md) now connects these
+artifacts to an actual marimo notebook with explicit cached and live roles,
+alongside fixed known-curve and joint-curve rough development replays.
+
 The new Heston model is BayesFlow 2.1's **100k-training-surface final epoch 500**, not the older course model or the same run's minimum-loss epoch 402. Its model SHA-256 is `8d4a243ba099524cf4cda40e4f0616e895879f053829a7f60dadbe65b98301db`.
 
 It passed the frozen 2,000-case marginal calibration gate and the recorded analytic variance-product comparisons. This supports one candidate; it is not full tutorial, training-seed, path-product or market acceptance. Historical checkpoints and acceptance files remain unchanged.
@@ -99,6 +103,6 @@ This copies the completed checked reference and neural output. Its analytic prod
 
 ## The rough lessons
 
-The known-curve route will supply seven curve levels alongside the 63 quotes and infer H, eta and rho. The joint route will infer six parameters and must not receive its generating curve as input. Their full tutorial bundles remain pending the ongoing bank, estimator and independent reference checks. The Heston loader deliberately rejects those tasks rather than silently accepting an incomplete rough bundle.
+The known50k route supplies seven observed curve levels alongside the 63 quotes and infers H, eta and rho. The joint20k route infers six parameters and receives no generating curve as input. The new review notebook loads one small fixed development replay from each completed run. These contain saved neural draws and provenance, with no fabricated reference chains or product checks. Independent rough reference, pricing and product acceptance remain pending.
 
-The current notebook loaders still point to the historical course artifacts. Connecting these new bundles is a separate, explicit integration change; this handover does not overwrite them. See the [collaborator overview](collaborator-numerical-status.md) for overall status and the [work order](tutorial-backbone-work-order.md) for active numerical work.
+The historical SPY notebooks retain their own artifacts and link to the new review notebook. The cache catalogue pins the exact model/task for an optional live load; it does not overwrite historical checkpoints or acceptance files. See the [review guide](tutorial-backbone-review.md), [collaborator overview](collaborator-numerical-status.md) and [work order](tutorial-backbone-work-order.md).

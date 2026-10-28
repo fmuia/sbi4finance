@@ -1,0 +1,79 @@
+{
+  "status": "completed_approximate_emulator_comparison",
+  "surface_id": "validation:2",
+  "reference_issues": [],
+  "reference_chain_shape": [
+    4,
+    8000,
+    3
+  ],
+  "neural_draws": 1000,
+  "neural_source": "saved completed known50k validation panel; no new neural sampling",
+  "saved_neural_sha256": "4b7ab2cfe1cc0dbff7b7e6feb50961dd869de5148dbab14dbbb926abab50b28a",
+  "checkpoint_sha256": "e32732daea513c1887438eab801e660f286166846ef65eac6258136c3f504613",
+  "reference_sha256": "4257c70963a6408fe3e603f7d1ec9308937adcf0147acd686672da40dcb5cb45",
+  "diagnostics_sha256": "56c92463c14f263eb10e3c460b5b49b9ad57fa9268f9753e496098f393816f9c",
+  "chains_sha256": "188a91f6efc436acf66f55d523df80e48878f1302f1e556d207eaabf559628fb",
+  "scientific_acceptance": false,
+  "reserved_test_evaluated": false,
+  "target_scope": "Current fixed conditional-mean emulator with independent Gaussian quote noise and physical uniform prior/logit Jacobian. MC label randomness/covariance and surrogate/grid bias omitted; approximate development comparison only.",
+  "old_neural_draw_count": 10000,
+  "draw_count_qualification": "Current comparison reuses1000draws versus10000in the old20kcomparison; retain neural MonteCarlo uncertainty, not a strict paired sample comparison.",
+  "proposed_parameter_agreement": {
+    "parameters": {
+      "hurst": {
+        "standardized_mean_error": 0.8215967435687946,
+        "width_ratio_90": 1.8139020439097273,
+        "mean_error_within_0_3_reference_sd": false,
+        "relative_width_error_within_25_percent": false
+      },
+      "eta": {
+        "standardized_mean_error": 0.788983189365401,
+        "width_ratio_90": 1.31788241399529,
+        "mean_error_within_0_3_reference_sd": false,
+        "relative_width_error_within_25_percent": false
+      },
+      "rho": {
+        "standardized_mean_error": 0.2899201785246477,
+        "width_ratio_90": 1.4226063146044758,
+        "mean_error_within_0_3_reference_sd": true,
+        "relative_width_error_within_25_percent": false
+      }
+    },
+    "all_checks_passed": false
+  },
+  "derived_parameter_comparison": {
+    "target": "rho_eta",
+    "status": "descriptive_approximate_target_comparison",
+    "scientific_acceptance": false,
+    "standardized_mean_error": 0.10302596499209767,
+    "width_ratio_90": 1.4512137902639022,
+    "reference_mean": -1.2742559853238982,
+    "neural_mean": -1.2759128023926938,
+    "reference_sd": 0.01608154865545491,
+    "reference_q05_q95": [
+      -1.3002128674134885,
+      -1.2474021925187273
+    ],
+    "neural_q05_q95": [
+      -1.3124050530348321,
+      -1.235765473354411
+    ],
+    "reference_mcse_mean": 0.0002970989538363474,
+    "reference_mcse_sd": 0.00019753379559344332,
+    "reference_mcse_mean_over_sd": 0.018474523828622098,
+    "reference_quantile_mcse": null,
+    "reference_diagnostics": {
+      "ess_bulk": 2933.365994448344,
+      "ess_tail": 3273.546569090599,
+      "eti89_lb": -1.2995757156376295,
+      "eti89_ub": -1.248214802336288,
+      "mcse_mean": 0.0002970989538363474,
+      "mcse_sd": 0.00019753379559344332,
+      "mean": -1.2742559853238982,
+      "r_hat": 1.0013417620593952,
+      "sd": 0.016081799935542044
+    },
+    "scope": "Derived parameter agreement with the approximate emulator target; not product pricing, an independent model-price check or an acceptance rule."
+  }
+}

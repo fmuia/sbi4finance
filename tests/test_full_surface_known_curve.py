@@ -76,13 +76,18 @@ class KnownCurveContractTests(unittest.TestCase):
             full_surface.training_data({key: value for key, value in self.split.items() if key != "context_values"},
                                        self.task)
 
-    def test_known_curve_vector_scope_is_explicit(self):
+    def test_known_curve_set_inputs_keep_global_curve_separate_and_noise_off_curve(self):
         for encoder in ("deepset", "set_transformer"):
             with self.subTest(encoder=encoder):
-                with self.assertRaisesRegex(ValueError, "vector encoder only"):
-                    full_surface.training_data(self.split, self.task, encoder)
-                with self.assertRaisesRegex(ValueError, "vector encoder only"):
-                    full_surface.build_workflow(self.task, encoder=encoder)
+                data = full_surface.training_data(self.split, self.task, encoder)
+                self.assertEqual(data["observations"].shape, (3, 63, 5))
+                self.assertEqual(data["curve_context"].shape, (3, 7))
+                np.testing.assert_array_equal(data["curve_context"], np.log(self.split["context_values"]))
+                noisy = full_surface.fresh_noise(93, encoder)(data)
+                np.testing.assert_array_equal(noisy["curve_context"], data["curve_context"])
+                np.testing.assert_array_equal(noisy["observations"][..., 1:], data["observations"][..., 1:])
+                self.assertFalse(np.array_equal(noisy["observations"][..., 0], data["observations"][..., 0]))
+                self.assertEqual(set(data), {"observations", "curve_context", *self.task["parameter_names"]})
 
     def test_fresh_noise_changes_quotes_only_and_keeps_curves(self):
         data = full_surface.training_data(self.split, self.task, clean=True)
@@ -162,6 +167,33 @@ class KnownCurveContractTests(unittest.TestCase):
 
 @unittest.skipUnless(CORE_ENVIRONMENT, "requires the locked BayesFlow2.1 core environment")
 class ActualKnownCurveTests(unittest.TestCase):
+    def test_set_encoders_train_reload_and_preserve_global_curve_under_quote_permutation(self):
+        os.environ.setdefault("KERAS_BACKEND", "jax")
+        import keras
+        task = tasks.rough_task(); split = dummy_split(task, 8, seed=83)
+        for encoder in ("deepset", "set_transformer"):
+            with self.subTest(encoder=encoder), tempfile.TemporaryDirectory() as temporary:
+                keras.utils.set_random_seed(83)
+                settings = dict(family="affine", encoder=encoder, widths=(8, 8), summary_dim=8)
+                workflow = full_surface.build_workflow(task, **settings)
+                data = full_surface.training_data(split, task, encoder)
+                history = workflow.fit_offline(data=data, validation_data=data, epochs=1, batch_size=8, verbose=0).history
+                self.assertTrue(np.isfinite(history["loss"]).all())
+                before = full_surface.sample(workflow, task, split["observations"][:2], 4, encoder=encoder,
+                                              context_values=split["context_values"][:2], seed=4)
+                self.assertEqual(before.shape, (2, 4, 3))
+                path = Path(temporary) / "model.keras"; workflow.estimator.save(path)
+                restored = full_surface.build_workflow(task, **settings); restored.load_estimator(path)
+                after = full_surface.sample(restored, task, split["observations"][:2], 4, encoder=encoder,
+                                             context_values=split["context_values"][:2], seed=4)
+                np.testing.assert_array_equal(before, after)
+                conditions = full_surface.conditioning_data(split["observations"][:2], task, encoder,
+                                                             context_values=split["context_values"][:2])
+                conditions["observations"] = conditions["observations"][:, ::-1]
+                sampled = restored.sample(num_samples=4, conditions=conditions, sample_shape=(), seed=4)
+                permuted = np.concatenate([sampled[name] for name in task["parameter_names"]], axis=-1)
+                np.testing.assert_allclose(before, permuted, rtol=1e-5, atol=1e-6)
+
     def test_tiny_training_run_reload_and_native_sampling_with_three_targets(self):
         os.environ.setdefault("KERAS_BACKEND", "jax")
         module = script_module("train_full_surface")

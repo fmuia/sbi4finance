@@ -1,0 +1,38 @@
+{
+  "format": "full_surface_neural_replay_v1",
+  "role": "cached_development_neural_replay",
+  "case_id": "validation:0",
+  "selection": "fixed first development validation row; no case search",
+  "task_fingerprint": "c99b0dd131896d89d8483a1668a3fde0fb7a0f28794c3db7fe14635cbbd52b65",
+  "parameter_names": [
+    "hurst",
+    "eta",
+    "rho"
+  ],
+  "checkpoint_sha256": "e32732daea513c1887438eab801e660f286166846ef65eac6258136c3f504613",
+  "selected_epoch": 500,
+  "bank_manifest_sha256": "412f3cf437895b4764fa981bedbc1f8ad0f532d6f5b18e1b1fb957297cb627c4",
+  "neural_draw_count": 1000,
+  "known_curve_is_observed": true,
+  "scientific_acceptance": false,
+  "reserved_test_evaluated": false,
+  "conditional_reference_available": false,
+  "source_sha256": {
+    "/oscar/scratch/afengler/sbi4finance-post-bank-baselines-recovery-v2-20261028/known/run.json": "56914964da1ce62bad15785d33d271b395406c3855c7e96c30f50ec85806e345",
+    "/oscar/scratch/afengler/sbi4finance-post-bank-baselines-recovery-v2-20261028/known/posterior/task.json": "c99b0dd131896d89d8483a1668a3fde0fb7a0f28794c3db7fe14635cbbd52b65",
+    "/oscar/scratch/afengler/sbi4finance-post-bank-baselines-recovery-v2-20261028/known/posterior/training.json": "0a80170acf40f72fb85c58cb60f032824c2cded0cf89f1a31ddd611482be1735",
+    "/oscar/scratch/afengler/sbi4finance-post-bank-baselines-recovery-v2-20261028/known/validation/evaluation.json": "2e3084c8ef1b7eb8e37af0d8c06520d12ef7de3ac63666fd8a48f285f774b66a",
+    "/oscar/scratch/afengler/sbi4finance-rough-known-backbone-20261027/snapshot-50k/manifest.json": "412f3cf437895b4764fa981bedbc1f8ad0f532d6f5b18e1b1fb957297cb627c4",
+    "/oscar/scratch/afengler/sbi4finance-rough-known-backbone-20261027/collection/parts/validation-0000000000-0000000025/manifest.json": "6945ab61f4a7b4bfecf0016a4960b27817a637f908b8d5100a3b379982468d24",
+    "/oscar/scratch/afengler/sbi4finance-rough-known-backbone-20261027/collection/parts/validation-0000000000-0000000025/arrays.npz": "015edb70e73c90c5b44d9c87c02589848522bdc6cb0390946a94d50d70f4cd1b",
+    "/oscar/scratch/afengler/sbi4finance-post-bank-baselines-recovery-v2-20261028/known/validation-partial/batch-0000.npz": "3bc58a5033e685beaba205133223b774941879a414b4f2446e68456449ba92a2"
+  },
+  "builder_source_sha256": "d9758a76f7246e22a77dc0239c46b3d001b1dd29aade3a848e4862df6d121b9a",
+  "files": {
+    "evaluation.json": "2e3084c8ef1b7eb8e37af0d8c06520d12ef7de3ac63666fd8a48f285f774b66a",
+    "posterior.npz": "c58e866c59f8a55cde16dbfb77870741dbe48fa2ce9e3922de428f61fd39f769",
+    "task.json": "c99b0dd131896d89d8483a1668a3fde0fb7a0f28794c3db7fe14635cbbd52b65",
+    "training.json": "0a80170acf40f72fb85c58cb60f032824c2cded0cf89f1a31ddd611482be1735"
+  },
+  "limitations": "Fixed development replay only, possibly prior-truncated. No interior-case selection, PyMC agreement, independent pricing/refinement, or downstream-product acceptance. Joint generating curves are intentionally absent from inference inputs."
+}
