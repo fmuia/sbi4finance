@@ -90,8 +90,34 @@ def check_snapshot(route, report):
     return sha(p)
 
 
+def external_campaign_ready(dependency, scheduler):
+    """A joint-only waiter can observe the already-launched known campaign."""
+    c = read_config(dependency["config"])
+    path = Path(c["campaign_root"]) / "execution.json"
+    if not path.exists():
+        return False, "waiting_for_resource_campaign"
+    run = json.loads(path.read_text())
+    if run["state"].startswith("stopped_"):
+        raise ValueError("resource_campaign_failed:" + run["state"])
+    if run["state"] != "completed_checked_snapshot":
+        return False, "waiting_for_resource_campaign:" + run["state"]
+    p = Path(c["snapshot"]) / "manifest.json"
+    if sha(p) != run["snapshot_manifest_sha256"]:
+        raise ValueError("resource campaign snapshot changed")
+    manifest = json.loads(p.read_text())
+    if (run["collection_id"] != dependency["collection_id"]
+            or manifest["collection_id"] != dependency["collection_id"]
+            or manifest["configuration"]["splits"] != dependency["splits"]):
+        raise ValueError("resource campaign identity differs")
+    return settled(run["attempts"], run["started_utc"], scheduler)
+
+
 def readiness(plan, name, states, scheduler):
     route = plan["routes"][name]
+    if route.get("after_campaign"):
+        ready, reason = external_campaign_ready(route["after_campaign"], scheduler)
+        if not ready:
+            return False, reason
     if route.get("after_route") and states[route["after_route"]]["state"] != "completed_checked_snapshot":
         prior = states[route["after_route"]]["state"]
         if prior in ("blocked_dependency", "blocked_campaign", "unknown_launch"):
@@ -106,7 +132,21 @@ def readiness(plan, name, states, scheduler):
             return False, "predecessor_final_check_running"
         raise ValueError("predecessor final check failed or is incompatible")
     manifest_sha = check_snapshot(route, report)
-    original = json.loads(Path(plan["original_execution"]).read_text())
+    execution_path = Path(route.get("dependency_execution", plan["original_execution"]))
+    original = json.loads(execution_path.read_text())
+    if route.get("reviewed_recovery"):
+        binding = route["reviewed_recovery"]
+        if (report.get("recovery_execution") != str(execution_path)
+                or report.get("recovery_execution_sha256") != sha(execution_path)
+                or report.get("original_execution_sha256") != binding["original_execution_sha256"]
+                or sha(plan["original_execution"]) != binding["original_execution_sha256"]
+                or report.get("preserved_inventory_sha256") != binding["preserved_inventory_sha256"]
+                or report.get("preserved_parts_unchanged") != binding["preserved_parts"]
+                or report.get("original_job_map_sha256") != binding["original_job_map_sha256"]
+                or report.get("reviewed_failed_indices") != binding["reviewed_failed_indices"]
+                or report.get("new_worker_indices") != binding["new_worker_indices"]
+                or report.get("plan_sha256") != sha(route["recovery_plan"])):
+            raise ValueError("reviewed recovery completion does not match frozen provenance/coverage")
     phase = original["phases"][name]
     if phase.get("status") != "completed_checked_snapshot":
         return False, "waiting_for_predecessor_completion_ledger"
@@ -116,6 +156,8 @@ def readiness(plan, name, states, scheduler):
     indices = [i for j in phase["jobs"] if j["role"] == "workers" for i in j["indices"]]
     if len(indices) != len(set(indices)) or len(indices) != route["expected_original_workers"]:
         raise ValueError("predecessor worker coverage or duplicate identity differs")
+    if route.get("reviewed_recovery") and sorted(indices) != route["reviewed_recovery"]["new_worker_indices"]:
+        raise ValueError("new recovery workers do not match the reviewed missing identities")
     return settled(phase["jobs"], original.get("started_utc", original.get("prepared_utc", "2026-10-28")),
                    scheduler, original=True)
 
@@ -182,6 +224,12 @@ def run_waiter(plan_path, *, scheduler=None, runner=subprocess.run, sleep=time.s
     scheduler = scheduler or scheduler_from_launcher(plan)
     frozen = {str(p): sha(p) for p in [plan_path, Path(__file__), Path(plan["launcher"]),
                                       *[Path(r["campaign_config"]) for r in plan["routes"].values()]]}
+    for route in plan["routes"].values():
+        if route.get("recovery_plan"):
+            frozen[route["recovery_plan"]] = sha(route["recovery_plan"])
+        if route.get("after_campaign"):
+            p = route["after_campaign"]["config"]
+            frozen[p] = sha(p)
     ledger = {"format": "bank_extension_waiter_v1", "state": "armed", "pid": os.getpid(),
               "started_utc": now(), "frozen_sha256": frozen,
               "routes": {n: {"state": "waiting"} for n in plan["routes"]},
