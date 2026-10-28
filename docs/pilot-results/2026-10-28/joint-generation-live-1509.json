@@ -1,0 +1,26 @@
+{
+  "checked_utc": "2026-10-28T15:09:02.496582+00:00",
+  "execution_path": "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/joint-100k/execution.json",
+  "state": "generation_active",
+  "pid": 4070959,
+  "last_poll_utc": "2026-10-28T15:08:35.541534+00:00",
+  "completed_workers": 73,
+  "missing_workers": 2932,
+  "training_surfaces_completed_at_least": 21825,
+  "budget": {
+    "actual_cpu_seconds": 107935,
+    "outstanding_cpu_seconds": 2152800,
+    "final_reserve_cpu_seconds": 3840,
+    "exposure_cpu_seconds": 2264575,
+    "nonterminal_workers": 195
+  },
+  "error": null,
+  "accounting_states": {
+    "RUNNING": 199,
+    "COMPLETED": 74
+  },
+  "failed_allocations": [],
+  "queue_counts": {
+    "RUNNING|sbi4f-bank": 199
+  }
+}
