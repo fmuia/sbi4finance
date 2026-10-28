@@ -1,4 +1,4 @@
-# Draft kept for Lecture 10 (Bayesian calibration of Black-Scholes on SPY, figure 29). Not run by the course; paths are those of the original draft.
+# Draft kept for Lecture 10 (Bayesian calibration of Black-Scholes on SPY, figure 29). Not run by the course, and its figures are not committed.
 """Draw the Appendix B figures of the calibration design document (Black-Scholes in detail).
 
 Figure 23: the law of X_T = S_T / F_T, and the call price as an area under it.
@@ -10,7 +10,7 @@ Figure 28: no-arbitrage checks on the SPY smile of 21 October 2026.
 Figure 29: Bayesian calibration of Black-Scholes to 63 quotes: synthetic and SPY.
 
 Closed-form, Fourier and cached SPY data only. Usage:
-    python scripts/plot_design_black_scholes_appendix.py [--out docs/design/images]
+    python course/scripts/drafts/design_bs_appendix_draft.py [--out course/design-document/images]
 """
 
 import argparse
@@ -396,7 +396,7 @@ def figure_posterior(path, spy):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--out", default="docs/design/images")
+    parser.add_argument("--out", default="course/design-document/images")
     out = Path(parser.parse_args().out)
     spy = json.loads(SPY.read_text())
     figure_terminal_law(out / "calibration-23-bs-terminal-law.png")
