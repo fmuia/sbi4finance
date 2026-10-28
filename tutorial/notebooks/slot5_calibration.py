@@ -10,7 +10,6 @@ app = marimo.App(
 @app.cell(hide_code=True)
 def _():
     import os
-    import sys
     import time
 
     os.environ.setdefault("KERAS_BACKEND", "jax")
@@ -19,15 +18,13 @@ def _():
     import matplotlib.pyplot as plt
     import numpy as np
 
-    from sbi4finance.calibration import plots, surface, teaching
+    from sbi4f_tutorial import long_end, plots, surface, teaching
 
     ROOT = mo.notebook_dir().parent
-    RESULTS = ROOT / "results" / "calibration"
-    CHECKPOINTS = ROOT / "checkpoints"
-    CURRICULUM = ROOT / "curriculum"
-    CHECKS = ROOT / "checks"
-    sys.path.insert(0, str(CHECKS / "long_end"))
-    import long_end  # noqa: E402  (the long-end check: tutorial_final/checks/long_end/long_end.py)
+    ASSETS = ROOT / "assets"
+    RESULTS = ASSETS / "results" / "calibration"
+    CHECKPOINTS = ASSETS / "checkpoints"
+    CHECKS = ASSETS / "quick-checks"
 
     plots.style()
 
@@ -47,9 +44,9 @@ def _():
         return mo.image(src=found, caption=caption, width=width)
 
     return (
+        ASSETS,
         CHECKPOINTS,
         CHECKS,
-        CURRICULUM,
         RESULTS,
         image,
         long_end,
@@ -113,7 +110,7 @@ def _(CHECKPOINTS, RESULTS, mo, teaching):
         ("Heston: products and reserves (S7)", RESULTS / "heston/s7/products.json"),
     ]
     mo.accordion({"**What this notebook reads** (click to open): every result and its status": mo.vstack([
-        mo.md("Every number below comes from an accepted study in `results/calibration`. The rough-Bergomi results "
+        mo.md("Every number below comes from an accepted study in `assets/results/calibration`. The rough-Bergomi results "
               "are a pilot (1,600 training smiles) until the full bank of 100,000 has run on the cluster; pilot "
               "results are marked and are not quoted on stage."),
         mo.ui.table([{"result": n, "status": "ready" if teaching.existing(p) else "pending"} for n, p in _checks],
@@ -211,13 +208,13 @@ def _(mo):
 
 
 @app.cell
-def _(CHECKPOINTS, CURRICULUM, RESULTS, np, surface, teaching):
+def _(ASSETS, CHECKPOINTS, RESULTS, np, surface, teaching):
     spy = teaching.load_json(RESULTS / "spy" / "surface.json")
     _k, _maturity, _kind, _delta = teaching.design_arrays()
     spy_skew = np.abs(np.asarray(spy["atm_skew"]))
     power_law = spy["skew_power_law"]
     _heston_task = teaching.load_json(CHECKPOINTS / "heston" / "task.json")
-    _heston_mean = np.load(CURRICULUM / "data" / "heston-spy-exact.npy").mean(axis=0)
+    _heston_mean = np.load(ASSETS / "data" / "heston-spy-exact.npy").mean(axis=0)
     _heston_iv = teaching.implied_vol_grid(teaching.heston_smile(_heston_task, _heston_mean))
     heston_skew = np.abs(surface.smile_statistics(_heston_iv, _k, _maturity)[2])
     skew_days = np.asarray(surface.DESIGN_DAYS)
@@ -291,10 +288,10 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(CURRICULUM, RESULTS, image, mo, teaching):
+def _(ASSETS, RESULTS, image, mo, teaching):
     _costs = teaching.load_json(RESULTS / "costs" / "costs.json")
     mo.vstack([
-        image(CURRICULUM / "images" / "ladder.png", "One likelihood evaluation and one exact posterior under each model "
+        image(ASSETS / "images" / "ladder.png", "One likelihood evaluation and one exact posterior under each model "
                                                     "(the rough-Bergomi posterior, by random-walk Metropolis, is a lower bound)."),
         mo.ui.table(teaching.cost_rows(_costs), selection=None, pagination=False),
     ])
@@ -457,7 +454,7 @@ def _(CHECKS, mo, np, plots, plt, teaching):
         Rough Bergomi at SPY's least-squares fit ($H$ = {_b[0]:.3f}, $\\eta$ = {_b[1]:.2f}, $\\rho$ = {_b[2]:.2f};
         four starts reach the same optimum, χ² {_r['best']['chi2']:.0f} on 63 quotes). The dashed line is an
         interval as wide as the prior box. Local only: it shows where a direction is weak, not the posterior's
-        shape. *Source:* `tutorial_final/checks/rough_checks.py`, a quick check.
+        shape. *Source:* `lab/checks/rough_checks.py`, a quick check.
         """),
     ])
     return
@@ -476,7 +473,7 @@ def _(RESULTS, mo, teaching):
 @app.cell(hide_code=True)
 def _(RESULTS, classical_model, image, mo, pending, pilot_banner, teaching):
     if classical_model.value is None:
-        _out = pending("study S6 (`tutorial_final/studies/classical_route.py`).")
+        _out = pending("study S6 (`lab/studies/classical_route.py`).")
     else:
         _report = teaching.load_json(RESULTS / classical_model.value / "s6" / "classical.json")
         _s = _report["summary"]
@@ -726,7 +723,7 @@ def _(mo):
     Gauss–Newton proposal can fail, and the network's draws are the proposal that stays affordable (not
     tested here).
 
-    *Source:* `tutorial_final/checks/long_end/` (a quick check of 23 October 2026, not yet an accepted study).
+    *Source:* `lab/checks/long_end/` (a quick check of 23 October 2026, not yet an accepted study).
     """)
     return
 
@@ -810,7 +807,7 @@ def _(mo):
     **Next, slot 6:** what changes when the prior or the model is wrong, and how to find out.
 
     *Evidence and code:* the [curriculum](../curriculum/05-slot5-rough-bergomi-to-a-reserve.md), the
-    [design document](../../docs/design/calibration-design-document.md) and `src/sbi4finance/calibration/`.
+    [design document](../../course/design-document/calibration-design-document.md) and `src/sbi4f_tutorial/`.
     Numbers marked pilot are not quoted on stage until the full studies replace them.
     """)
     return

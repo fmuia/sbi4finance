@@ -17,9 +17,9 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 from matplotlib.patches import Patch, Rectangle  # noqa: E402
 
-ROOT = Path(__file__).resolve().parents[2]
-OUT = ROOT / "tutorial" / "curriculum" / "images"
-COSTS = ROOT / "tutorial" / "assets" / "results" / "calibration" / "costs" / "costs.json"
+TUTORIAL_DIR = Path(__file__).resolve().parents[1]
+OUT = TUTORIAL_DIR / "curriculum" / "images"
+COSTS = TUTORIAL_DIR / "assets" / "results" / "calibration" / "costs" / "costs.json"
 
 PRESENTER = {"F": "#087F8C", "A": "#D97732", "S": "#738095", "FA": "#7A4E9C"}
 NAMES = {"F": "Francesco", "A": "Alex", "S": "Stefan", "FA": "Francesco and Alex"}
@@ -192,7 +192,7 @@ def ladder(path):
 
 def heston_variance_swaps(path):
     """The exact Heston posterior's variance-swap curve on SPY against SPY's replicated curve (slot 4's ending)."""
-    run = json.loads((ROOT / "tutorial" / "assets" / "data" / "heston-spy-exact.json").read_text())
+    run = json.loads((TUTORIAL_DIR / "assets" / "data" / "heston-spy-exact.json").read_text())
     vs = run["variance_swap_vol_pct"]
     days = vs["days"]
     fig, ax = plt.subplots(figsize=(7.6, 3.9))
