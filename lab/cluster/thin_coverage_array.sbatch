@@ -5,7 +5,7 @@
 #
 # Each task appends finished chains to OUT/rows-START-STOP.jsonl, so a requeued task continues where it stopped.
 # With CHUNK 100 and 16 cores a task takes about an hour (about 7 CPU-minutes a chain; CLUSTER-RUNS.md).
-# Afterwards: python tutorial_final/studies/thin_coverage.py summarize --out OUT
+# Afterwards: python studies/thin_coverage.py summarize --out OUT
 #SBATCH --job-name=sbi4finance-s10
 #SBATCH --account=carney-mjfrank-condo2
 #SBATCH --partition=batch
@@ -21,9 +21,9 @@ if (( $# != 5 )); then
     exit 2
 fi
 export PATH="$HOME/.pixi/bin:$PATH"
-cd "${SLURM_SUBMIT_DIR:?Submit from the run checkout}"
+cd "${SLURM_SUBMIT_DIR:?Submit from lab/ of the run checkout}"
 export PYTHONPATH="$PWD/src" KERAS_BACKEND=jax
 export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1
 start=$(( $4 + ${SLURM_ARRAY_TASK_ID:?Array task required} * $5 ))
-pixi run python tutorial_final/studies/thin_coverage.py run --bank "$1" --checkpoint "$2" --out "$3" \
+pixi run python studies/thin_coverage.py run --bank "$1" --checkpoint "$2" --out "$3" \
     --start "$start" --stop "$(( start + $5 ))" --workers "${SLURM_CPUS_PER_TASK:-16}"

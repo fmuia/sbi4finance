@@ -1,16 +1,16 @@
-"""Figures of the course's version-2 plan (docs/course/v2-plan.md), drawn from the quick checks of 23-24 October.
+"""Figures of the course's version-2 plan (course/v2-plan.md), drawn from the quick checks of 23-24 October.
 
-    python scripts/course/realignment.py
+    python course/scripts/realignment.py
 
 Only evidence that survived the review of 24 October is drawn. The front-month case, its 80-chain validation and
 the 15-quote and three-times-noise cases gave every method SPY's curve read from the full chain; they are
-withdrawn (docs/course/v2-plan.md, Section 4) and not drawn here.
+withdrawn (course/v2-plan.md, Section 4) and not drawn here.
 
-Inputs (all committed): tutorial_final/checks/heston_checks.json, rough_spy_is/rough_spy_is_seed0.json,
+Inputs (all committed): lab/checks/heston_checks.json, rough_spy_is/rough_spy_is_seed0.json,
 long_end/long_end.json, bs_hierarchy.json, thin_chains/{EWI,EWG,EWQ}_2026-10-22.json, thin_chains/FEZ_2026-10-23.json.
-Outputs: docs/course/images/v2-classical-vs-posterior.png, v2-pooling.png, v2-thin-chain.png,
+Outputs: course/images/v2-classical-vs-posterior.png, v2-pooling.png, v2-thin-chain.png,
 v2-thin-candidates.png, and v2-evidence-numbers.json with every plotted number, so that the plan's text can be
-checked against it (scripts/course/check_v2_plan.py).
+checked against it (course/scripts/check_v2_plan.py).
 """
 
 import json
@@ -19,7 +19,7 @@ import numpy as np
 
 from common import COLORS, GREY, OUT, ROOT, plt, save, tidy
 
-CHECKS = ROOT / "tutorial_final" / "checks"
+CHECKS = ROOT / "lab" / "checks"
 CANDIDATES = (("EWI", "EWI_2026-10-22.json"), ("EWG", "EWG_2026-10-22.json"), ("EWQ", "EWQ_2026-10-22.json"),
               ("FEZ", "FEZ_2026-10-23.json"))
 

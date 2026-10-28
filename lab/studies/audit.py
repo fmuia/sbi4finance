@@ -1,6 +1,6 @@
 """The audit of rough-Bergomi surfaces with the Monte Carlo likelihood (study S5).
 
-    python tutorial_final/studies/audit.py --bank ROUGH_BANK --checkpoint RUN --out NEW_DIR \
+    python lab/studies/audit.py --bank ROUGH_BANK --checkpoint RUN --out NEW_DIR \
         [--first 2500 --surfaces 200 --proposals 512 --paths 32768 --workers 4]
 
 For each surface: the network's draws give a Student t proposal (mixed with 10% of the prior). Each proposal's
@@ -40,7 +40,7 @@ import time
 
 import numpy as np
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from sbi4finance.calibration import bank, correction, pricing, tasks, validation  # noqa: E402

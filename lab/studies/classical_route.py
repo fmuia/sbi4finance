@@ -1,6 +1,6 @@
 """The classical route on the same surfaces (study S6).
 
-    python tutorial_final/studies/classical_route.py --bank BANK --checkpoint RUN --out NEW_DIR \
+    python lab/studies/classical_route.py --bank BANK --checkpoint RUN --out NEW_DIR \
         [--pricer S4_DIR/pricer] [--first 2100 --surfaces 200 --starts 10]
 
 For each test surface: weighted least squares from --starts stratified starts
@@ -25,7 +25,7 @@ import time
 
 import numpy as np
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from sbi4finance.calibration import bank, classical, correction, pricer_net, tasks  # noqa: E402

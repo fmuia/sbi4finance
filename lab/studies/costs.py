@@ -1,6 +1,6 @@
 """Costs of every route on one machine (study S9), in CPU-seconds that count every thread.
 
-    python tutorial_final/studies/costs.py --out NEW_DIR [--rough-paths 32768 --repeats 3]
+    python lab/studies/costs.py --out NEW_DIR [--rough-paths 32768 --repeats 3]
         [--rough-checkpoint RUN --rough-bank BANK] [--heston-checkpoint RUN --heston-bank BANK]
 
 Measured here, in CPU-seconds and in wall-clock seconds: one rough-Bergomi
@@ -24,7 +24,7 @@ import time
 
 import numpy as np
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from sbi4finance.calibration import pricing, tasks  # noqa: E402
 

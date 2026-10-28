@@ -1,6 +1,6 @@
 """Figures of Lecture 7: rough volatility, the rough Bergomi model.
 
-Usage: python scripts/course/lecture07.py   (writes docs/course/images/l07-*.png and prints the numbers quoted in the text)
+Usage: python course/scripts/lecture07.py   (writes course/images/l07-*.png and prints the numbers quoted in the text)
 
 Monte Carlo runs are kept small (2^13 to 2^15 paths); every price is reported with its standard error.
 """

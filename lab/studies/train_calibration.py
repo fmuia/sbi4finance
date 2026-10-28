@@ -1,6 +1,6 @@
 """Train the amortized calibration posterior on a calibration bank (studies S2 and S3).
 
-    python tutorial_final/studies/train_calibration.py --bank BANK --out NEW_DIR \
+    python lab/studies/train_calibration.py --bank BANK --out NEW_DIR \
         [--epochs 40 --batch-size 256 --augmentations 4 --seed 0] [--fresh-noise]
 
 Training quotes are the clean prices of each training surface plus quote
@@ -25,7 +25,7 @@ import time
 
 import numpy as np
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from sbi4finance.calibration import bank, inference, thin  # noqa: E402
 

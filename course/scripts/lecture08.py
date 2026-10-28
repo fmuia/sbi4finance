@@ -1,6 +1,6 @@
 """Figures of Lecture 8: calibration on a derivatives desk.
 
-Usage: python scripts/course/lecture08.py   (writes docs/course/images/l08-*.png and prints the numbers quoted in the text)
+Usage: python course/scripts/lecture08.py   (writes course/images/l08-*.png and prints the numbers quoted in the text)
 """
 
 import json
@@ -15,7 +15,7 @@ from sbi4finance import hkde
 from sbi4finance.calibration import pricing, products, tasks
 
 REPORT = {}
-RESULTS = ROOT / "tutorial_final" / "results" / "calibration"
+RESULTS = ROOT / "tutorial" / "assets" / "results" / "calibration"
 KAPPA = 2.0
 NOJUMP = dict(jump_intensity=0.0, jump_up_probability=0.5, jump_up_rate=10.0, jump_down_rate=10.0)
 
@@ -363,7 +363,7 @@ def fig_across_models():
     axes[0].plot([], [], "o", color="0.4", label="least-squares point")
     fig.legend(frameon=False, fontsize=8.5, loc="lower center", ncol=3)
     fig.tight_layout(rect=(0, 0.07, 1, 1))
-    fig.savefig(sf.__file__.split("/src/")[0] + "/docs/course/images/l08-across-models.png", dpi=160)
+    fig.savefig(ROOT / "course" / "images" / "l08-across-models.png", dpi=160)
     plt.close(fig)
     REPORT["across"] = out
 

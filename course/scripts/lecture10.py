@@ -1,6 +1,6 @@
 """Figures of Lecture 10: Bayesian calibration.
 
-Usage: python scripts/course/lecture10.py   (writes docs/course/images/l10-*.png and prints the numbers quoted in the text)
+Usage: python course/scripts/lecture10.py   (writes course/images/l10-*.png and prints the numbers quoted in the text)
 
 Uses the toy smile of lecture09.py and, for Heston, the repository's Fourier pricer and product pricer.
 """
@@ -18,7 +18,7 @@ from common import COLORS, DAYS, DELTAS, GREY, ROOT, load_spy, plt, save, sf, ti
 from sbi4finance.calibration import pricing, products, tasks
 
 REPORT = {}
-RESULTS = ROOT / "tutorial_final" / "results" / "calibration"
+RESULTS = ROOT / "tutorial" / "assets" / "results" / "calibration"
 SIG_BOX = (0.05, 0.60)
 
 

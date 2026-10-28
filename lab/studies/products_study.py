@@ -1,6 +1,6 @@
 """Products under the posterior: price ranges, reserves and what drives them (study S7).
 
-    python tutorial_final/studies/products_study.py --bank BANK --checkpoint RUN --out NEW_DIR \
+    python lab/studies/products_study.py --bank BANK --checkpoint RUN --out NEW_DIR \
         [--pricer S4_DIR/pricer] [--first 2300 --surfaces 3 --draws 400 --paths 8192 --workers 4]
 
 For each surface: posterior draws from the network; each draw prices the
@@ -26,7 +26,7 @@ import time
 from matplotlib.ticker import MaxNLocator
 import numpy as np
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from sbi4finance.calibration import bank, classical, products, tasks  # noqa: E402

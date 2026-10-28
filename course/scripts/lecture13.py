@@ -1,8 +1,8 @@
 """Figures of Lecture 13: validating an amortized posterior.
 
-Usage: python scripts/course/lecture13.py   (writes docs/course/images/l13-*.png and prints the numbers quoted in the text)
+Usage: python course/scripts/lecture13.py   (writes course/images/l13-*.png and prints the numbers quoted in the text)
 
-Most figures read the cached study results in tutorial_final/results/calibration. Two compute
+Most figures read the cached study results in tutorial/assets/results/calibration. Two compute
 new numbers: the toy simulations of Figures 13.2 and 13.7, and the posterior predictive check of
 Figure 13.10, which runs random-walk chains with the Heston Fourier likelihood (about five
 CPU-minutes on two cores).
@@ -65,7 +65,7 @@ def rhat_ess(chains):
 
 
 REPORT = {}
-RESULTS = ROOT / "tutorial_final" / "results" / "calibration"
+RESULTS = ROOT / "tutorial" / "assets" / "results" / "calibration"
 HESTON_NAMES = [r"$v_0$", r"$\theta_H$", r"$\sigma_v$", r"$\rho$"]
 ROUGH_NAMES = [r"$H$", r"$\eta$", r"$\rho$", r"$\rho\eta$"]
 

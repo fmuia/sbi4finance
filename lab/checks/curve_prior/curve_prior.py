@@ -26,11 +26,11 @@ from pathlib import Path
 
 import numpy as np
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
 from sbi4finance.calibration.plots import plt, style  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[3]
-SPY = json.loads((ROOT / "tutorial_final" / "results" / "calibration" / "spy" / "surface.json").read_text())
+SPY = json.loads((ROOT / "tutorial" / "assets" / "results" / "calibration" / "spy" / "surface.json").read_text())
 KNOTS = np.array([0, 5, 10, 21, 42, 63, 126, 252]) / 252
 MID = 0.5 * (KNOTS[1:] + KNOTS[:-1])
 LT = np.log(MID)

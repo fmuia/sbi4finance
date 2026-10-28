@@ -1,6 +1,6 @@
 """Figures of Lecture 4: the Black-Scholes model.
 
-Usage: python scripts/course/lecture04.py   (writes docs/course/images/l04-*.png and prints the numbers quoted in the text)
+Usage: python course/scripts/lecture04.py   (writes course/images/l04-*.png and prints the numbers quoted in the text)
 """
 
 import json

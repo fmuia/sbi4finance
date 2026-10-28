@@ -1,7 +1,7 @@
 [project]
 name = "sbi4finance"
 version = "0.1.0"
-description = "Amortized Bayesian inference for finance: tutorial material built on BayesFlow"
+description = "The lab of the sbi4finance tutorial: simulators, calibration banks, training, references and studies"
 readme = "README.md"
 requires-python = ">=3.12,<3.13"
 dependencies = []
@@ -14,9 +14,10 @@ build-backend = "hatchling.build"
 packages = ["src/sbi4finance"]
 
 # ---------------------------------------------------------------------------
-# pixi: `pixi install` creates the tutorial environment, `pixi shell` enters it.
-# bayesflow is PyPI-only, so it and its backend come from pypi-dependencies;
-# everything else comes from conda-forge.
+# pixi: run every command from lab/. `pixi install --locked` creates the lab
+# environment, `pixi shell` enters it. bayesflow is PyPI-only, so it and its
+# backend come from pypi-dependencies; everything else comes from conda-forge.
+# The tutorial has its own environment in tutorial/pixi.toml.
 # ---------------------------------------------------------------------------
 [tool.pixi.workspace]
 channels = ["conda-forge"]
@@ -24,12 +25,10 @@ platforms = ["osx-arm64", "linux-64"]
 
 [tool.pixi.dependencies]
 python = "3.12.*"
-marimo = ">=0.25.1"
-jq = "*"          # marimo-pair skill scripts need jq on PATH
 
 [tool.pixi.pypi-dependencies]
 sbi4finance = { path = ".", editable = true }
-# Exact pins: the shipped checkpoint was trained with these versions.
+# Exact pins: the shipped checkpoints were trained with these versions.
 bayesflow = "==2.0.14"
 keras = "==3.15.1"
 jax = "==0.11.1"
@@ -40,71 +39,15 @@ scipy = "==1.18.1" # Fourier quadrature, Gaussian references and option expectat
 KERAS_BACKEND = "jax"
 
 [tool.pixi.tasks]
-edit = { cmd = "marimo edit --no-token", cwd = "notebooks" }
-check = "marimo check notebooks"
-selfcheck = "python src/sbi4finance/mmar/univariate.py"
-gbm-demo = "python scripts/gbm_reference.py"
-test-gbm = "python -m unittest discover -s tests -p test_gbm.py -v"
-gbm-bank = "python scripts/generate_gbm_bank.py"
-gbm-train = "python scripts/train_gbm.py"
-test-simulators = "python -m unittest discover -s tests -v"
-test-heston = "python -m unittest discover -s tests -p test_heston.py -v"
-heston-validate = "python scripts/validate_heston.py --include-svj"
-heston-benchmark = "python scripts/benchmark_heston.py"
-heston-bank = "python scripts/generate_heston_bank.py"
-heston-reference = "python scripts/check_heston_reference.py"
-heston-task-numerics = "python scripts/check_heston_discretization.py"
-heston-train = "python scripts/train_heston.py"
-review-foundations = "marimo edit notebooks/01_gbm_foundations.py --no-token"
-review-kernels = "marimo edit notebooks/04_heston_svj_kernels.py --no-token"
-review-heston = "marimo edit notebooks/05_heston_joint_inference.py --no-token"
-option-bank = "python scripts/generate_option_bank.py"
-hkde-validate = "python scripts/validate_hkde.py"
-hkde-reference = "python scripts/check_hkde_reference.py"
-hkde-train = "python scripts/train_hkde.py"
-hkde-evaluate = "python scripts/evaluate_hkde.py"
-hkde-correct = "python scripts/evaluate_hkde_correction.py"
-review-hkde = "marimo edit notebooks/06_hkde_and_pricing.py --no-token"
-hkde-surrogate = "python scripts/run_hkde_surrogate.py"
-review-hkde-surrogate = "marimo edit notebooks/07_hkde_price_surrogate.py --no-token"
-review-hkde-corrected = "marimo edit notebooks/10_hkde_corrected_workflow.py --no-token"
-demo-hkde-corrected = { cmd = "marimo edit notebooks/10_hkde_corrected_workflow.py --no-token", env = { SBI4FINANCE_HKDE_DEMO = "1" } }
-hkde-calibration-audit = "python scripts/audit_hkde_calibration_gate.py"
-review-hkde-calibration = "marimo edit notebooks/11_hkde_calibration_audit.py --no-token"
-bergomi-validate = "python scripts/validate_bergomi.py"
-rough-bergomi-validate = "python scripts/validate_rough_bergomi.py"
-bergomi-refinement = "python scripts/check_bergomi_coupled_refinement.py"
-review-bergomi = "marimo edit notebooks/08_bergomi_models.py --no-token"
-data-check = "python -m unittest discover -s tests"
-hkde-data-check = "python scripts/check_hkde_data.py"
-hkde-bank-data-check = "python scripts/check_hkde_bank_data.py"
-hkde-data-walkthrough = "marimo edit notebooks/hkde_data_walkthrough.py --no-token"
-hkde-teaching-check = "python scripts/check_hkde_teaching.py"
-hkde-teaching-integration-check = "python scripts/check_hkde_teaching_integration.py"
-option-bank-shard = "python scripts/generate_option_bank_shard.py"
-option-bank-assemble = "python scripts/assemble_option_bank.py"
-rough-reference = "python scripts/check_rough_reference.py"
-rough-train = "python scripts/train_rough.py"
-rough-evaluate = "python scripts/evaluate_rough.py"
-rough-heldout-test = "python scripts/evaluate_rough_test.py"
-review-rough-inference = "marimo edit notebooks/09_rough_inference.py --no-token"
-svj-selfcheck = "python src/sbi4finance/svj/model.py"
-test-svj = "python -m unittest discover -s tests -p 'test_svj*.py' -v"
-svj-train = "python scripts/svj_train.py"
-svj-validate = "python scripts/svj_validate.py"
-svj-agreement = "python scripts/svj_agreement.py"
-svj-backtest = "python scripts/svj_backtest.py"
-svj-backtest-check = "python scripts/svj_backtest_check.py"
-svj-rolling = "python scripts/svj_rolling.py"
-svj-classical = "python scripts/svj_classical.py"
-svj-costs = "python scripts/svj_costs.py"
-svj-daily = "python scripts/svj_daily.py"
-svj-bank = "python scripts/generate_svj_bank.py"
-svj-bank-check = "python scripts/check_svj_bank.py"
-svj-teaching = "python scripts/prepare_svj_teaching.py"
-review-svj = "marimo edit notebooks/svj_var_pipeline.py --no-token"
-demo-svj = { cmd = "marimo edit notebooks/svj_var_pipeline.py --no-token", env = { SBI4FINANCE_SVJ_DEMO = "1" } }
-test-workflow = "python -m unittest discover -s tests -p 'test_*workflow.py' -v"
+test = "python -m unittest discover -s tests -v"
+bank = "python scripts/calibration_bank.py"
+surface = "python scripts/build_surface.py"
+accept = "python studies/accept.py"
+manifest = "python studies/manifest.py"
+claims = "python studies/claims.py"
+release-check = "python studies/manifest.py --check && python studies/claims.py --check"
+course-check = "python ../course/scripts/check_v2_plan.py"
+discover-cluster = "python cluster/discover_cluster.py"
 
 # GPU environment for Oscar (linux-64 only): `pixi install -e gpu` on a login node.
 [tool.pixi.feature.cuda]
@@ -113,50 +56,5 @@ platforms = ["linux-64"]
 [tool.pixi.feature.cuda.pypi-dependencies]
 jax-cuda12-plugin = { version = "==0.11.1", extras = ["with-cuda"] }
 
-# Optional live notebook collaboration; keeps Studio and MCP out of the
-# default tutorial and cluster environments. Inherits the scientific stack.
-[tool.pixi.feature.collaboration.dependencies]
-marimo = "==0.25.1"
-
-[tool.pixi.feature.collaboration.pypi-dependencies]
-marimo-studio = "==0.3.0"
-marimo-lens = "==0.2.3"
-mcp = "==2.3.0"
-httpx2 = "==2.13.1"
-# Match the existing scientific lock when resolving this optional environment.
-numpy = "==2.5.3"
-
-[tool.pixi.feature.collaboration.tasks]
-collaborate = { cmd = "marimo edit --host 127.0.0.1 --port 8772 --no-token --mcp code-mode --no-sandbox", env = { MARIMO_STUDIO_EDIT_ROOT = "marimo" } }
-studio-svj = "marimo edit notebooks/svj_var_pipeline.py --host 127.0.0.1 --port 8772 --no-token --mcp code-mode --no-sandbox"
-studio-build = "marimo-studio view build lesson --target notebooks/svj_var_pipeline.py --profile production"
-studio-check = "python scripts/check_marimo_studio.py"
-mcp-check = "python scripts/check_marimo_mcp.py"
-
 [tool.pixi.environments]
 gpu = ["cuda"]
-collaboration = ["collaboration"]
-
-[tool.marimo-studio]
-notebook = "notebooks/svj_var_pipeline.py"
-view_root = "notebooks/views/svj"
-default = "lesson"
-runtime = "server"
-
-[tool.marimo-studio.cells]
-workflow-introduction = {ref = "cell:v1:2070bd9c6010ff06ef7fe369a11a44d0254d82d2ce2a2c58a2e308cddd1a0c50:4cfa813b3494fe6efb20f8a864306ad756dc8861e60bde4ecd8487908deeaec0:0"}
-model-specification = {ref = "cell:v1:4b3ede4468e394ad2907353dbdb9272faa6f342924634c2d6721d613d6ecd562:341d87024965df7532999c5ca7d223899385be4d436797a3e7caca660cf44d4a:0"}
-prior-table = {ref = "cell:v1:971787095f0d4b4a811d57a6ea39ba6e8a218e15bdddaf9c55932c2f346e3708:971787095f0d4b4a811d57a6ea39ba6e8a218e15bdddaf9c55932c2f346e3708:0"}
-observed-history = {ref = "cell:v1:dee761db320d7ddcf9ac84119756bd0ad00454c9e32eae2336c2f545998849ba:dee761db320d7ddcf9ac84119756bd0ad00454c9e32eae2336c2f545998849ba:0"}
-prior-predictive-explanation = {ref = "cell:v1:46ec4b0897425d73ff7343b68831881a2831d7c2b19aeadc1352dc19aaaceaf2:f0041a398b398a323fd5d98b324221c60a9e3e5cce9f3d516a9c0a02c75b956c:0"}
-prior-predictive-checks = {ref = "cell:v1:dc3e9ed47d45bb0336d531e3f2946798320ae3b225d34eea4c040d4901c29405:dc3e9ed47d45bb0336d531e3f2946798320ae3b225d34eea4c040d4901c29405:0"}
-training-artifact = {ref = "cell:v1:b6f81b8b2338f72f63f495e5af49cbfaf734cc564988945ea777563732c8a4ce:2bfaf512e7f928e068f2f02cca21d8ac9fafa6bb7b6749d3965c7330262f758c:0"}
-live-control = {ref = "cell:v1:456fa7ff01938dd9350039c0c886babd33fc82e04de3e2dff52cd6638258d8d1:456fa7ff01938dd9350039c0c886babd33fc82e04de3e2dff52cd6638258d8d1:0"}
-inference-decision = {ref = "cell:v1:a5d6723485cdf426e83fee6b606bd0a7bb063d6b1e0d5148fc2357f2d53098bd:62aac0ef5d34b813128cbe83d6cd7ec9bf6c3edfb02014bd2b06ce2b91c9fb63:0"}
-diagnostics = {ref = "cell:v1:ae7a6542aab425f6b625c6370a02fd01688d12765bc3350b53588c1301affee6:ae7a6542aab425f6b625c6370a02fd01688d12765bc3350b53588c1301affee6:0"}
-posterior-summary = {ref = "cell:v1:01b9c8f5de6c830e0baca85ae387c74b734f3f88bfbef9f15088dff491c4a0b9:01b9c8f5de6c830e0baca85ae387c74b734f3f88bfbef9f15088dff491c4a0b9:0"}
-risk-explanation = {ref = "cell:v1:95ed15296e89c4070de980cd9b973760601fc7f7aa8b6eddb90704a2170d4ca4:2bdabe8072ce759472a68954f92f20c0b9aad89b87a1ec97629aab3ec455e4c9:0"}
-risk-summary = {ref = "cell:v1:3d04f99dff1bf6cf9fdb35a99ed9ff744bfc276f3680ea6ee676a50e84a3bebf:3d04f99dff1bf6cf9fdb35a99ed9ff744bfc276f3680ea6ee676a50e84a3bebf:0"}
-risk-uncertainty = {ref = "cell:v1:5dc4a0cc0f4aa248b428d6a069484af77a12543ffa438d16d1ec970c5d655200:5dc4a0cc0f4aa248b428d6a069484af77a12543ffa438d16d1ec970c5d655200:0"}
-evaluation = {ref = "cell:v1:2338f1bd6d07f128c5719c835078eda8ed7cb25011d9b8ee7420aa8c4981a13a:471822ba1dbe298b7f15c04f5cdeb652ae8b9de5015d6a4583ebfee2f93bfcc1:0"}
-training-exercise = {ref = "cell:v1:5384cfbea33119c180088c8869bbdb2f67cd3b5504152200276abfa3243cf9af:0b3519867687ef7863c9830b75498350ec1f41a53b7f4bc461f618ddded379f2:0"}

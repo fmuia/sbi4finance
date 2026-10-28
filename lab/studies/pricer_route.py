@@ -1,6 +1,6 @@
 """The neural-likelihood route against the amortized posterior (study S4).
 
-    python tutorial_final/studies/pricer_route.py --bank BANK --checkpoint RUN --out NEW_DIR \
+    python lab/studies/pricer_route.py --bank BANK --checkpoint RUN --out NEW_DIR \
         [--first 2050 --surfaces 50 --chains 4 --steps 20000 --burn 4000] [--pricer S4/pricer] [--exact S3.json]
 
 1. Train the neural pricer (deep calibration's forward map) on the bank's clean
@@ -29,7 +29,7 @@ import time
 
 import numpy as np
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from sbi4finance.calibration import bank, correction, plots, pricer_net, validation  # noqa: E402

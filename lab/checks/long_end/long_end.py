@@ -27,13 +27,13 @@ from pathlib import Path
 
 import numpy as np
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
 from sbi4finance.calibration import pricing, products, tasks  # noqa: E402
 
 HERE = Path(__file__).resolve().parent
 ROUGH = json.loads((HERE.parent / "rough_checks.json").read_text())
-SPY = json.loads((Path(__file__).resolve().parents[3] / "tutorial_final/results/calibration/spy/surface.json").read_text())
-TASK = json.loads((Path(__file__).resolve().parents[3] / "configs/tasks/calibration_rough_pilot.json").read_text())["task"]
+SPY = json.loads((Path(__file__).resolve().parents[3] / "tutorial/assets/results/calibration/spy/surface.json").read_text())
+TASK = json.loads((Path(__file__).resolve().parents[3] / "lab/configs/tasks/calibration_rough_pilot.json").read_text())["task"]
 SIGMA = tasks.sigma(TASK)
 THETA = np.asarray(ROUGH["best"]["theta"])  # H, eta, rho
 JAC = np.asarray(ROUGH["jacobian_seed1"])  # [63, 3 + 7]

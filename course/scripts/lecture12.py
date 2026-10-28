@@ -1,6 +1,6 @@
 """Figures of Lecture 12: amortized inference.
 
-Usage: python scripts/course/lecture12.py   (writes docs/course/images/l12-*.png and prints the numbers quoted in the text)
+Usage: python course/scripts/lecture12.py   (writes course/images/l12-*.png and prints the numbers quoted in the text)
 """
 
 import json
@@ -13,7 +13,7 @@ from scipy.stats import norm
 from common import COLORS, DAYS, DELTAS, GREY, ROOT, load_spy, plt, save, tidy
 
 REPORT = {}
-RESULTS = ROOT / "tutorial_final" / "results" / "calibration"
+RESULTS = ROOT / "tutorial" / "assets" / "results" / "calibration"
 
 
 def load(path):

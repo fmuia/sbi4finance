@@ -2,7 +2,7 @@
 
 A thin layout is a fixed subset of the 63 design contracts, with its own quote noise: the contracts a real thin
 chain quotes, and the half-spreads it quotes them with (configs/thin/*.json, built by
-tutorial_final/checks/thin_chains/build_layout.py). Unlike the liquid network of inference.py, which is given
+lab/checks/thin_chains/build_layout.py). Unlike the liquid network of inference.py, which is given
 the forward-variance curve read from the chain, this network infers the curve: a thin chain's strip does not
 support a replicated curve, and giving the estimator a curve read from another, fuller chain is the leak this
 module exists to avoid.

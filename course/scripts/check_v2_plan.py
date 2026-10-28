@@ -1,7 +1,7 @@
-"""Check the numbers of docs/course/v2-plan.md, and of the lectures' statement of the argument, against the stored
+"""Check the numbers of course/v2-plan.md, and of the lectures' statement of the argument, against the stored
 results.
 
-    python scripts/course/check_v2_plan.py
+    python course/scripts/check_v2_plan.py
 
 Each check reads a committed file and compares it with the value the plan prints, at the plan's precision.
 The script prints one line per check and exits with status 1 if any check fails.
@@ -15,11 +15,11 @@ from pathlib import Path
 import numpy as np
 
 ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT / "lab" / "src"))
 from sbi4finance.calibration import chain  # noqa: E402
 
-CHECKS = ROOT / "tutorial_final" / "checks"
-RESULTS = ROOT / "tutorial_final" / "results" / "calibration"
+CHECKS = ROOT / "lab" / "checks"
+RESULTS = ROOT / "tutorial" / "assets" / "results" / "calibration"
 FAILED = []
 
 
@@ -35,7 +35,7 @@ def check(label, value, printed, tol):
 
 
 def section_1():
-    layout = load(ROOT / "configs/thin/ewg_layout.json")
+    layout = load(ROOT / "lab/configs/thin/ewg_layout.json")
     observation = load(CHECKS / "thin_chains/EWG_observation.json")
     diag = observation["diagnostics"]
     april = next(r for r in layout["expiry_map"].values() if r["expiry"] == "2027-04-16")
@@ -80,7 +80,7 @@ def section_1():
 
 
 def section_2():
-    ev = load(ROOT / "docs/course/images/v2-evidence-numbers.json")
+    ev = load(ROOT / "course/images/v2-evidence-numbers.json")
     cases = ev["classical_vs_posterior"]
     heston = [p["ratio"] for c in cases if c["case"].startswith("Heston") for p in c["points"]]
     check("Heston ratios, lowest", min(heston), 0.92, 0.005)
@@ -138,7 +138,7 @@ def section_2():
 
 
 def section_3():
-    ev = load(ROOT / "docs/course/images/v2-evidence-numbers.json")["thin_candidates"]
+    ev = load(ROOT / "course/images/v2-evidence-numbers.json")["thin_candidates"]
 
     def rows(ticker, days=None):
         return [e for e in ev[ticker]["expiries"] if days is None or e["calendar_days"] in days]
@@ -168,14 +168,14 @@ def section_3():
     check("EWG half-spread, largest (vol points)", max(ewg) / 2, 2.0, 0.05)
     check("EWG half-spread over SPY's design noise, smallest", min(ewg) / 2 / 0.3, 4, 0.5)
     check("EWG half-spread over SPY's design noise, largest", max(ewg) / 2 / 0.3, 7, 0.5)
-    layout = load(ROOT / "configs/thin/ewg_layout.json")
+    layout = load(ROOT / "lab/configs/thin/ewg_layout.json")
     check("EWG layout contracts", len(layout["contract_indices"]), 27, 0)
     counts = {d: layout["maturity_days"].count(d) for d in set(layout["maturity_days"])}
     check("EWG layout: seven at 21, 42 and 63 days", float(counts[21] == counts[42] == counts[63] == 7), 1, 0)
     check("EWG layout: six at 126 days", counts[126], 6, 0)
     days = sorted(r["trading_days"] for r in layout["expiry_map"].values())
     check("EWG expiries in trading days", float(days == [21, 40, 58, 120]), 1, 0)
-    task = load(ROOT / "configs/tasks/calibration_rough_bank.json")["task"]
+    task = load(ROOT / "lab/configs/tasks/calibration_rough_bank.json")["task"]
     from sbi4finance.calibration import tasks
     ratio = np.array(layout["noise_sd"]) / tasks.sigma(task)[layout["contract_indices"]]
     check("EWG noise over design noise, smallest", ratio.min(), 2.0, 0.05)

@@ -1,6 +1,6 @@
 """Exact Heston posterior (kappa = 2 fixed) on the SPY smile of 21 Oct 2026: a feasibility check for slot 4.
 
-    python scripts/curriculum/heston_spy_exact.py OUT.json    (writes OUT.json and the draws as OUT.npy)
+    python lab/checks/heston_spy_exact.py OUT.json    (writes OUT.json and the draws as OUT.npy)
 
 Three steps, all with the repository's Fourier likelihood (one quadrature rung of 1,024 nodes, the full
 ladder where that rung fails) and the prior box of configs/tasks/calibration_heston_bank.json:
@@ -12,7 +12,7 @@ ladder where that rung fails) and the prior box of configs/tasks/calibration_hes
    deviations of noise in logit coordinates), the first 1,000 steps discarded; split R-hat and bulk ESS
    per parameter (as in sbi4finance.svj.pmmh.rhat_ess).
 
-Not an accepted study: study S8-H, through tutorial_final/studies/, replaces it.
+Not an accepted study: study S8-H, through lab/studies/, replaces it.
 """
 
 import json
@@ -27,14 +27,14 @@ from scipy.special import ndtri
 from scipy.stats import rankdata
 
 ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / "src"))
-sys.path.insert(0, str(ROOT / "tutorial_final" / "studies"))
+sys.path.insert(0, str(ROOT / "lab" / "src"))
+sys.path.insert(0, str(ROOT / "lab" / "studies"))
 
 from sbi4finance.calibration import correction  # noqa: E402
 import heston_check  # noqa: E402
 
-TASK = json.loads((ROOT / "configs/tasks/calibration_heston_bank.json").read_text())["task"]
-SPY = json.loads((ROOT / "tutorial_final/results/calibration/spy/surface.json").read_text())
+TASK = json.loads((ROOT / "lab/configs/tasks/calibration_heston_bank.json").read_text())["task"]
+SPY = json.loads((ROOT / "tutorial/assets/results/calibration/spy/surface.json").read_text())
 Y = np.asarray(SPY["prices_forward_units"], dtype=float)
 B = correction.bounds_of(TASK)
 KAPPA = float(TASK["fixed_parameters"]["kappa"])
@@ -147,7 +147,7 @@ def main(out):
         "what": ("Feasibility run of 23 Oct 2026 for the curriculum: exact Heston posterior (kappa = 2 fixed, "
                  "the prior box of configs/tasks/calibration_heston_bank.json) on the SPY smile of 21 Oct 2026. "
                  "Not an accepted study; study S8-H replaces it."),
-        "script": "scripts/curriculum/heston_spy_exact.py",
+        "script": "lab/checks/heston_spy_exact.py",
         "likelihood": "Fourier, one quadrature rung (1,024 nodes), full ladder where that rung fails",
         "multi_start": {"starts": len(starts), "distinct_optima": len(distinct),
                         "optima": [{"theta": d["theta"].tolist(), "loglik": d["loglik"]} for d in distinct],
@@ -167,7 +167,7 @@ def main(out):
         "variance_swap_vol_pct": {"days": DAYS.tolist(), "q05": vs[0].round(3).tolist(),
                                   "q50": vs[1].round(3).tolist(), "q95": vs[2].round(3).tolist(),
                                   "spy_replicated": SPY_VARIANCE_SWAP_VOL,
-                                  "spy_source": ("docs/design/calibration-design-document.md, S8 table: "
+                                  "spy_source": ("course/design-document/calibration-design-document.md, S8 table: "
                                                  "replication from the whole chain, strikes down to delta = -8")},
     }
     Path(out).write_text(json.dumps(report, indent=1))

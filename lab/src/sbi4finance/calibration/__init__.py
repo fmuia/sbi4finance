@@ -2,5 +2,5 @@
 
 Prices are in forward units throughout: an option price divided by its discount
 factor and its forward, so the forward is 1 and rates and dividends drop out.
-The design document is docs/design/calibration-design-document.md.
+The design document is course/design-document/calibration-design-document.md.
 """

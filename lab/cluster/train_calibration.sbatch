@@ -3,8 +3,8 @@
 #
 #   sbatch [--account=A --partition=P] cluster/train_calibration.sbatch --bank BANK --out RUN [options]
 #
-# Arguments go to tutorial_final/studies/train_calibration.py (tutorial_final/CLUSTER-RUNS.md gives the exact
-# ones). Submit from the run checkout, the commit the bank was built from. Loading the full bank's train split
+# Arguments go to studies/train_calibration.py (plans/CLUSTER-RUNS.md gives the exact
+# ones). Submit from lab/ of the run checkout, the commit the bank was built from. Loading the full bank's train split
 # needs about 13 GB, hence 96 GB. A CPU node also works: the Heston network (50,000 surfaces, 500 epochs) trained
 # in 32 minutes on 4 cores.
 #SBATCH --job-name=sbi4finance-train-calibration
@@ -18,8 +18,8 @@
 
 set -euo pipefail
 export PATH="$HOME/.pixi/bin:$PATH"   # pixi's installer puts it here; batch shells skip the rc file
-cd "${SLURM_SUBMIT_DIR:?Submit from the run checkout}"
+cd "${SLURM_SUBMIT_DIR:?Submit from lab/ of the run checkout}"
 export KERAS_BACKEND=jax
 nvidia-smi -L
 pixi run -e gpu python -c "import jax; print('jax devices:', jax.devices())"
-pixi run -e gpu python tutorial_final/studies/train_calibration.py "$@"
+pixi run -e gpu python studies/train_calibration.py "$@"

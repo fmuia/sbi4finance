@@ -21,7 +21,7 @@ import numpy as np
 from scipy.optimize import minimize_scalar
 from scipy.stats import norm
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from sbi4finance.calibration import surface  # noqa: E402
 
 MU_TRUE, TAU_TRUE = np.log(0.30), 0.10

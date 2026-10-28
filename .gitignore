@@ -3,8 +3,8 @@ __pycache__/
 *.egg-info/
 __marimo__/
 figures/
-!docs/results/hkde-inference/figures/
 *.out
-cluster/oscar.local.json
+lab/cluster/oscar.local.json
 .claude/settings.local.json
 /results/
+tutorial/.cache/

@@ -1,11 +1,11 @@
 """A real thin chain (study S11): EWG's posterior, its products and reserves, against the classical fits.
 
-    python tutorial_final/studies/thin_real.py --checkpoint S2T_RUN --observation OBSERVATION.json --out NEW_DIR \
+    python lab/studies/thin_real.py --checkpoint S2T_RUN --observation OBSERVATION.json --out NEW_DIR \
         [--draws 1000 --proposals 1024 --rounds 4 --paths 8192 --product-draws 512 --product-paths 8192 \
          --scales 1,0.5,2 --predictive-draws 200 --workers 4 --seed 0]
 
 The data are the chain's own cleaned quotes at their own strikes and trading days (OBSERVATION.json, written by
-tutorial_final/checks/thin_chains/build_layout.py); each quote's noise sd is its half-spread in price units,
+lab/checks/thin_chains/build_layout.py); each quote's noise sd is its half-spread in price units,
 floored at the design noise. The thin network reads the chain on its layout and gives a proposal; importance
 sampling with the Monte Carlo likelihood at the chain's own quotes gives the posterior (thin.importance_rounds:
 every proposal on its own seed, the unbiased estimate N(y; P_hat, diag(noise^2) - S), rounds refitted to the
@@ -35,7 +35,7 @@ import time
 
 import numpy as np
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from sbi4finance.calibration import correction, surface, thin, thin_products  # noqa: E402

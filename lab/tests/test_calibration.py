@@ -161,7 +161,7 @@ class TaskAndBankTests(unittest.TestCase):
         np.testing.assert_array_equal(draws, again)
         # SPY's curve of 21 October 2026 lies inside the prior's central 90% at every level, relative to level 1
         import json
-        spy = np.array(json.loads((Path(__file__).resolve().parents[1] / "tutorial_final" / "results" / "calibration"
+        spy = np.array(json.loads((Path(__file__).resolve().parents[2] / "tutorial" / "assets" / "results" / "calibration"
                                    / "spy" / "surface.json").read_text())["forward_variance_levels"])
         rel = np.log(draws) - np.log(draws[:, :1])
         low, high = np.quantile(rel, [0.05, 0.95], axis=0)
@@ -264,16 +264,6 @@ class TaskAndBankTests(unittest.TestCase):
         self.assertEqual(task["numerics"]["paths_ladder"], [2**k for k in range(15, 22)])
         self.assertEqual((task["numerics"]["max_mc_se_over_quote_sigma"],
                           task["numerics"]["max_mc_se_over_quote_sigma_last_rung"]), (0.25, 0.5))
-
-    def test_archived_fixed_panel_modules_are_not_modified(self):
-        # Archived evidence pins these hashes; the calibration family must reuse them by import only.
-        import json
-        root = Path(__file__).resolve().parents[1]
-        pinned = json.loads((root / "docs/results/hkde-inference/bank-manifest.json").read_text())["source_sha256"]
-        from sbi4finance.gbm_bank import _sha256
-        for name in ("option_bank.py", "option_panel.py"):
-            self.assertEqual(_sha256(root / "src/sbi4finance" / name), pinned[name])
-
 
 class InferenceAndCorrectionTests(unittest.TestCase):
     def test_conditioning_scales_quotes_and_logs_the_curve(self):

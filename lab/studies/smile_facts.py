@@ -1,8 +1,8 @@
 """Smile facts for the lesson's opening acts (figures S2-1 and S2-2 of the design document).
 
-    python tutorial_final/studies/smile_facts.py example --model rough --out NEW_DIR [--seed 0]
-    python tutorial_final/studies/smile_facts.py example --model heston --out NEW_DIR [--seed 0]
-    python tutorial_final/studies/smile_facts.py prior-predictive --bank BANK --out NEW_DIR [--surfaces 1000]
+    python lab/studies/smile_facts.py example --model rough --out NEW_DIR [--seed 0]
+    python lab/studies/smile_facts.py example --model heston --out NEW_DIR [--seed 0]
+    python lab/studies/smile_facts.py prior-predictive --bank BANK --out NEW_DIR [--surfaces 1000]
 
 example: one surface at the centre of the prior box (rough Bergomi with a flat
 25% forward-variance curve, or Heston), priced by the task's own pricer, with
@@ -27,7 +27,7 @@ import time
 
 import numpy as np
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from sbi4finance.calibration import bank, surface, tasks  # noqa: E402

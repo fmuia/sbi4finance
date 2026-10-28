@@ -12,16 +12,16 @@ import pandas as pd  # noqa: E402
 from scipy.stats import norm  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT / "lab" / "src"))
 from sbi4finance.calibration import surface as sf  # noqa: E402,F401
 
-OUT = ROOT / "docs" / "course" / "images"
+OUT = ROOT / "course" / "images"
 COLORS = ["#087F8C", "#D97732", "#738095", "#B33E43", "#5B8C3A", "#7A4E9C", "#2F2F2F"]
 GREY = "0.55"
 DAYS = np.array(sf.DESIGN_DAYS)
 DELTAS = np.array(sf.DESIGN_DELTAS)
-SPY_FILE = ROOT / "tutorial_final" / "results" / "calibration" / "spy" / "surface.json"
-VOO_FILE = ROOT / "data" / "SPMO_VOO_2020-01-01_2026-09-04.csv"
+SPY_FILE = ROOT / "tutorial" / "assets" / "results" / "calibration" / "spy" / "surface.json"
+VOO_FILE = ROOT / "course" / "scripts" / "data" / "SPMO_VOO_2020-01-01_2026-09-04.csv"
 
 
 def tidy(*axes):

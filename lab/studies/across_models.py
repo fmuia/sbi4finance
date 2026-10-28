@@ -1,6 +1,6 @@
 """The same smile under two models, rough Bergomi and Heston (study S7, across models).
 
-    python tutorial_final/studies/across_models.py --rough-bank BANK --rough-products S7_DIR \
+    python lab/studies/across_models.py --rough-bank BANK --rough-products S7_DIR \
         --heston-checkpoint RUN --out NEW_DIR [--draws 400 --proposals 2048 --starts 10 --workers 4]
 
 For each smile of the rough-Bergomi products study (S7_DIR, which holds
@@ -33,7 +33,7 @@ import sys
 from matplotlib.ticker import MaxNLocator
 import numpy as np
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from sbi4finance.calibration import bank, classical, correction, pricing, products, tasks  # noqa: E402

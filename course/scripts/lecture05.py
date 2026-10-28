@@ -1,6 +1,6 @@
 """Figures of Lecture 5: implied volatility and the smile.
 
-Usage: python scripts/course/lecture05.py   (writes docs/course/images/l05-*.png and prints the numbers quoted in the text)
+Usage: python course/scripts/lecture05.py   (writes course/images/l05-*.png and prints the numbers quoted in the text)
 """
 
 import json

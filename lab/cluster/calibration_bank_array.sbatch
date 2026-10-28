@@ -20,7 +20,7 @@ calibration_python=$1
 calibration_job_map=$2
 calibration_output_root=$3
 calibration_offset=${4:-0}
-cd "${SLURM_SUBMIT_DIR:?Submit from the source checkout}"
+cd "${SLURM_SUBMIT_DIR:?Submit from lab/ of the source checkout}"
 export PYTHONPATH="$PWD/src"
 export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1
 "$calibration_python" scripts/calibration_bank.py shard \
