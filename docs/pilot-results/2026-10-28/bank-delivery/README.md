@@ -9,6 +9,8 @@ Both banks have actual pricing workers running. These are generation jobs, not m
 
 The [first worker-state query](first-worker-states.json) confirms the running counts. They are a dated observation, not a live dashboard. The detached controller refills missing ranges until checked snapshots exist or an explicit stop condition is reached. No new training, posterior comparisons or notebook execution is part of this controller.
 
+**Later 100k direction:** the user subsequently requested 100k training surfaces for each rough route. Separate follow-on phases are being prepared; they do not change this phase's caps or readiness gates. The prepared `bank_delivery_controller_v3.py` / `borrow_joint_slots.py` slot-transfer prototype was **never deployed or armed** and is superseded by those follow-ons. Do not run it while the known100k phase needs its worker slots. The active current-generation controller remains **v2**.
+
 ## Durable process and limits
 
 - Oscar root: `/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028`.
