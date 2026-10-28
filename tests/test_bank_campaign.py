@@ -68,7 +68,9 @@ class BankCampaignTests(unittest.TestCase):
         c = self.config(); first = campaign.run(c, scheduler=FakeScheduler(c), sleep=lambda _: None)
         self.assertEqual(first["state"], "completed_checked_snapshot")
         before = {str(p): p.read_bytes() for p in (self.root / "collection/parts").rglob("*") if p.is_file()}
-        c = self.config("two", train=5); scheduler = FakeScheduler(c)
+        c = self.config("two", train=5)
+        c["exclude_nodes"] = ["node2339", "node2344"]
+        scheduler = FakeScheduler(c)
         result = campaign.run(c, scheduler=scheduler, sleep=lambda _: None)
         self.assertEqual(result["planned_workers"], 3)
         self.assertEqual(result["state"], "completed_checked_snapshot")
@@ -80,6 +82,7 @@ class BankCampaignTests(unittest.TestCase):
         arrays = [a for a in result["attempts"] if a["role"] == "workers"]
         self.assertEqual([a["array_offset"] for a in arrays], [0, 2])
         self.assertTrue(any("--array=0-0%1" in argv for argv in scheduler.calls))
+        self.assertTrue(all("--exclude=node2339,node2344" in argv for argv in scheduler.calls))
 
     def test_budget_counts_missing_records_and_reserves_final_publication(self):
         c = self.config()

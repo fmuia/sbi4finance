@@ -56,6 +56,10 @@ def read_config(path):
     c.setdefault("controller_wall_hours", 48)
     c.setdefault("max_array_size", 1000)
     c.setdefault("python", sys.executable)
+    c.setdefault("exclude_nodes", [])
+    if (not isinstance(c["exclude_nodes"], list)
+            or any(not isinstance(n, str) or not n.strip() for n in c["exclude_nodes"])):
+        raise ValueError("exclude_nodes must be a list of nonempty node names")
     if any(c[n] < 0 for n in ("prior_cpu_seconds", "cleanup_seconds")):
         raise ValueError("negative accounting allowance")
     if c["poll_seconds"] < 1 or c["controller_wall_hours"] <= 0:
@@ -167,6 +171,8 @@ def submit(c, ledger, root, scheduler, rows, role, indices=None):
             "--time=" + f"{wall//86400}-{wall%86400//3600:02}:{wall%3600//60:02}:{wall%60:02}",
             "--account=" + c["account"], "--partition=" + c["partition"], "--chdir=" + str(repo),
             "--output=" + str(root / "logs/%A_%a.out"), "--job-name=sbi4f-bank"]
+    if c.get("exclude_nodes"):
+        argv.append("--exclude=" + ",".join(c["exclude_nodes"]))
     if role == "workers":
         argv += ["--array=0-" + str(count-1) + "%" + str(min(count, c["max_workers"])),
                  str(repo / "cluster/calibration_collection_array.sbatch"), c["python"], str(root / "jobs.json"), str(indices[0])]
