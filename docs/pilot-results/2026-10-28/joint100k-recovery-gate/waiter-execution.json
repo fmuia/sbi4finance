@@ -1,0 +1,22 @@
+{
+  "format": "bank_extension_waiter_v1",
+  "state": "armed",
+  "pid": 2629343,
+  "started_utc": "2026-10-28T10:10:56.053373+00:00",
+  "frozen_sha256": {
+    "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/joint-recovery-gate-20261028/waiter/plan.json": "241ef80836479e180d6da05a9a13ee990b1e613fc5942d323ffb7b7b3d1c18bb",
+    "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/joint-recovery-gate-20261028/arm_bank_extensions.py": "67c51efff22e2c3c7f0fce83cccbc41ed2ccfb0ccafedbf87393bb8210aa059f",
+    "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/joint-recovery-gate-20261028/run_bank_campaign.py": "a59339f9f9d10f4de961a42977e41278324c76e290dc32b806094dc0542d5ee0",
+    "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/joint-recovery-gate-20261028/joint_100k_recovery_20261028.json": "f29dfe57c063a3851995b5d20d0d5fc0fa8fba536b45ba1a5f7571a04c76ca80",
+    "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/morning-recovery-20261028/recovery-plan.json": "714f76271559aba1c13e4bb149cda1777ecf128d1b8bb00cc53252248b68a6c8",
+    "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/configs/known_100k_20261028.json": "11d2588b7df29945d8c0c2819371b9e37453bab2c5b90040eb94896dc503c0a9"
+  },
+  "routes": {
+    "joint": {
+      "state": "waiting",
+      "progress": "waiting_for_resource_campaign:generation_active"
+    }
+  },
+  "scientific_acceptance": false,
+  "last_poll_utc": "2026-10-28T10:11:56.079375+00:00"
+}

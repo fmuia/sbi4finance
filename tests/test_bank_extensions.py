@@ -95,5 +95,51 @@ class ExtensionsTests(unittest.TestCase):
         with self.assertRaises(FileExistsError): ext.detach(p, popen=fake_popen)
         self.assertEqual(len(calls), 1)
 
+    def test_reviewed_recovery_uses_new_successful_jobs_not_historical_timeouts(self):
+        old = json.loads(self.original.read_text())
+        old["phases"]["joint"] = {"status": "generation_active", "jobs": [{"job_id": "old_failed"}]}
+        ext.save(self.original, old)
+        recovery = self.root / "recovery.json"
+        jobs = [{"role": "workers", "state": "submitted", "job_id": "99", "indices": [404, 992]},
+                {"role": "final", "state": "submitted", "job_id": "100"}]
+        original = json.loads(self.original.read_text())
+        phase = {**original["phases"]["known"], "jobs": jobs}
+        ext.save(recovery, {"status": "completed_checked_recovery", "started_utc": "2026-10-28", "phases": {"joint": phase}})
+        plan = self.root / "recovery-plan.json"; ext.save(plan, {"preserved_parts": 971})
+        binding = {"original_execution_sha256": ext.sha(self.original), "preserved_inventory_sha256": "inventory",
+                   "preserved_parts": 971, "original_job_map_sha256": "map", "reviewed_failed_indices": [404],
+                   "new_worker_indices": [404, 992]}
+        report = json.loads(self.final.read_text())
+        report.update(recovery_execution=str(recovery), recovery_execution_sha256=ext.sha(recovery),
+            original_execution_sha256=binding["original_execution_sha256"], preserved_inventory_sha256="inventory",
+            preserved_parts_unchanged=971, original_job_map_sha256="map", reviewed_failed_indices=[404],
+            new_worker_indices=[404,992], plan_sha256=ext.sha(plan))
+        ext.save(self.final, report)
+        route = {**self.route, "dependency_execution": str(recovery), "recovery_plan": str(plan), "reviewed_recovery": binding}
+        self.plan["routes"] = {"joint": route}
+        self.rows = {i: {"state": "COMPLETED", "exit_code": "0:0"} for i in ["99_404", "99_992", "100"]}
+        self.assertTrue(ext.readiness(self.plan, "joint", {}, self.scheduler)[0])
+        report["reviewed_failed_indices"] = []; ext.save(self.final, report)
+        with self.assertRaisesRegex(ValueError, "recovery completion"):
+            ext.readiness(self.plan, "joint", {}, self.scheduler)
+
+    def test_external_known_campaign_is_a_checked_and_settled_resource_gate(self):
+        p = self.root / "resource-campaign"; p.mkdir()
+        config = self.root / "resource-config.json"
+        ext.save(config, {"campaign_root": str(p), "snapshot": self.route["dependency_snapshot"]})
+        dep = {"config": str(config), "collection_id": "id", "splits": self.route["dependency_splits"]}
+        run = {"state": "generation_active", "started_utc": "2026-10-28"}
+        ext.save(p / "execution.json", run)
+        self.assertFalse(ext.external_campaign_ready(dep, self.scheduler)[0])
+        run.update(state="completed_checked_snapshot", collection_id="id", attempts=[
+            {"role": "workers", "state": "submitted", "job_id": "2", "indices": [0,1], "array_offset": 0},
+            {"role": "final", "state": "submitted", "job_id": "3"}],
+            snapshot_manifest_sha256=ext.sha(Path(self.route["dependency_snapshot"]) / "manifest.json"))
+        ext.save(p / "execution.json", run)
+        self.assertTrue(ext.external_campaign_ready(dep, self.scheduler)[0])
+        run["state"] = "stopped_for_review"; ext.save(p / "execution.json", run)
+        with self.assertRaisesRegex(ValueError, "resource_campaign_failed"):
+            ext.external_campaign_ready(dep, self.scheduler)
+
 
 if __name__ == "__main__": unittest.main()
