@@ -1,15 +1,17 @@
 # Rough-bank runs: morning recovery
 
-Updated **28 October 2026, 10:13 UTC**. These are intermediate results, not accepted final rough-Bergomi tutorial models.
+Updated **28 October 2026, 12:30 UTC** from live checks at 12:25–12:30 UTC. These are intermediate results, not accepted final rough-Bergomi tutorial models.
 
 The overnight run made useful data, but it did not advance through all the promised dependencies. The known-curve bank finished at 50k training surfaces. Joint generation stopped after 21 workers timed out; two orchestration bugs then kept the 100k append and model-training stages waiting. Both bugs have been fixed with regressions that reproduce the observed failures. Completed prices are preserved.
 
 | Work | Verified position | What follows |
 | --- | --- | --- |
-| Known curve: bank | Checked **50,000 training / 5,000 validation / 7,000 test**. At 10:13 UTC, 201 additional shards had completed: **at least 55,025 training surfaces**. | Append only training IDs 50,000–99,999. Campaign PID **2533833**, first array **8046496**, up to 64 workers with automatic refill. Phase cap: 200 CPU-hours. |
-| Known curve: intermediate models | GPU job **8046588** completed its 500-epoch posterior fit in 309 seconds and pricing-emulator fit in 79 seconds; now running validation. | Validate on 2,000 validation surfaces. The original pooled 9 CPU-hour / 2.25 GPU-hour allowance covers both intermediate routes. No reserved test results are inspected. |
-| Joint curve: initial bank | **19,475 training / 4,800 validation / 0 test**, in 971 preserved immutable parts. Recovery array **8046699** is now running. | Recover exactly 309 original shard IDs, with up to 120 workers: 21 timed-out shards and 288 never submitted. Finish the checked 20k / 5k / 7k snapshot before releasing its model training. |
+| Known curve: bank | Checked **50,000 training / 5,000 validation / 7,000 test**. At 12:25 UTC, 1,852 additional shards had completed: **at least 96,300 training surfaces**. | Finish appending IDs 50,000–99,999 and publish the checked 100k snapshot. Campaign PID **2533833** continues within its 200 CPU-hour phase cap. |
+| Known curve: intermediate models | GPU job **8046588 completed 0:0**, including both fits and 2,000-case validation. All four rank screens pass; product-interval undercoverage remains. | Inspect [completed baseline evidence](pilot-results/2026-10-28/known50k-completed/README.md), then conditional/reference and independent-price checks. The original pooled allowance charged 1.343 CPU-hours / 0.336 GPU-hours for this route. Reserved test outcomes remain unused. |
+| Joint curve: initial bank | Original 971 parts preserved. **304/309 recovery shards complete; five workers remain** at approximately 12:30 UTC. Four show severe system-CPU overhead on node2346 and risk timing out. | Resolve the remaining shards, then run final integrity checks and publish the checked 20k / 5k / 7k snapshot. Joint model training remains gated on that snapshot. No new failures had occurred at the check. |
 | Joint curve: 100k append | Replacement gate **PID 2629343 on login010** is armed, currently waiting for known-100k generation. | After known-100k completion and checked joint recovery, append training IDs 20,000–99,999 under the existing 3,000 CPU-hour cap, up to 200 workers. Completion is bound to the explicit recovery receipt; the old failed journal is not rewritten as successful. |
+
+**Current operational concern:** four remaining joint workers on node2346 had used roughly 2h25m of their three-hour allocation, with approximately 15 minutes of user CPU and over two hours of system CPU each. They remain active but are progressing abnormally slowly; active CPU alone is not evidence of healthy pricing throughput. A fifth worker on node1827 remains active, and another on that node completed during inspection. There is no observed numerical exception or memory exhaustion. No worker was cancelled or retried during this read-only update. The [worker observation receipt](pilot-results/2026-10-28/joint-tail-status-1230.json) records the counters and remaining IDs.
 
 ## Why it stalled
 
