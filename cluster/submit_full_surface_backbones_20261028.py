@@ -57,6 +57,9 @@ def readiness(route):
     final = Path(route["ready"])
     if not final.exists(): return None
     record = read(final)
+    # The finalizer writes an atomic running receipt before its integrity
+    # scan. This is ordinary waiting, not a failed or checked snapshot.
+    if record.get("status") == "running": return None
     if record.get("status") != "completed_checked_snapshot":
         raise ValueError("Bank controller has not published a successful checked snapshot")
     bank = Path(route["bank"]); manifest = read(bank / "manifest.json")

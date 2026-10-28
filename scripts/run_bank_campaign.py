@@ -5,7 +5,7 @@ This operator is deliberately independent of the already-running campaigns.
 """
 
 import argparse
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 import fcntl
 import hashlib
 import json
@@ -101,7 +101,12 @@ class Slurm:
         if not attempts:
             return {}
         ids = ",".join(a["job_id"] for a in attempts)
-        result = subprocess.run(["sacct", "-S", started[:10], "-j", ids, "-n", "-P",
+        # Ledger times are UTC; sacct interprets date-only filters in cluster
+        # local time. Include the previous date so evening local jobs whose
+        # UTC timestamp crossed midnight are not silently omitted. Exact job
+        # IDs still restrict the returned allocations.
+        since = (datetime.fromisoformat(started).date() - timedelta(days=1)).isoformat()
+        result = subprocess.run(["sacct", "-S", since, "-j", ids, "-n", "-P",
                                  "--format=JobID%64,State%40,ElapsedRaw,AllocCPUS,ExitCode"],
                                 capture_output=True, text=True, timeout=45, check=True)
         rows = {}

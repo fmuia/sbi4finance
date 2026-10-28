@@ -150,6 +150,20 @@ class BankCampaignTests(unittest.TestCase):
             campaign.detach(c, popen=popen)
         self.assertEqual(len(calls), 1)
 
+    def test_accounting_includes_previous_local_evening_from_real_capture(self):
+        fixture = json.loads((Path(__file__).resolve().parents[1] /
+            "docs/pilot-results/2026-10-28/bank-followons-accounting-recovery/accounting-date-failure.json").read_text())
+        self.assertEqual(fixture["raw_sacct"]["2026-10-28"], "")
+        called = []
+        def captured(argv, **kwargs):
+            called.append(argv)
+            return type("Result", (), {"stdout": fixture["raw_sacct"][argv[argv.index("-S")+1]]})()
+        with patch.object(campaign.subprocess, "run", side_effect=captured):
+            rows = campaign.Slurm().accounting([{"job_id": fixture["job_id"]}], fixture["original_started_utc"])
+        self.assertEqual(called[0][called[0].index("-S")+1], "2026-10-27")
+        self.assertEqual(set(rows), {"8032794"})  # Exclude .batch/.extern step records.
+        self.assertEqual(rows["8032794"], {"state": "COMPLETED", "elapsed": 445, "cpus": 1, "exit_code": "0:0"})
+
 
 if __name__ == "__main__":
     unittest.main()
