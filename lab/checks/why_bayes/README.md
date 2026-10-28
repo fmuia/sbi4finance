@@ -197,6 +197,24 @@ largest Monte Carlo error 0.067 of the quote noise against a budget of 0.25), so
 30 CPU-hours against about 370 for the full design. Runs R4 and R7 to R9 of the runbook then apply, with the
 classical baselines of `thin.py` ported from the seven-level curve to the three coefficients.
 
+## What runs without the cluster
+
+Measured on 28 October on a four-core machine with no GPU, in a plain virtual environment holding the lab's pins
+(BayesFlow 2.0.14, Keras 3.15.1, JAX 0.11.1 on CPU), outside pixi.
+
+| Step | Tested | Result |
+| --- | --- | --- |
+| The thin-layout joint bank | `make_thin_joint_config.py`, then PR #48's `calibration_bank.py local`, unchanged: 24 and 200 surfaces | 0.68 CPU-s a surface; every quote within the 0.25 budget (median Monte Carlo error 0.04 of the noise, largest 0.25); 153 of 160 training surfaces at the first rung of 4,096 paths. 100,000 surfaces: about 19 CPU-hours, five wall-hours on four cores |
+| The shipped Heston network | `tutorial/assets/checkpoints/heston` loaded through `sbi4f_tutorial.teaching.load_network` | 2,000 SPY draws in 3.5 s; means within 0.34 exact-posterior sd and widths within 4% of the exact chain, as in slot 4 |
+| Real chains | Ten Cboe chains fetched at 20:30 UTC (SPY, QQQ, IWM, EWI, EWQ, FEZ, AAPL, XLF, GLD, TLT), about one second each | All ten fail `build_surface.py`'s full-design gate: on SPY the one-week expiration's cleaned strip reaches −6.95 standardized deltas against the −8 the replication needs (−8.15 on 21 October), so the front maturity has no covered expiration; FEZ and XLF do not reach one year; EWI and EWQ have no usable expiration. `chain_reach.py` prints the reach per expiration |
+| The thin layout on a later date | `checks/thin_chains/build_layout.py` on EWG's chain of 28 October | 13 contracts at two maturities, against 27 at four on 22 October: the design maturities match an expiration only within 7 trading days (`MATCH_DAYS`), and EWG's January and April expirations have drifted out of the 63- and 126-day windows. A fixed layout is tied to its date; the stage date needs its own, or a network conditioned on the maturities |
+| Training | Not run: the thin trainer (`thin.py`) takes ten targets with the seven-level curve, and PR #48's trainer accepts only the complete 63-contract design | Either needs a six-target branch, about a day of work. The precedent for CPU training is the Heston network: 500 epochs on 50,000 smiles in 32 minutes on four cores (C8) |
+
+So the bank, the network's training, SBC on held-out chains, the breach-rate study on a few hundred chains
+(about 10 CPU-minutes a chain for the audit and the three classical fits, so 200 chains in a day on four cores)
+and EWG's own posterior can all run on one machine once the six-target thin trainer exists. The cluster is needed
+for a 1,000-chain study with every chain audited, and for nothing else on this path.
+
 ## Files
 
 | Script | Output | Runs on this branch |
