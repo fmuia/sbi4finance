@@ -1,311 +1,218 @@
 # sbi4finance
 
-Tutorial material on amortized / simulation-based Bayesian inference for finance, built on [BayesFlow](https://github.com/bayesflow-org/bayesflow).
+Material for the ICAIF '26 tutorial **Amortized Bayesian Calibration of Volatility Models** (Milan, 14–15 November
+2026): the notebooks presented on the day, a sixteen-lecture course behind them, and the lab that produces every
+number they show. Inference is amortized simulation-based inference with
+[BayesFlow](https://github.com/bayesflow-org/bayesflow).
 
-## Selected participant route: Q/options
+This page is the handover for anyone joining the work. It says what the tutorial teaches, how the repository is
+organized and why, how to set up, how to change a slot, how a number reaches the stage, where the work stands on
+28 October 2026, and what is still open. Read it once end to end before your first change.
 
-On 12 October 2026 the user selected **GBM foundations followed by a provisional
-corrected-HKDE diagnostic lesson** for [issue #26](https://github.com/fmuia/sbi4finance/issues/26).
-The financial question is: which parameter pairs explain nine synthetic option
-premiums, and what model prices do they imply for two excluded contracts?
-The historical failed calibration gate stays visible. This is selected-case
-teaching, not scientific acceptance, physical-measure risk forecasting or a
-claim about market performance; formal HKDE I4 remains deferred.
+## What the tutorial teaches
 
-The [combined integration review](docs/stack-integration-review.md) records exact
-source heads, conflict choices and verification for issue #27.
-The [13 October main-merge review](docs/main-merge-review.md) adds the completed
-Heston decision and final verification. Francesco's [SVJ application](docs/svj-integration-review.md) is incorporated as an optional P/returns companion.
-SVJ and HKDE share an [executable inference and training workflow](docs/shared-inference-workflow.md),
-with task-specific networks, references and downstream quantities.
-The [participant route card](docs/tutorial-participant-route.md) specifies the
-sections, exercises, inputs, assets and modes. The schedule below totals **120
-minutes including exercises**; lead assignments carry forward the original
-proposal and remain for the team to confirm.
+A desk calibrates a volatility model to the day's option quotes, then marks products that nobody quotes: a
+forward start, a long-dated put, a cliquet. The calibration is an estimate, so every mark inherits its uncertainty.
+The posterior states that uncertainty, and pricing a product under each posterior draw turns it into a price range,
+the range the prudent-valuation rules ask for. For a model priced only by simulation, one exact posterior costs
+hours; a network trained once on simulated smiles returns it in seconds, and can be checked on thousands of
+simulated smiles before anyone trusts it on a real one.
 
-| Minutes | Topic / participant activity | Proposed lead |
+The afternoon works on one data set, the SPY option smile of 21 October 2026 (63 prices on 7 maturities × 9
+moneyness points), and three models of increasing cost:
+
+1. **Black–Scholes** (slot 1): one parameter, a posterior on a grid in a millisecond, and a model the smile rejects.
+2. **Heston** (slot 4): four parameters and an exact likelihood by Fourier integral, so every step of the network
+   can be checked against the exact posterior.
+3. **Rough Bergomi** (slot 5, the advanced example): priced only by Monte Carlo, so the network is checked by
+   simulation-based calibration and by an audit of each smile.
+
+Slots 2 and 3 explain the machine between them; slot 6 changes the prior and the noise model and tests the model.
+
+## The critical path: Heston, then rough Bergomi
+
+Slot 4 builds the whole BayesFlow workflow on Heston, where an exact likelihood checks every step. Slot 5 keeps the
+smile and the code and changes the simulator to rough Bergomi. Everything in `lab/` serves these two examples. The
+earlier routes (SVJ and returns, HKDE jumps, the multifractal model, GBM) are archived, and sparse option chains are
+a separate unit that starts after the release.
+
+| Slot | Title | Presenter | Min | Notebook (`tutorial/notebooks/`) | State on 28 October |
+|---|---|---|---:|---|---|
+| 1 | The problem: Bayes for volatility models | Francesco | 15 | `slot1_intro.py` | Drafted; runs offline |
+| 2 | What is amortized Bayes? | Alex | 15 | `slot2_amortized_bayes.py` | Drafted; runs offline |
+| 3 | Network architectures | Stefan | 10 | `slot3_architectures.py` | Drafted; runs offline |
+| 4 | A worked example in BayesFlow: Heston on the SPY smile | Stefan | 20 | `slot4_heston_bayesflow.py` | Drafted; loads the BayesFlow 2.0 Heston network until the 2.1 candidate is exported |
+| 5 | Rough Bergomi on the SPY smile: from the posterior to a reserve | Francesco, Alex | 40 | `slot5_calibration.py` | Drafted on pilot results; the full rough-Bergomi network and studies are pending |
+| 6 | Changing priors and dealing with misspecified models | Stefan | 15 | – | Curriculum only; no notebook yet |
+
+The slot files in [`tutorial/curriculum/`](tutorial/curriculum/00-overview.md) give each slot's minute map, handoffs,
+open decisions and build list. Dates: slot 4 freezes on Friday 30 October; slots 1–3 on Wednesday 4 November;
+slots 5 and 6 on Friday 6 November; full timed run-through on Monday 9 November; release tag on Wednesday 11
+November. After a freeze, fixes only.
+
+## How the repository is organized
+
+```
+course/      The course: sixteen lectures, a superset of the tutorial, with the calibration design document
+             and the scripts that draw their figures.
+tutorial/    What participants install and run: the slot notebooks, their small runtime (src/sbi4f_tutorial),
+             the frozen networks and results they load (assets/), their tests, and the organizers' curriculum.
+lab/         What produces the numbers: simulators and pricers, calibration banks, training, references,
+             studies, quick checks, Oscar jobs, tests and plans.
+AGENTS.md    Rules for coding agents and people: the boundaries below and the MCMC policy.
+```
+
+The boundaries are what keep the tutorial safe to change late and easy to hand to participants:
+
+1. **The tutorial depends on nothing else in the repository.** Notebooks import only `sbi4f_tutorial` and
+   third-party packages, and read only `tutorial/assets/`. The tutorial has its own environment
+   (`tutorial/pyproject.toml`, `tutorial/pixi.lock`). Its tests fail on any import of the lab, any `sys.path` edit
+   and any path that climbs out of `tutorial/`.
+2. **Only files cross from the lab to the tutorial, through lab tools.** Trained networks and accepted study
+   results enter `tutorial/assets/` through `lab/studies/accept.py`; quick-check outputs and figures as copies made
+   by `lab/studies/manifest.py`; the exact Heston posterior on SPY from `lab/checks/heston_spy_exact.py`.
+   [`tutorial/MANIFEST.md`](tutorial/MANIFEST.md) lists every asset with its SHA-256 and source. Nobody copies files
+   into `tutorial/assets/` by hand.
+3. **What the notebooks compute live is copied, not shared.** `tutorial/src/sbi4f_tutorial` (about 1,300 lines)
+   holds readable copies of the lab's pricers and network code, the code participants read.
+   `lab/tests/test_tutorial_parity.py` checks that the copies return the lab's numbers exactly, so the two cannot
+   drift silently.
+4. **The course is documents.** Its figures are drawn by `course/scripts/` in the lab environment and committed
+   as images; readers need nothing installed.
+5. **A number goes on screen only from [`tutorial/CLAIMS.md`](tutorial/CLAIMS.md)**, which `lab/studies/claims.py`
+   generates from the accepted results. A pilot value is never presented as a result. Every live cell has a cached
+   fallback.
+
+```
+lab ──accept.py, manifest.py: files + SHA-256──▶ tutorial/assets ──read by──▶ tutorial/notebooks
+lab ──course/scripts draw figures──▶ course/images        course ◀──links only──▶ tutorial
+lab/tests/test_tutorial_parity.py ──reads──▶ tutorial/src  (tests only; the tutorial never reads the lab)
+```
+
+## Set up
+
+Install [pixi](https://pixi.sh) once (`curl -fsSL https://pixi.sh/install.sh | sh`), then clone the repository.
+There are two environments, each defined in its own folder; run `pixi` from that folder.
+
+```bash
+cd tutorial
+pixi install --locked
+pixi run test            # independence, the asset manifest, the runtime; about 10 s
+pixi run slot4           # opens slot 4 in the marimo editor
+```
+
+```bash
+cd lab
+pixi install --locked
+pixi run test            # library, studies and the tutorial parity tests; about 2 minutes
+```
+
+Both environments pin BayesFlow 2.0.14, the version the shipped networks were trained with. The tutorial is
+locked for Linux, macOS on Apple silicon and Windows; Windows is not yet tested. Draft
+[PR #48](https://github.com/fmuia/sbi4finance/pull/48) adds the lab's BayesFlow 2.1 environments (`core`,
+`core-gpu`, `core-reference` with PyMC). The tutorial's pin moves to 2.1 together with the networks, once they are
+accepted and exported.
+
+## Working on a slot
+
+1. Read the slot's file in `tutorial/curriculum/` and the lectures of `course/` it draws on.
+2. Branch from `main`, for example `git switch -c slot4/sampler-figure`.
+3. Edit live: `cd tutorial && pixi run slot4`, or `pixi run edit` for all notebooks. To pair with a coding agent
+   on the live kernel, use the marimo-pair skill in `.claude/skills/marimo-pair/`.
+4. Inside a notebook, import only `sbi4f_tutorial` and third-party packages, and read files only under
+   `ROOT / "assets"`. Put every number on screen through `tutorial/CLAIMS.md`: its study, its file and its status.
+   Give every live cell (loading a network, pricing, training) a cached fallback and a time budget.
+5. If a notebook needs a new computation, add a small, readable function to `tutorial/src/sbi4f_tutorial/`. If it
+   repeats lab code, copy it, and add a check to `lab/tests/test_tutorial_parity.py`.
+6. If a notebook needs a new number or figure, produce it in the lab, accept it into `tutorial/assets/` with
+   `lab/studies/accept.py`, then run `pixi run manifest` and `pixi run claims` in `lab/` (next section).
+7. Before opening a pull request, run in `tutorial/`: `pixi run test`, `pixi run test-notebooks` (every notebook
+   headless, a few minutes) and `pixi run check` (marimo lint). If you touched the lab, run `pixi run test` and
+   `pixi run release-check` in `lab/` as well.
+8. Open one pull request per slot change and ask the slot's presenter to review it.
+
+## Producing numbers in the lab
+
+The pipeline from a task to the stage, with details in [`lab/README.md`](lab/README.md):
+
+1. **Task and bank.** A task configuration in `lab/configs/tasks/` fixes the contracts, the quote noise, the prior
+   and the pricing numerics. `lab/scripts/calibration_bank.py` simulates the bank of priced smiles, locally or as
+   an Oscar array (`lab/cluster/calibration_bank_array.sbatch`).
+2. **Network.** `lab/studies/train_calibration.py` trains the amortized posterior, on Oscar with
+   `lab/cluster/train_calibration.sbatch`.
+3. **Checks.** Studies S1 to S9 in `lab/studies/`: simulation-based calibration and coverage, the exact Heston
+   check, the neural-pricer route, the audit, the classical route, products and reserves, costs. Each study writes
+   a new directory.
+4. **Acceptance.** `lab/studies/accept.py` copies an accepted run or checkpoint into `tutorial/assets/` with
+   `ACCEPTED.json`. Then `pixi run manifest` and `pixi run claims` refresh `tutorial/MANIFEST.md` and
+   `tutorial/CLAIMS.md`.
+
+The runbook of the Oscar runs is [`lab/plans/CLUSTER-RUNS.md`](lab/plans/CLUSTER-RUNS.md), and the next campaign is
+planned in [`lab/plans/NUMERICAL-EXPERIMENT-PLAN.md`](lab/plans/NUMERICAL-EXPERIMENT-PLAN.md) and its
+[protocol](lab/plans/EXPERIMENT-PROTOCOL.md). PyMC is preferred for reference MCMC where it fits naturally
+([MCMC policy](lab/plans/mcmc-policy.md)). Banks, model payloads and full posterior draws stay on Oscar; git
+records their identities and how they were produced.
+
+## The course
+
+[`course/README.md`](course/README.md) is its index: sixteen lectures from options and Black–Scholes to rough
+Bergomi on SPY and a thin chain. It is a superset of the tutorial: the presenters' long version, and take-home
+reading for participants. [`course/status.md`](course/status.md) gives the state of every study it cites. To redraw
+a lecture's figures, run its script in the lab environment, for example
+`cd lab && pixi run python ../course/scripts/lecture09.py`. `pixi run course-check` checks the numbers the course
+plan prints against the stored results.
+
+## Where the work stands on 28 October 2026
+
+| Piece | State | Where |
 |---|---|---|
-| 0–10 | Financial question, P/Q distinction and data roles | Francesco |
-| 10–30 | Exact GBM inference and separate Q expectation pricing | Stefan |
-| 30–45 | Amortized inference; spline coupling flow and its dense subnets; cached training/reload | Alex & Stefan |
-| 45–60 | Local synthetic panel → raw joint draws → excluded price | Stefan |
-| 60–75 | Likelihood correction and the full proposal-mixture denominator | Alex |
-| 75–95 | Joint posterior → two price distributions; one opt-in 2,048-proposal demo or labelled saved replay | Francesco & Alex |
-| 95–113 | Conditional checks, SBC and the shared numerical-reference alarm | Alex |
-| 113–120 | Changing priors/task assumptions and the exit exercise | All |
+| Heston network | A BayesFlow 2.1 candidate (100,000 training smiles, epoch 500) passed its frozen calibration check on 2,000 unused smiles, and 12 of 12 variance-product checks. It is not yet in the notebooks, which load the BayesFlow 2.0 network trained on 50,000 smiles. | [PR #48](https://github.com/fmuia/sbi4finance/pull/48) (draft) |
+| Rough Bergomi, known curve (H, η, ρ given the 7-level forward-variance curve) | 20,000-smile bank complete, first networks trained. Comparisons with reference posteriors still disagree on some smiles, partly from the reference emulator's error and the time grid. The next step is a 50,000-smile bank and refits. | PR #48 |
+| Rough Bergomi, inferred curve (six unknowns) | 9,925 of 20,000 training smiles generated; paused while the known-curve checks run. | PR #48 |
+| Notebooks of slots 1 to 5 | Run headless and offline in the tutorial environment. Slot 5 shows the pilot's results, with "pending" cards where the full study is missing. | `tutorial/` |
+| Notebook of slot 6 | Not started. | `tutorial/curriculum/06-slot6-priors-and-misspecification.md` |
+| Sparse option chains (EWG) | Deferred until after the release; its code stays in the lab, marked deferred. | [`lab/plans/SPARSE-QUOTE-CASE-PLAN.md`](lab/plans/SPARSE-QUOTE-CASE-PLAN.md) |
 
-**Delivery status:** curriculum selected. The pinned #27 combined revision
-includes #22's local panel, cached default and explicit live opt-in, plus #29's
-scientific-decision explanation. The [integration review](docs/stack-integration-review.md)
-records combined tests and offline execution. #26's [participant delivery record](docs/tutorial-delivery-verification.md)
-now confirms fresh locked setup and all five isolated exports on the same source
-pin, with 19 figure appearances reviewed. Static mirror assets/links pass checks;
-browser layout, interaction and offline runtime remain unverified. Scientific
-acceptance remains false and formal I4 remains deferred.
+The detailed numerical status of the backbone work is `docs/collaborator-numerical-status.md` on PR #48.
 
-The optional Heston, rough Bergomi and original MMAR reviews remain available;
-they are outside this two-hour schedule and use their own task/checkpoint.
+## Open decisions
 
-## Simulator and inference plan
+1. **Slot 5's rough-Bergomi task on 14 November:** the known-curve task (three unknowns) or the inferred-curve task
+   (six). Not decided yet; the numerical results above decide it. The slot-5 notebook follows the known-curve pilot.
+2. **Agreed:** every network shipped to participants moves to BayesFlow 2.1: the Heston candidate once it is
+   packaged, the rough-Bergomi network, and slot 2's toy network, retrained. The tutorial's pin moves with them.
+3. **Agreed:** the take-home returns track (SVJ, the multifractal model, GBM from returns, crash-day priors, betas
+   across stocks) is not part of the 14 November release. It stays in the archive and on its branches.
+4. **Open:** how much run evidence lives in git. Compact records only (README, summary JSON, key figures), or the
+   raw per-case outputs and logs too. PR #48 currently commits about 41 MB of them.
+5. **Agreed in principle:** participants get a separate small repository holding `tutorial/` without the
+   curriculum, created at the release. It is self-contained, so the copy is mechanical.
 
-For current code, PR dependencies, scientific limits and next review steps,
-start with the [collaborator handover](docs/simulator-handover.md).
-The [current code architecture](docs/code-architecture.md) maps the modules,
-data flow, saved artifacts and extension points for both financial workflows.
+## Open pull requests
 
-The [implementation plan and mathematical guide](docs/simulator-plan/README.md) describes the simulator library, pre-simulated training banks, and returns-inference and option-pricing workflows. It includes nine milestone subplans, beginner-oriented mathematical notes, and validation requirements. The selected participant application is the provisional Q/options route above; implementation and scientific evidence remain separately scoped.
+- [PR #47](https://github.com/fmuia/sbi4finance/pull/47) and [PR #48](https://github.com/fmuia/sbi4finance/pull/48)
+  (Alex): incremental banks and the BayesFlow 2.1 backbone. Both were written against the layout before the
+  restructure; [`lab/plans/RESTRUCTURE.md`](lab/plans/RESTRUCTURE.md) gives the path map and the conflicts a trial
+  merge found.
+- [PR #37](https://github.com/fmuia/sbi4finance/pull/37), [PR #38](https://github.com/fmuia/sbi4finance/pull/38),
+  [PR #40](https://github.com/fmuia/sbi4finance/pull/40), [PR #41](https://github.com/fmuia/sbi4finance/pull/41) and
+  [PR #42](https://github.com/fmuia/sbi4finance/pull/42): drafts of the earlier returns and SVJ route, superseded by
+  the current curriculum.
 
-Its [delivery and evidence boundary](docs/simulator-plan/README.md#synthetic-delivery-and-market-evidence) requires a complete offline synthetic teaching workflow. Actual-market application and empirical evaluation are optional additions with separate data and evidence requirements; acquisition does not block the synthetic core.
+## History and the archive
 
-## Setup
+Until 28 October the repository also held the simulator-ladder milestones (GBM, Heston from returns, the HKDE
+options route, one-factor Bergomi, the first rough-Bergomi inference pilot), the SVJ and multifractal applications,
+their checkpoints, sixty-five handover and review documents and 90 MB of results. They are off the critical path
+and were removed. Everything is unchanged at commit
+[`574b940`](https://github.com/fmuia/sbi4finance/tree/574b940087cd66a7540c5aa080f64e8b33010314), the last commit of
+`main` before the restructure, and links in the documents point there. To read one file, run
+`git show 574b940:docs/svj-pipeline.md`; to browse everything, run
+`git worktree add ../sbi4finance-archive 574b940`.
 
-The first simulator-ladder implementation is the [GBM reference example](docs/gbm-reference.md): exact simulation, an analytic drift posterior, conditional future losses and separate European price checks. Run `pixi run gbm-demo` and `pixi run test-gbm`. It uses generated data and has no neural-training or market-data prerequisite.
+## Who to ask
 
-The next increment adds a [saved synthetic bank and BayesFlow training/reload example](docs/gbm-bank-training.md). Run `pixi run gbm-bank --out /tmp/gbm-bank`, then `pixi run gbm-train --bank /tmp/gbm-bank --out /tmp/gbm-trained`. Both output directories must be new. A separate [one-CPU Oscar smoke run](docs/gbm-cluster-smoke.md) has verified actual cluster generation, storage and selected-example reproduction.
-
-[Heston and Gaussian-price-jump kernels](docs/heston-svj-kernels.md) add hidden variance, leverage, signed-state continuation and serial Numba stepping. Run `pixi run test-heston`, `pixi run heston-validate`, and `pixi run heston-benchmark` for the synthetic numerical/timing pilots.
-
-The [joint Heston inference pilot](docs/heston-joint-inference.md) adds a synthetic bank, a same-model particle reference, BayesFlow training/reload and conditional futures. Its saved checkpoint **failed conditional test checks** and remains provisional. The [completed Heston decision](docs/heston-validation-decision.md) retains its optional diagnostic lesson and defers further experiments for the selected options course. No market data are needed.
-
-[HKDE paths and European Fourier pricing](docs/hkde-reference.md) now supply
-[fixed synthetic option-panel banks](docs/option-banks.md). Run `pixi run option-bank
---config configs/tasks/hkde_option_bank.json --out /tmp/new-hkde-bank` and inspect
-`pixi run review-hkde`. These are reusable numerical building blocks; Q posterior
-inference is available as a [provisional baseline](docs/hkde-joint-inference.md).
-The separate [fixed-contract learned price map](docs/hkde-price-surrogate.md)
-passes its regression checks and preserves that baseline's inference discrepancy.
-Run `pixi run review-hkde-surrogate` for the math, actual accuracy and costs.
-A [bounded likelihood-correction follow-up](docs/hkde-corrected-inference.md)
-uses the frozen flow as a proposal and separately tests the resulting weighted
-posterior. It preserves the raw-flow failure and the first correction's
-boundary-reliability stop; its reports distinguish proposal quality, posterior
-accuracy, finite-pool SBC and actual numerical likelihood cost.
-Validation passes, but the fresh correction test fails one SBC rank gate;
-the corrected pipeline remains provisional. See the saved diagnostics before
-choosing a participant workflow.
-The [M8 options candidate](docs/m8-options-candidate.md) combines the frozen
-neural proposal, numerical-likelihood correction and that accepted target-price
-map in a paced lesson. Open it with
-`PYTHONPATH=src pixi run review-hkde-corrected`. It currently runs as a **cached
-diagnostic review**: validation passed, but the new test failed its theta SBC
-gate (0.10325 > 0.09251), so formal M8 acceptance remains pending. Conditional
-and proposal-reliability checks passed; they do not
-override the failed gate. The frozen run stopped without tuning or a rerun.
-The independent-grid PIT also fails on these panels, so the rank result does
-not by itself isolate bias from the correction algorithm.
-The [calibration-gate audit](docs/hkde-calibration-gate-audit.md) checks this
-distinction: ideal reference sampling would trigger the same theta gate in
-98.85% of diagnostic runs on this fixed cohort. Direct CDF checks support
-bounded approximation accuracy; the historical failure and participant gate
-remain unchanged. Open `PYTHONPATH=src pixi run review-hkde-calibration` for
-the didactic explanation, conditional controls and remaining uncertainty.
-For the [opt-in provisional live demonstration](docs/hkde-provisional-demo.md),
-run `pixi run demo-hkde-corrected`. It executes the same local panel with 2,048
-proposals and reports its numerical checks separately from formal acceptance.
-The original neural failure remains visible. The selected Q/options teaching scope is recorded in the [route card](docs/tutorial-participant-route.md); it does not upgrade scientific acceptance.
-The [analysis follow-up note](docs/simulator-analysis-next-steps.md)
-preserves the Heston findings while simulator and bank coverage expands.
-
-[One-factor Bergomi](docs/bergomi-simulators.md) adds an explicit forward-variance
-curve, exact OU factor stepping, complete continuation and bounded European
-Monte Carlo pricing. Generate its numerical pilot with `pixi run option-bank
---config configs/tasks/bergomi_option_bank.json --out /tmp/new-bergomi-bank`.
-Sampling uncertainty and time-grid bias remain distinct from quote noise.
-
-[Rough Bergomi](docs/rough-bergomi.md) adds a joint Gaussian reference and FFT
-hybrid Volterra driver. Its separate preset is
-`configs/tasks/rough_bergomi_option_bank.json`, consumed by the same bank command.
-`pixi run review-bergomi` covers both models, their bank results and numerical
-limits. A current variance alone is not a continuation state for rough memory;
-historical-return forecasting remains separate work. The
-[restricted rough posterior pilot](docs/rough-joint-inference.md) adds a frozen
-512-step Q inference task, cluster chunks, an independent importance reference,
-and a separate review of conditional, SBC and mean-price evidence.
-The [bounded reference extension](docs/rough-reference-expansion.md) preserves
-the original 19/20-case precision stop and expands only its independent
-reference bank to 8,192 rows. All 20 reference cases and all seven neural
-validation gates now pass, including conditional/joint checks, marginal SBC
-and target-price means. The later [held-out study](docs/rough-heldout-test.md)
-passes its reference and six of seven neural gates, but eta's posterior SD is
-31.0% too small on one case (limit 25%). Notebook09 explains this conditional
-failure despite passing SBC and target means. The candidate remains provisional;
-all 256 test cases are now used. No retraining or bank expansion followed.
-
-The default environment is managed by [pixi](https://pixi.sh) from `pyproject.toml`:
-
-```bash
-pixi install --locked   # BayesFlow 2.0.14 on the jax backend, marimo, python 3.12
-pixi run selfcheck      # simulator sanity check
-pixi run check          # marimo lint for notebooks/
-pixi run edit           # marimo editor (no auth token, so agents can pair with it)
-```
-
-`pixi shell` drops you into the environment. `KERAS_BACKEND=jax` is set on activation.
-
-## Notebooks
-
-Notebooks are [marimo](https://marimo.io) files: plain Python, reactive, git-friendly.
-
-Each simulator milestone includes a didactic review notebook explaining the
-new functionality, the mathematics, a small runnable example and the actual
-results with their limits. The [selected two-hour curriculum](docs/tutorial-participant-route.md) uses named
-sections of these reviews; the full development-review collection is optional. Closely related increments share named sections.
-
-| Review notebook | Milestones / increments | Run |
-|---|---|---|
-| [HKDE calibration-gate audit](notebooks/11_hkde_calibration_audit.py) | M8 follow-up: threshold calibration, conditional reference-rank controls and finite-pool CDF errors; no acceptance override | `PYTHONPATH=src pixi run review-hkde-calibration` |
-| [Corrected HKDE options candidate](notebooks/10_hkde_corrected_workflow.py) | M8 / 10: cached default and opt-in provisional live joint correction and two target-price distributions; historical theta SBC failure retained, participant acceptance pending | `PYTHONPATH=src pixi run review-hkde-corrected` |
-| [GBM, banks and cluster](notebooks/01_gbm_foundations.py) | M0–M2 / 1–3: exact inference, array roles, reproducible banks and the recorded cluster result | `pixi run review-foundations` |
-| [Heston and Gaussian jumps](notebooks/04_heston_svj_kernels.py) | M3.1–M3.2 / 4: diffusion/jump simulation, continuation, numerical checks and Numba timings | `pixi run review-kernels` |
-| [Joint Heston inference](notebooks/05_heston_joint_inference.py) | M3.3 / 5: observed histories, reference/neural joint posteriors, conditional futures and the failed frozen checks | `pixi run review-heston` |
-| [HKDE and option panels](notebooks/06_hkde_and_pricing.py) | M4 / 6: jump law, Q prices, noisy observations, bank roles and reference checks | `pixi run review-hkde` |
-| [HKDE learned prices](notebooks/07_hkde_price_surrogate.py) | M5.2 / 7: supervised regression, matched price propagation, independent accuracy and cost checks | `pixi run review-hkde-surrogate` |
-| [Bergomi models](notebooks/08_bergomi_models.py) | M6–M7 / 8–9: factor and rough drivers, memory, MC pricing, numerical and bank evidence | `pixi run review-bergomi` |
-| [Rough posterior pilot](notebooks/09_rough_inference.py) | M7.3b / 9: numerical observation law, independent reference, prior control, joint inference, SBC and excluded-price means | `pixi run review-rough-inference` |
-
-Default execution uses synthetic examples and committed evidence, with no market
-downloads, cluster submission or full training run. Recorded results and fresh
-illustrations are labeled separately. The joint-inference notebook keeps the
-original provisional checkpoint visible during further development.
-Notebook 10's original 30-minute pacing is a standalone review suggestion.
-For the selected curriculum, follow the schedule and exercises in the route
-card above; combined execution is verified in the linked integration records,
-with the remaining browser limits stated separately.
-Opening it reviews cached evidence; `pixi run demo-hkde-corrected` runs
-the bounded 2,048-proposal correction and target-price calculation
-offline while keeping the historical failure visible. The fixed example is a
-development case, not new calibration evidence. No market fixtures or raw
-training banks are required. Inspect the [joint posterior](docs/results/hkde-live-demo/live-joint.png),
-[target-price distributions](docs/results/hkde-live-demo/live-target-prices.png)
-and [live execution record](docs/results/hkde-live-demo/verification.json).
-Technical execution and single-case numerical checks remain separate from M8
-scientific acceptance. The earlier cached-only export (17 cells, zero errors,
-8.29 seconds) is preserved as a historical record, not a live-inference timing.
-
-The Heston review explains the [time-context correction](docs/heston-time-context.md),
-with before/after recurrent-gate diagnostics and the improved but still-failing
-validation results. The reserved final test remains unevaluated.
-The [diagnostic review](docs/heston-diagnostics.md) adds direct graph links,
-explains SBC versus conditional checks, demonstrates prior-to-posterior updating,
-and records the frozen-weight sampling/reference precision follow-up.
-The subsequent [signed-state transform experiment](docs/heston-state-transform.md)
-also failed validation. Its result is retained in the review notebook; the
-predeclared stop rule leaves Heston inference provisional. The completed
-decision defers new Heston experiments while retaining this optional lesson.
-
-See the [review guide and verification record](docs/milestone-review-notebooks.md)
-for export commands, evidence boundaries and the current inference results.
-
-| Notebook | Schedule item | What it shows |
-|---|---|---|
-| `notebooks/01_mmar_univariate.py` | Optional companion | Univariate multifractal model of asset returns (MMAR): simulator, prior predictive check, adapter and networks, pretrained checkpoint or CPU toy fit, recovery and calibration, posterior on SPMO and VOO |
-| `notebooks/svj_var_pipeline.py` | Optional P companion | Daily SVJ joint inference, particle audit and conditional log-loss forecasts |
-
-Export for people without marimo: `pixi run marimo export ipynb notebooks/01_mmar_univariate.py -o /tmp/01.ipynb --include-outputs`.
-
-### Pairing with an agent
-
-`.claude/skills/marimo-pair/` is the [marimo-pair](https://github.com/marimo-team/marimo-pair) skill (Apache-2.0, vendored at commit 6cecaff). With `pixi run edit` running and the notebook open in the browser, an agent runs code in the live kernel and commits cell changes through marimo rather than editing the `.py` file. See the skill for the rules; the short version is that during a live session the kernel, not the file, is the source of truth.
-
-For a lesson view with visual annotations and an MCP endpoint, use the optional
-[marimo collaboration setup](docs/marimo-collaboration.md):
-
-```bash
-pixi install --locked -e collaboration
-pixi run -e collaboration studio-build
-pixi run -e collaboration studio-svj
-```
-
-Open the printed localhost URL and keep the browser tab open. Studio presents
-the existing SVJ notebook's live outputs; Lens lets you point to a result or
-follow a guided walkthrough, and Pair controls the same computation. The guide
-covers session selection, the `mcp-check` task and other tutorial notebooks.
-
-## Shared inference workflow and optional SVJ application
-
-The [shared workflow guide](docs/shared-inference-workflow.md) follows the same
-sequence for SVJ and HKDE: task and simulation checks, separate training and
-validation, selected-checkpoint reload, compatible observation preparation,
-joint inference, diagnostics and correction/fallback, then downstream analysis.
-Both applications execute the same inference runner and training lifecycle.
-Architectures, summary networks, numerical references and risk/pricing targets
-remain specific to the financial question.
-
-Francesco's daily SVJ application infers eight parameter coordinates and terminal
-volatility from 1,000 daily returns. Its particle audit, PMMH and conditional
-forecasting extend the P route; its finite model remains distinct from the
-smaller Heston diagnostic example. The optional lesson defaults to a complete
-cached synthetic case, with no market CSV or network access. Reported VaR/ES is
-**percent log-loss**, and local diagnostic status accompanies forecasts.
-
-```bash
-pixi run review-svj
-pixi run demo-svj                 # bounded synthetic live inference, no PMMH
-pixi run svj-bank --config configs/tasks/svj_daily_smoke.json --out /tmp/svj-bank
-pixi run svj-bank-check --bank /tmp/svj-bank
-pixi run svj-train --bank /tmp/svj-bank --epochs 1 --batch-size 8 --out /tmp/svj-trained
-```
-
-Training and validation require new explicit output directories. The contributed
-network, training record, diagnostic reference and numerical results remain
-preserved; [historical results](docs/svj-results-summary.md) retain mixed SBC and
-conditional-reference evidence. A tiny train/reload or a successful illustration
-is not scientific acceptance. The [integration record](docs/svj-integration-review.md)
-separates software, cluster, teaching and scientific evidence.
-
-## Cluster (Oscar)
-
-`cluster/` holds what is lab-wide; `.claude/skills/cluster-setup/` walks a user through the per-person part:
-
-For the simulator ladder, [the CPU smoke guide](docs/gbm-cluster-smoke.md) uses `cluster/simulate.sbatch`, current allocation discovery, and an explicit Python interpreter/output path. The existing script below is for MMAR GPU training.
-
-```bash
-pixi run python cluster/discover_cluster.py --ssh-host oscar   # which lanes do I hold? -> cluster/oscar.local.json
-sbatch cluster/train.sbatch                                   # retrain the univariate checkpoint on one GPU
-```
-
-## Layout
-
-```
-notebooks/            marimo milestone reviews and participant candidates
-src/sbi4finance/      model kernels, banks, inference, references and forecasts
-configs/              task designs and frozen experiment protocols
-scripts/              generation, training, evaluation and plotting commands
-tests/                numerical, data-boundary and workflow checks
-data/                 pinned return CSVs for the earlier MMAR example
-checkpoints/          saved approximators with task metadata and status notes
-docs/                 plans, architecture, handover and scientific reports
-docs/results/         committed summaries, selected arrays and diagnostic plots
-cluster/              Oscar discovery and CPU-bank / MMAR-training wrappers
-.claude/skills/       marimo-pair (vendored) and cluster-setup
-```
-
-The original MMAR simulator, data cache and checkpoint come from Stefan Radev's [amortized-fractals](https://github.com/stefanradev93/amortized-fractals). The simulator ladder adds the model and inference modules described in the [architecture guide](docs/code-architecture.md).
-
-## Local observation fixtures
-
-[Local data preparation](docs/local-data.md) supplies CSV/JSON IO, daily return windows and [fixed HKDE premium panels](docs/hkde-local-panels.md), with explicit observation/context roles and separate synthetic truth. The CSV/JSON and preparation helpers need no downloads or extra dependencies. Run `pixi run data-check` for unit tests; `pixi run hkde-data-check` checks the real HKDE checkpoint handoff when simulator PR #15 is available. That checkpoint remains provisional; passing IO checks does not establish scientific acceptance.
-
-`pixi run hkde-bank-data-check` exercises the generated-bank → local-panel →
-checkpoint path using the simulator's existing writer, reader and adapter.
-It needs the simulator PR #15 implementation (or `--simulator-root` pointing to
-that checkout); no provider account or real-market data are used.
-
-The [cached HKDE data walkthrough](notebooks/hkde_data_walkthrough.py) is a
-small offline example of a synthetic panel, paired parameter draws and a
-held-out option's model-price uncertainty. Run `pixi run hkde-data-walkthrough`;
-see [reproduction and evidence limits](docs/hkde-offline-teaching.md). Its
-checkpoint is **provisional**, and the failed price gate is shown explicitly.
-
-The [teaching handoff](docs/hkde-teaching-integration.md) connects that same local
-panel to the corrected lesson and a cached raw/weighted/reference comparison.
-Run `pixi run hkde-teaching-integration-check` to verify both lessons together
-offline. Integration milestones I1–I3 and the separate I4a provisional live
-demonstration are complete; formal I4 acceptance remains pending. Add `--live`
-to the check command to exercise and record the actual demonstration.
-
-## Inference tasks and data planning
-
-Start with the [data implementation roadmap and milestone subplans](docs/data-plan/README.md). It sequences common contracts, local loading, separate returns/options preparation, checkpoint compatibility and the complete synthetic teaching workflow, with market application and empirical evaluation as optional branches. The [scenario specification](docs/inference-scenarios-and-data.md) explains the statistical objects, the [option format reference](docs/data-loading-plan.md) defines panels, and the [source comparison](docs/data-source-landscape.md) evaluates acquisition choices. The plans preserve their original scope; the implemented local interfaces and selected provisional Q/HKDE route are composed in this checkout.
-
-The [data dependency and evidence levels](docs/inference-scenarios-and-data.md#three-delivery-and-evidence-levels) separate a complete synthetic teaching core (no market data required), an optional real-market application, and empirical evaluation using held-out observations. Market-data acquisition does not block simulator development, synthetic training or the required notebook.
+- **Francesco Muia:** owner; the curriculum, the course, slots 1 and 5.
+- **Alex (Alexander Fengler):** the numerical backbone (banks, training, references), Oscar, slots 2 and 5.
+- **Stefan:** the BayesFlow architecture, slots 3, 4 and 6.
+- **Jerry Huang:** role to be agreed (curriculum decision D18).

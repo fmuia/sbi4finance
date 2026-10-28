@@ -1,9 +1,8 @@
-"""Loaders, figures and small helpers for the tutorial notebooks (slots 1 to 5). Everything reads accepted results.
+"""Loaders, figures and small helpers of the tutorial notebooks, and load_network for the lab's studies.
 
-The notebook lives in tutorial_final/notebooks and its results in
-tutorial/assets/results/calibration. A missing result returns None, so the
-notebook can say "pending" instead of failing. Only the explicit live cells
-load a network, through load_network, which initializes the neural backend.
+The notebooks no longer import this module: tutorial/src/sbi4f_tutorial/teaching.py is their copy, and
+lab/tests/test_tutorial_parity.py checks that the two return the same numbers. A missing result returns None,
+so a caller can say "pending" instead of failing. Only load_network initializes the neural backend.
 """
 
 import json
