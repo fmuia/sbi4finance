@@ -12,5 +12,5 @@ used as final.
 
 The audit now prices each proposal on its own seed, at 32,768 paths, and uses N(y; P̂, diag(σ²) + C − S), with
 S the proposal's Monte Carlo covariance and C the bank's covariance of the surface's reference prices
-(`lab/src/sbi4finance/calibration/correction.py`, `gaussian_loglik_mc`; `lab/studies/audit.py`). The
-study is to be rerun on the full bank (`lab/plans/CLUSTER-RUNS.md`).
+(`src/sbi4finance/calibration/correction.py`, `gaussian_loglik_mc`; `tutorial_final/studies/audit.py`). The
+study is to be rerun on the full bank (`tutorial_final/CLUSTER-RUNS.md`).
