@@ -1,0 +1,21 @@
+{
+  "checked_utc": "2026-10-28T17:35:14.072973+00:00",
+  "read_only": true,
+  "job_id": "8060582",
+  "preserved_posterior_sha256": "39f1a81986a38994dc6eacc520ad95254b34346abc02e758c08779c7c5916fc4",
+  "preserved_pricer_sha256": "9f0f695b0c369f6eaedb0c5559a46c254459047bd806fc14982377416a61a546",
+  "preserved_bank_sha256": "f1bfa42f7bf2acba3daaffb263b5bdeb60b5b12ebdfc267c5c5cd6eb7e08c313",
+  "pilot_plan_sha256": "8f2ec3d0059374bfc23f3d2c0f46a6c3dc728cc7a05bb3f90e16da5063b88855",
+  "pilot_driver_sha256": "fd2546eee2c2cf8503ac4d3f189418a76bb2008ac9e8edbd5aadf3f0c51fc4cb",
+  "queue": {
+    "returncode": 0,
+    "stdout": "8060582|PENDING|0:00|(ReqNodeNotAvail, UnavailableNodes:gpu[1502,2103-2104,2110,2112,2116,2502,2504,3005,3104])|4|gres/gpu:l40s:1\n",
+    "stderr": ""
+  },
+  "accounting": {
+    "returncode": 0,
+    "stdout": "8060582|PENDING|0|0|0:0||None assigned\n",
+    "stderr": ""
+  },
+  "fit": null
+}
