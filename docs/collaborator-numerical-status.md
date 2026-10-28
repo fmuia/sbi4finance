@@ -2,7 +2,7 @@
 
 Updated 28 October 2026.
 
-**13:55 UTC update:** the known-curve **100k bank is checked and complete**. Its intermediate 50k models and validation are also complete. Two joint holdout shards timed out; exactly those ranges are now running on different nodes, preserving all completed work. See the [recovery and live records](run-recovery-2026-10-28.md) for the remaining integrity checks and downstream dependencies. Original failed receipts are retained.
+**15:09 UTC update:** known-curve **100k** and joint-curve **20k** banks are checked and complete. Both intermediate models and their validation runs are complete. The joint append to **100k is now running with approximately 200 workers**. See the [current generation and completed handoff](run-recovery-2026-10-28.md). Original failed receipts are retained.
 
 We are building the data and trained models that the live finance tutorial will load. The aim is to infer plausible volatility-model parameters from option prices, then show how parameter uncertainty affects other prices. BayesFlow supplies the amortized neural inference; PyMC supplies reference calculations. The tutorial should run from prepared examples without asking participants to generate a large dataset or train a network.
 
@@ -12,9 +12,9 @@ The learning path has three stages. One training surface contains 63 simulated o
 | --- | --- |
 | Heston | A checked 100,000-surface training bank and a promising trained estimator. The frozen candidate passed its calibration checks on 2,000 previously unused cases, plus comparisons for simple variance products. It is ready for notebook packaging, with the limits below. |
 | Rough Bergomi with a known variance curve | **Checked 100k training bank**, plus 5k validation and 7k test surfaces. The [intermediate 50k models and 2,000-case validation](pilot-results/2026-10-28/known50k-completed/README.md) completed; all four rank screens pass, with 93.85% coverage for nominal 95% product intervals. Full-100k fitting and conditional reference/independent-price checks remain ahead. |
-| Rough Bergomi with an inferred variance curve | All 20k training surfaces are generated. Two missing holdout shards (50 surfaces) are running in a reviewed continuation, preserving all 1,278 successful parts. Integrity checks must release the initial 20k / 5k / 7k snapshot. The 100k append is armed but has not started; trained estimators and validation remain unfinished. |
+| Rough Bergomi with an inferred variance curve | **Checked 20k / 5k / 7k bank**. The [20k posterior, pricer and 2,000-case validation](pilot-results/2026-10-28/joint20k-completed/README.md) completed; all seven simultaneous rank screens pass, with coverage deviations and pricer tail errors still requiring review. The 100k append is running, with at least 21,825 training surfaces complete at 15:08 UTC. |
 
-The delivery target is **at least 100,000 unique training surfaces for each rough route**, matching Heston; learning curves may justify more. The known-curve bank has reached that target. GPU job **8046588** completed its intermediate 50k baseline; full-100k fitting follows the learning review. Existing prices, seeds and holdouts are reused. The known-curve append consumed 152.902 CPU-hours within its 200-hour phase cap; the joint append retains its 3,000-hour cap. Joint continuation and follow-on readiness use explicit completion receipts; both failed histories are preserved. Consult the recovery record for current job IDs rather than the historical overnight ones.
+The delivery target is **at least 100,000 unique training surfaces for each rough route**, matching Heston; learning curves may justify more. The known-curve bank has reached that target. Both intermediate baselines are complete: GPU jobs **8046588** (known50k) and **8053365** (joint20k). Full-100k fitting follows the learning review. Existing prices, seeds and holdouts are reused. The known append consumed 152.902 CPU-hours within its 200-hour phase cap. The initial joint phase, including all failed work and recovery, consumed 873.895 CPU-hours within 1,500; the active joint append retains its separate 3,000-hour cap. Both failed histories are preserved.
 
 ## Interesting posterior shapes
 
@@ -31,7 +31,7 @@ The rough figures use an approximate pricing-emulator reference. They illustrate
 ## What still needs doing
 
 1. Connect the checked Heston candidate, cached examples and regeneration commands to the marimo notebooks; check the participant workflow. Path-dependent product pricing and broader seed/conditional robustness remain separate checks.
-2. Finish the running rough banks and inspect their automatically queued intermediate fits. Improve/check both neural inference and the forward pricing emulator; preserve reference-target limitations before claiming agreement with MCMC. Final 100k fits follow the learning review.
+2. Finish the active joint-100k bank and review both completed intermediate fits. Improve/check neural inference and the forward pricing emulators, especially conditional errors and outliers; preserve reference-target limitations before claiming MCMC agreement. Full-100k fits follow the learning review.
 3. Complete and validate the joint-curve rough lesson.
 4. Follow with the planned architecture/summary-network comparisons. Sparse option chains remain a separate later unit.
 

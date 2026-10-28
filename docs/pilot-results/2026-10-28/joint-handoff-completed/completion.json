@@ -1,0 +1,80 @@
+{
+  "path": "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/tail-recovery-20261028/integrity-bridge/completion.json",
+  "sha256": "766fb3d8178ff16c6732d0f9289f99b559d1a362d868ff34264e4e1ff637ccfe",
+  "record": {
+    "collection_id": "817de3664968de0c605ae4c73e2c99c26465344294af2fc5412f39fffa4baa50",
+    "driver_sha256": "06e860477a336173c07d816a7522dccd6313451411edaceeedc49322cf271ecc",
+    "elapsed_seconds": 61.31598501838744,
+    "empirical_precision_exceptions": [],
+    "exact_prior_context_noise_replay": true,
+    "format": "rough_bank_delivery_stage_v1",
+    "no_financial_pricing_calls": true,
+    "no_posterior_evaluation": true,
+    "numerical_scope": "Original1280/2016/2016 six-target joint task; empirical precision only, continuous-price/refinement claims remain unaccepted.",
+    "phase": "joint",
+    "plan_sha256": "d19969e7136615d4397cedc6976e0ddff26957f4fea1776ceecd5542c0766e13",
+    "preserved_parts_unchanged": 1278,
+    "runtime": {
+      "numpy": "2.5.3",
+      "python": "3.12.16",
+      "scipy": "1.18.1"
+    },
+    "snapshot": "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/snapshot-20k",
+    "snapshot_manifest_sha256": "c0de030bafef6de3f728d75788cd7feddd672b476795b57c42ecd8cbb0843ce9",
+    "source_revision": "c773ceb26e7273612b15c69fd63715d131778083",
+    "source_sha256": {
+      "bergomi.py": "8bffe12110dfb7b0de85fcf58cb7b848e4f5bc5f5af2f614ff2bd593d0edb6f5",
+      "calibration/bank.py": "9f0d512ba6f52df5c73c54599183159f535b2aa84ac4daa6a60cfd219afcc7db",
+      "calibration/pricing.py": "bf9b57f73f030670de2f3db37b298b56dc0070be2f99cf187188b817020f3b52",
+      "calibration/surface.py": "24c0476ce3000208438d440cbbb1bf21efd92494b8c634592029af384ee30388",
+      "calibration/tasks.py": "295d1ce59b409f8edb5edba89488fa87a5a4e7bab6f785a152ecb69db1528916",
+      "gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
+      "rough_bergomi.py": "0e8d31c8e18ca8bffd7f798988b22e8a73f75fb49da6eee336f8a106c186ba06"
+    },
+    "split_counts": {
+      "test": 7000,
+      "train": 20000,
+      "validation": 5000
+    },
+    "stage": "final",
+    "status": "completed_checked_snapshot",
+    "task_fingerprint": "29eca4e1b970c4f13b99573939aa3449c5280a3a4478f7d24beace6539a9889d",
+    "verified_parts": 1280,
+    "recovery_execution": "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/tail-recovery-20261028/execution.json",
+    "recovery_execution_sha256": "364f7515b86034acde414f7ea18238d8d1c806c7bc3df1260093405d85942b59",
+    "recovery_jobs": "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/tail-recovery-20261028/jobs.json",
+    "recovery_jobs_sha256": "d7e6953113548195f7f9eeb2179f4b25403cfd7af07cf571905bb9aedffa0f99",
+    "recovery_config_sha256": "1af379b4e25ec7240526ad43c4ba62ad9ff8b1289dfbe85b1c4d3e24c1df8c93",
+    "recovery_snapshot_manifest_sha256": "1cd92c5e8b7e33a043af3933129fafe2e942ac5e2da21e4c70888440e0748d19",
+    "original_execution_sha256": "35925eec53f0152013b8c2782b635bf9862c7e74fdcc76d11e0866b15e28eb8e",
+    "prior_recovery_execution_sha256": "114788a8f72f91ba4f43a4848064d3090c99c58809661b4e389378d137a8f0db",
+    "preserved_inventory_sha256": "a230b44c6ab217fd1356d8da4e73edbd3c238d7070f381880886093905d3d3f6",
+    "original_job_map_sha256": "a815c58087279fa7c2b5603d6bc3fee11ed92ec7965c0ac29c2827a665bbae0c",
+    "reviewed_failed_allocations": [
+      "8046699_997",
+      "8046699_1000"
+    ],
+    "integrity_attempts": [
+      {
+        "role": "final",
+        "state": "submitted",
+        "job_id": "8053235"
+      }
+    ],
+    "integrity_started_utc": "2026-10-28T13:57:28.109965+00:00",
+    "integrity_execution": "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/tail-recovery-20261028/integrity-bridge/execution.json",
+    "integrity_accounting": [
+      {
+        "job_id": "8053235",
+        "state": "COMPLETED",
+        "elapsed": 62,
+        "cpus": 1,
+        "exit_code": "0:0"
+      }
+    ],
+    "cumulative_allocated_cpu_seconds": 3146021,
+    "bridge_plan_sha256": "4106b4079a4df4ea07ce342237fb1546c3c060b92d2c721254b2397a0a517dbd",
+    "scientific_acceptance": false,
+    "reserved_test_evaluated": false
+  }
+}
