@@ -16,16 +16,16 @@ def _():
     import matplotlib.pyplot as plt
     import numpy as np
 
-    from sbi4finance.calibration import inference, plots, teaching
+    from sbi4f_tutorial import inference, plots, teaching
 
     ROOT = mo.notebook_dir().parent
-    RESULTS = ROOT / "results" / "calibration"
-    CHECKPOINTS = ROOT / "checkpoints"
-    CURRICULUM = ROOT / "curriculum"
+    ASSETS = ROOT / "assets"
+    RESULTS = ASSETS / "results" / "calibration"
+    CHECKPOINTS = ASSETS / "checkpoints"
     plots.style()
     return (
+        ASSETS,
         CHECKPOINTS,
-        CURRICULUM,
         RESULTS,
         inference,
         inspect,
@@ -154,7 +154,7 @@ def _(mo):
 
     ## 3 · The configuration slot 4 trains
 
-    The whole network of slots 4 and 5 is this function (`src/sbi4finance/calibration/inference.py`):
+    The whole network of slots 4 and 5 is this function (`src/sbi4f_tutorial/inference.py`):
     """)
     return
 
@@ -199,7 +199,7 @@ def _(mo):
 
 @app.cell
 def _(
-    CURRICULUM,
+    ASSETS,
     heston_task,
     heston_workflow,
     inference,
@@ -210,7 +210,7 @@ def _(
     teaching,
     time,
 ):
-    exact_spy = np.load(CURRICULUM / "data" / "heston-spy-exact.npy")
+    exact_spy = np.load(ASSETS / "data" / "heston-spy-exact.npy")
     _rows = []
     _network = heston_workflow.approximator.inference_network
     for _steps in sorted(int(s) for s in steps_choice.value):
@@ -246,7 +246,7 @@ def _(mo):
     exact posterior.
 
     *Evidence and code:* the [curriculum](../curriculum/03-slot3-architectures.md),
-    `src/sbi4finance/calibration/inference.py` and the Heston checkpoint in `checkpoints/heston/`.
+    `src/sbi4f_tutorial/inference.py` and the Heston checkpoint in `assets/checkpoints/heston/`.
     """)
     return
 

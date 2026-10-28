@@ -17,15 +17,16 @@ def _():
     import matplotlib.pyplot as plt
     import numpy as np
 
-    from sbi4finance.calibration import inference, plots, surface, teaching
+    from sbi4f_tutorial import inference, plots, surface, teaching
 
     ROOT = mo.notebook_dir().parent
-    RESULTS = ROOT / "results" / "calibration"
-    TOY_CHECKPOINT = ROOT / "checkpoints" / "slot2-toy" / "model.keras"
+    ASSETS = ROOT / "assets"
+    RESULTS = ASSETS / "results" / "calibration"
+    TOY_CHECKPOINT = ASSETS / "checkpoints" / "slot2-toy" / "model.keras"
     plots.style()
     return (
+        ASSETS,
         RESULTS,
-        ROOT,
         TOY_CHECKPOINT,
         bf,
         inference,
@@ -206,8 +207,9 @@ def _(TOY_CHECKPOINT, bank, build_toy_workflow, mo, time, train_button):
     toy = build_toy_workflow()
     if train_button.value or not TOY_CHECKPOINT.exists():
         toy.fit_offline(data=bank, epochs=30, batch_size=256, verbose=0)
-        TOY_CHECKPOINT.parent.mkdir(parents=True, exist_ok=True)
-        toy.approximator.save(TOY_CHECKPOINT)
+        if not TOY_CHECKPOINT.exists():  # instructors create the shipped network once; a live run never replaces it
+            TOY_CHECKPOINT.parent.mkdir(parents=True, exist_ok=True)
+            toy.approximator.save(TOY_CHECKPOINT)
         toy_source = "trained live"
     else:
         toy.fit_offline(data={key: value[:256] for key, value in bank.items()}, epochs=1, batch_size=256, verbose=0)
@@ -343,10 +345,10 @@ def _(mo):
 
 
 @app.cell
-def _(RESULTS, ROOT, np, teaching):
+def _(ASSETS, RESULTS, np, teaching):
     costs = teaching.load_json(RESULTS / "costs" / "costs.json")
     _bank = teaching.load_json(RESULTS / "heston" / "s1" / "bank-quality.json")["generation"]["cpu_seconds"]
-    _training = teaching.load_json(ROOT / "checkpoints" / "heston" / "training.json")["timing_seconds"]["training_including_compile"]
+    _training = teaching.load_json(ASSETS / "checkpoints" / "heston" / "training.json")["timing_seconds"]["training_including_compile"]
     _heston_exact = costs["exact_heston_posterior"]["cpu_seconds"]
     _heston_net = costs["heston_amortized_posterior_1000_draws_cpu_s"]["median"]
     _rough_exact = 3600 * costs["exact_rough_posterior"]["cpu_hours"]
@@ -459,7 +461,7 @@ def _(mo):
     **Next, slot 3:** which networks represent $q_\phi(\theta \mid y)$, and how they read the data.
 
     *Evidence and code:* the [curriculum](../curriculum/02-slot2-amortized-bayes.md),
-    `costs/costs.json` (study S9) and `src/sbi4finance/calibration/`.
+    `costs/costs.json` (study S9) and `src/sbi4f_tutorial/`.
     """)
     return
 

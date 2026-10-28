@@ -16,18 +16,18 @@ def _():
     import matplotlib.pyplot as plt
     import numpy as np
 
-    from sbi4finance.calibration import inference, plots, surface, teaching
+    from sbi4f_tutorial import inference, plots, surface, teaching
 
     ROOT = mo.notebook_dir().parent
-    RESULTS = ROOT / "results" / "calibration"
-    CHECKPOINTS = ROOT / "checkpoints"
-    CURRICULUM = ROOT / "curriculum"
-    CHECKS = ROOT / "checks"
+    ASSETS = ROOT / "assets"
+    RESULTS = ASSETS / "results" / "calibration"
+    CHECKPOINTS = ASSETS / "checkpoints"
+    CHECKS = ASSETS / "quick-checks"
     plots.style()
     return (
+        ASSETS,
         CHECKPOINTS,
         CHECKS,
-        CURRICULUM,
         RESULTS,
         bf,
         inference,
@@ -398,13 +398,13 @@ def _(mo):
 
 
 @app.cell
-def _(CURRICULUM, heston_task, heston_workflow, inference, np, spy, time):
+def _(ASSETS, heston_task, heston_workflow, inference, np, spy, time):
     spy_conditions = np.asarray(spy["prices_forward_units"])[None]
     inference.sample(heston_workflow, heston_task, spy_conditions, None, 50, seed=0)  # compiles the sampler once
     _start = time.perf_counter()
     network_spy = inference.sample(heston_workflow, heston_task, spy_conditions, None, 2000, seed=1)[0]
     network_seconds = time.perf_counter() - _start
-    exact_spy = np.load(CURRICULUM / "data" / "heston-spy-exact.npy")
+    exact_spy = np.load(ASSETS / "data" / "heston-spy-exact.npy")
     return exact_spy, network_seconds, network_spy
 
 
@@ -456,7 +456,7 @@ def _(CHECKS, NAMES, exact_spy, mo, network_spy, np, teaching):
         Three routes, one answer. Here the network's value is not a different interval: it is the same interval
         for any smile in a second, with a check of its own calibration (SBC above). Where the answers part, with
         few quotes or inputs the quotes do not pin, is slot 1's first case and slot 5's long end.
-        *Source of the Gauss–Newton column:* `tutorial_final/checks/heston_checks.py`.
+        *Source of the Gauss–Newton column:* `lab/checks/heston_checks.py`.
         """),
     ])
     return (heston_checks,)
@@ -613,7 +613,7 @@ def _(heston_checks, mo, np, plots, plt):
         _fig,
         mo.ui.table(_shift_rows, selection=None, pagination=False),
         mo.md("Product prices in forward units, under the exact posteriors with κ fixed and free "
-              "(`tutorial_final/checks/heston_checks.py`). The training bank of this notebook keeps κ = 2; a bank "
+              "(`lab/checks/heston_checks.py`). The training bank of this notebook keeps κ = 2; a bank "
               "with κ free is one line in the task's prior."),
     ])
     return
@@ -645,8 +645,8 @@ def _(mo):
     | On SPY | extreme parameters, variance swaps below the market | a power-law skew, variance swaps that match by construction |
 
     *Evidence and code:* the [curriculum](../curriculum/04-slot4-heston-in-bayesflow.md); studies S1–S3
-    in `results/calibration/heston/`; the exact SPY posterior in `curriculum/data/` (a feasibility run, to be
-    redone as study S8-H); the Gauss–Newton and κ checks in `checks/` (quick checks, not yet accepted studies).
+    in `assets/results/calibration/heston/`; the exact SPY posterior in `assets/data/` (a feasibility run, to be
+    redone as study S8-H); the Gauss–Newton and κ checks in `assets/quick-checks/` (quick checks, not yet accepted studies).
     """)
     return
 

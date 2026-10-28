@@ -9,28 +9,23 @@ app = marimo.App(
 
 @app.cell(hide_code=True)
 def _():
-    import sys
-
     import marimo as mo
     import matplotlib.pyplot as plt
     import numpy as np
     from scipy.stats import norm
 
-    from sbi4finance.calibration import plots, surface, teaching, why_bayes
+    from sbi4f_tutorial import bs_hierarchy, plots, surface, teaching, why_bayes
 
     ROOT = mo.notebook_dir().parent
-    RESULTS = ROOT / "results" / "calibration"
-    CHECKS = ROOT / "checks"
-    COURSE = ROOT.parent / "docs" / "course"
-    sys.path.insert(0, str(CHECKS))
-    import bs_hierarchy  # noqa: E402  (the sector case: tutorial_final/checks/bs_hierarchy.py)
+    ASSETS = ROOT / "assets"
+    RESULTS = ASSETS / "results" / "calibration"
+    CHECKS = ASSETS / "quick-checks"
 
     plots.style()
     return (
+        ASSETS,
         CHECKS,
-        COURSE,
         RESULTS,
-        ROOT,
         bs_hierarchy,
         mo,
         norm,
@@ -417,7 +412,7 @@ def _(heston_checks, kappa_draws, kappa_gn, mo, norm, np, plots, plt):
         which the model excludes. All five cases on SPY:
         """),
         mo.ui.table(_rows, selection=None, pagination=False),
-        mo.md("*Source:* `tutorial_final/checks/heston_checks.py`, a quick check on SPY's quotes, not yet an "
+        mo.md("*Source:* `lab/checks/heston_checks.py`, a quick check on SPY's quotes, not yet an "
               "accepted study."),
     ])
     return
@@ -547,8 +542,8 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(COURSE, mo):
-    mo.image(src=COURSE / "images" / "l10-credible-vs-confidence.png",
+def _(ASSETS, mo):
+    mo.image(src=ASSETS / "images" / "l10-credible-vs-confidence.png",
              caption="Lecture 10: coverage of posterior and Gauss–Newton 90% intervals in the toy, 2,000 data sets per case.")
     return
 
@@ -564,7 +559,7 @@ def _(mo):
     | Heston, SPY reduced to 15 quotes, κ free (section 3) | κ from −0.6 to 5.8; the 2-year put's range 21% wider | κ from 0.7 to 6.3, skewed |
     | Rough Bergomi, SPY reduced to 15 quotes | ρ's local interval past the bound −0.99 | a posterior cut by the bound |
 
-    *Source:* `tutorial_final/checks/` (quick checks of 23 October 2026).
+    *Source:* `lab/checks/` (quick checks of 23 October 2026).
     """)
     return
 
@@ -719,7 +714,7 @@ def _(CHECKS, mo, np, teaching):
                       "posterior: all inputs": _unit(_post[_j]),
                       "posterior, prior width 0.1 to 0.3": f"{_unit(_sens[:, _j].min())} to {_unit(_sens[:, _j].max())}"})
     mo.vstack([mo.ui.table(_rows, selection=None, pagination=False),
-               mo.md("90% ranges as a share of the price. *Source:* `tutorial_final/checks/long_end/`, a quick check.")])
+               mo.md("90% ranges as a share of the price. *Source:* `lab/checks/long_end/`, a quick check.")])
     return
 
 
@@ -739,10 +734,10 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(RESULTS, ROOT, mo, teaching):
+def _(ASSETS, RESULTS, mo, teaching):
     costs = teaching.load_json(RESULTS / "costs" / "costs.json")
     mo.vstack([
-        mo.image(src=ROOT / "curriculum" / "images" / "ladder.png",
+        mo.image(src=ASSETS / "images" / "ladder.png",
                  caption="One likelihood evaluation and one exact posterior under each model, CPU-seconds on a log scale "
                          "(Heston at one quadrature rung; the rough-Bergomi posterior, by random-walk Metropolis, is a "
                          "lower bound)."),
@@ -820,8 +815,8 @@ def _(mo):
 
     **Next, slot 2:** how a network trained on simulations returns the posterior, and when that pays.
 
-    *Evidence and code:* `tutorial_final/checks/` (quick checks of 23 October 2026, not yet accepted studies),
-    Lectures 9 and 10 of the [course](../../docs/course/README.md), and `src/sbi4finance/calibration/`.
+    *Evidence and code:* `lab/checks/` (quick checks of 23 October 2026, not yet accepted studies),
+    Lectures 9 and 10 of the [course](../../course/README.md), and `src/sbi4f_tutorial/`.
     """)
     return
 
