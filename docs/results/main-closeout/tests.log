@@ -1,358 +1,0 @@
-test_bounded_conditional_estimator_matches_black_scholes_and_parity (test_bergomi.BergomiTests.test_bounded_conditional_estimator_matches_black_scholes_and_parity) ... ok
-test_complete_state_and_elapsed_curve_preserve_continuation (test_bergomi.BergomiTests.test_complete_state_and_elapsed_curve_preserve_continuation) ... ok
-test_conditional_put_bounds_panel_covariance_and_chunk_invariance (test_bergomi.BergomiTests.test_conditional_put_bounds_panel_covariance_and_chunk_invariance) ... ok
-test_exact_ou_transition_and_brownian_cross_covariance (test_bergomi.BergomiTests.test_exact_ou_transition_and_brownian_cross_covariance) ... ok
-test_perfect_negative_leverage_has_no_independent_asset_noise (test_bergomi.BergomiTests.test_perfect_negative_leverage_has_no_independent_asset_noise) ... ok
-test_rejects_unsupported_measure_domain_context_and_restart (test_bergomi.BergomiTests.test_rejects_unsupported_measure_domain_context_and_restart) ... ok
-test_zero_eta_returns_and_integrated_curve_are_exact_discrete_gbm (test_bergomi.BergomiTests.test_zero_eta_returns_and_integrated_curve_are_exact_discrete_gbm) ... ok
-test_chunk_invariance_and_call_parity_on_each_grid (test_bergomi_refinement.BergomiRefinementTests.test_chunk_invariance_and_call_parity_on_each_grid) ... ok
-test_exact_ou_endpoints_and_brownian_cross_covariance (test_bergomi_refinement.BergomiRefinementTests.test_exact_ou_endpoints_and_brownian_cross_covariance) ... ok
-test_flat_deterministic_variance_is_black_scholes_with_zero_refinement (test_bergomi_refinement.BergomiRefinementTests.test_flat_deterministic_variance_is_black_scholes_with_zero_refinement) ... ok
-test_full_covariance_and_paired_errors_match_direct_payoff_differences (test_bergomi_refinement.BergomiRefinementTests.test_full_covariance_and_paired_errors_match_direct_payoff_differences) ... ok
-test_linear_coupling_preserves_independent_standard_normal_channels (test_bergomi_refinement.BergomiRefinementTests.test_linear_coupling_preserves_independent_standard_normal_channels) ... ok
-test_rejects_invalid_grids_context_domains_and_unresolved_ou_bridge (test_bergomi_refinement.BergomiRefinementTests.test_rejects_invalid_grids_context_domains_and_unresolved_ou_bridge) ... ok
-test_rough_near_brownian_limit_has_nested_driver_endpoints (test_bergomi_refinement.BergomiRefinementTests.test_rough_near_brownian_limit_has_nested_driver_endpoints) ... ok
-test_rough_rebuild_has_coarse_discrete_covariance_and_own_normalizer (test_bergomi_refinement.BergomiRefinementTests.test_rough_rebuild_has_coarse_discrete_covariance_and_own_normalizer) ... ok
-test_demo_serializes_deterministic_and_unsampled_tail_prices (test_gbm.GBMReferenceTests.test_demo_serializes_deterministic_and_unsampled_tail_prices) ... ok
-test_european_prices_match_reference_parity_and_zero_variance (test_gbm.GBMReferenceTests.test_european_prices_match_reference_parity_and_zero_variance) ... ok
-test_invalid_inputs_fail_explicitly (test_gbm.GBMReferenceTests.test_invalid_inputs_fail_explicitly) ... ok
-test_likelihood_has_correct_density_and_batch_broadcast (test_gbm.GBMReferenceTests.test_likelihood_has_correct_density_and_batch_broadcast) ... ok
-test_posterior_matches_worked_example_and_grid_integration (test_gbm.GBMReferenceTests.test_posterior_matches_worked_example_and_grid_integration) ... ok
-test_predictive_integrates_drift_uncertainty (test_gbm.GBMReferenceTests.test_predictive_integrates_drift_uncertainty) ... ok
-test_simulation_moments_independence_and_continuation (test_gbm.GBMReferenceTests.test_simulation_moments_independence_and_continuation) ... ok
-test_corruption_missing_files_and_semantic_tampering_are_rejected (test_gbm_bank.GBMBankTests.test_corruption_missing_files_and_semantic_tampering_are_rejected) ... ok
-test_example_values_survive_reordering_rebatching_and_count_changes (test_gbm_bank.GBMBankTests.test_example_values_survive_reordering_rebatching_and_count_changes) ... ok
-test_incomplete_or_failed_generation_is_not_a_loadable_bank (test_gbm_bank.GBMBankTests.test_incomplete_or_failed_generation_is_not_a_loadable_bank) ... ok
-test_invalid_configuration_and_example_requests_fail (test_gbm_bank.GBMBankTests.test_invalid_configuration_and_example_requests_fail) ... ok
-test_saved_bank_round_trip_and_existing_directory_protection (test_gbm_bank.GBMBankTests.test_saved_bank_round_trip_and_existing_directory_protection) ... ok
-test_splits_have_distinct_examples_and_explicit_truth_arrays (test_gbm_bank.GBMBankTests.test_splits_have_distinct_examples_and_explicit_truth_arrays) ... ok
-test_checkpoint_time_design_must_match_exactly (test_gbm_inference.GBMInferenceTests.test_checkpoint_time_design_must_match_exactly) ... ok
-test_only_observations_condition_and_truth_is_a_separate_target (test_gbm_inference.GBMInferenceTests.test_only_observations_condition_and_truth_is_a_separate_target) ... ok
-test_saved_bank_training_normalization_and_checkpoint_work_offline (test_gbm_inference.GBMInferenceTests.test_saved_bank_training_normalization_and_checkpoint_work_offline) ... Matplotlib is building the font cache; this may take a moment.
-INFO:jax._src.xla_bridge:Unable to initialize backend 'tpu': INTERNAL: Failed to open libtpu.so: dlopen(libtpu.so, 0x0001): tried: 'libtpu.so' (no such file), '/System/Volumes/Preboot/Cryptexes/OSlibtpu.so' (no such file), '/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-inference/.pixi/envs/default/bin/../lib/libtpu.so' (no such file), '/usr/lib/libtpu.so' (no such file, not in dyld cache), 'libtpu.so' (no such file)
-INFO:bayesflow:Using backend 'jax'
-INFO:bayesflow:Fitting on dataset instance of OfflineDataset.
-INFO:bayesflow:Building on a test batch.
-/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-inference/.pixi/envs/default/lib/python3.12/site-packages/keras/src/backend/jax/core.py:409: DeprecationWarning: __array__ implementation doesn't accept a copy keyword, so passing copy=False failed. __array__ must implement 'dtype' and 'copy' keyword arguments. To learn more, see the migration guide https://numpy.org/devdocs/numpy_2_0_migration_guide.html#adapting-to-changes-in-the-copy-keyword
-  return np.array(x)
-/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-inference/.pixi/envs/default/lib/python3.12/site-packages/keras/src/backend/common/variables.py:252: DeprecationWarning: __array__ implementation doesn't accept a copy keyword, so passing copy=False failed. __array__ must implement 'dtype' and 'copy' keyword arguments. To learn more, see the migration guide https://numpy.org/devdocs/numpy_2_0_migration_guide.html#adapting-to-changes-in-the-copy-keyword
-  return np.array(self)
-INFO:bayesflow:Training completed in 1.18 seconds.
-INFO:bayesflow:Training is now finished.
-You can find the trained approximator at '/var/folders/rg/_j_2xg8n0qgbf0dvg2dyq1_r0000gn/T/tmp3bjnyc44/checkpoint/model.keras'.
-To restore it:
-Via the workflow: workflow.load_approximator()
-Standalone: approximator = keras.saving.load_model("/var/folders/rg/_j_2xg8n0qgbf0dvg2dyq1_r0000gn/T/tmp3bjnyc44/checkpoint/model.keras")
-INFO:bayesflow:Approximator restored from '/var/folders/rg/_j_2xg8n0qgbf0dvg2dyq1_r0000gn/T/tmp3bjnyc44/checkpoint/model.keras'.
-Sampling:   0%|          | 0/1 [00:00<?, ?batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  3.18batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  3.18batch/s]
-INFO:bayesflow:Sampling completed in 0.39 seconds.
-INFO:bayesflow:Approximator restored from '/var/folders/rg/_j_2xg8n0qgbf0dvg2dyq1_r0000gn/T/tmp3bjnyc44/checkpoint/model.keras'.
-Sampling:   0%|          | 0/1 [00:00<?, ?batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  6.32batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  6.31batch/s]
-INFO:bayesflow:Sampling completed in 0.19 seconds.
-ok
-test_regenerates_selected_ids_and_declares_version_differences (test_gbm_smoke.GBMSmokeTests.test_regenerates_selected_ids_and_declares_version_differences) ... ok
-test_regeneration_rejects_wrong_values_even_with_a_valid_file_hash (test_gbm_smoke.GBMSmokeTests.test_regeneration_rejects_wrong_values_even_with_a_valid_file_hash) ... ok
-test_source_identity_cannot_be_skipped_or_changed (test_gbm_smoke.GBMSmokeTests.test_source_identity_cannot_be_skipped_or_changed) ... ok
-test_constant_variance_matches_exact_gbm_with_the_same_noise (test_heston.HestonTests.test_constant_variance_matches_exact_gbm_with_the_same_noise) ... ok
-test_full_truncation_retains_negative_state_and_handles_rho_edges (test_heston.HestonTests.test_full_truncation_retains_negative_state_and_handles_rho_edges) ... ok
-test_innovation_identity_does_not_depend_on_batch_order (test_heston.HestonTests.test_innovation_identity_does_not_depend_on_batch_order) ... ok
-test_invalid_inputs_and_unsupported_backend_fail_explicitly (test_heston.HestonTests.test_invalid_inputs_and_unsupported_backend_fail_explicitly) ... ok
-test_numpy_numba_and_segmented_restart_preserve_the_same_transition (test_heston.HestonTests.test_numpy_numba_and_segmented_restart_preserve_the_same_transition) ... ok
-test_one_step_moments_and_leverage_match_the_gaussian_transition (test_heston.HestonTests.test_one_step_moments_and_leverage_match_the_gaussian_transition) ... ok
-test_poisson_multiple_jumps_and_compensated_price_expectation (test_heston.HestonTests.test_poisson_multiple_jumps_and_compensated_price_expectation) ... ok
-test_asinh_adapter_preserves_time_conditions_and_raw_signed_targets (test_heston_bank_inference.HestonBankInferenceTests.test_asinh_adapter_preserves_time_conditions_and_raw_signed_targets) ... ok
-test_asinh_state_joint_training_normalization_sampling_and_reload (test_heston_bank_inference.HestonBankInferenceTests.test_asinh_state_joint_training_normalization_sampling_and_reload) ... INFO:bayesflow:Fitting on dataset instance of OfflineDataset.
-INFO:bayesflow:Building on a test batch.
-/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-inference/.pixi/envs/default/lib/python3.12/site-packages/keras/src/backend/jax/core.py:409: DeprecationWarning: __array__ implementation doesn't accept a copy keyword, so passing copy=False failed. __array__ must implement 'dtype' and 'copy' keyword arguments. To learn more, see the migration guide https://numpy.org/devdocs/numpy_2_0_migration_guide.html#adapting-to-changes-in-the-copy-keyword
-  return np.array(x)
-/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-inference/.pixi/envs/default/lib/python3.12/site-packages/keras/src/backend/common/variables.py:252: DeprecationWarning: __array__ implementation doesn't accept a copy keyword, so passing copy=False failed. __array__ must implement 'dtype' and 'copy' keyword arguments. To learn more, see the migration guide https://numpy.org/devdocs/numpy_2_0_migration_guide.html#adapting-to-changes-in-the-copy-keyword
-  return np.array(self)
-INFO:bayesflow:Training completed in 3.25 seconds.
-INFO:bayesflow:Training is now finished.
-You can find the trained approximator at '/var/folders/rg/_j_2xg8n0qgbf0dvg2dyq1_r0000gn/T/tmpbw0112_w/checkpoint/model.keras'.
-To restore it:
-Via the workflow: workflow.load_approximator()
-Standalone: approximator = keras.saving.load_model("/var/folders/rg/_j_2xg8n0qgbf0dvg2dyq1_r0000gn/T/tmpbw0112_w/checkpoint/model.keras")
-INFO:bayesflow:Approximator restored from '/var/folders/rg/_j_2xg8n0qgbf0dvg2dyq1_r0000gn/T/tmpbw0112_w/checkpoint/model.keras'.
-Summarizing:   0%|          | 0/1 [00:00<?, ?batch/s]Summarizing: 100%|██████████| 1/1 [00:00<00:00,  4.17batch/s]Summarizing: 100%|██████████| 1/1 [00:00<00:00,  4.16batch/s]
-Sampling:   0%|          | 0/1 [00:00<?, ?batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  1.02batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  1.02batch/s]
-INFO:bayesflow:Sampling completed in 1.30 seconds.
-INFO:bayesflow:Approximator restored from '/var/folders/rg/_j_2xg8n0qgbf0dvg2dyq1_r0000gn/T/tmpbw0112_w/checkpoint/model.keras'.
-Summarizing:   0%|          | 0/1 [00:00<?, ?batch/s]Summarizing: 100%|██████████| 1/1 [00:00<00:00, 27.36batch/s]
-Sampling:   0%|          | 0/1 [00:00<?, ?batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00, 43.09batch/s]
-INFO:bayesflow:Sampling completed in 0.06 seconds.
-ok
-test_example_values_survive_reordering_chunking_and_count_changes (test_heston_bank_inference.HestonBankInferenceTests.test_example_values_survive_reordering_chunking_and_count_changes) ... ok
-test_explicit_time_conditioning_uses_only_the_known_observation_grid (test_heston_bank_inference.HestonBankInferenceTests.test_explicit_time_conditioning_uses_only_the_known_observation_grid) ... ok
-test_explicit_time_joint_training_normalization_sampling_and_reload (test_heston_bank_inference.HestonBankInferenceTests.test_explicit_time_joint_training_normalization_sampling_and_reload) ... INFO:bayesflow:Fitting on dataset instance of OfflineDataset.
-INFO:bayesflow:Building on a test batch.
-INFO:bayesflow:Training completed in 2.31 seconds.
-INFO:bayesflow:Training is now finished.
-You can find the trained approximator at '/var/folders/rg/_j_2xg8n0qgbf0dvg2dyq1_r0000gn/T/tmppwi0yait/checkpoint/model.keras'.
-To restore it:
-Via the workflow: workflow.load_approximator()
-Standalone: approximator = keras.saving.load_model("/var/folders/rg/_j_2xg8n0qgbf0dvg2dyq1_r0000gn/T/tmppwi0yait/checkpoint/model.keras")
-INFO:bayesflow:Approximator restored from '/var/folders/rg/_j_2xg8n0qgbf0dvg2dyq1_r0000gn/T/tmppwi0yait/checkpoint/model.keras'.
-Summarizing:   0%|          | 0/1 [00:00<?, ?batch/s]Summarizing: 100%|██████████| 1/1 [00:00<00:00, 36.43batch/s]
-Sampling:   0%|          | 0/1 [00:00<?, ?batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00, 52.58batch/s]
-INFO:bayesflow:Sampling completed in 0.05 seconds.
-INFO:bayesflow:Approximator restored from '/var/folders/rg/_j_2xg8n0qgbf0dvg2dyq1_r0000gn/T/tmppwi0yait/checkpoint/model.keras'.
-Summarizing:   0%|          | 0/1 [00:00<?, ?batch/s]Summarizing: 100%|██████████| 1/1 [00:00<00:00, 35.10batch/s]
-Sampling:   0%|          | 0/1 [00:00<?, ?batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00, 54.83batch/s]
-INFO:bayesflow:Sampling completed in 0.05 seconds.
-ok
-test_offline_joint_training_normalization_sampling_and_reload (test_heston_bank_inference.HestonBankInferenceTests.test_offline_joint_training_normalization_sampling_and_reload) ... INFO:bayesflow:Fitting on dataset instance of OfflineDataset.
-INFO:bayesflow:Building on a test batch.
-INFO:bayesflow:Training completed in 0.99 seconds.
-INFO:bayesflow:Training is now finished.
-You can find the trained approximator at '/var/folders/rg/_j_2xg8n0qgbf0dvg2dyq1_r0000gn/T/tmpmj_efzox/checkpoint/model.keras'.
-To restore it:
-Via the workflow: workflow.load_approximator()
-Standalone: approximator = keras.saving.load_model("/var/folders/rg/_j_2xg8n0qgbf0dvg2dyq1_r0000gn/T/tmpmj_efzox/checkpoint/model.keras")
-INFO:bayesflow:Approximator restored from '/var/folders/rg/_j_2xg8n0qgbf0dvg2dyq1_r0000gn/T/tmpmj_efzox/checkpoint/model.keras'.
-Summarizing:   0%|          | 0/1 [00:00<?, ?batch/s]Summarizing: 100%|██████████| 1/1 [00:00<00:00, 19.68batch/s]
-Sampling:   0%|          | 0/1 [00:00<?, ?batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  6.19batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  6.18batch/s]
-INFO:bayesflow:Sampling completed in 0.28 seconds.
-INFO:bayesflow:Approximator restored from '/var/folders/rg/_j_2xg8n0qgbf0dvg2dyq1_r0000gn/T/tmpmj_efzox/checkpoint/model.keras'.
-Summarizing:   0%|          | 0/1 [00:00<?, ?batch/s]Summarizing: 100%|██████████| 1/1 [00:00<00:00, 36.53batch/s]
-Sampling:   0%|          | 0/1 [00:00<?, ?batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  6.42batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  6.41batch/s]
-INFO:bayesflow:Sampling completed in 0.22 seconds.
-ok
-test_ordered_conditioning_excludes_both_targets_and_future_metadata (test_heston_bank_inference.HestonBankInferenceTests.test_ordered_conditioning_excludes_both_targets_and_future_metadata) ... ok
-test_signed_state_asinh_inverse_and_change_of_variables (test_heston_bank_inference.HestonBankInferenceTests.test_signed_state_asinh_inverse_and_change_of_variables) ... ok
-test_spline_joint_training_normalization_sampling_and_reload (test_heston_bank_inference.HestonBankInferenceTests.test_spline_joint_training_normalization_sampling_and_reload) ... INFO:bayesflow:Fitting on dataset instance of OfflineDataset.
-INFO:bayesflow:Building on a test batch.
-INFO:bayesflow:Training completed in 2.23 seconds.
-INFO:bayesflow:Training is now finished.
-You can find the trained approximator at '/var/folders/rg/_j_2xg8n0qgbf0dvg2dyq1_r0000gn/T/tmp3r32le2h/checkpoint/model.keras'.
-To restore it:
-Via the workflow: workflow.load_approximator()
-Standalone: approximator = keras.saving.load_model("/var/folders/rg/_j_2xg8n0qgbf0dvg2dyq1_r0000gn/T/tmp3r32le2h/checkpoint/model.keras")
-INFO:bayesflow:Approximator restored from '/var/folders/rg/_j_2xg8n0qgbf0dvg2dyq1_r0000gn/T/tmp3r32le2h/checkpoint/model.keras'.
-Summarizing:   0%|          | 0/1 [00:00<?, ?batch/s]Summarizing: 100%|██████████| 1/1 [00:00<00:00, 35.70batch/s]
-Sampling:   0%|          | 0/1 [00:00<?, ?batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00, 52.87batch/s]
-INFO:bayesflow:Sampling completed in 0.05 seconds.
-INFO:bayesflow:Approximator restored from '/var/folders/rg/_j_2xg8n0qgbf0dvg2dyq1_r0000gn/T/tmp3r32le2h/checkpoint/model.keras'.
-Summarizing:   0%|          | 0/1 [00:00<?, ?batch/s]Summarizing: 100%|██████████| 1/1 [00:00<00:00, 34.62batch/s]
-Sampling:   0%|          | 0/1 [00:00<?, ?batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00, 51.70batch/s]
-INFO:bayesflow:Sampling completed in 0.05 seconds.
-ok
-test_split_isolation_and_verified_bank_round_trip (test_heston_bank_inference.HestonBankInferenceTests.test_split_isolation_and_verified_bank_round_trip) ... ok
-test_unknown_adapter_is_rejected_at_every_public_entry_point (test_heston_bank_inference.HestonBankInferenceTests.test_unknown_adapter_is_rejected_at_every_public_entry_point) ... ok
-test_unsupported_tasks_time_grids_and_target_support_fail (test_heston_bank_inference.HestonBankInferenceTests.test_unsupported_tasks_time_grids_and_target_support_fail) ... ok
-test_deterministic_variance_reference_matches_direct_likelihood (test_heston_reference.HestonReferenceTests.test_deterministic_variance_reference_matches_direct_likelihood) ... ok
-test_first_observation_preserves_theta_prior_and_conditions_signed_state (test_heston_reference.HestonReferenceTests.test_first_observation_preserves_theta_prior_and_conditions_signed_state) ... ok
-test_forecast_preserves_pairs_and_signed_continuation (test_heston_reference.HestonReferenceTests.test_forecast_preserves_pairs_and_signed_continuation) ... ok
-test_reference_rejects_other_models_and_time_designs (test_heston_reference.HestonReferenceTests.test_reference_rejects_other_models_and_time_designs) ... ok
-test_zero_variance_atom_is_not_a_floored_gaussian (test_heston_reference.HestonReferenceTests.test_zero_variance_atom_is_not_a_floored_gaussian) ... ok
-test_characteristic_identities_and_deterministic_variance_limit (test_hkde.HKDETests.test_characteristic_identities_and_deterministic_variance_limit) ... ok
-test_exact_interval_jump_moments_and_compensated_expectation (test_hkde.HKDETests.test_exact_interval_jump_moments_and_compensated_expectation) ... ok
-test_explicit_noise_identity_zero_jump_limit_and_restart (test_hkde.HKDETests.test_explicit_noise_identity_zero_jump_limit_and_restart) ... ok
-test_invalid_pricing_and_noise_fail (test_hkde.HKDETests.test_invalid_pricing_and_noise_fail) ... ok
-test_moment_support_including_absent_upward_tail (test_hkde.HKDETests.test_moment_support_including_absent_upward_tail) ... ok
-test_pricing_parity_bounds_monotonicity_and_refinement (test_hkde.HKDETests.test_pricing_parity_bounds_monotonicity_and_refinement) ... ok
-test_exact_inputs_pass_but_replacement_requires_explicit_flag (test_hkde_acceptance_review.AcceptanceReviewProvenanceTests.test_exact_inputs_pass_but_replacement_requires_explicit_flag) ... ok
-test_flag_cannot_change_dependency_or_environment_configuration (test_hkde_acceptance_review.AcceptanceReviewProvenanceTests.test_flag_cannot_change_dependency_or_environment_configuration) ... ok
-test_flag_cannot_rebind_scientific_sources_or_lock (test_hkde_acceptance_review.AcceptanceReviewProvenanceTests.test_flag_cannot_rebind_scientific_sources_or_lock) ... ok
-test_integrated_teaching_verifies_history_and_records_both_identities (test_hkde_acceptance_review.AcceptanceReviewProvenanceTests.test_integrated_teaching_verifies_history_and_records_both_identities) ... ok
-test_missing_history_and_wrong_historical_hash_fail_closed (test_hkde_acceptance_review.AcceptanceReviewProvenanceTests.test_missing_history_and_wrong_historical_hash_fail_closed) ... ok
-INFO:bayesflow:Approximator restored from '/Users/afengler/Projects/proj_sbi4finance/sbi4finance-main-closeout/checkpoints/hkde-theta-intensity-provisional/model.keras'.
-test_raw_density_has_adapter_and_fitted_standardizer_jacobians_once (test_hkde_correction.HKDECorrectionDensityTests.test_raw_density_has_adapter_and_fitted_standardizer_jacobians_once) ... INFO:bayesflow:Computing log probability completed in 0.88 seconds.
-ok
-test_saved_flow_raw_density_integrates_to_one_on_the_declared_box (test_hkde_correction.HKDECorrectionDensityTests.test_saved_flow_raw_density_integrates_to_one_on_the_declared_box) ... INFO:bayesflow:Computing log probability completed in 1.10 seconds.
-ok
-test_boundary_fraction_and_endpoint_failures_are_explicit (test_hkde_correction.HKDECorrectionMathTests.test_boundary_fraction_and_endpoint_failures_are_explicit) ... ok
-test_boundary_mixture_density_component_law_and_overlap (test_hkde_correction.HKDECorrectionMathTests.test_boundary_mixture_density_component_law_and_overlap) ... ok
-test_defensive_denominator_is_whole_mixture_for_both_components (test_hkde_correction.HKDECorrectionMathTests.test_defensive_denominator_is_whole_mixture_for_both_components) ... ok
-test_exact_likelihood_path_and_extreme_log_weights (test_hkde_correction.HKDECorrectionMathTests.test_exact_likelihood_path_and_extreme_log_weights) ... ok
-test_neural_negative_infinity_density_still_has_prior_support (test_hkde_correction.HKDECorrectionMathTests.test_neural_negative_infinity_density_still_has_prior_support) ... ok
-test_resampling_preserves_joint_pairs_and_is_repeatable (test_hkde_correction.HKDECorrectionMathTests.test_resampling_preserves_joint_pairs_and_is_repeatable) ... ok
-test_shape_support_weight_and_block_failures_are_explicit (test_hkde_correction.HKDECorrectionMathTests.test_shape_support_weight_and_block_failures_are_explicit) ... ok
-test_weight_correction_recovers_uniform_target_from_nonuniform_proposal (test_hkde_correction.HKDECorrectionMathTests.test_weight_correction_recovers_uniform_target_from_nonuniform_proposal) ... ok
-test_weighted_joint_summary_reference_mass_and_block_uncertainty (test_hkde_correction.HKDECorrectionMathTests.test_weighted_joint_summary_reference_mass_and_block_uncertainty) ... ok
-test_zero_boundary_component_preserves_v1_and_positive_component_replays (test_hkde_correction.HKDECorrectionMathTests.test_zero_boundary_component_preserves_v1_and_positive_component_replays) ... ok
-test_loading_binds_the_original_task_seed_checkpoint_and_price_model (test_hkde_correction_run.HKDECorrectionRunTests.test_loading_binds_the_original_task_seed_checkpoint_and_price_model) ... ok
-test_price_and_reliability_failures_do_not_cancel_across_cases (test_hkde_correction_run.HKDECorrectionRunTests.test_price_and_reliability_failures_do_not_cancel_across_cases) ... ok
-test_test_generation_cannot_precede_matching_validation (test_hkde_correction_run.HKDECorrectionRunTests.test_test_generation_cannot_precede_matching_validation) ... ok
-test_thinned_grid_reuses_exact_nodes_but_reintegrates_the_prior (test_hkde_correction_run.HKDECorrectionRunTests.test_thinned_grid_reuses_exact_nodes_but_reintegrates_the_prior) ... ok
-test_exchangeable_gaussian_ranks_coverage_and_replay (test_hkde_diagnostics.HKDEDiagnosticsTests.test_exchangeable_gaussian_ranks_coverage_and_replay) ... ok
-test_gaussian_conditional_moments_mass_and_quantile_uncertainty (test_hkde_diagnostics.HKDEDiagnosticsTests.test_gaussian_conditional_moments_mass_and_quantile_uncertainty) ... ok
-test_independent_marginals_do_not_recover_joint_dependence (test_hkde_diagnostics.HKDEDiagnosticsTests.test_independent_marginals_do_not_recover_joint_dependence) ... ok
-test_interval_mass_integrates_cdf_with_clamped_outer_endpoints (test_hkde_diagnostics.HKDEDiagnosticsTests.test_interval_mass_integrates_cdf_with_clamped_outer_endpoints) ... ok
-test_invalid_inputs_and_unbounded_small_sample_quantile_intervals (test_hkde_diagnostics.HKDEDiagnosticsTests.test_invalid_inputs_and_unbounded_small_sample_quantile_intervals) ... ok
-test_prior_copy_can_pass_sbc_and_fail_conditional_comparison (test_hkde_diagnostics.HKDEDiagnosticsTests.test_prior_copy_can_pass_sbc_and_fail_conditional_comparison) ... ok
-test_ties_are_randomized_across_the_complete_rank_range (test_hkde_diagnostics.HKDEDiagnosticsTests.test_ties_are_randomized_across_the_complete_rank_range) ... ok
-test_constant_likelihood_recovers_uniform_prior_on_unequal_axes (test_hkde_gate_audit.ReferenceCDFTests.test_constant_likelihood_recovers_uniform_prior_on_unequal_axes) ... ok
-test_linear_prices_match_independent_truncated_normal_posteriors (test_hkde_gate_audit.ReferenceCDFTests.test_linear_prices_match_independent_truncated_normal_posteriors) ... ok
-test_invalid_observations_and_targets_are_rejected (test_hkde_inference.HKDEInferenceTests.test_invalid_observations_and_targets_are_rejected) ... ok
-test_offline_train_only_scaling_joint_support_and_exact_reload (test_hkde_inference.HKDEInferenceTests.test_offline_train_only_scaling_joint_support_and_exact_reload) ... INFO:bayesflow:Fitting on dataset instance of OfflineDataset.
-INFO:bayesflow:Building on a test batch.
-/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-inference/.pixi/envs/default/lib/python3.12/site-packages/keras/src/backend/jax/core.py:409: DeprecationWarning: __array__ implementation doesn't accept a copy keyword, so passing copy=False failed. __array__ must implement 'dtype' and 'copy' keyword arguments. To learn more, see the migration guide https://numpy.org/devdocs/numpy_2_0_migration_guide.html#adapting-to-changes-in-the-copy-keyword
-  return np.array(x)
-/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-inference/.pixi/envs/default/lib/python3.12/site-packages/keras/src/backend/common/variables.py:252: DeprecationWarning: __array__ implementation doesn't accept a copy keyword, so passing copy=False failed. __array__ must implement 'dtype' and 'copy' keyword arguments. To learn more, see the migration guide https://numpy.org/devdocs/numpy_2_0_migration_guide.html#adapting-to-changes-in-the-copy-keyword
-  return np.array(self)
-INFO:bayesflow:Training completed in 2.21 seconds.
-INFO:bayesflow:Training is now finished.
-You can find the trained approximator at '/var/folders/rg/_j_2xg8n0qgbf0dvg2dyq1_r0000gn/T/tmpjg2dl7kn/checkpoint/model.keras'.
-To restore it:
-Via the workflow: workflow.load_approximator()
-Standalone: approximator = keras.saving.load_model("/var/folders/rg/_j_2xg8n0qgbf0dvg2dyq1_r0000gn/T/tmpjg2dl7kn/checkpoint/model.keras")
-INFO:bayesflow:Approximator restored from '/var/folders/rg/_j_2xg8n0qgbf0dvg2dyq1_r0000gn/T/tmpjg2dl7kn/checkpoint/model.keras'.
-Sampling:   0%|          | 0/1 [00:00<?, ?batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  1.07batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  1.07batch/s]
-INFO:bayesflow:Sampling completed in 0.99 seconds.
-INFO:bayesflow:Approximator restored from '/var/folders/rg/_j_2xg8n0qgbf0dvg2dyq1_r0000gn/T/tmpjg2dl7kn/checkpoint/model.keras'.
-Sampling:   0%|          | 0/1 [00:00<?, ?batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00, 56.64batch/s]
-INFO:bayesflow:Sampling completed in 0.02 seconds.
-ok
-test_prices_keep_order_scale_and_negative_gaussian_quotes (test_hkde_inference.HKDEInferenceTests.test_prices_keep_order_scale_and_negative_gaussian_quotes) ... ok
-test_task_model_order_context_and_prior_are_validated (test_hkde_inference.HKDEInferenceTests.test_task_model_order_context_and_prior_are_validated) ... ok
-test_truth_diagnostics_and_future_outcomes_do_not_condition (test_hkde_inference.HKDEInferenceTests.test_truth_diagnostics_and_future_outcomes_do_not_condition) ... ok
-test_broadcast_prices_preserve_bank_refined_labels_and_contract_order (test_hkde_reference.HKDEReferenceTests.test_broadcast_prices_preserve_bank_refined_labels_and_contract_order) ... ok
-test_constant_likelihood_recovers_continuous_uniform_cdf (test_hkde_reference.HKDEReferenceTests.test_constant_likelihood_recovers_continuous_uniform_cdf) ... ok
-test_empirical_target_quantile_convention_and_zero_weights (test_hkde_reference.HKDEReferenceTests.test_empirical_target_quantile_convention_and_zero_weights) ... ok
-test_grid_prior_weights_endpoints_and_targets (test_hkde_reference.HKDEReferenceTests.test_grid_prior_weights_endpoints_and_targets) ... ok
-test_invalid_task_rows_grid_and_observations_fail_explicitly (test_hkde_reference.HKDEReferenceTests.test_invalid_task_rows_grid_and_observations_fail_explicitly) ... ok
-test_joint_dependence_is_retained_in_target_prices (test_hkde_reference.HKDEReferenceTests.test_joint_dependence_is_retained_in_target_prices) ... ok
-test_likelihood_normalization_survives_tiny_absolute_density (test_hkde_reference.HKDEReferenceTests.test_likelihood_normalization_survives_tiny_absolute_density) ... ok
-test_rectangular_truncated_gaussian_matches_analytic_marginals (test_hkde_reference.HKDEReferenceTests.test_rectangular_truncated_gaussian_matches_analytic_marginals) ... ok
-test_constant_columns_are_valid_even_with_zero_prices (test_hkde_surrogate.HKDESurrogateTests.test_constant_columns_are_valid_even_with_zero_prices) ... ok
-test_context_contract_order_and_raw_parameter_units_are_bound (test_hkde_surrogate.HKDESurrogateTests.test_context_contract_order_and_raw_parameter_units_are_bound) ... ok
-test_currency_output_scales_with_labels_without_output_normalization (test_hkde_surrogate.HKDESurrogateTests.test_currency_output_scales_with_labels_without_output_normalization) ... ok
-test_default_degree_six_recovers_high_order_mixed_terms (test_hkde_surrogate.HKDESurrogateTests.test_default_degree_six_recovers_high_order_mixed_terms) ... ok
-test_invalid_saved_metadata_coefficients_and_pickle_are_rejected (test_hkde_surrogate.HKDESurrogateTests.test_invalid_saved_metadata_coefficients_and_pickle_are_rejected) ... ok
-test_no_out_of_domain_clipping_and_no_nonfinite_or_wrong_shape_inputs (test_hkde_surrogate.HKDESurrogateTests.test_no_out_of_domain_clipping_and_no_nonfinite_or_wrong_shape_inputs) ... ok
-test_nontrivial_mixed_polynomial_recovers_independent_rows (test_hkde_surrogate.HKDESurrogateTests.test_nontrivial_mixed_polynomial_recovers_independent_rows) ... ok
-test_rank_deficient_or_underdetermined_design_raises_without_degree_change (test_hkde_surrogate.HKDESurrogateTests.test_rank_deficient_or_underdetermined_design_raises_without_degree_change) ... ok
-test_saved_reload_predictions_are_exact_and_archive_has_no_pickle (test_hkde_surrogate.HKDESurrogateTests.test_saved_reload_predictions_are_exact_and_archive_has_no_pickle) ... ok
-test_baseline_load_preserves_failed_inference_and_rejects_tampering (test_hkde_surrogate_run.HKDESurrogateRunTests.test_baseline_load_preserves_failed_inference_and_rejects_tampering) ... ok
-test_named_splits_are_stable_separate_parameter_bases (test_hkde_surrogate_run.HKDESurrogateRunTests.test_named_splits_are_stable_separate_parameter_bases) ... ok
-test_same_draw_quantiles_isolate_known_forward_price_shift (test_hkde_surrogate_run.HKDESurrogateRunTests.test_same_draw_quantiles_isolate_known_forward_price_shift) ... ok
-test_weighted_pushforward_preserves_joint_rows_and_case_weights (test_hkde_surrogate_run.HKDESurrogateRunTests.test_weighted_pushforward_preserves_joint_rows_and_case_weights) ... ok
-test_changed_context_is_rejected_even_with_same_nine_prices (test_hkde_teaching.TeachingExampleTests.test_changed_context_is_rejected_even_with_same_nine_prices) ... ok
-test_corrupted_cache_fails_instead_of_downloading_or_retraining (test_hkde_teaching.TeachingExampleTests.test_corrupted_cache_fails_instead_of_downloading_or_retraining) ... ok
-test_edited_observation_cannot_reuse_another_panels_cached_posterior (test_hkde_teaching.TeachingExampleTests.test_edited_observation_cannot_reuse_another_panels_cached_posterior) ... ok
-test_invalid_parameter_draws_cannot_be_used_for_pricing (test_hkde_teaching.TeachingExampleTests.test_invalid_parameter_draws_cannot_be_used_for_pricing) ... ok
-test_published_failure_is_visible_and_target_is_not_an_input (test_hkde_teaching.TeachingExampleTests.test_published_failure_is_visible_and_target_is_not_an_input) ... ok
-test_truth_can_be_removed_without_changing_inputs_or_cached_draws (test_hkde_teaching.TeachingExampleTests.test_truth_can_be_removed_without_changing_inputs_or_cached_draws) ... ok
-test_accidentally_bound_raw_bank_is_rejected (test_hkde_teaching_checker.TeachingCheckerIsolationTests.test_accidentally_bound_raw_bank_is_rejected) ... ok
-test_combined_results_copy_excludes_unneeded_data_and_models (test_hkde_teaching_checker.TeachingCheckerIsolationTests.test_combined_results_copy_excludes_unneeded_data_and_models) ... ok
-test_cached_example_cannot_be_silently_replaced_or_relabelled (test_hkde_teaching_integration.HKDETeachingIntegrationTests.test_cached_example_cannot_be_silently_replaced_or_relabelled) ... ok
-test_contract_order_units_and_complete_task_are_checked (test_hkde_teaching_integration.HKDETeachingIntegrationTests.test_contract_order_units_and_complete_task_are_checked) ... ok
-test_default_review_requires_no_demo_audit (test_hkde_teaching_integration.HKDETeachingIntegrationTests.test_default_review_requires_no_demo_audit) ... ok
-test_demo_does_not_admit_an_additional_scientific_failure (test_hkde_teaching_integration.HKDETeachingIntegrationTests.test_demo_does_not_admit_an_additional_scientific_failure) ... ok
-test_local_panel_preserves_the_existing_checkpoint_conditions (test_hkde_teaching_integration.HKDETeachingIntegrationTests.test_local_panel_preserves_the_existing_checkpoint_conditions) ... ok
-test_opt_in_checks_published_evidence_without_changing_acceptance (test_hkde_teaching_integration.HKDETeachingIntegrationTests.test_opt_in_checks_published_evidence_without_changing_acceptance) ... ok
-test_truth_and_auxiliary_values_are_neither_used_nor_required (test_hkde_teaching_integration.HKDETeachingIntegrationTests.test_truth_and_auxiliary_values_are_neither_used_nor_required) ... ok
-test_all_documented_fixtures_roundtrip (test_local_data.LocalDataTests.test_all_documented_fixtures_roundtrip) ... ok
-test_duplicate_identity_and_bad_numbers_fail_after_hash_verification (test_local_data.LocalDataTests.test_duplicate_identity_and_bad_numbers_fail_after_hash_verification) ... ok
-test_import_and_loading_need_no_site_packages_or_network (test_local_data.LocalDataTests.test_import_and_loading_need_no_site_packages_or_network) ... ok
-test_integrity_and_incomplete_artifacts (test_local_data.LocalDataTests.test_integrity_and_incomplete_artifacts) ... ok
-test_labels_and_auxiliary_values_cannot_enter_conditioning (test_local_data.LocalDataTests.test_labels_and_auxiliary_values_cannot_enter_conditioning) ... ok
-test_order_zero_missing_and_unlabelled_are_preserved (test_local_data.LocalDataTests.test_order_zero_missing_and_unlabelled_are_preserved) ... ok
-test_versions_column_roles_and_header_are_checked (test_local_data.LocalDataTests.test_versions_column_roles_and_header_are_checked) ... ok
-test_writer_rejects_overwrite_and_invalid_rows_before_publication (test_local_data.LocalDataTests.test_writer_rejects_overwrite_and_invalid_rows_before_publication) ... ok
-test_failed_precision_retains_original_id_without_redrawing (test_option_bank.OptionBankTests.test_failed_precision_retains_original_id_without_redrawing) ... ok
-test_ids_order_and_bank_extension_do_not_change_examples (test_option_bank.OptionBankTests.test_ids_order_and_bank_extension_do_not_change_examples) ... ok
-test_numerical_settings_are_part_of_task_identity (test_option_bank.OptionBankTests.test_numerical_settings_are_part_of_task_identity) ... ok
-test_quote_noise_is_explicit_and_not_clipped (test_option_bank.OptionBankTests.test_quote_noise_is_explicit_and_not_clipped) ... ok
-test_reject_misdeclared_inputs (test_option_bank.OptionBankTests.test_reject_misdeclared_inputs) ... ok
-test_roundtrip_roles_and_checksum (test_option_bank.OptionBankTests.test_roundtrip_roles_and_checksum) ... ok
-test_one_factor_roundtrip_and_order (test_option_bank_bergomi.BergomiBankTests.test_one_factor_roundtrip_and_order) ... ok
-test_rough_roundtrip_and_order (test_option_bank_bergomi.BergomiBankTests.test_rough_roundtrip_and_order) ... ok
-test_append_cli_matches_full_bank_without_changing_base (test_option_bank_shards.OptionBankShardTests.test_append_cli_matches_full_bank_without_changing_base) ... ok
-test_append_rejects_changed_base_identity_counts_sources_and_versions (test_option_bank_shards.OptionBankShardTests.test_append_rejects_changed_base_identity_counts_sources_and_versions) ... ok
-test_append_requires_exact_suffix_coverage (test_option_bank_shards.OptionBankShardTests.test_append_requires_exact_suffix_coverage) ... ok
-test_array_wrapper_and_assembly_cli (test_option_bank_shards.OptionBankShardTests.test_array_wrapper_and_assembly_cli) ... ok
-test_checksum_source_configuration_and_versions_are_checked (test_option_bank_shards.OptionBankShardTests.test_checksum_source_configuration_and_versions_are_checked) ... ok
-test_failed_chunk_records_exact_id_without_redrawing (test_option_bank_shards.OptionBankShardTests.test_failed_chunk_records_exact_id_without_redrawing) ... ok
-test_invalid_ranges_are_rejected_before_creating_directories (test_option_bank_shards.OptionBankShardTests.test_invalid_ranges_are_rejected_before_creating_directories) ... ok
-test_missing_duplicate_and_overlapping_ranges_are_rejected (test_option_bank_shards.OptionBankShardTests.test_missing_duplicate_and_overlapping_ranges_are_rejected) ... ok
-test_rehashed_invalid_arrays_still_fail_before_success_manifest (test_option_bank_shards.OptionBankShardTests.test_rehashed_invalid_arrays_still_fail_before_success_manifest) ... ok
-test_shuffled_chunks_equal_monolithic_bank_and_preserve_roles (test_option_bank_shards.OptionBankShardTests.test_shuffled_chunks_equal_monolithic_bank_and_preserve_roles) ... ok
-test_changed_observations_fail_despite_matching_transfer_hash (test_option_bank_verifier.OptionBankVerifierTests.test_changed_observations_fail_despite_matching_transfer_hash) ... ok
-test_covariance_keeps_the_tight_currency_squared_tolerance (test_option_bank_verifier.OptionBankVerifierTests.test_covariance_keeps_the_tight_currency_squared_tolerance) ... ok
-test_currency_changes_above_noise_scaled_budget_fail (test_option_bank_verifier.OptionBankVerifierTests.test_currency_changes_above_noise_scaled_budget_fail) ... ok
-test_currency_roundoff_uses_explicit_quote_noise_fraction (test_option_bank_verifier.OptionBankVerifierTests.test_currency_roundoff_uses_explicit_quote_noise_fraction) ... ok
-test_exact_and_portable_report_distinct_guarantees (test_option_bank_verifier.OptionBankVerifierTests.test_exact_and_portable_report_distinct_guarantees) ... ok
-test_ids_are_exact_even_in_portable_mode (test_option_bank_verifier.OptionBankVerifierTests.test_ids_are_exact_even_in_portable_mode) ... ok
-test_invalid_quote_sigma_cannot_define_a_portable_budget (test_option_bank_verifier.OptionBankVerifierTests.test_invalid_quote_sigma_cannot_define_a_portable_budget) ... ok
-test_parameters_keep_the_tight_base_tolerance (test_option_bank_verifier.OptionBankVerifierTests.test_parameters_keep_the_tight_base_tolerance) ... ok
-test_platform_change_or_absence_is_disclosed (test_option_bank_verifier.OptionBankVerifierTests.test_platform_change_or_absence_is_disclosed) ... ok
-test_portable_never_accepts_changed_or_missing_scientific_source (test_option_bank_verifier.OptionBankVerifierTests.test_portable_never_accepts_changed_or_missing_scientific_source) ... ok
-test_small_float_change_requires_declared_portable_tolerance (test_option_bank_verifier.OptionBankVerifierTests.test_small_float_change_requires_declared_portable_tolerance) ... ok
-test_transfer_corruption_fails_before_regeneration (test_option_bank_verifier.OptionBankVerifierTests.test_transfer_corruption_fails_before_regeneration) ... ok
-test_verify_existing_cli_is_read_only_and_can_write_external_report (test_option_bank_verifier.OptionBankVerifierTests.test_verify_existing_cli_is_read_only_and_can_write_external_report) ... ok
-test_versions_must_match_exact_mode_but_portable_discloses_changes (test_option_bank_verifier.OptionBankVerifierTests.test_versions_must_match_exact_mode_but_portable_discloses_changes) ... ok
-test_checkpoint_gate_rechecks_stored_roles_conventions_and_rows (test_option_preparation.OptionPreparationTests.test_checkpoint_gate_rechecks_stored_roles_conventions_and_rows) ... ok
-test_checkpoint_requires_the_entire_scientific_task_not_only_shape (test_option_preparation.OptionPreparationTests.test_checkpoint_requires_the_entire_scientific_task_not_only_shape) ... ok
-test_conflicting_metadata_cannot_silently_relabel_the_input (test_option_preparation.OptionPreparationTests.test_conflicting_metadata_cannot_silently_relabel_the_input) ... ok
-test_contract_count_coordinates_order_and_ids_cannot_be_guessed (test_option_preparation.OptionPreparationTests.test_contract_count_coordinates_order_and_ids_cannot_be_guessed) ... ok
-test_market_origin_does_not_create_or_accept_synthetic_labels (test_option_preparation.OptionPreparationTests.test_market_origin_does_not_create_or_accept_synthetic_labels) ... ok
-test_missing_and_nonfinite_values_are_not_imputed_or_filtered (test_option_preparation.OptionPreparationTests.test_missing_and_nonfinite_values_are_not_imputed_or_filtered) ... ok
-test_preparation_roundtrip_is_nonmutating_and_truth_is_not_required (test_option_preparation.OptionPreparationTests.test_preparation_roundtrip_is_nonmutating_and_truth_is_not_required) ... ok
-test_preserves_single_premiums_order_and_unknown_timestamps (test_option_preparation.OptionPreparationTests.test_preserves_single_premiums_order_and_unknown_timestamps) ... ok
-test_truth_clean_prices_and_future_targets_do_not_enter_conditioning (test_option_preparation.OptionPreparationTests.test_truth_clean_prices_and_future_targets_do_not_enter_conditioning) ... ok
-test_conflicting_metadata_and_market_truth_are_rejected (test_return_preparation.ReturnPreparationTests.test_conflicting_metadata_and_market_truth_are_rejected) ... ok
-test_dates_and_intervals_must_match_the_explicit_schedule (test_return_preparation.ReturnPreparationTests.test_dates_and_intervals_must_match_the_explicit_schedule) ... ok
-test_future_and_unselected_values_do_not_change_conditioning_or_lineage (test_return_preparation.ReturnPreparationTests.test_future_and_unselected_values_do_not_change_conditioning_or_lineage) ... ok
-test_missing_or_invalid_selected_values_are_not_filled_or_dropped (test_return_preparation.ReturnPreparationTests.test_missing_or_invalid_selected_values_are_not_filled_or_dropped) ... ok
-test_preparation_is_deterministic_nonmutating_and_roundtrips (test_return_preparation.ReturnPreparationTests.test_preparation_is_deterministic_nonmutating_and_roundtrips) ... ok
-test_price_conversion_preserves_zero_and_explicit_model_time (test_return_preparation.ReturnPreparationTests.test_price_conversion_preserves_zero_and_explicit_model_time) ... ok
-test_supplied_returns_use_declared_scale_and_definition (test_return_preparation.ReturnPreparationTests.test_supplied_returns_use_declared_scale_and_definition) ... ok
-test_time_grid_cutoff_and_declared_units_are_checked (test_return_preparation.ReturnPreparationTests.test_time_grid_cutoff_and_declared_units_are_checked) ... ok
-test_covariance_and_hybrid_prices_agree_at_bounded_fixture_budget (test_rough_bergomi.RoughBergomiTests.test_covariance_and_hybrid_prices_agree_at_bounded_fixture_budget) ... ok
-test_covariance_reference_has_correct_gaussian_and_asset_dependence (test_rough_bergomi.RoughBergomiTests.test_covariance_reference_has_correct_gaussian_and_asset_dependence) ... ok
-test_hybrid_fft_matches_causal_sum_and_joint_covariance (test_rough_bergomi.RoughBergomiTests.test_hybrid_fft_matches_causal_sum_and_joint_covariance) ... ok
-test_near_brownian_limit_and_normalized_variance (test_rough_bergomi.RoughBergomiTests.test_near_brownian_limit_and_normalized_variance) ... ok
-test_rejects_nonrough_domain_positive_leverage_and_large_reference (test_rough_bergomi.RoughBergomiTests.test_rejects_nonrough_domain_positive_leverage_and_large_reference) ... ok
-test_zero_eta_and_parity_use_same_bounded_estimator (test_rough_bergomi.RoughBergomiTests.test_zero_eta_and_parity_use_same_bounded_estimator) ... ok
-test_aggregate_and_all_frozen_gates_are_required (test_rough_evaluation.RoughEvaluationTests.test_aggregate_and_all_frozen_gates_are_required) ... ok
-test_checkpoint_identity_and_reserved_test_guards (test_rough_evaluation.RoughEvaluationTests.test_checkpoint_identity_and_reserved_test_guards) ... ok
-test_invalid_target_shapes_and_errors_fail (test_rough_evaluation.RoughEvaluationTests.test_invalid_target_shapes_and_errors_fail) ... ok
-test_joint_preserves_paired_sample_axis (test_rough_evaluation.RoughEvaluationTests.test_joint_preserves_paired_sample_axis) ... ok
-test_nested_target_mean_sampling_error_counts_inner_variation_once (test_rough_evaluation.RoughEvaluationTests.test_nested_target_mean_sampling_error_counts_inner_variation_once) ... ok
-test_reference_arrays_use_clean_weights_and_exact_audit_cases (test_rough_evaluation.RoughEvaluationTests.test_reference_arrays_use_clean_weights_and_exact_audit_cases) ... ok
-test_any_reference_failure_records_all16_and_stops_before_neural_or_sbc (test_rough_heldout.RoughHeldoutTests.test_any_reference_failure_records_all16_and_stops_before_neural_or_sbc) ... ok
-test_failed_neural_gate_still_saves_all_cases_and_fully_reproducible_sbc (test_rough_heldout.RoughHeldoutTests.test_failed_neural_gate_still_saves_all_cases_and_fully_reproducible_sbc) ... ok
-test_fixed_split_and_original_id_order_are_required (test_rough_heldout.RoughHeldoutTests.test_fixed_split_and_original_id_order_are_required) ... ok
-test_prerequisites_reject_before_any_reserved_array_loader (test_rough_heldout.RoughHeldoutTests.test_prerequisites_reject_before_any_reserved_array_loader) ... ok
-test_augmentation_draws_new_quote_noise_around_clean_prices_only (test_rough_inference.RoughInferenceTests.test_augmentation_draws_new_quote_noise_around_clean_prices_only) ... ok
-test_augmentation_is_base_grouped_and_order_independent (test_rough_inference.RoughInferenceTests.test_augmentation_is_base_grouped_and_order_independent) ... ok
-test_augmentation_rejects_invalid_or_nontraining_groups (test_rough_inference.RoughInferenceTests.test_augmentation_rejects_invalid_or_nontraining_groups) ... ok
-test_invalid_observations_and_targets_are_rejected (test_rough_inference.RoughInferenceTests.test_invalid_observations_and_targets_are_rejected) ... ok
-test_offline_train_only_scaling_joint_support_and_exact_reload (test_rough_inference.RoughInferenceTests.test_offline_train_only_scaling_joint_support_and_exact_reload) ... INFO:bayesflow:Fitting on dataset instance of OfflineDataset.
-INFO:bayesflow:Building on a test batch.
-/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-inference/.pixi/envs/default/lib/python3.12/site-packages/keras/src/backend/jax/core.py:409: DeprecationWarning: __array__ implementation doesn't accept a copy keyword, so passing copy=False failed. __array__ must implement 'dtype' and 'copy' keyword arguments. To learn more, see the migration guide https://numpy.org/devdocs/numpy_2_0_migration_guide.html#adapting-to-changes-in-the-copy-keyword
-  return np.array(x)
-/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-inference/.pixi/envs/default/lib/python3.12/site-packages/keras/src/backend/common/variables.py:252: DeprecationWarning: __array__ implementation doesn't accept a copy keyword, so passing copy=False failed. __array__ must implement 'dtype' and 'copy' keyword arguments. To learn more, see the migration guide https://numpy.org/devdocs/numpy_2_0_migration_guide.html#adapting-to-changes-in-the-copy-keyword
-  return np.array(self)
-INFO:bayesflow:Training completed in 2.24 seconds.
-INFO:bayesflow:Training is now finished.
-You can find the trained approximator at '/var/folders/rg/_j_2xg8n0qgbf0dvg2dyq1_r0000gn/T/tmpjejwpn4v/checkpoint/model.keras'.
-To restore it:
-Via the workflow: workflow.load_approximator()
-Standalone: approximator = keras.saving.load_model("/var/folders/rg/_j_2xg8n0qgbf0dvg2dyq1_r0000gn/T/tmpjejwpn4v/checkpoint/model.keras")
-INFO:bayesflow:Approximator restored from '/var/folders/rg/_j_2xg8n0qgbf0dvg2dyq1_r0000gn/T/tmpjejwpn4v/checkpoint/model.keras'.
-Sampling:   0%|          | 0/1 [00:00<?, ?batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00, 55.05batch/s]
-INFO:bayesflow:Sampling completed in 0.02 seconds.
-INFO:bayesflow:Approximator restored from '/var/folders/rg/_j_2xg8n0qgbf0dvg2dyq1_r0000gn/T/tmpjejwpn4v/checkpoint/model.keras'.
-Sampling:   0%|          | 0/1 [00:00<?, ?batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00, 54.56batch/s]
-INFO:bayesflow:Sampling completed in 0.02 seconds.
-ok
-test_prices_keep_order_scale_and_negative_gaussian_quotes (test_rough_inference.RoughInferenceTests.test_prices_keep_order_scale_and_negative_gaussian_quotes) ... ok
-test_task_model_order_context_and_prior_are_validated (test_rough_inference.RoughInferenceTests.test_task_model_order_context_and_prior_are_validated) ... ok
-test_truth_diagnostics_and_future_outcomes_do_not_condition (test_rough_inference.RoughInferenceTests.test_truth_diagnostics_and_future_outcomes_do_not_condition) ... ok
-test_conditional_metrics_distinguish_joint_dependence_from_marginals (test_rough_reference.RoughReferenceTests.test_conditional_metrics_distinguish_joint_dependence_from_marginals) ... ok
-test_empty_block_support_is_explicit (test_rough_reference.RoughReferenceTests.test_empty_block_support_is_explicit) ... ok
-test_finite_price_noise_is_integrated_by_clean_reference_rows (test_rough_reference.RoughReferenceTests.test_finite_price_noise_is_integrated_by_clean_reference_rows) ... ok
-test_invalid_shapes_weights_and_degenerate_support (test_rough_reference.RoughReferenceTests.test_invalid_shapes_weights_and_degenerate_support) ... ok
-test_sbc_statistics_exchangeability_ties_and_conditional_limit (test_rough_reference.RoughReferenceTests.test_sbc_statistics_exchangeability_ties_and_conditional_limit) ... ok
-test_snis_target_precision_includes_independent_target_noise (test_rough_reference.RoughReferenceTests.test_snis_target_precision_includes_independent_target_noise) ... ok
-test_uniform_weight_mcse_is_ordinary_sample_mean_se (test_rough_reference.RoughReferenceTests.test_uniform_weight_mcse_is_ordinary_sample_mean_se) ... ok
-test_weighted_moments_quantiles_and_rescaling (test_rough_reference.RoughReferenceTests.test_weighted_moments_quantiles_and_rescaling) ... ok
-test_weights_follow_quote_law_and_are_unit_translation_invariant (test_rough_reference.RoughReferenceTests.test_weights_follow_quote_law_and_are_unit_translation_invariant) ... ok
-
-----------------------------------------------------------------------
-Ran 225 tests in 37.393s
-
-OK
