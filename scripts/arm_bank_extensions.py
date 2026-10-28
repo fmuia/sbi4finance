@@ -112,6 +112,51 @@ def external_campaign_ready(dependency, scheduler):
     return settled(run["attempts"], run["started_utc"], scheduler)
 
 
+def native_recovery_ready(route, report, manifest_sha, scheduler):
+    """Check a native continuation without rewriting its failed predecessors."""
+    binding = route["native_recovery"]
+    execution_path = Path(route["dependency_execution"])
+    jobs_path = Path(binding["jobs"])
+    config_path = Path(binding["campaign_config"])
+    if (report.get("recovery_execution") != str(execution_path)
+            or report.get("recovery_execution_sha256") != sha(execution_path)
+            or report.get("recovery_jobs_sha256") != sha(jobs_path)
+            or report.get("recovery_config_sha256") != sha(config_path)
+            or any(report.get(k) != v for k, v in binding["completion_fields"].items())
+            or any(sha(p) != digest for p, digest in binding["frozen_provenance"].items())):
+        raise ValueError("native recovery completion does not match frozen provenance")
+    run = json.loads(execution_path.read_text())
+    jobs = json.loads(jobs_path.read_text())
+    config = json.loads(config_path.read_text())
+    native_manifest = Path(binding["snapshot"]) / "manifest.json"
+    checked_manifest = Path(route["dependency_snapshot"]) / "manifest.json"
+    native = json.loads(native_manifest.read_text())
+    if (run.get("state") != "completed_checked_snapshot"
+            or run.get("snapshot") != binding["snapshot"]
+            or run.get("snapshot_manifest_sha256") != sha(native_manifest)
+            or report.get("recovery_snapshot_manifest_sha256") != sha(native_manifest)
+            or native["collection_id"] != route["collection_id"]
+            or native["configuration"]
+                != json.loads(checked_manifest.read_text())["configuration"]
+            or run.get("collection_id") != route["collection_id"]
+            or run.get("source_sha256") != report["source_sha256"]
+            or run.get("runtime") != report["runtime"]
+            or run.get("producer_git_revision") != report["source_revision"]
+            or jobs.get("jobs") != binding["expected_jobs"]
+            or run.get("planned_workers") != len(binding["expected_jobs"])
+            or any(run["config"].get(k) != v for k, v in config.items())
+            or config["cpu_hours"] != binding["cpu_hours"]
+            or config["prior_cpu_seconds"] != binding["prior_cpu_seconds"]):
+        raise ValueError("native recovery task/coverage/budget differs")
+    indices = [i for a in run["attempts"] if a["role"] == "workers" for i in a["indices"]]
+    if sorted(indices) != list(range(len(binding["expected_jobs"]))):
+        raise ValueError("native recovery worker identities are missing or duplicated")
+    ready, reason = settled(run["attempts"], run["started_utc"], scheduler)
+    if not ready:
+        return ready, reason
+    return settled(report["integrity_attempts"], report["integrity_started_utc"], scheduler)
+
+
 def readiness(plan, name, states, scheduler):
     route = plan["routes"][name]
     if route.get("after_campaign"):
@@ -132,6 +177,8 @@ def readiness(plan, name, states, scheduler):
             return False, "predecessor_final_check_running"
         raise ValueError("predecessor final check failed or is incompatible")
     manifest_sha = check_snapshot(route, report)
+    if route.get("native_recovery"):
+        return native_recovery_ready(route, report, manifest_sha, scheduler)
     execution_path = Path(route.get("dependency_execution", plan["original_execution"]))
     original = json.loads(execution_path.read_text())
     if route.get("reviewed_recovery"):
@@ -230,6 +277,10 @@ def run_waiter(plan_path, *, scheduler=None, runner=subprocess.run, sleep=time.s
         if route.get("after_campaign"):
             p = route["after_campaign"]["config"]
             frozen[p] = sha(p)
+        if route.get("native_recovery"):
+            binding = route["native_recovery"]
+            frozen[binding["campaign_config"]] = sha(binding["campaign_config"])
+            frozen.update(binding["frozen_provenance"])
     ledger = {"format": "bank_extension_waiter_v1", "state": "armed", "pid": os.getpid(),
               "started_utc": now(), "frozen_sha256": frozen,
               "routes": {n: {"state": "waiting"} for n in plan["routes"]},
