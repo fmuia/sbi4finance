@@ -1,0 +1,69 @@
+{
+  "checked_utc": "2026-10-28T18:02:41.599662+00:00",
+  "new_root_absent": true,
+  "old_plan_sha256": "8f2ec3d0059374bfc23f3d2c0f46a6c3dc728cc7a05bb3f90e16da5063b88855",
+  "old_run_sha256": "54033c26be0b66afe937f609f5db650646e9ebc89a9686b4a891bcf5dceb4611",
+  "old_driver_sha256": "fd2546eee2c2cf8503ac4d3f189418a76bb2008ac9e8edbd5aadf3f0c51fc4cb",
+  "bank_manifest_sha256": "1a7906f58a2b3e1e4cc868bc819c9c9308357f2f23f7fbb642c682860fb0074f",
+  "original_state": "partial_screen",
+  "checkpoints": {
+    "flow_matching-vector": {
+      "model_sha256": "c436c9986b8a7e48fb52e39af5570b4cc775485f245f8810c54828e0b20f7801",
+      "training_json_sha256": "c2865c65600edee2e1ff9f8e4a86ec79fbe487817448bbc743bec41766655333",
+      "selected_epoch": 200,
+      "checkpoint_sha256": "c436c9986b8a7e48fb52e39af5570b4cc775485f245f8810c54828e0b20f7801",
+      "reload_exact": true,
+      "sampler": {
+        "method": "tsit5",
+        "steps": "adaptive"
+      }
+    },
+    "affine-vector": {
+      "model_sha256": "946b357ae2e236bb18c0674e5e3c550262a97363aff23f2e420c66fbe83f9b20",
+      "training_json_sha256": "187a64f85cca1da422cea399db7c38307adcac6b5cdfe3b51e04e9ca86fcd0f0",
+      "selected_epoch": 200,
+      "checkpoint_sha256": "946b357ae2e236bb18c0674e5e3c550262a97363aff23f2e420c66fbe83f9b20",
+      "reload_exact": true,
+      "sampler": null
+    },
+    "spline-vector": {
+      "model_sha256": "48eb03f01fb90a0af1e960eb8f05dacf3c349bb3879e47c8d2259a4420f12d73",
+      "training_json_sha256": "a58aa0df8f9d858cfb5d928c61122381b16a2e3140502d73eea9b0290354d315",
+      "selected_epoch": 200,
+      "checkpoint_sha256": "48eb03f01fb90a0af1e960eb8f05dacf3c349bb3879e47c8d2259a4420f12d73",
+      "reload_exact": true,
+      "sampler": null
+    },
+    "mean_flow-vector": {
+      "model_sha256": "8b199de75bd06184f72ad85406d780058c1e133fc993e5533a48fc795340a45d",
+      "training_json_sha256": "13851563470a795861f2f30fe6e34f521b38495a19d743d0c45022eca855a988",
+      "selected_epoch": 200,
+      "checkpoint_sha256": "8b199de75bd06184f72ad85406d780058c1e133fc993e5533a48fc795340a45d",
+      "reload_exact": true,
+      "sampler": null
+    },
+    "flow_matching-deepset": {
+      "model_sha256": "0d8dc6269442689b4e687e1593b9f9497363bc3d79efa63b9940a53363e889c1",
+      "training_json_sha256": "e8e2d4054098ae4f05167856da1575f18b1f5b67bd5ba85d78529d257b8a7d35",
+      "selected_epoch": 200,
+      "checkpoint_sha256": "0d8dc6269442689b4e687e1593b9f9497363bc3d79efa63b9940a53363e889c1",
+      "reload_exact": true,
+      "sampler": {
+        "method": "tsit5",
+        "steps": "adaptive"
+      }
+    },
+    "flow_matching-set_transformer": {
+      "model_sha256": "044ec379bb3dd52ede4ad7899ac41eac6a7c7e8cc34540642b91be67f98cd125",
+      "training_json_sha256": "0ef5358a1ee5bf9d96a05944d73d1f9683cf2d39775a5d619d51bb9dd5e7a6e1",
+      "selected_epoch": 200,
+      "checkpoint_sha256": "044ec379bb3dd52ede4ad7899ac41eac6a7c7e8cc34540642b91be67f98cd125",
+      "reload_exact": true,
+      "sampler": {
+        "method": "tsit5",
+        "steps": "adaptive"
+      }
+    }
+  },
+  "raw_accounting": "8059371|FAILED|1:0|1231|4|billing=112,cpu=4,gres/gpu=1,mem=32G,node=1|gpu3001|2026-10-28T13:57:31\n8059371.batch|FAILED|1:0|1231|4|cpu=4,gres/gpu=1,mem=32G,node=1|gpu3001|2026-10-28T13:57:31\n8059371.extern|COMPLETED|0:0|1231|4|billing=112,cpu=4,gres/gpu=1,mem=32G,node=1|gpu3001|2026-10-28T13:57:31\n"
+}

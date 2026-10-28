@@ -1,0 +1,28 @@
+{
+  "checked_utc": "2026-10-28T18:06:23.357716+00:00",
+  "read_only": true,
+  "job_id": "8061867",
+  "queue": {
+    "returncode": 0,
+    "stdout": "8061867|RUNNING|0:46|gpu3102|4|gres/gpu:l40s:1\n",
+    "stderr": ""
+  },
+  "accounting": {
+    "returncode": 0,
+    "stdout": "8061867|RUNNING|46|4|0:0|billing=112,cpu=4,gres/gpu=1,mem=32G,node=1|gpu3102\n8061867.batch|RUNNING|46|4|0:0|cpu=4,gres/gpu=1,mem=32G,node=1|gpu3102\n8061867.extern|RUNNING|46|4|0:0|billing=112,cpu=4,gres/gpu=1,mem=32G,node=1|gpu3102\n",
+    "stderr": ""
+  },
+  "progress": {
+    "state": "running",
+    "started_utc": "2026-10-28T18:05:38.612163+00:00",
+    "plan_sha256": "1268b637861a90f9dc4c2bc350907d5666c8fd959d1c9b7ad41a41cbd32a4917",
+    "variants": [
+      {
+        "name": "flow_matching-deepset",
+        "state": "running"
+      }
+    ],
+    "scientific_acceptance": false,
+    "reserved_test_evaluated": false
+  }
+}
