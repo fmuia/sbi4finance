@@ -1,0 +1,100 @@
+{
+  "observed_utc_approx": "2026-10-28T12:30:00Z",
+  "read_only": true,
+  "scope": "Only six remaining joint recovery workers",
+  "completed_recovery_workers": 304,
+  "running_recovery_workers": 5,
+  "worker_wall_seconds": 10800,
+  "observations": [
+    {
+      "original_map_index": 995,
+      "array_task": "8046699_995",
+      "physical_job_id": 8046724,
+      "node": "node2346",
+      "state": "RUNNING",
+      "observed_elapsed_seconds_earlier": 8567,
+      "process_pid": 4029658,
+      "process_state": "R",
+      "user_cpu_seconds": 924.32,
+      "system_cpu_seconds": 7661.57,
+      "minor_page_faults": 230292783,
+      "maxrss_kib": 678028
+    },
+    {
+      "original_map_index": 997,
+      "array_task": "8046699_997",
+      "physical_job_id": 8046726,
+      "node": "node2346",
+      "state": "RUNNING",
+      "observed_elapsed_seconds_earlier": 8567,
+      "process_pid": 4029661,
+      "process_state": "R",
+      "user_cpu_seconds": 915.05,
+      "system_cpu_seconds": 7666.2,
+      "minor_page_faults": 229210204,
+      "maxrss_kib": 645232
+    },
+    {
+      "original_map_index": 1000,
+      "array_task": "8046699_1000",
+      "physical_job_id": 8046729,
+      "node": "node2346",
+      "state": "RUNNING",
+      "observed_elapsed_seconds_earlier": 8567,
+      "process_pid": 4029660,
+      "process_state": "R",
+      "user_cpu_seconds": 894.02,
+      "system_cpu_seconds": 7693.19,
+      "minor_page_faults": 231033689,
+      "maxrss_kib": 670588
+    },
+    {
+      "original_map_index": 1001,
+      "array_task": "8046699_1001",
+      "physical_job_id": 8046730,
+      "node": "node2346",
+      "state": "RUNNING",
+      "observed_elapsed_seconds_earlier": 8567,
+      "process_pid": 4029657,
+      "process_state": "R",
+      "user_cpu_seconds": 916.58,
+      "system_cpu_seconds": 7669.05,
+      "minor_page_faults": 228503624,
+      "maxrss_kib": 648120
+    },
+    {
+      "original_map_index": 1124,
+      "array_task": "8047386_1124",
+      "physical_job_id": 8047388,
+      "node": "node1827",
+      "state": "COMPLETED",
+      "elapsed_seconds": 6667,
+      "exit_code": "0:0",
+      "user_cpu_seconds": 2007.906,
+      "system_cpu_seconds": 4624,
+      "maxrss_kib_at_running_sample": 711916
+    },
+    {
+      "original_map_index": 1249,
+      "array_task": "8048677_1249",
+      "physical_job_id": 8048678,
+      "node": "node1827",
+      "state": "RUNNING",
+      "observed_elapsed_seconds_earlier": 3688,
+      "process_pid": 2441193,
+      "process_state": "R",
+      "user_cpu_seconds": 1405.14,
+      "system_cpu_seconds": 2334.9,
+      "minor_page_faults": 19524190,
+      "maxrss_kib": 657604
+    }
+  ],
+  "evidence": [
+    "squeue for exact six jobs",
+    "sstat using physical job IDs; each AveCPU close to elapsed",
+    "direct read-only /proc/PID/stat on node2346 and node1827; CLK_TCK=100",
+    "sacct confirms worker1124 terminal COMPLETED0:0",
+    "logs show Slurm prolog only; no intermediate row-progress logging"
+  ],
+  "interpretation": "Four node2346 workers have roughly89percent system CPU and are slow tails with real risk of reaching3h; high CPU usage alone does not establish useful numerical progress. Node association suggests runtime/kernel slowdown, not a proven hardware diagnosis. No numerical errors or OOM observed. No actions taken."
+}
