@@ -42,8 +42,19 @@ def main():
         np.random.SeedSequence([args.seed, int(r)])).standard_normal(len(sd)) for r in rows])
     workflow = thin_joint.load(args.checkpoint, task)
     started = time.perf_counter()
-    draws = np.concatenate([thin_joint.sample(workflow, task, quotes[s:s + 250], args.draws, args.scale,
-                                              seed=args.seed + s) for s in range(0, len(rows), 250)])
+    # Draws are cached per batch of 100 surfaces, so an interrupted run continues where it stopped.
+    cache = args.out.with_suffix(".batches")
+    cache.mkdir(exist_ok=True)
+    batches = []
+    for s in range(0, len(rows), 100):
+        path = cache / f"{s:05d}-{args.draws}-{args.scale:g}-{args.seed}.npy"
+        if not path.exists():
+            temporary = path.with_name(path.stem + ".tmp.npy")
+            np.save(temporary, thin_joint.sample(workflow, task, quotes[s:s + 100], args.draws, args.scale,
+                                                 seed=args.seed + s))
+            temporary.replace(path)
+        batches.append(np.load(path))
+    draws = np.concatenate(batches)
     seconds = time.perf_counter() - started
     truth = np.asarray(data["parameters"], dtype=float)[rows]
     names = thin_joint.NAMES + ["rho_eta", "forward_variance_6m_1y"]
