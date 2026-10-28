@@ -292,7 +292,7 @@ The Heston chains of study S3, with an exact likelihood, needed about 12,300 eva
 
 One Monte Carlo surface of rough Bergomi costs 4.96 CPU-seconds at the first rung of its path ladder, measured on a flat 20% curve without the error-budget check (same file), and 11.9 CPU-seconds on average across the pilot bank, where the budget is enforced (Lecture 13, Section 13.8). Lecture 14 shows what an exact rough-Bergomi posterior costs at these prices. Rough Bergomi, whose smile has the right shape and whose exact posterior is expensive, is where the method is needed (Lecture 13).
 
-**Jumps.** The tutorial's study of 9 October 2026 calibrated Heston with Kou double-exponential jumps (HKDE; Agazzotti et al. 2025) to simulated surfaces that mimic the paper's AMZN and SHOP calibrations. The Fourier pricer gives its likelihood in closed form, so calibration to an option surface does not need simulation-based inference there ([SVJ design document, "Why not HKDE on option surfaces"](https://github.com/fmuia/sbi4finance/blob/574b940087cd66a7540c5aa080f64e8b33010314/docs/design/svj-design-document.md#why-not-hkde-on-option-surfaces)). Lecture 6, Section 6.4 shows the two optima that the study found.
+**Jumps.** The tutorial's study of 9 October 2026 calibrated Heston with Kou double-exponential jumps (HKDE; Agazzotti et al. 2025) to simulated surfaces that mimic the paper's AMZN and SHOP calibrations. The Fourier pricer gives its likelihood in closed form, so calibration to an option surface does not need simulation-based inference there. Lecture 6, Section 6.4 shows the two optima that the study found.
 
 ## 10.12 Further detail: five inversions and the quadrature ladder
 

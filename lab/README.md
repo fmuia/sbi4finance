@@ -25,7 +25,7 @@ pixi run test                  # unit tests and the tutorial parity tests
 | `checks/` | Quick checks behind the "why Bayes" material and the course: not accepted studies; [checks/README.md](checks/README.md) |
 | `cluster/` | Oscar: lane discovery, bank arrays, network training, one generic study job. Submit every job from `lab/` |
 | `tests/` | Unit tests, and `test_tutorial_parity.py`, which checks that the tutorial's copies of this code are unchanged and return the same numbers |
-| `plans/` | The [numerical experiment plan](plans/NUMERICAL-EXPERIMENT-PLAN.md), its [protocol](plans/EXPERIMENT-PROTOCOL.md), the [cluster runbook](plans/CLUSTER-RUNS.md), the [sparse-chain follow-up](plans/SPARSE-QUOTE-CASE-PLAN.md), the [MCMC policy](plans/mcmc-policy.md) and the [porting guide for the restructure](plans/RESTRUCTURE.md) |
+| `plans/` | The [numerical experiment plan](plans/NUMERICAL-EXPERIMENT-PLAN.md), its [protocol](plans/EXPERIMENT-PROTOCOL.md), the [cluster runbook](plans/CLUSTER-RUNS.md), the [sparse-chain follow-up](plans/SPARSE-QUOTE-CASE-PLAN.md) and the [MCMC policy](plans/mcmc-policy.md) |
 | `data/SOURCES.md` | Where the raw option chains came from. Raw files are not committed; derived data are |
 
 ## From a task to the stage
@@ -86,7 +86,7 @@ lines stay separate until every shipped network is retrained.
   the release. It stays because `studies/train_calibration.py` and `studies/accept.py` still import it, and PR #48
   edits `train_calibration.py`. Cut it when the sparse follow-up is decided, after PR #48 lands. The course's Lecture 16 cites its
   EWG results.
-- **Helpers borrowed from archived models.** `gbm.py`, `gbm_bank.py` (small utilities) and `svj/plots.py` (the
+- **Helpers from other models.** `gbm.py`, `gbm_bank.py` (small utilities) and `svj/plots.py` (the
   figure style) stay because the library imports a few functions from them; `svj/pmmh.py`, with the
   `svj/filtering.py` and `svj/model.py` it imports, stays because `studies/heston_check.py` and
   `studies/pricer_route.py` take R-hat and ESS from it. Fold those functions into `calibration/` after the

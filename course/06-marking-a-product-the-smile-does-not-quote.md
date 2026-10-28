@@ -233,4 +233,4 @@ Lecture 16, Section 16.8 gathers the evidence for each claim, and says what the 
 - Board of Governors of the Federal Reserve System, OCC, FDIC (2026). SR 26-2: Revised Guidance on Model Risk Management, 17 April 2026. [Federal Reserve](https://www.federalreserve.gov/supervisionreg/srletters/SR2602.htm)
 - Prudential Regulation Authority (2023). Supervisory Statement SS1/23, Model risk management principles for banks. [Bank of England](https://www.bankofengland.co.uk/prudential-regulation/publication/2023/may/model-risk-management-principles-for-banks-ss)
 
-Figures: `course/scripts/lecture08.py`, except Figure 6.2, from the HKDE study of 9 October 2026, whose code is archived at commit 574b940.
+Figures: `course/scripts/lecture08.py`, except Figure 6.2, from the HKDE study of 9 October 2026.

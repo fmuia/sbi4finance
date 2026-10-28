@@ -1,6 +1,6 @@
 # Course version 2: plan
 
-24 October 2026, revised after the review of the same day. Owner: Francesco Muia. [Course index](README.md).
+24 October 2026, revised after the review of the same day. [Course index](README.md).
 
 This plan says what version 2 of the course argues, which example carries the argument, what was wrong in earlier
 runs, and what is still to run. The runs themselves, with commands and costs, are in

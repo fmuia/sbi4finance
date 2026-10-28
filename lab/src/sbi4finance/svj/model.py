@@ -92,7 +92,7 @@ PRIOR = Prior()
 
 
 def prior_table(prior=PRIOR):
-    """The prior in the coordinates of the SVJ design document (archived at 574b940), with 95% ranges."""
+    """The prior on the eight parameter coordinates, each with its definition and 95% range."""
     import pandas as pd
 
     z = 1.959964

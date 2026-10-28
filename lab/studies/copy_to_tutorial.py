@@ -40,7 +40,7 @@ COPIED_FROM = {
 # Modules and definitions written for the tutorial, and why.
 WRITTEN_FOR_THE_TUTORIAL = {
     "paths": "where tutorial/assets/ is",
-    "why_bayes": "slot 1's toy example; the lab no longer uses it (archived at 574b940)",
+    "why_bayes": "slot 1's toy example, which the lab does not use",
     "tasks.rough_task": "reads the task the lab stored, instead of building it",
     "inference._checked_task": "checks a task's keys; the lab validated the shipped tasks (test_the_shipped_tasks_are_the_labs)",
     "long_end.ROUGH": "reads tutorial/assets/",

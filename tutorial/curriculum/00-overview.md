@@ -1,6 +1,6 @@
 # The ICAIF '26 tutorial: curriculum
 
-Draft for the organizers' review. 24 October 2026, revision 3. Owner: Francesco Muia.
+Draft for the organizers' review. 24 October 2026, revision 3.
 
 This folder fixes what the tutorial teaches, in what order and why: this summary, and one file per slot.
 
@@ -15,7 +15,7 @@ For the proposed next numerical campaign, read the [experiment plan](../../lab/p
 | [05-slot5-rough-bergomi-to-a-reserve.md](05-slot5-rough-bergomi-to-a-reserve.md) | 5. Rough Bergomi on the SPY smile: from the posterior to a reserve | Francesco, Alex | 40 |
 | [06-slot6-priors-and-misspecification.md](06-slot6-priors-and-misspecification.md) | 6. Changing priors and dealing with misspecified models | Stefan | 15 |
 
-The folder replaces `CURRICULUM.md` (revision 1, same day) and, where they differ, §4, §9, §10 and §13 of [PLAN.md](https://github.com/fmuia/sbi4finance/blob/574b940087cd66a7540c5aa080f64e8b33010314/tutorial_final/PLAN.md). A number written ⟨Sn⟩ comes from study Sn ([course/status.md](../../course/status.md)) and is not on screen until [CLAIMS.md](../CLAIMS.md) records the final run.
+A number written ⟨Sn⟩ comes from study Sn ([course/status.md](../../course/status.md)) and is not on screen until [CLAIMS.md](../CLAIMS.md) records the final run.
 
 ## Executive summary
 
@@ -135,17 +135,15 @@ shows the pilot's results, with a "pending" card wherever the full study is miss
 
 ## 6. The take-home track
 
-The proposal calibrates from returns and propagates into value-at-risk. The afternoon no longer does, so the repository carries that material as take-home notebooks. Each is drafted on a branch or in the archive and moves into `extras/`, which does not exist yet:
+The proposal calibrates from returns and propagates into value-at-risk. The afternoon does not. A take-home track was to carry that material:
 
-| Notebook | What it teaches | Source |
+| Notebook | What it teaches | Draft |
 | --- | --- | --- |
-| `extras/returns_bayesflow_basics.py` | BayesFlow on 1,000 VOO returns under GBM: the same workflow as slot 4, with VaR and expected shortfall | Branch `feat/tutorial-slot4-bayesflow-basics`, edited |
+| `extras/returns_bayesflow_basics.py` | BayesFlow on 1,000 VOO returns under GBM: the same workflow as slot 4, with VaR and expected shortfall | Branch `feat/tutorial-slot4-bayesflow-basics` |
 | `extras/svj_from_returns.py` | Stochastic volatility with jumps from returns, with a particle-filter audit | The SVJ lesson (#38), branch `feat/tutorial-slot5-svj-advanced` |
-| `extras/multifractal_returns.py` | The multifractal model of asset returns | [`notebooks/01_mmar_univariate.py`](https://github.com/fmuia/sbi4finance/blob/574b940087cd66a7540c5aa080f64e8b33010314/notebooks/01_mmar_univariate.py) in the archive |
+| `extras/multifractal_returns.py` | The multifractal model of asset returns | None on a branch |
 | `extras/crash_day_priors.py` | How much the prior decides the probability of a 7% loss day | Branch `feat/tutorial-slot6-crash-risk` (#42) |
 | `extras/betas_across_stocks.py` | Cross-sectional shrinkage of betas | Branch `feat/tutorial-slot1-intro` (option D) |
-
-Slot 1's last slide names the track in one line.
 
 Decision D21 (28 October): the track is not part of the release.
 
@@ -176,11 +174,11 @@ The audience has read the proposal. Each promise the curriculum does not keep ne
 | Calibration from return series (its Figure 1, "simulated pairs (parameters, return series)"), with joint returns-and-options calibration named as the follow-on edition | Every slot works on an option smile | Decision D16. Slot 1 says in one line why the afternoon uses options and that returns go home; the take-home track (§6) carries returns |
 | Propagation into volatility forecasts and value-at-risk (learning outcome 4) | Propagation into product prices and a reserve | Partly kept; VaR and volatility forecasts are in the take-home track |
 | Five model families: Heston, jump diffusion, GARCH, rough, multifractal | Black–Scholes, Heston, rough Bergomi; Heston with jumps as one slide | Name the take-home notebooks on slot 1's last slide, the SVJ and multifractal notebooks included; GARCH has no notebook: say so, or drop it from the slide |
-| Two notebooks live and one taken home, in student and solved versions, runnable on Colab | Live notebooks in slots 1, 2, 4, 5 and 6 | Decision D10 for the number; decision D17 for the student and solved versions; decision D9 of PLAN.md for the hosted option |
+| Two notebooks live and one taken home, in student and solved versions, runnable on Colab | Live notebooks in slots 1, 2, 4, 5 and 6 | Decision D10 for the number; decision D17 for the student and solved versions; on Colab, the tutorial installs with pip (`tutorial/README.md`) |
 | Half a day, 3.5 hours: principles (1 h with a break), a worked example hands-on (1.5 h with a break), advanced concepts and a second example (1 h with a 15-minute Q&A) | 115 minutes of talks; about 95 minutes of the 3.5 hours unassigned | Decision D12: assign the time to breaks, the Q&A and exercises after slots 4 and 5 |
 | A close with "a broader view of the field and recent developments" | Slot 6's last minute | Slot 6's close names recent developments in one slide, or the Q&A opens with them |
 | "Trained checkpoints for every example" | Heston's network exists; the rough network and slot 6's networks are pending | Ship each by its slot's freeze, or say which examples train at home |
-| Four organizers teaching | Jerry Huang has no slot | Decision D18: a role for Jerry, for example the hands-on support, slot 6's networks or the SBC study, as PLAN.md §14 proposed |
+| Four organizers teaching | Jerry Huang has the same role as Stefan | Decision D18 |
 | "Attendees calibrate real market data and sign off on the diagnostics" | Presenters do it on SPY | Decision D12: exercises after slots 4 and 5 |
 | LLM-based verification agents, used hands-on | Not in any slot | Decision D11: a two-minute demonstration in slot 4's check step, or drop it and say so |
 | "Special emphasis" on learning from series of different scales, dimensions, lengths and degrees of missingness; autoregressive samplers | Not in any slot; the smile is a fixed grid | The largest content gap after returns. Slot 3 can show the set network for real chains as the answer for quotes; time series stay in the take-home track. Say so rather than imply coverage |
@@ -216,7 +214,7 @@ The audience has read the proposal. Each promise the curriculum does not keep ne
 | D14 | Threshold for gate G3 | One smile in three flagged | Fri 30 Oct |
 | D15 | Slot 6's sensitivity-aware network and summary-space detector | Build the first; the second if time allows | Fri 30 Oct |
 | D17 | Student and solved versions of the notebooks | Solved versions on stage; student versions with the exercises blanked, generated from the solved ones | Fri 30 Oct |
-| D18 | Jerry Huang's role | To agree with Jerry | Fri 30 Oct |
+| D18 | Jerry Huang's role | Agreed on 28 Oct: the same as Stefan's | Done |
 | D19 | Slot 5's rough-Bergomi task: the known-curve task (three unknowns) or the inferred-curve task (six) | Open: the numerical results decide; the slot 5 notebook follows the known-curve pilot until then | Fri 6 Nov |
 | D20 | BayesFlow version of the shipped networks | Agreed on 28 Oct: every network shipped to participants moves to BayesFlow 2.1 (the Heston candidate once it is packaged, the rough-Bergomi network, slot 2's toy network retrained), and the tutorial's pin moves with them | Wed 11 Nov |
 | D21 | The take-home returns track (SVJ, the multifractal model, GBM from returns, crash-day priors, betas across stocks) | Agreed on 28 Oct: not part of the release | Done |
@@ -225,8 +223,8 @@ The audience has read the proposal. Each promise the curriculum does not keep ne
 
 ## 11. Sources
 
-- [PLAN.md](https://github.com/fmuia/sbi4finance/blob/574b940087cd66a7540c5aa080f64e8b33010314/tutorial_final/PLAN.md): the decision, the studies, the timeline. [CLAIMS.md](../CLAIMS.md): the status of every number.
+- [course/status.md](../../course/status.md): the studies. [CLAIMS.md](../CLAIMS.md): the status of every number.
 - [The course](../../course/README.md): the long version of slots 1, 4 and 5.
 - The proposal: *Amortized Bayesian Calibration of Volatility Models*, ICAIF '26 tutorial proposal.
 - The feasibility run of 23 October: `lab/checks/heston_spy_exact.py` and [data/heston-spy-exact.json](../assets/data/heston-spy-exact.json).
-- Branches with earlier slot drafts: `feat/tutorial-slot1-intro`, `feat/tutorial-slot4-bayesflow-basics`, `feat/tutorial-slot6-crash-risk`.
+- Branches with other slot drafts: `feat/tutorial-slot1-intro`, `feat/tutorial-slot4-bayesflow-basics`, `feat/tutorial-slot6-crash-risk`.

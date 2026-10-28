@@ -2,7 +2,7 @@
 
     python thin_chain.py TICKER RAW_CHAIN.json OUT.json
 
-RAW_CHAIN.json is the Cboe delayed-quotes file; it is not committed (decision D6), and data/SOURCES.md gives the
+RAW_CHAIN.json is the Cboe delayed-quotes file; it is not committed, and data/SOURCES.md gives the
 URL each file was downloaded from. settings.json gives, per ticker, the as-of date, spot, rate and dividends,
 with their sources. OUT.json keeps derived data only. Per out-of-the-money quote: the log-moneyness, the implied
 volatilities of the bid, the ask and the mid, the vendor's implied volatility, the open interest, the day's

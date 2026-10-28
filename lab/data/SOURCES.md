@@ -1,6 +1,6 @@
 # Data sources
 
-Raw quote files are not committed (decision D6 of the [plan of 22 October](https://github.com/fmuia/sbi4finance/blob/574b940087cd66a7540c5aa080f64e8b33010314/tutorial_final/PLAN.md), now archived). The repository keeps derived data only:
+Raw quote files are not committed. The repository keeps derived data only:
 implied volatilities, prices in forward units, half-spreads and the design-grid readings. This page says where each raw
 file came from, so that a collaborator can fetch a file of the same kind.
 

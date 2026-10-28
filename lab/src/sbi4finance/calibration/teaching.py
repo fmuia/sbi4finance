@@ -1,6 +1,6 @@
 """Loaders, figures and small helpers of the tutorial notebooks, and load_network for the lab's studies.
 
-The notebooks no longer import this module: tutorial/src/sbi4f_tutorial/teaching.py copies the functions they
+The notebooks do not import this module: tutorial/src/sbi4f_tutorial/teaching.py copies the functions they
 use, and lab/tests/test_tutorial_parity.py fails when a copy differs from the code here. A missing result returns None,
 so a caller can say "pending" instead of failing. Only load_network initializes the neural backend.
 """
