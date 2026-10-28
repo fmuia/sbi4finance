@@ -1,0 +1,1905 @@
+{
+ "paths": 32768,
+ "product_paths": 8192,
+ "seed": 20261028,
+ "names": [
+  "hurst",
+  "eta",
+  "rho",
+  "short_variance",
+  "long_variance",
+  "decay"
+ ],
+ "prior_bounds": [
+  [
+   0.02,
+   0.35
+  ],
+  [
+   0.5,
+   3.5
+  ],
+  [
+   -0.99,
+   -0.2
+  ],
+  [
+   0.01,
+   0.16
+  ],
+  [
+   0.01,
+   0.16
+  ],
+  [
+   0.25,
+   8.0
+  ]
+ ],
+ "results": [
+  {
+   "name": "A rising, slow decay (SPY-like dynamics)",
+   "theta": [
+    0.09,
+    2.6,
+    -0.73,
+    0.02,
+    0.06,
+    0.5
+   ],
+   "seconds": 65.12200951576233,
+   "sd_joint": {
+    "hurst": 0.016079413918152666,
+    "eta": 0.09411070742850251,
+    "rho": 0.057385529943468,
+    "short_variance": 0.0005802873385420639,
+    "long_variance": 0.09550556352977117,
+    "decay": 1.3911718550204881
+   },
+   "sd_known_curve": {
+    "hurst": 0.012970422795470091,
+    "eta": 0.07254001646513739,
+    "rho": 0.04789390007146383
+   },
+   "sd_ratio_joint_over_known": {
+    "hurst": 1.2396985180597495,
+    "eta": 1.2973626422284033,
+    "rho": 1.1981803498533519
+   },
+   "sd_over_prior_width": {
+    "hurst": 0.04872549672167475,
+    "eta": 0.03137023580950084,
+    "rho": 0.07263991132084557,
+    "short_variance": 0.003868582256947093,
+    "long_variance": 0.6367037568651411,
+    "decay": 0.17950604580909524
+   },
+   "correlation": [
+    [
+     1.0,
+     -0.433,
+     0.829,
+     -0.4,
+     -0.071,
+     0.108
+    ],
+    [
+     -0.433,
+     1.0,
+     -0.091,
+     0.441,
+     0.046,
+     -0.042
+    ],
+    [
+     0.829,
+     -0.091,
+     1.0,
+     -0.265,
+     -0.066,
+     0.101
+    ],
+    [
+     -0.4,
+     0.441,
+     -0.265,
+     1.0,
+     0.574,
+     -0.6
+    ],
+    [
+     -0.071,
+     0.046,
+     -0.066,
+     0.574,
+     1.0,
+     -0.998
+    ],
+    [
+     0.108,
+     -0.042,
+     0.101,
+     -0.6,
+     -0.998,
+     1.0
+    ]
+   ],
+   "scaled_eigenvalues": [
+    2.2855391155219147,
+    139.91296486507636,
+    806.9493187215288,
+    3699.9813908142132,
+    14346.65848431734,
+    260303.09608237632
+   ],
+   "weakest_direction": {
+    "hurst": -0.006,
+    "eta": 0.002,
+    "rho": -0.008,
+    "short_variance": 0.003,
+    "long_variance": 0.963,
+    "decay": -0.271
+   },
+   "weakest_sd_in_prior_widths": 0.6614631745149276,
+   "gn90_crosses_prior_box": {
+    "hurst": [
+     false,
+     false
+    ],
+    "eta": [
+     false,
+     false
+    ],
+    "rho": [
+     false,
+     false
+    ],
+    "short_variance": [
+     false,
+     false
+    ],
+    "long_variance": [
+     true,
+     true
+    ],
+    "decay": [
+     true,
+     false
+    ]
+   },
+   "curve_products": [
+    {
+     "product": "2y variance swap strike (variance)",
+     "value": 0.03471517764685769,
+     "gn_sd": 0.006254428053898606,
+     "gn90": [
+      0.024427268940999874,
+      0.04500308635271551
+     ],
+     "below_0.01": false,
+     "above_0.16": false,
+     "rel_sd": 0.18016408032020362
+    },
+    {
+     "product": "1y->2y forward variance",
+     "value": 0.04090790251670471,
+     "gn_sd": 0.011673034084672804,
+     "gn90": [
+      0.021706928750826415,
+      0.060108876282583004
+     ],
+     "below_0.01": false,
+     "above_0.16": false,
+     "rel_sd": 0.28534912245637944
+    }
+   ],
+   "mc_products": {
+    "names": [
+     "forward_start_call",
+     "put_2y_90"
+    ],
+    "price": [
+     0.022156118055853973,
+     0.04150863110119041
+    ],
+    "gn_sd_joint": [
+     0.00048649537292504906,
+     0.004403816061449441
+    ],
+    "gn_sd_known_curve": [
+     0.0003775919215573939,
+     0.0011429182075244244
+    ],
+    "rel_sd_joint": [
+     0.02195760880577678,
+     0.10609398442251076
+    ],
+    "rel_sd_known_curve": [
+     0.017042332082069248,
+     0.02753447119800699
+    ]
+   },
+   "slice_weakest": [
+    {
+     "t_sd": -3,
+     "inside_prior": false,
+     "chi2": null,
+     "quadratic": 9
+    },
+    {
+     "t_sd": -2,
+     "inside_prior": false,
+     "chi2": null,
+     "quadratic": 4
+    },
+    {
+     "t_sd": -1.6449,
+     "inside_prior": false,
+     "chi2": null,
+     "quadratic": 2.70569601
+    },
+    {
+     "t_sd": -1,
+     "inside_prior": false,
+     "chi2": null,
+     "quadratic": 1
+    },
+    {
+     "t_sd": 1,
+     "inside_prior": false,
+     "chi2": null,
+     "quadratic": 1
+    },
+    {
+     "t_sd": 1.6449,
+     "inside_prior": false,
+     "chi2": null,
+     "quadratic": 2.70569601
+    },
+    {
+     "t_sd": 2,
+     "inside_prior": false,
+     "chi2": null,
+     "quadratic": 4
+    },
+    {
+     "t_sd": 3,
+     "inside_prior": false,
+     "chi2": null,
+     "quadratic": 9
+    }
+   ]
+  },
+  {
+   "name": "B rising, fast decay",
+   "theta": [
+    0.09,
+    2.6,
+    -0.73,
+    0.02,
+    0.06,
+    4.0
+   ],
+   "seconds": 97.72396159172058,
+   "sd_joint": {
+    "hurst": 0.01387731381539334,
+    "eta": 0.07524650550568589,
+    "rho": 0.04840621713182908,
+    "short_variance": 0.0006886180134855268,
+    "long_variance": 0.0037233526584710165,
+    "decay": 0.6833299013794819
+   },
+   "sd_known_curve": {
+    "hurst": 0.01060793196302289,
+    "eta": 0.0596899818815728,
+    "rho": 0.03847057788127161
+   },
+   "sd_ratio_joint_over_known": {
+    "hurst": 1.3082016234424254,
+    "eta": 1.2606220195371785,
+    "rho": 1.258265921588726
+   },
+   "sd_over_prior_width": {
+    "hurst": 0.04205246610725255,
+    "eta": 0.025082168501895295,
+    "rho": 0.06127369257193554,
+    "short_variance": 0.004590786756570179,
+    "long_variance": 0.024822351056473443,
+    "decay": 0.08817160017799766
+   },
+   "correlation": [
+    [
+     1.0,
+     -0.539,
+     0.892,
+     -0.357,
+     0.406,
+     -0.167
+    ],
+    [
+     -0.539,
+     1.0,
+     -0.322,
+     0.36,
+     0.075,
+     -0.002
+    ],
+    [
+     0.892,
+     -0.322,
+     1.0,
+     -0.299,
+     0.393,
+     -0.144
+    ],
+    [
+     -0.357,
+     0.36,
+     -0.299,
+     1.0,
+     0.287,
+     -0.559
+    ],
+    [
+     0.406,
+     0.075,
+     0.393,
+     0.287,
+     1.0,
+     -0.875
+    ],
+    [
+     -0.167,
+     -0.002,
+     -0.144,
+     -0.559,
+     -0.875,
+     1.0
+    ]
+   ],
+   "scaled_eigenvalues": [
+    115.59693598091907,
+    198.5625039795009,
+    1550.8188661245622,
+    5625.938728537511,
+    20994.142013409586,
+    158754.73875926802
+   ],
+   "weakest_direction": {
+    "hurst": -0.188,
+    "eta": 0.028,
+    "rho": -0.265,
+    "short_variance": -0.021,
+    "long_variance": -0.247,
+    "decay": 0.912
+   },
+   "weakest_sd_in_prior_widths": 0.09300939910729657,
+   "gn90_crosses_prior_box": {
+    "hurst": [
+     false,
+     false
+    ],
+    "eta": [
+     false,
+     false
+    ],
+    "rho": [
+     false,
+     false
+    ],
+    "short_variance": [
+     false,
+     false
+    ],
+    "long_variance": [
+     false,
+     false
+    ],
+    "decay": [
+     false,
+     false
+    ]
+   },
+   "curve_products": [
+    {
+     "product": "2y variance swap strike (variance)",
+     "value": 0.05500167731313951,
+     "gn_sd": 0.002563438731444817,
+     "gn90": [
+      0.05078507694378594,
+      0.05921827768249309
+     ],
+     "below_0.01": false,
+     "above_0.16": false,
+     "rel_sd": 0.046606555593758765
+    },
+    {
+     "product": "1y->2y forward variance",
+     "value": 0.05982019823739169,
+     "gn_sd": 0.003575837217261242,
+     "gn90": [
+      0.05393830359871867,
+      0.06570209287606471
+     ],
+     "below_0.01": false,
+     "above_0.16": false,
+     "rel_sd": 0.0597764187118006
+    }
+   ],
+   "mc_products": {
+    "names": [
+     "forward_start_call",
+     "put_2y_90"
+    ],
+    "price": [
+     0.030287823444758,
+     0.05670869044936777
+    ],
+    "gn_sd_joint": [
+     0.00040898214953278075,
+     0.0014093949582243577
+    ],
+    "gn_sd_known_curve": [
+     0.00036163285623909874,
+     0.0010883446069499096
+    ],
+    "rel_sd_joint": [
+     0.013503187189357592,
+     0.024853244662433757
+    ],
+    "rel_sd_known_curve": [
+     0.011939875999960228,
+     0.019191848697716545
+    ]
+   },
+   "slice_weakest": [
+    {
+     "t_sd": -3,
+     "inside_prior": true,
+     "chi2": 48.142637954053484,
+     "quadratic": 9
+    },
+    {
+     "t_sd": -2,
+     "inside_prior": true,
+     "chi2": 10.589586018449138,
+     "quadratic": 4
+    },
+    {
+     "t_sd": -1.6449,
+     "inside_prior": true,
+     "chi2": 5.610890224086689,
+     "quadratic": 2.70569601
+    },
+    {
+     "t_sd": -1,
+     "inside_prior": true,
+     "chi2": 1.3910390837372424,
+     "quadratic": 1
+    },
+    {
+     "t_sd": 1,
+     "inside_prior": true,
+     "chi2": 1.1617997457064635,
+     "quadratic": 1
+    },
+    {
+     "t_sd": 1.6449,
+     "inside_prior": true,
+     "chi2": 3.9864435104695244,
+     "quadratic": 2.70569601
+    },
+    {
+     "t_sd": 2,
+     "inside_prior": true,
+     "chi2": 6.80005244886457,
+     "quadratic": 4
+    },
+    {
+     "t_sd": 3,
+     "inside_prior": true,
+     "chi2": 22.61167828447247,
+     "quadratic": 9
+    }
+   ]
+  },
+  {
+   "name": "C flat curve",
+   "theta": [
+    0.09,
+    2.6,
+    -0.73,
+    0.04,
+    0.04,
+    2.0
+   ],
+   "seconds": 80.84694147109985,
+   "sd_joint": {
+    "hurst": 0.011847312330186629,
+    "eta": 0.06431584973618504,
+    "rho": 0.03988251648837256,
+    "short_variance": 0.0005724515540235102,
+    "long_variance": 0.0023473137615119097,
+    "decay": 62856459044.49814
+   },
+   "sd_known_curve": {
+    "hurst": 0.009367065982252225,
+    "eta": 0.047466931018870236,
+    "rho": 0.0326172284735961
+   },
+   "sd_ratio_joint_over_known": {
+    "hurst": 1.2647836956239793,
+    "eta": 1.3549611983681145,
+    "rho": 1.2227438796848655
+   },
+   "sd_over_prior_width": {
+    "hurst": 0.035900946455111,
+    "eta": 0.021438616578728347,
+    "rho": 0.05048419808654754,
+    "short_variance": 0.003816343693490068,
+    "long_variance": 0.0156487584100794,
+    "decay": 8110510844.451373
+   },
+   "correlation": [
+    [
+     1.0,
+     -0.289,
+     0.871,
+     -0.382,
+     0.578,
+     -0.116
+    ],
+    [
+     -0.289,
+     1.0,
+     -0.02,
+     0.484,
+     0.184,
+     0.218
+    ],
+    [
+     0.871,
+     -0.02,
+     1.0,
+     -0.241,
+     0.571,
+     -0.051
+    ],
+    [
+     -0.382,
+     0.484,
+     -0.241,
+     1.0,
+     -0.428,
+     0.019
+    ],
+    [
+     0.578,
+     0.184,
+     0.571,
+     -0.428,
+     1.0,
+     0.042
+    ],
+    [
+     -0.116,
+     0.218,
+     -0.051,
+     0.019,
+     0.042,
+     1.0
+    ]
+   ],
+   "scaled_eigenvalues": [
+    1.520209987212033e-20,
+    270.6858616832229,
+    1876.2764566284766,
+    5251.161981659972,
+    11601.943336561428,
+    154659.22380230628
+   ],
+   "weakest_direction": {
+    "hurst": -0.0,
+    "eta": 0.0,
+    "rho": -0.0,
+    "short_variance": 0.0,
+    "long_variance": 0.0,
+    "decay": 1.0
+   },
+   "weakest_sd_in_prior_widths": 8110510844.451372,
+   "gn90_crosses_prior_box": {
+    "hurst": [
+     false,
+     false
+    ],
+    "eta": [
+     false,
+     false
+    ],
+    "rho": [
+     false,
+     false
+    ],
+    "short_variance": [
+     false,
+     false
+    ],
+    "long_variance": [
+     false,
+     false
+    ],
+    "decay": [
+     true,
+     true
+    ]
+   },
+   "curve_products": [
+    {
+     "product": "2y variance swap strike (variance)",
+     "value": 0.04,
+     "gn_sd": 0.001715808441656156,
+     "gn90": [
+      0.03717766669431979,
+      0.042822333305680214
+     ],
+     "below_0.01": false,
+     "above_0.16": false,
+     "rel_sd": 0.0428952110414039
+    },
+    {
+     "product": "1y->2y forward variance",
+     "value": 0.04,
+     "gn_sd": 0.002225731962454962,
+     "gn90": [
+      0.036338893494957836,
+      0.043661106505042166
+     ],
+     "below_0.01": false,
+     "above_0.16": false,
+     "rel_sd": 0.055643299061374045
+    }
+   ],
+   "mc_products": {
+    "names": [
+     "forward_start_call",
+     "put_2y_90"
+    ],
+    "price": [
+     0.027030039991145713,
+     0.04718022688019785
+    ],
+    "gn_sd_joint": [
+     0.000392473836621738,
+     0.0009915501104087695
+    ],
+    "gn_sd_known_curve": [
+     0.00035261906508929195,
+     0.0009109847905384329
+    ],
+    "rel_sd_joint": [
+     0.01451991327982872,
+     0.02101622175167911
+    ],
+    "rel_sd_known_curve": [
+     0.013045451105688343,
+     0.019308614027050915
+    ]
+   },
+   "slice_weakest": [
+    {
+     "t_sd": -3,
+     "inside_prior": false,
+     "chi2": null,
+     "quadratic": 9
+    },
+    {
+     "t_sd": -2,
+     "inside_prior": false,
+     "chi2": null,
+     "quadratic": 4
+    },
+    {
+     "t_sd": -1.6449,
+     "inside_prior": false,
+     "chi2": null,
+     "quadratic": 2.70569601
+    },
+    {
+     "t_sd": -1,
+     "inside_prior": false,
+     "chi2": null,
+     "quadratic": 1
+    },
+    {
+     "t_sd": 1,
+     "inside_prior": false,
+     "chi2": 0.06952956086342557,
+     "quadratic": 1
+    },
+    {
+     "t_sd": 1.6449,
+     "inside_prior": false,
+     "chi2": 0.1895336082879035,
+     "quadratic": 2.70569601
+    },
+    {
+     "t_sd": 2,
+     "inside_prior": false,
+     "chi2": 0.2814733229025697,
+     "quadratic": 4
+    },
+    {
+     "t_sd": 3,
+     "inside_prior": false,
+     "chi2": 0.6425200902623324,
+     "quadratic": 9
+    }
+   ]
+  },
+  {
+   "name": "D falling curve (stressed)",
+   "theta": [
+    0.09,
+    2.6,
+    -0.73,
+    0.1,
+    0.04,
+    1.5
+   ],
+   "seconds": 93.41580653190613,
+   "sd_joint": {
+    "hurst": 0.008549940754222825,
+    "eta": 0.03839446817800378,
+    "rho": 0.026238748415828957,
+    "short_variance": 0.0009589371771017942,
+    "long_variance": 0.0163837853742402,
+    "decay": 0.6501834829676728
+   },
+   "sd_known_curve": {
+    "hurst": 0.005801323681224827,
+    "eta": 0.025681234096144465,
+    "rho": 0.018767726000004606
+   },
+   "sd_ratio_joint_over_known": {
+    "hurst": 1.4737913662520699,
+    "eta": 1.4950398424882532,
+    "rho": 1.3980781910297773
+   },
+   "sd_over_prior_width": {
+    "hurst": 0.02590891137643281,
+    "eta": 0.012798156059334593,
+    "rho": 0.03321360558965691,
+    "short_variance": 0.006392914514011961,
+    "long_variance": 0.109225235828268,
+    "decay": 0.08389464296357069
+   },
+   "correlation": [
+    [
+     1.0,
+     -0.167,
+     0.947,
+     -0.478,
+     -0.171,
+     -0.326
+    ],
+    [
+     -0.167,
+     1.0,
+     -0.1,
+     0.474,
+     0.008,
+     -0.027
+    ],
+    [
+     0.947,
+     -0.1,
+     1.0,
+     -0.447,
+     -0.165,
+     -0.313
+    ],
+    [
+     -0.478,
+     0.474,
+     -0.447,
+     1.0,
+     0.518,
+     0.603
+    ],
+    [
+     -0.171,
+     0.008,
+     -0.165,
+     0.518,
+     1.0,
+     0.974
+    ],
+    [
+     -0.326,
+     -0.027,
+     -0.313,
+     0.603,
+     0.974,
+     1.0
+    ]
+   ],
+   "scaled_eigenvalues": [
+    53.051733444148915,
+    568.6168695105349,
+    5167.218023890345,
+    9960.919732651335,
+    26616.635628901975,
+    127044.32341298155
+   ],
+   "weakest_direction": {
+    "hurst": -0.047,
+    "eta": -0.0,
+    "rho": -0.059,
+    "short_variance": 0.026,
+    "long_variance": 0.791,
+    "decay": 0.606
+   },
+   "weakest_sd_in_prior_widths": 0.1372935739764912,
+   "gn90_crosses_prior_box": {
+    "hurst": [
+     false,
+     false
+    ],
+    "eta": [
+     false,
+     false
+    ],
+    "rho": [
+     false,
+     false
+    ],
+    "short_variance": [
+     false,
+     false
+    ],
+    "long_variance": [
+     false,
+     false
+    ],
+    "decay": [
+     false,
+     false
+    ]
+   },
+   "curve_products": [
+    {
+     "product": "2y variance swap strike (variance)",
+     "value": 0.05900425863264272,
+     "gn_sd": 0.004815187842437714,
+     "gn90": [
+      0.05108375615061692,
+      0.06692476111466851
+     ],
+     "below_0.01": false,
+     "above_0.16": false,
+     "rel_sd": 0.08160746281750288
+    },
+    {
+     "product": "1y->2y forward variance",
+     "value": 0.04693372367122263,
+     "gn_sd": 0.008599094850943964,
+     "gn90": [
+      0.0327890725509049,
+      0.06107837479154036
+     ],
+     "below_0.01": false,
+     "above_0.16": false,
+     "rel_sd": 0.18321782672054404
+    }
+   ],
+   "mc_products": {
+    "names": [
+     "forward_start_call",
+     "put_2y_90"
+    ],
+    "price": [
+     0.03671070735360601,
+     0.06305961539691152
+    ],
+    "gn_sd_joint": [
+     0.0003618737305186122,
+     0.002846080241862814
+    ],
+    "gn_sd_known_curve": [
+     0.0002995712349686274,
+     0.0006840063708934425
+    ],
+    "rel_sd_joint": [
+     0.009857443688920534,
+     0.04513316841450649
+    ],
+    "rel_sd_known_curve": [
+     0.008160323147224816,
+     0.010846979744296747
+    ]
+   },
+   "slice_weakest": [
+    {
+     "t_sd": -3,
+     "inside_prior": false,
+     "chi2": null,
+     "quadratic": 9
+    },
+    {
+     "t_sd": -2,
+     "inside_prior": false,
+     "chi2": 323.3726139177335,
+     "quadratic": 4
+    },
+    {
+     "t_sd": -1.6449,
+     "inside_prior": true,
+     "chi2": 135.96841985995675,
+     "quadratic": 2.70569601
+    },
+    {
+     "t_sd": -1,
+     "inside_prior": true,
+     "chi2": 16.212785257616268,
+     "quadratic": 1
+    },
+    {
+     "t_sd": 1,
+     "inside_prior": true,
+     "chi2": 10.953262116896406,
+     "quadratic": 1
+    },
+    {
+     "t_sd": 1.6449,
+     "inside_prior": true,
+     "chi2": 64.44312486012105,
+     "quadratic": 2.70569601
+    },
+    {
+     "t_sd": 2,
+     "inside_prior": true,
+     "chi2": 128.0790863802037,
+     "quadratic": 4
+    },
+    {
+     "t_sd": 3,
+     "inside_prior": true,
+     "chi2": 514.148636427623,
+     "quadratic": 9
+    }
+   ]
+  },
+  {
+   "name": "E rho near its bound",
+   "theta": [
+    0.07,
+    1.9,
+    -0.95,
+    0.02,
+    0.06,
+    0.5
+   ],
+   "seconds": 68.02220726013184,
+   "sd_joint": {
+    "hurst": 0.017251071829640818,
+    "eta": 0.13783131056529163,
+    "rho": 0.07988544572590657,
+    "short_variance": 0.0005085730299711304,
+    "long_variance": 0.08141151531663399,
+    "decay": 1.1904396929620749
+   },
+   "sd_known_curve": {
+    "hurst": 0.015958209588095143,
+    "eta": 0.11916121854585521,
+    "rho": 0.07154631817677953
+   },
+   "sd_ratio_joint_over_known": {
+    "hurst": 1.0810154945270396,
+    "eta": 1.1566792640027583,
+    "rho": 1.116555649006597
+   },
+   "sd_over_prior_width": {
+    "hurst": 0.052275975241335815,
+    "eta": 0.045943770188430544,
+    "rho": 0.10112081737456527,
+    "short_variance": 0.003390486866474203,
+    "long_variance": 0.5427434354442267,
+    "decay": 0.1536051216725258
+   },
+   "correlation": [
+    [
+     1.0,
+     -0.613,
+     0.75,
+     -0.273,
+     -0.102,
+     0.121
+    ],
+    [
+     -0.613,
+     1.0,
+     -0.028,
+     0.383,
+     0.06,
+     -0.061
+    ],
+    [
+     0.75,
+     -0.028,
+     1.0,
+     -0.076,
+     -0.087,
+     0.108
+    ],
+    [
+     -0.273,
+     0.383,
+     -0.076,
+     1.0,
+     0.604,
+     -0.626
+    ],
+    [
+     -0.102,
+     0.06,
+     -0.087,
+     0.604,
+     1.0,
+     -0.999
+    ],
+    [
+     0.121,
+     -0.061,
+     0.108,
+     -0.626,
+     -0.999,
+     1.0
+    ]
+   ],
+   "scaled_eigenvalues": [
+    3.142406909049894,
+    84.19887555878225,
+    340.678545683947,
+    6686.079700810985,
+    18761.31921620843,
+    306803.4903768946
+   ],
+   "weakest_direction": {
+    "hurst": -0.01,
+    "eta": 0.005,
+    "rho": -0.017,
+    "short_variance": 0.004,
+    "long_variance": 0.962,
+    "decay": -0.272
+   },
+   "weakest_sd_in_prior_widths": 0.5641164828600544,
+   "gn90_crosses_prior_box": {
+    "hurst": [
+     false,
+     false
+    ],
+    "eta": [
+     false,
+     false
+    ],
+    "rho": [
+     true,
+     false
+    ],
+    "short_variance": [
+     false,
+     false
+    ],
+    "long_variance": [
+     true,
+     true
+    ],
+    "decay": [
+     true,
+     false
+    ]
+   },
+   "curve_products": [
+    {
+     "product": "2y variance swap strike (variance)",
+     "value": 0.03471517764685769,
+     "gn_sd": 0.005166706285756357,
+     "gn90": [
+      0.02621646247741706,
+      0.043213892816298324
+     ],
+     "below_0.01": false,
+     "above_0.16": false,
+     "rel_sd": 0.148831336492499
+    },
+    {
+     "product": "1y->2y forward variance",
+     "value": 0.04090790251670471,
+     "gn_sd": 0.009747999722081164,
+     "gn90": [
+      0.024873417773853403,
+      0.05694238725955601
+     ],
+     "below_0.01": false,
+     "above_0.16": false,
+     "rel_sd": 0.23829135991757525
+    }
+   ],
+   "mc_products": {
+    "names": [
+     "forward_start_call",
+     "put_2y_90"
+    ],
+    "price": [
+     0.026616449393686854,
+     0.05089469196841334
+    ],
+    "gn_sd_joint": [
+     0.0005039598516496963,
+     0.004987040418623936
+    ],
+    "gn_sd_known_curve": [
+     0.0003843127276863157,
+     0.0009801038218070972
+    ],
+    "rel_sd_joint": [
+     0.018934150239033398,
+     0.09798743691619219
+    ],
+    "rel_sd_known_curve": [
+     0.014438917903808413,
+     0.019257486073702475
+    ]
+   },
+   "slice_weakest": [
+    {
+     "t_sd": -3,
+     "inside_prior": false,
+     "chi2": null,
+     "quadratic": 9
+    },
+    {
+     "t_sd": -2,
+     "inside_prior": false,
+     "chi2": null,
+     "quadratic": 4
+    },
+    {
+     "t_sd": -1.6449,
+     "inside_prior": false,
+     "chi2": null,
+     "quadratic": 2.70569601
+    },
+    {
+     "t_sd": -1,
+     "inside_prior": false,
+     "chi2": null,
+     "quadratic": 1
+    },
+    {
+     "t_sd": 1,
+     "inside_prior": false,
+     "chi2": null,
+     "quadratic": 1
+    },
+    {
+     "t_sd": 1.6449,
+     "inside_prior": false,
+     "chi2": null,
+     "quadratic": 2.70569601
+    },
+    {
+     "t_sd": 2,
+     "inside_prior": false,
+     "chi2": null,
+     "quadratic": 4
+    },
+    {
+     "t_sd": 3,
+     "inside_prior": false,
+     "chi2": null,
+     "quadratic": 9
+    }
+   ]
+  },
+  {
+   "name": "F low vol-of-vol",
+   "theta": [
+    0.15,
+    0.8,
+    -0.5,
+    0.03,
+    0.05,
+    1.0
+   ],
+   "seconds": 73.9020836353302,
+   "sd_joint": {
+    "hurst": 0.04957523700587662,
+    "eta": 0.10866248189018288,
+    "rho": 0.07900326800866292,
+    "short_variance": 0.000513632664938118,
+    "long_variance": 0.020860831755024026,
+    "decay": 1.4130615108656164
+   },
+   "sd_known_curve": {
+    "hurst": 0.04887676155092374,
+    "eta": 0.10054494418564339,
+    "rho": 0.0743830620560836
+   },
+   "sd_ratio_joint_over_known": {
+    "hurst": 1.014290542842638,
+    "eta": 1.0807354141004992,
+    "rho": 1.0621136832078217
+   },
+   "sd_over_prior_width": {
+    "hurst": 0.15022799092689887,
+    "eta": 0.036220827296727626,
+    "rho": 0.10000413671982647,
+    "short_variance": 0.0034242177662541203,
+    "long_variance": 0.13907221170016018,
+    "decay": 0.1823305175310473
+   },
+   "correlation": [
+    [
+     1.0,
+     -0.128,
+     -0.111,
+     -0.107,
+     0.018,
+     -0.003
+    ],
+    [
+     -0.128,
+     1.0,
+     0.898,
+     0.123,
+     -0.02,
+     0.037
+    ],
+    [
+     -0.111,
+     0.898,
+     1.0,
+     0.11,
+     -0.024,
+     0.038
+    ],
+    [
+     -0.107,
+     0.123,
+     0.11,
+     1.0,
+     0.599,
+     -0.647
+    ],
+    [
+     0.018,
+     -0.02,
+     -0.024,
+     0.599,
+     1.0,
+     -0.995
+    ],
+    [
+     -0.003,
+     0.037,
+     0.038,
+     -0.647,
+     -0.995,
+     1.0
+    ]
+   ],
+   "scaled_eigenvalues": [
+    19.055668706328472,
+    43.77646329727126,
+    92.60946621315041,
+    4345.8212564667,
+    7991.100409643737,
+    248609.09775792153
+   ],
+   "weakest_direction": {
+    "hurst": -0.011,
+    "eta": 0.006,
+    "rho": 0.019,
+    "short_variance": -0.009,
+    "long_variance": -0.606,
+    "decay": 0.795
+   },
+   "weakest_sd_in_prior_widths": 0.2290803843644202,
+   "gn90_crosses_prior_box": {
+    "hurst": [
+     false,
+     false
+    ],
+    "eta": [
+     false,
+     false
+    ],
+    "rho": [
+     false,
+     false
+    ],
+    "short_variance": [
+     false,
+     false
+    ],
+    "long_variance": [
+     false,
+     false
+    ],
+    "decay": [
+     true,
+     false
+    ]
+   },
+   "curve_products": [
+    {
+     "product": "2y variance swap strike (variance)",
+     "value": 0.04135335283236613,
+     "gn_sd": 0.003707845820764033,
+     "gn90": [
+      0.03525431724179137,
+      0.04745238842294089
+     ],
+     "below_0.01": false,
+     "above_0.16": false,
+     "rel_sd": 0.08966251988791595
+    },
+    {
+     "product": "1y->2y forward variance",
+     "value": 0.04534911684130341,
+     "gn_sd": 0.006872444162381036,
+     "gn90": [
+      0.034044633438602846,
+      0.056653600244003975
+     ],
+     "below_0.01": false,
+     "above_0.16": false,
+     "rel_sd": 0.15154527014121913
+    }
+   ],
+   "mc_products": {
+    "names": [
+     "forward_start_call",
+     "put_2y_90"
+    ],
+    "price": [
+     0.03635588495714159,
+     0.0643785412586424
+    ],
+    "gn_sd_joint": [
+     0.00044124462148907,
+     0.004122278355684767
+    ],
+    "gn_sd_known_curve": [
+     0.0003085913307417957,
+     0.0007787385343073436
+    ],
+    "rel_sd_joint": [
+     0.012136814218914889,
+     0.06403186954987705
+    ],
+    "rel_sd_known_curve": [
+     0.008488070943826038,
+     0.012096243858318288
+    ]
+   },
+   "slice_weakest": [
+    {
+     "t_sd": -3,
+     "inside_prior": false,
+     "chi2": null,
+     "quadratic": 9
+    },
+    {
+     "t_sd": -2,
+     "inside_prior": false,
+     "chi2": null,
+     "quadratic": 4
+    },
+    {
+     "t_sd": -1.6449,
+     "inside_prior": false,
+     "chi2": null,
+     "quadratic": 2.70569601
+    },
+    {
+     "t_sd": -1,
+     "inside_prior": false,
+     "chi2": null,
+     "quadratic": 1
+    },
+    {
+     "t_sd": 1,
+     "inside_prior": true,
+     "chi2": 185.54314579393747,
+     "quadratic": 1
+    },
+    {
+     "t_sd": 1.6449,
+     "inside_prior": true,
+     "chi2": 1071.801906230545,
+     "quadratic": 2.70569601
+    },
+    {
+     "t_sd": 2,
+     "inside_prior": false,
+     "chi2": 2132.1049948342957,
+     "quadratic": 4
+    },
+    {
+     "t_sd": 3,
+     "inside_prior": false,
+     "chi2": null,
+     "quadratic": 9
+    }
+   ]
+  },
+  {
+   "name": "G rising, very slow decay",
+   "theta": [
+    0.09,
+    2.6,
+    -0.73,
+    0.02,
+    0.08,
+    0.3
+   ],
+   "seconds": 64.20726680755615,
+   "sd_joint": {
+    "hurst": 0.016130175084818794,
+    "eta": 0.09453390116136572,
+    "rho": 0.057578965746482136,
+    "short_variance": 0.0005749356075376433,
+    "long_variance": 0.26013435288171943,
+    "decay": 1.4290311950890702
+   },
+   "sd_known_curve": {
+    "hurst": 0.013026326982176688,
+    "eta": 0.07282821733391867,
+    "rho": 0.04811475407495079
+   },
+   "sd_ratio_joint_over_known": {
+    "hurst": 1.238275003144705,
+    "eta": 1.2980394773076225,
+    "rho": 1.1967008218890294
+   },
+   "sd_over_prior_width": {
+    "hurst": 0.04887931843884484,
+    "eta": 0.0315113003871219,
+    "rho": 0.07288476676769891,
+    "short_variance": 0.0038329040502509556,
+    "long_variance": 1.7342290192114629,
+    "decay": 0.1843911219469768
+   },
+   "correlation": [
+    [
+     1.0,
+     -0.431,
+     0.828,
+     -0.4,
+     -0.099,
+     0.12
+    ],
+    [
+     -0.431,
+     1.0,
+     -0.086,
+     0.445,
+     0.044,
+     -0.042
+    ],
+    [
+     0.828,
+     -0.086,
+     1.0,
+     -0.262,
+     -0.091,
+     0.112
+    ],
+    [
+     -0.4,
+     0.445,
+     -0.262,
+     1.0,
+     0.586,
+     -0.601
+    ],
+    [
+     -0.099,
+     0.044,
+     -0.091,
+     0.586,
+     1.0,
+     -0.999
+    ],
+    [
+     0.12,
+     -0.042,
+     0.112,
+     -0.601,
+     -0.999,
+     1.0
+    ]
+   ],
+   "scaled_eigenvalues": [
+    0.32877676615157014,
+    140.21139964968324,
+    797.2180239594952,
+    3820.38150511869,
+    33011.46570507453,
+    289444.0871347844
+   ],
+   "weakest_direction": {
+    "hurst": -0.003,
+    "eta": 0.001,
+    "rho": -0.004,
+    "short_variance": 0.001,
+    "long_variance": 0.994,
+    "decay": -0.106
+   },
+   "weakest_sd_in_prior_widths": 1.7440118852952522,
+   "gn90_crosses_prior_box": {
+    "hurst": [
+     false,
+     false
+    ],
+    "eta": [
+     false,
+     false
+    ],
+    "rho": [
+     false,
+     false
+    ],
+    "short_variance": [
+     false,
+     false
+    ],
+    "long_variance": [
+     true,
+     true
+    ],
+    "decay": [
+     true,
+     false
+    ]
+   },
+   "curve_products": [
+    {
+     "product": "2y variance swap strike (variance)",
+     "value": 0.034881163609402646,
+     "gn_sd": 0.007045863724676581,
+     "gn90": [
+      0.02329142236868214,
+      0.04647090485012315
+     ],
+     "below_0.01": false,
+     "above_0.16": false,
+     "rel_sd": 0.20199623509054274
+    },
+    {
+     "product": "1y->2y forward variance",
+     "value": 0.04159868308246172,
+     "gn_sd": 0.013294064673877887,
+     "gn90": [
+      0.019731276100399986,
+      0.06346609006452346
+     ],
+     "below_0.01": false,
+     "above_0.16": false,
+     "rel_sd": 0.3195789791596252
+    }
+   ],
+   "mc_products": {
+    "names": [
+     "forward_start_call",
+     "put_2y_90"
+    ],
+    "price": [
+     0.021974606102439228,
+     0.04157062877531004
+    ],
+    "gn_sd_joint": [
+     0.000493388988772701,
+     0.004944490962400011
+    ],
+    "gn_sd_known_curve": [
+     0.000377393786745015,
+     0.0011619700508117082
+    ],
+    "rel_sd_joint": [
+     0.022452688638543276,
+     0.11894193347724111
+    ],
+    "rel_sd_known_curve": [
+     0.01717408653359768,
+     0.02795170737234157
+    ]
+   },
+   "slice_weakest": [
+    {
+     "t_sd": -3,
+     "inside_prior": false,
+     "chi2": null,
+     "quadratic": 9
+    },
+    {
+     "t_sd": -2,
+     "inside_prior": false,
+     "chi2": null,
+     "quadratic": 4
+    },
+    {
+     "t_sd": -1.6449,
+     "inside_prior": false,
+     "chi2": null,
+     "quadratic": 2.70569601
+    },
+    {
+     "t_sd": -1,
+     "inside_prior": false,
+     "chi2": null,
+     "quadratic": 1
+    },
+    {
+     "t_sd": 1,
+     "inside_prior": false,
+     "chi2": null,
+     "quadratic": 1
+    },
+    {
+     "t_sd": 1.6449,
+     "inside_prior": false,
+     "chi2": null,
+     "quadratic": 2.70569601
+    },
+    {
+     "t_sd": 2,
+     "inside_prior": false,
+     "chi2": null,
+     "quadratic": 4
+    },
+    {
+     "t_sd": 3,
+     "inside_prior": false,
+     "chi2": null,
+     "quadratic": 9
+    }
+   ]
+  },
+  {
+   "name": "H rising, slow decay, low eta",
+   "theta": [
+    0.12,
+    1.2,
+    -0.6,
+    0.02,
+    0.06,
+    0.5
+   ],
+   "seconds": 62.68710279464722,
+   "sd_joint": {
+    "hurst": 0.03704657636899193,
+    "eta": 0.12507992418175026,
+    "rho": 0.07224442085683205,
+    "short_variance": 0.00047619109119598614,
+    "long_variance": 0.07618116609487238,
+    "decay": 1.114915925225828
+   },
+   "sd_known_curve": {
+    "hurst": 0.03540127842156412,
+    "eta": 0.10788295896489523,
+    "rho": 0.06488274200326788
+   },
+   "sd_ratio_joint_over_known": {
+    "hurst": 1.046475664743949,
+    "eta": 1.1594039075480944,
+    "rho": 1.113461278396548
+   },
+   "sd_over_prior_width": {
+    "hurst": 0.1122623526333089,
+    "eta": 0.04169330806058342,
+    "rho": 0.09144863399598993,
+    "short_variance": 0.003174607274639908,
+    "long_variance": 0.5078744406324825,
+    "decay": 0.1438601193839778
+   },
+   "correlation": [
+    [
+     1.0,
+     -0.361,
+     0.017,
+     -0.228,
+     -0.035,
+     0.048
+    ],
+    [
+     -0.361,
+     1.0,
+     0.806,
+     0.251,
+     -0.015,
+     0.022
+    ],
+    [
+     0.017,
+     0.806,
+     1.0,
+     0.142,
+     -0.032,
+     0.042
+    ],
+    [
+     -0.228,
+     0.251,
+     0.142,
+     1.0,
+     0.606,
+     -0.629
+    ],
+    [
+     -0.035,
+     -0.015,
+     -0.032,
+     0.606,
+     1.0,
+     -0.999
+    ],
+    [
+     0.048,
+     0.022,
+     0.042,
+     -0.629,
+     -0.999,
+     1.0
+    ]
+   ],
+   "scaled_eigenvalues": [
+    3.5892292117199145,
+    77.69288411008696,
+    105.2686498735552,
+    3185.4961461062676,
+    21155.254831101163,
+    328899.98857042775
+   ],
+   "weakest_direction": {
+    "hurst": -0.008,
+    "eta": -0.001,
+    "rho": -0.006,
+    "short_variance": 0.004,
+    "long_variance": 0.962,
+    "decay": -0.272
+   },
+   "weakest_sd_in_prior_widths": 0.5278364813806955,
+   "gn90_crosses_prior_box": {
+    "hurst": [
+     false,
+     false
+    ],
+    "eta": [
+     false,
+     false
+    ],
+    "rho": [
+     false,
+     false
+    ],
+    "short_variance": [
+     false,
+     false
+    ],
+    "long_variance": [
+     true,
+     true
+    ],
+    "decay": [
+     true,
+     false
+    ]
+   },
+   "curve_products": [
+    {
+     "product": "2y variance swap strike (variance)",
+     "value": 0.03471517764685769,
+     "gn_sd": 0.004798654352343164,
+     "gn90": [
+      0.026821871102688424,
+      0.04260848419102696
+     ],
+     "below_0.01": false,
+     "above_0.16": false,
+     "rel_sd": 0.13822928982699653
+    },
+    {
+     "product": "1y->2y forward variance",
+     "value": 0.04090790251670471,
+     "gn_sd": 0.009079530334157048,
+     "gn90": [
+      0.025972983070049784,
+      0.055842821963359636
+     ],
+     "below_0.01": false,
+     "above_0.16": false,
+     "rel_sd": 0.2219505224069953
+    }
+   ],
+   "mc_products": {
+    "names": [
+     "forward_start_call",
+     "put_2y_90"
+    ],
+    "price": [
+     0.029815963478578407,
+     0.05454910773266153
+    ],
+    "gn_sd_joint": [
+     0.0004915853714810299,
+     0.005301798538737188
+    ],
+    "gn_sd_known_curve": [
+     0.00035701106957077754,
+     0.0009841457266727197
+    ],
+    "rel_sd_joint": [
+     0.016487321358379534,
+     0.09719313035734059
+    ],
+    "rel_sd_known_curve": [
+     0.011973823010189689,
+     0.01804146332687781
+    ]
+   },
+   "slice_weakest": [
+    {
+     "t_sd": -3,
+     "inside_prior": false,
+     "chi2": null,
+     "quadratic": 9
+    },
+    {
+     "t_sd": -2,
+     "inside_prior": false,
+     "chi2": null,
+     "quadratic": 4
+    },
+    {
+     "t_sd": -1.6449,
+     "inside_prior": false,
+     "chi2": null,
+     "quadratic": 2.70569601
+    },
+    {
+     "t_sd": -1,
+     "inside_prior": false,
+     "chi2": null,
+     "quadratic": 1
+    },
+    {
+     "t_sd": 1,
+     "inside_prior": false,
+     "chi2": null,
+     "quadratic": 1
+    },
+    {
+     "t_sd": 1.6449,
+     "inside_prior": false,
+     "chi2": null,
+     "quadratic": 2.70569601
+    },
+    {
+     "t_sd": 2,
+     "inside_prior": false,
+     "chi2": null,
+     "quadratic": 4
+    },
+    {
+     "t_sd": 3,
+     "inside_prior": false,
+     "chi2": null,
+     "quadratic": 9
+    }
+   ]
+  }
+ ]
+}

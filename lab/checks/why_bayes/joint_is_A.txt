@@ -1,0 +1,19 @@
+truth [0.09, 2.6, -0.73, 0.02, 0.06, 0.5]; proposals 1024, valid and inside the prior box 357; ESS 98; largest weight 0.033; min chi2 45.6 on 63 quotes
+  hurst           truth 0.0900 | posterior 5/50/95% 0.0800 0.1048 0.1301 | Gauss-Newton 90% 0.0636 0.1164 | prior [0.02, 0.35]
+  eta             truth 2.6000 | posterior 5/50/95% 2.3963 2.5423 2.6982 | Gauss-Newton 90% 2.4452 2.7548 | prior [0.5, 3.5]
+  rho             truth -0.7300 | posterior 5/50/95% -0.8065 -0.7200 -0.6427 | Gauss-Newton 90% -0.8244 -0.6356 | prior [-0.99, -0.2]
+  short_variance  truth 0.0200 | posterior 5/50/95% 0.0191 0.0198 0.0205 | Gauss-Newton 90% 0.0190 0.0210 | prior [0.01, 0.16]
+  long_variance   truth 0.0600 | posterior 5/50/95% 0.0300 0.0502 0.0875 | Gauss-Newton 90% -0.0971 0.2171 | prior [0.01, 0.16]
+  decay           truth 0.5000 | posterior 5/50/95% 0.2847 0.6568 2.9454 | Gauss-Newton 90% -1.7883 2.7883 | prior [0.25, 8.0]
+  2y variance swap strike  truth 0.0347 | posterior 5/10/50/90/95% 0.0281 0.0293 0.0332 0.0363 0.0366 | Gauss-Newton 90% 0.0244 0.0450
+  1y->2y forward variance  truth 0.0409 | posterior 5/10/50/90/95% 0.0298 0.0316 0.0384 0.0434 0.0440 | Gauss-Newton 90% 0.0217 0.0601
+  correlation, posterior | Gauss-Newton: (long, decay) -0.72 | -1.00; (eta, rho) 0.25 | -0.09
+
+priced 148 proposals carrying 0.9377 of the weight
+  forward start 63->126d, curve held flat beyond 1y at the truth: 0.02216 (+0.00% against the true curve); its 90% range from (H, eta, rho) alone: +-2.80%
+  2-year 90% put, curve held flat beyond 1y at the truth: 0.03844 (-7.39% against the true curve); its 90% range from (H, eta, rho) alone: +-4.26%
+  forward start 63->126d: mark 0.02216; posterior 5/10/50/90/95% 0.02140 0.02161 0.02213 0.02259 0.02280; delta-method 90% 0.02136 0.02296
+    reserve short: posterior 0.00043 (1.96%), delta 0.00062 (2.81%) | long: posterior 0.00055 (2.48%), delta 0.00062 (2.81%)
+  2-year 90% put: mark 0.04151; posterior 5/10/50/90/95% 0.03645 0.03741 0.03980 0.04169 0.04252; delta-method 90% 0.03426 0.04875
+    reserve short: posterior 0.00018 (0.43%), delta 0.00564 (13.60%) | long: posterior 0.00409 (9.86%), delta 0.00564 (13.60%)
+
