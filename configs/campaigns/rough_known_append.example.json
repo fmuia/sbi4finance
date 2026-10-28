@@ -1,0 +1,22 @@
+{
+  "task_config": "../calibration_rough_known_backbone_20k.json",
+  "producer_repo": "/oscar/scratch/YOUR_USER/FROZEN_COMPATIBLE_PRODUCER/repo",
+  "collection": "/oscar/scratch/YOUR_USER/EXISTING_KNOWN_COLLECTION",
+  "snapshot": "/oscar/scratch/YOUR_USER/snapshots/known-50k",
+  "campaign_root": "/oscar/scratch/YOUR_USER/campaigns/known-50k-UNIQUE_NAME",
+  "train": 50000,
+  "chunk": 25,
+  "max_workers": 64,
+  "worker_wall_seconds": 2400,
+  "memory_gib": 8,
+  "cpu_hours": 120,
+  "prior_cpu_seconds": 0,
+  "final_wall_seconds": 3600,
+  "cleanup_seconds": 240,
+  "poll_seconds": 60,
+  "controller_wall_hours": 48,
+  "max_array_size": 1000,
+  "account": "carney-mjfrank-condo2",
+  "partition": "batch",
+  "seed_policy": "native_collection"
+}

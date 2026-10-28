@@ -14,10 +14,12 @@ This is genuinely away from the prior boundaries: every central 99% marginal int
 
 ## Heston: four inferred parameters
 
-A new interior development observation is being evaluated with a truth fixed in advance at the midpoint of all four prior intervals: initial variance .085, long-run variance .085, vol-of-vol .8 and correlation −.525. Mean reversion remains fixed at 2. The complete four-parameter corner plot will be linked here after its PyMC reference and numerical checks finish.
+[Open the complete four-parameter interior Heston corner plot](pilot-results/2026-10-28/interior-corners/heston-interior-complete-corner.png).
 
-Job **8032768** was submitted with four CPUs, 16 GiB and a 30-minute limit under a separate 3-CPU-hour ceiling. A failed or boundary-reaching result will be retained rather than replaced by a better-looking case. The older boundary examples remain historical diagnostics, not the main interior showcase.
+The observation's truth was fixed in advance at the midpoint of all four prior intervals: initial variance .085, long-run variance .085, vol-of-vol .8 and correlation −.525. Mean reversion remains fixed at 2. The new reference passed chain-convergence, Fourier-precision and interior checks. Every central 99% interval is comfortably inside its prior: the nearest endpoint remains 44.45% of a prior width from a boundary. Neural/reference mean errors are at most .102 reference SD and central-90% width ratios range from 1.016 to 1.040. This posterior is mostly regular, not an artificially selected exotic shape.
+
+Job **8032768** completed successfully in 476 seconds with four CPUs, using **1,904 CPU-seconds**, no GPU, under the separate 3-CPU-hour ceiling. No case or seed was substituted. The older boundary examples remain historical diagnostics, not the main interior showcase.
 
 ## Handover and current work
 
-The [collaborator handover](collaborator-numerical-status.md) explains the tutorial objective, completed checks, remaining work and what is on GitHub. The [current work order](tutorial-backbone-work-order.md) gives the numerical agenda. The known-curve 50k bank extension and completion of the original joint-curve bank are being prepared under bounded generation plans; this figure page does not imply that unsubmitted bank jobs are already running.
+The [collaborator handover](collaborator-numerical-status.md) explains the tutorial objective, completed checks, remaining work and what is on GitHub. The [delivery work order](backbone-delivery-work-order.md) records the active bank generation: known-curve array **8032877** and joint array **8032878** started with 64 and 120 running workers, respectively, and the durable controller refills subsequent ranges within budget.

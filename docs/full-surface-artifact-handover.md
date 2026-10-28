@@ -6,14 +6,16 @@ It passed the frozen 2,000-case marginal calibration gate and the recorded analy
 
 ## Small offline cache
 
-The initial cache at `data/synthetic/full-surface-heston-final500/validation-0/` contains one previously inspected development observation, 10,000 neural draws, four-chain PyMC reference draws and paired analytic variance products. It is a reproducible integration fixture, **not the new interior posterior showcase**. The new interior case will receive its own cache after its reference and sampling checks finish.
+The primary cache at `data/synthetic/full-surface-heston-final500/interior-midpoint/` contains the new ex-ante interior development observation, 10,000 neural draws, four-chain PyMC reference draws and paired analytic variance products. Its reference convergence, Fourier refinement and registered interior criteria passed. All four central-99% parameter intervals are well inside the prior box. It is a development example, not another reserved-test acceptance campaign.
+
+The earlier `validation-0/` cache remains a separate integration fixture and boundary example; it has not been relabelled as the interior case.
 
 From the repository root:
 
 ```bash
 pixi run --locked -e collaboration python - <<'PY'
 from sbi4finance.calibration.full_surface_teaching import load_cache
-task, report, arrays = load_cache("data/synthetic/full-surface-heston-final500/validation-0")
+task, report, arrays = load_cache("data/synthetic/full-surface-heston-final500/interior-midpoint")
 print(report["case_id"], task["parameter_names"])
 print(arrays["observations"].shape)      # (63,), prices in spot-one forward units
 print(arrays["neural_draws"].shape)     # (10000, 4), joint parameter rows
@@ -25,7 +27,7 @@ The loader uses NumPy and file hashes; it does not import BayesFlow, Keras, JAX 
 
 ```python
 task, report, arrays = load_cache(
-    "data/synthetic/full-surface-heston-final500/validation-0",
+    "data/synthetic/full-surface-heston-final500/interior-midpoint",
     expected_task=checkpoint_task,
     expected_checkpoint_sha256=checkpoint_record["checkpoint_sha256"],
 )
@@ -56,7 +58,7 @@ from sbi4finance.calibration import full_surface
 from sbi4finance.calibration.full_surface_teaching import load_cache
 task, workflow, record = full_surface.load_checkpoint("/tmp/sbi4finance-heston-final500")
 _, _, cached = load_cache(
-    "data/synthetic/full-surface-heston-final500/validation-0",
+    "data/synthetic/full-surface-heston-final500/interior-midpoint",
     expected_task=task, expected_checkpoint_sha256=record["checkpoint_sha256"],
 )
 draws = full_surface.sample(workflow, task, cached["observations"][None, :], 1000, seed=0)
@@ -65,6 +67,8 @@ PY
 ```
 
 This is an explicit instructor/collaborator command; opening the cache does not run it. Sampling uses BayesFlow's native adaptive solver. A changed observation requires fresh inference: do not reuse cached posterior draws for edited prices.
+
+An actual CPU roundtrip compared this ordinary exported-checkpoint loader with a direct load of the pinned final-500 model: ten joint draws at the same seed were bit-identical and all model/metadata bytes remained unchanged. [Runtime verification](pilot-results/2026-10-28/heston-teaching-export/README.md) records the exact check. It does not promote the candidate to broader scientific acceptance.
 
 ## Instructor regeneration
 
@@ -81,6 +85,17 @@ pixi run --locked -e core python scripts/prepare_full_surface_teaching.py cache 
 ```
 
 The cache builder checks exact source hashes in the declaration. It copies existing development draws rather than sampling, training, pricing or reading the bank. Reference chain structure and parameter/product pairing are checked on replay. No notebook was executed while preparing this handover.
+
+For the new interior case, use its own completed source/run manifest, not the old case0 product evidence:
+
+```bash
+pixi run --locked -e core python scripts/prepare_full_surface_teaching.py cache-development \
+  --checkpoint /new/path/checkpoint-final500 \
+  --case-root /oscar/scratch/afengler/sbi4finance-interior-corners-20261028 \
+  --out /new/path/interior-midpoint
+```
+
+This copies the completed checked reference and neural output. Its analytic product summaries are **descriptive for this new case**, with no inherited boundary-case quantile-gate verdict. The normal core checkpoint loader and a direct candidate load have also passed an actual local CPU ten-draw same-seed roundtrip; [the verification record](pilot-results/2026-10-28/heston-teaching-export/README.md) retains its scope and exact bytes.
 
 ## The rough lessons
 

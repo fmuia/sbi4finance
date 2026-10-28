@@ -122,6 +122,47 @@ load_cache(sys.argv[1])
                                 env={**os.environ, "PYTHONPATH": str(ROOT / "src")}, timeout=20)
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
+    def completed_interior(self):
+        case = self.root / "interior"; (case / "reference").mkdir(parents=True); (case / "neural").mkdir()
+        record = json.loads((self.root / "reference/reference.json").read_text())
+        record.update(surface_id="development:midpoint", split="development")
+        teaching.write(case / "reference/reference.json", record)
+        teaching.write(case / "reference/diagnostics.json", {"mcmc_diagnostics_passed": True})
+        teaching.write(case / "neural/run.json", {"candidate_sha256": self.model_sha})
+        teaching.write(case / "interior-check.json", {"interior_passed": True})
+        teaching.write(case / "precision.json", {"all_points_priced": True})
+        with np.load(self.root / "reference/chains.npz", allow_pickle=False) as arrays:
+            np.savez_compressed(case / "reference/chains.npz", parameters=arrays["parameters"])
+        with np.load(self.root / "neural.npz", allow_pickle=False) as arrays:
+            np.savez_compressed(case / "neural/draws.npz", parameters=arrays["final"])
+        np.savez_compressed(case / "observation.npz", observed_prices=record["observed_prices"])
+        teaching.write(case / "manifest.json", {"candidate_sha256": self.model_sha})
+        paths = [p for p in case.rglob("*") if p.is_file() and p.name != "manifest.json"]
+        teaching.write(case / "run.json", {"format": "heston_interior_development_run_v1",
+            "status": "completed_development_case", "scientific_acceptance": False,
+            "frozen_inputs_verified": True, "manifest_sha256": teaching.digest(case / "manifest.json"),
+            "stages": {"precision": {"all_points_priced": True}},
+            "outputs": {str(p.relative_to(case)): teaching.digest(p) for p in paths}})
+        return case
+
+    def test_new_interior_case_keeps_own_identity_and_does_not_inherit_old_product_gates(self):
+        case = self.completed_interior(); out = self.root / "new-interior-cache"
+        teaching.prepare_development_cache(self.checkpoint, case, out)
+        _, report, arrays = teaching.load_cache(out, expected_task=self.task)
+        self.assertEqual(report["case_id"], "development:midpoint")
+        self.assertEqual(arrays["reference_chains"].shape, (2, 12, 4))
+        products = json.loads((out / "products.json").read_text())
+        self.assertIn("descriptive", products["scope"])
+        self.assertNotIn("case", products)
+        self.assertFalse(products["scientific_acceptance"])
+
+    def test_unchecked_interior_case_cannot_be_packaged(self):
+        case = self.completed_interior(); run = json.loads((case / "run.json").read_text())
+        run["stages"]["precision"]["all_points_priced"] = False
+        teaching.write(case / "run.json", run)
+        with self.assertRaisesRegex(ValueError, "precision checks must pass"):
+            teaching.prepare_development_cache(self.checkpoint, case, self.root / "invalid-interior-cache")
+
 
 if __name__ == "__main__":
     unittest.main()

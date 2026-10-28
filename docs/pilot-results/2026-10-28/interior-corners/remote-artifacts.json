@@ -1,0 +1,54 @@
+{
+  "artifacts": [
+    {
+      "path": "/oscar/scratch/afengler/sbi4finance-interior-corners-20261028/neural/draws.npz",
+      "relative_path": "neural/draws.npz",
+      "bytes": 149527,
+      "sha256": "c3ecc4216560f1b7bd01aa4549bb4364c3e3ebe89bb4dd01f0f2b79b6c3ace56",
+      "payload_in_git": false
+    },
+    {
+      "path": "/oscar/scratch/afengler/sbi4finance-interior-corners-20261028/observation.npz",
+      "relative_path": "observation.npz",
+      "bytes": 2882,
+      "sha256": "c9ff5bac323fc0daa7a4c13019744db2ea32ec7b676d55e33e4ac9671de3f5c3",
+      "payload_in_git": false
+    },
+    {
+      "path": "/oscar/scratch/afengler/sbi4finance-interior-corners-20261028/reference/chains.npz",
+      "relative_path": "reference/chains.npz",
+      "bytes": 514683,
+      "sha256": "dcc09de9175bca23e299b25946d947dc0604e7c1c30b978c22ec464263940af3",
+      "payload_in_git": false
+    },
+    {
+      "path": "/oscar/scratch/afengler/sbi4finance-interior-corners-20261028/reference/partial/chain-000.npz",
+      "relative_path": "reference/partial/chain-000.npz",
+      "bytes": 117224,
+      "sha256": "63abe8b1951443f1ae814e0ae554811f5d805673c5289b7a9ffcbd2a9e81a77a",
+      "payload_in_git": false
+    },
+    {
+      "path": "/oscar/scratch/afengler/sbi4finance-interior-corners-20261028/reference/partial/chain-001.npz",
+      "relative_path": "reference/partial/chain-001.npz",
+      "bytes": 112472,
+      "sha256": "40d2e6d46363f5aed12a3430f2594d671a3a1625cd1d2fe335a85848ccbd65d3",
+      "payload_in_git": false
+    },
+    {
+      "path": "/oscar/scratch/afengler/sbi4finance-interior-corners-20261028/reference/partial/chain-002.npz",
+      "relative_path": "reference/partial/chain-002.npz",
+      "bytes": 114473,
+      "sha256": "3b7c296a36b3f4f9348554247b8d68bbd33e1587e6ac811f3d2cc0d53f557dc5",
+      "payload_in_git": false
+    },
+    {
+      "path": "/oscar/scratch/afengler/sbi4finance-interior-corners-20261028/reference/partial/chain-003.npz",
+      "relative_path": "reference/partial/chain-003.npz",
+      "bytes": 117694,
+      "sha256": "9da5e075cb877396bbc16d6261f42f3dd8986f9829cadac8310d82e0b5b959b6",
+      "payload_in_git": false
+    }
+  ],
+  "scope": "Full draw payloads stay on Oscar/private temporary storage."
+}

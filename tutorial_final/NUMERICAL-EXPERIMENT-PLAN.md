@@ -4,6 +4,8 @@
 
 The implementation is in [PR 48](https://github.com/fmuia/sbi4finance/pull/48). It extends Francesco's course and existing numerical studies, whose [recorded results](../docs/course/status.md) remain the baseline to reproduce and improve. The [implementation guide](../docs/full-surface-calibration.md) gives the shared workflow; the [backbone work order](../docs/tutorial-backbone-work-order.md) gives the immediate actions and spending boundaries.
 
+**Active delivery:** the [delivery work order](../docs/backbone-delivery-work-order.md) supersedes older paused states. Complete interior corner plots and a usable Heston cache/export are available. Known-curve and joint bank generation are running in parallel. Both rough routes have a **100k unique training-surface baseline target**, matching Heston; the current 50k/20k banks are nested intermediate milestones. Increasing target sizes does not implicitly increase the separately frozen phase budgets.
+
 The [28 October validation unit](../docs/backbone-validation-2026-10-28.md) completed both parallel checks: Heston passed its frozen held-out calibration and analytic product gates; known-curve rough pricing detected emulator and grid errors. It records measured costs and the next 50k rough training-data milestone. No training or bank generation ran in this unit.
 
 ## The three delivered routes

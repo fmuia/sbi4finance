@@ -162,6 +162,67 @@ def prepare_cache(checkpoint, declaration, case_index, out):
     return report
 
 
+def prepare_development_cache(checkpoint, case_root, out):
+    """Package the completed interior case with its own descriptive products."""
+    checkpoint, case_root, out = map(Path, (checkpoint, case_root, out))
+    require(not out.exists(), "output must be a new directory")
+    export = json.loads((checkpoint / "export.json").read_text())
+    for name, sha in export["files"].items():
+        require(digest(checkpoint / name) == sha, f"changed exported file: {name}")
+    task = heston_task(json.loads((checkpoint / "task.json").read_text()))
+    run = json.loads((case_root / "run.json").read_text())
+    declaration = json.loads((case_root / "manifest.json").read_text())
+    require(run.get("format") == "heston_interior_development_run_v1"
+            and run.get("status") == "completed_development_case"
+            and run.get("frozen_inputs_verified") is True
+            and run.get("scientific_acceptance") is False, "completed checked interior development case required")
+    require(run["manifest_sha256"] == digest(case_root / "manifest.json")
+            and declaration["candidate_sha256"] == export["candidate_sha256"], "interior declaration/candidate mismatch")
+    for name, sha in run["outputs"].items():
+        require(digest(case_root / name) == sha, f"changed interior output: {name}")
+    interior = json.loads((case_root / "interior-check.json").read_text())
+    diagnostics = json.loads((case_root / "reference/diagnostics.json").read_text())
+    require(interior.get("interior_passed") is True and diagnostics.get("mcmc_diagnostics_passed") is True
+            and run["stages"]["precision"].get("all_points_priced") is True,
+            "interior, reference convergence and precision checks must pass")
+    reference = json.loads((case_root / "reference/reference.json").read_text())
+    neural_record = json.loads((case_root / "neural/run.json").read_text())
+    require(reference["task"] == task and reference.get("split") == "development"
+            and neural_record["candidate_sha256"] == export["candidate_sha256"], "interior task/readout mismatch")
+    with np.load(case_root / "neural/draws.npz", allow_pickle=False) as data: neural = data["parameters"].copy()
+    with np.load(case_root / "reference/chains.npz", allow_pickle=False) as data: chains = data["parameters"].copy()
+    with np.load(case_root / "observation.npz", allow_pickle=False) as data: observations = data["observed_prices"].copy()
+    require(np.array_equal(observations, reference["observed_prices"]), "interior observation/reference mismatch")
+    arrays = {"observations": observations, "neural_draws": neural, "reference_chains": chains}
+    products = {}
+    for prefix, values in (("neural_", neural), ("reference_", chains)):
+        for name, value in variance_products(task, values).items():
+            arrays[prefix + name] = value
+            products[prefix + name] = {"mean": float(value.mean()), "q10_q90": np.quantile(value, [.1, .9]).tolist()}
+    out.mkdir(parents=True)
+    shutil.copyfile(checkpoint / "task.json", out / "task.json")
+    shutil.copyfile(case_root / "reference/reference.json", out / "reference.json")
+    shutil.copyfile(case_root / "reference/diagnostics.json", out / "diagnostics.json")
+    write(out / "products.json", {"scientific_acceptance": False, "scope": "descriptive analytic products for this "
+          "interior development case; no inherited boundary-case product gate or new quantile acceptance rule",
+          "units": "annualized variance", "products": products})
+    np.savez_compressed(out / "posterior.npz", **arrays)
+    inputs = [case_root / n for n in ("run.json", "manifest.json", *run["outputs"])]
+    report = {"format": "full_surface_teaching_v1", "role": "cached_development_example",
+              "case_id": reference["surface_id"], "parameter_names": NAMES, "task_fingerprint": fingerprint(task),
+              "checkpoint_sha256": export["candidate_sha256"], "exported_candidate_epoch": 500,
+              "original_validation_selected_epoch": 402, "scientific_acceptance": False,
+              "checkpoint_status": "frozen_candidate_gate_passed_not_full_acceptance",
+              "neural_draw_count": len(neural), "reference_chain_shape": list(chains.shape),
+              "source_sha256": {str(p): digest(p) for p in inputs},
+              "files": {name: digest(out / name) for name in sorted(CACHE_FILES)},
+              "limitations": "Ex-ante midpoint development example; convergence/refinement/interior checks passed. "
+                             "Analytic products descriptive only, not inherited case0 gates or reserved acceptance."}
+    write(out / "bundle.json", report)
+    load_cache(out)
+    return report
+
+
 def load_cache(path, *, expected_task=None, expected_checkpoint_sha256=None):
     """Return task, report and cached arrays offline; requires NumPy, never BayesFlow."""
     path = Path(path)
@@ -212,8 +273,12 @@ def main():
     p = sub.add_parser("cache")
     for name in ("checkpoint", "declaration", "out"): p.add_argument("--" + name, type=Path, required=True)
     p.add_argument("--case-index", type=int, default=0)
+    p = sub.add_parser("cache-development")
+    for name in ("checkpoint", "case-root", "out"): p.add_argument("--" + name, type=Path, required=True)
     args = vars(parser.parse_args()); command = args.pop("command")
-    result = export_checkpoint(**args) if command == "export-checkpoint" else prepare_cache(**args)
+    if command == "export-checkpoint": result = export_checkpoint(**args)
+    elif command == "cache-development": result = prepare_development_cache(**args)
+    else: result = prepare_cache(**args)
     print(json.dumps({"format": result["format"], "scientific_acceptance": False}))
 
 
