@@ -1,0 +1,7 @@
+{
+  "status": "passed",
+  "exact_symmetric_MC_trace_correction_expected": -0.15624999999999994,
+  "actual": -0.15624999999999992,
+  "student_t_degrees_of_freedom": 7,
+  "t7_interval_wider_than_normal": true
+}

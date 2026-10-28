@@ -1,5 +1,7 @@
 # Heston replication audit — 28 October 2026
 
+> **Follow-up completed:** the candidate was frozen and passed **4/4** rank screens on 2,000 untouched cases plus **12/12** analytic development-product quantile checks, including uncertainty. The [follow-up report](backbone-validation-2026-10-28.md) records that narrower gate and remaining delivery work. The post-hoc development results and limitations in this audit remain unchanged.
+
 **The reported regression partly came from checkpoint selection. The 100k run had already saved a candidate with substantially better performance on the checked development diagnostics than the epoch-402 model we evaluated.** Holding that training run, data, native sampler, observations and PyMC references fixed, its saved final epoch-500 model passes all three conditional screens; the selected model passes one. Francesco's archived model passes two. This is a post-hoc development finding, not final acceptance.
 
 The audit also found genuine reproduction differences, including an import-order reproducibility defect. Matching the labels “seed 0, 500 epochs, four 256-unit blocks” did not reproduce Francesco's experiment. We should have checked the saved final checkpoint before proposing another architecture.
