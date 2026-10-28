@@ -66,6 +66,7 @@ Before the main known-curve bank, freeze whether it retains the pilot curve prio
 - Compare raw amortized outputs with independent references and products. Report corrected/audited results separately. Prefer existing deterministic **PyMC** workflows where natural; never pass a fresh random Monte Carlo log likelihood to ordinary MCMC.
 - Fit one baseline per route before the small architecture/summary comparison. Reuse data across affine/spline/FlowMatching/MeanFlow and vector/set encoders; report unique surfaces and optimizer updates. A learning curve informs the delivered estimator rather than replacing delivery.
 - Keep reported Monte Carlo precision distinct from grid bias. A small reported MCSE is not an absolute-price-accuracy certificate, and matched emulator/neural predictions are not independent truth.
+- Include a reference-supported example of non-Gaussian posterior geometry in the teaching material. The [existing-chain inspection](../docs/backbone-validation-2026-10-28.md#posterior-geometry-for-the-tutorial) already shows boundary skew; compare physical and transformed Gaussian baselines and the amortized output. Investigate the predeclared nearly-flat joint-curve case for weak identification and curved dependence; do not claim modes or geometry that have not been demonstrated by checked samples.
 
 ## Joint curve and bounded numerical refinement
 
