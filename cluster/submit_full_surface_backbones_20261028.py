@@ -213,7 +213,7 @@ def worker(root, name):
             "--batch-size", "256", "--chunk-epochs", "50", "--seed", "0", "--checkpoint-selection", "final"], 1500)
         stage("pricer", [repo / "scripts/train_full_surface_pricer.py", "--bank", bank, "--out", directory / "pricer",
             "--widths", "256,256,256,256", "--epochs", "300", "--batch-size", "256", "--learning-rate", ".001",
-            "--patience", "30", "--seed", "0"], 1200)
+            "--patience", str(plan["recipe"]["pricer_patience"]), "--seed", "0"], 1200)
         stage("validation", [Path(__file__), "evaluate", "--root", root, "--route", name], 1700)
         source_check(plan)
         if readiness(plan["routes"][name]) != declaration["bank"]: raise ValueError("Checked bank changed during run")

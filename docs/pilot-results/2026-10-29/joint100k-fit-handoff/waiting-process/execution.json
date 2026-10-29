@@ -1,0 +1,10 @@
+{
+  "state": "waiting_for_native_bank",
+  "pid": 188514,
+  "started_utc": "2026-10-29T00:42:11.199875+00:00",
+  "plan_sha256": "084d2b6711fee1bea28c1364940400aed2d5be55718c671b6ec2253be8ea9734",
+  "scientific_acceptance": false,
+  "automatic_retry": false,
+  "last_poll_utc": "2026-10-29T00:44:11.479829+00:00",
+  "progress": "native_generation_or_final_check_running"
+}
