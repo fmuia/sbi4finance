@@ -4,9 +4,9 @@
 
 **What this lecture is for.** This lecture runs the amortized workflow on rough Bergomi and a liquid smile: SPY at the close of 21 October 2026. It describes the network and the training bank for rough Bergomi, with the full bank's prior for the forward-variance curve and the time grids that define the model the bank simulates. It reports what the checks found on the pilot network and what remains to run on the full bank. It then shows what SPY's posterior rests on, compares a posterior computed by importance sampling with the Gauss–Newton answer on SPY's 63 quotes, and turns posteriors into product ranges and reserves. It ends beyond the last quote, where the prior decides, and with Heston and rough Bergomi calibrated to the same smiles.
 
-**Where it sits in the course.** Lecture 13 built rough Bergomi, and Lecture 14 measured what its exact posterior costs. Lecture 9 introduced the amortized posterior, and Lecture 12 ran its workflow and its checks on Heston, where every result has an exact reference. This lecture applies the same workflow to rough Bergomi on a smile with many tight quotes; Lecture 16 applies it to a thin chain. Numbers that need the full rough-Bergomi bank or SPY's posterior are written ⟨Sn⟩, and the runs that fill them are listed in `lab/plans/CLUSTER-RUNS.md`.
+**Where it sits in the course.** Lecture 13 built rough Bergomi, and Lecture 14 measured what its exact posterior costs. Lecture 9 introduced the amortized posterior, and Lecture 12 ran its workflow and its checks on Heston, where every result has an exact reference. This lecture applies the same workflow to rough Bergomi on a smile with many tight quotes; Lecture 16 applies it to a thin chain. Numbers that need the full rough-Bergomi bank or SPY's posterior are written ⟨Sn⟩, and the runs that fill them are listed in `lab/plans/CLUSTER-RUNS.md`. Numbers from the six-target joint runs, which infer the curve, are written ⟨Jn⟩ ([status](status.md#the-joint-runs)).
 
-**Its part in the argument.** This lecture gives three claims of the argument on rough Bergomi (Lecture 6, Section 6.8). On SPY's 63 quotes the posterior and Gauss–Newton agree (Section 15.4). Beyond the last quote they part, by an amount the prior sets (Section 15.6). On pilot smiles, two models that both fit can price a product further apart than either model's range, so the posterior is exact for its model only (Section 15.7).
+**Its part in the argument.** This lecture gives three claims of the argument on rough Bergomi (Lecture 6, Section 6.8). On SPY's 63 quotes the posterior and Gauss–Newton agree (Section 15.4). Beyond the last quote they part, by an amount the prior sets (Section 15.6). On pilot smiles, two models that both fit can price a product further apart than either model's range, so the posterior is exact for its model only (Section 15.7). With the curve inferred instead of given, the joint runs ⟨J1⟩ to ⟨J3⟩ test the first two claims on many smiles (Section 15.2).
 
 ## 15.1 The network and the bank for rough Bergomi
 
@@ -94,6 +94,20 @@ The pilot audit of study S5 differed in three ways, and its numbers below are to
 
 **Pending.** ⟨S2⟩ is the full bank's network: its SBC, coverage, contraction and recovery on 2,000 held-out surfaces, from study S2 (run R3; its gate G2 asks for every target, $H$, $\eta$, $\rho$ and $\rho\eta$, inside the band). ⟨S4⟩ is the held-out error of the rough-Bergomi neural pricer and the agreement of the two routes, from study S4 (run R10). ⟨S5⟩ is the audit of the full bank's network on 200 surfaces, each proposal on its own seed, with 512 proposals at 32,768 paths per block, from study S5 (run R5, accepted when fewer than 1% of proposals are unpriced).
 
+**With the curve inferred: the joint runs.** This lecture's network is given the curve read from SPY's strip, so its range leaves out the curve's own uncertainty (Lecture 8, Section 8.12). The campaign's core rough task now infers the curve from the quotes, with $(H, \eta, \rho)$, as three coefficients of a Heston-shaped curve,
+
+$$
+\xi_0(t) = \xi_{\text{long}} + (\xi_{\text{short}} - \xi_{\text{long}})\,e^{-\lambda t},
+$$
+
+with uniform priors from 0.01 to 0.16 for the two variances (volatilities of 10% to 40%) and from 0.25 to 8 per year for the decay $\lambda$: six targets in all (`lab/plans/EXPERIMENT-PROTOCOL.md`). Its bank and network are running on the cluster (PR #48), and three of its results have a place here:
+
+- ⟨J1⟩: the six-target network's SBC, coverage and contraction on held-out full surfaces;
+- ⟨J2⟩: its agreement with reference posteriors, and the shape of the posterior against Gauss–Newton with the curve inferred (Section 15.4);
+- ⟨J3⟩: the products beyond the last quote under the posterior, Gauss–Newton and the flat curve, with their breach rates on held-out smiles (Section 15.6).
+
+A thin-chain variant of the six-target network has already been trained and checked for a quick check (Lecture 16, Section 16.2).
+
 ## 15.3 SPY's posterior and its predictive check
 
 The real smile is the SPY chain at the close of 21 October 2026, from Cboe's delayed quotes: 13,114 options in 35 expirations, of which 32 keep at least 8 quotes after cleaning (study S8). Lecture 5 read it onto the design grid. Four results are in.
@@ -148,7 +162,7 @@ On SPY's 63 quotes a posterior has been computed by importance sampling from a G
 
 *Figure 15.7.* How to read the figure: each column is one case and each marker one product. The vertical axis is the classical answer over the posterior's, on a log scale; the grey band runs from 0.8 to 1.25. The four Heston columns are the delta-method 90% ranges over the exact posterior's of Lecture 11, Section 11.4. The column "rough Bergomi 63 quotes" is this section's: the delta-method reserve over the posterior's, filled for the long side and open for the short side. The variance swap is left out, because both answers are zero when the curve is given. The right-hand column is the range with the curve held flat beyond one year, and only $(H, \eta, \rho)$ uncertain, over the posterior's (Section 15.6). The numbers are in `images/v2-evidence-numbers.json`, drawn by `course/scripts/realignment.py`.
 
-**Interpretation.** With three parameters and these quotes, the posterior is close to the Gauss–Newton normal, as the Bernstein–von Mises theorem predicts (Lecture 8, Section 8.3). The course presents this as a strength: the method returns the classical answer where that answer is right. The two answers part where the quotes do not determine what the product needs: beyond the last quote (Section 15.6), and on a thin chain (Lecture 16).
+**Interpretation.** With three parameters and these quotes, the posterior is close to the Gauss–Newton normal, as the Bernstein–von Mises theorem predicts (Lecture 8, Section 8.3). The course presents this as a strength: the method returns the classical answer where that answer is right. The two answers part where the quotes do not determine what the product needs: beyond the last quote (Section 15.6), and on a thin chain (Lecture 16). PR #48's reference posteriors on full surfaces, with the curve given, are largely elliptical too, apart from a skew where a prior limit binds. With the curve inferred, the same comparison on many simulated smiles is ⟨J2⟩. A quick check at one smile already shows where the posterior leaves the Gauss–Newton normal: in the curve's long end, not in $(H, \eta, \rho)$ (Section 15.6).
 
 **The pilot's evidence.** Study S6 also ran the classical route on 8 rough-Bergomi pilot smiles, with ten optimizer starts each; Lecture 11, Section 11.6 reports their coverage. The rough-Bergomi figure of the study shows the toy's geometry (Lecture 7, Section 7.7) on a real model. It is a pilot result, and its posterior is the pilot network's, not an exact one.
 
@@ -193,6 +207,15 @@ A quick check measures what the flat curve leaves out (`lab/checks/long_end/`). 
 
 **Status.** This is a quick check, not a study. Its posterior is a Laplace approximation, and its curve to one year is known to 5% per level by assumption. The plan proposes to repeat it with SPY's audited posterior from study S8 (v2-plan, Section 2.6, option C).
 
+**With the curve inferred.** In the six-target task of Section 15.2 the curve beyond the last quote is the family's continuation, so its range comes from the quotes and the prior together. A second quick check computes the posterior of one simulated smile on the design grid whose curve still rises at one year ($\xi_{\text{short}} = 0.02$, $\xi_{\text{long}} = 0.06$, $\lambda = 0.5$), by importance sampling on a fixed-seed pricer (`lab/checks/why_bayes/`, Section 3 of its README).
+
+- **$(H, \eta, \rho)$ keep their Gauss–Newton widths**, to within 3% to 15%: the regular part of the posterior, as with the curve given.
+- **The long end does not.** The quotes pin the curve's level and slope within the year, but only weakly its curvature. The posterior of $(\xi_{\text{long}}, \lambda)$ is a bent ridge, and the straight Gauss–Newton region cannot follow it; most of that region lies outside the prior box. The forward variance from one to two years has a posterior 90% range 0.37 times Gauss–Newton's, skewed downward.
+- **The flat curve is biased.** Holding the curve flat beyond one year puts that forward variance 21% below the truth, and the two-year 90% put 7.4% below, with a range from $(H, \eta, \rho)$ alone that misses the put's truth.
+- **The prior sets the size here too.** The posterior's upper side comes from the prior's floor on the decay, a half-life of at most 2.8 years, so the prior must be stated and tested.
+
+On the same family SPY's own curve sits in the fast-decay regime, where its long end looks precise only because one exponential cannot express two time scales. The fit puts the forward variance from one to 2.23 years at 0.052, against 0.0575 implied by SPY's 2.23-year LEAP, which the design does not use (Section 4 of the same README). ⟨J3⟩ repeats the comparison on many held-out smiles, with breach rates for the posterior, Gauss–Newton and the flat curve.
+
 ## 15.7 Heston against rough Bergomi
 
 The range of Section 15.5 is a range within one model. A bank can also use other models, and their prices can differ by more than either model's range. The study calibrates Heston to the same three rough-Bergomi smiles. Heston's posterior for each smile is the Heston network's draws corrected by importance sampling with the Fourier likelihood; rough Bergomi's is the pilot network posterior of Section 15.5, without correction (`lab/studies/across_models.py`; study S7).
@@ -217,7 +240,8 @@ The range of Section 15.5 is a range within one model. A bank can also use other
 6. On the pilot smiles every rough product's range comes mostly from $\eta$; the forward-start's 90% range is 2.2% to 9.3% of its mean, overstated by a pilot network that is too wide.
 7. Beyond the last quote the two answers part. For the three products that depend mostly on the curve beyond 2.25 years, flat extrapolation gives 0.32, 0.30 and 0 of the posterior's 90% range, and that segment of the curve explains 59% to 76% of their posterior variance. The posterior's range depends on the prior's width: 19.4% to 36.8% of the forward start's price for a prior sd of 0.1 to 0.3 per square-root year.
 8. On pilot smile 290, Heston and rough Bergomi both fit and price the forward-start 7.9% apart, about five times either model's own reserve; on smile 292 the gap is within rough Bergomi's reserve, and on smile 291 Heston is rejected.
-9. For the argument of the course: on a liquid smile the method returns the classical answer, and beyond the last quote it gives the open input a range that flat extrapolation does not. Beyond SPY's LEAPs the curve's share of that range comes from the prior alone, so the prior must be stated and tested.
+9. With the curve inferred as three coefficients, a quick check on one simulated smile finds $(H, \eta, \rho)$ regular and the long end not: the forward variance from one to two years has a posterior range 0.37 times Gauss–Newton's, and the flat curve puts it 21% low. The joint runs on the cluster fill ⟨J1⟩ to ⟨J3⟩.
+10. For the argument of the course: on a liquid smile the method returns the classical answer, and beyond the last quote it gives the open input a range that flat extrapolation does not. Beyond SPY's LEAPs the curve's share of that range comes from the prior alone, so the prior must be stated and tested.
 
 ## References
 

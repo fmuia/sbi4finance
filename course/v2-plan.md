@@ -148,8 +148,13 @@ becomes affordable, not that one posterior becomes much cheaper. The course neve
 
 ### 2.5 What is not shown yet, and what would weaken the argument
 
-The thin-chain results are pending (S10, S10-E, S11). Two outcomes would weaken the argument, and the course will
-report them if they occur.
+The thin-chain results are pending (S10, S10-E, S11), and so are the joint runs on full surfaces, which infer the
+curve (⟨J1⟩ to ⟨J3⟩; Lecture 15, Section 15.2). A quick check on 100 simulated EWG chains with the curve inferred
+points to an outcome this plan did not list: Gauss–Newton over-reserves rather than under-covers, fixing $H$ is
+biased, and a Laplace approximation with the posterior's prior does as well as the network (Lecture 16, Section 16.4).
+If S10 confirms it, the thin chain shows that a stated prior is needed, not that the posterior's shape is, and
+simulation-based inference rests on cost and validation (Section 2.4). Two outcomes would weaken the argument, and
+the course will report them if they occur.
 - If Gauss–Newton covers at its nominal rate on EWG-like chains, the case for Bayes rests on the long end and on
   pooling.
 - If rough Bergomi fails EWG's predictive check, model error exceeds every within-model range.

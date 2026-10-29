@@ -3,9 +3,11 @@
 Quick check of 28 and 29 October 2026. It looks for a case in the core tutorial, Heston and rough Bergomi on the
 complete 63-quote design, where the full posterior changes a product's 90% bound, and proposes how to test it;
 Section 5 then runs the thin-chain case it settles on, on one machine. It is a quick check, not a study: nothing here
-is registered in `tutorial/CLAIMS.md`, and no number goes on screen from it. Sections 2, 3 and 5 use the joint-curve
-rough-Bergomi task of PR #48 (`rough_joint_calibration_v1`, `tasks.joint_rough_task`), which this branch does not
-have yet; their scripts run once that task is ported.
+is registered in `tutorial/CLAIMS.md`, and no number goes on screen from it. The course quotes it as a quick check:
+Section 1 in Lecture 11, Section 11.6; Sections 3 and 4 in Lecture 15, Section 15.6; Section 5 in Lecture 16,
+Sections 16.1 to 16.9; `course/scripts/check_v2_plan.py` checks every number quoted there against the files here.
+Sections 2, 3 and 5 use the joint-curve rough-Bergomi task of PR #48 (`rough_joint_calibration_v1`,
+`tasks.joint_rough_task`), which this branch does not have yet; their scripts run once that task is ported.
 
 **In short.** On complete surfaces the posterior is close to the Gauss–Newton normal, and the one non-Gaussian part,
 the curve beyond the last quote, is set by the prior rather than the simulator (Sections 1 to 4). On a thin chain
@@ -120,7 +122,7 @@ the right, the blue histogram is the posterior's distribution of the product, th
 normal, the green line or curve the answer with the curve held flat beyond one year, and the dashed line the truth.
 The histograms are spiky because the effective sample size is about 100.
 
-- **$(H, \eta, \rho)$** have the Gauss–Newton widths, to within 4% to 15%: the regular part of the posterior, as on
+- **$(H, \eta, \rho)$** have the Gauss–Newton widths, to within 3% to 15%: the regular part of the posterior, as on
   the known-curve task. The short variance's posterior range is 0.7 times Gauss–Newton's, through its coupling to
   the long end.
 - **The long end** does not. The long variance's 90% range is a fifth of Gauss–Newton's, and decay sits near its
