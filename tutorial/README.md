@@ -106,7 +106,7 @@ scientific claim; retain the original reference methods, chain/draw axes, task a
 | `notebooks/` | The marimo notebooks: plain Python files, reactive, readable in any editor |
 | `src/sbi4f_tutorial/` | The code the notebooks run, copied unchanged from the project's lab: Black–Scholes and implied volatility (`surface.py`), the Heston Fourier pricer (`hkde.py`), rough Bergomi by Monte Carlo (`rough_bergomi.py`, `bergomi.py`, `pricing.py`), the current network's adapter and native sampler (`full_surface.py`), and the notebooks' loaders and figures (`teaching.py`) |
 | `assets/` | The trained networks, the accepted study results, quick-check outputs, task files, data and figures that the notebooks load |
-| `MANIFEST.md` | Every file in `assets/`, with its size, SHA-256 and origin |
+| `MANIFEST.md` | Every shipped asset, with its size, SHA-256 and origin; excludes downloaded `local-checkpoints/` |
 | `CLAIMS.md` | Every number said on stage, with the study that produced it and its status |
 | `tests/` | `pixi run test` checks the files and the code; `pixi run test-notebooks` runs every notebook headless (a few minutes) |
 
