@@ -6,31 +6,15 @@ Section 5 then runs the thin-chain case it settles on, on one machine. It is a q
 is registered in `tutorial/CLAIMS.md`, and no number goes on screen from it. The course quotes it as a quick check:
 Section 1 in Lecture 11, Section 11.6; Sections 3 and 4 in Lecture 15, Section 15.6; Section 5 in Lecture 16,
 Sections 16.1 to 16.9; `course/scripts/check_v2_plan.py` checks every number quoted there against the files here.
-Sections 2, 3 and 5 use the joint-curve rough-Bergomi task of PR #48 (`rough_joint_calibration_v1`,
-`tasks.joint_rough_task`), which this branch does not have yet; their scripts run once that task is ported.
+Sections 2, 3 and 5 use `rough_joint_calibration_v1` and `tasks.joint_rough_task`, with the task/runtime/source identities of their recorded runs. Their outputs and samplers are not changed or rerun by this editorial refresh. The current full-surface tutorial has completed 100k known-curve and joint-curve banks/fits; see [current status](../../../course/status.md). Sparse chains remain an optional/deferred unit under the separate [sparse plan](../../plans/SPARSE-QUOTE-CASE-PLAN.md).
 
-**In short.** On complete surfaces the posterior is close to the Gauss–Newton normal, and the one non-Gaussian part,
-the curve beyond the last quote, is set by the prior rather than the simulator (Sections 1 to 4). On a thin chain
-with the curve inferred, the two classical practices fail in opposite directions: least squares without a prior
-cannot identify the model and over-reserves 1.5 to 3.3 times, and fixing $H$ at 0.10 leaves 23% of truths above its
-bound for the variance swap and the put. A stated prior fixes both, but a Gaussian at the posterior's mode does as
-well as the network for the six products tried (Section 5). The case for Bayes here is the prior; the case for the
-network is cost, not shape.
+**What these checks establish.** In the particular full-surface product comparisons below, the prior and curve continuation matter more than departures from a matched local Gaussian approximation. On the separate thin quick check, least squares without a prior over-reserves and fixing H at 0.10 can bias bounds; a Gaussian at the posterior mode with the same prior matches the network for the six tested products. These are useful arguments for stating the prior and comparing strong classical alternatives. They are not a theorem that all complete-surface posteriors are Gaussian or that SBI requires sparse observations.
 
-## Why products, not corner plots
+## Parameter geometry and product consequences are separate checks
 
-On the complete design with the forward-variance curve given, both models are in the Bernstein–von Mises regime:
-the posterior is close to the Gauss–Newton normal. Lecture 11, Section 11.4 and Lecture 15, Section 15.4 show it
-on SPY, and PR #48's reference posteriors are largely elliptical, apart from skew where a chosen prior limit binds
-(vol-of-vol at 1.5, ρ at −0.1, η at 3.5; PR #48, `docs/interior-corner-plots.md` and
-`docs/pilot-results/2026-10-28/{heston,rough}-posterior-geometry/`). A banana in those tasks is not to be expected.
+The known-curve SPY and Heston comparisons below can be close to a Gaussian for their recorded tasks and observations. Earlier PR48 boundary examples do not establish non-Gaussian interior geometry. The newer joint100k J1 panel does contain selected interior *learned* candidates: case 1983 has a curved long-level/decay ridge (Spearman 0.975), and case 1941 has strong eta/rho dependence (about 0.957, largely elliptical). Their all-six-parameter interior rule and exploratory selection are documented in [the joint sanity audit](../../plans/joint-rough-posterior-sanity.md). Conditional PyMC validation remains J2, and an effect on product prices remains J3; neither follows from a corner plot or from marginal SBC.
 
-The object the rules ask for is a product's 90% point (Lecture 6, Section 6.6). A non-Gaussian parameter posterior
-changes it only along directions the product loads on. A product linear in the parameters cannot separate a
-posterior from a Laplace answer at all: PR #48's twelve product comparisons
-(`docs/pilot-results/2026-10-28/heston-candidate-acceptance/results/products/products.json`) use the variance swap
-and a forward variance, both linear in $v_0$ and $\theta$ at fixed $\kappa$. The check therefore scores products,
-and looks where the quotes do not determine what a product needs.
+The financial question is whether such dependence changes the price distribution of a stated payoff. Linearity of a payoff's parameter map alone does not guarantee that arbitrary posteriors and Laplace approximations have the same distribution or quantiles. PR48's twelve analytic variance-product comparisons probe particular linear combinations of Heston parameters at fixed kappa; agreement there does not establish all parameter geometry or nonlinear-product accuracy. The exploration below therefore scores products and respects the prior, without dismissing parameter geometry as a diagnostic.
 
 ## 1. Heston: the low vol-of-vol corner (study S6)
 
@@ -80,7 +64,7 @@ The forward start's delta-method sd is 1.0% to 2.3% of its price inferred and 0.
   lower one, and a $\chi^2$ slice along the weakest direction leaves the prior box within one Gauss–Newton sd. The
   posterior there cannot be the Gauss–Newton normal. The 2-year put's delta-method sd rises four- to fivefold
   against the curve given. Section 3 measures what the posterior does instead.
-- **A flat curve leaves decay unidentified and harms nothing:** the products do not depend on it.
+- **An exactly flat curve does not depend on decay conditional on equal short/long levels.** This explains weak decay identification. Integrating uncertain levels need not leave its marginal equal to the prior, and broad decay alone does not prove every extrapolated product harmless.
 
 ## 3. One slow-decay smile, by importance sampling
 
@@ -173,7 +157,7 @@ other spends capital on curves the model does not allow, and the size of each er
 posterior is right if its prior is, which is testable. The non-Gaussian shape sits in the curve's coefficients, not
 in $(H, \eta, \rho)$, which is why the known-curve and Heston runs did not show it.
 
-**The test, on the joint validation and test banks** (a proposed study; nothing here runs it):
+**J3 proposal, not a completed study.** Specify the development analysis on validation first and freeze its protocol before opening reserved test outcomes; nothing here runs it:
 
 1. Stratify the smiles by an observable, the posterior median of decay below 1 per year (or the long variance's
    contraction below 0.5), against the rest. Bayesian calibration holds within any stratum defined by the data, when
@@ -187,8 +171,7 @@ in $(H, \eta, \rho)$, which is why the known-curve and Heston runs did not show 
    so: the posterior's advantage is then calibration tested on average, every product from one set of draws, and an
    explicit prior.
 3. Choose the exemplar by a fixed rule, the median smile of the stratum, and audit its posterior with the Monte
-   Carlo likelihood (S5's machinery). The network's least-calibrated marginal is decay (46.75% coverage at 50% in
-   the joint 20k run), the direction this case depends on.
+   Carlo likelihood (S5's machinery). The old joint20k decay coverage was 46.75% at 50%; the newer J1 panel must be read with its own frozen model and validation record, rather than inheriting that value. Decay remains weakly identified near flat curves.
 4. Repeat the breaches with truths from another law for the long end, as S10 does for EWG, so that the posterior's
    advantage is not only its own prior.
 
@@ -200,8 +183,7 @@ is right. Section 4 suggests the one-exponential family is too rigid for SPY.
 beyond the last quote depends on the curve family and its prior, not on the simulator: $(H, \eta, \rho)$ need the
 simulator, and they stay Gaussian here. The study above supports claim 2a of Lecture 6, Section 6.8 (a stated
 prior against a zero-width extrapolation) and is nearly free on PR #48's validation panels, so it stays worth
-running, as a result for Lecture 15, Section 15.6 and slot 6, not as the headline. The analysis that tests Bayes
-and the network together is the thin chain with the joint curve: EWG's 27-contract layout under the six-target
+running, as a result for Lecture 15, Section 15.6 and slot 6, not as the headline. One optional analysis that tests Bayes and the network together is the thin chain with the joint curve: EWG's 27-contract layout under the six-target
 task, which removes the curve leak that withdrew the earlier thin cases (Lecture 16, Section 16.3). One such
 surface prices in about 1 CPU-second at 8,192 paths, within the bank's precision budget (`thin_joint_timing.py`:
 largest Monte Carlo error 0.067 of the quote noise against a budget of 0.25), so a 100,000-surface bank costs about
@@ -345,18 +327,18 @@ dates, and for nothing else on this path.
 | Script | Output | Runs on this branch |
 | --- | --- | --- |
 | `heston_s6_strata.py` | `heston_s6_strata.json` | yes |
-| `joint_gn_screen.py` | `joint_gn_screen.json` | after PR #48's joint task is ported |
-| `joint_is_posterior.py`, `joint_is_products.py` | `joint_is_A.npz`, `joint_is_A-products.npz`, `joint_is_A.txt` | after PR #48's joint task is ported |
+| `joint_gn_screen.py` | `joint_gn_screen.json` | requires the recorded joint task/runtime; not rerun in this refresh |
+| `joint_is_posterior.py`, `joint_is_products.py` | `joint_is_A.npz`, `joint_is_A-products.npz`, `joint_is_A.txt` | requires the recorded joint task/runtime; not rerun in this refresh |
 | `joint_is_figure.py` | `joint_is_A.png` | yes, from the committed npz files |
 | `spy_curve_fit.py` | `spy_curve_fit.json` | yes |
-| `thin_joint_timing.py` | printed timings, quoted above | after PR #48's joint task is ported |
-| `make_thin_joint_config.py` | `thin_joint_net/bank-config.json`, the thin joint bank's configuration | after PR #48's joint task is ported |
-| `thin_joint.py`, `thin_joint_train.py` | `thin_joint_net/training.json`; `SHA256SUMS` identifies the network and the bank, which are not committed | after PR #48's joint task is ported |
-| `thin_joint_sbc.py` | `thin_joint_net/sbc-scale1.json` | after PR #48's joint task is ported |
-| `thin_joint_breach.py` | `thin_joint_results/rows-{classical,posterior,laplace}-0-100.jsonl`, `summary.json` | after PR #48's joint task is ported; `summarize` runs from the committed rows |
+| `thin_joint_timing.py` | printed timings, quoted above | requires the recorded joint task/runtime; not rerun in this refresh |
+| `make_thin_joint_config.py` | `thin_joint_net/bank-config.json`, the thin joint bank's configuration | requires the recorded joint task/runtime; not rerun in this refresh |
+| `thin_joint.py`, `thin_joint_train.py` | `thin_joint_net/training.json`; `SHA256SUMS` identifies the network and the bank, which are not committed | requires the recorded joint task/runtime; not rerun in this refresh |
+| `thin_joint_sbc.py` | `thin_joint_net/sbc-scale1.json` | requires the recorded joint task/runtime; not rerun in this refresh |
+| `thin_joint_breach.py` | `thin_joint_results/rows-{classical,posterior,laplace}-0-100.jsonl`, `summary.json` | requires the recorded joint task/runtime; not rerun in this refresh; `summarize` runs from the committed rows |
 | `thin_joint_breach_figure.py` | `thin_joint_results/breach.png` | yes, from the committed summary |
-| `thin_joint_audit.py` | `thin_joint_results/audit-0-10.jsonl` | after PR #48's joint task is ported |
-| `thin_joint_ewg.py` | `thin_joint_results/ewg-{classical,posterior,laplace}.json` | after PR #48's joint task is ported |
+| `thin_joint_audit.py` | `thin_joint_results/audit-0-10.jsonl` | requires the recorded joint task/runtime; not rerun in this refresh |
+| `thin_joint_ewg.py` | `thin_joint_results/ewg-{classical,posterior,laplace}.json` | requires the recorded joint task/runtime; not rerun in this refresh |
 
 Run every script from `lab/`; the commands are in each docstring. The recorded outputs were made on 28 and 29 October
 2026 with PR #48's source at `4281d4e`, outside the lab's locked environment: Python 3.13.17, NumPy 2.5.4, SciPy

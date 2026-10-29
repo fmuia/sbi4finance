@@ -1,12 +1,14 @@
 # Amortized Bayesian calibration of volatility models: a lecture series
 
-Version 2, 24 October 2026 · AI & Analytics Solutions SAS di Muia Francesco
+Version 2, updated 29 October 2026 · AI & Analytics Solutions SAS di Muia Francesco
 
 This folder is a course in sixteen lectures. It builds, from the basics, everything needed to understand and teach
 the advanced example of the ICAIF '26 tutorial: the calibration of a rough volatility model to option quotes, with
 a posterior, and the propagation of that posterior into the prices of products the quotes do not determine.
 
 The course is a superset of the tutorial.
+The current tutorial core uses complete surfaces in three steps: Heston, rough Bergomi with a known curve, then rough Bergomi with jointly inferred curve coefficients. Lecture 16's thin-chain material remains an optional, deferred extension, with its exploratory results preserved. The completed 100k banks/fits and J1 validation support this core; conditional references (J2) and long-end/product comparisons (J3) remain separate pending work ([current status](status.md)).
+
 [The plan](v2-plan.md) says what the course argues and why, and which options would strengthen it;
 [practice-sources.md](practice-sources.md) lists the practices the course may describe, with their sources;
 [status.md](status.md) gives the state of every study.
@@ -58,9 +60,7 @@ Today quick checks show claim 1 on SPY, and claim 2 beyond the last quote: on SP
 size set by the prior, and with the curve inferred on one simulated smile, by importance sampling. On 100 simulated
 thin chains with the curve inferred, they show claim 2 there too: least squares without a prior over-reserves, a
 parameter fixed by hand is biased, and a Laplace approximation with the posterior's prior matches the posterior. A
-simulated sector shows claim 2 for pooling, and pilot smiles show part of claim 4. The joint runs on full surfaces
-(⟨J1⟩ to ⟨J3⟩, on PR #48), the thin-chain studies on the full bank, the network's own checks, and the network as a
-proposal where a classical fit fails, wait for the runs of [`lab/plans/CLUSTER-RUNS.md`](../lab/plans/CLUSTER-RUNS.md).
+simulated sector shows claim 2 for pooling, and pilot smiles show part of claim 4. J1 is now complete on the joint100k development validation panel: marginal calibration, physical contraction, recovery and observation dependence have been checked. Its interior learned ridges are useful teaching candidates, but do not establish conditional accuracy or product benefits. J2 (conditional reference agreement) and J3 (long-end/product comparisons) remain pending. Thin-chain studies and the network as a proposal where a classical fit fails remain optional follow-ups; the older [runbook](../lab/plans/CLUSTER-RUNS.md) is not an instruction to launch them now.
 
 ## Who the course is for
 
@@ -95,7 +95,7 @@ rough Bergomi the full examples.
 | 13 | [The rough Bergomi model](13-rough-bergomi.md) | Roughness, the Volterra driver, the forward-variance curve, the hybrid scheme, the power-law skew, what the smile identifies |
 | 14 | [Why the exact posterior is expensive](14-why-the-exact-posterior-is-expensive.md) | The Monte Carlo likelihood, the cost of an exact chain and of importance sampling, and who needs many posteriors |
 | 15 | [A liquid smile: SPY](15-a-liquid-smile-spy.md) | The rough network, its checks, SPY's posterior, where it agrees with Gauss–Newton, products, the long end |
-| 16 | [A thin chain: EWG](16-a-thin-chain-ewg.md) | Why a thin chain and which one, the procedure on EWG, coverage on simulated chains, EWG's posterior, model error, and the argument claim by claim |
+| 16 (optional/deferred) | [A thin chain: EWG](16-a-thin-chain-ewg.md) | Why a thin chain and which one, the procedure on EWG, coverage on simulated chains, EWG's posterior, model error, and the argument claim by claim |
 
 For a worked explanation of the neural-pricer alternative, see [forward pricing emulation and fair inference comparisons](forward-pricing-emulation.md), including training data, MCMC, missing quotes and the current implementation's limits.
 
@@ -105,6 +105,7 @@ For a worked explanation of the neural-pricer alternative, see [forward pricing 
   weekdays (exchange holidays not removed); the thin chains count NYSE trading days, which makes
   a calendar year about 252 days (Lecture 16). Volatility is annualized and written as a fraction (0.20) or a
   percentage (20%). "One volatility point" is 0.01.
+- **Observation noise.** The synthetic core adds independent Gaussian errors in **price**, with a fixed contract-specific standard deviation equal to reference Black–Scholes vega times the stated volatility-scale error. This is not Gaussian noise applied to implied volatility. Training redraws quote errors around stored numerical prices; validation/inference use a fixed observed surface. Numerical Monte Carlo errors remain separate.
 - **Forward units.** From Lecture 2 on, option prices are divided by the discount factor and by the forward, so
   that the forward is 1 and a price is a fraction of it.
 - **Notation.** Each lecture defines a symbol when it first appears; [the table below](#symbols) collects them.
@@ -115,8 +116,8 @@ For a worked explanation of the neural-pricer alternative, see [forward pricing 
   URLs.
 - **Numbers that need further runs.** A number written as ⟨Sn⟩ is left blank on purpose. Study Sn produces it;
   [`lab/plans/CLUSTER-RUNS.md`](../lab/plans/CLUSTER-RUNS.md) says how. A number written as ⟨Jn⟩ comes from the
-  six-target joint runs of PR #48, which infer the forward-variance curve; [status.md](status.md#the-joint-runs)
-  lists them.
+  six-target joint evidence obligations, which infer the forward-variance curve; [status.md](status.md#the-joint-runs)
+  records J1 complete and J2/J3 pending.
 - **Figures.** Every figure is drawn by a script in `course/scripts/` (named by an earlier numbering of the lectures) or by
   a check in `lab/checks/`, from closed-form formulas, simulations with fixed seeds, or the data above.
   Four figures are copied from study results instead (`images/study-*.png`: Figures 6.2, 15.4, 15.5 and 15.8),

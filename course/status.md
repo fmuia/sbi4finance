@@ -2,7 +2,13 @@
 
 [Course index](README.md)
 
-24 October 2026. Every result on the full rough-Bergomi bank is pending: runs R0 to R10 of [`lab/plans/CLUSTER-RUNS.md`](../lab/plans/CLUSTER-RUNS.md) produce them, for about 930 CPU-hours and two GPU jobs. "Pilot" is the bank of 2,200 rough-Bergomi surfaces and a network trained on 1,600 of them. Claim IDs and their status are those of [`tutorial/CLAIMS.md`](../tutorial/CLAIMS.md). A quick check is a script in `lab/checks/`, not an accepted study, and is not registered there. The quick checks of 28 and 29 October, on where the posterior and the classical answer part, are in `lab/checks/why_bayes/`.
+Updated 29 October 2026. The full-surface numerical backbone now has completed **100,000-row training banks and baseline fits for Heston, known-curve rough Bergomi and six-target joint-curve rough Bergomi**. J1 below is complete on a 2,000-case development validation panel; conditional reference validation (J2) and the proposed long-end/product comparison (J3) are still pending. No new cluster run is implied by this page.
+
+The current tutorial core is Heston → known-curve rough Bergomi → joint-curve rough Bergomi on the complete 63-quote design. Thin chains are an optional, deferred extension. The [current backbone work order](../lab/plans/backbone-delivery-work-order.md), [training-data guide](../lab/plans/training-data-guide.md) and [joint posterior sanity report](../lab/plans/joint-rough-posterior-sanity.md) identify the released banks/models and their evidence. These supersede the old blanket statement that all full-bank results were pending.
+
+## Earlier studies and exploratory checks
+
+The table below preserves the earlier S-study results, proposed market/thin-chain studies and their own task identities. Their values are not silently relabelled as results of the new 100k fits. Here "pilot" means the historical 2,200-surface bank with 1,600 training surfaces. Claim IDs retain the status recorded in [`tutorial/CLAIMS.md`](../tutorial/CLAIMS.md). The 28–29 October `lab/checks/why_bayes/` results remain **exploratory quick checks**, including the thin-chain work; they do not authorize a new sparse campaign or acquire study acceptance from J1.
 
 | Item | Question | Result so far | Status | Run | Claims |
 | --- | --- | --- | --- | --- | --- |
@@ -33,27 +39,27 @@
 | Front-month case | SPY's front three months used as a thin market, with an 80-chain validation | – | Withdrawn: SPY's tight noise, and every method given SPY's curve to one year from the full chain (Lecture 16, Section 16.3) | – | – |
 | 15-quote and three-times-noise cases | Rough Bergomi on SPY when the quotes say less | – | Withdrawn: every method given SPY's curve from the full chain (Lecture 16, Section 16.3) | – | – |
 
-## The networks and banks in training
+## Current banks and fits
 
-28 October 2026. The full-surface work of [PR #48](https://github.com/fmuia/sbi4finance/pull/48) trains the networks the
-studies above will run on; its detailed numerical status is
-[`docs/collaborator-numerical-status.md`](https://github.com/fmuia/sbi4finance/blob/feat/full-surface-calibration/docs/collaborator-numerical-status.md)
-on that branch.
+All three immutable banks, current posterior/pricer checkpoints and saved validation panels are complete and available through the versioned distribution described in the [training-data guide](../lab/plans/training-data-guide.md). Each bank has 100,000 training and 5,000 validation surfaces; Heston retains 5,000 reserved test surfaces and each rough task 7,000. The 2,000-case neural readout is a subset of validation, not another split. Reserved test outcomes were not opened for this development campaign.
 
 | Piece | State |
 | --- | --- |
-| Heston network | A BayesFlow 2.1 candidate (100,000 training smiles, epoch 500) passed its frozen calibration check on 2,000 unused smiles, and 12 of 12 variance-product checks. The notebooks load the BayesFlow 2.0 network trained on 50,000 smiles until it is exported. |
-| Rough Bergomi, known curve ($H$, $\eta$, $\rho$ given the 7-level forward-variance curve) | The 20,000-smile bank is complete and the first networks are trained. Comparisons with reference posteriors still disagree on some smiles, partly from the reference emulator's error and the time grid. The next step is a 50,000-smile bank and refits. |
-| Rough Bergomi, inferred curve (six unknowns) | 9,925 of 20,000 training smiles generated; paused while the known-curve checks run. Its results fill ⟨J1⟩ to ⟨J3⟩ (below). |
-| Sparse option chains (EWG) | Deferred until after the release ([`lab/plans/SPARSE-QUOTE-CASE-PLAN.md`](../lab/plans/SPARSE-QUOTE-CASE-PLAN.md)). A six-target thin network on EWG's layout was trained on one machine for a quick check (Lecture 16, Section 16.2); its bank and weights are not committed, and their SHA-256 are in `lab/checks/why_bayes/thin_joint_net/`. |
+| Heston | BayesFlow 2.1, final epoch 500, 100k training surfaces. The checked final500 export and its Heston reference/product evidence remain distinct from the historical 50k/BayesFlow 2.0 study artifacts above. |
+| Rough Bergomi, known curve | Completed 100k bank and 500-epoch final posterior. The curve is supplied per case and varies across training. The released task preserves the original linear-with-perturbations curve prior; it is not the earlier proposed power-law-walk SPY extension. Conditional comparisons retain their mixed results; no global exact-model acceptance follows. |
+| Rough Bergomi, inferred curve | Completed 100k bank and 500-epoch final six-target posterior. The three curve coefficients are targets; seven derived curve levels never enter inference conditions. J1 is complete; J2 and J3 remain pending. |
+| Sparse option chains | Optional/deferred, separately specified in [the sparse follow-up plan](../lab/plans/SPARSE-QUOTE-CASE-PLAN.md). Section 5 of `why_bayes/` retains its separate local quick check, bank/model hashes and limitations. |
+
+Pretrained CPU inference has been measured with the unchanged native BayesFlow 2.1 adaptive sampler: 1,000-draw warm calls took 1.40–1.54 s (Heston), 1.77–1.92 s (known rough) and 3.59–3.62 s (joint rough) on a high-end Mac. These are one-case latency measurements, not CPU training estimates or a minimum hardware specification; see [the benchmark](../lab/evidence/pilot-results/2026-10-29/laptop-inference-benchmark/README.md).
 
 ## The joint runs
 
-The six-target rough task infers the curve with $(H, \eta, \rho)$ (Lecture 15, Section 15.2). Its runs on PR #48 will fill
-three places in the course, written ⟨J1⟩ to ⟨J3⟩.
+The six-target rough task infers the curve with $(H, \eta, \rho)$ (Lecture 15, Section 15.2). J1–J3 name different evidence obligations; completing one does not fill the others.
 
 | Item | Question | Where the course uses it | Status |
 | --- | --- | --- | --- |
-| J1 | The six-target network's SBC, coverage and contraction on held-out full surfaces | Lecture 15, Section 15.2; Lecture 16, Section 16.8 (claim 3a) | Running |
-| J2 | Its agreement with reference posteriors, and the shape of the posterior against Gauss–Newton with the curve inferred, for the parameters and the products | Lecture 15, Sections 15.2 and 15.4; Lecture 16, Section 16.8 (claim 1) | Running |
-| J3 | The products beyond the last quote under the posterior, Gauss–Newton and the flat curve: breach rates of their one-sided 90% bounds on held-out smiles, split by an observable such as the posterior median of the decay | Lecture 15, Section 15.6; Lecture 16, Section 16.8 (claim 2a) | Proposed in `lab/checks/why_bayes/README.md` ("What follows") |
+| J1 | SBC, coverage, recovery, contraction and observation dependence on full surfaces | Lecture 15, Section 15.2; Lecture 16, Section 16.8 (claim 3a) | **Complete as development evidence.** The 2,000 validation cases have 1,000 saved draws each; all six primary-target rank screens and the seven-target family including rho*eta pass, with marginal 90% coverage 89.15–90.15%. Physical contraction and the wrong-case-pairing control reject a prior-only output. See [fit evidence](../lab/evidence/pilot-results/2026-10-29/joint100k-completed/README.md) and [sanity audit](../lab/plans/joint-rough-posterior-sanity.md). |
+| J2 | Conditional PyMC reference agreement, and posterior shape against matched classical approximations, for parameters and products | Lecture 15, Sections 15.2 and 15.4; Lecture 16, Section 16.8 (claim 1) | **Pending.** Interior learned-posterior candidates 1983 and 1941 are identified; their geometry is not yet independently reference-validated. Existing known-curve emulator comparisons do not complete this joint task. |
+| J3 | Long-end/product prices and breach rates under the posterior, matched classical methods and explicit extrapolation assumptions | Lecture 15, Section 15.6; Lecture 16, Section 16.8 (claim 2a) | **Proposed, not run or accepted.** The single-smile `why_bayes/` check is exploratory. Product payoff/grid/Monte Carlo precision and a declared evaluation protocol are still needed; reserved test is not an automatic development dataset. |
+
+The current J1 geometry is informative without establishing a product advantage. Across cases the median absolute within-case long-level/decay Spearman correlation is 0.846, with opposite signs for rising and falling curves. Cases 1983 and 1941 meet the declared all-six-parameter interior criteria. Conditional PyMC agreement, a non-Gaussian *true* posterior and a change in product ranges are separate questions left to J2/J3. The exact task, checkpoint and saved-panel hashes are retained in the linked audits.

@@ -8,6 +8,10 @@ runs, and what is still to run. The runs themselves, with commands and costs, ar
 with their sources, are in [practice-sources.md](practice-sources.md). The course stays a superset of the ICAIF '26
 tutorial.
 
+## Current execution scope (29 October)
+
+The course keeps its prior-versus-geometry argument and exploratory checks. The immediate tutorial, however, uses **complete surfaces**: Heston → known-curve rough Bergomi → joint-curve rough Bergomi. All three 100k banks and baseline fits are complete; J1's marginal validation, contraction and observation-dependence audit is complete. J2's conditional references and J3's long-end/product comparison remain pending ([status](status.md#the-joint-runs)). The older budgets/options below describe proposed studies, not newly authorized jobs. Thin chains, pooling across names and a new market-data campaign are optional/deferred.
+
 ## Summary
 
 1. **Sixteen lectures in four parts.** Markets and Black–Scholes (1–5); calibration and Bayes on Black–Scholes
@@ -19,8 +23,7 @@ tutorial.
    tested on a thousand simulated chains, and each real chain gets a proposal for an audit. On one audited smile
    its saving over importance sampling from a Gauss–Newton proposal is small; in validation it is decisive
    (Section 2.4).
-3. **The example.** EWG (iShares MSCI Germany): a real thin chain, informative but sparse, chosen on merit from
-   four candidates (Section 3).
+3. **The optional thin-chain example.** EWG (iShares MSCI Germany) was chosen on merit from four candidates (Section 3). It remains course background and exploratory evidence, not a requirement for the current full-surface tutorial.
 4. **Two reviews found nineteen errors.** The most serious ones are a curve leaked from SPY's full chain, an audit
    that was not unbiased, and adaptive rounds that did not adapt. All are fixed in the code (Section 4).
 5. **What is missing.** Every result on the full rough-Bergomi bank: about 930 CPU-hours and two GPU jobs
@@ -148,8 +151,7 @@ becomes affordable, not that one posterior becomes much cheaper. The course neve
 
 ### 2.5 What is not shown yet, and what would weaken the argument
 
-The thin-chain results are pending (S10, S10-E, S11), and so are the joint runs on full surfaces, which infer the
-curve (⟨J1⟩ to ⟨J3⟩; Lecture 15, Section 15.2). A quick check on 100 simulated EWG chains with the curve inferred
+The formal thin-chain studies remain deferred (S10, S10-E, S11). On full surfaces, J1 is complete on the joint100k validation panel; conditional references J2 and long-end/product comparisons J3 remain pending (Lecture 15, Section 15.2). A quick check on 100 simulated EWG chains with the curve inferred
 points to an outcome this plan did not list: Gauss–Newton over-reserves rather than under-covers, fixing $H$ is
 biased, and a Laplace approximation with the posterior's prior does as well as the network (Lecture 16, Section 16.4).
 If S10 confirms it, the thin chain shows that a stated prior is needed, not that the posterior's shape is, and
@@ -185,7 +187,7 @@ to 36 volatility points, so pooling will decide most of their marks: that is the
 expiries (29, 57, 148 and 238 calendar days) match fewer design maturities than EWG's, so their layouts are smaller.
 Their dividends must be checked against rule 3 of Section 3 before they are used.
 
-## 3. The example: why EWG
+## 3. Optional/deferred example: why EWG
 
 ![Median bid–ask width near the money per expiry, for the four candidate chains.](images/v2-thin-candidates.png)
 
