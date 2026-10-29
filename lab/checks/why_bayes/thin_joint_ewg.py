@@ -3,12 +3,15 @@
 The input is EWG read onto its layout (checks/thin_chains/EWG_observation.json, prices_forward_units), the
 network's input; the noise is the layout's. `classical` fits least squares from the prior box and the quotes, with
 and without H fixed, and writes the delta-method bounds of thin_joint_breach.py's three classical methods.
-`posterior` samples the trained network and prices the products under its draws. There is no truth: this shows
-how far the methods' answers differ on a real chain, not which is right.
+`posterior` samples the trained network and prices the products under its draws. `laplace` starts from the
+least-squares fit, takes the posterior's mode and samples the Laplace approximation there, as thin_joint_breach.py's
+laplace arm does. There is no truth: this shows how far the methods' answers differ on a real chain, not which is
+right.
 
 Needs the joint task of PR #48. Run from lab/:
 python checks/why_bayes/thin_joint_ewg.py classical --config THIN_JOINT_CONFIG.json --out DIR
 python checks/why_bayes/thin_joint_ewg.py posterior --config THIN_JOINT_CONFIG.json --checkpoint RUN --out DIR
+python checks/why_bayes/thin_joint_ewg.py laplace --config THIN_JOINT_CONFIG.json --out DIR   (after classical)
 """
 
 import argparse
@@ -72,20 +75,45 @@ def posterior(args):
         print(f"  {n:15s} 5/50/95% " + " ".join(f"{v:.4f}" for v in result["parameters"][n]))
 
 
+def laplace(args):
+    task, quotes = load(args)
+    start = json.loads((args.out / "ewg-classical.json").read_text())["gauss_newton"]["theta"]
+    fitter = Fit(task, quotes, args.fit_paths, args.seed + 2, prior=True)
+    fit = fitter.run([fitter.theta(np.clip(fitter.z(start), -4.0, 4.0))])
+    product = lambda theta: thin_joint.products(task, theta, args.product_paths, args.seed + 1)
+    mark, lower, upper = delta_bounds(fit, fitter, product)
+    z = np.random.default_rng(np.random.SeedSequence([args.seed, 5, 99])).multivariate_normal(
+        fit["z"], fit["covariance"], size=args.draws)
+    draws = np.array([fitter.theta(zi) for zi in z])
+    priced = np.array([product(d) for d in draws])
+    result = {"products": list(thin_products.NAMES), "draws": args.draws, "chi2": fit["chi2"],
+              "mode": fit["theta"].tolist(), "condition": fit["condition"],
+              "sd_z": np.sqrt(np.diag(fit["covariance"])).tolist(),
+              "parameters": {n: np.quantile(draws[:, j], [0.05, 0.5, 0.95]).tolist() for j, n in enumerate(thin_joint.NAMES)},
+              "lower": np.quantile(priced, 0.1, axis=0).tolist(), "upper": np.quantile(priced, 0.9, axis=0).tolist(),
+              "median": np.median(priced, axis=0).tolist(),
+              "delta": {"mark": mark.tolist(), "lower": lower.tolist(), "upper": upper.tolist()}}
+    (args.out / "ewg-laplace.json").write_text(json.dumps(result, indent=1) + "\n")
+    print(f"mode: chi2 {fit['chi2']:.1f} on {len(quotes)} quotes, theta {np.round(fit['theta'], 4).tolist()}")
+    for j, n in enumerate(thin_joint.NAMES):
+        print(f"  {n:15s} 5/50/95% " + " ".join(f"{v:.4f}" for v in result["parameters"][n]))
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = parser.add_subparsers(dest="command", required=True)
-    for name, fn in (("classical", classical), ("posterior", posterior)):
+    for name, fn in (("classical", classical), ("posterior", posterior), ("laplace", laplace)):
         p = sub.add_parser(name)
         p.set_defaults(fn=fn)
         p.add_argument("--config", type=Path, required=True)
         p.add_argument("--out", type=Path, required=True)
         p.add_argument("--seed", type=int, default=0)
         p.add_argument("--product-paths", type=int, default=8192)
-        if name == "classical":
+        if name != "posterior":
             p.add_argument("--fit-paths", type=int, default=4096)
-        else:
+        if name == "posterior":
             p.add_argument("--checkpoint", type=Path, required=True)
+        if name != "classical":
             p.add_argument("--draws", type=int, default=400)
     args = parser.parse_args()
     args.fn(args)
