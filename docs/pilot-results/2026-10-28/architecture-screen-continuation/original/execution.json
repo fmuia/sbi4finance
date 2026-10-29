@@ -1,0 +1,28 @@
+{
+  "state": "submitted",
+  "plan_sha256": "8f2ec3d0059374bfc23f3d2c0f46a6c3dc728cc7a05bb3f90e16da5063b88855",
+  "argv": [
+    "sbatch",
+    "--parsable",
+    "--nodes=1",
+    "--ntasks=1",
+    "--no-requeue",
+    "--account=default",
+    "--partition=gpu-debug",
+    "--qos=gpu-debug",
+    "--cpus-per-task=4",
+    "--gres=gpu:l40s:1",
+    "--mem=32G",
+    "--time=01:00:00",
+    "--job-name=sbi4f-architecture-screen",
+    "--chdir=/oscar/scratch/afengler/sbi4finance-training-recovery-v2-20261028/repo",
+    "--output=/oscar/scratch/afengler/sbi4finance-independent-work-20261028/architecture-screen/logs/screen-%A.out",
+    "--wrap=env KERAS_BACKEND=jax JAX_PLATFORMS=cuda,cpu XLA_PYTHON_CLIENT_PREALLOCATE=false OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 MPLCONFIGDIR=/oscar/scratch/afengler/sbi4finance-independent-work-20261028/architecture-screen/cache/mpl XDG_CACHE_HOME=/oscar/scratch/afengler/sbi4finance-independent-work-20261028/architecture-screen/cache /oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/bin/python3.12 /oscar/scratch/afengler/sbi4finance-independent-work-source-20261028/run_architecture_screen_20261028.py worker"
+  ],
+  "attempted_utc": "2026-10-28T16:47:55.769890+00:00",
+  "automatic_retry": false,
+  "stdout": "8059371\n",
+  "stderr": "",
+  "returncode": 0,
+  "job_id": "8059371"
+}

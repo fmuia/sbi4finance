@@ -1,0 +1,491 @@
+{
+  "format": "joint20k_terminal_handover_v1",
+  "remote_root": "/oscar/scratch/afengler/sbi4finance-post-bank-baselines-recovery-v2-20261028",
+  "status": "completed",
+  "training_phase_state": "finished",
+  "all_training_routes": {
+    "known": "completed",
+    "joint": "completed"
+  },
+  "job": {
+    "id": "8053365",
+    "state": "COMPLETED",
+    "exit_code": "0:0",
+    "elapsed_seconds": 1088,
+    "allocated_cpus": 4,
+    "allocated_gpu_count": 1,
+    "allocated_cpu_seconds": 4352,
+    "allocated_gpu_seconds": 1088,
+    "allocated_cpu_hours": 1.208888888888889,
+    "allocated_gpu_hours": 0.3022222222222222
+  },
+  "stages": [
+    {
+      "name": "posterior",
+      "seconds": 184.72546877106652
+    },
+    {
+      "name": "pricer",
+      "seconds": 41.009379909024574
+    },
+    {
+      "name": "validation",
+      "seconds": 847.5677968669916
+    }
+  ],
+  "worker_seconds": 1073.578740496072,
+  "bank": {
+    "final_sha256": "766fb3d8178ff16c6732d0f9289f99b559d1a362d868ff34264e4e1ff637ccfe",
+    "manifest_sha256": "c0de030bafef6de3f728d75788cd7feddd672b476795b57c42ecd8cbb0843ce9",
+    "task_fingerprint": "29eca4e1b970c4f13b99573939aa3449c5280a3a4478f7d24beace6539a9889d"
+  },
+  "posterior": {
+    "task_id": "rough_joint_calibration_v1",
+    "checkpoint_sha256": "8d552a9392d54f98a954401fb979e861f26b9a9c71690b5c3980a4e8fa608dec",
+    "selected_epoch": 500,
+    "selection": "predeclared final epoch",
+    "checkpoint_selection": "final",
+    "validation_best_epoch": 475,
+    "validation_best_loss": 0.3905172646045685,
+    "validation_best_checkpoint_sha256": "26a634b374517bfa24925b4d83af6df6be39ff50ce42f5cb3c8b98df64cdef77",
+    "final_checkpoint_sha256": "8d552a9392d54f98a954401fb979e861f26b9a9c71690b5c3980a4e8fa608dec",
+    "flow_matching_integrate_kwargs": {
+      "method": "tsit5",
+      "steps": "adaptive"
+    },
+    "same_seed_reload_exact": true,
+    "training_surfaces": 20000,
+    "validation_surfaces": 5000,
+    "conditioning": "complete quotes/design/noise only; no supplied curve"
+  },
+  "runtime": {
+    "python": "3.12.16",
+    "keras_backend_env": "jax",
+    "bayesflow": "2.1.0",
+    "keras": "3.15.1",
+    "jax": "0.11.1",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1"
+  },
+  "source_revision": "c96a785fa1cc1a3e1ef234b8ddc81322776e5f4a",
+  "validation": {
+    "split": "validation",
+    "targets": [
+      "hurst",
+      "eta",
+      "rho",
+      "short_variance",
+      "long_variance",
+      "decay",
+      "rho_eta"
+    ],
+    "simultaneous_rank_screen": {
+      "surfaces": 2000,
+      "draws_per_surface": 1000,
+      "rank_ks": [
+        0.014029286961567966,
+        0.018678412750317785,
+        0.016676128142299795,
+        0.022289568598583442,
+        0.014853622561270263,
+        0.028050757759765954,
+        0.013412764655237719
+      ],
+      "dkw_bound": 0.03753261782493079,
+      "family_alpha": 0.05,
+      "passed": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    "coverage": {
+      "0.5": {
+        "coverage": [
+          0.492,
+          0.48,
+          0.503,
+          0.52,
+          0.4985,
+          0.4675,
+          0.5045
+        ],
+        "wilson": [
+          [
+            0.47012608411848256,
+            0.5139045886380174
+          ],
+          [
+            0.4581637787459181,
+            0.5019129031453318
+          ],
+          [
+            0.4811025929143192,
+            0.5248859048019933
+          ],
+          [
+            0.4980870968546681,
+            0.5418362212540818
+          ],
+          [
+            0.476610924647677,
+            0.5203948264941666
+          ],
+          [
+            0.44571646184835706,
+            0.4894081462249243
+          ],
+          [
+            0.4826002089845764,
+            0.5263825375898921
+          ]
+        ]
+      },
+      "0.8": {
+        "coverage": [
+          0.796,
+          0.803,
+          0.7955,
+          0.823,
+          0.805,
+          0.7835,
+          0.8065
+        ],
+        "wilson": [
+          [
+            0.7777797978268458,
+            0.8130853101826524
+          ],
+          [
+            0.7849950986603911,
+            0.8198431706871696
+          ],
+          [
+            0.7772647355331391,
+            0.8126022895236403
+          ],
+          [
+            0.8056583055486262,
+            0.8391032819076842
+          ],
+          [
+            0.7870581588102703,
+            0.8217724423481654
+          ],
+          [
+            0.7649154586282094,
+            0.8009975755633201
+          ],
+          [
+            0.7886059138137534,
+            0.8232189362028385
+          ]
+        ]
+      },
+      "0.9": {
+        "coverage": [
+          0.9005,
+          0.899,
+          0.901,
+          0.92,
+          0.9045,
+          0.897,
+          0.913
+        ],
+        "wilson": [
+          [
+            0.8866037634261721,
+            0.9128606817015441
+          ],
+          [
+            0.8850195371949674,
+            0.9114506590745928
+          ],
+          [
+            0.8871320405740596,
+            0.9133304875063756
+          ],
+          [
+            0.9072892548014819,
+            0.9311004254822657
+          ],
+          [
+            0.890832875631817,
+            0.9166162331176492
+          ],
+          [
+            0.8829086231738941,
+            0.9095692412847911
+          ],
+          [
+            0.8998429921623659,
+            0.9245735267833193
+          ]
+        ]
+      },
+      "0.95": {
+        "coverage": [
+          0.9515,
+          0.94,
+          0.951,
+          0.9635,
+          0.9525,
+          0.9505,
+          0.959
+        ],
+        "wilson": [
+          [
+            0.9411889997479057,
+            0.9600799065571228
+          ],
+          [
+            0.9287241955068138,
+            0.9495888028856835
+          ],
+          [
+            0.9406443633026171,
+            0.9596264600496927
+          ],
+          [
+            0.9543526494507533,
+            0.9708702477195252
+          ],
+          [
+            0.9422790928066445,
+            0.9609859794038216
+          ],
+          [
+            0.9400999950103993,
+            0.9591727453891917
+          ],
+          [
+            0.9493936413450841,
+            0.9668465092507255
+          ]
+        ]
+      }
+    },
+    "exploratory_pointwise_coverage_deviations": [
+      {
+        "target": "decay",
+        "nominal": 0.5,
+        "coverage": 0.4675,
+        "pointwise_wilson95": [
+          0.44571646184835706,
+          0.4894081462249243
+        ],
+        "direction": "below_nominal"
+      },
+      {
+        "target": "short_variance",
+        "nominal": 0.8,
+        "coverage": 0.823,
+        "pointwise_wilson95": [
+          0.8056583055486262,
+          0.8391032819076842
+        ],
+        "direction": "above_nominal"
+      },
+      {
+        "target": "short_variance",
+        "nominal": 0.9,
+        "coverage": 0.92,
+        "pointwise_wilson95": [
+          0.9072892548014819,
+          0.9311004254822657
+        ],
+        "direction": "above_nominal"
+      },
+      {
+        "target": "eta",
+        "nominal": 0.95,
+        "coverage": 0.94,
+        "pointwise_wilson95": [
+          0.9287241955068138,
+          0.9495888028856835
+        ],
+        "direction": "below_nominal"
+      },
+      {
+        "target": "short_variance",
+        "nominal": 0.95,
+        "coverage": 0.9635,
+        "pointwise_wilson95": [
+          0.9543526494507533,
+          0.9708702477195252
+        ],
+        "direction": "above_nominal"
+      }
+    ]
+  },
+  "pricer": {
+    "sha256": "7fdff1f11ce0f8d77984a11ac0333ba34d85c875adf3f94669b9cacba149b771",
+    "fit": {
+      "epochs_run": 300,
+      "selected_epoch": 295,
+      "selection": "minimum validation mean squared error in quote-noise units",
+      "best_val_mse_quote_noise": 0.010239139199256897,
+      "validation_mse_standardized_at_selected_epoch": 5.4586854702931675e-05,
+      "hidden_activation": "gelu_erf",
+      "export_max_abs_difference_quote_noise": 0.020006885963084642
+    },
+    "validation_errors": {
+      "units": "quote-noise standard deviations",
+      "rmse": 0.10117937664719429,
+      "absolute_quote_error_quantiles": {
+        "0.5": 0.04362370681629635,
+        "0.9": 0.1491975497586498,
+        "0.99": 0.3557576246704111,
+        "1.0": 3.8884706364394397
+      },
+      "surface_rms_error_quantiles": {
+        "0.5": 0.08247648176064629,
+        "0.9": 0.13919316129429302,
+        "0.99": 0.22375059121140198,
+        "1.0": 1.522476453188064
+      },
+      "surface_l2_error_quantiles": {
+        "0.5": 0.654636779250674,
+        "0.9": 1.1048114669568023,
+        "0.99": 1.775965260147132,
+        "1.0": 12.084282216261863
+      },
+      "signed_mean_error_per_contract": [
+        -0.0023139652213127527,
+        -0.0015086274615797577,
+        -0.000949278964939391,
+        -0.00016207053020357237,
+        0.00033164168702933737,
+        -0.000856521538239208,
+        -0.000360168774902273,
+        8.524626728586558e-05,
+        0.0016136835102988488,
+        -0.0035355023215825655,
+        -0.0016551933833520817,
+        -0.00017871008777383253,
+        -0.0004825541378381601,
+        -0.0007124141764197467,
+        -0.0012170829470134026,
+        0.0005058766549553051,
+        -0.00036357201222581015,
+        -0.0009677090803492867,
+        0.00025094570336558515,
+        0.0011540012563794602,
+        0.0009386205172810648,
+        0.001062681713951319,
+        0.0010621699190836943,
+        -0.0014187229946295414,
+        0.0007400480612636135,
+        -0.0003469766946790201,
+        -0.0022444628909376436,
+        0.0038881612280221617,
+        0.002124061595890712,
+        0.001379645416246418,
+        0.0008546025469599014,
+        0.0001583372591295806,
+        -0.0016048305197761278,
+        0.0011821564873052577,
+        0.0008148800706063074,
+        -0.00024060454811753162,
+        -0.0028250123644640835,
+        -0.0007687713106091267,
+        -0.0005222693687828073,
+        -0.0008029724713438641,
+        -0.00025517083030587173,
+        -0.0009301368585568543,
+        0.0010198605839810625,
+        0.000984140041166438,
+        -0.00038843512729931407,
+        0.0013265783748548912,
+        0.0010486574329465048,
+        0.0008508201195438289,
+        0.0006628711012236067,
+        -0.0004926484379675323,
+        0.0002470733878396406,
+        0.0015969322266058785,
+        -0.00012805096434370024,
+        -0.0019820205933002333,
+        0.0072390163513235935,
+        0.004372285983569712,
+        0.002847486141863762,
+        0.0025704780490403184,
+        0.003236708433259966,
+        0.0017957398818885405,
+        0.002733244445044792,
+        -0.0013906978762271052,
+        2.7549101202756977e-05
+      ],
+      "interpretation": "Discrepancies against numerical labels mix emulator error and label randomness; they do not measure absolute price bias or grid error. Per-quote accuracy alone does not bound posterior distortion across all contracts."
+    },
+    "scope": "Validation selects the epoch and measures interpolation error against bank labels. Independent price/refinement and posterior checks remain required."
+  },
+  "scientific_acceptance": false,
+  "reserved_test_evaluated": false,
+  "frozen_inputs_verified": true,
+  "limitations": [
+    "Development validation only: 2000 cases,1000 draws each; no reserved-test outcomes evaluated.",
+    "The simultaneous rank screen passes all seven targets but does not prove conditional/full-joint calibration or reference-posterior agreement.",
+    "Coverage deviations are descriptive pointwise Wilson intervals and are not multiplicity-adjusted; retained despite passing the rank screen.",
+    "Pricer errors compare against the same finite-grid bank labels, not independently accurate model prices; tail errors require attention before using an emulator likelihood.",
+    "No independent joint-curve PyMC/reference, discretization-refinement or downstream-product acceptance is established by this run."
+  ],
+  "archive": {
+    "path": "/private/tmp/sbi4finance-joint20k-completed-20261028.tar.gz",
+    "sha256": "7e79890c3520d94f0a4fe9b102ffc1c701ae6ac295c8bde48519ea21f8d0dba9",
+    "bytes": 31154
+  },
+  "exact_metadata_files": {
+    "plan.json": {
+      "sha256": "15e5d86393388c76fdf5df0cc262dbb4f8e4db8f10302ff96d7b4e1f91751761",
+      "bytes": 9505
+    },
+    "execution.json": {
+      "sha256": "c5bff23624d0624225b80d12d23d3551d6a60119479589011c2e54f93856b93a",
+      "bytes": 4783
+    },
+    "joint/run.json": {
+      "sha256": "265f2d319f0569d048b4adb27126b234895137dd1a1131bea4a8642c91d9e518",
+      "bytes": 1053
+    },
+    "joint/posterior/training.json": {
+      "sha256": "7edca0e55b875701b1be4e7607b5f5c8feb90bf4067f284a3f0bfe4295a5dc31",
+      "bytes": 32533
+    },
+    "joint/posterior/task.json": {
+      "sha256": "29eca4e1b970c4f13b99573939aa3449c5280a3a4478f7d24beace6539a9889d",
+      "bytes": 10575
+    },
+    "joint/pricer/run.json": {
+      "sha256": "f16cc1c860d9860cfed057a64ccb836302d34f0120beca680d9b906de133ef72",
+      "bytes": 9157
+    },
+    "joint/pricer/checkpoint/pricer.json": {
+      "sha256": "5ec2a6db43e1ef874d9300706021b8ced3af6c7cb3d0bc482c3fe413823e886b",
+      "bytes": 9157
+    },
+    "joint/validation/evaluation.json": {
+      "sha256": "bd64900a3caf9ef1350e3be3d56a5af03da41a47f3b79cf204806e74fcba1cab",
+      "bytes": 53491
+    },
+    "joint/posterior.log": {
+      "sha256": "1f306a96a7b3c4816ae8778f96c58dd5275e0af626d1f6f00e722ddee8f9688e",
+      "bytes": 2613
+    },
+    "joint/pricer.log": {
+      "sha256": "ef70b6c56a1b1a99e9ee9ed7149d36cfa748bf92844253cdd7a5cf43db0bd819",
+      "bytes": 203
+    },
+    "joint/validation.log": {
+      "sha256": "60c423638338928d2f765da7033cb64c5d6dcfe09fc7dfbc382e1b709d3ebee0",
+      "bytes": 1716
+    },
+    "logs/joint-8053365.out": {
+      "sha256": "83ecb1e80408be48a4dee24f7b58e42f551441fffaa34ca31eb866d737fc8c03",
+      "bytes": 370
+    }
+  }
+}

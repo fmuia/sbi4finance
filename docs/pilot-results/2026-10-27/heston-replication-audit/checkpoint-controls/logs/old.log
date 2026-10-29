@@ -1,0 +1,16 @@
+INFO:bayesflow:Using backend 'jax'
+/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/lib/python3.12/site-packages/keras/src/saving/saving_lib.py:869: UserWarning: Skipping variable loading for optimizer 'adam_w', because it has 83 variables whereas the saved optimizer has 0 variables. 
+  saveable.load_own_variables(store)
+INFO:bayesflow:Approximator restored from '/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo/tutorial_final/checkpoints/heston/model.keras'.
+Sampling:   0%|          | 0/1 [00:00<?, ?batch/s]Sampling: 100%|██████████| 1/1 [00:07<00:00,  7.05s/batch]Sampling: 100%|██████████| 1/1 [00:07<00:00,  7.05s/batch]
+INFO:bayesflow:Sampling completed in 7.41 seconds.
+Sampling:   0%|          | 0/1 [00:00<?, ?batch/s]Sampling: 100%|██████████| 1/1 [00:22<00:00, 22.28s/batch]Sampling: 100%|██████████| 1/1 [00:22<00:00, 22.28s/batch]
+INFO:bayesflow:Sampling completed in 22.29 seconds.
+Sampling:   0%|          | 0/1 [00:00<?, ?batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  1.83batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  1.83batch/s]
+INFO:bayesflow:Sampling completed in 0.60 seconds.
+Sampling:   0%|          | 0/1 [00:00<?, ?batch/s]Sampling: 100%|██████████| 1/1 [00:13<00:00, 13.49s/batch]Sampling: 100%|██████████| 1/1 [00:13<00:00, 13.49s/batch]
+INFO:bayesflow:Sampling completed in 13.49 seconds.
+Sampling:   0%|          | 0/1 [00:00<?, ?batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  1.87batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  1.87batch/s]
+INFO:bayesflow:Sampling completed in 0.59 seconds.
+Sampling:   0%|          | 0/1 [00:00<?, ?batch/s]Sampling: 100%|██████████| 1/1 [00:14<00:00, 14.32s/batch]Sampling: 100%|██████████| 1/1 [00:14<00:00, 14.32s/batch]
+INFO:bayesflow:Sampling completed in 14.33 seconds.

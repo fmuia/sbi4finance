@@ -1,0 +1,2101 @@
+{
+  "format": "rough_saved_posterior_geometry_v1",
+  "scientific_acceptance": false,
+  "no_new_model_calls": true,
+  "inputs": {
+    "cases": [
+      {
+        "case": 0,
+        "reference": {
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/runs/case-0/chains.npz",
+          "bytes": 466500,
+          "payload_transferred": false,
+          "sha256": "ee176993dba5337c6be9141ba10faa84e9426856a41588952aa77b8d69197b0d"
+        },
+        "neural": {
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/runs/comparisons/case-0/neural_draws.npz",
+          "bytes": 116514,
+          "sha256": "188c71eab40c2544bca8994fe1d0c83be7f1532ef80cbf369cae34554d01336e"
+        }
+      },
+      {
+        "case": 1,
+        "reference": {
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/runs/case-1/chains.npz",
+          "bytes": 458883,
+          "payload_transferred": false,
+          "sha256": "660e141d9bc98dff49f7243541bbf322f0bc91c993ec83b3af3e14472f50ca61"
+        },
+        "neural": {
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/runs/comparisons/case-1/neural_draws.npz",
+          "bytes": 110254,
+          "sha256": "368bee92f4c7e8649f9098ef6d87ab13b76e3c836ada6b5b8f7e45b212d79b99"
+        }
+      },
+      {
+        "case": 2,
+        "reference": {
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/runs/case-2/chains.npz",
+          "bytes": 450347,
+          "payload_transferred": false,
+          "sha256": "093b04b25db27f567cd59f30bdd95bd3f007537dede79ceac0bda58c07bde6cb"
+        },
+        "neural": {
+          "path": "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/runs/comparisons/case-2/neural_draws.npz",
+          "bytes": 110082,
+          "sha256": "09d2a550c0f14a2ec7f60f7ad892eaf8708fe3c7e5ad9e83a23ddcdb046a1317"
+        }
+      }
+    ],
+    "bounds": [
+      [
+        0.02,
+        0.35
+      ],
+      [
+        0.5,
+        3.5
+      ],
+      [
+        -0.99,
+        -0.2
+      ]
+    ],
+    "parameter_names": [
+      "H",
+      "eta",
+      "rho"
+    ],
+    "reference_scope": "Saved approximate-emulator PyMC target; known7curvelevelspercase; not independent exact-model truth.",
+    "neural_scope": "Savedselected292BF2.1checkpoint; knownconditionalfailuresincases1/2; no newinference.",
+    "sample_axes": {
+      "reference": [
+        "chain",
+        "draw",
+        "parameter"
+      ],
+      "neural": [
+        "draw",
+        "parameter"
+      ]
+    }
+  },
+  "analysis_source_sha256": "d2656e9a8a7d929cd1076fb05d83ca8384e9e539b93febd44241a4fce7fb84d4",
+  "records": [
+    {
+      "case": 0,
+      "kind": "reference",
+      "shape": [
+        4,
+        8000,
+        3
+      ],
+      "input_sha256": "ee176993dba5337c6be9141ba10faa84e9426856a41588952aa77b8d69197b0d",
+      "physical": {
+        "H": {
+          "mean": 0.17805549897165945,
+          "sd": 0.013585483842331214,
+          "skewness": 0.02916659235059371,
+          "excess_kurtosis": -0.08783167538135217,
+          "quantiles_01_05_25_50_75_95_99": [
+            0.14710869890952558,
+            0.15591636027169625,
+            0.16858218917253226,
+            0.17819654996312767,
+            0.18734376132798275,
+            0.20045271174537688,
+            0.21014514138316354
+          ],
+          "mass_lower_1pct_prior_width": 0.0,
+          "mass_upper_1pct_prior_width": 0.0,
+          "matched_gaussian_mass_outside_bounds": 1.3817196065450417e-31
+        },
+        "eta": {
+          "mean": 2.0037085346657175,
+          "sd": 0.04761184227128997,
+          "skewness": -0.03470112945361751,
+          "excess_kurtosis": 0.13879403094209586,
+          "quantiles_01_05_25_50_75_95_99": [
+            1.8913401180313436,
+            1.9245308401698447,
+            1.9719919727631876,
+            2.004373922347397,
+            2.0345532485700986,
+            2.082943239557973,
+            2.1141837315650753
+          ],
+          "mass_lower_1pct_prior_width": 0.0,
+          "mass_upper_1pct_prior_width": 0.0,
+          "matched_gaussian_mass_outside_bounds": 4.377199617924178e-217
+        },
+        "rho": {
+          "mean": -0.7609541321888732,
+          "sd": 0.024478118136678037,
+          "skewness": -0.07706780456470896,
+          "excess_kurtosis": -0.006247507229264926,
+          "quantiles_01_05_25_50_75_95_99": [
+            -0.818762065777393,
+            -0.8019803108039572,
+            -0.7773589870640851,
+            -0.7606315143743714,
+            -0.7443663870380566,
+            -0.7207904767478929,
+            -0.7062819970932487
+          ],
+          "mass_lower_1pct_prior_width": 0.0,
+          "mass_upper_1pct_prior_width": 0.0,
+          "matched_gaussian_mass_outside_bounds": 4.095118200464513e-21
+        }
+      },
+      "logit_skewness": [
+        0.009383059436278686,
+        -0.034524525430091,
+        -0.2812402608469835
+      ],
+      "logit_excess_kurtosis": [
+        -0.03733735059504717,
+        0.14818119010277275,
+        0.20704484817789215
+      ],
+      "noninterior_rows_excluded_from_logit": 0,
+      "physical_dependence": {
+        "pearson": [
+          [
+            1.0,
+            0.03140829101110295,
+            -0.14838082761501678
+          ],
+          [
+            0.03140829101110295,
+            1.0,
+            0.7297183627844898
+          ],
+          [
+            -0.14838082761501678,
+            0.7297183627844898,
+            1.0
+          ]
+        ],
+        "spearman": [
+          [
+            1.0,
+            0.03256847153898489,
+            -0.14496337095001358
+          ],
+          [
+            0.03256847153898489,
+            1.0,
+            0.7107602960263756
+          ],
+          [
+            -0.14496337095001358,
+            0.7107602960263756,
+            1.0
+          ]
+        ],
+        "pairs": [
+          {
+            "x": "H",
+            "y": "eta",
+            "held_chain_linear_rmse": 1.0005136040677767,
+            "held_chain_quadratic_rmse": 0.9983117301991568,
+            "quadratic_rmse_reduction_fraction": 0.002200743557776441,
+            "bins": [
+              {
+                "x_mean": 0.1545158175752798,
+                "y_mean": 2.0071964093819354,
+                "linear_residual_mean_in_residual_sd": 0.1277428804837969,
+                "rows": 3200
+              },
+              {
+                "x_mean": 0.16363814605263674,
+                "y_mean": 2.0027500430008955,
+                "linear_residual_mean_in_residual_sd": 0.013206840723569622,
+                "rows": 3195
+              },
+              {
+                "x_mean": 0.1685406613941169,
+                "y_mean": 1.9997345667553266,
+                "linear_residual_mean_in_residual_sd": -0.06149989708956659,
+                "rows": 3203
+              },
+              {
+                "x_mean": 0.17276041401062872,
+                "y_mean": 1.9998670134806693,
+                "linear_residual_mean_in_residual_sd": -0.06847729575400009,
+                "rows": 3202
+              },
+              {
+                "x_mean": 0.17646870104328896,
+                "y_mean": 2.0006722877955347,
+                "linear_residual_mean_in_residual_sd": -0.06013292060309526,
+                "rows": 3188
+              },
+              {
+                "x_mean": 0.17975328441887503,
+                "y_mean": 2.0040195989236995,
+                "linear_residual_mean_in_residual_sd": 0.00260955466223506,
+                "rows": 3208
+              },
+              {
+                "x_mean": 0.18318845540403692,
+                "y_mean": 2.0028228125264946,
+                "linear_residual_mean_in_residual_sd": -0.0304853823180657,
+                "rows": 3202
+              },
+              {
+                "x_mean": 0.18737554931024047,
+                "y_mean": 2.0014201227425796,
+                "linear_residual_mean_in_residual_sd": -0.06964640350608763,
+                "rows": 3197
+              },
+              {
+                "x_mean": 0.19235275720477155,
+                "y_mean": 2.006636294974161,
+                "linear_residual_mean_in_residual_sd": 0.028452910165039473,
+                "rows": 3200
+              },
+              {
+                "x_mean": 0.20190896922341733,
+                "y_mean": 2.011944202351303,
+                "linear_residual_mean_in_residual_sd": 0.11788834037807648,
+                "rows": 3205
+              }
+            ],
+            "scope": "Descriptive fourfold held-chain regression, not a posterior mode test or an acceptance threshold."
+          },
+          {
+            "x": "H",
+            "y": "rho",
+            "held_chain_linear_rmse": 0.9893793902650478,
+            "held_chain_quadratic_rmse": 0.9892495451365356,
+            "quadratic_rmse_reduction_fraction": 0.0001312389663559177,
+            "bins": [
+              {
+                "x_mean": 0.1545158175752798,
+                "y_mean": -0.7554094822117355,
+                "linear_residual_mean_in_residual_sd": -0.03092900037272395,
+                "rows": 3200
+              },
+              {
+                "x_mean": 0.16363814605263674,
+                "y_mean": -0.757320164408537,
+                "linear_residual_mean_in_residual_sd": -0.009109685833707614,
+                "rows": 3195
+              },
+              {
+                "x_mean": 0.1685406613941169,
+                "y_mean": -0.7579612644106934,
+                "linear_residual_mean_in_residual_sd": 0.01855153923981424,
+                "rows": 3203
+              },
+              {
+                "x_mean": 0.17276041401062872,
+                "y_mean": -0.7591327157413625,
+                "linear_residual_mean_in_residual_sd": 0.01676281987416329,
+                "rows": 3202
+              },
+              {
+                "x_mean": 0.17646870104328896,
+                "y_mean": -0.7596282536517616,
+                "linear_residual_mean_in_residual_sd": 0.0372477386831292,
+                "rows": 3188
+              },
+              {
+                "x_mean": 0.17975328441887503,
+                "y_mean": -0.7606667614594544,
+                "linear_residual_mean_in_residual_sd": 0.030622593392821362,
+                "rows": 3208
+              },
+              {
+                "x_mean": 0.18318845540403692,
+                "y_mean": -0.7628106297554842,
+                "linear_residual_mean_in_residual_sd": -0.020002666357560404,
+                "rows": 3202
+              },
+              {
+                "x_mean": 0.18737554931024047,
+                "y_mean": -0.7648942091330383,
+                "linear_residual_mean_in_residual_sd": -0.059832776508576366,
+                "rows": 3197
+              },
+              {
+                "x_mean": 0.19235275720477155,
+                "y_mean": -0.7639068801878638,
+                "linear_residual_mean_in_residual_sd": 0.035925006988295975,
+                "rows": 3200
+              },
+              {
+                "x_mean": 0.20190896922341733,
+                "y_mean": -0.7677968152541419,
+                "linear_residual_mean_in_residual_sd": -0.019228096943678732,
+                "rows": 3205
+              }
+            ],
+            "scope": "Descriptive fourfold held-chain regression, not a posterior mode test or an acceptance threshold."
+          },
+          {
+            "x": "eta",
+            "y": "rho",
+            "held_chain_linear_rmse": 0.6839422242150826,
+            "held_chain_quadratic_rmse": 0.6838150461444137,
+            "quadratic_rmse_reduction_fraction": 0.00018594855846898461,
+            "bins": [
+              {
+                "x_mean": 1.9191625539758987,
+                "y_mean": -0.7932204296926156,
+                "linear_residual_mean_in_residual_sd": -0.03273644755630009,
+                "rows": 3200
+              },
+              {
+                "x_mean": 1.9551274127934966,
+                "y_mean": -0.779443303364275,
+                "linear_residual_mean_in_residual_sd": -0.015738111039179253,
+                "rows": 3199
+              },
+              {
+                "x_mean": 1.972150968459111,
+                "y_mean": -0.7730073538719237,
+                "linear_residual_mean_in_residual_sd": -0.012788524125232367,
+                "rows": 3201
+              },
+              {
+                "x_mean": 1.985111942925745,
+                "y_mean": -0.7673304691074124,
+                "linear_residual_mean_in_residual_sd": 0.035872829756952974,
+                "rows": 3198
+              },
+              {
+                "x_mean": 1.9980746642344107,
+                "y_mean": -0.7629075781932616,
+                "linear_residual_mean_in_residual_sd": 0.009569777571297884,
+                "rows": 3199
+              },
+              {
+                "x_mean": 2.009992970993906,
+                "y_mean": -0.7581697257197904,
+                "linear_residual_mean_in_residual_sd": 0.025496675320479424,
+                "rows": 3201
+              },
+              {
+                "x_mean": 2.0222267747676086,
+                "y_mean": -0.7532023446729309,
+                "linear_residual_mean_in_residual_sd": 0.04806567680133502,
+                "rows": 3201
+              },
+              {
+                "x_mean": 2.0349559708613993,
+                "y_mean": -0.7485425131185244,
+                "linear_residual_mean_in_residual_sd": 0.041154277720394136,
+                "rows": 3200
+              },
+              {
+                "x_mean": 2.052682908173433,
+                "y_mean": -0.7432670904932484,
+                "linear_residual_mean_in_residual_sd": -0.041003546857608125,
+                "rows": 3200
+              },
+              {
+                "x_mean": 2.087546525948015,
+                "y_mean": -0.7304699394222767,
+                "linear_residual_mean_in_residual_sd": -0.05787302117987829,
+                "rows": 3201
+              }
+            ],
+            "scope": "Descriptive fourfold held-chain regression, not a posterior mode test or an acceptance threshold."
+          }
+        ]
+      },
+      "logit_dependence": {
+        "pearson": [
+          [
+            1.0,
+            0.031046381361149615,
+            -0.14925828236500963
+          ],
+          [
+            0.031046381361149615,
+            1.0,
+            0.7294803636390425
+          ],
+          [
+            -0.14925828236500963,
+            0.7294803636390425,
+            0.9999999999999998
+          ]
+        ],
+        "spearman": [
+          [
+            1.0,
+            0.03256847153898489,
+            -0.14496337095001358
+          ],
+          [
+            0.03256847153898489,
+            1.0,
+            0.7107602960263756
+          ],
+          [
+            -0.14496337095001358,
+            0.7107602960263756,
+            1.0
+          ]
+        ],
+        "pairs": [
+          {
+            "x": "H",
+            "y": "eta",
+            "held_chain_linear_rmse": 1.0005237411554604,
+            "held_chain_quadratic_rmse": 0.9983167038393634,
+            "quadratic_rmse_reduction_fraction": 0.0022058820049070116,
+            "bins": [
+              {
+                "x_mean": -0.37423807115634117,
+                "y_mean": 0.009605616773889629,
+                "linear_residual_mean_in_residual_sd": 0.12744929216325093,
+                "rows": 3200
+              },
+              {
+                "x_mean": -0.2604233135312711,
+                "y_mean": 0.003668815740101842,
+                "linear_residual_mean_in_residual_sd": 0.012695007491846606,
+                "rows": 3195
+              },
+              {
+                "x_mean": -0.2001846643421069,
+                "y_mean": -0.00035728430106549955,
+                "linear_residual_mean_in_residual_sd": -0.06195713524874295,
+                "rows": 3203
+              },
+              {
+                "x_mean": -0.14863850632153605,
+                "y_mean": -0.00017504797703335692,
+                "linear_residual_mean_in_residual_sd": -0.06872939217683595,
+                "rows": 3202
+              },
+              {
+                "x_mean": -0.10350592347227808,
+                "y_mean": 0.0008988245065650186,
+                "linear_residual_mean_in_residual_sd": -0.060264549936777906,
+                "rows": 3188
+              },
+              {
+                "x_mean": -0.06362001186924636,
+                "y_mean": 0.005362186430027042,
+                "linear_residual_mean_in_residual_sd": 0.0025441326233672044,
+                "rows": 3208
+              },
+              {
+                "x_mean": -0.021959962400847802,
+                "y_mean": 0.00376761312285158,
+                "linear_residual_mean_in_residual_sd": -0.03035224315050159,
+                "rows": 3202
+              },
+              {
+                "x_mean": 0.028798421184499583,
+                "y_mean": 0.0018895252856337358,
+                "linear_residual_mean_in_residual_sd": -0.06941390626663414,
+                "rows": 3197
+              },
+              {
+                "x_mean": 0.08919297834227544,
+                "y_mean": 0.008855891017403349,
+                "linear_residual_mean_in_residual_sd": 0.028964886275216883,
+                "rows": 3200
+              },
+              {
+                "x_mean": 0.20595714489784492,
+                "y_mean": 0.01594425190675286,
+                "linear_residual_mean_in_residual_sd": 0.1187208257901482,
+                "rows": 3205
+              }
+            ],
+            "scope": "Descriptive fourfold held-chain regression, not a posterior mode test or an acceptance threshold."
+          },
+          {
+            "x": "H",
+            "y": "rho",
+            "held_chain_linear_rmse": 0.9892651499416995,
+            "held_chain_quadratic_rmse": 0.9891005934724652,
+            "quadratic_rmse_reduction_fraction": 0.00016634212702626439,
+            "bins": [
+              {
+                "x_mean": -0.37423807115634117,
+                "y_mean": -0.8657261575474675,
+                "linear_residual_mean_in_residual_sd": -0.03163143926706921,
+                "rows": 3200
+              },
+              {
+                "x_mean": -0.2604233135312711,
+                "y_mean": -0.878034670272571,
+                "linear_residual_mean_in_residual_sd": -0.009845849884169167,
+                "rows": 3195
+              },
+              {
+                "x_mean": -0.2001846643421069,
+                "y_mean": -0.8822578702861504,
+                "linear_residual_mean_in_residual_sd": 0.016887784850828,
+                "rows": 3203
+              },
+              {
+                "x_mean": -0.14863850632153605,
+                "y_mean": -0.8893244850968341,
+                "linear_residual_mean_in_residual_sd": 0.016853771128013752,
+                "rows": 3202
+              },
+              {
+                "x_mean": -0.10350592347227808,
+                "y_mean": -0.8922336900434651,
+                "linear_residual_mean_in_residual_sd": 0.03857497579886764,
+                "rows": 3188
+              },
+              {
+                "x_mean": -0.06362001186924636,
+                "y_mean": -0.8982725447940072,
+                "linear_residual_mean_in_residual_sd": 0.03476147182511112,
+                "rows": 3208
+              },
+              {
+                "x_mean": -0.021959962400847802,
+                "y_mean": -0.9119403123435224,
+                "linear_residual_mean_in_residual_sd": -0.018058242611215084,
+                "rows": 3202
+              },
+              {
+                "x_mean": 0.028798421184499583,
+                "y_mean": -0.9254473394851211,
+                "linear_residual_mean_in_residual_sd": -0.06154131001878373,
+                "rows": 3197
+              },
+              {
+                "x_mean": 0.08919297834227544,
+                "y_mean": -0.9188419363989742,
+                "linear_residual_mean_in_residual_sd": 0.03718325869054581,
+                "rows": 3200
+              },
+              {
+                "x_mean": 0.20595714489784492,
+                "y_mean": -0.9439351795263783,
+                "linear_residual_mean_in_residual_sd": -0.023178610076405995,
+                "rows": 3205
+              }
+            ],
+            "scope": "Descriptive fourfold held-chain regression, not a posterior mode test or an acceptance threshold."
+          },
+          {
+            "x": "eta",
+            "y": "rho",
+            "held_chain_linear_rmse": 0.6842239301468694,
+            "held_chain_quadratic_rmse": 0.6827952017303732,
+            "quadratic_rmse_reduction_fraction": 0.002088100625462719,
+            "bins": [
+              {
+                "x_mean": -0.10791278023498346,
+                "y_mean": -1.1077116663627726,
+                "linear_residual_mean_in_residual_sd": -0.09240728069188897,
+                "rows": 3200
+              },
+              {
+                "x_mean": -0.05984895876017741,
+                "y_mean": -1.0152331753663209,
+                "linear_residual_mean_in_residual_sd": -0.011988661059693023,
+                "rows": 3199
+              },
+              {
+                "x_mean": -0.0371365852928371,
+                "y_mean": -0.9734963082929045,
+                "linear_residual_mean_in_residual_sd": 0.007179472557454621,
+                "rows": 3201
+              },
+              {
+                "x_mean": -0.01985151456139305,
+                "y_mean": -0.9378020643247676,
+                "linear_residual_mean_in_residual_sd": 0.05947004005595155,
+                "rows": 3198
+              },
+              {
+                "x_mean": -0.0025671292509835916,
+                "y_mean": -0.9103149287024808,
+                "linear_residual_mean_in_residual_sd": 0.033051174426014775,
+                "rows": 3199
+              },
+              {
+                "x_mean": 0.013324228090035686,
+                "y_mean": -0.8807337349945727,
+                "linear_residual_mean_in_residual_sd": 0.05009616299922399,
+                "rows": 3201
+              },
+              {
+                "x_mean": 0.0296380326698421,
+                "y_mean": -0.8506188490725897,
+                "linear_residual_mean_in_residual_sd": 0.06517062752911983,
+                "rows": 3201
+              },
+              {
+                "x_mean": 0.04661676789772728,
+                "y_mean": -0.822576317339724,
+                "linear_residual_mean_in_residual_sd": 0.049208489714294625,
+                "rows": 3200
+              },
+              {
+                "x_mean": 0.07027415846768487,
+                "y_mean": -0.7909475363097589,
+                "linear_residual_mean_in_residual_sd": -0.04443757206676551,
+                "rows": 3200
+              },
+              {
+                "x_mean": 0.11688326892339894,
+                "y_mean": -0.7167862790513151,
+                "linear_residual_mean_in_residual_sd": -0.11530093556811437,
+                "rows": 3201
+              }
+            ],
+            "scope": "Descriptive fourfold held-chain regression, not a posterior mode test or an acceptance threshold."
+          }
+        ]
+      },
+      "chainwise_physical_skewness": [
+        [
+          0.09519135240023507,
+          0.012248800763089322,
+          -0.030077055035516536
+        ],
+        [
+          -0.03800852683037835,
+          0.0980081854152947,
+          0.04920401549222084
+        ],
+        [
+          -0.0007124880600182218,
+          -0.13605922864634645,
+          -0.1504241441222048
+        ],
+        [
+          0.06087469222027415,
+          -0.12368471063911389,
+          -0.16681493849307946
+        ]
+      ]
+    },
+    {
+      "case": 0,
+      "kind": "neural",
+      "shape": [
+        10000,
+        3
+      ],
+      "input_sha256": "188c71eab40c2544bca8994fe1d0c83be7f1532ef80cbf369cae34554d01336e",
+      "physical": {
+        "H": {
+          "mean": 0.17523959347754717,
+          "sd": 0.013769884645052044,
+          "skewness": 0.0027868853596378176,
+          "excess_kurtosis": 0.16957288534992232,
+          "quantiles_01_05_25_50_75_95_99": [
+            0.14350755125284195,
+            0.1526458777487278,
+            0.16585882753133774,
+            0.17539098858833313,
+            0.1846616491675377,
+            0.19732021763920785,
+            0.20728804588317873
+          ],
+          "mass_lower_1pct_prior_width": 0.0,
+          "mass_upper_1pct_prior_width": 0.0,
+          "matched_gaussian_mass_outside_bounds": 8.833750429593313e-30
+        },
+        "eta": {
+          "mean": 2.0127353247642517,
+          "sd": 0.04926736370557196,
+          "skewness": -0.22798051845003678,
+          "excess_kurtosis": 0.6864117681184316,
+          "quantiles_01_05_25_50_75_95_99": [
+            1.8845070254802705,
+            1.9296258330345153,
+            1.982003539800644,
+            2.014096736907959,
+            2.046258866786957,
+            2.088657450675964,
+            2.120643894672394
+          ],
+          "mass_lower_1pct_prior_width": 0.0,
+          "mass_upper_1pct_prior_width": 0.0,
+          "matched_gaussian_mass_outside_bounds": 1.721537147600843e-200
+        },
+        "rho": {
+          "mean": -0.7563975945711136,
+          "sd": 0.02542152603132718,
+          "skewness": -0.4042786749684869,
+          "excess_kurtosis": 2.3472425211427606,
+          "quantiles_01_05_25_50_75_95_99": [
+            -0.8216738444566727,
+            -0.7976276099681854,
+            -0.7717264890670776,
+            -0.7562015950679779,
+            -0.7397454530000687,
+            -0.7161911070346832,
+            -0.6996192681789398
+          ],
+          "mass_lower_1pct_prior_width": 0.0001,
+          "mass_upper_1pct_prior_width": 0.0,
+          "matched_gaussian_mass_outside_bounds": 1.9796514168060538e-20
+        }
+      },
+      "logit_skewness": [
+        -0.031214068487652943,
+        -0.22746318659724082,
+        -7.111988649740503
+      ],
+      "logit_excess_kurtosis": [
+        0.26791488619925596,
+        0.7123487358937735,
+        252.9431987016947
+      ],
+      "noninterior_rows_excluded_from_logit": 0
+    },
+    {
+      "case": 1,
+      "kind": "reference",
+      "shape": [
+        4,
+        8000,
+        3
+      ],
+      "input_sha256": "660e141d9bc98dff49f7243541bbf322f0bc91c993ec83b3af3e14472f50ca61",
+      "physical": {
+        "H": {
+          "mean": 0.246697519502991,
+          "sd": 0.0042349745771362215,
+          "skewness": 0.001339414391691373,
+          "excess_kurtosis": -0.025362304261225876,
+          "quantiles_01_05_25_50_75_95_99": [
+            0.23679197594654,
+            0.23980114569129476,
+            0.2439501874569443,
+            0.24662953187835712,
+            0.24953319060090914,
+            0.2537718673994573,
+            0.25659793727533087
+          ],
+          "mass_lower_1pct_prior_width": 0.0,
+          "mass_upper_1pct_prior_width": 0.0,
+          "matched_gaussian_mass_outside_bounds": 1.0219896673444606e-131
+        },
+        "eta": {
+          "mean": 3.373765310468322,
+          "sd": 0.02216763732020942,
+          "skewness": -0.007380650129998021,
+          "excess_kurtosis": -0.12378126562880043,
+          "quantiles_01_05_25_50_75_95_99": [
+            3.3238404782799185,
+            3.3369927077992476,
+            3.3584392984459477,
+            3.3739563063217974,
+            3.3887248883664043,
+            3.409984593747378,
+            3.424883899286746
+          ],
+          "mass_lower_1pct_prior_width": 0.0,
+          "mass_upper_1pct_prior_width": 0.0,
+          "matched_gaussian_mass_outside_bounds": 6.1849350162818505e-09
+        },
+        "rho": {
+          "mean": -0.6257420981411369,
+          "sd": 0.005587902781228206,
+          "skewness": -0.013284504504811055,
+          "excess_kurtosis": -0.10847494105510114,
+          "quantiles_01_05_25_50_75_95_99": [
+            -0.6385436970979517,
+            -0.635049231383513,
+            -0.6294877120474004,
+            -0.6257577953570523,
+            -0.6218980854741474,
+            -0.6165495360402222,
+            -0.6128786932085668
+          ],
+          "mass_lower_1pct_prior_width": 0.0,
+          "mass_upper_1pct_prior_width": 0.0,
+          "matched_gaussian_mass_outside_bounds": 0.0
+        }
+      },
+      "logit_skewness": [
+        0.06768146620568534,
+        0.5283325400434287,
+        -0.019567073438346683
+      ],
+      "logit_excess_kurtosis": [
+        -0.015909084166538356,
+        0.5465650349390359,
+        -0.10722540791396806
+      ],
+      "noninterior_rows_excluded_from_logit": 0,
+      "physical_dependence": {
+        "pearson": [
+          [
+            1.0,
+            0.5907799678027225,
+            -0.251970561588485
+          ],
+          [
+            0.5907799678027225,
+            1.0,
+            0.2303234691682317
+          ],
+          [
+            -0.251970561588485,
+            0.2303234691682317,
+            1.0
+          ]
+        ],
+        "spearman": [
+          [
+            1.0,
+            0.5723795301275575,
+            -0.24028024879334414
+          ],
+          [
+            0.5723795301275575,
+            1.0,
+            0.2268371499783103
+          ],
+          [
+            -0.24028024879334414,
+            0.2268371499783103,
+            1.0
+          ]
+        ],
+        "pairs": [
+          {
+            "x": "H",
+            "y": "eta",
+            "held_chain_linear_rmse": 0.807288043109961,
+            "held_chain_quadratic_rmse": 0.8074211393495799,
+            "quadratic_rmse_reduction_fraction": -0.00016486834006124162,
+            "bins": [
+              {
+                "x_mean": 0.23925965422695533,
+                "y_mean": 3.3509712566031022,
+                "linear_residual_mean_in_residual_sd": 0.011558749834024369,
+                "rows": 3199
+              },
+              {
+                "x_mean": 0.24229027500108416,
+                "y_mean": 3.3605140072329958,
+                "linear_residual_mean_in_residual_sd": 0.021113363328729404,
+                "rows": 3200
+              },
+              {
+                "x_mean": 0.24391648541517788,
+                "y_mean": 3.36535558580914,
+                "linear_residual_mean_in_residual_sd": 0.010641106422439444,
+                "rows": 3196
+              },
+              {
+                "x_mean": 0.24504212345101165,
+                "y_mean": 3.3668140133976285,
+                "linear_residual_mean_in_residual_sd": -0.10243977717040198,
+                "rows": 3205
+              },
+              {
+                "x_mean": 0.24611003256308578,
+                "y_mean": 3.373277182654413,
+                "linear_residual_mean_in_residual_sd": 0.07428512108547661,
+                "rows": 3196
+              },
+              {
+                "x_mean": 0.24716696352474235,
+                "y_mean": 3.3754633196481554,
+                "linear_residual_mean_in_residual_sd": 0.013771360114588769,
+                "rows": 3204
+              },
+              {
+                "x_mean": 0.24831900068155613,
+                "y_mean": 3.378715817981405,
+                "linear_residual_mean_in_residual_sd": -0.0035641473513350432,
+                "rows": 3200
+              },
+              {
+                "x_mean": 0.24955126597358276,
+                "y_mean": 3.381498050877888,
+                "linear_residual_mean_in_residual_sd": -0.06106461467514149,
+                "rows": 3197
+              },
+              {
+                "x_mean": 0.25113782819551334,
+                "y_mean": 3.387723466389975,
+                "linear_residual_mean_in_residual_sd": 0.012691238282133534,
+                "rows": 3203
+              },
+              {
+                "x_mean": 0.25417554336223835,
+                "y_mean": 3.397305061194246,
+                "linear_residual_mean_in_residual_sd": 0.023191071862733448,
+                "rows": 3200
+              }
+            ],
+            "scope": "Descriptive fourfold held-chain regression, not a posterior mode test or an acceptance threshold."
+          },
+          {
+            "x": "H",
+            "y": "rho",
+            "held_chain_linear_rmse": 0.9682137907610872,
+            "held_chain_quadratic_rmse": 0.9687609906264018,
+            "quadratic_rmse_reduction_fraction": -0.0005651642958777181,
+            "bins": [
+              {
+                "x_mean": 0.23925965422695533,
+                "y_mean": -0.6234535119203881,
+                "linear_residual_mean_in_residual_sd": -0.03407372932755652,
+                "rows": 3199
+              },
+              {
+                "x_mean": 0.24229027500108416,
+                "y_mean": -0.6243486726190721,
+                "linear_residual_mean_in_residual_sd": -0.013284351792814507,
+                "rows": 3200
+              },
+              {
+                "x_mean": 0.24391648541517788,
+                "y_mean": -0.6246803996779232,
+                "linear_residual_mean_in_residual_sd": 0.02535317576249034,
+                "rows": 3196
+              },
+              {
+                "x_mean": 0.24504212345101165,
+                "y_mean": -0.6255114042339139,
+                "linear_residual_mean_in_residual_sd": -0.05911573466666359,
+                "rows": 3205
+              },
+              {
+                "x_mean": 0.24611003256308578,
+                "y_mean": -0.6250686832515456,
+                "linear_residual_mean_in_residual_sd": 0.08841295630595083,
+                "rows": 3196
+              },
+              {
+                "x_mean": 0.24716696352474235,
+                "y_mean": -0.6258093264664141,
+                "linear_residual_mean_in_residual_sd": 0.01643008254008835,
+                "rows": 3204
+              },
+              {
+                "x_mean": 0.24831900068155613,
+                "y_mean": -0.6260639294554159,
+                "linear_residual_mean_in_residual_sd": 0.04017675924722403,
+                "rows": 3200
+              },
+              {
+                "x_mean": 0.24955126597358276,
+                "y_mean": -0.626806315363011,
+                "linear_residual_mean_in_residual_sd": -0.0213484465000607,
+                "rows": 3197
+              },
+              {
+                "x_mean": 0.25113782819551334,
+                "y_mean": -0.6274713227573563,
+                "linear_residual_mean_in_residual_sd": -0.046781282164228076,
+                "rows": 3203
+              },
+              {
+                "x_mean": 0.25417554336223835,
+                "y_mean": -0.6282041845708348,
+                "linear_residual_mean_in_residual_sd": 0.004457804235916832,
+                "rows": 3200
+              }
+            ],
+            "scope": "Descriptive fourfold held-chain regression, not a posterior mode test or an acceptance threshold."
+          },
+          {
+            "x": "eta",
+            "y": "rho",
+            "held_chain_linear_rmse": 0.9740400754331461,
+            "held_chain_quadratic_rmse": 0.9737676124685333,
+            "quadratic_rmse_reduction_fraction": 0.0002797245939718529,
+            "bins": [
+              {
+                "x_mean": 3.3349072833186018,
+                "y_mean": -0.6282349834445988,
+                "linear_residual_mean_in_residual_sd": -0.043555589969429175,
+                "rows": 3189
+              },
+              {
+                "x_mean": 3.350105977289469,
+                "y_mean": -0.627109339793437,
+                "linear_residual_mean_in_residual_sd": 0.0011750604721804138,
+                "rows": 3211
+              },
+              {
+                "x_mean": 3.358326258637769,
+                "y_mean": -0.6267379755027471,
+                "linear_residual_mean_in_residual_sd": -0.018299571241137867,
+                "rows": 3200
+              },
+              {
+                "x_mean": 3.3653336689291256,
+                "y_mean": -0.6261384929731635,
+                "linear_residual_mean_in_residual_sd": 0.01712814130653053,
+                "rows": 3194
+              },
+              {
+                "x_mean": 3.3711865470620617,
+                "y_mean": -0.6259555452906457,
+                "linear_residual_mean_in_residual_sd": -0.011719802342777584,
+                "rows": 3205
+              },
+              {
+                "x_mean": 3.3768205960451616,
+                "y_mean": -0.62555756826814,
+                "linear_residual_mean_in_residual_sd": 0.001313788603352649,
+                "rows": 3197
+              },
+              {
+                "x_mean": 3.3826749491224595,
+                "y_mean": -0.6247507742723686,
+                "linear_residual_mean_in_residual_sd": 0.0871787194578999,
+                "rows": 3202
+              },
+              {
+                "x_mean": 3.3888674700398593,
+                "y_mean": -0.6247015160462455,
+                "linear_residual_mean_in_residual_sd": 0.030118109779219603,
+                "rows": 3198
+              },
+              {
+                "x_mean": 3.396888770781714,
+                "y_mean": -0.6244276773468556,
+                "linear_residual_mean_in_residual_sd": -0.0051674145197326,
+                "rows": 3204
+              },
+              {
+                "x_mean": 3.4124553882668147,
+                "y_mean": -0.6238128268452027,
+                "linear_residual_mean_in_residual_sd": -0.058302747636973004,
+                "rows": 3200
+              }
+            ],
+            "scope": "Descriptive fourfold held-chain regression, not a posterior mode test or an acceptance threshold."
+          }
+        ]
+      },
+      "logit_dependence": {
+        "pearson": [
+          [
+            1.0,
+            0.5861680712605337,
+            -0.2522339297760486
+          ],
+          [
+            0.5861680712605337,
+            1.0,
+            0.22540388951642099
+          ],
+          [
+            -0.2522339297760486,
+            0.22540388951642099,
+            0.9999999999999999
+          ]
+        ],
+        "spearman": [
+          [
+            1.0,
+            0.5723795301275575,
+            -0.24028024879334414
+          ],
+          [
+            0.5723795301275575,
+            1.0,
+            0.2268371499783103
+          ],
+          [
+            -0.24028024879334414,
+            0.2268371499783103,
+            1.0
+          ]
+        ],
+        "pairs": [
+          {
+            "x": "H",
+            "y": "eta",
+            "held_chain_linear_rmse": 0.8106285133404466,
+            "held_chain_quadratic_rmse": 0.8099840453279191,
+            "quadratic_rmse_reduction_fraction": 0.0007950226298749641,
+            "bins": [
+              {
+                "x_mean": 0.6831613167608896,
+                "y_mean": 2.959020967556336,
+                "linear_residual_mean_in_residual_sd": 0.07062322613387582,
+                "rows": 3199
+              },
+              {
+                "x_mean": 0.7245547377365029,
+                "y_mean": 3.0292972255905215,
+                "linear_residual_mean_in_residual_sd": 0.024998209679101973,
+                "rows": 3200
+              },
+              {
+                "x_mean": 0.7470512650004193,
+                "y_mean": 3.066668204580285,
+                "linear_residual_mean_in_residual_sd": -0.005131422664976762,
+                "rows": 3196
+              },
+              {
+                "x_mean": 0.7627319753749578,
+                "y_mean": 3.0789535858229224,
+                "linear_residual_mean_in_residual_sd": -0.1153431538822049,
+                "rows": 3205
+              },
+              {
+                "x_mean": 0.7776930030726631,
+                "y_mean": 3.1318276033353745,
+                "linear_residual_mean_in_residual_sd": 0.04624549485747201,
+                "rows": 3196
+              },
+              {
+                "x_mean": 0.7925820961822706,
+                "y_mean": 3.150939534753936,
+                "linear_residual_mean_in_residual_sd": -0.010133973649383825,
+                "rows": 3204
+              },
+              {
+                "x_mean": 0.8089081149897911,
+                "y_mean": 3.1786023799433134,
+                "linear_residual_mean_in_residual_sd": -0.02848470789873907,
+                "rows": 3200
+              },
+              {
+                "x_mean": 0.8264845551570249,
+                "y_mean": 3.2041857468110297,
+                "linear_residual_mean_in_residual_sd": -0.07545279053120943,
+                "rows": 3197
+              },
+              {
+                "x_mean": 0.8492995118608697,
+                "y_mean": 3.259452412876048,
+                "linear_residual_mean_in_residual_sd": 0.006558642895901947,
+                "rows": 3203
+              },
+              {
+                "x_mean": 0.8936799170936611,
+                "y_mean": 3.354650631944631,
+                "linear_residual_mean_in_residual_sd": 0.0863099428347349,
+                "rows": 3200
+              }
+            ],
+            "scope": "Descriptive fourfold held-chain regression, not a posterior mode test or an acceptance threshold."
+          },
+          {
+            "x": "H",
+            "y": "rho",
+            "held_chain_linear_rmse": 0.968153820423922,
+            "held_chain_quadratic_rmse": 0.9687613531780859,
+            "quadratic_rmse_reduction_fraction": -0.0006275167657738834,
+            "bins": [
+              {
+                "x_mean": 0.6831613167608896,
+                "y_mean": -0.14434571004436297,
+                "linear_residual_mean_in_residual_sd": -0.028156767281565135,
+                "rows": 3199
+              },
+              {
+                "x_mean": 0.7245547377365029,
+                "y_mean": -0.14890439111981357,
+                "linear_residual_mean_in_residual_sd": -0.01306983275839259,
+                "rows": 3200
+              },
+              {
+                "x_mean": 0.7470512650004193,
+                "y_mean": -0.15059117020642726,
+                "linear_residual_mean_in_residual_sd": 0.023832222827998562,
+                "rows": 3196
+              },
+              {
+                "x_mean": 0.7627319753749578,
+                "y_mean": -0.1548289929146734,
+                "linear_residual_mean_in_residual_sd": -0.06158989031820928,
+                "rows": 3205
+              },
+              {
+                "x_mean": 0.7776930030726631,
+                "y_mean": -0.15257363179325803,
+                "linear_residual_mean_in_residual_sd": 0.08553021148261562,
+                "rows": 3196
+              },
+              {
+                "x_mean": 0.7925820961822706,
+                "y_mean": -0.1563431709706745,
+                "linear_residual_mean_in_residual_sd": 0.013652340133222701,
+                "rows": 3204
+              },
+              {
+                "x_mean": 0.8089081149897911,
+                "y_mean": -0.1576404601213046,
+                "linear_residual_mean_in_residual_sd": 0.03777673486265449,
+                "rows": 3200
+              },
+              {
+                "x_mean": 0.8264845551570249,
+                "y_mean": -0.16142551460411358,
+                "linear_residual_mean_in_residual_sd": -0.02294246868310128,
+                "rows": 3197
+              },
+              {
+                "x_mean": 0.8492995118608697,
+                "y_mean": -0.1648127779535831,
+                "linear_residual_mean_in_residual_sd": -0.04637349483308193,
+                "rows": 3203
+              },
+              {
+                "x_mean": 0.8936799170936611,
+                "y_mean": -0.16854968407585436,
+                "linear_residual_mean_in_residual_sd": 0.011569983986442971,
+                "rows": 3200
+              }
+            ],
+            "scope": "Descriptive fourfold held-chain regression, not a posterior mode test or an acceptance threshold."
+          },
+          {
+            "x": "eta",
+            "y": "rho",
+            "held_chain_linear_rmse": 0.9751669167514058,
+            "held_chain_quadratic_rmse": 0.9737525960110389,
+            "quadratic_rmse_reduction_fraction": 0.0014503370818591543,
+            "bins": [
+              {
+                "x_mean": 2.8444984358933874,
+                "y_mean": -0.16871005379237658,
+                "linear_residual_mean_in_residual_sd": -0.09739955886273577,
+                "rows": 3189
+              },
+              {
+                "x_mean": 2.945342873718212,
+                "y_mean": -0.1629708140716642,
+                "linear_residual_mean_in_residual_sd": -0.013018060607942512,
+                "rows": 3211
+              },
+              {
+                "x_mean": 3.004574630672063,
+                "y_mean": -0.16107471515686844,
+                "linear_residual_mean_in_residual_sd": -0.01662693929947109,
+                "rows": 3200
+              },
+              {
+                "x_mean": 3.0577359018170154,
+                "y_mean": -0.15802337413678819,
+                "linear_residual_mean_in_residual_sd": 0.02878714645526017,
+                "rows": 3194
+              },
+              {
+                "x_mean": 3.104183542558549,
+                "y_mean": -0.1570849013680542,
+                "linear_residual_mean_in_residual_sd": 0.006187342504769706,
+                "rows": 3205
+              },
+              {
+                "x_mean": 3.1508937553697316,
+                "y_mean": -0.15506304022272357,
+                "linear_residual_mean_in_residual_sd": 0.022325626048892613,
+                "rows": 3197
+              },
+              {
+                "x_mean": 3.201646151192319,
+                "y_mean": -0.15095091192888158,
+                "linear_residual_mean_in_residual_sd": 0.1089087428895448,
+                "rows": 3202
+              },
+              {
+                "x_mean": 3.2580256433796038,
+                "y_mean": -0.15070066891154002,
+                "linear_residual_mean_in_residual_sd": 0.04943073079590594,
+                "rows": 3198
+              },
+              {
+                "x_mean": 3.3359698294763773,
+                "y_mean": -0.1493060775053412,
+                "linear_residual_mean_in_residual_sd": 0.00500699095216541,
+                "rows": 3204
+              },
+              {
+                "x_mean": 3.5102116202876785,
+                "y_mean": -0.14617656740357166,
+                "linear_residual_mean_in_residual_sd": -0.09387027632152817,
+                "rows": 3200
+              }
+            ],
+            "scope": "Descriptive fourfold held-chain regression, not a posterior mode test or an acceptance threshold."
+          }
+        ]
+      },
+      "chainwise_physical_skewness": [
+        [
+          0.026319526556490228,
+          -0.02420292699427964,
+          -0.16724173819466245
+        ],
+        [
+          -0.022087509197245586,
+          -0.026276910649557606,
+          -0.05890554356172516
+        ],
+        [
+          -0.041628083256426654,
+          -0.033525816999828185,
+          0.022779134875740705
+        ],
+        [
+          0.034553690823002595,
+          0.06457703035483768,
+          0.14899701678402524
+        ]
+      ]
+    },
+    {
+      "case": 1,
+      "kind": "neural",
+      "shape": [
+        10000,
+        3
+      ],
+      "input_sha256": "368bee92f4c7e8649f9098ef6d87ab13b76e3c836ada6b5b8f7e45b212d79b99",
+      "physical": {
+        "H": {
+          "mean": 0.2466115579456091,
+          "sd": 0.005921468629405355,
+          "skewness": -0.012574900906926086,
+          "excess_kurtosis": 0.010976952478368496,
+          "quantiles_01_05_25_50_75_95_99": [
+            0.23331765010952948,
+            0.2372131258249283,
+            0.2423975132405758,
+            0.2465047910809517,
+            0.2508479282259941,
+            0.2561640053987503,
+            0.2597092789411545
+          ],
+          "mass_lower_1pct_prior_width": 0.0,
+          "mass_upper_1pct_prior_width": 0.0,
+          "matched_gaussian_mass_outside_bounds": 1.4463821151964758e-68
+        },
+        "eta": {
+          "mean": 3.380173285508156,
+          "sd": 0.026028635217629385,
+          "skewness": -0.047618356777216896,
+          "excess_kurtosis": 1.0719412121954814,
+          "quantiles_01_05_25_50_75_95_99": [
+            3.3151472568511964,
+            3.3369733691215515,
+            3.3637574315071106,
+            3.381031632423401,
+            3.3969708681106567,
+            3.4202273368835447,
+            3.442273373603821
+          ],
+          "mass_lower_1pct_prior_width": 0.0,
+          "mass_upper_1pct_prior_width": 0.0029,
+          "matched_gaussian_mass_outside_bounds": 2.0757542833051224e-06
+        },
+        "rho": {
+          "mean": -0.6282295893192291,
+          "sd": 0.007887307540050365,
+          "skewness": 0.27156879549668855,
+          "excess_kurtosis": 1.6861561428305887,
+          "quantiles_01_05_25_50_75_95_99": [
+            -0.6455292546749115,
+            -0.6403409361839294,
+            -0.6334246397018433,
+            -0.6284657716751099,
+            -0.62344890832901,
+            -0.6149090588092804,
+            -0.6075868457555771
+          ],
+          "mass_lower_1pct_prior_width": 0.0,
+          "mass_upper_1pct_prior_width": 0.0,
+          "matched_gaussian_mass_outside_bounds": 0.0
+        }
+      },
+      "logit_skewness": [
+        0.0807001736141077,
+        2.9419527709059783,
+        0.25375129032123195
+      ],
+      "logit_excess_kurtosis": [
+        0.007908014560426224,
+        29.06635440207031,
+        1.707433433059161
+      ],
+      "noninterior_rows_excluded_from_logit": 0
+    },
+    {
+      "case": 2,
+      "kind": "reference",
+      "shape": [
+        4,
+        8000,
+        3
+      ],
+      "input_sha256": "093b04b25db27f567cd59f30bdd95bd3f007537dede79ceac0bda58c07bde6cb",
+      "physical": {
+        "H": {
+          "mean": 0.2449154157973231,
+          "sd": 0.00393880225063242,
+          "skewness": -0.1843230499993001,
+          "excess_kurtosis": 0.031520066712432016,
+          "quantiles_01_05_25_50_75_95_99": [
+            0.23503630184197583,
+            0.238211327150233,
+            0.24231300259529864,
+            0.24503948509884238,
+            0.24765753711151675,
+            0.2511802062326819,
+            0.2534615706776771
+          ],
+          "mass_lower_1pct_prior_width": 0.0,
+          "mass_upper_1pct_prior_width": 0.0,
+          "matched_gaussian_mass_outside_bounds": 4.089606362112812e-157
+        },
+        "eta": {
+          "mean": 3.4871034065038167,
+          "sd": 0.009993457494148386,
+          "skewness": -1.308701544550732,
+          "excess_kurtosis": 1.9257191748190348,
+          "quantiles_01_05_25_50_75_95_99": [
+            3.455712700278952,
+            3.4668000846354565,
+            3.482065657923955,
+            3.489739053447534,
+            3.494862040895327,
+            3.4979722239389175,
+            3.4988404261419377
+          ],
+          "mass_lower_1pct_prior_width": 0.0,
+          "mass_upper_1pct_prior_width": 0.92546875,
+          "matched_gaussian_mass_outside_bounds": 0.0984379205288064
+        },
+        "rho": {
+          "mean": -0.36307096672400474,
+          "sd": 0.005509701851999641,
+          "skewness": 0.23248875773134903,
+          "excess_kurtosis": 0.19985338727054813,
+          "quantiles_01_05_25_50_75_95_99": [
+            -0.37504610287484874,
+            -0.3716277926795543,
+            -0.36683576138823615,
+            -0.36331339708405874,
+            -0.3594798492711808,
+            -0.3537500851371216,
+            -0.3488856754199331
+          ],
+          "mass_lower_1pct_prior_width": 0.0,
+          "mass_upper_1pct_prior_width": 0.0,
+          "matched_gaussian_mass_outside_bounds": 8.151828075443908e-193
+        }
+      },
+      "logit_skewness": [
+        -0.12526046620839212,
+        0.3907700231270764,
+        0.31472607056699875
+      ],
+      "logit_excess_kurtosis": [
+        0.0032511415657969778,
+        -0.3885887340284384,
+        0.2899075098225494
+      ],
+      "noninterior_rows_excluded_from_logit": 0,
+      "physical_dependence": {
+        "pearson": [
+          [
+            1.0,
+            0.5586095061845798,
+            0.032163013207470725
+          ],
+          [
+            0.5586095061845798,
+            0.9999999999999998,
+            0.43782767972505515
+          ],
+          [
+            0.032163013207470725,
+            0.4378276797250552,
+            1.0
+          ]
+        ],
+        "spearman": [
+          [
+            0.9999999999999998,
+            0.5527717863276527,
+            0.04508640736626129
+          ],
+          [
+            0.5527717863276527,
+            0.9999999999999998,
+            0.5136493892689165
+          ],
+          [
+            0.04508640736626129,
+            0.5136493892689165,
+            0.9999999999999998
+          ]
+        ],
+        "pairs": [
+          {
+            "x": "H",
+            "y": "eta",
+            "held_chain_linear_rmse": 0.8301728011293908,
+            "held_chain_quadratic_rmse": 0.8181225622876537,
+            "quadratic_rmse_reduction_fraction": 0.01451533804208438,
+            "bins": [
+              {
+                "x_mean": 0.237712232318763,
+                "y_mean": 3.474905051219863,
+                "linear_residual_mean_in_residual_sd": -0.24000325132101524,
+                "rows": 3200
+              },
+              {
+                "x_mean": 0.24080122199696327,
+                "y_mean": 3.4809657101575993,
+                "linear_residual_mean_in_residual_sd": -0.036998890632813024,
+                "rows": 3196
+              },
+              {
+                "x_mean": 0.2423153733908113,
+                "y_mean": 3.4841189718586936,
+                "linear_residual_mean_in_residual_sd": 0.08452292801667798,
+                "rows": 3201
+              },
+              {
+                "x_mean": 0.2435444176325691,
+                "y_mean": 3.4856052566789497,
+                "linear_residual_mean_in_residual_sd": 0.053682087336175674,
+                "rows": 3203
+              },
+              {
+                "x_mean": 0.2445604213970762,
+                "y_mean": 3.4880697056312346,
+                "linear_residual_mean_in_residual_sd": 0.17728007404227855,
+                "rows": 3198
+              },
+              {
+                "x_mean": 0.24549537507237593,
+                "y_mean": 3.4889978116128773,
+                "linear_residual_mean_in_residual_sd": 0.12938406259729174,
+                "rows": 3200
+              },
+              {
+                "x_mean": 0.24649653207944633,
+                "y_mean": 3.4904648683804025,
+                "linear_residual_mean_in_residual_sd": 0.13518988982124333,
+                "rows": 3197
+              },
+              {
+                "x_mean": 0.24765762094957441,
+                "y_mean": 3.4911493437313914,
+                "linear_residual_mean_in_residual_sd": 0.019234093473126754,
+                "rows": 3205
+              },
+              {
+                "x_mean": 0.24899721207428185,
+                "y_mean": 3.492314883800776,
+                "linear_residual_mean_in_residual_sd": -0.06920554950235898,
+                "rows": 3199
+              },
+              {
+                "x_mean": 0.2515668788517467,
+                "y_mean": 3.494433898335737,
+                "linear_residual_mean_in_residual_sd": -0.2529435274007555,
+                "rows": 3201
+              }
+            ],
+            "scope": "Descriptive fourfold held-chain regression, not a posterior mode test or an acceptance threshold."
+          },
+          {
+            "x": "H",
+            "y": "rho",
+            "held_chain_linear_rmse": 0.9997985525855656,
+            "held_chain_quadratic_rmse": 0.9998915098597214,
+            "quadratic_rmse_reduction_fraction": -9.297600393143313e-05,
+            "bins": [
+              {
+                "x_mean": 0.237712232318763,
+                "y_mean": -0.3632189204798449,
+                "linear_residual_mean_in_residual_sd": 0.031982649459780355,
+                "rows": 3200
+              },
+              {
+                "x_mean": 0.24080122199696327,
+                "y_mean": -0.3635577552788548,
+                "linear_residual_mean_in_residual_sd": -0.05478515520567037,
+                "rows": 3196
+              },
+              {
+                "x_mean": 0.2423153733908113,
+                "y_mean": -0.3634607552189141,
+                "linear_residual_mean_in_residual_sd": -0.04954112231953481,
+                "rows": 3201
+              },
+              {
+                "x_mean": 0.2435444176325691,
+                "y_mean": -0.36335741253386045,
+                "linear_residual_mean_in_residual_sd": -0.04081596532037141,
+                "rows": 3203
+              },
+              {
+                "x_mean": 0.2445604213970762,
+                "y_mean": -0.36286027653054853,
+                "linear_residual_mean_in_residual_sd": 0.04116056358518531,
+                "rows": 3198
+              },
+              {
+                "x_mean": 0.24549537507237593,
+                "y_mean": -0.36311444264639897,
+                "linear_residual_mean_in_residual_sd": -0.012633291293308306,
+                "rows": 3200
+              },
+              {
+                "x_mean": 0.24649653207944633,
+                "y_mean": -0.3627371841901462,
+                "linear_residual_mean_in_residual_sd": 0.047695395721937546,
+                "rows": 3197
+              },
+              {
+                "x_mean": 0.24765762094957441,
+                "y_mean": -0.3628133914278336,
+                "linear_residual_mean_in_residual_sd": 0.02437041646862216,
+                "rows": 3205
+              },
+              {
+                "x_mean": 0.24899721207428185,
+                "y_mean": -0.36269002231417935,
+                "linear_residual_mean_in_residual_sd": 0.035829096728529464,
+                "rows": 3199
+              },
+              {
+                "x_mean": 0.2515668788517467,
+                "y_mean": -0.3628996171138375,
+                "linear_residual_mean_in_residual_sd": -0.023226506814859306,
+                "rows": 3201
+              }
+            ],
+            "scope": "Descriptive fourfold held-chain regression, not a posterior mode test or an acceptance threshold."
+          },
+          {
+            "x": "eta",
+            "y": "rho",
+            "held_chain_linear_rmse": 0.8995710330761177,
+            "held_chain_quadratic_rmse": 0.8616260406988306,
+            "quadratic_rmse_reduction_fraction": 0.04218120746677745,
+            "bins": [
+              {
+                "x_mean": 3.465076414779277,
+                "y_mean": -0.3664802504906045,
+                "linear_residual_mean_in_residual_sd": 0.3851373709241188,
+                "rows": 3200
+              },
+              {
+                "x_mean": 3.476766586827692,
+                "y_mean": -0.365922939351928,
+                "linear_residual_mean_in_residual_sd": -0.07202813928690023,
+                "rows": 3196
+              },
+              {
+                "x_mean": 3.4819558427676562,
+                "y_mean": -0.36538628807391166,
+                "linear_residual_mean_in_residual_sd": -0.2165677398278383,
+                "rows": 3191
+              },
+              {
+                "x_mean": 3.4853674886159443,
+                "y_mean": -0.3648313000585942,
+                "linear_residual_mean_in_residual_sd": -0.27078067476528106,
+                "rows": 3212
+              },
+              {
+                "x_mean": 3.4884090638116123,
+                "y_mean": -0.3647225777143591,
+                "linear_residual_mean_in_residual_sd": -0.3970512068620686,
+                "rows": 3201
+              },
+              {
+                "x_mean": 3.491008193178021,
+                "y_mean": -0.3632749945677282,
+                "linear_residual_mean_in_residual_sd": -0.23147337111420693,
+                "rows": 3200
+              },
+              {
+                "x_mean": 3.4931085421278465,
+                "y_mean": -0.36270235656382943,
+                "linear_residual_mean_in_residual_sd": -0.2182222282829465,
+                "rows": 3200
+              },
+              {
+                "x_mean": 3.4948616249595266,
+                "y_mean": -0.3612268205733857,
+                "linear_residual_mean_in_residual_sd": -0.005772542609282897,
+                "rows": 3200
+              },
+              {
+                "x_mean": 3.4964123349709983,
+                "y_mean": -0.35970537512496237,
+                "linear_residual_mean_in_residual_sd": 0.22580713270558633,
+                "rows": 3195
+              },
+              {
+                "x_mean": 3.4980441264519677,
+                "y_mean": -0.35646478756744504,
+                "linear_residual_mean_in_residual_sd": 0.8004938252518555,
+                "rows": 3205
+              }
+            ],
+            "scope": "Descriptive fourfold held-chain regression, not a posterior mode test or an acceptance threshold."
+          }
+        ]
+      },
+      "logit_dependence": {
+        "pearson": [
+          [
+            1.0,
+            0.5450908834091557,
+            0.033065420021903914
+          ],
+          [
+            0.5450908834091557,
+            1.0,
+            0.5459077882317523
+          ],
+          [
+            0.03306542002190392,
+            0.5459077882317523,
+            1.0
+          ]
+        ],
+        "spearman": [
+          [
+            0.9999999999999998,
+            0.5527717863276527,
+            0.04508640736626129
+          ],
+          [
+            0.5527717863276527,
+            0.9999999999999998,
+            0.5136493892689165
+          ],
+          [
+            0.04508640736626129,
+            0.5136493892689165,
+            0.9999999999999998
+          ]
+        ],
+        "pairs": [
+          {
+            "x": "H",
+            "y": "eta",
+            "held_chain_linear_rmse": 0.8391796823030565,
+            "held_chain_quadratic_rmse": 0.8385606799145252,
+            "quadratic_rmse_reduction_fraction": 0.0007376279497525173,
+            "bins": [
+              {
+                "x_mean": 0.6622012458645054,
+                "y_mean": 4.898937473504903,
+                "linear_residual_mean_in_residual_sd": -0.02677081003264639,
+                "rows": 3200
+              },
+              {
+                "x_mean": 0.7041024195050403,
+                "y_mean": 5.223111716199213,
+                "linear_residual_mean_in_residual_sd": -0.07436360165654124,
+                "rows": 3196
+              },
+              {
+                "x_mean": 0.7248942013011844,
+                "y_mean": 5.43322746334571,
+                "linear_residual_mean_in_residual_sd": -0.029887248027333065,
+                "rows": 3201
+              },
+              {
+                "x_mean": 0.7418866433481653,
+                "y_mean": 5.60342944827243,
+                "linear_residual_mean_in_residual_sd": 0.004362350655703323,
+                "rows": 3203
+              },
+              {
+                "x_mean": 0.7560091671719187,
+                "y_mean": 5.764772392446444,
+                "linear_residual_mean_in_residual_sd": 0.06031888236098017,
+                "rows": 3198
+              },
+              {
+                "x_mean": 0.7690710790973754,
+                "y_mean": 5.835037749834592,
+                "linear_residual_mean_in_residual_sd": 0.0029192311073402612,
+                "rows": 3200
+              },
+              {
+                "x_mean": 0.7831281604565172,
+                "y_mean": 6.025532386641394,
+                "linear_residual_mean_in_residual_sd": 0.09994880476115224,
+                "rows": 3197
+              },
+              {
+                "x_mean": 0.7995238854684649,
+                "y_mean": 6.1183595881458555,
+                "linear_residual_mean_in_residual_sd": 0.0342964802239,
+                "rows": 3205
+              },
+              {
+                "x_mean": 0.818569078041679,
+                "y_mean": 6.25039125777421,
+                "linear_residual_mean_in_residual_sd": -0.008505660903399739,
+                "rows": 3199
+              },
+              {
+                "x_mean": 0.8555755741362614,
+                "y_mean": 6.528180987627642,
+                "linear_residual_mean_in_residual_sd": -0.06231150554791472,
+                "rows": 3201
+              }
+            ],
+            "scope": "Descriptive fourfold held-chain regression, not a posterior mode test or an acceptance threshold."
+          },
+          {
+            "x": "H",
+            "y": "rho",
+            "held_chain_linear_rmse": 0.9997713241857618,
+            "held_chain_quadratic_rmse": 0.999849718415067,
+            "quadratic_rmse_reduction_fraction": -7.841216026971409e-05,
+            "bins": [
+              {
+                "x_mean": 0.6622012458645054,
+                "y_mean": 1.3458743729991656,
+                "linear_residual_mean_in_residual_sd": 0.029126430987732356,
+                "rows": 3200
+              },
+              {
+                "x_mean": 0.7041024195050403,
+                "y_mean": 1.343399880279847,
+                "linear_residual_mean_in_residual_sd": -0.0540142881138601,
+                "rows": 3196
+              },
+              {
+                "x_mean": 0.7248942013011844,
+                "y_mean": 1.3441440077941482,
+                "linear_residual_mean_in_residual_sd": -0.04911445937159284,
+                "rows": 3201
+              },
+              {
+                "x_mean": 0.7418866433481653,
+                "y_mean": 1.3450060653448779,
+                "linear_residual_mean_in_residual_sd": -0.039167239754524866,
+                "rows": 3203
+              },
+              {
+                "x_mean": 0.7560091671719187,
+                "y_mean": 1.3487997038253106,
+                "linear_residual_mean_in_residual_sd": 0.04112211254275488,
+                "rows": 3198
+              },
+              {
+                "x_mean": 0.7690710790973754,
+                "y_mean": 1.3467968359472315,
+                "linear_residual_mean_in_residual_sd": -0.01361883323964712,
+                "rows": 3200
+              },
+              {
+                "x_mean": 0.7831281604565172,
+                "y_mean": 1.349899336378919,
+                "linear_residual_mean_in_residual_sd": 0.05053364390064997,
+                "rows": 3197
+              },
+              {
+                "x_mean": 0.7995238854684649,
+                "y_mean": 1.3492572066387933,
+                "linear_residual_mean_in_residual_sd": 0.025634180431691696,
+                "rows": 3205
+              },
+              {
+                "x_mean": 0.818569078041679,
+                "y_mean": 1.3501744829200948,
+                "linear_residual_mean_in_residual_sd": 0.03563805118785571,
+                "rows": 3199
+              },
+              {
+                "x_mean": 0.8555755741362614,
+                "y_mean": 1.3484884167458178,
+                "linear_residual_mean_in_residual_sd": -0.026102731676161842,
+                "rows": 3201
+              }
+            ],
+            "scope": "Descriptive fourfold held-chain regression, not a posterior mode test or an acceptance threshold."
+          },
+          {
+            "x": "eta",
+            "y": "rho",
+            "held_chain_linear_rmse": 0.8380652905030009,
+            "held_chain_quadratic_rmse": 0.8282083206704556,
+            "quadratic_rmse_reduction_fraction": 0.011761577462096384,
+            "bins": [
+              {
+                "x_mean": 4.459188538790542,
+                "y_mean": 1.32084776975405,
+                "linear_residual_mean_in_residual_sd": 0.2531562602561943,
+                "rows": 3200
+              },
+              {
+                "x_mean": 4.856255622356407,
+                "y_mean": 1.3251145732159975,
+                "linear_residual_mean_in_residual_sd": 0.07244627908983532,
+                "rows": 3196
+              },
+              {
+                "x_mean": 5.109449335603803,
+                "y_mean": 1.3291771011678728,
+                "linear_residual_mean_in_residual_sd": -0.005323571197511646,
+                "rows": 3191
+              },
+              {
+                "x_mean": 5.320080569166019,
+                "y_mean": 1.3334599022288716,
+                "linear_residual_mean_in_residual_sd": -0.04480312798345188,
+                "rows": 3212
+              },
+              {
+                "x_mean": 5.55468238238927,
+                "y_mean": 1.3342990080696981,
+                "linear_residual_mean_in_residual_sd": -0.19853092290166013,
+                "rows": 3201
+              },
+              {
+                "x_mean": 5.80988070471233,
+                "y_mean": 1.345437154253591,
+                "linear_residual_mean_in_residual_sd": -0.08026468940239548,
+                "rows": 3200
+              },
+              {
+                "x_mean": 6.076871263141763,
+                "y_mean": 1.3498529990173573,
+                "linear_residual_mean_in_residual_sd": -0.15858845236997182,
+                "rows": 3200
+              },
+              {
+                "x_mean": 6.372411153808595,
+                "y_mean": 1.3613748222471094,
+                "linear_residual_mean_in_residual_sd": -0.060073263857916684,
+                "rows": 3200
+              },
+              {
+                "x_mean": 6.734955579090167,
+                "y_mean": 1.3732607167468562,
+                "linear_residual_mean_in_residual_sd": -0.001990582742013458,
+                "rows": 3195
+              },
+              {
+                "x_mean": 7.38575997410585,
+                "y_mean": 1.3989542721180028,
+                "linear_residual_mean_in_residual_sd": 0.2239247164021937,
+                "rows": 3205
+              }
+            ],
+            "scope": "Descriptive fourfold held-chain regression, not a posterior mode test or an acceptance threshold."
+          }
+        ]
+      },
+      "chainwise_physical_skewness": [
+        [
+          -0.19777251707300256,
+          -1.3766720392649598,
+          0.39760323912469436
+        ],
+        [
+          -0.15803815688172052,
+          -1.1577862369954084,
+          0.14860775420973787
+        ],
+        [
+          -0.27708860538212554,
+          -1.227356914852991,
+          0.24532850838254286
+        ],
+        [
+          -0.1142085477414107,
+          -1.4385659223949208,
+          0.14543342912952878
+        ]
+      ]
+    },
+    {
+      "case": 2,
+      "kind": "neural",
+      "shape": [
+        10000,
+        3
+      ],
+      "input_sha256": "09d2a550c0f14a2ec7f60f7ad892eaf8708fe3c7e5ad9e83a23ddcdb046a1317",
+      "physical": {
+        "H": {
+          "mean": 0.24138030974566937,
+          "sd": 0.006533921653116035,
+          "skewness": 0.6484122312775998,
+          "excess_kurtosis": 3.0562735894606448,
+          "quantiles_01_05_25_50_75_95_99": [
+            0.22766653060913086,
+            0.23131797909736634,
+            0.2369559034705162,
+            0.2411922961473465,
+            0.24547142162919044,
+            0.2518588870763779,
+            0.25842985630035403
+          ],
+          "mass_lower_1pct_prior_width": 0.0,
+          "mass_upper_1pct_prior_width": 0.0,
+          "matched_gaussian_mass_outside_bounds": 2.3368074292312556e-62
+        },
+        "eta": {
+          "mean": 3.466595056462288,
+          "sd": 0.016307993855825063,
+          "skewness": -0.7127454082595657,
+          "excess_kurtosis": 0.7893802936757743,
+          "quantiles_01_05_25_50_75_95_99": [
+            3.421839954853058,
+            3.4374922275543214,
+            3.456502079963684,
+            3.468220829963684,
+            3.478554368019104,
+            3.48973034620285,
+            3.495238654613495
+          ],
+          "mass_lower_1pct_prior_width": 0.0,
+          "mass_upper_1pct_prior_width": 0.4575,
+          "matched_gaussian_mass_outside_bounds": 0.020261464634007444
+        },
+        "rho": {
+          "mean": -0.3690181858897209,
+          "sd": 0.007886619728501382,
+          "skewness": 0.04699547777460714,
+          "excess_kurtosis": 3.3280613236697363,
+          "quantiles_01_05_25_50_75_95_99": [
+            -0.3879674279689789,
+            -0.3815972596406937,
+            -0.3736688047647476,
+            -0.36873817443847656,
+            -0.36472807824611664,
+            -0.35651303827762604,
+            -0.34768207907676696
+          ],
+          "mass_lower_1pct_prior_width": 0.0,
+          "mass_upper_1pct_prior_width": 0.0,
+          "matched_gaussian_mass_outside_bounds": 3.4340887545138753e-102
+        }
+      },
+      "logit_skewness": [
+        0.9724769731010968,
+        1.151108328848235,
+        0.32056537268135227
+      ],
+      "logit_excess_kurtosis": [
+        5.669985858590618,
+        3.0864739111220416,
+        3.5114615565680047
+      ],
+      "noninterior_rows_excluded_from_logit": 0
+    }
+  ],
+  "scope": "Geometry of existing approximate deterministic-emulator PyMC targets and existing neural posterior outputs, not exact rough-model truth. Physical and logit coordinates differ. Boundary asymmetry is not proof of curved ridges or multimodality. No normality p-values or mode-count acceptance tests.",
+  "analysis_seconds_before_plotting": 0.6016878616064787
+}

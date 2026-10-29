@@ -1,0 +1,154 @@
+{
+  "case_index": 2,
+  "format": "archived_heston_case_comparison_v1",
+  "observed_prices": [
+    0.0018364722284445417,
+    0.003429274336762035,
+    0.006113245906809183,
+    0.010226635525879867,
+    0.016558635809551376,
+    0.010412256188313523,
+    0.006342545278260987,
+    0.0034803459688846493,
+    0.0017541510320764778,
+    0.0028613336358878335,
+    0.005011142441771045,
+    0.009085056355100435,
+    0.01479751758891256,
+    0.023453498901502595,
+    0.014314851246412045,
+    0.007924108480995864,
+    0.004691351030988192,
+    0.0026191862126126934,
+    0.004220143330723947,
+    0.00749388324540114,
+    0.012509542169611199,
+    0.021282304822959366,
+    0.03333405234183758,
+    0.021461745723449683,
+    0.01258667280191413,
+    0.007341593536061993,
+    0.003923663965275284,
+    0.00685111641218874,
+    0.011010774530211445,
+    0.018992626661234836,
+    0.029011448361570845,
+    0.04673383357968724,
+    0.029110688189223556,
+    0.01781708624492847,
+    0.01050052378514191,
+    0.006463147526112276,
+    0.008772856683039848,
+    0.013822606723130489,
+    0.022515021527844806,
+    0.03477851762380741,
+    0.057878584665649956,
+    0.03561168154966952,
+    0.02276664216122435,
+    0.013555803740238308,
+    0.008561509849207513,
+    0.014472752345665306,
+    0.0208842403081548,
+    0.032408356570013175,
+    0.05307463457258159,
+    0.0820935813198595,
+    0.054427188455694886,
+    0.03374612351303655,
+    0.02246501207369764,
+    0.014102468265904954,
+    0.01949281054740558,
+    0.029876038321919957,
+    0.04905346394429754,
+    0.0763641012178619,
+    0.12138759601621374,
+    0.08195962530979617,
+    0.05413555485641766,
+    0.03588160490647713,
+    0.02402671028017653
+  ],
+  "proposed_parameter_agreement": {
+    "all_checks_passed": false,
+    "parameters": {
+      "initial_variance": {
+        "standardized_mean_error": 0.43153087622058983,
+        "width_ratio_90": 1.1582473818459116
+      },
+      "rho": {
+        "standardized_mean_error": 0.0560007857631834,
+        "width_ratio_90": 1.0636334756902157
+      },
+      "theta": {
+        "standardized_mean_error": 0.062344008679289596,
+        "width_ratio_90": 0.9559063481329989
+      },
+      "vol_of_vol": {
+        "standardized_mean_error": 0.04202705716816589,
+        "width_ratio_90": 0.9433346895591876
+      }
+    }
+  },
+  "reference_input_sha256": {
+    "chains.npz": "f37a3b78360fcdbb0a9e2b775cfacd057a11aaeb7d8ef97a72b9a544bdd13ccb",
+    "diagnostics.json": "cffe17d61e60a553a832b7cc281d2941f0cda211b99fe55c5957654969886a33",
+    "reference.json": "34f5811eab68c86a0cb303cd047e4c1e524590e5892b43a4a0f3e902da44cc1c"
+  },
+  "sampling_seconds": 2.113674624997657,
+  "sampling_seed": 817737888,
+  "scientific_acceptance": false,
+  "scope": "descriptive development comparison; historical 50k training differs from new20k fits",
+  "surface_id": "validation:2",
+  "variance_product_comparison": {
+    "limitations": "Analytic mean-curve functionals only; no vol-of-vol/leverage or path-dependent-price check. Absolute product tolerances and reference quantile MCSE are unassessed; no acceptance verdict.",
+    "products": {
+      "forward_variance_0_5_to_1y": {
+        "absolute_q10_error": 0.00012233646271339604,
+        "absolute_q90_error": 1.5072808772609303e-05,
+        "neural_mean": 0.12954503421568925,
+        "neural_q10": 0.12803928445006077,
+        "neural_q90": 0.13107829154978917,
+        "reference_90_percent_width": 0.004070317462303935,
+        "reference_diagnostics": {
+          "ess_bulk": 2278.255123211987,
+          "ess_tail": 2862.0563553908737,
+          "mcse_mean": 2.562663045421037e-05,
+          "mcse_sd": 1.5246776196938774e-05,
+          "r_hat": 1.0005935876320884
+        },
+        "reference_diagnostics_passed": true,
+        "reference_mean": 0.12951096495272998,
+        "reference_q05": 0.12747744763282887,
+        "reference_q10": 0.12791694798734737,
+        "reference_q90": 0.13106321874101656,
+        "reference_q95": 0.1315477650951328,
+        "reference_quantile_mcse": null,
+        "reference_sd": 0.0012228810518751547
+      },
+      "variance_swap_1y": {
+        "absolute_q10_error": 1.776180784175685e-05,
+        "absolute_q90_error": 3.0370517079006398e-05,
+        "neural_mean": 0.1185268826976956,
+        "neural_q10": 0.11744468038101429,
+        "neural_q90": 0.1196252976051957,
+        "reference_90_percent_width": 0.002852739864557141,
+        "reference_diagnostics": {
+          "ess_bulk": 2283.413218742219,
+          "ess_tail": 2957.760465741536,
+          "mcse_mean": 1.808992083096613e-05,
+          "mcse_sd": 1.0821222893153641e-05,
+          "r_hat": 1.0006519045488305
+        },
+        "reference_diagnostics_passed": true,
+        "reference_mean": 0.11855208708832962,
+        "reference_q05": 0.11712691523145644,
+        "reference_q10": 0.11742691857317253,
+        "reference_q90": 0.11965566812227471,
+        "reference_q95": 0.11997965509601358,
+        "reference_quantile_mcse": null,
+        "reference_sd": 0.0008639124363138917
+      }
+    },
+    "scientific_acceptance": false,
+    "status": "descriptive_development_comparison",
+    "units": "annualized variance, spot-normalized, continuous monitoring"
+  }
+}

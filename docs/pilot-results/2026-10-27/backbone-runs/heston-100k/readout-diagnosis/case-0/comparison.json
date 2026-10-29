@@ -1,0 +1,136 @@
+{
+  "case": 0,
+  "native_agreement": {
+    "all_checks_passed": false,
+    "parameters": {
+      "initial_variance": {
+        "mean_error_within_0_3_reference_sd": false,
+        "relative_width_error_within_25_percent": true,
+        "standardized_mean_error": 0.4821585778674872,
+        "width_ratio_90": 1.136448216043685
+      },
+      "rho": {
+        "mean_error_within_0_3_reference_sd": true,
+        "relative_width_error_within_25_percent": true,
+        "standardized_mean_error": 0.025162045736922437,
+        "width_ratio_90": 0.9543578820783546
+      },
+      "theta": {
+        "mean_error_within_0_3_reference_sd": true,
+        "relative_width_error_within_25_percent": true,
+        "standardized_mean_error": 0.11535175307530757,
+        "width_ratio_90": 0.9983961512035702
+      },
+      "vol_of_vol": {
+        "mean_error_within_0_3_reference_sd": true,
+        "relative_width_error_within_25_percent": true,
+        "standardized_mean_error": 0.04985815172730855,
+        "width_ratio_90": 0.9982424519581775
+      }
+    },
+    "scientific_acceptance": false,
+    "scope": "Existing proposed development rules; no numerical posterior stability/product acceptance or quantile MCSE claim."
+  },
+  "native_vs_stored": {
+    "allclose_rtol_1e_6_atol_1e_8": true,
+    "array_equal": true,
+    "max_abs_physical_delta": 0.0,
+    "paired_draw_max_abs_delta_over_reference_sd": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "paired_draw_rms_delta_over_reference_sd": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scope": "Cross-host equality is descriptive, not required.",
+    "signed_mean_delta_over_reference_sd": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "signed_width_delta_over_reference_sd": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "width_ratio_left_over_right": [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "seed": 271026,
+  "status": "completed",
+  "tighter_agreement": {
+    "all_checks_passed": false,
+    "parameters": {
+      "initial_variance": {
+        "mean_error_within_0_3_reference_sd": false,
+        "relative_width_error_within_25_percent": true,
+        "standardized_mean_error": 0.48283476854957597,
+        "width_ratio_90": 1.1366794192741512
+      },
+      "rho": {
+        "mean_error_within_0_3_reference_sd": true,
+        "relative_width_error_within_25_percent": true,
+        "standardized_mean_error": 0.025160108371446378,
+        "width_ratio_90": 0.954565792990113
+      },
+      "theta": {
+        "mean_error_within_0_3_reference_sd": true,
+        "relative_width_error_within_25_percent": true,
+        "standardized_mean_error": 0.11536537167844427,
+        "width_ratio_90": 0.998397221355551
+      },
+      "vol_of_vol": {
+        "mean_error_within_0_3_reference_sd": true,
+        "relative_width_error_within_25_percent": true,
+        "standardized_mean_error": 0.049921586021467984,
+        "width_ratio_90": 0.9983896535726127
+      }
+    },
+    "scientific_acceptance": false,
+    "scope": "Existing proposed development rules; no numerical posterior stability/product acceptance or quantile MCSE claim."
+  },
+  "tighter_minus_native": {
+    "max_abs_physical_delta": 0.00021380186080932617,
+    "paired_draw_max_abs_delta_over_reference_sd": [
+      0.06403473212102855,
+      0.001999517332884226,
+      0.0036232291125502174,
+      0.010622638283709372
+    ],
+    "paired_draw_rms_delta_over_reference_sd": [
+      0.012230712746050487,
+      0.0002494069583685124,
+      0.0007262222004964833,
+      0.0006650801089817628
+    ],
+    "signed_mean_delta_over_reference_sd": [
+      -0.0006761906820693879,
+      1.3618603127952763e-05,
+      6.343429415918042e-05,
+      -1.937365476777996e-06
+    ],
+    "signed_width_delta_over_reference_sd": [
+      0.0007674514377199378,
+      3.4817465958437856e-06,
+      0.0004787414204441764,
+      0.0006729842626088378
+    ],
+    "width_ratio_left_over_right": [
+      1.0002034437004714,
+      1.0000010718710999,
+      1.000147460783847,
+      1.0002178542407023
+    ]
+  }
+}

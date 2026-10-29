@@ -8,3 +8,6 @@ figures/
 cluster/oscar.local.json
 .claude/settings.local.json
 /results/
+# Local rendered delivery and visual QA; shareable reports live in docs/reports/.
+output/pdf/
+tmp/pdfs/

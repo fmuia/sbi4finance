@@ -1,0 +1,57 @@
+{
+  "checked_host": "login009",
+  "launch-attempt.json": {
+    "sha256": "71a067b47ff785a5f161f501ea9389884c8995f251e0fb27325ec77241501859",
+    "value": {
+      "state": "launch_attempted",
+      "utc": "2026-10-28T13:57:27.961362+00:00",
+      "host": "login010",
+      "command": [
+        "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python",
+        "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/tail-recovery-source-20261028/complete_joint_tail.py",
+        "--plan",
+        "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/tail-recovery-20261028/integrity-bridge/plan.json"
+      ],
+      "bridge_plan_sha256": "4106b4079a4df4ea07ce342237fb1546c3c060b92d2c721254b2397a0a517dbd",
+      "bridge_source_sha256": "8b84e573238daf4adcc937388a11876b8213a9c17ad41ff09470474101c4b338",
+      "tested_finalizer_sha256": "06e860477a336173c07d816a7522dccd6313451411edaceeedc49322cf271ecc",
+      "original_readiness_absent": true,
+      "original_snapshot_absent": true,
+      "automatic_retry": false
+    }
+  },
+  "launch.json": {
+    "sha256": "10e52f49d21a8a894a9ad301ae106222f498b1baaf6cc171dc2eee72a631895f",
+    "value": {
+      "state": "armed_waiting_for_native_recovery",
+      "utc": "2026-10-28T13:57:27.961362+00:00",
+      "host": "login010",
+      "command": [
+        "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python",
+        "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/tail-recovery-source-20261028/complete_joint_tail.py",
+        "--plan",
+        "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/tail-recovery-20261028/integrity-bridge/plan.json"
+      ],
+      "bridge_plan_sha256": "4106b4079a4df4ea07ce342237fb1546c3c060b92d2c721254b2397a0a517dbd",
+      "bridge_source_sha256": "8b84e573238daf4adcc937388a11876b8213a9c17ad41ff09470474101c4b338",
+      "tested_finalizer_sha256": "06e860477a336173c07d816a7522dccd6313451411edaceeedc49322cf271ecc",
+      "original_readiness_absent": true,
+      "original_snapshot_absent": true,
+      "automatic_retry": false,
+      "pid": 3795047
+    }
+  },
+  "execution.json": {
+    "sha256": "40226513fde220578f494e949d9494d6def7911190e24f360b84605b3f1c8acd",
+    "value": {
+      "state": "waiting_for_native_recovery",
+      "started_utc": "2026-10-28T13:57:28.109965+00:00",
+      "pid": 3795047,
+      "host": "login010",
+      "plan_sha256": "4106b4079a4df4ea07ce342237fb1546c3c060b92d2c721254b2397a0a517dbd",
+      "automatic_retry": false,
+      "last_poll_utc": "2026-10-28T13:57:28.143967+00:00"
+    }
+  },
+  "operator_log": ""
+}

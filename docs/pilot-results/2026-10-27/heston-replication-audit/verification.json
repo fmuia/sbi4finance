@@ -1,0 +1,8 @@
+{
+  "retained_file_hashes_verified": 47,
+  "json_files_parsed": 35,
+  "markdown_files_checked": 8,
+  "local_links_checked": 110,
+  "reserved_test_evaluated": false,
+  "verification_scope": "Compact audit evidence and documentation; does not rerun models or replace numerical acceptance."
+}

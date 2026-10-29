@@ -1,0 +1,27 @@
+{
+  "scope": "Read-only post-failure frozen-input integrity audit",
+  "all_inputs_unchanged": true,
+  "unchanged_by_path": {
+    "/oscar/scratch/afengler/sbi4finance-followup-20261027-f4d3679/runs/heston-flow-matching-500/checkpoint/model.keras": true,
+    "/oscar/scratch/afengler/sbi4finance-followup-20261027-f4d3679/runs/heston-flow-matching-500/checkpoint/task.json": true,
+    "/oscar/scratch/afengler/sbi4finance-followup-20261027-f4d3679/runs/heston-flow-matching-500/checkpoint/training.json": true,
+    "/oscar/scratch/afengler/sbi4finance-followup-20261027-f4d3679/runs/heston-flow-matching-500/comparisons/case-0/comparison.json": true,
+    "/oscar/scratch/afengler/sbi4finance-followup-20261027-f4d3679/runs/heston-flow-matching-500/comparisons/case-0/neural_draws.npz": true,
+    "/oscar/scratch/afengler/sbi4finance-followup-20261027-f4d3679/runs/heston-flow-matching-500/comparisons/case-1/comparison.json": true,
+    "/oscar/scratch/afengler/sbi4finance-followup-20261027-f4d3679/runs/heston-flow-matching-500/comparisons/case-1/neural_draws.npz": true,
+    "/oscar/scratch/afengler/sbi4finance-followup-20261027-f4d3679/runs/heston-flow-matching-500/comparisons/case-2/comparison.json": true,
+    "/oscar/scratch/afengler/sbi4finance-followup-20261027-f4d3679/runs/heston-flow-matching-500/comparisons/case-2/neural_draws.npz": true,
+    "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-0/precision/precision.json": true,
+    "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-0/reference/chains.npz": true,
+    "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-0/reference/diagnostics.json": true,
+    "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-0/reference/reference.json": true,
+    "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-1/precision/precision.json": true,
+    "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-1/reference/chains.npz": true,
+    "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-1/reference/diagnostics.json": true,
+    "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-1/reference/reference.json": true,
+    "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-2/precision/precision.json": true,
+    "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-2/reference/chains.npz": true,
+    "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-2/reference/diagnostics.json": true,
+    "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-2/reference/reference.json": true
+  }
+}

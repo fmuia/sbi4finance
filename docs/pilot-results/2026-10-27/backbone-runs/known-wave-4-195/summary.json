@@ -1,0 +1,35 @@
+{
+  "utc": "2026-10-27T21:31:36.846092+00:00",
+  "states": {
+    "COMPLETED": 192
+  },
+  "completed": 192,
+  "known_wave_nonterminal_or_unknown": 0,
+  "freed_slots_this_wave": 192,
+  "completed_allocated_cpu_seconds": 53332,
+  "hard_failures": 0,
+  "durable_failures": 0,
+  "log_errors": 0,
+  "status": "all192_completed_metadata_only",
+  "polls": 23,
+  "failed_rows": [],
+  "failure_records": [],
+  "checked_payloads": false,
+  "no_financial_pricing": true,
+  "no_neural_evaluation": true,
+  "progress_uncompressed_sha256": "82386710ccca0d0668db526efce07193e192d1f488c84866bf6ffd5768ace74e",
+  "published_collection_training_surfaces_at_observation": 13150,
+  "wave_training_surfaces": 4800,
+  "compressed_artifacts": {
+    "latest.json": {
+      "stored_file": "latest.json.gz",
+      "raw_sha256": "c43638ba11d010743f16014e06b6395df13f6e1a303029e83c58d9c05168032a",
+      "stored_sha256": "49ecae7b1553f8bc30c58e707d55a8ed5a56c3d0ef6abbd2dd7a30b0469f21ce"
+    },
+    "log-inventory.json": {
+      "stored_file": "log-inventory.json.gz",
+      "raw_sha256": "2a601d864a4c38e48f70a46b4c5153abec8962b3d134afe5747997e2185aa018",
+      "stored_sha256": "0917983b7de4ed99d56c29aef7dfa9f5700215b37c5af5b4eb663aa030a5c972"
+    }
+  }
+}

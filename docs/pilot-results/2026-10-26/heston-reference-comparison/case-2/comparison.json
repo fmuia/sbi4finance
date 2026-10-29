@@ -1,0 +1,655 @@
+{
+  "checkpoint_metadata_sha256": {
+    "model.keras": "2b364ed687a22fcefc04cd9fb977f68aebcb4f9cecb32f13a4be69925d11400f",
+    "task.json": "5e499526ff8f29a72f49785a1a36006b1d769d26bca8a6f83f7a8c8ac4d431fa",
+    "training.json": "aac38944c2c861657abe24eade4360c46c9c99a4eb72db7aa2c29694044cf5c3"
+  },
+  "checkpoint_sha256": "2b364ed687a22fcefc04cd9fb977f68aebcb4f9cecb32f13a4be69925d11400f",
+  "format": "full_surface_reference_comparison_v1",
+  "network": {
+    "encoder": "vector",
+    "family": "spline",
+    "flow_steps": 100,
+    "mean_steps": 4,
+    "summary_dim": 32,
+    "widths": [
+      128,
+      128
+    ]
+  },
+  "neural_draws_requested": 10000,
+  "observed_prices": [
+    0.0018364722284445417,
+    0.003429274336762035,
+    0.006113245906809183,
+    0.010226635525879867,
+    0.016558635809551376,
+    0.010412256188313523,
+    0.006342545278260987,
+    0.0034803459688846493,
+    0.0017541510320764778,
+    0.0028613336358878335,
+    0.005011142441771045,
+    0.009085056355100435,
+    0.01479751758891256,
+    0.023453498901502595,
+    0.014314851246412045,
+    0.007924108480995864,
+    0.004691351030988192,
+    0.0026191862126126934,
+    0.004220143330723947,
+    0.00749388324540114,
+    0.012509542169611199,
+    0.021282304822959366,
+    0.03333405234183758,
+    0.021461745723449683,
+    0.01258667280191413,
+    0.007341593536061993,
+    0.003923663965275284,
+    0.00685111641218874,
+    0.011010774530211445,
+    0.018992626661234836,
+    0.029011448361570845,
+    0.04673383357968724,
+    0.029110688189223556,
+    0.01781708624492847,
+    0.01050052378514191,
+    0.006463147526112276,
+    0.008772856683039848,
+    0.013822606723130489,
+    0.022515021527844806,
+    0.03477851762380741,
+    0.057878584665649956,
+    0.03561168154966952,
+    0.02276664216122435,
+    0.013555803740238308,
+    0.008561509849207513,
+    0.014472752345665306,
+    0.0208842403081548,
+    0.032408356570013175,
+    0.05307463457258159,
+    0.0820935813198595,
+    0.054427188455694886,
+    0.03374612351303655,
+    0.02246501207369764,
+    0.014102468265904954,
+    0.01949281054740558,
+    0.029876038321919957,
+    0.04905346394429754,
+    0.0763641012178619,
+    0.12138759601621374,
+    0.08195962530979617,
+    0.05413555485641766,
+    0.03588160490647713,
+    0.02402671028017653
+  ],
+  "parameter_names": [
+    "initial_variance",
+    "theta",
+    "vol_of_vol",
+    "rho"
+  ],
+  "precision": {
+    "all_points_priced": true,
+    "issues": [],
+    "max_abs_log_likelihood_shift": 1.4069544135963952e-05,
+    "max_abs_price_shift_over_quote_sigma": 2.9659336987959055e-06,
+    "posterior_stability_assessed": false,
+    "scope": "pointwise numerical sensitivity only; not posterior stability",
+    "sha256": "a8f773f64a53bac279ad57424ade39effeee43e69ae3dcc80306d720d9bc15ee"
+  },
+  "proposed_parameter_agreement": null,
+  "reference_chain_shape": [
+    4,
+    2000,
+    4
+  ],
+  "reference_diagnostics": {
+    "elapsed_seconds": 369.39923936128616,
+    "limitations": "Also assess numerical-price refinement, products and reference uncertainty.",
+    "mcmc_diagnostics_passed": false,
+    "parameters": {
+      "parameters[initial_variance]": {
+        "ess_bulk": 382.8086052072624,
+        "ess_tail": 616.5368941870327,
+        "eti89_lb": 0.08670454348637056,
+        "eti89_ub": 0.08816023963920899,
+        "mcse_mean": 2.2964809612709474e-05,
+        "mcse_sd": 1.2973508841140135e-05,
+        "mean": 0.0874249749610982,
+        "r_hat": 1.0182092093641075,
+        "sd": 0.00044984668170881364
+      },
+      "parameters[rho]": {
+        "ess_bulk": 426.27185439922005,
+        "ess_tail": 464.5391676323412,
+        "eti89_lb": -0.11656367791415057,
+        "eti89_ub": -0.10111886958994887,
+        "mcse_mean": 0.00022794546073757167,
+        "mcse_sd": 0.00012520344344511402,
+        "mean": -0.10781028975664084,
+        "r_hat": 1.0035322520408272,
+        "sd": 0.004903090416658305
+      },
+      "parameters[theta]": {
+        "ess_bulk": 124.87936441828982,
+        "ess_tail": 78.200449117275,
+        "eti89_lb": 0.13960938913401258,
+        "eti89_ub": 0.14571963644314453,
+        "mcse_mean": 0.0002649436640663001,
+        "mcse_sd": 0.0003891175532103107,
+        "mean": 0.14255864119800846,
+        "r_hat": 1.0296270177806384,
+        "sd": 0.0020404961121480844
+      },
+      "parameters[vol_of_vol]": {
+        "ess_bulk": 113.48337900547533,
+        "ess_tail": 70.28880684055997,
+        "eti89_lb": 1.164041874031206,
+        "eti89_ub": 1.2723395202530998,
+        "mcse_mean": 0.008716178704375402,
+        "mcse_sd": 0.01887277032846672,
+        "mean": 1.2197706799145556,
+        "r_hat": 1.0376017005050733,
+        "sd": 0.048897338057264275
+      }
+    },
+    "requirements": {
+      "ess_bulk_min": 400,
+      "ess_tail_min": 400,
+      "r_hat_max": 1.01
+    },
+    "scientific_acceptance": "not_assessed"
+  },
+  "reference_input_sha256": {
+    "chains.npz": "9c64d336def9fec299dc40e8a97c1bff5f50d98ec2d3b9c04b63733367ced056",
+    "diagnostics.json": "207ddc3f33dbcaccabfed1dc8f83c5d1f06555aa0b594332a079e1ff29aa1d8f",
+    "reference.json": "27256999bb1e3992688874601f65e0bc3262270df2f3eeeeee3a40cf11b7ca4e"
+  },
+  "reference_issues": [
+    "source MCMC diagnostics did not pass",
+    "initial_variance: missing or failing r_hat",
+    "initial_variance: missing or failing ess_bulk",
+    "theta: missing or failing r_hat",
+    "theta: missing or failing ess_bulk",
+    "theta: missing or failing ess_tail",
+    "vol_of_vol: missing or failing r_hat",
+    "vol_of_vol: missing or failing ess_bulk",
+    "vol_of_vol: missing or failing ess_tail"
+  ],
+  "reference_split": "validation",
+  "sampling_and_comparison_seconds": 2.500019036233425e-07,
+  "sampling_seed": 271032,
+  "scientific_acceptance": false,
+  "scope": "one development conditional comparison; no global acceptance, coverage or product claim",
+  "source_sha256": {
+    "calibration/full_surface.py": "3b9c1a3d02a687aafd08cb9b4e096d52e7710d0a184e96f0c43009cdbc3be38b",
+    "calibration/validation.py": "98c73f47aa76365b775c5f7527714e4bd3e0ffc648aab5e164854ed47deead7b",
+    "scripts/compare_full_surface_reference.py": "27a95978d6394da801e9c37be83228d8bbc7c136a8b3326295eb99a893b62a45"
+  },
+  "status": "inconclusive_reference",
+  "surface_id": "validation:2",
+  "task": {
+    "context": {
+      "contracts": [
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "put",
+          "strike": 0.9452142884010055
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "put",
+          "strike": 0.9586226994567999
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "put",
+          "strike": 0.9722213165740635
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "put",
+          "strike": 0.9860128379357256
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "call",
+          "strike": 1.014185578043342
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "call",
+          "strike": 1.0285723867111078
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "call",
+          "strike": 1.0431632805760247
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "call",
+          "strike": 1.0579611547045846
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "put",
+          "strike": 0.9234100296746439
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "put",
+          "strike": 0.9419892367120802
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "put",
+          "strike": 0.9609422613636284
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "put",
+          "strike": 0.9802766249195318
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "call",
+          "strike": 1.0201202136
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "call",
+          "strike": 1.0406452501953098
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "call",
+          "strike": 1.061583254911065
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "call",
+          "strike": 1.0829425367540593
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "put",
+          "strike": 0.8909472522884108
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "put",
+          "strike": 0.9170415101799084
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "put",
+          "strike": 0.9439000224008953
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "put",
+          "strike": 0.9715451725992442
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "call",
+          "strike": 1.029288218606067
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "call",
+          "strike": 1.0594342369612506
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "call",
+          "strike": 1.0904631784921235
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "call",
+          "strike": 1.1224009024456676
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "put",
+          "strike": 0.8493369300745177
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "put",
+          "strike": 0.8847284766100544
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "put",
+          "strike": 0.9215947754162442
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "put",
+          "strike": 0.9599972788587706
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "call",
+          "strike": 1.041669619302238
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "call",
+          "strike": 1.0850755957772693
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "call",
+          "strike": 1.1302902827674572
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "call",
+          "strike": 1.177389048551396
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "put",
+          "strike": 0.8187307530779818
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "put",
+          "strike": 0.8607079764250578
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "put",
+          "strike": 0.9048374180359595
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "put",
+          "strike": 0.951229424500714
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "call",
+          "strike": 1.0512710963760241
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "call",
+          "strike": 1.1051709180756477
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "call",
+          "strike": 1.161834242728283
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "call",
+          "strike": 1.2214027581601699
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "put",
+          "strike": 0.7536383164437648
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "put",
+          "strike": 0.808857893484718
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "put",
+          "strike": 0.8681234453945849
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "put",
+          "strike": 0.9317314234233945
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "call",
+          "strike": 1.073270660257192
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "call",
+          "strike": 1.151909910168909
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "call",
+          "strike": 1.2363111098437878
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "call",
+          "strike": 1.3268964411453439
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "put",
+          "strike": 0.6703200460356393
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "put",
+          "strike": 0.7408182206817179
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "put",
+          "strike": 0.8187307530779818
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "put",
+          "strike": 0.9048374180359595
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "call",
+          "strike": 1.1051709180756477
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "call",
+          "strike": 1.2214027581601699
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "call",
+          "strike": 1.3498588075760032
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "call",
+          "strike": 1.4918246976412703
+        }
+      ],
+      "dividend": 0.0,
+      "quote_noise_std": [
+        7.393122257748389e-05,
+        0.00014734934969936199,
+        0.00021842402110031601,
+        0.0002338836145277794,
+        0.00016856715907419804,
+        0.00023720138879472198,
+        0.00022466491669818916,
+        0.00015370943102313063,
+        7.82163616067961e-05,
+        0.00010333131487679448,
+        0.00020654717174897207,
+        0.00030707070665308804,
+        0.0003297651437400239,
+        0.00023836631390862972,
+        0.0003364000888699078,
+        0.0003195516723526538,
+        0.00021926701887794902,
+        0.0001119018762588081,
+        0.0001470535520785712,
+        0.0002952606968936182,
+        0.00044092792100661605,
+        0.0004756382639001542,
+        0.00034535022356236905,
+        0.0004895688613506721,
+        0.0004671341355465552,
+        0.0003219709180184147,
+        0.00016505303956082854,
+        0.0002029661289650328,
+        0.0004099682159446388,
+        0.0006158977907659265,
+        0.0006683659690345338,
+        0.00048819551274953464,
+        0.0006962165245187742,
+        0.0006682956622532423,
+        0.00046338309072573556,
+        0.00023897009747029984,
+        0.0002439600928959136,
+        0.0004950371278750658,
+        0.0007471169572237573,
+        0.0008144916556710369,
+        0.0005976658711421461,
+        0.0008562515358464142,
+        0.0008256919335248641,
+        0.0005751510865871115,
+        0.0002979735303440804,
+        0.00033059924189120005,
+        0.0006778258107718836,
+        0.0010336325808796537,
+        0.0011385746299607095,
+        0.0008441713068195146,
+        0.0012219987448500187,
+        0.0011906516133887396,
+        0.0008380035803961523,
+        0.00043867095751078236,
+        0.00043983595980427227,
+        0.0009150968861055087,
+        0.0014160391507115786,
+        0.0015828168637360485,
+        0.0011908576424310355,
+        0.0017492831664407858,
+        0.001729554124341907,
+        0.001235251591494895,
+        0.000656158147746766
+      ],
+      "rate": 0.0,
+      "spot": 1.0
+    },
+    "context_prior": {},
+    "fixed_parameters": {
+      "jump_down_rate": 10.0,
+      "jump_intensity": 0.0,
+      "jump_up_probability": 0.5,
+      "jump_up_rate": 10.0,
+      "kappa": 2.0
+    },
+    "measure": "Q",
+    "model": "hkde",
+    "model_context": {},
+    "numerics": {
+      "max_refinement_over_quote_sigma": 0.1,
+      "quadrature_ladder": [
+        [
+          512,
+          400.0
+        ],
+        [
+          1024,
+          600.0
+        ],
+        [
+          2048,
+          1500.0
+        ],
+        [
+          4096,
+          3000.0
+        ],
+        [
+          8192,
+          6000.0
+        ]
+      ]
+    },
+    "parameter_names": [
+      "initial_variance",
+      "theta",
+      "vol_of_vol",
+      "rho"
+    ],
+    "prior_bounds": [
+      [
+        0.01,
+        0.16
+      ],
+      [
+        0.01,
+        0.16
+      ],
+      [
+        0.1,
+        1.5
+      ],
+      [
+        -0.95,
+        -0.1
+      ]
+    ],
+    "task_id": "hkde_calibration_v1"
+  },
+  "task_fingerprint": "5e499526ff8f29a72f49785a1a36006b1d769d26bca8a6f83f7a8c8ac4d431fa",
+  "training_dataset": {
+    "collection_id": "402230db66b9885b59524e7808eebf1b3882c4a271f97eccc7cf970581e85221",
+    "manifest_sha256": "1a7906f58a2b3e1e4cc868bc819c9c9308357f2f23f7fbb642c682860fb0074f",
+    "task_fingerprint": "5e499526ff8f29a72f49785a1a36006b1d769d26bca8a6f83f7a8c8ac4d431fa"
+  },
+  "versions": {
+    "bayesflow": "2.1.0",
+    "jax": "0.11.1",
+    "keras": "3.15.1",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-readout-diagnosis/case-0/native.npz": {
+    "bytes": 150122,
+    "payload_transferred": false,
+    "sha256": "ddf7543775607d06b2a1a3bc32533dc4877cd65578c9ca73c4a4f9ba039ec6a0"
+  },
+  "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-readout-diagnosis/case-0/tighter.npz": {
+    "bytes": 150022,
+    "payload_transferred": false,
+    "sha256": "760058f6a09e5242c5c87b3797a4f11ac54eabcef68337282cd23c6f4a4599ea"
+  },
+  "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-readout-diagnosis/case-1/native.npz": {
+    "bytes": 151745,
+    "payload_transferred": false,
+    "sha256": "7e7b38f8b8f05fcd7095654ca5721d1d34264654dcac3cd374e71787c69c89ed"
+  },
+  "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-readout-diagnosis/case-1/tighter.npz": {
+    "bytes": 151729,
+    "payload_transferred": false,
+    "sha256": "5726bc905c91aa66bd572f670a96d647c3aba9471bb32df514e1ba63c19d3255"
+  },
+  "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-readout-diagnosis/case-2/native.npz": {
+    "bytes": 146150,
+    "payload_transferred": false,
+    "sha256": "e80297a8d72d4a548f1d7896b456f0107c40f0f4a92931423edbcbd3ca693de4"
+  },
+  "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-readout-diagnosis/case-2/tighter.npz": {
+    "bytes": 146194,
+    "payload_transferred": false,
+    "sha256": "00b8f95af328d2b758ee8f6ab8642de30e7c307b74ed65570a0c812a098d8739"
+  },
+  "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-readout-diagnosis/preprocessing-audit.npz": {
+    "bytes": 3806,
+    "payload_transferred": false,
+    "sha256": "c4dd1205431d0eb215b43a242ed0e90f0aa3324eb45e7afe517daaced7ed8481"
+  }
+}

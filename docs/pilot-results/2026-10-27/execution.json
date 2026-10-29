@@ -1,0 +1,268 @@
+{
+  "format": "reviewed_tutorial_unit_v1",
+  "reviewed_plan_revision": "9b495cf40422133672f92a93000dca0b7744faeb",
+  "authorized_scope": "Heston A and rough B only; user said continue after plan review",
+  "created_utc": "2026-10-26T23:45:17.630187+00:00",
+  "root": "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf",
+  "allocated_cpu_hour_ceilings": {
+    "heston": 6,
+    "rough_including_setup_reduction": 20,
+    "total": 26
+  },
+  "gpu_training_authorized_for_this_unit": false,
+  "old_run_root": "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4",
+  "root_seed_rough": 271100,
+  "jobs": [
+    {
+      "name": "heston-case-1",
+      "workstream": "A",
+      "source_revision": "7223e6d0aa8d588af075edca5ea260a11405cd38",
+      "runtime_prefix": "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference",
+      "locked_runtime_reuse": "byte-identical pyproject.toml/pixi.lock; explicit immutable source path",
+      "source_bundle_sha256": "df4c81bda35a19b2a0a8fdef22004bce541f82e48b3aeccf0171c3ac67e71525",
+      "arguments": [
+        "--job-name=sbi4finance-reviewed-heston1",
+        "--account=carney-mjfrank-condo2",
+        "--partition=batch",
+        "--ntasks=1",
+        "--cpus-per-task=4",
+        "--mem=12G",
+        "--time=00:30:00",
+        "--chdir=/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/repo-heston",
+        "--output=/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/logs/heston-case1-%j.out",
+        "--wrap=exec env PYTHONPATH=/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/repo-heston/src KERAS_BACKEND=jax OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 /oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python /oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/repo-heston/scripts/run_heston_reference_case.py --bank /oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/runs/readiness-cpu/snapshot-8 --checkpoint /oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/runs/heston-development/spline-seed0-300epochs --index 1 --out /oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-1"
+      ],
+      "allocated_cpu_hours_limit": 2.0,
+      "sampler_settings": {
+        "chains": 4,
+        "tune": 4000,
+        "draws": 8000,
+        "seed": 271027
+      },
+      "next_cases_gated": true,
+      "submitted_utc": "2026-10-26T23:53:10.074038+00:00",
+      "state": "submitted",
+      "job_id": "7997838"
+    },
+    {
+      "name": "rough-declaration",
+      "workstream": "B",
+      "source_revision": "65186b3dd2f8d1c49002e2cde0a33d525313feb7",
+      "runtime_prefix": "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference",
+      "source_bundle_sha256": "88991fe87c1a18ae8920c059fb59ae554ad57b1ac67e29e5deec255c3b8174b1",
+      "arguments": [
+        "--job-name=sbi4finance-reviewed-declare",
+        "--account=carney-mjfrank-condo2",
+        "--partition=batch",
+        "--ntasks=1",
+        "--cpus-per-task=1",
+        "--mem=2G",
+        "--time=00:05:00",
+        "--chdir=/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/repo-rough",
+        "--output=/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/logs/rough-declare-%j.out",
+        "--wrap=exec env PYTHONPATH=/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/repo-rough/src KERAS_BACKEND=jax OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 /oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python /oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/repo-rough/scripts/pilot_rough_working_grid.py declare --config /oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/repo-rough/configs/tasks/calibration_rough_joint_pilot.json --revision 65186b3dd2f8d1c49002e2cde0a33d525313feb7 --out /oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/manifests/rough"
+      ],
+      "allocated_cpu_hours_limit": 0.08333333333333333,
+      "submitted_utc": "2026-10-26T23:58:48.089900+00:00",
+      "state": "submitted",
+      "job_id": "7997906"
+    },
+    {
+      "name": "rough-adaptive",
+      "workstream": "B",
+      "source_revision": "65186b3dd2f8d1c49002e2cde0a33d525313feb7",
+      "declaration_sha256": "279cdbae6c899fd4c97513fd29ae7b03deea1aa14bf67945fb6cb5c0c28778f0",
+      "runtime_prefix": "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference",
+      "arguments": [
+        "--job-name=sbi4finance-rough-adaptive",
+        "--account=carney-mjfrank-condo2",
+        "--partition=batch",
+        "--nodes=1",
+        "--ntasks=1",
+        "--cpus-per-task=1",
+        "--mem=8G",
+        "--time=00:20:00",
+        "--array=0-31%20",
+        "--no-requeue",
+        "--chdir=/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/repo-rough",
+        "--output=/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/logs/rough-adaptive-%A_%a.out",
+        "--wrap=exec env PYTHONPATH=/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/repo-rough/src KERAS_BACKEND=jax OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 /oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python -c 'import os,sys; from pathlib import Path; i=int(os.environ['\"'\"'SLURM_ARRAY_TASK_ID'\"'\"']); os.execv(sys.executable,[sys.executable,sys.argv[1],'\"'\"'run'\"'\"','\"'\"'--declaration'\"'\"',sys.argv[2],'\"'\"'--component-index'\"'\"',str(i),'\"'\"'--out'\"'\"',str(Path(sys.argv[3])/f'\"'\"'component-{i:02d}'\"'\"')])' /oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/repo-rough/scripts/pilot_rough_working_grid.py /oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/manifests/rough/declaration.json /oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/rough"
+      ],
+      "component_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31
+      ],
+      "initial_array_concurrency": 20,
+      "allocated_cpu_hours_limit": 10.666666666666666,
+      "submitted_utc": "2026-10-27T00:03:16.813207+00:00",
+      "state": "submitted",
+      "submission_attempts": [
+        {
+          "arguments": [
+            "--job-name=sbi4finance-rough-adaptive",
+            "--account=carney-mjfrank-condo2",
+            "--partition=batch",
+            "--ntasks=1",
+            "--cpus-per-task=1",
+            "--mem=8G",
+            "--time=00:20:00",
+            "--array=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31%20",
+            "--dependency=afterok:7997906",
+            "--no-requeue",
+            "--chdir=/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/repo-rough",
+            "--output=/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/logs/rough-adaptive-%A_%a.out",
+            "--wrap=exec env PYTHONPATH=/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/repo-rough/src KERAS_BACKEND=jax OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 /oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python -c 'import os,sys; from pathlib import Path; i=int(os.environ['\"'\"'SLURM_ARRAY_TASK_ID'\"'\"']); os.execv(sys.executable,[sys.executable,sys.argv[1],'\"'\"'run'\"'\"','\"'\"'--declaration'\"'\"',sys.argv[2],'\"'\"'--component-index'\"'\"',str(i),'\"'\"'--out'\"'\"',str(Path(sys.argv[3])/f'\"'\"'component-{i:02d}'\"'\"')])' /oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/repo-rough/scripts/pilot_rough_working_grid.py /oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/manifests/rough/declaration.json /oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/rough"
+          ],
+          "submitted": false,
+          "diagnostic": "Scheduler dry-run reproduced Job dependency problem; completed declaration dependency removed after sacct verification."
+        }
+      ],
+      "dependency_check": {
+        "method": "verified terminal sacct state before submission",
+        "declaration_job": "7997906|COMPLETED|0:0",
+        "declaration_sha256": "279cdbae6c899fd4c97513fd29ae7b03deea1aa14bf67945fb6cb5c0c28778f0"
+      },
+      "job_id": "7998013"
+    },
+    {
+      "name": "rough-fixed",
+      "workstream": "B",
+      "source_revision": "65186b3dd2f8d1c49002e2cde0a33d525313feb7",
+      "declaration_sha256": "279cdbae6c899fd4c97513fd29ae7b03deea1aa14bf67945fb6cb5c0c28778f0",
+      "runtime_prefix": "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference",
+      "component_indices": [
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        40,
+        41,
+        42,
+        43
+      ],
+      "allocated_cpu_hours_limit": 5.0,
+      "arguments": [
+        "--job-name=sbi4finance-rough-fixed",
+        "--account=carney-mjfrank-condo2",
+        "--partition=batch",
+        "--nodes=1",
+        "--ntasks=1",
+        "--cpus-per-task=1",
+        "--mem=8G",
+        "--time=00:30:00",
+        "--array=32-37,40-43%10",
+        "--no-requeue",
+        "--chdir=/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/repo-rough",
+        "--output=/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/logs/rough-fixed-%A_%a.out",
+        "--wrap=exec env PYTHONPATH=/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/repo-rough/src KERAS_BACKEND=jax OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 /oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python -c 'import os,sys; from pathlib import Path; i=int(os.environ['\"'\"'SLURM_ARRAY_TASK_ID'\"'\"']); os.execv(sys.executable,[sys.executable,sys.argv[1],'\"'\"'run'\"'\"','\"'\"'--declaration'\"'\"',sys.argv[2],'\"'\"'--component-index'\"'\"',str(i),'\"'\"'--out'\"'\"',str(Path(sys.argv[3])/f'\"'\"'component-{i:02d}'\"'\"')])' /oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/repo-rough/scripts/pilot_rough_working_grid.py /oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/manifests/rough/declaration.json /oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/rough"
+      ],
+      "initial_array_concurrency": 10,
+      "dependency_check": {
+        "method": "verified terminal sacct state before submission",
+        "declaration_job": "7997906|COMPLETED|0:0",
+        "declaration_sha256": "279cdbae6c899fd4c97513fd29ae7b03deea1aa14bf67945fb6cb5c0c28778f0"
+      },
+      "submitted_utc": "2026-10-27T00:03:16.861610+00:00",
+      "state": "submitted",
+      "job_id": "7998014"
+    },
+    {
+      "name": "rough-long",
+      "workstream": "B",
+      "source_revision": "65186b3dd2f8d1c49002e2cde0a33d525313feb7",
+      "declaration_sha256": "279cdbae6c899fd4c97513fd29ae7b03deea1aa14bf67945fb6cb5c0c28778f0",
+      "runtime_prefix": "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference",
+      "component_indices": [
+        38,
+        39
+      ],
+      "allocated_cpu_hours_limit": 3.0,
+      "arguments": [
+        "--job-name=sbi4finance-rough-long",
+        "--account=carney-mjfrank-condo2",
+        "--partition=batch",
+        "--nodes=1",
+        "--ntasks=1",
+        "--cpus-per-task=1",
+        "--mem=8G",
+        "--time=01:30:00",
+        "--array=38-39%2",
+        "--no-requeue",
+        "--chdir=/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/repo-rough",
+        "--output=/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/logs/rough-long-%A_%a.out",
+        "--wrap=exec env PYTHONPATH=/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/repo-rough/src KERAS_BACKEND=jax OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 /oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python -c 'import os,sys; from pathlib import Path; i=int(os.environ['\"'\"'SLURM_ARRAY_TASK_ID'\"'\"']); os.execv(sys.executable,[sys.executable,sys.argv[1],'\"'\"'run'\"'\"','\"'\"'--declaration'\"'\"',sys.argv[2],'\"'\"'--component-index'\"'\"',str(i),'\"'\"'--out'\"'\"',str(Path(sys.argv[3])/f'\"'\"'component-{i:02d}'\"'\"')])' /oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/repo-rough/scripts/pilot_rough_working_grid.py /oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/manifests/rough/declaration.json /oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/rough"
+      ],
+      "initial_array_concurrency": 2,
+      "dependency_check": {
+        "method": "verified terminal sacct state before submission",
+        "declaration_job": "7997906|COMPLETED|0:0",
+        "declaration_sha256": "279cdbae6c899fd4c97513fd29ae7b03deea1aa14bf67945fb6cb5c0c28778f0"
+      },
+      "submitted_utc": "2026-10-27T00:03:16.924874+00:00",
+      "state": "submitted",
+      "job_id": "7998015"
+    },
+    {
+      "name": "heston-cases-0-2",
+      "workstream": "A",
+      "source_revision": "7223e6d0aa8d588af075edca5ea260a11405cd38",
+      "runtime_prefix": "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference",
+      "arguments": [
+        "--job-name=sbi4finance-reviewed-heston02",
+        "--account=carney-mjfrank-condo2",
+        "--partition=batch",
+        "--nodes=1",
+        "--ntasks=1",
+        "--cpus-per-task=4",
+        "--mem=12G",
+        "--time=00:30:00",
+        "--array=0,2%2",
+        "--no-requeue",
+        "--chdir=/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/repo-heston",
+        "--output=/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/logs/heston-cases02-%A_%a.out",
+        "--wrap=exec env PYTHONPATH=/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/repo-heston/src KERAS_BACKEND=jax OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 /oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python -c 'import os,sys; from pathlib import Path; i=int(os.environ['\"'\"'SLURM_ARRAY_TASK_ID'\"'\"']); assert i in (0,2); os.execv(sys.executable,[sys.executable,sys.argv[1],'\"'\"'--bank'\"'\"',sys.argv[2],'\"'\"'--checkpoint'\"'\"',sys.argv[3],'\"'\"'--index'\"'\"',str(i),'\"'\"'--out'\"'\"',str(Path(sys.argv[4])/f'\"'\"'case-{i}'\"'\"')])' /oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/repo-heston/scripts/run_heston_reference_case.py /oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/runs/readiness-cpu/snapshot-8 /oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/runs/heston-development/spline-seed0-300epochs /oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston"
+      ],
+      "case_indices": [
+        0,
+        2
+      ],
+      "allocated_cpu_hours_limit": 4,
+      "gate_sha256": "0429612aa3ddb6119f63c06de09bae75f764a62a376f735a21be96188e6df58c",
+      "submitted_utc": "2026-10-27T00:11:11.284449+00:00",
+      "state": "submitted",
+      "job_id": "7998368"
+    }
+  ]
+}

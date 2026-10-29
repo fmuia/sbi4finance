@@ -1,0 +1,12 @@
+{
+  "format": "captured_oscar_accounting_date_regression_v1",
+  "job_id": "8032794",
+  "original_started_utc": "2026-10-28T00:36:50.700687+00:00",
+  "cluster_timezone_observed": "EDT -0400",
+  "query_fields": "JobID%64,State%40,ElapsedRaw,AllocCPUS,ExitCode",
+  "raw_sacct": {
+    "2026-10-28": "",
+    "2026-10-27": "8032794|COMPLETED|445|1|0:0\n8032794.batch|COMPLETED|445|1|0:0\n8032794.extern|COMPLETED|445|1|0:0\n"
+  },
+  "interpretation": "The UTC start date excluded jobs submitted on the previous cluster-local evening. The rows were absent before parsing; this was not a parser or Slurm job failure."
+}

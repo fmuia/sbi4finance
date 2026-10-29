@@ -1,0 +1,24 @@
+{
+  "audit_sha256": "2ff4d4e2b25ab59127080eef981040ec4843bf9cbf623225d087b186d42474fb",
+  "collection_id": "402230db66b9885b59524e7808eebf1b3882c4a271f97eccc7cf970581e85221",
+  "collection_sha256": "8f9c4a5e6b3bebaa25215f720df02aee178b78bfce8483f0024679ffc869df1e",
+  "config_sha256": "1dcc7a239ef0a4b85ca42f8a0cd0556c291bcd0b7d04146844d2fde70a373273",
+  "format": "heston_backbone_stage_v1",
+  "inventory_sha256": "476626ffd40651b263650dcb7876fe90f56c2e4be65577e73cd6ed6bf164335e",
+  "no_financial_pricing_calls": true,
+  "no_model_training": true,
+  "original_parts_preserved": 60,
+  "reserved_test_outcomes_evaluated": false,
+  "runtime": {
+    "numpy": "2.5.3",
+    "python": "3.12.16",
+    "scipy": "1.18.1"
+  },
+  "script_sha256": "f9d4a60419676c6fbb1a47a368919e99f7a398b8085f33203b6f01a8e63b883d",
+  "seconds": 74.8371754065156,
+  "snapshot": "/oscar/scratch/afengler/sbi4finance-heston-backbone-20261027/snapshot-100k",
+  "snapshot_manifest_sha256": "4b5929b0d0b23698c340eec6defabfd629fe23eca2ed78fe9bd46e4de35c244e",
+  "source_revision": "9d903dbb5986f766844fbb942b322c0d55856705",
+  "stage": "freeze",
+  "status": "completed_snapshot"
+}

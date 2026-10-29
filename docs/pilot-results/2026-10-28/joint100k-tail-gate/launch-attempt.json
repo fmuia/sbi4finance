@@ -1,0 +1,35 @@
+{
+  "state": "launch_attempted",
+  "utc": "2026-10-28T13:53:36.866994+00:00",
+  "old_pid": 2629343,
+  "host": "login010",
+  "known_completed_files_sha256": {
+    "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/configs/known_100k_20261028.json": "11d2588b7df29945d8c0c2819371b9e37453bab2c5b90040eb94896dc503c0a9",
+    "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/known-100k/execution.json": "644eeb06a1bde9eaa7061d8be00d1004f47c3934b9a6c29969b192f38d0238f2",
+    "/oscar/scratch/afengler/sbi4finance-rough-known-backbone-20261027/snapshot-100k/manifest.json": "f1bfa42f7bf2acba3daaffb263b5bdeb60b5b12ebdfc267c5c5cd6eb7e08c313",
+    "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/accounting-recovery-20261028/run_bank_campaign.py": "b39970fdd827c9367bcbd021160d9fe89c3818dcaaf82580c1bd19dc7216bf8f",
+    "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/known-100k/campaign.json": "4634b171189456504ee1b1fe93541de88bde2063946ea2b47ac13450ff43a31b"
+  },
+  "plan_sha256": "bcb0aae9d0b244a908f52b06e2e51e39d1db17c175a77cf25ef665618be5007e",
+  "waiter_sha256": "501f3a53451945bba032c79022a780dfae874aeaec5a560428b93845b7f5f006",
+  "launcher_sha256": "a59339f9f9d10f4de961a42977e41278324c76e290dc32b806094dc0542d5ee0",
+  "campaign_config_sha256": "77bd438b284ddd07bc88e1cab994b5978f2ba4941891187af4023ece1b971270",
+  "native_config_sha256": "1af379b4e25ec7240526ad43c4ba62ad9ff8b1289dfbe85b1c4d3e24c1df8c93",
+  "frozen_provenance": {
+    "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/execution-v2.json": "35925eec53f0152013b8c2782b635bf9862c7e74fdcc76d11e0866b15e28eb8e",
+    "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/morning-recovery-20261028/execution.json": "114788a8f72f91ba4f43a4848064d3090c99c58809661b4e389378d137a8f0db",
+    "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/tail-recovery-source-20261028/preserved-parts.json": "a230b44c6ab217fd1356d8da4e73edbd3c238d7070f381880886093905d3d3f6",
+    "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/tail-recovery-source-20261028/reconciliation.json": "61a755c36667810341218499a3b956accff9071394e7acd00a341ef2ed6bf03a",
+    "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/jobs-20k.json": "a815c58087279fa7c2b5603d6bc3fee11ed92ec7965c0ac29c2827a665bbae0c"
+  },
+  "new_numerical_jobs_by_deployer": 0,
+  "automatic_retry": false,
+  "budget_change": false,
+  "argv": [
+    "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python",
+    "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/joint-tail-gate-20261028/arm_bank_extensions.py",
+    "--plan",
+    "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/joint-tail-gate-20261028/joint_100k_tail_gate_20261028.json",
+    "--detach"
+  ]
+}

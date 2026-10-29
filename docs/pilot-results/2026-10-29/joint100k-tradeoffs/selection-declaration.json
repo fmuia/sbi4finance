@@ -1,0 +1,20 @@
+{
+  "interpretation": "Exploratory selection and geometry of the learned candidate; no independent reference claim",
+  "interior_truth_fraction": [
+    0.1,
+    0.9
+  ],
+  "interior_central98_fraction": [
+    0.05,
+    0.95
+  ],
+  "interior_central99_fraction": [
+    0.025,
+    0.975
+  ],
+  "primary_selection": "Among strict interior cases, greatest absolute within-case Spearman among short/long/decay pairs; lowest ID breaks ties",
+  "secondary_selection": "Among remaining strict interior cases, greatest absolute eta/rho Spearman; lowest ID breaks ties",
+  "near_flat_definition": "abs(true long_variance minus true short_variance) <= .005 variance units",
+  "near_flat_selection": "Among near-flat cases with all six truths10percent inside bounds, largest decay90percent width/prior width; not an interior showcase",
+  "nonlinearity": "Descriptive additional R2 from a residualized quadratic predictor, in either direction; not a Gaussianity test"
+}

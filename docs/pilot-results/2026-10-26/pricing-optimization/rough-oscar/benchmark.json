@@ -1,0 +1,722 @@
+{
+  "format": "rough_conditional_output_benchmark_v1",
+  "results": [
+    {
+      "steps": 504,
+      "pairs": 2048,
+      "repeats": 4,
+      "all_prices_errors_covariance_bit_exact": true,
+      "full_median_cpu_seconds": 0.30132388200000004,
+      "lean_median_cpu_seconds": 0.24589004650000001,
+      "measured_cpu_speedup": 1.2254415593028083,
+      "cpu_ranges": {
+        "full": [
+          0.2995449339999998,
+          0.3041670769999998
+        ],
+        "lean": [
+          0.24369598400000014,
+          0.24838659399999985
+        ]
+      },
+      "median_process_peak_rss_bytes": {
+        "full": 354107392.0,
+        "lean": 222380032.0
+      },
+      "runs": {
+        "full": [
+          {
+            "mode": "full",
+            "steps": 504,
+            "pairs": 2048,
+            "paths": 4096,
+            "seed": 271029,
+            "contracts": 18,
+            "parameters": {
+              "hurst": 0.1,
+              "eta": 1.5,
+              "rho": -0.7
+            },
+            "curve_coefficients": {
+              "short_variance": 0.04,
+              "long_variance": 0.09,
+              "decay": 2.0
+            },
+            "cpu_seconds": 0.2995449339999998,
+            "wall_seconds": 0.30116756819188595,
+            "process_peak_rss_bytes": 353058816,
+            "runtime": {
+              "numpy": "2.5.3",
+              "scipy": "1.18.1",
+              "python": "3.12.16"
+            },
+            "pricing_source_sha256": {
+              "gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
+              "bergomi.py": "8bffe12110dfb7b0de85fcf58cb7b848e4f5bc5f5af2f614ff2bd593d0edb6f5",
+              "rough_bergomi.py": "0e8d31c8e18ca8bffd7f798988b22e8a73f75fb49da6eee336f8a106c186ba06",
+              "calibration/surface.py": "24c0476ce3000208438d440cbbb1bf21efd92494b8c634592029af384ee30388",
+              "calibration/pricing.py": "70e14c12f810e69f8591cf85303ae350e5c81cdf7509523cd87f7daa9293fcff",
+              "calibration/tasks.py": "295d1ce59b409f8edb5edba89488fa87a5a4e7bab6f785a152ecb69db1528916",
+              "calibration/bank.py": "9f0d512ba6f52df5c73c54599183159f535b2aa84ac4daa6a60cfd219afcc7db"
+            },
+            "thread_environment": {
+              "OMP_NUM_THREADS": "1",
+              "OPENBLAS_NUM_THREADS": "1",
+              "MKL_NUM_THREADS": "1",
+              "NUMEXPR_NUM_THREADS": "1"
+            }
+          },
+          {
+            "mode": "full",
+            "steps": 504,
+            "pairs": 2048,
+            "paths": 4096,
+            "seed": 271030,
+            "contracts": 18,
+            "parameters": {
+              "hurst": 0.1,
+              "eta": 1.5,
+              "rho": -0.7
+            },
+            "curve_coefficients": {
+              "short_variance": 0.04,
+              "long_variance": 0.09,
+              "decay": 2.0
+            },
+            "cpu_seconds": 0.3041670769999998,
+            "wall_seconds": 0.30585079826414585,
+            "process_peak_rss_bytes": 352751616,
+            "runtime": {
+              "numpy": "2.5.3",
+              "scipy": "1.18.1",
+              "python": "3.12.16"
+            },
+            "pricing_source_sha256": {
+              "gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
+              "bergomi.py": "8bffe12110dfb7b0de85fcf58cb7b848e4f5bc5f5af2f614ff2bd593d0edb6f5",
+              "rough_bergomi.py": "0e8d31c8e18ca8bffd7f798988b22e8a73f75fb49da6eee336f8a106c186ba06",
+              "calibration/surface.py": "24c0476ce3000208438d440cbbb1bf21efd92494b8c634592029af384ee30388",
+              "calibration/pricing.py": "70e14c12f810e69f8591cf85303ae350e5c81cdf7509523cd87f7daa9293fcff",
+              "calibration/tasks.py": "295d1ce59b409f8edb5edba89488fa87a5a4e7bab6f785a152ecb69db1528916",
+              "calibration/bank.py": "9f0d512ba6f52df5c73c54599183159f535b2aa84ac4daa6a60cfd219afcc7db"
+            },
+            "thread_environment": {
+              "OMP_NUM_THREADS": "1",
+              "OPENBLAS_NUM_THREADS": "1",
+              "MKL_NUM_THREADS": "1",
+              "NUMEXPR_NUM_THREADS": "1"
+            }
+          },
+          {
+            "mode": "full",
+            "steps": 504,
+            "pairs": 2048,
+            "paths": 4096,
+            "seed": 271031,
+            "contracts": 18,
+            "parameters": {
+              "hurst": 0.1,
+              "eta": 1.5,
+              "rho": -0.7
+            },
+            "curve_coefficients": {
+              "short_variance": 0.04,
+              "long_variance": 0.09,
+              "decay": 2.0
+            },
+            "cpu_seconds": 0.302937692,
+            "wall_seconds": 0.30458348989486694,
+            "process_peak_rss_bytes": 355282944,
+            "runtime": {
+              "numpy": "2.5.3",
+              "scipy": "1.18.1",
+              "python": "3.12.16"
+            },
+            "pricing_source_sha256": {
+              "gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
+              "bergomi.py": "8bffe12110dfb7b0de85fcf58cb7b848e4f5bc5f5af2f614ff2bd593d0edb6f5",
+              "rough_bergomi.py": "0e8d31c8e18ca8bffd7f798988b22e8a73f75fb49da6eee336f8a106c186ba06",
+              "calibration/surface.py": "24c0476ce3000208438d440cbbb1bf21efd92494b8c634592029af384ee30388",
+              "calibration/pricing.py": "70e14c12f810e69f8591cf85303ae350e5c81cdf7509523cd87f7daa9293fcff",
+              "calibration/tasks.py": "295d1ce59b409f8edb5edba89488fa87a5a4e7bab6f785a152ecb69db1528916",
+              "calibration/bank.py": "9f0d512ba6f52df5c73c54599183159f535b2aa84ac4daa6a60cfd219afcc7db"
+            },
+            "thread_environment": {
+              "OMP_NUM_THREADS": "1",
+              "OPENBLAS_NUM_THREADS": "1",
+              "MKL_NUM_THREADS": "1",
+              "NUMEXPR_NUM_THREADS": "1"
+            }
+          },
+          {
+            "mode": "full",
+            "steps": 504,
+            "pairs": 2048,
+            "paths": 4096,
+            "seed": 271032,
+            "contracts": 18,
+            "parameters": {
+              "hurst": 0.1,
+              "eta": 1.5,
+              "rho": -0.7
+            },
+            "curve_coefficients": {
+              "short_variance": 0.04,
+              "long_variance": 0.09,
+              "decay": 2.0
+            },
+            "cpu_seconds": 0.2997100720000001,
+            "wall_seconds": 0.30149524472653866,
+            "process_peak_rss_bytes": 355155968,
+            "runtime": {
+              "numpy": "2.5.3",
+              "scipy": "1.18.1",
+              "python": "3.12.16"
+            },
+            "pricing_source_sha256": {
+              "gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
+              "bergomi.py": "8bffe12110dfb7b0de85fcf58cb7b848e4f5bc5f5af2f614ff2bd593d0edb6f5",
+              "rough_bergomi.py": "0e8d31c8e18ca8bffd7f798988b22e8a73f75fb49da6eee336f8a106c186ba06",
+              "calibration/surface.py": "24c0476ce3000208438d440cbbb1bf21efd92494b8c634592029af384ee30388",
+              "calibration/pricing.py": "70e14c12f810e69f8591cf85303ae350e5c81cdf7509523cd87f7daa9293fcff",
+              "calibration/tasks.py": "295d1ce59b409f8edb5edba89488fa87a5a4e7bab6f785a152ecb69db1528916",
+              "calibration/bank.py": "9f0d512ba6f52df5c73c54599183159f535b2aa84ac4daa6a60cfd219afcc7db"
+            },
+            "thread_environment": {
+              "OMP_NUM_THREADS": "1",
+              "OPENBLAS_NUM_THREADS": "1",
+              "MKL_NUM_THREADS": "1",
+              "NUMEXPR_NUM_THREADS": "1"
+            }
+          }
+        ],
+        "lean": [
+          {
+            "mode": "lean",
+            "steps": 504,
+            "pairs": 2048,
+            "paths": 4096,
+            "seed": 271029,
+            "contracts": 18,
+            "parameters": {
+              "hurst": 0.1,
+              "eta": 1.5,
+              "rho": -0.7
+            },
+            "curve_coefficients": {
+              "short_variance": 0.04,
+              "long_variance": 0.09,
+              "decay": 2.0
+            },
+            "cpu_seconds": 0.2443240229999999,
+            "wall_seconds": 0.2457707654684782,
+            "process_peak_rss_bytes": 221982720,
+            "runtime": {
+              "numpy": "2.5.3",
+              "scipy": "1.18.1",
+              "python": "3.12.16"
+            },
+            "pricing_source_sha256": {
+              "gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
+              "bergomi.py": "8bffe12110dfb7b0de85fcf58cb7b848e4f5bc5f5af2f614ff2bd593d0edb6f5",
+              "rough_bergomi.py": "0e8d31c8e18ca8bffd7f798988b22e8a73f75fb49da6eee336f8a106c186ba06",
+              "calibration/surface.py": "24c0476ce3000208438d440cbbb1bf21efd92494b8c634592029af384ee30388",
+              "calibration/pricing.py": "70e14c12f810e69f8591cf85303ae350e5c81cdf7509523cd87f7daa9293fcff",
+              "calibration/tasks.py": "295d1ce59b409f8edb5edba89488fa87a5a4e7bab6f785a152ecb69db1528916",
+              "calibration/bank.py": "9f0d512ba6f52df5c73c54599183159f535b2aa84ac4daa6a60cfd219afcc7db"
+            },
+            "thread_environment": {
+              "OMP_NUM_THREADS": "1",
+              "OPENBLAS_NUM_THREADS": "1",
+              "MKL_NUM_THREADS": "1",
+              "NUMEXPR_NUM_THREADS": "1"
+            }
+          },
+          {
+            "mode": "lean",
+            "steps": 504,
+            "pairs": 2048,
+            "paths": 4096,
+            "seed": 271030,
+            "contracts": 18,
+            "parameters": {
+              "hurst": 0.1,
+              "eta": 1.5,
+              "rho": -0.7
+            },
+            "curve_coefficients": {
+              "short_variance": 0.04,
+              "long_variance": 0.09,
+              "decay": 2.0
+            },
+            "cpu_seconds": 0.24745607000000014,
+            "wall_seconds": 0.24881445989012718,
+            "process_peak_rss_bytes": 222777344,
+            "runtime": {
+              "numpy": "2.5.3",
+              "scipy": "1.18.1",
+              "python": "3.12.16"
+            },
+            "pricing_source_sha256": {
+              "gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
+              "bergomi.py": "8bffe12110dfb7b0de85fcf58cb7b848e4f5bc5f5af2f614ff2bd593d0edb6f5",
+              "rough_bergomi.py": "0e8d31c8e18ca8bffd7f798988b22e8a73f75fb49da6eee336f8a106c186ba06",
+              "calibration/surface.py": "24c0476ce3000208438d440cbbb1bf21efd92494b8c634592029af384ee30388",
+              "calibration/pricing.py": "70e14c12f810e69f8591cf85303ae350e5c81cdf7509523cd87f7daa9293fcff",
+              "calibration/tasks.py": "295d1ce59b409f8edb5edba89488fa87a5a4e7bab6f785a152ecb69db1528916",
+              "calibration/bank.py": "9f0d512ba6f52df5c73c54599183159f535b2aa84ac4daa6a60cfd219afcc7db"
+            },
+            "thread_environment": {
+              "OMP_NUM_THREADS": "1",
+              "OPENBLAS_NUM_THREADS": "1",
+              "MKL_NUM_THREADS": "1",
+              "NUMEXPR_NUM_THREADS": "1"
+            }
+          },
+          {
+            "mode": "lean",
+            "steps": 504,
+            "pairs": 2048,
+            "paths": 4096,
+            "seed": 271031,
+            "contracts": 18,
+            "parameters": {
+              "hurst": 0.1,
+              "eta": 1.5,
+              "rho": -0.7
+            },
+            "curve_coefficients": {
+              "short_variance": 0.04,
+              "long_variance": 0.09,
+              "decay": 2.0
+            },
+            "cpu_seconds": 0.24838659399999985,
+            "wall_seconds": 0.24978755228221416,
+            "process_peak_rss_bytes": 229806080,
+            "runtime": {
+              "numpy": "2.5.3",
+              "scipy": "1.18.1",
+              "python": "3.12.16"
+            },
+            "pricing_source_sha256": {
+              "gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
+              "bergomi.py": "8bffe12110dfb7b0de85fcf58cb7b848e4f5bc5f5af2f614ff2bd593d0edb6f5",
+              "rough_bergomi.py": "0e8d31c8e18ca8bffd7f798988b22e8a73f75fb49da6eee336f8a106c186ba06",
+              "calibration/surface.py": "24c0476ce3000208438d440cbbb1bf21efd92494b8c634592029af384ee30388",
+              "calibration/pricing.py": "70e14c12f810e69f8591cf85303ae350e5c81cdf7509523cd87f7daa9293fcff",
+              "calibration/tasks.py": "295d1ce59b409f8edb5edba89488fa87a5a4e7bab6f785a152ecb69db1528916",
+              "calibration/bank.py": "9f0d512ba6f52df5c73c54599183159f535b2aa84ac4daa6a60cfd219afcc7db"
+            },
+            "thread_environment": {
+              "OMP_NUM_THREADS": "1",
+              "OPENBLAS_NUM_THREADS": "1",
+              "MKL_NUM_THREADS": "1",
+              "NUMEXPR_NUM_THREADS": "1"
+            }
+          },
+          {
+            "mode": "lean",
+            "steps": 504,
+            "pairs": 2048,
+            "paths": 4096,
+            "seed": 271032,
+            "contracts": 18,
+            "parameters": {
+              "hurst": 0.1,
+              "eta": 1.5,
+              "rho": -0.7
+            },
+            "curve_coefficients": {
+              "short_variance": 0.04,
+              "long_variance": 0.09,
+              "decay": 2.0
+            },
+            "cpu_seconds": 0.24369598400000014,
+            "wall_seconds": 0.24508710764348507,
+            "process_peak_rss_bytes": 221974528,
+            "runtime": {
+              "numpy": "2.5.3",
+              "scipy": "1.18.1",
+              "python": "3.12.16"
+            },
+            "pricing_source_sha256": {
+              "gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
+              "bergomi.py": "8bffe12110dfb7b0de85fcf58cb7b848e4f5bc5f5af2f614ff2bd593d0edb6f5",
+              "rough_bergomi.py": "0e8d31c8e18ca8bffd7f798988b22e8a73f75fb49da6eee336f8a106c186ba06",
+              "calibration/surface.py": "24c0476ce3000208438d440cbbb1bf21efd92494b8c634592029af384ee30388",
+              "calibration/pricing.py": "70e14c12f810e69f8591cf85303ae350e5c81cdf7509523cd87f7daa9293fcff",
+              "calibration/tasks.py": "295d1ce59b409f8edb5edba89488fa87a5a4e7bab6f785a152ecb69db1528916",
+              "calibration/bank.py": "9f0d512ba6f52df5c73c54599183159f535b2aa84ac4daa6a60cfd219afcc7db"
+            },
+            "thread_environment": {
+              "OMP_NUM_THREADS": "1",
+              "OPENBLAS_NUM_THREADS": "1",
+              "MKL_NUM_THREADS": "1",
+              "NUMEXPR_NUM_THREADS": "1"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "steps": 2016,
+      "pairs": 2048,
+      "repeats": 4,
+      "all_prices_errors_covariance_bit_exact": true,
+      "full_median_cpu_seconds": 1.1965374340000001,
+      "lean_median_cpu_seconds": 1.013423824,
+      "measured_cpu_speedup": 1.180688084948751,
+      "cpu_ranges": {
+        "full": [
+          1.192486911,
+          1.1989639099999998
+        ],
+        "lean": [
+          1.011217594,
+          1.022325456
+        ]
+      },
+      "median_process_peak_rss_bytes": {
+        "full": 1064974336.0,
+        "lean": 605906944.0
+      },
+      "runs": {
+        "full": [
+          {
+            "mode": "full",
+            "steps": 2016,
+            "pairs": 2048,
+            "paths": 4096,
+            "seed": 271029,
+            "contracts": 18,
+            "parameters": {
+              "hurst": 0.1,
+              "eta": 1.5,
+              "rho": -0.7
+            },
+            "curve_coefficients": {
+              "short_variance": 0.04,
+              "long_variance": 0.09,
+              "decay": 2.0
+            },
+            "cpu_seconds": 1.1968381580000003,
+            "wall_seconds": 1.2033456694334745,
+            "process_peak_rss_bytes": 1064435712,
+            "runtime": {
+              "numpy": "2.5.3",
+              "scipy": "1.18.1",
+              "python": "3.12.16"
+            },
+            "pricing_source_sha256": {
+              "gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
+              "bergomi.py": "8bffe12110dfb7b0de85fcf58cb7b848e4f5bc5f5af2f614ff2bd593d0edb6f5",
+              "rough_bergomi.py": "0e8d31c8e18ca8bffd7f798988b22e8a73f75fb49da6eee336f8a106c186ba06",
+              "calibration/surface.py": "24c0476ce3000208438d440cbbb1bf21efd92494b8c634592029af384ee30388",
+              "calibration/pricing.py": "70e14c12f810e69f8591cf85303ae350e5c81cdf7509523cd87f7daa9293fcff",
+              "calibration/tasks.py": "295d1ce59b409f8edb5edba89488fa87a5a4e7bab6f785a152ecb69db1528916",
+              "calibration/bank.py": "9f0d512ba6f52df5c73c54599183159f535b2aa84ac4daa6a60cfd219afcc7db"
+            },
+            "thread_environment": {
+              "OMP_NUM_THREADS": "1",
+              "OPENBLAS_NUM_THREADS": "1",
+              "MKL_NUM_THREADS": "1",
+              "NUMEXPR_NUM_THREADS": "1"
+            }
+          },
+          {
+            "mode": "full",
+            "steps": 2016,
+            "pairs": 2048,
+            "paths": 4096,
+            "seed": 271030,
+            "contracts": 18,
+            "parameters": {
+              "hurst": 0.1,
+              "eta": 1.5,
+              "rho": -0.7
+            },
+            "curve_coefficients": {
+              "short_variance": 0.04,
+              "long_variance": 0.09,
+              "decay": 2.0
+            },
+            "cpu_seconds": 1.19623671,
+            "wall_seconds": 1.2026800028979778,
+            "process_peak_rss_bytes": 1064878080,
+            "runtime": {
+              "numpy": "2.5.3",
+              "scipy": "1.18.1",
+              "python": "3.12.16"
+            },
+            "pricing_source_sha256": {
+              "gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
+              "bergomi.py": "8bffe12110dfb7b0de85fcf58cb7b848e4f5bc5f5af2f614ff2bd593d0edb6f5",
+              "rough_bergomi.py": "0e8d31c8e18ca8bffd7f798988b22e8a73f75fb49da6eee336f8a106c186ba06",
+              "calibration/surface.py": "24c0476ce3000208438d440cbbb1bf21efd92494b8c634592029af384ee30388",
+              "calibration/pricing.py": "70e14c12f810e69f8591cf85303ae350e5c81cdf7509523cd87f7daa9293fcff",
+              "calibration/tasks.py": "295d1ce59b409f8edb5edba89488fa87a5a4e7bab6f785a152ecb69db1528916",
+              "calibration/bank.py": "9f0d512ba6f52df5c73c54599183159f535b2aa84ac4daa6a60cfd219afcc7db"
+            },
+            "thread_environment": {
+              "OMP_NUM_THREADS": "1",
+              "OPENBLAS_NUM_THREADS": "1",
+              "MKL_NUM_THREADS": "1",
+              "NUMEXPR_NUM_THREADS": "1"
+            }
+          },
+          {
+            "mode": "full",
+            "steps": 2016,
+            "pairs": 2048,
+            "paths": 4096,
+            "seed": 271031,
+            "contracts": 18,
+            "parameters": {
+              "hurst": 0.1,
+              "eta": 1.5,
+              "rho": -0.7
+            },
+            "curve_coefficients": {
+              "short_variance": 0.04,
+              "long_variance": 0.09,
+              "decay": 2.0
+            },
+            "cpu_seconds": 1.192486911,
+            "wall_seconds": 1.1989396568387747,
+            "process_peak_rss_bytes": 1066782720,
+            "runtime": {
+              "numpy": "2.5.3",
+              "scipy": "1.18.1",
+              "python": "3.12.16"
+            },
+            "pricing_source_sha256": {
+              "gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
+              "bergomi.py": "8bffe12110dfb7b0de85fcf58cb7b848e4f5bc5f5af2f614ff2bd593d0edb6f5",
+              "rough_bergomi.py": "0e8d31c8e18ca8bffd7f798988b22e8a73f75fb49da6eee336f8a106c186ba06",
+              "calibration/surface.py": "24c0476ce3000208438d440cbbb1bf21efd92494b8c634592029af384ee30388",
+              "calibration/pricing.py": "70e14c12f810e69f8591cf85303ae350e5c81cdf7509523cd87f7daa9293fcff",
+              "calibration/tasks.py": "295d1ce59b409f8edb5edba89488fa87a5a4e7bab6f785a152ecb69db1528916",
+              "calibration/bank.py": "9f0d512ba6f52df5c73c54599183159f535b2aa84ac4daa6a60cfd219afcc7db"
+            },
+            "thread_environment": {
+              "OMP_NUM_THREADS": "1",
+              "OPENBLAS_NUM_THREADS": "1",
+              "MKL_NUM_THREADS": "1",
+              "NUMEXPR_NUM_THREADS": "1"
+            }
+          },
+          {
+            "mode": "full",
+            "steps": 2016,
+            "pairs": 2048,
+            "paths": 4096,
+            "seed": 271032,
+            "contracts": 18,
+            "parameters": {
+              "hurst": 0.1,
+              "eta": 1.5,
+              "rho": -0.7
+            },
+            "curve_coefficients": {
+              "short_variance": 0.04,
+              "long_variance": 0.09,
+              "decay": 2.0
+            },
+            "cpu_seconds": 1.1989639099999998,
+            "wall_seconds": 1.2055090386420488,
+            "process_peak_rss_bytes": 1065070592,
+            "runtime": {
+              "numpy": "2.5.3",
+              "scipy": "1.18.1",
+              "python": "3.12.16"
+            },
+            "pricing_source_sha256": {
+              "gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
+              "bergomi.py": "8bffe12110dfb7b0de85fcf58cb7b848e4f5bc5f5af2f614ff2bd593d0edb6f5",
+              "rough_bergomi.py": "0e8d31c8e18ca8bffd7f798988b22e8a73f75fb49da6eee336f8a106c186ba06",
+              "calibration/surface.py": "24c0476ce3000208438d440cbbb1bf21efd92494b8c634592029af384ee30388",
+              "calibration/pricing.py": "70e14c12f810e69f8591cf85303ae350e5c81cdf7509523cd87f7daa9293fcff",
+              "calibration/tasks.py": "295d1ce59b409f8edb5edba89488fa87a5a4e7bab6f785a152ecb69db1528916",
+              "calibration/bank.py": "9f0d512ba6f52df5c73c54599183159f535b2aa84ac4daa6a60cfd219afcc7db"
+            },
+            "thread_environment": {
+              "OMP_NUM_THREADS": "1",
+              "OPENBLAS_NUM_THREADS": "1",
+              "MKL_NUM_THREADS": "1",
+              "NUMEXPR_NUM_THREADS": "1"
+            }
+          }
+        ],
+        "lean": [
+          {
+            "mode": "lean",
+            "steps": 2016,
+            "pairs": 2048,
+            "paths": 4096,
+            "seed": 271029,
+            "contracts": 18,
+            "parameters": {
+              "hurst": 0.1,
+              "eta": 1.5,
+              "rho": -0.7
+            },
+            "curve_coefficients": {
+              "short_variance": 0.04,
+              "long_variance": 0.09,
+              "decay": 2.0
+            },
+            "cpu_seconds": 1.022325456,
+            "wall_seconds": 1.0277605932205915,
+            "process_peak_rss_bytes": 605818880,
+            "runtime": {
+              "numpy": "2.5.3",
+              "scipy": "1.18.1",
+              "python": "3.12.16"
+            },
+            "pricing_source_sha256": {
+              "gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
+              "bergomi.py": "8bffe12110dfb7b0de85fcf58cb7b848e4f5bc5f5af2f614ff2bd593d0edb6f5",
+              "rough_bergomi.py": "0e8d31c8e18ca8bffd7f798988b22e8a73f75fb49da6eee336f8a106c186ba06",
+              "calibration/surface.py": "24c0476ce3000208438d440cbbb1bf21efd92494b8c634592029af384ee30388",
+              "calibration/pricing.py": "70e14c12f810e69f8591cf85303ae350e5c81cdf7509523cd87f7daa9293fcff",
+              "calibration/tasks.py": "295d1ce59b409f8edb5edba89488fa87a5a4e7bab6f785a152ecb69db1528916",
+              "calibration/bank.py": "9f0d512ba6f52df5c73c54599183159f535b2aa84ac4daa6a60cfd219afcc7db"
+            },
+            "thread_environment": {
+              "OMP_NUM_THREADS": "1",
+              "OPENBLAS_NUM_THREADS": "1",
+              "MKL_NUM_THREADS": "1",
+              "NUMEXPR_NUM_THREADS": "1"
+            }
+          },
+          {
+            "mode": "lean",
+            "steps": 2016,
+            "pairs": 2048,
+            "paths": 4096,
+            "seed": 271030,
+            "contracts": 18,
+            "parameters": {
+              "hurst": 0.1,
+              "eta": 1.5,
+              "rho": -0.7
+            },
+            "curve_coefficients": {
+              "short_variance": 0.04,
+              "long_variance": 0.09,
+              "decay": 2.0
+            },
+            "cpu_seconds": 1.011217594,
+            "wall_seconds": 1.0167410280555487,
+            "process_peak_rss_bytes": 604221440,
+            "runtime": {
+              "numpy": "2.5.3",
+              "scipy": "1.18.1",
+              "python": "3.12.16"
+            },
+            "pricing_source_sha256": {
+              "gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
+              "bergomi.py": "8bffe12110dfb7b0de85fcf58cb7b848e4f5bc5f5af2f614ff2bd593d0edb6f5",
+              "rough_bergomi.py": "0e8d31c8e18ca8bffd7f798988b22e8a73f75fb49da6eee336f8a106c186ba06",
+              "calibration/surface.py": "24c0476ce3000208438d440cbbb1bf21efd92494b8c634592029af384ee30388",
+              "calibration/pricing.py": "70e14c12f810e69f8591cf85303ae350e5c81cdf7509523cd87f7daa9293fcff",
+              "calibration/tasks.py": "295d1ce59b409f8edb5edba89488fa87a5a4e7bab6f785a152ecb69db1528916",
+              "calibration/bank.py": "9f0d512ba6f52df5c73c54599183159f535b2aa84ac4daa6a60cfd219afcc7db"
+            },
+            "thread_environment": {
+              "OMP_NUM_THREADS": "1",
+              "OPENBLAS_NUM_THREADS": "1",
+              "MKL_NUM_THREADS": "1",
+              "NUMEXPR_NUM_THREADS": "1"
+            }
+          },
+          {
+            "mode": "lean",
+            "steps": 2016,
+            "pairs": 2048,
+            "paths": 4096,
+            "seed": 271031,
+            "contracts": 18,
+            "parameters": {
+              "hurst": 0.1,
+              "eta": 1.5,
+              "rho": -0.7
+            },
+            "curve_coefficients": {
+              "short_variance": 0.04,
+              "long_variance": 0.09,
+              "decay": 2.0
+            },
+            "cpu_seconds": 1.0117625479999997,
+            "wall_seconds": 1.0171279441565275,
+            "process_peak_rss_bytes": 605995008,
+            "runtime": {
+              "numpy": "2.5.3",
+              "scipy": "1.18.1",
+              "python": "3.12.16"
+            },
+            "pricing_source_sha256": {
+              "gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
+              "bergomi.py": "8bffe12110dfb7b0de85fcf58cb7b848e4f5bc5f5af2f614ff2bd593d0edb6f5",
+              "rough_bergomi.py": "0e8d31c8e18ca8bffd7f798988b22e8a73f75fb49da6eee336f8a106c186ba06",
+              "calibration/surface.py": "24c0476ce3000208438d440cbbb1bf21efd92494b8c634592029af384ee30388",
+              "calibration/pricing.py": "70e14c12f810e69f8591cf85303ae350e5c81cdf7509523cd87f7daa9293fcff",
+              "calibration/tasks.py": "295d1ce59b409f8edb5edba89488fa87a5a4e7bab6f785a152ecb69db1528916",
+              "calibration/bank.py": "9f0d512ba6f52df5c73c54599183159f535b2aa84ac4daa6a60cfd219afcc7db"
+            },
+            "thread_environment": {
+              "OMP_NUM_THREADS": "1",
+              "OPENBLAS_NUM_THREADS": "1",
+              "MKL_NUM_THREADS": "1",
+              "NUMEXPR_NUM_THREADS": "1"
+            }
+          },
+          {
+            "mode": "lean",
+            "steps": 2016,
+            "pairs": 2048,
+            "paths": 4096,
+            "seed": 271032,
+            "contracts": 18,
+            "parameters": {
+              "hurst": 0.1,
+              "eta": 1.5,
+              "rho": -0.7
+            },
+            "curve_coefficients": {
+              "short_variance": 0.04,
+              "long_variance": 0.09,
+              "decay": 2.0
+            },
+            "cpu_seconds": 1.0150851000000003,
+            "wall_seconds": 1.020570281893015,
+            "process_peak_rss_bytes": 606416896,
+            "runtime": {
+              "numpy": "2.5.3",
+              "scipy": "1.18.1",
+              "python": "3.12.16"
+            },
+            "pricing_source_sha256": {
+              "gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
+              "bergomi.py": "8bffe12110dfb7b0de85fcf58cb7b848e4f5bc5f5af2f614ff2bd593d0edb6f5",
+              "rough_bergomi.py": "0e8d31c8e18ca8bffd7f798988b22e8a73f75fb49da6eee336f8a106c186ba06",
+              "calibration/surface.py": "24c0476ce3000208438d440cbbb1bf21efd92494b8c634592029af384ee30388",
+              "calibration/pricing.py": "70e14c12f810e69f8591cf85303ae350e5c81cdf7509523cd87f7daa9293fcff",
+              "calibration/tasks.py": "295d1ce59b409f8edb5edba89488fa87a5a4e7bab6f785a152ecb69db1528916",
+              "calibration/bank.py": "9f0d512ba6f52df5c73c54599183159f535b2aa84ac4daa6a60cfd219afcc7db"
+            },
+            "thread_environment": {
+              "OMP_NUM_THREADS": "1",
+              "OPENBLAS_NUM_THREADS": "1",
+              "MKL_NUM_THREADS": "1",
+              "NUMEXPR_NUM_THREADS": "1"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "benchmark_script_sha256": "578b64fabf52e2a61ae3d99b38ee0b30544a25e6c1a925b08e36539a9fe3d551",
+  "scope": "actual long-maturity rough_block estimator; separate order-balanced processes, one warmup and one timed call each; not mean adaptive bank throughput",
+  "rss_scope": "process high-water mark including imports and warmup; separate process per mode/observation"
+}

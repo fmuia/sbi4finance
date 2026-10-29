@@ -1,0 +1,17 @@
+{
+  "revision": "c773ceb26e7273612b15c69fd63715d131778083",
+  "source_sha256": {
+    "cluster/calibration_collection_array.sbatch": "1517cfa2b7ab4a9fdc02310d82d595d2be2c9745eb8dac64003b332c04e8e309",
+    "scripts/calibration_bank_collection.py": "23627b8f1e708e9f042c88292a04d15130e5b858c06f202a987168b940c3c429",
+    "src/sbi4finance/bergomi.py": "8bffe12110dfb7b0de85fcf58cb7b848e4f5bc5f5af2f614ff2bd593d0edb6f5",
+    "src/sbi4finance/calibration/bank.py": "9f0d512ba6f52df5c73c54599183159f535b2aa84ac4daa6a60cfd219afcc7db",
+    "src/sbi4finance/calibration/bank_collection.py": "b18bfa6d8322753bdbd36754a3f08c82800b826952453d5ce95adb5751757ed5",
+    "src/sbi4finance/calibration/pricing.py": "bf9b57f73f030670de2f3db37b298b56dc0070be2f99cf187188b817020f3b52",
+    "src/sbi4finance/calibration/surface.py": "24c0476ce3000208438d440cbbb1bf21efd92494b8c634592029af384ee30388",
+    "src/sbi4finance/calibration/tasks.py": "295d1ce59b409f8edb5edba89488fa87a5a4e7bab6f785a152ecb69db1528916",
+    "src/sbi4finance/gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
+    "src/sbi4finance/rough_bergomi.py": "0e8d31c8e18ca8bffd7f798988b22e8a73f75fb49da6eee336f8a106c186ba06"
+  },
+  "tar_sha256": "2073582df6917d9a1235c465b637d29d70e4d0a9f47630d088434945c7e35586",
+  "scope": "Exact Gitc773producer sources; remote hashes matched, no code modified."
+}

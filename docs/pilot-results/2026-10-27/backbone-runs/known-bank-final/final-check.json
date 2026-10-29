@@ -1,0 +1,184 @@
+{
+  "all_prior_curve_quote_noise_reconstructed_exactly": true,
+  "collection_id": "da963f7294aee242a80ebf9b47d914294b439aef8b6ee8f7c6d1899766e546f1",
+  "collection_sha256": "9e9e0ed2f087febd84bbd42ddc30aa24840d065c12a186b410851a68b5c83e13",
+  "configuration_splits": {
+    "test": 7000,
+    "train": 20000,
+    "validation": 5000
+  },
+  "format": "known_curve_backbone_final_integrity_v1",
+  "hard_cap_exceptions": 0,
+  "initial100_payload_manifest_hashes_preserved": true,
+  "job_map_sha256": "85382da5a542d0f9466124a936b3025e62b76a6150b4ea2fffedc66326cf6974",
+  "no_financial_pricing_calls": true,
+  "no_neural_training_or_evaluation": true,
+  "nominal_target_exception_cases": [
+    {
+      "blocks_above_nominal_target": [
+        2
+      ],
+      "example_id": "train:3999",
+      "maximum_reported_mcse_over_quote_sigma": 0.30201219554822734,
+      "paths_by_block": [
+        2097152,
+        2097152,
+        2097152
+      ]
+    }
+  ],
+  "numerical_scope": "Original80/504/504 known-curve task; bounded posterior/product grid sensitivity remains required before final teachingclaims.",
+  "reported_mcse_is_empirical_not_bias_certificate": true,
+  "runtime": {
+    "numpy": "2.5.3",
+    "python": "3.12.16",
+    "scipy": "1.18.1"
+  },
+  "script_sha256": "d8cc2c7cf0a0c0f53144b767b7040bb581c8d402e0f007388ec4c6be9cf08321",
+  "seconds": 36.67573809623718,
+  "snapshot": "/oscar/scratch/afengler/sbi4finance-rough-known-backbone-20261027/snapshot-20k",
+  "snapshot_manifest_sha256": "7cf0314dc6371fd045ad6b314dd6dd605db2f3343dbccf4e35b4df9ddf9397eb",
+  "source_revision": "616352035be4b9d271151090aa5d2d9539da8b1c",
+  "source_sha256": {
+    "bergomi.py": "8bffe12110dfb7b0de85fcf58cb7b848e4f5bc5f5af2f614ff2bd593d0edb6f5",
+    "calibration/bank.py": "9f0d512ba6f52df5c73c54599183159f535b2aa84ac4daa6a60cfd219afcc7db",
+    "calibration/pricing.py": "bf9b57f73f030670de2f3db37b298b56dc0070be2f99cf187188b817020f3b52",
+    "calibration/surface.py": "24c0476ce3000208438d440cbbb1bf21efd92494b8c634592029af384ee30388",
+    "calibration/tasks.py": "295d1ce59b409f8edb5edba89488fa87a5a4e7bab6f785a152ecb69db1528916",
+    "gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
+    "rough_bergomi.py": "0e8d31c8e18ca8bffd7f798988b22e8a73f75fb49da6eee336f8a106c186ba06"
+  },
+  "splits": {
+    "test": {
+      "examples": 7000,
+      "maximum_reported_mcse_over_quote_sigma": 0.2499874852845379,
+      "parts": 280,
+      "path_histograms": [
+        {
+          "1048576": 8,
+          "131072": 530,
+          "262144": 233,
+          "32768": 5356,
+          "524288": 86,
+          "65536": 787
+        },
+        {
+          "1048576": 4,
+          "131072": 628,
+          "2097152": 1,
+          "262144": 269,
+          "32768": 5150,
+          "524288": 64,
+          "65536": 884
+        },
+        {
+          "1048576": 3,
+          "131072": 792,
+          "2097152": 4,
+          "262144": 316,
+          "32768": 4767,
+          "524288": 51,
+          "65536": 1067
+        }
+      ],
+      "quote_mcse_ratio_quantiles": {
+        "q50": 0.04041614068060227,
+        "q90": 0.11137641237243884,
+        "q99": 0.22044110977007214
+      },
+      "surfaces_above_final_cap": 0,
+      "surfaces_above_nominal_target": 0
+    },
+    "train": {
+      "examples": 20000,
+      "maximum_reported_mcse_over_quote_sigma": 0.30201219554822734,
+      "parts": 800,
+      "path_histograms": [
+        {
+          "1048576": 27,
+          "131072": 1594,
+          "2097152": 2,
+          "262144": 754,
+          "32768": 15134,
+          "524288": 211,
+          "65536": 2278
+        },
+        {
+          "1048576": 15,
+          "131072": 1915,
+          "2097152": 4,
+          "262144": 817,
+          "32768": 14521,
+          "524288": 177,
+          "65536": 2551
+        },
+        {
+          "1048576": 23,
+          "131072": 2300,
+          "2097152": 6,
+          "262144": 1012,
+          "32768": 13377,
+          "524288": 127,
+          "65536": 3155
+        }
+      ],
+      "quote_mcse_ratio_quantiles": {
+        "q50": 0.04101414434697745,
+        "q90": 0.11238929478060586,
+        "q99": 0.22127173394295352
+      },
+      "surfaces_above_final_cap": 0,
+      "surfaces_above_nominal_target": 1
+    },
+    "validation": {
+      "examples": 5000,
+      "maximum_reported_mcse_over_quote_sigma": 0.24999072698792257,
+      "parts": 200,
+      "path_histograms": [
+        {
+          "1048576": 3,
+          "131072": 393,
+          "262144": 161,
+          "32768": 3823,
+          "524288": 47,
+          "65536": 573
+        },
+        {
+          "1048576": 1,
+          "131072": 469,
+          "262144": 180,
+          "32768": 3678,
+          "524288": 42,
+          "65536": 630
+        },
+        {
+          "1048576": 4,
+          "131072": 562,
+          "2097152": 1,
+          "262144": 224,
+          "32768": 3392,
+          "524288": 26,
+          "65536": 791
+        }
+      ],
+      "quote_mcse_ratio_quantiles": {
+        "q50": 0.04116476556210563,
+        "q90": 0.11200829519357366,
+        "q99": 0.2202504529341254
+      },
+      "surfaces_above_final_cap": 0,
+      "surfaces_above_nominal_target": 0
+    }
+  },
+  "status": "completed_checked_snapshot_and_integrity",
+  "task_fingerprint": "c99b0dd131896d89d8483a1668a3fde0fb7a0f28794c3db7fe14635cbbd52b65",
+  "test_use": "Numerical/ID/RNG integrity only; no posterior or model-selection outcomes.",
+  "total_nominal_target_exception_cases": 1,
+  "verified_examples": 32000,
+  "verified_parts": 1280,
+  "worst_reported_mcse": {
+    "contract_index": 53,
+    "example_id": "train:3999",
+    "maximum_reported_mcse_over_quote_sigma": 0.30201219554822734
+  }
+}

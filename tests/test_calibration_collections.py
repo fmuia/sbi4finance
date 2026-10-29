@@ -34,6 +34,34 @@ def cheap_price(task, parameters, context_values, seed, diagnostics=None):
     return values, np.zeros(c), np.zeros((c, c)), np.zeros(c), np.zeros(tasks.block_count(task))
 
 
+class DurableFailureTests(unittest.TestCase):
+    def test_real_rough_precision_failure_retains_identity_and_source(self):
+        config = {"task": tasks.joint_rough_task(), "root_seed": 2611,
+                  "splits": {"train": 1, "validation": 1, "test": 1}}
+        # Real simulator, deliberately unattainable precision at a tiny budget.
+        numerics = config["task"]["numerics"]
+        numerics.update(paths_ladder=[64], max_mc_se_over_quote_sigma=1e-30,
+                        max_mc_se_over_quote_sigma_last_rung=1e-30)
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / "collection"
+            record = collection.create_collection(root, config)
+            job = collection.plan_extension(root, 1, 1)["jobs"][0]
+            with self.assertRaisesRegex(ValueError, "failed example train:0: Monte Carlo"):
+                collection.run_job(root, job)
+            failures = list((root / "failures").glob("*/part/failure.json"))
+            self.assertEqual(len(failures), 1)
+            failure = json.loads(failures[0].read_text())
+            self.assertIn("failed example train:0:", failure["error"])
+            self.assertEqual((failure["split"], failure["start"], failure["stop"]), ("train", 0, 1))
+            self.assertEqual(failure["source_sha256"], record["source_sha256"])
+            self.assertEqual(failure["configuration"], config)
+            self.assertEqual(list((root / "parts").iterdir()), [])
+            self.assertEqual(list((root / ".tmp").iterdir()), [])
+            self.assertEqual(len(collection.plan_extension(root, 1, 1)["jobs"]), 3)
+            with self.assertRaisesRegex(ValueError, "missing ID ranges"):
+                collection.freeze_snapshot(root, 1, Path(directory) / "incomplete")
+
+
 class CollectionTests(unittest.TestCase):
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory()
@@ -69,6 +97,7 @@ class CollectionTests(unittest.TestCase):
                 for job in old_plan["jobs"]:
                     collection.run_job(root, job)
                 self.assertEqual(self.price.call_count, calls)
+                self.assertEqual(list((root / ".tmp").iterdir()), [])
                 extra = collection.plan_extension(root, 7, 3)
                 self.assertTrue(extra["jobs"])
                 self.assertTrue(all(j["split"] == "train" and j["start"] >= 3 for j in extra["jobs"]))

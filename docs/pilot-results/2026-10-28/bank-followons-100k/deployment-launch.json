@@ -1,0 +1,44 @@
+{
+  "format": "rough_100k_followon_deployment_v1",
+  "state": "armed_and_verified_alive",
+  "utc": "2026-10-28T01:12:45.950774+00:00",
+  "authorization": "User explicitly requests100k training surfaces for EACH rough route and overnight continuation; root approves new200/3000CPU-hour tranches.",
+  "frozen_launcher_revision": "00faaefe946c8e8fef3b55ff3156c2d0db61ffb3",
+  "frozen_sha256": {
+    "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/deploy_followons.py": "b2074946ac84b9d0d018076ce6db76eacb53f2dfa28396bc7dedea404a28b606",
+    "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/configs/rough_followon_100k_20261028.json": "35ed170b197153e60e9350171340f716f04b15f28bb536224fe6e28acb9fba52",
+    "/oscar/scratch/afengler/sbi4finance-overnight-20261028/repo/scripts/run_bank_campaign.py": "a313c173aac3bcb94b5097bd6bc3512ed14893372408da6d3c128121134f4724",
+    "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/arm_bank_extensions.py": "4f71ffa51461d55aa864294697f43119494f095bc64748897ba87add58ead734",
+    "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/configs/known_100k_20261028.json": "11d2588b7df29945d8c0c2819371b9e37453bab2c5b90040eb94896dc503c0a9",
+    "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/configs/joint_100k_20261028.json": "a0af8e1633ffabbe759d1e1aaadb5a92125f322e8e219f6e3517cc66b7dd0de8",
+    "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/tasks/known.json": "78abe2f3e34d5c8216a6dd76c60a731a1175523c07309fa6ade18f955e602f17",
+    "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/tasks/joint.json": "4b921a70bbcec3e4e0d4744a6b7755ad14f57555bd719289349f98fd17391318"
+  },
+  "argv": [
+    "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python",
+    "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/arm_bank_extensions.py",
+    "--plan",
+    "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/configs/rough_followon_100k_20261028.json",
+    "--detach"
+  ],
+  "automatic_retry": false,
+  "generation_started_by_deployer": false,
+  "resource_gate": "joint100k waits for its own checked20k snapshot AND known100k completed/settled; known100k may overlap originaljoint120.",
+  "stdout": "{\"state\": \"armed_process_launched\", \"pid\": 3792953}\n",
+  "stderr": "",
+  "returncode": 0,
+  "waiter_pid": 3792953,
+  "launch_receipt_sha256": "dc0d61b7eeda3050211f0c98fede8b915bb90ae00d28b633b8ebaa463940e177",
+  "execution_sha256": "8367250987a58724b739b8491574e0e178207fb6c3fd4f8ee3aa8695187bbc5a",
+  "routes": {
+    "known": {
+      "state": "waiting",
+      "progress": "waiting_for_predecessor_final_check"
+    },
+    "joint": {
+      "state": "waiting",
+      "progress": "waiting_for_known_resource_dependency:waiting"
+    }
+  },
+  "alive_verified_utc": "2026-10-28T01:12:46.399897+00:00"
+}

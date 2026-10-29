@@ -1,0 +1,3 @@
+8053365|COMPLETED|0:0|1088|4|billing=112,cpu=4,gres/gpu=1,mem=32G,node=1
+8053365.batch|COMPLETED|0:0|1088|4|cpu=4,gres/gpu=1,mem=32G,node=1
+8053365.extern|COMPLETED|0:0|1088|4|billing=112,cpu=4,gres/gpu=1,mem=32G,node=1

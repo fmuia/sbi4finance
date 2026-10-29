@@ -1,0 +1,50 @@
+{
+  "format": "joint_bank_stop_review_v1",
+  "submitted_shards": 397,
+  "completed_shards": 394,
+  "published_training_surfaces": 9850,
+  "timed_out_original_map_indices": [
+    378,
+    379,
+    380
+  ],
+  "timed_out_surface_id_range": [
+    9450,
+    9525
+  ],
+  "timed_out_ranges_censored_not_identified_bad_rows": true,
+  "timeout_allocated_cpu_seconds": 32403,
+  "all_submitted_worker_allocated_cpu_seconds": 1016133,
+  "preflight_allocated_cpu_seconds": 79,
+  "all_actual_allocated_cpu_hours": 282.2811111111111,
+  "failed_node": "node2338",
+  "timeout_seconds_each": 10801,
+  "raw_ave_cpu_freq": [
+    "341K",
+    "300K",
+    "300K"
+  ],
+  "system_cpu_seconds": [
+    10062,
+    9915,
+    9714
+  ],
+  "user_cpu_seconds": [
+    675,
+    823.003,
+    1023.003
+  ],
+  "maximum_rss_kib": [
+    670844,
+    743940,
+    748480
+  ],
+  "failure_json_files": 0,
+  "persisted_partial_payloads": 0,
+  "orphan_staging_retained": true,
+  "runtime_interpretation": "Allthreeco-locatedtasks were90\u201394%systemCPU withlowRSS andscheduler-onlytime-limitmessages. This isconsistentwithnode/runtimeperformancecontribution, notproof or aparameter-support/precision failure.",
+  "resume": "Cannot resume in-place:rowarrays existed only inRAM until whole25rowshardcompletion. SameIDs/streams must bereplayed; inactive persistentlockfiles andemptyunique.tmpdirs do not block the existingproducer.",
+  "scientific_acceptance": false,
+  "new_pricing_or_model_calls": 0,
+  "jobs_changed_or_retried": false
+}

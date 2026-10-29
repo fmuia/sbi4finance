@@ -1,0 +1,23 @@
+{
+  "job_id": "8032144",
+  "slurm_state": "COMPLETED",
+  "elapsed_seconds": "46",
+  "run_status": "completed",
+  "completed_pairs": 32,
+  "summaries": {
+    "best402": {
+      "mean": 0.20877201701924206,
+      "sd": 0.0043565165657381425
+    },
+    "final500": {
+      "mean": 0.2070838402248919,
+      "sd": 0.004349081171869794
+    }
+  },
+  "paired_difference": {
+    "mean": -0.0016881767943501495,
+    "sd": 0.00030356542188329577,
+    "mcse": 5.36632920868584e-05
+  },
+  "error": null
+}

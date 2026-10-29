@@ -1,0 +1,530 @@
+{
+  "format": "heston_interior_case_declaration_v1",
+  "prepared_utc": "2026-10-28T00:32:38.557672+00:00",
+  "root": "/oscar/scratch/afengler/sbi4finance-interior-corners-20261028",
+  "repo": "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo",
+  "source_revision": "56dcb13e1d2bf5b6dc96e573dfcaa6240a7104a9",
+  "task": {
+    "context": {
+      "contracts": [
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "put",
+          "strike": 0.9452142884010055
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "put",
+          "strike": 0.9586226994567999
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "put",
+          "strike": 0.9722213165740635
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "put",
+          "strike": 0.9860128379357256
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "call",
+          "strike": 1.014185578043342
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "call",
+          "strike": 1.0285723867111078
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "call",
+          "strike": 1.0431632805760247
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "call",
+          "strike": 1.0579611547045846
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "put",
+          "strike": 0.9234100296746439
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "put",
+          "strike": 0.9419892367120802
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "put",
+          "strike": 0.9609422613636284
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "put",
+          "strike": 0.9802766249195318
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "call",
+          "strike": 1.0201202136
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "call",
+          "strike": 1.0406452501953098
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "call",
+          "strike": 1.061583254911065
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "call",
+          "strike": 1.0829425367540593
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "put",
+          "strike": 0.8909472522884108
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "put",
+          "strike": 0.9170415101799084
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "put",
+          "strike": 0.9439000224008953
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "put",
+          "strike": 0.9715451725992442
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "call",
+          "strike": 1.029288218606067
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "call",
+          "strike": 1.0594342369612506
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "call",
+          "strike": 1.0904631784921235
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "call",
+          "strike": 1.1224009024456676
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "put",
+          "strike": 0.8493369300745177
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "put",
+          "strike": 0.8847284766100544
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "put",
+          "strike": 0.9215947754162442
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "put",
+          "strike": 0.9599972788587706
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "call",
+          "strike": 1.041669619302238
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "call",
+          "strike": 1.0850755957772693
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "call",
+          "strike": 1.1302902827674572
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "call",
+          "strike": 1.177389048551396
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "put",
+          "strike": 0.8187307530779818
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "put",
+          "strike": 0.8607079764250578
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "put",
+          "strike": 0.9048374180359595
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "put",
+          "strike": 0.951229424500714
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "call",
+          "strike": 1.0512710963760241
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "call",
+          "strike": 1.1051709180756477
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "call",
+          "strike": 1.161834242728283
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "call",
+          "strike": 1.2214027581601699
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "put",
+          "strike": 0.7536383164437648
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "put",
+          "strike": 0.808857893484718
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "put",
+          "strike": 0.8681234453945849
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "put",
+          "strike": 0.9317314234233945
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "call",
+          "strike": 1.073270660257192
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "call",
+          "strike": 1.151909910168909
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "call",
+          "strike": 1.2363111098437878
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "call",
+          "strike": 1.3268964411453439
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "put",
+          "strike": 0.6703200460356393
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "put",
+          "strike": 0.7408182206817179
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "put",
+          "strike": 0.8187307530779818
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "put",
+          "strike": 0.9048374180359595
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "call",
+          "strike": 1.1051709180756477
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "call",
+          "strike": 1.2214027581601699
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "call",
+          "strike": 1.3498588075760032
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "call",
+          "strike": 1.4918246976412703
+        }
+      ],
+      "dividend": 0.0,
+      "quote_noise_std": [
+        7.393122257748389e-05,
+        0.00014734934969936199,
+        0.00021842402110031601,
+        0.0002338836145277794,
+        0.00016856715907419804,
+        0.00023720138879472198,
+        0.00022466491669818916,
+        0.00015370943102313063,
+        7.82163616067961e-05,
+        0.00010333131487679448,
+        0.00020654717174897207,
+        0.00030707070665308804,
+        0.0003297651437400239,
+        0.00023836631390862972,
+        0.0003364000888699078,
+        0.0003195516723526538,
+        0.00021926701887794902,
+        0.0001119018762588081,
+        0.0001470535520785712,
+        0.0002952606968936182,
+        0.00044092792100661605,
+        0.0004756382639001542,
+        0.00034535022356236905,
+        0.0004895688613506721,
+        0.0004671341355465552,
+        0.0003219709180184147,
+        0.00016505303956082854,
+        0.0002029661289650328,
+        0.0004099682159446388,
+        0.0006158977907659265,
+        0.0006683659690345338,
+        0.00048819551274953464,
+        0.0006962165245187742,
+        0.0006682956622532423,
+        0.00046338309072573556,
+        0.00023897009747029984,
+        0.0002439600928959136,
+        0.0004950371278750658,
+        0.0007471169572237573,
+        0.0008144916556710369,
+        0.0005976658711421461,
+        0.0008562515358464142,
+        0.0008256919335248641,
+        0.0005751510865871115,
+        0.0002979735303440804,
+        0.00033059924189120005,
+        0.0006778258107718836,
+        0.0010336325808796537,
+        0.0011385746299607095,
+        0.0008441713068195146,
+        0.0012219987448500187,
+        0.0011906516133887396,
+        0.0008380035803961523,
+        0.00043867095751078236,
+        0.00043983595980427227,
+        0.0009150968861055087,
+        0.0014160391507115786,
+        0.0015828168637360485,
+        0.0011908576424310355,
+        0.0017492831664407858,
+        0.001729554124341907,
+        0.001235251591494895,
+        0.000656158147746766
+      ],
+      "rate": 0.0,
+      "spot": 1.0
+    },
+    "context_prior": {},
+    "fixed_parameters": {
+      "jump_down_rate": 10.0,
+      "jump_intensity": 0.0,
+      "jump_up_probability": 0.5,
+      "jump_up_rate": 10.0,
+      "kappa": 2.0
+    },
+    "measure": "Q",
+    "model": "hkde",
+    "model_context": {},
+    "numerics": {
+      "max_refinement_over_quote_sigma": 0.1,
+      "quadrature_ladder": [
+        [
+          512,
+          400.0
+        ],
+        [
+          1024,
+          600.0
+        ],
+        [
+          2048,
+          1500.0
+        ],
+        [
+          4096,
+          3000.0
+        ],
+        [
+          8192,
+          6000.0
+        ]
+      ]
+    },
+    "parameter_names": [
+      "initial_variance",
+      "theta",
+      "vol_of_vol",
+      "rho"
+    ],
+    "prior_bounds": [
+      [
+        0.01,
+        0.16
+      ],
+      [
+        0.01,
+        0.16
+      ],
+      [
+        0.1,
+        1.5
+      ],
+      [
+        -0.95,
+        -0.1
+      ]
+    ],
+    "task_id": "hkde_calibration_v1"
+  },
+  "truth": [
+    0.085,
+    0.085,
+    0.8,
+    -0.525
+  ],
+  "case_selection": "One ex-ante midpoint of all four prior intervals; fixed before observation generation or inference. No posterior-based reselection.",
+  "observation_entropy": [
+    1129271886,
+    20261028,
+    0
+  ],
+  "observation_law": "Checked Fourier prices plus one independent Gaussian quote-noise realization; same full63 task.",
+  "mcmc": {
+    "draws": 8000,
+    "tune": 4000,
+    "chains": 4,
+    "cores": 4,
+    "mp_context": "spawn",
+    "seed": 28002802,
+    "initialization": "data-fit",
+    "fit_starts": 4,
+    "fit_budget": 2000,
+    "checkpoint_every": 100
+  },
+  "interior_criterion": "Each parameter central99% reference interval must lie strictly within inner90% of its prior range (unit bounds .05,.95). Retain/report failure; never replace the case.",
+  "reference_criteria": {
+    "r_hat_max": 1.01,
+    "ess_bulk_min": 400,
+    "ess_tail_min": 400
+  },
+  "precision": "Existing16-point doubled Fourier ladder check, descriptive sensitivity not posterior stability certificate.",
+  "checkpoint_directory": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint",
+  "candidate": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/.resume/epoch-000500-_3f420vs/last.keras",
+  "candidate_sha256": "8d4a243ba099524cf4cda40e4f0616e895879f053829a7f60dadbe65b98301db",
+  "neural_seed": 28002803,
+  "neural_draws": 10000,
+  "scientific_acceptance": false,
+  "reserved_test_evaluated": false,
+  "runtime": {
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "pymc": "6.3.2",
+    "pytensor": "3.3.4",
+    "arviz-stats": "1.3.3",
+    "bayesflow": "2.1.0"
+  },
+  "frozen_sha256": {
+    "/oscar/scratch/afengler/sbi4finance-interior-corners-20261028/run_heston_interior.py": "ced5bcc77b35469ea9313f5e35a3202200be913da20a95f9ad6242b20736f226",
+    "/oscar/scratch/afengler/sbi4finance-interior-corners-20261028/prepare_heston_interior.py": "af9a97bb8a65753e87b0ea1144f4d57b6988ff837d879fb4ae2443eb3ce748ea",
+    "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/.resume/epoch-000500-_3f420vs/last.keras": "8d4a243ba099524cf4cda40e4f0616e895879f053829a7f60dadbe65b98301db",
+    "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/task.json": "5e499526ff8f29a72f49785a1a36006b1d769d26bca8a6f83f7a8c8ac4d431fa",
+    "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/training.json": "a3de032a681a3e89f895dca48cdc4c573f4d1768f3b217e30649742da80f46b2",
+    "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/resume.json": "47d1412664dc77cd0476cdbfd6be53271400eadc383035c7bf635a04731fe51e",
+    "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo/pixi.lock": "3e33b82d45dfdd696c5b12b22bca0943a5fca09804860fab13e3fc9126c60aae",
+    "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo/pyproject.toml": "0b38d45cea9c3d7143e261d6c8ce3d6892b31b7bce6d1f26bf748df75790fd54",
+    "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo/src/sbi4finance/hkde.py": "c13c07031413a4ba9ab38a7fcd614c4733aa6ce01314fb1a20416d9b3c18d163",
+    "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo/src/sbi4finance/heston.py": "f85237a6f223689bb83fb2837d6f6cba855867f5da9f919667163ae4a4c8996c",
+    "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo/src/sbi4finance/gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
+    "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo/src/sbi4finance/calibration/reference.py": "fd69a6958026f6addde982f2c8d57461cf549efe75f838956e0d931e12153056",
+    "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo/src/sbi4finance/calibration/pymc_reference_op.py": "99704310f8a503cad7eee2310da0204d52c213427ad21683834214018f02451b",
+    "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo/src/sbi4finance/calibration/reference_initialization.py": "0abf68e9862d30bf152dd01e28807ed651d53a12dca4c1286ccb17c52ef0b74f",
+    "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo/src/sbi4finance/calibration/variance_functionals.py": "f4b2f1e0764a5cd1d060a661fc2d15a77727a9fa43caa6555362b6ebd69f7e0e",
+    "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo/src/sbi4finance/calibration/tasks.py": "295d1ce59b409f8edb5edba89488fa87a5a4e7bab6f785a152ecb69db1528916",
+    "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo/src/sbi4finance/calibration/pricing.py": "bf9b57f73f030670de2f3db37b298b56dc0070be2f99cf187188b817020f3b52",
+    "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo/src/sbi4finance/calibration/full_surface.py": "f3ffbbb9d3a3440a2dfbeac78e4e84e867227d569cc28ce48d5d0fa3accc9e79",
+    "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo/src/sbi4finance/calibration/inference.py": "ebc4def8fe0e9e8ae0cab976b67c96d1e3328106c25422bacc11e5907a0f4d2e",
+    "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo/src/sbi4finance/calibration/bank.py": "9f0d512ba6f52df5c73c54599183159f535b2aa84ac4daa6a60cfd219afcc7db",
+    "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo/src/sbi4finance/calibration/bank_collection.py": "b18bfa6d8322753bdbd36754a3f08c82800b826952453d5ce95adb5751757ed5",
+    "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo/src/sbi4finance/calibration/surface.py": "24c0476ce3000208438d440cbbb1bf21efd92494b8c634592029af384ee30388",
+    "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo/scripts/calibration_reference.py": "070f3199645faabe8032132d13c6b1859d053d9b8717334d65ce157f707ef6b8",
+    "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo/scripts/check_heston_reference_precision.py": "6979eb5fe664b7a0a57acc91906418932d7eb891f61e130a22917d5a702c292d"
+  }
+}

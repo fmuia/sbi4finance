@@ -1,0 +1,25 @@
+{
+  "checked_utc": "2026-10-27T20:02:56+00:00",
+  "method": "Independent read-only metadata/accounting check; no new pricing, evaluation or payload inspection",
+  "submitted_shards": 397,
+  "published_training_shards": 390,
+  "published_training_surfaces": 9750,
+  "running_shards": 7,
+  "failed_or_timed_out": 0,
+  "durable_failure_artifacts": 0,
+  "completed_allocated_cpu_seconds_excluding_preflight": 949877,
+  "preflight_allocated_cpu_seconds": 79,
+  "total_conservative_exposure_cpu_hours": 286.4433333333333,
+  "uncompleted_original_map_indices": [
+    371,
+    372,
+    373,
+    374,
+    378,
+    379,
+    380
+  ],
+  "full_bank_snapshot_published": false,
+  "validation_test_pools_generated": false,
+  "priority": "Retain current jobs/shards; no further replenishment ahead of Heston and known-curve delivery."
+}

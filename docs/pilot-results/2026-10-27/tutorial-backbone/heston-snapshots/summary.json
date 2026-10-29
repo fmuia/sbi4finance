@@ -1,0 +1,46 @@
+{
+  "50k_snapshot_is_exact_prefix_of_100k_same_fixed_holdouts": true,
+  "all_four_stage_jobs": [
+    "8027920",
+    "8027955",
+    "8028013",
+    "8028020"
+  ],
+  "allocated_cpu_hours": 1.011388888888889,
+  "allocated_cpu_seconds_by_stage": {
+    "freeze_100k": 78,
+    "freeze_50k": 39,
+    "generation": 3439,
+    "preflight": 85
+  },
+  "allocated_cpu_seconds_top_level_once": 3641,
+  "format": "heston_backbone_snapshot_check_v1",
+  "no_bank_payloads_transferred": true,
+  "no_neural_evaluation_or_training": true,
+  "scope": "Data-backbone snapshots only: all payload hashes, array shapes/IDs/support/covariance and Fourier-refinement budget checked by frozen producer; no posterior estimator or teaching acceptance claimed. Original60parts include40trainparts and20heldoutparts; fixed holdout outcomes remain unevaluated.",
+  "snapshot_100k": {
+    "full_payload_integrity_checked_by_freeze_driver": true,
+    "manifest_sha256": "4b5929b0d0b23698c340eec6defabfd629fe23eca2ed78fe9bd46e4de35c244e",
+    "original_holdout_parts_preserved": 20,
+    "original_parts_preserved": 60,
+    "parts": 92,
+    "path": "/oscar/scratch/afengler/sbi4finance-heston-backbone-20261027/snapshot-100k",
+    "reserved_test_surfaces": 5000,
+    "stage_seconds": 74.8371754065156,
+    "train_surfaces": 100000,
+    "validation_surfaces": 5000
+  },
+  "snapshot_50k": {
+    "full_payload_integrity_checked_by_freeze_driver": true,
+    "manifest_sha256": "15e5302d869608c4721a5f172efce44de53e2d8816662585277428e0e31a8d30",
+    "original_holdout_parts_preserved": 20,
+    "original_parts_preserved": 60,
+    "parts": 72,
+    "path": "/oscar/scratch/afengler/sbi4finance-heston-backbone-20261027/snapshot-50k",
+    "reserved_test_surfaces": 5000,
+    "stage_seconds": 32.99002958834171,
+    "train_surfaces": 50000,
+    "validation_surfaces": 5000
+  },
+  "status": "both_checked_snapshots_completed"
+}

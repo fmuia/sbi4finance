@@ -1,0 +1,99 @@
+{
+  "format": "rough_reviewed_readonly_performance_note_v1",
+  "scope": "Read-only post-run accounting and source inspection for adaptive prior point 6; no reruns, profiling intervention, new pricing or method changes.",
+  "scientific_acceptance": false,
+  "cause_identified": false,
+  "remote_root": "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf",
+  "parameters": [0.06801497056547741, 2.660052850071144, -0.9830043983490563, 0.15881640439892336, 0.03506523281179216, 5.608268473117876],
+  "components": [
+    {
+      "component_index": 12,
+      "policy": "working",
+      "actual_job_id": 7998028,
+      "array_alias": "7998013_12",
+      "node": "node2336",
+      "scheduler_state": "COMPLETED",
+      "report_status": "priced",
+      "first_block_steps": 1280,
+      "instrumented_cpu_seconds": 1113.065776632,
+      "instrumented_wall_seconds": 1118.3577193692327,
+      "process_peak_rss_bytes": 778395648,
+      "first_block_attempts": [
+        {"total_paths": 32768, "cpu_seconds": 12.81650201, "wall_seconds": 12.91101973876357},
+        {"total_paths": 65536, "cpu_seconds": 19.190754382, "wall_seconds": 19.270489647984505},
+        {"total_paths": 131072, "cpu_seconds": 62.08736059, "wall_seconds": 62.337544448673725},
+        {"total_paths": 262144, "cpu_seconds": 160.819397458, "wall_seconds": 161.47109059244394},
+        {"total_paths": 524288, "cpu_seconds": 248.082397082, "wall_seconds": 249.10954803600907}
+      ],
+      "user_cpu_seconds": 485.415,
+      "system_cpu_seconds": 629.595,
+      "total_cpu_seconds": 1115.011,
+      "system_fraction_of_accounted_cpu": 0.5646536222512604,
+      "reported_ave_cpu_frequency": "3.30M",
+      "reported_max_rss": "813240K"
+    },
+    {
+      "component_index": 13,
+      "policy": "refined",
+      "actual_job_id": 7998029,
+      "array_alias": "7998013_13",
+      "node": "node2338",
+      "scheduler_state": "TIMEOUT",
+      "report_status": "interrupted",
+      "first_block_steps": 2560,
+      "instrumented_cpu_seconds": 1203.410475127,
+      "instrumented_wall_seconds": 1209.9447820484638,
+      "process_peak_rss_bytes": 735969280,
+      "first_block_attempts": [
+        {"total_paths": 32768, "cpu_seconds": 144.708945392, "wall_seconds": 145.61025812849402, "status": "priced"},
+        {"total_paths": 65536, "cpu_seconds": 316.058722293, "wall_seconds": 317.84785176441073, "status": "priced"},
+        {"total_paths": 131072, "cpu_seconds": 682.8450167519999, "wall_seconds": 686.2781818807125, "status": "priced"},
+        {"total_paths": 262144, "cpu_seconds": 59.75214707800001, "wall_seconds": 60.071881480515, "status": "interrupted; incomplete cost, no completed prices"}
+      ],
+      "user_cpu_seconds": 62.983,
+      "system_cpu_seconds": 1142.231,
+      "total_cpu_seconds": 1205.215,
+      "system_fraction_of_accounted_cpu": 0.9477404446509544,
+      "reported_ave_cpu_frequency": "1.20M",
+      "reported_max_rss": "769772K"
+    }
+  ],
+  "node_class": {
+    "source_command": "scontrol show node node2336; scontrol show node node2338",
+    "common_reported_fields": {
+      "Arch": "x86_64",
+      "CoresPerSocket": 24,
+      "Sockets": 2,
+      "CPUTot": 48,
+      "ThreadsPerCore": 1,
+      "RealMemory_reported_MB": 382000,
+      "AvailableFeatures": "48core,intel,cascade,edr",
+      "ActiveFeatures": "48core,intel,cascade,edr",
+      "SlurmVersion": "25.05.5",
+      "OS": "Linux 5.14.0-570.62.1.0.1.el9_6.x86_64"
+    },
+    "qualification": "Both have the same advertised Intel Cascade Lake class. Exact processor SKU and concurrent hardware conditions were not established. Node load/free-memory snapshots were taken after these jobs ended and are not evidence of their execution-time contention."
+  },
+  "raw_accounting": {
+    "command_1": "sacct -j 7998028,7998029 --format=JobID,JobName,State,Elapsed,AllocCPUS,TotalCPU,UserCPU,SystemCPU,MaxRSS,MaxVMSize,NodeList,ExitCode -P",
+    "output_1": "JobID|JobName|State|Elapsed|AllocCPUS|TotalCPU|UserCPU|SystemCPU|MaxRSS|MaxVMSize|NodeList|ExitCode\n7998013_12|sbi4finance-rough-adaptive|COMPLETED|00:18:46|1|18:35.011|08:05.415|10:29.595|||node2336|0:0\n7998013_12.batch|batch|COMPLETED|00:18:46|1|18:35.011|08:05.415|10:29.595|813240K|0|node2336|0:0\n7998013_12.extern|extern|COMPLETED|00:18:46|1|00:00:00|00:00:00|00:00:00|||node2336|0:0\n7998013_13|sbi4finance-rough-adaptive|TIMEOUT|00:20:16|1|20:05.215|01:02.983|19:02.231|||node2338|0:0\n7998013_13.batch|batch|FAILED|00:20:16|1|20:05.215|01:02.983|19:02.231|769772K|0|node2338|2:0\n7998013_13.extern|extern|COMPLETED|00:20:16|1|00:00:00|00:00:00|00:00:00|||node2338|0:0\n",
+    "command_2": "sacct -j 7998028,7998029 --format=JobID,UserCPU,SystemCPU,AvePages,MaxPages,MaxDiskRead,MaxDiskWrite,AveCPUFreq,ReqCPUFreq,MaxRSS -P",
+    "output_2": "JobID|UserCPU|SystemCPU|AvePages|MaxPages|MaxDiskRead|MaxDiskWrite|AveCPUFreq|ReqCPUFreq|MaxRSS\n7998013_12|08:05.415|10:29.595||||||Unknown|\n7998013_12.batch|08:05.415|10:29.595|400|400|18.52M|3.55M|3.30M|0|813240K\n7998013_12.extern|00:00:00|00:00:00|||||0|0|\n7998013_13|01:02.983|19:02.231||||||Unknown|\n7998013_13.batch|01:02.983|19:02.231|400|400|18.52M|0.28M|1.20M|0|769772K\n7998013_13.extern|00:00:00|00:00:00|||||0|0|\n",
+    "live_accounting_result": "Both jobs had already ended. squeue returned no rows; sstat could not retrieve their live batch steps. Completed sacct records use the array aliases even when queried by actual IDs."
+  },
+  "source_inspection": {
+    "files": ["src/sbi4finance/rough_bergomi.py", "src/sbi4finance/bergomi.py", "src/sbi4finance/calibration/pricing.py"],
+    "fft_sizes_at_first_block": {"working": 4096, "refined": 8192},
+    "chunk_antithetic_pairs": 2048,
+    "interpretation": "Doubling the time grid doubles the innovation/path workset and increases FFT work. At the same path count the conditional-payoff and OLS array dimensions remain unchanged; the first block has 18 quotes and four controls. This is a code-path observation, not a measured speed prediction. No parameter-dependent OLS or denormal mechanism was demonstrated."
+  },
+  "findings": [
+    "The observed matched first-block CPU ratios are about 11.3, 16.5 and 11.0 at 32k, 64k and 128k total paths; they are not a controlled intrinsic grid-cost multiplier.",
+    "Whole-job system CPU is unusually high, especially the refined component at about 94.8%. This supports substantial kernel/runtime overhead as a confounder. The jobs attempted different amounts of work before completion/timeout, so whole-job user/system totals do not identify the overhead of an individual block call.",
+    "Slurm defines AveCPUFreq as average weighted task frequency in kHz: the reported counters correspond to approximately 3.3 versus 1.2 GHz. They are accounting observations, not controlled clock measurements or proof that clock speed caused the timing difference.",
+    "The recorded RSS, page and I/O counters do not establish a memory-limit, paging, allocation, NUMA, contention, thermal or frequency-governor cause. No low-level profile was collected, and exact cause remains unknown.",
+    "Ordinary OLS or floating-point underflow work would normally accrue user CPU. Source inspection plus the system-CPU dominance makes them weaker explanations for this observed gap; it does not rule out every numerical/runtime interaction.",
+    "Retain both the actual costs and the timeout in the pilot reduction. Do not replace the slow case, discard overhead, extrapolate an intrinsic refinement multiplier, or infer an unconditional bank mean from these two components. The frozen pilot was not changed."
+  ],
+  "accounting_definition_source": "https://slurm.schedmd.com/sacct.html"
+}

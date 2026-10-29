@@ -1,0 +1,39 @@
+{
+  "state": "joint_only_waiter_armed_verified_alive",
+  "utc": "2026-10-28T10:10:55.735345+00:00",
+  "old_metadata_waiter_pid": 2533826,
+  "known_campaign_pid_untouched": 2533833,
+  "known_immutable_files_sha256": {
+    "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/configs/known_100k_20261028.json": "11d2588b7df29945d8c0c2819371b9e37453bab2c5b90040eb94896dc503c0a9",
+    "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/accounting-recovery-20261028/run_bank_campaign.py": "b39970fdd827c9367bcbd021160d9fe89c3818dcaaf82580c1bd19dc7216bf8f",
+    "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/known-100k/campaign.json": "4634b171189456504ee1b1fe93541de88bde2063946ea2b47ac13450ff43a31b"
+  },
+  "plan_sha256": "241ef80836479e180d6da05a9a13ee990b1e613fc5942d323ffb7b7b3d1c18bb",
+  "launcher_sha256": "a59339f9f9d10f4de961a42977e41278324c76e290dc32b806094dc0542d5ee0",
+  "waiter_sha256": "67c51efff22e2c3c7f0fce83cccbc41ed2ccfb0ccafedbf87393bb8210aa059f",
+  "recovery_plan_sha256": "714f76271559aba1c13e4bb149cda1777ecf128d1b8bb00cc53252248b68a6c8",
+  "budget_change": false,
+  "historical_failure_rewrite": false,
+  "new_numerical_jobs_by_deployer": 0,
+  "automatic_retry": false,
+  "argv": [
+    "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python",
+    "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/joint-recovery-gate-20261028/arm_bank_extensions.py",
+    "--plan",
+    "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/joint-recovery-gate-20261028/joint_100k_recovery_gate_20261028.json",
+    "--detach"
+  ],
+  "stdout": "{\"state\": \"armed_process_launched\", \"pid\": 2629343}\n",
+  "stderr": "",
+  "returncode": 0,
+  "pid": 2629343,
+  "host": "login010",
+  "routes": {
+    "joint": {
+      "state": "waiting",
+      "progress": "waiting_for_resource_campaign:generation_active"
+    }
+  },
+  "launch_receipt_sha256": "e8e17e370ff2694cd62dcf23a2e1ed8e15896dd0630aa7d179d5181e06b52365",
+  "verified_utc": "2026-10-28T10:10:56.219928+00:00"
+}

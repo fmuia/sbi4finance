@@ -1,0 +1,2431 @@
+{
+  "format": "heston_existing_posterior_geometry_v1",
+  "scientific_acceptance": false,
+  "new_inference_or_pricing": false,
+  "selection_scope": "Post-hoc descriptive illustration from the three previously inspected development cases; not a prevalence claim over the prior, architecture benchmark or multimodality finding.",
+  "candidate_sha256": "8d4a243ba099524cf4cda40e4f0616e895879f053829a7f60dadbe65b98301db",
+  "targets": [
+    "initial_variance",
+    "theta",
+    "vol_of_vol",
+    "rho"
+  ],
+  "prior_bounds": [
+    [
+      0.01,
+      0.16
+    ],
+    [
+      0.01,
+      0.16
+    ],
+    [
+      0.1,
+      1.5
+    ],
+    [
+      -0.95,
+      -0.1
+    ]
+  ],
+  "runtime": {
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "matplotlib": "3.11.2"
+  },
+  "source_sha256": "083fa925f8c5f019db1a87570d5c6b70a2fe79fe01e2b62fdd4307225de1992a",
+  "declaration_sha256": "6db210193e45b7d6af634ed77a5de17e5fbf7102c22298d18c13a3e1a141f525",
+  "cases": [
+    {
+      "case": 0,
+      "chain_shape": [
+        4,
+        8000,
+        4
+      ],
+      "neural_shape": [
+        10000,
+        4
+      ],
+      "input_sha256": {
+        "reference_chains": "be70a6798988bad251254fbe86df901b3affb5e0def92555aceb145f1fcb8505",
+        "neural_final": "328e620550243043109bd500329f59208b1ea7fb2f33258a6ae86c518f80812c",
+        "reference_diagnostics": "72bd9616e0a4f3985cbe6f642156e0650776a80e11770dbdb668917b20608808"
+      },
+      "reference_parameter_diagnostics": {
+        "parameters[initial_variance]": {
+          "ess_bulk": 2085.3961951672923,
+          "ess_tail": 2215.410347677147,
+          "eti89_lb": 0.13815653858871701,
+          "eti89_ub": 0.13964481518159452,
+          "mcse_mean": 1.0147336045407209e-05,
+          "mcse_sd": 6.2068777629622974e-06,
+          "mean": 0.1388957028497735,
+          "r_hat": 1.00335764577761,
+          "sd": 0.0004630889071816561
+        },
+        "parameters[rho]": {
+          "ess_bulk": 1702.6143265822502,
+          "ess_tail": 2545.8707858714656,
+          "eti89_lb": -0.286894721678734,
+          "eti89_ub": -0.22376785822325995,
+          "mcse_mean": 0.0004852211912735582,
+          "mcse_sd": 0.00031929393560565735,
+          "mean": -0.25309014838975497,
+          "r_hat": 1.0018949991832045,
+          "sd": 0.020127316381429217
+        },
+        "parameters[theta]": {
+          "ess_bulk": 1721.1062742069078,
+          "ess_tail": 1617.0610453832187,
+          "eti89_lb": 0.1547170300209844,
+          "eti89_ub": 0.15944905753782632,
+          "mcse_mean": 3.428449055062402e-05,
+          "mcse_sd": 1.9757138097027348e-05,
+          "mean": 0.15721196981961327,
+          "r_hat": 1.0012473160553212,
+          "sd": 0.001497951606000447
+        },
+        "parameters[vol_of_vol]": {
+          "ess_bulk": 2061.033384165268,
+          "ess_tail": 2789.5580002606685,
+          "eti89_lb": 0.5126701079543462,
+          "eti89_ub": 0.6564216493847318,
+          "mcse_mean": 0.0009959102797058655,
+          "mcse_sd": 0.0006083124450749535,
+          "mean": 0.585411216749046,
+          "r_hat": 1.0007990157177562,
+          "sd": 0.04515786922833393
+        }
+      },
+      "reference_marginals": {
+        "initial_variance": {
+          "mean": 0.1388957028497735,
+          "sd": 0.00046308167136095105,
+          "physical_skew": 0.05415288490125647,
+          "logit_skew": 0.10817471305469716,
+          "q01_q05_median_q95_q99": [
+            0.13781584348976075,
+            0.1381283809322682,
+            0.13888854909807422,
+            0.1396655250878725,
+            0.13998374888188272
+          ],
+          "mean_distance_to_lower_bound_sd": 278.3433480987529,
+          "mean_distance_to_upper_bound_sd": 45.57359631229424,
+          "physical_moment_gaussian_cdf_distance": 0.012991167419458494,
+          "logit_moment_gaussian_cdf_distance": 0.016597518390531807,
+          "physical_gaussian_probability_outside_prior": 0.0
+        },
+        "theta": {
+          "mean": 0.15721196981961327,
+          "sd": 0.001497928200323745,
+          "physical_skew": -0.4310861715195216,
+          "logit_skew": 1.7327345936962526,
+          "q01_q05_median_q95_q99": [
+            0.1532808095595527,
+            0.15461722162128863,
+            0.15728108468805993,
+            0.15949074099618968,
+            0.15986564599416167
+          ],
+          "mean_distance_to_lower_bound_sd": 98.27705345810071,
+          "mean_distance_to_upper_bound_sd": 1.8612575554583708,
+          "physical_moment_gaussian_cdf_distance": 0.03203262061672929,
+          "logit_moment_gaussian_cdf_distance": 0.11141788959917487,
+          "physical_gaussian_probability_outside_prior": 0.03135390699621497
+        },
+        "vol_of_vol": {
+          "mean": 0.585411216749046,
+          "sd": 0.045157163631114716,
+          "physical_skew": -0.18413868441857908,
+          "logit_skew": -0.34742054817933526,
+          "q01_q05_median_q95_q99": [
+            0.47217349129543956,
+            0.5109082790990447,
+            0.5859056903056394,
+            0.6577721891379554,
+            0.6850565802741603
+          ],
+          "mean_distance_to_lower_bound_sd": 10.749373470715115,
+          "mean_distance_to_upper_bound_sd": 20.25345946707719,
+          "physical_moment_gaussian_cdf_distance": 0.011283715306774189,
+          "logit_moment_gaussian_cdf_distance": 0.01700767291535965,
+          "physical_gaussian_probability_outside_prior": 2.983275546616309e-27
+        },
+        "rho": {
+          "mean": -0.25309014838975497,
+          "sd": 0.020127001889653773,
+          "physical_skew": -0.567267305724398,
+          "logit_skew": -0.212550201527384,
+          "q01_q05_median_q95_q99": [
+            -0.30849298195693364,
+            -0.288197196779372,
+            -0.2513903126116215,
+            -0.22304835292754532,
+            -0.21304810761489373
+          ],
+          "mean_distance_to_lower_bound_sd": 34.625616643305904,
+          "mean_distance_to_upper_bound_sd": 7.6062072845757775,
+          "physical_moment_gaussian_cdf_distance": 0.039591006757678016,
+          "logit_moment_gaussian_cdf_distance": 0.019297072254610803,
+          "physical_gaussian_probability_outside_prior": 1.4112823265008024e-14
+        }
+      },
+      "reference_chain_skew": {
+        "initial_variance": [
+          0.016779523754626036,
+          -0.03229459888285709,
+          0.1531166709195533,
+          0.09216286527957657
+        ],
+        "theta": [
+          -0.44849880243862356,
+          -0.4816798589995061,
+          -0.4502835894790432,
+          -0.3480075229316026
+        ],
+        "vol_of_vol": [
+          -0.15577925654844363,
+          -0.29534921088892957,
+          -0.13916048557547764,
+          -0.13747894861400392
+        ],
+        "rho": [
+          -0.6067330512524016,
+          -0.647040205938172,
+          -0.5511671278147605,
+          -0.46981561498988783
+        ]
+      },
+      "reference_logit_chain_skew": {
+        "initial_variance": [
+          0.07113468528658135,
+          0.016162246005253112,
+          0.20722655562395337,
+          0.14884046626034603
+        ],
+        "theta": [
+          1.7988504509392285,
+          1.5791861255438464,
+          1.9581071884299839,
+          1.4256383354383304
+        ],
+        "vol_of_vol": [
+          -0.30869971913461924,
+          -0.4853717931984296,
+          -0.27536133985251704,
+          -0.30650940825
+        ],
+        "rho": [
+          -0.2714531210503405,
+          -0.25480560293843646,
+          -0.20957669912565993,
+          -0.11962350706155851
+        ]
+      },
+      "neural_final_marginals": {
+        "initial_variance": {
+          "mean": 0.13891137102097273,
+          "sd": 0.0004633156715105248,
+          "physical_skew": 0.059132065218485984,
+          "logit_skew": 0.12044111756302253,
+          "q01_q05_median_q95_q99": [
+            0.1378428103029728,
+            0.13816261366009713,
+            0.13890797644853592,
+            0.13967469558119774,
+            0.13998508721590042
+          ],
+          "mean_distance_to_lower_bound_sd": 278.23658673294915,
+          "mean_distance_to_upper_bound_sd": 45.51676162878989,
+          "physical_moment_gaussian_cdf_distance": 0.007261317313082605,
+          "logit_moment_gaussian_cdf_distance": 0.01047379034199869,
+          "physical_gaussian_probability_outside_prior": 0.0
+        },
+        "theta": {
+          "mean": 0.1570673174366355,
+          "sd": 0.0014986650827285594,
+          "physical_skew": -0.35462387945896406,
+          "logit_skew": 1.7320238379004842,
+          "q01_q05_median_q95_q99": [
+            0.15340760007500648,
+            0.15446869656443596,
+            0.1571648120880127,
+            0.15936178117990493,
+            0.15979687348008156
+          ],
+          "mean_distance_to_lower_bound_sd": 98.13221054625221,
+          "mean_distance_to_upper_bound_sd": 1.95686320924025,
+          "physical_moment_gaussian_cdf_distance": 0.03450890008970264,
+          "logit_moment_gaussian_cdf_distance": 0.10157855900897828,
+          "physical_gaussian_probability_outside_prior": 0.025181776543609747
+        },
+        "vol_of_vol": {
+          "mean": 0.5853072774976492,
+          "sd": 0.044542067709000877,
+          "physical_skew": -0.2770592969503638,
+          "logit_skew": -0.4442495494852536,
+          "q01_q05_median_q95_q99": [
+            0.4701976957917213,
+            0.508282819390297,
+            0.5872493386268616,
+            0.6554215759038925,
+            0.6804334950447083
+          ],
+          "mean_distance_to_lower_bound_sd": 10.895481562917663,
+          "mean_distance_to_upper_bound_sd": 20.535479593766446,
+          "physical_moment_gaussian_cdf_distance": 0.018519214263017947,
+          "logit_moment_gaussian_cdf_distance": 0.02668341532421037,
+          "physical_gaussian_probability_outside_prior": 6.056204702793469e-28
+        },
+        "rho": {
+          "mean": -0.2538113485187292,
+          "sd": 0.019492670720786327,
+          "physical_skew": -0.7844175343711799,
+          "logit_skew": -0.3556293492506794,
+          "q01_q05_median_q95_q99": [
+            -0.30811614215373995,
+            -0.2879652976989746,
+            -0.2518688440322876,
+            -0.22580989599227905,
+            -0.21569140315055846
+          ],
+          "mean_distance_to_lower_bound_sd": 35.71540613667057,
+          "mean_distance_to_upper_bound_sd": 7.890727274980846,
+          "physical_moment_gaussian_cdf_distance": 0.04513681781725709,
+          "logit_moment_gaussian_cdf_distance": 0.02569254483184119,
+          "physical_gaussian_probability_outside_prior": 1.502152742800862e-15
+        }
+      },
+      "physical_pair_geometry": {
+        "initial_variance -> theta": {
+          "pearson": -0.3831231607406956,
+          "spearman": -0.3678594235499867,
+          "conditional_decile_mean_rms_departure_y_sd": 0.03878336902862493,
+          "conditional_decile_mean_max_departure_y_sd": 0.07423872852831001,
+          "bin_mean_x": [
+            0.13808888813550102,
+            0.13841345198998714,
+            0.13858559538770712,
+            0.1387149987436874,
+            0.13883181791748667,
+            0.13894235545790734,
+            0.13906762104888823,
+            0.13920640239734342,
+            0.13938726520479838,
+            0.13971673832978615
+          ],
+          "bin_mean_y": [
+            0.1581150152265049,
+            0.15786509685246478,
+            0.157616047434614,
+            0.15741864979129258,
+            0.15730642722043722,
+            0.15714756985442205,
+            0.15711011815571993,
+            0.15682608416823757,
+            0.1566114705835936,
+            0.1561056587477705
+          ],
+          "bin_departures_y_sd": [
+            -0.06464221096251156,
+            0.037037773002327364,
+            0.013195252861687587,
+            -0.01152540920588873,
+            0.010204527639930402,
+            -0.004395407840562496,
+            0.07423872852831001,
+            -0.0005606503852960422,
+            0.005799667156619383,
+            -0.05929033676445933
+          ],
+          "linear_fit_slope_intercept": [
+            -1.2392867655160194,
+            0.3293435761483854
+          ],
+          "chain_pearson": [
+            -0.425379607115134,
+            -0.34910909404049645,
+            -0.3497833619500324,
+            -0.40710344938158993
+          ],
+          "leave_one_chain_out_fits": [
+            {
+              "held_out_chain": 0,
+              "linear_mse_over_y_variance": 0.8343198959331039,
+              "quadratic_mse_over_y_variance": 0.832463577211748,
+              "relative_mse_improvement": 0.002224948404568159
+            },
+            {
+              "held_out_chain": 1,
+              "linear_mse_over_y_variance": 0.8655917399987606,
+              "quadratic_mse_over_y_variance": 0.8633194593173742,
+              "relative_mse_improvement": 0.002625118258856838
+            },
+            {
+              "held_out_chain": 2,
+              "linear_mse_over_y_variance": 0.8703352193022686,
+              "quadratic_mse_over_y_variance": 0.8685103320023657,
+              "relative_mse_improvement": 0.0020967637060188265
+            },
+            {
+              "held_out_chain": 3,
+              "linear_mse_over_y_variance": 0.8482277224523767,
+              "quadratic_mse_over_y_variance": 0.8528808485961972,
+              "relative_mse_improvement": -0.0054857039220169625
+            }
+          ],
+          "interpretation": "Descriptive physical-coordinate curvature; finite-bin noise remains. No normality p-value, independent-data prediction claim or mode count."
+        },
+        "initial_variance -> vol_of_vol": {
+          "pearson": 0.16349053311933132,
+          "spearman": 0.15198808098508954,
+          "conditional_decile_mean_rms_departure_y_sd": 0.05458584833621446,
+          "conditional_decile_mean_max_departure_y_sd": 0.11597767458404121,
+          "bin_mean_x": [
+            0.13808888813550102,
+            0.13841345198998714,
+            0.13858559538770712,
+            0.1387149987436874,
+            0.13883181791748667,
+            0.13894235545790734,
+            0.13906762104888823,
+            0.13920640239734342,
+            0.13938726520479838,
+            0.13971673832978615
+          ],
+          "bin_mean_y": [
+            0.5673111949088739,
+            0.5800980287560416,
+            0.5812310034252042,
+            0.5835830736683928,
+            0.5848525106637223,
+            0.5901959021014678,
+            0.58766552827621,
+            0.59093468046189,
+            0.5926275379395962,
+            0.5955834372149887
+          ],
+          "bin_departures_y_sd": [
+            -0.11597767458404121,
+            0.05259828234467067,
+            0.016912812265568376,
+            0.023313398313841296,
+            0.010182033543429387,
+            0.08948562830191188,
+            -0.010774093019162627,
+            0.012624272099200902,
+            -0.013741039111476184,
+            -0.06460316831773527
+          ],
+          "linear_fit_slope_intercept": [
+            15.942692645361262,
+            -1.6289602835463444
+          ],
+          "chain_pearson": [
+            0.18976522332457524,
+            0.1665350403813545,
+            0.1582940384649105,
+            0.14229429914410835
+          ],
+          "leave_one_chain_out_fits": [
+            {
+              "held_out_chain": 0,
+              "linear_mse_over_y_variance": 0.9266655076149949,
+              "quadratic_mse_over_y_variance": 0.9224430673824668,
+              "relative_mse_improvement": 0.004556595878264155
+            },
+            {
+              "held_out_chain": 1,
+              "linear_mse_over_y_variance": 1.0008246980329099,
+              "quadratic_mse_over_y_variance": 0.9961078336891557,
+              "relative_mse_improvement": 0.004712977560430943
+            },
+            {
+              "held_out_chain": 2,
+              "linear_mse_over_y_variance": 0.9642869098299464,
+              "quadratic_mse_over_y_variance": 0.9627404651451106,
+              "relative_mse_improvement": 0.0016037184255757423
+            },
+            {
+              "held_out_chain": 3,
+              "linear_mse_over_y_variance": 1.0032168114875073,
+              "quadratic_mse_over_y_variance": 1.0096728445837422,
+              "relative_mse_improvement": -0.006435331846824096
+            }
+          ],
+          "interpretation": "Descriptive physical-coordinate curvature; finite-bin noise remains. No normality p-value, independent-data prediction claim or mode count."
+        },
+        "initial_variance -> rho": {
+          "pearson": 0.13358887916791085,
+          "spearman": 0.12297349250604346,
+          "conditional_decile_mean_rms_departure_y_sd": 0.050832536590697884,
+          "conditional_decile_mean_max_departure_y_sd": 0.106713842119528,
+          "bin_mean_x": [
+            0.13808888813550102,
+            0.13841345198998714,
+            0.13858559538770712,
+            0.1387149987436874,
+            0.13883181791748667,
+            0.13894235545790734,
+            0.13906762104888823,
+            0.13920640239734342,
+            0.13938726520479838,
+            0.13971673832978615
+          ],
+          "bin_mean_y": [
+            -0.2599225036354474,
+            -0.2550818797165879,
+            -0.25461745198027236,
+            -0.253510260931283,
+            -0.2524794489820586,
+            -0.2513812900939532,
+            -0.252998955278099,
+            -0.2514828466908345,
+            -0.2502013733834082,
+            -0.24923770738410328
+          ],
+          "bin_departures_y_sd": [
+            -0.106713842119528,
+            0.04016059590890793,
+            0.013575870324824487,
+            0.03125607994044301,
+            0.04877169210715181,
+            0.07144551627234343,
+            -0.045063735976161194,
+            -0.0097720080558089,
+            0.0017224080359302704,
+            -0.045444081386091906
+          ],
+          "linear_fit_slope_intercept": [
+            5.806197458749762,
+            -1.0595460253073816
+          ],
+          "chain_pearson": [
+            0.1712070915937076,
+            0.11637676381490904,
+            0.12935311844867298,
+            0.1210400671630837
+          ],
+          "leave_one_chain_out_fits": [
+            {
+              "held_out_chain": 0,
+              "linear_mse_over_y_variance": 0.9851426095800525,
+              "quadratic_mse_over_y_variance": 0.9846945711082212,
+              "relative_mse_improvement": 0.00045479554683181396
+            },
+            {
+              "held_out_chain": 1,
+              "linear_mse_over_y_variance": 0.9693965189776867,
+              "quadratic_mse_over_y_variance": 0.9668138755355296,
+              "relative_mse_improvement": 0.0026641765176553533
+            },
+            {
+              "held_out_chain": 2,
+              "linear_mse_over_y_variance": 0.9991200536322302,
+              "quadratic_mse_over_y_variance": 0.9983963454168371,
+              "relative_mse_improvement": 0.00072434560067346
+            },
+            {
+              "held_out_chain": 3,
+              "linear_mse_over_y_variance": 0.9804233813985845,
+              "quadratic_mse_over_y_variance": 0.9853299590118816,
+              "relative_mse_improvement": -0.005004549775524286
+            }
+          ],
+          "interpretation": "Descriptive physical-coordinate curvature; finite-bin noise remains. No normality p-value, independent-data prediction claim or mode count."
+        },
+        "theta -> vol_of_vol": {
+          "pearson": 0.44328592263825867,
+          "spearman": 0.43063750054711925,
+          "conditional_decile_mean_rms_departure_y_sd": 0.02692769059036154,
+          "conditional_decile_mean_max_departure_y_sd": 0.046971934335413856,
+          "bin_mean_x": [
+            0.1543868478444089,
+            0.15562856317669516,
+            0.15621218962706906,
+            0.15669030122474026,
+            0.15708349471556854,
+            0.15748973819238568,
+            0.15790873447798912,
+            0.15834684365638996,
+            0.1588569592971421,
+            0.1595122742583154
+          ],
+          "bin_mean_y": [
+            0.5477149987523585,
+            0.5641267130351877,
+            0.5728571736962017,
+            0.5789785082119423,
+            0.5816685121614892,
+            0.5870020497775175,
+            0.5960549741064493,
+            0.6013491111134438,
+            0.6089083582140548,
+            0.6154039427591824
+          ],
+          "bin_departures_y_sd": [
+            0.0012676981366401394,
+            -0.0027610067175644244,
+            0.01785985705251795,
+            0.011927227940854785,
+            -0.04486176325980981,
+            -0.046971934335413856,
+            0.029509296494505743,
+            0.01709650082620185,
+            0.03353523174134379,
+            -0.016549943272308916
+          ],
+          "linear_fit_slope_intercept": [
+            13.363480932944256,
+            -1.515487944365957
+          ],
+          "chain_pearson": [
+            0.3761218159345619,
+            0.4987041718281339,
+            0.43799564189668055,
+            0.459339352586586
+          ],
+          "leave_one_chain_out_fits": [
+            {
+              "held_out_chain": 0,
+              "linear_mse_over_y_variance": 0.8349908815469465,
+              "quadratic_mse_over_y_variance": 0.8362641112707888,
+              "relative_mse_improvement": -0.0015248426683217328
+            },
+            {
+              "held_out_chain": 1,
+              "linear_mse_over_y_variance": 0.781335044696305,
+              "quadratic_mse_over_y_variance": 0.7816951376129639,
+              "relative_mse_improvement": -0.0004608687644349973
+            },
+            {
+              "held_out_chain": 2,
+              "linear_mse_over_y_variance": 0.7996527185684965,
+              "quadratic_mse_over_y_variance": 0.7996624987469523,
+              "relative_mse_improvement": -1.2230532365691201e-05
+            },
+            {
+              "held_out_chain": 3,
+              "linear_mse_over_y_variance": 0.8071274327794501,
+              "quadratic_mse_over_y_variance": 0.8071590453796991,
+              "relative_mse_improvement": -3.916680187676642e-05
+            }
+          ],
+          "interpretation": "Descriptive physical-coordinate curvature; finite-bin noise remains. No normality p-value, independent-data prediction claim or mode count."
+        },
+        "theta -> rho": {
+          "pearson": 0.2918971903255205,
+          "spearman": 0.27929296236813567,
+          "conditional_decile_mean_rms_departure_y_sd": 0.026272101802622787,
+          "conditional_decile_mean_max_departure_y_sd": 0.04421759494573911,
+          "bin_mean_x": [
+            0.1543868478444089,
+            0.15562856317669516,
+            0.15621218962706906,
+            0.15669030122474026,
+            0.15708349471556854,
+            0.15748973819238568,
+            0.15790873447798912,
+            0.15834684365638996,
+            0.1588569592971421,
+            0.1595122742583154
+          ],
+          "bin_mean_y": [
+            -0.2645145589282955,
+            -0.25951578393477215,
+            -0.2566022751348167,
+            -0.2544286875377009,
+            -0.25430129702790116,
+            -0.2520467361682037,
+            -0.2494674042428117,
+            -0.2493417240537789,
+            -0.2463380377532942,
+            -0.24435992320916367
+          ],
+          "bin_departures_y_sd": [
+            -0.017092283007293547,
+            -0.010700339410718336,
+            0.020326187409670404,
+            0.03515149224551003,
+            -0.03513971922941696,
+            -0.0022865533792783984,
+            0.04421759494573911,
+            -0.034911190714624125,
+            0.014920611356742308,
+            -0.014497201475897638
+          ],
+          "linear_fit_slope_intercept": [
+            3.922094062984307,
+            -0.869690281849327
+          ],
+          "chain_pearson": [
+            0.22494361862310827,
+            0.3732596904444578,
+            0.27229057498560005,
+            0.30049292418871704
+          ],
+          "leave_one_chain_out_fits": [
+            {
+              "held_out_chain": 0,
+              "linear_mse_over_y_variance": 0.9681702249176808,
+              "quadratic_mse_over_y_variance": 0.9681389518905263,
+              "relative_mse_improvement": 3.230116600322293e-05
+            },
+            {
+              "held_out_chain": 1,
+              "linear_mse_over_y_variance": 0.8567742934136644,
+              "quadratic_mse_over_y_variance": 0.8569059229480843,
+              "relative_mse_improvement": -0.0001536338513326127
+            },
+            {
+              "held_out_chain": 2,
+              "linear_mse_over_y_variance": 0.9419128051451634,
+              "quadratic_mse_over_y_variance": 0.9418208338946568,
+              "relative_mse_improvement": 9.764306207989736e-05
+            },
+            {
+              "held_out_chain": 3,
+              "linear_mse_over_y_variance": 0.9048599302717355,
+              "quadratic_mse_over_y_variance": 0.9050578870324995,
+              "relative_mse_improvement": -0.00021877061204876564
+            }
+          ],
+          "interpretation": "Descriptive physical-coordinate curvature; finite-bin noise remains. No normality p-value, independent-data prediction claim or mode count."
+        },
+        "vol_of_vol -> rho": {
+          "pearson": 0.8547905247889351,
+          "spearman": 0.839438267686631,
+          "conditional_decile_mean_rms_departure_y_sd": 0.0870540373773159,
+          "conditional_decile_mean_max_departure_y_sd": 0.1675886033940118,
+          "bin_mean_x": [
+            0.5039693446589322,
+            0.5394402866457971,
+            0.5552435565460212,
+            0.5683860037553555,
+            0.5802096172277922,
+            0.5916094819317178,
+            0.6037392534519671,
+            0.6162976132038105,
+            0.6326280425650626,
+            0.6622900884088102
+          ],
+          "bin_mean_y": [
+            -0.28729293517262167,
+            -0.2707147409631362,
+            -0.2632594580946986,
+            -0.25809774555942777,
+            -0.2532814684076269,
+            -0.24942768307527083,
+            -0.24551309820899384,
+            -0.24112085970342195,
+            -0.235133145193646,
+            -0.22717322070396143
+          ],
+          "bin_departures_y_sd": [
+            -0.15771604880343026,
+            -0.005474546583039088,
+            0.06579364911042798,
+            0.07347428827708133,
+            0.08895665620536447,
+            0.06463934021249142,
+            0.029526241538160445,
+            0.010032277504908668,
+            -0.001593649948776041,
+            -0.1675886033940118
+          ],
+          "linear_fit_slope_intercept": [
+            0.38098873189260807,
+            -0.4761252254946816
+          ],
+          "chain_pearson": [
+            0.8580267871368836,
+            0.856605507075306,
+            0.8568557884945672,
+            0.8496392602519607
+          ],
+          "leave_one_chain_out_fits": [
+            {
+              "held_out_chain": 0,
+              "linear_mse_over_y_variance": 0.2689027913561484,
+              "quadratic_mse_over_y_variance": 0.2572764408197152,
+              "relative_mse_improvement": 0.04323625826938596
+            },
+            {
+              "held_out_chain": 1,
+              "linear_mse_over_y_variance": 0.26272493084981013,
+              "quadratic_mse_over_y_variance": 0.25649948429373187,
+              "relative_mse_improvement": 0.02369568253740302
+            },
+            {
+              "held_out_chain": 2,
+              "linear_mse_over_y_variance": 0.2716845923471783,
+              "quadratic_mse_over_y_variance": 0.25869798682455863,
+              "relative_mse_improvement": 0.04780030185158394
+            },
+            {
+              "held_out_chain": 3,
+              "linear_mse_over_y_variance": 0.2776830556270418,
+              "quadratic_mse_over_y_variance": 0.27350982927328216,
+              "relative_mse_improvement": 0.015028739669894564
+            }
+          ],
+          "interpretation": "Descriptive physical-coordinate curvature; finite-bin noise remains. No normality p-value, independent-data prediction claim or mode count."
+        }
+      },
+      "neural_vs_reference_marginal_cdf_distance": {
+        "initial_variance": 0.02416874999999996,
+        "theta": 0.04605625000000002,
+        "vol_of_vol": 0.019025000000000014,
+        "rho": 0.031862500000000016
+      },
+      "reference_logit_correlation": [
+        [
+          0.9999999999999999,
+          -0.3398354671463893,
+          0.16206785591416656,
+          0.1334938691226941
+        ],
+        [
+          -0.3398354671463893,
+          1.0,
+          0.3883657874968851,
+          0.25578422022378894
+        ],
+        [
+          0.16206785591416656,
+          0.3883657874968851,
+          1.0,
+          0.8555429000187644
+        ],
+        [
+          0.1334938691226941,
+          0.25578422022378894,
+          0.8555429000187643,
+          0.9999999999999998
+        ]
+      ],
+      "neural_physical_correlation": [
+        [
+          0.9999999999999999,
+          -0.36187589354185834,
+          0.15106363206552664,
+          0.11951024607461926
+        ],
+        [
+          -0.36187589354185834,
+          1.0,
+          0.4612702101048114,
+          0.34399815068139256
+        ],
+        [
+          0.15106363206552664,
+          0.4612702101048114,
+          1.0,
+          0.8536703117651419
+        ],
+        [
+          0.11951024607461926,
+          0.34399815068139256,
+          0.8536703117651419,
+          1.0
+        ]
+      ]
+    },
+    {
+      "case": 1,
+      "chain_shape": [
+        4,
+        8000,
+        4
+      ],
+      "neural_shape": [
+        10000,
+        4
+      ],
+      "input_sha256": {
+        "reference_chains": "ff98be1a51cf294b59a7b723664a3a03313f48ea32fc9f4a3a54fff1989774b8",
+        "neural_final": "1c2d6dd261227b29d9714aea504bc623b6d7c0bff9ebee4e93e1c4f9267654b6",
+        "reference_diagnostics": "270f9257b19a3bd0fce0012d182977a366f6aabd93e95b60b6b92686be896dc4"
+      },
+      "reference_parameter_diagnostics": {
+        "parameters[initial_variance]": {
+          "ess_bulk": 2510.3095990443776,
+          "ess_tail": 2900.63767580693,
+          "eti89_lb": 0.0235927517035451,
+          "eti89_ub": 0.02486804993332942,
+          "mcse_mean": 7.94550777403881e-06,
+          "mcse_sd": 4.767545932850896e-06,
+          "mean": 0.024219368571447214,
+          "r_hat": 1.0026635305873206,
+          "sd": 0.00039775937293303794
+        },
+        "parameters[rho]": {
+          "ess_bulk": 1855.4677443662072,
+          "ess_tail": 2543.0024608598237,
+          "eti89_lb": -0.2583719975326899,
+          "eti89_ub": -0.21931357285752706,
+          "mcse_mean": 0.0002853812982033379,
+          "mcse_sd": 0.00016596988967618382,
+          "mean": -0.23873582035179583,
+          "r_hat": 1.0007773436604939,
+          "sd": 0.012304975057214203
+        },
+        "parameters[theta]": {
+          "ess_bulk": 2123.7910131342433,
+          "ess_tail": 2980.94293214799,
+          "eti89_lb": 0.08662369741211541,
+          "eti89_ub": 0.09119626307198163,
+          "mcse_mean": 3.115089465086972e-05,
+          "mcse_sd": 1.9151365411851954e-05,
+          "mean": 0.08893612451259093,
+          "r_hat": 1.00123550395033,
+          "sd": 0.0014342770599045174
+        },
+        "parameters[vol_of_vol]": {
+          "ess_bulk": 1718.4466551893488,
+          "ess_tail": 1938.1060247557696,
+          "eti89_lb": 1.4218732030730126,
+          "eti89_ub": 1.496848381994685,
+          "mcse_mean": 0.0005448055579433488,
+          "mcse_sd": 0.000315268800035769,
+          "mean": 1.4671017717031896,
+          "r_hat": 1.001999991589944,
+          "sd": 0.024384729058382418
+        }
+      },
+      "reference_marginals": {
+        "initial_variance": {
+          "mean": 0.024219368571447214,
+          "sd": 0.0003977531578942805,
+          "physical_skew": -0.0007222383147832854,
+          "logit_skew": -0.07705235318410736,
+          "q01_q05_median_q95_q99": [
+            0.02327980929617236,
+            0.023580953531271532,
+            0.02421645823394551,
+            0.024886971067932237,
+            0.025143684598883217
+          ],
+          "mean_distance_to_lower_bound_sd": 35.749228608831324,
+          "mean_distance_to_upper_bound_sd": 341.36908465386006,
+          "physical_moment_gaussian_cdf_distance": 0.008279116245730023,
+          "logit_moment_gaussian_cdf_distance": 0.008363405769770127,
+          "physical_gaussian_probability_outside_prior": 3.4004399047528604e-280
+        },
+        "theta": {
+          "mean": 0.08893612451259093,
+          "sd": 0.0014342546491503709,
+          "physical_skew": -0.0021327225298619448,
+          "logit_skew": 0.003952102908198269,
+          "q01_q05_median_q95_q99": [
+            0.0856384406069794,
+            0.08657202606884074,
+            0.08890436046226333,
+            0.09129558836612155,
+            0.09230758915472323
+          ],
+          "mean_distance_to_lower_bound_sd": 55.03633860231962,
+          "mean_distance_to_upper_bound_sd": 49.54759988367906,
+          "physical_moment_gaussian_cdf_distance": 0.009624742785398488,
+          "logit_moment_gaussian_cdf_distance": 0.010027657008125357,
+          "physical_gaussian_probability_outside_prior": 0.0
+        },
+        "vol_of_vol": {
+          "mean": 1.4671017717031896,
+          "sd": 0.024384348044014178,
+          "physical_skew": -0.9139740318969977,
+          "logit_skew": 1.2823441971921263,
+          "q01_q05_median_q95_q99": [
+            1.3982153454765,
+            1.4205084698341568,
+            1.4719998984108509,
+            1.4971436098023314,
+            1.4993223119371062
+          ],
+          "mean_distance_to_lower_bound_sd": 56.064725176803854,
+          "mean_distance_to_upper_bound_sd": 1.3491534913063312,
+          "physical_moment_gaussian_cdf_distance": 0.0890345255310695,
+          "logit_moment_gaussian_cdf_distance": 0.08655846656649246,
+          "physical_gaussian_probability_outside_prior": 0.08864383490737143
+        },
+        "rho": {
+          "mean": -0.23873582035179583,
+          "sd": 0.012304782790476839,
+          "physical_skew": -0.002810672198990246,
+          "logit_skew": 0.22413189061582056,
+          "q01_q05_median_q95_q99": [
+            -0.26745028622940137,
+            -0.2588340942543398,
+            -0.23874523388654778,
+            -0.218660325531858,
+            -0.2100960765051223
+          ],
+          "mean_distance_to_lower_bound_sd": 57.80387933370752,
+          "mean_distance_to_upper_bound_sd": 11.274950782485083,
+          "physical_moment_gaussian_cdf_distance": 0.009089461067968485,
+          "logit_moment_gaussian_cdf_distance": 0.01693193747869637,
+          "physical_gaussian_probability_outside_prior": 8.723808246747543e-30
+        }
+      },
+      "reference_chain_skew": {
+        "initial_variance": [
+          -0.05105098099012649,
+          0.01271661345131709,
+          0.030311843073578898,
+          0.011504473614523844
+        ],
+        "theta": [
+          0.05248517184552581,
+          -0.05722410621687499,
+          0.02499280549344589,
+          -0.03849827995625559
+        ],
+        "vol_of_vol": [
+          -0.9517437701939467,
+          -0.9841024367711405,
+          -0.8925927489471446,
+          -0.8338296331124073
+        ],
+        "rho": [
+          -0.09836442622251945,
+          0.035436592066860194,
+          -0.01826762054883829,
+          0.0696886302562366
+        ]
+      },
+      "reference_logit_chain_skew": {
+        "initial_variance": [
+          -0.12907557113240115,
+          -0.05943567391707963,
+          -0.050111442208345215,
+          -0.06242578196436007
+        ],
+        "theta": [
+          0.05842567853119655,
+          -0.051114206387276394,
+          0.03185028727492656,
+          -0.03325737388585105
+        ],
+        "vol_of_vol": [
+          1.3837416012052552,
+          1.04530819902069,
+          1.2006852565854258,
+          1.3538535374193787
+        ],
+        "rho": [
+          0.10102798844647892,
+          0.279403072539156,
+          0.2240238510548612,
+          0.29125636056252624
+        ]
+      },
+      "neural_final_marginals": {
+        "initial_variance": {
+          "mean": 0.024218407911248505,
+          "sd": 0.00041961307585854844,
+          "physical_skew": 0.020723997582938178,
+          "logit_skew": -0.07168172645838052,
+          "q01_q05_median_q95_q99": [
+            0.023253101017326118,
+            0.02353245997801423,
+            0.02421753853559494,
+            0.02489478550851345,
+            0.025202819388359787
+          ],
+          "mean_distance_to_lower_bound_sd": 33.88456825888221,
+          "mean_distance_to_upper_bound_sd": 323.587609396909,
+          "physical_moment_gaussian_cdf_distance": 0.0063435863481848265,
+          "logit_moment_gaussian_cdf_distance": 0.010221389839527861,
+          "physical_gaussian_probability_outside_prior": 5.622031589052959e-252
+        },
+        "theta": {
+          "mean": 0.08893896483033896,
+          "sd": 0.0014964580286377725,
+          "physical_skew": -0.27391670269439067,
+          "logit_skew": -0.26694928434244075,
+          "q01_q05_median_q95_q99": [
+            0.08523527771234513,
+            0.08645083718001842,
+            0.08897031471133232,
+            0.09125369265675544,
+            0.09219146110117435
+          ],
+          "mean_distance_to_lower_bound_sd": 52.75053714817327,
+          "mean_distance_to_upper_bound_sd": 47.486153176209015,
+          "physical_moment_gaussian_cdf_distance": 0.01375526067317484,
+          "logit_moment_gaussian_cdf_distance": 0.013579719812306601,
+          "physical_gaussian_probability_outside_prior": 0.0
+        },
+        "vol_of_vol": {
+          "mean": 1.468799252486229,
+          "sd": 0.023987453932355286,
+          "physical_skew": -1.017791323463061,
+          "logit_skew": 1.2535719035233766,
+          "q01_q05_median_q95_q99": [
+            1.3992468047142028,
+            1.4223511636257171,
+            1.4738379120826721,
+            1.4974215924739838,
+            1.4993102717399598
+          ],
+          "mean_distance_to_lower_bound_sd": 57.06313210006565,
+          "mean_distance_to_upper_bound_sd": 1.3007110967990696,
+          "physical_moment_gaussian_cdf_distance": 0.09684782612915388,
+          "logit_moment_gaussian_cdf_distance": 0.08563866978737483,
+          "physical_gaussian_probability_outside_prior": 0.09667868124636264
+        },
+        "rho": {
+          "mean": -0.23917545959949493,
+          "sd": 0.012615401622722226,
+          "physical_skew": -0.02772546804419201,
+          "logit_skew": 0.22806599792572974,
+          "q01_q05_median_q95_q99": [
+            -0.26787543535232544,
+            -0.25966729819774625,
+            -0.23899579048156738,
+            -0.21909265518188478,
+            -0.21025200963020324
+          ],
+          "mean_distance_to_lower_bound_sd": 56.34577175253808,
+          "mean_distance_to_upper_bound_sd": 11.032186192853274,
+          "physical_moment_gaussian_cdf_distance": 0.010586361533330146,
+          "logit_moment_gaussian_cdf_distance": 0.015296601961304668,
+          "physical_gaussian_probability_outside_prior": 1.3364367738697243e-28
+        }
+      },
+      "physical_pair_geometry": {
+        "initial_variance -> theta": {
+          "pearson": -0.5032385457923336,
+          "spearman": -0.4832441053897176,
+          "conditional_decile_mean_rms_departure_y_sd": 0.04121658457423211,
+          "conditional_decile_mean_max_departure_y_sd": 0.06974190607017036,
+          "bin_mean_x": [
+            0.0235238911756912,
+            0.02380937480847457,
+            0.023948712699560074,
+            0.024060244646580742,
+            0.024165772646605417,
+            0.02426683844558248,
+            0.024374340268767683,
+            0.024489051748093116,
+            0.024633830533745203,
+            0.024920103255858993
+          ],
+          "bin_mean_y": [
+            0.09023499903844247,
+            0.08968338389965223,
+            0.08948889319971268,
+            0.0891622036602877,
+            0.08895693159123369,
+            0.08874995691084808,
+            0.08874428127816483,
+            0.08846035763444024,
+            0.08822612811558826,
+            0.08765699678594038
+          ],
+          "bin_departures_y_sd": [
+            0.02568923592163538,
+            0.002283467311818277,
+            0.042970182495309664,
+            -0.04369577214388477,
+            -0.053302491047787566,
+            -0.06974190607017036,
+            0.06231253844993883,
+            0.009486843446474312,
+            0.029350447589310106,
+            -0.005269710900076595
+          ],
+          "linear_fit_slope_intercept": [
+            -1.8146234909998546,
+            0.1328851596595222
+          ],
+          "chain_pearson": [
+            -0.4948504801987477,
+            -0.5155404233563216,
+            -0.5160358983611201,
+            -0.4879205421364816
+          ],
+          "leave_one_chain_out_fits": [
+            {
+              "held_out_chain": 0,
+              "linear_mse_over_y_variance": 0.754836731001804,
+              "quadratic_mse_over_y_variance": 0.7543093440955795,
+              "relative_mse_improvement": 0.0006986767926947874
+            },
+            {
+              "held_out_chain": 1,
+              "linear_mse_over_y_variance": 0.7489823447345554,
+              "quadratic_mse_over_y_variance": 0.7487626153015976,
+              "relative_mse_improvement": 0.0002933706441847521
+            },
+            {
+              "held_out_chain": 2,
+              "linear_mse_over_y_variance": 0.7646983478570707,
+              "quadratic_mse_over_y_variance": 0.7642052712183537,
+              "relative_mse_improvement": 0.0006447988806288955
+            },
+            {
+              "held_out_chain": 3,
+              "linear_mse_over_y_variance": 0.7233999561206041,
+              "quadratic_mse_over_y_variance": 0.7251045109859443,
+              "relative_mse_improvement": -0.0023563104350755267
+            }
+          ],
+          "interpretation": "Descriptive physical-coordinate curvature; finite-bin noise remains. No normality p-value, independent-data prediction claim or mode count."
+        },
+        "initial_variance -> vol_of_vol": {
+          "pearson": 0.09286242100159495,
+          "spearman": 0.08674303820559567,
+          "conditional_decile_mean_rms_departure_y_sd": 0.02756414470284891,
+          "conditional_decile_mean_max_departure_y_sd": 0.044965834485135615,
+          "bin_mean_x": [
+            0.0235238911756912,
+            0.02380937480847457,
+            0.023948712699560074,
+            0.024060244646580742,
+            0.024165772646605417,
+            0.02426683844558248,
+            0.024374340268767683,
+            0.024489051748093116,
+            0.024633830533745203,
+            0.024920103255858993
+          ],
+          "bin_mean_y": [
+            1.4634616355079664,
+            1.4640446035037613,
+            1.4660979160095935,
+            1.4657512864231343,
+            1.4670232148371471,
+            1.4664049615541441,
+            1.4690804806792754,
+            1.4694210331706492,
+            1.4694073077814187,
+            1.4703160301766212
+          ],
+          "bin_departures_y_sd": [
+            0.013089673842595307,
+            -0.02965399888236906,
+            0.022021304983852494,
+            -0.018233025122246647,
+            0.009291294375751553,
+            -0.039658794945416895,
+            0.044965834485135615,
+            0.03215046449256292,
+            -0.00221354843198088,
+            -0.03178228815365817
+          ],
+          "linear_fit_slope_intercept": [
+            5.692951894839524,
+            1.329222071502556
+          ],
+          "chain_pearson": [
+            0.08512269254358934,
+            0.09371896314475184,
+            0.055100450551791004,
+            0.13646661915359015
+          ],
+          "leave_one_chain_out_fits": [
+            {
+              "held_out_chain": 0,
+              "linear_mse_over_y_variance": 0.9599981252809,
+              "quadratic_mse_over_y_variance": 0.9631352445303177,
+              "relative_mse_improvement": -0.003267838933018535
+            },
+            {
+              "held_out_chain": 1,
+              "linear_mse_over_y_variance": 0.9350509147101204,
+              "quadratic_mse_over_y_variance": 0.9347430447542799,
+              "relative_mse_improvement": 0.0003292547507275229
+            },
+            {
+              "held_out_chain": 2,
+              "linear_mse_over_y_variance": 1.0366409192992376,
+              "quadratic_mse_over_y_variance": 1.0359963586364953,
+              "relative_mse_improvement": 0.0006217781400892804
+            },
+            {
+              "held_out_chain": 3,
+              "linear_mse_over_y_variance": 1.0374233826986023,
+              "quadratic_mse_over_y_variance": 1.0368018237818433,
+              "relative_mse_improvement": 0.0005991371768990271
+            }
+          ],
+          "interpretation": "Descriptive physical-coordinate curvature; finite-bin noise remains. No normality p-value, independent-data prediction claim or mode count."
+        },
+        "initial_variance -> rho": {
+          "pearson": 0.03107960807503679,
+          "spearman": 0.02205393168791947,
+          "conditional_decile_mean_rms_departure_y_sd": 0.05618745450253379,
+          "conditional_decile_mean_max_departure_y_sd": 0.10204694918837123,
+          "bin_mean_x": [
+            0.0235238911756912,
+            0.02380937480847457,
+            0.023948712699560074,
+            0.024060244646580742,
+            0.024165772646605417,
+            0.02426683844558248,
+            0.024374340268767683,
+            0.024489051748093116,
+            0.024633830533745203,
+            0.024920103255858993
+          ],
+          "bin_mean_y": [
+            -0.2405849387685805,
+            -0.23787435161175427,
+            -0.23886305456346693,
+            -0.23943350720396492,
+            -0.23826907829913527,
+            -0.238323091261149,
+            -0.2381147654479183,
+            -0.23823760034060773,
+            -0.2388693725992418,
+            -0.23878949400145097
+          ],
+          "bin_departures_y_sd": [
+            -0.09593323296196117,
+            0.10204694918837123,
+            0.010808265235036462,
+            -0.044266846660776994,
+            0.042119633359531006,
+            0.02983297026316414,
+            0.038363475078439124,
+            0.0194174627101107,
+            -0.043238885347519775,
+            -0.059115972338470366
+          ],
+          "linear_fit_slope_intercept": [
+            0.9614702460214922,
+            -0.26202202261067
+          ],
+          "chain_pearson": [
+            0.014291723121647035,
+            0.023686850905706186,
+            0.028581734502730907,
+            0.060727964701642115
+          ],
+          "leave_one_chain_out_fits": [
+            {
+              "held_out_chain": 0,
+              "linear_mse_over_y_variance": 0.9941822280216829,
+              "quadratic_mse_over_y_variance": 0.9931982988867727,
+              "relative_mse_improvement": 0.0009896869076689322
+            },
+            {
+              "held_out_chain": 1,
+              "linear_mse_over_y_variance": 1.0004051000185679,
+              "quadratic_mse_over_y_variance": 1.005498214193103,
+              "relative_mse_improvement": -0.005091051789360774
+            },
+            {
+              "held_out_chain": 2,
+              "linear_mse_over_y_variance": 1.01279865914617,
+              "quadratic_mse_over_y_variance": 1.0110234569726941,
+              "relative_mse_improvement": 0.0017527690794657917
+            },
+            {
+              "held_out_chain": 3,
+              "linear_mse_over_y_variance": 0.9917534513360785,
+              "quadratic_mse_over_y_variance": 0.9951158233869896,
+              "relative_mse_improvement": -0.003390330577001076
+            }
+          ],
+          "interpretation": "Descriptive physical-coordinate curvature; finite-bin noise remains. No normality p-value, independent-data prediction claim or mode count."
+        },
+        "theta -> vol_of_vol": {
+          "pearson": 0.306081460546054,
+          "spearman": 0.2905682956290985,
+          "conditional_decile_mean_rms_departure_y_sd": 0.07094310021793954,
+          "conditional_decile_mean_max_departure_y_sd": 0.13520899316469873,
+          "bin_mean_x": [
+            0.08641559322513608,
+            0.08745054809853395,
+            0.08796858726397497,
+            0.0883771897923734,
+            0.08874211240018504,
+            0.08909934409725892,
+            0.08949835053743098,
+            0.0899113950718215,
+            0.09045470322598398,
+            0.09143847137107466
+          ],
+          "bin_mean_y": [
+            1.450879761089941,
+            1.4602947152969283,
+            1.4628407778203134,
+            1.464181590936759,
+            1.4666207715660473,
+            1.4696797531568397,
+            1.4716889965142974,
+            1.4716776086904944,
+            1.4763007183013852,
+            1.476826540428968
+          ],
+          "bin_departures_y_sd": [
+            -0.12736163037260084,
+            0.03787714405623509,
+            0.031737229235999594,
+            -0.0004752020848311885,
+            0.02167796894946619,
+            0.07089042581630975,
+            0.06813814304259347,
+            -0.020475891400694952,
+            0.053171109702104716,
+            -0.13520899316469873
+          ],
+          "linear_fit_slope_intercept": [
+            5.2038157019022835,
+            1.004294570498236
+          ],
+          "chain_pearson": [
+            0.3100600662821213,
+            0.30861059666247975,
+            0.3357777530728631,
+            0.26882686001743133
+          ],
+          "leave_one_chain_out_fits": [
+            {
+              "held_out_chain": 0,
+              "linear_mse_over_y_variance": 0.8736019449419954,
+              "quadratic_mse_over_y_variance": 0.8680851649768179,
+              "relative_mse_improvement": 0.006314981322006808
+            },
+            {
+              "held_out_chain": 1,
+              "linear_mse_over_y_variance": 0.8534284989617571,
+              "quadratic_mse_over_y_variance": 0.85087691773159,
+              "relative_mse_improvement": 0.0029898008248742764
+            },
+            {
+              "held_out_chain": 2,
+              "linear_mse_over_y_variance": 0.9223254204376754,
+              "quadratic_mse_over_y_variance": 0.9176420087669278,
+              "relative_mse_improvement": 0.005077829979493739
+            },
+            {
+              "held_out_chain": 3,
+              "linear_mse_over_y_variance": 0.9777365246015378,
+              "quadratic_mse_over_y_variance": 0.9731252688589691,
+              "relative_mse_improvement": 0.00471625599181534
+            }
+          ],
+          "interpretation": "Descriptive physical-coordinate curvature; finite-bin noise remains. No normality p-value, independent-data prediction claim or mode count."
+        },
+        "theta -> rho": {
+          "pearson": -0.07886569135495487,
+          "spearman": -0.07085945525402859,
+          "conditional_decile_mean_rms_departure_y_sd": 0.04130295419489577,
+          "conditional_decile_mean_max_departure_y_sd": 0.10919323101037424,
+          "bin_mean_x": [
+            0.08641559322513608,
+            0.08745054809853395,
+            0.08796858726397497,
+            0.0883771897923734,
+            0.08874211240018504,
+            0.08909934409725892,
+            0.08949835053743098,
+            0.0899113950718215,
+            0.09045470322598398,
+            0.09143847137107466
+          ],
+          "bin_mean_y": [
+            -0.23677441851347608,
+            -0.2390742695293169,
+            -0.23778348817509387,
+            -0.23765565416124168,
+            -0.23861257039371883,
+            -0.23865829772591027,
+            -0.23908089484265596,
+            -0.23938379856165698,
+            -0.2400377747968219,
+            -0.24029254886086301
+          ],
+          "bin_departures_y_sd": [
+            0.020804546092609216,
+            -0.10919323101037424,
+            0.0241930915148425,
+            0.05704998259112207,
+            -0.0006517618343246776,
+            0.015275195676298793,
+            0.0028713202452383593,
+            0.0009667488448447171,
+            -0.022306373544985457,
+            0.011083025061471432
+          ],
+          "linear_fit_slope_intercept": [
+            -0.6766059306960726,
+            -0.17856111105345368
+          ],
+          "chain_pearson": [
+            -0.06069962140884158,
+            -0.06017122916151681,
+            -0.09287881213306204,
+            -0.10556274652041414
+          ],
+          "leave_one_chain_out_fits": [
+            {
+              "held_out_chain": 0,
+              "linear_mse_over_y_variance": 0.991141042325345,
+              "quadratic_mse_over_y_variance": 0.9913500772575236,
+              "relative_mse_improvement": -0.00021090331572607058
+            },
+            {
+              "held_out_chain": 1,
+              "linear_mse_over_y_variance": 0.9979798571841478,
+              "quadratic_mse_over_y_variance": 0.9979311888344391,
+              "relative_mse_improvement": 4.876686574221667e-05
+            },
+            {
+              "held_out_chain": 2,
+              "linear_mse_over_y_variance": 1.0051575874697212,
+              "quadratic_mse_over_y_variance": 1.0051860293789554,
+              "relative_mse_improvement": -2.8295970292409884e-05
+            },
+            {
+              "held_out_chain": 3,
+              "linear_mse_over_y_variance": 0.9845219908338263,
+              "quadratic_mse_over_y_variance": 0.9853064348361115,
+              "relative_mse_improvement": -0.0007967765165111184
+            }
+          ],
+          "interpretation": "Descriptive physical-coordinate curvature; finite-bin noise remains. No normality p-value, independent-data prediction claim or mode count."
+        },
+        "vol_of_vol -> rho": {
+          "pearson": 0.13060222811908168,
+          "spearman": 0.1286721909151372,
+          "conditional_decile_mean_rms_departure_y_sd": 0.048262145259564425,
+          "conditional_decile_mean_max_departure_y_sd": 0.10604636926985826,
+          "bin_mean_x": [
+            1.4167275795008387,
+            1.4397353812275666,
+            1.4520356779229122,
+            1.4614092786213755,
+            1.4688823655685188,
+            1.4752671973662752,
+            1.4812148039830146,
+            1.486640238415027,
+            1.4918686376903842,
+            1.497118436581546
+          ],
+          "bin_mean_y": [
+            -0.2422056323103947,
+            -0.24014443918657685,
+            -0.23957823430146583,
+            -0.24041585735040769,
+            -0.23794976006178314,
+            -0.23870810628625902,
+            -0.23705655317061342,
+            -0.23729658274884252,
+            -0.2375776604852211,
+            -0.23643178739731535
+          ],
+          "bin_departures_y_sd": [
+            -0.012185412281297095,
+            0.03209666323031617,
+            0.012231470427687631,
+            -0.10604636926985826,
+            0.054345664361393785,
+            -0.041481605731651085,
+            0.06088351628173456,
+            0.012317950458051041,
+            -0.038528249276773695,
+            0.026478103856187582
+          ],
+          "linear_fit_slope_intercept": [
+            0.06590424505329676,
+            -0.33542405503224815
+          ],
+          "chain_pearson": [
+            0.12232612062263892,
+            0.15990012005900292,
+            0.09388138296770215,
+            0.14726975246421098
+          ],
+          "leave_one_chain_out_fits": [
+            {
+              "held_out_chain": 0,
+              "linear_mse_over_y_variance": 0.9788624470557055,
+              "quadratic_mse_over_y_variance": 0.9803314780819333,
+              "relative_mse_improvement": -0.0015007532781000257
+            },
+            {
+              "held_out_chain": 1,
+              "linear_mse_over_y_variance": 0.9771463003173434,
+              "quadratic_mse_over_y_variance": 0.9770906491258408,
+              "relative_mse_improvement": 5.695277307457787e-05
+            },
+            {
+              "held_out_chain": 2,
+              "linear_mse_over_y_variance": 1.0074114040578945,
+              "quadratic_mse_over_y_variance": 1.007333432770821,
+              "relative_mse_improvement": 7.739766172932932e-05
+            },
+            {
+              "held_out_chain": 3,
+              "linear_mse_over_y_variance": 0.9724910784237331,
+              "quadratic_mse_over_y_variance": 0.9723212573193476,
+              "relative_mse_improvement": 0.00017462484556744165
+            }
+          ],
+          "interpretation": "Descriptive physical-coordinate curvature; finite-bin noise remains. No normality p-value, independent-data prediction claim or mode count."
+        }
+      },
+      "neural_vs_reference_marginal_cdf_distance": {
+        "initial_variance": 0.018868750000000017,
+        "theta": 0.021506250000000005,
+        "vol_of_vol": 0.03158124999999998,
+        "rho": 0.02653749999999999
+      },
+      "reference_logit_correlation": [
+        [
+          0.9999999999999999,
+          -0.503511292632467,
+          0.07661223043969564,
+          0.03175610454205107
+        ],
+        [
+          -0.503511292632467,
+          0.9999999999999998,
+          0.2623132428828575,
+          -0.08019819657614777
+        ],
+        [
+          0.07661223043969566,
+          0.2623132428828575,
+          1.0,
+          0.11223145383860439
+        ],
+        [
+          0.03175610454205107,
+          -0.08019819657614777,
+          0.1122314538386044,
+          1.0
+        ]
+      ],
+      "neural_physical_correlation": [
+        [
+          1.0,
+          -0.446564624157271,
+          0.1051205268350059,
+          0.046363847658470625
+        ],
+        [
+          -0.446564624157271,
+          1.0,
+          0.28755905327424924,
+          -0.10904216132604412
+        ],
+        [
+          0.1051205268350059,
+          0.28755905327424924,
+          1.0,
+          0.028790464410796454
+        ],
+        [
+          0.04636384765847062,
+          -0.10904216132604412,
+          0.028790464410796454,
+          0.9999999999999999
+        ]
+      ]
+    },
+    {
+      "case": 2,
+      "chain_shape": [
+        4,
+        8000,
+        4
+      ],
+      "neural_shape": [
+        10000,
+        4
+      ],
+      "input_sha256": {
+        "reference_chains": "f37a3b78360fcdbb0a9e2b775cfacd057a11aaeb7d8ef97a72b9a544bdd13ccb",
+        "neural_final": "b627a304c4cfdaffe08bdcf3f95402041ef279246ac6f6b9adc7c25818253fe4",
+        "reference_diagnostics": "cffe17d61e60a553a832b7cc281d2941f0cda211b99fe55c5957654969886a33"
+      },
+      "reference_parameter_diagnostics": {
+        "parameters[initial_variance]": {
+          "ess_bulk": 2586.329407074453,
+          "ess_tail": 3248.7173544215607,
+          "eti89_lb": 0.08669944236208438,
+          "eti89_ub": 0.08813579512521233,
+          "mcse_mean": 8.827011878577236e-06,
+          "mcse_sd": 5.3521669843572335e-06,
+          "mean": 0.08741411028012584,
+          "r_hat": 1.000912531071814,
+          "sd": 0.0004486919840311785
+        },
+        "parameters[rho]": {
+          "ess_bulk": 1529.704679648317,
+          "ess_tail": 1462.156821510748,
+          "eti89_lb": -0.11652251953360593,
+          "eti89_ub": -0.10099893718972561,
+          "mcse_mean": 0.00011408449698566858,
+          "mcse_sd": 6.450109047912121e-05,
+          "mean": -0.10770647108738576,
+          "r_hat": 1.0049490358593958,
+          "sd": 0.005029351372984919
+        },
+        "parameters[theta]": {
+          "ess_bulk": 2278.2521494303705,
+          "ess_tail": 2830.346358212569,
+          "eti89_lb": 0.13959836563829917,
+          "eti89_ub": 0.14493917706543333,
+          "mcse_mean": 3.463333556757606e-05,
+          "mcse_sd": 2.0523724657890223e-05,
+          "mean": 0.14226658825374375,
+          "r_hat": 1.000554979528583,
+          "sd": 0.0016531282950168465
+        },
+        "parameters[vol_of_vol]": {
+          "ess_bulk": 2156.654346776298,
+          "ess_tail": 2695.8936145511316,
+          "eti89_lb": 1.1632156408423933,
+          "eti89_ub": 1.2574083617403713,
+          "mcse_mean": 0.0006400094208134019,
+          "mcse_sd": 0.0004005771635830018,
+          "mean": 1.2101474602670632,
+          "r_hat": 1.0014202433640045,
+          "sd": 0.029730135769112227
+        }
+      },
+      "reference_marginals": {
+        "initial_variance": {
+          "mean": 0.08741411028012584,
+          "sd": 0.0004486849731641552,
+          "physical_skew": 0.024842847269867272,
+          "logit_skew": 0.025976278777865337,
+          "q01_q05_median_q95_q99": [
+            0.08637909109796114,
+            0.08667954539140074,
+            0.08741180106582469,
+            0.08814887797888207,
+            0.0884545494285705
+          ],
+          "mean_distance_to_lower_bound_sd": 172.53555369638653,
+          "mean_distance_to_upper_bound_sd": 161.77472850939003,
+          "physical_moment_gaussian_cdf_distance": 0.008983354697579049,
+          "logit_moment_gaussian_cdf_distance": 0.008973697268407327,
+          "physical_gaussian_probability_outside_prior": 0.0
+        },
+        "theta": {
+          "mean": 0.14226658825374375,
+          "sd": 0.0016531024646854358,
+          "physical_skew": -0.015236971863211613,
+          "logit_skew": 0.22814498528826302,
+          "q01_q05_median_q95_q99": [
+            0.13846243877707387,
+            0.13953311942667343,
+            0.14228893967890088,
+            0.14501845961906562,
+            0.1460380759383885
+          ],
+          "mean_distance_to_lower_bound_sd": 80.01112518993938,
+          "mean_distance_to_upper_bound_sd": 10.727351827904204,
+          "physical_moment_gaussian_cdf_distance": 0.013401978455327812,
+          "logit_moment_gaussian_cdf_distance": 0.014607632343847654,
+          "physical_gaussian_probability_outside_prior": 3.786775585753729e-27
+        },
+        "vol_of_vol": {
+          "mean": 1.2101474602670632,
+          "sd": 0.02972967123211161,
+          "physical_skew": 0.002873160775275397,
+          "logit_skew": 0.2397605252415927,
+          "q01_q05_median_q95_q99": [
+            1.1401883360211955,
+            1.1616564210571978,
+            1.2101147282710298,
+            1.258836065959279,
+            1.2790898990970159
+          ],
+          "mean_distance_to_lower_bound_sd": 37.34139713822233,
+          "mean_distance_to_upper_bound_sd": 9.749604611162376,
+          "physical_moment_gaussian_cdf_distance": 0.006264314058333664,
+          "logit_moment_gaussian_cdf_distance": 0.020616588837000738,
+          "physical_gaussian_probability_outside_prior": 9.259406044257614e-23
+        },
+        "rho": {
+          "mean": -0.10770647108738576,
+          "sd": 0.005029272788755772,
+          "physical_skew": -0.736404936457755,
+          "logit_skew": 1.5537168935873482,
+          "q01_q05_median_q95_q99": [
+            -0.12177382954636806,
+            -0.116815465137493,
+            -0.10697051560143789,
+            -0.10092623329428317,
+            -0.10020003258091326
+          ],
+          "mean_distance_to_lower_bound_sd": 167.47819501773242,
+          "mean_distance_to_upper_bound_sd": 1.532323143142195,
+          "physical_moment_gaussian_cdf_distance": 0.06827090743196307,
+          "logit_moment_gaussian_cdf_distance": 0.09894648340099521,
+          "physical_gaussian_probability_outside_prior": 0.06272135642078963
+        }
+      },
+      "reference_chain_skew": {
+        "initial_variance": [
+          -0.052560753605075464,
+          0.0033883866576460294,
+          0.05749559746887828,
+          0.08907317039946261
+        ],
+        "theta": [
+          0.040896747977581416,
+          -0.12050529302543093,
+          0.10214580658513658,
+          -0.0952693322437151
+        ],
+        "vol_of_vol": [
+          0.008595064079676052,
+          -0.1069081737963206,
+          0.06064314056893079,
+          0.05203532071072357
+        ],
+        "rho": [
+          -0.6890407702671588,
+          -0.6861930442487413,
+          -0.7401968856114525,
+          -0.8224180080799846
+        ]
+      },
+      "reference_logit_chain_skew": {
+        "initial_variance": [
+          -0.051429087525447094,
+          0.004394786176239387,
+          0.058640518509310714,
+          0.09029105435085914
+        ],
+        "theta": [
+          0.32107618673447824,
+          0.0927130410611477,
+          0.3427870052424455,
+          0.12915659480466907
+        ],
+        "vol_of_vol": [
+          0.24982921991610604,
+          0.12007352814659616,
+          0.3118939459677599,
+          0.27324557756363177
+        ],
+        "rho": [
+          1.279342511616975,
+          1.5424182631093057,
+          1.4823960697809768,
+          1.7474119964627464
+        ]
+      },
+      "neural_final_marginals": {
+        "initial_variance": {
+          "mean": 0.08730390741080046,
+          "sd": 0.0005324605038505176,
+          "physical_skew": -0.042990334925583205,
+          "logit_skew": -0.04090630572406116,
+          "q01_q05_median_q95_q99": [
+            0.0860052014887333,
+            0.08646470122039318,
+            0.08730382099747658,
+            0.08815092705190182,
+            0.08858445018529892
+          ],
+          "mean_distance_to_lower_bound_sd": 145.1824254602416,
+          "mean_distance_to_upper_bound_sd": 136.52861022271833,
+          "physical_moment_gaussian_cdf_distance": 0.01558970016961514,
+          "logit_moment_gaussian_cdf_distance": 0.015594280967426988,
+          "physical_gaussian_probability_outside_prior": 0.0
+        },
+        "theta": {
+          "mean": 0.1422601511850953,
+          "sd": 0.0016619228236287044,
+          "physical_skew": -0.015114585655974939,
+          "logit_skew": 0.23692588250077992,
+          "q01_q05_median_q95_q99": [
+            0.13841144040226935,
+            0.1394894950091839,
+            0.1422531008720398,
+            0.14503079429268836,
+            0.14612202629446983
+          ],
+          "mean_distance_to_lower_bound_sd": 79.58260714917768,
+          "mean_distance_to_upper_bound_sd": 10.67429158724161,
+          "physical_moment_gaussian_cdf_distance": 0.004947808034657553,
+          "logit_moment_gaussian_cdf_distance": 0.019519616392620676,
+          "physical_gaussian_probability_outside_prior": 6.713890185541639e-27
+        },
+        "vol_of_vol": {
+          "mean": 1.2097250631570815,
+          "sd": 0.029646908259596098,
+          "physical_skew": -0.09766857696876116,
+          "logit_skew": 0.14285020074244362,
+          "q01_q05_median_q95_q99": [
+            1.137993528842926,
+            1.1614478051662445,
+            1.2096432447433472,
+            1.2575474321842193,
+            1.2760943639278413
+          ],
+          "mean_distance_to_lower_bound_sd": 37.431392624149474,
+          "mean_distance_to_upper_bound_sd": 9.791069419488707,
+          "physical_moment_gaussian_cdf_distance": 0.007715913669619545,
+          "logit_moment_gaussian_cdf_distance": 0.018034439879513253,
+          "physical_gaussian_probability_outside_prior": 6.149405351551701e-23
+        },
+        "rho": {
+          "mean": -0.10813038917183876,
+          "sd": 0.005397640162647199,
+          "physical_skew": -0.6987521919207236,
+          "logit_skew": 1.5914093221871222,
+          "q01_q05_median_q95_q99": [
+            -0.12276126265525818,
+            -0.11808933019638061,
+            -0.10734090209007263,
+            -0.10086334049701691,
+            -0.10020008146762847
+          ],
+          "mean_distance_to_lower_bound_sd": 155.96993972552585,
+          "mean_distance_to_upper_bound_sd": 1.5062858817641736,
+          "physical_moment_gaussian_cdf_distance": 0.06616139727913195,
+          "logit_moment_gaussian_cdf_distance": 0.10229163450206702,
+          "physical_gaussian_probability_outside_prior": 0.06599690041948264
+        }
+      },
+      "physical_pair_geometry": {
+        "initial_variance -> theta": {
+          "pearson": -0.4721706392820198,
+          "spearman": -0.4581974792263819,
+          "conditional_decile_mean_rms_departure_y_sd": 0.028674562895028642,
+          "conditional_decile_mean_max_departure_y_sd": 0.05225193848733813,
+          "bin_mean_x": [
+            0.08663243388603264,
+            0.08693920421133726,
+            0.08710269112252468,
+            0.08724245462514944,
+            0.0873567095409437,
+            0.08746897843953486,
+            0.08758928988633023,
+            0.0877240310554166,
+            0.08788237069405032,
+            0.08820027638604852
+          ],
+          "bin_mean_y": [
+            0.14358525138898628,
+            0.14310790314942815,
+            0.14281661445371474,
+            0.14263046888075548,
+            0.14235335282096834,
+            0.14218122057637536,
+            0.14189653547028408,
+            0.14181381816397484,
+            0.14145099397905236,
+            0.1408340053955693
+          ],
+          "bin_departures_y_sd": [
+            -0.024902043138546735,
+            0.009166647782881067,
+            0.005003724352351394,
+            0.039479142313593105,
+            -0.007919387151382472,
+            0.006099254772764668,
+            -0.0395044162442485,
+            0.05225193848733813,
+            -0.0006011585122376097,
+            -0.039285919631237086
+          ],
+          "linear_fit_slope_intercept": [
+            -1.7396313543659958,
+            0.2943349153110559
+          ],
+          "chain_pearson": [
+            -0.48192553759498064,
+            -0.4430662843061348,
+            -0.47331186935560426,
+            -0.488265399991223
+          ],
+          "leave_one_chain_out_fits": [
+            {
+              "held_out_chain": 0,
+              "linear_mse_over_y_variance": 0.8316599887843034,
+              "quadratic_mse_over_y_variance": 0.8313643735948075,
+              "relative_mse_improvement": 0.00035545197975431827
+            },
+            {
+              "held_out_chain": 1,
+              "linear_mse_over_y_variance": 0.7378592099762009,
+              "quadratic_mse_over_y_variance": 0.7373724406513397,
+              "relative_mse_improvement": 0.000659704884454783
+            },
+            {
+              "held_out_chain": 2,
+              "linear_mse_over_y_variance": 0.7916582910084842,
+              "quadratic_mse_over_y_variance": 0.7933588846046918,
+              "relative_mse_improvement": -0.00214814095364466
+            },
+            {
+              "held_out_chain": 3,
+              "linear_mse_over_y_variance": 0.7495810026190913,
+              "quadratic_mse_over_y_variance": 0.7499170630597203,
+              "relative_mse_improvement": -0.00044833105355489153
+            }
+          ],
+          "interpretation": "Descriptive physical-coordinate curvature; finite-bin noise remains. No normality p-value, independent-data prediction claim or mode count."
+        },
+        "initial_variance -> vol_of_vol": {
+          "pearson": 0.00736731488275194,
+          "spearman": 0.0031585134952915985,
+          "conditional_decile_mean_rms_departure_y_sd": 0.023935055445797715,
+          "conditional_decile_mean_max_departure_y_sd": 0.03884800436221541,
+          "bin_mean_x": [
+            0.08663243388603264,
+            0.08693920421133726,
+            0.08710269112252468,
+            0.08724245462514944,
+            0.0873567095409437,
+            0.08746897843953486,
+            0.08758928988633023,
+            0.0877240310554166,
+            0.08788237069405032,
+            0.08820027638604852
+          ],
+          "bin_mean_y": [
+            1.2090810601297024,
+            1.209452610537344,
+            1.2101859840258145,
+            1.2111771124265576,
+            1.2108177117052146,
+            1.2100543335167537,
+            1.2097405518949662,
+            1.2114536880658782,
+            1.2098111335494415,
+            1.2096906417097892
+          ],
+          "bin_departures_y_sd": [
+            -0.023034927924271385,
+            -0.015574404295384918,
+            0.006409240159599942,
+            0.03745237311661089,
+            0.023487373781348655,
+            -0.0040333752823009175,
+            -0.016563357968976445,
+            0.03884800436221541,
+            -0.019001569623984756,
+            -0.028274430943688277
+          ],
+          "linear_fit_slope_intercept": [
+            0.4881550807979369,
+            1.1674758182003881
+          ],
+          "chain_pearson": [
+            -0.02709832212320068,
+            0.053308190689012803,
+            0.037565404397570314,
+            -0.03328215951706474
+          ],
+          "leave_one_chain_out_fits": [
+            {
+              "held_out_chain": 0,
+              "linear_mse_over_y_variance": 1.0720143215551083,
+              "quadratic_mse_over_y_variance": 1.0716777436030582,
+              "relative_mse_improvement": 0.0003139677756933845
+            },
+            {
+              "held_out_chain": 1,
+              "linear_mse_over_y_variance": 0.9931583744271271,
+              "quadratic_mse_over_y_variance": 0.992761328408514,
+              "relative_mse_improvement": 0.00039978117170087383
+            },
+            {
+              "held_out_chain": 2,
+              "linear_mse_over_y_variance": 1.0297315653495047,
+              "quadratic_mse_over_y_variance": 1.030408551716664,
+              "relative_mse_improvement": -0.0006574396570327571
+            },
+            {
+              "held_out_chain": 3,
+              "linear_mse_over_y_variance": 0.9099381727619361,
+              "quadratic_mse_over_y_variance": 0.9097836038965317,
+              "relative_mse_improvement": 0.0001698674371856204
+            }
+          ],
+          "interpretation": "Descriptive physical-coordinate curvature; finite-bin noise remains. No normality p-value, independent-data prediction claim or mode count."
+        },
+        "initial_variance -> rho": {
+          "pearson": -0.003923213175161337,
+          "spearman": -0.006244719218100759,
+          "conditional_decile_mean_rms_departure_y_sd": 0.04660418214085283,
+          "conditional_decile_mean_max_departure_y_sd": 0.09485047550949437,
+          "bin_mean_x": [
+            0.08663243388603264,
+            0.08693920421133726,
+            0.08710269112252468,
+            0.08724245462514944,
+            0.0873567095409437,
+            0.08746897843953486,
+            0.08758928988633023,
+            0.0877240310554166,
+            0.08788237069405032,
+            0.08820027638604852
+          ],
+          "bin_mean_y": [
+            -0.10767296939806692,
+            -0.10779900979648321,
+            -0.10739482421656908,
+            -0.10781711327481268,
+            -0.10734238973911171,
+            -0.10781442924408516,
+            -0.10766396042336393,
+            -0.10819712876037463,
+            -0.10784288470245525,
+            -0.107521047792621
+          ],
+          "bin_departures_y_sd": [
+            -0.00017348600794944092,
+            -0.022552503131505617,
+            0.059243599323847686,
+            -0.023500562618915612,
+            0.07189054313513117,
+            -0.020986201254653638,
+            0.009984382327460104,
+            -0.09485047550949437,
+            -0.023029547452092923,
+            0.04374289022212511
+          ],
+          "linear_fit_slope_intercept": [
+            -0.04397497229987029,
+            -0.10386243800919928
+          ],
+          "chain_pearson": [
+            -0.0017054417386296987,
+            -0.023909114002472868,
+            -0.028397284131500566,
+            0.036446529984685005
+          ],
+          "leave_one_chain_out_fits": [
+            {
+              "held_out_chain": 0,
+              "linear_mse_over_y_variance": 1.0317753478524374,
+              "quadratic_mse_over_y_variance": 1.03262876000086,
+              "relative_mse_improvement": -0.0008271298109601159
+            },
+            {
+              "held_out_chain": 1,
+              "linear_mse_over_y_variance": 0.9223170377213716,
+              "quadratic_mse_over_y_variance": 0.9221603317761673,
+              "relative_mse_improvement": 0.0001699046410239672
+            },
+            {
+              "held_out_chain": 2,
+              "linear_mse_over_y_variance": 1.0106027583275647,
+              "quadratic_mse_over_y_variance": 1.012382138085966,
+              "relative_mse_improvement": -0.0017607113613523507
+            },
+            {
+              "held_out_chain": 3,
+              "linear_mse_over_y_variance": 1.0410860985046688,
+              "quadratic_mse_over_y_variance": 1.0414272380864482,
+              "relative_mse_improvement": -0.00032767662758092516
+            }
+          ],
+          "interpretation": "Descriptive physical-coordinate curvature; finite-bin noise remains. No normality p-value, independent-data prediction claim or mode count."
+        },
+        "theta -> vol_of_vol": {
+          "pearson": 0.49515814290696014,
+          "spearman": 0.4779000025334889,
+          "conditional_decile_mean_rms_departure_y_sd": 0.01791559152884748,
+          "conditional_decile_mean_max_departure_y_sd": 0.033441887726509134,
+          "bin_mean_x": [
+            0.13934797045871644,
+            0.1404978697465563,
+            0.1411504307152439,
+            0.14166582836371894,
+            0.14208690863363826,
+            0.14249262857020165,
+            0.14291562491624632,
+            0.14336799472749615,
+            0.14396396848215384,
+            0.14517280523296133
+          ],
+          "bin_mean_y": [
+            1.1851513650936025,
+            1.1949851962541918,
+            1.199477267764777,
+            1.2040850425962224,
+            1.208033386748144,
+            1.212507031639344,
+            1.2159347228773736,
+            1.2199003381212368,
+            1.2254884052607906,
+            1.2358788631050572
+          ],
+          "bin_departures_y_sd": [
+            0.033441887726509134,
+            0.019784491770742024,
+            -0.024581568825534434,
+            -0.02397089158517811,
+            -0.017289974866159703,
+            0.011661104482384119,
+            0.0002551886648421246,
+            -0.001855195615322491,
+            0.007593841368314293,
+            -0.004994313992817849
+          ],
+          "linear_fit_slope_intercept": [
+            8.905006864972508,
+            -0.056737484788743874
+          ],
+          "chain_pearson": [
+            0.5289880419105938,
+            0.47695716739625366,
+            0.4977890920777317,
+            0.4724919786644902
+          ],
+          "leave_one_chain_out_fits": [
+            {
+              "held_out_chain": 0,
+              "linear_mse_over_y_variance": 0.7729451954040999,
+              "quadratic_mse_over_y_variance": 0.7727512583396324,
+              "relative_mse_improvement": 0.0002509066174686201
+            },
+            {
+              "held_out_chain": 1,
+              "linear_mse_over_y_variance": 0.7660151833916974,
+              "quadratic_mse_over_y_variance": 0.7658401397969886,
+              "relative_mse_improvement": 0.00022851191269306805
+            },
+            {
+              "held_out_chain": 2,
+              "linear_mse_over_y_variance": 0.7742533496655644,
+              "quadratic_mse_over_y_variance": 0.774078796937766,
+              "relative_mse_improvement": 0.00022544652583513322
+            },
+            {
+              "held_out_chain": 3,
+              "linear_mse_over_y_variance": 0.7083567490396441,
+              "quadratic_mse_over_y_variance": 0.7095672678843716,
+              "relative_mse_improvement": -0.0017089112885120704
+            }
+          ],
+          "interpretation": "Descriptive physical-coordinate curvature; finite-bin noise remains. No normality p-value, independent-data prediction claim or mode count."
+        },
+        "theta -> rho": {
+          "pearson": -0.025892528788266443,
+          "spearman": -0.02451141841321744,
+          "conditional_decile_mean_rms_departure_y_sd": 0.021837594830904524,
+          "conditional_decile_mean_max_departure_y_sd": 0.03977841735724762,
+          "bin_mean_x": [
+            0.13934797045871644,
+            0.1404978697465563,
+            0.1411504307152439,
+            0.14166582836371894,
+            0.14208690863363826,
+            0.14249262857020165,
+            0.14291562491624632,
+            0.14336799472749615,
+            0.14396396848215384,
+            0.14517280523296133
+          ],
+          "bin_mean_y": [
+            -0.10739856333164062,
+            -0.10761952519766456,
+            -0.10764625481451658,
+            -0.10766957887273344,
+            -0.10773646994194275,
+            -0.10790650778032612,
+            -0.10755754143487585,
+            -0.10763272037542457,
+            -0.10793671363609297,
+            -0.10796095631061917
+          ],
+          "bin_departures_y_sd": [
+            0.015508833040123987,
+            -0.010415457247442961,
+            -0.005509208284781626,
+            -0.0020741998234930273,
+            -0.008779169603076474,
+            -0.036234009207947684,
+            0.03977841735724762,
+            0.03191560898973244,
+            -0.019194434250084515,
+            -0.005080749373855851
+          ],
+          "linear_fit_slope_intercept": [
+            -0.07877345370222118,
+            -0.09649964058420649
+          ],
+          "chain_pearson": [
+            -0.025107093151009972,
+            -0.06514803116637087,
+            0.008204640131621243,
+            -0.026369425697534695
+          ],
+          "leave_one_chain_out_fits": [
+            {
+              "held_out_chain": 0,
+              "linear_mse_over_y_variance": 1.0312333265336502,
+              "quadratic_mse_over_y_variance": 1.031282631219152,
+              "relative_mse_improvement": -4.781137714743589e-05
+            },
+            {
+              "held_out_chain": 1,
+              "linear_mse_over_y_variance": 0.9207115204982191,
+              "quadratic_mse_over_y_variance": 0.9206776292683708,
+              "relative_mse_improvement": 3.680982489496363e-05
+            },
+            {
+              "held_out_chain": 2,
+              "linear_mse_over_y_variance": 1.0123394227142932,
+              "quadratic_mse_over_y_variance": 1.0123669874830656,
+              "relative_mse_improvement": -2.722878132959363e-05
+            },
+            {
+              "held_out_chain": 3,
+              "linear_mse_over_y_variance": 1.0386233993061578,
+              "quadratic_mse_over_y_variance": 1.0384869492138145,
+              "relative_mse_improvement": 0.00013137590818237293
+            }
+          ],
+          "interpretation": "Descriptive physical-coordinate curvature; finite-bin noise remains. No normality p-value, independent-data prediction claim or mode count."
+        },
+        "vol_of_vol -> rho": {
+          "pearson": 0.12559441117843825,
+          "spearman": 0.11132692046803612,
+          "conditional_decile_mean_rms_departure_y_sd": 0.027705578524842,
+          "conditional_decile_mean_max_departure_y_sd": 0.05965954857719998,
+          "bin_mean_x": [
+            1.158037354794103,
+            1.179278960584766,
+            1.1900627523229041,
+            1.1983746664857946,
+            1.2061322419417748,
+            1.2138501373527142,
+            1.221640475817207,
+            1.230353702862848,
+            1.241446972369086,
+            1.2622342459002232
+          ],
+          "bin_mean_y": [
+            -0.10876090418196217,
+            -0.10832853328229662,
+            -0.1081409882383614,
+            -0.10818507961486672,
+            -0.10749173588690568,
+            -0.1076432357429981,
+            -0.10733517828431768,
+            -0.10743941839427631,
+            -0.10710335708856122,
+            -0.10663710872708956
+          ],
+          "bin_departures_y_sd": [
+            0.010482463610860963,
+            0.00671714747727471,
+            -0.0015488057033266243,
+            -0.045429831404528734,
+            0.05965954857719998,
+            -0.003068678738318893,
+            0.025273548811701976,
+            -0.03226257003789499,
+            -0.012305561652288133,
+            -0.007415473796508129
+          ],
+          "linear_fit_slope_intercept": [
+            0.02124640227697071,
+            -0.13341775084267396
+          ],
+          "chain_pearson": [
+            0.1340740631800884,
+            0.050501066906083227,
+            0.13427060449860487,
+            0.18203547732957176
+          ],
+          "leave_one_chain_out_fits": [
+            {
+              "held_out_chain": 0,
+              "linear_mse_over_y_variance": 1.013324175840802,
+              "quadratic_mse_over_y_variance": 1.0127961940638068,
+              "relative_mse_improvement": 0.0005210393569827841
+            },
+            {
+              "held_out_chain": 1,
+              "linear_mse_over_y_variance": 0.930131900723236,
+              "quadratic_mse_over_y_variance": 0.9304677949745246,
+              "relative_mse_improvement": -0.00036112539633074606
+            },
+            {
+              "held_out_chain": 2,
+              "linear_mse_over_y_variance": 0.9922673940590099,
+              "quadratic_mse_over_y_variance": 0.9930113230257663,
+              "relative_mse_improvement": -0.0007497263048353439
+            },
+            {
+              "held_out_chain": 3,
+              "linear_mse_over_y_variance": 1.012276380644327,
+              "quadratic_mse_over_y_variance": 1.01209776032586,
+              "relative_mse_improvement": 0.00017645410075964882
+            }
+          ],
+          "interpretation": "Descriptive physical-coordinate curvature; finite-bin noise remains. No normality p-value, independent-data prediction claim or mode count."
+        }
+      },
+      "neural_vs_reference_marginal_cdf_distance": {
+        "initial_variance": 0.10724374999999997,
+        "theta": 0.014274999999999982,
+        "vol_of_vol": 0.010112499999999969,
+        "rho": 0.04017499999999999
+      },
+      "reference_logit_correlation": [
+        [
+          1.0,
+          -0.4699443135047123,
+          0.007082679162289042,
+          -0.005282121539494905
+        ],
+        [
+          -0.4699443135047123,
+          0.9999999999999999,
+          0.49588949346828376,
+          -0.02576037473763106
+        ],
+        [
+          0.007082679162289042,
+          0.49588949346828376,
+          1.0,
+          0.10156777636846606
+        ],
+        [
+          -0.005282121539494905,
+          -0.025760374737631056,
+          0.10156777636846606,
+          1.0
+        ]
+      ],
+      "neural_physical_correlation": [
+        [
+          1.0,
+          -0.4408584527433385,
+          0.045194684090188134,
+          0.026418659044205733
+        ],
+        [
+          -0.4408584527433385,
+          1.0,
+          0.46814430821658654,
+          -0.024684839467275538
+        ],
+        [
+          0.04519468409018814,
+          0.4681443082165865,
+          0.9999999999999999,
+          0.17021254336678782
+        ],
+        [
+          0.026418659044205733,
+          -0.024684839467275538,
+          0.17021254336678784,
+          1.0
+        ]
+      ]
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "format": "tutorial_backbone_downloads_v1",
+  "release": "https://github.com/fmuia/sbi4finance/releases/tag/tutorial-backbones-2026-10-29",
+  "tag": "tutorial-backbones-2026-10-29",
+  "scientific_acceptance_unchanged": true,
+  "archives": [
+    {
+      "role": "native_bank",
+      "route": "heston",
+      "file": "sbi4finance-bank-heston-100k-20261029.tar.gz",
+      "bytes": 122873069,
+      "sha256": "d57543a90b9dc264a7161dea6e3f55f7c8f5a945d95f407d97151794c07afb40",
+      "url": "https://github.com/fmuia/sbi4finance/releases/download/tutorial-backbones-2026-10-29/sbi4finance-bank-heston-100k-20261029.tar.gz"
+    },
+    {
+      "role": "native_bank",
+      "route": "rough_known",
+      "file": "sbi4finance-bank-rough-known-100k-20261029.tar.gz",
+      "bytes": 899951783,
+      "sha256": "e831d35ff0d926231564724558697f1f81db6baae0ca4a844cad72bcab3c9938",
+      "url": "https://github.com/fmuia/sbi4finance/releases/download/tutorial-backbones-2026-10-29/sbi4finance-bank-rough-known-100k-20261029.tar.gz"
+    },
+    {
+      "role": "native_bank",
+      "route": "rough_joint",
+      "file": "sbi4finance-bank-rough-joint-100k-20261029.tar.gz",
+      "bytes": 933622627,
+      "sha256": "b1011602e7fbfa880bffc5f0b7250a96ad878e4ff9be9cf6a6af004bc0e14455",
+      "url": "https://github.com/fmuia/sbi4finance/releases/download/tutorial-backbones-2026-10-29/sbi4finance-bank-rough-joint-100k-20261029.tar.gz"
+    },
+    {
+      "role": "pretrained_posteriors_pricers_and_cases",
+      "file": "sbi4finance-pretrained-and-cases-20261029.zip",
+      "bytes": 38046255,
+      "sha256": "8d3a146312efdeaffcf797dee89158a491cde0961689649bbe17b6a3ae4bf51c",
+      "url": "https://github.com/fmuia/sbi4finance/releases/download/tutorial-backbones-2026-10-29/sbi4finance-pretrained-and-cases-20261029.zip"
+    }
+  ],
+  "checksums_url": "https://github.com/fmuia/sbi4finance/releases/download/tutorial-backbones-2026-10-29/SHA256SUMS",
+  "guide": "../../../training-data-guide.md",
+  "original_layout_preserved": true,
+  "reserved_test_policy": "Payloads retained; development loads train/validation only. Freeze the model and criteria before test evaluation."
+}

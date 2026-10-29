@@ -1,0 +1,13 @@
+{
+  "state": "armed_and_heartbeat_advancing",
+  "pid": 2629343,
+  "parent_pid": 1,
+  "host": "login010",
+  "started_utc": "2026-10-28T10:10:56.053373+00:00",
+  "later_heartbeat_utc": "2026-10-28T10:12:56.095155+00:00",
+  "observed_process_elapsed": "02:44",
+  "joint_progress": "waiting_for_resource_campaign:generation_active",
+  "known_campaign_pid_untouched": 2533833,
+  "new_joint100k_jobs_submitted_by_deployer": 0,
+  "scope": "Observed detached process and heartbeat; no guarantee of future dependency or campaign success."
+}

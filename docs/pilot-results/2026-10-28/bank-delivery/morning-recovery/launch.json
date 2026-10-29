@@ -1,0 +1,7 @@
+{
+  "state": "launched",
+  "attempted_utc": "2026-10-28T10:04:32.409594+00:00",
+  "plan_sha256": "714f76271559aba1c13e4bb149cda1777ecf128d1b8bb00cc53252248b68a6c8",
+  "automatic_retry": false,
+  "controller_pid": 2563401
+}

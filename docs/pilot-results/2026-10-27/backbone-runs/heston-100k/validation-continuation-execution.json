@@ -1,0 +1,61 @@
+{
+  "format": "heston_100k_validation_continuation_v1",
+  "state": "completed",
+  "attempted_utc": "2026-10-27T22:05:17.846081+00:00",
+  "authorization": "Explicit reviewed evaluation-only continuation after900second internal timeout. No retraining, new data, MCMC, changed panel/seeds/solver or automatic retry.",
+  "root": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027",
+  "original_failed_job": "8030120",
+  "original_failure": {
+    "error": "Command '['/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/bin/python', '/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/repo/scripts/evaluate_full_surface.py', '--bank', '/oscar/scratch/afengler/sbi4finance-heston-backbone-20261027/snapshot-100k', '--checkpoint', '/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint', '--out', '/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/validation', '--split', 'validation', '--first', '0', '--surfaces', '2000', '--draws', '1000', '--batch-size', '100', '--seed', '0']' timed out after 899.9999861586839 seconds",
+    "type": "TimeoutExpired"
+  },
+  "original_run_sha256": "94afb52d293abfa49f536d73c7fc017f373c4b355c4819d6bbc4113035723c0d",
+  "checkpoint_sha256": "7f037dee0fde78cd5a33f1107e13031ff01fdcb5481dab76fc6c8f7d07598f39",
+  "source_revision": "eb53cea9b26283c5d7094b022af3c9c28f44a596",
+  "operator_sha256": "eff562d964792fb569a686808bd51226de9ae71aeee566113ba985196920f460",
+  "argv": [
+    "sbatch",
+    "--parsable",
+    "--nodes=1",
+    "--ntasks=1",
+    "--no-requeue",
+    "--account=default",
+    "--partition=gpu-debug",
+    "--qos=gpu-debug",
+    "--cpus-per-task=4",
+    "--gres=gpu:l40s:1",
+    "--mem=24G",
+    "--time=00:20:00",
+    "--chdir=/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/repo",
+    "--job-name=sbi4f-heston-100k-val",
+    "--output=/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/logs/heston-100k-validation-%A.out",
+    "--wrap=env PYTHONPATH=/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/repo/src KERAS_BACKEND=jax OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 XLA_PYTHON_CLIENT_PREALLOCATE=false MPLCONFIGDIR=/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/cache/mpl XDG_CACHE_HOME=/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/cache /oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/bin/python /oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/repo/scripts/evaluate_full_surface.py --bank /oscar/scratch/afengler/sbi4finance-heston-backbone-20261027/snapshot-100k --checkpoint /oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint --out /oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-validation-continuation/validation --split validation --first 0 --surfaces 2000 --draws 1000 --batch-size 100 --seed 0"
+  ],
+  "allocation_ceiling": {
+    "cpus": 4,
+    "gpus": 1,
+    "wall_seconds": 1200,
+    "cleanup_seconds": 240,
+    "full_limit_plus_cleanup_cpu_seconds": 5760,
+    "full_limit_plus_cleanup_gpu_seconds": 1440
+  },
+  "pooled_budget_check": {
+    "previous_actual_cpu_seconds": 13664,
+    "previous_actual_gpu_seconds": 2861,
+    "after_submission_cpu_seconds": 19424,
+    "after_submission_gpu_seconds": 4301,
+    "cpu_ceiling_seconds": 21600,
+    "gpu_ceiling_seconds": 4500,
+    "accounting": "8028749|COMPLETED|1312|4|0:0\n8028804|CANCELLED by 140010387|555|4|0:0\n8028941|FAILED|13|4|1:0\n8029251|COMPLETED|53|4|0:0\n8030120|FAILED|1483|4|1:0\n"
+  },
+  "scientific_acceptance": false,
+  "reserved_test_evaluated": false,
+  "automatic_retry": false,
+  "stdout": "8030765\n",
+  "stderr": "",
+  "job_id": "8030765",
+  "submitted_utc": "2026-10-27T22:05:22.730107+00:00",
+  "actual_elapsed_seconds": 903,
+  "actual_allocated_cpu_seconds": 3612,
+  "actual_gpu_seconds": 903
+}

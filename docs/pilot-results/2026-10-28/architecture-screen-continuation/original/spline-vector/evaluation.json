@@ -1,0 +1,369 @@
+{
+  "format": "full_surface_evaluation_v1",
+  "task_fingerprint": "5e499526ff8f29a72f49785a1a36006b1d769d26bca8a6f83f7a8c8ac4d431fa",
+  "checkpoint_sha256": "48eb03f01fb90a0af1e960eb8f05dacf3c349bb3879e47c8d2259a4420f12d73",
+  "network": {
+    "family": "spline",
+    "encoder": "vector",
+    "widths": [
+      256,
+      256,
+      256,
+      256
+    ],
+    "summary_dim": 32,
+    "flow_steps": null,
+    "mean_steps": 4
+  },
+  "bank_manifest_sha256": "1a7906f58a2b3e1e4cc868bc819c9c9308357f2f23f7fbb642c682860fb0074f",
+  "evaluated_split": "validation",
+  "reserved_test_evaluated": false,
+  "example_ids": [
+    "validation:0",
+    "validation:1",
+    "validation:2",
+    "validation:3",
+    "validation:4",
+    "validation:5",
+    "validation:6",
+    "validation:7",
+    "validation:8",
+    "validation:9",
+    "validation:10",
+    "validation:11",
+    "validation:12",
+    "validation:13",
+    "validation:14",
+    "validation:15",
+    "validation:16",
+    "validation:17",
+    "validation:18",
+    "validation:19",
+    "validation:20",
+    "validation:21",
+    "validation:22",
+    "validation:23",
+    "validation:24",
+    "validation:25",
+    "validation:26",
+    "validation:27",
+    "validation:28",
+    "validation:29",
+    "validation:30",
+    "validation:31",
+    "validation:32",
+    "validation:33",
+    "validation:34",
+    "validation:35",
+    "validation:36",
+    "validation:37",
+    "validation:38",
+    "validation:39",
+    "validation:40",
+    "validation:41",
+    "validation:42",
+    "validation:43",
+    "validation:44",
+    "validation:45",
+    "validation:46",
+    "validation:47",
+    "validation:48",
+    "validation:49",
+    "validation:50",
+    "validation:51",
+    "validation:52",
+    "validation:53",
+    "validation:54",
+    "validation:55",
+    "validation:56",
+    "validation:57",
+    "validation:58",
+    "validation:59",
+    "validation:60",
+    "validation:61",
+    "validation:62",
+    "validation:63",
+    "validation:64",
+    "validation:65",
+    "validation:66",
+    "validation:67",
+    "validation:68",
+    "validation:69",
+    "validation:70",
+    "validation:71",
+    "validation:72",
+    "validation:73",
+    "validation:74",
+    "validation:75",
+    "validation:76",
+    "validation:77",
+    "validation:78",
+    "validation:79",
+    "validation:80",
+    "validation:81",
+    "validation:82",
+    "validation:83",
+    "validation:84",
+    "validation:85",
+    "validation:86",
+    "validation:87",
+    "validation:88",
+    "validation:89",
+    "validation:90",
+    "validation:91",
+    "validation:92",
+    "validation:93",
+    "validation:94",
+    "validation:95",
+    "validation:96",
+    "validation:97",
+    "validation:98",
+    "validation:99",
+    "validation:100",
+    "validation:101",
+    "validation:102",
+    "validation:103",
+    "validation:104",
+    "validation:105",
+    "validation:106",
+    "validation:107",
+    "validation:108",
+    "validation:109",
+    "validation:110",
+    "validation:111",
+    "validation:112",
+    "validation:113",
+    "validation:114",
+    "validation:115",
+    "validation:116",
+    "validation:117",
+    "validation:118",
+    "validation:119",
+    "validation:120",
+    "validation:121",
+    "validation:122",
+    "validation:123",
+    "validation:124",
+    "validation:125",
+    "validation:126",
+    "validation:127",
+    "validation:128",
+    "validation:129",
+    "validation:130",
+    "validation:131",
+    "validation:132",
+    "validation:133",
+    "validation:134",
+    "validation:135",
+    "validation:136",
+    "validation:137",
+    "validation:138",
+    "validation:139",
+    "validation:140",
+    "validation:141",
+    "validation:142",
+    "validation:143",
+    "validation:144",
+    "validation:145",
+    "validation:146",
+    "validation:147",
+    "validation:148",
+    "validation:149",
+    "validation:150",
+    "validation:151",
+    "validation:152",
+    "validation:153",
+    "validation:154",
+    "validation:155",
+    "validation:156",
+    "validation:157",
+    "validation:158",
+    "validation:159",
+    "validation:160",
+    "validation:161",
+    "validation:162",
+    "validation:163",
+    "validation:164",
+    "validation:165",
+    "validation:166",
+    "validation:167",
+    "validation:168",
+    "validation:169",
+    "validation:170",
+    "validation:171",
+    "validation:172",
+    "validation:173",
+    "validation:174",
+    "validation:175",
+    "validation:176",
+    "validation:177",
+    "validation:178",
+    "validation:179",
+    "validation:180",
+    "validation:181",
+    "validation:182",
+    "validation:183",
+    "validation:184",
+    "validation:185",
+    "validation:186",
+    "validation:187",
+    "validation:188",
+    "validation:189",
+    "validation:190",
+    "validation:191",
+    "validation:192",
+    "validation:193",
+    "validation:194",
+    "validation:195",
+    "validation:196",
+    "validation:197",
+    "validation:198",
+    "validation:199"
+  ],
+  "seed": 0,
+  "draws_per_surface": 256,
+  "targets": [
+    "initial_variance",
+    "theta",
+    "vol_of_vol",
+    "rho"
+  ],
+  "sbc": {
+    "surfaces": 200,
+    "draws_per_surface": 256,
+    "rank_ks": [
+      0.06785519018206293,
+      0.04342253110385497,
+      0.05791980798547769,
+      0.051298192426550315
+    ],
+    "dkw_bound": 0.11264073214465789,
+    "family_alpha": 0.05,
+    "passed": [
+      true,
+      true,
+      true,
+      true
+    ]
+  },
+  "coverage": {
+    "0.5": {
+      "coverage": [
+        0.48,
+        0.495,
+        0.51,
+        0.475
+      ],
+      "wilson": [
+        [
+          0.411791663783233,
+          0.5489621492718576
+        ],
+        [
+          0.4264584535990475,
+          0.5637299996647251
+        ],
+        [
+          0.44118587678458643,
+          0.5784372166878682
+        ],
+        [
+          0.4069162264657108,
+          0.5440260398531525
+        ]
+      ]
+    },
+    "0.8": {
+      "coverage": [
+        0.81,
+        0.81,
+        0.83,
+        0.815
+      ],
+      "wilson": [
+        [
+          0.7499876129240015,
+          0.8583282847220932
+        ],
+        [
+          0.7499876129240015,
+          0.8583282847220932
+        ],
+        [
+          0.7718411637168737,
+          0.8757209208741302
+        ],
+        [
+          0.7554293723884824,
+          0.8626980719938395
+        ]
+      ]
+    },
+    "0.9": {
+      "coverage": [
+        0.905,
+        0.88,
+        0.915,
+        0.925
+      ],
+      "wilson": [
+        [
+          0.8563983883518006,
+          0.9383368972826135
+        ],
+        [
+          0.8276574790170326,
+          0.9180200729362449
+        ],
+        [
+          0.8681041292843443,
+          0.9462542498225244
+        ],
+        [
+          0.8799563897637055,
+          0.954025082815618
+        ]
+      ]
+    },
+    "0.95": {
+      "coverage": [
+        0.975,
+        0.95,
+        0.955,
+        0.955
+      ],
+      "wilson": [
+        [
+          0.942821659593358,
+          0.9892752803482386
+        ],
+        [
+          0.9104218518612239,
+          0.972617354399236
+        ],
+        [
+          0.9167032959981803,
+          0.976147456998507
+        ],
+        [
+          0.9167032959981803,
+          0.976147456998507
+        ]
+      ]
+    }
+  },
+  "contraction_logit": {
+    "initial_variance": 0.9929648347580452,
+    "theta": 0.9775346119379947,
+    "vol_of_vol": 0.9488443661524596,
+    "rho": 0.9188554626864992
+  },
+  "recovery_correlation": {
+    "initial_variance": 0.9999377090421148,
+    "theta": 0.9991432894549919,
+    "vol_of_vol": 0.9954765309664085,
+    "rho": 0.9866899636026164
+  },
+  "scope": "synthetic complete-design diagnostics; not conditional reference agreement or scientific acceptance",
+  "seconds": 7.324514442007057
+}

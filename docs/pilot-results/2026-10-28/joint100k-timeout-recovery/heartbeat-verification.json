@@ -1,0 +1,41 @@
+{
+  "checked_utc": "2026-10-28T20:57:36.685273+00:00",
+  "host": "login010",
+  "pid": 2825694,
+  "ppid": 1,
+  "state": "generation_active",
+  "started_utc": "2026-10-28T20:54:25.915712+00:00",
+  "last_poll_utc": "2026-10-28T20:57:30.241754+00:00",
+  "budget": {
+    "actual_cpu_seconds": 3501517,
+    "outstanding_cpu_seconds": 2185920,
+    "final_reserve_cpu_seconds": 3840,
+    "exposure_cpu_seconds": 5691277,
+    "nonterminal_workers": 198
+  },
+  "new_worker_attempts": [
+    {
+      "job_id": "8067259",
+      "workers": 200,
+      "role": "workers"
+    },
+    {
+      "job_id": "8067482",
+      "workers": 2,
+      "role": "workers"
+    }
+  ],
+  "queue_counts": {
+    "RUNNING": 199
+  },
+  "excluded_nodes_absent": true,
+  "committed_split_rows": {
+    "train": 63590,
+    "validation": 5000,
+    "test": 7000
+  },
+  "published_parts": 3026,
+  "new_train_rows_since_recovery": 15,
+  "completed_new_workers_in_ledger": 2,
+  "original_journal_sha256": "4859cbc1d3bd65d907315e5b48d5454c47f151b08885ca84c7b0c547309e97a6"
+}

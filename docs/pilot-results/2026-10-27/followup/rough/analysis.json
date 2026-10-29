@@ -1,0 +1,514 @@
+{
+  "absolute_bias_interpretation": {
+    "batch_size_crosscheck": "At preidentified quotes8/49 all three pooled small-batch controlled means agree with earlier independent larger-batch means within one combined empirical/new and nominal/old SE. This argues against an obvious large batch-size effect here, but two controlled estimators can share bias; it does not supply an unbiased price oracle.",
+    "case6_quote8": "Paired mean\u22121.6127quoteSD, heuristic t95[\u22123.1625,\u22120.0629]. This is a flag, not automatic acceptance or proof of OLS bias; the interval does not establish a material absolute bias exceeding0.25quoteSD. Its half-width1.5498quoteSD is6.20times the policy scale.",
+    "finding": "The bounded-raw comparison does not certify absolute fitted-control mean bias below0.25quoteSD on all three anchors. Critical wing comparisons remain much noisier than the controlled estimator.",
+    "grid_bias": "This working-grid-only check does not reverse the earlier material refinement shift at low-H/high-eta anchor4 (index49,+1.6543quoteSD). Grid bias, MC dispersion and fitted-control mean bias remain distinct.",
+    "multiplicity": "Quote8 was already a meaningful short-end witness; nevertheless t intervals are descriptive and63quotes share controls/paths. Selected maxima or counts of interval exclusions are not formal familywise failure tests.",
+    "policy_scale_quote_sigma": 0.25
+  },
+  "accounting": {
+    "allocated_cpu_seconds": 1140,
+    "counting": "four run allocations plus declaration; batch/extern CPU not counted twice; batch MaxRSS recorded separately",
+    "declared_allocated_cpu_ceiling_seconds": 7200,
+    "system_cpu_seconds": 185.463,
+    "top_level_allocation_count": 5,
+    "total_cpu_seconds": 1106.382,
+    "user_cpu_seconds": 920.917
+  },
+  "anchors": [
+    {
+      "case_index": 0,
+      "declared_batches": 16,
+      "independent_batch_pool_paths_per_block": 524288,
+      "per_block_paths_per_batch": 32768,
+      "pooling_example_quote8": [
+        {
+          "batches_per_pool": 1,
+          "empirical_sd_across_pools_over_quote_sigma": 0.0018777974671786426,
+          "independent_pools": 16,
+          "paths_per_block_per_pool": 32768,
+          "rms_nominal_se_over_quote_sigma": 0.0017800646031668993
+        },
+        {
+          "batches_per_pool": 2,
+          "empirical_sd_across_pools_over_quote_sigma": 0.0008809947524137776,
+          "independent_pools": 8,
+          "paths_per_block_per_pool": 65536,
+          "rms_nominal_se_over_quote_sigma": 0.001258695751849455
+        },
+        {
+          "batches_per_pool": 4,
+          "empirical_sd_across_pools_over_quote_sigma": 0.0005811020382420512,
+          "independent_pools": 4,
+          "paths_per_block_per_pool": 131072,
+          "rms_nominal_se_over_quote_sigma": 0.0008900323015834496
+        },
+        {
+          "batches_per_pool": 8,
+          "empirical_sd_across_pools_over_quote_sigma": 0.00018157075618253235,
+          "independent_pools": 2,
+          "paths_per_block_per_pool": 262144,
+          "rms_nominal_se_over_quote_sigma": 0.0006293478759247275
+        },
+        {
+          "batches_per_pool": 16,
+          "empirical_sd_across_pools_over_quote_sigma": null,
+          "independent_pools": 1,
+          "paths_per_block_per_pool": 524288,
+          "rms_nominal_se_over_quote_sigma": 0.0004450161507917248
+        }
+      ],
+      "preidentified_quote_examples": [
+        {
+          "bounded_raw_mean_over_quote_sigma": 0.4402352873431258,
+          "combined_new_empirical_old_nominal_se_over_quote_sigma": 0.0007925650228143288,
+          "contract": {
+            "maturity": 0.01984126984126984,
+            "option_type": "call",
+            "strike": 1.0579611547045846
+          },
+          "contract_index": 8,
+          "controlled_between_to_nominal_se_ratio": 1.054904110692313,
+          "controlled_empirical_pooled_se_over_quote_sigma": 0.00046944936679466065,
+          "controlled_mean_over_quote_sigma": 0.31425469323943245,
+          "descriptive_interval_wholly_inside_plus_minus_0_25_sigma": false,
+          "paired_controlled_minus_raw_mean_over_quote_sigma": -0.12598059410235013,
+          "paired_descriptive_t95_halfwidth_over_quote_sigma": 0.38937663109451004,
+          "paired_descriptive_t95_interval_over_quote_sigma": [
+            -0.5153572251968602,
+            0.2633960369921599
+          ],
+          "paired_halfwidth_relative_to_0_25_sigma": 1.5575065243780402,
+          "previous_large_batch_paths_per_block": 131072,
+          "raw_empirical_pooled_se_over_quote_sigma": 0.18271575700294057,
+          "small_batch_pool_minus_previous_large_batch_controlled_over_quote_sigma": -0.0006894333411060293
+        },
+        {
+          "bounded_raw_mean_over_quote_sigma": 62.51293192726949,
+          "combined_new_empirical_old_nominal_se_over_quote_sigma": 0.03373415608626329,
+          "contract": {
+            "maturity": 0.08333333333333333,
+            "option_type": "put",
+            "strike": 1.0
+          },
+          "contract_index": 22,
+          "controlled_between_to_nominal_se_ratio": 1.1921944745074178,
+          "controlled_empirical_pooled_se_over_quote_sigma": 0.021595857369351778,
+          "controlled_mean_over_quote_sigma": 62.48945755803424,
+          "descriptive_interval_wholly_inside_plus_minus_0_25_sigma": true,
+          "paired_controlled_minus_raw_mean_over_quote_sigma": -0.023474369235257992,
+          "paired_descriptive_t95_halfwidth_over_quote_sigma": 0.218596661014741,
+          "paired_descriptive_t95_interval_over_quote_sigma": [
+            -0.242071030249999,
+            0.19512229177948304
+          ],
+          "paired_halfwidth_relative_to_0_25_sigma": 0.874386644058964,
+          "previous_large_batch_paths_per_block": 131072,
+          "raw_empirical_pooled_se_over_quote_sigma": 0.11055582995747243,
+          "small_batch_pool_minus_previous_large_batch_controlled_over_quote_sigma": -0.012231370588202423
+        },
+        {
+          "bounded_raw_mean_over_quote_sigma": 60.584347335935924,
+          "combined_new_empirical_old_nominal_se_over_quote_sigma": 0.03206986434711705,
+          "contract": {
+            "maturity": 0.5,
+            "option_type": "put",
+            "strike": 1.0
+          },
+          "contract_index": 49,
+          "controlled_between_to_nominal_se_ratio": 1.0525852512006812,
+          "controlled_empirical_pooled_se_over_quote_sigma": 0.019005392099769678,
+          "controlled_mean_over_quote_sigma": 60.47621392297277,
+          "descriptive_interval_wholly_inside_plus_minus_0_25_sigma": false,
+          "paired_controlled_minus_raw_mean_over_quote_sigma": -0.1081334129631104,
+          "paired_descriptive_t95_halfwidth_over_quote_sigma": 0.16730047566365364,
+          "paired_descriptive_t95_interval_over_quote_sigma": [
+            -0.27543388862676405,
+            0.059167062700543255
+          ],
+          "paired_halfwidth_relative_to_0_25_sigma": 0.6692019026546145,
+          "previous_large_batch_paths_per_block": 131072,
+          "raw_empirical_pooled_se_over_quote_sigma": 0.08314929460308648,
+          "small_batch_pool_minus_previous_large_batch_controlled_over_quote_sigma": -0.0068273496419671035
+        }
+      ],
+      "priced_batches": 16,
+      "se_ratio_descriptive_quantiles": {
+        "controlled": {
+          "max_descriptive_only": 1.39063882294167,
+          "median": 0.9744330964563668,
+          "p90": 1.245286374914512
+        },
+        "paired_controlled_minus_raw": {
+          "max_descriptive_only": 1.2805624817863777,
+          "median": 0.958500540452749,
+          "p90": 1.2400570461063967
+        },
+        "raw": {
+          "max_descriptive_only": 1.356613799931859,
+          "median": 0.9596724870753882,
+          "p90": 1.2623561702232107
+        }
+      }
+    },
+    {
+      "case_index": 4,
+      "declared_batches": 16,
+      "independent_batch_pool_paths_per_block": 524288,
+      "per_block_paths_per_batch": 32768,
+      "pooling_example_quote8": [
+        {
+          "batches_per_pool": 1,
+          "empirical_sd_across_pools_over_quote_sigma": 0.26499991921259913,
+          "independent_pools": 16,
+          "paths_per_block_per_pool": 32768,
+          "rms_nominal_se_over_quote_sigma": 0.3109694803230124
+        },
+        {
+          "batches_per_pool": 2,
+          "empirical_sd_across_pools_over_quote_sigma": 0.15302871989497852,
+          "independent_pools": 8,
+          "paths_per_block_per_pool": 65536,
+          "rms_nominal_se_over_quote_sigma": 0.2198886282784588
+        },
+        {
+          "batches_per_pool": 4,
+          "empirical_sd_across_pools_over_quote_sigma": 0.10511210716499111,
+          "independent_pools": 4,
+          "paths_per_block_per_pool": 131072,
+          "rms_nominal_se_over_quote_sigma": 0.15548474016150624
+        },
+        {
+          "batches_per_pool": 8,
+          "empirical_sd_across_pools_over_quote_sigma": 0.03394571931850489,
+          "independent_pools": 2,
+          "paths_per_block_per_pool": 262144,
+          "rms_nominal_se_over_quote_sigma": 0.10994431413922938
+        },
+        {
+          "batches_per_pool": 16,
+          "empirical_sd_across_pools_over_quote_sigma": null,
+          "independent_pools": 1,
+          "paths_per_block_per_pool": 524288,
+          "rms_nominal_se_over_quote_sigma": 0.0777423700807531
+        }
+      ],
+      "preidentified_quote_examples": [
+        {
+          "bounded_raw_mean_over_quote_sigma": 5.132941213078011,
+          "combined_new_empirical_old_nominal_se_over_quote_sigma": 0.07797604150484039,
+          "contract": {
+            "maturity": 0.01984126984126984,
+            "option_type": "call",
+            "strike": 1.0579611547045846
+          },
+          "contract_index": 8,
+          "controlled_between_to_nominal_se_ratio": 0.8521733995803593,
+          "controlled_empirical_pooled_se_over_quote_sigma": 0.06624997980314978,
+          "controlled_mean_over_quote_sigma": 4.673536085943717,
+          "descriptive_interval_wholly_inside_plus_minus_0_25_sigma": false,
+          "paired_controlled_minus_raw_mean_over_quote_sigma": -0.45940512713427034,
+          "paired_descriptive_t95_halfwidth_over_quote_sigma": 0.9670677797564566,
+          "paired_descriptive_t95_interval_over_quote_sigma": [
+            -1.426472906890727,
+            0.5076626526221864
+          ],
+          "paired_halfwidth_relative_to_0_25_sigma": 3.8682711190258265,
+          "previous_large_batch_paths_per_block": 1048576,
+          "raw_empirical_pooled_se_over_quote_sigma": 0.4595427904604689,
+          "small_batch_pool_minus_previous_large_batch_controlled_over_quote_sigma": -0.06553617973023493
+        },
+        {
+          "bounded_raw_mean_over_quote_sigma": 61.45325665234076,
+          "combined_new_empirical_old_nominal_se_over_quote_sigma": 0.07436111986387661,
+          "contract": {
+            "maturity": 0.08333333333333333,
+            "option_type": "put",
+            "strike": 1.0
+          },
+          "contract_index": 22,
+          "controlled_between_to_nominal_se_ratio": 0.8613577142381728,
+          "controlled_empirical_pooled_se_over_quote_sigma": 0.06312395230894755,
+          "controlled_mean_over_quote_sigma": 61.61289533979698,
+          "descriptive_interval_wholly_inside_plus_minus_0_25_sigma": false,
+          "paired_controlled_minus_raw_mean_over_quote_sigma": 0.1596386874561182,
+          "paired_descriptive_t95_halfwidth_over_quote_sigma": 0.3614905733093378,
+          "paired_descriptive_t95_interval_over_quote_sigma": [
+            -0.20185188585321964,
+            0.521129260765456
+          ],
+          "paired_halfwidth_relative_to_0_25_sigma": 1.4459622932373513,
+          "previous_large_batch_paths_per_block": 1048576,
+          "raw_empirical_pooled_se_over_quote_sigma": 0.17209806839006841,
+          "small_batch_pool_minus_previous_large_batch_controlled_over_quote_sigma": 0.17722683949361934
+        },
+        {
+          "bounded_raw_mean_over_quote_sigma": 71.90330686930221,
+          "combined_new_empirical_old_nominal_se_over_quote_sigma": 0.10013840449867654,
+          "contract": {
+            "maturity": 0.5,
+            "option_type": "put",
+            "strike": 1.0
+          },
+          "contract_index": 49,
+          "controlled_between_to_nominal_se_ratio": 0.957403534906197,
+          "controlled_empirical_pooled_se_over_quote_sigma": 0.08655476074916292,
+          "controlled_mean_over_quote_sigma": 71.90600113949071,
+          "descriptive_interval_wholly_inside_plus_minus_0_25_sigma": false,
+          "paired_controlled_minus_raw_mean_over_quote_sigma": 0.002694270188516948,
+          "paired_descriptive_t95_halfwidth_over_quote_sigma": 0.38641531796431866,
+          "paired_descriptive_t95_interval_over_quote_sigma": [
+            -0.38372104777580174,
+            0.3891095881528356
+          ],
+          "paired_halfwidth_relative_to_0_25_sigma": 1.5456612718572746,
+          "previous_large_batch_paths_per_block": 1048576,
+          "raw_empirical_pooled_se_over_quote_sigma": 0.22028225860977968,
+          "small_batch_pool_minus_previous_large_batch_controlled_over_quote_sigma": 0.0641501376824295
+        }
+      ],
+      "priced_batches": 16,
+      "se_ratio_descriptive_quantiles": {
+        "controlled": {
+          "max_descriptive_only": 1.2700888228230605,
+          "median": 0.957403534906197,
+          "p90": 1.1767015040679651
+        },
+        "paired_controlled_minus_raw": {
+          "max_descriptive_only": 1.383073287004808,
+          "median": 1.2195877451076764,
+          "p90": 1.36320015552399
+        },
+        "raw": {
+          "max_descriptive_only": 1.5416998116745033,
+          "median": 1.1112362847986894,
+          "p90": 1.3418279861334048
+        }
+      }
+    },
+    {
+      "case_index": 6,
+      "declared_batches": 16,
+      "independent_batch_pool_paths_per_block": 524288,
+      "per_block_paths_per_batch": 32768,
+      "pooling_example_quote8": [
+        {
+          "batches_per_pool": 1,
+          "empirical_sd_across_pools_over_quote_sigma": 0.10162015236473308,
+          "independent_pools": 16,
+          "paths_per_block_per_pool": 32768,
+          "rms_nominal_se_over_quote_sigma": 0.13178948793975281
+        },
+        {
+          "batches_per_pool": 2,
+          "empirical_sd_across_pools_over_quote_sigma": 0.06887283969052464,
+          "independent_pools": 8,
+          "paths_per_block_per_pool": 65536,
+          "rms_nominal_se_over_quote_sigma": 0.09318924061130195
+        },
+        {
+          "batches_per_pool": 4,
+          "empirical_sd_across_pools_over_quote_sigma": 0.035426010010471055,
+          "independent_pools": 4,
+          "paths_per_block_per_pool": 131072,
+          "rms_nominal_se_over_quote_sigma": 0.06589474396987642
+        },
+        {
+          "batches_per_pool": 8,
+          "empirical_sd_across_pools_over_quote_sigma": 0.03341222405615659,
+          "independent_pools": 2,
+          "paths_per_block_per_pool": 262144,
+          "rms_nominal_se_over_quote_sigma": 0.046594620305650966
+        },
+        {
+          "batches_per_pool": 16,
+          "empirical_sd_across_pools_over_quote_sigma": null,
+          "independent_pools": 1,
+          "paths_per_block_per_pool": 524288,
+          "rms_nominal_se_over_quote_sigma": 0.032947371984938204
+        }
+      ],
+      "preidentified_quote_examples": [
+        {
+          "bounded_raw_mean_over_quote_sigma": 10.457514783959304,
+          "combined_new_empirical_old_nominal_se_over_quote_sigma": 0.03423006158583416,
+          "contract": {
+            "maturity": 0.01984126984126984,
+            "option_type": "call",
+            "strike": 1.0579611547045846
+          },
+          "contract_index": 8,
+          "controlled_between_to_nominal_se_ratio": 0.7710793474756381,
+          "controlled_empirical_pooled_se_over_quote_sigma": 0.02540503809118327,
+          "controlled_mean_over_quote_sigma": 8.844790159611593,
+          "descriptive_interval_wholly_inside_plus_minus_0_25_sigma": false,
+          "paired_controlled_minus_raw_mean_over_quote_sigma": -1.6127246243466125,
+          "paired_descriptive_t95_halfwidth_over_quote_sigma": 1.5497941235653325,
+          "paired_descriptive_t95_interval_over_quote_sigma": [
+            -3.1625187479119448,
+            -0.06293050078127987
+          ],
+          "paired_halfwidth_relative_to_0_25_sigma": 6.19917649426133,
+          "previous_large_batch_paths_per_block": 524288,
+          "raw_empirical_pooled_se_over_quote_sigma": 0.7281576711974374,
+          "small_batch_pool_minus_previous_large_batch_controlled_over_quote_sigma": 0.010668375443992673
+        },
+        {
+          "bounded_raw_mean_over_quote_sigma": 106.9194143736478,
+          "combined_new_empirical_old_nominal_se_over_quote_sigma": 0.10379487559076576,
+          "contract": {
+            "maturity": 0.08333333333333333,
+            "option_type": "put",
+            "strike": 1.0
+          },
+          "contract_index": 22,
+          "controlled_between_to_nominal_se_ratio": 1.218149244747103,
+          "controlled_empirical_pooled_se_over_quote_sigma": 0.0896982026985373,
+          "controlled_mean_over_quote_sigma": 106.70813146556762,
+          "descriptive_interval_wholly_inside_plus_minus_0_25_sigma": false,
+          "paired_controlled_minus_raw_mean_over_quote_sigma": -0.21128290808022826,
+          "paired_descriptive_t95_halfwidth_over_quote_sigma": 0.48617868362508326,
+          "paired_descriptive_t95_interval_over_quote_sigma": [
+            -0.6974615917053115,
+            0.274895775544855
+          ],
+          "paired_halfwidth_relative_to_0_25_sigma": 1.944714734500333,
+          "previous_large_batch_paths_per_block": 524288,
+          "raw_empirical_pooled_se_over_quote_sigma": 0.20100378806178001,
+          "small_batch_pool_minus_previous_large_batch_controlled_over_quote_sigma": -0.08584025537882893
+        },
+        {
+          "bounded_raw_mean_over_quote_sigma": 98.30643403404643,
+          "combined_new_empirical_old_nominal_se_over_quote_sigma": 0.07369041290704809,
+          "contract": {
+            "maturity": 0.5,
+            "option_type": "put",
+            "strike": 1.0
+          },
+          "contract_index": 49,
+          "controlled_between_to_nominal_se_ratio": 0.7350029349063149,
+          "controlled_empirical_pooled_se_over_quote_sigma": 0.05268237576604343,
+          "controlled_mean_over_quote_sigma": 98.65110357158375,
+          "descriptive_interval_wholly_inside_plus_minus_0_25_sigma": false,
+          "paired_controlled_minus_raw_mean_over_quote_sigma": 0.3446695375373446,
+          "paired_descriptive_t95_halfwidth_over_quote_sigma": 0.49332922530929557,
+          "paired_descriptive_t95_interval_over_quote_sigma": [
+            -0.14865968777195093,
+            0.8379987628466402
+          ],
+          "paired_halfwidth_relative_to_0_25_sigma": 1.9733169012371823,
+          "previous_large_batch_paths_per_block": 524288,
+          "raw_empirical_pooled_se_over_quote_sigma": 0.25453271251332943,
+          "small_batch_pool_minus_previous_large_batch_controlled_over_quote_sigma": -0.004540196190015318
+        }
+      ],
+      "priced_batches": 16,
+      "se_ratio_descriptive_quantiles": {
+        "controlled": {
+          "max_descriptive_only": 1.280956649389419,
+          "median": 0.9165420867902487,
+          "p90": 1.2142508783965635
+        },
+        "paired_controlled_minus_raw": {
+          "max_descriptive_only": 1.2105087633041314,
+          "median": 0.9473613457542119,
+          "p90": 1.1577675247072023
+        },
+        "raw": {
+          "max_descriptive_only": 1.3205689481388556,
+          "median": 0.8460227494508433,
+          "p90": 1.109865959611342
+        }
+      }
+    }
+  ],
+  "declaration_sha256": "131d2b5733016e55382ac81206d1e7a95a41307c6fec4c04507edae8992fe9a2",
+  "empirical_recommendation": {
+    "before_32k_bank": "Do not treat this diagnostic as a price-accuracy certificate or automatic32k-bank authorization. Absolute bias at the0.25quoteSD scale remains unresolved for key wings, and the earlier grid-refinement issue remains material.",
+    "estimator": "Retain the current fitted-control estimator for bounded development. The repeated-batch and larger-batch comparisons do not justify an automatic algorithm switch or universal safety multiplier.",
+    "lean_next_step": "Use the already saved control means and fitted coefficients for a prespecified, analysis-only cross-batch coefficient check of the same-sample fit effect, with disjoint pairs and its own uncertainty. That needs no new paths or default-estimator change. It cannot validate control centering or remove time-grid bias. Review this evidence and the separately costed baseline-tranche proposal before any substantial generation; avoid simply enlarging the noisy raw-put comparison."
+  },
+  "format": "rough_control_diagnostic_analysis_v1",
+  "pooling_interpretation": "Nominal SEs shrink by1/sqrt(number of independent batches) by construction. Empirical pool scatter is descriptive and becomes very noisy with four/two pools; one16-batch pool has no empirical across-pool scatter. These are averages of separately fitted32768-path estimates, never a refit at524288paths.",
+  "se_policy_interpretation": "Controlled empirical-between/nominalSE ratios are near one across all three anchors. This provides no empirical reason for a blanket SE inflation or estimator replacement on this panel. Sixteen batches do not verify pointwise/global coverage or the unbounded controls' population moments.",
+  "source_revision": "615a72f48100b043b378d73373ac6ac78258fd36",
+  "status": "development_diagnostic_not_acceptance",
+  "timing": {
+    "diagnostics_enabled": false,
+    "historical_contrast": "Earlier refined point6 timeout occurred with~95%system CPU and a much lower frequency counter on another Cascade Lake node. The new allocation has~24%system CPU and consistent ABBA timings. This confirms runtime variability matters; it does not establish its cause.",
+    "mean_cpu_seconds": {
+      "refined": 46.012594414999995,
+      "working": 19.562075893000006
+    },
+    "no_extra_warmup": true,
+    "node": "node1842",
+    "order": "working/refined/refined/working",
+    "parameter_case": "frozen independent prior point6, not stress anchor6",
+    "paths_per_block": 32768,
+    "point_parameters": [
+      0.06801497056547741,
+      2.660052850071144,
+      -0.9830043983490563,
+      0.15881640439892336,
+      0.03506523281179216,
+      5.608268473117876
+    ],
+    "refined_to_working_mean_cpu_ratio": 2.35213249691281,
+    "runs": [
+      {
+        "call_index": 48,
+        "cpu_seconds": 19.919005596,
+        "first_call_in_allocation": true,
+        "policy": "working",
+        "repeat_id": 0,
+        "summed_block_cpu_seconds": 19.906835567,
+        "wall_seconds": 20.139254031702876
+      },
+      {
+        "call_index": 49,
+        "cpu_seconds": 46.042010391999995,
+        "first_call_in_allocation": false,
+        "policy": "refined",
+        "repeat_id": 0,
+        "summed_block_cpu_seconds": 45.993005504,
+        "wall_seconds": 46.3998079970479
+      },
+      {
+        "call_index": 50,
+        "cpu_seconds": 45.983178437999996,
+        "first_call_in_allocation": false,
+        "policy": "refined",
+        "repeat_id": 1,
+        "summed_block_cpu_seconds": 45.89881143600002,
+        "wall_seconds": 46.302113119512796
+      },
+      {
+        "call_index": 51,
+        "cpu_seconds": 19.205146190000008,
+        "first_call_in_allocation": false,
+        "policy": "working",
+        "repeat_id": 1,
+        "summed_block_cpu_seconds": 19.085471487000007,
+        "wall_seconds": 19.382085924968123
+      }
+    ],
+    "scope": "Same-allocation fixed-path timing, not adaptive generation throughput or a prior-population bank-cost estimate. The first working call may include cold effects; no calls are omitted."
+  },
+  "uncertainty_caveat": "All t intervals are heuristic descriptive summaries; neither pointwise coverage nor simultaneous coverage is verified. No universal coverage, zero-bias, continuous-model accuracy or production-bank cost claim is made.",
+  "validation": {
+    "all_48_batch_raw_put_means_within_recorded_bounds": true,
+    "all_52_calls_priced": true,
+    "all_source_hashes_match_current_checkout": true,
+    "checked_reducer_completed": true,
+    "seed_audit": {
+      "historical_reduced_uint64": 768,
+      "new_pricing_streams": 156,
+      "new_reduced_uint64": 208,
+      "observed_unique_streams": 156,
+      "passed": true,
+      "previous_initialized_pcg64_states": 724,
+      "scope": "All possible block/rung streams and parameter RNG states of reviewed root271100."
+    }
+  }
+}

@@ -1,0 +1,1337 @@
+{
+  "actual_seed_collision_audit_passed": true,
+  "case_index": 2,
+  "cases": [
+    {
+      "name": "typical_flat",
+      "parameters": [
+        0.1,
+        1.5,
+        -0.7,
+        0.04,
+        0.04,
+        2.0
+      ]
+    },
+    {
+      "name": "rising_curve",
+      "parameters": [
+        0.12,
+        1.6,
+        -0.65,
+        0.02,
+        0.09,
+        3.0
+      ]
+    },
+    {
+      "name": "falling_curve",
+      "parameters": [
+        0.12,
+        1.6,
+        -0.65,
+        0.09,
+        0.02,
+        3.0
+      ]
+    },
+    {
+      "name": "nearly_flat_fast_decay",
+      "parameters": [
+        0.15,
+        1.8,
+        -0.6,
+        0.04,
+        0.0401,
+        7.5
+      ]
+    },
+    {
+      "name": "low_h_high_eta",
+      "parameters": [
+        0.025,
+        3.4,
+        -0.95,
+        0.04,
+        0.09,
+        7.5
+      ]
+    },
+    {
+      "name": "high_h_low_eta",
+      "parameters": [
+        0.34,
+        0.55,
+        -0.25,
+        0.09,
+        0.04,
+        0.3
+      ]
+    },
+    {
+      "name": "high_variance",
+      "parameters": [
+        0.08,
+        2.5,
+        -0.9,
+        0.15,
+        0.15,
+        4.0
+      ]
+    },
+    {
+      "name": "low_short_steep_rise",
+      "parameters": [
+        0.05,
+        2.8,
+        -0.95,
+        0.012,
+        0.14,
+        7.5
+      ]
+    }
+  ],
+  "component_selection": {
+    "grid_multiplier": 4,
+    "replicate": 1
+  },
+  "declaration_sha256": "4e78934781e8b011981b1ebc3f03c16815aecac97957e36538a0e57040ca5f6c",
+  "declared_block_multipliers": {
+    "16": [
+      16,
+      4,
+      4
+    ],
+    "4": [
+      4,
+      4,
+      4
+    ],
+    "8": [
+      8,
+      4,
+      4
+    ]
+  },
+  "format": "rough_grid_development_pilot_v1",
+  "pricing_seed_table": [
+    {
+      "block_multipliers": [
+        4,
+        4,
+        4
+      ],
+      "case": "typical_flat",
+      "grid_multiplier": 4,
+      "pricing_seeds": [
+        10607296620560436000,
+        6975642274499006109,
+        5880870184089474452
+      ],
+      "replicate": 0
+    },
+    {
+      "block_multipliers": [
+        4,
+        4,
+        4
+      ],
+      "case": "typical_flat",
+      "grid_multiplier": 4,
+      "pricing_seeds": [
+        8223410662315198549,
+        14195678250117650067,
+        9627904363010694037
+      ],
+      "replicate": 1
+    },
+    {
+      "block_multipliers": [
+        8,
+        4,
+        4
+      ],
+      "case": "typical_flat",
+      "grid_multiplier": 8,
+      "pricing_seeds": [
+        11968647537622359246,
+        6045266669629392012,
+        11581720418213759686
+      ],
+      "replicate": 0
+    },
+    {
+      "block_multipliers": [
+        8,
+        4,
+        4
+      ],
+      "case": "typical_flat",
+      "grid_multiplier": 8,
+      "pricing_seeds": [
+        16466695804663005415,
+        17951735313494442650,
+        17312433916105711214
+      ],
+      "replicate": 1
+    },
+    {
+      "block_multipliers": [
+        16,
+        4,
+        4
+      ],
+      "case": "typical_flat",
+      "grid_multiplier": 16,
+      "pricing_seeds": [
+        14808107399889745261,
+        18381661670781539418,
+        8115290810675575908
+      ],
+      "replicate": 0
+    },
+    {
+      "block_multipliers": [
+        16,
+        4,
+        4
+      ],
+      "case": "typical_flat",
+      "grid_multiplier": 16,
+      "pricing_seeds": [
+        8467363869481026596,
+        9902343603692981444,
+        7400381529540186604
+      ],
+      "replicate": 1
+    },
+    {
+      "block_multipliers": [
+        4,
+        4,
+        4
+      ],
+      "case": "rising_curve",
+      "grid_multiplier": 4,
+      "pricing_seeds": [
+        18254931790826662511,
+        14462692212156223934,
+        16285892453554896615
+      ],
+      "replicate": 0
+    },
+    {
+      "block_multipliers": [
+        4,
+        4,
+        4
+      ],
+      "case": "rising_curve",
+      "grid_multiplier": 4,
+      "pricing_seeds": [
+        5401612375058129356,
+        7243136285664632830,
+        16566341650827863411
+      ],
+      "replicate": 1
+    },
+    {
+      "block_multipliers": [
+        8,
+        4,
+        4
+      ],
+      "case": "rising_curve",
+      "grid_multiplier": 8,
+      "pricing_seeds": [
+        1747804544947715371,
+        16930701080953147800,
+        16639685110669103295
+      ],
+      "replicate": 0
+    },
+    {
+      "block_multipliers": [
+        8,
+        4,
+        4
+      ],
+      "case": "rising_curve",
+      "grid_multiplier": 8,
+      "pricing_seeds": [
+        11946687006257997080,
+        2377735169640814763,
+        17706951067284039606
+      ],
+      "replicate": 1
+    },
+    {
+      "block_multipliers": [
+        16,
+        4,
+        4
+      ],
+      "case": "rising_curve",
+      "grid_multiplier": 16,
+      "pricing_seeds": [
+        11434248828814718041,
+        3340865337804843749,
+        14790811535318092588
+      ],
+      "replicate": 0
+    },
+    {
+      "block_multipliers": [
+        16,
+        4,
+        4
+      ],
+      "case": "rising_curve",
+      "grid_multiplier": 16,
+      "pricing_seeds": [
+        7506905233612960578,
+        16126544000345667421,
+        7785261267828280755
+      ],
+      "replicate": 1
+    },
+    {
+      "block_multipliers": [
+        4,
+        4,
+        4
+      ],
+      "case": "falling_curve",
+      "grid_multiplier": 4,
+      "pricing_seeds": [
+        9650020054418355754,
+        630582358691178476,
+        13791083761423197165
+      ],
+      "replicate": 0
+    },
+    {
+      "block_multipliers": [
+        4,
+        4,
+        4
+      ],
+      "case": "falling_curve",
+      "grid_multiplier": 4,
+      "pricing_seeds": [
+        7770025200997891637,
+        11127765319974433013,
+        1640725767554796835
+      ],
+      "replicate": 1
+    },
+    {
+      "block_multipliers": [
+        8,
+        4,
+        4
+      ],
+      "case": "falling_curve",
+      "grid_multiplier": 8,
+      "pricing_seeds": [
+        16327131341504189811,
+        5317502315762417316,
+        5365810359702585117
+      ],
+      "replicate": 0
+    },
+    {
+      "block_multipliers": [
+        8,
+        4,
+        4
+      ],
+      "case": "falling_curve",
+      "grid_multiplier": 8,
+      "pricing_seeds": [
+        12612367560284602961,
+        7701613126987255291,
+        7007796602907042511
+      ],
+      "replicate": 1
+    },
+    {
+      "block_multipliers": [
+        16,
+        4,
+        4
+      ],
+      "case": "falling_curve",
+      "grid_multiplier": 16,
+      "pricing_seeds": [
+        16516087388447563169,
+        2660487236436276958,
+        14407996620825598004
+      ],
+      "replicate": 0
+    },
+    {
+      "block_multipliers": [
+        16,
+        4,
+        4
+      ],
+      "case": "falling_curve",
+      "grid_multiplier": 16,
+      "pricing_seeds": [
+        6473292060734193719,
+        5946547723262980200,
+        13098879487230691967
+      ],
+      "replicate": 1
+    },
+    {
+      "block_multipliers": [
+        4,
+        4,
+        4
+      ],
+      "case": "nearly_flat_fast_decay",
+      "grid_multiplier": 4,
+      "pricing_seeds": [
+        1508902472721423804,
+        16223325395477512490,
+        11038248379297055974
+      ],
+      "replicate": 0
+    },
+    {
+      "block_multipliers": [
+        4,
+        4,
+        4
+      ],
+      "case": "nearly_flat_fast_decay",
+      "grid_multiplier": 4,
+      "pricing_seeds": [
+        1558655256238871774,
+        8796291106463095416,
+        11695870358569766493
+      ],
+      "replicate": 1
+    },
+    {
+      "block_multipliers": [
+        8,
+        4,
+        4
+      ],
+      "case": "nearly_flat_fast_decay",
+      "grid_multiplier": 8,
+      "pricing_seeds": [
+        4084764475911984999,
+        12118333937554875871,
+        16470503810999488362
+      ],
+      "replicate": 0
+    },
+    {
+      "block_multipliers": [
+        8,
+        4,
+        4
+      ],
+      "case": "nearly_flat_fast_decay",
+      "grid_multiplier": 8,
+      "pricing_seeds": [
+        6113299537218892034,
+        18283765972021540550,
+        18297775710478107650
+      ],
+      "replicate": 1
+    },
+    {
+      "block_multipliers": [
+        16,
+        4,
+        4
+      ],
+      "case": "nearly_flat_fast_decay",
+      "grid_multiplier": 16,
+      "pricing_seeds": [
+        12165285149111833271,
+        14710334424750130787,
+        12756733875561115163
+      ],
+      "replicate": 0
+    },
+    {
+      "block_multipliers": [
+        16,
+        4,
+        4
+      ],
+      "case": "nearly_flat_fast_decay",
+      "grid_multiplier": 16,
+      "pricing_seeds": [
+        5166873360098699562,
+        13131226278581338640,
+        190606852920843994
+      ],
+      "replicate": 1
+    },
+    {
+      "block_multipliers": [
+        4,
+        4,
+        4
+      ],
+      "case": "low_h_high_eta",
+      "grid_multiplier": 4,
+      "pricing_seeds": [
+        10586050003787537969,
+        9758131148634633561,
+        10101672443269559735
+      ],
+      "replicate": 0
+    },
+    {
+      "block_multipliers": [
+        4,
+        4,
+        4
+      ],
+      "case": "low_h_high_eta",
+      "grid_multiplier": 4,
+      "pricing_seeds": [
+        16941583110452614907,
+        16045978051752623019,
+        13847692005397724295
+      ],
+      "replicate": 1
+    },
+    {
+      "block_multipliers": [
+        8,
+        4,
+        4
+      ],
+      "case": "low_h_high_eta",
+      "grid_multiplier": 8,
+      "pricing_seeds": [
+        495640386159566964,
+        8228464604380628998,
+        5263950721786822949
+      ],
+      "replicate": 0
+    },
+    {
+      "block_multipliers": [
+        8,
+        4,
+        4
+      ],
+      "case": "low_h_high_eta",
+      "grid_multiplier": 8,
+      "pricing_seeds": [
+        13468480194984382408,
+        9898266266272374105,
+        16196309053111186968
+      ],
+      "replicate": 1
+    },
+    {
+      "block_multipliers": [
+        16,
+        4,
+        4
+      ],
+      "case": "low_h_high_eta",
+      "grid_multiplier": 16,
+      "pricing_seeds": [
+        6414426868585977277,
+        14250819234562503078,
+        18436694034530102808
+      ],
+      "replicate": 0
+    },
+    {
+      "block_multipliers": [
+        16,
+        4,
+        4
+      ],
+      "case": "low_h_high_eta",
+      "grid_multiplier": 16,
+      "pricing_seeds": [
+        3939700637281861680,
+        7864449436570741984,
+        6711441981941448016
+      ],
+      "replicate": 1
+    },
+    {
+      "block_multipliers": [
+        4,
+        4,
+        4
+      ],
+      "case": "high_h_low_eta",
+      "grid_multiplier": 4,
+      "pricing_seeds": [
+        4793976317252472766,
+        7117916155559839013,
+        14097898646716782235
+      ],
+      "replicate": 0
+    },
+    {
+      "block_multipliers": [
+        4,
+        4,
+        4
+      ],
+      "case": "high_h_low_eta",
+      "grid_multiplier": 4,
+      "pricing_seeds": [
+        8870333153959340532,
+        13443763159558732417,
+        14745350728740590396
+      ],
+      "replicate": 1
+    },
+    {
+      "block_multipliers": [
+        8,
+        4,
+        4
+      ],
+      "case": "high_h_low_eta",
+      "grid_multiplier": 8,
+      "pricing_seeds": [
+        1703862198786070012,
+        5186442472621411277,
+        5626126777933971755
+      ],
+      "replicate": 0
+    },
+    {
+      "block_multipliers": [
+        8,
+        4,
+        4
+      ],
+      "case": "high_h_low_eta",
+      "grid_multiplier": 8,
+      "pricing_seeds": [
+        11972277170955622457,
+        261066207377325233,
+        580207700446468135
+      ],
+      "replicate": 1
+    },
+    {
+      "block_multipliers": [
+        16,
+        4,
+        4
+      ],
+      "case": "high_h_low_eta",
+      "grid_multiplier": 16,
+      "pricing_seeds": [
+        6527067538548668300,
+        15021638287115119912,
+        5073938219337893028
+      ],
+      "replicate": 0
+    },
+    {
+      "block_multipliers": [
+        16,
+        4,
+        4
+      ],
+      "case": "high_h_low_eta",
+      "grid_multiplier": 16,
+      "pricing_seeds": [
+        12261606399354588389,
+        16310803948943517359,
+        10373541464766466732
+      ],
+      "replicate": 1
+    },
+    {
+      "block_multipliers": [
+        4,
+        4,
+        4
+      ],
+      "case": "high_variance",
+      "grid_multiplier": 4,
+      "pricing_seeds": [
+        12115432360556053450,
+        10767699673993042183,
+        16337785653367469721
+      ],
+      "replicate": 0
+    },
+    {
+      "block_multipliers": [
+        4,
+        4,
+        4
+      ],
+      "case": "high_variance",
+      "grid_multiplier": 4,
+      "pricing_seeds": [
+        17207702430625432738,
+        18093077880819389419,
+        6763158108262777180
+      ],
+      "replicate": 1
+    },
+    {
+      "block_multipliers": [
+        8,
+        4,
+        4
+      ],
+      "case": "high_variance",
+      "grid_multiplier": 8,
+      "pricing_seeds": [
+        14949042145456721683,
+        8888375176228814686,
+        1448803257754322036
+      ],
+      "replicate": 0
+    },
+    {
+      "block_multipliers": [
+        8,
+        4,
+        4
+      ],
+      "case": "high_variance",
+      "grid_multiplier": 8,
+      "pricing_seeds": [
+        7844575511754044799,
+        2129008101319916943,
+        12746944277375494960
+      ],
+      "replicate": 1
+    },
+    {
+      "block_multipliers": [
+        16,
+        4,
+        4
+      ],
+      "case": "high_variance",
+      "grid_multiplier": 16,
+      "pricing_seeds": [
+        764539751763735469,
+        2351317601029978257,
+        15273733217004890290
+      ],
+      "replicate": 0
+    },
+    {
+      "block_multipliers": [
+        16,
+        4,
+        4
+      ],
+      "case": "high_variance",
+      "grid_multiplier": 16,
+      "pricing_seeds": [
+        10947593742318274246,
+        11840002382412341916,
+        17404021362969835145
+      ],
+      "replicate": 1
+    },
+    {
+      "block_multipliers": [
+        4,
+        4,
+        4
+      ],
+      "case": "low_short_steep_rise",
+      "grid_multiplier": 4,
+      "pricing_seeds": [
+        17335825984495089948,
+        14936760512243716550,
+        15079685612043643256
+      ],
+      "replicate": 0
+    },
+    {
+      "block_multipliers": [
+        4,
+        4,
+        4
+      ],
+      "case": "low_short_steep_rise",
+      "grid_multiplier": 4,
+      "pricing_seeds": [
+        15632147454507332115,
+        4043352729867664027,
+        8466118433243726283
+      ],
+      "replicate": 1
+    },
+    {
+      "block_multipliers": [
+        8,
+        4,
+        4
+      ],
+      "case": "low_short_steep_rise",
+      "grid_multiplier": 8,
+      "pricing_seeds": [
+        7779685951271310617,
+        16433562113775565787,
+        10742275161405393123
+      ],
+      "replicate": 0
+    },
+    {
+      "block_multipliers": [
+        8,
+        4,
+        4
+      ],
+      "case": "low_short_steep_rise",
+      "grid_multiplier": 8,
+      "pricing_seeds": [
+        6352331721681659638,
+        17244001693610201856,
+        17724640349996570028
+      ],
+      "replicate": 1
+    },
+    {
+      "block_multipliers": [
+        16,
+        4,
+        4
+      ],
+      "case": "low_short_steep_rise",
+      "grid_multiplier": 16,
+      "pricing_seeds": [
+        10694198337158937923,
+        16408220754117991329,
+        11778921490433116657
+      ],
+      "replicate": 0
+    },
+    {
+      "block_multipliers": [
+        16,
+        4,
+        4
+      ],
+      "case": "low_short_steep_rise",
+      "grid_multiplier": 16,
+      "pricing_seeds": [
+        11450797719962216495,
+        9999533113986851665,
+        2902776604069590791
+      ],
+      "replicate": 1
+    }
+  ],
+  "settings": {
+    "fixed_other_grid": 4,
+    "multipliers": [
+      4,
+      8,
+      16
+    ],
+    "paths": 131072,
+    "refine_block": 0,
+    "replicates": 2,
+    "root_seed": 271026
+  },
+  "source_sha256": {
+    "bergomi.py": "39234a7e8443a3d27fa9b460c3e9e584e41e8780bd084b6113648c78f1dd3c1d",
+    "calibration/bank.py": "9f0d512ba6f52df5c73c54599183159f535b2aa84ac4daa6a60cfd219afcc7db",
+    "calibration/numerical_pilot.py": "eeb73c2e97e935be3d3d0c61b41c7ac86e6905940b1900d493e022a5a0f897a2",
+    "calibration/pricing.py": "fb1a16548514cc6f806baa651ef05310934dcb55e7fc591a2a49f0395ab7df71",
+    "calibration/surface.py": "24c0476ce3000208438d440cbbb1bf21efd92494b8c634592029af384ee30388",
+    "calibration/tasks.py": "295d1ce59b409f8edb5edba89488fa87a5a4e7bab6f785a152ecb69db1528916",
+    "gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
+    "rough_bergomi.py": "ab47c3bcd3292fde093b4aaaf4fb668101793997dc25afe11a485ec8f2537b8f",
+    "scripts/pilot_rough_numerics.py": "751cf6ec0920d20da10af57aea08930c90f9bf2fc5c16020cf8ca7614cf21a57"
+  },
+  "target": "grid-development price comparisons, not production bank or posterior acceptance",
+  "task": {
+    "context": {
+      "contracts": [
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "put",
+          "strike": 0.9452142884010055
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "put",
+          "strike": 0.9586226994567999
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "put",
+          "strike": 0.9722213165740635
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "put",
+          "strike": 0.9860128379357256
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "call",
+          "strike": 1.014185578043342
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "call",
+          "strike": 1.0285723867111078
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "call",
+          "strike": 1.0431632805760247
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "call",
+          "strike": 1.0579611547045846
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "put",
+          "strike": 0.9234100296746439
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "put",
+          "strike": 0.9419892367120802
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "put",
+          "strike": 0.9609422613636284
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "put",
+          "strike": 0.9802766249195318
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "call",
+          "strike": 1.0201202136
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "call",
+          "strike": 1.0406452501953098
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "call",
+          "strike": 1.061583254911065
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "call",
+          "strike": 1.0829425367540593
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "put",
+          "strike": 0.8909472522884108
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "put",
+          "strike": 0.9170415101799084
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "put",
+          "strike": 0.9439000224008953
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "put",
+          "strike": 0.9715451725992442
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "call",
+          "strike": 1.029288218606067
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "call",
+          "strike": 1.0594342369612506
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "call",
+          "strike": 1.0904631784921235
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "call",
+          "strike": 1.1224009024456676
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "put",
+          "strike": 0.8493369300745177
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "put",
+          "strike": 0.8847284766100544
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "put",
+          "strike": 0.9215947754162442
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "put",
+          "strike": 0.9599972788587706
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "call",
+          "strike": 1.041669619302238
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "call",
+          "strike": 1.0850755957772693
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "call",
+          "strike": 1.1302902827674572
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "call",
+          "strike": 1.177389048551396
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "put",
+          "strike": 0.8187307530779818
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "put",
+          "strike": 0.8607079764250578
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "put",
+          "strike": 0.9048374180359595
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "put",
+          "strike": 0.951229424500714
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "call",
+          "strike": 1.0512710963760241
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "call",
+          "strike": 1.1051709180756477
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "call",
+          "strike": 1.161834242728283
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "call",
+          "strike": 1.2214027581601699
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "put",
+          "strike": 0.7536383164437648
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "put",
+          "strike": 0.808857893484718
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "put",
+          "strike": 0.8681234453945849
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "put",
+          "strike": 0.9317314234233945
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "call",
+          "strike": 1.073270660257192
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "call",
+          "strike": 1.151909910168909
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "call",
+          "strike": 1.2363111098437878
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "call",
+          "strike": 1.3268964411453439
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "put",
+          "strike": 0.6703200460356393
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "put",
+          "strike": 0.7408182206817179
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "put",
+          "strike": 0.8187307530779818
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "put",
+          "strike": 0.9048374180359595
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "call",
+          "strike": 1.1051709180756477
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "call",
+          "strike": 1.2214027581601699
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "call",
+          "strike": 1.3498588075760032
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "call",
+          "strike": 1.4918246976412703
+        }
+      ],
+      "dividend": 0.0,
+      "quote_noise_std": [
+        7.393122257748389e-05,
+        0.00014734934969936199,
+        0.00021842402110031601,
+        0.0002338836145277794,
+        0.00016856715907419804,
+        0.00023720138879472198,
+        0.00022466491669818916,
+        0.00015370943102313063,
+        7.82163616067961e-05,
+        0.00010333131487679448,
+        0.00020654717174897207,
+        0.00030707070665308804,
+        0.0003297651437400239,
+        0.00023836631390862972,
+        0.0003364000888699078,
+        0.0003195516723526538,
+        0.00021926701887794902,
+        0.0001119018762588081,
+        0.0001470535520785712,
+        0.0002952606968936182,
+        0.00044092792100661605,
+        0.0004756382639001542,
+        0.00034535022356236905,
+        0.0004895688613506721,
+        0.0004671341355465552,
+        0.0003219709180184147,
+        0.00016505303956082854,
+        0.0002029661289650328,
+        0.0004099682159446388,
+        0.0006158977907659265,
+        0.0006683659690345338,
+        0.00048819551274953464,
+        0.0006962165245187742,
+        0.0006682956622532423,
+        0.00046338309072573556,
+        0.00023897009747029984,
+        0.0002439600928959136,
+        0.0004950371278750658,
+        0.0007471169572237573,
+        0.0008144916556710369,
+        0.0005976658711421461,
+        0.0008562515358464142,
+        0.0008256919335248641,
+        0.0005751510865871116,
+        0.0002979735303440804,
+        0.00033059924189120005,
+        0.0006778258107718836,
+        0.0010336325808796537,
+        0.0011385746299607095,
+        0.0008441713068195146,
+        0.0012219987448500187,
+        0.0011906516133887396,
+        0.0008380035803961523,
+        0.00043867095751078236,
+        0.00043983595980427227,
+        0.0009150968861055087,
+        0.0014160391507115786,
+        0.0015828168637360485,
+        0.0011908576424310355,
+        0.0017492831664407858,
+        0.001729554124341907,
+        0.001235251591494895,
+        0.000656158147746766
+      ],
+      "rate": 0.0,
+      "spot": 1.0
+    },
+    "context_prior": {},
+    "fixed_parameters": {},
+    "measure": "Q",
+    "model": "rough",
+    "model_context": {
+      "curve_family": "heston_exponential_v1",
+      "forward_variance_knots": [
+        0.0,
+        0.01984126984126984,
+        0.03968253968253968,
+        0.08333333333333333,
+        0.16666666666666666,
+        0.25,
+        0.5,
+        1.0
+      ]
+    },
+    "numerics": {
+      "blocks": [
+        {
+          "horizon": 0.03968253968253968,
+          "n_steps": 80
+        },
+        {
+          "horizon": 0.25,
+          "n_steps": 504
+        },
+        {
+          "horizon": 1.0,
+          "n_steps": 504
+        }
+      ],
+      "max_mc_se_over_quote_sigma": 0.25,
+      "max_mc_se_over_quote_sigma_last_rung": 0.5,
+      "method": "hybrid",
+      "paths_ladder": [
+        32768,
+        65536,
+        131072,
+        262144,
+        524288,
+        1048576,
+        2097152
+      ]
+    },
+    "parameter_names": [
+      "hurst",
+      "eta",
+      "rho",
+      "short_variance",
+      "long_variance",
+      "decay"
+    ],
+    "prior_bounds": [
+      [
+        0.02,
+        0.35
+      ],
+      [
+        0.5,
+        3.5
+      ],
+      [
+        -0.99,
+        -0.2
+      ],
+      [
+        0.01,
+        0.16
+      ],
+      [
+        0.01,
+        0.16
+      ],
+      [
+        0.25,
+        8.0
+      ]
+    ],
+    "task_id": "rough_joint_calibration_v1"
+  },
+  "versions": {
+    "numpy": "2.5.3",
+    "python": "3.12.16",
+    "scipy": "1.18.1"
+  }
+}

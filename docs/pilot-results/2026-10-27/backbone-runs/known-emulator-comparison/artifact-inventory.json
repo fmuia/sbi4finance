@@ -1,0 +1,46 @@
+{
+  "root": "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/runs/comparisons",
+  "payloads_transferred": false,
+  "files": {
+    "case-0/comparison.json": {
+      "bytes": 33621,
+      "sha256": "bbe158afc817a970801b6e4858cad697f73e9dbe9443ce9b15f6c3233b268a67"
+    },
+    "case-0/neural_draws.npz": {
+      "bytes": 116514,
+      "sha256": "188c71eab40c2544bca8994fe1d0c83be7f1532ef80cbf369cae34554d01336e"
+    },
+    "case-0.log": {
+      "bytes": 1236,
+      "sha256": "778b3c1b5e6a2f1fb2a714d2bb0015e10b988b48f418905d988c500e4a8cdcd2"
+    },
+    "case-1/comparison.json": {
+      "bytes": 33558,
+      "sha256": "8eb92214f8a9399447e31cf353108c4eb20071dc7bd035484bd7516047a9eb07"
+    },
+    "case-1/neural_draws.npz": {
+      "bytes": 110254,
+      "sha256": "368bee92f4c7e8649f9098ef6d87ab13b76e3c836ada6b5b8f7e45b212d79b99"
+    },
+    "case-1.log": {
+      "bytes": 1022,
+      "sha256": "2087b6eb52b59493d329004c991674c4bfb21a3f96373241fec4758812d87a44"
+    },
+    "case-2/comparison.json": {
+      "bytes": 33568,
+      "sha256": "c3d7d57effc56811e1bcf1cfb2578736dbbcd9d8d5c6d5ee76154f11a7e7584b"
+    },
+    "case-2/neural_draws.npz": {
+      "bytes": 110082,
+      "sha256": "09d2a550c0f14a2ec7f60f7ad892eaf8708fe3c7e5ad9e83a23ddcdb046a1317"
+    },
+    "case-2.log": {
+      "bytes": 1022,
+      "sha256": "41391dc4dd56297cce58893770e96e42907c62376b8d8b4b7b9d2daebdf9d500"
+    },
+    "run.json": {
+      "bytes": 13490,
+      "sha256": "6337e7236973df41493be443ee7dc2f6e1e2c3003be4f0da0fe0afa388d9a5f3"
+    }
+  }
+}

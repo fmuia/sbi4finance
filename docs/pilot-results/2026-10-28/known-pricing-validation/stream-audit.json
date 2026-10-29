@@ -1,0 +1,63 @@
+{
+  "status": "passed",
+  "format": "known_pricing_stream_audit_v1",
+  "plan_sha256": "759b3df88ac650aab83f2bf00fcd04aa2a2ebc669d03a3b6634661f68fdb8654",
+  "candidate_unique_block_streams": 48,
+  "intentional_reuse": "Eachcase/replicate/blockstreamsharedacrossthreepointroles; independentacrosscases/replicates/blocks.",
+  "candidate_collision_count": 0,
+  "configurations": [
+    {
+      "configuration": "configs/calibration_rough_known_backbone_20k.json",
+      "root_seed": 271300,
+      "surfaces": 32000,
+      "outer_purpose_streams_checked": 128000,
+      "all_possible_pricing_block_rung_streams_checked": 672000
+    },
+    {
+      "configuration": "configs/calibration_rough_joint_development_20k.json",
+      "root_seed": 271200,
+      "surfaces": 32000,
+      "outer_purpose_streams_checked": 128000,
+      "all_possible_pricing_block_rung_streams_checked": 672000
+    },
+    {
+      "configuration": "configs/calibration_heston_backbone_100k.json",
+      "root_seed": 271028,
+      "surfaces": 110000,
+      "outer_purpose_streams_checked": 440000,
+      "all_possible_pricing_block_rung_streams_checked": 0
+    },
+    {
+      "configuration": "configs/tasks/calibration_heston_bank.json",
+      "root_seed": 2610,
+      "surfaces": 60000,
+      "outer_purpose_streams_checked": 240000,
+      "all_possible_pricing_block_rung_streams_checked": 0
+    },
+    {
+      "configuration": "configs/tasks/calibration_rough_pilot.json",
+      "root_seed": 2612,
+      "surfaces": 2200,
+      "outer_purpose_streams_checked": 8800,
+      "all_possible_pricing_block_rung_streams_checked": 46200
+    },
+    {
+      "configuration": "configs/tasks/calibration_rough_bank.json",
+      "root_seed": 2611,
+      "surfaces": 112000,
+      "outer_purpose_streams_checked": 448000,
+      "all_possible_pricing_block_rung_streams_checked": 2352000
+    }
+  ],
+  "configuration_source_sha256": {
+    "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo/configs/calibration_rough_known_backbone_20k.json": "ef04f7d3a5a42c2c255bf35d74eb09fc92008486f6bfc532b31266add66e95e0",
+    "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo/configs/calibration_rough_joint_development_20k.json": "4890a6f86bba12ec4955ebc0253d037113ba38c04fa780e6dd10e8c4c52be830",
+    "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo/configs/calibration_heston_backbone_100k.json": "1dcc7a239ef0a4b85ca42f8a0cd0556c291bcd0b7d04146844d2fde70a373273",
+    "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo/configs/tasks/calibration_heston_bank.json": "15760492c822cf902e7b0a265ccadd69a92eac832776ba033202db8e312e56e8",
+    "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo/configs/tasks/calibration_rough_pilot.json": "5fe748cef363cf9d0f11429ca08bdc13bcfcfed81902076f7438e90c8bf24df5",
+    "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo/configs/tasks/calibration_rough_bank.json": "e6bf78ee8c4dfe8bee0ccca23dae55b7144b12dfe806daf0f47f023289c8d9e1"
+  },
+  "method": "Compare SHA256 of SeedSequence.generate_state(8,uint32) for every planned outerpurpose and every possible pricing-block/rung stream.",
+  "scope": "Reconstructs recorded configuration candidates, including ungenerated planned rows; not proof of historical payload availability. No financial simulations or test outcomes.",
+  "elapsed_seconds": 90.291423805058
+}

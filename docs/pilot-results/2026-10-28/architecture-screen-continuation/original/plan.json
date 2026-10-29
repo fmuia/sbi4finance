@@ -1,0 +1,65 @@
+{
+  "format": "tutorial_architecture_screen_v1",
+  "prepared_utc": "2026-10-28T16:47:55.370384+00:00",
+  "repo": "/oscar/scratch/afengler/sbi4finance-training-recovery-v2-20261028/repo",
+  "source_revision": "c96a785fa1cc1a3e1ef234b8ddc81322776e5f4a",
+  "python": "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/bin/python3.12",
+  "driver_sha256": "fd2546eee2c2cf8503ac4d3f189418a76bb2008ac9e8edbd5aadf3f0c51fc4cb",
+  "bank": "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/runs/heston-development/snapshot-20k",
+  "bank_manifest_sha256": "1a7906f58a2b3e1e4cc868bc819c9c9308357f2f23f7fbb642c682860fb0074f",
+  "variants": [
+    {
+      "family": "flow_matching",
+      "encoder": "vector"
+    },
+    {
+      "family": "affine",
+      "encoder": "vector"
+    },
+    {
+      "family": "spline",
+      "encoder": "vector"
+    },
+    {
+      "family": "mean_flow",
+      "encoder": "vector"
+    },
+    {
+      "family": "flow_matching",
+      "encoder": "deepset"
+    },
+    {
+      "family": "flow_matching",
+      "encoder": "set_transformer"
+    }
+  ],
+  "recipe": {
+    "epochs": 200,
+    "batch_size": 256,
+    "chunk_epochs": 50,
+    "seed": 0,
+    "widths": [
+      256,
+      256,
+      256,
+      256
+    ],
+    "summary_dim": 32,
+    "checkpoint_selection": "final",
+    "validation_first": 0,
+    "validation_surfaces": 200,
+    "draws_per_surface": 256
+  },
+  "resources": {
+    "wall_seconds": 3600,
+    "cleanup_seconds": 240,
+    "cpus": 4,
+    "gpus": 1,
+    "full_allocated_cpu_seconds_ceiling": 15360,
+    "full_allocated_gpu_seconds_ceiling": 3840,
+    "scope": "separate one-job pilot allowance; original bank and baseline pools unchanged"
+  },
+  "scientific_acceptance": false,
+  "reserved_test_evaluated": false,
+  "scope": "one-factor family and encoder feasibility screen, equal 20k data/200 epochs; no winner or loss cross-family ranking"
+}

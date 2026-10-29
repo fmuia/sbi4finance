@@ -1,0 +1,24 @@
+{
+  "checked_utc": "2026-10-28T17:23:10.986939+00:00",
+  "read_only": true,
+  "old_manifest": "/oscar/scratch/afengler/sbi4finance-rough-known-backbone-20261027/snapshot-50k/manifest.json",
+  "old_manifest_sha256": "412f3cf437895b4764fa981bedbc1f8ad0f532d6f5b18e1b1fb957297cb627c4",
+  "new_manifest": "/oscar/scratch/afengler/sbi4finance-rough-known-backbone-20261027/snapshot-100k/manifest.json",
+  "new_manifest_sha256": "f1bfa42f7bf2acba3daaffb263b5bdeb60b5b12ebdfc267c5c5cd6eb7e08c313",
+  "same_collection_id": true,
+  "same_task_fingerprint": true,
+  "same_task": true,
+  "same_root_seed": true,
+  "same_generator_source": true,
+  "same_runtime": true,
+  "all_5000_validation_parts_identical": true,
+  "validation_part_count": 200,
+  "validation_parts_canonical_sha256": "5754b96fba2f28256a8ebd05b72b2c44805a73545b8609e8297f0e51f2d94b54",
+  "original50k_training_prefix_unchanged": true,
+  "actual_posterior_sha256": "39f1a81986a38994dc6eacc520ad95254b34346abc02e758c08779c7c5916fc4",
+  "pricer_checkpoint_files": {
+    "pricer.json": "fa85ba6cdf3437c50ff77dabc1f5c31a9ec455b84dc3ac6ba8340fe3171d01ef",
+    "pricer.npz": "9f0f695b0c369f6eaedb0c5559a46c254459047bd806fc14982377416a61a546",
+    "task.json": "c99b0dd131896d89d8483a1668a3fde0fb7a0f28794c3db7fe14635cbbd52b65"
+  }
+}

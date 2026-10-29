@@ -1,0 +1,52 @@
+{
+  "format": "known_curve_backbone_final_summary_v1",
+  "status": "complete_checked_data_component",
+  "recorded_utc": "2026-10-27T22:09:07.060406+00:00",
+  "source_revision": "616352035be4b9d271151090aa5d2d9539da8b1c",
+  "task_fingerprint": "c99b0dd131896d89d8483a1668a3fde0fb7a0f28794c3db7fe14635cbbd52b65",
+  "same_task_as_Francesco_pilot": true,
+  "root_seed": 271300,
+  "numerical_block_steps": [
+    80,
+    504,
+    504
+  ],
+  "snapshot": "/oscar/scratch/afengler/sbi4finance-rough-known-backbone-20261027/snapshot-20k",
+  "snapshot_manifest_sha256": "7cf0314dc6371fd045ad6b314dd6dd605db2f3343dbccf4e35b4df9ddf9397eb",
+  "splits": {
+    "test": 7000,
+    "train": 20000,
+    "validation": 5000
+  },
+  "parts": 1280,
+  "unique_original_worker_indices": 1280,
+  "all_tasks_completed_exit_zero": true,
+  "no_retries_failures_replacement_seeds": true,
+  "initial100_payload_manifest_hashes_preserved": true,
+  "all_prior_curve_quote_noise_reconstructed_exactly": true,
+  "allocated_cpu_seconds_total": 342891,
+  "allocated_cpu_hours_total": 95.2475,
+  "allocated_cpu_seconds_generation": 342787,
+  "allocated_cpu_hour_ceiling": 150,
+  "gpu_seconds": 0,
+  "nominal_target_exception_cases": [
+    {
+      "blocks_above_nominal_target": [
+        2
+      ],
+      "example_id": "train:3999",
+      "maximum_reported_mcse_over_quote_sigma": 0.30201219554822734,
+      "paths_by_block": [
+        2097152,
+        2097152,
+        2097152
+      ]
+    }
+  ],
+  "hard_cap_exceptions": 0,
+  "no_bank_payloads_transferred": true,
+  "no_model_training_or_neural_evaluation": true,
+  "test_use": "Generated and numerically verified only; no statistical inference evaluation or model selection.",
+  "scope": "Matched-task development bank at original numerical resolution. The empirical MCSE policy and bounded posterior/product refinement requirements remain; this bank is not an accepted teaching estimator or a continuous-price bias certificate.",
+  "archived_worker_logs": 1280
+}

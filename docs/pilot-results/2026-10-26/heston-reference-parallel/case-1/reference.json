@@ -1,0 +1,635 @@
+{
+  "bank_manifest_sha256": "e5c12a5f405ca1273419c36b71e5ba77e4c7b63e73eba5ca63aad0bfe61a99bd",
+  "environment_sha256": {
+    "pixi.lock": "3e33b82d45dfdd696c5b12b22bca0943a5fca09804860fab13e3fc9126c60aae",
+    "pyproject.toml": "0b38d45cea9c3d7143e261d6c8ce3d6892b31b7bce6d1f26bf748df75790fd54"
+  },
+  "format": "full_surface_pymc_reference_v1",
+  "generator_source_sha256": {
+    "calibration/bank.py": "9f0d512ba6f52df5c73c54599183159f535b2aa84ac4daa6a60cfd219afcc7db",
+    "calibration/pricing.py": "fb1a16548514cc6f806baa651ef05310934dcb55e7fc591a2a49f0395ab7df71",
+    "calibration/surface.py": "24c0476ce3000208438d440cbbb1bf21efd92494b8c634592029af384ee30388",
+    "calibration/tasks.py": "295d1ce59b409f8edb5edba89488fa87a5a4e7bab6f785a152ecb69db1528916",
+    "gbm.py": "8d491f019326712a4a6e985b491658146fa3da9f57f513a6fed421259d55cb5d",
+    "gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
+    "heston.py": "f85237a6f223689bb83fb2837d6f6cba855867f5da9f919667163ae4a4c8996c",
+    "hkde.py": "c6618b6bd54eae169b4fc0e90201b8582b8e7da14ff41a305c27e4e2bd06e503"
+  },
+  "initialization": {
+    "chains": [
+      {
+        "chain": 0,
+        "model_initialization_seed": 471250196,
+        "spawn_key": [
+          0
+        ]
+      },
+      {
+        "chain": 1,
+        "model_initialization_seed": 933214278,
+        "spawn_key": [
+          1
+        ]
+      },
+      {
+        "chain": 2,
+        "model_initialization_seed": 194567486,
+        "spawn_key": [
+          2
+        ]
+      },
+      {
+        "chain": 3,
+        "model_initialization_seed": 62287201,
+        "spawn_key": [
+          3
+        ]
+      }
+    ],
+    "prior_starts": [
+      [
+        0.09193002541781939,
+        0.015398450871672622,
+        0.3140729844912521,
+        -0.20319420807802901
+      ],
+      [
+        0.07125624658456176,
+        0.09436098521763303,
+        0.19626005281979195,
+        -0.6047360287222874
+      ],
+      [
+        0.07591803599616267,
+        0.04378163484618827,
+        0.37877266247272323,
+        -0.8841432255511869
+      ],
+      [
+        0.055097782855289705,
+        0.07295312081736008,
+        0.9205227208523614,
+        -0.7685829927747182
+      ]
+    ],
+    "pymc_chain_rng_protocol": "PyMC 6: default_rng(seed).spawn(chains); child model seed drawn before sampling",
+    "pymc_random_seed": 271027,
+    "start_protocol": "PCG64 SeedSequence([0x50594D43, seed]); independent uniform prior draws"
+  },
+  "observed_prices": [
+    0.00021277485928792266,
+    0.0006333589006736829,
+    0.0014779133404190163,
+    0.003797354038567339,
+    0.008676498827185637,
+    0.0026341042051396544,
+    0.0009372752256049685,
+    0.00016935229830429492,
+    -1.429660619417396e-05,
+    0.0006997741390609129,
+    0.001255700580879592,
+    0.0022956792472170855,
+    0.0049570226686893575,
+    0.011591752862314128,
+    0.00416728165256982,
+    0.0011446709937907788,
+    0.0005201518063154503,
+    -7.202376685112025e-05,
+    0.0012567025863051953,
+    0.0023008480136410344,
+    0.00394079218894135,
+    0.007629163755625061,
+    0.016977403798257927,
+    0.006675537620643585,
+    0.0022095070659607315,
+    0.0005442560994383058,
+    0.000491307094748897,
+    0.0020192187447649686,
+    0.004425516772884319,
+    0.004869215984484248,
+    0.01170271548567344,
+    0.024137917283430912,
+    0.010007092615623775,
+    0.005234430538810493,
+    0.00263088782919493,
+    0.0012160230192712765,
+    0.0036218452061185045,
+    0.0047027825451122105,
+    0.007463550922682868,
+    0.014215717694196614,
+    0.03088625358270377,
+    0.014081109833258882,
+    0.004630525393649816,
+    0.0038209414174532525,
+    0.002020171128217654,
+    0.005307425654559648,
+    0.010081579660583897,
+    0.01597236902056038,
+    0.027306553498593067,
+    0.048597124571320996,
+    0.02284759879690015,
+    0.009131704415667621,
+    0.00559875958623397,
+    0.004053243146212059,
+    0.011104987390427392,
+    0.015912348415661918,
+    0.025620932682375672,
+    0.04442976520259561,
+    0.07628295844387468,
+    0.03630968268618773,
+    0.022709019410403278,
+    0.0126831183766646,
+    0.008351771008749504
+  ],
+  "partial_trace": {
+    "directory": "partial",
+    "sampler_resumable": false,
+    "scope": "draw persistence only; never pool warmup or substitute for convergence checks"
+  },
+  "reference_pricing_source_sha256": {
+    "calibration/bank.py": "9f0d512ba6f52df5c73c54599183159f535b2aa84ac4daa6a60cfd219afcc7db",
+    "calibration/pricing.py": "fb1a16548514cc6f806baa651ef05310934dcb55e7fc591a2a49f0395ab7df71",
+    "calibration/surface.py": "24c0476ce3000208438d440cbbb1bf21efd92494b8c634592029af384ee30388",
+    "calibration/tasks.py": "295d1ce59b409f8edb5edba89488fa87a5a4e7bab6f785a152ecb69db1528916",
+    "gbm.py": "8d491f019326712a4a6e985b491658146fa3da9f57f513a6fed421259d55cb5d",
+    "gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
+    "heston.py": "f85237a6f223689bb83fb2837d6f6cba855867f5da9f919667163ae4a4c8996c",
+    "hkde.py": "c6618b6bd54eae169b4fc0e90201b8582b8e7da14ff41a305c27e4e2bd06e503"
+  },
+  "sampler": "PyMC DEMetropolisZ; no gradients; native independent chains with explicit cores/context",
+  "settings": {
+    "chains": 4,
+    "checkpoint_every": 100,
+    "cores": 4,
+    "draws": 2000,
+    "mp_context": "spawn",
+    "seed": 271027,
+    "tune": 2000
+  },
+  "source_sha256": {
+    "calibration_reference.py": "2e33e053a86b0c44e2ec4e36d572306f1fd2b79711551efe7f662246c95b7fab",
+    "pymc_reference_op.py": "99704310f8a503cad7eee2310da0204d52c213427ad21683834214018f02451b",
+    "reference.py": "d9f8e5144df82d9b1889a5b3eb77387d88a6726acb2f04f098e71554fe4b52e4"
+  },
+  "split": "validation",
+  "surface_id": "validation:1",
+  "target": "independent Gaussian quote noise around deterministic refined Fourier prices",
+  "task": {
+    "context": {
+      "contracts": [
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "put",
+          "strike": 0.9452142884010055
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "put",
+          "strike": 0.9586226994567999
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "put",
+          "strike": 0.9722213165740635
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "put",
+          "strike": 0.9860128379357256
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "call",
+          "strike": 1.014185578043342
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "call",
+          "strike": 1.0285723867111078
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "call",
+          "strike": 1.0431632805760247
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "call",
+          "strike": 1.0579611547045846
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "put",
+          "strike": 0.9234100296746439
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "put",
+          "strike": 0.9419892367120802
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "put",
+          "strike": 0.9609422613636284
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "put",
+          "strike": 0.9802766249195318
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "call",
+          "strike": 1.0201202136
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "call",
+          "strike": 1.0406452501953098
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "call",
+          "strike": 1.061583254911065
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "call",
+          "strike": 1.0829425367540593
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "put",
+          "strike": 0.8909472522884108
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "put",
+          "strike": 0.9170415101799084
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "put",
+          "strike": 0.9439000224008953
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "put",
+          "strike": 0.9715451725992442
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "call",
+          "strike": 1.029288218606067
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "call",
+          "strike": 1.0594342369612506
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "call",
+          "strike": 1.0904631784921235
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "call",
+          "strike": 1.1224009024456676
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "put",
+          "strike": 0.8493369300745177
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "put",
+          "strike": 0.8847284766100544
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "put",
+          "strike": 0.9215947754162442
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "put",
+          "strike": 0.9599972788587706
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "call",
+          "strike": 1.041669619302238
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "call",
+          "strike": 1.0850755957772693
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "call",
+          "strike": 1.1302902827674572
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "call",
+          "strike": 1.177389048551396
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "put",
+          "strike": 0.8187307530779818
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "put",
+          "strike": 0.8607079764250578
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "put",
+          "strike": 0.9048374180359595
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "put",
+          "strike": 0.951229424500714
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "call",
+          "strike": 1.0512710963760241
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "call",
+          "strike": 1.1051709180756477
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "call",
+          "strike": 1.161834242728283
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "call",
+          "strike": 1.2214027581601699
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "put",
+          "strike": 0.7536383164437648
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "put",
+          "strike": 0.808857893484718
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "put",
+          "strike": 0.8681234453945849
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "put",
+          "strike": 0.9317314234233945
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "call",
+          "strike": 1.073270660257192
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "call",
+          "strike": 1.151909910168909
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "call",
+          "strike": 1.2363111098437878
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "call",
+          "strike": 1.3268964411453439
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "put",
+          "strike": 0.6703200460356393
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "put",
+          "strike": 0.7408182206817179
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "put",
+          "strike": 0.8187307530779818
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "put",
+          "strike": 0.9048374180359595
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "call",
+          "strike": 1.1051709180756477
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "call",
+          "strike": 1.2214027581601699
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "call",
+          "strike": 1.3498588075760032
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "call",
+          "strike": 1.4918246976412703
+        }
+      ],
+      "dividend": 0.0,
+      "quote_noise_std": [
+        7.393122257748389e-05,
+        0.00014734934969936199,
+        0.00021842402110031601,
+        0.0002338836145277794,
+        0.00016856715907419804,
+        0.00023720138879472198,
+        0.00022466491669818916,
+        0.00015370943102313063,
+        7.82163616067961e-05,
+        0.00010333131487679448,
+        0.00020654717174897207,
+        0.00030707070665308804,
+        0.0003297651437400239,
+        0.00023836631390862972,
+        0.0003364000888699078,
+        0.0003195516723526538,
+        0.00021926701887794902,
+        0.0001119018762588081,
+        0.0001470535520785712,
+        0.0002952606968936182,
+        0.00044092792100661605,
+        0.0004756382639001542,
+        0.00034535022356236905,
+        0.0004895688613506721,
+        0.0004671341355465552,
+        0.0003219709180184147,
+        0.00016505303956082854,
+        0.0002029661289650328,
+        0.0004099682159446388,
+        0.0006158977907659265,
+        0.0006683659690345338,
+        0.00048819551274953464,
+        0.0006962165245187742,
+        0.0006682956622532423,
+        0.00046338309072573556,
+        0.00023897009747029984,
+        0.0002439600928959136,
+        0.0004950371278750658,
+        0.0007471169572237573,
+        0.0008144916556710369,
+        0.0005976658711421461,
+        0.0008562515358464142,
+        0.0008256919335248641,
+        0.0005751510865871115,
+        0.0002979735303440804,
+        0.00033059924189120005,
+        0.0006778258107718836,
+        0.0010336325808796537,
+        0.0011385746299607095,
+        0.0008441713068195146,
+        0.0012219987448500187,
+        0.0011906516133887396,
+        0.0008380035803961523,
+        0.00043867095751078236,
+        0.00043983595980427227,
+        0.0009150968861055087,
+        0.0014160391507115786,
+        0.0015828168637360485,
+        0.0011908576424310355,
+        0.0017492831664407858,
+        0.001729554124341907,
+        0.001235251591494895,
+        0.000656158147746766
+      ],
+      "rate": 0.0,
+      "spot": 1.0
+    },
+    "context_prior": {},
+    "fixed_parameters": {
+      "jump_down_rate": 10.0,
+      "jump_intensity": 0.0,
+      "jump_up_probability": 0.5,
+      "jump_up_rate": 10.0,
+      "kappa": 2.0
+    },
+    "measure": "Q",
+    "model": "hkde",
+    "model_context": {},
+    "numerics": {
+      "max_refinement_over_quote_sigma": 0.1,
+      "quadrature_ladder": [
+        [
+          512,
+          400.0
+        ],
+        [
+          1024,
+          600.0
+        ],
+        [
+          2048,
+          1500.0
+        ],
+        [
+          4096,
+          3000.0
+        ],
+        [
+          8192,
+          6000.0
+        ]
+      ]
+    },
+    "parameter_names": [
+      "initial_variance",
+      "theta",
+      "vol_of_vol",
+      "rho"
+    ],
+    "prior_bounds": [
+      [
+        0.01,
+        0.16
+      ],
+      [
+        0.01,
+        0.16
+      ],
+      [
+        0.1,
+        1.5
+      ],
+      [
+        -0.95,
+        -0.1
+      ]
+    ],
+    "task_id": "hkde_calibration_v1"
+  },
+  "versions": {
+    "arviz-stats": "1.3.3",
+    "numpy": "2.5.3",
+    "pymc": "6.3.2",
+    "pytensor": "3.3.4",
+    "python": "3.12.16",
+    "scipy": "1.18.1"
+  }
+}

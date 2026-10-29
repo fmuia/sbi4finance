@@ -1,0 +1,33 @@
+## SLURM PROLOG ###############################################################
+##    Job ID : 8030120
+##  Job Name : sbi4f-heston-100k
+##  Nodelist : gpu2708
+##      CPUs : 1
+##  Mem/Node : 24576 MB
+## Directory : /oscar/home/afengler
+##   Job Started : Tue Oct 27 05:37:15 PM EDT 2026
+###############################################################################
+Traceback (most recent call last):
+  File "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/repo/scripts/run_heston_backbone_fit.py", line 175, in <module>
+    if __name__ == "__main__": main()
+                               ^^^^^^
+  File "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/repo/scripts/run_heston_backbone_fit.py", line 174, in main
+    state = run(args); print(json.dumps({"status": state["status"], "scientific_acceptance": False}))
+            ^^^^^^^^^
+  File "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/repo/scripts/run_heston_backbone_fit.py", line 138, in run
+    result = subprocess.run(row["command"], cwd=ROOT, stdout=log, stderr=subprocess.STDOUT,
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/lib/python3.12/subprocess.py", line 550, in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/lib/python3.12/subprocess.py", line 1209, in communicate
+    stdout, stderr = self._communicate(input, endtime, timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/lib/python3.12/subprocess.py", line 2141, in _communicate
+    self.wait(timeout=self._remaining_time(endtime))
+  File "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/lib/python3.12/subprocess.py", line 1264, in wait
+    return self._wait(timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/lib/python3.12/subprocess.py", line 2045, in _wait
+    raise TimeoutExpired(self.args, timeout)
+subprocess.TimeoutExpired: Command '['/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/bin/python', '/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/repo/scripts/evaluate_full_surface.py', '--bank', '/oscar/scratch/afengler/sbi4finance-heston-backbone-20261027/snapshot-100k', '--checkpoint', '/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint', '--out', '/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/validation', '--split', 'validation', '--first', '0', '--surfaces', '2000', '--draws', '1000', '--batch-size', '100', '--seed', '0']' timed out after 899.9999861586839 seconds

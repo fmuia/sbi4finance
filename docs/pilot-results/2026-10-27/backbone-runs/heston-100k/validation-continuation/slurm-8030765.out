@@ -1,0 +1,35 @@
+## SLURM PROLOG ###############################################################
+##    Job ID : 8030765
+##  Job Name : sbi4f-heston-100k-val
+##  Nodelist : gpu2708
+##      CPUs : 1
+##  Mem/Node : 24576 MB
+## Directory : /oscar/home/afengler
+##   Job Started : Tue Oct 27 06:05:31 PM EDT 2026
+###############################################################################
+INFO:jax._src.xla_bridge:Unable to initialize backend 'tpu': INTERNAL: Failed to open libtpu.so: libtpu.so: cannot open shared object file: No such file or directory
+INFO:bayesflow:Using backend 'jax'
+INFO:bayesflow:Estimator restored from '/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/model.keras'.
+/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/lib/python3.12/site-packages/keras/src/backend/jax/core.py:401: UserWarning: Explicitly requested dtype float64 requested in asarray is not available, and will be truncated to dtype float32. To enable more dtypes, set the jax_enable_x64 configuration option or the JAX_ENABLE_X64 shell environment variable. See https://github.com/jax-ml/jax#current-gotchas for more.
+  return jnp.asarray(x, dtype=dtype)
+INFO:bayesflow:Sampling completed in 57.31 seconds.
+INFO:bayesflow:Sampling completed in 42.91 seconds.
+INFO:bayesflow:Sampling completed in 42.37 seconds.
+INFO:bayesflow:Sampling completed in 45.07 seconds.
+INFO:bayesflow:Sampling completed in 44.34 seconds.
+INFO:bayesflow:Sampling completed in 44.55 seconds.
+INFO:bayesflow:Sampling completed in 45.98 seconds.
+INFO:bayesflow:Sampling completed in 43.30 seconds.
+INFO:bayesflow:Sampling completed in 46.17 seconds.
+INFO:bayesflow:Sampling completed in 39.36 seconds.
+INFO:bayesflow:Sampling completed in 42.82 seconds.
+INFO:bayesflow:Sampling completed in 44.08 seconds.
+INFO:bayesflow:Sampling completed in 43.25 seconds.
+INFO:bayesflow:Sampling completed in 43.19 seconds.
+INFO:bayesflow:Sampling completed in 43.46 seconds.
+INFO:bayesflow:Sampling completed in 45.29 seconds.
+INFO:bayesflow:Sampling completed in 43.06 seconds.
+INFO:bayesflow:Sampling completed in 42.39 seconds.
+INFO:bayesflow:Sampling completed in 42.88 seconds.
+INFO:bayesflow:Sampling completed in 45.18 seconds.
+{"surfaces": 2000, "evaluated_split": "validation", "seconds": 888.180628631264}

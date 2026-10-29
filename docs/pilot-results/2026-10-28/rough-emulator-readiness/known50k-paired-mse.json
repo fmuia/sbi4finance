@@ -1,0 +1,139 @@
+{
+  "format": "paired_fixed_pricer_mse_comparison_v1",
+  "new_monte_carlo_paths": 0,
+  "scientific_acceptance": false,
+  "reserved_test_evaluated": false,
+  "comparison_family_size": 12,
+  "replicates": 8,
+  "degrees_of_freedom": 7,
+  "units": "squared quote-noise standard deviations, averaged across63contracts",
+  "formula": "For each saved independent batch P: mean_contracts[(new-P/sigma)^2-(old-P/sigma)^2]. The random (P/sigma)^2 term cancels exactly, so pairedMSEdifference is linear in estimatedprice; average across8batches and use t7 standarderror.",
+  "interpretation": "Exploratory reused development-panel comparison conditional on frozen emulators; normal-batch Student-t approximation and fitted-control estimator limitations retained. Bonferroni12 intervals are not new acceptance-pool evidence or continuous-price certificates.",
+  "comparisons": [
+    {
+      "case": 0,
+      "role": "truth",
+      "grid": "bank",
+      "mse_change_new_minus_old": -0.005214634644582292,
+      "mcse": 0.00042131458696361253,
+      "bonferroni12_t7_lower": -0.006973334432505814,
+      "bonferroni12_t7_upper": -0.0034559348566587703,
+      "new_mse_smaller_through_interval": true
+    },
+    {
+      "case": 0,
+      "role": "truth",
+      "grid": "doubled",
+      "mse_change_new_minus_old": -0.005126682717754424,
+      "mcse": 0.0005719257188771691,
+      "bonferroni12_t7_lower": -0.007514080808445636,
+      "bonferroni12_t7_upper": -0.0027392846270632124,
+      "new_mse_smaller_through_interval": true
+    },
+    {
+      "case": 0,
+      "role": "neural_mean",
+      "grid": "bank",
+      "mse_change_new_minus_old": -0.004541206946404732,
+      "mcse": 0.00038236467785259215,
+      "bonferroni12_t7_lower": -0.006137317545601427,
+      "bonferroni12_t7_upper": -0.002945096347208038,
+      "new_mse_smaller_through_interval": true
+    },
+    {
+      "case": 0,
+      "role": "neural_mean",
+      "grid": "doubled",
+      "mse_change_new_minus_old": -0.004679833190063421,
+      "mcse": 0.0005553078701810014,
+      "bonferroni12_t7_lower": -0.006997863146154016,
+      "bonferroni12_t7_upper": -0.0023618032339728268,
+      "new_mse_smaller_through_interval": true
+    },
+    {
+      "case": 0,
+      "role": "reference_mean",
+      "grid": "bank",
+      "mse_change_new_minus_old": -0.004651902184680804,
+      "mcse": 0.00038849366687866916,
+      "bonferroni12_t7_lower": -0.006273597114527029,
+      "bonferroni12_t7_upper": -0.0030302072548345793,
+      "new_mse_smaller_through_interval": true
+    },
+    {
+      "case": 0,
+      "role": "reference_mean",
+      "grid": "doubled",
+      "mse_change_new_minus_old": -0.004733316018244795,
+      "mcse": 0.0005548079216002691,
+      "bonferroni12_t7_lower": -0.007049259031490037,
+      "bonferroni12_t7_upper": -0.0024173730049995533,
+      "new_mse_smaller_through_interval": true
+    },
+    {
+      "case": 2,
+      "role": "truth",
+      "grid": "bank",
+      "mse_change_new_minus_old": -0.05323590779372136,
+      "mcse": 0.002457480719718117,
+      "bonferroni12_t7_lower": -0.06349420635333822,
+      "bonferroni12_t7_upper": -0.04297760923410451,
+      "new_mse_smaller_through_interval": true
+    },
+    {
+      "case": 2,
+      "role": "truth",
+      "grid": "doubled",
+      "mse_change_new_minus_old": -0.02982343392952062,
+      "mcse": 0.0034783208350735906,
+      "bonferroni12_t7_lower": -0.0443430406658101,
+      "bonferroni12_t7_upper": -0.015303827193231135,
+      "new_mse_smaller_through_interval": true
+    },
+    {
+      "case": 2,
+      "role": "neural_mean",
+      "grid": "bank",
+      "mse_change_new_minus_old": -0.02479408480037569,
+      "mcse": 0.0006566442813532833,
+      "bonferroni12_t7_lower": -0.027535124854744734,
+      "bonferroni12_t7_upper": -0.022053044746006646,
+      "new_mse_smaller_through_interval": true
+    },
+    {
+      "case": 2,
+      "role": "neural_mean",
+      "grid": "doubled",
+      "mse_change_new_minus_old": -0.02804184506283954,
+      "mcse": 0.0009368137764295502,
+      "bonferroni12_t7_lower": -0.03195240083496328,
+      "bonferroni12_t7_upper": -0.0241312892907158,
+      "new_mse_smaller_through_interval": true
+    },
+    {
+      "case": 2,
+      "role": "reference_mean",
+      "grid": "bank",
+      "mse_change_new_minus_old": -0.032336037369260384,
+      "mcse": 0.0013597265890267854,
+      "bonferroni12_t7_lower": -0.03801196442649734,
+      "bonferroni12_t7_upper": -0.02666011031202343,
+      "new_mse_smaller_through_interval": true
+    },
+    {
+      "case": 2,
+      "role": "reference_mean",
+      "grid": "doubled",
+      "mse_change_new_minus_old": -0.02471291966315122,
+      "mcse": 0.0020022358929062223,
+      "bonferroni12_t7_lower": -0.03307088292667136,
+      "bonferroni12_t7_upper": -0.01635495639963108,
+      "new_mse_smaller_through_interval": true
+    }
+  ],
+  "all12_mse_intervals_favor_new": true,
+  "input_sha256": {
+    "docs/pilot-results/2026-10-28/known-pricing-validation/batch-summaries.npz": "d5b8671109b0e9150d20fb1aff88c3b8fa17af51d60854e4f30f09b4745c7f52",
+    "/private/tmp/sbi4finance-scientific-validation-20261028/known/pricer/checkpoint/pricer.npz": "162685962bbbfd8fa4029ae1dc13933ddc490e4222c8581a6f9fab10c8b5199b"
+  }
+}

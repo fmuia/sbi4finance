@@ -1,0 +1,54 @@
+{
+  "final-check.json": {
+    "source_path": "/oscar/scratch/afengler/sbi4finance-rough-known-backbone-20261027/final-check.json",
+    "raw_sha256": "2adc81bb3a24a8f39bee37452565954d42702ca5a69ea6a4b6941b09e4f176b9",
+    "stored_sha256": "2adc81bb3a24a8f39bee37452565954d42702ca5a69ea6a4b6941b09e4f176b9",
+    "raw_bytes": 5684,
+    "stored_bytes": 5684,
+    "lossless_gzip": false
+  },
+  "snapshot-manifest.json.gz": {
+    "source_path": "/oscar/scratch/afengler/sbi4finance-rough-known-backbone-20261027/snapshot-20k/manifest.json",
+    "raw_sha256": "7cf0314dc6371fd045ad6b314dd6dd605db2f3343dbccf4e35b4df9ddf9397eb",
+    "stored_sha256": "bb1937dbfc6014916edba41a3d3ce722fc378b4cab99c47ff47c4b774d7cdfa4",
+    "raw_bytes": 434098,
+    "stored_bytes": 125953,
+    "lossless_gzip": true
+  },
+  "collection.json": {
+    "source_path": "/oscar/scratch/afengler/sbi4finance-rough-known-backbone-20261027/collection/collection.json",
+    "raw_sha256": "9e9e0ed2f087febd84bbd42ddc30aa24840d065c12a186b410851a68b5c83e13",
+    "stored_sha256": "9e9e0ed2f087febd84bbd42ddc30aa24840d065c12a186b410851a68b5c83e13",
+    "raw_bytes": 13772,
+    "stored_bytes": 13772,
+    "lossless_gzip": false
+  },
+  "slurm-8030755.out": {
+    "source_path": "/oscar/scratch/afengler/sbi4finance-rough-known-backbone-20261027/logs/freeze-8030755_4294967294.out",
+    "raw_sha256": "8d05efbde31a37ef0a23e3002c06f40db9f562e75b042e3683c8f7691106c8ee",
+    "stored_sha256": "8d05efbde31a37ef0a23e3002c06f40db9f562e75b042e3683c8f7691106c8ee",
+    "raw_bytes": 861,
+    "stored_bytes": 861,
+    "lossless_gzip": false
+  },
+  "worker-logs.json.gz": {
+    "source_path": "/oscar/scratch/afengler/sbi4finance-rough-known-backbone-20261027/logs/workers-*.out",
+    "raw_sha256": "f710a5e2ef810fccc4eedaf8c984f65181e1097a85801237afb69297ff67261f",
+    "stored_sha256": "2d59f7798aea29286a5ddc93d5f2dcc803d36e40e68c72858c2a86a454df72d0",
+    "raw_bytes": 845158,
+    "lossless_gzip": true
+  },
+  "accounting-all-jobs.psv.gz": {
+    "source_command": "sacct -S2026-10-27 -j8028780,8028825,8028927,8028945,8029261,8029539,8029705,8029745,8029756,8029796,8029852,8029897,8029948,8029980,8030012,8030077,8030123,8030170,8030202,8030234,8030276,8030312,8030353,8030390,8030434,8030459,8030530,8030569,8030598,8030630,8030658,8030692,8030755 -n -P --format=JobID%64,JobIDRaw%64,State%40,ElapsedRaw,AllocCPUS,ExitCode,TotalCPU,UserCPU,SystemCPU,NodeList,ReqMem,TimelimitRaw,Start,End,MaxRSS",
+    "raw_sha256": "e4433beb207afc1dccb74cd582f7e133b213a76f2889111661527a7ebede7199",
+    "stored_sha256": "9116f8d6b596ffffc0c0e56122120304771c5856c7069fb31d61f22d15ec61b6",
+    "raw_bytes": 513648,
+    "lossless_gzip": true
+  },
+  "controller-progress.jsonl.gz": {
+    "raw_sha256": "e7d8ca0fd5caa809ebffe702ad566e1beab06290c2a691e0392792c5b138f33f",
+    "stored_sha256": "577cc0b5cb8887764ffb582649fe8fb973dca1279e97e3d1bae58c95a2987df6",
+    "raw_bytes": 40220,
+    "lossless_gzip": true
+  }
+}

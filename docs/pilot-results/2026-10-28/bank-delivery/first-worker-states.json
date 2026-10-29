@@ -1,0 +1,16 @@
+{
+  "known": {
+    "job_id": "8032877",
+    "expected_worker_tasks": 64,
+    "states": {
+      "RUNNING": 64
+    }
+  },
+  "joint": {
+    "job_id": "8032878",
+    "expected_worker_tasks": 120,
+    "states": {
+      "RUNNING": 120
+    }
+  }
+}

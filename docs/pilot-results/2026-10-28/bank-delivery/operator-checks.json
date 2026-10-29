@@ -1,0 +1,16 @@
+{
+  "known": {
+    "initial_full_wave_plus_checks_cpu_hours": 48.93333333333333,
+    "cap_cpu_hours": 120
+  },
+  "joint": {
+    "initial_full_wave_plus_checks_cpu_hours": 653.4163888888888,
+    "cap_cpu_hours": 1500
+  },
+  "synthetic_checks": [
+    "completed accounting counted once",
+    "missing scheduler record reserves full wall+cleanup",
+    "unknown submission fails closed",
+    "terminal timeout fails closed"
+  ]
+}

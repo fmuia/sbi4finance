@@ -1,0 +1,20 @@
+{
+  "criterion": "Each parameter central99% reference interval must lie strictly within inner90% of its prior range (unit bounds .05,.95). Retain/report failure; never replace the case.",
+  "central_99_percent_unit_prior_quantiles": [
+    [
+      0.4971091773790686,
+      0.46534489621549385,
+      0.44448737811139555,
+      0.4612854295583308
+    ],
+    [
+      0.5126046060198202,
+      0.5170377327913926,
+      0.5384722104304455,
+      0.5468076056217808
+    ]
+  ],
+  "interior_passed": true,
+  "fraction_any_parameter_outside_inner_90_percent_prior_box": 0.0,
+  "scientific_acceptance": false
+}

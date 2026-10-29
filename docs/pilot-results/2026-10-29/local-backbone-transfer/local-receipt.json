@@ -1,0 +1,331 @@
+{
+  "checked_utc": "2026-10-29T13:00:34.091509+00:00",
+  "status": "all_models_and_selected_teaching_inputs_local_full_banks_copying",
+  "local_archive_root": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/tutorial-backbones-20261029",
+  "teaching_input_verification": {
+    "verified_files": [
+      {
+        "path": "sbi4finance-heston-teaching-20261028/checkpoint-final500/analytic-product-checks.json",
+        "bytes": 11286,
+        "sha256": "f7d665dae57c4db1b742996b1b3cfd5e07edf2d3a019ec8ce0c48b1cb68b6677",
+        "matches_expected": true
+      },
+      {
+        "path": "sbi4finance-heston-teaching-20261028/checkpoint-final500/gate.json",
+        "bytes": 74156,
+        "sha256": "c8ce2dede56f1f5a68044ccd7529a10bf91dd0ac6a231049042b3c0fb781ea0e",
+        "matches_expected": true
+      },
+      {
+        "path": "sbi4finance-heston-teaching-20261028/checkpoint-final500/model.keras",
+        "bytes": 12246485,
+        "sha256": "8d4a243ba099524cf4cda40e4f0616e895879f053829a7f60dadbe65b98301db",
+        "matches_expected": true
+      },
+      {
+        "path": "sbi4finance-heston-teaching-20261028/checkpoint-final500/origin-training.json",
+        "bytes": 32416,
+        "sha256": "a3de032a681a3e89f895dca48cdc4c573f4d1768f3b217e30649742da80f46b2",
+        "matches_expected": true
+      },
+      {
+        "path": "sbi4finance-heston-teaching-20261028/checkpoint-final500/task.json",
+        "bytes": 10197,
+        "sha256": "5e499526ff8f29a72f49785a1a36006b1d769d26bca8a6f83f7a8c8ac4d431fa",
+        "matches_expected": true
+      },
+      {
+        "path": "sbi4finance-heston-teaching-20261028/checkpoint-final500/training.json",
+        "bytes": 33269,
+        "sha256": "6d9c25a77869940bd23e561933f0296ddfb4269fc708d45e24e1ad9f8fbdf4ee",
+        "matches_expected": true
+      },
+      {
+        "path": "sbi4finance-heston-teaching-20261028/checkpoint-final500/export.json",
+        "bytes": 909,
+        "sha256": "f9290f8c9f9e5986b02501db6ffde90c884ff570920f6ce5987e3677e120fcdc",
+        "matches_expected": true
+      },
+      {
+        "path": "sbi4finance-independent-work-20261028/known100k/known/posterior/model.keras",
+        "bytes": 12261416,
+        "sha256": "39f1a81986a38994dc6eacc520ad95254b34346abc02e758c08779c7c5916fc4",
+        "matches_expected": true
+      },
+      {
+        "path": "sbi4finance-independent-work-20261028/known100k/known/posterior/task.json",
+        "bytes": 10539,
+        "sha256": "c99b0dd131896d89d8483a1668a3fde0fb7a0f28794c3db7fe14635cbbd52b65",
+        "matches_expected": true
+      },
+      {
+        "path": "sbi4finance-independent-work-20261028/known100k/known/posterior/training.json",
+        "bytes": 32585,
+        "sha256": "ab93cd13a399e16d32aae8875c9b1831f38696fbab6619ba341720408a5bd198",
+        "matches_expected": true
+      },
+      {
+        "path": "sbi4finance-independent-work-20261029/joint100k/joint/posterior/model.keras",
+        "bytes": 12260113,
+        "sha256": "19c24d64290651f592d3c13d7d0a1616d0d8ae080d487d0298aee8f97779498b",
+        "matches_expected": true
+      },
+      {
+        "path": "sbi4finance-independent-work-20261029/joint100k/joint/posterior/task.json",
+        "bytes": 10575,
+        "sha256": "29eca4e1b970c4f13b99573939aa3449c5280a3a4478f7d24beace6539a9889d",
+        "matches_expected": true
+      },
+      {
+        "path": "sbi4finance-independent-work-20261029/joint100k/joint/posterior/training.json",
+        "bytes": 32636,
+        "sha256": "ef41e5f9fc24fd897f3bdf1162bed15765387ca1c49107d24f9593cf6b951c37",
+        "matches_expected": true
+      },
+      {
+        "path": "sbi4finance-independent-work-20261028/known100k-pricer-full300/pricer/checkpoint/pricer.npz",
+        "bytes": 870334,
+        "sha256": "069593fc90e47761df7c06657e7a729781dce3680b50105dd4f1d5a094e4756d",
+        "matches_expected": true
+      },
+      {
+        "path": "sbi4finance-independent-work-20261028/known100k-pricer-full300/pricer/checkpoint/pricer.json",
+        "bytes": 9144,
+        "sha256": "69970785522004f8df1f2b13f23ee6bef51b83b078baa33628d3faadb17a8907",
+        "matches_expected": true
+      },
+      {
+        "path": "sbi4finance-independent-work-20261028/known100k-pricer-full300/pricer/checkpoint/task.json",
+        "bytes": 10539,
+        "sha256": "c99b0dd131896d89d8483a1668a3fde0fb7a0f28794c3db7fe14635cbbd52b65",
+        "matches_expected": true
+      },
+      {
+        "path": "sbi4finance-independent-work-20261028/known100k-pricer-full300/pricer/run.json",
+        "bytes": 9144,
+        "sha256": "6e2887eab88fde2d3e1f77d66ac32e64e2a9106480c5fc9632c22e4c81a7acfe",
+        "matches_expected": true
+      },
+      {
+        "path": "sbi4finance-independent-work-20261029/joint100k/joint/pricer/checkpoint/pricer.npz",
+        "bytes": 866174,
+        "sha256": "be699c31a7950ca3ebd9117275b4f8cb1a8355c96f7ca1e18bcfa36e0d252301",
+        "matches_expected": true
+      },
+      {
+        "path": "sbi4finance-independent-work-20261029/joint100k/joint/pricer/checkpoint/pricer.json",
+        "bytes": 9169,
+        "sha256": "8b5612712bd5b19d598ca09ff68793786ac5eb33841e48ace969abdf3005c492",
+        "matches_expected": true
+      },
+      {
+        "path": "sbi4finance-independent-work-20261029/joint100k/joint/pricer/checkpoint/task.json",
+        "bytes": 10575,
+        "sha256": "29eca4e1b970c4f13b99573939aa3449c5280a3a4478f7d24beace6539a9889d",
+        "matches_expected": true
+      },
+      {
+        "path": "sbi4finance-independent-work-20261029/joint100k/joint/pricer/run.json",
+        "bytes": 9169,
+        "sha256": "3dd465e32b694e4fb4a6b0f9fcd1b03f0107a5e80fc423a3601b576bf7802a75",
+        "matches_expected": true
+      },
+      {
+        "path": "sbi4finance-independent-work-20261028/known100k/known/pricer/checkpoint/pricer.npz",
+        "bytes": 870334,
+        "sha256": "9f0f695b0c369f6eaedb0c5559a46c254459047bd806fc14982377416a61a546",
+        "matches_expected": true
+      },
+      {
+        "path": "sbi4finance-independent-work-20261028/known100k/known/pricer/checkpoint/pricer.json",
+        "bytes": 9091,
+        "sha256": "fa85ba6cdf3437c50ff77dabc1f5c31a9ec455b84dc3ac6ba8340fe3171d01ef",
+        "matches_expected": true
+      },
+      {
+        "path": "sbi4finance-independent-work-20261028/known100k/known/pricer/checkpoint/task.json",
+        "bytes": 10539,
+        "sha256": "c99b0dd131896d89d8483a1668a3fde0fb7a0f28794c3db7fe14635cbbd52b65",
+        "matches_expected": true
+      },
+      {
+        "path": "sbi4finance-heston-backbone-20261027/snapshot-100k/manifest.json",
+        "bytes": 52124,
+        "sha256": "4b5929b0d0b23698c340eec6defabfd629fe23eca2ed78fe9bd46e4de35c244e",
+        "matches_expected": true
+      },
+      {
+        "path": "sbi4finance-full-core-20261026-wy2_j3o4/runs/heston-development/collection/collection.json",
+        "bytes": 13442,
+        "sha256": "8f9c4a5e6b3bebaa25215f720df02aee178b78bfce8483f0024679ffc869df1e",
+        "matches_expected": true
+      },
+      {
+        "path": "sbi4finance-rough-known-backbone-20261027/snapshot-100k/manifest.json",
+        "bytes": 1480502,
+        "sha256": "f1bfa42f7bf2acba3daaffb263b5bdeb60b5b12ebdfc267c5c5cd6eb7e08c313",
+        "matches_expected": true
+      },
+      {
+        "path": "sbi4finance-rough-known-backbone-20261027/collection/collection.json",
+        "bytes": 13772,
+        "sha256": "9e9e0ed2f087febd84bbd42ddc30aa24840d065c12a186b410851a68b5c83e13",
+        "matches_expected": null
+      },
+      {
+        "path": "sbi4finance-native-bank-20261027/snapshot-100k/manifest.json",
+        "bytes": 3386593,
+        "sha256": "eb72588b9b7665e0e416cb5d3a1bcf8cd78a1c97f2b43f18ea8246c749a871d8",
+        "matches_expected": true
+      },
+      {
+        "path": "sbi4finance-native-bank-20261027/collection/collection.json",
+        "bytes": 13824,
+        "sha256": "802a200f73bacddaa744abcfdcf2497b2d45a609c9039ed816baf1e3e9a5b12c",
+        "matches_expected": true
+      }
+    ]
+  },
+  "curation_verification": [
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/tutorial-backbones-20261029/oscar-scratch/sbi4finance-independent-work-20261028/known100k/known/run.json",
+      "sha256": "1ab2f2cb980a5ea3f48e513559fbcd07481fbd286e705155d5bb776cee73ffe7",
+      "actual_sha256": "1ab2f2cb980a5ea3f48e513559fbcd07481fbd286e705155d5bb776cee73ffe7",
+      "bytes": 1052
+    },
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/tutorial-backbones-20261029/oscar-scratch/sbi4finance-independent-work-20261028/known100k/known/validation/evaluation.json",
+      "sha256": "e4f6c2a91ad92597032c6918cac743c8d5d617c0b5a8826ef0884774a20e4b2c",
+      "actual_sha256": "e4f6c2a91ad92597032c6918cac743c8d5d617c0b5a8826ef0884774a20e4b2c",
+      "bytes": 50477
+    },
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/tutorial-backbones-20261029/oscar-scratch/sbi4finance-independent-work-20261029/joint100k/joint/run.json",
+      "sha256": "0981cf38953e901cffbee723747d742ad5487820e8715401b8badcc94adda785",
+      "actual_sha256": "0981cf38953e901cffbee723747d742ad5487820e8715401b8badcc94adda785",
+      "bytes": 1050
+    },
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/tutorial-backbones-20261029/oscar-scratch/sbi4finance-independent-work-20261029/joint100k/joint/validation/evaluation.json",
+      "sha256": "395eab6088e5d3799d9b8d65904ac25daa536991ef43c23f84f161b7e82a8ac9",
+      "actual_sha256": "395eab6088e5d3799d9b8d65904ac25daa536991ef43c23f84f161b7e82a8ac9",
+      "bytes": 53495
+    },
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/tutorial-backbones-20261029/oscar-scratch/sbi4finance-independent-work-20261028/known100k/known/validation-partial/batch-0000.npz",
+      "sha256": null,
+      "actual_sha256": "b923024d53700dca29babdebdf96e79c1461c3bd8bd3af1e84ae9e975e9390fa",
+      "bytes": 1168215
+    },
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/tutorial-backbones-20261029/oscar-scratch/sbi4finance-independent-work-20261029/joint100k/joint/validation-partial/batch-1900.npz",
+      "sha256": null,
+      "actual_sha256": "7659b0aff6d4c5b0e8cc96bb9c4b041d63096e9f07b94b5e964d63297f84e9e1",
+      "bytes": 2434581
+    },
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/tutorial-backbones-20261029/oscar-scratch/sbi4finance-independent-work-20261028/known100k/known/validation/draws.npz",
+      "sha256": null,
+      "actual_sha256": "131589dec755754e5fb1ce8d99b9021f35cf8e888ef65e9bbeb72f9efc75fc37",
+      "bytes": 23580493
+    },
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/tutorial-backbones-20261029/oscar-scratch/sbi4finance-independent-work-20261029/joint100k/joint/validation-partial/batch-0000.npz",
+      "sha256": null,
+      "actual_sha256": "502c47b33f1de42febc08fdda7637610d26ee0e3939f54ef933a1138acfca1c6",
+      "bytes": 2436080
+    },
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/tutorial-backbones-20261029/oscar-scratch/sbi4finance-rough-known-backbone-20261027/collection/parts/validation-0000000000-0000000025/manifest.json",
+      "sha256": "6945ab61f4a7b4bfecf0016a4960b27817a637f908b8d5100a3b379982468d24",
+      "actual_sha256": "6945ab61f4a7b4bfecf0016a4960b27817a637f908b8d5100a3b379982468d24",
+      "bytes": 13761
+    },
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/tutorial-backbones-20261029/oscar-scratch/sbi4finance-rough-known-backbone-20261027/collection/parts/validation-0000000000-0000000025/arrays.npz",
+      "sha256": "015edb70e73c90c5b44d9c87c02589848522bdc6cb0390946a94d50d70f4cd1b",
+      "actual_sha256": "015edb70e73c90c5b44d9c87c02589848522bdc6cb0390946a94d50d70f4cd1b",
+      "bytes": 222554
+    },
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/tutorial-backbones-20261029/oscar-scratch/sbi4finance-native-bank-20261027/collection/parts/validation-0000001975-0000002000/manifest.json",
+      "sha256": "2508329f240ad4e0e7793da1fe8e018137582b9207ba37eca4b98f5fed316bc4",
+      "actual_sha256": "2508329f240ad4e0e7793da1fe8e018137582b9207ba37eca4b98f5fed316bc4",
+      "bytes": 13819
+    },
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/tutorial-backbones-20261029/oscar-scratch/sbi4finance-native-bank-20261027/collection/parts/validation-0000001975-0000002000/arrays.npz",
+      "sha256": "006270d016caa6f3e52a7a043737f6106730a5ad02b4cc97d498cf676d88fe0a",
+      "actual_sha256": "006270d016caa6f3e52a7a043737f6106730a5ad02b4cc97d498cf676d88fe0a",
+      "bytes": 223224
+    },
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/tutorial-backbones-20261029/oscar-scratch/sbi4finance-native-bank-20261027/collection/parts/validation-0000001925-0000001950/manifest.json",
+      "sha256": "490a61ecee129553e946c57e4c419b58d261099edc236661985686cbd29e2755",
+      "actual_sha256": "490a61ecee129553e946c57e4c419b58d261099edc236661985686cbd29e2755",
+      "bytes": 13818
+    },
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/tutorial-backbones-20261029/oscar-scratch/sbi4finance-native-bank-20261027/collection/parts/validation-0000001925-0000001950/arrays.npz",
+      "sha256": "ebbeb1642c881057e428bcbef33fce086bed60644b7f075c2567aad275ef07f0",
+      "actual_sha256": "ebbeb1642c881057e428bcbef33fce086bed60644b7f075c2567aad275ef07f0",
+      "bytes": 223330
+    },
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/tutorial-backbones-20261029/oscar-scratch/sbi4finance-native-bank-20261027/collection/parts/validation-0000001950-0000001975/manifest.json",
+      "sha256": "0971692d3a05ed0db8d315897ac74afbec8e043543f2615629a9451410f27596",
+      "actual_sha256": "0971692d3a05ed0db8d315897ac74afbec8e043543f2615629a9451410f27596",
+      "bytes": 13819
+    },
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/tutorial-backbones-20261029/oscar-scratch/sbi4finance-native-bank-20261027/collection/parts/validation-0000001950-0000001975/arrays.npz",
+      "sha256": "93c3357f3724a3f986b80fff1645c2c86b3e5ca4c91312bd301eeed6961f92bf",
+      "actual_sha256": "93c3357f3724a3f986b80fff1645c2c86b3e5ca4c91312bd301eeed6961f92bf",
+      "bytes": 223163
+    },
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/tutorial-backbones-20261029/oscar-scratch/sbi4finance-native-bank-20261027/collection/parts/validation-0000000000-0000000025/manifest.json",
+      "sha256": "b8d5eeba80feeb0cd06a27f77c4784ac5ba75d4e3c6fec61c33f14d97b681322",
+      "actual_sha256": "b8d5eeba80feeb0cd06a27f77c4784ac5ba75d4e3c6fec61c33f14d97b681322",
+      "bytes": 13814
+    },
+    {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/tutorial-backbones-20261029/oscar-scratch/sbi4finance-native-bank-20261027/collection/parts/validation-0000000000-0000000025/arrays.npz",
+      "sha256": "5a6bfcc612e84d465a768d681b8ad77c8cd21ff66e5cb1c669b2b2e60369c4ee",
+      "actual_sha256": "5a6bfcc612e84d465a768d681b8ad77c8cd21ff66e5cb1c669b2b2e60369c4ee",
+      "bytes": 223361
+    }
+  ],
+  "banks_at_check": [
+    {
+      "route": "heston",
+      "expected_parts": 92,
+      "verified_part_files": 184,
+      "pending_or_incomplete_part_files": 0,
+      "verified_part_bytes": 127777134,
+      "status": "complete_native_snapshot_verified",
+      "snapshot_sha256": "4b5929b0d0b23698c340eec6defabfd629fe23eca2ed78fe9bd46e4de35c244e"
+    },
+    {
+      "route": "rough_known",
+      "expected_parts": 4480,
+      "verified_part_files": 65,
+      "pending_or_incomplete_part_files": 8895,
+      "verified_part_bytes": 7785789,
+      "status": "copy_in_progress",
+      "snapshot_sha256": "f1bfa42f7bf2acba3daaffb263b5bdeb60b5b12ebdfc267c5c5cd6eb7e08c313"
+    },
+    {
+      "route": "rough_joint",
+      "expected_parts": 10308,
+      "verified_part_files": 8,
+      "pending_or_incomplete_part_files": 20608,
+      "verified_part_bytes": 948348,
+      "status": "copy_in_progress",
+      "snapshot_sha256": "eb72588b9b7665e0e416cb5d3a1bcf8cd78a1c97f2b43f18ea8246c749a871d8"
+    }
+  ],
+  "local_curation_worktree": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-tutorial-local-20261029",
+  "public_upload": false,
+  "notebooks_executed": false
+}

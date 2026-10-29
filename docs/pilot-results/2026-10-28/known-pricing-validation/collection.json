@@ -1,0 +1,10 @@
+{
+  "status": "completed",
+  "source_checks_passed": true,
+  "completed_pricing_batches": 48,
+  "actual_allocated_cpu_seconds": 5790,
+  "actual_allocated_gpu_seconds": 0,
+  "worker_driver_elapsed_seconds_sum": 1902.1712103690952,
+  "collection_elapsed_seconds": 1.648640463128686,
+  "allocation_failures": []
+}

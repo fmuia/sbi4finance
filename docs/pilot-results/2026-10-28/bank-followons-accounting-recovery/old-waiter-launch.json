@@ -1,0 +1,9 @@
+{
+  "state": "armed_process_launched",
+  "pid": 3792953,
+  "utc": "2026-10-28T01:12:46.129215+00:00",
+  "plan_sha256": "35ed170b197153e60e9350171340f716f04b15f28bb536224fe6e28acb9fba52",
+  "waiter_sha256": "4f71ffa51461d55aa864294697f43119494f095bc64748897ba87add58ead734",
+  "execution": "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/waiter/execution.json",
+  "log": "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/waiter/waiter.log"
+}

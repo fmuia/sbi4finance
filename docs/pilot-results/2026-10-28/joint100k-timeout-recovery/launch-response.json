@@ -1,0 +1,8 @@
+{
+  "state": "detached_campaign_launched",
+  "pid": 2825694,
+  "host": "login010",
+  "launch_receipt": "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/joint-100k-recovery-20261028/launch.json",
+  "config_sha256": "a27a7a142f160e37ce903788308744dde61f2889fb9091aa8a23b583043234a7",
+  "operator_sha256": "a59339f9f9d10f4de961a42977e41278324c76e290dc32b806094dc0542d5ee0"
+}

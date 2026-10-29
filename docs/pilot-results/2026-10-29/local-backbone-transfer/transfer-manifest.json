@@ -1,0 +1,679 @@
+{
+  "format": "local_backbone_transfer_manifest_v1",
+  "prepared_utc": "2026-10-29T12:44:22.368851+00:00",
+  "status": "offline_source_manifest_ready_no_remote_transfer_performed_by_this_manifest",
+  "source_host": "transfer.ccv.brown.edu",
+  "source_base": "/oscar/scratch/afengler/",
+  "archive_layout": "Choose local archive root outside Git; retain source_base-relative directory paths exactly. Do not flatten Heston collection beside its snapshot.",
+  "source_refresh": "All remote sizes and availability must be stat-checked over authenticated SFTP; unknown values remain null. Known hashes are archived completed-run identities or freshly hashed existing local copies.",
+  "ordered_transfer_priority": [
+    {
+      "priority": 0,
+      "action": "Reuse hash-verified local Heston final500 export and existing small tutorial bundles/cases; root chooses durable archive."
+    },
+    {
+      "priority": 1,
+      "action": "Transfer known100k and joint100k posterior inference files; small pricer checkpoint bundles, preserving original and diagnostic known candidates separately."
+    },
+    {
+      "priority": 2,
+      "action": "Transfer snapshot manifests and collection.json first to enumerate exact native payload list; retain small run/evaluation metadata already archived in repository."
+    },
+    {
+      "priority": 3,
+      "action": "Optional saved full validation draws for local diagnostics; joint panel already local."
+    },
+    {
+      "priority": 4,
+      "action": "Transfer all referenced canonical collection parts in background; hash-verify locally against native manifests."
+    }
+  ],
+  "posterior_bundles": [
+    {
+      "route": "heston",
+      "priority": 0,
+      "checkpoint_selection": "final500 exported candidate; not original validation-best402",
+      "files": [
+        {
+          "source": "/oscar/scratch/afengler/sbi4finance-heston-teaching-20261028/checkpoint-final500/analytic-product-checks.json",
+          "archive_relative_path": "sbi4finance-heston-teaching-20261028/checkpoint-final500/analytic-product-checks.json",
+          "sha256": "f7d665dae57c4db1b742996b1b3cfd5e07edf2d3a019ec8ce0c48b1cb68b6677",
+          "bytes": 11286,
+          "required": false,
+          "verified_local_copy": "/private/tmp/sbi4finance-heston-final500-verify.S2Y66f/checkpoint/analytic-product-checks.json"
+        },
+        {
+          "source": "/oscar/scratch/afengler/sbi4finance-heston-teaching-20261028/checkpoint-final500/gate.json",
+          "archive_relative_path": "sbi4finance-heston-teaching-20261028/checkpoint-final500/gate.json",
+          "sha256": "c8ce2dede56f1f5a68044ccd7529a10bf91dd0ac6a231049042b3c0fb781ea0e",
+          "bytes": 74156,
+          "required": false,
+          "verified_local_copy": "/private/tmp/sbi4finance-heston-final500-verify.S2Y66f/checkpoint/gate.json"
+        },
+        {
+          "source": "/oscar/scratch/afengler/sbi4finance-heston-teaching-20261028/checkpoint-final500/model.keras",
+          "archive_relative_path": "sbi4finance-heston-teaching-20261028/checkpoint-final500/model.keras",
+          "sha256": "8d4a243ba099524cf4cda40e4f0616e895879f053829a7f60dadbe65b98301db",
+          "bytes": 12246485,
+          "required": true,
+          "verified_local_copy": "/private/tmp/sbi4finance-heston-final500-verify.S2Y66f/checkpoint/model.keras"
+        },
+        {
+          "source": "/oscar/scratch/afengler/sbi4finance-heston-teaching-20261028/checkpoint-final500/origin-training.json",
+          "archive_relative_path": "sbi4finance-heston-teaching-20261028/checkpoint-final500/origin-training.json",
+          "sha256": "a3de032a681a3e89f895dca48cdc4c573f4d1768f3b217e30649742da80f46b2",
+          "bytes": 32416,
+          "required": false,
+          "verified_local_copy": "/private/tmp/sbi4finance-heston-final500-verify.S2Y66f/checkpoint/origin-training.json"
+        },
+        {
+          "source": "/oscar/scratch/afengler/sbi4finance-heston-teaching-20261028/checkpoint-final500/task.json",
+          "archive_relative_path": "sbi4finance-heston-teaching-20261028/checkpoint-final500/task.json",
+          "sha256": "5e499526ff8f29a72f49785a1a36006b1d769d26bca8a6f83f7a8c8ac4d431fa",
+          "bytes": 10197,
+          "required": true,
+          "verified_local_copy": "/private/tmp/sbi4finance-heston-final500-verify.S2Y66f/checkpoint/task.json"
+        },
+        {
+          "source": "/oscar/scratch/afengler/sbi4finance-heston-teaching-20261028/checkpoint-final500/training.json",
+          "archive_relative_path": "sbi4finance-heston-teaching-20261028/checkpoint-final500/training.json",
+          "sha256": "6d9c25a77869940bd23e561933f0296ddfb4269fc708d45e24e1ad9f8fbdf4ee",
+          "bytes": 33269,
+          "required": true,
+          "verified_local_copy": "/private/tmp/sbi4finance-heston-final500-verify.S2Y66f/checkpoint/training.json"
+        },
+        {
+          "source": "/oscar/scratch/afengler/sbi4finance-heston-teaching-20261028/checkpoint-final500/export.json",
+          "archive_relative_path": "sbi4finance-heston-teaching-20261028/checkpoint-final500/export.json",
+          "sha256": "f9290f8c9f9e5986b02501db6ffde90c884ff570920f6ce5987e3677e120fcdc",
+          "bytes": 909,
+          "required": false,
+          "verified_local_copy": "/private/tmp/sbi4finance-heston-final500-verify.S2Y66f/checkpoint/export.json"
+        }
+      ],
+      "pricer": "Analytic/Fourier implementation in versioned repository; no learned Heston pricer checkpoint required."
+    },
+    {
+      "route": "rough_known",
+      "priority": 1,
+      "checkpoint_selection": "final500 current100k",
+      "files": [
+        {
+          "source": "/oscar/scratch/afengler/sbi4finance-independent-work-20261028/known100k/known/posterior/model.keras",
+          "archive_relative_path": "sbi4finance-independent-work-20261028/known100k/known/posterior/model.keras",
+          "sha256": "39f1a81986a38994dc6eacc520ad95254b34346abc02e758c08779c7c5916fc4",
+          "bytes": null,
+          "required": true
+        },
+        {
+          "source": "/oscar/scratch/afengler/sbi4finance-independent-work-20261028/known100k/known/posterior/task.json",
+          "archive_relative_path": "sbi4finance-independent-work-20261028/known100k/known/posterior/task.json",
+          "sha256": "c99b0dd131896d89d8483a1668a3fde0fb7a0f28794c3db7fe14635cbbd52b65",
+          "bytes": null,
+          "required": true
+        },
+        {
+          "source": "/oscar/scratch/afengler/sbi4finance-independent-work-20261028/known100k/known/posterior/training.json",
+          "archive_relative_path": "sbi4finance-independent-work-20261028/known100k/known/posterior/training.json",
+          "sha256": "ab93cd13a399e16d32aae8875c9b1831f38696fbab6619ba341720408a5bd198",
+          "bytes": 32585,
+          "required": true,
+          "verified_local_copy": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-parallel-delivery-20261028/docs/pilot-results/2026-10-28/known100k-completed-fit/known100k/known/posterior/training.json"
+        }
+      ]
+    },
+    {
+      "route": "rough_joint",
+      "priority": 1,
+      "checkpoint_selection": "final500 current100k",
+      "files": [
+        {
+          "source": "/oscar/scratch/afengler/sbi4finance-independent-work-20261029/joint100k/joint/posterior/model.keras",
+          "archive_relative_path": "sbi4finance-independent-work-20261029/joint100k/joint/posterior/model.keras",
+          "sha256": "19c24d64290651f592d3c13d7d0a1616d0d8ae080d487d0298aee8f97779498b",
+          "bytes": null,
+          "required": true
+        },
+        {
+          "source": "/oscar/scratch/afengler/sbi4finance-independent-work-20261029/joint100k/joint/posterior/task.json",
+          "archive_relative_path": "sbi4finance-independent-work-20261029/joint100k/joint/posterior/task.json",
+          "sha256": "29eca4e1b970c4f13b99573939aa3449c5280a3a4478f7d24beace6539a9889d",
+          "bytes": 10575,
+          "required": true,
+          "verified_local_copy": "/private/tmp/sbi-joint100k-sanity-20261029/task.json"
+        },
+        {
+          "source": "/oscar/scratch/afengler/sbi4finance-independent-work-20261029/joint100k/joint/posterior/training.json",
+          "archive_relative_path": "sbi4finance-independent-work-20261029/joint100k/joint/posterior/training.json",
+          "sha256": "ef41e5f9fc24fd897f3bdf1162bed15765387ca1c49107d24f9593cf6b951c37",
+          "bytes": 32636,
+          "required": true,
+          "verified_local_copy": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-parallel-delivery-20261028/docs/pilot-results/2026-10-29/joint100k-completed/joint100k/joint/posterior/training.json"
+        }
+      ]
+    }
+  ],
+  "pricer_bundles": [
+    {
+      "route": "rough_known",
+      "priority": 1,
+      "label": "full300 optimization candidate; independent pricing rescore completed, no new conditional PyMC target, no automatic promotion",
+      "files": [
+        {
+          "source": "/oscar/scratch/afengler/sbi4finance-independent-work-20261028/known100k-pricer-full300/pricer/checkpoint/pricer.npz",
+          "archive_relative_path": "sbi4finance-independent-work-20261028/known100k-pricer-full300/pricer/checkpoint/pricer.npz",
+          "sha256": "069593fc90e47761df7c06657e7a729781dce3680b50105dd4f1d5a094e4756d",
+          "bytes": null,
+          "required": true
+        },
+        {
+          "source": "/oscar/scratch/afengler/sbi4finance-independent-work-20261028/known100k-pricer-full300/pricer/checkpoint/pricer.json",
+          "archive_relative_path": "sbi4finance-independent-work-20261028/known100k-pricer-full300/pricer/checkpoint/pricer.json",
+          "sha256": "69970785522004f8df1f2b13f23ee6bef51b83b078baa33628d3faadb17a8907",
+          "bytes": 9144,
+          "required": true,
+          "verified_local_copy": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-parallel-delivery-20261028/docs/pilot-results/2026-10-28/known100k-pricer-full300/terminal/pricer/checkpoint/pricer.json"
+        },
+        {
+          "source": "/oscar/scratch/afengler/sbi4finance-independent-work-20261028/known100k-pricer-full300/pricer/checkpoint/task.json",
+          "archive_relative_path": "sbi4finance-independent-work-20261028/known100k-pricer-full300/pricer/checkpoint/task.json",
+          "sha256": "c99b0dd131896d89d8483a1668a3fde0fb7a0f28794c3db7fe14635cbbd52b65",
+          "bytes": null,
+          "required": true,
+          "note": "Same known-curve task; expected task identity from frozen diagnostic metadata, verify downloaded bytes."
+        },
+        {
+          "source": "/oscar/scratch/afengler/sbi4finance-independent-work-20261028/known100k-pricer-full300/pricer/run.json",
+          "archive_relative_path": "sbi4finance-independent-work-20261028/known100k-pricer-full300/pricer/run.json",
+          "sha256": "6e2887eab88fde2d3e1f77d66ac32e64e2a9106480c5fc9632c22e4c81a7acfe",
+          "bytes": 9144,
+          "required": false,
+          "verified_local_copy": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-parallel-delivery-20261028/docs/pilot-results/2026-10-28/known100k-pricer-full300/terminal/pricer/run.json"
+        }
+      ]
+    },
+    {
+      "route": "rough_joint",
+      "priority": 1,
+      "label": "current100k learned forward pricer, final300 selected297",
+      "files": [
+        {
+          "source": "/oscar/scratch/afengler/sbi4finance-independent-work-20261029/joint100k/joint/pricer/checkpoint/pricer.npz",
+          "archive_relative_path": "sbi4finance-independent-work-20261029/joint100k/joint/pricer/checkpoint/pricer.npz",
+          "sha256": "be699c31a7950ca3ebd9117275b4f8cb1a8355c96f7ca1e18bcfa36e0d252301",
+          "bytes": null,
+          "required": true
+        },
+        {
+          "source": "/oscar/scratch/afengler/sbi4finance-independent-work-20261029/joint100k/joint/pricer/checkpoint/pricer.json",
+          "archive_relative_path": "sbi4finance-independent-work-20261029/joint100k/joint/pricer/checkpoint/pricer.json",
+          "sha256": "8b5612712bd5b19d598ca09ff68793786ac5eb33841e48ace969abdf3005c492",
+          "bytes": 9169,
+          "required": true,
+          "verified_local_copy": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-parallel-delivery-20261028/docs/pilot-results/2026-10-29/joint100k-completed/joint100k/joint/pricer/checkpoint/pricer.json"
+        },
+        {
+          "source": "/oscar/scratch/afengler/sbi4finance-independent-work-20261029/joint100k/joint/pricer/checkpoint/task.json",
+          "archive_relative_path": "sbi4finance-independent-work-20261029/joint100k/joint/pricer/checkpoint/task.json",
+          "sha256": "29eca4e1b970c4f13b99573939aa3449c5280a3a4478f7d24beace6539a9889d",
+          "bytes": null,
+          "required": true,
+          "note": "Expected same joint task; verify downloaded bytes."
+        },
+        {
+          "source": "/oscar/scratch/afengler/sbi4finance-independent-work-20261029/joint100k/joint/pricer/run.json",
+          "archive_relative_path": "sbi4finance-independent-work-20261029/joint100k/joint/pricer/run.json",
+          "sha256": "3dd465e32b694e4fb4a6b0f9fcd1b03f0107a5e80fc423a3601b576bf7802a75",
+          "bytes": 9169,
+          "required": false,
+          "verified_local_copy": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-parallel-delivery-20261028/docs/pilot-results/2026-10-29/joint100k-completed/joint100k/joint/pricer/run.json"
+        }
+      ]
+    },
+    {
+      "route": "rough_known_original100k",
+      "priority": 1,
+      "label": "Original100k pricer used in existing scientific comparisons; earlystopped116/selected86; keep distinct from full300diagnostic",
+      "files": [
+        {
+          "source": "/oscar/scratch/afengler/sbi4finance-independent-work-20261028/known100k/known/pricer/checkpoint/pricer.npz",
+          "archive_relative_path": "sbi4finance-independent-work-20261028/known100k/known/pricer/checkpoint/pricer.npz",
+          "sha256": "9f0f695b0c369f6eaedb0c5559a46c254459047bd806fc14982377416a61a546",
+          "bytes": null,
+          "required": true
+        },
+        {
+          "source": "/oscar/scratch/afengler/sbi4finance-independent-work-20261028/known100k/known/pricer/checkpoint/pricer.json",
+          "archive_relative_path": "sbi4finance-independent-work-20261028/known100k/known/pricer/checkpoint/pricer.json",
+          "sha256": "fa85ba6cdf3437c50ff77dabc1f5c31a9ec455b84dc3ac6ba8340fe3171d01ef",
+          "bytes": 9091,
+          "required": true,
+          "verified_local_copy": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-parallel-delivery-20261028/docs/pilot-results/2026-10-28/known100k-completed-fit/known100k/known/pricer/checkpoint/pricer.json"
+        },
+        {
+          "source": "/oscar/scratch/afengler/sbi4finance-independent-work-20261028/known100k/known/pricer/checkpoint/task.json",
+          "archive_relative_path": "sbi4finance-independent-work-20261028/known100k/known/pricer/checkpoint/task.json",
+          "sha256": "c99b0dd131896d89d8483a1668a3fde0fb7a0f28794c3db7fe14635cbbd52b65",
+          "bytes": null,
+          "required": true
+        }
+      ]
+    }
+  ],
+  "full_banks": [
+    {
+      "route": "heston",
+      "snapshot": "/oscar/scratch/afengler/sbi4finance-heston-backbone-20261027/snapshot-100k",
+      "manifest_sha256": "4b5929b0d0b23698c340eec6defabfd629fe23eca2ed78fe9bd46e4de35c244e",
+      "collection": "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/runs/heston-development/collection",
+      "collection_json_sha256": "8f9c4a5e6b3bebaa25215f720df02aee178b78bfce8483f0024679ffc869df1e",
+      "collection_id": "402230db66b9885b59524e7808eebf1b3882c4a271f97eccc7cf970581e85221",
+      "split_counts": {
+        "train": 100000,
+        "validation": 5000,
+        "test": 5000
+      },
+      "source_revision": "9d903dbb5986f766844fbb942b322c0d55856705",
+      "task_sha256": "5e499526ff8f29a72f49785a1a36006b1d769d26bca8a6f83f7a8c8ac4d431fa",
+      "evidence": "docs/pilot-results/2026-10-27/tutorial-backbone/preparation.json",
+      "priority": 4,
+      "bytes": null,
+      "required_files": [
+        {
+          "source": "/oscar/scratch/afengler/sbi4finance-heston-backbone-20261027/snapshot-100k/manifest.json",
+          "archive_relative_path": "sbi4finance-heston-backbone-20261027/snapshot-100k/manifest.json",
+          "sha256": "4b5929b0d0b23698c340eec6defabfd629fe23eca2ed78fe9bd46e4de35c244e",
+          "bytes": null,
+          "required": true
+        },
+        {
+          "source": "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/runs/heston-development/collection/collection.json",
+          "archive_relative_path": "sbi4finance-full-core-20261026-wy2_j3o4/runs/heston-development/collection/collection.json",
+          "sha256": "8f9c4a5e6b3bebaa25215f720df02aee178b78bfce8483f0024679ffc869df1e",
+          "bytes": null,
+          "required": true
+        }
+      ],
+      "required_tree": {
+        "source": "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/runs/heston-development/collection/parts",
+        "archive_relative_path": "sbi4finance-full-core-20261026-wy2_j3o4/runs/heston-development/collection/parts",
+        "include": "Every committed native part directory referenced by snapshot; each contains manifest.json and arrays.npz. Preserve exact bytes and directory names.",
+        "payload_hashes": "Use snapshot part manifest_sha256 and array_sha256 fields; enumerate only after downloading the small snapshot manifest.",
+        "sha256": null,
+        "bytes": null
+      },
+      "preserve_relative_paths": true,
+      "exclude_from_tutorial_payload": [
+        ".tmp",
+        ".locks",
+        "uncommitted or failed attempts (retain separately if archiving operational history)"
+      ]
+    },
+    {
+      "route": "rough_known",
+      "snapshot": "/oscar/scratch/afengler/sbi4finance-rough-known-backbone-20261027/snapshot-100k",
+      "manifest_sha256": "f1bfa42f7bf2acba3daaffb263b5bdeb60b5b12ebdfc267c5c5cd6eb7e08c313",
+      "collection": "/oscar/scratch/afengler/sbi4finance-rough-known-backbone-20261027/collection",
+      "collection_json_sha256": null,
+      "collection_id": "da963f7294aee242a80ebf9b47d914294b439aef8b6ee8f7c6d1899766e546f1",
+      "split_counts": {
+        "train": 100000,
+        "validation": 5000,
+        "test": 7000
+      },
+      "source_revision": "616352035be4b9d271151090aa5d2d9539da8b1c",
+      "task_sha256": "c99b0dd131896d89d8483a1668a3fde0fb7a0f28794c3db7fe14635cbbd52b65",
+      "evidence": "docs/pilot-results/2026-10-28/known100k-completed-fit/bank-and-model-identity-proof.json",
+      "priority": 4,
+      "bytes": null,
+      "required_files": [
+        {
+          "source": "/oscar/scratch/afengler/sbi4finance-rough-known-backbone-20261027/snapshot-100k/manifest.json",
+          "archive_relative_path": "sbi4finance-rough-known-backbone-20261027/snapshot-100k/manifest.json",
+          "sha256": "f1bfa42f7bf2acba3daaffb263b5bdeb60b5b12ebdfc267c5c5cd6eb7e08c313",
+          "bytes": null,
+          "required": true
+        },
+        {
+          "source": "/oscar/scratch/afengler/sbi4finance-rough-known-backbone-20261027/collection/collection.json",
+          "archive_relative_path": "sbi4finance-rough-known-backbone-20261027/collection/collection.json",
+          "sha256": null,
+          "bytes": null,
+          "required": true
+        }
+      ],
+      "required_tree": {
+        "source": "/oscar/scratch/afengler/sbi4finance-rough-known-backbone-20261027/collection/parts",
+        "archive_relative_path": "sbi4finance-rough-known-backbone-20261027/collection/parts",
+        "include": "Every committed native part directory referenced by snapshot; each contains manifest.json and arrays.npz. Preserve exact bytes and directory names.",
+        "payload_hashes": "Use snapshot part manifest_sha256 and array_sha256 fields; enumerate only after downloading the small snapshot manifest.",
+        "sha256": null,
+        "bytes": null
+      },
+      "preserve_relative_paths": true,
+      "exclude_from_tutorial_payload": [
+        ".tmp",
+        ".locks",
+        "uncommitted or failed attempts (retain separately if archiving operational history)"
+      ]
+    },
+    {
+      "route": "rough_joint",
+      "snapshot": "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/snapshot-100k",
+      "manifest_sha256": "eb72588b9b7665e0e416cb5d3a1bcf8cd78a1c97f2b43f18ea8246c749a871d8",
+      "collection": "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection",
+      "collection_json_sha256": "802a200f73bacddaa744abcfdcf2497b2d45a609c9039ed816baf1e3e9a5b12c",
+      "collection_id": "817de3664968de0c605ae4c73e2c99c26465344294af2fc5412f39fffa4baa50",
+      "split_counts": {
+        "train": 100000,
+        "validation": 5000,
+        "test": 7000
+      },
+      "source_revision": "c773ceb26e7273612b15c69fd63715d131778083",
+      "task_sha256": "29eca4e1b970c4f13b99573939aa3449c5280a3a4478f7d24beace6539a9889d",
+      "evidence": "docs/pilot-results/2026-10-29/joint100k-completed/data-model-and-accounting-proof.json",
+      "priority": 4,
+      "bytes": null,
+      "required_files": [
+        {
+          "source": "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/snapshot-100k/manifest.json",
+          "archive_relative_path": "sbi4finance-native-bank-20261027/snapshot-100k/manifest.json",
+          "sha256": "eb72588b9b7665e0e416cb5d3a1bcf8cd78a1c97f2b43f18ea8246c749a871d8",
+          "bytes": null,
+          "required": true
+        },
+        {
+          "source": "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/collection.json",
+          "archive_relative_path": "sbi4finance-native-bank-20261027/collection/collection.json",
+          "sha256": "802a200f73bacddaa744abcfdcf2497b2d45a609c9039ed816baf1e3e9a5b12c",
+          "bytes": null,
+          "required": true
+        }
+      ],
+      "required_tree": {
+        "source": "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts",
+        "archive_relative_path": "sbi4finance-native-bank-20261027/collection/parts",
+        "include": "Every committed native part directory referenced by snapshot; each contains manifest.json and arrays.npz. Preserve exact bytes and directory names.",
+        "payload_hashes": "Use snapshot part manifest_sha256 and array_sha256 fields; enumerate only after downloading the small snapshot manifest.",
+        "sha256": null,
+        "bytes": null
+      },
+      "preserve_relative_paths": true,
+      "exclude_from_tutorial_payload": [
+        ".tmp",
+        ".locks",
+        "uncommitted or failed attempts (retain separately if archiving operational history)"
+      ]
+    }
+  ],
+  "already_local": [
+    {
+      "path": "data/synthetic/full-surface-backbones/artifacts.json",
+      "status": "already_local_no_transfer_needed",
+      "files": [
+        {
+          "path": "data/synthetic/full-surface-backbones/artifacts.json",
+          "sha256": "e58f68e4d644126f750869edb2246351ecf76293d3dcecfa85d2c798683e9746",
+          "bytes": 2361
+        }
+      ]
+    },
+    {
+      "path": "data/synthetic/full-surface-heston-final500/interior-midpoint",
+      "status": "already_local_no_transfer_needed",
+      "files": [
+        {
+          "path": "data/synthetic/full-surface-heston-final500/interior-midpoint/bundle.json",
+          "sha256": "3733f8e9672f7a6bb8dbefa9a5112d0e0d9e2dfa5a2e47a17a5de71dc2a1f3b3",
+          "bytes": 2907
+        },
+        {
+          "path": "data/synthetic/full-surface-heston-final500/interior-midpoint/diagnostics.json",
+          "sha256": "8993076d03ff44ba1106c8324c8856ad421b40be54ecbe0773a43377397c3d5f",
+          "bytes": 2642
+        },
+        {
+          "path": "data/synthetic/full-surface-heston-final500/interior-midpoint/posterior.npz",
+          "sha256": "cc26e3129d94083c35de8b300b214f2518a7bcf825137a625f1ec74893ff16db",
+          "bytes": 686780
+        },
+        {
+          "path": "data/synthetic/full-surface-heston-final500/interior-midpoint/products.json",
+          "sha256": "f07c48cade071469012c32b64065ef0480be181ec9a4cc77b558d1238db987e9",
+          "bytes": 904
+        },
+        {
+          "path": "data/synthetic/full-surface-heston-final500/interior-midpoint/reference.json",
+          "sha256": "ff6c7a4660bdc486546d8dae9825abe0adf8e335972ba5c49df576f8ea189310",
+          "bytes": 24783
+        },
+        {
+          "path": "data/synthetic/full-surface-heston-final500/interior-midpoint/task.json",
+          "sha256": "5e499526ff8f29a72f49785a1a36006b1d769d26bca8a6f83f7a8c8ac4d431fa",
+          "bytes": 10197
+        }
+      ]
+    },
+    {
+      "path": "data/synthetic/full-surface-heston-final500/validation-0",
+      "status": "already_local_no_transfer_needed",
+      "files": [
+        {
+          "path": "data/synthetic/full-surface-heston-final500/validation-0/bundle.json",
+          "sha256": "22b063613091cd7555064ddc1287fd209e42fb025e2ef86c134bef19f6adb194",
+          "bytes": 2252
+        },
+        {
+          "path": "data/synthetic/full-surface-heston-final500/validation-0/diagnostics.json",
+          "sha256": "72bd9616e0a4f3985cbe6f642156e0650776a80e11770dbdb668917b20608808",
+          "bytes": 2643
+        },
+        {
+          "path": "data/synthetic/full-surface-heston-final500/validation-0/posterior.npz",
+          "sha256": "e105bbb440c947d03c522cf0f33bae451dc4854625efd9ec4d3192b26ea74fc4",
+          "bytes": 677155
+        },
+        {
+          "path": "data/synthetic/full-surface-heston-final500/validation-0/products.json",
+          "sha256": "029f8ec3acfbf56a37a78e8b8a24005c25ebc2d979cd74e5b182f04cbeb8edcf",
+          "bytes": 3057
+        },
+        {
+          "path": "data/synthetic/full-surface-heston-final500/validation-0/reference.json",
+          "sha256": "35e646876a5c4a1413593455741dc0a3a6688678909a570353ec4fc70125c902",
+          "bytes": 25550
+        },
+        {
+          "path": "data/synthetic/full-surface-heston-final500/validation-0/task.json",
+          "sha256": "5e499526ff8f29a72f49785a1a36006b1d769d26bca8a6f83f7a8c8ac4d431fa",
+          "bytes": 10197
+        }
+      ]
+    },
+    {
+      "path": "data/synthetic/full-surface-backbones/rough-known50k-validation0",
+      "status": "already_local_no_transfer_needed",
+      "files": [
+        {
+          "path": "data/synthetic/full-surface-backbones/rough-known50k-validation0/bundle.json",
+          "sha256": "4828c315afb1ef50d504ff1b6e8da03786298909545fe4d38989b9803fad31a4",
+          "bytes": 2965
+        },
+        {
+          "path": "data/synthetic/full-surface-backbones/rough-known50k-validation0/evaluation.json",
+          "sha256": "2e3084c8ef1b7eb8e37af0d8c06520d12ef7de3ac63666fd8a48f285f774b66a",
+          "bytes": 50485
+        },
+        {
+          "path": "data/synthetic/full-surface-backbones/rough-known50k-validation0/posterior.npz",
+          "sha256": "c58e866c59f8a55cde16dbfb77870741dbe48fa2ce9e3922de428f61fd39f769",
+          "bytes": 13203
+        },
+        {
+          "path": "data/synthetic/full-surface-backbones/rough-known50k-validation0/task.json",
+          "sha256": "c99b0dd131896d89d8483a1668a3fde0fb7a0f28794c3db7fe14635cbbd52b65",
+          "bytes": 10539
+        },
+        {
+          "path": "data/synthetic/full-surface-backbones/rough-known50k-validation0/training.json",
+          "sha256": "0a80170acf40f72fb85c58cb60f032824c2cded0cf89f1a31ddd611482be1735",
+          "bytes": 32603
+        }
+      ]
+    },
+    {
+      "path": "data/synthetic/full-surface-backbones/rough-joint20k-validation0",
+      "status": "already_local_no_transfer_needed",
+      "files": [
+        {
+          "path": "data/synthetic/full-surface-backbones/rough-joint20k-validation0/bundle.json",
+          "sha256": "8afdc1a15c10a887415abcd479781f05d26508255c814868175bd2e66d7ab26f",
+          "bytes": 2995
+        },
+        {
+          "path": "data/synthetic/full-surface-backbones/rough-joint20k-validation0/evaluation.json",
+          "sha256": "bd64900a3caf9ef1350e3be3d56a5af03da41a47f3b79cf204806e74fcba1cab",
+          "bytes": 53491
+        },
+        {
+          "path": "data/synthetic/full-surface-backbones/rough-joint20k-validation0/posterior.npz",
+          "sha256": "a83203e556e12c29d146e162f58a13676daa83bda01705241db8f56c45e8de84",
+          "bytes": 25542
+        },
+        {
+          "path": "data/synthetic/full-surface-backbones/rough-joint20k-validation0/task.json",
+          "sha256": "29eca4e1b970c4f13b99573939aa3449c5280a3a4478f7d24beace6539a9889d",
+          "bytes": 10575
+        },
+        {
+          "path": "data/synthetic/full-surface-backbones/rough-joint20k-validation0/training.json",
+          "sha256": "7edca0e55b875701b1be4e7607b5f5c8feb90bf4067f284a3f0bfe4295a5dc31",
+          "bytes": 32533
+        }
+      ]
+    },
+    {
+      "path": "docs/pilot-results/2026-10-29/joint100k-tradeoffs/candidate-1983.npz",
+      "status": "already_local_no_transfer_needed",
+      "files": [
+        {
+          "path": "docs/pilot-results/2026-10-29/joint100k-tradeoffs/candidate-1983.npz",
+          "sha256": "f9985c45c7c23b676496b4dc923505464d2d931372f77332ccfffa40db5fee80",
+          "bytes": 919454
+        }
+      ]
+    },
+    {
+      "path": "docs/pilot-results/2026-10-29/joint100k-tradeoffs/candidate-1941.npz",
+      "status": "already_local_no_transfer_needed",
+      "files": [
+        {
+          "path": "docs/pilot-results/2026-10-29/joint100k-tradeoffs/candidate-1941.npz",
+          "sha256": "2c923dbb154b5464a45f9b5a6ed35d9d8d15d530ee3e7f1f1a3fef4f0b65942b",
+          "bytes": 912263
+        }
+      ]
+    },
+    {
+      "path": "docs/pilot-results/2026-10-29/joint100k-tradeoffs/weak-decay-1962.npz",
+      "status": "already_local_no_transfer_needed",
+      "files": [
+        {
+          "path": "docs/pilot-results/2026-10-29/joint100k-tradeoffs/weak-decay-1962.npz",
+          "sha256": "e13ba12295229c5dcdea8bda7710de1d33d468b9549fa65adc84015a532b96c5",
+          "bytes": 26101
+        }
+      ]
+    },
+    {
+      "path": "docs/pilot-results/2026-10-29/joint100k-contraction-audit",
+      "status": "already_local_no_transfer_needed",
+      "files": [
+        {
+          "path": "docs/pilot-results/2026-10-29/joint100k-contraction-audit/README.md",
+          "sha256": "7b5c348e6ad7d691c088c14fd8ffce25d112ed98b1759d3bf8fcb9d9f2ff6776",
+          "bytes": 5771
+        },
+        {
+          "path": "docs/pilot-results/2026-10-29/joint100k-contraction-audit/analysis.py",
+          "sha256": "c551fcb264c8988009dc00a0866ad522d597ddad0a179a802e668915ae7cf3bb",
+          "bytes": 10860
+        },
+        {
+          "path": "docs/pilot-results/2026-10-29/joint100k-contraction-audit/audit.json",
+          "sha256": "096f37bd0ad88d93a21f5eefbee13f5afbcfe233632e731a1dfefb768085c0d0",
+          "bytes": 25071
+        },
+        {
+          "path": "docs/pilot-results/2026-10-29/joint100k-contraction-audit/illustrative-case-contraction.json",
+          "sha256": "cdd1d09fb21d6aca10f63bc6c1352e9be8e447b0880fa02cda108be2f444e08e",
+          "bytes": 3633
+        },
+        {
+          "path": "docs/pilot-results/2026-10-29/joint100k-contraction-audit/sha256sums.txt",
+          "sha256": "87d56c8dae8bf28f83eabe071b12488801ba695c6c5fc030f8590bf797365315",
+          "bytes": 332
+        }
+      ]
+    },
+    {
+      "path": "docs/reports/inference-performance-2026-10-28.md",
+      "status": "already_local_no_transfer_needed",
+      "files": [
+        {
+          "path": "docs/reports/inference-performance-2026-10-28.md",
+          "sha256": "05dbed0aea4598d14ca6394132cd42aeaea4faf1778328afdf1b19e547c938c7",
+          "bytes": 10262
+        }
+      ]
+    },
+    {
+      "path": "docs/reports/inference-performance-2026-10-28-addendum.md",
+      "status": "already_local_no_transfer_needed",
+      "files": [
+        {
+          "path": "docs/reports/inference-performance-2026-10-28-addendum.md",
+          "sha256": "f0b89bad05f0711e37004b7508e00eb5bcc125b7ac0401fd196369cd58c76e2c",
+          "bytes": 4907
+        }
+      ]
+    },
+    {
+      "path": "docs/reports/inference-performance-2026-10-28.pdf",
+      "status": "already_local_no_transfer_needed",
+      "files": [
+        {
+          "path": "docs/reports/inference-performance-2026-10-28.pdf",
+          "sha256": "c955688b4b57dbb0878e957dfb23a5fa02eb16eb78c82f15a2ca17e01a880e5f",
+          "bytes": 1058337
+        }
+      ]
+    }
+  ],
+  "already_local_full_validation_panel": {
+    "path": "/private/tmp/sbi-joint100k-sanity-20261029/draws.npz",
+    "sha256": "d7b6e67f74228aa15de413fd0a2802cbe0c7a586888853ce3ef4403856ee422d",
+    "bytes": 48718023,
+    "source": "/oscar/scratch/afengler/sbi4finance-independent-work-20261029/joint100k/joint/validation/draws.npz",
+    "note": "Temporary verified copy; preserve durably rather than downloading a second copy."
+  },
+  "validation_rules": [
+    "For model inference keep exact model.keras, task.json and training.json together; loader validates checkpoint hash/task/architecture.",
+    "For pricer keep pricer.npz, pricer.json and task.json together; no training history or optimizer-resume directory is required for inference.",
+    "Full native snapshot verification uses original manifest and payload bytes. Do not strip NPZ roles or rewrite paths/manifests in place.",
+    "Native snapshot collection path is relative: copy canonical directory layout preserving all referenced part paths.",
+    "Heston reserved test contains5000 rows; rough reserved test contains7000. Transfer does not authorize outcome selection or re-evaluation.",
+    "Scientific acceptance/promotion status unchanged by transfer."
+  ],
+  "evidence_sources": [
+    "docs/pilot-results/2026-10-28/heston-teaching-export/export-manifest.json",
+    "docs/pilot-results/2026-10-27/tutorial-backbone/preparation.json",
+    "docs/pilot-results/2026-10-27/tutorial-backbone/heston-snapshots/summary.json",
+    "docs/pilot-results/2026-10-28/known100k-completed-fit/bank-and-model-identity-proof.json",
+    "docs/pilot-results/2026-10-28/known100k-pricer-full300/terminal",
+    "docs/pilot-results/2026-10-29/joint100k-completed",
+    "src/sbi4finance/calibration/full_surface.py",
+    "src/sbi4finance/calibration/bank_collection.py",
+    "src/sbi4finance/calibration/pricer_net.py"
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "platform": "Linux-5.14.0-570.62.1.0.1.el9_6.x86_64-x86_64-with-glibc2.34",
+  "python": "3.12.16",
+  "numpy": "2.5.3",
+  "scope": "63-contract Heston task, existing base/refined quadrature and acceptance logic",
+  "parameters": [
+    0.085,
+    0.085,
+    0.8,
+    -0.525
+  ],
+  "quadrature_ladder": [
+    [
+      512,
+      400.0
+    ],
+    [
+      1024,
+      600.0
+    ],
+    [
+      2048,
+      1500.0
+    ],
+    [
+      4096,
+      3000.0
+    ],
+    [
+      8192,
+      6000.0
+    ]
+  ],
+  "warm_repeats": 80,
+  "timings": {
+    "original": {
+      "cold_wall_seconds": 0.1461084857583046,
+      "warm_wall_seconds_median": 0.036064404994249344
+    },
+    "maturity_reuse": {
+      "cold_wall_seconds": 0.0637063980102539,
+      "warm_wall_seconds_median": 0.011720804497599602
+    }
+  },
+  "bitwise_equal_all_return_arrays": true,
+  "warm_speedup": 3.0769564496733364
+}

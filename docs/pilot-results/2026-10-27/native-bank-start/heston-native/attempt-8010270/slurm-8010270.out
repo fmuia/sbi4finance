@@ -1,0 +1,17 @@
+## SLURM PROLOG ###############################################################
+##    Job ID : 8010270
+##  Job Name : sbi4f-native-heston-corrected-guard
+##  Nodelist : gpu2708
+##      CPUs : 1
+##  Mem/Node : 24576 MB
+## Directory : /oscar/scratch/afengler/sbi4finance-native-bank-20261027/repo-native-corrected
+##   Job Started : Tue Oct 27 11:05:41 AM EDT 2026
+###############################################################################
+INFO:bayesflow:Using backend 'jax'
+INFO:bayesflow:Estimator restored from '/oscar/scratch/afengler/sbi4finance-followup-20261027-f4d3679/runs/heston-flow-matching-500/checkpoint/model.keras'.
+/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/lib/python3.12/site-packages/keras/src/backend/jax/core.py:401: UserWarning: Explicitly requested dtype float64 requested in asarray is not available, and will be truncated to dtype float32. To enable more dtypes, set the jax_enable_x64 configuration option or the JAX_ENABLE_X64 shell environment variable. See https://github.com/jax-ml/jax#current-gotchas for more.
+  return jnp.asarray(x, dtype=dtype)
+INFO:bayesflow:Sampling completed in 20.15 seconds.
+INFO:bayesflow:Sampling completed in 4.21 seconds.
+INFO:bayesflow:Sampling completed in 4.31 seconds.
+{"status": "completed_development_comparisons", "scientific_acceptance": false}

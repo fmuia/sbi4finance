@@ -1,0 +1,401 @@
+{
+  "approximation_scope": "Forward emulator learns numerical bank prices; its Gaussian likelihood would omit label MC randomness/covariance. No independent-reference or like-for-like posterior claim follows from this fit.",
+  "automatic_retry": false,
+  "bank_manifest_sha256": "7cf0314dc6371fd045ad6b314dd6dd605db2f3343dbccf4e35b4df9ddf9397eb",
+  "calibration_with_derived_targets": {
+    "coverage": {
+      "0.5": {
+        "coverage": [
+          0.495,
+          0.5245,
+          0.4765,
+          0.4955
+        ],
+        "wilson": [
+          [
+            0.47311862851889475,
+            0.5169005419539177
+          ],
+          [
+            0.5025872298490504,
+            0.5463188348341681
+          ],
+          [
+            0.45467714809372733,
+            0.4984129531284914
+          ],
+          [
+            0.4736174624101077,
+            0.5173997910154234
+          ]
+        ]
+      },
+      "0.8": {
+        "coverage": [
+          0.7995,
+          0.8025,
+          0.794,
+          0.7945
+        ],
+        "wilson": [
+          [
+            0.7813864072147222,
+            0.8164652814638073
+          ],
+          [
+            0.7844794422797299,
+            0.8193607441151121
+          ],
+          [
+            0.7757197975727613,
+            0.8111529786258619
+          ],
+          [
+            0.7762347355183078,
+            0.8116361236330342
+          ]
+        ]
+      },
+      "0.9": {
+        "coverage": [
+          0.8985,
+          0.901,
+          0.902,
+          0.8975
+        ],
+        "wilson": [
+          [
+            0.8844916613108394,
+            0.9109804520060018
+          ],
+          [
+            0.8871320405740596,
+            0.9133304875063756
+          ],
+          [
+            0.8881889015430704,
+            0.9142697924428023
+          ],
+          [
+            0.883436204935987,
+            0.9100397424754167
+          ]
+        ]
+      },
+      "0.95": {
+        "coverage": [
+          0.947,
+          0.9485,
+          0.9485,
+          0.9435
+        ],
+        "wilson": [
+          [
+            0.9362966169363569,
+            0.9559895427942029
+          ],
+          [
+            0.9379251286390549,
+            0.9573552799496612
+          ],
+          [
+            0.9379251286390549,
+            0.9573552799496612
+          ],
+          [
+            0.9325050206793213,
+            0.9527945583822073
+          ]
+        ]
+      }
+    },
+    "sbc": {
+      "dkw_bound": 0.03562012708860619,
+      "draws_per_surface": 1000,
+      "family_alpha": 0.05,
+      "passed": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "rank_ks": [
+        0.023258087753760703,
+        0.0189171379591202,
+        0.024717437789333663,
+        0.022133606768465597
+      ],
+      "surfaces": 2000
+    },
+    "scope": "one simultaneous rank-screen family containing primary parameters and rho*eta; no uniform-prior assumption or logit contraction is applied to the derived target",
+    "targets": [
+      "hurst",
+      "eta",
+      "rho",
+      "rho_eta"
+    ]
+  },
+  "declared_config_sha256": "ef04f7d3a5a42c2c255bf35d74eb09fc92008486f6bfc532b31266add66e95e0",
+  "driver_sha256": "e19aa4f1f8011ebe9249113dc2058b0cee0e2aa9a530f39307a375045ff96945",
+  "environment_sha256": {
+    "pixi.lock": "3e33b82d45dfdd696c5b12b22bca0943a5fca09804860fab13e3fc9126c60aae",
+    "pyproject.toml": "0b38d45cea9c3d7143e261d6c8ce3d6892b31b7bce6d1f26bf748df75790fd54"
+  },
+  "format": "known_curve_backbone_fit_run_v1",
+  "interpretation": "Selected development fits and numerical-label comparisons; retain failed scientific diagnostics. No conditional reference/product or tutorial acceptance claim.",
+  "no_new_pricing_or_mcmc": true,
+  "observation_selection": {
+    "draws": 1000,
+    "first": 0,
+    "scope": "development IDs only; no reserved acceptance evaluation",
+    "seed": 0,
+    "split": "validation",
+    "surfaces": 2000
+  },
+  "posterior_checkpoint_sha256": "9d6cbd534a49bd0862316c9e38a02ed4e9da818986951d1b020162fa0ef9573e",
+  "pricer_sha256": "d1dcefd7cb9a62ca864a46a461b66a4201e442cd5cd18c7fa3862ade6428460a",
+  "pricer_validation_errors": {
+    "absolute_quote_error_quantiles": {
+      "0.5": 0.058514548095707664,
+      "0.9": 0.1836873791117683,
+      "0.99": 0.41812813183327163,
+      "1.0": 3.5709617708101007
+    },
+    "interpretation": "Discrepancies against numerical labels mix emulator error and label randomness; they do not measure absolute price bias or grid error. Per-quote accuracy alone does not bound posterior distortion across all contracts.",
+    "rmse": 0.12326812383610361,
+    "signed_mean_error_per_contract": [
+      -0.007221557330693119,
+      -0.003969837135753826,
+      -0.0026136257935047424,
+      -0.0035133496990805823,
+      -0.003974001935234112,
+      -0.0019997868290274573,
+      -0.0022773240888546618,
+      -0.0030356454340263,
+      -0.00395862732486048,
+      -0.0007951878892517968,
+      -0.00010865110707196677,
+      -0.0011950864137142202,
+      -0.001251214603285275,
+      -0.001083460319577639,
+      -0.002036667305881675,
+      0.00024755594550380963,
+      -0.002418297391955155,
+      -0.0005325898469877419,
+      -0.002550531864736677,
+      -0.0006774789754867561,
+      -0.0004053869151773575,
+      -0.0013246772932715084,
+      -0.002821249979257,
+      -0.00199069006379688,
+      -0.0016566369818907824,
+      -0.00031187379996086453,
+      -0.0016265394267995859,
+      0.000752652250279279,
+      -0.00047535903197687255,
+      -0.0025024788924006406,
+      -0.0016438097643911597,
+      -0.0013892100019493783,
+      -0.00046582385127266177,
+      -0.0019146506111024056,
+      0.00037371829878064865,
+      -0.00034449395698544165,
+      -0.0022939973780692936,
+      -0.002791288502333832,
+      -0.0027550902564118505,
+      0.0006936110048526091,
+      -0.002659230117173388,
+      -0.0003551337063307783,
+      -0.0005166083418236973,
+      0.00039078102343175375,
+      -0.0010250407058058635,
+      -0.0035370508935341073,
+      -0.0019865062041284,
+      -0.0009574708201525877,
+      -0.0022342553312423006,
+      -0.0008273411777101856,
+      -0.0009706876467974633,
+      -0.0028386756180175466,
+      -0.0008943132750578318,
+      0.0024844435194180474,
+      0.00311369601858948,
+      0.0015790075646109902,
+      0.0003334045029004492,
+      9.274492416930417e-05,
+      0.002034692033573473,
+      -0.00022532692537437552,
+      -0.0007217119375436226,
+      -0.0020649994756943807,
+      0.002565164618179032
+    ],
+    "surface_l2_error_quantiles": {
+      "0.5": 0.7800658827792311,
+      "0.9": 1.3597193644412822,
+      "0.99": 2.3105444631107033,
+      "1.0": 10.861258404959415
+    },
+    "surface_rms_error_quantiles": {
+      "0.5": 0.09827906343237656,
+      "0.9": 0.1713085376738302,
+      "0.99": 0.2911012401213416,
+      "1.0": 1.3683899364158416
+    },
+    "units": "quote-noise standard deviations"
+  },
+  "reserved_test_evaluated": false,
+  "resources": {
+    "allocated_cpu_hour_ceiling": 3,
+    "cleanup_seconds": 240,
+    "cpus": 4,
+    "full_limit_plus_cleanup_cpu_seconds": 10560,
+    "full_limit_plus_cleanup_gpu_seconds": 2640,
+    "gpu_hour_ceiling": 0.75,
+    "gpus": 1,
+    "internal_deadline_seconds": 2370,
+    "memory_gib": 24,
+    "wall_seconds": 2400
+  },
+  "scientific_acceptance": false,
+  "seconds": 1005.0613900367171,
+  "selected_posterior_epoch": 292,
+  "selected_pricer_epoch": 294,
+  "source_revision": "845c458b849c472271527cccf815ea6714f02206",
+  "source_sha256": {
+    "scripts/check_full_surface_environment.py": "0715d58995c803b483203cdb544e29e74cccdb19cf0de7f43d77353644138309",
+    "scripts/evaluate_full_surface.py": "d6c74029cdb573db4518d1d81e7076bb129ee517e1b380a875a0fc6604cad006",
+    "scripts/train_full_surface.py": "ce0fe607e1c7068c4942f7c62127b86285193fb7c95e241e310ed19b5fa57703",
+    "scripts/train_full_surface_pricer.py": "48d166911cc1ac10c9c938e1a8b358ef8c3159105c80afc08b1152d63db094fd",
+    "src/sbi4finance/calibration/__init__.py": "9b30e8b6d4b3d77cd9d7c91af7a2e37b5462c8ef02bbdf85f92e2092a37ec6e4",
+    "src/sbi4finance/calibration/bank.py": "9f0d512ba6f52df5c73c54599183159f535b2aa84ac4daa6a60cfd219afcc7db",
+    "src/sbi4finance/calibration/bank_collection.py": "b18bfa6d8322753bdbd36754a3f08c82800b826952453d5ce95adb5751757ed5",
+    "src/sbi4finance/calibration/chain.py": "f3a1ad079cc01570c35208c2fe5d3009fa06bd545b2d4ce3083e835f5569ea2b",
+    "src/sbi4finance/calibration/classical.py": "ebe157b6564408ece99fb1213e16ea48feb0c9b90fb30a5269a923d994496002",
+    "src/sbi4finance/calibration/correction.py": "31b9b9fdf96cf8c62128899709b977a53ac3c9190c7e6b7a13d6888241cdfcf1",
+    "src/sbi4finance/calibration/curve_adequacy.py": "5815ddca3eb883863b397a620f7655b9d56fe354ce69773e75deacd7b993cdd1",
+    "src/sbi4finance/calibration/full_surface.py": "f3ffbbb9d3a3440a2dfbeac78e4e84e867227d569cc28ce48d5d0fa3accc9e79",
+    "src/sbi4finance/calibration/inference.py": "ebc4def8fe0e9e8ae0cab976b67c96d1e3328106c25422bacc11e5907a0f4d2e",
+    "src/sbi4finance/calibration/numerical_pilot.py": "eeb73c2e97e935be3d3d0c61b41c7ac86e6905940b1900d493e022a5a0f897a2",
+    "src/sbi4finance/calibration/plots.py": "558d60bda9969df4115ac0a1cb161e62e85fb9712fbb21660ddc7ff267844492",
+    "src/sbi4finance/calibration/pricer_net.py": "e5d8da240c2dc9b242fabfe289e6623d786645acf86d42d7eb96e702c47bd489",
+    "src/sbi4finance/calibration/pricing.py": "bf9b57f73f030670de2f3db37b298b56dc0070be2f99cf187188b817020f3b52",
+    "src/sbi4finance/calibration/products.py": "9e5dfd4eeb4adf212975c111357c20d4df6ac60373b1c07c68fa8a40b92597fd",
+    "src/sbi4finance/calibration/pymc_reference_op.py": "99704310f8a503cad7eee2310da0204d52c213427ad21683834214018f02451b",
+    "src/sbi4finance/calibration/reference.py": "fd69a6958026f6addde982f2c8d57461cf549efe75f838956e0d931e12153056",
+    "src/sbi4finance/calibration/reference_initialization.py": "0abf68e9862d30bf152dd01e28807ed651d53a12dca4c1286ccb17c52ef0b74f",
+    "src/sbi4finance/calibration/rough_control_diagnostic.py": "ef31703f41ac758f2b6788ff243936c0079609e695599002418b10efed885163",
+    "src/sbi4finance/calibration/rough_working_grid_pilot.py": "0f351ca7f226daaed98756c1052ddcc7fc11a17d9619a336efb5a4acf19042fc",
+    "src/sbi4finance/calibration/surface.py": "24c0476ce3000208438d440cbbb1bf21efd92494b8c634592029af384ee30388",
+    "src/sbi4finance/calibration/tasks.py": "295d1ce59b409f8edb5edba89488fa87a5a4e7bab6f785a152ecb69db1528916",
+    "src/sbi4finance/calibration/teaching.py": "f772e508949cc1befb276c92f0a146a9383f5962ac4fe14b1985901fda7fe1e5",
+    "src/sbi4finance/calibration/thin.py": "a0790c87467d5a6504f0ac369fdb9a31b462c6c7e9a66d19114219873e7e5eae",
+    "src/sbi4finance/calibration/thin_products.py": "9c0277e302806d961a80be2f6178c525b3d2ddccc8d77cf786c50cdb674169b2",
+    "src/sbi4finance/calibration/validation.py": "98c73f47aa76365b775c5f7527714e4bd3e0ffc648aab5e164854ed47deead7b",
+    "src/sbi4finance/calibration/variance_functionals.py": "f4b2f1e0764a5cd1d060a661fc2d15a77727a9fa43caa6555362b6ebd69f7e0e",
+    "src/sbi4finance/calibration/why_bayes.py": "cfb1e8c9409a56cf62923e444506d791d1e5dbdddd4e7d814527ca025a0eef1b",
+    "src/sbi4finance/gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
+    "tutorial_final/studies/train_calibration.py": "f4f00780636ea232888d0f63c6371a1b23fde74612973b700b2ea744c0d4e715"
+  },
+  "stages": [
+    {
+      "command": [
+        "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/bin/python",
+        "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/repo/scripts/check_full_surface_environment.py",
+        "--require-gpu"
+      ],
+      "effective_timeout_seconds": 60,
+      "name": "environment",
+      "returncode": 0,
+      "seconds": 6.683032577857375,
+      "status": "completed",
+      "timeout_cap_seconds": 60
+    },
+    {
+      "command": [
+        "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/bin/python",
+        "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/repo/scripts/train_full_surface.py",
+        "--bank",
+        "/oscar/scratch/afengler/sbi4finance-rough-known-backbone-20261027/snapshot-20k",
+        "--out",
+        "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/runs/known-20k-native/checkpoint",
+        "--family",
+        "flow_matching",
+        "--encoder",
+        "vector",
+        "--widths",
+        "256,256,256,256",
+        "--epochs",
+        "300",
+        "--batch-size",
+        "256",
+        "--chunk-epochs",
+        "25",
+        "--seed",
+        "0"
+      ],
+      "effective_timeout_seconds": 600,
+      "name": "posterior",
+      "returncode": 0,
+      "seconds": 125.86801112163812,
+      "status": "completed",
+      "timeout_cap_seconds": 600
+    },
+    {
+      "command": [
+        "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/bin/python",
+        "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/repo/scripts/train_full_surface_pricer.py",
+        "--bank",
+        "/oscar/scratch/afengler/sbi4finance-rough-known-backbone-20261027/snapshot-20k",
+        "--out",
+        "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/runs/known-20k-native/pricer",
+        "--widths",
+        "256,256,256,256",
+        "--epochs",
+        "300",
+        "--batch-size",
+        "512",
+        "--patience",
+        "30",
+        "--seed",
+        "0"
+      ],
+      "effective_timeout_seconds": 600,
+      "name": "pricer",
+      "returncode": 0,
+      "seconds": 38.04404181614518,
+      "status": "completed",
+      "timeout_cap_seconds": 600
+    },
+    {
+      "command": [
+        "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/bin/python",
+        "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/repo/scripts/evaluate_full_surface.py",
+        "--bank",
+        "/oscar/scratch/afengler/sbi4finance-rough-known-backbone-20261027/snapshot-20k",
+        "--checkpoint",
+        "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/runs/known-20k-native/checkpoint",
+        "--out",
+        "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/runs/known-20k-native/validation",
+        "--split",
+        "validation",
+        "--first",
+        "0",
+        "--surfaces",
+        "2000",
+        "--draws",
+        "1000",
+        "--batch-size",
+        "100",
+        "--seed",
+        "0"
+      ],
+      "effective_timeout_seconds": 1050,
+      "name": "validation",
+      "returncode": 0,
+      "seconds": 834.1844043741003,
+      "status": "completed",
+      "timeout_cap_seconds": 1050
+    }
+  ],
+  "status": "completed_development_checks",
+  "task_fingerprint": "c99b0dd131896d89d8483a1668a3fde0fb7a0f28794c3db7fe14635cbbd52b65"
+}

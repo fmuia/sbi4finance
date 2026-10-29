@@ -1,0 +1,10 @@
+## SLURM PROLOG ###############################################################
+##    Job ID : 8006596
+##  Job Name : sbi4f-followup-heston-spline-1000
+##  Nodelist : gpu2708
+##      CPUs : 1
+##  Mem/Node : 24576 MB
+## Directory : /oscar/home/afengler
+##   Job Started : Tue Oct 27 06:38:29 AM EDT 2026
+###############################################################################
+{"status": "completed_development_checks", "scientific_acceptance": false}

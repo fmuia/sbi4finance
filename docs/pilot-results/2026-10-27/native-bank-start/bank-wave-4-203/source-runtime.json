@@ -1,0 +1,16 @@
+{
+  "driver_and_runtime_match_preflight_and_collection": true,
+  "driver_sha256": {
+    "cluster/calibration_collection_array.sbatch": "1517cfa2b7ab4a9fdc02310d82d595d2be2c9745eb8dac64003b332c04e8e309",
+    "configs/calibration_rough_joint_development_20k.json": "4890a6f86bba12ec4955ebc0253d037113ba38c04fa780e6dd10e8c4c52be830",
+    "scripts/calibration_bank_collection.py": "23627b8f1e708e9f042c88292a04d15130e5b858c06f202a987168b940c3c429",
+    "src/sbi4finance/calibration/bank_collection.py": "b18bfa6d8322753bdbd36754a3f08c82800b826952453d5ce95adb5751757ed5"
+  },
+  "source_revision": "c773ceb26e7273612b15c69fd63715d131778083",
+  "submit_line": "sbatch --parsable --job-name=sbi4f-bank-workers-4-203 --nodes=1 --ntasks=1 --no-requeue --chdir=/oscar/scratch/afengler/sbi4finance-native-bank-20261027/repo --account=carney-mjfrank-condo2 --partition=batch --cpus-per-task=1 --mem=8G --time=03:00:00 --array=4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,195,196,197,198,199,200,201,202,203%200 --output=/oscar/scratch/afengler/sbi4finance-native-bank-20261027/logs/bank-workers-4-203-%A_%a.out /oscar/scratch/afengler/sbi4finance-native-bank-20261027/repo/cluster/calibration_collection_array.sbatch /oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python /oscar/scratch/afengler/sbi4finance-native-bank-20261027/jobs-20k.json\n\n\n",
+  "versions": {
+    "numpy": "2.5.3",
+    "python": "3.12.16",
+    "scipy": "1.18.1"
+  }
+}

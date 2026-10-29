@@ -34,7 +34,9 @@ from sbi4finance.calibration import bank, tasks  # noqa: E402
 
 
 def _config(args):
-    if args.model == "rough":
+    if args.model == "rough-joint":
+        task = tasks.joint_rough_task()
+    elif args.model == "rough":
         prior = tasks.FULL_BANK_CURVE_PRIOR if args.curve_prior == "power_law_walk" else None
         task = tasks.rough_task(curve_prior=prior)
     else:
@@ -144,7 +146,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = parser.add_subparsers(dest="command", required=True)
     p = sub.add_parser("config")
-    p.add_argument("--model", choices=("rough", "heston"), required=True)
+    p.add_argument("--model", choices=("rough", "rough-joint", "heston"), required=True,
+                   help="rough-joint is the candidate six-target analytic-curve task; pilot/freeze before scale-up")
     p.add_argument("--curve-prior", choices=("linear_wobble", "power_law_walk"), default="linear_wobble",
                    help="rough only: the pilot's curve prior (default) or the full bank's")
     for split in ("train", "validation", "test"):
