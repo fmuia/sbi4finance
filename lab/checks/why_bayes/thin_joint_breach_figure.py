@@ -46,5 +46,6 @@ axes[1].text(len(x) - 1, axes[1].get_ylim()[1] * 0.97, "beyond the\nlast quote",
              color=INK_2)
 axes[0].text(-0.4, 0.105, "nominal 10%", fontsize=8, color=INK, va="bottom")
 handles, labels = axes[0].get_legend_handles_labels()
-fig.legend(handles, labels, loc="lower center", ncol=min(len(shown), 3), fontsize=8, frameon=False, bbox_to_anchor=(0.5, -0.07))
+fig.legend(handles, labels, loc="upper center", ncol=min(len(shown), 3), fontsize=8, frameon=False,
+           bbox_to_anchor=(0.5, 0.0))
 fig.savefig(out / "breach.png", dpi=160, bbox_inches="tight")
