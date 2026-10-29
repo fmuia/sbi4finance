@@ -1,5 +1,5 @@
 """Draw DIR/breach.png from thin_joint_breach.py's DIR/summary.json: each method's breach rate per product and side,
-for the methods the summary holds (laplace_delta stays in the table only).
+for the methods the summary holds (the sampled laplace arm stays in the table only).
 
 Run from lab/: python checks/why_bayes/thin_joint_breach_figure.py DIR
 """
@@ -16,7 +16,7 @@ METHODS = {"posterior": ("posterior (network)", SERIES[0], "o"),
            "gauss_newton": ("Gauss–Newton, delta method", SERIES[1], "s"),
            "hurst_fixed": ("Gauss–Newton, H fixed at 0.10", SERIES[2], "^"),
            "flat_curve": ("Gauss–Newton, curve flat beyond 6 months", "#eda100", "D"),
-           "laplace": ("Laplace at the posterior mode", "#e87ba4", "v")}
+           "laplace_delta": ("Laplace at the posterior mode, delta method", "#e87ba4", "v")}
 LABELS = {"variance_swap_6m": "variance swap\n6m", "volatility_swap_6m": "volatility\nswap 6m",
           "forward_start_3m_6m": "forward start\n3m→6m", "put_6m_80": "put 6m\n80%", "cliquet_6m": "cliquet\n6m",
           "forward_start_6m_1y": "forward start\n6m→1y"}

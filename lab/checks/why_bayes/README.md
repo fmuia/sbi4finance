@@ -1,10 +1,19 @@
-# Where the posterior and the classical answer part on complete surfaces
+# Where the posterior and the classical answer part: complete surfaces and a thin chain
 
-Quick check of 28 October 2026. It looks for a case in the core tutorial, Heston and rough Bergomi on the complete
-63-quote design, where the full posterior changes a product's 90% bound, and proposes how to test it. It is a quick
-check, not a study: nothing here is registered in `tutorial/CLAIMS.md`, and no number goes on screen from it.
-Sections 2 and 3 use the joint-curve rough-Bergomi task of PR #48 (`rough_joint_calibration_v1`,
-`tasks.joint_rough_task`), which this branch does not have yet; their scripts run once that task is ported.
+Quick check of 28 and 29 October 2026. It looks for a case in the core tutorial, Heston and rough Bergomi on the
+complete 63-quote design, where the full posterior changes a product's 90% bound, and proposes how to test it;
+Section 5 then runs the thin-chain case it settles on, on one machine. It is a quick check, not a study: nothing here
+is registered in `tutorial/CLAIMS.md`, and no number goes on screen from it. Sections 2, 3 and 5 use the joint-curve
+rough-Bergomi task of PR #48 (`rough_joint_calibration_v1`, `tasks.joint_rough_task`), which this branch does not
+have yet; their scripts run once that task is ported.
+
+**In short.** On complete surfaces the posterior is close to the Gauss–Newton normal, and the one non-Gaussian part,
+the curve beyond the last quote, is set by the prior rather than the simulator (Sections 1 to 4). On a thin chain
+with the curve inferred, the two classical practices fail in opposite directions: least squares without a prior
+cannot identify the model and over-reserves 1.5 to 3.3 times, and fixing $H$ at 0.10 leaves 23% of truths above its
+bound for the variance swap and the put. A stated prior fixes both, but a Gaussian at the posterior's mode does as
+well as the network for the six products tried (Section 5). The case for Bayes here is the prior; the case for the
+network is cost, not shape.
 
 ## Why products, not corner plots
 
@@ -197,6 +206,113 @@ largest Monte Carlo error 0.067 of the quote noise against a budget of 0.25), so
 30 CPU-hours against about 370 for the full design. Runs R4 and R7 to R9 of the runbook then apply, with the
 classical baselines of `thin.py` ported from the seven-level curve to the three coefficients.
 
+## 5. The thin chain with the curve inferred, run locally
+
+The analysis the reassessment proposes, run on one four-core machine on 28 and 29 October. The task is PR #48's
+joint rough Bergomi with all six targets, $(H, \eta, \rho)$ and the curve's short variance, long variance and decay,
+on EWG's layout of 22 October: 27 contracts at 21, 42, 63 and 126 trading days, with EWG's half-spreads as the quote
+noise (`make_thin_joint_config.py`). The curve is inferred with the rest, so no given curve carries information into
+the products.
+
+**Bank, network, calibration.** 24,000 surfaces (20,000 training, 2,000 validation, 2,000 test) from PR #48's bank
+builder, unchanged. The network is `thin.py`'s design for the six targets (`thin_joint.py`): flow matching
+conditioned on the quotes in noise units and on the noise scale, trained with a fresh quote error and a log-uniform
+noise scale on [0.5, 2] each batch, at R4's settings (`thin_joint_train.py`): 20 minutes, best validation loss at
+epoch 270 of 300 (`thin_joint_net/`). SBC on 1,000 validation surfaces at the layout's noise, 200 draws each
+(`thin_joint_sbc.py`): every rank KS statistic, 0.017 to 0.033, is inside the DKW bound of 0.054, for the six
+targets, $\rho\eta$ and the forward variance from six months to one year. The quotes inform the short variance
+(contraction 0.92) and $\eta$ (0.72), less so the long variance (0.64) and $\rho$ (0.55), and barely $H$ (0.22) or
+decay (0.18). The tails are less exact than the ranks: the 90% intervals cover 88.4% to 89.7%, every one below
+90%, and the truth lies above the 90% quantile of $H$ on 12.8% of surfaces and of the short variance on 12.0%
+(standard error 0.9 points).
+
+**The breach study** (`thin_joint_breach.py`, study S10's design for the joint task). 100 test surfaces, each read
+as a chain with a fresh quote error. For six products, five inside the quoted half-year and the forward start from
+six months to one year beyond it, each method gives a lower and an upper 90% bound. The truth is the product priced
+at the surface's parameters on the same paths, so a correct method puts it below the lower bound on 10% of chains and
+above the upper bound on 10%. The classical fits start from the prior box and the quotes only: the best of 17 points
+by $\chi^2$, then two least-squares runs. The Laplace approximation is the posterior's mode in the logit coordinates
+of the box, where the uniform prior is a logistic density, with the Gauss–Newton curvature of the quotes plus the
+prior's; "delta" applies the delta method there, "sampled" prices 200 draws of that normal mapped back into the box.
+
+| Product | Posterior (network) | Laplace, delta | Laplace, sampled | Gauss–Newton | $H$ fixed at 0.10 | Curve flat beyond 6 months |
+| --- | --- | --- | --- | --- | --- | --- |
+| variance swap 6m | 15 / 7 (0.27) | 7 / 10 (0.27) | 7 / 16 (0.30) | 0 / 6 (0.50) | 2 / 23 (0.26) | as Gauss–Newton |
+| volatility swap 6m | 18 / 13 (0.080) | 18 / 13 (0.076) | 16 / 13 (0.122) | 1 / 7 (0.139) | 6 / 16 (0.096) | as Gauss–Newton |
+| forward start 3m→6m | 14 / 12 (0.18) | 14 / 11 (0.18) | 18 / 11 (0.21) | 2 / 3 (0.30) | 8 / 1 (0.24) | as Gauss–Newton |
+| put 6m, 80% | 18 / 13 (0.25) | 12 / 11 (0.25) | 9 / 18 (0.30) | 0 / 4 (0.56) | 4 / 23 (0.27) | as Gauss–Newton |
+| cliquet 6m | 14 / 9 (0.16) | 13 / 4 (0.17) | 7 / 11 (0.19) | 7 / 4 (0.23) | 12 / 7 (0.18) | as Gauss–Newton |
+| forward start 6m→1y | 15 / 6 (0.32) | 17 / 6 (0.32) | 20 / 10 (0.33) | 2 / 1 (1.04) | 8 / 2 (0.73) | 14 / 1 (0.46) |
+
+Each cell: percent of the 100 chains with the truth below the lower bound / above the upper bound, and in brackets
+the median width of the 10%-to-90% band over the true price. Near 10%, a rate's 95% interval is about ±6 points.
+
+![Breach rates of each method's one-sided 90% bounds on 100 simulated thin chains, by product and side](thin_joint_results/breach.png)
+
+How to read the figure: each marker is the share of chains whose truth lies beyond a method's bound, on the long
+side (left) and the short side (right), with a 95% Wilson interval; the dashed line is the 10% a correct method
+hits, and the shaded product lies beyond the last quote. The sampled Laplace is in the table only.
+
+- **Least squares cannot identify the model on 27 quotes.** 76 of 100 Gauss–Newton fits end with a parameter on its
+  bound, most often the long variance (36% of fits), $H$ (34%) and decay (30%), and the median condition number of
+  the information matrix is $2 \times 10^{12}$. The delta method's bands are then 1.5 to 3.3 times the posterior's
+  and breach 0% to 7%: an over-reserve on every product, largest beyond the last quote.
+- **Fixing $H$ at 0.10 buys the width back with a bias.** Inside the half-year its bands are about as narrow as the
+  posterior's, and the truth lies above them on 23% of chains for the variance swap and the put. The bias comes from
+  chains whose true $H$ is far from 0.10: on the 29 within 0.05 of it the two rates are 10% and 14%, on the other 71
+  they are 28% and 27%. The variance swap does not depend on $H$; the fitted curve absorbs the error. (A split by the
+  truth, as a diagnostic: a desk cannot make it.)
+- **Holding the curve flat** beyond the last quote, with Gauss–Newton's fit and covariance, moves the forward start
+  from six months to one year from 2% to 14% of truths below the band, with 1% above.
+- **A prior fixes both, and its Gaussian approximation does as well as the network.** The delta-method Laplace and
+  the network's posterior have the same widths to within 5% on every product, and no mode lies on a bound (median
+  condition number 370). Their breach rates differ by at most 8 points, mostly on the same chains, and neither is
+  consistently the closer to 10%. Sampling the same normal through the box gives bands up to 1.6 times as wide (the
+  volatility swap) that breach as often or more: a normal in logit coordinates spreads the weakly informed $H$ and
+  decay toward the box's edges.
+- **The common excess**, 14% to 18% below the band on several products for the posterior and the Laplace alike, is
+  partly the sample: the methods read the same quotes and miss on the same chains. On the 1,000 SBC surfaces the
+  network's 6-month variance swap, computed from the curve's coefficients, breaches 10.8% and 9.4%, against 15% and
+  7% on these 100 chains.
+
+**The audit** (`thin_joint_audit.py`; chains 0 to 9, fixed in advance; 7 done so far). Importance sampling with the
+Monte Carlo likelihood: 512 proposals, 90% a t distribution fitted to the network's draws and widened by 1.2, 10%
+the prior, each priced on its own 8,192 paths; effective sample sizes 33 to 60, Pareto $\hat k$ at most 0.48, so the
+exact bands are good to a few percentile points. Against them the network's product bands are 0.85 to 1.52 times as
+wide (median 1.04), the delta-method Laplace's 0.80 to 1.72 (median 1.10). The truth lies on the same side of the
+exact band as of the network's in 39 of 42 chain-products, and as of the Laplace's in 39. The exact posterior itself
+misses 14 of the 42, against 8 expected: on these chains the misses come from the quotes, not from the network.
+
+**EWG's own chain** (`thin_joint_ewg.py`; there is no truth, so this shows how far the answers differ, not which is
+right). Least squares fits the 27 quotes with $\chi^2$ = 1.75, decay on its upper bound and a condition number of
+$8 \times 10^{13}$: the mids sit far closer to the model than their half-spreads, so the noise model is
+conservative here. The posterior barely informs $H$ (5% to 95%: 0.05 to 0.32) and decay (0.6 to 7.3). The 10%-to-90%
+bands:
+
+| Product | Posterior (network) | Laplace, delta | Gauss–Newton | $H$ fixed at 0.10 | Curve flat beyond 6 months |
+| --- | --- | --- | --- | --- | --- |
+| variance swap 6m | 0.0572 to 0.0832 | 0.0544 to 0.0801 | 0.0341 to 0.1054 | 0.0507 to 0.0747 | as Gauss–Newton |
+| volatility swap 6m | 0.1949 to 0.2169 | 0.1952 to 0.2169 | 0.1881 to 0.2191 | 0.1902 to 0.2185 | as Gauss–Newton |
+| forward start 3m→6m | 0.0300 to 0.0380 | 0.0303 to 0.0381 | 0.0277 to 0.0381 | 0.0291 to 0.0392 | as Gauss–Newton |
+| put 6m, 80% | 0.0114 to 0.0148 | 0.0115 to 0.0150 | 0.0093 to 0.0173 | 0.0105 to 0.0146 | as Gauss–Newton |
+| cliquet 6m | 0.0147 to 0.0168 | 0.0146 to 0.0171 | 0.0141 to 0.0171 | 0.0148 to 0.0174 | as Gauss–Newton |
+| forward start 6m→1y | 0.0339 to 0.0509 | 0.0347 to 0.0519 | 0.0248 to 0.0540 | 0.0349 to 0.0555 | 0.0219 to 0.0560 |
+
+The posterior and the Laplace agree to a few percent on every product. Gauss–Newton's bands are 1.3 to 2.7 times
+wider, and fixing $H$ moves the variance swap's band about 11% down, the pattern of the simulated chains.
+
+**What this shows, and what it does not.** On a thin chain with the curve inferred, the two classical practices fail
+in opposite directions: without a prior the model is not identified and the reserve grows 1.5 to 3.3 times; with a
+parameter fixed by hand the reserve is tight and a quarter of the truths escape it on one side. A stated prior fixes
+both, which is claim 2a of Lecture 6, Section 6.8 on a case where no given curve leaks. It does not show that the
+posterior's shape matters: for these six products a normal at the posterior's mode, in the box's logit coordinates,
+does as well as the network, presumably because the products load on the directions the quotes inform. What the
+network adds is cost and robustness: once trained it gives 200 draws of a chain in 1.3 s on four cores, with no
+starts to choose and no optimum to lose, where the Laplace needs about three CPU-minutes of fitting a chain (least
+squares from the box, then the mode); the bank and the training cost about as much as 100 such fits. The truths come
+from the network's own prior, so an exact posterior is calibrated by construction; truths from another law (S10's
+robustness check), the profile likelihood, other dates and other noise models are not run.
+
 ## What runs without the cluster
 
 Measured on 28 October on a four-core machine with no GPU, in a plain virtual environment holding the lab's pins
@@ -209,11 +325,15 @@ Measured on 28 October on a four-core machine with no GPU, in a plain virtual en
 | Real chains | Ten Cboe chains fetched at 20:30 UTC (SPY, QQQ, IWM, EWI, EWQ, FEZ, AAPL, XLF, GLD, TLT), about one second each | All ten fail `build_surface.py`'s full-design gate: on SPY the one-week expiration's cleaned strip reaches −6.95 standardized deltas against the −8 the replication needs (−8.15 on 21 October), so the front maturity has no covered expiration; FEZ and XLF do not reach one year; EWI and EWQ have no usable expiration. `chain_reach.py` prints the reach per expiration |
 | The thin layout on a later date | `checks/thin_chains/build_layout.py` on EWG's chain of 28 October | 13 contracts at two maturities, against 27 at four on 22 October: the design maturities match an expiration only within 7 trading days (`MATCH_DAYS`), and EWG's January and April expirations have drifted out of the 63- and 126-day windows. A fixed layout is tied to its date; the stage date needs its own, or a network conditioned on the maturities |
 | Training | `thin_joint.py` and `thin_joint_train.py`, the six-target branch of `thin.py`, written the same day; R4's settings (four layers of 512, 300 epochs, batch 256, time alpha −0.5) on the 20,000-surface bank | 20 minutes on four cores; best validation loss at epoch 270. Section 5 |
+| SBC | `thin_joint_sbc.py`, 1,000 validation surfaces, 200 draws each | 1.3 s a surface on four cores |
+| Breach study | `thin_joint_breach.py`, 100 test chains, three arms | A chain costs 3.7 CPU-minutes for the classical fits and their delta method, 1.2 for pricing the network's 200 draws, 2.2 for the Laplace (mode and 200 draws): 12 CPU-hours in all |
+| Audit | `thin_joint_audit.py`, chains 0 to 9 | About 14 CPU-minutes a chain: 512 surfaces at 8,192 paths, then 200 resampled draws of the products |
+| EWG | `thin_joint_ewg.py` | Minutes per method |
 
-So the bank, the network's training, SBC on held-out chains, the breach-rate study on a few hundred chains
-(about 10 CPU-minutes a chain for the audit and the three classical fits, so 200 chains in a day on four cores)
-and EWG's own posterior can all run on one machine once the six-target thin trainer exists. The cluster is needed
-for a 1,000-chain study with every chain audited, and for nothing else on this path.
+So the bank, the network's training, SBC on held-out chains, the breach-rate study on 100 chains with a
+10-chain audit and EWG's own chain all ran on one machine, in about a day of four cores including restarts. The
+cluster is needed for a 1,000-chain study with every chain audited, a 100,000-surface bank, or more layouts and
+dates, and for nothing else on this path.
 
 ## Files
 
@@ -225,8 +345,16 @@ for a 1,000-chain study with every chain audited, and for nothing else on this p
 | `joint_is_figure.py` | `joint_is_A.png` | yes, from the committed npz files |
 | `spy_curve_fit.py` | `spy_curve_fit.json` | yes |
 | `thin_joint_timing.py` | printed timings, quoted above | after PR #48's joint task is ported |
+| `make_thin_joint_config.py` | `thin_joint_net/bank-config.json`, the thin joint bank's configuration | after PR #48's joint task is ported |
+| `thin_joint.py`, `thin_joint_train.py` | `thin_joint_net/training.json`; `SHA256SUMS` identifies the network and the bank, which are not committed | after PR #48's joint task is ported |
+| `thin_joint_sbc.py` | `thin_joint_net/sbc-scale1.json` | after PR #48's joint task is ported |
+| `thin_joint_breach.py` | `thin_joint_results/rows-{classical,posterior,laplace}-0-100.jsonl`, `summary.json` | after PR #48's joint task is ported; `summarize` runs from the committed rows |
+| `thin_joint_breach_figure.py` | `thin_joint_results/breach.png` | yes, from the committed summary |
+| `thin_joint_audit.py` | `thin_joint_results/audit-0-10.jsonl` | after PR #48's joint task is ported |
+| `thin_joint_ewg.py` | `thin_joint_results/ewg-{classical,posterior,laplace}.json` | after PR #48's joint task is ported |
 
-Run every script from `lab/`; the commands are in each docstring. The recorded outputs were made on 28 October 2026
-with PR #48's source at `4281d4e`, outside the lab's locked environment: Python 3.13.17, NumPy 2.5.4, SciPy 1.18.1,
-Numba 0.68.1, Matplotlib 3.11.2, on four cores. The screen took 63 to 98 seconds a point on one core; the importance
-sampling about ten minutes and the product pricing about four, on four.
+Run every script from `lab/`; the commands are in each docstring. The recorded outputs were made on 28 and 29 October
+2026 with PR #48's source at `4281d4e`, outside the lab's locked environment: Python 3.13.17, NumPy 2.5.4, SciPy
+1.18.1, Numba 0.68.1, Matplotlib 3.11.2, BayesFlow 2.0.14, Keras 3.15.1 and JAX 0.11.1, on four cores. The screen
+took 63 to 98 seconds a point on one core; the importance sampling about ten minutes and the product pricing about
+four, on four.
