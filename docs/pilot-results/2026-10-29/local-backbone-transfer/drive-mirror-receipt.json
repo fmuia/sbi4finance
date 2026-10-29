@@ -1,0 +1,77 @@
+{
+  "format": "completed_drive_mirror_v1",
+  "checked_utc": "2026-10-29T20:59:43.323573+00:00",
+  "status": "all10files_locally_sha256_verified_and_drive_provider_reports_uploaded",
+  "versioned_folder_url": "https://drive.google.com/drive/folders/1Zez6mSu8Y_B7IIjdRYWJlDxdAl49fTLq",
+  "destination_parent_id": "1ta1LjBopl-kErBfDEr2R_UL-9Hs8Y9D7",
+  "versioned_folder_id": "1Zez6mSu8Y_B7IIjdRYWJlDxdAl49fTLq",
+  "total_bytes": 2001621235,
+  "files": [
+    {
+      "name": "sbi4finance-bank-heston-100k-20261029.tar.gz",
+      "bytes": 122873069,
+      "sha256": "d57543a90b9dc264a7161dea6e3f55f7c8f5a945d95f407d97151794c07afb40",
+      "local_readback_verified": true
+    },
+    {
+      "name": "sbi4finance-bank-heston-100k-20261029.tar.gz.manifest.json",
+      "bytes": 50040,
+      "sha256": "35b777f9847c4e7f6652a569ab71b4fc29704d873fc10bd55744975896604be7",
+      "local_readback_verified": true
+    },
+    {
+      "name": "sbi4finance-bank-rough-joint-100k-20261029.tar.gz",
+      "bytes": 933622627,
+      "sha256": "b1011602e7fbfa880bffc5f0b7250a96ad878e4ff9be9cf6a6af004bc0e14455",
+      "local_readback_verified": true
+    },
+    {
+      "name": "sbi4finance-bank-rough-joint-100k-20261029.tar.gz.manifest.json",
+      "bytes": 4839879,
+      "sha256": "4ae06dbe898be55870e6370bcbba9646133f26a86ca9a7e28cd70ca6b631377e",
+      "local_readback_verified": true
+    },
+    {
+      "name": "sbi4finance-bank-rough-known-100k-20261029.tar.gz",
+      "bytes": 899951783,
+      "sha256": "e831d35ff0d926231564724558697f1f81db6baae0ca4a844cad72bcab3c9938",
+      "local_readback_verified": true
+    },
+    {
+      "name": "sbi4finance-bank-rough-known-100k-20261029.tar.gz.manifest.json",
+      "bytes": 2188661,
+      "sha256": "d1167c3d2063447d7f6a6caa63439ccbf6ea11af1ec91305f448093563dff3f1",
+      "local_readback_verified": true
+    },
+    {
+      "name": "sbi4finance-pretrained-and-cases-20261029.zip",
+      "bytes": 38046255,
+      "sha256": "8d3a146312efdeaffcf797dee89158a491cde0961689649bbe17b6a3ae4bf51c",
+      "local_readback_verified": true
+    },
+    {
+      "name": "sbi4finance-pretrained-and-cases-20261029.zip.manifest.json",
+      "bytes": 34392,
+      "sha256": "1c3271e7f2bd190644f6bce898af2f6991994d4a3263e716d94cfa82bb0873a1",
+      "local_readback_verified": true
+    },
+    {
+      "name": "SHA256SUMS",
+      "bytes": 455,
+      "sha256": "79dd0b90042d44d92346d804c0073e777b6e80555c7dd15d937c928812222538",
+      "local_readback_verified": true
+    },
+    {
+      "name": "training-data-guide.md",
+      "bytes": 14074,
+      "sha256": "ec3c2376ba4100743e28939ec2335075b85a1157d19e81e1b8d486a1133405ae",
+      "local_readback_verified": true
+    }
+  ],
+  "provider_verification_method": "Documented macOS fileproviderctl evaluate for each exact copied file; Drive provider isUploaded=1,isUploading=0,isSyncPaused=0,isExcludedFromSync=0 and matching documentSize.",
+  "all10_provider_uploaded": true,
+  "independent_cloud_payload_download_verified": false,
+  "sharing_permissions_changed": false,
+  "provider_receipt_sha256": "d30ee40242036b3d317a248c69455940b5b4a978efa83fbcc020d84ccefe251c",
+  "final_copy_receipt_sha256": "ee34d103472e3382b2168e22c728e98492409579aa611e4d424b52c08817fbe9"
+}
