@@ -262,7 +262,7 @@ def c11():
 CLAIMS_LIST = [
     ("C1", "The SPY ATM skew follows a power law in T, with an exponent near −0.4", "S8", "spy/surface.json", c1),
     ("C2", "A smile identifies ρη and H; η and ρ separately only along a ridge", "S2", "rough/s2/validation.json", c2),
-    ("C3", "Under rough Bergomi the variance swap's posterior range is zero; the volatility swap's and the "
+    ("C3", "With rough Bergomi's curve supplied as known, the variance swap's posterior range is zero; the volatility swap's and the "
            "forward-start's are not; the forward-start reserve is a stated share of its price", "S7",
      "rough/s7/products.json", c3),
     ("C4", "Multi-start least squares lands on several optima along the ridge; a regularized fit picks one by "

@@ -1,0 +1,72 @@
+{
+  "format": "full_surface_training_run_v1",
+  "network": {
+    "family": "flow_matching",
+    "encoder": "vector",
+    "widths": [
+      256,
+      256,
+      256,
+      256
+    ],
+    "summary_dim": 32,
+    "flow_steps": null,
+    "mean_steps": 4
+  },
+  "dataset": {
+    "manifest_sha256": "4b5929b0d0b23698c340eec6defabfd629fe23eca2ed78fe9bd46e4de35c244e",
+    "task_fingerprint": "5e499526ff8f29a72f49785a1a36006b1d769d26bca8a6f83f7a8c8ac4d431fa",
+    "collection_id": "402230db66b9885b59524e7808eebf1b3882c4a271f97eccc7cf970581e85221"
+  },
+  "runtime": {
+    "python": "3.12.16",
+    "keras_backend_env": "jax",
+    "bayesflow": "2.1.0",
+    "keras": "3.15.1",
+    "jax": "0.11.1",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1"
+  },
+  "environment_sha256": {
+    "pyproject.toml": "0b38d45cea9c3d7143e261d6c8ce3d6892b31b7bce6d1f26bf748df75790fd54",
+    "pixi.lock": "3e33b82d45dfdd696c5b12b22bca0943a5fca09804860fab13e3fc9126c60aae"
+  },
+  "settings": {
+    "epochs": 500,
+    "batch_size": 256,
+    "chunk_epochs": 50,
+    "seed": 0,
+    "fresh_quote_noise": true
+  },
+  "source_sha256": {
+    "scripts/train_full_surface.py": "ce0fe607e1c7068c4942f7c62127b86285193fb7c95e241e310ed19b5fa57703",
+    "tutorial_final/studies/train_calibration.py": "f4f00780636ea232888d0f63c6371a1b23fde74612973b700b2ea744c0d4e715",
+    "src/sbi4finance/calibration/__init__.py": "9b30e8b6d4b3d77cd9d7c91af7a2e37b5462c8ef02bbdf85f92e2092a37ec6e4",
+    "src/sbi4finance/calibration/bank.py": "9f0d512ba6f52df5c73c54599183159f535b2aa84ac4daa6a60cfd219afcc7db",
+    "src/sbi4finance/calibration/bank_collection.py": "b18bfa6d8322753bdbd36754a3f08c82800b826952453d5ce95adb5751757ed5",
+    "src/sbi4finance/calibration/chain.py": "f3a1ad079cc01570c35208c2fe5d3009fa06bd545b2d4ce3083e835f5569ea2b",
+    "src/sbi4finance/calibration/classical.py": "ebe157b6564408ece99fb1213e16ea48feb0c9b90fb30a5269a923d994496002",
+    "src/sbi4finance/calibration/correction.py": "31b9b9fdf96cf8c62128899709b977a53ac3c9190c7e6b7a13d6888241cdfcf1",
+    "src/sbi4finance/calibration/curve_adequacy.py": "5815ddca3eb883863b397a620f7655b9d56fe354ce69773e75deacd7b993cdd1",
+    "src/sbi4finance/calibration/full_surface.py": "f3ffbbb9d3a3440a2dfbeac78e4e84e867227d569cc28ce48d5d0fa3accc9e79",
+    "src/sbi4finance/calibration/inference.py": "ebc4def8fe0e9e8ae0cab976b67c96d1e3328106c25422bacc11e5907a0f4d2e",
+    "src/sbi4finance/calibration/numerical_pilot.py": "eeb73c2e97e935be3d3d0c61b41c7ac86e6905940b1900d493e022a5a0f897a2",
+    "src/sbi4finance/calibration/plots.py": "558d60bda9969df4115ac0a1cb161e62e85fb9712fbb21660ddc7ff267844492",
+    "src/sbi4finance/calibration/pricer_net.py": "810df0cf7ef58feebdd1abb4239878e20cc87cc7fd90a5ea597b150fdbb836c6",
+    "src/sbi4finance/calibration/pricing.py": "bf9b57f73f030670de2f3db37b298b56dc0070be2f99cf187188b817020f3b52",
+    "src/sbi4finance/calibration/products.py": "9e5dfd4eeb4adf212975c111357c20d4df6ac60373b1c07c68fa8a40b92597fd",
+    "src/sbi4finance/calibration/pymc_reference_op.py": "99704310f8a503cad7eee2310da0204d52c213427ad21683834214018f02451b",
+    "src/sbi4finance/calibration/reference.py": "ac72633203f331bbd6b16b6d64c7a91e6be4afb1ad5233b542e5d4e85cfce336",
+    "src/sbi4finance/calibration/reference_initialization.py": "0abf68e9862d30bf152dd01e28807ed651d53a12dca4c1286ccb17c52ef0b74f",
+    "src/sbi4finance/calibration/rough_control_diagnostic.py": "ef31703f41ac758f2b6788ff243936c0079609e695599002418b10efed885163",
+    "src/sbi4finance/calibration/rough_working_grid_pilot.py": "0f351ca7f226daaed98756c1052ddcc7fc11a17d9619a336efb5a4acf19042fc",
+    "src/sbi4finance/calibration/surface.py": "24c0476ce3000208438d440cbbb1bf21efd92494b8c634592029af384ee30388",
+    "src/sbi4finance/calibration/tasks.py": "295d1ce59b409f8edb5edba89488fa87a5a4e7bab6f785a152ecb69db1528916",
+    "src/sbi4finance/calibration/teaching.py": "f772e508949cc1befb276c92f0a146a9383f5962ac4fe14b1985901fda7fe1e5",
+    "src/sbi4finance/calibration/thin.py": "a0790c87467d5a6504f0ac369fdb9a31b462c6c7e9a66d19114219873e7e5eae",
+    "src/sbi4finance/calibration/thin_products.py": "9c0277e302806d961a80be2f6178c525b3d2ddccc8d77cf786c50cdb674169b2",
+    "src/sbi4finance/calibration/validation.py": "98c73f47aa76365b775c5f7527714e4bd3e0ffc648aab5e164854ed47deead7b",
+    "src/sbi4finance/calibration/variance_functionals.py": "f4b2f1e0764a5cd1d060a661fc2d15a77727a9fa43caa6555362b6ebd69f7e0e",
+    "src/sbi4finance/calibration/why_bayes.py": "cfb1e8c9409a56cf62923e444506d791d1e5dbdddd4e7d814527ca025a0eef1b"
+  }
+}

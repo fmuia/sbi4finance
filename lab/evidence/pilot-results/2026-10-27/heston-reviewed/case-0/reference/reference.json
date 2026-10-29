@@ -1,0 +1,949 @@
+{
+  "bank_manifest_sha256": "e5c12a5f405ca1273419c36b71e5ba77e4c7b63e73eba5ca63aad0bfe61a99bd",
+  "environment_sha256": {
+    "pixi.lock": "3e33b82d45dfdd696c5b12b22bca0943a5fca09804860fab13e3fc9126c60aae",
+    "pyproject.toml": "0b38d45cea9c3d7143e261d6c8ce3d6892b31b7bce6d1f26bf748df75790fd54"
+  },
+  "format": "full_surface_pymc_reference_v1",
+  "generator_source_sha256": {
+    "calibration/bank.py": "9f0d512ba6f52df5c73c54599183159f535b2aa84ac4daa6a60cfd219afcc7db",
+    "calibration/pricing.py": "fb1a16548514cc6f806baa651ef05310934dcb55e7fc591a2a49f0395ab7df71",
+    "calibration/surface.py": "24c0476ce3000208438d440cbbb1bf21efd92494b8c634592029af384ee30388",
+    "calibration/tasks.py": "295d1ce59b409f8edb5edba89488fa87a5a4e7bab6f785a152ecb69db1528916",
+    "gbm.py": "8d491f019326712a4a6e985b491658146fa3da9f57f513a6fed421259d55cb5d",
+    "gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
+    "heston.py": "f85237a6f223689bb83fb2837d6f6cba855867f5da9f919667163ae4a4c8996c",
+    "hkde.py": "c6618b6bd54eae169b4fc0e90201b8582b8e7da14ff41a305c27e4e2bd06e503"
+  },
+  "initialization": {
+    "best_fit": 3,
+    "bounds": [
+      [
+        0.01,
+        0.16
+      ],
+      [
+        0.01,
+        0.16
+      ],
+      [
+        0.1,
+        1.5
+      ],
+      [
+        -0.95,
+        -0.1
+      ]
+    ],
+    "chain_start_checks": 4,
+    "chain_start_details": [
+      {
+        "attempts": 1,
+        "chain": 0,
+        "fit": 3,
+        "logit": [
+          1.7499906983068723,
+          4.894855532674143,
+          -0.640400101285475,
+          1.630025190612998
+        ],
+        "negative_log_posterior_logit": -388.74262977711203,
+        "spread": 2.0
+      },
+      {
+        "attempts": 1,
+        "chain": 1,
+        "fit": 3,
+        "logit": [
+          1.797921319444233,
+          4.479781102330039,
+          -0.4651294882038606,
+          1.5853367423826652
+        ],
+        "negative_log_posterior_logit": -391.1778046942039,
+        "spread": 2.0
+      },
+      {
+        "attempts": 1,
+        "chain": 2,
+        "fit": 3,
+        "logit": [
+          1.8416178212890624,
+          3.024024900259769,
+          -0.6619902419255684,
+          1.677051970374186
+        ],
+        "negative_log_posterior_logit": -388.56191726568386,
+        "spread": 2.0
+      },
+      {
+        "attempts": 1,
+        "chain": 3,
+        "fit": 3,
+        "logit": [
+          1.8161925448607998,
+          4.656535488759333,
+          -0.3810678407228577,
+          1.361771421181044
+        ],
+        "negative_log_posterior_logit": -376.2756847270854,
+        "spread": 2.0
+      }
+    ],
+    "chain_start_max_objective_gap": 25.0,
+    "chain_start_seed_protocol": "PCG64 SeedSequence([0x53544152, seed])",
+    "chain_starts": [
+      [
+        0.1377927443123684,
+        0.1588855927552674,
+        0.5832185421731363,
+        -0.2392528738324886
+      ],
+      [
+        0.1386843565386765,
+        0.1583186751778489,
+        0.6400775440954316,
+        -0.24453484701964778
+      ],
+      [
+        0.13947098979521383,
+        0.1530471649289006,
+        0.5764097423672535,
+        -0.23386329663461258
+      ],
+      [
+        0.13901629526680198,
+        0.15858851079020914,
+        0.668217121789757,
+        -0.2733596681471743
+      ]
+    ],
+    "chains": [
+      {
+        "chain": 0,
+        "model_initialization_seed": 1067421312,
+        "spawn_key": [
+          0
+        ]
+      },
+      {
+        "chain": 1,
+        "model_initialization_seed": 296856654,
+        "spawn_key": [
+          1
+        ]
+      },
+      {
+        "chain": 2,
+        "model_initialization_seed": 558978717,
+        "spawn_key": [
+          2
+        ]
+      },
+      {
+        "chain": 3,
+        "model_initialization_seed": 1025553887,
+        "spawn_key": [
+          3
+        ]
+      }
+    ],
+    "cpu_seconds": 26.19379571,
+    "curvature": {
+      "coordinates": "PyMC Uniform logit/value coordinates",
+      "covariance": [
+        [
+          0.0006727048894065634,
+          -0.004709775599521804,
+          0.0005713097649526907,
+          0.0005049559534260637
+        ],
+        [
+          -0.004709775599521804,
+          0.2247604775208259,
+          0.03134514430286669,
+          0.02312114500128603
+        ],
+        [
+          0.0005713097649526906,
+          0.031345144302866695,
+          0.020297451658015064,
+          0.018971030408203037
+        ],
+        [
+          0.0005049559534260637,
+          0.02312114500128603,
+          0.01897103040820304,
+          0.024198187023649568
+        ]
+      ],
+      "finite_difference_step": 0.01,
+      "hessian": [
+        [
+          2122.1610692651893,
+          69.96500032343533,
+          -239.1264549511618,
+          76.33656450920512
+        ],
+        [
+          69.96500032343533,
+          8.173239760935758,
+          -22.179635951147247,
+          8.119064572582602
+        ],
+        [
+          -239.1264549511618,
+          -22.179635951147247,
+          246.13280169489826,
+          -166.78216246177158
+        ],
+        [
+          76.33656450920512,
+          8.119064572582602,
+          -166.78216246177158,
+          162.72957969079016
+        ]
+      ],
+      "precision_eigenvalue_floor": 2.1593076412126875e-05,
+      "proposal_covariance_eigenvalue_bounds": [
+        1e-06,
+        4.0
+      ],
+      "proposal_covariance_eigenvalues": [
+        0.2327235472411043,
+        0.033852424361510376,
+        0.002889738082221293,
+        0.00046311140706119605
+      ],
+      "raw_hessian_eigenvalues": [
+        4.296943785254306,
+        29.53998181403465,
+        346.05212359983744,
+        2159.3076412126875
+      ],
+      "regularization_applied": false,
+      "scope": "local regularized proposal geometry; not posterior uncertainty or proof of unimodality"
+    },
+    "curvature_evaluations": 33,
+    "determinism_checks": 2,
+    "fit_start_seed_protocol": "PCG64 SeedSequence([0x464954, seed])",
+    "fits": [
+      {
+        "fit": 0,
+        "function_evaluations": 500,
+        "initial_logit": [
+          1.5831063884075665,
+          2.8983270507869583,
+          -3.6565564408628948,
+          1.291251186133332
+        ],
+        "initial_parameters": [
+          0.13444660128005895,
+          0.15216455126251757,
+          0.13523984974230724,
+          -0.28329494339824823
+        ],
+        "logit": [
+          1.813737317118712,
+          3.806921944462083,
+          -0.6433651266084384,
+          1.5169290515820422
+        ],
+        "max_function_evaluations": 500,
+        "message": "Maximum number of function evaluations has been exceeded.",
+        "negative_log_posterior_logit": -393.2044572529918,
+        "optimizer_success": false
+      },
+      {
+        "fit": 1,
+        "function_evaluations": 500,
+        "initial_logit": [
+          -0.5580432448605381,
+          -1.9368460910109557,
+          3.607201803948262,
+          -0.03178417737858791
+        ],
+        "initial_parameters": [
+          0.06460005038139818,
+          0.02889921336017206,
+          1.4630243534305523,
+          -0.5317535691454633
+        ],
+        "logit": [
+          8.582795730874082,
+          1.3165900038038985,
+          0.16261428441352108,
+          2.14432695084545
+        ],
+        "max_function_evaluations": 500,
+        "message": "Maximum number of function evaluations has been exceeded.",
+        "negative_log_posterior_logit": 554.0948225211976,
+        "optimizer_success": false
+      },
+      {
+        "fit": 2,
+        "function_evaluations": 500,
+        "initial_logit": [
+          -2.4775005347478083,
+          -1.2248945117621155,
+          -0.06893386981589503,
+          0.712377355329119
+        ],
+        "initial_parameters": [
+          0.02161759081564869,
+          0.044061438188230294,
+          0.7758826950165656,
+          -0.3797126828538717
+        ],
+        "logit": [
+          1.8172886633639582,
+          4.061048405213845,
+          -0.5801715269756335,
+          1.5663608259005124
+        ],
+        "max_function_evaluations": 500,
+        "message": "Maximum number of function evaluations has been exceeded.",
+        "negative_log_posterior_logit": -393.01364206852026,
+        "optimizer_success": false
+      },
+      {
+        "fit": 3,
+        "function_evaluations": 450,
+        "initial_logit": [
+          -6.256304063289889,
+          2.792751625182296,
+          3.4951854205940385,
+          1.4001613038063643
+        ],
+        "initial_parameters": [
+          0.01028719746907141,
+          0.15134243147020401,
+          1.4587706566367968,
+          -0.2681219387794299
+        ],
+        "logit": [
+          1.8137717707439711,
+          3.801556578268165,
+          -0.6432278280365682,
+          1.5177384838196657
+        ],
+        "max_function_evaluations": 500,
+        "message": "Optimization terminated successfully.",
+        "negative_log_posterior_logit": -393.20455932939154,
+        "optimizer_success": true
+      }
+    ],
+    "kind": "data-fit",
+    "optimization_logit_box": [
+      -12.0,
+      12.0
+    ],
+    "optimizer": "scipy.optimize.minimize Powell; transformed log posterior includes Uniform logit Jacobian",
+    "optimizer_box_limits_sampling_support": false,
+    "optimizer_evaluation_budget": 2000,
+    "optimizer_evaluations": 1950,
+    "proposal": {
+      "S": [
+        [
+          0.0006727048894065634,
+          -0.004709775599521804,
+          0.0005713097649526907,
+          0.0005049559534260637
+        ],
+        [
+          -0.004709775599521804,
+          0.2247604775208259,
+          0.03134514430286669,
+          0.02312114500128603
+        ],
+        [
+          0.0005713097649526906,
+          0.031345144302866695,
+          0.020297451658015064,
+          0.018971030408203037
+        ],
+        [
+          0.0005049559534260637,
+          0.02312114500128603,
+          0.01897103040820304,
+          0.024198187023649568
+        ]
+      ],
+      "S_coordinates": "parameters_interval__",
+      "distribution": "PyMC MultivariateNormalProposal",
+      "initial_scaling": 1.0,
+      "tune": "scaling"
+    },
+    "pymc_chain_rng_protocol": "PyMC 6: default_rng(seed).spawn(chains); child model seed drawn before sampling",
+    "pymc_random_seed": 271026,
+    "scope": "initialization/proposal only; finite multistart search does not establish global mode coverage or posterior correctness",
+    "seed": 271026,
+    "separated_supported_fit_locations": [
+      3
+    ],
+    "start_protocol": "data-only transformed-space MAP fits plus seeded dispersed logit starts; no neural draws",
+    "supported_fit_max_objective_gap": 10.0,
+    "wall_seconds": 26.343137800693512
+  },
+  "observed_prices": [
+    0.0038507397181568033,
+    0.0063731416702867884,
+    0.010093634871937584,
+    0.014290869755705475,
+    0.02086018232250487,
+    0.01412009707819778,
+    0.009668557559205466,
+    0.006169685381835344,
+    0.0037824489649307402,
+    0.005517882876072346,
+    0.00856085248865397,
+    0.013967667110962697,
+    0.02033313521282551,
+    0.029470461704458998,
+    0.020731525255141707,
+    0.013446154393998015,
+    0.008905159525088286,
+    0.005389442295430482,
+    0.008086624291407059,
+    0.013113766035900379,
+    0.01981282938100516,
+    0.029366934926797247,
+    0.04297266282925125,
+    0.03012914642509403,
+    0.0203948378896002,
+    0.013482161406137913,
+    0.007687686609094776,
+    0.011214195941861533,
+    0.01835632725624862,
+    0.028471676311027396,
+    0.04227374272101867,
+    0.06034283576867739,
+    0.04217298258479347,
+    0.0276886136173507,
+    0.018016712434701758,
+    0.010607670129751806,
+    0.013963479766764155,
+    0.023301614738870404,
+    0.03317252806024272,
+    0.05065191352557035,
+    0.07356282208003882,
+    0.052968998157813335,
+    0.03468422560014295,
+    0.022518350602963703,
+    0.013382819604088709,
+    0.02048583398585836,
+    0.031968666878863745,
+    0.04711904059446496,
+    0.07124462464829681,
+    0.10396948058755147,
+    0.07475415935630401,
+    0.049635684510687096,
+    0.03253389252320404,
+    0.019816288959700307,
+    0.027647475062610748,
+    0.041043278058681736,
+    0.06331151456044905,
+    0.10193479560265327,
+    0.14791943771333396,
+    0.10628813128928315,
+    0.07223075146874812,
+    0.04699285351704592,
+    0.029877752461747502
+  ],
+  "partial_trace": {
+    "directory": "partial",
+    "sampler_resumable": false,
+    "scope": "draw persistence only; never pool warmup or substitute for convergence checks"
+  },
+  "reference_pricing_source_sha256": {
+    "calibration/bank.py": "9f0d512ba6f52df5c73c54599183159f535b2aa84ac4daa6a60cfd219afcc7db",
+    "calibration/pricing.py": "70e14c12f810e69f8591cf85303ae350e5c81cdf7509523cd87f7daa9293fcff",
+    "calibration/surface.py": "24c0476ce3000208438d440cbbb1bf21efd92494b8c634592029af384ee30388",
+    "calibration/tasks.py": "295d1ce59b409f8edb5edba89488fa87a5a4e7bab6f785a152ecb69db1528916",
+    "gbm.py": "8d491f019326712a4a6e985b491658146fa3da9f57f513a6fed421259d55cb5d",
+    "gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
+    "heston.py": "f85237a6f223689bb83fb2837d6f6cba855867f5da9f919667163ae4a4c8996c",
+    "hkde.py": "c13c07031413a4ba9ab38a7fcd614c4733aa6ce01314fb1a20416d9b3c18d163"
+  },
+  "sampler": "PyMC DEMetropolisZ; no gradients; native independent chains with explicit cores/context",
+  "settings": {
+    "chains": 4,
+    "checkpoint_every": 100,
+    "cores": 4,
+    "draws": 8000,
+    "fit_budget": 2000,
+    "fit_starts": 4,
+    "initialization": "data-fit",
+    "mp_context": "spawn",
+    "seed": 271026,
+    "tune": 4000
+  },
+  "source_sha256": {
+    "calibration_reference.py": "ed0e45bae90826fae09e9e6dcc8e5bbca9c4a0c6b65b2ebd38b19392e6fc94c1",
+    "pymc_reference_op.py": "99704310f8a503cad7eee2310da0204d52c213427ad21683834214018f02451b",
+    "reference.py": "ac72633203f331bbd6b16b6d64c7a91e6be4afb1ad5233b542e5d4e85cfce336",
+    "reference_initialization.py": "0abf68e9862d30bf152dd01e28807ed651d53a12dca4c1286ccb17c52ef0b74f",
+    "variance_functionals.py": "f4b2f1e0764a5cd1d060a661fc2d15a77727a9fa43caa6555362b6ebd69f7e0e"
+  },
+  "split": "validation",
+  "surface_id": "validation:0",
+  "target": "independent Gaussian quote noise around deterministic refined Fourier prices",
+  "task": {
+    "context": {
+      "contracts": [
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "put",
+          "strike": 0.9452142884010055
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "put",
+          "strike": 0.9586226994567999
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "put",
+          "strike": 0.9722213165740635
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "put",
+          "strike": 0.9860128379357256
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "call",
+          "strike": 1.014185578043342
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "call",
+          "strike": 1.0285723867111078
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "call",
+          "strike": 1.0431632805760247
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "call",
+          "strike": 1.0579611547045846
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "put",
+          "strike": 0.9234100296746439
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "put",
+          "strike": 0.9419892367120802
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "put",
+          "strike": 0.9609422613636284
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "put",
+          "strike": 0.9802766249195318
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "call",
+          "strike": 1.0201202136
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "call",
+          "strike": 1.0406452501953098
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "call",
+          "strike": 1.061583254911065
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "call",
+          "strike": 1.0829425367540593
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "put",
+          "strike": 0.8909472522884108
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "put",
+          "strike": 0.9170415101799084
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "put",
+          "strike": 0.9439000224008953
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "put",
+          "strike": 0.9715451725992442
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "call",
+          "strike": 1.029288218606067
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "call",
+          "strike": 1.0594342369612506
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "call",
+          "strike": 1.0904631784921235
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "call",
+          "strike": 1.1224009024456676
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "put",
+          "strike": 0.8493369300745177
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "put",
+          "strike": 0.8847284766100544
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "put",
+          "strike": 0.9215947754162442
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "put",
+          "strike": 0.9599972788587706
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "call",
+          "strike": 1.041669619302238
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "call",
+          "strike": 1.0850755957772693
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "call",
+          "strike": 1.1302902827674572
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "call",
+          "strike": 1.177389048551396
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "put",
+          "strike": 0.8187307530779818
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "put",
+          "strike": 0.8607079764250578
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "put",
+          "strike": 0.9048374180359595
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "put",
+          "strike": 0.951229424500714
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "call",
+          "strike": 1.0512710963760241
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "call",
+          "strike": 1.1051709180756477
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "call",
+          "strike": 1.161834242728283
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "call",
+          "strike": 1.2214027581601699
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "put",
+          "strike": 0.7536383164437648
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "put",
+          "strike": 0.808857893484718
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "put",
+          "strike": 0.8681234453945849
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "put",
+          "strike": 0.9317314234233945
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "call",
+          "strike": 1.073270660257192
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "call",
+          "strike": 1.151909910168909
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "call",
+          "strike": 1.2363111098437878
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "call",
+          "strike": 1.3268964411453439
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "put",
+          "strike": 0.6703200460356393
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "put",
+          "strike": 0.7408182206817179
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "put",
+          "strike": 0.8187307530779818
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "put",
+          "strike": 0.9048374180359595
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "call",
+          "strike": 1.1051709180756477
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "call",
+          "strike": 1.2214027581601699
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "call",
+          "strike": 1.3498588075760032
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "call",
+          "strike": 1.4918246976412703
+        }
+      ],
+      "dividend": 0.0,
+      "quote_noise_std": [
+        7.393122257748389e-05,
+        0.00014734934969936199,
+        0.00021842402110031601,
+        0.0002338836145277794,
+        0.00016856715907419804,
+        0.00023720138879472198,
+        0.00022466491669818916,
+        0.00015370943102313063,
+        7.82163616067961e-05,
+        0.00010333131487679448,
+        0.00020654717174897207,
+        0.00030707070665308804,
+        0.0003297651437400239,
+        0.00023836631390862972,
+        0.0003364000888699078,
+        0.0003195516723526538,
+        0.00021926701887794902,
+        0.0001119018762588081,
+        0.0001470535520785712,
+        0.0002952606968936182,
+        0.00044092792100661605,
+        0.0004756382639001542,
+        0.00034535022356236905,
+        0.0004895688613506721,
+        0.0004671341355465552,
+        0.0003219709180184147,
+        0.00016505303956082854,
+        0.0002029661289650328,
+        0.0004099682159446388,
+        0.0006158977907659265,
+        0.0006683659690345338,
+        0.00048819551274953464,
+        0.0006962165245187742,
+        0.0006682956622532423,
+        0.00046338309072573556,
+        0.00023897009747029984,
+        0.0002439600928959136,
+        0.0004950371278750658,
+        0.0007471169572237573,
+        0.0008144916556710369,
+        0.0005976658711421461,
+        0.0008562515358464142,
+        0.0008256919335248641,
+        0.0005751510865871115,
+        0.0002979735303440804,
+        0.00033059924189120005,
+        0.0006778258107718836,
+        0.0010336325808796537,
+        0.0011385746299607095,
+        0.0008441713068195146,
+        0.0012219987448500187,
+        0.0011906516133887396,
+        0.0008380035803961523,
+        0.00043867095751078236,
+        0.00043983595980427227,
+        0.0009150968861055087,
+        0.0014160391507115786,
+        0.0015828168637360485,
+        0.0011908576424310355,
+        0.0017492831664407858,
+        0.001729554124341907,
+        0.001235251591494895,
+        0.000656158147746766
+      ],
+      "rate": 0.0,
+      "spot": 1.0
+    },
+    "context_prior": {},
+    "fixed_parameters": {
+      "jump_down_rate": 10.0,
+      "jump_intensity": 0.0,
+      "jump_up_probability": 0.5,
+      "jump_up_rate": 10.0,
+      "kappa": 2.0
+    },
+    "measure": "Q",
+    "model": "hkde",
+    "model_context": {},
+    "numerics": {
+      "max_refinement_over_quote_sigma": 0.1,
+      "quadrature_ladder": [
+        [
+          512,
+          400.0
+        ],
+        [
+          1024,
+          600.0
+        ],
+        [
+          2048,
+          1500.0
+        ],
+        [
+          4096,
+          3000.0
+        ],
+        [
+          8192,
+          6000.0
+        ]
+      ]
+    },
+    "parameter_names": [
+      "initial_variance",
+      "theta",
+      "vol_of_vol",
+      "rho"
+    ],
+    "prior_bounds": [
+      [
+        0.01,
+        0.16
+      ],
+      [
+        0.01,
+        0.16
+      ],
+      [
+        0.1,
+        1.5
+      ],
+      [
+        -0.95,
+        -0.1
+      ]
+    ],
+    "task_id": "hkde_calibration_v1"
+  },
+  "versions": {
+    "arviz-stats": "1.3.3",
+    "numpy": "2.5.3",
+    "pymc": "6.3.2",
+    "pytensor": "3.3.4",
+    "python": "3.12.16",
+    "scipy": "1.18.1"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "format": "heston_export_reload_verification_v1",
+  "status": "passed",
+  "candidate_sha256": "8d4a243ba099524cf4cda40e4f0616e895879f053829a7f60dadbe65b98301db",
+  "exported_candidate_epoch": 500,
+  "original_validation_selected_epoch": 402,
+  "normal_core_loader_succeeded": true,
+  "seeded_direct_vs_export_reload_exact": true,
+  "draw_shape": [
+    1,
+    10,
+    4
+  ],
+  "seed": 280500,
+  "reference": "Direct build+candidate load versus normal full_surface.load_checkpoint(export)",
+  "draw_bytes_sha256": "5f63b24c500dc888ef4c315a0d4e56ad3f93e7748e3d4104a7bb18a5122c26e6",
+  "model_and_metadata_unchanged": true,
+  "offline_cache_replayed": "validation:0",
+  "source_sha256": {
+    "src/sbi4finance/calibration/full_surface_teaching.py": "dbffc313952962a24ec9c887b836f162801781c8b3db09a3385225dea311f969",
+    "scripts/prepare_full_surface_teaching.py": "03c67a84e8cb7acaf726eef59c3be3c605fb2c84a9b87f1649327b9ac072efd4",
+    "tests/test_full_surface_teaching.py": "943237e9a3bd8d61a53bfc74aeecdd8e6999648781f5753e30146fb7a95f4bde"
+  },
+  "runtime": {
+    "bayesflow": "2.1.0",
+    "keras": "3.15.1",
+    "jax": "0.11.1",
+    "numpy": "2.5.3"
+  },
+  "seconds": 11.75160474999575,
+  "scope": "Read-only local CPU software/reload check on existing development observation; no training, pricing, MCMC or notebook execution."
+}

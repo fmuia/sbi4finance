@@ -1,0 +1,10 @@
+{
+  "state": "waiting_process_launched",
+  "pid": 188514,
+  "utc": "2026-10-29T00:42:11.119972+00:00",
+  "plan_sha256": "084d2b6711fee1bea28c1364940400aed2d5be55718c671b6ec2253be8ea9734",
+  "helper_sha256": "525ad97a6a2db32e3f24f9f2e0cc53a9510a2e209c322251ecf17973108311ce",
+  "operator_sha256": "f723a0099ac06dc49d771ded7a0bf9b1f91d736fcd8cb0eff61ef118b7692284",
+  "wall_seconds": 7200,
+  "outside_slurm": true
+}

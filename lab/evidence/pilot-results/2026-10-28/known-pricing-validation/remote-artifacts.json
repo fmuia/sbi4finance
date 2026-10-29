@@ -1,0 +1,1205 @@
+{
+  "artifacts": [
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-00/block-0.npz",
+      "sha256": "dc8dbb3d4fc883e4eb5bfa75531bd6334deb44a910023d06c83678b01573343f",
+      "bytes": 28276
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-00/block-1.npz",
+      "sha256": "dfca2f73935d75ce750de9d849ed15183ca4d79b917d3e26b1332d3406996ad4",
+      "bytes": 71925
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-00/block-2.npz",
+      "sha256": "1d41f0d07afa97d92d3395b90da2f88cf1bd453e5c6e5880a83cfd5b3395fd7d",
+      "bytes": 27989
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-00/prices.npz",
+      "sha256": "1ff8ed14f107e95435adecb33262aed1e965de81c4ba9e609ee5eaf26d4767a2",
+      "bytes": 160169
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-00/run.json",
+      "sha256": "5fb99504831dfa7273d701f83a811e6ba5f1d7ae8f6f34d8acf063605117e212",
+      "bytes": 138629
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-01/block-0.npz",
+      "sha256": "4fcf2f5cf2cdce9a85c6b7e8e070c160ecd4d10a1af97cbf41e021ff70710f1c",
+      "bytes": 28227
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-01/block-1.npz",
+      "sha256": "9048f269f1c2ac20fc0abcd2d3346a6bb967b616ff29e007b6924b4582e9d7e6",
+      "bytes": 71849
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-01/block-2.npz",
+      "sha256": "9ac65a618ac1cfafa7a7de2ad3379ee2657227ff4132575d1e352b4040a2f2dc",
+      "bytes": 27944
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-01/prices.npz",
+      "sha256": "775986d01831f24fde24b93ef2ee6e21e02e6c3a7c411797482dcb6179a69ee8",
+      "bytes": 159938
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-01/run.json",
+      "sha256": "8e22fb448433c4486953fa960b901e97b9c1fb74d46ed1fe0c5bbd59ed0f49dc",
+      "bytes": 138800
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-02/block-0.npz",
+      "sha256": "40ba93f1a2200a0c9dfbcd473ff4d0b9ecf2592cdef68f89a5fe46cdf21983c6",
+      "bytes": 28266
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-02/block-1.npz",
+      "sha256": "774bfef27ff13eb4ff90651764326ed96d12ba7241dd4fd5a67db79c3fe5278c",
+      "bytes": 72038
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-02/block-2.npz",
+      "sha256": "ab7b95058d6890a9cedff57066fe93da18ecf7f8cab804386462b71f7dfa00ca",
+      "bytes": 27985
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-02/prices.npz",
+      "sha256": "a58ed4e6839a759d3a409f8f78dded061a755439745873c9e99ee608ff8a98ae",
+      "bytes": 160259
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-02/run.json",
+      "sha256": "9924a2bfb486ac644862d5b995b6fadb9eefa151292f1d80b9ef41ca462529e7",
+      "bytes": 138768
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-03/block-0.npz",
+      "sha256": "17fa1ff89b0d65fb76424f08ef788fa1d89f2189d48e576d3756faf2c52830b4",
+      "bytes": 28254
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-03/block-1.npz",
+      "sha256": "ae14c980f5906fa8cdbf6bbb7426000b43578f9c8fb71156aed202c5b6f276bf",
+      "bytes": 71938
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-03/block-2.npz",
+      "sha256": "277db8f9ddce6a3932d78ef661c5494efc98dee2f2940d58ffa6383c9b8e469c",
+      "bytes": 28073
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-03/prices.npz",
+      "sha256": "78be706367c2f5573cd5b2f39b926c921e0c3fe7b9279301c50440bfd3faa056",
+      "bytes": 160267
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-03/run.json",
+      "sha256": "55c12c2c30a65741855b8b3e1326997f12fa1c6c9f56dc2154149ed9a5f19f04",
+      "bytes": 138808
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-04/block-0.npz",
+      "sha256": "57a61a1a48c6510749b27d6c2f2184706e9b2dc88ad4453ec765ed88c47d9801",
+      "bytes": 28253
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-04/block-1.npz",
+      "sha256": "cea34c8b14ec389c0e526f371e2db60cc912431439524e03b5b2db03fb1b684f",
+      "bytes": 71794
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-04/block-2.npz",
+      "sha256": "2f97a958c25f7542a5456be62b61a14fdaf500f533ba6ab25204f73989531d59",
+      "bytes": 28057
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-04/prices.npz",
+      "sha256": "90bc5b3f0323110435d391c894c8a210afa3005a8e7219decce5ba4c51f05854",
+      "bytes": 160143
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-04/run.json",
+      "sha256": "f6e2eb53a9a930d33f836e88645224d57a33866c4df680d02543c76ac1b6cfe9",
+      "bytes": 138794
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-05/block-0.npz",
+      "sha256": "235f32f5a2adaba694a694a5e17fdb68e25c55b3eecc720a69b16888b5404041",
+      "bytes": 28188
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-05/block-1.npz",
+      "sha256": "ebfbac7a0acac5b817990369063879ed46ca481437eec533f887d4a358116cd2",
+      "bytes": 71879
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-05/block-2.npz",
+      "sha256": "90f463fd20ece1c220b21eef90afb27c05ef4037f66c40195fccca66caadc14f",
+      "bytes": 28028
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-05/prices.npz",
+      "sha256": "a7e932a56461728852f1d068d99479e25cfacb8da14289a85a8e5663a5e5ccbe",
+      "bytes": 160010
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-05/run.json",
+      "sha256": "4a3bf992853dea35368375b31a66a740be7c6585522e197a88aae9254f7f63dc",
+      "bytes": 138694
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-06/block-0.npz",
+      "sha256": "1081cfd878ae336f51c2248ca1690d8c557ee971341e02e41d77fddac60f9b70",
+      "bytes": 28166
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-06/block-1.npz",
+      "sha256": "dd5df27aeb7b5acbd073d42a570c12eee2ddd780f8000e4bbf8fbfae5e9efd68",
+      "bytes": 71707
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-06/block-2.npz",
+      "sha256": "d5d12c4d6ffadcbd91dab25dd73a7ef388886b928124b71aaa82ceae3f6d6aab",
+      "bytes": 27984
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-06/prices.npz",
+      "sha256": "3bc48a27d806a446b8f035e6ee9415ae2711e2c0e65978800aa7844a9ae833ce",
+      "bytes": 159764
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-06/run.json",
+      "sha256": "0e6bb5ceb1154d19d0aedecc21492ccd591dea34d4ee39b53444902e03cd7a26",
+      "bytes": 138749
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-07/block-0.npz",
+      "sha256": "5664d59f64eb364fcd5f4e44cb9373d67ea6aac42d83abae58cae8ede824db49",
+      "bytes": 28299
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-07/block-1.npz",
+      "sha256": "8af8dd8f234dabf1cf266cca4eb805203149c28f94609d2852d839005089b6ee",
+      "bytes": 71739
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-07/block-2.npz",
+      "sha256": "e76c67a61623b0746d611a3bcd3d9fd34f84011a180b5199a65c6e14066337b6",
+      "bytes": 28128
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-07/prices.npz",
+      "sha256": "74d3b68199d89d7e554d712d08568e4ff1b22da8d6380bafa2d210b835a98744",
+      "bytes": 160205
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-07/run.json",
+      "sha256": "0ac56a2eeb0a5c09a4f7a06404db6bbb065baed1135c99a0ad09b9661411c145",
+      "bytes": 138829
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-08/block-0.npz",
+      "sha256": "bc8217ded9b9219d27b0554e1df2c0761bf90d9691eaafa5bf123fb666915ecc",
+      "bytes": 28278
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-08/block-1.npz",
+      "sha256": "d06ba0cb791ca6495ced5d82200922c9e48e163ad2b2be7ffbed54e3ee5d1261",
+      "bytes": 71570
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-08/block-2.npz",
+      "sha256": "f163a71dc452afa016ade84e4bc904307b0d5ec6e4ab9627b4f05d8d77640c11",
+      "bytes": 27998
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-08/prices.npz",
+      "sha256": "3eb58bf2611a6cc884cb4db0f6189f79169fe59a9a7d4e702eee7ddd148563a1",
+      "bytes": 159772
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-08/run.json",
+      "sha256": "affa3ada9fc08c58ea62c61c6807925c2bbeee0f1bbaeb17a9df0575db45e5bf",
+      "bytes": 136913
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-09/block-0.npz",
+      "sha256": "e2d5bb394e95338546df8005638398cd733d27ab371edb90900163dcf683fc3a",
+      "bytes": 28238
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-09/block-1.npz",
+      "sha256": "a5b2513bafaa12271036b00c4a2b2cade8e1960b8b3718fca99763d770308223",
+      "bytes": 71658
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-09/block-2.npz",
+      "sha256": "10c5c76b4a0b8f8c474d7335e4a7f345b2525c8c520dda9b64a04296d25c4f32",
+      "bytes": 27972
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-09/prices.npz",
+      "sha256": "0aea72bad5d534873a00221db4d02f5d75b061ed73d0e45fd06a8a7a6a5cc71e",
+      "bytes": 159818
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-09/run.json",
+      "sha256": "86ec5525ae74385737a34ac4c258f81d0b320ccb6f288c417c331e921dfbacad",
+      "bytes": 136917
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-10/block-0.npz",
+      "sha256": "a03ac274cac29dd0b01707fe300d4fee98d3a7343ac0a82b7ac00319416a0b55",
+      "bytes": 28274
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-10/block-1.npz",
+      "sha256": "771ebdae72bd0259efcab52d8dd6e1b32e0bfc2a862ee5c585ba2202f57a8bea",
+      "bytes": 71842
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-10/block-2.npz",
+      "sha256": "e85d89b2e7f36b800dc95e9ce491c0efc55113378ab662ac3215092df9a3cdb7",
+      "bytes": 27968
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-10/prices.npz",
+      "sha256": "24c634d55c59206c06e147e2c85334676c7faab7d34d0aef2f1cc7fa1c229177",
+      "bytes": 160035
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-10/run.json",
+      "sha256": "1a5d0914af03a4eadd727e6bc0c5d19f304a287c71f075be37645e0cc559a237",
+      "bytes": 136998
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-11/block-0.npz",
+      "sha256": "21677cb77e22c7c0d063f6d1be571b1b18b19e41f781aed6cb05649520872920",
+      "bytes": 28205
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-11/block-1.npz",
+      "sha256": "d3837ab206efc4a412df1b53a47362938b1b1f2d70e24550db985928ee27b8b9",
+      "bytes": 71769
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-11/block-2.npz",
+      "sha256": "73e7f64375df45fe62dc1d4bd75bcf7098947c70a0c735e8f09d5f2b817d0c4b",
+      "bytes": 27980
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-11/prices.npz",
+      "sha256": "e7590a98423040ae381ac3b6bb4076ff6d0f291ce825eb12bc628a8f3da0c490",
+      "bytes": 159863
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-11/run.json",
+      "sha256": "08e398f9b562d8b3b4f0096ceee4a473a1a23477651fd6f5e26a53ca53adbc0b",
+      "bytes": 136965
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-12/block-0.npz",
+      "sha256": "a5c01ec2dffea9c64f7ede99a0b95f58f43619543eaa47f3727d8e8a9f3b5120",
+      "bytes": 28211
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-12/block-1.npz",
+      "sha256": "b963e00e8f1408595e844e4623c237dfd4d13d6d52dd4f21faf800f4e22eba0c",
+      "bytes": 71853
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-12/block-2.npz",
+      "sha256": "cfef9d95d60007e7c9840f2413cb970843883badd5a357ff4c8b7cd95576481d",
+      "bytes": 27947
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-12/prices.npz",
+      "sha256": "852e12f200915ce0610f714f1900c46da0f3691c613cea4ad47cb853d7f0dccf",
+      "bytes": 159964
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-12/run.json",
+      "sha256": "4d76092b9cbe0907e5d83fd32bf3f4ca756064865e3d26e1ffdf02474d9134d3",
+      "bytes": 136963
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-13/block-0.npz",
+      "sha256": "1befe0660867a6a308d40b2e46dbad16072fa5f0c884186d35776c4d9ea241ec",
+      "bytes": 28229
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-13/block-1.npz",
+      "sha256": "8a663d6d00a9d74ee58f9905bf503f2d8fa185ee7c0556bda6becfd43e3f2286",
+      "bytes": 71646
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-13/block-2.npz",
+      "sha256": "b12ceada4615a006e8cf43af4003a6b2ef0af491531157500de029451154d5b5",
+      "bytes": 28070
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-13/prices.npz",
+      "sha256": "c1466cd254216436a6af868fed027f388a1f11d74dcacfb77dca154717eb2488",
+      "bytes": 159878
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-13/run.json",
+      "sha256": "b13a4102a5859265a967bf3e50078c0f37ee6dad36ed2ae5c47fa93931bae65f",
+      "bytes": 136875
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-14/block-0.npz",
+      "sha256": "7a6fa7252c592092e6043d2669db2730372aca7bd167c6c6540a6025ad7c6914",
+      "bytes": 28239
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-14/block-1.npz",
+      "sha256": "6fd2cdd5da1dfa6a485f1447c0da91e692904ace04812a8a62e0850a03b4949f",
+      "bytes": 71718
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-14/block-2.npz",
+      "sha256": "4f9e766cbb70c2fc0f1427b124380abb40bace9b946e0f370554a305bd616105",
+      "bytes": 28012
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-14/prices.npz",
+      "sha256": "bc467a154ec20bde0016f84a5edfe5a7d9c6463b11e73a6c21f8f0fca25a7c00",
+      "bytes": 159887
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-14/run.json",
+      "sha256": "8487e20127cbddc056d9bc3a0a56516af2a8c6c9cb670572f64b58bbedb5f839",
+      "bytes": 137019
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-15/block-0.npz",
+      "sha256": "d8ebe0febbd9ae131decd00be0ed4966ca96c0b0dd4f7d56045dfa66007fb1a2",
+      "bytes": 28212
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-15/block-1.npz",
+      "sha256": "48404cef30eeb59c4d241d0185d283ef5c674600501248ba37fc313d0623c3c9",
+      "bytes": 71863
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-15/block-2.npz",
+      "sha256": "8187851994b64529cc475c3891ed65dc78c0baf5dfbcdaf3f67d92bf9b5536de",
+      "bytes": 28040
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-15/prices.npz",
+      "sha256": "8a177ccd2ed9765ca88bd373a7204d7d6b0d0178c9eef736a5d9ee8afc2d48e7",
+      "bytes": 160025
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-15/run.json",
+      "sha256": "ab56b873bfbf297a734c72aa605091c384a4c1438fc8b87cb3761784b98d9d6a",
+      "bytes": 136926
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-16/block-0.npz",
+      "sha256": "ab0661d2fcc91a783e6fa84c6dd35499ec8ab37203f409e43b3c1dc6a447bd5b",
+      "bytes": 28116
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-16/block-1.npz",
+      "sha256": "24ae9af6d3f89f398f9b77cf04ca6d238455f1792e108cf193028d07b048a77d",
+      "bytes": 71740
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-16/block-2.npz",
+      "sha256": "91fbd3905da5d10198f11e53c2864d7f9936aa773d4e909f605d740ccb07be8e",
+      "bytes": 27992
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-16/prices.npz",
+      "sha256": "1df321164762dd925ae7f3baee11c9af2e94dc90293df00adb284e0326ba2278",
+      "bytes": 159735
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-16/run.json",
+      "sha256": "544f0b5701810edb89cae748ca98382218734bd5daf9e2f0bcda789973c36266",
+      "bytes": 136844
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-17/block-0.npz",
+      "sha256": "c49666a14b757292c1b7f1cba2e6400f157b0680d51ccc2be5e2c5a9c8b2fc70",
+      "bytes": 28185
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-17/block-1.npz",
+      "sha256": "04b8e7f678aa7787f69ff06a625c44d2c0f3603e3bfe71e8af553ad6c80f97d8",
+      "bytes": 71738
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-17/block-2.npz",
+      "sha256": "339870a9cc743a3b166066910532fdf96e464e0639c521bb4a54718a252af71b",
+      "bytes": 28011
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-17/prices.npz",
+      "sha256": "2d5bcee6250e4ec7cb8dbbea3dff68d213ec759d7a1123e3c81e4b88584c35dd",
+      "bytes": 159884
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-17/run.json",
+      "sha256": "c90d64e140a446493fe1be35678c111c4c303910803a2c20f7b2e28653f125a3",
+      "bytes": 137045
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-18/block-0.npz",
+      "sha256": "2c2bb50f9e5565e93ebe444348d48a5e04301413c52fb442dc70a6085fa9d266",
+      "bytes": 28237
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-18/block-1.npz",
+      "sha256": "68a65e3583ec0fff6a3f997db0fdba6a55825d9b03eed8ac8043427c3563d3c3",
+      "bytes": 71839
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-18/block-2.npz",
+      "sha256": "c44ca05ca03523bcaec3596fd34657ede090b597cea346fa3c064130ae39fd53",
+      "bytes": 27933
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-18/prices.npz",
+      "sha256": "b55cc5eacd13ab18c892016c0b0aa1f738a4f5fd9caef4eca611551f4e07f1b7",
+      "bytes": 159941
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-18/run.json",
+      "sha256": "b53b8526053c478d27cfbc82c0a55e02673b80aefd74f901a4d1410ce601d4f5",
+      "bytes": 136967
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-19/block-0.npz",
+      "sha256": "2b688b94d39ab23be82646111284e1527b86099442a44420dccfd2021b92fb79",
+      "bytes": 28264
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-19/block-1.npz",
+      "sha256": "c1185185ffa5271eb98319514b8c529bfe2b3c33397e07d82296886c472d91ed",
+      "bytes": 71867
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-19/block-2.npz",
+      "sha256": "cba6a9b83ea4ef8bb8b776ee72202c8dd74f5e1c950bcf954a0218fec8cc10c7",
+      "bytes": 27940
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-19/prices.npz",
+      "sha256": "700472efc512d3c83f4a518e46fa693152e86ab35f4226fadf6b978e5e202712",
+      "bytes": 160064
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-19/run.json",
+      "sha256": "4fe667b2b9bb3963ea10f91c9650293f34e8c6710e37dc04b2872fcef2cce9e5",
+      "bytes": 136990
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-20/block-0.npz",
+      "sha256": "69191a03fc3bdbeff6a574a1a562daa95c65c1b878fe4b80bf0bd1b900f38988",
+      "bytes": 28211
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-20/block-1.npz",
+      "sha256": "f2e2e57736bbbd160312c9a73c2e15c93e11941474ab510c88d172a52de323e5",
+      "bytes": 71760
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-20/block-2.npz",
+      "sha256": "9c8b922e43dd65a2208b09bc0b2df3764a9126ce067585b5dacd713addc6baf3",
+      "bytes": 27993
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-20/prices.npz",
+      "sha256": "400ee0721777b254e67ce91159b24bbf59b067aa5ee41dc05957a0505c67754f",
+      "bytes": 159866
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-20/run.json",
+      "sha256": "cc31453d571ae4c1c782264ed2aec93a6250194e0224a184c690e5d6f0c6fa71",
+      "bytes": 136906
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-21/block-0.npz",
+      "sha256": "73a0b3abc51da14da9ba3466eb8e12114617d727437358fd6dbe4e5b121abba4",
+      "bytes": 28244
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-21/block-1.npz",
+      "sha256": "c6c3b7f4866bc9cc122b8b229e7013d72516afae38413ae55866ba61d7d3f5d8",
+      "bytes": 71899
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-21/block-2.npz",
+      "sha256": "740ff0f35f5a55c0403cb51038cca026f5dea8834cc888ee8401f3602e004308",
+      "bytes": 28019
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-21/prices.npz",
+      "sha256": "3465e52b5b2a224d34c7fe91bc95d2fb2a7ad5059e29af20768a483aa349acf1",
+      "bytes": 160129
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-21/run.json",
+      "sha256": "b8d0d4d5a358a8edf9b4ad4e8ef9647f12e887e686f6fc66abb7d727944f708e",
+      "bytes": 136917
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-22/block-0.npz",
+      "sha256": "c2c031e9e25042e2c1703d3050edecdbad2e7343a4c057954f526ebc6b214480",
+      "bytes": 28264
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-22/block-1.npz",
+      "sha256": "35ff6ef0dfdeba3dd7cd3c88a0fb5fc4f2eae7ee32722b42a81375ce349fc0f1",
+      "bytes": 71902
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-22/block-2.npz",
+      "sha256": "99d156bb6a97bf042eb56737b78c196a77fe9d2dcda9cd276f310fa59741bed8",
+      "bytes": 27964
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-22/prices.npz",
+      "sha256": "66ca1cd7496c504249c28e7ed23e14944c2166493d2061dec65b67b9ace14184",
+      "bytes": 160090
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-22/run.json",
+      "sha256": "2f3090dfd68bebb2996b32b86bfc4fd97a5db3e3a52cef539f6246f82001beac",
+      "bytes": 136949
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-23/block-0.npz",
+      "sha256": "1daee3ef12a976a80c82170cc0b9da5b75330180450bdd76f89aa2fcd2b75bcd",
+      "bytes": 28224
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-23/block-1.npz",
+      "sha256": "9eea26f79cbd35b9787e278a05d5a37748d2c1bd80efc69ac0a3e928c36200c9",
+      "bytes": 71866
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-23/block-2.npz",
+      "sha256": "54d06b1fedc42c04b2eeba467ca6359813455ecf2b72ea2bb5bef81221befcde",
+      "bytes": 27927
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-23/prices.npz",
+      "sha256": "dc7a11be49c02a96f051d55447b95906fd5ffe3aec2a29512bc6841a0508f08d",
+      "bytes": 159973
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-23/run.json",
+      "sha256": "cb1eae4b4fd95f33d34097ecc877b6c43e19be4321a475736e61d8fd5145dd24",
+      "bytes": 137041
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-24/block-0.npz",
+      "sha256": "07f3c5325218e3a4524cbff1b014452f71d1a0b08f56fb733ba89dbe1643bfc4",
+      "bytes": 27885
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-24/block-1.npz",
+      "sha256": "e07e8add7f422b9e7fc08f5abb30fff200ffff72a59da41bbde800c32f49dc24",
+      "bytes": 70253
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-24/block-2.npz",
+      "sha256": "4885e3ba755d25192b263bb5aff6e0a73c1fb17b7e63a58b9c49d35c1a5abf8f",
+      "bytes": 27339
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-24/prices.npz",
+      "sha256": "cf4f27d5e8025a768af25670728aaed1c60cc493dfaef5af2bca22c4c01134d0",
+      "bytes": 156764
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-24/run.json",
+      "sha256": "6da7fd97c7ce7c16b11fc88b75ab71069d6f061838353fa8c1a5677084844ee7",
+      "bytes": 138537
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-25/block-0.npz",
+      "sha256": "56115d105f74e23dbfa94c780424d0222422dc454af662925976f199582790ed",
+      "bytes": 27741
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-25/block-1.npz",
+      "sha256": "c329c02b07604593d7c6cc40de47afdce1b45f0ca1c2ab4c315af754da29bfe3",
+      "bytes": 70029
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-25/block-2.npz",
+      "sha256": "abbd9620c0c15641da4f65d27b0b60e441f8c332e5b97ad562babbea3eeaf525",
+      "bytes": 27372
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-25/prices.npz",
+      "sha256": "1f6a7497e5868f366afab8ba90053d0baa1fbab3c8a21253c34215191c88fcff",
+      "bytes": 156374
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-25/run.json",
+      "sha256": "cf9c3917cdde8ebd0c6d0de7ae17226b5e7cd9e5ea7c7ac1268505ff065c664e",
+      "bytes": 138510
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-26/block-0.npz",
+      "sha256": "2b4c977018592041656379bd2d3a072e9cb8c559cace66afd1023062c7d0de7f",
+      "bytes": 27891
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-26/block-1.npz",
+      "sha256": "a505acf1822555a9f59815d59a74f2adcd3c6fd8159095ff60d1260e326ccbbc",
+      "bytes": 70251
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-26/block-2.npz",
+      "sha256": "b33ec7d8e86bd61741fdbd09438c08095f9436f654353aec6eea66febc3b96ae",
+      "bytes": 27707
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-26/prices.npz",
+      "sha256": "430c8c5ed8305a2c5ab0af4eb7124b8f200f5b1176bf65d9d6d198e247ea94ca",
+      "bytes": 157289
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-26/run.json",
+      "sha256": "10df2ef508ad5ffd199605a079247989886c087f503f12eb0397a8507b3b8952",
+      "bytes": 138498
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-27/block-0.npz",
+      "sha256": "798b372e67924d0eb1c37f7e4c178e702b971e5a68ecab766399f3e7a464c598",
+      "bytes": 27777
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-27/block-1.npz",
+      "sha256": "4982d10d2c08d2d3810df6319369833db9260678bf9221bbb60a0cd497c75eb5",
+      "bytes": 70152
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-27/block-2.npz",
+      "sha256": "b971c034aa7024b3865e8d9bc9b7ed7fe237461ca4df454261fd79112786ba21",
+      "bytes": 27339
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-27/prices.npz",
+      "sha256": "aae1ab79aaa0877ba816d9216480e892f78e5eab7753a71f2063f46ba4a9061c",
+      "bytes": 156577
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-27/run.json",
+      "sha256": "0dece4737b612d7b57021bf4302c3c403c45e449553de851ece82d7150a9bec8",
+      "bytes": 138415
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-28/block-0.npz",
+      "sha256": "253822a3b1e4a6d86e7715aacb78c680859e9007ce34cdc806f05c82ec6fbaf0",
+      "bytes": 27764
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-28/block-1.npz",
+      "sha256": "52e799ff4c2bae45287ac08d05dd6d6252c7616810390ea25854ca06de7dd0d0",
+      "bytes": 70400
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-28/block-2.npz",
+      "sha256": "aee2c4ee1a6257b3fb56aca30061ba69dd27f132203b4c226c4ac63c78244b68",
+      "bytes": 27200
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-28/prices.npz",
+      "sha256": "3a572b20b82eb3bdde9113f29390d4b8ea488e0f5bdd581eea78c1355ae3e286",
+      "bytes": 156660
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-28/run.json",
+      "sha256": "9907375a5b1dfb3fe5da21afce021143a37af1a9fdfaf6daf5012dcae74a472b",
+      "bytes": 138451
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-29/block-0.npz",
+      "sha256": "c65dae224583cd4b33a96754c204911e4c28f62644e4caaa2062f3f4b2a782f5",
+      "bytes": 27837
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-29/block-1.npz",
+      "sha256": "5c632027a87c45955ba238224825e3762f92d31d6934db9ec610664e743a8c4f",
+      "bytes": 70038
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-29/block-2.npz",
+      "sha256": "443d39a669f36a733826aa5dafdb621e296565b12988d6abdcc1e7bbbf7f5ec3",
+      "bytes": 27457
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-29/prices.npz",
+      "sha256": "15e91684f8247fb7ca9f290f7407f4bdb920d52cecacff5c609617d7a3123edc",
+      "bytes": 156712
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-29/run.json",
+      "sha256": "079ec3d37edc9f866a631edb91aebeae3d628806c78cfaf9b68516b57e074856",
+      "bytes": 138451
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-30/block-0.npz",
+      "sha256": "f09317d7c5f7fe65833937b829de9007981476cbe80c6a28d28b458a8b2b9da0",
+      "bytes": 27819
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-30/block-1.npz",
+      "sha256": "48ca60abfccae787ea55bd39e61a53738baefbfb4ad9438a0a0c8fcd0be1886d",
+      "bytes": 70109
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-30/block-2.npz",
+      "sha256": "04011c067cbab267b783ab1b2d554fc7690515e395b7afffbc851a40417d4b4f",
+      "bytes": 27255
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-30/prices.npz",
+      "sha256": "e5303b62114e86643d9daf4443a0a2d0846f78cd91b4a84fcf079af864225006",
+      "bytes": 156465
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-30/run.json",
+      "sha256": "95298cf943b590dc76a9941a1bd2ccf00297a9a25b6bf74d1522041837ae46e5",
+      "bytes": 138371
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-31/block-0.npz",
+      "sha256": "0bfa8ea660c6878a688a1407bd65b5772f00f29a6fe33a6b0aa6a9848053f089",
+      "bytes": 27850
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-31/block-1.npz",
+      "sha256": "03a6f5576e37fb7f90b6077d27fc4b1a69172d9f00f10f75cb43eb22d0d79488",
+      "bytes": 69936
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-31/block-2.npz",
+      "sha256": "8866169404e6c9bead141feca1a836463b3eebdf54bc65b647f15fb0e525b760",
+      "bytes": 27186
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-31/prices.npz",
+      "sha256": "7d1bf797b2db6b4f70351b3d4c4fee4d5dcf030e5a6dec215274170ceb3a3d37",
+      "bytes": 156366
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-31/run.json",
+      "sha256": "8ffc88b071428144bd0ff0c3d7b3869f3f97a8e5528d8553452969539baa3bf6",
+      "bytes": 138353
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-32/block-0.npz",
+      "sha256": "e1a3614acbd59f1f87a693507cebd2df634af68e732164e910f3a1f1405b5da3",
+      "bytes": 27788
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-32/block-1.npz",
+      "sha256": "8571fd94e4ef89b5a161aba25fc723f96d468c3d43612cd95b0cbf1816596093",
+      "bytes": 70345
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-32/block-2.npz",
+      "sha256": "2d6ae4e4a630e89839132d4dc1d3a1c49bb3481e7b0c0995ef748d58da05cd3f",
+      "bytes": 27192
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-32/prices.npz",
+      "sha256": "ff8b4073f88621e987d29fd5f75b48f73e2254134a82d138fbbc1f5869500376",
+      "bytes": 156694
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-32/run.json",
+      "sha256": "0553f6ad76dc1c049f7eac3901c17f575b1b50c8207ef3bf62f92ede996fa72b",
+      "bytes": 136823
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-33/block-0.npz",
+      "sha256": "9fd8903859d4e74bcf7616f424712bf8b63d57d4ddf249f4fa9117c1ea250cf0",
+      "bytes": 27807
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-33/block-1.npz",
+      "sha256": "c5bdd0b7f51c8bb7c5de9abba45c4e49c464dd712cb8de2743d20ea2d1be2466",
+      "bytes": 70256
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-33/block-2.npz",
+      "sha256": "31993c7b7e6c6f5f0369d87dec951c3fd360ab72c0a29a50365905b37caec5a4",
+      "bytes": 27190
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-33/prices.npz",
+      "sha256": "8bb3f728626c360c7689cf9dc62296e5eeaf4bf1fd62b3e416eb3cf5589d65a8",
+      "bytes": 156530
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-33/run.json",
+      "sha256": "ddcbc36e6256a67c66a0272f2d803e2407ee0b71882b5d97a06a9d35bd021736",
+      "bytes": 136684
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-34/block-0.npz",
+      "sha256": "4863e27082eef71daaaf9d41cbe69ecfcba0c841de1ac07aadaa64c717913cdc",
+      "bytes": 27854
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-34/block-1.npz",
+      "sha256": "6565f36db4d1d1d741a26641bbb1ce7b456b800890e3cd43b4212a6dad49826c",
+      "bytes": 70314
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-34/block-2.npz",
+      "sha256": "7955f20a119ba1ba70a8b3d83ab2bd36f1baa7a1a89d400a70160e0b7d8285c9",
+      "bytes": 27252
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-34/prices.npz",
+      "sha256": "0bf3abfcbf0596a4c977e9596a40719eb990e09de971a28c76fd38ae70f6d38c",
+      "bytes": 156733
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-34/run.json",
+      "sha256": "3a1efb82374725cf0953828db013a67dc6effbcac2a16fe1d4a413b310bf9e55",
+      "bytes": 136674
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-35/block-0.npz",
+      "sha256": "ab2d4178ac8fa961b0d69e64ee615631326f71fc3f865009d542a724e4bf40b0",
+      "bytes": 27803
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-35/block-1.npz",
+      "sha256": "d570f2a5adefed37ceb3993a2c0c269907f826dd92d125c2626b46d8b7cf4b6a",
+      "bytes": 70203
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-35/block-2.npz",
+      "sha256": "1f1c03a5a2db22fc5fde5a23c278bc5b80f868dea14e5ea9629577601e040ad6",
+      "bytes": 27423
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-35/prices.npz",
+      "sha256": "534bf48d618d68ca02ddb005addf85097682a5f23c7e23e70e7a791580a26ba6",
+      "bytes": 156760
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-35/run.json",
+      "sha256": "5d33378d8e8941e668e8740e6a0930f90c55fe53e0d8234c837e5dab73cc38a9",
+      "bytes": 136724
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-36/block-0.npz",
+      "sha256": "147edc9a78fd57f0f3dfaf1c1af93a32cd015d368997c6b618be6f4ca11851fa",
+      "bytes": 27803
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-36/block-1.npz",
+      "sha256": "5988038fa3532763e0b9615a3a69513ba4607286d814e9ba8d116f96450296a6",
+      "bytes": 70106
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-36/block-2.npz",
+      "sha256": "add8d2592f8109711f7c5bd7301fdf2548686f56dc609779d234b6c29e56145f",
+      "bytes": 27229
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-36/prices.npz",
+      "sha256": "727589b3d2f2e1f9a9c80419f53870bb0f24e5e61bce4ac0e27cae2d1e52a2f9",
+      "bytes": 156389
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-36/run.json",
+      "sha256": "c73552f845bade486fb0b2920579fa2e30f7310b703209d8ef1ce51f0f054ab9",
+      "bytes": 136781
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-37/block-0.npz",
+      "sha256": "4dc8cfda61265a2279dc2ac8ee9e64e0d4e84d75753bc2053946ba845f15311b",
+      "bytes": 27800
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-37/block-1.npz",
+      "sha256": "915daa98f7160c94897f4fb53de8b1c478cf3353aa4aca4569572460253e7e25",
+      "bytes": 70021
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-37/block-2.npz",
+      "sha256": "236641cdcd93378f79d84dc55c5a9a77e09f1a59e529daf51897541c8c615b5d",
+      "bytes": 27549
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-37/prices.npz",
+      "sha256": "36822b398f04df06b207873fa250095fe3eac876981c3e88edd71d9b4035c7a2",
+      "bytes": 156776
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-37/run.json",
+      "sha256": "6bfbfbc43f1ac55262f35486a0581348af4f4ffa5f2de50bf86e9ef3924765ab",
+      "bytes": 136722
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-38/block-0.npz",
+      "sha256": "c34d6dba5562f4d367c77547e9fa7c299643440fdc5c4b4101198db6254ac08a",
+      "bytes": 27840
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-38/block-1.npz",
+      "sha256": "325c12dc6ba30f9edfaf4d9e06ba2d94f8e003bc6387bbe699988ad8b8c71924",
+      "bytes": 70168
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-38/block-2.npz",
+      "sha256": "3df20befc115faab60a735c81118e5260098a13e7e32cdd11c3dd4f7bba4797d",
+      "bytes": 27250
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-38/prices.npz",
+      "sha256": "9ab6054090bc893dcbda737095694f1948ff0d5fe97a77bd6ed9016bc3102838",
+      "bytes": 156532
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-38/run.json",
+      "sha256": "b45e68011f818d3195f6855145c9bbdd54411fec0bc0af7e150140196b5adbc6",
+      "bytes": 136605
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-39/block-0.npz",
+      "sha256": "8f71d7cb658e19b7b6f9a591076c085502e123fbab0cd7e6b8a53ee1d9400067",
+      "bytes": 27814
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-39/block-1.npz",
+      "sha256": "667f8028a3959e12ed9a377533877c2a97e4e34109f4ae4035a8d23e34ff473a",
+      "bytes": 69892
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-39/block-2.npz",
+      "sha256": "7e249598e7e7551dad9586f6c790ab9bcaf71a53989c9d25cfdf0472e446ffa0",
+      "bytes": 27183
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-39/prices.npz",
+      "sha256": "73d8ce201be02cbb577dd47010d7fa5a12b58fd8546ff229126355bc36060f52",
+      "bytes": 156182
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-39/run.json",
+      "sha256": "34854fbffe37c61e93a75e34decee283aa7c0108e8dc7b2962677ce494d033e7",
+      "bytes": 136625
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-40/block-0.npz",
+      "sha256": "6f7e09489a22659dff7edfbe6aebee98e1448632a121c16c91ca85e21bec87f5",
+      "bytes": 27771
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-40/block-1.npz",
+      "sha256": "85f420bac50002a633a935acf1ac7512825b3093b8198463bdb7e44b4f7d8d5d",
+      "bytes": 70572
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-40/block-2.npz",
+      "sha256": "01a2bdaf0313967a20b3dc43c3c86b532a4c0708d5d40ed12e74ccdb4727804f",
+      "bytes": 27257
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-40/prices.npz",
+      "sha256": "c3bb25383dd22b79f9e00fd1ebcad85630f2729a7d7c6f1d1af4e2c5cf4e6647",
+      "bytes": 156935
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-40/run.json",
+      "sha256": "acecee7904ab5ed403a0e3588bb4501de76ec88f397d3ea89f5ef2b1bccf1628",
+      "bytes": 136732
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-41/block-0.npz",
+      "sha256": "d117aef2c8c2a137ffb13add925f64a0e41e7b13e6cc594577d1ed10c806d1ec",
+      "bytes": 27744
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-41/block-1.npz",
+      "sha256": "d33c6a9816a4303c9a2c9b55bdf405926bd9a40f59d70f1b83e0f186474b9f46",
+      "bytes": 70470
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-41/block-2.npz",
+      "sha256": "db33ab5e05633e1fc38faf4f2c236db8b9c37feb1a565a29b1e496409de041c5",
+      "bytes": 27168
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-41/prices.npz",
+      "sha256": "117450f2ef8150da86d26d0898047ec170fe023b4d2e19241720ef233a7d7e36",
+      "bytes": 156494
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-41/run.json",
+      "sha256": "c90483e28aac07080c2823f5a70fb14a7e3c86d261b40b36885fa2bebdbc1915",
+      "bytes": 136752
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-42/block-0.npz",
+      "sha256": "11f0fda0d0d78f3fb13953f27cc5d7d47b2624e327278bde815098fe10ac47df",
+      "bytes": 27843
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-42/block-1.npz",
+      "sha256": "9901e57561cea4c8a94c0f3868c2dd4b253eea240ff789046b6495ad7cdec69f",
+      "bytes": 70427
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-42/block-2.npz",
+      "sha256": "252657403b646c8c7700429d7a323c4f2cc29f6ec090f14476ea55dec8a4d521",
+      "bytes": 27691
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-42/prices.npz",
+      "sha256": "66bcb183d29d6e89ca256c88175c8fceceff17b296dc25c7a4d3c237eb242351",
+      "bytes": 157295
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-42/run.json",
+      "sha256": "7c770de9425b77ee3d5221c4d26329a821732f0f922348faa1150b8bfaaed107",
+      "bytes": 136772
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-43/block-0.npz",
+      "sha256": "d95a95405005e83969d339777996245e9ec2fc288dd58e8eecb063d0a2d5bc89",
+      "bytes": 27892
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-43/block-1.npz",
+      "sha256": "fd818e49fde25a00bde5c5f2ae83bda609b6ec5bb4e103cbef68226472dcc1c0",
+      "bytes": 70314
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-43/block-2.npz",
+      "sha256": "5d7afde98a159be65c258d3da7db9f6e742f66bbc36285bc59eaa2f37a730db1",
+      "bytes": 27334
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-43/prices.npz",
+      "sha256": "c1cb8eaddcbc4491354da9f9d2f928c545749000fc485d8b1bc9779c05591f8c",
+      "bytes": 156913
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-43/run.json",
+      "sha256": "4d7a114b3109ce1c3d730faf2ea45729812cab276be88c9dc7dd43a3801fbed3",
+      "bytes": 136714
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-44/block-0.npz",
+      "sha256": "33043a7bc3ea0864b47c5037d45623874aa0883626d813232f2b6f749d4115cf",
+      "bytes": 27806
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-44/block-1.npz",
+      "sha256": "bdc4c395099b0c82406810e83ae3ec0d248013e2ee601558dbbcd986da2b0a81",
+      "bytes": 70166
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-44/block-2.npz",
+      "sha256": "c6e9505d0253a18827aed6c3d29b12b85d84c99157948d6b8ea31db3ba2d1dfc",
+      "bytes": 27216
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-44/prices.npz",
+      "sha256": "a52744be6bdebc258ae55997da2ee07902f720354f678f4ac2a42f4372e43ef9",
+      "bytes": 156470
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-44/run.json",
+      "sha256": "cf1cabf8c6d6221baedd74ff5af1905be8b75adf292f2f5a3cf633050b8de050",
+      "bytes": 136802
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-45/block-0.npz",
+      "sha256": "f63cd96799ae68a553b445cc3391cda00c214fe1e96093b904a36bd120ae1521",
+      "bytes": 27874
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-45/block-1.npz",
+      "sha256": "da3fcba73dedadd10173f40bc3807febec1dadffa69ea7e60ade73101fb6688b",
+      "bytes": 70241
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-45/block-2.npz",
+      "sha256": "2a0dd56f99186c5d4020958b52ded431648374af9eaaf2b0a37e3ea70c606d6d",
+      "bytes": 27425
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-45/prices.npz",
+      "sha256": "b13a943fa2af37e36035cbe2776015fcfb9bf5e3a6cd423ead84a5fd3d889df8",
+      "bytes": 156885
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-45/run.json",
+      "sha256": "b141e726e6198d9d21a2d77db35f7d9a1ace9ecbaf6249fb13be8a24eb15f991",
+      "bytes": 136724
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-46/block-0.npz",
+      "sha256": "b14d6d0f456b33ab017b3d132824f170bcb2e8bb160dc3026f9d59718273b185",
+      "bytes": 27827
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-46/block-1.npz",
+      "sha256": "0e88bce4be146704a4ff1e41bcba45935d7d4f64c1d9f5ce9e9ff07a47a9ca3f",
+      "bytes": 69980
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-46/block-2.npz",
+      "sha256": "2fd1152fdf3cdbc04b98d7f604e9132b46c1cb0162bd5b26192344a461e038dc",
+      "bytes": 27241
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-46/prices.npz",
+      "sha256": "365dd1f134b4171ccf44536bc341aae63b9ff7d5bc5df7506e38e9717f28c4bd",
+      "bytes": 156339
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-46/run.json",
+      "sha256": "119d668d05e45fee6ee477d4ba7591a24894b4ccc25b95756d72a8245c9b4a60",
+      "bytes": 136627
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-47/block-0.npz",
+      "sha256": "87bb8563ba6ba2ec0d33a08f71bf81a21276172e87080d68cd8134e5f9da4e14",
+      "bytes": 27782
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-47/block-1.npz",
+      "sha256": "8904fa90e4aa95076d16f2ea9d7bbcdde90824b1643a4b8d435bafb96204c03a",
+      "bytes": 69923
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-47/block-2.npz",
+      "sha256": "eae77731e3a3235b1e4e177a6f1b0b06eb7056c34b179aa0d121b17f9d3e98a0",
+      "bytes": 27180
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-47/prices.npz",
+      "sha256": "6f74a80733c60d4c7e83671655a2a3778b19413c8cedc1676e40ab4ecfc2eb55",
+      "bytes": 156159
+    },
+    {
+      "file": "/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/results/batch-47/run.json",
+      "sha256": "70df0a4018b50f0d7f93e629f023fb75292011818db43b632da93508351f8e30",
+      "bytes": 136588
+    }
+  ],
+  "scope": "Allperbatchcovariances,momentsandpartialblockpayloadsremainonOscar;compactmeansdownloadedseparately."
+}

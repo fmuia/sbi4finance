@@ -1,0 +1,75 @@
+{
+  "format": "completed_local_backbone_transfer_v1",
+  "checked_utc": "2026-10-29T18:57:44.561961+00:00",
+  "status": "verified",
+  "counts": {
+    "verified": 29766,
+    "missing": 0,
+    "mismatch": 0,
+    "unknown_expected_hash": 0
+  },
+  "native_total_bytes": 2347578442,
+  "full_verification_sha256": "1a371492535e9ec8a0eed3305f4bc219fb0336cb52eb191bf244472b4e454652",
+  "source_manifest_sha256": "f96bf14db7eac556a2bb9990b1f82cc343b673e76a4f9f41d2187a3b914ce2e9",
+  "archives": [
+    {
+      "route": "heston",
+      "file": "sbi4finance-bank-heston-100k-20261029.tar.gz",
+      "bytes": 122873069,
+      "sha256": "d57543a90b9dc264a7161dea6e3f55f7c8f5a945d95f407d97151794c07afb40",
+      "native_files": 186,
+      "native_bytes": 127842700,
+      "source_payloads_hash_checked_while_archiving": true,
+      "archive_member_names_and_sizes_verified": true,
+      "snapshot_manifest_sha256": "4b5929b0d0b23698c340eec6defabfd629fe23eca2ed78fe9bd46e4de35c244e",
+      "split_counts": {
+        "train": 100000,
+        "validation": 5000,
+        "test": 5000
+      },
+      "layout": "Exact /oscar/scratch/afengler-relative paths; extract all banks into one common root."
+    },
+    {
+      "route": "rough_known",
+      "file": "sbi4finance-bank-rough-known-100k-20261029.tar.gz",
+      "bytes": 899951783,
+      "sha256": "e831d35ff0d926231564724558697f1f81db6baae0ca4a844cad72bcab3c9938",
+      "native_files": 8962,
+      "native_bytes": 1060441570,
+      "source_payloads_hash_checked_while_archiving": true,
+      "archive_member_names_and_sizes_verified": true,
+      "snapshot_manifest_sha256": "f1bfa42f7bf2acba3daaffb263b5bdeb60b5b12ebdfc267c5c5cd6eb7e08c313",
+      "split_counts": {
+        "train": 100000,
+        "validation": 5000,
+        "test": 7000
+      },
+      "layout": "Exact /oscar/scratch/afengler-relative paths; extract all banks into one common root."
+    },
+    {
+      "route": "rough_joint",
+      "file": "sbi4finance-bank-rough-joint-100k-20261029.tar.gz",
+      "bytes": 933622627,
+      "sha256": "b1011602e7fbfa880bffc5f0b7250a96ad878e4ff9be9cf6a6af004bc0e14455",
+      "native_files": 20618,
+      "native_bytes": 1159294172,
+      "source_payloads_hash_checked_while_archiving": true,
+      "archive_member_names_and_sizes_verified": true,
+      "snapshot_manifest_sha256": "eb72588b9b7665e0e416cb5d3a1bcf8cd78a1c97f2b43f18ea8246c749a871d8",
+      "split_counts": {
+        "train": 100000,
+        "validation": 5000,
+        "test": 7000
+      },
+      "layout": "Exact /oscar/scratch/afengler-relative paths; extract all banks into one common root."
+    }
+  ],
+  "notebooks_executed": false,
+  "new_bank_generation": false,
+  "reserved_test_evaluated": false,
+  "hosting": {
+    "github_release": "https://github.com/fmuia/sbi4finance/releases/tag/tutorial-backbones-2026-10-29",
+    "download_index": "downloads.json",
+    "drive_mirror": "https://drive.google.com/drive/folders/1Zez6mSu8Y_B7IIjdRYWJlDxdAl49fTLq"
+  }
+}

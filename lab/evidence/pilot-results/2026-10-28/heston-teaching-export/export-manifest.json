@@ -1,0 +1,16 @@
+{
+  "format": "full_surface_checkpoint_export_v1",
+  "scientific_acceptance": false,
+  "task_fingerprint": "5e499526ff8f29a72f49785a1a36006b1d769d26bca8a6f83f7a8c8ac4d431fa",
+  "candidate_sha256": "8d4a243ba099524cf4cda40e4f0616e895879f053829a7f60dadbe65b98301db",
+  "exported_candidate_epoch": 500,
+  "original_validation_selected_epoch": 402,
+  "files": {
+    "analytic-product-checks.json": "f7d665dae57c4db1b742996b1b3cfd5e07edf2d3a019ec8ce0c48b1cb68b6677",
+    "gate.json": "c8ce2dede56f1f5a68044ccd7529a10bf91dd0ac6a231049042b3c0fb781ea0e",
+    "model.keras": "8d4a243ba099524cf4cda40e4f0616e895879f053829a7f60dadbe65b98301db",
+    "origin-training.json": "a3de032a681a3e89f895dca48cdc4c573f4d1768f3b217e30649742da80f46b2",
+    "task.json": "5e499526ff8f29a72f49785a1a36006b1d769d26bca8a6f83f7a8c8ac4d431fa",
+    "training.json": "6d9c25a77869940bd23e561933f0296ddfb4269fc708d45e24e1ad9f8fbdf4ee"
+  }
+}

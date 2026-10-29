@@ -1,0 +1,1115 @@
+{
+  "approximation_scope": "MCMC targets the fixed fitted emulator with declared Gaussian quote noise. Emulator bias and training-pricer randomness/covariance are not propagated. Independent pricing/refinement and posterior/product checks remain required; convergence alone does not establish an exact-model reference.",
+  "bank_manifest_sha256": "412f3cf437895b4764fa981bedbc1f8ad0f532d6f5b18e1b1fb957297cb627c4",
+  "emulator": {
+    "activation": "gelu_erf",
+    "directory": "/oscar/scratch/afengler/sbi4finance-post-bank-baselines-recovery-v2-20261028/known/pricer/checkpoint",
+    "input_sha256": {
+      "/oscar/scratch/afengler/sbi4finance-post-bank-baselines-recovery-v2-20261028/known/pricer/checkpoint/pricer.json": "a526243907f23a2329d616b25da5548dc04d9d170518851706f350fe517d9095",
+      "/oscar/scratch/afengler/sbi4finance-post-bank-baselines-recovery-v2-20261028/known/pricer/checkpoint/pricer.npz": "162685962bbbfd8fa4029ae1dc13933ddc490e4222c8581a6f9fab10c8b5199b",
+      "/oscar/scratch/afengler/sbi4finance-post-bank-baselines-recovery-v2-20261028/known/pricer/checkpoint/task.json": "c99b0dd131896d89d8483a1668a3fde0fb7a0f28794c3db7fe14635cbbd52b65"
+    },
+    "interpreted_output_units": "forward prices divided by the task's quote-noise standard deviations",
+    "target_scope": "approximate deterministic emulator likelihood; independent pricing accuracy not assessed by this run",
+    "task_fingerprint": "c99b0dd131896d89d8483a1668a3fde0fb7a0f28794c3db7fe14635cbbd52b65",
+    "training_record": {
+      "bank_manifest_sha256": "412f3cf437895b4764fa981bedbc1f8ad0f532d6f5b18e1b1fb957297cb627c4",
+      "collection_id": "da963f7294aee242a80ebf9b47d914294b439aef8b6ee8f7c6d1899766e546f1",
+      "conditioning": "three model parameters and supplied log curve levels",
+      "environment_sha256": {
+        "pixi.lock": "3e33b82d45dfdd696c5b12b22bca0943a5fca09804860fab13e3fc9126c60aae",
+        "pyproject.toml": "0b38d45cea9c3d7143e261d6c8ce3d6892b31b7bce6d1f26bf748df75790fd54"
+      },
+      "fit": {
+        "best_val_mse_quote_noise": 0.006880391854792833,
+        "epochs_run": 300,
+        "export_max_abs_difference_quote_noise": 0.05251542096030448,
+        "hidden_activation": "gelu_erf",
+        "selected_epoch": 298,
+        "selection": "minimum validation mean squared error in quote-noise units",
+        "validation_mse_standardized_at_selected_epoch": 2.410815952369428e-05
+      },
+      "format": "full_surface_pricer_training_v1",
+      "generator_source_sha256": {
+        "bergomi.py": "8bffe12110dfb7b0de85fcf58cb7b848e4f5bc5f5af2f614ff2bd593d0edb6f5",
+        "calibration/bank.py": "9f0d512ba6f52df5c73c54599183159f535b2aa84ac4daa6a60cfd219afcc7db",
+        "calibration/pricing.py": "bf9b57f73f030670de2f3db37b298b56dc0070be2f99cf187188b817020f3b52",
+        "calibration/surface.py": "24c0476ce3000208438d440cbbb1bf21efd92494b8c634592029af384ee30388",
+        "calibration/tasks.py": "295d1ce59b409f8edb5edba89488fa87a5a4e7bab6f785a152ecb69db1528916",
+        "gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
+        "rough_bergomi.py": "0e8d31c8e18ca8bffd7f798988b22e8a73f75fb49da6eee336f8a106c186ba06"
+      },
+      "pricer_sha256": "162685962bbbfd8fa4029ae1dc13933ddc490e4222c8581a6f9fab10c8b5199b",
+      "reserved_test_evaluated": false,
+      "same_reload_exact": true,
+      "scientific_acceptance": false,
+      "scope": "Validation selects the epoch and measures interpolation error against bank labels. Independent price/refinement and posterior checks remain required.",
+      "seconds": 76.68175154272467,
+      "settings": {
+        "batch_size": 256,
+        "epochs": 300,
+        "learning_rate": 0.001,
+        "patience": 30,
+        "seed": 0,
+        "widths": [
+          256,
+          256,
+          256,
+          256
+        ]
+      },
+      "source_sha256": {
+        "scripts/train_full_surface_pricer.py": "48d166911cc1ac10c9c938e1a8b358ef8c3159105c80afc08b1152d63db094fd",
+        "src/sbi4finance/calibration/__init__.py": "9b30e8b6d4b3d77cd9d7c91af7a2e37b5462c8ef02bbdf85f92e2092a37ec6e4",
+        "src/sbi4finance/calibration/bank.py": "9f0d512ba6f52df5c73c54599183159f535b2aa84ac4daa6a60cfd219afcc7db",
+        "src/sbi4finance/calibration/bank_collection.py": "b18bfa6d8322753bdbd36754a3f08c82800b826952453d5ce95adb5751757ed5",
+        "src/sbi4finance/calibration/chain.py": "f3a1ad079cc01570c35208c2fe5d3009fa06bd545b2d4ce3083e835f5569ea2b",
+        "src/sbi4finance/calibration/classical.py": "ebe157b6564408ece99fb1213e16ea48feb0c9b90fb30a5269a923d994496002",
+        "src/sbi4finance/calibration/correction.py": "31b9b9fdf96cf8c62128899709b977a53ac3c9190c7e6b7a13d6888241cdfcf1",
+        "src/sbi4finance/calibration/curve_adequacy.py": "5815ddca3eb883863b397a620f7655b9d56fe354ce69773e75deacd7b993cdd1",
+        "src/sbi4finance/calibration/full_surface.py": "f3ffbbb9d3a3440a2dfbeac78e4e84e867227d569cc28ce48d5d0fa3accc9e79",
+        "src/sbi4finance/calibration/full_surface_teaching.py": "179de693db42541342653c651a38fe9fd7e1fe4ed649c6414463c7a6d1c83ace",
+        "src/sbi4finance/calibration/inference.py": "ebc4def8fe0e9e8ae0cab976b67c96d1e3328106c25422bacc11e5907a0f4d2e",
+        "src/sbi4finance/calibration/numerical_pilot.py": "eeb73c2e97e935be3d3d0c61b41c7ac86e6905940b1900d493e022a5a0f897a2",
+        "src/sbi4finance/calibration/plots.py": "558d60bda9969df4115ac0a1cb161e62e85fb9712fbb21660ddc7ff267844492",
+        "src/sbi4finance/calibration/pricer_net.py": "e5d8da240c2dc9b242fabfe289e6623d786645acf86d42d7eb96e702c47bd489",
+        "src/sbi4finance/calibration/pricing.py": "bf9b57f73f030670de2f3db37b298b56dc0070be2f99cf187188b817020f3b52",
+        "src/sbi4finance/calibration/products.py": "709850bbdeed1f26a8820421b8d58e7d9c01a07f30379586ea5b48f496b83c02",
+        "src/sbi4finance/calibration/pymc_reference_op.py": "99704310f8a503cad7eee2310da0204d52c213427ad21683834214018f02451b",
+        "src/sbi4finance/calibration/reference.py": "fd69a6958026f6addde982f2c8d57461cf549efe75f838956e0d931e12153056",
+        "src/sbi4finance/calibration/reference_initialization.py": "0abf68e9862d30bf152dd01e28807ed651d53a12dca4c1286ccb17c52ef0b74f",
+        "src/sbi4finance/calibration/rough_control_diagnostic.py": "ef31703f41ac758f2b6788ff243936c0079609e695599002418b10efed885163",
+        "src/sbi4finance/calibration/rough_working_grid_pilot.py": "0f351ca7f226daaed98756c1052ddcc7fc11a17d9619a336efb5a4acf19042fc",
+        "src/sbi4finance/calibration/surface.py": "24c0476ce3000208438d440cbbb1bf21efd92494b8c634592029af384ee30388",
+        "src/sbi4finance/calibration/tasks.py": "295d1ce59b409f8edb5edba89488fa87a5a4e7bab6f785a152ecb69db1528916",
+        "src/sbi4finance/calibration/teaching.py": "f772e508949cc1befb276c92f0a146a9383f5962ac4fe14b1985901fda7fe1e5",
+        "src/sbi4finance/calibration/thin.py": "a0790c87467d5a6504f0ac369fdb9a31b462c6c7e9a66d19114219873e7e5eae",
+        "src/sbi4finance/calibration/thin_products.py": "9c0277e302806d961a80be2f6178c525b3d2ddccc8d77cf786c50cdb674169b2",
+        "src/sbi4finance/calibration/validation.py": "98c73f47aa76365b775c5f7527714e4bd3e0ffc648aab5e164854ed47deead7b",
+        "src/sbi4finance/calibration/variance_functionals.py": "f4b2f1e0764a5cd1d060a661fc2d15a77727a9fa43caa6555362b6ebd69f7e0e",
+        "src/sbi4finance/calibration/why_bayes.py": "cfb1e8c9409a56cf62923e444506d791d1e5dbdddd4e7d814527ca025a0eef1b"
+      },
+      "status": "completed",
+      "target": "clean numerical prices divided by fixed quote SD; no observation-noise augmentation",
+      "task_fingerprint": "c99b0dd131896d89d8483a1668a3fde0fb7a0f28794c3db7fe14635cbbd52b65",
+      "task_id": "rough_calibration_v1",
+      "training_surfaces": 50000,
+      "validation_errors": {
+        "absolute_quote_error_quantiles": {
+          "0.5": 0.03319493028049614,
+          "0.9": 0.12498219661522875,
+          "0.99": 0.30718577339832687,
+          "1.0": 1.3107747127497191
+        },
+        "interpretation": "Discrepancies against numerical labels mix emulator error and label randomness; they do not measure absolute price bias or grid error. Per-quote accuracy alone does not bound posterior distortion across all contracts.",
+        "rmse": 0.08286549893644245,
+        "signed_mean_error_per_contract": [
+          -0.0016335862625470985,
+          -0.0013855622538877675,
+          -0.0009368967918978266,
+          -0.0012463203575600785,
+          -0.0013265749855443118,
+          -0.0008501292470195376,
+          8.66653028574182e-05,
+          -0.0012986123380907052,
+          -0.0011318600674937423,
+          0.0017089844527872296,
+          0.0006487594995718376,
+          0.0006587971400545097,
+          0.0004608891266531609,
+          0.0005927809334954737,
+          0.0009841326030756836,
+          0.0011866418674590525,
+          -0.00036865312333125806,
+          0.0002625791343593374,
+          -0.003852244314321522,
+          -0.001459206521364789,
+          -0.0007394061498280394,
+          -0.001294927958010127,
+          -0.0014574171050171529,
+          -0.0016292230552216555,
+          -0.0010671324894680194,
+          -0.0012447759981663903,
+          -0.0013505381879547862,
+          -0.003105627931737324,
+          -0.0018452796258500322,
+          -0.00156105884077808,
+          -0.0021031408781804367,
+          -0.0012990223673235036,
+          -0.0008516353110615952,
+          -0.0010514962857012494,
+          -0.001159738903511452,
+          -0.00012318126219319225,
+          -0.004984118110675609,
+          -0.002575844294966962,
+          -0.001993664907729132,
+          -0.0011821554129657981,
+          -0.0018582737495456754,
+          -0.0005521867387647041,
+          -0.0007727506441128469,
+          -0.0020396879636079084,
+          -0.001192215490870714,
+          -0.004494840737374104,
+          -0.001821084272473226,
+          -0.001319455298689043,
+          8.080066034454258e-05,
+          -0.00022684778558078306,
+          0.00021425146937023687,
+          0.000785775554410395,
+          -0.000507545952496315,
+          0.0011952645676259123,
+          -0.0011487749795580356,
+          -0.0011146187179276843,
+          -0.0001497896398917354,
+          0.000347423219420857,
+          0.00019006420570095983,
+          0.0008123195872009049,
+          0.0008859936313528935,
+          -0.0009422653792213525,
+          0.0005431033289057151
+        ],
+        "surface_l2_error_quantiles": {
+          "0.5": 0.5459876645486148,
+          "0.9": 0.9841549424917764,
+          "0.99": 1.3952937301413266,
+          "1.0": 3.506572076007939
+        },
+        "surface_rms_error_quantiles": {
+          "0.5": 0.06878797996688531,
+          "0.9": 0.1239918680661102,
+          "0.99": 0.17579048646864848,
+          "1.0": 0.44178655559240415
+        },
+        "units": "quote-noise standard deviations"
+      },
+      "validation_label_reported_mcse": {
+        "interpretation": "Reported label MCSE only; not independent price error or a grid-bias bound.",
+        "max": 0.24999072698792257,
+        "median": 0.04116476556210563,
+        "p99": 0.2202504529341254,
+        "units": "quote-noise standard deviations"
+      },
+      "validation_surfaces": 5000,
+      "versions": {
+        "jax": "0.11.1",
+        "keras": "3.15.1",
+        "numpy": "2.5.3",
+        "python": "3.12.16",
+        "scipy": "1.18.1"
+      }
+    }
+  },
+  "environment_sha256": {
+    "pixi.lock": "3e33b82d45dfdd696c5b12b22bca0943a5fca09804860fab13e3fc9126c60aae",
+    "pyproject.toml": "0b38d45cea9c3d7143e261d6c8ce3d6892b31b7bce6d1f26bf748df75790fd54"
+  },
+  "format": "full_surface_pymc_reference_v1",
+  "generator_source_sha256": {
+    "bergomi.py": "8bffe12110dfb7b0de85fcf58cb7b848e4f5bc5f5af2f614ff2bd593d0edb6f5",
+    "calibration/bank.py": "9f0d512ba6f52df5c73c54599183159f535b2aa84ac4daa6a60cfd219afcc7db",
+    "calibration/pricing.py": "bf9b57f73f030670de2f3db37b298b56dc0070be2f99cf187188b817020f3b52",
+    "calibration/surface.py": "24c0476ce3000208438d440cbbb1bf21efd92494b8c634592029af384ee30388",
+    "calibration/tasks.py": "295d1ce59b409f8edb5edba89488fa87a5a4e7bab6f785a152ecb69db1528916",
+    "gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
+    "rough_bergomi.py": "0e8d31c8e18ca8bffd7f798988b22e8a73f75fb49da6eee336f8a106c186ba06"
+  },
+  "initialization": {
+    "best_fit": 2,
+    "bounds": [
+      [
+        0.02,
+        0.35
+      ],
+      [
+        0.5,
+        3.5
+      ],
+      [
+        -0.99,
+        -0.2
+      ]
+    ],
+    "chain_start_checks": 5,
+    "chain_start_details": [
+      {
+        "attempts": 2,
+        "chain": 0,
+        "fit": 2,
+        "logit": [
+          0.8632303601451726,
+          9.39082419514492,
+          1.351961786048472
+        ],
+        "negative_log_posterior_logit": -387.56811067346683,
+        "spread": 2.0
+      },
+      {
+        "attempts": 1,
+        "chain": 1,
+        "fit": 2,
+        "logit": [
+          0.8062669846177309,
+          6.068592401198873,
+          1.3446896853780816
+        ],
+        "negative_log_posterior_logit": -393.85503723190084,
+        "spread": 2.0
+      },
+      {
+        "attempts": 1,
+        "chain": 2,
+        "fit": 2,
+        "logit": [
+          0.8281387174497382,
+          6.484777846881929,
+          1.2902856280550834
+        ],
+        "negative_log_posterior_logit": -393.0764888376637,
+        "spread": 2.0
+      },
+      {
+        "attempts": 1,
+        "chain": 3,
+        "fit": 2,
+        "logit": [
+          0.7134682799737238,
+          5.598242142656483,
+          1.254539506472968
+        ],
+        "negative_log_posterior_logit": -391.25761684845963,
+        "spread": 2.0
+      }
+    ],
+    "chain_start_max_objective_gap": 25.0,
+    "chain_start_seed_protocol": "PCG64 SeedSequence([0x53544152, seed])",
+    "chain_starts": [
+      [
+        0.252100591915635,
+        3.499749561052478,
+        -0.3623843647938899
+      ],
+      [
+        0.248133438958348,
+        3.493072746516553,
+        -0.3633245204808777
+      ],
+      [
+        0.24966720512206061,
+        3.495427480413397,
+        -0.37048553069532275
+      ],
+      [
+        0.24148513292827342,
+        3.4889279058804172,
+        -0.3753131010685059
+      ]
+    ],
+    "chains": [
+      {
+        "chain": 0,
+        "model_initialization_seed": 636559753,
+        "spawn_key": [
+          0
+        ]
+      },
+      {
+        "chain": 1,
+        "model_initialization_seed": 519633022,
+        "spawn_key": [
+          1
+        ]
+      },
+      {
+        "chain": 2,
+        "model_initialization_seed": 200897581,
+        "spawn_key": [
+          2
+        ]
+      },
+      {
+        "chain": 3,
+        "model_initialization_seed": 57332522,
+        "spawn_key": [
+          3
+        ]
+      }
+    ],
+    "cpu_seconds": 0.377776758,
+    "curvature": {
+      "coordinates": "PyMC Uniform logit/value coordinates",
+      "covariance": [
+        [
+          0.0025912070300068766,
+          0.01905495549216899,
+          -0.00037024827457390473
+        ],
+        [
+          0.019054955492168988,
+          0.8404294213981917,
+          0.007168358456482862
+        ],
+        [
+          -0.00037024827457390457,
+          0.007168358456482862,
+          0.0012995219411306201
+        ]
+      ],
+      "finite_difference_step": 0.01,
+      "hessian": [
+        [
+          518.1439189254888,
+          -13.649152482173577,
+          222.91575110344297
+        ],
+        [
+          -13.649152482173577,
+          1.6081659248357028,
+          -12.759680647036475
+        ],
+        [
+          222.91575110344297,
+          -12.759680647036475,
+          903.4092459171461
+        ]
+      ],
+      "precision_eigenvalue_floor": 1.0056903610770798e-05,
+      "proposal_covariance_eigenvalue_bounds": [
+        1e-06,
+        4.0
+      ],
+      "proposal_covariance_eigenvalues": [
+        0.84092358965767,
+        0.002402218875739547,
+        0.0009943418359195711
+      ],
+      "raw_hessian_eigenvalues": [
+        1.1891686858339747,
+        416.28180100455666,
+        1005.6903610770798
+      ],
+      "regularization_applied": false,
+      "scope": "local regularized proposal geometry; not posterior uncertainty or proof of unimodality"
+    },
+    "curvature_evaluations": 19,
+    "determinism_checks": 2,
+    "fit_start_seed_protocol": "PCG64 SeedSequence([0x464954, seed])",
+    "fits": [
+      {
+        "fit": 0,
+        "function_evaluations": 351,
+        "initial_logit": [
+          1.758710529689702,
+          1.292504891958078,
+          0.7683979469699859
+        ],
+        "initial_parameters": [
+          0.30150586956326536,
+          2.8537125990565944,
+          -0.4502923538386139
+        ],
+        "logit": [
+          0.7436559081720869,
+          5.332595466463077,
+          1.3284515072982723
+        ],
+        "max_function_evaluations": 500,
+        "message": "Optimization terminated successfully.",
+        "negative_log_posterior_logit": -394.9649103638619,
+        "optimizer_success": true
+      },
+      {
+        "fit": 1,
+        "function_evaluations": 380,
+        "initial_logit": [
+          1.4294912220665064,
+          3.1994308022859523,
+          -0.24954086488203922
+        ],
+        "initial_parameters": [
+          0.28625126986486604,
+          3.3824385550007205,
+          -0.6440301561997714
+        ],
+        "logit": [
+          0.7435276744369621,
+          5.330983653538475,
+          1.328478340987843
+        ],
+        "max_function_evaluations": 500,
+        "message": "Optimization terminated successfully.",
+        "negative_log_posterior_logit": -394.9649057028291,
+        "optimizer_success": true
+      },
+      {
+        "fit": 2,
+        "function_evaluations": 341,
+        "initial_logit": [
+          -0.76461585473662,
+          3.6505881631251427,
+          0.7108265472638777
+        ],
+        "initial_parameters": [
+          0.1248228348753711,
+          3.424045445090386,
+          -0.46023882106060554
+        ],
+        "logit": [
+          0.7436685727690628,
+          5.332884811869638,
+          1.3284346216504377
+        ],
+        "max_function_evaluations": 500,
+        "message": "Optimization terminated successfully.",
+        "negative_log_posterior_logit": -394.96491053126226,
+        "optimizer_success": true
+      },
+      {
+        "fit": 3,
+        "function_evaluations": 490,
+        "initial_logit": [
+          1.214329620096963,
+          -1.1175561804408634,
+          -0.9373013670268584
+        ],
+        "initial_parameters": [
+          0.2744511624903627,
+          1.2393946049042475,
+          -0.767657836931507
+        ],
+        "logit": [
+          0.7436377164944453,
+          5.332443391332702,
+          1.3284365697484326
+        ],
+        "max_function_evaluations": 500,
+        "message": "Optimization terminated successfully.",
+        "negative_log_posterior_logit": -394.96491033579383,
+        "optimizer_success": true
+      }
+    ],
+    "kind": "data-fit",
+    "optimization_logit_box": [
+      -12.0,
+      12.0
+    ],
+    "optimizer": "scipy.optimize.minimize Powell; transformed log posterior includes Uniform logit Jacobian",
+    "optimizer_box_limits_sampling_support": false,
+    "optimizer_evaluation_budget": 2000,
+    "optimizer_evaluations": 1562,
+    "proposal": {
+      "S": [
+        [
+          0.0025912070300068766,
+          0.01905495549216899,
+          -0.00037024827457390473
+        ],
+        [
+          0.019054955492168988,
+          0.8404294213981917,
+          0.007168358456482862
+        ],
+        [
+          -0.00037024827457390457,
+          0.007168358456482862,
+          0.0012995219411306201
+        ]
+      ],
+      "S_coordinates": "parameters_interval__",
+      "distribution": "PyMC MultivariateNormalProposal",
+      "initial_scaling": 1.0,
+      "tune": "scaling"
+    },
+    "pymc_chain_rng_protocol": "PyMC 6: default_rng(seed).spawn(chains); child model seed drawn before sampling",
+    "pymc_random_seed": 271402,
+    "scope": "initialization/proposal only; finite multistart search does not establish global mode coverage or posterior correctness",
+    "seed": 271402,
+    "separated_supported_fit_locations": [
+      2
+    ],
+    "start_protocol": "data-only transformed-space MAP fits plus seeded dispersed logit starts; no neural draws",
+    "supported_fit_max_objective_gap": 10.0,
+    "wall_seconds": 0.3799318801611662
+  },
+  "known_curve_levels": [
+    0.15604696096731213,
+    0.16419291962940472,
+    0.16460757814408525,
+    0.13818317088639204,
+    0.18065031285740085,
+    0.1675928911454976,
+    0.21965426088463377
+  ],
+  "known_curve_sha256": "1b0fab1b4589fdfa1b2c0c7aa7637ef0f850682e5487a10f85967c954fe865fe",
+  "likelihood_kind": "forward-pricer-emulator",
+  "observation_sha256": "b6dd9f0c770de54ca4ba770ac09ffac029df76fce791e2de8507c3f9cd4f4132",
+  "observed_prices": [
+    0.005480978128884297,
+    0.007498929373458469,
+    0.01052554106405671,
+    0.014429814769400253,
+    0.020463747012382814,
+    0.01338675266565873,
+    0.008420003101239132,
+    0.005358481903334692,
+    0.0032108860521285454,
+    0.007876022894634896,
+    0.01036503483237197,
+    0.014281216486613861,
+    0.020624271539151022,
+    0.028039215633030096,
+    0.018410693202227286,
+    0.011506336866093363,
+    0.007396012585488057,
+    0.004181998801262704,
+    0.011132245242419918,
+    0.014055715404511449,
+    0.019358196173496066,
+    0.027436007696943432,
+    0.03850172120514876,
+    0.0242610156198396,
+    0.016155073880255676,
+    0.008864235245676316,
+    0.006215930771370679,
+    0.01335502066586072,
+    0.01762933124033176,
+    0.024180157960477924,
+    0.03408618497115524,
+    0.0497947188153919,
+    0.02955981293796009,
+    0.017510790062061205,
+    0.011786231885401333,
+    0.0066436457865384334,
+    0.01573497834279662,
+    0.020718417113341353,
+    0.028895658040621174,
+    0.040694584537387515,
+    0.05827932965349901,
+    0.03487949696808247,
+    0.02106244267118017,
+    0.013243351411540514,
+    0.00833198431253435,
+    0.01863992791568421,
+    0.023472054411182438,
+    0.03397789682002887,
+    0.047013079200486044,
+    0.0729179489933636,
+    0.042279348325980716,
+    0.023824064108774773,
+    0.016306066999710513,
+    0.010683898951228128,
+    0.021136922807855417,
+    0.026991057068589563,
+    0.03730898727221857,
+    0.054701127567389075,
+    0.09082244941608439,
+    0.0480698473731217,
+    0.028208898832592914,
+    0.017617144348207405,
+    0.012558200898028121
+  ],
+  "partial_trace": {
+    "directory": "partial",
+    "sampler_resumable": false,
+    "scope": "draw persistence only; never pool warmup or substitute for convergence checks"
+  },
+  "reference_pricing_source_sha256": null,
+  "sampler": "PyMC DEMetropolisZ; no gradients; native independent chains with explicit cores/context",
+  "scientific_acceptance": false,
+  "settings": {
+    "chains": 4,
+    "checkpoint_every": 100,
+    "cores": 4,
+    "draws": 8000,
+    "fit_budget": 2000,
+    "fit_starts": 4,
+    "initialization": "data-fit",
+    "mp_context": "spawn",
+    "seed": 271402,
+    "tune": 4000
+  },
+  "source_sha256": {
+    "calibration_reference.py": "070f3199645faabe8032132d13c6b1859d053d9b8717334d65ce157f707ef6b8",
+    "pricer_net.py": "e5d8da240c2dc9b242fabfe289e6623d786645acf86d42d7eb96e702c47bd489",
+    "pymc_reference_op.py": "99704310f8a503cad7eee2310da0204d52c213427ad21683834214018f02451b",
+    "reference.py": "fd69a6958026f6addde982f2c8d57461cf549efe75f838956e0d931e12153056",
+    "reference_initialization.py": "0abf68e9862d30bf152dd01e28807ed651d53a12dca4c1286ccb17c52ef0b74f",
+    "variance_functionals.py": "f4b2f1e0764a5cd1d060a661fc2d15a77727a9fa43caa6555362b6ebd69f7e0e"
+  },
+  "split": "validation",
+  "surface_id": "validation:2",
+  "target": "independent Gaussian quote noise around deterministic forward-pricer emulator; approximate price target",
+  "task": {
+    "context": {
+      "contracts": [
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "put",
+          "strike": 0.9452142884010055
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "put",
+          "strike": 0.9586226994567999
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "put",
+          "strike": 0.9722213165740635
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "put",
+          "strike": 0.9860128379357256
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "call",
+          "strike": 1.014185578043342
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "call",
+          "strike": 1.0285723867111078
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "call",
+          "strike": 1.0431632805760247
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "call",
+          "strike": 1.0579611547045846
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "put",
+          "strike": 0.9234100296746439
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "put",
+          "strike": 0.9419892367120802
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "put",
+          "strike": 0.9609422613636284
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "put",
+          "strike": 0.9802766249195318
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "call",
+          "strike": 1.0201202136
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "call",
+          "strike": 1.0406452501953098
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "call",
+          "strike": 1.061583254911065
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "call",
+          "strike": 1.0829425367540593
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "put",
+          "strike": 0.8909472522884108
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "put",
+          "strike": 0.9170415101799084
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "put",
+          "strike": 0.9439000224008953
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "put",
+          "strike": 0.9715451725992442
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "call",
+          "strike": 1.029288218606067
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "call",
+          "strike": 1.0594342369612506
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "call",
+          "strike": 1.0904631784921235
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "call",
+          "strike": 1.1224009024456676
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "put",
+          "strike": 0.8493369300745177
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "put",
+          "strike": 0.8847284766100544
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "put",
+          "strike": 0.9215947754162442
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "put",
+          "strike": 0.9599972788587706
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "call",
+          "strike": 1.041669619302238
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "call",
+          "strike": 1.0850755957772693
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "call",
+          "strike": 1.1302902827674572
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "call",
+          "strike": 1.177389048551396
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "put",
+          "strike": 0.8187307530779818
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "put",
+          "strike": 0.8607079764250578
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "put",
+          "strike": 0.9048374180359595
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "put",
+          "strike": 0.951229424500714
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "call",
+          "strike": 1.0512710963760241
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "call",
+          "strike": 1.1051709180756477
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "call",
+          "strike": 1.161834242728283
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "call",
+          "strike": 1.2214027581601699
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "put",
+          "strike": 0.7536383164437648
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "put",
+          "strike": 0.808857893484718
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "put",
+          "strike": 0.8681234453945849
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "put",
+          "strike": 0.9317314234233945
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "call",
+          "strike": 1.073270660257192
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "call",
+          "strike": 1.151909910168909
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "call",
+          "strike": 1.2363111098437878
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "call",
+          "strike": 1.3268964411453439
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "put",
+          "strike": 0.6703200460356393
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "put",
+          "strike": 0.7408182206817179
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "put",
+          "strike": 0.8187307530779818
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "put",
+          "strike": 0.9048374180359595
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "call",
+          "strike": 1.1051709180756477
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "call",
+          "strike": 1.2214027581601699
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "call",
+          "strike": 1.3498588075760032
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "call",
+          "strike": 1.4918246976412703
+        }
+      ],
+      "dividend": 0.0,
+      "quote_noise_std": [
+        7.393122257748389e-05,
+        0.00014734934969936199,
+        0.00021842402110031601,
+        0.0002338836145277794,
+        0.00016856715907419804,
+        0.00023720138879472198,
+        0.00022466491669818916,
+        0.00015370943102313063,
+        7.82163616067961e-05,
+        0.00010333131487679448,
+        0.00020654717174897207,
+        0.00030707070665308804,
+        0.0003297651437400239,
+        0.00023836631390862972,
+        0.0003364000888699078,
+        0.0003195516723526538,
+        0.00021926701887794902,
+        0.0001119018762588081,
+        0.0001470535520785712,
+        0.0002952606968936182,
+        0.00044092792100661605,
+        0.0004756382639001542,
+        0.00034535022356236905,
+        0.0004895688613506721,
+        0.0004671341355465552,
+        0.0003219709180184147,
+        0.00016505303956082854,
+        0.0002029661289650328,
+        0.0004099682159446388,
+        0.0006158977907659265,
+        0.0006683659690345338,
+        0.00048819551274953464,
+        0.0006962165245187742,
+        0.0006682956622532423,
+        0.00046338309072573556,
+        0.00023897009747029984,
+        0.0002439600928959136,
+        0.0004950371278750658,
+        0.0007471169572237573,
+        0.0008144916556710369,
+        0.0005976658711421461,
+        0.0008562515358464142,
+        0.0008256919335248641,
+        0.0005751510865871115,
+        0.0002979735303440804,
+        0.00033059924189120005,
+        0.0006778258107718836,
+        0.0010336325808796537,
+        0.0011385746299607095,
+        0.0008441713068195146,
+        0.0012219987448500187,
+        0.0011906516133887396,
+        0.0008380035803961523,
+        0.00043867095751078236,
+        0.00043983595980427227,
+        0.0009150968861055087,
+        0.0014160391507115786,
+        0.0015828168637360485,
+        0.0011908576424310355,
+        0.0017492831664407858,
+        0.001729554124341907,
+        0.001235251591494895,
+        0.000656158147746766
+      ],
+      "rate": 0.0,
+      "spot": 1.0
+    },
+    "context_prior": {
+      "forward_variance": {
+        "level_bounds": [
+          0.1,
+          0.4
+        ],
+        "log_perturbation": 0.2,
+        "slope_bounds": [
+          -0.3,
+          0.6
+        ]
+      }
+    },
+    "fixed_parameters": {},
+    "measure": "Q",
+    "model": "rough",
+    "model_context": {
+      "forward_variance_knots": [
+        0.0,
+        0.01984126984126984,
+        0.03968253968253968,
+        0.08333333333333333,
+        0.16666666666666666,
+        0.25,
+        0.5,
+        1.0
+      ]
+    },
+    "numerics": {
+      "blocks": [
+        {
+          "horizon": 0.03968253968253968,
+          "n_steps": 80
+        },
+        {
+          "horizon": 0.25,
+          "n_steps": 504
+        },
+        {
+          "horizon": 1.0,
+          "n_steps": 504
+        }
+      ],
+      "max_mc_se_over_quote_sigma": 0.25,
+      "max_mc_se_over_quote_sigma_last_rung": 0.5,
+      "method": "hybrid",
+      "paths_ladder": [
+        32768,
+        65536,
+        131072,
+        262144,
+        524288,
+        1048576,
+        2097152
+      ]
+    },
+    "parameter_names": [
+      "hurst",
+      "eta",
+      "rho"
+    ],
+    "prior_bounds": [
+      [
+        0.02,
+        0.35
+      ],
+      [
+        0.5,
+        3.5
+      ],
+      [
+        -0.99,
+        -0.2
+      ]
+    ],
+    "task_id": "rough_calibration_v1"
+  },
+  "task_fingerprint": "c99b0dd131896d89d8483a1668a3fde0fb7a0f28794c3db7fe14635cbbd52b65",
+  "versions": {
+    "arviz-stats": "1.3.3",
+    "numpy": "2.5.3",
+    "pymc": "6.3.2",
+    "pytensor": "3.3.4",
+    "python": "3.12.16",
+    "scipy": "1.18.1"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "state": "submission_attempted",
+  "utc": "2026-10-28T17:34:19.160189+00:00",
+  "plan_sha256": "e27ba12801a81701fbf2f92d24c66bd07cc04eb426176b386724b4ad926f135b",
+  "driver_sha256": "79e82e0c3e23cdc1018a9c2c9fc6ed207e81c726473122059d3f2fa75831d36a",
+  "argv": [
+    "sbatch",
+    "--parsable",
+    "--nodes=1",
+    "--ntasks=1",
+    "--no-requeue",
+    "--account=default",
+    "--partition=gpu-debug",
+    "--qos=gpu-debug",
+    "--cpus-per-task=4",
+    "--gres=gpu:l40s:1",
+    "--mem=32G",
+    "--time=00:10:00",
+    "--job-name=sbi4f-pricer-full300",
+    "--chdir=/oscar/scratch/afengler/sbi4finance-training-recovery-v2-20261028/repo",
+    "--output=/oscar/scratch/afengler/sbi4finance-independent-work-20261028/known100k-pricer-full300/logs/pricer-%A.out",
+    "--wrap=env PYTHONPATH=/oscar/scratch/afengler/sbi4finance-training-recovery-v2-20261028/repo/src KERAS_BACKEND=jax JAX_PLATFORMS=cuda,cpu XLA_PYTHON_CLIENT_PREALLOCATE=false OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 MPLCONFIGDIR=/oscar/scratch/afengler/sbi4finance-independent-work-20261028/known100k-pricer-full300/cache/mpl XDG_CACHE_HOME=/oscar/scratch/afengler/sbi4finance-independent-work-20261028/known100k-pricer-full300/cache /oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/bin/python3.12 /oscar/scratch/afengler/sbi4finance-training-recovery-v2-20261028/repo/scripts/train_full_surface_pricer.py --bank /oscar/scratch/afengler/sbi4finance-rough-known-backbone-20261027/snapshot-100k --out /oscar/scratch/afengler/sbi4finance-independent-work-20261028/known100k-pricer-full300/pricer --widths 256,256,256,256 --epochs 300 --batch-size 256 --learning-rate 0.001 --patience 300 --seed 0"
+  ],
+  "automatic_retry": false
+}

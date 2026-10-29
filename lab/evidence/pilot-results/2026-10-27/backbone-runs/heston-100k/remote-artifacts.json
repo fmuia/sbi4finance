@@ -1,0 +1,202 @@
+{
+  "small_files": {
+    "comparison-0.log": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/comparison-0.log",
+      "bytes": 1015,
+      "sha256": "d14a75723d6bbebec86c7d0a51638a94d07fa4eee6b185049affc61896ae7f2a"
+    },
+    "comparison-1.log": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/comparison-1.log",
+      "bytes": 1014,
+      "sha256": "7ac8b5a1aadc2371d87c06871aad8ee163bea2f90829e9faf4fb70d7a07a6206"
+    },
+    "comparison-2.log": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/comparison-2.log",
+      "bytes": 1015,
+      "sha256": "f721a05e2306aca602b36a950e943c3c19de343415d3dceb55b20998b1efa9bf"
+    },
+    "environment.log": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/environment.log",
+      "bytes": 770,
+      "sha256": "89446a25c57f2fb014b37c4cce54b4df976d818a6e849d32d1f278706e7e693a"
+    },
+    "run.json": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/run.json",
+      "bytes": 20816,
+      "sha256": "94afb52d293abfa49f536d73c7fc017f373c4b355c4819d6bbc4113035723c0d"
+    },
+    "training.log": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/training.log",
+      "bytes": 2619,
+      "sha256": "2f6b9ef57485118e5c90876bb68a96c3f158d85d6156e69a3cc3ccb8d6a7c503"
+    },
+    "validation.log": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/validation.log",
+      "bytes": 1833,
+      "sha256": "e3943effc1f6f22943df9a49694df130bfd65e5635896aeb4ca6e897cb54136f"
+    },
+    "checkpoint/resume.json": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/resume.json",
+      "bytes": 25672,
+      "sha256": "47d1412664dc77cd0476cdbfd6be53271400eadc383035c7bf635a04731fe51e"
+    },
+    "checkpoint/run-contract.json": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/run-contract.json",
+      "bytes": 4518,
+      "sha256": "2cb9eb3b3e659ebc797f38def51b16508a2650036cdb377ffa238ae30fa742f7"
+    },
+    "checkpoint/task.json": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/task.json",
+      "bytes": 10197,
+      "sha256": "5e499526ff8f29a72f49785a1a36006b1d769d26bca8a6f83f7a8c8ac4d431fa"
+    },
+    "checkpoint/training.json": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/training.json",
+      "bytes": 32416,
+      "sha256": "a3de032a681a3e89f895dca48cdc4c573f4d1768f3b217e30649742da80f46b2"
+    },
+    "comparisons/case-0/comparison.json": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/comparisons/case-0/comparison.json",
+      "bytes": 23578,
+      "sha256": "be810cc9498a1e869b03346fffc113e3616de14c5774e1932b6f33a8ae23247a"
+    },
+    "comparisons/case-1/comparison.json": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/comparisons/case-1/comparison.json",
+      "bytes": 23618,
+      "sha256": "98de8001209c27e668859cbe9beec4a8e7d94c0f4f1e64c35f06bbd0f1963263"
+    },
+    "comparisons/case-2/comparison.json": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/comparisons/case-2/comparison.json",
+      "bytes": 23580,
+      "sha256": "624e8dd8bd8bd08ad63b30a2212fd48734c06711747fd8523a42600aea3b32b6"
+    },
+    "slurm-8030120.out": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/logs/heston-100k-8030120.out",
+      "bytes": 3075,
+      "sha256": "8450207eb6862486c5c98f9668ef9f14fc9c830090b50d3325c2bc8f84d0a60b"
+    }
+  },
+  "large_files_not_downloaded": {
+    "checkpoint/model.keras": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/model.keras",
+      "bytes": 12246485,
+      "sha256": "7f037dee0fde78cd5a33f1107e13031ff01fdcb5481dab76fc6c8f7d07598f39"
+    },
+    "checkpoint/.resume/epoch-000050-u0ywfsnw/best.keras": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/.resume/epoch-000050-u0ywfsnw/best.keras",
+      "bytes": 12246485,
+      "sha256": "c5ef27a44553aa8a521082e12bcf56f01da621db1fe51f16b5893e75fd032568"
+    },
+    "checkpoint/.resume/epoch-000050-u0ywfsnw/last.keras": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/.resume/epoch-000050-u0ywfsnw/last.keras",
+      "bytes": 12246485,
+      "sha256": "836789c68ba4b2dbc3de2f157c02c5fd1cdd2c23eed649ae0d8e62541748e9fd"
+    },
+    "checkpoint/.resume/epoch-000100-3uqvji4c/best.keras": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/.resume/epoch-000100-3uqvji4c/best.keras",
+      "bytes": 12246485,
+      "sha256": "67f07c5bd49dfb86d0f189f728e30ee92ca0bab927bc8c51ece4d6f99a67e565"
+    },
+    "checkpoint/.resume/epoch-000100-3uqvji4c/last.keras": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/.resume/epoch-000100-3uqvji4c/last.keras",
+      "bytes": 12246485,
+      "sha256": "60b5a7b41f2ffbd8eef11e2f2f3b7742f91a82309cc17fb9dda1c54b8e89b37e"
+    },
+    "checkpoint/.resume/epoch-000150-asm5b45a/best.keras": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/.resume/epoch-000150-asm5b45a/best.keras",
+      "bytes": 12246485,
+      "sha256": "7d4801325030fcb05b4e9eadf98a682edb67a80ff18679f980fac78259bad49c"
+    },
+    "checkpoint/.resume/epoch-000150-asm5b45a/last.keras": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/.resume/epoch-000150-asm5b45a/last.keras",
+      "bytes": 12246485,
+      "sha256": "8661e4571d76081ab8809cd14a6656046e56bee0e98a584ff60d60dddf2a70b3"
+    },
+    "checkpoint/.resume/epoch-000200-djp081v_/best.keras": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/.resume/epoch-000200-djp081v_/best.keras",
+      "bytes": 12246485,
+      "sha256": "57d0ffca652ea37d9fc4ca579e29944b9b380b2fae52bf3fd7c244edd60fab2f"
+    },
+    "checkpoint/.resume/epoch-000200-djp081v_/last.keras": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/.resume/epoch-000200-djp081v_/last.keras",
+      "bytes": 12246485,
+      "sha256": "cf22422f25f9730feecd933e465e37d80675553b063da344b97104dbe23f6d8d"
+    },
+    "checkpoint/.resume/epoch-000250-ixp5rpeg/best.keras": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/.resume/epoch-000250-ixp5rpeg/best.keras",
+      "bytes": 12246485,
+      "sha256": "8d97530dc8ef0dc2fbe2aae99286569462cf3fbba6e1249e1bf9806cd821e5f6"
+    },
+    "checkpoint/.resume/epoch-000250-ixp5rpeg/last.keras": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/.resume/epoch-000250-ixp5rpeg/last.keras",
+      "bytes": 12246485,
+      "sha256": "04064ed5d9bd4c2dbf1eb460163c0e6e353af4385310bce77b4276d4df4baa37"
+    },
+    "checkpoint/.resume/epoch-000300-jtrhh66k/best.keras": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/.resume/epoch-000300-jtrhh66k/best.keras",
+      "bytes": 12246485,
+      "sha256": "03226d810db57830ce78e98cfe8971aad73618ad30edeaec5ef7a9a3ee8bcb53"
+    },
+    "checkpoint/.resume/epoch-000300-jtrhh66k/last.keras": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/.resume/epoch-000300-jtrhh66k/last.keras",
+      "bytes": 12246485,
+      "sha256": "dbfb720db9db153a52d548987d70ebe17628cead5a724c1ec7abf49d1b2d4cea"
+    },
+    "checkpoint/.resume/epoch-000350-77j1izya/best.keras": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/.resume/epoch-000350-77j1izya/best.keras",
+      "bytes": 12246485,
+      "sha256": "03226d810db57830ce78e98cfe8971aad73618ad30edeaec5ef7a9a3ee8bcb53"
+    },
+    "checkpoint/.resume/epoch-000350-77j1izya/last.keras": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/.resume/epoch-000350-77j1izya/last.keras",
+      "bytes": 12246485,
+      "sha256": "1db0eeb127f6ec14f3c9612f47038434f769dea68f55668cffb508501dbbe77f"
+    },
+    "checkpoint/.resume/epoch-000400-vz4ngxf3/best.keras": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/.resume/epoch-000400-vz4ngxf3/best.keras",
+      "bytes": 12246485,
+      "sha256": "03226d810db57830ce78e98cfe8971aad73618ad30edeaec5ef7a9a3ee8bcb53"
+    },
+    "checkpoint/.resume/epoch-000400-vz4ngxf3/last.keras": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/.resume/epoch-000400-vz4ngxf3/last.keras",
+      "bytes": 12246485,
+      "sha256": "0c75057e7af948b73035099acbfb09da1aaaebb52ad20747d157417f478449d7"
+    },
+    "checkpoint/.resume/epoch-000450-xtcvo6p4/best.keras": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/.resume/epoch-000450-xtcvo6p4/best.keras",
+      "bytes": 12246485,
+      "sha256": "7f037dee0fde78cd5a33f1107e13031ff01fdcb5481dab76fc6c8f7d07598f39"
+    },
+    "checkpoint/.resume/epoch-000450-xtcvo6p4/last.keras": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/.resume/epoch-000450-xtcvo6p4/last.keras",
+      "bytes": 12246485,
+      "sha256": "173d7a274ff8943adb747f7c749a87de350a642a27268dd805e8b2d991c5dded"
+    },
+    "checkpoint/.resume/epoch-000500-_3f420vs/best.keras": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/.resume/epoch-000500-_3f420vs/best.keras",
+      "bytes": 12246485,
+      "sha256": "7f037dee0fde78cd5a33f1107e13031ff01fdcb5481dab76fc6c8f7d07598f39"
+    },
+    "checkpoint/.resume/epoch-000500-_3f420vs/last.keras": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/.resume/epoch-000500-_3f420vs/last.keras",
+      "bytes": 12246485,
+      "sha256": "8d4a243ba099524cf4cda40e4f0616e895879f053829a7f60dadbe65b98301db"
+    },
+    "comparisons/case-0/neural_draws.npz": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/comparisons/case-0/neural_draws.npz",
+      "bytes": 150122,
+      "sha256": "ddf7543775607d06b2a1a3bc32533dc4877cd65578c9ca73c4a4f9ba039ec6a0"
+    },
+    "comparisons/case-1/neural_draws.npz": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/comparisons/case-1/neural_draws.npz",
+      "bytes": 151745,
+      "sha256": "7e7b38f8b8f05fcd7095654ca5721d1d34264654dcac3cd374e71787c69c89ed"
+    },
+    "comparisons/case-2/neural_draws.npz": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/comparisons/case-2/neural_draws.npz",
+      "bytes": 146150,
+      "sha256": "e80297a8d72d4a548f1d7896b456f0107c40f0f4a92931423edbcbd3ca693de4"
+    }
+  },
+  "scope": "Original100k jobfailed only at900-second validation deadline; selected checkpoint and three conditional comparisons retained. No model or draw payloads transferred."
+}

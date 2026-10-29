@@ -1,0 +1,149 @@
+{
+  "scope": "Posthoc selected worstquote pointwise t7 intervals, notsimultaneous bands. NegativeMCvariance-subtractedMSE means samplingprecision cannotresolve smallerror, notnegativephysicalMSE.",
+  "points": [
+    {
+      "case": 0,
+      "role": "truth",
+      "largest_grid_shift": {
+        "mean": -0.2745668268539705,
+        "mcse": 0.21014624913166358,
+        "pointwise_t95_lower": -0.7714837439319613,
+        "pointwise_t95_upper": 0.22235009022402025,
+        "degrees_of_freedom": 7,
+        "quote_index": 0
+      },
+      "largest_emulator_error_by_grid": [
+        {
+          "grid": 0,
+          "quote_index": 26,
+          "mean": -0.5877608046015261,
+          "lower": -0.7090707173891596,
+          "upper": -0.46645089181389265
+        },
+        {
+          "grid": 1,
+          "quote_index": 26,
+          "mean": -0.513349286153086,
+          "lower": -0.7044225461498648,
+          "upper": -0.32227602615630707
+        }
+      ],
+      "rms_external_mcse_by_grid": [
+        0.0740094459112269,
+        0.06524884911133826
+      ],
+      "mse_minus_external_mean_variance": [
+        0.028194583522858585,
+        0.020260028147319982
+      ]
+    },
+    {
+      "case": 0,
+      "role": "neural_mean",
+      "largest_grid_shift": {
+        "mean": -0.21430148709197877,
+        "mcse": 0.15191053379381772,
+        "pointwise_t95_lower": -0.5735128193732453,
+        "pointwise_t95_upper": 0.1449098451892878,
+        "degrees_of_freedom": 7,
+        "quote_index": 0
+      },
+      "largest_emulator_error_by_grid": [
+        {
+          "grid": 0,
+          "quote_index": 26,
+          "mean": -0.24547614200322032,
+          "lower": -0.3319676478878482,
+          "upper": -0.15898463611859243
+        },
+        {
+          "grid": 1,
+          "quote_index": 26,
+          "mean": -0.23193309078406532,
+          "lower": -0.3869336445533974,
+          "upper": -0.07693253701473321
+        }
+      ],
+      "rms_external_mcse_by_grid": [
+        0.06215849437425198,
+        0.05619297519079975
+      ],
+      "mse_minus_external_mean_variance": [
+        0.005072112738482102,
+        0.005023562141884926
+      ]
+    },
+    {
+      "case": 2,
+      "role": "truth",
+      "largest_grid_shift": {
+        "mean": -0.03270188961084171,
+        "mcse": 0.007394519206577893,
+        "pointwise_t95_lower": -0.050187149055584426,
+        "pointwise_t95_upper": -0.01521663016609899,
+        "degrees_of_freedom": 7,
+        "quote_index": 50
+      },
+      "largest_emulator_error_by_grid": [
+        {
+          "grid": 0,
+          "quote_index": 36,
+          "mean": -0.15556360862523366,
+          "lower": -0.4168038954060888,
+          "upper": 0.10567667815562148
+        },
+        {
+          "grid": 1,
+          "quote_index": 36,
+          "mean": -0.16069838272957782,
+          "lower": -0.43856986812441534,
+          "upper": 0.11717310266525971
+        }
+      ],
+      "rms_external_mcse_by_grid": [
+        0.04337553371058129,
+        0.045203629876287565
+      ],
+      "mse_minus_external_mean_variance": [
+        -0.0004241112774464302,
+        -0.00021274318057261767
+      ]
+    },
+    {
+      "case": 2,
+      "role": "neural_mean",
+      "largest_grid_shift": {
+        "mean": -0.03268916877205889,
+        "mcse": 0.007481618156610682,
+        "pointwise_t95_lower": -0.0503803845063374,
+        "pointwise_t95_upper": -0.01499795303778037,
+        "degrees_of_freedom": 7,
+        "quote_index": 50
+      },
+      "largest_emulator_error_by_grid": [
+        {
+          "grid": 0,
+          "quote_index": 36,
+          "mean": -0.16546204930047548,
+          "lower": -0.4289604572399747,
+          "upper": 0.09803635863902377
+        },
+        {
+          "grid": 1,
+          "quote_index": 36,
+          "mean": -0.1693069892373522,
+          "lower": -0.44922267425615786,
+          "upper": 0.11060869578145344
+        }
+      ],
+      "rms_external_mcse_by_grid": [
+        0.0437838119471533,
+        0.045646700332993013
+      ],
+      "mse_minus_external_mean_variance": [
+        -0.0005287037274576355,
+        -0.00034649186777375215
+      ]
+    }
+  ]
+}

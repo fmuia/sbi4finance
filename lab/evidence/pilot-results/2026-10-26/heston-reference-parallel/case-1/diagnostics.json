@@ -1,0 +1,57 @@
+{
+  "elapsed_seconds": 511.54878486320376,
+  "limitations": "Also assess numerical-price refinement, products and reference uncertainty.",
+  "mcmc_diagnostics_passed": false,
+  "parameters": {
+    "parameters[initial_variance]": {
+      "ess_bulk": 33.372863854162986,
+      "ess_tail": 16.61793870871051,
+      "eti89_lb": 0.022180007933460116,
+      "eti89_ub": 0.024815373927093754,
+      "mcse_mean": 0.0001791793981413746,
+      "mcse_sd": 0.0002135300800684788,
+      "mean": 0.024009650940790613,
+      "r_hat": 1.104708872332743,
+      "sd": 0.0007599378196320622
+    },
+    "parameters[rho]": {
+      "ess_bulk": 77.6153474909042,
+      "ess_tail": 12.922937371600952,
+      "eti89_lb": -0.5796404731103186,
+      "eti89_ub": -0.21827562963934288,
+      "mcse_mean": 0.03322951967050232,
+      "mcse_sd": 0.06505196352200872,
+      "mean": -0.27644878039516835,
+      "r_hat": 1.1905659524597916,
+      "sd": 0.1555002431256099
+    },
+    "parameters[theta]": {
+      "ess_bulk": 11.980574004412063,
+      "ess_tail": 9.487643977248586,
+      "eti89_lb": 0.07617776920825158,
+      "eti89_ub": 0.09098581533729759,
+      "mcse_mean": 0.001385646552956304,
+      "mcse_sd": 0.0015090436493371629,
+      "mean": 0.08733229868677514,
+      "r_hat": 1.2419310352358788,
+      "sd": 0.004356927809602632
+    },
+    "parameters[vol_of_vol]": {
+      "ess_bulk": 8.397971512363817,
+      "ess_tail": 9.480975662394638,
+      "eti89_lb": 0.5471251426487737,
+      "eti89_ub": 1.4926023575084848,
+      "mcse_mean": 0.07682469970826199,
+      "mcse_sd": 0.09043507053710573,
+      "mean": 1.3797439128037767,
+      "r_hat": 1.3994496766733548,
+      "sd": 0.24000325174836712
+    }
+  },
+  "requirements": {
+    "ess_bulk_min": 400,
+    "ess_tail_min": 400,
+    "r_hat_max": 1.01
+  },
+  "scientific_acceptance": "not_assessed"
+}

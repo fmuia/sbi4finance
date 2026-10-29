@@ -1,0 +1,4 @@
+JobIDRaw|State|ElapsedRaw|AllocCPUS|AllocTRES|ExitCode
+8032275|COMPLETED|975|4|billing=110,cpu=4,gres/gpu=1,mem=24G,node=1|0:0
+8032275.batch|COMPLETED|975|4|cpu=4,gres/gpu=1,mem=24G,node=1|0:0
+8032275.extern|COMPLETED|975|4|billing=110,cpu=4,gres/gpu=1,mem=24G,node=1|0:0

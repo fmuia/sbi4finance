@@ -1,0 +1,69 @@
+INFO:bayesflow:Using backend 'jax'
+INFO:bayesflow:Fitting on dataset instance of OfflineDataset.
+INFO:bayesflow:Building on a test batch.
+INFO:bayesflow:Training completed in 1.08 minutes.
+epoch 50/1000: best validation loss -5.9957
+INFO:bayesflow:Fitting on dataset instance of OfflineDataset.
+INFO:bayesflow:Training completed in 18.61 seconds.
+epoch 100/1000: best validation loss -6.4282
+INFO:bayesflow:Fitting on dataset instance of OfflineDataset.
+INFO:bayesflow:Training completed in 18.08 seconds.
+epoch 150/1000: best validation loss -6.6302
+INFO:bayesflow:Fitting on dataset instance of OfflineDataset.
+INFO:bayesflow:Training completed in 18.11 seconds.
+epoch 200/1000: best validation loss -6.6897
+INFO:bayesflow:Fitting on dataset instance of OfflineDataset.
+INFO:bayesflow:Training completed in 17.79 seconds.
+epoch 250/1000: best validation loss -6.7814
+INFO:bayesflow:Fitting on dataset instance of OfflineDataset.
+INFO:bayesflow:Training completed in 17.29 seconds.
+epoch 300/1000: best validation loss -6.7966
+INFO:bayesflow:Fitting on dataset instance of OfflineDataset.
+INFO:bayesflow:Training completed in 17.24 seconds.
+epoch 350/1000: best validation loss -6.8397
+INFO:bayesflow:Fitting on dataset instance of OfflineDataset.
+INFO:bayesflow:Training completed in 17.30 seconds.
+epoch 400/1000: best validation loss -6.8439
+INFO:bayesflow:Fitting on dataset instance of OfflineDataset.
+INFO:bayesflow:Training completed in 17.26 seconds.
+epoch 450/1000: best validation loss -6.8595
+INFO:bayesflow:Fitting on dataset instance of OfflineDataset.
+INFO:bayesflow:Training completed in 17.14 seconds.
+epoch 500/1000: best validation loss -6.8755
+INFO:bayesflow:Fitting on dataset instance of OfflineDataset.
+INFO:bayesflow:Training completed in 17.44 seconds.
+epoch 550/1000: best validation loss -6.8755
+INFO:bayesflow:Fitting on dataset instance of OfflineDataset.
+INFO:bayesflow:Training completed in 19.08 seconds.
+epoch 600/1000: best validation loss -6.8755
+INFO:bayesflow:Fitting on dataset instance of OfflineDataset.
+INFO:bayesflow:Training completed in 19.19 seconds.
+epoch 650/1000: best validation loss -6.8755
+INFO:bayesflow:Fitting on dataset instance of OfflineDataset.
+INFO:bayesflow:Training completed in 18.31 seconds.
+epoch 700/1000: best validation loss -6.8755
+INFO:bayesflow:Fitting on dataset instance of OfflineDataset.
+INFO:bayesflow:Training completed in 17.23 seconds.
+epoch 750/1000: best validation loss -6.8755
+INFO:bayesflow:Fitting on dataset instance of OfflineDataset.
+INFO:bayesflow:Training completed in 17.04 seconds.
+epoch 800/1000: best validation loss -6.8755
+INFO:bayesflow:Fitting on dataset instance of OfflineDataset.
+INFO:bayesflow:Training completed in 17.07 seconds.
+epoch 850/1000: best validation loss -6.8755
+INFO:bayesflow:Fitting on dataset instance of OfflineDataset.
+INFO:bayesflow:Training completed in 17.20 seconds.
+epoch 900/1000: best validation loss -6.8755
+INFO:bayesflow:Fitting on dataset instance of OfflineDataset.
+INFO:bayesflow:Training completed in 17.05 seconds.
+epoch 950/1000: best validation loss -6.8755
+INFO:bayesflow:Fitting on dataset instance of OfflineDataset.
+INFO:bayesflow:Training completed in 16.87 seconds.
+epoch 1000/1000: best validation loss -6.8755
+INFO:bayesflow:Estimator restored from '/oscar/scratch/afengler/sbi4finance-followup-20261027-f4d3679/runs/heston-spline-1000/checkpoint/model.keras'.
+INFO:bayesflow:Estimator restored from '/oscar/scratch/afengler/sbi4finance-followup-20261027-f4d3679/runs/heston-spline-1000/checkpoint/model.keras'.
+/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/lib/python3.12/site-packages/keras/src/backend/jax/core.py:401: UserWarning: Explicitly requested dtype float64 requested in asarray is not available, and will be truncated to dtype float32. To enable more dtypes, set the jax_enable_x64 configuration option or the JAX_ENABLE_X64 shell environment variable. See https://github.com/jax-ml/jax#current-gotchas for more.
+  return jnp.asarray(x, dtype=dtype)
+INFO:bayesflow:Sampling completed in 6.00 seconds.
+INFO:bayesflow:Sampling completed in 0.18 seconds.
+{"selected_epoch": 472, "reload_exact": true, "scientific_validation": false}

@@ -1,0 +1,1016 @@
+{
+  "collection": {
+    "manifest_sha256": "8f9c4a5e6b3bebaa25215f720df02aee178b78bfce8483f0024679ffc869df1e",
+    "path": "../collection"
+  },
+  "collection_id": "402230db66b9885b59524e7808eebf1b3882c4a271f97eccc7cf970581e85221",
+  "conditioning_cutoff_years": 0.0,
+  "configuration": {
+    "root_seed": 271028,
+    "splits": {
+      "test": 5000,
+      "train": 20000,
+      "validation": 5000
+    },
+    "task": {
+      "context": {
+        "contracts": [
+          {
+            "maturity": 0.01984126984126984,
+            "option_type": "put",
+            "strike": 0.9452142884010055
+          },
+          {
+            "maturity": 0.01984126984126984,
+            "option_type": "put",
+            "strike": 0.9586226994567999
+          },
+          {
+            "maturity": 0.01984126984126984,
+            "option_type": "put",
+            "strike": 0.9722213165740635
+          },
+          {
+            "maturity": 0.01984126984126984,
+            "option_type": "put",
+            "strike": 0.9860128379357256
+          },
+          {
+            "maturity": 0.01984126984126984,
+            "option_type": "put",
+            "strike": 1.0
+          },
+          {
+            "maturity": 0.01984126984126984,
+            "option_type": "call",
+            "strike": 1.014185578043342
+          },
+          {
+            "maturity": 0.01984126984126984,
+            "option_type": "call",
+            "strike": 1.0285723867111078
+          },
+          {
+            "maturity": 0.01984126984126984,
+            "option_type": "call",
+            "strike": 1.0431632805760247
+          },
+          {
+            "maturity": 0.01984126984126984,
+            "option_type": "call",
+            "strike": 1.0579611547045846
+          },
+          {
+            "maturity": 0.03968253968253968,
+            "option_type": "put",
+            "strike": 0.9234100296746439
+          },
+          {
+            "maturity": 0.03968253968253968,
+            "option_type": "put",
+            "strike": 0.9419892367120802
+          },
+          {
+            "maturity": 0.03968253968253968,
+            "option_type": "put",
+            "strike": 0.9609422613636284
+          },
+          {
+            "maturity": 0.03968253968253968,
+            "option_type": "put",
+            "strike": 0.9802766249195318
+          },
+          {
+            "maturity": 0.03968253968253968,
+            "option_type": "put",
+            "strike": 1.0
+          },
+          {
+            "maturity": 0.03968253968253968,
+            "option_type": "call",
+            "strike": 1.0201202136
+          },
+          {
+            "maturity": 0.03968253968253968,
+            "option_type": "call",
+            "strike": 1.0406452501953098
+          },
+          {
+            "maturity": 0.03968253968253968,
+            "option_type": "call",
+            "strike": 1.061583254911065
+          },
+          {
+            "maturity": 0.03968253968253968,
+            "option_type": "call",
+            "strike": 1.0829425367540593
+          },
+          {
+            "maturity": 0.08333333333333333,
+            "option_type": "put",
+            "strike": 0.8909472522884108
+          },
+          {
+            "maturity": 0.08333333333333333,
+            "option_type": "put",
+            "strike": 0.9170415101799084
+          },
+          {
+            "maturity": 0.08333333333333333,
+            "option_type": "put",
+            "strike": 0.9439000224008953
+          },
+          {
+            "maturity": 0.08333333333333333,
+            "option_type": "put",
+            "strike": 0.9715451725992442
+          },
+          {
+            "maturity": 0.08333333333333333,
+            "option_type": "put",
+            "strike": 1.0
+          },
+          {
+            "maturity": 0.08333333333333333,
+            "option_type": "call",
+            "strike": 1.029288218606067
+          },
+          {
+            "maturity": 0.08333333333333333,
+            "option_type": "call",
+            "strike": 1.0594342369612506
+          },
+          {
+            "maturity": 0.08333333333333333,
+            "option_type": "call",
+            "strike": 1.0904631784921235
+          },
+          {
+            "maturity": 0.08333333333333333,
+            "option_type": "call",
+            "strike": 1.1224009024456676
+          },
+          {
+            "maturity": 0.16666666666666666,
+            "option_type": "put",
+            "strike": 0.8493369300745177
+          },
+          {
+            "maturity": 0.16666666666666666,
+            "option_type": "put",
+            "strike": 0.8847284766100544
+          },
+          {
+            "maturity": 0.16666666666666666,
+            "option_type": "put",
+            "strike": 0.9215947754162442
+          },
+          {
+            "maturity": 0.16666666666666666,
+            "option_type": "put",
+            "strike": 0.9599972788587706
+          },
+          {
+            "maturity": 0.16666666666666666,
+            "option_type": "put",
+            "strike": 1.0
+          },
+          {
+            "maturity": 0.16666666666666666,
+            "option_type": "call",
+            "strike": 1.041669619302238
+          },
+          {
+            "maturity": 0.16666666666666666,
+            "option_type": "call",
+            "strike": 1.0850755957772693
+          },
+          {
+            "maturity": 0.16666666666666666,
+            "option_type": "call",
+            "strike": 1.1302902827674572
+          },
+          {
+            "maturity": 0.16666666666666666,
+            "option_type": "call",
+            "strike": 1.177389048551396
+          },
+          {
+            "maturity": 0.25,
+            "option_type": "put",
+            "strike": 0.8187307530779818
+          },
+          {
+            "maturity": 0.25,
+            "option_type": "put",
+            "strike": 0.8607079764250578
+          },
+          {
+            "maturity": 0.25,
+            "option_type": "put",
+            "strike": 0.9048374180359595
+          },
+          {
+            "maturity": 0.25,
+            "option_type": "put",
+            "strike": 0.951229424500714
+          },
+          {
+            "maturity": 0.25,
+            "option_type": "put",
+            "strike": 1.0
+          },
+          {
+            "maturity": 0.25,
+            "option_type": "call",
+            "strike": 1.0512710963760241
+          },
+          {
+            "maturity": 0.25,
+            "option_type": "call",
+            "strike": 1.1051709180756477
+          },
+          {
+            "maturity": 0.25,
+            "option_type": "call",
+            "strike": 1.161834242728283
+          },
+          {
+            "maturity": 0.25,
+            "option_type": "call",
+            "strike": 1.2214027581601699
+          },
+          {
+            "maturity": 0.5,
+            "option_type": "put",
+            "strike": 0.7536383164437648
+          },
+          {
+            "maturity": 0.5,
+            "option_type": "put",
+            "strike": 0.808857893484718
+          },
+          {
+            "maturity": 0.5,
+            "option_type": "put",
+            "strike": 0.8681234453945849
+          },
+          {
+            "maturity": 0.5,
+            "option_type": "put",
+            "strike": 0.9317314234233945
+          },
+          {
+            "maturity": 0.5,
+            "option_type": "put",
+            "strike": 1.0
+          },
+          {
+            "maturity": 0.5,
+            "option_type": "call",
+            "strike": 1.073270660257192
+          },
+          {
+            "maturity": 0.5,
+            "option_type": "call",
+            "strike": 1.151909910168909
+          },
+          {
+            "maturity": 0.5,
+            "option_type": "call",
+            "strike": 1.2363111098437878
+          },
+          {
+            "maturity": 0.5,
+            "option_type": "call",
+            "strike": 1.3268964411453439
+          },
+          {
+            "maturity": 1.0,
+            "option_type": "put",
+            "strike": 0.6703200460356393
+          },
+          {
+            "maturity": 1.0,
+            "option_type": "put",
+            "strike": 0.7408182206817179
+          },
+          {
+            "maturity": 1.0,
+            "option_type": "put",
+            "strike": 0.8187307530779818
+          },
+          {
+            "maturity": 1.0,
+            "option_type": "put",
+            "strike": 0.9048374180359595
+          },
+          {
+            "maturity": 1.0,
+            "option_type": "put",
+            "strike": 1.0
+          },
+          {
+            "maturity": 1.0,
+            "option_type": "call",
+            "strike": 1.1051709180756477
+          },
+          {
+            "maturity": 1.0,
+            "option_type": "call",
+            "strike": 1.2214027581601699
+          },
+          {
+            "maturity": 1.0,
+            "option_type": "call",
+            "strike": 1.3498588075760032
+          },
+          {
+            "maturity": 1.0,
+            "option_type": "call",
+            "strike": 1.4918246976412703
+          }
+        ],
+        "dividend": 0.0,
+        "quote_noise_std": [
+          7.393122257748389e-05,
+          0.00014734934969936199,
+          0.00021842402110031601,
+          0.0002338836145277794,
+          0.00016856715907419804,
+          0.00023720138879472198,
+          0.00022466491669818916,
+          0.00015370943102313063,
+          7.82163616067961e-05,
+          0.00010333131487679448,
+          0.00020654717174897207,
+          0.00030707070665308804,
+          0.0003297651437400239,
+          0.00023836631390862972,
+          0.0003364000888699078,
+          0.0003195516723526538,
+          0.00021926701887794902,
+          0.0001119018762588081,
+          0.0001470535520785712,
+          0.0002952606968936182,
+          0.00044092792100661605,
+          0.0004756382639001542,
+          0.00034535022356236905,
+          0.0004895688613506721,
+          0.0004671341355465552,
+          0.0003219709180184147,
+          0.00016505303956082854,
+          0.0002029661289650328,
+          0.0004099682159446388,
+          0.0006158977907659265,
+          0.0006683659690345338,
+          0.00048819551274953464,
+          0.0006962165245187742,
+          0.0006682956622532423,
+          0.00046338309072573556,
+          0.00023897009747029984,
+          0.0002439600928959136,
+          0.0004950371278750658,
+          0.0007471169572237573,
+          0.0008144916556710369,
+          0.0005976658711421461,
+          0.0008562515358464142,
+          0.0008256919335248641,
+          0.0005751510865871115,
+          0.0002979735303440804,
+          0.00033059924189120005,
+          0.0006778258107718836,
+          0.0010336325808796537,
+          0.0011385746299607095,
+          0.0008441713068195146,
+          0.0012219987448500187,
+          0.0011906516133887396,
+          0.0008380035803961523,
+          0.00043867095751078236,
+          0.00043983595980427227,
+          0.0009150968861055087,
+          0.0014160391507115786,
+          0.0015828168637360485,
+          0.0011908576424310355,
+          0.0017492831664407858,
+          0.001729554124341907,
+          0.001235251591494895,
+          0.000656158147746766
+        ],
+        "rate": 0.0,
+        "spot": 1.0
+      },
+      "context_prior": {},
+      "fixed_parameters": {
+        "jump_down_rate": 10.0,
+        "jump_intensity": 0.0,
+        "jump_up_probability": 0.5,
+        "jump_up_rate": 10.0,
+        "kappa": 2.0
+      },
+      "measure": "Q",
+      "model": "hkde",
+      "model_context": {},
+      "numerics": {
+        "max_refinement_over_quote_sigma": 0.1,
+        "quadrature_ladder": [
+          [
+            512,
+            400.0
+          ],
+          [
+            1024,
+            600.0
+          ],
+          [
+            2048,
+            1500.0
+          ],
+          [
+            4096,
+            3000.0
+          ],
+          [
+            8192,
+            6000.0
+          ]
+        ]
+      },
+      "parameter_names": [
+        "initial_variance",
+        "theta",
+        "vol_of_vol",
+        "rho"
+      ],
+      "prior_bounds": [
+        [
+          0.01,
+          0.16
+        ],
+        [
+          0.01,
+          0.16
+        ],
+        [
+          0.1,
+          1.5
+        ],
+        [
+          -0.95,
+          -0.1
+        ]
+      ],
+      "task_id": "hkde_calibration_v1"
+    }
+  },
+  "configuration_sha256": "92c09222851c976f5a95491037301430299ca035352da6149f02fc5f3c07d606",
+  "contract_selection": "fixed ordered design grid in task context",
+  "data_origin": "synthetic",
+  "evidence_scope": "S",
+  "format": "calibration_bank_snapshot_v1",
+  "future_outcomes_in_conditioning": false,
+  "measure": "Q",
+  "noise": "independent additive Gaussian forward-unit quote errors, one sd per contract, no clipping",
+  "numerical_scope": {
+    "fourier_difference_is_error_bound": false,
+    "mc_se_excludes_bias": true,
+    "posterior_validated": false
+  },
+  "parts": [
+    {
+      "array_sha256": "b5380fbef42423102ea70bd720b00532edb6deb9dcb48752fdc29a2e355803f0",
+      "manifest_sha256": "b5156c765501af309ab89dadd6d68f26fd8180aee2809d4ed95e504d696a8cc8",
+      "path": "../collection/parts/train-0000000000-0000000500",
+      "split": "train",
+      "start": 0,
+      "stop": 500
+    },
+    {
+      "array_sha256": "834845cbaa1b6efe3913483a85d5a1c2e5dbd64b98e756d23cff36d643fdbde6",
+      "manifest_sha256": "5ca1c92f8df3ac9b6eb404523f1b4a765e471ab94c645de7c9560e9e2698cde9",
+      "path": "../collection/parts/train-0000000500-0000001000",
+      "split": "train",
+      "start": 500,
+      "stop": 1000
+    },
+    {
+      "array_sha256": "474e4f4a236fc0f21c62ee8037fac0d2dbe5a35fdee28710926854b57f768722",
+      "manifest_sha256": "fb84c3d50a08d82abb1e2b78d9ddb3a65a65a8106b8ff5c660c35a685cfc7ea9",
+      "path": "../collection/parts/train-0000001000-0000001500",
+      "split": "train",
+      "start": 1000,
+      "stop": 1500
+    },
+    {
+      "array_sha256": "13e6b95e076c34414c6b10a49dfc22a6bd006ba72bb2e6026b007e9350e10d59",
+      "manifest_sha256": "0328612d4eb60e9b775c45a41d89d6a48707accc32a9e9ab9a42f950f8a29684",
+      "path": "../collection/parts/train-0000001500-0000002000",
+      "split": "train",
+      "start": 1500,
+      "stop": 2000
+    },
+    {
+      "array_sha256": "0de35098fb7612cfb50d91b9221e333e0c63654fd93900696d947a3d4c245419",
+      "manifest_sha256": "637923bc06340b558bd8bf9293eb90e4eb01b5b668fdaefe0e929edf03dcdc14",
+      "path": "../collection/parts/train-0000002000-0000002500",
+      "split": "train",
+      "start": 2000,
+      "stop": 2500
+    },
+    {
+      "array_sha256": "5f300387fa872b6c3455ecb57dbde15d4f5bd317475ed7c92661124daf692387",
+      "manifest_sha256": "6e137fc9dfb94b4b5c226c14a3ef0a2a08e1cd42abbd826dfe7a99c4ed9ba447",
+      "path": "../collection/parts/train-0000002500-0000003000",
+      "split": "train",
+      "start": 2500,
+      "stop": 3000
+    },
+    {
+      "array_sha256": "21c73c1957144ba5953f37d29c43c4a431baf60b2f77f70d4ab72c71ede16a28",
+      "manifest_sha256": "4c7812307e5c3e84e4caca4a6f4e77e0c23d10a53280b1cf13333cd3ef0df5ec",
+      "path": "../collection/parts/train-0000003000-0000003500",
+      "split": "train",
+      "start": 3000,
+      "stop": 3500
+    },
+    {
+      "array_sha256": "3e600b7b7ac121706cf6210c4065d252d8238e6d708a8ecf733660ad233b0ad2",
+      "manifest_sha256": "f2aedf40badef7bd5874664dee2ed9dd9fbb78fdea8ee406154a7e1a9bbf5707",
+      "path": "../collection/parts/train-0000003500-0000004000",
+      "split": "train",
+      "start": 3500,
+      "stop": 4000
+    },
+    {
+      "array_sha256": "bddafdb080920b2d3545e6b7211d17c56155107965a3df60936427639802e69b",
+      "manifest_sha256": "4e027a56169f379f89db2ff4050bdaa2932d2c070923e1a3269af7303d92d8ef",
+      "path": "../collection/parts/train-0000004000-0000004500",
+      "split": "train",
+      "start": 4000,
+      "stop": 4500
+    },
+    {
+      "array_sha256": "45c7e61a6a580bedebe48bdfe207c77ffe70bdc166b329ac9855c023654527f9",
+      "manifest_sha256": "0db7954eefcab0299e37c6435cabeb3114ee2c7f9d0d165113489fa4033dcd5c",
+      "path": "../collection/parts/train-0000004500-0000005000",
+      "split": "train",
+      "start": 4500,
+      "stop": 5000
+    },
+    {
+      "array_sha256": "b5d3113246785a6f50a94b7153d4e512ab6e00d985f5686e35a799c18aebd380",
+      "manifest_sha256": "9762db762cc862be1d05ab4ea098fd166e3d11daeae842d08a0e6d86926b8f36",
+      "path": "../collection/parts/train-0000005000-0000005500",
+      "split": "train",
+      "start": 5000,
+      "stop": 5500
+    },
+    {
+      "array_sha256": "b440664b23f86b46bbb916e199ae0ebfe38dc9bfe7e0c4d84d1a8a197b11ffb0",
+      "manifest_sha256": "6d54faf2a3f0498f5095f1fa06bcd49879a32c1569982d95fcf8878f913523bb",
+      "path": "../collection/parts/train-0000005500-0000006000",
+      "split": "train",
+      "start": 5500,
+      "stop": 6000
+    },
+    {
+      "array_sha256": "f3c22540c4794837b3ee4a49436ca379fe9ae6a15bc25cafc33e27acd074f8e7",
+      "manifest_sha256": "8f6510ad87e01b4c7570a6f9ff1c5ddb005ef338ed01ba18e1a3a3065d555419",
+      "path": "../collection/parts/train-0000006000-0000006500",
+      "split": "train",
+      "start": 6000,
+      "stop": 6500
+    },
+    {
+      "array_sha256": "9b4ceecf5df59326429892f62a1f74545a775244544e45ce9c2079cfe0b992c8",
+      "manifest_sha256": "f3bfdfbe23a6ad2445ef9a25247e107af3b78f2cd36b8a3424d253689eaf59d1",
+      "path": "../collection/parts/train-0000006500-0000007000",
+      "split": "train",
+      "start": 6500,
+      "stop": 7000
+    },
+    {
+      "array_sha256": "21e7312fed0582c486080bbc72ab6caea2d3d0296b7d15ccbf6bfade2e342aa5",
+      "manifest_sha256": "5d25124fda2be02a8dbc34ba7fd868dd58b1ad726c839595a04a2147b5a9ba4f",
+      "path": "../collection/parts/train-0000007000-0000007500",
+      "split": "train",
+      "start": 7000,
+      "stop": 7500
+    },
+    {
+      "array_sha256": "2669cad866ad2ade4735c9afacad3aa056d14db4d515d974511ef973cc7b041f",
+      "manifest_sha256": "0a63ab13475cc0c4936d7ec239836b0ff3ea86f8d74d0bc7d78c338311a8240f",
+      "path": "../collection/parts/train-0000007500-0000008000",
+      "split": "train",
+      "start": 7500,
+      "stop": 8000
+    },
+    {
+      "array_sha256": "af0fedd8905757ad641cef915ee598e8a33672d950bbccbd4fb2f13ced4e1ddc",
+      "manifest_sha256": "7114a230760ea9dd84d5903d72dbb1cb8aa539a62b064f0dd8657eb26ce182ef",
+      "path": "../collection/parts/train-0000008000-0000008500",
+      "split": "train",
+      "start": 8000,
+      "stop": 8500
+    },
+    {
+      "array_sha256": "cc790d698d1025bdecdedb4f708ebef9124c0fa37e5e0e07017bc61a4f40212f",
+      "manifest_sha256": "295d50a67e6e152a724112df53125ee6f33f3603c3164b1e7b4da4ce58f946ab",
+      "path": "../collection/parts/train-0000008500-0000009000",
+      "split": "train",
+      "start": 8500,
+      "stop": 9000
+    },
+    {
+      "array_sha256": "0d7c3e6b3e57c57d7e17487b1f79bcd29d8f9b0c24bcff70ea2be6234eaeebda",
+      "manifest_sha256": "e690bde44a7a7b78da9691ed901a01f9c73c3126e475bd4a39dd106a0c80c0aa",
+      "path": "../collection/parts/train-0000009000-0000009500",
+      "split": "train",
+      "start": 9000,
+      "stop": 9500
+    },
+    {
+      "array_sha256": "3b6ec137acd4c5bb28b743da05cb8c23ee272b93d4c459c48e6d8184cf8a4511",
+      "manifest_sha256": "647b74f299a57e7909f5304165bfbb6f40e197bd5f37ab3205fa87ac27fbb8b9",
+      "path": "../collection/parts/train-0000009500-0000010000",
+      "split": "train",
+      "start": 9500,
+      "stop": 10000
+    },
+    {
+      "array_sha256": "b1c4148bfe8b9ce3c038dc2c8dbe6071b3b71d66476c5cf3d418515d36030e90",
+      "manifest_sha256": "f9e0ce770260f32517ff8ed70ca2f6f05bce990ae529bd31f77970464c785e01",
+      "path": "../collection/parts/train-0000010000-0000010500",
+      "split": "train",
+      "start": 10000,
+      "stop": 10500
+    },
+    {
+      "array_sha256": "847054999dc933f14732c2e7e75ef4fdf9f34891b0bcac32e67a8fcdb003a536",
+      "manifest_sha256": "288b73ca95f95fa08cd04ee9b4bab8169a3d3073dc6a0e139c379fe5eef35095",
+      "path": "../collection/parts/train-0000010500-0000011000",
+      "split": "train",
+      "start": 10500,
+      "stop": 11000
+    },
+    {
+      "array_sha256": "96d80b0b0a4715970276e7e143655d15fef137a7cb95cf4aee87633ffe18d914",
+      "manifest_sha256": "f105ed50ec91982f28fc444c03d105804e54c9d7ad08fb27968ddd4ca73a5905",
+      "path": "../collection/parts/train-0000011000-0000011500",
+      "split": "train",
+      "start": 11000,
+      "stop": 11500
+    },
+    {
+      "array_sha256": "9c46433641f5edc5fb7c3c17ca091028088538ce0ace2bb417952a9531cb12f8",
+      "manifest_sha256": "b6dadeaebfc9e2eda439a1378e3795f9edf94a9001cbabfd1a0294bd1348f085",
+      "path": "../collection/parts/train-0000011500-0000012000",
+      "split": "train",
+      "start": 11500,
+      "stop": 12000
+    },
+    {
+      "array_sha256": "ea8acf2ca305a590974b37e4c3a08b0873911b422ceb0f1e309ab186442785f3",
+      "manifest_sha256": "1634cfb0b84d3e264c726127e2744bfec3166994077d5291b44605136ff484d9",
+      "path": "../collection/parts/train-0000012000-0000012500",
+      "split": "train",
+      "start": 12000,
+      "stop": 12500
+    },
+    {
+      "array_sha256": "aab3cb66a766451a5d69c190c14272774b8ff64ff1b97415e11725cb136aefae",
+      "manifest_sha256": "62007df57101b3cd79c477622b2ac20e3599c55986234c0895a26d9c86d93de0",
+      "path": "../collection/parts/train-0000012500-0000013000",
+      "split": "train",
+      "start": 12500,
+      "stop": 13000
+    },
+    {
+      "array_sha256": "c1434660454ed278254b4c9a65b225912a0f4dfe62192fd3d4e0c008625c3c68",
+      "manifest_sha256": "8adbae3e563f87b4ae1b4a46650ab712fee4e9050cf953cbd5f266179059ef60",
+      "path": "../collection/parts/train-0000013000-0000013500",
+      "split": "train",
+      "start": 13000,
+      "stop": 13500
+    },
+    {
+      "array_sha256": "ce4607659c0f70996bedc36a342ac428a631a68306c50f5018f30acc29539a9b",
+      "manifest_sha256": "d22fc370ca7f9f6b3f125aa9605b26e2e1292cf32a51eff559ff0dd0a6e43db1",
+      "path": "../collection/parts/train-0000013500-0000014000",
+      "split": "train",
+      "start": 13500,
+      "stop": 14000
+    },
+    {
+      "array_sha256": "e1159882dd43afba0fa439209ff3442369566c884812c6a5d805f2a7c198c93b",
+      "manifest_sha256": "3e1ca277d5237d893e9af8a8c45b3b579bb416684e15136d4b0f8ae7a09b1bbf",
+      "path": "../collection/parts/train-0000014000-0000014500",
+      "split": "train",
+      "start": 14000,
+      "stop": 14500
+    },
+    {
+      "array_sha256": "6f892c5decbd4c0d63028d74de8cc57399c19192f43c2f4618f3fe3433f6ac18",
+      "manifest_sha256": "464193f2b18198cd1cbdf58c068699dbbe37d29296054b72930878bf3e44daa0",
+      "path": "../collection/parts/train-0000014500-0000015000",
+      "split": "train",
+      "start": 14500,
+      "stop": 15000
+    },
+    {
+      "array_sha256": "2a6ebaee4772af64e4ac17d6f6d79b8b39014235db51e52d83298890d8078619",
+      "manifest_sha256": "69af3dad93ab91b110c0d7ca5ef18c14cb3bfea0f27ea8181cd66c34b9dd42cb",
+      "path": "../collection/parts/train-0000015000-0000015500",
+      "split": "train",
+      "start": 15000,
+      "stop": 15500
+    },
+    {
+      "array_sha256": "524da2d7f46686b09d149a09d5f9b3caf35cd7c90dd80f2d26407faefa79f129",
+      "manifest_sha256": "1a7085569bde0073c14cd6424607c3f3755872202b40a2d8fb72980fd7a43bbc",
+      "path": "../collection/parts/train-0000015500-0000016000",
+      "split": "train",
+      "start": 15500,
+      "stop": 16000
+    },
+    {
+      "array_sha256": "5ee3de88d478d4324292ba4e9c866e0e3bcbfdb61f74c360e567c1cd0a171fa6",
+      "manifest_sha256": "478c102a1c2ae7537ff248bb39a511e9540962c27740216b0daa6b3203072a24",
+      "path": "../collection/parts/train-0000016000-0000016500",
+      "split": "train",
+      "start": 16000,
+      "stop": 16500
+    },
+    {
+      "array_sha256": "e305f2ea1d2dcf6a04c9b0729279fe0137bd6db40a28ed7dd12ddbe608fda9ea",
+      "manifest_sha256": "bfe4f04d5c6edb4712a9a7781376a1d18fa0e1076bd8f5338229f733b5e68663",
+      "path": "../collection/parts/train-0000016500-0000017000",
+      "split": "train",
+      "start": 16500,
+      "stop": 17000
+    },
+    {
+      "array_sha256": "dc398c4978bbca5ff8b0143a91e564fef4d185dd690e0ffdc4d0fe6967df8024",
+      "manifest_sha256": "f10e8a74adb5b1fda1292cd0a467e59f1eb9e7aa13e00634e648d3c8e173a60b",
+      "path": "../collection/parts/train-0000017000-0000017500",
+      "split": "train",
+      "start": 17000,
+      "stop": 17500
+    },
+    {
+      "array_sha256": "b31fdfa9c82eb6608a759790f20bf44a6b427ed4dedab4465dd93ea057432735",
+      "manifest_sha256": "192398fa5b03ba4be5723b368443acb09821fe5cce5251c67b95eed1eb017233",
+      "path": "../collection/parts/train-0000017500-0000018000",
+      "split": "train",
+      "start": 17500,
+      "stop": 18000
+    },
+    {
+      "array_sha256": "6c519ac2465f2c1743a8a9f80721c181a22c0e2cdb60f376b7be048e1f16b19b",
+      "manifest_sha256": "671301077edb50d83318f31f5112a5819b7b8f797d8aa089ff9ce194247c2cb9",
+      "path": "../collection/parts/train-0000018000-0000018500",
+      "split": "train",
+      "start": 18000,
+      "stop": 18500
+    },
+    {
+      "array_sha256": "9968c0ba6ad538637758b9f78c8885de5622b9314f2167d87fffee8116f4eb79",
+      "manifest_sha256": "8c338f4f118ed82d86afa626126b54bb52b390a07bd9714c0fb96dc7422af47f",
+      "path": "../collection/parts/train-0000018500-0000019000",
+      "split": "train",
+      "start": 18500,
+      "stop": 19000
+    },
+    {
+      "array_sha256": "a42a03bde5d02a4e2b004e6c29aa60bf2584589f9cb4a6284148882b29e66ecf",
+      "manifest_sha256": "cbf19c79dde6103b0a04966e6f011fa226e4ed41103969bc3a461a9ccc491abc",
+      "path": "../collection/parts/train-0000019000-0000019500",
+      "split": "train",
+      "start": 19000,
+      "stop": 19500
+    },
+    {
+      "array_sha256": "6182c18e812746445606111f92de0d71e054df55faef5644ff38cff6579fbf14",
+      "manifest_sha256": "e80569567c42da0bbcb18b2e9fccad7674de10c548160d9f5d6d5f4686579fcf",
+      "path": "../collection/parts/train-0000019500-0000020000",
+      "split": "train",
+      "start": 19500,
+      "stop": 20000
+    },
+    {
+      "array_sha256": "9c65276682cc3933a6536051c4cbf7829ddaa86c6aaaa6666a001aa19db2920f",
+      "manifest_sha256": "ea605f8e6bbfe490ca6605032affad01f78e3219e497643a9370646b417d0fb2",
+      "path": "../collection/parts/validation-0000000000-0000000500",
+      "split": "validation",
+      "start": 0,
+      "stop": 500
+    },
+    {
+      "array_sha256": "984d68f534998bebb0eecf3ea4e7691b2e1b1ddc66f94950222915f2ad87827a",
+      "manifest_sha256": "a9489bd029bd261ecd752f5ade51d03f6035ad5ed3cc15248d6e1f6d6e322186",
+      "path": "../collection/parts/validation-0000000500-0000001000",
+      "split": "validation",
+      "start": 500,
+      "stop": 1000
+    },
+    {
+      "array_sha256": "09741e932e03aac7f9f4c065017c82c5dbe8f86835692e87d2fc7b4e1f49c070",
+      "manifest_sha256": "b9870cf0a415fdc562e1d5c1b8d12b0876c07a7da59efa266ce0bd8e31b41a83",
+      "path": "../collection/parts/validation-0000001000-0000001500",
+      "split": "validation",
+      "start": 1000,
+      "stop": 1500
+    },
+    {
+      "array_sha256": "8749a6b61acf13b0460315141fa364858abe8a9f369d2cc64f37ad09b58dec47",
+      "manifest_sha256": "11ccfe718633f06d5088540df57fea6c7c7ffc6818004c143f39541afea7f53a",
+      "path": "../collection/parts/validation-0000001500-0000002000",
+      "split": "validation",
+      "start": 1500,
+      "stop": 2000
+    },
+    {
+      "array_sha256": "867cf071b1d073ebfb1671c1bb464be3688a01e6290044482840c1061abec89d",
+      "manifest_sha256": "563754396c6d1683550001f6439e21c21b4f68f639f4944e844b7b9664716d4c",
+      "path": "../collection/parts/validation-0000002000-0000002500",
+      "split": "validation",
+      "start": 2000,
+      "stop": 2500
+    },
+    {
+      "array_sha256": "8459b29fed074e99278d0aa50b73a11952bed4d42b491dc6d66f9855680b4a17",
+      "manifest_sha256": "4975acaa24a6226724ac90cd1051e80a10b981b836e854e4e6a4d36d7d788556",
+      "path": "../collection/parts/validation-0000002500-0000003000",
+      "split": "validation",
+      "start": 2500,
+      "stop": 3000
+    },
+    {
+      "array_sha256": "54201d088962c0c85571aa5e499c9b0bbe3a9e609cafad2fd73f4a59367ad8eb",
+      "manifest_sha256": "fb85ff69f48da98ac6849e8545497624e195fab86cf41faddebdf0b865513b65",
+      "path": "../collection/parts/validation-0000003000-0000003500",
+      "split": "validation",
+      "start": 3000,
+      "stop": 3500
+    },
+    {
+      "array_sha256": "0a284b97530b3976172e58c600eb5af30ee364da3bee974044668b7a01703850",
+      "manifest_sha256": "55546757a4b77f4352207064a797015e14e4491297d961a73bb4accd97216fa7",
+      "path": "../collection/parts/validation-0000003500-0000004000",
+      "split": "validation",
+      "start": 3500,
+      "stop": 4000
+    },
+    {
+      "array_sha256": "d7970c7bc3c697d25b3ee7de8823387f7b9c9af6282b9396c189e6e6142a350e",
+      "manifest_sha256": "aed1fda93086a2cb71482bd485832450cfc4c4ede4079726e3d5d2c45f846fe3",
+      "path": "../collection/parts/validation-0000004000-0000004500",
+      "split": "validation",
+      "start": 4000,
+      "stop": 4500
+    },
+    {
+      "array_sha256": "c30dd671da11ce98320194ca4696f4dbd9036929d33b44f66f251d10be1695cf",
+      "manifest_sha256": "5ad42e473454275f9fd970e5b2e02dace2cbf6b94c76f390db4819c2031c0ddf",
+      "path": "../collection/parts/validation-0000004500-0000005000",
+      "split": "validation",
+      "start": 4500,
+      "stop": 5000
+    },
+    {
+      "array_sha256": "7b43457c737a4645a6745a5bf16bd705466c298f4267ba0dbe48f190c9ab5005",
+      "manifest_sha256": "06cf85ad7ec6c13d66a27f74d915cc8227832237e6b48a22e8a56308dec45225",
+      "path": "../collection/parts/test-0000000000-0000000500",
+      "split": "test",
+      "start": 0,
+      "stop": 500
+    },
+    {
+      "array_sha256": "9fc315a8490272c3cd05c0f54186d849622a8d78d975f37bf1ee4c31a0b2e1d2",
+      "manifest_sha256": "fb956f2a6c886f9277e4c9636c933483338ba767ba4766a9990818dc5fd541f4",
+      "path": "../collection/parts/test-0000000500-0000001000",
+      "split": "test",
+      "start": 500,
+      "stop": 1000
+    },
+    {
+      "array_sha256": "47c7a8b270a3169e5267fdabb17146a92945e0e33af63c0e9480a6a356555438",
+      "manifest_sha256": "2f004e190a47445c3c14388805126a960e691ca35669a8c2e6dc3ebc139b9188",
+      "path": "../collection/parts/test-0000001000-0000001500",
+      "split": "test",
+      "start": 1000,
+      "stop": 1500
+    },
+    {
+      "array_sha256": "e00ca4f7d051cc41c3a8ad8eb1284780a6b8ec012cde3e67ef1c5b84da3e0af3",
+      "manifest_sha256": "41294d62832f51731fed27d74f6301258f661089a75cbb2f6f3f1961773a4cab",
+      "path": "../collection/parts/test-0000001500-0000002000",
+      "split": "test",
+      "start": 1500,
+      "stop": 2000
+    },
+    {
+      "array_sha256": "66b3b0d7cbcfffa26dc1dbd81310326f46d150853dcf456a4e776c41a76222fd",
+      "manifest_sha256": "72e5222973ab828f6a0e72b4107cb57de6d856f2191e11cf0f2c97c6aa5dc64c",
+      "path": "../collection/parts/test-0000002000-0000002500",
+      "split": "test",
+      "start": 2000,
+      "stop": 2500
+    },
+    {
+      "array_sha256": "d4741886d6ed21112b8ea1a138d4c2df71b484b3748188b1b7b392fc9228d759",
+      "manifest_sha256": "2fe0bdfa3aa5637f62986f4683fe456074ea33f07d55afaffa692e7e98b6a713",
+      "path": "../collection/parts/test-0000002500-0000003000",
+      "split": "test",
+      "start": 2500,
+      "stop": 3000
+    },
+    {
+      "array_sha256": "e21ab2b23e196a94eec5f9588ad3b3f613e00fe443e92ccc7956025095194e5a",
+      "manifest_sha256": "9d9fb00a53f5883a1d3e86fc0ee4fb379935cc30bc34c17d9e40e538445b3e05",
+      "path": "../collection/parts/test-0000003000-0000003500",
+      "split": "test",
+      "start": 3000,
+      "stop": 3500
+    },
+    {
+      "array_sha256": "169c63681b6a69fe0e5e930698084029e8d8b8d2851f38791525e472296eec7e",
+      "manifest_sha256": "15d320f67309ac8ec713412dc17321aeef267dce336d024f4db158d838529a28",
+      "path": "../collection/parts/test-0000003500-0000004000",
+      "split": "test",
+      "start": 3500,
+      "stop": 4000
+    },
+    {
+      "array_sha256": "e0ec5e65571fcdd1f6212d70e2044c39b406f23effd2c69c0d1f0bc5269ded26",
+      "manifest_sha256": "6cd4cbf6a2c7ddb21d59d66a4fa3e9008ef3bcf540c2d736bcee8abab81bcfdd",
+      "path": "../collection/parts/test-0000004000-0000004500",
+      "split": "test",
+      "start": 4000,
+      "stop": 4500
+    },
+    {
+      "array_sha256": "c8d5711fae4a1ad51338f70d060a353e5f6edce73a095e7e6c22b95c9911f13b",
+      "manifest_sha256": "fbeb5f3547b201e9beef3d0e4d12a1f16436196a4993d0c1c1f19d964b071dbc",
+      "path": "../collection/parts/test-0000004500-0000005000",
+      "split": "test",
+      "start": 4500,
+      "stop": 5000
+    }
+  ],
+  "prior": "independent uniforms in explicit parameter_names order; curve context from context_prior",
+  "purpose": "synthetic smile-calibration training/evaluation",
+  "rng": "PCG64; SeedSequence(option tag, root, task digest words, split, ID, purpose); purposes 0 prior, 1 pricing, 2 quotes, 3 curve context",
+  "roles": {
+    "context": "known contracts, forward units and per-contract quote sigma; stored in configuration",
+    "context_parameters": "auxiliary draws behind the curve (sigma0 and the slope or exponent); never conditioning",
+    "context_values": "known per-example forward-variance levels on the knot intervals; conditioning",
+    "example_id": "auxiliary split-qualified surface identity; augmentations must keep base grouping",
+    "observations": "conditioning: noisy forward-unit prices [batch,contract,1]",
+    "parameters": "ordered synthetic training targets only; never observed conditioning",
+    "pricing_covariance": "auxiliary covariance of MC price MEANS; zero for Fourier",
+    "pricing_paths": "auxiliary Monte Carlo paths used per maturity block",
+    "pricing_standard_errors": "auxiliary MC standard errors (zero for deterministic Fourier)",
+    "reference_prices": "auxiliary numerical expectation estimates, not exact market truth",
+    "refinement_difference": "auxiliary refined-minus-base Fourier estimate; MC zeros mean not calculated"
+  },
+  "seed_audit": {
+    "configuration_sha256": "92c09222851c976f5a95491037301430299ca035352da6149f02fc5f3c07d606",
+    "duplicate_pricing_seeds": 0,
+    "examples_checked": 30000,
+    "protocol": "calibration_legacy_seedsequence_uint64_pricing_v1"
+  },
+  "source_sha256": {
+    "calibration/bank.py": "9f0d512ba6f52df5c73c54599183159f535b2aa84ac4daa6a60cfd219afcc7db",
+    "calibration/pricing.py": "fb1a16548514cc6f806baa651ef05310934dcb55e7fc591a2a49f0395ab7df71",
+    "calibration/surface.py": "24c0476ce3000208438d440cbbb1bf21efd92494b8c634592029af384ee30388",
+    "calibration/tasks.py": "295d1ce59b409f8edb5edba89488fa87a5a4e7bab6f785a152ecb69db1528916",
+    "gbm.py": "8d491f019326712a4a6e985b491658146fa3da9f57f513a6fed421259d55cb5d",
+    "gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
+    "heston.py": "f85237a6f223689bb83fb2837d6f6cba855867f5da9f919667163ae4a4c8996c",
+    "hkde.py": "c6618b6bd54eae169b4fc0e90201b8582b8e7da14ff41a305c27e4e2bd06e503"
+  },
+  "splits": {
+    "test": {
+      "examples": 5000
+    },
+    "train": {
+      "examples": 20000
+    },
+    "validation": {
+      "examples": 5000
+    }
+  },
+  "task_fingerprint": "5e499526ff8f29a72f49785a1a36006b1d769d26bca8a6f83f7a8c8ac4d431fa",
+  "truth_available": [
+    "initial_variance",
+    "theta",
+    "vol_of_vol",
+    "rho"
+  ],
+  "versions": {
+    "numpy": "2.5.3",
+    "python": "3.12.16",
+    "scipy": "1.18.1"
+  }
+}

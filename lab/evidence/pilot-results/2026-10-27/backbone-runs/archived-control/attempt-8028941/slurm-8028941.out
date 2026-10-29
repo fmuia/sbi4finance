@@ -1,0 +1,56 @@
+## SLURM PROLOG ###############################################################
+##    Job ID : 8028941
+##  Job Name : sbi4f-archived-gpu-cont
+##  Nodelist : gpu2708
+##      CPUs : 1
+##  Mem/Node : 24576 MB
+## Directory : /oscar/scratch/afengler/sbi4finance-backbone-fit-20261027/repo
+##   Job Started : Tue Oct 27 05:09:45 PM EDT 2026
+###############################################################################
+{"status": "failed", "completed_surfaces": 0, "process_cpu_seconds": 3.388353, "wall_seconds": 11.067767042666674}
+Traceback (most recent call last):
+  File "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/lib/python3.12/site-packages/jax/_src/debugging.py", line 89, in debug_callback_impl
+    cpu_device, *_ = xla_bridge.local_devices(backend="cpu")
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/lib/python3.12/site-packages/jax/_src/xla_bridge.py", line 1092, in local_devices
+    process_index = get_backend(backend).process_index()
+                    ^^^^^^^^^^^^^^^^^^^^
+  File "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/lib/python3.12/site-packages/jax/_src/xla_bridge.py", line 958, in get_backend
+    return _get_backend_uncached(platform)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/lib/python3.12/site-packages/jax/_src/xla_bridge.py", line 946, in _get_backend_uncached
+    raise RuntimeError(
+RuntimeError: Unknown backend cpu. Available backends are ['cuda']
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/oscar/scratch/afengler/sbi4finance-backbone-fit-20261027/manifests/continue_heston_archived_panel_gpu_20261027.py", line 135, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/oscar/scratch/afengler/sbi4finance-backbone-fit-20261027/manifests/continue_heston_archived_panel_gpu_20261027.py", line 59, in main
+    import bayesflow as bf
+  File "/oscar/scratch/afengler/sbi4finance-backbone-fit-20261027/legacy-bayesflow/bayesflow/__init__.py", line 99, in <module>
+    setup()
+  File "/oscar/scratch/afengler/sbi4finance-backbone-fit-20261027/legacy-bayesflow/bayesflow/__init__.py", line 75, in setup
+    logging.info(f"Using backend {keras.backend.backend()!r}")
+  File "/oscar/scratch/afengler/sbi4finance-backbone-fit-20261027/legacy-bayesflow/bayesflow/utils/logging.py", line 40, in info
+    _log(msg, *args, callback_fn=logger.info, **kwargs)
+  File "/oscar/scratch/afengler/sbi4finance-backbone-fit-20261027/legacy-bayesflow/bayesflow/utils/logging.py", line 18, in _log
+    jax.debug.callback(__log, *args, **kwargs)
+  File "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/lib/python3.12/site-packages/jax/_src/debugging.py", line 517, in debug_callback
+    _debug_callback(callback, *args, **kwargs)
+  File "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/lib/python3.12/site-packages/jax/_src/debugging.py", line 509, in _debug_callback
+    debug_callback_p.bind(
+  File "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/lib/python3.12/site-packages/jax/_src/core.py", line 724, in bind
+    return self.bind_with_trace(prev_trace, args, avals, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/lib/python3.12/site-packages/jax/_src/core.py", line 732, in bind_with_trace
+    return trace.process_primitive(self, args, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/lib/python3.12/site-packages/jax/_src/core.py", line 1306, in process_primitive
+    return primitive.impl(*args, **params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/lib/python3.12/site-packages/jax/_src/debugging.py", line 91, in debug_callback_impl
+    raise RuntimeError(
+RuntimeError: jax.debug.callback failed to find a local CPU device to place the inputs on. Make sure "cpu" is listed in --jax_platforms or the JAX_PLATFORMS environment variable.

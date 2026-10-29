@@ -1,0 +1,163 @@
+{
+  "checked_utc": "2026-10-28T17:44:37.694044+00:00",
+  "read_only": true,
+  "job_id": "8060582",
+  "accounting": {
+    "returncode": 0,
+    "stdout": "8060582|COMPLETED|133|4|0:0|billing=112,cpu=4,gres/gpu=1,mem=32G,node=1|gpu3102|2026-10-28T13:39:34\n8060582.batch|COMPLETED|133|4|0:0|cpu=4,gres/gpu=1,mem=32G,node=1|gpu3102|2026-10-28T13:39:34\n8060582.extern|COMPLETED|133|4|0:0|billing=112,cpu=4,gres/gpu=1,mem=32G,node=1|gpu3102|2026-10-28T13:39:34\n",
+    "stderr": ""
+  },
+  "queue": {
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "slurm_load_jobs error: Invalid job id specified\n"
+  },
+  "record": {
+    "bank_manifest_sha256": "f1bfa42f7bf2acba3daaffb263b5bdeb60b5b12ebdfc267c5c5cd6eb7e08c313",
+    "collection_id": "da963f7294aee242a80ebf9b47d914294b439aef8b6ee8f7c6d1899766e546f1",
+    "conditioning": "three model parameters and supplied log curve levels",
+    "fit": {
+      "best_val_mse_quote_noise": 0.0060938578099012375,
+      "epochs_run": 300,
+      "export_max_abs_difference_quote_noise": 0.04628480595496853,
+      "hidden_activation": "gelu_erf",
+      "selected_epoch": 300,
+      "selection": "minimum validation mean squared error in quote-noise units",
+      "validation_mse_standardized_at_selected_epoch": 0.00002008408580516883
+    },
+    "format": "full_surface_pricer_training_v1",
+    "pricer_sha256": "069593fc90e47761df7c06657e7a729781dce3680b50105dd4f1d5a094e4756d",
+    "reserved_test_evaluated": false,
+    "same_reload_exact": true,
+    "scientific_acceptance": false,
+    "scope": "Validation selects the epoch and measures interpolation error against bank labels. Independent price/refinement and posterior checks remain required.",
+    "seconds": 129.36489397473633,
+    "settings": {
+      "batch_size": 256,
+      "epochs": 300,
+      "learning_rate": 0.001,
+      "patience": 300,
+      "seed": 0,
+      "widths": [
+        256,
+        256,
+        256,
+        256
+      ]
+    },
+    "status": "completed",
+    "target": "clean numerical prices divided by fixed quote SD; no observation-noise augmentation",
+    "task_fingerprint": "c99b0dd131896d89d8483a1668a3fde0fb7a0f28794c3db7fe14635cbbd52b65",
+    "task_id": "rough_calibration_v1",
+    "training_surfaces": 100000,
+    "validation_errors": {
+      "absolute_quote_error_quantiles": {
+        "0.5": 0.028583457092057785,
+        "0.9": 0.11750068486756228,
+        "0.99": 0.2964953283054335,
+        "1.0": 0.8291537698022182
+      },
+      "interpretation": "Discrepancies against numerical labels mix emulator error and label randomness; they do not measure absolute price bias or grid error. Per-quote accuracy alone does not bound posterior distortion across all contracts.",
+      "rmse": 0.07800595810497016,
+      "signed_mean_error_per_contract": [
+        -0.0008615386238461003,
+        -0.0010224222355985201,
+        -0.0003764015440312093,
+        -0.0015086502747799384,
+        -0.0019465029110012778,
+        -0.001442777046419549,
+        0.000023026608276399962,
+        -0.0007841895507552005,
+        -0.0027530012008229274,
+        0.002388524471772567,
+        0.0011506712022177701,
+        0.000983697176217872,
+        0.00012959703020360127,
+        0.0008354358050196261,
+        0.00012328831749239727,
+        0.00017368337891882633,
+        -0.0015330195937424166,
+        -0.0011015381737003252,
+        -0.0027484533830589874,
+        -0.001347670839309089,
+        -0.0011904198279790122,
+        -0.0008675216939257076,
+        -0.0012184016281003693,
+        -0.0011749370380342765,
+        -0.0008033425196209035,
+        -0.0006979145945867888,
+        -0.0007457980950020286,
+        -0.00347904230919724,
+        -0.0021865233848650254,
+        -0.0018444461295935596,
+        -0.002063378119225918,
+        -0.0025912138989345294,
+        -0.0008057965371775389,
+        -0.0014344862082752896,
+        -0.0012862263276860585,
+        -0.0006537970082308109,
+        -0.0038829158515584347,
+        -0.001981960759732316,
+        -0.0014095294545916244,
+        -0.0021793549675547005,
+        -0.0010489254007907817,
+        -0.0012101442007687747,
+        -0.0009166634941436122,
+        -0.0017586848460885228,
+        -0.0011567754773692338,
+        -0.00225856005432994,
+        -0.0009089082691450868,
+        -0.0007876652224206143,
+        0.0011196360214063893,
+        0.0016551988272754598,
+        0.00029023500317686823,
+        0.00004753512879308689,
+        0.0008771809557966772,
+        0.0006281793601706206,
+        0.0012131567887865883,
+        0.00021284724200075784,
+        0.0006148831714811316,
+        0.0013545130803151479,
+        0.0017412000651020527,
+        -0.00007554221384971924,
+        0.0014523647691789176,
+        0.0007231297093277464,
+        0.0009495343551353898
+      ],
+      "surface_l2_error_quantiles": {
+        "0.5": 0.5169668288525805,
+        "0.9": 0.9325339094744162,
+        "0.99": 1.332082348135458,
+        "1.0": 2.0753967658190975
+      },
+      "surface_rms_error_quantiles": {
+        "0.5": 0.06513169834350566,
+        "0.9": 0.11748822921924404,
+        "0.99": 0.16782660090597082,
+        "1.0": 0.26147541495928994
+      },
+      "units": "quote-noise standard deviations"
+    },
+    "validation_label_reported_mcse": {
+      "interpretation": "Reported label MCSE only; not independent price error or a grid-bias bound.",
+      "max": 0.24999072698792257,
+      "median": 0.04116476556210563,
+      "p99": 0.2202504529341254,
+      "units": "quote-noise standard deviations"
+    },
+    "validation_surfaces": 5000,
+    "versions": {
+      "jax": "0.11.1",
+      "keras": "3.15.1",
+      "numpy": "2.5.3",
+      "python": "3.12.16",
+      "scipy": "1.18.1"
+    }
+  },
+  "artifacts": {
+    "pricer/run.json": "6e2887eab88fde2d3e1f77d66ac32e64e2a9106480c5fc9632c22e4c81a7acfe",
+    "pricer/checkpoint/pricer.json": "69970785522004f8df1f2b13f23ee6bef51b83b078baa33628d3faadb17a8907",
+    "pricer/checkpoint/pricer.npz": "069593fc90e47761df7c06657e7a729781dce3680b50105dd4f1d5a094e4756d"
+  },
+  "log_tail": "## SLURM PROLOG ###############################################################\n##    Job ID : 8060582\n##  Job Name : sbi4f-pricer-full300\n##  Nodelist : gpu3102\n##      CPUs : 1\n##  Mem/Node : 32768 MB\n## Directory : /oscar/home/afengler\n##   Job Started : Wed Oct 28 01:37:21 PM EDT 2026\n###############################################################################\n{\"checkpoint\": \"/oscar/scratch/afengler/sbi4finance-independent-work-20261028/known100k-pricer-full300/pricer/checkpoint\", \"validation_rmse_quote_noise\": 0.07800595810497016, \"scientific_acceptance\": false}\n"
+}

@@ -1,0 +1,26 @@
+{
+  "heston100k": {
+    "root": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint",
+    "public_model_bytes": 12246485,
+    "recovery_model_files": 20,
+    "recovery_model_bytes": 244929700
+  },
+  "heston50k": {
+    "root": "/oscar/scratch/afengler/sbi4finance-backbone-fit-20261027/runs/heston-50k-native/checkpoint",
+    "public_model_bytes": 12246484,
+    "recovery_model_files": 20,
+    "recovery_model_bytes": 244929680
+  },
+  "known20k": {
+    "root": "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/runs/known-20k-native/checkpoint",
+    "public_model_bytes": 12261415,
+    "recovery_model_files": 24,
+    "recovery_model_bytes": 294273960
+  },
+  "heston_export": {
+    "root": "/oscar/scratch/afengler/sbi4finance-heston-teaching-20261028/checkpoint-final500",
+    "public_model_bytes": 12246485,
+    "recovery_model_files": 0,
+    "recovery_model_bytes": 0
+  }
+}

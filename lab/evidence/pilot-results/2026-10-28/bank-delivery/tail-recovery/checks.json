@@ -1,0 +1,62 @@
+{
+  "status": "passed_review_preparation",
+  "read_only_reconciliation": true,
+  "original_map_indices": [
+    997,
+    1000
+  ],
+  "native_jobs": [
+    {
+      "split": "validation",
+      "start": 4925,
+      "stop": 4950,
+      "job_sha256": "dc8d453f2148053f8797005dad27861d456b183b9733988db10b62b34adad204"
+    },
+    {
+      "split": "test",
+      "start": 0,
+      "stop": 25,
+      "job_sha256": "b3084c283a030fd7c5ae21ae29db1201cb2f6c23eed7a77002dfc963c165c958"
+    }
+  ],
+  "preserved_parts": 1278,
+  "split_counts": {
+    "test": 6975,
+    "train": 20000,
+    "validation": 4975
+  },
+  "prior_cpu_seconds": 3141589,
+  "prior_cpu_hours": 872.6636111111111,
+  "two_workers_worst_case_seconds": 22080,
+  "generic_final_reserve_seconds": 7440,
+  "separate_integrity_reserve_seconds": 7440,
+  "worst_case_including_both_finalizers_seconds": 3178549,
+  "cpu_ceiling_seconds": 5400000,
+  "campaign_sha256": "1af379b4e25ec7240526ad43c4ba62ad9ff8b1289dfbe85b1c4d3e24c1df8c93",
+  "reconciliation_sha256": "61a755c36667810341218499a3b956accff9071394e7acd00a341ef2ed6bf03a",
+  "preserved_inventory_sha256": "a230b44c6ab217fd1356d8da4e73edbd3c238d7070f381880886093905d3d3f6",
+  "operator_source_sha256": "a59339f9f9d10f4de961a42977e41278324c76e290dc32b806094dc0542d5ee0",
+  "morning_execution_sha256": "114788a8f72f91ba4f43a4848064d3090c99c58809661b4e389378d137a8f0db",
+  "original_execution_sha256": "35925eec53f0152013b8c2782b635bf9862c7e74fdcc76d11e0866b15e28eb8e",
+  "original_job_map_sha256": "a815c58087279fa7c2b5603d6bc3fee11ed92ec7965c0ac29c2827a665bbae0c",
+  "failed_attempts": [
+    {
+      "job_id": "8046699_997",
+      "state": "TIMEOUT",
+      "elapsed_seconds": 10805,
+      "cpus": 1,
+      "exit_code": "0:0",
+      "node": "node2346",
+      "original_map_index": 997
+    },
+    {
+      "job_id": "8046699_1000",
+      "state": "TIMEOUT",
+      "elapsed_seconds": 10805,
+      "cpus": 1,
+      "exit_code": "0:0",
+      "node": "node2346",
+      "original_map_index": 1000
+    }
+  ]
+}

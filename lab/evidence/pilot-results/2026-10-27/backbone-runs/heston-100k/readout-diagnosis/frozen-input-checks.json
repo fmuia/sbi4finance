@@ -1,0 +1,350 @@
+{
+  "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/lib/python3.12/site-packages/bayesflow/adapters/transforms/constrain.py": {
+    "actual_sha256": "8c704f30190f214c0c76d31d499c3c2d3aef76a48b5ca01537bda3f8f2e2b358",
+    "bytes": 7448,
+    "expected_sha256": "8c704f30190f214c0c76d31d499c3c2d3aef76a48b5ca01537bda3f8f2e2b358",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/lib/python3.12/site-packages/bayesflow/estimators/basic_estimator.py": {
+    "actual_sha256": "dfe54314ce12a917d5bd8ca810e7af8cd8071110248160c4470edc81ab972c6e",
+    "bytes": 23305,
+    "expected_sha256": "dfe54314ce12a917d5bd8ca810e7af8cd8071110248160c4470edc81ab972c6e",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/lib/python3.12/site-packages/bayesflow/networks/helpers/standardization/standardize.py": {
+    "actual_sha256": "c6a9110842431c90087f6db6daf698c7efb7b89aca5fbe1e5ffdcd8e563fd737",
+    "bytes": 9155,
+    "expected_sha256": "c6a9110842431c90087f6db6daf698c7efb7b89aca5fbe1e5ffdcd8e563fd737",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/lib/python3.12/site-packages/bayesflow/networks/inference/flow_matching/flow_matching.py": {
+    "actual_sha256": "4a7e2c1eeb077992247dcf86760460a7d9317f9fa68444514edf227187111a61",
+    "bytes": 15829,
+    "expected_sha256": "4a7e2c1eeb077992247dcf86760460a7d9317f9fa68444514edf227187111a61",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/lib/python3.12/site-packages/bayesflow/networks/inference/inference_network.py": {
+    "actual_sha256": "f06f2b1d733c080109488fad53ba4e9f10cfb1a21a22b35eb39dbf0d1902e5a5",
+    "bytes": 9354,
+    "expected_sha256": "f06f2b1d733c080109488fad53ba4e9f10cfb1a21a22b35eb39dbf0d1902e5a5",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/lib/python3.12/site-packages/bayesflow/utils/integrate.py": {
+    "actual_sha256": "402061b557836b2446d10ad4681e1627d3942780cfff15d29be643b65ea2663b",
+    "bytes": 73564,
+    "expected_sha256": "402061b557836b2446d10ad4681e1627d3942780cfff15d29be643b65ea2663b",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/manifests/check_heston_100k_readout_20261027.py": {
+    "actual_sha256": "2160278be2b167ca7551a76ceb8278514fec97d82e294cc98259c17b34825f6d",
+    "bytes": 14869,
+    "expected_sha256": "2160278be2b167ca7551a76ceb8278514fec97d82e294cc98259c17b34825f6d",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/model.keras": {
+    "actual_sha256": "7f037dee0fde78cd5a33f1107e13031ff01fdcb5481dab76fc6c8f7d07598f39",
+    "bytes": 12246485,
+    "expected_sha256": "7f037dee0fde78cd5a33f1107e13031ff01fdcb5481dab76fc6c8f7d07598f39",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/task.json": {
+    "actual_sha256": "5e499526ff8f29a72f49785a1a36006b1d769d26bca8a6f83f7a8c8ac4d431fa",
+    "bytes": 10197,
+    "expected_sha256": "5e499526ff8f29a72f49785a1a36006b1d769d26bca8a6f83f7a8c8ac4d431fa",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/training.json": {
+    "actual_sha256": "a3de032a681a3e89f895dca48cdc4c573f4d1768f3b217e30649742da80f46b2",
+    "bytes": 32416,
+    "expected_sha256": "a3de032a681a3e89f895dca48cdc4c573f4d1768f3b217e30649742da80f46b2",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/comparisons/case-0/comparison.json": {
+    "actual_sha256": "be810cc9498a1e869b03346fffc113e3616de14c5774e1932b6f33a8ae23247a",
+    "bytes": 23578,
+    "expected_sha256": "be810cc9498a1e869b03346fffc113e3616de14c5774e1932b6f33a8ae23247a",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/comparisons/case-0/neural_draws.npz": {
+    "actual_sha256": "ddf7543775607d06b2a1a3bc32533dc4877cd65578c9ca73c4a4f9ba039ec6a0",
+    "bytes": 150122,
+    "expected_sha256": "ddf7543775607d06b2a1a3bc32533dc4877cd65578c9ca73c4a4f9ba039ec6a0",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/comparisons/case-1/comparison.json": {
+    "actual_sha256": "98de8001209c27e668859cbe9beec4a8e7d94c0f4f1e64c35f06bbd0f1963263",
+    "bytes": 23618,
+    "expected_sha256": "98de8001209c27e668859cbe9beec4a8e7d94c0f4f1e64c35f06bbd0f1963263",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/comparisons/case-1/neural_draws.npz": {
+    "actual_sha256": "7e7b38f8b8f05fcd7095654ca5721d1d34264654dcac3cd374e71787c69c89ed",
+    "bytes": 151745,
+    "expected_sha256": "7e7b38f8b8f05fcd7095654ca5721d1d34264654dcac3cd374e71787c69c89ed",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/comparisons/case-2/comparison.json": {
+    "actual_sha256": "624e8dd8bd8bd08ad63b30a2212fd48734c06711747fd8523a42600aea3b32b6",
+    "bytes": 23580,
+    "expected_sha256": "624e8dd8bd8bd08ad63b30a2212fd48734c06711747fd8523a42600aea3b32b6",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/comparisons/case-2/neural_draws.npz": {
+    "actual_sha256": "e80297a8d72d4a548f1d7896b456f0107c40f0f4a92931423edbcbd3ca693de4",
+    "bytes": 146150,
+    "expected_sha256": "e80297a8d72d4a548f1d7896b456f0107c40f0f4a92931423edbcbd3ca693de4",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-0/precision/precision.json": {
+    "actual_sha256": "c073e80c87d78f493f4d0933881361e8acd0c87e04fa3d6aa0d33e56a0b49533",
+    "bytes": 106498,
+    "expected_sha256": "c073e80c87d78f493f4d0933881361e8acd0c87e04fa3d6aa0d33e56a0b49533",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-0/reference/chains.npz": {
+    "actual_sha256": "be70a6798988bad251254fbe86df901b3affb5e0def92555aceb145f1fcb8505",
+    "bytes": 511613,
+    "expected_sha256": "be70a6798988bad251254fbe86df901b3affb5e0def92555aceb145f1fcb8505",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-0/reference/diagnostics.json": {
+    "actual_sha256": "72bd9616e0a4f3985cbe6f642156e0650776a80e11770dbdb668917b20608808",
+    "bytes": 2643,
+    "expected_sha256": "72bd9616e0a4f3985cbe6f642156e0650776a80e11770dbdb668917b20608808",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-0/reference/reference.json": {
+    "actual_sha256": "35e646876a5c4a1413593455741dc0a3a6688678909a570353ec4fc70125c902",
+    "bytes": 25550,
+    "expected_sha256": "35e646876a5c4a1413593455741dc0a3a6688678909a570353ec4fc70125c902",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-1/precision/precision.json": {
+    "actual_sha256": "a443bf9f6bf1075e111be961c05a00d2ec41a185f10933df196d1fc1e5c8e549",
+    "bytes": 107903,
+    "expected_sha256": "a443bf9f6bf1075e111be961c05a00d2ec41a185f10933df196d1fc1e5c8e549",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-1/reference/chains.npz": {
+    "actual_sha256": "ff98be1a51cf294b59a7b723664a3a03313f48ea32fc9f4a3a54fff1989774b8",
+    "bytes": 509505,
+    "expected_sha256": "ff98be1a51cf294b59a7b723664a3a03313f48ea32fc9f4a3a54fff1989774b8",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-1/reference/diagnostics.json": {
+    "actual_sha256": "270f9257b19a3bd0fce0012d182977a366f6aabd93e95b60b6b92686be896dc4",
+    "bytes": 2639,
+    "expected_sha256": "270f9257b19a3bd0fce0012d182977a366f6aabd93e95b60b6b92686be896dc4",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-1/reference/reference.json": {
+    "actual_sha256": "e1c6c08419fbd08e35900e590f8110e68c32e087f4619359f16ef8322919bdfd",
+    "bytes": 25580,
+    "expected_sha256": "e1c6c08419fbd08e35900e590f8110e68c32e087f4619359f16ef8322919bdfd",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-2/precision/precision.json": {
+    "actual_sha256": "915ed7872ec516f7e9a458fc44de8f2b2b0e2ad3fadefc65ec102405554e86be",
+    "bytes": 106863,
+    "expected_sha256": "915ed7872ec516f7e9a458fc44de8f2b2b0e2ad3fadefc65ec102405554e86be",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-2/reference/chains.npz": {
+    "actual_sha256": "f37a3b78360fcdbb0a9e2b775cfacd057a11aaeb7d8ef97a72b9a544bdd13ccb",
+    "bytes": 505891,
+    "expected_sha256": "f37a3b78360fcdbb0a9e2b775cfacd057a11aaeb7d8ef97a72b9a544bdd13ccb",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-2/reference/diagnostics.json": {
+    "actual_sha256": "cffe17d61e60a553a832b7cc281d2941f0cda211b99fe55c5957654969886a33",
+    "bytes": 2642,
+    "expected_sha256": "cffe17d61e60a553a832b7cc281d2941f0cda211b99fe55c5957654969886a33",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-2/reference/reference.json": {
+    "actual_sha256": "34f5811eab68c86a0cb303cd047e4c1e524590e5892b43a4a0f3e902da44cc1c",
+    "bytes": 25572,
+    "expected_sha256": "34f5811eab68c86a0cb303cd047e4c1e524590e5892b43a4a0f3e902da44cc1c",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/repo/pixi.lock": {
+    "actual_sha256": "3e33b82d45dfdd696c5b12b22bca0943a5fca09804860fab13e3fc9126c60aae",
+    "bytes": 297129,
+    "expected_sha256": "3e33b82d45dfdd696c5b12b22bca0943a5fca09804860fab13e3fc9126c60aae",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/repo/pyproject.toml": {
+    "actual_sha256": "0b38d45cea9c3d7143e261d6c8ce3d6892b31b7bce6d1f26bf748df75790fd54",
+    "bytes": 10591,
+    "expected_sha256": "0b38d45cea9c3d7143e261d6c8ce3d6892b31b7bce6d1f26bf748df75790fd54",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/repo/scripts/compare_full_surface_reference.py": {
+    "actual_sha256": "a420f5bfb493412ddfab94cbaf80a2a7e737a9245982ba53acd2472bcd0084f3",
+    "bytes": 14424,
+    "expected_sha256": "a420f5bfb493412ddfab94cbaf80a2a7e737a9245982ba53acd2472bcd0084f3",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/repo/src/sbi4finance/calibration/__init__.py": {
+    "actual_sha256": "9b30e8b6d4b3d77cd9d7c91af7a2e37b5462c8ef02bbdf85f92e2092a37ec6e4",
+    "bytes": 315,
+    "expected_sha256": "9b30e8b6d4b3d77cd9d7c91af7a2e37b5462c8ef02bbdf85f92e2092a37ec6e4",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/repo/src/sbi4finance/calibration/bank.py": {
+    "actual_sha256": "9f0d512ba6f52df5c73c54599183159f535b2aa84ac4daa6a60cfd219afcc7db",
+    "bytes": 18867,
+    "expected_sha256": "9f0d512ba6f52df5c73c54599183159f535b2aa84ac4daa6a60cfd219afcc7db",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/repo/src/sbi4finance/calibration/bank_collection.py": {
+    "actual_sha256": "b18bfa6d8322753bdbd36754a3f08c82800b826952453d5ce95adb5751757ed5",
+    "bytes": 25704,
+    "expected_sha256": "b18bfa6d8322753bdbd36754a3f08c82800b826952453d5ce95adb5751757ed5",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/repo/src/sbi4finance/calibration/chain.py": {
+    "actual_sha256": "f3a1ad079cc01570c35208c2fe5d3009fa06bd545b2d4ce3083e835f5569ea2b",
+    "bytes": 14989,
+    "expected_sha256": "f3a1ad079cc01570c35208c2fe5d3009fa06bd545b2d4ce3083e835f5569ea2b",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/repo/src/sbi4finance/calibration/classical.py": {
+    "actual_sha256": "ebe157b6564408ece99fb1213e16ea48feb0c9b90fb30a5269a923d994496002",
+    "bytes": 4143,
+    "expected_sha256": "ebe157b6564408ece99fb1213e16ea48feb0c9b90fb30a5269a923d994496002",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/repo/src/sbi4finance/calibration/correction.py": {
+    "actual_sha256": "31b9b9fdf96cf8c62128899709b977a53ac3c9190c7e6b7a13d6888241cdfcf1",
+    "bytes": 15493,
+    "expected_sha256": "31b9b9fdf96cf8c62128899709b977a53ac3c9190c7e6b7a13d6888241cdfcf1",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/repo/src/sbi4finance/calibration/curve_adequacy.py": {
+    "actual_sha256": "5815ddca3eb883863b397a620f7655b9d56fe354ce69773e75deacd7b993cdd1",
+    "bytes": 18464,
+    "expected_sha256": "5815ddca3eb883863b397a620f7655b9d56fe354ce69773e75deacd7b993cdd1",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/repo/src/sbi4finance/calibration/full_surface.py": {
+    "actual_sha256": "f3ffbbb9d3a3440a2dfbeac78e4e84e867227d569cc28ce48d5d0fa3accc9e79",
+    "bytes": 13252,
+    "expected_sha256": "f3ffbbb9d3a3440a2dfbeac78e4e84e867227d569cc28ce48d5d0fa3accc9e79",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/repo/src/sbi4finance/calibration/inference.py": {
+    "actual_sha256": "ebc4def8fe0e9e8ae0cab976b67c96d1e3328106c25422bacc11e5907a0f4d2e",
+    "bytes": 9491,
+    "expected_sha256": "ebc4def8fe0e9e8ae0cab976b67c96d1e3328106c25422bacc11e5907a0f4d2e",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/repo/src/sbi4finance/calibration/numerical_pilot.py": {
+    "actual_sha256": "eeb73c2e97e935be3d3d0c61b41c7ac86e6905940b1900d493e022a5a0f897a2",
+    "bytes": 19229,
+    "expected_sha256": "eeb73c2e97e935be3d3d0c61b41c7ac86e6905940b1900d493e022a5a0f897a2",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/repo/src/sbi4finance/calibration/plots.py": {
+    "actual_sha256": "558d60bda9969df4115ac0a1cb161e62e85fb9712fbb21660ddc7ff267844492",
+    "bytes": 3098,
+    "expected_sha256": "558d60bda9969df4115ac0a1cb161e62e85fb9712fbb21660ddc7ff267844492",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/repo/src/sbi4finance/calibration/pricer_net.py": {
+    "actual_sha256": "e5d8da240c2dc9b242fabfe289e6623d786645acf86d42d7eb96e702c47bd489",
+    "bytes": 9178,
+    "expected_sha256": "e5d8da240c2dc9b242fabfe289e6623d786645acf86d42d7eb96e702c47bd489",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/repo/src/sbi4finance/calibration/pricing.py": {
+    "actual_sha256": "bf9b57f73f030670de2f3db37b298b56dc0070be2f99cf187188b817020f3b52",
+    "bytes": 12777,
+    "expected_sha256": "bf9b57f73f030670de2f3db37b298b56dc0070be2f99cf187188b817020f3b52",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/repo/src/sbi4finance/calibration/products.py": {
+    "actual_sha256": "9e5dfd4eeb4adf212975c111357c20d4df6ac60373b1c07c68fa8a40b92597fd",
+    "bytes": 9069,
+    "expected_sha256": "9e5dfd4eeb4adf212975c111357c20d4df6ac60373b1c07c68fa8a40b92597fd",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/repo/src/sbi4finance/calibration/pymc_reference_op.py": {
+    "actual_sha256": "99704310f8a503cad7eee2310da0204d52c213427ad21683834214018f02451b",
+    "bytes": 842,
+    "expected_sha256": "99704310f8a503cad7eee2310da0204d52c213427ad21683834214018f02451b",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/repo/src/sbi4finance/calibration/reference.py": {
+    "actual_sha256": "fd69a6958026f6addde982f2c8d57461cf549efe75f838956e0d931e12153056",
+    "bytes": 17383,
+    "expected_sha256": "fd69a6958026f6addde982f2c8d57461cf549efe75f838956e0d931e12153056",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/repo/src/sbi4finance/calibration/reference_initialization.py": {
+    "actual_sha256": "0abf68e9862d30bf152dd01e28807ed651d53a12dca4c1286ccb17c52ef0b74f",
+    "bytes": 9941,
+    "expected_sha256": "0abf68e9862d30bf152dd01e28807ed651d53a12dca4c1286ccb17c52ef0b74f",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/repo/src/sbi4finance/calibration/rough_control_diagnostic.py": {
+    "actual_sha256": "ef31703f41ac758f2b6788ff243936c0079609e695599002418b10efed885163",
+    "bytes": 19780,
+    "expected_sha256": "ef31703f41ac758f2b6788ff243936c0079609e695599002418b10efed885163",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/repo/src/sbi4finance/calibration/rough_working_grid_pilot.py": {
+    "actual_sha256": "0f351ca7f226daaed98756c1052ddcc7fc11a17d9619a336efb5a4acf19042fc",
+    "bytes": 22342,
+    "expected_sha256": "0f351ca7f226daaed98756c1052ddcc7fc11a17d9619a336efb5a4acf19042fc",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/repo/src/sbi4finance/calibration/surface.py": {
+    "actual_sha256": "24c0476ce3000208438d440cbbb1bf21efd92494b8c634592029af384ee30388",
+    "bytes": 7162,
+    "expected_sha256": "24c0476ce3000208438d440cbbb1bf21efd92494b8c634592029af384ee30388",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/repo/src/sbi4finance/calibration/tasks.py": {
+    "actual_sha256": "295d1ce59b409f8edb5edba89488fa87a5a4e7bab6f785a152ecb69db1528916",
+    "bytes": 25709,
+    "expected_sha256": "295d1ce59b409f8edb5edba89488fa87a5a4e7bab6f785a152ecb69db1528916",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/repo/src/sbi4finance/calibration/teaching.py": {
+    "actual_sha256": "f772e508949cc1befb276c92f0a146a9383f5962ac4fe14b1985901fda7fe1e5",
+    "bytes": 17696,
+    "expected_sha256": "f772e508949cc1befb276c92f0a146a9383f5962ac4fe14b1985901fda7fe1e5",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/repo/src/sbi4finance/calibration/thin.py": {
+    "actual_sha256": "a0790c87467d5a6504f0ac369fdb9a31b462c6c7e9a66d19114219873e7e5eae",
+    "bytes": 31258,
+    "expected_sha256": "a0790c87467d5a6504f0ac369fdb9a31b462c6c7e9a66d19114219873e7e5eae",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/repo/src/sbi4finance/calibration/thin_products.py": {
+    "actual_sha256": "9c0277e302806d961a80be2f6178c525b3d2ddccc8d77cf786c50cdb674169b2",
+    "bytes": 2902,
+    "expected_sha256": "9c0277e302806d961a80be2f6178c525b3d2ddccc8d77cf786c50cdb674169b2",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/repo/src/sbi4finance/calibration/validation.py": {
+    "actual_sha256": "98c73f47aa76365b775c5f7527714e4bd3e0ffc648aab5e164854ed47deead7b",
+    "bytes": 6596,
+    "expected_sha256": "98c73f47aa76365b775c5f7527714e4bd3e0ffc648aab5e164854ed47deead7b",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/repo/src/sbi4finance/calibration/variance_functionals.py": {
+    "actual_sha256": "f4b2f1e0764a5cd1d060a661fc2d15a77727a9fa43caa6555362b6ebd69f7e0e",
+    "bytes": 2135,
+    "expected_sha256": "f4b2f1e0764a5cd1d060a661fc2d15a77727a9fa43caa6555362b6ebd69f7e0e",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/repo/src/sbi4finance/calibration/why_bayes.py": {
+    "actual_sha256": "cfb1e8c9409a56cf62923e444506d791d1e5dbdddd4e7d814527ca025a0eef1b",
+    "bytes": 4204,
+    "expected_sha256": "cfb1e8c9409a56cf62923e444506d791d1e5dbdddd4e7d814527ca025a0eef1b",
+    "passed": true
+  }
+}

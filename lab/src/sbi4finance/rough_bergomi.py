@@ -101,7 +101,7 @@ def rough_driver(hurst, dt_years, innovations, *, method="hybrid"):
 
 
 def simulate_rough(parameters, curve, dt_years, innovations, *, method="hybrid",
-                   spot=1.0, rate=0.0, dividend=0.0):
+                   spot=1.0, rate=0.0, dividend=0.0, conditional_only=False):
     """Simulate from the original Q origin on a uniform grid.
 
     innovations [paths,steps,3] are independent standard normal channels for
@@ -110,7 +110,13 @@ def simulate_rough(parameters, curve, dt_years, innovations, *, method="hybrid",
     No restart API or P risk forecast is claimed. The hybrid normalizer is its
     discrete Var(Y_i), so E[v_i]=xi0(t_i) exactly for its Gaussian approximation.
     The covariance reference uses t_i^(2H); both retain log Euler asset bias.
+    conditional_only=True returns only integrated_variance and
+    volatility_driver_integral for conditional pricing. The three innovation
+    channels and their order are unchanged, including the integrated-out asset
+    channel; the default full-path API is unchanged.
     """
+    if not isinstance(conditional_only, (bool, np.bool_)):
+        raise ValueError("conditional_only must be boolean")
     p = _model_parameters(parameters, "rough")
     dt = _scalar(dt_years, "dt_years")
     if dt <= 0:
@@ -127,7 +133,10 @@ def simulate_rough(parameters, curve, dt_years, innovations, *, method="hybrid",
             variance = xi * np.exp(p["eta"] * driver - 0.5 * p["eta"] ** 2 * driver_variance)
         except FloatingPointError as error:
             raise ValueError("variance overflow; numerical support exceeded") from error
-    result = _asset_paths(variance, dt, z, p["rho"], spot, rate, dividend)
+    result = _asset_paths(variance, dt, z, p["rho"], spot, rate, dividend,
+                          conditional_only=conditional_only)
+    if conditional_only:
+        return result
     result.update(volterra_driver=driver, driver_variance=driver_variance, times=times,
                   continuation_state_available=False, driver_method=method)
     return result

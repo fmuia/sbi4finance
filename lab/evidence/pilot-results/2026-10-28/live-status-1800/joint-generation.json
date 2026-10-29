@@ -1,0 +1,39 @@
+{
+  "checked_utc": "2026-10-28T18:03:32.391603+00:00",
+  "campaign_path": "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/joint-100k",
+  "collection_id": "817de3664968de0c605ae4c73e2c99c26465344294af2fc5412f39fffa4baa50",
+  "state": "generation_active",
+  "last_poll_utc": "2026-10-28T18:02:44.813942+00:00",
+  "completed_workers": 1079,
+  "planned_workers": 3200,
+  "budget": {
+    "actual_cpu_seconds": 2124017,
+    "outstanding_cpu_seconds": 2163840,
+    "final_reserve_cpu_seconds": 3840,
+    "exposure_cpu_seconds": 4291697,
+    "nonterminal_workers": 196
+  },
+  "accounting_states": {
+    "COMPLETED|0:0": 1083,
+    "RUNNING|0:0": 196
+  },
+  "committed_part_manifests": {
+    "test": {
+      "manifest_rows": 7000,
+      "parts": 280,
+      "contiguous_prefix": 7000
+    },
+    "train": {
+      "manifest_rows": 47050,
+      "parts": 1882,
+      "contiguous_prefix": 30975
+    },
+    "validation": {
+      "manifest_rows": 5000,
+      "parts": 200,
+      "contiguous_prefix": 5000
+    }
+  },
+  "note": "Manifest counts only; the new immutable100k snapshot is not yet frozen or fully audited.",
+  "scientific_acceptance": false
+}

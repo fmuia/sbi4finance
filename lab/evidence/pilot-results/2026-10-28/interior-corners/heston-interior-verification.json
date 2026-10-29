@@ -1,0 +1,33 @@
+{
+  "reference_diagnostics_passed": true,
+  "max_rhat": 1.0029687977789614,
+  "min_bulk_ess": 1908.2518034697307,
+  "min_tail_ess": 2607.046893015021,
+  "max_abs_precision_price_shift_over_quote_sigma": 2.965958390815589e-06,
+  "max_abs_precision_log_likelihood_shift": 1.2325107377364475e-05,
+  "reference_marginal_skewness": [
+    0.050849585639920675,
+    0.00036676786269501156,
+    0.020886283103191117,
+    -0.14779808754142085
+  ],
+  "neural_reference_marginal_CDF_distances": [
+    0.019706249999999925,
+    0.030862500000000015,
+    0.03726875000000002,
+    0.06399374999999996
+  ],
+  "standardized_absolute_neural_mean_errors": [
+    0.02138235508767308,
+    0.024105669259392653,
+    0.07780556127339643,
+    0.10126725814113605
+  ],
+  "width_ratio_90": [
+    1.0163353045344625,
+    1.018347315674243,
+    1.0252718023936815,
+    1.039691532984067
+  ],
+  "scope": "Descriptive development comparison; no p-values or new acceptance gate."
+}

@@ -8,3 +8,6 @@ lab/cluster/oscar.local.json
 .claude/settings.local.json
 /results/
 tutorial/.cache/
+tutorial/assets/local-checkpoints/
+output/pdf/
+tmp/pdfs/

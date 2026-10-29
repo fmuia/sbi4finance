@@ -1,0 +1,526 @@
+{
+  "format": "known_rough_pricing_execution_v1",
+  "state": "completed_pricing_diagnostic",
+  "plan_sha256": "759b3df88ac650aab83f2bf00fcd04aa2a2ebc669d03a3b6634661f68fdb8654",
+  "attempts": [
+    {
+      "role": "metadata",
+      "state": "submitted",
+      "attempted_unix": 1793144816.1125038,
+      "argv": [
+        "sbatch",
+        "--parsable",
+        "--nodes=1",
+        "--ntasks=1",
+        "--no-requeue",
+        "--account=carney-mjfrank-condo2",
+        "--partition=batch",
+        "--cpus-per-task=1",
+        "--mem=4G",
+        "--time=00:05:00",
+        "--chdir=/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo",
+        "--job-name=known-price-metadata",
+        "--output=/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/logs/metadata-%A_%a.out",
+        "--wrap=env PYTHONPATH=/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo/src OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 /oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python /oscar/scratch/afengler/audit_known_pricing_streams_20261028.py /oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo /oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028"
+      ],
+      "stdout": "8032278\n",
+      "stderr": "",
+      "returncode": 0,
+      "job_id": "8032278",
+      "terminal": {
+        "job_id": "8032278",
+        "state": "COMPLETED",
+        "elapsed_seconds": 94,
+        "allocated_cpus": 1,
+        "exit_code": "0:0",
+        "allocated_cpu_seconds": 94
+      }
+    },
+    {
+      "role": "pilot",
+      "state": "submitted",
+      "attempted_unix": 1793145001.3183377,
+      "argv": [
+        "sbatch",
+        "--parsable",
+        "--nodes=1",
+        "--ntasks=1",
+        "--no-requeue",
+        "--account=carney-mjfrank-condo2",
+        "--partition=batch",
+        "--cpus-per-task=1",
+        "--mem=16G",
+        "--time=00:20:00",
+        "--chdir=/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo",
+        "--job-name=known-price-pilot",
+        "--output=/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/logs/pilot-%A_%a.out",
+        "--wrap=env PYTHONPATH=/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo/src OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 /oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python /oscar/scratch/afengler/known_rough_pricing_check_20261028.py worker --repo /oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo --root /oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028 --index 0"
+      ],
+      "stdout": "8032395\n",
+      "stderr": "",
+      "returncode": 0,
+      "job_id": "8032395",
+      "terminal": {
+        "job_id": "8032395",
+        "state": "COMPLETED",
+        "elapsed_seconds": 33,
+        "allocated_cpus": 1,
+        "exit_code": "0:0",
+        "allocated_cpu_seconds": 33
+      }
+    },
+    {
+      "role": "remaining",
+      "state": "submitted",
+      "attempted_unix": 1793145123.7832174,
+      "argv": [
+        "sbatch",
+        "--parsable",
+        "--nodes=1",
+        "--ntasks=1",
+        "--no-requeue",
+        "--account=carney-mjfrank-condo2",
+        "--partition=batch",
+        "--cpus-per-task=1",
+        "--mem=16G",
+        "--time=00:20:00",
+        "--chdir=/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo",
+        "--job-name=known-price-remaining",
+        "--output=/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/logs/remaining-%A_%a.out",
+        "--array=1-47%16",
+        "--wrap=env PYTHONPATH=/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo/src OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 /oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python /oscar/scratch/afengler/known_rough_pricing_check_20261028.py worker --repo /oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo --root /oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028 --index 0"
+      ],
+      "stdout": "8032433\n",
+      "stderr": "",
+      "returncode": 0,
+      "job_id": "8032433"
+    }
+  ],
+  "authorization": "Usercontinuesknown-curvepricingdiagnosis; rootapprovedsixpoints,eight65536-total-antithetic-pathreplicates,bothgrids,24CPUh,noGPU.",
+  "resources": {
+    "cpu_ceiling_seconds": 86400,
+    "gpu_ceiling_seconds": 0,
+    "cpus_per_worker": 1,
+    "gpus": 0,
+    "worker_wall_seconds": 1200,
+    "cleanup_seconds_per_job": 240,
+    "max_concurrent_workers": 16,
+    "memory_gib_per_worker": 16,
+    "all48_worker_full_exposure_cpu_seconds": 69120,
+    "metadata_full_exposure_cpu_seconds": 540,
+    "final_integrity_reserved_cpu_seconds": 3600,
+    "prospective_total_cpu_seconds": 73260
+  },
+  "frozen_submission_sources": {
+    "/oscar/scratch/afengler/known_rough_pricing_check_20261028.py": "007edba3796be584a15153c0449b3b527a97cacbe1bb622f4e4ecda77c92a01a",
+    "/oscar/scratch/afengler/audit_known_pricing_streams_20261028.py": "39ced3e724611876bc7bf65bb1f6a93242d17ef73fb01df902c5f3a5473a51bb",
+    "/oscar/scratch/afengler/submit_known_pricing_validation_20261028.py": "162109c71380c15db2bd4e7052bfbf2297fe80dd4dad0e1bdd4601a9eb0f1811"
+  },
+  "automatic_retry": false,
+  "scientific_acceptance": false,
+  "reserved_test_evaluated": false,
+  "stream_audit_sha256": "c31c5fba82dc1e59b127e7b1f3cfca77dd00d2cc5a7692b73b8aab3e5e3971bb",
+  "pilot_elapsed_seconds": 30.830979650840163,
+  "terminal_accounting": [
+    {
+      "job_id": "8032278",
+      "state": "COMPLETED",
+      "elapsed_seconds": 94,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 94
+    },
+    {
+      "job_id": "8032395",
+      "state": "COMPLETED",
+      "elapsed_seconds": 33,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 33
+    },
+    {
+      "job_id": "8032433_1",
+      "state": "COMPLETED",
+      "elapsed_seconds": 36,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 36
+    },
+    {
+      "job_id": "8032433_2",
+      "state": "COMPLETED",
+      "elapsed_seconds": 36,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 36
+    },
+    {
+      "job_id": "8032433_3",
+      "state": "COMPLETED",
+      "elapsed_seconds": 35,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 35
+    },
+    {
+      "job_id": "8032433_4",
+      "state": "COMPLETED",
+      "elapsed_seconds": 36,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 36
+    },
+    {
+      "job_id": "8032433_5",
+      "state": "COMPLETED",
+      "elapsed_seconds": 36,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 36
+    },
+    {
+      "job_id": "8032433_6",
+      "state": "COMPLETED",
+      "elapsed_seconds": 49,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 49
+    },
+    {
+      "job_id": "8032433_7",
+      "state": "COMPLETED",
+      "elapsed_seconds": 49,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 49
+    },
+    {
+      "job_id": "8032433_8",
+      "state": "COMPLETED",
+      "elapsed_seconds": 49,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 49
+    },
+    {
+      "job_id": "8032433_9",
+      "state": "COMPLETED",
+      "elapsed_seconds": 49,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 49
+    },
+    {
+      "job_id": "8032433_10",
+      "state": "COMPLETED",
+      "elapsed_seconds": 55,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 55
+    },
+    {
+      "job_id": "8032433_11",
+      "state": "COMPLETED",
+      "elapsed_seconds": 55,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 55
+    },
+    {
+      "job_id": "8032433_12",
+      "state": "COMPLETED",
+      "elapsed_seconds": 54,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 54
+    },
+    {
+      "job_id": "8032433_13",
+      "state": "COMPLETED",
+      "elapsed_seconds": 54,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 54
+    },
+    {
+      "job_id": "8032433_14",
+      "state": "COMPLETED",
+      "elapsed_seconds": 54,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 54
+    },
+    {
+      "job_id": "8032433_15",
+      "state": "COMPLETED",
+      "elapsed_seconds": 53,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 53
+    },
+    {
+      "job_id": "8032433_16",
+      "state": "COMPLETED",
+      "elapsed_seconds": 54,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 54
+    },
+    {
+      "job_id": "8032433_17",
+      "state": "COMPLETED",
+      "elapsed_seconds": 36,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 36
+    },
+    {
+      "job_id": "8032433_18",
+      "state": "COMPLETED",
+      "elapsed_seconds": 36,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 36
+    },
+    {
+      "job_id": "8032433_19",
+      "state": "COMPLETED",
+      "elapsed_seconds": 36,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 36
+    },
+    {
+      "job_id": "8032433_20",
+      "state": "COMPLETED",
+      "elapsed_seconds": 36,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 36
+    },
+    {
+      "job_id": "8032433_21",
+      "state": "COMPLETED",
+      "elapsed_seconds": 37,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 37
+    },
+    {
+      "job_id": "8032433_22",
+      "state": "COMPLETED",
+      "elapsed_seconds": 281,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 281
+    },
+    {
+      "job_id": "8032433_23",
+      "state": "COMPLETED",
+      "elapsed_seconds": 291,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 291
+    },
+    {
+      "job_id": "8032433_24",
+      "state": "COMPLETED",
+      "elapsed_seconds": 289,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 289
+    },
+    {
+      "job_id": "8032433_25",
+      "state": "COMPLETED",
+      "elapsed_seconds": 291,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 291
+    },
+    {
+      "job_id": "8032433_26",
+      "state": "COMPLETED",
+      "elapsed_seconds": 267,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 267
+    },
+    {
+      "job_id": "8032433_27",
+      "state": "COMPLETED",
+      "elapsed_seconds": 266,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 266
+    },
+    {
+      "job_id": "8032433_28",
+      "state": "COMPLETED",
+      "elapsed_seconds": 265,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 265
+    },
+    {
+      "job_id": "8032433_29",
+      "state": "COMPLETED",
+      "elapsed_seconds": 263,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 263
+    },
+    {
+      "job_id": "8032433_30",
+      "state": "COMPLETED",
+      "elapsed_seconds": 267,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 267
+    },
+    {
+      "job_id": "8032433_31",
+      "state": "COMPLETED",
+      "elapsed_seconds": 267,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 267
+    },
+    {
+      "job_id": "8032433_32",
+      "state": "COMPLETED",
+      "elapsed_seconds": 269,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 269
+    },
+    {
+      "job_id": "8032433_33",
+      "state": "COMPLETED",
+      "elapsed_seconds": 253,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 253
+    },
+    {
+      "job_id": "8032433_34",
+      "state": "COMPLETED",
+      "elapsed_seconds": 256,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 256
+    },
+    {
+      "job_id": "8032433_35",
+      "state": "COMPLETED",
+      "elapsed_seconds": 257,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 257
+    },
+    {
+      "job_id": "8032433_36",
+      "state": "COMPLETED",
+      "elapsed_seconds": 257,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 257
+    },
+    {
+      "job_id": "8032433_37",
+      "state": "COMPLETED",
+      "elapsed_seconds": 256,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 256
+    },
+    {
+      "job_id": "8032433_38",
+      "state": "COMPLETED",
+      "elapsed_seconds": 34,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 34
+    },
+    {
+      "job_id": "8032433_39",
+      "state": "COMPLETED",
+      "elapsed_seconds": 33,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 33
+    },
+    {
+      "job_id": "8032433_40",
+      "state": "COMPLETED",
+      "elapsed_seconds": 36,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 36
+    },
+    {
+      "job_id": "8032433_41",
+      "state": "COMPLETED",
+      "elapsed_seconds": 36,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 36
+    },
+    {
+      "job_id": "8032433_42",
+      "state": "COMPLETED",
+      "elapsed_seconds": 46,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 46
+    },
+    {
+      "job_id": "8032433_43",
+      "state": "COMPLETED",
+      "elapsed_seconds": 46,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 46
+    },
+    {
+      "job_id": "8032433_44",
+      "state": "COMPLETED",
+      "elapsed_seconds": 47,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 47
+    },
+    {
+      "job_id": "8032433_45",
+      "state": "COMPLETED",
+      "elapsed_seconds": 50,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 50
+    },
+    {
+      "job_id": "8032433_46",
+      "state": "COMPLETED",
+      "elapsed_seconds": 52,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 52
+    },
+    {
+      "job_id": "8032433_47",
+      "state": "COMPLETED",
+      "elapsed_seconds": 53,
+      "allocated_cpus": 1,
+      "exit_code": "0:0",
+      "allocated_cpu_seconds": 53
+    }
+  ],
+  "total_allocated_cpu_seconds": 5790,
+  "total_allocated_cpu_hours": 1.6083333333333334,
+  "allocated_gpu_seconds": 0,
+  "completed_pricing_batches": 48,
+  "frozen_inputs_verified": true,
+  "summary_sha256": "e9780b6b8d5308b499ef421ba2fa33b1c45153af7988fadcaa906651e9e069fb",
+  "summary_driver_sha256": "6025b4e6c641206f878ec45d4154d529e3bb75ffae725b9d72c594be3ef74a82",
+  "collection_driver_sha256": "181f3c55628a4a0cd7fd6f574fdd5c4e55c1fccaa0fda54e79b7177a364cdf1e"
+}

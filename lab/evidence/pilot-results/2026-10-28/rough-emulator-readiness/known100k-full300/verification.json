@@ -1,0 +1,30 @@
+{
+  "status": "completed_zero_mc_rescore",
+  "source_job_id": "8060582",
+  "candidate_pricer_sha256": "069593fc90e47761df7c06657e7a729781dce3680b50105dd4f1d5a094e4756d",
+  "completed_and_stable_source_checks": true,
+  "copied_pricer_hashes_reverified": true,
+  "fixed_points": 6,
+  "saved_mc_batches_reused": 48,
+  "grids": 2,
+  "contracts": 63,
+  "new_simulation_paths": 0,
+  "new_mcmc": false,
+  "new_training": false,
+  "new_cluster_allocations": 0,
+  "reserved_test_evaluated": false,
+  "all_gradient_checks_passed": true,
+  "all12_rms_point_estimates_lower_than50k_and_original100k": true,
+  "older_report_directories_unchanged_from_git": true,
+  "candidate_promoted": false,
+  "runtime": {
+    "python": "3.12.16",
+    "system": "Darwin",
+    "machine": "arm64",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "pytensor": "3.3.4"
+  },
+  "report_sha256": "e96bf4d1a9ab19d6f962d28b4dce9b97e1bf2cec0d62fa2b6cf618c501d41d09",
+  "new_posterior_sampling": false
+}

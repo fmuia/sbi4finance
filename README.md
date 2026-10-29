@@ -19,6 +19,12 @@ path is Heston, then rough Bergomi.
 | 5 | Rough Bergomi on the SPY smile: from the posterior to a reserve | `slot5_calibration.py` |
 | 6 | Changing priors and dealing with misspecified models | in preparation |
 
+The current numerical release has 100k training surfaces and completed baseline fits for Heston, known-curve
+rough Bergomi and joint-curve rough Bergomi. The new cached examples are synthetic; historical SPY results
+retain their own provenance. Start with the [data and training guide](lab/plans/training-data-guide.md)
+and [current work order](lab/plans/backbone-delivery-work-order.md). Conditional rough references and
+downstream-product checks remain scoped follow-ups.
+
 Presenters, dates and decisions: [`tutorial/curriculum/00-overview.md`](tutorial/curriculum/00-overview.md). State
 of the studies and of the training runs: [`course/status.md`](course/status.md).
 
@@ -57,14 +63,15 @@ Guides: [`course/README.md`](course/README.md), [`tutorial/README.md`](tutorial/
   numbers differ from the lab's. The little code written for the tutorial alone is listed, with the reason, in
   `lab/studies/copy_to_tutorial.py`.
 - **Files enter `tutorial/assets/` only through lab tools** (`accept`, `manifest`, `checks/heston_spy_exact.py`),
-  with their SHA-256 in `tutorial/MANIFEST.md`, which the tutorial's tests check. Slot 2's toy network is the
-  exception: the notebook trains it when it is missing.
+  with their SHA-256 in `tutorial/MANIFEST.md`, which the tutorial's tests check. Slot 2's explicit toy
+  training stays in memory for that session and does not write assets.
 - **Every number on screen is in `tutorial/CLAIMS.md`**, with its study, file and status. Only verified claims go on
   screen; pilot values are labelled. ⟨Sn⟩ marks a number that study Sn will produce.
 - **The stage never waits.** Every live cell has a cached fallback and a time budget; nothing is downloaded, and
   nothing trains unless a button says so.
-- **Large outputs stay on the cluster.** Banks are regenerated from configuration and seed; banks, model payloads
-  and posterior draws are identified by SHA-256. Git holds compact run records: README, summary JSON, key figures.
+- **Large payloads stay outside Git.** Versioned banks and pretrained models are available through the
+  [collaborator data guide](lab/plans/training-data-guide.md), with GitHub and Drive mirrors and SHA-256 checksums.
+  Git holds compact evidence and teaching caches. Existing prices are reused rather than regenerated.
 - **Course figures are committed**, drawn by `course/scripts/` in the lab environment.
 - **Plans and status pages are updated in place.**
 
@@ -81,8 +88,10 @@ cd tutorial && pixi install --locked && pixi run test   # about 10 seconds
 cd lab && pixi install --locked && pixi run test        # about 2 minutes
 ```
 
-Both use Python 3.12, BayesFlow 2.0.14, Keras 3.15.1 and JAX 0.11.1 (`KERAS_BACKEND=jax`), and are locked for Linux
-and macOS on Apple silicon; the tutorial also for Windows, not yet tested. The course needs nothing installed.
+The participant environment and the lab's `core`/`core-gpu` profiles use Python 3.12, BayesFlow 2.1.0,
+Keras 3.15.1 and JAX 0.11.1. The lab default BF2.0.14 profile remains for archived legacy studies; use
+`pixi run --locked -e core ...` for the current backbone. Locks cover Linux/macOS, and the tutorial also
+Windows (not yet tested). The written course needs nothing installed.
 
 ## Tutorial
 
@@ -177,11 +186,12 @@ Each entry is `pixi run` followed by the name.
   $\delta = k / (\sigma_{\text{ref}}\sqrt{T}) \in \lbrace -2, -1.5, \dots, 2 \rbrace$, with $\sigma_{\text{ref}} = 0.20$
   and $k$ the log-moneyness. Puts for $\delta \le 0$, calls above.
 - Time is business days over 252; one volatility point is 0.01.
-- Quote noise is Gaussian in implied volatility, from 0.3 volatility points at the money to 1.0 at $|\delta| = 2$,
-  linear in $|\delta|$, converted to price by each contract's vega at $\sigma_{\text{ref}}$.
+- Quote errors are independent Gaussian in price. Their standard deviations use reference Black–Scholes vega
+  times a volatility-equivalent scale rising from 0.3 volatility points at the money to 1.0 at the wings.
 - Heston infers $v_0$, $\theta$, $\sigma_v$ and $\rho$ with $\kappa = 2$. Rough Bergomi infers $H$, $\eta$ and
   $\rho$ given a forward-variance curve of 7 levels. Symbols: [course/README.md](course/README.md#symbols).
-- Studies use fixed, disjoint rows of the test split.
+- Current development uses training and validation. Freeze the model and criteria before reserved-test evaluation;
+  historical registered studies retain their recorded split provenance.
 
 ## People
 

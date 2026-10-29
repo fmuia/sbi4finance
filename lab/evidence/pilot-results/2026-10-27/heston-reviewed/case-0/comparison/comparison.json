@@ -1,0 +1,786 @@
+{
+  "checkpoint_metadata_sha256": {
+    "model.keras": "2b364ed687a22fcefc04cd9fb977f68aebcb4f9cecb32f13a4be69925d11400f",
+    "task.json": "5e499526ff8f29a72f49785a1a36006b1d769d26bca8a6f83f7a8c8ac4d431fa",
+    "training.json": "aac38944c2c861657abe24eade4360c46c9c99a4eb72db7aa2c29694044cf5c3"
+  },
+  "checkpoint_sha256": "2b364ed687a22fcefc04cd9fb977f68aebcb4f9cecb32f13a4be69925d11400f",
+  "format": "full_surface_reference_comparison_v1",
+  "network": {
+    "encoder": "vector",
+    "family": "spline",
+    "flow_steps": 100,
+    "mean_steps": 4,
+    "summary_dim": 32,
+    "widths": [
+      128,
+      128
+    ]
+  },
+  "neural_draws_requested": 10000,
+  "observed_prices": [
+    0.0038507397181568033,
+    0.0063731416702867884,
+    0.010093634871937584,
+    0.014290869755705475,
+    0.02086018232250487,
+    0.01412009707819778,
+    0.009668557559205466,
+    0.006169685381835344,
+    0.0037824489649307402,
+    0.005517882876072346,
+    0.00856085248865397,
+    0.013967667110962697,
+    0.02033313521282551,
+    0.029470461704458998,
+    0.020731525255141707,
+    0.013446154393998015,
+    0.008905159525088286,
+    0.005389442295430482,
+    0.008086624291407059,
+    0.013113766035900379,
+    0.01981282938100516,
+    0.029366934926797247,
+    0.04297266282925125,
+    0.03012914642509403,
+    0.0203948378896002,
+    0.013482161406137913,
+    0.007687686609094776,
+    0.011214195941861533,
+    0.01835632725624862,
+    0.028471676311027396,
+    0.04227374272101867,
+    0.06034283576867739,
+    0.04217298258479347,
+    0.0276886136173507,
+    0.018016712434701758,
+    0.010607670129751806,
+    0.013963479766764155,
+    0.023301614738870404,
+    0.03317252806024272,
+    0.05065191352557035,
+    0.07356282208003882,
+    0.052968998157813335,
+    0.03468422560014295,
+    0.022518350602963703,
+    0.013382819604088709,
+    0.02048583398585836,
+    0.031968666878863745,
+    0.04711904059446496,
+    0.07124462464829681,
+    0.10396948058755147,
+    0.07475415935630401,
+    0.049635684510687096,
+    0.03253389252320404,
+    0.019816288959700307,
+    0.027647475062610748,
+    0.041043278058681736,
+    0.06331151456044905,
+    0.10193479560265327,
+    0.14791943771333396,
+    0.10628813128928315,
+    0.07223075146874812,
+    0.04699285351704592,
+    0.029877752461747502
+  ],
+  "parameter_names": [
+    "initial_variance",
+    "theta",
+    "vol_of_vol",
+    "rho"
+  ],
+  "precision": {
+    "all_points_priced": true,
+    "issues": [],
+    "max_abs_log_likelihood_shift": 7.465758017133339e-06,
+    "max_abs_price_shift_over_quote_sigma": 2.9655754580553703e-06,
+    "posterior_stability_assessed": false,
+    "scope": "pointwise numerical sensitivity only; not posterior stability",
+    "sha256": "c073e80c87d78f493f4d0933881361e8acd0c87e04fa3d6aa0d33e56a0b49533"
+  },
+  "proposed_parameter_agreement": {
+    "all_checks_passed": false,
+    "limitations": "proposed parameter-only rules; reference quantile MCSE, numerical posterior stability and product acceptance remain unassessed",
+    "parameters": {
+      "initial_variance": {
+        "mean_error_within_0_3_reference_sd": false,
+        "reference_mcse_mean": 1.0147336045407209e-05,
+        "reference_mcse_mean_over_sd": 0.0219126272382691,
+        "reference_mcse_sd": 6.2068777629622974e-06,
+        "reference_mean": 0.1388957028497735,
+        "reference_q05": 0.1381283809322682,
+        "reference_q95": 0.1396655250878725,
+        "reference_quantile_mcse": null,
+        "reference_sd": 0.0004630816713609535,
+        "relative_width_error_within_25_percent": false,
+        "standardized_mean_error": 0.7564234790958709,
+        "width_ratio_90": 1.4646811896754868
+      },
+      "rho": {
+        "mean_error_within_0_3_reference_sd": false,
+        "reference_mcse_mean": 0.0004852211912735582,
+        "reference_mcse_mean_over_sd": 0.02410797166581411,
+        "reference_mcse_sd": 0.00031929393560565735,
+        "reference_mean": -0.25309014838975497,
+        "reference_q05": -0.288197196779372,
+        "reference_q95": -0.22304835292754532,
+        "reference_quantile_mcse": null,
+        "reference_sd": 0.02012700188965369,
+        "relative_width_error_within_25_percent": false,
+        "standardized_mean_error": 0.4209343798679558,
+        "width_ratio_90": 1.7344817541161157
+      },
+      "theta": {
+        "mean_error_within_0_3_reference_sd": true,
+        "reference_mcse_mean": 3.428449055062402e-05,
+        "reference_mcse_mean_over_sd": 0.02288793985133229,
+        "reference_mcse_sd": 1.9757138097027348e-05,
+        "reference_mean": 0.15721196981961327,
+        "reference_q05": 0.15461722162128863,
+        "reference_q95": 0.15949074099618968,
+        "reference_quantile_mcse": null,
+        "reference_sd": 0.0014979282003237328,
+        "relative_width_error_within_25_percent": true,
+        "standardized_mean_error": 0.18171181383332818,
+        "width_ratio_90": 1.1663662890084427
+      },
+      "vol_of_vol": {
+        "mean_error_within_0_3_reference_sd": true,
+        "reference_mcse_mean": 0.0009959102797058655,
+        "reference_mcse_mean_over_sd": 0.022054314301965163,
+        "reference_mcse_sd": 0.0006083124450749535,
+        "reference_mean": 0.585411216749046,
+        "reference_q05": 0.5109082790990447,
+        "reference_q95": 0.6577721891379554,
+        "reference_quantile_mcse": null,
+        "reference_sd": 0.045157163631114314,
+        "relative_width_error_within_25_percent": false,
+        "standardized_mean_error": 0.24496143985470553,
+        "width_ratio_90": 1.6189191753114929
+      }
+    }
+  },
+  "reference_chain_shape": [
+    4,
+    8000,
+    4
+  ],
+  "reference_diagnostics": {
+    "elapsed_seconds": 381.95178570970893,
+    "limitations": "Also assess numerical-price refinement, products and reference uncertainty.",
+    "mcmc_diagnostics_passed": true,
+    "parameters": {
+      "parameters[initial_variance]": {
+        "ess_bulk": 2085.3961951672923,
+        "ess_tail": 2215.410347677147,
+        "eti89_lb": 0.13815653858871701,
+        "eti89_ub": 0.13964481518159452,
+        "mcse_mean": 1.0147336045407209e-05,
+        "mcse_sd": 6.2068777629622974e-06,
+        "mean": 0.1388957028497735,
+        "r_hat": 1.00335764577761,
+        "sd": 0.0004630889071816561
+      },
+      "parameters[rho]": {
+        "ess_bulk": 1702.6143265822502,
+        "ess_tail": 2545.8707858714656,
+        "eti89_lb": -0.286894721678734,
+        "eti89_ub": -0.22376785822325995,
+        "mcse_mean": 0.0004852211912735582,
+        "mcse_sd": 0.00031929393560565735,
+        "mean": -0.25309014838975497,
+        "r_hat": 1.0018949991832045,
+        "sd": 0.020127316381429217
+      },
+      "parameters[theta]": {
+        "ess_bulk": 1721.1062742069078,
+        "ess_tail": 1617.0610453832187,
+        "eti89_lb": 0.1547170300209844,
+        "eti89_ub": 0.15944905753782632,
+        "mcse_mean": 3.428449055062402e-05,
+        "mcse_sd": 1.9757138097027348e-05,
+        "mean": 0.15721196981961327,
+        "r_hat": 1.0012473160553212,
+        "sd": 0.001497951606000447
+      },
+      "parameters[vol_of_vol]": {
+        "ess_bulk": 2061.033384165268,
+        "ess_tail": 2789.5580002606685,
+        "eti89_lb": 0.5126701079543462,
+        "eti89_ub": 0.6564216493847318,
+        "mcse_mean": 0.0009959102797058655,
+        "mcse_sd": 0.0006083124450749535,
+        "mean": 0.585411216749046,
+        "r_hat": 1.0007990157177562,
+        "sd": 0.04515786922833393
+      }
+    },
+    "requirements": {
+      "ess_bulk_min": 400,
+      "ess_tail_min": 400,
+      "r_hat_max": 1.01
+    },
+    "scientific_acceptance": "not_assessed",
+    "variance_functionals": {
+      "mcmc_diagnostics_passed": true,
+      "names": {
+        "forward_variance_0_5_to_1y": {
+          "ess_bulk": 1736.6192244197096,
+          "ess_tail": 1617.3302663715253,
+          "mcse_mean": 2.5409670712740857e-05,
+          "mcse_sd": 1.4455751418019083e-05,
+          "r_hat": 1.001142105288042
+        },
+        "variance_swap_1y": {
+          "ess_bulk": 1798.4212017997847,
+          "ess_tail": 1774.0559924028362,
+          "mcse_mean": 1.8060971377280007e-05,
+          "mcse_sd": 1.0122089291847151e-05,
+          "r_hat": 1.0011216857754806
+        }
+      },
+      "requirements": {
+        "ess_bulk_min": 400,
+        "ess_tail_min": 400,
+        "r_hat_max": 1.01
+      },
+      "scope": "analytic variance-unit functionals; a product pass does not imply parameter or scientific acceptance"
+    }
+  },
+  "reference_input_sha256": {
+    "chains.npz": "be70a6798988bad251254fbe86df901b3affb5e0def92555aceb145f1fcb8505",
+    "diagnostics.json": "72bd9616e0a4f3985cbe6f642156e0650776a80e11770dbdb668917b20608808",
+    "reference.json": "35e646876a5c4a1413593455741dc0a3a6688678909a570353ec4fc70125c902"
+  },
+  "reference_issues": [],
+  "reference_split": "validation",
+  "sampling_and_comparison_seconds": 3.8470641747117043,
+  "sampling_seed": 271026,
+  "scientific_acceptance": false,
+  "scope": "one development conditional comparison; no global acceptance or coverage claim",
+  "source_sha256": {
+    "calibration/full_surface.py": "3b9c1a3d02a687aafd08cb9b4e096d52e7710d0a184e96f0c43009cdbc3be38b",
+    "calibration/validation.py": "98c73f47aa76365b775c5f7527714e4bd3e0ffc648aab5e164854ed47deead7b",
+    "calibration/variance_functionals.py": "f4b2f1e0764a5cd1d060a661fc2d15a77727a9fa43caa6555362b6ebd69f7e0e",
+    "scripts/compare_full_surface_reference.py": "a420f5bfb493412ddfab94cbaf80a2a7e737a9245982ba53acd2472bcd0084f3"
+  },
+  "status": "completed_development_comparison",
+  "surface_id": "validation:0",
+  "task": {
+    "context": {
+      "contracts": [
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "put",
+          "strike": 0.9452142884010055
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "put",
+          "strike": 0.9586226994567999
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "put",
+          "strike": 0.9722213165740635
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "put",
+          "strike": 0.9860128379357256
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "call",
+          "strike": 1.014185578043342
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "call",
+          "strike": 1.0285723867111078
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "call",
+          "strike": 1.0431632805760247
+        },
+        {
+          "maturity": 0.01984126984126984,
+          "option_type": "call",
+          "strike": 1.0579611547045846
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "put",
+          "strike": 0.9234100296746439
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "put",
+          "strike": 0.9419892367120802
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "put",
+          "strike": 0.9609422613636284
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "put",
+          "strike": 0.9802766249195318
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "call",
+          "strike": 1.0201202136
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "call",
+          "strike": 1.0406452501953098
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "call",
+          "strike": 1.061583254911065
+        },
+        {
+          "maturity": 0.03968253968253968,
+          "option_type": "call",
+          "strike": 1.0829425367540593
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "put",
+          "strike": 0.8909472522884108
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "put",
+          "strike": 0.9170415101799084
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "put",
+          "strike": 0.9439000224008953
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "put",
+          "strike": 0.9715451725992442
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "call",
+          "strike": 1.029288218606067
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "call",
+          "strike": 1.0594342369612506
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "call",
+          "strike": 1.0904631784921235
+        },
+        {
+          "maturity": 0.08333333333333333,
+          "option_type": "call",
+          "strike": 1.1224009024456676
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "put",
+          "strike": 0.8493369300745177
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "put",
+          "strike": 0.8847284766100544
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "put",
+          "strike": 0.9215947754162442
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "put",
+          "strike": 0.9599972788587706
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "call",
+          "strike": 1.041669619302238
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "call",
+          "strike": 1.0850755957772693
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "call",
+          "strike": 1.1302902827674572
+        },
+        {
+          "maturity": 0.16666666666666666,
+          "option_type": "call",
+          "strike": 1.177389048551396
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "put",
+          "strike": 0.8187307530779818
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "put",
+          "strike": 0.8607079764250578
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "put",
+          "strike": 0.9048374180359595
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "put",
+          "strike": 0.951229424500714
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "call",
+          "strike": 1.0512710963760241
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "call",
+          "strike": 1.1051709180756477
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "call",
+          "strike": 1.161834242728283
+        },
+        {
+          "maturity": 0.25,
+          "option_type": "call",
+          "strike": 1.2214027581601699
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "put",
+          "strike": 0.7536383164437648
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "put",
+          "strike": 0.808857893484718
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "put",
+          "strike": 0.8681234453945849
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "put",
+          "strike": 0.9317314234233945
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "call",
+          "strike": 1.073270660257192
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "call",
+          "strike": 1.151909910168909
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "call",
+          "strike": 1.2363111098437878
+        },
+        {
+          "maturity": 0.5,
+          "option_type": "call",
+          "strike": 1.3268964411453439
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "put",
+          "strike": 0.6703200460356393
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "put",
+          "strike": 0.7408182206817179
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "put",
+          "strike": 0.8187307530779818
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "put",
+          "strike": 0.9048374180359595
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "put",
+          "strike": 1.0
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "call",
+          "strike": 1.1051709180756477
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "call",
+          "strike": 1.2214027581601699
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "call",
+          "strike": 1.3498588075760032
+        },
+        {
+          "maturity": 1.0,
+          "option_type": "call",
+          "strike": 1.4918246976412703
+        }
+      ],
+      "dividend": 0.0,
+      "quote_noise_std": [
+        7.393122257748389e-05,
+        0.00014734934969936199,
+        0.00021842402110031601,
+        0.0002338836145277794,
+        0.00016856715907419804,
+        0.00023720138879472198,
+        0.00022466491669818916,
+        0.00015370943102313063,
+        7.82163616067961e-05,
+        0.00010333131487679448,
+        0.00020654717174897207,
+        0.00030707070665308804,
+        0.0003297651437400239,
+        0.00023836631390862972,
+        0.0003364000888699078,
+        0.0003195516723526538,
+        0.00021926701887794902,
+        0.0001119018762588081,
+        0.0001470535520785712,
+        0.0002952606968936182,
+        0.00044092792100661605,
+        0.0004756382639001542,
+        0.00034535022356236905,
+        0.0004895688613506721,
+        0.0004671341355465552,
+        0.0003219709180184147,
+        0.00016505303956082854,
+        0.0002029661289650328,
+        0.0004099682159446388,
+        0.0006158977907659265,
+        0.0006683659690345338,
+        0.00048819551274953464,
+        0.0006962165245187742,
+        0.0006682956622532423,
+        0.00046338309072573556,
+        0.00023897009747029984,
+        0.0002439600928959136,
+        0.0004950371278750658,
+        0.0007471169572237573,
+        0.0008144916556710369,
+        0.0005976658711421461,
+        0.0008562515358464142,
+        0.0008256919335248641,
+        0.0005751510865871115,
+        0.0002979735303440804,
+        0.00033059924189120005,
+        0.0006778258107718836,
+        0.0010336325808796537,
+        0.0011385746299607095,
+        0.0008441713068195146,
+        0.0012219987448500187,
+        0.0011906516133887396,
+        0.0008380035803961523,
+        0.00043867095751078236,
+        0.00043983595980427227,
+        0.0009150968861055087,
+        0.0014160391507115786,
+        0.0015828168637360485,
+        0.0011908576424310355,
+        0.0017492831664407858,
+        0.001729554124341907,
+        0.001235251591494895,
+        0.000656158147746766
+      ],
+      "rate": 0.0,
+      "spot": 1.0
+    },
+    "context_prior": {},
+    "fixed_parameters": {
+      "jump_down_rate": 10.0,
+      "jump_intensity": 0.0,
+      "jump_up_probability": 0.5,
+      "jump_up_rate": 10.0,
+      "kappa": 2.0
+    },
+    "measure": "Q",
+    "model": "hkde",
+    "model_context": {},
+    "numerics": {
+      "max_refinement_over_quote_sigma": 0.1,
+      "quadrature_ladder": [
+        [
+          512,
+          400.0
+        ],
+        [
+          1024,
+          600.0
+        ],
+        [
+          2048,
+          1500.0
+        ],
+        [
+          4096,
+          3000.0
+        ],
+        [
+          8192,
+          6000.0
+        ]
+      ]
+    },
+    "parameter_names": [
+      "initial_variance",
+      "theta",
+      "vol_of_vol",
+      "rho"
+    ],
+    "prior_bounds": [
+      [
+        0.01,
+        0.16
+      ],
+      [
+        0.01,
+        0.16
+      ],
+      [
+        0.1,
+        1.5
+      ],
+      [
+        -0.95,
+        -0.1
+      ]
+    ],
+    "task_id": "hkde_calibration_v1"
+  },
+  "task_fingerprint": "5e499526ff8f29a72f49785a1a36006b1d769d26bca8a6f83f7a8c8ac4d431fa",
+  "training_dataset": {
+    "collection_id": "402230db66b9885b59524e7808eebf1b3882c4a271f97eccc7cf970581e85221",
+    "manifest_sha256": "1a7906f58a2b3e1e4cc868bc819c9c9308357f2f23f7fbb642c682860fb0074f",
+    "task_fingerprint": "5e499526ff8f29a72f49785a1a36006b1d769d26bca8a6f83f7a8c8ac4d431fa"
+  },
+  "variance_product_comparison": {
+    "limitations": "Analytic mean-curve functionals only; no vol-of-vol/leverage or path-dependent-price check. Absolute product tolerances and reference quantile MCSE are unassessed; no acceptance verdict.",
+    "products": {
+      "forward_variance_0_5_to_1y": {
+        "absolute_q10_error": 0.0006311607050251133,
+        "absolute_q90_error": 3.6427575223624276e-05,
+        "neural_mean": 0.15266227724764003,
+        "neural_q10": 0.15085836589717502,
+        "neural_q90": 0.15434210510528043,
+        "reference_90_percent_width": 0.0036133519403405145,
+        "reference_diagnostics": {
+          "ess_bulk": 1736.6192244197096,
+          "ess_tail": 1617.3302663715253,
+          "mcse_mean": 2.5409670712740857e-05,
+          "mcse_sd": 1.4455751418019083e-05,
+          "r_hat": 1.001142105288042
+        },
+        "reference_diagnostics_passed": true,
+        "reference_mean": 0.15295262894060233,
+        "reference_q05": 0.15103099985675744,
+        "reference_q10": 0.15148952660220014,
+        "reference_q90": 0.15437853268050405,
+        "reference_q95": 0.15464435179709796,
+        "reference_quantile_mcse": null,
+        "reference_sd": 0.001112791021209332
+      },
+      "variance_swap_1y": {
+        "absolute_q10_error": 0.0005562605722942704,
+        "absolute_q90_error": 7.40151565388758e-05,
+        "neural_mean": 0.14898730085149614,
+        "neural_q10": 0.1476857950697444,
+        "neural_q90": 0.15022350006557,
+        "reference_90_percent_width": 0.0025924703941285487,
+        "reference_diagnostics": {
+          "ess_bulk": 1798.4212017997847,
+          "ess_tail": 1774.0559924028362,
+          "mcse_mean": 1.8060971377280007e-05,
+          "mcse_sd": 1.0122089291847151e-05,
+          "r_hat": 1.0011216857754806
+        },
+        "reference_diagnostics_passed": true,
+        "reference_mean": 0.14929325492379372,
+        "reference_q05": 0.1479119390480719,
+        "reference_q10": 0.14824205564203868,
+        "reference_q90": 0.15029751522210888,
+        "reference_q95": 0.15050440944220045,
+        "reference_quantile_mcse": null,
+        "reference_sd": 0.0007954180788299897
+      }
+    },
+    "scientific_acceptance": false,
+    "status": "descriptive_development_comparison",
+    "units": "annualized variance, spot-normalized, continuous monitoring"
+  },
+  "versions": {
+    "bayesflow": "2.1.0",
+    "jax": "0.11.1",
+    "keras": "3.15.1",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1"
+  }
+}

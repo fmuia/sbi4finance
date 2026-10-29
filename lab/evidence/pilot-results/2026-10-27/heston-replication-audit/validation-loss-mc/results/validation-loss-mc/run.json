@@ -1,0 +1,1161 @@
+{
+  "format": "heston_paired_validation_loss_mc_v1",
+  "status": "completed",
+  "scientific_acceptance": false,
+  "development_audit": true,
+  "seeds": [
+    281001,
+    281002,
+    281003,
+    281004,
+    281005,
+    281006,
+    281007,
+    281008,
+    281009,
+    281010,
+    281011,
+    281012,
+    281013,
+    281014,
+    281015,
+    281016,
+    281017,
+    281018,
+    281019,
+    281020,
+    281021,
+    281022,
+    281023,
+    281024,
+    281025,
+    281026,
+    281027,
+    281028,
+    281029,
+    281030,
+    281031,
+    281032
+  ],
+  "replicates": 32,
+  "loss_difference_convention": "final500 - best402",
+  "completed_pairs": [
+    {
+      "replicate": 0,
+      "seed": 281001,
+      "best402": 0.20558438351154326,
+      "final500": 0.2033439742088318,
+      "difference": -0.0022404093027114658
+    },
+    {
+      "replicate": 1,
+      "seed": 281002,
+      "final500": 0.21166021251678466,
+      "best402": 0.21311086151599884,
+      "difference": -0.0014506489992141824
+    },
+    {
+      "replicate": 2,
+      "seed": 281003,
+      "best402": 0.206909064412117,
+      "final500": 0.2047978087902069,
+      "difference": -0.002111255621910113
+    },
+    {
+      "replicate": 3,
+      "seed": 281004,
+      "final500": 0.20063903875350952,
+      "best402": 0.20222123835086822,
+      "difference": -0.0015821995973586966
+    },
+    {
+      "replicate": 4,
+      "seed": 281005,
+      "best402": 0.20863240504264832,
+      "final500": 0.2073501765727997,
+      "difference": -0.0012822284698486286
+    },
+    {
+      "replicate": 5,
+      "seed": 281006,
+      "final500": 0.20311753542423247,
+      "best402": 0.20493729646205902,
+      "difference": -0.0018197610378265505
+    },
+    {
+      "replicate": 6,
+      "seed": 281007,
+      "best402": 0.20819339787960053,
+      "final500": 0.2063548429965973,
+      "difference": -0.001838554883003246
+    },
+    {
+      "replicate": 7,
+      "seed": 281008,
+      "final500": 0.2109728119134903,
+      "best402": 0.21259714233875274,
+      "difference": -0.0016243304252624435
+    },
+    {
+      "replicate": 8,
+      "seed": 281009,
+      "best402": 0.21410373868942262,
+      "final500": 0.21250977258682252,
+      "difference": -0.0015939661026000973
+    },
+    {
+      "replicate": 9,
+      "seed": 281010,
+      "final500": 0.20902710876464844,
+      "best402": 0.2109507691860199,
+      "difference": -0.0019236604213714592
+    },
+    {
+      "replicate": 10,
+      "seed": 281011,
+      "best402": 0.20137225847244264,
+      "final500": 0.19965725440979004,
+      "difference": -0.0017150040626525975
+    },
+    {
+      "replicate": 11,
+      "seed": 281012,
+      "final500": 0.2012702795267105,
+      "best402": 0.2028843959569931,
+      "difference": -0.0016141164302825861
+    },
+    {
+      "replicate": 12,
+      "seed": 281013,
+      "best402": 0.2115010217189789,
+      "final500": 0.20992981173992156,
+      "difference": -0.0015712099790573253
+    },
+    {
+      "replicate": 13,
+      "seed": 281014,
+      "final500": 0.21583420915603638,
+      "best402": 0.21764557962417602,
+      "difference": -0.0018113704681396448
+    },
+    {
+      "replicate": 14,
+      "seed": 281015,
+      "best402": 0.2103653725385666,
+      "final500": 0.2085708474636078,
+      "difference": -0.0017945250749588082
+    },
+    {
+      "replicate": 15,
+      "seed": 281016,
+      "final500": 0.20395803146362304,
+      "best402": 0.20543165214061737,
+      "difference": -0.0014736206769943305
+    },
+    {
+      "replicate": 16,
+      "seed": 281017,
+      "best402": 0.21156297328472137,
+      "final500": 0.21011463525295257,
+      "difference": -0.0014483380317688033
+    },
+    {
+      "replicate": 17,
+      "seed": 281018,
+      "final500": 0.20644908430576325,
+      "best402": 0.20801131360530853,
+      "difference": -0.0015622292995452758
+    },
+    {
+      "replicate": 18,
+      "seed": 281019,
+      "best402": 0.1980030664920807,
+      "final500": 0.19682754094600677,
+      "difference": -0.001175525546073919
+    },
+    {
+      "replicate": 19,
+      "seed": 281020,
+      "final500": 0.20746333277225495,
+      "best402": 0.20930725703239442,
+      "difference": -0.0018439242601394623
+    },
+    {
+      "replicate": 20,
+      "seed": 281021,
+      "best402": 0.2034722517967224,
+      "final500": 0.201375341629982,
+      "difference": -0.0020969101667404066
+    },
+    {
+      "replicate": 21,
+      "seed": 281022,
+      "final500": 0.20990539484024048,
+      "best402": 0.21166522543430327,
+      "difference": -0.001759830594062789
+    },
+    {
+      "replicate": 22,
+      "seed": 281023,
+      "best402": 0.2063002844810486,
+      "final500": 0.2045642652273178,
+      "difference": -0.0017360192537307917
+    },
+    {
+      "replicate": 23,
+      "seed": 281024,
+      "final500": 0.20980450842380524,
+      "best402": 0.21126433260440827,
+      "difference": -0.001459824180603031
+    },
+    {
+      "replicate": 24,
+      "seed": 281025,
+      "best402": 0.21244646742343903,
+      "final500": 0.21072942781448364,
+      "difference": -0.0017170396089553897
+    },
+    {
+      "replicate": 25,
+      "seed": 281026,
+      "final500": 0.2083780633687973,
+      "best402": 0.2092329045534134,
+      "difference": -0.0008548411846160953
+    },
+    {
+      "replicate": 26,
+      "seed": 281027,
+      "best402": 0.2162492691040039,
+      "final500": 0.21451286895275115,
+      "difference": -0.0017364001512527594
+    },
+    {
+      "replicate": 27,
+      "seed": 281028,
+      "final500": 0.2047784844636917,
+      "best402": 0.20661381080150604,
+      "difference": -0.0018353263378143303
+    },
+    {
+      "replicate": 28,
+      "seed": 281029,
+      "best402": 0.20910478422641754,
+      "final500": 0.20784702713489533,
+      "difference": -0.0012577570915222047
+    },
+    {
+      "replicate": 29,
+      "seed": 281030,
+      "final500": 0.2090872312784195,
+      "best402": 0.21103670740127564,
+      "difference": -0.0019494761228561475
+    },
+    {
+      "replicate": 30,
+      "seed": 281031,
+      "best402": 0.21156063199043273,
+      "final500": 0.20928129935264586,
+      "difference": -0.002279332637786874
+    },
+    {
+      "replicate": 31,
+      "seed": 281032,
+      "final500": 0.20657066514492034,
+      "best402": 0.20843268654346467,
+      "difference": -0.001862021398544328
+    }
+  ],
+  "source_revision": "56dcb13e1d2bf5b6dc96e573dfcaa6240a7104a9",
+  "runtime": {
+    "python": "3.12.16",
+    "bayesflow": "2.1.0",
+    "keras": "3.15.1",
+    "jax": "0.11.1",
+    "jaxlib": "0.11.1",
+    "numpy": "2.5.3",
+    "devices": [
+      "cuda:0"
+    ]
+  },
+  "driver_sha256": "f039389d8d118caa755a6bfefc0da8671034dff9bbdcacda268e659c22d65f09",
+  "checkpoint_sha256": {
+    "best402": "7f037dee0fde78cd5a33f1107e13031ff01fdcb5481dab76fc6c8f7d07598f39",
+    "final500": "8d4a243ba099524cf4cda40e4f0616e895879f053829a7f60dadbe65b98301db"
+  },
+  "frozen_sha256": {
+    "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/model.keras": "7f037dee0fde78cd5a33f1107e13031ff01fdcb5481dab76fc6c8f7d07598f39",
+    "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/.resume/epoch-000500-_3f420vs/last.keras": "8d4a243ba099524cf4cda40e4f0616e895879f053829a7f60dadbe65b98301db",
+    "/oscar/scratch/afengler/sbi4finance-heston-backbone-20261027/snapshot-100k/manifest.json": "4b5929b0d0b23698c340eec6defabfd629fe23eca2ed78fe9bd46e4de35c244e",
+    "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/task.json": "5e499526ff8f29a72f49785a1a36006b1d769d26bca8a6f83f7a8c8ac4d431fa",
+    "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/training.json": "a3de032a681a3e89f895dca48cdc4c573f4d1768f3b217e30649742da80f46b2",
+    "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/resume.json": "47d1412664dc77cd0476cdbfd6be53271400eadc383035c7bf635a04731fe51e",
+    "/oscar/scratch/afengler/sbi4finance-heston-audit-20261027/heston_validation_loss_mc_20261028.py": "f039389d8d118caa755a6bfefc0da8671034dff9bbdcacda268e659c22d65f09"
+  },
+  "validation_input_sha256": {
+    "observations": "c5d5c8737210eb2aa60faf0a5e1bf6f158e94e3dc737f4b9d4d18a4e863cdbae",
+    "parameters": "fe0ea094ad8c50ec65cdc252fd3913da2135f46f712bf5a7a2e1d49d5aa2f5b6",
+    "example_id": "5fc0f9506930a97d80874f62a6fe31034abba70b1aacfc7f7015105564efbd77"
+  },
+  "adapted_input_sha256": {
+    "inference_variables": "1688001930899f0b55ddfa6692c079892786ad3de8251b2811be2f719f7874a8",
+    "inference_conditions": "6db8fc2f5e421ecea41d24764f5ffccadb0317f6feb3535dff2e48b0dd32557e"
+  },
+  "standardizer_variables": {
+    "best402": [
+      {
+        "path": "basic_estimator/standardization_1/standardize/variable",
+        "sha256": "6aac2f485b044b7c3282c39a68f532e9736df6561e5d046baf5f8e56177aa49d",
+        "shape": [
+          4
+        ],
+        "value": [
+          -0.019937578588724136,
+          -0.000416655297158286,
+          0.0011481769615784287,
+          0.0017496536020189524
+        ]
+      },
+      {
+        "path": "basic_estimator/standardization_1/standardize/variable_1",
+        "sha256": "13928c3f9abd9fa406f4c45b06f7d0a0eab307a1cf8d5cc8fef93a47e14984fd",
+        "shape": [
+          4
+        ],
+        "value": [
+          131670280.0,
+          131599152.0,
+          133152376.0,
+          132157680.0
+        ]
+      },
+      {
+        "path": "basic_estimator/standardization_1/standardize/variable_2",
+        "sha256": "53c73738480200da26e4f87840acde3cd5b63b538be159fc2f2213a8e7a32637",
+        "shape": [],
+        "value": 40200000.0
+      },
+      {
+        "path": "basic_estimator/standardization_1/standardize_1/variable_3",
+        "sha256": "d14367c93f09701ba088098cb2ee9a813dedf8cd6d343e6f4c0247bed5078f39",
+        "shape": [
+          63
+        ],
+        "value": [
+          28.58572769165039,
+          24.593183517456055,
+          27.748477935791016,
+          42.18436813354492,
+          92.33534240722656,
+          39.700923919677734,
+          23.941526412963867,
+          19.005678176879883,
+          19.278301239013672,
+          30.355091094970703,
+          25.486618041992188,
+          28.209362030029297,
+          42.270870208740234,
+          91.69609069824219,
+          38.83917236328125,
+          22.985897064208984,
+          17.85803985595703,
+          17.714508056640625,
+          32.65221405029297,
+          26.55480194091797,
+          28.663816452026367,
+          42.164039611816406,
+          90.48470306396484,
+          37.463035583496094,
+          21.567623138427734,
+          16.2983341217041,
+          15.823678970336914,
+          34.79656982421875,
+          27.412567138671875,
+          28.86223793029785,
+          41.720130920410156,
+          88.7496566772461,
+          35.74998092651367,
+          19.937236785888672,
+          14.697586059570312,
+          14.12707805633545,
+          35.75798034667969,
+          27.700380325317383,
+          28.79767608642578,
+          41.28132629394531,
+          87.54186248779297,
+          34.665260314941406,
+          18.965011596679688,
+          13.810186386108398,
+          13.243185043334961,
+          36.36070251464844,
+          27.634435653686523,
+          28.35128402709961,
+          40.36115264892578,
+          85.5818099975586,
+          33.06718063354492,
+          17.601993560791016,
+          12.58471965789795,
+          12.003973960876465,
+          35.43867111206055,
+          26.92275047302246,
+          27.683170318603516,
+          39.59300231933594,
+          84.49055480957031,
+          32.33201217651367,
+          17.010839462280273,
+          12.002168655395508,
+          11.315014839172363
+        ]
+      },
+      {
+        "path": "basic_estimator/standardization_1/standardize_1/variable_4",
+        "sha256": "e9891ae57b9c264cf86c752a9fd851ecd73ac23b35909f01ecd35bb257dd837a",
+        "shape": [
+          63
+        ],
+        "value": [
+          17159205888.0,
+          9457492992.0,
+          8327983104.0,
+          11810375680.0,
+          28701302784.0,
+          12723780608.0,
+          8475832832.0,
+          8286189568.0,
+          12109574144.0,
+          17500237824.0,
+          9254118400.0,
+          7957986304.0,
+          11248091136.0,
+          27824664576.0,
+          12389939200.0,
+          8060612608.0,
+          7639000576.0,
+          10831086592.0,
+          17510336512.0,
+          8745763840.0,
+          7277597184.0,
+          10235776000.0,
+          25861257216.0,
+          11524935680.0,
+          7262195200.0,
+          6644240384.0,
+          9173158912.0,
+          16624715776.0,
+          7790292992.0,
+          6250189824.0,
+          8746864640.0,
+          22582022144.0,
+          10077644800.0,
+          6193090048.0,
+          5526407168.0,
+          7513368064.0,
+          15416810496.0,
+          6958541824.0,
+          5476429312.0,
+          7677585920.0,
+          20184674304.0,
+          9058642944.0,
+          5520289280.0,
+          4867760640.0,
+          6579878912.0,
+          12415210496.0,
+          5382774784.0,
+          4210560000.0,
+          6073657344.0,
+          16747060224.0,
+          7654164992.0,
+          4613056512.0,
+          3973891840.0,
+          5310169088.0,
+          10478724096.0,
+          4689550336.0,
+          3830829568.0,
+          5774160896.0,
+          16402213888.0,
+          7538418176.0,
+          4469353472.0,
+          3768150272.0,
+          4917024768.0
+        ]
+      },
+      {
+        "path": "basic_estimator/standardization_1/standardize_1/variable_5",
+        "sha256": "53c73738480200da26e4f87840acde3cd5b63b538be159fc2f2213a8e7a32637",
+        "shape": [],
+        "value": 40200000.0
+      }
+    ],
+    "final500": [
+      {
+        "path": "basic_estimator/standardization_3/standardize_2/variable_6",
+        "sha256": "d621901e7273298900633536d350afdcf63d74665f7188620316ece45d6f61eb",
+        "shape": [
+          4
+        ],
+        "value": [
+          -0.01993752457201481,
+          -0.00041665395838208497,
+          0.0011481718393042684,
+          0.0017496454529464245
+        ]
+      },
+      {
+        "path": "basic_estimator/standardization_3/standardize_2/variable_7",
+        "sha256": "b8d1c1df16d5a72c3f82afee450d7d705c64ff150cf53435fe373d8e00f81624",
+        "shape": [
+          4
+        ],
+        "value": [
+          163736464.0,
+          163647008.0,
+          165577840.0,
+          164341216.0
+        ]
+      },
+      {
+        "path": "basic_estimator/standardization_3/standardize_2/variable_8",
+        "sha256": "350caf71851ffe98364063d727f77469fb7919e25e52cf07bb76de88a963091c",
+        "shape": [],
+        "value": 50000000.0
+      },
+      {
+        "path": "basic_estimator/standardization_3/standardize_3/variable_9",
+        "sha256": "f20ef133895c75849e5684692d9601b096defb9be002a0b1eb6cbd5ace36ae8d",
+        "shape": [
+          63
+        ],
+        "value": [
+          28.585817337036133,
+          24.593158721923828,
+          27.748437881469727,
+          42.18403625488281,
+          92.33464813232422,
+          39.700740814208984,
+          23.941190719604492,
+          19.005722045898438,
+          19.27846908569336,
+          30.355127334594727,
+          25.48670196533203,
+          28.20954704284668,
+          42.27049255371094,
+          91.6958999633789,
+          38.8390007019043,
+          22.985628128051758,
+          17.85788917541504,
+          17.71441650390625,
+          32.65213394165039,
+          26.554981231689453,
+          28.6638126373291,
+          42.1640510559082,
+          90.48408508300781,
+          37.46333694458008,
+          21.567413330078125,
+          16.298437118530273,
+          15.823846817016602,
+          34.79665756225586,
+          27.41261100769043,
+          28.862279891967773,
+          41.72018814086914,
+          88.74929809570312,
+          35.75017547607422,
+          19.93701934814453,
+          14.697601318359375,
+          14.127188682556152,
+          35.75779724121094,
+          27.70054054260254,
+          28.797536849975586,
+          41.28139877319336,
+          87.5421142578125,
+          34.66566848754883,
+          18.965251922607422,
+          13.810195922851562,
+          13.243165016174316,
+          36.360870361328125,
+          27.634517669677734,
+          28.351455688476562,
+          40.36126708984375,
+          85.58271026611328,
+          33.06703567504883,
+          17.602094650268555,
+          12.584704399108887,
+          12.004059791564941,
+          35.43867492675781,
+          26.92262840270996,
+          27.683019638061523,
+          39.59306335449219,
+          84.49016571044922,
+          32.33203125,
+          17.010787963867188,
+          12.001971244812012,
+          11.315004348754883
+        ]
+      },
+      {
+        "path": "basic_estimator/standardization_3/standardize_3/variable_10",
+        "sha256": "fd12537b1abe88f4289915689963fb4748c1ed0ccd00106e8c55439e7ac0272f",
+        "shape": [
+          63
+        ],
+        "value": [
+          21337890816.0,
+          11760878592.0,
+          10356173824.0,
+          14688172032.0,
+          35694579712.0,
+          15824377856.0,
+          10539910144.0,
+          10304292864.0,
+          15060119552.0,
+          21761972224.0,
+          11508012032.0,
+          9896457216.0,
+          13988459520.0,
+          34604929024.0,
+          15408874496.0,
+          10023845888.0,
+          9499830272.0,
+          13469729792.0,
+          21774630912.0,
+          10875802624.0,
+          9050551296.0,
+          12729352192.0,
+          32162807808.0,
+          14332791808.0,
+          9031597056.0,
+          8263216640.0,
+          11407291392.0,
+          20673798144.0,
+          9687796736.0,
+          7773266944.0,
+          10877097984.0,
+          28084021248.0,
+          12532639744.0,
+          7702253056.0,
+          6872842240.0,
+          9343670272.0,
+          19172188160.0,
+          8654194688.0,
+          6810538496.0,
+          9547686912.0,
+          25101867008.0,
+          11264807936.0,
+          6865039360.0,
+          6053342720.0,
+          8183357440.0,
+          15440232448.0,
+          6694105600.0,
+          5235954176.0,
+          7553675776.0,
+          20825276416.0,
+          9518778368.0,
+          5736456704.0,
+          4941794816.0,
+          6603731968.0,
+          13031113728.0,
+          5831780352.0,
+          4763976704.0,
+          7181175808.0,
+          20396451840.0,
+          9374937088.0,
+          5557770240.0,
+          4686095872.0,
+          6114754560.0
+        ]
+      },
+      {
+        "path": "basic_estimator/standardization_3/standardize_3/variable_11",
+        "sha256": "350caf71851ffe98364063d727f77469fb7919e25e52cf07bb76de88a963091c",
+        "shape": [],
+        "value": 50000000.0
+      }
+    ]
+  },
+  "adapter_configs": {
+    "best402": {
+      "transforms": [
+        {
+          "module": "bayesflow.adapters.transforms.map_transform",
+          "class_name": "MapTransform",
+          "config": {
+            "transform_map": {
+              "initial_variance": {
+                "module": "bayesflow.adapters.transforms.constrain",
+                "class_name": "Constrain",
+                "config": {
+                  "lower": 0.01,
+                  "upper": 0.16,
+                  "method": "default",
+                  "inclusive": "none",
+                  "epsilon": 1e-06
+                },
+                "registered_name": "bayesflow.adapters>Constrain"
+              }
+            }
+          },
+          "registered_name": "bayesflow.adapters>MapTransform"
+        },
+        {
+          "module": "bayesflow.adapters.transforms.map_transform",
+          "class_name": "MapTransform",
+          "config": {
+            "transform_map": {
+              "theta": {
+                "module": "bayesflow.adapters.transforms.constrain",
+                "class_name": "Constrain",
+                "config": {
+                  "lower": 0.01,
+                  "upper": 0.16,
+                  "method": "default",
+                  "inclusive": "none",
+                  "epsilon": 1e-06
+                },
+                "registered_name": "bayesflow.adapters>Constrain"
+              }
+            }
+          },
+          "registered_name": "bayesflow.adapters>MapTransform"
+        },
+        {
+          "module": "bayesflow.adapters.transforms.map_transform",
+          "class_name": "MapTransform",
+          "config": {
+            "transform_map": {
+              "vol_of_vol": {
+                "module": "bayesflow.adapters.transforms.constrain",
+                "class_name": "Constrain",
+                "config": {
+                  "lower": 0.1,
+                  "upper": 1.5,
+                  "method": "default",
+                  "inclusive": "none",
+                  "epsilon": 1e-06
+                },
+                "registered_name": "bayesflow.adapters>Constrain"
+              }
+            }
+          },
+          "registered_name": "bayesflow.adapters>MapTransform"
+        },
+        {
+          "module": "bayesflow.adapters.transforms.map_transform",
+          "class_name": "MapTransform",
+          "config": {
+            "transform_map": {
+              "rho": {
+                "module": "bayesflow.adapters.transforms.constrain",
+                "class_name": "Constrain",
+                "config": {
+                  "lower": -0.95,
+                  "upper": -0.1,
+                  "method": "default",
+                  "inclusive": "none",
+                  "epsilon": 1e-06
+                },
+                "registered_name": "bayesflow.adapters>Constrain"
+              }
+            }
+          },
+          "registered_name": "bayesflow.adapters>MapTransform"
+        },
+        {
+          "module": "bayesflow.adapters.transforms.filter_transform",
+          "class_name": "FilterTransform",
+          "config": {
+            "include": null,
+            "transform_constructor": "__bayesflow_type__bayesflow.adapters>ConvertDType",
+            "predicate": null,
+            "exclude": null,
+            "transform_map": {
+              "observations": {
+                "module": "bayesflow.adapters.transforms.convert_dtype",
+                "class_name": "ConvertDType",
+                "config": {
+                  "from_dtype": "float64",
+                  "to_dtype": "float32"
+                },
+                "registered_name": "bayesflow.adapters>ConvertDType"
+              },
+              "initial_variance": {
+                "module": "bayesflow.adapters.transforms.convert_dtype",
+                "class_name": "ConvertDType",
+                "config": {
+                  "from_dtype": "float64",
+                  "to_dtype": "float32"
+                },
+                "registered_name": "bayesflow.adapters>ConvertDType"
+              },
+              "theta": {
+                "module": "bayesflow.adapters.transforms.convert_dtype",
+                "class_name": "ConvertDType",
+                "config": {
+                  "from_dtype": "float64",
+                  "to_dtype": "float32"
+                },
+                "registered_name": "bayesflow.adapters>ConvertDType"
+              },
+              "vol_of_vol": {
+                "module": "bayesflow.adapters.transforms.convert_dtype",
+                "class_name": "ConvertDType",
+                "config": {
+                  "from_dtype": "float64",
+                  "to_dtype": "float32"
+                },
+                "registered_name": "bayesflow.adapters>ConvertDType"
+              },
+              "rho": {
+                "module": "bayesflow.adapters.transforms.convert_dtype",
+                "class_name": "ConvertDType",
+                "config": {
+                  "from_dtype": "float64",
+                  "to_dtype": "float32"
+                },
+                "registered_name": "bayesflow.adapters>ConvertDType"
+              }
+            },
+            "from_dtype": "float64",
+            "to_dtype": "float32"
+          },
+          "registered_name": "bayesflow.adapters>FilterTransform"
+        },
+        {
+          "module": "bayesflow.adapters.transforms.concatenate",
+          "class_name": "Concatenate",
+          "config": {
+            "keys": [
+              "initial_variance",
+              "theta",
+              "vol_of_vol",
+              "rho"
+            ],
+            "into": "inference_variables",
+            "axis": -1,
+            "indices": [
+              1,
+              2,
+              3,
+              4
+            ]
+          },
+          "registered_name": "bayesflow.adapters>Concatenate"
+        },
+        {
+          "module": "bayesflow.adapters.transforms.concatenate",
+          "class_name": "Concatenate",
+          "config": {
+            "keys": [
+              "observations"
+            ],
+            "into": "inference_conditions",
+            "axis": -1,
+            "indices": [
+              63
+            ]
+          },
+          "registered_name": "bayesflow.adapters>Concatenate"
+        }
+      ],
+      "device": "cpu",
+      "differentiable": false,
+      "jit_compile": false
+    },
+    "final500": {
+      "transforms": [
+        {
+          "module": "bayesflow.adapters.transforms.map_transform",
+          "class_name": "MapTransform",
+          "config": {
+            "transform_map": {
+              "initial_variance": {
+                "module": "bayesflow.adapters.transforms.constrain",
+                "class_name": "Constrain",
+                "config": {
+                  "lower": 0.01,
+                  "upper": 0.16,
+                  "method": "default",
+                  "inclusive": "none",
+                  "epsilon": 1e-06
+                },
+                "registered_name": "bayesflow.adapters>Constrain"
+              }
+            }
+          },
+          "registered_name": "bayesflow.adapters>MapTransform"
+        },
+        {
+          "module": "bayesflow.adapters.transforms.map_transform",
+          "class_name": "MapTransform",
+          "config": {
+            "transform_map": {
+              "theta": {
+                "module": "bayesflow.adapters.transforms.constrain",
+                "class_name": "Constrain",
+                "config": {
+                  "lower": 0.01,
+                  "upper": 0.16,
+                  "method": "default",
+                  "inclusive": "none",
+                  "epsilon": 1e-06
+                },
+                "registered_name": "bayesflow.adapters>Constrain"
+              }
+            }
+          },
+          "registered_name": "bayesflow.adapters>MapTransform"
+        },
+        {
+          "module": "bayesflow.adapters.transforms.map_transform",
+          "class_name": "MapTransform",
+          "config": {
+            "transform_map": {
+              "vol_of_vol": {
+                "module": "bayesflow.adapters.transforms.constrain",
+                "class_name": "Constrain",
+                "config": {
+                  "lower": 0.1,
+                  "upper": 1.5,
+                  "method": "default",
+                  "inclusive": "none",
+                  "epsilon": 1e-06
+                },
+                "registered_name": "bayesflow.adapters>Constrain"
+              }
+            }
+          },
+          "registered_name": "bayesflow.adapters>MapTransform"
+        },
+        {
+          "module": "bayesflow.adapters.transforms.map_transform",
+          "class_name": "MapTransform",
+          "config": {
+            "transform_map": {
+              "rho": {
+                "module": "bayesflow.adapters.transforms.constrain",
+                "class_name": "Constrain",
+                "config": {
+                  "lower": -0.95,
+                  "upper": -0.1,
+                  "method": "default",
+                  "inclusive": "none",
+                  "epsilon": 1e-06
+                },
+                "registered_name": "bayesflow.adapters>Constrain"
+              }
+            }
+          },
+          "registered_name": "bayesflow.adapters>MapTransform"
+        },
+        {
+          "module": "bayesflow.adapters.transforms.filter_transform",
+          "class_name": "FilterTransform",
+          "config": {
+            "include": null,
+            "transform_constructor": "__bayesflow_type__bayesflow.adapters>ConvertDType",
+            "predicate": null,
+            "exclude": null,
+            "transform_map": {
+              "observations": {
+                "module": "bayesflow.adapters.transforms.convert_dtype",
+                "class_name": "ConvertDType",
+                "config": {
+                  "from_dtype": "float64",
+                  "to_dtype": "float32"
+                },
+                "registered_name": "bayesflow.adapters>ConvertDType"
+              },
+              "initial_variance": {
+                "module": "bayesflow.adapters.transforms.convert_dtype",
+                "class_name": "ConvertDType",
+                "config": {
+                  "from_dtype": "float64",
+                  "to_dtype": "float32"
+                },
+                "registered_name": "bayesflow.adapters>ConvertDType"
+              },
+              "theta": {
+                "module": "bayesflow.adapters.transforms.convert_dtype",
+                "class_name": "ConvertDType",
+                "config": {
+                  "from_dtype": "float64",
+                  "to_dtype": "float32"
+                },
+                "registered_name": "bayesflow.adapters>ConvertDType"
+              },
+              "vol_of_vol": {
+                "module": "bayesflow.adapters.transforms.convert_dtype",
+                "class_name": "ConvertDType",
+                "config": {
+                  "from_dtype": "float64",
+                  "to_dtype": "float32"
+                },
+                "registered_name": "bayesflow.adapters>ConvertDType"
+              },
+              "rho": {
+                "module": "bayesflow.adapters.transforms.convert_dtype",
+                "class_name": "ConvertDType",
+                "config": {
+                  "from_dtype": "float64",
+                  "to_dtype": "float32"
+                },
+                "registered_name": "bayesflow.adapters>ConvertDType"
+              }
+            },
+            "from_dtype": "float64",
+            "to_dtype": "float32"
+          },
+          "registered_name": "bayesflow.adapters>FilterTransform"
+        },
+        {
+          "module": "bayesflow.adapters.transforms.concatenate",
+          "class_name": "Concatenate",
+          "config": {
+            "keys": [
+              "initial_variance",
+              "theta",
+              "vol_of_vol",
+              "rho"
+            ],
+            "into": "inference_variables",
+            "axis": -1,
+            "indices": [
+              1,
+              2,
+              3,
+              4
+            ]
+          },
+          "registered_name": "bayesflow.adapters>Concatenate"
+        },
+        {
+          "module": "bayesflow.adapters.transforms.concatenate",
+          "class_name": "Concatenate",
+          "config": {
+            "keys": [
+              "observations"
+            ],
+            "into": "inference_conditions",
+            "axis": -1,
+            "indices": [
+              63
+            ]
+          },
+          "registered_name": "bayesflow.adapters>Concatenate"
+        }
+      ],
+      "device": "cpu",
+      "differentiable": false,
+      "jit_compile": false
+    }
+  },
+  "api": {
+    "estimator": {
+      "qualname": "BasicEstimator.compute_metrics",
+      "path": "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/lib/python3.12/site-packages/bayesflow/estimators/basic_estimator.py",
+      "file_sha256": "dfe54314ce12a917d5bd8ca810e7af8cd8071110248160c4470edc81ab972c6e",
+      "method_sha256": "0541e0fb4292f00076d7828c91430a3e629060ed537de8630e970f1dc2dae2b5"
+    },
+    "stateless": {
+      "qualname": "JAXEstimator.stateless_compute_metrics",
+      "path": "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/lib/python3.12/site-packages/bayesflow/estimators/backend_estimators/jax_estimator.py",
+      "file_sha256": "d9b227c87015734ccc21de0a0d7d8a32f9d3cad9c80e8d6f5dfb97c4507d0ce0",
+      "method_sha256": "bc8d10cc47edfb1f9bdc07acbd0f0fd2a48db61c1feedf541306bbedbcbee503"
+    },
+    "framework_test_step": {
+      "qualname": "JAXEstimator.stateless_test_step",
+      "path": "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/lib/python3.12/site-packages/bayesflow/estimators/backend_estimators/jax_estimator.py",
+      "file_sha256": "d9b227c87015734ccc21de0a0d7d8a32f9d3cad9c80e8d6f5dfb97c4507d0ce0",
+      "method_sha256": "3dee9cf8fad52c4fe7b66f6bae1feea426c56f518bcf3e8b5d9d2c3b954398bc"
+    },
+    "framework_metric_reduction": {
+      "qualname": "JAXEstimator._update_metrics",
+      "path": "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/lib/python3.12/site-packages/bayesflow/estimators/backend_estimators/jax_estimator.py",
+      "file_sha256": "d9b227c87015734ccc21de0a0d7d8a32f9d3cad9c80e8d6f5dfb97c4507d0ce0",
+      "method_sha256": "330320aac2e535c88ac92b295b1f2362623139eedd4fd0f7d00cddb37fb1cd53"
+    },
+    "network": {
+      "qualname": "FlowMatching.compute_metrics",
+      "path": "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/lib/python3.12/site-packages/bayesflow/networks/inference/flow_matching/flow_matching.py",
+      "file_sha256": "4a7e2c1eeb077992247dcf86760460a7d9317f9fa68444514edf227187111a61",
+      "method_sha256": "49dd4a1aad2c2f316ca6ffa73cdf547c3fa49f02d6bfaa09d55d0f12fa0413e0"
+    },
+    "base_noise": {
+      "qualname": "DiagonalNormal.sample",
+      "path": "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/lib/python3.12/site-packages/bayesflow/utils/decorators.py",
+      "file_sha256": "31228150b7a4fdadeadd4a8f37d7f70642370e324f79d4538b020ccc92ce5619",
+      "method_sha256": "8410e07b6533bebf945c35b4943266a9f3b1b1043c02a36fe08661dc78490f78"
+    },
+    "uniform_time": {
+      "qualname": "uniform",
+      "path": "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/lib/python3.12/site-packages/keras/src/random/random.py",
+      "file_sha256": "6d4003648543b82821c08593934a81c574f151d88d19621db118bc409dde3e0e",
+      "method_sha256": "d681be3bf93032ba15d7c46bc486fa7e929376ef8bd8f42aa10a6a2102b12444"
+    },
+    "seed_advance": {
+      "qualname": "SeedGenerator.next",
+      "path": "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/lib/python3.12/site-packages/keras/src/random/seed_generator.py",
+      "file_sha256": "b5874e00d17e67573ff2f7355c27a35d9db70d13a3cabed81cc2f1aef835a784",
+      "method_sha256": "d2174a08ab35eb07c66e2aae0d3071503f59e0d031e9a254801bce39a8460dac"
+    },
+    "standardizer": {
+      "qualname": "Standardization.maybe_standardize",
+      "path": "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/lib/python3.12/site-packages/bayesflow/networks/helpers/standardization/standardization.py",
+      "file_sha256": "6ab5c98fd127ef7ef0b198e79be3ec74c222e35cb29ee5e126666a0dba647c1a",
+      "method_sha256": "3a4d87e419da2eccabafdbd9f8c9bd8504af66441af5d55290962942c6d7854b"
+    },
+    "training_data": {
+      "qualname": "training_data",
+      "path": "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo/src/sbi4finance/calibration/full_surface.py",
+      "file_sha256": "f3ffbbb9d3a3440a2dfbeac78e4e84e867227d569cc28ce48d5d0fa3accc9e79",
+      "method_sha256": "c85b75a3d1c876446da063058980541a1f5fe2a93abc018f905446d10d3e5927"
+    }
+  },
+  "reduction": {
+    "batch_size": 256,
+    "batch_rows": [
+      256,
+      256,
+      256,
+      256,
+      256,
+      256,
+      256,
+      256,
+      256,
+      256,
+      256,
+      256,
+      256,
+      256,
+      256,
+      256,
+      256,
+      256,
+      256,
+      136
+    ],
+    "row_weighted_mean": true,
+    "differences_from_historical_val_loss": [
+      "Canonical fixed row order replaces per-epoch validation shuffle.",
+      "32 independent explicit seeds replace the historical evolving training/validation RNG stream.",
+      "Same BF compute_metrics and row-weighting; Python float64 accumulation may differ at float32 roundoff."
+    ],
+    "scope": "Same fixed noisy validation quotes/targets, no augmentation, stage=validation; model-specific saved standardization."
+  },
+  "elapsed_seconds": 42.176523480564356,
+  "summaries": {
+    "best402": {
+      "mean": 0.20877201701924206,
+      "sd": 0.0043565165657381425
+    },
+    "final500": {
+      "mean": 0.2070838402248919,
+      "sd": 0.004349081171869794
+    }
+  },
+  "paired_difference": {
+    "mean": -0.0016881767943501495,
+    "sd": 0.00030356542188329577,
+    "mcse": 5.36632920868584e-05
+  },
+  "interpretation_caveat": "Post-hoc development comparison. A lower averaged final loss supports noisy selection as a contributor; a higher final loss alongside better posterior diagnostics indicates surrogate/proxy misalignment. Neither establishes a universally optimal checkpoint or independent scientific acceptance.",
+  "immutable_model_inputs_verified": true
+}

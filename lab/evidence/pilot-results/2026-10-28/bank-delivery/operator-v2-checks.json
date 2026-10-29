@@ -1,0 +1,20 @@
+{
+  "known": {
+    "prospective_full_wave_cpu_hours": 48.93333333333333,
+    "cap_cpu_hours": 120
+  },
+  "joint": {
+    "prospective_full_wave_cpu_hours": 653.4163888888888,
+    "cap_cpu_hours": 1500
+  },
+  "checks": [
+    "full wave exposure within both caps",
+    "receipt persisted before fake sbatch",
+    "submission cwd is frozen producer",
+    "no real scheduler call",
+    "duplicate indices rejected",
+    "joint PASS advances independently while known RUNNING stays gated",
+    "completed actual counted once; unknown reserves full wall+cleanup",
+    "ambiguous submission and timeout fail closed"
+  ]
+}

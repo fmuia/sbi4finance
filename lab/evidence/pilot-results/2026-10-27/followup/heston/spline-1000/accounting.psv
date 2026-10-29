@@ -1,0 +1,4 @@
+JobID|JobIDRaw|JobName|Account|Partition|QOS|State|Elapsed|ElapsedRaw|Start|End|AllocCPUS|AllocTRES|TotalCPU|UserCPU|SystemCPU|MaxRSS|AveCPUFreq|ReqCPUFreq|NodeList|ExitCode
+8006596|8006596|sbi4f-followup-heston-spline-1000|default|gpu-debug|gpu-debug|COMPLETED|00:08:31|511|2026-10-27T06:38:28|2026-10-27T06:46:59|4|billing=110,cpu=4,gres/gpu=1,mem=24G,node=1|10:17.172|09:18.012|00:59.159|||Unknown|gpu2708|0:0
+8006596.batch|8006596.batch|batch|default|||COMPLETED|00:08:31|511|2026-10-27T06:38:28|2026-10-27T06:46:59|4|cpu=4,gres/gpu=1,mem=24G,node=1|10:17.172|09:18.012|00:59.159|2901248K|2.58M|0|gpu2708|0:0
+8006596.extern|8006596.extern|extern|default|||COMPLETED|00:08:31|511|2026-10-27T06:38:28|2026-10-27T06:46:59|4|billing=110,cpu=4,gres/gpu=1,mem=24G,node=1|00:00:00|00:00:00|00:00:00||0|0|gpu2708|0:0

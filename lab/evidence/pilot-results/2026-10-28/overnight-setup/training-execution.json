@@ -1,0 +1,16 @@
+{
+  "format": "full_surface_post_bank_execution_v1",
+  "state": "waiting_or_running",
+  "plan_sha256": "d935f11ae27053f228a1800e3b21620bcde9dd968bf0b62193fec8b4a79e0107",
+  "routes": {
+    "known": {
+      "state": "waiting"
+    },
+    "joint": {
+      "state": "waiting"
+    }
+  },
+  "scientific_acceptance": false,
+  "reserved_test_evaluated": false,
+  "updated_utc": "2026-10-28T01:16:22.674603+00:00"
+}

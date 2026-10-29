@@ -1,0 +1,11 @@
+## SLURM PROLOG ###############################################################
+##    Job ID : 8030755
+##  Job Name : sbi4f-known-freeze
+##  Nodelist : node1829
+##      CPUs : 1
+##  Mem/Node : 8192 MB
+## Directory : /oscar/scratch/afengler/sbi4finance-backbone-fit-20261027/repo
+##   Job Started : Tue Oct 27 06:02:58 PM EDT 2026
+###############################################################################
+/oscar/scratch/afengler/sbi4finance-rough-known-backbone-20261027/snapshot-20k: frozen snapshot of collection da963f7294aee242a80ebf9b47d914294b439aef8b6ee8f7c6d1899766e546f1
+{"status": "completed_checked_snapshot_and_integrity", "verified_examples": 32000, "nominal_exceptions": 1, "worst_reported_mcse": {"maximum_reported_mcse_over_quote_sigma": 0.30201219554822734, "example_id": "train:3999", "contract_index": 53}, "seconds": 36.67573809623718}

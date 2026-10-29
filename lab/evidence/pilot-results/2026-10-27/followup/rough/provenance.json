@@ -1,0 +1,8 @@
+{
+  "archive_sha256": "3cb74cbd5e5f66268404e137d8438221053644ce50ac77d17c992073df6b749b",
+  "declaration_sha256": "131d2b5733016e55382ac81206d1e7a95a41307c6fec4c04507edae8992fe9a2",
+  "node_snapshot_scope": "Read-only scontrol snapshot after jobs completed; current node state is not proof of execution-time contention.",
+  "operations": "Read-only monitoring/download; local checked pure reducer; no repricing or new jobs.",
+  "remote_root": "/oscar/scratch/afengler/sbi4finance-followup-20261027-f4d3679",
+  "source_revision": "615a72f48100b043b378d73373ac6ac78258fd36"
+}

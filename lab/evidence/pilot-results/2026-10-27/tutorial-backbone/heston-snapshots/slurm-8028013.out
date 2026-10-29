@@ -1,0 +1,10 @@
+## SLURM PROLOG ###############################################################
+##    Job ID : 8028013
+##  Job Name : sbi4f-heston-freeze-50k
+##  Nodelist : node1802
+##      CPUs : 1
+##  Mem/Node : 8192 MB
+## Directory : /oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo
+##   Job Started : Tue Oct 27 04:16:08 PM EDT 2026
+###############################################################################
+{"format": "heston_backbone_stage_v1", "status": "completed_snapshot", "stage": "freeze", "source_revision": "9d903dbb5986f766844fbb942b322c0d55856705", "collection_id": "402230db66b9885b59524e7808eebf1b3882c4a271f97eccc7cf970581e85221", "collection_sha256": "8f9c4a5e6b3bebaa25215f720df02aee178b78bfce8483f0024679ffc869df1e", "config_sha256": "1dcc7a239ef0a4b85ca42f8a0cd0556c291bcd0b7d04146844d2fde70a373273", "audit_sha256": "2ff4d4e2b25ab59127080eef981040ec4843bf9cbf623225d087b186d42474fb", "inventory_sha256": "476626ffd40651b263650dcb7876fe90f56c2e4be65577e73cd6ed6bf164335e", "runtime": {"numpy": "2.5.3", "scipy": "1.18.1", "python": "3.12.16"}, "no_financial_pricing_calls": true, "no_model_training": true, "script_sha256": "f9d4a60419676c6fbb1a47a368919e99f7a398b8085f33203b6f01a8e63b883d", "snapshot": "/oscar/scratch/afengler/sbi4finance-heston-backbone-20261027/snapshot-50k", "snapshot_manifest_sha256": "15e5302d869608c4721a5f172efce44de53e2d8816662585277428e0e31a8d30", "original_parts_preserved": 60, "reserved_test_outcomes_evaluated": false, "seconds": 32.99002958834171}

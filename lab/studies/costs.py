@@ -90,8 +90,9 @@ def main():
         if checkpoint is None:
             continue
         from evaluate_calibration import load_network
-        from sbi4finance.calibration import bank, inference
-        _, splits = bank.load_bank(bank_path)
+        from sbi4finance.calibration import bank_collection as bank
+        from sbi4finance.calibration import inference
+        _, splits = bank.load_bank(bank_path, splits=("test",), roles=bank.TRAINING_ROLES)
         test = splits["test"]
         started, clock = time.process_time(), time.perf_counter()
         task, workflow, _ = load_network(checkpoint)

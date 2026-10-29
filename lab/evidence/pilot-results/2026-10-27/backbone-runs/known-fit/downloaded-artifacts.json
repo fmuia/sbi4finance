@@ -1,0 +1,98 @@
+{
+  "run.json": {
+    "source_path": "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/runs/known-20k-native/run.json",
+    "raw_bytes": 14849,
+    "raw_sha256": "a8d0d362ec2033f5ccfd7cca97dc0e346d8997e9470b16fb03c1760f4da498a7",
+    "stored_bytes": 14849,
+    "stored_sha256": "a8d0d362ec2033f5ccfd7cca97dc0e346d8997e9470b16fb03c1760f4da498a7",
+    "lossless_gzip": false
+  },
+  "checkpoint/training.json": {
+    "source_path": "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/runs/known-20k-native/checkpoint/training.json",
+    "raw_bytes": 21583,
+    "raw_sha256": "86c1b89e2d38729a27e70301d74766401d69f87de188ff5d3b4fca484a9a81e3",
+    "stored_bytes": 21583,
+    "stored_sha256": "86c1b89e2d38729a27e70301d74766401d69f87de188ff5d3b4fca484a9a81e3",
+    "lossless_gzip": false
+  },
+  "checkpoint/task.json": {
+    "source_path": "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/runs/known-20k-native/checkpoint/task.json",
+    "raw_bytes": 10539,
+    "raw_sha256": "c99b0dd131896d89d8483a1668a3fde0fb7a0f28794c3db7fe14635cbbd52b65",
+    "stored_bytes": 10539,
+    "stored_sha256": "c99b0dd131896d89d8483a1668a3fde0fb7a0f28794c3db7fe14635cbbd52b65",
+    "lossless_gzip": false
+  },
+  "pricer/run.json": {
+    "source_path": "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/runs/known-20k-native/pricer/run.json",
+    "raw_bytes": 9005,
+    "raw_sha256": "183ff0880aa75a8a57770f4196bd7cb4165d8f400e133d0e248446a7c38f010b",
+    "stored_bytes": 9005,
+    "stored_sha256": "183ff0880aa75a8a57770f4196bd7cb4165d8f400e133d0e248446a7c38f010b",
+    "lossless_gzip": false
+  },
+  "pricer/checkpoint/pricer.json": {
+    "source_path": "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/runs/known-20k-native/pricer/checkpoint/pricer.json",
+    "raw_bytes": 9005,
+    "raw_sha256": "1a9cf45fcb9c38e44ab8c53943912935892ca30c07ff68147d440d04bdaef057",
+    "stored_bytes": 9005,
+    "stored_sha256": "1a9cf45fcb9c38e44ab8c53943912935892ca30c07ff68147d440d04bdaef057",
+    "lossless_gzip": false
+  },
+  "pricer/checkpoint/task.json": {
+    "source_path": "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/runs/known-20k-native/pricer/checkpoint/task.json",
+    "raw_bytes": 10539,
+    "raw_sha256": "c99b0dd131896d89d8483a1668a3fde0fb7a0f28794c3db7fe14635cbbd52b65",
+    "stored_bytes": 10539,
+    "stored_sha256": "c99b0dd131896d89d8483a1668a3fde0fb7a0f28794c3db7fe14635cbbd52b65",
+    "lossless_gzip": false
+  },
+  "validation/evaluation.json": {
+    "source_path": "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/runs/known-20k-native/validation/evaluation.json",
+    "raw_bytes": 50493,
+    "raw_sha256": "8dfe72dbd1892a32844d660ceee9b9adb6d6cc7ad148b7bbdd6bec38a3255bf2",
+    "stored_bytes": 50493,
+    "stored_sha256": "8dfe72dbd1892a32844d660ceee9b9adb6d6cc7ad148b7bbdd6bec38a3255bf2",
+    "lossless_gzip": false
+  },
+  "environment.log.gz": {
+    "source_path": "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/runs/known-20k-native/environment.log",
+    "raw_bytes": 770,
+    "raw_sha256": "89446a25c57f2fb014b37c4cce54b4df976d818a6e849d32d1f278706e7e693a",
+    "stored_bytes": 476,
+    "stored_sha256": "938db900bcacfa3f22971297c767d60aac3ef3c909eeae59379f04c12dcb84c4",
+    "lossless_gzip": true
+  },
+  "posterior.log.gz": {
+    "source_path": "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/runs/known-20k-native/posterior.log",
+    "raw_bytes": 2916,
+    "raw_sha256": "b9f3f7f1e6ae1f6bab1d8f519238c7859fa578e37cd33bc90b55f5e2b1a34b5d",
+    "stored_bytes": 760,
+    "stored_sha256": "626ebf966cc817f55dc90fc3776841479647e3f4a565f123af7e8f50e6cfd6a6",
+    "lossless_gzip": true
+  },
+  "pricer.log.gz": {
+    "source_path": "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/runs/known-20k-native/pricer.log",
+    "raw_bytes": 203,
+    "raw_sha256": "43454c5cc09dc8da8415c163a19ebfbf809897cb03db8edb575d084b84e7445b",
+    "stored_bytes": 174,
+    "stored_sha256": "45f62ea9b0fb0c413bade468aa72c8ce823febe27e0fec51d6816b05b3ffd7a3",
+    "lossless_gzip": true
+  },
+  "validation.log.gz": {
+    "source_path": "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/runs/known-20k-native/validation.log",
+    "raw_bytes": 1965,
+    "raw_sha256": "370b2befb40b5284abec76af48b83527bc328f36120a8487f80d3f3b0aea7518",
+    "stored_bytes": 716,
+    "stored_sha256": "93e4058616f9f4433852f7810b493a3698675539547c1e207df0e9b31c6aaf07",
+    "lossless_gzip": true
+  },
+  "slurm-8030774.out": {
+    "source_path": "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/logs/known-20k-fit-8030774.out",
+    "raw_bytes": 444,
+    "raw_sha256": "b241b6c0db784cf8a28b1f9d4cb00a0bf6c053ec38bbe107e744388359525906",
+    "stored_bytes": 444,
+    "stored_sha256": "b241b6c0db784cf8a28b1f9d4cb00a0bf6c053ec38bbe107e744388359525906",
+    "lossless_gzip": false
+  }
+}

@@ -9,8 +9,8 @@ Run every command from this folder:
 
 ```bash
 cd lab
-pixi install --locked          # the default environment; `pixi install -e gpu` on an Oscar login node
-pixi run test                  # unit tests and the tutorial parity tests
+pixi install --locked -e core  # current BayesFlow 2.1 numerical backbone
+pixi run --locked -e core test # unit tests and tutorial parity tests
 ```
 
 ## Layout
@@ -60,7 +60,7 @@ copy is stale.
 - Prefer PyMC for reference MCMC where it fits naturally; the [MCMC policy](plans/mcmc-policy.md) lists the
   exceptions and what every chain must record.
 - Every result records the task fingerprint, the bank manifest's SHA-256 and, where a network was used, the
-  checkpoint's SHA-256. Banks, model payloads and full posterior draws stay on Oscar, with their identities in git.
+  checkpoint's SHA-256. Banks, model payloads and full posterior draws stay outside Git, with their identities in git and versioned downloads in the [training-data guide](plans/training-data-guide.md).
   How much of each run's raw output belongs in git is open (decision D22 in
   [the curriculum overview](../tutorial/curriculum/00-overview.md#10-decisions)).
 - `course/scripts/` runs in this environment: `pixi run python ../course/scripts/lecture08.py` redraws a lecture's
@@ -71,20 +71,20 @@ copy is stale.
 
 | Environment | What | Install |
 |---|---|---|
-| `default` | BayesFlow 2.0.14 on JAX (CPU), numba, SciPy: the versions the shipped networks were trained with | `pixi install --locked` |
+| `core` | Current BayesFlow 2.1.0/JAX backbone and its native adaptive FlowMatching sampler | `pixi install --locked -e core` |
+| `core-gpu` | Current backbone with CUDA, Linux only | `pixi install --locked -e core-gpu` |
+| `core-reference` | Current backbone plus optional PyMC reference MCMC | `pixi install --locked -e core-reference` |
+| `default` | Archived BayesFlow 2.0.14 studies and their historical checkpoints | `pixi install --locked` |
 | `gpu` | The same with JAX's CUDA plugin, for Oscar (linux-64 only) | `pixi install -e gpu` |
 
-Draft [PR #48](https://github.com/fmuia/sbi4finance/pull/48) adds `core` (BayesFlow 2.1), `core-gpu` and
-`core-reference` (PyMC) for the new full-surface candidates. BayesFlow 2.1 cannot load 2.0 networks, so the two
-lines stay separate until every shipped network is retrained.
+The current 100k checkpoints use `core`; archived 2.0 networks require their historical environment. The participant package uses 2.1 and gates its historical neural comparisons until a separately checked update. Use `scripts/train_full_surface.py` for current posterior fits; `studies/train_calibration.py` retains the older study route.
 
 ## Kept for now, off the critical path
 
 - **The sparse-chain code** (`calibration/thin.py`, `calibration/thin_products.py`, `studies/thin_coverage.py`,
   `studies/evaluate_thin.py`, `studies/thin_real.py`, `checks/thin_chains/`, `configs/thin/`,
   `cluster/thin_coverage_array.sbatch`, `tests/test_thin.py`) is deferred: sparse chains are a separate unit after
-  the release. It stays because `studies/train_calibration.py` and `studies/accept.py` still import it, and PR #48
-  edits `train_calibration.py`. Cut it when the sparse follow-up is decided, after PR #48 lands. The course's Lecture 16 cites its
+  the release. It stays because `studies/train_calibration.py` and `studies/accept.py` still import it. Review this dependency before trimming it in a separate follow-up. The course's Lecture 16 cites its
   EWG results.
 - **Helpers from other models.** `gbm.py`, `gbm_bank.py` (small utilities) and `svj/plots.py` (the
   figure style) stay because the library imports a few functions from them; `svj/pmmh.py`, with the

@@ -1,0 +1,156 @@
+{
+  "status": "completed_development_fit_no_scientific_acceptance",
+  "same_validation": {
+    "example_ids_equal": true,
+    "range": "validation:0 through validation:1999",
+    "surfaces": 2000,
+    "draws_per_surface": 1000,
+    "seed": 0,
+    "same_network_task_sampler_and_training_recipe": true,
+    "frozen_validation_part_hash_proof": "bank-and-model-identity-proof.json",
+    "reserved_test_evaluated": false
+  },
+  "posterior_comparison": [
+    {
+      "target": "hurst",
+      "rank_ks_50k": 0.02275653029976865,
+      "rank_ks_100k": 0.02120928613107753,
+      "rank_pass_50k": true,
+      "rank_pass_100k": true,
+      "coverage90_50k": 0.893,
+      "coverage90_100k": 0.8945,
+      "coverage90_wilson_50k": [
+        0.8786914023121892,
+        0.905801798524746
+      ],
+      "coverage90_wilson_100k": [
+        0.880272153863572,
+        0.9072152958315192
+      ]
+    },
+    {
+      "target": "eta",
+      "rank_ks_50k": 0.02376029586601902,
+      "rank_ks_100k": 0.02198897204651773,
+      "rank_pass_50k": true,
+      "rank_pass_100k": true,
+      "coverage90_50k": 0.8945,
+      "coverage90_100k": 0.894,
+      "coverage90_wilson_50k": [
+        0.880272153863572,
+        0.9072152958315192
+      ],
+      "coverage90_wilson_100k": [
+        0.8797451436838335,
+        0.9067442230585392
+      ]
+    },
+    {
+      "target": "rho",
+      "rank_ks_50k": 0.021935778894735414,
+      "rank_ks_100k": 0.018398985768851794,
+      "rank_pass_50k": true,
+      "rank_pass_100k": true,
+      "coverage90_50k": 0.8985,
+      "coverage90_100k": 0.8985,
+      "coverage90_wilson_50k": [
+        0.8844916613108394,
+        0.9109804520060018
+      ],
+      "coverage90_wilson_100k": [
+        0.8844916613108394,
+        0.9109804520060018
+      ]
+    },
+    {
+      "target": "rho_eta",
+      "rank_ks_50k": 0.015616121877675138,
+      "rank_ks_100k": 0.017081559635979793,
+      "rank_pass_50k": true,
+      "rank_pass_100k": true,
+      "coverage90_50k": 0.897,
+      "coverage90_100k": 0.899,
+      "coverage90_wilson_50k": [
+        0.8829086231738941,
+        0.9095692412847911
+      ],
+      "coverage90_wilson_100k": [
+        0.8850195371949674,
+        0.9114506590745928
+      ]
+    }
+  ],
+  "simultaneous_rank_bound": 0.03562012708860619,
+  "pricer_comparison": {
+    "units": "quote-noise standard deviations against the same numerical validation labels",
+    "rmse50k": 0.08286549893644245,
+    "rmse100k": 0.09842932037401224,
+    "relative_rmse_change_percent": 18.782028271509212,
+    "surface_rms_p99_50k": 0.17579048646864848,
+    "surface_rms_p99_100k": 0.2016749747209875,
+    "selected_epoch50k": 298,
+    "selected_epoch100k": 86,
+    "epochs_run50k": 300,
+    "epochs_run100k": 116
+  },
+  "fitting": {
+    "epochs_both": 500,
+    "selection": "predeclared final epoch",
+    "posterior_gradient_steps50k": 98000,
+    "posterior_gradient_steps100k": 195500,
+    "single_seed": 0,
+    "stage_seconds50k": [
+      {
+        "name": "posterior",
+        "seconds": 309.1093172430992
+      },
+      {
+        "name": "pricer",
+        "seconds": 78.64152307529002
+      },
+      {
+        "name": "validation",
+        "seconds": 817.650652420707
+      }
+    ],
+    "stage_seconds100k": [
+      {
+        "name": "posterior",
+        "seconds": 579.7973112559412
+      },
+      {
+        "name": "pricer",
+        "seconds": 73.89692831004504
+      },
+      {
+        "name": "validation",
+        "seconds": 819.4988106259843
+      }
+    ],
+    "allocated_gpu_seconds50k": 1209,
+    "allocated_gpu_seconds100k": 1478,
+    "allocated_cpu_seconds50k": 4836,
+    "allocated_cpu_seconds100k": 5912,
+    "actual_cumulative_original_pool_cpu_seconds": 15100,
+    "actual_cumulative_original_pool_gpu_seconds": 3775,
+    "original_pool_cpu_seconds_ceiling": 32400,
+    "original_pool_gpu_seconds_ceiling": 8100
+  },
+  "identities": {
+    "bank100k": "f1bfa42f7bf2acba3daaffb263b5bdeb60b5b12ebdfc267c5c5cd6eb7e08c313",
+    "posterior100k": "39f1a81986a38994dc6eacc520ad95254b34346abc02e758c08779c7c5916fc4",
+    "pricer100k": "9f0f695b0c369f6eaedb0c5559a46c254459047bd806fc14982377416a61a546",
+    "posterior50k": "e32732daea513c1887438eab801e660f286166846ef65eac6258136c3f504613",
+    "pricer50k": "162685962bbbfd8fa4029ae1dc13933ddc490e4222c8581a6f9fab10c8b5199b"
+  },
+  "interpretation": [
+    "Both fits pass the same simultaneous four-target marginal rank screen; the primary-target rank discrepancies become slightly smaller, with little change in coverage and correlation.",
+    "The rho*eta rank discrepancy is slightly larger at 100k, still below the same simultaneous bound. These measurements do not establish a material posterior improvement.",
+    "The unchanged 100k pricer recipe has worse validation label RMSE; it stopped after 116 epochs and selected 86, compared with 300/298 for 50k. More bank rows alone do not guarantee better optimized emulators.",
+    "This is one seed with twice the training rows and nearly twice the gradient updates at the same 500 epochs, not a replicated or fixed-compute learning curve.",
+    "The rank screen does not establish the full joint posterior or continuous-price correctness. Existing precision/model adequacy and PyMC comparison gates remain separate."
+  ],
+  "scientific_acceptance": false,
+  "cache_promoted": false,
+  "pilot_state_at172045utc": "8059371 pending; no variants started"
+}

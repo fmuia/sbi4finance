@@ -1,0 +1,34 @@
+{
+  "original_trainer_revision": "18d89025a06c71dd170a73983a57cf47a4f9349b",
+  "original_trainer_sha256": "1aee30b9612fbcd53cc8c5af2fe262bd03c50a2dfe28157e6291c74fa1ae0a9d",
+  "original_archived_source_sha256": {
+    "train_calibration.py": "1aee30b9612fbcd53cc8c5af2fe262bd03c50a2dfe28157e6291c74fa1ae0a9d",
+    "inference.py": "6f7f32be07ff595c2e8327b63475ab03f066558a98db828ab13f245af0ae2703"
+  },
+  "runs": {
+    "archive": {
+      "training_surfaces": 50000,
+      "selected_epoch": 487,
+      "last50_training_mean": 0.2099791920185089,
+      "last50_validation_mean": 0.21286780267953873,
+      "last50_validation_population_sd": 0.005433125716294714,
+      "minimum_validation_loss": 0.20291580259799957
+    },
+    "new50k": {
+      "training_surfaces": 50000,
+      "selected_epoch": 445,
+      "last50_training_mean": 0.2105294308066368,
+      "last50_validation_mean": 0.20853131473064423,
+      "last50_validation_population_sd": 0.004432132656077232,
+      "minimum_validation_loss": 0.19658592343330383
+    },
+    "new100k": {
+      "training_surfaces": 100000,
+      "selected_epoch": 402,
+      "last50_training_mean": 0.2093915170431137,
+      "last50_validation_mean": 0.20905549943447113,
+      "last50_validation_population_sd": 0.0050636465992403255,
+      "minimum_validation_loss": 0.19835618138313293
+    }
+  }
+}

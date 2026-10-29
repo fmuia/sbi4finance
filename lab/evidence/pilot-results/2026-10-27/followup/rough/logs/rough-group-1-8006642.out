@@ -1,0 +1,10 @@
+## SLURM PROLOG ###############################################################
+##    Job ID : 8006642
+##  Job Name : sbi4f-followup-rough-group-1
+##  Nodelist : node1835
+##      CPUs : 1
+##  Mem/Node : 8192 MB
+## Directory : /oscar/home/afengler
+##   Job Started : Tue Oct 27 06:32:02 AM EDT 2026
+###############################################################################
+{"group": 1, "status": "completed", "reported_calls": 16}

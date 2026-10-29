@@ -1,0 +1,46 @@
+{
+  "accounting": "8030774|COMPLETED|1008|4|0:0\n8030774.batch|COMPLETED|1008|4|0:0\n8030774.extern|COMPLETED|1008|4|0:0\n",
+  "run": {
+    "status": "completed_development_checks",
+    "seconds": 1005.0613900367171,
+    "failure": null,
+    "selected_posterior_epoch": 292,
+    "selected_pricer_epoch": 294
+  },
+  "stages": [
+    {
+      "name": "environment",
+      "status": "completed",
+      "seconds": 6.683032577857375,
+      "returncode": 0,
+      "timeout_cap_seconds": 60
+    },
+    {
+      "name": "posterior",
+      "status": "completed",
+      "seconds": 125.86801112163812,
+      "returncode": 0,
+      "timeout_cap_seconds": 600
+    },
+    {
+      "name": "pricer",
+      "status": "completed",
+      "seconds": 38.04404181614518,
+      "returncode": 0,
+      "timeout_cap_seconds": 600
+    },
+    {
+      "name": "validation",
+      "status": "completed",
+      "seconds": 834.1844043741003,
+      "returncode": 0,
+      "timeout_cap_seconds": 1050
+    }
+  ],
+  "observed_utc": "2026-10-27T22:23:01.077276+00:00",
+  "state": "COMPLETED",
+  "elapsed_seconds": 1008,
+  "allocated_cpus": 4,
+  "exit_code": "0:0",
+  "poll": 12
+}

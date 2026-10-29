@@ -1,0 +1,275 @@
+{
+  "format": "heston_cached_analytic_products_v1",
+  "scientific_acceptance": false,
+  "case_role": "previously inspected development references",
+  "candidate_sha256": "8d4a243ba099524cf4cda40e4f0616e895879f053829a7f60dadbe65b98301db",
+  "cases": [
+    {
+      "case": 0,
+      "products": {
+        "variance_swap_1y": {
+          "reference_diagnostics": {
+            "ess_bulk": 1798.4212017997847,
+            "ess_tail": 1774.0559924028362,
+            "mcse_mean": 1.8060971377280007e-05,
+            "mcse_sd": 1.0122089291847151e-05,
+            "r_hat": 1.0011216857754806
+          },
+          "reference_converged": true,
+          "reference_mean": 0.14929325492379372,
+          "neural_mean": 0.14921791430410036,
+          "quantiles": [
+            {
+              "probability": 0.1,
+              "reference": 0.14824205564203868,
+              "neural": 0.14814631489658375,
+              "absolute_error": 9.574074545493083e-05,
+              "reference_quantile_mcse": 2.3297542674216576e-05,
+              "neural_quantile_mcse": 1.4683282366048656e-05,
+              "combined_95_percent_half_width": 5.397465655998029e-05,
+              "reference_90_percent_width": 0.0025924703941285487,
+              "tolerance": 0.00025924703941285486,
+              "status": "within_declared_tolerance"
+            },
+            {
+              "probability": 0.9,
+              "reference": 0.15029751522210888,
+              "neural": 0.1502397546717588,
+              "absolute_error": 5.776055035008887e-05,
+              "reference_quantile_mcse": 2.439413256506706e-05,
+              "neural_quantile_mcse": 1.0640494827809932e-05,
+              "combined_95_percent_half_width": 5.2162070467226184e-05,
+              "reference_90_percent_width": 0.0025924703941285487,
+              "tolerance": 0.00025924703941285486,
+              "status": "within_declared_tolerance"
+            }
+          ]
+        },
+        "forward_variance_0_5_to_1y": {
+          "reference_diagnostics": {
+            "ess_bulk": 1736.6192244197096,
+            "ess_tail": 1617.3302663715253,
+            "mcse_mean": 2.5409670712740857e-05,
+            "mcse_sd": 1.4455751418019083e-05,
+            "r_hat": 1.001142105288042
+          },
+          "reference_converged": true,
+          "reference_mean": 0.15295262894060233,
+          "neural_mean": 0.1528452581658953,
+          "quantiles": [
+            {
+              "probability": 0.1,
+              "reference": 0.15148952660220014,
+              "neural": 0.15134798709316907,
+              "absolute_error": 0.00014153950903106338,
+              "reference_quantile_mcse": 3.560626197740557e-05,
+              "neural_quantile_mcse": 1.4939886247775092e-05,
+              "combined_95_percent_half_width": 7.568116349560208e-05,
+              "reference_90_percent_width": 0.0036133519403405145,
+              "tolerance": 0.0003613351940340515,
+              "status": "within_declared_tolerance"
+            },
+            {
+              "probability": 0.9,
+              "reference": 0.15437853268050405,
+              "neural": 0.1542755887473039,
+              "absolute_error": 0.00010294393320015027,
+              "reference_quantile_mcse": 2.7899904658568175e-05,
+              "neural_quantile_mcse": 1.3867680882850841e-05,
+              "combined_95_percent_half_width": 6.106529582369888e-05,
+              "reference_90_percent_width": 0.0036133519403405145,
+              "tolerance": 0.0003613351940340515,
+              "status": "within_declared_tolerance"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case": 1,
+      "products": {
+        "variance_swap_1y": {
+          "reference_diagnostics": {
+            "ess_bulk": 2060.842727722842,
+            "ess_tail": 2784.750721006612,
+            "mcse_mean": 1.6384835951517123e-05,
+            "mcse_sd": 9.922887384008259e-06,
+            "r_hat": 1.0013490915888812
+          },
+          "reference_converged": true,
+          "reference_mean": 0.060956976789743794,
+          "neural_mean": 0.060958173821731944,
+          "quantiles": [
+            {
+              "probability": 0.1,
+              "reference": 0.06000374145195175,
+              "neural": 0.05996277607894476,
+              "absolute_error": 4.0965373006990324e-05,
+              "reference_quantile_mcse": 3.322014962016048e-05,
+              "neural_quantile_mcse": 1.551855282477463e-05,
+              "combined_95_percent_half_width": 7.186426039939815e-05,
+              "reference_90_percent_width": 0.002437320007846279,
+              "tolerance": 0.0002437320007846279,
+              "status": "within_declared_tolerance"
+            },
+            {
+              "probability": 0.9,
+              "reference": 0.06191152887904928,
+              "neural": 0.06193177927179244,
+              "absolute_error": 2.0250392743163814e-05,
+              "reference_quantile_mcse": 2.03380780140483e-05,
+              "neural_quantile_mcse": 1.3174828864176424e-05,
+              "combined_95_percent_half_width": 4.749480609089947e-05,
+              "reference_90_percent_width": 0.002437320007846279,
+              "tolerance": 0.0002437320007846279,
+              "status": "within_declared_tolerance"
+            }
+          ]
+        },
+        "forward_variance_0_5_to_1y": {
+          "reference_diagnostics": {
+            "ess_bulk": 2096.5513841510324,
+            "ess_tail": 3005.0614388611025,
+            "mcse_mean": 2.310285549829631e-05,
+            "mcse_sd": 1.4127176053106854e-05,
+            "r_hat": 1.0012628813016202
+          },
+          "reference_converged": true,
+          "reference_mean": 0.07388662099798378,
+          "neural_mean": 0.07388857742051586,
+          "quantiles": [
+            {
+              "probability": 0.1,
+              "reference": 0.07253630750211702,
+              "neural": 0.07249053638144544,
+              "absolute_error": 4.577112067158384e-05,
+              "reference_quantile_mcse": 4.117739432486778e-05,
+              "neural_quantile_mcse": 2.484910812861063e-05,
+              "combined_95_percent_half_width": 9.426297942518096e-05,
+              "reference_90_percent_width": 0.003466787980888744,
+              "tolerance": 0.00034667879808887445,
+              "status": "within_declared_tolerance"
+            },
+            {
+              "probability": 0.9,
+              "reference": 0.07523949275738916,
+              "neural": 0.07525695209088994,
+              "absolute_error": 1.7459333500779994e-05,
+              "reference_quantile_mcse": 2.8482047980095404e-05,
+              "neural_quantile_mcse": 1.6322722877951112e-05,
+              "combined_95_percent_half_width": 6.434112318854404e-05,
+              "reference_90_percent_width": 0.003466787980888744,
+              "tolerance": 0.00034667879808887445,
+              "status": "within_declared_tolerance"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case": 2,
+      "products": {
+        "variance_swap_1y": {
+          "reference_diagnostics": {
+            "ess_bulk": 2283.413218742219,
+            "ess_tail": 2957.760465741536,
+            "mcse_mean": 1.808992083096613e-05,
+            "mcse_sd": 1.0821222893153641e-05,
+            "r_hat": 1.0006519045488305
+          },
+          "reference_converged": true,
+          "reference_mean": 0.11855208708832962,
+          "neural_mean": 0.11850078870635516,
+          "quantiles": [
+            {
+              "probability": 0.1,
+              "reference": 0.11742691857317253,
+              "neural": 0.11739756646974148,
+              "absolute_error": 2.9352103431051768e-05,
+              "reference_quantile_mcse": 2.6423221463095503e-05,
+              "neural_quantile_mcse": 1.6433082406452915e-05,
+              "combined_95_percent_half_width": 6.098710146228283e-05,
+              "reference_90_percent_width": 0.002852739864557141,
+              "tolerance": 0.0002852739864557141,
+              "status": "within_declared_tolerance"
+            },
+            {
+              "probability": 0.9,
+              "reference": 0.11965566812227471,
+              "neural": 0.11962241235966474,
+              "absolute_error": 3.3255762609971096e-05,
+              "reference_quantile_mcse": 3.266826535436307e-05,
+              "neural_quantile_mcse": 1.841114822377643e-05,
+              "combined_95_percent_half_width": 7.34969753353439e-05,
+              "reference_90_percent_width": 0.002852739864557141,
+              "tolerance": 0.0002852739864557141,
+              "status": "within_declared_tolerance"
+            }
+          ]
+        },
+        "forward_variance_0_5_to_1y": {
+          "reference_diagnostics": {
+            "ess_bulk": 2278.255123211987,
+            "ess_tail": 2862.0563553908737,
+            "mcse_mean": 2.562663045421037e-05,
+            "mcse_sd": 1.5246776196938774e-05,
+            "r_hat": 1.0005935876320884
+          },
+          "reference_converged": true,
+          "reference_mean": 0.12951096495272998,
+          "neural_mean": 0.1294803977533407,
+          "quantiles": [
+            {
+              "probability": 0.1,
+              "reference": 0.12791694798734737,
+              "neural": 0.12792348577422943,
+              "absolute_error": 6.537786882060415e-06,
+              "reference_quantile_mcse": 3.898023609855139e-05,
+              "neural_quantile_mcse": 1.924263298885842e-05,
+              "combined_95_percent_half_width": 8.520181731733157e-05,
+              "reference_90_percent_width": 0.004070317462303935,
+              "tolerance": 0.00040703174623039353,
+              "status": "within_declared_tolerance"
+            },
+            {
+              "probability": 0.9,
+              "reference": 0.13106321874101656,
+              "neural": 0.13105055455710238,
+              "absolute_error": 1.2664183914185001e-05,
+              "reference_quantile_mcse": 4.433435781132922e-05,
+              "neural_quantile_mcse": 2.4388440972022973e-05,
+              "combined_95_percent_half_width": 9.917362246584134e-05,
+              "reference_90_percent_width": 0.004070317462303935,
+              "tolerance": 0.00040703174623039353,
+              "status": "within_declared_tolerance"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "runtime": {
+    "numpy": "2.5.3",
+    "arviz": "1.3.0",
+    "xarray": "2026.9.0"
+  },
+  "rules": {
+    "names": [
+      "variance_swap_1y",
+      "forward_variance_0_5_to_1y"
+    ],
+    "epsilon_annual_variance": 0.0001,
+    "probabilities": [
+      0.1,
+      0.9
+    ],
+    "tolerance": "T=max(.10*(referenceq95-referenceq05),epsilon)",
+    "uncertainty": "1.95996398454*hypot(chain-aware reference quantile MCSE, neural quantile MCSE)",
+    "within": "absolute error+uncertainty<=T and uncertainty<=T/2",
+    "resolved_excess": "absolute error-uncertainty>T",
+    "otherwise": "inconclusive",
+    "role": "Pointwise analytic development curve-product check, not independent conditional acceptance."
+  },
+  "limitations": "Analytic mean-variance functionals test v0/theta only. No path product, vol-of-vol/leverage check, new MCMC, or independent conditional acceptance. Quantile errors use pointwise approximate normal uncertainty, not simultaneous bounds.",
+  "immutable_inputs_verified": true
+}

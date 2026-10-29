@@ -28,7 +28,8 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from sbi4finance.calibration import bank, classical, correction, pricer_net, tasks  # noqa: E402
+from sbi4finance.calibration import bank_collection as bank  # noqa: E402
+from sbi4finance.calibration import classical, correction, pricer_net, tasks  # noqa: E402
 from evaluate_calibration import LABELS, load_network, posterior_draws  # noqa: E402
 from heston_check import exact_prices, jsonable  # noqa: E402
 
@@ -130,7 +131,7 @@ def main():
     parser.add_argument("--least-squares-paths", type=int, default=8192)
     parser.add_argument("--landscape-points", type=int, default=45)
     args = parser.parse_args()
-    manifest, splits = bank.load_bank(args.bank)
+    manifest, splits = bank.load_bank(args.bank, splits=("test",), roles=bank.TRAINING_ROLES)
     task, workflow, _ = load_network(args.checkpoint)
     mc_paths = args.least_squares_paths if task["model"] == "rough" and args.pricer is None else None
     test = splits["test"]

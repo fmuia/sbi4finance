@@ -1,0 +1,326 @@
+{
+  "format": "known_emulator_comparison_summary_v1",
+  "job_id": "8030954",
+  "status": "completed_approximate_emulator_comparisons",
+  "source_revision": "56dcb13e1d2bf5b6dc96e573dfcaa6240a7104a9",
+  "actuals": {
+    "elapsed_seconds": 84,
+    "allocated_cpus": 4,
+    "allocated_cpu_seconds": 336,
+    "allocated_cpu_hours": 0.09333333333333334,
+    "allocated_gpus": 1,
+    "allocated_gpu_seconds": 84,
+    "allocated_gpu_hours": 0.023333333333333334,
+    "slurm_state": "COMPLETED",
+    "exit_code": "0:0",
+    "accounting_sha256": "a19c35e19084b581703e3c86c6b4cdd0afb83274bade6a891c4c75bd4693b51b",
+    "scope": "Count top-level allocation once, without batch/extern or queue-time double counting."
+  },
+  "shared_pool_actuals": {
+    "fit_actual_cpu_seconds": 4032,
+    "fit_actual_gpu_seconds": 1008,
+    "comparison_actual_cpu_seconds": 336,
+    "comparison_actual_gpu_seconds": 84,
+    "combined_actual_cpu_seconds": 4368,
+    "combined_actual_gpu_seconds": 1092,
+    "combined_actual_cpu_hours": 1.2133333333333334,
+    "combined_actual_gpu_hours": 0.30333333333333334,
+    "ceiling_cpu_seconds": 10800,
+    "ceiling_gpu_seconds": 2700,
+    "outstanding_comparison_reservation_seconds": 0,
+    "cpu_reference_788_seconds_in_separate_pool": true
+  },
+  "cases": [
+    {
+      "index": 0,
+      "surface_id": "validation:0",
+      "status": "completed_approximate_emulator_comparison",
+      "sampling_seed": 271500,
+      "neural_draws_requested": 10000,
+      "reference_issues": [],
+      "parameter_agreement": {
+        "all_checks_passed": true,
+        "limitations": "proposed parameter-only rules; reference quantile MCSE, numerical posterior stability and product acceptance remain unassessed; these rules describe agreement with an approximate emulator target only, not exact-model accuracy",
+        "parameters": {
+          "eta": {
+            "mean_error_within_0_3_reference_sd": true,
+            "reference_mcse_mean": 0.0008687706109813623,
+            "reference_mcse_mean_over_sd": 0.018247228932878275,
+            "reference_mcse_sd": 0.0005778797130243725,
+            "reference_mean": 2.0037085346657175,
+            "reference_q05": 1.9245308401698447,
+            "reference_q95": 2.082943239557973,
+            "reference_quantile_mcse": null,
+            "reference_sd": 0.04761109833044247,
+            "relative_width_error_within_25_percent": true,
+            "standardized_mean_error": 0.18959424199508515,
+            "width_ratio_90": 1.0039089001600405
+          },
+          "hurst": {
+            "mean_error_within_0_3_reference_sd": true,
+            "reference_mcse_mean": 0.0002451563729094352,
+            "reference_mcse_mean_over_sd": 0.01804574694672601,
+            "reference_mcse_sd": 0.00014925439207704152,
+            "reference_mean": 0.17805549897165945,
+            "reference_q05": 0.15591636027169625,
+            "reference_q95": 0.20045271174537688,
+            "reference_quantile_mcse": null,
+            "reference_sd": 0.01358527156748772,
+            "relative_width_error_within_25_percent": true,
+            "standardized_mean_error": 0.20727634925252483,
+            "width_ratio_90": 1.003098332311325
+          },
+          "rho": {
+            "mean_error_within_0_3_reference_sd": true,
+            "reference_mcse_mean": 0.00045165394375846395,
+            "reference_mcse_mean_over_sd": 0.018451622730751075,
+            "reference_mcse_sd": 0.00028762386075542075,
+            "reference_mean": -0.7609541321888732,
+            "reference_q05": -0.8019803108039572,
+            "reference_q95": -0.7207904767478929,
+            "reference_quantile_mcse": null,
+            "reference_sd": 0.024477735663094136,
+            "relative_width_error_within_25_percent": true,
+            "standardized_mean_error": 0.18615029104293424,
+            "width_ratio_90": 1.0030381744254768
+          }
+        }
+      },
+      "derived_parameter_comparison": {
+        "neural_mean": -1.5214807620470558,
+        "neural_q05_q95": [
+          -1.5724891022412835,
+          -1.4656221620816468
+        ],
+        "reference_diagnostics": {
+          "ess_bulk": 3019.9454295684245,
+          "ess_tail": 3772.220747123471,
+          "eti89_lb": -1.5773307661942355,
+          "eti89_ub": -1.4694144053040574,
+          "mcse_mean": 0.0006099016571353992,
+          "mcse_sd": 0.00036054786658148774,
+          "mean": -1.5238798667072664,
+          "r_hat": 1.000480947671006,
+          "sd": 0.033522349160267285
+        },
+        "reference_mcse_mean": 0.0006099016571353992,
+        "reference_mcse_mean_over_sd": 0.018194166051914228,
+        "reference_mcse_sd": 0.00036054786658148774,
+        "reference_mean": -1.5238798667072664,
+        "reference_q05_q95": [
+          -1.5790825048359756,
+          -1.4680306218076926
+        ],
+        "reference_quantile_mcse": null,
+        "reference_sd": 0.03352182536946951,
+        "scientific_acceptance": false,
+        "scope": "Derived parameter agreement with the approximate emulator target; not product pricing, an independent model-price check or an acceptance rule.",
+        "standardized_mean_error": 0.07156843739170474,
+        "status": "descriptive_approximate_target_comparison",
+        "target": "rho_eta",
+        "width_ratio_90": 0.9623154263167207
+      },
+      "sampling_and_comparison_seconds": 19.014074293896556,
+      "neural_payload": {
+        "bytes": 116514,
+        "sha256": "188c71eab40c2544bca8994fe1d0c83be7f1532ef80cbf369cae34554d01336e"
+      }
+    },
+    {
+      "index": 1,
+      "surface_id": "validation:1",
+      "status": "completed_approximate_emulator_comparison",
+      "sampling_seed": 271501,
+      "neural_draws_requested": 10000,
+      "reference_issues": [],
+      "parameter_agreement": {
+        "all_checks_passed": false,
+        "limitations": "proposed parameter-only rules; reference quantile MCSE, numerical posterior stability and product acceptance remain unassessed; these rules describe agreement with an approximate emulator target only, not exact-model accuracy",
+        "parameters": {
+          "eta": {
+            "mean_error_within_0_3_reference_sd": true,
+            "reference_mcse_mean": 0.00041591746008420654,
+            "reference_mcse_mean_over_sd": 0.01876266527365345,
+            "reference_mcse_sd": 0.0002629637758367004,
+            "reference_mean": 3.373765310468322,
+            "reference_q05": 3.3369927077992476,
+            "reference_q95": 3.409984593747378,
+            "reference_quantile_mcse": null,
+            "reference_sd": 0.02216729094817026,
+            "relative_width_error_within_25_percent": true,
+            "standardized_mean_error": 0.28907343954532955,
+            "width_ratio_90": 1.1405920902106192
+          },
+          "hurst": {
+            "mean_error_within_0_3_reference_sd": true,
+            "reference_mcse_mean": 7.76652527920259e-05,
+            "reference_mcse_mean_over_sd": 0.018339299309929547,
+            "reference_mcse_sd": 4.8707814684889563e-05,
+            "reference_mean": 0.246697519502991,
+            "reference_q05": 0.23980114569129476,
+            "reference_q95": 0.2537718673994573,
+            "reference_quantile_mcse": null,
+            "reference_sd": 0.004234908405141476,
+            "relative_width_error_within_25_percent": false,
+            "standardized_mean_error": 0.020298327415959872,
+            "width_ratio_90": 1.3564710520824255
+          },
+          "rho": {
+            "mean_error_within_0_3_reference_sd": false,
+            "reference_mcse_mean": 0.00010442169554453303,
+            "reference_mcse_mean_over_sd": 0.018687391542057976,
+            "reference_mcse_sd": 6.0629385993485206e-05,
+            "reference_mean": -0.6257420981411369,
+            "reference_q05": -0.635049231383513,
+            "reference_q95": -0.6165495360402222,
+            "reference_quantile_mcse": null,
+            "reference_sd": 0.005587815469565179,
+            "relative_width_error_within_25_percent": false,
+            "standardized_mean_error": 0.44516344386098605,
+            "width_ratio_90": 1.3747187130772038
+          }
+        }
+      },
+      "derived_parameter_comparison": {
+        "neural_mean": -2.123493917555523,
+        "neural_q05_q95": [
+          -2.1673962155526603,
+          -2.073067962580258
+        ],
+        "reference_diagnostics": {
+          "ess_bulk": 2817.1962099645484,
+          "ess_tail": 3897.2885079233697,
+          "eti89_lb": -2.1442762876767305,
+          "eti89_ub": -2.07855098589094,
+          "mcse_mean": 0.00038917775913813353,
+          "mcse_sd": 0.0002362095000007537,
+          "mean": -2.111078454592969,
+          "r_hat": 1.0022029578993201,
+          "sd": 0.020674278924689333
+        },
+        "reference_mcse_mean": 0.00038917775913813353,
+        "reference_mcse_mean_over_sd": 0.0188245423988345,
+        "reference_mcse_sd": 0.0002362095000007537,
+        "reference_mean": -2.111078454592969,
+        "reference_q05_q95": [
+          -2.1452453941963907,
+          -2.0774598891410494
+        ],
+        "reference_quantile_mcse": null,
+        "reference_sd": 0.02067395588655738,
+        "scientific_acceptance": false,
+        "scope": "Derived parameter agreement with the approximate emulator target; not product pricing, an independent model-price check or an acceptance rule.",
+        "standardized_mean_error": 0.6005363961633824,
+        "status": "descriptive_approximate_target_comparison",
+        "target": "rho_eta",
+        "width_ratio_90": 1.391569671058596
+      },
+      "sampling_and_comparison_seconds": 19.132672523148358,
+      "neural_payload": {
+        "bytes": 110254,
+        "sha256": "368bee92f4c7e8649f9098ef6d87ab13b76e3c836ada6b5b8f7e45b212d79b99"
+      }
+    },
+    {
+      "index": 2,
+      "surface_id": "validation:2",
+      "status": "completed_approximate_emulator_comparison",
+      "sampling_seed": 271502,
+      "neural_draws_requested": 10000,
+      "reference_issues": [],
+      "parameter_agreement": {
+        "all_checks_passed": false,
+        "limitations": "proposed parameter-only rules; reference quantile MCSE, numerical posterior stability and product acceptance remain unassessed; these rules describe agreement with an approximate emulator target only, not exact-model accuracy",
+        "parameters": {
+          "eta": {
+            "mean_error_within_0_3_reference_sd": false,
+            "reference_mcse_mean": 0.00017604162960487612,
+            "reference_mcse_mean_over_sd": 0.017615963286269194,
+            "reference_mcse_sd": 0.00015058960477206727,
+            "reference_mean": 3.4871034065038167,
+            "reference_q05": 3.4668000846354565,
+            "reference_q95": 3.4979722239389175,
+            "reference_quantile_mcse": null,
+            "reference_sd": 0.009993301345155062,
+            "relative_width_error_within_25_percent": false,
+            "standardized_mean_error": 2.052209708605643,
+            "width_ratio_90": 1.6757951111404445
+          },
+          "hurst": {
+            "mean_error_within_0_3_reference_sd": false,
+            "reference_mcse_mean": 7.473998932240773e-05,
+            "reference_mcse_mean_over_sd": 0.01897560537600285,
+            "reference_mcse_sd": 4.659871232188642e-05,
+            "reference_mean": 0.2449154157973231,
+            "reference_q05": 0.238211327150233,
+            "reference_q95": 0.2511802062326819,
+            "reference_quantile_mcse": null,
+            "reference_sd": 0.003938740706366411,
+            "relative_width_error_within_25_percent": false,
+            "standardized_mean_error": 0.8975219023524955,
+            "width_ratio_90": 1.583861477034669
+          },
+          "rho": {
+            "mean_error_within_0_3_reference_sd": false,
+            "reference_mcse_mean": 0.000101412354127553,
+            "reference_mcse_mean_over_sd": 0.018406429505059094,
+            "reference_mcse_sd": 7.003119856194309e-05,
+            "reference_mean": -0.36307096672400474,
+            "reference_q05": -0.3716277926795543,
+            "reference_q95": -0.3537500851371216,
+            "reference_quantile_mcse": null,
+            "reference_sd": 0.005509615762235655,
+            "relative_width_error_within_25_percent": false,
+            "standardized_mean_error": 1.0794253941421044,
+            "width_ratio_90": 1.4031005543373087
+          }
+        }
+      },
+      "derived_parameter_comparison": {
+        "neural_mean": -1.2792330995844636,
+        "neural_q05_q95": [
+          -1.323283857952336,
+          -1.2348611306351764
+        ],
+        "reference_diagnostics": {
+          "ess_bulk": 2951.4616324431086,
+          "ess_tail": 3310.5065435402644,
+          "eti89_lb": -1.29357415716989,
+          "eti89_ub": -1.2369738415725693,
+          "mcse_mean": 0.00033216967431359443,
+          "mcse_sd": 0.0002288995819572085,
+          "mean": -1.2660418984019692,
+          "r_hat": 1.001291891359597,
+          "sd": 0.01793193940067842
+        },
+        "reference_mcse_mean": 0.00033216967431359443,
+        "reference_mcse_mean_over_sd": 0.018524201825812315,
+        "reference_mcse_sd": 0.0002288995819572085,
+        "reference_mean": -1.2660418984019692,
+        "reference_q05_q95": [
+          -1.2943790490440408,
+          -1.2359785432863664
+        ],
+        "reference_quantile_mcse": null,
+        "reference_sd": 0.01793165921193629,
+        "scientific_acceptance": false,
+        "scope": "Derived parameter agreement with the approximate emulator target; not product pricing, an independent model-price check or an acceptance rule.",
+        "standardized_mean_error": 0.7356375127692373,
+        "status": "descriptive_approximate_target_comparison",
+        "target": "rho_eta",
+        "width_ratio_90": 1.5140746842854178
+      },
+      "sampling_and_comparison_seconds": 19.654039008542895,
+      "neural_payload": {
+        "bytes": 110082,
+        "sha256": "09d2a550c0f14a2ec7f60f7ad892eaf8708fe3c7e5ad9e83a23ddcdb046a1317"
+      }
+    }
+  ],
+  "scientific_acceptance": false,
+  "independent_pricing_assessed": false,
+  "reserved_test_evaluated": false,
+  "no_new_fits_prices_or_mcmc": true,
+  "payloads_transferred": false,
+  "scope": "Agreement is with a fixed deterministic emulator and Gaussian quote-noise likelihood. It omits bank pricing MC randomness/covariance and emulator/grid bias; not exact-model or like-for-like simulator-posterior validation."
+}

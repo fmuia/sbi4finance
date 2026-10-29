@@ -26,12 +26,14 @@ sys.path.insert(0, str(REPO / "tutorial" / "src"))
 
 from sbi4f_tutorial import bs_hierarchy as t_sector  # noqa: E402
 from sbi4f_tutorial import inference as t_inference  # noqa: E402
+from sbi4f_tutorial import backbones as t_backbones  # noqa: E402
+from sbi4f_tutorial import full_surface as t_full_surface  # noqa: E402
 from sbi4f_tutorial import long_end as t_long_end  # noqa: E402
 from sbi4f_tutorial import surface as t_surface  # noqa: E402
 from sbi4f_tutorial import tasks as t_tasks  # noqa: E402
 from sbi4f_tutorial import teaching as t_teaching  # noqa: E402
 
-from sbi4finance.calibration import inference, surface, tasks, teaching  # noqa: E402
+from sbi4finance.calibration import full_surface, inference, surface, tasks, teaching  # noqa: E402
 
 RUNTIME = REPO / "tutorial" / "src" / "sbi4f_tutorial"
 
@@ -74,12 +76,29 @@ class CopyTests(unittest.TestCase):
                         self.assertEqual(missing, set(), "run: pixi run copy-to-tutorial --add MODULE.NAME")
 
     def test_the_shipped_tasks_are_the_labs(self):
-        self.assertEqual(t_tasks.rough_task(), tasks.rough_task())
+        stored = json.loads((LAB / "configs" / "tasks" / "calibration_rough_pilot.json").read_text())["task"]
+        self.assertEqual(t_tasks.rough_task(), stored)
         tasks.validate_task(t_tasks.rough_task())
         tasks.validate_task(HESTON_TASK)
 
 
 class ParityTests(unittest.TestCase):
+    def test_current_task_validation_and_known_joint_conditions_match_the_lab(self):
+        for name in t_backbones.examples():
+            task, _, arrays = t_backbones.load_example(name)
+            full_surface.validate_task(task)
+            t_full_surface.validate_task(task)
+            levels = None if "context_values" not in arrays else arrays["context_values"][None]
+            for encoder in ("vector", "deepset", "set_transformer"):
+                ours = t_full_surface.conditioning_data(arrays["observations"][None], task, encoder,
+                                                        context_values=levels)
+                theirs = full_surface.conditioning_data(arrays["observations"][None], task, encoder,
+                                                        context_values=levels)
+                self.assertEqual(set(ours), set(theirs))
+                for key in ours:
+                    assert_array_equal(ours[key], theirs[key])
+        self.assertIsNone(t_full_surface.configuration(family="flow_matching")["flow_steps"])
+
     def test_design_grid_noise_and_black_scholes(self):
         self.assertEqual(t_surface.design_grid(), surface.design_grid())
         self.assertEqual(t_surface.quote_noise(t_surface.design_grid()), surface.quote_noise(surface.design_grid()))

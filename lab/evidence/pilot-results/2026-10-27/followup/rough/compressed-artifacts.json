@@ -1,0 +1,38 @@
+{
+  "format": "lossless_rough_group_compression_v1",
+  "scope": "Original report bytes retained losslessly; science and hashes unchanged. Decompress to a temporary group directory for the existing reducer.",
+  "files": [
+    {
+      "path": "groups/group-0/report.json.gz",
+      "uncompressed_path": "groups/group-0/report.json",
+      "uncompressed_bytes": 8630902,
+      "uncompressed_sha256": "dc34e9e1b84a297f2e69503a617ce174cf51ce9b48abcacc5484a44ee7ee4ee2",
+      "compressed_bytes": 1430923,
+      "compressed_sha256": "2f374e1835a7fbcd2c08aa2a2e0c07a7566f0ea6b084e18def789675c5e975a6"
+    },
+    {
+      "path": "groups/group-1/report.json.gz",
+      "uncompressed_path": "groups/group-1/report.json",
+      "uncompressed_bytes": 8622871,
+      "uncompressed_sha256": "ef017acdc32fd1caaebeefcb5c817f413091b8068560bd36aee0425742e39768",
+      "compressed_bytes": 1396109,
+      "compressed_sha256": "bbf8edf7b0bda16da2e5453c62d29729dda1a179cbf9f74b4f7bbe096a2a75c5"
+    },
+    {
+      "path": "groups/group-2/report.json.gz",
+      "uncompressed_path": "groups/group-2/report.json",
+      "uncompressed_bytes": 8622941,
+      "uncompressed_sha256": "426289b6f15782ecff099c6f4ed44fc22a69723945b020153fd01db286cd5c53",
+      "compressed_bytes": 1397683,
+      "compressed_sha256": "9dff128f367d1fa54b1300cdd77d221fc50c1bf0688d3ef1d6f21f2f125ca934"
+    },
+    {
+      "path": "groups/group-3/report.json.gz",
+      "uncompressed_path": "groups/group-3/report.json",
+      "uncompressed_bytes": 609012,
+      "uncompressed_sha256": "239e5f60ff0713f72cc640112cbcc120e09349b0873721b40389adacd21fa72c",
+      "compressed_bytes": 94885,
+      "compressed_sha256": "b1bf82e8667c08ef7f77eb5d07f881f623998cf0613ce74183cc589453a25e1e"
+    }
+  ]
+}

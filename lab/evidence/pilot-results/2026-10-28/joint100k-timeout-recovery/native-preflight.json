@@ -1,0 +1,94 @@
+{
+  "checked_utc": "2026-10-28T20:51:00.033950+00:00",
+  "read_only": true,
+  "native_full_payload_validation_and_seed_audit": "passed",
+  "planner_seconds": 69.20857873186469,
+  "producer_revision": "c773ceb26e7273612b15c69fd63715d131778083",
+  "producer_bank_source_sha256": "9f0d512ba6f52df5c73c54599183159f535b2aa84ac4daa6a60cfd219afcc7db",
+  "producer_collection_source_sha256": "b18bfa6d8322753bdbd36754a3f08c82800b826952453d5ce95adb5751757ed5",
+  "locks": {
+    "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/joint-100k/campaign.lock": "free",
+    "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/.locks/mutation.lock": "free"
+  },
+  "unchanged_inputs": {
+    "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/joint-100k/execution.json": "4859cbc1d3bd65d907315e5b48d5454c47f151b08885ca84c7b0c547309e97a6",
+    "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/joint-100k/jobs.json": "76ad4d7b19b78f21e37ba8ad468e326b0ec0d0e05b355e90a963e97223a25949",
+    "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/joint-100k/campaign.json": "e2feaa113e1b887a9796ba29bed85e62b5498aaaace20c8626fd27a0a8f25fbf",
+    "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/collection.json": "802a200f73bacddaa744abcfdcf2497b2d45a609c9039ed816baf1e3e9a5b12c",
+    "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/snapshot-20k/manifest.json": "c0de030bafef6de3f728d75788cd7feddd672b476795b57c42ecd8cbb0843ce9"
+  },
+  "seed_audit": {
+    "protocol": "calibration_legacy_seedsequence_uint64_pricing_v1",
+    "configuration_sha256": "504b2b7b0b50f94bc4bb2d96db68e2be1105227452a208cd0bd1ba6037fd0e89",
+    "examples_checked": 112000,
+    "duplicate_pricing_seeds": 0
+  },
+  "new_jobs": 7285,
+  "new_rows": 36425,
+  "missing_intervals": [
+    [
+      36075,
+      36100
+    ],
+    [
+      63600,
+      100000
+    ]
+  ],
+  "first_jobs": [
+    {
+      "split": "train",
+      "start": 36075,
+      "stop": 36080,
+      "job_sha256": "4f1dd0b089dd7f7c66908d618506b4ccf933450bcc6c776038157a61be00eb04"
+    },
+    {
+      "split": "train",
+      "start": 36080,
+      "stop": 36085,
+      "job_sha256": "7c34e28d841547a7ab016cf1ad989c84e71d2ff214bfcc1085be80183e9b5be8"
+    },
+    {
+      "split": "train",
+      "start": 36085,
+      "stop": 36090,
+      "job_sha256": "fc906cb9d21d6f46404a5b34a3319250e5cb3490242d61536ba365d2aa3725e1"
+    },
+    {
+      "split": "train",
+      "start": 36090,
+      "stop": 36095,
+      "job_sha256": "472f55cd1830b136416a5919a06d37be6df141bc21ffed12a90250e4b82c76ca"
+    },
+    {
+      "split": "train",
+      "start": 36095,
+      "stop": 36100,
+      "job_sha256": "97914ae727f87d5bd95beecd35be2eff211d71f6a839287a6202a3bbbc044227"
+    },
+    {
+      "split": "train",
+      "start": 63600,
+      "stop": 63605,
+      "job_sha256": "a2bc480edc90f054a8b783410c05ea9c153fadc04880ffd062ec2a963aaff896"
+    }
+  ],
+  "last_jobs": [
+    {
+      "split": "train",
+      "start": 99990,
+      "stop": 99995,
+      "job_sha256": "eb85089b9282295d21319c99bf374574f2b58088d478a9fc16aa01f6b78b0943"
+    },
+    {
+      "split": "train",
+      "start": 99995,
+      "stop": 100000,
+      "job_sha256": "82208045ef5d2c7d19c01ced61904ee640a2abb9f9b4dc8e24c851b0e4de8e48"
+    }
+  ],
+  "compact_job_map_sha256": "d94b574505429e23194c0b46a00f8fded05feb0a22cdb53721dcc4b84010fb8f",
+  "holdout_parts_unchanged_against_checked20k": 480,
+  "checked20k_manifest_sha256": "c0de030bafef6de3f728d75788cd7feddd672b476795b57c42ecd8cbb0843ce9",
+  "snapshot100k_exists": false
+}

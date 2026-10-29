@@ -1,0 +1,10 @@
+## SLURM PROLOG ###############################################################
+##    Job ID : 8030954
+##  Job Name : sbi4f-known-emulator-compare
+##  Nodelist : gpu2708
+##      CPUs : 1
+##  Mem/Node : 24576 MB
+## Directory : /oscar/home/afengler
+##   Job Started : Tue Oct 27 06:30:09 PM EDT 2026
+###############################################################################
+{"status": "completed_approximate_emulator_comparisons", "scientific_acceptance": false, "case_parameter_checks": [true, false, false]}

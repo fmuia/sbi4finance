@@ -1,0 +1,82 @@
+{
+  "elapsed_seconds": 446.03434314392507,
+  "limitations": "Also assess numerical-price refinement, products and reference uncertainty.",
+  "mcmc_diagnostics_passed": false,
+  "parameters": {
+    "parameters[initial_variance]": {
+      "ess_bulk": 571.4398765628896,
+      "ess_tail": 752.6125677573751,
+      "eti89_lb": 0.023585112139560837,
+      "eti89_ub": 0.02489685896684597,
+      "mcse_mean": 1.73360188118515e-05,
+      "mcse_sd": 9.634985937027163e-06,
+      "mean": 0.024233162849640486,
+      "r_hat": 1.0072721906413473,
+      "sd": 0.0004142386051094401
+    },
+    "parameters[rho]": {
+      "ess_bulk": 559.9321028204472,
+      "ess_tail": 643.2779269578427,
+      "eti89_lb": -0.25918854031435484,
+      "eti89_ub": -0.21950699497078008,
+      "mcse_mean": 0.0005235928619930001,
+      "mcse_sd": 0.0003788996094575463,
+      "mean": -0.2395190617068773,
+      "r_hat": 1.009452604004128,
+      "sd": 0.012347264132515473
+    },
+    "parameters[theta]": {
+      "ess_bulk": 491.8772808953913,
+      "ess_tail": 640.1439387297954,
+      "eti89_lb": 0.0865884564103859,
+      "eti89_ub": 0.09133166360499144,
+      "mcse_mean": 6.637758059643523e-05,
+      "mcse_sd": 4.158746925148571e-05,
+      "mean": 0.08897141643766693,
+      "r_hat": 1.0057976614101043,
+      "sd": 0.0014704374447949173
+    },
+    "parameters[vol_of_vol]": {
+      "ess_bulk": 376.9313666457038,
+      "ess_tail": 418.2124774781739,
+      "eti89_lb": 1.4201947798832781,
+      "eti89_ub": 1.4959567470246937,
+      "mcse_mean": 0.0011389741167806638,
+      "mcse_sd": 0.000805062755059594,
+      "mean": 1.4654413783656413,
+      "r_hat": 1.0236415328144457,
+      "sd": 0.02427519440530169
+    }
+  },
+  "requirements": {
+    "ess_bulk_min": 400,
+    "ess_tail_min": 400,
+    "r_hat_max": 1.01
+  },
+  "scientific_acceptance": "not_assessed",
+  "variance_functionals": {
+    "mcmc_diagnostics_passed": true,
+    "names": {
+      "forward_variance_0_5_to_1y": {
+        "ess_bulk": 488.7375475941617,
+        "ess_tail": 659.2754577429563,
+        "mcse_mean": 4.9251827449077647e-05,
+        "mcse_sd": 3.080076042613486e-05,
+        "r_hat": 1.0064589814100369
+      },
+      "variance_swap_1y": {
+        "ess_bulk": 486.5267494939075,
+        "ess_tail": 677.1288628102066,
+        "mcse_mean": 3.4991641549596404e-05,
+        "mcse_sd": 2.1661780047636755e-05,
+        "r_hat": 1.0076436693180832
+      }
+    },
+    "requirements": {
+      "ess_bulk_min": 400,
+      "ess_tail_min": 400,
+      "r_hat_max": 1.01
+    },
+    "scope": "analytic variance-unit functionals; a product pass does not imply parameter or scientific acceptance"
+  }
+}

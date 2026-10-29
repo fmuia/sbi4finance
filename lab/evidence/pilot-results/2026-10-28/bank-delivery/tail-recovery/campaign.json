@@ -1,0 +1,36 @@
+{
+  "task_config": "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/tasks/joint.json",
+  "producer_repo": "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/repo",
+  "expected_git_revision": "c773ceb26e7273612b15c69fd63715d131778083",
+  "expected_runtime": {
+    "numpy": "2.5.3",
+    "python": "3.12.16",
+    "scipy": "1.18.1"
+  },
+  "collection": "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection",
+  "snapshot": "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/tail-recovery-20261028/native-snapshot-20k",
+  "campaign_root": "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/tail-recovery-20261028",
+  "train": 20000,
+  "chunk": 25,
+  "max_workers": 2,
+  "worker_wall_seconds": 10800,
+  "memory_gib": 8,
+  "cpu_hours": 1500,
+  "prior_cpu_seconds": 3141589,
+  "final_wall_seconds": 7200,
+  "cleanup_seconds": 240,
+  "poll_seconds": 60,
+  "controller_wall_hours": 12,
+  "max_array_size": 2,
+  "account": "carney-mjfrank-condo2",
+  "partition": "batch",
+  "seed_policy": "native_collection",
+  "python": "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python",
+  "exclude_nodes": [
+    "node2338",
+    "node2339",
+    "node2336",
+    "node2344",
+    "node2346"
+  ]
+}

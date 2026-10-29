@@ -1,0 +1,12 @@
+{
+  "checked_utc": "2026-10-28T18:08:48.425527+00:00",
+  "read_only": true,
+  "job_id": "8061867",
+  "raw_accounting": "8061867|COMPLETED|139|4|0:0|billing=112,cpu=4,gres/gpu=1,mem=32G,node=1|gpu3102|2026-10-28T14:07:56\n8061867.batch|COMPLETED|139|4|0:0|cpu=4,gres/gpu=1,mem=32G,node=1|gpu3102|2026-10-28T14:07:56\n8061867.extern|COMPLETED|139|4|0:0|billing=112,cpu=4,gres/gpu=1,mem=32G,node=1|gpu3102|2026-10-28T14:07:56\n",
+  "file_sha256": {
+    "run.json": "b38e06fa01372e0092ca68aa8be9dc2a6faf43856d3d9f567865d66def7625cc",
+    "flow_matching-deepset/validation/evaluation.json": "00d2b1b59f61d7769e8f634dfa555767b1cec2cdca045a185bd9bae8eadc4d90",
+    "flow_matching-set_transformer/validation/evaluation.json": "19a191c779d28e0b77f28183863354d325b9dcff798ed4107947414d67a366bf"
+  },
+  "original_partial_run_sha256": "54033c26be0b66afe937f609f5db650646e9ebc89a9686b4a891bcf5dceb4611"
+}

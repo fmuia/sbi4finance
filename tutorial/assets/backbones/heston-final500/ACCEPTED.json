@@ -1,0 +1,15 @@
+{
+  "accepted": "2026-10-29T22:07:49+00:00",
+  "source": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-parallel-delivery-20261028/data/synthetic/full-surface-heston-final500/interior-midpoint",
+  "source_sha256": {
+    "bundle.json": "3733f8e9672f7a6bb8dbefa9a5112d0e0d9e2dfa5a2e47a17a5de71dc2a1f3b3",
+    "diagnostics.json": "8993076d03ff44ba1106c8324c8856ad421b40be54ecbe0773a43377397c3d5f",
+    "posterior.npz": "cc26e3129d94083c35de8b300b214f2518a7bcf825137a625f1ec74893ff16db",
+    "products.json": "f07c48cade071469012c32b64065ef0480be181ec9a4cc77b558d1238db987e9",
+    "reference.json": "ff6c7a4660bdc486546d8dae9825abe0adf8e335972ba5c49df576f8ea189310",
+    "task.json": "5e499526ff8f29a72f49785a1a36006b1d769d26bca8a6f83f7a8c8ac4d431fa"
+  },
+  "changes": [],
+  "scientific_acceptance": false,
+  "scope": "verified development replay copied byte-for-byte; no scientific promotion"
+}

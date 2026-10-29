@@ -1,0 +1,10 @@
+{
+  "format": "calibration_bank_campaign_launch_v1",
+  "state": "launched_not_yet_checked",
+  "pid": 2825694,
+  "utc": "2026-10-28T20:54:23.226741+00:00",
+  "config_sha256": "a27a7a142f160e37ce903788308744dde61f2889fb9091aa8a23b583043234a7",
+  "operator_sha256": "a59339f9f9d10f4de961a42977e41278324c76e290dc32b806094dc0542d5ee0",
+  "execution": "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/joint-100k-recovery-20261028/execution.json",
+  "log": "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/joint-100k-recovery-20261028/operator.log"
+}

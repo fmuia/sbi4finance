@@ -1,0 +1,52 @@
+{
+  "format": "full_surface_cluster_readiness_v1",
+  "scientific_acceptance": false,
+  "hostname": "node1830.oscar.ccv.brown.edu",
+  "slurm_job_id": "7989651",
+  "slurm_cpus_per_task": "2",
+  "output_path": "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/runs/readiness-cpu",
+  "seed": 271027,
+  "runtime": {
+    "python": "3.12.16",
+    "keras_backend_env": "jax",
+    "bayesflow": "2.1.0",
+    "keras": "3.15.1",
+    "jax": "0.11.1",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1"
+  },
+  "source_revision": "9d903dbb5986f766844fbb942b322c0d55856705",
+  "limitations": [
+    "tiny execution check, not posterior validation",
+    "same-node lock check, not cross-node filesystem certification"
+  ],
+  "stage": "complete",
+  "devices": [
+    {
+      "platform": "cpu",
+      "kind": "cpu"
+    }
+  ],
+  "filesystem": {
+    "process_lock_exclusion": true,
+    "retry_rewrites": false,
+    "prefix_and_validation_preserved": true,
+    "train_before": 4,
+    "train_after": 8,
+    "validation": 4,
+    "test": 2,
+    "test_loaded_by_training_or_evaluation": false,
+    "snapshot_sha256": "e5c12a5f405ca1273419c36b71e5ba77e4c7b63e73eba5ca63aad0bfe61a99bd"
+  },
+  "passed": true,
+  "training": {
+    "resumed_at_epochs": [
+      1
+    ],
+    "same_seed_reload_exact": true,
+    "test_read": false,
+    "checkpoint_sha256": "819f05cbb1723fd3aa2063991d3dcc754ff3b50522060b1682ff56a0e23638a0"
+  },
+  "evaluated_split": "validation",
+  "seconds": 79.91959219053388
+}

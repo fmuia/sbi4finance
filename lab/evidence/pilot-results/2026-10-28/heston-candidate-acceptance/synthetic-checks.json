@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "interpreter": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-full-surface-core/.pixi/envs/core-reference/bin/python",
+  "driver_mode": "--dry-products --repo .",
+  "checks": [
+    "Analytic one-year variance-swap rate agrees with independent scipy.integrate.quad integration.",
+    "Analytic six-to-twelve-month forward-variance rate agrees with independent quadrature.",
+    "ArviZ quantile MCSE preserves reference chain/draw axes.",
+    "Identical synthetic product draws classify within tolerance.",
+    "A shifted synthetic distribution classifies as a resolved excess.",
+    "An uncertainty-overlapping comparison classifies inconclusive."
+  ],
+  "scope": "Synthetic software/numerical checks only; no financial test data or production training."
+}

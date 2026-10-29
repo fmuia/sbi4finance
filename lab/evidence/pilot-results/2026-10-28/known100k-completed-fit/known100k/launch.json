@@ -1,0 +1,9 @@
+{
+  "job_id": "8059257",
+  "watcher_pid": 747264,
+  "root": "/oscar/scratch/afengler/sbi4finance-independent-work-20261028/known100k",
+  "prior_cpu_seconds": 9188,
+  "prior_gpu_seconds": 2297,
+  "full_cumulative_cpu_seconds": 24548,
+  "full_cumulative_gpu_seconds": 6137
+}

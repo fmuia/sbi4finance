@@ -1,0 +1,10 @@
+{
+  "cpu": "Apple M5 Max",
+  "model": "Mac17,6",
+  "physical_cpus": 18,
+  "logical_cpus": 18,
+  "memory_bytes": 137438953472,
+  "memory_GiB": 128,
+  "source": "sysctl hw.model hw.memsize hw.physicalcpu hw.logicalcpu machdep.cpu.brand_string",
+  "scope": "Measured host configuration, not an estimated minimum RAM requirement or representative low-end laptop."
+}

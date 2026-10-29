@@ -1,0 +1,13 @@
+{
+  "state": "reviewed_recovery_prepared",
+  "utc": "2026-10-28T09:53:11.532040+00:00",
+  "old_pid": 3792953,
+  "host": "login010",
+  "old_command": "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python /oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/arm_bank_extensions.py --plan /oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/waiter/plan.json --run ",
+  "old_execution_sha256": "21accb738ea303dec04f7e949830f676fe9c7d47e83d7b79d4c9f8c4cea24ff6",
+  "root_review": "Exact date-filter patch and16 tests passed; user100k expansion remains authorized.",
+  "budget_change": false,
+  "new_simulations_or_repricing": false,
+  "patched_launcher_sha256": "b39970fdd827c9367bcbd021160d9fe89c3818dcaaf82580c1bd19dc7216bf8f",
+  "waiter_sha256": "4f71ffa51461d55aa864294697f43119494f095bc64748897ba87add58ead734"
+}

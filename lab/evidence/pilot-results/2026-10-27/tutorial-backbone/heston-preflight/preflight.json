@@ -1,0 +1,30 @@
+{
+  "audit_sha256": "2ff4d4e2b25ab59127080eef981040ec4843bf9cbf623225d087b186d42474fb",
+  "collection_id": "402230db66b9885b59524e7808eebf1b3882c4a271f97eccc7cf970581e85221",
+  "collection_sha256": "8f9c4a5e6b3bebaa25215f720df02aee178b78bfce8483f0024679ffc869df1e",
+  "config_sha256": "1dcc7a239ef0a4b85ca42f8a0cd0556c291bcd0b7d04146844d2fde70a373273",
+  "fixed_test_surfaces": 5000,
+  "fixed_validation_surfaces": 5000,
+  "format": "heston_backbone_stage_v1",
+  "inventory_sha256": "476626ffd40651b263650dcb7876fe90f56c2e4be65577e73cd6ed6bf164335e",
+  "job_map_sha256": "1dfc2b16858517cef6fecb1d2eb1d052e5a11386f09e4e930adcffedba9370fc",
+  "new_train_surfaces": 80000,
+  "no_financial_pricing_calls": true,
+  "no_model_training": true,
+  "ordered_new_seed_digest": "26e29c1f9d4571ee40179dc1587b4a40f8310c38421dba0e19a65a222df50668",
+  "ordered_new_state_digest": "51717ae1c6699a9a8b2b27f75063bc140d2a4597b560a69c21553dcc0cd1946e",
+  "original_parts_checked": 60,
+  "original_train_surfaces": 20000,
+  "planned_shards": 32,
+  "reserved_test_outcomes_evaluated": false,
+  "runtime": {
+    "numpy": "2.5.3",
+    "python": "3.12.16",
+    "scipy": "1.18.1"
+  },
+  "script_sha256": "f9d4a60419676c6fbb1a47a368919e99f7a398b8085f33203b6f01a8e63b883d",
+  "seconds": 82.75775942858309,
+  "source_revision": "9d903dbb5986f766844fbb942b322c0d55856705",
+  "stage": "preflight",
+  "status": "completed_metadata_only"
+}

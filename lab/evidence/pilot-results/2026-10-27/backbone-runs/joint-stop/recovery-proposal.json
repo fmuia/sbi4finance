@@ -1,0 +1,92 @@
+{
+  "format": "joint_timeout_manual_recovery_proposal_v1",
+  "status": "prepared_only_not_submitted",
+  "scope": "Exactly three original map entries,75fixed surface IDs; no wider refill, changed seeds or numerical settings.",
+  "original_map_indices": [
+    378,
+    379,
+    380
+  ],
+  "original_jobs": [
+    "8019485_378",
+    "8019485_379",
+    "8019485_380"
+  ],
+  "surface_ranges": [
+    {
+      "split": "train",
+      "start": 9450,
+      "stop": 9475
+    },
+    {
+      "split": "train",
+      "start": 9475,
+      "stop": 9500
+    },
+    {
+      "split": "train",
+      "start": 9500,
+      "stop": 9525
+    }
+  ],
+  "root_seed": 271200,
+  "source_revision": "c773ceb26e7273612b15c69fd63715d131778083",
+  "source_sha256": {
+    "bergomi.py": "8bffe12110dfb7b0de85fcf58cb7b848e4f5bc5f5af2f614ff2bd593d0edb6f5",
+    "calibration/bank.py": "9f0d512ba6f52df5c73c54599183159f535b2aa84ac4daa6a60cfd219afcc7db",
+    "calibration/pricing.py": "bf9b57f73f030670de2f3db37b298b56dc0070be2f99cf187188b817020f3b52",
+    "calibration/surface.py": "24c0476ce3000208438d440cbbb1bf21efd92494b8c634592029af384ee30388",
+    "calibration/tasks.py": "295d1ce59b409f8edb5edba89488fa87a5a4e7bab6f785a152ecb69db1528916",
+    "gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
+    "rough_bergomi.py": "0e8d31c8e18ca8bffd7f798988b22e8a73f75fb49da6eee336f8a106c186ba06",
+    "calibration/bank_collection.py": "b18bfa6d8322753bdbd36754a3f08c82800b826952453d5ce95adb5751757ed5"
+  },
+  "collection_id": "817de3664968de0c605ae4c73e2c99c26465344294af2fc5412f39fffa4baa50",
+  "collection_sha256": "802a200f73bacddaa744abcfdcf2497b2d45a609c9039ed816baf1e3e9a5b12c",
+  "job_map_sha256": "a815c58087279fa7c2b5603d6bc3fee11ed92ec7965c0ac29c2827a665bbae0c",
+  "argv": [
+    "sbatch",
+    "--parsable",
+    "--job-name=sbi4f-joint-timeout-recovery-378-380",
+    "--nodes=1",
+    "--ntasks=1",
+    "--no-requeue",
+    "--account=carney-mjfrank-condo2",
+    "--partition=batch",
+    "--cpus-per-task=1",
+    "--mem=8G",
+    "--time=03:00:00",
+    "--exclude=node2338",
+    "--array=378,379,380%3",
+    "--chdir=/oscar/scratch/afengler/sbi4finance-native-bank-20261027/repo",
+    "--output=/oscar/scratch/afengler/sbi4finance-native-bank-20261027/logs/recovery-378-380-%A_%a.out",
+    "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/repo/cluster/calibration_collection_array.sbatch",
+    "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python",
+    "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/jobs-20k.json"
+  ],
+  "submission_cwd": "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/repo",
+  "resource_change": "Exclude only node2338 after co-located system-CPU-dominated timeouts; financial task/prior/IDs/source/runtime/caps unchanged.",
+  "budget": {
+    "existing_bank_ceiling_cpu_hours": 1500,
+    "existing_submitted_actual_cpu_seconds_including_preflight": 1016212,
+    "three_workers_time_limits_cpu_seconds": 32400,
+    "worker_cleanup_allowance_seconds": 720,
+    "setup_limit_and_cleanup_reserved_cpu_seconds": 540,
+    "postcheck_limit_and_cleanup_reserved_cpu_seconds": 540,
+    "total_recovery_full_exposure_cpu_seconds": 34200,
+    "total_recovery_cpu_hour_ceiling": 9.5,
+    "existing_final_snapshot_reserved_cpu_seconds": 3960,
+    "total_existing_spend_plus_recovery_and_final_reserve_cpu_seconds": 1054372,
+    "total_existing_spend_plus_recovery_and_final_reserve_cpu_hours": 292.8811111111111
+  },
+  "preservation": [
+    "No original staging, logs or lock files deleted or overwritten.",
+    "Original map/config/source/runtime bytes must still match before submission.",
+    "Original jobs must be terminal; no earlier reviewed recovery may already be active.",
+    "Submit from frozen source directory so SLURM_SUBMIT_DIR stays correct.",
+    "Run existing frozen driver; each new stage gets a unique temporary name and publishes only its original canonical range.",
+    "After success validate all three payload/manifest/source/range/precision identities and unchanged394finishedparts; no finalcomplete32ksnapshotclaim.",
+    "Any recurrence, numerical failure or ambiguous submission stops this bounded unit; retain exact old/new job IDs and all costs.",
+    "This is explicit reviewed retry accounting; original helper correctly rejects automatic duplicate-index submissions."
+  ]
+}

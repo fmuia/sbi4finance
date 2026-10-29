@@ -1,0 +1,5993 @@
+{
+  "format": "sbi4finance_storage_audit_v1",
+  "utc": "2026-10-28T00:56:18.432549+00:00",
+  "scope": "Read-only completed-shard stat and ZIP/NPY headers; no full arrays, simulation paths or test outcomes read.",
+  "banks": {
+    "known": {
+      "root": "/oscar/scratch/afengler/sbi4finance-rough-known-backbone-20261027/collection",
+      "completed_parts": 1385,
+      "completed_examples": {
+        "train": 22625,
+        "validation": 5000,
+        "test": 7000
+      },
+      "payload_bytes": 308303905,
+      "payload_physical_allocated_bytes": 308642304,
+      "part_manifest_bytes": 19061995,
+      "observed_payload_bytes_per_example": 8904.083898916968,
+      "sampled_parts": [
+        {
+          "part": "test-0000000000-0000000025",
+          "examples": 25,
+          "payload_bytes": 222806,
+          "members": {
+            "observations": {
+              "compressed_bytes": 12051,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 482.04
+            },
+            "parameters": {
+              "compressed_bytes": 702,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 28.08
+            },
+            "reference_prices": {
+              "compressed_bytes": 11969,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 478.76
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 12160,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 486.4
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 182219,
+              "uncompressed_npy_bytes": 793928,
+              "raw_array_bytes": 793800,
+              "shape": [
+                25,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 7288.76
+            },
+            "refinement_difference": {
+              "compressed_bytes": 111,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.44
+            },
+            "context_values": {
+              "compressed_bytes": 1444,
+              "uncompressed_npy_bytes": 1528,
+              "raw_array_bytes": 1400,
+              "shape": [
+                25,
+                7
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 57.76
+            },
+            "context_parameters": {
+              "compressed_bytes": 496,
+              "uncompressed_npy_bytes": 528,
+              "raw_array_bytes": 400,
+              "shape": [
+                25,
+                2
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 19.84
+            },
+            "pricing_paths": {
+              "compressed_bytes": 121,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.84
+            },
+            "example_id": {
+              "compressed_bytes": 161,
+              "uncompressed_npy_bytes": 828,
+              "raw_array_bytes": 700,
+              "shape": [
+                25
+              ],
+              "dtype": "<U7",
+              "compressed_bytes_per_example": 6.44
+            }
+          }
+        },
+        {
+          "part": "test-0000002300-0000002325",
+          "examples": 25,
+          "payload_bytes": 222592,
+          "members": {
+            "observations": {
+              "compressed_bytes": 12051,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 482.04
+            },
+            "parameters": {
+              "compressed_bytes": 706,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 28.24
+            },
+            "reference_prices": {
+              "compressed_bytes": 11947,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 477.88
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 12179,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 487.16
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 182009,
+              "uncompressed_npy_bytes": 793928,
+              "raw_array_bytes": 793800,
+              "shape": [
+                25,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 7280.36
+            },
+            "refinement_difference": {
+              "compressed_bytes": 111,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.44
+            },
+            "context_values": {
+              "compressed_bytes": 1443,
+              "uncompressed_npy_bytes": 1528,
+              "raw_array_bytes": 1400,
+              "shape": [
+                25,
+                7
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 57.72
+            },
+            "context_parameters": {
+              "compressed_bytes": 494,
+              "uncompressed_npy_bytes": 528,
+              "raw_array_bytes": 400,
+              "shape": [
+                25,
+                2
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 19.76
+            },
+            "pricing_paths": {
+              "compressed_bytes": 111,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.44
+            },
+            "example_id": {
+              "compressed_bytes": 169,
+              "uncompressed_npy_bytes": 1028,
+              "raw_array_bytes": 900,
+              "shape": [
+                25
+              ],
+              "dtype": "<U9",
+              "compressed_bytes_per_example": 6.76
+            }
+          }
+        },
+        {
+          "part": "test-0000004625-0000004650",
+          "examples": 25,
+          "payload_bytes": 222815,
+          "members": {
+            "observations": {
+              "compressed_bytes": 12047,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 481.88
+            },
+            "parameters": {
+              "compressed_bytes": 705,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 28.2
+            },
+            "reference_prices": {
+              "compressed_bytes": 11963,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 478.52
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 12169,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 486.76
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 182235,
+              "uncompressed_npy_bytes": 793928,
+              "raw_array_bytes": 793800,
+              "shape": [
+                25,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 7289.4
+            },
+            "refinement_difference": {
+              "compressed_bytes": 111,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.44
+            },
+            "context_values": {
+              "compressed_bytes": 1443,
+              "uncompressed_npy_bytes": 1528,
+              "raw_array_bytes": 1400,
+              "shape": [
+                25,
+                7
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 57.72
+            },
+            "context_parameters": {
+              "compressed_bytes": 494,
+              "uncompressed_npy_bytes": 528,
+              "raw_array_bytes": 400,
+              "shape": [
+                25,
+                2
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 19.76
+            },
+            "pricing_paths": {
+              "compressed_bytes": 103,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.12
+            },
+            "example_id": {
+              "compressed_bytes": 173,
+              "uncompressed_npy_bytes": 1028,
+              "raw_array_bytes": 900,
+              "shape": [
+                25
+              ],
+              "dtype": "<U9",
+              "compressed_bytes_per_example": 6.92
+            }
+          }
+        },
+        {
+          "part": "test-0000006925-0000006950",
+          "examples": 25,
+          "payload_bytes": 223061,
+          "members": {
+            "observations": {
+              "compressed_bytes": 12070,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 482.8
+            },
+            "parameters": {
+              "compressed_bytes": 703,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 28.12
+            },
+            "reference_prices": {
+              "compressed_bytes": 11931,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 477.24
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 12171,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 486.84
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 182471,
+              "uncompressed_npy_bytes": 793928,
+              "raw_array_bytes": 793800,
+              "shape": [
+                25,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 7298.84
+            },
+            "refinement_difference": {
+              "compressed_bytes": 111,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.44
+            },
+            "context_values": {
+              "compressed_bytes": 1444,
+              "uncompressed_npy_bytes": 1528,
+              "raw_array_bytes": 1400,
+              "shape": [
+                25,
+                7
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 57.76
+            },
+            "context_parameters": {
+              "compressed_bytes": 496,
+              "uncompressed_npy_bytes": 528,
+              "raw_array_bytes": 400,
+              "shape": [
+                25,
+                2
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 19.84
+            },
+            "pricing_paths": {
+              "compressed_bytes": 120,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.8
+            },
+            "example_id": {
+              "compressed_bytes": 172,
+              "uncompressed_npy_bytes": 1028,
+              "raw_array_bytes": 900,
+              "shape": [
+                25
+              ],
+              "dtype": "<U9",
+              "compressed_bytes_per_example": 6.88
+            }
+          }
+        },
+        {
+          "part": "train-0000002225-0000002250",
+          "examples": 25,
+          "payload_bytes": 222510,
+          "members": {
+            "observations": {
+              "compressed_bytes": 12033,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 481.32
+            },
+            "parameters": {
+              "compressed_bytes": 705,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 28.2
+            },
+            "reference_prices": {
+              "compressed_bytes": 11990,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 479.6
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 12160,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 486.4
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 181930,
+              "uncompressed_npy_bytes": 793928,
+              "raw_array_bytes": 793800,
+              "shape": [
+                25,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 7277.2
+            },
+            "refinement_difference": {
+              "compressed_bytes": 111,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.44
+            },
+            "context_values": {
+              "compressed_bytes": 1437,
+              "uncompressed_npy_bytes": 1528,
+              "raw_array_bytes": 1400,
+              "shape": [
+                25,
+                7
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 57.48
+            },
+            "context_parameters": {
+              "compressed_bytes": 494,
+              "uncompressed_npy_bytes": 528,
+              "raw_array_bytes": 400,
+              "shape": [
+                25,
+                2
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 19.76
+            },
+            "pricing_paths": {
+              "compressed_bytes": 107,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.28
+            },
+            "example_id": {
+              "compressed_bytes": 171,
+              "uncompressed_npy_bytes": 1128,
+              "raw_array_bytes": 1000,
+              "shape": [
+                25
+              ],
+              "dtype": "<U10",
+              "compressed_bytes_per_example": 6.84
+            }
+          }
+        },
+        {
+          "part": "train-0000004525-0000004550",
+          "examples": 25,
+          "payload_bytes": 222427,
+          "members": {
+            "observations": {
+              "compressed_bytes": 12006,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 480.24
+            },
+            "parameters": {
+              "compressed_bytes": 704,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 28.16
+            },
+            "reference_prices": {
+              "compressed_bytes": 11949,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 477.96
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 12165,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 486.6
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 181892,
+              "uncompressed_npy_bytes": 793928,
+              "raw_array_bytes": 793800,
+              "shape": [
+                25,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 7275.68
+            },
+            "refinement_difference": {
+              "compressed_bytes": 111,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.44
+            },
+            "context_values": {
+              "compressed_bytes": 1440,
+              "uncompressed_npy_bytes": 1528,
+              "raw_array_bytes": 1400,
+              "shape": [
+                25,
+                7
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 57.6
+            },
+            "context_parameters": {
+              "compressed_bytes": 495,
+              "uncompressed_npy_bytes": 528,
+              "raw_array_bytes": 400,
+              "shape": [
+                25,
+                2
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 19.8
+            },
+            "pricing_paths": {
+              "compressed_bytes": 121,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.84
+            },
+            "example_id": {
+              "compressed_bytes": 172,
+              "uncompressed_npy_bytes": 1128,
+              "raw_array_bytes": 1000,
+              "shape": [
+                25
+              ],
+              "dtype": "<U10",
+              "compressed_bytes_per_example": 6.88
+            }
+          }
+        },
+        {
+          "part": "train-0000006850-0000006875",
+          "examples": 25,
+          "payload_bytes": 223026,
+          "members": {
+            "observations": {
+              "compressed_bytes": 12061,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 482.44
+            },
+            "parameters": {
+              "compressed_bytes": 705,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 28.2
+            },
+            "reference_prices": {
+              "compressed_bytes": 11969,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 478.76
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 12152,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 486.08
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 182439,
+              "uncompressed_npy_bytes": 793928,
+              "raw_array_bytes": 793800,
+              "shape": [
+                25,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 7297.56
+            },
+            "refinement_difference": {
+              "compressed_bytes": 111,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.44
+            },
+            "context_values": {
+              "compressed_bytes": 1444,
+              "uncompressed_npy_bytes": 1528,
+              "raw_array_bytes": 1400,
+              "shape": [
+                25,
+                7
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 57.76
+            },
+            "context_parameters": {
+              "compressed_bytes": 494,
+              "uncompressed_npy_bytes": 528,
+              "raw_array_bytes": 400,
+              "shape": [
+                25,
+                2
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 19.76
+            },
+            "pricing_paths": {
+              "compressed_bytes": 107,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.28
+            },
+            "example_id": {
+              "compressed_bytes": 172,
+              "uncompressed_npy_bytes": 1128,
+              "raw_array_bytes": 1000,
+              "shape": [
+                25
+              ],
+              "dtype": "<U10",
+              "compressed_bytes_per_example": 6.88
+            }
+          }
+        },
+        {
+          "part": "train-0000009150-0000009175",
+          "examples": 25,
+          "payload_bytes": 222368,
+          "members": {
+            "observations": {
+              "compressed_bytes": 12020,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 480.8
+            },
+            "parameters": {
+              "compressed_bytes": 705,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 28.2
+            },
+            "reference_prices": {
+              "compressed_bytes": 11988,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 479.52
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 12155,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 486.2
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 181789,
+              "uncompressed_npy_bytes": 793928,
+              "raw_array_bytes": 793800,
+              "shape": [
+                25,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 7271.56
+            },
+            "refinement_difference": {
+              "compressed_bytes": 111,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.44
+            },
+            "context_values": {
+              "compressed_bytes": 1442,
+              "uncompressed_npy_bytes": 1528,
+              "raw_array_bytes": 1400,
+              "shape": [
+                25,
+                7
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 57.68
+            },
+            "context_parameters": {
+              "compressed_bytes": 494,
+              "uncompressed_npy_bytes": 528,
+              "raw_array_bytes": 400,
+              "shape": [
+                25,
+                2
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 19.76
+            },
+            "pricing_paths": {
+              "compressed_bytes": 120,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.8
+            },
+            "example_id": {
+              "compressed_bytes": 172,
+              "uncompressed_npy_bytes": 1128,
+              "raw_array_bytes": 1000,
+              "shape": [
+                25
+              ],
+              "dtype": "<U10",
+              "compressed_bytes_per_example": 6.88
+            }
+          }
+        },
+        {
+          "part": "train-0000011450-0000011475",
+          "examples": 25,
+          "payload_bytes": 222510,
+          "members": {
+            "observations": {
+              "compressed_bytes": 12040,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 481.6
+            },
+            "parameters": {
+              "compressed_bytes": 700,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 28.0
+            },
+            "reference_prices": {
+              "compressed_bytes": 11999,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 479.96
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 12157,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 486.28
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 181905,
+              "uncompressed_npy_bytes": 793928,
+              "raw_array_bytes": 793800,
+              "shape": [
+                25,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 7276.2
+            },
+            "refinement_difference": {
+              "compressed_bytes": 111,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.44
+            },
+            "context_values": {
+              "compressed_bytes": 1442,
+              "uncompressed_npy_bytes": 1528,
+              "raw_array_bytes": 1400,
+              "shape": [
+                25,
+                7
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 57.68
+            },
+            "context_parameters": {
+              "compressed_bytes": 493,
+              "uncompressed_npy_bytes": 528,
+              "raw_array_bytes": 400,
+              "shape": [
+                25,
+                2
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 19.72
+            },
+            "pricing_paths": {
+              "compressed_bytes": 118,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.72
+            },
+            "example_id": {
+              "compressed_bytes": 173,
+              "uncompressed_npy_bytes": 1228,
+              "raw_array_bytes": 1100,
+              "shape": [
+                25
+              ],
+              "dtype": "<U11",
+              "compressed_bytes_per_example": 6.92
+            }
+          }
+        },
+        {
+          "part": "train-0000013750-0000013775",
+          "examples": 25,
+          "payload_bytes": 222834,
+          "members": {
+            "observations": {
+              "compressed_bytes": 12036,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 481.44
+            },
+            "parameters": {
+              "compressed_bytes": 706,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 28.24
+            },
+            "reference_prices": {
+              "compressed_bytes": 11982,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 479.28
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 12154,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 486.16
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 182242,
+              "uncompressed_npy_bytes": 793928,
+              "raw_array_bytes": 793800,
+              "shape": [
+                25,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 7289.68
+            },
+            "refinement_difference": {
+              "compressed_bytes": 111,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.44
+            },
+            "context_values": {
+              "compressed_bytes": 1444,
+              "uncompressed_npy_bytes": 1528,
+              "raw_array_bytes": 1400,
+              "shape": [
+                25,
+                7
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 57.76
+            },
+            "context_parameters": {
+              "compressed_bytes": 496,
+              "uncompressed_npy_bytes": 528,
+              "raw_array_bytes": 400,
+              "shape": [
+                25,
+                2
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 19.84
+            },
+            "pricing_paths": {
+              "compressed_bytes": 116,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.64
+            },
+            "example_id": {
+              "compressed_bytes": 175,
+              "uncompressed_npy_bytes": 1228,
+              "raw_array_bytes": 1100,
+              "shape": [
+                25
+              ],
+              "dtype": "<U11",
+              "compressed_bytes_per_example": 7.0
+            }
+          }
+        },
+        {
+          "part": "train-0000016075-0000016100",
+          "examples": 25,
+          "payload_bytes": 222311,
+          "members": {
+            "observations": {
+              "compressed_bytes": 12030,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 481.2
+            },
+            "parameters": {
+              "compressed_bytes": 705,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 28.2
+            },
+            "reference_prices": {
+              "compressed_bytes": 11977,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 479.08
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 12156,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 486.24
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 181728,
+              "uncompressed_npy_bytes": 793928,
+              "raw_array_bytes": 793800,
+              "shape": [
+                25,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 7269.12
+            },
+            "refinement_difference": {
+              "compressed_bytes": 111,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.44
+            },
+            "context_values": {
+              "compressed_bytes": 1451,
+              "uncompressed_npy_bytes": 1528,
+              "raw_array_bytes": 1400,
+              "shape": [
+                25,
+                7
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 58.04
+            },
+            "context_parameters": {
+              "compressed_bytes": 494,
+              "uncompressed_npy_bytes": 528,
+              "raw_array_bytes": 400,
+              "shape": [
+                25,
+                2
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 19.76
+            },
+            "pricing_paths": {
+              "compressed_bytes": 111,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.44
+            },
+            "example_id": {
+              "compressed_bytes": 176,
+              "uncompressed_npy_bytes": 1228,
+              "raw_array_bytes": 1100,
+              "shape": [
+                25
+              ],
+              "dtype": "<U11",
+              "compressed_bytes_per_example": 7.04
+            }
+          }
+        },
+        {
+          "part": "train-0000018375-0000018400",
+          "examples": 25,
+          "payload_bytes": 222701,
+          "members": {
+            "observations": {
+              "compressed_bytes": 12045,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 481.8
+            },
+            "parameters": {
+              "compressed_bytes": 704,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 28.16
+            },
+            "reference_prices": {
+              "compressed_bytes": 11980,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 479.2
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 12169,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 486.76
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 182096,
+              "uncompressed_npy_bytes": 793928,
+              "raw_array_bytes": 793800,
+              "shape": [
+                25,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 7283.84
+            },
+            "refinement_difference": {
+              "compressed_bytes": 111,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.44
+            },
+            "context_values": {
+              "compressed_bytes": 1450,
+              "uncompressed_npy_bytes": 1528,
+              "raw_array_bytes": 1400,
+              "shape": [
+                25,
+                7
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 58.0
+            },
+            "context_parameters": {
+              "compressed_bytes": 494,
+              "uncompressed_npy_bytes": 528,
+              "raw_array_bytes": 400,
+              "shape": [
+                25,
+                2
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 19.76
+            },
+            "pricing_paths": {
+              "compressed_bytes": 105,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.2
+            },
+            "example_id": {
+              "compressed_bytes": 175,
+              "uncompressed_npy_bytes": 1228,
+              "raw_array_bytes": 1100,
+              "shape": [
+                25
+              ],
+              "dtype": "<U11",
+              "compressed_bytes_per_example": 7.0
+            }
+          }
+        },
+        {
+          "part": "train-0000020675-0000020700",
+          "examples": 25,
+          "payload_bytes": 222381,
+          "members": {
+            "observations": {
+              "compressed_bytes": 12033,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 481.32
+            },
+            "parameters": {
+              "compressed_bytes": 702,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 28.08
+            },
+            "reference_prices": {
+              "compressed_bytes": 11959,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 478.36
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 12158,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 486.32
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 181829,
+              "uncompressed_npy_bytes": 793928,
+              "raw_array_bytes": 793800,
+              "shape": [
+                25,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 7273.16
+            },
+            "refinement_difference": {
+              "compressed_bytes": 111,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.44
+            },
+            "context_values": {
+              "compressed_bytes": 1442,
+              "uncompressed_npy_bytes": 1528,
+              "raw_array_bytes": 1400,
+              "shape": [
+                25,
+                7
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 57.68
+            },
+            "context_parameters": {
+              "compressed_bytes": 492,
+              "uncompressed_npy_bytes": 528,
+              "raw_array_bytes": 400,
+              "shape": [
+                25,
+                2
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 19.68
+            },
+            "pricing_paths": {
+              "compressed_bytes": 107,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.28
+            },
+            "example_id": {
+              "compressed_bytes": 176,
+              "uncompressed_npy_bytes": 1228,
+              "raw_array_bytes": 1100,
+              "shape": [
+                25
+              ],
+              "dtype": "<U11",
+              "compressed_bytes_per_example": 7.04
+            }
+          }
+        },
+        {
+          "part": "validation-0000000350-0000000375",
+          "examples": 25,
+          "payload_bytes": 222582,
+          "members": {
+            "observations": {
+              "compressed_bytes": 12045,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 481.8
+            },
+            "parameters": {
+              "compressed_bytes": 706,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 28.24
+            },
+            "reference_prices": {
+              "compressed_bytes": 11966,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 478.64
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 12167,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 486.68
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 181968,
+              "uncompressed_npy_bytes": 793928,
+              "raw_array_bytes": 793800,
+              "shape": [
+                25,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 7278.72
+            },
+            "refinement_difference": {
+              "compressed_bytes": 111,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.44
+            },
+            "context_values": {
+              "compressed_bytes": 1449,
+              "uncompressed_npy_bytes": 1528,
+              "raw_array_bytes": 1400,
+              "shape": [
+                25,
+                7
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 57.96
+            },
+            "context_parameters": {
+              "compressed_bytes": 493,
+              "uncompressed_npy_bytes": 528,
+              "raw_array_bytes": 400,
+              "shape": [
+                25,
+                2
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 19.72
+            },
+            "pricing_paths": {
+              "compressed_bytes": 114,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.56
+            },
+            "example_id": {
+              "compressed_bytes": 191,
+              "uncompressed_npy_bytes": 1528,
+              "raw_array_bytes": 1400,
+              "shape": [
+                25
+              ],
+              "dtype": "<U14",
+              "compressed_bytes_per_example": 7.64
+            }
+          }
+        },
+        {
+          "part": "validation-0000002675-0000002700",
+          "examples": 25,
+          "payload_bytes": 222434,
+          "members": {
+            "observations": {
+              "compressed_bytes": 12043,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 481.72
+            },
+            "parameters": {
+              "compressed_bytes": 705,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 28.2
+            },
+            "reference_prices": {
+              "compressed_bytes": 11991,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 479.64
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 12145,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 485.8
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 181826,
+              "uncompressed_npy_bytes": 793928,
+              "raw_array_bytes": 793800,
+              "shape": [
+                25,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 7273.04
+            },
+            "refinement_difference": {
+              "compressed_bytes": 111,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.44
+            },
+            "context_values": {
+              "compressed_bytes": 1444,
+              "uncompressed_npy_bytes": 1528,
+              "raw_array_bytes": 1400,
+              "shape": [
+                25,
+                7
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 57.76
+            },
+            "context_parameters": {
+              "compressed_bytes": 496,
+              "uncompressed_npy_bytes": 528,
+              "raw_array_bytes": 400,
+              "shape": [
+                25,
+                2
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 19.84
+            },
+            "pricing_paths": {
+              "compressed_bytes": 109,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.36
+            },
+            "example_id": {
+              "compressed_bytes": 192,
+              "uncompressed_npy_bytes": 1628,
+              "raw_array_bytes": 1500,
+              "shape": [
+                25
+              ],
+              "dtype": "<U15",
+              "compressed_bytes_per_example": 7.68
+            }
+          }
+        },
+        {
+          "part": "validation-0000004975-0000005000",
+          "examples": 25,
+          "payload_bytes": 222372,
+          "members": {
+            "observations": {
+              "compressed_bytes": 12050,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 482.0
+            },
+            "parameters": {
+              "compressed_bytes": 701,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 28.04
+            },
+            "reference_prices": {
+              "compressed_bytes": 11985,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 479.4
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 12148,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 485.92
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 181767,
+              "uncompressed_npy_bytes": 793928,
+              "raw_array_bytes": 793800,
+              "shape": [
+                25,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 7270.68
+            },
+            "refinement_difference": {
+              "compressed_bytes": 111,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.44
+            },
+            "context_values": {
+              "compressed_bytes": 1445,
+              "uncompressed_npy_bytes": 1528,
+              "raw_array_bytes": 1400,
+              "shape": [
+                25,
+                7
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 57.8
+            },
+            "context_parameters": {
+              "compressed_bytes": 494,
+              "uncompressed_npy_bytes": 528,
+              "raw_array_bytes": 400,
+              "shape": [
+                25,
+                2
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 19.76
+            },
+            "pricing_paths": {
+              "compressed_bytes": 109,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.36
+            },
+            "example_id": {
+              "compressed_bytes": 190,
+              "uncompressed_npy_bytes": 1628,
+              "raw_array_bytes": 1500,
+              "shape": [
+                25
+              ],
+              "dtype": "<U15",
+              "compressed_bytes_per_example": 7.6
+            }
+          }
+        }
+      ],
+      "role_summary": {
+        "observations": {
+          "mean_compressed_bytes_per_example": 481.65250000000003,
+          "median_compressed_bytes_per_example": 481.76,
+          "min": 480.24,
+          "max": 482.8,
+          "raw_bytes_per_example": 504.0,
+          "training_role": true
+        },
+        "parameters": {
+          "mean_compressed_bytes_per_example": 28.16,
+          "median_compressed_bytes_per_example": 28.2,
+          "min": 28.0,
+          "max": 28.24,
+          "raw_bytes_per_example": 24.0,
+          "training_role": true
+        },
+        "reference_prices": {
+          "mean_compressed_bytes_per_example": 478.8625,
+          "median_compressed_bytes_per_example": 478.91999999999996,
+          "min": 477.24,
+          "max": 479.96,
+          "raw_bytes_per_example": 504.0,
+          "training_role": true
+        },
+        "pricing_standard_errors": {
+          "mean_compressed_bytes_per_example": 486.4125,
+          "median_compressed_bytes_per_example": 486.36,
+          "min": 485.8,
+          "max": 487.16,
+          "raw_bytes_per_example": 504.0,
+          "training_role": false
+        },
+        "pricing_covariance": {
+          "mean_compressed_bytes_per_example": 7280.8625,
+          "median_compressed_bytes_per_example": 7277.96,
+          "min": 7269.12,
+          "max": 7298.84,
+          "raw_bytes_per_example": 31752.0,
+          "training_role": false
+        },
+        "refinement_difference": {
+          "mean_compressed_bytes_per_example": 4.44,
+          "median_compressed_bytes_per_example": 4.44,
+          "min": 4.44,
+          "max": 4.44,
+          "raw_bytes_per_example": 504.0,
+          "training_role": false
+        },
+        "context_values": {
+          "mean_compressed_bytes_per_example": 57.76,
+          "median_compressed_bytes_per_example": 57.76,
+          "min": 57.48,
+          "max": 58.04,
+          "raw_bytes_per_example": 56.0,
+          "training_role": true
+        },
+        "context_parameters": {
+          "mean_compressed_bytes_per_example": 19.7725,
+          "median_compressed_bytes_per_example": 19.76,
+          "min": 19.68,
+          "max": 19.84,
+          "raw_bytes_per_example": 16.0,
+          "training_role": false
+        },
+        "pricing_paths": {
+          "mean_compressed_bytes_per_example": 4.4975000000000005,
+          "median_compressed_bytes_per_example": 4.44,
+          "min": 4.12,
+          "max": 4.84,
+          "raw_bytes_per_example": 24.0,
+          "training_role": false
+        },
+        "example_id": {
+          "mean_compressed_bytes_per_example": 7.025,
+          "median_compressed_bytes_per_example": 6.92,
+          "min": 6.44,
+          "max": 7.68,
+          "raw_bytes_per_example": 43.25,
+          "training_role": true
+        }
+      },
+      "sample_training_compressed_bytes_per_example": 1053.4600000000003,
+      "sample_auxiliary_compressed_bytes_per_example": 7795.985000000001,
+      "sample_auxiliary_fraction": 0.8809575063746935,
+      "extrapolation": {
+        "training": 100000,
+        "fixed_holdouts": 12000,
+        "total_payload_bytes_at_observed_rate": 997257396.6787004,
+        "training_roles_only_bytes_at_sample_rate": 117987520.00000003,
+        "scope": "Extrapolation, not forecast; current numerical target and sample compression rate."
+      }
+    },
+    "joint": {
+      "root": "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection",
+      "completed_parts": 397,
+      "completed_examples": {
+        "train": 9925,
+        "validation": 0,
+        "test": 0
+      },
+      "payload_bytes": 88598802,
+      "payload_physical_allocated_bytes": 88683008,
+      "part_manifest_bytes": 5484423,
+      "observed_payload_bytes_per_example": 8926.831435768261,
+      "sampled_parts": [
+        {
+          "part": "train-0000000000-0000000025",
+          "examples": 25,
+          "payload_bytes": 223217,
+          "members": {
+            "observations": {
+              "compressed_bytes": 12023,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 480.92
+            },
+            "parameters": {
+              "compressed_bytes": 1285,
+              "uncompressed_npy_bytes": 1328,
+              "raw_array_bytes": 1200,
+              "shape": [
+                25,
+                6
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 51.4
+            },
+            "reference_prices": {
+              "compressed_bytes": 11992,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 479.68
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 12158,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 486.32
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 181853,
+              "uncompressed_npy_bytes": 793928,
+              "raw_array_bytes": 793800,
+              "shape": [
+                25,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 7274.12
+            },
+            "refinement_difference": {
+              "compressed_bytes": 111,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.44
+            },
+            "context_values": {
+              "compressed_bytes": 1440,
+              "uncompressed_npy_bytes": 1528,
+              "raw_array_bytes": 1400,
+              "shape": [
+                25,
+                7
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 57.6
+            },
+            "context_parameters": {
+              "compressed_bytes": 700,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 28.0
+            },
+            "pricing_paths": {
+              "compressed_bytes": 121,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.84
+            },
+            "example_id": {
+              "compressed_bytes": 162,
+              "uncompressed_npy_bytes": 928,
+              "raw_array_bytes": 800,
+              "shape": [
+                25
+              ],
+              "dtype": "<U8",
+              "compressed_bytes_per_example": 6.48
+            }
+          }
+        },
+        {
+          "part": "train-0000000650-0000000675",
+          "examples": 25,
+          "payload_bytes": 223122,
+          "members": {
+            "observations": {
+              "compressed_bytes": 12014,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 480.56
+            },
+            "parameters": {
+              "compressed_bytes": 1282,
+              "uncompressed_npy_bytes": 1328,
+              "raw_array_bytes": 1200,
+              "shape": [
+                25,
+                6
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 51.28
+            },
+            "reference_prices": {
+              "compressed_bytes": 11975,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 479.0
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 12166,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 486.64
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 181777,
+              "uncompressed_npy_bytes": 793928,
+              "raw_array_bytes": 793800,
+              "shape": [
+                25,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 7271.08
+            },
+            "refinement_difference": {
+              "compressed_bytes": 111,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.44
+            },
+            "context_values": {
+              "compressed_bytes": 1435,
+              "uncompressed_npy_bytes": 1528,
+              "raw_array_bytes": 1400,
+              "shape": [
+                25,
+                7
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 57.4
+            },
+            "context_parameters": {
+              "compressed_bytes": 698,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 27.92
+            },
+            "pricing_paths": {
+              "compressed_bytes": 120,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.8
+            },
+            "example_id": {
+              "compressed_bytes": 172,
+              "uncompressed_npy_bytes": 1028,
+              "raw_array_bytes": 900,
+              "shape": [
+                25
+              ],
+              "dtype": "<U9",
+              "compressed_bytes_per_example": 6.88
+            }
+          }
+        },
+        {
+          "part": "train-0000001325-0000001350",
+          "examples": 25,
+          "payload_bytes": 223068,
+          "members": {
+            "observations": {
+              "compressed_bytes": 12013,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 480.52
+            },
+            "parameters": {
+              "compressed_bytes": 1282,
+              "uncompressed_npy_bytes": 1328,
+              "raw_array_bytes": 1200,
+              "shape": [
+                25,
+                6
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 51.28
+            },
+            "reference_prices": {
+              "compressed_bytes": 11968,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 478.72
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 12166,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 486.64
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 181723,
+              "uncompressed_npy_bytes": 793928,
+              "raw_array_bytes": 793800,
+              "shape": [
+                25,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 7268.92
+            },
+            "refinement_difference": {
+              "compressed_bytes": 111,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.44
+            },
+            "context_values": {
+              "compressed_bytes": 1440,
+              "uncompressed_npy_bytes": 1528,
+              "raw_array_bytes": 1400,
+              "shape": [
+                25,
+                7
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 57.6
+            },
+            "context_parameters": {
+              "compressed_bytes": 697,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 27.88
+            },
+            "pricing_paths": {
+              "compressed_bytes": 123,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.92
+            },
+            "example_id": {
+              "compressed_bytes": 173,
+              "uncompressed_npy_bytes": 1128,
+              "raw_array_bytes": 1000,
+              "shape": [
+                25
+              ],
+              "dtype": "<U10",
+              "compressed_bytes_per_example": 6.92
+            }
+          }
+        },
+        {
+          "part": "train-0000001975-0000002000",
+          "examples": 25,
+          "payload_bytes": 223192,
+          "members": {
+            "observations": {
+              "compressed_bytes": 12013,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 480.52
+            },
+            "parameters": {
+              "compressed_bytes": 1275,
+              "uncompressed_npy_bytes": 1328,
+              "raw_array_bytes": 1200,
+              "shape": [
+                25,
+                6
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 51.0
+            },
+            "reference_prices": {
+              "compressed_bytes": 11975,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 479.0
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 12150,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 486.0
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 181873,
+              "uncompressed_npy_bytes": 793928,
+              "raw_array_bytes": 793800,
+              "shape": [
+                25,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 7274.92
+            },
+            "refinement_difference": {
+              "compressed_bytes": 111,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.44
+            },
+            "context_values": {
+              "compressed_bytes": 1444,
+              "uncompressed_npy_bytes": 1528,
+              "raw_array_bytes": 1400,
+              "shape": [
+                25,
+                7
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 57.76
+            },
+            "context_parameters": {
+              "compressed_bytes": 695,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 27.8
+            },
+            "pricing_paths": {
+              "compressed_bytes": 110,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.4
+            },
+            "example_id": {
+              "compressed_bytes": 174,
+              "uncompressed_npy_bytes": 1128,
+              "raw_array_bytes": 1000,
+              "shape": [
+                25
+              ],
+              "dtype": "<U10",
+              "compressed_bytes_per_example": 6.96
+            }
+          }
+        },
+        {
+          "part": "train-0000002650-0000002675",
+          "examples": 25,
+          "payload_bytes": 223509,
+          "members": {
+            "observations": {
+              "compressed_bytes": 12044,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 481.76
+            },
+            "parameters": {
+              "compressed_bytes": 1280,
+              "uncompressed_npy_bytes": 1328,
+              "raw_array_bytes": 1200,
+              "shape": [
+                25,
+                6
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 51.2
+            },
+            "reference_prices": {
+              "compressed_bytes": 11969,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 478.76
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 12159,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 486.36
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 182150,
+              "uncompressed_npy_bytes": 793928,
+              "raw_array_bytes": 793800,
+              "shape": [
+                25,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 7286.0
+            },
+            "refinement_difference": {
+              "compressed_bytes": 111,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.44
+            },
+            "context_values": {
+              "compressed_bytes": 1441,
+              "uncompressed_npy_bytes": 1528,
+              "raw_array_bytes": 1400,
+              "shape": [
+                25,
+                7
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 57.64
+            },
+            "context_parameters": {
+              "compressed_bytes": 698,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 27.92
+            },
+            "pricing_paths": {
+              "compressed_bytes": 112,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.48
+            },
+            "example_id": {
+              "compressed_bytes": 173,
+              "uncompressed_npy_bytes": 1128,
+              "raw_array_bytes": 1000,
+              "shape": [
+                25
+              ],
+              "dtype": "<U10",
+              "compressed_bytes_per_example": 6.92
+            }
+          }
+        },
+        {
+          "part": "train-0000003300-0000003325",
+          "examples": 25,
+          "payload_bytes": 223270,
+          "members": {
+            "observations": {
+              "compressed_bytes": 12024,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 480.96
+            },
+            "parameters": {
+              "compressed_bytes": 1282,
+              "uncompressed_npy_bytes": 1328,
+              "raw_array_bytes": 1200,
+              "shape": [
+                25,
+                6
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 51.28
+            },
+            "reference_prices": {
+              "compressed_bytes": 11974,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 478.96
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 12157,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 486.28
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 181920,
+              "uncompressed_npy_bytes": 793928,
+              "raw_array_bytes": 793800,
+              "shape": [
+                25,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 7276.8
+            },
+            "refinement_difference": {
+              "compressed_bytes": 111,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.44
+            },
+            "context_values": {
+              "compressed_bytes": 1442,
+              "uncompressed_npy_bytes": 1528,
+              "raw_array_bytes": 1400,
+              "shape": [
+                25,
+                7
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 57.68
+            },
+            "context_parameters": {
+              "compressed_bytes": 700,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 28.0
+            },
+            "pricing_paths": {
+              "compressed_bytes": 119,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.76
+            },
+            "example_id": {
+              "compressed_bytes": 169,
+              "uncompressed_npy_bytes": 1128,
+              "raw_array_bytes": 1000,
+              "shape": [
+                25
+              ],
+              "dtype": "<U10",
+              "compressed_bytes_per_example": 6.76
+            }
+          }
+        },
+        {
+          "part": "train-0000003950-0000003975",
+          "examples": 25,
+          "payload_bytes": 223113,
+          "members": {
+            "observations": {
+              "compressed_bytes": 12033,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 481.32
+            },
+            "parameters": {
+              "compressed_bytes": 1277,
+              "uncompressed_npy_bytes": 1328,
+              "raw_array_bytes": 1200,
+              "shape": [
+                25,
+                6
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 51.08
+            },
+            "reference_prices": {
+              "compressed_bytes": 11967,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 478.68
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 12158,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 486.32
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 181767,
+              "uncompressed_npy_bytes": 793928,
+              "raw_array_bytes": 793800,
+              "shape": [
+                25,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 7270.68
+            },
+            "refinement_difference": {
+              "compressed_bytes": 111,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.44
+            },
+            "context_values": {
+              "compressed_bytes": 1434,
+              "uncompressed_npy_bytes": 1528,
+              "raw_array_bytes": 1400,
+              "shape": [
+                25,
+                7
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 57.36
+            },
+            "context_parameters": {
+              "compressed_bytes": 698,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 27.92
+            },
+            "pricing_paths": {
+              "compressed_bytes": 123,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.92
+            },
+            "example_id": {
+              "compressed_bytes": 173,
+              "uncompressed_npy_bytes": 1128,
+              "raw_array_bytes": 1000,
+              "shape": [
+                25
+              ],
+              "dtype": "<U10",
+              "compressed_bytes_per_example": 6.92
+            }
+          }
+        },
+        {
+          "part": "train-0000004625-0000004650",
+          "examples": 25,
+          "payload_bytes": 223064,
+          "members": {
+            "observations": {
+              "compressed_bytes": 12020,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 480.8
+            },
+            "parameters": {
+              "compressed_bytes": 1279,
+              "uncompressed_npy_bytes": 1328,
+              "raw_array_bytes": 1200,
+              "shape": [
+                25,
+                6
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 51.16
+            },
+            "reference_prices": {
+              "compressed_bytes": 11978,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 479.12
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 12172,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 486.88
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 181704,
+              "uncompressed_npy_bytes": 793928,
+              "raw_array_bytes": 793800,
+              "shape": [
+                25,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 7268.16
+            },
+            "refinement_difference": {
+              "compressed_bytes": 111,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.44
+            },
+            "context_values": {
+              "compressed_bytes": 1439,
+              "uncompressed_npy_bytes": 1528,
+              "raw_array_bytes": 1400,
+              "shape": [
+                25,
+                7
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 57.56
+            },
+            "context_parameters": {
+              "compressed_bytes": 698,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 27.92
+            },
+            "pricing_paths": {
+              "compressed_bytes": 118,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.72
+            },
+            "example_id": {
+              "compressed_bytes": 173,
+              "uncompressed_npy_bytes": 1128,
+              "raw_array_bytes": 1000,
+              "shape": [
+                25
+              ],
+              "dtype": "<U10",
+              "compressed_bytes_per_example": 6.92
+            }
+          }
+        },
+        {
+          "part": "train-0000005275-0000005300",
+          "examples": 25,
+          "payload_bytes": 223242,
+          "members": {
+            "observations": {
+              "compressed_bytes": 12030,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 481.2
+            },
+            "parameters": {
+              "compressed_bytes": 1280,
+              "uncompressed_npy_bytes": 1328,
+              "raw_array_bytes": 1200,
+              "shape": [
+                25,
+                6
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 51.2
+            },
+            "reference_prices": {
+              "compressed_bytes": 11988,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 479.52
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 12154,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 486.16
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 181874,
+              "uncompressed_npy_bytes": 793928,
+              "raw_array_bytes": 793800,
+              "shape": [
+                25,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 7274.96
+            },
+            "refinement_difference": {
+              "compressed_bytes": 111,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.44
+            },
+            "context_values": {
+              "compressed_bytes": 1440,
+              "uncompressed_npy_bytes": 1528,
+              "raw_array_bytes": 1400,
+              "shape": [
+                25,
+                7
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 57.6
+            },
+            "context_parameters": {
+              "compressed_bytes": 701,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 28.04
+            },
+            "pricing_paths": {
+              "compressed_bytes": 119,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.76
+            },
+            "example_id": {
+              "compressed_bytes": 173,
+              "uncompressed_npy_bytes": 1128,
+              "raw_array_bytes": 1000,
+              "shape": [
+                25
+              ],
+              "dtype": "<U10",
+              "compressed_bytes_per_example": 6.92
+            }
+          }
+        },
+        {
+          "part": "train-0000005950-0000005975",
+          "examples": 25,
+          "payload_bytes": 223101,
+          "members": {
+            "observations": {
+              "compressed_bytes": 12019,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 480.76
+            },
+            "parameters": {
+              "compressed_bytes": 1282,
+              "uncompressed_npy_bytes": 1328,
+              "raw_array_bytes": 1200,
+              "shape": [
+                25,
+                6
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 51.28
+            },
+            "reference_prices": {
+              "compressed_bytes": 11972,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 478.88
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 12151,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 486.04
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 181764,
+              "uncompressed_npy_bytes": 793928,
+              "raw_array_bytes": 793800,
+              "shape": [
+                25,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 7270.56
+            },
+            "refinement_difference": {
+              "compressed_bytes": 111,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.44
+            },
+            "context_values": {
+              "compressed_bytes": 1442,
+              "uncompressed_npy_bytes": 1528,
+              "raw_array_bytes": 1400,
+              "shape": [
+                25,
+                7
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 57.68
+            },
+            "context_parameters": {
+              "compressed_bytes": 697,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 27.88
+            },
+            "pricing_paths": {
+              "compressed_bytes": 119,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.76
+            },
+            "example_id": {
+              "compressed_bytes": 172,
+              "uncompressed_npy_bytes": 1128,
+              "raw_array_bytes": 1000,
+              "shape": [
+                25
+              ],
+              "dtype": "<U10",
+              "compressed_bytes_per_example": 6.88
+            }
+          }
+        },
+        {
+          "part": "train-0000006600-0000006625",
+          "examples": 25,
+          "payload_bytes": 223217,
+          "members": {
+            "observations": {
+              "compressed_bytes": 12028,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 481.12
+            },
+            "parameters": {
+              "compressed_bytes": 1280,
+              "uncompressed_npy_bytes": 1328,
+              "raw_array_bytes": 1200,
+              "shape": [
+                25,
+                6
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 51.2
+            },
+            "reference_prices": {
+              "compressed_bytes": 11968,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 478.72
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 12173,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 486.92
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 181859,
+              "uncompressed_npy_bytes": 793928,
+              "raw_array_bytes": 793800,
+              "shape": [
+                25,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 7274.36
+            },
+            "refinement_difference": {
+              "compressed_bytes": 111,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.44
+            },
+            "context_values": {
+              "compressed_bytes": 1443,
+              "uncompressed_npy_bytes": 1528,
+              "raw_array_bytes": 1400,
+              "shape": [
+                25,
+                7
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 57.72
+            },
+            "context_parameters": {
+              "compressed_bytes": 699,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 27.96
+            },
+            "pricing_paths": {
+              "compressed_bytes": 115,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.6
+            },
+            "example_id": {
+              "compressed_bytes": 169,
+              "uncompressed_npy_bytes": 1128,
+              "raw_array_bytes": 1000,
+              "shape": [
+                25
+              ],
+              "dtype": "<U10",
+              "compressed_bytes_per_example": 6.76
+            }
+          }
+        },
+        {
+          "part": "train-0000007250-0000007275",
+          "examples": 25,
+          "payload_bytes": 223251,
+          "members": {
+            "observations": {
+              "compressed_bytes": 12024,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 480.96
+            },
+            "parameters": {
+              "compressed_bytes": 1284,
+              "uncompressed_npy_bytes": 1328,
+              "raw_array_bytes": 1200,
+              "shape": [
+                25,
+                6
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 51.36
+            },
+            "reference_prices": {
+              "compressed_bytes": 11973,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 478.92
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 12164,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 486.56
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 181890,
+              "uncompressed_npy_bytes": 793928,
+              "raw_array_bytes": 793800,
+              "shape": [
+                25,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 7275.6
+            },
+            "refinement_difference": {
+              "compressed_bytes": 111,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.44
+            },
+            "context_values": {
+              "compressed_bytes": 1439,
+              "uncompressed_npy_bytes": 1528,
+              "raw_array_bytes": 1400,
+              "shape": [
+                25,
+                7
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 57.56
+            },
+            "context_parameters": {
+              "compressed_bytes": 700,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 28.0
+            },
+            "pricing_paths": {
+              "compressed_bytes": 122,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.88
+            },
+            "example_id": {
+              "compressed_bytes": 172,
+              "uncompressed_npy_bytes": 1128,
+              "raw_array_bytes": 1000,
+              "shape": [
+                25
+              ],
+              "dtype": "<U10",
+              "compressed_bytes_per_example": 6.88
+            }
+          }
+        },
+        {
+          "part": "train-0000007925-0000007950",
+          "examples": 25,
+          "payload_bytes": 223312,
+          "members": {
+            "observations": {
+              "compressed_bytes": 12032,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 481.28
+            },
+            "parameters": {
+              "compressed_bytes": 1278,
+              "uncompressed_npy_bytes": 1328,
+              "raw_array_bytes": 1200,
+              "shape": [
+                25,
+                6
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 51.12
+            },
+            "reference_prices": {
+              "compressed_bytes": 11981,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 479.24
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 12154,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 486.16
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 181967,
+              "uncompressed_npy_bytes": 793928,
+              "raw_array_bytes": 793800,
+              "shape": [
+                25,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 7278.68
+            },
+            "refinement_difference": {
+              "compressed_bytes": 111,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.44
+            },
+            "context_values": {
+              "compressed_bytes": 1439,
+              "uncompressed_npy_bytes": 1528,
+              "raw_array_bytes": 1400,
+              "shape": [
+                25,
+                7
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 57.56
+            },
+            "context_parameters": {
+              "compressed_bytes": 698,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 27.92
+            },
+            "pricing_paths": {
+              "compressed_bytes": 107,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.28
+            },
+            "example_id": {
+              "compressed_bytes": 173,
+              "uncompressed_npy_bytes": 1128,
+              "raw_array_bytes": 1000,
+              "shape": [
+                25
+              ],
+              "dtype": "<U10",
+              "compressed_bytes_per_example": 6.92
+            }
+          }
+        },
+        {
+          "part": "train-0000008575-0000008600",
+          "examples": 25,
+          "payload_bytes": 223143,
+          "members": {
+            "observations": {
+              "compressed_bytes": 12023,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 480.92
+            },
+            "parameters": {
+              "compressed_bytes": 1283,
+              "uncompressed_npy_bytes": 1328,
+              "raw_array_bytes": 1200,
+              "shape": [
+                25,
+                6
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 51.32
+            },
+            "reference_prices": {
+              "compressed_bytes": 11977,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 479.08
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 12172,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 486.88
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 181770,
+              "uncompressed_npy_bytes": 793928,
+              "raw_array_bytes": 793800,
+              "shape": [
+                25,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 7270.8
+            },
+            "refinement_difference": {
+              "compressed_bytes": 111,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.44
+            },
+            "context_values": {
+              "compressed_bytes": 1444,
+              "uncompressed_npy_bytes": 1528,
+              "raw_array_bytes": 1400,
+              "shape": [
+                25,
+                7
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 57.76
+            },
+            "context_parameters": {
+              "compressed_bytes": 699,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 27.96
+            },
+            "pricing_paths": {
+              "compressed_bytes": 120,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.8
+            },
+            "example_id": {
+              "compressed_bytes": 172,
+              "uncompressed_npy_bytes": 1128,
+              "raw_array_bytes": 1000,
+              "shape": [
+                25
+              ],
+              "dtype": "<U10",
+              "compressed_bytes_per_example": 6.88
+            }
+          }
+        },
+        {
+          "part": "train-0000009250-0000009275",
+          "examples": 25,
+          "payload_bytes": 223616,
+          "members": {
+            "observations": {
+              "compressed_bytes": 12058,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 482.32
+            },
+            "parameters": {
+              "compressed_bytes": 1280,
+              "uncompressed_npy_bytes": 1328,
+              "raw_array_bytes": 1200,
+              "shape": [
+                25,
+                6
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 51.2
+            },
+            "reference_prices": {
+              "compressed_bytes": 11972,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 478.88
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 12175,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 487.0
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 182212,
+              "uncompressed_npy_bytes": 793928,
+              "raw_array_bytes": 793800,
+              "shape": [
+                25,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 7288.48
+            },
+            "refinement_difference": {
+              "compressed_bytes": 111,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.44
+            },
+            "context_values": {
+              "compressed_bytes": 1442,
+              "uncompressed_npy_bytes": 1528,
+              "raw_array_bytes": 1400,
+              "shape": [
+                25,
+                7
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 57.68
+            },
+            "context_parameters": {
+              "compressed_bytes": 699,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 27.96
+            },
+            "pricing_paths": {
+              "compressed_bytes": 123,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.92
+            },
+            "example_id": {
+              "compressed_bytes": 172,
+              "uncompressed_npy_bytes": 1128,
+              "raw_array_bytes": 1000,
+              "shape": [
+                25
+              ],
+              "dtype": "<U10",
+              "compressed_bytes_per_example": 6.88
+            }
+          }
+        },
+        {
+          "part": "train-0000009900-0000009925",
+          "examples": 25,
+          "payload_bytes": 222945,
+          "members": {
+            "observations": {
+              "compressed_bytes": 12006,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 480.24
+            },
+            "parameters": {
+              "compressed_bytes": 1283,
+              "uncompressed_npy_bytes": 1328,
+              "raw_array_bytes": 1200,
+              "shape": [
+                25,
+                6
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 51.32
+            },
+            "reference_prices": {
+              "compressed_bytes": 11974,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 478.96
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 12160,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 486.4
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 181621,
+              "uncompressed_npy_bytes": 793928,
+              "raw_array_bytes": 793800,
+              "shape": [
+                25,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 7264.84
+            },
+            "refinement_difference": {
+              "compressed_bytes": 111,
+              "uncompressed_npy_bytes": 12728,
+              "raw_array_bytes": 12600,
+              "shape": [
+                25,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.44
+            },
+            "context_values": {
+              "compressed_bytes": 1436,
+              "uncompressed_npy_bytes": 1528,
+              "raw_array_bytes": 1400,
+              "shape": [
+                25,
+                7
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 57.44
+            },
+            "context_parameters": {
+              "compressed_bytes": 697,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 27.88
+            },
+            "pricing_paths": {
+              "compressed_bytes": 116,
+              "uncompressed_npy_bytes": 728,
+              "raw_array_bytes": 600,
+              "shape": [
+                25,
+                3
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 4.64
+            },
+            "example_id": {
+              "compressed_bytes": 169,
+              "uncompressed_npy_bytes": 1128,
+              "raw_array_bytes": 1000,
+              "shape": [
+                25
+              ],
+              "dtype": "<U10",
+              "compressed_bytes_per_example": 6.76
+            }
+          }
+        }
+      ],
+      "role_summary": {
+        "observations": {
+          "mean_compressed_bytes_per_example": 481.01,
+          "median_compressed_bytes_per_example": 480.94,
+          "min": 480.24,
+          "max": 482.32,
+          "raw_bytes_per_example": 504.0,
+          "training_role": true
+        },
+        "parameters": {
+          "mean_compressed_bytes_per_example": 51.230000000000004,
+          "median_compressed_bytes_per_example": 51.24,
+          "min": 51.0,
+          "max": 51.4,
+          "raw_bytes_per_example": 48.0,
+          "training_role": true
+        },
+        "reference_prices": {
+          "mean_compressed_bytes_per_example": 479.0075,
+          "median_compressed_bytes_per_example": 478.96,
+          "min": 478.68,
+          "max": 479.68,
+          "raw_bytes_per_example": 504.0,
+          "training_role": true
+        },
+        "pricing_standard_errors": {
+          "mean_compressed_bytes_per_example": 486.4725,
+          "median_compressed_bytes_per_example": 486.38,
+          "min": 486.0,
+          "max": 487.0,
+          "raw_bytes_per_example": 504.0,
+          "training_role": false
+        },
+        "pricing_covariance": {
+          "mean_compressed_bytes_per_example": 7274.31,
+          "median_compressed_bytes_per_example": 7274.24,
+          "min": 7264.84,
+          "max": 7288.48,
+          "raw_bytes_per_example": 31752.0,
+          "training_role": false
+        },
+        "refinement_difference": {
+          "mean_compressed_bytes_per_example": 4.44,
+          "median_compressed_bytes_per_example": 4.44,
+          "min": 4.44,
+          "max": 4.44,
+          "raw_bytes_per_example": 504.0,
+          "training_role": false
+        },
+        "context_values": {
+          "mean_compressed_bytes_per_example": 57.6,
+          "median_compressed_bytes_per_example": 57.6,
+          "min": 57.36,
+          "max": 57.76,
+          "raw_bytes_per_example": 56.0,
+          "training_role": true
+        },
+        "context_parameters": {
+          "mean_compressed_bytes_per_example": 27.935000000000002,
+          "median_compressed_bytes_per_example": 27.92,
+          "min": 27.8,
+          "max": 28.04,
+          "raw_bytes_per_example": 24.0,
+          "training_role": false
+        },
+        "pricing_paths": {
+          "mean_compressed_bytes_per_example": 4.7175,
+          "median_compressed_bytes_per_example": 4.76,
+          "min": 4.28,
+          "max": 4.92,
+          "raw_bytes_per_example": 24.0,
+          "training_role": false
+        },
+        "example_id": {
+          "mean_compressed_bytes_per_example": 6.8525,
+          "median_compressed_bytes_per_example": 6.88,
+          "min": 6.48,
+          "max": 6.96,
+          "raw_bytes_per_example": 39.25,
+          "training_role": true
+        }
+      },
+      "sample_training_compressed_bytes_per_example": 1075.6999999999998,
+      "sample_auxiliary_compressed_bytes_per_example": 7797.875,
+      "sample_auxiliary_fraction": 0.8787749018856548,
+      "extrapolation": {
+        "training": 100000,
+        "fixed_holdouts": 12000,
+        "total_payload_bytes_at_observed_rate": 999805120.8060453,
+        "training_roles_only_bytes_at_sample_rate": 120478399.99999999,
+        "scope": "Extrapolation, not forecast; current numerical target and sample compression rate."
+      }
+    },
+    "heston": {
+      "root": "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/runs/heston-development/collection",
+      "completed_parts": 92,
+      "completed_examples": {
+        "train": 100000,
+        "validation": 5000,
+        "test": 5000
+      },
+      "payload_bytes": 126541157,
+      "payload_physical_allocated_bytes": 126563328,
+      "part_manifest_bytes": 1235977,
+      "observed_payload_bytes_per_example": 1150.3741545454545,
+      "sampled_parts": [
+        {
+          "part": "test-0000000000-0000000500",
+          "examples": 500,
+          "payload_bytes": 575784,
+          "members": {
+            "observations": {
+              "compressed_bytes": 238694,
+              "uncompressed_npy_bytes": 252128,
+              "raw_array_bytes": 252000,
+              "shape": [
+                500,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 477.388
+            },
+            "parameters": {
+              "compressed_bytes": 15382,
+              "uncompressed_npy_bytes": 16128,
+              "raw_array_bytes": 16000,
+              "shape": [
+                500,
+                4
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 30.764
+            },
+            "reference_prices": {
+              "compressed_bytes": 230500,
+              "uncompressed_npy_bytes": 252128,
+              "raw_array_bytes": 252000,
+              "shape": [
+                500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 461.0
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 345,
+              "uncompressed_npy_bytes": 252128,
+              "raw_array_bytes": 252000,
+              "shape": [
+                500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.69
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 15525,
+              "uncompressed_npy_bytes": 15876128,
+              "raw_array_bytes": 15876000,
+              "shape": [
+                500,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 31.05
+            },
+            "refinement_difference": {
+              "compressed_bytes": 72462,
+              "uncompressed_npy_bytes": 252128,
+              "raw_array_bytes": 252000,
+              "shape": [
+                500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 144.924
+            },
+            "context_values": {
+              "compressed_bytes": 72,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.144
+            },
+            "context_parameters": {
+              "compressed_bytes": 72,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.144
+            },
+            "pricing_paths": {
+              "compressed_bytes": 72,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.144
+            },
+            "example_id": {
+              "compressed_bytes": 1288,
+              "uncompressed_npy_bytes": 16128,
+              "raw_array_bytes": 16000,
+              "shape": [
+                500
+              ],
+              "dtype": "<U8",
+              "compressed_bytes_per_example": 2.576
+            }
+          }
+        },
+        {
+          "part": "test-0000003000-0000003500",
+          "examples": 500,
+          "payload_bytes": 577369,
+          "members": {
+            "observations": {
+              "compressed_bytes": 238768,
+              "uncompressed_npy_bytes": 252128,
+              "raw_array_bytes": 252000,
+              "shape": [
+                500,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 477.536
+            },
+            "parameters": {
+              "compressed_bytes": 15375,
+              "uncompressed_npy_bytes": 16128,
+              "raw_array_bytes": 16000,
+              "shape": [
+                500,
+                4
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 30.75
+            },
+            "reference_prices": {
+              "compressed_bytes": 230528,
+              "uncompressed_npy_bytes": 252128,
+              "raw_array_bytes": 252000,
+              "shape": [
+                500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 461.056
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 345,
+              "uncompressed_npy_bytes": 252128,
+              "raw_array_bytes": 252000,
+              "shape": [
+                500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.69
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 15525,
+              "uncompressed_npy_bytes": 15876128,
+              "raw_array_bytes": 15876000,
+              "shape": [
+                500,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 31.05
+            },
+            "refinement_difference": {
+              "compressed_bytes": 73894,
+              "uncompressed_npy_bytes": 252128,
+              "raw_array_bytes": 252000,
+              "shape": [
+                500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 147.788
+            },
+            "context_values": {
+              "compressed_bytes": 72,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.144
+            },
+            "context_parameters": {
+              "compressed_bytes": 72,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.144
+            },
+            "pricing_paths": {
+              "compressed_bytes": 72,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.144
+            },
+            "example_id": {
+              "compressed_bytes": 1346,
+              "uncompressed_npy_bytes": 18128,
+              "raw_array_bytes": 18000,
+              "shape": [
+                500
+              ],
+              "dtype": "<U9",
+              "compressed_bytes_per_example": 2.692
+            }
+          }
+        },
+        {
+          "part": "train-0000001000-0000001500",
+          "examples": 500,
+          "payload_bytes": 578229,
+          "members": {
+            "observations": {
+              "compressed_bytes": 238717,
+              "uncompressed_npy_bytes": 252128,
+              "raw_array_bytes": 252000,
+              "shape": [
+                500,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 477.434
+            },
+            "parameters": {
+              "compressed_bytes": 15382,
+              "uncompressed_npy_bytes": 16128,
+              "raw_array_bytes": 16000,
+              "shape": [
+                500,
+                4
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 30.764
+            },
+            "reference_prices": {
+              "compressed_bytes": 230592,
+              "uncompressed_npy_bytes": 252128,
+              "raw_array_bytes": 252000,
+              "shape": [
+                500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 461.184
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 345,
+              "uncompressed_npy_bytes": 252128,
+              "raw_array_bytes": 252000,
+              "shape": [
+                500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.69
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 15525,
+              "uncompressed_npy_bytes": 15876128,
+              "raw_array_bytes": 15876000,
+              "shape": [
+                500,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 31.05
+            },
+            "refinement_difference": {
+              "compressed_bytes": 74743,
+              "uncompressed_npy_bytes": 252128,
+              "raw_array_bytes": 252000,
+              "shape": [
+                500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 149.486
+            },
+            "context_values": {
+              "compressed_bytes": 72,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.144
+            },
+            "context_parameters": {
+              "compressed_bytes": 72,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.144
+            },
+            "pricing_paths": {
+              "compressed_bytes": 72,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.144
+            },
+            "example_id": {
+              "compressed_bytes": 1337,
+              "uncompressed_npy_bytes": 20128,
+              "raw_array_bytes": 20000,
+              "shape": [
+                500
+              ],
+              "dtype": "<U10",
+              "compressed_bytes_per_example": 2.674
+            }
+          }
+        },
+        {
+          "part": "train-0000004000-0000004500",
+          "examples": 500,
+          "payload_bytes": 579709,
+          "members": {
+            "observations": {
+              "compressed_bytes": 238818,
+              "uncompressed_npy_bytes": 252128,
+              "raw_array_bytes": 252000,
+              "shape": [
+                500,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 477.636
+            },
+            "parameters": {
+              "compressed_bytes": 15370,
+              "uncompressed_npy_bytes": 16128,
+              "raw_array_bytes": 16000,
+              "shape": [
+                500,
+                4
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 30.74
+            },
+            "reference_prices": {
+              "compressed_bytes": 230635,
+              "uncompressed_npy_bytes": 252128,
+              "raw_array_bytes": 252000,
+              "shape": [
+                500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 461.27
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 345,
+              "uncompressed_npy_bytes": 252128,
+              "raw_array_bytes": 252000,
+              "shape": [
+                500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.69
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 15525,
+              "uncompressed_npy_bytes": 15876128,
+              "raw_array_bytes": 15876000,
+              "shape": [
+                500,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 31.05
+            },
+            "refinement_difference": {
+              "compressed_bytes": 76092,
+              "uncompressed_npy_bytes": 252128,
+              "raw_array_bytes": 252000,
+              "shape": [
+                500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 152.184
+            },
+            "context_values": {
+              "compressed_bytes": 72,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.144
+            },
+            "context_parameters": {
+              "compressed_bytes": 72,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.144
+            },
+            "pricing_paths": {
+              "compressed_bytes": 72,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.144
+            },
+            "example_id": {
+              "compressed_bytes": 1336,
+              "uncompressed_npy_bytes": 20128,
+              "raw_array_bytes": 20000,
+              "shape": [
+                500
+              ],
+              "dtype": "<U10",
+              "compressed_bytes_per_example": 2.672
+            }
+          }
+        },
+        {
+          "part": "train-0000007000-0000007500",
+          "examples": 500,
+          "payload_bytes": 577419,
+          "members": {
+            "observations": {
+              "compressed_bytes": 238736,
+              "uncompressed_npy_bytes": 252128,
+              "raw_array_bytes": 252000,
+              "shape": [
+                500,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 477.472
+            },
+            "parameters": {
+              "compressed_bytes": 15373,
+              "uncompressed_npy_bytes": 16128,
+              "raw_array_bytes": 16000,
+              "shape": [
+                500,
+                4
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 30.746
+            },
+            "reference_prices": {
+              "compressed_bytes": 230548,
+              "uncompressed_npy_bytes": 252128,
+              "raw_array_bytes": 252000,
+              "shape": [
+                500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 461.096
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 345,
+              "uncompressed_npy_bytes": 252128,
+              "raw_array_bytes": 252000,
+              "shape": [
+                500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.69
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 15525,
+              "uncompressed_npy_bytes": 15876128,
+              "raw_array_bytes": 15876000,
+              "shape": [
+                500,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 31.05
+            },
+            "refinement_difference": {
+              "compressed_bytes": 73959,
+              "uncompressed_npy_bytes": 252128,
+              "raw_array_bytes": 252000,
+              "shape": [
+                500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 147.918
+            },
+            "context_values": {
+              "compressed_bytes": 72,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.144
+            },
+            "context_parameters": {
+              "compressed_bytes": 72,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.144
+            },
+            "pricing_paths": {
+              "compressed_bytes": 72,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.144
+            },
+            "example_id": {
+              "compressed_bytes": 1345,
+              "uncompressed_npy_bytes": 20128,
+              "raw_array_bytes": 20000,
+              "shape": [
+                500
+              ],
+              "dtype": "<U10",
+              "compressed_bytes_per_example": 2.69
+            }
+          }
+        },
+        {
+          "part": "train-0000010000-0000010500",
+          "examples": 500,
+          "payload_bytes": 578064,
+          "members": {
+            "observations": {
+              "compressed_bytes": 238727,
+              "uncompressed_npy_bytes": 252128,
+              "raw_array_bytes": 252000,
+              "shape": [
+                500,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 477.454
+            },
+            "parameters": {
+              "compressed_bytes": 15374,
+              "uncompressed_npy_bytes": 16128,
+              "raw_array_bytes": 16000,
+              "shape": [
+                500,
+                4
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 30.748
+            },
+            "reference_prices": {
+              "compressed_bytes": 230512,
+              "uncompressed_npy_bytes": 252128,
+              "raw_array_bytes": 252000,
+              "shape": [
+                500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 461.024
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 345,
+              "uncompressed_npy_bytes": 252128,
+              "raw_array_bytes": 252000,
+              "shape": [
+                500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.69
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 15525,
+              "uncompressed_npy_bytes": 15876128,
+              "raw_array_bytes": 15876000,
+              "shape": [
+                500,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 31.05
+            },
+            "refinement_difference": {
+              "compressed_bytes": 74597,
+              "uncompressed_npy_bytes": 252128,
+              "raw_array_bytes": 252000,
+              "shape": [
+                500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 149.194
+            },
+            "context_values": {
+              "compressed_bytes": 72,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.144
+            },
+            "context_parameters": {
+              "compressed_bytes": 72,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.144
+            },
+            "pricing_paths": {
+              "compressed_bytes": 72,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.144
+            },
+            "example_id": {
+              "compressed_bytes": 1396,
+              "uncompressed_npy_bytes": 22128,
+              "raw_array_bytes": 22000,
+              "shape": [
+                500
+              ],
+              "dtype": "<U11",
+              "compressed_bytes_per_example": 2.792
+            }
+          }
+        },
+        {
+          "part": "train-0000013000-0000013500",
+          "examples": 500,
+          "payload_bytes": 577084,
+          "members": {
+            "observations": {
+              "compressed_bytes": 238729,
+              "uncompressed_npy_bytes": 252128,
+              "raw_array_bytes": 252000,
+              "shape": [
+                500,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 477.458
+            },
+            "parameters": {
+              "compressed_bytes": 15376,
+              "uncompressed_npy_bytes": 16128,
+              "raw_array_bytes": 16000,
+              "shape": [
+                500,
+                4
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 30.752
+            },
+            "reference_prices": {
+              "compressed_bytes": 230607,
+              "uncompressed_npy_bytes": 252128,
+              "raw_array_bytes": 252000,
+              "shape": [
+                500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 461.214
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 345,
+              "uncompressed_npy_bytes": 252128,
+              "raw_array_bytes": 252000,
+              "shape": [
+                500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.69
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 15525,
+              "uncompressed_npy_bytes": 15876128,
+              "raw_array_bytes": 15876000,
+              "shape": [
+                500,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 31.05
+            },
+            "refinement_difference": {
+              "compressed_bytes": 73514,
+              "uncompressed_npy_bytes": 252128,
+              "raw_array_bytes": 252000,
+              "shape": [
+                500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 147.028
+            },
+            "context_values": {
+              "compressed_bytes": 72,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.144
+            },
+            "context_parameters": {
+              "compressed_bytes": 72,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.144
+            },
+            "pricing_paths": {
+              "compressed_bytes": 72,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.144
+            },
+            "example_id": {
+              "compressed_bytes": 1400,
+              "uncompressed_npy_bytes": 22128,
+              "raw_array_bytes": 22000,
+              "shape": [
+                500
+              ],
+              "dtype": "<U11",
+              "compressed_bytes_per_example": 2.8
+            }
+          }
+        },
+        {
+          "part": "train-0000016000-0000016500",
+          "examples": 500,
+          "payload_bytes": 575704,
+          "members": {
+            "observations": {
+              "compressed_bytes": 238717,
+              "uncompressed_npy_bytes": 252128,
+              "raw_array_bytes": 252000,
+              "shape": [
+                500,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 477.434
+            },
+            "parameters": {
+              "compressed_bytes": 15369,
+              "uncompressed_npy_bytes": 16128,
+              "raw_array_bytes": 16000,
+              "shape": [
+                500,
+                4
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 30.738
+            },
+            "reference_prices": {
+              "compressed_bytes": 230456,
+              "uncompressed_npy_bytes": 252128,
+              "raw_array_bytes": 252000,
+              "shape": [
+                500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 460.912
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 345,
+              "uncompressed_npy_bytes": 252128,
+              "raw_array_bytes": 252000,
+              "shape": [
+                500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.69
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 15525,
+              "uncompressed_npy_bytes": 15876128,
+              "raw_array_bytes": 15876000,
+              "shape": [
+                500,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 31.05
+            },
+            "refinement_difference": {
+              "compressed_bytes": 72308,
+              "uncompressed_npy_bytes": 252128,
+              "raw_array_bytes": 252000,
+              "shape": [
+                500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 144.616
+            },
+            "context_values": {
+              "compressed_bytes": 72,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.144
+            },
+            "context_parameters": {
+              "compressed_bytes": 72,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.144
+            },
+            "pricing_paths": {
+              "compressed_bytes": 72,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.144
+            },
+            "example_id": {
+              "compressed_bytes": 1396,
+              "uncompressed_npy_bytes": 22128,
+              "raw_array_bytes": 22000,
+              "shape": [
+                500
+              ],
+              "dtype": "<U11",
+              "compressed_bytes_per_example": 2.792
+            }
+          }
+        },
+        {
+          "part": "train-0000019500-0000020000",
+          "examples": 500,
+          "payload_bytes": 577115,
+          "members": {
+            "observations": {
+              "compressed_bytes": 238717,
+              "uncompressed_npy_bytes": 252128,
+              "raw_array_bytes": 252000,
+              "shape": [
+                500,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 477.434
+            },
+            "parameters": {
+              "compressed_bytes": 15361,
+              "uncompressed_npy_bytes": 16128,
+              "raw_array_bytes": 16000,
+              "shape": [
+                500,
+                4
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 30.722
+            },
+            "reference_prices": {
+              "compressed_bytes": 230560,
+              "uncompressed_npy_bytes": 252128,
+              "raw_array_bytes": 252000,
+              "shape": [
+                500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 461.12
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 345,
+              "uncompressed_npy_bytes": 252128,
+              "raw_array_bytes": 252000,
+              "shape": [
+                500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.69
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 15525,
+              "uncompressed_npy_bytes": 15876128,
+              "raw_array_bytes": 15876000,
+              "shape": [
+                500,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 31.05
+            },
+            "refinement_difference": {
+              "compressed_bytes": 73629,
+              "uncompressed_npy_bytes": 252128,
+              "raw_array_bytes": 252000,
+              "shape": [
+                500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 147.258
+            },
+            "context_values": {
+              "compressed_bytes": 72,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.144
+            },
+            "context_parameters": {
+              "compressed_bytes": 72,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.144
+            },
+            "pricing_paths": {
+              "compressed_bytes": 72,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.144
+            },
+            "example_id": {
+              "compressed_bytes": 1390,
+              "uncompressed_npy_bytes": 22128,
+              "raw_array_bytes": 22000,
+              "shape": [
+                500
+              ],
+              "dtype": "<U11",
+              "compressed_bytes_per_example": 2.78
+            }
+          }
+        },
+        {
+          "part": "train-0000032500-0000035000",
+          "examples": 2500,
+          "payload_bytes": 2872810,
+          "members": {
+            "observations": {
+              "compressed_bytes": 1193228,
+              "uncompressed_npy_bytes": 1260128,
+              "raw_array_bytes": 1260000,
+              "shape": [
+                2500,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 477.2912
+            },
+            "parameters": {
+              "compressed_bytes": 76536,
+              "uncompressed_npy_bytes": 80128,
+              "raw_array_bytes": 80000,
+              "shape": [
+                2500,
+                4
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 30.6144
+            },
+            "reference_prices": {
+              "compressed_bytes": 1152428,
+              "uncompressed_npy_bytes": 1260128,
+              "raw_array_bytes": 1260000,
+              "shape": [
+                2500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 460.9712
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 1323,
+              "uncompressed_npy_bytes": 1260128,
+              "raw_array_bytes": 1260000,
+              "shape": [
+                2500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.5292
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 77249,
+              "uncompressed_npy_bytes": 79380128,
+              "raw_array_bytes": 79380000,
+              "shape": [
+                2500,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 30.8996
+            },
+            "refinement_difference": {
+              "compressed_bytes": 364144,
+              "uncompressed_npy_bytes": 1260128,
+              "raw_array_bytes": 1260000,
+              "shape": [
+                2500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 145.6576
+            },
+            "context_values": {
+              "compressed_bytes": 73,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                2500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.0292
+            },
+            "context_parameters": {
+              "compressed_bytes": 73,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                2500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.0292
+            },
+            "pricing_paths": {
+              "compressed_bytes": 73,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                2500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.0292
+            },
+            "example_id": {
+              "compressed_bytes": 6311,
+              "uncompressed_npy_bytes": 110128,
+              "raw_array_bytes": 110000,
+              "shape": [
+                2500
+              ],
+              "dtype": "<U11",
+              "compressed_bytes_per_example": 2.5244
+            }
+          }
+        },
+        {
+          "part": "train-0000047500-0000050000",
+          "examples": 2500,
+          "payload_bytes": 2872333,
+          "members": {
+            "observations": {
+              "compressed_bytes": 1193116,
+              "uncompressed_npy_bytes": 1260128,
+              "raw_array_bytes": 1260000,
+              "shape": [
+                2500,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 477.2464
+            },
+            "parameters": {
+              "compressed_bytes": 76555,
+              "uncompressed_npy_bytes": 80128,
+              "raw_array_bytes": 80000,
+              "shape": [
+                2500,
+                4
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 30.622
+            },
+            "reference_prices": {
+              "compressed_bytes": 1152468,
+              "uncompressed_npy_bytes": 1260128,
+              "raw_array_bytes": 1260000,
+              "shape": [
+                2500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 460.9872
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 1323,
+              "uncompressed_npy_bytes": 1260128,
+              "raw_array_bytes": 1260000,
+              "shape": [
+                2500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.5292
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 77249,
+              "uncompressed_npy_bytes": 79380128,
+              "raw_array_bytes": 79380000,
+              "shape": [
+                2500,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 30.8996
+            },
+            "refinement_difference": {
+              "compressed_bytes": 363721,
+              "uncompressed_npy_bytes": 1260128,
+              "raw_array_bytes": 1260000,
+              "shape": [
+                2500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 145.4884
+            },
+            "context_values": {
+              "compressed_bytes": 73,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                2500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.0292
+            },
+            "context_parameters": {
+              "compressed_bytes": 73,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                2500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.0292
+            },
+            "pricing_paths": {
+              "compressed_bytes": 73,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                2500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.0292
+            },
+            "example_id": {
+              "compressed_bytes": 6310,
+              "uncompressed_npy_bytes": 110128,
+              "raw_array_bytes": 110000,
+              "shape": [
+                2500
+              ],
+              "dtype": "<U11",
+              "compressed_bytes_per_example": 2.524
+            }
+          }
+        },
+        {
+          "part": "train-0000062500-0000065000",
+          "examples": 2500,
+          "payload_bytes": 2870247,
+          "members": {
+            "observations": {
+              "compressed_bytes": 1193268,
+              "uncompressed_npy_bytes": 1260128,
+              "raw_array_bytes": 1260000,
+              "shape": [
+                2500,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 477.3072
+            },
+            "parameters": {
+              "compressed_bytes": 76570,
+              "uncompressed_npy_bytes": 80128,
+              "raw_array_bytes": 80000,
+              "shape": [
+                2500,
+                4
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 30.628
+            },
+            "reference_prices": {
+              "compressed_bytes": 1152408,
+              "uncompressed_npy_bytes": 1260128,
+              "raw_array_bytes": 1260000,
+              "shape": [
+                2500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 460.9632
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 1323,
+              "uncompressed_npy_bytes": 1260128,
+              "raw_array_bytes": 1260000,
+              "shape": [
+                2500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.5292
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 77249,
+              "uncompressed_npy_bytes": 79380128,
+              "raw_array_bytes": 79380000,
+              "shape": [
+                2500,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 30.8996
+            },
+            "refinement_difference": {
+              "compressed_bytes": 361487,
+              "uncompressed_npy_bytes": 1260128,
+              "raw_array_bytes": 1260000,
+              "shape": [
+                2500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 144.5948
+            },
+            "context_values": {
+              "compressed_bytes": 73,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                2500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.0292
+            },
+            "context_parameters": {
+              "compressed_bytes": 73,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                2500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.0292
+            },
+            "pricing_paths": {
+              "compressed_bytes": 73,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                2500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.0292
+            },
+            "example_id": {
+              "compressed_bytes": 6351,
+              "uncompressed_npy_bytes": 110128,
+              "raw_array_bytes": 110000,
+              "shape": [
+                2500
+              ],
+              "dtype": "<U11",
+              "compressed_bytes_per_example": 2.5404
+            }
+          }
+        },
+        {
+          "part": "train-0000077500-0000080000",
+          "examples": 2500,
+          "payload_bytes": 2873083,
+          "members": {
+            "observations": {
+              "compressed_bytes": 1193192,
+              "uncompressed_npy_bytes": 1260128,
+              "raw_array_bytes": 1260000,
+              "shape": [
+                2500,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 477.2768
+            },
+            "parameters": {
+              "compressed_bytes": 76566,
+              "uncompressed_npy_bytes": 80128,
+              "raw_array_bytes": 80000,
+              "shape": [
+                2500,
+                4
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 30.6264
+            },
+            "reference_prices": {
+              "compressed_bytes": 1152321,
+              "uncompressed_npy_bytes": 1260128,
+              "raw_array_bytes": 1260000,
+              "shape": [
+                2500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 460.9284
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 1323,
+              "uncompressed_npy_bytes": 1260128,
+              "raw_array_bytes": 1260000,
+              "shape": [
+                2500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.5292
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 77249,
+              "uncompressed_npy_bytes": 79380128,
+              "raw_array_bytes": 79380000,
+              "shape": [
+                2500,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 30.8996
+            },
+            "refinement_difference": {
+              "compressed_bytes": 364512,
+              "uncompressed_npy_bytes": 1260128,
+              "raw_array_bytes": 1260000,
+              "shape": [
+                2500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 145.8048
+            },
+            "context_values": {
+              "compressed_bytes": 73,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                2500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.0292
+            },
+            "context_parameters": {
+              "compressed_bytes": 73,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                2500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.0292
+            },
+            "pricing_paths": {
+              "compressed_bytes": 73,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                2500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.0292
+            },
+            "example_id": {
+              "compressed_bytes": 6329,
+              "uncompressed_npy_bytes": 110128,
+              "raw_array_bytes": 110000,
+              "shape": [
+                2500
+              ],
+              "dtype": "<U11",
+              "compressed_bytes_per_example": 2.5316
+            }
+          }
+        },
+        {
+          "part": "train-0000092500-0000095000",
+          "examples": 2500,
+          "payload_bytes": 2873981,
+          "members": {
+            "observations": {
+              "compressed_bytes": 1193074,
+              "uncompressed_npy_bytes": 1260128,
+              "raw_array_bytes": 1260000,
+              "shape": [
+                2500,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 477.2296
+            },
+            "parameters": {
+              "compressed_bytes": 76544,
+              "uncompressed_npy_bytes": 80128,
+              "raw_array_bytes": 80000,
+              "shape": [
+                2500,
+                4
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 30.6176
+            },
+            "reference_prices": {
+              "compressed_bytes": 1152465,
+              "uncompressed_npy_bytes": 1260128,
+              "raw_array_bytes": 1260000,
+              "shape": [
+                2500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 460.986
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 1323,
+              "uncompressed_npy_bytes": 1260128,
+              "raw_array_bytes": 1260000,
+              "shape": [
+                2500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.5292
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 77249,
+              "uncompressed_npy_bytes": 79380128,
+              "raw_array_bytes": 79380000,
+              "shape": [
+                2500,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 30.8996
+            },
+            "refinement_difference": {
+              "compressed_bytes": 365405,
+              "uncompressed_npy_bytes": 1260128,
+              "raw_array_bytes": 1260000,
+              "shape": [
+                2500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 146.162
+            },
+            "context_values": {
+              "compressed_bytes": 73,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                2500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.0292
+            },
+            "context_parameters": {
+              "compressed_bytes": 73,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                2500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.0292
+            },
+            "pricing_paths": {
+              "compressed_bytes": 73,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                2500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.0292
+            },
+            "example_id": {
+              "compressed_bytes": 6330,
+              "uncompressed_npy_bytes": 110128,
+              "raw_array_bytes": 110000,
+              "shape": [
+                2500
+              ],
+              "dtype": "<U11",
+              "compressed_bytes_per_example": 2.532
+            }
+          }
+        },
+        {
+          "part": "validation-0000001500-0000002000",
+          "examples": 500,
+          "payload_bytes": 578808,
+          "members": {
+            "observations": {
+              "compressed_bytes": 238784,
+              "uncompressed_npy_bytes": 252128,
+              "raw_array_bytes": 252000,
+              "shape": [
+                500,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 477.568
+            },
+            "parameters": {
+              "compressed_bytes": 15372,
+              "uncompressed_npy_bytes": 16128,
+              "raw_array_bytes": 16000,
+              "shape": [
+                500,
+                4
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 30.744
+            },
+            "reference_prices": {
+              "compressed_bytes": 230669,
+              "uncompressed_npy_bytes": 252128,
+              "raw_array_bytes": 252000,
+              "shape": [
+                500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 461.338
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 345,
+              "uncompressed_npy_bytes": 252128,
+              "raw_array_bytes": 252000,
+              "shape": [
+                500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.69
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 15525,
+              "uncompressed_npy_bytes": 15876128,
+              "raw_array_bytes": 15876000,
+              "shape": [
+                500,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 31.05
+            },
+            "refinement_difference": {
+              "compressed_bytes": 75065,
+              "uncompressed_npy_bytes": 252128,
+              "raw_array_bytes": 252000,
+              "shape": [
+                500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 150.13
+            },
+            "context_values": {
+              "compressed_bytes": 72,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.144
+            },
+            "context_parameters": {
+              "compressed_bytes": 72,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.144
+            },
+            "pricing_paths": {
+              "compressed_bytes": 72,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.144
+            },
+            "example_id": {
+              "compressed_bytes": 1460,
+              "uncompressed_npy_bytes": 30128,
+              "raw_array_bytes": 30000,
+              "shape": [
+                500
+              ],
+              "dtype": "<U15",
+              "compressed_bytes_per_example": 2.92
+            }
+          }
+        },
+        {
+          "part": "validation-0000004500-0000005000",
+          "examples": 500,
+          "payload_bytes": 575244,
+          "members": {
+            "observations": {
+              "compressed_bytes": 238727,
+              "uncompressed_npy_bytes": 252128,
+              "raw_array_bytes": 252000,
+              "shape": [
+                500,
+                63,
+                1
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 477.454
+            },
+            "parameters": {
+              "compressed_bytes": 15378,
+              "uncompressed_npy_bytes": 16128,
+              "raw_array_bytes": 16000,
+              "shape": [
+                500,
+                4
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 30.756
+            },
+            "reference_prices": {
+              "compressed_bytes": 230523,
+              "uncompressed_npy_bytes": 252128,
+              "raw_array_bytes": 252000,
+              "shape": [
+                500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 461.046
+            },
+            "pricing_standard_errors": {
+              "compressed_bytes": 345,
+              "uncompressed_npy_bytes": 252128,
+              "raw_array_bytes": 252000,
+              "shape": [
+                500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.69
+            },
+            "pricing_covariance": {
+              "compressed_bytes": 15525,
+              "uncompressed_npy_bytes": 15876128,
+              "raw_array_bytes": 15876000,
+              "shape": [
+                500,
+                63,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 31.05
+            },
+            "refinement_difference": {
+              "compressed_bytes": 71689,
+              "uncompressed_npy_bytes": 252128,
+              "raw_array_bytes": 252000,
+              "shape": [
+                500,
+                63
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 143.378
+            },
+            "context_values": {
+              "compressed_bytes": 72,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.144
+            },
+            "context_parameters": {
+              "compressed_bytes": 72,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.144
+            },
+            "pricing_paths": {
+              "compressed_bytes": 72,
+              "uncompressed_npy_bytes": 128,
+              "raw_array_bytes": 0,
+              "shape": [
+                500,
+                0
+              ],
+              "dtype": "<f8",
+              "compressed_bytes_per_example": 0.144
+            },
+            "example_id": {
+              "compressed_bytes": 1469,
+              "uncompressed_npy_bytes": 30128,
+              "raw_array_bytes": 30000,
+              "shape": [
+                500
+              ],
+              "dtype": "<U15",
+              "compressed_bytes_per_example": 2.938
+            }
+          }
+        }
+      ],
+      "role_summary": {
+        "observations": {
+          "mean_compressed_bytes_per_example": 477.4137,
+          "median_compressed_bytes_per_example": 477.434,
+          "min": 477.2296,
+          "max": 477.636,
+          "raw_bytes_per_example": 504.0,
+          "training_role": true
+        },
+        "parameters": {
+          "mean_compressed_bytes_per_example": 30.708275,
+          "median_compressed_bytes_per_example": 30.741999999999997,
+          "min": 30.6144,
+          "max": 30.764,
+          "raw_bytes_per_example": 32.0,
+          "training_role": true
+        },
+        "reference_prices": {
+          "mean_compressed_bytes_per_example": 461.0685,
+          "median_compressed_bytes_per_example": 461.03499999999997,
+          "min": 460.912,
+          "max": 461.338,
+          "raw_bytes_per_example": 504.0,
+          "training_role": true
+        },
+        "pricing_standard_errors": {
+          "mean_compressed_bytes_per_example": 0.6397499999999999,
+          "median_compressed_bytes_per_example": 0.69,
+          "min": 0.5292,
+          "max": 0.69,
+          "raw_bytes_per_example": 504.0,
+          "training_role": false
+        },
+        "pricing_covariance": {
+          "mean_compressed_bytes_per_example": 31.003,
+          "median_compressed_bytes_per_example": 31.05,
+          "min": 30.8996,
+          "max": 31.05,
+          "raw_bytes_per_example": 31752.0,
+          "training_role": false
+        },
+        "refinement_difference": {
+          "mean_compressed_bytes_per_example": 146.975725,
+          "median_compressed_bytes_per_example": 146.595,
+          "min": 143.378,
+          "max": 152.184,
+          "raw_bytes_per_example": 504.0,
+          "training_role": false
+        },
+        "context_values": {
+          "mean_compressed_bytes_per_example": 0.108125,
+          "median_compressed_bytes_per_example": 0.144,
+          "min": 0.0292,
+          "max": 0.144,
+          "raw_bytes_per_example": 0.0,
+          "training_role": true
+        },
+        "context_parameters": {
+          "mean_compressed_bytes_per_example": 0.108125,
+          "median_compressed_bytes_per_example": 0.144,
+          "min": 0.0292,
+          "max": 0.144,
+          "raw_bytes_per_example": 0.0,
+          "training_role": false
+        },
+        "pricing_paths": {
+          "mean_compressed_bytes_per_example": 0.108125,
+          "median_compressed_bytes_per_example": 0.144,
+          "min": 0.0292,
+          "max": 0.144,
+          "raw_bytes_per_example": 0.0,
+          "training_role": false
+        },
+        "example_id": {
+          "mean_compressed_bytes_per_example": 2.68615,
+          "median_compressed_bytes_per_example": 2.682,
+          "min": 2.524,
+          "max": 2.938,
+          "raw_bytes_per_example": 44.0,
+          "training_role": true
+        }
+      },
+      "sample_training_compressed_bytes_per_example": 971.98475,
+      "sample_auxiliary_compressed_bytes_per_example": 178.83472500000002,
+      "sample_auxiliary_fraction": 0.15539772213187478,
+      "extrapolation": {
+        "training": 100000,
+        "fixed_holdouts": 10000,
+        "total_payload_bytes_at_observed_rate": 126541157.0,
+        "training_roles_only_bytes_at_sample_rate": 106918322.5,
+        "scope": "Extrapolation, not forecast; current numerical target and sample compression rate."
+      }
+    }
+  },
+  "seconds": 2.4774922654032707
+}

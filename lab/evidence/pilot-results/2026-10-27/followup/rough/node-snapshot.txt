@@ -1,0 +1,64 @@
+NodeName=node1828 Arch=x86_64 CoresPerSocket=24 
+   CPUAlloc=47 CPUEfctv=48 CPUTot=48 CPULoad=40.51
+   AvailableFeatures=48core,intel,cascade,edr
+   ActiveFeatures=48core,intel,cascade,edr
+   Gres=(null)
+   NodeAddr=node1828 NodeHostName=node1828 Version=25.05.5
+   OS=Linux 5.14.0-570.62.1.0.1.el9_6.x86_64 #1 SMP PREEMPT_DYNAMIC Mon Nov 10 05:10:07 PST 2025 
+   RealMemory=382000 AllocMem=333488 FreeMem=19152 Sockets=2 Boards=1
+   State=MIXED ThreadsPerCore=1 TmpDisk=0 Weight=5 Owner=N/A MCS_label=N/A
+   Partitions=batch,vnc,debug 
+   BootTime=2026-08-31T12:16:49 SlurmdStartTime=2026-10-26T20:53:36
+   LastBusyTime=2026-09-01T11:42:35 ResumeAfterTime=None
+   CfgTRES=cpu=48,mem=382000M,billing=48
+   AllocTRES=cpu=47,mem=333488M
+   CurrentWatts=0 AveWatts=0
+
+NodeName=node1831 Arch=x86_64 CoresPerSocket=24 
+   CPUAlloc=44 CPUEfctv=48 CPUTot=48 CPULoad=40.99
+   AvailableFeatures=48core,intel,cascade,edr
+   ActiveFeatures=48core,intel,cascade,edr
+   Gres=(null)
+   NodeAddr=node1831 NodeHostName=node1831 Version=25.05.5
+   OS=Linux 5.14.0-570.62.1.0.1.el9_6.x86_64 #1 SMP PREEMPT_DYNAMIC Mon Nov 10 05:10:07 PST 2025 
+   RealMemory=382000 AllocMem=314848 FreeMem=78601 Sockets=2 Boards=1
+   State=MIXED ThreadsPerCore=1 TmpDisk=0 Weight=5 Owner=N/A MCS_label=N/A
+   Partitions=batch,vnc 
+   BootTime=2026-08-31T16:16:51 SlurmdStartTime=2026-10-26T20:53:36
+   LastBusyTime=2026-08-31T16:16:56 ResumeAfterTime=None
+   CfgTRES=cpu=48,mem=382000M,billing=48
+   AllocTRES=cpu=44,mem=314848M
+   CurrentWatts=0 AveWatts=0
+
+NodeName=node1835 Arch=x86_64 CoresPerSocket=24 
+   CPUAlloc=47 CPUEfctv=48 CPUTot=48 CPULoad=28.86
+   AvailableFeatures=48core,intel,cascade,edr
+   ActiveFeatures=48core,intel,cascade,edr
+   Gres=(null)
+   NodeAddr=node1835 NodeHostName=node1835 Version=25.05.5
+   OS=Linux 5.14.0-570.62.1.0.1.el9_6.x86_64 #1 SMP PREEMPT_DYNAMIC Mon Nov 10 05:10:07 PST 2025 
+   RealMemory=382000 AllocMem=336768 FreeMem=40261 Sockets=2 Boards=1
+   State=MIXED ThreadsPerCore=1 TmpDisk=0 Weight=10 Owner=N/A MCS_label=N/A
+   Partitions=batch 
+   BootTime=2026-08-24T01:25:31 SlurmdStartTime=2026-10-26T20:53:36
+   LastBusyTime=2026-10-19T02:11:18 ResumeAfterTime=None
+   CfgTRES=cpu=48,mem=382000M,billing=48
+   AllocTRES=cpu=47,mem=336768M
+   CurrentWatts=0 AveWatts=0
+
+NodeName=node1842 Arch=x86_64 CoresPerSocket=24 
+   CPUAlloc=42 CPUEfctv=48 CPUTot=48 CPULoad=44.70
+   AvailableFeatures=48core,intel,cascade,edr
+   ActiveFeatures=48core,intel,cascade,edr
+   Gres=(null)
+   NodeAddr=node1842 NodeHostName=node1842 Version=25.05.5
+   OS=Linux 5.14.0-570.62.1.0.1.el9_6.x86_64 #1 SMP PREEMPT_DYNAMIC Mon Nov 10 05:10:07 PST 2025 
+   RealMemory=382000 AllocMem=212256 FreeMem=16886 Sockets=2 Boards=1
+   State=MIXED ThreadsPerCore=1 TmpDisk=0 Weight=10 Owner=N/A MCS_label=N/A
+   Partitions=batch 
+   BootTime=2026-08-24T11:28:57 SlurmdStartTime=2026-10-26T20:53:36
+   LastBusyTime=2026-10-23T14:39:14 ResumeAfterTime=None
+   CfgTRES=cpu=48,mem=382000M,billing=48
+   AllocTRES=cpu=42,mem=212256M
+   CurrentWatts=0 AveWatts=0
+

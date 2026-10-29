@@ -37,13 +37,15 @@ def sampler_times(steps=SAMPLER_STEPS):
 
 def use_sampler(workflow):
     """Set the sampler on a built or loaded workflow; the saved configuration keeps its own."""
-    network = workflow.approximator.inference_network
+    network = workflow.inference_network
     network.integrate_kwargs = {**network.integrate_kwargs, "method": "euler", "steps": sampler_times()}
     return workflow
 
 
 def _checked_task(task):
     tasks.validate_task(task)
+    if getattr(tasks, "is_joint_curve_task", lambda _: False)(task):
+        raise ValueError("joint-curve tasks require calibration.full_surface; generating curves are not conditions")
     return task
 
 
