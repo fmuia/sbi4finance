@@ -243,9 +243,9 @@ Smaller fixes: the S10 truth is priced on the methods' seed; Heston's control va
 scheme; studies load only the splits they use; an audit counts as reliable only if every proposal was priced; S10-E
 reports its distinct truths and a bootstrap over them.
 
-## 5. The studies still to run
+## 5. Earlier proposed studies, retained for scope and provenance
 
-The runbook gives the commands, costs and acceptance checks. In order:
+This was the earlier SPY/thin-chain execution queue. It does not replace the completed 100k backbone or authorize new jobs. The power-law-walk proposal has a different task identity from the released known100k reproduction bank; J1 is complete, J2/J3 remain pending, and sparse studies are deferred. The old runbook retains its commands, estimates and proposed acceptance checks:
 
 - **S1, S1-G.** The full bank of 112,000 surfaces with the new curve prior (about 360 CPU-hours), its quality and
   its grid bias.
