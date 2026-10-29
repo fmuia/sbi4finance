@@ -1,0 +1,542 @@
+{
+  "status": "passed",
+  "gradient_checks": [
+    {
+      "case": 0,
+      "role": "truth",
+      "theta": [
+        0.021456031544387195,
+        1.4499114427406143,
+        -0.9839463050321633,
+        0.14951262112103897,
+        0.04520189640984738,
+        7.208552115185525
+      ],
+      "prior_fraction": [
+        0.004412216801173319,
+        0.3166371475802048,
+        0.0076629050225780985,
+        0.9300841408069265,
+        0.23467930939898252,
+        0.8978776922820032
+      ],
+      "target_value": -48.21185310976766,
+      "original_numpy_target_value": -48.21185310976766,
+      "gradient_logit": [
+        -0.48536077833404034,
+        -15.359373394923404,
+        1.4401068474749614,
+        -31.46519948422913,
+        -39.041256816726765,
+        6.344264866679656
+      ],
+      "finite_difference_checks": [
+        {
+          "step": 0.001,
+          "gradient": [
+            -0.4853639031985324,
+            -15.35927644626156,
+            1.4401065988458583,
+            -31.46505407985245,
+            -39.04170473796498,
+            6.344285029246777
+          ],
+          "max_scaled_error": 1.118649297804088e-05
+        },
+        {
+          "step": 0.0001,
+          "gradient": [
+            -0.48536080964112216,
+            -15.359372425542972,
+            1.4401068450098364,
+            -31.465198029891894,
+            -39.041261295764684,
+            6.34426506849195
+          ],
+          "max_scaled_error": 1.1186057270195193e-07
+        },
+        {
+          "step": 1e-05,
+          "gradient": [
+            -0.48536077876804024,
+            -15.359373383105888,
+            1.4401068423097738,
+            -31.465199469593582,
+            -39.04125686311488,
+            6.344264864566184
+          ],
+          "max_scaled_error": 2.1167874744095483e-09
+        }
+      ],
+      "value_parity_passed": true,
+      "finite_difference_passed": true,
+      "pytensor": {
+        "target_value": -48.21185310976763,
+        "gradient_logit": [
+          -0.48536077833405245,
+          -15.359373394923612,
+          1.4401068474749692,
+          -31.46519948422884,
+          -39.04125681672559,
+          6.344264866679473
+        ],
+        "max_scaled_gradient_error": 2.927968818187572e-14,
+        "max_price_error_quote_sigma": 1.4210854715202004e-14,
+        "passed": true
+      }
+    },
+    {
+      "case": 0,
+      "role": "neural_mean",
+      "theta": [
+        0.028575051246210934,
+        1.2634338873028754,
+        -0.953472690820694,
+        0.14799598340690137,
+        0.0446950128339231,
+        7.037111235141754
+      ],
+      "prior_fraction": [
+        0.025985003776396773,
+        0.2544779624342918,
+        0.04623710022696965,
+        0.9199732227126758,
+        0.23130008555948736,
+        0.8757562884053877
+      ],
+      "target_value": -43.03948684923184,
+      "original_numpy_target_value": -43.03948684923184,
+      "gradient_logit": [
+        -3.415838067682983,
+        -11.02915330784389,
+        1.5767160656018273,
+        0.5985507000810748,
+        -1.2184199578830082,
+        -1.6215261463707755
+      ],
+      "finite_difference_checks": [
+        {
+          "step": 0.001,
+          "gradient": [
+            -3.415864736254548,
+            -11.02914465454674,
+            1.5767122756145113,
+            0.5987465277073056,
+            -1.2188654187852421,
+            -1.621498502451857
+          ],
+          "max_scaled_error": 0.00020080098028826644
+        },
+        {
+          "step": 0.0001,
+          "gradient": [
+            -3.415838334213106,
+            -11.029153221535637,
+            1.5767160279978043,
+            0.598552658424012,
+            -1.2184244126345334,
+            -1.6215258701990365
+          ],
+          "max_scaled_error": 2.008074039087302e-06
+        },
+        {
+          "step": 1e-05,
+          "gradient": [
+            -3.4158380703530606,
+            -11.029153307262616,
+            1.5767160654434063,
+            0.5985507158356995,
+            -1.2184200020470826,
+            -1.6215261432250825
+          ],
+          "max_scaled_error": 1.9907896266720268e-08
+        }
+      ],
+      "value_parity_passed": true,
+      "finite_difference_passed": true,
+      "pytensor": {
+        "target_value": -43.03948684923181,
+        "gradient_logit": [
+          -3.41583806768302,
+          -11.029153307844018,
+          1.5767160656018364,
+          0.5985507000809938,
+          -1.2184199578832144,
+          -1.6215261463707524
+        ],
+        "max_scaled_gradient_error": 9.298484592259178e-14,
+        "max_price_error_quote_sigma": 1.4210854715202004e-14,
+        "passed": true
+      }
+    },
+    {
+      "case": 2,
+      "role": "truth",
+      "theta": [
+        0.2772628889069159,
+        2.8743222556050623,
+        -0.7453395584104031,
+        0.11572479529515903,
+        0.10627939705367904,
+        3.046758132680311
+      ],
+      "prior_fraction": [
+        0.7795845118391391,
+        0.791440751868354,
+        0.3096967615058188,
+        0.7048319686343936,
+        0.641862647024527,
+        0.3608720171200401
+      ],
+      "target_value": -49.909965451615825,
+      "original_numpy_target_value": -49.90996545161582,
+      "gradient_logit": [
+        -3.2111437204239226,
+        -12.618484474316626,
+        -13.133774493902234,
+        0.9366264309901338,
+        9.810588459443403,
+        0.01643070053875828
+      ],
+      "finite_difference_checks": [
+        {
+          "step": 0.001,
+          "gradient": [
+            -3.2110875394018024,
+            -12.618264689368885,
+            -13.133941322180931,
+            0.9375094083807767,
+            9.810645906846105,
+            0.016430966542912984
+          ],
+          "max_scaled_error": 0.0004559358359017523
+        },
+        {
+          "step": 0.0001,
+          "gradient": [
+            -3.2111431583459193,
+            -12.618482276067766,
+            -13.1337761622774,
+            0.9366352608353168,
+            9.810589033492079,
+            0.016430703055902995
+          ],
+          "max_scaled_error": 4.559395163530968e-06
+        },
+        {
+          "step": 1e-05,
+          "gradient": [
+            -3.2111437121784543,
+            -12.618484453952304,
+            -13.133774510265537,
+            0.9366265231847136,
+            9.810588463210479,
+            0.016430698934755128
+          ],
+          "max_scaled_error": 4.760576349883908e-08
+        }
+      ],
+      "value_parity_passed": true,
+      "finite_difference_passed": true,
+      "pytensor": {
+        "target_value": -49.90996545161582,
+        "gradient_logit": [
+          -3.2111437204238626,
+          -12.618484474316645,
+          -13.13377449390214,
+          0.9366264309899666,
+          9.810588459443391,
+          0.016430700538757115
+        ],
+        "max_scaled_gradient_error": 8.633548774972822e-14,
+        "max_price_error_quote_sigma": 7.105427357601002e-15,
+        "passed": true
+      }
+    },
+    {
+      "case": 2,
+      "role": "neural_mean",
+      "theta": [
+        0.2765249501466751,
+        2.819716360569,
+        -0.7613461000323296,
+        0.11560210040211677,
+        0.10176282061077654,
+        4.1441215960383415
+      ],
+      "prior_fraction": [
+        0.7773483337778034,
+        0.7732387868563334,
+        0.2894353164147726,
+        0.7040140026807785,
+        0.611752137405177,
+        0.5024673027146247
+      ],
+      "target_value": -52.92474365683742,
+      "original_numpy_target_value": -52.92474365683743,
+      "gradient_logit": [
+        18.855833594558217,
+        -73.35490413592848,
+        30.352389861402578,
+        109.73735576084071,
+        67.89608814605727,
+        -6.4157140132463635
+      ],
+      "finite_difference_checks": [
+        {
+          "step": 0.001,
+          "gradient": [
+            18.85588676615413,
+            -73.35467618430869,
+            30.352230744938424,
+            109.73816580516882,
+            67.89616510101126,
+            -6.415712637757309
+          ],
+          "max_scaled_error": 7.3150051537677615e-06
+        },
+        {
+          "step": 0.0001,
+          "gradient": [
+            18.855834126547677,
+            -73.35490185642612,
+            30.352388269676567,
+            109.73736386112876,
+            67.8960889156599,
+            -6.415713999246009
+          ],
+          "max_scaled_error": 7.31486496715276e-08
+        },
+        {
+          "step": 1e-05,
+          "gradient": [
+            18.85583359992893,
+            -73.35490411399803,
+            30.35238984878674,
+            109.73735584158815,
+            67.89608815225279,
+            -6.415714013385808
+          ],
+          "max_scaled_error": 7.291797802019091e-10
+        }
+      ],
+      "value_parity_passed": true,
+      "finite_difference_passed": true,
+      "pytensor": {
+        "target_value": -52.92474365683737,
+        "gradient_logit": [
+          18.855833594558053,
+          -73.3549041359278,
+          30.352389861402113,
+          109.73735576084025,
+          67.8960881460569,
+          -6.415714013246333
+        ],
+        "max_scaled_gradient_error": 1.48443386287378e-14,
+        "max_price_error_quote_sigma": 1.4210854715202004e-14,
+        "passed": true
+      }
+    }
+  ],
+  "pricer": {
+    "directory": "/oscar/scratch/afengler/sbi4finance-post-bank-baselines-recovery-v2-20261028/joint/pricer/checkpoint",
+    "task_fingerprint": "29eca4e1b970c4f13b99573939aa3449c5280a3a4478f7d24beace6539a9889d",
+    "input_sha256": {
+      "/oscar/scratch/afengler/sbi4finance-post-bank-baselines-recovery-v2-20261028/joint/pricer/checkpoint/pricer.npz": "7fdff1f11ce0f8d77984a11ac0333ba34d85c875adf3f94669b9cacba149b771",
+      "/oscar/scratch/afengler/sbi4finance-post-bank-baselines-recovery-v2-20261028/joint/pricer/checkpoint/pricer.json": "5ec2a6db43e1ef874d9300706021b8ced3af6c7cb3d0bc482c3fe413823e886b",
+      "/oscar/scratch/afengler/sbi4finance-post-bank-baselines-recovery-v2-20261028/joint/pricer/checkpoint/task.json": "29eca4e1b970c4f13b99573939aa3449c5280a3a4478f7d24beace6539a9889d"
+    },
+    "activation": "gelu_erf",
+    "training_record": {
+      "format": "full_surface_pricer_training_v1",
+      "status": "completed",
+      "task_fingerprint": "29eca4e1b970c4f13b99573939aa3449c5280a3a4478f7d24beace6539a9889d",
+      "task_id": "rough_joint_calibration_v1",
+      "bank_manifest_sha256": "c0de030bafef6de3f728d75788cd7feddd672b476795b57c42ecd8cbb0843ce9",
+      "collection_id": "817de3664968de0c605ae4c73e2c99c26465344294af2fc5412f39fffa4baa50",
+      "generator_source_sha256": {
+        "bergomi.py": "8bffe12110dfb7b0de85fcf58cb7b848e4f5bc5f5af2f614ff2bd593d0edb6f5",
+        "calibration/bank.py": "9f0d512ba6f52df5c73c54599183159f535b2aa84ac4daa6a60cfd219afcc7db",
+        "calibration/pricing.py": "bf9b57f73f030670de2f3db37b298b56dc0070be2f99cf187188b817020f3b52",
+        "calibration/surface.py": "24c0476ce3000208438d440cbbb1bf21efd92494b8c634592029af384ee30388",
+        "calibration/tasks.py": "295d1ce59b409f8edb5edba89488fa87a5a4e7bab6f785a152ecb69db1528916",
+        "gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
+        "rough_bergomi.py": "0e8d31c8e18ca8bffd7f798988b22e8a73f75fb49da6eee336f8a106c186ba06"
+      },
+      "source_sha256": {
+        "scripts/train_full_surface_pricer.py": "48d166911cc1ac10c9c938e1a8b358ef8c3159105c80afc08b1152d63db094fd",
+        "src/sbi4finance/calibration/__init__.py": "9b30e8b6d4b3d77cd9d7c91af7a2e37b5462c8ef02bbdf85f92e2092a37ec6e4",
+        "src/sbi4finance/calibration/bank.py": "9f0d512ba6f52df5c73c54599183159f535b2aa84ac4daa6a60cfd219afcc7db",
+        "src/sbi4finance/calibration/bank_collection.py": "b18bfa6d8322753bdbd36754a3f08c82800b826952453d5ce95adb5751757ed5",
+        "src/sbi4finance/calibration/chain.py": "f3a1ad079cc01570c35208c2fe5d3009fa06bd545b2d4ce3083e835f5569ea2b",
+        "src/sbi4finance/calibration/classical.py": "ebe157b6564408ece99fb1213e16ea48feb0c9b90fb30a5269a923d994496002",
+        "src/sbi4finance/calibration/correction.py": "31b9b9fdf96cf8c62128899709b977a53ac3c9190c7e6b7a13d6888241cdfcf1",
+        "src/sbi4finance/calibration/curve_adequacy.py": "5815ddca3eb883863b397a620f7655b9d56fe354ce69773e75deacd7b993cdd1",
+        "src/sbi4finance/calibration/full_surface.py": "f3ffbbb9d3a3440a2dfbeac78e4e84e867227d569cc28ce48d5d0fa3accc9e79",
+        "src/sbi4finance/calibration/full_surface_teaching.py": "179de693db42541342653c651a38fe9fd7e1fe4ed649c6414463c7a6d1c83ace",
+        "src/sbi4finance/calibration/inference.py": "ebc4def8fe0e9e8ae0cab976b67c96d1e3328106c25422bacc11e5907a0f4d2e",
+        "src/sbi4finance/calibration/numerical_pilot.py": "eeb73c2e97e935be3d3d0c61b41c7ac86e6905940b1900d493e022a5a0f897a2",
+        "src/sbi4finance/calibration/plots.py": "558d60bda9969df4115ac0a1cb161e62e85fb9712fbb21660ddc7ff267844492",
+        "src/sbi4finance/calibration/pricer_net.py": "e5d8da240c2dc9b242fabfe289e6623d786645acf86d42d7eb96e702c47bd489",
+        "src/sbi4finance/calibration/pricing.py": "bf9b57f73f030670de2f3db37b298b56dc0070be2f99cf187188b817020f3b52",
+        "src/sbi4finance/calibration/products.py": "709850bbdeed1f26a8820421b8d58e7d9c01a07f30379586ea5b48f496b83c02",
+        "src/sbi4finance/calibration/pymc_reference_op.py": "99704310f8a503cad7eee2310da0204d52c213427ad21683834214018f02451b",
+        "src/sbi4finance/calibration/reference.py": "fd69a6958026f6addde982f2c8d57461cf549efe75f838956e0d931e12153056",
+        "src/sbi4finance/calibration/reference_initialization.py": "0abf68e9862d30bf152dd01e28807ed651d53a12dca4c1286ccb17c52ef0b74f",
+        "src/sbi4finance/calibration/rough_control_diagnostic.py": "ef31703f41ac758f2b6788ff243936c0079609e695599002418b10efed885163",
+        "src/sbi4finance/calibration/rough_working_grid_pilot.py": "0f351ca7f226daaed98756c1052ddcc7fc11a17d9619a336efb5a4acf19042fc",
+        "src/sbi4finance/calibration/surface.py": "24c0476ce3000208438d440cbbb1bf21efd92494b8c634592029af384ee30388",
+        "src/sbi4finance/calibration/tasks.py": "295d1ce59b409f8edb5edba89488fa87a5a4e7bab6f785a152ecb69db1528916",
+        "src/sbi4finance/calibration/teaching.py": "f772e508949cc1befb276c92f0a146a9383f5962ac4fe14b1985901fda7fe1e5",
+        "src/sbi4finance/calibration/thin.py": "a0790c87467d5a6504f0ac369fdb9a31b462c6c7e9a66d19114219873e7e5eae",
+        "src/sbi4finance/calibration/thin_products.py": "9c0277e302806d961a80be2f6178c525b3d2ddccc8d77cf786c50cdb674169b2",
+        "src/sbi4finance/calibration/validation.py": "98c73f47aa76365b775c5f7527714e4bd3e0ffc648aab5e164854ed47deead7b",
+        "src/sbi4finance/calibration/variance_functionals.py": "f4b2f1e0764a5cd1d060a661fc2d15a77727a9fa43caa6555362b6ebd69f7e0e",
+        "src/sbi4finance/calibration/why_bayes.py": "cfb1e8c9409a56cf62923e444506d791d1e5dbdddd4e7d814527ca025a0eef1b"
+      },
+      "environment_sha256": {
+        "pyproject.toml": "0b38d45cea9c3d7143e261d6c8ce3d6892b31b7bce6d1f26bf748df75790fd54",
+        "pixi.lock": "3e33b82d45dfdd696c5b12b22bca0943a5fca09804860fab13e3fc9126c60aae"
+      },
+      "versions": {
+        "python": "3.12.16",
+        "keras": "3.15.1",
+        "jax": "0.11.1",
+        "numpy": "2.5.3",
+        "scipy": "1.18.1"
+      },
+      "settings": {
+        "widths": [
+          256,
+          256,
+          256,
+          256
+        ],
+        "epochs": 300,
+        "batch_size": 256,
+        "learning_rate": 0.001,
+        "patience": 30,
+        "seed": 0
+      },
+      "training_surfaces": 20000,
+      "validation_surfaces": 5000,
+      "reserved_test_evaluated": false,
+      "scientific_acceptance": false,
+      "target": "clean numerical prices divided by fixed quote SD; no observation-noise augmentation",
+      "conditioning": "physical model parameters through logits; joint auxiliary curves excluded",
+      "scope": "Validation selects the epoch and measures interpolation error against bank labels. Independent price/refinement and posterior checks remain required.",
+      "fit": {
+        "epochs_run": 300,
+        "selected_epoch": 295,
+        "selection": "minimum validation mean squared error in quote-noise units",
+        "best_val_mse_quote_noise": 0.010239139199256897,
+        "validation_mse_standardized_at_selected_epoch": 5.4586854702931675e-05,
+        "hidden_activation": "gelu_erf",
+        "export_max_abs_difference_quote_noise": 0.020006885963084642
+      },
+      "pricer_sha256": "7fdff1f11ce0f8d77984a11ac0333ba34d85c875adf3f94669b9cacba149b771",
+      "same_reload_exact": true,
+      "validation_errors": {
+        "units": "quote-noise standard deviations",
+        "rmse": 0.10117937664719429,
+        "absolute_quote_error_quantiles": {
+          "0.5": 0.04362370681629635,
+          "0.9": 0.1491975497586498,
+          "0.99": 0.3557576246704111,
+          "1.0": 3.8884706364394397
+        },
+        "surface_rms_error_quantiles": {
+          "0.5": 0.08247648176064629,
+          "0.9": 0.13919316129429302,
+          "0.99": 0.22375059121140198,
+          "1.0": 1.522476453188064
+        },
+        "surface_l2_error_quantiles": {
+          "0.5": 0.654636779250674,
+          "0.9": 1.1048114669568023,
+          "0.99": 1.775965260147132,
+          "1.0": 12.084282216261863
+        },
+        "signed_mean_error_per_contract": [
+          -0.0023139652213127527,
+          -0.0015086274615797577,
+          -0.000949278964939391,
+          -0.00016207053020357237,
+          0.00033164168702933737,
+          -0.000856521538239208,
+          -0.000360168774902273,
+          8.524626728586558e-05,
+          0.0016136835102988488,
+          -0.0035355023215825655,
+          -0.0016551933833520817,
+          -0.00017871008777383253,
+          -0.0004825541378381601,
+          -0.0007124141764197467,
+          -0.0012170829470134026,
+          0.0005058766549553051,
+          -0.00036357201222581015,
+          -0.0009677090803492867,
+          0.00025094570336558515,
+          0.0011540012563794602,
+          0.0009386205172810648,
+          0.001062681713951319,
+          0.0010621699190836943,
+          -0.0014187229946295414,
+          0.0007400480612636135,
+          -0.0003469766946790201,
+          -0.0022444628909376436,
+          0.0038881612280221617,
+          0.002124061595890712,
+          0.001379645416246418,
+          0.0008546025469599014,
+          0.0001583372591295806,
+          -0.0016048305197761278,
+          0.0011821564873052577,
+          0.0008148800706063074,
+          -0.00024060454811753162,
+          -0.0028250123644640835,
+          -0.0007687713106091267,
+          -0.0005222693687828073,
+          -0.0008029724713438641,
+          -0.00025517083030587173,
+          -0.0009301368585568543,
+          0.0010198605839810625,
+          0.000984140041166438,
+          -0.00038843512729931407,
+          0.0013265783748548912,
+          0.0010486574329465048,
+          0.0008508201195438289,
+          0.0006628711012236067,
+          -0.0004926484379675323,
+          0.0002470733878396406,
+          0.0015969322266058785,
+          -0.00012805096434370024,
+          -0.0019820205933002333,
+          0.0072390163513235935,
+          0.004372285983569712,
+          0.002847486141863762,
+          0.0025704780490403184,
+          0.003236708433259966,
+          0.0017957398818885405,
+          0.002733244445044792,
+          -0.0013906978762271052,
+          2.7549101202756977e-05
+        ],
+        "interpretation": "Discrepancies against numerical labels mix emulator error and label randomness; they do not measure absolute price bias or grid error. Per-quote accuracy alone does not bound posterior distortion across all contracts."
+      },
+      "validation_label_reported_mcse": {
+        "units": "quote-noise standard deviations",
+        "median": 0.045113441664983905,
+        "p99": 0.2243384444583865,
+        "max": 0.24999489114084497,
+        "interpretation": "Reported label MCSE only; not independent price error or a grid-bias bound."
+      },
+      "seconds": 39.17133143800311
+    },
+    "consumer_source_sha256": "e5d8da240c2dc9b242fabfe289e6623d786645acf86d42d7eb96e702c47bd489"
+  },
+  "tiny_finest_price_parity": true,
+  "pricing_batch_count": 32,
+  "scientific_acceptance": false,
+  "reserved_test_evaluated": false
+}

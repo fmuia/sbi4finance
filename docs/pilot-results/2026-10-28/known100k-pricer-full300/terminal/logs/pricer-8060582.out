@@ -1,0 +1,10 @@
+## SLURM PROLOG ###############################################################
+##    Job ID : 8060582
+##  Job Name : sbi4f-pricer-full300
+##  Nodelist : gpu3102
+##      CPUs : 1
+##  Mem/Node : 32768 MB
+## Directory : /oscar/home/afengler
+##   Job Started : Wed Oct 28 01:37:21 PM EDT 2026
+###############################################################################
+{"checkpoint": "/oscar/scratch/afengler/sbi4finance-independent-work-20261028/known100k-pricer-full300/pricer/checkpoint", "validation_rmse_quote_noise": 0.07800595810497016, "scientific_acceptance": false}

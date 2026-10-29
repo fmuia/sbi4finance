@@ -1,0 +1,104 @@
+{
+  "scope": "Four completed pilot validations; the original partial-screen failure remains unchanged.",
+  "training_completed": 6,
+  "evaluations_completed": 4,
+  "evaluations_continued": 2,
+  "targets": [
+    "initial_variance",
+    "theta",
+    "vol_of_vol",
+    "rho"
+  ],
+  "results": [
+    {
+      "name": "affine-vector",
+      "rank_passed": [
+        false,
+        true,
+        true,
+        true
+      ],
+      "rank_ks": [
+        0.11963870243623972,
+        0.05264522962832063,
+        0.04584237944459772,
+        0.04831875453941681
+      ],
+      "coverage90": [
+        0.98,
+        0.905,
+        0.925,
+        0.91
+      ],
+      "seconds": 5.280980880954303
+    },
+    {
+      "name": "flow_matching-vector",
+      "rank_passed": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "rank_ks": [
+        0.05216266000110459,
+        0.05824159634886765,
+        0.06494145743504787,
+        0.0544393365674192
+      ],
+      "coverage90": [
+        0.875,
+        0.84,
+        0.89,
+        0.88
+      ],
+      "seconds": 36.44440856995061
+    },
+    {
+      "name": "mean_flow-vector",
+      "rank_passed": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "rank_ks": [
+        0.1031756041723435,
+        0.09474971787046338,
+        0.08754225537441684,
+        0.09260669843729623
+      ],
+      "coverage90": [
+        0.84,
+        0.805,
+        0.86,
+        0.835
+      ],
+      "seconds": 7.930560070089996
+    },
+    {
+      "name": "spline-vector",
+      "rank_passed": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "rank_ks": [
+        0.06785519018206293,
+        0.04342253110385497,
+        0.05791980798547769,
+        0.051298192426550315
+      ],
+      "coverage90": [
+        0.905,
+        0.88,
+        0.915,
+        0.925
+      ],
+      "seconds": 7.324514442007057
+    }
+  ],
+  "scientific_acceptance": false,
+  "reserved_test_evaluated": false
+}

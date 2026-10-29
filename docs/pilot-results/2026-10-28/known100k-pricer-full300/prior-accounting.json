@@ -1,0 +1,33 @@
+{
+  "checked_utc": "2026-10-28T17:34:19.156578+00:00",
+  "rows": {
+    "8046588": [
+      "8046588",
+      "COMPLETED",
+      "0:0",
+      "1209",
+      "4",
+      "billing=112,cpu=4,gres/gpu=1,mem=32G,node=1"
+    ],
+    "8053365": [
+      "8053365",
+      "COMPLETED",
+      "0:0",
+      "1088",
+      "4",
+      "billing=112,cpu=4,gres/gpu=1,mem=32G,node=1"
+    ],
+    "8059257": [
+      "8059257",
+      "COMPLETED",
+      "0:0",
+      "1478",
+      "4",
+      "billing=112,cpu=4,gres/gpu=1,mem=32G,node=1"
+    ]
+  },
+  "raw_sacct": "8046588|COMPLETED|0:0|1209|4|billing=112,cpu=4,gres/gpu=1,mem=32G,node=1\n8046588.batch|COMPLETED|0:0|1209|4|cpu=4,gres/gpu=1,mem=32G,node=1\n8046588.extern|COMPLETED|0:0|1210|4|billing=112,cpu=4,gres/gpu=1,mem=32G,node=1\n8053365|COMPLETED|0:0|1088|4|billing=112,cpu=4,gres/gpu=1,mem=32G,node=1\n8053365.batch|COMPLETED|0:0|1088|4|cpu=4,gres/gpu=1,mem=32G,node=1\n8053365.extern|COMPLETED|0:0|1088|4|billing=112,cpu=4,gres/gpu=1,mem=32G,node=1\n8059257|COMPLETED|0:0|1478|4|billing=112,cpu=4,gres/gpu=1,mem=32G,node=1\n8059257.batch|COMPLETED|0:0|1478|4|cpu=4,gres/gpu=1,mem=32G,node=1\n8059257.extern|COMPLETED|0:0|1478|4|billing=112,cpu=4,gres/gpu=1,mem=32G,node=1\n",
+  "prior_cpu_seconds": 15100,
+  "prior_gpu_seconds": 3775,
+  "all_terminal_success": true
+}

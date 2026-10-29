@@ -1,0 +1,16 @@
+{
+  "checked_utc": "2026-10-28T16:49:51.617875+00:00",
+  "read_only": true,
+  "job_id": "8059371",
+  "job": {
+    "returncode": 0,
+    "stdout": "JobId=8059371 JobName=sbi4f-architecture-screen UserId=afengler(140010387) GroupId=ccv-frankmj(3237933) MCS_label=N/A Priority=105153 Nice=0 Account=default QOS=gpu-debug JobState=PENDING Reason=Resources Dependency=(null) Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0 RunTime=00:00:00 TimeLimit=01:00:00 TimeMin=N/A SubmitTime=2026-10-28T12:47:56 EligibleTime=2026-10-28T12:47:56 AccrueTime=2026-10-28T12:47:56 StartTime=2026-10-28T13:44:58 EndTime=2026-10-28T14:44:58 Deadline=N/A SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-10-28T12:49:50 Scheduler=Main Partition=gpu-debug AllocNode:Sid=node1901:1886728 ReqNodeList=(null) ExcNodeList=(null) NodeList= SchedNodeList=gpu3001 NumNodes=1-1 NumCPUs=4 NumTasks=1 CPUs/Task=4 ReqB:S:C:T=0:0:*:* ReqTRES=cpu=4,mem=32G,node=1,billing=112,gres/gpu=1 AllocTRES=(null) Socks/Node=* NtasksPerN:B:S:C=0:0:*:1 CoreSpec=* MinCPUsNode=4 MinMemoryNode=32G MinTmpDiskNode=0 Features=(null) DelayBoot=00:00:00 OverSubscribe=OK Contiguous=0 Licenses=(null) LicensesAlloc=(null) Network=(null) Command=(null) WorkDir=/oscar/scratch/afengler/sbi4finance-training-recovery-v2-20261028/repo StdErr=/oscar/scratch/afengler/sbi4finance-independent-work-20261028/architecture-screen/logs/screen-8059371.out StdIn=/dev/null StdOut=/oscar/scratch/afengler/sbi4finance-independent-work-20261028/architecture-screen/logs/screen-8059371.out TresPerNode=gres/gpu:l40s:1 TresPerTask=cpu=4 \n",
+    "stderr": ""
+  },
+  "estimated_start": {
+    "returncode": 0,
+    "stdout": "8059371|PENDING|2026-10-28T13:44:58|(Resources)\n",
+    "stderr": ""
+  },
+  "run": null
+}

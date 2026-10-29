@@ -1,0 +1,52 @@
+{
+  "format": "architecture_evaluation_continuation_v1",
+  "prepared_utc": "2026-10-28T18:05:36.177929+00:00",
+  "repo": "/oscar/scratch/afengler/sbi4finance-training-recovery-v2-20261028/repo",
+  "python": "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/bin/python3.12",
+  "bank": "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/runs/heston-development/snapshot-20k",
+  "variants": [
+    "flow_matching-deepset",
+    "flow_matching-set_transformer"
+  ],
+  "frozen_sha256": {
+    "/oscar/scratch/afengler/sbi4finance-independent-work-source-20261028/continue_architecture_evaluations_20261028.py": "a7dcd3dac51df6501190a937b57369b2611d4fab4108ab9811432457203c782c",
+    "/oscar/scratch/afengler/sbi4finance-independent-work-source-20261028/architecture_screen_continuation_preflight.json": "e753929b14c70ee24c757bf2c4b34b1df79ce01dfc5884b96e71ec24a7a257bc",
+    "/oscar/scratch/afengler/sbi4finance-independent-work-20261028/architecture-screen/plan.json": "8f2ec3d0059374bfc23f3d2c0f46a6c3dc728cc7a05bb3f90e16da5063b88855",
+    "/oscar/scratch/afengler/sbi4finance-independent-work-20261028/architecture-screen/run.json": "54033c26be0b66afe937f609f5db650646e9ebc89a9686b4a891bcf5dceb4611",
+    "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/runs/heston-development/snapshot-20k/manifest.json": "1a7906f58a2b3e1e4cc868bc819c9c9308357f2f23f7fbb642c682860fb0074f",
+    "/oscar/scratch/afengler/sbi4finance-training-recovery-v2-20261028/repo/scripts/evaluate_full_surface.py": "d6c74029cdb573db4518d1d81e7076bb129ee517e1b380a875a0fc6604cad006",
+    "/oscar/scratch/afengler/sbi4finance-independent-work-20261028/architecture-screen/flow_matching-deepset/posterior/model.keras": "0d8dc6269442689b4e687e1593b9f9497363bc3d79efa63b9940a53363e889c1",
+    "/oscar/scratch/afengler/sbi4finance-independent-work-20261028/architecture-screen/flow_matching-deepset/posterior/training.json": "e8e2d4054098ae4f05167856da1575f18b1f5b67bd5ba85d78529d257b8a7d35",
+    "/oscar/scratch/afengler/sbi4finance-independent-work-20261028/architecture-screen/flow_matching-set_transformer/posterior/model.keras": "044ec379bb3dd52ede4ad7899ac41eac6a7c7e8cc34540642b91be67f98cd125",
+    "/oscar/scratch/afengler/sbi4finance-independent-work-20261028/architecture-screen/flow_matching-set_transformer/posterior/training.json": "0ef5358a1ee5bf9d96a05944d73d1f9683cf2d39775a5d619d51bb9dd5e7a6e1"
+  },
+  "settings": {
+    "split": "validation",
+    "first": 0,
+    "surfaces": 200,
+    "draws": 256,
+    "batch_size": 50,
+    "seed": 0,
+    "per_evaluation_timeout_seconds": 240,
+    "overall_worker_deadline_seconds": 550
+  },
+  "resources": {
+    "cpus": 4,
+    "gpus": 1,
+    "memory_gib": 32,
+    "wall_seconds": 600,
+    "cleanup_seconds": 240,
+    "prior_cpu_seconds": 4924,
+    "prior_gpu_seconds": 1231,
+    "full_new_cpu_seconds": 3360,
+    "full_new_gpu_seconds": 840,
+    "full_cumulative_cpu_seconds": 8284,
+    "full_cumulative_gpu_seconds": 2071,
+    "original_cpu_seconds_ceiling": 15360,
+    "original_gpu_seconds_ceiling": 3840
+  },
+  "scope": "Evaluate only two saved final200 checkpoints. No retraining, original-pilot mutation or promotion.",
+  "scientific_acceptance": false,
+  "reserved_test_evaluated": false,
+  "automatic_retry": false
+}

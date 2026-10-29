@@ -1,0 +1,25 @@
+{
+  "scope": "Plots of retained learned posteriors and audit summaries; not conditional reference validation",
+  "new_inference_or_simulation": false,
+  "quadrature_128_vs_256_max_abs_difference": 1.0276797024477702e-08,
+  "source_sha256": "3eef51d75254b9b41ca4bfad1cb45a90a02b611bf34bd315e26db53ad34344cd",
+  "inputs": {
+    "docs/pilot-results/2026-10-29/joint100k-contraction-audit/audit.json": "096f37bd0ad88d93a21f5eefbee13f5afbcfe233632e731a1dfefb768085c0d0",
+    "docs/pilot-results/2026-10-29/joint100k-tradeoffs/tradeoffs.json": "2d391ed7b1c4659d82b294b446845b1b8680f265da094d9e7e76b4264638973b",
+    "docs/pilot-results/2026-10-29/joint100k-tradeoffs/candidate-1983.npz": "f9985c45c7c23b676496b4dc923505464d2d931372f77332ccfffa40db5fee80",
+    "docs/pilot-results/2026-10-29/joint100k-tradeoffs/candidate-1941.npz": "2c923dbb154b5464a45f9b5a6ed35d9d8d15d530ee3e7f1f1a3fef4f0b65942b",
+    "docs/pilot-results/2026-10-29/joint100k-tradeoffs/weak-decay-1962.npz": "e13ba12295229c5dcdea8bda7710de1d33d468b9549fa65adc84015a532b96c5"
+  },
+  "outputs": {
+    "contraction-and-case-pairing.png": "064d9ce31dd1f4954eefdbe316efabc4ae60741ddde080de5b35a28ed224a8fc",
+    "contraction-and-case-pairing.svg": "85ab450420b5b81d7fe52aea847a003d854d8574bffc1dce2c2b77853d3e20ec",
+    "complete-corner-validation-1983.png": "e58295596ed03b18e6d6d22ceeb538fa2718c40dd857ea3206a38cd32a4fa976",
+    "complete-corner-validation-1983.svg": "2a3574750fdf770f0a2adcdafb270ae0fbd2ac9d7d6aea9fc60a582a7567be04",
+    "complete-corner-validation-1941.png": "3b3261336e8ab8e8dce7a36fefcd553897b64bca2d533f0c7dc45d06163204bc",
+    "complete-corner-validation-1941.svg": "872df7a1c70d09a7587bff5240868b78e39562940879e81775910e6c0d2a4e2f",
+    "curve-function-and-weak-decay.png": "8a9957678a4fad87bf344d1a4d180fcbe0a01f99fb99300056f2146ebfaebdd5",
+    "curve-function-and-weak-decay.svg": "60479329a1de120d87ebb0cdf6dd162a5c05f57030155149220443bd036a4e95"
+  },
+  "numpy": "2.5.3",
+  "matplotlib": "3.11.2"
+}

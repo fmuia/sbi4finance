@@ -1,5 +1,7 @@
 # Rough-bank runs: completed recovery and current generation
 
+**Historical recovery snapshot:** this document retains the 15:09 UTC completion/handoff state. Independent work has since started; use the [current parallel work order](backbone-delivery-work-order.md), [collaborator overview](collaborator-numerical-status.md) and [rendered report](reports/inference-performance-2026-10-28.pdf) for the new runs and findings.
+
 Status checked **28 October 2026, 15:09 UTC**. Known-curve 100k and joint-curve 20k banks are checked and complete. Both intermediate model-training routes have completed. Joint generation toward 100k is running; final rough-Bergomi model acceptance remains unfinished.
 
 The overnight run made useful data, but it did not advance through all the promised dependencies. The known-curve bank finished at 50k training surfaces. Joint generation stopped after 21 workers timed out; two orchestration bugs then kept the 100k append and model-training stages waiting. Both bugs have been fixed with regressions that reproduce the observed failures. Completed prices are preserved.

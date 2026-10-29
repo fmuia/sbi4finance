@@ -1,0 +1,29 @@
+{
+  "state": "launch_attempted",
+  "utc": "2026-10-28T20:54:23.101566+00:00",
+  "host": "login010",
+  "argv": [
+    "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python",
+    "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/joint-tail-gate-20261028/run_bank_campaign.py",
+    "--config",
+    "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/joint-100k-recovery-source-20261028/recovery-config.json",
+    "--detach"
+  ],
+  "config_sha256": "a27a7a142f160e37ce903788308744dde61f2889fb9091aa8a23b583043234a7",
+  "operator_sha256": "a59339f9f9d10f4de961a42977e41278324c76e290dc32b806094dc0542d5ee0",
+  "deployer_sha256": "94c1882241b22491dfc114db7783ca989ae1e0c244363888dc84f908e8f10ec7",
+  "preflight_sha256": "0bc3dea13d594505303b3e2e4154e1404096fcb1e5cbe060bdcba2a17184e1a1",
+  "preserved_inputs_sha256": {
+    "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/joint-100k/execution.json": "4859cbc1d3bd65d907315e5b48d5454c47f151b08885ca84c7b0c547309e97a6",
+    "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/joint-100k/jobs.json": "76ad4d7b19b78f21e37ba8ad468e326b0ec0d0e05b355e90a963e97223a25949",
+    "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/joint-100k/campaign.json": "e2feaa113e1b887a9796ba29bed85e62b5498aaaace20c8626fd27a0a8f25fbf",
+    "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/collection.json": "802a200f73bacddaa744abcfdcf2497b2d45a609c9039ed816baf1e3e9a5b12c",
+    "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/snapshot-20k/manifest.json": "c0de030bafef6de3f728d75788cd7feddd672b476795b57c42ecd8cbb0843ce9"
+  },
+  "original_failed_job": "8056659_1",
+  "prior_cpu_seconds": 3501292,
+  "cpu_hour_ceiling": 3000,
+  "first200_full_exposure_cpu_seconds": 5713132,
+  "automatic_retry": false,
+  "old_source_or_journal_changed": false
+}

@@ -1,0 +1,21 @@
+WARNING:matplotlib:/Users/afengler/.matplotlib is not a writable directory
+WARNING:matplotlib:Matplotlib created a temporary cache directory at /var/folders/rg/_j_2xg8n0qgbf0dvg2dyq1_r0000gn/T/matplotlib-zy6x4qqh because there was an issue with the default path (/Users/afengler/.matplotlib); it is highly recommended to set the MPLCONFIGDIR environment variable to a writable directory, in particular to speed up the import of Matplotlib and to better support multiprocessing.
+
+Fontconfig error: No writable cache directories
+	/opt/homebrew/var/cache/fontconfig
+	/Users/afengler/.cache/fontconfig
+	/Users/afengler/.fontconfig
+WARNING:matplotlib.font_manager:Matplotlib is building the font cache; this may take a moment.
+INFO:matplotlib.font_manager:Failed to extract font properties from /System/Library/Fonts/LastResort.otf: tuple indices must be integers or slices, not str
+INFO:matplotlib.font_manager:Failed to extract font properties from /System/Library/Fonts/Supplemental/NISC18030.ttf: Non-scalable fonts are not supported
+INFO:matplotlib.font_manager:Failed to extract font properties from /System/Library/PrivateFrameworks/FontServices.framework/Resources/Reserved/PingFangUI.ttc: FT_Open_Face (ft2font.cpp line 200) failed with error 0x02: unknown file format
+INFO:matplotlib.font_manager:Failed to extract font properties from /System/Library/Fonts/Apple Color Emoji.ttc: Non-scalable fonts are not supported
+INFO:matplotlib.font_manager:generated new fontManager
+INFO:bayesflow:Using backend 'jax'
+INFO:bayesflow:Estimator restored from '/Users/afengler/Projects/proj_sbi4finance/local-artifacts/tutorial-backbones-20261029/oscar-scratch/sbi4finance-independent-work-20261029/joint100k/joint/posterior/model.keras'.
+/Users/afengler/Projects/proj_sbi4finance/sbi4finance-full-surface-core/.pixi/envs/core-reference/lib/python3.12/site-packages/keras/src/backend/jax/core.py:401: UserWarning: Explicitly requested dtype float64 requested in asarray is not available, and will be truncated to dtype float32. To enable more dtypes, set the jax_enable_x64 configuration option or the JAX_ENABLE_X64 shell environment variable. See https://github.com/jax-ml/jax#current-gotchas for more.
+  return jnp.asarray(x, dtype=dtype)
+INFO:bayesflow:Sampling completed in 2.42 seconds.
+INFO:bayesflow:Sampling completed in 3.59 seconds.
+INFO:bayesflow:Sampling completed in 3.62 seconds.
+{"case_id": "validation:0", "checkpoint_load_seconds": 9.716800041031092, "cold_start_to_first_draws_seconds": 12.541979458008427, "inference_calls": [{"label": "first", "seed": 271400, "seconds": 2.420959417009726, "shape": [1, 1000, 6], "all_finite": true, "cpu_user_seconds": 8.149985, "cpu_system_seconds": 0.9431120000000001, "process_peak_RSS_bytes": 712261632, "draws_array_sha256": "bc66064be1298308016b55016328478a744304b113b29fa02006e7992932434b"}, {"label": "warm_1", "seed": 271401, "seconds": 3.5898871250101365, "shape": [1, 1000, 6], "all_finite": true, "cpu_user_seconds": 7.486196999999999, "cpu_system_seconds": 1.1432979999999997, "process_peak_RSS_bytes": 901185536, "draws_array_sha256": "a73634afa17b454f94fa15a227c733ea0c226727f14509e1c37cad859eb4dcfc"}, {"label": "warm_2", "seed": 271402, "seconds": 3.6197217919980176, "shape": [1, 1000, 6], "all_finite": true, "cpu_user_seconds": 7.2606699999999975, "cpu_system_seconds": 2.1329779999999996, "process_peak_RSS_bytes": 1201061888, "draws_array_sha256": "968cb1cfe59e181781db3eedbdb4c626b2b3a4c1eb5e042a1e07de20300a1760"}], "total_process_seconds": 19.758382542000618}

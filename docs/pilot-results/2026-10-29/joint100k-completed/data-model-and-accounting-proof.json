@@ -1,0 +1,33 @@
+{
+  "checked_utc": "2026-10-29T09:15:13.713401+00:00",
+  "read_only": true,
+  "old_manifest_sha256": "c0de030bafef6de3f728d75788cd7feddd672b476795b57c42ecd8cbb0843ce9",
+  "new_manifest_sha256": "eb72588b9b7665e0e416cb5d3a1bcf8cd78a1c97f2b43f18ea8246c749a871d8",
+  "same_collection_task_root_source_runtime": true,
+  "old_training20k_prefix_identical": true,
+  "all_validation5000_parts_identical": true,
+  "actual_old_prefix_and_all_validation_payloads_verified": {
+    "train": {
+      "parts": 800,
+      "rows": 20000,
+      "actual_payload_and_manifest_hashes_verified": true
+    },
+    "validation": {
+      "parts": 200,
+      "rows": 5000,
+      "actual_payload_and_manifest_hashes_verified": true
+    }
+  },
+  "validation_part_list_sha256": "757f352fc6e32fbc6f92decfc1303b4357552c6c41ae5cd213ddfaf5f948ef5a",
+  "models": {
+    "joint100k": {
+      "posterior_sha256": "19c24d64290651f592d3c13d7d0a1616d0d8ae080d487d0298aee8f97779498b",
+      "pricer_sha256": "be699c31a7950ca3ebd9117275b4f8cb1a8355c96f7ca1e18bcfa36e0d252301"
+    },
+    "joint20k": {
+      "posterior_sha256": "8d552a9392d54f98a954401fb979e861f26b9a9c71690b5c3980a4e8fa608dec",
+      "pricer_sha256": "7fdff1f11ce0f8d77984a11ac0333ba34d85c875adf3f94669b9cacba149b771"
+    }
+  },
+  "raw_accounting": "8053365|COMPLETED|0:0|1088|4|billing=112,cpu=4,gres/gpu=1,mem=32G,node=1|gpu3001|2026-10-28T10:54:41\n8053365.batch|COMPLETED|0:0|1088|4|cpu=4,gres/gpu=1,mem=32G,node=1|gpu3001|2026-10-28T10:54:41\n8053365.extern|COMPLETED|0:0|1088|4|billing=112,cpu=4,gres/gpu=1,mem=32G,node=1|gpu3001|2026-10-28T10:54:41\n8080084|COMPLETED|0:0|1713|4|billing=112,cpu=4,gres/gpu=1,mem=32G,node=1|gpu3006|2026-10-28T21:35:58\n8080084.batch|COMPLETED|0:0|1713|4|cpu=4,gres/gpu=1,mem=32G,node=1|gpu3006|2026-10-28T21:35:58\n8080084.extern|COMPLETED|0:0|1714|4|billing=112,cpu=4,gres/gpu=1,mem=32G,node=1|gpu3006|2026-10-28T21:35:59\n"
+}

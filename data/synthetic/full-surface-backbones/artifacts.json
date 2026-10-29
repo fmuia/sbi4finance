@@ -1,0 +1,51 @@
+{
+  "format": "full_surface_tutorial_artifacts_v1",
+  "scientific_acceptance": false,
+  "artifacts": {
+    "heston-final500": {
+      "cache": "../full-surface-heston-final500/interior-midpoint",
+      "cache_format": "full_surface_teaching_v1",
+      "bundle_sha256": "3733f8e9672f7a6bb8dbefa9a5112d0e0d9e2dfa5a2e47a17a5de71dc2a1f3b3",
+      "task_fingerprint": "5e499526ff8f29a72f49785a1a36006b1d769d26bca8a6f83f7a8c8ac4d431fa",
+      "checkpoint_sha256": "8d4a243ba099524cf4cda40e4f0616e895879f053829a7f60dadbe65b98301db",
+      "model_source": "oscar:/oscar/scratch/afengler/sbi4finance-heston-teaching-20261028/checkpoint-final500",
+      "model_files": [
+        "model.keras",
+        "task.json",
+        "training.json"
+      ],
+      "case_id": "development:midpoint-20261028",
+      "scope": "interior development case with PyMC reference"
+    },
+    "rough-known50k": {
+      "cache": "rough-known50k-validation0",
+      "cache_format": "full_surface_neural_replay_v1",
+      "bundle_sha256": "4828c315afb1ef50d504ff1b6e8da03786298909545fe4d38989b9803fad31a4",
+      "task_fingerprint": "c99b0dd131896d89d8483a1668a3fde0fb7a0f28794c3db7fe14635cbbd52b65",
+      "checkpoint_sha256": "e32732daea513c1887438eab801e660f286166846ef65eac6258136c3f504613",
+      "model_source": "oscar:/oscar/scratch/afengler/sbi4finance-post-bank-baselines-recovery-v2-20261028/known/posterior",
+      "model_files": [
+        "model.keras",
+        "task.json",
+        "training.json"
+      ],
+      "case_id": "validation:0",
+      "scope": "fixed development validation:0 replay, no conditional reference"
+    },
+    "rough-joint20k": {
+      "cache": "rough-joint20k-validation0",
+      "cache_format": "full_surface_neural_replay_v1",
+      "bundle_sha256": "8afdc1a15c10a887415abcd479781f05d26508255c814868175bd2e66d7ab26f",
+      "task_fingerprint": "29eca4e1b970c4f13b99573939aa3449c5280a3a4478f7d24beace6539a9889d",
+      "checkpoint_sha256": "8d552a9392d54f98a954401fb979e861f26b9a9c71690b5c3980a4e8fa608dec",
+      "model_source": "oscar:/oscar/scratch/afengler/sbi4finance-post-bank-baselines-recovery-v2-20261028/joint/posterior",
+      "model_files": [
+        "model.keras",
+        "task.json",
+        "training.json"
+      ],
+      "case_id": "validation:0",
+      "scope": "fixed development validation:0 replay, no conditional reference"
+    }
+  }
+}

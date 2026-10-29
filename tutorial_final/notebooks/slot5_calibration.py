@@ -69,6 +69,11 @@ def _(mo):
     mo.md(r"""
     # Slot 5 · Rough Bergomi on the SPY smile: from the posterior to a reserve
 
+    The new known-curve and joint-curve BayesFlow 2.1 development estimators can
+    be inspected in [the cached/live backbone review](backbone_review.py).
+    Those fixed synthetic replays have separate provenance and do not replace
+    the historical SPY or pilot results below.
+
     **A long-dated mark rests on inputs no quote pins. The posterior prices them; amortization makes it checkable.**
 
     Slot 4 calibrated Heston to the SPY smile and checked every step against the exact posterior. The

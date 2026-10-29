@@ -1,0 +1,28 @@
+{
+  "status": "authenticated_github_download_extract_and_real_loader_passed",
+  "repository_visibility": "private",
+  "archive_sha256": "d57543a90b9dc264a7161dea6e3f55f7c8f5a945d95f407d97151794c07afb40",
+  "archive_bytes": 122873069,
+  "first_training_part_shapes": {
+    "observations": [
+      500,
+      63,
+      1
+    ],
+    "reference_prices": [
+      500,
+      63
+    ],
+    "parameters": [
+      500,
+      4
+    ],
+    "example_id": [
+      500
+    ]
+  },
+  "neural_backend_imported": false,
+  "new_training": false,
+  "new_simulation": false,
+  "reserved_test_evaluated": false
+}
