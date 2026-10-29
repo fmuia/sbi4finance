@@ -9,6 +9,8 @@ then joint calibration of its variance curve. Start with the
 [rendered inference-performance report](docs/reports/inference-performance-2026-10-28.pdf),
 [parallel work order](docs/backbone-delivery-work-order.md) and
 [notebook review guide](docs/tutorial-backbone-review.md).
+For collaborator experiments, the [training-data guide](docs/training-data-guide.md)
+links the versioned banks/models and gives executable loading and training examples.
 The new review notebook loads small pinned examples by default; live inference
 is a separate explicit action. Scientific limitations and historical failures
 remain visible. The proposed course/tutorial/lab layout in
