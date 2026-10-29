@@ -146,11 +146,15 @@ def delta_bounds(fit, fitter, product_fn, step=1e-2):
     return base, base - Z90 * sd, base + Z90 * sd
 
 
+def records(out, arm):
+    return {r["row"]: r for f in sorted(out.glob(f"rows-{arm}-*.jsonl")) for r in map(json.loads, f.read_text().splitlines())}
+
+
 def run(args):
+    """Skips a row that any run of the same arm has written, checked before each row, so row ranges may overlap."""
     manifest, _ = bank.load_bank(args.bank, splits=())
     task = manifest["configuration"]["task"]
     out_file = args.out / f"rows-{args.arm}-{args.start}-{args.stop}.jsonl"
-    done = {json.loads(line)["row"] for line in out_file.read_text().splitlines()} if out_file.exists() else set()
     box = thin_joint.bounds(task)
     product = lambda theta, flat=None: thin_joint.products(task, theta, args.product_paths, args.seed + 1, flat)
     if args.arm == "posterior":
@@ -159,12 +163,9 @@ def run(args):
     else:
         _, splits = bank.load_bank(args.bank, splits=(args.split,))
         data = splits[args.split]
-    if args.arm == "laplace":
-        least = {r["row"]: r["gauss_newton"]["theta"] for f in args.out.glob("rows-classical-*.jsonl")
-                 for r in map(json.loads, f.read_text().splitlines())}
     args.out.mkdir(parents=True, exist_ok=True)
     for row in range(args.start, args.stop):
-        if row in done:
+        if row in records(args.out, args.arm):
             continue
         t0 = time.process_time()
         if args.arm == "posterior":
@@ -181,10 +182,11 @@ def run(args):
             print(f"row {row}: posterior {record['cpu_seconds']['posterior']:.0f} CPU-s", flush=True)
             continue
         if args.arm == "laplace":
-            if row not in least:
+            least = records(args.out, "classical").get(row)
+            if least is None:
                 continue
             fitter = Fit(task, chain_quotes(data, task, row, args.seed), args.fit_paths, args.seed + 2, prior=True)
-            fit = fitter.run([fitter.theta(np.clip(fitter.z(least[row]), -4.0, 4.0))])
+            fit = fitter.run([fitter.theta(np.clip(fitter.z(least["gauss_newton"]["theta"]), -4.0, 4.0))])
             timings = {"fit": time.process_time() - t0}
             t0 = time.process_time()
             mark, lower, upper = delta_bounds(fit, fitter, product)
@@ -244,21 +246,20 @@ def wilson(k, n, z=1.96):
 def summarize(args):
     """Joins the arms' records by row; only rows that every arm in --arms has enter the table. The split by the true
     H, within 0.05 of 0.10 or not, is a diagnostic of the fixed-H baseline, not a stratum a desk could observe."""
-    by_arm = {arm: {r["row"]: r for f in sorted(args.out.glob(f"rows-{arm}-*.jsonl"))
-                    for r in map(json.loads, f.read_text().splitlines())} for arm in args.arms}
+    by_arm = {arm: records(args.out, arm) for arm in args.arms}
     rows = sorted(set.intersection(*(set(found) for found in by_arm.values())))
-    records = [{k: v for arm in args.arms for k, v in by_arm[arm][r].items()} for r in rows]
+    joined = [{k: v for arm in args.arms for k, v in by_arm[arm][r].items()} for r in rows]
     methods = [m for m in METHODS if any(m in ARM_METHODS[arm] for arm in args.arms)]
-    truth = np.array([r["truth"] for r in records])
-    near = np.abs(np.array([r["truth_parameters"][0] for r in records]) - HURST_FIXED) <= 0.05
-    n = len(records)
+    truth = np.array([r["truth"] for r in joined])
+    near = np.abs(np.array([r["truth_parameters"][0] for r in joined]) - HURST_FIXED) <= 0.05
+    n = len(joined)
     report = {"chains": n, "arms": args.arms, "products": list(thin_products.NAMES), "nominal_breach_rate": 0.1,
               "true_hurst_near_0.10": int(near.sum()), "methods": {}}
     print(f"{n} chains; breach rates of the one-sided 90% bounds (nominal 10% each side)")
     print(f"  {'product':22s} " + " ".join(f"{m:>22s}" for m in methods))
     for m in methods:
-        lower = np.array([r[m]["lower"] for r in records])
-        upper = np.array([r[m]["upper"] for r in records])
+        lower = np.array([r[m]["lower"] for r in joined])
+        upper = np.array([r[m]["upper"] for r in joined])
         long_hit, short_hit = truth < lower, truth > upper
         long_b, short_b = long_hit.sum(axis=0), short_hit.sum(axis=0)
         width = np.median((upper - lower) / np.abs(truth), axis=0)
@@ -277,7 +278,7 @@ def summarize(args):
         print(f"  {p:22s} " + " ".join(f"{c:>22s}" for c in cells))
     for m in ("gauss_newton", "hurst_fixed", "laplace"):
         if m in methods:
-            on_bound = sum(r[m]["on_bound"] for r in records)
+            on_bound = sum(r[m]["on_bound"] for r in joined)
             report["methods"][m]["fits_on_bound"] = on_bound
             print(f"  {m}: fits with a coordinate on the prior bound {on_bound} of {n}")
     (args.out / "summary.json").write_text(json.dumps(report, indent=1) + "\n")
