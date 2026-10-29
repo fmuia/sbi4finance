@@ -27,6 +27,11 @@ notebook still pins its earlier known50k/joint20k replays; new checkpoints are
 not silently substituted. Review the [completed joint100k results](pilot-results/2026-10-29/joint100k-completed/README.md)
 before updating the catalogue and its reference/product claims.
 
+The [joint posterior sanity report](joint-rough-posterior-sanity.md) supplies
+complete six-dimensional corners for the new 100k candidate and checks its
+contraction against the prior. These supplementary figures do not replace
+the notebook's pinned caches or imply completed conditional PyMC validation.
+
 ## What each example supports
 
 | Example | Inferred parameters | Inference conditions | Cached comparison |
