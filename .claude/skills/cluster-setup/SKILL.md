@@ -3,14 +3,14 @@ name: cluster-setup
 description: >
   Set up and use Brown's Oscar cluster for sbi4finance: check ssh access,
   discover which SLURM lanes the user holds, install pixi on Oscar, and
-  submit the GPU training job. Use when the user asks to "set up the cluster",
+  submit the calibration bank and training jobs. Use when the user asks to "set up the cluster",
   "configure Oscar", "what resources do I have", "why is my job queueing",
   "train on the cluster", or runs a job there for the first time.
 ---
 
 # Using Oscar for sbi4finance
 
-Everything in `cluster/` is lab-wide. What differs per person is which SLURM
+Everything in `lab/cluster/` is lab-wide, and every job is submitted from `lab/`. What differs per person is which SLURM
 associations they hold, and therefore how much they can run at once. Discovery
 turns that into numbers; this skill walks the user through it with agreement at
 each step rather than guesses.
@@ -47,10 +47,10 @@ the line above, then retry. Do not loop on it.
 ## Step 1: discover the lanes
 
 ```bash
-pixi run python cluster/discover_cluster.py --ssh-host oscar
+cd lab && pixi run discover-cluster --ssh-host oscar
 ```
 
-It writes `cluster/oscar.local.json` (gitignored) and prints one line per lane.
+It writes `lab/cluster/oscar.local.json` (gitignored) and prints one line per lane.
 A lane is one (account, partition, QOS) triple; its cap is `MaxTRESPU` on the
 QOS, applied per QOS, so lanes are independent budgets. **Show the user the
 summary and confirm it looks right before continuing.** A surprising lane
@@ -77,13 +77,15 @@ ssh oscar 'squeue -h -u $USER | wc -l'             # what they already have queu
 
 ## Step 2: agree the mapping
 
-1. **Training** (`cluster/train.sbatch`): one GPU on the highest-priority GPU
-   lane. One job cannot span lanes, so there is nothing to split. 8 cores and
-   64 GB are generous for the FusionTransformer + CouplingFlow; measure
-   `sacct -j <id> --format=JobID,Elapsed,MaxRSS` once and trim.
-2. **Simulation** (future array jobs): the simulator does 100k paths in about
-   a second on one core, so simulation does not need the cluster unless the
-   model changes. Use the best CPU lane, one core per task, when it does.
+1. **Training** (`cluster/train_calibration.sbatch`): one GPU on the
+   highest-priority GPU lane. One job cannot span lanes, so there is nothing to
+   split. Loading the full rough bank's training split needs about 13 GB, hence
+   96 GB; measure `sacct -j <id> --format=JobID,Elapsed,MaxRSS` once and trim.
+2. **Simulation** (`cluster/calibration_bank_array.sbatch`): a rough-Bergomi
+   smile costs seconds of Monte Carlo, so the banks run as arrays on the best CPU
+   lane, one core per task. Studies run as one CPU job each
+   (`cluster/study.sbatch`). `plans/CLUSTER-RUNS.md` gives each run's cores,
+   memory and time.
 3. **Where output goes**: never the home directory (small, often nearly full).
    Clone the repo under the lab's data volume and check it with `checkquota`.
 4. **Wall time** is a quoted string in the sbatch file on purpose. Ask for
@@ -99,7 +101,7 @@ home quota:
 ssh oscar
 curl -fsSL https://pixi.sh/install.sh | sh
 echo 'export PIXI_CACHE_DIR=/oscar/data/<lab>/$USER/pixi-cache' >> ~/.bashrc   # confirm the path with checkquota
-cd /oscar/data/<lab>/$USER && git clone <repo> sbi4finance && cd sbi4finance
+cd /oscar/data/<lab>/$USER && git clone <repo> sbi4finance && cd sbi4finance/lab
 pixi install -e gpu          # linux-64 CUDA env; login nodes have internet
 pixi run -e gpu python -c "import jax; print(jax.devices())"   # prints CpuDevice on a login node, fine
 ```
@@ -107,22 +109,23 @@ pixi run -e gpu python -c "import jax; print(jax.devices())"   # prints CpuDevic
 ## Step 4: submit, then watch
 
 ```bash
-sbatch cluster/train.sbatch                                   # lab defaults
-sbatch --account=<acct> --partition=<part> cluster/train.sbatch --n-train 20000 --epochs 10
+# from sbi4finance/lab, where Step 3 ended
+sbatch cluster/train_calibration.sbatch --bank $BANK --out $RUNS/s2-train --epochs 300 --batch-size 256
+sbatch --account=<acct> --partition=<part> cluster/study.sbatch python studies/evaluate_calibration.py ...
 squeue -u $USER
 sacct -j <job_id> --format=JobID,State,Elapsed,MaxRSS
-tail -f sbi4finance-train-<job_id>.out
+tail -f sbi4finance-train-calibration-<job_id>.out
 ```
 
-`sbatch` flags override `#SBATCH` lines; arguments after the script go to
-`scripts/train_univariate.py`. The job writes to `checkpoints/univariate-retrained/`;
-rename to `checkpoints/univariate/` only after the notebook's recovery and
-calibration plots look right with it.
+`sbatch` flags override `#SBATCH` lines; arguments after
+`train_calibration.sbatch` go to `studies/train_calibration.py`, which writes a new
+run directory. A network reaches the notebooks only through
+`studies/accept.py` (see `lab/README.md`), never by copying files.
 
 ## Rules
 
 - **Never commit a personal value.** `oscar.local.json` is gitignored and
-  generated. Account names of lab condos are fine in `train.sbatch`; usernames,
+  generated. Account names of lab condos are fine in the `.sbatch` files; usernames,
   paths under `/oscar/data`, and tokens are not.
 - **Never hand-edit the generated file**; re-run discovery.
 - **Re-run discovery** when allocations change and after any "why is this

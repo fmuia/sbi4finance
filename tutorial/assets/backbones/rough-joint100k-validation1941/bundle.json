@@ -1,0 +1,47 @@
+{
+  "format": "full_surface_neural_replay_v1",
+  "role": "cached_development_neural_replay",
+  "case_id": "validation:1941",
+  "validation_case_index": 1941,
+  "evaluation_row": 1941,
+  "saved_batch_seed": 1900,
+  "saved_batch_row": 41,
+  "combined_truth_crosscheck": true,
+  "selection": "explicitly requested development row; external selection criteria are not certified by this export",
+  "task_fingerprint": "29eca4e1b970c4f13b99573939aa3449c5280a3a4478f7d24beace6539a9889d",
+  "parameter_names": [
+    "hurst",
+    "eta",
+    "rho",
+    "short_variance",
+    "long_variance",
+    "decay"
+  ],
+  "checkpoint_sha256": "19c24d64290651f592d3c13d7d0a1616d0d8ae080d487d0298aee8f97779498b",
+  "selected_epoch": 500,
+  "bank_manifest_sha256": "eb72588b9b7665e0e416cb5d3a1bcf8cd78a1c97f2b43f18ea8246c749a871d8",
+  "neural_draw_count": 1000,
+  "known_curve_is_observed": false,
+  "scientific_acceptance": false,
+  "reserved_test_evaluated": false,
+  "conditional_reference_available": false,
+  "source_sha256": {
+    "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/tutorial-backbones-20261029/oscar-scratch/sbi4finance-independent-work-20261029/joint100k/joint/run.json": "0981cf38953e901cffbee723747d742ad5487820e8715401b8badcc94adda785",
+    "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/tutorial-backbones-20261029/oscar-scratch/sbi4finance-independent-work-20261029/joint100k/joint/posterior/task.json": "29eca4e1b970c4f13b99573939aa3449c5280a3a4478f7d24beace6539a9889d",
+    "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/tutorial-backbones-20261029/oscar-scratch/sbi4finance-independent-work-20261029/joint100k/joint/posterior/training.json": "ef41e5f9fc24fd897f3bdf1162bed15765387ca1c49107d24f9593cf6b951c37",
+    "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/tutorial-backbones-20261029/oscar-scratch/sbi4finance-independent-work-20261029/joint100k/joint/validation/evaluation.json": "395eab6088e5d3799d9b8d65904ac25daa536991ef43c23f84f161b7e82a8ac9",
+    "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/tutorial-backbones-20261029/oscar-scratch/sbi4finance-native-bank-20261027/snapshot-100k/manifest.json": "eb72588b9b7665e0e416cb5d3a1bcf8cd78a1c97f2b43f18ea8246c749a871d8",
+    "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/tutorial-backbones-20261029/oscar-scratch/sbi4finance-native-bank-20261027/collection/parts/validation-0000001925-0000001950/manifest.json": "490a61ecee129553e946c57e4c419b58d261099edc236661985686cbd29e2755",
+    "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/tutorial-backbones-20261029/oscar-scratch/sbi4finance-native-bank-20261027/collection/parts/validation-0000001925-0000001950/arrays.npz": "ebbeb1642c881057e428bcbef33fce086bed60644b7f075c2567aad275ef07f0",
+    "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/tutorial-backbones-20261029/oscar-scratch/sbi4finance-independent-work-20261029/joint100k/joint/validation-partial/batch-1900.npz": "7659b0aff6d4c5b0e8cc96bb9c4b041d63096e9f07b94b5e964d63297f84e9e1",
+    "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/tutorial-backbones-20261029/oscar-scratch/sbi4finance-independent-work-20261029/joint100k/joint/validation/draws.npz": "d7b6e67f74228aa15de413fd0a2802cbe0c7a586888853ce3ef4403856ee422d"
+  },
+  "builder_source_sha256": "b5a3a4f715264c6a14c43b7e06909f765e23e7147369774621ab94eef3ace481",
+  "files": {
+    "evaluation.json": "395eab6088e5d3799d9b8d65904ac25daa536991ef43c23f84f161b7e82a8ac9",
+    "posterior.npz": "69863b5067bb6e1a87f7219836ea33566043e46c51d39a4e027ae1933968918f",
+    "task.json": "29eca4e1b970c4f13b99573939aa3449c5280a3a4478f7d24beace6539a9889d",
+    "training.json": "ef41e5f9fc24fd897f3bdf1162bed15765387ca1c49107d24f9593cf6b951c37"
+  },
+  "limitations": "Development replay only, possibly prior-truncated. This export does not certify interior-case selection, PyMC agreement, independent pricing/refinement, or downstream-product acceptance. Joint generating curves are intentionally absent from inference inputs."
+}

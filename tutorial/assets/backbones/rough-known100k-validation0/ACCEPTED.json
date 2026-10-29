@@ -1,0 +1,14 @@
+{
+  "accepted": "2026-10-29T22:07:50+00:00",
+  "source": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/tutorial-backbones-20261029/curation-candidates/rough-known100k-validation0",
+  "source_sha256": {
+    "bundle.json": "d7f98cae7df4b70346e3986d43de27eab283ae09d0af2980c0b61ff4bbb7af32",
+    "evaluation.json": "e4f6c2a91ad92597032c6918cac743c8d5d617c0b5a8826ef0884774a20e4b2c",
+    "posterior.npz": "fa352120d72983b3f8633d6a93de85904cf9dd5d8efb879d9b234b0f161d614c",
+    "task.json": "c99b0dd131896d89d8483a1668a3fde0fb7a0f28794c3db7fe14635cbbd52b65",
+    "training.json": "ab93cd13a399e16d32aae8875c9b1831f38696fbab6619ba341720408a5bd198"
+  },
+  "changes": [],
+  "scientific_acceptance": false,
+  "scope": "verified development replay copied byte-for-byte; no scientific promotion"
+}

@@ -1,0 +1,44 @@
+{
+  "format": "full_surface_neural_replay_v1",
+  "role": "cached_development_neural_replay",
+  "case_id": "validation:0",
+  "validation_case_index": 0,
+  "evaluation_row": 0,
+  "saved_batch_seed": 0,
+  "saved_batch_row": 0,
+  "combined_truth_crosscheck": true,
+  "selection": "fixed first development validation row; no case search",
+  "task_fingerprint": "c99b0dd131896d89d8483a1668a3fde0fb7a0f28794c3db7fe14635cbbd52b65",
+  "parameter_names": [
+    "hurst",
+    "eta",
+    "rho"
+  ],
+  "checkpoint_sha256": "39f1a81986a38994dc6eacc520ad95254b34346abc02e758c08779c7c5916fc4",
+  "selected_epoch": 500,
+  "bank_manifest_sha256": "f1bfa42f7bf2acba3daaffb263b5bdeb60b5b12ebdfc267c5c5cd6eb7e08c313",
+  "neural_draw_count": 1000,
+  "known_curve_is_observed": true,
+  "scientific_acceptance": false,
+  "reserved_test_evaluated": false,
+  "conditional_reference_available": false,
+  "source_sha256": {
+    "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/tutorial-backbones-20261029/oscar-scratch/sbi4finance-independent-work-20261028/known100k/known/run.json": "1ab2f2cb980a5ea3f48e513559fbcd07481fbd286e705155d5bb776cee73ffe7",
+    "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/tutorial-backbones-20261029/oscar-scratch/sbi4finance-independent-work-20261028/known100k/known/posterior/task.json": "c99b0dd131896d89d8483a1668a3fde0fb7a0f28794c3db7fe14635cbbd52b65",
+    "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/tutorial-backbones-20261029/oscar-scratch/sbi4finance-independent-work-20261028/known100k/known/posterior/training.json": "ab93cd13a399e16d32aae8875c9b1831f38696fbab6619ba341720408a5bd198",
+    "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/tutorial-backbones-20261029/oscar-scratch/sbi4finance-independent-work-20261028/known100k/known/validation/evaluation.json": "e4f6c2a91ad92597032c6918cac743c8d5d617c0b5a8826ef0884774a20e4b2c",
+    "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/tutorial-backbones-20261029/oscar-scratch/sbi4finance-rough-known-backbone-20261027/snapshot-100k/manifest.json": "f1bfa42f7bf2acba3daaffb263b5bdeb60b5b12ebdfc267c5c5cd6eb7e08c313",
+    "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/tutorial-backbones-20261029/oscar-scratch/sbi4finance-rough-known-backbone-20261027/collection/parts/validation-0000000000-0000000025/manifest.json": "6945ab61f4a7b4bfecf0016a4960b27817a637f908b8d5100a3b379982468d24",
+    "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/tutorial-backbones-20261029/oscar-scratch/sbi4finance-rough-known-backbone-20261027/collection/parts/validation-0000000000-0000000025/arrays.npz": "015edb70e73c90c5b44d9c87c02589848522bdc6cb0390946a94d50d70f4cd1b",
+    "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/tutorial-backbones-20261029/oscar-scratch/sbi4finance-independent-work-20261028/known100k/known/validation-partial/batch-0000.npz": "b923024d53700dca29babdebdf96e79c1461c3bd8bd3af1e84ae9e975e9390fa",
+    "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/tutorial-backbones-20261029/oscar-scratch/sbi4finance-independent-work-20261028/known100k/known/validation/draws.npz": "131589dec755754e5fb1ce8d99b9021f35cf8e888ef65e9bbeb72f9efc75fc37"
+  },
+  "builder_source_sha256": "b5a3a4f715264c6a14c43b7e06909f765e23e7147369774621ab94eef3ace481",
+  "files": {
+    "evaluation.json": "e4f6c2a91ad92597032c6918cac743c8d5d617c0b5a8826ef0884774a20e4b2c",
+    "posterior.npz": "fa352120d72983b3f8633d6a93de85904cf9dd5d8efb879d9b234b0f161d614c",
+    "task.json": "c99b0dd131896d89d8483a1668a3fde0fb7a0f28794c3db7fe14635cbbd52b65",
+    "training.json": "ab93cd13a399e16d32aae8875c9b1831f38696fbab6619ba341720408a5bd198"
+  },
+  "limitations": "Development replay only, possibly prior-truncated. This export does not certify interior-case selection, PyMC agreement, independent pricing/refinement, or downstream-product acceptance. Joint generating curves are intentionally absent from inference inputs."
+}

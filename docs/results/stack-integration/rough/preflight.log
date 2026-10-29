@@ -1,1 +1,0 @@
-{"isolated_package": "/private/tmp/issue27-rough-ca63424-final/isolated/src/sbi4finance/__init__.py", "blocked": ["bayesflow", "keras", "jax", "connect", "connect_ex", "dns"], "local_ipc_allowed": true}

@@ -1,0 +1,66 @@
+{
+  "format": "full_surface_tutorial_artifacts_v1",
+  "scientific_acceptance": false,
+  "artifacts": {
+    "heston-final500": {
+      "cache": "heston-final500",
+      "cache_format": "full_surface_teaching_v1",
+      "bundle_sha256": "3733f8e9672f7a6bb8dbefa9a5112d0e0d9e2dfa5a2e47a17a5de71dc2a1f3b3",
+      "task_fingerprint": "5e499526ff8f29a72f49785a1a36006b1d769d26bca8a6f83f7a8c8ac4d431fa",
+      "checkpoint_sha256": "8d4a243ba099524cf4cda40e4f0616e895879f053829a7f60dadbe65b98301db",
+      "case_id": "development:midpoint-20261028",
+      "model_source": "published tutorial-backbones-20261029 models archive",
+      "scope": "Ex-ante midpoint development example; convergence/refinement/interior checks passed. Analytic products descriptive only, not inherited case0 gates or reserved acceptance."
+    },
+    "rough-known100k-validation0": {
+      "cache": "rough-known100k-validation0",
+      "cache_format": "full_surface_neural_replay_v1",
+      "bundle_sha256": "d7f98cae7df4b70346e3986d43de27eab283ae09d0af2980c0b61ff4bbb7af32",
+      "task_fingerprint": "c99b0dd131896d89d8483a1668a3fde0fb7a0f28794c3db7fe14635cbbd52b65",
+      "checkpoint_sha256": "39f1a81986a38994dc6eacc520ad95254b34346abc02e758c08779c7c5916fc4",
+      "case_id": "validation:0",
+      "model_source": "published tutorial-backbones-20261029 models archive",
+      "scope": "Development replay only, possibly prior-truncated. This export does not certify interior-case selection, PyMC agreement, independent pricing/refinement, or downstream-product acceptance. Joint generating curves are intentionally absent from inference inputs."
+    },
+    "rough-joint100k-validation0": {
+      "cache": "rough-joint100k-validation0",
+      "cache_format": "full_surface_neural_replay_v1",
+      "bundle_sha256": "440839e3ec33f060cc573625938bb8bd1cac8d5eae38eb5b5356fe65a476bb76",
+      "task_fingerprint": "29eca4e1b970c4f13b99573939aa3449c5280a3a4478f7d24beace6539a9889d",
+      "checkpoint_sha256": "19c24d64290651f592d3c13d7d0a1616d0d8ae080d487d0298aee8f97779498b",
+      "case_id": "validation:0",
+      "model_source": "published tutorial-backbones-20261029 models archive",
+      "scope": "Development replay only, possibly prior-truncated. This export does not certify interior-case selection, PyMC agreement, independent pricing/refinement, or downstream-product acceptance. Joint generating curves are intentionally absent from inference inputs."
+    },
+    "rough-joint100k-validation1983": {
+      "cache": "rough-joint100k-validation1983",
+      "cache_format": "full_surface_neural_replay_v1",
+      "bundle_sha256": "82a9002d30c140e6aaee11d10386eadb14ab8daab898b8cbfeb06722a8b1e82a",
+      "task_fingerprint": "29eca4e1b970c4f13b99573939aa3449c5280a3a4478f7d24beace6539a9889d",
+      "checkpoint_sha256": "19c24d64290651f592d3c13d7d0a1616d0d8ae080d487d0298aee8f97779498b",
+      "case_id": "validation:1983",
+      "model_source": "published tutorial-backbones-20261029 models archive",
+      "scope": "Development replay only, possibly prior-truncated. This export does not certify interior-case selection, PyMC agreement, independent pricing/refinement, or downstream-product acceptance. Joint generating curves are intentionally absent from inference inputs."
+    },
+    "rough-joint100k-validation1941": {
+      "cache": "rough-joint100k-validation1941",
+      "cache_format": "full_surface_neural_replay_v1",
+      "bundle_sha256": "36338d9f7607d4c6030c00bff91a642f797556b3e464628f2a69e10c026dec8a",
+      "task_fingerprint": "29eca4e1b970c4f13b99573939aa3449c5280a3a4478f7d24beace6539a9889d",
+      "checkpoint_sha256": "19c24d64290651f592d3c13d7d0a1616d0d8ae080d487d0298aee8f97779498b",
+      "case_id": "validation:1941",
+      "model_source": "published tutorial-backbones-20261029 models archive",
+      "scope": "Development replay only, possibly prior-truncated. This export does not certify interior-case selection, PyMC agreement, independent pricing/refinement, or downstream-product acceptance. Joint generating curves are intentionally absent from inference inputs."
+    },
+    "rough-joint100k-validation1962": {
+      "cache": "rough-joint100k-validation1962",
+      "cache_format": "full_surface_neural_replay_v1",
+      "bundle_sha256": "b099eff9108ca703ec888a8e13ae96d2ee84a5ca45494666ee19afd78de61f78",
+      "task_fingerprint": "29eca4e1b970c4f13b99573939aa3449c5280a3a4478f7d24beace6539a9889d",
+      "checkpoint_sha256": "19c24d64290651f592d3c13d7d0a1616d0d8ae080d487d0298aee8f97779498b",
+      "case_id": "validation:1962",
+      "model_source": "published tutorial-backbones-20261029 models archive",
+      "scope": "Development replay only, possibly prior-truncated. This export does not certify interior-case selection, PyMC agreement, independent pricing/refinement, or downstream-product acceptance. Joint generating curves are intentionally absent from inference inputs."
+    }
+  }
+}

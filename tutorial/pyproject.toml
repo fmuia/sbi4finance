@@ -1,0 +1,74 @@
+[project]
+name = "sbi4f-tutorial"
+version = "0.1.0"
+description = "Amortized Bayesian calibration of volatility models: the tutorial notebooks and their runtime"
+readme = "README.md"
+requires-python = ">=3.12"
+# Current native estimators use BF2.1; archived BF2.0 files are evidence only.
+dependencies = [
+    "bayesflow==2.1.0",
+    "keras==3.15.1",
+    "jax==0.11.1",
+    "numpy==2.5.3",
+    "scipy==1.18.1",
+    "matplotlib==3.11.2",
+    "marimo==0.25.1",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/sbi4f_tutorial"]
+
+# ---------------------------------------------------------------------------
+# pixi: run every command from tutorial/. `pixi install --locked` creates the
+# participant environment; nothing here installs or imports the lab.
+# ---------------------------------------------------------------------------
+[tool.pixi.workspace]
+channels = ["conda-forge"]
+platforms = ["osx-arm64", "linux-64", "win-64"]
+
+[tool.pixi.dependencies]
+python = "3.12.*"
+
+[tool.pixi.pypi-dependencies]
+sbi4f-tutorial = { path = ".", editable = true }
+
+[tool.pixi.activation.env]
+KERAS_BACKEND = "jax"
+
+[tool.pixi.tasks]
+edit = { cmd = "marimo edit --no-token", cwd = "notebooks" }
+slot1 = { cmd = "marimo edit slot1_intro.py --no-token", cwd = "notebooks" }
+slot2 = { cmd = "marimo edit slot2_amortized_bayes.py --no-token", cwd = "notebooks" }
+slot3 = { cmd = "marimo edit slot3_architectures.py --no-token", cwd = "notebooks" }
+slot4 = { cmd = "marimo edit slot4_heston_bayesflow.py --no-token", cwd = "notebooks" }
+slot5 = { cmd = "marimo edit slot5_calibration.py --no-token", cwd = "notebooks" }
+backbones = "marimo edit notebooks/backbone_review.py --no-token"
+check = "marimo check notebooks"
+test = "python -m unittest discover -s tests -v"
+test-notebooks = "python tests/run_notebooks.py"
+
+# Optional authoring tools inherit this participant stack, including BF2.1.
+[tool.pixi.feature.collaboration.target.osx-arm64.dependencies]
+jq = "*"
+
+[tool.pixi.feature.collaboration.target.linux-64.dependencies]
+jq = "*"
+
+[tool.pixi.feature.collaboration.pypi-dependencies]
+marimo-studio = "==0.3.0"
+marimo-lens = "==0.2.3"
+mcp = "==2.3.0"
+httpx2 = "==2.13.1"
+
+[tool.pixi.feature.collaboration.tasks]
+collaborate = { cmd = "marimo edit --host 127.0.0.1 --port 8772 --no-token --mcp code-mode --no-sandbox", env = { MARIMO_STUDIO_EDIT_ROOT = "marimo" } }
+studio-create = "marimo-studio view create lesson --target notebooks/backbone_review.py"
+studio-build = "marimo-studio view build lesson --target notebooks/backbone_review.py --profile production"
+
+[tool.pixi.environments]
+default = { features = [], solve-group = "participant" }
+collaboration = { features = ["collaboration"], solve-group = "participant" }
