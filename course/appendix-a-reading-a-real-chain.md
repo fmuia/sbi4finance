@@ -190,7 +190,7 @@ The premium rises with the strike, in dollars and as a share of the price. The c
 
 ### A.2.6 How the premium is computed: the binomial tree
 
-The premium is not quoted. The screen shows the American option's bid and ask; the premium is a model number, the American price minus the European price under the same model. The course computes it with a **Cox–Ross–Rubinstein (CRR) binomial tree** (`tutorial_final/checks/thin_chains/thin_chain.py`, method `tree`).
+The premium is not quoted. The screen shows the American option's bid and ask; the premium is a model number, the American price minus the European price under the same model. The course computes it with a **Cox–Ross–Rubinstein (CRR) binomial tree** (`lab/checks/thin_chains/thin_chain.py`, method `tree`).
 
 1. **Time steps.** Split $[t, T]$ into $n$ steps of length $\Delta t = \tau/n$ ($n = 600$ in the code).
 2. **Moves.** In each step the price moves up by the factor $u = e^{\sigma\sqrt{\Delta t}}$ or down by $1/u$. The log-price then moves by $\pm\sigma\sqrt{\Delta t}$, so its variance per step is $\sigma^2\Delta t$, as in Black–Scholes.
