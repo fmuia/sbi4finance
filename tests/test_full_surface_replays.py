@@ -100,6 +100,73 @@ class RoughReplayTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "evaluation truth differs"):
             teaching.prepare_rough_replay(run, snapshot, self.root / "invalid")
 
+    def additional_case(self, known, seed=0):
+        task, run, snapshot, _ = self.source(known)
+        bounds = np.asarray(task["prior_bounds"]); span = np.diff(bounds).ravel()
+        truth = bounds.mean(axis=1) + np.array([.03, .07])[:, None] * span
+        draws = truth[:, None, :] + np.random.default_rng(7).uniform(-.01, .01, (2, 12, len(bounds))) * span
+        prices = np.arange(63)[None, :, None] * .0002 + np.array([.01, .02])[:, None, None]
+        part = snapshot.parent / "collection/parts/validation-0000000025-0000000027"; part.mkdir()
+        teaching.write(part / "manifest.json", {"scope": "synthetic integrity fixture"})
+        np.savez_compressed(part / "arrays.npz", observations=prices, parameters=truth,
+                            example_id=np.array(["validation:25", "validation:26"]),
+                            context_values=np.full((2, 7), .05 if known else np.nan))
+        manifest = json.loads((snapshot / "manifest.json").read_text())
+        manifest["parts"].append({"split": "validation", "start": 25, "stop": 27,
+            "path": "../collection/parts/" + part.name,
+            "manifest_sha256": teaching.digest(part / "manifest.json"), "array_sha256": teaching.digest(part / "arrays.npz")})
+        teaching.write(snapshot / "manifest.json", manifest)
+        evaluation = json.loads((run / "validation/evaluation.json").read_text())
+        evaluation.update(example_ids=[f"validation:{i}" for i in range(27)], seed=seed,
+                          bank_manifest_sha256=teaching.digest(snapshot / "manifest.json"))
+        teaching.write(run / "validation/evaluation.json", evaluation)
+        record = json.loads((run / "run.json").read_text()); record["bank"]["manifest_sha256"] = teaching.digest(snapshot / "manifest.json")
+        teaching.write(run / "run.json", record)
+        all_truth = np.tile(bounds.mean(axis=1), (27, 1)); all_truth[25:27] = truth
+        np.savez_compressed(run / "validation/draws.npz", truth=all_truth)
+        batch = run / f"validation-partial/batch-{seed + 25:04d}.npz"
+        np.savez_compressed(batch, draws=draws, first=seed + 25)
+        return task, run, snapshot, batch, truth[1], prices[1, :, 0], draws[1]
+
+    def test_explicit_case_selects_part_offset_and_sampling_seed_offset(self):
+        for known in (True, False):
+            with self.subTest(known=known):
+                task, run, snapshot, _, truth, prices, draws = self.additional_case(known, seed=7)
+                out = run.parent / "case26"
+                report = teaching.prepare_rough_replay(run, snapshot, out, case_index=26)
+                _, loaded, arrays = teaching.load_neural_replay(out, expected_task=task)
+                self.assertEqual(loaded["case_id"], "validation:26")
+                self.assertEqual(report["saved_batch_seed"], 32); self.assertEqual(report["saved_batch_row"], 1)
+                self.assertTrue(report["combined_truth_crosscheck"])
+                np.testing.assert_array_equal(arrays["observations"], prices)
+                np.testing.assert_array_equal(arrays["truth"], truth)
+                np.testing.assert_array_equal(arrays["neural_draws"], draws)
+                self.assertEqual("context_values" in arrays, known)
+                if known: np.testing.assert_array_equal(arrays["context_values"], np.full(7, .05))
+                self.assertFalse(report["conditional_reference_available"])
+
+    def test_explicit_case_rejects_absent_case_or_wrong_saved_batch(self):
+        _, run, snapshot, batch, *_ = self.additional_case(False)
+        with self.assertRaisesRegex(ValueError, "absent or ambiguous"):
+            teaching.prepare_rough_replay(run, snapshot, self.root / "absent", case_index=27)
+        with np.load(batch, allow_pickle=False) as saved: draws = saved["draws"]
+        np.savez_compressed(batch, draws=draws, first=24)
+        with self.assertRaisesRegex(ValueError, "different validation row"):
+            teaching.prepare_rough_replay(run, snapshot, self.root / "wrong-batch", case_index=26)
+        batch.unlink()
+        with self.assertRaisesRegex(ValueError, "does not contain requested case"):
+            teaching.prepare_rough_replay(run, snapshot, self.root / "missing-batch", case_index=26)
+
+    def test_optional_combined_truth_and_case_label_binding(self):
+        _, run, snapshot, _, *_ = self.additional_case(False)
+        (run / "validation/draws.npz").unlink()
+        out = self.root / "case26-without-combined"
+        report = teaching.prepare_rough_replay(run, snapshot, out, case_index=26)
+        self.assertFalse(report["combined_truth_crosscheck"])
+        report["evaluation_row"] = 0; teaching.write(out / "bundle.json", report)
+        with self.assertRaisesRegex(ValueError, "case identity differs"):
+            teaching.load_neural_replay(out)
+
     def test_repository_catalogue_roundtrip_imports_no_backend_and_keeps_task_boundaries(self):
         probe = '''
 import importlib.abc, sys

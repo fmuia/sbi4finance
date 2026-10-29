@@ -281,14 +281,19 @@ def rough_task(task):
     return task
 
 
-def prepare_rough_replay(run_root, snapshot, out):
-    """Copy fixed validation:0 from completed outputs; no model load or new inference.
+def prepare_rough_replay(run_root, snapshot, out, case_index=0):
+    """Copy an explicit saved validation case; no model load or new inference.
 
-    This is a software replay fixture, not a selected interior example or a
-    conditional reference. Only the first validation part's payload is read.
+    The default retains the original validation:0 fixture. Selecting a different
+    case does not certify its geometry or conditional accuracy. Only its native
+    part and saved posterior batch are decoded; a combined truth panel is also
+    checked when available.
     """
     run_root, snapshot, out = map(Path, (run_root, snapshot, out))
     require(not out.exists(), "output must be a new directory")
+    require(not isinstance(case_index, (bool, np.bool_)) and isinstance(case_index, (int, np.integer))
+            and case_index >= 0, "case index must be a nonnegative integer")
+    case_index = int(case_index); case_id = f"validation:{case_index}"
     task = rough_task(json.loads((run_root / "posterior/task.json").read_text()))
     training = json.loads((run_root / "posterior/training.json").read_text())
     evaluation = json.loads((run_root / "validation/evaluation.json").read_text())
@@ -301,26 +306,51 @@ def prepare_rough_replay(run_root, snapshot, out):
             and digest(snapshot / "manifest.json") == run["bank"]["manifest_sha256"]
             and training["task_fingerprint"] == fingerprint(task) == evaluation["task_fingerprint"]
             and training["checkpoint_sha256"] == evaluation["checkpoint_sha256"] == run["posterior_sha256"]
-            and evaluation.get("evaluated_split") == "validation" and evaluation.get("reserved_test_evaluated") is False
-            and evaluation["example_ids"][0] == "validation:0", "bank/model/validation identity differs")
-    selected = [p for p in manifest["parts"] if p["split"] == "validation" and p["start"] == 0]
-    require(len(selected) == 1, "fixed validation:0 part missing")
+            and evaluation.get("evaluated_split") == "validation" and evaluation.get("reserved_test_evaluated") is False,
+            "bank/model/validation identity differs")
+    ids = evaluation["example_ids"]
+    require(len(ids) == len(set(ids)) and case_id in ids, "requested validation case is absent or ambiguous")
+    evaluation_row = ids.index(case_id)
+    selected = [p for p in manifest["parts"] if p["split"] == "validation"
+                and p["start"] <= case_index < p["stop"]]
+    require(len(selected) == 1, "requested validation part missing or ambiguous")
     part = selected[0]; part_root = (snapshot / part["path"]).resolve()
+    part_row = case_index - part["start"]
     collection = (snapshot / manifest["collection"]["path"]).resolve()
     require(part_root == collection / "parts" / f"validation-{part['start']:010d}-{part['stop']:010d}"
             and digest(part_root / "manifest.json") == part["manifest_sha256"]
             and digest(part_root / "arrays.npz") == part["array_sha256"], "validation part identity differs")
     with np.load(part_root / "arrays.npz", allow_pickle=False) as saved:
-        require(str(saved["example_id"][0]) == "validation:0", "validation row identity differs")
-        arrays = {"observations": saved["observations"][0, :, 0].copy(), "truth": saved["parameters"][0].copy()}
-        if task["task_id"] == "rough_calibration_v1": arrays["context_values"] = saved["context_values"][0].copy()
-    partial = run_root / "validation-partial/batch-0000.npz"
+        require(str(saved["example_id"][part_row]) == case_id, "validation row identity differs")
+        arrays = {"observations": saved["observations"][part_row, :, 0].copy(),
+                  "truth": saved["parameters"][part_row].copy()}
+        if task["task_id"] == "rough_calibration_v1":
+            arrays["context_values"] = saved["context_values"][part_row].copy()
+    seed = evaluation.get("seed", 0)
+    require(type(seed) is int and seed >= 0, "invalid saved validation sampling seed")
+    batches = []
+    for path in (run_root / "validation-partial").glob("batch-*.npz"):
+        suffix = path.stem.removeprefix("batch-")
+        require(suffix.isdigit() and path.name == f"batch-{int(suffix):04d}.npz", "invalid saved batch name")
+        if int(suffix) <= seed + case_index: batches.append((int(suffix), path))
+    require(batches, "saved posterior batch missing for requested case")
+    batch_seed, partial = max(batches, key=lambda item: item[0])
     with np.load(partial, allow_pickle=False) as saved:
-        require(int(saved["first"]) == 0, "saved draw batch starts at a different validation row")
-        arrays["neural_draws"] = saved["draws"][0].copy()
-    # Read truth only: NumPy does not decode the large combined draw member.
-    with np.load(run_root / "validation/draws.npz", allow_pickle=False) as saved:
-        require(np.array_equal(saved["truth"][0], arrays["truth"]), "saved evaluation truth differs from bank row")
+        first = np.asarray(saved["first"])
+        require(first.shape == () and first.dtype.kind in "iu" and int(first) == batch_seed,
+                "saved draw batch starts at a different validation row")
+        draws = saved["draws"]; batch_row = case_index - (batch_seed - seed)
+        require(draws.ndim == 3 and draws.shape[2] == len(task["parameter_names"])
+                and 0 <= batch_row < len(draws), "saved posterior batch does not contain requested case")
+        arrays["neural_draws"] = draws[batch_row].copy()
+    combined = run_root / "validation/draws.npz"
+    if combined.exists():
+        # Read truth only: NumPy does not decode the large combined draw member.
+        with np.load(combined, allow_pickle=False) as saved:
+            truth = saved["truth"]
+            require(truth.shape == (len(ids), len(task["parameter_names"]))
+                    and np.array_equal(truth[evaluation_row], arrays["truth"]),
+                    "saved evaluation truth differs from bank row")
     out.mkdir(parents=True)
     for name, source in (("task.json", "posterior/task.json"), ("training.json", "posterior/training.json"),
                          ("evaluation.json", "validation/evaluation.json")):
@@ -328,9 +358,13 @@ def prepare_rough_replay(run_root, snapshot, out):
     np.savez_compressed(out / "posterior.npz", **arrays)
     sources = [run_root / n for n in ("run.json", "posterior/task.json", "posterior/training.json",
                "validation/evaluation.json")] + [snapshot / "manifest.json", part_root / "manifest.json",
-               part_root / "arrays.npz", partial]
+               part_root / "arrays.npz", partial] + ([combined] if combined.exists() else [])
     report = {"format": "full_surface_neural_replay_v1", "role": "cached_development_neural_replay",
-        "case_id": "validation:0", "selection": "fixed first development validation row; no case search",
+        "case_id": case_id, "validation_case_index": case_index, "evaluation_row": evaluation_row,
+        "saved_batch_seed": batch_seed, "saved_batch_row": batch_row,
+        "combined_truth_crosscheck": combined.exists(),
+        "selection": ("fixed first development validation row; no case search" if case_index == 0 else
+                      "explicitly requested development row; external selection criteria are not certified by this export"),
         "task_fingerprint": fingerprint(task), "parameter_names": task["parameter_names"],
         "checkpoint_sha256": training["checkpoint_sha256"], "selected_epoch": training["selected_epoch"],
         "bank_manifest_sha256": digest(snapshot / "manifest.json"), "neural_draw_count": len(arrays["neural_draws"]),
@@ -339,7 +373,7 @@ def prepare_rough_replay(run_root, snapshot, out):
         "source_sha256": {str(p): digest(p) for p in sources},
         "builder_source_sha256": digest(__file__),
         "files": {name: digest(out / name) for name in sorted(NEURAL_FILES)},
-        "limitations": "Fixed development replay only, possibly prior-truncated. No interior-case selection, "
+        "limitations": "Development replay only, possibly prior-truncated. This export does not certify interior-case selection, "
             "PyMC agreement, independent pricing/refinement, or downstream-product acceptance. "
             "Joint generating curves are intentionally absent from inference inputs."}
     write(out / "bundle.json", report); load_neural_replay(out)
@@ -363,7 +397,15 @@ def load_neural_replay(path, *, expected_task=None, expected_checkpoint_sha256=N
     require(expected_task is None or task == expected_task, "replay differs from expected complete task")
     require(expected_checkpoint_sha256 is None or report["checkpoint_sha256"] == expected_checkpoint_sha256,
             "replay differs from expected checkpoint")
-    require(report.get("role") == "cached_development_neural_replay" and report.get("case_id") == "validation:0"
+    ids = evaluation.get("example_ids", [])
+    case_id = report.get("case_id")
+    require(isinstance(case_id, str) and case_id.startswith("validation:")
+            and case_id.removeprefix("validation:").isdigit()
+            and case_id == f"validation:{int(case_id.removeprefix('validation:'))}"
+            and len(ids) == len(set(ids)) and case_id in ids, "development replay case identity differs")
+    require(report.get("validation_case_index", int(case_id.split(":")[1])) == int(case_id.split(":")[1])
+            and report.get("evaluation_row", ids.index(case_id)) == ids.index(case_id), "development replay case identity differs")
+    require(report.get("role") == "cached_development_neural_replay"
             and report.get("scientific_acceptance") is False and report.get("reserved_test_evaluated") is False
             and report.get("conditional_reference_available") is False and evaluation.get("evaluated_split") == "validation"
             and evaluation.get("reserved_test_evaluated") is False, "development replay scope changed")
@@ -422,6 +464,7 @@ def main():
     for name in ("checkpoint", "case-root", "out"): p.add_argument("--" + name, type=Path, required=True)
     p = sub.add_parser("rough-replay")
     for name in ("run-root", "snapshot", "out"): p.add_argument("--" + name, type=Path, required=True)
+    p.add_argument("--case-index", type=int, default=0, help="explicit validation ID; defaults to the existing case0 fixture")
     args = vars(parser.parse_args()); command = args.pop("command")
     if command == "export-checkpoint": result = export_checkpoint(**args)
     elif command == "cache-development": result = prepare_development_cache(**args)
