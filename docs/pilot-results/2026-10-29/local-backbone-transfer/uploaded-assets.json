@@ -1,6 +1,7 @@
 {
   "status": "all10uploadedfiles_match_local_size_and_sha256",
   "release_tag": "tutorial-backbones-2026-10-29",
+  "repository_visibility": "private",
   "assets": [
     {
       "digest": "sha256:d57543a90b9dc264a7161dea6e3f55f7c8f5a945d95f407d97151794c07afb40",
@@ -57,9 +58,9 @@
       "state": "uploaded"
     },
     {
-      "digest": "sha256:3c3e0013e8b666bd396a485b6b89bb2aecf577ed954dae47896ecb7902457494",
+      "digest": "sha256:3233134e22411fa7137d885e2de24fc310732d285fc7d820178dfe0ca3f0bc7a",
       "name": "training-data-guide.md",
-      "size": 13364,
+      "size": 13742,
       "state": "uploaded"
     }
   ]

@@ -15,6 +15,12 @@ contain the full payloads. A Google Drive mirror of the identical versioned file
 is being arranged; its link will be added once the destination is confirmed. These are synthetic research data, and the release
 retains the recorded numerical and scientific limitations.
 
+**Access:** this GitHub repository is private. Sign in with an account that has
+repository read access; releases inherit that access. For the CLI example, run
+`gh auth login` first if needed. A 404 from an unauthenticated release link does
+not mean the asset is missing. Drive access will be controlled by its own shared
+folder permissions, independently of GitHub membership.
+
 For example, with the GitHub CLI installed, download Heston and verify it:
 
 ```sh
