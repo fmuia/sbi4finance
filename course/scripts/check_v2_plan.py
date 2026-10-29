@@ -232,12 +232,150 @@ def lectures():
         check(f"local check, 15 quotes, curve sd {sd}: contraction of rho, higher seed", c[1], hi, 0.005)
 
 
+def why_bayes():
+    """Numbers of the quick checks in lab/checks/why_bayes/ that the lectures quote: Lecture 11, Section 11.6;
+    Lecture 15, Section 15.6; Lecture 16, Sections 16.1, 16.2, 16.4, 16.5 and 16.8; the course index; v2-plan 2.5."""
+    base = CHECKS / "why_bayes"
+    strata = load(base / "heston_s6_strata.json")["strata"]
+    for name, counts, ratios in (("vol_of_vol below 0.3", (28, 7, 4, 6), ((1.48, 0.84, 3.10), (1.36, 0.60, 5.54))),
+                                 ("vol_of_vol 0.3 and above", (172, 8, 7, 0), ((1.03, 0.95, 1.15), (1.01, 0.93, 1.10)))):
+        s = strata[name]
+        for key, printed in zip(("smiles", "optimum_on_bound", "no_gauss_newton", "two_or_more_optima"), counts):
+            check(f"Heston, {name}: {key}", s[key], printed, 0)
+        for target, printed in zip(("vol_of_vol", "rho"), ratios):
+            p = s["parameters"][target]
+            for key, value in zip(("width_ratio_median", "width_ratio_10", "width_ratio_90"), printed):
+                check(f"Heston, {name}: {target} {key}", p[key], value, 0.005)
+
+    point = np.load(base / "joint_is_A.npz")
+    truth, ok, weights = point["truth"], point["valid"], point["weights"]
+
+    def quantiles(values, w, qs):
+        order = np.argsort(values)
+        c = np.cumsum(w[order])
+        return np.interp(qs, (c - 0.5 * w[order]) / c[-1], values[order])
+
+    def forward_variance(theta, a, b):
+        short, long, decay = theta[3], theta[4], theta[5]
+        return long + (short - long) * (np.exp(-decay * a) - np.exp(-decay * b)) / (decay * (b - a))
+
+    sd = np.sqrt(np.diag(point["gn_cov"]))
+    widths = [2 * 1.6449 * sd[j] / np.ptp(quantiles(point["draws"][ok, j], weights[ok], [0.05, 0.95])) for j in range(3)]
+    check("point A: (H, eta, rho) Gauss-Newton over posterior 90% width, closest (%)", 100 * (min(widths) - 1), 3, 0.5)
+    check("point A: (H, eta, rho) Gauss-Newton over posterior 90% width, farthest (%)", 100 * (max(widths) - 1), 15, 0.5)
+    step = np.eye(6) * 1e-6
+    gradient = np.array([(forward_variance(truth + e, 1, 2) - forward_variance(truth - e, 1, 2)) / 2e-6 for e in step])
+    gn_range = 2 * 1.6449 * np.sqrt(gradient @ point["gn_cov"] @ gradient)
+    posterior_range = np.ptp(quantiles(point["curve_products"][ok, 1], weights[ok], [0.05, 0.95]))
+    check("point A: forward variance 1-2y, posterior over Gauss-Newton 90% range", posterior_range / gn_range, 0.37, 0.005)
+    flat, true = forward_variance(truth, 0.5, 1.0), forward_variance(truth, 1.0, 2.0)
+    check("point A: flat curve, forward variance 1-2y below the truth (%)", 100 * (1 - flat / true), 21, 0.5)
+    put = np.load(base / "joint_is_A-products.npz")
+    check("point A: flat curve, 2-year put below the truth (%)", 100 * (1 - put["flat"][1] / put["mark"][1]), 7.4, 0.05)
+
+    net = base / "thin_joint_net"
+    training = load(net / "training.json")["training"]
+    check("thin network: best epoch", training["best_epoch"], 270, 0)
+    check("thin network: epochs", training["epochs"], 300, 0)
+    check("thin network: training surfaces", training["rows"], 20000, 0)
+    sbc = load(net / "sbc-scale1.json")
+    check("thin SBC: surfaces", sbc["surfaces"], 1000, 0)
+    check("thin SBC: every rank test inside the band", float(all(sbc["sbc"]["passed"])), 1, 0)
+    check("thin SBC: largest KS distance", max(sbc["sbc"]["rank_ks"]), 0.033, 0.0005)
+    check("thin SBC: band", sbc["sbc"]["dkw_bound"], 0.054, 0.0005)
+    coverage = sbc["coverage"]["0.9"]["coverage"]
+    check("thin SBC: 90% coverage, lowest (%)", 100 * min(coverage), 88.4, 0.05)
+    check("thin SBC: 90% coverage, highest (%)", 100 * max(coverage), 89.7, 0.05)
+    for name, printed in (("hurst", 0.22), ("eta", 0.72), ("rho", 0.55), ("short_variance", 0.92), ("long_variance", 0.64),
+                          ("decay", 0.18)):
+        check(f"thin SBC: contraction of {name}", sbc["contraction"][name], printed, 0.005)
+    check("thin network: seconds for 200 draws of a chain", sbc["seconds_per_surface"], 1.3, 0.05)
+
+    results = base / "thin_joint_results"
+    summary = load(results / "summary.json")
+    methods, n, names = summary["methods"], summary["chains"], summary["products"]
+    check("thin breach study: chains", n, 100, 0)
+    posterior_width = np.array(methods["posterior"]["median_relative_width"])
+    gn = np.array(methods["gauss_newton"]["median_relative_width"]) / posterior_width
+    check("thin breach study: Gauss-Newton width over the posterior's, smallest", gn.min(), 1.5, 0.05)
+    check("thin breach study: Gauss-Newton width over the posterior's, largest", gn.max(), 3.3, 0.05)
+    check("thin breach study: Gauss-Newton fits on a bound", methods["gauss_newton"]["fits_on_bound"], 76, 0)
+    check("thin breach study: Laplace modes on a bound", methods["laplace"]["fits_on_bound"], 0, 0)
+    laplace = np.array(methods["laplace_delta"]["median_relative_width"]) / posterior_width
+    check("thin breach study: Laplace width over the posterior's, largest departure", np.abs(laplace - 1).max(), 0.05, 0.005)
+    sampled = np.array(methods["laplace"]["median_relative_width"]) / np.array(methods["laplace_delta"]["median_relative_width"])
+    check("thin breach study: sampled Laplace over delta-method Laplace width, largest", sampled.max(), 1.6, 0.05)
+    rates = {m: (100 * np.array(methods[m]["long_breaches"]) / n, 100 * np.array(methods[m]["short_breaches"]) / n)
+             for m in methods}
+    check("thin breach study: Laplace against posterior, largest difference (points)",
+          max(np.abs(rates["laplace_delta"][s] - rates["posterior"][s]).max() for s in (0, 1)), 8, 0)
+    check("thin breach study: posterior below the band, lowest (%)", rates["posterior"][0].min(), 14, 0)
+    check("thin breach study: posterior below the band, highest (%)", rates["posterior"][0].max(), 18, 0)
+    vs, put_6m, last = names.index("variance_swap_6m"), names.index("put_6m_80"), names.index("forward_start_6m_1y")
+    for i, label in ((vs, "variance swap"), (put_6m, "put")):
+        check(f"thin breach study: H fixed, above the band, {label} (%)", rates["hurst_fixed"][1][i], 23, 0)
+    split = methods["hurst_fixed"]["by_true_hurst"]
+    check("thin breach study: chains with H within 0.05 of 0.10", split["near_0.10"]["chains"], 29, 0)
+    for group, printed in (("near_0.10", (10, 14)), ("far", (28, 27))):
+        g = split[group]
+        for i, value in zip((vs, put_6m), printed):
+            check(f"thin breach study: H fixed, {group}, above the band (%)", 100 * g["short_breaches"][i] / g["chains"],
+                  value, 0.5)
+    check("thin breach study: flat curve, below the band beyond the last quote (%)", rates["flat_curve"][0][last], 14, 0)
+    check("thin breach study: flat curve, above the band beyond the last quote (%)", rates["flat_curve"][1][last], 1, 0)
+    check("thin breach study: curve continued, below the band beyond the last quote (%)", rates["gauss_newton"][0][last], 2,
+          0)
+    classical = [json.loads(line) for line in (results / "rows-classical-0-100.jsonl").read_text().splitlines()]
+    modes = [json.loads(line) for line in (results / "rows-laplace-0-100.jsonl").read_text().splitlines()]
+    check("thin breach study: Gauss-Newton condition number, median (log10)",
+          np.log10(np.median([r["gauss_newton"]["condition"] for r in classical])), np.log10(2e12), 0.1)
+    check("thin breach study: condition number at the mode, median", np.median([r["laplace"]["condition"] for r in modes]),
+          370, 10)
+
+    audit = [json.loads(line) for line in (results / "audit-0-10.jsonl").read_text().splitlines()]
+    check("thin audit: chains", len(audit), 10, 0)
+    check("thin audit: smallest effective sample size", min(r["ess"] for r in audit), 28, 0.5)
+    check("thin audit: largest effective sample size", max(r["ess"] for r in audit), 60, 0.5)
+    check("thin audit: largest k-hat", max(r["khat"] for r in audit), 0.53, 0.005)
+    ratio, same, missed = [], 0, 0
+    for r in audit:
+        p = r["products"]
+        exact = np.array(p["audited"]["upper"]) - np.array(p["audited"]["lower"])
+        ratio += list((np.array(p["network"]["upper"]) - np.array(p["network"]["lower"])) / exact)
+        for j, t in enumerate(p["truth"]):
+            side = lambda band: (t < band["lower"][j]) - (t > band["upper"][j])
+            same += side(p["network"]) == side(p["audited"])
+            missed += side(p["audited"]) != 0
+    check("thin audit: network over exact band width, median", np.median(ratio), 1.04, 0.005)
+    check("thin audit: network over exact band width, smallest", min(ratio), 0.65, 0.005)
+    check("thin audit: network over exact band width, largest", max(ratio), 1.52, 0.005)
+    check("thin audit: truth on the same side of both bands (of 60)", same, 57, 0)
+    check("thin audit: truth outside the exact band (of 60)", missed, 14, 0)
+
+    ewg = {arm: load(results / f"ewg-{arm}.json") for arm in ("classical", "posterior", "laplace")}
+    fit = ewg["classical"]["gauss_newton"]
+    check("EWG: least-squares chi2", fit["chi2"], 1.75, 0.005)
+    check("EWG: condition number (1e13)", fit["condition"] / 1e13, 8, 0.5)
+    hurst, decay = ewg["posterior"]["parameters"]["hurst"], ewg["posterior"]["parameters"]["decay"]
+    check("EWG posterior: H at 5%", hurst[0], 0.05, 0.005)
+    check("EWG posterior: H at 95%", hurst[2], 0.32, 0.005)
+    check("EWG posterior: decay at 5%", decay[0], 0.6, 0.05)
+    check("EWG posterior: decay at 95%", decay[2], 7.3, 0.05)
+    width = lambda band: np.array(band["upper"]) - np.array(band["lower"])
+    check("EWG: Gauss-Newton width over the posterior's, smallest", (width(fit) / width(ewg["posterior"])).min(), 1.3, 0.05)
+    check("EWG: Gauss-Newton width over the posterior's, largest", (width(fit) / width(ewg["posterior"])).max(), 2.7, 0.05)
+    middle = lambda band: (band["lower"][vs] + band["upper"][vs]) / 2
+    check("EWG: H fixed moves the variance swap's band (%)",
+          100 * (middle(ewg["classical"]["hurst_fixed"]) / middle(ewg["posterior"]) - 1), -11, 0.5)
+
+
 def main():
     grid = section_1()
     section_2()
     section_3()
     section_5()
     lectures()
+    why_bayes()
     print(f"grid bias (for the plan's Section 1): {json.dumps(grid)}")
     if FAILED:
         print(f"{len(FAILED)} checks failed")
