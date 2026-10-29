@@ -1,0 +1,37 @@
+{
+  "case-0/comparison.json": {
+    "bytes": 4059,
+    "sha256": "a3b7302d901b904576431bd1002148d3eef8ff8d1bddc8180b27ceaaa6eb4de6",
+    "source": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-readout-diagnosis/case-0/comparison.json"
+  },
+  "case-1/comparison.json": {
+    "bytes": 4050,
+    "sha256": "8909856910ee4d34813c4d21decd7899f7220eddf463328acc3534cd778e7256",
+    "source": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-readout-diagnosis/case-1/comparison.json"
+  },
+  "case-2/comparison.json": {
+    "bytes": 4064,
+    "sha256": "7bdcf8dfada9beceff3604d87adf5d8243bef7c134ac7380780e519626ac6bef",
+    "source": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-readout-diagnosis/case-2/comparison.json"
+  },
+  "check_heston_100k_readout_20261027.py": {
+    "bytes": 14869,
+    "sha256": "2160278be2b167ca7551a76ceb8278514fec97d82e294cc98259c17b34825f6d",
+    "source": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/manifests/check_heston_100k_readout_20261027.py"
+  },
+  "remote-execution-submitted.json": {
+    "bytes": 3076,
+    "sha256": "c15fea0210b19ce346f3fed79021237c844abe9edbe13e155bf3e8de4d002332",
+    "source": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/readout-diagnosis-execution.json"
+  },
+  "run.json": {
+    "bytes": 28778,
+    "sha256": "92e498f84cbfe156ac7b322f7416112924475ea87ace9661276d9581996a0c71",
+    "source": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-readout-diagnosis/run.json"
+  },
+  "slurm-8030926.out": {
+    "bytes": 2565,
+    "sha256": "c7f85251cba177f39b10cd95e9769362ea90cfaff422ab512e3557d854e2ac55",
+    "source": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/logs/readout-diagnosis-8030926.out"
+  }
+}

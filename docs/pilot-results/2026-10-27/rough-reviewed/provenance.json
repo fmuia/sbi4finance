@@ -1,0 +1,22 @@
+{
+  "archive_sha256": "f515cf4fe8c55d475a25f20450a13589a33ed44583761ce70928b145821e79a6",
+  "component_reports": 44,
+  "declaration_job": 7997906,
+  "execution_revision_for_local_reducer": "65186b3",
+  "pricing_jobs": [
+    7998013,
+    7998014,
+    7998015
+  ],
+  "raw_accounting_sha256": "04c4643153fc96923dece25d67edab3de55619a79d0b7eadc6c33a00acf93295",
+  "retrieved_from": "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf",
+  "scope": "Read-only download and local checked reduction; no new jobs or price generation.",
+  "unit_accounting_jobs": [
+    7997838,
+    7998368,
+    7997906,
+    7998013,
+    7998014,
+    7998015
+  ]
+}

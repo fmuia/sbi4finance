@@ -29,7 +29,8 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from sbi4finance.calibration import bank, classical, products, tasks  # noqa: E402
+from sbi4finance.calibration import bank_collection as bank  # noqa: E402
+from sbi4finance.calibration import classical, products, tasks  # noqa: E402
 from sbi4finance.calibration.plots import INK, SERIES, plt, style  # noqa: E402
 from classical_route import _price_fn  # noqa: E402
 from evaluate_calibration import LABELS, load_network, posterior_draws  # noqa: E402
@@ -102,7 +103,7 @@ def main():
     parser.add_argument("--workers", type=int, default=4)
     parser.add_argument("--seed", type=int, default=0)
     args = parser.parse_args()
-    manifest, splits = bank.load_bank(args.bank)
+    manifest, splits = bank.load_bank(args.bank, splits=("test",), roles=bank.TRAINING_ROLES)
     task, workflow, _ = load_network(args.checkpoint)
     test = splits["test"]
     rows = np.arange(args.first, args.first + args.surfaces)

@@ -24,7 +24,8 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
 
-from sbi4finance.calibration import bank, pricing, tasks  # noqa: E402
+from sbi4finance.calibration import bank_collection as bank  # noqa: E402
+from sbi4finance.calibration import pricing, tasks  # noqa: E402
 
 _TAG = 0x53314742  # "S1GB"
 
@@ -96,7 +97,7 @@ def main():
     parser.add_argument("--workers", type=int, default=4)
     parser.add_argument("--seed", type=int, default=0)
     args = parser.parse_args()
-    manifest, splits = bank.load_bank(args.bank, splits=("test",))
+    manifest, splits = bank.load_bank(args.bank, splits=("test",), roles=bank.TRAINING_ROLES)
     task = manifest["configuration"]["task"]
     test = splits["test"]
     rows = np.arange(args.first, min(args.first + args.surfaces, len(test["parameters"])))

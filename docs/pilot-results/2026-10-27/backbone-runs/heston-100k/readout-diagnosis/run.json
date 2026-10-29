@@ -1,0 +1,690 @@
+{
+  "cases": [
+    {
+      "case": 0,
+      "native_agreement": {
+        "all_checks_passed": false,
+        "parameters": {
+          "initial_variance": {
+            "mean_error_within_0_3_reference_sd": false,
+            "relative_width_error_within_25_percent": true,
+            "standardized_mean_error": 0.4821585778674872,
+            "width_ratio_90": 1.136448216043685
+          },
+          "rho": {
+            "mean_error_within_0_3_reference_sd": true,
+            "relative_width_error_within_25_percent": true,
+            "standardized_mean_error": 0.025162045736922437,
+            "width_ratio_90": 0.9543578820783546
+          },
+          "theta": {
+            "mean_error_within_0_3_reference_sd": true,
+            "relative_width_error_within_25_percent": true,
+            "standardized_mean_error": 0.11535175307530757,
+            "width_ratio_90": 0.9983961512035702
+          },
+          "vol_of_vol": {
+            "mean_error_within_0_3_reference_sd": true,
+            "relative_width_error_within_25_percent": true,
+            "standardized_mean_error": 0.04985815172730855,
+            "width_ratio_90": 0.9982424519581775
+          }
+        },
+        "scientific_acceptance": false,
+        "scope": "Existing proposed development rules; no numerical posterior stability/product acceptance or quantile MCSE claim."
+      },
+      "native_vs_stored": {
+        "allclose_rtol_1e_6_atol_1e_8": true,
+        "array_equal": true,
+        "max_abs_physical_delta": 0.0,
+        "paired_draw_max_abs_delta_over_reference_sd": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "paired_draw_rms_delta_over_reference_sd": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scope": "Cross-host equality is descriptive, not required.",
+        "signed_mean_delta_over_reference_sd": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "signed_width_delta_over_reference_sd": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "width_ratio_left_over_right": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "seed": 271026,
+      "status": "completed",
+      "tighter_agreement": {
+        "all_checks_passed": false,
+        "parameters": {
+          "initial_variance": {
+            "mean_error_within_0_3_reference_sd": false,
+            "relative_width_error_within_25_percent": true,
+            "standardized_mean_error": 0.48283476854957597,
+            "width_ratio_90": 1.1366794192741512
+          },
+          "rho": {
+            "mean_error_within_0_3_reference_sd": true,
+            "relative_width_error_within_25_percent": true,
+            "standardized_mean_error": 0.025160108371446378,
+            "width_ratio_90": 0.954565792990113
+          },
+          "theta": {
+            "mean_error_within_0_3_reference_sd": true,
+            "relative_width_error_within_25_percent": true,
+            "standardized_mean_error": 0.11536537167844427,
+            "width_ratio_90": 0.998397221355551
+          },
+          "vol_of_vol": {
+            "mean_error_within_0_3_reference_sd": true,
+            "relative_width_error_within_25_percent": true,
+            "standardized_mean_error": 0.049921586021467984,
+            "width_ratio_90": 0.9983896535726127
+          }
+        },
+        "scientific_acceptance": false,
+        "scope": "Existing proposed development rules; no numerical posterior stability/product acceptance or quantile MCSE claim."
+      },
+      "tighter_minus_native": {
+        "max_abs_physical_delta": 0.00021380186080932617,
+        "paired_draw_max_abs_delta_over_reference_sd": [
+          0.06403473212102855,
+          0.001999517332884226,
+          0.0036232291125502174,
+          0.010622638283709372
+        ],
+        "paired_draw_rms_delta_over_reference_sd": [
+          0.012230712746050487,
+          0.0002494069583685124,
+          0.0007262222004964833,
+          0.0006650801089817628
+        ],
+        "signed_mean_delta_over_reference_sd": [
+          -0.0006761906820693879,
+          1.3618603127952763e-05,
+          6.343429415918042e-05,
+          -1.937365476777996e-06
+        ],
+        "signed_width_delta_over_reference_sd": [
+          0.0007674514377199378,
+          3.4817465958437856e-06,
+          0.0004787414204441764,
+          0.0006729842626088378
+        ],
+        "width_ratio_left_over_right": [
+          1.0002034437004714,
+          1.0000010718710999,
+          1.000147460783847,
+          1.0002178542407023
+        ]
+      }
+    },
+    {
+      "case": 1,
+      "native_agreement": {
+        "all_checks_passed": true,
+        "parameters": {
+          "initial_variance": {
+            "mean_error_within_0_3_reference_sd": true,
+            "relative_width_error_within_25_percent": true,
+            "standardized_mean_error": 0.06714228173656403,
+            "width_ratio_90": 1.088905560440273
+          },
+          "rho": {
+            "mean_error_within_0_3_reference_sd": true,
+            "relative_width_error_within_25_percent": true,
+            "standardized_mean_error": 0.050430854901123694,
+            "width_ratio_90": 1.0256056414010777
+          },
+          "theta": {
+            "mean_error_within_0_3_reference_sd": true,
+            "relative_width_error_within_25_percent": true,
+            "standardized_mean_error": 0.1005598183026941,
+            "width_ratio_90": 1.1060157821107692
+          },
+          "vol_of_vol": {
+            "mean_error_within_0_3_reference_sd": true,
+            "relative_width_error_within_25_percent": true,
+            "standardized_mean_error": 0.08236268401748559,
+            "width_ratio_90": 1.0595185171313997
+          }
+        },
+        "scientific_acceptance": false,
+        "scope": "Existing proposed development rules; no numerical posterior stability/product acceptance or quantile MCSE claim."
+      },
+      "native_vs_stored": {
+        "allclose_rtol_1e_6_atol_1e_8": true,
+        "array_equal": true,
+        "max_abs_physical_delta": 0.0,
+        "paired_draw_max_abs_delta_over_reference_sd": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "paired_draw_rms_delta_over_reference_sd": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scope": "Cross-host equality is descriptive, not required.",
+        "signed_mean_delta_over_reference_sd": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "signed_width_delta_over_reference_sd": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "width_ratio_left_over_right": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "seed": 271027,
+      "status": "completed",
+      "tighter_agreement": {
+        "all_checks_passed": true,
+        "parameters": {
+          "initial_variance": {
+            "mean_error_within_0_3_reference_sd": true,
+            "relative_width_error_within_25_percent": true,
+            "standardized_mean_error": 0.06717026357237767,
+            "width_ratio_90": 1.089741742819407
+          },
+          "rho": {
+            "mean_error_within_0_3_reference_sd": true,
+            "relative_width_error_within_25_percent": true,
+            "standardized_mean_error": 0.05052780898039596,
+            "width_ratio_90": 1.0260229237939473
+          },
+          "theta": {
+            "mean_error_within_0_3_reference_sd": true,
+            "relative_width_error_within_25_percent": true,
+            "standardized_mean_error": 0.1006096675512216,
+            "width_ratio_90": 1.1057686945575507
+          },
+          "vol_of_vol": {
+            "mean_error_within_0_3_reference_sd": true,
+            "relative_width_error_within_25_percent": true,
+            "standardized_mean_error": 0.0823967239828223,
+            "width_ratio_90": 1.059549472445934
+          }
+        },
+        "scientific_acceptance": false,
+        "scope": "Existing proposed development rules; no numerical posterior stability/product acceptance or quantile MCSE claim."
+      },
+      "tighter_minus_native": {
+        "max_abs_physical_delta": 3.6776065826416016e-05,
+        "paired_draw_max_abs_delta_over_reference_sd": [
+          0.01113129445196958,
+          0.003989560641708347,
+          0.0014861838404711376,
+          0.0029887618865469235
+        ],
+        "paired_draw_rms_delta_over_reference_sd": [
+          0.0023365257586994586,
+          0.0005640958527023475,
+          0.00019892521732437234,
+          0.0006088837212915036
+        ],
+        "signed_mean_delta_over_reference_sd": [
+          2.7981835817776117e-05,
+          -4.984924853372066e-05,
+          -3.403996533821212e-05,
+          -9.695407927328036e-05
+        ],
+        "signed_width_delta_over_reference_sd": [
+          0.002745594420360984,
+          -0.0008137560866212224,
+          9.728637640108318e-05,
+          0.0013623813299719837
+        ],
+        "width_ratio_left_over_right": [
+          1.0007679108359,
+          0.999776596720214,
+          1.000029216397858,
+          1.0004068643697197
+        ]
+      }
+    },
+    {
+      "case": 2,
+      "native_agreement": {
+        "all_checks_passed": false,
+        "parameters": {
+          "initial_variance": {
+            "mean_error_within_0_3_reference_sd": false,
+            "relative_width_error_within_25_percent": false,
+            "standardized_mean_error": 0.6520357129818501,
+            "width_ratio_90": 1.3554723251749907
+          },
+          "rho": {
+            "mean_error_within_0_3_reference_sd": true,
+            "relative_width_error_within_25_percent": true,
+            "standardized_mean_error": 0.03073164500417309,
+            "width_ratio_90": 1.0257969493435757
+          },
+          "theta": {
+            "mean_error_within_0_3_reference_sd": true,
+            "relative_width_error_within_25_percent": true,
+            "standardized_mean_error": 0.1536569355812214,
+            "width_ratio_90": 1.0091965866763546
+          },
+          "vol_of_vol": {
+            "mean_error_within_0_3_reference_sd": true,
+            "relative_width_error_within_25_percent": true,
+            "standardized_mean_error": 0.11040002117164216,
+            "width_ratio_90": 1.000778829515608
+          }
+        },
+        "scientific_acceptance": false,
+        "scope": "Existing proposed development rules; no numerical posterior stability/product acceptance or quantile MCSE claim."
+      },
+      "native_vs_stored": {
+        "allclose_rtol_1e_6_atol_1e_8": true,
+        "array_equal": true,
+        "max_abs_physical_delta": 0.0,
+        "paired_draw_max_abs_delta_over_reference_sd": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "paired_draw_rms_delta_over_reference_sd": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scope": "Cross-host equality is descriptive, not required.",
+        "signed_mean_delta_over_reference_sd": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "signed_width_delta_over_reference_sd": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "width_ratio_left_over_right": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "seed": 271028,
+      "status": "completed",
+      "tighter_agreement": {
+        "all_checks_passed": false,
+        "parameters": {
+          "initial_variance": {
+            "mean_error_within_0_3_reference_sd": false,
+            "relative_width_error_within_25_percent": false,
+            "standardized_mean_error": 0.651985707566559,
+            "width_ratio_90": 1.3561084475504528
+          },
+          "rho": {
+            "mean_error_within_0_3_reference_sd": true,
+            "relative_width_error_within_25_percent": true,
+            "standardized_mean_error": 0.03068450549026039,
+            "width_ratio_90": 1.0259404350504457
+          },
+          "theta": {
+            "mean_error_within_0_3_reference_sd": true,
+            "relative_width_error_within_25_percent": true,
+            "standardized_mean_error": 0.15375475343243666,
+            "width_ratio_90": 1.0092669451338776
+          },
+          "vol_of_vol": {
+            "mean_error_within_0_3_reference_sd": true,
+            "relative_width_error_within_25_percent": true,
+            "standardized_mean_error": 0.110433105022398,
+            "width_ratio_90": 1.000662355308953
+          }
+        },
+        "scientific_acceptance": false,
+        "scope": "Existing proposed development rules; no numerical posterior stability/product acceptance or quantile MCSE claim."
+      },
+      "tighter_minus_native": {
+        "max_abs_physical_delta": 6.258487701416016e-05,
+        "paired_draw_max_abs_delta_over_reference_sd": [
+          0.009714142237622445,
+          0.0028214000966732566,
+          0.0021051318235420315,
+          0.0016947707075935757
+        ],
+        "paired_draw_rms_delta_over_reference_sd": [
+          0.0016172895344012006,
+          0.0007077850538725595,
+          0.00045930707994459733,
+          0.00024399190675040972
+        ],
+        "signed_mean_delta_over_reference_sd": [
+          5.0005415272438005e-05,
+          -9.781785121108362e-05,
+          -3.308385076129637e-05,
+          -4.713951391226187e-05
+        ],
+        "signed_width_delta_over_reference_sd": [
+          0.0020831438354198158,
+          0.00023346409745970734,
+          -0.00038072812694794016,
+          0.00045332153541999775
+        ],
+        "width_ratio_left_over_right": [
+          1.0004692994195805,
+          1.0000697172963642,
+          0.9998836164362996,
+          1.0001398772992665
+        ]
+      }
+    }
+  ],
+  "cleanup_seconds": 240,
+  "cpus": 4,
+  "devices": [
+    {
+      "kind": "NVIDIA L40S",
+      "name": "cuda:0",
+      "platform": "gpu"
+    }
+  ],
+  "draws_per_case": 10000,
+  "driver_sha256": "2160278be2b167ca7551a76ceb8278514fec97d82e294cc98259c17b34825f6d",
+  "effective_native_sampling": {
+    "atol": 1e-06,
+    "max_steps": 10000,
+    "min_steps": 50,
+    "rtol": 0.0001
+  },
+  "environment_sha256": {
+    "pixi.lock": "3e33b82d45dfdd696c5b12b22bca0943a5fca09804860fab13e3fc9126c60aae",
+    "pyproject.toml": "0b38d45cea9c3d7143e261d6c8ce3d6892b31b7bce6d1f26bf748df75790fd54"
+  },
+  "format": "heston_100k_readout_diagnosis_v1",
+  "full_limit_plus_cleanup_cpu_seconds": 2400,
+  "full_limit_plus_cleanup_gpu_seconds": 600,
+  "gpus": 1,
+  "input_sha256": {
+    "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/model.keras": "7f037dee0fde78cd5a33f1107e13031ff01fdcb5481dab76fc6c8f7d07598f39",
+    "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/task.json": "5e499526ff8f29a72f49785a1a36006b1d769d26bca8a6f83f7a8c8ac4d431fa",
+    "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/training.json": "a3de032a681a3e89f895dca48cdc4c573f4d1768f3b217e30649742da80f46b2",
+    "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/comparisons/case-0/comparison.json": "be810cc9498a1e869b03346fffc113e3616de14c5774e1932b6f33a8ae23247a",
+    "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/comparisons/case-0/neural_draws.npz": "ddf7543775607d06b2a1a3bc32533dc4877cd65578c9ca73c4a4f9ba039ec6a0",
+    "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/comparisons/case-1/comparison.json": "98de8001209c27e668859cbe9beec4a8e7d94c0f4f1e64c35f06bbd0f1963263",
+    "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/comparisons/case-1/neural_draws.npz": "7e7b38f8b8f05fcd7095654ca5721d1d34264654dcac3cd374e71787c69c89ed",
+    "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/comparisons/case-2/comparison.json": "624e8dd8bd8bd08ad63b30a2212fd48734c06711747fd8523a42600aea3b32b6",
+    "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/comparisons/case-2/neural_draws.npz": "e80297a8d72d4a548f1d7896b456f0107c40f0f4a92931423edbcbd3ca693de4",
+    "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-0/precision/precision.json": "c073e80c87d78f493f4d0933881361e8acd0c87e04fa3d6aa0d33e56a0b49533",
+    "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-0/reference/chains.npz": "be70a6798988bad251254fbe86df901b3affb5e0def92555aceb145f1fcb8505",
+    "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-0/reference/diagnostics.json": "72bd9616e0a4f3985cbe6f642156e0650776a80e11770dbdb668917b20608808",
+    "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-0/reference/reference.json": "35e646876a5c4a1413593455741dc0a3a6688678909a570353ec4fc70125c902",
+    "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-1/precision/precision.json": "a443bf9f6bf1075e111be961c05a00d2ec41a185f10933df196d1fc1e5c8e549",
+    "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-1/reference/chains.npz": "ff98be1a51cf294b59a7b723664a3a03313f48ea32fc9f4a3a54fff1989774b8",
+    "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-1/reference/diagnostics.json": "270f9257b19a3bd0fce0012d182977a366f6aabd93e95b60b6b92686be896dc4",
+    "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-1/reference/reference.json": "e1c6c08419fbd08e35900e590f8110e68c32e087f4619359f16ef8322919bdfd",
+    "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-2/precision/precision.json": "915ed7872ec516f7e9a458fc44de8f2b2b0e2ad3fadefc65ec102405554e86be",
+    "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-2/reference/chains.npz": "f37a3b78360fcdbb0a9e2b775cfacd057a11aaeb7d8ef97a72b9a544bdd13ccb",
+    "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-2/reference/diagnostics.json": "cffe17d61e60a553a832b7cc281d2941f0cda211b99fe55c5957654969886a33",
+    "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-2/reference/reference.json": "34f5811eab68c86a0cb303cd047e4c1e524590e5892b43a4a0f3e902da44cc1c"
+  },
+  "internal_wall_seconds": 330,
+  "interpretation": "Numerical readout and preprocessing diagnosis only. Native tutorial policy remains unchanged; no new fit, data, posterior reference or scientific acceptance.",
+  "keras_backend_env": "jax",
+  "library_source_sha256": {
+    "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/lib/python3.12/site-packages/bayesflow/adapters/transforms/constrain.py": "8c704f30190f214c0c76d31d499c3c2d3aef76a48b5ca01537bda3f8f2e2b358",
+    "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/lib/python3.12/site-packages/bayesflow/estimators/basic_estimator.py": "dfe54314ce12a917d5bd8ca810e7af8cd8071110248160c4470edc81ab972c6e",
+    "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/lib/python3.12/site-packages/bayesflow/networks/helpers/standardization/standardize.py": "c6a9110842431c90087f6db6daf698c7efb7b89aca5fbe1e5ffdcd8e563fd737",
+    "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/lib/python3.12/site-packages/bayesflow/networks/inference/flow_matching/flow_matching.py": "4a7e2c1eeb077992247dcf86760460a7d9317f9fa68444514edf227187111a61",
+    "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/lib/python3.12/site-packages/bayesflow/networks/inference/inference_network.py": "f06f2b1d733c080109488fad53ba4e9f10cfb1a21a22b35eb39dbf0d1902e5a5",
+    "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/lib/python3.12/site-packages/bayesflow/utils/integrate.py": "402061b557836b2446d10ad4681e1627d3942780cfff15d29be643b65ea2663b"
+  },
+  "native_policy_unchanged": true,
+  "no_fit_data_pricing_mcmc_or_test": true,
+  "outer_slurm_wall_seconds": 360,
+  "preprocessing_audit": {
+    "inference_conditions": {
+      "adapter_manual_max_abs_delta": 0.0,
+      "float32_audit_atol": 2e-06,
+      "float32_audit_rtol": 2e-06,
+      "passed": true,
+      "roundtrip_max_abs_delta": 3.814697265625e-06,
+      "standardization_manual_max_abs_delta": 2.384185791015625e-07,
+      "stored_count": 40200000.0,
+      "stored_mean": [
+        28.58572769165039,
+        24.593183517456055,
+        27.748477935791016,
+        42.18436813354492,
+        92.33534240722656,
+        39.700923919677734,
+        23.941526412963867,
+        19.005678176879883,
+        19.278301239013672,
+        30.355091094970703,
+        25.486618041992188,
+        28.209362030029297,
+        42.270870208740234,
+        91.69609069824219,
+        38.83917236328125,
+        22.985897064208984,
+        17.85803985595703,
+        17.714508056640625,
+        32.65221405029297,
+        26.55480194091797,
+        28.663816452026367,
+        42.164039611816406,
+        90.48470306396484,
+        37.463035583496094,
+        21.567623138427734,
+        16.2983341217041,
+        15.823678970336914,
+        34.79656982421875,
+        27.412567138671875,
+        28.86223793029785,
+        41.720130920410156,
+        88.7496566772461,
+        35.74998092651367,
+        19.937236785888672,
+        14.697586059570312,
+        14.12707805633545,
+        35.75798034667969,
+        27.700380325317383,
+        28.79767608642578,
+        41.28132629394531,
+        87.54186248779297,
+        34.665260314941406,
+        18.965011596679688,
+        13.810186386108398,
+        13.243185043334961,
+        36.36070251464844,
+        27.634435653686523,
+        28.35128402709961,
+        40.36115264892578,
+        85.5818099975586,
+        33.06718063354492,
+        17.601993560791016,
+        12.58471965789795,
+        12.003973960876465,
+        35.43867111206055,
+        26.92275047302246,
+        27.683170318603516,
+        39.59300231933594,
+        84.49055480957031,
+        32.33201217651367,
+        17.010839462280273,
+        12.002168655395508,
+        11.315014839172363
+      ],
+      "stored_sd": [
+        20.660249710083008,
+        15.338220596313477,
+        14.393184661865234,
+        17.140316009521484,
+        26.720081329345703,
+        17.790782928466797,
+        14.5203857421875,
+        14.357023239135742,
+        17.356069564819336,
+        20.864545822143555,
+        15.172407150268555,
+        14.069820404052734,
+        16.727319717407227,
+        26.308855056762695,
+        17.555837631225586,
+        14.160252571105957,
+        13.784951210021973,
+        16.414323806762695,
+        20.87056541442871,
+        14.74979019165039,
+        13.454916000366211,
+        15.956856727600098,
+        25.363651275634766,
+        16.931921005249023,
+        13.440670013427734,
+        12.856111526489258,
+        15.105894088745117,
+        20.3359317779541,
+        13.920788764953613,
+        12.469056129455566,
+        14.750718116760254,
+        23.701091766357422,
+        15.83311939239502,
+        12.411968231201172,
+        11.72488021850586,
+        13.671126365661621,
+        19.58322525024414,
+        13.156673431396484,
+        11.67174243927002,
+        13.819722175598145,
+        22.40772819519043,
+        15.011307716369629,
+        11.718388557434082,
+        11.004024505615234,
+        12.793692588806152,
+        17.573732376098633,
+        11.571511268615723,
+        10.234270095825195,
+        12.291704177856445,
+        20.41062355041504,
+        13.798626899719238,
+        10.712265968322754,
+        9.942485809326172,
+        11.493204116821289,
+        16.14511489868164,
+        10.800716400146484,
+        9.76187801361084,
+        11.984817504882812,
+        20.199386596679688,
+        13.69389820098877,
+        10.544095039367676,
+        9.681687355041504,
+        11.059568405151367
+      ]
+    },
+    "inference_variables": {
+      "adapter_manual_max_abs_delta": 2.384185791015625e-06,
+      "float32_audit_atol": 2e-06,
+      "float32_audit_rtol": 2e-06,
+      "passed": true,
+      "roundtrip_max_abs_delta": 4.76837158203125e-07,
+      "standardization_manual_max_abs_delta": 2.384185791015625e-07,
+      "stored_count": 40200000.0,
+      "stored_mean": [
+        -0.019937578588724136,
+        -0.000416655297158286,
+        0.0011481769615784287,
+        0.0017496536020189524
+      ],
+      "stored_sd": [
+        1.8098011016845703,
+        1.8093122243881226,
+        1.8199583292007446,
+        1.8131476640701294
+      ]
+    }
+  },
+  "python": "3.12.16 (main, Oct 26 2026, 11:37:43) [GCC 15.3.0]",
+  "sampling": {
+    "native": {},
+    "tighter": {
+      "atol": 1e-07,
+      "rtol": 1e-05
+    }
+  },
+  "scientific_acceptance": false,
+  "seconds": 93.44402313511819,
+  "seeds": [
+    271026,
+    271027,
+    271028
+  ],
+  "source_revision": "845c458b849c472271527cccf815ea6714f02206",
+  "source_sha256": {
+    "scripts/compare_full_surface_reference.py": "a420f5bfb493412ddfab94cbaf80a2a7e737a9245982ba53acd2472bcd0084f3",
+    "src/sbi4finance/calibration/__init__.py": "9b30e8b6d4b3d77cd9d7c91af7a2e37b5462c8ef02bbdf85f92e2092a37ec6e4",
+    "src/sbi4finance/calibration/bank.py": "9f0d512ba6f52df5c73c54599183159f535b2aa84ac4daa6a60cfd219afcc7db",
+    "src/sbi4finance/calibration/bank_collection.py": "b18bfa6d8322753bdbd36754a3f08c82800b826952453d5ce95adb5751757ed5",
+    "src/sbi4finance/calibration/chain.py": "f3a1ad079cc01570c35208c2fe5d3009fa06bd545b2d4ce3083e835f5569ea2b",
+    "src/sbi4finance/calibration/classical.py": "ebe157b6564408ece99fb1213e16ea48feb0c9b90fb30a5269a923d994496002",
+    "src/sbi4finance/calibration/correction.py": "31b9b9fdf96cf8c62128899709b977a53ac3c9190c7e6b7a13d6888241cdfcf1",
+    "src/sbi4finance/calibration/curve_adequacy.py": "5815ddca3eb883863b397a620f7655b9d56fe354ce69773e75deacd7b993cdd1",
+    "src/sbi4finance/calibration/full_surface.py": "f3ffbbb9d3a3440a2dfbeac78e4e84e867227d569cc28ce48d5d0fa3accc9e79",
+    "src/sbi4finance/calibration/inference.py": "ebc4def8fe0e9e8ae0cab976b67c96d1e3328106c25422bacc11e5907a0f4d2e",
+    "src/sbi4finance/calibration/numerical_pilot.py": "eeb73c2e97e935be3d3d0c61b41c7ac86e6905940b1900d493e022a5a0f897a2",
+    "src/sbi4finance/calibration/plots.py": "558d60bda9969df4115ac0a1cb161e62e85fb9712fbb21660ddc7ff267844492",
+    "src/sbi4finance/calibration/pricer_net.py": "e5d8da240c2dc9b242fabfe289e6623d786645acf86d42d7eb96e702c47bd489",
+    "src/sbi4finance/calibration/pricing.py": "bf9b57f73f030670de2f3db37b298b56dc0070be2f99cf187188b817020f3b52",
+    "src/sbi4finance/calibration/products.py": "9e5dfd4eeb4adf212975c111357c20d4df6ac60373b1c07c68fa8a40b92597fd",
+    "src/sbi4finance/calibration/pymc_reference_op.py": "99704310f8a503cad7eee2310da0204d52c213427ad21683834214018f02451b",
+    "src/sbi4finance/calibration/reference.py": "fd69a6958026f6addde982f2c8d57461cf549efe75f838956e0d931e12153056",
+    "src/sbi4finance/calibration/reference_initialization.py": "0abf68e9862d30bf152dd01e28807ed651d53a12dca4c1286ccb17c52ef0b74f",
+    "src/sbi4finance/calibration/rough_control_diagnostic.py": "ef31703f41ac758f2b6788ff243936c0079609e695599002418b10efed885163",
+    "src/sbi4finance/calibration/rough_working_grid_pilot.py": "0f351ca7f226daaed98756c1052ddcc7fc11a17d9619a336efb5a4acf19042fc",
+    "src/sbi4finance/calibration/surface.py": "24c0476ce3000208438d440cbbb1bf21efd92494b8c634592029af384ee30388",
+    "src/sbi4finance/calibration/tasks.py": "295d1ce59b409f8edb5edba89488fa87a5a4e7bab6f785a152ecb69db1528916",
+    "src/sbi4finance/calibration/teaching.py": "f772e508949cc1befb276c92f0a146a9383f5962ac4fe14b1985901fda7fe1e5",
+    "src/sbi4finance/calibration/thin.py": "a0790c87467d5a6504f0ac369fdb9a31b462c6c7e9a66d19114219873e7e5eae",
+    "src/sbi4finance/calibration/thin_products.py": "9c0277e302806d961a80be2f6178c525b3d2ddccc8d77cf786c50cdb674169b2",
+    "src/sbi4finance/calibration/validation.py": "98c73f47aa76365b775c5f7527714e4bd3e0ffc648aab5e164854ed47deead7b",
+    "src/sbi4finance/calibration/variance_functionals.py": "f4b2f1e0764a5cd1d060a661fc2d15a77727a9fa43caa6555362b6ebd69f7e0e",
+    "src/sbi4finance/calibration/why_bayes.py": "cfb1e8c9409a56cf62923e444506d791d1e5dbdddd4e7d814527ca025a0eef1b"
+  },
+  "status": "completed_development_diagnosis",
+  "versions": {
+    "bayesflow": "2.1.0",
+    "jax": "0.11.1",
+    "keras": "3.15.1",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1"
+  }
+}

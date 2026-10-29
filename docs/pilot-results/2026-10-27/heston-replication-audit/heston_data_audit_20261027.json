@@ -1,0 +1,363 @@
+{
+  "archive_provenance": {
+    "accepted_changes": [
+      "model.keras: optimizer state removed; same-seed draws checked identical to the original's, whose SHA-256 the study reports cite as checkpoint_sha256"
+    ],
+    "actual_sampler": "inference.sample calls use_sampler; 100 Euler steps on t_i=1-(1-i/100)^2,101 explicit timestamps; actual grid verified in paired-control record.",
+    "original_training_checkpoint_sha256": "fbfc4b24376882993144b35072b957fe84fb14fe9732ec18d5ed435211967caf",
+    "original_training_device": "Not recorded. cpu_count=4 is not proof of CPU-only training; timings cannot isolate hardware or framework speed.",
+    "original_training_versions": {
+      "bayesflow": "2.0.14",
+      "jax": "0.11.1",
+      "keras": "3.15.1",
+      "numpy": "2.5.3",
+      "python": "3.12.15"
+    },
+    "original_tuning_history": "Course lecture12:three networks. Net1 fixed-noise/40 epochs, Net2 fresh-noise/500 epochs still failed, Net3 endpoint-weighted training plus end-dense readout yielded the accepted result. Final nominal recipe was copied, but this is a tuned baseline.",
+    "paired_control_backend_mix": "First 500 committed cases CPU, remaining 1,500 GPU; all committed CPU batch hashes preserved. No speedup claim.",
+    "serialized_sampler": "Uniform Euler50 stored in network config",
+    "shipped_optimizer_stripped_checkpoint_sha256": "2d8a8a700f8c8a27c60e777656df14769b5e03e9e47ad717ffb21e1bffb2055e",
+    "strip_method": "accept.py copies every non-optimizer HDF5 group and attributes unchanged, removes optimizer variables, and checks same-seed draw equality."
+  },
+  "audit_scope_date": "2026-10-27",
+  "audit_worktree_revision": "552005588c849325dbbc57a4319c9dbaca980de9",
+  "banks": {
+    "new": {
+      "nesting": "Exact50k training prefix, initial20k prefix and fixed5000validation/5000test parts preserved by prior freeze checks.",
+      "root_seed": 271028,
+      "snapshots": {
+        "100k": {
+          "manifest_sha256": "4b5929b0d0b23698c340eec6defabfd629fe23eca2ed78fe9bd46e4de35c244e",
+          "splits": {
+            "test": 5000,
+            "train": 100000,
+            "validation": 5000
+          }
+        },
+        "50k": {
+          "manifest_sha256": "15e5302d869608c4721a5f172efce44de53e2d8816662585277428e0e31a8d30",
+          "splits": {
+            "test": 5000,
+            "train": 50000,
+            "validation": 5000
+          }
+        }
+      }
+    },
+    "original": {
+      "inventory_root2610_records": 0,
+      "old_temporary_root_exists_locally": false,
+      "raw_bank_recovered": false,
+      "recorded_manifest_sha256": "b5e5ea23debb739f51969de4933cd12f78483f2517751644b97e0fdd4fe73c76",
+      "retained_oscar_inventory_records": 791,
+      "root_seed": 2610,
+      "splits": {
+        "test": 5000,
+        "train": 50000,
+        "validation": 5000
+      }
+    }
+  },
+  "comparison_validity": {
+    "new_three_case_comparison": {
+      "not_first_three_rows_of_new_2k_panel": true,
+      "observation_bank_manifest_sha256": "e5c12a5f405ca1273419c36b71e5ba77e4c7b63e73eba5ca63aad0bfe61a99bd",
+      "observations_identical_old_and_new": true,
+      "pointwise_refinement_max_abs_loglik_shift": [
+        7.465758017133339e-06,
+        2.2525735630551935e-05,
+        1.63196886546757e-05
+      ],
+      "precision_limit": "Pointwise check, not a full posterior-stability proof.",
+      "reference_chain_bytes_identical_old_and_new": true,
+      "reference_chains_shape": [
+        4,
+        8000,
+        4
+      ],
+      "statistical_limit": "Only three readiness cases; they do not replace historical 50-case population evidence. Raw thresholds omit quantile MCSE; retain continuous errors and reference uncertainty."
+    },
+    "original_s2": {
+      "all_four_rank_screens_passed": true,
+      "draws_per_case": 1000,
+      "rows": [
+        0,
+        2000
+      ],
+      "split": "test",
+      "v0_ks": 0.02526631241128957
+    },
+    "original_s3": {
+      "cases": 50,
+      "chain_starts_and_proposal_geometry_from_neural_draws": true,
+      "custom_metropolis_cases": 4,
+      "defensive_importance_proposals": 2048,
+      "importance_cases_khat_above_0_7": 4,
+      "not_50_independent_pymc_references": true,
+      "reference_proposal_fitted_from_neural_draws": true,
+      "reported_max_rhat": 1.011074443587745,
+      "reported_pass_rate": 0.8,
+      "test_first": 2000
+    },
+    "shared_new_panel": {
+      "archive_panel_input_sha256": {
+        "example_ids": "3c8a13e0c36790dd5ce86576673209fb25bbcc9bc2e190eb80d30006732e3d20",
+        "observations": "15410a5ac919efc6580e8f565ac3c4403be2ba4fb6acd56114e1606371a86f6e",
+        "parameters": "648d42fa1370c0a1800c24768ea40a9f61f1692c99e4ac2c2acd2e7b566b3992"
+      },
+      "development_not_untouched_acceptance": true,
+      "draws_per_case": 1000,
+      "four_target_dkw_bound": 0.03562012708860619,
+      "interpretation": "Supports a remaining selected-checkpoint v0 calibration regression; does not establish uniformly worse inference or a causal data/version explanation.",
+      "latent_streams": "Different across estimators/frameworks; no claim of identical Gaussian draws.",
+      "new_validation_used_for_epoch_selection": true,
+      "rank_randomization_seed": 0,
+      "rows": [
+        0,
+        2000
+      ],
+      "split": "validation",
+      "task_and_example_ids_equal_all_reports": true,
+      "v0_ks": {
+        "archive": 0.022148345997915375,
+        "new100k_selected402": 0.05083512711793137,
+        "new50k_selected445": 0.0699664488077576
+      }
+    }
+  },
+  "format": "heston_data_and_comparison_audit_v1",
+  "historical_control_recommendation": {
+    "design": "Train archived BF2.0.14 workflow on the exact new50k bank on matched hardware; freeze selection/diagnostic observations and final recipe. This separates new bank realization from migrated implementation/optimization without regenerating old data. One seed cannot quantify variability.",
+    "status": "Proposed only in initial audit; not executed, and not a replacement for subsequent root model-selection evidence."
+  },
+  "historical_metrics_scope": "Metrics below describe the already reported validation-selected checkpoints (50k epoch445,100k epoch402), not subsequent final-epoch selection diagnostics.",
+  "observed_new_training_parameters": {
+    "all_selected_rows_exactly_equal_declared_prior_stream": true,
+    "means100k": [
+      0.08449774116815294,
+      0.08501390778540974,
+      0.8010995346311094,
+      -0.5246915886247487
+    ],
+    "means_first50k": [
+      0.08443968468040805,
+      0.08488821309343744,
+      0.8018872237093261,
+      -0.524819200285761
+    ],
+    "method": "Read existing snapshot-100k train parameters only through projected bank_collection.load_bank; no new bank generation.",
+    "qualification": "Only 12 spread-out rows were checked against regenerated streams in this audit, not every row. Prior snapshot integrity checks supply full hash/shape/support/coverage checks.",
+    "replayed_row_ids": [
+      0,
+      1,
+      2,
+      127,
+      999,
+      19999,
+      20000,
+      39999,
+      49999,
+      50000,
+      79999,
+      99999
+    ],
+    "reserved_test_opened": false,
+    "shape": [
+      100000,
+      4
+    ]
+  },
+  "preserved_on_local_date": "2026-10-28",
+  "reconstructed_prior_comparison": {
+    "case_centers": "Existing three PyMC reference means, mapped to unit prior box; not sampled posterior neighborhoods.",
+    "interpretation": "Finite bank realizations differ. No obvious new loss of broad or local parameter coverage was found. These descriptive statistics do not identify or exclude a cause of neural error.",
+    "method": "Pinned NumPy2.5.3; PCG64/SeedSequence([0x4F5054,root,*task_digest_words,train_split0,ID,prior_purpose0]); no price calls.",
+    "new100k": {
+      "nearest_unitbox_distance": [
+        0.041138742995442006,
+        0.03314349747733986,
+        0.03989524413708935
+      ],
+      "within_radius_0_1": [
+        28,
+        40,
+        29
+      ],
+      "within_radius_0_2": [
+        422,
+        403,
+        401
+      ]
+    },
+    "new100k_sd": [
+      0.04329074039025931,
+      0.04324807045358802,
+      0.4045404179243067,
+      0.24555308653284436
+    ],
+    "new50k": {
+      "nearest_unitbox_distance": [
+        0.041138742995442006,
+        0.055478840328212584,
+        0.06651248199540943
+      ],
+      "within_radius_0_1": [
+        16,
+        16,
+        14
+      ],
+      "within_radius_0_2": [
+        215,
+        202,
+        185
+      ]
+    },
+    "old50k_vs_new50k_marginal_ks": [
+      0.00918,
+      0.00474,
+      0.00386,
+      0.0061
+    ],
+    "original50k": {
+      "nearest_unitbox_distance": [
+        0.054835118309022345,
+        0.03332262162510962,
+        0.0651685868678958
+      ],
+      "within_radius_0_1": [
+        23,
+        18,
+        13
+      ],
+      "within_radius_0_2": [
+        252,
+        215,
+        203
+      ]
+    },
+    "original50k_means": [
+      0.08520957710852527,
+      0.08505076865822266,
+      0.8005898208556818,
+      -0.5227328193899711
+    ],
+    "original50k_sd": [
+      0.04336649101442383,
+      0.04330702813316454,
+      0.40450276695577053,
+      0.24593124626680773
+    ],
+    "original_is_reconstruction_not_observed_payload": true,
+    "preserved_script": "/private/tmp/heston_data_prior_check_20261027.py",
+    "preserved_script_sha256": "63eba719d826f5aa70f5c53e8ae440a14a9d62906eb91b58cae4827834065bc0",
+    "script_provenance": "Original calculation was inline; preserved file reproduces the same CPU-only calculation."
+  },
+  "retained_artifact_sha256": {
+    "configs/tasks/calibration_heston_bank.json": "15760492c822cf902e7b0a265ccadd69a92eac832776ba033202db8e312e56e8",
+    "docs/pilot-results/2026-10-27/tutorial-backbone/heston-snapshots/snapshot-100k-manifest.json": "4b5929b0d0b23698c340eec6defabfd629fe23eca2ed78fe9bd46e4de35c244e",
+    "docs/pilot-results/2026-10-27/tutorial-backbone/heston-snapshots/snapshot-50k-manifest.json": "15e5302d869608c4721a5f172efce44de53e2d8816662585277428e0e31a8d30",
+    "tutorial_final/checkpoints/heston/ACCEPTED.json": "d18f6812cb458620cc1039d12342e0af646807d03687d566859464e8d7f03fcd",
+    "tutorial_final/checkpoints/heston/model.keras": "2d8a8a700f8c8a27c60e777656df14769b5e03e9e47ad717ffb21e1bffb2055e",
+    "tutorial_final/checkpoints/heston/task.json": "49b79f2febd35f0aa54bd294e770199fe1fbff238843dd49ef56f49a4953041a",
+    "tutorial_final/checkpoints/heston/training.json": "360fe4da4493ce1545f4256429a0888a9ee679d9fd52bf4737514c6883140916"
+  },
+  "same_task": {
+    "context": "spot1,rate0,dividend0; identical per-contract Gaussian quote SD; no clipping",
+    "contracts": {
+      "count": 63,
+      "same_ordered_contracts": true
+    },
+    "exact_task_dictionary_equal_original_50k_100k": true,
+    "fixed_parameters": {
+      "jump_down_rate": 10.0,
+      "jump_intensity": 0.0,
+      "jump_up_probability": 0.5,
+      "jump_up_rate": 10.0,
+      "kappa": 2.0
+    },
+    "numerics": {
+      "max_refinement_over_quote_sigma": 0.1,
+      "quadrature_ladder": [
+        [
+          512,
+          400.0
+        ],
+        [
+          1024,
+          600.0
+        ],
+        [
+          2048,
+          1500.0
+        ],
+        [
+          4096,
+          3000.0
+        ],
+        [
+          8192,
+          6000.0
+        ]
+      ]
+    },
+    "parameters": [
+      "initial_variance",
+      "theta",
+      "vol_of_vol",
+      "rho"
+    ],
+    "prior": "independent uniforms in declared physical parameter order",
+    "prior_bounds": [
+      [
+        0.01,
+        0.16
+      ],
+      [
+        0.01,
+        0.16
+      ],
+      [
+        0.1,
+        1.5
+      ],
+      [
+        -0.95,
+        -0.1
+      ]
+    ],
+    "qualification": "Original raw bank/manifest was not recovered; source-law parity is based on retained course source/history/config and metadata, not a bytewise comparison with missing original payloads.",
+    "source_diff_result": "hkde.py and heston.py are byte-identical at compared commits. heston_surface/heston_prices behavior is unchanged. bank/tasks/pricing file additions between these commits concern joint rough; Heston generation branches are unchanged.",
+    "task_fingerprint": "5e499526ff8f29a72f49785a1a36006b1d769d26bca8a6f83f7a8c8ac4d431fa"
+  },
+  "scope": "Read-only data/provenance/comparison audit. No new financial pricing, training, notebooks, cluster jobs, or model-test evaluation.",
+  "source_commits": {
+    "new_frozen_heston_generator": "9d903dbb5986f766844fbb942b322c0d55856705",
+    "original_course": "cebfb1f31c36b50d0c12dc2dbca87a06e60738df"
+  },
+  "source_sha256": {
+    "9d903db": {
+      "src/sbi4finance/calibration/bank.py": "9f0d512ba6f52df5c73c54599183159f535b2aa84ac4daa6a60cfd219afcc7db",
+      "src/sbi4finance/calibration/pricing.py": "fb1a16548514cc6f806baa651ef05310934dcb55e7fc591a2a49f0395ab7df71",
+      "src/sbi4finance/calibration/tasks.py": "295d1ce59b409f8edb5edba89488fa87a5a4e7bab6f785a152ecb69db1528916",
+      "src/sbi4finance/heston.py": "f85237a6f223689bb83fb2837d6f6cba855867f5da9f919667163ae4a4c8996c",
+      "src/sbi4finance/hkde.py": "c6618b6bd54eae169b4fc0e90201b8582b8e7da14ff41a305c27e4e2bd06e503"
+    },
+    "cebfb1f": {
+      "src/sbi4finance/calibration/bank.py": "9bf5d6155c69c3a54eb781453876b220b6dae762a805fc18321c4ae9b70df1d9",
+      "src/sbi4finance/calibration/pricing.py": "e24d7d7977807f38572fa6d15aa4248763c4df6387d2073b63b5373448771df6",
+      "src/sbi4finance/calibration/tasks.py": "8f3c02bf422b9158c7805da38ffee6253f0cec37a41ce322adcb5c8a940eba1a",
+      "src/sbi4finance/heston.py": "f85237a6f223689bb83fb2837d6f6cba855867f5da9f919667163ae4a4c8996c",
+      "src/sbi4finance/hkde.py": "c6618b6bd54eae169b4fc0e90201b8582b8e7da14ff41a305c27e4e2bd06e503"
+    }
+  },
+  "sources": {
+    "heston_pricer": "src/sbi4finance/calibration/pricing.py:219-232; tasks.py:heston_prices",
+    "new_evaluation": "scripts/evaluate_full_surface.py:20-53",
+    "original_s2_split": "tutorial_final/studies/evaluate_calibration.py:56-66 and historicals2/validation.json:test_rows",
+    "original_s3_method": "tutorial_final/studies/heston_check.py:124-184",
+    "original_tuning": "docs/course/12-the-amortized-workflow-on-heston.md:82-91",
+    "rng": "src/sbi4finance/calibration/bank.py:93-131",
+    "sampler_override": "src/sbi4finance/calibration/inference.py:18-42, sample()",
+    "stripping": "tutorial_final/studies/accept.py:59-99"
+  }
+}

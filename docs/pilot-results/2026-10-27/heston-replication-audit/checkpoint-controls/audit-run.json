@@ -1,0 +1,22 @@
+{
+  "status": "completed",
+  "scientific_acceptance": false,
+  "no_training_pricing_mcmc_or_test": true,
+  "stages": [
+    {
+      "role": "old",
+      "status": "completed",
+      "seconds_cap": 180,
+      "seconds": 89.18522145785391,
+      "returncode": 0
+    },
+    {
+      "role": "new",
+      "status": "completed",
+      "seconds_cap": 330,
+      "seconds": 78.00989848654717,
+      "returncode": 0
+    }
+  ],
+  "seconds": 167.2392783695832
+}

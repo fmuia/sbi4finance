@@ -1,0 +1,67 @@
+{
+  "case-0/diagnostics.json": {
+    "bytes": 2431,
+    "sha256": "41ac6aa49fb6a6a8dfee556996a3a4c826b4bc146739ae5003dc50e1e1d098be",
+    "source": "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/runs/case-0/diagnostics.json"
+  },
+  "case-0/partial/progress.json": {
+    "bytes": 465,
+    "sha256": "16a17f88cb10f82779d60743f90a9217e0d3d81fbac68f0adf81c84950ec16da",
+    "source": "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/runs/case-0/partial/progress.json"
+  },
+  "case-0/reference.json": {
+    "bytes": 35609,
+    "sha256": "b393e6728d24af2e67c8d9748da259fa1249ce01a5471155f4f4bf4ec566bac4",
+    "source": "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/runs/case-0/reference.json"
+  },
+  "case-0/slurm-8030892_0.out": {
+    "bytes": 2518,
+    "sha256": "6b5d9cb3ffb8e3a6c8c27f31c1fd2e5515408dc22299bffd0e48744919f7c695",
+    "source": "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/logs/reference-8030892_0.out"
+  },
+  "case-1/diagnostics.json": {
+    "bytes": 2423,
+    "sha256": "051f7c7c9c63150a25789d2158d21ec056263ea0cafbecffd2fbc8f0ae30c521",
+    "source": "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/runs/case-1/diagnostics.json"
+  },
+  "case-1/partial/progress.json": {
+    "bytes": 464,
+    "sha256": "192144ed658069d79e1de228a0bfaf67a79742d54f026430f680914eaaf38556",
+    "source": "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/runs/case-1/partial/progress.json"
+  },
+  "case-1/reference.json": {
+    "bytes": 35541,
+    "sha256": "67b18053469cbd770a08534c4454e48e8a37b823207eeb1803e65e81d4464a0c",
+    "source": "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/runs/case-1/reference.json"
+  },
+  "case-1/slurm-8030892_1.out": {
+    "bytes": 2518,
+    "sha256": "6d180deb87351714c872ba3d9338cdc7b1468ada65b672e1cb307980265d6a35",
+    "source": "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/logs/reference-8030892_1.out"
+  },
+  "case-2/diagnostics.json": {
+    "bytes": 2428,
+    "sha256": "e8cd036372e2dc5890b0feb11d0feb0dcc644b79e844b28fbc48c9f6cc9ae8f6",
+    "source": "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/runs/case-2/diagnostics.json"
+  },
+  "case-2/partial/progress.json": {
+    "bytes": 463,
+    "sha256": "92844f1440071be00507ff30f73a3b03d3ab0b0f00f3fdcae17aef452273cd0c",
+    "source": "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/runs/case-2/partial/progress.json"
+  },
+  "case-2/reference.json": {
+    "bytes": 35491,
+    "sha256": "e0ad71bb5c63d0c23e85df2c24a5b18a912a7b0e9177d75a052d7d5af5b34832",
+    "source": "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/runs/case-2/reference.json"
+  },
+  "case-2/slurm-8030892_2.out": {
+    "bytes": 2518,
+    "sha256": "38f1019e4970c209ea6aed51b53c27613153614b9d7ebef1a3c204f30e73a250",
+    "source": "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/logs/reference-8030892_2.out"
+  },
+  "remote-execution-submitted.json": {
+    "bytes": 4953,
+    "sha256": "4eb6d5ab587d9151913f7574b78427a5357778c22f6e64730a53aceb87f18678",
+    "source": "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/execution.json"
+  }
+}

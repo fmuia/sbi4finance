@@ -1,0 +1,58 @@
+{
+  "format": "joint_tail_completion_bridge_v1",
+  "root": "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/tail-recovery-20261028/integrity-bridge",
+  "python": "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python",
+  "recovery_execution": "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/tail-recovery-20261028/execution.json",
+  "recovery_config": "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/tail-recovery-source-20261028/campaign.json",
+  "recovery_jobs": "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/tail-recovery-20261028/jobs.json",
+  "native_jobs": [
+    {
+      "split": "validation",
+      "start": 4925,
+      "stop": 4950,
+      "job_sha256": "dc8d453f2148053f8797005dad27861d456b183b9733988db10b62b34adad204"
+    },
+    {
+      "split": "test",
+      "start": 0,
+      "stop": 25,
+      "job_sha256": "b3084c283a030fd7c5ae21ae29db1201cb2f6c23eed7a77002dfc963c165c958"
+    }
+  ],
+  "prior_cpu_seconds": 3141589,
+  "stage_plan": "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/tail-recovery-20261028/integrity-bridge/stage-plan.json",
+  "tested_finalizer": "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/bank_delivery_stage_v2.py",
+  "tested_finalizer_sha256": "06e860477a336173c07d816a7522dccd6313451411edaceeedc49322cf271ecc",
+  "readiness": "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/joint/final.json",
+  "original_execution_sha256": "35925eec53f0152013b8c2782b635bf9862c7e74fdcc76d11e0866b15e28eb8e",
+  "prior_recovery_execution_sha256": "114788a8f72f91ba4f43a4848064d3090c99c58809661b4e389378d137a8f0db",
+  "preserved_inventory_sha256": "a230b44c6ab217fd1356d8da4e73edbd3c238d7070f381880886093905d3d3f6",
+  "original_job_map_sha256": "a815c58087279fa7c2b5603d6bc3fee11ed92ec7965c0ac29c2827a665bbae0c",
+  "frozen_sha256": {
+    "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/tail-recovery-source-20261028/complete_joint_tail.py": "8b84e573238daf4adcc937388a11876b8213a9c17ad41ff09470474101c4b338",
+    "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/bank_delivery_stage_v2.py": "06e860477a336173c07d816a7522dccd6313451411edaceeedc49322cf271ecc",
+    "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/tail-recovery-source-20261028/campaign.json": "1af379b4e25ec7240526ad43c4ba62ad9ff8b1289dfbe85b1c4d3e24c1df8c93",
+    "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/tail-recovery-source-20261028/checks.json": "9ba8c1844c46a37c6f95840bd294f8f2a001a9d4d7e8a65ad7b893ad8e752ef6",
+    "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/tail-recovery-source-20261028/reconciliation.json": "61a755c36667810341218499a3b956accff9071394e7acd00a341ef2ed6bf03a",
+    "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/tail-recovery-source-20261028/preserved-parts.json": "a230b44c6ab217fd1356d8da4e73edbd3c238d7070f381880886093905d3d3f6",
+    "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/execution-v2.json": "35925eec53f0152013b8c2782b635bf9862c7e74fdcc76d11e0866b15e28eb8e",
+    "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/morning-recovery-20261028/execution.json": "114788a8f72f91ba4f43a4848064d3090c99c58809661b4e389378d137a8f0db",
+    "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/tail-recovery-20261028/jobs.json": "d7e6953113548195f7f9eeb2179f4b25403cfd7af07cf571905bb9aedffa0f99",
+    "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/tail-recovery-20261028/campaign.json": "9f1ef84817c2b0c2c893c3afd3fce4f403e02c8603680135c406b41dbf98ad96",
+    "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/tail-recovery-20261028/integrity-bridge/stage-plan.json": "d19969e7136615d4397cedc6976e0ddff26957f4fea1776ceecd5542c0766e13",
+    "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/tail-recovery-20261028/integrity-bridge/stage/preflight.json": "60424474bd5befed8be37b3aa2d538e2ebb55560f65a93dc0cc5915daeefe95f",
+    "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/tail-recovery-20261028/integrity-bridge/stage/jobs.json": "a815c58087279fa7c2b5603d6bc3fee11ed92ec7965c0ac29c2827a665bbae0c",
+    "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/tail-recovery-20261028/integrity-bridge/stage/preserved-parts.json": "a230b44c6ab217fd1356d8da4e73edbd3c238d7070f381880886093905d3d3f6",
+    "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/collection.json": "802a200f73bacddaa744abcfdcf2497b2d45a609c9039ed816baf1e3e9a5b12c"
+  },
+  "finite_resources": {
+    "wall_seconds": 3600,
+    "cleanup_seconds": 240,
+    "cpus": 1,
+    "cumulative_cpu_seconds_ceiling": 5400000,
+    "cumulative_worst_case_including_both_finalizers_seconds": 3178549
+  },
+  "scientific_acceptance": false,
+  "reserved_test_evaluated": false,
+  "automatic_retry": false
+}

@@ -102,10 +102,34 @@ def _bs_call(log_forward, log_strike, total_variance):
 
 
 def forward_start_call(paths, rho, start, end, moneyness=1.0):
-    """E[(S_end / S_start - moneyness)^+], the strike set at start as moneyness times S_start."""
+    """Legacy return payoff E[(S_end / S_start - moneyness)^+].
+
+    Use forward_start_call_spot for the spot-notional difference payoff.
+    """
     log_forward, variance, control = _conditional(paths, rho, start, end)
     payoff = _bs_call(log_forward, np.log(moneyness), variance)
     controls = np.column_stack([np.exp(log_forward) - 1.0, control])
+    return _controlled_mean(payoff, controls)
+
+
+def forward_start_call_spot(paths, rho, start, end, moneyness=1.0):
+    """Price E[(S_end - moneyness*S_start)^+] in initial-spot units.
+
+    Conditional on the variance-driving path, the orthogonal Brownian
+    increments before and after start are independent. The conditional
+    expectation of S_start therefore multiplies the conditional ratio call.
+    The controls below have zero mean under the declared left-point scheme;
+    they are not multiplied by that random start weight.
+    """
+    if (not np.isfinite([rho, start, end, moneyness]).all() or abs(rho) > 1
+            or not 0 <= start < end or moneyness <= 0):
+        raise ValueError("finite correlation, ordered nonnegative dates and positive moneyness required")
+    i, j = _index(paths, start), _index(paths, end)
+    start_forward = np.exp(rho * paths["J"][:, i] - .5 * rho**2 * paths["I"][:, i])
+    end_forward = np.exp(rho * paths["J"][:, j] - .5 * rho**2 * paths["I"][:, j])
+    log_forward, variance, control = _conditional(paths, rho, start, end)
+    payoff = start_forward * _bs_call(log_forward, np.log(moneyness), variance)
+    controls = np.column_stack([end_forward - start_forward, control])
     return _controlled_mean(payoff, controls)
 
 
@@ -145,6 +169,10 @@ def price_draw(model, parameters, context, specification, n_paths, seed):
     cover two years) or 'heston' (parameters as hkde with initial_variance).
     """
     spec = specification
+    forward_payoff = spec["forward_start_call"].get("payoff", "return_ratio")
+    if forward_payoff not in ("return_ratio", "spot_difference"):
+        raise ValueError("forward-start payoff must be return_ratio or spot_difference")
+    forward_pricer = forward_start_call_spot if forward_payoff == "spot_difference" else forward_start_call
     steps_per_year = spec["steps_per_year"]
     horizon_short = spec["forward_start_call"]["end"]
     horizon_long = spec["put_out_of_grid"]["maturity"]
@@ -162,7 +190,7 @@ def price_draw(model, parameters, context, specification, n_paths, seed):
     results = {
         "variance_swap": variance_swap(short, spec["variance_swap"]["maturity"]),
         "volatility_swap": volatility_swap(short, spec["volatility_swap"]["maturity"]),
-        "forward_start_call": forward_start_call(short, rho, spec["forward_start_call"]["start"],
+        "forward_start_call": forward_pricer(short, rho, spec["forward_start_call"]["start"],
                                                  spec["forward_start_call"]["end"],
                                                  spec["forward_start_call"]["moneyness"]),
         "put_out_of_grid": vanilla(long, rho, spec["put_out_of_grid"]["strike"], horizon_long, "put"),

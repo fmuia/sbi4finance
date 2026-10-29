@@ -14,6 +14,10 @@ pricers, priors and seed streams apply, and differ from them in four ways:
 * the Heston check is the HKDE model with jump intensity fixed at zero and
   the initial variance as an inferred parameter.
 
+The additive rough_joint_calibration_v1 task instead infers three analytic
+Heston-shaped curve coefficients alongside H, eta and rho. Its stored curve
+averages are derived auxiliary labels, never known inference conditions.
+
 Prices are in forward units: spot 1, rate 0 and dividend 0 are required.
 The archived fixed-panel modules (option_panel, option_bank) are reused by
 import only: archived evidence pins their source hashes.
@@ -24,6 +28,8 @@ import numpy as np
 from . import pricing, surface
 
 FAMILY = "_calibration_v1"
+JOINT_ROUGH_ID = "rough_joint_calibration_v1"
+JOINT_ROUGH_PARAMETERS = ["hurst", "eta", "rho", "short_variance", "long_variance", "decay"]
 HKDE_PARAMETERS = {"kappa", "theta", "vol_of_vol", "rho", "jump_intensity",
                    "jump_up_probability", "jump_up_rate", "jump_down_rate"}
 UNIVERSE = {"rough": {"hurst", "eta", "rho"}, "hkde": HKDE_PARAMETERS | {"initial_variance"}}
@@ -41,6 +47,11 @@ FULL_BANK_CURVE_PRIOR = {"kind": "power_law_walk", "level_bounds": [0.08, 0.60],
 
 def is_calibration_task(task):
     return isinstance(task, dict) and str(task.get("task_id", "")).endswith(FAMILY)
+
+
+def is_joint_curve_task(task):
+    """The additive six-target task; stored derived curve arrays are auxiliary, never conditions."""
+    return isinstance(task, dict) and task.get("task_id") == JOINT_ROUGH_ID
 
 
 def _positive_int(value, name):
@@ -61,12 +72,12 @@ def knots(task):
 
 
 def context_size(task):
-    """Number of per-example context values: forward-variance levels for rough, none for Heston."""
+    """Stored per-example curve values: known legacy context or joint-task auxiliaries; none for Heston."""
     return max(len(knots(task)) - 1, 0)
 
 
 def context_parameter_size(task):
-    return 2 if task["model"] == "rough" else 0
+    return 3 if is_joint_curve_task(task) else (2 if task["model"] == "rough" else 0)
 
 
 def block_count(task):
@@ -79,7 +90,10 @@ def sigma(task):
 
 def model_parameters(task, values):
     """The full model dictionary for one row of inferred parameter values."""
-    return dict(task["fixed_parameters"], **dict(zip(task["parameter_names"], (float(v) for v in values))))
+    parameters = dict(task["fixed_parameters"], **dict(zip(task["parameter_names"], (float(v) for v in values))))
+    if is_joint_curve_task(task):
+        return {name: parameters[name] for name in ("hurst", "eta", "rho")}
+    return parameters
 
 
 def _heston_split(parameters):
@@ -112,6 +126,9 @@ def validate_context(context):
 
 
 def validate_task(task):
+    if is_joint_curve_task(task):
+        _validate_joint_task(task)
+        return
     if not isinstance(task, dict) or set(task) != TASK_KEYS or task["model"] not in UNIVERSE \
             or task["measure"] != "Q" or task["task_id"] != task["model"] + FAMILY:
         raise ValueError("unsupported calibration task")
@@ -195,6 +212,26 @@ def validate_task(task):
         raise ValueError("numerical precision budget must be positive")
 
 
+def _validate_joint_task(task):
+    """Reuse the legacy numerical-domain validation without changing legacy task semantics."""
+    if (set(task) != TASK_KEYS or task["model"] != "rough" or task["measure"] != "Q"
+            or task["parameter_names"] != JOINT_ROUGH_PARAMETERS or task["fixed_parameters"] != {}
+            or task["context_prior"] != {} or not isinstance(task["model_context"], dict)
+            or set(task["model_context"]) != {"forward_variance_knots", "curve_family"}
+            or task["model_context"]["curve_family"] != "heston_exponential_v1"):
+        raise ValueError("joint rough task requires six ordered targets and its explicit analytic curve family")
+    bounds = np.asarray(task["prior_bounds"], dtype=float)
+    if (bounds.shape != (6, 2) or not np.isfinite(bounds).all() or np.any(bounds[:, 0] >= bounds[:, 1])
+            or np.any(bounds[3:, 0] <= 0)):
+        raise ValueError("six finite increasing uniform bounds with positive curve levels/decay required")
+    legacy = {**task, "task_id": "rough" + FAMILY, "parameter_names": JOINT_ROUGH_PARAMETERS[:3],
+              "prior_bounds": bounds[:3].tolist(),
+              "model_context": {"forward_variance_knots": task["model_context"]["forward_variance_knots"]},
+              "context_prior": {"forward_variance": {"level_bounds": [0.1, 0.2],
+                                                        "slope_bounds": [0.0, 0.1], "log_perturbation": 0.0}}}
+    validate_task(legacy)
+
+
 def curve_kind(prior):
     return prior.get("kind", "linear_wobble")
 
@@ -238,6 +275,8 @@ def draw_context(task, rng):
     sigma0 log-uniform on level_bounds, b ~ U(exponent_bounds); a curve with any level's volatility sqrt(xi_j)
     outside vol_bounds is drawn again (the prior is truncated to vol_bounds); returns (sigma0, b).
     """
+    if is_joint_curve_task(task):
+        raise ValueError("joint curve is derived from the six parameter targets; use derived_context")
     if task["model"] != "rough":
         return np.empty(0), np.empty(0)
     prior = task["context_prior"]["forward_variance"]
@@ -288,7 +327,38 @@ def heston_prices(task, parameters, v0, contracts=None):
 
 
 def curve(task, context_values):
+    if is_joint_curve_task(task):
+        raise ValueError("joint rough pricing requires joint_curve(task, parameter_values), not curve context")
     return pricing.step_curve(knots(task), context_values)
+
+
+def _joint_coefficients(task, parameter_values):
+    if not is_joint_curve_task(task):
+        raise ValueError("a six-target joint rough task is required")
+    values = np.asarray(parameter_values, dtype=float)
+    if values.shape != (6,) or not np.isfinite(values).all() or np.any(values[3:] <= 0):
+        raise ValueError("six finite parameters with positive curve coefficients required")
+    return values[3:]
+
+
+def derived_context(task, parameter_values):
+    """Auxiliary interval-average xi and its three coefficients, derived from the joint targets.
+
+    These averages preserve analytic W at the design maturities. Pricing uses
+    joint_curve on the finer simulator grids, not these seven buckets.
+    """
+    coefficients = _joint_coefficients(task, parameter_values)
+    grid = knots(task)
+    total = pricing.heston_integrated_variance(grid, *coefficients)
+    return np.diff(total) / np.diff(grid), coefficients.copy()
+
+
+def joint_curve(task, parameter_values):
+    """Analytic initial curve evaluated at the union of every block's simulator nodes."""
+    coefficients = _joint_coefficients(task, parameter_values)
+    times = np.unique(np.concatenate([b["horizon"] / b["n_steps"] * np.arange(b["n_steps"] + 1)
+                                      for b in task["numerics"]["blocks"]]))
+    return pricing.heston_variance_curve(times, *coefficients)
 
 
 def price(task, parameter_values, context_values, seed, diagnostics=None):
@@ -304,8 +374,9 @@ def price(task, parameter_values, context_values, seed, diagnostics=None):
         parameters, v0 = _heston_split(parameters)
         prices, difference = heston_prices(task, parameters, v0)
         return prices, np.zeros(n), np.zeros((n, n)), difference, np.empty(0)
+    initial_curve = joint_curve(task, parameter_values) if is_joint_curve_task(task) else curve(task, context_values)
     prices, errors, covariance, used = pricing.rough_surface(
-        parameters, curve(task, context_values), contracts, numerics["blocks"], numerics["paths_ladder"],
+        parameters, initial_curve, contracts, numerics["blocks"], numerics["paths_ladder"],
         sigma(task), numerics["max_mc_se_over_quote_sigma"], seed,
         cap=numerics.get("max_mc_se_over_quote_sigma_last_rung"), diagnostics=diagnostics)
     return prices, errors, covariance, np.zeros(n), used
@@ -367,5 +438,26 @@ def heston_task(*, days=surface.DESIGN_DAYS, deltas=surface.DESIGN_DELTAS, sigma
         "numerics": {"quadrature_ladder": [list(rung) for rung in quadrature_ladder],
                      "max_refinement_over_quote_sigma": budget},
     }
+    validate_task(task)
+    return task
+
+
+def joint_rough_task(*, prior_bounds=((0.02, 0.35), (0.5, 3.5), (-0.99, -0.2),
+                                     (0.01, 0.16), (0.01, 0.16), (0.25, 8.0)), **kwargs):
+    """Candidate six-target task for bounded development, not an approved production prior.
+
+    Levels are independent uniforms in annualized variance units, decay in
+    inverse years. The illustrative positive bounds and numerical ladder need
+    the declared family/prior/precision pilot before substantial generation.
+    kwargs supplies rough_task's design/numerical settings; curve-prior kwargs
+    are not part of this jointly inferred family.
+    """
+    forbidden = {"curve_prior", "level_bounds", "slope_bounds", "log_perturbation"} & set(kwargs)
+    if forbidden:
+        raise ValueError(f"joint curve priors belong in the six prior_bounds, not {sorted(forbidden)}")
+    task = rough_task(**kwargs)
+    task.update(task_id=JOINT_ROUGH_ID, parameter_names=list(JOINT_ROUGH_PARAMETERS),
+                prior_bounds=[list(b) for b in prior_bounds], context_prior={})
+    task["model_context"]["curve_family"] = "heston_exponential_v1"
     validate_task(task)
     return task

@@ -46,6 +46,11 @@ def _(mo):
     mo.md(r"""
     # Slot 4 · A worked example in BayesFlow: Heston on the SPY smile
 
+    For the new BayesFlow 2.1 estimator and checked synthetic interior example,
+    open [the cached/live backbone review](backbone_review.py). That replay has
+    its own observation and provenance; the historical SPY results below remain
+    separate.
+
     **The whole amortized workflow, on a model whose exact posterior can check every step**
 
     Slot 1 showed why a bank wants the posterior, and that on a liquid surface the classical interval

@@ -1,0 +1,57 @@
+## SLURM PROLOG ###############################################################
+##    Job ID : 8032275
+##  Job Name : sbi4f-heston-acceptance
+##  Nodelist : gpu3004
+##      CPUs : 1
+##  Mem/Node : 24576 MB
+## Directory : /oscar/home/afengler
+##   Job Started : Tue Oct 27 07:48:55 PM EDT 2026
+###############################################################################
+INFO:matplotlib.font_manager:Failed to extract font properties from /usr/share/fonts/google-noto-emoji/NotoColorEmoji.ttf: Non-scalable fonts are not supported
+INFO:matplotlib.font_manager:generated new fontManager
+INFO:bayesflow:Using backend 'jax'
+INFO:bayesflow:Estimator restored from '/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/model.keras'.
+INFO:bayesflow:Estimator restored from '/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/.resume/epoch-000500-_3f420vs/last.keras'.
+/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/lib/python3.12/site-packages/keras/src/backend/jax/core.py:401: UserWarning: Explicitly requested dtype float64 requested in asarray is not available, and will be truncated to dtype float32. To enable more dtypes, set the jax_enable_x64 configuration option or the JAX_ENABLE_X64 shell environment variable. See https://github.com/jax-ml/jax#current-gotchas for more.
+  return jnp.asarray(x, dtype=dtype)
+INFO:bayesflow:Sampling completed in 58.33 seconds.
+{"completed_surfaces": 100, "seconds": 58.602628184482455}
+INFO:bayesflow:Sampling completed in 47.01 seconds.
+{"completed_surfaces": 200, "seconds": 105.9002729114145}
+INFO:bayesflow:Sampling completed in 44.07 seconds.
+{"completed_surfaces": 300, "seconds": 150.2516623120755}
+INFO:bayesflow:Sampling completed in 47.35 seconds.
+{"completed_surfaces": 400, "seconds": 197.89101404882967}
+INFO:bayesflow:Sampling completed in 43.86 seconds.
+{"completed_surfaces": 500, "seconds": 242.039319884032}
+INFO:bayesflow:Sampling completed in 44.74 seconds.
+{"completed_surfaces": 600, "seconds": 287.06120513379574}
+INFO:bayesflow:Sampling completed in 48.70 seconds.
+{"completed_surfaces": 700, "seconds": 336.0691500082612}
+INFO:bayesflow:Sampling completed in 47.24 seconds.
+{"completed_surfaces": 800, "seconds": 383.6019827090204}
+INFO:bayesflow:Sampling completed in 46.99 seconds.
+{"completed_surfaces": 900, "seconds": 430.8897486757487}
+INFO:bayesflow:Sampling completed in 45.54 seconds.
+{"completed_surfaces": 1000, "seconds": 476.7473545204848}
+INFO:bayesflow:Sampling completed in 48.50 seconds.
+{"completed_surfaces": 1100, "seconds": 525.5448679085821}
+INFO:bayesflow:Sampling completed in 50.03 seconds.
+{"completed_surfaces": 1200, "seconds": 575.8658842984587}
+INFO:bayesflow:Sampling completed in 43.22 seconds.
+{"completed_surfaces": 1300, "seconds": 619.3691448960453}
+INFO:bayesflow:Sampling completed in 44.47 seconds.
+{"completed_surfaces": 1400, "seconds": 664.1373613122851}
+INFO:bayesflow:Sampling completed in 44.10 seconds.
+{"completed_surfaces": 1500, "seconds": 708.537241095677}
+INFO:bayesflow:Sampling completed in 44.99 seconds.
+{"completed_surfaces": 1600, "seconds": 753.8302377201617}
+INFO:bayesflow:Sampling completed in 45.74 seconds.
+{"completed_surfaces": 1700, "seconds": 799.8579451292753}
+INFO:bayesflow:Sampling completed in 44.02 seconds.
+{"completed_surfaces": 1800, "seconds": 844.177650751546}
+INFO:bayesflow:Sampling completed in 46.28 seconds.
+{"completed_surfaces": 1900, "seconds": 890.748525261879}
+INFO:bayesflow:Sampling completed in 47.54 seconds.
+{"completed_surfaces": 2000, "seconds": 938.5759336613119}
+{"status": "completed", "sbc": {"surfaces": 2000, "draws_per_surface": 1000, "rank_ks": [0.02639217936783958, 0.017810970328184572, 0.01745023505366272, 0.018410528460797826], "dkw_bound": 0.03562012708860619, "family_alpha": 0.05, "passed": [true, true, true, true]}}

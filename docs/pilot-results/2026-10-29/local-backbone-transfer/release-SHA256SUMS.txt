@@ -1,0 +1,4 @@
+d57543a90b9dc264a7161dea6e3f55f7c8f5a945d95f407d97151794c07afb40  sbi4finance-bank-heston-100k-20261029.tar.gz
+e831d35ff0d926231564724558697f1f81db6baae0ca4a844cad72bcab3c9938  sbi4finance-bank-rough-known-100k-20261029.tar.gz
+b1011602e7fbfa880bffc5f0b7250a96ad878e4ff9be9cf6a6af004bc0e14455  sbi4finance-bank-rough-joint-100k-20261029.tar.gz
+8d3a146312efdeaffcf797dee89158a491cde0961689649bbe17b6a3ae4bf51c  sbi4finance-pretrained-and-cases-20261029.zip

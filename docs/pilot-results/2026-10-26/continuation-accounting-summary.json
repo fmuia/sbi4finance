@@ -1,0 +1,122 @@
+{
+  "scope": "14 terminal continuation tasks; excludes earlier 97 completed/5 timeouts and later optimization work",
+  "terminal_tasks": 14,
+  "all_completed": true,
+  "reported_cpu_seconds": 2485.67,
+  "reported_cpu_hours": 0.6904638888888889,
+  "tasks": [
+    {
+      "job_id": "7996366_0",
+      "state": "COMPLETED",
+      "elapsed": "00:01:22",
+      "reported_cpu_seconds": 69.575,
+      "allocated_cpus": 1,
+      "exit_code": "0:0"
+    },
+    {
+      "job_id": "7996366_1",
+      "state": "COMPLETED",
+      "elapsed": "00:01:25",
+      "reported_cpu_seconds": 73.142,
+      "allocated_cpus": 1,
+      "exit_code": "0:0"
+    },
+    {
+      "job_id": "7996366_2",
+      "state": "COMPLETED",
+      "elapsed": "00:01:30",
+      "reported_cpu_seconds": 77.551,
+      "allocated_cpus": 1,
+      "exit_code": "0:0"
+    },
+    {
+      "job_id": "7996366_3",
+      "state": "COMPLETED",
+      "elapsed": "00:01:43",
+      "reported_cpu_seconds": 90.537,
+      "allocated_cpus": 1,
+      "exit_code": "0:0"
+    },
+    {
+      "job_id": "7996366_4",
+      "state": "COMPLETED",
+      "elapsed": "00:01:57",
+      "reported_cpu_seconds": 104.54599999999999,
+      "allocated_cpus": 1,
+      "exit_code": "0:0"
+    },
+    {
+      "job_id": "7996366_5",
+      "state": "COMPLETED",
+      "elapsed": "00:01:49",
+      "reported_cpu_seconds": 96.905,
+      "allocated_cpus": 1,
+      "exit_code": "0:0"
+    },
+    {
+      "job_id": "7996366_6",
+      "state": "COMPLETED",
+      "elapsed": "00:01:33",
+      "reported_cpu_seconds": 80.59700000000001,
+      "allocated_cpus": 1,
+      "exit_code": "0:0"
+    },
+    {
+      "job_id": "7996366_7",
+      "state": "COMPLETED",
+      "elapsed": "00:01:33",
+      "reported_cpu_seconds": 80.471,
+      "allocated_cpus": 1,
+      "exit_code": "0:0"
+    },
+    {
+      "job_id": "7996366_8",
+      "state": "COMPLETED",
+      "elapsed": "00:02:07",
+      "reported_cpu_seconds": 113.46600000000001,
+      "allocated_cpus": 1,
+      "exit_code": "0:0"
+    },
+    {
+      "job_id": "7996366_9",
+      "state": "COMPLETED",
+      "elapsed": "00:02:07",
+      "reported_cpu_seconds": 113.282,
+      "allocated_cpus": 1,
+      "exit_code": "0:0"
+    },
+    {
+      "job_id": "7996366_10",
+      "state": "COMPLETED",
+      "elapsed": "00:01:45",
+      "reported_cpu_seconds": 92.054,
+      "allocated_cpus": 1,
+      "exit_code": "0:0"
+    },
+    {
+      "job_id": "7996366_11",
+      "state": "COMPLETED",
+      "elapsed": "00:01:45",
+      "reported_cpu_seconds": 91.92699999999999,
+      "allocated_cpus": 1,
+      "exit_code": "0:0"
+    },
+    {
+      "job_id": "7996473",
+      "state": "COMPLETED",
+      "elapsed": "00:07:49",
+      "reported_cpu_seconds": 1396.541,
+      "allocated_cpus": 4,
+      "exit_code": "0:0"
+    },
+    {
+      "job_id": "7996492",
+      "state": "COMPLETED",
+      "elapsed": "00:00:14",
+      "reported_cpu_seconds": 5.076,
+      "allocated_cpus": 1,
+      "exit_code": "0:0"
+    }
+  ],
+  "caution": "Reported TotalCPU is not allocated walltime, GPU-hours, dollar charges or a bank throughput estimate."
+}

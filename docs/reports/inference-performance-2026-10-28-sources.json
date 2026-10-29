@@ -1,0 +1,66 @@
+{
+  "report_date": "2026-10-28",
+  "source_link_base": "https://github.com/fmuia/sbi4finance/blob/e0d2d1b/",
+  "renderer_versions": {
+    "numpy": "2.5.4",
+    "matplotlib": "3.11.2",
+    "reportlab": "5.1.0",
+    "pypdf": "6.21.3"
+  },
+  "models": [
+    {
+      "model": "Heston",
+      "training_surfaces": 100000,
+      "evaluated_split": "test",
+      "checkpoint_sha256": "8d4a243ba099524cf4cda40e4f0616e895879f053829a7f60dadbe65b98301db",
+      "report_role": "baseline figures"
+    },
+    {
+      "model": "Rough Bergomi / known curve",
+      "training_surfaces": 50000,
+      "evaluated_split": "validation",
+      "checkpoint_sha256": "e32732daea513c1887438eab801e660f286166846ef65eac6258136c3f504613",
+      "report_role": "baseline figures"
+    },
+    {
+      "model": "Rough Bergomi / joint curve",
+      "training_surfaces": 20000,
+      "evaluated_split": "validation",
+      "checkpoint_sha256": "8d552a9392d54f98a954401fb979e861f26b9a9c71690b5c3980a4e8fa608dec",
+      "report_role": "baseline figures"
+    },
+    {
+      "model": "Rough Bergomi / known curve",
+      "training_surfaces": 100000,
+      "evaluated_split": "validation",
+      "checkpoint_sha256": "39f1a81986a38994dc6eacc520ad95254b34346abc02e758c08779c7c5916fc4",
+      "report_role": "later fit / matched appendix comparison"
+    }
+  ],
+  "sources": {
+    "docs/pilot-results/2026-10-28/heston-candidate-acceptance/results/acceptance/evaluation.json": "c8ce2dede56f1f5a68044ccd7529a10bf91dd0ac6a231049042b3c0fb781ea0e",
+    "docs/pilot-results/2026-10-28/known50k-completed/evaluation.json": "2e3084c8ef1b7eb8e37af0d8c06520d12ef7de3ac63666fd8a48f285f774b66a",
+    "docs/pilot-results/2026-10-28/joint20k-completed/evaluation.json": "bd64900a3caf9ef1350e3be3d56a5af03da41a47f3b79cf204806e74fcba1cab",
+    "docs/pilot-results/2026-10-28/heston-candidate-acceptance/results/products/products.json": "f7d665dae57c4db1b742996b1b3cfd5e07edf2d3a019ec8ce0c48b1cb68b6677",
+    "docs/pilot-results/2026-10-28/interior-corners/heston-interior-verification.json": "a1ca219a7958f83dba54c36460820a757076b3af29be7be4a82be4a36d5b7283",
+    "docs/pilot-results/2026-10-28/known50k-completed/pricer-run.json": "4f2c858185d0d00a3b60db4c4aa75ed33e6e106089102c61450e8edd535a5a27",
+    "docs/pilot-results/2026-10-28/joint20k-completed/pricer-run.json": "f16cc1c860d9860cfed057a64ccb836302d34f0120beca680d9b906de133ef72",
+    "docs/backbone-validation-2026-10-28.md": "16ce0e9cbffacb6901c29643394bb81cb7a7b6d74e3ab353aa2374ba3358576e",
+    "docs/pilot-results/2026-10-28/interior-corners/heston-interior-complete-corner.json": "a5c3407f12f79091b296d2d3fa17191fde10bc4e990711f92c528a20b2ba1d24",
+    "docs/pilot-results/2026-10-28/rough-emulator-readiness/known50k/readiness.json": "dd80208518d1788faff371d404bfc5d84aa7b7bd145a229697c5678a50568673",
+    "data/synthetic/full-surface-backbones/artifacts.json": "e58f68e4d644126f750869edb2246351ecf76293d3dcecfa85d2c798683e9746",
+    "docs/pilot-results/2026-10-28/rough-emulator-readiness/joint20k/readiness.json": "dc954b650a6685939b5c6b65826559a423853caf5e6e07a70893818fb714cf03",
+    "docs/pilot-results/2026-10-28/known50k-current-pymc/terminal-summary.json": "26a7733115c81101a9616109ac1246e3795b09d1cad4ec3ffc1e74fb7a331d7c",
+    "docs/pilot-results/2026-10-28/known50k-current-pymc/README.md": "6f18b24ce65547e5125e4d221422a0e997b3f2a5d7caaaa6ad3a645447d4c095",
+    "docs/pilot-results/2026-10-28/known100k-completed-fit/comparison-summary.json": "68604314fd5f0f31cb4a4b2a1d70675254327732ac595ea1970e5fc96aba7b83",
+    "docs/pilot-results/2026-10-28/known100k-completed-fit/bank-and-model-identity-proof.json": "7b50c1627d3e02ea798555f5ef70d528782a727be1808271af88817eb220d940",
+    "docs/pilot-results/2026-10-28/rough-emulator-readiness/known100k/readiness.json": "0eb8c21acc54ec4c6528b233a821da42a158d3958cf2c5976138c6aa91411a0d",
+    "docs/pilot-results/2026-10-28/known100k-fixed50k-pymc/comparison.json": "80eec85c42c97b65847cf8d7cfe4e417ee9abc70466c04e5f86f85fdfbd7c87e",
+    "docs/pilot-results/2026-10-28/known100k-completed-fit/known100k/known/validation/evaluation.json": "e4f6c2a91ad92597032c6918cac743c8d5d617c0b5a8826ef0884774a20e4b2c"
+  },
+  "existing_figure": {
+    "path": "docs/pilot-results/2026-10-28/interior-corners/heston-interior-complete-corner.png",
+    "sha256": "faf454126de9eb1eacff9409f9cdc9cd7af498e417005052c230dac3da94d49e"
+  },
+  "generated_pdf_sha256": "c955688b4b57dbb0878e957dfb23a5fa02eb16eb78c82f15a2ca17e01a880e5f"
+}

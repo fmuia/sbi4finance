@@ -1,0 +1,14 @@
+{
+  "reference_cases": 3,
+  "reference_chain_shape": [
+    4,
+    8000,
+    4
+  ],
+  "existing_neural_draws_per_case": 10000,
+  "source_hash_verified": true,
+  "input_hashes_verified": 9,
+  "figure_visually_reviewed": true,
+  "new_sampling_training_pricing_or_cluster_jobs": false,
+  "geometry_scope": "Post-hoc descriptive example, no mode claim or new acceptance gate."
+}

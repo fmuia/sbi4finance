@@ -1,0 +1,308 @@
+{
+  "format": "reviewed_joint_three_timeout_recovery_execution_v1",
+  "status": "completed_validated_original_three_ranges",
+  "approved_scope": "Root approved one bounded manual recovery of original indices 378\u2013380 with unchanged IDs, seeds, source and map; 3-hour, 1-CPU, 8-GB caps; exclude node2338. No wider refill or automatic retry.",
+  "source_revision": "c773ceb26e7273612b15c69fd63715d131778083",
+  "collection_id": "817de3664968de0c605ae4c73e2c99c26465344294af2fc5412f39fffa4baa50",
+  "collection_sha256": "802a200f73bacddaa744abcfdcf2497b2d45a609c9039ed816baf1e3e9a5b12c",
+  "job_map_sha256": "a815c58087279fa7c2b5603d6bc3fee11ed92ec7965c0ac29c2827a665bbae0c",
+  "root_seed": 271200,
+  "original_map_indices": [
+    378,
+    379,
+    380
+  ],
+  "original_timeout_job_ids": [
+    "8019485_378",
+    "8019485_379",
+    "8019485_380"
+  ],
+  "unit_cpu_hour_ceiling": 9.5,
+  "bank_cpu_hour_ceiling": 1500,
+  "baseline_bank_allocated_cpu_seconds": 1016212,
+  "final_snapshot_cpu_seconds_reserved": 3960,
+  "all_stages_full_exposure_cpu_seconds": 34200,
+  "all_stages_plus_existing_and_final_exposure_cpu_seconds": 1054372,
+  "stage_driver_sha256": "dec48a94bd107873ba3ed854150e386dd41615a748edd28a490f78ccb35fb993",
+  "stages": [
+    {
+      "role": "preflight",
+      "state": "completed",
+      "indices": null,
+      "wall_seconds_per_task": 300,
+      "cleanup_seconds_per_task": 240,
+      "full_cpu_seconds_including_cleanup": 540,
+      "argv": [
+        "sbatch",
+        "--parsable",
+        "--nodes=1",
+        "--ntasks=1",
+        "--no-requeue",
+        "--account=carney-mjfrank-condo2",
+        "--partition=batch",
+        "--cpus-per-task=1",
+        "--mem=8G",
+        "--exclude=node2338",
+        "--chdir=/oscar/scratch/afengler/sbi4finance-native-bank-20261027/repo",
+        "--job-name=sbi4f-joint-recovery-preflight",
+        "--time=00:05:00",
+        "--output=/oscar/scratch/afengler/sbi4finance-native-bank-20261027/recovery-378-380-20261027/logs/preflight-%j.out",
+        "--wrap=env PYTHONPATH=/oscar/scratch/afengler/sbi4finance-native-bank-20261027/repo/src OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 /oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python /oscar/scratch/afengler/sbi4finance-native-bank-20261027/recovery-378-380-20261027/joint_timeout_recovery_stage_20261027.py preflight"
+      ],
+      "submission_cwd": "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/repo",
+      "parent_attempt_key": "joint-timeout-recovery-20261027-preflight",
+      "budget_check": {
+        "checked_utc": "2026-10-27T22:00:50.371161+00:00",
+        "completed_unit_allocated_cpu_seconds": 0,
+        "all_outstanding_unsubmitted_full_caps_cleanup_cpu_seconds": 34200,
+        "unit_exposure_cpu_seconds": 34200,
+        "bank_plus_final_snapshot_exposure_cpu_seconds": 1054372
+      },
+      "attempted_utc": "2026-10-27T22:00:50.371328+00:00",
+      "operator_sha256": "316fee377d64223b73fddca5941daaa15a54f993a3aadbac10a7dccef243894c",
+      "stdout": "8030743\n",
+      "stderr": "",
+      "returncode": 0,
+      "job_id": "8030743",
+      "submitted_utc": "2026-10-27T22:01:00.476688+00:00",
+      "terminal_accounting": [
+        {
+          "job_id": "8030743",
+          "state": "COMPLETED",
+          "elapsed_seconds": 12,
+          "allocated_cpus": 1,
+          "allocated_cpu_seconds": 12,
+          "exit_code": "0:0"
+        }
+      ]
+    },
+    {
+      "role": "workers",
+      "state": "completed",
+      "indices": [
+        378,
+        379,
+        380
+      ],
+      "wall_seconds_per_task": 10800,
+      "cleanup_seconds_per_task": 240,
+      "full_cpu_seconds_including_cleanup": 33120,
+      "argv": [
+        "sbatch",
+        "--parsable",
+        "--job-name=sbi4f-joint-timeout-recovery-378-380",
+        "--nodes=1",
+        "--ntasks=1",
+        "--no-requeue",
+        "--account=carney-mjfrank-condo2",
+        "--partition=batch",
+        "--cpus-per-task=1",
+        "--mem=8G",
+        "--time=03:00:00",
+        "--exclude=node2338",
+        "--array=378,379,380%3",
+        "--chdir=/oscar/scratch/afengler/sbi4finance-native-bank-20261027/repo",
+        "--output=/oscar/scratch/afengler/sbi4finance-native-bank-20261027/recovery-378-380-20261027/logs/workers-%A_%a.out",
+        "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/repo/cluster/calibration_collection_array.sbatch",
+        "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python",
+        "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/jobs-20k.json"
+      ],
+      "submission_cwd": "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/repo",
+      "parent_attempt_key": "joint-timeout-recovery-20261027-workers",
+      "budget_check": {
+        "checked_utc": "2026-10-27T22:01:32.296070+00:00",
+        "completed_unit_allocated_cpu_seconds": 12,
+        "all_outstanding_unsubmitted_full_caps_cleanup_cpu_seconds": 33660,
+        "unit_exposure_cpu_seconds": 33672,
+        "bank_plus_final_snapshot_exposure_cpu_seconds": 1053844
+      },
+      "attempted_utc": "2026-10-27T22:01:32.296499+00:00",
+      "operator_sha256": "316fee377d64223b73fddca5941daaa15a54f993a3aadbac10a7dccef243894c",
+      "stdout": "8030747\n",
+      "stderr": "",
+      "returncode": 0,
+      "job_id": "8030747",
+      "submitted_utc": "2026-10-27T22:01:40.784627+00:00",
+      "terminal_accounting": [
+        {
+          "job_id": "8030747_378",
+          "state": "COMPLETED",
+          "elapsed_seconds": 1723,
+          "allocated_cpus": 1,
+          "allocated_cpu_seconds": 1723,
+          "exit_code": "0:0"
+        },
+        {
+          "job_id": "8030747_379",
+          "state": "COMPLETED",
+          "elapsed_seconds": 1131,
+          "allocated_cpus": 1,
+          "allocated_cpu_seconds": 1131,
+          "exit_code": "0:0"
+        },
+        {
+          "job_id": "8030747_380",
+          "state": "COMPLETED",
+          "elapsed_seconds": 1210,
+          "allocated_cpus": 1,
+          "allocated_cpu_seconds": 1210,
+          "exit_code": "0:0"
+        }
+      ]
+    },
+    {
+      "role": "postcheck",
+      "state": "completed",
+      "indices": null,
+      "wall_seconds_per_task": 300,
+      "cleanup_seconds_per_task": 240,
+      "full_cpu_seconds_including_cleanup": 540,
+      "argv": [
+        "sbatch",
+        "--parsable",
+        "--nodes=1",
+        "--ntasks=1",
+        "--no-requeue",
+        "--account=carney-mjfrank-condo2",
+        "--partition=batch",
+        "--cpus-per-task=1",
+        "--mem=8G",
+        "--exclude=node2338",
+        "--chdir=/oscar/scratch/afengler/sbi4finance-native-bank-20261027/repo",
+        "--job-name=sbi4f-joint-recovery-postcheck",
+        "--time=00:05:00",
+        "--output=/oscar/scratch/afengler/sbi4finance-native-bank-20261027/recovery-378-380-20261027/logs/postcheck-%j.out",
+        "--wrap=env PYTHONPATH=/oscar/scratch/afengler/sbi4finance-native-bank-20261027/repo/src OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 /oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python /oscar/scratch/afengler/sbi4finance-native-bank-20261027/recovery-378-380-20261027/joint_timeout_recovery_stage_20261027.py postcheck"
+      ],
+      "submission_cwd": "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/repo",
+      "parent_attempt_key": "joint-timeout-recovery-20261027-postcheck",
+      "budget_check": {
+        "checked_utc": "2026-10-27T22:31:33.107010+00:00",
+        "completed_unit_allocated_cpu_seconds": 4076,
+        "all_outstanding_unsubmitted_full_caps_cleanup_cpu_seconds": 540,
+        "unit_exposure_cpu_seconds": 4616,
+        "bank_plus_final_snapshot_exposure_cpu_seconds": 1024788
+      },
+      "attempted_utc": "2026-10-27T22:31:33.107212+00:00",
+      "operator_sha256": "316fee377d64223b73fddca5941daaa15a54f993a3aadbac10a7dccef243894c",
+      "stdout": "8030998\n",
+      "stderr": "",
+      "returncode": 0,
+      "job_id": "8030998",
+      "submitted_utc": "2026-10-27T22:31:43.065587+00:00",
+      "terminal_accounting": [
+        {
+          "job_id": "8030998",
+          "state": "COMPLETED",
+          "elapsed_seconds": 11,
+          "allocated_cpus": 1,
+          "allocated_cpu_seconds": 11,
+          "exit_code": "0:0"
+        }
+      ]
+    }
+  ],
+  "completed_utc": "2026-10-27T22:32:13.656231+00:00",
+  "final_accounting": {
+    "stages": {
+      "preflight": [
+        {
+          "job_id": "8030743",
+          "state": "COMPLETED",
+          "elapsed_seconds": 12,
+          "allocated_cpus": 1,
+          "allocated_cpu_seconds": 12,
+          "exit_code": "0:0"
+        }
+      ],
+      "workers": [
+        {
+          "job_id": "8030747_378",
+          "state": "COMPLETED",
+          "elapsed_seconds": 1723,
+          "allocated_cpus": 1,
+          "allocated_cpu_seconds": 1723,
+          "exit_code": "0:0"
+        },
+        {
+          "job_id": "8030747_379",
+          "state": "COMPLETED",
+          "elapsed_seconds": 1131,
+          "allocated_cpus": 1,
+          "allocated_cpu_seconds": 1131,
+          "exit_code": "0:0"
+        },
+        {
+          "job_id": "8030747_380",
+          "state": "COMPLETED",
+          "elapsed_seconds": 1210,
+          "allocated_cpus": 1,
+          "allocated_cpu_seconds": 1210,
+          "exit_code": "0:0"
+        }
+      ],
+      "postcheck": [
+        {
+          "job_id": "8030998",
+          "state": "COMPLETED",
+          "elapsed_seconds": 11,
+          "allocated_cpus": 1,
+          "allocated_cpu_seconds": 11,
+          "exit_code": "0:0"
+        }
+      ]
+    },
+    "unit_allocated_cpu_seconds": 4087,
+    "unit_allocated_cpu_hours": 1.1352777777777778,
+    "unit_full_authorized_cpu_seconds": 34200,
+    "bank_actual_allocated_cpu_seconds": 1020299,
+    "bank_actual_plus_original_final_snapshot_reserve_cpu_seconds": 1024259,
+    "no_additional_recovery_or_refill_reserved": true
+  },
+  "postcheck_summary": {
+    "format": "joint_three_shard_recovery_integrity_v1",
+    "stage": "postcheck",
+    "status": "completed_integrity_postcheck",
+    "no_financial_pricing_calls": true,
+    "no_neural_calls": true,
+    "source_revision": "c773ceb26e7273612b15c69fd63715d131778083",
+    "script_sha256": "dec48a94bd107873ba3ed854150e386dd41615a748edd28a490f78ccb35fb993",
+    "preserved_parts": 394,
+    "new_original_ranges_published": 3,
+    "recovered_surface_ids": 75,
+    "total_published_training_surfaces": 9925,
+    "total_published_parts": 397,
+    "original_staging_preserved": true,
+    "new_parts": {
+      "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000009450-0000009475": {
+        "split": "train",
+        "start": 9450,
+        "stop": 9475,
+        "manifest_sha256": "292b1a07816996e1ed9ce43af818660e711548cc5e29a8fdf98a0bb687c99eb3",
+        "array_sha256": "1ed4f78e445dd4b4f77dc7ac0baea4aa85398641254e2038d30ed98e5df1b790"
+      },
+      "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000009475-0000009500": {
+        "split": "train",
+        "start": 9475,
+        "stop": 9500,
+        "manifest_sha256": "27dfaac68238f5d883ddb06c118e1ba5d8692b84aee02db7e013d1007e49f64f",
+        "array_sha256": "f02d8f05dd9de99d105f36547f5dba3c4708648e10f45355ca5d8c646c70b492"
+      },
+      "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000009500-0000009525": {
+        "split": "train",
+        "start": 9500,
+        "stop": 9525,
+        "manifest_sha256": "fa5ffe3f56799a82cc2e20181639066a149ed12a8f20ea847be88596f4840846",
+        "array_sha256": "e8404c8bf4a05ddfa6bce1f9f369ed0d4c0ba5b71da94ec9017d8cc794d73c49"
+      }
+    },
+    "maximum_reported_mcse_over_quote_sigma": 0.24985947804442066,
+    "recovered_rows_above_nominal_025": 0,
+    "recovered_rows_above_hard_05": 0,
+    "exact_prior_and_quote_noise_reconstruction": true,
+    "ordered_pricing_seed_digest_sha256": "4d5fb2a64a6503279d23a602c34c3b372cfc111d78797afba58a7e26ef1afc24",
+    "full_32000_snapshot_complete": false,
+    "reserved_test_outcomes_evaluated": false,
+    "seconds": 9.58399148285389
+  }
+}

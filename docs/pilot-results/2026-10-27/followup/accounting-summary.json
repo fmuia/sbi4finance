@@ -1,0 +1,12 @@
+{
+  "format": "bounded_followup_accounting_v1",
+  "terminal_allocations": 7,
+  "all_completed": true,
+  "allocated_cpu_seconds": 4472,
+  "allocated_cpu_hours": 1.2422222222222221,
+  "gpu_seconds": 833,
+  "gpu_hours": 0.2313888888888889,
+  "reported_cluster_cpu_seconds": 2123.2960000000003,
+  "local_archived_process_cpu_seconds": 68.106988,
+  "scope": "Top-level allocation CPU once; step CPU not added. Local archival CPU counts all JAX threads. Small local saved-data reductions are separate from Oscar allocation."
+}

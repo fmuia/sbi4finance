@@ -1,0 +1,36 @@
+{
+  "accounting": "8030954|COMPLETED|84|4|0:0\n8030954.batch|COMPLETED|84|4|0:0\n8030954.extern|COMPLETED|84|4|0:0\n",
+  "run": {
+    "status": "completed_approximate_emulator_comparisons",
+    "seconds": 82.98009942658246,
+    "failure": null
+  },
+  "cases": [
+    {
+      "index": 0,
+      "status": "completed",
+      "seconds": 28.51403019670397,
+      "returncode": 0,
+      "proposed_parameter_agreement_all_checks_passed": true
+    },
+    {
+      "index": 1,
+      "status": "completed",
+      "seconds": 25.474106370471418,
+      "returncode": 0,
+      "proposed_parameter_agreement_all_checks_passed": false
+    },
+    {
+      "index": 2,
+      "status": "completed",
+      "seconds": 27.762693332508206,
+      "returncode": 0,
+      "proposed_parameter_agreement_all_checks_passed": false
+    }
+  ],
+  "poll": 2,
+  "observed_utc": "2026-10-27T22:31:49.647483+00:00",
+  "state": "COMPLETED",
+  "elapsed_seconds": 84,
+  "exit_code": "0:0"
+}

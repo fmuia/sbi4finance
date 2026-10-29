@@ -1,0 +1,120 @@
+{
+  "checked_utc": "2026-10-28T14:37:02.206268+00:00",
+  "read_only_watch_completed": "successful_automatic_handoff",
+  "split_counts": {
+    "test": 7000,
+    "train": 20000,
+    "validation": 5000
+  },
+  "checked_snapshot": "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/snapshot-20k",
+  "snapshot_manifest_sha256": "c0de030bafef6de3f728d75788cd7feddd672b476795b57c42ecd8cbb0843ce9",
+  "completion_sha256": "766fb3d8178ff16c6732d0f9289f99b559d1a362d868ff34264e4e1ff637ccfe",
+  "original_readiness_sha256": "766fb3d8178ff16c6732d0f9289f99b559d1a362d868ff34264e4e1ff637ccfe",
+  "completion_matches_original_readiness": true,
+  "cumulative_original_joint_allocated_cpu_seconds": 3146021,
+  "cumulative_original_joint_allocated_cpu_hours": 873.8947222222222,
+  "ceiling_cpu_hours": 1500,
+  "terminal_recovery_allocations": [
+    {
+      "job_id": "8051758_0",
+      "state": "COMPLETED",
+      "elapsed_seconds": 1892,
+      "cpus": 1,
+      "exit_code": "0:0",
+      "node": "node1804"
+    },
+    {
+      "job_id": "8051758_1",
+      "state": "COMPLETED",
+      "elapsed_seconds": 2446,
+      "cpus": 1,
+      "exit_code": "0:0",
+      "node": "node1807"
+    },
+    {
+      "job_id": "8053113",
+      "state": "COMPLETED",
+      "elapsed_seconds": 32,
+      "cpus": 1,
+      "exit_code": "0:0",
+      "node": "node1830"
+    },
+    {
+      "job_id": "8053235",
+      "state": "COMPLETED",
+      "elapsed_seconds": 62,
+      "cpus": 1,
+      "exit_code": "0:0",
+      "node": "node1808"
+    }
+  ],
+  "training_allocation": [
+    {
+      "job_id": "8053365",
+      "state": "RUNNING",
+      "elapsed_seconds": 29,
+      "cpus": 4,
+      "exit_code": "0:0",
+      "node": "gpu3001"
+    }
+  ],
+  "joint100k_first_array": "8053366",
+  "joint100k_workers": {
+    "RUNNING": 200
+  },
+  "joint100k_first_wave_nodes": {
+    "node1817": 1,
+    "node1820": 1,
+    "node1838": 1,
+    "node1843": 1,
+    "node1847": 1,
+    "node1848": 3,
+    "node1850": 1,
+    "node1854": 1,
+    "node1856": 2,
+    "node1933": 2,
+    "node1937": 2,
+    "node1940": 1,
+    "node1944": 1,
+    "node1945": 1,
+    "node1947": 2,
+    "node1950": 2,
+    "node1954": 2,
+    "node1955": 10,
+    "node2333": 13,
+    "node2334": 18,
+    "node2335": 1,
+    "node2337": 8,
+    "node2340": 4,
+    "node2342": 15,
+    "node2343": 1,
+    "node2345": 7,
+    "node2347": 4,
+    "node2350": 13,
+    "node2351": 13,
+    "node2352": 11,
+    "node1905": 2,
+    "node1906": 2,
+    "node1907": 1,
+    "node1908": 1,
+    "node1910": 2,
+    "node1911": 1,
+    "node1912": 2,
+    "node1924": 2,
+    "node1925": 1,
+    "node1926": 1,
+    "node1927": 1,
+    "node1929": 1,
+    "node1930": 2,
+    "node1931": 1,
+    "node2301": 16,
+    "node2302": 16,
+    "node2307": 4,
+    "node2308": 1
+  },
+  "all_excluded_nodes_avoided": true,
+  "source_receipts": {
+    "full_handoff": "/private/tmp/joint-handoff-watch-20261028/terminal-start-receipt.json",
+    "exact_final_bytes": "/private/tmp/joint-handoff-watch-20261028/final-receipts.json"
+  }
+}

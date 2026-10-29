@@ -1,0 +1,17 @@
+{
+  "before_plan_sha256": "4cb00b3ba26600dadd4e98cc4606f4d30e2ae0ed9738c431039d25748194e159",
+  "after_plan_sha256": "cbc6be83ae9a05b83a7dd74870264cbdb09605902ea520f8dbd602d597a3a431",
+  "stopped_execution_sha256": "d4cf86e046d05e53de23c28aa81f6ae85a70540327de774f2d6c039c0deee9c4",
+  "old_controller_pid": 3570625,
+  "old_controller_status": "stopped_for_review",
+  "pricing_submissions_before_amendment": 0,
+  "retained_metadata_job_ids": [
+    "8032794",
+    "8032795"
+  ],
+  "amendment": "Before any pricing, correct final-only joint context replay from draw_context to derived_context; retain old frozen metadata jobs/plan/helper, no source/seed/task/resource changes. Each bank advances after its own validated preflight; global184worker and separate budgets unchanged.",
+  "stage_v2_sha256": "06e860477a336173c07d816a7522dccd6313451411edaceeedc49322cf271ecc",
+  "controller_v2_sha256": "1f48840039f50a19035572d6ec74001b0f3b085649f13207f315cafd72696179",
+  "finalizer_checks": "Before-fix joint replay fails; after-fix real native freeze plus exact replay succeeds on tiny known and joint mocked-price banks.",
+  "operator_checks": "Budget/fake-sbatch/duplicate/unknown/timeout checks pass; no real scheduler calls."
+}

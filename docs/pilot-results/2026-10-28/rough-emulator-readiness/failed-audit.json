@@ -1,0 +1,49 @@
+{
+  "format": "joint_price_panel_execution_v1",
+  "state": "stopped_for_review",
+  "plan_sha256": "f04e925ba8677f61570f483369aa99c73d7adced9ad33ed5958f97195707d126",
+  "started_utc": "2026-10-28T16:48:55.900173+00:00",
+  "prior_allocated_cpu_seconds": 5790,
+  "cpu_ceiling_seconds": 86400,
+  "automatic_retry": false,
+  "scientific_acceptance": false,
+  "reserved_test_evaluated": false,
+  "attempts": [
+    {
+      "role": "audit",
+      "state": "submitted",
+      "wall_seconds": 1200,
+      "argv": [
+        "sbatch",
+        "--parsable",
+        "--nodes=1",
+        "--ntasks=1",
+        "--cpus-per-task=1",
+        "--mem=16G",
+        "--time=00:20:00",
+        "--no-requeue",
+        "--account=carney-mjfrank-condo2",
+        "--partition=batch",
+        "--chdir=/oscar/scratch/afengler/sbi4finance-native-bank-20261027/repo",
+        "--exclude=node2338,node2339,node2336,node2344,node2346",
+        "--job-name=rough-price-audit",
+        "--output=/oscar/scratch/afengler/sbi4finance-scientific-validation-20261028/joint-price-panel/logs/audit-%j.out",
+        "--wrap=env PYTHONPATH=/oscar/scratch/afengler/sbi4finance-native-bank-20261027/repo/src OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 NUMBA_CACHE_DIR=/oscar/scratch/afengler/sbi4finance-scientific-validation-20261028/joint-price-panel/cache/numba PYTENSOR_FLAGS=base_compiledir=/oscar/scratch/afengler/sbi4finance-scientific-validation-20261028/joint-price-panel/cache/pytensor /oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python /oscar/scratch/afengler/sbi4finance-scientific-validation-20261028/source/validate_rough_price_panel.py audit --plan /oscar/scratch/afengler/sbi4finance-scientific-validation-20261028/joint-price-panel/plan.json"
+      ],
+      "stdout": "8059387\n",
+      "stderr": "",
+      "returncode": 0,
+      "job_id": "8059387",
+      "terminal": {
+        "state": "FAILED",
+        "elapsed_seconds": 2,
+        "cpus": 1,
+        "exit_code": "1:0",
+        "allocated_cpu_seconds": 2
+      }
+    }
+  ],
+  "observed_stopped_utc": "2026-10-28T16:54:20.163107+00:00",
+  "error": "Frozen c773 reference module lacks newer load_forward_pricer consumer API; no pricing jobs submitted",
+  "total_new_allocated_cpu_seconds": 2
+}

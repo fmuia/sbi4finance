@@ -1,0 +1,59 @@
+{
+  "state": "partial_screen",
+  "plan_sha256": "8f2ec3d0059374bfc23f3d2c0f46a6c3dc728cc7a05bb3f90e16da5063b88855",
+  "variants": [
+    {
+      "family": "flow_matching",
+      "encoder": "vector",
+      "name": "flow_matching-vector",
+      "state": "completed",
+      "training_seconds": 102.85571529704612,
+      "validation_seconds": 43.516000941977836
+    },
+    {
+      "family": "affine",
+      "encoder": "vector",
+      "name": "affine-vector",
+      "state": "completed",
+      "training_seconds": 141.20716010394972,
+      "validation_seconds": 12.694367521093227
+    },
+    {
+      "family": "spline",
+      "encoder": "vector",
+      "name": "spline-vector",
+      "state": "completed",
+      "training_seconds": 187.95523655903526,
+      "validation_seconds": 15.495989320916124
+    },
+    {
+      "family": "mean_flow",
+      "encoder": "vector",
+      "name": "mean_flow-vector",
+      "state": "completed",
+      "training_seconds": 166.6754353980068,
+      "validation_seconds": 15.000463227974251
+    },
+    {
+      "family": "flow_matching",
+      "encoder": "deepset",
+      "name": "flow_matching-deepset",
+      "state": "incomplete",
+      "training_seconds": 203.68435821402818,
+      "error_type": "TimeoutExpired",
+      "error": "Command '['/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/bin/python3.12', '/oscar/scratch/afengler/sbi4finance-training-recovery-v2-20261028/repo/scripts/evaluate_full_surface.py', '--bank', '/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/runs/heston-development/snapshot-20k', '--checkpoint', '/oscar/scratch/afengler/sbi4finance-independent-work-20261028/architecture-screen/flow_matching-deepset/posterior', '--out', '/oscar/scratch/afengler/sbi4finance-independent-work-20261028/architecture-screen/flow_matching-deepset/validation', '--split', 'validation', '--first', '0', '--surfaces', '200', '--draws', '256', '--batch-size', '50', '--seed', '0']' timed out after 64.99999010493048 seconds"
+    },
+    {
+      "family": "flow_matching",
+      "encoder": "set_transformer",
+      "name": "flow_matching-set_transformer",
+      "state": "incomplete",
+      "training_seconds": 208.192154224962,
+      "error_type": "TimeoutExpired",
+      "error": "Command '['/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/bin/python3.12', '/oscar/scratch/afengler/sbi4finance-training-recovery-v2-20261028/repo/scripts/evaluate_full_surface.py', '--bank', '/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/runs/heston-development/snapshot-20k', '--checkpoint', '/oscar/scratch/afengler/sbi4finance-independent-work-20261028/architecture-screen/flow_matching-set_transformer/posterior', '--out', '/oscar/scratch/afengler/sbi4finance-independent-work-20261028/architecture-screen/flow_matching-set_transformer/validation', '--split', 'validation', '--first', '0', '--surfaces', '200', '--draws', '256', '--batch-size', '50', '--seed', '0']' timed out after 64.99997080583125 seconds"
+    }
+  ],
+  "scientific_acceptance": false,
+  "reserved_test_evaluated": false,
+  "seconds": 1228.812491060933
+}

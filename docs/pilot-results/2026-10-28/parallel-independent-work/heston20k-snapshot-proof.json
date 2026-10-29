@@ -1,0 +1,124 @@
+{
+  "checked_utc": "2026-10-28T16:45:32.011361+00:00",
+  "bank": "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/runs/heston-development/snapshot-20k",
+  "manifest_sha256": "1a7906f58a2b3e1e4cc868bc819c9c9308357f2f23f7fbb642c682860fb0074f",
+  "manifest_keys": [
+    "collection",
+    "collection_id",
+    "conditioning_cutoff_years",
+    "configuration",
+    "configuration_sha256",
+    "contract_selection",
+    "data_origin",
+    "evidence_scope",
+    "format",
+    "future_outcomes_in_conditioning",
+    "measure",
+    "noise",
+    "numerical_scope",
+    "parts",
+    "prior",
+    "purpose",
+    "rng",
+    "roles",
+    "seed_audit",
+    "source_sha256",
+    "splits",
+    "task_fingerprint",
+    "truth_available",
+    "versions"
+  ],
+  "source_sha256": {
+    "calibration/bank.py": "9f0d512ba6f52df5c73c54599183159f535b2aa84ac4daa6a60cfd219afcc7db",
+    "calibration/pricing.py": "fb1a16548514cc6f806baa651ef05310934dcb55e7fc591a2a49f0395ab7df71",
+    "calibration/surface.py": "24c0476ce3000208438d440cbbb1bf21efd92494b8c634592029af384ee30388",
+    "calibration/tasks.py": "295d1ce59b409f8edb5edba89488fa87a5a4e7bab6f785a152ecb69db1528916",
+    "gbm.py": "8d491f019326712a4a6e985b491658146fa3da9f57f513a6fed421259d55cb5d",
+    "gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
+    "heston.py": "f85237a6f223689bb83fb2837d6f6cba855867f5da9f919667163ae4a4c8996c",
+    "hkde.py": "c6618b6bd54eae169b4fc0e90201b8582b8e7da14ff41a305c27e4e2bd06e503"
+  },
+  "source_revision": null,
+  "versions": {
+    "numpy": "2.5.3",
+    "python": "3.12.16",
+    "scipy": "1.18.1"
+  },
+  "collection_id": "402230db66b9885b59524e7808eebf1b3882c4a271f97eccc7cf970581e85221",
+  "frozen_trainer_source_check": "passed",
+  "frozen_trainer_repo": "/oscar/scratch/afengler/sbi4finance-training-recovery-v2-20261028/repo",
+  "frozen_trainer_revision": "c96a785fa1cc1a3e1ef234b8ddc81322776e5f4a",
+  "architecture_root_exists": false,
+  "pre_submission_failure_only": true,
+  "configuration_summary": {
+    "root_seed": 271028,
+    "splits": {
+      "test": 5000,
+      "train": 20000,
+      "validation": 5000
+    },
+    "task": {
+      "task_id": "hkde_calibration_v1",
+      "model": "hkde",
+      "parameter_names": [
+        "initial_variance",
+        "theta",
+        "vol_of_vol",
+        "rho"
+      ],
+      "prior_bounds": [
+        [
+          0.01,
+          0.16
+        ],
+        [
+          0.01,
+          0.16
+        ],
+        [
+          0.1,
+          1.5
+        ],
+        [
+          -0.95,
+          -0.1
+        ]
+      ],
+      "fixed_parameters": {
+        "jump_down_rate": 10,
+        "jump_intensity": 0,
+        "jump_up_probability": 0.5,
+        "jump_up_rate": 10,
+        "kappa": 2
+      },
+      "numerics": {
+        "max_refinement_over_quote_sigma": 0.1,
+        "quadrature_ladder": [
+          [
+            512,
+            400
+          ],
+          [
+            1024,
+            600
+          ],
+          [
+            2048,
+            1500
+          ],
+          [
+            4096,
+            3000
+          ],
+          [
+            8192,
+            6000
+          ]
+        ]
+      }
+    },
+    "contracts": 63,
+    "measure": "Q"
+  },
+  "omitted_context": "Contract rows and quote-noise arrays omitted from this compact proof; the exact manifest hash binds their complete values."
+}

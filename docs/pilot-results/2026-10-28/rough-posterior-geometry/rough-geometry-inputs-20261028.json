@@ -1,0 +1,78 @@
+{
+  "cases": [
+    {
+      "case": 0,
+      "reference": {
+        "path": "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/runs/case-0/chains.npz",
+        "bytes": 466500,
+        "payload_transferred": false,
+        "sha256": "ee176993dba5337c6be9141ba10faa84e9426856a41588952aa77b8d69197b0d"
+      },
+      "neural": {
+        "path": "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/runs/comparisons/case-0/neural_draws.npz",
+        "bytes": 116514,
+        "sha256": "188c71eab40c2544bca8994fe1d0c83be7f1532ef80cbf369cae34554d01336e"
+      }
+    },
+    {
+      "case": 1,
+      "reference": {
+        "path": "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/runs/case-1/chains.npz",
+        "bytes": 458883,
+        "payload_transferred": false,
+        "sha256": "660e141d9bc98dff49f7243541bbf322f0bc91c993ec83b3af3e14472f50ca61"
+      },
+      "neural": {
+        "path": "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/runs/comparisons/case-1/neural_draws.npz",
+        "bytes": 110254,
+        "sha256": "368bee92f4c7e8649f9098ef6d87ab13b76e3c836ada6b5b8f7e45b212d79b99"
+      }
+    },
+    {
+      "case": 2,
+      "reference": {
+        "path": "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/runs/case-2/chains.npz",
+        "bytes": 450347,
+        "payload_transferred": false,
+        "sha256": "093b04b25db27f567cd59f30bdd95bd3f007537dede79ceac0bda58c07bde6cb"
+      },
+      "neural": {
+        "path": "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/runs/comparisons/case-2/neural_draws.npz",
+        "bytes": 110082,
+        "sha256": "09d2a550c0f14a2ec7f60f7ad892eaf8708fe3c7e5ad9e83a23ddcdb046a1317"
+      }
+    }
+  ],
+  "bounds": [
+    [
+      0.02,
+      0.35
+    ],
+    [
+      0.5,
+      3.5
+    ],
+    [
+      -0.99,
+      -0.2
+    ]
+  ],
+  "parameter_names": [
+    "H",
+    "eta",
+    "rho"
+  ],
+  "reference_scope": "Saved approximate-emulator PyMC target; known7curvelevelspercase; not independent exact-model truth.",
+  "neural_scope": "Savedselected292BF2.1checkpoint; knownconditionalfailuresincases1/2; no newinference.",
+  "sample_axes": {
+    "reference": [
+      "chain",
+      "draw",
+      "parameter"
+    ],
+    "neural": [
+      "draw",
+      "parameter"
+    ]
+  }
+}

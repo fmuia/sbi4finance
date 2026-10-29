@@ -1,0 +1,31 @@
+{
+  "format": "backbone_closeout_checks_v1",
+  "code_revision": "1acceb1",
+  "targeted_unit_tests": 84,
+  "unit_skips": 0,
+  "unit_exit_code": 0,
+  "unit_seconds": 29.861,
+  "unit_modules": [
+    "test_full_surface_known_curve",
+    "test_full_surface_replays",
+    "test_full_surface_post_bank_operator",
+    "test_rough_emulator_readiness",
+    "test_joint_price_panel",
+    "test_full_surface",
+    "test_full_surface_teaching",
+    "test_full_surface_native_solver",
+    "test_calibration_resume",
+    "test_calibration_collections.CollectionTests"
+  ],
+  "static_marimo_strict": [
+    "tutorial_final/notebooks/backbone_review.py",
+    "tutorial_final/notebooks/slot4_heston_bayesflow.py",
+    "tutorial_final/notebooks/slot5_calibration.py"
+  ],
+  "notebooks_executed": false,
+  "github_ci_checks": 0,
+  "native_bank_verification": "completed-receipt.json",
+  "independent_archive_closure_review": "all3archivescontainallnative_snapshot_references",
+  "collaborator_examples": "oneactualpartfromeachrouteverified_without_neural_backend;8train4validationprojected_fixture_loaded;CLIflagschecked",
+  "scope": "Software, distribution and recorded numerical-evidence closeout; scientific acceptance flags unchanged"
+}

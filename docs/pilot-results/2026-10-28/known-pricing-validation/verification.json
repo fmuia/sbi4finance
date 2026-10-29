@@ -1,0 +1,14 @@
+{
+  "status": "passed",
+  "terminal_allocations": 49,
+  "cpu_seconds": 5790,
+  "gpu_seconds": 0,
+  "worker_report_original_hashes_verified": 48,
+  "raw_log_content_hashes_verified": 49,
+  "plan_summary_driver_hashes_verified": true,
+  "compact_means_consistent": true,
+  "compressed_summary_identical": true,
+  "local_readme_links_valid": true,
+  "scientific_acceptance": false,
+  "reserved_test_evaluated": false
+}

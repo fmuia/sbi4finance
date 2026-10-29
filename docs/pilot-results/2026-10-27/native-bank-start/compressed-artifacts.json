@@ -1,0 +1,47 @@
+{
+  "format": "lossless_raw_artifact_index_v1",
+  "artifacts": {
+    "jobs-20k.json": {
+      "stored_file": "jobs-20k.json.gz",
+      "raw_sha256": "a815c58087279fa7c2b5603d6bc3fee11ed92ec7965c0ac29c2827a665bbae0c",
+      "stored_sha256": "0d67dded19aea88bc7978aaec088b94b591834b8fe3ef21ad932f6acde7c57d3",
+      "raw_bytes": 225596,
+      "stored_bytes": 62579
+    },
+    "prior-oscar-inventory.json": {
+      "stored_file": "prior-oscar-inventory.json.gz",
+      "raw_sha256": "a8941c3173c2aabeb0ca43c8c73db6daa1e780bdd824fad6cf0ae41433e03ef0",
+      "stored_sha256": "48c00778ab225930354c6dda63bd6d148aa242c1f2c8ef44016920cef939b617",
+      "raw_bytes": 453945,
+      "stored_bytes": 10083
+    },
+    "seed-audit.json": {
+      "stored_file": "seed-audit.json.gz",
+      "raw_sha256": "080e0bf89ebf8b1b12c710012c0262ecc04fb57f75589bc00a0a557afe4b94b4",
+      "stored_sha256": "44ed5ae4c22d3ffacbd93ed449024ad577f48d189a42212172d852eb77ee7db9",
+      "raw_bytes": 251341,
+      "stored_bytes": 34722
+    },
+    "bank-initial/jobs-20k.json": {
+      "stored_file": "bank-initial/jobs-20k.json.gz",
+      "raw_sha256": "a815c58087279fa7c2b5603d6bc3fee11ed92ec7965c0ac29c2827a665bbae0c",
+      "stored_sha256": "0d67dded19aea88bc7978aaec088b94b591834b8fe3ef21ad932f6acde7c57d3",
+      "raw_bytes": 225596,
+      "stored_bytes": 62579
+    },
+    "bank-initial/latest.json": {
+      "stored_file": "bank-initial/latest.json.gz",
+      "raw_sha256": "0612b03d68f22115f3b3a5746413e839159a2af461a5a55194452d3765b40fbf",
+      "stored_sha256": "a23d3f8d7431c76e2dc087abc5e50c0ecbd9ec0f51df335285a56d0073fbeae7",
+      "raw_bytes": 72467,
+      "stored_bytes": 4805
+    },
+    "bank-wave-4-203/log-inventory.json": {
+      "stored_file": "bank-wave-4-203/log-inventory.json.gz",
+      "raw_sha256": "623dd295b9674480eecf63ed95ad1f7632d11e620012d1a9fedc4d7ba2ba5e43",
+      "stored_sha256": "00e1282591041b444844fdcadeb1c06f34fa23480e6810cf2c3895bb29aed3b4",
+      "raw_bytes": 63171,
+      "stored_bytes": 9029
+    }
+  }
+}

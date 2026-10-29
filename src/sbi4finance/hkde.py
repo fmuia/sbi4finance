@@ -223,7 +223,14 @@ def european_price(forward, strike, discount, maturity, parameters, initial_vari
         integrated = theta*time + (initial_variance-theta)*(-np.expm1(-kappa*time))/kappa
         return gbm.european_price(fwd, k, disc, integrated, option=kind)
     u, weights = _quadrature(int(nodes), cutoff)
-    phi = characteristic_function(u-0.5j, time[..., None], parameters, initial_variance)
+    # A surface repeats each maturity across strikes. The characteristic
+    # function depends on maturity, not strike; retain exact floating values.
+    unique_time, inverse = np.unique(time.reshape(-1), return_inverse=True)
+    if len(unique_time) < time.size:
+        phi = characteristic_function(u-0.5j, unique_time[:, None], parameters, initial_variance)
+        phi = phi[inverse].reshape((*time.shape, len(u)))
+    else:
+        phi = characteristic_function(u-0.5j, time[..., None], parameters, initial_variance)
     integrand = np.real(np.exp(1j*u*np.log(fwd/k)[..., None])*phi)/(u*u+0.25)
     call = disc*(fwd - np.sqrt(fwd*k)*np.sum(integrand*weights, axis=-1)/np.pi)
     call = np.where(time == 0, disc*np.maximum(fwd-k, 0), call)

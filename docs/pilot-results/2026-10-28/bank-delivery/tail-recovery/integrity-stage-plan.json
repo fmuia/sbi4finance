@@ -1,0 +1,33 @@
+{
+  "format": "joint_tail_final_integrity_plan_v1",
+  "scope": "Reuse the unchanged tested final stage after native recovery; original seed preflight is reused byte for byte; 1278-part retained inventory is independently bound. No financial pricing or posterior evaluation.",
+  "phases": {
+    "joint": {
+      "root": "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/tail-recovery-20261028/integrity-bridge/stage",
+      "repo": "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/repo",
+      "revision": "c773ceb26e7273612b15c69fd63715d131778083",
+      "collection": "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection",
+      "collection_id": "817de3664968de0c605ae4c73e2c99c26465344294af2fc5412f39fffa4baa50",
+      "collection_sha256": "802a200f73bacddaa744abcfdcf2497b2d45a609c9039ed816baf1e3e9a5b12c",
+      "root_seed": 271200,
+      "train_target": 20000,
+      "splits": {
+        "train": 20000,
+        "validation": 5000,
+        "test": 7000
+      },
+      "preserved_parts": 1278,
+      "worker_indices": [],
+      "worker_wall_seconds": 10800,
+      "max_workers": 120,
+      "cpu_hour_ceiling": 1500,
+      "prior_allocated_cpu_seconds": 2384586,
+      "snapshot": "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/snapshot-20k",
+      "original_map": "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/jobs-20k.json",
+      "original_map_sha256": "a815c58087279fa7c2b5603d6bc3fee11ed92ec7965c0ac29c2827a665bbae0c",
+      "original_seed_audit": "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/manifests/rough-bank-seed-audit-20261027.json",
+      "original_seed_audit_sha256": "080e0bf89ebf8b1b12c710012c0262ecc04fb57f75589bc00a0a557afe4b94b4",
+      "numerical_scope": "Original1280/2016/2016 six-target joint task; empirical precision only, continuous-price/refinement claims remain unaccepted."
+    }
+  }
+}

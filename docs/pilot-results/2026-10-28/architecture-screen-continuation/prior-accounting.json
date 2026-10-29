@@ -1,0 +1,8 @@
+{
+  "checked_utc": "2026-10-28T18:05:36.174364+00:00",
+  "raw_sacct": "8059371|FAILED|1:0|1231|4|billing=112,cpu=4,gres/gpu=1,mem=32G,node=1\n8059371.batch|FAILED|1:0|1231|4|cpu=4,gres/gpu=1,mem=32G,node=1\n8059371.extern|COMPLETED|0:0|1231|4|billing=112,cpu=4,gres/gpu=1,mem=32G,node=1\n",
+  "prior_cpu_seconds": 4924,
+  "prior_gpu_seconds": 1231,
+  "reviewed_failed_job": "8059371",
+  "historical_failure_preserved": true
+}

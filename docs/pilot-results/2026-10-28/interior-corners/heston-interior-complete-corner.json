@@ -1,0 +1,72 @@
+{
+  "format": "complete_interior_corner_v1",
+  "model": "heston",
+  "scientific_acceptance": false,
+  "reference_shape": [
+    4,
+    8000,
+    4
+  ],
+  "neural_shape": [
+    10000,
+    4
+  ],
+  "parameter_names": [
+    "initial_variance",
+    "theta",
+    "vol_of_vol",
+    "rho"
+  ],
+  "prior_bounds": [
+    [
+      0.01,
+      0.16
+    ],
+    [
+      0.01,
+      0.16
+    ],
+    [
+      0.1,
+      1.5
+    ],
+    [
+      -0.95,
+      -0.1
+    ]
+  ],
+  "truth": [
+    0.085,
+    0.085,
+    0.8,
+    -0.525
+  ],
+  "input_sha256": {
+    "/private/tmp/sbi4finance-interior-corners-20261028/heston/chains.npz": "dcc09de9175bca23e299b25946d947dc0604e7c1c30b978c22ec464263940af3",
+    "/private/tmp/sbi4finance-interior-corners-20261028/heston/reference.json": "ff6c7a4660bdc486546d8dae9825abe0adf8e335972ba5c49df576f8ea189310",
+    "/private/tmp/sbi4finance-interior-corners-20261028/heston/draws.npz": "c3ecc4216560f1b7bd01aa4549bb4364c3e3ebe89bb4dd01f0f2b79b6c3ace56"
+  },
+  "source_sha256": "f1076b42d4f1b48645ba74e0f85ca145f3609ebfcbdfdfe0fb3d33c788710cd9",
+  "reference_interior": {
+    "criterion": "Each central99% marginal interval is strictly inside inner90% of prior range.",
+    "unit_prior_quantiles_005_995": [
+      [
+        0.4971091773790686,
+        0.46534489621549385,
+        0.44448737811139555,
+        0.4612854295583308
+      ],
+      [
+        0.5126046060198202,
+        0.5170377327913926,
+        0.5384722104304455,
+        0.5468076056217808
+      ]
+    ],
+    "interior_passed": true,
+    "minimum_central99_interval_distance_from_prior_boundary_as_fraction_of_prior_width": 0.44448737811139555,
+    "fraction_of_draws_with_any_parameter_outside_inner90_prior_box": 0.0
+  },
+  "plot_scope": "All inferred parameters and every pair shown. Reference uses all4chains; deterministic stride4 for pair display only; statistics use all32000draws. Axes zoom to posterior, not full prior range. Smoothed neural contours are descriptive.",
+  "figure_sha256": "faf454126de9eb1eacff9409f9cdc9cd7af498e417005052c230dac3da94d49e"
+}

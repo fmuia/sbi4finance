@@ -1,0 +1,31 @@
+{
+  "groups": [
+    {
+      "allocated_cpu_seconds": 13001,
+      "group": "rough_pricing",
+      "system_cpu_seconds": 5337.016,
+      "top_level_rows": 44,
+      "total_cpu_seconds": 12745.152,
+      "user_cpu_seconds": 7408.114
+    },
+    {
+      "allocated_cpu_seconds": 7,
+      "group": "declaration",
+      "system_cpu_seconds": 0.26,
+      "top_level_rows": 1,
+      "total_cpu_seconds": 1.77,
+      "user_cpu_seconds": 1.51
+    },
+    {
+      "allocated_cpu_seconds": 4888,
+      "group": "heston",
+      "system_cpu_seconds": 15.499,
+      "top_level_rows": 3,
+      "total_cpu_seconds": 4011.635,
+      "user_cpu_seconds": 3996.135
+    }
+  ],
+  "scope": "one top-level row per allocation; .batch/.extern CPU excluded to avoid double counting; batch MaxRSS used separately",
+  "total_allocated_cpu_seconds": 17896,
+  "total_cpu_seconds": 16758.557
+}

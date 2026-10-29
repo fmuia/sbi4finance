@@ -1,0 +1,27 @@
+{
+  "format": "heston_training_followup_v1",
+  "name": "heston-flow-matching-seed0-500epochs",
+  "bank_manifest_sha256": "1a7906f58a2b3e1e4cc868bc819c9c9308357f2f23f7fbb642c682860fb0074f",
+  "baseline_checkpoint_sha256": "2b364ed687a22fcefc04cd9fb977f68aebcb4f9cecb32f13a4be69925d11400f",
+  "task_fingerprint": "5e499526ff8f29a72f49785a1a36006b1d769d26bca8a6f83f7a8c8ac4d431fa",
+  "splits": {"train": 20000, "validation": 5000, "test": 5000},
+  "network": {"family": "flow_matching", "encoder": "vector", "widths": [256, 256, 256, 256], "summary_dim": 32, "flow_steps": 100, "mean_steps": 4},
+  "training": {"epochs": 500, "batch_size": 256, "chunk_epochs": 50, "seed": 0},
+  "evaluation": {"split": "validation", "first": 0, "surfaces": 500, "draws": 1000, "batch_size": 100, "seed": 0},
+  "reference_comparison": {"case_indices": [0, 1, 2], "neural_draws": 10000, "seed_base": 271026},
+  "resources": {"cpus": 4, "gpus": 1, "memory_gib": 24, "wall_seconds": 1800},
+  "execution_budget": {"total_seconds": 1740, "environment_seconds": 60, "training_seconds": 1200, "validation_seconds": 300, "comparison_seconds_per_case": 60},
+  "preprocessing": "Same core route as the 300-epoch fit: spot-normalized prices divided by fixed quote-noise SD; fresh standard-normal training quote errors; fixed noisy validation; physical bounded targets through logit adapter, float32 conversion and learned standardization. No test arrays are opened.",
+  "optimizer": "Fresh run: AdamW, weight_decay=.005, clipnorm=1.5, 5% warmup to .0005 then cosine decay to zero across the declared total updates.",
+  "selection": "Minimum validation loss within this family, then exact same-device seeded reload check. Loss values are not compared across spline likelihood and flow-matching regression objectives.",
+  "course_relationship": {
+    "archived_metadata": "tutorial_final/checkpoints/heston/training.json",
+    "archived_bayesflow": "2.0.14",
+    "archived_training": "500 epochs, 4x256, seed0, 50k training/5k validation, fresh quote noise, alpha=-.5; 100 nonuniform Euler steps dense at the data endpoint t=1.",
+    "new_bayesflow": "2.1.0",
+    "new_training": "500 epochs, 4x256, seed0, existing20k training/5k validation; current factory default alpha=-.5 with t=1-u^(1+alpha), data endpoint t=0.",
+    "new_sampling": "Current BF2.1 factory: 100 uniform Euler steps from noise t=1 to data t=0; no archived reversed/nonuniform grid is injected.",
+    "limitation": "A course-style architecture in the shared BF2.1 workflow, not an identical replication. Training bank size, endpoint conventions/time distribution, sampler grid and framework differ. A failed comparison can include solver error; sampler refinement is a separate check, not evidence that more training data is needed."
+  },
+  "stop_rule": "Stop this one run on any failure or stage/whole-job time limit; retain committed training checkpoints and incomplete stages. No automatic retry, schedule extension, new data or test evaluation."
+}

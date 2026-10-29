@@ -1,0 +1,22 @@
+{
+  "counts_including_warmup": [
+    12000,
+    12000,
+    12000,
+    12000
+  ],
+  "format": "pymc_partial_draw_progress_v1",
+  "planned_chains": 4,
+  "planned_draws": 8000,
+  "planned_tune": 4000,
+  "posterior_draw_counts": [
+    8000,
+    8000,
+    8000,
+    8000
+  ],
+  "sampler_resumable": false,
+  "scientific_acceptance": false,
+  "scope": "partial trace only; tuning flags must be honored; no sampler/adaptation/RNG state",
+  "seconds": 354.1615665797144
+}

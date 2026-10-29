@@ -1,0 +1,15 @@
+{
+  "prepared_not_activated": true,
+  "joint_borrowing_limit": 184,
+  "global_worker_limit": 184,
+  "joint_cumulative_cpu_hour_limit": 1500,
+  "unchanged_v2_controller_and_finalizer": true,
+  "checks": [
+    "not ready while known generation active",
+    "ready only with known checked final and exact manifest/counts",
+    "stop prevents automatic transfer",
+    "no signal/submission performed"
+  ],
+  "controller_v3_sha256": "7fa3adebeb0ea0ec7406835f1af8244ef1af7e70d035127067195ae72a979ce8",
+  "transfer_helper_sha256": "e0d48a9b83b7422efc38b6c7215c077f1aea67982fecd09dcc9b717d105d2f2c"
+}

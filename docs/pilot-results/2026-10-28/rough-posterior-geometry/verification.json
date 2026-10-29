@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "saved_sample_input_hashes_verified_by_analysis": 6,
+  "chain_axes_recorded": true,
+  "analysis_source_hash_matches": true,
+  "local_readme_links_valid": true,
+  "plot_visual_qa": "BothPNGfiguresinspected;clearlabels,boundaries,referenceandneuraldistinction.",
+  "one_thread_postprocess_wall_seconds": 4.379432704299688,
+  "new_model_calls": 0,
+  "new_slurm_allocations": 0,
+  "scientific_acceptance": false,
+  "reserved_test_evaluated": false
+}

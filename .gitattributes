@@ -1,0 +1,6 @@
+# Preserve raw scientific evidence while keeping review focused on code/reports.
+docs/pilot-results/**/*.json linguist-generated=true
+docs/pilot-results/**/*.npz linguist-generated=true
+docs/pilot-results/**/*.png linguist-generated=true
+docs/pilot-results/**/*.svg linguist-generated=true
+docs/pilot-results/**/*.psv linguist-generated=true

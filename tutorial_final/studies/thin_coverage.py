@@ -67,7 +67,8 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from sbi4finance.calibration import bank, correction, thin, thin_products  # noqa: E402
+from sbi4finance.calibration import bank_collection as bank  # noqa: E402
+from sbi4finance.calibration import correction, thin, thin_products  # noqa: E402
 
 ONE_SIDED = 1.2815515655446004
 H_FIXED = 0.10
@@ -291,7 +292,7 @@ def run(args):
         keep = [i for i, r in enumerate(rows) if r not in done]
         pending, truth, clean, clean_cov = [rows[i] for i in keep], truth[keep], clean[keep], clean_cov[keep]
     else:
-        manifest, splits = bank.load_bank(args.bank, splits=("test",))
+        manifest, splits = bank.load_bank(args.bank, splits=("test",), roles=(*bank.TRAINING_ROLES, "pricing_covariance"))
         if task != manifest["configuration"]["task"]:
             raise ValueError("checkpoint and bank tasks differ")
         test = splits["test"]

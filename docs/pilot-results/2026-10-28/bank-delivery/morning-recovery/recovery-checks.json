@@ -1,0 +1,12 @@
+{
+  "missing_original_ids": 309,
+  "reviewed_failed_ids": 21,
+  "never_submitted_ids": 288,
+  "preserved_parts": 971,
+  "no_active_old_allocations": true,
+  "initial120_full_exposure_cpu_hours": 1032.385,
+  "cumulative_cpu_hour_cap": 1500,
+  "plan_sha256": "714f76271559aba1c13e4bb149cda1777ecf128d1b8bb00cc53252248b68a6c8",
+  "original_execution_sha256": "35925eec53f0152013b8c2782b635bf9862c7e74fdcc76d11e0866b15e28eb8e",
+  "preserved_inventory_sha256": "b516b16f8be36f06059d0bb166c7cfe7de10901d67f538929dcc8e7965c58def"
+}

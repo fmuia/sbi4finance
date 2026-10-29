@@ -1,0 +1,116 @@
+{
+  "format": "calibration_bank_campaign_v1",
+  "state": "generation_active",
+  "started_utc": "2026-10-28T13:50:20.528842+00:00",
+  "pid": 191281,
+  "config": {
+    "task_config": "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/tasks/joint.json",
+    "producer_repo": "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/repo",
+    "expected_git_revision": "c773ceb26e7273612b15c69fd63715d131778083",
+    "expected_runtime": {
+      "numpy": "2.5.3",
+      "python": "3.12.16",
+      "scipy": "1.18.1"
+    },
+    "collection": "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection",
+    "snapshot": "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/tail-recovery-20261028/native-snapshot-20k",
+    "campaign_root": "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/tail-recovery-20261028",
+    "train": 20000,
+    "chunk": 25,
+    "max_workers": 2,
+    "worker_wall_seconds": 10800,
+    "memory_gib": 8,
+    "cpu_hours": 1500,
+    "prior_cpu_seconds": 3141589,
+    "final_wall_seconds": 7200,
+    "cleanup_seconds": 240,
+    "poll_seconds": 60,
+    "controller_wall_hours": 12,
+    "max_array_size": 2,
+    "account": "carney-mjfrank-condo2",
+    "partition": "batch",
+    "seed_policy": "native_collection",
+    "python": "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python",
+    "exclude_nodes": [
+      "node2338",
+      "node2339",
+      "node2336",
+      "node2344",
+      "node2346"
+    ],
+    "expected_operator_sha256": "a59339f9f9d10f4de961a42977e41278324c76e290dc32b806094dc0542d5ee0"
+  },
+  "attempts": [
+    {
+      "role": "workers",
+      "state": "submitted",
+      "utc": "2026-10-28T13:50:44.743916+00:00",
+      "wall_seconds": 10800,
+      "argv": [
+        "sbatch",
+        "--parsable",
+        "--nodes=1",
+        "--ntasks=1",
+        "--cpus-per-task=1",
+        "--no-requeue",
+        "--mem=8G",
+        "--time=0-03:00:00",
+        "--account=carney-mjfrank-condo2",
+        "--partition=batch",
+        "--chdir=/oscar/scratch/afengler/sbi4finance-native-bank-20261027/repo",
+        "--output=/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/tail-recovery-20261028/logs/%A_%a.out",
+        "--job-name=sbi4f-bank",
+        "--exclude=node2338,node2339,node2336,node2344,node2346",
+        "--array=0-1%2",
+        "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/repo/cluster/calibration_collection_array.sbatch",
+        "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python",
+        "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/tail-recovery-20261028/jobs.json",
+        "0"
+      ],
+      "indices": [
+        0,
+        1
+      ],
+      "array_offset": 0,
+      "job_id": "8051758"
+    }
+  ],
+  "scientific_acceptance": false,
+  "collection_id": "817de3664968de0c605ae4c73e2c99c26465344294af2fc5412f39fffa4baa50",
+  "source_sha256": {
+    "bergomi.py": "8bffe12110dfb7b0de85fcf58cb7b848e4f5bc5f5af2f614ff2bd593d0edb6f5",
+    "calibration/bank.py": "9f0d512ba6f52df5c73c54599183159f535b2aa84ac4daa6a60cfd219afcc7db",
+    "calibration/pricing.py": "bf9b57f73f030670de2f3db37b298b56dc0070be2f99cf187188b817020f3b52",
+    "calibration/surface.py": "24c0476ce3000208438d440cbbb1bf21efd92494b8c634592029af384ee30388",
+    "calibration/tasks.py": "295d1ce59b409f8edb5edba89488fa87a5a4e7bab6f785a152ecb69db1528916",
+    "gbm_bank.py": "5b52548449b45192f42081bf14c0c4579749d900e69108b3fa91d0a64c6ddceb",
+    "rough_bergomi.py": "0e8d31c8e18ca8bffd7f798988b22e8a73f75fb49da6eee336f8a106c186ba06"
+  },
+  "runtime": {
+    "numpy": "2.5.3",
+    "python": "3.12.16",
+    "scipy": "1.18.1"
+  },
+  "producer_git_revision": "c773ceb26e7273612b15c69fd63715d131778083",
+  "producer_repo": "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/repo",
+  "seed_policy": {
+    "scope": "native within-collection pricing-seed audit only; no cross-collection certificate requested"
+  },
+  "frozen_sha256": {
+    "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/tail-recovery-source-20261028/run_bank_campaign.py": "a59339f9f9d10f4de961a42977e41278324c76e290dc32b806094dc0542d5ee0",
+    "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/tasks/joint.json": "4b921a70bbcec3e4e0d4744a6b7755ad14f57555bd719289349f98fd17391318",
+    "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/tail-recovery-20261028/jobs.json": "d7e6953113548195f7f9eeb2179f4b25403cfd7af07cf571905bb9aedffa0f99",
+    "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/collection.json": "802a200f73bacddaa744abcfdcf2497b2d45a609c9039ed816baf1e3e9a5b12c"
+  },
+  "planned_workers": 2,
+  "last_poll_utc": "2026-10-28T13:50:44.743837+00:00",
+  "budget": {
+    "actual_cpu_seconds": 3141589,
+    "outstanding_cpu_seconds": 0,
+    "final_reserve_cpu_seconds": 7440,
+    "exposure_cpu_seconds": 3149029,
+    "nonterminal_workers": 0
+  },
+  "completed_workers": 0,
+  "missing_workers": 2
+}

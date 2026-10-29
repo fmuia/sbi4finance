@@ -1,0 +1,8 @@
+{
+  "retained_file_hashes_verified": 42,
+  "json_files_parsed": 25,
+  "python_sources_syntax_checked": 8,
+  "markdown_files_checked": 8,
+  "local_links_checked": 122,
+  "scope": "Evidence/documentation consistency only; numerical jobs and synthetic checks are separately recorded."
+}

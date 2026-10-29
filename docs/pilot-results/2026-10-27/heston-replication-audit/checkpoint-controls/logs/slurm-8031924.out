@@ -1,0 +1,9 @@
+## SLURM PROLOG ###############################################################
+##    Job ID : 8031924
+##  Job Name : sbi4f-heston-audit
+##  Nodelist : gpu3002
+##      CPUs : 1
+##  Mem/Node : 24576 MB
+## Directory : /oscar/home/afengler
+##   Job Started : Tue Oct 27 06:57:31 PM EDT 2026
+###############################################################################

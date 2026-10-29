@@ -1,0 +1,24 @@
+## SLURM PROLOG ###############################################################
+##    Job ID : 8030926
+##  Job Name : sbi4f-heston-readout
+##  Nodelist : gpu2708
+##      CPUs : 1
+##  Mem/Node : 24576 MB
+## Directory : /oscar/home/afengler
+##   Job Started : Tue Oct 27 06:24:34 PM EDT 2026
+###############################################################################
+INFO:bayesflow:Using backend 'jax'
+INFO:bayesflow:Estimator restored from '/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/model.keras'.
+/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/manifests/check_heston_100k_readout_20261027.py:136: DeprecationWarning: __array__ implementation doesn't accept a copy keyword, so passing copy=False failed. __array__ must implement 'dtype' and 'copy' keyword arguments. To learn more, see the migration guide https://numpy.org/devdocs/numpy_2_0_migration_guide.html#adapting-to-changes-in-the-copy-keyword
+  moments_before = [np.array(w) for layer in workflow.estimator.standardizer.standardize_layers.values() for w in layer.weights]
+/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/lib/python3.12/site-packages/keras/src/backend/jax/core.py:401: UserWarning: Explicitly requested dtype float64 requested in asarray is not available, and will be truncated to dtype float32. To enable more dtypes, set the jax_enable_x64 configuration option or the JAX_ENABLE_X64 shell environment variable. See https://github.com/jax-ml/jax#current-gotchas for more.
+  return jnp.asarray(x, dtype=dtype)
+INFO:bayesflow:Sampling completed in 19.42 seconds.
+INFO:bayesflow:Sampling completed in 18.10 seconds.
+INFO:bayesflow:Sampling completed in 4.20 seconds.
+INFO:bayesflow:Sampling completed in 18.50 seconds.
+INFO:bayesflow:Sampling completed in 4.28 seconds.
+INFO:bayesflow:Sampling completed in 18.74 seconds.
+/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/manifests/check_heston_100k_readout_20261027.py:157: DeprecationWarning: __array__ implementation doesn't accept a copy keyword, so passing copy=False failed. __array__ must implement 'dtype' and 'copy' keyword arguments. To learn more, see the migration guide https://numpy.org/devdocs/numpy_2_0_migration_guide.html#adapting-to-changes-in-the-copy-keyword
+  moments_after = [np.array(w) for layer in workflow.estimator.standardizer.standardize_layers.values() for w in layer.weights]
+{"status": "completed_development_diagnosis", "scientific_acceptance": false, "native_policy_unchanged": true}

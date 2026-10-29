@@ -1,0 +1,23 @@
+{
+  "bank_producer": "616352035be4b9d271151090aa5d2d9539da8b1c",
+  "diagnostic_source": "56dcb13e1d2bf5b6dc96e573dfcaa6240a7104a9",
+  "all_four_files_byte_identical": true,
+  "sha256": {
+    "src/sbi4finance/calibration/pricing.py": {
+      "616352035be4b9d271151090aa5d2d9539da8b1c": "bf9b57f73f030670de2f3db37b298b56dc0070be2f99cf187188b817020f3b52",
+      "56dcb13e1d2bf5b6dc96e573dfcaa6240a7104a9": "bf9b57f73f030670de2f3db37b298b56dc0070be2f99cf187188b817020f3b52"
+    },
+    "src/sbi4finance/rough_bergomi.py": {
+      "616352035be4b9d271151090aa5d2d9539da8b1c": "0e8d31c8e18ca8bffd7f798988b22e8a73f75fb49da6eee336f8a106c186ba06",
+      "56dcb13e1d2bf5b6dc96e573dfcaa6240a7104a9": "0e8d31c8e18ca8bffd7f798988b22e8a73f75fb49da6eee336f8a106c186ba06"
+    },
+    "src/sbi4finance/bergomi.py": {
+      "616352035be4b9d271151090aa5d2d9539da8b1c": "8bffe12110dfb7b0de85fcf58cb7b848e4f5bc5f5af2f614ff2bd593d0edb6f5",
+      "56dcb13e1d2bf5b6dc96e573dfcaa6240a7104a9": "8bffe12110dfb7b0de85fcf58cb7b848e4f5bc5f5af2f614ff2bd593d0edb6f5"
+    },
+    "src/sbi4finance/bergomi_refinement.py": {
+      "616352035be4b9d271151090aa5d2d9539da8b1c": "c8a6a2b5a82a4446374b7b7dda2b270a648a9742fde019115747f1604f099b04",
+      "56dcb13e1d2bf5b6dc96e573dfcaa6240a7104a9": "c8a6a2b5a82a4446374b7b7dda2b270a648a9742fde019115747f1604f099b04"
+    }
+  }
+}

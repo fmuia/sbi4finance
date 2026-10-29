@@ -1,0 +1,14 @@
+{
+  "method": "Persistent sacct record; scontrol no longer retained completed job at retrieval",
+  "job_id": "8028749",
+  "sacct_arguments": [
+    "sacct",
+    "-S",
+    "2026-10-27",
+    "-j",
+    "8028749",
+    "-n",
+    "-P",
+    "--format=JobID%64,State%40,AllocCPUS,ReqMem,ReqTRES%100,AllocTRES%100,Partition,Account,QOS,Timelimit,Submit,Start,End"
+  ]
+}

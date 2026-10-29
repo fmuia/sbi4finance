@@ -1,0 +1,67 @@
+{
+  "status": "all10uploadedfiles_match_local_size_and_sha256",
+  "release_tag": "tutorial-backbones-2026-10-29",
+  "repository_visibility": "private",
+  "assets": [
+    {
+      "digest": "sha256:d57543a90b9dc264a7161dea6e3f55f7c8f5a945d95f407d97151794c07afb40",
+      "name": "sbi4finance-bank-heston-100k-20261029.tar.gz",
+      "size": 122873069,
+      "state": "uploaded"
+    },
+    {
+      "digest": "sha256:35b777f9847c4e7f6652a569ab71b4fc29704d873fc10bd55744975896604be7",
+      "name": "sbi4finance-bank-heston-100k-20261029.tar.gz.manifest.json",
+      "size": 50040,
+      "state": "uploaded"
+    },
+    {
+      "digest": "sha256:b1011602e7fbfa880bffc5f0b7250a96ad878e4ff9be9cf6a6af004bc0e14455",
+      "name": "sbi4finance-bank-rough-joint-100k-20261029.tar.gz",
+      "size": 933622627,
+      "state": "uploaded"
+    },
+    {
+      "digest": "sha256:4ae06dbe898be55870e6370bcbba9646133f26a86ca9a7e28cd70ca6b631377e",
+      "name": "sbi4finance-bank-rough-joint-100k-20261029.tar.gz.manifest.json",
+      "size": 4839879,
+      "state": "uploaded"
+    },
+    {
+      "digest": "sha256:e831d35ff0d926231564724558697f1f81db6baae0ca4a844cad72bcab3c9938",
+      "name": "sbi4finance-bank-rough-known-100k-20261029.tar.gz",
+      "size": 899951783,
+      "state": "uploaded"
+    },
+    {
+      "digest": "sha256:d1167c3d2063447d7f6a6caa63439ccbf6ea11af1ec91305f448093563dff3f1",
+      "name": "sbi4finance-bank-rough-known-100k-20261029.tar.gz.manifest.json",
+      "size": 2188661,
+      "state": "uploaded"
+    },
+    {
+      "digest": "sha256:8d3a146312efdeaffcf797dee89158a491cde0961689649bbe17b6a3ae4bf51c",
+      "name": "sbi4finance-pretrained-and-cases-20261029.zip",
+      "size": 38046255,
+      "state": "uploaded"
+    },
+    {
+      "digest": "sha256:1c3271e7f2bd190644f6bce898af2f6991994d4a3263e716d94cfa82bb0873a1",
+      "name": "sbi4finance-pretrained-and-cases-20261029.zip.manifest.json",
+      "size": 34392,
+      "state": "uploaded"
+    },
+    {
+      "digest": "sha256:79dd0b90042d44d92346d804c0073e777b6e80555c7dd15d937c928812222538",
+      "name": "SHA256SUMS",
+      "size": 455,
+      "state": "uploaded"
+    },
+    {
+      "digest": "sha256:3233134e22411fa7137d885e2de24fc310732d285fc7d820178dfe0ca3f0bc7a",
+      "name": "training-data-guide.md",
+      "size": 13742,
+      "state": "uploaded"
+    }
+  ]
+}

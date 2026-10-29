@@ -35,7 +35,8 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
 
-from sbi4finance.calibration import bank, correction, pricing, tasks, validation  # noqa: E402
+from sbi4finance.calibration import bank_collection as bank  # noqa: E402
+from sbi4finance.calibration import correction, pricing, tasks, validation  # noqa: E402
 
 LABELS = ["v₀", "θ", "σ_v", "ρ"]
 MEAN_LIMIT, WIDTH_LIMIT = 0.3, 0.25
@@ -120,7 +121,7 @@ def main():
     from sbi4finance.svj.pmmh import rhat_ess
     from sbi4finance.calibration import plots
 
-    manifest, splits = bank.load_bank(args.bank)
+    manifest, splits = bank.load_bank(args.bank, splits=("test",), roles=bank.TRAINING_ROLES)
     task, workflow, record = load_network(args.checkpoint)
     if task != manifest["configuration"]["task"] or task["model"] != "hkde":
         raise ValueError("the Heston check needs the Heston bank and its checkpoint")

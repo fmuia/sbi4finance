@@ -1,0 +1,20 @@
+{
+  "status": "passed",
+  "scope": "Tiny synthetic helper validation; no production data or reserved test input.",
+  "finest_prices_bit_identical_to_rough_block": true,
+  "finest_bank_covariance_bit_identical": true,
+  "antithetic_pairs": 129,
+  "coarse_normal_mean": [
+    0.005039808235271802,
+    0.0027662966867775247,
+    -0.004440285351308725
+  ],
+  "coarse_normal_variance": [
+    0.9934539639867426,
+    1.000118836407526,
+    1.00520493223972
+  ],
+  "joint_covariance_symmetric": true,
+  "difference_consistent": true,
+  "driver_sha256": "007edba3796be584a15153c0449b3b527a97cacbe1bb622f4e4ecda77c92a01a"
+}

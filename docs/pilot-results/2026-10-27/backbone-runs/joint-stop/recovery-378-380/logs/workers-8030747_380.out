@@ -1,0 +1,10 @@
+## SLURM PROLOG ###############################################################
+##    Job ID : 8030747
+##  Job Name : sbi4f-joint-timeout-recovery-378-380
+##  Nodelist : node1830
+##      CPUs : 1
+##  Mem/Node : 8192 MB
+## Directory : /oscar/scratch/afengler/sbi4finance-native-bank-20261027/repo
+##   Job Started : Tue Oct 27 06:01:41 PM EDT 2026
+###############################################################################
+completed or verified task 380

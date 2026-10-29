@@ -44,6 +44,8 @@ def use_sampler(workflow):
 
 def _checked_task(task):
     tasks.validate_task(task)
+    if getattr(tasks, "is_joint_curve_task", lambda _: False)(task):
+        raise ValueError("joint-curve tasks require calibration.full_surface; generating curves are not conditions")
     return task
 
 

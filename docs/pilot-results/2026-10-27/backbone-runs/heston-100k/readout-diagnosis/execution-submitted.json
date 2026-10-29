@@ -1,0 +1,53 @@
+{
+  "format": "heston_readout_diagnosis_execution_v1",
+  "state": "submitted",
+  "attempted_utc": "2026-10-27T22:24:13.653240+00:00",
+  "authorization": "Focused diagnosis of remaining initial-variance error before further data/training. Native default is unchanged; tighter tolerances are diagnostic call-time overrides only.",
+  "root": "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027",
+  "source_revision": "845c458b849c472271527cccf815ea6714f02206",
+  "driver_sha256": "2160278be2b167ca7551a76ceb8278514fec97d82e294cc98259c17b34825f6d",
+  "operator_sha256": "a2e79c4401468e9c7d680e7c3cbd5caf09619dafe6ae4e1ddfad16dc7c144dc8",
+  "argv": [
+    "sbatch",
+    "--parsable",
+    "--nodes=1",
+    "--ntasks=1",
+    "--no-requeue",
+    "--account=default",
+    "--partition=gpu-debug",
+    "--qos=gpu-debug",
+    "--cpus-per-task=4",
+    "--gres=gpu:l40s:1",
+    "--mem=24G",
+    "--time=00:06:00",
+    "--chdir=/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/repo",
+    "--job-name=sbi4f-heston-readout",
+    "--output=/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/logs/readout-diagnosis-%A.out",
+    "--wrap=env PYTHONPATH=/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/repo/src KERAS_BACKEND=jax OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 XLA_PYTHON_CLIENT_PREALLOCATE=false MPLCONFIGDIR=/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/cache/mpl XDG_CACHE_HOME=/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/cache /oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/bin/python /oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/manifests/check_heston_100k_readout_20261027.py --repo /oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/repo --checkpoint /oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint --references /oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston --out /oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-readout-diagnosis"
+  ],
+  "allocation_ceiling": {
+    "cpus": 4,
+    "gpus": 1,
+    "wall_seconds": 360,
+    "cleanup_seconds": 240,
+    "full_limit_plus_cleanup_cpu_seconds": 2400,
+    "full_limit_plus_cleanup_gpu_seconds": 600
+  },
+  "pooled_budget_check": {
+    "previous_actual_cpu_seconds": 17276,
+    "previous_actual_gpu_seconds": 3764,
+    "full_exposure_cpu_seconds": 19676,
+    "full_exposure_gpu_seconds": 4364,
+    "cpu_ceiling_seconds": 21600,
+    "gpu_ceiling_seconds": 4500,
+    "accounting": "8028749|COMPLETED|1312|4|0:0\n8028804|CANCELLED by 140010387|555|4|0:0\n8028941|FAILED|13|4|1:0\n8029251|COMPLETED|53|4|0:0\n8030120|FAILED|1483|4|1:0\n8030765|COMPLETED|903|4|0:0\n"
+  },
+  "new_training_data_pricing_mcmc_or_test": false,
+  "native_tutorial_policy_unchanged": true,
+  "scientific_acceptance": false,
+  "automatic_retry": false,
+  "stdout": "8030926\n",
+  "stderr": "",
+  "job_id": "8030926",
+  "submitted_utc": "2026-10-27T22:24:15.893340+00:00"
+}

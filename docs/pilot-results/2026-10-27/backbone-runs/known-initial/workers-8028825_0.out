@@ -1,0 +1,10 @@
+## SLURM PROLOG ###############################################################
+##    Job ID : 8028826
+##  Job Name : sbi4f-known-initial4
+##  Nodelist : node1831
+##      CPUs : 1
+##  Mem/Node : 8192 MB
+## Directory : /oscar/scratch/afengler/sbi4finance-backbone-fit-20261027/repo
+##   Job Started : Tue Oct 27 04:58:16 PM EDT 2026
+###############################################################################
+completed or verified task 0

@@ -1,0 +1,450 @@
+{
+  "automatic_retry": false,
+  "development_comparisons": {
+    "validation:0": {
+      "analytic_products": {
+        "limitations": "Analytic mean-curve functionals only; no vol-of-vol/leverage or path-dependent-price check. Absolute product tolerances and reference quantile MCSE are unassessed; no acceptance verdict.",
+        "products": {
+          "forward_variance_0_5_to_1y": {
+            "absolute_q10_error": 0.0008954847202913008,
+            "absolute_q90_error": 0.0003892413108819437,
+            "neural_mean": 0.15233843414660253,
+            "neural_q10": 0.15059404188190884,
+            "neural_q90": 0.1539892913696221,
+            "reference_90_percent_width": 0.0036133519403405145,
+            "reference_diagnostics": {
+              "ess_bulk": 1736.6192244197096,
+              "ess_tail": 1617.3302663715253,
+              "mcse_mean": 2.5409670712740857e-05,
+              "mcse_sd": 1.4455751418019083e-05,
+              "r_hat": 1.001142105288042
+            },
+            "reference_diagnostics_passed": true,
+            "reference_mean": 0.15295262894060233,
+            "reference_q05": 0.15103099985675744,
+            "reference_q10": 0.15148952660220014,
+            "reference_q90": 0.15437853268050405,
+            "reference_q95": 0.15464435179709796,
+            "reference_quantile_mcse": null,
+            "reference_sd": 0.001112791021209332
+          },
+          "variance_swap_1y": {
+            "absolute_q10_error": 0.0008573873672817478,
+            "absolute_q90_error": 0.0003848513613915472,
+            "neural_mean": 0.1486599620480902,
+            "neural_q10": 0.14738466827475694,
+            "neural_q90": 0.14991266386071733,
+            "reference_90_percent_width": 0.0025924703941285487,
+            "reference_diagnostics": {
+              "ess_bulk": 1798.4212017997847,
+              "ess_tail": 1774.0559924028362,
+              "mcse_mean": 1.8060971377280007e-05,
+              "mcse_sd": 1.0122089291847151e-05,
+              "r_hat": 1.0011216857754806
+            },
+            "reference_diagnostics_passed": true,
+            "reference_mean": 0.14929325492379372,
+            "reference_q05": 0.1479119390480719,
+            "reference_q10": 0.14824205564203868,
+            "reference_q90": 0.15029751522210888,
+            "reference_q95": 0.15050440944220045,
+            "reference_quantile_mcse": null,
+            "reference_sd": 0.0007954180788299897
+          }
+        },
+        "scientific_acceptance": false,
+        "status": "descriptive_development_comparison",
+        "units": "annualized variance, spot-normalized, continuous monitoring"
+      },
+      "proposed_parameter_checks_passed": false,
+      "status": "completed_development_comparison"
+    },
+    "validation:1": {
+      "analytic_products": {
+        "limitations": "Analytic mean-curve functionals only; no vol-of-vol/leverage or path-dependent-price check. Absolute product tolerances and reference quantile MCSE are unassessed; no acceptance verdict.",
+        "products": {
+          "forward_variance_0_5_to_1y": {
+            "absolute_q10_error": 0.0005254581757058868,
+            "absolute_q90_error": 0.001209202499804829,
+            "neural_mean": 0.07477311618514246,
+            "neural_q10": 0.07306176567782291,
+            "neural_q90": 0.07644869525719399,
+            "reference_90_percent_width": 0.003466787980888744,
+            "reference_diagnostics": {
+              "ess_bulk": 2096.5513841510324,
+              "ess_tail": 3005.0614388611025,
+              "mcse_mean": 2.310285549829631e-05,
+              "mcse_sd": 1.4127176053106854e-05,
+              "r_hat": 1.0012628813016202
+            },
+            "reference_diagnostics_passed": true,
+            "reference_mean": 0.07388662099798378,
+            "reference_q05": 0.07214008253794235,
+            "reference_q10": 0.07253630750211702,
+            "reference_q90": 0.07523949275738916,
+            "reference_q95": 0.0756068705188311,
+            "reference_quantile_mcse": null,
+            "reference_sd": 0.0010572058157013646
+          },
+          "variance_swap_1y": {
+            "absolute_q10_error": 0.00037563300191131854,
+            "absolute_q90_error": 0.0009757927627373278,
+            "neural_mean": 0.06164011444446352,
+            "neural_q10": 0.06037937445386307,
+            "neural_q90": 0.0628873216417866,
+            "reference_90_percent_width": 0.002437320007846279,
+            "reference_diagnostics": {
+              "ess_bulk": 2060.842727722842,
+              "ess_tail": 2784.750721006612,
+              "mcse_mean": 1.6384835951517123e-05,
+              "mcse_sd": 9.922887384008259e-06,
+              "r_hat": 1.0013490915888812
+            },
+            "reference_diagnostics_passed": true,
+            "reference_mean": 0.060956976789743794,
+            "reference_q05": 0.059719866650466025,
+            "reference_q10": 0.06000374145195175,
+            "reference_q90": 0.06191152887904928,
+            "reference_q95": 0.062157186658312304,
+            "reference_quantile_mcse": null,
+            "reference_sd": 0.0007426609442085258
+          }
+        },
+        "scientific_acceptance": false,
+        "status": "descriptive_development_comparison",
+        "units": "annualized variance, spot-normalized, continuous monitoring"
+      },
+      "proposed_parameter_checks_passed": false,
+      "status": "completed_development_comparison"
+    },
+    "validation:2": {
+      "analytic_products": {
+        "limitations": "Analytic mean-curve functionals only; no vol-of-vol/leverage or path-dependent-price check. Absolute product tolerances and reference quantile MCSE are unassessed; no acceptance verdict.",
+        "products": {
+          "forward_variance_0_5_to_1y": {
+            "absolute_q10_error": 0.00028674911980433593,
+            "absolute_q90_error": 0.000893872024771869,
+            "neural_mean": 0.13008110056982805,
+            "neural_q10": 0.1282036971071517,
+            "neural_q90": 0.13195709076578843,
+            "reference_90_percent_width": 0.004070317462303935,
+            "reference_diagnostics": {
+              "ess_bulk": 2278.255123211987,
+              "ess_tail": 2862.0563553908737,
+              "mcse_mean": 2.562663045421037e-05,
+              "mcse_sd": 1.5246776196938774e-05,
+              "r_hat": 1.0005935876320884
+            },
+            "reference_diagnostics_passed": true,
+            "reference_mean": 0.12951096495272998,
+            "reference_q05": 0.12747744763282887,
+            "reference_q10": 0.12791694798734737,
+            "reference_q90": 0.13106321874101656,
+            "reference_q95": 0.1315477650951328,
+            "reference_quantile_mcse": null,
+            "reference_sd": 0.0012228810518751547
+          },
+          "variance_swap_1y": {
+            "absolute_q10_error": 0.0002675900809475107,
+            "absolute_q90_error": 0.0007366889206625177,
+            "neural_mean": 0.11903743758222006,
+            "neural_q10": 0.11769450865412004,
+            "neural_q90": 0.12039235704293723,
+            "reference_90_percent_width": 0.002852739864557141,
+            "reference_diagnostics": {
+              "ess_bulk": 2283.413218742219,
+              "ess_tail": 2957.760465741536,
+              "mcse_mean": 1.808992083096613e-05,
+              "mcse_sd": 1.0821222893153641e-05,
+              "r_hat": 1.0006519045488305
+            },
+            "reference_diagnostics_passed": true,
+            "reference_mean": 0.11855208708832962,
+            "reference_q05": 0.11712691523145644,
+            "reference_q10": 0.11742691857317253,
+            "reference_q90": 0.11965566812227471,
+            "reference_q95": 0.11997965509601358,
+            "reference_quantile_mcse": null,
+            "reference_sd": 0.0008639124363138917
+          }
+        },
+        "scientific_acceptance": false,
+        "status": "descriptive_development_comparison",
+        "units": "annualized variance, spot-normalized, continuous monitoring"
+      },
+      "proposed_parameter_checks_passed": false,
+      "status": "completed_development_comparison"
+    }
+  },
+  "format": "heston_training_followup_run_v1",
+  "inputs": {
+    "bank_manifest_sha256": "1a7906f58a2b3e1e4cc868bc819c9c9308357f2f23f7fbb642c682860fb0074f",
+    "baseline_checkpoint_sha256": "2b364ed687a22fcefc04cd9fb977f68aebcb4f9cecb32f13a4be69925d11400f",
+    "environment_sha256": {
+      "pixi.lock": "3e33b82d45dfdd696c5b12b22bca0943a5fca09804860fab13e3fc9126c60aae",
+      "pyproject.toml": "0b38d45cea9c3d7143e261d6c8ce3d6892b31b7bce6d1f26bf748df75790fd54"
+    },
+    "reference_sha256": {
+      "case-0": {
+        "precision/precision.json": "c073e80c87d78f493f4d0933881361e8acd0c87e04fa3d6aa0d33e56a0b49533",
+        "reference/chains.npz": "be70a6798988bad251254fbe86df901b3affb5e0def92555aceb145f1fcb8505",
+        "reference/diagnostics.json": "72bd9616e0a4f3985cbe6f642156e0650776a80e11770dbdb668917b20608808",
+        "reference/reference.json": "35e646876a5c4a1413593455741dc0a3a6688678909a570353ec4fc70125c902"
+      },
+      "case-1": {
+        "precision/precision.json": "a443bf9f6bf1075e111be961c05a00d2ec41a185f10933df196d1fc1e5c8e549",
+        "reference/chains.npz": "ff98be1a51cf294b59a7b723664a3a03313f48ea32fc9f4a3a54fff1989774b8",
+        "reference/diagnostics.json": "270f9257b19a3bd0fce0012d182977a366f6aabd93e95b60b6b92686be896dc4",
+        "reference/reference.json": "e1c6c08419fbd08e35900e590f8110e68c32e087f4619359f16ef8322919bdfd"
+      },
+      "case-2": {
+        "precision/precision.json": "915ed7872ec516f7e9a458fc44de8f2b2b0e2ad3fadefc65ec102405554e86be",
+        "reference/chains.npz": "f37a3b78360fcdbb0a9e2b775cfacd057a11aaeb7d8ef97a72b9a544bdd13ccb",
+        "reference/diagnostics.json": "cffe17d61e60a553a832b7cc281d2941f0cda211b99fe55c5957654969886a33",
+        "reference/reference.json": "34f5811eab68c86a0cb303cd047e4c1e524590e5892b43a4a0f3e902da44cc1c"
+      }
+    },
+    "runtime": {
+      "bayesflow": "2.1.0",
+      "jax": "0.11.1",
+      "keras": "3.15.1",
+      "keras_backend_env": "jax",
+      "numpy": "2.5.3",
+      "python": "3.12.16",
+      "scipy": "1.18.1"
+    },
+    "task_fingerprint": "5e499526ff8f29a72f49785a1a36006b1d769d26bca8a6f83f7a8c8ac4d431fa",
+    "test_access": "split counts in metadata only; no test arrays opened"
+  },
+  "interpretation": "Within-family validation selection only; failed neural checks are retained, not rerun or accepted.",
+  "recipe": {
+    "bank_manifest_sha256": "1a7906f58a2b3e1e4cc868bc819c9c9308357f2f23f7fbb642c682860fb0074f",
+    "baseline_checkpoint_sha256": "2b364ed687a22fcefc04cd9fb977f68aebcb4f9cecb32f13a4be69925d11400f",
+    "evaluation": {
+      "batch_size": 100,
+      "draws": 1000,
+      "first": 0,
+      "seed": 0,
+      "split": "validation",
+      "surfaces": 500
+    },
+    "execution_budget": {
+      "comparison_seconds_per_case": 60,
+      "environment_seconds": 60,
+      "total_seconds": 1740,
+      "training_seconds": 1200,
+      "validation_seconds": 300
+    },
+    "format": "heston_training_followup_v1",
+    "name": "heston-spline-seed0-1000epochs",
+    "network": {
+      "encoder": "vector",
+      "family": "spline",
+      "flow_steps": 100,
+      "mean_steps": 4,
+      "summary_dim": 32,
+      "widths": [
+        128,
+        128
+      ]
+    },
+    "optimizer": "Fresh run: AdamW, weight_decay=.005, clipnorm=1.5, 5% warmup to .0005 then cosine decay to zero across the declared total updates. It is not a resume or extension of the old 300-epoch schedule.",
+    "preprocessing": "Same core route as the 300-epoch fit: spot-normalized prices divided by fixed quote-noise SD; fresh standard-normal training quote errors; fixed noisy validation; physical bounded targets through logit adapter, float32 conversion and learned standardization. No test arrays are opened.",
+    "reference_comparison": {
+      "case_indices": [
+        0,
+        1,
+        2
+      ],
+      "neural_draws": 10000,
+      "seed_base": 271026
+    },
+    "resources": {
+      "cpus": 4,
+      "gpus": 1,
+      "memory_gib": 24,
+      "wall_seconds": 1800
+    },
+    "selection": "Minimum validation loss within this family, then exact same-device seeded reload check. All evaluations remain development evidence.",
+    "splits": {
+      "test": 5000,
+      "train": 20000,
+      "validation": 5000
+    },
+    "stop_rule": "Stop this one run on any failure or stage/whole-job time limit; retain committed training checkpoints and incomplete stages. No automatic retry, schedule extension, new data or test evaluation.",
+    "task_fingerprint": "5e499526ff8f29a72f49785a1a36006b1d769d26bca8a6f83f7a8c8ac4d431fa",
+    "training": {
+      "batch_size": 256,
+      "chunk_epochs": 50,
+      "epochs": 1000,
+      "seed": 0
+    }
+  },
+  "reserved_test_evaluated": false,
+  "scientific_acceptance": false,
+  "seconds": 509.1903334027156,
+  "source_commit": "51fec8675367a486f163046d6d80209e34c91fc9",
+  "source_sha256": {
+    "configs/heston_20k_spline_1000epochs.json": "250b6dc03c3ccc825329982c9b564694a5a24706228d2a72dcd205e1e12ad811",
+    "scripts/compare_full_surface_reference.py": "a420f5bfb493412ddfab94cbaf80a2a7e737a9245982ba53acd2472bcd0084f3",
+    "scripts/evaluate_full_surface.py": "b9ea15ea8ee713f2ef3f84b8d48de727e3d3816e8b22636e6a7c94e573d2cea9",
+    "scripts/run_heston_training_followup.py": "ba6e736d3d549e5a06bcc0cbcecc4b1d242139699754419de507448a1c4866b9",
+    "scripts/train_full_surface.py": "226fe6cfeffc32666976ab52a2e6a9565649db3519bd963ce6e471bf69c652cf",
+    "src/sbi4finance/calibration/full_surface.py": "3b9c1a3d02a687aafd08cb9b4e096d52e7710d0a184e96f0c43009cdbc3be38b",
+    "src/sbi4finance/calibration/inference.py": "ebc4def8fe0e9e8ae0cab976b67c96d1e3328106c25422bacc11e5907a0f4d2e"
+  },
+  "stages": [
+    {
+      "command": [
+        "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/bin/python",
+        "/oscar/scratch/afengler/sbi4finance-followup-20261027-f4d3679/repo-heston/scripts/check_full_surface_environment.py",
+        "--require-gpu"
+      ],
+      "effective_timeout_seconds": 60,
+      "name": "environment",
+      "returncode": 0,
+      "seconds": 27.922005182132125,
+      "status": "completed",
+      "timeout_cap_seconds": 60
+    },
+    {
+      "command": [
+        "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/bin/python",
+        "/oscar/scratch/afengler/sbi4finance-followup-20261027-f4d3679/repo-heston/scripts/train_full_surface.py",
+        "--bank",
+        "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/runs/heston-development/snapshot-20k",
+        "--out",
+        "/oscar/scratch/afengler/sbi4finance-followup-20261027-f4d3679/runs/heston-spline-1000/checkpoint",
+        "--family",
+        "spline",
+        "--encoder",
+        "vector",
+        "--widths",
+        "128,128",
+        "--summary-dim",
+        "32",
+        "--flow-steps",
+        "100",
+        "--mean-steps",
+        "4",
+        "--epochs",
+        "1000",
+        "--batch-size",
+        "256",
+        "--chunk-epochs",
+        "50",
+        "--seed",
+        "0"
+      ],
+      "effective_timeout_seconds": 1200,
+      "name": "training",
+      "returncode": 0,
+      "seconds": 421.35131617821753,
+      "status": "completed",
+      "timeout_cap_seconds": 1200
+    },
+    {
+      "command": [
+        "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/bin/python",
+        "/oscar/scratch/afengler/sbi4finance-followup-20261027-f4d3679/repo-heston/scripts/evaluate_full_surface.py",
+        "--bank",
+        "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/runs/heston-development/snapshot-20k",
+        "--checkpoint",
+        "/oscar/scratch/afengler/sbi4finance-followup-20261027-f4d3679/runs/heston-spline-1000/checkpoint",
+        "--out",
+        "/oscar/scratch/afengler/sbi4finance-followup-20261027-f4d3679/runs/heston-spline-1000/validation",
+        "--split",
+        "validation",
+        "--first",
+        "0",
+        "--surfaces",
+        "500",
+        "--draws",
+        "1000",
+        "--batch-size",
+        "100",
+        "--seed",
+        "0"
+      ],
+      "effective_timeout_seconds": 300,
+      "name": "validation",
+      "returncode": 0,
+      "seconds": 17.509131072089076,
+      "status": "completed",
+      "timeout_cap_seconds": 300
+    },
+    {
+      "command": [
+        "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/bin/python",
+        "/oscar/scratch/afengler/sbi4finance-followup-20261027-f4d3679/repo-heston/scripts/compare_full_surface_reference.py",
+        "--checkpoint",
+        "/oscar/scratch/afengler/sbi4finance-followup-20261027-f4d3679/runs/heston-spline-1000/checkpoint",
+        "--reference",
+        "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-0/reference",
+        "--precision",
+        "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-0/precision/precision.json",
+        "--out",
+        "/oscar/scratch/afengler/sbi4finance-followup-20261027-f4d3679/runs/heston-spline-1000/comparisons/case-0",
+        "--draws",
+        "10000",
+        "--seed",
+        "271026"
+      ],
+      "effective_timeout_seconds": 60,
+      "name": "comparison-0",
+      "returncode": 0,
+      "seconds": 13.442356870509684,
+      "status": "completed",
+      "timeout_cap_seconds": 60
+    },
+    {
+      "command": [
+        "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/bin/python",
+        "/oscar/scratch/afengler/sbi4finance-followup-20261027-f4d3679/repo-heston/scripts/compare_full_surface_reference.py",
+        "--checkpoint",
+        "/oscar/scratch/afengler/sbi4finance-followup-20261027-f4d3679/runs/heston-spline-1000/checkpoint",
+        "--reference",
+        "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-1/reference",
+        "--precision",
+        "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-1/precision/precision.json",
+        "--out",
+        "/oscar/scratch/afengler/sbi4finance-followup-20261027-f4d3679/runs/heston-spline-1000/comparisons/case-1",
+        "--draws",
+        "10000",
+        "--seed",
+        "271027"
+      ],
+      "effective_timeout_seconds": 60,
+      "name": "comparison-1",
+      "returncode": 0,
+      "seconds": 14.458956054411829,
+      "status": "completed",
+      "timeout_cap_seconds": 60
+    },
+    {
+      "command": [
+        "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/bin/python",
+        "/oscar/scratch/afengler/sbi4finance-followup-20261027-f4d3679/repo-heston/scripts/compare_full_surface_reference.py",
+        "--checkpoint",
+        "/oscar/scratch/afengler/sbi4finance-followup-20261027-f4d3679/runs/heston-spline-1000/checkpoint",
+        "--reference",
+        "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-2/reference",
+        "--precision",
+        "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-2/precision/precision.json",
+        "--out",
+        "/oscar/scratch/afengler/sbi4finance-followup-20261027-f4d3679/runs/heston-spline-1000/comparisons/case-2",
+        "--draws",
+        "10000",
+        "--seed",
+        "271028"
+      ],
+      "effective_timeout_seconds": 60,
+      "name": "comparison-2",
+      "returncode": 0,
+      "seconds": 14.094099572859704,
+      "status": "completed",
+      "timeout_cap_seconds": 60
+    }
+  ],
+  "status": "completed_development_checks"
+}

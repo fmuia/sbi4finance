@@ -1,0 +1,16 @@
+{
+  "format": "archived_control_cancelled_cpu_attempt_v1",
+  "status": "cancelled_for_bounded_GPU_continuation",
+  "slurm_job_id": "8028804",
+  "allocated_elapsed_seconds_top_level": 555,
+  "allocated_cpus": 4,
+  "allocated_cpu_seconds_top_level_once": 2220,
+  "committed_surfaces": 500,
+  "required_surfaces": 2000,
+  "full_panel_completed": false,
+  "scientific_acceptance": false,
+  "new_calibration_metrics_produced": false,
+  "partial_arrays_downloaded": false,
+  "run_sha256": "c5ab4b0edde1d1bf3d54fdb2f94f213158e3cd32127b341c81ad80e1cd6b0e00",
+  "scope": "Warm CPU batch cost was about100wall seconds/100surfaces;2k panel could not fit23min internal bound. Root stopped this attempt and retained committed bytes for an explicitly mixed CPU/GPU continuation. No rows or seeds replaced."
+}

@@ -1,0 +1,32 @@
+{
+  "format": "reviewed_heston_case1_manual_gate_v1",
+  "reviewed_plan_revision": "9b495cf40422133672f92a93000dca0b7744faeb",
+  "case_index": 1,
+  "next_declared_cases": [
+    0,
+    2
+  ],
+  "gate_passed_for_next_cases": true,
+  "scientific_acceptance": false,
+  "input_sha256": {
+    "run.json": "0d3d0d407b598acfd6484132e5c1828d6515230a931b39af75279d743a863816",
+    "reference/reference.json": "e1c6c08419fbd08e35900e590f8110e68c32e087f4619359f16ef8322919bdfd",
+    "reference/diagnostics.json": "270f9257b19a3bd0fce0012d182977a366f6aabd93e95b60b6b92686be896dc4",
+    "reference/chains.npz": "ff98be1a51cf294b59a7b723664a3a03313f48ea32fc9f4a3a54fff1989774b8",
+    "precision/precision.json": "a443bf9f6bf1075e111be961c05a00d2ec41a185f10933df196d1fc1e5c8e549",
+    "comparison/comparison.json": "50491277960da4fd6289103ab75f91afdc40a98a341295a80efe8e19629a0fcc",
+    "review/traces.png": "717864bca0724532605912eaa9a62207ab5c1353da48e340f83bc95d0308f881",
+    "review/marginals.png": "12f9f399ed0cad689afc50f5d1796cb5966712c8ccc1f366f190087ce601f377",
+    "review/review.json": "12a8809ab4950149cd9a28bc6f55ed1231975280487770e0b0271b58593bcba2"
+  },
+  "parameter_diagnostics_passed": true,
+  "analytic_product_diagnostics_passed": true,
+  "max_r_hat": 1.0026635305873206,
+  "min_bulk_ess": 1718.4466551893488,
+  "min_tail_ess": 1938.1060247557696,
+  "pointwise_price_change_over_sigma": 7.515097020686895e-06,
+  "pointwise_log_likelihood_change": 2.2525735630551935e-05,
+  "visual_review": "Root inspected traces and marginal figures: overlapping chains, repeated tail visits, no isolated/stuck chain; modest vol-of-vol half-shift retained and quarter patterns nonmonotone. This is not a proof of stationarity or posterior numerical stability.",
+  "neural_parameter_checks_passed": false,
+  "neural_outcome": "Development failure remains; v0 mean error1.10 reference SD,width1.52x;theta0.62SD. Neural failure does not invalidate the independently passing reference."
+}

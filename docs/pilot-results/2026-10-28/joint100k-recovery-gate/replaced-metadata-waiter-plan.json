@@ -1,0 +1,49 @@
+{
+  "format": "rough_bank_100k_followon_plan_v1",
+  "root": "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/accounting-recovery-20261028/waiter",
+  "python": "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python",
+  "launcher": "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/accounting-recovery-20261028/run_bank_campaign.py",
+  "original_execution": "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/execution-v2.json",
+  "poll_seconds": 60,
+  "controller_wall_hours": 96,
+  "routes": {
+    "known": {
+      "campaign_config": "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/configs/known_100k_20261028.json",
+      "collection": "/oscar/scratch/afengler/sbi4finance-rough-known-backbone-20261027/collection",
+      "collection_id": "da963f7294aee242a80ebf9b47d914294b439aef8b6ee8f7c6d1899766e546f1",
+      "collection_sha256": "9e9e0ed2f087febd84bbd42ddc30aa24840d065c12a186b410851a68b5c83e13",
+      "root_seed": 271300,
+      "producer_revision": "616352035be4b9d271151090aa5d2d9539da8b1c",
+      "dependency_final": "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/known/final.json",
+      "dependency_snapshot": "/oscar/scratch/afengler/sbi4finance-rough-known-backbone-20261027/snapshot-50k",
+      "dependency_splits": {
+        "train": 50000,
+        "validation": 5000,
+        "test": 7000
+      },
+      "expected_original_workers": 1200
+    },
+    "joint": {
+      "campaign_config": "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/configs/joint_100k_20261028.json",
+      "collection": "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection",
+      "collection_id": "817de3664968de0c605ae4c73e2c99c26465344294af2fc5412f39fffa4baa50",
+      "collection_sha256": "802a200f73bacddaa744abcfdcf2497b2d45a609c9039ed816baf1e3e9a5b12c",
+      "root_seed": 271200,
+      "producer_revision": "c773ceb26e7273612b15c69fd63715d131778083",
+      "dependency_final": "/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/joint/final.json",
+      "dependency_snapshot": "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/snapshot-20k",
+      "dependency_splits": {
+        "train": 20000,
+        "validation": 5000,
+        "test": 7000
+      },
+      "expected_original_workers": 883,
+      "after_route": "known"
+    }
+  },
+  "recovery_of": {
+    "old_pid": 3792953,
+    "old_execution_sha256": "21accb738ea303dec04f7e949830f676fe9c7d47e83d7b79d4c9f8c4cea24ff6",
+    "cause": "UTC date was interpreted by sacct in EDT and excluded prior-local-evening jobs."
+  }
+}
