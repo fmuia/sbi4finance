@@ -11,15 +11,21 @@ The [artifact inventory](pilot-results/2026-10-29/local-backbone-transfer/README
 records their verified identities. Download only the bank you need; the separate
 38 MB pretrained-and-cases ZIP supports inference/review without a training bank.
 The repository contains code, compact examples and provenance; release assets
-contain the full payloads. A Google Drive mirror of the identical versioned files
-is being arranged; its link will be added once the destination is confirmed. These are synthetic research data, and the release
-retains the recorded numerical and scientific limitations.
+contain the full payloads. The alternative
+[Drive mirror](https://drive.google.com/drive/folders/1Zez6mSu8Y_B7IIjdRYWJlDxdAl49fTLq)
+opens the versioned folder `tutorial-backbones-2026-10-29` directly and contains
+the same archive and `SHA256SUMS` filenames. These are synthetic research data; the recorded
+numerical and scientific limitations remain unchanged.
 
 **Access:** this GitHub repository is private. Sign in with an account that has
 repository read access; releases inherit that access. For the CLI example, run
 `gh auth login` first if needed. A 404 from an unauthenticated release link does
-not mean the asset is missing. Drive access will be controlled by its own shared
-folder permissions, independently of GitHub membership.
+not mean the asset is missing. Drive folder access and GitHub repository access
+are separate permissions; access to one does not grant access to the other.
+
+For a manual browser download, open the Drive mirror and download your chosen
+archive plus `SHA256SUMS`. Then use the checksum-verification and extraction
+commands below; the Drive route does not require the GitHub CLI.
 
 For example, with the GitHub CLI installed, download Heston and verify it:
 

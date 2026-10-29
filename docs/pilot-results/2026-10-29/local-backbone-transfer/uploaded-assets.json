@@ -58,9 +58,9 @@
       "state": "uploaded"
     },
     {
-      "digest": "sha256:3233134e22411fa7137d885e2de24fc310732d285fc7d820178dfe0ca3f0bc7a",
+      "digest": "sha256:ec3c2376ba4100743e28939ec2335075b85a1157d19e81e1b8d486a1133405ae",
       "name": "training-data-guide.md",
-      "size": 13742,
+      "size": 14074,
       "state": "uploaded"
     }
   ]

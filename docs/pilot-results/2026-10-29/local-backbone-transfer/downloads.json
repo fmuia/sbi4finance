@@ -39,5 +39,12 @@
   "checksums_url": "https://github.com/fmuia/sbi4finance/releases/download/tutorial-backbones-2026-10-29/SHA256SUMS",
   "guide": "../../../training-data-guide.md",
   "original_layout_preserved": true,
-  "reserved_test_policy": "Payloads retained; development loads train/validation only. Freeze the model and criteria before test evaluation."
+  "reserved_test_policy": "Payloads retained; development loads train/validation only. Freeze the model and criteria before test evaluation.",
+  "drive_mirror": {
+    "folder_id": "1Zez6mSu8Y_B7IIjdRYWJlDxdAl49fTLq",
+    "folder_url": "https://drive.google.com/drive/folders/1Zez6mSu8Y_B7IIjdRYWJlDxdAl49fTLq",
+    "parent_folder_id": "1ta1LjBopl-kErBfDEr2R_UL-9Hs8Y9D7",
+    "same_archive_filenames_and_sha256": true,
+    "access": "User-managed Drive folder permissions, independent of GitHub membership"
+  }
 }
