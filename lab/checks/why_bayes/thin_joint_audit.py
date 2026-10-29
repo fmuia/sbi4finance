@@ -5,11 +5,14 @@ degrees of freedom) fitted in the logit coordinates of the prior box and widened
 each proposal priced on its own paths, the Gaussian likelihood with the layout's noise less the Monte Carlo
 variance (Lecture 8, Section 8.9); self-normalized weights, their effective sample size and Pareto k-hat
 (correction.pareto_khat). Reported per chain beside the network's: the 5%, 50% and 95% quantiles of the six
-targets and of the forward variance from six months to one year, the curve beyond the last quote.
+targets and of the forward variance from six months to one year, the curve beyond the last quote; and the 10%, 50%
+and 90% quantiles of the six thin products under --product-draws draws resampled systematically from the weighted
+proposals, priced as thin_joint_breach.py prices them (8,192 paths, seed --seed + 1), beside the network's from that
+study's posterior arm (DIR/rows-posterior-*.jsonl) when it has run. Rows already in OUT are skipped.
 
 Needs the joint task of PR #48. Run from lab/:
 python checks/why_bayes/thin_joint_audit.py --bank BANK --posterior DIR/posterior-0-100.npz --rows 0 1 2 --out OUT.jsonl
-    [--proposals 512 --paths 8192 --seed 0]
+    [--proposals 512 --paths 8192 --product-draws 200 --seed 0]
 """
 
 import argparse
@@ -22,11 +25,12 @@ import numpy as np
 from scipy.special import expit, logit, logsumexp
 from scipy.stats import multivariate_t
 
-from sbi4finance.calibration import bank, correction, pricing, tasks
+from sbi4finance.calibration import bank, correction, pricing, tasks, thin_products
 
 import thin_joint
 
 _TASK = {}
+PRODUCT_PATHS = 8192
 
 
 def _price(args):
@@ -36,6 +40,11 @@ def _price(args):
                                              task["context"]["contracts"], task["numerics"]["blocks"], [paths],
                                              thin_joint.noise(task), np.inf, seed, cap=np.inf)
     return prices, se
+
+
+def _products(args):
+    theta, seed = args
+    return thin_joint.products(_TASK["task"], theta, PRODUCT_PATHS, seed)
 
 
 def _init(task):
@@ -75,6 +84,11 @@ def weighted_quantiles(values, weights, qs):
     return np.interp(qs, (c - 0.5 * weights[order]) / c[-1], values[order]).tolist()
 
 
+def systematic_resample(weights, n, rng):
+    positions = (rng.random() + np.arange(n)) / n
+    return np.minimum(np.searchsorted(np.cumsum(weights), positions), len(weights) - 1)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--bank", type=Path, required=True)
@@ -83,16 +97,22 @@ def main():
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--proposals", type=int, default=512)
     parser.add_argument("--paths", type=int, default=8192)
+    parser.add_argument("--product-draws", type=int, default=200)
     parser.add_argument("--seed", type=int, default=0)
     args = parser.parse_args()
     manifest, _ = bank.load_bank(args.bank, splits=())
     task = manifest["configuration"]["task"]
     post = np.load(args.posterior)
     index = {int(r): i for i, r in enumerate(post["rows"])}
+    network_products = {r["row"]: r["posterior"] for f in args.posterior.parent.glob("rows-posterior-*.jsonl")
+                        for r in map(json.loads, f.read_text().splitlines())}
+    done = {json.loads(line)["row"] for line in args.out.read_text().splitlines()} if args.out.exists() else set()
     qs = [0.05, 0.5, 0.95]
     names = thin_joint.NAMES + ["forward_variance_6m_1y"]
     with ProcessPoolExecutor(max_workers=4, initializer=_init, initargs=(task,)) as pool:
         for row in args.rows:
+            if row in done:
+                continue
             i = index[row]
             t0 = time.time()
             theta, w, diagnostics = audit_chain(task, post["quotes"][i], post["draws"][i], args.proposals, args.paths,
@@ -100,9 +120,20 @@ def main():
             net = np.column_stack([post["draws"][i], thin_joint.forward_variance(post["draws"][i], 0.5, 1.0)])
             aud = np.column_stack([theta, thin_joint.forward_variance(theta, 0.5, 1.0)])
             truth = np.r_[post["truth"][i], thin_joint.forward_variance(post["truth"][i], 0.5, 1.0)]
+            pick = systematic_resample(w, args.product_draws, np.random.default_rng(np.random.SeedSequence([args.seed, 9, row])))
+            seed = args.seed + 1
+            priced = np.array(list(pool.map(_products, [(theta[k], seed) for k in pick] + [(post["truth"][i], seed)])))
+            products = {"names": list(thin_products.NAMES), "distinct_draws": int(len(np.unique(pick))),
+                        "truth": priced[-1].tolist(),
+                        "audited": {"lower": np.quantile(priced[:-1], 0.1, axis=0).tolist(),
+                                    "median": np.median(priced[:-1], axis=0).tolist(),
+                                    "upper": np.quantile(priced[:-1], 0.9, axis=0).tolist()}}
+            if row in network_products:
+                products["network"] = network_products[row]
             record = {"row": row, **diagnostics, "seconds": time.time() - t0, "truth": dict(zip(names, truth.tolist())),
                       "network": {n: np.quantile(net[:, j], qs).tolist() for j, n in enumerate(names)},
-                      "audited": {n: weighted_quantiles(aud[:, j], w, qs) for j, n in enumerate(names)}}
+                      "audited": {n: weighted_quantiles(aud[:, j], w, qs) for j, n in enumerate(names)},
+                      "products": products}
             with args.out.open("a") as handle:
                 handle.write(json.dumps(record) + "\n")
             print(f"row {row}: ESS {diagnostics['ess']:.0f} of {args.proposals}, k-hat {diagnostics['khat']:.2f}, "

@@ -2,7 +2,7 @@
 
 The joint-task version of study S10's design (studies/thin_coverage.py), for EWG's layout. Each chain is a test
 surface of a thin joint bank: its clean layout prices plus a fresh quote error with the layout's noise (seed per
-row, as in thin_joint_sbc.py). Its truth is the six thin products priced at the surface's parameters. Four methods
+row, as in thin_joint_sbc.py). Its truth is the six thin products priced at the surface's parameters. Six methods
 give a lower and an upper 90% bound for each product:
 
 * posterior: the 10% and 90% quantiles of the products priced under the network's draws;
@@ -10,18 +10,26 @@ give a lower and an upper 90% bound for each product:
   coordinates of the prior box, and the delta method: the price at the fit plus or minus 1.2816 sd;
 * hurst_fixed: the same with H fixed at 0.10, the course's baseline (Lecture 6, Section 6.7);
 * flat_curve: the gauss_newton fit, with the curve held flat beyond the last quote at its average over the last
-  quoted interval (thin_joint.product_curve).
+  quoted interval (thin_joint.product_curve);
+* laplace: the posterior's mode and the Laplace approximation there, in the same logit coordinates, where the
+  uniform prior on the box is a logistic density in each coordinate (Gauss-Newton curvature for the quotes, the
+  exact curvature for the prior); the 10% and 90% quantiles of the products under 200 draws from that normal,
+  each mapped back into the box;
+* laplace_delta: the delta method at the same mode with the same covariance.
 
 A long breach is a true price below the lower bound, a short breach one above the upper bound; a correct method
 breaches each side 10% of the time. Every product is priced with the same paths (common random numbers), so the
 spreads come from the parameters. Least squares starts from the prior box and the quotes only, never from the
 posterior: the best of the box's centre and 16 prior draws by chi-square, and a second start from the next best.
+The mode starts from the least-squares fit, each logit coordinate clipped to [-4, 4].
 
-Needs the joint task of PR #48. Run from lab/; the classical arm needs no network and can run first:
+Needs the joint task of PR #48. Run from lab/; the classical arm needs no network and can run first, the laplace
+arm after it:
 python checks/why_bayes/thin_joint_breach.py run --arm classical --bank BANK --out DIR --start 0 --stop 25
 python checks/why_bayes/thin_joint_breach.py sample --checkpoint RUN --bank BANK --out DIR --start 0 --stop 100
 python checks/why_bayes/thin_joint_breach.py run --arm posterior --bank BANK --out DIR --start 0 --stop 25
-python checks/why_bayes/thin_joint_breach.py summarize --out DIR
+python checks/why_bayes/thin_joint_breach.py run --arm laplace --bank BANK --out DIR --start 0 --stop 25
+python checks/why_bayes/thin_joint_breach.py summarize --out DIR [--arms classical posterior laplace]
 (one run per core and row range)
 """
 
@@ -38,7 +46,9 @@ from sbi4finance.calibration import bank, pricing, tasks, thin_products
 
 import thin_joint
 
-METHODS = ("posterior", "gauss_newton", "hurst_fixed", "flat_curve")
+METHODS = ("posterior", "gauss_newton", "hurst_fixed", "flat_curve", "laplace", "laplace_delta")
+ARM_METHODS = {"classical": ("gauss_newton", "hurst_fixed", "flat_curve"), "posterior": ("posterior",),
+               "laplace": ("laplace", "laplace_delta")}
 Z90 = 1.2815515655446004  # one-sided 90%
 HURST_FIXED = 0.10
 LAST_QUOTED = (63 / 252, 126 / 252)
@@ -66,13 +76,15 @@ def sample(args):
 
 
 class Fit:
-    """Least squares in the logit coordinates of the prior box, with the Monte Carlo pricer on one seed."""
+    """Least squares in the logit coordinates of the prior box, with the Monte Carlo pricer on one seed. With
+    prior=True the box's uniform density joins the objective, so the fit is the posterior's mode."""
 
-    def __init__(self, task, quotes, paths, seed, fixed_hurst=None):
+    def __init__(self, task, quotes, paths, seed, fixed_hurst=None, prior=False):
         self.task, self.y, self.paths, self.seed, self.fixed = task, np.asarray(quotes, dtype=float), paths, seed, fixed_hurst
         self.box = thin_joint.bounds(task)
         self.free = [0, 1, 2, 3, 4, 5] if fixed_hurst is None else [1, 2, 3, 4, 5]
         self.sd = thin_joint.noise(task)
+        self.prior = prior
 
     def theta(self, z):
         theta = np.empty(6)
@@ -92,7 +104,12 @@ class Fit:
         return p
 
     def residuals(self, z):
-        return (self.prices(self.theta(z)) - self.y) / self.sd
+        r = (self.prices(self.theta(z)) - self.y) / self.sd
+        if not self.prior:
+            return r
+        # Half the square of each extra residual is the logistic density's negative log, less its value at 0.
+        excess = np.logaddexp(0.0, z) + np.logaddexp(0.0, -z) - 2 * np.log(2.0)
+        return np.r_[r, np.sign(z) * np.sqrt(2 * np.maximum(excess, 0.0))]
 
     def chi2(self, theta):
         return float(np.sum(((self.prices(theta) - self.y) / self.sd) ** 2))
@@ -105,10 +122,14 @@ class Fit:
                               max_nfev=max_nfev, bounds=(-12.0, 12.0))
             if best is None or r.cost < best.cost:
                 best = r
-        jtj = best.jac.T @ best.jac
-        return {"z": best.x, "theta": self.theta(best.x), "chi2": float(2 * best.cost), "covariance": np.linalg.pinv(jtj),
-                "condition": float(np.linalg.cond(jtj)), "on_bound": bool(np.any(np.abs(best.x) > 8)),
-                "evaluations": int(best.nfev)}
+        jac = best.jac[: len(self.y)]
+        curvature = jac.T @ jac
+        if self.prior:
+            u = expit(best.x)
+            curvature += np.diag(2 * u * (1 - u))
+        return {"z": best.x, "theta": self.theta(best.x), "chi2": float(np.sum(best.fun[: len(self.y)] ** 2)),
+                "covariance": np.linalg.pinv(curvature), "condition": float(np.linalg.cond(curvature)),
+                "on_bound": bool(np.any(np.abs(best.x) > 8)), "evaluations": int(best.nfev)}
 
 
 def delta_bounds(fit, fitter, product_fn, step=1e-2):
@@ -138,6 +159,9 @@ def run(args):
     else:
         _, splits = bank.load_bank(args.bank, splits=(args.split,))
         data = splits[args.split]
+    if args.arm == "laplace":
+        least = {r["row"]: r["gauss_newton"]["theta"] for f in args.out.glob("rows-classical-*.jsonl")
+                 for r in map(json.loads, f.read_text().splitlines())}
     args.out.mkdir(parents=True, exist_ok=True)
     for row in range(args.start, args.stop):
         if row in done:
@@ -155,6 +179,31 @@ def run(args):
             with out_file.open("a") as handle:
                 handle.write(json.dumps(record) + "\n")
             print(f"row {row}: posterior {record['cpu_seconds']['posterior']:.0f} CPU-s", flush=True)
+            continue
+        if args.arm == "laplace":
+            if row not in least:
+                continue
+            fitter = Fit(task, chain_quotes(data, task, row, args.seed), args.fit_paths, args.seed + 2, prior=True)
+            fit = fitter.run([fitter.theta(np.clip(fitter.z(least[row]), -4.0, 4.0))])
+            timings = {"fit": time.process_time() - t0}
+            t0 = time.process_time()
+            mark, lower, upper = delta_bounds(fit, fitter, product)
+            rng = np.random.default_rng(np.random.SeedSequence([args.seed, 5, row]))
+            z = rng.multivariate_normal(fit["z"], fit["covariance"], size=args.draws)
+            priced = np.array([product(fitter.theta(zi)) for zi in z])
+            timings["products"] = time.process_time() - t0
+            record = {"row": row,
+                      "laplace": {"lower": np.quantile(priced, 0.1, axis=0).tolist(),
+                                  "upper": np.quantile(priced, 0.9, axis=0).tolist(),
+                                  "median": np.median(priced, axis=0).tolist(), "chi2": fit["chi2"],
+                                  "condition": fit["condition"], "on_bound": fit["on_bound"],
+                                  "theta": fit["theta"].tolist(), "sd_z": np.sqrt(np.diag(fit["covariance"])).tolist(),
+                                  "evaluations": fit["evaluations"]},
+                      "laplace_delta": {"mark": mark.tolist(), "lower": lower.tolist(), "upper": upper.tolist()},
+                      "cpu_seconds_laplace": timings}
+            with out_file.open("a") as handle:
+                handle.write(json.dumps(record) + "\n")
+            print(f"row {row}: laplace {sum(timings.values()):.0f} CPU-s; chi2 at the mode {fit['chi2']:.1f}", flush=True)
             continue
         quotes = chain_quotes(data, task, row, args.seed)
         truth = np.asarray(data["parameters"], dtype=float)[row]
@@ -193,36 +242,44 @@ def wilson(k, n, z=1.96):
 
 
 def summarize(args):
-    """Joins the classical and posterior records by row; only rows with both enter the table."""
-    by_arm = {}
-    for arm in ("classical", "posterior"):
-        by_arm[arm] = {r["row"]: r for f in sorted(args.out.glob(f"rows-{arm}-*.jsonl"))
-                       for r in map(json.loads, f.read_text().splitlines())}
-    rows = sorted(set(by_arm["classical"]) & set(by_arm["posterior"]))
-    records = [{**by_arm["classical"][r], **by_arm["posterior"][r]} for r in rows]
+    """Joins the arms' records by row; only rows that every arm in --arms has enter the table. The split by the true
+    H, within 0.05 of 0.10 or not, is a diagnostic of the fixed-H baseline, not a stratum a desk could observe."""
+    by_arm = {arm: {r["row"]: r for f in sorted(args.out.glob(f"rows-{arm}-*.jsonl"))
+                    for r in map(json.loads, f.read_text().splitlines())} for arm in args.arms}
+    rows = sorted(set.intersection(*(set(found) for found in by_arm.values())))
+    records = [{k: v for arm in args.arms for k, v in by_arm[arm][r].items()} for r in rows]
+    methods = [m for m in METHODS if any(m in ARM_METHODS[arm] for arm in args.arms)]
     truth = np.array([r["truth"] for r in records])
+    near = np.abs(np.array([r["truth_parameters"][0] for r in records]) - HURST_FIXED) <= 0.05
     n = len(records)
-    report = {"chains": n, "products": list(thin_products.NAMES), "nominal_breach_rate": 0.1, "methods": {}}
+    report = {"chains": n, "arms": args.arms, "products": list(thin_products.NAMES), "nominal_breach_rate": 0.1,
+              "true_hurst_near_0.10": int(near.sum()), "methods": {}}
     print(f"{n} chains; breach rates of the one-sided 90% bounds (nominal 10% each side)")
-    print(f"  {'product':22s} " + " ".join(f"{m:>22s}" for m in METHODS))
-    for m in METHODS:
+    print(f"  {'product':22s} " + " ".join(f"{m:>22s}" for m in methods))
+    for m in methods:
         lower = np.array([r[m]["lower"] for r in records])
         upper = np.array([r[m]["upper"] for r in records])
-        long_b, short_b = (truth < lower).sum(axis=0), (truth > upper).sum(axis=0)
+        long_hit, short_hit = truth < lower, truth > upper
+        long_b, short_b = long_hit.sum(axis=0), short_hit.sum(axis=0)
         width = np.median((upper - lower) / np.abs(truth), axis=0)
         report["methods"][m] = {"long_breaches": long_b.tolist(), "short_breaches": short_b.tolist(),
                                 "long_wilson": [wilson(k, n) for k in long_b], "short_wilson": [wilson(k, n) for k in short_b],
-                                "median_relative_width": width.tolist()}
+                                "median_relative_width": width.tolist(),
+                                "by_true_hurst": {name: {"chains": int(mask.sum()),
+                                                         "long_breaches": long_hit[mask].sum(axis=0).tolist(),
+                                                         "short_breaches": short_hit[mask].sum(axis=0).tolist()}
+                                                  for name, mask in (("near_0.10", near), ("far", ~near))}}
     for j, p in enumerate(thin_products.NAMES):
         cells = []
-        for m in METHODS:
+        for m in methods:
             r = report["methods"][m]
             cells.append(f"{r['long_breaches'][j] / n:5.2f}/{r['short_breaches'][j] / n:4.2f} w{r['median_relative_width'][j]:5.3f}")
         print(f"  {p:22s} " + " ".join(f"{c:>22s}" for c in cells))
-    for m in ("gauss_newton", "hurst_fixed"):
-        on_bound = sum(r[m]["on_bound"] for r in records)
-        report["methods"][m]["fits_on_bound"] = on_bound
-        print(f"  {m}: fits with a coordinate on the prior bound {on_bound} of {n}")
+    for m in ("gauss_newton", "hurst_fixed", "laplace"):
+        if m in methods:
+            on_bound = sum(r[m]["on_bound"] for r in records)
+            report["methods"][m]["fits_on_bound"] = on_bound
+            print(f"  {m}: fits with a coordinate on the prior bound {on_bound} of {n}")
     (args.out / "summary.json").write_text(json.dumps(report, indent=1) + "\n")
 
 
@@ -243,9 +300,12 @@ def main():
             p.add_argument("--split", default="test")
         if name == "sample":
             p.add_argument("--checkpoint", type=Path, required=True)
+        if name == "summarize":
+            p.add_argument("--arms", nargs="+", choices=list(ARM_METHODS), default=["classical", "posterior"])
         if name == "run":
-            p.add_argument("--arm", choices=("classical", "posterior"), required=True,
-                           help="classical needs only the bank; posterior needs the sample step's draws")
+            p.add_argument("--arm", choices=list(ARM_METHODS), required=True,
+                           help="classical needs only the bank; posterior needs the sample step's draws; laplace "
+                                "starts from the classical arm's fits")
             p.add_argument("--product-paths", type=int, default=8192)
             p.add_argument("--fit-paths", type=int, default=4096)
     args = parser.parse_args()
