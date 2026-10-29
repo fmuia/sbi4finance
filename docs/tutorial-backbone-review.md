@@ -22,6 +22,11 @@ live section requires a matching local checkpoint directory and an explicit
 button press. It generates fresh draws for the exact cached observation; it
 does not train, reprice the surface or run MCMC.
 
+The known-curve and joint-curve 100k banks and fits are now complete. This review
+notebook still pins its earlier known50k/joint20k replays; new checkpoints are
+not silently substituted. Review the [completed joint100k results](pilot-results/2026-10-29/joint100k-completed/README.md)
+before updating the catalogue and its reference/product claims.
+
 ## What each example supports
 
 | Example | Inferred parameters | Inference conditions | Cached comparison |
