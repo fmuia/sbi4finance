@@ -6,7 +6,7 @@
 
 **Where it sits in the course.** Lecture 6 asked for a range of plausible prices for products the smile does not pin down. Lecture 7 built that range from one optimum and a local covariance, and showed where the construction breaks. This lecture builds it from the posterior, which is exact under the stated model and the stated prior, whatever the shape of the plausible set. Its one drawback is cost: every evaluation of the posterior density is one priced surface. For Black–Scholes and Heston that is cheap. For rough Bergomi it is a Monte Carlo run, which is the subject of Lecture 14. Lecture 9 learns the posterior from simulations instead, and Lecture 11 applies the methods of this lecture to Heston.
 
-**Its part in the argument.** This lecture shows the first two claims of the argument (Lecture 6, Section 6.8) in their simplest form. The posterior returns the classical interval when the conditions of Lecture 7 hold (Section 8.3). It differs where a direction is weakly informed (Section 8.5) and where a name quotes almost nothing (Section 8.10). Section 8.11 sorts the cases. Section 8.12 states the fourth claim: what the posterior does not cover.
+**Its part in the argument.** This lecture shows the first two claims of the argument (Lecture 6, Section 6.8) in their simplest form. The posterior returns the classical interval when the conditions of Lecture 7 hold (Section 8.3). It differs where a direction is weakly informed (Section 8.5) and where a name quotes almost nothing (Section 8.10). It can differ for two reasons: it gives the open inputs a prior with a stated width, and it follows the exact shape of what the quotes allow. Section 8.11 sorts the cases, and Lectures 15 and 16 measure which of the two reasons matters on real models. Section 8.12 states the fourth claim: what the posterior does not cover.
 
 ## 8.1 Bayes' rule for a calibration
 
@@ -332,11 +332,13 @@ The results of this lecture sort into the cases of the argument of the course (L
 | Case | Classical answer | Posterior | Where it is shown |
 | --- | --- | --- | --- |
 | The quotes determine the parameters | The Gauss–Newton interval | The same interval | Section 8.3 on Black–Scholes; on SPY, Lecture 11 (Heston) and Lecture 15 (rough Bergomi) |
-| A direction is weakly informed | A linear, symmetric interval, which can cross the bounds | Follows the curved, truncated valley | Section 8.5, the toy smile; on a thin chain, Lecture 16 (pending) |
-| An input is not quoted | The input fixed, with no range | A prior on the input, carried into the range | Lecture 15, Section 15.6, the long end; on a thin chain, $H$ and the last curve level (Lecture 16, pending) |
+| A direction is weakly informed | A linear, symmetric interval, which can cross the bounds | Follows the curved, truncated valley | Section 8.5, the toy smile; Heston at low vol of vol (Lecture 11, Section 11.6); on simulated thin chains, a quick check (Lecture 16, Section 16.4) |
+| An input is not quoted | The input fixed, with no range | A prior on the input, carried into the range | Lecture 15, Section 15.6, the long end; on simulated thin chains, $H$ and the curve beyond the last quote, a quick check (Lecture 16, Section 16.4) |
 | A name quotes almost nothing | Its own fit, wide, or a proxy, overconfident | Strength borrowed from the sector | Section 8.10, a simulated sector |
 
 In the third case the posterior's range depends on the width of the prior. The posterior is then right if its prior is, and not otherwise. The course therefore tests other laws for the unquoted input (Lecture 16, Section 16.4).
+
+The two reasons for a difference can be told apart. A Laplace approximation keeps the prior and drops the shape: a normal at the posterior's mode, with the curvature of the prior and the quotes together (Lecture 7, Section 7.9). On simulated thin chains it gives the same product bands as the posterior, while least squares without a prior is up to 3.3 times as wide and a parameter fixed by hand is biased (Lecture 16, Section 16.4). Where the course has measured it on products, the prior is what changes the answer. The shape shows in single inputs along a valley or near a bound (Section 8.5; Lecture 11, Section 11.6; Lecture 15, Section 15.6).
 
 ## 8.12 What the posterior does not cover
 

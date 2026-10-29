@@ -8,6 +8,10 @@ runs, and what is still to run. The runs themselves, with commands and costs, ar
 with their sources, are in [practice-sources.md](practice-sources.md). The course stays a superset of the ICAIF '26
 tutorial.
 
+## Current execution scope (29 October)
+
+The course keeps its prior-versus-geometry argument and exploratory checks. The immediate tutorial, however, uses **complete surfaces**: Heston → known-curve rough Bergomi → joint-curve rough Bergomi. All three 100k banks and baseline fits are complete; J1's marginal validation, contraction and observation-dependence audit is complete. J2's conditional references and J3's long-end/product comparison remain pending ([status](status.md#the-joint-runs)). The older budgets/options below describe proposed studies, not newly authorized jobs. Thin chains, pooling across names and a new market-data campaign are optional/deferred.
+
 ## Summary
 
 1. **Sixteen lectures in four parts.** Markets and Black–Scholes (1–5); calibration and Bayes on Black–Scholes
@@ -19,8 +23,7 @@ tutorial.
    tested on a thousand simulated chains, and each real chain gets a proposal for an audit. On one audited smile
    its saving over importance sampling from a Gauss–Newton proposal is small; in validation it is decisive
    (Section 2.4).
-3. **The example.** EWG (iShares MSCI Germany): a real thin chain, informative but sparse, chosen on merit from
-   four candidates (Section 3).
+3. **The optional thin-chain example.** EWG (iShares MSCI Germany) was chosen on merit from four candidates (Section 3). It remains course background and exploratory evidence, not a requirement for the current full-surface tutorial.
 4. **Two reviews found nineteen errors.** The most serious ones are a curve leaked from SPY's full chain, an audit
    that was not unbiased, and adaptive rounds that did not adapt. All are fixed in the code (Section 4).
 5. **What is missing.** Every result on the full rough-Bergomi bank: about 930 CPU-hours and two GPU jobs
@@ -148,8 +151,12 @@ becomes affordable, not that one posterior becomes much cheaper. The course neve
 
 ### 2.5 What is not shown yet, and what would weaken the argument
 
-The thin-chain results are pending (S10, S10-E, S11). Two outcomes would weaken the argument, and the course will
-report them if they occur.
+The formal thin-chain studies remain deferred (S10, S10-E, S11). On full surfaces, J1 is complete on the joint100k validation panel; conditional references J2 and long-end/product comparisons J3 remain pending (Lecture 15, Section 15.2). A quick check on 100 simulated EWG chains with the curve inferred
+points to an outcome this plan did not list: Gauss–Newton over-reserves rather than under-covers, fixing $H$ is
+biased, and a Laplace approximation with the posterior's prior does as well as the network (Lecture 16, Section 16.4).
+If S10 confirms it, the thin chain shows that a stated prior is needed, not that the posterior's shape is, and
+simulation-based inference rests on cost and validation (Section 2.4). Two outcomes would weaken the argument, and
+the course will report them if they occur.
 - If Gauss–Newton covers at its nominal rate on EWG-like chains, the case for Bayes rests on the long end and on
   pooling.
 - If rough Bergomi fails EWG's predictive check, model error exceeds every within-model range.
@@ -180,7 +187,7 @@ to 36 volatility points, so pooling will decide most of their marks: that is the
 expiries (29, 57, 148 and 238 calendar days) match fewer design maturities than EWG's, so their layouts are smaller.
 Their dividends must be checked against rule 3 of Section 3 before they are used.
 
-## 3. The example: why EWG
+## 3. Optional/deferred example: why EWG
 
 ![Median bid–ask width near the money per expiry, for the four candidate chains.](images/v2-thin-candidates.png)
 
@@ -236,9 +243,9 @@ Smaller fixes: the S10 truth is priced on the methods' seed; Heston's control va
 scheme; studies load only the splits they use; an audit counts as reliable only if every proposal was priced; S10-E
 reports its distinct truths and a bootstrap over them.
 
-## 5. The studies still to run
+## 5. Earlier proposed studies, retained for scope and provenance
 
-The runbook gives the commands, costs and acceptance checks. In order:
+This was the earlier SPY/thin-chain execution queue. It does not replace the completed 100k backbone or authorize new jobs. The power-law-walk proposal has a different task identity from the released known100k reproduction bank; J1 is complete, J2/J3 remain pending, and sparse studies are deferred. The old runbook retains its commands, estimates and proposed acceptance checks:
 
 - **S1, S1-G.** The full bank of 112,000 surfaces with the new curve prior (about 360 CPU-hours), its quality and
   its grid bias.

@@ -1,0 +1,102 @@
+{
+ "source": "../tutorial/assets/results/calibration/heston/s6/classical.json",
+ "stratum": "least-squares vol_of_vol below 0.3",
+ "strata": {
+  "vol_of_vol below 0.3": {
+   "smiles": 28,
+   "optimum_on_bound": 7,
+   "no_gauss_newton": 4,
+   "two_or_more_optima": 6,
+   "parameters": {
+    "initial_variance": {
+     "posterior_breach_below": 0.0,
+     "posterior_breach_above": 0.0,
+     "gauss_newton_breach_below": 0.0,
+     "gauss_newton_breach_above": 0.0,
+     "gauss_newton_smiles": 24,
+     "width_ratio_median": 1.0030700183892491,
+     "width_ratio_10": 0.9320018068199802,
+     "width_ratio_90": 1.0931486106337889
+    },
+    "theta": {
+     "posterior_breach_below": 0.10714285714285714,
+     "posterior_breach_above": 0.03571428571428571,
+     "gauss_newton_breach_below": 0.125,
+     "gauss_newton_breach_above": 0.041666666666666664,
+     "gauss_newton_smiles": 24,
+     "width_ratio_median": 1.0357623338145814,
+     "width_ratio_10": 0.9794167430932756,
+     "width_ratio_90": 1.0953177426277512
+    },
+    "vol_of_vol": {
+     "posterior_breach_below": 0.03571428571428571,
+     "posterior_breach_above": 0.03571428571428571,
+     "gauss_newton_breach_below": 0.0,
+     "gauss_newton_breach_above": 0.08333333333333333,
+     "gauss_newton_smiles": 24,
+     "width_ratio_median": 1.4757697642114052,
+     "width_ratio_10": 0.8368521169659721,
+     "width_ratio_90": 3.0963686098478473
+    },
+    "rho": {
+     "posterior_breach_below": 0.07142857142857142,
+     "posterior_breach_above": 0.10714285714285714,
+     "gauss_newton_breach_below": 0.0,
+     "gauss_newton_breach_above": 0.0,
+     "gauss_newton_smiles": 24,
+     "width_ratio_median": 1.3605564329461377,
+     "width_ratio_10": 0.5989406029837439,
+     "width_ratio_90": 5.538271855435296
+    }
+   }
+  },
+  "vol_of_vol 0.3 and above": {
+   "smiles": 172,
+   "optimum_on_bound": 8,
+   "no_gauss_newton": 7,
+   "two_or_more_optima": 0,
+   "parameters": {
+    "initial_variance": {
+     "posterior_breach_below": 0.040697674418604654,
+     "posterior_breach_above": 0.0755813953488372,
+     "gauss_newton_breach_below": 0.04242424242424243,
+     "gauss_newton_breach_above": 0.06666666666666667,
+     "gauss_newton_smiles": 165,
+     "width_ratio_median": 1.0409265688389924,
+     "width_ratio_10": 0.9651252816644815,
+     "width_ratio_90": 1.1133180201325963
+    },
+    "theta": {
+     "posterior_breach_below": 0.0755813953488372,
+     "posterior_breach_above": 0.03488372093023256,
+     "gauss_newton_breach_below": 0.09696969696969697,
+     "gauss_newton_breach_above": 0.024242424242424242,
+     "gauss_newton_smiles": 165,
+     "width_ratio_median": 1.0224485035065993,
+     "width_ratio_10": 0.9613232953061327,
+     "width_ratio_90": 1.0879547095293578
+    },
+    "vol_of_vol": {
+     "posterior_breach_below": 0.06395348837209303,
+     "posterior_breach_above": 0.046511627906976744,
+     "gauss_newton_breach_below": 0.05454545454545454,
+     "gauss_newton_breach_above": 0.030303030303030304,
+     "gauss_newton_smiles": 165,
+     "width_ratio_median": 1.0263694053232366,
+     "width_ratio_10": 0.9540394496893465,
+     "width_ratio_90": 1.151191566274074
+    },
+    "rho": {
+     "posterior_breach_below": 0.08139534883720931,
+     "posterior_breach_above": 0.040697674418604654,
+     "gauss_newton_breach_below": 0.07878787878787878,
+     "gauss_newton_breach_above": 0.03636363636363636,
+     "gauss_newton_smiles": 165,
+     "width_ratio_median": 1.0137716451577568,
+     "width_ratio_10": 0.9319755846586311,
+     "width_ratio_90": 1.1014669573909863
+    }
+   }
+  }
+ }
+}
