@@ -1,0 +1,117 @@
+{
+  "format": "tutorial_artifact_integration_verification_v1",
+  "recorded_utc": "2026-10-28T16:44:48.272683+00:00",
+  "notebooks_executed": false,
+  "new_financial_simulations": false,
+  "new_scientific_inference": false,
+  "reserved_test_outcomes_evaluated": false,
+  "scientific_acceptance": false,
+  "tests": {
+    "known_curve_contract_and_actual_tiny_bayesflow": {
+      "passed": 8,
+      "seconds": 24.69
+    },
+    "full_surface_heston_and_replay_contracts": {
+      "passed": 23,
+      "seconds": 0.351
+    },
+    "static_marimo_strict": [
+      "tutorial_final/notebooks/backbone_review.py",
+      "tutorial_final/notebooks/slot4_heston_bayesflow.py",
+      "tutorial_final/notebooks/slot5_calibration.py"
+    ],
+    "offline_catalogue_with_bayesflow_keras_jax_scipy_imports_blocked": "passed all three artifacts",
+    "git_diff_check": "passed"
+  },
+  "tiny_software_test_runtime": {
+    "python": "3.12.16",
+    "bayesflow": "2.1.0",
+    "keras": "3.15.1",
+    "jax": "0.11.1",
+    "numpy": "2.5.3",
+    "marimo": "0.25.1"
+  },
+  "artifacts": {
+    "heston-final500": {
+      "case_id": "development:midpoint-20261028",
+      "task_fingerprint": "5e499526ff8f29a72f49785a1a36006b1d769d26bca8a6f83f7a8c8ac4d431fa",
+      "checkpoint_sha256": "8d4a243ba099524cf4cda40e4f0616e895879f053829a7f60dadbe65b98301db",
+      "parameter_names": [
+        "initial_variance",
+        "theta",
+        "vol_of_vol",
+        "rho"
+      ],
+      "neural_draw_shape": [
+        10000,
+        4
+      ],
+      "reference_chain_shape": [
+        4,
+        8000,
+        4
+      ],
+      "observed_curve_shape": null,
+      "scientific_acceptance": false
+    },
+    "rough-known50k": {
+      "case_id": "validation:0",
+      "task_fingerprint": "c99b0dd131896d89d8483a1668a3fde0fb7a0f28794c3db7fe14635cbbd52b65",
+      "checkpoint_sha256": "e32732daea513c1887438eab801e660f286166846ef65eac6258136c3f504613",
+      "parameter_names": [
+        "hurst",
+        "eta",
+        "rho"
+      ],
+      "neural_draw_shape": [
+        1000,
+        3
+      ],
+      "reference_chain_shape": null,
+      "observed_curve_shape": [
+        7
+      ],
+      "scientific_acceptance": false
+    },
+    "rough-joint20k": {
+      "case_id": "validation:0",
+      "task_fingerprint": "29eca4e1b970c4f13b99573939aa3449c5280a3a4478f7d24beace6539a9889d",
+      "checkpoint_sha256": "8d552a9392d54f98a954401fb979e861f26b9a9c71690b5c3980a4e8fa608dec",
+      "parameter_names": [
+        "hurst",
+        "eta",
+        "rho",
+        "short_variance",
+        "long_variance",
+        "decay"
+      ],
+      "neural_draw_shape": [
+        1000,
+        6
+      ],
+      "reference_chain_shape": null,
+      "observed_curve_shape": null,
+      "scientific_acceptance": false
+    }
+  },
+  "source_sha256": {
+    "src/sbi4finance/calibration/full_surface.py": "b712406cf7e95f8807df126577c3b7cb8d60119437c88036ab3c5e9a5407684e",
+    "src/sbi4finance/calibration/full_surface_teaching.py": "d9758a76f7246e22a77dc0239c46b3d001b1dd29aade3a848e4862df6d121b9a",
+    "tests/test_full_surface_known_curve.py": "e1893b89b511f98d91ce03ec5d35de85275e31abf54ac1011f40b2c4d204ea2e",
+    "tests/test_full_surface_replays.py": "a2dbb13a596afcde45500876eeb14652a46ab08d099c70580dc037e5ad61bfdb",
+    "tutorial_final/notebooks/backbone_review.py": "12e4a7ed1a0b20481ba264f96ba24107bd9f0f322c2757a6065e5af9132add55",
+    "data/synthetic/full-surface-backbones/artifacts.json": "e58f68e4d644126f750869edb2246351ecf76293d3dcecfa85d2c798683e9746"
+  },
+  "pr49_checked": {
+    "state": "OPEN",
+    "head": "3cf59b552b0e1a4fc8050c54d1ce715b4483a014",
+    "updated_at": "2026-10-28T12:26:41Z",
+    "merged": false
+  },
+  "limitations": [
+    "Tiny native training tests verify software, not new-encoder posterior quality.",
+    "Rough caches are fixed development validation:0, not interior or conditional reference acceptance.",
+    "Joint replay approaches prior edges in hurst,rho,decay; complete plots/table show this.",
+    "Live buttons were not executed; no new model readout or notebook execution occurred."
+  ]
+}

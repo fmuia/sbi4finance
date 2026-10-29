@@ -1,0 +1,18 @@
+{
+  "original_c96_operator_sha256": "1ada0012f6deab62269d16bb8479b4a63e28d326bd215575096ad24dab5150dc",
+  "versioned_operator_sha256": "f723a0099ac06dc49d771ded7a0bf9b1f91d736fcd8cb0eff61ef118b7692284",
+  "only_delta": "--patience literal30 becomes declared plan.recipe.pricer_patience",
+  "other_operator_bytes_unchanged": true,
+  "helper_sha256": "525ad97a6a2db32e3f24f9f2e0cc53a9510a2e209c322251ecf17973108311ce",
+  "bank_config_sha256": "a27a7a142f160e37ce903788308744dde61f2889fb9091aa8a23b583043234a7",
+  "pool_prior_cpu_seconds": 15632,
+  "pool_prior_gpu_seconds": 3908,
+  "one_full_cpu_seconds": 15360,
+  "one_full_gpu_seconds": 3840,
+  "full_cumulative_cpu_seconds": 30992,
+  "full_cumulative_gpu_seconds": 7748,
+  "original_cpu_seconds_ceiling": 32400,
+  "original_gpu_seconds_ceiling": 8100,
+  "launch_performed": false,
+  "original_phase_plan_sha256": "15e5d86393388c76fdf5df0cc262dbb4f8e4db8f10302ff96d7b4e1f91751761"
+}

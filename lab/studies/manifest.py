@@ -14,6 +14,7 @@ copies match their sources and the table is current, and exits non-zero if not.
 
 import argparse
 import hashlib
+import json
 from pathlib import Path
 import shutil
 import sys
@@ -36,6 +37,31 @@ EXPORTS = {
     "images/ladder.png": "tutorial/curriculum/images/ladder.png",
     "images/l10-credible-vs-confidence.png": "course/images/l10-credible-vs-confidence.png",
 }
+BACKBONES = ("heston-final500", "rough-known100k-validation0", "rough-joint100k-validation0",
+             "rough-joint100k-validation1983", "rough-joint100k-validation1941", "rough-joint100k-validation1962")
+
+
+def backbone_catalogue():
+    """Index verified development bundles without promoting scientific acceptance."""
+    entries = {}
+    for name in BACKBONES:
+        path = ASSETS / "backbones" / name
+        bundle = json.loads((path / "bundle.json").read_text())
+        entries[name] = {"cache": name, "cache_format": bundle["format"],
+                         "bundle_sha256": sha256(path / "bundle.json"),
+                         "task_fingerprint": bundle["task_fingerprint"],
+                         "checkpoint_sha256": bundle["checkpoint_sha256"],
+                         "case_id": bundle["case_id"],
+                         "model_source": "published tutorial-backbones-20261029 models archive",
+                         "scope": bundle.get("limitations", "development replay; no acceptance promotion")}
+    return json.dumps({"format": "full_surface_tutorial_artifacts_v1", "scientific_acceptance": False,
+                       "artifacts": entries}, indent=2, allow_nan=False) + "\n"
+
+
+def tracked_assets():
+    """Downloaded native models have their own bound hashes and stay out of the shipped manifest."""
+    return sorted(p for p in ASSETS.rglob("*") if p.is_file()
+                  and not p.is_relative_to(ASSETS / "local-checkpoints"))
 
 
 def sha256(path):
@@ -49,7 +75,7 @@ def stale_exports():
 
 def table():
     rows = []
-    for path in sorted(p for p in ASSETS.rglob("*") if p.is_file()):
+    for path in tracked_assets():
         name = str(path.relative_to(ASSETS))
         source = f"`{EXPORTS[name]}`" if name in EXPORTS else ""
         rows.append(f"| `{name}` | {path.stat().st_size:,} | `{sha256(path)}` | {source} |")
@@ -58,16 +84,41 @@ def table():
     return "\n".join(["| File | Bytes | SHA-256 | Copy of |", "|---|---:|---|---|"] + rows), len(rows)
 
 
+def current_description(text):
+    """Refresh the obsolete automatic-toy instructions through the manifest tool."""
+    text = text.replace("in the repository, and the tutorial's tests check every file against the SHA-256 recorded below. Paths are",
+                        "in the repository. Tests check shipped files against the SHA-256 recorded below; optional native models\n"
+                        "under `local-checkpoints/` are checked by their own bound loader. Paths are")
+    lines = text.splitlines()
+    for i, line in enumerate(lines):
+        if line.startswith("| `checkpoints/` |"):
+            lines[i] = ("| `checkpoints/` | Historical BayesFlow 2.0 networks, retained unchanged as evidence | "
+                        "The original `lab/studies/accept.py` export stripped optimizer state and checked same-seed draws. "
+                        "The current participant environment never loads these files implicitly. New toy training is explicit and session-only. |")
+    if not any(line.startswith("| `backbones/` |") for line in lines):
+        index = next(i for i, line in enumerate(lines) if line.startswith("| `data/` |"))
+        lines[index:index] = ["| `backbones/` | Hash-bound development cases from the current 100k estimators | "
+                             "`lab/studies/accept.py --replay` preserves bytes and scientific scope; `manifest.py` generates their catalogue. "
+                             "Native checkpoint exports preserve model bytes and metadata hashes. |"]
+    return "\n".join(lines) + "\n"
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
     stale = stale_exports()
+    catalogue = ASSETS / "backbones" / "artifacts.json"
+    expected_catalogue = backbone_catalogue()
+    catalogue_current = catalogue.exists() and catalogue.read_text() == expected_catalogue
     if not args.check:
         for name in stale:
             (ASSETS / name).parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(REPO / EXPORTS[name], ASSETS / name)
-    text = MANIFEST.read_text()
+        catalogue.write_text(expected_catalogue)
+        catalogue_current = True
+    original = MANIFEST.read_text()
+    text = current_description(original)
     if BEGIN not in text or END not in text:
         raise SystemExit(f"{MANIFEST} lacks the marker lines")
     head, rest = text.split(BEGIN, 1)
@@ -77,8 +128,8 @@ def main():
     if args.check:
         for name in stale:
             print(f"stale copy: {name} differs from {EXPORTS[name]}")
-        print("current" if updated == text and not stale else "stale")
-        sys.exit(0 if updated == text and not stale else 1)
+        print("current" if updated == original and not stale and catalogue_current else "stale")
+        sys.exit(0 if updated == original and not stale and catalogue_current else 1)
     MANIFEST.write_text(updated)
     print(f"{MANIFEST}: {count} artifacts, {len(stale)} copies refreshed")
 

@@ -1,0 +1,737 @@
+{
+  "checked_utc": "2026-10-29T09:42:57.212228+00:00",
+  "scope": "Saved-draw descriptive contraction audit; no new inference, simulations, prior MC, fitting or promotion.",
+  "saved_panel": {
+    "path": "/private/tmp/sbi-joint100k-sanity-20261029/draws.npz",
+    "hashes": {
+      "draws.npz": "d7b6e67f74228aa15de413fd0a2802cbe0c7a586888853ce3ef4403856ee422d",
+      "task.json": "29eca4e1b970c4f13b99573939aa3449c5280a3a4478f7d24beace6539a9889d",
+      "training.json": "ef41e5f9fc24fd897f3bdf1162bed15765387ca1c49107d24f9593cf6b951c37",
+      "evaluation.json": "395eab6088e5d3799d9b8d65904ac25daa536991ef43c23f84f161b7e82a8ac9"
+    },
+    "shape": [
+      2000,
+      1000,
+      6
+    ],
+    "truth_shape": [
+      2000,
+      6
+    ],
+    "model_sha256": "19c24d64290651f592d3c13d7d0a1616d0d8ae080d487d0298aee8f97779498b",
+    "bank_sha256": "eb72588b9b7665e0e416cb5d3a1bcf8cd78a1c97f2b43f18ea8246c749a871d8",
+    "split": "validation",
+    "cases": 2000,
+    "draws_per_case": 1000
+  },
+  "prior": {
+    "distribution": "Independent physical-coordinate uniforms; bank.generate_examples uses prior_rng.uniform(bounds[:,0],bounds[:,1]).",
+    "bounds": [
+      [
+        0.02,
+        0.35
+      ],
+      [
+        0.5,
+        3.5
+      ],
+      [
+        -0.99,
+        -0.2
+      ],
+      [
+        0.01,
+        0.16
+      ],
+      [
+        0.01,
+        0.16
+      ],
+      [
+        0.25,
+        8.0
+      ]
+    ],
+    "analytic_variance": "(upper-lower)^2/12",
+    "analytic_width90": "0.9*(upper-lower)",
+    "analytic_logit_variance": 3.289868133696453,
+    "no_prior_MC": true
+  },
+  "existing_definition_audit": {
+    "definition": "1-mean_across_cases(Var_across_draws(logit((theta-lower)/(upper-lower)),ddof=0))/(pi^2/3)",
+    "reproduced_max_absolute_difference": 0.0,
+    "population_variance_ddof0_prior_sampling_bias_at1000draws": 0.001,
+    "existing_recovery_correlation_uses": "posterior MEDIAN, while this audit computes posterior MEAN RMSE",
+    "clip_interval": [
+      1e-12,
+      0.999999999999
+    ],
+    "clip_incidence_audited": true
+  },
+  "parameters": [
+    {
+      "name": "hurst",
+      "prior_mean": 0.185,
+      "prior_variance": 0.009074999999999998,
+      "prior_sd": 0.09526279441628824,
+      "physical_variance_ratio": {
+        "q10": 0.006845421826475132,
+        "median": 0.01831178340001394,
+        "q90": 0.0905003335336251
+      },
+      "physical_sd_ratio": {
+        "q10": 0.08273702941980539,
+        "median": 0.13532103329547668,
+        "q90": 0.3008327178820992
+      },
+      "mean_physical_variance_ratio": 0.04263951764370131,
+      "physical_contraction": 0.9573604823562987,
+      "posterior_width90": {
+        "q10": 0.025658478830009695,
+        "median": 0.04204446487128734,
+        "q90": 0.09302539868280293
+      },
+      "coverage90": {
+        "matched": 0.9,
+        "offdiagonal": 0.16030990495247624
+      },
+      "mean_recovery": {
+        "rmse": 0.019884334657809092,
+        "prior_midpoint_rmse": 0.09548669506712186,
+        "matched_rmse_ratio": 0.20824194034395582,
+        "offdiagonal_rmse": 0.13347044285718926,
+        "offdiagonal_rmse_ratio": 1.3977909986660124
+      },
+      "bayes_consistency": {
+        "mse_over_mean_posterior_variance": 1.0217936767464106,
+        "total_variance_over_prior_variance": 0.9999109066034111,
+        "total_variance_over_empirical_truth_variance": 0.9952296024372037,
+        "posterior_mixture_mean_minus_prior_mean_in_prior_sd": -0.007366537418044897
+      },
+      "prior_width90": 0.297,
+      "width90_ratio": {
+        "q10": 0.08639218461282727,
+        "median": 0.14156385478547925,
+        "q90": 0.3132168305818281
+      },
+      "prior_bounds": [
+        0.02,
+        0.35
+      ],
+      "reported_logit_contraction": 0.9010910743916256,
+      "logit_variance_ratio": {
+        "q10": 0.004850277282192582,
+        "median": 0.02197728669688622,
+        "q90": 0.3231218787487101
+      },
+      "bounds": {
+        "outside_draws": 0,
+        "exact_bound_draws": 0,
+        "clipped_draws": 0,
+        "minimum_unit_draw": 6.590377200720916e-07,
+        "maximum_unit_draw": 0.9999984466668332
+      }
+    },
+    {
+      "name": "eta",
+      "prior_mean": 2.0,
+      "prior_variance": 0.75,
+      "prior_sd": 0.8660254037844386,
+      "physical_variance_ratio": {
+        "q10": 0.002561213526085355,
+        "median": 0.0059485031012047485,
+        "q90": 0.01997455462696233
+      },
+      "physical_sd_ratio": {
+        "q10": 0.050608430649123515,
+        "median": 0.07712653846188994,
+        "q90": 0.1413313644875232
+      },
+      "mean_physical_variance_ratio": 0.009267961096068771,
+      "physical_contraction": 0.9907320389039312,
+      "posterior_width90": {
+        "q10": 0.1423871603608131,
+        "median": 0.217070958018303,
+        "q90": 0.3966302955150605
+      },
+      "coverage90": {
+        "matched": 0.895,
+        "offdiagonal": 0.08248424212106054
+      },
+      "mean_recovery": {
+        "rmse": 0.08263503663547611,
+        "prior_midpoint_rmse": 0.8764612408850314,
+        "matched_rmse_ratio": 0.0942825909244236,
+        "offdiagonal_rmse": 1.2370217875617628,
+        "offdiagonal_rmse_ratio": 1.411382192226373
+      },
+      "bayes_consistency": {
+        "mse_over_mean_posterior_variance": 0.9823878497782319,
+        "total_variance_over_prior_variance": 1.0243305921454355,
+        "total_variance_over_empirical_truth_variance": 1.0001090160044426,
+        "posterior_mixture_mean_minus_prior_mean_in_prior_sd": -0.00497576575025002
+      },
+      "prior_width90": 2.7,
+      "width90_ratio": {
+        "q10": 0.05273598531881966,
+        "median": 0.08039665111788999,
+        "q90": 0.1469001094500224
+      },
+      "prior_bounds": [
+        0.5,
+        3.5
+      ],
+      "reported_logit_contraction": 0.9527766843246418,
+      "logit_variance_ratio": {
+        "q10": 0.0014500814143955873,
+        "median": 0.006511100877300647,
+        "q90": 0.1573093571269236
+      },
+      "bounds": {
+        "outside_draws": 0,
+        "exact_bound_draws": 0,
+        "clipped_draws": 0,
+        "minimum_unit_draw": 5.960464477539062e-07,
+        "maximum_unit_draw": 0.9999993642171224
+      }
+    },
+    {
+      "name": "rho",
+      "prior_mean": -0.595,
+      "prior_variance": 0.052008333333333344,
+      "prior_sd": 0.2280533563299022,
+      "physical_variance_ratio": {
+        "q10": 0.001308263635039292,
+        "median": 0.009104249303242721,
+        "q90": 0.08076860293587536
+      },
+      "physical_sd_ratio": {
+        "q10": 0.03616992631718388,
+        "median": 0.09541608772674512,
+        "q90": 0.284198154715591
+      },
+      "mean_physical_variance_ratio": 0.027490737117788717,
+      "physical_contraction": 0.9725092628822113,
+      "posterior_width90": {
+        "q10": 0.0269484317302704,
+        "median": 0.07014695852994918,
+        "q90": 0.21095933288335808
+      },
+      "coverage90": {
+        "matched": 0.9015,
+        "offdiagonal": 0.12291870935467734
+      },
+      "mean_recovery": {
+        "rmse": 0.038133296326858294,
+        "prior_midpoint_rmse": 0.22665406647851122,
+        "matched_rmse_ratio": 0.16824448340737652,
+        "offdiagonal_rmse": 0.317327676621757,
+        "offdiagonal_rmse_ratio": 1.4000528715501446
+      },
+      "bayes_consistency": {
+        "mse_over_mean_posterior_variance": 1.0170665593212254,
+        "total_variance_over_prior_variance": 0.9757807137078448,
+        "total_variance_over_empirical_truth_variance": 0.9887351325093201,
+        "posterior_mixture_mean_minus_prior_mean_in_prior_sd": -0.02440163665971249
+      },
+      "prior_width90": 0.7110000000000001,
+      "width90_ratio": {
+        "q10": 0.03790215433230717,
+        "median": 0.0986595759914897,
+        "q90": 0.29670792248010974
+      },
+      "prior_bounds": [
+        -0.99,
+        -0.2
+      ],
+      "reported_logit_contraction": 0.9331564050646307,
+      "logit_variance_ratio": {
+        "q10": 0.0010349067205724003,
+        "median": 0.012565379716054316,
+        "q90": 0.238812747324131
+      },
+      "bounds": {
+        "outside_draws": 0,
+        "exact_bound_draws": 0,
+        "clipped_draws": 0,
+        "minimum_unit_draw": 1.3882600807321134e-07,
+        "maximum_unit_draw": 0.9999988079071044
+      }
+    },
+    {
+      "name": "short_variance",
+      "prior_mean": 0.085,
+      "prior_variance": 0.001875,
+      "prior_sd": 0.04330127018922193,
+      "physical_variance_ratio": {
+        "q10": 0.000172820751919132,
+        "median": 0.000311812232618182,
+        "q90": 0.0006086450369798536
+      },
+      "physical_sd_ratio": {
+        "q10": 0.013146127532822311,
+        "median": 0.017658205777364298,
+        "q90": 0.024670731070023547
+      },
+      "mean_physical_variance_ratio": 0.0003615215291471665,
+      "physical_contraction": 0.9996384784708529,
+      "posterior_width90": {
+        "q10": 0.0018454253207892165,
+        "median": 0.002495401166379453,
+        "q90": 0.003472191207110888
+      },
+      "coverage90": {
+        "matched": 0.9015,
+        "offdiagonal": 0.017210105052526264
+      },
+      "mean_recovery": {
+        "rmse": 0.0008070139926509649,
+        "prior_midpoint_rmse": 0.04339314873056399,
+        "matched_rmse_ratio": 0.018597728357116067,
+        "offdiagonal_rmse": 0.06134270125230989,
+        "offdiagonal_rmse_ratio": 1.4136494595770857
+      },
+      "bayes_consistency": {
+        "mse_over_mean_posterior_variance": 0.9607860582957943,
+        "total_variance_over_prior_variance": 1.002505711380333,
+        "total_variance_over_empirical_truth_variance": 0.9987634436816671,
+        "posterior_mixture_mean_minus_prior_mean_in_prior_sd": 0.02257396905447149
+      },
+      "prior_width90": 0.135,
+      "width90_ratio": {
+        "q10": 0.013669817191031233,
+        "median": 0.018484453084292245,
+        "q90": 0.025719934867488057
+      },
+      "prior_bounds": [
+        0.01,
+        0.16
+      ],
+      "reported_logit_contraction": 0.9917219014629791,
+      "logit_variance_ratio": {
+        "q10": 0.00011222668180139843,
+        "median": 0.0002508878697396221,
+        "q90": 0.0039885642810949
+      },
+      "bounds": {
+        "outside_draws": 0,
+        "exact_bound_draws": 0,
+        "clipped_draws": 0,
+        "minimum_unit_draw": 1.1968115965511432e-06,
+        "maximum_unit_draw": 0.9999990820884704
+      }
+    },
+    {
+      "name": "long_variance",
+      "prior_mean": 0.085,
+      "prior_variance": 0.001875,
+      "prior_sd": 0.04330127018922193,
+      "physical_variance_ratio": {
+        "q10": 0.0015306093897499754,
+        "median": 0.013573101731138324,
+        "q90": 0.1664708959121514
+      },
+      "physical_sd_ratio": {
+        "q10": 0.039123003173579786,
+        "median": 0.1165036467975287,
+        "q90": 0.40800843391110997
+      },
+      "mean_physical_variance_ratio": 0.052397243910436306,
+      "physical_contraction": 0.9476027560895637,
+      "posterior_width90": {
+        "q10": 0.005391099266707895,
+        "median": 0.015165511518716812,
+        "q90": 0.055445696301758336
+      },
+      "coverage90": {
+        "matched": 0.897,
+        "offdiagonal": 0.1554312156078039
+      },
+      "mean_recovery": {
+        "rmse": 0.00941735035643324,
+        "prior_midpoint_rmse": 0.04282061288684102,
+        "matched_rmse_ratio": 0.21992563210899857,
+        "offdiagonal_rmse": 0.05993902148598107,
+        "offdiagonal_rmse_ratio": 1.3997702845678004
+      },
+      "bayes_consistency": {
+        "mse_over_mean_posterior_variance": 0.9027089326800668,
+        "total_variance_over_prior_variance": 0.99006372738026,
+        "total_variance_over_empirical_truth_variance": 1.012862258344937,
+        "posterior_mixture_mean_minus_prior_mean_in_prior_sd": 0.018038884943850232
+      },
+      "prior_width90": 0.135,
+      "width90_ratio": {
+        "q10": 0.039934068642280704,
+        "median": 0.11233712236086527,
+        "q90": 0.4107088614945062
+      },
+      "prior_bounds": [
+        0.01,
+        0.16
+      ],
+      "reported_logit_contraction": 0.9075841045689403,
+      "logit_variance_ratio": {
+        "q10": 0.001303790549030626,
+        "median": 0.031199309729616025,
+        "q90": 0.2902358816723505
+      },
+      "bounds": {
+        "outside_draws": 0,
+        "exact_bound_draws": 0,
+        "clipped_draws": 0,
+        "minimum_unit_draw": 2.624839544294877e-06,
+        "maximum_unit_draw": 0.9999960025151571
+      }
+    },
+    {
+      "name": "decay",
+      "prior_mean": 4.125,
+      "prior_variance": 5.005208333333333,
+      "prior_sd": 2.2372322931097997,
+      "physical_variance_ratio": {
+        "q10": 0.01717015441940473,
+        "median": 0.1041124247104433,
+        "q90": 0.9442942431420317
+      },
+      "physical_sd_ratio": {
+        "q10": 0.13103493463443475,
+        "median": 0.32266456627846507,
+        "q90": 0.9717480324312728
+      },
+      "mean_physical_variance_ratio": 0.28192155303576877,
+      "physical_contraction": 0.7180784469642312,
+      "posterior_width90": {
+        "q10": 0.9434962049126624,
+        "median": 2.2890508480370046,
+        "q90": 6.760476091951132
+      },
+      "coverage90": {
+        "matched": 0.8915,
+        "offdiagonal": 0.39056053026513254
+      },
+      "mean_recovery": {
+        "rmse": 1.2142143510022247,
+        "prior_midpoint_rmse": 2.308136767207843,
+        "matched_rmse_ratio": 0.5260582337462878,
+        "offdiagonal_rmse": 3.0133095404109245,
+        "offdiagonal_rmse_ratio": 1.3055160262691583
+      },
+      "bayes_consistency": {
+        "mse_over_mean_posterior_variance": 1.0448171316082917,
+        "total_variance_over_prior_variance": 1.0309130910419433,
+        "total_variance_over_empirical_truth_variance": 0.9686276687388259,
+        "posterior_mixture_mean_minus_prior_mean_in_prior_sd": 0.0014144969748375994
+      },
+      "prior_width90": 6.9750000000000005,
+      "width90_ratio": {
+        "q10": 0.13526827310575804,
+        "median": 0.3281793330519003,
+        "q90": 0.9692438841506998
+      },
+      "prior_bounds": [
+        0.25,
+        8.0
+      ],
+      "reported_logit_contraction": 0.6299252815595363,
+      "logit_variance_ratio": {
+        "q10": 0.012826112174402505,
+        "median": 0.2034414874013685,
+        "q90": 1.108958840390734
+      },
+      "bounds": {
+        "outside_draws": 0,
+        "exact_bound_draws": 0,
+        "clipped_draws": 0,
+        "minimum_unit_draw": 1.1113382154895413e-06,
+        "maximum_unit_draw": 0.9999988309798702
+      }
+    }
+  ],
+  "decay_truth_strata": [
+    {
+      "name": "near_flat_relative_gap_le_0.10",
+      "cases": 217,
+      "relative_gap": {
+        "q10": 0.008629289984546533,
+        "median": 0.053594636416330346,
+        "q90": 0.09236370270086985
+      },
+      "decay_physical_sd_ratio": {
+        "q10": 0.7670719117991313,
+        "median": 0.9847411009621584,
+        "q90": 1.0601968790401939
+      },
+      "decay_width90_ratio": {
+        "q10": 0.7938785748669749,
+        "median": 0.9792331457138056,
+        "q90": 1.0234552944005604
+      },
+      "scope": "Descriptive truth-selected broadness, not conditional calibration or a required exact-prior posterior."
+    },
+    {
+      "name": "intermediate_gap_0.10_to_0.50",
+      "cases": 690,
+      "relative_gap": {
+        "q10": 0.12882948715992476,
+        "median": 0.2809214409387505,
+        "q90": 0.4462724586660266
+      },
+      "decay_physical_sd_ratio": {
+        "q10": 0.27612563267645773,
+        "median": 0.5455169393914292,
+        "q90": 0.9726960946561917
+      },
+      "decay_width90_ratio": {
+        "q10": 0.2787687359744929,
+        "median": 0.5521664798900643,
+        "q90": 0.9693720365937892
+      },
+      "scope": "Descriptive truth-selected broadness, not conditional calibration or a required exact-prior posterior."
+    },
+    {
+      "name": "large_contrast_gap_ge_0.50",
+      "cases": 1093,
+      "relative_gap": {
+        "q10": 0.589257162780874,
+        "median": 0.9415288776898768,
+        "q90": 1.475267192202697
+      },
+      "decay_physical_sd_ratio": {
+        "q10": 0.11060372002472225,
+        "median": 0.20758385659860343,
+        "q90": 0.4185647367378079
+      },
+      "decay_width90_ratio": {
+        "q10": 0.11471902170488907,
+        "median": 0.2137004688221921,
+        "q90": 0.42446277748299327
+      },
+      "scope": "Descriptive truth-selected broadness, not conditional calibration or a required exact-prior posterior."
+    }
+  ],
+  "derived_functionals": [
+    {
+      "name": "rho_eta",
+      "prior_method": "Exact independent-uniform product moments and analytic product CDF",
+      "prior_mean": -1.19,
+      "prior_variance": 0.5125583333333332,
+      "prior_sd": 0.7159317937718181,
+      "physical_variance_ratio": {
+        "q10": 0.000489125686789472,
+        "median": 0.002444100947572474,
+        "q90": 0.03230541768967279
+      },
+      "physical_sd_ratio": {
+        "q10": 0.02211618444078726,
+        "median": 0.04943784580110893,
+        "q90": 0.17973702363702657
+      },
+      "mean_physical_variance_ratio": 0.013232003443327556,
+      "physical_contraction": 0.9867679965566725,
+      "posterior_width90": {
+        "q10": 0.05110952553163544,
+        "median": 0.11368724771940752,
+        "q90": 0.4047792442108436
+      },
+      "coverage90": {
+        "matched": 0.9055,
+        "offdiagonal": 0.06931015507753877
+      },
+      "mean_recovery": {
+        "rmse": 0.08067404774162734,
+        "prior_midpoint_rmse": 0.7204779968262163,
+        "matched_rmse_ratio": 0.11197295142531107,
+        "offdiagonal_rmse": 1.015647112408744,
+        "offdiagonal_rmse_ratio": 1.40968512138161
+      },
+      "bayes_consistency": {
+        "mse_over_mean_posterior_variance": 0.9596188969153512,
+        "total_variance_over_prior_variance": 1.0121790204282197,
+        "total_variance_over_empirical_truth_variance": 0.9996028169300154,
+        "posterior_mixture_mean_minus_prior_mean_in_prior_sd": -0.011227945162121599
+      },
+      "prior_width90": 2.3094736799453774,
+      "width90_ratio": {
+        "q10": 0.02213037800579925,
+        "median": 0.04922647471873176,
+        "q90": 0.17526904407952257
+      }
+    },
+    {
+      "name": "xi_0.25y",
+      "prior_method": "Analytic exponential moments of uniform decay and independent uniform levels",
+      "prior_mean": 0.085,
+      "prior_variance": 0.0011550248753633564,
+      "prior_sd": 0.03398565690645623,
+      "physical_variance_ratio": {
+        "q10": 0.00042876014682479715,
+        "median": 0.0010119847515811758,
+        "q90": 0.005431723641396028
+      },
+      "physical_sd_ratio": {
+        "q10": 0.020706523178942407,
+        "median": 0.03181169867071388,
+        "q90": 0.07370018596582019
+      },
+      "mean_physical_variance_ratio": 0.002065083614444261,
+      "physical_contraction": 0.9979349163855558,
+      "posterior_width90": {
+        "q10": 0.0022883100116897785,
+        "median": 0.0035252769748151877,
+        "q90": 0.008138706513426545
+      },
+      "coverage90": {
+        "matched": 0.915,
+        "offdiagonal": 0.03572811405702851
+      },
+      "mean_recovery": {
+        "rmse": 0.0014547777418332378,
+        "prior_midpoint_rmse": 0.033577558584422885,
+        "matched_rmse_ratio": 0.04332589393524668,
+        "offdiagonal_rmse": 0.04748154425994847,
+        "offdiagonal_rmse_ratio": 1.4140856650005473
+      },
+      "bayes_consistency": {
+        "mse_over_mean_posterior_variance": 0.8872874056123448,
+        "total_variance_over_prior_variance": 0.9773988700458773,
+        "total_variance_over_empirical_truth_variance": 1.0018506721671476,
+        "posterior_mixture_mean_minus_prior_mean_in_prior_sd": 0.024253660805320622
+      }
+    },
+    {
+      "name": "xi_1.0y",
+      "prior_method": "Analytic exponential moments of uniform decay and independent uniform levels",
+      "prior_mean": 0.085,
+      "prior_variance": 0.001645064493457368,
+      "prior_sd": 0.040559394638694596,
+      "physical_variance_ratio": {
+        "q10": 0.001318333100396514,
+        "median": 0.004978649635360881,
+        "q90": 0.0279793290356501
+      },
+      "physical_sd_ratio": {
+        "q10": 0.036308855709311263,
+        "median": 0.07055950581266521,
+        "q90": 0.16727022755287632
+      },
+      "mean_physical_variance_ratio": 0.010243131822296723,
+      "physical_contraction": 0.9897568681777033,
+      "posterior_width90": {
+        "q10": 0.004757135221311669,
+        "median": 0.009357712769741611,
+        "q90": 0.02193974281250612
+      },
+      "coverage90": {
+        "matched": 0.897,
+        "offdiagonal": 0.07979264632316158
+      },
+      "mean_recovery": {
+        "rmse": 0.004002558661814385,
+        "prior_midpoint_rmse": 0.040023818194461096,
+        "matched_rmse_ratio": 0.10000441842823231,
+        "offdiagonal_rmse": 0.05651640095571482,
+        "offdiagonal_rmse_ratio": 1.4120692004226656
+      },
+      "bayes_consistency": {
+        "mse_over_mean_posterior_variance": 0.950735522329672,
+        "total_variance_over_prior_variance": 0.9774639484199517,
+        "total_variance_over_empirical_truth_variance": 1.0041342399501327,
+        "posterior_mixture_mean_minus_prior_mean_in_prior_sd": 0.01941681111129065
+      }
+    },
+    {
+      "name": "W_1y",
+      "prior_method": "Analytic exponential-integral moments; W(T)=long*T+(short-long)*(1-exp(-decay*T))/decay",
+      "prior_mean": 0.085,
+      "prior_variance": 0.0012064122838359593,
+      "prior_sd": 0.03473344618427546,
+      "physical_variance_ratio": {
+        "q10": 0.0005633133831863179,
+        "median": 0.0016285680550763594,
+        "q90": 0.011150521946792615
+      },
+      "physical_sd_ratio": {
+        "q10": 0.02373422376965587,
+        "median": 0.04035550831668737,
+        "q90": 0.10559602576859299
+      },
+      "mean_physical_variance_ratio": 0.004043181125631137,
+      "physical_contraction": 0.9959568188743688,
+      "posterior_width90": {
+        "q10": 0.002671045590439071,
+        "median": 0.004559055035509855,
+        "q90": 0.012005610484377286
+      },
+      "coverage90": {
+        "matched": 0.9,
+        "offdiagonal": 0.04843446723361681
+      },
+      "mean_recovery": {
+        "rmse": 0.002112655743196839,
+        "prior_midpoint_rmse": 0.03425731558897844,
+        "matched_rmse_ratio": 0.061670206987162204,
+        "offdiagonal_rmse": 0.04842290812708083,
+        "offdiagonal_rmse_ratio": 1.413505620465483
+      },
+      "bayes_consistency": {
+        "mse_over_mean_posterior_variance": 0.9150367178941511,
+        "total_variance_over_prior_variance": 0.9743948202148925,
+        "total_variance_over_empirical_truth_variance": 1.002182816025925,
+        "posterior_mixture_mean_minus_prior_mean_in_prior_sd": 0.023696366949677018
+      }
+    },
+    {
+      "name": "forward_variance_0.5_to_1y",
+      "prior_method": "Analytic moments of the interval-average analytic initial curve",
+      "prior_mean": 0.085,
+      "prior_variance": 0.0015460746359677255,
+      "prior_sd": 0.03932015559439873,
+      "physical_variance_ratio": {
+        "q10": 0.0010456466729842752,
+        "median": 0.0030809728072259917,
+        "q90": 0.019196637653532238
+      },
+      "physical_sd_ratio": {
+        "q10": 0.03233646014921362,
+        "median": 0.05550651093011755,
+        "q90": 0.13855193124687162
+      },
+      "mean_physical_variance_ratio": 0.007024900762443708,
+      "physical_contraction": 0.9929750992375563,
+      "posterior_width90": {
+        "q10": 0.004119937179467461,
+        "median": 0.007088870907013999,
+        "q90": 0.017730279836960537
+      },
+      "coverage90": {
+        "matched": 0.9,
+        "offdiagonal": 0.06548674337168585
+      },
+      "mean_recovery": {
+        "rmse": 0.0031970121464296756,
+        "prior_midpoint_rmse": 0.03877231959909203,
+        "matched_rmse_ratio": 0.08245604543362277,
+        "offdiagonal_rmse": 0.05478731801330346,
+        "offdiagonal_rmse_ratio": 1.41305236776668
+      },
+      "bayes_consistency": {
+        "mse_over_mean_posterior_variance": 0.9410613209266793,
+        "total_variance_over_prior_variance": 0.9755501229983521,
+        "total_variance_over_empirical_truth_variance": 1.0036829046264861,
+        "posterior_mixture_mean_minus_prior_mean_in_prior_sd": 0.020402751818804563
+      }
+    }
+  ],
+  "permutation_control": "Exact expectation over all offdiagonal saved-posterior/validation-truth pairings. Widths unchanged, no new model calls or random permutations.",
+  "bayes_consistency_note": "Aggregate descriptive identities, not conditional/full-copula certification. Posterior variance uses ddof1; posterior-mean Monte Carlo adds approximately1/1000 of posterior variance to risk.",
+  "strata_note": "Near-flat true curves weaken decay sensitivity; a joint nuisance-marginal decay posterior is not required to equal its prior. No conditional coverage/risk criterion is imposed on truth-selected strata.",
+  "runtime": {
+    "python": "3.12.16",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1"
+  },
+  "scientific_acceptance": false,
+  "reserved_test_evaluated": false,
+  "promotion": false
+}

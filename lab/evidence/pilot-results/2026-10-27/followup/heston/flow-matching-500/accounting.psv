@@ -1,0 +1,4 @@
+JobID|JobIDRaw|JobName|Account|Partition|QOS|State|Elapsed|ElapsedRaw|Start|End|AllocCPUS|AllocTRES|TotalCPU|UserCPU|SystemCPU|MaxRSS|AveCPUFreq|ReqCPUFreq|NodeList|ExitCode
+8006597|8006597|sbi4f-followup-heston-flow-matching-500|default|gpu-debug|gpu-debug|COMPLETED|00:05:22|322|2026-10-27T06:34:44|2026-10-27T06:40:06|4|billing=110,cpu=4,gres/gpu=1,mem=24G,node=1|06:39.742|05:58.894|00:40.848|||Unknown|gpu3004|0:0
+8006597.batch|8006597.batch|batch|default|||COMPLETED|00:05:22|322|2026-10-27T06:34:44|2026-10-27T06:40:06|4|cpu=4,gres/gpu=1,mem=24G,node=1|06:39.742|05:58.894|00:40.848|2186480K|6.24M|0|gpu3004|0:0
+8006597.extern|8006597.extern|extern|default|||COMPLETED|00:05:23|323|2026-10-27T06:34:44|2026-10-27T06:40:07|4|billing=110,cpu=4,gres/gpu=1,mem=24G,node=1|00:00:00|00:00:00|00:00:00||0|0|gpu3004|0:0

@@ -66,6 +66,11 @@ def _(mo):
     mo.md(r"""
     # Slot 5 · Rough Bergomi on the SPY smile: from the posterior to a reserve
 
+    The new known-curve and joint-curve BayesFlow 2.1 development estimators can
+    be inspected in [the cached/live backbone review](backbone_review.py).
+    Those fixed synthetic replays have separate provenance and do not replace
+    the historical SPY or pilot results below.
+
     **A long-dated mark rests on inputs no quote pins. The posterior prices them; amortization makes it checkable.**
 
     Slot 4 calibrated Heston to the SPY smile and checked every step against the exact posterior. The
@@ -92,6 +97,65 @@ def _(mo):
        gives a 5-year put three times the baseline's range. That gap is a reserve the baseline does not report.
     """)
     return
+
+
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Current numerical backbone · cached development example
+
+    This section uses the completed 100,000-surface estimator. It opens without
+    loading a neural model, generating prices or running MCMC. The historical
+    SPY material below retains its original data, models and scientific scope.
+    Fresh sampling is an explicit action in [the backbone review](backbone_review.py).
+    """)
+    return
+
+
+@app.cell
+def _(mo):
+    from sbi4f_tutorial import backbones
+
+    backbone_case = mo.ui.dropdown(options=backbones.examples("rough"),
+                                    value="rough-known100k-validation0", label="Current cached example")
+    backbone_case
+    return backbone_case, backbones
+
+
+@app.cell
+def _(backbone_case, backbones, mo):
+    _task, _report, _arrays = backbones.load_example(backbone_case.value)
+    if "context_values" in _arrays:
+        _context = mo.vstack([
+            mo.md("**Known curve first:** infer H, eta and rho from the quotes and seven supplied curve levels. "
+                  "The known curve varies across training examples and stays fixed during each inference."),
+            mo.ui.table([{"maturity (years)": float(t), "known forward variance": float(v)}
+                         for t, v in zip(_task["model_context"]["forward_variance_knots"][1:],
+                                         _arrays["context_values"])], selection=None, pagination=False),
+        ])
+    else:
+        _notes = {"validation:1983": "Selected illustration of curved long-variance/decay trade-offs.",
+                  "validation:1941": "Selected illustration of strong eta/rho correlation; correlation alone is not non-Gaussianity.",
+                  "validation:1962": "Separate near-flat-curve illustration: decay can remain weakly informed; no interior claim."}
+        _context = mo.md("**Joint calibration next:** infer H, eta, rho and three curve coefficients from the quotes. "
+                         "The generating curve is excluded from the conditions. "
+                         "xi(t) = long + (short - long) * exp(-decay * t). "
+                         + _notes.get(_report["case_id"], "Validation:0 has no interior-selection claim."))
+    mo.vstack([
+        _context,
+        mo.callout(mo.md(f"**Development example:** `{_report['case_id']}`; "
+                         f"{len(_arrays['neural_draws']):,} paired joint draws. "
+                         f"{'PyMC reference supplied' if 'reference_chains' in _arrays else 'conditional reference and rough products pending'}. "
+                         "The selected geometry examples illustrate trade-offs; they are not an accuracy study."), kind="neutral"),
+        mo.md(f"Task SHA256: `{_report['task_fingerprint']}`  \nModel SHA256: `{_report['checkpoint_sha256']}`"),
+        mo.ui.table(backbones.parameter_rows(_task, _arrays), selection=None, pagination=False),
+        backbones.corner(_task, _arrays),
+    ])
+    return
+
+
 
 
 @app.cell(hide_code=True)

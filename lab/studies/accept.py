@@ -1,18 +1,17 @@
-"""Copy an accepted study run or checkpoint into tutorial/assets, recording what was copied and changed.
+"""Publish tutorial assets with an explicit copy receipt and preserved scientific scope.
 
-    python lab/studies/accept.py --run RUN_DIR --to results/calibration/heston/s2 [--keep-surfaces 20]
-    python lab/studies/accept.py --checkpoint RUN_DIR --to checkpoints/heston
+    python lab/studies/accept.py --run RUN_DIR --to results/calibration/heston/s2
+    python lab/studies/accept.py --replay CACHE_DIR --to backbones/EXAMPLE_ID
+    python lab/studies/accept.py --checkpoint RUN_DIR --to local-checkpoints/MODEL_ID
 
-Results: every .json and .png is copied unchanged. A .npz is copied unchanged
-unless --keep-surfaces is given, in which case the arrays "draws", "truth" and
-"rows" keep only their first N surfaces (the notebook shows a few; the study
-JSON keeps every number). Checkpoints: task.json and training.json are copied
-unchanged; model.keras is copied with the optimizer's state removed, which
-leaves the network's weights and therefore its draws unchanged (checked by
-sampling both with the same seed) and cuts the file to about a third.
+Native BF2.1 checkpoint bytes and task/training metadata are preserved, retaining
+bound hashes. Historical BF2.0 exports keep their original optimizer-stripping
+route and same-seed comparison. Replay exports first validate the full bound
+case, copy its bytes unchanged and explicitly retain scientific_acceptance=false.
+ACCEPTED.json is a copy receipt, not a new scientific-acceptance decision.
 
-Each destination receives ACCEPTED.json: the source directory, the SHA-256 of
-every source file, and every change made. The destination must be new.
+Result JSON/PNG are unchanged; optional --keep-surfaces slices only legacy run
+arrays, never bound replay bundles. Every destination must be new and asset-local.
 """
 
 import argparse
@@ -124,11 +123,14 @@ def main():
     source_kind = parser.add_mutually_exclusive_group(required=True)
     source_kind.add_argument("--run", type=Path)
     source_kind.add_argument("--checkpoint", type=Path)
+    source_kind.add_argument("--replay", type=Path, help="verified development replay; preserves scope and bytes")
     parser.add_argument("--to", required=True, help="destination relative to tutorial/assets/")
     parser.add_argument("--keep-surfaces", type=int)
     args = parser.parse_args()
-    source = (args.run or args.checkpoint).resolve()
-    destination = ASSETS / args.to
+    source = (args.run or args.checkpoint or args.replay).resolve()
+    destination = (ASSETS / args.to).resolve()
+    if not destination.is_relative_to(ASSETS.resolve()) or destination == ASSETS.resolve():
+        raise ValueError("destination must be inside tutorial/assets/")
     if destination.exists():
         raise FileExistsError(f"{destination} exists: the destination must be new")
     # Everything is built in a staging directory and moved into place only when every check has passed, so a
@@ -139,17 +141,37 @@ def main():
     staging.mkdir(parents=True)
     record = {"accepted": datetime.now(timezone.utc).isoformat(timespec="seconds"), "source": str(source),
               "source_sha256": {p.name: sha256(p) for p in sorted(source.iterdir()) if p.is_file()}}
-    if args.run:
+    if args.replay:
+        from sbi4finance.calibration import full_surface_teaching as replay
+        bundle = json.loads((source / "bundle.json").read_text())
+        loader = replay.load_cache if bundle["format"] == "full_surface_teaching_v1" else replay.load_neural_replay
+        loader(source)
+        if args.keep_surfaces is not None:
+            raise ValueError("bound replay arrays cannot be sliced")
+        record["changes"] = accept_run(source, staging, None)
+        record["scientific_acceptance"] = False
+        record["scope"] = "verified development replay copied byte-for-byte; no scientific promotion"
+    elif args.run:
         record["changes"] = accept_run(source, staging, args.keep_surfaces)
     else:
         for name in ("task.json", "training.json"):
             shutil.copy2(source / name, staging / name)
-        strip_optimizer(source / "model.keras", staging / "model.keras")
-        if not same_draws(source, staging):
+        metadata = json.loads((source / "training.json").read_text())
+        native = metadata.get("format") == "full_surface_training_v1"
+        if native:
+            if sha256(source / "model.keras") != metadata["checkpoint_sha256"]:
+                raise ValueError("native checkpoint bytes differ from training record")
+            shutil.copy2(source / "model.keras", staging / "model.keras")
+            record["changes"] = ["native BF2.1 model and metadata copied unchanged; checkpoint hash retained"]
+            record["scientific_acceptance"] = False
+        else:
+            strip_optimizer(source / "model.keras", staging / "model.keras")
+        if not native and not same_draws(source, staging):
             shutil.rmtree(staging)
             raise RuntimeError("the stripped checkpoint does not reproduce the original's draws")
-        record["changes"] = ["model.keras: optimizer state removed; same-seed draws checked identical to the "
-                             "original's, whose SHA-256 the study reports cite as checkpoint_sha256"]
+        if not native:
+            record["changes"] = ["model.keras: optimizer state removed; same-seed draws checked identical to the "
+                                 "original's, whose SHA-256 the study reports cite as checkpoint_sha256"]
     (staging / "ACCEPTED.json").write_text(json.dumps(record, indent=2) + "\n")
     staging.rename(destination)
     print(json.dumps({"to": str(destination.relative_to(ASSETS) if destination.is_relative_to(ASSETS) else destination), "files": sorted(p.name for p in destination.iterdir()),

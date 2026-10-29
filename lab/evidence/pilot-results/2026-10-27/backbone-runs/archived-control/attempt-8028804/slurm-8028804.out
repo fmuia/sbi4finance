@@ -1,0 +1,25 @@
+## SLURM PROLOG ###############################################################
+##    Job ID : 8028804
+##  Job Name : sbi4f-archived-paired
+##  Nodelist : node1829
+##      CPUs : 1
+##  Mem/Node : 24576 MB
+## Directory : /oscar/scratch/afengler/sbi4finance-backbone-fit-20261027/repo
+##   Job Started : Tue Oct 27 04:54:01 PM EDT 2026
+###############################################################################
+INFO:bayesflow:Using backend 'jax'
+/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/lib/python3.12/site-packages/keras/src/saving/saving_lib.py:869: UserWarning: Skipping variable loading for optimizer 'adam_w', because it has 83 variables whereas the saved optimizer has 0 variables. 
+  saveable.load_own_variables(store)
+INFO:bayesflow:Approximator restored from '/oscar/scratch/afengler/sbi4finance-backbone-fit-20261027/repo/tutorial_final/checkpoints/heston/model.keras'.
+Sampling:   0%|          | 0/1 [00:00<?, ?batch/s]Sampling: 100%|██████████| 1/1 [00:01<00:00,  1.18s/batch]Sampling: 100%|██████████| 1/1 [00:01<00:00,  1.18s/batch]
+INFO:bayesflow:Sampling completed in 1.68 minutes.
+Sampling:   0%|          | 0/1 [00:00<?, ?batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  4.09batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  4.09batch/s]
+INFO:bayesflow:Sampling completed in 1.65 minutes.
+Sampling:   0%|          | 0/1 [00:00<?, ?batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  4.51batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  4.51batch/s]
+INFO:bayesflow:Sampling completed in 1.66 minutes.
+Sampling:   0%|          | 0/1 [00:00<?, ?batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  4.66batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  4.65batch/s]
+INFO:bayesflow:Sampling completed in 1.67 minutes.
+Sampling:   0%|          | 0/1 [00:00<?, ?batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  4.13batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  4.12batch/s]
+INFO:bayesflow:Sampling completed in 1.66 minutes.
+Sampling:   0%|          | 0/1 [00:00<?, ?batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  4.58batch/s]Sampling: 100%|██████████| 1/1 [00:00<00:00,  4.58batch/s]
+[2026-10-27T17:03:16.546] error: *** JOB 8028804 ON node1829 CANCELLED AT 2026-10-27T17:03:16 DUE to SIGNAL Terminated ***

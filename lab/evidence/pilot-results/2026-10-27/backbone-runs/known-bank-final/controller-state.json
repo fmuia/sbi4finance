@@ -1,0 +1,28 @@
+{
+  "utc": "2026-10-27T22:03:49.344141+00:00",
+  "poll": 38,
+  "status": "completed_full_checked_bank",
+  "submitted_worker_tasks": 1280,
+  "completed_worker_tasks": 1280,
+  "published_surface_count_implied_by_completed_tasks": 32000,
+  "missing_worker_tasks": 0,
+  "known_nonterminal_or_unknown_workers": 0,
+  "free_known_worker_slots": 192,
+  "budget_affordable_new_workers": 96,
+  "budget": {
+    "checked_utc": "2026-10-27T22:03:49.343576+00:00",
+    "completed_allocated_cpu_seconds": 342891,
+    "outstanding_reserved_cpu_seconds": 0,
+    "unsubmitted_integrity_reserved_cpu_seconds": 0,
+    "after_submission_exposure_cpu_seconds": 342891,
+    "existing_nonterminal_workers": 0
+  },
+  "action": "finished",
+  "snapshot_manifest_sha256": "7cf0314dc6371fd045ad6b314dd6dd605db2f3343dbccf4e35b4df9ddf9397eb",
+  "nominal_target_exceptions": 1,
+  "hard_cap_exceptions": 0,
+  "controller_script_sha256": "38bea81a6955291727d58e0dd1fd2e672a4bcf57e9bea4f6e6330e77e6da2777",
+  "helper_sha256": "1d0421569471262af6c05ffe7ed5fce346e6f519cbf170ec2b120118a7955759",
+  "elapsed_controller_wall_seconds": 2299.744593500014,
+  "controller_pid": 77882
+}

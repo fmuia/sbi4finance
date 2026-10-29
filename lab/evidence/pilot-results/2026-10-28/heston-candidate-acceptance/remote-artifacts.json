@@ -1,0 +1,204 @@
+{
+  "small_files": {
+    "accounting.psv": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-acceptance-20261028/accounting.psv",
+      "bytes": 272,
+      "sha256": "ff1941c8f5f260daecbb5d8aaca0e26348496032f8bf955b2ded2bff01aaa198"
+    },
+    "check_heston_candidate_20261028.py": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-acceptance-20261028/check_heston_candidate_20261028.py",
+      "bytes": 12090,
+      "sha256": "6ec86957cc033f9c473e940fc25ed22440ec2dff79dd8e1693085ff275d47400"
+    },
+    "collect_heston_candidate_20261028.py": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-acceptance-20261028/collect_heston_candidate_20261028.py",
+      "bytes": 4266,
+      "sha256": "b5e7ff4758df324db36c5cee22a8c76431e0a9660a751ed62dd23ba8592acf3f"
+    },
+    "execution-prospective.json": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-acceptance-20261028/execution-prospective.json",
+      "bytes": 2043,
+      "sha256": "4fa40cbb80e89c0c2f43722efdc2912e2c6fb125e340e36c8761fdb613bc4a91"
+    },
+    "execution-submitted.json": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-acceptance-20261028/execution-submitted.json",
+      "bytes": 2124,
+      "sha256": "cc6f220686ca69da35f926e3ae216899b181d29a2ce4a4138d88fca3eafd4851"
+    },
+    "execution.json": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-acceptance-20261028/execution.json",
+      "bytes": 2338,
+      "sha256": "8ae10845eabea1de17ae30e486508aa74642cdb2567236449ef255bf1e19c4b4"
+    },
+    "logs/slurm-8032275.out": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-acceptance-20261028/logs/slurm-8032275.out",
+      "bytes": 3925,
+      "sha256": "dc3796054a28478ba79655e6048fe80b10cf6204af9b66a96ac80a758a6c8cb6"
+    },
+    "manifest.json": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-acceptance-20261028/manifest.json",
+      "bytes": 66823,
+      "sha256": "6db210193e45b7d6af634ed77a5de17e5fbf7102c22298d18c13a3e1a141f525"
+    },
+    "prepare_heston_candidate_20261028.py": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-acceptance-20261028/prepare_heston_candidate_20261028.py",
+      "bytes": 11604,
+      "sha256": "75b28a30a2c9aac8f7755c1d4772beab99754a2f4c95639a1dec9bdb38d3386b"
+    },
+    "results/acceptance/evaluation.json": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-acceptance-20261028/results/acceptance/evaluation.json",
+      "bytes": 74156,
+      "sha256": "c8ce2dede56f1f5a68044ccd7529a10bf91dd0ac6a231049042b3c0fb781ea0e"
+    },
+    "results/acceptance/run.json": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-acceptance-20261028/results/acceptance/run.json",
+      "bytes": 73772,
+      "sha256": "5da25ad8f985c014fedb4e3e2b3b09c3ce1fcd73be43c211a99de337c91f6c14"
+    },
+    "results/products/products.json": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-acceptance-20261028/results/products/products.json",
+      "bytes": 11286,
+      "sha256": "f7d665dae57c4db1b742996b1b3cfd5e07edf2d3a019ec8ce0c48b1cb68b6677"
+    }
+  },
+  "large_payloads_not_downloaded": {
+    "results/acceptance/draws.npz": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-acceptance-20261028/results/acceptance/draws.npz",
+      "bytes": 30848461,
+      "sha256": "b877747ee5fdc1c19b2c01da4460627540302a56a6c887c90fbad3a3dc920f15"
+    },
+    "results/acceptance/partial/batch-0000.npz": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-acceptance-20261028/results/acceptance/partial/batch-0000.npz",
+      "bytes": 1536417,
+      "sha256": "caf27018c906bdf7f1c16da8e9d84496b5c546e9b0138e6f3a7c9f3c7ba57439"
+    },
+    "results/acceptance/partial/batch-0100.npz": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-acceptance-20261028/results/acceptance/partial/batch-0100.npz",
+      "bytes": 1545690,
+      "sha256": "774b7a3be80866484f2af0c18bdc88f4c47ce4dc9fcb767dfaca982e3738641e"
+    },
+    "results/acceptance/partial/batch-0200.npz": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-acceptance-20261028/results/acceptance/partial/batch-0200.npz",
+      "bytes": 1542927,
+      "sha256": "f5b7d4ba9fb2634fa73b091f032fcf845e02fdddab1272aad6486398110599c0"
+    },
+    "results/acceptance/partial/batch-0300.npz": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-acceptance-20261028/results/acceptance/partial/batch-0300.npz",
+      "bytes": 1543031,
+      "sha256": "d2a959a67ff3768488c57e4f78f8999b090e87c8ab8122b1132daec01eb65bdb"
+    },
+    "results/acceptance/partial/batch-0400.npz": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-acceptance-20261028/results/acceptance/partial/batch-0400.npz",
+      "bytes": 1548153,
+      "sha256": "2c7069f0fa7e6a7427221ae07716286a62c5807c38b775a29a593db5461adaa8"
+    },
+    "results/acceptance/partial/batch-0500.npz": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-acceptance-20261028/results/acceptance/partial/batch-0500.npz",
+      "bytes": 1542979,
+      "sha256": "f3eda13a54b37ea1f0ede71e97472f1e780f9d0544d512e207f9b8a9c092a89a"
+    },
+    "results/acceptance/partial/batch-0600.npz": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-acceptance-20261028/results/acceptance/partial/batch-0600.npz",
+      "bytes": 1547521,
+      "sha256": "66d9d99c440c621017dad0ebbeef2ecb9b33f91b07dc95d664c7ac461201aefd"
+    },
+    "results/acceptance/partial/batch-0700.npz": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-acceptance-20261028/results/acceptance/partial/batch-0700.npz",
+      "bytes": 1543336,
+      "sha256": "1ede9ea6ccff64fa511f7e6062528107ecd16f6d336837e074d00479c31fa36f"
+    },
+    "results/acceptance/partial/batch-0800.npz": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-acceptance-20261028/results/acceptance/partial/batch-0800.npz",
+      "bytes": 1543137,
+      "sha256": "933046bb1abdc1052a2dfd1736236605e23ac8d5ad0e7c4b5e5ff479243d6454"
+    },
+    "results/acceptance/partial/batch-0900.npz": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-acceptance-20261028/results/acceptance/partial/batch-0900.npz",
+      "bytes": 1543898,
+      "sha256": "0d518725c9dc0000f7b0d7252e17bf6432be09d58850f6b1ce3f1e9733c14535"
+    },
+    "results/acceptance/partial/batch-1000.npz": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-acceptance-20261028/results/acceptance/partial/batch-1000.npz",
+      "bytes": 1547232,
+      "sha256": "83fabf42f8e31f5f3cef650d2b1362f02d958782fd46df81fe0bfdb15e3466ce"
+    },
+    "results/acceptance/partial/batch-1100.npz": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-acceptance-20261028/results/acceptance/partial/batch-1100.npz",
+      "bytes": 1546242,
+      "sha256": "a58b93e4478a44e41be03ea6d563a949b8f75f49a241a81e2f613a246e014a93"
+    },
+    "results/acceptance/partial/batch-1200.npz": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-acceptance-20261028/results/acceptance/partial/batch-1200.npz",
+      "bytes": 1537402,
+      "sha256": "1f83fccde3b109049660e53fc1519345362157585d3424eb6e9daa5aa9de9fce"
+    },
+    "results/acceptance/partial/batch-1300.npz": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-acceptance-20261028/results/acceptance/partial/batch-1300.npz",
+      "bytes": 1542910,
+      "sha256": "6fc53e44976998f566ad172afc68590d3f7328849a48afac207dd9cbfb0be403"
+    },
+    "results/acceptance/partial/batch-1400.npz": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-acceptance-20261028/results/acceptance/partial/batch-1400.npz",
+      "bytes": 1548021,
+      "sha256": "cc54a0e7d32fc78d57a52f2b1a0212f22024ae142127758468a2daf417f4f23d"
+    },
+    "results/acceptance/partial/batch-1500.npz": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-acceptance-20261028/results/acceptance/partial/batch-1500.npz",
+      "bytes": 1540737,
+      "sha256": "fb201eed36a0a498aab907b3cf27868f414593383fc1b78e62d8ce8facab3178"
+    },
+    "results/acceptance/partial/batch-1600.npz": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-acceptance-20261028/results/acceptance/partial/batch-1600.npz",
+      "bytes": 1543626,
+      "sha256": "b97eabd4f8a476fd1e41b11519f37d73bc007c9096d8c1b82efd2b54f6acf15a"
+    },
+    "results/acceptance/partial/batch-1700.npz": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-acceptance-20261028/results/acceptance/partial/batch-1700.npz",
+      "bytes": 1540759,
+      "sha256": "2aea02528dcc7293367afd7ed3ee2c7843faa39c0dbebc24968295203db11f12"
+    },
+    "results/acceptance/partial/batch-1800.npz": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-acceptance-20261028/results/acceptance/partial/batch-1800.npz",
+      "bytes": 1538995,
+      "sha256": "2ca096fc9e2c03d1504a6dc46ecad9ca2fcc7ce44a45466274e409362eb0c6b6"
+    },
+    "results/acceptance/partial/batch-1900.npz": {
+      "path": "/oscar/scratch/afengler/sbi4finance-heston-acceptance-20261028/results/acceptance/partial/batch-1900.npz",
+      "bytes": 1544086,
+      "sha256": "e6112890aef1290a7c236c93edf6f7f1f14394ac6041b1145865ca4cef5ea237"
+    }
+  },
+  "frozen_inputs_rechecked": {
+    "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/.resume/epoch-000500-_3f420vs/last.keras": true,
+    "/oscar/scratch/afengler/sbi4finance-heston-backbone-20261027/snapshot-100k/manifest.json": true,
+    "/oscar/scratch/afengler/sbi4finance-heston-acceptance-20261028/check_heston_candidate_20261028.py": true,
+    "/oscar/scratch/afengler/sbi4finance-heston-acceptance-20261028/prepare_heston_candidate_20261028.py": true,
+    "/oscar/scratch/afengler/sbi4finance-heston-audit-20261027/results/new/run.json": true,
+    "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/task.json": true,
+    "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/training.json": true,
+    "/oscar/scratch/afengler/sbi4finance-heston-100k-fit-20261027/runs/heston-100k-native/checkpoint/resume.json": true,
+    "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo/pixi.lock": true,
+    "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo/pyproject.toml": true,
+    "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo/src/sbi4finance/calibration/full_surface.py": true,
+    "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo/src/sbi4finance/calibration/inference.py": true,
+    "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo/src/sbi4finance/calibration/validation.py": true,
+    "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo/src/sbi4finance/calibration/variance_functionals.py": true,
+    "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo/src/sbi4finance/calibration/bank.py": true,
+    "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo/src/sbi4finance/calibration/bank_collection.py": true,
+    "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo/src/sbi4finance/calibration/tasks.py": true,
+    "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo/src/sbi4finance/calibration/pricing.py": true,
+    "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo/src/sbi4finance/calibration/surface.py": true,
+    "/oscar/scratch/afengler/sbi4finance-heston-audit-20261027/results/new/100k-case-0.npz": true,
+    "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-0/reference/reference.json": true,
+    "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-0/reference/diagnostics.json": true,
+    "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-0/reference/chains.npz": true,
+    "/oscar/scratch/afengler/sbi4finance-heston-audit-20261027/results/new/100k-case-1.npz": true,
+    "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-1/reference/reference.json": true,
+    "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-1/reference/diagnostics.json": true,
+    "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-1/reference/chains.npz": true,
+    "/oscar/scratch/afengler/sbi4finance-heston-audit-20261027/results/new/100k-case-2.npz": true,
+    "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-2/reference/reference.json": true,
+    "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-2/reference/diagnostics.json": true,
+    "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-2/reference/chains.npz": true
+  }
+}

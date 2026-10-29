@@ -1,0 +1,300 @@
+{
+  "format": "rough_short_block_analysis_v1",
+  "scope": "Only indices 0\u201317 diagnose the first-block refinement; unchanged-grid quotes are MC controls. Approximate pointwise MC intervals, not acceptance bounds.",
+  "affected_contract_indices": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17
+  ],
+  "paths_per_grid_replicate": 131072,
+  "replicates": 2,
+  "block_allocations": {
+    "4": [
+      4,
+      4,
+      4
+    ],
+    "8": [
+      8,
+      4,
+      4
+    ],
+    "16": [
+      16,
+      4,
+      4
+    ]
+  },
+  "cases": [
+    {
+      "case_index": 2,
+      "name": "falling_curve",
+      "report_sha256": "e6b9d6105ffc772125c911a352ec3416c1ad648f7a049a188df4ccbeb4bd7a5f",
+      "cpu_seconds": 497.33762545400003,
+      "peak_rss_bytes": 1073758208,
+      "all_six_component_mc_targets_met": true,
+      "single_component_max_affected_mcse_range": [
+        0.09900949414910509,
+        0.10158144851723093
+      ],
+      "pooled_max_affected_mcse_by_grid": {
+        "4": 0.07161473790675331,
+        "8": 0.07121953910478443,
+        "16": 0.07015339708601583
+      },
+      "pooled_index8_mcse_by_grid": {
+        "4": 0.008034223194828202,
+        "8": 0.00769673962724411,
+        "16": 0.007546189180701009
+      },
+      "comparisons": [
+        {
+          "coarse_multiplier": 4,
+          "fine_multiplier": 8,
+          "largest_absolute_affected_change": {
+            "index": 0,
+            "contract": {
+              "maturity": 0.01984126984126984,
+              "option_type": "put",
+              "strike": 0.9452142884010055
+            },
+            "signed_change_over_quote_sigma": 0.13338956754133902,
+            "mcse_over_quote_sigma": 0.10099947245283457,
+            "pointwise_mc95_interval_over_quote_sigma": [
+              -0.06456939846621673,
+              0.33134853354889476
+            ]
+          },
+          "previously_identified_index8": {
+            "index": 8,
+            "contract": {
+              "maturity": 0.01984126984126984,
+              "option_type": "call",
+              "strike": 1.0579611547045846
+            },
+            "signed_change_over_quote_sigma": -0.0676589083336612,
+            "mcse_over_quote_sigma": 0.011126029985304969,
+            "pointwise_mc95_interval_over_quote_sigma": [
+              -0.08946592710485894,
+              -0.04585188956246346
+            ]
+          },
+          "max_pointwise_mc95_halfwidth_affected": 0.19795896600755575,
+          "max_unaffected_absolute_change_mc_control_only": 0.11164841346463206
+        },
+        {
+          "coarse_multiplier": 8,
+          "fine_multiplier": 16,
+          "largest_absolute_affected_change": {
+            "index": 0,
+            "contract": {
+              "maturity": 0.01984126984126984,
+              "option_type": "put",
+              "strike": 0.9452142884010055
+            },
+            "signed_change_over_quote_sigma": -0.10136841383608751,
+            "mcse_over_quote_sigma": 0.09996860443662366,
+            "pointwise_mc95_interval_over_quote_sigma": [
+              -0.2973068785318699,
+              0.09457005085969485
+            ]
+          },
+          "previously_identified_index8": {
+            "index": 8,
+            "contract": {
+              "maturity": 0.01984126984126984,
+              "option_type": "call",
+              "strike": 1.0579611547045846
+            },
+            "signed_change_over_quote_sigma": -0.03132868744084586,
+            "mcse_over_quote_sigma": 0.0107789040277998,
+            "pointwise_mc95_interval_over_quote_sigma": [
+              -0.052455339335333466,
+              -0.010202035546358255
+            ]
+          },
+          "max_pointwise_mc95_halfwidth_affected": 0.19593846469578236,
+          "max_unaffected_absolute_change_mc_control_only": 0.1982699587389521
+        },
+        {
+          "coarse_multiplier": 4,
+          "fine_multiplier": 16,
+          "largest_absolute_affected_change": {
+            "index": 8,
+            "contract": {
+              "maturity": 0.01984126984126984,
+              "option_type": "call",
+              "strike": 1.0579611547045846
+            },
+            "signed_change_over_quote_sigma": -0.09898759577450707,
+            "mcse_over_quote_sigma": 0.01102241867718898,
+            "pointwise_mc95_interval_over_quote_sigma": [
+              -0.12059153638179747,
+              -0.07738365516721667
+            ]
+          },
+          "previously_identified_index8": {
+            "index": 8,
+            "contract": {
+              "maturity": 0.01984126984126984,
+              "option_type": "call",
+              "strike": 1.0579611547045846
+            },
+            "signed_change_over_quote_sigma": -0.09898759577450707,
+            "mcse_over_quote_sigma": 0.01102241867718898,
+            "pointwise_mc95_interval_over_quote_sigma": [
+              -0.12059153638179747,
+              -0.07738365516721667
+            ]
+          },
+          "max_pointwise_mc95_halfwidth_affected": 0.19649104899468575,
+          "max_unaffected_absolute_change_mc_control_only": 0.09431693119983194
+        }
+      ]
+    },
+    {
+      "case_index": 6,
+      "name": "high_variance",
+      "report_sha256": "92be9a306730500734fff1af3d22799fddf04d08312fffc62fbcd6880e5bf18a",
+      "cpu_seconds": 557.071900108,
+      "peak_rss_bytes": 1059598336,
+      "all_six_component_mc_targets_met": false,
+      "single_component_max_affected_mcse_range": [
+        0.36343506080803956,
+        0.37406304941551055
+      ],
+      "pooled_max_affected_mcse_by_grid": {
+        "4": 0.26255613096584945,
+        "8": 0.2581645902512282,
+        "16": 0.25764966962336355
+      },
+      "pooled_index8_mcse_by_grid": {
+        "4": 0.061008071902746465,
+        "8": 0.051720653879227786,
+        "16": 0.04617745635481467
+      },
+      "comparisons": [
+        {
+          "coarse_multiplier": 4,
+          "fine_multiplier": 8,
+          "largest_absolute_affected_change": {
+            "index": 8,
+            "contract": {
+              "maturity": 0.01984126984126984,
+              "option_type": "call",
+              "strike": 1.0579611547045846
+            },
+            "signed_change_over_quote_sigma": -0.9665883422339885,
+            "mcse_over_quote_sigma": 0.07998131578678587,
+            "pointwise_mc95_interval_over_quote_sigma": [
+              -1.1233517211760888,
+              -0.8098249632918881
+            ]
+          },
+          "previously_identified_index8": {
+            "index": 8,
+            "contract": {
+              "maturity": 0.01984126984126984,
+              "option_type": "call",
+              "strike": 1.0579611547045846
+            },
+            "signed_change_over_quote_sigma": -0.9665883422339885,
+            "mcse_over_quote_sigma": 0.07998131578678587,
+            "pointwise_mc95_interval_over_quote_sigma": [
+              -1.1233517211760888,
+              -0.8098249632918881
+            ]
+          },
+          "max_pointwise_mc95_halfwidth_affected": 0.7217077645021539,
+          "max_unaffected_absolute_change_mc_control_only": 0.38657399930206887
+        },
+        {
+          "coarse_multiplier": 8,
+          "fine_multiplier": 16,
+          "largest_absolute_affected_change": {
+            "index": 0,
+            "contract": {
+              "maturity": 0.01984126984126984,
+              "option_type": "put",
+              "strike": 0.9452142884010055
+            },
+            "signed_change_over_quote_sigma": 0.7838316831934575,
+            "mcse_over_quote_sigma": 0.3647359427265332,
+            "pointwise_mc95_interval_over_quote_sigma": [
+              0.06894923544945242,
+              1.4987141309374628
+            ]
+          },
+          "previously_identified_index8": {
+            "index": 8,
+            "contract": {
+              "maturity": 0.01984126984126984,
+              "option_type": "call",
+              "strike": 1.0579611547045846
+            },
+            "signed_change_over_quote_sigma": -0.5001400561657655,
+            "mcse_over_quote_sigma": 0.06933529774289351,
+            "pointwise_mc95_interval_over_quote_sigma": [
+              -0.6360372397418368,
+              -0.36424287258969423
+            ]
+          },
+          "max_pointwise_mc95_halfwidth_affected": 0.7148824477440051,
+          "max_unaffected_absolute_change_mc_control_only": 0.6878597456757426
+        },
+        {
+          "coarse_multiplier": 4,
+          "fine_multiplier": 16,
+          "largest_absolute_affected_change": {
+            "index": 8,
+            "contract": {
+              "maturity": 0.01984126984126984,
+              "option_type": "call",
+              "strike": 1.0579611547045846
+            },
+            "signed_change_over_quote_sigma": -1.466728398399754,
+            "mcse_over_quote_sigma": 0.07651367402426507,
+            "pointwise_mc95_interval_over_quote_sigma": [
+              -1.6166951994873136,
+              -1.3167615973121947
+            ]
+          },
+          "previously_identified_index8": {
+            "index": 8,
+            "contract": {
+              "maturity": 0.01984126984126984,
+              "option_type": "call",
+              "strike": 1.0579611547045846
+            },
+            "signed_change_over_quote_sigma": -1.466728398399754,
+            "mcse_over_quote_sigma": 0.07651367402426507,
+            "pointwise_mc95_interval_over_quote_sigma": [
+              -1.6166951994873136,
+              -1.3167615973121947
+            ]
+          },
+          "max_pointwise_mc95_halfwidth_affected": 0.7210005237941487,
+          "max_unaffected_absolute_change_mc_control_only": 0.6129260879129548
+        }
+      ]
+    }
+  ],
+  "total_cpu_seconds": 1054.409525562,
+  "peak_rss_bytes": 1073758208,
+  "scientific_acceptance": "not_assessed"
+}

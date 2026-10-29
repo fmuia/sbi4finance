@@ -1,0 +1,38 @@
+{
+  "checked_utc": "2026-10-28T10:08:33.108369+00:00",
+  "array_id": "8046699",
+  "worker_tasks": 120,
+  "states": {
+    "RUNNING": 120
+  },
+  "nodes": {
+    "node2335": 2,
+    "node2337": 1,
+    "node2340": 5,
+    "node2342": 2,
+    "node2343": 14,
+    "node2346": 8,
+    "node2347": 10,
+    "node2350": 46,
+    "node2352": 11,
+    "node1802": 21
+  },
+  "excluded_nodes": [
+    "node2338",
+    "node2339",
+    "node2336",
+    "node2344"
+  ],
+  "excluded_nodes_observed": [],
+  "metadata_allocation": {
+    "job_id": "8046673",
+    "state": "COMPLETED",
+    "elapsed_seconds": "15",
+    "cpus": "1",
+    "exit_code": "0:0",
+    "node": "node2337",
+    "total_cpu": "00:08.288",
+    "user_cpu": "00:07.535",
+    "system_cpu": "00:00.752"
+  }
+}

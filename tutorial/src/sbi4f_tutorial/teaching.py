@@ -314,17 +314,14 @@ def live_smile_figure(result):
 
 
 def load_network(checkpoint):
-    """(task, workflow) from a run directory with model.keras, task.json and training.json."""
-    from . import inference
+    """Native BF2.1 loading only; archived BF2.0 files remain historical evidence."""
+    from . import full_surface
 
     checkpoint = Path(checkpoint)
-    task = json.loads((checkpoint / "task.json").read_text())
     record = json.loads((checkpoint / "training.json").read_text())
-    workflow = inference.build_workflow(task, subnet_widths=tuple(record["training"]["subnet_widths"]))
-    with warnings.catch_warnings():
-        # accepted checkpoints carry no optimizer state (studies/accept.py); sampling never needs it
-        warnings.filterwarnings("ignore", message="Skipping variable loading for optimizer")
-        workflow.load_approximator(checkpoint / "model.keras")
+    if record.get("format") != "full_surface_training_v1":
+        raise ValueError("archived BayesFlow 2.0 checkpoint: use the current BF2.1 backbone examples instead")
+    task, workflow, _ = full_surface.load_checkpoint(checkpoint)
     return task, workflow
 
 

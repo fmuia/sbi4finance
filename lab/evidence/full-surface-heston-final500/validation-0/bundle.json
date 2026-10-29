@@ -1,0 +1,38 @@
+{
+  "format": "full_surface_teaching_v1",
+  "role": "cached_development_example",
+  "case_id": "validation:0",
+  "parameter_names": [
+    "initial_variance",
+    "theta",
+    "vol_of_vol",
+    "rho"
+  ],
+  "task_fingerprint": "5e499526ff8f29a72f49785a1a36006b1d769d26bca8a6f83f7a8c8ac4d431fa",
+  "checkpoint_sha256": "8d4a243ba099524cf4cda40e4f0616e895879f053829a7f60dadbe65b98301db",
+  "exported_candidate_epoch": 500,
+  "original_validation_selected_epoch": 402,
+  "scientific_acceptance": false,
+  "checkpoint_status": "frozen_candidate_gate_passed_not_full_acceptance",
+  "neural_draw_count": 10000,
+  "reference_chain_shape": [
+    4,
+    8000,
+    4
+  ],
+  "source_sha256": {
+    "/oscar/scratch/afengler/sbi4finance-heston-acceptance-20261028/manifest.json": "6db210193e45b7d6af634ed77a5de17e5fbf7102c22298d18c13a3e1a141f525",
+    "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-0/reference/reference.json": "35e646876a5c4a1413593455741dc0a3a6688678909a570353ec4fc70125c902",
+    "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-0/reference/diagnostics.json": "72bd9616e0a4f3985cbe6f642156e0650776a80e11770dbdb668917b20608808",
+    "/oscar/scratch/afengler/sbi4finance-reviewed-unit-20261027-9b495cf/runs/heston/case-0/reference/chains.npz": "be70a6798988bad251254fbe86df901b3affb5e0def92555aceb145f1fcb8505",
+    "/oscar/scratch/afengler/sbi4finance-heston-audit-20261027/results/new/100k-case-0.npz": "328e620550243043109bd500329f59208b1ea7fb2f33258a6ae86c518f80812c"
+  },
+  "files": {
+    "diagnostics.json": "72bd9616e0a4f3985cbe6f642156e0650776a80e11770dbdb668917b20608808",
+    "posterior.npz": "e105bbb440c947d03c522cf0f33bae451dc4854625efd9ec4d3192b26ea74fc4",
+    "products.json": "029f8ec3acfbf56a37a78e8b8a24005c25ebc2d979cd74e5b182f04cbeb8edcf",
+    "reference.json": "35e646876a5c4a1413593455741dc0a3a6688678909a570353ec4fc70125c902",
+    "task.json": "5e499526ff8f29a72f49785a1a36006b1d769d26bca8a6f83f7a8c8ac4d431fa"
+  },
+  "limitations": "Previously inspected development case. Analytic variance rates only; no path-product, market, training-seed or universal conditional acceptance. This initial cache is not the prospective interior teaching example."
+}

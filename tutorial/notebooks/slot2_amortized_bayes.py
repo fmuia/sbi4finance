@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.25.2"
+__generated_with = "0.25.1"
 app = marimo.App(width="medium", app_title="Slot 2 · What is amortized Bayes?")
 
 
@@ -12,7 +12,6 @@ def _():
 
     os.environ.setdefault("KERAS_BACKEND", "jax")
 
-    import bayesflow as bf
     import marimo as mo
     import matplotlib.pyplot as plt
     import numpy as np
@@ -24,20 +23,7 @@ def _():
     RESULTS = ASSETS / "results" / "calibration"
     TOY_CHECKPOINT = ASSETS / "checkpoints" / "slot2-toy" / "model.keras"
     plots.style()
-    return (
-        ASSETS,
-        RESULTS,
-        TOY_CHECKPOINT,
-        bf,
-        inference,
-        mo,
-        np,
-        plots,
-        plt,
-        surface,
-        teaching,
-        time,
-    )
+    return ASSETS, RESULTS, mo, np, plots, plt, surface, teaching, time
 
 
 @app.cell(hide_code=True)
@@ -123,7 +109,7 @@ def _(mo):
 
 
 @app.cell
-def _(RESULTS, bf, np, surface, teaching):
+def _(RESULTS, np, surface, teaching):
     spy = teaching.load_json(RESULTS / "spy" / "surface.json")
     _k, _maturity, _kind, _delta = teaching.design_arrays()
     _i = int(np.flatnonzero((_maturity * surface.TRADING_DAYS == 21) & (np.abs(_delta) < 1e-9))[0])
@@ -141,8 +127,11 @@ def _(RESULTS, bf, np, surface, teaching):
         return {"price": surface.bs_price(QUOTE["k"], QUOTE["T"], sigma, QUOTE["kind"]) + QUOTE["sd"] * _rng.standard_normal()}
 
 
-    simulator = bf.make_simulator([prior, quote])
-    return PRIOR_HIGH, PRIOR_LOW, QUOTE, simulator
+    def make_toy_simulator():
+        import bayesflow as bf
+        return bf.make_simulator([prior, quote])
+
+    return PRIOR_HIGH, PRIOR_LOW, QUOTE, make_toy_simulator
 
 
 @app.cell(hide_code=True)
@@ -156,12 +145,14 @@ def _(mo):
 
 
 @app.cell
-def _(mo, simulator, time):
+def _(make_toy_simulator, mo, time, train_button):
+    mo.stop(not train_button.value, mo.md("Toy bank generation and training are off. Press the training button to run a new BayesFlow 2.1 toy; the archived 2.0 model stays untouched."))
+    simulator = make_toy_simulator()
     _start = time.perf_counter()
     bank = simulator.sample(40_000)
     bank_seconds = time.perf_counter() - _start
-    mo.md(f"40,000 pairs of (σ, price) in **{bank_seconds:.1f} s**.")
-    return (bank,)
+    mo.md(f"40,000 toy pairs generated in {bank_seconds:.1f}s.")
+    return bank, simulator
 
 
 @app.cell(hide_code=True)
@@ -169,26 +160,20 @@ def _(mo):
     mo.md(r"""
     The network is BayesFlow's flow matching, at a toy size. The adapter maps $\sigma$ from its prior
     interval to the real line and names what the network infers and what it conditions on. Sampling uses
-    100 Euler steps on a grid that is dense where the flow ends (slot 3).
+    BayesFlow 2.1's native adaptive solver (slot 3). The archived 2.0 toy checkpoint is not loaded here.
     """)
     return
 
 
 @app.cell
-def _(PRIOR_HIGH, PRIOR_LOW, bf, inference):
-    adapter = (
-        bf.Adapter()
-        .constrain("sigma", lower=PRIOR_LOW, upper=PRIOR_HIGH)
-        .convert_dtype("float64", "float32")
-        .rename("sigma", "inference_variables")
-        .rename("price", "inference_conditions")
-    )
-
-
+def _(PRIOR_HIGH, PRIOR_LOW):
     def build_toy_workflow():
-        network = bf.networks.FlowMatching(subnet_kwargs={"widths": [128, 128, 128]},
-                                           integrate_kwargs={"method": "euler", "steps": inference.sampler_times(100)})
-        return bf.BasicWorkflow(adapter=adapter, inference_network=network,
+        import bayesflow as bf
+        adapter = (bf.Adapter().constrain("sigma", lower=PRIOR_LOW, upper=PRIOR_HIGH)
+                   .convert_dtype("float64", "float32")
+                   .rename("sigma", "inference_variables").rename("price", "inference_conditions"))
+        return bf.BasicWorkflow(adapter=adapter,
+                                inference_network=bf.networks.FlowMatching(subnet_kwargs={"widths": [128, 128, 128]}),
                                 standardize=["inference_variables", "inference_conditions"])
 
     return (build_toy_workflow,)
@@ -196,27 +181,19 @@ def _(PRIOR_HIGH, PRIOR_LOW, bf, inference):
 
 @app.cell(hide_code=True)
 def _(mo):
-    train_button = mo.ui.run_button(label="Train the toy network live (about 30 s on 4 cores)")
+    train_button = mo.ui.run_button(label="Train a new BayesFlow 2.1 toy explicitly (30 epochs)")
     train_button
     return (train_button,)
 
 
 @app.cell
-def _(TOY_CHECKPOINT, bank, build_toy_workflow, mo, time, train_button):
+def _(bank, build_toy_workflow, mo, time, train_button):
+    mo.stop(not train_button.value, mo.md("No toy training is running."))
     _start = time.perf_counter()
     toy = build_toy_workflow()
-    if train_button.value or not TOY_CHECKPOINT.exists():
-        toy.fit_offline(data=bank, epochs=30, batch_size=256, verbose=0)
-        if not TOY_CHECKPOINT.exists():  # instructors create the shipped network once; a live run never replaces it
-            TOY_CHECKPOINT.parent.mkdir(parents=True, exist_ok=True)
-            toy.approximator.save(TOY_CHECKPOINT)
-        toy_source = "trained live"
-    else:
-        toy.fit_offline(data={key: value[:256] for key, value in bank.items()}, epochs=1, batch_size=256, verbose=0)
-        toy.load_approximator(TOY_CHECKPOINT)
-        toy_source = "loaded from the checkpoint trained before the session"
+    toy.fit_offline(data=bank, epochs=30, batch_size=256, verbose=0)
     toy_seconds = time.perf_counter() - _start
-    mo.md(f"The toy network was **{toy_source}** in {toy_seconds:.0f} s.")
+    mo.md(f"New BayesFlow 2.1 toy trained explicitly in {toy_seconds:.0f}s. It is session-only and replaces no saved asset.")
     return (toy,)
 
 
@@ -228,6 +205,20 @@ def _(mo):
     The grid posterior is slot 1's computation with this prior. The network's posterior comes from one
     call with the SPY quote as condition.
     """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(PRIOR_HIGH, PRIOR_LOW, QUOTE, mo, np, plt, surface):
+    _sigma = np.linspace(PRIOR_LOW, PRIOR_HIGH, 4001)
+    _miss = (QUOTE["price"] - surface.bs_price(QUOTE["k"], QUOTE["T"], _sigma, QUOTE["kind"])) / QUOTE["sd"]
+    _density = np.exp(-0.5 * (_miss**2 - (_miss**2).min()))
+    _density /= np.trapezoid(_density, _sigma)
+    _fig, _ax = plt.subplots(figsize=(7, 3))
+    _ax.plot(100 * _sigma, _density / 100)
+    _ax.set_xlabel("Black–Scholes volatility (%)")
+    _ax.set_ylabel("exact posterior density")
+    mo.vstack([mo.md("**Exact toy posterior**, available before any optional network training."), _fig])
     return
 
 
@@ -430,7 +421,7 @@ def _(many, mo, np, plots, plt):
     _ax.legend(fontsize=8)
     _ax.set_title("simulation-based calibration, 500 simulated quotes", loc="left")
     mo.vstack([_fig, mo.md(f"Largest deviation **{np.max(np.abs(_ecdf - _grid)):.3f}** against a 95% band of "
-                           f"±{_band:.3f}: the toy network is calibrated on average.")])
+                           f"±{_band:.3f}: compare the deviation with the reference band; this small demonstration is not a full validation.")])
     return
 
 

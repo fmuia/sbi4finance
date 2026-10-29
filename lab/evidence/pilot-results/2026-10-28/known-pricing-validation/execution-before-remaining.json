@@ -1,0 +1,120 @@
+{
+  "format": "known_rough_pricing_execution_v1",
+  "state": "submission_in_progress",
+  "plan_sha256": "759b3df88ac650aab83f2bf00fcd04aa2a2ebc669d03a3b6634661f68fdb8654",
+  "attempts": [
+    {
+      "role": "metadata",
+      "state": "submitted",
+      "attempted_unix": 1793144816.1125038,
+      "argv": [
+        "sbatch",
+        "--parsable",
+        "--nodes=1",
+        "--ntasks=1",
+        "--no-requeue",
+        "--account=carney-mjfrank-condo2",
+        "--partition=batch",
+        "--cpus-per-task=1",
+        "--mem=4G",
+        "--time=00:05:00",
+        "--chdir=/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo",
+        "--job-name=known-price-metadata",
+        "--output=/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/logs/metadata-%A_%a.out",
+        "--wrap=env PYTHONPATH=/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo/src OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 /oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python /oscar/scratch/afengler/audit_known_pricing_streams_20261028.py /oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo /oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028"
+      ],
+      "stdout": "8032278\n",
+      "stderr": "",
+      "returncode": 0,
+      "job_id": "8032278",
+      "terminal": {
+        "job_id": "8032278",
+        "state": "COMPLETED",
+        "elapsed_seconds": 94,
+        "allocated_cpus": 1,
+        "exit_code": "0:0",
+        "allocated_cpu_seconds": 94
+      }
+    },
+    {
+      "role": "pilot",
+      "state": "submitted",
+      "attempted_unix": 1793145001.3183377,
+      "argv": [
+        "sbatch",
+        "--parsable",
+        "--nodes=1",
+        "--ntasks=1",
+        "--no-requeue",
+        "--account=carney-mjfrank-condo2",
+        "--partition=batch",
+        "--cpus-per-task=1",
+        "--mem=16G",
+        "--time=00:20:00",
+        "--chdir=/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo",
+        "--job-name=known-price-pilot",
+        "--output=/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/logs/pilot-%A_%a.out",
+        "--wrap=env PYTHONPATH=/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo/src OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 /oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python /oscar/scratch/afengler/known_rough_pricing_check_20261028.py worker --repo /oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo --root /oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028 --index 0"
+      ],
+      "stdout": "8032395\n",
+      "stderr": "",
+      "returncode": 0,
+      "job_id": "8032395",
+      "terminal": {
+        "job_id": "8032395",
+        "state": "COMPLETED",
+        "elapsed_seconds": 33,
+        "allocated_cpus": 1,
+        "exit_code": "0:0",
+        "allocated_cpu_seconds": 33
+      }
+    },
+    {
+      "role": "remaining",
+      "state": "submitting",
+      "attempted_unix": 1793145123.7832174,
+      "argv": [
+        "sbatch",
+        "--parsable",
+        "--nodes=1",
+        "--ntasks=1",
+        "--no-requeue",
+        "--account=carney-mjfrank-condo2",
+        "--partition=batch",
+        "--cpus-per-task=1",
+        "--mem=16G",
+        "--time=00:20:00",
+        "--chdir=/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo",
+        "--job-name=known-price-remaining",
+        "--output=/oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028/logs/remaining-%A_%a.out",
+        "--array=1-47%16",
+        "--wrap=env PYTHONPATH=/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo/src OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 /oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python /oscar/scratch/afengler/known_rough_pricing_check_20261028.py worker --repo /oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo --root /oscar/scratch/afengler/sbi4finance-known-pricing-validation-20261028 --index 0"
+      ]
+    }
+  ],
+  "authorization": "Usercontinuesknown-curvepricingdiagnosis; rootapprovedsixpoints,eight65536-total-antithetic-pathreplicates,bothgrids,24CPUh,noGPU.",
+  "resources": {
+    "cpu_ceiling_seconds": 86400,
+    "gpu_ceiling_seconds": 0,
+    "cpus_per_worker": 1,
+    "gpus": 0,
+    "worker_wall_seconds": 1200,
+    "cleanup_seconds_per_job": 240,
+    "max_concurrent_workers": 16,
+    "memory_gib_per_worker": 16,
+    "all48_worker_full_exposure_cpu_seconds": 69120,
+    "metadata_full_exposure_cpu_seconds": 540,
+    "final_integrity_reserved_cpu_seconds": 3600,
+    "prospective_total_cpu_seconds": 73260
+  },
+  "frozen_submission_sources": {
+    "/oscar/scratch/afengler/known_rough_pricing_check_20261028.py": "007edba3796be584a15153c0449b3b527a97cacbe1bb622f4e4ecda77c92a01a",
+    "/oscar/scratch/afengler/audit_known_pricing_streams_20261028.py": "39ced3e724611876bc7bf65bb1f6a93242d17ef73fb01df902c5f3a5473a51bb",
+    "/oscar/scratch/afengler/submit_known_pricing_validation_20261028.py": "162109c71380c15db2bd4e7052bfbf2297fe80dd4dad0e1bdd4601a9eb0f1811"
+  },
+  "automatic_retry": false,
+  "scientific_acceptance": false,
+  "reserved_test_evaluated": false,
+  "stream_audit_sha256": "c31c5fba82dc1e59b127e7b1f3cfca77dd00d2cc5a7692b73b8aab3e5e3971bb",
+  "pilot_elapsed_seconds": 30.830979650840163
+}

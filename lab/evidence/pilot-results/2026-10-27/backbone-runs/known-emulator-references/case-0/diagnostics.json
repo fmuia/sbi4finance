@@ -1,0 +1,72 @@
+{
+  "derived_quantities": {
+    "limitations": "Also assess numerical-price refinement, products and reference uncertainty.",
+    "mcmc_diagnostics_passed": true,
+    "parameters": {
+      "parameters[rho_eta]": {
+        "ess_bulk": 3019.9454295684245,
+        "ess_tail": 3772.220747123471,
+        "eti89_lb": -1.5773307661942355,
+        "eti89_ub": -1.4694144053040574,
+        "mcse_mean": 0.0006099016571353992,
+        "mcse_sd": 0.00036054786658148774,
+        "mean": -1.5238798667072664,
+        "r_hat": 1.000480947671006,
+        "sd": 0.033522349160267285
+      }
+    },
+    "requirements": {
+      "ess_bulk_min": 400,
+      "ess_tail_min": 400,
+      "r_hat_max": 1.01
+    },
+    "scientific_acceptance": "not_assessed",
+    "scope": "derived rho*eta chain diagnostics; not product pricing or independent emulator validation"
+  },
+  "elapsed_seconds": 65.86856799013913,
+  "limitations": "Also assess numerical-price refinement, products and reference uncertainty.",
+  "mcmc_diagnostics_passed": true,
+  "parameter_mcmc_diagnostics_passed": true,
+  "parameters": {
+    "parameters[eta]": {
+      "ess_bulk": 3010.567588421873,
+      "ess_tail": 3767.0423181323567,
+      "eti89_lb": 1.9269228232062652,
+      "eti89_ub": 2.0805340000150414,
+      "mcse_mean": 0.0008687706109813623,
+      "mcse_sd": 0.0005778797130243725,
+      "mean": 2.0037085346657175,
+      "r_hat": 1.0021505577637924,
+      "sd": 0.04761184227128997
+    },
+    "parameters[hurst]": {
+      "ess_bulk": 3048.6534541073984,
+      "ess_tail": 3202.8366834920325,
+      "eti89_lb": 0.15649075091982637,
+      "eti89_ub": 0.19981315973790023,
+      "mcse_mean": 0.0002451563729094352,
+      "mcse_sd": 0.00014925439207704152,
+      "mean": 0.17805549897165945,
+      "r_hat": 1.0013658258183826,
+      "sd": 0.013585483842331214
+    },
+    "parameters[rho]": {
+      "ess_bulk": 2946.5415040680364,
+      "ess_tail": 3461.272683849989,
+      "eti89_lb": -0.8010514100656564,
+      "eti89_ub": -0.7218353695383493,
+      "mcse_mean": 0.00045165394375846395,
+      "mcse_sd": 0.00028762386075542075,
+      "mean": -0.7609541321888732,
+      "r_hat": 1.001141972112461,
+      "sd": 0.024478118136678037
+    }
+  },
+  "requirements": {
+    "ess_bulk_min": 400,
+    "ess_tail_min": 400,
+    "r_hat_max": 1.01
+  },
+  "scientific_acceptance": "not_assessed",
+  "target_scope": "approximate emulator posterior, not independently validated model prices"
+}

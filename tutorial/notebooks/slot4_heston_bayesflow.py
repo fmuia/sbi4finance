@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.25.2"
+__generated_with = "0.25.1"
 app = marimo.App(width="medium", app_title="Slot 4 · Heston in BayesFlow")
 
 
@@ -11,12 +11,11 @@ def _():
 
     os.environ.setdefault("KERAS_BACKEND", "jax")
 
-    import bayesflow as bf
     import marimo as mo
     import matplotlib.pyplot as plt
     import numpy as np
 
-    from sbi4f_tutorial import inference, plots, surface, teaching
+    from sbi4f_tutorial import full_surface, plots, surface, teaching
 
     ROOT = mo.notebook_dir().parent
     ASSETS = ROOT / "assets"
@@ -29,8 +28,7 @@ def _():
         CHECKPOINTS,
         CHECKS,
         RESULTS,
-        bf,
-        inference,
+        full_surface,
         mo,
         np,
         plots,
@@ -45,6 +43,11 @@ def _():
 def _(mo):
     mo.md(r"""
     # Slot 4 · A worked example in BayesFlow: Heston on the SPY smile
+
+    For the new BayesFlow 2.1 estimator and checked synthetic interior example,
+    open [the cached/live backbone review](backbone_review.py). That replay has
+    its own observation and provenance; the historical SPY results below remain
+    separate.
 
     **The whole amortized workflow, on a model whose exact posterior can check every step**
 
@@ -66,6 +69,55 @@ def _(mo):
        one. That is why slot 5 changes the model.
     """)
     return
+
+
+
+
+@app.cell
+def _(mo):
+    prior_button = mo.ui.run_button(label="Simulate 100 Heston prior-predictive smiles")
+    prior_button
+    return (prior_button,)
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Current numerical backbone · cached development example
+
+    This section uses the completed 100,000-surface estimator. It opens without
+    loading a neural model, generating prices or running MCMC. The historical
+    SPY material below retains its original data, models and scientific scope.
+    Fresh sampling is an explicit action in [the backbone review](backbone_review.py).
+    """)
+    return
+
+
+@app.cell
+def _(mo):
+    from sbi4f_tutorial import backbones
+
+    backbone_case = mo.ui.dropdown(options=backbones.examples("heston"),
+                                    value="heston-final500", label="Current cached example")
+    backbone_case
+    return backbone_case, backbones
+
+
+@app.cell
+def _(backbone_case, backbones, mo):
+    _task, _report, _arrays = backbones.load_example(backbone_case.value)
+    mo.vstack([
+        mo.callout(mo.md(f"**Development example:** `{_report['case_id']}`; "
+                         f"{len(_arrays['neural_draws']):,} paired joint draws. "
+                         f"{'PyMC reference supplied' if 'reference_chains' in _arrays else 'conditional reference and rough products pending'}. "
+                         "The selected geometry examples illustrate trade-offs; they are not an accuracy study."), kind="neutral"),
+        mo.md(f"Task SHA256: `{_report['task_fingerprint']}`  \nModel SHA256: `{_report['checkpoint_sha256']}`"),
+        mo.ui.table(backbones.parameter_rows(_task, _arrays), selection=None, pagination=False),
+        backbones.corner(_task, _arrays),
+    ])
+    return
+
+
 
 
 @app.cell(hide_code=True)
@@ -138,25 +190,26 @@ def _(mo):
 
 
 @app.cell
-def _(CHECKPOINTS, bf, np, teaching):
+def _(CHECKPOINTS, np, teaching):
     heston_task = teaching.load_json(CHECKPOINTS / "heston" / "task.json")
     NAMES = heston_task["parameter_names"]
     BOUNDS = np.asarray(heston_task["prior_bounds"])
     NOISE = np.asarray(heston_task["context"]["quote_noise_std"])
-    _rng = np.random.default_rng(4)
 
+    def make_demo_simulator():
+        import bayesflow as bf
+        _rng = np.random.default_rng(4)
 
-    def prior():
-        return dict(zip(NAMES, _rng.uniform(BOUNDS[:, 0], BOUNDS[:, 1])))
+        def prior():
+            return dict(zip(NAMES, _rng.uniform(BOUNDS[:, 0], BOUNDS[:, 1])))
 
+        def smile(initial_variance, theta, vol_of_vol, rho):
+            prices = teaching.heston_smile(heston_task, [initial_variance, theta, vol_of_vol, rho])
+            return {"observations": prices + NOISE * _rng.standard_normal(len(NOISE))}
 
-    def smile(initial_variance, theta, vol_of_vol, rho):
-        prices = teaching.heston_smile(heston_task, [initial_variance, theta, vol_of_vol, rho])
-        return {"observations": prices + NOISE * _rng.standard_normal(len(NOISE))}
+        return bf.make_simulator([prior, smile])
 
-
-    simulator = bf.make_simulator([prior, smile])
-    return NAMES, NOISE, heston_task, simulator
+    return NAMES, NOISE, heston_task, make_demo_simulator
 
 
 @app.cell(hide_code=True)
@@ -169,40 +222,24 @@ def _(mo):
 
 
 @app.cell
-def _(RESULTS, np, simulator, surface, teaching, time):
+def _(RESULTS, make_demo_simulator, np, prior_button, surface, teaching, time):
     _start = time.perf_counter()
-    prior_draws = simulator.sample(100)
+    if prior_button.value:
+        _prior = make_demo_simulator().sample(100)
+        prior_iv = np.array([teaching.implied_vol_grid(p) for p in _prior["observations"]])
+    else:
+        prior_iv = np.empty((0, 63))
     prior_seconds = time.perf_counter() - _start
-    prior_iv = np.array([teaching.implied_vol_grid(p) for p in prior_draws["observations"]])
     spy = teaching.load_json(RESULTS / "spy" / "surface.json")
     spy_prices = np.asarray(spy["prices_forward_units"])
     spy_iv = teaching.implied_vol_grid(spy_prices)
     _k, _maturity, _kind, grid_delta = teaching.design_arrays()
     grid_days = np.rint(_maturity * surface.TRADING_DAYS).astype(int)
-    return (
-        grid_days,
-        grid_delta,
-        prior_iv,
-        prior_seconds,
-        spy,
-        spy_iv,
-        spy_prices,
-    )
+    return grid_days, grid_delta, prior_iv, spy_iv, spy_prices
 
 
 @app.cell(hide_code=True)
-def _(
-    grid_days,
-    grid_delta,
-    mo,
-    np,
-    plots,
-    plt,
-    prior_iv,
-    prior_seconds,
-    spy_iv,
-    teaching,
-):
+def _(grid_days, grid_delta, mo, np, plots, plt, prior_iv, spy_iv, teaching):
     _fig, _axes = plt.subplots(1, 3, figsize=(11.0, 3.4), sharey=True, constrained_layout=True)
     for _ax, _days in zip(_axes, (5, 21, 252)):
         _rows = np.flatnonzero(grid_days == _days)
@@ -215,7 +252,7 @@ def _(
     _axes[0].set_ylabel("implied volatility (%)")
     _axes[0].set_ylim(0, 80)
     _axes[0].legend(fontsize=8, loc="upper right")
-    mo.vstack([_fig, mo.md(f"100 prior smiles (blue) in {prior_seconds:.1f} s, and SPY (orange).")])
+    mo.vstack([_fig, mo.md(f"{len(prior_iv)} explicitly simulated prior smiles (blue); SPY is cached (orange).")])
     return
 
 
@@ -230,7 +267,7 @@ def _(mo):
     is flow matching.
 
     ```python
-    workflow = inference.build_workflow(heston_task, time_power_law_alpha=-0.5)   # slot 3, section 3
+    workflow = full_surface.build_workflow(heston_task, family="flow_matching", widths=(256, 256, 256, 256))   # slot 3, section 3
     ```
     """)
     return
@@ -258,33 +295,36 @@ def _(mo):
 
     Training is the one-off cost. The button trains a fresh network for 15 epochs on 1,000 smiles simulated
     now, to show the loss falling; the network used below is the one trained before the session on the
-    full bank.
+    full bank. This short software demonstration does not reproduce the baseline fit
+    or establish inference quality.
     """)
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    train_button = mo.ui.run_button(label="Train a small network live (about a minute)")
+    train_button = mo.ui.run_button(label="Train a small native BayesFlow 2.1 network explicitly")
     train_button
     return (train_button,)
 
 
 @app.cell
 def _(
+    full_surface,
     heston_task,
-    inference,
+    make_demo_simulator,
     mo,
     np,
     plots,
     plt,
-    simulator,
     time,
     train_button,
 ):
     mo.stop(not train_button.value, mo.md("*Press the button to simulate 1,000 smiles and train for 15 epochs.*"))
-    _bank_small = simulator.sample(1000)
-    _small = inference.build_workflow(heston_task, time_power_law_alpha=-0.5)
+    _bank_small = make_demo_simulator().sample(1000)
+    _small = full_surface.build_workflow(heston_task, family="flow_matching", widths=(256, 256, 256, 256))
+    _bank_small = full_surface.training_data({"observations": _bank_small["observations"],
+        "parameters": np.column_stack([_bank_small[n].reshape(-1) for n in heston_task["parameter_names"]])}, heston_task)
     _start = time.perf_counter()
     _history = _small.fit_offline(data=_bank_small, epochs=15, batch_size=64, verbose=0)
     _fig, _ax = plt.subplots(figsize=(6.0, 3.0), constrained_layout=True)
@@ -297,10 +337,11 @@ def _(
 
 
 @app.cell
-def _(CHECKPOINTS, mo, teaching):
-    _task, heston_workflow = teaching.load_network(CHECKPOINTS / "heston")
-    mo.md("Loaded the network trained before the session: 500 epochs on 50,000 smiles.")
-    return (heston_workflow,)
+def _(mo):
+    mo.md("""
+    The archived SPY checkpoint was trained with BayesFlow 2.0. It is retained as evidence, and is not loaded in this BayesFlow 2.1 environment. The current Heston example above and backbone review use the native 2.1 model with its own exact observation.
+    """)
+    return
 
 
 @app.cell(hide_code=True)
@@ -398,18 +439,18 @@ def _(mo):
 
 
 @app.cell
-def _(ASSETS, heston_task, heston_workflow, inference, np, spy, time):
-    spy_conditions = np.asarray(spy["prices_forward_units"])[None]
-    inference.sample(heston_workflow, heston_task, spy_conditions, None, 50, seed=0)  # compiles the sampler once
-    _start = time.perf_counter()
-    network_spy = inference.sample(heston_workflow, heston_task, spy_conditions, None, 2000, seed=1)[0]
-    network_seconds = time.perf_counter() - _start
+def _(ASSETS, mo, np):
     exact_spy = np.load(ASSETS / "data" / "heston-spy-exact.npy")
+    network_spy = None
+    network_seconds = None
+    mo.md("**SPY neural update pending:** the saved Fourier-reference draws below remain historical. "
+          "No new SPY neural posterior is fabricated from the synthetic development replay.")
     return exact_spy, network_seconds, network_spy
 
 
 @app.cell(hide_code=True)
 def _(NAMES, exact_spy, mo, network_seconds, network_spy, teaching):
+    mo.stop(network_spy is None, mo.md("Historical SPY neural comparison awaits an explicitly validated BF2.1 export."))
     _labels = [teaching.LABELS[n] for n in NAMES]
     _rows = []
     for _j, _name in enumerate(_labels):
@@ -440,6 +481,7 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(CHECKS, NAMES, exact_spy, mo, network_spy, np, teaching):
+    mo.stop(network_spy is None, mo.md("Historical SPY neural comparison awaits an explicitly validated BF2.1 export."))
     heston_checks = teaching.load_json(CHECKS / "heston_checks.json")
     _gn = heston_checks["cases"]["full grid, kappa fixed"]["parameters"]
     _rows = []
@@ -472,7 +514,8 @@ def _(mo):
 
 
 @app.cell
-def _(NOISE, heston_task, network_spy, np, spy_prices, teaching):
+def _(NOISE, heston_task, mo, network_spy, np, spy_prices, teaching):
+    mo.stop(network_spy is None, mo.md("Historical SPY neural comparison awaits an explicitly validated BF2.1 export."))
     _rows = np.random.default_rng(6).choice(len(network_spy), 200, replace=False)
     repriced = np.array([teaching.heston_smile(heston_task, network_spy[i]) for i in _rows])
     repriced_iv = np.array([teaching.implied_vol_grid(p) for p in repriced])

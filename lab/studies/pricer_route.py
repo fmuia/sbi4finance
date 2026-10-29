@@ -32,7 +32,8 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from sbi4finance.calibration import bank, correction, plots, pricer_net, validation  # noqa: E402
+from sbi4finance.calibration import bank_collection as bank  # noqa: E402
+from sbi4finance.calibration import correction, plots, pricer_net, validation  # noqa: E402
 from sbi4finance.svj.pmmh import rhat_ess  # noqa: E402
 from evaluate_calibration import LABELS, load_network, posterior_draws  # noqa: E402
 from heston_check import jsonable, passes  # noqa: E402
@@ -56,7 +57,7 @@ def main():
     parser.add_argument("--exact", type=Path, help="study S3's heston-check.json: on the rows it covers, also compare "
                                                    "the pricer chains with the exact posterior")
     args = parser.parse_args()
-    manifest, splits = bank.load_bank(args.bank)
+    manifest, splits = bank.load_bank(args.bank, roles=bank.TRAINING_ROLES)
     task, workflow, _ = load_network(args.checkpoint)
     if task != manifest["configuration"]["task"]:
         raise ValueError("checkpoint and bank tasks differ")

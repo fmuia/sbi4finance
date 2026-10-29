@@ -1,0 +1,10 @@
+## SLURM PROLOG ###############################################################
+##    Job ID : 8010142
+##  Job Name : sbi4f-bank-workers-0-3
+##  Nodelist : node1802
+##      CPUs : 1
+##  Mem/Node : 8192 MB
+## Directory : /oscar/scratch/afengler/sbi4finance-native-bank-20261027/repo
+##   Job Started : Tue Oct 27 11:01:33 AM EDT 2026
+###############################################################################
+completed or verified task 2

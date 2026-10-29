@@ -58,13 +58,9 @@ class LongEndAndNetworkTests(unittest.TestCase):
         self.assertTrue(np.all(desk >= 0) and np.all(post > 0))  # the variance swap's desk range is zero: it
         self.assertEqual(float(desk[-1]), 0.0)  # depends on the curve alone, which the desk holds fixed
 
-    def test_the_heston_network_loads_and_samples_inside_its_prior(self):
-        task, workflow = teaching.load_network(CHECKPOINTS / "heston")
-        spy = json.loads((RESULTS / "spy" / "surface.json").read_text())
-        draws = inference.sample(workflow, task, np.asarray(spy["prices_forward_units"])[None], None, 200, seed=0)
-        self.assertEqual(draws.shape, (1, 200, 4))
-        bounds = np.asarray(task["prior_bounds"])
-        self.assertTrue(np.all((draws > bounds[:, 0]) & (draws < bounds[:, 1])))
+    def test_archived_heston_is_rejected_before_neural_loading(self):
+        with self.assertRaisesRegex(ValueError, "archived BayesFlow 2.0"):
+            teaching.load_network(CHECKPOINTS / "heston")
 
 
 if __name__ == "__main__":

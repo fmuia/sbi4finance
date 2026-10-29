@@ -1,0 +1,62 @@
+{
+  "/oscar/scratch/afengler/sbi4finance-rough-known-backbone-20261027/snapshot-20k/manifest.json": {
+    "actual_sha256": "7cf0314dc6371fd045ad6b314dd6dd605db2f3343dbccf4e35b4df9ddf9397eb",
+    "bytes": 434098,
+    "expected_sha256": "7cf0314dc6371fd045ad6b314dd6dd605db2f3343dbccf4e35b4df9ddf9397eb",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/repo/pixi.lock": {
+    "actual_sha256": "3e33b82d45dfdd696c5b12b22bca0943a5fca09804860fab13e3fc9126c60aae",
+    "bytes": 297129,
+    "expected_sha256": "3e33b82d45dfdd696c5b12b22bca0943a5fca09804860fab13e3fc9126c60aae",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/repo/pyproject.toml": {
+    "actual_sha256": "0b38d45cea9c3d7143e261d6c8ce3d6892b31b7bce6d1f26bf748df75790fd54",
+    "bytes": 10591,
+    "expected_sha256": "0b38d45cea9c3d7143e261d6c8ce3d6892b31b7bce6d1f26bf748df75790fd54",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/repo/scripts/calibration_reference.py": {
+    "actual_sha256": "070f3199645faabe8032132d13c6b1859d053d9b8717334d65ce157f707ef6b8",
+    "bytes": 13655,
+    "expected_sha256": "070f3199645faabe8032132d13c6b1859d053d9b8717334d65ce157f707ef6b8",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/repo/src/sbi4finance/calibration/pricer_net.py": {
+    "actual_sha256": "e5d8da240c2dc9b242fabfe289e6623d786645acf86d42d7eb96e702c47bd489",
+    "bytes": 9178,
+    "expected_sha256": "e5d8da240c2dc9b242fabfe289e6623d786645acf86d42d7eb96e702c47bd489",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/repo/src/sbi4finance/calibration/reference.py": {
+    "actual_sha256": "fd69a6958026f6addde982f2c8d57461cf549efe75f838956e0d931e12153056",
+    "bytes": 17383,
+    "expected_sha256": "fd69a6958026f6addde982f2c8d57461cf549efe75f838956e0d931e12153056",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/runs/known-20k-native/pricer/checkpoint/pricer.json": {
+    "actual_sha256": "1a9cf45fcb9c38e44ab8c53943912935892ca30c07ff68147d440d04bdaef057",
+    "bytes": 9005,
+    "expected_sha256": "1a9cf45fcb9c38e44ab8c53943912935892ca30c07ff68147d440d04bdaef057",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/runs/known-20k-native/pricer/checkpoint/pricer.npz": {
+    "actual_sha256": "d1dcefd7cb9a62ca864a46a461b66a4201e442cd5cd18c7fa3862ade6428460a",
+    "bytes": 870334,
+    "expected_sha256": "d1dcefd7cb9a62ca864a46a461b66a4201e442cd5cd18c7fa3862ade6428460a",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-fit-20261027/runs/known-20k-native/pricer/checkpoint/task.json": {
+    "actual_sha256": "c99b0dd131896d89d8483a1668a3fde0fb7a0f28794c3db7fe14635cbbd52b65",
+    "bytes": 10539,
+    "expected_sha256": "c99b0dd131896d89d8483a1668a3fde0fb7a0f28794c3db7fe14635cbbd52b65",
+    "passed": true
+  },
+  "/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/manifests/known_emulator_reference_array_20261027.py": {
+    "actual_sha256": "116cc0f277a7ad5584602d1168ebd7a5e928d3fa67fb80395f48ef95339b403c",
+    "bytes": 1646,
+    "expected_sha256": "116cc0f277a7ad5584602d1168ebd7a5e928d3fa67fb80395f48ef95339b403c",
+    "passed": true
+  }
+}

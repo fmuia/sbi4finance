@@ -1,0 +1,16 @@
+{
+  "before_fix_joint": {
+    "expected_before_fix_failure": "joint curve is derived from the six parameter targets; use derived_context",
+    "real_native_freeze_exercised": true
+  },
+  "after_fix_known": {
+    "status": "completed_checked_snapshot",
+    "real_native_freeze_exercised": true,
+    "no_financial_price_calls": true
+  },
+  "after_fix_joint": {
+    "status": "completed_checked_snapshot",
+    "real_native_freeze_exercised": true,
+    "no_financial_price_calls": true
+  }
+}

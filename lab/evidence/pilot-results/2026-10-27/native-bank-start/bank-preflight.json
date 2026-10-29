@@ -1,0 +1,34 @@
+{
+  "audit_sha256": "080e0bf89ebf8b1b12c710012c0262ecc04fb57f75589bc00a0a557afe4b94b4",
+  "candidate_seeds": 704000,
+  "candidate_states": 768000,
+  "collection_id": "817de3664968de0c605ae4c73e2c99c26465344294af2fc5412f39fffa4baa50",
+  "collection_sha256": "802a200f73bacddaa744abcfdcf2497b2d45a609c9039ed816baf1e3e9a5b12c",
+  "config_sha256": "4890a6f86bba12ec4955ebc0253d037113ba38c04fa780e6dd10e8c4c52be830",
+  "driver_sha256": {
+    "cluster/calibration_collection_array.sbatch": "1517cfa2b7ab4a9fdc02310d82d595d2be2c9745eb8dac64003b332c04e8e309",
+    "configs/calibration_rough_joint_development_20k.json": "4890a6f86bba12ec4955ebc0253d037113ba38c04fa780e6dd10e8c4c52be830",
+    "scripts/calibration_bank_collection.py": "23627b8f1e708e9f042c88292a04d15130e5b858c06f202a987168b940c3c429",
+    "src/sbi4finance/calibration/bank_collection.py": "b18bfa6d8322753bdbd36754a3f08c82800b826952453d5ce95adb5751757ed5"
+  },
+  "format": "rough_bank_deployment_preflight_v1",
+  "initial_shard_indices": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "job_map_sha256": "a815c58087279fa7c2b5603d6bc3fee11ed92ec7965c0ac29c2827a665bbae0c",
+  "no_financial_prices_generated": true,
+  "planned_shards": 1280,
+  "rng_seed_digest": "9b354113795044ecdf90854fec6b3bd13d5f6abae373bb7723378cdcfb6eca61",
+  "rng_state_digest": "67d26ee5c8f18a9f2b3633cd98af0568bd793fbe92b4c4219f50d8e0f0a538dd",
+  "seconds": 75.55641964636743,
+  "source_commit": "c773ceb26e7273612b15c69fd63715d131778083",
+  "status": "completed_metadata_only",
+  "versions": {
+    "numpy": "2.5.3",
+    "python": "3.12.16",
+    "scipy": "1.18.1"
+  }
+}

@@ -1,0 +1,26 @@
+INFO:jax._src.xla_bridge:Unable to initialize backend 'tpu': INTERNAL: Failed to open libtpu.so: libtpu.so: cannot open shared object file: No such file or directory
+INFO:bayesflow:Using backend 'jax'
+INFO:bayesflow:Estimator restored from '/oscar/scratch/afengler/sbi4finance-backbone-fit-20261027/runs/heston-50k-native/checkpoint/model.keras'.
+/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/lib/python3.12/site-packages/keras/src/backend/jax/core.py:401: UserWarning: Explicitly requested dtype float64 requested in asarray is not available, and will be truncated to dtype float32. To enable more dtypes, set the jax_enable_x64 configuration option or the JAX_ENABLE_X64 shell environment variable. See https://github.com/jax-ml/jax#current-gotchas for more.
+  return jnp.asarray(x, dtype=dtype)
+INFO:bayesflow:Sampling completed in 56.40 seconds.
+INFO:bayesflow:Sampling completed in 41.63 seconds.
+INFO:bayesflow:Sampling completed in 39.26 seconds.
+INFO:bayesflow:Sampling completed in 43.37 seconds.
+INFO:bayesflow:Sampling completed in 41.46 seconds.
+INFO:bayesflow:Sampling completed in 42.36 seconds.
+INFO:bayesflow:Sampling completed in 44.26 seconds.
+INFO:bayesflow:Sampling completed in 42.12 seconds.
+INFO:bayesflow:Sampling completed in 44.61 seconds.
+INFO:bayesflow:Sampling completed in 38.22 seconds.
+INFO:bayesflow:Sampling completed in 39.71 seconds.
+INFO:bayesflow:Sampling completed in 41.99 seconds.
+INFO:bayesflow:Sampling completed in 41.32 seconds.
+INFO:bayesflow:Sampling completed in 41.01 seconds.
+INFO:bayesflow:Sampling completed in 41.09 seconds.
+INFO:bayesflow:Sampling completed in 44.53 seconds.
+INFO:bayesflow:Sampling completed in 41.39 seconds.
+INFO:bayesflow:Sampling completed in 42.30 seconds.
+INFO:bayesflow:Sampling completed in 41.55 seconds.
+INFO:bayesflow:Sampling completed in 44.51 seconds.
+{"surfaces": 2000, "evaluated_split": "validation", "seconds": 854.4368707370013}

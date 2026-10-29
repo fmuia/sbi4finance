@@ -1,0 +1,72 @@
+{
+  "checked_utc": "2026-10-28T17:01:47.188145+00:00",
+  "execution": {
+    "state": "submitted",
+    "plan_sha256": "52141b4b18d49b25880ef180bb1d3af39d8cd2384f441eace4703506bccea750",
+    "argv": [
+      "sbatch",
+      "--parsable",
+      "--nodes=1",
+      "--ntasks=1",
+      "--no-requeue",
+      "--account=carney-mjfrank-condo2",
+      "--partition=batch",
+      "--cpus-per-task=4",
+      "--mem=16G",
+      "--time=01:00:00",
+      "--exclude=node2338,node2339,node2336,node2344,node2346",
+      "--job-name=sbi4f-known50k-pymc",
+      "--chdir=/oscar/scratch/afengler/sbi4finance-training-recovery-v2-20261028/repo",
+      "--output=/oscar/scratch/afengler/sbi4finance-scientific-validation-20261028/known50k-references/logs/reference-%A.out",
+      "--wrap=env PYTHONPATH=/oscar/scratch/afengler/sbi4finance-training-recovery-v2-20261028/repo/src KERAS_BACKEND=jax JAX_PLATFORMS=cpu OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 MPLCONFIGDIR=/oscar/scratch/afengler/sbi4finance-scientific-validation-20261028/known50k-references/cache/mpl XDG_CACHE_HOME=/oscar/scratch/afengler/sbi4finance-scientific-validation-20261028/known50k-references/cache PYTENSOR_FLAGS=compiledir=/oscar/scratch/afengler/sbi4finance-scientific-validation-20261028/known50k-references/cache/pytensor /oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python /oscar/scratch/afengler/sbi4finance-scientific-validation-20261028/known50k-reference-source/run_known50k_references_20261028.py worker"
+    ],
+    "attempted_utc": "2026-10-28T17:00:39.081270+00:00",
+    "automatic_retry": false,
+    "stdout": "8059665\n",
+    "stderr": "",
+    "returncode": 0,
+    "job_id": "8059665"
+  },
+  "run.json": {
+    "state": "running",
+    "cases": [
+      {
+        "surface_id": "validation:0",
+        "state": "sampling"
+      }
+    ]
+  },
+  "case-0/reference.json": {
+    "settings": {
+      "chains": 4,
+      "checkpoint_every": 100,
+      "cores": 4,
+      "draws": 8000,
+      "fit_budget": 2000,
+      "fit_starts": 4,
+      "initialization": "data-fit",
+      "mp_context": "spawn",
+      "seed": 271400,
+      "tune": 4000
+    },
+    "surface_id": "validation:0"
+  },
+  "case-0/partial/progress.json": {
+    "counts_including_warmup": [
+      12000,
+      12000,
+      12000,
+      12000
+    ],
+    "posterior_draw_counts": [
+      8000,
+      8000,
+      8000,
+      8000
+    ],
+    "seconds": 53.5245914645493
+  },
+  "accounting_raw": "8059665|RUNNING|0:0|67|4|billing=4,cpu=4,mem=16G,node=1|node1943\n8059665.batch|RUNNING|0:0|67|4|cpu=4,mem=16G,node=1|node1943\n8059665.extern|RUNNING|0:0|67|4|billing=4,cpu=4,mem=16G,node=1|node1943\n",
+  "queue_raw": "8059665|RUNNING|sbi4f-known50k-pymc|node1943|1:07|node1943\n",
+  "log_tail": "## SLURM PROLOG ###############################################################\n##    Job ID : 8059665\n##  Job Name : sbi4f-known50k-pymc\n##  Nodelist : node1943\n##      CPUs : 1\n##  Mem/Node : 16384 MB\n## Directory : /oscar/home/afengler\n##   Job Started : Wed Oct 28 01:00:40 PM EDT 2026\n###############################################################################\n"
+}

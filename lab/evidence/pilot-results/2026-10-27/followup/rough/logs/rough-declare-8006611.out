@@ -1,0 +1,10 @@
+## SLURM PROLOG ###############################################################
+##    Job ID : 8006611
+##  Job Name : sbi4f-followup-rough-declare
+##  Nodelist : node1828
+##      CPUs : 1
+##  Mem/Node : 2048 MB
+## Directory : /oscar/home/afengler
+##   Job Started : Tue Oct 27 06:28:50 AM EDT 2026
+###############################################################################
+{"calls": 52, "seed_audit": {"passed": true, "new_pricing_streams": 156, "previous_initialized_pcg64_states": 724, "new_reduced_uint64": 208, "historical_reduced_uint64": 768, "scope": "All possible block/rung streams and parameter RNG states of reviewed root271100."}, "declaration_sha256": "131d2b5733016e55382ac81206d1e7a95a41307c6fec4c04507edae8992fe9a2"}

@@ -43,7 +43,8 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from sbi4finance.calibration import bank, correction, pricing, tasks, validation  # noqa: E402
+from sbi4finance.calibration import bank_collection as bank  # noqa: E402
+from sbi4finance.calibration import correction, pricing, tasks, validation  # noqa: E402
 from evaluate_calibration import load_network, posterior_draws  # noqa: E402
 from heston_check import jsonable  # noqa: E402
 from thin_coverage import end_with_newline, read_jsonl  # noqa: E402
@@ -161,7 +162,7 @@ def main():
     parser.add_argument("--workers", type=int, default=4)
     parser.add_argument("--seed", type=int, default=0)
     args = parser.parse_args()
-    manifest, splits = bank.load_bank(args.bank, splits=("test",))
+    manifest, splits = bank.load_bank(args.bank, splits=("test",), roles=(*bank.TRAINING_ROLES, "pricing_covariance"))
     task, workflow, _ = load_network(args.checkpoint)
     if task["model"] != "rough":
         raise ValueError("the Monte Carlo audit is for rough Bergomi; Heston's exact audit is study S3")

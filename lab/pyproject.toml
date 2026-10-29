@@ -57,5 +57,39 @@ platforms = ["linux-64"]
 [tool.pixi.feature.cuda.pypi-dependencies]
 jax-cuda12-plugin = { version = "==0.11.1", extras = ["with-cuda"] }
 
+
+# Current numerical backbone; archived legacy studies retain the default BF2.0 environment.
+[tool.pixi.feature.core.dependencies]
+python = "3.12.*"
+marimo = "==0.25.1"
+
+[tool.pixi.feature.core.pypi-dependencies]
+sbi4finance = { path = ".", editable = true }
+bayesflow = "==2.1.0"
+keras = "==3.15.1"
+jax = "==0.11.1"
+numba = "==0.68.0"
+scipy = "==1.18.1"
+numpy = "==2.5.3"
+
+[tool.pixi.feature.core.activation.env]
+KERAS_BACKEND = "jax"
+
+[tool.pixi.feature.core.tasks]
+core-check = "python scripts/check_full_surface_environment.py"
+test = "python -m unittest discover -s tests -v"
+copy-to-tutorial = "python studies/copy_to_tutorial.py"
+manifest = "python studies/manifest.py"
+claims = "python studies/claims.py"
+release-check = "python studies/manifest.py --check && python studies/claims.py --check && python studies/copy_to_tutorial.py --check"
+course-check = "python ../course/scripts/check_v2_plan.py"
+
+# Reference MCMC is optional and isolated from participant/training installs.
+[tool.pixi.feature.reference.pypi-dependencies]
+pymc = "==6.3.2"
+
 [tool.pixi.environments]
 gpu = ["cuda"]
+core = { features = ["core"], no-default-feature = true }
+core-gpu = { features = ["core", "cuda"], no-default-feature = true }
+core-reference = { features = ["core", "reference"], no-default-feature = true }

@@ -1,0 +1,9 @@
+{
+  "test": "tests/test_full_surface_seed_order.py",
+  "before_fix": "failed: cold and preimported BayesFlow produced different initial tensor hashes",
+  "after_fix": "passed: all41 initial tensor hashes identical",
+  "before_seconds": 11.233,
+  "after_seconds": 4.186,
+  "additional_test": "ActualKnownCurveTests.test_tiny_training_run_reload_and_native_sampling_with_three_targets passed",
+  "scope": "Build-only seeding regression plus tiny synthetic software fit; no production retraining."
+}

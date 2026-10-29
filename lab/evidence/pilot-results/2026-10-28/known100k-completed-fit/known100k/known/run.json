@@ -1,0 +1,32 @@
+{
+  "format": "full_surface_post_bank_run_v1",
+  "status": "completed",
+  "route": "known",
+  "plan_sha256": "9786e0aa5dff94db2f614e7bdd24cdfaa8893c2d23f5bd884c62ec3eb02ef279",
+  "bank": {
+    "final_sha256": "7927e2db8d03b9f3e2e5917e005b1cf6e27e47986564ce4c4e8ee8a34c1de33b",
+    "manifest_sha256": "f1bfa42f7bf2acba3daaffb263b5bdeb60b5b12ebdfc267c5c5cd6eb7e08c313",
+    "task_fingerprint": "c99b0dd131896d89d8483a1668a3fde0fb7a0f28794c3db7fe14635cbbd52b65"
+  },
+  "stages": [
+    {
+      "name": "posterior",
+      "seconds": 579.7973112559412
+    },
+    {
+      "name": "pricer",
+      "seconds": 73.89692831004504
+    },
+    {
+      "name": "validation",
+      "seconds": 819.4988106259843
+    }
+  ],
+  "scientific_acceptance": false,
+  "reserved_test_evaluated": false,
+  "active_stage": "validation",
+  "seconds": 1473.6925049510319,
+  "posterior_sha256": "39f1a81986a38994dc6eacc520ad95254b34346abc02e758c08779c7c5916fc4",
+  "pricer_sha256": "9f0f695b0c369f6eaedb0c5559a46c254459047bd806fc14982377416a61a546",
+  "frozen_inputs_verified": true
+}

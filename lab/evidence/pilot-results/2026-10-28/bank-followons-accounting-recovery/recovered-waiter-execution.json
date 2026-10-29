@@ -1,0 +1,41 @@
+{
+  "format": "bank_extension_waiter_v1",
+  "state": "armed",
+  "pid": 2533826,
+  "started_utc": "2026-10-28T09:53:11.858483+00:00",
+  "frozen_sha256": {
+    "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/accounting-recovery-20261028/waiter/plan.json": "d03d23e99b343128aa58d8315ca442ea21e139d9592565ab704087311047f125",
+    "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/accounting-recovery-20261028/arm_bank_extensions.py": "4f71ffa51461d55aa864294697f43119494f095bc64748897ba87add58ead734",
+    "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/accounting-recovery-20261028/run_bank_campaign.py": "b39970fdd827c9367bcbd021160d9fe89c3818dcaaf82580c1bd19dc7216bf8f",
+    "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/configs/known_100k_20261028.json": "11d2588b7df29945d8c0c2819371b9e37453bab2c5b90040eb94896dc503c0a9",
+    "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/configs/joint_100k_20261028.json": "a0af8e1633ffabbe759d1e1aaadb5a92125f322e8e219f6e3517cc66b7dd0de8"
+  },
+  "routes": {
+    "known": {
+      "state": "launched",
+      "progress": "generation_active",
+      "attempt": {
+        "utc": "2026-10-28T09:53:12.167812+00:00",
+        "command": [
+          "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python",
+          "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/accounting-recovery-20261028/run_bank_campaign.py",
+          "--config",
+          "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/configs/known_100k_20261028.json",
+          "--detach"
+        ]
+      },
+      "campaign_pid": 2533833,
+      "launch_receipt": "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/known-100k/launch.json",
+      "launch_receipt_sha256": "0b451a65093700e939f313cfb27ac4c4902cf0502fa01e4d2b7ccb885116ee39",
+      "launched_utc": "2026-10-28T09:53:12.267914+00:00",
+      "campaign_completed_workers": 25,
+      "campaign_planned_workers": 2000
+    },
+    "joint": {
+      "state": "waiting",
+      "progress": "waiting_for_known_resource_dependency:launched"
+    }
+  },
+  "scientific_acceptance": false,
+  "last_poll_utc": "2026-10-28T09:59:12.358229+00:00"
+}

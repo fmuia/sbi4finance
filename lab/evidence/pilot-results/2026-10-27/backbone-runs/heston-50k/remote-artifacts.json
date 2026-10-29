@@ -1,0 +1,101 @@
+{
+  "small_files": {
+    "run.json": {
+      "path": "/oscar/scratch/afengler/sbi4finance-backbone-fit-20261027/runs/heston-50k-native/run.json",
+      "bytes": 28594,
+      "sha256": "0ee2b2dcab0377c597eb2b9bef78e1c29596a2c8a6c9cc11fe4b299bde124209"
+    },
+    "environment.log": {
+      "path": "/oscar/scratch/afengler/sbi4finance-backbone-fit-20261027/runs/heston-50k-native/environment.log",
+      "bytes": 770,
+      "sha256": "89446a25c57f2fb014b37c4cce54b4df976d818a6e849d32d1f278706e7e693a"
+    },
+    "training.log": {
+      "path": "/oscar/scratch/afengler/sbi4finance-backbone-fit-20261027/runs/heston-50k-native/training.log",
+      "bytes": 2611,
+      "sha256": "98002591e8c670c6c05153dfbaa328c68da97d7224e48c737ddd2efe434eafbb"
+    },
+    "comparison-0.log": {
+      "path": "/oscar/scratch/afengler/sbi4finance-backbone-fit-20261027/runs/heston-50k-native/comparison-0.log",
+      "bytes": 1011,
+      "sha256": "4944a85035ba42c4c07e1bc3a52e35f892b6ca1c8869fee755f3c518cc2a2a31"
+    },
+    "comparison-1.log": {
+      "path": "/oscar/scratch/afengler/sbi4finance-backbone-fit-20261027/runs/heston-50k-native/comparison-1.log",
+      "bytes": 1011,
+      "sha256": "39e4990f56de06e78ff49b8e6a7c7cffd017a8435ba89a74829ea8b8c4ffe121"
+    },
+    "comparison-2.log": {
+      "path": "/oscar/scratch/afengler/sbi4finance-backbone-fit-20261027/runs/heston-50k-native/comparison-2.log",
+      "bytes": 1011,
+      "sha256": "f19cae9d205d39af8434cb25452705c223153907bb782de6f3d65670cfb20a04"
+    },
+    "validation.log": {
+      "path": "/oscar/scratch/afengler/sbi4finance-backbone-fit-20261027/runs/heston-50k-native/validation.log",
+      "bytes": 1963,
+      "sha256": "3f9b456939e83204aa5ebabea678832d944fb5f960eb4319871660b593a2af85"
+    },
+    "checkpoint/task.json": {
+      "path": "/oscar/scratch/afengler/sbi4finance-backbone-fit-20261027/runs/heston-50k-native/checkpoint/task.json",
+      "bytes": 10197,
+      "sha256": "5e499526ff8f29a72f49785a1a36006b1d769d26bca8a6f83f7a8c8ac4d431fa"
+    },
+    "checkpoint/training.json": {
+      "path": "/oscar/scratch/afengler/sbi4finance-backbone-fit-20261027/runs/heston-50k-native/checkpoint/training.json",
+      "bytes": 32403,
+      "sha256": "99dc8c747a895cef9618024d379715670fcaae77d9c10ccc04b22fc021a45534"
+    },
+    "checkpoint/resume.json": {
+      "path": "/oscar/scratch/afengler/sbi4finance-backbone-fit-20261027/runs/heston-50k-native/checkpoint/resume.json",
+      "bytes": 25661,
+      "sha256": "3de5fe9a256ee639333e9701e192b4d380e5dc676b2e8e824168bd9ab8f0ba81"
+    },
+    "validation/evaluation.json": {
+      "path": "/oscar/scratch/afengler/sbi4finance-backbone-fit-20261027/runs/heston-50k-native/validation/evaluation.json",
+      "bytes": 48309,
+      "sha256": "2c474faa49148f3e72b99a65e690017f84957a5a3ff0866d068ac10d49e224c7"
+    },
+    "comparisons/case-0/comparison.json": {
+      "path": "/oscar/scratch/afengler/sbi4finance-backbone-fit-20261027/runs/heston-50k-native/comparisons/case-0/comparison.json",
+      "bytes": 23578,
+      "sha256": "2f3be691df50b8c5417c1793655a6ff3c9aaec2dac96a2fa76e80fc1218b030e"
+    },
+    "comparisons/case-1/comparison.json": {
+      "path": "/oscar/scratch/afengler/sbi4finance-backbone-fit-20261027/runs/heston-50k-native/comparisons/case-1/comparison.json",
+      "bytes": 23622,
+      "sha256": "9ca37e383df9240467b51626538e26821fd2198e0ec98b3d91cfa2e5fb342978"
+    },
+    "comparisons/case-2/comparison.json": {
+      "path": "/oscar/scratch/afengler/sbi4finance-backbone-fit-20261027/runs/heston-50k-native/comparisons/case-2/comparison.json",
+      "bytes": 23578,
+      "sha256": "e289efe21b6c2e9c8fc20bfedbc954d3bba5cf4928f647995ba4471647f5810a"
+    }
+  },
+  "large_artifacts_left_on_Oscar": {
+    "checkpoint/model.keras": {
+      "path": "/oscar/scratch/afengler/sbi4finance-backbone-fit-20261027/runs/heston-50k-native/checkpoint/model.keras",
+      "bytes": 12246484,
+      "sha256": "94b85c0966cc5c8e1ec933f4f9524c0c99120619ecf68f6bc186ee8c03a77de7"
+    },
+    "validation/draws.npz": {
+      "path": "/oscar/scratch/afengler/sbi4finance-backbone-fit-20261027/runs/heston-50k-native/validation/draws.npz",
+      "bytes": 30836425,
+      "sha256": "891d2d93910960ca51b2c77f53b3b5b2a369aa92e1876933c06e91740ad00f56"
+    },
+    "comparisons/case-0/neural_draws.npz": {
+      "path": "/oscar/scratch/afengler/sbi4finance-backbone-fit-20261027/runs/heston-50k-native/comparisons/case-0/neural_draws.npz",
+      "bytes": 149750,
+      "sha256": "19a3f020292519b8dd0cf197620edbd698e5b334cdff56be87c754b4195d1a18"
+    },
+    "comparisons/case-1/neural_draws.npz": {
+      "path": "/oscar/scratch/afengler/sbi4finance-backbone-fit-20261027/runs/heston-50k-native/comparisons/case-1/neural_draws.npz",
+      "bytes": 151997,
+      "sha256": "b00613dcf52f72fdbade7eaac65f8163b3dba8a4296093838e184680bbbe6ac0"
+    },
+    "comparisons/case-2/neural_draws.npz": {
+      "path": "/oscar/scratch/afengler/sbi4finance-backbone-fit-20261027/runs/heston-50k-native/comparisons/case-2/neural_draws.npz",
+      "bytes": 146228,
+      "sha256": "e4695eb2fcb11ffddd338590b52a8da01dced6cbd73b9e883db30ee6d5700307"
+    }
+  }
+}

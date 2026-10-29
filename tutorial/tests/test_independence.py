@@ -45,7 +45,8 @@ class IndependenceTests(unittest.TestCase):
     def test_every_asset_matches_the_manifest(self):
         rows = re.findall(r"^\| `([^`]+)` \| ([\d,]+) \| `([0-9a-f]{64})` \|", (TUTORIAL / "MANIFEST.md").read_text(), re.M)
         listed = {name: (int(size.replace(",", "")), digest) for name, size, digest in rows}
-        present = {str(p.relative_to(ASSETS)) for p in ASSETS.rglob("*") if p.is_file()}
+        present = {str(p.relative_to(ASSETS)) for p in ASSETS.rglob("*") if p.is_file()
+                   and not p.is_relative_to(ASSETS / "local-checkpoints")}
         self.assertEqual(present, set(listed), "tutorial/assets/ and MANIFEST.md list different files")
         for name, (size, digest) in listed.items():
             with self.subTest(asset=name):

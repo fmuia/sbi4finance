@@ -1,0 +1,14 @@
+{
+  "accepted": "2026-10-29T22:07:49+00:00",
+  "source": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/tutorial-backbones-20261029/curation-candidates/rough-joint100k-validation0",
+  "source_sha256": {
+    "bundle.json": "440839e3ec33f060cc573625938bb8bd1cac8d5eae38eb5b5356fe65a476bb76",
+    "evaluation.json": "395eab6088e5d3799d9b8d65904ac25daa536991ef43c23f84f161b7e82a8ac9",
+    "posterior.npz": "5911693b25b82848e237d624096f62c0a6560c380f7067451bcbbd829f0d9ec8",
+    "task.json": "29eca4e1b970c4f13b99573939aa3449c5280a3a4478f7d24beace6539a9889d",
+    "training.json": "ef41e5f9fc24fd897f3bdf1162bed15765387ca1c49107d24f9593cf6b951c37"
+  },
+  "changes": [],
+  "scientific_acceptance": false,
+  "scope": "verified development replay copied byte-for-byte; no scientific promotion"
+}

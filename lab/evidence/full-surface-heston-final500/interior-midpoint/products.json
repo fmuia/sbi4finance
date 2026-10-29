@@ -1,0 +1,35 @@
+{
+  "scientific_acceptance": false,
+  "scope": "descriptive analytic products for this interior development case; no inherited boundary-case product gate or new quantile acceptance rule",
+  "units": "annualized variance",
+  "products": {
+    "neural_variance_swap_1y": {
+      "mean": 0.08454224364227649,
+      "q10_q90": [
+        0.0835143995356278,
+        0.08558033822888958
+      ]
+    },
+    "neural_forward_variance_0_5_to_1y": {
+      "mean": 0.08412961842324605,
+      "q10_q90": [
+        0.08265171861353979,
+        0.08562261775922106
+      ]
+    },
+    "reference_variance_swap_1y": {
+      "mean": 0.08455889025551408,
+      "q10_q90": [
+        0.08353590565255951,
+        0.08557465857839608
+      ]
+    },
+    "reference_forward_variance_0_5_to_1y": {
+      "mean": 0.08415551572389805,
+      "q10_q90": [
+        0.08270490070664517,
+        0.08560370609447335
+      ]
+    }
+  }
+}

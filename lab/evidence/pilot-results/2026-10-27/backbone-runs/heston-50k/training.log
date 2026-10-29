@@ -1,0 +1,39 @@
+INFO:bayesflow:Using backend 'jax'
+INFO:bayesflow:Fitting on dataset instance of OfflineDataset.
+INFO:bayesflow:Building on a test batch.
+INFO:bayesflow:Training completed in 1.24 minutes.
+epoch 50/500: best validation loss 0.2574
+INFO:bayesflow:Fitting on dataset instance of OfflineDataset.
+INFO:bayesflow:Training completed in 25.11 seconds.
+epoch 100/500: best validation loss 0.2342
+INFO:bayesflow:Fitting on dataset instance of OfflineDataset.
+INFO:bayesflow:Training completed in 25.28 seconds.
+epoch 150/500: best validation loss 0.2254
+INFO:bayesflow:Fitting on dataset instance of OfflineDataset.
+INFO:bayesflow:Training completed in 25.30 seconds.
+epoch 200/500: best validation loss 0.2192
+INFO:bayesflow:Fitting on dataset instance of OfflineDataset.
+INFO:bayesflow:Training completed in 25.35 seconds.
+epoch 250/500: best validation loss 0.2148
+INFO:bayesflow:Fitting on dataset instance of OfflineDataset.
+INFO:bayesflow:Training completed in 25.30 seconds.
+epoch 300/500: best validation loss 0.2052
+INFO:bayesflow:Fitting on dataset instance of OfflineDataset.
+INFO:bayesflow:Training completed in 24.68 seconds.
+epoch 350/500: best validation loss 0.2052
+INFO:bayesflow:Fitting on dataset instance of OfflineDataset.
+INFO:bayesflow:Training completed in 24.94 seconds.
+epoch 400/500: best validation loss 0.2004
+INFO:bayesflow:Fitting on dataset instance of OfflineDataset.
+INFO:bayesflow:Training completed in 24.53 seconds.
+epoch 450/500: best validation loss 0.1966
+INFO:bayesflow:Fitting on dataset instance of OfflineDataset.
+INFO:bayesflow:Training completed in 24.17 seconds.
+epoch 500/500: best validation loss 0.1966
+INFO:bayesflow:Estimator restored from '/oscar/scratch/afengler/sbi4finance-backbone-fit-20261027/runs/heston-50k-native/checkpoint/model.keras'.
+INFO:bayesflow:Estimator restored from '/oscar/scratch/afengler/sbi4finance-backbone-fit-20261027/runs/heston-50k-native/checkpoint/model.keras'.
+/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/lib/python3.12/site-packages/keras/src/backend/jax/core.py:401: UserWarning: Explicitly requested dtype float64 requested in asarray is not available, and will be truncated to dtype float32. To enable more dtypes, set the jax_enable_x64 configuration option or the JAX_ENABLE_X64 shell environment variable. See https://github.com/jax-ml/jax#current-gotchas for more.
+  return jnp.asarray(x, dtype=dtype)
+INFO:bayesflow:Sampling completed in 11.56 seconds.
+INFO:bayesflow:Sampling completed in 2.25 seconds.
+{"selected_epoch": 445, "reload_exact": true, "scientific_validation": false}

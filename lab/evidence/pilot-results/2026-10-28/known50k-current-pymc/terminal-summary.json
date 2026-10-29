@@ -1,0 +1,106 @@
+{
+  "checked_utc": "2026-10-28T17:06:05.947263+00:00",
+  "job_id": "8059665",
+  "state": "COMPLETED",
+  "exit_code": "0:0",
+  "allocated_cpu_seconds": 756,
+  "prior_allocated_cpu_seconds": 788,
+  "cumulative_actual_cpu_seconds": 1544,
+  "scientific_acceptance": false,
+  "reserved_test_evaluated": false,
+  "cases": [
+    {
+      "surface_id": "validation:0",
+      "mcmc_diagnostics_passed": true,
+      "parameter_comparison_passed": true,
+      "parameters": {
+        "hurst": {
+          "standardized_mean_error": 0.05491372748993004,
+          "width_ratio_90": 0.967029587457348,
+          "mean_error_within_0_3_reference_sd": true,
+          "relative_width_error_within_25_percent": true
+        },
+        "eta": {
+          "standardized_mean_error": 0.05597601136349946,
+          "width_ratio_90": 1.0860187280767875,
+          "mean_error_within_0_3_reference_sd": true,
+          "relative_width_error_within_25_percent": true
+        },
+        "rho": {
+          "standardized_mean_error": 0.1730709357048496,
+          "width_ratio_90": 1.1185448426276303,
+          "mean_error_within_0_3_reference_sd": true,
+          "relative_width_error_within_25_percent": true
+        }
+      },
+      "rho_eta": {
+        "standardized_mean_error": 0.20039432690695688,
+        "width_ratio_90": 1.0359640840875353,
+        "reference_mcse_mean_over_sd": 0.01776225348316809
+      },
+      "chain_sha256": "55820e90bc5716c64556994a87eaeb8c6ab2e5b401c1b1447c0881d7a9795240"
+    },
+    {
+      "surface_id": "validation:1",
+      "mcmc_diagnostics_passed": true,
+      "parameter_comparison_passed": true,
+      "parameters": {
+        "hurst": {
+          "standardized_mean_error": 0.14885465423362898,
+          "width_ratio_90": 1.1577922062761594,
+          "mean_error_within_0_3_reference_sd": true,
+          "relative_width_error_within_25_percent": true
+        },
+        "eta": {
+          "standardized_mean_error": 0.2228127947151505,
+          "width_ratio_90": 1.15683529331746,
+          "mean_error_within_0_3_reference_sd": true,
+          "relative_width_error_within_25_percent": true
+        },
+        "rho": {
+          "standardized_mean_error": 0.1546453348574785,
+          "width_ratio_90": 1.0675875229027652,
+          "mean_error_within_0_3_reference_sd": true,
+          "relative_width_error_within_25_percent": true
+        }
+      },
+      "rho_eta": {
+        "standardized_mean_error": 0.008713308316802037,
+        "width_ratio_90": 1.0648132338186647,
+        "reference_mcse_mean_over_sd": 0.018588547589502936
+      },
+      "chain_sha256": "25c290063943e74e099c6d13cb55ab748b9ca705e280b40f3630eb98682ab684"
+    },
+    {
+      "surface_id": "validation:2",
+      "mcmc_diagnostics_passed": true,
+      "parameter_comparison_passed": false,
+      "parameters": {
+        "hurst": {
+          "standardized_mean_error": 0.8215967435687946,
+          "width_ratio_90": 1.8139020439097273,
+          "mean_error_within_0_3_reference_sd": false,
+          "relative_width_error_within_25_percent": false
+        },
+        "eta": {
+          "standardized_mean_error": 0.788983189365401,
+          "width_ratio_90": 1.31788241399529,
+          "mean_error_within_0_3_reference_sd": false,
+          "relative_width_error_within_25_percent": false
+        },
+        "rho": {
+          "standardized_mean_error": 0.2899201785246477,
+          "width_ratio_90": 1.4226063146044758,
+          "mean_error_within_0_3_reference_sd": true,
+          "relative_width_error_within_25_percent": false
+        }
+      },
+      "rho_eta": {
+        "standardized_mean_error": 0.10302596499209767,
+        "width_ratio_90": 1.4512137902639022,
+        "reference_mcse_mean_over_sd": 0.018474523828622098
+      },
+      "chain_sha256": "188a91f6efc436acf66f55d523df80e48878f1302f1e556d207eaabf559628fb"
+    }
+  ]
+}

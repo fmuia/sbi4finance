@@ -1,0 +1,37 @@
+{
+  "checked_utc": "2026-10-29T00:43:37.479197+00:00",
+  "host": "login010",
+  "waiting_process_launch": {
+    "state": "waiting_process_launched",
+    "pid": 188514,
+    "utc": "2026-10-29T00:42:11.119972+00:00",
+    "plan_sha256": "084d2b6711fee1bea28c1364940400aed2d5be55718c671b6ec2253be8ea9734",
+    "helper_sha256": "525ad97a6a2db32e3f24f9f2e0cc53a9510a2e209c322251ecf17973108311ce",
+    "operator_sha256": "f723a0099ac06dc49d771ded7a0bf9b1f91d736fcd8cb0eff61ef118b7692284",
+    "wall_seconds": 7200,
+    "outside_slurm": true
+  },
+  "handoff_state": {
+    "state": "waiting_for_native_bank",
+    "pid": 188514,
+    "started_utc": "2026-10-29T00:42:11.199875+00:00",
+    "plan_sha256": "084d2b6711fee1bea28c1364940400aed2d5be55718c671b6ec2253be8ea9734",
+    "scientific_acceptance": false,
+    "automatic_retry": false,
+    "last_poll_utc": "2026-10-29T00:43:11.436192+00:00",
+    "progress": "native_generation_or_final_check_running"
+  },
+  "pid_alive": true,
+  "native_state": "generation_active",
+  "native_last_poll_utc": "2026-10-29T00:43:35.313375+00:00",
+  "native_completed_workers": 7195,
+  "published_split_rows": {
+    "train": 99560,
+    "validation": 5000,
+    "test": 7000
+  },
+  "training_root_exists": false,
+  "original_c96_operator_sha256": "1ada0012f6deab62269d16bb8479b4a63e28d326bd215575096ad24dab5150dc",
+  "ppid": 1,
+  "command": "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/bin/python3.12 /oscar/scratch/afengler/sbi4finance-joint100k-handoff-source-20261029/start_joint100k_20261029.py --plan /oscar/scratch/afengler/sbi4finance-independent-work-20261029/joint100k-handoff/plan.json --run "
+}

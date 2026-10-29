@@ -1,0 +1,56 @@
+{
+  "format": "full_surface_post_bank_execution_v1",
+  "state": "waiting_or_running",
+  "plan_sha256": "15e5d86393388c76fdf5df0cc262dbb4f8e4db8f10302ff96d7b4e1f91751761",
+  "routes": {
+    "known": {
+      "state": "completed",
+      "attempted_utc": "2026-10-28T09:58:23.476019+00:00",
+      "bank": {
+        "final_sha256": "5d4ee6853e40b8e758b6908b75e8584c591b6659e51ab9de9b895384856b2909",
+        "manifest_sha256": "412f3cf437895b4764fa981bedbc1f8ad0f532d6f5b18e1b1fb957297cb627c4",
+        "task_fingerprint": "c99b0dd131896d89d8483a1668a3fde0fb7a0f28794c3db7fe14635cbbd52b65"
+      },
+      "argv": [
+        "sbatch",
+        "--parsable",
+        "--nodes=1",
+        "--ntasks=1",
+        "--no-requeue",
+        "--account=default",
+        "--partition=gpu-debug",
+        "--qos=gpu-debug",
+        "--cpus-per-task=4",
+        "--gres=gpu:l40s:1",
+        "--mem=32G",
+        "--time=01:00:00",
+        "--job-name=sbi4f-known-baseline",
+        "--chdir=/oscar/scratch/afengler/sbi4finance-training-recovery-v2-20261028/repo",
+        "--output=/oscar/scratch/afengler/sbi4finance-post-bank-baselines-recovery-v2-20261028/logs/known-%A.out",
+        "--wrap=env PYTHONPATH=/oscar/scratch/afengler/sbi4finance-training-recovery-v2-20261028/repo/src KERAS_BACKEND=jax JAX_PLATFORMS=cuda,cpu OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 XLA_PYTHON_CLIENT_PREALLOCATE=false MPLCONFIGDIR=/oscar/scratch/afengler/sbi4finance-post-bank-baselines-recovery-v2-20261028/known/cache/mpl XDG_CACHE_HOME=/oscar/scratch/afengler/sbi4finance-post-bank-baselines-recovery-v2-20261028/known/cache /oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/bin/python3.12 /oscar/scratch/afengler/sbi4finance-training-recovery-v2-20261028/repo/cluster/submit_full_surface_backbones_20261028.py worker --root /oscar/scratch/afengler/sbi4finance-post-bank-baselines-recovery-v2-20261028 --route known"
+      ],
+      "stdout": "8046588\n",
+      "stderr": "",
+      "returncode": 0,
+      "job_id": "8046588",
+      "last_accounting_utc": "2026-10-28T10:19:24.358031+00:00",
+      "scheduler_state": "COMPLETED",
+      "accounting": [
+        "8046588",
+        "COMPLETED",
+        "0:0",
+        "1209",
+        "4",
+        "billing=112,cpu=4,gres/gpu=1,mem=32G,node=1"
+      ],
+      "allocated_cpu_seconds": 4836,
+      "allocated_gpu_seconds": 1209
+    },
+    "joint": {
+      "state": "waiting"
+    }
+  },
+  "scientific_acceptance": false,
+  "reserved_test_evaluated": false,
+  "updated_utc": "2026-10-28T10:21:24.400389+00:00"
+}

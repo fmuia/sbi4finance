@@ -1,0 +1,117 @@
+{
+  "checked_utc": "2026-10-28T18:08:48.425527+00:00",
+  "state": "completed_continuation",
+  "training_completed": 6,
+  "evaluations_completed_original": 4,
+  "evaluations_completed_continuation": 2,
+  "evaluations_completed_total": 6,
+  "original_partial_screen_failure_preserved": true,
+  "same_original_validation_settings": true,
+  "results": [
+    {
+      "name": "flow_matching-deepset",
+      "targets": [
+        "initial_variance",
+        "theta",
+        "vol_of_vol",
+        "rho"
+      ],
+      "rank_ks": [
+        0.05173842694520925,
+        0.0807644405457163,
+        0.05142763736761746,
+        0.06257252696894325
+      ],
+      "rank_passed": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "rank_bound": 0.11264073214465789,
+      "coverage90": [
+        0.925,
+        0.855,
+        0.9,
+        0.885
+      ],
+      "coverage90_wilson": [
+        [
+          0.8799563897637055,
+          0.954025082815618
+        ],
+        [
+          0.7995133246921847,
+          0.8971064935799559
+        ],
+        [
+          0.8505941875672826,
+          0.9343295513309041
+        ],
+        [
+          0.8333528310151243,
+          0.9221362676743804
+        ]
+      ],
+      "evaluation_seconds": 44.38557044789195,
+      "checkpoint_sha256": "0d8dc6269442689b4e687e1593b9f9497363bc3d79efa63b9940a53363e889c1"
+    },
+    {
+      "name": "flow_matching-set_transformer",
+      "targets": [
+        "initial_variance",
+        "theta",
+        "vol_of_vol",
+        "rho"
+      ],
+      "rank_ks": [
+        0.04702468541106741,
+        0.08001170588884754,
+        0.059107557233438746,
+        0.06752471956432392
+      ],
+      "rank_passed": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "rank_bound": 0.11264073214465789,
+      "coverage90": [
+        0.915,
+        0.85,
+        0.905,
+        0.87
+      ],
+      "coverage90_wilson": [
+        [
+          0.8681041292843443,
+          0.9462542498225244
+        ],
+        [
+          0.7939442071583334,
+          0.89286406437758
+        ],
+        [
+          0.8563983883518006,
+          0.9383368972826135
+        ],
+        [
+          0.8163364812775159,
+          0.9097179772033067
+        ]
+      ],
+      "evaluation_seconds": 45.54758409410715,
+      "checkpoint_sha256": "044ec379bb3dd52ede4ad7899ac41eac6a7c7e8cc34540642b91be67f98cd125"
+    }
+  ],
+  "allocated_cpu_seconds_this_job": 556,
+  "allocated_gpu_seconds_this_job": 139,
+  "cumulative_pilot_cpu_seconds": 5480,
+  "cumulative_pilot_gpu_seconds": 1370,
+  "original_pilot_cpu_seconds_ceiling": 15360,
+  "original_pilot_gpu_seconds_ceiling": 3840,
+  "scientific_acceptance": false,
+  "reserved_test_evaluated": false,
+  "scope": "Same preliminary 200-case development screen; no architecture winner or promotion."
+}

@@ -1,0 +1,21 @@
+{
+  "state": "completed_continuation",
+  "started_utc": "2026-10-28T18:05:38.612163+00:00",
+  "plan_sha256": "1268b637861a90f9dc4c2bc350907d5666c8fd959d1c9b7ad41a41cbd32a4917",
+  "variants": [
+    {
+      "name": "flow_matching-deepset",
+      "state": "completed",
+      "seconds": 72.01814409904182
+    },
+    {
+      "name": "flow_matching-set_transformer",
+      "state": "completed",
+      "seconds": 66.06064784899354
+    }
+  ],
+  "scientific_acceptance": false,
+  "reserved_test_evaluated": false,
+  "completed_utc": "2026-10-28T18:07:56.744651+00:00",
+  "seconds": 138.13251187466085
+}

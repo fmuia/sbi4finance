@@ -150,7 +150,11 @@ class TaskAndBankTests(unittest.TestCase):
     def test_power_law_walk_curve_prior(self):
         """The full bank's prior: positive levels inside vol_bounds, reproducible, and the pilot left unchanged."""
         pilot = json_config("calibration_rough_pilot.json")["task"]
-        self.assertEqual(tasks.rough_task(), pilot)  # the default builder still gives the pilot's task
+        default, expected = tasks.rough_task(), copy.deepcopy(pilot)
+        default_sigma = default["context"].pop("quote_noise_std")
+        expected_sigma = expected["context"].pop("quote_noise_std")
+        self.assertEqual(default, expected)  # all non-noise task fields remain exact
+        assert_allclose(default_sigma, expected_sigma, rtol=1e-15, atol=0)
         full = json_config("calibration_rough_bank.json")["task"]
         prior = full["context_prior"]["forward_variance"]
         self.assertEqual(prior["kind"], "power_law_walk")

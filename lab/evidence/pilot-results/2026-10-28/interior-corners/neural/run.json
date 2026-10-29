@@ -1,0 +1,12 @@
+{
+  "candidate_sha256": "8d4a243ba099524cf4cda40e4f0616e895879f053829a7f60dadbe65b98301db",
+  "seed": 28002803,
+  "draws": 10000,
+  "sampler": {
+    "method": "tsit5",
+    "steps": "adaptive"
+  },
+  "role": "development readout",
+  "source_checkpoint_training": "7f037dee0fde78cd5a33f1107e13031ff01fdcb5481dab76fc6c8f7d07598f39",
+  "scientific_acceptance": false
+}

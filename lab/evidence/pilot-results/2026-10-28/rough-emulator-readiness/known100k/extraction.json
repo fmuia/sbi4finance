@@ -1,0 +1,18 @@
+{
+  "checked_utc": "2026-10-28T17:19:40.500042+00:00",
+  "status": "completed_pricer_stable_across_read",
+  "source": "/oscar/scratch/afengler/sbi4finance-independent-work-20261028/known100k/known",
+  "route_status": "completed",
+  "active_stage": "validation",
+  "training_surfaces": 100000,
+  "pricer_sha256": "9f0f695b0c369f6eaedb0c5559a46c254459047bd806fc14982377416a61a546",
+  "task_fingerprint": "c99b0dd131896d89d8483a1668a3fde0fb7a0f28794c3db7fe14635cbbd52b65",
+  "bank_manifest_sha256": "f1bfa42f7bf2acba3daaffb263b5bdeb60b5b12ebdfc267c5c5cd6eb7e08c313",
+  "input_sha256": {
+    "/oscar/scratch/afengler/sbi4finance-independent-work-20261028/known100k/known/pricer/checkpoint/pricer.npz": "9f0f695b0c369f6eaedb0c5559a46c254459047bd806fc14982377416a61a546",
+    "/oscar/scratch/afengler/sbi4finance-independent-work-20261028/known100k/known/pricer/checkpoint/pricer.json": "fa85ba6cdf3437c50ff77dabc1f5c31a9ec455b84dc3ac6ba8340fe3171d01ef",
+    "/oscar/scratch/afengler/sbi4finance-independent-work-20261028/known100k/known/pricer/checkpoint/task.json": "c99b0dd131896d89d8483a1668a3fde0fb7a0f28794c3db7fe14635cbbd52b65",
+    "/oscar/scratch/afengler/sbi4finance-independent-work-20261028/known100k/known/pricer/run.json": "ff5ae52ec4ecb040503263eecab2a01ff3f43689efabf6555a9dc2536aade25d"
+  },
+  "reserved_test_evaluated": false
+}

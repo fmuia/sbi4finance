@@ -1,0 +1,10 @@
+## SLURM PROLOG ###############################################################
+##    Job ID : 8006597
+##  Job Name : sbi4f-followup-heston-flow-matching-500
+##  Nodelist : gpu3004
+##      CPUs : 1
+##  Mem/Node : 24576 MB
+## Directory : /oscar/home/afengler
+##   Job Started : Tue Oct 27 06:34:45 AM EDT 2026
+###############################################################################
+{"status": "completed_development_checks", "scientific_acceptance": false}

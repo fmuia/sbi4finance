@@ -1,0 +1,43 @@
+{
+  "format": "heston_candidate_acceptance_execution_v1",
+  "state": "submitted",
+  "prepared_utc": "2026-10-27T23:45:58.212511+00:00",
+  "root": "/oscar/scratch/afengler/sbi4finance-heston-acceptance-20261028",
+  "argv": [
+    "sbatch",
+    "--parsable",
+    "--nodes=1",
+    "--ntasks=1",
+    "--no-requeue",
+    "--account=default",
+    "--partition=gpu-debug",
+    "--qos=gpu-debug",
+    "--cpus-per-task=4",
+    "--gres=gpu:l40s:1",
+    "--mem=24G",
+    "--time=00:25:00",
+    "--chdir=/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo",
+    "--job-name=sbi4f-heston-acceptance",
+    "--output=/oscar/scratch/afengler/sbi4finance-heston-acceptance-20261028/logs/slurm-%A.out",
+    "--wrap=env PYTHONPATH=/oscar/scratch/afengler/sbi4finance-rough-known-reference-20261027/repo/src KERAS_BACKEND=jax JAX_PLATFORMS=cuda,cpu OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 XLA_PYTHON_CLIENT_PREALLOCATE=false MPLCONFIGDIR=/oscar/scratch/afengler/sbi4finance-heston-acceptance-20261028/cache/mpl XDG_CACHE_HOME=/oscar/scratch/afengler/sbi4finance-heston-acceptance-20261028/cache /oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo/.pixi/envs/core-gpu/bin/python /oscar/scratch/afengler/sbi4finance-heston-acceptance-20261028/check_heston_candidate_20261028.py --manifest /oscar/scratch/afengler/sbi4finance-heston-acceptance-20261028/manifest.json"
+  ],
+  "manifest_sha256": "6db210193e45b7d6af634ed77a5de17e5fbf7102c22298d18c13a3e1a141f525",
+  "driver_sha256": "6ec86957cc033f9c473e940fc25ed22440ec2dff79dd8e1693085ff275d47400",
+  "authorization": "User requests continuing Heston acceptance and rough pricing tracks; one frozen candidate only.",
+  "resources": {
+    "cpus": 4,
+    "gpus": 1,
+    "wall_seconds": 1500,
+    "cleanup_seconds": 240,
+    "full_exposure_cpu_seconds": 6960,
+    "full_exposure_gpu_seconds": 1740,
+    "separate_cpu_hour_ceiling": 2,
+    "separate_gpu_hour_ceiling": 0.5
+  },
+  "automatic_retry": false,
+  "scientific_acceptance": false,
+  "stdout": "8032275\n",
+  "stderr": "",
+  "returncode": 0,
+  "job_id": "8032275"
+}

@@ -1,0 +1,18 @@
+{
+  "format": "archived_heston_paired_validation_v1",
+  "status": "failed",
+  "scientific_acceptance": false,
+  "no_pricing_training_mcmc_or_test": true,
+  "required_surfaces": 2000,
+  "draws_per_surface": 1000,
+  "batch_size": 100,
+  "seed_root": 271410,
+  "internal_wall_seconds": 480,
+  "hard_process_cpu_seconds": 2300,
+  "completed_surfaces": 0,
+  "error_type": "RuntimeError",
+  "error": "jax.debug.callback failed to find a local CPU device to place the inputs on. Make sure \"cpu\" is listed in --jax_platforms or the JAX_PLATFORMS environment variable.",
+  "full_panel_completed": false,
+  "process_cpu_seconds": 3.388353,
+  "wall_seconds": 11.067767042666674
+}

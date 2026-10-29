@@ -1,0 +1,104 @@
+{
+  "accounting_fields": [
+    "JobID",
+    "JobIDRaw",
+    "State",
+    "ExitCode",
+    "ElapsedRaw",
+    "AllocCPUS",
+    "TotalCPU",
+    "UserCPU",
+    "SystemCPU",
+    "NodeList",
+    "TimelimitRaw",
+    "ReqMem"
+  ],
+  "archived_observations": {
+    "file": "launch-observations.jsonl.gz",
+    "stored_sha256": "74e597c6d82f2cd76b366175877ab68480ae5dc2776161f4c43a87942ee4c870",
+    "uncompressed_sha256": "fe67f39f6c3b52ae1115e614b10e532b83ae99119c2449b7bcb22ef737b62c34"
+  },
+  "array_job_id": 8010762,
+  "array_task_throttle": 200,
+  "cadence_note": "Four timestamped launch observations. The initial metadata audit caused a longer first gap; the last three observations were approximately50seconds apart. Monitoring stopped after the requested launch check.",
+  "collection_sha256": "802a200f73bacddaa744abcfdcf2497b2d45a609c9039ed816baf1e3e9a5b12c",
+  "cpus_per_worker": 1,
+  "driver_runtime_unchanged": true,
+  "format": "rough_development_bank_wave_launch_v1",
+  "job_map_sha256": "a815c58087279fa7c2b5603d6bc3fee11ed92ec7965c0ac29c2827a665bbae0c",
+  "limit_minutes_per_worker": 180,
+  "memory_gib_per_worker": 8,
+  "new_jobs_submitted_by_this_audit": 0,
+  "new_training_surfaces_if_completed": 5000,
+  "nonterminal_cleanup_reserve_minutes_per_worker": 4,
+  "observation_window_seconds": 244.319829,
+  "observations": [
+    {
+      "durable_failure_artifacts": 0,
+      "global_user_queue_rows": 200,
+      "log_files": 200,
+      "states": {
+        "RUNNING": 200
+      },
+      "utc": "2026-10-27T15:37:58.603186+00:00"
+    },
+    {
+      "durable_failure_artifacts": 0,
+      "global_user_queue_rows": 200,
+      "log_files": 200,
+      "states": {
+        "RUNNING": 200
+      },
+      "utc": "2026-10-27T15:40:23.373534+00:00"
+    },
+    {
+      "durable_failure_artifacts": 0,
+      "global_user_queue_rows": 200,
+      "log_files": 200,
+      "states": {
+        "RUNNING": 200
+      },
+      "utc": "2026-10-27T15:41:13.108184+00:00"
+    },
+    {
+      "durable_failure_artifacts": 0,
+      "global_user_queue_rows": 200,
+      "log_files": 200,
+      "states": {
+        "RUNNING": 200
+      },
+      "utc": "2026-10-27T15:42:02.923015+00:00"
+    }
+  ],
+  "original_map_indices_inclusive": [
+    4,
+    203
+  ],
+  "pricing_payloads_retrieved": 0,
+  "queue_fields": [
+    "job_id_raw",
+    "account",
+    "job_name",
+    "state",
+    "cpus",
+    "time_limit",
+    "memory",
+    "nodes",
+    "reason"
+  ],
+  "raw_wave_full_time_caps_cpu_hours": 600,
+  "requeue": false,
+  "root_seed": 271200,
+  "scientific_scope": "Launch identity/resource/failure inspection only; no claim these5000surfaces are finished or numerically accepted. Root owns continued monitoring and budget-gated submissions.",
+  "source_revision": "c773ceb26e7273612b15c69fd63715d131778083",
+  "status": "launch_checked_not_completed",
+  "task_fingerprint": "29eca4e1b970c4f13b99573939aa3449c5280a3a4478f7d24beace6539a9889d",
+  "test_payloads_opened": 0,
+  "training_range_half_open": [
+    100,
+    5100
+  ],
+  "wave_full_caps_plus_cleanup_cpu_hours": 613.3333333333334,
+  "whole_bank_allocated_cpu_hour_ceiling": 1500,
+  "workers": 200
+}

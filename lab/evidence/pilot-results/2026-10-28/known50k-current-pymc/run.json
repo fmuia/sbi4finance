@@ -1,0 +1,28 @@
+{
+  "state": "completed",
+  "job_id": "8059665",
+  "plan_sha256": "52141b4b18d49b25880ef180bb1d3af39d8cd2384f441eace4703506bccea750",
+  "cases": [
+    {
+      "surface_id": "validation:0",
+      "state": "completed",
+      "comparison_status": "completed_approximate_emulator_comparison",
+      "proposed_parameter_agreement": true
+    },
+    {
+      "surface_id": "validation:1",
+      "state": "completed",
+      "comparison_status": "completed_approximate_emulator_comparison",
+      "proposed_parameter_agreement": true
+    },
+    {
+      "surface_id": "validation:2",
+      "state": "completed",
+      "comparison_status": "completed_approximate_emulator_comparison",
+      "proposed_parameter_agreement": false
+    }
+  ],
+  "scientific_acceptance": false,
+  "reserved_test_evaluated": false,
+  "seconds": 186.1048624906689
+}

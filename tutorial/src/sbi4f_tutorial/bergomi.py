@@ -70,11 +70,29 @@ def _q_inputs(spot, rate, dividend):
     return s, r, q
 
 
-def _asset_paths(variance, dt, normals, rho, spot, rate, dividend):
+def _asset_paths(variance, dt, normals, rho, spot, rate, dividend, *, conditional_only=False):
     """Adapted left-point log Euler; same W drives leverage and variance."""
     left = variance[:, :-1]
     integrated = np.cumsum(left * dt, axis=1)
     driver_integral = np.cumsum(np.sqrt(left * dt) * normals[..., 0], axis=1)
+    if conditional_only:
+        if not all(np.isfinite(a).all() for a in (variance, integrated, driver_integral)):
+            raise ValueError("nonfinite trajectory; numerical support exceeded, do not redraw silently")
+        # Conditional European pricing integrates W-perp out. Avoid materializing
+        # asset returns/log spots when a conservative scalar bound certifies that
+        # the omitted calculations would remain finite. The integrated variance
+        # bounds every nonnegative left*dt term. A generous floating-point margin
+        # covers rounding in the bound and cumulative sums. Extreme/uncertain
+        # inputs fall through to the original calculations and failure checks.
+        with np.errstate(over="ignore", invalid="ignore"):
+            normal_bound = max(np.max(normals), -np.min(normals))
+            driver_bound = (abs(rho) + np.sqrt(1 - rho * rho)) * normal_bound
+            drift_bound = abs(rate) + abs(dividend) + 0.5 * np.max(variance)
+            return_bound = drift_bound * np.max(dt) + np.sqrt(np.max(integrated)) * driver_bound
+            path_bound = abs(np.log(spot)) + normals.shape[1] * return_bound
+        bounds = (driver_bound, drift_bound, return_bound, path_bound)
+        if np.isfinite(bounds).all() and max(bounds) < np.finfo(float).max / 8:
+            return {"integrated_variance": integrated, "volatility_driver_integral": driver_integral}
     returns = ((rate - dividend - 0.5 * left) * dt
                + np.sqrt(left * dt) * (rho * normals[..., 0]
                                       + np.sqrt(1 - rho * rho) * normals[..., 2]))
@@ -82,6 +100,8 @@ def _asset_paths(variance, dt, normals, rho, spot, rate, dividend):
                                np.log(spot) + np.cumsum(returns, axis=1)))
     if not all(np.isfinite(a).all() for a in (variance, returns, integrated, driver_integral, log_spot)):
         raise ValueError("nonfinite trajectory; numerical support exceeded, do not redraw silently")
+    if conditional_only:
+        return {"integrated_variance": integrated, "volatility_driver_integral": driver_integral}
     return {"log_returns": returns[..., None], "log_spot": log_spot,
             "variance": variance, "integrated_variance": integrated,
             "volatility_driver_integral": driver_integral}

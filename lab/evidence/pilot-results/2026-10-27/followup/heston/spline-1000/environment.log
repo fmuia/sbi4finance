@@ -1,0 +1,20 @@
+INFO:jax._src.xla_bridge:Unable to initialize backend 'tpu': INTERNAL: Failed to open libtpu.so: libtpu.so: cannot open shared object file: No such file or directory
+INFO:bayesflow:Using backend 'jax'
+{
+  "python": "3.12.16",
+  "versions": {
+    "bayesflow": "2.1.0",
+    "keras": "3.15.1",
+    "jax": "0.11.1",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1"
+  },
+  "keras_backend": "jax",
+  "devices": [
+    {
+      "platform": "gpu",
+      "kind": "NVIDIA L40S"
+    }
+  ],
+  "scope": "runtime/API availability only; no numerical or posterior validation"
+}

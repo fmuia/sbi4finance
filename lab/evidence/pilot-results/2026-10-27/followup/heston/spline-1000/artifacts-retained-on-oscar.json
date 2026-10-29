@@ -1,0 +1,216 @@
+{
+  "remote_root": "/oscar/scratch/afengler/sbi4finance-followup-20261027-f4d3679/runs/heston-spline-1000",
+  "retained_on_oscar": [
+    {
+      "path": "checkpoint/.resume/epoch-000050-88akr3tx/best.keras",
+      "size_bytes": 5937922,
+      "sha256": "a440d7575948507730b4db3d33ac47795c911a7e09ceae39e71247b49965a14e"
+    },
+    {
+      "path": "checkpoint/.resume/epoch-000050-88akr3tx/last.keras",
+      "size_bytes": 5937922,
+      "sha256": "102aab679cf27b76d00b07181abd58d510cecd8663e5adc500a11f383ac02186"
+    },
+    {
+      "path": "checkpoint/.resume/epoch-000100-pjc5_enm/best.keras",
+      "size_bytes": 5937922,
+      "sha256": "434b384e59f147ef8e7e3f43a35abfe753bbbb741be1d67f583a5d985797a0ab"
+    },
+    {
+      "path": "checkpoint/.resume/epoch-000100-pjc5_enm/last.keras",
+      "size_bytes": 5937922,
+      "sha256": "03768a41cd5e5f15822d7b4579d726c08d8c0f84feadc2afd18cd33f8a9388ab"
+    },
+    {
+      "path": "checkpoint/.resume/epoch-000150-7rzw2n6n/best.keras",
+      "size_bytes": 5937922,
+      "sha256": "461fe40d6308bfd01c5a638bfcfbc4408067559b0c499f8a6bfd6eb263042853"
+    },
+    {
+      "path": "checkpoint/.resume/epoch-000150-7rzw2n6n/last.keras",
+      "size_bytes": 5937922,
+      "sha256": "13d46b7f8caa3fdcb1b712ee32b1d836acd0b838c8674f2f908c22b4d81ccd8c"
+    },
+    {
+      "path": "checkpoint/.resume/epoch-000200-8kjsigga/best.keras",
+      "size_bytes": 5937922,
+      "sha256": "dc30874aad1c1c4a331287a53798a59e9765981856695e3517d50f7a72e28e52"
+    },
+    {
+      "path": "checkpoint/.resume/epoch-000200-8kjsigga/last.keras",
+      "size_bytes": 5937922,
+      "sha256": "6995a8ca795a1c7422d1653d8e91156469be8229fc631c4c128dce972cd83519"
+    },
+    {
+      "path": "checkpoint/.resume/epoch-000250-6vvn5_gk/best.keras",
+      "size_bytes": 5937922,
+      "sha256": "aa25056281895e6af4817c193eda682ef801e7330c34b33cc9c5097c3326afb2"
+    },
+    {
+      "path": "checkpoint/.resume/epoch-000250-6vvn5_gk/last.keras",
+      "size_bytes": 5937922,
+      "sha256": "efdacd4ff0bdb0ca6591c0a6ba110fa84b86f8cb5e30665f3bdc91c2748a8f55"
+    },
+    {
+      "path": "checkpoint/.resume/epoch-000300-kt4xzly0/best.keras",
+      "size_bytes": 5937922,
+      "sha256": "ad9693529bde5e219ce81cf1ebd1223df1bcec3761cf2a62a03f757864f740d0"
+    },
+    {
+      "path": "checkpoint/.resume/epoch-000300-kt4xzly0/last.keras",
+      "size_bytes": 5937922,
+      "sha256": "8073c8d8b771a0547efe227c07a1bff5697124f1ec0ba4fe534c1009a44f30b5"
+    },
+    {
+      "path": "checkpoint/.resume/epoch-000350-733vy1u5/best.keras",
+      "size_bytes": 5937922,
+      "sha256": "0e4f2e3799efb93b49e1444606b03d4004515bd86b9facac1e90074095d1b2a3"
+    },
+    {
+      "path": "checkpoint/.resume/epoch-000350-733vy1u5/last.keras",
+      "size_bytes": 5937922,
+      "sha256": "3c8078686d4dca989bd021a4c5bea259165bcfe3b43be4ccddea2df4ef7d51ae"
+    },
+    {
+      "path": "checkpoint/.resume/epoch-000400-sv9xiefh/best.keras",
+      "size_bytes": 5937922,
+      "sha256": "1ce4355de50df7f59cf9adedd0661c763af02d7b7953fa66945a47b27d2f289d"
+    },
+    {
+      "path": "checkpoint/.resume/epoch-000400-sv9xiefh/last.keras",
+      "size_bytes": 5937922,
+      "sha256": "87458bb2c0bf93bb5640ef51430e152dfa28d5c4dcefde9be53d67dea3df204d"
+    },
+    {
+      "path": "checkpoint/.resume/epoch-000450-jvhfzdqv/best.keras",
+      "size_bytes": 5937922,
+      "sha256": "ab2cf619919d848349765160ae5107c7d56a5a12a9cf1d766edde97a408cc068"
+    },
+    {
+      "path": "checkpoint/.resume/epoch-000450-jvhfzdqv/last.keras",
+      "size_bytes": 5937922,
+      "sha256": "f1e752b11784409c27427012232e7ade42b8358d0b07a8c27689880f9ebbf57e"
+    },
+    {
+      "path": "checkpoint/.resume/epoch-000500-azc551rh/best.keras",
+      "size_bytes": 5937922,
+      "sha256": "c7eaa10a509c3df93c139b1d38b1283068af6edd3adb65055231fe3be9f9ede1"
+    },
+    {
+      "path": "checkpoint/.resume/epoch-000500-azc551rh/last.keras",
+      "size_bytes": 5937922,
+      "sha256": "17b1382ac808ed3d9849bf8d19608cfc55885938d50e8451476a1355454ff0af"
+    },
+    {
+      "path": "checkpoint/.resume/epoch-000550-4np1wf4o/best.keras",
+      "size_bytes": 5937922,
+      "sha256": "c7eaa10a509c3df93c139b1d38b1283068af6edd3adb65055231fe3be9f9ede1"
+    },
+    {
+      "path": "checkpoint/.resume/epoch-000550-4np1wf4o/last.keras",
+      "size_bytes": 5937922,
+      "sha256": "ad4aed8c3ce92fce3dc49efde6c3014298727065e245d6082df748b1c1a9f79b"
+    },
+    {
+      "path": "checkpoint/.resume/epoch-000600-fk2r6yya/best.keras",
+      "size_bytes": 5937922,
+      "sha256": "c7eaa10a509c3df93c139b1d38b1283068af6edd3adb65055231fe3be9f9ede1"
+    },
+    {
+      "path": "checkpoint/.resume/epoch-000600-fk2r6yya/last.keras",
+      "size_bytes": 5937922,
+      "sha256": "b3687c0987861290127753a3154a3ea0616f6b17fb97f2fbbd11de258dc5a60e"
+    },
+    {
+      "path": "checkpoint/.resume/epoch-000650-s70ifcxq/best.keras",
+      "size_bytes": 5937922,
+      "sha256": "c7eaa10a509c3df93c139b1d38b1283068af6edd3adb65055231fe3be9f9ede1"
+    },
+    {
+      "path": "checkpoint/.resume/epoch-000650-s70ifcxq/last.keras",
+      "size_bytes": 5937922,
+      "sha256": "9cc3ba9a1fb7131d48313c7a69961e2fe137533a4d7140dfd7d452eb5063591f"
+    },
+    {
+      "path": "checkpoint/.resume/epoch-000700-9l5pb7p0/best.keras",
+      "size_bytes": 5937922,
+      "sha256": "c7eaa10a509c3df93c139b1d38b1283068af6edd3adb65055231fe3be9f9ede1"
+    },
+    {
+      "path": "checkpoint/.resume/epoch-000700-9l5pb7p0/last.keras",
+      "size_bytes": 5937922,
+      "sha256": "aa78db17c054c1214381bd248efb3ac22b0c145414e3a8fb8cdebc677cf5b1f9"
+    },
+    {
+      "path": "checkpoint/.resume/epoch-000750-_wh3e64t/best.keras",
+      "size_bytes": 5937922,
+      "sha256": "c7eaa10a509c3df93c139b1d38b1283068af6edd3adb65055231fe3be9f9ede1"
+    },
+    {
+      "path": "checkpoint/.resume/epoch-000750-_wh3e64t/last.keras",
+      "size_bytes": 5937922,
+      "sha256": "70d01125f8cde38fd804a90e308805dc6c0a8b3e54bc96912d5479b5d573b92d"
+    },
+    {
+      "path": "checkpoint/.resume/epoch-000800-06qfoac_/best.keras",
+      "size_bytes": 5937922,
+      "sha256": "c7eaa10a509c3df93c139b1d38b1283068af6edd3adb65055231fe3be9f9ede1"
+    },
+    {
+      "path": "checkpoint/.resume/epoch-000800-06qfoac_/last.keras",
+      "size_bytes": 5937922,
+      "sha256": "d27e793670bfae3ecdb5820f088df90d454c2fe0d096b63ae8420ee402d4c32e"
+    },
+    {
+      "path": "checkpoint/.resume/epoch-000850-e0oh126o/best.keras",
+      "size_bytes": 5937922,
+      "sha256": "c7eaa10a509c3df93c139b1d38b1283068af6edd3adb65055231fe3be9f9ede1"
+    },
+    {
+      "path": "checkpoint/.resume/epoch-000850-e0oh126o/last.keras",
+      "size_bytes": 5937922,
+      "sha256": "45da8a73259347fbb0a5ff2d7c7d8dfbfc67f577130ca49fac0a9ea62a2b70a5"
+    },
+    {
+      "path": "checkpoint/.resume/epoch-000900-9u1ux1cy/best.keras",
+      "size_bytes": 5937922,
+      "sha256": "c7eaa10a509c3df93c139b1d38b1283068af6edd3adb65055231fe3be9f9ede1"
+    },
+    {
+      "path": "checkpoint/.resume/epoch-000900-9u1ux1cy/last.keras",
+      "size_bytes": 5937922,
+      "sha256": "bd38a21819a624dfd520a9090f63ae347a13a88a8b7cb47ce11b9e69fc103ba3"
+    },
+    {
+      "path": "checkpoint/.resume/epoch-000950-1mf9f63b/best.keras",
+      "size_bytes": 5937922,
+      "sha256": "c7eaa10a509c3df93c139b1d38b1283068af6edd3adb65055231fe3be9f9ede1"
+    },
+    {
+      "path": "checkpoint/.resume/epoch-000950-1mf9f63b/last.keras",
+      "size_bytes": 5937922,
+      "sha256": "c0988046a3628d47d763466c8559f442355bb57f80820afcd5da6acf9f91b513"
+    },
+    {
+      "path": "checkpoint/.resume/epoch-001000-n43mef8w/best.keras",
+      "size_bytes": 5937922,
+      "sha256": "c7eaa10a509c3df93c139b1d38b1283068af6edd3adb65055231fe3be9f9ede1"
+    },
+    {
+      "path": "checkpoint/.resume/epoch-001000-n43mef8w/last.keras",
+      "size_bytes": 5937922,
+      "sha256": "6f77c7d4ccd1259ec693eda3cdf6c26ed1557083aece2b26403d0e691136240f"
+    },
+    {
+      "path": "checkpoint/model.keras",
+      "size_bytes": 5937922,
+      "sha256": "c7eaa10a509c3df93c139b1d38b1283068af6edd3adb65055231fe3be9f9ede1"
+    },
+    {
+      "path": "validation/draws.npz",
+      "size_bytes": 7766140,
+      "sha256": "6325fb1505bbb25218c84850e27e1f66d27cff880f77cf51028b3601f5355b3a"
+    }
+  ],
+  "scope": "Large model/epoch/500k-validation-draw artifacts retained on Oscar; no test artifacts opened"
+}

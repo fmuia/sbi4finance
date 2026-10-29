@@ -33,7 +33,7 @@ The existing bank contains the main ingredients:
 
 Our current [implementation](../lab/src/sbi4finance/calibration/pricer_net.py) is a fully connected network with four hidden layers of 256 GELU units by default. Heston has four parameter inputs. The liquid rough task has three model parameters plus seven curve levels. Both predict the 63 design prices. Parameters are transformed into unconstrained coordinates, curve levels are logged, and training statistics standardize the inputs and outputs.
 
-Prices are first divided by the design quote-noise standard deviations. This makes held-out errors interpretable relative to the likelihood's precision. The implementation also standardizes those outputs during fitting, so the recorded standardized training loss is not itself a pricing error in quote-noise units. The `errors()` function reverses the learned standardization and reports the relevant scaled pricing errors.
+Prices are first divided by the design quote-noise standard deviations. This makes held-out errors interpretable relative to the likelihood's precision. The current shared trainer also standardizes outputs internally, then restores their scales in the loss so training and epoch selection use **quote-noise MSE**. Its `errors()` function reports discrepancies in those same units. Historical S4 records labelled `best_val_mse_standardized` retain their original meaning and are not directly comparable to the new loss. The [instructor guide](../lab/plans/full-surface-calibration.md#forward-price-emulation-and-rough-pymc-inference) gives the reusable training and PyMC commands.
 
 The source and recorded [Heston pricer comparison](../tutorial/assets/results/calibration/heston/s4-exact/pricer-route.json) already exist. The new full rough-bank emulator and its validation are work to perform; their accuracy does not follow from the Heston result.
 
@@ -53,6 +53,8 @@ $$
 $$
 
 MCMC combines this likelihood with the chosen prior. It samples an approximation to the original model's posterior. A converged chain removes neither emulator error nor the underlying model's numerical error.
+
+There is another approximation when the bank's labels are Monte Carlo prices. Amortized training adds fresh quote noise to those estimates, retaining pricing randomness; the mean emulator's Gaussian likelihood includes only the declared quote noise. A perfect mean emulator therefore need not reproduce the finite-Monte-Carlo simulator posterior. Independent posterior-region checks must show that pricing randomness and covariance are negligible at the required accuracy, or the comparison must justify how they are treated. Validation residuals against the same numerical labels do not measure shared grid bias.
 
 This is a learned mean function with an explicit observation-noise model. It need not learn a general likelihood density. It also does not generate the price distributions of arbitrary downstream products: a network trained on 63 vanilla quotes needs additional labels and validation to emulate an exotic product.
 
@@ -93,7 +95,7 @@ The current EWG neural proposal reads a 27-point layout derived on the design gr
 
 ## Current code and the adaptation still needed
 
-The present [S4 runner](../lab/studies/pricer_route.py) uses a complete grid and, for liquid rough Bergomi, a supplied curve. Its `log_posterior()` wrapper has no general observed-indices argument and does not implement ten-dimensional curve inference. Missing-data-aware emulator MCMC is therefore an extension to build and test, rather than an existing capability of that wrapper.
+The historical [S4 runner](../lab/studies/pricer_route.py) uses a complete grid and, for liquid rough Bergomi, a supplied curve. Its `log_posterior()` wrapper has no general observed-indices argument and does not implement ten-dimensional curve inference. The new shared [PyMC reference command](../lab/scripts/calibration_reference.py) supports both three-target known-curve and six-target joint rough calibration through a fixed emulator. It also requires complete quotes. Missing-data-aware emulator MCMC remains a downstream extension to build and test.
 
 The implementation returns `price / design_sigma`, not unscaled forward-unit prices. For another layout, reconstruct prices using the design scale, select observed contracts, then use that layout's actual noise. Tests should also enforce:
 

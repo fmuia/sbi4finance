@@ -1,0 +1,2760 @@
+{
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000000000-0000000025": {
+    "split": "train",
+    "start": 0,
+    "stop": 25,
+    "manifest_sha256": "f65351f84b2709f49842b5a40ef6c1321366316a9a6622bb0b11de6ffc62acdc",
+    "array_sha256": "6489c43f0edc625343f2773ff35d2be6fe805a3f935f4694139aa2384a68f708"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000000025-0000000050": {
+    "split": "train",
+    "start": 25,
+    "stop": 50,
+    "manifest_sha256": "e726f713f897528d9c92045c5fd362121e4b8df571ce9f871b84798c5c591430",
+    "array_sha256": "6790d5d9492bf1f85ac841536b0f6ac390113cc7cb4169202b0a4f38135190d4"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000000050-0000000075": {
+    "split": "train",
+    "start": 50,
+    "stop": 75,
+    "manifest_sha256": "91a01b4ad8935d0df3a9abc5e533075cbff3aa0e573485a5edf7cd7eefebd62f",
+    "array_sha256": "94821d4f29555e7d17887cc720d478261ea2d7c18b0fd2a01726a5b0c7b5536c"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000000075-0000000100": {
+    "split": "train",
+    "start": 75,
+    "stop": 100,
+    "manifest_sha256": "dc77eae594bb333b02788df249a1c66c7b11937c022ad528eb1254463533b792",
+    "array_sha256": "fc710075ac01af84525d5550a33b1a7837a94df70090fe407e1add8fc2d92adc"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000000100-0000000125": {
+    "split": "train",
+    "start": 100,
+    "stop": 125,
+    "manifest_sha256": "7ddd9f821394092c229d557dc9ff233961d939617f76fdb5ee80870a977cb84b",
+    "array_sha256": "87f82c70651fcecfa0b32e24093924cdaa98c67fef5fc0851857821c8102eb2e"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000000125-0000000150": {
+    "split": "train",
+    "start": 125,
+    "stop": 150,
+    "manifest_sha256": "42aa8caf960b7a0fdc22214fe34ebe5b425f66a953617a6396b4c10ecbe2bb23",
+    "array_sha256": "7c707c2b62bc59790023b7030c35e56121438c0ef8fa6b52da731fc593f8a0fa"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000000150-0000000175": {
+    "split": "train",
+    "start": 150,
+    "stop": 175,
+    "manifest_sha256": "3f7c69d73cbd50a385a2ad9633d80824d83290db3a8b3a48e7378440e34fb28d",
+    "array_sha256": "0a0362a03ff50118e7a16cea0ac83e4d36a10b6b9866691504e38121b3d85bd9"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000000175-0000000200": {
+    "split": "train",
+    "start": 175,
+    "stop": 200,
+    "manifest_sha256": "b4a7b8952a93d875cd21ad50d76ecae3e8515997562f4ecff485ec3affea5648",
+    "array_sha256": "a1503cf887e522913a4d1eae490b2a8e29a1f6cf7cbfad0b51e49c9f362f50f8"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000000200-0000000225": {
+    "split": "train",
+    "start": 200,
+    "stop": 225,
+    "manifest_sha256": "260540c34af8866d682c2ac4f6af5a04f4694bf4fd3d2a5e17befd0566cc3b3a",
+    "array_sha256": "69bffc2fa54a0686fd72b56f3c0783df0ba3cd8643681710778e022f548abdd8"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000000225-0000000250": {
+    "split": "train",
+    "start": 225,
+    "stop": 250,
+    "manifest_sha256": "1c56cfb93d2a0aa8031a2cbb9b5046779cff59143db6f8ab24bdf264d2dac371",
+    "array_sha256": "a080110d7e2a8563139a1e1801f7223e3b77a534924b67923bc318e3d48a9aa6"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000000250-0000000275": {
+    "split": "train",
+    "start": 250,
+    "stop": 275,
+    "manifest_sha256": "c2baae97b5d8534e8ee5d79576889e3e1db814b1683d5f8e5f442e473a1d405e",
+    "array_sha256": "df9da93b9a9289ae2b16a0e797d630116bc84baae7e4f684fa9506c91f6c64b9"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000000275-0000000300": {
+    "split": "train",
+    "start": 275,
+    "stop": 300,
+    "manifest_sha256": "ee32c7fd3facce9a518014d312768b936f78d0d99b3bdf085d08eed772379d9c",
+    "array_sha256": "64b22461bb3a0628775b1d903cfadefe099abca8b1fc7bd59a268979355dad64"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000000300-0000000325": {
+    "split": "train",
+    "start": 300,
+    "stop": 325,
+    "manifest_sha256": "3d963fa2441fe995c653459a6bbfaadb8d9a56b5031a3f06d2c4fc6558f221be",
+    "array_sha256": "dbd330476e6a780327a961288febd69cd6ef7e5829e3b5d84dbe7040ffd1fc48"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000000325-0000000350": {
+    "split": "train",
+    "start": 325,
+    "stop": 350,
+    "manifest_sha256": "5b9096ac852997617ad63ef50777abb6427581ce1f2ab09485e8cbe919b9b5cf",
+    "array_sha256": "9f8c4c71dac176b5d33b59b1298ebb4462e7e272362af14be926f4966bb95186"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000000350-0000000375": {
+    "split": "train",
+    "start": 350,
+    "stop": 375,
+    "manifest_sha256": "a1aa0aef5b109894e4fc8704e0b3dca66a334b34a2b74b3514bccd34fbe8dd62",
+    "array_sha256": "0aaab3dabd6bb01a6d34775d7308cc82814770943469743a82a348684db18704"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000000375-0000000400": {
+    "split": "train",
+    "start": 375,
+    "stop": 400,
+    "manifest_sha256": "5cdd89682c6c7f9584830ff77cc7fcdcadbcbdf1ea829b9fa62b0889d07c4557",
+    "array_sha256": "0b1fefbf0eb0274e2bcdaeb949dea4bee6435b6c7cf0597bc8d954a94b690416"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000000400-0000000425": {
+    "split": "train",
+    "start": 400,
+    "stop": 425,
+    "manifest_sha256": "1f4dc44b67b6c041be02b9db30d0ced35303fcd5af0cd33db91cf31c6170635a",
+    "array_sha256": "3772e3bf273b9f94a8e38568a2d4615095956e29d8894f7f3a43b52a7b55ec9e"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000000425-0000000450": {
+    "split": "train",
+    "start": 425,
+    "stop": 450,
+    "manifest_sha256": "6109209d1128c86bb8ed6a6546cf649655f4ee11410cdac8e8063d3e514c4dbe",
+    "array_sha256": "50bbce2d2d54012ea0565f89a66b460872bda7a36206eba774e9eeacedfc282c"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000000450-0000000475": {
+    "split": "train",
+    "start": 450,
+    "stop": 475,
+    "manifest_sha256": "548ae56910a4e79a758d7f0c23149df1c904123ad16327021609380ec8f16532",
+    "array_sha256": "3ac0a2f04b2d61332305f18a49c792269ea274eb2fc215c95e7ad594b9662b4b"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000000475-0000000500": {
+    "split": "train",
+    "start": 475,
+    "stop": 500,
+    "manifest_sha256": "af8935dda6f9791a0cd0c1fc3d9a13150cbd10072e567969237262b089ff244e",
+    "array_sha256": "5eddc4c968d763985599395c9ce3cc84bfbfec6a1f877b3f15a19aaf1fb89d0b"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000000500-0000000525": {
+    "split": "train",
+    "start": 500,
+    "stop": 525,
+    "manifest_sha256": "b1b8daf2e0243b5fbd97e0d7d2ffde114869b1fef419602928096b5feeb8f718",
+    "array_sha256": "523a9d03a09cefac3c2838c218ff6ea6f78b29842241a5643c2ad7af06a76699"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000000525-0000000550": {
+    "split": "train",
+    "start": 525,
+    "stop": 550,
+    "manifest_sha256": "f54ac3b942465af0ce0c5078bc85dffceb7e4764d5a1ca4194ef225c830ebc62",
+    "array_sha256": "6ce18ee2a8ef6ba9c33b722d9eea6666853b4493209fade43c6b0d405a9ffb37"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000000550-0000000575": {
+    "split": "train",
+    "start": 550,
+    "stop": 575,
+    "manifest_sha256": "6daa0b393c7034d63277b9ae3429ca34bc259dff09e1bc2dfb7105369b68db4e",
+    "array_sha256": "31ef40134a136c6b64d3778eb0c9d37b00ea6242cdece35c31fb15f649fbe5c6"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000000575-0000000600": {
+    "split": "train",
+    "start": 575,
+    "stop": 600,
+    "manifest_sha256": "f6e514c5d8156283805e0f12be29b7a06d002ae8dab0d9e5221dd244298aae93",
+    "array_sha256": "4647c3c4103b5ea8744b0e7bc20a24e23b681a960f20f74610803572c44cac39"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000000600-0000000625": {
+    "split": "train",
+    "start": 600,
+    "stop": 625,
+    "manifest_sha256": "78753422c9066aa5e7dcdcce09ae6a5077df1bd4d498f4a9c01cc29910850128",
+    "array_sha256": "57222c25f5fecb6b4c3f46b7ff7a62c5c8d9c39c0fea1301d5f14fe083966132"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000000625-0000000650": {
+    "split": "train",
+    "start": 625,
+    "stop": 650,
+    "manifest_sha256": "37a8d86a880038432502902dbc5953ab7e400ae7d8c920a6f030e4404c2e8c4d",
+    "array_sha256": "6021976c88dbdcbceeb59aa4cf38b8e05d5aa064e37d802ec7bbd83bb7299349"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000000650-0000000675": {
+    "split": "train",
+    "start": 650,
+    "stop": 675,
+    "manifest_sha256": "ef433a7a0a125800bf097228f36201cdfb574fc6609282c03471992ba09d2581",
+    "array_sha256": "ad342de7fa1d2d20fc63ba0f5a41e6e286416c2ed48a14d28b093232a3721482"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000000675-0000000700": {
+    "split": "train",
+    "start": 675,
+    "stop": 700,
+    "manifest_sha256": "39c528f68a3e0492a0bc8c7e5ca9b53fd45663aaa2e6446a4dc8668309387de5",
+    "array_sha256": "540dc1bd120b2beeecfa98640692c05d83771f9141fed10f09841b87594972d2"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000000700-0000000725": {
+    "split": "train",
+    "start": 700,
+    "stop": 725,
+    "manifest_sha256": "33b343a00570902f3d1658960ae386db064e35c6841eda0bd59a9cb2e74e081c",
+    "array_sha256": "a5c1d7f5e1fbb5abeb59a851eb8ae2f22a9a3aeef22d441f121dd11dfbb887eb"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000000725-0000000750": {
+    "split": "train",
+    "start": 725,
+    "stop": 750,
+    "manifest_sha256": "40b8e38c85deddaa8a6e28bbfcb491953e573e0695d5101cc5d2e630c1873cd1",
+    "array_sha256": "b746ebdba948f96bf73697fb6a0f42debcb0f4341ed34a5382b0efb22d963abb"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000000750-0000000775": {
+    "split": "train",
+    "start": 750,
+    "stop": 775,
+    "manifest_sha256": "32f1c3d0329b3b248b42cfe3bb21c2e703a02fc2ffdc99468f6e7aabd4b13924",
+    "array_sha256": "98c965c353047a601e77509c6cc3be5f07ab492ed529d3bd0fd75ae1d2737bb8"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000000775-0000000800": {
+    "split": "train",
+    "start": 775,
+    "stop": 800,
+    "manifest_sha256": "c6e1c9cb003675d8a1ee0003e9573cd9d80d328e3e9f542f166d271745cddc0b",
+    "array_sha256": "71ffa4ca6d129700930e34e062cb32464495acd9305f5cc3d82512c88ea92831"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000000800-0000000825": {
+    "split": "train",
+    "start": 800,
+    "stop": 825,
+    "manifest_sha256": "c63f65245026c53653a488b2d04357d87df3986f2ebd24248b45c74d0e06ec95",
+    "array_sha256": "fc258531ebd11c19ebfe51102e54180fb451ecf55f59f28eb4cbf5cfc80f6c5f"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000000825-0000000850": {
+    "split": "train",
+    "start": 825,
+    "stop": 850,
+    "manifest_sha256": "6a0d249e51f6054345a042b312fc37a0321b6784ac27f5770c07378c3ac80b70",
+    "array_sha256": "a444d2bf1422fcc77b79b0b8bc8645580678fef57f7803a1a3607e355d4af26c"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000000850-0000000875": {
+    "split": "train",
+    "start": 850,
+    "stop": 875,
+    "manifest_sha256": "bc472e420569e2fcc792ebb36cbe2577608177668a505e34a9788d275909e1b6",
+    "array_sha256": "051ed305df66f4aa4c16889cd61727da0a3db29ecc37b101f5591454ce45424c"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000000875-0000000900": {
+    "split": "train",
+    "start": 875,
+    "stop": 900,
+    "manifest_sha256": "8d48d04d357cb6f894297ba1fd2062a1bb9d2f72f22c8de5719bca784b48f43e",
+    "array_sha256": "49b6065e649999401f48e46db70241d0ef81757aa0ad275e2abae759dff1e1be"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000000900-0000000925": {
+    "split": "train",
+    "start": 900,
+    "stop": 925,
+    "manifest_sha256": "8f614ea8aae147cb0367e5643e9054409ef0c45863d56f0e13221d1a70558913",
+    "array_sha256": "e9e7a142c31843de7642fc511158ebd04d1bd5f2bc64cfcc4f4a638b3de39ec2"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000000925-0000000950": {
+    "split": "train",
+    "start": 925,
+    "stop": 950,
+    "manifest_sha256": "8381fecdc67ccec7ec57768be89b9b1ed77a7bd55bab7bb22cf4b5fe84ef7d85",
+    "array_sha256": "5b6489593532393b60354b5f4a80a68082c479d9368d8f5c3cf1e4c953c30f95"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000000950-0000000975": {
+    "split": "train",
+    "start": 950,
+    "stop": 975,
+    "manifest_sha256": "da85d233b3dfcd7a83fea11ed695cb12ee3fac275a760c0d6f7b581040785ae1",
+    "array_sha256": "6c4e90f74eaebae7ac609fbbcd5ce7e73cd73e88c943f41e897dc0186593dd61"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000000975-0000001000": {
+    "split": "train",
+    "start": 975,
+    "stop": 1000,
+    "manifest_sha256": "55045ac2faed1f4824b57349237d9e599d14be097a9dc2e39d38abd21f44a9d0",
+    "array_sha256": "35365510804d0e90200cded5035196ec0e7ec95d0ba196c66f381e64fc2bf6ae"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000001000-0000001025": {
+    "split": "train",
+    "start": 1000,
+    "stop": 1025,
+    "manifest_sha256": "2f9406d8141822ac8e0d59732b4b11f2f6cd3f41410f64b06c4aeae0f1edd415",
+    "array_sha256": "00eff5649cf95a309967fa4e33c272a139de3f5342e61725dba80a51ee6e1764"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000001025-0000001050": {
+    "split": "train",
+    "start": 1025,
+    "stop": 1050,
+    "manifest_sha256": "3fcdf0b99dc2866d9d1645431206903c4855f2e1b59f4080d03f0b63059897ec",
+    "array_sha256": "416223299f2a07242aba9cff4f5bfa2e264d5c36e0cb91ee9d1535a2a10079d7"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000001050-0000001075": {
+    "split": "train",
+    "start": 1050,
+    "stop": 1075,
+    "manifest_sha256": "f27c72a3ca7452cbd5876651bfd461eb559d5c98214a3972c28337dfd57a93aa",
+    "array_sha256": "9334358f540355705065d0defb2c101eec5f19b718548f8080c5a187cec27f73"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000001075-0000001100": {
+    "split": "train",
+    "start": 1075,
+    "stop": 1100,
+    "manifest_sha256": "d412f4fc676c92a069a761e6961737dcd7e411254e770303b4b9f55cb310f53b",
+    "array_sha256": "80ce182f38a2ec312dfc4427a90439f0a7c31f8897f512de9c03583946114b8f"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000001100-0000001125": {
+    "split": "train",
+    "start": 1100,
+    "stop": 1125,
+    "manifest_sha256": "a0399f6bfc0bf65b7e5507a7c91235884b61c961146e26e07d6a4d221257f0a9",
+    "array_sha256": "ec5e5b00698d5ab1268ac2c687018ce12df18486721ce62a6108e4c8c76f512f"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000001125-0000001150": {
+    "split": "train",
+    "start": 1125,
+    "stop": 1150,
+    "manifest_sha256": "5d5dcca3b55483b16d694627703674f62a3139d0c403ecf3f91cc253294e33c5",
+    "array_sha256": "c5e2eba915ff4f95b7163b6074a3f23912f58ea50c673c8835a729058a32080a"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000001150-0000001175": {
+    "split": "train",
+    "start": 1150,
+    "stop": 1175,
+    "manifest_sha256": "b24abf204bdb8a62fdabfe6fbf1702bbf3dedb82b667d97a504cbe44d18ba9f2",
+    "array_sha256": "eb055f697a2e0bc27cca2a98724670fb2506aa45caad4dbba7207308c12465ce"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000001175-0000001200": {
+    "split": "train",
+    "start": 1175,
+    "stop": 1200,
+    "manifest_sha256": "62df4c6c3cf64fd9cba64e1289b4e11542a228bdf24a5911b9cad50dabe945ff",
+    "array_sha256": "1f22ba335f20bf501064bec029750df56cf54d63337de5d14daf53db6add81a3"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000001200-0000001225": {
+    "split": "train",
+    "start": 1200,
+    "stop": 1225,
+    "manifest_sha256": "9ff365c80b79334283a38964f22d80a84553abb0440cc76df124667ec1e6f0d5",
+    "array_sha256": "2d1b9f06f5052e9a01d8d3099e7c25cb8ef6df1e1c0754aa63671ba4def96c3b"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000001225-0000001250": {
+    "split": "train",
+    "start": 1225,
+    "stop": 1250,
+    "manifest_sha256": "6a82209c65d10bd339a68816420070daf7150902e576c86435a9c5f91c6d611b",
+    "array_sha256": "962800c0a315aa787e4500436ba1e84a2d463c3ca4825b012a1f2ac849df96fc"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000001250-0000001275": {
+    "split": "train",
+    "start": 1250,
+    "stop": 1275,
+    "manifest_sha256": "709dd082b2cb9be46458cdcd7fa00a33a6eefb41542fa412efd9bc05f3cc5b0d",
+    "array_sha256": "e942c08a432d501dff95575d2406c9dfd4cce60db5c2481ef0cdaebf71752c07"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000001275-0000001300": {
+    "split": "train",
+    "start": 1275,
+    "stop": 1300,
+    "manifest_sha256": "7d3d284aaa76f17a91c0ea3515dc47e80655c1a9d1a7e7c0110a2be1b3248dbc",
+    "array_sha256": "d476fa2a7889ca652d0bae2759c61fb6b7ce69947a8fd3de5cad27307a30d8f2"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000001300-0000001325": {
+    "split": "train",
+    "start": 1300,
+    "stop": 1325,
+    "manifest_sha256": "dd9a3dd64d569ff74a284799e54ea7173880e08fddab5c889c050c7b5d47f8cf",
+    "array_sha256": "04c70895826fb4299dd3c9c6c0d36204f7c088c7ed13f356c3ab588d29d0fb1e"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000001325-0000001350": {
+    "split": "train",
+    "start": 1325,
+    "stop": 1350,
+    "manifest_sha256": "9b8b828490da58ac20c9397b60392d20f598c40d607e43820b31b690d65463b7",
+    "array_sha256": "3a687ea6d36e216214bc1724a81f2ddb211c35c3ee954896a2aab21bdb389bca"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000001350-0000001375": {
+    "split": "train",
+    "start": 1350,
+    "stop": 1375,
+    "manifest_sha256": "c45a89ffe233726102de3d5be837e60a0d8a86b48619e84dae87a9eedb44f47e",
+    "array_sha256": "40d879cf6fa2f4404647e6a0c9d4638dab35059621a7a051cf4afb4b761ab3f0"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000001375-0000001400": {
+    "split": "train",
+    "start": 1375,
+    "stop": 1400,
+    "manifest_sha256": "1e35a1f273a19cae9222a0856b7bb57e654b8be050d8624dcfae93052e1c6520",
+    "array_sha256": "69afe67d1d122ae9e45c3f9a1d7d19790176702cf152afe91f5cd6dc7ad9efd4"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000001400-0000001425": {
+    "split": "train",
+    "start": 1400,
+    "stop": 1425,
+    "manifest_sha256": "b0642414da49fccafbffdfc6a90ef75b1a0a61a3fc0f917b0a5a49a80bd81865",
+    "array_sha256": "51117c4bb7d394b248d1ec0cc975c59ad912aab0cdfc6597c2c74f8380c8da03"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000001425-0000001450": {
+    "split": "train",
+    "start": 1425,
+    "stop": 1450,
+    "manifest_sha256": "ad03623f2d3db2d0b5ec1c3c43bac6a0daf3d13a520b292d77d2cdbf24f1a4f0",
+    "array_sha256": "d7b2387ed8470dc9fa957619f82cdda70cf46d0f6cbd21136eb599f03092f4f0"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000001450-0000001475": {
+    "split": "train",
+    "start": 1450,
+    "stop": 1475,
+    "manifest_sha256": "4561d82bd0387143d0aef1e3498bf83c44c5377ce6bd7ce3df3e87e93c92f648",
+    "array_sha256": "a61137e7695465634443e10aec68ab0521260c0a0a2455c77333394e6e3c0211"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000001475-0000001500": {
+    "split": "train",
+    "start": 1475,
+    "stop": 1500,
+    "manifest_sha256": "16e1e62975c7ea2744b672effbdf300a1e0c9eee40b24afdc888e5564425eff0",
+    "array_sha256": "860a25cc760d6af45dabcf2afacfa31668232d6c2fbdf565a8a0441db1448c2d"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000001500-0000001525": {
+    "split": "train",
+    "start": 1500,
+    "stop": 1525,
+    "manifest_sha256": "2936d8954bf07cbffdfa016a73458801e521570bdc6a5b31a9fb2bd46c23aba9",
+    "array_sha256": "e054728e8e70ec6cde748c0c8cc7660faf7b5b7a396340d92af21a87b9f3596d"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000001525-0000001550": {
+    "split": "train",
+    "start": 1525,
+    "stop": 1550,
+    "manifest_sha256": "2cf34390b61b7612dcc10b07d3bcf022564f3b79756d20788ff5c6e8c46a49b7",
+    "array_sha256": "eb168075fd5eabf72e0b5d921a6efc463873e6037fd924d669bf863c3e2ae973"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000001550-0000001575": {
+    "split": "train",
+    "start": 1550,
+    "stop": 1575,
+    "manifest_sha256": "98fa81a839358910984929957531ccb9210f30d07b423b29e356dd8f776bc535",
+    "array_sha256": "b10baf552f5ea9e5d0447ac18e1c6aa9b92dc567b00baf30d0474ee8d11b792b"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000001575-0000001600": {
+    "split": "train",
+    "start": 1575,
+    "stop": 1600,
+    "manifest_sha256": "120c8d64488a9c8d7d370257218c1ff61ca5ec4616976cacdca880a98e08de6d",
+    "array_sha256": "18803437809e66d710a85a35d090e834b50410b684acb04553c5b45e3e0c9433"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000001600-0000001625": {
+    "split": "train",
+    "start": 1600,
+    "stop": 1625,
+    "manifest_sha256": "52e1121a33e6d80f4e9f3a2c4f1d03bcdd7c6f9d743121a8edcbb2a928697991",
+    "array_sha256": "50380af47c46412e71e545075c237c35f7be0447540e0bd816a0572a72afb398"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000001625-0000001650": {
+    "split": "train",
+    "start": 1625,
+    "stop": 1650,
+    "manifest_sha256": "e7586ce54444d9f86c5dfd627ccca930dc6363cdfd9896455e5e15f20bf3c823",
+    "array_sha256": "4766cba1a1087278cfd89e0e37746741a6c7ae701074670715367740a2db87b1"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000001650-0000001675": {
+    "split": "train",
+    "start": 1650,
+    "stop": 1675,
+    "manifest_sha256": "339d20d95e5727952ba27f891f2e3ca455db36caf99549ccb424a5af61c9f41b",
+    "array_sha256": "e037292a63e8834e5c519954b0d0e4e8db4883d35afbb642edfb40b991e650b7"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000001675-0000001700": {
+    "split": "train",
+    "start": 1675,
+    "stop": 1700,
+    "manifest_sha256": "f2ac1a2857a06544969ca617970445fb81c2c8210c88277b01f8e69e2fa81666",
+    "array_sha256": "c8a22fc1bfae10ec0e7316ef7181eb43f47314d1cb3f58cb120a98f77effb52c"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000001700-0000001725": {
+    "split": "train",
+    "start": 1700,
+    "stop": 1725,
+    "manifest_sha256": "52f9c006ffcb50295a7067e4af3320db38d4a56f168e4de4573a75aca3fef688",
+    "array_sha256": "dfa73728587454b9a74024da584f7150d513892ab8a1148eec02ad4efa92c74e"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000001725-0000001750": {
+    "split": "train",
+    "start": 1725,
+    "stop": 1750,
+    "manifest_sha256": "d0a9404fae5b8828b34265dadb5b4f3f96064f6cd1799458270e66d00336e71d",
+    "array_sha256": "7d38aa68c73a8b7e7bfaf2222367121ab8de366a8f66102763b09f0863924a30"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000001750-0000001775": {
+    "split": "train",
+    "start": 1750,
+    "stop": 1775,
+    "manifest_sha256": "29e6a0447ab9e88114877af2a4dce7642766330b7c8356953d91a2cfd6089030",
+    "array_sha256": "67bab8fbcfbe460f950efbff1d98ce3e7313fe16f16f8f4a1697bfbccc50a7ac"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000001775-0000001800": {
+    "split": "train",
+    "start": 1775,
+    "stop": 1800,
+    "manifest_sha256": "22eda36b92504463d420a83a7fb6668cda1252a6b978bf15958f22a7eead6500",
+    "array_sha256": "f0ada56176b5bd2e54b482a537c4c8a98b0e507f1f404defb8105d37bcafd6bb"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000001800-0000001825": {
+    "split": "train",
+    "start": 1800,
+    "stop": 1825,
+    "manifest_sha256": "20686bdda71922bf6b4a6b3b29b1ebffb8d3366baca9f0c5a0204db24fd440a2",
+    "array_sha256": "be34824f66fceacf6be4fbea98ff10cc8251b2c11c6d1dae32674a54aa4ed25a"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000001825-0000001850": {
+    "split": "train",
+    "start": 1825,
+    "stop": 1850,
+    "manifest_sha256": "9277052a52055783004825b748cc30448e88ae5f64d3396d3edefb47efe6b7ef",
+    "array_sha256": "42abdb7f13bf424b8fab57bd49cafe2ec2ec6a30b4b8f01234cd28b4a2c31cae"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000001850-0000001875": {
+    "split": "train",
+    "start": 1850,
+    "stop": 1875,
+    "manifest_sha256": "6e379f6b2407fb0d6e627298064d656ddf6f41236e27e70dbc1267ef86f71c81",
+    "array_sha256": "4a3da47121e8d8b1388b4611b492bac40e2bc43e6a2c285435442ae4f0ddeeb6"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000001875-0000001900": {
+    "split": "train",
+    "start": 1875,
+    "stop": 1900,
+    "manifest_sha256": "4f8341814eed92b6a96cc64053abc3456825e60b93675ba6dc3acb806ac5fcba",
+    "array_sha256": "2fbc645045427dad6997f2d18f227e991b8b7a78687c55b31a72038f325307e8"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000001900-0000001925": {
+    "split": "train",
+    "start": 1900,
+    "stop": 1925,
+    "manifest_sha256": "dc2b701439fa0982b402848d3e1e3f6531fe36a90b9877408673fe4840a42cdc",
+    "array_sha256": "4891b3203b0833e77d86cbe979482c739593556be8d5f10e9b7ca51ddc62db2f"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000001925-0000001950": {
+    "split": "train",
+    "start": 1925,
+    "stop": 1950,
+    "manifest_sha256": "89d662c07905819601de4bf51d2424745cfd45509500f9bc4bbc2b439989ea9c",
+    "array_sha256": "ff4959ffeafa50e4b92ff6fd8ee62ecf962818cf800521157b11e4cbf917a012"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000001950-0000001975": {
+    "split": "train",
+    "start": 1950,
+    "stop": 1975,
+    "manifest_sha256": "ab806868054fd59b2e256d1387808ac566b907274c137dcc30806e503549776a",
+    "array_sha256": "71772d317e94423b40f3af2b4933c853f8c454750607d47bf918da188dbd8d83"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000001975-0000002000": {
+    "split": "train",
+    "start": 1975,
+    "stop": 2000,
+    "manifest_sha256": "65c6f38a41cb28045ef4b88a204d2f6e9428ed799d56f651f346af1783b9c36c",
+    "array_sha256": "a945a005a0854f7f7ea232bf40f4f4b00854d739a1fe08aaaaa31c91e20dceaf"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000002000-0000002025": {
+    "split": "train",
+    "start": 2000,
+    "stop": 2025,
+    "manifest_sha256": "620afa7896dea97a033de87b76cdcbc966e6a88e2bd2376d49815ed29dc58523",
+    "array_sha256": "701499abce1cc54a047a8ae75264ea7a0959d9077e408dd2b32bd9fb2b0a27ce"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000002025-0000002050": {
+    "split": "train",
+    "start": 2025,
+    "stop": 2050,
+    "manifest_sha256": "cdfec021c915ed678a3627418997189788cf1c63a826b0ea9883603638be67ab",
+    "array_sha256": "8e0878098671e0a4bce2854e708ec1ed93ad42f120666901e253a387d4ea6b86"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000002050-0000002075": {
+    "split": "train",
+    "start": 2050,
+    "stop": 2075,
+    "manifest_sha256": "5fd11af63d208df570a66b1b8af39e7fb237117e192bcc782a0e3c2e4c7f126d",
+    "array_sha256": "e49d5bf169e642e550545367e459ce87041652bda61b4b40fa15a52df22efd71"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000002075-0000002100": {
+    "split": "train",
+    "start": 2075,
+    "stop": 2100,
+    "manifest_sha256": "b3ff2f0315d4af73017ef8ee8626f9a492b4f6459b31fa81522984d0afc53611",
+    "array_sha256": "293e4b5f17bd0fbbf25f12492b08563e5b059556b96f089b6301f767643eb2c8"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000002100-0000002125": {
+    "split": "train",
+    "start": 2100,
+    "stop": 2125,
+    "manifest_sha256": "d1fcf22dd0f2558f6ebc6b5f7234ce2adc34ad56724d19a5973e92f825d5af48",
+    "array_sha256": "39fae773b28d688a32abb464209d24003922a1e1d9855147463cf048510549cb"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000002125-0000002150": {
+    "split": "train",
+    "start": 2125,
+    "stop": 2150,
+    "manifest_sha256": "d7cdfe6451e49e34cfb0b66c816779b79492cbe9a245245c513da6a0eca9d225",
+    "array_sha256": "c74eb8198ed68d5d43b33dac4b12a97b3f8c36e40d30150f49d05b0004a02c0b"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000002150-0000002175": {
+    "split": "train",
+    "start": 2150,
+    "stop": 2175,
+    "manifest_sha256": "65b050869f23529dde9ba18257698091fb709b2ced97e18aaaddcb35432ca6d9",
+    "array_sha256": "78732f43daaf74b1ad9bff3a003dc16d79e640e8e3730924834d47a60bb9fc7b"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000002175-0000002200": {
+    "split": "train",
+    "start": 2175,
+    "stop": 2200,
+    "manifest_sha256": "bfd867d310735760750d992cb93c39bb30cef195e2ab03dbf5c378f2d6fc5e80",
+    "array_sha256": "99d1a74e7bfe9a750b23f315ca262f38cdc930e0f554576951c547809413b7da"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000002200-0000002225": {
+    "split": "train",
+    "start": 2200,
+    "stop": 2225,
+    "manifest_sha256": "453e21bb39305685695b6835f00c04e6367778847f16d05c8f28f16668206c6e",
+    "array_sha256": "dcdac8de8de8b9d59af4e29e9359c7fb5b8db50c39523eba14f07cd52c809a08"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000002225-0000002250": {
+    "split": "train",
+    "start": 2225,
+    "stop": 2250,
+    "manifest_sha256": "1be1b2088b37fc0e6bee97bf9a55a747fcd4f75793acff27fa8e6095fb833776",
+    "array_sha256": "0fc173414c7c9a64800bb8fd2fe59ca34b4233159ba8095d4a563fd644f05f1b"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000002250-0000002275": {
+    "split": "train",
+    "start": 2250,
+    "stop": 2275,
+    "manifest_sha256": "036f18b9924044ac0e8881ef15648fc51b898e817e2fbe31bb74d5bd59681af1",
+    "array_sha256": "7cc5c31ce5f97c347d5ffb4b01d21b6b355481f4b46bfbc278c04980c8dd76ae"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000002275-0000002300": {
+    "split": "train",
+    "start": 2275,
+    "stop": 2300,
+    "manifest_sha256": "d2533569ba78a49e6f52dacbf3c26b790ca61550bbdb8667ea47dfd0aa2cbda7",
+    "array_sha256": "4ae2eb0085671caf9adabddd33b660a3002bd2168d2d0442449294eb80323a93"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000002300-0000002325": {
+    "split": "train",
+    "start": 2300,
+    "stop": 2325,
+    "manifest_sha256": "e95aee4fd46167352821eab6dbf3b21d86efa65b10f1b55d857ee40df8c9045f",
+    "array_sha256": "eec44704bec5b092e058e4e8bae9812600b97e6e7fe2c55c8e490b041d3bfdef"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000002325-0000002350": {
+    "split": "train",
+    "start": 2325,
+    "stop": 2350,
+    "manifest_sha256": "724b631d02ac46924e7cdbba01a77133712cd66d1eb0a98cb2dd2840d289ac9b",
+    "array_sha256": "ca8af1e5cc5ee30b2069fa72792158a5a7bb06a0f87b5ac1120030f598ef517b"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000002350-0000002375": {
+    "split": "train",
+    "start": 2350,
+    "stop": 2375,
+    "manifest_sha256": "d430893b072f5c4b8ce2744d00428ab6bbbdd663babc45e7eec83e09cdddbf97",
+    "array_sha256": "7ea59b44af531fa40c771da847a14db5dacec9c67f85a88476b3497acaede7e9"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000002375-0000002400": {
+    "split": "train",
+    "start": 2375,
+    "stop": 2400,
+    "manifest_sha256": "1457215aff42709f9c215c6cc95353946175c566de526eb4b36d43327695b720",
+    "array_sha256": "c0402b660dd2e7730590a634fa18acd3b2c7667c02347a3df634f3c9946fa580"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000002400-0000002425": {
+    "split": "train",
+    "start": 2400,
+    "stop": 2425,
+    "manifest_sha256": "6be72694e6641099db5c84f20704f46e851bbea1a1de55b1163ab17b19d990dc",
+    "array_sha256": "c5f7da1384d2e5c56618079139c155fd962b996f6a52438ac0dc867db362dae7"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000002425-0000002450": {
+    "split": "train",
+    "start": 2425,
+    "stop": 2450,
+    "manifest_sha256": "f5d137d337c5d5cebf91ce495ed70a24c7bc5c29bbcb93ad41ff34cb944c7a0b",
+    "array_sha256": "6d904af87ccc2fedcbe2eedc8ce3a1ca9abaf270b3b2b3af6c5682012842fee7"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000002450-0000002475": {
+    "split": "train",
+    "start": 2450,
+    "stop": 2475,
+    "manifest_sha256": "845f85da7f3f8ba60770a0c2874d82edd2706206997753d82d2a100d05614a31",
+    "array_sha256": "6d06b28917b9d031c04e89b400eabfbc6144ad1ac8a4bc122eb676d89c53fcd6"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000002475-0000002500": {
+    "split": "train",
+    "start": 2475,
+    "stop": 2500,
+    "manifest_sha256": "4224b6f61f97ead535ba824dae44983a15006c411a0e0f50a1ccbd75640ef34e",
+    "array_sha256": "ab139ca70c876f068ddcdcbc76dc6469995cca5aebdb971054ffc8e7f9ee7f77"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000002500-0000002525": {
+    "split": "train",
+    "start": 2500,
+    "stop": 2525,
+    "manifest_sha256": "c0414ae00d72d388a1792ce68e210df714894db82cd77fd97c77d13476b00449",
+    "array_sha256": "10d409c0ef036f3a8f843e521476b27f70557fdf239c268ba5a08c6bc1c0579c"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000002525-0000002550": {
+    "split": "train",
+    "start": 2525,
+    "stop": 2550,
+    "manifest_sha256": "540f87c1c025f482ee2b0b86725f9ef2b519bd8e74d57603db4ffed89084516b",
+    "array_sha256": "2b870f43bf878476e71cb1659c4a830f3d7e887bea47e9db2f31b57ac6a367d0"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000002550-0000002575": {
+    "split": "train",
+    "start": 2550,
+    "stop": 2575,
+    "manifest_sha256": "4c998dc2bf6001ca9429678a0af1a6c4d8f2b39b0a6a867248d3c0ea435d066e",
+    "array_sha256": "9643409d54efa0926a5d257c835c50d5f2d798c75e2f79547d419425591eb797"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000002575-0000002600": {
+    "split": "train",
+    "start": 2575,
+    "stop": 2600,
+    "manifest_sha256": "26b2340b95e83afd9434801dab6cd1eaffb3db60ddda7c5cf13a80be65766089",
+    "array_sha256": "86e663bbd532c0402b549018b00cbbad94520eadfd4087d55c7dacec15f740f9"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000002600-0000002625": {
+    "split": "train",
+    "start": 2600,
+    "stop": 2625,
+    "manifest_sha256": "90c668a1f1307373c8820e53cb887a0996dd65124577bce4a8b60909d2c86ca1",
+    "array_sha256": "1fbc7ec39732e82293b5cd5985e590199b6015abf5bedf3754a6ba02d06ccd71"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000002625-0000002650": {
+    "split": "train",
+    "start": 2625,
+    "stop": 2650,
+    "manifest_sha256": "28214a33fd011859f2674458530cdbf4976223be51c4343f6ef2c8690e897f53",
+    "array_sha256": "14d33848714f9e2695cac9c98693afe43996cc143850ffd75805cb8fade1f788"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000002650-0000002675": {
+    "split": "train",
+    "start": 2650,
+    "stop": 2675,
+    "manifest_sha256": "e120bbeb8ed87840f7fa553913d4e4f043c7c572b2b1e2684dd9f4c3ac9f1163",
+    "array_sha256": "493e2030952a7e206426190fb80dfedfe521493dcdfabebc626a4658f606bfdc"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000002675-0000002700": {
+    "split": "train",
+    "start": 2675,
+    "stop": 2700,
+    "manifest_sha256": "c13444723c6a19d0ff46171a8f40f500f9b5547269a7c9c7e43c80df43303c9f",
+    "array_sha256": "46aa5bff6882502515ca8c8409b5144403ec43f9d249dc9427b416c69e01c8e3"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000002700-0000002725": {
+    "split": "train",
+    "start": 2700,
+    "stop": 2725,
+    "manifest_sha256": "3e41905f34306399bb8c97e93e84089fe4c950668b57bad5c74b6f70818eec69",
+    "array_sha256": "b7995bf0b088b36a5422f0dc84001cd6011655f632a5ecddc3e1dfed9a3dbafe"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000002725-0000002750": {
+    "split": "train",
+    "start": 2725,
+    "stop": 2750,
+    "manifest_sha256": "4ada77908ba7cf35729a46190ef2fc0164c15f9f1c318ef90ec4bc751986d67b",
+    "array_sha256": "b8feae1d873335ee3188a2ed5ff1123b0c4c9f3ef7729f3d27bdfd6470611cd8"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000002750-0000002775": {
+    "split": "train",
+    "start": 2750,
+    "stop": 2775,
+    "manifest_sha256": "7fdfd55c17cbcce47eb2b08821df7262bcc0fe5a9b98c3373b843c68cfbaebb5",
+    "array_sha256": "9d116b6a7f63ea0f890d177373dcd79ac8a37fda307a105039c915e29dc6463c"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000002775-0000002800": {
+    "split": "train",
+    "start": 2775,
+    "stop": 2800,
+    "manifest_sha256": "78039cbef1813ebebee8b7bf9a96bb9108e785a7883581dacc3d792986381fbb",
+    "array_sha256": "780f3dfa4d1fae5403ef446d0ab20545e35409abe62794dd3c8cb63210bd626a"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000002800-0000002825": {
+    "split": "train",
+    "start": 2800,
+    "stop": 2825,
+    "manifest_sha256": "ae8e82831577cca049f71e0080159d7746e2968203ee2dbead4ca8d57118d07b",
+    "array_sha256": "926fce67f410d70fb7680e707b31c037f7066f3fec6d2bf24ef86a55fe09326f"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000002825-0000002850": {
+    "split": "train",
+    "start": 2825,
+    "stop": 2850,
+    "manifest_sha256": "c85cd8e0f6a6d13411db29390504b7e2017b26257673074482723e1da9a395c5",
+    "array_sha256": "4c12accaa71ababcf23c7f08554d76c1dc92c2767bbb68feb262dd1d23ec955f"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000002850-0000002875": {
+    "split": "train",
+    "start": 2850,
+    "stop": 2875,
+    "manifest_sha256": "effe0d7db8f86486c3a9d4f986627d91cdafec21b99827edefed5e1ba4f10957",
+    "array_sha256": "de3438c6d5c1e5ad22868d8f035bba0aeae0203405fc7afc118ee7dfcb75d315"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000002875-0000002900": {
+    "split": "train",
+    "start": 2875,
+    "stop": 2900,
+    "manifest_sha256": "a483db60f57c834b2a76c271b2b57895865228e91582c5ab5b92967e0709f1aa",
+    "array_sha256": "29e88c4e8a9235823af7c56bf93f4e8ebe77862293665bb68260e9d7ac50e6bd"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000002900-0000002925": {
+    "split": "train",
+    "start": 2900,
+    "stop": 2925,
+    "manifest_sha256": "b4743825af8b36f3400fe58a961ac33a31588793406698b35b796adb6043525f",
+    "array_sha256": "0b12a5e67f174834467fc8dacd110bc368407f3d78dd6c4fc2ebebb14239647f"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000002925-0000002950": {
+    "split": "train",
+    "start": 2925,
+    "stop": 2950,
+    "manifest_sha256": "80ab036563e6bc24bb8eee1b295846142f55a436b19c6349e76dc7901afe3936",
+    "array_sha256": "3dfd70a020f8687e1ca435705d55a295090deab3d0ba4134f84f094d33c3266a"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000002950-0000002975": {
+    "split": "train",
+    "start": 2950,
+    "stop": 2975,
+    "manifest_sha256": "4a84712e2634f39093544cd46108122dc5494788f70e07f1542dc7f1e410236d",
+    "array_sha256": "9e7edf446f3247b2bc1902d39797b3c463d26d382b27cba5029036e2f1fecf21"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000002975-0000003000": {
+    "split": "train",
+    "start": 2975,
+    "stop": 3000,
+    "manifest_sha256": "17354a7eb33dd48a448e0aa89a4ab2a32f3a512893ee68ec30b673c872883f3d",
+    "array_sha256": "ff41bca5b2c4c16f148307ca0e35a683c3a0e24c7709a81d3cb5b6f444d712ab"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000003000-0000003025": {
+    "split": "train",
+    "start": 3000,
+    "stop": 3025,
+    "manifest_sha256": "db87a768934c2caf8e4c47c920d7f8e800b73e838c42ea540c94c0b4980682d5",
+    "array_sha256": "94747d14d18db785b3094f4485054274379ff1f174baf660f6e24e289a83f7df"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000003025-0000003050": {
+    "split": "train",
+    "start": 3025,
+    "stop": 3050,
+    "manifest_sha256": "40d088f430ef8eda552ca4b8ef307cdcf65ffb5208feccb40f673b62f1e72a00",
+    "array_sha256": "b5ade7a9666227893c57d7184d3aaf613f32b453be91c247283e93ae8285855e"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000003050-0000003075": {
+    "split": "train",
+    "start": 3050,
+    "stop": 3075,
+    "manifest_sha256": "59bbd206cc901fedfe6b9ee940290c45beae942327e7f1a636ba00757686f39c",
+    "array_sha256": "b3c18fbda0035d00fe441bc5d965f9191cf0eb112f9c832c1a3b20ad2c5c6c85"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000003075-0000003100": {
+    "split": "train",
+    "start": 3075,
+    "stop": 3100,
+    "manifest_sha256": "755669d46f1d9e0e4680d15b4026d32bb54a91285b213cd3daae31d38d5b81f1",
+    "array_sha256": "e6aff42e4fc7191ab4cc7f61da369941ee12083005eb3c3d9f5bcbc0acc1caab"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000003100-0000003125": {
+    "split": "train",
+    "start": 3100,
+    "stop": 3125,
+    "manifest_sha256": "80909bae2810423709c35379d4c3bfdd2d0915a7f04d7fd14517bdc7826b0546",
+    "array_sha256": "c5ee0d1b3253d3c9da6f03ca5f3ad0052378ee996ffbf06f4ae1022722e4a0a0"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000003125-0000003150": {
+    "split": "train",
+    "start": 3125,
+    "stop": 3150,
+    "manifest_sha256": "e2f8c86d2021b6b8c5fe68da5048b748b34c9d63e2c940a20eb0fa5e7a29db78",
+    "array_sha256": "e72878e332ccd006b5303976e09531fc776de47bcdb7d451aa9806994a12b7c5"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000003150-0000003175": {
+    "split": "train",
+    "start": 3150,
+    "stop": 3175,
+    "manifest_sha256": "e5394c5038b9e46812733d49476c0150040902c4b8690e9e1eba8ade8b31b6ab",
+    "array_sha256": "1d66f31d8b1aa221e214f3676ee81078f28bd3536339bf47070b1f0527732c2e"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000003175-0000003200": {
+    "split": "train",
+    "start": 3175,
+    "stop": 3200,
+    "manifest_sha256": "d277bfb53af0ee2d2078161542e5faf847e0beb7fccb5b60ba095f240f4c55b1",
+    "array_sha256": "2367a6c56b7f1192137bee2d774dfef73f8e59c4caa1179ffcc07df106a2de8f"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000003200-0000003225": {
+    "split": "train",
+    "start": 3200,
+    "stop": 3225,
+    "manifest_sha256": "5f9349ac4ec2b568477ee1016d3f342aff119019250efc95d3cb6a9dea491fc1",
+    "array_sha256": "177207b4a030b1872b7faad267ce6546879e0214469e514abeeed6fbe0ebc430"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000003225-0000003250": {
+    "split": "train",
+    "start": 3225,
+    "stop": 3250,
+    "manifest_sha256": "c94f0d015955893592fa58b39c1aab49ef21910833b2c1a50462f9463ce3b5bf",
+    "array_sha256": "7af92d7d5796261b005f6fa10040b9b05bdd99ba60d627a484cf424842a31edc"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000003250-0000003275": {
+    "split": "train",
+    "start": 3250,
+    "stop": 3275,
+    "manifest_sha256": "282cb06688fc2fc60042193a15f4d1b175eebdb0a4c6b88f9e9c6f13c82a5ae4",
+    "array_sha256": "fc6faced53db1ea5e4a9f5f9675ed6f3fedeaec5275899265983d02159223d7c"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000003275-0000003300": {
+    "split": "train",
+    "start": 3275,
+    "stop": 3300,
+    "manifest_sha256": "bf80de791b33dd42a979991fa31f3cd9c401ff3aa92f781401ab993bea55bd0a",
+    "array_sha256": "e836957fbfc4c747e823bc69f04a6d252fd665fe60d895403a8b860aec12ea54"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000003300-0000003325": {
+    "split": "train",
+    "start": 3300,
+    "stop": 3325,
+    "manifest_sha256": "014070e0e2aa9af7699db04890b223e13bd6ed5e182d9d1dd177e34cf17e05a7",
+    "array_sha256": "3a2382caf043e2ef85f3df1a7e9c233e5e90fd01877ebadff87153e6386bd2cf"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000003325-0000003350": {
+    "split": "train",
+    "start": 3325,
+    "stop": 3350,
+    "manifest_sha256": "28487221df6ad9fc7dbf1f8c27a600181b8d8658448b79ca36fd0c691e43b3e9",
+    "array_sha256": "da3eedde7167d6b14f330ae2c3b45395ee71882df103d1c2125d653acd58de4d"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000003350-0000003375": {
+    "split": "train",
+    "start": 3350,
+    "stop": 3375,
+    "manifest_sha256": "d3a7cfc55a12f17dbe296add0d86b3d0f89c414b367ea0f49dc8fd5e8ef0d429",
+    "array_sha256": "1b824d0dcc2083ce2a640af9343877a66b42cc69e36f60392b60ddd5d06371b7"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000003375-0000003400": {
+    "split": "train",
+    "start": 3375,
+    "stop": 3400,
+    "manifest_sha256": "ba190b792b64ba08a965bf4c752699517214bb87e25d6929881d9c5e95350f4c",
+    "array_sha256": "4fad89a0217343dd6f088e8b70ab563d7adc961d4af0f762b0000b5a7f615623"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000003400-0000003425": {
+    "split": "train",
+    "start": 3400,
+    "stop": 3425,
+    "manifest_sha256": "6b45593ec91b4d0f8e11775f2ac3093ab75ac2300a2ae886ecf849f6ea18dccb",
+    "array_sha256": "09d2b8038fe18a7524b52da9b38c80addaf807aa67bc961501647a65fe075d10"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000003425-0000003450": {
+    "split": "train",
+    "start": 3425,
+    "stop": 3450,
+    "manifest_sha256": "c5dc9003d011ef8c346a6b0a2c81e79878462ecb877cf8d3ea8274b5da18a4c4",
+    "array_sha256": "b9fb95c08234aea43602f2f1978b4342bf4d379180bf5db35e9843c0f18b0b3e"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000003450-0000003475": {
+    "split": "train",
+    "start": 3450,
+    "stop": 3475,
+    "manifest_sha256": "40c3ae75d07b50fb6ede6e3720388b4a5c6253717787fb1b42a3f6b35ba5291c",
+    "array_sha256": "d25162b2cd2a5cae669e8bfca18a972b86f4e6ae2b98afec9ee19997a390276d"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000003475-0000003500": {
+    "split": "train",
+    "start": 3475,
+    "stop": 3500,
+    "manifest_sha256": "7190fd54f1d690fb01048d11d65e1495724ad604fe0770a1e4fdbc09e2312fc2",
+    "array_sha256": "83f13a70f98dba5f48bbbb2bb9df7f690f2fe628bbce68fd56e8ca8660075019"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000003500-0000003525": {
+    "split": "train",
+    "start": 3500,
+    "stop": 3525,
+    "manifest_sha256": "9467579ce2602800b5028df342b1b4c596aab37219b1249ac222be067bea93ea",
+    "array_sha256": "0b0dca8808711bf48dc607f536ae4d5bef2f6f1b2b5bb5769a3f866609f1fcfc"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000003525-0000003550": {
+    "split": "train",
+    "start": 3525,
+    "stop": 3550,
+    "manifest_sha256": "87c5c3e9178d13c2db335198e0ba110a7ce1265ff7c6606d3052c3690e7d4f8a",
+    "array_sha256": "d27fac01896f0c424b3e8704b150c1b127b31a3d287accb3153a41c7416bde4b"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000003550-0000003575": {
+    "split": "train",
+    "start": 3550,
+    "stop": 3575,
+    "manifest_sha256": "4802b32a173bdeb5c6e22d6df74e5a7e9365a2d11a1cdf3ddf3f8faa19920fda",
+    "array_sha256": "386bf9376a4e49638c0f46434540cfbb56836fdbd9f6e0892f8f3c15fd469719"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000003575-0000003600": {
+    "split": "train",
+    "start": 3575,
+    "stop": 3600,
+    "manifest_sha256": "ad6fb1e22cec1e2471d460de558951936d327fdc123f6842c82127ae7070bcfd",
+    "array_sha256": "fe4591c62dd30fdf358f2fed2fe156f710ba1afe6c1a8d00cfe18a331deb1d71"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000003600-0000003625": {
+    "split": "train",
+    "start": 3600,
+    "stop": 3625,
+    "manifest_sha256": "1e7abf35e99d0b8e79ec3de5034b8a7186fbd49e13cb9088ec86d211be546a45",
+    "array_sha256": "d2f56ede29d22fd6e42e05925ee6e191b09121f9387fc4a201acae6795cb12ab"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000003625-0000003650": {
+    "split": "train",
+    "start": 3625,
+    "stop": 3650,
+    "manifest_sha256": "1e711f96a057e519c77c0ec575fc32db55bdf69f0b207128f77a428510c2f6a8",
+    "array_sha256": "c204c18578ea4a9fc981d7d62b965e24d44aca74d40ef0292b26986448e59dd9"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000003650-0000003675": {
+    "split": "train",
+    "start": 3650,
+    "stop": 3675,
+    "manifest_sha256": "da9cdfdf7484159bd7b03f46f7adbaf152e4112706b5301cd50aed29e0866b91",
+    "array_sha256": "a6a5f1f945121ec2bb7fd84490363c4db89a9754ff773159f03acf913669ec4f"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000003675-0000003700": {
+    "split": "train",
+    "start": 3675,
+    "stop": 3700,
+    "manifest_sha256": "f9e106be1b5ad9ffeafcb228865981285ebd45bffcab199075c807de7fa7ab21",
+    "array_sha256": "d39c22d679cd90f0db60f7edfdfaa91474409a51dfe987e376d81178ad2626e4"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000003700-0000003725": {
+    "split": "train",
+    "start": 3700,
+    "stop": 3725,
+    "manifest_sha256": "7f601014af307cd0cd6a8d880247bbd513aef23115b9fbe60d684ae4bc42851a",
+    "array_sha256": "e7cc093e9f1b4c8020488c095f6a97c0f692578ad2e4a618c5e5974675d182da"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000003725-0000003750": {
+    "split": "train",
+    "start": 3725,
+    "stop": 3750,
+    "manifest_sha256": "3f50cc31ce167d5fa14090f0c31f1f8f3d7f9b6ac27ad141ce6b3f96a0149167",
+    "array_sha256": "15cd168723ca9f32bf458ec07e9ecb71085f15e989bf3260fe997c7d78b5a3c9"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000003750-0000003775": {
+    "split": "train",
+    "start": 3750,
+    "stop": 3775,
+    "manifest_sha256": "707d5b2fefc0e02d204a0e67ae873de9e5d6341c16b0d80f1735d364718c1bd2",
+    "array_sha256": "7dde059a742c67bd907f00fb3718aa536dd2d0a7874c56294e6830e21316563f"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000003775-0000003800": {
+    "split": "train",
+    "start": 3775,
+    "stop": 3800,
+    "manifest_sha256": "fa79c33412eae71e9c00c4f29de67d6eed27cf96f47a6e550f07b0c16029a962",
+    "array_sha256": "3f15495dd42db6882bcd12f1cc0c1be4162fedc58dc396cb7d68795cbeba3a23"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000003800-0000003825": {
+    "split": "train",
+    "start": 3800,
+    "stop": 3825,
+    "manifest_sha256": "dd233b32eaf2d63f1a2a04f4b52581bdb821cb809e544f91c44c3228273ac388",
+    "array_sha256": "10f6b033a127f9c8a4792ca738f0eb9d971d710afc7e84710779b97f8510ac52"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000003825-0000003850": {
+    "split": "train",
+    "start": 3825,
+    "stop": 3850,
+    "manifest_sha256": "4c12d72f4f95ae16c352a5ed2644562b3029ef9caa14f13f4941db2fcfe135dc",
+    "array_sha256": "5c1d18e89153ca2b57dd7e0fbaca36834d0f0df3c25b4fa3909c2c1e1807ec58"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000003850-0000003875": {
+    "split": "train",
+    "start": 3850,
+    "stop": 3875,
+    "manifest_sha256": "0c813071902b032d812811e345d19cd729eaea5a2dbf4376261c196ea29aeeba",
+    "array_sha256": "aa654526881c063b8e7ad34721701d55ea360dc266dc64ecbd1d21b447beeaa2"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000003875-0000003900": {
+    "split": "train",
+    "start": 3875,
+    "stop": 3900,
+    "manifest_sha256": "4047ec54f9055ba5a6aec658b121b2d353e53a6e68c50935496df866f741a372",
+    "array_sha256": "b30260d29321cd3e90db2a2f7529b0a13134330eac0bdbef773e8c8ef430d3d4"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000003900-0000003925": {
+    "split": "train",
+    "start": 3900,
+    "stop": 3925,
+    "manifest_sha256": "66533f365c706bb3f7b74e3198b0563f4dcb12a8294f9b9ec9eebec58cec58a1",
+    "array_sha256": "5047297f059eb3ced08da0ebf2090d69d12b6aade3a233928de9efb9c8211fc3"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000003925-0000003950": {
+    "split": "train",
+    "start": 3925,
+    "stop": 3950,
+    "manifest_sha256": "bc2f30366b4c769c6f3b8d47cba8dceee49071a39629a991493b97a5e7c71fdb",
+    "array_sha256": "6333a015993767cbeb1ea6d30eba6aa66275e05107f6bef1e8a5ec175d0fee34"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000003950-0000003975": {
+    "split": "train",
+    "start": 3950,
+    "stop": 3975,
+    "manifest_sha256": "331c61c004cbe5ee39887900a0e2955f0d66e912942430fb4d4f4fe9ede583c9",
+    "array_sha256": "91cb53d72e29a8cd11b0abc85214fc4859fb202ca34de23daff3fa60a2e473d2"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000003975-0000004000": {
+    "split": "train",
+    "start": 3975,
+    "stop": 4000,
+    "manifest_sha256": "7ede820c91d99db156525b5e95c69a76e9f6c704f8051d33f05eb7a419173cc9",
+    "array_sha256": "0ed03dcd3e326ca868379325c0038a6d835b1caa52871f0e21a0d6c0cb665250"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000004000-0000004025": {
+    "split": "train",
+    "start": 4000,
+    "stop": 4025,
+    "manifest_sha256": "9cc16fc75996f99a995235e696ad174a8b56904ab64b23cbc12f37871a0e52ce",
+    "array_sha256": "c8e2dba5edad8d6df5805cdb8ca5572ba802053a486aff41b85232ff20f512b3"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000004025-0000004050": {
+    "split": "train",
+    "start": 4025,
+    "stop": 4050,
+    "manifest_sha256": "6117a322441d2abd68cea6e207645278fc919464a9a115b6f2efa751e26056fd",
+    "array_sha256": "a6b6e570dc91d4d37f0c38896292978026a85c0913c8b3702fc30d666ed5024f"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000004050-0000004075": {
+    "split": "train",
+    "start": 4050,
+    "stop": 4075,
+    "manifest_sha256": "60870370725d75f062e4fec96bcabdd19e9739e99987da7f827f59eab950059d",
+    "array_sha256": "ec920103f5d50e3055c071a2dba5021fad53a5465490f3deabf6a142499dc097"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000004075-0000004100": {
+    "split": "train",
+    "start": 4075,
+    "stop": 4100,
+    "manifest_sha256": "bd0988b2b158ab917c37880cb2c17b128cbf7ed247a810ec4ce13712e15144b1",
+    "array_sha256": "92dfb3c69ad62382f733b36a3c3ef75375bf685dd29ba79bbd067349ad33d42a"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000004100-0000004125": {
+    "split": "train",
+    "start": 4100,
+    "stop": 4125,
+    "manifest_sha256": "0d4b79918c0966a6bf670c2b82aac55788f056f8cdf7ca69c348fca40f8a76f9",
+    "array_sha256": "5490fb1deebb03f937f1f43d5c4fcb00ae6c9058fb8f45879ac80d0ab349e328"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000004125-0000004150": {
+    "split": "train",
+    "start": 4125,
+    "stop": 4150,
+    "manifest_sha256": "647c2782dd4c2dcc98b703bc09674ba20ab977ea267fe5109f1b8f176d3abd0e",
+    "array_sha256": "5bc18441ea32c9f237199237d1aaff4e699a83d8185913c8ba29dbc6dba8735a"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000004150-0000004175": {
+    "split": "train",
+    "start": 4150,
+    "stop": 4175,
+    "manifest_sha256": "b4c33a77240e3d160b9e1976b544d5c7a2b96b3e36a7c65358e4ee32eb8c975e",
+    "array_sha256": "8d9d18b7c408f2f62dbc8e0af53b8a4b1057485d5fe125b33ef007a1e91a4626"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000004175-0000004200": {
+    "split": "train",
+    "start": 4175,
+    "stop": 4200,
+    "manifest_sha256": "718eb35818143409a307991a39232b12317b52e161837eddf0088807f6cbf673",
+    "array_sha256": "e6dd0301d06df23ac2f3dd90392b5cb2d064e3d24df858bc10fb1ccfa6f8d6d8"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000004200-0000004225": {
+    "split": "train",
+    "start": 4200,
+    "stop": 4225,
+    "manifest_sha256": "b7902f4b7411d7d4cc42490b6b0056f81442b9cd4a657e3f7068e3de61b013c5",
+    "array_sha256": "e9753a2366459c23f21f44b764fd5f6a5b5d3eebd311ee0dc51f86812605e64d"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000004225-0000004250": {
+    "split": "train",
+    "start": 4225,
+    "stop": 4250,
+    "manifest_sha256": "6e21526265e68ef15b2bf0148a1e950b41f59c5d020a251fe7f81c8901766a83",
+    "array_sha256": "82a11da6d2ca54f09a3450631cdd43e33dde238639edc89f6c90e100257b787f"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000004250-0000004275": {
+    "split": "train",
+    "start": 4250,
+    "stop": 4275,
+    "manifest_sha256": "2727501bcee84b1d7945d23268893a1e36e628dc836769de57b034189adccd95",
+    "array_sha256": "f4cbcbdee54a91c5a3d495c3b1ea4f4df6bc79868fc0c3227b5221daa32abff9"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000004275-0000004300": {
+    "split": "train",
+    "start": 4275,
+    "stop": 4300,
+    "manifest_sha256": "c6efff560a6874c202988e6b8f68e1f41ad69df71c3a54aea22c4f1dc89a81c1",
+    "array_sha256": "c7efe91a7678020a1c2ea41dc57d4e187671a01dc3ff68e3fd871e0ebde97456"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000004300-0000004325": {
+    "split": "train",
+    "start": 4300,
+    "stop": 4325,
+    "manifest_sha256": "786b12dd648f0288303a0e10b462ed127b1e708614b3baaeb95fff930717d5c0",
+    "array_sha256": "f841bbf8e8c19b02b15ad6687c0c12066250a42f22d5929a44efe4e924447c86"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000004325-0000004350": {
+    "split": "train",
+    "start": 4325,
+    "stop": 4350,
+    "manifest_sha256": "9836bcefb27ad18204dd971fc7b65549e6aef232b4456d7cf0b41b162b0b3e93",
+    "array_sha256": "b70d2ece230d33cb2952cee8cfd9f8b30af3315df8c275882487ee0b6fd0f722"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000004350-0000004375": {
+    "split": "train",
+    "start": 4350,
+    "stop": 4375,
+    "manifest_sha256": "5576e4dfdbda2796d7e128f2343edd8fa9bdfa15c8e405b39be63a90592c02a0",
+    "array_sha256": "f1bd173d13570166576a663b8f5fdab76a3fc27ea044fb932458ec7846247927"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000004375-0000004400": {
+    "split": "train",
+    "start": 4375,
+    "stop": 4400,
+    "manifest_sha256": "0353c6077984c65fc7f26b9f93daeca9af2fb6b4f9e63fabfe24065a009947d8",
+    "array_sha256": "3e6f20093d044eb897b6f741a79d6fd12159fbd9c5c20f0c33957e128c4e61f7"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000004400-0000004425": {
+    "split": "train",
+    "start": 4400,
+    "stop": 4425,
+    "manifest_sha256": "7d5d6967ada9214abb592dd34e50194aae4a7343b2b21ff8f33f85e74c5b46d9",
+    "array_sha256": "446fc946426e2b5bcc3e7d3b189448fd792226a8eb5648309b59bfab808da9f7"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000004425-0000004450": {
+    "split": "train",
+    "start": 4425,
+    "stop": 4450,
+    "manifest_sha256": "2046d0a831ea7df12efc57389e1394e26940f46a5cfee53dfce1825247097741",
+    "array_sha256": "f67f97cd5b48f90c1c87d86f9f85c2c8e69561c7d68c02c5bcb66315e9db21ed"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000004450-0000004475": {
+    "split": "train",
+    "start": 4450,
+    "stop": 4475,
+    "manifest_sha256": "475e022afb6df08f2323a4c358914086e546e56f2c9db3d3584f6cdba43e50f3",
+    "array_sha256": "04b9ea731f4fa1dc3ffe28538aa1665852d6cb68616c52d9ff4f21c3ffc27bd7"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000004475-0000004500": {
+    "split": "train",
+    "start": 4475,
+    "stop": 4500,
+    "manifest_sha256": "55e3cf7e098f6716a69e571c47b4223a67faf17bb3d3de731a43d64d9c4d41b4",
+    "array_sha256": "09bbe5865b1f4689198f86c65e2d31ccd7d0c22629411db230ebea078739efe9"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000004500-0000004525": {
+    "split": "train",
+    "start": 4500,
+    "stop": 4525,
+    "manifest_sha256": "5f2e9d9b669997ffea73f09d247e8af0ee37235d3b8080a8e2de1a2e3230ac6f",
+    "array_sha256": "7cd942506083df12c5aafe63b50b40e17db31b681eb7737c5cafd65205ff085b"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000004525-0000004550": {
+    "split": "train",
+    "start": 4525,
+    "stop": 4550,
+    "manifest_sha256": "352500eada2bd7933e0c06fab6e1e643b2269daa6cc7993b73b490b5d1213932",
+    "array_sha256": "b7742b78e832e5ff4761bbddf801003595b8c0149387a1847675ea9bdafe0c6f"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000004550-0000004575": {
+    "split": "train",
+    "start": 4550,
+    "stop": 4575,
+    "manifest_sha256": "77a05f86ad81b7f021a7208381ca5ddf865ae50f8f76f32fca3e703fbc5c6ab9",
+    "array_sha256": "b36b710938006169e52fe75191ba404c8a509ef0d7cfe7f63e86fdc8ccc71885"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000004575-0000004600": {
+    "split": "train",
+    "start": 4575,
+    "stop": 4600,
+    "manifest_sha256": "b3d74a5ae9e8ffde57cd996db83d7eafc3443fda0b762de46288b320e56fb9b3",
+    "array_sha256": "975e2a7329c30ff3039e4b9571e2b2e0cd818e17554b082df42295fa4371909d"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000004600-0000004625": {
+    "split": "train",
+    "start": 4600,
+    "stop": 4625,
+    "manifest_sha256": "4537512a89eb4eba4a8ed45c131ee3b91fb0a9911d7ad9a91b88b65806d8b399",
+    "array_sha256": "e3d807b435c27eedd177d1bccb4148e47e44de4f899572e7d64c870a1e533c8a"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000004625-0000004650": {
+    "split": "train",
+    "start": 4625,
+    "stop": 4650,
+    "manifest_sha256": "1809959dd2aa1d750fec3b608d99b4317f16166f761ae902d7f2d06eef97be6d",
+    "array_sha256": "6df3c4c13c20a26cbe79eae0ceb80b37fad30412809934fc9ef43dda6e53263a"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000004650-0000004675": {
+    "split": "train",
+    "start": 4650,
+    "stop": 4675,
+    "manifest_sha256": "fdc390ab19b3651304c20c7e52c2af6216f6e66d9cce4c56194833f13648b5d4",
+    "array_sha256": "2d8d81004a12867233df1208e3365cb78948aef8e06494cdfaed0b29bf859da0"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000004675-0000004700": {
+    "split": "train",
+    "start": 4675,
+    "stop": 4700,
+    "manifest_sha256": "65a308b17d2fc9ac2a216ce9f0d3246a3133c9dffaef6a1e47a992615518be3c",
+    "array_sha256": "d5d84dc41bc63756d29def92faece8aa2c0f0236c4ea18938f2619690c8dd452"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000004700-0000004725": {
+    "split": "train",
+    "start": 4700,
+    "stop": 4725,
+    "manifest_sha256": "4e8fd67fc1c837ba4daa68596048a27aa0df53411ca0ef55cdcdb6dd283203bb",
+    "array_sha256": "061e90e192efcb9731136b90dfbf30f18c04284413adfd9a711c7e7b81f26ec4"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000004725-0000004750": {
+    "split": "train",
+    "start": 4725,
+    "stop": 4750,
+    "manifest_sha256": "ed0e489383da770185a9f14e906b134fb9132576fe292e1662e8a68764f85838",
+    "array_sha256": "12fd48eac12fac3bd9dea0971d35419c7750161284c2216a13c2b00875176bca"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000004750-0000004775": {
+    "split": "train",
+    "start": 4750,
+    "stop": 4775,
+    "manifest_sha256": "c284dee9a0bf8f753e2f2525187f8671d58d07e0b5ca8eefada8896e8851d965",
+    "array_sha256": "9c4abf7fe9a406e4abb7a88d6c0fc9fb0d161a748fbf1fd925f6a3bcf311962a"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000004775-0000004800": {
+    "split": "train",
+    "start": 4775,
+    "stop": 4800,
+    "manifest_sha256": "ee09cb94777bf9546f311dbf3b2b238a712580b4b1cfabee519773a9e53fcd6a",
+    "array_sha256": "a0b91aba98e8509f1de898e925a2da12c3ef83a543c286ff42c0b73f8042611d"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000004800-0000004825": {
+    "split": "train",
+    "start": 4800,
+    "stop": 4825,
+    "manifest_sha256": "9180713b8825e5a79851bcca259f86d68e46c2b4dd60fd0c28a8fb404952eb82",
+    "array_sha256": "36ce9a4244621e2f0db18622e6537159690535455ad721c97ca321d7b9074a09"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000004825-0000004850": {
+    "split": "train",
+    "start": 4825,
+    "stop": 4850,
+    "manifest_sha256": "c742137a6ed762de5d45670a1f60066b3a4bdd4c8cd82415fc401484192a5d07",
+    "array_sha256": "5cb61b50ce6ed04c76d78b45d1ea4248c862ce85f5b7d44530a1e2ed4a384faa"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000004850-0000004875": {
+    "split": "train",
+    "start": 4850,
+    "stop": 4875,
+    "manifest_sha256": "ccfb184db1a9ab7d44857a8078f561183198c54935b7466466d2a1775049293c",
+    "array_sha256": "fc412adfd496eaaadf74d4242a97c0829bc01cdf2932990847612366dabc0bf6"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000004875-0000004900": {
+    "split": "train",
+    "start": 4875,
+    "stop": 4900,
+    "manifest_sha256": "07498468c686d5f6db0b8db748e954d125ee58a3913675a38ff9d6fff2f6d4a6",
+    "array_sha256": "e54f1110e65e39116d1efb8347d75025ebe141404bb010e054ff2ff780d8d2e0"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000004900-0000004925": {
+    "split": "train",
+    "start": 4900,
+    "stop": 4925,
+    "manifest_sha256": "420a7dc64dbfb5d2fd7da195323105c8bfe47e80667b39e4d5bc6e7440dfebde",
+    "array_sha256": "c11b25ae2e1c289e97e87d63c4a118b5a8c500ff30a9edef93088ddca7ddc10d"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000004925-0000004950": {
+    "split": "train",
+    "start": 4925,
+    "stop": 4950,
+    "manifest_sha256": "e950dc7360c74939f7e7322f08202035421600dff6c6314073d69c1a215d79a4",
+    "array_sha256": "587e89a21d237c65e354d6a7239209d5b4928871cb119f8d1b6a915ddebb8444"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000004950-0000004975": {
+    "split": "train",
+    "start": 4950,
+    "stop": 4975,
+    "manifest_sha256": "c08760583cefc5b5ceac2f915a27b54ac075e1c6776a25e0ab08067894e3dc18",
+    "array_sha256": "5c5d8a7b225ee56eddd709b07884e70d56a48e848107a24abf1805362f65c13a"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000004975-0000005000": {
+    "split": "train",
+    "start": 4975,
+    "stop": 5000,
+    "manifest_sha256": "57522ed25bc438dc05e9479f2ef6288f786e6224498adf38ad6b0a395b47639c",
+    "array_sha256": "9232de8b8921727404b1d339277169e52a83df35e75b82d0c6c687d676ae025b"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000005000-0000005025": {
+    "split": "train",
+    "start": 5000,
+    "stop": 5025,
+    "manifest_sha256": "3e615b99a58851d5215186f36c8de4a68d0f6a7a2c0d39d4f5d2a130752716b2",
+    "array_sha256": "67690cf23d0b0374ab6f59082d57862c39f4151c113a951a16bdb41386ec113e"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000005025-0000005050": {
+    "split": "train",
+    "start": 5025,
+    "stop": 5050,
+    "manifest_sha256": "a96698193e87ee9d68b335d6d9dac156acba77c71e5cb28690795dc2897d0201",
+    "array_sha256": "2d01c0ec4b20bc033932fdf3484bf1331b7dd30de4c5033ef12467e4265d2136"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000005050-0000005075": {
+    "split": "train",
+    "start": 5050,
+    "stop": 5075,
+    "manifest_sha256": "4359727aaea2b49fa7d461ac47ea02c160cc62a7e808ac086bf23e03887bf344",
+    "array_sha256": "f437af5eb69bdacc8c4a497a107befc6aae0a811752624fdf9f47ef14f02c034"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000005075-0000005100": {
+    "split": "train",
+    "start": 5075,
+    "stop": 5100,
+    "manifest_sha256": "12f9f6698c25e3235cba10e184777e1bf0ed5b43e33d9d7e0c3ae4486cd7aa09",
+    "array_sha256": "cba8b2e37379b50b038d5f3f546937df81d5332ae1063a638e53ce9d30bf08b7"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000005100-0000005125": {
+    "split": "train",
+    "start": 5100,
+    "stop": 5125,
+    "manifest_sha256": "f4f3721805ce1d5d8e22286e6ecd95cb9e6fb5f2031505c8a10096a9333b762c",
+    "array_sha256": "1d533b2c4f0a5159798680dab9d79c3c17c30b42325439c17b6047fa5355bf6b"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000005125-0000005150": {
+    "split": "train",
+    "start": 5125,
+    "stop": 5150,
+    "manifest_sha256": "3df9e68c37b5782bc3ff5fd06d5509078603c4a1ea24311092cdfb02487cf0b6",
+    "array_sha256": "384746c145e16d9addd933a9b9399600f246a9de8c56622bddc6c1cf4a3014cc"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000005150-0000005175": {
+    "split": "train",
+    "start": 5150,
+    "stop": 5175,
+    "manifest_sha256": "a34c4c6cbd98937546b0b7eef560263741f04942d7255d92687f71cb22daf3c7",
+    "array_sha256": "7d1abb3bdeb33c177e8b373cfe7fed3e2c979ec1797ad8f0b34d181e91a1a9ef"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000005175-0000005200": {
+    "split": "train",
+    "start": 5175,
+    "stop": 5200,
+    "manifest_sha256": "04097bb9612e7e2b3175912a123d6702937292cb02be3c252570f3ac7f5e527b",
+    "array_sha256": "00de11bcb29bc0d09859b28db63bd75dd9bd49979ad0fb6121f6c36bd3842276"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000005200-0000005225": {
+    "split": "train",
+    "start": 5200,
+    "stop": 5225,
+    "manifest_sha256": "8f126fa8df138ef5c4be19b952fdeceefa1b58f40de175160008524995dba050",
+    "array_sha256": "b9d696ec01c9ca946773cf7aefa6c896ace387dbbe0e9cb5244a5e1716ef5ae6"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000005225-0000005250": {
+    "split": "train",
+    "start": 5225,
+    "stop": 5250,
+    "manifest_sha256": "d823565d15904e303160d98704eee7e6b5968bc2b3b230cf0391d598cc192403",
+    "array_sha256": "a9764d9cb2ecd9986e9546207132d2d12ebeff6fcf8a7dd20ef7a0b562e50f1a"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000005250-0000005275": {
+    "split": "train",
+    "start": 5250,
+    "stop": 5275,
+    "manifest_sha256": "a2b4de46a796bbf6f14832d69684092ab2cc0a66cf56489498e3d58dfbe4e0ce",
+    "array_sha256": "7e50159208a93491fbdc619875d148f437aab0562b45fc914cd11f6e37e22ebe"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000005275-0000005300": {
+    "split": "train",
+    "start": 5275,
+    "stop": 5300,
+    "manifest_sha256": "8c2b8bfde5739bd6448194a59b486f0e4b5420dd0cb71cfa5161c36732f94d8b",
+    "array_sha256": "67225a8ada89bbd4ca691b3b2c0dd68441d6605a478f547880d64f4179485362"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000005300-0000005325": {
+    "split": "train",
+    "start": 5300,
+    "stop": 5325,
+    "manifest_sha256": "09ba818427ed0e06e43086073d3eecdb3232a957e79890bf435b23d73ff529d6",
+    "array_sha256": "5a6685ba93ad6fcfc7d6e571d8d75b8fb30521f6bcb48349cd5308face8c9880"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000005325-0000005350": {
+    "split": "train",
+    "start": 5325,
+    "stop": 5350,
+    "manifest_sha256": "932cdbb416ff433589baf5f4c967d1865da96a569edb3db5f10f01053bdf3f5d",
+    "array_sha256": "c76abc46223fca2e454a073b026b915d039e786100c2106ac306e8a359fbb007"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000005350-0000005375": {
+    "split": "train",
+    "start": 5350,
+    "stop": 5375,
+    "manifest_sha256": "07bbeaf332fde58b8f71c8cb9fdf05c0a912d6e58ef4c90a43e1f5c6141f949f",
+    "array_sha256": "5cffded8b2763b74072e27066d28830362dd7141351444fa223c3d9621abb1ed"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000005375-0000005400": {
+    "split": "train",
+    "start": 5375,
+    "stop": 5400,
+    "manifest_sha256": "87de42109310b2c2f8ee77c067cb62966d5c0aa7a4ac55ac72fd9bcb7d718552",
+    "array_sha256": "965c9e6e435c88fe6cd825437f2bbf2b313221785f1b80d91686908094fca0f0"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000005400-0000005425": {
+    "split": "train",
+    "start": 5400,
+    "stop": 5425,
+    "manifest_sha256": "1752051b9b1b0b50118d3ba6c4563a301312f67661357ee569d070c4ab2d0354",
+    "array_sha256": "7add8afdea13bdb747b5e4e84d7313eab6d5ca561fc648cc60d582b38f9309f4"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000005425-0000005450": {
+    "split": "train",
+    "start": 5425,
+    "stop": 5450,
+    "manifest_sha256": "635ee33b2709b0b598b885d84370780b53537ed180cb69f5125943fb176a176d",
+    "array_sha256": "6ed3532ec8593816a43437cbd08c88e6a3e95ff2d08c85a15fa352f1002c3ac8"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000005450-0000005475": {
+    "split": "train",
+    "start": 5450,
+    "stop": 5475,
+    "manifest_sha256": "47c4979cddf854328af61722b7597c79d40920c1d8c311b3090de3c4f4bcd558",
+    "array_sha256": "df3e589fd7dc0acf2d7ebdb4a9fc202014262e374149b03f9f461a3853bc275e"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000005475-0000005500": {
+    "split": "train",
+    "start": 5475,
+    "stop": 5500,
+    "manifest_sha256": "01744f334c8b4a8361f252c99f1813e0e82376b8cecda37773a3fed3a4db8e21",
+    "array_sha256": "991e190ebefcb191c48cf96e99aaa8a415abab4b839a65a31e1474964aa99a5a"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000005500-0000005525": {
+    "split": "train",
+    "start": 5500,
+    "stop": 5525,
+    "manifest_sha256": "55948ae865a8c6a3b0303993994d18cc9581ccc6122fb565023385f5b944a0ae",
+    "array_sha256": "e9a6ffe2f4712b4b31ebc1b05e2c23090230093ab98d68b588f662350c2286c5"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000005525-0000005550": {
+    "split": "train",
+    "start": 5525,
+    "stop": 5550,
+    "manifest_sha256": "94da9fa07fc791cfc4ca1ad26d3d5b9702e036155b5888bdf06a1df00a99e7d8",
+    "array_sha256": "eebb577a61efa2da8ba78049937db3a5082de3d0ea7cf490cba71e7be832390b"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000005550-0000005575": {
+    "split": "train",
+    "start": 5550,
+    "stop": 5575,
+    "manifest_sha256": "1b6dc521dadbc113df46b55bafc66e0bc66f42fcf2737d883beb214e54dc4d70",
+    "array_sha256": "3d1cfcc28b2f0c763ba3eb435ba7278e82169aa1271026fd4792fd4c698b1b25"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000005575-0000005600": {
+    "split": "train",
+    "start": 5575,
+    "stop": 5600,
+    "manifest_sha256": "21ef83969245ba1cd1625e65e4b3ac513b85f7d166322d04a38335e10ad4e398",
+    "array_sha256": "03990f7e198c55bfdc6e591f8985cf64ce27ad6a61499e28ef9169ba8c4a83cc"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000005600-0000005625": {
+    "split": "train",
+    "start": 5600,
+    "stop": 5625,
+    "manifest_sha256": "322af4b08039ebae714f3c831ca237dbe461569e37bada2188512ca083ca76bd",
+    "array_sha256": "069e3d2ec356dc6201ad1c4c5278347305ae429b5ae6e439ac0502fb1c98b661"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000005625-0000005650": {
+    "split": "train",
+    "start": 5625,
+    "stop": 5650,
+    "manifest_sha256": "63c0a66b57466a6d56147bcd1e2af4f83ed3aaab9ca1701e8e4b3f54185c1127",
+    "array_sha256": "204f4d1b601b01ac805f8af5f6730dd9adf3e7fb3a7e8040bec40caaa8b287bc"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000005650-0000005675": {
+    "split": "train",
+    "start": 5650,
+    "stop": 5675,
+    "manifest_sha256": "ac2ee6c023b05bf62381c8d940048b2c6728d3a6caba879f6bb5733894d8f0d2",
+    "array_sha256": "fb102e9ef9ae68c33776e41c6c0ceb089c1b530342c762f7eb1783be02e74e3f"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000005675-0000005700": {
+    "split": "train",
+    "start": 5675,
+    "stop": 5700,
+    "manifest_sha256": "f1f5016e43a2b88aaf04563bf7545c63ef7992006e8e40fcc976aebb832330dc",
+    "array_sha256": "b993f9b71a70caa6a28c053123503e87be5a3145fb1e2383ddd30f6f90dc75dd"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000005700-0000005725": {
+    "split": "train",
+    "start": 5700,
+    "stop": 5725,
+    "manifest_sha256": "4fbc047cf95772815a77db4618e12d9b0afd2c3a4e1a234587e3e6779c58f530",
+    "array_sha256": "5d2a517f089f053f7291da3212200f34e95fb8a2744796abc6687c2067ceb84b"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000005725-0000005750": {
+    "split": "train",
+    "start": 5725,
+    "stop": 5750,
+    "manifest_sha256": "4d7c1198c6905a3e2c3a1de9623d76e83bb7af7d220002b577a8158c41d2e224",
+    "array_sha256": "c0c5f3714007dced9112232244a97b708cae0b3b3c2691bb6ff21671a8aa6fd4"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000005750-0000005775": {
+    "split": "train",
+    "start": 5750,
+    "stop": 5775,
+    "manifest_sha256": "b9de1a52a5637cfbdd0e7aff0d513d495c2db950f8a8c2a17d69941c4dfa61c7",
+    "array_sha256": "020bc435c97244ff3714db6f3a94ce2bea43c62c80ca4dbf12d0a6e6b4d1f150"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000005775-0000005800": {
+    "split": "train",
+    "start": 5775,
+    "stop": 5800,
+    "manifest_sha256": "e1802b82d3f00f5ad375c8e8b3977f450c40caefc44cb1690efe182cba9bd819",
+    "array_sha256": "c4a65a27c5a3da50d45204edac91d4fdc2c014e5d5ff57da2a293fb69a1d1e26"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000005800-0000005825": {
+    "split": "train",
+    "start": 5800,
+    "stop": 5825,
+    "manifest_sha256": "fda2b624b3821bbe74aaf3d12f7318d7324ce4095ba4bc9dbae2a5172d0f0789",
+    "array_sha256": "90dfe484cf6d579a08472d0dd8e4900964a045b021b7533f5ddba7dfe2521d1d"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000005825-0000005850": {
+    "split": "train",
+    "start": 5825,
+    "stop": 5850,
+    "manifest_sha256": "39c28c060070a435cc72e01f78377a5c4b9a1ae854b67cd2d689cfc579436e5a",
+    "array_sha256": "d7c2a4930ab0645366295c9457ec19e0f9d08d6f0e90dd22d4cd540de812c48e"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000005850-0000005875": {
+    "split": "train",
+    "start": 5850,
+    "stop": 5875,
+    "manifest_sha256": "0254f01f5f2d92b3153874e8dd5a3a28f6f4bb6ce627b1921af8ba60f6dcd90a",
+    "array_sha256": "f0ca2be1ae785aa630f7c93887f6080e3639d8cb636641c6d7c5c7d93d9a9341"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000005875-0000005900": {
+    "split": "train",
+    "start": 5875,
+    "stop": 5900,
+    "manifest_sha256": "46a3d5975a10181c28220ee7cbdfab66e698927107c421bd19ef33374704cd49",
+    "array_sha256": "79632a0f6b1a579de95548f806c93e0059c21e1fd49d7488bd7a4ff017aa1f87"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000005900-0000005925": {
+    "split": "train",
+    "start": 5900,
+    "stop": 5925,
+    "manifest_sha256": "5c8b713174dc5d9edd88a8ca297b67946734941e9cb069b5d73bca2fa074d268",
+    "array_sha256": "38a3c67f54a6d5fbe95f6278342110c3e80111bfe7b4dc5265b52fa7e04617b4"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000005925-0000005950": {
+    "split": "train",
+    "start": 5925,
+    "stop": 5950,
+    "manifest_sha256": "254d515621ccf27504ebee133bf9ed634eb05dd686227bf6cc9467fb089db002",
+    "array_sha256": "89db6c72f674c5bcba14af36f318f6f5f19f870dc3af5d4c0609e713210a1a39"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000005950-0000005975": {
+    "split": "train",
+    "start": 5950,
+    "stop": 5975,
+    "manifest_sha256": "231ab5617bc16de3a32a13bb86a50f4c2ef4abec41c33c53e21ce43e770798a9",
+    "array_sha256": "3516e62de06ac65da1e9ef0d48d014eea27c8464afdd0c3ec3c7894b3266ff74"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000005975-0000006000": {
+    "split": "train",
+    "start": 5975,
+    "stop": 6000,
+    "manifest_sha256": "a23d92c5efcd78aa1b71a06efbcbbfb30afb7f54b76c4a6e0fee49214cb89638",
+    "array_sha256": "570af1010f150599e6a9e79c3255883365932dafead6b66dd210fd9550a50bdc"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000006000-0000006025": {
+    "split": "train",
+    "start": 6000,
+    "stop": 6025,
+    "manifest_sha256": "4cb92427c99f0560b670bb4670422be4ab87168d13089dcb1e3feabe253ab19d",
+    "array_sha256": "a2bf1cbdb8ee8a7adb0e90751ff8276118d9828ffea45d6f1f5ea1c7f4a813a9"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000006025-0000006050": {
+    "split": "train",
+    "start": 6025,
+    "stop": 6050,
+    "manifest_sha256": "d8c7dc9eadafeabd7f97a2c24c08663be146bd6bf878b33d35cd406ab3be7375",
+    "array_sha256": "09dfe66b9173b3270509edd29022c5f28469b1a4ac93f8c41bbc4a80edacaa4a"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000006050-0000006075": {
+    "split": "train",
+    "start": 6050,
+    "stop": 6075,
+    "manifest_sha256": "703bfaccf6f9fa803843a316a1fff46733fca6d8eb4adf2650fead5a44a032dc",
+    "array_sha256": "29334f32423aaa76ab2edae734addd463b994ee14299a8b3de7a4318167c201f"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000006075-0000006100": {
+    "split": "train",
+    "start": 6075,
+    "stop": 6100,
+    "manifest_sha256": "695dfa32970b52bfbd532644b0116c394cd160c5e4c2d5d7a6464ea47be58152",
+    "array_sha256": "62f4a6e93569a7c47f51f4b574d8dbc5b452aeadb93d0ff6dda6514df8646243"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000006100-0000006125": {
+    "split": "train",
+    "start": 6100,
+    "stop": 6125,
+    "manifest_sha256": "fbad675f72b1ba5579b79a186937164b9d89a7e92b7bd18e658a5af75ff70ddb",
+    "array_sha256": "d7a530b22c0964dca1d7d5b2edec446ff694f17aba870cfa23d8320c41d10d6c"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000006125-0000006150": {
+    "split": "train",
+    "start": 6125,
+    "stop": 6150,
+    "manifest_sha256": "5a8c553ecc7ca7d9bb4feb9f0be3c5099cff4e07a738efeec36d39f086dfb093",
+    "array_sha256": "dd70a62faeb3681166d97b1d49f8fab2ec400723befdfd84807cbcd5d2da9146"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000006150-0000006175": {
+    "split": "train",
+    "start": 6150,
+    "stop": 6175,
+    "manifest_sha256": "b891dcb247f17a541dc5b17c5a4ba859c27d7217efbd31c6cda57f5aab4269fd",
+    "array_sha256": "10656f75cdb160fcd3c30870b2397c022542f18aeea48484242a8da3ab4e3d8a"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000006175-0000006200": {
+    "split": "train",
+    "start": 6175,
+    "stop": 6200,
+    "manifest_sha256": "f7d7dc4167f7a701f043b8d242073e41498a891ad117e852d2381fc2683bd63a",
+    "array_sha256": "ce3ccd3c863e9fbe836019c63d9bddc7d0a827e4973c6509e7d877526355dc22"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000006200-0000006225": {
+    "split": "train",
+    "start": 6200,
+    "stop": 6225,
+    "manifest_sha256": "5a0031de510a5d4f1b7e1a2ea621ae4af0f595b3a93926790ea6493346f48af8",
+    "array_sha256": "4066cc3c1019df48ab07f4888eebba010449b9ddc57589a5612a94d669c61766"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000006225-0000006250": {
+    "split": "train",
+    "start": 6225,
+    "stop": 6250,
+    "manifest_sha256": "d9e98c028de605933dd520e5f76b634ed82a9aaee572ca1000a32ccee9be7f3d",
+    "array_sha256": "f54bf27704b417fe0647cc1c9997a8634cc9045dd54e81ab203561d218020ca8"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000006250-0000006275": {
+    "split": "train",
+    "start": 6250,
+    "stop": 6275,
+    "manifest_sha256": "1fc738cb3f5d18f2e8ccd5b536a5a7ca70fe6e99bb9e2ef6dd3d631d29ac7990",
+    "array_sha256": "7b1840d5af01a325fe85e570cf844d079ebf3a66ded7a8f1711dc082fb8bb2e1"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000006275-0000006300": {
+    "split": "train",
+    "start": 6275,
+    "stop": 6300,
+    "manifest_sha256": "80efc440d6f49c58996598659bf7007b3cd53e5ba6edd1f9c7f86aca090e4f0c",
+    "array_sha256": "6b64339b859f37c424f3aa04a80a8ede67671ac2366aa693f6c785396eb57a6a"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000006300-0000006325": {
+    "split": "train",
+    "start": 6300,
+    "stop": 6325,
+    "manifest_sha256": "411d0a755c6eb8e12b6270e3a4bfddf2152b2ff1ef4a9d571168676419ae75ce",
+    "array_sha256": "efe31408586087da0460a1908e333eddcdb93f8f5fcd4d402de234dfe79a23df"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000006325-0000006350": {
+    "split": "train",
+    "start": 6325,
+    "stop": 6350,
+    "manifest_sha256": "64f80d9815e516bd2bdecdb358f7d88e1140819e89daa3ebaa62c39383cce6b5",
+    "array_sha256": "a96ca2a4b2c9ad16d5101761adc878f24d2098d2c322056653f89a688070db24"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000006350-0000006375": {
+    "split": "train",
+    "start": 6350,
+    "stop": 6375,
+    "manifest_sha256": "bf21b86c44a0f426655b03a9d41c6f07e925ae5c3d5c61aed9d4f1d9d849590f",
+    "array_sha256": "c4035b5e536867e90b7e389cb5f90426a19b331d86e31d9b498b9c3cbd13e128"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000006375-0000006400": {
+    "split": "train",
+    "start": 6375,
+    "stop": 6400,
+    "manifest_sha256": "e501993fcd41ca66f777040458fa3960e29627f9edb46f8dcd627cc9074927fc",
+    "array_sha256": "4028623dbd7f2d5dbe0ecb73b3b50e6c5f57141675b3f0a7bba5cabfa44bf51d"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000006400-0000006425": {
+    "split": "train",
+    "start": 6400,
+    "stop": 6425,
+    "manifest_sha256": "3cd5177ac8a67386f6f110fc1036a41603ac155f2e587bfa3b15cb8ae98cdb71",
+    "array_sha256": "b9be9b2210d764019dd681c60ccb8d20b50bf28f423b21a2650c218fa97aaf55"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000006425-0000006450": {
+    "split": "train",
+    "start": 6425,
+    "stop": 6450,
+    "manifest_sha256": "623cfc9eb190544b1e6492030475dc21458fd5980415f22eaaec9ce277e06b6c",
+    "array_sha256": "7ae328b9db42a9481314e2463b7037d485d088b325d1c6f5f8cfe3b03520b7eb"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000006450-0000006475": {
+    "split": "train",
+    "start": 6450,
+    "stop": 6475,
+    "manifest_sha256": "d2ca199c0d36136038bc47af72db83cbf6f1239747ce876de1eca985a39aeb58",
+    "array_sha256": "99180e1fdad6babefbdaf38b5b3d82ff128ec02c4147f08b013e359c924db357"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000006475-0000006500": {
+    "split": "train",
+    "start": 6475,
+    "stop": 6500,
+    "manifest_sha256": "b91e1c3dfde091358af5a98c91a31c73bcc6c017e133c817d5de0fba28b86e4e",
+    "array_sha256": "ee9e94d9ac31c5180130f442e3e11b27179e0aa04677a039f845e018e45ac6bc"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000006500-0000006525": {
+    "split": "train",
+    "start": 6500,
+    "stop": 6525,
+    "manifest_sha256": "7d3c23926f83c29deeaf80d937cdeffc3320575e8275bdc5ad2cc3425c4be032",
+    "array_sha256": "1d67ceca4a8343aed3da646cfe232f27c545cf13efeb3bfc8dd557e3fa6e1809"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000006525-0000006550": {
+    "split": "train",
+    "start": 6525,
+    "stop": 6550,
+    "manifest_sha256": "d5d3618f010f2847ec24fc2124e0a36e55e9213d03bb1aa75cc1f130ad2ab77c",
+    "array_sha256": "fcc2ac5be6fbc6fda64a6931614042af51f3cd586aeff023e43fbb47c5be23ff"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000006550-0000006575": {
+    "split": "train",
+    "start": 6550,
+    "stop": 6575,
+    "manifest_sha256": "a6ba9255031ba9ae99f5b2de7ac2eb1293d12aaecba27510efa609081e328bbc",
+    "array_sha256": "2cdd4acece1ecc820e7f4768c985188f677231d771340102f235cd6abb0b26ec"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000006575-0000006600": {
+    "split": "train",
+    "start": 6575,
+    "stop": 6600,
+    "manifest_sha256": "cd47567296231944893f3f820866832d81c149ed326cfa6741e307c6a3d02b2a",
+    "array_sha256": "c7f991fec62ef80cfd4d10786d8ac95837990db5ce8a9216c9adc7aeea1eaf61"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000006600-0000006625": {
+    "split": "train",
+    "start": 6600,
+    "stop": 6625,
+    "manifest_sha256": "1e894767020e2ccb3911b1ffbd5d61a7a655094ba2a378077cb4f9762209391e",
+    "array_sha256": "17aaeb3bcb8f53f4361afbd703ae10a9ed5ec0bcef12a766c4bbf98eb0d62ea9"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000006625-0000006650": {
+    "split": "train",
+    "start": 6625,
+    "stop": 6650,
+    "manifest_sha256": "1084d414dcd77c93b394d1e650836517331ad6fd970a542cbf13e72c13e0e3fd",
+    "array_sha256": "24d300be83288811dd719ad5ffd7d1b3ee07092a34a17a5cc6f26afc6a5b6beb"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000006650-0000006675": {
+    "split": "train",
+    "start": 6650,
+    "stop": 6675,
+    "manifest_sha256": "d967da47107f2f79a684c62daea750012c62d0338e97f4178260642c610dcfe8",
+    "array_sha256": "9eb4eecae1c2e88be74a12dc3a1ed79c190161f020c21849841de69c7e64686c"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000006675-0000006700": {
+    "split": "train",
+    "start": 6675,
+    "stop": 6700,
+    "manifest_sha256": "2dcd95a2f7124509132dd7282f6ac537eaadafbea44382baa103a643abc4d836",
+    "array_sha256": "41039ef5f5929c5f6c7aee118d8a68f4261442aadf61a430283986b1804347cb"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000006700-0000006725": {
+    "split": "train",
+    "start": 6700,
+    "stop": 6725,
+    "manifest_sha256": "62bb5cfd0060913a5818af251059be93df7f5edb27cfe2f6e4018faf9bbdd77f",
+    "array_sha256": "e199b91f263fcbb5cb7f6224f3973fbcf8fdc8030b839b8341f55d883e2f456c"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000006725-0000006750": {
+    "split": "train",
+    "start": 6725,
+    "stop": 6750,
+    "manifest_sha256": "f86f7b3db2e150741d6c51d42fdc15fa234fbeb627c75d406670d1e9fa42d030",
+    "array_sha256": "30e308497addafa2b5ecdf3e085e9c65699ce001ef4acc1bae8de2a2d7eefd8d"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000006750-0000006775": {
+    "split": "train",
+    "start": 6750,
+    "stop": 6775,
+    "manifest_sha256": "3f2ae13319e447632545695b9dbfac78d87852de8537ee994662278ac72e5dd7",
+    "array_sha256": "e6cc0ed4276c1f6959bc9840e43ff576129162b9e4f4b1f2a1c035733e3e201f"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000006775-0000006800": {
+    "split": "train",
+    "start": 6775,
+    "stop": 6800,
+    "manifest_sha256": "f22c5ba825d8c8eef26b9568be7c3e8c05f06c7353362629178257cef0a91951",
+    "array_sha256": "67ba655a63783753157371a411e7b33da9f0985eae8e0594697be015f19d7348"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000006800-0000006825": {
+    "split": "train",
+    "start": 6800,
+    "stop": 6825,
+    "manifest_sha256": "9a9709a1bbfddfd5743df853cec5970b060f7742f0ae92361560021e00d2baf7",
+    "array_sha256": "ace93979b02a7176c3c44277f257e1924b90ffebd84fd7a3e4409a92c87b9698"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000006825-0000006850": {
+    "split": "train",
+    "start": 6825,
+    "stop": 6850,
+    "manifest_sha256": "fcf059f77120c8fb75c274f080e77c0f98b264cf770585c61fbbf499870df133",
+    "array_sha256": "8a718ecc87108350f94219988d8651dd07c41622bd92f2158c560b70aa11968e"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000006850-0000006875": {
+    "split": "train",
+    "start": 6850,
+    "stop": 6875,
+    "manifest_sha256": "beca896eefddb794f8af521272d31b895dc330eb3c75b48df5f5295a0a435e63",
+    "array_sha256": "4b88e855dc149930d121a5dad7f6423c0c4ec2ec175390cd803c56d6188ed71d"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000006875-0000006900": {
+    "split": "train",
+    "start": 6875,
+    "stop": 6900,
+    "manifest_sha256": "713bf447ca8eb6c3ec7d165779ba5b023f5d8da120bd1ea22ee787ed16e9c758",
+    "array_sha256": "1c33cd937cbaaa756692e066289b1df549a5c91124a02d2b2e47763162472c29"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000006900-0000006925": {
+    "split": "train",
+    "start": 6900,
+    "stop": 6925,
+    "manifest_sha256": "ccca83bac1f2556480ac97a5d964d1710a8d890f0e99dd3bccf9bb8175735c83",
+    "array_sha256": "2e6fe3c1caee980bd116b073de2083ab2130d566150f1c0c57f4be314c359d79"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000006925-0000006950": {
+    "split": "train",
+    "start": 6925,
+    "stop": 6950,
+    "manifest_sha256": "f4c33d98822617b7a8808340658c81d1d3f7a0714384b676f25fb00d2949d8ee",
+    "array_sha256": "011f159ec9ff05b3a444367abe380d03ef19913717ab16eee22853675d8eebcc"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000006950-0000006975": {
+    "split": "train",
+    "start": 6950,
+    "stop": 6975,
+    "manifest_sha256": "816679cd4f10ea1d7f824e0c35f1b24e901ef9e60eca2efa9da9727833ea46a6",
+    "array_sha256": "f1075647593598aefc061d320719a908d11cce5d3209a4045ff6c1cd621a924e"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000006975-0000007000": {
+    "split": "train",
+    "start": 6975,
+    "stop": 7000,
+    "manifest_sha256": "28c0c554c8d7e7ca2e06a8aac9a20a0ab835511950f0b065042189e706c59000",
+    "array_sha256": "b11d1423ba7ab4f4b059509ee7c26447c21d13f4b0db76cd6184b9841a83e95c"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000007000-0000007025": {
+    "split": "train",
+    "start": 7000,
+    "stop": 7025,
+    "manifest_sha256": "9c8abe142876cf6f9e0b9280c306c7d2477adbaa7713240f3358f6632ed9c793",
+    "array_sha256": "0899e04253339c2ee0bb8938ac4181e935630caf034655dacead18abde524982"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000007025-0000007050": {
+    "split": "train",
+    "start": 7025,
+    "stop": 7050,
+    "manifest_sha256": "7e10ff0cf94f4e4020d253a1c0f11f16be45ea46982b427617a613673b2d455f",
+    "array_sha256": "129a7f9add8a2ee134483d1d264c4eb45c390ccd0a3f6b2b9abe45880d05dba3"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000007050-0000007075": {
+    "split": "train",
+    "start": 7050,
+    "stop": 7075,
+    "manifest_sha256": "cbe035e2e05b8658595c28f868824e4e3b0da05ab096c96df90c30fb0601121f",
+    "array_sha256": "323ead6593c4047220abf0405fa74a49135826b1eb589cb399667b6b5e815dc9"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000007075-0000007100": {
+    "split": "train",
+    "start": 7075,
+    "stop": 7100,
+    "manifest_sha256": "01e40277b313b73dcc796c5c8236df58909a27854028cab91c5490a1845842ff",
+    "array_sha256": "9cce62c24c35d63bd1cd6e8cfb2e021a8314c1979407d459ab26388b53d63092"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000007100-0000007125": {
+    "split": "train",
+    "start": 7100,
+    "stop": 7125,
+    "manifest_sha256": "8c03bd1a63bf4c059547bb52a6ae646a0b2832f9e939693c68ba774083210508",
+    "array_sha256": "af7e35f0b52de3644d24406bc30210d1924dad9571d1ba723792072e0f3ed71f"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000007125-0000007150": {
+    "split": "train",
+    "start": 7125,
+    "stop": 7150,
+    "manifest_sha256": "8ec2b60ad9d4a5dbe2948acb49d697a719acc152ed35042c3e9f1dd40403a25c",
+    "array_sha256": "3ec3d312906d41c8277d255be3efb02efb729d3f88ef165923ffc8d3b119fa07"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000007150-0000007175": {
+    "split": "train",
+    "start": 7150,
+    "stop": 7175,
+    "manifest_sha256": "5aacf60063d73d609ec7565bea7b3f2dd457f86d4bfc9396463197b71c3178fd",
+    "array_sha256": "a7b839d3789b4215a9870cafb0dc3c431b88fab77e7d84ca16b281d942fa86c0"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000007175-0000007200": {
+    "split": "train",
+    "start": 7175,
+    "stop": 7200,
+    "manifest_sha256": "7dc58dd2dcccbe2a3ff9464141567daf1cbbf02dd92400b1102adad19caf1b99",
+    "array_sha256": "339870b37e8aa93d1c809d5ee4912792bf8091e618febb0edbf8591dfc492149"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000007200-0000007225": {
+    "split": "train",
+    "start": 7200,
+    "stop": 7225,
+    "manifest_sha256": "7ffd448888dedd6078b339030ec6bf73e2eca99a61aa643ff3f62b173ced82e3",
+    "array_sha256": "51eacf5430600ad30765b5a294d1e9e1c308f1414cc3ffea8e5066a4066837f5"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000007225-0000007250": {
+    "split": "train",
+    "start": 7225,
+    "stop": 7250,
+    "manifest_sha256": "051a31b4d976dfcc14cf10ec51081d06ec9168ffc72b9b1014f331a8af331d34",
+    "array_sha256": "0dedab96f4be5ec4ddca42dfc5f49cf40a4193cc26e3f237da18a8b16d256c7b"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000007250-0000007275": {
+    "split": "train",
+    "start": 7250,
+    "stop": 7275,
+    "manifest_sha256": "469ff5672c1087ffc9de2f1b688fd08a2c61142c3d4f1c0fc5d3659bbfd007a7",
+    "array_sha256": "0304a6c049e9edc7ddeba1dfc1decf05bbbe151ae20f7e222f175658169cbfc0"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000007275-0000007300": {
+    "split": "train",
+    "start": 7275,
+    "stop": 7300,
+    "manifest_sha256": "72d11b03da89e12fbae4e57c52a0bfda5fe64f6a6c35cad33e6a24611565b44f",
+    "array_sha256": "9e0320ec12b0789f026e9b086c7a244cb466694f712e5db616ddbc7f52dca195"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000007300-0000007325": {
+    "split": "train",
+    "start": 7300,
+    "stop": 7325,
+    "manifest_sha256": "07bc624a270b2efb0686ef1cac0bf55358b91ce09914a30d756ad6bfe1cbf0ae",
+    "array_sha256": "18b86eeac3966c4976272fdc985ec4da7d0d30939b8d3e1f61643e256e7cbebe"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000007325-0000007350": {
+    "split": "train",
+    "start": 7325,
+    "stop": 7350,
+    "manifest_sha256": "84346b612c36eef3e4d62e7f7b7b208a0e5883b675f3929e2a82f2a87ce5f30b",
+    "array_sha256": "b1b1b8bf94488a135c8bd3ecd9264b1b6af863bd4d2eabc088e5e5de0eecd235"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000007350-0000007375": {
+    "split": "train",
+    "start": 7350,
+    "stop": 7375,
+    "manifest_sha256": "197cae799187a84c66762ff1f1d60e2aff42dc9b87c2aa023de1ad03905ae42b",
+    "array_sha256": "444b12d02661d8165a4b8ce5d409647873aad7c133fef32c2d74a84fb4891ee0"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000007375-0000007400": {
+    "split": "train",
+    "start": 7375,
+    "stop": 7400,
+    "manifest_sha256": "b51bba662a251a9a8549f3e93669774c474882c58bdec1f10f49f012a1d942a3",
+    "array_sha256": "34035e913142ba4d32f329b3f48feb4f14533fdf921891f593ad3e3b0236aee0"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000007400-0000007425": {
+    "split": "train",
+    "start": 7400,
+    "stop": 7425,
+    "manifest_sha256": "a52c6cd8b33f1c4222b4a370634760f7d3728d3a2702f02093ba789c50abfcde",
+    "array_sha256": "ffd07fde60c3d3fa5db79bec00953a1abc4e8841742e0a1d8e97784137a02de2"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000007425-0000007450": {
+    "split": "train",
+    "start": 7425,
+    "stop": 7450,
+    "manifest_sha256": "5974b5d97d18d6e337461d735d3f6a55bb8d7509b543faa29a8df071099cadaa",
+    "array_sha256": "2c1b23ec5446c2e880251c7405ce1a559c258b03287cb727e7267b1fdc9119d8"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000007450-0000007475": {
+    "split": "train",
+    "start": 7450,
+    "stop": 7475,
+    "manifest_sha256": "699744601eb10089512434fa987463dc99ec71431631f51fb06adff2da4da0fe",
+    "array_sha256": "b10b8096b1de738b35dc76415a733cdafd57a21d74b225b0b0ecbfc7e03d799a"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000007475-0000007500": {
+    "split": "train",
+    "start": 7475,
+    "stop": 7500,
+    "manifest_sha256": "557e46ff650012e672acaff5c8a92c30aa46da1e5cc3752e72e179531541e038",
+    "array_sha256": "40a86e8115a0b487146db4eda877b33c423f4bb8d86436bfcf04905b27817773"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000007500-0000007525": {
+    "split": "train",
+    "start": 7500,
+    "stop": 7525,
+    "manifest_sha256": "449e3ce11d6851eca87edbcb2d7a5ef49344f634757240e1902e163143406c76",
+    "array_sha256": "c39a804dd9704189f6a2dd93b4302d7576b4c45ebc4c57512d88fc53dab336f2"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000007525-0000007550": {
+    "split": "train",
+    "start": 7525,
+    "stop": 7550,
+    "manifest_sha256": "1188598be60031ee124e7b43037abb6ee71f20f7f6d14cdd4108a9323a46fc21",
+    "array_sha256": "ba09bac8239a3eafe289ba92c9467c2d350fa7740ca2f5ca75ae395b2cf145a8"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000007550-0000007575": {
+    "split": "train",
+    "start": 7550,
+    "stop": 7575,
+    "manifest_sha256": "8b7b51857fd652a684001bfbc748665c84df61b2ff9954e617729ce67ac33b19",
+    "array_sha256": "0366158f8f711c37ce6ed84600b133bee80e39d1fdbe98f947c1b47ddd104339"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000007575-0000007600": {
+    "split": "train",
+    "start": 7575,
+    "stop": 7600,
+    "manifest_sha256": "8dda6ddd15ee8a6afb10a1d6a7cf09b6c8fc3fa08e1841a5981998429674f443",
+    "array_sha256": "836cd30ac3f268da40e5ca4000c95e5d619c0f85710dde7f53fb9cdbb793a115"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000007600-0000007625": {
+    "split": "train",
+    "start": 7600,
+    "stop": 7625,
+    "manifest_sha256": "d3a5f20debf0acdd27e902a8deb8c95b5c60764b2e2a0c77ff1d95166d1f228a",
+    "array_sha256": "6be96167cd6328371013783102be558cce3b5f1364943c1ac5c740caf542ac37"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000007625-0000007650": {
+    "split": "train",
+    "start": 7625,
+    "stop": 7650,
+    "manifest_sha256": "b516bc464ad50a94d358a17e823ef01aa52cadcc7df700be0fa70a64e7632ed2",
+    "array_sha256": "7e1309a7bcb420cd57b2de74a7fd13ed6426b4c7b1f63d1dc706161f74b367b0"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000007650-0000007675": {
+    "split": "train",
+    "start": 7650,
+    "stop": 7675,
+    "manifest_sha256": "4cd5355f753b3268d93afcc6611d798cb4582248c28082a14c271fc7646aefd3",
+    "array_sha256": "f79bb2ce853d84e0c1d50587ab1b432c4f1bf6d50d14f78d08905d3ad4ff2d42"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000007675-0000007700": {
+    "split": "train",
+    "start": 7675,
+    "stop": 7700,
+    "manifest_sha256": "a8013ea234a5d31e312df4bc0b8d82df19643e053882f6143eb0959935731065",
+    "array_sha256": "98cd8963edbcfd03cb44db61330d7c2a8d0d8638462365c791d4bfa3ccab2e19"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000007700-0000007725": {
+    "split": "train",
+    "start": 7700,
+    "stop": 7725,
+    "manifest_sha256": "092822426d48701a123456ddae238a3afd8b8aa3a2d2bb03dec4f7ff6f438541",
+    "array_sha256": "0b4ac73cce457c83ba63e82a007b8af8b4f18168d20cc9bc12c3cc14cefdf831"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000007725-0000007750": {
+    "split": "train",
+    "start": 7725,
+    "stop": 7750,
+    "manifest_sha256": "a357e9e01b239505d2eea39e9c93169ebc90b205e03f4c0aaf27e3218e2d4f64",
+    "array_sha256": "62aada7201c72d7b1f7480c0fefb0cb52b69b1bceb3dc7eb0b8f602970fca436"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000007750-0000007775": {
+    "split": "train",
+    "start": 7750,
+    "stop": 7775,
+    "manifest_sha256": "ca68a3d8c9adcaa496b9d617f01669663d49d677372f830155bc3639208e8005",
+    "array_sha256": "5d37c6ae7e0ff8f82c83dd3120aaa283452fb22c42d510e6f6b4702184b02fc1"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000007775-0000007800": {
+    "split": "train",
+    "start": 7775,
+    "stop": 7800,
+    "manifest_sha256": "eb01f750001f9d5588136aab19a3e46612ae1f5b9ae85d95c12c343748840607",
+    "array_sha256": "609e756457a8549111675148d4cca213d8dca0231518bdbbcf3ee27e26028ae0"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000007800-0000007825": {
+    "split": "train",
+    "start": 7800,
+    "stop": 7825,
+    "manifest_sha256": "11f79469629cd6af64d072eee0fa9f245d12925a232ab56b3b5d2d89eb286f73",
+    "array_sha256": "cffe6f794c4c717537f82f3c9a0bdeba22d0e2f4796be3a482f39d482dbf6d70"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000007825-0000007850": {
+    "split": "train",
+    "start": 7825,
+    "stop": 7850,
+    "manifest_sha256": "751b33bb9cca7a9436b94981f77a158bb66a29745b2c33683924e5a974d9781f",
+    "array_sha256": "63aee07dadf7eb806d08358c2c26c45b4fbb0d264eaa252e81342993c126ac68"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000007850-0000007875": {
+    "split": "train",
+    "start": 7850,
+    "stop": 7875,
+    "manifest_sha256": "677be83eff5776a1ad5a89351e30b53a99deb5a4f85f40443d5d744b401e531b",
+    "array_sha256": "82a1c7f08c11e48c542e6c827b349c8544121099219be7a6855dde0afab1899c"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000007875-0000007900": {
+    "split": "train",
+    "start": 7875,
+    "stop": 7900,
+    "manifest_sha256": "0849349ae02bda8c6134eaadd8122687360de4aa3bf668322c7acc69a198a4b5",
+    "array_sha256": "b991e7d8a59b0135351aee9b5a35163d230bd6bf53b7b98dcf73d1f97fbeccb2"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000007900-0000007925": {
+    "split": "train",
+    "start": 7900,
+    "stop": 7925,
+    "manifest_sha256": "7f8e96858498bf154c20cf6c56506aad9b03fafc52b82e80deb2411870bb13f5",
+    "array_sha256": "113f806efe254cce453a8a8e4f5304742c8810e233c70dfa71c2f49ceca08fd7"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000007925-0000007950": {
+    "split": "train",
+    "start": 7925,
+    "stop": 7950,
+    "manifest_sha256": "eadb4c363166a0b810faa6e47ccdc616e4dd621ad12af15665b597fa586fa3a6",
+    "array_sha256": "341595df05a24e329d447e1f94d558c07c208a4bfbcadd66e34a2dd8982071e5"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000007950-0000007975": {
+    "split": "train",
+    "start": 7950,
+    "stop": 7975,
+    "manifest_sha256": "10f0702e23c72f8f469aef60d930e0aa9a71ae9d8aeb959ed73c3121ba23c0bd",
+    "array_sha256": "9e06625f853229d5806cd28dffcf7898ac1938892d7e158d36f809e92ceaec6f"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000007975-0000008000": {
+    "split": "train",
+    "start": 7975,
+    "stop": 8000,
+    "manifest_sha256": "87b23c271587a6de902f65ab10632edfb51776c0c034b3e43100ef7613bd64ea",
+    "array_sha256": "d9caf0960fdf2588bc2ca40e782c81bfc2359ae6b000852617daf2d9d8ae5679"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000008000-0000008025": {
+    "split": "train",
+    "start": 8000,
+    "stop": 8025,
+    "manifest_sha256": "10818a1e96ac8bc622e7f4368623fe4ccfcc9b08186107aae4dd9e1940ecdd84",
+    "array_sha256": "3507d4d6496a40bb78d3fd2dc8995dc3123b776f725d21a0d4e7e5f1cae7c9ee"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000008025-0000008050": {
+    "split": "train",
+    "start": 8025,
+    "stop": 8050,
+    "manifest_sha256": "35584a4fb2aa457f79c4e9fc7926c50f9e18fee1ad75ad55d60d1674644f84fe",
+    "array_sha256": "d976d4dcd90762939121e8631f233d26f8b7c1cf09c2c6e58cc6d32fa96ba264"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000008050-0000008075": {
+    "split": "train",
+    "start": 8050,
+    "stop": 8075,
+    "manifest_sha256": "2372de334bd06eccd302dd26633413057487017c2126a4fc3644d13d99b6a307",
+    "array_sha256": "d3b3881881a648959f31494ac7d99ba75ef0bbf398f4a030e3f8bf2c17f11da0"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000008075-0000008100": {
+    "split": "train",
+    "start": 8075,
+    "stop": 8100,
+    "manifest_sha256": "a9443f8b4c7a2e52ba2bdeef640dcfb1988ed2ace89b0edf6b648e1571664653",
+    "array_sha256": "552587c08c84b374fae1713f4a8a5f3fa1e5477b1f9635bc3ff0ebb86f89dc78"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000008100-0000008125": {
+    "split": "train",
+    "start": 8100,
+    "stop": 8125,
+    "manifest_sha256": "171937bff6e7e4a6fcfc0be97a1aa967d6e52bd0c2ad725c99b8aec9e57ed8ba",
+    "array_sha256": "cd9a4d1ca4a0be5c0d85d792690ee393a52440df7d612a009eb910b2a9ca46f4"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000008125-0000008150": {
+    "split": "train",
+    "start": 8125,
+    "stop": 8150,
+    "manifest_sha256": "16631da83aa82c26c16933dfd6c24e7cc45942b25af16bd3dada7333ff238e6a",
+    "array_sha256": "0046b87f7b31227cd250ec64f305dce8ddd852a0729a50778c65470066d559e9"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000008150-0000008175": {
+    "split": "train",
+    "start": 8150,
+    "stop": 8175,
+    "manifest_sha256": "dfc40568d86175630ac4129d2abcbc03b1b2cf547280bba526aa868831820636",
+    "array_sha256": "441edc3a88531dae2dceb5d9409627db1f58c65d5a0dcc9afb923b2498ca76f8"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000008175-0000008200": {
+    "split": "train",
+    "start": 8175,
+    "stop": 8200,
+    "manifest_sha256": "70a2cb6b07fb3e59c17e1f44c1725d7251b0b452f2319e14f70eb99a7cd71c88",
+    "array_sha256": "b7456ca52d63c0d2a4c24d71e56e6684c34fc2dee34674477a2c7ae29b6f5a0d"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000008200-0000008225": {
+    "split": "train",
+    "start": 8200,
+    "stop": 8225,
+    "manifest_sha256": "1df54f641ee82b2109ebd40c4318c1f82e411bf6537acd3c9e032bc145fdb4ae",
+    "array_sha256": "1672c2404e94c2137f8e3daa10f3bcd286ed545f0f0630d1a791b2f48cf64188"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000008225-0000008250": {
+    "split": "train",
+    "start": 8225,
+    "stop": 8250,
+    "manifest_sha256": "bd163c92b5ac0a0e102dfd77bec6b9f0f77febdcef6dacb81b76c12a9c4d75bb",
+    "array_sha256": "e541819e79338ba23a30cf7bd785c612b4a5d4a5a5e4bfa4a040f528de08368b"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000008250-0000008275": {
+    "split": "train",
+    "start": 8250,
+    "stop": 8275,
+    "manifest_sha256": "c8f5db43a1f5e87c920d8d4c635cb76fceb58b475d31e7e4aa0502e1147bf17f",
+    "array_sha256": "b4abd3a1f7cacdc4e89de4d8951f3dc03a1cfd0eb2126676331ed33c0b5eab0a"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000008275-0000008300": {
+    "split": "train",
+    "start": 8275,
+    "stop": 8300,
+    "manifest_sha256": "16779817ae3cdfbed41340d9e23d0ac9ea43392004b2d403bd08daabf2583bee",
+    "array_sha256": "501d2c20ca46da73630b0660c3741df612eddeb8007227d94023ddcfa490b4f9"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000008300-0000008325": {
+    "split": "train",
+    "start": 8300,
+    "stop": 8325,
+    "manifest_sha256": "501ea074fdfc9c4dfca17ffeb5459339fa4cab0c013d761b8d083f4a3ce198e1",
+    "array_sha256": "9298fda04ebc5fb5e1490e14b780b16d97758d24a82836cd8ccf9230b04c6653"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000008325-0000008350": {
+    "split": "train",
+    "start": 8325,
+    "stop": 8350,
+    "manifest_sha256": "1cb18e71f317c2b2f2dff12bbb9e13b9ceed856beca92df1c92210798a700b3f",
+    "array_sha256": "527b5b6441983559abcc2ab339bde17719af2b0af595bbbfc867fd7de78436a6"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000008350-0000008375": {
+    "split": "train",
+    "start": 8350,
+    "stop": 8375,
+    "manifest_sha256": "1cf1b1d483e3a2689964b04bdc4f44c7126b22ae571d8c9728fce8986c54bc60",
+    "array_sha256": "6b2efb3d029a24ebc923b6700186352a274af128fec9eb5dbe63697133b4dd1a"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000008375-0000008400": {
+    "split": "train",
+    "start": 8375,
+    "stop": 8400,
+    "manifest_sha256": "c025c219c01e7bd6f07e89ff1ba0fa10f10498bb2372be55bcd48c1eb02a94f4",
+    "array_sha256": "59de1551d367d9e4f42bf0236590790eff741b754b33937df8899df524cfc0ea"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000008400-0000008425": {
+    "split": "train",
+    "start": 8400,
+    "stop": 8425,
+    "manifest_sha256": "649bfc3e96d959523fead254723ef2c558b1ffb094dbb1d92010427a58dd7dc8",
+    "array_sha256": "bb5d933426b7e58338fd2e0e13b4743569a90980506cea0709a051f766860991"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000008425-0000008450": {
+    "split": "train",
+    "start": 8425,
+    "stop": 8450,
+    "manifest_sha256": "aeb08056671824ccdbb019d92025ace56b1d96f6b97426e05fddaeb12792dcd2",
+    "array_sha256": "cc2498e9994bd081c22997c6924929dfa17899221da0d0a832b40b4bb14ea075"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000008450-0000008475": {
+    "split": "train",
+    "start": 8450,
+    "stop": 8475,
+    "manifest_sha256": "31aa5ba0fbb14e50ad7c431fa22a79ede04b09e8eab2ec0dd7daddd5b52938ba",
+    "array_sha256": "1c0bfe22406960eec891434a0fe5cb8cf70b2c41e51ee9b19ba7daf6868de868"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000008475-0000008500": {
+    "split": "train",
+    "start": 8475,
+    "stop": 8500,
+    "manifest_sha256": "19a223306867b40862364eae21f300f4df4f4eb9ad6311c1a6d15af7e7034a76",
+    "array_sha256": "393f3e7e06e0b0ca59b20c21a913528a877cbfc58c770ddbe4801341ac1c9ca8"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000008500-0000008525": {
+    "split": "train",
+    "start": 8500,
+    "stop": 8525,
+    "manifest_sha256": "e248520c231cd3e1333378d08d37948a29331d0ec95a34c1a914f30be5049230",
+    "array_sha256": "91647b1a0eb606d1060713c3efb7ce7e0f9e3aeb64ac01642ca60f9b782a2a51"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000008525-0000008550": {
+    "split": "train",
+    "start": 8525,
+    "stop": 8550,
+    "manifest_sha256": "f38ee262509ad78847c6c744320fc691f032a49c5c711ffcb81e93c8e24aef05",
+    "array_sha256": "c5acd37fa9cfdcce7118370c8d6a22f2c6d134ce5c68d6892b5773074d7ee656"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000008550-0000008575": {
+    "split": "train",
+    "start": 8550,
+    "stop": 8575,
+    "manifest_sha256": "02bf38de93a8250744dcd18846de8741be3eea413feeaa45cc6a45621e369a83",
+    "array_sha256": "dea815e28e7adbf4b0696633259ca5358836652fd40444cb435201e880714080"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000008575-0000008600": {
+    "split": "train",
+    "start": 8575,
+    "stop": 8600,
+    "manifest_sha256": "7897f8003381893b255918afd7796eb054316e130e910ed8c6c31ef241e6d3f7",
+    "array_sha256": "d73a8319d37dbbd2596f28f7d45c927fca86b3da5720a0f4811f88a66f8a4c19"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000008600-0000008625": {
+    "split": "train",
+    "start": 8600,
+    "stop": 8625,
+    "manifest_sha256": "21755fa9a7fe6ebafc94e796c69def61c406ded8575d3482602ae9583a3309f2",
+    "array_sha256": "1dfc77c2c40777b0c260b2a60a0c350b4667f2bf88c27dfe71b3b44808d03461"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000008625-0000008650": {
+    "split": "train",
+    "start": 8625,
+    "stop": 8650,
+    "manifest_sha256": "7b83ae7b9f261df744a51fca402614449e1c864b5169b783ad7e39a06d7e09aa",
+    "array_sha256": "251010a4e61ccac0945a48842208853305c4c53387a0e55212f57c102a0f3ce2"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000008650-0000008675": {
+    "split": "train",
+    "start": 8650,
+    "stop": 8675,
+    "manifest_sha256": "3abeada587b50c38bfedf69f13cde20dc534d02373bfc665674accf9f5e3c1d3",
+    "array_sha256": "b4026bf9c06ec2fa3a193d7a0128bfce543fb49ea948a6975db2fe143b62d58f"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000008675-0000008700": {
+    "split": "train",
+    "start": 8675,
+    "stop": 8700,
+    "manifest_sha256": "260bccb716c95e14299c03825bea41e84dfa3ec247b8c377121faefe7951d6ec",
+    "array_sha256": "e98488567332dc9a6abcdae30b05bdf58e000bd91ff4534fb117291902fa0d3d"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000008700-0000008725": {
+    "split": "train",
+    "start": 8700,
+    "stop": 8725,
+    "manifest_sha256": "10a7eef0d676223edd63d1f78d51b1b997dd274e27af7cb21d720e0b1faa2ec8",
+    "array_sha256": "7c81e399f2f76d5ffe3810d471a23149a73c150e482e3e55a0c8f379f14e2a90"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000008725-0000008750": {
+    "split": "train",
+    "start": 8725,
+    "stop": 8750,
+    "manifest_sha256": "e8b84429d79ab58474b5ef2489befa383b3f3fce6029d9b979b07c4a322325cc",
+    "array_sha256": "9cb1004b9121974a30c806e474c084dff32d1a7699c91bc3a2d7b7c4e25d9f7e"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000008750-0000008775": {
+    "split": "train",
+    "start": 8750,
+    "stop": 8775,
+    "manifest_sha256": "50bba8fc04e71b2672ff427c8f68f58977bc3d266063e905d3da8a095772170b",
+    "array_sha256": "14982987e60feaa37ac3e81e3b4fdb442b49866ef91881858ddf3cf6a6bcc630"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000008775-0000008800": {
+    "split": "train",
+    "start": 8775,
+    "stop": 8800,
+    "manifest_sha256": "3bfb1fa6a5e22e5608bf00119f610eaf515a00a4d6c61fb34253595d2de7ebc7",
+    "array_sha256": "07ad2ecd38c81d50fe22e61646f7c4d40f500b5f9cb72f8baf631561b4596335"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000008800-0000008825": {
+    "split": "train",
+    "start": 8800,
+    "stop": 8825,
+    "manifest_sha256": "8fab8429d38aae34ee74c2f0298c20b54ba6430a08f683f9052412e44d744149",
+    "array_sha256": "33e3014dd4c5aaa4db4884bf140944a814f6e0d06c1a64206c07470eb0b42377"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000008825-0000008850": {
+    "split": "train",
+    "start": 8825,
+    "stop": 8850,
+    "manifest_sha256": "8014277ba8d31281c75b4e4ec2ba5d7458256592e1192ce2d15c9d415542326b",
+    "array_sha256": "7c4c419731aa7cc734bea991918d38270e05350c668e7686d039e92f13099977"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000008850-0000008875": {
+    "split": "train",
+    "start": 8850,
+    "stop": 8875,
+    "manifest_sha256": "2faf48cf430157a759395c4348712df5c38f93a5cdd2334812f0bde0da4ac57c",
+    "array_sha256": "5d8e9da59a71e2f1e9ed1dfcae65c047266d533176eeb27023881078ddf4bb20"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000008875-0000008900": {
+    "split": "train",
+    "start": 8875,
+    "stop": 8900,
+    "manifest_sha256": "f494687596b4886dc1f4dd60f15ba7c3bb50945b5a02c138294a0e005a34a7f2",
+    "array_sha256": "6c2c37fe2e0817fcb8bf0060dd613f043bd1a0dfa4d150e5ba25dbf00e00c9c3"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000008900-0000008925": {
+    "split": "train",
+    "start": 8900,
+    "stop": 8925,
+    "manifest_sha256": "8ba5e03a8ddfaaa0cec54a04029d44415d3664ec9c4a82007b7bef384bc9b822",
+    "array_sha256": "50cd3da96a820b3fc6670b07f1804d4205b1ac20edbfd8f66f298d8aeda0c25c"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000008925-0000008950": {
+    "split": "train",
+    "start": 8925,
+    "stop": 8950,
+    "manifest_sha256": "69d03de84d4808ed8ad47a4fdf41ae4d07236063d2f7c4c7d8ace5dbe59fe99b",
+    "array_sha256": "502d762ea1e28c151e86b93f341b04de3f1fe507816857bc7856cb0b06fa0ae1"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000008950-0000008975": {
+    "split": "train",
+    "start": 8950,
+    "stop": 8975,
+    "manifest_sha256": "1e77ff1776141516c1708142c4841234bdf3a17613cb4025c0d87172e31313a8",
+    "array_sha256": "197e42801d44680730aab05eeae005bc72a7f4195c6ae98a43a07b464556d542"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000008975-0000009000": {
+    "split": "train",
+    "start": 8975,
+    "stop": 9000,
+    "manifest_sha256": "1034d2f81e7fffe78a5681d62e3355832a664435f1e69622dbf434ad043993d2",
+    "array_sha256": "2f9890660bc5ddff1a49c7993e7db45c8da197947087d590ee6006d3a8baf086"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000009000-0000009025": {
+    "split": "train",
+    "start": 9000,
+    "stop": 9025,
+    "manifest_sha256": "411cbc6a5cf34c9cd71a58d9755657740daeafa475df448a9957622948b06006",
+    "array_sha256": "46ef2b227b40975833b86654757b35fe78ed95b009711036028f9b9b7361728a"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000009025-0000009050": {
+    "split": "train",
+    "start": 9025,
+    "stop": 9050,
+    "manifest_sha256": "cc213256e2f960dd4d27f8597587ef339014b44bed4e3e835864460dc6838b6c",
+    "array_sha256": "feb96dcadadcf0dc1b4287fe361a2d6294b9f74f9a4721e9494adde7caf1f49e"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000009050-0000009075": {
+    "split": "train",
+    "start": 9050,
+    "stop": 9075,
+    "manifest_sha256": "d66c6abe3d36db24899d0ba962af6d301dd4e127ae8eaaaa2b72a9b27099b498",
+    "array_sha256": "b41c7bb5aaba838b1d114cbf1a84c6bbc5f3dd8d8adbcfcd5276e4f29e755b27"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000009075-0000009100": {
+    "split": "train",
+    "start": 9075,
+    "stop": 9100,
+    "manifest_sha256": "9df0e7b6d8ae0b3ab5ec64e89ebfc8fd9613f3766a89967acf81d724db09288b",
+    "array_sha256": "c543db211f73288e1045b5f8c3b7222c002a55d6cf61cd4d4aafeee7bc60d5e1"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000009100-0000009125": {
+    "split": "train",
+    "start": 9100,
+    "stop": 9125,
+    "manifest_sha256": "d322dff6f0f3fe9cf3ca027a54c129c5eaf96cd1224cbc3050d59f0673cd72cd",
+    "array_sha256": "345a17c9cfdcc72ce69b659735f51804f1d2b11cd2c75c7a767bb12881fa2634"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000009125-0000009150": {
+    "split": "train",
+    "start": 9125,
+    "stop": 9150,
+    "manifest_sha256": "7b5e35cf2632aad4d3584c648ca2c8a29098801302e47ec1c357729feb144721",
+    "array_sha256": "dfe3030c874f1f3ab3c574429b088d84169aa9c8bd979b069aa9722f7d0996a4"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000009150-0000009175": {
+    "split": "train",
+    "start": 9150,
+    "stop": 9175,
+    "manifest_sha256": "e3a36baa5f32c3ee12c56893fcdcdcd45dd2086f33c1bd54afddc880fdd9afe6",
+    "array_sha256": "85430a3887b67a462383518cb188a9bfb15aacc1890fa56e2746f4e7fe15da7d"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000009175-0000009200": {
+    "split": "train",
+    "start": 9175,
+    "stop": 9200,
+    "manifest_sha256": "b97661b49b1a436c356d3163ec096889af0f6c56a88f9779b1689d1fa03089d3",
+    "array_sha256": "64741995103b258fd250c8174cccbe01bd0de8f33fc71f22e9a3f9655d305a40"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000009200-0000009225": {
+    "split": "train",
+    "start": 9200,
+    "stop": 9225,
+    "manifest_sha256": "416cae1f95c31c54a6629b92ec07457091a423de9656246ddf6b2d931896c682",
+    "array_sha256": "d3a417ffca1d31879119ef6f4bb6b121ecd2e874e9e8a733688a59ed1d86bf9a"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000009225-0000009250": {
+    "split": "train",
+    "start": 9225,
+    "stop": 9250,
+    "manifest_sha256": "61825b241087bcbb60c80eef429969ac87da9193c147cfb27349c873bc4f4c70",
+    "array_sha256": "81b1372978ad67701bdd2460cc371348bc94d8cc2486fef33dd2612b37cb10d4"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000009250-0000009275": {
+    "split": "train",
+    "start": 9250,
+    "stop": 9275,
+    "manifest_sha256": "83f76ae40485f0e8b871c11380fcc24b95677cb923fe3d5b2e5eae32e11a6aff",
+    "array_sha256": "7fbff32d5a0dbbd72c9329ff59427841b088d522af75eefb18e78654a298ed02"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000009275-0000009300": {
+    "split": "train",
+    "start": 9275,
+    "stop": 9300,
+    "manifest_sha256": "8209a66a7ffe58865acbb044dd4b22415d4524bc09750f844d72aa2b80f5222d",
+    "array_sha256": "2198f9f90f88f2edbc3c2161bec13262b1c1ce7792378879af480c609f12ec71"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000009300-0000009325": {
+    "split": "train",
+    "start": 9300,
+    "stop": 9325,
+    "manifest_sha256": "eb2ee3bbdb30b40c761b0586127e5581116fc829076465df9530c8baf9ca3150",
+    "array_sha256": "559faa5705072408d18ead3069c17ce038d8b9e9b6caebbd7811d6e65be78334"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000009325-0000009350": {
+    "split": "train",
+    "start": 9325,
+    "stop": 9350,
+    "manifest_sha256": "3f8e6371b26e6467d3d74067faffe0b1de6c4dfe5333ff150e0e626af6256026",
+    "array_sha256": "f7cb5d99dc5a3739fb0331ae40aa6a2b17fff05960a23f2da6a066d9e489e8e5"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000009350-0000009375": {
+    "split": "train",
+    "start": 9350,
+    "stop": 9375,
+    "manifest_sha256": "6abe44dd26add35e9cb7c54b9669b00245ef0f4df452271deaa4e230415c957c",
+    "array_sha256": "3ad6a45dcaced9b4c38aac39b70deb297da5b2d906a192b60ef7a0b98f21660c"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000009375-0000009400": {
+    "split": "train",
+    "start": 9375,
+    "stop": 9400,
+    "manifest_sha256": "2ee4aa51425933a158625712746e50b31a65751a72d215a2ec2ee61d09663fc4",
+    "array_sha256": "8d54e96634b321065865d8e53555e7904ca382317fcf718b7e8db25c8bec6702"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000009400-0000009425": {
+    "split": "train",
+    "start": 9400,
+    "stop": 9425,
+    "manifest_sha256": "14a72b5f3e5f6e67a4ae80e027c9842409277e7a95c224eeb642197fa92b9095",
+    "array_sha256": "31bb970bd6c1c7fc38518cd2e91cb7880b63dc69ebaf2222a33bcdf06bc3953f"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000009425-0000009450": {
+    "split": "train",
+    "start": 9425,
+    "stop": 9450,
+    "manifest_sha256": "20f6ca1d5767ba20313fe26ec2c30df4bb62d53d58aef3feb3b338f73b61756e",
+    "array_sha256": "e48b7562f4754c472300254fd902c87b9e9657eecba1dde18c8163d11fe3df11"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000009525-0000009550": {
+    "split": "train",
+    "start": 9525,
+    "stop": 9550,
+    "manifest_sha256": "8c123e4b82a7b133cb6987895c55b8076c277ee10a69880ec1604045cb3975c8",
+    "array_sha256": "54698fda5aac3eefe5c9276cfe51d34e07f5e7ceeb879aec99710582fc8876e1"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000009550-0000009575": {
+    "split": "train",
+    "start": 9550,
+    "stop": 9575,
+    "manifest_sha256": "2ff15395d26510d57bcad068c57d8482267b4cf9b7de8052279c961d3d083fa8",
+    "array_sha256": "6f84158cac107fcb6d86c9441f5daa8880b6a711798ea6e87355547baf95783e"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000009575-0000009600": {
+    "split": "train",
+    "start": 9575,
+    "stop": 9600,
+    "manifest_sha256": "315d26bb3075bc96ef69d2ff045f91b2e704d69a47119262027b0cdb8d2205aa",
+    "array_sha256": "22988f4d44da6407b2e6bbc0e60d0df0243c1e3c6078b341133301be1e103cb0"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000009600-0000009625": {
+    "split": "train",
+    "start": 9600,
+    "stop": 9625,
+    "manifest_sha256": "786d6cdbf69970f8443d061a2afe8072f95ecf0566eb70773f71ba47fb502f37",
+    "array_sha256": "e7bed0f00bffe49515cb8dcf0a5d7d60e46d93c1d1008a70371c64fb0b79bb76"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000009625-0000009650": {
+    "split": "train",
+    "start": 9625,
+    "stop": 9650,
+    "manifest_sha256": "b4ba7607d1e5866e1aac6b2cac98313a651cf7b668c1db83d43d95c682d9b662",
+    "array_sha256": "a5a0e0ca823b7ca547595e753c7dd2d56f0927f4ee7803af71754b6dd388094f"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000009650-0000009675": {
+    "split": "train",
+    "start": 9650,
+    "stop": 9675,
+    "manifest_sha256": "63b52f3a2078cae937bbf2d65ae0a93df024bda69cbc0064252722f071b4b1c0",
+    "array_sha256": "737e6f3ca281f32ef30b17ef4ca566d4449bda196e1b327f63b304c0f4b31344"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000009675-0000009700": {
+    "split": "train",
+    "start": 9675,
+    "stop": 9700,
+    "manifest_sha256": "4b2aeeabcfc5f47b4e05943d3b17597e8ba4cafc65406272523554f856e58cf2",
+    "array_sha256": "734ec3e1ce184429f5d98bf5d395ec57faa8a1236c498917a736ff5a8ba15bad"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000009700-0000009725": {
+    "split": "train",
+    "start": 9700,
+    "stop": 9725,
+    "manifest_sha256": "e31051c45a846a1de84721e76fb748118d9dfcbddd42112d405ee5dc1b2ae1ee",
+    "array_sha256": "7949df7ccf8440f1e0b0d903ce45468e9ba59b7868a04b3ba8b4cc04134e3daf"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000009725-0000009750": {
+    "split": "train",
+    "start": 9725,
+    "stop": 9750,
+    "manifest_sha256": "7cd1482d2fb591b273d849b76ffb99571960b98bf23833a686fa7841896e28e6",
+    "array_sha256": "44593c540d5da9054fa24e4321701d4b1fccc9674589aca73c8f391ab81cc94b"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000009750-0000009775": {
+    "split": "train",
+    "start": 9750,
+    "stop": 9775,
+    "manifest_sha256": "9745b845f759b20397b1c6ee88f6f4c13d6566501133255d8ce39537b44463b7",
+    "array_sha256": "40ba7d177b3aecebd6f9c3966dcfbcfa2339d47aaaf0aefb14a5c9ea1154a5b3"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000009775-0000009800": {
+    "split": "train",
+    "start": 9775,
+    "stop": 9800,
+    "manifest_sha256": "384d99443b2b107bdc81b5bf277bfe01e3def48eb5c4164da2510bc8ac3e338f",
+    "array_sha256": "cacf1a002e143c8bb199d499391a6d252afb4fc2992b66f4942c3a76c693256d"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000009800-0000009825": {
+    "split": "train",
+    "start": 9800,
+    "stop": 9825,
+    "manifest_sha256": "da2b813c8b4153b485f21028e7e94837164b9fe168cccf254a45d6626f88915f",
+    "array_sha256": "08aae744aca2c691abc9e7ccc2483cbc0d58a26fb49523cbc7922d61da1b84c3"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000009825-0000009850": {
+    "split": "train",
+    "start": 9825,
+    "stop": 9850,
+    "manifest_sha256": "5614dc902811b68761b3ecb6ba6214345c861bb960a2aa928c1fb6816bb3732d",
+    "array_sha256": "b4ab127b8584adf1520f3a0f429a800b23c66ee68fa885abc7b03bdb0f95b97d"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000009850-0000009875": {
+    "split": "train",
+    "start": 9850,
+    "stop": 9875,
+    "manifest_sha256": "5bd6b9f1a58f561938c9de690c6c3b32bc4fa4d829aa98750c413e4c8cad6419",
+    "array_sha256": "ba3f7900793c682094193754539015901b6ab64282a6c346ef78057634bbb68c"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000009875-0000009900": {
+    "split": "train",
+    "start": 9875,
+    "stop": 9900,
+    "manifest_sha256": "bed1298bb874e8c1436744c7dbb34ff2d4f687a1e3f0af7343fa5e2c6e09abb8",
+    "array_sha256": "c6181bde3f72e31fe6abe2849db0b16969153b2f0e756ce87b688037826f223f"
+  },
+  "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/collection/parts/train-0000009900-0000009925": {
+    "split": "train",
+    "start": 9900,
+    "stop": 9925,
+    "manifest_sha256": "a3749a1460b6cb9871d5c06cc8c7cf688153486594f764b79e8d33f6e60a25dc",
+    "array_sha256": "f0af5e40ea880bb89a4f54a2ca49ca788a1a6f6e18aa32c2559ce17f88b3bc7b"
+  }
+}

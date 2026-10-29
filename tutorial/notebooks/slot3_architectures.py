@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.25.2"
+__generated_with = "0.25.1"
 app = marimo.App(width="medium", app_title="Slot 3 · Network architectures")
 
 
@@ -16,26 +16,14 @@ def _():
     import matplotlib.pyplot as plt
     import numpy as np
 
-    from sbi4f_tutorial import inference, plots, teaching
+    from sbi4f_tutorial import full_surface, inference, plots, teaching
 
     ROOT = mo.notebook_dir().parent
     ASSETS = ROOT / "assets"
     RESULTS = ASSETS / "results" / "calibration"
     CHECKPOINTS = ASSETS / "checkpoints"
     plots.style()
-    return (
-        ASSETS,
-        CHECKPOINTS,
-        RESULTS,
-        inference,
-        inspect,
-        mo,
-        np,
-        plots,
-        plt,
-        teaching,
-        time,
-    )
+    return full_surface, inspect, mo
 
 
 @app.cell(hide_code=True)
@@ -46,8 +34,8 @@ def _(mo):
     **Which networks represent the posterior, and how they read the data**
 
     Slot 2 ended on the object to build: a conditional distribution $q_\phi(\theta \mid y)$, trained on
-    simulated pairs. This notebook shows the networks that build it, using the trained Heston network of
-    slot 4 on the SPY smile.
+    simulated pairs. This notebook shows the networks that build it, using the current cached Heston
+    development example and its PyMC reference. Historical SPY results remain labelled separately in slot 4.
 
     Three claims, each shown below:
 
@@ -84,53 +72,41 @@ def _(mo):
 
     $$\mathcal L(\phi) = \mathbb E\,\big\| u_\phi\big((1 - \tau)\,z + \tau\,\theta,\ \tau,\ y\big) - (\theta - z) \big\|^2 .$$
 
-    Sampling integrates $dz/d\tau = u_\phi(z, \tau, y)$ from $\tau = 0$ to $1$. A normalizing flow does
+    This formula uses a conceptual noise-to-parameter time. BayesFlow retains its released
+    time convention and sampler. In this conceptual convention, sampling integrates
+    $dz/d\tau = u_\phi(z, \tau, y)$ from $\tau = 0$ to $1$. A normalizing flow does
     the same transport in one invertible map with an exact density; flow matching trades that for a
     regression loss that scales to many parameters and odd shapes, and the tutorial's networks use it.
 
-    Below, the trained Heston network of slot 4 carries 2,000 noise points to SPY's posterior. Each panel
-    stops the integration at a time $\tau$ and maps the points to parameter units.
+    The cached current Heston example below shows the endpoint and its reference.
+    Flow trajectories depend on the trained network and its sampler; we do not invent intermediate states from cached endpoint draws.
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    The archived BayesFlow 2.0 Euler-step experiment is retained in git history. Current estimators use BayesFlow 2.1's native adaptive solver; this notebook does not override it. Inspect all current Heston parameter pairs in the cached example below, and use the backbone review for explicit native sampling.
     """)
     return
 
 
 @app.cell
-def _(CHECKPOINTS, RESULTS, inference, np, teaching):
-    heston_task, heston_workflow = teaching.load_network(CHECKPOINTS / "heston")
-    spy = teaching.load_json(RESULTS / "spy" / "surface.json")
-    spy_conditions = inference.conditioning_data(np.asarray(spy["prices_forward_units"])[None], None, heston_task)
-    _network = heston_workflow.approximator.inference_network
-    _full = inference.sampler_times()
-    snapshots = {}
-    for _tau in (0.0, 0.25, 0.5, 0.75, 1.0):
-        _times = _full[_full <= _tau + 1e-9] if _tau > 0 else np.array([0.0, 1e-4], dtype=np.float32)
-        _network.integrate_kwargs = {**_network.integrate_kwargs, "method": "euler", "steps": _times}
-        _draws = heston_workflow.sample(num_samples=2000, conditions=spy_conditions, seed=3)
-        snapshots[_tau] = np.column_stack([np.asarray(_draws[n])[0, :, 0] for n in ("vol_of_vol", "rho")])
-    inference.use_sampler(heston_workflow)  # back to the full 100-step sampler
-    return heston_task, heston_workflow, snapshots, spy_conditions
-
-
-@app.cell(hide_code=True)
-def _(plots, plt, snapshots):
-    _fig, _axes = plt.subplots(1, 5, figsize=(12.0, 2.9), sharex=True, sharey=True, constrained_layout=True)
-    for _ax, (_tau, _xy) in zip(_axes, snapshots.items()):
-        _ax.scatter(_xy[:, 0], _xy[:, 1], s=2, alpha=0.35, color=plots.SERIES[0])
-        _ax.set_title(f"τ = {_tau:g}", loc="left")
-        _ax.set_xlabel("vol-of-vol σ_v")
-    _axes[0].set_ylabel("correlation ρ")
-    _axes[0].set_xlim(0.1, 1.5)
-    _axes[0].set_ylim(-0.95, -0.1)
-    _fig
+def _(mo):
+    from sbi4f_tutorial import backbones
+    _task, _report, _arrays = backbones.load_example("heston-final500")
+    mo.vstack([mo.md("**Current cached Heston development case**, with the PyMC reference. "
+                    "No network is loaded on opening this lesson."), backbones.corner(_task, _arrays)])
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    At $\tau = 0$ the points fill the prior box; by $\tau = 1$ they sit on SPY's posterior,
-    $\sigma_v \approx 1.13$ and $\rho \approx -0.64$. The path is not a straight line in parameter units,
-    because the network works in standardized, unbounded coordinates.
+    The current cached endpoint is a synthetic development observation with its own PyMC reference.
+    It is not SPY. Flow paths need not be straight in physical parameter units because the adapter
+    works in standardized, unbounded coordinates.
 
     ## 2 · Reading the data
 
@@ -149,18 +125,20 @@ def _(mo):
     bf.networks.TimeSeriesNetwork(summary_dim=32)          # a return series
     ```
 
-    Where sufficient statistics exist, a learned summary rediscovers them.
+    The current set-encoder experiments still use complete 63-quote surfaces. Supporting
+    variable or missing quotes is a separate follow-up; a set network alone does not establish it.
+    Where sufficient statistics exist, a learned summary can learn to approximate them.
 
     ## 3 · The configuration slot 4 trains
 
-    The whole network of slots 4 and 5 is this function (`src/sbi4f_tutorial/inference.py`):
+    The current network factory for slots 4 and 5 is this function (`src/sbi4f_tutorial/full_surface.py`):
     """)
     return
 
 
 @app.cell(hide_code=True)
-def _(inference, inspect, mo):
-    mo.ui.code_editor(inspect.getsource(inference.build_workflow), language="python", disabled=True)
+def _(full_surface, inspect, mo):
+    mo.ui.code_editor(inspect.getsource(full_surface.build_workflow), language="python", disabled=True)
     return
 
 
@@ -176,10 +154,10 @@ def _(mo):
     3. **Noise.** Quote noise is drawn fresh in every batch during training, so the network never sees the
        same noisy smile twice.
     4. **Capacity.** Four dense layers of 256 in the velocity network.
-    5. **Training times** are drawn with a power law (`time_power_law_alpha`; −0.5 for the trained Heston
-       network).
-    6. **Sampler.** `inference.sample` integrates with 100 Euler steps on the grid $\tau_i = 1 - (1 - i/100)^2$,
-       dense where the flow ends. The configuration stored with a network has 50 uniform steps.
+    5. **Training times** follow the current BayesFlow family defaults. The earlier 2.0 study
+       used a custom time distribution; its results retain that historical identity.
+    6. **Sampler.** `full_surface.sample` preserves BayesFlow 2.1's native adaptive solver,
+       with the integration settings bound in the checkpoint metadata.
 
     ## 4 · How many steps does the sampler need?
 
@@ -190,40 +168,18 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
-    steps_choice = mo.ui.multiselect(options=["10", "25", "50", "100"], value=["10", "25", "100"],
-                                     label="Euler steps on the non-uniform grid")
-    steps_choice
-    return (steps_choice,)
+    _message = ("The default sampler is BayesFlow 2.1's native adaptive solver. "
+                "Numerical posterior-sampling error is distinct from simulator pricing error. "
+                "Check both while preserving the recorded sampler identity.")
+    mo.md(_message)
+    return
 
 
-@app.cell
-def _(
-    ASSETS,
-    heston_task,
-    heston_workflow,
-    inference,
-    mo,
-    np,
-    spy_conditions,
-    steps_choice,
-    teaching,
-    time,
-):
-    exact_spy = np.load(ASSETS / "data" / "heston-spy-exact.npy")
-    _rows = []
-    _network = heston_workflow.approximator.inference_network
-    for _steps in sorted(int(s) for s in steps_choice.value):
-        _network.integrate_kwargs = {**_network.integrate_kwargs, "method": "euler", "steps": inference.sampler_times(_steps)}
-        _start = time.perf_counter()
-        _draws = heston_workflow.sample(num_samples=2000, conditions=spy_conditions, seed=5)
-        _seconds = time.perf_counter() - _start
-        _row = {"steps": _steps, "seconds for 2,000 draws": round(_seconds, 2)}
-        for _j, _name in enumerate(heston_task["parameter_names"]):
-            _x = np.asarray(_draws[_name])[0, :, 0]
-            _row[f"{teaching.LABELS[_name]}: width / exact"] = round(float(_x.std() / exact_spy[:, _j].std()), 2)
-        _rows.append(_row)
-    inference.use_sampler(heston_workflow)
-    mo.ui.table(_rows, selection=None, pagination=False)
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    The archived BayesFlow 2.0 Euler-step experiment is retained in git history. Current estimators use BayesFlow 2.1's native adaptive solver; this notebook does not override it. Inspect all current Heston parameter pairs in the cached example below, and use the backbone review for explicit native sampling.
+    """)
     return
 
 
@@ -245,7 +201,8 @@ def _(mo):
     exact posterior.
 
     *Evidence and code:* the [curriculum](../curriculum/03-slot3-architectures.md),
-    `src/sbi4f_tutorial/inference.py` and the Heston checkpoint in `assets/checkpoints/heston/`.
+    `src/sbi4f_tutorial/full_surface.py`, the bound cases in `assets/backbones/`,
+    and [the cached/live backbone review](backbone_review.py).
     """)
     return
 

@@ -1,0 +1,11 @@
+{
+  "only_bank_path_changed": true,
+  "previous_driver_sha256": "998acc441ec77b8ed344c92d14cdc83edd3031ca1ad111f1b7e486b710ee05f5",
+  "corrected_driver_sha256": "fd2546eee2c2cf8503ac4d3f189418a76bb2008ac9e8edbd5aadf3f0c51fc4cb",
+  "pre_submission_pilot_root_absent": true,
+  "existing_snapshot_manifest_sha256": "1a7906f58a2b3e1e4cc868bc819c9c9308357f2f23f7fbb642c682860fb0074f",
+  "accepted_job_id": "8059371",
+  "accepted_submission_utc": "2026-10-28T16:47:55.769890+00:00",
+  "recipe_or_resource_changes": false,
+  "automatic_submission_retry": false
+}

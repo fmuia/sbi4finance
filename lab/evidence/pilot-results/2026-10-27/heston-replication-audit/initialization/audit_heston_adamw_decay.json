@@ -1,0 +1,73 @@
+{
+  "scope": "Zero-gradient nominal decoupled shrinkage product(1-lr(step)*weight_decay). Not observed weight norms; ignores gradient updates and finite-precision in-place rounding.",
+  "weight_decay": 0.005,
+  "rows": [
+    {
+      "run": "archive",
+      "stage": "selected",
+      "epochs": 487,
+      "updates": 95452,
+      "total_schedule_updates": 98000,
+      "learning_rate_sum": 24.62174014102743,
+      "log_nominal_decay_factor": -0.12310881547249967,
+      "nominal_decay_factor": 0.8841674462275728,
+      "nominal_percent_reduction": 11.583255377242715
+    },
+    {
+      "run": "archive",
+      "stage": "full500",
+      "epochs": 500,
+      "updates": 98000,
+      "total_schedule_updates": 98000,
+      "learning_rate_sum": 24.62252516072978,
+      "log_nominal_decay_factor": -0.12311274057101687,
+      "nominal_decay_factor": 0.8841639757900516,
+      "nominal_percent_reduction": 11.583602420994838
+    },
+    {
+      "run": "new50k",
+      "stage": "selected",
+      "epochs": 445,
+      "updates": 87220,
+      "total_schedule_updates": 98000,
+      "learning_rate_sum": 24.563473605106992,
+      "log_nominal_decay_factor": -0.12281748278564336,
+      "nominal_decay_factor": 0.8844250706306959,
+      "nominal_percent_reduction": 11.557492936930416
+    },
+    {
+      "run": "new50k",
+      "stage": "full500",
+      "epochs": 500,
+      "updates": 98000,
+      "total_schedule_updates": 98000,
+      "learning_rate_sum": 24.62252516072978,
+      "log_nominal_decay_factor": -0.12311274057101687,
+      "nominal_decay_factor": 0.8841639757900516,
+      "nominal_percent_reduction": 11.583602420994838
+    },
+    {
+      "run": "new100k",
+      "stage": "selected",
+      "epochs": 402,
+      "updates": 157182,
+      "total_schedule_updates": 195500,
+      "learning_rate_sum": 48.46258405426852,
+      "log_nominal_decay_factor": -0.24231314896923242,
+      "nominal_decay_factor": 0.7848103765072201,
+      "nominal_percent_reduction": 21.518962349277988
+    },
+    {
+      "run": "new100k",
+      "stage": "full500",
+      "epochs": 500,
+      "updates": 195500,
+      "total_schedule_updates": 195500,
+      "learning_rate_sum": 49.11940361139903,
+      "log_nominal_decay_factor": -0.2455972470061831,
+      "nominal_decay_factor": 0.7822372098688046,
+      "nominal_percent_reduction": 21.776279013119538
+    }
+  ],
+  "script_sha256": "fb403feca9f4caf3bf93273c64385502e52a1f42f8c1adbd57ddd60d30f2c1ba"
+}

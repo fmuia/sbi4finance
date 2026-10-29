@@ -1,0 +1,13 @@
+{
+  "state": "submitted_with_existing_watcher",
+  "job_id": "8080084",
+  "watcher_pid": 361879,
+  "root": "/oscar/scratch/afengler/sbi4finance-independent-work-20261029/joint100k",
+  "utc": "2026-10-29T01:04:15.510334+00:00",
+  "prior_cpu_seconds": 15632,
+  "prior_gpu_seconds": 3908,
+  "full_cumulative_cpu_seconds": 30992,
+  "full_cumulative_gpu_seconds": 7748,
+  "cpu_seconds_ceiling": 32400,
+  "gpu_seconds_ceiling": 8100
+}

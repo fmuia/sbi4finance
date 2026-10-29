@@ -1,0 +1,116 @@
+{
+  "format": "rough_bank_delivery_execution_v1",
+  "status": "stopped_for_review",
+  "started_utc": "2026-10-28T00:36:50.700687+00:00",
+  "plan_sha256": "4cb00b3ba26600dadd4e98cc4606f4d30e2ae0ed9738c431039d25748194e159",
+  "controller_pid": 3570625,
+  "automatic_retry": false,
+  "phases": {
+    "known": {
+      "jobs": [
+        {
+          "role": "preflight",
+          "state": "submitted",
+          "attempted_utc": "2026-10-28T00:36:50.710256+00:00",
+          "wall_seconds": 900,
+          "argv": [
+            "sbatch",
+            "--parsable",
+            "--nodes=1",
+            "--ntasks=1",
+            "--cpus-per-task=1",
+            "--mem=8G",
+            "--no-requeue",
+            "--account=carney-mjfrank-condo2",
+            "--partition=batch",
+            "--time=15",
+            "--chdir=/oscar/scratch/afengler/sbi4finance-backbone-fit-20261027/repo",
+            "--job-name=sbi4f-known-preflight",
+            "--output=/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/known/logs/preflight-%A_%a.out",
+            "--wrap=env PYTHONPATH=/oscar/scratch/afengler/sbi4finance-backbone-fit-20261027/repo/src OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 /oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python /oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/bank_delivery_stage.py preflight --plan /oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/plan.json --phase known"
+          ],
+          "prospective_budget": {
+            "actual_allocated_cpu_seconds": 0,
+            "outstanding_full_cpu_seconds": 0,
+            "checks_reserve_cpu_seconds": 7200,
+            "exposure_cpu_seconds": 7200,
+            "nonterminal_workers": 0
+          },
+          "stdout": "8032794\n",
+          "stderr": "",
+          "returncode": 0,
+          "job_id": "8032794",
+          "submitted_utc": "2026-10-28T00:36:50.744303+00:00"
+        }
+      ],
+      "status": "preflight_pending",
+      "budget": {
+        "actual_allocated_cpu_seconds": 0,
+        "outstanding_full_cpu_seconds": 1140,
+        "checks_reserve_cpu_seconds": 7200,
+        "exposure_cpu_seconds": 8340,
+        "nonterminal_workers": 0
+      },
+      "submitted_workers": 0,
+      "completed_workers": 0,
+      "missing_workers": 1200
+    },
+    "joint": {
+      "jobs": [
+        {
+          "role": "preflight",
+          "state": "submitted",
+          "attempted_utc": "2026-10-28T00:36:50.757055+00:00",
+          "wall_seconds": 900,
+          "argv": [
+            "sbatch",
+            "--parsable",
+            "--nodes=1",
+            "--ntasks=1",
+            "--cpus-per-task=1",
+            "--mem=8G",
+            "--no-requeue",
+            "--account=carney-mjfrank-condo2",
+            "--partition=batch",
+            "--time=15",
+            "--chdir=/oscar/scratch/afengler/sbi4finance-native-bank-20261027/repo",
+            "--job-name=sbi4f-joint-preflight",
+            "--output=/oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/joint/logs/preflight-%A_%a.out",
+            "--exclude=node2338",
+            "--wrap=env PYTHONPATH=/oscar/scratch/afengler/sbi4finance-native-bank-20261027/repo/src OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 /oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python /oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/bank_delivery_stage.py preflight --plan /oscar/scratch/afengler/sbi4finance-bank-delivery-20261028/plan.json --phase joint"
+          ],
+          "prospective_budget": {
+            "actual_allocated_cpu_seconds": 1020299,
+            "outstanding_full_cpu_seconds": 0,
+            "checks_reserve_cpu_seconds": 7200,
+            "exposure_cpu_seconds": 1027499,
+            "nonterminal_workers": 0
+          },
+          "stdout": "8032795\n",
+          "stderr": "",
+          "returncode": 0,
+          "job_id": "8032795",
+          "submitted_utc": "2026-10-28T00:36:50.787739+00:00"
+        }
+      ],
+      "status": "preflight_pending",
+      "budget": {
+        "actual_allocated_cpu_seconds": 1020324,
+        "outstanding_full_cpu_seconds": 0,
+        "checks_reserve_cpu_seconds": 7200,
+        "exposure_cpu_seconds": 1027524,
+        "nonterminal_workers": 0
+      },
+      "submitted_workers": 0,
+      "completed_workers": 0,
+      "missing_workers": 883
+    }
+  },
+  "last_poll_utc": "2026-10-28T00:38:50.917303+00:00",
+  "poll": 2,
+  "controller_elapsed_seconds": 120.20710941404104,
+  "global_nonterminal_bank_workers": 0,
+  "stopped_utc": "2026-10-28T00:39:27.999383+00:00",
+  "error_type": "KeyboardInterrupt",
+  "error": ""
+}

@@ -1,0 +1,53 @@
+{
+  "root": "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4",
+  "created_utc": "2026-10-26T22:40:20.124449+00:00",
+  "jobs": [
+    {
+      "name": "rough-conditional-benchmark",
+      "revision": "17344a1fac494ae67cbbe896c22ac36e5a7458f7",
+      "runtime_prefix": "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference",
+      "runtime_reuse": "same byte-identical pyproject.toml/pixi.lock as frozen source; existing locked environment, new immutable source via explicit PYTHONPATH and script path",
+      "arguments": [
+        "--job-name=sbi4finance-pricing-bench",
+        "--account=carney-mjfrank-condo2",
+        "--partition=batch",
+        "--ntasks=1",
+        "--cpus-per-task=1",
+        "--mem=4G",
+        "--time=00:10:00",
+        "--chdir=/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-pricing-optimization",
+        "--output=/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/logs/pricing-bench-%j.out",
+        "--wrap=exec env PYTHONPATH=/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-pricing-optimization/src OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 /oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python /oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-pricing-optimization/scripts/benchmark_rough_conditional.py --steps 504 2016 --pairs 2048 --repeats 4 --seed 271029 --out /oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/runs/rough-conditional-benchmark"
+      ],
+      "scope": "one CPU; full-versus-lean actual block pricing, 4 balanced reps, exact price/error/cov equality; no bank generation",
+      "state": "submitted",
+      "job_id": "7996826"
+    },
+    {
+      "name": "heston-maturity-reuse-benchmark",
+      "revision": "180e358c8288b249104a5a895e654eb8281a9a15",
+      "runtime_prefix": "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference",
+      "source_sha256": {
+        "src/sbi4finance/hkde.py": "c13c07031413a4ba9ab38a7fcd614c4733aa6ce01314fb1a20416d9b3c18d163",
+        "tests/test_hkde_maturity_reuse.py": "c2742b75685b2665dc7eb1aa8ba5a998b5b7ce6fe9a453af166cb4de4a6806d3",
+        "pyproject.toml": "0b38d45cea9c3d7143e261d6c8ce3d6892b31b7bce6d1f26bf748df75790fd54",
+        "pixi.lock": "3e33b82d45dfdd696c5b12b22bca0943a5fca09804860fab13e3fc9126c60aae"
+      },
+      "arguments": [
+        "--job-name=sbi4finance-heston-pricing-bench",
+        "--account=carney-mjfrank-condo2",
+        "--partition=batch",
+        "--ntasks=1",
+        "--cpus-per-task=1",
+        "--mem=2G",
+        "--time=00:05:00",
+        "--chdir=/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-heston-pricing-optimization",
+        "--output=/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/logs/heston-pricing-bench-%j.out",
+        "--wrap=exec env PYTHONPATH=/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-heston-pricing-optimization/src OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 /oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python /oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-heston-pricing-optimization/tests/test_hkde_maturity_reuse.py --benchmark"
+      ],
+      "scope": "actual63contractrefinedtask; original oracle vs exact maturityreuse;80alternatingwarmreps andonecoldcall each; not bankthroughput",
+      "state": "submitted",
+      "job_id": "7996873"
+    }
+  ]
+}

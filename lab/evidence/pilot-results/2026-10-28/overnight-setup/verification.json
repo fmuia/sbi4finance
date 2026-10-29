@@ -1,0 +1,55 @@
+{
+  "checked_utc": "2026-10-28T01:15:16.762393+00:00",
+  "ssh_host": "login009",
+  "generation": {
+    "state": "resumed_after_review",
+    "heartbeat": "2026-10-28T01:14:58.144877+00:00",
+    "pid": 2709727,
+    "error": "",
+    "routes": null,
+    "phases": {
+      "known": {
+        "status": "generation_active",
+        "submitted_workers": 385,
+        "completed_workers": 333
+      },
+      "joint": {
+        "status": "generation_active",
+        "submitted_workers": 131,
+        "completed_workers": 13
+      }
+    }
+  },
+  "extensions100k": {
+    "state": "armed",
+    "heartbeat": "2026-10-28T01:14:46.319786+00:00",
+    "pid": 3792953,
+    "error": null,
+    "routes": {
+      "known": {
+        "state": "waiting",
+        "progress": "waiting_for_predecessor_final_check"
+      },
+      "joint": {
+        "state": "waiting",
+        "progress": "waiting_for_known_resource_dependency:waiting"
+      }
+    },
+    "phases": {}
+  },
+  "training": {
+    "state": "waiting_or_running",
+    "heartbeat": "2026-10-28T01:14:22.640244+00:00",
+    "pid": null,
+    "error": null,
+    "routes": {
+      "known": {
+        "state": "waiting"
+      },
+      "joint": {
+        "state": "waiting"
+      }
+    },
+    "phases": {}
+  }
+}

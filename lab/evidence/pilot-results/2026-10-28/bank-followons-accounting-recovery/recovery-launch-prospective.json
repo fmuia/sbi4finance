@@ -1,0 +1,15 @@
+{
+  "state": "launch_attempted",
+  "utc": "2026-10-28T09:53:11.649105+00:00",
+  "argv": [
+    "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python",
+    "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/accounting-recovery-20261028/arm_bank_extensions.py",
+    "--plan",
+    "/oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/accounting-recovery-20261028/plan.json",
+    "--detach"
+  ],
+  "automatic_retry": false,
+  "plan_sha256": "d03d23e99b343128aa58d8315ca442ea21e139d9592565ab704087311047f125",
+  "launcher_sha256": "b39970fdd827c9367bcbd021160d9fe89c3818dcaaf82580c1bd19dc7216bf8f",
+  "waiter_sha256": "4f71ffa51461d55aa864294697f43119494f095bc64748897ba87add58ead734"
+}

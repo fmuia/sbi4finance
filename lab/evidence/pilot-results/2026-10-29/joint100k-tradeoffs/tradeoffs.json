@@ -1,0 +1,1930 @@
+{
+  "format": "joint100k_saved_posterior_tradeoffs_v1",
+  "exploratory_selection": true,
+  "scientific_acceptance": false,
+  "independent_posterior_reference": false,
+  "new_sampling": false,
+  "saved_panel_shape": [
+    2000,
+    1000,
+    6
+  ],
+  "parameter_names": [
+    "hurst",
+    "eta",
+    "rho",
+    "short_variance",
+    "long_variance",
+    "decay"
+  ],
+  "prior_bounds": [
+    [
+      0.02,
+      0.35
+    ],
+    [
+      0.5,
+      3.5
+    ],
+    [
+      -0.99,
+      -0.2
+    ],
+    [
+      0.01,
+      0.16
+    ],
+    [
+      0.01,
+      0.16
+    ],
+    [
+      0.25,
+      8.0
+    ]
+  ],
+  "prior": "Six independent physical Uniform distributions; source generator uses vectoruniform, no curveorientation constraint",
+  "model_checkpoint_sha256": "19c24d64290651f592d3c13d7d0a1616d0d8ae080d487d0298aee8f97779498b",
+  "bank_manifest_sha256": "eb72588b9b7665e0e416cb5d3a1bcf8cd78a1c97f2b43f18ea8246c749a871d8",
+  "input_sha256": {
+    "/private/tmp/sbi-joint100k-sanity-20261029/draws.npz": "d7b6e67f74228aa15de413fd0a2802cbe0c7a586888853ce3ef4403856ee422d",
+    "/private/tmp/sbi-joint100k-sanity-20261029/task.json": "29eca4e1b970c4f13b99573939aa3449c5280a3a4478f7d24beace6539a9889d",
+    "/private/tmp/sbi-joint100k-sanity-20261029/training.json": "ef41e5f9fc24fd897f3bdf1162bed15765387ca1c49107d24f9593cf6b951c37",
+    "/private/tmp/sbi-joint100k-sanity-20261029/evaluation.json": "395eab6088e5d3799d9b8d65904ac25daa536991ef43c23f84f161b7e82a8ac9"
+  },
+  "analysis_source_sha256": "1c64f86baf69c97910de583c316a542c07f230b3e76267747e0fbfad7b702652",
+  "selection": {
+    "interpretation": "Exploratory selection and geometry of the learned candidate; no independent reference claim",
+    "interior_truth_fraction": [
+      0.1,
+      0.9
+    ],
+    "interior_central98_fraction": [
+      0.05,
+      0.95
+    ],
+    "interior_central99_fraction": [
+      0.025,
+      0.975
+    ],
+    "primary_selection": "Among strict interior cases, greatest absolute within-case Spearman among short/long/decay pairs; lowest ID breaks ties",
+    "secondary_selection": "Among remaining strict interior cases, greatest absolute eta/rho Spearman; lowest ID breaks ties",
+    "near_flat_definition": "abs(true long_variance minus true short_variance) <= .005 variance units",
+    "near_flat_selection": "Among near-flat cases with all six truths10percent inside bounds, largest decay90percent width/prior width; not an interior showcase",
+    "nonlinearity": "Descriptive additional R2 from a residualized quadratic predictor, in either direction; not a Gaussianity test"
+  },
+  "strict_interior_cases": 122,
+  "pair_distributions": [
+    {
+      "parameters": [
+        "hurst",
+        "eta"
+      ],
+      "pearson": {
+        "finite": 2000,
+        "q05": -0.8846886110114319,
+        "q25": -0.3367980370477616,
+        "median": 0.23657055233726754,
+        "q75": 0.49588238788841105,
+        "q95": 0.7135451691280444,
+        "median_absolute": 0.4625113856976899,
+        "fraction_absolute_ge_half": 0.446,
+        "fraction_absolute_ge_point8": 0.109,
+        "fraction_absolute_ge_point95": 0.0015
+      },
+      "spearman": {
+        "finite": 2000,
+        "q05": -0.8938341604341613,
+        "q25": -0.30616773190043994,
+        "median": 0.22622538926222516,
+        "q75": 0.4799356786147863,
+        "q95": 0.6967371385371385,
+        "median_absolute": 0.4449930269955825,
+        "fraction_absolute_ge_half": 0.4195,
+        "fraction_absolute_ge_point8": 0.111,
+        "fraction_absolute_ge_point95": 0.0095
+      },
+      "max_direction_quadratic_extra_R2": {
+        "finite": 2000,
+        "q05": 0.0002731766783595452,
+        "q25": 0.0020193118648142907,
+        "median": 0.0064188177064996715,
+        "q75": 0.02417760932437382,
+        "q95": 0.08427967466833639,
+        "median_absolute": 0.0064188177064996715,
+        "fraction_absolute_ge_half": 0.0,
+        "fraction_absolute_ge_point8": 0.0,
+        "fraction_absolute_ge_point95": 0.0
+      }
+    },
+    {
+      "parameters": [
+        "hurst",
+        "rho"
+      ],
+      "pearson": {
+        "finite": 2000,
+        "q05": -0.255813880901956,
+        "q25": -0.11430167566293307,
+        "median": 0.04252684097301168,
+        "q75": 0.4563186423635166,
+        "q95": 0.9227543565802495,
+        "median_absolute": 0.18792590070686144,
+        "fraction_absolute_ge_half": 0.232,
+        "fraction_absolute_ge_point8": 0.132,
+        "fraction_absolute_ge_point95": 0.015
+      },
+      "spearman": {
+        "finite": 2000,
+        "q05": -0.25077991918459863,
+        "q25": -0.11091248491069734,
+        "median": 0.03691528602603187,
+        "q75": 0.4282403785621769,
+        "q95": 0.9556238755473471,
+        "median_absolute": 0.18141269431564327,
+        "fraction_absolute_ge_half": 0.226,
+        "fraction_absolute_ge_point8": 0.1355,
+        "fraction_absolute_ge_point95": 0.0575
+      },
+      "max_direction_quadratic_extra_R2": {
+        "finite": 2000,
+        "q05": 0.0002591220422211143,
+        "q25": 0.0017108621571602916,
+        "median": 0.005118784168158486,
+        "q75": 0.020209279365657293,
+        "q95": 0.10517545015230785,
+        "median_absolute": 0.005118784168158486,
+        "fraction_absolute_ge_half": 0.0,
+        "fraction_absolute_ge_point8": 0.0,
+        "fraction_absolute_ge_point95": 0.0
+      }
+    },
+    {
+      "parameters": [
+        "hurst",
+        "short_variance"
+      ],
+      "pearson": {
+        "finite": 2000,
+        "q05": -0.5667405059074246,
+        "q25": -0.38195643629260084,
+        "median": -0.23035496253331297,
+        "q75": -0.10699047034048634,
+        "q95": 0.01969403131376604,
+        "median_absolute": 0.23035496253331297,
+        "fraction_absolute_ge_half": 0.106,
+        "fraction_absolute_ge_point8": 0.0,
+        "fraction_absolute_ge_point95": 0.0
+      },
+      "spearman": {
+        "finite": 2000,
+        "q05": -0.5538808018872885,
+        "q25": -0.3666809873313306,
+        "median": -0.22298765799871154,
+        "q75": -0.10385019689547118,
+        "q95": 0.024346174992252015,
+        "median_absolute": 0.22298765799871154,
+        "fraction_absolute_ge_half": 0.089,
+        "fraction_absolute_ge_point8": 0.0,
+        "fraction_absolute_ge_point95": 0.0
+      },
+      "max_direction_quadratic_extra_R2": {
+        "finite": 2000,
+        "q05": 0.00016312497314060754,
+        "q25": 0.0008270283164443645,
+        "median": 0.001966232677186125,
+        "q75": 0.004132872821757853,
+        "q95": 0.010254261390627146,
+        "median_absolute": 0.001966232677186125,
+        "fraction_absolute_ge_half": 0.0,
+        "fraction_absolute_ge_point8": 0.0,
+        "fraction_absolute_ge_point95": 0.0
+      }
+    },
+    {
+      "parameters": [
+        "hurst",
+        "long_variance"
+      ],
+      "pearson": {
+        "finite": 2000,
+        "q05": -0.013608738847767218,
+        "q25": 0.10038739282978273,
+        "median": 0.25951884502887,
+        "q75": 0.4193624395506445,
+        "q95": 0.586382036798423,
+        "median_absolute": 0.25951884502887,
+        "fraction_absolute_ge_half": 0.144,
+        "fraction_absolute_ge_point8": 0.0,
+        "fraction_absolute_ge_point95": 0.0
+      },
+      "spearman": {
+        "finite": 2000,
+        "q05": -0.013422246822246856,
+        "q25": 0.11575709627967902,
+        "median": 0.28122958765077133,
+        "q75": 0.44339343639091067,
+        "q95": 0.6062025929936242,
+        "median_absolute": 0.28122958765077133,
+        "fraction_absolute_ge_half": 0.1815,
+        "fraction_absolute_ge_point8": 0.0,
+        "fraction_absolute_ge_point95": 0.0
+      },
+      "max_direction_quadratic_extra_R2": {
+        "finite": 2000,
+        "q05": 0.0003562302085823208,
+        "q25": 0.002111925857166243,
+        "median": 0.006522941416791072,
+        "q75": 0.019864765164134206,
+        "q95": 0.06592314515104694,
+        "median_absolute": 0.006522941416791072,
+        "fraction_absolute_ge_half": 0.0,
+        "fraction_absolute_ge_point8": 0.0,
+        "fraction_absolute_ge_point95": 0.0
+      }
+    },
+    {
+      "parameters": [
+        "hurst",
+        "decay"
+      ],
+      "pearson": {
+        "finite": 2000,
+        "q05": -0.46132538430816583,
+        "q25": -0.18474432551967604,
+        "median": -0.0561348223704862,
+        "q75": 0.027480728594857968,
+        "q95": 0.19513214102939788,
+        "median_absolute": 0.10395562333040445,
+        "fraction_absolute_ge_half": 0.031,
+        "fraction_absolute_ge_point8": 0.0,
+        "fraction_absolute_ge_point95": 0.0
+      },
+      "spearman": {
+        "finite": 2000,
+        "q05": -0.44746491646491654,
+        "q25": -0.1777749607749608,
+        "median": -0.05418979218979218,
+        "q75": 0.028588600588600584,
+        "q95": 0.1861090426649435,
+        "median_absolute": 0.09973540573540574,
+        "fraction_absolute_ge_half": 0.027,
+        "fraction_absolute_ge_point8": 0.0,
+        "fraction_absolute_ge_point95": 0.0
+      },
+      "max_direction_quadratic_extra_R2": {
+        "finite": 2000,
+        "q05": 0.00017793175060554578,
+        "q25": 0.001007903902120609,
+        "median": 0.0026927155078555866,
+        "q75": 0.006238656372027851,
+        "q95": 0.020927576021085657,
+        "median_absolute": 0.0026927155078555866,
+        "fraction_absolute_ge_half": 0.0,
+        "fraction_absolute_ge_point8": 0.0,
+        "fraction_absolute_ge_point95": 0.0
+      }
+    },
+    {
+      "parameters": [
+        "eta",
+        "rho"
+      ],
+      "pearson": {
+        "finite": 2000,
+        "q05": -0.846119865714349,
+        "q25": 0.12510855910267754,
+        "median": 0.5083265529750955,
+        "q75": 0.7505062415701083,
+        "q95": 0.9162158326713662,
+        "median_absolute": 0.6163187528663809,
+        "fraction_absolute_ge_half": 0.6225,
+        "fraction_absolute_ge_point8": 0.2535,
+        "fraction_absolute_ge_point95": 0.013
+      },
+      "spearman": {
+        "finite": 2000,
+        "q05": -0.82373529888283,
+        "q25": 0.13598001960289618,
+        "median": 0.49656246005246374,
+        "q75": 0.74866385078703,
+        "q95": 0.9178971136971137,
+        "median_absolute": 0.6011268809302615,
+        "fraction_absolute_ge_half": 0.606,
+        "fraction_absolute_ge_point8": 0.242,
+        "fraction_absolute_ge_point95": 0.018
+      },
+      "max_direction_quadratic_extra_R2": {
+        "finite": 2000,
+        "q05": 0.000711986948825201,
+        "q25": 0.003374540049489415,
+        "median": 0.009028070649037065,
+        "q75": 0.02547751573462255,
+        "q95": 0.10962693842796867,
+        "median_absolute": 0.009028070649037065,
+        "fraction_absolute_ge_half": 0.0,
+        "fraction_absolute_ge_point8": 0.0,
+        "fraction_absolute_ge_point95": 0.0
+      }
+    },
+    {
+      "parameters": [
+        "eta",
+        "short_variance"
+      ],
+      "pearson": {
+        "finite": 2000,
+        "q05": -0.24712958192629372,
+        "q25": -0.042404470331410746,
+        "median": 0.06671784194798536,
+        "q75": 0.21782068401874505,
+        "q95": 0.5004574861342282,
+        "median_absolute": 0.12719675573207395,
+        "fraction_absolute_ge_half": 0.0515,
+        "fraction_absolute_ge_point8": 0.0,
+        "fraction_absolute_ge_point95": 0.0
+      },
+      "spearman": {
+        "finite": 2000,
+        "q05": -0.2423233761770238,
+        "q25": -0.04140838037423162,
+        "median": 0.06342864438008593,
+        "q75": 0.2112060912901778,
+        "q95": 0.48403701172045954,
+        "median_absolute": 0.12400959475377149,
+        "fraction_absolute_ge_half": 0.0455,
+        "fraction_absolute_ge_point8": 0.0,
+        "fraction_absolute_ge_point95": 0.0
+      },
+      "max_direction_quadratic_extra_R2": {
+        "finite": 2000,
+        "q05": 0.00017632388374777834,
+        "q25": 0.0010118074881043052,
+        "median": 0.0024333217094852605,
+        "q75": 0.004995263870201689,
+        "q95": 0.012955947371940408,
+        "median_absolute": 0.0024333217094852605,
+        "fraction_absolute_ge_half": 0.0,
+        "fraction_absolute_ge_point8": 0.0,
+        "fraction_absolute_ge_point95": 0.0
+      }
+    },
+    {
+      "parameters": [
+        "eta",
+        "long_variance"
+      ],
+      "pearson": {
+        "finite": 2000,
+        "q05": -0.11878119261083768,
+        "q25": 0.03646573062222583,
+        "median": 0.2081431473879679,
+        "q75": 0.4579600610045193,
+        "q95": 0.6979935250174,
+        "median_absolute": 0.22365401960360556,
+        "fraction_absolute_ge_half": 0.21,
+        "fraction_absolute_ge_point8": 0.0075,
+        "fraction_absolute_ge_point95": 0.0
+      },
+      "spearman": {
+        "finite": 2000,
+        "q05": -0.12810968297158012,
+        "q25": 0.04678927082430702,
+        "median": 0.23244881279664037,
+        "q75": 0.5081181922613316,
+        "q95": 0.7316269928269927,
+        "median_absolute": 0.24877949715275244,
+        "fraction_absolute_ge_half": 0.258,
+        "fraction_absolute_ge_point8": 0.0115,
+        "fraction_absolute_ge_point95": 0.0
+      },
+      "max_direction_quadratic_extra_R2": {
+        "finite": 2000,
+        "q05": 0.00042578717848215745,
+        "q25": 0.0026007769708797208,
+        "median": 0.007658905930538013,
+        "q75": 0.02417289544687072,
+        "q95": 0.10175973855804663,
+        "median_absolute": 0.007658905930538013,
+        "fraction_absolute_ge_half": 0.0,
+        "fraction_absolute_ge_point8": 0.0,
+        "fraction_absolute_ge_point95": 0.0
+      }
+    },
+    {
+      "parameters": [
+        "eta",
+        "decay"
+      ],
+      "pearson": {
+        "finite": 2000,
+        "q05": -0.41726912372911396,
+        "q25": -0.1130241353497731,
+        "median": -0.013861045128383707,
+        "q75": 0.053828977387777116,
+        "q95": 0.20326530645879456,
+        "median_absolute": 0.07981784021055865,
+        "fraction_absolute_ge_half": 0.03,
+        "fraction_absolute_ge_point8": 0.0,
+        "fraction_absolute_ge_point95": 0.0
+      },
+      "spearman": {
+        "finite": 2000,
+        "q05": -0.4073245954848469,
+        "q25": -0.1109654625487249,
+        "median": -0.016471324471324475,
+        "q75": 0.0522215937607893,
+        "q95": 0.19195741915741923,
+        "median_absolute": 0.07579387613484678,
+        "fraction_absolute_ge_half": 0.025,
+        "fraction_absolute_ge_point8": 0.0,
+        "fraction_absolute_ge_point95": 0.0
+      },
+      "max_direction_quadratic_extra_R2": {
+        "finite": 2000,
+        "q05": 0.00017118632669218314,
+        "q25": 0.0010514597520859582,
+        "median": 0.002764528313053883,
+        "q75": 0.006613386974541654,
+        "q95": 0.024775659841385318,
+        "median_absolute": 0.002764528313053883,
+        "fraction_absolute_ge_half": 0.0,
+        "fraction_absolute_ge_point8": 0.0,
+        "fraction_absolute_ge_point95": 0.0
+      }
+    },
+    {
+      "parameters": [
+        "rho",
+        "short_variance"
+      ],
+      "pearson": {
+        "finite": 2000,
+        "q05": -0.41491599370193827,
+        "q25": -0.06818087675817705,
+        "median": 0.029013372207700044,
+        "q75": 0.09596875779460906,
+        "q95": 0.18606024705136626,
+        "median_absolute": 0.08737711861534173,
+        "fraction_absolute_ge_half": 0.027,
+        "fraction_absolute_ge_point8": 0.0,
+        "fraction_absolute_ge_point95": 0.0
+      },
+      "spearman": {
+        "finite": 2000,
+        "q05": -0.3988417572149152,
+        "q25": -0.06464736038996502,
+        "median": 0.027706873247663515,
+        "q75": 0.09220081715287683,
+        "q95": 0.1863626551021613,
+        "median_absolute": 0.08559375810723413,
+        "fraction_absolute_ge_half": 0.0235,
+        "fraction_absolute_ge_point8": 0.0,
+        "fraction_absolute_ge_point95": 0.0
+      },
+      "max_direction_quadratic_extra_R2": {
+        "finite": 2000,
+        "q05": 0.0001375671470405226,
+        "q25": 0.0008244012396755817,
+        "median": 0.002066425472178735,
+        "q75": 0.004491428131164162,
+        "q95": 0.011044207717067158,
+        "median_absolute": 0.002066425472178735,
+        "fraction_absolute_ge_half": 0.0,
+        "fraction_absolute_ge_point8": 0.0,
+        "fraction_absolute_ge_point95": 0.0
+      }
+    },
+    {
+      "parameters": [
+        "rho",
+        "long_variance"
+      ],
+      "pearson": {
+        "finite": 2000,
+        "q05": -0.05058030294740259,
+        "q25": 0.03980939458672428,
+        "median": 0.1270167578652498,
+        "q75": 0.24193601960577743,
+        "q95": 0.4380909902696652,
+        "median_absolute": 0.12978175339444523,
+        "fraction_absolute_ge_half": 0.019,
+        "fraction_absolute_ge_point8": 0.0,
+        "fraction_absolute_ge_point95": 0.0
+      },
+      "spearman": {
+        "finite": 2000,
+        "q05": -0.05085347654323099,
+        "q25": 0.04714151485307679,
+        "median": 0.1442234473050398,
+        "q75": 0.274075633281333,
+        "q95": 0.45830735891968055,
+        "median_absolute": 0.14538261160053906,
+        "fraction_absolute_ge_half": 0.0285,
+        "fraction_absolute_ge_point8": 0.0,
+        "fraction_absolute_ge_point95": 0.0
+      },
+      "max_direction_quadratic_extra_R2": {
+        "finite": 2000,
+        "q05": 0.0002726256016395996,
+        "q25": 0.0016146372905838013,
+        "median": 0.004650730800209739,
+        "q75": 0.012456676644761125,
+        "q95": 0.039447860501116094,
+        "median_absolute": 0.004650730800209739,
+        "fraction_absolute_ge_half": 0.0,
+        "fraction_absolute_ge_point8": 0.0,
+        "fraction_absolute_ge_point95": 0.0
+      }
+    },
+    {
+      "parameters": [
+        "rho",
+        "decay"
+      ],
+      "pearson": {
+        "finite": 2000,
+        "q05": -0.22331015829182985,
+        "q25": -0.08753065614230598,
+        "median": -0.028510592573975736,
+        "q75": 0.02011893477321123,
+        "q95": 0.08649449837305051,
+        "median_absolute": 0.05412663321474942,
+        "fraction_absolute_ge_half": 0.0,
+        "fraction_absolute_ge_point8": 0.0,
+        "fraction_absolute_ge_point95": 0.0
+      },
+      "spearman": {
+        "finite": 2000,
+        "q05": -0.21993041313041323,
+        "q25": -0.08723591443218938,
+        "median": -0.027414834537887508,
+        "q75": 0.0226380901550766,
+        "q95": 0.08938528939470139,
+        "median_absolute": 0.05427611427611426,
+        "fraction_absolute_ge_half": 0.0,
+        "fraction_absolute_ge_point8": 0.0,
+        "fraction_absolute_ge_point95": 0.0
+      },
+      "max_direction_quadratic_extra_R2": {
+        "finite": 2000,
+        "q05": 0.00014029293233381796,
+        "q25": 0.0007967895807110808,
+        "median": 0.002019670801990623,
+        "q75": 0.004344117471469924,
+        "q95": 0.01294356377510592,
+        "median_absolute": 0.002019670801990623,
+        "fraction_absolute_ge_half": 0.0,
+        "fraction_absolute_ge_point8": 0.0,
+        "fraction_absolute_ge_point95": 0.0
+      }
+    },
+    {
+      "parameters": [
+        "short_variance",
+        "long_variance"
+      ],
+      "pearson": {
+        "finite": 2000,
+        "q05": -0.2737872862942091,
+        "q25": 0.052610025199946335,
+        "median": 0.2487447384395658,
+        "q75": 0.3809939254901978,
+        "q95": 0.4770160680383192,
+        "median_absolute": 0.277388981954038,
+        "fraction_absolute_ge_half": 0.0225,
+        "fraction_absolute_ge_point8": 0.0,
+        "fraction_absolute_ge_point95": 0.0
+      },
+      "spearman": {
+        "finite": 2000,
+        "q05": -0.3367720435520887,
+        "q25": 0.02169762974357003,
+        "median": 0.23950219257991018,
+        "q75": 0.37592609728302717,
+        "q95": 0.48215655752186565,
+        "median_absolute": 0.2844636525971357,
+        "fraction_absolute_ge_half": 0.038,
+        "fraction_absolute_ge_point8": 0.0,
+        "fraction_absolute_ge_point95": 0.0
+      },
+      "max_direction_quadratic_extra_R2": {
+        "finite": 2000,
+        "q05": 0.0004848582822324699,
+        "q25": 0.002839430064877362,
+        "median": 0.008189713017933774,
+        "q75": 0.01903071147204205,
+        "q95": 0.050702343526981386,
+        "median_absolute": 0.008189713017933774,
+        "fraction_absolute_ge_half": 0.0,
+        "fraction_absolute_ge_point8": 0.0,
+        "fraction_absolute_ge_point95": 0.0
+      }
+    },
+    {
+      "parameters": [
+        "short_variance",
+        "decay"
+      ],
+      "pearson": {
+        "finite": 2000,
+        "q05": -0.6436231977843601,
+        "q25": -0.47861991937353204,
+        "median": -0.027420431871545844,
+        "q75": 0.501200976969347,
+        "q95": 0.6536808785776915,
+        "median_absolute": 0.49388897855054126,
+        "fraction_absolute_ge_half": 0.4845,
+        "fraction_absolute_ge_point8": 0.0,
+        "fraction_absolute_ge_point95": 0.0
+      },
+      "spearman": {
+        "finite": 2000,
+        "q05": -0.635426869308362,
+        "q25": -0.46647624182633685,
+        "median": -0.022693297728668127,
+        "q75": 0.48826600119559727,
+        "q95": 0.6438284325960556,
+        "median_absolute": 0.4786444665163337,
+        "fraction_absolute_ge_half": 0.4515,
+        "fraction_absolute_ge_point8": 0.0,
+        "fraction_absolute_ge_point95": 0.0
+      },
+      "max_direction_quadratic_extra_R2": {
+        "finite": 2000,
+        "q05": 0.00043944810023169734,
+        "q25": 0.0022252263330685505,
+        "median": 0.005999039153463375,
+        "q75": 0.01227896300456184,
+        "q95": 0.025582961069357067,
+        "median_absolute": 0.005999039153463375,
+        "fraction_absolute_ge_half": 0.0,
+        "fraction_absolute_ge_point8": 0.0,
+        "fraction_absolute_ge_point95": 0.0
+      }
+    },
+    {
+      "parameters": [
+        "long_variance",
+        "decay"
+      ],
+      "pearson": {
+        "finite": 2000,
+        "q05": -0.9150339212270399,
+        "q25": -0.811279639968538,
+        "median": 0.012395328381962318,
+        "q75": 0.7841592119079511,
+        "q95": 0.9082730911707699,
+        "median_absolute": 0.798265612805662,
+        "fraction_absolute_ge_half": 0.895,
+        "fraction_absolute_ge_point8": 0.4945,
+        "fraction_absolute_ge_point95": 0.0105
+      },
+      "spearman": {
+        "finite": 2000,
+        "q05": -0.9629579971468711,
+        "q25": -0.8654812814812817,
+        "median": 0.008032910073717633,
+        "q75": 0.8318839298839297,
+        "q95": 0.9545871065871062,
+        "median_absolute": 0.8463398398791129,
+        "fraction_absolute_ge_half": 0.89,
+        "fraction_absolute_ge_point8": 0.6275,
+        "fraction_absolute_ge_point95": 0.134
+      },
+      "max_direction_quadratic_extra_R2": {
+        "finite": 2000,
+        "q05": 0.003325539632438582,
+        "q25": 0.013464256928753606,
+        "median": 0.041570358717842815,
+        "q75": 0.12477292434217907,
+        "q95": 0.2210560416944563,
+        "median_absolute": 0.041570358717842815,
+        "fraction_absolute_ge_half": 0.0,
+        "fraction_absolute_ge_point8": 0.0,
+        "fraction_absolute_ge_point95": 0.0
+      }
+    }
+  ],
+  "curve_orientation_strata": {
+    "rising": {
+      "cases": 951,
+      "long_decay_pearson": {
+        "finite": 951,
+        "q05": -0.9310930827348453,
+        "q25": -0.884804156758388,
+        "median": -0.8193762794537306,
+        "q75": -0.7010425010663439,
+        "q95": -0.4838449465080702,
+        "median_absolute": 0.8193762794537306,
+        "fraction_absolute_ge_half": 0.943217665615142,
+        "fraction_absolute_ge_point8": 0.5583596214511041,
+        "fraction_absolute_ge_point95": 0.010515247108307046
+      },
+      "long_decay_spearman": {
+        "finite": 951,
+        "q05": -0.9768201962842376,
+        "q25": -0.9300512294465793,
+        "median": -0.871832083832083,
+        "q75": -0.7621099025407704,
+        "q95": -0.46039515208142134,
+        "median_absolute": 0.871832083832083,
+        "fraction_absolute_ge_half": 0.935856992639327,
+        "fraction_absolute_ge_point8": 0.6919032597266036,
+        "fraction_absolute_ge_point95": 0.167192429022082
+      },
+      "short_decay_spearman": {
+        "finite": 951,
+        "q05": -0.6620607680607682,
+        "q25": -0.5762433307007131,
+        "median": -0.4787711596437871,
+        "q75": -0.36810631521022763,
+        "q95": -0.20195138255723677,
+        "median_absolute": 0.4787711596437871,
+        "fraction_absolute_ge_half": 0.4479495268138801,
+        "fraction_absolute_ge_point8": 0.0,
+        "fraction_absolute_ge_point95": 0.0
+      }
+    },
+    "falling": {
+      "cases": 934,
+      "long_decay_pearson": {
+        "finite": 934,
+        "q05": 0.43435497127385775,
+        "q25": 0.6732646502213984,
+        "median": 0.7962712808579693,
+        "q75": 0.8669237550895069,
+        "q95": 0.9335122774338872,
+        "median_absolute": 0.7962712808579693,
+        "fraction_absolute_ge_half": 0.923982869379015,
+        "fraction_absolute_ge_point8": 0.49036402569593146,
+        "fraction_absolute_ge_point95": 0.011777301927194861
+      },
+      "long_decay_spearman": {
+        "finite": 934,
+        "q05": 0.4164008738178062,
+        "q25": 0.7281131661131663,
+        "median": 0.8398940274137094,
+        "q75": 0.9113241803241796,
+        "q95": 0.9719705267705269,
+        "median_absolute": 0.8398940274137094,
+        "fraction_absolute_ge_half": 0.9079229122055674,
+        "fraction_absolute_ge_point8": 0.6295503211991434,
+        "fraction_absolute_ge_point95": 0.11670235546038545
+      },
+      "short_decay_spearman": {
+        "finite": 934,
+        "q05": 0.13850637550802097,
+        "q25": 0.3772802802606976,
+        "median": 0.5028827486371709,
+        "q75": 0.5966345762137988,
+        "q95": 0.6745490937023502,
+        "median_absolute": 0.5028827486371709,
+        "fraction_absolute_ge_half": 0.5096359743040685,
+        "fraction_absolute_ge_point8": 0.0,
+        "fraction_absolute_ge_point95": 0.0
+      }
+    },
+    "near_flat": {
+      "cases": 115,
+      "long_decay_pearson": {
+        "finite": 115,
+        "q05": -0.5436511492449417,
+        "q25": -0.25356896998841805,
+        "median": 0.14523313033528384,
+        "q75": 0.44748694646493953,
+        "q95": 0.6536437866276017,
+        "median_absolute": 0.3937253318661612,
+        "fraction_absolute_ge_half": 0.2608695652173913,
+        "fraction_absolute_ge_point8": 0.0,
+        "fraction_absolute_ge_point95": 0.0
+      },
+      "long_decay_spearman": {
+        "finite": 115,
+        "q05": -0.6676768912768908,
+        "q25": -0.2557743614523733,
+        "median": 0.12402875202875203,
+        "q75": 0.4839098499098501,
+        "q95": 0.8216237816237814,
+        "median_absolute": 0.4241387921387919,
+        "fraction_absolute_ge_half": 0.3652173913043478,
+        "fraction_absolute_ge_point8": 0.0782608695652174,
+        "fraction_absolute_ge_point95": 0.0
+      },
+      "short_decay_spearman": {
+        "finite": 115,
+        "q05": -0.36465748361348843,
+        "q25": -0.17422114901193406,
+        "median": 0.045754624166415785,
+        "q75": 0.19468020596580143,
+        "q95": 0.3723571829518312,
+        "median_absolute": 0.18587498987498988,
+        "fraction_absolute_ge_half": 0.008695652173913044,
+        "fraction_absolute_ge_point8": 0.0,
+        "fraction_absolute_ge_point95": 0.0
+      }
+    }
+  },
+  "candidates": [
+    {
+      "case_id": "validation:1983",
+      "row": 1983,
+      "truth": [
+        0.06719985085485192,
+        1.3613580867806085,
+        -0.614284356790169,
+        0.12315279219438968,
+        0.06617391744977567,
+        2.3848561840923743
+      ],
+      "truth_percentile_0_100": {
+        "hurst": 31.900000000000002,
+        "eta": 68.2,
+        "rho": 64.4,
+        "short_variance": 79.5,
+        "long_variance": 92.30000000000001,
+        "decay": 86.8
+      },
+      "truth_inside_marginal90": {
+        "hurst": true,
+        "eta": true,
+        "rho": true,
+        "short_variance": true,
+        "long_variance": true,
+        "decay": true
+      },
+      "all_truths_inside_marginal90": true,
+      "coverage_not_a_selection_criterion": true,
+      "truth_prior_fraction": [
+        0.14302985107530886,
+        0.28711936226020285,
+        0.4755894217845961,
+        0.754351947962598,
+        0.37449278299850447,
+        0.2754653140764354
+      ],
+      "posterior_fraction_q005_q01_q99_q995": [
+        [
+          0.06207212862191779,
+          0.22448664049307504,
+          0.3737511966801897,
+          0.7376440959672134,
+          0.04889421363671621,
+          0.08886103768502512
+        ],
+        [
+          0.06888594500946277,
+          0.22877171595891316,
+          0.39122499619858175,
+          0.7386260916789373,
+          0.07209305055439472,
+          0.09376407715582079
+        ],
+        [
+          0.23604907230897382,
+          0.346500449180603,
+          0.5223743062985093,
+          0.7615927403171858,
+          0.39932100176811214,
+          0.34109626646964775
+        ],
+        [
+          0.24519629957097952,
+          0.358333667119344,
+          0.5250412580333178,
+          0.7625018641352653,
+          0.4110014595091343,
+          0.35562417061098156
+        ]
+      ],
+      "pearson": [
+        [
+          0.9999999999999984,
+          -0.6185132424108811,
+          0.48352093837451793,
+          -0.24970811880170996,
+          -0.055726391192953695,
+          -0.12033106328763749
+        ],
+        [
+          -0.6185132424108811,
+          0.9999999999999996,
+          0.21011980106365774,
+          0.3382766361027598,
+          0.013425398614643981,
+          0.027587242677106286
+        ],
+        [
+          0.48352093837451793,
+          0.21011980106365774,
+          0.9999999999999973,
+          0.033237465173721,
+          -0.02740571739766572,
+          -0.09218379811138575
+        ],
+        [
+          -0.24970811880170996,
+          0.3382766361027598,
+          0.033237465173721,
+          1.0,
+          0.5451452844949092,
+          0.63582281223357
+        ],
+        [
+          -0.055726391192953695,
+          0.013425398614643981,
+          -0.02740571739766572,
+          0.5451452844949092,
+          1.0,
+          0.935024716370063
+        ],
+        [
+          -0.12033106328763749,
+          0.027587242677106286,
+          -0.09218379811138575,
+          0.63582281223357,
+          0.935024716370063,
+          0.9999999999999994
+        ]
+      ],
+      "spearman": [
+        [
+          0.9999999999999996,
+          -0.5440694217016299,
+          0.4593572433572434,
+          -0.24050929539540686,
+          -0.0538802698802698,
+          -0.12253227853227856
+        ],
+        [
+          -0.5440694217016299,
+          0.9999999999999992,
+          0.32226072522750737,
+          0.3369207119745222,
+          0.034019860121919696,
+          0.03961653373538333
+        ],
+        [
+          0.4593572433572434,
+          0.32226072522750737,
+          0.9999999999999989,
+          0.040812497302247286,
+          -0.0039374079374079485,
+          -0.07558155958155956
+        ],
+        [
+          -0.24050929539540686,
+          0.3369207119745222,
+          0.040812497302247286,
+          1.0,
+          0.5523130869408435,
+          0.6295328350872297
+        ],
+        [
+          -0.0538802698802698,
+          0.034019860121919696,
+          -0.0039374079374079485,
+          0.5523130869408435,
+          0.9999999999999992,
+          0.975023703023703
+        ],
+        [
+          -0.12253227853227856,
+          0.03961653373538333,
+          -0.07558155958155956,
+          0.6295328350872297,
+          0.975023703023703,
+          0.9999999999999991
+        ]
+      ],
+      "quadratic_extra_R2_directional": [
+        [
+          8.015724468233114e-32,
+          0.045965170323372204,
+          0.03792034612832322,
+          0.00012305219340756634,
+          0.0014636456881981124,
+          0.0008086103648075785
+        ],
+        [
+          0.005423682481209011,
+          3.2734534485678223e-31,
+          0.1681089225767619,
+          0.0016853340130737876,
+          3.5941364088944486e-05,
+          0.00022947950369831254
+        ],
+        [
+          0.007401686206725644,
+          0.05992618203440932,
+          5.84958866048505e-32,
+          0.0014704202923585775,
+          0.0001103760201460646,
+          2.913419161736813e-06
+        ],
+        [
+          0.000640026525028772,
+          0.0007282862772984842,
+          5.678982414434269e-05,
+          1.27906870418087e-29,
+          0.027539424913500306,
+          0.0058635603593142115
+        ],
+        [
+          1.3683661644595004e-05,
+          0.0008001848254048221,
+          0.00111534618162849,
+          0.018644826288830855,
+          4.4822330888969584e-32,
+          0.07297553931509475
+        ],
+        [
+          0.0006537795268918121,
+          3.969550084660986e-05,
+          0.0005220978281193078,
+          0.0015888785504498146,
+          0.07328642053974231,
+          1.2774485914675538e-32
+        ]
+      ],
+      "physical_marginal_skewness": [
+        -0.136538120972532,
+        0.8586484428854881,
+        -0.5369435112516467,
+        0.06674099188300679,
+        -1.3049656786217547,
+        0.010831095802029221
+      ],
+      "physical_moment_matched_gaussian_cdf_distance": [
+        0.02895781033069411,
+        0.049898093680621036,
+        0.0511469352642292,
+        0.01927370579286014,
+        0.08956820361939483,
+        0.0261940757293192
+      ],
+      "posterior_probability_rising_curve": 0.0,
+      "rho_eta_quantiles": [
+        -0.9226576681126787,
+        -0.8229332297350069,
+        -0.7739668166722126
+      ],
+      "decay90_width_over_prior": 0.1735332581304734,
+      "logit_pearson": [
+        [
+          1.0,
+          -0.6446647447820522,
+          0.5131100075016151,
+          -0.24295924031066035,
+          -0.05680094114956232,
+          -0.12276926260760514
+        ],
+        [
+          -0.6446647447820522,
+          1.0,
+          0.22579375283016503,
+          0.33975194991610796,
+          0.009414790804363932,
+          0.023632761189704164
+        ],
+        [
+          0.5131100075016151,
+          0.22579375283016503,
+          0.9999999999999987,
+          0.03262405611002254,
+          -0.03136015491472581,
+          -0.09492250502203312
+        ],
+        [
+          -0.24295924031066035,
+          0.33975194991610796,
+          0.03262405611002254,
+          1.0,
+          0.4814777723724242,
+          0.6327922187616082
+        ],
+        [
+          -0.05680094114956232,
+          0.009414790804363932,
+          -0.03136015491472581,
+          0.4814777723724242,
+          0.9999999999999989,
+          0.8852059553542593
+        ],
+        [
+          -0.12276926260760514,
+          0.023632761189704164,
+          -0.09492250502203312,
+          0.6327922187616082,
+          0.8852059553542593,
+          1.0
+        ]
+      ],
+      "logit_quadratic_extra_R2_directional": [
+        [
+          7.893472948500277e-31,
+          0.010076205087150722,
+          0.010037031135345174,
+          0.003119292195549779,
+          0.00023611284416670653,
+          9.890526871496916e-05
+        ],
+        [
+          0.05238649158380789,
+          3.8797618781251165e-30,
+          0.16510771045570713,
+          0.0004689287179009014,
+          0.00032659523489863695,
+          0.000609397412789702
+        ],
+        [
+          0.023788524970608193,
+          0.05488687818886975,
+          1.0535780987640801e-32,
+          0.0015766950392653827,
+          0.0003082214836146685,
+          8.280903046106452e-06
+        ],
+        [
+          0.0002033143746113052,
+          0.00040465037121968465,
+          6.473481566527936e-05,
+          1.3864125666832326e-27,
+          0.03562310946700652,
+          0.01661501950241709
+        ],
+        [
+          0.00017715534313045959,
+          5.965499692210435e-05,
+          6.420991191881464e-05,
+          0.07419611962823433,
+          2.1121679760204332e-30,
+          0.15402902855329959
+        ],
+        [
+          6.954201177919153e-05,
+          0.0005680551962700323,
+          0.00015868548336623063,
+          0.0035957752606935404,
+          0.11696870384728321,
+          1.057525292421865e-29
+        ]
+      ],
+      "logit_marginal_skewness": [
+        -1.1336693531223332,
+        0.6013423477594293,
+        -0.5872455478333034,
+        0.10424105105177112,
+        -3.396344014820041,
+        -0.5330484140252254
+      ],
+      "logit_moment_matched_gaussian_cdf_distance": [
+        0.07340907211871062,
+        0.04182446237061466,
+        0.053402763329057135,
+        0.021942601376467696,
+        0.13954311010457288,
+        0.049950834154303125
+      ],
+      "saved_npz": "candidate-1983.npz",
+      "saved_npz_sha256": "f9985c45c7c23b676496b4dc923505464d2d931372f77332ccfffa40db5fee80"
+    },
+    {
+      "case_id": "validation:1941",
+      "row": 1941,
+      "truth": [
+        0.161099843299465,
+        0.831286596116128,
+        -0.8627646105338025,
+        0.0774164131588935,
+        0.1306304089620348,
+        4.325367061285454
+      ],
+      "truth_percentile_0_100": {
+        "hurst": 51.9,
+        "eta": 15.1,
+        "rho": 13.4,
+        "short_variance": 72.2,
+        "long_variance": 30.0,
+        "decay": 57.99999999999999
+      },
+      "truth_inside_marginal90": {
+        "hurst": true,
+        "eta": true,
+        "rho": true,
+        "short_variance": true,
+        "long_variance": true,
+        "decay": true
+      },
+      "all_truths_inside_marginal90": true,
+      "coverage_not_a_selection_criterion": true,
+      "truth_prior_fraction": [
+        0.4275752827256516,
+        0.11042886537204266,
+        0.16105745502050317,
+        0.4494427543926234,
+        0.8042027264135653,
+        0.5258538143594135
+      ],
+      "posterior_fraction_q005_q01_q99_q995": [
+        [
+          0.32938871758453775,
+          0.08295652449131012,
+          0.062995682411556,
+          0.4339090384542943,
+          0.7716805468002955,
+          0.36517521812069803
+        ],
+        [
+          0.3385099321603775,
+          0.0878648285071055,
+          0.0768003524104251,
+          0.4346996506055197,
+          0.7763289531071982,
+          0.37143940033451206
+        ],
+        [
+          0.5330507583690413,
+          0.16840694030125936,
+          0.3241276107256925,
+          0.4589397415518761,
+          0.8628262629111607,
+          0.6551468996847829
+        ],
+        [
+          0.5500693178989671,
+          0.17038584152857464,
+          0.3317758124085921,
+          0.45956938068072006,
+          0.8673986122012137,
+          0.6733786481426608
+        ]
+      ],
+      "pearson": [
+        [
+          1.0,
+          0.2519020409707071,
+          0.19742616066326088,
+          0.06883824646775626,
+          0.22647860804146172,
+          -0.1415450921369691
+        ],
+        [
+          0.2519020409707071,
+          0.9999999999999994,
+          0.9570458388714884,
+          -0.06864714523418995,
+          0.3477039993948949,
+          -0.109018171843272
+        ],
+        [
+          0.19742616066326088,
+          0.9570458388714884,
+          1.0,
+          -0.06806899152370204,
+          0.30524058713383795,
+          -0.09366338288571095
+        ],
+        [
+          0.06883824646775626,
+          -0.06864714523418995,
+          -0.06806899152370204,
+          0.9999999999999992,
+          0.3601382647322924,
+          -0.6425610292752136
+        ],
+        [
+          0.22647860804146172,
+          0.3477039993948949,
+          0.30524058713383795,
+          0.3601382647322924,
+          0.9999999999999988,
+          -0.8654304804635417
+        ],
+        [
+          -0.1415450921369691,
+          -0.109018171843272,
+          -0.09366338288571095,
+          -0.6425610292752136,
+          -0.8654304804635417,
+          1.0
+        ]
+      ],
+      "spearman": [
+        [
+          0.9999999999999993,
+          0.2357910557910556,
+          0.18602115657922008,
+          0.05568614035437404,
+          0.23499011640005726,
+          -0.13622497622497615
+        ],
+        [
+          0.2357910557910556,
+          0.9999999999999991,
+          0.9567073315774542,
+          -0.06298514174096344,
+          0.33157121156063873,
+          -0.08884493284493285
+        ],
+        [
+          0.18602115657922008,
+          0.9567073315774542,
+          0.9999999999999998,
+          -0.06291367585738096,
+          0.28522144778844066,
+          -0.07159898381378076
+        ],
+        [
+          0.05568614035437404,
+          -0.06298514174096344,
+          -0.06291367585738096,
+          1.0,
+          0.34505379326476154,
+          -0.6195316109659905
+        ],
+        [
+          0.23499011640005726,
+          0.33157121156063873,
+          0.28522144778844066,
+          0.34505379326476154,
+          1.0,
+          -0.864319013504928
+        ],
+        [
+          -0.13622497622497615,
+          -0.08884493284493285,
+          -0.07159898381378076,
+          -0.6195316109659905,
+          -0.864319013504928,
+          0.9999999999999989
+        ]
+      ],
+      "quadratic_extra_R2_directional": [
+        [
+          1.6085115810542002e-31,
+          0.0048880789843748435,
+          0.0005492487076810374,
+          2.4282914334453926e-06,
+          0.0009327661511185293,
+          0.0006393514493768177
+        ],
+        [
+          0.0009955740448656482,
+          6.298041227738898e-31,
+          0.007872361665146523,
+          1.914306607941668e-05,
+          0.0014453285517372597,
+          0.0026645215569839746
+        ],
+        [
+          0.00013198371917048178,
+          0.004819580915533547,
+          1.0888048013730862e-30,
+          8.609513359914105e-06,
+          0.00029130134282931387,
+          0.001260672793204728
+        ],
+        [
+          0.007318259067966097,
+          0.004509437887871353,
+          0.006732556761467022,
+          9.169902288723734e-31,
+          8.54605401859063e-05,
+          0.0023431932556063125
+        ],
+        [
+          0.002159290516492608,
+          0.00647627603934197,
+          0.005537475964997371,
+          0.0020001152330410407,
+          3.772344407746855e-32,
+          0.015451962053368217
+        ],
+        [
+          0.0015244515510788044,
+          0.00014160666126521407,
+          0.00019667204439696828,
+          6.9144847556271e-05,
+          0.022588321234494117,
+          9.073260428151388e-32
+        ]
+      ],
+      "physical_marginal_skewness": [
+        0.26572502785289087,
+        -0.16518418498264092,
+        -0.515751789102772,
+        0.13700113499770125,
+        0.7107872961027664,
+        0.11612083502967466
+      ],
+      "physical_moment_matched_gaussian_cdf_distance": [
+        0.031130500361329028,
+        0.031089128780923514,
+        0.054843861849615705,
+        0.024955867090334816,
+        0.055557025468677135,
+        0.017433726612509748
+      ],
+      "posterior_probability_rising_curve": 1.0,
+      "rho_eta_quantiles": [
+        -0.7432504006560496,
+        -0.7217937351024162,
+        -0.700843523320805
+      ],
+      "decay90_width_over_prior": 0.19305128282116304,
+      "logit_pearson": [
+        [
+          1.0,
+          0.24786049212068278,
+          0.1946720562804362,
+          0.06883709201011382,
+          0.21982851153369318,
+          -0.14138592517233056
+        ],
+        [
+          0.24786049212068278,
+          1.0,
+          0.8965502928111968,
+          -0.06809482192439406,
+          0.34101312157737074,
+          -0.11328298205729913
+        ],
+        [
+          0.1946720562804362,
+          0.8965502928111968,
+          0.9999999999999988,
+          -0.06912143278412669,
+          0.2836647678209698,
+          -0.09703144629026786
+        ],
+        [
+          0.06883709201011382,
+          -0.06809482192439406,
+          -0.06912143278412669,
+          1.0,
+          0.3529133722311717,
+          -0.6426153255509364
+        ],
+        [
+          0.21982851153369318,
+          0.34101312157737074,
+          0.2836647678209698,
+          0.3529133722311717,
+          1.0,
+          -0.846874736735089
+        ],
+        [
+          -0.14138592517233056,
+          -0.11328298205729913,
+          -0.09703144629026786,
+          -0.6426153255509364,
+          -0.846874736735089,
+          0.9999999999999996
+        ]
+      ],
+      "logit_quadratic_extra_R2_directional": [
+        [
+          3.56201758575091e-30,
+          0.003973727919631975,
+          0.00015172172296160286,
+          6.8912402504278485e-06,
+          0.0012948891947668067,
+          0.00077179612625963
+        ],
+        [
+          0.0016037054663527188,
+          9.880215007144986e-30,
+          0.062344016524696184,
+          4.8851008397984575e-05,
+          1.991668415436431e-06,
+          0.001990759810387727
+        ],
+        [
+          0.0014287378583168764,
+          0.11330657772950428,
+          1.9464046670859647e-32,
+          5.22398247079261e-05,
+          0.008298425367884424,
+          0.00017363513846920932
+        ],
+        [
+          0.007476322650539375,
+          0.00439447005297475,
+          0.004146827142000328,
+          1.9386396454681874e-30,
+          0.00036022547008129376,
+          0.0031460261759516926
+        ],
+        [
+          0.005037343268489264,
+          0.011626734946737997,
+          0.01239802555913851,
+          0.008835785406434775,
+          5.40350183300209e-30,
+          0.04426128086484917
+        ],
+        [
+          0.0013008985194289501,
+          4.222496776307043e-05,
+          1.57885365562677e-05,
+          0.0002501309636944756,
+          0.04479047121281451,
+          4.7646352716122744e-32
+        ]
+      ],
+      "logit_marginal_skewness": [
+        0.19471858098853478,
+        -0.5206153911777767,
+        -3.8238711004999977,
+        0.12871148665637266,
+        1.3078725901137258,
+        0.20458040882665837
+      ],
+      "logit_moment_matched_gaussian_cdf_distance": [
+        0.02832013562814739,
+        0.048162504540950835,
+        0.09238894428361971,
+        0.024538909323252645,
+        0.0754570955765752,
+        0.020262199728814156
+      ],
+      "saved_npz": "candidate-1941.npz",
+      "saved_npz_sha256": "2c923dbb154b5464a45f9b5a6ed35d9d8d15d530ee3e7f1f1a3fef4f0b65942b"
+    }
+  ],
+  "separate_weak_decay_candidate": {
+    "case_id": "validation:1962",
+    "row": 1962,
+    "truth": [
+      0.09973288815603515,
+      1.7989917919954652,
+      -0.6578661426470441,
+      0.09162874697615654,
+      0.08968308776420636,
+      2.283915496752348
+    ],
+    "truth_percentile_0_100": {
+      "hurst": 80.30000000000001,
+      "eta": 27.400000000000002,
+      "rho": 21.099999999999998,
+      "short_variance": 64.60000000000001,
+      "long_variance": 93.8,
+      "decay": 25.0
+    },
+    "truth_inside_marginal90": {
+      "hurst": true,
+      "eta": true,
+      "rho": true,
+      "short_variance": true,
+      "long_variance": true,
+      "decay": true
+    },
+    "all_truths_inside_marginal90": true,
+    "coverage_not_a_selection_criterion": true,
+    "truth_prior_fraction": [
+      0.24161481259404594,
+      0.4329972639984884,
+      0.42042260424424793,
+      0.5441916465077103,
+      0.5312205850947092,
+      0.2624407092583675
+    ],
+    "posterior_fraction_q005_q01_q99_q995": [
+      [
+        0.1267244688827883,
+        0.40596128443876905,
+        0.3647116928160945,
+        0.5305399954319001,
+        0.3401479331155618,
+        0.0022170586547543927
+      ],
+      [
+        0.13869330241824643,
+        0.4083370073636373,
+        0.37747337546529647,
+        0.5318943778673808,
+        0.359036652247111,
+        0.004809408380139259
+      ],
+      [
+        0.2812763344157826,
+        0.48975289543469747,
+        0.4757311585583264,
+        0.5540957932670911,
+        0.544409254193306,
+        0.9931466004156297
+      ],
+      [
+        0.287415418661002,
+        0.4956046897172928,
+        0.4797031728527214,
+        0.5557956889271737,
+        0.5471237989763419,
+        0.9969194049219932
+      ]
+    ],
+    "pearson": [
+      [
+        0.9999999999999982,
+        -0.5330864222483314,
+        0.692818314911372,
+        -0.3820107550607963,
+        0.16160237343032935,
+        -0.090171575414645
+      ],
+      [
+        -0.5330864222483314,
+        1.0,
+        -0.011704365156570981,
+        0.35800603025609967,
+        0.028959018905888787,
+        0.010113564303467904
+      ],
+      [
+        0.692818314911372,
+        -0.011704365156570981,
+        0.9999999999999997,
+        -0.17619210309972708,
+        0.16154171252997773,
+        -0.07785602192823185
+      ],
+      [
+        -0.3820107550607963,
+        0.35800603025609967,
+        -0.17619210309972708,
+        1.0,
+        -0.005182745602888469,
+        0.33878928099419003
+      ],
+      [
+        0.16160237343032935,
+        0.028959018905888787,
+        0.16154171252997773,
+        -0.005182745602888469,
+        1.0,
+        0.544397270730703
+      ],
+      [
+        -0.090171575414645,
+        0.010113564303467904,
+        -0.07785602192823185,
+        0.33878928099419003,
+        0.544397270730703,
+        1.0
+      ]
+    ],
+    "spearman": [
+      [
+        0.9999999999999994,
+        -0.48406212096649376,
+        0.6570573050284766,
+        -0.35625292532168407,
+        0.33923152126691036,
+        -0.0847945450489286
+      ],
+      [
+        -0.48406212096649376,
+        1.0,
+        0.08924552951326617,
+        0.31122094815461093,
+        0.053502425823440426,
+        0.004814416828860121
+      ],
+      [
+        0.6570573050284766,
+        0.08924552951326617,
+        0.9999999999999992,
+        -0.15636003636003631,
+        0.3131331680725674,
+        -0.07606264006264012
+      ],
+      [
+        -0.35625292532168407,
+        0.31122094815461093,
+        -0.15636003636003631,
+        0.9999999999999984,
+        -0.14238941881658707,
+        0.3244094884094885
+      ],
+      [
+        0.33923152126691036,
+        0.053502425823440426,
+        0.3131331680725674,
+        -0.14238941881658707,
+        0.9999999999999998,
+        0.5069262584470366
+      ],
+      [
+        -0.0847945450489286,
+        0.004814416828860121,
+        -0.07606264006264012,
+        0.3244094884094885,
+        0.5069262584470366,
+        0.999999999999999
+      ]
+    ],
+    "quadratic_extra_R2_directional": [
+      [
+        4.106434256490751e-31,
+        0.03682820973206428,
+        0.03421779801291679,
+        0.0015477278246607052,
+        0.004206161385009395,
+        0.0024002119632875567
+      ],
+      [
+        0.008119012114242286,
+        2.4276808319432765e-30,
+        0.0634862571353129,
+        0.003638333791501443,
+        0.0014222044364138409,
+        0.001375940252060839
+      ],
+      [
+        0.0008070799320474438,
+        0.0849377358457557,
+        2.405130952364147e-30,
+        0.00023321977797057905,
+        0.0033595168888853845,
+        1.683670046153387e-05
+      ],
+      [
+        0.0033827944542106146,
+        0.007534760004382032,
+        0.005760026973909935,
+        1.8067311633690127e-29,
+        0.005260539799934924,
+        0.0017954632207995156
+      ],
+      [
+        0.0568036439414749,
+        6.7209082120565945e-06,
+        0.03718286423283078,
+        0.01568619189920336,
+        1.0806546582261073e-30,
+        0.03219394981182381
+      ],
+      [
+        7.16691165892231e-05,
+        0.003385496403080368,
+        0.0008370721871749084,
+        0.0019239662413839593,
+        0.14774382736357972,
+        3.534183920462431e-31
+      ]
+    ],
+    "physical_marginal_skewness": [
+      -0.12216062743693307,
+      0.38430222586815116,
+      -0.6426935038313882,
+      0.13176544864064235,
+      -3.095219633349933,
+      -0.15411777045678265
+    ],
+    "physical_moment_matched_gaussian_cdf_distance": [
+      0.013737675894474943,
+      0.03557187046457566,
+      0.04813788123499518,
+      0.019093995743932224,
+      0.22107647798440946,
+      0.06620002487243382
+    ],
+    "posterior_probability_rising_curve": 0.027,
+    "rho_eta_quantiles": [
+      -1.2630255248607214,
+      -1.1782353174901061,
+      -1.127301943973464
+    ],
+    "decay90_width_over_prior": 0.9423885372377211,
+    "logit_pearson": [
+      [
+        1.0,
+        -0.5467239342188258,
+        0.7075880143354589,
+        -0.38356646866059274,
+        0.15250473342926413,
+        -0.08432146713012534
+      ],
+      [
+        -0.5467239342188258,
+        0.9999999999999984,
+        -0.013937777271475667,
+        0.3578535448563373,
+        0.030131135118939795,
+        0.014421337603028014
+      ],
+      [
+        0.7075880143354589,
+        -0.013937777271475667,
+        0.9999999999999997,
+        -0.17640251253725292,
+        0.1589290437414182,
+        -0.06732799632480949
+      ],
+      [
+        -0.38356646866059274,
+        0.3578535448563373,
+        -0.17640251253725292,
+        1.0,
+        -0.004632006974104416,
+        0.31043231483929473
+      ],
+      [
+        0.15250473342926413,
+        0.030131135118939795,
+        0.1589290437414182,
+        -0.004632006974104416,
+        1.0,
+        0.6157027793553487
+      ],
+      [
+        -0.08432146713012534,
+        0.014421337603028014,
+        -0.06732799632480949,
+        0.31043231483929473,
+        0.6157027793553487,
+        1.0
+      ]
+    ],
+    "logit_quadratic_extra_R2_directional": [
+      [
+        4.340770867021818e-30,
+        0.019732831863716476,
+        0.019843308199402096,
+        1.4574224734767937e-07,
+        0.005392820079421845,
+        0.0016522519130630286
+      ],
+      [
+        0.01652054259653921,
+        1.113941106410258e-30,
+        0.06360528960586065,
+        0.0038359347059693807,
+        0.0014520856422971413,
+        0.0008960192997561464
+      ],
+      [
+        0.00512704482917868,
+        0.08411247988963494,
+        6.271361372893664e-32,
+        0.00015639906463997544,
+        0.003375471325385485,
+        1.4885361419298738e-06
+      ],
+      [
+        0.00488269274586134,
+        0.007304811117217218,
+        0.00576473405870616,
+        1.7001476309589711e-31,
+        0.005272404747457833,
+        0.0013003459363636733
+      ],
+      [
+        0.052434640521622694,
+        6.318664796401777e-05,
+        0.033537495674058594,
+        0.012983669661361327,
+        5.890966911019102e-31,
+        0.01370763306291429
+      ],
+      [
+        0.0004421216968058707,
+        0.001855701970263259,
+        0.0007669822450489066,
+        0.002695652781233649,
+        0.17314484515474418,
+        2.786545741237266e-32
+      ]
+    ],
+    "logit_marginal_skewness": [
+      -0.49631136196015985,
+      0.36260771430041416,
+      -0.7056396147336433,
+      0.1372205970170783,
+      -3.2373150434587212,
+      -0.12097745205470488
+    ],
+    "logit_moment_matched_gaussian_cdf_distance": [
+      0.03308332212130416,
+      0.03407598719898519,
+      0.05078033241209812,
+      0.019320281935923944,
+      0.22370803673282333,
+      0.06665618457228711
+    ],
+    "saved_npz": "weak-decay-1962.npz",
+    "saved_npz_sha256": "e13ba12295229c5dcdea8bda7710de1d33d468b9549fa65adc84015a532b96c5",
+    "not_an_interior_showcase": true
+  },
+  "weak_decay_candidate_is_interior_showcase": false,
+  "scope": "All correlations computed within each observed case; no pooled posterior correlation. Quadratic/skew/CDF distances are descriptive learned-candidate diagnostics, not proof of nonGaussian true posteriors.",
+  "runtime": {
+    "python": "3.12.16",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "system": "Darwin",
+    "machine": "arm64"
+  },
+  "seconds": 1.1925786249921657
+}

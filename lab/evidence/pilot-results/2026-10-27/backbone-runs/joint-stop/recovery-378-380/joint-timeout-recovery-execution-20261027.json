@@ -1,0 +1,117 @@
+{
+  "format": "reviewed_joint_three_timeout_recovery_execution_v1",
+  "status": "prepared",
+  "approved_scope": "Root approved one bounded manual recovery of original indices 378\u2013380 with unchanged IDs, seeds, source and map; 3-hour, 1-CPU, 8-GB caps; exclude node2338. No wider refill or automatic retry.",
+  "source_revision": "c773ceb26e7273612b15c69fd63715d131778083",
+  "collection_id": "817de3664968de0c605ae4c73e2c99c26465344294af2fc5412f39fffa4baa50",
+  "collection_sha256": "802a200f73bacddaa744abcfdcf2497b2d45a609c9039ed816baf1e3e9a5b12c",
+  "job_map_sha256": "a815c58087279fa7c2b5603d6bc3fee11ed92ec7965c0ac29c2827a665bbae0c",
+  "root_seed": 271200,
+  "original_map_indices": [
+    378,
+    379,
+    380
+  ],
+  "original_timeout_job_ids": [
+    "8019485_378",
+    "8019485_379",
+    "8019485_380"
+  ],
+  "unit_cpu_hour_ceiling": 9.5,
+  "bank_cpu_hour_ceiling": 1500,
+  "baseline_bank_allocated_cpu_seconds": 1016212,
+  "final_snapshot_cpu_seconds_reserved": 3960,
+  "all_stages_full_exposure_cpu_seconds": 34200,
+  "all_stages_plus_existing_and_final_exposure_cpu_seconds": 1054372,
+  "stage_driver_sha256": "dec48a94bd107873ba3ed854150e386dd41615a748edd28a490f78ccb35fb993",
+  "stages": [
+    {
+      "role": "preflight",
+      "state": "planned_not_submitted",
+      "indices": null,
+      "wall_seconds_per_task": 300,
+      "cleanup_seconds_per_task": 240,
+      "full_cpu_seconds_including_cleanup": 540,
+      "argv": [
+        "sbatch",
+        "--parsable",
+        "--nodes=1",
+        "--ntasks=1",
+        "--no-requeue",
+        "--account=carney-mjfrank-condo2",
+        "--partition=batch",
+        "--cpus-per-task=1",
+        "--mem=8G",
+        "--exclude=node2338",
+        "--chdir=/oscar/scratch/afengler/sbi4finance-native-bank-20261027/repo",
+        "--job-name=sbi4f-joint-recovery-preflight",
+        "--time=00:05:00",
+        "--output=/oscar/scratch/afengler/sbi4finance-native-bank-20261027/recovery-378-380-20261027/logs/preflight-%j.out",
+        "--wrap=env PYTHONPATH=/oscar/scratch/afengler/sbi4finance-native-bank-20261027/repo/src OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 /oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python /oscar/scratch/afengler/sbi4finance-native-bank-20261027/recovery-378-380-20261027/joint_timeout_recovery_stage_20261027.py preflight"
+      ],
+      "submission_cwd": "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/repo",
+      "parent_attempt_key": "joint-timeout-recovery-20261027-preflight"
+    },
+    {
+      "role": "workers",
+      "state": "planned_not_submitted",
+      "indices": [
+        378,
+        379,
+        380
+      ],
+      "wall_seconds_per_task": 10800,
+      "cleanup_seconds_per_task": 240,
+      "full_cpu_seconds_including_cleanup": 33120,
+      "argv": [
+        "sbatch",
+        "--parsable",
+        "--job-name=sbi4f-joint-timeout-recovery-378-380",
+        "--nodes=1",
+        "--ntasks=1",
+        "--no-requeue",
+        "--account=carney-mjfrank-condo2",
+        "--partition=batch",
+        "--cpus-per-task=1",
+        "--mem=8G",
+        "--time=03:00:00",
+        "--exclude=node2338",
+        "--array=378,379,380%3",
+        "--chdir=/oscar/scratch/afengler/sbi4finance-native-bank-20261027/repo",
+        "--output=/oscar/scratch/afengler/sbi4finance-native-bank-20261027/recovery-378-380-20261027/logs/workers-%A_%a.out",
+        "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/repo/cluster/calibration_collection_array.sbatch",
+        "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python",
+        "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/jobs-20k.json"
+      ],
+      "submission_cwd": "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/repo",
+      "parent_attempt_key": "joint-timeout-recovery-20261027-workers"
+    },
+    {
+      "role": "postcheck",
+      "state": "planned_not_submitted",
+      "indices": null,
+      "wall_seconds_per_task": 300,
+      "cleanup_seconds_per_task": 240,
+      "full_cpu_seconds_including_cleanup": 540,
+      "argv": [
+        "sbatch",
+        "--parsable",
+        "--nodes=1",
+        "--ntasks=1",
+        "--no-requeue",
+        "--account=carney-mjfrank-condo2",
+        "--partition=batch",
+        "--cpus-per-task=1",
+        "--mem=8G",
+        "--exclude=node2338",
+        "--chdir=/oscar/scratch/afengler/sbi4finance-native-bank-20261027/repo",
+        "--job-name=sbi4f-joint-recovery-postcheck",
+        "--time=00:05:00",
+        "--output=/oscar/scratch/afengler/sbi4finance-native-bank-20261027/recovery-378-380-20261027/logs/postcheck-%j.out",
+        "--wrap=env PYTHONPATH=/oscar/scratch/afengler/sbi4finance-native-bank-20261027/repo/src OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 /oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python /oscar/scratch/afengler/sbi4finance-native-bank-20261027/recovery-378-380-20261027/joint_timeout_recovery_stage_20261027.py postcheck"
+      ],
+      "submission_cwd": "/oscar/scratch/afengler/sbi4finance-native-bank-20261027/repo",
+      "parent_attempt_key": "joint-timeout-recovery-20261027-postcheck"
+    }
+  ]
+}

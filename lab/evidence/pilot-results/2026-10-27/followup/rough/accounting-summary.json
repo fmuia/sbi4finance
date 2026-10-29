@@ -1,0 +1,9 @@
+{
+  "allocated_cpu_seconds": 1140,
+  "counting": "four run allocations plus declaration; batch/extern CPU not counted twice; batch MaxRSS recorded separately",
+  "declared_allocated_cpu_ceiling_seconds": 7200,
+  "system_cpu_seconds": 185.463,
+  "top_level_allocation_count": 5,
+  "total_cpu_seconds": 1106.382,
+  "user_cpu_seconds": 920.917
+}

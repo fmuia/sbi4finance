@@ -1,0 +1,76 @@
+{
+  "v2.0.14": {
+    "commit": "391acaf1e15a487e265e96bb06e8e837328cae8b",
+    "files": {
+      "networks/inference/flow_matching/flow_matching.py": {
+        "tag_matches_installed": true,
+        "sha256": "2e37484873319d4c3d9f683aa54fbafabb495892dcbf740dbaf761f6b1e92320"
+      },
+      "networks/inference/inference_network.py": {
+        "tag_matches_installed": true,
+        "sha256": "675ff72777c8fcfdc1803f28a4e39f4210c39b3923b46d4ee24b4623238a1e22"
+      },
+      "networks/subnets/mlp/time_mlp.py": {
+        "tag_matches_installed": true,
+        "sha256": "c645530f76686ffc64d03b29b1a1628de1baeecb52469b3deafef2b631dd3531"
+      },
+      "networks/helpers/embeddings/fourier_embedding.py": {
+        "tag_matches_installed": true,
+        "sha256": "47fa7f2a50fd71f89a7769cf448a7b4e6816ea9770fac5496c152b7c7d6696fc"
+      },
+      "networks/helpers/standardization/standardize.py": {
+        "tag_matches_installed": true,
+        "sha256": "1b391af7c8ea5b3dffde1ade9a57a7d0953109b8ed4f0e6e636d143d9b4eb497"
+      },
+      "adapters/adapter.py": {
+        "tag_matches_installed": true,
+        "sha256": "427238dcddcf3a656046d9d493e175e950fa267b2db14048ed1ff32f6884c787"
+      },
+      "adapters/transforms/constrain.py": {
+        "tag_matches_installed": true,
+        "sha256": "5356ec27e7061a31c77fc9a569540d7b2befc7bb1a9e9e33a87b7ece8e1ef403"
+      },
+      "datasets/offline_dataset.py": {
+        "tag_matches_installed": true,
+        "sha256": "ccc50ef2b4833a5c31230a2bdd19e77a1f9972a4e8d4a1847f3232dd3044470e"
+      }
+    }
+  },
+  "v2.1.0": {
+    "commit": "d4421e7e68cfa4c7abe9483aedb416b65321d98f",
+    "files": {
+      "networks/inference/flow_matching/flow_matching.py": {
+        "tag_matches_installed": true,
+        "sha256": "4a7e2c1eeb077992247dcf86760460a7d9317f9fa68444514edf227187111a61"
+      },
+      "networks/inference/inference_network.py": {
+        "tag_matches_installed": true,
+        "sha256": "f06f2b1d733c080109488fad53ba4e9f10cfb1a21a22b35eb39dbf0d1902e5a5"
+      },
+      "networks/subnets/mlp/time_mlp.py": {
+        "tag_matches_installed": true,
+        "sha256": "9f126b1b9d783cd02a1ff9070ab09c489d0eb54b5314f5244c97f39517db77fe"
+      },
+      "networks/helpers/embeddings/fourier_embedding.py": {
+        "tag_matches_installed": true,
+        "sha256": "ea085e942584925ca36aba59f214ce76a311d545dc66029bd36881b4bc12c7f6"
+      },
+      "networks/helpers/standardization/standardize.py": {
+        "tag_matches_installed": true,
+        "sha256": "c6a9110842431c90087f6db6daf698c7efb7b89aca5fbe1e5ffdcd8e563fd737"
+      },
+      "adapters/adapter.py": {
+        "tag_matches_installed": true,
+        "sha256": "a8606efc7b50c4f8131ac95cc95ac82701566cf5b4bc748a00161c084ac4964d"
+      },
+      "adapters/transforms/constrain.py": {
+        "tag_matches_installed": true,
+        "sha256": "8c704f30190f214c0c76d31d499c3c2d3aef76a48b5ca01537bda3f8f2e2b358"
+      },
+      "datasets/offline_dataset.py": {
+        "tag_matches_installed": true,
+        "sha256": "ccc50ef2b4833a5c31230a2bdd19e77a1f9972a4e8d4a1847f3232dd3044470e"
+      }
+    }
+  }
+}

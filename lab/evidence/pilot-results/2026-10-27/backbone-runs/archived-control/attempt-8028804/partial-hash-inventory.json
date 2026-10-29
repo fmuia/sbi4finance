@@ -1,0 +1,33 @@
+{
+  "committed_surfaces": 500,
+  "run_sha256": "c5ab4b0edde1d1bf3d54fdb2f94f213158e3cd32127b341c81ad80e1cd6b0e00",
+  "declaration_sha256": "a4d66a84934461980c75b233abfaf601964189cf78070701a61a2cf100965eb6",
+  "committed_files": [
+    {
+      "name": "batch-00.npz",
+      "bytes": 2989960,
+      "sha256": "35ae49749ca44bf24a63434841f5e8f82c7c1632da92e8e21b67f4e4711067fc"
+    },
+    {
+      "name": "batch-01.npz",
+      "bytes": 2992177,
+      "sha256": "63e092d113ef1b80cac6b092d843f91575d0f2f02228896b31b94c1b38967b54"
+    },
+    {
+      "name": "batch-02.npz",
+      "bytes": 2989814,
+      "sha256": "24de1dfc13ac86308196989bcd3af54e66d7f3f28d2e2ee306f1fec91d8ee9c9"
+    },
+    {
+      "name": "batch-03.npz",
+      "bytes": 2992332,
+      "sha256": "7edfadd8693c0677fba33258637c98e2b531bd9bf268e6fd0d0cab6871be2fa8"
+    },
+    {
+      "name": "batch-04.npz",
+      "bytes": 2989831,
+      "sha256": "42889448921704c2fa401edd3df6d0672ee967f9f49576cb60467d4d0b716b47"
+    }
+  ],
+  "uncommitted_files": []
+}

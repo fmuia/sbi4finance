@@ -1,0 +1,36 @@
+{
+  "format": "heston_interior_development_run_v1",
+  "status": "completed_development_case",
+  "scientific_acceptance": false,
+  "manifest_sha256": "385de2814c36748b5efd8c4d1b4d9b2316f527a992f270c66bf95ff772ac1ca4",
+  "selection": "One ex-ante midpoint of all four prior intervals; fixed before observation generation or inference. No posterior-based reselection.",
+  "stages": {
+    "reference": {
+      "status": "completed",
+      "diagnostics_passed": true
+    },
+    "precision": {
+      "status": "completed",
+      "all_points_priced": true
+    },
+    "interior": {
+      "status": "completed",
+      "interior_passed": true
+    },
+    "neural_readout": {
+      "status": "completed"
+    }
+  },
+  "elapsed_seconds": 469.66859504394233,
+  "frozen_inputs_verified": true,
+  "outputs": {
+    "observation.npz": "c9ff5bac323fc0daa7a4c13019744db2ea32ec7b676d55e33e4ac9671de3f5c3",
+    "reference/reference.json": "ff6c7a4660bdc486546d8dae9825abe0adf8e335972ba5c49df576f8ea189310",
+    "reference/chains.npz": "dcc09de9175bca23e299b25946d947dc0604e7c1c30b978c22ec464263940af3",
+    "reference/diagnostics.json": "8993076d03ff44ba1106c8324c8856ad421b40be54ecbe0773a43377397c3d5f",
+    "precision.json": "1d9b37b91dc068ab5d8c00a37bfa41bb45b7682d44102504ecaeb0b54793adac",
+    "interior-check.json": "9169bfc997b9016ca533a05f7977542f6369814a16a1e3ab54e224ed2983354a",
+    "neural/draws.npz": "c3ecc4216560f1b7bd01aa4549bb4364c3e3ebe89bb4dd01f0f2b79b6c3ace56",
+    "neural/run.json": "e16a61ae68e8462ec0b68de1f73904ef1ee52b66fa2c7ed0a2c28b8abd6272f2"
+  }
+}

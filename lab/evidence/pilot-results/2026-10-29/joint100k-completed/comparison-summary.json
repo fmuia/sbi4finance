@@ -1,0 +1,213 @@
+{
+  "status": "completed_development_fit_without_scientific_acceptance",
+  "same_validation": {
+    "cases": 2000,
+    "draws_per_case": 1000,
+    "seed": 0,
+    "all_example_ids_equal": true,
+    "all5000_validation_payloads_verified_identical": true,
+    "old20k_training_prefix_unchanged": true,
+    "proof": "data-model-and-accounting-proof.json",
+    "reserved_test_evaluated": false
+  },
+  "posterior_comparison": [
+    {
+      "target": "hurst",
+      "rank_ks20k": 0.014029286961567966,
+      "rank_ks100k": 0.01395360479268104,
+      "rank_pass20k": true,
+      "rank_pass100k": true,
+      "coverage90_20k": 0.9005,
+      "coverage90_100k": 0.9,
+      "coverage90_wilson20k": [
+        0.8866037634261721,
+        0.9128606817015441
+      ],
+      "coverage90_wilson100k": [
+        0.8860755875933475,
+        0.9123907745816502
+      ]
+    },
+    {
+      "target": "eta",
+      "rank_ks20k": 0.018678412750317785,
+      "rank_ks100k": 0.01472319889648177,
+      "rank_pass20k": true,
+      "rank_pass100k": true,
+      "coverage90_20k": 0.899,
+      "coverage90_100k": 0.895,
+      "coverage90_wilson20k": [
+        0.8850195371949674,
+        0.9114506590745928
+      ],
+      "coverage90_wilson100k": [
+        0.8807992578125098,
+        0.9076862748353004
+      ]
+    },
+    {
+      "target": "rho",
+      "rank_ks20k": 0.016676128142299795,
+      "rank_ks100k": 0.016763757916560595,
+      "rank_pass20k": true,
+      "rank_pass100k": true,
+      "coverage90_20k": 0.901,
+      "coverage90_100k": 0.9015,
+      "coverage90_wilson20k": [
+        0.8871320405740596,
+        0.9133304875063756
+      ],
+      "coverage90_wilson100k": [
+        0.8876604197168964,
+        0.9138001913162573
+      ]
+    },
+    {
+      "target": "short_variance",
+      "rank_ks20k": 0.022289568598583442,
+      "rank_ks100k": 0.018492062714371538,
+      "rank_pass20k": true,
+      "rank_pass100k": true,
+      "coverage90_20k": 0.92,
+      "coverage90_100k": 0.9015,
+      "coverage90_wilson20k": [
+        0.9072892548014819,
+        0.9311004254822657
+      ],
+      "coverage90_wilson100k": [
+        0.8876604197168964,
+        0.9138001913162573
+      ]
+    },
+    {
+      "target": "long_variance",
+      "rank_ks20k": 0.014853622561270263,
+      "rank_ks100k": 0.015656516467188242,
+      "rank_pass20k": true,
+      "rank_pass100k": true,
+      "coverage90_20k": 0.9045,
+      "coverage90_100k": 0.897,
+      "coverage90_wilson20k": [
+        0.890832875631817,
+        0.9166162331176492
+      ],
+      "coverage90_wilson100k": [
+        0.8829086231738941,
+        0.9095692412847911
+      ]
+    },
+    {
+      "target": "decay",
+      "rank_ks20k": 0.028050757759765954,
+      "rank_ks100k": 0.028972940725823126,
+      "rank_pass20k": true,
+      "rank_pass100k": true,
+      "coverage90_20k": 0.897,
+      "coverage90_100k": 0.8915,
+      "coverage90_wilson20k": [
+        0.8829086231738941,
+        0.9095692412847911
+      ],
+      "coverage90_wilson100k": [
+        0.8771114791991816,
+        0.9043874727795971
+      ]
+    },
+    {
+      "target": "rho_eta",
+      "rank_ks20k": 0.013412764655237719,
+      "rank_ks100k": 0.009671669710652364,
+      "rank_pass20k": true,
+      "rank_pass100k": true,
+      "coverage90_20k": 0.913,
+      "coverage90_100k": 0.9055,
+      "coverage90_wilson20k": [
+        0.8998429921623659,
+        0.9245735267833193
+      ],
+      "coverage90_wilson100k": [
+        0.8918912091403923,
+        0.9175540655145114
+      ]
+    }
+  ],
+  "simultaneous_rank_bound_7targets": 0.03753261782493079,
+  "pricer_comparison": {
+    "units": "quote-noise SD against shared numerical validation labels",
+    "rmse20k": 0.10117937664719429,
+    "rmse100k": 0.08076387076572364,
+    "rmse_change_percent": -20.177536725352784,
+    "worst_quote20k": 3.8884706364394397,
+    "worst_quote100k": 1.0465505430546642,
+    "patience20k": 30,
+    "patience100k": 300,
+    "epochs_run_both": 300,
+    "selected_epoch20k": 295,
+    "selected_epoch100k": 297,
+    "no_observed_early_stop_truncation_in_either_fit": true
+  },
+  "optimization": {
+    "epochs_both": 500,
+    "checkpoint_selection": "final",
+    "seed": 0,
+    "posterior_gradient_steps20k": 39500,
+    "posterior_gradient_steps100k": 195500,
+    "gradient_step_ratio": 4.949367088607595,
+    "single_seed_not_fixed_compute": true,
+    "stages_seconds20k": [
+      {
+        "name": "posterior",
+        "seconds": 184.72546877106652
+      },
+      {
+        "name": "pricer",
+        "seconds": 41.009379909024574
+      },
+      {
+        "name": "validation",
+        "seconds": 847.5677968669916
+      }
+    ],
+    "stages_seconds100k": [
+      {
+        "name": "posterior",
+        "seconds": 674.6972540149
+      },
+      {
+        "name": "pricer",
+        "seconds": 134.26759967196267
+      },
+      {
+        "name": "validation",
+        "seconds": 888.5899014560273
+      }
+    ]
+  },
+  "identities": {
+    "bank100k": "eb72588b9b7665e0e416cb5d3a1bcf8cd78a1c97f2b43f18ea8246c749a871d8",
+    "posterior100k": "19c24d64290651f592d3c13d7d0a1616d0d8ae080d487d0298aee8f97779498b",
+    "pricer100k": "be699c31a7950ca3ebd9117275b4f8cb1a8355c96f7ca1e18bcfa36e0d252301",
+    "bank20k": "c0de030bafef6de3f728d75788cd7feddd672b476795b57c42ecd8cbb0843ce9",
+    "posterior20k": "8d552a9392d54f98a954401fb979e861f26b9a9c71690b5c3980a4e8fa608dec",
+    "pricer20k": "7fdff1f11ce0f8d77984a11ac0333ba34d85c875adf3f94669b9cacba149b771"
+  },
+  "resources": {
+    "joint100k_job": "8080084",
+    "completed_allocated_gpu_seconds": 1713,
+    "completed_allocated_cpu_seconds": 6852,
+    "actual_pool_gpu_seconds": 5621,
+    "actual_pool_cpu_seconds": 22484,
+    "original_pool_gpu_seconds_ceiling": 8100,
+    "original_pool_cpu_seconds_ceiling": 32400
+  },
+  "interpretation": [
+    "Both fits pass the same six-primary and seven-target marginal rank screens; the maximum rank discrepancy changes little.",
+    "Short-variance 90% coverage moves from 92.0% to 90.15%; most other posterior diagnostics change modestly. This is not proof of joint-posterior or continuous-price accuracy.",
+    "The 100k pricer has lower validation label RMSE and worst quote error. Both joint pricers ran 300 epochs, so the patience metadata change 30 to 300 did not truncate the 20k run.",
+    "One seed and nearly 5 times as many posterior gradient updates prevent a clean causal separation of data volume from optimization exposure.",
+    "The 100k artifacts have new hashes. Earlier reference, emulator or model-adequacy acceptance cannot be transferred without matched downstream checks."
+  ],
+  "scientific_acceptance": false,
+  "promotion": false,
+  "reserved_test_evaluated": false
+}

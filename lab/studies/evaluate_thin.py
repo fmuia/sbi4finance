@@ -1,14 +1,15 @@
 """Calibration of the thin-chain posterior (study S2-T) on simulated thin chains.
 
-    python lab/studies/evaluate_thin.py --bank BANK --checkpoint RUN --out NEW_DIR \
-        [--first 4000 --surfaces 2000 --draws 1000 --scale 1.0 --seed 0]
+    python studies/evaluate_thin.py --bank BANK --checkpoint RUN --out NEW_DIR \
+        [--split test|validation --first ROW --surfaces 2000 --draws 1000 --scale 1.0 --seed 0]
 
-Each of --surfaces test surfaces from row --first becomes a thin chain: its clean prices on the checkpoint's layout plus
+Each of --surfaces selected surfaces from row --first becomes a thin chain: its clean prices on the checkpoint's layout plus
 a fresh quote error with the layout's noise times --scale (independent of the bank's stored noise). The network
 returns draws of (H, eta, rho) and the seven log forward-variance levels; rho * eta is added. Writes
 validation.json (SBC with a simultaneous band, coverage with Wilson intervals, contraction against each
 target's prior variance) and sbc.png. Test rows 4000 to 5999 are S2-T's and 3000 to 3999 are S10's
-(lab/studies/README.md).
+(studies/README.md). The default split is test, starting at 4000;
+--split validation starts at 0 and supports model selection without reading the test split.
 """
 
 import argparse
@@ -23,7 +24,8 @@ from scipy.special import logit
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from sbi4finance.calibration import bank, plots, thin, validation  # noqa: E402
+from sbi4finance.calibration import bank_collection as bank  # noqa: E402
+from sbi4finance.calibration import plots, thin, validation  # noqa: E402
 
 _TAG = 0x45564C54
 
@@ -69,20 +71,25 @@ def main():
     parser.add_argument("--bank", type=Path, required=True)
     parser.add_argument("--checkpoint", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True)
-    parser.add_argument("--first", type=int, default=4000)
+    parser.add_argument("--split", choices=("validation", "test"), default="test")
+    parser.add_argument("--first", type=int, help="first row (default: test 4000, validation 0)")
     parser.add_argument("--surfaces", type=int, default=2000)
     parser.add_argument("--draws", type=int, default=1000)
     parser.add_argument("--scale", type=float, default=1.0)
     parser.add_argument("--seed", type=int, default=0)
     args = parser.parse_args()
-    manifest, splits = bank.load_bank(args.bank, splits=("test",))
+    if args.first is None:
+        args.first = 4000 if args.split == "test" else 0
+    if args.first < 0 or args.surfaces < 1 or args.draws < 1:
+        raise ValueError("nonnegative --first and positive --surfaces and --draws required")
+    manifest, splits = bank.load_bank(args.bank, splits=(args.split,), roles=bank.TRAINING_ROLES)
     task, layout, workflow, record = load_thin_network(args.checkpoint)
     if task != manifest["configuration"]["task"] or record["task_fingerprint"] != manifest["task_fingerprint"]:
         raise ValueError("checkpoint and bank tasks differ")
-    test = splits["test"]
+    test = splits[args.split]
     rows = np.arange(args.first, min(args.first + args.surfaces, len(test["parameters"])))
     if not len(rows):
-        raise ValueError("no test rows in range")
+        raise ValueError(f"no {args.split} rows in range")
     args.out.mkdir(parents=True, exist_ok=False)
     quotes = simulated_chains(test, rows, layout, args.scale, args.seed)
     started = time.perf_counter()
@@ -108,7 +115,9 @@ def main():
         "layout_contracts": len(layout["contract_indices"]), "noise_scale": args.scale,
         "bank_manifest_sha256": sha256(args.bank / "manifest.json"),
         "checkpoint_sha256": sha256(args.checkpoint / "model.keras"),
-        "surfaces": int(len(rows)), "test_rows": [int(rows[0]), int(rows[-1]) + 1], "draws_per_surface": args.draws,
+        "surfaces": int(len(rows)), f"{args.split}_rows": [int(rows[0]), int(rows[-1]) + 1],
+        "evaluated_split": args.split, "reserved_test_evaluated": args.split == "test",
+        "example_ids": test["example_id"][rows].tolist(), "draws_per_surface": args.draws,
         "targets": names, "sbc": {k: v for k, v in result.items() if k != "fractional_ranks"},
         "coverage": cover, "contraction": dict(zip(names, shrink)),
         "prior_variance_logit": dict(zip(names, [float(v) for v in prior_variance])),

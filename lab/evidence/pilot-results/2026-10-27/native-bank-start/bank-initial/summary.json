@@ -1,0 +1,199 @@
+{
+  "all_four_expansion_gate_passed": true,
+  "checked_training_examples": 100,
+  "checked_training_ranges": [
+    [
+      0,
+      25
+    ],
+    [
+      25,
+      50
+    ],
+    [
+      50,
+      75
+    ],
+    [
+      75,
+      100
+    ]
+  ],
+  "checked_utc": "2026-10-27T15:36:49.708262+00:00",
+  "collection_id": "817de3664968de0c605ae4c73e2c99c26465344294af2fc5412f39fffa4baa50",
+  "collection_sha256": "802a200f73bacddaa744abcfdcf2497b2d45a609c9039ed816baf1e3e9a5b12c",
+  "conditional_cost_scenarios": {
+    "all1280shards_full3h_caps_cpu_hours": 3840,
+    "full_32000_at_observed_allocated_mean_cpu_hours": 466.6666666666667,
+    "ideal_200_workers_hours_full32000": 2.3333333333333335,
+    "remaining_31900_at_observed_allocated_mean_cpu_hours": 465.2083333333333,
+    "scope": "Arithmetic scaling of the first 100 training rows on one node; not a guaranteed estimate for the prior population or heterogeneous cluster. No extra data size or budget is authorized.",
+    "whole_bank_allocated_cpu_hour_ceiling": 1500
+  },
+  "cost": {
+    "allocated_cpu_hours": 1.4583333333333333,
+    "allocated_cpu_seconds_top_level_once": 5250,
+    "allocated_seconds_per_surface": 52.5,
+    "generation_cpu_seconds_per_surface": 52.13809326578999,
+    "generation_process_cpu_seconds": 5213.809326578999,
+    "scope": "All four finished shards and all 100 training rows are included; no completion censoring in this tranche. Excludes setup and native Heston; the root execution ledger accounts for setup against the 1,500 CPU-hour bank ceiling.",
+    "total_cpu_hours": 1.4494833333333332,
+    "total_cpu_seconds_per_surface": 52.1814,
+    "total_cpu_seconds_top_level_once": 5218.139999999999
+  },
+  "final_label_paths_by_block": [
+    {
+      "1048576": 0,
+      "131072": 6,
+      "2097152": 0,
+      "262144": 3,
+      "32768": 75,
+      "524288": 1,
+      "65536": 15
+    },
+    {
+      "1048576": 0,
+      "131072": 9,
+      "2097152": 0,
+      "262144": 4,
+      "32768": 71,
+      "524288": 1,
+      "65536": 15
+    },
+    {
+      "1048576": 0,
+      "131072": 8,
+      "2097152": 0,
+      "262144": 5,
+      "32768": 69,
+      "524288": 0,
+      "65536": 18
+    }
+  ],
+  "format": "initial_rough_bank_four_shard_summary_v1",
+  "inspection_methods": {
+    "inspection-script.py": "9eddaa7fbdf3ffbac6a4dbf6c4212906d4a7fed6dfea61884eb1aa3addaacb2b",
+    "native-reconstruction-script.py": "68d13f29f3257ff3d0382b9407ea1cf1400ee1db00ad344b315f540b03e0d0ac"
+  },
+  "job_map_sha256": "a815c58087279fa7c2b5603d6bc3fee11ed92ec7965c0ac29c2827a665bbae0c",
+  "jobs": [
+    {
+      "allocated_cpu_seconds": 1653,
+      "allocated_cpus": 1,
+      "array_task_index": 0,
+      "batch_ave_cpu_freq_raw": "1.20M",
+      "batch_ave_pages_raw": "2",
+      "batch_max_pages_raw": "2",
+      "batch_peak_rss_bytes": 679522304.0,
+      "batch_peak_rss_raw": "663596K",
+      "elapsed_seconds": 1653,
+      "exit_code": "0:0",
+      "generation_cpu_seconds": 1642.43130323,
+      "maximum_mc_se_over_quote_sigma": 0.24775211847415207,
+      "node": "node1802",
+      "slurm_job_id": "8010139_0",
+      "slurm_job_id_raw": "8010140",
+      "state": "COMPLETED",
+      "system_cpu_seconds": 456.05899999999997,
+      "total_cpu_seconds": 1643.464,
+      "training_start": 0,
+      "training_stop": 25,
+      "user_cpu_seconds": 1187.405
+    },
+    {
+      "allocated_cpu_seconds": 2037,
+      "allocated_cpus": 1,
+      "array_task_index": 1,
+      "batch_ave_cpu_freq_raw": "1.20M",
+      "batch_ave_pages_raw": "0",
+      "batch_max_pages_raw": "0",
+      "batch_peak_rss_bytes": 721244160.0,
+      "batch_peak_rss_raw": "704340K",
+      "elapsed_seconds": 2037,
+      "exit_code": "0:0",
+      "generation_cpu_seconds": 2025.437039685,
+      "maximum_mc_se_over_quote_sigma": 0.24591364523069523,
+      "node": "node1802",
+      "slurm_job_id": "8010139_1",
+      "slurm_job_id_raw": "8010141",
+      "state": "COMPLETED",
+      "system_cpu_seconds": 434.519,
+      "total_cpu_seconds": 2026.481,
+      "training_start": 25,
+      "training_stop": 50,
+      "user_cpu_seconds": 1591.961
+    },
+    {
+      "allocated_cpu_seconds": 762,
+      "allocated_cpus": 1,
+      "array_task_index": 2,
+      "batch_ave_cpu_freq_raw": "1.20M",
+      "batch_ave_pages_raw": "2",
+      "batch_max_pages_raw": "2",
+      "batch_peak_rss_bytes": 679780352.0,
+      "batch_peak_rss_raw": "663848K",
+      "elapsed_seconds": 762,
+      "exit_code": "0:0",
+      "generation_cpu_seconds": 754.674058772,
+      "maximum_mc_se_over_quote_sigma": 0.24225555499977564,
+      "node": "node1802",
+      "slurm_job_id": "8010139_2",
+      "slurm_job_id_raw": "8010142",
+      "state": "COMPLETED",
+      "system_cpu_seconds": 138.735,
+      "total_cpu_seconds": 755.886,
+      "training_start": 50,
+      "training_stop": 75,
+      "user_cpu_seconds": 617.151
+    },
+    {
+      "allocated_cpu_seconds": 798,
+      "allocated_cpus": 1,
+      "array_task_index": 3,
+      "batch_ave_cpu_freq_raw": "1.20M",
+      "batch_ave_pages_raw": "2",
+      "batch_max_pages_raw": "2",
+      "batch_peak_rss_bytes": 685154304.0,
+      "batch_peak_rss_raw": "669096K",
+      "elapsed_seconds": 798,
+      "exit_code": "0:0",
+      "generation_cpu_seconds": 791.266924892,
+      "maximum_mc_se_over_quote_sigma": 0.24394283019389584,
+      "node": "node1802",
+      "slurm_job_id": "8010139_3",
+      "slurm_job_id_raw": "8010139",
+      "state": "COMPLETED",
+      "system_cpu_seconds": 107.28999999999999,
+      "total_cpu_seconds": 792.309,
+      "training_start": 75,
+      "training_stop": 100,
+      "user_cpu_seconds": 685.018
+    }
+  ],
+  "maximum_mc_se_over_quote_sigma": 0.24775211847415207,
+  "neural_evaluations": 0,
+  "new_pricing_calls_by_inspection": 0,
+  "per_part_checks": [
+    "train-0-25-integrity.json",
+    "train-25-50-integrity.json",
+    "train-50-75-integrity.json",
+    "train-75-100-integrity.json"
+  ],
+  "progress_journal": {
+    "file": "progress.jsonl.gz",
+    "observations": 35,
+    "scope": "Read-only polls at approximately45-second intervals; final accounting supplies terminal costs.",
+    "stored_sha256": "6444d20b17a79142507064ae8782b9497320be99662a1f30022cd4b7143e84ed",
+    "uncompressed_sha256": "17ef224c55c73926f126e443e38907222fac9b3f981b32c5239850d295fb1b8c"
+  },
+  "raw_accounting_file": "accounting.psv",
+  "root_seed": 271200,
+  "rows_above_final_cap_05": 0,
+  "rows_above_nominal_target_025": 0,
+  "scientific_scope": "Integrity and nominal empirical MCSE bookkeeping only. Does not validate estimator moment assumptions, bias, time-grid accuracy, posteriors or financial products. Existing known grid sensitivity remains. Successful shards remain in the proposed 32k bank; this is not a complete bank or snapshot.",
+  "source_revision": "c773ceb26e7273612b15c69fd63715d131778083",
+  "status": "all_four_completed_and_checked",
+  "task_fingerprint": "29eca4e1b970c4f13b99573939aa3449c5280a3a4478f7d24beace6539a9889d",
+  "test_examples_opened": 0,
+  "validation_examples_opened": 0
+}

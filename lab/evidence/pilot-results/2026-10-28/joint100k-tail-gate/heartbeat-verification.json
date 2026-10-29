@@ -1,0 +1,17 @@
+{
+  "checked_utc": "2026-10-28T13:55:25.994969+00:00",
+  "host": "login010",
+  "pid": 3781846,
+  "ppid": 1,
+  "command": "/oscar/scratch/afengler/sbi4finance-full-core-20261026-wy2_j3o4/repo-conditioned-reference/.pixi/envs/core-reference/bin/python /oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/joint-tail-gate-20261028/arm_bank_extensions.py --plan /oscar/scratch/afengler/sbi4finance-overnight-20261028/followons/joint-tail-gate-20261028/waiter/plan.json --run ",
+  "started_utc": "2026-10-28T13:53:37.245238+00:00",
+  "last_poll_utc": "2026-10-28T13:54:38.247787+00:00",
+  "state": "armed",
+  "routes": {
+    "joint": {
+      "state": "waiting",
+      "progress": "waiting_for_predecessor_final_check"
+    }
+  },
+  "joint100k_campaign_exists": false
+}
