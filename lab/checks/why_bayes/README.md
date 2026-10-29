@@ -271,17 +271,20 @@ hits, and the shaded product lies beyond the last quote. The sampled Laplace is 
   volatility swap) that breach as often or more: a normal in logit coordinates spreads the weakly informed $H$ and
   decay toward the box's edges.
 - **The common excess**, 14% to 18% below the band on several products for the posterior and the Laplace alike, is
-  partly the sample: the methods read the same quotes and miss on the same chains. On the 1,000 SBC surfaces the
+  mostly the sample: the methods read the same quotes and miss on the same chains. On the 1,000 SBC surfaces the
   network's 6-month variance swap, computed from the curve's coefficients, breaches 10.8% and 9.4%, against 15% and
-  7% on these 100 chains.
+  7% on these 100 chains, and on the ten audited chains the exact posterior's bands are as wide as the network's
+  (below).
 
-**The audit** (`thin_joint_audit.py`; chains 0 to 9, fixed in advance; 7 done so far). Importance sampling with the
-Monte Carlo likelihood: 512 proposals, 90% a t distribution fitted to the network's draws and widened by 1.2, 10%
-the prior, each priced on its own 8,192 paths; effective sample sizes 33 to 60, Pareto $\hat k$ at most 0.48, so the
-exact bands are good to a few percentile points. Against them the network's product bands are 0.85 to 1.52 times as
-wide (median 1.04), the delta-method Laplace's 0.80 to 1.72 (median 1.10). The truth lies on the same side of the
-exact band as of the network's in 39 of 42 chain-products, and as of the Laplace's in 39. The exact posterior itself
-misses 14 of the 42, against 8 expected: on these chains the misses come from the quotes, not from the network.
+**The audit** (`thin_joint_audit.py`; chains 0 to 9, fixed in advance). Importance sampling with the Monte Carlo
+likelihood: 512 proposals, 90% a t distribution fitted to the network's draws and widened by 1.2, 10% the prior,
+each priced on its own 8,192 paths; effective sample sizes 28 to 60, Pareto $\hat k$ at most 0.53, so the exact
+bands are good to a few percentile points. Against them the network's product bands are 0.65 to 1.52 times as wide
+(median 1.04), the delta-method Laplace's 0.69 to 1.72 (median 1.08) and the sampled Laplace's 0.76 to 2.90 (median
+1.20). The truth lies on the same side of the exact band as of the network's in 57 of 60 chain-products, and as of
+the delta-method Laplace's in 55. The exact posterior itself misses 14 of the 60, against 12 expected. The
+parameters agree as well: the network's 90% intervals are 0.53 to 1.45 times the exact ones (medians 0.94 to 1.14
+across the six), and no quantile is off by more than 0.43 of the exact interval.
 
 **EWG's own chain** (`thin_joint_ewg.py`; there is no truth, so this shows how far the answers differ, not which is
 right). Least squares fits the 27 quotes with $\chi^2$ = 1.75, decay on its upper bound and a condition number of
@@ -327,7 +330,7 @@ Measured on 28 October on a four-core machine with no GPU, in a plain virtual en
 | Training | `thin_joint.py` and `thin_joint_train.py`, the six-target branch of `thin.py`, written the same day; R4's settings (four layers of 512, 300 epochs, batch 256, time alpha −0.5) on the 20,000-surface bank | 20 minutes on four cores; best validation loss at epoch 270. Section 5 |
 | SBC | `thin_joint_sbc.py`, 1,000 validation surfaces, 200 draws each | 1.3 s a surface on four cores |
 | Breach study | `thin_joint_breach.py`, 100 test chains, three arms | A chain costs 3.7 CPU-minutes for the classical fits and their delta method, 1.2 for pricing the network's 200 draws, 2.2 for the Laplace (mode and 200 draws): 12 CPU-hours in all |
-| Audit | `thin_joint_audit.py`, chains 0 to 9 | About 14 CPU-minutes a chain: 512 surfaces at 8,192 paths, then 200 resampled draws of the products |
+| Audit | `thin_joint_audit.py`, chains 0 to 9 | About 10 CPU-minutes a chain, 2.4 minutes on four cores: 512 surfaces at 8,192 paths, then 200 resampled draws of the products |
 | EWG | `thin_joint_ewg.py` | Minutes per method |
 
 So the bank, the network's training, SBC on held-out chains, the breach-rate study on 100 chains with a
