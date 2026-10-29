@@ -13,7 +13,7 @@ With [pixi](https://pixi.sh) (recommended):
 ```bash
 cd tutorial
 pixi install --locked
-pixi run test          # asset hashes, runtime and inference input boundaries
+pixi run --locked test # asset hashes, runtime and inference input boundaries
 ```
 
 The participant environment uses **BayesFlow 2.1.0** and is locked for Linux, macOS on Apple silicon,
@@ -28,15 +28,15 @@ pip install -e .
 export KERAS_BACKEND=jax
 ```
 
-## Run
+## Run or review an existing lesson
 
 ```bash
-pixi run slot1         # opens slot 1 in the marimo editor, in your browser; likewise slot2 ... slot5
-pixi run edit          # all notebooks
-pixi run backbones     # cached 100k examples and explicit native model sampling
+pixi run --locked slot1 # opens slot 1 in the marimo editor, in your browser; likewise slot2 ... slot5
+pixi run --locked edit  # all notebooks
+pixi run --locked backbones # cached 100k examples and explicit native model sampling
 ```
 
-`pixi run marimo run notebooks/slot4_heston_bayesflow.py` opens a notebook as a read-only app.
+`pixi run --locked marimo run notebooks/slot4_heston_bayesflow.py` opens a notebook as a read-only app.
 
 | Notebook | Slot | What you do | Computed live |
 |---|---|---|---|
@@ -44,7 +44,7 @@ pixi run backbones     # cached 100k examples and explicit native model sampling
 | `slot2_amortized_bayes.py` | 2. What is amortized Bayes? | Watch a small network learn slot 1's posterior and check it against the exact answer | Exact grid by default; a new 2.1 toy trains only after pressing the button |
 | `slot3_architectures.py` | 3. Network architectures | See how flow matching carries noise to Heston's posterior, and what the sampler's steps change | Cached Heston posterior and PyMC reference |
 | `slot4_heston_bayesflow.py` | 4. A worked example in BayesFlow: Heston on the SPY smile | Follow the whole workflow, from simulator to checks, against the exact posterior | Cached 100k example; simulation and a small native fit are optional buttons |
-| `slot5_calibration.py` | 5. Rough Bergomi on the SPY smile: from the posterior to a reserve | Read rough Bergomi's posterior, its audit, and the price ranges and reserves of products | One rough-Bergomi smile by Monte Carlo (seconds) |
+| `slot5_calibration.py` | 5. Rough Bergomi on the SPY smile: from the posterior to a reserve | Read rough Bergomi's posterior, its audit, and the price ranges and reserves of products | Cached known/joint-curve examples; Monte Carlo is an explicit action |
 
 `backbone_review.py` adds the current Heston, known-curve rough and joint-curve rough estimators.
 The rough examples include validation:0 and three explicitly selected joint-geometry illustrations.
@@ -52,7 +52,9 @@ They retain development scope; conditional rough references and product validati
 Slots 4 and 5 expose these cached examples alongside the historical SPY material. The historical SPY
 neural comparison awaits a separately checked 2.1 update. Slot 6 is still in preparation.
 
-For fresh samples, obtain the published models archive and extract it under
+Start by reviewing the cached example, its diagnostics and its financial interpretation. No cluster connection
+or full bank is needed. For fresh samples, obtain the models archive from the
+[training-data guide](../lab/plans/training-data-guide.md) and extract it under
 `assets/local-checkpoints/`. Enter the matching native checkpoint directory in the review notebook
 and press its live button. The loader checks its task, model SHA256 and sampler settings against the
 selected cached example. Model payloads are excluded from git and the shipped asset manifest;
@@ -69,6 +71,33 @@ pixi run --locked -e collaboration studio-build
 This preserves marimo Pair/MCP, Studio 0.3 and Lens 0.2.3. The old SVJ-specific Studio view is not
 reused for the new notebook. Live server sessions and the new Studio scaffold need a separate
 interactive review; they were not executed during this integration.
+
+## Author or change a lesson
+
+Start with the [editing map](../README.md#start-editing-here) and the slot's plan in `curriculum/`.
+The main content files are `notebooks/slot4_heston_bayesflow.py` and `notebooks/slot5_calibration.py`;
+`curriculum/00-overview.md` fixes scope and responsibilities. Edit the explanation, figures and learning sequence
+alongside that plan. First reconcile the slot 4/5 plans and prose with the complete-surface Heston → known-curve
+rough → joint-curve rough sequence: retain historical SPY provenance and keep thin-chain extensions optional.
+State the model, curve conditioning, quote-noise law and evidence status explicitly.
+
+Put new numerical work in the lab. Use its existing `copy-to-tutorial` tool for runtime functions and its
+publication tools for assets; [the lab README](../lab/README.md#from-lab-code-to-a-lesson) gives the workflow.
+Do not make the participant package import `sbi4finance`, edit `sys.path`, or read lab files. Do not hand-copy a
+checkpoint into the shipped assets or edit the generated manifest/claim tables. The ignored
+`assets/local-checkpoints/` download cache is the explicit hash-checked exception for optional live loading.
+
+Run these checks from `tutorial/` before a PR:
+
+```bash
+pixi run --locked test
+pixi run --locked check
+pixi run --locked test-notebooks
+```
+
+These are validation commands for authors, not actions executed by this handover. Interactive Pair/MCP/Studio
+sessions still need their stated review. Runtime success does not promote a development example to an accepted
+scientific claim; retain the original reference methods, chain/draw axes, task and checkpoint hashes.
 
 ## What is in this folder
 
