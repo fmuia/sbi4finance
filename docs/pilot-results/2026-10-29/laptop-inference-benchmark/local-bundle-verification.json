@@ -1,0 +1,22 @@
+{
+  "priority_verification_path": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/tutorial-backbones-20261029/priority-verification.json",
+  "priority_verification_sha256": "e3c6e1173db8a17e24f469a9348d46224d84580e6ff4186e85ba1cdb4c1d4146",
+  "stable_before_after": true,
+  "route_results": [
+    {
+      "route": "known100k",
+      "returncode": 0,
+      "driver_elapsed_seconds": 18.82356491696555,
+      "timeout_seconds": 125,
+      "process_alarm_seconds": 120
+    },
+    {
+      "route": "joint100k",
+      "returncode": 0,
+      "driver_elapsed_seconds": 20.214579083025455,
+      "timeout_seconds": 125,
+      "process_alarm_seconds": 120
+    }
+  ],
+  "local_only": true
+}

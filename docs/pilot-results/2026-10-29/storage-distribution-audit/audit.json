@@ -1,0 +1,101 @@
+{
+  "checked_utc": "2026-10-29T12:36:11.681644+00:00",
+  "status": "partial_readonly_audit_remote_metadata_unavailable",
+  "actions": "Only local/archived metadata and sizes inspected. No inference, training, simulations, array repacking, large copy or public upload by this audit.",
+  "current_inference_loader": {
+    "source": "src/sbi4finance/calibration/full_surface.py:204",
+    "required_files": [
+      "model.keras",
+      "task.json",
+      "training.json"
+    ],
+    "raw_bank_needed_for_inference": false,
+    "resume_directory_needed_for_inference": false,
+    "note": "Use the versioned loader/task/training metadata and hash-checked exact model. Existing Keras model contains optimizer state; removing it would require a separately verified derived export."
+  },
+  "heston_current_verified_local": {
+    "checkpoint": "/private/tmp/sbi4finance-heston-final500-verify.S2Y66f/checkpoint",
+    "model_sha256": "8d4a243ba099524cf4cda40e4f0616e895879f053829a7f60dadbe65b98301db",
+    "model_bytes": 12246485,
+    "required_three_file_bytes": 12289951,
+    "required_files_bytes": {
+      "model.keras": 12246485,
+      "task.json": 10197,
+      "training.json": 33269
+    },
+    "all_export_folder_files_bytes": 12408718,
+    "model_h5_dataset_bytes": {
+      "network_and_other_state": 4037232,
+      "optimizer": 8073380
+    },
+    "model_zip_compression": "ZIP_STORED; current size is before any outer archive compression",
+    "archive_resume_history_extra_bytes": 244929700,
+    "archive_resume_history_files": 20,
+    "archive_source": "docs/pilot-results/2026-10-27/backbone-runs/heston-100k/remote-artifacts.json"
+  },
+  "known100k_archived_size": {
+    "same_run_checkpoint_model_bytes": 12261416,
+    "scope": "Recorded in first-progress checkpoint inventory, not freshly measured final39f1a819 model due current Oscar connection failure.",
+    "source": "docs/pilot-results/2026-10-28/parallel-independent-work/first-progress-check.json"
+  },
+  "joint100k_current_size": {
+    "bytes": null,
+    "reason": "Not available from local metadata; not guessed."
+  },
+  "bank_distribution_roles": {
+    "posterior_training": [
+      "observations",
+      "reference_prices",
+      "parameters",
+      "context_values",
+      "example_id"
+    ],
+    "source": "src/sbi4finance/calibration/bank_collection.py:27",
+    "additional_for_existing_pricer_cli": [
+      "pricing_standard_errors"
+    ],
+    "pricer_source": "scripts/train_full_surface_pricer.py:52",
+    "large_audit_role": "pricing_covariance shape[count,63,63] uses31752raw numericbytes percase beforecompression.",
+    "compressed_bytes": null,
+    "scope": "Current actual full/minimal compressed bank sizes need fresh ZIP central-directory inspection when access is restored. No estimates claimed as actual measurements.",
+    "loader_caveat": "The current native loader verifies original full-payload hashes. A role-filtered repack would need an explicit provenance-preserving derived export/loader, not in-place deletion of NPZ members."
+  },
+  "measured_gpu_times": {
+    "heston100k": {
+      "training_surfaces": 100000,
+      "epochs": 500,
+      "setup_seconds": 4.680504220537841,
+      "training_and_reload_seconds": 482.20623080432415,
+      "evaluation_2000cases_1000draws_seconds": 939.8286207355559,
+      "evaluation_split": "test",
+      "training_source": "docs/pilot-results/2026-10-27/backbone-runs/heston-100k/checkpoint/training.json",
+      "evaluation_source": "docs/pilot-results/2026-10-28/heston-candidate-acceptance/results/acceptance/evaluation.json"
+    },
+    "known100k": {
+      "training_surfaces": 100000,
+      "epochs": 500,
+      "setup_seconds": 44.968190097017214,
+      "training_and_reload_seconds": 532.8799885229673,
+      "evaluation_2000cases_1000draws_seconds": 806.3642645369982,
+      "evaluation_split": "validation",
+      "training_source": "docs/pilot-results/2026-10-28/known100k-completed-fit/known100k/known/posterior/training.json",
+      "evaluation_source": "docs/pilot-results/2026-10-28/known100k-completed-fit/known100k/known/validation/evaluation.json"
+    },
+    "joint100k": {
+      "training_surfaces": 100000,
+      "epochs": 500,
+      "setup_seconds": 123.08379423408769,
+      "training_and_reload_seconds": 544.7197887069779,
+      "evaluation_2000cases_1000draws_seconds": 866.8641144040739,
+      "evaluation_split": "validation",
+      "training_source": "docs/pilot-results/2026-10-29/joint100k-completed/joint100k/joint/posterior/training.json",
+      "evaluation_source": "docs/pilot-results/2026-10-29/joint100k-completed/joint100k/joint/validation/evaluation.json"
+    }
+  },
+  "scope_limits": [
+    "GPU times do not estimate laptop training speed.",
+    "Full2000case calibration timings do not represent one interactive observation.",
+    "No minimal bank export was created or loaded.",
+    "Current full banks and inference model hashes remain unchanged."
+  ]
+}

@@ -1,0 +1,3 @@
+4fd239fb901c22913f0f2e4ee6a0b3e417baeef77d886eebcf3443b91048cddf  README.md
+9cf9290ebe59e999787ed61701b6c1c7f65be71b49ccfae30bc5a18924b4213d  local-receipt.json
+f96bf14db7eac556a2bb9990b1f82cc343b673e76a4f9f41d2187a3b914ce2e9  transfer-manifest.json

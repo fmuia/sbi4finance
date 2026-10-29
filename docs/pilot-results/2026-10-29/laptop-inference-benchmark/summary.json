@@ -1,0 +1,195 @@
+{
+  "format": "core_laptop_cpu_inference_comparison_v1",
+  "scientific_acceptance": false,
+  "new_training": false,
+  "numerical_simulation": false,
+  "mcmc": false,
+  "notebooks_executed": false,
+  "sample_count_per_call": 1000,
+  "observations_per_call": 1,
+  "cpu_host": "Apple M5 Max;18cores;128GiB installed RAM,not requirement",
+  "core_affinity_enforced": false,
+  "scope": "Fixed validation:0 per route; first+two warm calls; local pretrained inference only. RSS high-water after three calls, not long-session bound. No strict single/four-core claim.",
+  "routes": [
+    {
+      "route": "heston",
+      "model_sha256": "8d4a243ba099524cf4cda40e4f0616e895879f053829a7f60dadbe65b98301db",
+      "durable_checkpoint_path": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/tutorial-backbones-20261029/oscar-scratch/sbi4finance-heston-teaching-20261028/checkpoint-final500",
+      "durable_model_matches_benchmarked_bytes": true,
+      "case_id": "validation:0",
+      "task_fingerprint": "5e499526ff8f29a72f49785a1a36006b1d769d26bca8a6f83f7a8c8ac4d431fa",
+      "source_import_seconds": 0.5935215000063181,
+      "load_seconds": 10.77322799997637,
+      "inference_calls": [
+        {
+          "label": "first",
+          "seed": 271400,
+          "seconds": 2.0830885419854894,
+          "shape": [
+            1,
+            1000,
+            4
+          ],
+          "all_finite": true,
+          "draws_array_sha256": "e51395d38d84e55fffdac4af39a97a98b53a71c762580f72ef1ec229d598b250"
+        },
+        {
+          "label": "warm_1",
+          "seed": 271401,
+          "seconds": 1.3966219580033794,
+          "shape": [
+            1,
+            1000,
+            4
+          ],
+          "all_finite": true,
+          "draws_array_sha256": "b863be34670dda0b42c7fe16a25da3727c013239ae326ec399102cfea0ed75ae"
+        },
+        {
+          "label": "warm_2",
+          "seed": 271402,
+          "seconds": 1.53797545802081,
+          "shape": [
+            1,
+            1000,
+            4
+          ],
+          "all_finite": true,
+          "draws_array_sha256": "78e08279d1b564de15e23c1580de3120d368a1d09ecdf22bbd1085c4a92f318b"
+        }
+      ],
+      "process_peak_RSS_bytes": null,
+      "native_integration": {
+        "method": "tsit5",
+        "steps": "adaptive"
+      },
+      "result_sha256": "0a12a12db3a32f346c16057044a4c600184a9e0d4fdb095aed639263599d3ed6"
+    },
+    {
+      "route": "known100k",
+      "model_sha256": "39f1a81986a38994dc6eacc520ad95254b34346abc02e758c08779c7c5916fc4",
+      "durable_checkpoint_path": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/tutorial-backbones-20261029/oscar-scratch/sbi4finance-independent-work-20261028/known100k/known/posterior",
+      "durable_model_matches_benchmarked_bytes": true,
+      "case_id": "validation:0",
+      "task_fingerprint": "c99b0dd131896d89d8483a1668a3fde0fb7a0f28794c3db7fe14635cbbd52b65",
+      "source_import_seconds": 0.9642450829851441,
+      "load_seconds": 11.113956874993164,
+      "inference_calls": [
+        {
+          "label": "first",
+          "seed": 271400,
+          "seconds": 2.505228791036643,
+          "shape": [
+            1,
+            1000,
+            3
+          ],
+          "all_finite": true,
+          "cpu_user_seconds": 8.207731,
+          "cpu_system_seconds": 0.963399,
+          "process_peak_RSS_bytes": 711737344,
+          "draws_array_sha256": "dbe788ff1e10739e13fc0df8903af2ff609e351b76776b856c88c4a55937564a"
+        },
+        {
+          "label": "warm_1",
+          "seed": 271401,
+          "seconds": 1.773458625015337,
+          "shape": [
+            1,
+            1000,
+            3
+          ],
+          "all_finite": true,
+          "cpu_user_seconds": 7.128824999999999,
+          "cpu_system_seconds": 1.1988630000000002,
+          "process_peak_RSS_bytes": 883736576,
+          "draws_array_sha256": "5f125e4d654c2f31893a5c68d0dfb718b6e47ea8a1e41ca013824637e6e9f141"
+        },
+        {
+          "label": "warm_2",
+          "seed": 271402,
+          "seconds": 1.9247803330072202,
+          "shape": [
+            1,
+            1000,
+            3
+          ],
+          "all_finite": true,
+          "cpu_user_seconds": 7.221554000000001,
+          "cpu_system_seconds": 1.8733380000000004,
+          "process_peak_RSS_bytes": 1075544064,
+          "draws_array_sha256": "37449f8920a1537c6214e450dbe761190d4a2a2175edc42896c3efc06b767b88"
+        }
+      ],
+      "process_peak_RSS_bytes": 1075544064,
+      "native_integration": {
+        "method": "tsit5",
+        "steps": "adaptive"
+      },
+      "result_sha256": "bd6e7945a2347bad4eb101e434477d4654fc5ded72bc4df31a20278896a561e6"
+    },
+    {
+      "route": "joint100k",
+      "model_sha256": "19c24d64290651f592d3c13d7d0a1616d0d8ae080d487d0298aee8f97779498b",
+      "durable_checkpoint_path": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/tutorial-backbones-20261029/oscar-scratch/sbi4finance-independent-work-20261029/joint100k/joint/posterior",
+      "durable_model_matches_benchmarked_bytes": true,
+      "case_id": "validation:0",
+      "task_fingerprint": "29eca4e1b970c4f13b99573939aa3449c5280a3a4478f7d24beace6539a9889d",
+      "source_import_seconds": 0.40205420803977177,
+      "load_seconds": 9.716800041031092,
+      "inference_calls": [
+        {
+          "label": "first",
+          "seed": 271400,
+          "seconds": 2.420959417009726,
+          "shape": [
+            1,
+            1000,
+            6
+          ],
+          "all_finite": true,
+          "cpu_user_seconds": 8.149985,
+          "cpu_system_seconds": 0.9431120000000001,
+          "process_peak_RSS_bytes": 712261632,
+          "draws_array_sha256": "bc66064be1298308016b55016328478a744304b113b29fa02006e7992932434b"
+        },
+        {
+          "label": "warm_1",
+          "seed": 271401,
+          "seconds": 3.5898871250101365,
+          "shape": [
+            1,
+            1000,
+            6
+          ],
+          "all_finite": true,
+          "cpu_user_seconds": 7.486196999999999,
+          "cpu_system_seconds": 1.1432979999999997,
+          "process_peak_RSS_bytes": 901185536,
+          "draws_array_sha256": "a73634afa17b454f94fa15a227c733ea0c226727f14509e1c37cad859eb4dcfc"
+        },
+        {
+          "label": "warm_2",
+          "seed": 271402,
+          "seconds": 3.6197217919980176,
+          "shape": [
+            1,
+            1000,
+            6
+          ],
+          "all_finite": true,
+          "cpu_user_seconds": 7.2606699999999975,
+          "cpu_system_seconds": 2.1329779999999996,
+          "process_peak_RSS_bytes": 1201061888,
+          "draws_array_sha256": "968cb1cfe59e181781db3eedbdb4c626b2b3a4c1eb5e042a1e07de20300a1760"
+        }
+      ],
+      "process_peak_RSS_bytes": 1201061888,
+      "native_integration": {
+        "method": "tsit5",
+        "steps": "adaptive"
+      },
+      "result_sha256": "3dd435ecf92d30e61f1660d64aa3efd45e93006ba3bc8810cd1095e991e26b35"
+    }
+  ]
+}
