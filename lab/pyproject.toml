@@ -78,6 +78,7 @@ KERAS_BACKEND = "jax"
 [tool.pixi.feature.core.tasks]
 core-check = "python scripts/check_full_surface_environment.py"
 test = "python -m unittest discover -s tests -v"
+accept = "python studies/accept.py"
 copy-to-tutorial = "python studies/copy_to_tutorial.py"
 manifest = "python studies/manifest.py"
 claims = "python studies/claims.py"
