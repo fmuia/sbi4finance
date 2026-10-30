@@ -134,15 +134,237 @@ def _(mo, np, plots, plt, spy, spy_expirations, spy_iv, surface, teaching):
 
 
 @app.cell(hide_code=True)
+def _(mo, spy):
+    _rates = spy["rate_curve"]["points_bond_equivalent"]
+    _readings = spy["diagnostics"]["grid_point_readings"]
+    _extrapolated = ("none is extrapolated" if _readings["extrapolated"] == 0
+                     else f"{_readings['extrapolated']} are extrapolated")
+    mo.md(f"""
+    ### From the chain to the grid
+
+    The 63 numbers are produced from the chain in five steps.
+
+    1. Clean the quotes. We keep out-of-the-money options with a positive bid, an ask above the bid and a spread of
+       at most half the mid. These are puts with strikes below the forward and calls with strikes above it.
+    2. Find each expiration's discount factor and forward. The discount factor comes from US Treasury yields,
+       {100 * _rates[0][1]:.2f}% at three months and {100 * _rates[1][1]:.2f}% at two years. The forward comes from
+       put–call parity on the six strike pairs nearest the money.
+    3. Divide each mid price by the discount factor and the forward, and convert it to an implied volatility.
+    4. Read the grid. A smoothing spline runs through the implied volatilities of each expiration. Each grid point is
+       read at its log-moneyness from the nearest expirations on either side whose quotes reach it, and the two
+       readings are interpolated linearly in total implied variance, σ²T. Of the 63 points,
+       {_readings['two expirations']} use two expirations and {_readings['one expiration']} use one; {_extrapolated}.
+    5. Convert the 63 implied volatilities back into prices in units of the forward. These prices, with their
+       noise, form the observation y.
+
+    Reading every smile onto the same grid gives real and simulated smiles the same 63 inputs, so one network can
+    process any of them. Slot 3 discusses set networks, which could read a chain's quotes directly and so remove the grid.
+    """)
+    return
+
+
+@app.cell(hide_code=True)
 def _(mo, same_design):
     mo.md(rf"""
     | One observation $y$ | |
     |:---|:---|
-    | Maturities | 5, 10, 21, 42, 63, 126 and 252 trading days, from one week to one year |
-    | Strikes | 9 per maturity, from $\delta = -2$ to $2$ |
-    | Values | 63 prices, divided by the discount factor and the forward |
-    | Noise | one standard deviation per price: a third of a volatility point at the money, one point in the wings |
-    | Used by | every slot and every network of the afternoon ({'the same 63 contracts and noise, checked live' if same_design else 'a different grid: check the task files'}) |
+    | Contracts | 63, ordered by maturity and then by strike |
+    | Maturities | 5, 10, 21, 42, 63, 126 and 252 trading days, from one week to one year; in the formulas $T$ = days / 252 |
+    | Strikes | 9 per maturity, at $\delta = -2, -1.5, \dots, 2$: a put for $\delta \le 0$ and a call above |
+    | Values | prices divided by the discount factor and the forward, so the models are priced with a forward of 1 and no rates or dividends |
+    | Noise | one standard deviation per price, from the rule below |
+    | Used by | slot 2's toy network, which reads one of these quotes, and the networks of slots 4 and 5, which read all 63 ({'the same contracts and noise, checked live' if same_design else 'a different grid: check the task files'}) |
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ### The noise, and what a network reads
+
+    Each price comes with a standard deviation $\sigma_c$ that says how precisely we take it to be known. It is set
+    by a fixed rule rather than read from each day's bid–ask spreads: the Black–Scholes vega at a 20% volatility,
+    times a volatility error that rises from 0.3 points at the money to 1 point at $\delta = \pm 2$. On 21 October
+    the rule gives a wider error than SPY's half-spread at every point. With a fixed rule, real and simulated smiles
+    carry exactly the same noise, and the networks of the later slots rely on that.
+
+    For inference, what matters is each price relative to its noise. The networks read $y_c / \sigma_c$, the price in
+    noise units. During training, each simulated smile gets a new draw of the noise every time it is used. Slot 6
+    changes the noise level to see how much the conclusions depend on it.
+    """)
+    return
+
+
+@app.cell
+def _(np, spy_noise, spy_prices, surface):
+    noise_vol_points = 100 * surface.implied_vol_noise(np.array(surface.DESIGN_DELTAS))  # the rule, in volatility points
+    noise_units = (spy_prices / spy_noise).reshape(len(surface.DESIGN_DAYS), len(surface.DESIGN_DELTAS))
+    return noise_units, noise_vol_points
+
+
+@app.cell(hide_code=True)
+def _(
+    mo,
+    noise_units,
+    noise_vol_points,
+    np,
+    plots,
+    plt,
+    spy_iv,
+    surface,
+    teaching,
+):
+    _deltas = np.array(surface.DESIGN_DELTAS)
+    _fig, (_left, _right) = plt.subplots(1, 2, figsize=(9.6, 3.6), constrained_layout=True,
+                                         gridspec_kw={"width_ratios": [1, 1.7]})
+    _line = np.linspace(-2, 2, 81)
+    _left.plot(_line, 100 * surface.implied_vol_noise(_line), color=plots.INK_2, linewidth=1.4)
+    _left.scatter(_deltas, noise_vol_points, s=16, color=plots.SERIES[0], zorder=3)
+    _left.set_ylim(0, 1.2)
+    _left.set_xlabel("standardized moneyness δ")
+    _left.set_ylabel("volatility points")
+    _left.set_title("the noise rule, one standard deviation", loc="left")
+    _right.imshow(np.log10(noise_units), cmap="viridis", aspect="auto")
+    for (_row, _col), _value in np.ndenumerate(noise_units):
+        _right.text(_col, _row, f"{_value:.1f}" if _value < 10 else f"{_value:.0f}", ha="center", va="center",
+                    fontsize=7, color="white" if np.log10(_value) < 0.6 else plots.INK)
+    _right.set_xticks(range(len(_deltas)), [f"{_x:g}" for _x in _deltas])
+    _right.set_yticks(range(len(surface.DESIGN_DAYS)), [teaching.TENORS[_d] for _d in surface.DESIGN_DAYS])
+    _right.set_xlabel("standardized moneyness δ")
+    _right.set_title("SPY's prices in noise units, y / σ: what a network reads", loc="left")
+    _right.grid(visible=False)
+    _low = np.unravel_index(np.argmin(noise_units), noise_units.shape)
+    _high = np.unravel_index(np.argmax(noise_units), noise_units.shape)
+    _faint = noise_units.max(axis=0) < 1  # strikes below one noise standard deviation at every maturity
+    _faint_iv = 100 * np.asarray(spy_iv).reshape(noise_units.shape)[:, _faint]
+    _faint_deltas = " and ".join(f"{_x:g}" for _x in _deltas[_faint])
+    mo.vstack([
+        _fig,
+        mo.md(f"""
+    The left panel shows the rule. The right panel shows SPY's 63 prices divided by their noise. The option at
+    δ = {_deltas[_low[1]]:g} with {teaching.TENORS[surface.DESIGN_DAYS[_low[0]]]} to expiry is worth only
+    {noise_units[_low]:.1f} noise standard deviations, and the option at δ = {_deltas[_high[1]]:g} with
+    {teaching.TENORS[surface.DESIGN_DAYS[_high[0]]]} to expiry is worth {noise_units[_high]:.0f}. The calls at
+    δ = {_faint_deltas} are worth less than one noise standard deviation at every maturity. SPY's implied volatility
+    there, {_faint_iv.min():.0f} to {_faint_iv.max():.0f}%, is well below the 20% at which the rule is set, so their
+    prices are small compared with the noise. On their own, these quotes say little about the parameters.
+    """),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ### The variance curve and the skew
+
+    The same chain gives two more quantities that the later slots use.
+
+    The first is the market's variance-swap curve. For each expiration whose quotes reach far enough into the wings,
+    down to $\delta = -8$ for the puts and up to $\delta = 1.8$ for the calls, a log contract is replicated from the
+    whole strip of out-of-the-money options. Its price is the total variance that a variance swap to that expiration
+    pays. Read at the grid maturities and differenced, these values give seven forward-variance levels, one for each
+    interval between grid maturities. Rough Bergomi takes this forward-variance curve as an input. In slot 5 the
+    curve is either given, with these seven levels, or inferred together with the other parameters. When it is
+    given, the network reads the seven levels alongside the 63 prices; the levels vary from one training smile to
+    the next, so the same network works with any curve. In slot 4, Heston's variance swaps are compared with these
+    market values.
+
+    The second is the at-the-money skew, the slope of the smile at the money. On SPY it falls with maturity roughly
+    like a power of the maturity. Heston cannot follow this: its skew tends to a constant at short maturities.
+    Rough Bergomi's skew falls like a power of the maturity, which is one reason slot 5 uses it.
+    """)
+    return
+
+
+@app.cell
+def _(np, spy, surface):
+    _knots = np.r_[0, surface.DESIGN_DAYS] / surface.TRADING_DAYS
+    forward_variance = np.asarray(spy["forward_variance_levels"])  # one level per interval between grid maturities
+    variance_swap_vol = 100 * np.sqrt(np.cumsum(forward_variance * np.diff(_knots)) / _knots[1:])
+    atm_skew = np.abs(np.asarray(spy["atm_skew"]))  # |d sigma / d k| at the money, one per maturity
+    skew_law = spy["skew_power_law"]  # |skew| = scale * T ** exponent, fitted from one week to one year
+    return atm_skew, forward_variance, skew_law, variance_swap_vol
+
+
+@app.cell(hide_code=True)
+def _(
+    atm_skew,
+    forward_variance,
+    mo,
+    np,
+    plots,
+    plt,
+    skew_law,
+    spy_expirations,
+    surface,
+    variance_swap_vol,
+):
+    _days = np.array(surface.DESIGN_DAYS)
+    _exponent = f"{skew_law['exponent']:.2f}".replace("-", "−")
+    _fig, (_left, _right) = plt.subplots(1, 2, figsize=(9.6, 3.4), constrained_layout=True)
+    _left.stairs(100 * np.sqrt(forward_variance), np.r_[0, _days], baseline=None, color=plots.SERIES[0], linewidth=1.6,
+                 label="forward volatility on each interval")
+    _left.set_ylim(0, 26)
+    _left.plot(_days, variance_swap_vol, "o", color=plots.SERIES[1], markersize=5, label="variance swap to each maturity")
+    _left.set_xlabel("maturity, trading days")
+    _left.set_ylabel("volatility (%)")
+    _left.set_title("SPY's forward-variance curve and variance swaps", loc="left")
+    _left.legend(fontsize=7.5, loc="lower right")
+    _t = _days / surface.TRADING_DAYS
+    _fine = np.geomspace(_t[0], _t[-1], 50)
+    _right.plot(_days, atm_skew, "o", color=plots.SERIES[0], label="SPY")
+    _right.plot(_fine * surface.TRADING_DAYS, skew_law["scale"] * _fine ** skew_law["exponent"], color=plots.INK_2,
+                linewidth=1.2, label=f"power law, exponent {_exponent}")
+    _right.set_xscale("log")
+    _right.set_yscale("log")
+    _right.minorticks_off()
+    _right.set_xticks(list(_days), [str(_d) for _d in _days])
+    _right.set_yticks([0.25, 0.4, 0.6, 0.85], ["0.25", "0.4", "0.6", "0.85"])
+    _right.set_xlabel("maturity, trading days")
+    _right.set_ylabel("|∂σ/∂k| at the money")
+    _right.set_title("the at-the-money skew falls like a power of maturity", loc="left")
+    _right.legend(fontsize=7.5, loc="upper right")
+    _covered = sum(_e["replication_covered"] for _e in spy_expirations)
+    mo.vstack([
+        _fig,
+        mo.md(f"""
+    On the left, the steps are the forward volatility on each interval between grid maturities, the square root of the
+    forward variance. The dots are the variance-swap volatility to each maturity, the square root of the average
+    forward variance up to it. They come from the {_covered} expirations, out of {len(spy_expirations)}, whose quotes
+    reach far enough into the wings. On the right is the slope of the smile at the money for each maturity, with a
+    power law fitted from one week to one year. Its exponent is {_exponent} (claim C1).
+    """),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ### Simulated smiles and the task files
+
+    The real smile is a single observation. Most of what follows also needs simulated smiles on the same grid: draw
+    parameters from the prior, price the 63 options with the model, and add noise from the rule above. The true
+    parameters of a simulated smile are known, so simulated smiles are used to train the networks and to test any
+    method.
+
+    For each model, one file, the task file, fixes everything a simulation needs: the 63 contracts and their noise,
+    the prior box of the parameters, the parameters held fixed (Heston's mean reversion, $\kappa = 2$), rough
+    Bergomi's variance curve or its prior, and the accuracy required of the pricer. Simulated prices have to be
+    accurate relative to the noise. Heston's Fourier prices are refined until they change by less than 0.1 noise
+    standard deviations. Rough Bergomi's Monte Carlo uses between 32,768 and about 2 million paths, enough to bring
+    the Monte Carlo error below 0.25 noise standard deviations (0.5 at the largest number of paths). The same file
+    is used to simulate, to train and to compute posteriors, and its hash identifies it.
+
+    | Data set | What it is | Where it is used |
+    |:---|:---|:---|
+    | SPY's 63 prices | the real smile of 21 October 2026 | slot 1 (Black–Scholes), slot 4 (Heston), slot 5 (rough Bergomi, products and reserves) |
+    | SPY's forward-variance curve | seven levels from the same chain | slot 4 (Heston's variance swaps against the market), slot 5 (rough Bergomi's input curve) |
+    | Training banks | for each model, 100,000 simulated smiles for training, 5,000 for validation, and 5,000 (Heston) or 7,000 (rough Bergomi) held back for tests; slot 4's SPY network comes from an earlier Heston bank of 50,000 | slots 3 to 5 |
+    | Tests with known truth | simulated smiles whose parameters are known, used to check that posteriors are calibrated | slots 2, 4 and 5 |
+    | Cached examples | single simulated smiles with their posteriors, stored with the tutorial | slots 1, 4 and 5 |
     """)
     return
 
@@ -316,7 +538,7 @@ def _(mo):
     | Rates and forwards | Discount factors from US Treasury yields; each expiration's forward from put–call parity near the money | The desk's funding curve and dividend forecasts |
     | Time | Weekdays to expiration, over 252 | Holidays and intraday time |
     | Grid | 63 values read from a smoothed smile of the neighbouring expirations, interpolated in total variance | The grid is a reading of the quotes, not the quotes themselves |
-    | Noise | Independent Gaussian errors: a third of a volatility point at the money, one point in the wings, wider than SPY's bid–ask that day | Correlated quote errors, and spreads that change from day to day |
+    | Noise | Independent Gaussian errors: 0.3 volatility points at the money, rising to 1 point at $\delta = \pm 2$, wider than SPY's bid–ask that day | Correlated quote errors, and spreads that change from day to day |
     | Models | Black–Scholes; Heston with mean reversion fixed at 2; rough Bergomi with a three-parameter variance curve; parameters constant in time | Jumps, and parameters that change over time |
     | Priors | Uniform over a box of plausible values | Other priors: slot 6 changes them |
     | Truth | Some examples use smiles simulated from the models, so the true parameters are known | On market data the truth is unknown |
@@ -441,7 +663,6 @@ def _(mo):
 
     With a single parameter we can compute all three exactly, on a grid of 4,001 volatilities.
     """)
-
     return
 
 
@@ -556,7 +777,6 @@ def _(mo):
     $\delta = -2$, and suppose for now that the market does not quote it, as is the case for the products a desk has
     to mark.
     """)
-
     return
 
 
@@ -610,7 +830,6 @@ def _(mo):
 
     A posterior range answers the first row for one model. A full valuation adjustment needs more than that.
     """)
-
     return
 
 
@@ -627,7 +846,6 @@ def _(mo, put_range, quotes):
     Before moving the slider, try to guess how much noisier the two quotes would have to be for one volatility to fit
     both.
     """)
-
     return
 
 
@@ -724,7 +942,6 @@ def _(mo):
     curve is almost flat, drawn with the network of slot 5. In both panels the dashed ellipse is the Gaussian with the
     same mean and covariance as the draws.
     """)
-
     return
 
 
@@ -854,7 +1071,6 @@ def _(mo):
     - the results have to be tested against the assumptions, by changing the prior or the noise model and
       recomputing the ranges (slot 6).
     """)
-
     return
 
 
@@ -877,7 +1093,6 @@ def _(mo):
     about 20 ms per smile for Heston's Fourier integral at one quadrature rung and 5 CPU-seconds per smile for rough
     Bergomi's Monte Carlo.
     """)
-
     return
 
 
@@ -931,7 +1146,6 @@ def _(mo):
     costs one pass through a trained network. The training is done once, and the rest of the afternoon checks the
     network before relying on it.
     """)
-
     return
 
 
@@ -975,7 +1189,6 @@ def _(mo):
     accepted studies) and `src/sbi4f_tutorial/`. The SPY quotes come from study S8. Results on simulated smiles use
     the tutorial's models and priors, and do not show how well these models describe market data.
     """)
-
     return
 
 
