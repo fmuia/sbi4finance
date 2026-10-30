@@ -83,7 +83,7 @@ the posterior's, on a log scale; the grey band runs from 0.8 to 1.25.
 - *Rough Bergomi, 63 quotes:* the delta-method reserve over the posterior's, at the 5% quantile for the long side
   (filled) and the 95% for the short side (open). The variance swap is left out, because both answers are zero when
   the curve is given.
-- *Right-hand column:* the range with the curve held flat beyond one year, and only $(H, \eta, \rho)$ uncertain, over
+- *Right-hand column:* the range with the curve held flat beyond one year, and only $`(H, \eta, \rho)`$ uncertain, over
   the posterior's.
 
 The numbers are in `images/v2-evidence-numbers.json`, drawn by `course/scripts/realignment.py`.
@@ -98,7 +98,7 @@ answer where that answer is right.
 
 ### 2.2 Beyond the last quote they part, and the prior decides
 
-Flat extrapolation varies only $(H, \eta, \rho)$ and holds the curve flat beyond one year. The posterior also varies the
+Flat extrapolation varies only $`(H, \eta, \rho)`$ and holds the curve flat beyond one year. The posterior also varies the
 curve to one year (5% per level), the segment to 2.25 years that SPY's LEAPs inform, and the segment beyond, which
 only the prior constrains. For the three products that depend mostly on that last segment (a forward start from two
 to three years, a five-year put and a three-year variance swap), it explains 59% to 76% of the posterior variance,
@@ -152,7 +152,7 @@ becomes affordable, not that one posterior becomes much cheaper. The course neve
 ### 2.5 What is not shown yet, and what would weaken the argument
 
 The formal thin-chain studies remain deferred (S10, S10-E, S11). On full surfaces, J1 is complete on the joint100k validation panel; conditional references J2 and long-end/product comparisons J3 remain pending (Lecture 15, Section 15.2). A quick check on 100 simulated EWG chains with the curve inferred
-points to an outcome this plan did not list: Gauss–Newton over-reserves rather than under-covers, fixing $H$ is
+points to an outcome this plan did not list: Gauss–Newton over-reserves rather than under-covers, fixing $`H`$ is
 biased, and a Laplace approximation with the posterior's prior does as well as the network (Lecture 16, Section 16.4).
 If S10 confirms it, the thin chain shows that a stated prior is needed, not that the posterior's shape is, and
 simulation-based inference rests on cost and validation (Section 2.4). Two outcomes would weaken the argument, and
@@ -170,17 +170,17 @@ Lecture 16, Section 16.8 gives the rule for reading each outcome of S10, S10-E a
 | A. Run R0 to R10 as planned | The network's calibration (S2, S2-T), the audit's reliability (S5), SPY's posterior (S8), and the thin-chain evidence (S10, S10-E, S11) | About 930 CPU-hours and two GPU jobs; code ready and reviewed | Necessary: the weekend's runs |
 | B. A Gauss–Newton-proposal arm in S10 | Whether a classical fit can replace the network as the proposal on a thin chain. If it can, claim 3b of Lecture 16, Section 16.8 is dropped, and simulation-based inference rests on validation | About a day of code and a test; 20 to 30 CPU-hours on 200 of S10's chains | Do next: the cheapest way to make the claim on proposals specific |
 | C. The long end as an accepted study | The long-end result of Lecture 15, Section 15.6 with SPY's audited posterior (S8) in place of the Laplace approximation, with the prior's sd from 0.1 to 0.3 | A few CPU-hours after R6; small changes to `lab/checks/long_end/` | Do after R6: it turns a quick check into a result |
-| D. Pooling on real thin chains | Pooling on market data: EWI and EWQ, which say almost nothing alone, borrowing from EWG | Two more thin networks (EWI's and EWQ's layouts, two GPU jobs), their audited posteriors (a few CPU-hours), and a hierarchical step on $(H, \eta, \rho)$ by reweighting each name's draws; two to three days of work | Only if time allows before the freeze of slot 5 on 6 November |
+| D. Pooling on real thin chains | Pooling on market data: EWI and EWQ, which say almost nothing alone, borrowing from EWG | Two more thin networks (EWI's and EWQ's layouts, two GPU jobs), their audited posteriors (a few CPU-hours), and a hierarchical step on $`(H, \eta, \rho)`$ by reweighting each name's draws; two to three days of work | Only if time allows before the freeze of slot 5 on 6 November |
 | E. A second liquid smile, SPX | That the agreement on a liquid smile is not specific to SPY | A new chain, and a network trained on its layout | Not needed for the argument; after the tutorial |
 
-**Option B in more detail.** For each of 200 of S10's chains, build a proposal from the Gauss–Newton fit: a Student-$t$
+**Option B in more detail.** For each of 200 of S10's chains, build a proposal from the Gauss–Newton fit: a Student-$`t`$
 on its normal approximation in the fit's coordinates. The fit ties some forward-variance levels and says nothing
 about the last one, so draw the tied and unquoted levels from the curve prior given the fitted levels. Mix with 10%
-of the prior, as the network's proposal is. Price and weight exactly as the network's audit does. Compare $\hat k$,
+of the prior, as the network's proposal is. Price and weight exactly as the network's audit does. Compare $`\hat k`$,
 the effective sample size and the coverage of the two arms on the same chains.
 
 **Option D in more detail.** Run S11 on EWI and EWQ with a thin network trained on each layout. Each name's posterior
-is then available under the common prior. The hierarchical model puts $(H, \eta, \rho)$ of the three names in one
+is then available under the common prior. The hierarchical model puts $`(H, \eta, \rho)`$ of the three names in one
 law with unknown centre and spread. Its posterior follows by reweighting each name's draws by the ratio of the
 hierarchical density to the common prior, as in Lecture 8, Section 8.10. EWI and EWQ quote with median widths of 8
 to 36 volatility points, so pooling will decide most of their marks: that is the point, and it must be said. Their
