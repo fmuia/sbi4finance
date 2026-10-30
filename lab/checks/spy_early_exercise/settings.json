@@ -1,0 +1,13 @@
+{
+ "_about": "Inputs of spy_early_exercise.py. Dividends: SPY's last four quarterly amounts (Alpha Vantage DIVIDENDS: 1.993368 ex 2025-12-19, 1.796999 ex 2026-03-20, 1.903516 ex 2026-06-18, 1.888834 ex 2026-09-18), on assumed ex-dates one, two and three years on: the third Friday of December, March, June and September, the Thursday before when that Friday is an NYSE holiday (2027-06-18). Spot: the close (Alpha Vantage TIME_SERIES_DAILY); the tree does not use it, the output compares it with F D + PV(dividends). Rate curve: bond-equivalent Treasury yields at maturities in years, as scripts/build_surface.py --rate-curve takes them. Raw chains: data/SOURCES.md.",
+ "dividends": [["2026-12-18", 1.993368], ["2027-03-19", 1.796999], ["2027-06-17", 1.903516], ["2027-09-17", 1.888834],
+               ["2027-12-17", 1.993368], ["2028-03-17", 1.796999], ["2028-06-16", 1.903516], ["2028-09-15", 1.888834],
+               ["2028-12-15", 1.993368]],
+ "2026-10-21": {"spot": 773.09, "rate_curve": [[0.25, 0.0426], [2.0, 0.0479]],
+                "rate_source": "US Treasury yields of 2026-10-20, 3-month 4.26% and 2-year 4.79%, as study S8",
+                "surface": "tutorial/assets/results/calibration/spy/surface.json"},
+ "2026-10-29": {"spot": 769.36, "rate_curve": [[0.25, 0.0418], [2.0, 0.0467]],
+                "rate_source": "US Treasury yields of 2026-10-28 (the latest published), 3-month 4.18% and 2-year 4.67% (FRED DGS3MO, DGS2)",
+                "replication_deltas": [-7.0, 1.3],
+                "replication_deltas_reason": "on 29 October the strips of the 1- to 5-day expirations stop at delta -7.1 or above and 1.35 to 1.5, so S8's default (-8, 1.8) leaves no covered expiration at or before 5 days and build_surface stops; the setting moves the forward-variance levels only, not the 63 grid points, and both readings use it"}
+}
