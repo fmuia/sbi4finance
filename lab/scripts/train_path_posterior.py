@@ -7,6 +7,7 @@ from importlib import metadata
 import json
 from pathlib import Path
 import resource
+import shutil
 import sys
 import time
 
@@ -30,11 +31,11 @@ def peak_rss():
             "bytes": int(raw if sys.platform == "darwin" else raw * 1024)}
 
 
-def memory_projection(task, training_count, validation_count, validation_cases, batch_size):
+def memory_projection(task, training_count, validation_count, validation_cases, batch_size, *, lengths=None):
     steps, targets = task["n_observations"], len(task["parameter_names"])
     row_bytes = steps * (2 * 4 + 1) + (targets + 2) * 4
     training_bytes = training_count * row_bytes
-    validation_bytes = min(validation_count, validation_cases) * len(task["prefix_lengths"]) * row_bytes
+    validation_bytes = min(validation_count, validation_cases) * len(lengths or task["prefix_lengths"]) * row_bytes
     raw_bank_bytes = training_count * (steps * 8 + targets * 8)
     # Cover bank concatenation, neural input conversion, multiple host copies,
     # per-batch workspaces and a fixed import/runtime allowance. GPU activation
@@ -58,9 +59,29 @@ def run_training(args):
         raise ValueError("max-seconds must be positive")
     manifest = bank.load_manifest(args.bank)
     task = inference.validate_task(manifest["task"])
+    policy = getattr(args, "prefix_policy", "uniform")
+    if policy not in inference.PREFIX_POLICIES:
+        raise ValueError("unsupported prefix policy")
+    learning_rate = getattr(args, "learning_rate", 5e-4)
+    if not np.isfinite(learning_rate) or learning_rate <= 0:
+        raise ValueError("learning rate must be finite and positive")
+    selection = getattr(args, "checkpoint_selection", "validation_loss")
+    if selection not in ("validation_loss", "final"):
+        raise ValueError("checkpoint selection must be validation_loss or final")
+    init_checkpoint = getattr(args, "init_checkpoint", None)
+    initial_record = None
+    if init_checkpoint is not None:
+        init_checkpoint = Path(init_checkpoint)
+        initial_record = json.loads((init_checkpoint / "training.json").read_text())
+        initial_task = json.loads((init_checkpoint / "task.json").read_text())
+        if (inference.fingerprint(initial_task) != inference.fingerprint(task)
+                or initial_record.get("bank_manifest_sha256") != inference.sha256(args.bank / "manifest.json")):
+            raise ValueError("warm start requires exactly the same task and bank manifest identity")
+    validation_lengths = sorted(set(task["prefix_lengths"] +
+                                    [n for n in (1, 2, 4, 8, 17, 32) if n <= task["n_observations"]]))
     memory = memory_projection(task, manifest["split_counts"]["train"],
                                manifest["split_counts"]["validation"],
-                               args.validation_cases, args.batch_size)
+                               args.validation_cases, args.batch_size, lengths=validation_lengths)
     if memory["estimated_peak_host_bytes"] > memory["host_guard_bytes"]:
         raise MemoryError("projected path-training host memory exceeds 12 GiB guard; use a streamed bank loader")
     train_split = bank.load_split(args.bank, "train")
@@ -80,25 +101,40 @@ def run_training(args):
                         for k, v in validation_split.items()}
     panels = [inference.training_data(validation_split, task,
                                      lengths=np.full(count, n, dtype=np.int64))
-              for n in task["prefix_lengths"]]
+              for n in validation_lengths]
     validation = {key: np.concatenate([panel[key] for panel in panels]) for key in panels[0]}
     del panels
     memory["actual_training_input_bytes"] = sum(value.nbytes for value in train.values())
     memory["actual_validation_input_bytes"] = sum(value.nbytes for value in validation.values())
     gc.collect()
-    network = dict(inference.DEFAULT_NETWORK)
+    network = dict(inference.DEFAULT_NETWORK if initial_record is None else initial_record["network"])
     for name in ("hidden_dim", "summary_dim", "depth", "bins"):
         value = getattr(args, name, None)
         if value is not None:
+            if initial_record is not None and network[name] != value:
+                raise ValueError("warm start cannot change the network architecture")
             network[name] = inference.integer(value, name)
     if getattr(args, "width", None) is not None:
+        if initial_record is not None and network["widths"] != [args.width] * 2:
+            raise ValueError("warm start cannot change the network architecture")
         network["widths"] = [inference.integer(args.width, "width")] * 2
     import bayesflow  # noqa: F401
     import keras
     keras.utils.set_random_seed(args.seed)
-    optimizer = keras.optimizers.Adam(learning_rate=5e-4, clipnorm=1.5)
-    workflow = inference.build_workflow(task, network=network, optimizer=optimizer)
-    augment = inference.random_prefixes(task, args.seed + 701)
+    optimizer = keras.optimizers.Adam(learning_rate=learning_rate, clipnorm=1.5)
+    if init_checkpoint is None:
+        workflow = inference.build_workflow(task, network=network, optimizer=optimizer)
+    else:
+        _, workflow, checked_record = inference.load_checkpoint(init_checkpoint)
+        if checked_record != initial_record:
+            raise ValueError("warm-start metadata changed while loading")
+        # Explicit weights-only warm start: a newly compiled optimizer has no
+        # moments/step history from the parent run. This is not an exact resume.
+        workflow.optimizer = optimizer
+        workflow._needs_compile = True
+    if int(optimizer.iterations.numpy()) != 0:
+        raise RuntimeError("new optimizer did not start at step zero")
+    augment = inference.random_prefixes(task, args.seed + 701, policy=policy)
     args.out.mkdir(parents=True, exist_ok=False)
     atomic_json(args.out / "task.json", task)
     versions = {}
@@ -108,17 +144,29 @@ def run_training(args):
               "bank_manifest_sha256": inference.sha256(args.bank / "manifest.json"),
               "network": network, "runtime": versions,
               "normalization": "fixed_prior_units_no_fitted_standardizer_v1",
-              "history_training": "uniform_integer_per_trajectory_1_to_max_with_mask",
+              "history_training": inference.PREFIX_POLICIES[policy], "prefix_policy": policy,
+              "learning_rate": learning_rate,
               "supported_history_lengths": [1, task["n_observations"]],
-              "validation_landmarks": task["prefix_lengths"],
+              "validation_landmarks": validation_lengths,
               "validation_cases_per_length": count,
-              "checkpoint_selection": "minimum equally weighted landmark validation loss",
+              "checkpoint_selection": selection,
+              "selection_description": ("last completed epoch under the fixed epoch/time limits"
+                                        if selection == "final" else
+                                        "minimum equally weighted validation loss over declared lengths"),
               "training_trajectories": training_count, "training_identity": training_identity,
               "host_memory": memory, "peak_rss": peak_rss(),
               "planned_epochs": args.epochs, "batch_size": args.batch_size, "seed": args.seed,
               "max_seconds": args.max_seconds, "epochs_completed": 0,
               "status": "initializing", "reserved_test_evaluated": False,
               "scientific_validation": False, "resume_supported": False,
+              "initialization": ({"mode": "fresh", "optimizer_reset": True, "initial_optimizer_steps": 0}
+                                 if initial_record is None else
+                                 {"mode": "warm_start_weights_only", "optimizer_reset": True,
+                                  "initial_optimizer_steps": 0,
+                                  "parent_model_sha256": initial_record["model_sha256"],
+                                  "parent_task_sha256": initial_record["task_sha256"],
+                                  "parent_bank_manifest_sha256": initial_record["bank_manifest_sha256"],
+                                  "parent_selected_epoch": initial_record["selected_epoch"]}),
               "source_sha256": {str(p.relative_to(ROOT)): inference.sha256(p)
                                 for p in (Path(__file__), Path(inference.__file__), Path(bank.__file__))},
               "environment_sha256": {name: inference.sha256(ROOT / name)
@@ -142,7 +190,13 @@ def run_training(args):
             self.model.save(args.out / "final.keras")
             if val_loss < self.best:
                 self.best = val_loss
-                self.model.save(args.out / "model.keras")
+                report["best_validation_epoch"] = epoch + 1
+                report["best_validation_loss"] = val_loss
+                if selection == "validation_loss":
+                    shutil.copyfile(args.out / "final.keras", args.out / "model.keras")
+            if selection == "final" or report["best_validation_epoch"] == epoch + 1:
+                if selection == "final":
+                    shutil.copyfile(args.out / "final.keras", args.out / "model.keras")
                 report["selected_epoch"] = epoch + 1
                 report["selected_validation_loss"] = val_loss
             report["model_sha256"] = inference.sha256(args.out / "model.keras")
@@ -192,6 +246,11 @@ def main():
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--max-seconds", type=float, default=2700)
     parser.add_argument("--validation-cases", type=int, default=256)
+    parser.add_argument("--init-checkpoint", type=Path,
+                        help="Initialize from checked weights on the identical bank/task; reset optimizer")
+    parser.add_argument("--prefix-policy", choices=tuple(inference.PREFIX_POLICIES), default="uniform")
+    parser.add_argument("--learning-rate", type=float, default=5e-4)
+    parser.add_argument("--checkpoint-selection", choices=("validation_loss", "final"), default="validation_loss")
     for name in ("hidden-dim", "summary-dim", "depth", "bins", "width"):
         parser.add_argument("--" + name, type=int)
     args = parser.parse_args()

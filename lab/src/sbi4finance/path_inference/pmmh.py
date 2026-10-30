@@ -9,13 +9,16 @@ This specialized method is not PyMC/NUTS or an accepted numerical reference.
 """
 
 from dataclasses import dataclass
+import hashlib
+import json
 import math
+from pathlib import Path
 
 import numpy as np
 from numba import njit
 from scipy.special import expit
 
-from sbi4finance.path_inference.bank import validate_task
+from sbi4finance.path_inference.bank import task_fingerprint, validate_task
 from sbi4finance.path_inference.reference import _filter
 
 
@@ -69,6 +72,92 @@ class LikelihoodEstimate:
     minimum_ess: float = np.nan
     minimum_compatible: int = -1
     collapse: bool = False
+
+
+def proposal_cholesky(covariance, dimension):
+    """Validate a fixed symmetric positive-definite covariance in z units."""
+    matrix = np.eye(dimension) if covariance is None else np.asarray(covariance, dtype=np.float64)
+    if (matrix.shape != (dimension, dimension) or not np.isfinite(matrix).all()
+            or not np.allclose(matrix, matrix.T, rtol=1e-12, atol=1e-12)):
+        raise ValueError("proposal covariance must be finite, symmetric and match parameter dimension")
+    try:
+        return np.linalg.cholesky(matrix)
+    except np.linalg.LinAlgError as error:
+        raise ValueError("proposal covariance must be strictly positive definite") from error
+
+
+def regularized_covariance(z, *, diagonal_shrinkage=0.1, relative_eigenfloor=1e-4):
+    """Freeze a pooled empirical covariance with documented bounded regularization."""
+    values = np.asarray(z, dtype=np.float64)
+    if (values.ndim != 2 or values.shape[0] < 2 or values.shape[1] < 1
+            or not np.isfinite(values).all() or not 0 <= diagonal_shrinkage <= 1
+            or not 0 < relative_eigenfloor <= 1):
+        raise ValueError("finite [sample,parameter] inputs and valid shrinkage/floor required")
+    empirical = np.atleast_2d(np.cov(values, rowvar=False, ddof=1))
+    shrunk = ((1 - diagonal_shrinkage) * empirical
+              + diagonal_shrinkage * np.diag(np.diag(empirical)))
+    floor = max(1e-8, relative_eigenfloor * float(np.trace(shrunk)) / values.shape[1])
+    eigenvalues, vectors = np.linalg.eigh(shrunk)
+    covariance = (vectors * np.maximum(eigenvalues, floor)) @ vectors.T
+    covariance = (covariance + covariance.T) / 2
+    proposal_cholesky(covariance, values.shape[1])
+    return covariance, {"diagonal_shrinkage": diagonal_shrinkage,
+                        "relative_eigenfloor": relative_eigenfloor,
+                        "absolute_eigenvalue_floor": floor,
+                        "empirical_eigenvalues": np.linalg.eigvalsh(empirical).tolist(),
+                        "regularized_eigenvalues": np.linalg.eigvalsh(covariance).tolist(),
+                        "pooled_samples": values.shape[0]}
+
+
+def load_initial_checkpoint(directory, task, returns, observation, *, particles=None):
+    """Validate an accepted extended state for a fresh sampling phase.
+
+    Supplying particles enforces unchanged likelihood-estimator particle count.
+    Omitting it is only suitable for static-point noise diagnostics: the old
+    estimate must not initialize a chain at a different particle count.
+    No prior RNG state is resumed; the caller declares a fresh phase RNG.
+    """
+    directory = Path(directory)
+    summary_path, draws_path = directory / "pmmh-summary.json", directory / "draws.npz"
+    report = json.loads(summary_path.read_text())
+    digest = task_fingerprint(task)
+    if task_fingerprint(report["task"]) != digest or report["observation"]["task_sha256"] != digest:
+        raise ValueError("initial checkpoint task identity differs")
+    if particles is not None and report["particles"] != particles:
+        raise ValueError("initial checkpoint particle count differs; accepted likelihood cannot be reused")
+    fields = ("trajectory_id", "length", "source_shard_sha256", "split")
+    if any(report["observation"].get(k) != observation.get(k) for k in fields):
+        raise ValueError("initial checkpoint observation identity differs")
+    for item in report.get("files", []):
+        if item["file"] in ("observations.npz", "draws.npz"):
+            if hashlib.sha256((directory / item["file"]).read_bytes()).hexdigest() != item["sha256"]:
+                raise ValueError("initial checkpoint file checksum mismatch")
+    with np.load(directory / "observations.npz", allow_pickle=False) as saved:
+        if not np.array_equal(saved["log_returns"], np.asarray(returns)):
+            raise ValueError("initial checkpoint actual observations differ")
+        if not np.array_equal(saved["dt_years"], np.full(len(returns), task["dt_years"])):
+            raise ValueError("initial checkpoint observation intervals differ")
+    with np.load(draws_path, allow_pickle=False) as saved:
+        if saved["z"].ndim != 3 or saved["z"].shape[0] != 1 or not saved["z"].shape[1]:
+            raise ValueError("initial checkpoint has no retained single-chain state")
+        z = np.asarray(saved["z"][0, -1], dtype=float)
+        estimate = LikelihoodEstimate(float(saved["log_likelihood_estimate"][0, -1]),
+            int(saved["likelihood_seed"][0, -1]), float(saved["minimum_ess"][0, -1]),
+            int(saved["minimum_compatible"][0, -1]))
+    if z.shape != (len(task["parameter_names"]),) or not np.isfinite(z).all() or not np.isfinite(estimate.log_value):
+        raise ValueError("initial checkpoint extended state is nonfinite or wrong dimension")
+    state = report["sampler_state"]
+    if (not np.array_equal(z, np.asarray(state["current_z"]))
+            or estimate.seed != state["current_likelihood_seed"]
+            or estimate.log_value != state["current_log_likelihood_estimate"]):
+        raise ValueError("initial checkpoint draw and summary states differ")
+    provenance = {"directory": str(directory), "summary_sha256": hashlib.sha256(summary_path.read_bytes()).hexdigest(),
+                  "draws_sha256": hashlib.sha256(draws_path.read_bytes()).hexdigest(),
+                  "source_chain_id": report["chain_id"], "source_chain_seed": report["chain_seed"],
+                  "source_particles": report["particles"], "accepted_likelihood_seed": estimate.seed,
+                  "accepted_log_likelihood_estimate": estimate.log_value,
+                  "task_sha256": digest, "observation": report["observation"]}
+    return z, estimate, provenance
 
 
 @njit(cache=True, fastmath=False)
@@ -206,7 +295,8 @@ def particle_log_likelihood(returns, task, physical, *, particles, seed, method=
 
 
 def run_chain(estimator, initial_z, *, tune=500, draws=1000, seed=0,
-              proposal_scale=0.35, adapt=True, callback=None, initial_estimate=None):
+              proposal_scale=0.35, adapt=True, callback=None, initial_estimate=None,
+              proposal_covariance=None):
     """Symmetric random-walk PMMH in prior-CDF logits.
 
     estimator(z, fresh_seed) returns a LikelihoodEstimate. Initialization must
@@ -222,6 +312,7 @@ def run_chain(estimator, initial_z, *, tune=500, draws=1000, seed=0,
     z = np.array(initial_z, dtype=np.float64, copy=True)
     if z.ndim != 1 or not z.size or not np.isfinite(z).all():
         raise ValueError("initial_z must be a finite vector")
+    factor = proposal_cholesky(proposal_covariance, len(z))
     rng = np.random.Generator(np.random.PCG64(seed))
     next_seed = lambda: int(rng.integers(0, np.iinfo(np.uint64).max, dtype=np.uint64))
     # A screened finite initial estimate may be supplied as part of the initial
@@ -243,7 +334,7 @@ def run_chain(estimator, initial_z, *, tune=500, draws=1000, seed=0,
                "likelihood_seed": current.seed, "proposal_scale": proposal_scale}
     for iteration in range(count):
         scale = float(np.exp(log_scale))
-        candidate_z = z + scale * rng.standard_normal(len(z))
+        candidate_z = z + scale * (factor @ rng.standard_normal(len(z)))
         candidate_seed = next_seed()
         candidate = estimator(candidate_z, candidate_seed)
         if np.isnan(candidate.log_value) or candidate.log_value == np.inf:
@@ -269,8 +360,10 @@ def run_chain(estimator, initial_z, *, tune=500, draws=1000, seed=0,
             callback(iteration + 1, arrays, {"rng_state": rng.bit_generator.state,
                      "current_z": z.tolist(), "current_likelihood_seed": current.seed,
                      "current_log_likelihood_estimate": current.log_value,
+                     "proposal_covariance": (factor @ factor.T).tolist(),
                      "proposal_scale_for_next_iteration": float(np.exp(log_scale))})
     return {"tune": {k: v[:tune] for k, v in arrays.items()},
             "draws": {k: v[tune:] for k, v in arrays.items()}, "initial": initial,
             "final_rng_state": rng.bit_generator.state,
-            "final_proposal_scale": float(np.exp(log_scale)), "seed": int(seed)}
+            "final_proposal_scale": float(np.exp(log_scale)), "seed": int(seed),
+            "proposal_covariance": factor @ factor.T}

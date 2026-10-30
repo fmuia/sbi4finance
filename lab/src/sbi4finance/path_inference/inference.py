@@ -17,6 +17,10 @@ FORMAT = "path_posterior_v1"
 DEFAULT_NETWORK = {"hidden_dim": 64, "summary_dim": 32, "depth": 6,
                    "bins": 8, "widths": [64, 64]}
 LOGISTIC_SD = np.pi / np.sqrt(3.0)
+PREFIX_POLICIES = {
+    "uniform": "uniform_integer_per_trajectory_1_to_max_with_mask",
+    "uniform_log_mixture": "half_uniform_half_log_uniform_integer_per_trajectory_1_to_max_with_mask",
+}
 
 
 def fingerprint(value):
@@ -139,8 +143,15 @@ def training_data(split, task, *, lengths=None):
     return {**result, "parameters": parameters}
 
 
-def random_prefixes(task, seed):
-    """Pre-adapter augmentation: independent uniform integer lengths, stable shape."""
+def random_prefixes(task, seed, policy="uniform"):
+    """Pre-adapter prefix sampling with full integer support and stable shapes.
+
+    The short-history refinement mixes equal probabilities of Uniform{1..T}
+    and floor(exp(Uniform[0,log(T+1)))). This changes training exposure only;
+    neither the model's parameter prior nor the observed-path law changes.
+    """
+    if policy not in PREFIX_POLICIES:
+        raise ValueError(f"prefix policy must be one of {tuple(PREFIX_POLICIES)}")
     maximum = integer(task["n_observations"], "n_observations")
     rng = np.random.default_rng(integer(seed, "prefix seed", minimum=0))
     exposure = np.zeros(maximum + 1, dtype=np.int64)
@@ -149,6 +160,11 @@ def random_prefixes(task, seed):
         result = dict(batch)
         tokens = np.array(batch["observations"], copy=True)
         lengths = rng.integers(1, maximum + 1, len(tokens))
+        if policy == "uniform_log_mixture":
+            choose_log = rng.random(len(tokens)) < .5
+            log_lengths = np.minimum(maximum, np.floor(np.exp(
+                rng.uniform(0.0, np.log(maximum + 1), len(tokens)))).astype(np.int64))
+            lengths = np.where(choose_log, log_lengths, lengths)
         mask = np.arange(maximum)[None, :] < lengths[:, None]
         tokens = np.where(mask[..., None], tokens, 0.0)
         result["observations"] = tokens
@@ -158,7 +174,7 @@ def random_prefixes(task, seed):
         exposure[:] += np.bincount(lengths, minlength=maximum + 1)
         return result
 
-    augment.rng, augment.exposure = rng, exposure
+    augment.rng, augment.exposure, augment.policy = rng, exposure, policy
     return augment
 
 
@@ -199,10 +215,12 @@ def load_checkpoint(directory):
     directory = Path(directory)
     task = validate_task(json.loads((directory / "task.json").read_text()))
     report = json.loads((directory / "training.json").read_text())
+    policy = report.get("prefix_policy", "uniform")
     if (report.get("format") != FORMAT or report.get("task_sha256") != fingerprint(task)
             or report.get("model_sha256") != sha256(directory / "model.keras")
             or report.get("normalization") != "fixed_prior_units_no_fitted_standardizer_v1"
-            or report.get("history_training") != "uniform_integer_per_trajectory_1_to_max_with_mask"):
+            or policy not in PREFIX_POLICIES
+            or report.get("history_training") != PREFIX_POLICIES[policy]):
         raise ValueError("checkpoint task/model/normalization contract mismatch")
     workflow = build_workflow(task, network=report["network"])
     workflow.load_estimator(directory / "model.keras")

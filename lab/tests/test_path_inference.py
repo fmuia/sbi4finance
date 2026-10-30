@@ -1,10 +1,13 @@
 """Path conditions, arbitrary-prefix masks, support and real BF2.1 serialization."""
 
 from importlib import metadata
+import importlib.util
+import json
 import os
 from pathlib import Path
 import tempfile
 import unittest
+from types import SimpleNamespace
 
 import numpy as np
 
@@ -95,9 +98,77 @@ class InputContractTests(unittest.TestCase):
         self.assertGreater(min(result["mean_posterior_to_prior_variance"]), 1)
         self.assertEqual(result["cases"], 20)
 
+    def test_mixture_policy_adds_short_history_exposure_without_losing_support(self):
+        data = inference.training_data(self.split, self.task)
+        data = {k: np.tile(v, (250,) + (1,) * (v.ndim - 1)) for k, v in data.items()}
+        uniform = inference.random_prefixes(self.task, 991, policy="uniform")
+        mixture = inference.random_prefixes(self.task, 991, policy="uniform_log_mixture")
+        for _ in range(10):
+            first, second = uniform(data), mixture(data)
+            np.testing.assert_array_equal(first["parameters"], second["parameters"])
+            self.assertTrue(np.all(second["summary_mask"].sum(axis=1) >= 1))
+        self.assertTrue(np.all(mixture.exposure[1:] > 0))
+        self.assertGreater(mixture.exposure[1:5].sum(), 1.5 * uniform.exposure[1:5].sum())
+        with self.assertRaises(ValueError):
+            inference.random_prefixes(self.task, 83, policy="unknown")
+
 
 @unittest.skipUnless(CORE, "requires locked BayesFlow2.1 core runtime")
 class ActualWorkflowTests(unittest.TestCase):
+    def test_weights_only_warm_start_resets_optimizer_and_checks_bank_identity(self):
+        os.environ.setdefault("KERAS_BACKEND", "jax")
+        root = Path(__file__).resolve().parents[1]
+        spec = importlib.util.spec_from_file_location("path_train_warm_test", root / "scripts/train_path_posterior.py")
+        trainer = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(trainer)
+        task = dict(bank.default_task("rough-joint"), n_observations=17,
+                    prefix_lengths=[1, 4, 8, 13, 17], history_length_range=[1, 17])
+        with tempfile.TemporaryDirectory() as temporary:
+            work = Path(temporary)
+            bank.write_bank(task, work / "bank", train=8, validation=4, test=2, chunk=4, seed=83)
+            settings = dict(bank=work / "bank", epochs=1, batch_size=4, seed=83, max_seconds=120,
+                            validation_cases=4, hidden_dim=8, summary_dim=8, depth=2, bins=4, width=8,
+                            prefix_policy="uniform", learning_rate=5e-4, init_checkpoint=None)
+            parent = trainer.run_training(SimpleNamespace(**settings, out=work / "parent"))
+            self.assertEqual(parent["optimizer_steps"], 2)
+            # An original uniform checkpoint without the new policy field still
+            # loads, so historical native bytes need not be rewritten.
+            legacy = json.loads((work / "parent/training.json").read_text())
+            legacy.pop("prefix_policy")
+            (work / "parent/training.json").write_text(json.dumps(legacy))
+            inference.load_checkpoint(work / "parent")
+            settings.update(init_checkpoint=work / "parent", prefix_policy="uniform_log_mixture", learning_rate=1e-4,
+                            epochs=2, checkpoint_selection="final")
+            child = trainer.run_training(SimpleNamespace(**settings, out=work / "child"))
+            self.assertEqual(child["optimizer_steps"], 4)
+            self.assertEqual(child["initialization"]["initial_optimizer_steps"], 0)
+            self.assertEqual(child["initialization"]["parent_model_sha256"], parent["model_sha256"])
+            self.assertEqual(child["prefix_policy"], "uniform_log_mixture")
+            self.assertEqual(child["checkpoint_selection"], "final")
+            self.assertEqual(child["selected_epoch"], child["epochs_completed"])
+            self.assertEqual(child["model_sha256"], child["final_sha256"])
+            self.assertTrue(child["same_seed_reload_exact"])
+            self.assertTrue({1, 2, 4, 8, 17}.issubset(child["validation_landmarks"]))
+            inference.load_checkpoint(work / "child")
+            for script in ("evaluate_path_posterior", "check_path_one_return"):
+                spec = importlib.util.spec_from_file_location(script + "_warm_test", root / "scripts" / (script + ".py"))
+                module = importlib.util.module_from_spec(spec)
+                spec.loader.exec_module(module)
+                arguments = SimpleNamespace(bank=work / "bank", checkpoint=work / "child", out=work / script,
+                                            split="validation", cases=3, draws=8, batch_size=2, seed=83,
+                                            offset=1, lengths=[1, 2, 17], quadrature_nodes=64)
+                checked = module.evaluate(arguments) if script == "evaluate_path_posterior" else module.run(arguments)
+                self.assertEqual(checked["offset"], 1)
+                if script == "evaluate_path_posterior":
+                    self.assertEqual(set(checked["lengths"]), {"1", "2", "17"})
+                    with np.load(arguments.out / "case-summary.npz") as summary:
+                        self.assertEqual(summary["truth"].shape, (3, 6))
+                        self.assertEqual(summary["posterior_mean_17"].shape, (3, 6))
+            bank.write_bank(task, work / "other-bank", train=8, validation=4, test=2, chunk=4, seed=84)
+            settings["bank"] = work / "other-bank"
+            with self.assertRaisesRegex(ValueError, "same task and bank"):
+                trainer.run_training(SimpleNamespace(**settings, out=work / "bad-child"))
+
     def test_masked_arbitrary_prefix_training_reload_and_future_invariance(self):
         os.environ.setdefault("KERAS_BACKEND", "jax")
         import bayesflow  # noqa: F401

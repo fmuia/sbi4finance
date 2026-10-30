@@ -1,6 +1,6 @@
 # Parameter inference from Heston and rough Bergomi paths
 
-**30 October 2026 afternoon status:** known-curve and joint rough fits and validation are complete; Heston is running after release of a cluster environment hold. Reference convergence remains unresolved.
+**30 October 2026 evening status:** all three baseline fits and development evaluations are complete. A fixed short-history refinement and reference-repair tranche is ready for tested, budget-checked submission.
 
 Build a counterpart to option-surface calibration: infer fixed stochastic-volatility parameters from discrete observed returns, and display how their posterior changes as the observed history grows. Keep simulated volatility hidden from the estimator. Start with synthetic physical-measure models; market-data inference and time-varying parameters are later tasks.
 
@@ -164,3 +164,31 @@ Heston job 8110048 was held overnight by Slurm after a user-environment retrieva
 The one-year PMMH screen completed four chains with 1,000 retained draws but fails reference gates: rank R-hat 1.031–1.104, bulk ESS 29–135 and 5%/95% tail ESS 30–205. The five-year jobs all timed out at 20 minutes; each retained checkpoint has 500 tuning + 300 retained iterations. Their rank R-hat 1.093–1.203 and bulk ESS 14–45 also fail. Preserve the partial traces. Improve proposal preconditioning/mixing and measure long-history likelihood noise before allocating more reference sampling; completing the original short chain alone would not certify convergence.
 
 The external status bundle contains verified summaries, saved diagnostic draws, `status-summary.json`, `metrics-summary.json` and `status-progress.png`. The reserved test posteriors remain unevaluated. The immediate work is to finish Heston, address joint short-prefix calibration with its exact one-return control, and improve the independent references.
+
+
+## Fixed follow-up runs defined on 30 October
+
+The recovered Heston baseline completed all 60 epochs and selected epoch 50. Both rough baselines remain at their recorded epochs 47 and 53. The original models and all 100k banks remain frozen; this follow-up changes neither the prior nor the observation law.
+
+| Candidate | Parent weights | Additional training | Prefix policy | Optimizer and endpoint |
+| --- | --- | --- | --- | --- |
+| Heston | Selected baseline epoch 50 | At most 8 epochs on the existing 100k paths; 420-second soft stop and 10-minute Slurm cap | 50% uniform integer lengths, 50% floor of log-uniform lengths, covering every length 1–1,260 | Fresh Adam at 0.0001, batch 128; last completed epoch |
+| Joint rough | Selected baseline epoch 53 | Same bounds on the existing 100k paths | Same mixture, covering every length 1–1,008 | Same reset and fixed endpoint |
+
+These are weights-only warm starts with new optimizer and prefix RNG states, not exact resumes. Task, bank and parent-model identities are checked. Known-curve rough is retained as a control without another fit. This is one combined optimization intervention per affected task, not an ablation isolating prefix weighting from additional updates or the new learning rate. Final model bytes and seeded reload are checked; minimum validation loss is informational rather than the candidate-selection rule.
+
+Both baseline and candidate are evaluated with 512 posterior draws on the same 512 validation trajectories at lengths 1, 2, 4, 8, 17, 32, 63, 126, 252, 504, maximum-minus-seven and maximum. Rows 0–255 are the reused checkpoint-development cohort. Rows 256–511 are the predeclared primary validation cohort for the comparison; they remain validation data, not the reserved test set. Per-case means and interval bounds are saved with identities/checksums so all comparisons can pair trajectories.
+
+The development screens are fixed before submission:
+
+- At the five original landmarks, each target's upper pointwise 95% paired trajectory-bootstrap bound on the MSE increase, normalized by prior-mean risk, must be at most `max(0.01, 0.05 * baseline normalized MSE)`. Bootstrap complete trajectories; the horizons are repeated views of those trajectories.
+- At those landmarks, the candidate's absolute 90% coverage error may not increase by more than 0.02 for any target; report this as a descriptive pointwise guard, not a simultaneous calibration certificate.
+- For joint rough at one return, use independent scalar log-coordinate quadrature for short variance and exact independent priors for the other five targets. With 2,048 neural draws per case, require mean RMSE at most 0.10 reference SD and mean absolute error of exact probability mass inside neural 90% intervals at most 0.04 for every target. Also report casewise tails and quadrature refinement. Bind each exact check to its own model/task hashes.
+- Heston uses eight internal steps, so its first daily return is parameter-dependent. Apply a simulation-based short-history screen rather than an exact-prior assertion: mean absolute coverage error across lengths 1–32 must improve, and each target's length-one 90% coverage must lie in [0.85, 0.95]. This is a development screen, not conditional posterior certification.
+- Finite-output, prior-support and native reload checks must pass. Failed or inconclusive screens retain the original baseline. No report automatically publishes a model or opens reserved tests.
+
+The reference work proceeds independently. Freeze a one-year proposal covariance from the old logit traces with 10% diagonal shrinkage and a relative eigenvalue floor. Start four new phases from their respective accepted parameter/particle-likelihood states, preserving the accepted likelihood estimate and seed, with fresh phase RNGs. Each has 500 tuning and 5,000 retained iterations, 512 particles and a 15-minute CPU cap. The covariance is fixed; scalar adaptation ends after tuning. Check rank R-hat at most 1.01 and bulk and 5%/95% tail ESS at least 400. A single Heston case comparison against both neural checkpoints runs only if those convergence gates pass; it remains a development comparison.
+
+For five years, first measure likelihood noise and timing at the four saved partial-chain states with 512/1,024/2,048 particles and eight independent repeats. This job starts no new chains. The measurement will determine whether the next expense should address particle noise, proposal geometry or longer sampling.
+
+The follow-up launcher checks actual old spending, outstanding requests, earlier failures and 240 seconds of cleanup per allocated job against the existing 24 CPU-hour / 3 GPU-hour ceiling. At the measured old allocation totals, the 20-job follow-up reserves approximately **21.44 cumulative CPU-hours and 2.99083 cumulative GPU-hours**, including cleanup. Its two GPU fits are the only new GPU allocations. A new immutable source/run directory, dependency gates, partial-submission receipt and final report preserve all prior artifacts. No automatic retry or architecture sweep is authorized by this tranche.
