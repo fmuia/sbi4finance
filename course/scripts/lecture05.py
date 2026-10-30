@@ -8,7 +8,7 @@ import json
 import numpy as np
 from scipy.stats import norm
 
-from common import COLORS, DAYS, DELTAS, GREY, call, d12, load_spy, otm, plt, save, sf, tidy
+from common import COLORS, DAYS, DELTAS, GREY, ROOT, call, d12, load_spy, otm, plt, save, sf, tidy
 from sbi4finance import hkde
 
 REPORT = {}
@@ -322,6 +322,59 @@ def fig_variance_swap(spy, prices):
                              xi_vol=[float(v) for v in np.sqrt(xi)])
 
 
+SPY_QUOTES = ROOT / "lab" / "checks" / "spy_quotes" / "SPY_2026-10-21.json"
+
+
+def fig_spy_quotes(spy, path=SPY_QUOTES, name="l05-spy-quotes.png"):
+    """At four design maturities, the nearest expiration whose strip covers the replication range: its quotes, the
+    spline read from them, the strip's range and the design grid."""
+    if not path.exists():
+        REPORT["spy_quotes"] = f"skipped: {path.name} is missing (lab/checks/spy_quotes/spy_quotes.py)"
+        return
+    data = json.loads(path.read_text())
+    if data["chain_sha256"] != spy["chain_sha256"]:
+        raise ValueError(f"{path.name} was read from another chain than the tutorial's SPY surface")
+    grid = np.array(data["implied_vol_grid"]).reshape(len(DAYS), len(DELTAS))
+    lo, hi = data["replication_deltas"]
+    fig, axes = plt.subplots(2, 2, figsize=(11, 7.4))
+    report = []
+    covered = [e for e in data["expirations"] if e["replication_covered"]] or data["expirations"]
+    for ax, design_days in zip(axes.ravel(), (5, 21, 63, 252)):
+        e = min(covered, key=lambda e: abs(e["days"] - design_days))
+        scale = sf.SIGMA_REF * np.sqrt(e["days"] / 252)
+        q = e["quotes"]
+        d = np.array([x["k"] for x in q]) / scale
+        bid, mid, ask = (100 * np.array([x[key] for x in q]) for key in ("iv_bid", "iv_mid", "iv_ask"))
+        kept = np.array([x["kept"] for x in q])
+        spline_d = np.array(e["spline"]["k"]) / scale
+        spline_iv = 100 * np.array(e["spline"]["iv"])
+        ax.axvspan(*e["strip_deltas"], color=COLORS[0], alpha=0.07, lw=0, label="the strip's range")
+        for x in (lo, hi):
+            ax.axvline(x, color=GREY, ls=":", lw=1, label=rf"replication range, $\delta$ = {lo:g} to {hi:g}"
+                       if x == lo else None)
+        ax.vlines(d[~kept], bid[~kept], ask[~kept], color=GREY, lw=1, alpha=0.6, label="removed by cleaning")
+        ax.vlines(d[kept], bid[kept], ask[kept], color=COLORS[0], lw=1.6, label="quote, bid to ask")
+        ax.plot(spline_d, spline_iv, color=COLORS[1], lw=1, label="smoothing spline")
+        # the design points at their log-moneyness, in this expiration's delta
+        j = list(DAYS).index(design_days)
+        ax.plot(DELTAS * np.sqrt(design_days / e["days"]), 100 * grid[j], "o", color=COLORS[6], ms=4.5, zorder=5,
+                label="design grid")
+        ax.set_ylim(0, min(1.05 * ask[kept].max(), 150))
+        ax.set_xlabel(r"standardized moneyness $\delta$ at the expiration's maturity")
+        ax.set_ylabel("implied volatility (%)")
+        ax.set_title(f"{e['expiration']}: {e['days']} days (design maturity {design_days})", fontsize=10)
+        half = (ask[kept] - bid[kept]) / 2
+        miss = (np.interp(d[kept], spline_d, spline_iv) - mid[kept]) / half
+        report.append(dict(design_days=design_days, days=e["days"], kept=int(kept.sum()), removed=int((~kept).sum()),
+                           no_bid=e["quotes_no_bid"], strip_deltas=e["strip_deltas"],
+                           replication_covered=e["replication_covered"],
+                           spline_rms_miss_half_spreads=float(np.sqrt(np.mean(miss ** 2)))))
+    axes[0, 0].legend(frameon=False, fontsize=8)
+    tidy(*axes.ravel())
+    save(fig, name)
+    REPORT["spy_quotes"] = report
+
+
 def main():
     spy = load_spy()
     prices, iv = spy_iv(spy)
@@ -332,6 +385,7 @@ def main():
     fig_smile_mechanisms()
     fig_spy_calendar(iv)
     fig_variance_swap(spy, prices)
+    fig_spy_quotes(spy)
     print(json.dumps(REPORT, indent=1))
 
 
