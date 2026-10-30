@@ -6,11 +6,13 @@ Francesco · 15 minutes · first slot of the afternoon. Part of the [curriculum]
 
 Rebuilt on 30 October 2026, after the organizers' call of 29 October. Slot 1 introduces the objects the
 afternoon uses, with a short window on why they matter. It follows the arc of a standard introduction to Bayes,
-translated to option quotes, and leaves hierarchies out. Its first section opens on a diagram of a desk's daily
-task. It then describes the data in the form every later slot uses: the grid read from SPY's quotes and how it
-is read, the noise each price carries and what a network reads, the variance curve and the skew that slots 4
-and 5 use, and the simulated smiles and task files behind the networks. Finally it explains the three ideas of
-the tutorial with a figure each, and lists the study's assumptions. The notebook is
+translated to option quotes, and leaves hierarchies out. It opens on a diagram of a desk's daily task and the
+question it raises, then presents the data: the grid read from SPY's quotes and the noise of each price. It
+builds Bayesian inference step by step on Black–Scholes: the model as a map from $\sigma$ to a price, least
+squares and the likelihood, prior and posterior, more quotes, the range of a price, and a check of the model.
+Heston repeats the steps with four parameters and shows when the posterior differs from least squares, and the
+cost of exact posteriors leads to amortization. After the takeaways, as reference, come the details of the
+data that the later slots use, the formulas and the study's assumptions. The notebook is
 [`slot1_intro.py`](../notebooks/slot1_intro.py); its structure, style and formatting follow the slot 5 SVJ
 notebook of #38 (branch `feat/tutorial-slot5-svj-advanced`, commit `d00ccb1`).
 
@@ -27,6 +29,7 @@ notebook of #38 (branch `feat/tutorial-slot5-svj-advanced`, commit `d00ccb1`).
 ## What the audience leaves with
 
 - The objects of the afternoon: the quotes $y$ (63 prices, each with its noise), the model, the parameters $\theta$, the prior, the likelihood, the posterior, a product's range, the checks, and the network $q(\theta \mid y)$.
+- Least squares keeps the peak of the likelihood; the posterior keeps the whole curve. More quotes narrow it, around the truth when the model can produce the data.
 - The data as every later slot uses it: 63 prices in units of the forward, on 7 maturities × 9 standardized moneyness points, each with a noise fixed by rule; networks read the prices in noise units; SPY's seven forward-variance levels; simulated smiles drawn from one task file per model.
 - What the study assumes: one date and one underlying, a grid read from cleaned quotes, European pricing of American options, independent Gaussian quote noise, three models with constant parameters, uniform priors.
 - The posterior is conditional on its model. A model that cannot produce the data gives a precise and wrong range.
@@ -37,12 +40,12 @@ notebook of #38 (branch `feat/tutorial-slot5-svj-advanced`, commit `d00ccb1`).
 
 | A generic introduction (*Statistical Rethinking*, ch. 2–3; *Bayesian Data Analysis*, ch. 1) | Slot 1 |
 | --- | --- |
-| The data story: how unknowns produce data | Section 1: the desk's task, the quotes and the grid, and how a model turns parameters into prices |
-| Prior × likelihood → posterior, on a grid | Section 2: the Black–Scholes $\sigma$ from one quote |
-| Posterior samples give derived quantities | Section 3: another option priced under every draw |
-| A posterior predictive check | Section 4: that prediction against the market's quote |
-| The quadratic approximation, and when it fails | Section 5: Heston's posterior is an ellipse; rough Bergomi's need not be |
-| Computing the posterior: grid, quadratic, MCMC | Section 6: and a fourth rung, amortized inference |
+| The question, and the data story: how unknowns produce data | Sections 1 and 2: the desk's task and its question; the quotes, the grid and the noise of each price |
+| Prior × likelihood → posterior, on a grid | Section 3: the Black–Scholes $\sigma$ from one quote, least squares as the peak of the likelihood, and more quotes narrowing the posterior |
+| Posterior samples give derived quantities | Section 4: another option priced under every draw |
+| A posterior predictive check | Section 5: the predicted quote against the market's, and the flat prediction against the smile |
+| The quadratic approximation, and when it fails | Section 6: Heston's posterior is an ellipse; rough Bergomi's need not be |
+| Computing the posterior: grid, quadratic, MCMC | Section 7: and a fourth rung, amortized inference |
 
 Each section answers one question and hands the next one over.
 
@@ -50,34 +53,35 @@ Each section answers one question and hands the next one over.
 
 | Min | Section | The question | On screen | Mode |
 | --- | --- | --- | --- | --- |
-| 0–1 | Opening | What does a desk do with option quotes? | A diagram: quotes, calibration, the calibrated model, prices of products that are not quoted, the book | slide |
-| 1–2.5 | 1 · The data | What is quoted, what do we read from it, and how is it used? | The 63 contracts as strikes against maturity, with SPY's forward, and the smile at those points; the five steps from the chain to the grid; one observation, identical to every network's (checked live); the noise rule and SPY's prices in noise units; the forward-variance curve and the skew's power law (C1); simulated smiles, task files, and which slot uses which data | cached |
-| 2.5–5 | 1 · Three ideas | What are a volatility model, a Bayesian calibration and amortized inference? | Heston fitted to SPY's smile against Black–Scholes, and the smile as the correlation changes (live Fourier pricing); Heston's exact posterior on SPY and a 1-year variance swap priced under it; the amortized pipeline | live |
-| 5–6 | 1 · What the study assumes | Which simplifications do the examples make? | One table: data, quotes kept, exercise, rates and forwards, time, grid, noise, models, priors, truth; then the plan of sections 2 to 6 and the folded "model in detail" panel | slide |
-| 6–8.5 | 2 · Bayes on one quote | What does one quote say about $\sigma$? | Prior, likelihood and posterior on a grid of 4,001 volatilities: $\sigma$ = 12.84% ± 0.30 points under the flat prior; a choice of priors shows when the prior matters | live |
-| 8.5–9.5 | 3 · Using the posterior | How sure is a price the model computes? | The one-month put at $\delta = -2$ priced under 4,000 draws: a 90% range of 0.05 to 0.14 bp; why the rules ask for ranges | live |
-| 9.5–11 | 4 · Checking the model | Does the model reproduce data it has not seen? | The market quotes 14.1 bp, about 100 times the predicted range; with both quotes, the best $\sigma$ misses the put by 9.5 noise units; a noise slider (about 4.8 times the noise reconciles them) | live |
-| 11–13.5 | 5 · When the posterior differs from least squares | Is the posterior just least squares with error bars? | The least-squares/Bayes table; Heston's exact posterior (PyMC) is an ellipse, with claim C11; rough Bergomi's posterior for an almost flat variance curve is not, and the prior sets the decay | cached |
-| 13.5–15 | 6 · What it costs; close | Why not a posterior for every smile? | The methods' ladder (grid, Gaussian, MCMC, amortized), the measured costs (C8) and a valuation-run slider; the objects of the afternoon and four takeaways; next, slot 2 | cached |
+| 0–1 | 1 · The problem | What does a desk do with option quotes, and what does one calibration not tell it? | A diagram: quotes, calibration, the calibrated model, prices of products that are not quoted, the book; the question: how sure are the parameters, and the prices computed from them? | slide |
+| 1–2.5 | 2 · The data | What is quoted, and how precisely? | The 63 contracts as strikes against maturity, with SPY's forward, and the smile at those points; each quote ± its noise at one month and one year: tight at and below the money, open above it | cached |
+| 2.5–5.5 | 3 · Bayes with one parameter | What does one quote say about $\sigma$? | The model as a map from $\sigma$ to a price, and least squares' $\chi^2$ (12.84%, with $\chi^2 \le 1$ from 12.55% to 13.13%); prior × likelihood → posterior on a grid of 4,001 volatilities, with a choice of priors; seven simulated quotes narrowing the posterior like $1/\sqrt n$ | live |
+| 5.5–6.5 | 4 · Using the posterior | How sure is a price the model computes? | The one-month put at $\delta = -2$ priced under 4,000 draws: a 90% range of 0.05 to 0.14 bp; the rules that ask for ranges | live |
+| 6.5–8.5 | 5 · Checking the model | Does the model reproduce data it has not seen? | The market's 14.1 bp against the predicted quotes, 9.5 standard deviations away, and the flat prediction against the smile; with both quotes, a noise slider (about 4.8 times the noise reconciles them) | live |
+| 8.5–11.5 | 6 · A model with a smile: Heston | What changes when the model can produce the smile? | Heston fitted to SPY's smile and the effect of the correlation (live Fourier pricing); its exact posterior on SPY and a 1-year variance swap priced under it; the least-squares/Bayes table; Heston's posterior is an ellipse (C11), rough Bergomi's for an almost flat curve is not | cached |
+| 11.5–14 | 7 · What it costs, and amortized inference | Why not a posterior for every smile? | The methods' ladder (grid, Gaussian, MCMC, amortized) and the measured costs (C8); the cost of one valuation run by route, with a slider; the amortized pipeline | cached |
+| 14–15 | Close | What does the afternoon build on? | The objects of the afternoon and four takeaways; next, slot 2 | slide |
 
 The notebook reads every number live; the values above are today's.
 
-Section 1's data subsections hold more than their 1.5 minutes. On stage, show the grid figure and the noise
-heatmap and name the rest. The five steps, the variance curve and the task files are there to be read, and the
-later slots rely on them.
+After the takeaways the notebook holds reference material that is not presented: the data in detail (how the
+grid is read from the chain, what a network reads, the variance curve and the skew, simulated smiles and the
+task files), the formulas, and the study's assumptions. The presenter names it in the close; the later slots
+rely on it.
 
 ## The live notebook
 
 | Cells | Compute | Budget |
 | --- | --- | --- |
-| Section 1 | SPY prices, noise and the cleaned chain's expirations from `spy/surface.json`; implied volatilities; the identity of the grid and noise with `backbones/heston-final500/task.json`; the rates and grid readings; prices in noise units; the forward-variance levels, variance-swap volatilities, at-the-money skew and its power law; three Heston smiles by Fourier pricing; the SPY Heston posterior draws of `data/heston-spy-exact.npy` | about 2 s |
-| Section 2 | Grid posterior of $\sigma$ from the at-the-money one-month quote, flat prior on 5% to 60%; three normal priors centred on 20% for comparison | < 0.1 s per choice |
-| Section 3 | 4,000 draws of $\sigma$, the put under each, its quantiles | < 0.1 s |
-| Section 4 | Both likelihoods, the joint posterior, standardized misses; a noise multiple from 1 to 10 | < 0.1 s per move |
-| Section 5 | `heston-final500` (PyMC reference draws) and `rough-joint100k-validation1962` (network draws), loaded offline with NumPy; Gaussian ellipses; C11 from `heston/s6/classical.json` | < 2 s |
-| Section 6 | C8 from `costs/costs.json`; the cost of one valuation run by route | < 0.1 s per move |
+| Section 2 | SPY prices, noise and the cleaned chain's expirations from `spy/surface.json`; implied volatilities, and those of each price ± its noise; the identity of the grid and noise with `backbones/heston-final500/task.json` | < 1 s |
+| Section 3 | $\chi^2$ and the grid posterior of $\sigma$ from the at-the-money one-month quote, flat prior on 5% to 60%; three normal priors centred on 20% for comparison; seven at-the-money quotes simulated at 13% (fixed seed) and their posteriors | < 0.1 s per choice |
+| Section 4 | 4,000 draws of $\sigma$, the put under each, its quantiles | < 0.1 s |
+| Section 5 | The posterior predictive of the put's quote; both likelihoods, the joint posterior, standardized misses; a noise multiple from 1 to 10 | < 0.1 s per move |
+| Section 6 | Three Heston smiles by Fourier pricing; the SPY Heston posterior draws of `data/heston-spy-exact.npy`; `heston-final500` (PyMC reference draws) and `rough-joint100k-validation1962` (network draws), loaded offline with NumPy; Gaussian ellipses; C11 from `heston/s6/classical.json` | about 3 s |
+| Section 7 | C8 from `costs/costs.json`; the cost of one valuation run by route | < 0.1 s per move |
+| The data in detail | The rates and grid readings; prices in noise units; the forward-variance levels, variance-swap volatilities, at-the-money skew and its power law | < 0.1 s |
 
-No network is loaded. The notebook runs headless in about 7 seconds.
+No network is loaded. The notebook runs headless in about 9 seconds.
 
 ## Numbers on screen, and their status
 
@@ -86,6 +90,9 @@ No network is loaded. The notebook runs headless in about 7 seconds.
 | 63 prices on a grid of 7 maturities × 9 moneyness points, read from SPY's quotes of 21 Oct 2026 | `spy/surface.json` (S8) | verified |
 | The grid and noise are those of every backbone task | computed live | verified by construction |
 | 32 expirations, 5,358 cleaned quotes; every grid point inside the quoted strikes | `spy/surface.json` diagnostics (S8) | verified |
+| Each quote's noise in implied volatility at one month: about ±0.3 points at the money and ±0.5 at $\delta = -2$; at $\delta$ = 1.5 and 2 the lower end reaches zero | computed live from `spy/surface.json` | verified by construction (live) |
+| Least squares on the one-month at-the-money quote: $\sigma$ = 12.84%, $\chi^2 \le 1$ from 12.55% to 13.13% | computed live | verified by construction (live) |
+| Seven at-the-money quotes simulated at $\sigma$ = 13%: posterior standard deviation 0.30 points from one quote, 0.11 from seven | computed live, fixed seed | verified by construction (live) |
 | Treasury yields 4.26% (3 months) and 4.79% (2 years); 35 grid points read from two expirations, 28 from one, none extrapolated | `spy/surface.json` (S8) | verified |
 | Prices in noise units from 0.2 (1 week, $\delta = 2$) to 56 (1 year, at the money); the calls at $\delta$ = 1.5 and 2 below one noise unit at every maturity, where SPY's implied volatility is 12% to 15% | computed live from `spy/surface.json` | verified by construction (live) |
 | Variance swaps replicated on 17 of 32 expirations; seven forward-variance levels; variance-swap volatilities from 13.6 (1 week) to 21.8 points (1 year) | `spy/surface.json` (S8) | verified |
@@ -103,7 +110,7 @@ No network is loaded. The notebook runs headless in about 7 seconds.
 
 | Say | Do not say | Why |
 | --- | --- | --- |
-| "The at-the-money quote is known to 0.3 volatility points, and the wings to 1 point: the noise the tutorial assumes." | "The quote's bid–ask is 0.3 points." | The noise is the design's floor, wider than SPY's spreads on that day (study S8; course, Lecture 5, Section 5.4). |
+| "The at-the-money quote is known to 0.3 volatility points, and the quotes at $\delta = \pm 2$ to 1 point at a 20% volatility: the noise the tutorial assumes." | "The quote's bid–ask is 0.3 points." | The noise is the design's floor, wider than SPY's spreads on that day (study S8; course, Lecture 5, Section 5.4). |
 | "The 63 prices are read from SPY's quotes by smoothing and interpolation." | "The 63 prices are quoted." | Each is read from a spline through an expiration's implied volatilities; 35 of them interpolate between two expirations (study S8). |
 | "SPY's skew falls roughly like $T^{-0.32}$." | "So $H$ is about 0.18." | Under rough Bergomi with a large $\eta$ the fitted exponent is steeper than $H - \tfrac12$ (slot 5). |
 | "On an almost flat curve, the network's posterior is not an ellipse." | "Rough Bergomi's posteriors are banana-shaped." | One development case, network draws, no exact reference yet. |
@@ -115,8 +122,8 @@ No network is loaded. The notebook runs headless in about 7 seconds.
 
 ## Hard questions
 
-1. **"With a flat prior, one quote is just least squares."** Yes. Section 2's prior choice shows when the prior moves the answer; section 5 shows where it decides it. Priors are slot 6's subject.
-2. **"Black–Scholes is a straw man."** It is the one-parameter case where prior, likelihood and posterior can be drawn on one axis. Sections 4 and 5 move to models that can produce a smile.
+1. **"With a flat prior, one quote is just least squares."** Yes. Section 3's prior choice shows when the prior moves the answer; section 6 shows where it decides it. Priors are slot 6's subject.
+2. **"Black–Scholes is a straw man."** It is the one-parameter case where prior, likelihood and posterior can be drawn on one axis. Section 5 shows it failing on SPY, and section 6 moves to a model that can produce a smile.
 3. **"The right panel shows network draws. How do you know the shape is not the network's?"** Not yet from an exact reference: that is pending (J2), and the slide says so. The geometry explains it: when the short and long levels of the curve coincide, its decay barely changes a price.
 4. **"Why a fixed noise rule and not each day's bid–ask?"** Real and simulated smiles must carry the same noise, or a network trained on simulations would read real quotes as a different kind of data. On 21 October the rule is wider than SPY's half-spread at every grid point, and slot 6 varies its level.
 5. **"Why a grid, and not the chain's own quotes?"** The grid gives real and simulated smiles the same 63 inputs, so one network serves both. Set networks, discussed in slot 3, would read a chain directly and remove the grid.
@@ -134,7 +141,7 @@ No network is loaded. The notebook runs headless in about 7 seconds.
 ## To build, by the freeze on Wed 4 Nov
 
 1. Alex's review, as agreed on 29 October; a semi-final version by Sunday 1 November.
-2. Decide whether section 5's right panel waits for a conditional reference (J2).
+2. Decide whether section 6's right panel waits for a conditional reference (J2).
 3. Remove the assets and modules only the old slot 1 used (`why_bayes.py`, `bs_hierarchy.py`, `quick-checks/bs_hierarchy.json`, `quick-checks/long_end/`, `images/l10-credible-vs-confidence.png`) through the lab's tools, with the repository cleanup.
 4. Rehearse with a timer, twice, before the run-through of Mon 9 Nov.
 

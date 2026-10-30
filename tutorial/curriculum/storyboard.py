@@ -39,15 +39,14 @@ TUTORIAL = ("The tutorial: one smile, three models, 115 minutes", [
 
 SLOTS = {
     1: ("Slot 1, 15 minutes", [
-        ("Opening:\nthe desk's\ntask", 1, "F", "slide"),
-        ("1 The data:\nquotes and grid", 1.5, "F", "cached"),
-        ("1 Model, Bayes,\namortization", 2.5, "F", "live"),
-        ("1 What we\nassume", 1, "F", "slide"),
-        ("2 Bayes on one quote:\nprior × likelihood", 2.5, "F", "live"),
-        ("3 Using the\nposterior", 1, "F", "live"),
-        ("4 Checking\nthe model", 1.5, "F", "live"),
-        ("5 Posterior vs\nleast squares", 2.5, "F", "cached"),
-        ("6 Costs;\nthe close", 1.5, "F", "cached"),
+        ("1 The desk's\nquestion", 1, "F", "slide"),
+        ("2 The data:\nquotes and noise", 1.5, "F", "cached"),
+        ("3 Bayes, one parameter:\nleast squares, prior,\nposterior, more quotes", 3, "F", "live"),
+        ("4 Using the\nposterior", 1, "F", "live"),
+        ("5 Checking\nthe model", 2, "F", "live"),
+        ("6 Heston: fit,\nposterior, vs\nleast squares", 3, "F", "cached"),
+        ("7 Cost and\namortization", 2.5, "F", "cached"),
+        ("Close", 1, "F", "slide"),
     ]),
     2: ("Slot 2, 15 minutes", [
         ("Two ways\nto pay", 2, "A", "slide"),
