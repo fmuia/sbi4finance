@@ -1,99 +1,103 @@
 # The lab
 
-The code that produces every number of the tutorial: the rough-Bergomi and Heston simulators and pricers, the
-calibration banks, the networks' training, the reference posteriors, the studies and quick checks, the Oscar jobs,
-and the tests. The tutorial loads the results as files; it never imports this package (see the
-[repository README](../README.md)).
-
-Run every command from this folder:
+The lab produces and checks the tutorial's data, estimators and financial conclusions. The participant package
+loads published assets and copied functions; it never imports this package. Run the commands below from `lab/`.
 
 ```bash
 cd lab
-pixi install --locked -e core  # current BayesFlow 2.1 numerical backbone
-pixi run --locked -e core test # unit tests and tutorial parity tests
+pixi install --locked -e core
+pixi run --locked -e core test
 ```
 
-## Layout
+## Start with the supplied data and models
 
-| Path | What |
+All three complete-surface routes have **100k training banks and completed baseline fits**. Use the
+[training-data guide](plans/training-data-guide.md) for archive identities, extraction paths, SHA checks and
+executable examples of loading, training and evaluating. Downloads are in the
+[GitHub release](https://github.com/fmuia/sbi4finance/releases/tag/tutorial-backbones-2026-10-29) and
+[Drive mirror](https://drive.google.com/drive/folders/1Zez6mSu8Y_B7IIjdRYWJlDxdAl49fTLq).
+
+The pretrained-and-cases ZIP is about 38 MB; full bank archives are about 123 MB Heston, 900 MB known-curve rough
+and 934 MB joint-curve rough. Extract native banks into one common external directory without flattening paths:
+Heston's snapshot and canonical collection are in different top-level directories. Preserve the original manifests,
+part files and checksums. A full bank is unnecessary for pretrained inference. Keep large payloads outside Git.
+
+Current validation is development evidence, not automatic model or lesson acceptance. J1 is complete; joint
+conditional references J2 and product/long-end comparisons J3 remain pending. See [course/status.md](../course/status.md)
+and the [numerical plan](plans/NUMERICAL-EXPERIMENT-PLAN.md) before starting additional work.
+
+## Canonical workflow
+
+Use the current full-surface route for new backbone work. The guide above gives complete command examples;
+`--help` on each CLI describes its arguments. Always use a new output directory for a changed fit or evaluation.
+
+| Operation | Entry point |
 |---|---|
-| `src/sbi4finance/calibration/` | The calibration library: tasks (`tasks.py`), banks (`bank.py`), pricing (`pricing.py`), the network's adapter and training helpers (`inference.py`), the audit (`correction.py`), validation (`validation.py`), the classical route (`classical.py`), the neural pricer (`pricer_net.py`), products (`products.py`), real chains (`chain.py`), Black–Scholes and the design grid (`surface.py`), figures (`plots.py`) |
-| `src/sbi4finance/` | The simulators the library uses: `rough_bergomi.py` and `bergomi.py` (hybrid scheme, conditional put estimator), `hkde.py` (the Heston Fourier pricer, used with jumps off) and `heston.py` (Heston paths) |
-| `configs/tasks/` | Task and bank configurations: Heston (50,000 / 5,000 / 5,000 smiles, seed 2610), rough Bergomi (100,000 / 5,000 / 7,000, seed 2611), the rough pilot (1,600 / 200 / 400, seed 2612) and the 200-smile mini-pilot |
-| `scripts/` | `calibration_bank.py` (`config`, `job-map`, `shard`, `assemble`, `local`): banks, locally or as Oscar arrays. `build_surface.py`: a real chain read onto the design grid (study S8) |
-| `studies/` | Studies S1 to S9 and the release tools `accept.py`, `manifest.py`, `claims.py` and `copy_to_tutorial.py`; [studies/README.md](studies/README.md) gives each study's command and test rows |
-| `checks/` | Quick checks behind the "why Bayes" material and the course: not accepted studies; [checks/README.md](checks/README.md) |
-| `cluster/` | Oscar: lane discovery, bank arrays, network training, one generic study job. Submit every job from `lab/` |
-| `tests/` | Unit tests, and `test_tutorial_parity.py`, which checks that the tutorial's copies of this code are unchanged and return the same numbers |
-| `plans/` | The [numerical experiment plan](plans/NUMERICAL-EXPERIMENT-PLAN.md), its [protocol](plans/EXPERIMENT-PROTOCOL.md), the [cluster runbook](plans/CLUSTER-RUNS.md), the [sparse-chain follow-up](plans/SPARSE-QUOTE-CASE-PLAN.md) and the [MCMC policy](plans/mcmc-policy.md) |
-| `data/SOURCES.md` | Where the raw option chains came from. Raw files are not committed; derived data are |
+| Load or stream requested native bank splits and array roles | [`bank_collection.py`](src/sbi4finance/calibration/bank_collection.py): `load_bank`, `iter_snapshot`, `TRAINING_ROLES` |
+| Load and sample a matching native posterior | [`full_surface.py`](src/sbi4finance/calibration/full_surface.py): `load_checkpoint`, `sample` |
+| Train the amortized posterior | [`scripts/train_full_surface.py`](scripts/train_full_surface.py) |
+| Train the separate forward-price emulator | [`scripts/train_full_surface_pricer.py`](scripts/train_full_surface_pricer.py) |
+| Evaluate held-out calibration and recovery | [`scripts/evaluate_full_surface.py`](scripts/evaluate_full_surface.py) |
+| Initialize, plan, append and freeze a native collection | [`scripts/calibration_bank_collection.py`](scripts/calibration_bank_collection.py) |
+| Run a bounded generation campaign when needed | [`scripts/run_bank_campaign.py`](scripts/run_bank_campaign.py); [on-demand instructions](plans/generate-bank-on-demand.md) |
+| Reference MCMC, classical comparisons and financial products | [`studies/README.md`](studies/README.md), the relevant task/study and [MCMC policy](plans/mcmc-policy.md) |
+| Publish reviewed code and lesson assets | [`copy_to_tutorial.py`](studies/copy_to_tutorial.py), [`accept.py`](studies/accept.py), [`manifest.py`](studies/manifest.py), [`claims.py`](studies/claims.py) |
 
-## From a task to the stage
+Reuse successful bank rows and fixed holdouts. An unchanged task can grow by appending missing split-qualified
+IDs; a changed task, grid or prior needs a new collection. Training on a new snapshot starts a new fit. Never
+regenerate successful data to repair a local download. Retain the task, source/runtime, bank and checkpoint
+identities, observation-noise law, Monte Carlo error records and actual sampler settings.
 
-1. **Task and bank.** A configuration in `configs/tasks/` fixes the 63 contracts, the quote noise, the prior box,
-   the forward-variance curve prior and the pricing numerics. `pixi run bank local --config ... --out ...`
-   builds a small bank; the full banks run as Oscar arrays (`cluster/calibration_bank_array.sbatch`; the runbook has
-   the commands). A bank is regenerated exactly from its configuration and seed, so banks are never committed.
-2. **Network.** `studies/train_calibration.py` trains the amortized posterior with fresh quote noise in every
-   batch, on Oscar with `cluster/train_calibration.sbatch`.
-3. **Checks.** S1 (bank quality), S2 (simulation-based calibration, coverage, contraction), S3 (Heston against the
-   exact posterior), S4 (MCMC on a neural pricer), S5 (the audit of each smile with the Monte Carlo likelihood), S6
-   (least squares and Gauss–Newton), S7 (products and reserves), S8 (the real smile), S9 (costs). Each study writes
-   a new directory and refuses to overwrite one.
-4. **Into the tutorial.** `pixi run accept --run RUN --to results/calibration/heston/s2` copies an accepted run
-   into `tutorial/assets/` with `ACCEPTED.json` (`--checkpoint RUN --to checkpoints/heston` for a network, with the
-   optimizer state removed and same-seed draws checked). Then `pixi run manifest` refreshes the tutorial's copies of
-   quick-check outputs, task files and figures, and the hash table of `tutorial/MANIFEST.md`, and `pixi run claims` regenerates
-   `tutorial/CLAIMS.md`.
-5. **Verify.** `pixi run test` and `pixi run release-check` here; `pixi run test` and `pixi run test-notebooks` in
-   `tutorial/`.
-
-Rerun a quick check the same way, then `pixi run manifest`: `tests/test_tutorial_parity.py` fails while a tutorial
-copy is stale.
-
-## Rules
-
-- Library code lives here once, with tests. When a notebook needs a computation live, copy the functions unchanged
-  into the module of the same name in `tutorial/src/sbi4f_tutorial/` with `pixi run copy-to-tutorial --add
-  MODULE.NAME`. `tests/test_tutorial_parity.py` fails when a copy differs from the code here, or returns different
-  numbers; after changing a copied function, `pixi run copy-to-tutorial` copies it again.
-- Prefer PyMC for reference MCMC where it fits naturally; the [MCMC policy](plans/mcmc-policy.md) lists the
-  exceptions and what every chain must record.
-- Every result records the task fingerprint, the bank manifest's SHA-256 and, where a network was used, the
-  checkpoint's SHA-256. Banks, model payloads and full posterior draws stay outside Git, with their identities in git and versioned downloads in the [training-data guide](plans/training-data-guide.md).
-  How much of each run's raw output belongs in git is open (decision D22 in
-  [the curriculum overview](../tutorial/curriculum/00-overview.md#10-decisions)).
-- `course/scripts/` runs in this environment: `pixi run python ../course/scripts/lecture08.py` redraws a lecture's
-  figures (the last figure of `lecture09.py` also needs scikit-learn, which the environment lacks), and
-  `pixi run course-check` checks the course plan's numbers against the stored results.
+The older [`studies/train_calibration.py`](studies/train_calibration.py) supports the registered study and sparse
+routes; it is not the default training command for the new backbone. **Dated cluster launch/recovery controllers
+and campaign configurations are historical records bound to their original checkouts, paths, budgets and journals.**
+Do not repurpose `cluster/start_*20261028.py`, `start_joint100k_20261029.py` or another frozen controller by changing
+its paths. Use the canonical current scripts and a new reviewed configuration/output when fresh work is justified.
+The [cluster runbook](plans/CLUSTER-RUNS.md) records earlier commands rather than authorizing their whole programme.
 
 ## Environments
 
-| Environment | What | Install |
+| Environment | Purpose | Install |
 |---|---|---|
-| `core` | Current BayesFlow 2.1.0/JAX backbone and its native adaptive FlowMatching sampler | `pixi install --locked -e core` |
-| `core-gpu` | Current backbone with CUDA, Linux only | `pixi install --locked -e core-gpu` |
-| `core-reference` | Current backbone plus optional PyMC reference MCMC | `pixi install --locked -e core-reference` |
-| `default` | Archived BayesFlow 2.0.14 studies and their historical checkpoints | `pixi install --locked` |
-| `gpu` | The same with JAX's CUDA plugin, for Oscar (linux-64 only) | `pixi install -e gpu` |
+| `core` | Current BayesFlow 2.1.0/JAX workflow; native adaptive Tsit5 for new FlowMatching checkpoints | `pixi install --locked -e core` |
+| `core-gpu` | The same with CUDA on Linux | `pixi install --locked -e core-gpu` |
+| `core-reference` | Current workflow plus optional PyMC | `pixi install --locked -e core-reference` |
+| `default` | Archived BayesFlow 2.0.14 studies/checkpoints | `pixi install --locked` |
+| `gpu` | Archived environment with CUDA on Linux | `pixi install --locked -e gpu` |
 
-The current 100k checkpoints use `core`; archived 2.0 networks require their historical environment. The participant package uses 2.1 and gates its historical neural comparisons until a separately checked update. Use `scripts/train_full_surface.py` for current posterior fits; `studies/train_calibration.py` retains the older study route.
+Use `pixi run --locked -e core ...` for the current backbone. Historical checkpoints retain their matching
+runtime and sampling settings. A passing file/runtime test does not establish posterior correctness. Prefer PyMC
+for references where it fits naturally; the policy records specialized-method exceptions and required provenance.
 
-## Kept for now, off the critical path
+## From lab code to a lesson
 
-- **The sparse-chain code** (`calibration/thin.py`, `calibration/thin_products.py`, `studies/thin_coverage.py`,
-  `studies/evaluate_thin.py`, `studies/thin_real.py`, `checks/thin_chains/`, `configs/thin/`,
-  `cluster/thin_coverage_array.sbatch`, `tests/test_thin.py`) is deferred: sparse chains are a separate unit after
-  the release. It stays because `studies/train_calibration.py` and `studies/accept.py` still import it. Review this dependency before trimming it in a separate follow-up. The course's Lecture 16 cites its
-  EWG results.
-- **Helpers from other models.** `gbm.py`, `gbm_bank.py` (small utilities) and `svj/plots.py` (the
-  figure style) stay because the library imports a few functions from them; `svj/pmmh.py`, with the
-  `svj/filtering.py` and `svj/model.py` it imports, stays because `studies/heston_check.py` and
-  `studies/pricer_route.py` take R-hat and ESS from it. Fold those functions into `calibration/` after the
-  tutorial, and delete the rest.
+Put numerical changes here, with the relevant checks. When the tutorial needs a lab function live, copy it
+unchanged with `pixi run --locked -e core copy-to-tutorial --add MODULE.NAME`. The registry in that tool and
+[`test_tutorial_parity.py`](tests/test_tutorial_parity.py) enforce the copies; the tutorial must not import the lab.
 
-## Oscar
+Publish assets through `accept`, `manifest` and `claims`, preserving their acceptance/development roles and
+reference provenance. Never hand-edit `tutorial/MANIFEST.md`, the generated claim tables or asset payloads.
+After a change, run from this folder:
 
-`.claude/skills/cluster-setup/` walks a new user through access, lane discovery (`pixi run discover-cluster
---ssh-host oscar`), pixi on Oscar and the first job. The exact commands of every run are in
-[plans/CLUSTER-RUNS.md](plans/CLUSTER-RUNS.md).
+```bash
+pixi run --locked -e core manifest
+pixi run --locked -e core claims
+pixi run --locked -e core test
+pixi run --locked -e core release-check
+```
+
+Then run the required [tutorial checks](../tutorial/README.md#author-or-change-a-lesson). For historical studies,
+use their recorded environment. [`studies/README.md`](studies/README.md) describes S1–S9 and the publication tools;
+[`checks/README.md`](checks/README.md) describes exploratory quick checks, which are not accepted studies.
+Course figures are drawn by `course/scripts/` in the lab environment; `pixi run --locked -e core course-check`
+checks course-plan numbers against stored results.
+
+## What remains, and what can be trimmed
+
+The [numerical plan](plans/NUMERICAL-EXPERIMENT-PLAN.md#current-next-work-and-repository-trimming) gives the next
+lesson work and the trimming order. Check dependencies before removing scripts, helpers or evidence. In particular,
+sparse code still has active imports, and some `gbm*`/`svj*` helpers supply utilities, plot style or diagnostics to
+supported studies. Their original application being deferred does not make those dependencies removable.
+
+Complete 63-contract surfaces are the current task. Sparse chains, masks and arbitrary quote sets remain a
+[separate follow-up](plans/SPARSE-QUOTE-CASE-PLAN.md). This handover starts no new cluster campaign.
