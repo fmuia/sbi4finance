@@ -148,6 +148,7 @@ class FollowupTests(unittest.TestCase):
                     "--cpu-python", "/cpu", "--gpu-python", "/gpu", "--reference-python", "/reference",
                     "--source-commit", "repaired-source", "--repair-of", str(original)]
             with patch("sys.argv", argv), patch.object(launcher, "reconcile", return_value=({}, "runtime-sha")), \
+                    patch.object(launcher, "external_dependency_provenance", return_value={}), \
                     patch.object(launcher.subprocess, "run") as submit:
                 submit.side_effect = [types.SimpleNamespace(stdout=f"{200 + i}\n") for i in range(13)]
                 with contextlib.redirect_stdout(io.StringIO()):
@@ -170,6 +171,70 @@ class FollowupTests(unittest.TestCase):
             for reused in receipt["reused_jobs"]:
                 self.assertEqual(reused["source_commit"], "original-source")
                 self.assertEqual(len(reused["source_receipt"]["sha256"]), 64)
+
+    def test_completed_external_dependencies_are_omitted_and_recorded_without_new_jobs(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            old, original, _, _ = self.original_followup(root)
+            specs = launcher.job_specs(old, root / "repair", "/cpu", "/gpu", "/reference", repair_of=original)
+            reused = launcher.reused_jobs(original, old)
+            external_ids = {job["name"]: job["job_id"] for job in reused}
+            rows = f"{external_ids['pmmh-summary']}|COMPLETED|0:0|\n{external_ids['noise']}|FAILED|1:0|\n"
+            with patch.object(launcher.subprocess, "run", return_value=types.SimpleNamespace(stdout=rows)) as query:
+                provenance = launcher.external_dependency_provenance(specs, reused)
+            self.assertEqual(query.call_args.args[0][0], "sacct")
+            self.assertEqual(len(specs), 13)
+            self.assertTrue(all(item["decision"] == "omit_satisfied_terminal_dependency" for item in provenance.values()))
+            self.assertEqual(provenance["pmmh-summary"]["exit_code"], "0:0")
+            self.assertEqual(provenance["noise"]["state"], "FAILED")
+            self.assertTrue(all(item["queried_at"] and item["accounting_row"] for item in provenance.values()))
+            identities = {**external_ids, **{spec["name"]: str(300 + i) for i, spec in enumerate(specs)}}
+            conditional_spec = next(spec for spec in specs if spec["name"] == "conditional-heston")
+            argument = launcher.dependency_argument(conditional_spec, identities, provenance)
+            self.assertEqual(argument, f"--dependency=afterok:{identities['fit-heston']}")
+            report_argument = launcher.dependency_argument(specs[-1], identities, provenance)
+            self.assertNotIn(external_ids["pmmh-summary"], report_argument.split(":"))
+            self.assertNotIn(external_ids["noise"], report_argument.split(":"))
+
+    def test_live_external_dependencies_are_retained(self):
+        specs = launcher.job_specs(Path("/old"), Path("/repair"), "/cpu", "/gpu", "/reference", repair_of=Path("/original"))
+        reused = [{"name": "pmmh-summary", "job_id": "11"}, {"name": "noise", "job_id": "12"}]
+        with patch.object(launcher.subprocess, "run", return_value=types.SimpleNamespace(
+                stdout="11|RUNNING|0:0|\n12|PENDING|0:0|\n")):
+            provenance = launcher.external_dependency_provenance(specs, reused)
+        self.assertTrue(all(item["decision"] == "retain_live_scheduler_dependency" for item in provenance.values()))
+        conditional_spec = next(spec for spec in specs if spec["name"] == "conditional-heston")
+        self.assertEqual(launcher.dependency_argument(conditional_spec,
+            {"pmmh-summary": "11", "fit-heston": "22"}, provenance), "--dependency=afterok:11:22")
+
+    def test_failed_or_unknown_external_afterok_dependencies_stop_preflight(self):
+        specs = launcher.job_specs(Path("/old"), Path("/repair"), "/cpu", "/gpu", "/reference", repair_of=Path("/original"))
+        reused = [{"name": "pmmh-summary", "job_id": "11"}, {"name": "noise", "job_id": "12"}]
+        for summary, message in (("11|FAILED|1:0|\n", "external afterok"),
+                                 ("11|COMPLETED|1:0|\n", "external afterok"), ("", "no accounting state")):
+            with self.subTest(summary=summary):
+                with patch.object(launcher.subprocess, "run", return_value=types.SimpleNamespace(
+                        stdout="12|COMPLETED|0:0|\n" + summary)):
+                    with self.assertRaisesRegex(RuntimeError, message):
+                        launcher.external_dependency_provenance(specs, reused)
+
+    def test_existing_partial_receipt_is_preserved_without_duplicate_submissions(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            run = Path(temporary)
+            path = run / "submission-receipt.json"
+            original = json.dumps({"jobs": [{"job_id": str(i)} for i in range(11)],
+                                   "submission_error": "purged external dependency"})
+            path.write_text(original)
+            argv = ["submit_path_followup.py", "--old-run", "/missing-old", "--run-root", str(run),
+                    "--cpu-python", "/cpu", "--gpu-python", "/gpu", "--reference-python", "/reference",
+                    "--source-commit", "repair", "--repair-of", "/missing-original"]
+            with patch("sys.argv", argv), patch.object(launcher.subprocess, "run") as submit, \
+                    patch.object(launcher, "reconcile") as accounting:
+                with self.assertRaisesRegex(RuntimeError, "11 jobs; no jobs resubmitted"):
+                    launcher.main()
+            submit.assert_not_called()
+            accounting.assert_not_called()
+            self.assertEqual(path.read_text(), original)
 
     def test_repair_report_reads_original_reference_artifacts(self):
         with tempfile.TemporaryDirectory() as temporary:

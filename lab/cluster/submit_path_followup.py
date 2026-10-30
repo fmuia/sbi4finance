@@ -15,6 +15,10 @@ import subprocess
 
 
 REUSED_REFERENCE_JOBS = ("proposal", "pmmh-0", "pmmh-1", "pmmh-2", "pmmh-3", "noise", "pmmh-summary")
+TERMINAL_STATES = {"COMPLETED", "FAILED", "CANCELLED", "TIMEOUT", "OUT_OF_MEMORY",
+                   "NODE_FAIL", "PREEMPTED", "BOOT_FAIL", "DEADLINE", "REVOKED"}
+LIVE_STATES = {"PENDING", "RUNNING", "CONFIGURING", "COMPLETING", "RESIZING", "SUSPENDED",
+               "REQUEUED", "REQUEUE_HOLD", "REQUEUE_FED", "SIGNALING", "STAGE_OUT", "STOPPED"}
 
 
 def job_specs(old, run, cpu, gpu, reference, repair_of=None):
@@ -104,11 +108,63 @@ def reused_jobs(reference_run, old):
     return [found[name] for name in REUSED_REFERENCE_JOBS]
 
 
-def dependency_argument(spec, identifiers):
+def external_dependency_provenance(specs, reused):
+    """Resolve external readiness through accounting, before any submission.
+
+    Completed jobs can disappear from Slurm's controller while remaining in
+    sacct. Omit proven satisfied dependencies instead of asking sbatch to find
+    purged IDs. Unknown or failed afterok dependencies stop this new submission.
+    """
+    local_names = {spec["name"] for spec in specs}
+    conditions = {}
+    for spec in specs:
+        for name in spec["dependencies"]:
+            if name not in local_names:
+                conditions.setdefault(name, set()).add(spec["dependency_condition"])
+    if not conditions:
+        return {}
+    identities = {job["name"]: str(job["job_id"]) for job in reused}
+    if not set(conditions) <= set(identities):
+        raise ValueError("external dependencies lack reused scheduler identities")
+    identifiers = sorted({identities[name] for name in conditions})
+    result = subprocess.run(["sacct", "-nP", "-j", ",".join(identifiers),
+                             "--format", "JobIDRaw,State,ExitCode"],
+                            text=True, capture_output=True, check=True)
+    rows = {parts[0]: parts for line in result.stdout.splitlines()
+            if len(parts := line.split("|")) >= 3 and parts[0].isdigit()}
+    provenance = {}
+    queried_at = datetime.now(timezone.utc).isoformat()
+    for name in sorted(conditions):
+        identifier = identities[name]
+        row = rows.get(identifier)
+        if row is None:
+            raise RuntimeError(f"external dependency {name} ({identifier}) has no accounting state; no jobs submitted")
+        state = row[1].split()[0].rstrip("+") if row[1].strip() else "UNKNOWN"
+        exit_code = row[2].strip()
+        if state in TERMINAL_STATES:
+            if "afterok" in conditions[name] and (state != "COMPLETED" or exit_code != "0:0"):
+                raise RuntimeError(f"external afterok dependency {name} ({identifier}) ended {state} "
+                                   f"with ExitCode={exit_code!r}; no jobs submitted")
+            decision = "omit_satisfied_terminal_dependency"
+        elif state in LIVE_STATES:
+            decision = "retain_live_scheduler_dependency"
+        else:
+            raise RuntimeError(f"external dependency {name} ({identifier}) has unrecognized state {state!r}; no jobs submitted")
+        provenance[name] = {"name": name, "job_id": identifier, "state": state, "exit_code": exit_code,
+                            "required_conditions": sorted(conditions[name]), "decision": decision,
+                            "accounting_row": row, "queried_at": queried_at}
+    return provenance
+
+
+def dependency_argument(spec, identifiers, external=None):
     if not spec["dependencies"]:
         return None
-    return "--dependency=" + spec["dependency_condition"] + ":" + ":".join(
-        identifiers[name] for name in spec["dependencies"])
+    external = external or {}
+    remaining = [name for name in spec["dependencies"]
+                 if external.get(name, {}).get("decision") != "omit_satisfied_terminal_dependency"]
+    if not remaining:
+        return None
+    return "--dependency=" + spec["dependency_condition"] + ":" + ":".join(identifiers[name] for name in remaining)
 
 
 def reconcile(old, specs, repair_of=None):
@@ -182,6 +238,14 @@ def main():
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
     old, run, lab = Path(args.old_run).resolve(), Path(args.run_root).resolve(), Path(__file__).resolve().parents[1]
+    existing_receipt = run / "submission-receipt.json"
+    if existing_receipt.exists():
+        recorded = json.loads(existing_receipt.read_text())
+        raise RuntimeError(f"existing submission receipt at {existing_receipt} records "
+                           f"{len(recorded.get('jobs', []))} jobs; no jobs resubmitted. "
+                           "Preserve those scheduler IDs and complete the partial graph explicitly.")
+    if run.exists() and not args.dry_run:
+        raise RuntimeError(f"run directory already exists without a submission receipt: {run}; no jobs submitted")
     repair = args.repair_of.resolve() if args.repair_of is not None else None
     reference_run = run
     reuse = []
@@ -191,11 +255,15 @@ def main():
         reuse = reused_jobs(reference_run, old)
     specs = job_specs(old, run, args.cpu_python, args.gpu_python, args.reference_python,
                       repair_of=reference_run if repair is not None else None)
+    external = external_dependency_provenance(specs, reuse)
     budget, runtime_lock = reconcile(old, specs, repair_of=repair)
     receipt = {"created_at": datetime.now(timezone.utc).isoformat(), "source_commit": args.source_commit,
                "old_run": str(old), "run_root": str(run), "budget": budget, "jobs": [],
                "runtime_lock_sha256": runtime_lock, "repair_of": str(repair) if repair is not None else None,
                "reference_run": str(reference_run), "reused_jobs": reuse,
+               "external_dependency_provenance": external,
+               "completed_dependencies": [item for item in external.values()
+                                          if item["decision"] == "omit_satisfied_terminal_dependency"],
                "reserved_test_evaluated": False, "baseline_replaced": False}
     if not args.dry_run:
         run.mkdir(parents=True, exist_ok=False)
@@ -218,7 +286,7 @@ def main():
                 f"--output={run / 'logs' / (spec['name'] + '-%j.out')}"]
             if graphics:
                 command += ["--gres=gpu:1", "--qos=norm-gpu"]
-            dependency = dependency_argument(spec, ids)
+            dependency = dependency_argument(spec, ids, external)
             if dependency:
                 command.append(dependency)
             command += [str(lab / "cluster/path_job.sbatch"), *spec["command"]]
