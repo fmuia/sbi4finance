@@ -23,6 +23,9 @@ from sbi4finance.rough_bergomi import rough_driver
 SPLITS = {"train": 0, "validation": 1, "test": 2}
 MODELS = ("heston", "rough-known", "rough-joint")
 FORMAT = "physical_return_path_bank_v1"
+TEACHING_TASK_IDS = {name: f"physical_{name.replace('-', '_')}_daily_drift_paths_v2"
+                     for name in MODELS}
+TEACHING_LANDMARKS = (21, 63, 126, 252, 504, 756, 1260)
 
 
 def _json(value):
@@ -85,12 +88,42 @@ def default_task(name):
     return task
 
 
+def teaching_task(name, *, observations=1260):
+    """Harmonized daily, five-year teaching task with inferred physical drift.
+
+    These are new task identities. Legacy defaults retain their existing time
+    designs, fixed drifts, priors and random streams. Rough paths use four
+    internal steps per observed day, with daily log returns summed only after
+    simulating the entire zero-origin Volterra path.
+    """
+    observations = _integer(observations, "observations", 1)
+    task = default_task(name)
+    task.update(task_id=TEACHING_TASK_IDS[name], task_version=2,
+                n_observations=observations, dt_years=1 / 252,
+                history_length_range=[1, observations],
+                prefix_lengths=sorted(set([n for n in TEACHING_LANDMARKS if n <= observations]
+                                          + [observations])))
+    task["parameter_names"].append("drift")
+    task["prior_bounds"].append([-.10, .20])
+    task["prior_types"].append("uniform")
+    task["fixed"].pop("drift")
+    if name != "heston":
+        task["numerics"]["observation_substeps"] = 4
+    validate_task(task)
+    return task
+
+
 def validate_task(task):
     """Validate the supported discrete laws without changing their priors."""
     if not isinstance(task, dict) or task.get("model") not in MODELS:
         raise ValueError("unsupported path model")
     if task.get("measure") != "P" or task.get("observation") != "decimal_log_returns_only":
         raise ValueError("path tasks require P decimal log-return observations")
+    teaching = task.get("task_id") == TEACHING_TASK_IDS[task["model"]]
+    if teaching and task.get("task_version") != 2:
+        raise ValueError("daily drift teaching tasks require explicit task_version 2")
+    if task.get("task_version") == 2 and not teaching:
+        raise ValueError("task_version 2 requires its named daily drift teaching identity")
     n = _integer(task.get("n_observations"), "n_observations", 1)
     minimum = _integer(task.get("min_history"), "min_history", 1)
     if minimum > n or task.get("history_length_range") != [minimum, n]:
@@ -104,11 +137,15 @@ def validate_task(task):
     dt = task.get("dt_years")
     if isinstance(dt, bool) or not np.isscalar(dt) or not np.isfinite(dt) or dt <= 0:
         raise ValueError("dt_years must be finite and positive")
+    if teaching and dt != 1 / 252:
+        raise ValueError("harmonized teaching observations must use daily dt_years=1/252")
     rough = task["model"] != "heston"
     expected = (["hurst", "eta", "rho"] if rough
                 else ["kappa", "long_variance", "vol_of_vol", "rho"])
     if task["model"] == "rough-joint":
         expected += ["short_variance", "long_variance", "decay"]
+    if teaching:
+        expected += ["drift"]
     if task.get("parameter_names") != expected:
         raise ValueError("parameter names/order differs from the path task contract")
     bounds = np.asarray(task.get("prior_bounds"), dtype=np.float64)
@@ -119,13 +156,16 @@ def validate_task(task):
         raise ValueError("invalid independent prior bounds/types")
     for name, (low, high), kind in zip(expected, bounds, types, strict=True):
         if ((name == "rho" and not -1 < low < high < 1)
-                or (name != "rho" and low <= 0)
+                or (name not in ("rho", "drift") and low <= 0)
+                or (name == "drift" and kind != "uniform")
                 or (name == "hurst" and high >= 0.5)
                 or (kind == "log_uniform" and low <= 0)):
             raise ValueError(f"invalid prior support for {name}")
     fixed = task.get("fixed")
     fixed_keys = ({"drift", "initial_variance"} if not rough else
                   {"drift", "variance_level"} if task["model"] == "rough-known" else {"drift"})
+    if teaching:
+        fixed_keys.remove("drift")
     if not isinstance(fixed, dict) or set(fixed) != fixed_keys:
         raise ValueError("fixed parameter contract differs")
     if any(isinstance(x, bool) or not np.isscalar(x) or not np.isfinite(x) for x in fixed.values()):
@@ -138,10 +178,16 @@ def validate_task(task):
                 or numerics["scheme"] != "full_truncation_euler_signed"):
             raise ValueError("unsupported Heston numerical law")
         _integer(numerics["substeps"], "substeps", 1)
-    elif numerics != {"scheme": "log_euler", "driver_method": "hybrid",
-                      "variance_compensator": "discrete_hybrid_variance",
-                      "initialization": "zero_volterra_driver_at_origin"}:
-        raise ValueError("unsupported rough numerical law/compensator/initialization")
+        if teaching and numerics["substeps"] != 8:
+            raise ValueError("daily teaching Heston requires eight internal steps per day")
+    else:
+        expected_numerics = {"scheme": "log_euler", "driver_method": "hybrid",
+                             "variance_compensator": "discrete_hybrid_variance",
+                             "initialization": "zero_volterra_driver_at_origin"}
+        if teaching:
+            expected_numerics["observation_substeps"] = 4
+        if numerics != expected_numerics:
+            raise ValueError("unsupported rough numerical law/compensator/initialization")
     _json(task)
 
 
@@ -187,21 +233,23 @@ def generate(task, split, start, count, seed=30102026):
         inputs = {"brownian": noise, "jump_counts": np.zeros((count, n), dtype=np.int64),
                   "jump_normals": np.zeros((count, n))}
         p = dict(zip(task["parameter_names"], parameters.T, strict=True))
-        law = {"drift": task["fixed"]["drift"], "kappa": p["kappa"],
+        law = {"drift": p["drift"] if "drift" in p else task["fixed"]["drift"], "kappa": p["kappa"],
                "theta": p["long_variance"], "vol_of_vol": p["vol_of_vol"], "rho": p["rho"]}
         observations = heston.simulate(law, np.full(n, task["dt_years"]),
                                        task["fixed"]["initial_variance"], inputs)["log_returns"]
     else:
         observations = np.empty((count, n, 1), dtype=np.float64)
-        dt = task["dt_years"]
-        times = dt * np.arange(n + 1)
+        observation_substeps = task["numerics"].get("observation_substeps", 1)
+        internal_count = n * observation_substeps
+        dt = task["dt_years"] / observation_substeps
+        times = dt * np.arange(internal_count + 1)
         for row, identifier in enumerate(range(start, start + count)):
-            normals = _rng(digest, split, identifier, seed, 1).standard_normal((1, n, 3))
+            normals = _rng(digest, split, identifier, seed, 1).standard_normal((1, internal_count, 3))
             p = dict(zip(task["parameter_names"], parameters[row], strict=True))
             driver, discrete_variance = rough_driver(p["hurst"], dt, normals, method="hybrid")
             driver = np.r_[0.0, driver[0]]
             discrete_variance = np.r_[0.0, discrete_variance]
-            xi = (np.full(n + 1, task["fixed"]["variance_level"])
+            xi = (np.full(internal_count + 1, task["fixed"]["variance_level"])
                   if task["model"] == "rough-known" else
                   p["long_variance"] + (p["short_variance"] - p["long_variance"]) * np.exp(-p["decay"] * times))
             # Explicit synthetic P law: E_P[v_t]=xi(t), with declared hybrid
@@ -209,9 +257,12 @@ def generate(task, split, start, count, seed=30102026):
             with np.errstate(over="raise", invalid="raise"):
                 variance = xi * np.exp(p["eta"] * driver - 0.5 * p["eta"] ** 2 * discrete_variance)
                 left = variance[:-1]
-                observations[row, :, 0] = ((task["fixed"]["drift"] - 0.5 * left) * dt
+                drift = p["drift"] if "drift" in p else task["fixed"]["drift"]
+                fine_returns = ((drift - 0.5 * left) * dt
                     + np.sqrt(left * dt) * (p["rho"] * normals[0, :, 0]
                                              + np.sqrt(1 - p["rho"] ** 2) * normals[0, :, 2]))
+                observations[row, :, 0] = (fine_returns if observation_substeps == 1 else
+                                           fine_returns.reshape(n, observation_substeps).sum(axis=1))
     if not np.isfinite(observations).all() or not np.isfinite(parameters).all():
         raise FloatingPointError(f"nonfinite path in {split}:{start}-{start + count}; no redraw")
     identities = np.asarray([f"{digest[:16]}:{seed}:{split}:{i}" for i in range(start, start + count)])
@@ -244,7 +295,8 @@ def write_bank(task, out, train, validation, test, chunk=128, seed=30102026):
                         k: metadata.version(k) for k in ("numpy", "scipy", "numba")}},
                     "source_sha256": {str(p.relative_to(package)): _sha256(p) for p in
                         (Path(__file__), package / "heston.py", package / "rough_bergomi.py", package / "bergomi.py")}},
-                "timing_seconds": {}}
+                "timing_seconds": {}, "payload_bytes": 0,
+                "payload_bytes_by_split": {split: 0 for split in SPLITS}}
     started = perf_counter()
     try:
         for split, count in counts.items():
@@ -257,14 +309,21 @@ def write_bank(task, out, train, validation, test, chunk=128, seed=30102026):
                 with temporary.open("wb") as stream:
                     np.savez(stream, **arrays)
                 os.replace(temporary, path)
+                payload_bytes = path.stat().st_size
                 manifest["splits"][split].append({"path": str(path.relative_to(out)),
-                    "sha256": _sha256(path), "count": len(arrays["parameters"]), "start": start})
+                    "sha256": _sha256(path), "count": len(arrays["parameters"]), "start": start,
+                    "bytes": payload_bytes})
+                manifest["payload_bytes"] += payload_bytes
+                manifest["payload_bytes_by_split"][split] += payload_bytes
             manifest["timing_seconds"][split] = perf_counter() - split_started
         manifest["timing_seconds"]["total"] = perf_counter() - started
+        verification_started = perf_counter()
         for split in SPLITS:
             # Chunk verification avoids materializing the whole bank here.
             for record in manifest["splits"][split]:
                 _load_part(out, manifest, split, record)
+        manifest["timing_seconds"]["verification"] = perf_counter() - verification_started
+        manifest["timing_seconds"]["total_including_verification"] = perf_counter() - started
         _write_json(out / "manifest.json", manifest)
     except Exception as error:
         (out / "manifest.json").unlink(missing_ok=True)

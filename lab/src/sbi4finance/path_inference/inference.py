@@ -154,6 +154,20 @@ def training_data(split, task, *, lengths=None):
     return {**result, "parameters": parameters}
 
 
+def draw_prefix_lengths(task, count, rng, policy="uniform"):
+    """Shared independent length law for eager and deterministic streamed batches."""
+    if policy not in PREFIX_POLICIES:
+        raise ValueError(f"prefix policy must be one of {tuple(PREFIX_POLICIES)}")
+    maximum = integer(task["n_observations"], "n_observations")
+    lengths = rng.integers(1, maximum + 1, integer(count, "prefix count"))
+    if policy == "uniform_log_mixture":
+        choose_log = rng.random(count) < .5
+        log_lengths = np.minimum(maximum, np.floor(np.exp(
+            rng.uniform(0.0, np.log(maximum + 1), count))).astype(np.int64))
+        lengths = np.where(choose_log, log_lengths, lengths)
+    return lengths
+
+
 def random_prefixes(task, seed, policy="uniform"):
     """Pre-adapter prefix sampling with full integer support and stable shapes.
 
@@ -170,12 +184,7 @@ def random_prefixes(task, seed, policy="uniform"):
     def augment(batch):
         result = dict(batch)
         tokens = np.array(batch["observations"], copy=True)
-        lengths = rng.integers(1, maximum + 1, len(tokens))
-        if policy == "uniform_log_mixture":
-            choose_log = rng.random(len(tokens)) < .5
-            log_lengths = np.minimum(maximum, np.floor(np.exp(
-                rng.uniform(0.0, np.log(maximum + 1), len(tokens)))).astype(np.int64))
-            lengths = np.where(choose_log, log_lengths, lengths)
+        lengths = draw_prefix_lengths(task, len(tokens), rng, policy=policy)
         mask = np.arange(maximum)[None, :] < lengths[:, None]
         tokens = np.where(mask[..., None], tokens, 0.0)
         result["observations"] = tokens

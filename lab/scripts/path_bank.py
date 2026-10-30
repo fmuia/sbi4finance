@@ -8,7 +8,7 @@ from time import perf_counter
 import numpy as np
 
 from sbi4finance.path_inference.bank import (
-    MODELS, default_task, generate, load_manifest, load_split, task_fingerprint, write_bank,
+    MODELS, default_task, teaching_task, validate_task, generate, load_manifest, load_split, task_fingerprint, write_bank,
 )
 
 
@@ -26,6 +26,10 @@ def main():
         source = command.add_mutually_exclusive_group(required=True)
         source.add_argument("--model", choices=MODELS)
         source.add_argument("--task", type=Path, help="explicit task JSON (including a smaller smoke design)")
+        command.add_argument("--teaching", action="store_true",
+                             help="Use the new harmonized daily task with inferred drift; requires --model")
+        command.add_argument("--observations", type=int,
+                             help="Override observed history length, e.g. a small smoke design")
         command.add_argument("--out", type=Path, required=True)
         command.add_argument("--seed", type=int, default=30102026)
         command.add_argument("--chunk", type=int, default=128)
@@ -50,14 +54,26 @@ def main():
         if args.out:
             _write(args.out, report)
     else:
-        task = json.loads(args.task.read_text()) if args.task else default_task(args.model)
+        if args.teaching and args.task:
+            parser.error("--teaching requires --model; an explicit --task already defines its numerical law")
+        if args.observations is not None and args.observations < 1:
+            parser.error("observations must be positive")
+        task = (json.loads(args.task.read_text()) if args.task else
+                teaching_task(args.model, observations=args.observations or 1260) if args.teaching else
+                default_task(args.model))
+        if args.observations is not None:
+            task.update(n_observations=args.observations, history_length_range=[task["min_history"], args.observations],
+                        prefix_lengths=sorted(set([n for n in task["prefix_lengths"] if n <= args.observations]
+                                                  + [args.observations])))
+        validate_task(task)
         if args.chunk < 1 or args.seed < 0:
             parser.error("chunk must be positive and seed nonnegative")
         if args.command == "generate":
             manifest = write_bank(task, args.out, args.train, args.validation, args.test,
                                   chunk=args.chunk, seed=args.seed)
             report = {"bank": str(args.out), "task_sha256": manifest["task_sha256"],
-                      "counts": manifest["split_counts"], "timing_seconds": manifest["timing_seconds"]}
+                      "counts": manifest["split_counts"], "timing_seconds": manifest["timing_seconds"],
+                      "payload_bytes": manifest["payload_bytes"]}
         else:
             if args.count < 1 or args.out.exists():
                 parser.error("benchmark count must be positive and output must be new")

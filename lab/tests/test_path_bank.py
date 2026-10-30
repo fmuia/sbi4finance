@@ -184,6 +184,127 @@ class PathBankTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "fingerprint"):
                 bank.load_manifest(path)
 
+    def test_teaching_tasks_share_daily_design_and_infer_drift_without_changing_legacy_defaults(self):
+        before = {model: bank.default_task(model) for model in bank.MODELS}
+        for model, dimension in (("heston", 5), ("rough-known", 4), ("rough-joint", 7)):
+            task = bank.teaching_task(model)
+            bank.validate_task(task)
+            self.assertEqual(task["task_version"], 2)
+            self.assertEqual(task["task_id"], bank.TEACHING_TASK_IDS[model])
+            self.assertEqual(task["dt_years"], 1 / 252)
+            self.assertEqual(task["n_observations"], 1260)
+            self.assertEqual(task["prefix_lengths"], [21, 63, 126, 252, 504, 756, 1260])
+            self.assertEqual(task["history_length_range"], [1, 1260])
+            self.assertEqual(len(task["parameter_names"]), dimension)
+            self.assertEqual(task["parameter_names"][-1], "drift")
+            self.assertEqual(task["prior_bounds"][-1], [-.10, .20])
+            self.assertEqual(task["prior_types"][-1], "uniform")
+            self.assertNotIn("drift", task["fixed"])
+            if model == "heston":
+                self.assertEqual(task["numerics"]["substeps"], 8)
+            else:
+                self.assertEqual(task["numerics"]["observation_substeps"], 4)
+            self.assertEqual(bank.default_task(model), before[model])
+            self.assertNotEqual(bank.task_fingerprint(task), bank.task_fingerprint(before[model]))
+
+    def test_teaching_smoke_lengths_chunk_identity_and_negative_drift_labels(self):
+        for model in bank.MODELS:
+            task = bank.teaching_task(model, observations=9)
+            self.assertEqual(task["prefix_lengths"], [9])
+            self.assertEqual(task["history_length_range"], [1, 9])
+            whole = bank.generate(task, "train", 0, 32, 2026103101)
+            chunks = [bank.generate(task, "train", 0, 13, 2026103101),
+                      bank.generate(task, "train", 13, 19, 2026103101)]
+            for key in whole:
+                np.testing.assert_array_equal(whole[key], np.concatenate([part[key] for part in chunks]))
+            self.assertEqual(whole["observations"].shape, (32, 9, 1))
+            self.assertTrue(np.any(whole["parameters"][:, -1] < 0))
+            self.assertTrue(np.any(whole["parameters"][:, -1] > 0))
+            self.assertEqual(set(whole), {"observations", "parameters", "trajectory_id"})
+
+    def test_paired_drift_changes_shift_each_daily_return_by_delta_times_dt(self):
+        factory = bank._rng
+        for model in bank.MODELS:
+            task = bank.teaching_task(model, observations=11)
+
+            def generate_with_drift_quantile(quantile):
+                def controlled(digest, split, identifier, seed, domain):
+                    generator = factory(digest, split, identifier, seed, domain)
+                    if domain != 0:
+                        return generator
+
+                    class ControlledParameterPrior:
+                        def random(self, size):
+                            values = generator.random(size)
+                            values[-1] = quantile
+                            return values
+
+                    return ControlledParameterPrior()
+
+                with patch.object(bank, "_rng", side_effect=controlled):
+                    return bank.generate(task, "validation", 3, 4, 2026103103)
+
+            low, high = generate_with_drift_quantile(.2), generate_with_drift_quantile(.8)
+            np.testing.assert_array_equal(low["parameters"][:, :-1], high["parameters"][:, :-1])
+            np.testing.assert_array_equal(low["trajectory_id"], high["trajectory_id"])
+            shift = (high["parameters"][:, -1] - low["parameters"][:, -1])[:, None, None] * task["dt_years"]
+            np.testing.assert_allclose(high["observations"] - low["observations"],
+                                       np.broadcast_to(shift, high["observations"].shape), rtol=1e-11, atol=1e-15)
+
+    def test_teaching_rough_daily_returns_sum_full_origin_intraday_path(self):
+        for model in ("rough-known", "rough-joint"):
+            task = bank.teaching_task(model, observations=7)
+            generated = bank.generate(task, "validation", 17, 1, 2026103104)
+            p = dict(zip(task["parameter_names"], generated["parameters"][0]))
+            internal_count = 7 * 4
+            dt = task["dt_years"] / 4
+            normals = bank._rng(bank.task_fingerprint(task), "validation", 17, 2026103104, 1).standard_normal(
+                (1, internal_count, 3))
+            driver, compensation = rough_driver(p["hurst"], dt, normals)
+            time = dt * np.arange(internal_count)
+            curve = (np.full(internal_count, .04) if model == "rough-known" else
+                     p["long_variance"] + (p["short_variance"] - p["long_variance"]) * np.exp(-p["decay"] * time))
+            variance = curve * np.exp(p["eta"] * np.r_[0., driver[0, :-1]]
+                                      - .5 * p["eta"] ** 2 * np.r_[0., compensation[:-1]])
+            fine = ((p["drift"] - .5 * variance) * dt + np.sqrt(variance * dt)
+                    * (p["rho"] * normals[0, :, 0] + np.sqrt(1 - p["rho"] ** 2) * normals[0, :, 2]))
+            expected = fine.reshape(7, 4).sum(axis=1)
+            np.testing.assert_allclose(generated["observations"][0, :, 0], expected, rtol=1e-14, atol=1e-16)
+
+    def test_teaching_law_and_inferred_drift_contract_cannot_be_changed_silently(self):
+        task = bank.teaching_task("rough-joint", observations=7)
+        for mutate in (
+            lambda t: t.pop("task_version"),
+            lambda t: t.update(dt_years=1 / 1008),
+            lambda t: t["fixed"].update(drift=.05),
+            lambda t: t["numerics"].update(observation_substeps=1),
+            lambda t: t["prior_types"].__setitem__(-1, "log_uniform"),
+        ):
+            changed = copy.deepcopy(task)
+            mutate(changed)
+            with self.assertRaises(ValueError):
+                bank.validate_task(changed)
+        heston = bank.teaching_task("heston", observations=7)
+        heston["numerics"]["substeps"] = 1
+        with self.assertRaisesRegex(ValueError, "eight"):
+            bank.validate_task(heston)
+
+    def test_teaching_banks_record_measured_payload_and_verify(self):
+        with tempfile.TemporaryDirectory() as root:
+            out = Path(root) / "teaching-bank"
+            task = bank.teaching_task("rough-joint", observations=7)
+            written = bank.write_bank(task, out, 5, 3, 1, chunk=2, seed=2026103105)
+            actual = sum(path.stat().st_size for path in out.glob("*/*.npz"))
+            self.assertEqual(written["payload_bytes"], actual)
+            self.assertEqual(sum(written["payload_bytes_by_split"].values()), actual)
+            for split, records in written["splits"].items():
+                self.assertEqual(sum(record["bytes"] for record in records), written["payload_bytes_by_split"][split])
+                loaded = bank.load_split(out, split)
+                self.assertEqual(loaded["task"], task)
+                self.assertEqual(loaded["parameters"].shape[1], 7)
+            self.assertGreaterEqual(written["timing_seconds"]["total_including_verification"],
+                                    written["timing_seconds"]["total"])
+
 
 if __name__ == "__main__":
     unittest.main()

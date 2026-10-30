@@ -24,7 +24,8 @@ from sbi4finance.path_inference.reference import _filter
 
 def validate_reference_task(task):
     validate_task(task)
-    if task["model"] != "heston":
+    if (task["model"] != "heston" or "drift" not in task["fixed"]
+            or task["parameter_names"] != ["kappa", "long_variance", "vol_of_vol", "rho"]):
         raise ValueError("PMMH supports only the four-parameter Heston path task")
 
 

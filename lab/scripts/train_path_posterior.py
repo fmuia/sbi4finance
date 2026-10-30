@@ -69,6 +69,13 @@ def run_training(args):
     if selection not in ("validation_loss", "final"):
         raise ValueError("checkpoint selection must be validation_loss or final")
     init_checkpoint = getattr(args, "init_checkpoint", None)
+    streaming = bool(getattr(args, "streaming", False))
+    limit = getattr(args, "training_limit", None)
+    cache_shards = inference.integer(getattr(args, "cache_shards", 2), "cache shards")
+    if streaming and init_checkpoint is not None:
+        raise ValueError("streaming comparison fits require fresh weights, not a warm start")
+    if not streaming and limit is not None:
+        raise ValueError("--training-limit requires --streaming")
     initial_record = None
     if init_checkpoint is not None:
         init_checkpoint = Path(init_checkpoint)
@@ -79,21 +86,33 @@ def run_training(args):
             raise ValueError("warm start requires exactly the same task and bank manifest identity")
     validation_lengths = sorted(set(task["prefix_lengths"] +
                                     [n for n in (1, 2, 4, 8, 17, 32) if n <= task["n_observations"]]))
-    memory = memory_projection(task, manifest["split_counts"]["train"],
-                               manifest["split_counts"]["validation"],
-                               args.validation_cases, args.batch_size, lengths=validation_lengths)
+    if streaming:
+        from sbi4finance.path_inference import dataset as streamed
+        validation_lengths = sorted(set(validation_lengths + [max(1, task["n_observations"] - 7)]))
+        training_count = streamed.training_count(manifest, limit)
+        memory = streamed.streaming_memory_projection(manifest, training_count, args.batch_size,
+                                                      args.validation_cases, validation_lengths, cache_shards)
+    else:
+        memory = memory_projection(task, manifest["split_counts"]["train"],
+                                   manifest["split_counts"]["validation"],
+                                   args.validation_cases, args.batch_size, lengths=validation_lengths)
     if memory["estimated_peak_host_bytes"] > memory["host_guard_bytes"]:
         raise MemoryError("projected path-training host memory exceeds 12 GiB guard; use a streamed bank loader")
-    train_split = bank.load_split(args.bank, "train")
-    training_count = len(train_split["observations"])
-    if training_count == 0:
-        raise ValueError("training split must contain trajectories")
-    training_identity = {key + "_sha256": hashlib.sha256(train_split[key].tobytes()).hexdigest()
-                         for key in ("parameters", "trajectory_id")}
-    train = inference.training_data(train_split, task)
-    del train_split
-    gc.collect()
-    validation_split = bank.load_split(args.bank, "validation")
+    if streaming:
+        training_identity = streamed.subset_identity(args.bank, manifest, training_count)
+        train = None
+        validation_split = streamed.load_subset(args.bank, "validation", args.validation_cases, manifest=manifest)
+    else:
+        train_split = bank.load_split(args.bank, "train")
+        training_count = len(train_split["observations"])
+        if training_count == 0:
+            raise ValueError("training split must contain trajectories")
+        training_identity = {key + "_sha256": hashlib.sha256(train_split[key].tobytes()).hexdigest()
+                             for key in ("parameters", "trajectory_id")}
+        train = inference.training_data(train_split, task)
+        del train_split
+        gc.collect()
+        validation_split = bank.load_split(args.bank, "validation")
     count = min(args.validation_cases, len(validation_split["observations"]))
     if count == 0:
         raise ValueError("validation split must contain trajectories")
@@ -104,7 +123,7 @@ def run_training(args):
               for n in validation_lengths]
     validation = {key: np.concatenate([panel[key] for panel in panels]) for key in panels[0]}
     del panels
-    memory["actual_training_input_bytes"] = sum(value.nbytes for value in train.values())
+    memory["actual_training_input_bytes"] = (None if streaming else sum(value.nbytes for value in train.values()))
     memory["actual_validation_input_bytes"] = sum(value.nbytes for value in validation.values())
     gc.collect()
     network = dict(inference.DEFAULT_NETWORK if initial_record is None else initial_record["network"])
@@ -136,6 +155,10 @@ def run_training(args):
     if int(optimizer.iterations.numpy()) != 0:
         raise RuntimeError("new optimizer did not start at step zero")
     augment = inference.random_prefixes(task, args.seed + 701, policy=policy)
+    train_dataset = (streamed.ShardedPathDataset(args.bank, adapter=workflow.adapter,
+                     batch_size=args.batch_size, training_limit=training_count,
+                     seed=args.seed + 701, prefix_policy=policy, cache_shards=cache_shards)
+                     if streaming else None)
     args.out.mkdir(parents=True, exist_ok=False)
     atomic_json(args.out / "task.json", task)
     versions = {}
@@ -155,6 +178,11 @@ def run_training(args):
                                         if selection == "final" else
                                         "minimum equally weighted validation loss over declared lengths"),
               "training_trajectories": training_count, "training_identity": training_identity,
+              "offline_storage": "bounded_shard_streaming" if streaming else "eager_in_memory",
+              "bank_training_trajectories": manifest["split_counts"]["train"],
+              "training_limit": training_count if streaming else None,
+              "planned_training_views": training_count * args.epochs,
+              "planned_optimizer_steps": ((training_count + args.batch_size - 1) // args.batch_size) * args.epochs,
               "host_memory": memory, "peak_rss": peak_rss(),
               "planned_epochs": args.epochs, "batch_size": args.batch_size, "seed": args.seed,
               "effective_backend_seed": effective_seed,
@@ -175,6 +203,12 @@ def run_training(args):
               "environment_sha256": {name: inference.sha256(ROOT / name)
                                      for name in ("pyproject.toml", "pixi.lock")},
               "history": {"loss": [], "val_loss": []}}
+    if streaming:
+        report["source_sha256"][str(Path(streamed.__file__).relative_to(ROOT))] = inference.sha256(streamed.__file__)
+        report["streaming"] = {"dataset_seed": args.seed + 701, "cache_shards": cache_shards,
+            "batch_shuffle": False, "drop_last": False,
+            "fit_api": "BayesFlow2.1 BasicWorkflow._fit(custom PyDataset, strategy='offline'); fit_offline itself only accepts in-memory mappings",
+            "fresh_weights_required": True, "validation_rows": [0, count]}
     atomic_json(args.out / "training.json", report)
 
     class Checkpoint(keras.callbacks.Callback):
@@ -207,8 +241,11 @@ def run_training(args):
             report["optimizer_steps"] = int(self.model.optimizer.iterations.numpy())
             report["elapsed_seconds"] = time.monotonic() - started
             report["peak_rss"] = peak_rss()
-            report["prefix_generation_histogram"] = augment.exposure.tolist()
+            report["prefix_generation_histogram"] = (train_dataset.exposure if streaming else augment.exposure).tolist()
             report["prefix_histogram_note"] = "includes dataset build/probe calls; optimizer_steps records actual updates"
+            report["completed_training_views"] = (epoch + 1) * training_count
+            if streaming:
+                report["streaming"]["observed"] = train_dataset.statistics()
             report["status"] = "running"
             if report["elapsed_seconds"] >= args.max_seconds:
                 self.model.stop_training = True
@@ -217,9 +254,18 @@ def run_training(args):
             print(f"epoch {epoch + 1}/{args.epochs}: loss={loss:.5g} val={val_loss:.5g} "
                   f"elapsed={report['elapsed_seconds']:.1f}s", flush=True)
 
-    workflow.fit_offline(data=train, validation_data=validation, epochs=args.epochs,
-                         batch_size=args.batch_size, augmentations=augment,
-                         keep_optimizer=True, callbacks=[Checkpoint()], verbose=0)
+    if streaming:
+        # The locked BF2.1 public fit_offline API always wraps in-memory data.
+        # Its existing wrapper accepts this PyDataset and preserves identical
+        # adapter, optimizer, validation and callback handling. Disabling the
+        # framework's batch shuffle preserves the bounded shard-local traversal.
+        workflow._fit(dataset=train_dataset, epochs=args.epochs, strategy="offline",
+                      validation_data=validation, keep_optimizer=True,
+                      callbacks=[Checkpoint()], verbose=0, shuffle=False)
+    else:
+        workflow.fit_offline(data=train, validation_data=validation, epochs=args.epochs,
+                             batch_size=args.batch_size, augmentations=augment,
+                             keep_optimizer=True, callbacks=[Checkpoint()], verbose=0)
     if report["epochs_completed"] == args.epochs:
         report["status"] = "completed"
     # Reload the selected estimator twice; identical seeded draws are a software
@@ -228,12 +274,17 @@ def run_training(args):
     restored = inference.build_workflow(task, network=network)
     restored.load_estimator(args.out / "model.keras")
     observed = validation_split["observations"][:2]
-    arbitrary = min(17, task["n_observations"])
-    a = inference.sample(workflow, task, observed[:, :arbitrary], 8, seed=args.seed + 19)
-    b = inference.sample(restored, task, observed[:, :arbitrary], 8, seed=args.seed + 19)
-    if not np.array_equal(a, b):
-        raise RuntimeError("same-device same-seed checkpoint reload changed posterior draws")
+    reload_lengths = (sorted(set(task["prefix_lengths"] + [1, min(17, task["n_observations"])]))
+                      if streaming else [min(17, task["n_observations"])])
+    for length in reload_lengths:
+        a = inference.sample(workflow, task, observed[:, :length], 8, seed=args.seed + 19)
+        b = inference.sample(restored, task, observed[:, :length], 8, seed=args.seed + 19)
+        if not np.array_equal(a, b):
+            raise RuntimeError("same-device same-seed checkpoint reload changed posterior draws")
     report["same_seed_reload_exact"] = True
+    report["reload_checked_lengths"] = reload_lengths
+    if streaming:
+        report["streaming"]["observed"] = train_dataset.statistics()
     report["elapsed_seconds"] = time.monotonic() - started
     report["peak_rss"] = peak_rss()
     atomic_json(args.out / "training.json", report)
@@ -254,6 +305,10 @@ def main():
     parser.add_argument("--prefix-policy", choices=tuple(inference.PREFIX_POLICIES), default="uniform")
     parser.add_argument("--learning-rate", type=float, default=5e-4)
     parser.add_argument("--checkpoint-selection", choices=("validation_loss", "final"), default="validation_loss")
+    parser.add_argument("--streaming", action="store_true", help="Read bounded native shards; require fresh weights")
+    parser.add_argument("--training-limit", type=int,
+                        help="First N train trajectories from the same large bank")
+    parser.add_argument("--cache-shards", type=int, default=2)
     for name in ("hidden-dim", "summary-dim", "depth", "bins", "width"):
         parser.add_argument("--" + name, type=int)
     args = parser.parse_args()

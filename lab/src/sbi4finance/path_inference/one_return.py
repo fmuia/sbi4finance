@@ -36,6 +36,8 @@ class ShortVariancePosterior:
         bank.validate_task(task)
         if task["model"] != "rough-joint":
             raise ValueError("one-return scalar reference requires the joint rough path task")
+        if "drift" in task["parameter_names"] or task["numerics"].get("observation_substeps", 1) != 1:
+            raise ValueError("legacy scalar reference requires fixed drift and a single internal step per observation")
         self.returns = np.asarray(returns, dtype=np.float64)
         if self.returns.ndim != 1 or not len(self.returns) or not np.isfinite(self.returns).all():
             raise ValueError("one finite first return per case required")
