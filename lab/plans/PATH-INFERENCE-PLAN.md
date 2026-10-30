@@ -1,6 +1,6 @@
 # Parameter inference from Heston and rough Bergomi paths
 
-**30 October 2026. Status: overnight campaign running on Oscar. All three 100k banks and production GPU readiness are complete; known/joint rough fits are running and Heston is queued behind the two-GPU user cap.**
+**30 October 2026 afternoon status:** known-curve and joint rough fits and validation are complete; Heston is running after release of a cluster environment hold. Reference convergence remains unresolved.
 
 Build a counterpart to option-surface calibration: infer fixed stochastic-volatility parameters from discrete observed returns, and display how their posterior changes as the observed history grows. Keep simulated volatility hidden from the estimator. Start with synthetic physical-measure models; market-data inference and time-varying parameters are later tasks.
 
@@ -149,3 +149,18 @@ The first immutable source was `8a3f896`. CPU job 8109953 exposed a launcher wor
 The corrected v2 graph uses source `ea4d400` and jobs 8110042 through 8110058. Oscar CPU readiness passed all 30 tests; the full-production-shape GPU check and 100k banks then progressed. An additional eight-chain Heston PMMH feasibility screen uses the same eight-substep law, two validation prefixes (252 and 1,260 days) and four chains each, with 512 and 2,048 particles respectively. The supplemental launcher reconciles actual completed spending, outstanding reservations and 240 seconds of cleanup per job before admission to the same 24 CPU-h / 3 GPU-h ceiling. Rejected PMMH updates retain the accepted particle likelihood estimate and seed. The output remains a feasibility screen until cross-chain mixing and likelihood precision pass.
 
 The active main graph is jobs **8110042–8110058**. Supplemental PMMH software/chain jobs are **8110221–8110229**. At admission of those nine CPU jobs, the reconciled conservative exposure, including completed launch failures, remaining wall reservations and cleanup allowances, was **19.3003 CPU-hours / 2.8158 GPU-hours**, below the 24 / 3 ceiling. Receipts, source archives and GPU readiness evidence are copied to the workspace external artifact directory `local-artifacts/path-inference-20261030/`. Banks have 100,000 training, 2,000 validation and 2,000 reserved test trajectories each. Validation and per-chain reference outputs are separate development evidence; the reserved test posteriors remain unevaluated.
+
+
+## Afternoon result audit on 30 October
+
+All banks retain 100k training / 2k validation / 2k reserved test paths. Rough-known completed 52 epochs (selected 47), rough-joint 54 (selected 53); both stopped deliberately at the 45-minute training budget and passed exact native reload checks. Slurm peak host RSS stayed below 4 GB for each rough fit.
+
+On the 256-history validation panel, one-year posterior-mean MSE relative to the prior-mean predictor is H/eta/rho = 0.349/0.137/0.203 for known curve and 0.358/0.141/0.271 for joint curve. Joint short/long/decay ratios are 0.265/0.840/0.939: long level and especially decay remain much less informative. One-year nominal 90% marginal coverage ranges from 88.7% to 93.8% across the two tasks. These are development results on reused checkpoint-selection data, not conditional-reference acceptance.
+
+The joint one-return control needs correction: nominal 90% coverage is 82.8% for short variance and 85.5% for eta. Eta should retain its independent prior at this horizon. Arbitrary-length implementation and mask tests passed, but calibration across all history lengths is not established.
+
+Heston job 8110048 was held overnight by Slurm after a user-environment retrieval failure, before any estimator was written. It was released during this audit and verified running on gpu3103 with initial epochs saved. Its original evaluation 8110049 and report 8110058 dependencies remain intact.
+
+The one-year PMMH screen completed four chains with 1,000 retained draws but fails reference gates: rank R-hat 1.031–1.104, bulk ESS 29–135 and 5%/95% tail ESS 30–205. The five-year jobs all timed out at 20 minutes; each retained checkpoint has 500 tuning + 300 retained iterations. Their rank R-hat 1.093–1.203 and bulk ESS 14–45 also fail. Preserve the partial traces. Improve proposal preconditioning/mixing and measure long-history likelihood noise before allocating more reference sampling; completing the original short chain alone would not certify convergence.
+
+The external status bundle contains verified summaries, saved diagnostic draws, `status-summary.json`, `metrics-summary.json` and `status-progress.png`. The reserved test posteriors remain unevaluated. The immediate work is to finish Heston, address joint short-prefix calibration with its exact one-return control, and improve the independent references.
