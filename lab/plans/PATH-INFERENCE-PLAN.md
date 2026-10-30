@@ -1,6 +1,6 @@
 # Parameter inference from Heston and rough Bergomi paths
 
-**30 October 2026 evening status:** all three baseline fits and development evaluations are complete. A fixed short-history refinement and reference-repair tranche is ready for tested, budget-checked submission.
+**30 October 2026 completed follow-up status:** all baseline work and all thirteen corrected follow-up jobs completed successfully; the Oscar queue is empty. The short-history refinements improved their targeted diagnostics, but both failed the full prespecified development screen, so the original baselines remain retained. The independent Heston reference still misses convergence gates. Reserved tests remain closed; no further runs were submitted during this audit.
 
 Build a counterpart to option-surface calibration: infer fixed stochastic-volatility parameters from discrete observed returns, and display how their posterior changes as the observed history grows. Keep simulated volatility hidden from the estimator. Start with synthetic physical-measure models; market-data inference and time-varying parameters are later tasks.
 
@@ -224,4 +224,30 @@ The conditional comparison must therefore remain inconclusive. For the next sepa
 The completed reference/noise evidence, raw chains and original startup logs have been copied locally and checksum-verified as `local-artifacts/path-inference-20261030/followup-20261030/reference-audit.tar.gz` (SHA-256 `3177750a5f32b32123da77376471f7c14a2fdea4fe375669ab35b9d38ed14871`). The corrected source, test log and receipts live under its `repair-v2/` sibling. The reserved 2,000-history test splits remain closed; baselines remain frozen.
 
 
-Both corrected fits have now finished their intended soft stops. Heston completed **3 extra epochs / 2,346 fresh-optimizer steps** in 211.23 trainer seconds; joint rough completed **4 extra epochs / 3,128 steps** in 214.87 trainer seconds. Each final endpoint equals its selected-model hash and passed exact same-seed reload. Heston model SHA-256 is `b4378d8ed55b96bffa8babd7a8fbf98d5b8d525d81bd0495144550ce273131ba`; joint rough is `c46597c03b4569cdf4a0e5eb26c9cff859b63b4dbc089cf91eb589b1f18b5793`. Paired candidate evaluations, the candidate joint one-return reference check, and guarded conditional reporting have started automatically. These successful execution checks do not yet establish improved posterior calibration; the frozen comparison gates decide that separately.
+Both corrected fits have now finished their intended soft stops. Heston completed **3 extra epochs / 2,346 fresh-optimizer steps** in 211.23 trainer seconds; joint rough completed **4 extra epochs / 3,128 steps** in 214.87 trainer seconds. Each final endpoint equals its selected-model hash and passed exact same-seed reload. Heston model SHA-256 is `b4378d8ed55b96bffa8babd7a8fbf98d5b8d525d81bd0495144550ce273131ba`; joint rough is `c46597c03b4569cdf4a0e5eb26c9cff859b63b4dbc089cf91eb589b1f18b5793`. Paired candidate evaluations, the candidate joint one-return reference check, guarded conditional reporting and the final report have all completed. Execution and checkpoint checks passed; the statistical decisions are recorded below.
+
+
+## Completed follow-up evaluation
+
+All thirteen corrected jobs ended `COMPLETED` with exit code `0:0`. On the prespecified primary cohort of validation rows 256–511 (256 independent histories, with repeated prefixes), both candidates have `retain_original_baseline_needs_further_work` status. Their finite-output, prior-support and native-reload checks passed. No model was promoted and the 2,000-history reserved test split for each task remains closed. Known-curve rough retains its original baseline as the control.
+
+| Primary validation diagnostic | Baseline | Candidate | Decision |
+| --- | ---: | ---: | --- |
+| Heston mean absolute 90% coverage error across lengths 1, 2, 4, 8, 17, 32 and all four targets | 2.29 percentage points | 1.71 percentage points | Short-history screen passes; length-one coverage 90.2–92.6% |
+| Joint rough one-return eta posterior-mean RMSE in exact-reference SD units | 0.182 | 0.064 | Passes 0.10 mean-error limit |
+| Joint rough one-return short-variance posterior-mean RMSE in exact-reference SD units | 0.388 | 0.242 | Still fails 0.10 mean-error limit |
+| Joint rough one-return short-variance mean absolute exact probability-mass error in neural 90% intervals | 6.95 percentage points | 2.69 percentage points | Now passes 4-percentage-point limit |
+
+The other five joint one-return mean-error checks and all six interval-mass checks pass. These are marginal controls, not joint-copula certification or evidence of accuracy at every supported history length.
+
+Heston still fails to establish the prespecified longer-history nondegradation bound for vol-of-vol at 252 and 504 days. The upper pointwise bootstrap limits were 0.016062 versus a 0.015932 margin and 0.011050 versus a 0.010000 margin, respectively. At 1,260 days, kappa coverage moves from 90.23% to 92.58%; the increase in absolute nominal-coverage error exceeds the allowed 2 percentage points. Heston's short-history pass therefore does not justify replacement of its baseline.
+
+Joint rough fails longer-history nondegradation bounds for short variance at 252/504/1,008 observations, rho at 504/1,008, and H at 1,008. All its longer-history coverage guards pass. The point MSE changes are smaller than their prespecified margins; the upper uncertainty bounds prevent establishing nondegradation. These failed development screens must not be described as proof of material degradation. Several checks reuse the same histories across lengths, and the bootstrap intervals are pointwise rather than a simultaneous accuracy certificate.
+
+The one-year PMMH convergence result remains unchanged: kappa rank R-hat 1.0114 exceeds 1.01 and rho bulk/tail ESS 364/224 falls below 400. The guarded conditional Heston report is explicitly `inconclusive_reference`, and neither neural model was sampled in that comparison. No threshold was relaxed.
+
+At the final 30 October 22:00 UTC reconciliation, cumulative usage plus the declared 240-second cleanup allowance per allocated job was **19.11028 CPU-hours / 2.95417 GPU-hours**, below the original 24 / 3 ceiling, including startup failures. The two successful refinement jobs used 252/254 allocated GPU seconds. Their peak host RSS was about **4.45 / 4.00 GiB** (Heston / joint rough); this is host-memory accounting, not device-memory peak. There are no queued or running jobs in this campaign.
+
+Next work should be separately specified and costed: a longer fixed training comparison that balances short-prefix calibration against longer-history performance, with particular attention to the exact one-return short-variance bias; and additional one-year reference sampling after inspecting kappa/rho traces and likelihood-noise diagnostics. The current bank size, physical simulator law and all-length architecture can be retained. This tranche does not show that bank size or model capacity is the limiting factor. Do not open reserved tests, publish the candidates, expand the reference case panel or start another five-year chain until the respective development/reference gates are met.
+
+The final report is archived locally as `local-artifacts/path-inference-20261030/followup-20261030/repair-v2/followup-summary.json` and matches Oscar SHA-256 `0136db009d0714764d4919662cd59592071042e0ebd044d17a446f49099cf794`. Its embedded comparisons correspond to Heston comparison SHA-256 `d406e4ea4f2ca9836893b5cc05eff7312ffa3e8f4ff90e2d47e622d7c3541206` and joint-rough comparison SHA-256 `997dfc05cbc67b5a184b8078c37e2735911708eecbed524d3712306e65b2cc5a`.
