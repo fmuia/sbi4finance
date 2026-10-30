@@ -66,7 +66,7 @@ def default_task(name):
         task.update(parameter_names=["kappa", "long_variance", "vol_of_vol", "rho"],
                     prior_bounds=[[0.25, 5.0], [0.01, 0.09], [0.05, 0.6], [-0.95, -0.05]],
                     prior_types=["log_uniform", "log_uniform", "uniform", "uniform"],
-                    numerics={"scheme": "full_truncation_euler_signed", "substeps": 1})
+                    numerics={"scheme": "full_truncation_euler_signed", "substeps": 8})
         task["fixed"]["initial_variance"] = 0.04
     else:
         task.update(parameter_names=["hurst", "eta", "rho"],

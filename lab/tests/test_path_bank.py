@@ -31,6 +31,7 @@ class PathBankTests(unittest.TestCase):
             self.assertEqual(len(task["parameter_names"]), dimension)
         self.assertEqual(bank.default_task("rough-joint")["numerics"]["variance_compensator"],
                          "discrete_hybrid_variance")
+        self.assertEqual(bank.default_task("heston")["numerics"]["substeps"], 8)
 
     def test_chunks_reproduce_exact_trajectories_for_every_model(self):
         for model in bank.MODELS:
@@ -87,6 +88,9 @@ class PathBankTests(unittest.TestCase):
 
     def test_heston_first_return_has_physical_drift_and_leverage(self):
         task = small_task("heston")
+        # An exact single-step Gaussian calculation checks the P law and
+        # leverage routing; the primary bank uses eight internal steps.
+        task["numerics"]["substeps"] = 1
         task["fixed"]["drift"] = 0.17
         arrays = bank.generate(task, "validation", 9, 1, 123)
         p = dict(zip(task["parameter_names"], arrays["parameters"][0]))

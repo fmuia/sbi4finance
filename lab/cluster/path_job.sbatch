@@ -28,7 +28,9 @@ case "$PATH_DEVICE" in
     *) echo "Device must be cpu or gpu" >&2; exit 2 ;;
 esac
 : "${SLURM_JOB_ID:?Run inside a Slurm allocation}"
-cd "${SLURM_SUBMIT_DIR:?Submit from the immutable lab checkout}"
+cd "${SBI4FINANCE_SOURCE_LAB:-${SLURM_SUBMIT_DIR:?Submit from the immutable lab checkout}}"
+test -d src/sbi4finance/path_inference
+test -d tests
 export PYTHONPATH="$PWD/src" KERAS_BACKEND=jax PYTHONDONTWRITEBYTECODE=1
 export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1
 export XLA_PYTHON_CLIENT_PREALLOCATE=false

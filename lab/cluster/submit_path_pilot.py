@@ -60,6 +60,10 @@ def main():
     parser.add_argument("--account", required=True)
     parser.add_argument("--cpu-partition", required=True)
     parser.add_argument("--gpu-partition", required=True)
+    parser.add_argument("--gpu-account", help="Defaults to --account; use the discovered standard GPU lane if the condo quota is occupied")
+    parser.add_argument("--gpu-qos")
+    parser.add_argument("--smoke-gpu-partition")
+    parser.add_argument("--smoke-gpu-qos")
     parser.add_argument("--runtime-lock-sha256", required=True)
     parser.add_argument("--source-commit", required=True)
     parser.add_argument("--dry-run", action="store_true")
@@ -84,14 +88,22 @@ def main():
     try:
         for spec in specs:
             gpu = bool(spec["gpus"])
+            partition = args.gpu_partition if gpu else args.cpu_partition
+            qos = args.gpu_qos if gpu else None
+            if spec["name"] == "gpu-smoke":
+                partition = args.smoke_gpu_partition or partition
+                qos = args.smoke_gpu_qos or qos
+            account = (args.gpu_account or args.account) if gpu else args.account
             command = ["sbatch", "--parsable", "--kill-on-invalid-dep=yes", f"--job-name=path-{spec['name']}",
-                       f"--export=ALL,SBI4FINANCE_RUNTIME_LOCK_SHA256={args.runtime_lock_sha256}",
-                       f"--account={args.account}", f"--partition={args.gpu_partition if gpu else args.cpu_partition}",
+                       f"--export=ALL,SBI4FINANCE_RUNTIME_LOCK_SHA256={args.runtime_lock_sha256},SBI4FINANCE_SOURCE_LAB={lab}",
+                       f"--account={account}", f"--partition={partition}",
                        f"--cpus-per-task={spec['cpus']}", f"--mem={'24G' if gpu else '8G'}",
                        f"--time=00:{spec['minutes']:02d}:00" if spec["minutes"] < 60 else "--time=01:00:00",
                        f"--chdir={lab}", f"--output={run / 'logs' / (spec['name'] + '-%j.out')}"]
             if gpu:
                 command.append("--gres=gpu:1")
+            if qos:
+                command.append(f"--qos={qos}")
             if spec["dependencies"]:
                 condition = spec.get("dependency_condition", "afterok")
                 command.append(f"--dependency={condition}:" + ":".join(identifiers[d] for d in spec["dependencies"]))
@@ -100,7 +112,7 @@ def main():
             if args.dry_run:
                 identifier = f"DRY_{spec['name']}"
             else:
-                result = subprocess.run(command, text=True, capture_output=True, check=True)
+                result = subprocess.run(command, text=True, capture_output=True, check=True, cwd=lab)
                 identifier = result.stdout.strip().split(";")[0]
                 if not identifier.isdigit():
                     raise RuntimeError(f"Unexpected sbatch reply: {result.stdout!r}")
