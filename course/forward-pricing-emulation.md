@@ -41,16 +41,16 @@ The source and recorded [Heston pricer comparison](../tutorial/assets/results/ca
 
 Suppose the observation model is
 
-$$
+```math
 y = P(\theta,\xi) + \epsilon,\qquad \epsilon\sim\mathcal N(0,\Sigma).
-$$
+```
 
 The original likelihood evaluates the numerical prices `P`. The emulator likelihood substitutes its prediction:
 
-$$
+```math
 \widetilde p(y\mid\theta,\xi)
 =\mathcal N\big(y;\widehat P_\psi(\theta,\xi),\Sigma\big).
-$$
+```
 
 MCMC combines this likelihood with the chosen prior. It samples an approximation to the original model's posterior. A converged chain removes neither emulator error nor the underlying model's numerical error.
 
@@ -62,10 +62,10 @@ This is a learned mean function with an explicit observation-noise model. It nee
 
 The forward map does not consume observed quotes. Given proposed parameters and curve values, it can predict all 63 prices even when only a few market quotes are observed. The likelihood should use only the observed subset, denoted `O`:
 
-$$
+```math
 \widetilde p(y_O\mid\theta,\xi,O)
 =\mathcal N\big(y_O;\widehat P_{\psi,O}(\theta,\xi),\Sigma_{OO}\big).
-$$
+```
 
 For independent noise, the log likelihood is a sum over observed contracts. Missing values supply no residual and need no invented price.
 
@@ -121,10 +121,10 @@ Use dense surfaces, random subsets, structured omissions of maturities/wings and
 
 A small average pricing error does not give a general bound on posterior error. With independent Gaussian noise, define `r = (y - P) / sigma` and emulator error `e = (P_hat - P) / sigma`. Then
 
-$$
+```math
 \log\widetilde L-\log L
 =\sum_c\left(r_c e_c-\frac12 e_c^2\right).
-$$
+```
 
 Errors can accumulate coherently across quotes and alter weakly identified directions. Validate held-out errors in noise units, errors in the posterior-relevant region, relevant price bounds/no-arbitrage relations, and posterior/product summaries against independent numerical calculations. A generic regression network does not enforce those price relations automatically.
 

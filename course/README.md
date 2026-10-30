@@ -109,6 +109,11 @@ For a worked explanation of the neural-pricer alternative, see [forward pricing 
 - **Forward units.** From Lecture 2 on, option prices are divided by the discount factor and by the forward, so
   that the forward is 1 and a price is a fraction of it.
 - **Notation.** Each lecture defines a symbol when it first appears; [the table below](#symbols) collects them.
+- **Math.** Inline math is written $`\sigma\sqrt{T}`$ and display math in a fenced `math` block, the two forms that
+  GitHub and VS Code's preview both render. GitHub mangles bare `$...$` and `$$...$$`: it drops the backslash of
+  `\,`, `\;`, `\{`, `\%` and `\\`, and leaves a formula unrendered when its `_` or `*` read as emphasis.
+  `python course/scripts/check_math.py` checks the lectures, and `--fix` converts bare dollars. In Cursor, read the
+  lectures with "Markdown: Open Preview to the Side" (Cmd+Shift+V): its native Markdown preview does not render math yet.
 - **Data.** The daily returns of VOO from 3 January 2020 to 4 September 2026
   (`course/scripts/data/SPMO_VOO_2020-01-01_2026-09-04.csv`); SPY's surface of 21 October 2026 on the design grid
   (`tutorial/assets/results/calibration/spy/surface.json`); four thin chains of 22 and 23 October 2026, derived data
