@@ -39,8 +39,10 @@ def evaluate(args):
         inference.integer(getattr(args, key), key)
     task, workflow, training = inference.load_checkpoint(args.checkpoint)
     manifest = bank.load_manifest(args.bank)
-    if inference.fingerprint(manifest["task"]) != inference.fingerprint(task):
-        raise ValueError("evaluation bank task differs from checkpoint task")
+    bank_hash = inference.sha256(args.bank / "manifest.json")
+    if (inference.fingerprint(manifest["task"]) != inference.fingerprint(task)
+            or training.get("bank_manifest_sha256") != bank_hash):
+        raise ValueError("evaluation bank task or bank manifest differs from checkpoint identity")
     split = bank.load_split(args.bank, "validation")
     offset = inference.integer(getattr(args, "offset", 0), "offset", minimum=0)
     stop = min(offset + args.cases, len(split["observations"]))
@@ -53,10 +55,12 @@ def evaluate(args):
     prior = inference.prior_samples(task, 100_000, args.seed + 11)
     report = {"format": "path_development_evaluation_v1", "task_sha256": inference.fingerprint(task),
               "checkpoint_sha256": training["model_sha256"], "targets": task["parameter_names"],
+              "bank_manifest_sha256": bank_hash,
               "cases": count, "draws": args.draws, "reserved_test_evaluated": False,
               "supported_lengths": [1, task["n_observations"]], "lengths": {},
               "references": "not compared in this command", "scientific_acceptance": False,
               "split": "validation", "offset": offset, "seed": args.seed,
+              "backend_seed_mapping": inference.BACKEND_SEED_MAPPING,
               "case_identities_sha256": inference.fingerprint(split["trajectory_id"].tolist()),
               "prior_checkpoint_development_pool_size": training.get("validation_cases_per_length"),
               "cohort_note": "offsets identify validation rows; later rows remain validation, not reserved tests"}

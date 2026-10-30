@@ -39,6 +39,7 @@ def run(args):
     report.update(format="path_exact_one_return_check_v1", task_sha256=inference.fingerprint(task),
                   checkpoint_sha256=training["model_sha256"], split="validation",
                   reserved_test_evaluated=False, seed=args.seed, offset=offset,
+                  backend_seed_mapping=inference.BACKEND_SEED_MAPPING,
                   prior_checkpoint_development_pool_size=training.get("validation_cases_per_length"),
                   case_identities_sha256=inference.fingerprint(split["trajectory_id"].tolist()),
                   elapsed_seconds=time.monotonic() - started)

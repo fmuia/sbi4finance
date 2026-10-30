@@ -120,7 +120,8 @@ def run_training(args):
         network["widths"] = [inference.integer(args.width, "width")] * 2
     import bayesflow  # noqa: F401
     import keras
-    keras.utils.set_random_seed(args.seed)
+    effective_seed = inference.backend_seed(args.seed)
+    keras.utils.set_random_seed(effective_seed)
     optimizer = keras.optimizers.Adam(learning_rate=learning_rate, clipnorm=1.5)
     if init_checkpoint is None:
         workflow = inference.build_workflow(task, network=network, optimizer=optimizer)
@@ -156,6 +157,8 @@ def run_training(args):
               "training_trajectories": training_count, "training_identity": training_identity,
               "host_memory": memory, "peak_rss": peak_rss(),
               "planned_epochs": args.epochs, "batch_size": args.batch_size, "seed": args.seed,
+              "effective_backend_seed": effective_seed,
+              "backend_seed_mapping": inference.BACKEND_SEED_MAPPING,
               "max_seconds": args.max_seconds, "epochs_completed": 0,
               "status": "initializing", "reserved_test_evaluated": False,
               "scientific_validation": False, "resume_supported": False,

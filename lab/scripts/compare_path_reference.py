@@ -55,6 +55,7 @@ def run(args):
     # remains deferred until actual chain/bank identities have been verified.
     from sbi4finance.path_inference import bank, inference
     from summarize_path_pmmh import _load_chains
+    report["backend_seed_mapping"] = inference.BACKEND_SEED_MAPPING
 
     if (current.get("input_valid") is not True or gates.get("evaluated") is not True
             or gates.get("rank_rhat_max") != 1.01 or gates.get("bulk_ess_min") != 400

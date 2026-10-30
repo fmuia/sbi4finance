@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 import tempfile
 import unittest
+from unittest import mock
 from types import SimpleNamespace
 
 import numpy as np
@@ -98,6 +99,15 @@ class InputContractTests(unittest.TestCase):
         self.assertGreater(min(result["mean_posterior_to_prior_variance"]), 1)
         self.assertEqual(result["cases"], 20)
 
+    def test_backend_seed_folds_large_integers_and_preserves_uint32_domain(self):
+        for seed in (0, 1, 83, 2 ** 32 - 1):
+            self.assertEqual(inference.backend_seed(seed), seed)
+        for seed in (2 ** 32, 20261030201, 2 ** 64 + 91, np.uint64(2 ** 63 + 17)):
+            self.assertEqual(inference.backend_seed(seed), int(seed) % 2 ** 32)
+        for seed in (-1, True, False, 1.5, "83", None):
+            with self.subTest(seed=seed), self.assertRaises(ValueError):
+                inference.backend_seed(seed)
+
     def test_mixture_policy_adds_short_history_exposure_without_losing_support(self):
         data = inference.training_data(self.split, self.task)
         data = {k: np.tile(v, (250,) + (1,) * (v.ndim - 1)) for k, v in data.items()}
@@ -138,12 +148,15 @@ class ActualWorkflowTests(unittest.TestCase):
             (work / "parent/training.json").write_text(json.dumps(legacy))
             inference.load_checkpoint(work / "parent")
             settings.update(init_checkpoint=work / "parent", prefix_policy="uniform_log_mixture", learning_rate=1e-4,
-                            epochs=2, checkpoint_selection="final")
+                            epochs=2, checkpoint_selection="final", seed=20261030201)
             child = trainer.run_training(SimpleNamespace(**settings, out=work / "child"))
             self.assertEqual(child["optimizer_steps"], 4)
             self.assertEqual(child["initialization"]["initial_optimizer_steps"], 0)
             self.assertEqual(child["initialization"]["parent_model_sha256"], parent["model_sha256"])
             self.assertEqual(child["prefix_policy"], "uniform_log_mixture")
+            self.assertEqual(child["effective_backend_seed"], 20261030201 % 2 ** 32)
+            self.assertEqual(child["seed"], 20261030201)
+            self.assertEqual(child["backend_seed_mapping"], inference.BACKEND_SEED_MAPPING)
             self.assertEqual(child["checkpoint_selection"], "final")
             self.assertEqual(child["selected_epoch"], child["epochs_completed"])
             self.assertEqual(child["model_sha256"], child["final_sha256"])
@@ -160,11 +173,19 @@ class ActualWorkflowTests(unittest.TestCase):
                 checked = module.evaluate(arguments) if script == "evaluate_path_posterior" else module.run(arguments)
                 self.assertEqual(checked["offset"], 1)
                 if script == "evaluate_path_posterior":
+                    evaluator = module
                     self.assertEqual(set(checked["lengths"]), {"1", "2", "17"})
                     with np.load(arguments.out / "case-summary.npz") as summary:
                         self.assertEqual(summary["truth"].shape, (3, 6))
                         self.assertEqual(summary["posterior_mean_17"].shape, (3, 6))
             bank.write_bank(task, work / "other-bank", train=8, validation=4, test=2, chunk=4, seed=84)
+            bad_evaluation = SimpleNamespace(bank=work / "other-bank", checkpoint=work / "child",
+                                             out=work / "bad-evaluation", split="validation", cases=3,
+                                             draws=8, batch_size=2, seed=20261030201, offset=0, lengths=[1])
+            with mock.patch.object(evaluator.bank, "load_split") as load:
+                with self.assertRaisesRegex(ValueError, "bank manifest"):
+                    evaluator.evaluate(bad_evaluation)
+                load.assert_not_called()
             settings["bank"] = work / "other-bank"
             with self.assertRaisesRegex(ValueError, "same task and bank"):
                 trainer.run_training(SimpleNamespace(**settings, out=work / "bad-child"))
@@ -201,6 +222,15 @@ class ActualWorkflowTests(unittest.TestCase):
         changed_conditions = {**conditions, "observations": changed}
         changed_draws = workflow.sample(num_samples=4, conditions=changed_conditions, sample_shape=(), seed=113)
         np.testing.assert_array_equal(original_draws["parameters"], changed_draws["parameters"])
+        large_seed = 20261030201
+        first = inference.sample(workflow, task, split["observations"][:2], 8,
+                                  lengths=lengths, seed=large_seed)
+        repeated = inference.sample(workflow, task, split["observations"][:2], 8,
+                                     lengths=lengths, seed=large_seed)
+        folded = inference.sample(workflow, task, split["observations"][:2], 8,
+                                   lengths=lengths, seed=inference.backend_seed(large_seed))
+        np.testing.assert_array_equal(first, repeated)
+        np.testing.assert_array_equal(first, folded)
         with tempfile.TemporaryDirectory() as temporary:
             path = Path(temporary) / "model.keras"
             workflow.estimator.save(path)

@@ -21,6 +21,7 @@ PREFIX_POLICIES = {
     "uniform": "uniform_integer_per_trajectory_1_to_max_with_mask",
     "uniform_log_mixture": "half_uniform_half_log_uniform_integer_per_trajectory_1_to_max_with_mask",
 }
+BACKEND_SEED_MAPPING = "nonnegative integer modulo 2**32; existing uint32 seeds unchanged"
 
 
 def fingerprint(value):
@@ -36,6 +37,16 @@ def integer(value, name, minimum=1):
     if isinstance(value, (bool, np.bool_)) or not isinstance(value, (int, np.integer)) or value < minimum:
         raise ValueError(f"{name} must be an integer >= {minimum}")
     return int(value)
+
+
+def backend_seed(seed):
+    """Fold a recorded experiment seed to Keras' uint32 seed domain.
+
+    Physical simulation and prefix RNGs retain their original full integer
+    seeds. Only backend initialization/posterior sampling use this explicit,
+    reproducible modulo mapping. Every previously valid uint32 seed is unchanged.
+    """
+    return integer(seed, "backend seed", minimum=0) % (2 ** 32)
 
 
 def validate_task(task):
@@ -203,7 +214,7 @@ def build_workflow(task, *, network=None, optimizer=None):
 def sample(workflow, task, values, draws, *, lengths=None, seed=0):
     conditions = conditioning_data(values, task, lengths=lengths)
     output = workflow.sample(num_samples=integer(draws, "draws"), conditions=conditions,
-                             sample_shape=(), seed=integer(seed, "seed", minimum=0))
+                             sample_shape=(), seed=backend_seed(seed))
     result = inverse_parameters(np.asarray(output["parameters"], dtype=np.float64), task)
     expected = (len(conditions["observations"]), draws, len(task["parameter_names"]))
     if result.shape != expected or not np.isfinite(result).all():
