@@ -54,7 +54,7 @@ Each section answers one question and hands the next one over.
 | 6–8.5 | 2 · Bayes on one quote | What does one quote say about $\sigma$? | Prior, likelihood and posterior on a grid of 4,001 volatilities: $\sigma$ = 12.84% ± 0.30 points under the flat prior; a choice of priors shows when the prior matters | live |
 | 8.5–9.5 | 3 · Using the posterior | How sure is a price the model computes? | The one-month put at $\delta = -2$ priced under 4,000 draws: a 90% range of 0.05 to 0.14 bp; why the rules ask for ranges | live |
 | 9.5–11 | 4 · Checking the model | Does the model reproduce data it has not seen? | The market quotes 14.1 bp, about 100 times the predicted range; with both quotes, the best $\sigma$ misses the put by 9.5 noise units; a noise slider (about 4.8 times the noise reconciles them) | live |
-| 11–13.5 | 5 · When does Bayes change the answer? | Is the posterior just least squares with error bars? | The least-squares/Bayes table; Heston's exact posterior (PyMC) is an ellipse, with claim C11; rough Bergomi's posterior for an almost flat variance curve is not, and the prior sets the decay | cached |
+| 11–13.5 | 5 · When the posterior differs from least squares | Is the posterior just least squares with error bars? | The least-squares/Bayes table; Heston's exact posterior (PyMC) is an ellipse, with claim C11; rough Bergomi's posterior for an almost flat variance curve is not, and the prior sets the decay | cached |
 | 13.5–15 | 6 · What it costs; close | Why not a posterior for every smile? | The methods' ladder (grid, Gaussian, MCMC, amortized), the measured costs (C8) and a valuation-run slider; the objects of the afternoon and four takeaways; next, slot 2 | cached |
 
 The notebook reads every number live; the values above are today's.

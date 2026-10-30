@@ -130,7 +130,6 @@ def _(mo, np, plots, plt, spy, spy_expirations, spy_iv, surface, teaching):
     On the right are the implied volatilities at these points, which form the smile.
     """),
     ])
-
     return
 
 
@@ -338,7 +337,7 @@ def _(mo):
     | 2 · Bayes on one quote | prior, likelihood and posterior for $\sigma$ |
     | 3 · Using the posterior | the range of another option's price |
     | 4 · Checking the model | the posterior's prediction against a quote it has not seen |
-    | 5 · When does Bayes change the answer? | posteriors that a Gaussian approximation misses |
+    | 5 · When the posterior differs from least squares | cases where the quotes leave a parameter undetermined |
     | 6 · What it costs | exact posteriors against amortized ones |
 
     The panel below collects the formulas.
@@ -430,17 +429,19 @@ def _(mo):
     mo.md(r"""
     ## 2 · Bayes on one quote
 
-    **What does one quote say about $\sigma$?** Take the at-the-money one-month price, and combine three things:
+    We start with the simplest case, Black–Scholes with a single quote, the at-the-money option that expires in one
+    month. Bayes' rule combines three ingredients.
 
-    - **the prior** $p(\sigma)$: what we accept before seeing today's quotes. Here every volatility from 5% to 60%
-      is equally plausible;
-    - **the likelihood** $p(y \mid \sigma)$: how probable this quote is if $\sigma$ were the true volatility, given
-      the quote's noise;
-    - **the posterior** $p(\sigma \mid y) \propto p(y \mid \sigma)\,p(\sigma)$: the two multiplied and normalized.
-      It holds every volatility consistent with the quote, weighted by how consistent it is.
+    - The prior $p(\sigma)$ says which volatilities we consider possible before looking at today's quotes. Here every
+      value between 5% and 60% is equally likely.
+    - The likelihood $p(y \mid \sigma)$ says how probable the observed quote is if the volatility were $\sigma$,
+      given the noise of the quote.
+    - The posterior $p(\sigma \mid y) \propto p(y \mid \sigma)\,p(\sigma)$ is the product of the two, rescaled so that
+      it integrates to one. It weights every volatility by how well it agrees with the quote.
 
-    With one parameter, all three can be computed exactly on a grid of 4,001 volatilities.
+    With a single parameter we can compute all three exactly, on a grid of 4,001 volatilities.
     """)
+
     return
 
 
@@ -528,16 +529,18 @@ def _(
     _ax.legend(loc="upper right", fontsize=8)
     if _sd is None:
         _text = f"""
-    Posterior: **σ = {100 * _mean:.2f}% ± {100 * _spread:.2f} volatility points**. With a flat prior the posterior is
-    the likelihood, normalized. Its width is the quote's noise divided by its vega: the noise, expressed as a
-    volatility. Slot 2 trains a network to return exactly this posterior.
+    With the flat prior the posterior is the likelihood rescaled to integrate to one. Its mean is
+    σ = {100 * _mean:.2f}%, with a standard deviation of {100 * _spread:.2f} volatility points. The width equals the
+    noise of the quote divided by the option's vega, which converts the price noise into volatility. Slot 2 trains a
+    network to reproduce this posterior.
     """
     else:
         _text = f"""
-    With this prior the posterior sits at **σ = {100 * _mean:.2f}% ± {100 * _spread:.2f} volatility points**, against
-    {100 * one_quote_mean:.2f}% under the flat prior. A prior much wider than the quote's precision hardly moves the
-    answer; a prior narrower than it overrides the quote. A penalty that pulls a calibration toward a reference
-    value, such as yesterday's parameters, acts as such a prior. Slot 6 varies the priors of the real models.
+    With this prior the posterior mean is σ = {100 * _mean:.2f}%, with a standard deviation of
+    {100 * _spread:.2f} volatility points, compared with {100 * one_quote_mean:.2f}% under the flat prior. A prior that
+    is much wider than the precision of the quote barely changes the result, while a narrower one pulls it toward
+    20%. Penalizing a calibration for moving away from a reference value, such as yesterday's parameters, is
+    equivalent to using a prior of this kind. Slot 6 changes the priors of the real models.
     """
     mo.vstack([_fig, mo.md(_text)])
     return
@@ -546,12 +549,14 @@ def _(
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## 3 · Using the posterior: the price of another option
+    ## 3 · Using the posterior
 
-    **How sure is a price the model computes?** Draw volatilities from the posterior and price another option
-    under each draw. Take the one-month put struck far below the money, at $\delta = -2$, and pretend for a moment
-    that the market does not quote it, as for the products a desk must mark.
+    The main use of the posterior is pricing. To price another option, we draw volatilities from the posterior and
+    price the option under each draw. As an example we take the one-month put with its strike far below the money, at
+    $\delta = -2$, and suppose for now that the market does not quote it, as is the case for the products a desk has
+    to mark.
     """)
+
     return
 
 
@@ -582,10 +587,10 @@ def _(mo, plots, plt, put_draws, put_range, quotes, sigma_draws):
     mo.vstack([
         _fig,
         mo.md(f"""
-    For the put struck at {100 * quotes['put']['strike']:.0f}% of the forward, the 90% range is
-    **{1e4 * put_range[0]:.2f} to {1e4 * put_range[1]:.2f} basis points** of the forward. Nothing more is needed than
-    a pricer and the posterior. The same recipe gives the range of any product the model can price, such as an
-    option that starts in a year; slot 5 applies it with rough Bergomi.
+    The put's strike is {100 * quotes['put']['strike']:.0f}% of the forward. Under the posterior, its price lies
+    between {1e4 * put_range[0]:.2f} and {1e4 * put_range[1]:.2f} basis points of the forward with 90% probability.
+    The same procedure, a pricer for the product applied to draws from the posterior, gives a price range for any
+    product the model can price, for example an option that starts in a year. Slot 5 does this with rough Bergomi.
     """),
     ])
     return
@@ -594,7 +599,7 @@ def _(mo, plots, plt, put_draws, put_range, quotes, sigma_draws):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    **Why a range?** The rules on valuation ask for the uncertainty of a mark at a stated confidence:
+    Valuation rules ask for this kind of range, that is, the uncertainty of a mark at a stated confidence level.
 
     | Rule | What it asks for |
     |:---|:---|
@@ -603,9 +608,9 @@ def _(mo):
     | IFRS 13, §93(h) | the sensitivity of a Level 3 fair value to reasonably possible alternative inputs |
     | PRA SS1/23 | model uncertainty: "the inherent uncertainty in the parameter estimates and results of statistical models" |
 
-    A posterior range answers the first row within one model. It is an input to a valuation adjustment, not a
-    complete procedure by itself.
+    A posterior range answers the first row for one model. A full valuation adjustment needs more than that.
     """)
+
     return
 
 
@@ -614,13 +619,15 @@ def _(mo, put_range, quotes):
     mo.md(f"""
     ## 4 · Checking the model
 
-    **Does the model reproduce data it has not seen?** The market does quote that put, at
-    **{1e4 * quotes['put']['price']:.1f} basis points**: about {quotes['put']['price'] / put_range[1]:.0f} times the top
-    of the range the posterior predicted. Now use both quotes as data. If Black–Scholes were right, one
-    volatility would fit both.
+    The market does quote this put, at {1e4 * quotes['put']['price']:.1f} basis points. That is about
+    {quotes['put']['price'] / put_range[1]:.0f} times the upper end of the range the posterior predicted, so the model
+    misses a price it was not fitted to. To see what goes wrong, we now use both quotes as data. If Black–Scholes were
+    the right model, a single volatility would fit both.
 
-    Before moving the slider, predict: how much noisier would both quotes have to be for one volatility to fit them?
+    Before moving the slider, try to guess how much noisier the two quotes would have to be for one volatility to fit
+    both.
     """)
+
     return
 
 
@@ -683,12 +690,13 @@ def _(
     mo.vstack([
         _fig,
         mo.md(f"""
-    The two likelihoods do not overlap. The posterior from both quotes stays at the at-the-money value, whose
-    quote is the more precise, and misses the put by **{misses['put']:.1f} noise units**. It takes about
-    {noise_needed:.2g} times the assumed noise to bring both misses under two. That misfit is **the smile**: one
-    volatility cannot price both options. The posterior was precise and wrong, because **a posterior is
-    conditional on its model**: check the model before trusting its ranges. The afternoon therefore moves to
-    models that make a smile: Heston, with four parameters (slot 4), and rough Bergomi, with six (slot 5).
+    The two likelihoods do not overlap. The posterior from both quotes stays close to the at-the-money value,
+    because that quote is the more precise of the two, and it misses the put by {misses['put']:.1f} noise units. Only
+    about {noise_needed:.2g} times the assumed noise would bring both misses below two units. No single volatility
+    prices both options, and this mismatch is what the volatility smile shows. The posterior is precise but wrong,
+    because it is computed inside a model that cannot produce these quotes. A model has to be checked before its
+    ranges are used. For this reason the rest of the afternoon uses models that produce a smile: Heston, with four
+    parameters (slot 4), and rough Bergomi, with six (slot 5).
     """),
     ])
     return
@@ -697,11 +705,10 @@ def _(
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## 5 · When does Bayes change the answer?
+    ## 5 · When the posterior differs from least squares
 
-    **With a model that fits, is the posterior just least squares with error bars?** Often, yes. The classical
-    route fits once and reads an ellipse off the curvature at the optimum. The Bayesian route keeps the whole
-    distribution:
+    Once the model can fit the smile, the posterior is often close to the least-squares answer, that is, the best fit
+    with an error ellipse computed from the curvature of the fit. The table compares the two approaches.
 
     | | Least squares | Bayesian calibration |
     |:---|:---|:---|
@@ -712,10 +719,12 @@ def _(mo):
     | What "90%" means | across repeated sets of quotes | given today's quotes and the prior |
     | Cost | one optimization | thousands of likelihood evaluations |
 
-    Two synthetic smiles, on SPY's grid and noise, show both cases. On the left, Heston's exact posterior, sampled
-    by MCMC in PyMC. On the right, rough Bergomi's posterior for a smile whose variance curve is almost flat,
-    drawn by slot 5's network. The dashed ellipse is the Gaussian with the same mean and covariance as the draws.
+    The two panels below use synthetic smiles on SPY's grid, with the same noise. The left panel shows Heston's exact
+    posterior, sampled by MCMC in PyMC. The right panel shows rough Bergomi's posterior for a smile whose variance
+    curve is almost flat, drawn with the network of slot 5. In both panels the dashed ellipse is the Gaussian with the
+    same mean and covariance as the draws.
     """)
+
     return
 
 
@@ -809,23 +818,23 @@ def _(
     mo.vstack([
         _fig,
         mo.md(f"""
-    **Left, an ellipse.** Of Heston's exact draws, {share_inside_90(heston_pair):.0%} fall inside the Gaussian's 90%
-    ellipse, as they would for a Gaussian. With 63 informative quotes, the classical interval is the posterior's
-    Gaussian limit. Over {heston_s6['surfaces']} synthetic Heston smiles, both kinds of 90% interval cover the truth
-    at about the stated rate: Gauss–Newton's in {min(_gn):.0%} to {max(_gn):.0%} of cases, the posterior's in
-    {min(_post):.0%} to {max(_post):.0%} (claim C11), although no Gauss–Newton interval exists on
-    {heston_s6['gauss_newton_singular']} of them. On a liquid smile, the classical toolkit is right.
+    In the Heston case, {share_inside_90(heston_pair):.0%} of the exact draws fall inside the Gaussian's 90%
+    ellipse, as they would for a Gaussian. With 63 informative quotes the least-squares interval is a good
+    approximation of the posterior. Over {heston_s6['surfaces']} synthetic Heston smiles, both kinds of 90% interval
+    contain the true parameters about as often as they should: the Gauss–Newton intervals in {min(_gn):.0%} to
+    {max(_gn):.0%} of cases and the posterior intervals in {min(_post):.0%} to {max(_post):.0%} (claim C11). For
+    {heston_s6['gauss_newton_singular']} of these smiles no Gauss–Newton interval could be computed.
 
-    **Right, not an ellipse.** This smile's variance curve is almost flat: its short and long levels are
-    {_truth['short_variance']:.3f} and {_truth['long_variance']:.3f}. How fast the curve moves from one to the
-    other, the decay, then barely changes a price, so the quotes cannot pin it. Its 90% posterior interval, from
-    {_decay90[0]:.1f} to {_decay90[1]:.1f} a year, spans {np.ptp(_decay90) / np.ptp(decay_bounds):.0%} of the
-    prior's range. The Gaussian with the same mean and covariance puts {_outside:.0%} of its mass outside the prior
-    box, on values the model excludes. **Where the quotes say nothing, the prior decides**, which is why it must
-    be stated.
+    In the rough Bergomi case the variance curve is almost flat, with short and long levels of
+    {_truth['short_variance']:.3f} and {_truth['long_variance']:.3f}. How fast the curve moves from one level to the
+    other, the decay, then has almost no effect on prices, and the quotes cannot determine it. Its 90% posterior
+    interval runs from {_decay90[0]:.1f} to {_decay90[1]:.1f} per year and covers
+    {np.ptp(_decay90) / np.ptp(decay_bounds):.0%} of the prior range. A Gaussian with the same mean and covariance
+    would put {_outside:.0%} of its probability outside the prior box, on values the model does not allow. In this
+    case the result depends on the prior, so the prior has to be stated.
 
-    *Status:* the left panel is a development example checked against PyMC. The right panel shows network draws,
-    with no exact reference yet (`{rough_report['case_id']}`).
+    Status: the Heston example is a development case checked against PyMC. The rough Bergomi panel shows network
+    draws, without an exact reference yet (`{rough_report['case_id']}`).
     """),
     ])
     return
@@ -834,25 +843,28 @@ def _(
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    **So when is a posterior worth having?** Not on every volatility problem: on a liquid smile with a
-    well-identified model, the classical interval does the job, as on the left. A posterior earns its place when
+    A posterior is not needed for every volatility problem. On a liquid smile with a well-identified model, the
+    least-squares interval is enough, as in the Heston panel. The posterior adds most in these situations:
 
-    - the quotes leave a direction open, as on the right, and a product depends on it;
-    - a range for a mark must be reported at a stated confidence (section 3);
-    - prior knowledge should enter openly, as a stated prior, rather than as a penalty or a parameter fixed by hand;
-    - the answer must be tested against its assumptions: change the prior or the noise and re-read the ranges
-      (slot 6).
+    - the quotes leave some direction in parameter space undetermined, as in the rough Bergomi panel, and a product
+      depends on it;
+    - a range for a mark has to be reported at a stated confidence level (section 3);
+    - prior knowledge should enter the calibration explicitly, as a prior, instead of through a penalty or a
+      parameter fixed by hand;
+    - the results have to be tested against the assumptions, by changing the prior or the noise model and
+      recomputing the ranges (slot 6).
     """)
+
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## 6 · What it costs, and the way around
+    ## 6 · What it costs
 
-    **Why not compute the posterior for every smile?** Because computing it gets expensive as the model gets
-    realistic. There are four ways, each a rung up:
+    Computing a posterior becomes more expensive as the model becomes more realistic. The table lists four ways of
+    doing it.
 
     | Method | Needs | In this tutorial |
     |:---|:---|:---|
@@ -861,9 +873,11 @@ def _(mo):
     | MCMC | thousands of likelihood evaluations | Heston's exact posterior: minutes. Rough Bergomi: at least 17 CPU-hours by a random-walk chain, or about 85 CPU-minutes by importance sampling from a Gauss–Newton proposal on SPY's 63 quotes |
     | Amortized inference | one training run on simulated smiles | seconds per smile, for any smile the prior can produce |
 
-    The likelihood exists for every model here. What costs is the pricing inside it: about 20 ms per smile for
-    Heston's Fourier integral at one quadrature rung, and 5 CPU-seconds per smile for rough Bergomi's Monte Carlo.
+    The likelihood can be written down for every model here. The cost comes from the pricing inside it, which takes
+    about 20 ms per smile for Heston's Fourier integral at one quadrature rung and 5 CPU-seconds per smile for rough
+    Bergomi's Monte Carlo.
     """)
+
     return
 
 
@@ -912,11 +926,12 @@ def _(costs, mo, smiles_per_run):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    Many posteriors are the common case: one for every name in a valuation run, for example at month-end, and
-    thousands on simulated smiles to test a method before it is used. The amortized route of section 1 replaces
-    each of them by one pass through a trained network. The training is paid once, and the rest of the afternoon
-    checks the network before trusting it.
+    In practice many posteriors are needed: one for every name in a valuation run, for example at month-end, and
+    thousands for simulated smiles when a method is tested. With the amortized approach of section 1, each of them
+    costs one pass through a trained network. The training is done once, and the rest of the afternoon checks the
+    network before relying on it.
     """)
+
     return
 
 
@@ -944,22 +959,23 @@ def _(mo):
     mo.md(r"""
     ## Takeaways
 
-    1. **A calibration is an estimate.** The posterior is every parameter value consistent with the quotes at
-       their precision, and pricing under it gives the range of any mark.
-    2. **A posterior is conditional on its model.** Black–Scholes is precise and wrong on SPY; check the model
-       before trusting its ranges.
-    3. **Often the classical interval is the posterior's Gaussian limit, but not always.** Where the quotes leave
-       a direction open, the posterior is not an ellipse, and the stated prior decides.
-    4. **Exact posteriors get expensive as models get realistic, and many are needed**: every name in a valuation
-       run, every smile of a validation. The rest of the afternoon amortizes them.
+    1. A calibration is an estimate. Its posterior contains every parameter value consistent with the quotes and
+       their noise, and pricing a product under the posterior gives a range for its price.
+    2. A posterior is only as good as its model. On SPY, Black–Scholes gives a precise but wrong answer, so the model
+       has to be checked before its ranges are used.
+    3. With many informative quotes, the posterior is close to the least-squares result. When the quotes leave a
+       parameter undetermined, the posterior is no longer an ellipse and the prior matters.
+    4. Exact posteriors become expensive as models become more realistic, and many of them are needed. The rest of
+       the afternoon shows how amortized inference reduces this cost.
 
-    **Next, slot 2:** how a network trained on simulations returns the posterior, starting with this slot's
-    quote, and when that pays.
+    Slot 2 shows how a network trained on simulations returns the posterior, starting from the quote of section 2,
+    and when this pays off.
 
-    *Evidence and code:* `CLAIMS.md` (claims C8 and C11), the cached examples in `assets/backbones/` (development
-    examples, not accepted studies) and `src/sbi4f_tutorial/`. The SPY quotes come from study S8. Simulated
-    results use the tutorial's models and priors; they do not certify the models on market data.
+    Sources: `CLAIMS.md` (claims C8 and C11), the cached examples in `assets/backbones/` (development examples, not
+    accepted studies) and `src/sbi4f_tutorial/`. The SPY quotes come from study S8. Results on simulated smiles use
+    the tutorial's models and priors, and do not show how well these models describe market data.
     """)
+
     return
 
 

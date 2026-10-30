@@ -46,7 +46,7 @@ SLOTS = {
         ("2 Bayes on one quote:\nprior × likelihood", 2.5, "F", "live"),
         ("3 Using the\nposterior", 1, "F", "live"),
         ("4 Checking\nthe model", 1.5, "F", "live"),
-        ("5 When Bayes\nchanges the answer", 2.5, "F", "cached"),
+        ("5 Posterior vs\nleast squares", 2.5, "F", "cached"),
         ("6 Costs;\nthe close", 1.5, "F", "cached"),
     ]),
     2: ("Slot 2, 15 minutes", [
