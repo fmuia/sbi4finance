@@ -92,23 +92,25 @@ def _(RESULTS, backbones, np, surface, teaching):
 @app.cell(hide_code=True)
 def _(mo, np, plots, plt, spy, spy_expirations, spy_iv, surface, teaching):
     _days, _deltas = np.array(surface.DESIGN_DAYS), np.array(surface.DESIGN_DELTAS)
-    _fig, (_left, _right) = plt.subplots(1, 2, figsize=(9.6, 4.3), constrained_layout=True,
-                                         gridspec_kw={"width_ratios": [1, 1.2]})
-    _left.axvspan(-2, 2, color=plots.GRID, alpha=0.6, linewidth=0)
-    for _e in spy_expirations:
-        _left.plot(_e["strip_deltas"], [_e["days"]] * 2, color=plots.SERIES[0], linewidth=1.6, solid_capstyle="butt")
-    _left.plot([], [], color=plots.SERIES[0], linewidth=1.6, label="strikes quoted, one line per expiration")
-    _grid_delta, _grid_days = np.meshgrid(_deltas, _days)
-    _left.scatter(_grid_delta, _grid_days, s=12, color=plots.SERIES[1], zorder=3, label="the 63 points we read")
-    _left.set_yscale("log")
-    _left.set_yticks(list(_days), [teaching.TENORS[_d] for _d in _days])
-    _left.minorticks_off()
-    _left.set_ylim(0.8, 700)
-    _left.set_xlim(-10.5, 3.2)
-    _left.set_xlabel("standardized moneyness δ (puts left, calls right)")
-    _left.set_ylabel("time to expiration")
-    _left.set_title("what is quoted, and the grid we read", loc="left")
-    _left.legend(loc="upper center", bbox_to_anchor=(0.5, -0.17), ncols=2, fontsize=7.5)
+    _put_color, _call_color = "#087F8C", "#D97732"  # the course's colours for this figure
+    _exp_days = np.array([_e["days"] for _e in spy_expirations], dtype=float)
+    _exp_forward = np.array([_e["forward"] for _e in spy_expirations])
+    _fig, (_left, _right) = plt.subplots(1, 2, figsize=(9.6, 3.9), constrained_layout=True,
+                                         gridspec_kw={"width_ratios": [1, 1.15]})
+    for _d in _days:
+        _forward = float(np.interp(_d, _exp_days, _exp_forward))
+        _strikes = _forward * np.exp(_deltas * surface.SIGMA_REF * np.sqrt(_d / surface.TRADING_DAYS))
+        _left.scatter(np.full(len(_deltas), _d), _strikes, s=16, zorder=3,
+                      color=[_put_color if _x <= 0 else _call_color for _x in _deltas])
+    _left.plot(_exp_days, _exp_forward, color=plots.INK_2, linewidth=1, label="forward $F_T$")
+    _left.scatter([], [], s=16, color=_put_color, label="put (strike below the forward)")
+    _left.scatter([], [], s=16, color=_call_color, label="call (strike above the forward)")
+    _left.set_xscale("log")
+    _left.set_xticks(list(_days), [str(_d) for _d in _days])
+    _left.set_xlabel("maturity, trading days")
+    _left.set_ylabel("strike, US dollars")
+    _left.set_title("the 63 contracts read from the SPY chain", loc="left")
+    _left.legend(fontsize=7.5, loc="upper left")
     for _j, _d in enumerate(_days):
         _right.plot(_deltas, 100 * spy_iv[_j], marker="o", markersize=3, linewidth=1.2,
                     color=plt.cm.viridis(_j / (len(_days) - 1)), label=teaching.TENORS[_d])
@@ -121,12 +123,14 @@ def _(mo, np, plots, plt, spy, spy_expirations, spy_iv, surface, teaching):
     mo.vstack([
         _fig,
         mo.md(f"""
-    Each blue line spans the strikes quoted for one of SPY's {len(spy_expirations)} expirations, after removing
-    in-the-money options and quotes without a bid or with a very wide spread. That leaves {_kept:,} quotes. The
-    orange points are the grid. {"All of them fall inside the quoted strikes, so the grid interpolates the quotes and never extrapolates them." if _inside else "Some of them fall outside the quoted strikes, where the grid extrapolates."}
-    On the right are the implied volatilities read at these points, which form the smile.
+    Each dot is one of the 63 contracts on the grid: a put when its strike is below the forward, a call when it is
+    above. The strikes spread out with maturity because $\\delta$ measures the distance from the forward in units of
+    $0.2\\sqrt T$. The line is SPY's forward for each listed expiration, from put–call parity. The grid's prices are
+    read from {_kept:,} cleaned quotes on {len(spy_expirations)} expirations. {"Every point lies inside the strikes quoted for its maturity, so the grid interpolates the quotes and never extrapolates them." if _inside else "Some points lie outside the quoted strikes, where the grid extrapolates."}
+    On the right are the implied volatilities at these points, which form the smile.
     """),
     ])
+
     return
 
 
