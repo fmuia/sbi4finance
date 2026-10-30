@@ -4,178 +4,118 @@ Francesco · 15 minutes · first slot of the afternoon. Part of the [curriculum]
 
 ![Minute map of slot 1](images/slot-1.png)
 
+Rebuilt on 30 October 2026, after the organizers' call of 29 October. Slot 1 introduces the objects the
+afternoon uses, with a short window on why they matter. It follows the arc of a standard introduction to Bayes,
+translated to option quotes, and leaves hierarchies out. The notebook is
+[`slot1_intro.py`](../notebooks/slot1_intro.py); its structure, style and formatting follow the slot 5 SVJ
+notebook of #38 (branch `feat/tutorial-slot5-svj-advanced`, commit `d00ccb1`).
+
 ## The slot in three sentences
 
-**The question.** Why does a calibrated volatility model need a posterior, and what does one cost?
+**The question.** What does a calibration know, and how sure is it?
 
 **The answer.**
 
-1. A calibration is an estimate from noisy quotes, so the prices it gives for products nobody quotes are uncertain, and the rules ask banks to report that range.
-2. The posterior is that uncertainty: pricing a product under every posterior draw turns it into the range.
-3. For richer models, one posterior costs minutes to hours. That adds up for every name in a valuation across a book, for example at month-end, and much more for the thousands of simulated smiles that a validation of the method needs. Amortized inference makes those thousands affordable, and the rest of the afternoon shows how, and how to check it.
+1. A calibration is an estimate from noisy quotes; its posterior becomes a range for any price computed from it.
+2. The posterior is often the classical answer with error bars, but not always: where the quotes say nothing, the prior decides, so it must be stated.
+3. Exact posteriors get expensive as models get realistic, and many are needed: every name in a valuation run, every smile of a validation. Amortization, from slot 2 on, makes them affordable.
 
 ## What the audience leaves with
 
-- The posterior is every parameter value consistent with the quotes at their precision, and propagation is pricing under each value.
-- The posterior is conditional on the model. A model that cannot produce the data gives a precise and wrong range.
-- The three models of the afternoon form a ladder: Black–Scholes (closed form), Heston (exact likelihood, slot 4) and rough Bergomi (Monte Carlo only, slot 5). Each step up fits the smile better and makes the posterior more expensive.
+- The objects of the afternoon: the quotes $y$ (63 prices, each with its noise), the model, the parameters $\theta$, the prior, the likelihood, the posterior, a product's range, the checks, and the network $q(\theta \mid y)$.
+- The posterior is conditional on its model. A model that cannot produce the data gives a precise and wrong range.
+- On a liquid smile with a well-identified model, the classical interval is the posterior's Gaussian limit. Where the quotes leave a direction open, the posterior is not an ellipse.
+- The three models form a ladder: Black–Scholes (closed form), Heston (exact likelihood, slot 4) and rough Bergomi (Monte Carlo only, slot 5). Each step fits the smile better and makes the exact posterior more expensive.
 
-## Slide by slide
+## The arc: a standard introduction to Bayes, on option quotes
 
-Each slide states its title as it appears on screen, what is on screen, what is said, and how it leads to the next slide. The words "said" are a script to adapt, not to read.
+| A generic introduction (*Statistical Rethinking*, ch. 2–3; *Bayesian Data Analysis*, ch. 1) | Slot 1 |
+| --- | --- |
+| The data story: how unknowns produce data | Section 1: a quote is the model price plus noise |
+| Prior × likelihood → posterior, on a grid | Section 2: the Black–Scholes $\sigma$ from one quote |
+| Posterior samples give derived quantities | Section 3: another option priced under every draw |
+| A posterior predictive check | Section 4: that prediction against the market's quote |
+| The quadratic approximation, and when it fails | Section 5: Heston's posterior is an ellipse; rough Bergomi's need not be |
+| Computing the posterior: grid, quadratic, MCMC | Section 6: and a fourth rung, amortized inference |
 
-### Slide 1. Bayes for volatility models (30 seconds)
+Each section answers one question and hands the next one over.
 
-- **On screen.** The tutorial's title and the four organizers, one line each: hedge-fund research, BayesFlow's lead developer, BayesFlow's core developers, Bayesian consulting.
-- **Said.** The afternoon answers one question: which price to mark for a product the smile does not quote, and with what range. The question returns for every name in a valuation across a book, for example at month-end. The afternoon answers it on one real option smile, with three models of increasing realism.
+## Section by section
 
-### Slide 2. The marking procedure (1.5 minutes)
+| Min | Section | The question | On screen | Mode |
+| --- | --- | --- | --- | --- |
+| 0–1.5 | Opening | What is the afternoon about? | The desk's daily calibration; the tutorial's title in three parts; the six steps; three claims; a one-line map of the objects (parameters → quotes → posterior → a range); the folded "model in detail" panel | slide |
+| 1.5–3 | 1 · Quotes, smile and model | What do we observe, and what does a model say about it? | SPY's 63 prices of 21 October 2026 as a smile, and each quote's noise; the structure of one observation, identical to every network's (checked live) | cached |
+| 3–5.5 | 2 · Bayes on one quote | What does one quote say about $\sigma$? | Prior, likelihood and posterior on a grid of 4,001 volatilities: $\sigma$ = 12.84% ± 0.30 points under the flat prior; a choice of priors shows when the prior matters | live |
+| 5.5–7 | 3 · Using the posterior | How sure is a price the model computes? | The one-month put at $\delta = -2$ priced under 4,000 draws: a 90% range of 0.05 to 0.14 bp; why the rules ask for ranges | live |
+| 7–8.5 | 4 · Checking the model | Does the model reproduce data it has not seen? | The market quotes 14.1 bp, about 100 times the predicted range; with both quotes, the best $\sigma$ misses the put by 9.5 noise units; a noise slider (about 4.8 times the noise reconciles them) | live |
+| 8.5–11.5 | 5 · When does Bayes change the answer? | Is the posterior just least squares with error bars? | The least-squares/Bayes table; Heston's exact posterior (PyMC) is an ellipse, with claim C11; rough Bergomi's posterior for an almost flat variance curve is not, and the prior sets the decay | cached |
+| 11.5–14 | 6 · What it costs, and the way around | Why not a posterior for every smile? | The methods' ladder (grid, Gaussian, MCMC, amortized); the cost ladder and the measured costs (C8); a valuation-run slider; the amortization pipeline | cached |
+| 14–15 | Close | What should you remember? | The objects of the afternoon and where each returns; four takeaways; next, slot 2 | slide |
 
-- **On screen.** Left: the SPY smile of 21 October 2026, implied volatility against strike for the 7 maturities from one week to one year (`results/calibration/spy/surface.png`). Right: the seven steps of marking a product the smile does not quote, one line each ([v2-plan](../../course/v2-plan.md), Section 1):
-  1. Quotes: closing quotes, out of the money, with a bid below the ask.
-  2. Clock: trading days over 252.
-  3. Rate and forward: a flat 3-month rate, and the forward.
-  4. Exercise: out-of-the-money puts priced as European.
-  5. Noise: each quote's half-spread as one standard deviation, floored at the design's noise.
-  6. Calibration: the model fitted to the quotes.
-  7. Products and ranges: a forward-start option, a volatility swap; a one-sided 90% bound on each side.
-
-  Below the steps, one line: "What the quotes leave open is a choice. Fixing a parameter, or holding a curve flat beyond the last quote, is a choice of zero width."
-- **Said.** These are 63 SPY option prices from the close of 21 October, read onto a fixed grid of 7 maturities and 9 moneyness points. Marking a product the smile does not quote takes seven steps. The first five turn quotes into data: which quotes count, on what clock, at what rate and forward, how early exercise is treated, and how precise each quote is. The sixth fits a model to the data. The seventh prices products nobody quotes, such as an option whose strike is set in one year's time, and gives each price a range. The quotes do not determine every input those products need. Fixing a parameter the smile does not identify, or holding the curve flat beyond the last quote, is a choice of zero width: it adds nothing to the range, however uncertain the input is. Fixing an unidentified parameter is documented for SABR's β and Heston's κ. The quotes are noisy, so the fit is uncertain. The question of the afternoon is how uncertain the price of the unquoted product is.
-- **Leads to.** An example where the uncertainty is large.
-
-### Slide 3. Two calibrations, two prices (1.5 minutes)
-
-- **On screen.** The SHOP-like panel of the HKDE study of 9 October (`course/images/study-hkde-option-prices.png`), with the variance-swap column highlighted.
-- **Said.** This is Heston's model with jumps, fitted to a synthetic smile whose true parameters are known. Thirty starts of the optimizer end at two parameter sets that fit the quotes almost equally well. One gives a one-year variance-swap volatility 83% above the true one, the other 16% below. The blue shape is the posterior: all parameter values consistent with the quotes, and the prices they give. Its 90% interval runs from −18% to +67%.
-- **Leads to.** What the rules say about such a range.
-
-### Slide 4. The rules ask for the range (1 minute)
-
-- **On screen.** Three quotations, one line each:
-  - Regulation (EU) 2016/101, Art. 9 (market price uncertainty) and Art. 11 (model risk): a range of plausible values and a point in it at 90% confidence. Art. 9 covers the parameters calibrated to market quotes; Art. 11 covers the choice among models and calibration approaches. The difference from the fair value is a valuation adjustment deducted from capital.
-  - IFRS 13 §93(h): the sensitivity of a Level 3 fair value to reasonably possible alternative inputs.
-  - PRA SS1/23: model uncertainty is "the inherent uncertainty in the parameter estimates and results of statistical models".
-- **Said.** Supervisors already ask for this range. Least squares returns one parameter vector and one price. The rules ask for a distribution of prices and a point in it.
-- **Leads to.** How to compute that distribution, in the simplest model there is.
-
-### Slides 5 to 7. The posterior in one example (4 minutes, live)
-
-The notebook `slot1_intro.py` runs three cells, each in under a second.
-
-**Cell 1: one quote gives a posterior.**
-
-- **On screen.** The likelihood of σ for the at-the-money one-month SPY quote, with a flat prior from 5% to 60%. The posterior: σ = 12.8% ± 0.3 volatility points.
-- **Said.** Black–Scholes has one parameter, the volatility σ. The quote is known to about a third of a volatility point, the noise the tutorial assumes at the money. Only volatilities between about 12.3% and 13.3% are consistent with it. That curve is the posterior.
-
-**Cell 2: the posterior prices another option.**
-
-- **On screen.** The one-month put struck at 89% of the forward, priced under every posterior draw: a 90% range of 0.05 to 0.14 basis points of the forward.
-- **Said.** To price another option, price it under every volatility the posterior allows. The spread of those prices is the range the rules ask for. Nothing more is needed than a pricer and the posterior.
-
-**Cell 3: the market disagrees.**
-
-- **On screen.** The market's price for the same put: 14.1 basis points, an implied volatility of 24.4%. Then both quotes as data: the two likelihoods do not overlap. The best single σ fits the at-the-money quote and misses the put by 9.5 noise standard deviations. A slider multiplies the noise: only five times the assumed noise brings the miss under two standard deviations.
-- **Said.** The market prices the put about a hundred times higher than the range. One volatility cannot fit both quotes. That misfit is the smile. The posterior was precise, and it was wrong, because it is conditional on the model. A posterior says which parameters fit only inside a model that can produce the data.
-- **Leads to.** Models that can produce a smile.
-
-### Slide 8. Richer models, costlier posteriors (2 minutes)
-
-- **On screen.** The ladder figure ([images/ladder.png](images/ladder.png)): for each model, the cost of one likelihood evaluation and of one exact posterior, on a log scale.
-- **Said.** Heston adds a random variance that moves against the price. It has four parameters here, and a smile is priced by a Fourier integral in 20 milliseconds at one quadrature rung, so its exact posterior takes about 4 CPU-minutes, or twice that with the accuracy checks. Rough Bergomi's skew follows a power law in maturity, the shape SPY's skew has, but its prices exist only by Monte Carlo: 5 CPU-seconds per smile, and at least 17 CPU-hours per exact posterior by a random-walk chain, or about 85 CPU-minutes by importance sampling from a Gauss–Newton proposal on SPY's 63 quotes.
-- **Leads to.** What those costs mean when many posteriors are needed.
-
-### Slide 9. Every name at month-end, every validation run (1.5 minutes)
-
-- **On screen.** A 2×2 table.
-
-  | | One posterior | 500 smiles in one valuation run |
-  | --- | --- | --- |
-  | Cheap likelihood (Black–Scholes, Heston) | Milliseconds to minutes | Heston: 35 CPU-hours or more |
-  | Likelihood only by simulation (rough Bergomi) | At least 17 CPU-hours by a chain; about 85 CPU-minutes by importance sampling | At least 8,500 CPU-hours by the chain; about 710 by importance sampling |
-
-- **Said.** For one smile, Heston's posterior is affordable. A valuation across a book needs a posterior for every name, for example at month-end. For 500 smiles in one valuation run, Heston's posteriors cost 35 CPU-hours or more, and rough Bergomi's at least 8,500 CPU-hours by the chain, or about 710 by importance sampling where a Gauss–Newton proposal works. A validation of the method needs more: a posterior on each of thousands of simulated smiles. Importance sampling keeps a book affordable where the Gauss–Newton proposal works; a validation is what it cannot afford.
-- **Leads to.** The way around the cost.
-
-### Slide 10. Amortized inference: pay once, then seconds (1.5 minutes)
-
-- **On screen.** A pipeline: prior → simulator → many (parameters, smile) pairs → a network trained once → a new smile → posterior draws. Below it, the three checks of the afternoon: an exact answer on a sibling model (Heston, slot 4), simulation-based calibration on simulated smiles, and an audit of each real smile (slot 5).
-- **Said.** Amortized inference moves the cost into training. Parameters are drawn from the prior, smiles are simulated from them, and a network learns to return the posterior from a smile. A new smile then costs one pass through the network: 1.4 seconds for 1,000 posterior draws for rough Bergomi. The network is an approximation, so the afternoon spends as much time checking it as building it.
-- **Leads to.** The plan of the afternoon.
-
-### Slide 11. The afternoon (1.5 minutes)
-
-- **On screen.** The six slots, each with its question, and the model ladder beside them.
-
-  | Slot | Question |
-  | --- | --- |
-  | 2 | How does a network learn a posterior, and when does it pay? |
-  | 3 | Which networks, for which data? |
-  | 4 | Heston on the SPY smile in BayesFlow, checked against the exact posterior |
-  | 5 | Rough Bergomi on the SPY smile, from the posterior to a reserve |
-  | 6 | What changes when the prior or the model is wrong? |
-
-  A footer: everything shown is in the repository, with a ledger of where each number comes from.
-- **Said.** One smile, three models, one question. The same approach applies to a value-at-risk computed from returns.
+The notebook reads every number live; the values above are today's.
 
 ## The live notebook
 
-`tutorial/notebooks/slot1_intro.py`, built from today's `intro_one_quote.py`.
+| Cells | Compute | Budget |
+| --- | --- | --- |
+| Section 1 | SPY prices and noise from `spy/surface.json`; implied volatilities; the identity of the grid and noise with `backbones/heston-final500/task.json` | < 1 s |
+| Section 2 | Grid posterior of $\sigma$ from the at-the-money one-month quote, flat prior on 5% to 60%; three normal priors centred on 20% for comparison | < 0.1 s per choice |
+| Section 3 | 4,000 draws of $\sigma$, the put under each, its quantiles | < 0.1 s |
+| Section 4 | Both likelihoods, the joint posterior, standardized misses; a noise multiple from 1 to 10 | < 0.1 s per move |
+| Section 5 | `heston-final500` (PyMC reference draws) and `rough-joint100k-validation1962` (network draws), loaded offline with NumPy; Gaussian ellipses; C11 from `heston/s6/classical.json` | < 2 s |
+| Section 6 | C8 from `costs/costs.json`; the cost of one valuation run by route | < 0.1 s per move |
 
-| Cell | Computes | Budget | Fallback |
-| --- | --- | --- | --- |
-| Load | SPY prices and noise on the design grid from `spy/surface.json`; the one-month at-the-money quote and the one-month put at δ = −2 | < 1 s | none needed |
-| 1 | Grid posterior of σ from the at-the-money quote (4,001 points, flat prior on 5% to 60%) | < 0.1 s | none needed |
-| 2 | The put's price under each posterior quantile; the 90% range | < 0.1 s | none needed |
-| 3 | Both likelihoods; the joint posterior; standardized misses; a slider for the noise multiplier from 1 to 10 | < 0.1 s per move | none needed |
-
-The notebook's text changes with the data. On SPY the posterior from both quotes does not sit between the two likelihoods. It stays at the at-the-money value, whose quote has the larger vega, and misses the put.
+No network is loaded. The notebook runs headless in about 4 seconds.
 
 ## Numbers on screen, and their status
 
 | Number | Source | Status |
 | --- | --- | --- |
 | 63 prices on a grid of 7 maturities × 9 moneyness points, read from SPY's quotes of 21 Oct 2026 | `spy/surface.json` (S8) | verified |
-| The marking procedure: trading days over 252, a flat 3-month rate, half-spread noise floored at the design's, one-sided 90% bounds | [v2-plan](../../course/v2-plan.md), Section 1 | sourced; SPY's grid simplifies two steps: its quotes are grid readings, and its maturities count weekdays |
-| HKDE: +83%, −16%, posterior 90% interval −18% to +67% | HKDE study, 9 Oct; `course/images/study-hkde-option-prices.png` | to register as C12, with the two optima's fit in noise units |
-| σ = 12.8% ± 0.3; put range 0.05–0.14 bp; quote 14.1 bp (24.4%); miss 9.5 sd; five times the noise | computed live from `spy/surface.json` | verified by construction (live) |
+| The grid and noise are those of every backbone task | computed live | verified by construction |
+| $\sigma$ = 12.84% ± 0.30; put range 0.05–0.14 bp; quote 14.1 bp; miss 9.5 sd; about 4.8 times the noise | computed live from `spy/surface.json` | verified by construction (live) |
+| Heston: about 90% of the exact draws inside the Gaussian's 90% ellipse | `backbones/heston-final500`, PyMC DEMetropolisZ reference | development example, not an accepted study |
+| Gauss–Newton 90% coverage 87–92% against the posterior's 87–90%, on 200 Heston smiles; no Gauss–Newton interval on 11 | C11, `heston/s6/classical.json` | verified |
+| Rough Bergomi with an almost flat curve: the decay's 90% interval spans most of its prior; the matching Gaussian puts mass outside the prior box | `backbones/rough-joint100k-validation1962`, network draws | development replay; no conditional reference yet (J2) |
 | Heston 20 ms and about 4 CPU-min, both at one quadrature rung; rough Bergomi 5.0 CPU-s and at least 17 CPU-h by the chain; network 1.4 s (3.6 CPU-s) | `costs/costs.json` (C8) | verified |
 | Rough Bergomi by importance sampling from a Gauss–Newton proposal on SPY's 63 quotes: 1,024 evaluations at 5.0 CPU-s, about 85 CPU-min | `lab/checks/rough_spy_is.py`; [v2-plan](../../course/v2-plan.md), Section 2.4 | verified |
-| 500 smiles in one valuation run: Heston 35 CPU-h or more; rough at least 8,500 CPU-h by the chain, about 710 CPU-h by importance sampling | arithmetic on C8 and the line above | verified |
-| Black–Scholes: 10 µs per price, 0.2 ms per vectorized grid posterior | timed on 23 Oct with `sbi4finance.calibration.surface` | illustrative, not a study result |
 
 ## What may be said, and what may not
 
 | Say | Do not say | Why |
 | --- | --- | --- |
 | "The quote is known to a third of a volatility point, the noise the tutorial assumes." | "The quote's bid–ask is a third of a point." | The noise is the design's floor, wider than SPY's spreads on that day (study S8; course, Lecture 5, Section 5.4). |
-| "Two parameter sets fit almost equally well." | "Least squares is broken." | Both fit within the noise; the point is that the quotes cannot tell them apart. |
+| "On an almost flat curve, the network's posterior is not an ellipse." | "Rough Bergomi's posteriors are banana-shaped." | One development case, network draws, no exact reference yet. |
+| "Where the quotes say nothing, the stated prior decides." | "The prior is arbitrary." | The prior is stated and tested; slot 6 varies it. |
 | "At least 17 CPU-hours by a random-walk chain, or about 85 CPU-minutes by importance sampling." | "17 CPU-hours", or the chain's cost alone. | The chain's cost is a lower bound (study S9); importance sampling targets the same exact posterior ([v2-plan](../../course/v2-plan.md), Section 2.4). |
 | "1.4 seconds for 1,000 draws." | "Milliseconds." | Not what was measured. |
-| "Rough Bergomi's skew follows a power law in maturity, the shape SPY's has." | "Heston cannot fit SPY", or "rough Bergomi fits SPY" before gate G4. | Heston fits SPY with extreme parameters (slot 4); rough Bergomi's fit to SPY is ⟨S8⟩. |
 | "Art. 9 for the calibrated parameters, Art. 11 for the choice of model." | "Art. 11 asks for the range of calibrations." | Art. 11(1) excludes calibrations from market-derived parameters, which Art. 9 covers (Lecture 6, Section 6.6). |
-| "Fixing a parameter, or holding the curve flat beyond the last quote, is a choice of zero width." | That fixing H, or holding the curve flat, is standard practice. | Fixing an unidentified parameter is documented for SABR's β and Heston's κ, not for H; a flat curve is one rule among several ([practice-sources.md](../../course/practice-sources.md)). |
+| "A posterior range is an input to a valuation adjustment." | That a posterior quantile is a complete prudent-valuation procedure. | It is a within-model range ([tutorial review](TUTORIAL-REVIEW.md)). |
 
 ## Hard questions
 
-1. **"With a flat prior, one quote is just least squares."** Yes. The example is chosen to show propagation and the conditionality on the model, not the prior. Priors are slot 6's subject.
-2. **"Two optima? Use a better optimizer, or regularize."** Both optima fit the quotes within their noise, so no optimizer can choose between them from these quotes. A penalty picks one by the penalty, not by the data.
-3. **"Black–Scholes is a straw man."** It is the one-parameter case where the posterior can be drawn on one axis. Slots 4 and 5 use models that can produce a smile: Heston and rough Bergomi.
-4. **"Heston calibrates in a second; why would I need a network?"** For one smile, the exact Heston posterior is affordable, and slot 4 computes it. A validation of the method needs thousands of posteriors, and a valuation across a book needs one for every name, for example at month-end (slot 2). Rough Bergomi has no fast pricer at all (slot 5).
+1. **"With a flat prior, one quote is just least squares."** Yes. Section 2's prior choice shows when the prior moves the answer; section 5 shows where it decides it. Priors are slot 6's subject.
+2. **"Black–Scholes is a straw man."** It is the one-parameter case where prior, likelihood and posterior can be drawn on one axis. Sections 4 and 5 move to models that can produce a smile.
+3. **"The right panel shows network draws. How do you know the shape is not the network's?"** Not yet from an exact reference: that is pending (J2), and the slide says so. The geometry explains it: when the short and long levels of the curve coincide, its decay barely changes a price.
+4. **"Heston calibrates in a second; why would I need a network?"** For one smile, the exact Heston posterior is affordable, and slot 4 computes it. A validation needs thousands of posteriors, and a valuation across a book needs one for every name (slot 2). Rough Bergomi has no fast pricer at all (slot 5).
 
 ## What is left out, and why
 
-- **Option D, betas across stocks** (branch `feat/tutorial-slot1-intro`). Strong, reviewed, and about betas rather than volatility; no later slot uses cross-sectional shrinkage.
-- **The proposal's Figure 1, Heston from a year of returns.** Its source is not in `tutorial/`, and the afternoon does not use returns. It can return as one sentence on slide 11 if its source is committed.
-- **Returns and value-at-risk.** One sentence on slide 11 says the afternoon leaves them out (overview, §6).
+- **Hierarchies across names** (the sector of names): agreed on 29 October to keep them out of slot 1.
+- **The classical-versus-Bayes toy of Lecture 9.7**: replaced by a case from the afternoon's own models.
+- **The long-end products table**: pricing products is slot 5's; further exotics are an extension.
+- **The 15-quote Heston panel**: sparse quote chains are deferred.
+- **The HKDE two-optima slide**: Heston with jumps is outside the core models, and the study is not registered as a claim.
+- **Option D, betas across stocks** (branch `feat/tutorial-slot1-intro`), **the proposal's Figure 1**, and **returns and value-at-risk** (overview, §6).
 
 ## To build, by the freeze on Wed 4 Nov
 
-1. `slot1_intro.py` from `intro_one_quote.py`, on the SPY quotes, with the text of cell 3 rewritten for the real data.
-2. Register C12 (HKDE) in CLAIMS.md, with the fit of both optima in noise units from the study's result file.
-3. Draw slide 2's procedure, slide 9's table and slide 10's diagram.
+1. Alex's review, as agreed on 29 October; a semi-final version by Sunday 1 November.
+2. Decide whether section 5's right panel waits for a conditional reference (J2).
+3. Remove the assets and modules only the old slot 1 used (`why_bayes.py`, `bs_hierarchy.py`, `quick-checks/bs_hierarchy.json`, `quick-checks/long_end/`, `images/l10-credible-vs-confidence.png`) through the lab's tools, with the repository cleanup.
 4. Rehearse with a timer, twice, before the run-through of Mon 9 Nov.
 
 ## Course lectures behind slot 1
 
-Lectures 1 and 6 (the marking procedure, the products, the rules), 4 and 5 (Black–Scholes, implied volatility), 8 (posterior and propagation), 14 (cost).
+Lectures 1 and 6 (the products, the rules), 4 and 5 (Black–Scholes, implied volatility), 7 and 8 (calibration as estimation, the posterior and propagation), 14 (cost).
