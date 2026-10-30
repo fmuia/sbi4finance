@@ -1,0 +1,1796 @@
+{
+ "check": "spy_early_exercise",
+ "mode": "chain",
+ "asof": "2026-10-29",
+ "source": "Cboe delayed quotes for SPY, file timestamp 2026-10-30 00:13:44; quotes of the 2026-10-29 close",
+ "chain_sha256": "2e8cafd4cf0160767c23bb5b3a81f96d93ccf5336df2ae1599948842aad90b8e",
+ "raw_quotes_committed": false,
+ "inputs": {
+  "rate_curve": [
+   [
+    0.25,
+    0.0418
+   ],
+   [
+    2.0,
+    0.0467
+   ]
+  ],
+  "rate_source": "US Treasury yields of 2026-10-28 (the latest published), 3-month 4.18% and 2-year 4.67% (FRED DGS3MO, DGS2)",
+  "spot": 769.36,
+  "dividends": [
+   [
+    "2026-12-18",
+    1.993368
+   ],
+   [
+    "2027-03-19",
+    1.796999
+   ],
+   [
+    "2027-06-17",
+    1.903516
+   ],
+   [
+    "2027-09-17",
+    1.888834
+   ],
+   [
+    "2027-12-17",
+    1.993368
+   ],
+   [
+    "2028-03-17",
+    1.796999
+   ],
+   [
+    "2028-06-16",
+    1.903516
+   ],
+   [
+    "2028-09-15",
+    1.888834
+   ],
+   [
+    "2028-12-15",
+    1.993368
+   ]
+  ],
+  "tree_steps": [
+   800,
+   801
+  ],
+  "replication_deltas": [
+   -7.0,
+   1.3
+  ]
+ },
+ "design": {
+  "days": [
+   5,
+   10,
+   21,
+   42,
+   63,
+   126,
+   252
+  ],
+  "deltas": [
+   -2.0,
+   -1.5,
+   -1.0,
+   -0.5,
+   0.0,
+   0.5,
+   1.0,
+   1.5,
+   2.0
+  ]
+ },
+ "readings": {
+  "european": {
+   "two expirations": 36,
+   "one expiration": 27,
+   "extrapolated": 0
+  },
+  "american": {
+   "two expirations": 36,
+   "one expiration": 27,
+   "extrapolated": 0
+  }
+ },
+ "shift": {
+  "european_vol_percent": [
+   [
+    20.9454,
+    18.7521,
+    16.7438,
+    14.8255,
+    13.0081,
+    11.3291,
+    9.826,
+    10.5289,
+    11.1304
+   ],
+   [
+    23.5792,
+    20.8097,
+    18.1746,
+    15.6063,
+    13.0968,
+    11.0883,
+    10.2269,
+    11.1601,
+    14.1442
+   ],
+   [
+    25.016,
+    21.893,
+    18.8551,
+    15.936,
+    13.2016,
+    11.1222,
+    10.4449,
+    11.9224,
+    15.2563
+   ],
+   [
+    26.747,
+    23.5241,
+    20.2575,
+    16.9738,
+    13.962,
+    11.8052,
+    11.1096,
+    12.1911,
+    15.2592
+   ],
+   [
+    27.3201,
+    23.9831,
+    20.6667,
+    17.4197,
+    14.3296,
+    11.9995,
+    11.2984,
+    12.3562,
+    14.5428
+   ],
+   [
+    28.5204,
+    25.2513,
+    21.8974,
+    18.5636,
+    15.4071,
+    12.9795,
+    12.0267,
+    12.7419,
+    14.8231
+   ],
+   [
+    29.0294,
+    25.916,
+    22.8131,
+    19.764,
+    16.8046,
+    14.1084,
+    13.0078,
+    13.3039,
+    14.6559
+   ]
+  ],
+  "american_vol_percent": [
+   [
+    20.9469,
+    18.7501,
+    16.7332,
+    14.8021,
+    12.9749,
+    11.2971,
+    9.8145,
+    10.5625,
+    11.1549
+   ],
+   [
+    23.5845,
+    20.8067,
+    18.1421,
+    15.5507,
+    13.0479,
+    11.0639,
+    10.2155,
+    11.1203,
+    14.211
+   ],
+   [
+    25.0228,
+    21.8897,
+    18.8315,
+    15.8797,
+    13.1026,
+    11.0147,
+    10.4282,
+    12.1607,
+    15.2458
+   ],
+   [
+    26.7123,
+    23.473,
+    20.1792,
+    16.8569,
+    13.8182,
+    11.6923,
+    11.0673,
+    12.1781,
+    15.1693
+   ],
+   [
+    27.3255,
+    23.9752,
+    20.6029,
+    17.2681,
+    14.0997,
+    11.8135,
+    11.2486,
+    12.3226,
+    14.4494
+   ],
+   [
+    28.4554,
+    25.1847,
+    21.8194,
+    18.3958,
+    15.0422,
+    12.5864,
+    12.0377,
+    12.6588,
+    14.5981
+   ],
+   [
+    29.0401,
+    25.9072,
+    22.749,
+    19.4911,
+    16.2085,
+    13.6143,
+    12.7802,
+    13.1833,
+    14.4918
+   ]
+  ],
+  "vol_points": [
+   [
+    -0.0015,
+    0.0019,
+    0.0106,
+    0.0233,
+    0.0332,
+    0.032,
+    0.0115,
+    -0.0336,
+    -0.0245
+   ],
+   [
+    -0.0053,
+    0.003,
+    0.0325,
+    0.0556,
+    0.0489,
+    0.0244,
+    0.0115,
+    0.0398,
+    -0.0668
+   ],
+   [
+    -0.0067,
+    0.0033,
+    0.0235,
+    0.0563,
+    0.099,
+    0.1075,
+    0.0167,
+    -0.2383,
+    0.0105
+   ],
+   [
+    0.0347,
+    0.0511,
+    0.0783,
+    0.1169,
+    0.1438,
+    0.1129,
+    0.0423,
+    0.013,
+    0.0899
+   ],
+   [
+    -0.0054,
+    0.0079,
+    0.0639,
+    0.1516,
+    0.2298,
+    0.186,
+    0.0497,
+    0.0336,
+    0.0935
+   ],
+   [
+    0.065,
+    0.0666,
+    0.0779,
+    0.1677,
+    0.3649,
+    0.3931,
+    -0.0111,
+    0.0831,
+    0.225
+   ],
+   [
+    -0.0106,
+    0.0088,
+    0.0641,
+    0.2729,
+    0.5961,
+    0.4941,
+    0.2276,
+    0.1206,
+    0.164
+   ]
+  ],
+  "design_noise_units": [
+   [
+    -0.0015,
+    0.0023,
+    0.0163,
+    0.0491,
+    0.1106,
+    0.0673,
+    0.0176,
+    -0.0407,
+    -0.0245
+   ],
+   [
+    -0.0053,
+    0.0037,
+    0.05,
+    0.117,
+    0.163,
+    0.0514,
+    0.0177,
+    0.0482,
+    -0.0668
+   ],
+   [
+    -0.0067,
+    0.004,
+    0.0362,
+    0.1184,
+    0.3301,
+    0.2263,
+    0.0257,
+    -0.2889,
+    0.0105
+   ],
+   [
+    0.0347,
+    0.0619,
+    0.1205,
+    0.2461,
+    0.4794,
+    0.2376,
+    0.0651,
+    0.0158,
+    0.0899
+   ],
+   [
+    -0.0054,
+    0.0096,
+    0.0982,
+    0.3191,
+    0.766,
+    0.3915,
+    0.0765,
+    0.0407,
+    0.0935
+   ],
+   [
+    0.065,
+    0.0808,
+    0.1199,
+    0.3531,
+    1.2165,
+    0.8275,
+    -0.017,
+    0.1008,
+    0.225
+   ],
+   [
+    -0.0106,
+    0.0107,
+    0.0985,
+    0.5745,
+    1.987,
+    1.0403,
+    0.3502,
+    0.1462,
+    0.164
+   ]
+  ],
+  "price_shift_over_noise_sd": [
+   [
+    -0.0017,
+    0.002,
+    0.0132,
+    0.0443,
+    0.1106,
+    0.0516,
+    0.0037,
+    -0.0022,
+    -0.0003
+   ],
+   [
+    -0.0093,
+    0.004,
+    0.045,
+    0.1079,
+    0.163,
+    0.0387,
+    0.0043,
+    0.004,
+    -0.0092
+   ],
+   [
+    -0.0139,
+    0.0048,
+    0.034,
+    0.1102,
+    0.3301,
+    0.1706,
+    0.0068,
+    -0.04,
+    0.0025
+   ],
+   [
+    0.0836,
+    0.0844,
+    0.1218,
+    0.2342,
+    0.4796,
+    0.1876,
+    0.0211,
+    0.0023,
+    0.021
+   ],
+   [
+    -0.0137,
+    0.0135,
+    0.1012,
+    0.3063,
+    0.7665,
+    0.312,
+    0.0262,
+    0.0065,
+    0.0154
+   ],
+   [
+    0.1789,
+    0.1224,
+    0.13,
+    0.3457,
+    1.2177,
+    0.6915,
+    -0.0071,
+    0.0191,
+    0.0413
+   ],
+   [
+    -0.0303,
+    0.0168,
+    0.1103,
+    0.5719,
+    1.9902,
+    0.911,
+    0.1739,
+    0.0347,
+    0.0281
+   ]
+  ],
+  "summary": {
+   "at_the_money_vol_points_by_maturity": [
+    0.033,
+    0.049,
+    0.099,
+    0.144,
+    0.23,
+    0.365,
+    0.596
+   ],
+   "at_the_money_design_noise_units_by_maturity": [
+    0.111,
+    0.163,
+    0.33,
+    0.479,
+    0.766,
+    1.216,
+    1.987
+   ],
+   "largest_put_vol_points": 0.596,
+   "largest_call_vol_points_in_size": 0.494,
+   "largest_design_noise_units": {
+    "value": 1.987,
+    "days": 252,
+    "delta": 0.0
+   },
+   "points_at_least_half_the_design_noise": 6,
+   "points_at_least_the_design_noise": 3,
+   "mean_over_63_points_design_noise_units": 0.183
+  },
+  "smile": {
+   "european": {
+    "atm_skew": [
+     -1.2304,
+     -1.0247,
+     -0.7494,
+     -0.5748,
+     -0.4831,
+     -0.3582,
+     -0.2527
+    ],
+    "skew_exponent": -0.4061
+   },
+   "american": {
+    "atm_skew": [
+     -1.2312,
+     -1.0211,
+     -0.7507,
+     -0.5729,
+     -0.4833,
+     -0.3588,
+     -0.2581
+    ],
+    "skew_exponent": -0.4021
+   }
+  }
+ },
+ "forward_variance_levels": {
+  "european": [
+   0.02165728752215262,
+   0.028556463041774206,
+   0.028918206537418948,
+   0.04149968819478453,
+   0.042256915967872205,
+   0.04800046281841923,
+   0.05444711663471341
+  ],
+  "american": [
+   0.021587297585224603,
+   0.028385607227957584,
+   0.028645553182916377,
+   0.04073508182092898,
+   0.04188391901131269,
+   0.047215307933564564,
+   0.052886944811843285
+  ],
+  "relative_change": [
+   -0.003231703732816338,
+   -0.005983087386091324,
+   -0.009428432366639594,
+   -0.018424388401830027,
+   -0.008826885446233224,
+   -0.01635723571718095,
+   -0.02865481074667997
+  ]
+ },
+ "expirations": [
+  {
+   "expiration": "2026-10-30",
+   "days": 1,
+   "forward_european": 765.9025660812014,
+   "forward_change": 6.9567458722552544e-06,
+   "spot_less_carry_european": 3.5831567852613944,
+   "spot_less_carry_american": 3.5778294703683287,
+   "forward_american": 765.9078942707165,
+   "last_forward_move": 1.1618371265065264e-08,
+   "out_of_the_money_puts": 35,
+   "premium_over_half_spread_median": 0.01191149919839567,
+   "premium_over_half_spread_max": 0.4143297364446626,
+   "put_nearest_the_money": {
+    "strike": 765.0,
+    "k": -0.0011860862179230022,
+    "premium": 0.0054722773427751115,
+    "half_spread": 0.025000000000000133,
+    "premium_vol_points": 0.028731578355084553
+   }
+  },
+  {
+   "expiration": "2026-11-02",
+   "days": 2,
+   "forward_european": 766.0204991387393,
+   "forward_change": 1.793219144929914e-05,
+   "spot_less_carry_european": 3.590964671016991,
+   "spot_less_carry_american": 3.577232754069655,
+   "forward_american": 766.0342355649839,
+   "last_forward_move": 8.240549331794966e-08,
+   "out_of_the_money_puts": 48,
+   "premium_over_half_spread_median": 0.03221621056992487,
+   "premium_over_half_spread_max": 0.6100762633951384,
+   "put_nearest_the_money": {
+    "strike": 766.0,
+    "k": -4.469295032030577e-05,
+    "premium": 0.015251906584878405,
+    "half_spread": 0.02499999999999991,
+    "premium_vol_points": 0.055926986024557035
+   }
+  },
+  {
+   "expiration": "2026-11-03",
+   "days": 3,
+   "forward_european": 766.1027967984647,
+   "forward_change": 2.9030647294758793e-05,
+   "spot_less_carry_european": 3.6344084795058507,
+   "spot_less_carry_american": 3.6121789699338933,
+   "forward_american": 766.12503725855,
+   "last_forward_move": 4.3825454376644757e-10,
+   "out_of_the_money_puts": 50,
+   "premium_over_half_spread_median": 0.05554474658454734,
+   "premium_over_half_spread_max": 0.6865435915566435,
+   "put_nearest_the_money": {
+    "strike": 766.0,
+    "k": -0.0001632206977719686,
+    "premium": 0.02402902570448262,
+    "half_spread": 0.03500000000000014,
+    "premium_vol_points": 0.07210400827660224
+   }
+  },
+  {
+   "expiration": "2026-11-04",
+   "days": 4,
+   "forward_european": 766.1829483133197,
+   "forward_change": 4.0737755554243194e-05,
+   "spot_less_carry_european": 3.6800033952599733,
+   "spot_less_carry_american": 3.6488113107254776,
+   "forward_american": 766.2141608869779,
+   "last_forward_move": 1.0582494880395643e-09,
+   "out_of_the_money_puts": 57,
+   "premium_over_half_spread_median": 0.06807075949034914,
+   "premium_over_half_spread_max": 0.7260768740512951,
+   "put_nearest_the_money": {
+    "strike": 766.0,
+    "k": -0.00027954432720883696,
+    "premium": 0.03268048095515441,
+    "half_spread": 0.06499999999999995,
+    "premium_vol_points": 0.08494263351338516
+   }
+  },
+  {
+   "expiration": "2026-11-05",
+   "days": 5,
+   "forward_european": 766.2596871510273,
+   "forward_change": 4.193137415509085e-05,
+   "spot_less_carry_european": 3.7290138519541642,
+   "spot_less_carry_american": 3.696909892609142,
+   "forward_american": 766.2918174726692,
+   "last_forward_move": 4.842855005904312e-10,
+   "out_of_the_money_puts": 14,
+   "premium_over_half_spread_median": 0.08077210830436758,
+   "premium_over_half_spread_max": 0.7445149067664518,
+   "put_nearest_the_money": {
+    "strike": 765.0,
+    "k": -0.0016872261242225567,
+    "premium": 0.03722574533832246,
+    "half_spread": 0.04999999999999982,
+    "premium_vol_points": 0.08695220366242151
+   }
+  },
+  {
+   "expiration": "2026-11-06",
+   "days": 6,
+   "forward_european": 766.4834682201343,
+   "forward_change": 6.342234100142896e-05,
+   "spot_less_carry_european": 3.631131380955594,
+   "spot_less_carry_american": 3.5825670635352935,
+   "forward_american": 766.5320803960278,
+   "last_forward_move": 2.33181962627782e-09,
+   "out_of_the_money_puts": 79,
+   "premium_over_half_spread_median": 0.08327592646730513,
+   "premium_over_half_spread_max": 0.9052136611692015,
+   "put_nearest_the_money": {
+    "strike": 766.0,
+    "k": -0.000694380788778711,
+    "premium": 0.05056821860077987,
+    "half_spread": 0.09499999999999975,
+    "premium_vol_points": 0.1073780317687012
+   }
+  },
+  {
+   "expiration": "2026-11-09",
+   "days": 7,
+   "forward_european": 766.581816691069,
+   "forward_change": 4.758873375632078e-05,
+   "spot_less_carry_european": 3.6585902156938346,
+   "spot_less_carry_american": 3.622151455166886,
+   "forward_american": 766.6182973490459,
+   "last_forward_move": 2.8474764768304794e-09,
+   "out_of_the_money_puts": 16,
+   "premium_over_half_spread_median": 0.1558193565803416,
+   "premium_over_half_spread_max": 0.9056898234686354,
+   "put_nearest_the_money": {
+    "strike": 765.0,
+    "k": -0.0021131870180236345,
+    "premium": 0.05434138940811817,
+    "half_spread": 0.06000000000000005,
+    "premium_vol_points": 0.10732316430127065
+   }
+  },
+  {
+   "expiration": "2026-11-10",
+   "days": 8,
+   "forward_european": 766.7571495029731,
+   "forward_change": 4.869514115335427e-05,
+   "spot_less_carry_european": 3.609177365193432,
+   "spot_less_carry_american": 3.571889020796789,
+   "forward_american": 766.7944868505986,
+   "last_forward_move": 5.4179639552565106e-08,
+   "out_of_the_money_puts": 15,
+   "premium_over_half_spread_median": 0.17653758855662433,
+   "premium_over_half_spread_max": 1.0501835856639394,
+   "put_nearest_the_money": {
+    "strike": 765.0,
+    "k": -0.0023429875050725796,
+    "premium": 0.06301101513983642,
+    "half_spread": 0.06000000000000005,
+    "premium_vol_points": 0.11640274161704434
+   }
+  },
+  {
+   "expiration": "2026-11-11",
+   "days": 9,
+   "forward_european": 766.800157716628,
+   "forward_change": 0.00017665634070751501,
+   "spot_less_carry_european": 3.691930605783682,
+   "spot_less_carry_american": 3.556670486447956,
+   "forward_american": 766.9356178265441,
+   "last_forward_move": 1.188935081497533e-07,
+   "out_of_the_money_puts": 15,
+   "premium_over_half_spread_median": 0.1890565132735576,
+   "premium_over_half_spread_max": 1.2028720095338534,
+   "put_nearest_the_money": {
+    "strike": 765.0,
+    "k": -0.0025270237653160716,
+    "premium": 0.07217232057203127,
+    "half_spread": 0.06000000000000005,
+    "premium_vol_points": 0.12584763171704094
+   }
+  },
+  {
+   "expiration": "2026-11-12",
+   "days": 10,
+   "forward_european": 767.0531699450289,
+   "forward_change": 5.771724180458904e-05,
+   "spot_less_carry_european": 3.565017764016261,
+   "spot_less_carry_american": 3.5208181898537987,
+   "forward_american": 767.0974421383156,
+   "last_forward_move": 4.5711257001812555e-10,
+   "out_of_the_money_puts": 15,
+   "premium_over_half_spread_median": 0.277377010715951,
+   "premium_over_half_spread_max": 1.3551562469515117,
+   "put_nearest_the_money": {
+    "strike": 765.0,
+    "k": -0.002738002676520926,
+    "premium": 0.08130937481709077,
+    "half_spread": 0.06000000000000005,
+    "premium_vol_points": 0.13447676691655808
+   }
+  },
+  {
+   "expiration": "2026-11-13",
+   "days": 11,
+   "forward_european": 767.0534986045657,
+   "forward_change": 0.00013024857554566616,
+   "spot_less_carry_european": 3.690394904016671,
+   "spot_less_carry_american": 3.5906675286144036,
+   "forward_american": 767.1534062301262,
+   "last_forward_move": 1.30294495193084e-08,
+   "out_of_the_money_puts": 95,
+   "premium_over_half_spread_median": 0.24851917321098127,
+   "premium_over_half_spread_max": 2.020631061045699,
+   "put_nearest_the_money": {
+    "strike": 767.0,
+    "k": -0.0001999881237619341,
+    "premium": 0.10812178904981362,
+    "half_spread": 0.0600000000000005,
+    "premium_vol_points": 0.1694435661166227
+   }
+  },
+  {
+   "expiration": "2026-11-20",
+   "days": 16,
+   "forward_european": 767.6153024577429,
+   "forward_change": 0.00022453073937556134,
+   "spot_less_carry_european": 3.758281609113851,
+   "spot_less_carry_american": 3.586380489216367,
+   "forward_american": 767.7876556891597,
+   "last_forward_move": 2.69857050039235e-08,
+   "out_of_the_money_puts": 124,
+   "premium_over_half_spread_median": 0.33130522810784613,
+   "premium_over_half_spread_max": 2.2299645896802343,
+   "put_nearest_the_money": {
+    "strike": 767.0,
+    "k": -0.0010264035619388188,
+    "premium": 0.16076342333904048,
+    "half_spread": 0.09499999999999975,
+    "premium_vol_points": 0.20908584514170436
+   }
+  },
+  {
+   "expiration": "2026-11-27",
+   "days": 21,
+   "forward_european": 768.157261964616,
+   "forward_change": 0.0002898571077012413,
+   "spot_less_carry_european": 3.8463484064297973,
+   "spot_less_carry_american": 3.6244588334731134,
+   "forward_american": 768.3799178068289,
+   "last_forward_move": 7.876220475822038e-08,
+   "out_of_the_money_puts": 81,
+   "premium_over_half_spread_median": 0.44168319233332604,
+   "premium_over_half_spread_max": 3.1185707195220274,
+   "put_nearest_the_money": {
+    "strike": 768.0,
+    "k": -0.000494562328196691,
+    "premium": 0.23246844000326483,
+    "half_spread": 0.07500000000000018,
+    "premium_vol_points": 0.26378100900797397
+   }
+  },
+  {
+   "expiration": "2026-11-30",
+   "days": 22,
+   "forward_european": 768.2702769109039,
+   "forward_change": 0.00030091108992480464,
+   "spot_less_carry_european": 3.8593999143837436,
+   "spot_less_carry_american": 3.6290522944739223,
+   "forward_american": 768.501457957286,
+   "last_forward_move": 1.1523938825419577e-07,
+   "out_of_the_money_puts": 210,
+   "premium_over_half_spread_median": 0.2728620945335961,
+   "premium_over_half_spread_max": 2.8657030718640093,
+   "put_nearest_the_money": {
+    "strike": 768.0,
+    "k": -0.0006527269759399643,
+    "premium": 0.24374042813943841,
+    "half_spread": 0.08999999999999986,
+    "premium_vol_points": 0.2702664426435242
+   }
+  },
+  {
+   "expiration": "2026-12-04",
+   "days": 26,
+   "forward_european": 768.7435372624493,
+   "forward_change": 0.00038894253812449264,
+   "spot_less_carry_european": 3.8906590402385746,
+   "spot_less_carry_american": 3.592935451909284,
+   "forward_american": 769.0425343249989,
+   "last_forward_move": 1.4908877266073262e-07,
+   "out_of_the_money_puts": 82,
+   "premium_over_half_spread_median": 0.5987562757333169,
+   "premium_over_half_spread_max": 4.3716968675776275,
+   "put_nearest_the_money": {
+    "strike": 769.0,
+    "k": -5.530968625445784e-05,
+    "premium": 0.3060187807304313,
+    "half_spread": 0.0699999999999994,
+    "premium_vol_points": 0.311994957902334
+   }
+  },
+  {
+   "expiration": "2026-12-11",
+   "days": 31,
+   "forward_european": 769.3012627660428,
+   "forward_change": 0.0006283801515938325,
+   "spot_less_carry_european": 3.9638171681494896,
+   "spot_less_carry_american": 3.482857398752344,
+   "forward_american": 769.784676410161,
+   "last_forward_move": 1.4949143356535188e-06,
+   "out_of_the_money_puts": 9,
+   "premium_over_half_spread_median": 1.840438428449426,
+   "premium_over_half_spread_max": 3.956993764546288,
+   "put_nearest_the_money": {
+    "strike": 765.0,
+    "k": -0.006235000888586354,
+    "premium": 0.2967745323409723,
+    "half_spread": 0.07500000000000018,
+    "premium_vol_points": 0.28052231692812235
+   }
+  },
+  {
+   "expiration": "2026-12-18",
+   "days": 36,
+   "forward_european": 769.0457156041982,
+   "forward_change": -0.0009575218503777849,
+   "spot_less_carry_european": 2.863903537762673,
+   "spot_less_carry_american": 3.5959425403103813,
+   "forward_american": 768.3093375275678,
+   "last_forward_move": 6.460188587409377e-07,
+   "out_of_the_money_puts": 151,
+   "premium_over_half_spread_median": 0.2593878700428189,
+   "premium_over_half_spread_max": 0.7061408827372199,
+   "put_nearest_the_money": {
+    "strike": 768.0,
+    "k": -0.0004027021436269199,
+    "premium": 0.06355020806719303,
+    "half_spread": 0.08999999999999986,
+    "premium_vol_points": 0.05500359975154634
+   }
+  },
+  {
+   "expiration": "2026-12-31",
+   "days": 45,
+   "forward_european": 769.1623751703869,
+   "forward_change": 0.00028823626147223,
+   "spot_less_carry_european": 3.8768159067575487,
+   "spot_less_carry_american": 3.6567471646945995,
+   "forward_american": 769.3840756578711,
+   "last_forward_move": 9.536297129741911e-08,
+   "out_of_the_money_puts": 210,
+   "premium_over_half_spread_median": 0.7694289064251816,
+   "premium_over_half_spread_max": 3.600590602002123,
+   "put_nearest_the_money": {
+    "strike": 769.0,
+    "k": -0.0004993235069555886,
+    "premium": 0.3475262095058138,
+    "half_spread": 0.11500000000000021,
+    "premium_vol_points": 0.27014229580279436
+   }
+  },
+  {
+   "expiration": "2027-01-15",
+   "days": 56,
+   "forward_european": 770.689184301501,
+   "forward_change": 0.0006583476409594002,
+   "spot_less_carry_european": 3.7414632728764508,
+   "spot_less_carry_american": 3.2387249258131368,
+   "forward_american": 771.1965657078988,
+   "last_forward_move": 3.2991728371456475e-07,
+   "out_of_the_money_puts": 110,
+   "premium_over_half_spread_median": 0.30339980918667714,
+   "premium_over_half_spread_max": 5.63611542095686,
+   "put_nearest_the_money": {
+    "strike": 770.0,
+    "k": -0.001552775259099081,
+    "premium": 0.5917921192004627,
+    "half_spread": 0.10499999999999865,
+    "premium_vol_points": 0.4125522460855957
+   }
+  },
+  {
+   "expiration": "2027-01-29",
+   "days": 66,
+   "forward_european": 771.7223985123776,
+   "forward_change": 0.0010510113867365778,
+   "spot_less_carry_european": 3.9784961687273332,
+   "spot_less_carry_american": 3.176154532965911,
+   "forward_american": 772.5334875406137,
+   "last_forward_move": 8.556560826544768e-07,
+   "out_of_the_money_puts": 142,
+   "premium_over_half_spread_median": 2.3447573692053663,
+   "premium_over_half_spread_max": 6.899921686737298,
+   "put_nearest_the_money": {
+    "strike": 772.0,
+    "k": -0.0006908073746964431,
+    "premium": 0.8182211941998982,
+    "half_spread": 0.11999999999999922,
+    "premium_vol_points": 0.525182791707085
+   }
+  },
+  {
+   "expiration": "2027-02-19",
+   "days": 81,
+   "forward_european": 773.5767903877876,
+   "forward_change": 0.0014227637756412115,
+   "spot_less_carry_european": 4.067670907971148,
+   "spot_less_carry_american": 2.9816604708484524,
+   "forward_american": 774.6774074228282,
+   "last_forward_move": 1.9315449617529623e-06,
+   "out_of_the_money_puts": 75,
+   "premium_over_half_spread_median": 0.8958688837588539,
+   "premium_over_half_spread_max": 9.62358570972094,
+   "put_nearest_the_money": {
+    "strike": 770.0,
+    "k": -0.006056179363495166,
+    "premium": 1.0104764995207027,
+    "half_spread": 0.10500000000000043,
+    "premium_vol_points": 0.5886591827004628
+   }
+  },
+  {
+   "expiration": "2027-02-26",
+   "days": 86,
+   "forward_european": 774.1618338344845,
+   "forward_change": 0.001557082283718314,
+   "spot_less_carry_european": 4.134282368962067,
+   "spot_less_carry_american": 2.9458489091802895,
+   "forward_american": 775.3672675106791,
+   "last_forward_move": 2.6947426721157797e-06,
+   "out_of_the_money_puts": 100,
+   "premium_over_half_spread_median": 4.362383293012018,
+   "premium_over_half_spread_max": 9.330379737899435,
+   "put_nearest_the_money": {
+    "strike": 775.0,
+    "k": -0.00047378131007474403,
+    "premium": 1.2456262899594908,
+    "half_spread": 0.1349999999999998,
+    "premium_vol_points": 0.7005622090136832
+   }
+  },
+  {
+   "expiration": "2027-03-19",
+   "days": 101,
+   "forward_european": 775.7317008155841,
+   "forward_change": 2.7718184493430442e-05,
+   "spot_less_carry_european": 2.7613053467512008,
+   "spot_less_carry_american": 2.7401605460383824,
+   "forward_american": 775.7532026899847,
+   "last_forward_move": 6.016876175074515e-08,
+   "out_of_the_money_puts": 106,
+   "premium_over_half_spread_median": 0.17174198273484637,
+   "premium_over_half_spread_max": 7.051704065277169,
+   "put_nearest_the_money": {
+    "strike": 775.0,
+    "k": -0.0009714024744962216,
+    "premium": 0.8462044878332673,
+    "half_spread": 0.120000000000001,
+    "premium_vol_points": 0.4399297285653858
+   }
+  },
+  {
+   "expiration": "2027-03-31",
+   "days": 109,
+   "forward_european": 775.9468611657759,
+   "forward_change": 0.0010907814639153912,
+   "spot_less_carry_european": 3.5899367951714503,
+   "spot_less_carry_american": 2.7587385611562176,
+   "forward_american": 776.7932496189188,
+   "last_forward_move": 1.4004548567481123e-06,
+   "out_of_the_money_puts": 154,
+   "premium_over_half_spread_median": 1.3472062520110306,
+   "premium_over_half_spread_max": 8.285890674720473,
+   "put_nearest_the_money": {
+    "strike": 775.0,
+    "k": -0.0023111976000661848,
+    "premium": 1.0771657877136533,
+    "half_spread": 0.129999999999999,
+    "premium_vol_points": 0.5398541161935111
+   }
+  },
+  {
+   "expiration": "2027-04-30",
+   "days": 131,
+   "forward_european": 778.4224732385072,
+   "forward_change": 0.002166054439388221,
+   "spot_less_carry_european": 4.042836595665463,
+   "spot_less_carry_american": 2.3932384191512166,
+   "forward_american": 780.108578692385,
+   "last_forward_move": 4.94913955506604e-06,
+   "out_of_the_money_puts": 114,
+   "premium_over_half_spread_median": 6.613776639274555,
+   "premium_over_half_spread_max": 13.170216177519825,
+   "put_nearest_the_money": {
+    "strike": 780.0,
+    "k": -0.00013919376387412332,
+    "premium": 1.7507215370864522,
+    "half_spread": 0.134999999999998,
+    "premium_vol_points": 0.7996073146932958
+   }
+  },
+  {
+   "expiration": "2027-06-17",
+   "days": 165,
+   "forward_european": 782.5227733997885,
+   "forward_change": 0.0010221695483594306,
+   "spot_less_carry_european": 2.7014082292052812,
+   "spot_less_carry_american": 1.9234775365197088,
+   "forward_american": 783.3226443496555,
+   "last_forward_move": 3.3400347478895753e-06,
+   "out_of_the_money_puts": 135,
+   "premium_over_half_spread_median": 0.24293084345196586,
+   "premium_over_half_spread_max": 10.976008610642502,
+   "put_nearest_the_money": {
+    "strike": 780.0,
+    "k": -0.004250753182278634,
+    "premium": 1.7012813346495612,
+    "half_spread": 0.15499999999999758,
+    "premium_vol_points": 0.6955526256593569
+   }
+  },
+  {
+   "expiration": "2027-06-30",
+   "days": 174,
+   "forward_european": 782.6004088115285,
+   "forward_change": 0.002511756791649944,
+   "spot_less_carry_european": 3.8312715745731465,
+   "spot_less_carry_american": 1.9225154449993296,
+   "forward_american": 784.5661107035088,
+   "last_forward_move": 7.990730448437233e-06,
+   "out_of_the_money_puts": 141,
+   "premium_over_half_spread_median": 4.982626677631714,
+   "premium_over_half_spread_max": 11.916155589394581,
+   "put_nearest_the_money": {
+    "strike": 780.0,
+    "k": -0.005836920071417135,
+    "premium": 1.9661656722500958,
+    "half_spread": 0.16499999999999915,
+    "premium_vol_points": 0.7844073448769195
+   }
+  },
+  {
+   "expiration": "2027-09-17",
+   "days": 231,
+   "forward_european": 789.4351257497269,
+   "forward_change": 0.0027946537383500836,
+   "spot_less_carry_european": 3.157974925638915,
+   "spot_less_carry_american": 1.037426451850398,
+   "forward_american": 791.6413235750883,
+   "last_forward_move": 1.6504980458575957e-05,
+   "out_of_the_money_puts": 140,
+   "premium_over_half_spread_median": 0.5787658579366892,
+   "premium_over_half_spread_max": 17.267999900030294,
+   "put_nearest_the_money": {
+    "strike": 790.0,
+    "k": -0.002075469500955094,
+    "premium": 3.021899982505314,
+    "half_spread": 0.1750000000000007,
+    "premium_vol_points": 1.0462550134991755
+   }
+  },
+  {
+   "expiration": "2027-09-30",
+   "days": 240,
+   "forward_european": 789.5547099100645,
+   "forward_change": 0.00410969845311393,
+   "spot_less_carry_european": 4.283860476222182,
+   "spot_less_carry_american": 1.1700979472311221,
+   "forward_american": 792.7995416800306,
+   "last_forward_move": 2.4016156205508565e-05,
+   "out_of_the_money_puts": 133,
+   "premium_over_half_spread_median": 8.927242968778138,
+   "premium_over_half_spread_max": 16.29710087131226,
+   "put_nearest_the_money": {
+    "strike": 792.0,
+    "k": -0.0010090130982975413,
+    "premium": 3.422391182975531,
+    "half_spread": 0.2099999999999973,
+    "premium_vol_points": 1.1628068843672568
+   }
+  },
+  {
+   "expiration": "2027-12-17",
+   "days": 296,
+   "forward_european": 796.1931176781403,
+   "forward_change": 0.004311775126088824,
+   "spot_less_carry_european": 3.878619404819352,
+   "spot_less_carry_american": 0.6181580620459552,
+   "forward_american": 799.626123358508,
+   "last_forward_move": 3.70295160063705e-05,
+   "out_of_the_money_puts": 144,
+   "premium_over_half_spread_median": 0.8908373026953981,
+   "premium_over_half_spread_max": 20.668714954936128,
+   "put_nearest_the_money": {
+    "strike": 795.0,
+    "k": -0.0058021579716445405,
+    "premium": 4.237086565761871,
+    "half_spread": 0.2049999999999983,
+    "premium_vol_points": 1.3043259074232094
+   }
+  },
+  {
+   "expiration": "2028-01-21",
+   "days": 321,
+   "forward_european": 798.1294399215211,
+   "forward_change": 0.0068431772723027695,
+   "spot_less_carry_european": 5.596734036905854,
+   "spot_less_carry_american": 0.43383297383929786,
+   "forward_american": 803.5911811651479,
+   "last_forward_move": 7.236081779393722e-05,
+   "out_of_the_money_puts": 143,
+   "premium_over_half_spread_median": 1.9787352629441248,
+   "premium_over_half_spread_max": 22.311353537257002,
+   "put_nearest_the_money": {
+    "strike": 800.0,
+    "k": -0.004478931052789661,
+    "premium": 5.354724848941725,
+    "half_spread": 0.240000000000002,
+    "premium_vol_points": 1.5844129740170354
+   }
+  },
+  {
+   "expiration": "2028-06-16",
+   "days": 426,
+   "forward_european": 809.6187439934757,
+   "forward_change": 0.00901396321549286,
+   "spot_less_carry_european": 6.700990335063125,
+   "spot_less_carry_american": -0.0587111384650143,
+   "forward_american": 816.9166175704065,
+   "last_forward_move": 0.00020815467598467308,
+   "out_of_the_money_puts": 148,
+   "premium_over_half_spread_median": 1.7114004731004506,
+   "premium_over_half_spread_max": 28.44369631019381,
+   "put_nearest_the_money": {
+    "strike": 815.0,
+    "k": -0.0023489171333895696,
+    "premium": 8.248671929956181,
+    "half_spread": 0.28999999999999915,
+    "premium_vol_points": 2.1368284312926034
+   }
+  },
+  {
+   "expiration": "2028-12-15",
+   "days": 556,
+   "forward_european": 822.8266297665443,
+   "forward_change": 0.014551274637082834,
+   "spot_less_carry_european": 9.951034478977533,
+   "spot_less_carry_american": -0.8626982575022453,
+   "forward_american": 834.7998060349827,
+   "last_forward_move": 0.0007211622240985704,
+   "out_of_the_money_puts": 130,
+   "premium_over_half_spread_median": 3.587417792163609,
+   "premium_over_half_spread_max": 32.54982790479136,
+   "put_nearest_the_money": {
+    "strike": 830.0,
+    "k": -0.005766242063288698,
+    "premium": 12.531683743344608,
+    "half_spread": 0.384999999999998,
+    "premium_vol_points": 2.8948083463825105
+   }
+  },
+  {
+   "expiration": "2029-01-19",
+   "days": 581,
+   "forward_european": 824.6717694237512,
+   "forward_change": 0.016614256050109466,
+   "spot_less_carry_european": 11.687775586832515,
+   "spot_less_carry_american": -0.6302004605092293,
+   "forward_american": 838.3730773582542,
+   "last_forward_move": 0.0008680596969872223,
+   "out_of_the_money_puts": 94,
+   "premium_over_half_spread_median": 0.7434821948207988,
+   "premium_over_half_spread_max": 9.163495473743424,
+   "put_nearest_the_money": {
+    "strike": 835.0,
+    "k": -0.004031476270760011,
+    "premium": 14.11594875422412,
+    "half_spread": 2.0549999999999997,
+    "premium_vol_points": 3.1937883998199967
+   }
+  }
+ ],
+ "surface_estimate": {
+  "shift": {
+   "european_vol_percent": [
+    [
+     20.9454,
+     18.7521,
+     16.7438,
+     14.8255,
+     13.0081,
+     11.3291,
+     9.826,
+     10.5289,
+     11.1304
+    ],
+    [
+     23.5792,
+     20.8097,
+     18.1746,
+     15.6063,
+     13.0968,
+     11.0883,
+     10.2269,
+     11.1601,
+     14.1442
+    ],
+    [
+     25.016,
+     21.893,
+     18.8551,
+     15.936,
+     13.2016,
+     11.1222,
+     10.4449,
+     11.9224,
+     15.2563
+    ],
+    [
+     26.747,
+     23.5241,
+     20.2575,
+     16.9738,
+     13.962,
+     11.8052,
+     11.1096,
+     12.1911,
+     15.2592
+    ],
+    [
+     27.3201,
+     23.9831,
+     20.6667,
+     17.4197,
+     14.3296,
+     11.9995,
+     11.2984,
+     12.3562,
+     14.5428
+    ],
+    [
+     28.5204,
+     25.2513,
+     21.8974,
+     18.5636,
+     15.4071,
+     12.9795,
+     12.0267,
+     12.7419,
+     14.8231
+    ],
+    [
+     29.0294,
+     25.916,
+     22.8131,
+     19.764,
+     16.8046,
+     14.1084,
+     13.0078,
+     13.3039,
+     14.6559
+    ]
+   ],
+   "american_vol_percent": [
+    [
+     20.9466,
+     18.7529,
+     16.7424,
+     14.8146,
+     12.9496,
+     11.2944,
+     9.8076,
+     10.5165,
+     11.1153
+    ],
+    [
+     23.5775,
+     20.8069,
+     18.1679,
+     15.5843,
+     13.0002,
+     11.035,
+     10.1999,
+     11.1512,
+     14.1427
+    ],
+    [
+     25.0098,
+     21.8847,
+     18.8401,
+     15.8967,
+     13.0372,
+     11.0342,
+     10.403,
+     11.9104,
+     15.2553
+    ],
+    [
+     26.7084,
+     23.4748,
+     20.1894,
+     16.865,
+     13.73,
+     11.7109,
+     11.0664,
+     12.1632,
+     15.2358
+    ],
+    [
+     27.2956,
+     23.9502,
+     20.6141,
+     17.3119,
+     14.0108,
+     11.8279,
+     11.211,
+     12.3163,
+     14.5203
+    ],
+    [
+     28.4824,
+     25.2012,
+     21.8203,
+     18.4114,
+     14.9111,
+     12.714,
+     11.885,
+     12.6711,
+     14.7579
+    ],
+    [
+     29.0258,
+     25.8843,
+     22.7338,
+     19.5388,
+     15.9415,
+     13.6539,
+     12.7536,
+     13.147,
+     14.5505
+    ]
+   ],
+   "vol_points": [
+    [
+     -0.0012,
+     -0.0008,
+     0.0014,
+     0.0109,
+     0.0585,
+     0.0347,
+     0.0184,
+     0.0124,
+     0.0151
+    ],
+    [
+     0.0017,
+     0.0028,
+     0.0068,
+     0.0219,
+     0.0966,
+     0.0533,
+     0.0271,
+     0.0088,
+     0.0015
+    ],
+    [
+     0.0062,
+     0.0083,
+     0.0149,
+     0.0393,
+     0.1644,
+     0.088,
+     0.0419,
+     0.012,
+     0.0009
+    ],
+    [
+     0.0386,
+     0.0493,
+     0.0681,
+     0.1088,
+     0.232,
+     0.0943,
+     0.0432,
+     0.0279,
+     0.0234
+    ],
+    [
+     0.0245,
+     0.033,
+     0.0527,
+     0.1078,
+     0.3187,
+     0.1716,
+     0.0874,
+     0.0399,
+     0.0225
+    ],
+    [
+     0.0381,
+     0.0502,
+     0.0771,
+     0.1522,
+     0.4961,
+     0.2654,
+     0.1417,
+     0.0708,
+     0.0652
+    ],
+    [
+     0.0036,
+     0.0317,
+     0.0793,
+     0.2252,
+     0.8631,
+     0.4546,
+     0.2542,
+     0.1569,
+     0.1054
+    ]
+   ],
+   "design_noise_units": [
+    [
+     -0.0012,
+     -0.001,
+     0.0021,
+     0.023,
+     0.1951,
+     0.0729,
+     0.0283,
+     0.015,
+     0.0151
+    ],
+    [
+     0.0017,
+     0.0034,
+     0.0104,
+     0.0462,
+     0.3221,
+     0.1122,
+     0.0417,
+     0.0107,
+     0.0015
+    ],
+    [
+     0.0062,
+     0.0101,
+     0.023,
+     0.0827,
+     0.548,
+     0.1853,
+     0.0644,
+     0.0145,
+     0.0009
+    ],
+    [
+     0.0386,
+     0.0597,
+     0.1048,
+     0.2291,
+     0.7732,
+     0.1985,
+     0.0664,
+     0.0338,
+     0.0234
+    ],
+    [
+     0.0245,
+     0.0399,
+     0.081,
+     0.2269,
+     1.0624,
+     0.3613,
+     0.1344,
+     0.0483,
+     0.0225
+    ],
+    [
+     0.0381,
+     0.0608,
+     0.1186,
+     0.3204,
+     1.6535,
+     0.5588,
+     0.218,
+     0.0859,
+     0.0652
+    ],
+    [
+     0.0036,
+     0.0384,
+     0.122,
+     0.4742,
+     2.8771,
+     0.957,
+     0.3911,
+     0.1902,
+     0.1054
+    ]
+   ],
+   "price_shift_over_noise_sd": [
+    [
+     -0.0014,
+     -0.0008,
+     0.0017,
+     0.0208,
+     0.1951,
+     0.0559,
+     0.0059,
+     0.0008,
+     0.0002
+    ],
+    [
+     0.003,
+     0.0037,
+     0.0094,
+     0.0426,
+     0.3221,
+     0.0845,
+     0.0101,
+     0.0009,
+     0.0002
+    ],
+    [
+     0.0128,
+     0.0122,
+     0.0216,
+     0.0769,
+     0.5481,
+     0.1398,
+     0.0169,
+     0.0019,
+     0.0002
+    ],
+    [
+     0.0929,
+     0.0814,
+     0.106,
+     0.218,
+     0.7735,
+     0.1568,
+     0.0215,
+     0.005,
+     0.0055
+    ],
+    [
+     0.0618,
+     0.0562,
+     0.0835,
+     0.2179,
+     1.0631,
+     0.2881,
+     0.0457,
+     0.0077,
+     0.0038
+    ],
+    [
+     0.1048,
+     0.0922,
+     0.1286,
+     0.3138,
+     1.6553,
+     0.4684,
+     0.0888,
+     0.0163,
+     0.0125
+    ],
+    [
+     0.0102,
+     0.0603,
+     0.1366,
+     0.4721,
+     2.8818,
+     0.8387,
+     0.1937,
+     0.0449,
+     0.0183
+    ]
+   ],
+   "summary": {
+    "at_the_money_vol_points_by_maturity": [
+     0.059,
+     0.097,
+     0.164,
+     0.232,
+     0.319,
+     0.496,
+     0.863
+    ],
+    "at_the_money_design_noise_units_by_maturity": [
+     0.195,
+     0.322,
+     0.548,
+     0.773,
+     1.062,
+     1.654,
+     2.877
+    ],
+    "largest_put_vol_points": 0.863,
+    "largest_call_vol_points_in_size": 0.455,
+    "largest_design_noise_units": {
+     "value": 2.877,
+     "days": 252,
+     "delta": 0.0
+    },
+    "points_at_least_half_the_design_noise": 7,
+    "points_at_least_the_design_noise": 3,
+    "mean_over_63_points_design_noise_units": 0.217
+   },
+   "smile": {
+    "european": {
+     "atm_skew": [
+      -1.2304,
+      -1.0247,
+      -0.7494,
+      -0.5748,
+      -0.4831,
+      -0.3582,
+      -0.2527
+     ],
+     "skew_exponent": -0.4061
+    },
+    "american": {
+     "atm_skew": [
+      -1.2346,
+      -1.0284,
+      -0.753,
+      -0.5732,
+      -0.4858,
+      -0.3616,
+      -0.2585
+     ],
+     "skew_exponent": -0.4022
+    }
+   }
+  },
+  "less_exact_vol_points_max_abs": 0.267,
+  "less_exact_vol_points_mean": 0.0109,
+  "forward_american": [
+   765.9095545749555,
+   766.0357557514374,
+   766.127010742228,
+   766.2166451647961,
+   766.3032186690758,
+   766.5371657657627,
+   766.6459925307377,
+   766.832101452085,
+   766.8861446975366,
+   767.1504694738948,
+   767.1622957246144,
+   767.7849304010422,
+   768.3917331640789,
+   768.5177818656153,
+   769.0445971860335,
+   769.6722400433621,
+   768.3217420427227,
+   769.3943829288153,
+   771.2946414753036,
+   772.53707294998,
+   774.6968518682456,
+   775.3838685069912,
+   775.8553099072179,
+   776.8866179371463,
+   780.1353719960302,
+   783.542869449097,
+   784.5359649651231,
+   791.7216717541903,
+   792.768611443311,
+   799.8642317678743,
+   803.6173678760646,
+   817.1572452480021,
+   834.9686526881565,
+   838.8505793620819
+  ],
+  "atm_vol": [
+   0.1300807809228503,
+   0.1300807809228503,
+   0.1300807809228503,
+   0.1300807809228503,
+   0.1300807809228503,
+   0.13037731249660078,
+   0.13058870851348667,
+   0.13074703122541043,
+   0.13087003869386032,
+   0.1309683614867031,
+   0.13115079065721333,
+   0.13171925334191328,
+   0.13201604261104427,
+   0.1327252855747735,
+   0.1349912212015116,
+   0.1369699524426529,
+   0.13838144075490114,
+   0.14036256750217072,
+   0.142385469704962,
+   0.14430840746494278,
+   0.14818157271785842,
+   0.14915622818808275,
+   0.15147549833818974,
+   0.15244088815585383,
+   0.15518255863743588,
+   0.16082921330370928,
+   0.16193100660208476,
+   0.16682441558966818,
+   0.16737545647188792,
+   0.16804649706365316,
+   0.16804649706365316,
+   0.16804649706365316,
+   0.16804649706365316,
+   0.16804649706365316
+  ],
+  "two_expiration_points": 36
+ }
+}

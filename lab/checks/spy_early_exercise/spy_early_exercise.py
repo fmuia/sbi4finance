@@ -25,8 +25,9 @@ forwards, and the premia of the out-of-the-money puts in half-spreads, as the EW
 and each expiration S8 read there, the American quote is rebuilt from the grid's volatility, S8's forward and
 discount and the grid's slope in k, and inverted again at the de-Americanized forward, which comes from the
 at-the-money pair. It assumes the two expirations share the grid's volatility at the point's log-moneyness, and it
-does not smooth across the money as S8's splines do: on the chain of 29 October it overstates the at-the-money
-shift by about 40% and is within 0.05 points of the per-quote shift at the puts.
+does not smooth across the money as S8's splines do. On the chain of 29 October it overstates the at-the-money
+shift 1.4 to 1.7 times from 21 days on (0.86 against 0.60 points at 252 days), and is within 0.05 points of the
+per-quote shift at the puts with delta <= -0.5 and within 0.16 at the calls.
 
 spot_less_carry_* compares the spot with F D + PV(dividends) for each forward. With S8's forward it alternates
 between SPY's quarterly expirations, whose calls carry the dividend paid on the expiry day, and the others; with the
