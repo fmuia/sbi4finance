@@ -24,7 +24,14 @@ forwards, and the premia of the out-of-the-money puts in half-spreads, as the EW
 'surface' needs only S8's committed surface.json, for a date whose raw file is not at hand. For each design point
 and each expiration S8 read there, the American quote is rebuilt from the grid's volatility, S8's forward and
 discount and the grid's slope in k, and inverted again at the de-Americanized forward, which comes from the
-at-the-money pair. It assumes the two expirations share the grid's volatility at the point's log-moneyness.
+at-the-money pair. It assumes the two expirations share the grid's volatility at the point's log-moneyness, and it
+does not smooth across the money as S8's splines do: on the chain of 29 October it overstates the at-the-money
+shift by about 40% and is within 0.05 points of the per-quote shift at the puts.
+
+spot_less_carry_* compares the spot with F D + PV(dividends) for each forward. With S8's forward it alternates
+between SPY's quarterly expirations, whose calls carry the dividend paid on the expiry day, and the others; with the
+de-Americanized forward it is smooth in maturity, and what is left grows with it (the market's financing rate above
+the Treasury yield, and a spot that is not synchronous with the options' close).
 
 Shifts are European (S8) less American: positive means S8 reads too high. Units: volatility points; the design
 noise s_iv(delta) of Lecture 5, Section 5.3 (0.3 points at the money to 1 point at |delta| = 2); and, for prices,
@@ -50,15 +57,16 @@ NEAR = 0.05  # in-the-money quotes within this log-moneyness are de-Americanized
 
 
 def dividend_times(settings, valuation):
-    """(time on S8's clock, amount); the stock is ex at the open of the ex-date, so the dividend is due by then."""
-    return [(chain.trading_days(valuation, date.fromisoformat(d)) / surface.TRADING_DAYS, a)
+    """(the last cum-dividend close on S8's clock, amount): the stock opens ex on the ex-date, so exercising at the
+    close before it still collects the dividend, and an option expiring on the ex-date ends on an ex-dividend price."""
+    return [((chain.trading_days(valuation, date.fromisoformat(d)) - 1) / surface.TRADING_DAYS, a)
             for d, a in settings["dividends"] if date.fromisoformat(d) > valuation]
 
 
 def tree(forward, discount, T, dividends, strikes, sigmas, is_put, steps):
     """American and European values per strike, each on its own CRR tree with escrowed dividends."""
     r = -np.log(discount) / T
-    due = [(t, a) for t, a in dividends if t <= T]
+    due = [(t, a) for t, a in dividends if t < T]
     dt = T / steps
     sign = np.where(is_put, -1.0, 1.0)[:, None]
     K = np.asarray(strikes, dtype=float)[:, None]
@@ -70,7 +78,7 @@ def tree(forward, discount, T, dividends, strikes, sigmas, is_put, steps):
     for i in range(steps - 1, -1, -1):
         t = i * dt
         x = s0 * np.exp(up * (i - 2 * np.arange(i + 1)))
-        pv = sum(a * np.exp(-r * (td - t)) for td, a in due if td > t)
+        pv = sum(a * np.exp(-r * (td - t)) for td, a in due if td >= t - 1e-12)
         eu = disc * (p * eu[:, :-1] + (1 - p) * eu[:, 1:])
         am = np.maximum(disc * (p * am[:, :-1] + (1 - p) * am[:, 1:]), sign * (x + pv - K))
     return am[:, 0], eu[:, 0]
@@ -104,7 +112,7 @@ def de_americanize(rows, T, discount, dividends, iterations=3):
     K = np.array([r["strike"] for r in quoted])
     is_put = np.array([r["type"] == "put" for r in quoted])
     mid = np.array([0.5 * (r["bid"] + r["ask"]) for r in quoted])
-    dividend_due = any(t <= T for t, _ in dividends)  # without one, an American call is a European call
+    dividend_due = any(t < T for t, _ in dividends)  # without one, an American call is a European call
     eep = np.zeros(len(K))
     for n in range(iterations):
         k = np.log(K / forward)
@@ -156,12 +164,8 @@ def readings(Ts, reach, design_T, deltas):
     return out
 
 
-def from_grid(grid, expirations, design_days, deltas, dividends, spot=None):
-    """The 'surface' estimate: the American design grid from a European one and its expirations' forwards.
-
-    The American forward is parity on the at-the-money pair once its premia are taken off; with a spot, it is the
-    carry forward (spot - PV(dividends)) / D instead, the forward Lecture 16 uses for EWG.
-    """
+def from_grid(grid, expirations, design_days, deltas, dividends):
+    """The 'surface' estimate: the American design grid from a European one and its expirations' forwards."""
     Ts = np.array([e["days"] for e in expirations]) / surface.TRADING_DAYS
     F = np.array([e["forward"] for e in expirations])
     D = np.array([e["discount"] for e in expirations])
@@ -175,9 +179,6 @@ def from_grid(grid, expirations, design_days, deltas, dividends, spot=None):
     atm_at = np.where(Ts < design_T[0], atm[0], np.where(Ts > design_T[-1], atm[-1], atm_at))
     F_A = F.copy()
     for i in range(len(Ts)):
-        if spot is not None:
-            F_A[i] = (spot - sum(a * D[i] ** (t / Ts[i]) for t, a in dividends if t <= Ts[i])) / D[i]
-            continue
         for _ in range(3):
             put, call = premium(F_A[i], D[i], Ts[i], dividends, np.array([F[i], F[i]]), np.full(2, atm_at[i]),
                                 np.array([True, False]))
@@ -278,10 +279,11 @@ def chain_check(raw_path, asof, settings):
         new, info = de_americanize(quotes, T, discount, dividends)
         american_rows += new
         forward = chain.forward_given_discount(quotes, discount)
-        pv = sum(a * discount ** (t / T) for t, a in dividends if t <= T)
+        pv = sum(a * discount ** (t / T) for t, a in dividends if t < T)
         expirations.append({"expiration": expiry.isoformat(), "days": days, "forward_european": forward,
                             "forward_change": info["forward_american"] / forward - 1,
-                            "spot_less_carry": day["spot"] - info["forward_american"] * discount - pv} | info)
+                            "spot_less_carry_european": day["spot"] - forward * discount - pv,
+                            "spot_less_carry_american": day["spot"] - info["forward_american"] * discount - pv} | info)
         print(f"{expiry} ({days} d): forward {forward:.3f} -> {info['forward_american']:.3f}; put premium up to "
               f"{info['premium_over_half_spread_max']:.2f} half-spreads", flush=True)
     american = chain.build_surface(american_rows, rate=curve, **options)
@@ -289,8 +291,7 @@ def chain_check(raw_path, asof, settings):
     days_, deltas = list(surface.DESIGN_DAYS), list(surface.DESIGN_DELTAS)
     exact = grid_shift(design["implied_vol_grid"], american["diagnostics"]["implied_vol_grid"], european["prices"],
                        american["prices"], european["noise_sd"], days_, deltas)
-    approximate, carry, estimate_info = estimates(design, european["prices"], european["noise_sd"], days_, deltas,
-                                                  dividends, day["spot"])
+    approximate, estimate_info = estimate(design, european["prices"], european["noise_sd"], days_, deltas, dividends)
     gap = np.array(approximate["vol_points"]) - np.array(exact["vol_points"])
     levels_e, levels_a = european["forward_variance_levels"], american["forward_variance_levels"]
     return {
@@ -308,18 +309,13 @@ def chain_check(raw_path, asof, settings):
         "expirations": expirations,
         "surface_estimate": {"shift": approximate, "less_exact_vol_points_max_abs": round(float(np.abs(gap).max()), 4),
                              "less_exact_vol_points_mean": round(float(gap.mean()), 4)} | estimate_info,
-        "surface_estimate_carry_forward": {"shift": carry},
     }
 
 
-def estimates(design, prices, noise_sd, days_, deltas, dividends, spot):
-    """The 'surface' estimate with the de-Americanized parity forward, and with the carry forward."""
-    out = []
-    for forward_spot in (None, spot):
-        grid, info = from_grid(design["implied_vol_grid"], design["expirations"], days_, deltas, dividends, forward_spot)
-        out.append((grid_shift(design["implied_vol_grid"], grid, prices, design_prices(grid, days_, deltas), noise_sd,
-                               days_, deltas), info))
-    return out[0][0], out[1][0], out[0][1]
+def estimate(design, prices, noise_sd, days_, deltas, dividends):
+    grid, info = from_grid(design["implied_vol_grid"], design["expirations"], days_, deltas, dividends)
+    return grid_shift(design["implied_vol_grid"], grid, prices, design_prices(grid, days_, deltas), noise_sd, days_,
+                      deltas), info
 
 
 def surface_check(asof, settings):
@@ -332,11 +328,10 @@ def surface_check(asof, settings):
         raise ValueError(f"{path} holds the surface of {valuation}, not {asof}")
     days_, deltas = artifact["design"]["days"], artifact["design"]["deltas"]
     dividends = dividend_times(settings, valuation)
-    shift, carry, info = estimates(design, artifact["prices_forward_units"], artifact["noise_sd"], days_, deltas,
-                                   dividends, day["spot"])
+    shift, info = estimate(design, artifact["prices_forward_units"], artifact["noise_sd"], days_, deltas, dividends)
     D = np.array([e["discount"] for e in design["expirations"]])
     T = np.array([e["days"] for e in design["expirations"]]) / surface.TRADING_DAYS
-    pv = np.array([sum(a * d ** (t / tt) for t, a in dividends if t <= tt) for d, tt in zip(D, T)])
+    pv = np.array([sum(a * d ** (t / tt) for t, a in dividends if t < tt) for d, tt in zip(D, T)])
     F = np.array([e["forward"] for e in design["expirations"]])
     return {
         "check": "spy_early_exercise", "mode": "surface", "asof": asof,
@@ -346,7 +341,6 @@ def surface_check(asof, settings):
                    "dividends": settings["dividends"], "tree_steps": [STEPS, STEPS + 1]},
         "design": {"days": days_, "deltas": deltas},
         "shift": shift,
-        "shift_carry_forward": carry,
         "expirations": [{"expiration": e["expiration"], "days": e["days"], "forward_european": e["forward"],
                          "forward_american": fa, "forward_change": fa / e["forward"] - 1,
                          "spot_less_carry_european": day["spot"] - e["forward"] * e["discount"] - p,

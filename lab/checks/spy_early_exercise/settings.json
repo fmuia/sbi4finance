@@ -6,7 +6,9 @@
  "2026-10-21": {"spot": 773.09, "rate_curve": [[0.25, 0.0426], [2.0, 0.0479]],
                 "rate_source": "US Treasury yields of 2026-10-20, 3-month 4.26% and 2-year 4.79%, as study S8",
                 "surface": "tutorial/assets/results/calibration/spy/surface.json"},
- "2026-10-29": {"spot": 769.36, "rate_curve": [[0.25, 0.0418], [2.0, 0.0467]],
+ "2026-10-29": {"spot": 769.36,
+                "spot_note": "the 16:00 close; SPY's options close at 16:15, and their parity forwards put SPY about 3.6 lower then (the file's last price is 764.66), so spot_less_carry starts near 3.6 on this date",
+                "rate_curve": [[0.25, 0.0418], [2.0, 0.0467]],
                 "rate_source": "US Treasury yields of 2026-10-28 (the latest published), 3-month 4.18% and 2-year 4.67% (FRED DGS3MO, DGS2)",
                 "replication_deltas": [-7.0, 1.3],
                 "replication_deltas_reason": "on 29 October the strips of the 1- to 5-day expirations stop at delta -7.1 or above and 1.35 to 1.5, so S8's default (-8, 1.8) leaves no covered expiration at or before 5 days and build_surface stops; the setting moves the forward-variance levels only, not the 63 grid points, and both readings use it"}
