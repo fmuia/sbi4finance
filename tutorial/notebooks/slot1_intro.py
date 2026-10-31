@@ -56,7 +56,6 @@ def _(mo):
     derivatives.
     """), kind="info"),
     ])
-
     return
 
 
@@ -80,20 +79,37 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(mo, spy_expirations):
     _kept = sum(_e["quotes_kept"] for _e in spy_expirations)
-    _longest = max(_e["days"] for _e in spy_expirations)
-    mo.md(rf"""
+    mo.vstack([
+        mo.md(r"""
     ### The option chain
 
-    An option chain lists, for each expiration, the calls and puts quoted at many strikes, each with a bid and an ask.
-    On 21 October 2026 SPY's chain had {len(spy_expirations)} expirations, from one day to {_longest} trading days. We
-    keep the out-of-the-money options, puts below the forward and calls above it, with a positive bid and a spread of
-    at most half the mid: {_kept:,} quotes in all.
+    An option chain lists, for each expiration date, the calls and puts on the underlying at many strikes, each quoted
+    with a bid and an ask.
+    """),
+        mo.hstack([
+            mo.stat(value="13,114", label="options in the raw chain", caption="35 expirations (study S8)", bordered=True),
+            mo.stat(value=f"{_kept:,}", label="quotes kept after cleaning", caption=f"{len(spy_expirations)} expirations",
+                    bordered=True),
+        ], widths="equal"),
+        mo.md(r"""
+    **What the cleaning removes**
 
-    Strikes are measured by their standardized moneyness $\delta = \ln(K/F) / (0.2\sqrt T)$: the distance of the strike
-    $K$ from the forward $F$, in standard deviations of a 20% volatility over the option's life $T$. At $\delta = -2$ a
-    put is far below the money; at $\delta = 2$ a call is far above it. The figure shows how far each expiration's
-    quotes reach.
-    """)
+    1. **In-the-money options.** We keep puts below the forward and calls above it. A put and a call at the same strike
+       carry the same information, by put–call parity; the out-of-the-money one is more liquid.
+    2. **Quotes we cannot trust:** no bid, an ask not above the bid, a spread wider than half the mid, or a mid that no
+       volatility reproduces.
+    3. **Isolated outliers:** an implied volatility more than 25% away from the average of its five neighbours.
+    4. **Thin expirations:** those left with fewer than 8 quotes.
+
+    **Standardized moneyness.** To compare strikes across maturities we measure them by
+
+    $$\delta = \frac{\ln(K/F)}{0.2\,\sqrt{T}},$$
+
+    the distance of the strike $K$ from the forward $F$ in standard deviations of a 20% volatility over the option's life
+    $T$. At $\delta = -2$ a put is far below the money, at $\delta = 0$ an option is at the money, and at $\delta = 2$ a
+    call is far above it.
+    """),
+    ])
 
     return
 
@@ -139,23 +155,26 @@ def _(mo, np, plots, plt, spy_expirations, surface):
     _ax.legend(fontsize=7.5, loc="lower left")
     mo.vstack([
         _fig,
-        mo.md("Each vertical bar is one expiration, from its lowest to its highest cleaned strike. The puts reach far "
-              "below the money; on many expirations the calls stop before δ = 2 (orange)."),
+        mo.md("Each bar is one expiration: it spans that expiration's cleaned quotes of 21 October, from the lowest δ "
+              "to the highest. The shaded band, δ from −2 to 2, is the part of the chain read into the grid (below). "
+              "Outside it the quotes thin out: on the call side, many expirations (orange) stop before δ = 2."),
     ])
-
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""
-    ### The smile
-
-    Each quote is turned into an implied volatility: the volatility at which Black–Scholes reproduces it. If
-    Black–Scholes described SPY, all its options would have the same implied volatility. Instead it changes with the
-    strike, which is the smile, and with the maturity. The figure shows SPY's smiles at seven maturities, read at the
-    points of the grid described below.
-    """)
+    mo.vstack([
+        mo.md("### The smile"),
+        mo.callout(mo.md(r"""
+    **Implied volatility** is the volatility $\sigma$ at which the Black–Scholes formula reproduces an option's price. It
+    puts options of every strike and maturity on one scale.
+    """), kind="neutral"),
+        mo.callout(mo.md(r"""
+    **Black–Scholes does not describe SPY.** If it did, every option would have the same implied volatility. SPY's falls
+    from the puts to the at-the-money options and rises again on the calls, the smile, and it changes with the maturity.
+    """), kind="info"),
+    ])
 
     return
 
@@ -172,26 +191,27 @@ def _(np, plt, spy_iv, surface, teaching):
     _ax.set_title("SPY's smile at seven maturities, 21 October 2026", loc="left")
     _ax.legend(ncols=4, fontsize=7.5, loc="upper right")
     _fig
-
     return
 
 
 @app.cell(hide_code=True)
-def _(mo, spy):
-    mo.md(f"""
-    Three numbers describe a smile near the money. The models are judged on how they reproduce each, at every maturity.
+def _(mo, np, spy):
+    _level = 100 * np.asarray(spy["atm_implied_vol"])
+    _card = lambda text: mo.callout(mo.md(text), kind="neutral")  # noqa: E731
+    mo.vstack([
+        mo.md("Three numbers summarize a smile near the money:"),
+        mo.hstack([
+            _card(f"**Level:** the at-the-money implied volatility, the overall size of the moves the market prices. "
+                  f"SPY's rises from {_level[0]:.1f}% at one week to {_level[-1]:.1f}% at one year."),
+            _card("**Skew:** the slope at the money. A put far below the money costs more, in implied volatility, than a "
+                  "call as far above it: the market gives large falls more probability than large rises. Volatility "
+                  "tends to rise when prices fall, so falls become larger."),
+            _card("**Curvature:** how much the smile bends upward away from the money. Options far from the money on both "
+                  "sides cost more than the slope alone would give: the market gives large moves, up or down, more "
+                  "probability than Black–Scholes does. These are fat tails."),
+        ], widths="equal"),
+    ])
 
-    - **Level**, the at-the-money volatility: how expensive options are overall. SPY's rises from
-      {100 * spy['atm_implied_vol'][0]:.1f}% at one week to {100 * spy['atm_implied_vol'][-1]:.1f}% at one year.
-    - **Skew**, the slope at the money: puts are dearer than calls, because the market prices large falls and
-      volatility tends to rise when the price falls. In Heston it comes from the correlation ρ times the volatility
-      of variance.
-    - **Curvature**: both wings above a straight line, the market pricing fat tails. In Heston it comes from the
-      volatility of variance.
-
-    Skew and curvature grow without bound as the maturity shortens, each at its own rate. Heston's skew tends to a
-    constant at short maturities, rough Bergomi's follows a power law: this is why slot 5 uses rough Bergomi.
-    """)
     return
 
 
@@ -241,40 +261,53 @@ def _(mo, np, plots, plt, spy, spy_iv, surface):
     mo.vstack([
         _fig,
         mo.md(f"""
-    - **Left:** the one-month smile against log-moneyness, with the quadratic through the five quotes nearest the
-      money. Its value, slope and curvature at $k = 0$ are the level ({100 * _level:.1f}%), the skew
+    - **Left:** the one-month smile against log-moneyness $k = \\ln(K/F)$, with the parabola through the five quotes
+      nearest the money. Its height, slope and bend at $k = 0$ are the level ({100 * _level:.1f}%), the skew
       ({_skew:.2f}) and the curvature ({_curvature:.1f}).
-    - **Right:** the absolute skew and the curvature on log–log axes, where a power law is a straight line. The skew's
-      exponent is {_exponent} (claim C1).
+    - **Right:** skew and curvature by maturity, on log–log axes. Both grow as the maturity shortens: short-dated
+      smiles are the steepest and the most curved. The skew falls like a power of the maturity, with exponent
+      {_exponent} (claim C1).
     """.replace("-0.", "−0.")),
+        mo.callout(mo.md(r"""
+    **What the calibration fits.** All 63 prices, not these three numbers: level, skew and curvature are a way to read a
+    smile and to see what a model can reproduce. Many exotic products depend on more than today's smile. A forward-start
+    option, for example, depends on the smile that will prevail at a future date, which no quote shows: there the model,
+    and the uncertainty of its parameters, sets the price (section 5).
+    """), kind="neutral"),
     ])
     return
 
 
 @app.cell(hide_code=True)
-def _(mo, np, spy_expirations):
-    _reach = np.array([_e["strip_deltas"] for _e in spy_expirations])
-    mo.md(f"""
-    ### The grid
+def _(mo, spy):
+    _readings = spy["diagnostics"]["grid_point_readings"]
+    mo.vstack([
+        mo.md("### The grid"),
+        mo.callout(mo.md(r"""
+    **Why a grid.** The strikes and expirations in the chain change every day. Reading the chain at fixed points gives
+    every smile, today's, tomorrow's or a simulated one, the same 63 inputs, which the models and the networks need.
+    """), kind="info"),
+        mo.md(f"""
+    **The 63 points**
 
-    We do not use the chain's quotes directly. We read prices on a fixed grid: 7 maturities, from one week to one year,
-    times 9 strikes, at δ = −2, −1.5, …, 2. Each grid price comes from a smooth curve through the quotes of the nearest
-    expirations; *The data in detail*, after the takeaways, gives the steps. Every smile, real or simulated, then has the
-    same 63 inputs.
+    - 7 maturities: 1 and 2 weeks, 1, 2, 3 and 6 months, and 1 year (5 to 252 trading days);
+    - 9 strikes at each maturity, at δ = −2, −1.5, …, 2: a put for δ ≤ 0 and a call above;
+    - prices in units of the forward.
 
-    Why the grid stops at δ = ±2:
+    **How each grid price is read**
 
-    - **The calls run out.** On {int(np.sum(_reach[:, 1] < 2))} of the {len(_reach)} expirations the cleaned calls stop
-      before δ = 2, and none reaches beyond {_reach[:, 1].max():.1f} (the chain figure above).
-    - **The far calls say little.** At δ = 1.5 and 2 the call prices are already below their noise (the last figure of
-      this section).
-    - **Every grid point is read from quoted strikes;** none is extrapolated.
-    - **The centre holds what the models must fit:** level, skew and curvature.
+    1. For each listed expiration, fit a smooth curve through its implied volatilities against δ: a smoothing spline,
+       which follows the quotes without chasing their noise.
+    2. For a grid point, take the nearest listed expiration before its maturity and the nearest after it, among those
+       whose quotes reach its strike, and read each curve at the same log-moneyness $\\ln(K/F)$.
+    3. Interpolate between the two readings in total variance, $\\sigma^2 T$, linearly in the maturity, and turn the
+       result back into a price.
 
-    The puts reach much further, to δ = {np.median(_reach[:, 0]):.1f} for the median expiration. That part of the chain
-    gives the variance-swap curve, but it is not used for calibration. What lies outside the grid, the far wings and
-    maturities beyond one year, is priced by the model alone.
-    """.replace("δ = -", "δ = −"))
+    Of the 63 points, {_readings['two expirations']} are read from two expirations and {_readings['one expiration']} from
+    one, where an expiration falls on the grid maturity itself or only one side reaches the strike. None is extrapolated.
+    Why the grid stops at δ = ±2 is explained at the end of this section.
+    """),
+    ])
 
     return
 
@@ -310,41 +343,64 @@ def _(mo, np, plots, plt, spy, spy_expirations, surface):
     {"Every point lies inside the strikes quoted for its maturity." if _inside else "Some points lie outside the quoted strikes, where the grid extrapolates."}
     """),
     ])
-
     return
 
 
 @app.cell(hide_code=True)
-def _(mo):
+def _(heston_checks, mo, np, spy_expirations, surface):
     _card = lambda text: mo.callout(mo.md(text), kind="neutral")  # noqa: E731
+    _days = [_e["days"] for _e in spy_expirations]
+    _forward = float(np.interp(surface.DESIGN_DAYS[2], _days, [_e["forward"] for _e in spy_expirations]))
+    _vega = float(surface.bs_vega(0.0, surface.DESIGN_DAYS[2] / surface.TRADING_DAYS, surface.SIGMA_REF))
+    _sigma = _vega * surface.NOISE_ATM  # the one-month at-the-money noise, in units of the forward
+    _chi2 = heston_checks["cases"]["full grid, kappa fixed"]["best_chi2"]
     mo.vstack([
+        mo.md("### How precise a quote is: the noise"),
+        mo.callout(mo.md(r"""
+    **Every price comes with an error bar.** The mid between bid and ask only estimates a price, and a grid price is read
+    from a curve. We treat each grid price as the model's price plus a random error of known size.
+    """), kind="info"),
         mo.md(r"""
-    ### How precise a quote is: the noise
+    $$y_c = P_c(\theta) + \sigma_c\,\varepsilon_c, \qquad \varepsilon_c \sim \mathcal N(0, 1), \text{ independent across the 63 contracts.}$$
 
-    Each grid price is the model's price plus an error, $y_c = P_c(\theta) + \sigma_c\,\varepsilon_c$, with independent
-    standard normal errors $\varepsilon_c$. The standard deviation $\sigma_c$, the noise, is set in two steps:
+    The size of the error, the noise $\sigma_c$, is set by a rule in two steps:
 
-    $$\sigma_c = \text{vega}_{20\%}(k_c, T_c) \times s(\delta_c), \qquad s(\delta) = 0.3 + 0.35\,|\delta| \text{ volatility points}.$$
+    $$\sigma_c = \underbrace{\text{vega}_{20\%}(k_c, T_c)}_{\text{price change per unit of volatility}} \times \underbrace{s(\delta_c)}_{\text{error in volatility}}, \qquad s(\delta) = 0.3 + 0.35\,|\delta| \text{ volatility points.}$$
     """),
         mo.hstack([
-            _card("**Why in volatility points.** Market makers quote in volatility, and a quote's half-spread is "
-                  "roughly constant in volatility: a fraction of a point at the money, about a point in the wings. In "
-                  "price it is not."),
-            _card("**Why the vega at 20%.** The vega turns a volatility error into a price error. Taking it at a fixed "
-                  "20%, not at each smile's own volatility, gives every smile, real or simulated, exactly the same noise."),
+            _card(r"**Vega** is how much an option's price moves when its volatility moves, $\partial P / \partial \sigma$. "
+                  "It is largest at the money and for long maturities, small far from the money and at short maturities. "
+                  "Here it is computed with Black–Scholes at a fixed volatility of 20%."),
+            _card(f"**From volatility points to price.** For the one-month option at the money, the vega at 20% is "
+                  f"{_vega:.3f} of the forward per unit of volatility. One volatility point (0.01) therefore moves the "
+                  f"price by {1e2 * _vega:.1f} basis points of the forward, about ${0.01 * _vega * _forward:.2f}, and the "
+                  f"noise of 0.3 points is {1e4 * _sigma:.1f} basis points, about ${_sigma * _forward:.2f}."),
         ], widths="equal"),
+        mo.md("**Why a fixed rule, wider than SPY's own spreads**"),
         mo.hstack([
-            _card("**How it compares with SPY.** On 21 October SPY's own half-spreads are below this rule at every grid "
-                  "point: the rule is a floor, wider than the market's spread."),
-            _card(r"**What it does.** It is the yardstick of the calibration. Least squares weights each miss by "
-                  r"$1/\sigma_c^2$, and the posterior's width scales with it. Slot 6 changes it."),
+            _card("**More than the spread.** A grid price is read from a smoothed curve between expirations, not traded, "
+                  "and the quotes are not all taken at the same instant. The half-spread measures neither. SPY's "
+                  "half-spreads are below the rule at every grid point on 21 October, so the rule acts as a floor."),
+            _card(f"**Room for the model's own error.** No model reproduces a smile exactly. With this noise, the model of "
+                  f"section 5 misses SPY's 63 prices by about one noise unit each (χ² = {_chi2:.0f}). With a smaller "
+                  "noise the same misses would count as several units, and the calibration would read the model's "
+                  "error as information."),
+            _card("**The same for every smile.** The networks of the later slots learn from smiles simulated with this "
+                  "noise, so a real smile must carry the same. The noise could be estimated as one more parameter; here "
+                  "it is a stated assumption, and slot 6 changes it to see what moves."),
         ], widths="equal"),
+        mo.callout(mo.md(r"""
+    **What the noise does.** It decides how close is close enough. A model price that misses a quote by one $\sigma_c$ is
+    an ordinary miss; by three, a bad one. Section 2 counts every miss in these units, and the range of parameters that
+    the quotes allow grows with the noise: double it, and the range roughly doubles.
+    """), kind="info"),
     ])
+
     return
 
 
 @app.cell(hide_code=True)
-def _(mo, np, plots, plt, spy_noise, surface, teaching):
+def _(mo, np, plots, plt, spy_expirations, spy_noise, surface, teaching):
     _deltas = np.array(surface.DESIGN_DELTAS)
     _fig, (_left, _right) = plt.subplots(1, 2, figsize=(9.6, 3.2), constrained_layout=True)
     _line = np.linspace(-2, 2, 81)
@@ -363,18 +419,36 @@ def _(mo, np, plots, plt, spy_noise, surface, teaching):
     _right.set_ylabel("basis points of the forward")
     _right.set_title("step 2: times the vega at 20%, the price noise σ_c", loc="left")
     _right.legend(fontsize=7, ncols=2, loc="lower center")
+    _forwards = np.interp(surface.DESIGN_DAYS, [_e["days"] for _e in spy_expirations], [_e["forward"] for _e in spy_expirations])
+    _dollars = _noise * _forwards[:, None]
     mo.vstack([
         mo.hstack([
             mo.stat(value=f"±{100 * surface.NOISE_ATM:.1f}", label="at the money", caption="volatility points", bordered=True),
             mo.stat(value=f"±{100 * surface.NOISE_WING:.0f}", label="at δ = ±2", caption="volatility points", bordered=True),
             mo.stat(value=f"{1e4 * spy_noise.min():.1f} to {1e4 * spy_noise.max():.0f}", label="in price",
                     caption="basis points of the forward", bordered=True),
+            mo.stat(value=f"${_dollars.min():.2f} to ${_dollars.max():.2f}", label="in dollars", caption="per SPY option",
+                    bordered=True),
         ], widths="equal"),
         _fig,
         mo.md("""
     The price noise grows with maturity, like the vega, and peaks a little away from the money, where the error in
     volatility has grown and the vega has not yet fallen much.
     """),
+    ])
+
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.vstack([
+        mo.md("### How much a quote says about volatility"),
+        mo.callout(mo.md(r"""
+    **Some quotes say much more than others.** Dividing a price's noise by the option's vega turns it back into an error
+    in volatility, now at SPY's own volatility. The figure shows, for each quote, the implied volatilities that fit it
+    within one noise standard deviation.
+    """), kind="info"),
     ])
 
     return
@@ -412,15 +486,44 @@ def _(mo, np, plots, plt, spy_iv, spy_iv_band, surface, teaching):
     mo.vstack([
         _fig,
         mo.md(f"""
-    Each bar runs from the implied volatility of the quote minus one noise standard deviation to that of the quote
-    plus one. At the money, the one-month quote pins the volatility to about ±{_half[2, 4]:.1f} points. Below the money
-    the bars stay short, about ±{_half[2, 0]:.1f} points at δ = −2, less than the rule's 1 point, because SPY's
-    volatility there is above 20% and the option's price is more sensitive to it. Above the money SPY's volatility
-    is low and the prices are small; at δ = {_open} the bars reach zero, so any lower volatility is consistent with
-    those quotes. The section *The data in detail*, after the takeaways, describes how the grid is read from the
-    chain and what the later slots take from it.
+    - Each bar runs from the implied volatility of the price minus one noise standard deviation to that of the price
+      plus one.
+    - **At the money** a one-month quote fixes the implied volatility to about ±{_half[2, 4]:.1f} points.
+    - **Below the money** the bars stay short, about ±{_half[2, 0]:.1f} points at δ = −2: SPY's volatility there is
+      above 20%, so the price reacts more to it than the rule assumes.
+    - **Above the money**, at δ = {_open}, the bars reach zero: these calls cost a few cents, less than their noise,
+      and any lower volatility fits them.
     """),
     ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo, np, spy_expirations, spy_noise, spy_prices, surface):
+    _reach = np.array([_e["strip_deltas"] for _e in spy_expirations])
+    _forward = float(np.interp(surface.DESIGN_DAYS[0], [_e["days"] for _e in spy_expirations],
+                               [_e["forward"] for _e in spy_expirations]))
+    _call = spy_prices[len(surface.DESIGN_DELTAS) - 1] * _forward  # one week, delta = 2, in dollars
+    _noise = spy_noise[len(surface.DESIGN_DELTAS) - 1] * _forward
+    mo.vstack([
+        mo.md("### Why the grid stops at δ = ±2"),
+        mo.md(f"""
+    1. **The calls stop.** The chain quotes puts much further from the money than calls (the chain figure). Far above
+       the money a call costs a cent or two; such quotes often have no bid, or a spread wider than half their price, and
+       the cleaning removes them. On {int(np.sum(_reach[:, 1] < 2))} of the {len(_reach)} expirations the cleaned calls
+       stop before δ = 2, and none reaches beyond {_reach[:, 1].max():.1f}.
+    2. **The calls that remain say little.** At one week the call at δ = 2 costs ${_call:.2f} and its noise is
+       ${_noise:.2f}. A price smaller than its own error fits almost any volatility, as the bars reaching zero show, so
+       more such points would add no information.
+    3. **Nothing is invented.** Within ±2 every grid point is read from quoted strikes. Beyond, it would have to be
+       extrapolated, and the grid would carry the reading method's assumptions instead of market prices.
+
+    The puts reach much further, to δ = {np.median(_reach[:, 0]):.1f} for the median expiration. That part of the chain
+    gives the variance-swap curve (*The data in detail*), but it is not used for calibration. Outside the grid, in the far
+    wings and beyond one year, prices come from the model alone.
+    """.replace("δ = -", "δ = −")),
+    ])
+
     return
 
 
@@ -430,7 +533,6 @@ def _(mo):
     **The question of this slot.** The 63 prices are known only to within their noise. How precisely do they determine
     a model's parameters, and with them the prices of the products the market does not quote?
     """), kind="info")
-
     return
 
 
@@ -734,7 +836,6 @@ def _(mo):
                   "contain the truth 90% of the time. This checks the method, not one mark."),
         ], widths="equal"),
     ])
-
     return
 
 
@@ -856,7 +957,6 @@ def _(mo):
               "do not measure how uncertain today's mark is: that is the range and its 90% point. Section 5 shows how "
               "large these ranges are for Heston on SPY's quotes."),
     ])
-
     return
 
 
@@ -1217,7 +1317,6 @@ def _(PRODUCTS, mo, np, plots, plt, put_money, uncertainty):
     `assets/results/calibration/rough-pilot/s7-across/` (pilot networks).
     """),
     ])
-
     return
 
 
