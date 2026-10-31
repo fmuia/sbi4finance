@@ -1,0 +1,14 @@
+{
+  "accepted": "2026-10-31T02:41:56+00:00",
+  "source": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/path-workshop-closeout-20261031/replays/rough-known",
+  "source_sha256": {
+    "bundle.json": "c21aa1f12c59a664469a4ce4d3b6824f61180b10663ee8e765b5dac0c7dde79f",
+    "evaluation.json": "e65001d7fd0604ccb1e838879d26bb5918f4e40e1e22ac87d17d5423ecbfddf7",
+    "posterior.npz": "2d446c4e3f9ec9de9686748b4f7385846db7631b6382118589c5ee43b8f57892",
+    "task.json": "f38737f8b3e87f0450d0531245a885c5d6d3872ea716930ef5b1720be2864601",
+    "training.json": "602930a448433dd7c5297e42cfcf13a7558bfea7092e8bff9563ede4ce1495e1"
+  },
+  "changes": [],
+  "scientific_acceptance": false,
+  "scope": "verified development replay copied byte-for-byte; no scientific promotion"
+}

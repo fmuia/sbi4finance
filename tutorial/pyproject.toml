@@ -47,6 +47,7 @@ slot3 = { cmd = "marimo edit slot3_architectures.py --no-token", cwd = "notebook
 slot4 = { cmd = "marimo edit slot4_heston_bayesflow.py --no-token", cwd = "notebooks" }
 slot5 = { cmd = "marimo edit slot5_calibration.py --no-token", cwd = "notebooks" }
 backbones = "marimo edit notebooks/backbone_review.py --no-token"
+trajectories = "marimo edit notebooks/trajectory_inference.py --no-token"
 check = "marimo check notebooks"
 test = "python -m unittest discover -s tests -v"
 test-notebooks = "python tests/run_notebooks.py"

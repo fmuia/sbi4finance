@@ -1,0 +1,14 @@
+{
+  "accepted": "2026-10-31T02:41:57+00:00",
+  "source": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/path-workshop-closeout-20261031/replays/rough-joint",
+  "source_sha256": {
+    "bundle.json": "4f5be8eb862a4bc54e4244747410a0cd509446810bcd243ef8081cd632302ac2",
+    "evaluation.json": "3f6ea3dc8f9683ca791442093fdee4ea673cb030affc67b3862727bf4f582112",
+    "posterior.npz": "d129ca4b47a31cb457f2350d443a881e338ea1f012e9685c4a222dd2a51141b3",
+    "task.json": "717b64b512d2ceb1055acdfe1f5ced2aeccef06ad2964c2a2b2f0b90daa3f680",
+    "training.json": "a8e8d26fda40bc54fccfde0ead59981991d93a0706a7ea61f75fc12c9bb81ec9"
+  },
+  "changes": [],
+  "scientific_acceptance": false,
+  "scope": "verified development replay copied byte-for-byte; no scientific promotion"
+}
