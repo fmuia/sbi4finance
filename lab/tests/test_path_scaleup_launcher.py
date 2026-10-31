@@ -217,7 +217,7 @@ class ScaleupLauncherTests(unittest.TestCase):
             (run / "submission-receipt.json").write_text(json.dumps(receipt))
             directory = run / "fits/heston/100k"
             directory.mkdir(parents=True)
-            (directory / "training.json").write_text('{"epochs_completed":2,"optimizer_steps":1564,"status":"soft_wall_stop"}')
+            (directory / "training.json").write_text('{"epochs_completed":2,"optimizer_steps":1564,"completed_training_views":200000,"status":"soft_wall_stop"}')
             (run / "comparison/heston").mkdir(parents=True)
             (run / "comparison/heston/comparison.json").write_text('{"status":"inconclusive_missing_large_fit"}')
             raw = "1|FAILED|1:0|10|2|cpu=2|1024K|\n1.batch|FAILED|1:0|10|2|cpu=2|1024K|\n2|TIMEOUT|0:15|4200|4|cpu=4,gres/gpu=1|2048K|\n"
@@ -227,9 +227,13 @@ class ScaleupLauncherTests(unittest.TestCase):
             self.assertEqual(result["software"]["execution"]["status"], "FAILED")
             self.assertTrue(result["models"]["rough-known"]["bank"]["missing"])
             self.assertFalse(result["models"]["heston"]["exposure_comparison"]["both_planned_epoch_counts_completed"])
+            self.assertEqual(result["models"]["heston"]["exposure_comparison"]["actual_presentations"],
+                             {"100k": 200000, "1m": None})
             self.assertEqual(result["models"]["heston"]["comparison"]["records"]["comparison.json"]["record"]["status"], "inconclusive_missing_large_fit")
             self.assertFalse(result["scientific_acceptance"])
             self.assertTrue((run / "scaleup-summary.json").exists())
+            saved = json.loads((run / "scaleup-summary.json").read_text())
+            self.assertEqual(saved["models"]["heston"]["exposure_comparison"]["actual_presentations"]["100k"], 200000)
 
     def test_accounting_metadata_failure_does_not_prevent_artifact_report(self):
         with tempfile.TemporaryDirectory() as temporary:

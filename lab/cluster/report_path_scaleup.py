@@ -126,7 +126,7 @@ def collect(run):
             "planned_epochs": dict(zip(("100k", "1m"), planned)),
             "epochs_completed": {label: record.get("epochs_completed") for label, record in zip(("100k", "1m"), records)},
             "optimizer_steps": {label: record.get("optimizer_steps") for label, record in zip(("100k", "1m"), records)},
-            "actual_presentations": {label: record.get("sample_presentations", record.get("training_presentations"))
+            "actual_presentations": {label: record.get("sample_presentations", record.get("training_presentations", record.get("completed_training_views")))
                                       for label, record in zip(("100k", "1m"), records)},
             "stop_status": {label: record.get("status") for label, record in zip(("100k", "1m"), records)},
             "both_planned_epoch_counts_completed": all(record.get("epochs_completed") == epochs for record, epochs in zip(records, planned)),
