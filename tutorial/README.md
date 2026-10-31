@@ -40,7 +40,7 @@ pixi run --locked backbones # cached 100k examples and explicit native model sam
 
 | Notebook | Slot | What you do | Computed live |
 |---|---|---|---|
-| `slot1_intro.py` | 1. The problem: Bayes for volatility models | Meet the afternoon's objects on SPY's quotes: the data, its grid and noise, and where each slot uses them; prior, likelihood and posterior for Black–Scholes, the range of a price, a check of the model; see when the posterior is not the classical ellipse, and what it costs | Grid posteriors on one quote; cached Heston and rough-Bergomi posteriors (seconds) |
+| `slot1_intro.py` | 1. The problem: Bayes for volatility models | Meet the afternoon's objects on SPY's quotes: the data, its grid and noise, and where each slot uses them; prior, likelihood and posterior for Black–Scholes, the range of a price, a check of the model; see how large the uncertainty is in money, when the classical route's reserves part from the posterior's, and what it costs | Grid posteriors on one quote; cached Heston and rough-Bergomi posteriors (seconds) |
 | `slot2_amortized_bayes.py` | 2. What is amortized Bayes? | Watch a small network learn slot 1's posterior and check it against the exact answer | Exact grid by default; a new 2.1 toy trains only after pressing the button |
 | `slot3_architectures.py` | 3. Network architectures | See how flow matching carries noise to Heston's posterior, and what the sampler's steps change | Cached Heston posterior and PyMC reference |
 | `slot4_heston_bayesflow.py` | 4. A worked example in BayesFlow: Heston on the SPY smile | Follow the whole workflow, from simulator to checks, against the exact posterior | Cached 100k example; simulation and a small native fit are optional buttons |

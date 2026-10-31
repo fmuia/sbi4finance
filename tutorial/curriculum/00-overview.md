@@ -83,7 +83,7 @@ How to read the figure: the top row is the tutorial, 115 minutes of talks in six
 
 | Slot | The question it answers | Example | What it hands to the next slot |
 | --- | --- | --- | --- |
-| 1 | Why does a calibrated volatility model need a posterior, and what does one cost? | Black–Scholes on two SPY quotes (live); Heston's exact posterior and a rough-Bergomi posterior that is not an ellipse (cached) | The objects of the afternoon, the data, grid and noise every later slot uses, the cost of the posterior under richer models, and the idea of amortization |
+| 1 | Why does a calibrated volatility model need a posterior, and what does one cost? | Black–Scholes on two SPY quotes (live); Heston's exact posterior on SPY against Gauss–Newton, on 63 and on 15 quotes, and a curved rough-Bergomi posterior (cached) | The objects of the afternoon, the data, grid and noise every later slot uses, the cost of the posterior under richer models, and the idea of amortization |
 | 2 | How can a network trained on simulations return the posterior, and when does that pay? | A network learns slot 1's posterior (live); the break-even for Heston and rough Bergomi | The object to build, $q_\phi(\theta \mid y)$, and the workflow that checks it |
 | 3 | Which networks represent the posterior, and how do they read the data? | Flow matching carrying noise to SPY's Heston posterior; data shapes and their networks | The exact network configuration of slots 4 and 5 |
 | 4 | What does the workflow look like in code, when every step can be checked? | Heston on the SPY smile, against the exact posterior | The same code, a new simulator; Heston's defects on SPY |

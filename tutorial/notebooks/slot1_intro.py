@@ -12,15 +12,30 @@ def _():
     import marimo as mo
     import matplotlib.pyplot as plt
     import numpy as np
+    from scipy import stats
 
     from sbi4f_tutorial import backbones, plots, surface, teaching
 
     ROOT = mo.notebook_dir().parent
     ASSETS = ROOT / "assets"
     RESULTS = ASSETS / "results" / "calibration"
+    CHECKS = ASSETS / "quick-checks"  # outputs of the lab's quick checks, not accepted studies
 
     plots.style()
-    return ASSETS, RESULTS, backbones, mo, np, plots, plt, surface, teaching
+
+    return (
+        ASSETS,
+        CHECKS,
+        RESULTS,
+        backbones,
+        mo,
+        np,
+        plots,
+        plt,
+        stats,
+        surface,
+        teaching,
+    )
 
 
 @app.cell(hide_code=True)
@@ -57,35 +72,153 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""
-    ### The question
+def _(mo, uncertainty):
+    _liquid = uncertainty["Heston, 63 SPY quotes: 90% range"]
+    _thin = uncertainty["Heston, 15 SPY quotes, κ free: 90% range"]
+    _models = uncertainty["two models that fit one smile: gap between marks"]
+    mo.vstack([
+        mo.md(r"""
+    ### Why the uncertainty matters
 
-    Calibration usually returns one set of parameters, the one whose prices come closest to the quotes. But the
-    quotes are noisy, and nearby parameter values reproduce them almost as well. Every price computed with the
-    model inherits this uncertainty, and valuation rules ask for it to be measured: a range for each mark, at a
-    stated confidence level.
+    A calibration returns one set of parameters, the one whose prices come closest to the quotes. The quotes are
+    noisy, so other parameter values reproduce them almost as well, and they give different prices to the products
+    the smile does not quote: exotic options, and vanillas beyond the quoted strikes and maturities.
+    """),
+        mo.callout(mo.md(f"""
+    **In one line.** On SPY's 63 liquid quotes, Heston's products move by {min(_liquid):.0f} to {max(_liquid):.0f}% of
+    their price. With 15 quotes the 2-year put moves by {_thin[3]:.0f}%, and a second model that fits a smile as well
+    marks the forward-start {_models[2]:.0f}% apart. The rules ask banks to measure this range and to hold capital
+    against its 90% point.
+    """), kind="info"),
+    ])
 
-    Bayesian inference gives this range. It treats the parameters as unknowns and turns the quotes into a
-    probability distribution over them, the posterior. Pricing a product under the posterior gives a distribution
-    for its price.
-    """)
+    return
+
+
+@app.cell
+def _(CHECKS, RESULTS, np, teaching):
+    heston_checks = teaching.load_json(CHECKS / "heston_checks.json")  # exact posterior against Gauss-Newton on SPY (lab quick check)
+    _across = teaching.load_json(RESULTS / "rough-pilot" / "s7-across" / "across-models.json")
+    PRODUCTS = {"variance_swap": "variance swap, 3 months", "volatility_swap": "volatility swap, 3 months",
+                "forward_start_call": "forward-start call, 3 to 6 months", "put_out_of_grid": "2-year 90% put"}
+    _liquid = heston_checks["cases"]["full grid, kappa fixed"]["products"]
+    _thin = heston_checks["cases"]["3 x 5 grid, kappa free"]["products"]
+    _smile = next(_s for _s in _across["surfaces"] if _s["test_row"] == 290)["products"]
+    uncertainty = {  # % of each product's price
+        "Heston, 63 SPY quotes: 90% range": [100 * _liquid[_p]["posterior_range_90_relative"] for _p in PRODUCTS],
+        "Heston, 15 SPY quotes, κ free: 90% range": [100 * _thin[_p]["posterior_range_90_relative"] for _p in PRODUCTS],
+        "two models that fit one smile: gap between marks": [100 * abs(_smile[_p]["gap_between_points_relative"]) for _p in PRODUCTS],
+    }
+    put_money = {}  # the 2-year put on 100 million of notional: its mark and its reserve for a sold position
+    for _name, _case in (("63 quotes", "full grid, kappa fixed"), ("15 quotes", "3 x 5 grid, kappa free")):
+        _summary = heston_checks["cases"][_case]
+        _mark = _summary["products"]["put_out_of_grid"]["least_squares_point"]
+        _q90 = np.quantile(np.asarray(_summary["posterior_product_draws"])[:, list(PRODUCTS).index("put_out_of_grid")], 0.9)
+        put_money[_name] = {"mark": 100e6 * _mark, "reserve": 100e6 * (_q90 - _mark)}
+    put_money["second model"] = {"gap": 100e6 * abs(_smile["put_out_of_grid"]["heston"]["point"] - _smile["put_out_of_grid"]["rough"]["point"])}
+
+    return PRODUCTS, heston_checks, put_money, uncertainty
+
+
+@app.cell(hide_code=True)
+def _(PRODUCTS, mo, np, plots, plt, put_money, uncertainty):
+    _fig, _ax = plt.subplots(figsize=(9.6, 3.4), constrained_layout=True)
+    _y = np.arange(len(PRODUCTS))
+    for _i, ((_label, _values), _color) in enumerate(zip(uncertainty.items(), plots.SERIES)):
+        _bars = _ax.barh(_y + (_i - 1) * 0.27, _values, height=0.25, color=_color, label=_label)
+        for _bar, _value in zip(_bars, _values):
+            _ax.text(_value + 0.4, _bar.get_y() + _bar.get_height() / 2, f"{_value:.1f}%", va="center", fontsize=7,
+                     color=plots.INK_2)
+    _ax.set_yticks(_y, list(PRODUCTS.values()))
+    _ax.invert_yaxis()
+    _ax.set_xlabel("% of the product's price")
+    _ax.set_xlim(0, 36)
+    _ax.grid(axis="y", visible=False)
+    _ax.legend(fontsize=7.5, loc="upper right")
+    _ax.set_title("how far a product's price moves while the model still fits the quotes", loc="left")
+    mo.vstack([
+        _fig,
+        mo.hstack([
+            mo.stat(value=f"{put_money['63 quotes']['mark'] / 1e6:.1f} m", label="2-year 90% put: the mark",
+                    caption="on 100 million of notional", bordered=True),
+            mo.stat(value=f"{put_money['63 quotes']['reserve'] / 1e3:,.0f} k", label="reserve, 63 quotes",
+                    caption="90% point minus the mark", bordered=True),
+            mo.stat(value=f"{put_money['15 quotes']['reserve'] / 1e3:,.0f} k", label="reserve, 15 quotes",
+                    caption="same, κ free", bordered=True),
+            mo.stat(value=f"{put_money['second model']['gap'] / 1e3:,.0f} k", label="gap to a second model",
+                    caption="same smile, both fit", bordered=True),
+        ], widths="equal"),
+        mo.md(r"""
+    - **Blue:** Heston's exact posterior on SPY's 63 quotes, with the mean reversion fixed. The range runs from the
+      5% to the 95% point of each product's price over 300 posterior draws.
+    - **Orange:** the same model on 15 of those quotes, at 1, 3 and 6 months and $\delta$ from −1 to 1, with the mean
+      reversion free. The 2-year put depends on what happens beyond six months, which these quotes do not reach.
+    - **Green:** a smile generated by rough Bergomi and fitted by both Heston and rough Bergomi, nearly equally well;
+      the bars are the gaps between the two models' least-squares prices (study S7).
+    - The cards translate the 2-year put into money. Each case uses its own mark; the 15-quote and second-model
+      marks are 6.4 and 6.7 million.
+
+    Sources: `assets/quick-checks/heston_checks.json` (a lab quick check, not an accepted study) and
+    `assets/results/calibration/rough-pilot/s7-across/` (pilot networks).
+    """),
+    ])
+
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""
-    ## 2 · The data
+    _card = lambda text: mo.callout(mo.md(text), kind="neutral")  # noqa: E731
+    mo.vstack([
+        mo.md("**Why it matters**"),
+        mo.hstack([
+            _card("**Capital.** Under EU prudent valuation (Regulation 2016/101), a bank deducts additional valuation "
+                  "adjustments (AVAs) from its capital. For calibrated parameters (Art. 9) and for the choice of model "
+                  "(Art. 11), the AVA is the distance from the mark to the 90% point of the range of plausible values."),
+            _card("**Accounts.** IFRS 13 §93(h): for fair values that rest on unobservable inputs (Level 3), the bank "
+                  "discloses how the value changes under reasonably possible alternative inputs."),
+        ], widths="equal"),
+        mo.hstack([
+            _card("**Model risk.** SR 26-2 in the US, which replaces SR 11-7, and PRA SS1/23 in the UK ask banks to "
+                  "understand the uncertainty of parameter estimates and of model choices."),
+            _card("**P&L.** Refitting to the next day's quotes moves the parameters within this range, and the marks "
+                  "with them, even when the market has not moved."),
+        ], widths="equal"),
+        mo.md("**What is measured**"),
+        mo.hstack([
+            _card("**The range.** The 5% to 95% points of a product's price over the calibrations the quotes allow: "
+                  "the bars above."),
+            _card("**The 90% point and the reserve.** For a position the bank has sold, the 90% point is the prudent "
+                  "value and the reserve (the AVA) is that point minus the mark; for a position it holds, the 10% point. "
+                  "It is a quantile, like a VaR, but of today's valuation, not of tomorrow's P&L."),
+            _card("**Coverage.** On simulated smiles whose true parameters are known, a method's 90% ranges should "
+                  "contain the truth 90% of the time. This checks the method, not one mark."),
+        ], widths="equal"),
+        mo.md("Market-risk measures, VaR and expected shortfall, describe how the value may change over a horizon. "
+              "They do not measure how uncertain today's mark is: that is the range and its 90% point."),
+    ])
 
-    SPY options are quoted for many expirations, from one day to more than two years, each with its own strikes. To
-    compare models, and later to train networks, we read these quotes onto a fixed grid of 63 points: 7 maturities
-    from one week to one year, and 9 strikes per maturity.
+    return
 
-    Strikes are placed by their standardized moneyness $\delta = \ln(K/F) / (0.2\sqrt T)$: the distance of the strike
-    $K$ from the forward $F$, measured in standard deviations of a 20% volatility over the option's life $T$. At
-    $\delta = -2$ a put is far below the money; at $\delta = 2$ a call is far above it.
-    """)
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.vstack([
+        mo.md("## 2 · The data"),
+        mo.callout(mo.md(r"""
+    **In one line.** One observation is 63 SPY option prices on a fixed grid of maturities and strikes, each with a
+    stated noise. The grid covers the centre of the smile, where the quotes are informative; prices in the far wings and
+    beyond one year come from the model, not from the data.
+    """), kind="info"),
+        mo.md(r"""
+    SPY options are quoted for many expirations, from one day to more than two years, each with its own strikes. We read
+    these quotes onto a fixed grid: 7 maturities from one week to one year, and 9 strikes per maturity. Strikes are
+    placed by their standardized moneyness $\delta = \ln(K/F) / (0.2\sqrt T)$, the distance of the strike $K$ from the
+    forward $F$ in standard deviations of a 20% volatility over the option's life $T$. At $\delta = -2$ a put is far
+    below the money; at $\delta = 2$ a call is far above it.
+    """),
+    ])
+
     return
 
 
@@ -150,16 +283,193 @@ def _(mo, np, plots, plt, spy, spy_expirations, spy_iv, surface, teaching):
 
 
 @app.cell(hide_code=True)
+def _(mo, spy):
+    mo.md(f"""
+    ### What the smile tells: level, skew and curvature
+
+    Three numbers describe a smile near the money. The models are judged on how they reproduce each, at every maturity.
+
+    - **Level**, the at-the-money volatility: how expensive options are overall. SPY's rises from
+      {100 * spy['atm_implied_vol'][0]:.1f}% at one week to {100 * spy['atm_implied_vol'][-1]:.1f}% at one year.
+    - **Skew**, the slope at the money: puts are dearer than calls, because the market prices large falls and
+      volatility tends to rise when the price falls. In Heston it comes from the correlation ρ times the volatility
+      of variance.
+    - **Curvature**: both wings above a straight line, the market pricing fat tails. In Heston it comes from the
+      volatility of variance.
+
+    Skew and curvature grow without bound as the maturity shortens, each at its own rate. Heston's skew tends to a
+    constant at short maturities, rough Bergomi's follows a power law: this is why slot 5 uses rough Bergomi.
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo, np, plots, plt, spy, spy_iv, surface):
+    _days = np.array(surface.DESIGN_DAYS)
+    _t = _days / surface.TRADING_DAYS
+    _k = np.array(surface.DESIGN_DELTAS) * surface.SIGMA_REF * np.sqrt(_t[2])  # log-moneyness at one month
+    _coef = np.polyfit(_k[2:7], spy_iv[2, 2:7], 2)  # a quadratic through the five quotes nearest the money
+    _level, _skew, _curvature = _coef[2], _coef[1], 2 * _coef[0]
+    _fig, (_left, _middle, _right) = plt.subplots(1, 3, figsize=(9.6, 3.2), constrained_layout=True,
+                                                  gridspec_kw={"width_ratios": [1.3, 1, 1]})
+    _fine = np.linspace(_k[2], _k[6], 60)
+    _left.scatter(100 * _k, 100 * spy_iv[2], s=16, color=plots.SERIES[0], zorder=3, label="SPY, 1 month")
+    _left.plot(100 * _fine, 100 * np.polyval(_coef, _fine), color=plots.INK_2, linewidth=1.2, label="quadratic near the money")
+    _left.plot(100 * _fine, 100 * (_level + _skew * _fine), color=plots.SERIES[1], linewidth=1, linestyle="--",
+               label="slope at the money")
+    _left.set_xlim(100 * _k[0] - 1, 100 * _k[-1] + 1)
+    _left.set_ylim(8, 27)
+    _left.set_xlabel("log-moneyness k = ln(K/F), %")
+    _left.set_ylabel("implied volatility (%)")
+    _left.set_title("one smile: level, skew, curvature", loc="left")
+    _left.legend(fontsize=7, loc="upper right")
+    _left.annotate(f"level {100 * _level:.1f}%", (0, 100 * _level), xytext=(4, -26), textcoords="offset points",
+                   fontsize=7.5, color=plots.INK_2, arrowprops={"arrowstyle": "-", "color": plots.MUTED, "lw": 0.7})
+    _middle.plot(_days, 100 * np.asarray(spy["atm_implied_vol"]), "o-", color=plots.SERIES[0], markersize=4)
+    _middle.set_xscale("log")
+    _middle.minorticks_off()
+    _middle.set_xticks(list(_days), [str(_d) for _d in _days])
+    _middle.set_xlabel("maturity, trading days")
+    _middle.set_ylabel("at-the-money volatility (%)")
+    _middle.set_title("level by maturity", loc="left")
+    _skews, _curvatures = np.abs(np.asarray(spy["atm_skew"])), np.asarray(spy["atm_curvature"])
+    _fit = np.polyfit(np.log(_t), np.log(_curvatures), 1)
+    _exponent = f"{spy['skew_power_law']['exponent']:.2f}".replace("-", "−")
+    _right.loglog(_days, _skews, "o", color=plots.SERIES[1], markersize=4, label=f"|skew|, exponent {_exponent}")
+    _right.loglog(_days, spy["skew_power_law"]["scale"] * _t ** spy["skew_power_law"]["exponent"], color=plots.SERIES[1],
+                  linewidth=1)
+    _right.loglog(_days, _curvatures, "s", color=plots.SERIES[2], markersize=4,
+                  label=f"curvature, exponent {_fit[0]:.2f}".replace("-", "−"))
+    _right.loglog(_days, np.exp(np.polyval(_fit, np.log(_t))), color=plots.SERIES[2], linewidth=1)
+    _right.minorticks_off()
+    _right.set_xticks(list(_days), [str(_d) for _d in _days])
+    _right.set_xlabel("maturity, trading days")
+    _right.set_title("skew and curvature by maturity", loc="left")
+    _right.legend(fontsize=7, loc="upper right")
+    mo.vstack([
+        _fig,
+        mo.md(f"""
+    - **Left:** the one-month smile against log-moneyness, with the quadratic through the five quotes nearest the
+      money. Its value, slope and curvature at $k = 0$ are the level ({100 * _level:.1f}%), the skew
+      ({_skew:.2f}) and the curvature ({_curvature:.1f}).
+    - **Right:** the absolute skew and the curvature on log–log axes, where a power law is a straight line. The skew's
+      exponent is {_exponent} (claim C1).
+    """.replace("-0.", "−0.")),
+    ])
+
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo, np, spy_expirations):
+    _reach = np.array([_e["strip_deltas"] for _e in spy_expirations])
+    mo.md(f"""
+    ### Why the grid stops at δ = ±2
+
+    - **The calls run out.** On the call side the cleaned quotes of {int(np.sum(_reach[:, 1] < 2))} of the
+      {len(_reach)} expirations stop before δ = 2, and none reaches beyond {_reach[:, 1].max():.1f}. Past that point
+      the chain lists no strikes, or their quotes fail the cleaning rules: a zero bid, or a spread above half the mid.
+    - **The far calls say little.** At δ = 1.5 and 2 the call prices are already below their noise (section 2's last
+      figure, and *What a network reads*).
+    - **Every point is read, none extrapolated.** At δ = ±2 every grid point is read from quoted strikes.
+    - **The centre holds what the models must fit:** level, skew and curvature.
+
+    The puts reach much further, to δ = {np.median(_reach[:, 0]):.1f} for the median expiration. That part of the
+    chain gives the variance-swap curve (*The data in detail*), but it is not calibration data. What lies outside the
+    grid, the far wings and maturities beyond one year, is priced by the model alone: there the uncertainty of
+    section 1 matters most.
+    """.replace("δ = -", "δ = −"))
+
+    return
+
+
+@app.cell(hide_code=True)
+def _(np, plots, plt, spy_expirations, surface):
+    _days = np.array([_e["days"] for _e in spy_expirations], dtype=float)
+    _low = np.array([_e["strip_deltas"][0] for _e in spy_expirations])
+    _high = np.array([_e["strip_deltas"][1] for _e in spy_expirations])
+    _short = _high < 2
+    _fig, _ax = plt.subplots(figsize=(9.6, 3.1), constrained_layout=True)
+    _ax.axhspan(-2, 2, color=plots.SERIES[0], alpha=0.12, linewidth=0, label="the grid, δ from −2 to 2")
+    _ax.vlines(_days[~_short], _low[~_short], _high[~_short], color=plots.INK_2, linewidth=2,
+               label="cleaned quotes of one expiration")
+    _ax.vlines(_days[_short], _low[_short], _high[_short], color=plots.SERIES[1], linewidth=2,
+               label="calls stop before δ = 2")
+    for _x in surface.DESIGN_DAYS:
+        _ax.axvline(_x, color=plots.BASELINE, linewidth=0.6, linestyle=":")
+    _ax.set_xscale("log")
+    _ax.minorticks_off()
+    _ticks = [1, 5, 10, 21, 42, 63, 126, 252, int(_days.max())]
+    _ax.set_xticks(_ticks, [str(_x) for _x in _ticks])
+    _ax.set_ylim(-15, 4)
+    _ax.set_xlabel("expiration, trading days (dotted: the grid's maturities)")
+    _ax.set_ylabel("standardized moneyness δ")
+    _ax.set_title("how far each expiration's cleaned quotes reach", loc="left")
+    _ax.legend(fontsize=7.5, loc="lower left")
+    _fig
+
+    return
+
+
+@app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""
+    _card = lambda text: mo.callout(mo.md(text), kind="neutral")  # noqa: E731
+    mo.vstack([
+        mo.md(r"""
     ### The noise
 
-    A quote is not an exact number: the bid and the ask differ, and the grid's prices are read from neighbouring
-    expirations. Each of the 63 prices therefore comes with a standard deviation $\sigma_c$, its noise. A fixed rule
-    sets it: 0.3 volatility points at the money, rising to 1 point at $\delta = \pm 2$, turned into a price with the
-    Black–Scholes vega at 20%. On 21 October SPY's half-spreads are below this noise at every point. The 63 prices
-    and their noise are all the data that the next sections use.
-    """)
+    Each grid price is the model's price plus an error, $y_c = P_c(\theta) + \sigma_c\,\varepsilon_c$, with independent
+    standard normal errors $\varepsilon_c$. The standard deviation $\sigma_c$, the noise, is set in two steps:
+
+    $$\sigma_c = \text{vega}_{20\%}(k_c, T_c) \times s(\delta_c), \qquad s(\delta) = 0.3 + 0.35\,|\delta| \text{ volatility points}.$$
+    """),
+        mo.hstack([
+            _card("**Why in volatility points.** Market makers quote in volatility, and a quote's half-spread is "
+                  "roughly constant in volatility: a fraction of a point at the money, about a point in the wings. In "
+                  "price it is not."),
+            _card("**Why the vega at 20%.** The vega turns a volatility error into a price error. Taking it at a fixed "
+                  "20%, not at each smile's own volatility, gives every smile, real or simulated, exactly the same noise."),
+        ], widths="equal"),
+        mo.hstack([
+            _card("**How it compares with SPY.** On 21 October SPY's own half-spreads are below this rule at every grid "
+                  "point: the rule is a floor, wider than the market's spread."),
+            _card(r"**What it does.** It is the yardstick of the calibration. Least squares weights each miss by "
+                  r"$1/\sigma_c^2$, and the posterior's width scales with it. Slot 6 changes it."),
+        ], widths="equal"),
+    ])
+
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo, np, plots, plt, spy_noise, surface, teaching):
+    _deltas = np.array(surface.DESIGN_DELTAS)
+    _fig, (_left, _right) = plt.subplots(1, 2, figsize=(9.6, 3.2), constrained_layout=True)
+    _line = np.linspace(-2, 2, 81)
+    _left.plot(_line, 100 * surface.implied_vol_noise(_line), color=plots.INK_2, linewidth=1.4)
+    _left.scatter(_deltas, 100 * surface.implied_vol_noise(_deltas), s=16, color=plots.SERIES[0], zorder=3)
+    _left.set_ylim(0, 1.2)
+    _left.set_xlabel("standardized moneyness δ")
+    _left.set_ylabel("volatility points")
+    _left.set_title("step 1: the error in volatility, s(δ)", loc="left")
+    _noise = spy_noise.reshape(len(surface.DESIGN_DAYS), len(_deltas))
+    for _row, _day in enumerate(surface.DESIGN_DAYS):
+        _right.plot(_deltas, 1e4 * _noise[_row], "o-", markersize=3, linewidth=1.1, color=plt.cm.viridis(_row / 6),
+                    label=teaching.TENORS[_day])
+    _right.set_yscale("log")
+    _right.set_xlabel("standardized moneyness δ")
+    _right.set_ylabel("basis points of the forward")
+    _right.set_title("step 2: times the vega at 20%, the price noise σ_c", loc="left")
+    _right.legend(fontsize=7, ncols=2, loc="lower center")
+    mo.vstack([
+        _fig,
+        mo.md(f"""
+    The price noise runs from {1e4 * spy_noise.min():.1f} to {1e4 * spy_noise.max():.0f} basis points of the forward.
+    It grows with maturity, like the vega, and peaks a little away from the money, where the error in volatility has
+    grown and the vega has not yet fallen much.
+    """),
+    ])
+
     return
 
 
@@ -209,22 +519,26 @@ def _(mo, np, plots, plt, spy_iv, spy_iv_band, surface, teaching):
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""
-    ## 3 · Bayes with one parameter
-
+    mo.vstack([
+        mo.md("## 3 · Bayes with one parameter"),
+        mo.callout(mo.md(r"""
+    **In one line.** Least squares and Bayes start from the same curve, the squared miss $\chi^2(\sigma)$. Least squares
+    keeps its minimum; Bayes keeps all of it, weighted by a prior. With one liquid quote they give the same answer.
+    """), kind="info"),
+        mo.md(r"""
     ### A model turns parameters into prices
 
-    A volatility model gives a price for every option on the grid once its parameters are fixed. Black–Scholes has
-    a single parameter, the volatility $\sigma$, and gives every option the same implied volatility, whatever its
-    strike. That cannot match SPY's smile, and section 5 shows how a check of the model detects it. With one
-    parameter, though, each step of Bayesian inference fits in one figure, so we start with Black–Scholes and a
-    single quote: the at-the-money option that expires in one month.
-
-    Calibration goes backwards, from the quote to $\sigma$. Least squares, the usual method, chooses the $\sigma$
-    that minimizes the squared miss in noise units, summed over the quotes used:
+    - Black–Scholes has one parameter, the volatility $\sigma$, and gives every option the same implied volatility.
+      It cannot match SPY's smile, and section 5 shows how a check of the model detects this. But with one parameter
+      each step of Bayesian inference fits in one figure.
+    - We start with one quote: the at-the-money option that expires in one month.
+    - Calibration goes backwards, from the quote to $\sigma$. Least squares chooses the $\sigma$ that minimizes the
+      squared miss in noise units, summed over the quotes used:
 
     $$\chi^2(\sigma) = \sum_c \frac{\big(y_c - P_c(\sigma)\big)^2}{\sigma_c^2}.$$
-    """)
+    """),
+    ])
+
     return
 
 
@@ -317,16 +631,15 @@ def _(mo):
     mo.md(r"""
     ### Prior × likelihood → posterior
 
-    If the noise is Gaussian, the probability of seeing the quote when the volatility is $\sigma$, the likelihood
-    $p(y \mid \sigma)$, is proportional to $e^{-\chi^2(\sigma)/2}$. Least squares keeps the peak of this curve;
-    Bayesian inference keeps all of it. Bayes' rule multiplies the likelihood by a prior $p(\sigma)$, which says
-    which volatilities we consider possible before seeing the quote, and rescales the product to integrate to one:
+    - **Likelihood.** If the noise is Gaussian, the probability of the quote given $\sigma$ is proportional to
+      $e^{-\chi^2(\sigma)/2}$: the least-squares curve, read as a probability.
+    - **Prior.** Which volatilities we consider possible before the quote. By default every value from 5% to 60% is
+      equally likely; the buttons change it.
+    - **Posterior.** Their product, rescaled to integrate to one, computed exactly on a grid of 4,001 volatilities:
 
     $$p(\sigma \mid y) = \frac{p(y \mid \sigma)\, p(\sigma)}{p(y)}.$$
-
-    The result is the posterior. With one parameter it can be computed exactly, on a grid of 4,001 volatilities.
-    The default prior gives every value between 5% and 60% the same probability; the buttons change it.
     """)
+
     return
 
 
@@ -395,11 +708,11 @@ def _(mo):
     mo.md(r"""
     ### More quotes, a narrower posterior
 
-    Each new quote multiplies the likelihood by one more factor, and the posterior narrows. To see this on data the
-    model can produce, we simulate quotes from Black–Scholes itself, with a volatility of 13%: one at-the-money
-    quote for each of the seven maturities, each with its noise. Simulated data, whose true parameters are known,
-    are also how the methods of the afternoon are tested.
+    Each quote adds a factor to the likelihood. To see the effect where the model is right, we simulate one
+    at-the-money quote per maturity from Black–Scholes itself, at a known $\sigma$ = 13%, with the same noise. Simulated
+    data with a known truth is also how every method of the afternoon is tested.
     """)
+
     return
 
 
@@ -473,80 +786,147 @@ def _(
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""
-    ## 4 · Using the posterior
+    mo.vstack([
+        mo.md("## 4 · Using the posterior: the range of a price"),
+        mo.callout(mo.md(r"""
+    **In one line.** Price the product under each posterior draw and read off its quantiles. Here $\sigma$'s posterior
+    is exactly the Gauss–Newton normal, but the put's price is not normal: linearizing the price, the delta method,
+    misses its skew and understates its 90% point.
+    """), kind="info"),
+        mo.md(r"""
+    We take the one-month put at $\delta = -2$, far below the money, and suppose the market does not quote it, as for
+    the products a desk has to mark.
 
-    The main use of the posterior is pricing. To price another option, we draw volatilities from the posterior and
-    price the option under each draw. As an example we take the one-month put with its strike far below the money, at
-    $\delta = -2$, and suppose for now that the market does not quote it, as is the case for the products a desk has
-    to mark.
-    """)
+    - **The classical route** has two steps: the Gauss–Newton normal for $\sigma$, centred at the least-squares fit
+      with standard deviation equal to the noise divided by the vega; then the delta method for the price, a normal
+      whose standard deviation is the price's slope in $\sigma$ times that of $\sigma$.
+    - **The Bayesian route** prices the put at each posterior draw of $\sigma$.
+    """),
+    ])
+
     return
 
 
 @app.cell
-def _(np, one_quote, quotes, sigma_grid, surface):
+def _(np, one_quote, quotes, sigma_grid, standardized_miss, surface):
     _rng = np.random.default_rng(1)
     _cdf = np.cumsum(one_quote) / np.sum(one_quote)
     _index = np.minimum(np.searchsorted(_cdf, _rng.uniform(size=4_000)), len(sigma_grid) - 1)
     sigma_draws = sigma_grid[_index] + (_rng.uniform(size=_index.size) - 0.5) * (sigma_grid[1] - sigma_grid[0])
     put_draws = surface.bs_price(quotes["put"]["k"], quotes["put"]["T"], sigma_draws, "put")
     put_range = np.quantile(put_draws, [0.05, 0.95])
-    return put_draws, put_range, sigma_draws
+
+    # the classical route: Gauss-Newton for sigma, the delta method for the put
+    _atm, _put = quotes["at the money"], quotes["put"]
+    sigma_hat = sigma_grid[np.argmin(standardized_miss(_atm) ** 2)]  # least squares
+    sigma_gn_sd = _atm["sd"] / float(surface.bs_vega(_atm["k"], _atm["T"], sigma_hat))  # the noise over the vega
+    put_mark = float(surface.bs_price(_put["k"], _put["T"], sigma_hat, "put"))
+    put_delta_sd = float(surface.bs_vega(_put["k"], _put["T"], sigma_hat)) * sigma_gn_sd  # slope in sigma times its sd
+    put_gn_draws = surface.bs_price(_put["k"], _put["T"], np.random.default_rng(3).normal(sigma_hat, sigma_gn_sd, 4_000),
+                                    "put")
+
+    return (
+        put_delta_sd,
+        put_draws,
+        put_gn_draws,
+        put_mark,
+        put_range,
+        sigma_draws,
+        sigma_gn_sd,
+        sigma_hat,
+    )
 
 
 @app.cell(hide_code=True)
-def _(mo, plots, plt, put_draws, put_range, quotes, sigma_draws):
-    _fig, (_left, _right) = plt.subplots(1, 2, figsize=(9.6, 2.9), constrained_layout=True)
-    _left.hist(100 * sigma_draws, bins=40, color=plots.SERIES[0], alpha=0.85, edgecolor=plots.SURFACE, linewidth=0.4)
-    _left.set_xlabel("σ (%)")
+def _(
+    mo,
+    np,
+    plots,
+    plt,
+    put_delta_sd,
+    put_draws,
+    put_gn_draws,
+    put_mark,
+    put_range,
+    sigma_draws,
+    sigma_gn_sd,
+    sigma_hat,
+    stats,
+):
+    _fig, (_left, _right) = plt.subplots(1, 2, figsize=(9.6, 3.2), constrained_layout=True)
+    _left.hist(100 * sigma_draws, bins=40, density=True, color=plots.SERIES[0], alpha=0.8, edgecolor=plots.SURFACE,
+               linewidth=0.4, label="posterior draws")
+    _x = np.linspace(sigma_hat - 4 * sigma_gn_sd, sigma_hat + 4 * sigma_gn_sd, 200)
+    _left.plot(100 * _x, stats.norm.pdf(_x, sigma_hat, sigma_gn_sd) / 100, color=plots.INK, linestyle="--", linewidth=1.3,
+               label="Gauss–Newton normal")
     _left.set_yticks([])
-    _left.set_title(f"{len(sigma_draws):,} draws from the posterior of σ", loc="left")
-    _right.hist(1e4 * put_draws, bins=40, color=plots.SERIES[1], alpha=0.85, edgecolor=plots.SURFACE, linewidth=0.4)
-    for _edge in put_range:
-        _right.axvline(1e4 * _edge, color=plots.INK, linestyle="--", linewidth=0.9)
-    _right.set_xlabel("put price (basis points of the forward)")
+    _left.set_xlabel("σ (%)")
+    _left.set_title("σ: the posterior and Gauss–Newton coincide", loc="left")
+    _left.legend(fontsize=7.5, loc="upper right")
+    _bins = np.linspace(0, 0.25, 51)
+    _right.hist(1e4 * put_draws, bins=_bins, density=True, color=plots.SERIES[1], alpha=0.8, edgecolor=plots.SURFACE,
+                linewidth=0.4, label="priced at posterior draws")
+    _right.hist(1e4 * put_gn_draws, bins=_bins, density=True, histtype="step", color=plots.INK_2, linewidth=1.1,
+                label="priced at Gauss–Newton draws")
+    _y = np.linspace(1e4 * (put_mark - 4 * put_delta_sd), 1e4 * (put_mark + 4 * put_delta_sd), 200)
+    _right.plot(_y, stats.norm.pdf(_y, 1e4 * put_mark, 1e4 * put_delta_sd), color=plots.INK, linestyle="--", linewidth=1.3,
+                label="delta method")
+    _q90 = np.quantile(put_draws, 0.9)
+    _d90 = put_mark + 1.2816 * put_delta_sd
+    _right.axvline(1e4 * _q90, color=plots.SERIES[1], linewidth=1.2, label="90% point, posterior")
+    _right.axvline(1e4 * _d90, color=plots.INK, linewidth=1.2, linestyle=":", label="90% point, delta method")
     _right.set_yticks([])
-    _right.set_title("the put priced under each draw; dashed: the 90% range", loc="left")
+    _right.set_xlim(0, 0.22)
+    _right.set_xlabel("put price (basis points of the forward)")
+    _right.set_title("the put: skewed, which the delta method misses", loc="left")
+    _right.legend(fontsize=7, loc="upper right")
     mo.vstack([
         _fig,
+        mo.hstack([
+            mo.stat(value=f"{100 * sigma_draws.mean():.2f}% ± {100 * sigma_draws.std():.2f}", label="σ, posterior",
+                    caption="mean ± standard deviation", bordered=True),
+            mo.stat(value=f"{100 * sigma_hat:.2f}% ± {100 * sigma_gn_sd:.2f}", label="σ, Gauss–Newton",
+                    caption="least squares ± noise / vega", bordered=True),
+            mo.stat(value=f"{100 * (_q90 / put_mark - 1):.0f}%", label="put's reserve, posterior",
+                    caption="90% point over the mark, sold put", bordered=True),
+            mo.stat(value=f"{100 * (_d90 / put_mark - 1):.0f}%", label="put's reserve, delta method",
+                    caption="the same, linearized", bordered=True),
+        ], widths="equal"),
         mo.md(f"""
-    The put's strike is {100 * quotes['put']['strike']:.0f}% of the forward. Under the posterior, its price lies
-    between {1e4 * put_range[0]:.2f} and {1e4 * put_range[1]:.2f} basis points of the forward with 90% probability.
-    The same procedure, a pricer for the product applied to draws from the posterior, gives a price range for any
-    product the model can price, for example an option that starts in a year. Slot 5 does this with rough Bergomi.
+    - The put's price is convex in σ: a draw above the centre raises it more than a draw below lowers it. Its
+      distribution is skewed to the right, whether σ comes from the posterior or from the Gauss–Newton normal (outline).
+    - The delta method makes the price normal. Its 90% point, {1e4 * _d90:.3f} bp, is below the posterior's,
+      {1e4 * _q90:.3f} bp: for a bank that has sold the put, the reserve would be too small.
+    - Under the posterior the put's 90% range is {1e4 * put_range[0]:.2f} to {1e4 * put_range[1]:.2f} basis points
+      of the forward. Section 6 compares the two routes on Heston and four exotic products.
     """),
     ])
+
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""
-    Valuation rules ask for this kind of range, that is, the uncertainty of a mark at a stated confidence level.
+    mo.callout(mo.md(r"""
+    **What the rules ask for.** This range, and its 90% point, are what EU prudent valuation asks a bank to estimate for
+    each position: Art. 9 for calibrated parameters, Art. 11 for the choice of model (section 1).
+    """), kind="neutral")
 
-    | Rule | What it asks for |
-    |:---|:---|
-    | Regulation (EU) 2016/101, Art. 9 (market price uncertainty) | for inputs calibrated to market quotes, a range of plausible values and a point in it at 90% confidence |
-    | Regulation (EU) 2016/101, Art. 11 (model risk) | the same for the choice among models and calibration approaches |
-    | IFRS 13, §93(h) | the sensitivity of a Level 3 fair value to reasonably possible alternative inputs |
-    | PRA SS1/23 | model uncertainty: "the inherent uncertainty in the parameter estimates and results of statistical models" |
-
-    A posterior range answers the first row for one model. A full valuation adjustment needs more than that.
-    """)
     return
 
 
 @app.cell(hide_code=True)
 def _(mo, put_range, quotes):
-    mo.md(f"""
-    ## 5 · Checking the model
+    mo.vstack([
+        mo.md("## 5 · Checking the model"),
+        mo.callout(mo.md(f"""
+    **In one line.** A posterior is computed inside its model, so it cannot show that the model is wrong. A predictive
+    check can: the market quotes the put at {1e4 * quotes['put']['price']:.1f} basis points, about
+    {quotes['put']['price'] / put_range[1]:.0f} times the top of the predicted range. Black–Scholes cannot produce a smile.
+    """), kind="warn"),
+        mo.md("A posterior predictive check compares what the fitted model predicts with quotes it was not fitted to."),
+    ])
 
-    The posterior is computed inside the model, so on its own it cannot show that the model is wrong. A posterior
-    predictive check compares what the fitted model predicts with quotes it was not fitted to. The market does quote
-    the put of section 4, at {1e4 * quotes['put']['price']:.1f} basis points: about
-    {quotes['put']['price'] / put_range[1]:.0f} times the upper end of the predicted range.
-    """)
     return
 
 
@@ -672,28 +1052,45 @@ def _(
     mo.vstack([
         _fig,
         mo.md(f"""
-    The two likelihoods do not overlap. The posterior from both quotes stays close to the at-the-money value,
-    because that quote is the more precise of the two, and it misses the put by {misses['put']:.1f} noise units. Only
-    about {noise_needed:.2g} times the assumed noise would bring both misses below two units. No single volatility
-    prices both options, and this mismatch is what the volatility smile shows. The posterior is precise but wrong,
-    because it is computed inside a model that cannot produce these quotes. A model has to be checked before its
-    ranges are used. For this reason the rest of the afternoon uses models that produce a smile: Heston, with four
-    parameters (section 6 and slot 4), and rough Bergomi, with six (slot 5).
+    - The two likelihoods do not overlap. The posterior from both quotes stays near the at-the-money value, the more
+      precise quote, and misses the put by {misses['put']:.1f} noise units.
+    - Only about {noise_needed:.2g} times the assumed noise would bring both misses below two units.
+    - No single volatility prices both options: this mismatch is the smile. The posterior is precise but wrong,
+      because the model cannot produce these quotes. A model has to be checked before its ranges are used, which is
+      why the afternoon moves to models with a smile: Heston (section 6 and slot 4) and rough Bergomi (slot 5).
     """),
     ])
     return
 
 
 @app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""
-    ## 6 · A model with a smile: Heston
+def _(gn_reserves, mo):
+    _thin = [_k for _k in gn_reserves if _k[0] == "15 quotes, κ free"]
+    _worst = max(abs(gn_reserves[_k]["delta method"] / gn_reserves[_k]["sold"] - 1) for _k in _thin)
+    mo.vstack([
+        mo.md("## 6 · A model with a smile: Heston"),
+        mo.callout(mo.md(f"""
+    **In one line.** On SPY's 63 quotes, Heston's posterior is Gaussian down to its tails, and the classical route,
+    Gauss–Newton and the delta method, gives the same reserves. With 15 quotes the posterior bends, a tail grows, and
+    the classical reserves differ from the posterior's by up to {100 * _worst:.0f}%. The test is the reserve, not the
+    shape of a scatter plot.
+    """), kind="info"),
+        mo.md(r"""
+    Heston lets the variance of SPY move randomly: it reverts to a long-run level and moves against the price. Its
+    parameters map onto the smile's features of section 2.
 
-    Heston lets the variance of SPY move randomly: it reverts to a long-run level, and its moves are correlated with
-    the price's. With four free parameters, the initial and long-run variance, the volatility of variance and the
-    correlation, and the speed of mean reversion fixed at 2, it reproduces the shape of SPY's smile. Rough Bergomi,
-    the model of slot 5, describes short maturities better still, but it can only be priced by Monte Carlo.
-    """)
+    | Parameter | What it sets |
+    |:---|:---|
+    | initial variance $v_0$ | the level at short maturities |
+    | long-run variance $\theta$ | the level at long maturities |
+    | mean reversion $\kappa$, fixed at 2 | how fast the level moves from $v_0$ to $\theta$ |
+    | correlation $\rho$, times the volatility of variance | the skew |
+    | volatility of variance $\sigma_v$ | the curvature |
+
+    Rough Bergomi, the model of slot 5, describes short maturities better still, but it can only be priced by Monte Carlo.
+    """),
+    ])
+
     return
 
 
@@ -758,11 +1155,13 @@ def _(mo):
     mo.md(r"""
     ### The posterior of four parameters
 
-    Sections 3 and 4 carry over unchanged. The likelihood is the same product over the quotes, now over all 63 and
-    as a function of four parameters, and a product is priced under each posterior draw. With four parameters a
-    grid of values is no longer practical. Markov chain Monte Carlo (MCMC) samples the posterior instead: a chain of
-    parameter values that visits each region in proportion to its posterior probability.
+    - Sections 3 and 4 carry over: the likelihood is the same product, now over all 63 quotes and four parameters, and
+      a product is priced at each posterior draw.
+    - With four parameters a grid of values is no longer practical. Markov chain Monte Carlo (MCMC) samples the
+      posterior instead: a chain of parameter values that visits each region in proportion to its posterior
+      probability.
     """)
+
     return
 
 
@@ -803,178 +1202,366 @@ def _(heston_spy_draws, mo, np, plots, plt, swap_vol_1y):
 
 
 @app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""
-    ### When the posterior differs from least squares
+def _(heston_checks, mo):
+    _widths = [_p["width_ratio_gn_over_posterior"] for _p in heston_checks["cases"]["full grid, kappa fixed"]["parameters"].values()]
+    _card = lambda text: mo.callout(mo.md(text), kind="neutral")  # noqa: E731
+    mo.vstack([
+        mo.md(r"""
+    ### Gauss–Newton or the posterior?
 
-    With a model that fits the smile, the posterior is often close to the least-squares answer of section 3: the
-    best fit, with an error ellipse computed from the curvature of $\chi^2$. The table compares the two approaches.
+    The classical route approximates the posterior by a normal centred at the least-squares fit, with the covariance
+    $(J^\top W J)^{-1}$ given by the curvature of $\chi^2$, and each product's range by the delta method. An elliptical
+    scatter is not enough to trust it. Three checks, with the exact posterior on SPY's quotes:
+    """),
+        mo.hstack([
+            _card(f"**1. Centre and width.** Do the Gauss–Newton intervals match the posterior's? On 63 quotes their "
+                  f"widths are {min(_widths):.2f} to {max(_widths):.2f} times the posterior's."),
+            _card("**2. Tails.** Do the quantiles match out to the 1% and 99% points, not only near the centre? "
+                  "The next figure compares them, parameter by parameter."),
+            _card("**3. The reserve.** Do the products' 90% points match? This is the number the rules ask for, so it "
+                  "decides whether a difference matters."),
+        ], widths="equal"),
+    ])
 
-    | | Least squares | Bayesian calibration |
-    |:---|:---|:---|
-    | Output | one parameter vector $\hat\theta$ | a distribution $p(\theta \mid y)$ |
-    | Uncertainty | the Gauss–Newton ellipse $(J^\top W J)^{-1}$ around $\hat\theta$ | the posterior, whatever its shape |
-    | What is known beforehand | penalties, parameters fixed by hand | a stated prior |
-    | The range of a product | the delta method, through the product's gradient | the product priced under each posterior draw |
-    | What "90%" means | across repeated sets of quotes | given today's quotes and the prior |
-    | Cost | one optimization | thousands of likelihood evaluations |
-
-    The two panels below use synthetic smiles on SPY's grid, with the same noise. The left panel shows Heston's exact
-    posterior, sampled by MCMC in PyMC. The right panel shows rough Bergomi's posterior for a smile whose variance
-    curve is almost flat, drawn with the network of slot 5. In both panels the dashed ellipse is the Gaussian with the
-    same mean and covariance as the draws.
-    """)
     return
 
 
 @app.cell
-def _(RESULTS, backbones, np, teaching):
-    heston_cache = backbones.load_example("heston-final500")[2]
-    rough_task, rough_report, rough_cache = backbones.load_example("rough-joint100k-validation1962")
-    rough_names = rough_task["parameter_names"]
-    heston_pair = heston_cache["reference_chains"].reshape(-1, 4)[:, 2:]  # volatility of variance, correlation
-    rough_pair = rough_cache["neural_draws"][:, [rough_names.index("long_variance"), rough_names.index("decay")]]
-    decay_bounds = np.asarray(rough_task["prior_bounds"])[rough_names.index("decay")]
-    heston_s6 = teaching.load_json(RESULTS / "heston" / "s6" / "classical.json")["summary"]
-
-
-    def gaussian_twin(draws, size=100_000, seed=0):
-        """Draws from the Gaussian with the same mean and covariance as `draws`."""
-        return np.random.default_rng(seed).multivariate_normal(draws.mean(axis=0), np.cov(draws.T), size)
-
-
-    def share_inside_90(draws):
-        """Share of `draws` inside the 90% ellipse of that Gaussian."""
-        centred = draws - draws.mean(axis=0)
-        distance = np.einsum("ni,ij,nj->n", centred, np.linalg.inv(np.cov(draws.T)), centred)
-        return float(np.mean(distance < 4.605))
-
+def _(CHECKS, PRODUCTS, heston_checks, heston_spy_draws, np, stats):
+    gn_cases = {  # the exact posterior's draws, and the lab quick check's Gauss-Newton summary of the same quotes
+        "63 quotes, κ = 2": (heston_spy_draws, heston_checks["cases"]["full grid, kappa fixed"]),
+        "15 quotes, κ free": (np.load(CHECKS / "heston_checks-3_x_5_grid_kappa_free.npy"),
+                              heston_checks["cases"]["3 x 5 grid, kappa free"]),
+    }
+    PARAMETER_LABELS = {"initial_variance": "v₀", "theta": "θ", "vol_of_vol": "σ_v", "rho": "ρ", "kappa": "κ"}
+    _p = np.linspace(0.01, 0.99, 99)
+    gn_quantiles, gn_shape = {}, {}  # quantiles in Gauss-Newton sd from the least-squares fit; skewness and kurtosis
+    for _case, (_draws, _summary) in gn_cases.items():
+        for _i, _name in enumerate(_summary["names"]):
+            _parameter = _summary["parameters"][_name]
+            _sd = np.ptp(_parameter["gauss_newton_90"]) / (2 * 1.645)
+            gn_quantiles[_case, _name] = (np.quantile(_draws[:, _i], _p) - _parameter["best"]) / _sd
+            gn_shape[_case, _name] = (float(stats.skew(_draws[:, _i])), float(stats.kurtosis(_draws[:, _i])))
+    gn_reserves, gn_precision = {}, {}  # reserves as shares of the mark, and the bootstrap precision of the posterior's
+    _rng = np.random.default_rng(0)
+    for _case, (_, _summary) in gn_cases.items():
+        _prices = np.asarray(_summary["posterior_product_draws"])  # 300 draws, columns in the order of PRODUCTS
+        for _j, _product in enumerate(PRODUCTS):
+            _info = _summary["products"][_product]
+            _x = _prices[:, _j] / _info["least_squares_point"]
+            gn_reserves[_case, _product] = {"sold": np.quantile(_x, 0.9) - 1, "held": 1 - np.quantile(_x, 0.1),
+                                            "delta method": 1.2816 * _info["delta_range_90_relative"] / (2 * 1.645)}
+            _boot = np.quantile(_x[_rng.integers(0, len(_x), (2000, len(_x)))], [0.1, 0.9], axis=1)
+            gn_precision[_case, _product] = float(max(np.std(_boot[0]), np.std(_boot[1])))
 
     return (
-        decay_bounds,
-        gaussian_twin,
-        heston_pair,
-        heston_s6,
-        rough_cache,
-        rough_names,
-        rough_pair,
-        rough_report,
-        rough_task,
-        share_inside_90,
+        PARAMETER_LABELS,
+        gn_cases,
+        gn_precision,
+        gn_quantiles,
+        gn_reserves,
+        gn_shape,
     )
 
 
 @app.cell(hide_code=True)
 def _(
-    decay_bounds,
-    gaussian_twin,
-    heston_pair,
-    heston_s6,
+    PARAMETER_LABELS,
+    gn_cases,
+    gn_quantiles,
+    gn_shape,
+    heston_checks,
+    mo,
+    np,
+    plots,
+    plt,
+    stats,
+):
+    _z = stats.norm.ppf(np.linspace(0.01, 0.99, 99))
+    _colors = list(plots.SERIES) + [plots.INK_2, plots.CRITICAL]
+    _fig, _axes = plt.subplots(1, 2, figsize=(9.6, 3.4), constrained_layout=True, sharey=True)
+    for _ax, (_case, (_, _summary)) in zip(_axes, gn_cases.items()):
+        _ax.plot([-3, 3], [-3, 3], color=plots.BASELINE, linewidth=1)
+        for _name, _color in zip(_summary["names"], _colors):
+            _ax.plot(_z, gn_quantiles[_case, _name], color=_color, linewidth=1.4, label=PARAMETER_LABELS[_name])
+        _ax.set_xlim(-2.6, 2.6)
+        _ax.set_ylim(-3.2, 5.5)
+        _ax.set_xlabel("quantile of the Gauss–Newton normal (sd)")
+        _ax.set_title(f"Heston on SPY, {_case}", loc="left")
+        _ax.legend(fontsize=7.5, loc="upper left")
+    _axes[0].set_ylabel("quantile of the exact posterior (sd)")
+    _liquid = max(max(abs(_a), abs(_b)) for (_case, _), (_a, _b) in gn_shape.items() if _case == "63 quotes, κ = 2")
+    _theta = gn_shape["15 quotes, κ free", "theta"]
+    _kappa = heston_checks["cases"]["3 x 5 grid, kappa free"]["parameters"]["kappa"]["gauss_newton_90"]
+    mo.vstack([
+        _fig,
+        mo.md(f"""
+    Each line compares one parameter's posterior quantiles, from the 1% to the 99% point, with the Gauss–Newton normal's.
+    On the diagonal the two agree, tails included.
+
+    - **63 quotes, κ = 2:** every line lies on the diagonal, and every skewness and excess kurtosis is within
+      ±{_liquid:.2f}. The posterior is the Gauss–Newton normal, out to the tails.
+    - **15 quotes, κ free:** θ's right tail reaches {gn_quantiles['15 quotes, κ free', 'theta'][-1]:.1f} Gauss–Newton
+      standard deviations at the 99% point, with skewness {_theta[0]:.1f}. κ is cut by the prior's lower bound, while
+      its Gauss–Newton interval reaches {_kappa[0]:.2f}, a negative mean reversion that the model does not allow.
+    """.replace("reaches -", "reaches −")),
+    ])
+
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ### A curved posterior, and why
+
+    In Heston the expected variance at time $t$ is $\theta + (v_0 - \theta)\,e^{-\kappa t}$: it starts at $v_0$ and moves
+    to the level $\theta$ at the speed $\kappa$. Fifteen quotes up to six months pin its **average up to six months**,
+    but not how that average splits between the level and the speed. Every pair on the dashed curve gives the same
+    average, and the exact posterior lies along it (left). Gauss–Newton replaces the curve by a box that misses its
+    upper arm and reaches negative $\kappa$.
+
+    Rough Bergomi's variance curve has the same form, with a short level, a long level and a decay. When the two levels
+    nearly coincide, the decay barely changes the curve, and the network's posterior follows the same kind of dashed
+    curve (right).
+    """)
+    return
+
+
+@app.cell
+def _(ASSETS, RESULTS, backbones, np, teaching):
+    _task, rough_report, rough_cache = backbones.load_example("rough-joint100k-validation1962")
+    rough_names = _task["parameter_names"]
+    _evaluation = teaching.load_json(ASSETS / "backbones" / "rough-joint100k-validation1962" / "evaluation.json")
+    rough_coverage_90 = dict(zip(_evaluation["targets"], _evaluation["coverage"]["0.9"]["coverage"]))  # 2,000 smiles
+    rough_decay_cases = []  # how much of its prior the decay's 90% interval covers, by the ratio of the curve's levels
+    for _case in ("rough-joint100k-validation0", "rough-joint100k-validation1941", "rough-joint100k-validation1962",
+                  "rough-joint100k-validation1983"):
+        _t, _, _c = backbones.load_example(_case)
+        _n = _t["parameter_names"]
+        _truth = dict(zip(_n, _c["truth"]))
+        _q = np.quantile(_c["neural_draws"][:, _n.index("decay")], [0.05, 0.95])
+        rough_decay_cases.append({"levels": _truth["short_variance"] / _truth["long_variance"],
+                                  "share": np.ptp(_q) / np.ptp(np.asarray(_t["prior_bounds"])[_n.index("decay")])})
+    heston_s6 = teaching.load_json(RESULTS / "heston" / "s6" / "classical.json")["summary"]
+
+    return (
+        heston_s6,
+        rough_cache,
+        rough_coverage_90,
+        rough_decay_cases,
+        rough_names,
+    )
+
+
+@app.cell(hide_code=True)
+def _(
+    gn_cases,
     mo,
     np,
     plots,
     plt,
     rough_cache,
+    rough_coverage_90,
+    rough_decay_cases,
     rough_names,
-    rough_pair,
-    rough_report,
-    rough_task,
-    share_inside_90,
 ):
-    def _ellipse(draws):
-        _values, _vectors = np.linalg.eigh(np.cov(draws.T))
-        _angle = np.linspace(0, 2 * np.pi, 200)
-        _circle = np.vstack([np.cos(_angle), np.sin(_angle)])
-        return draws.mean(axis=0)[:, None] + _vectors @ (np.sqrt(4.605 * _values)[:, None] * _circle)
+    def _average(start, level, decay, horizon):
+        """The variance curve start + (level - start)(1 - e^(-decay t)), averaged from 0 to horizon."""
+        _g = (1 - np.exp(-decay * horizon)) / (decay * horizon)
+        return level + (start - level) * _g
 
 
-    _box = np.asarray(rough_task["prior_bounds"])[[rough_names.index("long_variance"), rough_names.index("decay")]]
-    _twin = gaussian_twin(rough_pair)
-    _outside = float(np.mean(np.any((_twin < _box[:, 0]) | (_twin > _box[:, 1]), axis=1)))
-    _decay90 = np.quantile(rough_pair[:, 1], [0.05, 0.95])
-    _truth = dict(zip(rough_names, rough_cache["truth"]))
-    _shown = heston_pair[np.random.default_rng(0).choice(len(heston_pair), 3_000, replace=False)]
+    def _same_average(start, target, decay, horizon):
+        """The level that gives this average for each decay, the start held fixed."""
+        _g = (1 - np.exp(-decay * horizon)) / (decay * horizon)
+        return (target - start * _g) / (1 - _g)
+
+
+    _draws, _summary = gn_cases["15 quotes, κ free"]
+    _v0, _theta, _kappa = _draws[:, 0], _draws[:, 1], _draws[:, 4]
+    _speeds = np.linspace(0.25, 8, 200)
     _fig, (_left, _right) = plt.subplots(1, 2, figsize=(9.6, 3.6), constrained_layout=True)
-    _left.scatter(_shown[:, 0], _shown[:, 1], s=3, alpha=0.3, color=plots.SERIES[0], rasterized=True)
-    _left.plot(*_ellipse(heston_pair), color=plots.INK, linestyle="--", linewidth=1.2, label="Gaussian, 90%")
-    _left.set_xlabel("volatility of variance")
-    _left.set_ylabel("correlation ρ")
-    _left.set_title("Heston, exact posterior: an ellipse", loc="left")
-    _left.legend(fontsize=8, loc="lower right")
-    _e = _ellipse(rough_pair)
-    _low, _high = min(_e[1].min(), _box[1, 0]) - 0.4, max(_e[1].max(), _box[1, 1]) + 0.4
-    _right.axhspan(_low, _box[1, 0], color=plots.GRID, linewidth=0)
-    _right.axhspan(_box[1, 1], _high, color=plots.GRID, linewidth=0, label="outside the prior")
-    _right.scatter(rough_pair[:, 0], rough_pair[:, 1], s=5, alpha=0.45, color=plots.SERIES[1], rasterized=True)
-    _right.plot(*_e, color=plots.INK, linestyle="--", linewidth=1.2, label="Gaussian, 90%")
-    _right.set_ylim(_low, _high)
-    _right.set_xlabel("long level of the variance curve")
-    _right.set_ylabel("decay (per year)")
-    _right.set_title("Rough Bergomi, almost flat curve: not an ellipse", loc="left")
-    _right.legend(fontsize=8, loc="center left")
-    _gn = list(heston_s6["gauss_newton_coverage_90"].values())
-    _post = list(heston_s6["posterior_coverage_90"].values())
+    _left.scatter(_kappa, _theta, s=3, alpha=0.25, color=plots.SERIES[0], rasterized=True, label="exact posterior (MCMC)")
+    _left.plot(_speeds, _same_average(_v0.mean(), _average(_v0, _theta, _kappa, 0.5).mean(), _speeds, 0.5),
+               color=plots.INK, linewidth=1.3, linestyle="--", label="same average variance to 6 months")
+    _gk = _summary["parameters"]["kappa"]["gauss_newton_90"]
+    _gt = _summary["parameters"]["theta"]["gauss_newton_90"]
+    _left.add_patch(plt.Rectangle((max(_gk[0], 0), _gt[0]), _gk[1] - max(_gk[0], 0), _gt[1] - _gt[0], fill=False, edgecolor=plots.SERIES[1],
+                                  linewidth=1.3, label=f"Gauss–Newton 90% box (κ from {_gk[0]:.2f})".replace("-", "−")))
+    _left.set_xlim(0, 8.2)
+    _left.set_ylim(0, 0.17)
+    _left.set_xlabel("mean reversion κ (the speed)")
+    _left.set_ylabel("long-run variance θ (the level)")
+    _left.set_title("Heston, 15 SPY quotes: exact posterior", loc="left")
+    _left.legend(fontsize=7.2, loc="upper right")
+    _short, _long, _decay = (rough_cache["neural_draws"][:, rough_names.index(_n)]
+                             for _n in ("short_variance", "long_variance", "decay"))
+    _right.scatter(_decay, _long, s=4, alpha=0.4, color=plots.SERIES[1], rasterized=True, label="network posterior")
+    _right.plot(_speeds, _same_average(_short.mean(), _average(_short, _long, _decay, 1.0).mean(), _speeds, 1.0),
+                color=plots.INK, linewidth=1.3, linestyle="--", label="same average variance to 1 year")
+    _right.set_xlim(0, 8.2)
+    _right.set_ylim(0.04, 0.1)
+    _right.set_xlabel("decay (the speed, per year)")
+    _right.set_ylabel("long level of the variance curve")
+    _right.set_title("rough Bergomi, almost flat curve: network", loc="left")
+    _right.legend(fontsize=7.2, loc="lower right")
+    _pinned = [_c for _c in rough_decay_cases if abs(np.log(_c["levels"])) > 0.3]
+    mo.vstack([
+        _fig,
+        mo.callout(mo.md(f"""
+    **Is the rough Bergomi shape real?** The dashed curves come from the model's formula, not from the networks or the
+    sampler, and both posteriors follow them: the shape is the model's geometry. The Heston posterior is exact
+    (MCMC on real SPY quotes). The rough Bergomi draws are the network's, and two further facts support them: in the
+    cached cases whose two levels differ, the network pins the decay to {min(_c['share'] for _c in _pinned):.0%} to
+    {max(_c['share'] for _c in _pinned):.0%} of its prior range, and on 2,000 simulated smiles its 90% intervals for the
+    decay contain the truth {rough_coverage_90['decay']:.0%} of the time. What is missing is an exact sampler on this
+    smile (pending, J2).
+    """), kind="neutral"),
+    ])
+
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ### What it does to a reserve
+
+    The rules ask for the 90% point of each product's price, so the two routes have to agree there. Below, two of the
+    four products, under the exact posterior (bars) and under the classical route (dashed). The solid and dashed
+    vertical lines are each route's 10% and 90% points: the reserve for a position held and for one sold is the
+    distance from the mark (0) to these lines.
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(
+    PRODUCTS,
+    gn_cases,
+    gn_precision,
+    gn_reserves,
+    mo,
+    np,
+    plots,
+    plt,
+    stats,
+):
+    _fig, _axes = plt.subplots(2, 2, figsize=(9.6, 4.6), constrained_layout=True)
+    for _row, (_case, (_, _summary)) in enumerate(gn_cases.items()):
+        _prices = np.asarray(_summary["posterior_product_draws"])
+        for _col, _product in enumerate(("forward_start_call", "put_out_of_grid")):
+            _ax = _axes[_row, _col]
+            _info = _summary["products"][_product]
+            _relative = 100 * (_prices[:, list(PRODUCTS).index(_product)] / _info["least_squares_point"] - 1)
+            _sd = 100 * _info["delta_range_90_relative"] / (2 * 1.645)
+            _ax.hist(_relative, bins=30, density=True, color=plots.SERIES[0], alpha=0.75, edgecolor=plots.SURFACE,
+                     linewidth=0.4, label="exact posterior")
+            _x = np.linspace(-4 * _sd, 4 * _sd, 200)
+            _ax.plot(_x, stats.norm.pdf(_x, 0, _sd), color=plots.INK, linestyle="--", linewidth=1.2,
+                     label="Gauss–Newton and the delta method")
+            for _q in np.quantile(_relative, [0.1, 0.9]):
+                _ax.axvline(_q, color=plots.SERIES[0], linewidth=1.5)
+            for _q in (-1.2816 * _sd, 1.2816 * _sd):
+                _ax.axvline(_q, color=plots.INK, linewidth=1.2, linestyle="--")
+            _ax.axvline(0, color=plots.MUTED, linewidth=0.8)
+            _ax.set_yticks([])
+            _ax.set_title(f"{PRODUCTS[_product]}, {_case}", loc="left", fontsize=8.5)
+            if _row == 1:
+                _ax.set_xlabel("price relative to the least-squares mark (%)")
+    _fig.legend(*_axes[0, 0].get_legend_handles_labels(), loc="outside upper center", ncols=2, fontsize=7.5)
+
+
+    def _cell(case, product, side):
+        _r = gn_reserves[case, product]
+        return f"{100 * _r[side]:.1f}% / {100 * _r['delta method']:.1f}%"
+
+
+    _rows = "\n".join(f"| {PRODUCTS[_p]} | " + " | ".join(_cell(_c, _p, _s) for _c in gn_cases for _s in ("sold", "held")) + " |"
+                      for _p in PRODUCTS)
     mo.vstack([
         _fig,
         mo.md(f"""
-    In the Heston case, {share_inside_90(heston_pair):.0%} of the exact draws fall inside the Gaussian's 90%
-    ellipse, as they would for a Gaussian. With 63 informative quotes the least-squares interval is a good
-    approximation of the posterior. Over {heston_s6['surfaces']} synthetic Heston smiles, both kinds of 90% interval
-    contain the true parameters about as often as they should: the Gauss–Newton intervals in {min(_gn):.0%} to
-    {max(_gn):.0%} of cases and the posterior intervals in {min(_post):.0%} to {max(_post):.0%} (claim C11). For
-    {heston_s6['gauss_newton_singular']} of these smiles no Gauss–Newton interval could be computed.
+    | Reserve, posterior / delta method | 63 quotes, sold | 63 quotes, held | 15 quotes, sold | 15 quotes, held |
+    |:---|:---|:---|:---|:---|
+    {_rows}
 
-    In the rough Bergomi case the variance curve is almost flat, with short and long levels of
-    {_truth['short_variance']:.3f} and {_truth['long_variance']:.3f}. How fast the curve moves from one level to the
-    other, the decay, then has almost no effect on prices, and the quotes cannot determine it. Its 90% posterior
-    interval runs from {_decay90[0]:.1f} to {_decay90[1]:.1f} per year and covers
-    {np.ptp(_decay90) / np.ptp(decay_bounds):.0%} of the prior range. A Gaussian with the same mean and covariance
-    would put {_outside:.0%} of its probability outside the prior box, on values the model does not allow. In this
-    case the result depends on the prior, so the prior has to be stated.
-
-    Status: the Heston example is a development case checked against PyMC. The rough Bergomi panel shows network
-    draws, without an exact reference yet (`{rough_report['case_id']}`).
+    Shares of the least-squares mark. The posterior's reserves come from 300 draws, which fix them to about
+    ±{100 * min(gn_precision.values()):.1f} to ±{100 * max(gn_precision.values()):.1f} points (bootstrap).
     """),
     ])
+
+    return
+
+
+@app.cell(hide_code=True)
+def _(PRODUCTS, gn_precision, gn_reserves, heston_checks, heston_s6, mo):
+    _liquid = [_k for _k in gn_reserves if _k[0] == "63 quotes, κ = 2"]
+    _z = max(abs(gn_reserves[_k][_side] - gn_reserves[_k]["delta method"]) / gn_precision[_k]
+             for _k in _liquid for _side in ("sold", "held"))
+    _thin = [_k for _k in gn_reserves if _k[0] == "15 quotes, κ free"]
+    _gaps = {_k: gn_reserves[_k]["delta method"] / gn_reserves[_k]["sold"] - 1 for _k in _thin}
+    _low, _high = min(_gaps, key=_gaps.get), max(_gaps, key=_gaps.get)
+    _chains = heston_checks["cases"]["3 x 5 grid, kappa free"]["parameters"]
+    _ess = min(_chains[_n]["rhat_ess"][1] for _n in ("theta", "kappa"))
+    _coverage = heston_s6["gauss_newton_coverage_90"].values()
+    mo.callout(mo.md(f"""
+    **When does a difference matter?** Compare reserves, not shapes. A difference matters when it is larger than the
+    precision of the reserve itself and larger than the bank's materiality threshold, once added up over the book.
+
+    - **63 quotes:** for every product and both sides, the two routes differ by at most {_z:.1f} times the precision of
+      the posterior's reserve: no real difference. Gauss–Newton is enough here, as on 200 simulated Heston smiles, where
+      its 90% intervals contain the truth {min(_coverage):.0%} to {max(_coverage):.0%} of the time (claim C11).
+    - **15 quotes:** for a sold {PRODUCTS[_low[1]].split(",")[0]} the delta method's reserve is {-100 * _gaps[_low]:.0f}%
+      too small, the unsafe direction; for a sold {PRODUCTS[_high[1]].split(",")[0]} it is {100 * _gaps[_high]:.0f}% too
+      large. The posterior's prices are skewed, and the delta method makes every product symmetric.
+
+    Status: the 63-quote posterior is the feasibility run of 23 October (not an accepted study; S8-H replaces it). The
+    15-quote posterior and the classical reserves come from a lab quick check (`lab/checks/heston_checks.py`), whose
+    chains for θ and κ carry about {_ess:.0f} effective draws, so its reserves are less precise than the bootstrap says.
+    """), kind="warn")
+
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""
-    A posterior is not needed for every volatility problem. On a liquid smile with a well-identified model, the
-    least-squares interval is enough, as in the Heston panel. The posterior adds most in these situations:
+    mo.callout(mo.md(r"""
+    **When the posterior adds most.** On a liquid smile with a well-identified model, the classical route is enough. The
+    posterior adds most when
 
-    - the quotes leave some direction in parameter space undetermined, as in the rough Bergomi panel, and a product
-      depends on it;
-    - a range for a mark has to be reported at a stated confidence level (section 4);
-    - prior knowledge should enter the calibration explicitly, as a prior, instead of through a penalty or a
-      parameter fixed by hand;
-    - the results have to be tested against the assumptions, by changing the prior or the noise model and
-      recomputing the ranges (slot 6).
-    """)
+    - the quotes leave a direction open, as in the curved posteriors above, and a product depends on it;
+    - a product is priced beyond the quotes, or its price is far from linear in the parameters (section 4's put);
+    - a range has to be reported at a stated confidence level, as the rules ask (section 1);
+    - prior knowledge should enter openly, as a prior, instead of as a penalty or a parameter fixed by hand;
+    - the result has to be tested by changing the prior or the noise model (slot 6).
+    """), kind="success")
+
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""
-    ## 7 · What it costs, and amortized inference
-
-    Computing a posterior becomes more expensive as the model becomes more realistic. The table lists four ways of
-    doing it.
-
+    mo.vstack([
+        mo.md("## 7 · What it costs, and amortized inference"),
+        mo.callout(mo.md(r"""
+    **In one line.** Exact posteriors get expensive as models get realistic, and a desk needs many of them. Amortized
+    inference pays once, in training, and then returns a posterior in about a second.
+    """), kind="info"),
+        mo.md(r"""
     | Method | Needs | In this tutorial |
     |:---|:---|:---|
     | A grid | one or two parameters | Black–Scholes, sections 3 to 5 |
-    | A Gaussian approximation | a posterior close to an ellipse | Heston on a liquid smile, section 6 |
+    | A Gaussian approximation | a posterior close to a normal | Heston on a liquid smile, section 6 |
     | MCMC | thousands of likelihood evaluations | Heston's exact posterior: minutes. Rough Bergomi: at least 17 CPU-hours by a random-walk chain, or about 85 CPU-minutes by importance sampling from a Gauss–Newton proposal on SPY's 63 quotes |
     | Amortized inference | one training run on simulated smiles | seconds per smile, for any smile the prior can produce |
 
-    The likelihood can be written down for every model here. The cost comes from the pricing inside it, which takes
-    about 20 ms per smile for Heston's Fourier integral at one quadrature rung and 5 CPU-seconds per smile for rough
-    Bergomi's Monte Carlo.
-    """)
+    The likelihood can be written down for every model here. The cost is the pricing inside it: about 20 ms per smile
+    for Heston's Fourier integral at one quadrature rung, and 5 CPU-seconds per smile for rough Bergomi's Monte Carlo.
+    """),
+    ])
+
     return
 
 
@@ -1106,23 +1693,25 @@ def _(mo):
     mo.md(r"""
     ## Takeaways
 
-    1. A calibration is an estimate. Least squares keeps the peak of the likelihood; the posterior keeps all of it,
-       every parameter value consistent with the quotes and their noise. Pricing a product under the posterior gives
-       a range for its price.
-    2. A posterior is only as good as its model. On SPY, Black–Scholes gives a precise but wrong answer, so the model
-       has to be checked before its ranges are used.
-    3. With many informative quotes, the posterior is close to the least-squares result. When the quotes leave a
-       parameter undetermined, the posterior is no longer an ellipse and the prior matters.
-    4. Exact posteriors become expensive as models become more realistic, and many of them are needed. The rest of
-       the afternoon shows how amortized inference reduces this cost.
+    1. **A calibration is an estimate.** Least squares keeps the peak of the likelihood; the posterior keeps all of it.
+       Pricing a product under the posterior gives a range: a few percent of its price on a liquid smile, much more
+       with few quotes or beyond them. The rules ask for its 90% point.
+    2. **A posterior is only as good as its model.** On SPY, Black–Scholes gives a precise but wrong answer, so the
+       model has to be checked before its ranges are used.
+    3. **The classical route is right when the quotes inform every direction.** Test it on the reserve, not on the shape
+       of a scatter plot: on 63 quotes Gauss–Newton and the posterior agree, on 15 they do not.
+    4. **Exact posteriors become expensive** as models become realistic, and many are needed. The rest of the afternoon
+       shows how amortized inference reduces this cost.
 
-    Slot 2 shows how a network trained on simulations returns the posterior, starting from the quote of section 3,
-    and when this pays off.
+    Slot 2 shows how a network trained on simulations returns the posterior, starting from the quote of section 3, and
+    when this pays off.
 
-    Sources: `CLAIMS.md` (claims C8 and C11), the cached examples in `assets/backbones/` (development examples, not
-    accepted studies) and `src/sbi4f_tutorial/`. The SPY quotes come from study S8. Results on simulated smiles use
-    the tutorial's models and priors, and do not show how well these models describe market data.
+    Sources: `CLAIMS.md` (claims C1, C8 and C11), the cached examples in `assets/backbones/` (development examples,
+    not accepted studies), the lab quick checks in `assets/quick-checks/` (not accepted studies) and
+    `src/sbi4f_tutorial/`. The SPY quotes come from study S8. Results on simulated smiles use the tutorial's models and
+    priors, and do not show how well these models describe market data.
     """)
+
     return
 
 
@@ -1201,40 +1790,22 @@ def _(mo):
 def _(np, spy_noise, spy_prices, surface):
     noise_vol_points = 100 * surface.implied_vol_noise(np.array(surface.DESIGN_DELTAS))  # the rule, in volatility points
     noise_units = (spy_prices / spy_noise).reshape(len(surface.DESIGN_DAYS), len(surface.DESIGN_DELTAS))
-    return noise_units, noise_vol_points
+    return (noise_units,)
 
 
 @app.cell(hide_code=True)
-def _(
-    mo,
-    noise_units,
-    noise_vol_points,
-    np,
-    plots,
-    plt,
-    spy_iv,
-    surface,
-    teaching,
-):
+def _(mo, noise_units, np, plots, plt, spy_iv, surface, teaching):
     _deltas = np.array(surface.DESIGN_DELTAS)
-    _fig, (_left, _right) = plt.subplots(1, 2, figsize=(9.6, 3.6), constrained_layout=True,
-                                         gridspec_kw={"width_ratios": [1, 1.7]})
-    _line = np.linspace(-2, 2, 81)
-    _left.plot(_line, 100 * surface.implied_vol_noise(_line), color=plots.INK_2, linewidth=1.4)
-    _left.scatter(_deltas, noise_vol_points, s=16, color=plots.SERIES[0], zorder=3)
-    _left.set_ylim(0, 1.2)
-    _left.set_xlabel("standardized moneyness δ")
-    _left.set_ylabel("volatility points")
-    _left.set_title("the noise rule, one standard deviation", loc="left")
-    _right.imshow(np.log10(noise_units), cmap="viridis", aspect="auto")
+    _fig, _ax = plt.subplots(figsize=(9.6, 3.4), constrained_layout=True)
+    _ax.imshow(np.log10(noise_units), cmap="viridis", aspect="auto")
     for (_row, _col), _value in np.ndenumerate(noise_units):
-        _right.text(_col, _row, f"{_value:.1f}" if _value < 10 else f"{_value:.0f}", ha="center", va="center",
-                    fontsize=7, color="white" if np.log10(_value) < 0.6 else plots.INK)
-    _right.set_xticks(range(len(_deltas)), [f"{_x:g}" for _x in _deltas])
-    _right.set_yticks(range(len(surface.DESIGN_DAYS)), [teaching.TENORS[_d] for _d in surface.DESIGN_DAYS])
-    _right.set_xlabel("standardized moneyness δ")
-    _right.set_title("SPY's prices in noise units, y / σ: what a network reads", loc="left")
-    _right.grid(visible=False)
+        _ax.text(_col, _row, f"{_value:.1f}" if _value < 10 else f"{_value:.0f}", ha="center", va="center", fontsize=7.5,
+                 color="white" if np.log10(_value) < 0.6 else plots.INK)
+    _ax.set_xticks(range(len(_deltas)), [f"{_x:g}" for _x in _deltas])
+    _ax.set_yticks(range(len(surface.DESIGN_DAYS)), [teaching.TENORS[_d] for _d in surface.DESIGN_DAYS])
+    _ax.set_xlabel("standardized moneyness δ")
+    _ax.set_title("SPY's prices in noise units, y / σ: what a network reads", loc="left")
+    _ax.grid(visible=False)
     _low = np.unravel_index(np.argmin(noise_units), noise_units.shape)
     _high = np.unravel_index(np.argmax(noise_units), noise_units.shape)
     _faint = noise_units.max(axis=0) < 1  # strikes below one noise standard deviation at every maturity
@@ -1243,39 +1814,36 @@ def _(
     mo.vstack([
         _fig,
         mo.md(f"""
-    The left panel shows the rule. The right panel shows SPY's 63 prices divided by their noise. The option at
-    δ = {_deltas[_low[1]]:g} with {teaching.TENORS[surface.DESIGN_DAYS[_low[0]]]} to expiry is worth only
-    {noise_units[_low]:.1f} noise standard deviations, and the option at δ = {_deltas[_high[1]]:g} with
-    {teaching.TENORS[surface.DESIGN_DAYS[_high[0]]]} to expiry is worth {noise_units[_high]:.0f}. The calls at
-    δ = {_faint_deltas} are worth less than one noise standard deviation at every maturity. SPY's implied volatility
-    there, {_faint_iv.min():.0f} to {_faint_iv.max():.0f}%, is well below the 20% at which the rule is set, so their
-    prices are small compared with the noise. On their own, these quotes say little about the parameters.
+    - The option at δ = {_deltas[_low[1]]:g} with {teaching.TENORS[surface.DESIGN_DAYS[_low[0]]]} to expiry is worth
+      only {noise_units[_low]:.1f} noise standard deviations; the one at δ = {_deltas[_high[1]]:g} with
+      {teaching.TENORS[surface.DESIGN_DAYS[_high[0]]]} to expiry is worth {noise_units[_high]:.0f}.
+    - The calls at δ = {_faint_deltas} are worth less than one noise standard deviation at every maturity. SPY's
+      implied volatility there, {_faint_iv.min():.0f} to {_faint_iv.max():.0f}%, is well below the 20% at which the rule
+      is set, so their prices are small compared with the noise. On their own, these quotes say little.
     """),
     ])
+
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ### The variance curve and the skew
+    ### The variance curve
 
-    The same chain gives two more quantities that the later slots use.
+    The same chain gives the market's variance-swap curve, which the later slots use.
 
-    The first is the market's variance-swap curve. For each expiration whose quotes reach far enough into the wings,
-    down to $\delta = -8$ for the puts and up to $\delta = 1.8$ for the calls, a log contract is replicated from the
-    whole strip of out-of-the-money options. Its price is the total variance that a variance swap to that expiration
-    pays. Read at the grid maturities and differenced, these values give seven forward-variance levels, one for each
-    interval between grid maturities. Rough Bergomi takes this forward-variance curve as an input. In slot 5 the
-    curve is either given, with these seven levels, or inferred together with the other parameters. When it is
-    given, the network reads the seven levels alongside the 63 prices; the levels vary from one training smile to
-    the next, so the same network works with any curve. In slot 4, Heston's variance swaps are compared with these
-    market values.
-
-    The second is the at-the-money skew, the slope of the smile at the money. On SPY it falls with maturity roughly
-    like a power of the maturity. Heston cannot follow this: its skew tends to a constant at short maturities.
-    Rough Bergomi's skew falls like a power of the maturity, which is one reason slot 5 uses it.
+    - For each expiration whose quotes reach far enough into the wings, down to $\delta = -8$ for the puts and up to
+      $\delta = 1.8$ for the calls, a log contract is replicated from the whole strip of out-of-the-money options. Its
+      price is the total variance that a variance swap to that expiration pays.
+    - Read at the grid maturities and differenced, these values give seven forward-variance levels, one for each
+      interval between grid maturities.
+    - Rough Bergomi takes this curve as an input. In slot 5 it is either given, with these seven levels, or inferred
+      with the other parameters. When it is given, the network reads the seven levels alongside the 63 prices; the
+      levels vary from one training smile to the next, so the same network works with any curve.
+    - In slot 4, Heston's variance swaps are compared with these market values.
     """)
+
     return
 
 
@@ -1284,60 +1852,42 @@ def _(np, spy, surface):
     _knots = np.r_[0, surface.DESIGN_DAYS] / surface.TRADING_DAYS
     forward_variance = np.asarray(spy["forward_variance_levels"])  # one level per interval between grid maturities
     variance_swap_vol = 100 * np.sqrt(np.cumsum(forward_variance * np.diff(_knots)) / _knots[1:])
-    atm_skew = np.abs(np.asarray(spy["atm_skew"]))  # |d sigma / d k| at the money, one per maturity
-    skew_law = spy["skew_power_law"]  # |skew| = scale * T ** exponent, fitted from one week to one year
-    return atm_skew, forward_variance, skew_law, variance_swap_vol
+
+    return forward_variance, variance_swap_vol
 
 
 @app.cell(hide_code=True)
 def _(
-    atm_skew,
     forward_variance,
     mo,
     np,
     plots,
     plt,
-    skew_law,
     spy_expirations,
     surface,
     variance_swap_vol,
 ):
     _days = np.array(surface.DESIGN_DAYS)
-    _exponent = f"{skew_law['exponent']:.2f}".replace("-", "−")
-    _fig, (_left, _right) = plt.subplots(1, 2, figsize=(9.6, 3.4), constrained_layout=True)
-    _left.stairs(100 * np.sqrt(forward_variance), np.r_[0, _days], baseline=None, color=plots.SERIES[0], linewidth=1.6,
-                 label="forward volatility on each interval")
-    _left.set_ylim(0, 26)
-    _left.plot(_days, variance_swap_vol, "o", color=plots.SERIES[1], markersize=5, label="variance swap to each maturity")
-    _left.set_xlabel("maturity, trading days")
-    _left.set_ylabel("volatility (%)")
-    _left.set_title("SPY's forward-variance curve and variance swaps", loc="left")
-    _left.legend(fontsize=7.5, loc="lower right")
-    _t = _days / surface.TRADING_DAYS
-    _fine = np.geomspace(_t[0], _t[-1], 50)
-    _right.plot(_days, atm_skew, "o", color=plots.SERIES[0], label="SPY")
-    _right.plot(_fine * surface.TRADING_DAYS, skew_law["scale"] * _fine ** skew_law["exponent"], color=plots.INK_2,
-                linewidth=1.2, label=f"power law, exponent {_exponent}")
-    _right.set_xscale("log")
-    _right.set_yscale("log")
-    _right.minorticks_off()
-    _right.set_xticks(list(_days), [str(_d) for _d in _days])
-    _right.set_yticks([0.25, 0.4, 0.6, 0.85], ["0.25", "0.4", "0.6", "0.85"])
-    _right.set_xlabel("maturity, trading days")
-    _right.set_ylabel("|∂σ/∂k| at the money")
-    _right.set_title("the at-the-money skew falls like a power of maturity", loc="left")
-    _right.legend(fontsize=7.5, loc="upper right")
+    _fig, _ax = plt.subplots(figsize=(9.6, 3.2), constrained_layout=True)
+    _ax.stairs(100 * np.sqrt(forward_variance), np.r_[0, _days], baseline=None, color=plots.SERIES[0], linewidth=1.6,
+               label="forward volatility on each interval")
+    _ax.set_ylim(0, 26)
+    _ax.plot(_days, variance_swap_vol, "o", color=plots.SERIES[1], markersize=5, label="variance swap to each maturity")
+    _ax.set_xlabel("maturity, trading days")
+    _ax.set_ylabel("volatility (%)")
+    _ax.set_title("SPY's forward-variance curve and variance swaps", loc="left")
+    _ax.legend(fontsize=7.5, loc="lower right")
     _covered = sum(_e["replication_covered"] for _e in spy_expirations)
     mo.vstack([
         _fig,
         mo.md(f"""
-    On the left, the steps are the forward volatility on each interval between grid maturities, the square root of the
-    forward variance. The dots are the variance-swap volatility to each maturity, the square root of the average
-    forward variance up to it. They come from the {_covered} expirations, out of {len(spy_expirations)}, whose quotes
-    reach far enough into the wings. On the right is the slope of the smile at the money for each maturity, with a
-    power law fitted from one week to one year. Its exponent is {_exponent} (claim C1).
+    The steps are the forward volatility on each interval between grid maturities, the square root of the forward
+    variance. The dots are the variance-swap volatility to each maturity, the square root of the average forward
+    variance up to it. They come from the {_covered} expirations, out of {len(spy_expirations)}, whose quotes reach far
+    enough into the wings.
     """),
     ])
+
     return
 
 
