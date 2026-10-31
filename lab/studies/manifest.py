@@ -58,6 +58,25 @@ def backbone_catalogue():
                        "artifacts": entries}, indent=2, allow_nan=False) + "\n"
 
 
+def trajectory_catalogue():
+    """Catalogue development trajectory replays without scientific promotion."""
+    folder = ASSETS / "trajectories"
+    if not folder.exists():
+        return None
+    from sbi4finance.path_inference.teaching import load_cache
+    entries = {}
+    for name in ("heston", "rough-known", "rough-joint"):
+        path = folder / name
+        _, bundle, _ = load_cache(path)
+        entries[name] = {"cache": name, "bundle_sha256": sha256(path / "bundle.json"),
+                         "task_sha256": bundle["task_sha256"],
+                         "checkpoint_sha256": bundle["checkpoint_sha256"],
+                         "model_source": "versioned path-workshop models archive; optional local-checkpoints/path-" + name,
+                         "scope": bundle["limitations"]}
+    return json.dumps({"format": "trajectory_tutorial_artifacts_v1", "scientific_acceptance": False,
+                       "artifacts": entries}, indent=2, allow_nan=False) + "\n"
+
+
 def tracked_assets():
     """Downloaded native models have their own bound hashes and stay out of the shipped manifest."""
     return sorted(p for p in ASSETS.rglob("*") if p.is_file()
@@ -111,12 +130,18 @@ def main():
     catalogue = ASSETS / "backbones" / "artifacts.json"
     expected_catalogue = backbone_catalogue()
     catalogue_current = catalogue.exists() and catalogue.read_text() == expected_catalogue
+    trajectories = trajectory_catalogue()
+    trajectory_index = ASSETS / "trajectories" / "artifacts.json"
+    trajectories_current = trajectories is None or (trajectory_index.exists() and trajectory_index.read_text() == trajectories)
     if not args.check:
         for name in stale:
             (ASSETS / name).parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(REPO / EXPORTS[name], ASSETS / name)
         catalogue.write_text(expected_catalogue)
         catalogue_current = True
+        if trajectories is not None:
+            trajectory_index.write_text(trajectories)
+        trajectories_current = True
     original = MANIFEST.read_text()
     text = current_description(original)
     if BEGIN not in text or END not in text:
@@ -128,8 +153,9 @@ def main():
     if args.check:
         for name in stale:
             print(f"stale copy: {name} differs from {EXPORTS[name]}")
-        print("current" if updated == original and not stale and catalogue_current else "stale")
-        sys.exit(0 if updated == original and not stale and catalogue_current else 1)
+        current = updated == original and not stale and catalogue_current and trajectories_current
+        print("current" if current else "stale")
+        sys.exit(0 if current else 1)
     MANIFEST.write_text(updated)
     print(f"{MANIFEST}: {count} artifacts, {len(stale)} copies refreshed")
 
