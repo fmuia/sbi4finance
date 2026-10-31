@@ -67,6 +67,31 @@ def _(mo, model_choice, trajectory):
 
 @app.cell(hide_code=True)
 def _(cache_task, mo):
+    _targets = ", ".join(name.replace("_", " ") for name in cache_task["parameter_names"])
+    mo.md(rf"""
+    **How the amortization is learned**
+
+    $\theta\sim p(\theta)$ → simulator → ordered daily returns → random prefix and mask
+    → GRU summary → conditional flow $q_\phi(\theta\mid r_{{1:T}},T)$.
+
+    Offline training uses **one million independent simulated histories per model**,
+    with random prefix lengths from 1 to 1,260. The summary and flow learn jointly
+    to assign high density to the generating parameters: **{_targets}**. These
+    parameter labels, including drift, are training targets only. The estimator
+    receives the revealed returns, their mask and known time design. Fixed return
+    scaling preserves variance amplitude; each path is not divided by its own
+    observed volatility.
+
+    At each new prefix, the same trained estimator approximates the posterior
+    under the **original prior and the full revealed history**. Do not multiply
+    posteriors from overlapping prefixes or feed the previous posterior back into
+    the unchanged estimator: that would reuse the same observations.
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(cache_task, mo):
     _warning = (mo.callout(mo.md(
         "**Heston: numerical-development prototype.** The current discretized simulator can "
         "produce a deterministic return when its effective variance stays at zero over a day. "
@@ -162,7 +187,11 @@ def _(cache_task, mo):
 
 @app.cell(hide_code=True)
 def _(cache_report, mo):
-    mo.accordion({"Provenance and scope": mo.md(
+    mo.accordion({"Network, provenance and scope": mo.md(
+        "The published candidates use a **64-unit causal GRU**, a **32-value summary**, "
+        "and **six spline coupling layers** for the joint parameter density. "
+        "The GRU learns temporal features; the flow represents uncertainty and "
+        "parameter trade-offs conditional on those features and the time design.  \n\n"
         f"Checkpoint SHA-256: `{cache_report['checkpoint_sha256']}`  \n"
         f"Task SHA-256: `{cache_report['task_sha256']}`  \n"
         "The cache contains validation observations and neural draws. Its file hashes, "
@@ -212,16 +241,24 @@ def _(
     trajectory,
 ):
     mo.stop(not live_button.value, mo.md("CPU inference is idle until the button is pressed."))
+    from time import perf_counter as _perf_counter
+    _load_started = _perf_counter()
     try:
         _task, _workflow, _record = trajectory.load_live(model_choice.value, checkpoint_path.value.strip() or None)
     except (FileNotFoundError, ValueError, RuntimeError, ImportError) as _error:
         mo.stop(True, mo.callout(mo.md(str(_error)), kind="warn"))
+    _load_seconds = _perf_counter() - _load_started
     _observed = cache_arrays["observations"][case_choice.value:case_choice.value + 1, :observed_days.value]
+    _draw_started = _perf_counter()
     _fresh = trajectory.sample(_workflow, _task, _observed, 512, seed=20261031)[0]
+    _draw_seconds = _perf_counter() - _draw_started
     mo.vstack([
         mo.callout(mo.md(f"**Fresh CPU approximate posterior at exactly {observed_days.value} observed days.** "
                          "These new draws can differ from the finite cached sample. "
                          "This completion message reports execution, not a calibration verdict."), kind="neutral"),
+        mo.md(f"This click: model verification/load **{_load_seconds:.3f} s**; "
+              f"512 posterior draws **{_draw_seconds:.3f} s**. The draw time can include "
+              "first-call compilation. These measured elapsed times are not a performance guarantee."),
         mo.ui.table(trajectory.posterior_rows(_task, _fresh), selection=None, pagination=False),
     ])
     return
