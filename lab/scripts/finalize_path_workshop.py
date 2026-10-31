@@ -145,6 +145,8 @@ def freeze_selection(run_root, out, *, seed=DEFAULT_SEED):
         if comparison.get("status") != "development_comparison_complete" or comparison.get("reserved_test_evaluated"):
             raise ValueError("development comparison is missing or incomplete")
         models[name] = {"checkpoint": str(directory), "bank": str(bank_path), "task": task,
+            "candidate_scope": ("numerical_development_prototype_with_unrepresented_drift_atoms" if name == "heston"
+                                else "approximate_neural_development_candidate"),
             "task_sha256": manifest["task_sha256"], "task_file_sha256": task_hash,
             "bank_manifest_sha256": training["bank_manifest_sha256"], "training_sha256": training_hash,
             "model_sha256": training["model_sha256"], "runtime": training["runtime"],
@@ -164,6 +166,7 @@ def freeze_selection(run_root, out, *, seed=DEFAULT_SEED):
             "final": {"split": "test", "offset": 0, "cases": 4000}},
         "gate_policy": {"family_cells": cells, "coverage_nominal": .9, "coverage_family_alpha": .025,
             "coverage_method": "exact Clopper-Pearson; Bonferroni across every model/length/target",
+            "heston_drift_coverage": "one-sided minimum nominal coverage; central intervals for a mixed/atomic posterior can legitimately overcover",
             "risk_family_alpha": .025, "risk_method": "two-sided bounded paired-loss empirical Bernstein; Bonferroni across every model/length/target",
             "risk_guard": "no cell with demonstrated worse risk than analytic prior mean (lower bound>0); require at least one non-drift target informative (upper bound<0) at1260 permodel; unresolved cells explicitly broad/unresolved",
             "execution_guard": "identities/cohorts match; zero nonfinite and support violations",
@@ -229,6 +232,14 @@ def simultaneous_screens(arrays, report, task, policy):
         lower = np.where(hits == 0, 0, beta.ppf(tail, hits, n - hits + 1))
         upper = np.where(hits == n, 1, beta.ppf(1 - tail, hits + 1, n - hits))
         calibrated = (lower <= .9) & (upper >= .9)
+        criteria = ["two_sided_nominal_compatibility"] * dimension
+        if task.get("model") == "heston" and "drift" in task["parameter_names"]:
+            drift = task["parameter_names"].index("drift")
+            # Correct central quantile intervals can contain >90% mass when
+            # the true posterior has atoms. Retain the same conservative
+            # Bonferroni upper bound and test undercoverage only for this cell.
+            calibrated[drift] = upper[drift] >= .9
+            criteria[drift] = "one_sided_minimum_nominal_coverage_for_atomic_target"
         calibration &= bool(calibrated.all())
         delta = ((mean - truth) ** 2 - (center - truth) ** 2) / width2
         radius = np.sqrt(2 * delta.var(axis=0, ddof=1) * logarithm / n) + 14 * logarithm / (3 * (n - 1))
@@ -240,6 +251,7 @@ def simultaneous_screens(arrays, report, task, policy):
             informative = bool(any(flag and name != "drift" for flag, name in zip(better, task["parameter_names"])))
         result[length] = {"coverage90": (hits / n).tolist(), "coverage90_simultaneous_interval": [lower.tolist(), upper.tolist()],
             "nominal_inside_interval": calibrated.tolist(),
+            "coverage_criterion": criteria,
             "prior_normalized_paired_risk_difference": estimate.tolist(),
             "risk_difference_simultaneous_interval": [risk_low.tolist(), risk_high.tolist()],
             "risk_labels": ["demonstrated_degradation" if bad else "informative" if good else "broad_or_unresolved" for bad, good in zip(worse, better)]}

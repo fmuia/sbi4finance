@@ -22,6 +22,22 @@ def write(path, value):
 
 
 class WorkshopAcceptanceTests(unittest.TestCase):
+    def test_heston_atomic_drift_does_not_require_exact_nominal_coverage(self):
+        task = {"model": "heston", "parameter_names": ["kappa", "drift"],
+                "prior_bounds": [[.25, 5], [-.1, .2]], "prior_types": ["log_uniform", "uniform"]}
+        truth = inference.prior_samples(task | {"measure": "P", "n_observations": 1260,
+            "prefix_lengths": [1260], "dt_years": 1 / 252}, 2976, 81)
+        low, high = truth.copy(), truth.copy()
+        low[-60:] = [.25, -.1]
+        high[-60:] = [.25, -.1]
+        arrays = {"truth": truth, "posterior_mean_1260": truth, "lower90_1260": low, "upper90_1260": high}
+        result = closeout.simultaneous_screens(arrays, {"lengths": {"1260": {
+            "nonfinite_count": 0, "out_of_prior_fraction": [0, 0]}}}, task,
+            {"family_cells": 192, "coverage_family_alpha": .025, "risk_family_alpha": .025})
+        row = result["lengths"]["1260"]
+        self.assertEqual(row["nominal_inside_interval"], [False, True])
+        self.assertEqual(row["coverage_criterion"][1], "one_sided_minimum_nominal_coverage_for_atomic_target")
+
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory()
         self.addCleanup(self.temporary.cleanup)

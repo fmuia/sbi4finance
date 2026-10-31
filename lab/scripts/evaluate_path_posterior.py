@@ -83,7 +83,7 @@ def evaluate(args):
               "phase": phase,
               "supported_lengths": [1, task["n_observations"]], "lengths": {},
               "references": "not compared in this command", "scientific_acceptance": False,
-              "split": "validation", "offset": offset, "seed": args.seed,
+              "split": args.split, "offset": offset, "seed": args.seed,
               "backend_seed_mapping": inference.BACKEND_SEED_MAPPING,
               "case_identities_sha256": inference.fingerprint(split["trajectory_id"].tolist()),
               "prior_checkpoint_development_pool_size": training.get("validation_cases_per_length"),
