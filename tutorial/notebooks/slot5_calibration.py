@@ -483,7 +483,7 @@ def _(mo):
 
     The classical route is weighted least squares from several starting points, with an interval from the
     Gauss–Newton approximation $(J^\top W J)^{-1}$. On Heston that interval covers the truth as often as the
-    posterior does (slot 1, section 6). For rough Bergomi on SPY, the local analysis below is the same
+    posterior does (slot 1, section 5). For rough Bergomi on SPY, the local analysis below is the same
     approximation at SPY's least-squares fit, with Monte Carlo derivatives: the 63 quotes pin every
     parameter, and they still do when each level of $\xi_0$ is 20% uncertain. The quotes stop pinning the
     parameters only when they are few: on 15 quotes, $\rho$'s interval runs past the bound. On the full

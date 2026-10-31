@@ -474,7 +474,7 @@ def _(mo):
     mo.md(r"""
     **And the classical route?** Least squares from several starts, with the Gauss–Newton interval at the
     optimum, on the same smile. On a liquid surface it should agree with the posterior, because the
-    likelihood of 63 informative quotes is close to Gaussian in the parameters (slot 1, section 6).
+    likelihood of 63 informative quotes is close to Gaussian in the parameters (slot 1, section 5).
     """)
     return
 
@@ -497,7 +497,7 @@ def _(CHECKS, NAMES, exact_spy, mo, network_spy, np, teaching):
         mo.md("""
         Three routes, one answer. Here the network's value is not a different interval: it is the same interval
         for any smile in a second, with a check of its own calibration (SBC above). Where the answers part, with
-        few quotes or inputs the quotes do not pin, is slot 1's section 6 and slot 5's long end.
+        few quotes or inputs the quotes do not pin, is slot 1's section 5 and slot 5's long end.
         *Source of the Gauss–Newton column:* `lab/checks/heston_checks.py`.
         """),
     ])
