@@ -80,7 +80,7 @@ Parity has three uses in the course.
 2. **The forward and the discount factor can be read off the chain.** Across strikes, $C - P$ is a straight line in $K$ with slope $-D$ and intercept $D F$. A linear regression of $C - P$ on $K$ near the money returns both.
 3. **Data quality.** A pair that violates parity by more than its bid-ask spread signals a bad quote.
 
-**A limit: American exercise.** SPY options are American. An American put can be worth more than a European put, because exercising a deep in-the-money put early returns the strike $K$ in cash, which then earns interest. This early-exercise premium grows with the strike, so it tilts the line $C - P$ against $K$ and biases the regression's slope. The right panel of Figure 2.1 shows the result: the regression returns a discount factor above 1, which is impossible with a positive rate, for 30 of the 32 expirations, up to 1.044 at 562 days. The tutorial therefore takes the discount factor from Treasury yields and uses parity only for the forward, $F = K + (C - P)/D$, as the median over the six strike pairs nearest the money, where the early-exercise premium is smallest.
+**A limit: American exercise.** SPY options are American. An American put can be worth more than a European put, because exercising a deep in-the-money put early returns the strike $K$ in cash, which then earns interest. This early-exercise premium grows with the strike, so it tilts the line $C - P$ against $K$ and biases the regression's slope. The right panel of Figure 2.1 shows the result: the regression returns a discount factor above 1, which is impossible with a positive rate, for 30 of the 32 expirations, up to 1.044 at 562 days. The tutorial therefore takes the discount factor from Treasury yields and uses parity only for the forward, $F = K + (C - P)/D$, as the median over the six strike pairs nearest the money, where the early-exercise premium is smallest. For American options parity becomes a pair of bounds; Appendix 2.A derives them step by step, and shows that on SPY at one year they are about 42 US dollars apart, too wide to read the forward from.
 
 **Calls before an ex-dividend date, and the forward of a thin chain.** A call can also carry early-exercise value, because a holder who exercises just before an ex-dividend date receives the dividend. EWI, a thin chain of Lecture 1, Section 1.6, is assumed to pay the amounts it paid a year earlier: about 0.70 US dollars a share before its December expiry and 1.17 before its June expiry. A binomial tree with escrowed dividends then gives an early-exercise premium of 0.18 on the December call struck at 57, more than that quote's half-spread of 0.125. On the June call struck at 55 it gives 0.50, inside that quote's half-spread of 1.75. On the same chain, a parity regression returns implied rates from −4.6% to 56% across the four expiries, so the rate must come from Treasury yields, as for SPY. EWG paid no December distribution in 2024 or 2025, so no dividend is assumed before June 2027. Its carry forward is then the spot carried at the Treasury rate, $S_0 e^{rT}$. Parity on its pairs nearest the money gives a forward 0.15% to 0.46% lower, because the puts in those pairs carry early-exercise value. Lecture 16 therefore uses the carry forward. The numbers are in `lab/checks/thin_chains/`.
 
@@ -241,6 +241,107 @@ A **model** closes these gaps by specifying how the price evolves in time. Lectu
 5. Prices lie within $(1-x)^+ \le c \le 1$, decrease and are convex in the strike, and increase with maturity at fixed forward-moneyness.
 6. The second derivative of the call price in the strike is the risk-neutral density, and any payoff of $X_T$ is a strip of vanillas. The log contract gives the variance swap of Lecture 5.
 7. The vanillas say nothing about the joint law of prices at different dates. That is what a model adds.
+8. For American options parity is replaced by the bounds $S_0 e^{-qT} - K \le C_A - P_A \le S_0 - K e^{-rT}$ (Appendix 2.A).
+
+## Appendix 2.A Put–call parity step by step, and its American version
+
+This appendix derives put–call parity one step at a time, then the bounds that replace it for American options, first without dividends and then with them. It uses only the law of one price of Section 2.2.
+
+### 2.A.1 Payoff and price
+
+The **payoff** of a contract is what it pays at maturity $T$. It is random today, because it depends on $S_T$: a call pays $(S_T - K)^+$. The **price** is what the contract costs today: one number. The price is not the payoff discounted, because the payoff is not known today. It is the discounted expected payoff under the pricing measure $\mathbb{Q}$ of Section 2.5, for a call $C = D(T)\,\mathbb{E}^{\mathbb{Q}}[(S_T - K)^+]$. In parity, $C$ and $P$ are today's prices.
+
+### 2.A.2 What "the fair forward costs nothing" means
+
+A forward is an agreement made today to buy the underlying at $T$ for a price $K$ fixed today. Nothing is paid today; at $T$ the buyer pays $K$ and receives the underlying, so the payoff is $S_T - K$. Its value today depends on $K$: a low $K$ makes the agreement valuable to the buyer, a high $K$ costly. The forward price $F_0(T)$ of Section 2.3 is the one value of $K$ that makes the agreement worth exactly zero today.
+
+"Worth zero" refers to the value today, not to the payoff. At $T$, $S_T - F_0(T)$ can be positive or negative. What is zero is its price, $D(T)\,\mathbb{E}^{\mathbb{Q}}[S_T - F_0(T)] = 0$, which says $\mathbb{E}^{\mathbb{Q}}[S_T] = F_0(T)$: the forward price is the expectation of $S_T$ under $\mathbb{Q}$, not $S_T$ itself.
+
+For example, with $S_0 = 100$, $r = 4\%$, $q = 1\%$ and $T = 1$, the forward price is $100\,e^{0.03} = 103.05$. A forward with $K = 103.05$ costs nothing to enter. A forward with $K = 100$ pays $3.05$ more than that one in every outcome, so it is worth $D(1) \times 3.05 = e^{-0.04} \times 3.05 = 2.93$ to the buyer today.
+
+### 2.A.3 European parity
+
+**Step 1: the payoff identity.** Hold one call and sell one put, with the same $K$ and $T$. If $S_T > K$, the call pays $S_T - K$ and the put pays nothing: the total is $S_T - K$. If $S_T < K$, the call pays nothing and the put's buyer receives $K - S_T$, which the seller pays: the total is $-(K - S_T) = S_T - K$. In every outcome the position pays $S_T - K$.
+
+**Step 2: same payoff, same price.** By the law of one price, the position costs today what any other claim to $S_T - K$ at $T$ costs: $C - P$ is the value today of receiving $S_T - K$ at $T$.
+
+**Step 3: value that claim.** Write $S_T - K = \big(S_T - F_0(T)\big) + \big(F_0(T) - K\big)$. The first part is the payoff of the forward at the forward price, worth zero today (2.A.2). The second part is a fixed amount known today and paid at $T$, worth $D(T)\,(F_0(T) - K)$ today. Adding the two:
+
+$$
+C - P = D(T)\,\big(F_0(T) - K\big).
+$$
+
+Both legs must pay at $T$. An American option can be exercised earlier, so for American options the argument fails at Step 1, and parity becomes a pair of bounds.
+
+### 2.A.4 American options without dividends
+
+Write $C_E$ and $P_E$ for the prices of a European call and put, and $C_A$ and $P_A$ for the American ones, all with the same $K$ and $T$. A dollar deposited today grows to $e^{rT}$ at $T$; a dollar paid at $T$ is worth $e^{-rT}$ today. The underlying pays no dividends, so $F_0(T) = S_0 e^{rT}$, $D(T) = e^{-rT}$, and European parity reads $C_E - P_E = S_0 - K e^{-rT}$.
+
+The argument uses the law of one price in this form: if one portfolio is worth at least as much as another in every outcome, whatever the holders of the options decide, it cannot cost less today. If it did, buying it and selling the other would collect money today and never owe anything later.
+
+**Step 1: an American option is worth at least as much as the European one.** The holder of the American option can do everything the holder of the European one can: wait until $T$. The holder can also exercise earlier, but is never obliged to. A right that can be ignored cannot lower the value, so $C_A \ge C_E$ and $P_A \ge P_E$.
+
+**Step 2: without dividends, an American call is never exercised before $T$.** At a time $t < T$, with the underlying at $S_t$, the holder of the call can exercise it or sell it.
+
+- Exercising pays $K$ for a share worth $S_t$, a gain of $S_t - K$.
+- Selling it brings its price, which by Step 1 is at least the price of the European call. European parity at time $t$, with $T - t$ left, gives $C_E(t) = P_E(t) + S_t - K e^{-r(T-t)}$. A put is never worth less than zero, so $C_E(t) \ge S_t - K e^{-r(T-t)}$.
+
+With a positive rate and time left, $K e^{-r(T-t)} < K$, so selling brings more than exercising. Exercising early pays $K$ sooner than necessary, losing the interest on it, and gives up the protection the call gives if the price falls; without dividends, owning the share sooner gains nothing in return. The right to exercise early is therefore worth nothing, and $C_A = C_E$.
+
+**Step 3: the upper bound.** By Step 2, $C_A - P_A = C_E - P_A$. By Step 1, $P_A \ge P_E$, and subtracting a larger number gives a smaller result: $C_E - P_A \le C_E - P_E$. European parity gives $C_E - P_E = S_0 - K e^{-rT}$. Hence
+
+$$
+C_A - P_A \le S_0 - K e^{-rT}.
+$$
+
+**Step 4: the lower bound.** Build two portfolios today.
+
+- Portfolio A: one European call, and $K$ dollars deposited at the rate $r$. It costs $C_E + K$.
+- Portfolio B: one American put, and one share. It costs $P_A + S_0$.
+
+Portfolio A is worth at least as much as B in every outcome.
+
+- *The holder of B exercises the put at a time $\tau < T$.* B hands over the share and receives $K$: it is now $K$ in cash. A holds a deposit grown to $K e^{r\tau} \ge K$, and a call worth zero or more. A is ahead, and stays ahead if both are then held as cash.
+- *The put is not exercised before $T$, and $S_T < K$.* B is worth $K$ if its holder exercises at $T$, and $S_T < K$ if not. A's call pays nothing and its deposit is $K e^{rT} \ge K$. A is ahead.
+- *The put is not exercised before $T$, and $S_T \ge K$.* B's put pays nothing and B holds a share worth $S_T$. A's call pays $S_T - K$ and its deposit is $K e^{rT}$, a total of $S_T - K + K e^{rT} \ge S_T$. A is ahead.
+
+So A cannot cost less than B: $C_E + K \ge P_A + S_0$, that is $C_E - P_A \ge S_0 - K$. By Step 2, $C_E = C_A$. Hence
+
+$$
+S_0 - K \;\le\; C_A - P_A \;\le\; S_0 - K e^{-rT}.
+$$
+
+**Interpretation.** The European value, $S_0 - K e^{-rT}$, is the upper end. The range has width $K(1 - e^{-rT})$, the interest earned by $K$ over the option's life: the most that the put's holder can gain by exercising early is to receive $K$ sooner. With $S_0 = K = 100$, $r = 4\%$ and $T = 1$, $C_A - P_A$ lies between 0 and 3.92, where the European value is exactly 3.92.
+
+### 2.A.5 American options with dividends
+
+Now the underlying pays dividends continuously at the rate $q$, as in Section 2.3. Reinvesting them, $e^{-qT}$ shares bought today become one share at $T$. Then $F_0(T) = S_0 e^{(r-q)T}$, and European parity reads $C_E - P_E = S_0 e^{-qT} - K e^{-rT}$.
+
+**What changes.** Step 2 of 2.A.4 fails. The owner of a share receives the dividends, the owner of a call does not. Before a large dividend, exercising the call to own the share can be worth more than keeping the call, so $C_A$ can exceed $C_E$ and cannot be replaced by it. Both bounds are therefore proved directly from the law of one price: assume a bound is violated, build the trade that would profit, and check every outcome.
+
+**The upper bound, $C_A - P_A \le S_0 - K e^{-rT}$.** Suppose instead that $C_A - P_A > S_0 - K e^{-rT}$, that is, $C_A + K e^{-rT} > P_A + S_0$. Then the following trades collect $C_A + K e^{-rT} - P_A - S_0 > 0$ today: sell an American call, borrow $K e^{-rT}$ until $T$, buy an American put, and buy one share, keeping its dividends in the bank. The loan grows to $K e^{-r(T-t)}$ at time $t$, and to $K$ at $T$.
+
+- *The buyer of the call exercises it at a time $\tau \le T$.* The trader delivers the share and receives $K$. The loan is $K e^{-r(T-\tau)} \le K$, so the $K$ received repays it with something left. The trader still holds the put and the dividends. Nothing is owed.
+- *The call is not exercised.* At $T$ the loan is $K$. If $S_T < K$, the trader exercises the put: hands over the share and receives $K$. Otherwise the trader sells the share for $S_T \ge K$. Either way the loan is repaid and the dividends remain. Nothing is owed.
+
+The trades collect money today and never owe anything, which the law of one price excludes. Hence $C_A - P_A \le S_0 - K e^{-rT}$: dividends do not change the upper bound.
+
+**The lower bound, $C_A - P_A \ge S_0 e^{-qT} - K$.** Suppose instead that $C_A - P_A < S_0 e^{-qT} - K$, that is, $P_A + S_0 e^{-qT} > C_A + K$. Then the following trades collect $P_A + S_0 e^{-qT} - C_A - K > 0$ today: sell an American put, borrow $e^{-qT}$ shares and sell them, buy an American call, and deposit $K$ at the rate $r$. The lender of the shares must be paid the dividends they would have received; paying them in shares, borrowed and sold as the dividends fall due, makes the number of shares owed grow at the rate $q$, from $e^{-qT}$ today to $e^{-q(T-t)}$ at time $t$ and to exactly one at $T$.
+
+- *The buyer of the put exercises it at a time $\tau \le T$.* The trader pays $K$ and receives a share. The deposit is $K e^{r\tau} \ge K$, so the payment is covered. The trader owes $e^{-q(T-\tau)} \le 1$ shares and returns them out of the share received, keeping any remainder. The call is still held. Nothing is owed.
+- *The put is not exercised.* At $T$ exactly one share is owed, and the deposit is $K e^{rT} \ge K$. If $S_T > K$, the trader exercises the call: pays $K$ out of the deposit and receives the share. Otherwise the trader buys the share in the market for $S_T \le K$. Either way the share is returned to the lender. Nothing is owed.
+
+Again the trades collect money today and never owe anything. Hence $C_A - P_A \ge S_0 e^{-qT} - K$, and together
+
+$$
+S_0 e^{-qT} - K \;\le\; C_A - P_A \;\le\; S_0 - K e^{-rT}.
+$$
+
+With $q = 0$ this is the result of 2.A.4.
+
+**Interpretation.** The European value, $S_0 e^{-qT} - K e^{-rT}$, lies inside the range. The lower end replaces $K e^{-rT}$ by $K$: the put's holder can exercise early and receive $K$ sooner. The upper end replaces $S_0 e^{-qT}$ by $S_0$: the call's holder can exercise early and receive the dividends. The width is $K(1 - e^{-rT}) + S_0(1 - e^{-qT})$.
+
+**What it means for SPY.** With the spot at 773.09 US dollars, a rate of 4.4%, a dividend yield of 1.05% (Section 2.3) and a one-year strike at the forward, 799.76, the bounds are $-34.74 \le C_A - P_A \le 7.76$: a range of 42.5 US dollars, 5.3% of the strike, around a European value of about zero. American quotes therefore do not pin the forward through parity. Section 2.4 reads it from the pairs nearest the money, where the early-exercise premium is smallest; issue #55 measures how large that premium is.
 
 ## References
 
