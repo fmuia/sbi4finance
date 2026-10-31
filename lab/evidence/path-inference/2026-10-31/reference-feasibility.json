@@ -1,0 +1,328 @@
+{
+  "format": "daily_drift_reference_feasibility_summary_v1",
+  "scientific_acceptance": false,
+  "reserved_test_evaluated": false,
+  "models": {
+    "heston": {
+      "task_sha256": "dd233e297f3ff974985383cf23dbb76865d4db92b7e348d675ac3065637ea7c3",
+      "source": {
+        "bank_manifest_sha256": "bcddef79dddd753df6a07035124c7e0043e309dd84a8e693fb489555f76477a9",
+        "bundle_sha256": "6675cf99bf9d4a2e7d3feaad01a085534955473b746afeef2448fbd9816ac00f",
+        "checkpoint_sha256": "ae8229c76ede0783deb264309747c2ac28c5b0cee8191e7ffa0ecf913636a9b7",
+        "directory": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/path-workshop-closeout-20261031/replays/heston",
+        "evaluation_sha256": "4d2ca547543367ded90a920d67088a9140fc2c55a301eda045968a558db6ccfd",
+        "inspected_case_indices": [
+          0,
+          1
+        ],
+        "kind": "development_replay",
+        "reserved_test_evaluated": false,
+        "source_case_panel_sha256": "05647771751e9eecf088e9d72de633778768f74a6afdcac01c16525dcecb2944",
+        "split": "validation",
+        "unseen_validation_evaluated": false
+      },
+      "seconds": 18.7130780419684,
+      "cases": {
+        "0": {
+          "1": {
+            "comparison": {
+              "gates": {
+                "maximum_mean_shift_in_posterior_sd": 0.1,
+                "maximum_quantile_shift_in_posterior_sd": 0.15,
+                "maximum_weight": 0.01,
+                "minimum_ess": 1000.0
+              },
+              "independent_runs": 4,
+              "limitations": "Necessary finite-sample stability checks; agreement can miss rare high-weight regions. No certification of neural, long-history, conditional or joint posterior accuracy.",
+              "maximum_mean_shift_in_posterior_sd": 0.022824360501588332,
+              "maximum_quantile_shift_in_posterior_sd": 0.03835276548992816,
+              "scientific_acceptance": false,
+              "status": "short_history_precision_checks_pass"
+            },
+            "ess_range": [
+              23516.93367954705,
+              47106.162818995435
+            ],
+            "maximum_weight": 0.00014237555626504678
+          },
+          "21": {
+            "comparison": {
+              "scientific_acceptance": false,
+              "status": "posterior_reference_inconclusive_atom_handling_required"
+            },
+            "prior_paths_with_any_zero_variance_day": [
+              94,
+              72,
+              162,
+              131
+            ],
+            "atom_compatible_observed_days": [
+              2
+            ]
+          }
+        },
+        "1": {
+          "1": {
+            "comparison": {
+              "gates": {
+                "maximum_mean_shift_in_posterior_sd": 0.1,
+                "maximum_quantile_shift_in_posterior_sd": 0.15,
+                "maximum_weight": 0.01,
+                "minimum_ess": 1000.0
+              },
+              "independent_runs": 4,
+              "limitations": "Necessary finite-sample stability checks; agreement can miss rare high-weight regions. No certification of neural, long-history, conditional or joint posterior accuracy.",
+              "maximum_mean_shift_in_posterior_sd": 0.016125830160267807,
+              "maximum_quantile_shift_in_posterior_sd": 0.032337712184901404,
+              "scientific_acceptance": false,
+              "status": "short_history_precision_checks_pass"
+            },
+            "ess_range": [
+              25362.42278361954,
+              50810.0111327704
+            ],
+            "maximum_weight": 0.00012108087161663856
+          },
+          "21": {
+            "comparison": {
+              "scientific_acceptance": false,
+              "status": "posterior_reference_inconclusive_atom_handling_required"
+            },
+            "prior_paths_with_any_zero_variance_day": [
+              85,
+              71,
+              152,
+              144
+            ],
+            "atom_compatible_observed_days": [
+              3,
+              10,
+              12
+            ]
+          }
+        }
+      }
+    },
+    "rough-known": {
+      "task_sha256": "eb195dd594de03a95630a4c46bd35e9355e235982d0eb30ae597491e14df6446",
+      "source": {
+        "bank_manifest_sha256": "0de676d0da84a1fd9a1984f54fbc9d8205edeae276fa3c6a783a2679044272ea",
+        "bundle_sha256": "c21aa1f12c59a664469a4ce4d3b6824f61180b10663ee8e765b5dac0c7dde79f",
+        "checkpoint_sha256": "b9b800ef987b7fddce62919d84f6420d751a7c390f8a2f476f49a2ca37be1e9c",
+        "directory": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/path-workshop-closeout-20261031/replays/rough-known",
+        "evaluation_sha256": "e65001d7fd0604ccb1e838879d26bb5918f4e40e1e22ac87d17d5423ecbfddf7",
+        "inspected_case_indices": [
+          0,
+          1
+        ],
+        "kind": "development_replay",
+        "reserved_test_evaluated": false,
+        "source_case_panel_sha256": "0a52c475772da48f492b10aa4784aaf5e0c3e9e0e3fd9268233ff55b30ea4076",
+        "split": "validation",
+        "unseen_validation_evaluated": false
+      },
+      "seconds": 46.948963165981695,
+      "cases": {
+        "0": {
+          "1": {
+            "comparison": {
+              "gates": {
+                "maximum_mean_shift_in_posterior_sd": 0.1,
+                "maximum_quantile_shift_in_posterior_sd": 0.15,
+                "maximum_weight": 0.01,
+                "minimum_ess": 1000.0
+              },
+              "independent_runs": 4,
+              "limitations": "Necessary finite-sample stability checks; agreement can miss rare high-weight regions. No certification of neural, long-history, conditional or joint posterior accuracy.",
+              "maximum_mean_shift_in_posterior_sd": 0.010348484259960466,
+              "maximum_quantile_shift_in_posterior_sd": 0.015288332786194214,
+              "scientific_acceptance": false,
+              "status": "short_history_precision_checks_pass"
+            },
+            "ess_range": [
+              26060.147638909482,
+              52224.24148407732
+            ],
+            "maximum_weight": 0.00015410352351156686
+          },
+          "21": {
+            "comparison": {
+              "gates": {
+                "maximum_mean_shift_in_posterior_sd": 0.1,
+                "maximum_quantile_shift_in_posterior_sd": 0.15,
+                "maximum_weight": 0.01,
+                "minimum_ess": 1000.0
+              },
+              "independent_runs": 4,
+              "limitations": "Necessary finite-sample stability checks; agreement can miss rare high-weight regions. No certification of neural, long-history, conditional or joint posterior accuracy.",
+              "maximum_mean_shift_in_posterior_sd": 0.8188314916570639,
+              "maximum_quantile_shift_in_posterior_sd": 1.7734143596029004,
+              "scientific_acceptance": false,
+              "status": "inconclusive_monte_carlo_precision"
+            },
+            "ess_range": [
+              4.642125398434277,
+              409.35288105886264
+            ],
+            "maximum_weight": 0.4563856663760934
+          }
+        },
+        "1": {
+          "1": {
+            "comparison": {
+              "gates": {
+                "maximum_mean_shift_in_posterior_sd": 0.1,
+                "maximum_quantile_shift_in_posterior_sd": 0.15,
+                "maximum_weight": 0.01,
+                "minimum_ess": 1000.0
+              },
+              "independent_runs": 4,
+              "limitations": "Necessary finite-sample stability checks; agreement can miss rare high-weight regions. No certification of neural, long-history, conditional or joint posterior accuracy.",
+              "maximum_mean_shift_in_posterior_sd": 0.011582131296611252,
+              "maximum_quantile_shift_in_posterior_sd": 0.02024039655177487,
+              "scientific_acceptance": false,
+              "status": "short_history_precision_checks_pass"
+            },
+            "ess_range": [
+              24444.20643709509,
+              49054.54230162165
+            ],
+            "maximum_weight": 0.0001885479296786948
+          },
+          "21": {
+            "comparison": {
+              "gates": {
+                "maximum_mean_shift_in_posterior_sd": 0.1,
+                "maximum_quantile_shift_in_posterior_sd": 0.15,
+                "maximum_weight": 0.01,
+                "minimum_ess": 1000.0
+              },
+              "independent_runs": 4,
+              "limitations": "Necessary finite-sample stability checks; agreement can miss rare high-weight regions. No certification of neural, long-history, conditional or joint posterior accuracy.",
+              "maximum_mean_shift_in_posterior_sd": 0.628835449891158,
+              "maximum_quantile_shift_in_posterior_sd": 0.6325522929292354,
+              "scientific_acceptance": false,
+              "status": "inconclusive_monte_carlo_precision"
+            },
+            "ess_range": [
+              20.072484827411085,
+              290.1855028041142
+            ],
+            "maximum_weight": 0.21185780479874075
+          }
+        }
+      }
+    },
+    "rough-joint": {
+      "task_sha256": "277c7219e49edb130049f78f91bcf176a22c06fad31f4404556fa27df263a7ca",
+      "source": {
+        "bank_manifest_sha256": "1e48dc63aa700dd98039d84d815f4b1a607e9fbdeacaa5c999b1c35299228fce",
+        "bundle_sha256": "4f5be8eb862a4bc54e4244747410a0cd509446810bcd243ef8081cd632302ac2",
+        "checkpoint_sha256": "9fea2e446b6264d46ee92a924a930faa9ad5473b88d909ab4844b1b37f726003",
+        "directory": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/path-workshop-closeout-20261031/replays/rough-joint",
+        "evaluation_sha256": "3f6ea3dc8f9683ca791442093fdee4ea673cb030affc67b3862727bf4f582112",
+        "inspected_case_indices": [
+          0,
+          1
+        ],
+        "kind": "development_replay",
+        "reserved_test_evaluated": false,
+        "source_case_panel_sha256": "d774a11cbb240f67b593635777124791ce8443e92a3102f96cd55cef3e6e9bb1",
+        "split": "validation",
+        "unseen_validation_evaluated": false
+      },
+      "seconds": 49.04721695894841,
+      "cases": {
+        "0": {
+          "1": {
+            "comparison": {
+              "gates": {
+                "maximum_mean_shift_in_posterior_sd": 0.1,
+                "maximum_quantile_shift_in_posterior_sd": 0.15,
+                "maximum_weight": 0.01,
+                "minimum_ess": 1000.0
+              },
+              "independent_runs": 4,
+              "limitations": "Necessary finite-sample stability checks; agreement can miss rare high-weight regions. No certification of neural, long-history, conditional or joint posterior accuracy.",
+              "maximum_mean_shift_in_posterior_sd": 0.035634515891766895,
+              "maximum_quantile_shift_in_posterior_sd": 0.05639132184901021,
+              "scientific_acceptance": false,
+              "status": "short_history_precision_checks_pass"
+            },
+            "ess_range": [
+              17816.351766103217,
+              35910.795834845536
+            ],
+            "maximum_weight": 0.00043581062188188937
+          },
+          "21": {
+            "comparison": {
+              "gates": {
+                "maximum_mean_shift_in_posterior_sd": 0.1,
+                "maximum_quantile_shift_in_posterior_sd": 0.15,
+                "maximum_weight": 0.01,
+                "minimum_ess": 1000.0
+              },
+              "independent_runs": 4,
+              "limitations": "Necessary finite-sample stability checks; agreement can miss rare high-weight regions. No certification of neural, long-history, conditional or joint posterior accuracy.",
+              "maximum_mean_shift_in_posterior_sd": 0.3142921573224242,
+              "maximum_quantile_shift_in_posterior_sd": 0.6001342599296111,
+              "scientific_acceptance": false,
+              "status": "inconclusive_monte_carlo_precision"
+            },
+            "ess_range": [
+              38.72398509116366,
+              580.0480659406829
+            ],
+            "maximum_weight": 0.15174024052108875
+          }
+        },
+        "1": {
+          "1": {
+            "comparison": {
+              "gates": {
+                "maximum_mean_shift_in_posterior_sd": 0.1,
+                "maximum_quantile_shift_in_posterior_sd": 0.15,
+                "maximum_weight": 0.01,
+                "minimum_ess": 1000.0
+              },
+              "independent_runs": 4,
+              "limitations": "Necessary finite-sample stability checks; agreement can miss rare high-weight regions. No certification of neural, long-history, conditional or joint posterior accuracy.",
+              "maximum_mean_shift_in_posterior_sd": 0.03577563989747371,
+              "maximum_quantile_shift_in_posterior_sd": 0.0469018797390231,
+              "scientific_acceptance": false,
+              "status": "short_history_precision_checks_pass"
+            },
+            "ess_range": [
+              25623.046049811255,
+              51292.48538593987
+            ],
+            "maximum_weight": 0.00018964673482019538
+          },
+          "21": {
+            "comparison": {
+              "gates": {
+                "maximum_mean_shift_in_posterior_sd": 0.1,
+                "maximum_quantile_shift_in_posterior_sd": 0.15,
+                "maximum_weight": 0.01,
+                "minimum_ess": 1000.0
+              },
+              "independent_runs": 4,
+              "limitations": "Necessary finite-sample stability checks; agreement can miss rare high-weight regions. No certification of neural, long-history, conditional or joint posterior accuracy.",
+              "maximum_mean_shift_in_posterior_sd": 0.32870539740563104,
+              "maximum_quantile_shift_in_posterior_sd": 0.5607534172513237,
+              "scientific_acceptance": false,
+              "status": "inconclusive_monte_carlo_precision"
+            },
+            "ess_range": [
+              77.19648641664733,
+              650.845848963734
+            ],
+            "maximum_weight": 0.06059279152672978
+          }
+        }
+      }
+    }
+  },
+  "conclusion": "All six one-day case/model references pass bounded Monte Carlo precision checks. All four 21-day rough references fail fixed precision gates; Heston21-day remains atom-support diagnostic only. No general conditional or joint certification."
+}

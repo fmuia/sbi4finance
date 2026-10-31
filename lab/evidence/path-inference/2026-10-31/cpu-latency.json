@@ -1,0 +1,467 @@
+{
+  "format": "trajectory_cpu_latency_v1",
+  "created_utc": "2026-10-31T03:34:01.334523+00:00",
+  "hardware": {
+    "platform": "macOS-26.4.1-arm64-arm-64bit",
+    "machine": "arm64",
+    "processor": "Apple M5 Max",
+    "logical_cpus": 18,
+    "memory_bytes": 137438953472
+  },
+  "thread_controls": {
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "NUMEXPR_NUM_THREADS": "1"
+  },
+  "keras_backend": "jax",
+  "jax_platforms": "cpu",
+  "jax_threading_note": "JAX CPU uses its backend-default thread pool; BLAS/OpenMP environment controls are recorded, not a claim that every JAX operation is single-threaded.",
+  "protocol": {
+    "cold": "three fresh Python processes per model; model load includes verification and first BayesFlow/Keras/JAX import; OS filesystem caches are not flushed",
+    "filesystem_cache": "not flushed; cold refers to process initialization",
+    "warm": "9 separately seeded 512-draw calls per length after a separately timed first call; NumPy output conversion completes computation before timing stops",
+    "prefix_shape": "all histories pad to 1260, allowing JIT shape reuse; length changes do not imply fewer recurrent steps",
+    "scope": "local CPU latency only; no reference-sampler break-even or posterior-accuracy claim"
+  },
+  "models": [
+    {
+      "model": "heston",
+      "task_id": "physical_heston_daily_drift_paths_v2",
+      "task_sha256": "dd233e297f3ff974985383cf23dbb76865d4db92b7e348d675ac3065637ea7c3",
+      "checkpoint_sha256": "ae8229c76ede0783deb264309747c2ac28c5b0cee8191e7ffa0ecf913636a9b7",
+      "training_record_sha256": "66f9d5d5c46166b80886b73d29c2d57100300bad947e58742ec08c69620e9453",
+      "case_id": "dd233e297f3ff974:20261031001:validation:0",
+      "native_runtime_import_seconds": 0.026265166990924627,
+      "cache_load_seconds": 0.013835207966621965,
+      "cold_process_model_load_seconds": 3.0429565419908613,
+      "runtime": {
+        "bayesflow": "2.1.0",
+        "keras": "3.15.1",
+        "jax": "0.11.1",
+        "numpy": "2.5.3",
+        "scipy": "1.18.1"
+      },
+      "jax_devices": [
+        {
+          "platform": "cpu",
+          "kind": "cpu",
+          "id": 0
+        }
+      ],
+      "lengths": [
+        {
+          "history_length": 1,
+          "elapsed_years": 0.003968253968253968,
+          "draws": 512,
+          "first_call_seconds": 1.9121711250045337,
+          "first_call_note": "warm-up; first length includes common-shape JIT compilation, later lengths reuse that shape",
+          "warm_repeats": 9,
+          "warm_seconds": [
+            0.06891400000313297,
+            0.0683057089918293,
+            0.06891395902493969,
+            0.0661823750124313,
+            0.06601033301558346,
+            0.06562279199715704,
+            0.06457616598345339,
+            0.06590370897902176,
+            0.06602545798523352
+          ],
+          "warm_median_seconds": 0.06602545798523352,
+          "warm_p10_seconds": 0.06541346679441631,
+          "warm_p90_seconds": 0.06891396722057834,
+          "shape": [
+            1,
+            512,
+            5
+          ]
+        },
+        {
+          "history_length": 21,
+          "elapsed_years": 0.08333333333333333,
+          "draws": 512,
+          "first_call_seconds": 0.06438654096564278,
+          "first_call_note": "warm-up; first length includes common-shape JIT compilation, later lengths reuse that shape",
+          "warm_repeats": 9,
+          "warm_seconds": [
+            0.06583116599358618,
+            0.06732312502572313,
+            0.06688554200809449,
+            0.07139312499202788,
+            0.08118595799896866,
+            0.09177841601194814,
+            0.07018666702788323,
+            0.07092391699552536,
+            0.0688154159579426
+          ],
+          "warm_median_seconds": 0.07018666702788323,
+          "warm_p10_seconds": 0.06667466680519282,
+          "warm_p90_seconds": 0.08330444960156456,
+          "shape": [
+            1,
+            512,
+            5
+          ]
+        },
+        {
+          "history_length": 252,
+          "elapsed_years": 1.0,
+          "draws": 512,
+          "first_call_seconds": 0.06687691604020074,
+          "first_call_note": "warm-up; first length includes common-shape JIT compilation, later lengths reuse that shape",
+          "warm_repeats": 9,
+          "warm_seconds": [
+            0.06611166702350602,
+            0.06525570899248123,
+            0.0641669169999659,
+            0.06652125000255182,
+            0.06825824995758012,
+            0.06647212500683963,
+            0.06625170900952071,
+            0.06645629199920222,
+            0.106958249991294
+          ],
+          "warm_median_seconds": 0.06645629199920222,
+          "warm_p10_seconds": 0.06503795059397817,
+          "warm_p90_seconds": 0.0759982499643229,
+          "shape": [
+            1,
+            512,
+            5
+          ]
+        },
+        {
+          "history_length": 1260,
+          "elapsed_years": 5.0,
+          "draws": 512,
+          "first_call_seconds": 0.06641304201912135,
+          "first_call_note": "warm-up; first length includes common-shape JIT compilation, later lengths reuse that shape",
+          "warm_repeats": 9,
+          "warm_seconds": [
+            0.06863254099152982,
+            0.06634349998785183,
+            0.06654237501788884,
+            0.06771375000244007,
+            0.06961195799522102,
+            0.0692511250381358,
+            0.06715283304220065,
+            0.06421333295293152,
+            0.06885391700780019
+          ],
+          "warm_median_seconds": 0.06771375000244007,
+          "warm_p10_seconds": 0.06591746658086776,
+          "warm_p90_seconds": 0.06932329162955284,
+          "shape": [
+            1,
+            512,
+            5
+          ]
+        }
+      ],
+      "supported_maximum": 1260,
+      "backend_seed_mapping": "nonnegative integer modulo 2**32; existing uint32 seeds unchanged",
+      "fresh_process_wall_seconds": 7.984406167000998,
+      "cold_process_load_repeats_seconds": [
+        3.0429565419908613,
+        3.3530558749916963,
+        2.732209791021887
+      ],
+      "cold_process_load_median_seconds": 3.0429565419908613,
+      "cold_process_load_p10_seconds": 2.794359141215682,
+      "cold_process_load_p90_seconds": 3.2910360083915293
+    },
+    {
+      "model": "rough-known",
+      "task_id": "physical_rough_known_daily_drift_paths_v2",
+      "task_sha256": "eb195dd594de03a95630a4c46bd35e9355e235982d0eb30ae597491e14df6446",
+      "checkpoint_sha256": "b9b800ef987b7fddce62919d84f6420d751a7c390f8a2f476f49a2ca37be1e9c",
+      "training_record_sha256": "1183f9b450d22bfd0f7b0e88cf077947c47e5b0b66cf595f10c07705ac591cc4",
+      "case_id": "eb195dd594de03a9:20261031002:validation:0",
+      "native_runtime_import_seconds": 0.023929917020723224,
+      "cache_load_seconds": 0.014085708011407405,
+      "cold_process_model_load_seconds": 2.803933541988954,
+      "runtime": {
+        "bayesflow": "2.1.0",
+        "keras": "3.15.1",
+        "jax": "0.11.1",
+        "numpy": "2.5.3",
+        "scipy": "1.18.1"
+      },
+      "jax_devices": [
+        {
+          "platform": "cpu",
+          "kind": "cpu",
+          "id": 0
+        }
+      ],
+      "lengths": [
+        {
+          "history_length": 1,
+          "elapsed_years": 0.003968253968253968,
+          "draws": 512,
+          "first_call_seconds": 1.3315728339948691,
+          "first_call_note": "warm-up; first length includes common-shape JIT compilation, later lengths reuse that shape",
+          "warm_repeats": 9,
+          "warm_seconds": [
+            0.06535316596273333,
+            0.07537912501720712,
+            0.06517720897682011,
+            0.06509033299516886,
+            0.06768920802278444,
+            0.07588304101955146,
+            0.0748031249968335,
+            0.08324754098430276,
+            0.08101812499808148
+          ],
+          "warm_median_seconds": 0.0748031249968335,
+          "warm_p10_seconds": 0.06515983378048987,
+          "warm_p90_seconds": 0.08146400819532573,
+          "shape": [
+            1,
+            512,
+            4
+          ]
+        },
+        {
+          "history_length": 21,
+          "elapsed_years": 0.08333333333333333,
+          "draws": 512,
+          "first_call_seconds": 0.06846795801538974,
+          "first_call_note": "warm-up; first length includes common-shape JIT compilation, later lengths reuse that shape",
+          "warm_repeats": 9,
+          "warm_seconds": [
+            0.07522375002736226,
+            0.08938362501794472,
+            0.06727520801359788,
+            0.07416175003163517,
+            0.07209324999712408,
+            0.07619975000852719,
+            0.07537904195487499,
+            0.07949045801069587,
+            0.07583241700194776
+          ],
+          "warm_median_seconds": 0.07537904195487499,
+          "warm_p10_seconds": 0.07112964160041883,
+          "warm_p90_seconds": 0.08146909141214564,
+          "shape": [
+            1,
+            512,
+            4
+          ]
+        },
+        {
+          "history_length": 252,
+          "elapsed_years": 1.0,
+          "draws": 512,
+          "first_call_seconds": 0.07453220896422863,
+          "first_call_note": "warm-up; first length includes common-shape JIT compilation, later lengths reuse that shape",
+          "warm_repeats": 9,
+          "warm_seconds": [
+            0.07359920797171071,
+            0.07415987498825416,
+            0.0668354170047678,
+            0.06411708297673613,
+            0.06328808300895616,
+            0.06298908399185166,
+            0.06325937499059364,
+            0.06399574998067692,
+            0.06394025002373382
+          ],
+          "warm_median_seconds": 0.06399574998067692,
+          "warm_p10_seconds": 0.06320531679084525,
+          "warm_p90_seconds": 0.0737113413750194,
+          "shape": [
+            1,
+            512,
+            4
+          ]
+        },
+        {
+          "history_length": 1260,
+          "elapsed_years": 5.0,
+          "draws": 512,
+          "first_call_seconds": 0.0644683749997057,
+          "first_call_note": "warm-up; first length includes common-shape JIT compilation, later lengths reuse that shape",
+          "warm_repeats": 9,
+          "warm_seconds": [
+            0.06373358401469886,
+            0.06319804198574275,
+            0.06333924998762086,
+            0.06362637499114498,
+            0.06257266696775332,
+            0.06432274996768683,
+            0.06511579197831452,
+            0.06513879098929465,
+            0.06329133303370327
+          ],
+          "warm_median_seconds": 0.06362637499114498,
+          "warm_p10_seconds": 0.06307296698214486,
+          "warm_p90_seconds": 0.06512039178051054,
+          "shape": [
+            1,
+            512,
+            4
+          ]
+        }
+      ],
+      "supported_maximum": 1260,
+      "backend_seed_mapping": "nonnegative integer modulo 2**32; existing uint32 seeds unchanged",
+      "fresh_process_wall_seconds": 7.115590333996806,
+      "cold_process_load_repeats_seconds": [
+        2.803933541988954,
+        2.4425107080023736,
+        2.3544744580285624
+      ],
+      "cold_process_load_median_seconds": 2.4425107080023736,
+      "cold_process_load_p10_seconds": 2.3720817080233245,
+      "cold_process_load_p90_seconds": 2.731648975191638
+    },
+    {
+      "model": "rough-joint",
+      "task_id": "physical_rough_joint_daily_drift_paths_v2",
+      "task_sha256": "277c7219e49edb130049f78f91bcf176a22c06fad31f4404556fa27df263a7ca",
+      "checkpoint_sha256": "9fea2e446b6264d46ee92a924a930faa9ad5473b88d909ab4844b1b37f726003",
+      "training_record_sha256": "6bbfa75537d1a840e28edb1337ef41f3ba8b5661a918dcb6a2f1e69890ff6f39",
+      "case_id": "277c7219e49edb13:20261031003:validation:0",
+      "native_runtime_import_seconds": 0.022037416987586766,
+      "cache_load_seconds": 0.014779124991036952,
+      "cold_process_model_load_seconds": 2.8766791250091046,
+      "runtime": {
+        "bayesflow": "2.1.0",
+        "keras": "3.15.1",
+        "jax": "0.11.1",
+        "numpy": "2.5.3",
+        "scipy": "1.18.1"
+      },
+      "jax_devices": [
+        {
+          "platform": "cpu",
+          "kind": "cpu",
+          "id": 0
+        }
+      ],
+      "lengths": [
+        {
+          "history_length": 1,
+          "elapsed_years": 0.003968253968253968,
+          "draws": 512,
+          "first_call_seconds": 1.9123841249966063,
+          "first_call_note": "warm-up; first length includes common-shape JIT compilation, later lengths reuse that shape",
+          "warm_repeats": 9,
+          "warm_seconds": [
+            0.06532766699092463,
+            0.06600316596450284,
+            0.06370720802806318,
+            0.06521066598361358,
+            0.06412370799807832,
+            0.06485912500647828,
+            0.06524533295305446,
+            0.06718437495874241,
+            0.06500724999932572
+          ],
+          "warm_median_seconds": 0.06521066598361358,
+          "warm_p10_seconds": 0.06404040800407529,
+          "warm_p90_seconds": 0.06623940776335076,
+          "shape": [
+            1,
+            512,
+            7
+          ]
+        },
+        {
+          "history_length": 21,
+          "elapsed_years": 0.08333333333333333,
+          "draws": 512,
+          "first_call_seconds": 0.0644683749997057,
+          "first_call_note": "warm-up; first length includes common-shape JIT compilation, later lengths reuse that shape",
+          "warm_repeats": 9,
+          "warm_seconds": [
+            0.06488508300390095,
+            0.06478299997979775,
+            0.07023887505056337,
+            0.06428170797880739,
+            0.06651999999303371,
+            0.0651101249968633,
+            0.06464837497333065,
+            0.06399291701382026,
+            0.06518704100744799
+          ],
+          "warm_median_seconds": 0.06488508300390095,
+          "warm_p10_seconds": 0.06422394978580996,
+          "warm_p90_seconds": 0.06726377500453964,
+          "shape": [
+            1,
+            512,
+            7
+          ]
+        },
+        {
+          "history_length": 252,
+          "elapsed_years": 1.0,
+          "draws": 512,
+          "first_call_seconds": 0.0651680410373956,
+          "first_call_note": "warm-up; first length includes common-shape JIT compilation, later lengths reuse that shape",
+          "warm_repeats": 9,
+          "warm_seconds": [
+            0.06635187502251938,
+            0.06537370797013864,
+            0.06467175000580028,
+            0.06636241701198742,
+            0.06498445803299546,
+            0.0658224580110982,
+            0.06511904200306162,
+            0.10176537500228733,
+            0.06428704201243818
+          ],
+          "warm_median_seconds": 0.06537370797013864,
+          "warm_p10_seconds": 0.06459480840712786,
+          "warm_p90_seconds": 0.0734430086100474,
+          "shape": [
+            1,
+            512,
+            7
+          ]
+        },
+        {
+          "history_length": 1260,
+          "elapsed_years": 5.0,
+          "draws": 512,
+          "first_call_seconds": 0.0637980000465177,
+          "first_call_note": "warm-up; first length includes common-shape JIT compilation, later lengths reuse that shape",
+          "warm_repeats": 9,
+          "warm_seconds": [
+            0.06502908398397267,
+            0.06529079197207466,
+            0.0652006670134142,
+            0.0650020000175573,
+            0.06650720798643306,
+            0.06561074999626726,
+            0.06413204205455258,
+            0.06385358399711549,
+            0.06304762500803918
+          ],
+          "warm_median_seconds": 0.06502908398397267,
+          "warm_p10_seconds": 0.06369239219930023,
+          "warm_p90_seconds": 0.06579004159430042,
+          "shape": [
+            1,
+            512,
+            7
+          ]
+        }
+      ],
+      "supported_maximum": 1260,
+      "backend_seed_mapping": "nonnegative integer modulo 2**32; existing uint32 seeds unchanged",
+      "fresh_process_wall_seconds": 7.639973333047237,
+      "cold_process_load_repeats_seconds": [
+        2.8766791250091046,
+        2.6879564170376398,
+        2.851963124994654
+      ],
+      "cold_process_load_median_seconds": 2.851963124994654,
+      "cold_process_load_p10_seconds": 2.7207577586290426,
+      "cold_process_load_p90_seconds": 2.8717359250062144
+    }
+  ]
+}

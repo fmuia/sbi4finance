@@ -68,6 +68,10 @@ Run `pixi run --locked trajectories` to compare the three physical-measure model
 on the same daily grid, from one observed return to five trading years. All infer
 annual proportional price drift; the joint rough task also infers its variance-scale
 curve. Realized latent volatility and synthetic truth are excluded from conditions.
+The lesson shows how one million offline histories per model train a masked GRU
+summary and conditional flow using random prefixes. Each displayed prefix posterior
+uses the original prior and full revealed history; overlapping prefix posteriors
+are not multiplied together.
 
 The lab publishes the first four predeclared validation cases under
 `assets/trajectories/`, with their task, checkpoint and file identities. Opening the
@@ -77,7 +81,11 @@ the return chart reveals the requested days and the posterior is explicitly labe
 with its nearest **past** cached length. Cached posteriors are not interpolated.
 
 For fresh inference at any integer length from 1 to 1,260, obtain the matching native
-checkpoint and place its unchanged `model.keras`, `task.json` and `training.json` in
+checkpoint from the `path-workshop-2026-10-31` subfolder of the existing
+[shared sbi4finance Drive folder](https://drive.google.com/drive/folders/1ta1LjBopl-kErBfDEr2R_UL-9Hs8Y9D7).
+The `path-workshop-native-models-20261031.tar.gz` archive is 6,354,318 bytes, with
+SHA-256 `261c36550da52948aedcc2680d51bcb756db485626a6a2b8ee918fa9d6fff4cf`.
+Extract it into `tutorial/assets/`; it places unchanged `model.keras`, `task.json` and `training.json` in
 `assets/local-checkpoints/path-heston/`, `path-rough-known/` or `path-rough-joint/`.
 Select the model and case, reveal the desired history, and press the CPU inference
 button. These optional model payloads stay outside Git; the loader verifies their
@@ -85,6 +93,8 @@ native hashes against the selected cached example. The same cached notebook rema
 usable when those files are absent. Development examples and aggregate held-out
 evaluation have separate scopes; neither a smooth learning curve nor a narrow
 posterior is a conditional-accuracy certificate.
+The live result reports model load and draw elapsed times for that click, including
+any first-call compilation in the draw time; these are not guaranteed timings.
 
 The estimators are neural candidates with approximate posteriors; their recorded
 calibration and reference outcomes remain separate from this working demonstration.

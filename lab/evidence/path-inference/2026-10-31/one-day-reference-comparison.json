@@ -1,0 +1,90 @@
+{
+  "format": "one_day_neural_reference_comparison_summary_v1",
+  "scientific_acceptance": false,
+  "reserved_test_evaluated": false,
+  "unseen_validation_evaluated": false,
+  "files": [
+    {
+      "model": "heston",
+      "file": "heston.json",
+      "sha256": "4ee8acba5d485ab4754846908c50516b3bad978c5049b68dc2fc97c9f0a5d493"
+    },
+    {
+      "model": "rough-known",
+      "file": "rough-known.json",
+      "sha256": "7b61078f817b65a42906c6da7d67c3e7dd19ff7d79c6d9f7c096418879b6db0e"
+    },
+    {
+      "model": "rough-joint",
+      "file": "rough-joint.json",
+      "sha256": "75a75b6d82e7549fb1b876372c5afc6e45abd6bf5b30028e2949a21ba8dc5a70"
+    }
+  ],
+  "models": {
+    "heston": {
+      "neural_draws_per_case": 512,
+      "pooled_reference_ess": [
+        94069.3209846398,
+        101410.04621460127
+      ],
+      "maximum_absolute_mean_difference_in_reference_sd": 0.10343418650649382,
+      "reference_mass_inside_neural90_range": [
+        0.8853588706226114,
+        0.9247672248734249
+      ],
+      "neural_sd_to_reference_sd_range": [
+        0.9642473943190042,
+        1.0728679373618482
+      ],
+      "posthoc_flags": []
+    },
+    "rough-known": {
+      "neural_draws_per_case": 512,
+      "pooled_reference_ess": [
+        104419.27315770312,
+        98086.54835775356
+      ],
+      "maximum_absolute_mean_difference_in_reference_sd": 0.1353746594088812,
+      "reference_mass_inside_neural90_range": [
+        0.9001267774046056,
+        0.9227142266325743
+      ],
+      "neural_sd_to_reference_sd_range": [
+        0.9904877181782329,
+        1.0490404838522256
+      ],
+      "posthoc_flags": []
+    },
+    "rough-joint": {
+      "neural_draws_per_case": 512,
+      "pooled_reference_ess": [
+        71395.2956660191,
+        102493.65864365244
+      ],
+      "maximum_absolute_mean_difference_in_reference_sd": 0.11186582296342037,
+      "reference_mass_inside_neural90_range": [
+        0.8846786601711867,
+        0.9277825832357427
+      ],
+      "neural_sd_to_reference_sd_range": [
+        0.952874834704207,
+        1.0509392311812775
+      ],
+      "posthoc_flags": []
+    }
+  },
+  "global": {
+    "parameter_case_comparisons": 32,
+    "posthoc_flags": 0,
+    "maximum_absolute_mean_difference_in_reference_sd": 0.1353746594088812,
+    "reference_mass_inside_neural90_range": [
+      0.8846786601711867,
+      0.9277825832357427
+    ],
+    "neural_sd_to_reference_sd_range": [
+      0.952874834704207,
+      1.0728679373618482
+    ]
+  },
+  "interpretation": "No large posthoc descriptive discrepancy flag in32marginal case/parameter comparisons from6one-day controls. Finite512-draw neural uncertainty remains; these data do not establish general conditional, joint or long-history accuracy."
+}

@@ -1,0 +1,61 @@
+{
+  "format": "path_workshop_drive_provider_verification_v1",
+  "parent_url": "https://drive.google.com/drive/folders/1ta1LjBopl-kErBfDEr2R_UL-9Hs8Y9D7",
+  "subfolder": "path-workshop-2026-10-31",
+  "files": [
+    {
+      "name": "completed-models-and-diagnostics.tar.gz",
+      "bytes": 270621445,
+      "sha256": "21d198732ad51184f346249b02637daab3f67dd403750a0a0be96306da73b059",
+      "provider_fields": {
+        "documentSize": "270621445",
+        "isUploaded": "1",
+        "isUploading": "0",
+        "isSyncPaused": "0",
+        "isExcludedFromSync": "0"
+      },
+      "upload_complete": true
+    },
+    {
+      "name": "archive-receipt.json",
+      "bytes": 40932,
+      "sha256": "786e1b161c7a333c055220769badbe3bcf34e94c9abff4d5e2773401774754ab",
+      "provider_fields": {
+        "documentSize": "40932",
+        "isUploaded": "1",
+        "isUploading": "0",
+        "isSyncPaused": "0",
+        "isExcludedFromSync": "0"
+      },
+      "upload_complete": true
+    },
+    {
+      "name": "path-workshop-native-models-20261031.tar.gz",
+      "bytes": 6354318,
+      "sha256": "261c36550da52948aedcc2680d51bcb756db485626a6a2b8ee918fa9d6fff4cf",
+      "provider_fields": {
+        "documentSize": "6354318",
+        "isUploaded": "1",
+        "isUploading": "0",
+        "isSyncPaused": "0",
+        "isExcludedFromSync": "0"
+      },
+      "upload_complete": true
+    },
+    {
+      "name": "models-archive-receipt.json",
+      "bytes": 1450,
+      "sha256": "062592f22960c6609114e91e28802038848c67cc89ebf38df1895e3987444cb7",
+      "provider_fields": {
+        "documentSize": "1450",
+        "isUploaded": "1",
+        "isUploading": "0",
+        "isSyncPaused": "0",
+        "isExcludedFromSync": "0"
+      },
+      "upload_complete": true
+    }
+  ],
+  "all_uploaded": true,
+  "verification": "Local readback SHA-256 plus documented macOS Drive-provider upload flags; independent cloud download not checked."
+}

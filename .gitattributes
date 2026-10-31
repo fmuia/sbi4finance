@@ -4,3 +4,5 @@ lab/evidence/pilot-results/**/*.npz linguist-generated=true
 lab/evidence/pilot-results/**/*.png linguist-generated=true
 lab/evidence/pilot-results/**/*.svg linguist-generated=true
 lab/evidence/pilot-results/**/*.psv linguist-generated=true
+tutorial/assets/trajectories/** linguist-generated=true
+lab/evidence/path-inference/**/*.json linguist-generated=true
