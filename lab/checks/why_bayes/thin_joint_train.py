@@ -107,7 +107,7 @@ def main():
     quotes = splits["validation"]["reference_prices"][:2]
     draws = thin_joint.sample(restored, task, quotes, 64, seed=args.seed + 11)
     record = {
-        "bank": {"path": str(args.bank), "manifest_sha256": hashlib.sha256((args.bank / "manifest.json").read_bytes()).hexdigest(),
+        "bank": {"name": args.bank.name, "manifest_sha256": hashlib.sha256((args.bank / "manifest.json").read_bytes()).hexdigest(),
                  "train": len(train["clean_scaled"]), "validation": len(validation["observations"])},
         "task": {"task_id": task["task_id"], "targets": thin_joint.NAMES, "prior_bounds": task["prior_bounds"],
                  "contracts": len(task["context"]["contracts"])},

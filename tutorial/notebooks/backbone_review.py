@@ -155,7 +155,7 @@ def _(cache_report, mo):
     ### Optional live role
 
     To obtain fresh neural draws for this same observation, use the
-    [download and loading guide](https://github.com/fmuia/sbi4finance/blob/integration/course-tutorial-lab-20261029/lab/plans/training-data-guide.md)
+    [download and loading guide](https://github.com/fmuia/sbi4finance/blob/main/lab/plans/training-data-guide.md)
     to obtain the matching checkpoint from `{cache_report['model_source']}`.
     Place it under `tutorial/assets/local-checkpoints/`.
     Use the tutorial environment (BayesFlow 2.1), enter its directory

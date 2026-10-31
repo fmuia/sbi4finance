@@ -16,7 +16,6 @@ python checks/why_bayes/thin_joint_audit.py --bank BANK --posterior DIR/posterio
 """
 
 import argparse
-import json
 import time
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
@@ -105,8 +104,8 @@ def main():
     post = np.load(args.posterior)
     index = {int(r): i for i, r in enumerate(post["rows"])}
     network_products = {r["row"]: r["posterior"] for f in args.posterior.parent.glob("rows-posterior-*.jsonl")
-                        for r in map(json.loads, f.read_text().splitlines())}
-    done = {json.loads(line)["row"] for line in args.out.read_text().splitlines()} if args.out.exists() else set()
+                        for r in thin_joint.read_rows(f)}
+    done = {r["row"] for r in thin_joint.read_rows(args.out)} if args.out.exists() else set()
     qs = [0.05, 0.5, 0.95]
     names = thin_joint.NAMES + ["forward_variance_6m_1y"]
     with ProcessPoolExecutor(max_workers=4, initializer=_init, initargs=(task,)) as pool:
@@ -134,8 +133,7 @@ def main():
                       "network": {n: np.quantile(net[:, j], qs).tolist() for j, n in enumerate(names)},
                       "audited": {n: weighted_quantiles(aud[:, j], w, qs) for j, n in enumerate(names)},
                       "products": products}
-            with args.out.open("a") as handle:
-                handle.write(json.dumps(record) + "\n")
+            thin_joint.append_row(args.out, record)
             print(f"row {row}: ESS {diagnostics['ess']:.0f} of {args.proposals}, k-hat {diagnostics['khat']:.2f}, "
                   f"{record['seconds']:.0f} s", flush=True)
 
