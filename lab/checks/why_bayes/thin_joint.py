@@ -7,14 +7,20 @@ layout's contracts, so its prices are read whole. The conditions are the quotes 
 a per-surface noise scale s; training draws s log-uniform on thin.SCALE_BOUNDS and a fresh error for every batch
 (thin.thin_noise).
 
-Needs the joint task of PR #48.
+Needs the joint task of PR #48. The network is a BayesFlow 2.0.14 network: train and load it in the lab's default
+environment (`pixi run --locked python checks/why_bayes/...` from lab/), not `-e core`; build_workflow refuses
+another BayesFlow version.
 """
+
+import json
+from pathlib import Path
 
 import numpy as np
 
 from sbi4finance.calibration import inference, tasks, thin
 
 NAMES = list(tasks.JOINT_ROUGH_PARAMETERS)
+BAYESFLOW = "2.0.14"  # the version the network was trained with
 _VALIDATION_TAG = 0x544A56  # "TJV"
 
 
@@ -62,6 +68,9 @@ def build_workflow(task, checkpoint_dir=None, *, subnet_widths=(256, 256, 256, 2
                    time_power_law_alpha=0.5):
     """thin.build_thin_workflow with the six joint targets."""
     import bayesflow as bf
+    if bf.__version__ != BAYESFLOW:
+        raise RuntimeError(f"use the lab's default environment (BayesFlow {BAYESFLOW}), in which the thin network "
+                           "was trained: pixi run --locked python checks/why_bayes/...")
 
     adapter = bf.Adapter()
     for name, (lower, upper) in zip(NAMES, bounds(task), strict=True):
@@ -93,6 +102,23 @@ def sample(workflow, task, quotes, num_samples, scale=1.0, seed=0):
     inference.use_sampler(workflow)
     drawn = workflow.sample(num_samples=num_samples, conditions=conditions(quotes, task, scale), seed=int(seed))
     return np.concatenate([np.asarray(drawn[name], dtype=np.float64) for name in NAMES], axis=-1)
+
+
+def read_rows(path):
+    """The complete records of a JSON-lines file. A last line without its newline was cut off by an interrupted
+    run, or is still being written by another: it is ignored, so its row is computed again."""
+    text = Path(path).read_text()
+    return [json.loads(line) for line in text[: text.rfind("\n") + 1].splitlines()]
+
+
+def append_row(path, record):
+    """Appends one record as a JSON line, after dropping a line an interrupted run left unfinished."""
+    path = Path(path)
+    text = path.read_text() if path.exists() else ""
+    if not text.endswith("\n") and text:
+        path.write_text(text[: text.rfind("\n") + 1])
+    with path.open("a") as handle:
+        handle.write(json.dumps(record) + "\n")
 
 
 def forward_variance(theta, start, end):
