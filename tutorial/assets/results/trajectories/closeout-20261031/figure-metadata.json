@@ -1,0 +1,154 @@
+{
+  "format": "path_workshop_aggregate_figures_v1",
+  "phase": "final",
+  "cohort": {
+    "cases": 4000,
+    "offset": 0,
+    "split": "test"
+  },
+  "draws_per_history": 512,
+  "lengths": [
+    1,
+    2,
+    4,
+    8,
+    17,
+    21,
+    63,
+    126,
+    252,
+    504,
+    756,
+    1260
+  ],
+  "source_code_sha256": "c200fc85e61924b6e0bf985743ad34061709a865b3288d962a503c4ae99556f7",
+  "selection_file_sha256": "51bbc492f5f393288741bcffe317eac7650403343d2079483ce6e81116b491e2",
+  "selection_receipt_sha256": "d83ba139a61c138672a2b9f62c285bbd382abbf52f5dd327dd478c1e9ef6a1ba",
+  "assessment_file_sha256": "f9d73216d4382d8db1d88834e987ca4f4b413cfa82274d7a1114f3f0147c2676",
+  "assessment_receipt_sha256": "b59ddf1501712352bfb76204673e772e6316792de985692dab4cf9072db6cfa0",
+  "assessment_status": "failed_calibration_screen",
+  "assessment_passed": false,
+  "evaluations": {
+    "heston": {
+      "local_evaluation_json": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/path-workshop-closeout-20261031/final-audit/run/final/heston/evaluation.json",
+      "evaluation_sha256": "7ccd89ec111f5ad7bccbb302f9fee5cf6d42666677e1e2b8ba86728d7ef650e0",
+      "task_sha256": "dd233e297f3ff974985383cf23dbb76865d4db92b7e348d675ac3065637ea7c3",
+      "model_sha256": "ae8229c76ede0783deb264309747c2ac28c5b0cee8191e7ffa0ecf913636a9b7",
+      "bank_manifest_sha256": "bcddef79dddd753df6a07035124c7e0043e309dd84a8e693fb489555f76477a9",
+      "case_identities_sha256": "73724c95647a33b00c14a8f8db6ccc13c5202dba3941509f86ca84ed066496a8",
+      "targets": [
+        "kappa",
+        "long_variance",
+        "vol_of_vol",
+        "rho",
+        "drift"
+      ]
+    },
+    "rough-known": {
+      "local_evaluation_json": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/path-workshop-closeout-20261031/final-audit/run/final/rough-known/evaluation.json",
+      "evaluation_sha256": "ddbe096c4ea63244bc2a302275d0b9f35fb50b7d74468e125eaa533fcf2a3c09",
+      "task_sha256": "eb195dd594de03a95630a4c46bd35e9355e235982d0eb30ae597491e14df6446",
+      "model_sha256": "b9b800ef987b7fddce62919d84f6420d751a7c390f8a2f476f49a2ca37be1e9c",
+      "bank_manifest_sha256": "0de676d0da84a1fd9a1984f54fbc9d8205edeae276fa3c6a783a2679044272ea",
+      "case_identities_sha256": "8e04c51312893b8e3bac97383148f601a778d75adc055123e1774de3e0f27f1c",
+      "targets": [
+        "hurst",
+        "eta",
+        "rho",
+        "drift"
+      ]
+    },
+    "rough-joint": {
+      "local_evaluation_json": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/path-workshop-closeout-20261031/final-audit/run/final/rough-joint/evaluation.json",
+      "evaluation_sha256": "83814a9be163f0a3df7f1e2792ed3ed686c052ea1da811c617dbc9ff5a65835d",
+      "task_sha256": "277c7219e49edb130049f78f91bcf176a22c06fad31f4404556fa27df263a7ca",
+      "model_sha256": "9fea2e446b6264d46ee92a924a930faa9ad5473b88d909ab4844b1b37f726003",
+      "bank_manifest_sha256": "1e48dc63aa700dd98039d84d815f4b1a607e9fbdeacaa5c999b1c35299228fce",
+      "case_identities_sha256": "46d2756a8349cd4828aeb1bdf15eba2f1162a99de1f74b21289bdffeac981227",
+      "targets": [
+        "hurst",
+        "eta",
+        "rho",
+        "short_variance",
+        "long_variance",
+        "decay",
+        "drift"
+      ]
+    }
+  },
+  "outlined_failed_coverage_cells": [
+    {
+      "model": "heston",
+      "parameter": "kappa",
+      "length": 252,
+      "coverage90": 0.8775
+    },
+    {
+      "model": "heston",
+      "parameter": "rho",
+      "length": 504,
+      "coverage90": 0.9230000000000002
+    },
+    {
+      "model": "heston",
+      "parameter": "vol_of_vol",
+      "length": 756,
+      "coverage90": 0.91975
+    },
+    {
+      "model": "heston",
+      "parameter": "rho",
+      "length": 756,
+      "coverage90": 0.922
+    },
+    {
+      "model": "heston",
+      "parameter": "vol_of_vol",
+      "length": 1260,
+      "coverage90": 0.92475
+    },
+    {
+      "model": "rough-known",
+      "parameter": "drift",
+      "length": 1260,
+      "coverage90": 0.92
+    },
+    {
+      "model": "rough-joint",
+      "parameter": "rho",
+      "length": 252,
+      "coverage90": 0.87575
+    }
+  ],
+  "files": {
+    "drift-learning.pdf": {
+      "sha256": "29deb679579610e42eeb5c443f528bfeaf95f6f62e91ddb09053e0f375be39c4",
+      "bytes": 26316
+    },
+    "drift-learning.png": {
+      "sha256": "efa3d41706ddc9f0a46d39eba430d2a96f3ecaed892149a06ccf6c11ca2e3854",
+      "bytes": 178866
+    },
+    "marginal-coverage.pdf": {
+      "sha256": "dd5ceaadd6ce110f2c4141d60e33277010fb8bd870c2fcfd2f7d2edf3016c95b",
+      "bytes": 46408
+    },
+    "marginal-coverage.png": {
+      "sha256": "bbdc7660b6f3e40203104f0eb5c7dea1e72b53364cec14e3d7d92098c2b4111b",
+      "bytes": 461530
+    }
+  },
+  "versions": {
+    "python": "3.12.16",
+    "numpy": "2.5.3",
+    "matplotlib": "3.11.2"
+  },
+  "risk_ratio": "Reported MSE divided by same-model/same-cohort prior-mean baseline MSE. Evaluator prior mean comes from its seeded100k prior draws; this is distinct from the assessment's analytic-prior paired-risk screen. No new simulations or risk estimates were generated.",
+  "coverage": "Reported marginal central90% interval truth coverage over independent histories; equal to sealed assessment coverage. Heatmap outlines use its frozen simultaneous-screen decisions, not posthoc pointwise tests.",
+  "uncertainty": "No confidence intervals or bands fabricated or added. Prefixes share histories and are dependent; posterior draws are not independent evaluation cases.",
+  "scope": "Common daily1260-return design with twelve frozen prefix evaluations. Own-model baselines; curves are not a ranking of stochastic models. Heston remains a prototype with drift atoms.",
+  "scientific_acceptance": false,
+  "asset_publication": false,
+  "reserved_test_evaluated": true,
+  "receipt_verification": "Local content seals verified; supplied local evaluation JSON hashes verified against assessment. No canonical Oscar path was opened."
+}

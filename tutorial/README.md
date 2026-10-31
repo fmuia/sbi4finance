@@ -110,6 +110,15 @@ neural density cannot represent exactly. Its displayed intervals carry no endors
 claim. A newly specified numerical target and refit are needed to resolve that limitation;
 the frozen task, model and cached examples retain their original identities.
 
+Final characterization used 4,000 previously reserved histories per model, twelve
+history lengths and 512 draws per history, with candidates and screening rules
+frozen beforehand. All execution and risk screens passed; **all three models failed
+the declared marginal calibration screen**. The known-curve model's confirmation
+pass did not reproduce across every tested cell. This package is a development lesson.
+See the [aggregate report](assets/results/trajectories/closeout-20261031/closeout-summary.json),
+[drift-learning figure](assets/results/trajectories/closeout-20261031/drift-learning.png)
+and [coverage figure](assets/results/trajectories/closeout-20261031/marginal-coverage.png).
+
 Optional authoring tools inherit the same 2.1 stack:
 
 ```sh
