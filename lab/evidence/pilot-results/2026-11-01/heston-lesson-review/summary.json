@@ -1,0 +1,57 @@
+{
+  "format": "heston_lesson_review_v1",
+  "checked_utc": "2026-11-01T22:16:54.389403+00:00",
+  "scientific_acceptance": false,
+  "scope": "Didactic notebook revision, deterministic illustrations and a saved-data audit; no task, bank, checkpoint or posterior cache replaced.",
+  "source_sha256": {
+    "tutorial/notebooks/slot4_heston_bayesflow.py": "f56ea5d9c75f33e3d9c69b37daf17f959fb23d53411a3afb08e34623bf563371",
+    "lab/src/sbi4finance/calibration/teaching.py": "107e084ff24813f34a1324ee341541a66570ca403040b58e8227769df388580d",
+    "tutorial/src/sbi4f_tutorial/teaching.py": "791f362f56aa66bba0c6cf54c770346ee499ec2ae05f25c523ed3c632fc461b1",
+    "lab/tests/test_heston_lesson_helpers.py": "754f38d126c5eb044e506a6985ca6bebc27efa280a968565f3d52e0afa28a3c7",
+    "lab/evidence/pilot-results/2026-11-01/heston-case-2001/summary.json": "05cbea0ed19175f95225ec6d9bec390e036f5580232a7e7b9c385feec789e8c7"
+  },
+  "validation": {
+    "lab_tests": 514,
+    "optional_skips": 3,
+    "tutorial_tests": 29,
+    "all_notebook_exports": 7,
+    "exported_cells": 207,
+    "cell_errors": 0,
+    "final_heston_export_cells": 53,
+    "marimo_check": true,
+    "manifest_claims_and_copy_parity": true
+  },
+  "browser_review": {
+    "notebook_sha256": "f56ea5d9c75f33e3d9c69b37daf17f959fb23d53411a3afb08e34623bf563371",
+    "browser": "156.0.8078.76",
+    "errors": [],
+    "default_code_visible": true,
+    "default_bookkeeping_hidden": true,
+    "comparison_cases": [
+      "Low volatility-of-variance",
+      "Strong negative price\u2013variance correlation",
+      "High volatility-of-variance",
+      "High long-run variance"
+    ],
+    "narrow_dimensions": {
+      "viewport": 760,
+      "document": 760
+    },
+    "screenshots": {
+      "01-model.png": "57bd03cae4540df01fa5075fa4ca8fcbdd0a786f531d4fa709f513ee9ca33812",
+      "02-model-code.png": "f701c967af9c885990c3a12eeba4bcaeecc43dc3f29d7733366d604907456485",
+      "03-simulator.png": "4520b79abcbd3418bea65108e6ecc50dd05a7bdc23d7b0f2254016b79332bddf",
+      "04-two-routes.png": "5e20bba8cde2534c46c1f8ea39ec9e30d43cd19e139adc63bc01684ce30a3fa8",
+      "05-core-code.png": "16fd30e5bddf1e30bd80ca3a14b2dd7304494521d9e79dce22e602172e61fd95",
+      "06-quotes.png": "0a670f7d3cba8367588b9abe37267b3a9c87ae2a35fb014fcbf882386a5834cc",
+      "07-predictive.png": "4a80700340f7463e78f5e7467bd76ccfa4331fe0667e422df20560220586e4d1",
+      "08-calibration.png": "20e5e1c9a9e621fd44aa700be78fb17e53f1c1b7ab26985aaec69d7dbc48b6f4",
+      "09-case-2001.png": "891942fdbb9e7d8071d7af86d0211748de4ae0c6e6dde8f27f7a58011ec6ee88",
+      "10-case-2001-explanation.png": "2ba01359b1d436d0366c4c7feb5d88f5d99f1ad186528f58c77f712994bc2753",
+      "11-narrow-predictive.png": "6b4993152de844b21fb2948e9da8008524af4b0818f9818f09d4fc8ac05e0398"
+    },
+    "scope": "cached interactions, bounded Fourier predictive calculation and illustrative paths; no neural load, training or new scientific acceptance"
+  },
+  "local_evidence_directory": "local-artifacts/application-refinement-20261101/heston-lesson-review",
+  "case_2001_audit": "../heston-case-2001/summary.json"
+}

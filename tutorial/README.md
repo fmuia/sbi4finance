@@ -4,7 +4,9 @@ The notebooks of the ICAIF '26 tutorial (Milan, 14–15 November 2026). A desk c
 day's option quotes and marks products that nobody quotes; the notebooks show how a posterior states the
 uncertainty of that calibration, how a network trained on simulations returns the posterior in seconds, and how
 to check it. Current cached examples open offline from `assets/` without loading a neural backend.
-Fresh model sampling, financial simulations and training are explicit actions.
+Fresh model sampling, large pricing simulations and training are explicit actions.
+The Heston lesson also runs bounded path illustrations and Fourier re-pricing of saved
+posterior draws on opening, to explain simulation and posterior prediction.
 
 ## Install
 
@@ -44,7 +46,7 @@ pixi run --locked trajectories # parameter inference from daily return histories
 | `slot1_intro.py` | 1. The problem: Bayes for volatility models | Calibrate Black–Scholes to SPY quotes as inference, compare the posterior with the classical interval, price what the quotes do not pin | Grid posteriors, a toy smile, a sector of names (seconds) |
 | `slot2_amortized_bayes.py` | 2. What is amortized Bayes? | Watch a small network learn slot 1's posterior and check it against the exact answer | Exact grid by default; a new 2.1 toy trains only after pressing the button |
 | `slot3_architectures.py` | 3. Network architectures | See how flow matching carries noise to Heston's posterior, and what the sampler's steps change | Cached Heston posterior and PyMC reference |
-| `slot4_heston_bayesflow.py` | 4. A worked example in BayesFlow: Heston on the SPY smile | Follow the whole workflow, from simulator to checks, against the exact posterior | Cached 100k example; simulation and a small native fit are optional buttons |
+| `slot4_heston_bayesflow.py` | 4. A worked example in BayesFlow: Heston on the SPY smile | Follow the whole workflow, from simulator to checks, against the exact posterior | Cached posterior; bounded path/predictive illustrations; optional small native fit |
 | `slot5_calibration.py` | 5. Rough Bergomi on the SPY smile: from the posterior to a reserve | Read rough Bergomi's posterior, its audit, and the price ranges and reserves of products | Cached known/joint-curve examples; Monte Carlo is an explicit action |
 | `trajectory_inference.py` | Counterpart: estimate dynamics from observed paths | Switch between Heston and two rough Bergomi tasks, reveal a daily history, inspect posterior evolution and drift uncertainty | Cached validation examples by default; exact-length CPU inference is an explicit button |
 

@@ -106,3 +106,72 @@ Francesco's historical 40/50 agreement is a separate experiment, primarily defen
 No new production training data, original-pricer calls, MCMC chains or notebook executions were required. The three read-only GPU jobs consumed **4,540 allocated CPU-seconds (1.2611 hours) / 1,135 GPU-seconds (.3153 hours)**: saved-checkpoint controls 672/168, final panel 3,684/921 and repeated loss 184/46. Their allocation ledgers retain separate ceilings; the repeated-loss job shares the original controls pool, whose total actual use is 856 CPU-seconds / 214 GPU-seconds. These are additional audit costs, not another charge for earlier fits or bank generation.
 
 The original raw bank was not recovered; its prior-sample statistics in the audit are explicitly reconstructed from recorded source/seeds, while our bank's sampled rows were checked against actual stored arrays. Only compact evidence is committed; model, bank and draw payloads remain on Oscar.
+
+## 1 November 2026 — archived S3 surface 2001
+
+The truth stars in the archived four-case S3 figure expose a real miss: both the
+neural candidate and its Fourier-MCMC reference place surface 2001's generating
+vol-of-vol and correlation in their lower tails. Keep this case visible. The
+[cached-data audit](../evidence/pilot-results/2026-11-01/heston-case-2001/summary.json)
+records all four cases in original parameter units, their marginal interval
+membership, reconstructed quote noise and recomputed chain diagnostics. Its
+[script](../evidence/pilot-results/2026-11-01/heston-case-2001/audit_case_2001.py)
+reads existing cached draws and evaluates deterministic Fourier prices; it does
+not load a neural model, refit a model or run a sampler. Input bytes and source
+hashes are bound in the report. This is a separate audit of the archived
+BayesFlow 2.0 S3 material, not an evaluation of the current 100k candidate.
+
+| Surface 2001 parameter | Generating truth | Fourier-MCMC mean ± SD | Central 90% interval | (truth − mean) / SD |
+| --- | ---: | ---: | ---: | ---: |
+| Initial variance | .067798 | .067903 ± .000454 | [.067172, .068650] | −.232 |
+| Long-run variance | .030780 | .031582 ± .001350 | [.029369, .033736] | −.594 |
+| Vol-of-vol | .397182 | .479785 ± .027251 | [.433957, .523215] | −3.031 |
+| Correlation | −.845334 | −.719746 ± .037676 | [−.786590, −.662442] | −3.333 |
+
+The last two truths also lie outside the central 95% intervals. Their reference
+posterior correlation is .887, so the two discrepancies are strongly coupled;
+they should not be counted as independent tail events. Surface 2000 and 2002
+contain all four truths in their central 90% reference intervals. Surface 2003
+misses correlation at 90%, while retaining it at 95%. These four pre-existing
+examples do not provide a new coverage estimate.
+
+The saved report and NPZ agree on every truth and parameter order; all three
+S3 artifact hashes match `ACCEPTED.json`. Reconstructing the declared seed 2610,
+test IDs 2000–2003 and separate prior/quote PCG64 streams reproduces the truths
+within 2.23e−16 and the observations within 3.18e−7 quote-noise SD. This supports
+the saved data/row association. It does not restore the unrecovered original
+bank or its file hashes. Surface 2001's realized quote errors have RMSE 1.084
+noise SD and maximum absolute error 2.626 SD. On its actual saved observation,
+the Gaussian χ² falls from 74.082 at truth to 64.280 at the saved reference
+mean: a log-likelihood increase of 4.901. The data therefore favor this shifted
+parameter point over truth; no optimization was rerun. The evidence is
+**consistent with a data-associated noise shift**, rather than a demonstrated
+row or plotting error. It is not a guarantee that the reference is globally
+correct.
+
+Reshaping the saved pooled reference back to four chains of 5,000 draws
+reproduces its rank-normalized split/folded R-hat and bulk ESS. For surface 2001,
+vol-of-vol has R-hat 1.00113 / ESS 1,545 and correlation 1.00155 / ESS 1,621;
+initial variance has the weakest result, R-hat 1.01107 / ESS 413. Four-chain
+acceptance ranges from .3765 to .3920. Refining Fourier quadrature from 1,024
+nodes/cutoff 600 to 4,096/cutoff 3,000 at truth, mean and 16 existing reference
+draws changes prices by at most 1.22e−6 quote SD and the selected-draw
+log-likelihood by at most 4.48e−6. These are numerical spot checks, not a
+uniform integration-error certificate.
+
+Important limits remain: all chain starts and their proposal covariance came
+from neural draws, so agreement and diagnostics cannot exclude an undiscovered
+mode. This case's importance audit has Pareto k .738, efficiency .0513 and
+maximum weight .0690; its agreement is not an independent correctness guarantee.
+Historical mean/width pass flags do not themselves gate convergence or test
+truth coverage. S3 also lacks a bank-manifest/source-code binding; the new
+hashes bind the current audit dependencies, not the historical executable's
+byte identity. No archived case, asset or reported outcome was replaced.
+
+The cached NPZ contains the original observations and all method draws needed
+for original-unit marginal or observation plots. These option observations
+were Fourier expectations plus quote noise, not realized price/variance paths.
+A process-path illustration would therefore be a separately labelled
+simulation. A band of noiseless prices obtained from posterior parameter draws
+is a model-price band; a replicated-observation predictive band must also
+include the specified quote noise.

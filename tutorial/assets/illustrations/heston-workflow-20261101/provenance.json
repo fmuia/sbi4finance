@@ -1,0 +1,61 @@
+{
+  "format": "teaching_illustration_provenance_v1",
+  "scientific_acceptance": false,
+  "scope": "Original conceptual schematics; no empirical results or new model-accuracy claims.",
+  "source": "lab/evidence/illustrations/heston-workflow-20261101/render.py",
+  "source_sha256": "9890cb0bdf139f8b118e73a8d7df84418c1177ae95ec70c0efc7eac3040c1636",
+  "visual_inspiration": {
+    "repository": "talk-slides-sbi4finance-overleaf",
+    "commit": "75dce200d423ecfea988571809cee8b46450b581",
+    "author_credit": "Stefan T. Radev, Introduction to Simulation-Based Inference",
+    "sources": [
+      {
+        "path": "bayesops.sty",
+        "sha256": "f49358f40b39da05ed4999270c128cba48b2572efe99c6cbb75a3fb7012db6c0"
+      },
+      {
+        "path": "macros/colors.tex",
+        "sha256": "72efcd91163a5d230e8e3f38d2b9426c204c832209683ab7420fc764c894ce5c"
+      },
+      {
+        "path": "figures/amortized-3.pdf",
+        "sha256": "7a8b3eccb0abcc9469e5cb9cd46e085826ad97e71f7f7b72275e9d74e0653342"
+      },
+      {
+        "path": "figures/basic-workflow.pdf",
+        "sha256": "12aa4e20e80e072eb7e4500ae3bb991fc53c950177690c3649f2f4f85cd19f1d"
+      }
+    ],
+    "use": "Original arrangement and labels, inspired by the deck palette and separation of training/inference. No source artwork copied."
+  },
+  "palette": {
+    "text": "#15153B",
+    "training_purple": "#4E2A84",
+    "inference_green": "#2E7D43",
+    "theme_accent": "#6969FF"
+  },
+  "notation": {
+    "vartheta": "four unknown Heston parameters (v0, long variance, vol-of-vol, correlation); kappa fixed",
+    "P": "vector of clean expected option payoffs",
+    "y": "vector of 63 prices with independent prescribed Gaussian quote errors"
+  },
+  "outputs": {
+    "simulation-and-observation.png": {
+      "sha256": "b02181de0a4518ef840f620a056ece2953eba31dc6fa9ec86600a352e70f38b7",
+      "bytes": 123143
+    },
+    "simulation-and-observation.svg": {
+      "sha256": "a77e18a4cfc0ab8f7cd6b2bac847de1345c34201bf9c78915d917927a6c3de0e",
+      "bytes": 24796
+    },
+    "two-amortization-routes.png": {
+      "sha256": "d5c7a9f8595a8fa787e2e57cad661c1ca56571483687dc86f0e68ab85754ee21",
+      "bytes": 196764
+    },
+    "two-amortization-routes.svg": {
+      "sha256": "d9176e2453020a86d684c6585e76d124b4f39578c1d4294f24a0d98d0966aa39",
+      "bytes": 31712
+    }
+  },
+  "publication": "Publish PNG and provenance JSON only through lab/studies/accept.py --run; editable SVG and rendering source remain in lab evidence."
+}

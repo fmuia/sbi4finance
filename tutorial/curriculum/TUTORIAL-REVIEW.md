@@ -290,8 +290,8 @@ unrelated notebook or transfer.
   removed zero daily integrated variance in that panel, without establishing
   weak accuracy or selecting a production law. No production refit or new
   acceptance result is claimed.
-- **F:** first-tranche checks pass: 505 lab tests (three unchanged optional PyMC
-  skips), 29 tutorial tests and all seven cached exports (192 cells, zero errors),
+- **F:** first-tranche checks pass: 514 lab tests (three unchanged optional PyMC
+  skips), 29 tutorial tests and all seven cached exports (207 cells, zero errors),
   plus Marimo, manifest/claims and copy parity. Offline checks cover all six
   current option cases and nine path model/length combinations. Independent
   reviews found no code blockers. The [live isolated-Chrome check record](../../lab/evidence/pilot-results/2026-11-01/application-browser-qa/summary.json)
@@ -303,6 +303,57 @@ unrelated notebook or transfer.
   ready for review. Rehearsal and two-hour pruning follow content refinement;
   the existing versioned workshop kit has not been repackaged with
   these new notebook interfaces.
+
+## Guided notebook review · 1 November 2026
+
+The Heston review establishes the presentation contract for the remaining
+application lessons: define the model and data locally; pair a short intuitive
+statement with the relevant mathematics; show syntax-highlighted core workflow
+code by default; reserve implementation accounting for optional source panels.
+The prerequisite is probability/Bayes and Python, rather than prior expertise
+in option calibration. Timing and pruning remain deferred.
+
+### Heston feedback implemented
+
+The [source-bound check record](../../lab/evidence/pilot-results/2026-11-01/heston-lesson-review/summary.json)
+records the final code, exports and browser review for this revision.
+
+- Explain the pricing-measure Heston equations, all four inferred parameters,
+  fixed mean reversion and variance versus volatility before showing inference.
+  Show coupled price/volatility paths and the update code in the main flow.
+- Illustrate the construction of a training pair: prior draw, Fourier expected
+  option prices, prescribed quote error and observed price vector. Distinguish
+  path randomness, quote noise, numerical pricing error and bid–ask spreads.
+- Explain both neural routes visually and mathematically: a forward price
+  surrogate plus a new sampler for each observation, and an amortized posterior
+  conditional on observations. Original diagrams use the inspected Overleaf
+  deck's palette, with editable sources and attribution retained.
+- Show the simulator, adapter/network, offline fit and posterior-draw APIs in
+  highlighted code by default. Plotting and input validation remain helpers;
+  visible snippets disclose that division rather than claiming the financial
+  pricer itself is only a few lines.
+- Add a synthetic posterior-predictive illustration from saved joint neural and
+  reference draws. Distinguish model-price uncertainty from replicated quotes
+  with fresh Gaussian errors; label the bounded empirical bands and in-sample
+  scope. No learned model or posterior cache is replaced.
+- Explain recovery, coverage, SBC and reference comparisons with both slogans
+  and formal definitions. Describe historical contraction in its actual logit
+  coordinates rather than as a physical interval-width reduction.
+- Replace standardized historical comparison panels with four selectable,
+  descriptively named cases in original parameter units, alongside illustrative
+  Heston paths and saved observed quotes. All four cases/methods/truths remain.
+- Audit the displaced truth in case 2001. [The source-bound diagnosis](../../lab/evidence/pilot-results/2026-11-01/heston-case-2001/summary.json)
+  reproduces its declared simulation and finds a likelihood shift consistent
+  with its quote errors. Retain its importance-weight and reference limitations;
+  a single case neither establishes nor refutes aggregate calibration.
+- Explain strike/forward and premium/forward with a currency example and the
+  put/call switch at the forward. Hide technical case IDs and hashes behind a
+  reproducibility panel while keeping scientific limitations visible.
+
+This pass implements the contract in Heston. The one-by-one review of rough
+options and trajectories will apply the same principles to their specific
+models, controls, inputs and evidence. It does not relabel the failed trajectory
+screens or promote historical studies to new-model acceptance.
 
 ## Historical review: 26 October 2026
 
