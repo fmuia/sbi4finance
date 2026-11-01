@@ -203,6 +203,23 @@ bank/training, checks, inference and interpretation. Add a few assessable
 predict → change → inspect → explain exercises using existing controls. Keep
 parameter names, colors, interval labels and source labels consistent.
 
+Start with these application activities; they require cached assets and existing
+controls, with fresh CPU inference optional:
+
+| Application activity | Participant action | Evidence of understanding |
+| --- | --- | --- |
+| Heston: define the data | Inspect the current quote/noise plot and contract table before the posterior. | Distinguish the 63 observations, assumed noise, fixed mean reversion and four unknowns; identify the synthetic case rather than SPY. |
+| Heston: check and propagate | Compare neural/PyMC marginals and pairs, then the two analytic variance-rate summaries. | Explain why reference agreement tests the approximation under this task, and why a derived quantity depends on paired parameter draws. It does not establish model adequacy on another observation. |
+| Rough: change what is supplied | Identify the known curve inputs, then select a joint-curve case and inspect dependence and variance rates. | Explain the known-curve zero rate spread as imposed by conditioning. Recognize that the selected observations and curve families also change, so this is not a controlled numerical ablation. |
+| Trajectories: reveal information | Move from one day to 252 and 1,260 days; compare parameter intervals and drift learning. | Describe learning about fixed parameters, distinguish a single path's changing intervals from average contraction, and retain the candidate's calibration limitations. |
+| Trajectories: inspect a non-landmark input | Select 137 days and open the input preview; optionally run fresh CPU inference. | Identify exactly 137 observed mask entries, the labelled 126-day cached posterior, and why only the explicit inference action conditions on the newly selected complete prefix. Never multiply overlapping prefix posteriors. |
+
+Across these activities, ask what additional *training* should improve: the
+approximation to the declared posterior, rather than automatically narrowing
+its uncertainty. Additional *observations* change the posterior target. This
+distinction can be taught directly from the application, without expanding the
+separate introductory/architecture lessons in this workstream.
+
 Run required area tests, notebook execution/export, Marimo checks, copy parity,
 manifest/claims generation and release checks after relevant changes. Explicitly
 exercise optional live/model actions separately from headless cached export.
@@ -241,19 +258,27 @@ unrelated notebook or transfer.
 - **B/C:** the option lessons now name their current and historical evidence
   locally, correct stale pending-bank text, retain their controls, add
   interpretation prompts and restore the independent stored Heston
-  mean-reversion check. Carrying one current case through all supported stages
-  remains the next content refinement.
+  mean-reversion check. Current cases now connect their exact quotes/noise to
+  posterior and analytic mean-variance functionals; the longer historical
+  simulation/training studies remain separately labelled. Main application
+  parameter and derived-quantity tables use central 90% intervals.
 - **D1:** the trajectory lesson now displays actual task/prior metadata,
   prior/posterior densities, paired joint geometry and hash-bound final
-  diagnostics. Simulator/prior-predictive and fuller training walkthroughs
-  remain developed follow-ups.
+  diagnostics, plus an actual observed/padded-input preview using the native
+  conditioning function. Simulator/prior-predictive and fuller training
+  walkthroughs remain developed follow-ups.
 - **E:** the bounded diagnosis protocol and the
   [first source-bound development diagnosis](../../lab/evidence/path-inference/2026-11-01/development-diagnosis/README.md)
   are complete. The latter uses 768 already-inspected development histories,
   binds 27 inputs and supports no production refit yet. An explicit separate
   development-cohort evaluator binds both bank identities and preserves the
   original reserved-test guards; the versioned fresh-acceptance protocol is
-  still pending. No production refit or new acceptance result is claimed.
+  still pending. The isolated
+  [Heston numerical admission pilot](../../lab/evidence/path-inference/2026-11-01/numerical-pilot/README.md)
+  completed on Oscar and its full source/results are preserved. Projection
+  removed zero daily integrated variance in that panel, without establishing
+  weak accuracy or selecting a production law. No production refit or new
+  acceptance result is claimed.
 - **F:** first-tranche unit, cached export, Marimo and release/parity checks are
   being run as changes complete. Rehearsal and two-hour pruning follow content
   refinement.

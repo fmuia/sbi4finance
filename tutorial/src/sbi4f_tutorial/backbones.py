@@ -35,9 +35,9 @@ def load_live(name, directory):
 def parameter_rows(task, arrays):
     draws = arrays["neural_draws"]
     bounds = np.asarray(task["prior_bounds"])
-    q = np.quantile(draws, [.005, .5, .995], axis=0)
+    q = np.quantile(draws, [.05, .5, .95], axis=0)
     return [{"parameter": name, "prior": f"{bounds[i, 0]:.4g} to {bounds[i, 1]:.4g}",
-             "median": float(q[1, i]), "central 99%": f"{q[0, i]:.4g} to {q[2, i]:.4g}"}
+             "median": float(q[1, i]), "central 90%": f"{q[0, i]:.4g} to {q[2, i]:.4g}"}
             for i, name in enumerate(task["parameter_names"])]
 
 

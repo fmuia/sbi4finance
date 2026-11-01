@@ -105,16 +105,61 @@ def _(mo):
 
 
 @app.cell
-def _(backbone_case, backbones, mo):
+def _(backbone_case, backbones, mo, np, plt):
     _task, _report, _arrays = backbones.load_example(backbone_case.value)
+    _contracts = _task["context"]["contracts"]
+    _noise = np.asarray(_task["context"]["quote_noise_std"])
+    _maturities = np.asarray([c["maturity"] for c in _contracts])
+    _strikes = np.asarray([c["strike"] for c in _contracts])
+    _quote_fig, _quote_ax = plt.subplots(figsize=(6.8, 3.0), constrained_layout=True)
+    for _maturity in np.unique(_maturities):
+        _at = _maturities == _maturity
+        _quote_ax.errorbar(_strikes[_at], _arrays["observations"][_at], yerr=_noise[_at],
+                           fmt=".", capsize=2, label=f"{252 * _maturity:g} days")
+    _quote_ax.set(xlabel="strike / forward", ylabel="observed price / forward",
+                  title="This case's 63 observed option prices; bars are ±1 quote-noise SD")
+    _quote_ax.legend(fontsize=7, ncol=4)
+    _quote_rows = [{"maturity (years)": float(c["maturity"]), "strike / forward": float(c["strike"]),
+                    "option": c["option_type"], "observed price / forward": float(y),
+                    "quote-noise SD": float(noise)}
+                   for c, y, noise in zip(_contracts, _arrays["observations"], _noise)]
+    _quote_view = mo.vstack([
+        _quote_fig,
+        mo.accordion({"Exact observations, contract design and known quote noise": mo.vstack([
+            mo.md("These are the saved noisy prices used for this posterior, in the task's spot-one, "
+                  "zero-carry forward units. The quote-noise standard deviations define the observation "
+                  "model; they are not posterior intervals. Prices are shown as stored, without implied-"
+                  "volatility inversion or clipping."),
+            mo.ui.table(_quote_rows, selection=None, pagination=True, page_size=9),
+        ])}),
+    ])
+    _rate_rows = []
+    for _quantity, _label in (("variance_swap_1y", "1-year mean variance rate"),
+                              ("forward_variance_0_5_to_1y", "6-month to 1-year forward variance rate")):
+        for _prefix, _source in (("neural_", "neural candidate"), ("reference_", "PyMC reference")):
+            _q = np.quantile(_arrays[_prefix + _quantity].reshape(-1), [.05, .5, .95])
+            _rate_rows.append({"quantity": _label, "source": _source,
+                               "median (variance/year)": float(_q[1]),
+                               "central 90%": f"{_q[0]:.5g} to {_q[2]:.5g}"})
+    _rate_view = mo.vstack([
+        mo.md("**Carry each paired draw to a derived quantity.** These cached analytic quantities average "
+              "Heston's mean variance over [0, 1] and [0.5, 1] years at the task's fixed kappa. They are "
+              "annualized decimal variance rates; this table performs no new Monte Carlo pricing."),
+        mo.ui.table(_rate_rows, selection=None, pagination=False),
+        mo.md("**Interpret the rates.** Compare neural and PyMC intervals for the same observation. "
+              "Which rate is more uncertain? Agreement on these two functionals would still leave "
+              "other products and other observations to check."),
+    ])
     mo.vstack([
         mo.callout(mo.md(f"**Development example:** `{_report['case_id']}`; "
                          f"{len(_arrays['neural_draws']):,} paired joint draws. "
-                         f"{'PyMC reference supplied' if 'reference_chains' in _arrays else 'conditional reference and rough products pending'}. "
-                         "The selected geometry examples illustrate trade-offs; they are not an accuracy study."), kind="neutral"),
+                         f"{'PyMC reference supplied' if 'reference_chains' in _arrays else 'conditional reference pending'}. "
+                         "This single development observation is not a population accuracy study."), kind="neutral"),
         mo.md(f"Task SHA256: `{_report['task_fingerprint']}`  \nModel SHA256: `{_report['checkpoint_sha256']}`"),
+        _quote_view,
         mo.ui.table(backbones.parameter_rows(_task, _arrays), selection=None, pagination=False),
         backbones.corner(_task, _arrays),
+        _rate_view,
         mo.md("**Interpret the current case.** Choose one parameter pair with visible dependence. "
               "Compare the neural and PyMC shapes as well as their marginal widths. What can this one "
               "comparison establish, and what still needs a collection of independent observations?"),

@@ -126,8 +126,60 @@ def _(mo):
 
 
 @app.cell
-def _(backbone_case, backbones, mo):
+def _(backbone_case, backbones, mo, np, plt):
     _task, _report, _arrays = backbones.load_example(backbone_case.value)
+    _contracts = _task["context"]["contracts"]
+    _noise = np.asarray(_task["context"]["quote_noise_std"])
+    _maturities = np.asarray([c["maturity"] for c in _contracts])
+    _strikes = np.asarray([c["strike"] for c in _contracts])
+    _quote_fig, _quote_ax = plt.subplots(figsize=(6.8, 3.0), constrained_layout=True)
+    for _maturity in np.unique(_maturities):
+        _at = _maturities == _maturity
+        _quote_ax.errorbar(_strikes[_at], _arrays["observations"][_at], yerr=_noise[_at],
+                           fmt=".", capsize=2, label=f"{252 * _maturity:g} days")
+    _quote_ax.set(xlabel="strike / forward", ylabel="observed price / forward",
+                  title="This case's 63 observed option prices; bars are ±1 quote-noise SD")
+    _quote_ax.legend(fontsize=7, ncol=4)
+    _quote_rows = [{"maturity (years)": float(c["maturity"]), "strike / forward": float(c["strike"]),
+                    "option": c["option_type"], "observed price / forward": float(y),
+                    "quote-noise SD": float(noise)}
+                   for c, y, noise in zip(_contracts, _arrays["observations"], _noise)]
+    _quote_view = mo.vstack([
+        _quote_fig,
+        mo.accordion({"Exact observations, contract design and known quote noise": mo.vstack([
+            mo.md("These are the saved noisy prices used for this posterior, in the task's spot-one, "
+                  "zero-carry forward units. The quote-noise standard deviations define the observation "
+                  "model; they are not posterior intervals. Prices are shown as stored, without implied-"
+                  "volatility inversion or clipping."),
+            mo.ui.table(_quote_rows, selection=None, pagination=True, page_size=9),
+        ])}),
+    ])
+    _rates = backbones.replay.rough_variance_products(
+        _task, _arrays["neural_draws"], context_values=_arrays.get("context_values"))
+    _rate_rows = []
+    for _quantity, _label in (("variance_swap_1y", "1-year mean variance rate"),
+                              ("forward_variance_0_5_to_1y", "6-month to 1-year forward variance rate")):
+        _q = np.quantile(_rates[_quantity], [.05, .5, .95])
+        _rate_rows.append({"quantity": _label, "source": "neural candidate",
+                           "median (variance/year)": float(_q[1]),
+                           "central 90%": f"{_q[0]:.5g} to {_q[2]:.5g}"})
+    _rate_scope = (
+        "The known curve is an observed input: these rates are constant across the parameter draws "
+        "by construction. Their zero posterior width does not mean the quotes identified the curve."
+        if "context_values" in _arrays else
+        "Each paired draw of the three exponential-curve coefficients gives one rate. This is the "
+        "learned candidate's uncertainty propagation; a conditional reference is still unavailable.")
+    _rate_view = mo.vstack([
+        mo.md("**Carry the posterior to a derived quantity.** These two analytic rates average the "
+              "continuous forward-variance curve over [0, 1] and [0.5, 1] years. They are annualized decimal "
+              "variance rates, not realized payoffs or new Monte Carlo product prices."),
+        mo.ui.table(_rate_rows, selection=None, pagination=False),
+        mo.md(_rate_scope + " The known and joint examples have different observations and curve families; "
+              "their widths do not isolate the effect of changing the conditioning assumption."),
+        mo.md("**Interpret the rates.** Which curve inputs determine these quantities? In a known-curve "
+              "case, could tighter intervals for H, eta or rho change these rates? In a joint case, why "
+              "might a broad decay posterior coexist with a more concentrated curve average?"),
+    ])
     if "context_values" in _arrays:
         _context = mo.vstack([
             mo.md("**Known curve first:** infer H, eta and rho from the quotes and seven supplied curve levels. "
@@ -148,11 +200,13 @@ def _(backbone_case, backbones, mo):
         _context,
         mo.callout(mo.md(f"**Development example:** `{_report['case_id']}`; "
                          f"{len(_arrays['neural_draws']):,} paired joint draws. "
-                         f"{'PyMC reference supplied' if 'reference_chains' in _arrays else 'conditional reference and rough products pending'}. "
+                         f"{'PyMC reference supplied' if 'reference_chains' in _arrays else 'conditional reference and Monte Carlo product checks pending'}. "
                          "The selected geometry examples illustrate trade-offs; they are not an accuracy study."), kind="neutral"),
         mo.md(f"Task SHA256: `{_report['task_fingerprint']}`  \nModel SHA256: `{_report['checkpoint_sha256']}`"),
+        _quote_view,
         mo.ui.table(backbones.parameter_rows(_task, _arrays), selection=None, pagination=False),
         backbones.corner(_task, _arrays),
+        _rate_view,
         mo.md("**Predict, then compare.** Before switching from known to joint curve, name which inputs "
               "become unknown. In the selected case, which parameter trade-off or broad interval can you "
               "explain? These cases have different synthetic observations: switching cases is not a matched "
