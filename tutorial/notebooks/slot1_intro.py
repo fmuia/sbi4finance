@@ -110,7 +110,6 @@ def _(mo, spy_expirations):
     call is far above it.
     """),
     ])
-
     return
 
 
@@ -175,7 +174,6 @@ def _(mo):
     from the puts to the at-the-money options and rises again on the calls, the smile, and it changes with the maturity.
     """), kind="info"),
     ])
-
     return
 
 
@@ -211,7 +209,6 @@ def _(mo, np, spy):
                   "probability than Black–Scholes does. These are fat tails."),
         ], widths="equal"),
     ])
-
     return
 
 
@@ -308,7 +305,6 @@ def _(mo, spy):
     Why the grid stops at δ = ±2 is explained at the end of this section.
     """),
     ])
-
     return
 
 
@@ -395,7 +391,6 @@ def _(heston_checks, mo, np, spy_expirations, surface):
     the quotes allow grows with the noise: double it, and the range roughly doubles.
     """), kind="info"),
     ])
-
     return
 
 
@@ -436,7 +431,6 @@ def _(mo, np, plots, plt, spy_expirations, spy_noise, surface, teaching):
     volatility has grown and the vega has not yet fallen much.
     """),
     ])
-
     return
 
 
@@ -450,7 +444,6 @@ def _(mo):
     within one noise standard deviation.
     """), kind="info"),
     ])
-
     return
 
 
@@ -523,7 +516,6 @@ def _(mo, np, spy_expirations, spy_noise, spy_prices, surface):
     wings and beyond one year, prices come from the model alone.
     """.replace("δ = -", "δ = −")),
     ])
-
     return
 
 
@@ -541,22 +533,42 @@ def _(mo):
     mo.vstack([
         mo.md("## 2 · Bayes with one parameter"),
         mo.callout(mo.md(r"""
-    Least squares and Bayes start from the same curve, the squared miss $\chi^2(\sigma)$. Least squares
-    keeps its minimum; Bayes keeps all of it, weighted by a prior. With one liquid quote they give the same answer.
+    **Calibration runs the model backwards.** A price known to within its noise $\sigma_c$ gives a volatility known to
+    within $\sigma_c / \text{vega}$. Least squares returns a point and an error bar; Bayes returns a distribution, and adds
+    a prior.
     """), kind="info"),
+        mo.md("### From one price to σ"),
+    ])
+
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo, np, quotes, spy_expirations, surface):
+    _card = lambda text: mo.callout(mo.md(text), kind="neutral")  # noqa: E731
+    _quote = quotes["at the money"]
+    _t = round(_quote["T"] * surface.TRADING_DAYS)
+    _days = np.array([_e["days"] for _e in spy_expirations])
+    _forward = float(np.interp(_t, _days, [_e["forward"] for _e in spy_expirations]))
+    _below, _above = _days[_days <= _t].max(), _days[_days >= _t].min()
+    _source = f"the {_below}-day expiration" if _below == _above else f"the {_below}- and {_above}-day expirations"
+    mo.vstack([
+        mo.hstack([
+            _card(f"**The data.** The one-month at-the-money grid price: {1e4 * _quote['price']:.1f} basis points of the "
+                  f"forward, about ${_quote['price'] * _forward:.2f}, read from {_source}. Its noise is "
+                  f"{1e4 * _quote['sd']:.2f} basis points, about ${_quote['sd'] * _forward:.2f}."),
+            _card(r"**The model.** Black–Scholes, with one parameter: the volatility $\sigma$. It gives every option the same "
+                  r"implied volatility, so it cannot fit SPY's smile (section 4). With one parameter, each step of "
+                  r"inference fits in one figure."),
+        ], widths="equal"),
         mo.md(r"""
-    ### A model turns parameters into prices
+    $$y = P(\sigma) + \sigma_c\,\varepsilon, \quad \varepsilon \sim \mathcal N(0, 1), \qquad \chi^2(\sigma) = \frac{\big(y - P(\sigma)\big)^2}{\sigma_c^2}.$$
 
-    - Black–Scholes has one parameter, the volatility $\sigma$, and gives every option the same implied volatility.
-      It cannot match SPY's smile, and section 4 shows how a check of the model detects this. But with one parameter
-      each step of Bayesian inference fits in one figure.
-    - We start with one quote: the at-the-money option that expires in one month.
-    - Calibration goes backwards, from the quote to $\sigma$. Least squares chooses the $\sigma$ that minimizes the
-      squared miss in noise units, summed over the quotes used:
-
-    $$\chi^2(\sigma) = \sum_c \frac{\big(y_c - P_c(\sigma)\big)^2}{\sigma_c^2}.$$
+    $P(\sigma)$ is the Black–Scholes price of this option and $\sigma_c$ the price's noise. Least squares picks the $\sigma$
+    with the smallest $\chi^2$, the miss in noise units; with several prices, $\chi^2$ adds up their misses.
     """),
     ])
+
     return
 
 
@@ -594,7 +606,6 @@ def _(np, spy_noise, spy_prices, surface, teaching):
         grid_posterior,
         one_quote,
         one_quote_loglik,
-        one_quote_mean,
         quotes,
         sigma_grid,
         standardized_miss,
@@ -604,16 +615,18 @@ def _(np, spy_noise, spy_prices, surface, teaching):
 @app.cell(hide_code=True)
 def _(mo, np, plots, plt, quotes, sigma_grid, standardized_miss, surface):
     _quote = quotes["at the money"]
+    _args = (_quote["k"], _quote["T"], _quote["kind"])
     _price = surface.bs_price(_quote["k"], _quote["T"], sigma_grid, _quote["kind"])
     _chi2 = standardized_miss(_quote) ** 2
-    _best = sigma_grid[np.argmin(_chi2)]
-    _inside = sigma_grid[_chi2 <= 1]
+    _best = float(surface.implied_vol(_quote["price"], *_args))  # one price and one parameter: chi2 reaches zero
+    _low, _high = (float(surface.implied_vol(_quote["price"] + _sign * _quote["sd"], *_args)) for _sign in (-1, 1))
+    _bar = _quote["sd"] / float(surface.bs_vega(_quote["k"], _quote["T"], _best))  # the noise over the vega
     _fig, (_left, _right) = plt.subplots(1, 2, figsize=(9.6, 3.2), constrained_layout=True)
     _left.axhspan(1e4 * (_quote["price"] - _quote["sd"]), 1e4 * (_quote["price"] + _quote["sd"]), color=plots.SERIES[1],
-                  alpha=0.25, linewidth=0, label="the quote ± one noise standard deviation")
+                  alpha=0.25, linewidth=0, label="the grid price ± its noise")
     _left.axhline(1e4 * _quote["price"], color=plots.SERIES[1], linewidth=1)
-    _left.axvspan(100 * _inside[0], 100 * _inside[-1], color=plots.SERIES[0], alpha=0.18, linewidth=0,
-                  label="volatilities that reproduce it")
+    _left.axvspan(100 * _low, 100 * _high, color=plots.SERIES[0], alpha=0.18, linewidth=0,
+                  label="volatilities whose price falls in the band")
     _left.plot(100 * sigma_grid, 1e4 * _price, color=plots.INK, linewidth=1.5, label="Black–Scholes price for each σ")
     _left.set_xlim(11, 15)
     _left.set_ylim(1e4 * np.interp([0.11, 0.15], sigma_grid, _price))
@@ -621,7 +634,7 @@ def _(mo, np, plots, plt, quotes, sigma_grid, standardized_miss, surface):
     _left.set_ylabel("price (basis points of the forward)")
     _left.set_title("the model maps σ to a price; calibration goes back", loc="left")
     _left.legend(fontsize=7.5, loc="upper left")
-    _right.axvspan(100 * _inside[0], 100 * _inside[-1], color=plots.SERIES[0], alpha=0.18, linewidth=0, label="χ² ≤ 1")
+    _right.axvspan(100 * _low, 100 * _high, color=plots.SERIES[0], alpha=0.18, linewidth=0, label="χ² ≤ 1")
     _right.plot(100 * sigma_grid, _chi2, color=plots.INK, linewidth=1.5, label="χ²(σ)")
     _right.axvline(100 * _best, color=plots.SERIES[1], linewidth=1, linestyle="--",
                    label=f"least squares: σ = {100 * _best:.2f}%")
@@ -633,102 +646,183 @@ def _(mo, np, plots, plt, quotes, sigma_grid, standardized_miss, surface):
     _right.legend(fontsize=7.5, loc="upper center")
     mo.vstack([
         _fig,
+        mo.hstack([
+            mo.stat(value=f"{100 * _best:.2f}%", label="least squares", caption="the σ with the smallest χ²", bordered=True),
+            mo.stat(value=f"± {100 * _bar:.2f} points", label="error bar, where χ² ≤ 1",
+                    caption="the noise divided by the option's vega", bordered=True),
+        ], widths="equal"),
         mo.md(f"""
-    On the left, the Black–Scholes price of the one-month at-the-money option rises with σ. The quote with its
-    noise is a horizontal band, and the volatilities whose prices fall inside it reproduce the quote to within its
-    noise: from {100 * _inside[0]:.2f}% to {100 * _inside[-1]:.2f}%. On the right, least squares measures the miss of
-    each σ in noise units and picks the smallest, σ = {100 * _best:.2f}%. The volatilities with χ² ≤ 1 form the same
-    interval as on the left: the usual error bar of a least-squares fit.
+    - **Left:** the model maps σ to a price. The grid price with its noise is a horizontal band; the volatilities whose
+      price falls inside it run from {100 * _low:.2f}% to {100 * _high:.2f}%.
+    - **Right:** least squares measures the miss of each σ in noise units and picks the smallest. The volatilities with
+      χ² ≤ 1 form the same interval: the usual error bar of a least-squares fit.
     """),
     ])
+
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""
+    _card = lambda text: mo.callout(mo.md(text), kind="neutral")  # noqa: E731
+    mo.vstack([
+        mo.md(r"""
     ### Prior × likelihood → posterior
 
-    - **Likelihood.** If the noise is Gaussian, the probability of the quote given $\sigma$ is proportional to
-      $e^{-\chi^2(\sigma)/2}$: the least-squares curve, read as a probability.
-    - **Prior.** Which volatilities we consider possible before the quote. By default every value from 5% to 60% is
-      equally likely; the buttons change it.
-    - **Posterior.** Their product, rescaled to integrate to one, computed exactly on a grid of 4,001 volatilities:
+    $$p(\sigma \mid y) = \frac{p(y \mid \sigma)\, p(\sigma)}{p(y)}$$
+    """),
+        mo.hstack([
+            _card(r"**Likelihood** $p(y \mid \sigma) \propto e^{-\chi^2(\sigma)/2}$: the least-squares curve, read as the "
+                  r"probability of the price given $\sigma$, for Gaussian noise."),
+            _card(r"**Prior** $p(\sigma)$: which volatilities are plausible before seeing the price. Below: flat from 5% to "
+                  r"60%, or normal around 20%, close to the long-run average of the VIX."),
+            _card(r"**Posterior** $p(\sigma \mid y)$: their product, rescaled to integrate to one. Here it is computed "
+                  r"exactly on a grid of volatilities; slot 2 trains a network to return it."),
+        ], widths="equal"),
+    ])
 
-    $$p(\sigma \mid y) = \frac{p(y \mid \sigma)\, p(\sigma)}{p(y)}.$$
-    """)
     return
 
 
-@app.cell(hide_code=True)
-def _(mo):
-    prior_choice = mo.ui.radio(
-        options={"flat, 5% to 60%": None, "normal, 20% ± 2 points": 0.02, "normal, 20% ± 0.5 points": 0.005,
-                 "normal, 20% ± 0.2 points": 0.002},
-        value="flat, 5% to 60%", inline=True, label="prior for σ",
+@app.cell
+def _(grid_posterior, np, one_quote_loglik, sigma_grid):
+    sigma_prior_centre = 0.20  # a normal prior's centre, close to the long-run average of the VIX
+    sigma_prior_widths = np.geomspace(0.0005, 0.1, 81)  # its width, from 0.05 to 10 volatility points
+
+
+    def posterior_with_prior(width):
+        """The posterior of sigma from the one-month price under a normal prior of this width."""
+        return grid_posterior(one_quote_loglik - 0.5 * ((sigma_grid - sigma_prior_centre) / width) ** 2)
+
+
+    def posterior_summary(density):
+        """Mean, standard deviation and 90% interval of a density on sigma_grid."""
+        mean = np.trapezoid(sigma_grid * density, sigma_grid)
+        sd = np.sqrt(np.trapezoid((sigma_grid - mean) ** 2 * density, sigma_grid))
+        cdf = np.cumsum(density) / np.sum(density)
+        return (mean, sd, *np.interp([0.05, 0.95], cdf, sigma_grid))
+
+
+    sigma_prior_sweep = np.array([posterior_summary(posterior_with_prior(_width)) for _width in sigma_prior_widths])
+
+    return (
+        posterior_summary,
+        posterior_with_prior,
+        sigma_prior_centre,
+        sigma_prior_sweep,
+        sigma_prior_widths,
     )
-    prior_choice
-    return (prior_choice,)
 
 
 @app.cell(hide_code=True)
 def _(
-    grid_posterior,
     mo,
     np,
-    one_quote_loglik,
-    one_quote_mean,
+    one_quote,
     plots,
     plt,
-    prior_choice,
+    posterior_summary,
+    posterior_with_prior,
+    quotes,
     sigma_grid,
+    sigma_prior_centre,
+    sigma_prior_sweep,
+    sigma_prior_widths,
+    surface,
 ):
-    _sd = prior_choice.value
-    _log_prior = np.zeros_like(sigma_grid) if _sd is None else -0.5 * ((sigma_grid - 0.20) / _sd) ** 2
-    _prior = grid_posterior(_log_prior)
-    _posterior = grid_posterior(one_quote_loglik + _log_prior)
-    _mean = np.trapezoid(sigma_grid * _posterior, sigma_grid)
-    _spread = np.sqrt(np.trapezoid((sigma_grid - _mean) ** 2 * _posterior, sigma_grid))
-    _fig, _ax = plt.subplots(figsize=(9.6, 2.9), constrained_layout=True)
-    _ax.fill_between(100 * sigma_grid, _prior / _prior.max(), color=plots.GRID, alpha=0.6, linewidth=0, label="prior")
-    _ax.plot(100 * sigma_grid, np.exp(one_quote_loglik), color=plots.SERIES[0], linewidth=1.5,
-             label="likelihood of the at-the-money quote")
-    _ax.plot(100 * sigma_grid, _posterior / _posterior.max(), color=plots.SERIES[1], linewidth=1.5, linestyle="--",
-             label="posterior")
-    _ax.set_xlim(5, 30)
-    _ax.set_ylim(0, 1.08)
-    _ax.set_yticks([])
-    _ax.set_xlabel("Black–Scholes volatility σ (%)")
-    _ax.set_title("Prior × likelihood → posterior, each scaled to the same height", loc="left")
-    _ax.legend(loc="upper right", fontsize=8)
-    if _sd is None:
-        _text = f"""
-    With the flat prior the posterior is the likelihood rescaled to integrate to one. Its mean is
-    σ = {100 * _mean:.2f}%, with a standard deviation of {100 * _spread:.2f} volatility points. The width equals the
-    noise of the quote divided by the option's vega, which converts the price noise into volatility. Slot 2 trains a
-    network to reproduce this posterior.
-    """
-    else:
-        _text = f"""
-    With this prior the posterior mean is σ = {100 * _mean:.2f}%, with a standard deviation of
-    {100 * _spread:.2f} volatility points, compared with {100 * one_quote_mean:.2f}% under the flat prior. A prior that
-    is much wider than the precision of the quote barely changes the result, while a narrower one pulls it toward
-    20%. Penalizing a calibration for moving away from a reference value, such as yesterday's parameters, is
-    equivalent to using a prior of this kind. Slot 6 changes the priors of the real models.
-    """
-    mo.vstack([_fig, mo.md(_text)])
+    _card = lambda text: mo.callout(mo.md(text), kind="neutral")  # noqa: E731
+    _frames = (0.02, 0.003, 0.001)  # three priors: much wider than the price's error bar, as wide, narrower
+    _colors = plt.cm.viridis(np.linspace(0.15, 0.8, len(_frames)))
+    _quote = quotes["at the money"]
+    _best = float(surface.implied_vol(_quote["price"], _quote["k"], _quote["T"], _quote["kind"]))
+    _bar = _quote["sd"] / float(surface.bs_vega(_quote["k"], _quote["T"], _best))
+    _centre = 100 * sigma_prior_centre
+    _flat = posterior_summary(one_quote)
+    _fig = plt.figure(figsize=(9.6, 4.0), constrained_layout=True)
+    _layout = _fig.add_gridspec(3, 2, width_ratios=[1, 1.05])
+    _summaries = []
+    for _row, (_width, _color) in enumerate(zip(_frames, _colors)):
+        _ax = _fig.add_subplot(_layout[_row, 0])
+        _posterior = posterior_with_prior(_width)
+        _summaries.append(posterior_summary(_posterior))
+        _ax.fill_between(100 * sigma_grid, one_quote / one_quote.max(), color=plots.GRID, alpha=0.9, linewidth=0)
+        _ax.plot(100 * sigma_grid, np.exp(-0.5 * ((sigma_grid - sigma_prior_centre) / _width) ** 2), color=_color,
+                 linewidth=1, linestyle=":")
+        _ax.plot(100 * sigma_grid, _posterior / _posterior.max(), color=_color, linewidth=1.6)
+        _ax.set_title(f"prior {_centre:.0f}% ± {100 * _width:g} points → posterior {100 * _summaries[-1][0]:.2f}% "
+                      f"± {100 * _summaries[-1][1]:.2f}", loc="left", fontsize=8)
+        _ax.set_xlim(11, 22)
+        _ax.set_ylim(0, 1.1)
+        _ax.set_yticks([])
+        if _row < len(_frames) - 1:
+            _ax.set_xticklabels([])
+    _ax.set_xlabel("volatility σ (%)")
+    _fig.legend(handles=[plt.Rectangle((0, 0), 1, 1, color=plots.GRID), plt.Line2D([], [], color=plots.INK_2, linestyle=":"),
+                         plt.Line2D([], [], color=plots.INK_2, linewidth=1.6)],
+                labels=["likelihood of the price", "prior", "posterior"], loc="outside upper left", ncols=3, fontsize=7.5)
+    _right = _fig.add_subplot(_layout[:, 1])
+    _right.fill_between(100 * sigma_prior_widths, 100 * sigma_prior_sweep[:, 2], 100 * sigma_prior_sweep[:, 3],
+                        color=plots.SERIES[0], alpha=0.2, linewidth=0, label="posterior 90% interval")
+    _right.plot(100 * sigma_prior_widths, 100 * sigma_prior_sweep[:, 0], color=plots.SERIES[0], linewidth=1.6,
+                label="posterior mean")
+    _right.axhline(100 * _best, color=plots.SERIES[1], linestyle="--", linewidth=1, label=f"least squares, {100 * _best:.2f}%")
+    _right.axhline(_centre, color=plots.INK_2, linestyle=":", linewidth=1, label=f"prior centre, {_centre:.0f}%")
+    _right.axvline(100 * _bar, color=plots.MUTED, linewidth=1)
+    _right.annotate(f"the price's error bar,\n±{100 * _bar:.2f} points", (100 * _bar, _centre + 0.4), xytext=(4, 0),
+                    textcoords="offset points", fontsize=7, color=plots.INK_2, va="bottom")
+    for _width, _color, _summary in zip(_frames, _colors, _summaries):
+        _right.plot(100 * _width, 100 * _summary[0], "o", color=_color, markersize=5, zorder=4)
+    _right.set_xscale("log")
+    _right.set_ylim(11.5, _centre + 1.6)
+    _right.set_xlabel("width of the prior (volatility points, log scale)")
+    _right.set_ylabel("posterior of σ (%)")
+    _right.set_title("the posterior for every width of the prior", loc="left")
+    _right.legend(fontsize=7, loc="center right")
+    _wide, _equal, _narrow = _summaries
+    mo.vstack([
+        _fig,
+        mo.md(f"""
+    - **Left:** three normal priors centred on {_centre:.0f}%, from wide to narrow, with the likelihood of the one-month
+      price in grey.
+    - **Right:** the posterior's mean and 90% interval for every width of the prior, from 0.05 to 10 points; the dots are
+      the three priors on the left.
+    """),
+        mo.callout(mo.md(f"""
+    **The prior matters only when it is narrower than what the price says.** The posterior's mean is close to an average of
+    the least-squares value and the prior's centre, each weighted by one over its width squared. A prior much wider than the
+    price's error bar of ±{100 * _bar:.2f} points barely moves it ({100 * _wide[0]:.2f}%); one as wide meets it halfway
+    ({100 * _equal[0]:.1f}%); a narrower one decides ({100 * _narrow[0]:.1f}%).
+    """), kind="info"),
+        mo.hstack([
+            _card("**A penalty is a prior.** Calibrations often add λ(σ − σ_ref)² to χ², to pull the result toward a "
+                  "reference such as yesterday's value. The minimum is the peak of the posterior under a normal prior "
+                  "centred on σ_ref, of width 1/√λ. Bayes states that prior and keeps the posterior's width. Slot 6 "
+                  "changes the priors of the real models."),
+            _card(f"**Same numbers, different meaning.** With the flat prior the posterior is {100 * _flat[0]:.2f}% "
+                  f"± {100 * _flat[1]:.2f}, the least-squares answer. The least-squares error bar describes the procedure: "
+                  "over redrawn prices, it contains the true σ about 68% of the time. The posterior is a probability for σ "
+                  "given today's price. Sections 3 and 5 show where the two part."),
+        ], widths="equal"),
+    ])
+
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""
-    ### More quotes, a narrower posterior
+    mo.vstack([
+        mo.md("### More prices, a narrower posterior"),
+        mo.callout(mo.md(r"""
+    **Each price multiplies the likelihood by one more factor**, and the posterior narrows like $1/\sqrt n$: around the
+    truth, when the model can produce the data.
+    """), kind="info"),
+        mo.md(r"""
+    To see the effect where the model is right, we simulate one at-the-money price per maturity from Black–Scholes itself,
+    at a known $\sigma$ = 13%, with SPY's noise. Simulated data with a known truth is also how every method of the afternoon
+    is tested.
+    """),
+    ])
 
-    Each quote adds a factor to the likelihood. To see the effect where the model is right, we simulate one
-    at-the-money quote per maturity from Black–Scholes itself, at a known $\sigma$ = 13%, with the same noise. Simulated
-    data with a known truth is also how every method of the afternoon is tested.
-    """)
     return
 
 
@@ -760,43 +854,28 @@ def _(
     _means = np.array([np.trapezoid(sigma_grid * _p, sigma_grid) for _p in sim_posteriors])
     _sd = np.array([np.sqrt(np.trapezoid((sigma_grid - _m) ** 2 * _p, sigma_grid))
                     for _m, _p in zip(_means, sim_posteriors)])
-    _cdfs = [np.cumsum(_p) / np.sum(_p) for _p in sim_posteriors]
-    _intervals = [sigma_grid[np.searchsorted(_c, [0.05, 0.95])] for _c in _cdfs]  # 90% intervals
-    _covered = sum(_low <= sim_sigma <= _high for _low, _high in _intervals)
-    _total = len(sim_posteriors)
-    _which = f"all {_total}" if _covered == _total else f"{_covered} of the {_total}"
-    _count = np.arange(1, len(sim_posteriors) + 1)
-    _fig, (_left, _right) = plt.subplots(1, 2, figsize=(9.6, 3.2), constrained_layout=True,
-                                         gridspec_kw={"width_ratios": [1.5, 1]})
+    _fig, _ax = plt.subplots(figsize=(9.6, 3.0), constrained_layout=True)
     for _n, _color in zip((1, 2, 4, 7), plt.cm.viridis(np.linspace(0.15, 0.85, 4))):
         _last = teaching.TENORS[surface.DESIGN_DAYS[_n - 1]]
-        _label = "1 quote, at 1 week" if _n == 1 else f"{_n} quotes, 1 week to {_last}"
-        _left.plot(100 * sigma_grid, sim_posteriors[_n - 1], color=_color, linewidth=1.5, label=_label)
-    _left.axvline(100 * sim_sigma, color=plots.INK, linestyle="--", linewidth=1, label="the true σ")
-    _left.set_xlim(11.8, 14.2)
-    _left.set_yticks([])
-    _left.set_xlabel("volatility σ (%)")
-    _left.set_title("posterior of σ from simulated at-the-money quotes", loc="left")
-    _left.legend(fontsize=7.5, loc="upper left")
-    _right.plot(_count, 100 * _sd, "o", color=plots.SERIES[0], label="posterior standard deviation")
-    _right.plot(_count, 100 * _sd[0] / np.sqrt(_count), color=plots.INK_2, linewidth=1,
-                label="first value / √(number of quotes)")
-    _right.set_ylim(0, 0.35)
-    _right.set_xticks(_count)
-    _right.set_xlabel("number of quotes")
-    _right.set_ylabel("volatility points")
-    _right.set_title("the width falls like 1/√n", loc="left")
-    _right.legend(fontsize=7.5, loc="upper right")
+        _label = "1 price, at 1 week" if _n == 1 else f"{_n} prices, 1 week to {_last}"
+        _ax.plot(100 * sigma_grid, sim_posteriors[_n - 1], color=_color, linewidth=1.5,
+                 label=f"{_label}: ± {100 * _sd[_n - 1]:.2f} points")
+    _ax.axvline(100 * sim_sigma, color=plots.INK, linestyle="--", linewidth=1, label=f"the true σ, {100 * sim_sigma:.0f}%")
+    _ax.set_xlim(11.8, 14.2)
+    _ax.set_yticks([])
+    _ax.set_xlabel("volatility σ (%)")
+    _ax.set_title("posterior of σ from simulated at-the-money prices", loc="left")
+    _ax.legend(fontsize=7.5, loc="upper left")
     mo.vstack([
         _fig,
         mo.md(f"""
-    With the first quote alone, the posterior's standard deviation is {100 * _sd[0]:.2f} volatility points. With all
-    seven quotes it is {100 * _sd[-1]:.2f}, close to {100 * _sd[0]:.2f} / √7 = {100 * _sd[0] / np.sqrt(7):.2f}.
-    The true value, {100 * sim_sigma:.0f}%, lies inside the 90% interval of {_which} posteriors,
-    because these quotes come from the model itself. On real quotes the model can be wrong, and then more quotes
-    narrow the posterior around a wrong value: section 4 shows this on SPY.
+    With one price the posterior's standard deviation is {100 * _sd[0]:.2f} volatility points; with all seven it is
+    {100 * _sd[-1]:.2f}, close to {100 * _sd[0]:.2f} / √7 = {100 * _sd[0] / np.sqrt(7):.2f}. These prices come from the
+    model itself, so the posteriors narrow around the true {100 * sim_sigma:.0f}%. On real prices the model can be wrong,
+    and more prices then narrow the posterior around a wrong value: section 4 shows this on SPY.
     """),
     ])
+
     return
 
 
