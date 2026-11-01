@@ -389,3 +389,39 @@ def load_split(bank, split):
                   "parameters": np.empty((0, len(task["parameter_names"]))),
                   "trajectory_id": np.asarray([], dtype="U1")}
     return {**result, "task": task}
+
+
+def verify_bank(bank):
+    """Check all native payloads while retaining at most one decoded shard.
+
+    This is an integrity check, not an evaluation of posterior accuracy. In
+    particular, it may inspect reserved-split identities and bytes without
+    running inference or reporting statistical outcomes from those histories.
+    """
+    bank = Path(bank)
+    manifest = load_manifest(bank)
+    counts = {}
+    checked_shards = 0
+    largest_decoded_shard_bytes = 0
+    expected_paths = set()
+    for split in SPLITS:
+        count = 0
+        for record in manifest["splits"][split]:
+            path = bank / record["path"]
+            if path.stat().st_size != record["bytes"]:
+                raise ValueError(f"{path}: payload size differs from manifest")
+            arrays = _load_part(bank, manifest, split, record)
+            count += len(arrays["parameters"])
+            largest_decoded_shard_bytes = max(
+                largest_decoded_shard_bytes, sum(value.nbytes for value in arrays.values()))
+            del arrays
+            checked_shards += 1
+            expected_paths.add(record["path"])
+        counts[split] = count
+    actual_paths = {path.relative_to(bank).as_posix() for path in bank.rglob("*.npz")}
+    if actual_paths != expected_paths:
+        raise ValueError("native shard inventory differs from manifest")
+    return {"passed": True, "task_sha256": manifest["task_sha256"], "counts": counts,
+            "checked_shards": checked_shards,
+            "largest_decoded_shard_bytes": largest_decoded_shard_bytes,
+            "scope": "byte/array/identity integrity; not scientific acceptance"}

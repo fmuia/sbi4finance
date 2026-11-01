@@ -277,3 +277,82 @@ not replace the posterior estimator. The
 [full-surface workflow guide](full-surface-calibration.md) covers that route
 and optional PyMC references. The numerical generation task and independent
 pricing checks keep their recorded scope when a bank or model is copied.
+
+## Trajectory banks: daily histories with inferred drift
+
+The physical-measure trajectory application has separate native banks for
+Heston, known-curve rough Bergomi and joint-curve rough Bergomi. Each contains
+1,000,000 training, 4,000 validation and 4,000 test histories with 1,260 daily
+log returns (five trading years). The files store observed returns, target
+parameters and stable trajectory IDs; latent volatility is not an inference
+input. Prefixes of a history stay in its original split.
+
+**Preservation status, 1 November:** all native source shards have been rehashed
+and archived on Oscar. Download, extracted-bank verification and Drive upload
+are in progress under [PR #64](https://github.com/fmuia/sbi4finance/pull/64).
+Do not treat the presence of a partial folder as a completed download. The
+completion receipt will bind every archive part and extracted manifest.
+
+The destination is `training-banks-20261031/` within the existing
+[path-workshop Drive folder](https://drive.google.com/drive/folders/1LJsR0Qb0RkD4h8XiF3t6OQQlyYDKcI2k).
+Download one model's entire folder, including all ten archive parts and its
+`sha256sums.txt`, `bank-manifest.json` and `archive-receipt.json`.
+
+| Folder | Native NPZ payload | Compressed split archive | Native manifest SHA-256 |
+| --- | ---: | ---: | --- |
+| `heston` | 10,372,028,516 B | 9,643,832,260 B | `bcddef79dddd753df6a07035124c7e0043e309dd84a8e693fb489555f76477a9` |
+| `rough-known` | 10,363,964,516 B | 9,752,018,975 B | `0de676d0da84a1fd9a1984f54fbc9d8205edeae276fa3c6a783a2679044272ea` |
+| `rough-joint` | 10,388,156,516 B | 9,775,977,517 B | `1e48dc63aa700dd98039d84d815f4b1a607e9fbdeacaa5c999b1c35299228fce` |
+
+The archive sizes above come from the completed source-part receipts. Native
+bank bytes and identities are unchanged. After downloading
+all parts, verify their checksums and stream extraction (requires `zstd`):
+
+```sh
+cd /absolute/path/to/downloaded/heston
+shasum -a 256 -c sha256sums.txt
+cat path-bank-heston-1000000-native.tar.zst.part* | zstd -d -c | tar -xf -
+```
+
+The extracted `heston/` contains `manifest.json` and the native split directories.
+Use the analogous filename and directory for either rough bank. From `lab/`,
+check every native shard without materializing a whole split:
+
+```sh
+pixi run -e core python scripts/path_bank.py check \
+  --bank /absolute/path/to/downloaded/heston/heston
+```
+
+This verifies checksums, array schemas, finite values, prior support and canonical
+split-qualified identities. It is not posterior evaluation or scientific
+acceptance. The checker retains one decoded shard at a time; avoid calling
+`load_split` on the million-history training split for an integrity audit.
+
+For a fresh streaming fit using the published Heston recipe, choose a new
+output directory and run from `lab/` in the locked BF2.1 environment:
+
+```sh
+pixi run -e core python scripts/train_path_posterior.py \
+  --bank /absolute/path/to/downloaded/heston/heston \
+  --out /absolute/path/to/new-heston-fit \
+  --streaming --training-limit 1000000 --epochs 5 --batch-size 128 \
+  --prefix-policy uniform_log_mixture --checkpoint-selection final \
+  --hidden-dim 64 --summary-dim 32 --depth 6 --bins 8 --width 64 \
+  --learning-rate 0.0005 --cache-shards 2 --seed 20261031301
+```
+
+The matched comparison uses the first 100,000 training histories for 50 epochs,
+also five million presentations. Known-curve and joint-curve training use their
+own banks and recorded seeds `20261031302` and `20261031303`. Runtime, backend,
+source and selected checkpoint identity remain part of reproducibility; matching
+this command is not a guarantee of bitwise agreement across devices. These are
+fresh trajectory fits; the option trainer's optimizer-resume contract above does
+not apply to them.
+
+All three selected trajectory candidates failed their declared final marginal
+calibration screen; Heston also retains its documented atom-bearing numerical
+law. Bank distribution does not change that status. All 4,000 test histories
+have been characterized already. Use development data for changes and the
+[bounded follow-up protocol](PATH-INFERENCE-PLAN.md#bounded-numerical-diagnosis-follow-up--1-november-2026)
+for a new target, refit and fresh acceptance cohort. Native checkpoints alone,
+in the parent workshop folder, remain sufficient for participant inference.

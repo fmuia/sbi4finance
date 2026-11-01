@@ -73,6 +73,22 @@ the existing notebooks and asset catalogue. No new asset platform is needed.
 **Completion:** a reader can identify the target of every posterior or product
 plot without relying on an opening disclaimer or presenter explanation.
 
+Start with the existing case inventory, keeping illustration and evaluation
+separate:
+
+| Application | Existing primary case | Teaching role |
+| --- | --- | --- |
+| Heston options | `heston-final500` | Follow one current synthetic observation and its numerical reference. |
+| Known-curve rough options | `rough-known100k-validation0` | Identify supplied curve inputs and posterior targets. |
+| Joint-curve rough options | `rough-joint100k-validation0` | Explain inferred curve uncertainty; selected cases 1983/1941/1962 extend geometry inspection. |
+| Trajectories | Predeclared validation case 0 per model; cases 1–3 remain available | Reveal history and inspect uncertainty, with each model's own synthetic path and task. |
+
+The shared trajectory grid does not make the cached observations identical.
+Likewise, switching current option development cases changes the observation.
+Any future same-observation cross-model comparison needs an explicit shared-data
+and measure contract; compare current interfaces without implying that experiment
+has already been performed.
+
 ## C. Refine the option notebooks in place
 
 **Retain:** Heston's simulator → prior predictive → bank/adapter/network →

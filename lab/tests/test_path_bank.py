@@ -7,6 +7,7 @@ from pathlib import Path
 import tempfile
 import unittest
 from unittest.mock import patch
+import weakref
 
 import numpy as np
 
@@ -21,6 +22,49 @@ def small_task(model):
 
 
 class PathBankTests(unittest.TestCase):
+    def test_integrity_check_releases_each_shard_without_materializing_splits(self):
+        with tempfile.TemporaryDirectory() as root:
+            path = Path(root) / "bank"
+            manifest = bank.write_bank(small_task("heston"), path, 7, 3, 0, chunk=2, seed=91)
+            original = bank._load_part
+            references = []
+
+            def checked_load(*args):
+                self.assertTrue(all(reference() is None for reference in references),
+                                "the preceding decoded shard is still retained")
+                arrays = original(*args)
+                references[:] = [weakref.ref(value) for value in arrays.values()]
+                return arrays
+
+            with patch.object(bank, "load_split", side_effect=AssertionError("whole split loaded")):
+                with patch.object(bank, "_load_part", side_effect=checked_load):
+                    report = bank.verify_bank(path)
+            self.assertTrue(report["passed"])
+            self.assertEqual(report["counts"], {"train": 7, "validation": 3, "test": 0})
+            self.assertEqual(report["checked_shards"], 6)
+            self.assertEqual(report["task_sha256"], manifest["task_sha256"])
+            self.assertLess(report["largest_decoded_shard_bytes"], 20_000)
+            self.assertTrue(all(reference() is None for reference in references))
+
+    def test_streamed_integrity_rejects_corruption_and_unlisted_shards(self):
+        for mutation, message in (("bytes", "checksum"), ("size", "payload size"),
+                                  ("extra", "inventory")):
+            with self.subTest(mutation=mutation), tempfile.TemporaryDirectory() as root:
+                path = Path(root) / "bank"
+                manifest = bank.write_bank(small_task("heston"), path, 2, 1, 1, chunk=2, seed=92)
+                payload = path / manifest["splits"]["train"][0]["path"]
+                if mutation == "bytes":
+                    data = bytearray(payload.read_bytes())
+                    data[len(data) // 2] ^= 1
+                    payload.write_bytes(data)
+                elif mutation == "size":
+                    with payload.open("ab") as stream:
+                        stream.write(b"changed")
+                else:
+                    (path / "train" / "unlisted.npz").write_bytes(payload.read_bytes())
+                with self.assertRaisesRegex(ValueError, message):
+                    bank.verify_bank(path)
+
     def test_tasks_declare_physical_measure_and_full_history_range(self):
         for model, dimension, maximum in (("heston", 4, 1260), ("rough-known", 3, 1008),
                                            ("rough-joint", 6, 1008)):
