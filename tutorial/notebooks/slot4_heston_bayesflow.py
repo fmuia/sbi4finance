@@ -49,21 +49,22 @@ def _(mo):
     its own observation and provenance; the historical SPY results below remain
     separate.
 
-    **The whole amortized workflow, on a model whose exact posterior can check every step**
+    **Follow the amortized workflow, then check its approximation against a numerical reference**
 
     Slot 1 showed why a bank wants the posterior, and that on a liquid surface the classical interval
     should agree with it. Black–Scholes cannot fit the smile, so the tutorial uses a model that can. This notebook
-    calibrates **Heston** to the same 63 SPY prices with BayesFlow, step by step. Heston is priced by a
-    Fourier integral in 20 ms, so its exact posterior can be computed by MCMC and every step of the network
-    can be compared with it. That is what makes Heston the right first example: the answer is known.
+    follows **Heston** on the same 63-price design, step by step. Its Fourier pricer makes a likelihood-based
+    numerical reference affordable. The current 2.1 example below is synthetic and has its own PyMC reference;
+    the later SPY figures and studies retain their historical checkpoint identities. The matching 2.1 neural
+    posterior for SPY has not been packaged here.
 
     Three claims, each backed by evidence below:
 
     1. **The BayesFlow workflow is a few objects**: a simulator, an adapter, a network, a training call,
        diagnostics. Five calls take a prior and a pricer to a posterior.
-    2. **The checks earn the trust.** The network passes simulation-based calibration on 2,000 held-out
-       smiles. On SPY it agrees with the exact posterior, and both agree with the Gauss–Newton interval, as
-       they should on a liquid surface.
+    2. **Checks answer different questions.** The current case permits a direct neural/reference comparison.
+       The historical studies separately illustrate calibration across simulated smiles and correction with
+       a likelihood. Their outcomes do not validate the new checkpoint or the small optional training run.
     3. **The posterior also judges the model.** On SPY, Heston needs a vol-of-vol about twice its Feller
        limit, prices variance swaps below the market, and prefers a mean reversion other than the fixed
        one. That is why slot 5 changes the model.
@@ -114,6 +115,9 @@ def _(backbone_case, backbones, mo):
         mo.md(f"Task SHA256: `{_report['task_fingerprint']}`  \nModel SHA256: `{_report['checkpoint_sha256']}`"),
         mo.ui.table(backbones.parameter_rows(_task, _arrays), selection=None, pagination=False),
         backbones.corner(_task, _arrays),
+        mo.md("**Interpret the current case.** Choose one parameter pair with visible dependence. "
+              "Compare the neural and PyMC shapes as well as their marginal widths. What can this one "
+              "comparison establish, and what still needs a collection of independent observations?"),
     ])
     return
 
@@ -123,6 +127,12 @@ def _(backbone_case, backbones, mo):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
+    ## Historical SPY workflow and studies
+
+    The sections below retain the SPY observation, archived training metadata and study figures.
+    Simulator and small-fit buttons use the current runtime as software demonstrations. They do not
+    reproduce the archived full fit or transfer its validation results to the current synthetic example.
+
     | | Slot 1: Black–Scholes | Slot 4: Heston |
     |:---|:---|:---|
     | Data | two SPY quotes | the SPY smile: 63 prices on the design grid |
@@ -217,6 +227,10 @@ def _(mo):
     mo.md(r"""
     **The prior predictive check comes first.** Draw smiles from the prior and look at them next to SPY's.
     If SPY's smile lay outside the cloud, the network would be asked to extrapolate.
+
+    **Predict, then inspect:** before pressing the simulation button, name a feature of SPY's smile
+    the prior should reproduce. Afterward, explain why being inside this cloud would still not prove
+    that a fitted posterior is accurate.
     """)
     return
 
@@ -347,11 +361,12 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## 4 · Step 4: check before you trust
+    ## 4 · Step 4: check before you trust · historical studies
 
     A trained network can be wrong in two ways: **biased**, with the posterior in the wrong place, or
     **miscalibrated**, with a posterior too narrow or too wide. Both can be tested on simulated smiles whose
-    parameters are known. The figures were computed on 2,000 held-out test smiles (study S2).
+    parameters are known. These figures were computed for the archived checkpoint on 2,000 held-out
+    test smiles (study S2); they are not a new evaluation of the 2.1 development checkpoint above.
     """)
     return
 
@@ -431,9 +446,10 @@ def _(mo):
     mo.md(r"""
     ## 5 · Step 5: use it on SPY
 
-    One call gives SPY's posterior. The exact posterior beside it was computed by MCMC on the Fourier
+    The saved SPY reference was computed by MCMC on the Fourier
     likelihood: seven of eight optimizer starts over the prior box reach the same optimum, and four chains
-    from dispersed starts agree.
+    from dispersed starts agree. A matching current neural comparison and posterior re-pricing remain
+    unavailable in this notebook; the cells below state that boundary explicitly.
     """)
     return
 
@@ -446,6 +462,12 @@ def _(ASSETS, mo, np):
     mo.md("**SPY neural update pending:** the saved Fourier-reference draws below remain historical. "
           "No new SPY neural posterior is fabricated from the synthetic development replay.")
     return exact_spy, network_seconds, network_spy
+
+
+@app.cell
+def _(CHECKS, teaching):
+    heston_checks = teaching.load_json(CHECKS / "heston_checks.json")
+    return (heston_checks,)
 
 
 @app.cell(hide_code=True)
@@ -480,9 +502,8 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(CHECKS, NAMES, exact_spy, mo, network_spy, np, teaching):
+def _(NAMES, exact_spy, heston_checks, mo, network_spy, np, teaching):
     mo.stop(network_spy is None, mo.md("Historical SPY neural comparison awaits an explicitly validated BF2.1 export."))
-    heston_checks = teaching.load_json(CHECKS / "heston_checks.json")
     _gn = heston_checks["cases"]["full grid, kappa fixed"]["parameters"]
     _rows = []
     for _j, _name in enumerate(NAMES):
@@ -501,7 +522,7 @@ def _(CHECKS, NAMES, exact_spy, mo, network_spy, np, teaching):
         *Source of the Gauss–Newton column:* `lab/checks/heston_checks.py`.
         """),
     ])
-    return (heston_checks,)
+    return
 
 
 @app.cell(hide_code=True)
@@ -606,7 +627,8 @@ def _(
     mo.vstack([_fig, mo.md(f"""
     - **The Feller condition fails on every draw**: the ratio runs from {feller_ratio.min():.1f} to
       {feller_ratio.max():.1f}, so the vol-of-vol is about {np.sqrt(np.median(feller_ratio)):.1f} times its
-      Feller limit. Heston produces SPY's short skew only with a variance that keeps touching zero.
+      Feller limit. The variance boundary is accessible; violating this sufficient positivity condition
+      does not by itself invalidate Heston. Judge the product discrepancy and sensitivity checks separately.
     - **Heston's variance swaps sit below the market** by {-_gaps[1:].max():.1f} to {-_gaps[1:].min():.1f}
       volatility points from two weeks to one year, while the posterior's 90% band is less than one point wide.
       In Heston the variance-swap curve is tied to the smile parameters, and the replication uses strikes the
@@ -657,7 +679,9 @@ def _(heston_checks, mo, np, plots, plt):
         mo.ui.table(_shift_rows, selection=None, pagination=False),
         mo.md("Product prices in forward units, under the exact posteriors with κ fixed and free "
               "(`lab/checks/heston_checks.py`). The training bank of this notebook keeps κ = 2; a bank "
-              "with κ free is one line in the task's prior."),
+              "with κ inferred needs its own task, simulations and fitted estimator. Changing a task file "
+              "alone does not make the existing four-target network infer κ. This stored check is independent "
+              "of the unavailable SPY neural comparison."),
     ])
     return
 
@@ -669,10 +693,12 @@ def _(mo):
 
     1. **The workflow is five objects**: a simulator that draws, an adapter, a flow-matching network, one
        training call, and diagnostics.
-    2. **Check before you trust.** SBC on 2,000 smiles passes; smile by smile the network is close to the
-       exact posterior, and on SPY it agrees with it.
-    3. **On a liquid surface, three routes agree**: the network, the exact posterior and the Gauss–Newton
-       interval. The network's value here is speed and a calibration check, not a different answer.
+    2. **Keep evidence attached to its estimator.** Historical SBC and likelihood-correction studies retain
+       their archived checkpoint identity. The current synthetic 2.1 case has a separate PyMC comparison;
+       its SPY neural update remains pending.
+    3. **Compare approximation and reference, then interpret the model.** Agreement on one development
+       case does not certify all observations. The historical liquid-surface checks show where a local
+       Gaussian approximation can agree with a numerical posterior.
     4. **The posterior judges the model.** Heston fits SPY only with a vol-of-vol twice its Feller limit,
        its variance swaps disagree with the market, and the smile prefers a mean reversion near 3.8 to the
        fixed 2.

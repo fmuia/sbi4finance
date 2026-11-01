@@ -1,5 +1,14 @@
 # The ICAIF '26 tutorial: curriculum
 
+**Current application workstream (1 November):** the workshop duration is now
+two hours. Refine the existing option and trajectory application notebooks
+before allocating minutes or pruning. The developed subplans, dependencies and
+first implementation tranche are in the
+[application notebook execution plan](TUTORIAL-REVIEW.md). Earlier slot timings
+and returns-exclusion decisions below are historical and do not supersede this
+new scope. Introduction, Amortized Bayes, Architectures and backbone review are
+outside this refinement tranche.
+
 Draft for the organizers' review. 24 October 2026, revision 3.
 
 This folder fixes what the tutorial teaches, in what order and why: this summary, and one file per slot.

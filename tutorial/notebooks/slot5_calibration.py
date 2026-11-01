@@ -34,7 +34,7 @@ def _():
 
 
     def pilot_banner(what):
-        return mo.callout(mo.md(f"**Pilot result, not for the stage:** {what} The full study replaces it."), kind="neutral")
+        return mo.callout(mo.md(f"**Historical pilot result:** {what} This is separate from the current 100k estimators' evidence."), kind="neutral")
 
 
     def image(path, caption, width=None):
@@ -73,28 +73,29 @@ def _(mo):
 
     **A long-dated mark rests on inputs no quote pins. The posterior prices them; amortization makes it checkable.**
 
-    Slot 4 calibrated Heston to the SPY smile and checked every step against the exact posterior. The
-    posterior was precise, and it said Heston fits SPY only with a vol-of-vol about twice its Feller limit
-    and variance swaps below the market. This notebook keeps the smile and the code and changes the model
+    Slot 4 illustrated the workflow with a current synthetic Heston case and retained historical SPY
+    references and model checks. Here the current known-curve and joint-curve examples make the inference
+    inputs explicit. The historical SPY application below keeps the financial question and changes the model
     to one built for index smiles, **rough Bergomi**, a rough version of Bergomi's (2005) forward-variance
     model. That change makes the exact posterior expensive, and its validation far more so: that is where
     amortized inference pays.
 
-    Three claims, each backed by evidence below:
+    Three questions organize the application; each result below names its method and scope:
 
     1. **Rough Bergomi is priced only by Monte Carlo**, so its exact posterior costs at least 17 CPU-hours
        per smile by random-walk Metropolis. Importance sampling from a Gauss–Newton proposal takes about 85
        CPU-minutes on SPY's 63 quotes (1,024 evaluations at 5.0 CPU-seconds). Where that proposal works, one
        smile and a book are affordable; a validation on thousands of simulated smiles is not. The amortized
-       posterior takes 1.4 seconds, and without an exact answer it is checked three ways: simulation-based
-       calibration, a second method, and an audit of each smile.
-    2. **On SPY's full surface the smile pins $H$, $\eta$ and $\rho$**, even with the forward-variance curve
-       uncertain. There the Gauss–Newton interval is a good approximation, and the posterior's value is a
-       coverage check.
+       timing of 1.4 seconds belongs to the historical benchmark. Calibration, independent-reference and
+       per-observation audit checks remain different questions; a new fit does not inherit those results.
+    2. **Which inputs does a smile constrain?** Historical local analysis on SPY examines $H$, $\eta$ and
+       $\rho$ with supplied or perturbed curve levels. The current joint task instead infers three curve
+       coefficients with the parameters; these are different conditioning assumptions.
     3. **Long-dated products depend on the forward-variance curve beyond the last quote.** Held flat, as in
        the tutorial's baseline, the curve gives a 3-year variance swap no range at all. With a stated prior and
        the long-dated quotes as data, the posterior gives it a 90% range of about a quarter of its price, and
-       gives a 5-year put three times the baseline's range. That gap is a reserve the baseline does not report.
+       gives a 5-year put three times the baseline's range in the historical long-end experiment. This is
+       Gaussian/Laplace propagation with a separate curve prior, not output of the new six-target estimator.
     """)
     return
 
@@ -152,6 +153,10 @@ def _(backbone_case, backbones, mo):
         mo.md(f"Task SHA256: `{_report['task_fingerprint']}`  \nModel SHA256: `{_report['checkpoint_sha256']}`"),
         mo.ui.table(backbones.parameter_rows(_task, _arrays), selection=None, pagination=False),
         backbones.corner(_task, _arrays),
+        mo.md("**Predict, then compare.** Before switching from known to joint curve, name which inputs "
+              "become unknown. In the selected case, which parameter trade-off or broad interval can you "
+              "explain? These cases have different synthetic observations: switching cases is not a matched "
+              "experiment measuring the effect of curve uncertainty alone."),
     ])
     return
 
@@ -159,25 +164,29 @@ def _(backbone_case, backbones, mo):
 
 
 @app.cell(hide_code=True)
-def _(CHECKPOINTS, RESULTS, mo, teaching):
+def _(CHECKPOINTS, RESULTS, backbones, mo, teaching):
     _checks = [
         ("Real SPY smile (S8)", RESULTS / "spy/surface.json"),
         ("Costs on one machine (S9)", RESULTS / "costs/costs.json"),
-        ("Rough Bergomi network, full bank", CHECKPOINTS / "rough/model.keras"),
-        ("Rough Bergomi: SBC and recovery, full bank (S2)", RESULTS / "rough/s2/validation.json"),
-        ("Rough Bergomi: audit, full bank (S5)", RESULTS / "rough/s5/audit.json"),
-        ("Rough Bergomi: classical route, full bank (S6)", RESULTS / "rough/s6/classical.json"),
-        ("Rough Bergomi: products and reserves, full bank (S7)", RESULTS / "rough/s7/products.json"),
+        ("Historical rough SPY route: checkpoint", CHECKPOINTS / "rough/model.keras"),
+        ("Historical rough SPY route: SBC and recovery (S2)", RESULTS / "rough/s2/validation.json"),
+        ("Historical rough SPY route: audit (S5)", RESULTS / "rough/s5/audit.json"),
+        ("Historical rough SPY route: classical comparison (S6)", RESULTS / "rough/s6/classical.json"),
+        ("Historical rough SPY route: products and reserves (S7)", RESULTS / "rough/s7/products.json"),
         ("Rough Bergomi pilot: S2, S5, S6, S7, across models", RESULTS / "rough-pilot/s7-across/across-models.json"),
         ("Heston: neural-pricer route (S4)", RESULTS / "heston/s4/pricer-route.json"),
         ("Heston: classical route (S6)", RESULTS / "heston/s6/classical.json"),
         ("Heston: products and reserves (S7)", RESULTS / "heston/s7/products.json"),
     ]
     mo.accordion({"**What this notebook reads** (click to open): every result and its status": mo.vstack([
-        mo.md("Every number below comes from an accepted study in `assets/results/calibration`. The rough-Bergomi results "
-              "are a pilot (1,600 training smiles) until the full bank of 100,000 has run on the cluster; pilot "
-              "results are marked and are not quoted on stage."),
-        mo.ui.table([{"result": n, "status": "ready" if teaching.existing(p) else "pending"} for n, p in _checks],
+        mo.md("The current 100,000-surface known-curve and joint-curve fits are complete and their development "
+              "replays are packaged above. Their conditional references and downstream-product checks remain "
+              "separate work. Historical studies, pilot results and quick checks below keep their own provenance; "
+              "an absent historical export does not mean the new training bank is unfinished."),
+        mo.ui.table([{"result": f"Current 2.1 replay: {name}", "status": "packaged development example"}
+                     for name in backbones.examples("rough")] +
+                    [{"result": n, "status": "historical asset available" if teaching.existing(p)
+                      else "not packaged for this historical route"} for n, p in _checks],
                     selection=None, pagination=False),
     ])})
     return
@@ -186,6 +195,12 @@ def _(CHECKPOINTS, RESULTS, mo, teaching):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
+    ## Historical SPY application and comparison experiments
+
+    The following sections preserve the original SPY/pilot studies. In this route, the curve is supplied
+    at short maturities. Section 8 uses a separate eleven-level long-end curve model. Neither route is
+    the six-target exponential-curve inference task shown in the current development panel above.
+
     | | Slot 4: Heston | Slot 5: rough Bergomi |
     |:---|:---|:---|
     | Data | the SPY smile: 63 prices | the same |
@@ -312,7 +327,9 @@ def _(heston_skew, mo, plots, plt, power_law, skew_days, spy_skew, surface):
 def _(mo):
     mo.md(r"""
     **Price a rough-Bergomi smile live.** Choose $H$, $\eta$ and $\rho$; the button prices the 63 options by
-    Monte Carlo on a flat 20% forward-variance curve.
+    Monte Carlo on a flat 20% forward-variance curve. Predict which feature of the smile changes before
+    moving one control, then inspect the generated prices. This button runs the forward simulator;
+    it does not update the current cached inverse posterior above.
     """)
     return
 
@@ -365,12 +382,12 @@ def _(ASSETS, RESULTS, image, mo, teaching):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## 4 · The amortized posterior for SPY
+    ## 4 · Historical SPY neural route · export status
 
-    The training bank holds 100,000 rough-Bergomi smiles. Their parameters and forward-variance curves are
-    drawn from the prior, they are priced by Monte Carlo on the cluster, and the design noise is added. The
-    network is slot 4's, with $\xi_0$ as an extra condition. For a new smile it returns 1,000 posterior draws
-    in 1.4 s.
+    The current 100,000-surface estimators already have packaged synthetic replays above. A matching
+    native SPY posterior and the historical S2–S7 exports are separate artifacts. In the known-curve
+    training task, parameters and curves vary across simulations and the realized curve is supplied as
+    an inference condition. In the joint task its three coefficients are targets instead.
     """)
     return
 
@@ -378,8 +395,10 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(CHECKPOINTS, mo, pending, teaching):
     _ready = teaching.existing(CHECKPOINTS / "rough" / "model.keras")
-    pending("the rough-Bergomi network trained on the full bank (gates G0 to G2), and SPY's posterior from it "
-            "(study S8).") if _ready is None else mo.md("The full-bank network is available.")
+    pending("a matching native SPY posterior and historical-route export (study S8); the completed current "
+            "100k fits are available above.") if _ready is None else mo.md(
+                "A historical rough checkpoint file is present. File presence alone does not establish "
+                "its compatibility or validate a current SPY posterior.")
     return
 
 
@@ -403,9 +422,10 @@ def _(pending, pilot, pilot_surface, teaching):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## 5 · Is it right without an exact answer?
+    ## 5 · Is it right without an exact answer? · historical and pilot studies
 
-    Three checks replace slot 4's exact chain, each answering a different question.
+    The original study design used three checks, each answering a different question.
+    The saved historical results and explicit missing exports below do not certify the new 100k fits.
 
     1. **Calibrated on average?** Simulation-based calibration on held-out simulated smiles.
     2. **Does an independent method agree?** MCMC on a neural pricer: deep calibration's network, sampled
@@ -565,7 +585,7 @@ def _(RESULTS, classical_model, image, mo, pending, pilot_banner, teaching):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## 7 · From posterior to prices: the range and the reserve
+    ## 7 · From posterior to prices: the range and the reserve · stored studies
 
     Each posterior draw prices each path-dependent product by Monte Carlo, with the same random numbers for
     every draw, so the spread of prices comes from the parameters and not from the simulation. The
@@ -576,6 +596,11 @@ def _(mo):
     which fixes it under continuous monitoring. That is a consistency check of the curve input, not a
     finding; with daily monitoring the strike does depend on $(H, \eta, \rho)$ (Lecture 8). Under Heston the
     variance swap carries a range, because Heston's forward variance depends on its parameters.
+
+    The model and test-smile controls below select stored historical product panels. They are independent
+    of the current development-case selector. Before increasing the confidence level, predict which
+    reported quantiles should move; afterward, explain why this changes the reported range without
+    adding information to the posterior.
     """)
     return
 
@@ -632,7 +657,12 @@ def _(
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## 8 · The long end: where the reserve comes from
+    ## 8 · The long end: where the reserve comes from · separate Gaussian/Laplace experiment
+
+    This stored experiment has fourteen uncertain inputs: $H$, $\eta$, $\rho$ and eleven curve levels.
+    Its sliders recompute Gaussian curve updates and delta-method product ranges from stored Monte Carlo
+    gradients. It does not run the new six-target neural estimator, whose curve is exponential. Predict
+    which product depends most on the unobserved long end, widen that prior, and explain the change.
 
     Long-dated exotics run past the last quote. An autocallable observes the index every year for three
     years; a cliquet sums capped annual returns; a five-year put depends on the whole variance path. Under
@@ -778,11 +808,11 @@ def _(mo):
     mo.md(r"""
     **Where amortized inference comes in.** Every number in this section needs the Monte Carlo pricer: the
     surface's likelihood, and the products. The posterior over the 14 inputs ($H$, $\eta$, $\rho$ and eleven
-    levels of $\xi_0$) is what an amortized network returns in a second. This quick check used its Gaussian
-    (Laplace) approximation at the least-squares fit, which matched full Monte Carlo propagation through 400
-    posterior draws within 1–5%. The network makes the same computation routine, for every index in a
-    valuation across a book, for example at month-end, and simulation-based calibration checks that its 90%
-    is 90%. Where the posterior stops being Gaussian, with sparse long-dated smiles instead of replicated
+    levels of $\xi_0$) was approximated here by a Gaussian (Laplace) calculation at the least-squares fit,
+    with product ranges from stored gradients. At the recorded settings, that propagation matched full
+    Monte Carlo propagation through 400 posterior draws within 1–5%. A neural estimator for this
+    fourteen-input task would need its own training and validation; the current three- and six-target
+    fits do not provide it. Where the posterior stops being Gaussian, with sparse long-dated smiles instead of replicated
     variance swaps, or with a model whose vol-of-vol term structure the vanilla smile cannot pin, a
     Gauss–Newton proposal can fail, and the network's draws are the proposal that stays affordable (not
     tested here).
