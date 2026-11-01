@@ -34,6 +34,7 @@ export KERAS_BACKEND=jax
 pixi run --locked slot1 # opens slot 1 in the marimo editor, in your browser; likewise slot2 ... slot5
 pixi run --locked edit  # all notebooks
 pixi run --locked backbones # cached 100k examples and explicit native model sampling
+pixi run --locked trajectories # parameter inference from daily return histories
 ```
 
 `pixi run --locked marimo run notebooks/slot4_heston_bayesflow.py` opens a notebook as a read-only app.
@@ -45,6 +46,7 @@ pixi run --locked backbones # cached 100k examples and explicit native model sam
 | `slot3_architectures.py` | 3. Network architectures | See how flow matching carries noise to Heston's posterior, and what the sampler's steps change | Cached Heston posterior and PyMC reference |
 | `slot4_heston_bayesflow.py` | 4. A worked example in BayesFlow: Heston on the SPY smile | Follow the whole workflow, from simulator to checks, against the exact posterior | Cached 100k example; simulation and a small native fit are optional buttons |
 | `slot5_calibration.py` | 5. Rough Bergomi on the SPY smile: from the posterior to a reserve | Read rough Bergomi's posterior, its audit, and the price ranges and reserves of products | Cached known/joint-curve examples; Monte Carlo is an explicit action |
+| `trajectory_inference.py` | Counterpart: estimate dynamics from observed paths | Switch between Heston and two rough Bergomi tasks, reveal a daily history, inspect posterior evolution and drift uncertainty | Cached validation examples by default; exact-length CPU inference is an explicit button |
 
 `backbone_review.py` adds the current Heston, known-curve rough and joint-curve rough estimators.
 The rough examples include validation:0 and three explicitly selected joint-geometry illustrations.
@@ -59,6 +61,63 @@ or full bank is needed. For fresh samples, obtain the models archive from the
 and press its live button. The loader checks its task, model SHA256 and sampler settings against the
 selected cached example. Model payloads are excluded from git and the shipped asset manifest;
 their own native hashes are checked on loading. No bank is needed for pretrained inference.
+
+## Trajectory inference
+
+Run `pixi run --locked trajectories` to compare the three physical-measure models
+on the same daily grid, from one observed return to five trading years. All infer
+annual proportional price drift; the joint rough task also infers its variance-scale
+curve. Realized latent volatility and synthetic truth are excluded from conditions.
+The lesson shows how one million offline histories per model train a masked GRU
+summary and conditional flow using random prefixes. Each displayed prefix posterior
+uses the original prior and full revealed history; overlapping prefix posteriors
+are not multiplied together.
+
+The lab publishes the first four predeclared validation cases under
+`assets/trajectories/`, with their task, checkpoint and file identities. Opening the
+notebook uses these cached arrays and requires no neural backend initialization,
+training bank or cluster connection. For a history length between stored snapshots,
+the return chart reveals the requested days and the posterior is explicitly labelled
+with its nearest **past** cached length. Cached posteriors are not interpolated.
+
+For fresh inference at any integer length from 1 to 1,260, obtain the matching native
+checkpoint from the `path-workshop-2026-10-31` subfolder of the existing
+[shared sbi4finance Drive folder](https://drive.google.com/drive/folders/1ta1LjBopl-kErBfDEr2R_UL-9Hs8Y9D7).
+The `path-workshop-native-models-20261031.tar.gz` archive is 6,354,318 bytes, with
+SHA-256 `261c36550da52948aedcc2680d51bcb756db485626a6a2b8ee918fa9d6fff4cf`.
+Extract it into `tutorial/assets/`; it places unchanged `model.keras`, `task.json` and `training.json` in
+`assets/local-checkpoints/path-heston/`, `path-rough-known/` or `path-rough-joint/`.
+Select the model and case, reveal the desired history, and press the CPU inference
+button. These optional model payloads stay outside Git; the loader verifies their
+native hashes against the selected cached example. The same cached notebook remains
+usable when those files are absent. Development examples and aggregate held-out
+evaluation have separate scopes; neither a smooth learning curve nor a narrow
+posterior is a conditional-accuracy certificate.
+The live result reports model load and draw elapsed times for that click, including
+any first-call compilation in the draw time; these are not guaranteed timings.
+
+The estimators are neural candidates with approximate posteriors; their recorded
+calibration and reference outcomes remain separate from this working demonstration.
+Exact-length inference means conditioning on precisely the selected observations,
+not exact posterior computation. Run the notebook in marimo for interactive model
+and history controls. An exported HTML lesson is a **static preview** of one saved
+state and does not execute those controls or load models.
+
+The known-curve rough model opens by default. **Heston is currently a numerical-development
+prototype:** the discretized simulator can produce deterministic zero-variance daily returns.
+With unknown drift this can put point masses in the exact drift posterior, which the continuous
+neural density cannot represent exactly. Its displayed intervals carry no endorsed calibration
+claim. A newly specified numerical target and refit are needed to resolve that limitation;
+the frozen task, model and cached examples retain their original identities.
+
+Final characterization used 4,000 previously reserved histories per model, twelve
+history lengths and 512 draws per history, with candidates and screening rules
+frozen beforehand. All execution and risk screens passed; **all three models failed
+the declared marginal calibration screen**. The known-curve model's confirmation
+pass did not reproduce across every tested cell. This package is a development lesson.
+See the [aggregate report](assets/results/trajectories/closeout-20261031/closeout-summary.json),
+[drift-learning figure](assets/results/trajectories/closeout-20261031/drift-learning.png)
+and [coverage figure](assets/results/trajectories/closeout-20261031/marginal-coverage.png).
 
 Optional authoring tools inherit the same 2.1 stack:
 

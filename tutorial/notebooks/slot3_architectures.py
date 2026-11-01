@@ -114,7 +114,7 @@ def _(mo):
     |:---|:---|:---|:---|
     | A smile on the design grid | a fixed vector of 63 prices (and, in slot 5, the forward-variance curve as context) | no summary network: the standardized prices enter as conditions | slots 4 and 5 |
     | A real option chain | a set of (log-moneyness, maturity, price, noise) tuples, of varying size and order | a set network (DeepSet, set transformer), invariant to the order of the quotes | the extension that removes the design grid |
-    | Daily returns | a series of 1,000 values | a time-series network: convolutions, then a recurrent or attention layer | not in the tutorial |
+    | Daily returns | any prefix of 1 to 1,260 daily observations | a causal GRU summary of the ordered returns | `trajectory_inference.py` (`pixi run trajectories`) |
     | Any data, for misspecification tests | any | a summary network trained with a distance term in its output space (Schmitt et al. 2024) | slot 6 |
 
     In BayesFlow each is one line, and the rest of the workflow does not change:
@@ -122,7 +122,7 @@ def _(mo):
     ```python
     bf.networks.DeepSet(summary_dim=16)                    # a set of quotes, any order, any number
     bf.networks.SetTransformer(summary_dim=16)             # the same, with attention between quotes
-    bf.networks.TimeSeriesNetwork(summary_dim=32)          # a return series
+    bf.networks.RecurrentNetwork(hidden_dim=64, summary_dim=32, recurrent_type="gru")  # ordered returns
     ```
 
     The current set-encoder experiments still use complete 63-quote surfaces. Supporting

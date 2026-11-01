@@ -1,0 +1,15 @@
+{
+  "candidate_status": "frozen_development_candidate",
+  "confirmation_sha256": "855a32f50cace5ac2a38ec4a1a51c59c2661c27db9a3b22214b53767c1864635",
+  "confirmation_status": "failed_calibration_screen",
+  "created_at": "2026-10-31T03:55:51.275795+00:00",
+  "format": "path_workshop_confirmation_review_v1",
+  "mode": "evaluate_frozen_development_candidate",
+  "model_changes_after_confirmation_allowed": false,
+  "reason": "The sealed confirmation has valid identities and zero execution/support failures; all risk screens pass. Known rough has marginal compatibility, while Heston and joint retain failed calibration screens. Preserve all failures and the Heston mixed-drift limitation. Characterize unchanged frozen candidates once; no model/threshold changes or scientific promotion.",
+  "receipt_sha256": "78ac7741faf843777cf1065f42331cb74a8e10b09b7cbbe34d92b50639cad34c",
+  "reviewer": "Codex closeout review with independent workflow-audit agent",
+  "scientific_acceptance": false,
+  "selection_sha256": "d83ba139a61c138672a2b9f62c285bbd382abbf52f5dd327dd478c1e9ef6a1ba",
+  "statistical_screens_passed": false
+}

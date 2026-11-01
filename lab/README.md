@@ -26,6 +26,10 @@ Current validation is development evidence, not automatic model or lesson accept
 conditional references J2 and product/long-end comparisons J3 remain pending. See [course/status.md](../course/status.md)
 and the [numerical plan](plans/NUMERICAL-EXPERIMENT-PLAN.md) before starting additional work.
 
+The separate [path-inference plan](plans/PATH-INFERENCE-PLAN.md) specifies the proposed Heston and rough Bergomi
+return-history workstream, its proof-of-concept lessons, growing-prefix tasks and bounded first Oscar tranche.
+It includes the seeded bank, arbitrary-prefix recurrent inference, numerical/reference checks and bounded Oscar launcher. The option-surface results retain their existing scope.
+
 ## Canonical workflow
 
 Use the current full-surface route for new backbone work. The guide above gives complete command examples;

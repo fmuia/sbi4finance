@@ -1,0 +1,30 @@
+{
+  "format": "trajectory_tutorial_artifacts_v1",
+  "scientific_acceptance": false,
+  "artifacts": {
+    "heston": {
+      "cache": "heston",
+      "bundle_sha256": "6675cf99bf9d4a2e7d3feaad01a085534955473b746afeef2448fbd9816ac00f",
+      "task_sha256": "dd233e297f3ff974985383cf23dbb76865d4db92b7e348d675ac3065637ea7c3",
+      "checkpoint_sha256": "ae8229c76ede0783deb264309747c2ac28c5b0cee8191e7ffa0ecf913636a9b7",
+      "model_source": "versioned path-workshop models archive; optional local-checkpoints/path-heston",
+      "scope": "Development illustration from prespecified validation cases. Approximate neural posteriors; marginal diagnostics do not certify conditional or joint accuracy. No real-market validity claim. Intervals can widen as returns accumulate."
+    },
+    "rough-known": {
+      "cache": "rough-known",
+      "bundle_sha256": "c21aa1f12c59a664469a4ce4d3b6824f61180b10663ee8e765b5dac0c7dde79f",
+      "task_sha256": "eb195dd594de03a95630a4c46bd35e9355e235982d0eb30ae597491e14df6446",
+      "checkpoint_sha256": "b9b800ef987b7fddce62919d84f6420d751a7c390f8a2f476f49a2ca37be1e9c",
+      "model_source": "versioned path-workshop models archive; optional local-checkpoints/path-rough-known",
+      "scope": "Development illustration from prespecified validation cases. Approximate neural posteriors; marginal diagnostics do not certify conditional or joint accuracy. No real-market validity claim. Intervals can widen as returns accumulate."
+    },
+    "rough-joint": {
+      "cache": "rough-joint",
+      "bundle_sha256": "4f5be8eb862a4bc54e4244747410a0cd509446810bcd243ef8081cd632302ac2",
+      "task_sha256": "277c7219e49edb130049f78f91bcf176a22c06fad31f4404556fa27df263a7ca",
+      "checkpoint_sha256": "9fea2e446b6264d46ee92a924a930faa9ad5473b88d909ab4844b1b37f726003",
+      "model_source": "versioned path-workshop models archive; optional local-checkpoints/path-rough-joint",
+      "scope": "Development illustration from prespecified validation cases. Approximate neural posteriors; marginal diagnostics do not certify conditional or joint accuracy. No real-market validity claim. Intervals can widen as returns accumulate."
+    }
+  }
+}
