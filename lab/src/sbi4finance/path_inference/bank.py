@@ -408,7 +408,7 @@ def verify_bank(bank):
         count = 0
         for record in manifest["splits"][split]:
             path = bank / record["path"]
-            if path.stat().st_size != record["bytes"]:
+            if "bytes" in record and path.stat().st_size != record["bytes"]:
                 raise ValueError(f"{path}: payload size differs from manifest")
             arrays = _load_part(bank, manifest, split, record)
             count += len(arrays["parameters"])

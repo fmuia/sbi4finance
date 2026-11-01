@@ -406,6 +406,13 @@ separate finite posterior-sample noise from estimator error.
 with an initial proposed ceiling of four allocated CPU-hours and zero GPUs.
 No architecture search or repeated acceptance testing belongs to E1.
 
+The [first development diagnosis](../evidence/path-inference/2026-11-01/development-diagnosis/README.md)
+is complete: 192 comparisons bind 27 input files and use 768 already-inspected
+validation histories as their primary cohort. Known-curve eta shows negative
+long-history mean error; the joint results do not isolate a correction. The
+record names the next data/reference diagnostics and justifies no production
+fit, broader architecture search or additional bank generation.
+
 ### E2. Choose Heston's numerical target before a refit
 
 The first 32 inspected development histories contained five histories with 18
@@ -478,6 +485,18 @@ size from the diagnosed question first. Use bounded offline shard streaming;
 online producers remain outside this design.
 
 ### E4. Stage conditional references and a fresh final cohort
+
+The first identity-contract implementation adds
+`evaluate_path_posterior.py --bank TRAINING_BANK --cohort-bank DEVELOPMENT_BANK`
+for development/validation only. It retains the exact native training-manifest guard, checks the same task
+with a distinct root seed and canonical IDs, and reads only the selected cohort
+rows/shards. Exclusive per-output opening receipts bind both manifests and the
+model; a durable validation-exposure marker permits paired development comparisons
+without describing the exposed data as fresh acceptance. **A versioned fresh
+confirmation/acceptance selection-and-review schema remains pending.** The new
+route rejects reserved tests and the old confirmation/final guards; the default
+route keeps those original guards unchanged. No fresh cohort was generated and
+no acceptance result follows from this software change.
 
 Keep the existing one-day validation cases 0/1 as development controls. Their six
 stable marginal comparisons do not validate multiday or joint inference. The

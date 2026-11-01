@@ -233,6 +233,31 @@ labels, path inspection views, and the bounded numerical diagnosis. Training
 submission follows its tested specification rather than the completion of an
 unrelated notebook or transfer.
 
+### First implementation status
+
+- **A:** source-bank and historical-output packaging/verification is complete;
+  large downloads, extracted-payload checks and Drive uploads are active. No
+  scientific job is being retried as a preservation task.
+- **B/C:** the option lessons now name their current and historical evidence
+  locally, correct stale pending-bank text, retain their controls, add
+  interpretation prompts and restore the independent stored Heston
+  mean-reversion check. Carrying one current case through all supported stages
+  remains the next content refinement.
+- **D1:** the trajectory lesson now displays actual task/prior metadata,
+  prior/posterior densities, paired joint geometry and hash-bound final
+  diagnostics. Simulator/prior-predictive and fuller training walkthroughs
+  remain developed follow-ups.
+- **E:** the bounded diagnosis protocol and the
+  [first source-bound development diagnosis](../../lab/evidence/path-inference/2026-11-01/development-diagnosis/README.md)
+  are complete. The latter uses 768 already-inspected development histories,
+  binds 27 inputs and supports no production refit yet. An explicit separate
+  development-cohort evaluator binds both bank identities and preserves the
+  original reserved-test guards; the versioned fresh-acceptance protocol is
+  still pending. No production refit or new acceptance result is claimed.
+- **F:** first-tranche unit, cached export, Marimo and release/parity checks are
+  being run as changes complete. Rehearsal and two-hour pruning follow content
+  refinement.
+
 ## Historical review: 26 October 2026
 
 The following assessment records the earlier option-focused proposal. Its slot

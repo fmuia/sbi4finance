@@ -65,6 +65,19 @@ class PathBankTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, message):
                     bank.verify_bank(path)
 
+    def test_streamed_integrity_accepts_legacy_manifests_without_byte_counts(self):
+        with tempfile.TemporaryDirectory() as root:
+            path = Path(root) / "bank"
+            manifest = bank.write_bank(small_task("heston"), path, 4, 2, 1, chunk=2, seed=94)
+            for records in manifest["splits"].values():
+                for record in records:
+                    record.pop("bytes")
+            (path / "manifest.json").write_text(json.dumps(manifest))
+            report = bank.verify_bank(path)
+            self.assertTrue(report["passed"])
+            self.assertEqual(report["counts"], {"train": 4, "validation": 2, "test": 1})
+            self.assertEqual(report["checked_shards"], 4)
+
     def test_tasks_declare_physical_measure_and_full_history_range(self):
         for model, dimension, maximum in (("heston", 4, 1260), ("rough-known", 3, 1008),
                                            ("rough-joint", 6, 1008)):

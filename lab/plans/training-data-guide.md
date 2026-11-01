@@ -338,7 +338,7 @@ pixi run -e core python scripts/train_path_posterior.py \
   --streaming --training-limit 1000000 --epochs 5 --batch-size 128 \
   --prefix-policy uniform_log_mixture --checkpoint-selection final \
   --hidden-dim 64 --summary-dim 32 --depth 6 --bins 8 --width 64 \
-  --learning-rate 0.0005 --cache-shards 2 --seed 20261031301
+  --learning-rate 0.0005 --cache-shards 2 --max-seconds 3300 --seed 20261031301
 ```
 
 The matched comparison uses the first 100,000 training histories for 50 epochs,
@@ -347,7 +347,9 @@ own banks and recorded seeds `20261031302` and `20261031303`. Runtime, backend,
 source and selected checkpoint identity remain part of reproducibility; matching
 this command is not a guarantee of bitwise agreement across devices. These are
 fresh trajectory fits; the option trainer's optimizer-resume contract above does
-not apply to them.
+not apply to them. On a slower CPU, the time cap may stop a run before all five
+epochs. Inspect the recorded status, completed epochs and actual training views;
+an interrupted budget is not a completed comparison.
 
 All three selected trajectory candidates failed their declared final marginal
 calibration screen; Heston also retains its documented atom-bearing numerical
