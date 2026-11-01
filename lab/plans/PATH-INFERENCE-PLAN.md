@@ -367,22 +367,32 @@ These are independent-trajectory marginal screens with repeated prefixes, not co
 
 The 92,104,580-byte final audit archive has SHA-256 `a29fd9bdf1cc9d44aa4a9bcfe0f30125dd4c59e759c8c1bb1cfb649ef4e9a180` and is checksum-verified outside Oscar scratch, alongside all previous models and the new reference audit. The standalone tutorial is packaged with all three native models and verified independently of the checkout: 208 initial payload hashes, 29 tutorial tests and actual seeded 137-day CPU inference for all models. Full lab tests passed 476 tests with three optional PyMC-environment skips; seven notebooks exported 183 cells without genuine errors. Source parity, manifest/claims, Marimo and diff checks passed. Final aggregate reports/figures enter tutorial assets only through the existing acceptance and manifest tools. Source integration is prepared as [draft PR #63](https://github.com/fmuia/sbi4finance/pull/63).
 
-## Oscar preservation: local verification complete — 1 November 2026
+## Oscar preservation closure — 1 November 2026
 
-All three native million-history trajectory banks are downloaded and verified
-off Oscar: 30 resumable archive parts (29.172 GB), 23,631 extracted shards
-(31.124 GB), with every native payload checked one shard at a time. Historical
-unique results, failed/partial references, old fixed-drift banks and source/config
-snapshots are also archived and logically hash-verified. The [local record](../evidence/pilot-results/2026-11-01/oscar-preservation/LOCAL-VERIFICATION.md)
-binds the inventories, bank identities and verification receipts. No identified
-unique result remains only on Oscar; remote originals remain.
+The [preservation record](../evidence/pilot-results/2026-11-01/oscar-preservation/README.md)
+reconciles 41 original run roots, 1,650 JSON receipts and all known allocations.
+All three million-history trajectory banks are now available in native form
+off Oscar: 30 resumable archive parts, 29.172 GB compressed / 31.124 GB native,
+with all 23,631 extracted shards verified one at a time. Historical unique
+results, including old fixed-drift banks, repaired models, intermediate option
+studies and failed/partial references, are archived and logically hash-verified.
+Source/config identities and explicit exclusion proofs are retained.
 
-The Drive mirror remains partial. macOS now denies both destination identity
-metadata and ordinary file reads, so exact destination checks and further copies
-are gated. Strict monitors can resume once access is restored. No complete-cloud
-or independent-cloud-download claim is made. This access issue does not affect
-the verified local banks or completed scientific jobs. The numerical/reference
-follow-ups below remain separate from preservation.
+Original Gmail copy/readback proofs are retained. The remaining five bank
+parts were copied and hash-verified through the verified Brown-account view;
+fresh Brown provider metadata confirms completion under the same Google parent
+and workshop identities. Old cold payloads were not re-read or freshly hashed.
+The Gmail-path denial remains unexplained; sharing permissions were unchanged.
+An independent cloud download was not performed. Remote originals
+and existing versioned workshop archives are unchanged. No active allocation
+or unpreserved unique output was identified in the saved accounting scope.
+The last successful queue observation remains bound; the latest read-only retry
+failed with expired SSH authentication. The live queue was not freshly rechecked,
+and no jobs were submitted after the pilot. The seven packaging jobs
+and one isolated numerical pilot used 784 allocated CPU-seconds and no GPU;
+historical accounting remains separate. Use the [training guide](training-data-guide.md#trajectory-banks-daily-histories-with-inferred-drift)
+for extraction and streaming training. This closes preservation work; numerical
+accuracy, conditional references and fresh acceptance remain the follow-ups below.
 
 ## Bounded numerical diagnosis follow-up — 1 November 2026
 

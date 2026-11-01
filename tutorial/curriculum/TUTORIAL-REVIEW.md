@@ -252,14 +252,20 @@ unrelated notebook or transfer.
 
 ### First implementation status
 
-- **A:** all three trajectory banks are downloaded; every archive part and all
-  23,631 native shards pass integrity checks. All historical logical payloads
-  and source snapshots are verified off Oscar. No unique output remains only
-  on scratch in the audited scope. The [local verification record](../../lab/evidence/pilot-results/2026-11-01/oscar-preservation/LOCAL-VERIFICATION.md)
-  binds these results. Drive completion is pending because macOS denies
-  destination file and identity-metadata access; strict resume monitors retain
-  the original checks. No scientific job is active or being retried as a
-  preservation task.
+- **A:** preservation is complete: all three full trajectory banks and unique
+  historical outputs are off Oscar, verified locally and provider-confirmed
+  uploaded to the same Drive folder. The [compact record](../../lab/evidence/pilot-results/2026-11-01/oscar-preservation/README.md)
+  binds the inventories and receipts. Original Gmail copy/readback proofs are
+  retained; the last five bank parts were copied and hash-verified through the
+  verified Brown-account view, followed by fresh provider metadata checks over
+  the same Google parent/workshop identities. Old cold payloads were not re-read.
+  The cause of the Gmail-path denial remains unknown; sharing permissions were
+  unchanged. No unpreserved unique output or nonterminal allocation was
+  identified in the audited records. The latest queue retry was blocked by
+  expired SSH authentication; the prior successful check remains separately
+  bound, with no fresh live-empty-queue claim. No jobs were submitted after
+  the pilot. Failed scientific attempts and remote originals remain preserved;
+  scientific acceptance is unchanged.
 - **B/C:** the option lessons now name their current and historical evidence
   locally, correct stale pending-bank text, retain their controls, add
   interpretation prompts and restore the independent stored Heston
