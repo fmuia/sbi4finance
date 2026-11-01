@@ -457,6 +457,40 @@ task ID/version, source hash, bank and catalogue entry; preserve v2 bytes and
 results. Publish neither a numerical-accuracy nor an exact-transition claim
 without the corresponding checks.
 
+#### E2 first-candidate pilot: projected Euler
+
+**Analysis/prototype only: no production target has been adopted.** Test the
+documented absorption fix, described here as projected Euler:
+\[
+V_{j+1}=\max\{V_j+\kappa(L-V_j)h+\sigma\sqrt{V_jh}Z_j^v,0\}.
+\]
+Keep the Gaussian log-price increment
+\((\mu-V_j/2)h+\sqrt{V_jh}(\rho Z_j^v+\sqrt{1-\rho^2}Z_j^\perp)\),
+including its shared variance driver and independent price noise. Zero is not
+absorbing: its next value is \(\kappa Lh>0\). Thus no two consecutive variance
+states are both zero; eight left-point substeps contain at least four positive
+states. In real arithmetic, daily \(I_h=h\sum_jV_j>0\) and conditional price-noise
+variance \((1-\rho^2)I_h>0\) over the declared prior. This argument gives no
+uniform positive lower bound on \(I_h\); finite-precision behavior still needs
+checking. The adapted Gaussian price increment preserves proportional price
+drift. The [Lord–Koekkoek–van Dijk comparison](https://papers.tinbergen.nl/06046.pdf)
+documents absorption's boundary bias and generally better option-price accuracy
+of full truncation: removing this support mismatch does not certify accuracy.
+
+[Andersen's QE scheme](https://www.maths.univ-evry.fr/pages_perso/crepey/Finance/andersen%20vol%20sto.pdf)
+is not an automatic remedy: its high-variance-ratio branch has a zero endpoint
+atom, and the joint price approximation can have zero conditional variance when
+both endpoints are zero. Exact endpoints alone are insufficient.
+[Broadie–Kaya](https://doi.org/10.1287/opre.1050.0247) instead samples conditional
+integrated variance and the joint price law; numerical inversion and its cost
+need separate checks before treating it as a reference or production generator.
+
+Next, use the 64-setting/four-innovation panel above, coupling projected 8/16/32
+substeps with the existing law where valid. Check computed integrated variance,
+leverage, price drift, continuous-time moments/characteristic functions, boundary
+events, finite outputs and measured cost. This is an admission/sensitivity screen,
+not a weak-bias certificate; four paths per setting cannot establish that claim.
+
 ### E3. Reuse data only when the target is unchanged
 
 | Proposed change | Reuse | Required new work |
