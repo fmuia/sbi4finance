@@ -287,13 +287,15 @@ log returns (five trading years). The files store observed returns, target
 parameters and stable trajectory IDs; latent volatility is not an inference
 input. Prefixes of a history stay in its original split.
 
-**Preservation status, 1 November:** all native source shards have been rehashed
-and archived on Oscar. Download, extracted-bank verification and Drive upload
-are in progress under [PR #64](https://github.com/fmuia/sbi4finance/pull/64).
-Do not treat the presence of a partial folder as a completed download. The
-completion receipt will bind every archive part and extracted manifest.
+**Local preservation complete, 1 November:** all 30 archive parts are downloaded
+and hash-verified, and all 23,631 extracted native shards pass integrity checks.
+The [local verification record](../evidence/pilot-results/2026-11-01/oscar-preservation/LOCAL-VERIFICATION.md)
+binds every part and native manifest. **Drive completion remains pending:** 35
+of 40 distribution files were copied before macOS denied destination file and
+identity-metadata access. Strict resume monitors retain the exact destination
+checks. Do not treat the current partial Drive folder as a complete bank.
 
-The destination is `training-banks-20261031/` within the existing
+The Drive destination is `training-banks-20261031/` within the existing
 [path-workshop Drive folder](https://drive.google.com/drive/folders/1LJsR0Qb0RkD4h8XiF3t6OQQlyYDKcI2k).
 Download one model's entire folder, including all ten archive parts and its
 `sha256sums.txt`, `bank-manifest.json` and `archive-receipt.json`.

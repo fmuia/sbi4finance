@@ -367,6 +367,23 @@ These are independent-trajectory marginal screens with repeated prefixes, not co
 
 The 92,104,580-byte final audit archive has SHA-256 `a29fd9bdf1cc9d44aa4a9bcfe0f30125dd4c59e759c8c1bb1cfb649ef4e9a180` and is checksum-verified outside Oscar scratch, alongside all previous models and the new reference audit. The standalone tutorial is packaged with all three native models and verified independently of the checkout: 208 initial payload hashes, 29 tutorial tests and actual seeded 137-day CPU inference for all models. Full lab tests passed 476 tests with three optional PyMC-environment skips; seven notebooks exported 183 cells without genuine errors. Source parity, manifest/claims, Marimo and diff checks passed. Final aggregate reports/figures enter tutorial assets only through the existing acceptance and manifest tools. Source integration is prepared as [draft PR #63](https://github.com/fmuia/sbi4finance/pull/63).
 
+## Oscar preservation: local verification complete — 1 November 2026
+
+All three native million-history trajectory banks are downloaded and verified
+off Oscar: 30 resumable archive parts (29.172 GB), 23,631 extracted shards
+(31.124 GB), with every native payload checked one shard at a time. Historical
+unique results, failed/partial references, old fixed-drift banks and source/config
+snapshots are also archived and logically hash-verified. The [local record](../evidence/pilot-results/2026-11-01/oscar-preservation/LOCAL-VERIFICATION.md)
+binds the inventories, bank identities and verification receipts. No identified
+unique result remains only on Oscar; remote originals remain.
+
+The Drive mirror remains partial. macOS now denies both destination identity
+metadata and ordinary file reads, so exact destination checks and further copies
+are gated. Strict monitors can resume once access is restored. No complete-cloud
+or independent-cloud-download claim is made. This access issue does not affect
+the verified local banks or completed scientific jobs. The numerical/reference
+follow-ups below remain separate from preservation.
+
 ## Bounded numerical diagnosis follow-up — 1 November 2026
 
 This develops [application subplan E](../../tutorial/curriculum/TUTORIAL-REVIEW.md#e-resolve-trajectory-numerical-and-inference-limitations)

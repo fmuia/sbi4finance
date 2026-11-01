@@ -252,9 +252,14 @@ unrelated notebook or transfer.
 
 ### First implementation status
 
-- **A:** source-bank and historical-output packaging/verification is complete;
-  large downloads, extracted-payload checks and Drive uploads are active. No
-  scientific job is being retried as a preservation task.
+- **A:** all three trajectory banks are downloaded; every archive part and all
+  23,631 native shards pass integrity checks. All historical logical payloads
+  and source snapshots are verified off Oscar. No unique output remains only
+  on scratch in the audited scope. The [local verification record](../../lab/evidence/pilot-results/2026-11-01/oscar-preservation/LOCAL-VERIFICATION.md)
+  binds these results. Drive completion is pending because macOS denies
+  destination file and identity-metadata access; strict resume monitors retain
+  the original checks. No scientific job is active or being retried as a
+  preservation task.
 - **B/C:** the option lessons now name their current and historical evidence
   locally, correct stale pending-bank text, retain their controls, add
   interpretation prompts and restore the independent stored Heston
