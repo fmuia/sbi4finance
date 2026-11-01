@@ -116,8 +116,11 @@ def _(cache_task, mo):
         parameter labels shown later are evaluation aids, not inference conditions.
 
         Under the declared physical measure P,
-        $$d\log S_t=(\mu-V_t/2)dt+\sqrt{V_t}\,dW_t^S,
-        \qquad d\langle W^S,W^V\rangle_t=\rho\,dt.$$
+
+        $$
+        d\log S_t=(\mu-V_t/2)dt+\sqrt{V_t}\,dW_t^S,
+        \qquad d\langle W^S,W^V\rangle_t=\rho\,dt.
+        $$
         """),
         mo.md(_equation + "\n\n" + _curve),
         mo.ui.table(_priors, selection=None, pagination=False),

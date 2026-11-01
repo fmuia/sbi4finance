@@ -288,7 +288,11 @@ unrelated notebook or transfer.
   skips), 29 tutorial tests and all seven cached exports (192 cells, zero errors),
   plus Marimo, manifest/claims and copy parity. Offline checks cover all six
   current option cases and nine path model/length combinations. Independent
-  reviews found no code blockers. Rehearsal and two-hour pruning follow content
+  reviews found no code blockers. Live isolated-Chrome checks also cover the
+  current option cases, trajectory model/case/joint controls, the actual
+  137-day input with its labelled 126-day cache, and 760-pixel layouts. No
+  browser runtime errors were found. A display-math delimiter defect found in
+  that review was fixed and checked visually. Rehearsal and two-hour pruning follow content
   refinement; the existing versioned workshop kit has not been repackaged with
   these new notebook interfaces.
 
