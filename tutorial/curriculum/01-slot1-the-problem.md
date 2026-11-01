@@ -23,6 +23,9 @@ times it), and section 6's slider a fixed run of 500 smiles. After the takeaways
 the data that the later slots use, the formulas and the study's assumptions. The notebook is
 [`slot1_intro.py`](../notebooks/slot1_intro.py); its structure, style and formatting follow the slot 5 SVJ
 notebook of #38 (branch `feat/tutorial-slot5-svj-advanced`, commit `d00ccb1`).
+The talk's slides are [`slides/slot1/slot1.tex`](../slides/slot1/slot1.tex), in the tutorial's BayesOps Beamer
+theme, with the notebook's figures exported by `slides/slot1/export_figures.py`; they are compiled in the tutorial's
+Overleaf project ([`slides/slot1/README.md`](../slides/slot1/README.md)).
 
 ## The slot in three sentences
 

@@ -1137,12 +1137,12 @@ def _(
         _ax.plot(100 * sigma_grid, np.exp(-0.5 * _put**2), color=plots.SERIES[1], label="likelihood, put")
         _ax.plot(100 * sigma_grid, _both / _both.max(), color=plots.INK, linestyle="--", label="posterior from both")
         _ax.set_xlim(8, 32)
-        _ax.set_ylim(0, 1.25)
+        _ax.set_ylim(0, 1.45)
         _ax.set_yticks([])
         _ax.set_xlabel("Black–Scholes volatility σ (%)")
         _noise = "the assumed noise" if _multiple == 1 else f"{_multiple:.2g} times the assumed noise"
         _ax.set_title(f"{_noise}: misses of {abs(_atm[_best]):.1f} and {abs(_put[_best]):.1f}", loc="left")
-    _axes[0].legend(fontsize=7.5, loc="upper right")
+    _axes[0].legend(fontsize=7.5, loc="upper center")
     mo.vstack([
         _fig,
         mo.md(f"""
@@ -1224,7 +1224,7 @@ def _(
     _left.set_xlabel("standardized moneyness δ")
     _left.set_ylabel("implied volatility (%)")
     _left.set_title("SPY's smile, Black–Scholes and Heston", loc="left")
-    _left.legend(fontsize=7.5, loc="upper right", ncols=2)
+    _left.legend(fontsize=7.5, loc="upper center", ncols=2)
     for _rho, _color in ((-0.85, plots.SERIES[1]), (heston_spy_fit[3], plots.INK), (-0.4, plots.SERIES[2])):
         _right.plot(_deltas, 100 * heston_iv[_rho][2], color=_color, linewidth=1.5,
                     label=f"ρ = {_rho:.2f}".replace("-", "−"))
