@@ -166,14 +166,16 @@ scientific claim; retain the original reference methods, chain/draw axes, task a
 | `src/sbi4f_tutorial/` | The code the notebooks run, copied unchanged from the project's lab: Black–Scholes and implied volatility (`surface.py`), the Heston Fourier pricer (`hkde.py`), rough Bergomi by Monte Carlo (`rough_bergomi.py`, `bergomi.py`, `pricing.py`), the current network's adapter and native sampler (`full_surface.py`), and the notebooks' loaders and figures (`teaching.py`) |
 | `assets/` | The trained networks, the accepted study results, quick-check outputs, task files, data and figures that the notebooks load |
 | `MANIFEST.md` | Every shipped asset, with its size, SHA-256 and origin; excludes downloaded `local-checkpoints/` |
-| `CLAIMS.md` | Every number said on stage, with the study that produced it and its status |
+| `CLAIMS.md` | Historical calibration-study claims, source outputs and actual verification status |
 | `tests/` | `pixi run test` checks the files and the code; `pixi run test-notebooks` runs every notebook headless (a few minutes) |
 
 ## Where the numbers come from
 
-Stage claims come from the accepted studies in `CLAIMS.md`. The current development replays are
-labelled separately and do not promote their models to accepted status. A pilot value is labelled as one and
-never quoted as a result. The simulations, training runs and studies behind them, and a sixteen-lecture course with
+Historical calibration-study claims and their outcomes are recorded in `CLAIMS.md`.
+Current option replays and trajectory diagnostics identify their own tasks, checkpoints and source reports.
+Pilot values and failed screens can be inspected with their explicit labels; only the stated verification
+supports a scientific claim, and a working replay does not promote its model to accepted status.
+The simulations, training runs and studies behind them, and a sixteen-lecture course with
 the full theory, are in the project repository, [fmuia/sbi4finance](https://github.com/fmuia/sbi4finance): the
 course in `course/`, the code that produced every asset in `lab/`.
 

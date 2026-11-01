@@ -279,9 +279,13 @@ unrelated notebook or transfer.
   removed zero daily integrated variance in that panel, without establishing
   weak accuracy or selecting a production law. No production refit or new
   acceptance result is claimed.
-- **F:** first-tranche unit, cached export, Marimo and release/parity checks are
-  being run as changes complete. Rehearsal and two-hour pruning follow content
-  refinement.
+- **F:** first-tranche checks pass: 505 lab tests (three unchanged optional PyMC
+  skips), 29 tutorial tests and all seven cached exports (192 cells, zero errors),
+  plus Marimo, manifest/claims and copy parity. Offline checks cover all six
+  current option cases and nine path model/length combinations. Independent
+  reviews found no code blockers. Rehearsal and two-hour pruning follow content
+  refinement; the existing versioned workshop kit has not been repackaged with
+  these new notebook interfaces.
 
 ## Historical review: 26 October 2026
 

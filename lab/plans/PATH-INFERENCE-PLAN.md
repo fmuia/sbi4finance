@@ -485,11 +485,20 @@ both endpoints are zero. Exact endpoints alone are insufficient.
 integrated variance and the joint price law; numerical inversion and its cost
 need separate checks before treating it as a reference or production generator.
 
-Next, use the 64-setting/four-innovation panel above, coupling projected 8/16/32
-substeps with the existing law where valid. Check computed integrated variance,
-leverage, price drift, continuous-time moments/characteristic functions, boundary
-events, finite outputs and measured cost. This is an admission/sensitivity screen,
-not a weak-bias certificate; four paths per setting cannot establish that claim.
+The [first numerical pilot](../evidence/path-inference/2026-11-01/numerical-pilot/README.md)
+completed on Oscar as job 8206381 at source `5eeefc4`, using the 64-setting,
+four-innovation panel and coupled 8/16/32 grids. All recorded values were finite.
+The projected law had zero daily integrated-variance atoms in this panel; the
+signed control had 11,412 / 6,691 / 3,342 zero days respectively. These deliberately
+selected settings do not estimate a population atom rate. The allocation used
+13 CPU-seconds and 203.3 MiB peak memory, with no GPU. Source, results and logs
+are preserved locally and provider-confirmed uploaded.
+
+Next, specify a bounded fixed-parameter precision check against continuous-time
+moments and characteristic functions before deciding on a production law. Retain
+the coupled-grid sensitivity and explicit boundary-bias concern. Four paths per
+setting cannot certify weak accuracy; the completed support screen neither
+selects projected Euler nor justifies a production bank regeneration/refit.
 
 ### E3. Reuse data only when the target is unchanged
 
