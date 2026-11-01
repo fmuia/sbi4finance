@@ -126,6 +126,7 @@ def _(cache_task, mo):
         mo.md(f"**Numerical target:** `{cache_task['numerics']['scheme']}`, **{_steps} internal steps per observed day**. "
               f"The estimator accepts **{cache_task['n_observations']:,} daily returns at most**, "
               f"with dt = **{cache_task['dt_years']:.6g} years**. "
+              "Internal substeps are used by the simulator; participants observe one daily return. "
               "These equations explain the model; the task's finite-grid simulator defines the experiment."),
         mo.accordion({"Declared numerical-law settings": mo.ui.table(
             [{"setting": _name.replace("_", " "), "declared value": _value}
@@ -202,6 +203,47 @@ def _(cache_report, cached, mo, observed_days):
               f"{cache_report['limitations']}"),
     ])
     return
+
+
+@app.cell(hide_code=True)
+def _(cache_arrays, cache_task, cached, case_choice, mo, observed_days, trajectory):
+    _length = observed_days.value
+    _revealed = cache_arrays["observations"][case_choice.value:case_choice.value + 1, :_length].copy()
+    _inputs = trajectory.conditioning_data(_revealed, cache_task)
+    _maximum = cache_task["n_observations"]
+    _indices = sorted({0, max(0, _length - 2), _length - 1}
+                      | set(range(_length, min(_length + 2, _maximum))))
+    conditioning_preview = {
+        "requested_length": _length,
+        "shapes": [{"input tensor": _name, "shape": str(_value.shape), "dtype": str(_value.dtype)}
+                   for _name, _value in _inputs.items()],
+        "time_context": _inputs["time_context"][0].tolist(),
+        "rows": [{"day index (1-based)": _index + 1,
+                  "role": "observed" if _inputs["summary_mask"][0, _index] else "padding",
+                  "scaled return": float(_inputs["observations"][0, _index, 0]),
+                  "normalized time": float(_inputs["observations"][0, _index, 1]),
+                  "mask": bool(_inputs["summary_mask"][0, _index])}
+                 for _index in _indices],
+    }
+    mo.accordion({"Follow one history into the network": mo.vstack([
+        mo.md(f"**Actual inputs for the selected case at exactly {_length} revealed days.** "
+              "This calls the same `trajectory.conditioning_data` used by inference, "
+              "passing only the selected prefix. Constructing these arrays does not load a model or run inference. "
+              f"The displayed cached posterior still uses **{cached['length']} days**, as labelled above."),
+        mo.ui.table(conditioning_preview["shapes"], selection=None, pagination=False),
+        mo.md(f"Known `time_context`: **{conditioning_preview['time_context']}** = "
+              f"[observed length / {_maximum}, daily step / (1/252 year)]. "
+              "The observation tensor has two features: scaled return and normalized time. "
+              "The mask tells the GRU which rows are observed; padding is not another price observation."),
+        mo.ui.table(conditioning_preview["rows"], selection=None, pagination=False),
+        mo.md(r"Returns use fixed physical scaling, $r_t/\sqrt{0.04\,\Delta t}$. "
+              "The reference variance 0.04 is a choice of units, not an estimate of this path's latent variance. "
+              "Dividing every path by its own observed volatility would remove variance-amplitude information. "
+              "Observed time features are day index / maximum history; padded returns and times are zero and their masks are false. "
+              "No unrevealed return is read for this preview. Parameter labels remain separate training targets; "
+              "neither synthetic truth nor hidden volatility appears in these inputs."),
+    ])})
+    return (conditioning_preview,)
 
 
 @app.cell
