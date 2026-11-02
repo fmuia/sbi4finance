@@ -148,11 +148,14 @@ interactive review; they were not executed during this integration.
 ## Author or change a lesson
 
 Start with the [editing map](../README.md#start-editing-here) and the slot's plan in `curriculum/`.
-The main content files are `notebooks/slot4_heston_bayesflow.py` and `notebooks/slot5_calibration.py`;
-`curriculum/00-overview.md` fixes scope and responsibilities. Edit the explanation, figures and learning sequence
-alongside that plan. First reconcile the slot 4/5 plans and prose with the complete-surface Heston → known-curve
-rough → joint-curve rough sequence: retain historical SPY provenance and keep thin-chain extensions optional.
-State the model, curve conditioning, quote-noise law and evidence status explicitly.
+The three core content files are `notebooks/slot4_heston_bayesflow.py`,
+`notebooks/slot5_calibration.py` and `notebooks/trajectory_inference.py`.
+The current [application and collaborator plan](curriculum/TUTORIAL-REVIEW.md#g-collaborator-handover-before-the-next-feedback-round)
+supersedes older returns exclusions and slot timings. Edit explanations, equations,
+visible code examples and controls in the notebook. Executing numerical helpers
+have their own source locations: changing a displayed code block alone does not
+change the simulator or fitted estimator. Keep historical SPY studies distinct,
+and state the model, inputs, noise assumptions and evidence status locally.
 
 Put new numerical work in the lab. Use its existing `copy-to-tutorial` tool for runtime functions and its
 publication tools for assets; [the lab README](../lab/README.md#from-lab-code-to-a-lesson) gives the workflow.
@@ -177,7 +180,7 @@ scientific claim; retain the original reference methods, chain/draw axes, task a
 | Path | What |
 |---|---|
 | `notebooks/` | The marimo notebooks: plain Python files, reactive, readable in any editor |
-| `src/sbi4f_tutorial/` | The code the notebooks run, copied unchanged from the project's lab: Black–Scholes and implied volatility (`surface.py`), the Heston Fourier pricer (`hkde.py`), rough Bergomi by Monte Carlo (`rough_bergomi.py`, `bergomi.py`, `pricing.py`), the current network's adapter and native sampler (`full_surface.py`), and the notebooks' loaders and figures (`teaching.py`) |
+| `src/sbi4f_tutorial/` | The participant runtime: unchanged numerical copies from the lab plus authored UI/loaders. `backbones.py` is authored; `trajectory.py` mixes copied numerical and authored presentation definitions. The copy registry identifies each boundary. Core numerical modules include `surface`, `hkde`, `rough_bergomi`, `pricing`, `full_surface` and `teaching`. |
 | `assets/` | The trained networks, the accepted study results, quick-check outputs, task files, data and figures that the notebooks load |
 | `MANIFEST.md` | Every shipped asset, with its size, SHA-256 and origin; excludes downloaded `local-checkpoints/` |
 | `CLAIMS.md` | Historical calibration-study claims, source outputs and actual verification status |

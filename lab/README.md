@@ -26,9 +26,15 @@ Current validation is development evidence, not automatic model or lesson accept
 conditional references J2 and product/long-end comparisons J3 remain pending. See [course/status.md](../course/status.md)
 and the [numerical plan](plans/NUMERICAL-EXPERIMENT-PLAN.md) before starting additional work.
 
-The separate [path-inference plan](plans/PATH-INFERENCE-PLAN.md) specifies the proposed Heston and rough Bergomi
-return-history workstream, its proof-of-concept lessons, growing-prefix tasks and bounded first Oscar tranche.
-It includes the seeded bank, arbitrary-prefix recurrent inference, numerical/reference checks and bounded Oscar launcher. The option-surface results retain their existing scope.
+Trajectory inference is the third core application. Its three million-history
+banks, native models and preserved outputs are available through the
+[training-data guide](plans/training-data-guide.md); the
+[path plan](plans/PATH-INFERENCE-PLAN.md) records growing-prefix inference and
+its unresolved numerical/calibration questions. The
+[collaborator handover plan](../tutorial/curriculum/TUTORIAL-REVIEW.md#g-collaborator-handover-before-the-next-feedback-round)
+separates scheduler-free workers, optional deployment wrappers and historical
+Oscar controllers. It defines the remaining clean-machine and compute rehearsal;
+no other cluster is claimed tested by that plan.
 
 ## Canonical workflow
 

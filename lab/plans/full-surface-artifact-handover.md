@@ -1,5 +1,14 @@
 # Loading the new tutorial artifacts
 
+> **Historical operational record (superseded 1 November 2026).** The repository-root
+> commands and Oscar/SCP paths below describe the original artifact export, not
+> the current collaborator setup. Start with the [tutorial README](../../tutorial/README.md),
+> [current data guide](training-data-guide.md) and
+> [handover execution plan](../../tutorial/curriculum/TUTORIAL-REVIEW.md#g-collaborator-handover-before-the-next-feedback-round).
+> Published native model downloads now exist; retain this record for the original
+> checkpoint/reference provenance.
+
+
 The [backbone review guide](tutorial-backbone-review.md) now connects these
 artifacts to an actual marimo notebook with explicit cached and live roles,
 alongside fixed known-curve and joint-curve rough development replays.
