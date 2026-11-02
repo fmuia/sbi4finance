@@ -14,6 +14,7 @@ from numpy.testing import assert_array_equal, assert_allclose
 
 from sbi4finance import heston
 from sbi4finance.calibration import teaching
+from sbi4f_tutorial.heston_options import lesson as heston_lesson
 
 LAB = Path(__file__).resolve().parents[1]
 REPO = LAB.parent
@@ -59,7 +60,7 @@ class HestonLessonHelperTests(unittest.TestCase):
     def test_predictive_preserves_whole_rows_chain_indices_and_exact_observations(self):
         task_before=copy.deepcopy(self.task);rows_before=self.rows.copy();observed_before=self.observed.copy()
         chains=self.rows.reshape(2,10,4)
-        with patch.object(teaching,'heston_smile',side_effect=lambda task,row:np.full(63,row[0]+2*row[1])):
+        with patch.object(heston_lesson,'heston_smile',side_effect=lambda task,row:np.full(63,row[0]+2*row[1])):
             found=teaching.heston_posterior_predictive(self.task,{'neural':self.rows,'reference':chains},self.observed,truth=self.rows[3],draws_per_set=6)
         for label,original in [('neural',self.rows),('reference',chains)]:
             panel=found['draw_sets'][label];indices=np.linspace(0,19,6,dtype=int)
@@ -74,7 +75,7 @@ class HestonLessonHelperTests(unittest.TestCase):
 
     def test_predictive_noise_is_added_once_and_negative_quotes_are_retained(self):
         task=copy.deepcopy(self.task);task['context']['quote_noise_std']=[.1]*63
-        with patch.object(teaching,'heston_smile',return_value=np.zeros(63)):
+        with patch.object(heston_lesson,'heston_smile',return_value=np.zeros(63)):
             found=teaching.heston_posterior_predictive(task,{'neural':self.rows},self.observed,draws_per_set=8,seed=12)
         panel=found['draw_sets']['neural'];z=np.random.default_rng(12).standard_normal((8,63))
         assert_array_equal(panel['standard_normal_noise'],z)
@@ -84,7 +85,7 @@ class HestonLessonHelperTests(unittest.TestCase):
         assert_array_equal(found['observations'],self.observed)
 
     def test_truth_overlay_and_noise_seed_do_not_change_posterior_mean_prices(self):
-        with patch.object(teaching,'heston_smile',side_effect=lambda task,row:np.full(63,row[0])):
+        with patch.object(heston_lesson,'heston_smile',side_effect=lambda task,row:np.full(63,row[0])):
             a=teaching.heston_posterior_predictive(self.task,{'neural':self.rows},self.observed,truth=self.rows[0],draws_per_set=4,seed=3)
             b=teaching.heston_posterior_predictive(self.task,{'neural':self.rows},self.observed,truth=self.rows[1],draws_per_set=4,seed=3)
             c=teaching.heston_posterior_predictive(self.task,{'neural':self.rows},self.observed,draws_per_set=4,seed=4)
@@ -100,7 +101,7 @@ class HestonLessonHelperTests(unittest.TestCase):
                ({'a':np.full((2,4),np.nan)},self.observed,{}),
                ({'a':self.rows},self.observed,{'truth':[1.]*4}),
                ({'a':np.tile(self.rows,(4,1)),'b':np.tile(self.rows,(4,1)),'c':np.tile(self.rows,(4,1))},self.observed,{'draws_per_set':64})]
-        with patch.object(teaching,'heston_smile') as price:
+        with patch.object(heston_lesson,'heston_smile') as price:
             for sets,observations,options in cases:
                 with self.subTest(options=options),self.assertRaises(ValueError):teaching.heston_posterior_predictive(self.task,sets,observations,**options)
             price.assert_not_called()

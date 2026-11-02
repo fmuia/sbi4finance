@@ -12,21 +12,19 @@ import platform
 
 import numpy as np
 
+from .runtime_sources import runtime_hashes
+
 from .gbm import simulate_log_returns
+
+# Shared implementations are owned by the tutorial runtime.
+from sbi4f_tutorial.shared.bank_helpers import (
+    _json,
+    _integer,
+)
 
 
 TASK_ID = "gbm_drift_known_vol_bank_v1"
 SPLITS = {"train": 0, "validation": 1, "test": 2}
-
-
-def _json(value):
-    return json.dumps(value, sort_keys=True, indent=2, allow_nan=False) + "\n"
-
-
-def _integer(value, name, *, minimum=0):
-    if isinstance(value, bool) or not isinstance(value, (int, np.integer)) or value < minimum:
-        raise ValueError(f"{name} must be an integer >= {minimum}")
-    return int(value)
 
 
 def validate_config(config):
@@ -130,8 +128,9 @@ def write_bank(path, config):
         "truth_available": ["drift"], "future_outcomes_in_conditioning": False,
         "rng": "PCG64; SeedSequence(root_seed, task SHA256 words, split code, local ID, purpose)",
         "split_codes": SPLITS, "versions": {"numpy": np.__version__, "python": platform.python_version()},
-        "source_sha256": {name: _sha256(Path(__file__).with_name(name))
-                          for name in ("gbm.py", "gbm_bank.py")},
+        "source_sha256": {**{name: _sha256(Path(__file__).with_name(name))
+                          for name in ("gbm.py", "gbm_bank.py", "runtime_sources.py")},
+                          **runtime_hashes(("sbi4f_tutorial.shared.gbm", "sbi4f_tutorial.shared.bank_helpers"))},
         "splits": {},
     }
     try:

@@ -38,7 +38,17 @@ Preserve the old result as historical evidence. A separate replay is worthwhile 
 
 ## Reuse within sbi4finance
 
-Develop under `lab/`, preserving tutorial independence. This plan is based on the integrated course/tutorial/lab tree at `76c4967`; at the time of the fetch, GitHub `main` was still `dd001a3`. The new branch must follow the final layout integration before code is merged.
+**Current source ownership, 2 November 2026:** edit shared physical-measure task
+and simulation code in `tutorial/src/sbi4f_tutorial/trajectories/simulation.py`
+and masking/native inference in `trajectories/inference.py`; the Heston physical
+kernel lives in `heston_options/simulator.py`. Lab workers import these same
+implementations and retain disk-backed banks, production training/evaluation,
+references and publication. Keep the complete checkout and use the locked lab
+environment. See the [current editing map](../../tutorial/README.md#author-or-change-a-lesson).
+The original integration basis below records how the initial pipeline was built;
+it does not override this ownership or the later completed-run status.
+
+**Original integration basis:** development started under `lab/`, preserving tutorial independence, from the integrated course/tutorial/lab tree at `76c4967`; at the time of the fetch, GitHub `main` was still `dd001a3`. The initial branch followed the final layout integration before merge.
 
 The layout retains `src/sbi4finance/heston.py` and `rough_bergomi.py`, but removes the older Heston path-inference pipeline. Recover only the needed functions and tests from `dd001a3`: `heston_bank.py`, `heston_inference.py`, `heston_reference.py`, `heston_forecast.py`, their generation/training/reference scripts, and their task definitions. Rehouse these in a focused `src/sbi4finance/path_inference/` package rather than restoring every historical workflow.
 
@@ -613,7 +623,7 @@ Before new acceptance evaluation:
 
 **Delivery gate:** a compact diagnosis and chosen-target record precedes any
 production generation/refit. New numerical results reach the lesson only through
-the existing exporter, catalogue, manifest and copy-parity routes, with labels
+the existing exporter, catalogue, manifest and runtime-boundary checks, with labels
 matching the checks actually passed. A new task version may need a separately
 reviewed runtime/loader extension; do not overwrite the v2 tutorial assets to
 bypass its strict task contract. Until then retain all current candidate and

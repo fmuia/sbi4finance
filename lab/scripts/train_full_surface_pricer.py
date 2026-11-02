@@ -19,6 +19,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 from sbi4finance.calibration import bank_collection, full_surface, pricer_net, tasks  # noqa: E402
 from sbi4finance.gbm_bank import _write_json  # noqa: E402
+from sbi4finance.runtime_sources import option_inference_runtime_hashes  # noqa: E402
 
 
 def digest(path):
@@ -60,12 +61,13 @@ def run_training(args):
     task = full_surface.validate_task(manifest["configuration"]["task"])
     if any(not len(splits[name]["parameters"]) for name in ("train", "validation")):
         raise ValueError("nonempty training and validation splits required")
-    sources = [Path(__file__), *sorted((ROOT / "src/sbi4finance/calibration").glob("*.py"))]
+    sources = [Path(__file__), ROOT / "src/sbi4finance/runtime_sources.py", *sorted((ROOT / "src/sbi4finance/calibration").glob("*.py"))]
     record = {"format": "full_surface_pricer_training_v1", "status": "training",
               "task_fingerprint": manifest["task_fingerprint"], "task_id": task["task_id"],
               "bank_manifest_sha256": manifest_hash, "collection_id": manifest.get("collection_id"),
               "generator_source_sha256": manifest.get("source_sha256"),
               "source_sha256": {str(p.relative_to(ROOT)): digest(p) for p in sources},
+              "shared_runtime_source_sha256": option_inference_runtime_hashes(task),
               "environment_sha256": {name: digest(ROOT / name) for name in ("pyproject.toml", "pixi.lock")},
               "versions": {"python": platform.python_version(),
                            **{name: metadata.version(name) for name in ("keras", "jax", "numpy", "scipy")}},
@@ -104,7 +106,8 @@ def run_training(args):
                       status="completed", seconds=time.perf_counter() - before)
         if digest(args.bank / "manifest.json") != manifest_hash:
             raise ValueError("bank manifest changed during training")
-        if any(digest(ROOT / name) != value for name, value in record["source_sha256"].items()):
+        if (any(digest(ROOT / name) != value for name, value in record["source_sha256"].items())
+                or option_inference_runtime_hashes(task) != record["shared_runtime_source_sha256"]):
             raise ValueError("source changed during training")
         pricer_net.save_record(checkpoint, record)
         _write_json(args.out / "run.json", record)

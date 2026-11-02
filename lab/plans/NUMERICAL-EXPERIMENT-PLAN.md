@@ -95,6 +95,16 @@ supersedes older returns exclusions and the initial lesson-integration status
 below. Keep active trajectory code and its dependency closure during trimming.
 
 
+**Source ownership update, 2 November 2026:** the lesson runtime is now owned
+under `tutorial/src/sbi4f_tutorial/{heston_options,rough_options,trajectories,shared}/`.
+Lab workflows reuse these implementations; there is no source-copy publication
+step. See the [current source map and handover](../../tutorial/README.md#collaborator-handover)
+and [refactor plan](../../tutorial/curriculum/TUTORIAL-REVIEW.md#h-tutorial-owned-runtime-refactor).
+Keep both sibling directories from one revision on compute. Read/train on
+preserved banks normally; append or resume frozen generation only with its
+producer-matching historical source/environment. New generation records the
+changed source identity. This organization change requires no new scientific fit.
+
 **First content-review action:** reconcile [the slot 4 curriculum](../../tutorial/curriculum/04-slot4-heston-in-bayesflow.md), [the slot 5 curriculum](../../tutorial/curriculum/05-slot5-rough-bergomi-to-a-reserve.md) and their notebook prose with the complete-surface Heston → known-curve rough → joint-curve rough sequence. The existing narrative still contains historical SPY/known-curve framing, and the slot 5 plan names a thin-chain case as required. Retain historical SPY provenance, but keep thin-chain material optional rather than a prerequisite for the core lesson. Cached integration and completed numerical inputs do not mean the lessons are fully curated.
 
 Use the supplied data and saved cases to finish that sequence. J1's marginal calibration, contraction and observation-dependence evidence does not complete J2's conditional references or J3's financial-product comparisons. Keep dataset size, optimizer-update count, task/curve prior, observation noise and reference method explicit when comparing results. New numerical work should resolve a named lesson claim; another bank or infrastructure layer is not the default next step.
@@ -102,7 +112,7 @@ Use the supplied data and saved cases to finish that sequence. J1's marginal cal
 The [repository README](../../README.md) is the collaborator front door. Maintain this plan, the curriculum overview and course status in place. Trim in small reviewed follow-ups:
 
 1. **Keep active content and its dependency closure.** Retain the core notebooks and course, their runtime, publication tools, tests, task configurations and code used by supported load/train/evaluate/generate/reference/product commands. Retain historical accepted checkpoints and exact reference evidence while a lesson or claim still uses them.
-2. **Check dependencies before cutting.** Search imports, CLI/pixi tasks, tests, the copied-function registry/parity checks, asset manifests, claims, source-hash bindings and links. Deferred sparse/legacy helpers may still supply utilities to active routes; first separate or replace that dependency with checks.
+2. **Check dependencies before cutting.** Search imports, CLI/pixi tasks, tests, the runtime-boundary/parity checks, asset manifests, claims, source-hash bindings and links. Deferred sparse/legacy helpers may still supply utilities to active routes; first separate or replace that dependency with checks.
 3. **Retire dated orchestration and bulk records.** Once no supported route needs them, remove one-off launch/recovery controllers, duplicated frozen operator copies and bulk dated logs/per-case outputs from the working tree. Preserve a pinned source commit/tag, immutable external archives and checksums, plus the compact record needed to support every retained claim. Update references in the same change. Git retains retired source; failures and scientific provenance are not relabelled or erased. Do not repurpose dated controllers bound to old checkouts as current launchers.
 4. **Use the current three-application scope.** The Heston and rough-Bergomi trajectory application is active core work; the earlier D21 returns exclusion is superseded for that application. Separate legacy SVJ/multifractal take-home material remains outside this refinement scope, but utility dependencies must be checked before removal. Preserve unique earlier ideas through immutable [PR 37 source](https://github.com/fmuia/sbi4finance/tree/1f9972ecb2bee087248af1f2abef7bcdf0c7a125) and [PR 38 source](https://github.com/fmuia/sbi4finance/tree/d00ccb121be1e93a1100b6681ca1e17ec0c3b573). PR 40's promotion plan is independent; no PR state changes here.
 5. **Validate the smaller route.** Run the affected lab tests/release checks and tutorial independence/parity/notebook checks. Stop when further removal would obscure a retained scientific claim, break a supported command or require an abstraction solely to justify deletion.
@@ -112,7 +122,7 @@ The [repository README](../../README.md) is the collaborator front door. Maintai
 Two completed, Oscar-specific continuation controllers are retired from
 `lab/cluster/`. They are not the canonical generation/training/evaluation
 interface. A tracked-text search of names and SHA-256 identities, plus the
-current Python imports, CLI/pixi tasks, tests, publication/copy registry and
+then-current Python imports, CLI/pixi tasks, tests, publication/copy registry and
 Markdown references, found only historical consumers and the explanatory
 documentation. No worker, notebook, current test or supported command invokes
 either controller.
@@ -150,10 +160,12 @@ and failed attempts, is unchanged. To reproduce that old no-submission handoff
 check, use its full pinned `08f4ebde1b47893057c61706a1a94ae017806c47`
 checkout. The source-recovery check was run in a temporary copy of that layout
 with the exact pinned helper, checker and plan; scheduler calls remained mocked.
-All four cases in `tests/test_full_surface_post_bank_operator.py` passed;
+At that retirement baseline, all four cases in
+`tests/test_full_surface_post_bank_operator.py` passed; the then-current
 `studies/copy_to_tutorial.py --check`, `studies/manifest.py --check` and
-`studies/claims.py --check` report current outputs. These checks cover the
-retained active boundary. The next candidate operator copies are retained
+`studies/claims.py --check` passed. The current source-ownership refactor replaces
+copy checking with `studies/runtime_boundary.py`; the historical record is
+retained against its original source revision. The next candidate operator copies are retained
 until their distinct behavior and provenance have a separate retirement proof.
 
 This bounded batch changes no numerical worker, task, model, scientific result

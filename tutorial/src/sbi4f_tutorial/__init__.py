@@ -1,8 +1,7 @@
-"""The runtime of the tutorial notebooks: everything they compute live, and the loaders of what they show cached.
+"""The self-contained, authoritative runtime of the tutorial notebooks.
 
-The tutorial depends on nothing else in the repository. Each module holds the functions the notebooks need from
-the same-named lab module (lab/src/sbi4finance, lab/checks), copied unchanged and under the same names. The code
-written for the tutorial (slot 1's toy example, paths.py, and reading the tasks the lab stored) is listed in
-lab/studies/copy_to_tutorial.py, which refreshes the copies; lab/tests/test_tutorial_parity.py fails when a copy
-differs from the lab's code. The notebooks read their inputs from tutorial/assets/ only (paths.py).
+Application helpers live in heston_options, rough_options and trajectories.
+Shared numerical and presentation components live in shared. Lab workers reuse
+these implementations; the tutorial never imports lab code. The former flat
+module names remain thin compatibility imports. Inputs are local to assets/.
 """

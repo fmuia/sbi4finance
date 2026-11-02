@@ -14,7 +14,7 @@ from unittest import mock
 
 import numpy as np
 
-from sbi4f_tutorial import trajectory
+from sbi4f_tutorial.trajectories import lesson as trajectory
 
 
 def write_json(path, value):
@@ -127,7 +127,7 @@ class Offline(importlib.abc.MetaPathFinder):
         if fullname.split('.')[0] in {'bayesflow','keras','jax','sbi4finance'}:
             raise AssertionError('cached trajectory imported backend: '+fullname)
 sys.meta_path.insert(0,Offline())
-from sbi4f_tutorial import trajectory
+from sbi4f_tutorial.trajectories import lesson as trajectory
 for model in trajectory.MODEL_LABELS:
     trajectory.load_example(model)
 """

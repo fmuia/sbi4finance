@@ -15,6 +15,21 @@ HTML preview does not contain subsequent notebook edits; use the agreed Git
 revision for collaboration. Model and bank distribution does not change any
 recorded numerical or scientific limitation.
 
+## Source and environment for existing banks
+
+Keep the complete current checkout when installing the locked lab environment:
+lab workers reuse the numerical runtime under the sibling `tutorial/` directory.
+The participant-only notebook dependencies are separate, so the lab can retain
+its recorded BayesFlow environment. Runtime editing locations are in the
+[tutorial source map](../../tutorial/README.md#author-or-change-a-lesson).
+
+The source-ownership refactor does not rewrite downloaded banks, task files,
+checkpoints or their identities. Existing banks can be read and used for a new
+fit from the current checkout. Extending an existing collection or resuming its
+generation additionally requires its original producer source/runtime identity;
+use the matching historical checkout/environment for that operation. A newly
+generated bank records the new source identity. Keep native manifests unchanged.
+
 ## Access and local paths
 
 The [29 October option-backbone release](https://github.com/fmuia/sbi4finance/releases/tag/tutorial-backbones-2026-10-29)

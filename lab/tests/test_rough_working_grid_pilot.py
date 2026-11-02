@@ -11,6 +11,7 @@ import numpy as np
 
 from sbi4finance.calibration import numerical_pilot, pricing, tasks
 from sbi4finance.calibration import rough_working_grid_pilot as pilot
+from sbi4f_tutorial.shared import pricing as core_pricing
 
 
 class WorkingGridDeclarationTests(unittest.TestCase):
@@ -131,9 +132,9 @@ class WorkingGridExecutionTests(unittest.TestCase):
                 raise ValueError("predeclared test failure")
             return original(*args, **kwargs)
 
-        with patch.object(pricing, "rough_block", side_effect=fail_on_second) as mocked:
+        with patch.object(core_pricing, "rough_block", side_effect=fail_on_second) as mocked:
             report = pilot.run_component(self.declaration, 0, output)
-            self.assertIs(pricing.rough_block, mocked)
+            self.assertIs(core_pricing.rough_block, mocked)
         self.assertEqual(len(calls), 2)
         self.assertEqual(report["status"], "failed")
         self.assertEqual([a["status"] for a in report["attempts"]], ["priced", "failed"])
@@ -146,7 +147,7 @@ class WorkingGridExecutionTests(unittest.TestCase):
         self.assertEqual(result["comparisons"][0]["status"], "incomplete")
 
     def test_interrupted_missing_and_censored_are_not_mc_failures(self):
-        with patch.object(pricing, "rough_block", side_effect=SystemExit("time limit")):
+        with patch.object(core_pricing, "rough_block", side_effect=SystemExit("time limit")):
             report = pilot.run_component(self.declaration, 0, self.root / "interrupted")
         self.assertEqual(report["status"], "interrupted")
         result = pilot.reduce_components(self.declaration, [report], accounting=[

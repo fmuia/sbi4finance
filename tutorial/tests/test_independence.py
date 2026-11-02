@@ -28,7 +28,9 @@ class IndependenceTests(unittest.TestCase):
                 top = {name.split(".")[0] for name in imported_modules(path)}
                 self.assertNotIn("sbi4finance", top)
                 if path.is_relative_to(TUTORIAL / "src"):
-                    allowed = set(sys.stdlib_module_names) | {RUNTIME, "numpy", "scipy", "matplotlib", "bayesflow"}
+                    # Numba is a lazy, optional acceleration for lab generation; cached
+                    # viewing and the explicit NumPy simulator require no Numba install.
+                    allowed = set(sys.stdlib_module_names) | {RUNTIME, "numpy", "scipy", "matplotlib", "bayesflow", "numba"}
                     self.assertLessEqual(top, allowed)
 
     def test_code_neither_edits_sys_path_nor_climbs_out_of_tutorial(self):

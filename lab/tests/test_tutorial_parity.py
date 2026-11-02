@@ -1,9 +1,9 @@
-"""The tutorial's runtime (tutorial/src/sbi4f_tutorial) is the lab's code and returns the lab's numbers.
+"""Lab APIs reuse tutorial-owned code and preserve numerical outputs.
 
-The tutorial never imports the lab: its runtime holds copies of the lab functions the notebooks need, under the
-same names, and its assets are copies of lab files. This test reads the tutorial from the lab's side only. A
-copied function that differs from the lab's, a name the runtime uses but does not define, a stored task that is
-not the lab's, or a stale asset fails here before it reaches the stage.
+Core shared APIs are identical imported objects, not synchronized copies.
+Historical sector/long-end studies retain their original input globals and
+serve as independent numerical regression references. Published assets keep
+separate provenance and publication checks.
 """
 
 import builtins
@@ -14,7 +14,6 @@ import inspect
 import json
 from pathlib import Path
 import pkgutil
-import sys
 import unittest
 
 import numpy as np
@@ -22,7 +21,6 @@ from numpy.testing import assert_array_equal
 
 LAB = Path(__file__).resolve().parents[1]
 REPO = LAB.parent
-sys.path.insert(0, str(REPO / "tutorial" / "src"))
 
 from sbi4f_tutorial import bs_hierarchy as t_sector  # noqa: E402
 from sbi4f_tutorial import inference as t_inference  # noqa: E402
@@ -45,7 +43,7 @@ def lab_module(path, name):
     return module
 
 
-COPY = lab_module(LAB / "studies" / "copy_to_tutorial.py", "lab_copy_to_tutorial")
+BOUNDARY = lab_module(LAB / "studies" / "runtime_boundary.py", "lab_runtime_boundary")
 HESTON_TASK = json.loads((REPO / "tutorial" / "assets" / "checkpoints" / "heston" / "task.json").read_text())
 SPY = json.loads((REPO / "tutorial" / "assets" / "results" / "calibration" / "spy" / "surface.json").read_text())
 
@@ -58,22 +56,19 @@ def global_names(code):
             names |= global_names(const)
     return names
 
-
-
-
-class CopyTests(unittest.TestCase):
-    def test_copied_definitions_are_the_labs(self):
-        self.assertEqual(COPY.differences(), [], "run: pixi run copy-to-tutorial")
+class RuntimeBoundaryTests(unittest.TestCase):
+    def test_shared_definitions_are_the_same_objects(self):
+        self.assertEqual(BOUNDARY.differences(), [], "edit the canonical tutorial module and import it in the lab")
 
     def test_every_global_name_the_runtime_uses_is_defined(self):
-        for info in pkgutil.iter_modules([str(RUNTIME)]):
-            module = importlib.import_module(f"sbi4f_tutorial.{info.name}")
+        for info in pkgutil.walk_packages([str(RUNTIME)], prefix="sbi4f_tutorial."):
+            module = importlib.import_module(info.name)
             for name, function in vars(module).items():
                 if inspect.isfunction(function) and function.__module__ == module.__name__:
                     with self.subTest(function=f"{info.name}.{name}"):
                         missing = {n for n in global_names(function.__code__)
                                    if n not in vars(module) and not hasattr(builtins, n)}
-                        self.assertEqual(missing, set(), "run: pixi run copy-to-tutorial --add MODULE.NAME")
+                        self.assertEqual(missing, set(), "define or import this dependency in the canonical tutorial module")
 
     def test_the_shipped_tasks_are_the_labs(self):
         stored = json.loads((LAB / "configs" / "tasks" / "calibration_rough_pilot.json").read_text())["task"]

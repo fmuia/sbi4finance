@@ -19,6 +19,8 @@ from unittest.mock import patch
 import numpy as np
 from numpy.testing import assert_array_equal
 
+from sbi4f_tutorial.heston_options import model as heston_model
+
 from sbi4finance import gbm, hkde
 from sbi4finance.calibration import tasks
 
@@ -114,12 +116,12 @@ class MaturityReuseTests(unittest.TestCase):
         strike = np.array([c["strike"] for c in task["context"]["contracts"]])
         maturity = np.array([c["maturity"] for c in task["context"]["contracts"]])
         original_cf = hkde.characteristic_function
-        with patch.object(hkde, "characteristic_function", wraps=original_cf) as observed:
+        with patch.object(heston_model, "characteristic_function", wraps=original_cf) as observed:
             hkde.european_price(1., strike, 1., maturity, model(), .04)
         assert_array_equal(observed.call_args_list[1].args[1], np.unique(maturity)[:, None])
         self.assertEqual(observed.call_count, 2)  # original validation plus integration
         close = np.array([.25, np.nextafter(.25, 1.), .25])
-        with patch.object(hkde, "characteristic_function", wraps=original_cf) as observed:
+        with patch.object(heston_model, "characteristic_function", wraps=original_cf) as observed:
             hkde.european_price(1., [1., 1., 1.], 1., close, model(), .04)
         assert_array_equal(observed.call_args_list[1].args[1], np.unique(close)[:, None])
         self.assertEqual(observed.call_args_list[1].args[1].shape, (2, 1))
@@ -147,7 +149,7 @@ class MaturityReuseTests(unittest.TestCase):
         for parameters in candidates:
             with self.subTest(parameters=parameters):
                 actual = tasks.price(task, parameters, [], 0)
-                with patch.object(hkde, "european_price", original_price):
+                with patch.object(heston_model, "european_price", original_price):
                     expected = tasks.price(task, parameters, [], 0)
                 for value, reference in zip(actual, expected, strict=True):
                     assert_array_equal(value, reference, strict=True)
@@ -162,14 +164,14 @@ def benchmark(repeats=80):
     timings = {}
     for name, implementation in (("original", original_price), ("maturity_reuse", optimized)):
         hkde._quadrature.cache_clear()
-        with patch.object(hkde, "european_price", implementation):
+        with patch.object(heston_model, "european_price", implementation):
             start = time.perf_counter()
             outputs[name] = tasks.price(task, parameters, [], 0)
             timings[name] = {"cold_wall_seconds": time.perf_counter() - start, "warm_wall_seconds": []}
     for i in range(repeats):
         order = (("original", original_price), ("maturity_reuse", optimized))
         for name, implementation in order[::1 if i % 2 == 0 else -1]:
-            with patch.object(hkde, "european_price", implementation):
+            with patch.object(heston_model, "european_price", implementation):
                 start = time.perf_counter()
                 tasks.price(task, parameters, [], 0)
                 timings[name]["warm_wall_seconds"].append(time.perf_counter() - start)

@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "The lab of the sbi4finance tutorial: simulators, calibration banks, training, references and studies"
 readme = "README.md"
 requires-python = ">=3.12,<3.13"
-dependencies = []
+dependencies = ["sbi4f-tutorial==0.1.0"]
 
 [build-system]
 requires = ["hatchling"]
@@ -28,6 +28,7 @@ python = "3.12.*"
 
 [tool.pixi.pypi-dependencies]
 sbi4finance = { path = ".", editable = true }
+sbi4f-tutorial = { path = "../tutorial", editable = true }
 # Exact pins: the shipped checkpoints were trained with these versions.
 bayesflow = "==2.0.14"
 keras = "==3.15.1"
@@ -45,8 +46,9 @@ surface = "python scripts/build_surface.py"
 accept = "python studies/accept.py"
 manifest = "python studies/manifest.py"
 claims = "python studies/claims.py"
+runtime-check = "python studies/runtime_boundary.py"
 copy-to-tutorial = "python studies/copy_to_tutorial.py"
-release-check = "python studies/manifest.py --check && python studies/claims.py --check && python studies/copy_to_tutorial.py --check"
+release-check = "python studies/manifest.py --check && python studies/claims.py --check && python studies/runtime_boundary.py"
 course-check = "python ../course/scripts/check_v2_plan.py"
 discover-cluster = "python cluster/discover_cluster.py"
 
@@ -65,6 +67,7 @@ marimo = "==0.25.1"
 
 [tool.pixi.feature.core.pypi-dependencies]
 sbi4finance = { path = ".", editable = true }
+sbi4f-tutorial = { path = "../tutorial", editable = true }
 bayesflow = "==2.1.0"
 keras = "==3.15.1"
 jax = "==0.11.1"
@@ -79,10 +82,11 @@ KERAS_BACKEND = "jax"
 core-check = "python scripts/check_full_surface_environment.py"
 test = "python -m unittest discover -s tests -v"
 accept = "python studies/accept.py"
+runtime-check = "python studies/runtime_boundary.py"
 copy-to-tutorial = "python studies/copy_to_tutorial.py"
 manifest = "python studies/manifest.py"
 claims = "python studies/claims.py"
-release-check = "python studies/manifest.py --check && python studies/claims.py --check && python studies/copy_to_tutorial.py --check"
+release-check = "python studies/manifest.py --check && python studies/claims.py --check && python studies/runtime_boundary.py"
 course-check = "python ../course/scripts/check_v2_plan.py"
 
 # Reference MCMC is optional and isolated from participant/training installs.

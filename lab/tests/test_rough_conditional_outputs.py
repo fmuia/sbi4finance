@@ -10,6 +10,7 @@ from numpy.testing import assert_array_equal
 from sbi4finance.bergomi import _asset_paths
 from sbi4finance.rough_bergomi import simulate_rough
 from sbi4finance.calibration import pricing, tasks
+from sbi4f_tutorial.shared import pricing as core_pricing
 
 
 @contextmanager
@@ -20,7 +21,7 @@ def full_output_pricer():
         kwargs["conditional_only"] = False
         return original(*args, **kwargs)
 
-    with patch.object(pricing, "simulate_rough", side_effect=full):
+    with patch.object(core_pricing, "simulate_rough", side_effect=full):
         yield
 
 
