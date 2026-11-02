@@ -1,40 +1,55 @@
-# Amortized Bayesian calibration of volatility models: the notebooks
+# Application notebooks
 
-The notebooks of the ICAIF '26 tutorial (Milan, 14–15 November 2026) teach one
-workflow through three applications: Heston option calibration, rough Bergomi
-option calibration, and parameter estimation from daily return histories.
-Define a model and observation process, simulate training pairs, fit an
-amortized posterior, and check the resulting uncertainty.
+We start the workshop with **Beamer slides** on the introduction, amortized
+Bayes and network architectures. These notebooks cover the applications:
 
-The application lessons expose their core Python code, pair short intuitive
-explanations with mathematics, and use consistent workflow diagrams. They open
-offline from `assets/` without initializing a neural backend. Source identifiers
-and detailed numerical settings remain available in optional panels; scientific
-limitations stay next to the relevant results.
+| Application | Notebook | Main code |
+| --- | --- | --- |
+| Heston options | [slot4_heston_bayesflow.py](notebooks/slot4_heston_bayesflow.py) | [heston_options/](src/sbi4f_tutorial/heston_options/) |
+| Rough Bergomi options | [slot5_calibration.py](notebooks/slot5_calibration.py) | [rough_options/](src/sbi4f_tutorial/rough_options/) |
+| Parameter estimation from returns | [trajectory_inference.py](notebooks/trajectory_inference.py) | [trajectories/](src/sbi4f_tutorial/trajectories/) |
 
-Fresh model sampling, large pricing simulations and training are explicit
-actions. Heston also runs bounded illustrative paths and Fourier re-pricing of
-saved draws on opening. Rough-option prices are expectations over many paths;
-trajectory observations are returns from one path. The two observation models
-and the different pricing/physical measures are explained locally.
+Each follows the same workflow: **model → simulate → train → infer → check**.
+The slot 1–3 notebooks remain available as supporting demos; they are not the
+planned format for the opening lessons.
+
+## Collaborator handover
+
+For now, please focus on the three application notebooks above. We want to
+improve the content and presentation; we can trim for timing later.
+
+1. Follow the [setup](#install), then [open a notebook](#run-or-review-an-existing-lesson).
+   The saved examples work without Oscar or extra downloads.
+2. Review the explanations, figures and visible code. Is it clear what we
+   observe, what we estimate and how the Bayesian workflow fits together?
+3. Edit the notebook for text, layout and controls. Edit its application
+   package for the calculations; common code lives in
+   [shared/](src/sbi4f_tutorial/shared/). Lab scripts use this same code.
+4. Leave a review comment or open a PR. Please name the notebook and section,
+   explain what you would change, and why.
+
+For bugs, include the model, example, settings and error message. For return
+histories, include the requested history length and the length used by the
+saved posterior. See the [editing guide](#author-or-change-a-lesson) for checks.
 
 ## Install
 
-With [pixi](https://pixi.sh) (recommended):
+With [Pixi](https://pixi.sh), from the repo root:
 
 ```bash
 cd tutorial
 pixi install --locked
-pixi run --locked test # asset hashes, runtime and inference input boundaries
+pixi run --locked test
 ```
 
-The participant environment pins Python 3.12, **BayesFlow 2.1.0**, Keras 3.15.1,
-JAX 0.11.1 and marimo 0.25.1. Its lock supports Linux, macOS on Apple silicon,
-and Windows (not runtime-tested here); Intel macOS is not a locked target. A CPU
-is sufficient for cached review and optional pretrained inference. Archived 2.0
-checkpoints remain historical evidence and are never loaded implicitly in this environment.
+`--locked` uses the versions in `pixi.lock` and stops if the dependency settings
+and lock file disagree. It does not prevent code edits.
 
-With pip, on Python 3.12, for example in a hosted notebook:
+The notebooks use Python 3.12, BayesFlow 2.1 and marimo. A CPU is sufficient.
+The lock covers Linux, Apple Silicon macOS and Windows; Windows has not been
+runtime-tested here, and Intel macOS is not included.
+
+With pip on Python 3.12:
 
 ```bash
 cd tutorial
@@ -42,15 +57,12 @@ pip install -e ".[participant]"
 export KERAS_BACKEND=jax
 ```
 
-The base package contains the shared runtime without selecting a neural backend
-version. The `participant` extra adds the complete notebook stack above. Pixi
-selects that extra automatically; lab environments reuse the base package with
-their own current or historical BayesFlow version.
+Pixi includes the `participant` extra automatically. The lab installs the base
+package and selects its own BayesFlow version.
 
 ## Run or review an existing lesson
 
-From `tutorial/`, review these three applications in order. Each command opens
-the marimo editor in a browser; press Ctrl+C in its terminal before starting the next:
+From `tutorial/`:
 
 ```bash
 pixi run --locked heston-options
@@ -58,226 +70,92 @@ pixi run --locked rough-options
 pixi run --locked path-inference
 ```
 
-A fresh checkout includes the cached examples. No additional model, bank,
-Oscar account or Drive filesystem is required. Opening Heston also runs its
-small deterministic path/Fourier illustrations; training, native model loading
-and rough Monte Carlo remain explicit actions.
+Run one command at a time. Each opens the marimo editor in your browser;
+press Ctrl+C in the terminal before opening the next notebook.
 
-For a read-only app, use e.g.
-`pixi run --locked marimo run notebooks/slot4_heston_bayesflow.py`.
-An exported HTML file is a static preview, not an interactive app. The other
-notebooks remain available through `slot1`, `slot2`, `slot3` or `edit`;
-`backbones` opens the separate cached/native model review. The older task names
-`slot4`, `slot5` and `trajectories` remain aliases for the three applications.
+The saved observations and posterior draws are included. Training and fresh
+model sampling only start when requested. Heston also computes small path and
+pricing illustrations on opening.
 
-| Notebook | Slot | What you do | Computed live |
-|---|---|---|---|
-| `slot1_intro.py` | 1. The problem: Bayes for volatility models | Calibrate Black–Scholes to SPY quotes as inference, compare the posterior with the classical interval, price what the quotes do not pin | Grid posteriors, a toy smile, a sector of names (seconds) |
-| `slot2_amortized_bayes.py` | 2. What is amortized Bayes? | Watch a small network learn slot 1's posterior and check it against the exact answer | Exact grid by default; a new 2.1 toy trains only after pressing the button |
-| `slot3_architectures.py` | 3. Network architectures | See how flow matching carries noise to Heston's posterior, and what the sampler's steps change | Cached Heston posterior and PyMC reference |
-| `slot4_heston_bayesflow.py` | Heston: from option quotes to a posterior | Follow simulation, training, numerical-reference checks and posterior prediction | Cached posterior; bounded path/predictive illustrations; optional small native fit |
-| `slot5_calibration.py` | Rough Bergomi: supplied versus inferred variance curves | Explain simulation/noise, compare the inference inputs, inspect uncertainty and its checks | Cached known/joint-curve examples; Monte Carlo is an explicit action |
-| `trajectory_inference.py` | Dynamics from observed paths | Follow the generative model, masked GRU training, revealed history and parameter uncertainty | Cached validation examples by default; exact-length CPU inference is an explicit button |
+For a read-only app:
 
-`backbone_review.py` adds the current Heston, known-curve rough and joint-curve rough estimators.
-The rough examples include validation:0 and three explicitly selected joint-geometry illustrations.
-They retain development scope; conditional rough references and product validation remain pending.
-Slots 4 and 5 expose these cached examples alongside the historical SPY material. The historical SPY
-neural comparison awaits a separately checked 2.1 update. Slot 6 is still in preparation.
+```bash
+pixi run --locked marimo run notebooks/slot4_heston_bayesflow.py
+```
 
-Start with each model and its observed data, then its visible simulator/training
-recipe, posterior and checks. The inference examples are approximate;
-calibration failures and reference limitations remain explicit.
+Exported HTML is a static preview; use marimo for interactive controls.
+`slot1`, `slot2` and `slot3` open the supporting demos. `backbones` opens the
+separate model-review notebook. The older `slot4`, `slot5` and `trajectories`
+commands still work.
 
 ## Choose files for the task
 
-| Task | Additional download | Instructions |
-| --- | --- | --- |
-| Read, edit or review the application lessons | None | The cached observations, draws and evidence ship with this checkout. |
-| Draw fresh option posteriors in `backbone_review.py` | `sbi4finance-pretrained-and-cases-20261029.zip` (38,046,255 B) | [Exact checksum, extraction and UI paths](../lab/plans/training-data-guide.md#option-models-heston-and-knownjoint-curve-rough-bergomi). |
-| Draw fresh trajectory posteriors at any supported history length | `path-workshop-native-models-20261031.tar.gz` (6,354,318 B) | [Exact checksum, extraction and defaults](../lab/plans/training-data-guide.md#trajectory-models-daily-return-histories). |
-| Retrain or compare estimators | Only the selected full native bank | [Option banks](../lab/plans/training-data-guide.md#full-option-training-banks) or [trajectory banks](../lab/plans/training-data-guide.md#trajectory-banks-daily-histories-with-inferred-drift), outside Git. |
+| What you want to do | What you need |
+| --- | --- |
+| Review or edit a notebook | This checkout; no extra download |
+| Draw fresh option posteriors | [Option model bundle and setup](../lab/plans/training-data-guide.md#option-models-heston-and-knownjoint-curve-rough-bergomi) |
+| Draw fresh trajectory posteriors | [Trajectory model bundle and setup](../lab/plans/training-data-guide.md#trajectory-models-daily-return-histories) |
+| Retrain an estimator | The matching [option bank](../lab/plans/training-data-guide.md#full-option-training-banks) or [trajectory bank](../lab/plans/training-data-guide.md#trajectory-banks-daily-histories-with-inferred-drift) |
 
-For option models, the ZIP SHA-256 is
-`8d3a146312efdeaffcf797dee89158a491cde0961689649bbe17b6a3ae4bf51c`.
-Extract beneath `tutorial/assets/local-checkpoints/`; the native directories
-are `pretrained/heston100k-final500/`, `pretrained/rough-known100k-final500/`
-and `pretrained/rough-joint100k-final500/`. In `pixi run --locked backbones`,
-choose the matching example and paste its **absolute** directory into
-**Local matching checkpoint directory** before pressing the live button.
-Keep each unchanged `model.keras`, `task.json` and `training.json` together.
-The loader checks their task/model identities and recorded sampler against the
-selected cache. This changes neither the cached lesson nor its evidence status.
-
-Use your own GitHub or Drive account with the relevant access. They have
-separate permissions; an unauthenticated GitHub 404 does not establish that a
-release asset is missing. Browser downloads work without Drive Desktop or
-owner-specific SSH access. Optional models belong in the ignored
-`assets/local-checkpoints/` cache; their native hashes are checked at loading.
-Do not replace shipped assets or regenerate data to fix a download.
+The linked guide gives download locations, checksums and extraction commands.
+Use your own GitHub or Drive account with access to the files; Drive Desktop
+and Oscar are not required. Put downloaded models in `assets/local-checkpoints/`
+as instructed. The loaders check that the model matches the selected example.
 
 ## Trajectory inference
 
-Run `pixi run --locked path-inference` to compare the three physical-measure models
-on the same daily grid, from one observed return to five trading years. All infer
-annual proportional price drift; the joint rough task also infers its variance-scale
-curve. Realized latent volatility and synthetic truth are excluded from conditions.
-The lesson shows how one million offline histories per model train a masked GRU
-summary and conditional flow using random prefixes. Each displayed prefix posterior
-uses the original prior and full revealed history; overlapping prefix posteriors
-are not multiplied together.
+The three models use daily returns and estimate drift. The joint rough model
+also estimates its variance curve. The estimator accepts any integer history
+length from **1 to 1,260 trading days** (five years).
 
-The lab publishes the first four predeclared validation cases under
-`assets/trajectories/`, with their task, checkpoint and file identities. Opening the
-notebook uses these cached arrays and requires no neural backend initialization,
-training bank or cluster connection. For a history length between stored snapshots,
-the return chart reveals the requested days and the posterior is explicitly labelled
-with its nearest **past** cached length. Cached posteriors are not interpolated.
+The notebook opens with saved posterior snapshots. Between snapshots, it shows
+the nearest **past** posterior and labels the length it uses. For example,
+requesting 137 days shows 137 returns but a saved posterior based on 126 days.
+It does not interpolate posteriors or use future returns.
 
-For fresh inference at any integer length from 1 to 1,260, obtain the matching native
-checkpoint from the
-[path-workshop Drive folder](https://drive.google.com/drive/folders/1LJsR0Qb0RkD4h8XiF3t6OQQlyYDKcI2k).
-The `path-workshop-native-models-20261031.tar.gz` archive is 6,354,318 bytes, with
-SHA-256 `261c36550da52948aedcc2680d51bcb756db485626a6a2b8ee918fa9d6fff4cf`.
-Extract it into `tutorial/assets/`; it places unchanged `model.keras`, `task.json` and `training.json` in
-`assets/local-checkpoints/path-heston/`, `path-rough-known/` or `path-rough-joint/`.
-Select the model and case, reveal the desired history, and press the CPU inference
-button. Leave the optional checkpoint field empty for these defaults, or enter
-e.g. `local-checkpoints/path-rough-known` relative to `tutorial/assets/`. The
-[model instructions](../lab/plans/training-data-guide.md#trajectory-models-daily-return-histories)
-include runnable checksum and extraction commands. These optional model payloads stay outside Git; the loader verifies their
-native hashes against the selected cached example. The same cached notebook remains
-usable when those files are absent. Development examples and aggregate held-out
-evaluation have separate scopes; neither a smooth learning curve nor a narrow
-posterior is a conditional-accuracy certificate.
-The live result reports model load and draw elapsed times for that click, including
-any first-call compilation in the draw time; these are not guaranteed timings.
+With the matching model downloaded, the CPU inference button uses exactly the
+selected history length. The result remains an approximate posterior.
 
-The estimators are neural candidates with approximate posteriors; their recorded
-calibration and reference outcomes remain separate from this working demonstration.
-Exact-length inference means conditioning on precisely the selected observations,
-not exact posterior computation. Run the notebook in marimo for interactive model
-and history controls. An exported HTML lesson is a **static preview** of one saved
-state and does not execute those controls or load models.
-
-The known-curve rough model opens by default. **Heston is currently a numerical-development
-prototype:** the discretized simulator can produce deterministic zero-variance daily returns.
-With unknown drift this can put point masses in the exact drift posterior, which the continuous
-neural density cannot represent exactly. Its displayed intervals carry no endorsed calibration
-claim. A newly specified numerical target and refit are needed to resolve that limitation;
-the frozen task, model and cached examples retain their original identities.
-
-Final characterization used 4,000 previously reserved histories per model, twelve
-history lengths and 512 draws per history, with candidates and screening rules
-frozen beforehand. All execution and risk screens passed; **all three models failed
-the declared marginal calibration screen**. The known-curve model's confirmation
-pass did not reproduce across every tested cell. This package is a development lesson.
-See the [aggregate report](assets/results/trajectories/closeout-20261031/closeout-summary.json),
-[drift-learning figure](assets/results/trajectories/closeout-20261031/drift-learning.png)
+**Checks are not yet satisfactory:** all three estimators failed the final
+calibration check. The Heston simulator can also produce zero-variance days
+that reveal drift exactly, which a continuous neural density cannot fully
+represent. These are development examples. Keep those limitations alongside
+the results. See the [report](assets/results/trajectories/closeout-20261031/closeout-summary.json),
+[drift figure](assets/results/trajectories/closeout-20261031/drift-learning.png)
 and [coverage figure](assets/results/trajectories/closeout-20261031/marginal-coverage.png).
-
-Optional authoring tools inherit the same 2.1 stack:
-
-```sh
-pixi run --locked -e collaboration collaborate notebooks/backbone_review.py
-pixi run --locked -e collaboration studio-create  # create a new lesson scaffold once
-pixi run --locked -e collaboration studio-build
-```
-
-This preserves marimo Pair/MCP, Studio 0.3 and Lens 0.2.3. The old SVJ-specific Studio view is not
-reused for the new notebook. Live server sessions and the new Studio scaffold need a separate
-interactive review; they were not executed during this integration.
 
 ## Give feedback on an application
 
-Use the agreed commit or PR revision and report the notebook, section heading,
-friendly case/model label and relevant controls (including requested and cached
-history lengths for trajectories). Include expected versus observed behavior,
-platform, and a screenshot or exact error text when useful. Separate a teaching
-suggestion from an execution failure or a scientific claim needing evidence.
+Useful starting points:
 
-A short cached walkthrough is sufficient for the first feedback round:
+- **Heston:** are the model, quote noise, posterior comparison and predictive
+  checks clear?
+- **Rough Bergomi:** is the difference between a supplied and an estimated
+  variance curve clear? Are the remaining checks easy to spot?
+- **Trajectories:** can you follow how longer histories change the posterior?
+  Is the distinction between saved and freshly computed results clear?
 
-- Heston: identify the 63 observations, assumed quote noise, fixed inputs and
-  four unknowns; compare neural/reference uncertainty and the replicated-quote
-  illustration without confusing latent price means with new noisy quotes.
-- Rough options: switch from the supplied curve to a joint-curve example;
-  distinguish inference conditions from targets, and note that the observation
-  and curve family also change. Interpret physical-unit intervals and the
-  candidate's remaining reference limitations.
-- Trajectories: select 137 days and inspect the input preview. It contains
-  exactly 137 observed returns; the labelled cached posterior uses 126 days.
-  Keep the calibration failures visible. Fresh CPU inference is optional.
-
-Record what was actually checked. A fresh collaborator rehearsal remains a
-separate acceptance step from the saved local software/artifact checks.
-
-## Collaborator handover
-
-Pull the agreed repository revision, then run these from your checkout. Open
-one lesson at a time; stop its terminal server before starting the next. Cached
-review needs no Oscar login, full bank or additional native-model download.
-
-```bash
-cd tutorial
-pixi install --locked
-pixi run --locked heston-options
-pixi run --locked rough-options
-pixi run --locked path-inference
-```
-
-The three notebook files hold the presentation and controls. Their executing
-helpers are owned here too: `src/sbi4f_tutorial/heston_options/`,
-`rough_options/` and `trajectories/`. Shared numerical and plotting code is in
-`shared/`. Edit the implementation in these locations directly; lab workflows
-reuse it. Old flat module names are compatibility imports, not editing targets.
-
-For a content/UI change, run `pixi run --locked check`, `test` and
-`test-notebooks`. For shared numerical changes, also run the relevant lab tests
-and release checks. Assets are generated: use the lab publication tools when a
-result or figure needs changing. Keep scientific limitations beside the results.
-
-Give feedback with the notebook and section, selected model/example and controls,
-expected versus observed behavior, and a proposed improvement. For trajectories,
-include both requested and cached history lengths. A fresh collaborator rehearsal
-remains deferred; previous author-side checks do not substitute for it.
+Please report the notebook, section and proposed improvement. For an execution
+problem, also include your platform and the exact error. A collaborator
+rehearsal is still planned separately.
 
 ## Author or change a lesson
 
-Start with the [editing map](../README.md#start-editing-here) and the slot's plan in `curriculum/`.
-The three core content files are `notebooks/slot4_heston_bayesflow.py`,
-`notebooks/slot5_calibration.py` and `notebooks/trajectory_inference.py`.
-The current [application and collaborator plan](curriculum/TUTORIAL-REVIEW.md#h-tutorial-owned-runtime-refactor)
-supersedes older source-copy instructions, returns exclusions and slot timings.
-Edit explanations, equations, visible code examples and controls in the notebook.
-Changing a displayed code block alone does not change the executing simulator or
-fitted estimator. Keep historical SPY studies distinct, and state the model,
-inputs, noise assumptions and evidence status locally.
-
-| Executing behavior | Edit here |
+| Change | Edit here |
 | --- | --- |
-| Heston illustrative paths, Fourier smiles and posterior predictive quotes | [heston_options/lesson.py](src/sbi4f_tutorial/heston_options/lesson.py); Fourier model in [model.py](src/sbi4f_tutorial/heston_options/model.py); physical path kernel in [simulator.py](src/sbi4f_tutorial/heston_options/simulator.py) |
-| Rough forward-simulation button and smile figure | [rough_options/lesson.py](src/sbi4f_tutorial/rough_options/lesson.py); rough numerics in [model.py](src/sbi4f_tutorial/rough_options/model.py) and [simulator.py](src/sbi4f_tutorial/rough_options/simulator.py) |
-| Trajectory cached examples, history views and figures | [trajectories/lesson.py](src/sbi4f_tutorial/trajectories/lesson.py) |
-| Small trajectory simulations, task definitions and teaching training pairs | [trajectories/simulation.py](src/sbi4f_tutorial/trajectories/simulation.py): `teaching_task`, `generate`; use `backend="numpy"` for the dependency-light lesson recipe |
-| Trajectory normalization, prefix masks, GRU and native inference | [trajectories/inference.py](src/sbi4f_tutorial/trajectories/inference.py) |
-| Option conditions, network construction and native loading | [shared/full_surface.py](src/sbi4f_tutorial/shared/full_surface.py) |
-| Option examples and posterior presentation | [shared/backbones.py](src/sbi4f_tutorial/shared/backbones.py) |
-| Contract grid/noise, option tasks and shared plot style | [shared/surface.py](src/sbi4f_tutorial/shared/surface.py), [tasks.py](src/sbi4f_tutorial/shared/tasks.py), [plots.py](src/sbi4f_tutorial/shared/plots.py) |
+| Text, equations, layout and controls | The notebook |
+| Heston prices, path illustrations and predictive checks | [heston_options/](src/sbi4f_tutorial/heston_options/) |
+| Rough Bergomi simulation and lesson figures | [rough_options/](src/sbi4f_tutorial/rough_options/) |
+| Trajectory simulations, masks, inference and figures | [trajectories/](src/sbi4f_tutorial/trajectories/) |
+| Option inputs, networks and loading | [shared/full_surface.py](src/sbi4f_tutorial/shared/full_surface.py) |
+| Common grids, noise assumptions and plotting | [shared/](src/sbi4f_tutorial/shared/) |
 
-The tutorial owns these implementations. `lab/` reuses them for generation,
-production training, references and publication; it retains its own orchestration
-and lab-only functions. Do not add a second implementation or run a function-copy
-step. Legacy flat modules only preserve older import paths. The participant
-package must not import `sbi4finance`, edit `sys.path`, or read lab files.
+Edit the implementation directly. Older flat modules are compatibility imports;
+there is no code-copy step. Changing a displayed code snippet alone does not
+change the calculation behind it. The [source map](curriculum/TUTORIAL-REVIEW.md#follow-a-computation-from-the-lesson)
+gives more detail.
 
-Use the [lab publication workflow](../lab/README.md#from-lab-code-to-a-lesson)
-for shipped results and figures. Never hand-copy a checkpoint into shipped
-assets or edit the generated manifest/claim tables. The ignored
-`assets/local-checkpoints/` download cache remains the explicit hash-checked
-exception for optional live loading.
-
-Run these checks from `tutorial/` before a PR:
+Before opening a PR, run from `tutorial/`:
 
 ```bash
 pixi run --locked test
@@ -285,54 +163,38 @@ pixi run --locked check
 pixi run --locked test-notebooks
 ```
 
-Shared numerical changes additionally require the relevant lab tests and
+For shared numerical changes, also run the affected lab tests and
 `pixi run --locked -e core release-check` from `lab/`.
 
-The small trajectory recipe uses `trajectories.simulation` for task definitions
-and simulation, plus `trajectories.inference` for training data, prefixes and
-workflow construction. Its NumPy simulation backend needs no optional Numba
-install; lab production workers can use their pinned accelerated backend.
-A changed model/prior/noise law or numerical target needs its own specified data
-and fit; source organization alone does not justify regenerating banks or
-changing frozen metadata. Existing
-banks and models keep their original identities. To extend generation or resume
-a frozen run, use its producer-matching source/environment.
-
-Interactive Pair/MCP/Studio sessions still need their stated review. Runtime
-success does not promote a development example to an accepted scientific claim;
-retain the original reference methods, chain/draw axes, task and checkpoint hashes.
+Use the [lab tools](../lab/README.md#from-lab-code-to-a-lesson) to update saved
+results and figures. Do not edit generated assets or their manifest by hand.
+Keep `tutorial/` and `lab/` together when deploying lab work elsewhere. Existing
+banks can be read and used for training; extending an old run requires its
+matching code and environment.
 
 ## What is in this folder
 
-| Path | What |
-|---|---|
-| `notebooks/` | The marimo notebooks: plain Python files, reactive, readable in any editor |
-| `src/sbi4f_tutorial/{heston_options,rough_options,trajectories}/` | Authoritative application helpers, organized to match the lessons; trajectory presentation and native inference are separate modules. |
-| `src/sbi4f_tutorial/shared/` | Shared simulators, option conditions/tasks, native inference, cached option views, asset paths and plot utilities; lab workflows reuse this code. |
-| Flat modules in `src/sbi4f_tutorial/` | Compatibility imports for older callers; edit the owning application/shared module. |
-| `assets/` | The trained networks, the accepted study results, quick-check outputs, task files, data and figures that the notebooks load |
-| `MANIFEST.md` | Every shipped asset, with its size, SHA-256 and origin; excludes downloaded `local-checkpoints/` |
-| `CLAIMS.md` | Historical calibration-study claims, source outputs and actual verification status |
-| `tests/` | `pixi run test` checks the files and the code; `pixi run test-notebooks` runs every notebook headless (a few minutes) |
+| Folder | Contents |
+| --- | --- |
+| `notebooks/` | Lessons and supporting demos |
+| `src/sbi4f_tutorial/` | Application packages and shared code |
+| `assets/` | Saved examples, results and figures |
+| `tests/` | Code, data and notebook checks |
+| `curriculum/` | Teaching plans and review notes |
 
 ## Where the numbers come from
 
-Historical calibration-study claims and their outcomes are recorded in `CLAIMS.md`.
-Current option replays and trajectory diagnostics identify their own tasks, checkpoints and source reports.
-Pilot values and failed screens can be inspected with their explicit labels; only the stated verification
-supports a scientific claim, and a working replay does not promote its model to accepted status.
-The simulations, training runs and studies behind them, and a sixteen-lecture course with
-the full theory, are in the project repository, [fmuia/sbi4finance](https://github.com/fmuia/sbi4finance): the
-course in `course/`, production workers and publication records in `lab/`, and
-the numerical runtime they share with the lessons in `tutorial/src/sbi4f_tutorial/`.
+The [application plan](curriculum/TUTORIAL-REVIEW.md) and
+[trajectory plan](../lab/plans/PATH-INFERENCE-PLAN.md) record the current checks
+and limitations. Rough Bergomi still needs further reference-posterior and
+product checks. Older SPY comparisons and calibration claims have their own
+scope in [CLAIMS.md](CLAIMS.md). Passing software tests does not establish
+posterior accuracy.
 
 ## If something does not work
 
-- **Keras complains about its backend:** set `KERAS_BACKEND=jax`. pixi sets it; with pip, export it before
-  starting marimo.
-- **The first network call is slow:** backend initialization/compilation adds
-  first-call latency. The trajectory result reports actual load/draw elapsed
-  times; saved timing measurements are not a guarantee on your machine.
-- **A cell says "pending":** that historical or proposed result is not packaged
-  for this route. Check its local study/status label; this does not mean the
-  current training banks or cached application examples are missing.
+- **Keras backend error:** set `KERAS_BACKEND=jax` before starting marimo.
+  Pixi does this for you.
+- **Slow first model call:** the first call includes backend setup and compilation.
+- **A cell says “pending”:** that result is not included yet. Check its section
+  notes; this does not mean the current examples or training banks are missing.
