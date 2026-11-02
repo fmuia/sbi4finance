@@ -291,7 +291,7 @@ unrelated notebook or transfer.
   weak accuracy or selecting a production law. No production refit or new
   acceptance result is claimed.
 - **F:** first-tranche checks pass: 514 lab tests (three unchanged optional PyMC
-  skips), 29 tutorial tests and all seven cached exports (207 cells, zero errors),
+  skips), 29 tutorial tests and all seven cached exports (220 cells, zero errors),
   plus Marimo, manifest/claims and copy parity. Offline checks cover all six
   current option cases and nine path model/length combinations. Independent
   reviews found no code blockers. The [live isolated-Chrome check record](../../lab/evidence/pilot-results/2026-11-01/application-browser-qa/summary.json)
@@ -350,10 +350,48 @@ records the final code, exports and browser review for this revision.
   put/call switch at the forward. Hide technical case IDs and hashes behind a
   reproducibility panel while keeping scientific limitations visible.
 
-This pass implements the contract in Heston. The one-by-one review of rough
-options and trajectories will apply the same principles to their specific
-models, controls, inputs and evidence. It does not relabel the failed trajectory
-screens or promote historical studies to new-model acceptance.
+### Rough options and trajectories: shared presentation contract
+
+The [source-bound application check record](../../lab/evidence/pilot-results/2026-11-01/application-lesson-review/summary.json)
+binds the final notebook/runtime sources, tests and cached-control browser review.
+
+The same contract now applies to the two remaining core applications. The
+opening establishes the model and observed data before posterior plots, and
+short highlighted code stays visible throughout the generative and Bayesian
+workflow. New original diagrams use the inspected Overleaf palette and retain
+source, editable SVG and attribution. Parameter tables and corner axes use
+readable names/symbols; technical identities remain optional source details.
+
+**Rough options.** Explain the Volterra-memory variance model, its parameters
+and the forward-variance curve. Distinguish many latent paths averaged into
+numerical prices, finite-path pricing error and separately prescribed Gaussian
+quote errors. Supplied seven-level and jointly inferred exponential curves
+remain different tasks and curve families. Friendly selectors retain every
+case. Reference, calibration, importance-audit and product uncertainty each
+receive an intuitive explanation and their mathematical scope. Current neural
+examples do not inherit historical validation or become a matched comparison
+when the selected data change. Explicit forward simulation is not relabelled
+as posterior prediction.
+
+**Trajectories.** Explain observed daily log returns, hidden variance/shocks,
+physical drift and each model's equation locally. Show the actual generation,
+offline training, random-prefix/mask and GRU/conditional-flow APIs, distinguishing
+a small author example from million-history streaming production. The revealed
+history and mask are visible; detailed tensor/accounting fields are optional.
+All integer lengths from 1 to 1,260 remain supported. The 137-day input versus
+126-day cached posterior is explicit, and prefixes use the original prior and
+full revealed data. Generating labels and hidden states remain excluded. Model
+switches change the synthetic observation; the display does not pretend to be
+a matched cross-model experiment.
+
+Calibration explanations distinguish concentration, recovery, coverage and
+prior-averaged ranks. All failed trajectory marginal screens and the Heston
+atomic-drift limitation remain visible in plain language. New independent
+replicate histories and continuation forecasts are distinct; the latter need
+latent-state and rough-memory conditioning beyond a parameter posterior.
+No new posterior-predictive trajectory cache or conditional reference is
+fabricated. These interface and teaching changes replace no scientific task,
+bank, checkpoint or inference result.
 
 ## Historical review: 26 October 2026
 

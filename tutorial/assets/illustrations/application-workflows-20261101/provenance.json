@@ -1,0 +1,66 @@
+{
+  "format": "teaching_illustration_provenance_v1",
+  "scientific_acceptance": false,
+  "scope": "Original conceptual schematics of rough-option simulation/inference and physical-path prefix inference; no empirical results or model-accuracy claims.",
+  "source": "lab/evidence/illustrations/application-workflows-20261101/render.py",
+  "source_sha256": "b2494388260bdcfc9829589064f04b1956b03e964efa46c29b78e642488e7f14",
+  "visual_inspiration": {
+    "repository": "talk-slides-sbi4finance-overleaf",
+    "commit": "75dce200d423ecfea988571809cee8b46450b581",
+    "author_credit": "Stefan T. Radev, Introduction to Simulation-Based Inference",
+    "sources": [
+      {
+        "path": "bayesops.sty",
+        "sha256": "f49358f40b39da05ed4999270c128cba48b2572efe99c6cbb75a3fb7012db6c0"
+      },
+      {
+        "path": "macros/colors.tex",
+        "sha256": "72efcd91163a5d230e8e3f38d2b9426c204c832209683ab7420fc764c894ce5c"
+      },
+      {
+        "path": "figures/amortized-3.pdf",
+        "sha256": "7a8b3eccb0abcc9469e5cb9cd46e085826ad97e71f7f7b72275e9d74e0653342"
+      },
+      {
+        "path": "figures/basic-workflow.pdf",
+        "sha256": "12aa4e20e80e072eb7e4500ae3bb991fc53c950177690c3649f2f4f85cd19f1d"
+      }
+    ],
+    "use": "Original arrangement and labels, using the Heston lesson palette and training/inference separation. No source artwork copied."
+  },
+  "style_source": {
+    "path": "lab/evidence/illustrations/heston-workflow-20261101/render.py",
+    "sha256": "9890cb0bdf139f8b118e73a8d7df84418c1177ae95ec70c0efc7eac3040c1636"
+  },
+  "palette": {
+    "text": "#15153B",
+    "training_purple": "#4E2A84",
+    "inference_green": "#2E7D43",
+    "theme_accent": "#6969FF"
+  },
+  "notation": {
+    "rough": "Known curve targets H/eta/rho with seven supplied xi_0 levels; joint targets also S/L/k and excludes its generating curve from conditions.",
+    "rough_price_error": "Finite-path MC error is numerical pricing error, distinct from prescribed Gaussian observation noise.",
+    "trajectory": "Theta is the full static parameter vector, including physical drift mu. r_1:T is the complete revealed daily return prefix. Variance and generating labels are excluded from new-case conditions.",
+    "prefix_posterior": "Each prefix posterior uses the original prior and the whole revealed history; overlapping-prefix posteriors are not multiplied."
+  },
+  "outputs": {
+    "rough-data-and-inference.png": {
+      "sha256": "4dcf71b448aca8041903220ebbf92edd942470831a8b8d636bfa079a03825a9c",
+      "bytes": 208512
+    },
+    "rough-data-and-inference.svg": {
+      "sha256": "dc834993e7223680b5b8d7d7ecdd49a709c85fa7974225c46960dd0bb3eb7b63",
+      "bytes": 46747
+    },
+    "trajectory-prefix-workflow.png": {
+      "sha256": "1a6c4cb73d718c2cdde2f9731cc0213baa0746d1ca4083d85765ee62b665a7cd",
+      "bytes": 209501
+    },
+    "trajectory-prefix-workflow.svg": {
+      "sha256": "fdfad6d8e16f2abb0583480f472765cff3f2b9b1810d0b78449f2a2061bafffd",
+      "bytes": 18450
+    }
+  },
+  "publication": "Publish PNG and provenance JSON only through lab/studies/accept.py --run; editable SVG and rendering source remain in lab evidence."
+}

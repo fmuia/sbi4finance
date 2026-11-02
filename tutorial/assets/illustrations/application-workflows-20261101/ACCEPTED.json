@@ -1,0 +1,13 @@
+{
+  "accepted": "2026-11-01T23:55:59+00:00",
+  "source": "lab/evidence/illustrations/application-workflows-20261101",
+  "source_sha256": {
+    "provenance.json": "6566f06e012cb70ebe8bf3a0b17673a40a868a6627dab60a4ed1beaa3ea6cd30",
+    "render.py": "b2494388260bdcfc9829589064f04b1956b03e964efa46c29b78e642488e7f14",
+    "rough-data-and-inference.png": "4dcf71b448aca8041903220ebbf92edd942470831a8b8d636bfa079a03825a9c",
+    "rough-data-and-inference.svg": "dc834993e7223680b5b8d7d7ecdd49a709c85fa7974225c46960dd0bb3eb7b63",
+    "trajectory-prefix-workflow.png": "1a6c4cb73d718c2cdde2f9731cc0213baa0746d1ca4083d85765ee62b665a7cd",
+    "trajectory-prefix-workflow.svg": "fdfad6d8e16f2abb0583480f472765cff3f2b9b1810d0b78449f2a2061bafffd"
+  },
+  "changes": []
+}
