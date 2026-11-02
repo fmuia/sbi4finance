@@ -88,6 +88,13 @@ Completed work remains in the [26 October report](oscar-pilot-2026-10-26.md), [r
 
 ## Current next work and repository trimming
 
+**Scope update, 1 November 2026:** merged PR #64 includes the three core
+application notebooks, including trajectory inference. The current
+[collaborator handover plan](../../tutorial/curriculum/TUTORIAL-REVIEW.md#g-collaborator-handover-before-the-next-feedback-round)
+supersedes older returns exclusions and the initial lesson-integration status
+below. Keep active trajectory code and its dependency closure during trimming.
+
+
 **First content-review action:** reconcile [the slot 4 curriculum](../../tutorial/curriculum/04-slot4-heston-in-bayesflow.md), [the slot 5 curriculum](../../tutorial/curriculum/05-slot5-rough-bergomi-to-a-reserve.md) and their notebook prose with the complete-surface Heston → known-curve rough → joint-curve rough sequence. The existing narrative still contains historical SPY/known-curve framing, and the slot 5 plan names a thin-chain case as required. Retain historical SPY provenance, but keep thin-chain material optional rather than a prerequisite for the core lesson. Cached integration and completed numerical inputs do not mean the lessons are fully curated.
 
 Use the supplied data and saved cases to finish that sequence. J1's marginal calibration, contraction and observation-dependence evidence does not complete J2's conditional references or J3's financial-product comparisons. Keep dataset size, optimizer-update count, task/curve prior, observation noise and reference method explicit when comparing results. New numerical work should resolve a named lesson claim; another bank or infrastructure layer is not the default next step.
@@ -97,7 +104,58 @@ The [repository README](../../README.md) is the collaborator front door. Maintai
 1. **Keep active content and its dependency closure.** Retain the core notebooks and course, their runtime, publication tools, tests, task configurations and code used by supported load/train/evaluate/generate/reference/product commands. Retain historical accepted checkpoints and exact reference evidence while a lesson or claim still uses them.
 2. **Check dependencies before cutting.** Search imports, CLI/pixi tasks, tests, the copied-function registry/parity checks, asset manifests, claims, source-hash bindings and links. Deferred sparse/legacy helpers may still supply utilities to active routes; first separate or replace that dependency with checks.
 3. **Retire dated orchestration and bulk records.** Once no supported route needs them, remove one-off launch/recovery controllers, duplicated frozen operator copies and bulk dated logs/per-case outputs from the working tree. Preserve a pinned source commit/tag, immutable external archives and checksums, plus the compact record needed to support every retained claim. Update references in the same change. Git retains retired source; failures and scientific provenance are not relabelled or erased. Do not repurpose dated controllers bound to old checkouts as current launchers.
-4. **Respect D21's scope.** The returns/SVJ/multifractal take-home track is excluded. Preserve unique earlier ideas through immutable [PR 37 source](https://github.com/fmuia/sbi4finance/tree/1f9972ecb2bee087248af1f2abef7bcdf0c7a125) and [PR 38 source](https://github.com/fmuia/sbi4finance/tree/d00ccb121be1e93a1100b6681ca1e17ec0c3b573), rather than adding `extras/` by default. PR 40's promotion plan is independent. Any superseded-PR closure remains an owner-review action; this handover changes no PR state.
+4. **Use the current three-application scope.** The Heston and rough-Bergomi trajectory application is active core work; the earlier D21 returns exclusion is superseded for that application. Separate legacy SVJ/multifractal take-home material remains outside this refinement scope, but utility dependencies must be checked before removal. Preserve unique earlier ideas through immutable [PR 37 source](https://github.com/fmuia/sbi4finance/tree/1f9972ecb2bee087248af1f2abef7bcdf0c7a125) and [PR 38 source](https://github.com/fmuia/sbi4finance/tree/d00ccb121be1e93a1100b6681ca1e17ec0c3b573). PR 40's promotion plan is independent; no PR state changes here.
 5. **Validate the smaller route.** Run the affected lab tests/release checks and tutorial independence/parity/notebook checks. Stop when further removal would obscure a retained scientific claim, break a supported command or require an abstraction solely to justify deletion.
 
-This handover defines the trimming route; it performs no additional deletion or new cluster run.
+### Bounded retirement batch · 1 November 2026
+
+Two completed, Oscar-specific continuation controllers are retired from
+`lab/cluster/`. They are not the canonical generation/training/evaluation
+interface. A tracked-text search of names and SHA-256 identities, plus the
+current Python imports, CLI/pixi tasks, tests, publication/copy registry and
+Markdown references, found only historical consumers and the explanatory
+documentation. No worker, notebook, current test or supported command invokes
+either controller.
+
+| File | Decision and dependency finding | Retained exact source |
+| --- | --- | --- |
+| `lab/cluster/start_known100k_20261028.py` (6,564 bytes) | Retired. Its two source-hash references are frozen October progress receipts; no current caller was found. | [Pinned main source](https://github.com/fmuia/sbi4finance/blob/08f4ebde1b47893057c61706a1a94ae017806c47/lab/cluster/start_known100k_20261028.py); archive member `sbi4finance-independent-work-source-20261028/start_known100k_20261028.py`. |
+| `lab/cluster/start_joint100k_20261029.py` (11,341 bytes) | Retired. References are frozen handoff/fit receipts and the historical `joint100k-fit-handoff/check_handoff.py`; that original check belongs to the pinned historical checkout, not current CI. | [Pinned main source](https://github.com/fmuia/sbi4finance/blob/08f4ebde1b47893057c61706a1a94ae017806c47/lab/cluster/start_joint100k_20261029.py); archive member `sbi4finance-joint100k-handoff-source-20261029/start_joint100k_20261029.py`. |
+| `lab/cluster/submit_full_surface_backbones_20261028.py` | Retained. `tests/test_full_surface_post_bank_operator.py` imports its scheduling guards; other retained historical controllers also refer to it. Retirement requires separating those consumers first. | Existing source and pinned history remain unchanged. |
+| The three October 27 evidence copies named `submission-operator.py` | Retained. Inspection found three different byte sequences (6,295 / 10,106 / 4,923 bytes), not duplicate files. Their README, archive script and checksum references remain intact. | `evidence/pilot-results/2026-10-27/{backbone-runs/known-bank-final,native-bank-start,tutorial-backbone}/submission-operator.py`. |
+
+Before retirement, each controller matched both the pinned Git blob and the
+already preserved payload-manifest entry exactly:
+
+```text
+a6293857c61a9f4178190deb4f2bc2bffde9826518a7c35141047f2d47484d67  start_known100k_20261028.py
+525ad97a6a2db32e3f24f9f2e0cc53a9510a2e209c322251ecf17973108311ce  start_joint100k_20261029.py
+```
+
+The external copy is the single part
+`oscar-history-20261101/historical-options-operators-and-controls/historical-options-operators-and-controls.tar.zst.part-00000`
+in the existing [workshop Drive folder](https://drive.google.com/drive/folders/1LJsR0Qb0RkD4h8XiF3t6OQQlyYDKcI2k).
+Its archive SHA-256 is
+`ba0e88812ffb2f9a548921b1d2e109ecbcf59370cb7059778703ab1d5621b740`;
+the payload manifest SHA-256 is
+`883be3380cda99a102f0d2445dc610f8cd736a9a7a9707daf252b6a13717e9fe`.
+The [existing preservation summary](../evidence/pilot-results/2026-11-01/oscar-preservation/summary.json)
+binds the full historical closeout and its manifest, all 16,682 locally checked
+logical payloads in this group, and provider-confirmed upload. This retirement
+rechecks those local proof bindings and the two source entries; it does not
+claim another archive read, cold-file rehydration or independent cloud download.
+
+Historical evidence, including `check_handoff.py`, `sha256sums.txt`, receipts
+and failed attempts, is unchanged. To reproduce that old no-submission handoff
+check, use its full pinned `08f4ebde1b47893057c61706a1a94ae017806c47`
+checkout. The source-recovery check was run in a temporary copy of that layout
+with the exact pinned helper, checker and plan; scheduler calls remained mocked.
+All four cases in `tests/test_full_surface_post_bank_operator.py` passed;
+`studies/copy_to_tutorial.py --check`, `studies/manifest.py --check` and
+`studies/claims.py --check` report current outputs. These checks cover the
+retained active boundary. The next candidate operator copies are retained
+until their distinct behavior and provenance have a separate retirement proof.
+
+This bounded batch changes no numerical worker, task, model, scientific result
+or immutable evidence hash. No new cluster run or collaborator-machine
+rehearsal is implied.

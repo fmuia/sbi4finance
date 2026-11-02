@@ -1,0 +1,105 @@
+{
+  "format": "local_tutorial_browser_qa_v1",
+  "reviewed_at_utc": "2026-11-01T14:08:39.413002+00:00",
+  "base_commit": "5d4b877",
+  "notebook_sha256": {
+    "tutorial/notebooks/slot4_heston_bayesflow.py": "8edfd6780f2c73c48777e9ee128aea19c44ee3550b62ec6912e675cfa57a2363",
+    "tutorial/notebooks/slot5_calibration.py": "3fa60d6f5dd86c6cde1fecb3eae1a0383d4296a746b66a2f76b93d9041586312",
+    "tutorial/notebooks/trajectory_inference.py": "5d08ac659f2c2e8e9ab81f714b44eaf3fd6f04ab579ae8369cd44bb5d5011436"
+  },
+  "browser": {
+    "name": "Google Chrome",
+    "version": "156.0.8078.76",
+    "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+    "headless": true,
+    "fresh_isolated_profile": true,
+    "playwright": "1.64.1",
+    "python": "3.12.16"
+  },
+  "server": "http://127.0.0.1:8775",
+  "viewports": [
+    {
+      "width": 1440,
+      "height": 1100
+    },
+    {
+      "width": 760,
+      "height": 1000
+    }
+  ],
+  "scope": {
+    "cached_application_controls": true,
+    "one_missing_native_checkpoint_path": true,
+    "valid_native_checkpoint_loaded": false,
+    "posterior_sampling_performed": false,
+    "training_performed": false,
+    "forward_monte_carlo_button_pressed": false,
+    "user_chrome_profile_used": false,
+    "scientific_acceptance": false
+  },
+  "assertions_passed": [
+    "heston cached quotes, rates and independent kappa check",
+    "rough known/joint case reactivity and narrow layout",
+    "trajectory exact137 prefix with past126 cache",
+    "trajectory model/case/joint selectors and narrow layout",
+    "missing native checkpoint produces actionable file-placement warning",
+    "cached case selector and return/posterior views still work after missing-model warning",
+    "corrected trajectory SDE visibly renders without stray dollar signs"
+  ],
+  "missing_native_checkpoint": {
+    "path": "local-checkpoints/browser-qa-missing-do-not-create",
+    "warning": "Matching native checkpoint missing. Place task.json, training.json and model.keras in assets/local-checkpoints/path-rough-known/.",
+    "cached_case_after_warning": "Validation case 1"
+  },
+  "errors": [],
+  "runtime_checks": {
+    "heston": {
+      "name": "heston",
+      "page_console_errors": [],
+      "traceback_in_text": false,
+      "visible_alerts": [],
+      "error_testids": 0
+    },
+    "rough": {
+      "name": "rough",
+      "page_console_errors": [],
+      "traceback_in_text": false,
+      "visible_alerts": [],
+      "error_testids": 0
+    },
+    "trajectory": {
+      "name": "trajectory",
+      "page_console_errors": [],
+      "traceback_in_text": false,
+      "visible_alerts": [],
+      "error_testids": 0
+    }
+  },
+  "narrow_screen": {
+    "rough_document_width": 760,
+    "trajectory_document_width": 760,
+    "viewport_width": 760,
+    "horizontal_document_overflow": false
+  },
+  "key_screenshots": [
+    "10-heston-current-quotes.png",
+    "11-heston-exact-quote-table.png",
+    "12-heston-derived-rates.png",
+    "13-heston-kappa-check.png",
+    "20-rough-known100k-validation0-rates.png",
+    "20-rough-joint100k-validation1983-rates.png",
+    "22-rough-narrow-current-quotes.png",
+    "32-trajectory-known-task.png",
+    "35-trajectory-narrow-joint.png",
+    "36-trajectory-137-preview-settled.png",
+    "37-missing-native-checkpoint-warning.png",
+    "38-cached-view-after-missing-model-warning.png"
+  ],
+  "harness_notes": "Earlier failed harness assertions are preserved in explicitly labelled files. Marimo keeps hidden DOM templates; final checks use visible shadow-aware locators, settled controls and a focused expanded-preview screenshot. No repository files were changed by browser tooling.",
+  "reviewed_notebook_commit": "2d6d805e821939f0617e73c4fc547f0d3492d34f",
+  "full_artifacts": {
+    "directory": "local-artifacts/application-refinement-20261101/browser-qa/",
+    "report_sha256": "e98f863d5efc46be519a028deb7113ad9840d7c3e9ea9571de8ba198a64aa1ef",
+    "screenshots_and_harness_logs_committed": false
+  }
+}

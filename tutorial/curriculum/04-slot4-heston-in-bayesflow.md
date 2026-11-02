@@ -1,5 +1,16 @@
 # Slot 4. A worked example in BayesFlow: Heston on the SPY smile
 
+> **Review update · 1 November 2026.** The implemented notebook now starts from
+> one synthetic observation: Heston model and visible code, simulation and
+> quote noise, pricer-surrogate versus amortized-posterior routes, inference,
+> posterior prediction and calibration. Historical SPY material remains a
+> separate extension. The [guided review](TUTORIAL-REVIEW.md#guided-notebook-review--1-november-2026)
+> supersedes the older single-SPY/minute map below; timings are not the current
+> workshop plan. The current notebook does not load the archived SPY neural
+> checkpoint. Original-unit reference comparisons retain all four cases,
+> including case 2001's audited truth miss and reference limitations.
+
+
 Stefan and Jerry · 20 minutes. A proposal for Stefan and Jerry's review. Part of the [curriculum](00-overview.md).
 
 ![Minute map of slot 4](images/slot-4.png)

@@ -10,6 +10,18 @@ from .paths import ASSETS
 
 CATALOGUE = ASSETS / "backbones" / "artifacts.json"
 
+PARAMETER_LABELS = {
+    "initial_variance": ("Initial variance v₀", "v₀"),
+    "theta": ("Long-run variance θ", "θ"),
+    "vol_of_vol": ("Volatility of variance σᵥ", "σᵥ"),
+    "rho": ("Price–variance correlation ρ", "ρ"),
+    "hurst": ("Roughness H", "H"),
+    "eta": ("Variance amplitude η", "η"),
+    "short_variance": ("Initial curve level S", "S"),
+    "long_variance": ("Long-run curve level L", "L"),
+    "decay": ("Curve decay k", "k"),
+}
+
 
 def examples(prefix=None):
     names = list(json.loads(CATALOGUE.read_text())["artifacts"])
@@ -35,9 +47,9 @@ def load_live(name, directory):
 def parameter_rows(task, arrays):
     draws = arrays["neural_draws"]
     bounds = np.asarray(task["prior_bounds"])
-    q = np.quantile(draws, [.005, .5, .995], axis=0)
-    return [{"parameter": name, "prior": f"{bounds[i, 0]:.4g} to {bounds[i, 1]:.4g}",
-             "median": float(q[1, i]), "central 99%": f"{q[0, i]:.4g} to {q[2, i]:.4g}"}
+    q = np.quantile(draws, [.05, .5, .95], axis=0)
+    return [{"parameter": PARAMETER_LABELS.get(name, (name, name))[0], "prior": f"{bounds[i, 0]:.4g} to {bounds[i, 1]:.4g}",
+             "median": float(q[1, i]), "central 90%": f"{q[0, i]:.4g} to {q[2, i]:.4g}"}
             for i, name in enumerate(task["parameter_names"])]
 
 
@@ -69,9 +81,9 @@ def corner(task, arrays):
                 else:
                     ax.plot(arrays["truth"][j], arrays["truth"][i], "k+", markersize=6)
             if i == n - 1:
-                ax.set_xlabel(names[j], fontsize=8)
+                ax.set_xlabel(PARAMETER_LABELS.get(names[j], (names[j], names[j]))[1], fontsize=9)
             if j == 0:
-                ax.set_ylabel(names[i], fontsize=8)
+                ax.set_ylabel(PARAMETER_LABELS.get(names[i], (names[i], names[i]))[1], fontsize=9)
             ax.tick_params(labelsize=7)
     axes[0, 0].legend(fontsize=7)
     fig.tight_layout()

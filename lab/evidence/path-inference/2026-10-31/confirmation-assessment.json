@@ -1,0 +1,2652 @@
+{
+  "calibration_pass": false,
+  "created_at": "2026-10-31T03:53:54.640828+00:00",
+  "evaluations": {
+    "heston": {
+      "case_summary_path": "/oscar/scratch/afengler/sbi4finance-path-workshop-closeout-20261031-v1/run/confirmation/heston/case-summary.npz",
+      "case_summary_sha256": "b15c0ead61af7c5b08b519c644314ab56a623fa2c0a68dd6c3d624db49086a5f",
+      "path": "/oscar/scratch/afengler/sbi4finance-path-workshop-closeout-20261031-v1/run/confirmation/heston/evaluation.json",
+      "sha256": "9e06761c68b93908ce06f08ffcbc032dc7c23f654183930b892b4478c959325d"
+    },
+    "rough-joint": {
+      "case_summary_path": "/oscar/scratch/afengler/sbi4finance-path-workshop-closeout-20261031-v1/run/confirmation/rough-joint/case-summary.npz",
+      "case_summary_sha256": "5b1a4b7493670260403c00474d6772cf37715a82bebf46bbd1789eae34bab19a",
+      "path": "/oscar/scratch/afengler/sbi4finance-path-workshop-closeout-20261031-v1/run/confirmation/rough-joint/evaluation.json",
+      "sha256": "58f169ab62aa8dd0daf35b8b31ef55963d53b9852436f84fbec2436371eb8a12"
+    },
+    "rough-known": {
+      "case_summary_path": "/oscar/scratch/afengler/sbi4finance-path-workshop-closeout-20261031-v1/run/confirmation/rough-known/case-summary.npz",
+      "case_summary_sha256": "ae009255ee1daac38d671f253ca5baa8b2eb03b92b334829f781a4aa55c8fad8",
+      "path": "/oscar/scratch/afengler/sbi4finance-path-workshop-closeout-20261031-v1/run/confirmation/rough-known/evaluation.json",
+      "sha256": "4bb97953b13b39879d418d13f11f19bfe07e2542a538aeaa6eaced0c1057aa5a"
+    }
+  },
+  "execution_pass": true,
+  "format": "path_workshop_confirmation_v1",
+  "models": {
+    "heston": {
+      "calibration_pass": false,
+      "execution_pass": true,
+      "lengths": {
+        "1": {
+          "coverage90": [
+            0.8981854838709677,
+            0.9028897849462365,
+            0.8995295698924731,
+            0.9059139784946236,
+            0.8834005376344086
+          ],
+          "coverage90_simultaneous_interval": [
+            [
+              0.8754508447378138,
+              0.8805787326408762,
+              0.8769144963518222,
+              0.883883004998675,
+              0.859421685551791
+            ],
+            [
+              0.9181940483303164,
+              0.922441969641457,
+              0.9194092049740363,
+              0.9251649725473228,
+              0.904756059975091
+            ]
+          ],
+          "coverage_criterion": [
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "one_sided_minimum_nominal_coverage_for_atomic_target"
+          ],
+          "nominal_inside_interval": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "prior_normalized_paired_risk_difference": [
+            0.0016733017602487627,
+            0.002425864102858011,
+            0.002003794030777873,
+            0.007283470773173329,
+            0.0009891606201498484
+          ],
+          "risk_difference_simultaneous_interval": [
+            [
+              -0.2281574504670926,
+              -0.2191551909956837,
+              -0.20464382700020692,
+              -0.20045055714662768,
+              -0.20338346518933678
+            ],
+            [
+              0.23150405398759016,
+              0.22400691920139976,
+              0.20865141506176269,
+              0.21501749869297437,
+              0.2053617864296365
+            ]
+          ],
+          "risk_labels": [
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved"
+          ]
+        },
+        "126": {
+          "coverage90": [
+            0.8894489247311828,
+            0.8961693548387096,
+            0.8998655913978495,
+            0.9015456989247311,
+            0.8773521505376344
+          ],
+          "coverage90_simultaneous_interval": [
+            [
+              0.8659639732466224,
+              0.873257492511222,
+              0.8772805892170819,
+              0.8791121494456808,
+              0.852898682312696
+            ],
+            [
+              0.9102685671954859,
+              0.9163691801681271,
+              0.9197128134869055,
+              0.9212297559201842,
+              0.8992242053067765
+            ]
+          ],
+          "coverage_criterion": [
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "one_sided_minimum_nominal_coverage_for_atomic_target"
+          ],
+          "nominal_inside_interval": [
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "prior_normalized_paired_risk_difference": [
+            -0.08172303403042205,
+            -0.13719764810353954,
+            -0.5199130749379227,
+            -0.2706905678239234,
+            -0.22100005479431095
+          ],
+          "risk_difference_simultaneous_interval": [
+            [
+              -0.342490820534014,
+              -0.407226880031,
+              -0.7906749342744889,
+              -0.5318275619993488,
+              -0.478493507732037
+            ],
+            [
+              0.17904475247316987,
+              0.13283158382392093,
+              -0.24915121560135642,
+              -0.009553573648498029,
+              0.036493398143415026
+            ]
+          ],
+          "risk_labels": [
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "informative",
+            "informative",
+            "broad_or_unresolved"
+          ]
+        },
+        "1260": {
+          "coverage90": [
+            0.9079301075268817,
+            0.8894489247311828,
+            0.9294354838709677,
+            0.9092741935483871,
+            0.9069220430107527
+          ],
+          "coverage90_simultaneous_interval": [
+            [
+              0.8860893879097642,
+              0.8659639732466224,
+              0.9098262926079425,
+              0.887561929317185,
+              0.8849858362017066
+            ],
+            [
+              0.9269767587086359,
+              0.9102685671954859,
+              0.9460994023269469,
+              0.9281829899116439,
+              0.9260712273735249
+            ]
+          ],
+          "coverage_criterion": [
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "one_sided_minimum_nominal_coverage_for_atomic_target"
+          ],
+          "nominal_inside_interval": [
+            true,
+            true,
+            false,
+            true,
+            true
+          ],
+          "prior_normalized_paired_risk_difference": [
+            -0.5694930315537644,
+            -0.5716798476846122,
+            -0.9171720380803603,
+            -0.7780469836460431,
+            -0.7575363358504288
+          ],
+          "risk_difference_simultaneous_interval": [
+            [
+              -0.8886628829221598,
+              -0.8757022286235482,
+              -1.1868496456157207,
+              -1.0507434612570634,
+              -1.0312551771420064
+            ],
+            [
+              -0.2503231801853688,
+              -0.2676574667456762,
+              -0.6474944305449999,
+              -0.5053505060350227,
+              -0.48381749455885126
+            ]
+          ],
+          "risk_labels": [
+            "informative",
+            "informative",
+            "informative",
+            "informative",
+            "informative"
+          ]
+        },
+        "17": {
+          "coverage90": [
+            0.895497311827957,
+            0.896505376344086,
+            0.9049059139784946,
+            0.9032258064516129,
+            0.884744623655914
+          ],
+          "coverage90_simultaneous_interval": [
+            [
+              0.8725269320884168,
+              0.8736228764108718,
+              0.8827808839895935,
+              0.8809455666906347,
+              0.86087381470154
+            ],
+            [
+              0.9157603317262811,
+              0.9166735003179733,
+              0.9242580046164635,
+              0.9227448340769315,
+              0.9059827798610477
+            ]
+          ],
+          "coverage_criterion": [
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "one_sided_minimum_nominal_coverage_for_atomic_target"
+          ],
+          "nominal_inside_interval": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "prior_normalized_paired_risk_difference": [
+            0.001202368430081766,
+            -0.004019455280597402,
+            -0.041494235498475945,
+            -0.01568655136155702,
+            -0.016163261277633317
+          ],
+          "risk_difference_simultaneous_interval": [
+            [
+              -0.23010355247226336,
+              -0.23460437509925744,
+              -0.26872440311030876,
+              -0.2364540508453684,
+              -0.23401264316698314
+            ],
+            [
+              0.2325082893324269,
+              0.22656546453806264,
+              0.18573593211335684,
+              0.20508094812225441,
+              0.2016861206117165
+            ]
+          ],
+          "risk_labels": [
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved"
+          ]
+        },
+        "2": {
+          "coverage90": [
+            0.8995295698924731,
+            0.9008736559139785,
+            0.8978494623655914,
+            0.9038978494623656,
+            0.8870967741935484
+          ],
+          "coverage90_simultaneous_interval": [
+            [
+              0.8769144963518222,
+              0.8783793048617768,
+              0.8750851102190257,
+              0.8816794631317072,
+              0.8634173742969933
+            ],
+            [
+              0.9194092049740363,
+              0.9206232002941674,
+              0.9178900801091268,
+              0.9233503336964054,
+              0.9081271983415486
+            ]
+          ],
+          "coverage_criterion": [
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "one_sided_minimum_nominal_coverage_for_atomic_target"
+          ],
+          "nominal_inside_interval": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "prior_normalized_paired_risk_difference": [
+            0.0038622238155004663,
+            0.003268478462113492,
+            0.0019541280660614825,
+            0.003079114755377894,
+            -0.002786983206676357
+          ],
+          "risk_difference_simultaneous_interval": [
+            [
+              -0.22706886851253372,
+              -0.21920521128270395,
+              -0.20336115287144219,
+              -0.20208854485452668,
+              -0.21056034042050156
+            ],
+            [
+              0.23479331614353469,
+              0.22574216820693094,
+              0.20726940900356514,
+              0.20824677436528244,
+              0.20498637400714886
+            ]
+          ],
+          "risk_labels": [
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved"
+          ]
+        },
+        "21": {
+          "coverage90": [
+            0.8978494623655914,
+            0.8968413978494624,
+            0.9049059139784946,
+            0.9035618279569892,
+            0.8817204301075269
+          ],
+          "coverage90_simultaneous_interval": [
+            [
+              0.8750851102190257,
+              0.8739883298310361,
+              0.8827808839895935,
+              0.8813124767365439,
+              0.8576078607482696
+            ],
+            [
+              0.9178900801091268,
+              0.9169777506894511,
+              0.9242580046164635,
+              0.9230476222137851,
+              0.9032213191268931
+            ]
+          ],
+          "coverage_criterion": [
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "one_sided_minimum_nominal_coverage_for_atomic_target"
+          ],
+          "nominal_inside_interval": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "prior_normalized_paired_risk_difference": [
+            0.0003572912855969588,
+            -0.012579917860107386,
+            -0.0676759905467921,
+            -0.02906093186892081,
+            -0.020311455440676775
+          ],
+          "risk_difference_simultaneous_interval": [
+            [
+              -0.23159154725106276,
+              -0.24510000519447778,
+              -0.30078832429995417,
+              -0.2536735413965327,
+              -0.24042672015699013
+            ],
+            [
+              0.23230612982225665,
+              0.21994016947426304,
+              0.16543634320637,
+              0.1955516776586911,
+              0.1998038092756366
+            ]
+          ],
+          "risk_labels": [
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved"
+          ]
+        },
+        "252": {
+          "coverage90": [
+            0.8924731182795699,
+            0.8995295698924731,
+            0.9018817204301075,
+            0.9042338709677419,
+            0.8864247311827957
+          ],
+          "coverage90_simultaneous_interval": [
+            [
+              0.8692427747209954,
+              0.8769144963518222,
+              0.8794786829823188,
+              0.8820465262322691,
+              0.8626903364415212
+            ],
+            [
+              0.9130171369472181,
+              0.9194092049740363,
+              0.9215329220541474,
+              0.9236529681661096,
+              0.9075148149155938
+            ]
+          ],
+          "coverage_criterion": [
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "one_sided_minimum_nominal_coverage_for_atomic_target"
+          ],
+          "nominal_inside_interval": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "prior_normalized_paired_risk_difference": [
+            -0.18479681475828144,
+            -0.2432635984665211,
+            -0.7063489146969996,
+            -0.42821632092810163,
+            -0.3852862350897801
+          ],
+          "risk_difference_simultaneous_interval": [
+            [
+              -0.4643106128619134,
+              -0.5314644975611483,
+              -0.9801072621743501,
+              -0.6987902339748339,
+              -0.6533883007534643
+            ],
+            [
+              0.09471698334535045,
+              0.044937300628106094,
+              -0.43259056721964895,
+              -0.15764240788136927,
+              -0.11718416942609595
+            ]
+          ],
+          "risk_labels": [
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "informative",
+            "informative",
+            "informative"
+          ]
+        },
+        "4": {
+          "coverage90": [
+            0.8931451612903226,
+            0.8991935483870968,
+            0.8985215053763441,
+            0.9055779569892473,
+            0.8870967741935484
+          ],
+          "coverage90_simultaneous_interval": [
+            [
+              0.8699721176225977,
+              0.8765484757892597,
+              0.8758166502976523,
+              0.8835155529199067,
+              0.8634173742969933
+            ],
+            [
+              0.9136272073278189,
+              0.9191055238817732,
+              0.918497945242365,
+              0.9248627286325457,
+              0.9081271983415486
+            ]
+          ],
+          "coverage_criterion": [
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "one_sided_minimum_nominal_coverage_for_atomic_target"
+          ],
+          "nominal_inside_interval": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "prior_normalized_paired_risk_difference": [
+            0.0028808597394616156,
+            0.0011768744756455035,
+            0.0038836596708150583,
+            0.0016613237955868285,
+            -0.0044175347309304705
+          ],
+          "risk_difference_simultaneous_interval": [
+            [
+              -0.2277413265015943,
+              -0.2219527579928557,
+              -0.20618532856619937,
+              -0.20453705329966185,
+              -0.2136875506510584
+            ],
+            [
+              0.23350304598051755,
+              0.2243065069441467,
+              0.21395264790782945,
+              0.2078597008908355,
+              0.20485248118919747
+            ]
+          ],
+          "risk_labels": [
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved"
+          ]
+        },
+        "504": {
+          "coverage90": [
+            0.8931451612903226,
+            0.8907930107526881,
+            0.9153225806451613,
+            0.9082661290322581,
+            0.9012096774193549
+          ],
+          "coverage90_simultaneous_interval": [
+            [
+              0.8699721176225977,
+              0.8674205696677957,
+              0.8942051679265877,
+              0.8864574004134171,
+              0.8787456901840344
+            ],
+            [
+              0.9136272073278189,
+              0.9114908047051026,
+              0.9335941552100671,
+              0.927278439875713,
+              0.9209265152208763
+            ]
+          ],
+          "coverage_criterion": [
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "one_sided_minimum_nominal_coverage_for_atomic_target"
+          ],
+          "nominal_inside_interval": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "prior_normalized_paired_risk_difference": [
+            -0.33198831633707776,
+            -0.3946209547465005,
+            -0.8382070469889266,
+            -0.5977661738179577,
+            -0.5757840664793058
+          ],
+          "risk_difference_simultaneous_interval": [
+            [
+              -0.6293947699063969,
+              -0.6932301205701334,
+              -1.109421471171294,
+              -0.8720117441413496,
+              -0.8486179653165153
+            ],
+            [
+              -0.03458186276775871,
+              -0.09601178892286755,
+              -0.5669926228065592,
+              -0.32352060349456585,
+              -0.3029501676420963
+            ]
+          ],
+          "risk_labels": [
+            "informative",
+            "informative",
+            "informative",
+            "informative",
+            "informative"
+          ]
+        },
+        "63": {
+          "coverage90": [
+            0.8961693548387096,
+            0.8985215053763441,
+            0.9035618279569892,
+            0.905241935483871,
+            0.8783602150537635
+          ],
+          "coverage90_simultaneous_interval": [
+            [
+              0.873257492511222,
+              0.8758166502976523,
+              0.8813124767365439,
+              0.8831481793741841,
+              0.8539845639513424
+            ],
+            [
+              0.9163691801681271,
+              0.918497945242365,
+              0.9230476222137851,
+              0.9245604058640573,
+              0.900147470707547
+            ]
+          ],
+          "coverage_criterion": [
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "one_sided_minimum_nominal_coverage_for_atomic_target"
+          ],
+          "nominal_inside_interval": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "prior_normalized_paired_risk_difference": [
+            -0.02379724106919499,
+            -0.05962709131861275,
+            -0.29330523653817847,
+            -0.13449576265538474,
+            -0.10109512694221671
+          ],
+          "risk_difference_simultaneous_interval": [
+            [
+              -0.2679670941695926,
+              -0.3114864277051473,
+              -0.5553244644524856,
+              -0.3826428667367436,
+              -0.3416558711739762
+            ],
+            [
+              0.22037261203120262,
+              0.19223224506792178,
+              -0.03128600862387129,
+              0.11365134142597406,
+              0.13946561728954288
+            ]
+          ],
+          "risk_labels": [
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "informative",
+            "broad_or_unresolved",
+            "broad_or_unresolved"
+          ]
+        },
+        "756": {
+          "coverage90": [
+            0.895497311827957,
+            0.8894489247311828,
+            0.9186827956989247,
+            0.9190188172043011,
+            0.9042338709677419
+          ],
+          "coverage90_simultaneous_interval": [
+            [
+              0.8725269320884168,
+              0.8659639732466224,
+              0.8979084164060872,
+              0.8982792608983525,
+              0.8820465262322691
+            ],
+            [
+              0.9157603317262811,
+              0.9102685671954859,
+              0.9365877409906711,
+              0.9368865774830297,
+              0.9236529681661096
+            ]
+          ],
+          "coverage_criterion": [
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "one_sided_minimum_nominal_coverage_for_atomic_target"
+          ],
+          "nominal_inside_interval": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "prior_normalized_paired_risk_difference": [
+            -0.4362407885480848,
+            -0.47892655645628657,
+            -0.8804665680576904,
+            -0.7003543938482836,
+            -0.6654211988538219
+          ],
+          "risk_difference_simultaneous_interval": [
+            [
+              -0.7437498974347706,
+              -0.779955613744096,
+              -1.1511667613043404,
+              -0.9738675146917265,
+              -0.9387300860259419
+            ],
+            [
+              -0.12873167966139898,
+              -0.17789749916847708,
+              -0.6097663748110405,
+              -0.4268412730048406,
+              -0.39211231168170185
+            ]
+          ],
+          "risk_labels": [
+            "informative",
+            "informative",
+            "informative",
+            "informative",
+            "informative"
+          ]
+        },
+        "8": {
+          "coverage90": [
+            0.8988575268817204,
+            0.8991935483870968,
+            0.9065860215053764,
+            0.9038978494623656,
+            0.8830645161290323
+          ],
+          "coverage90_simultaneous_interval": [
+            [
+              0.8761825272100985,
+              0.8765484757892597,
+              0.8846181462594016,
+              0.8816794631317072,
+              0.8590588025172659
+            ],
+            [
+              0.9188017705315995,
+              0.9191055238817732,
+              0.9257692223007596,
+              0.9233503336964054,
+              0.9044492302621382
+            ]
+          ],
+          "coverage_criterion": [
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "one_sided_minimum_nominal_coverage_for_atomic_target"
+          ],
+          "nominal_inside_interval": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "prior_normalized_paired_risk_difference": [
+            -0.0014341215323197736,
+            0.0023180087139648307,
+            -0.0006635012510756568,
+            -0.002480030914899799,
+            -0.0076206225191971675
+          ],
+          "risk_difference_simultaneous_interval": [
+            [
+              -0.2322826226174829,
+              -0.2228212312349666,
+              -0.21638613891305986,
+              -0.21358977702924886,
+              -0.22046772809569729
+            ],
+            [
+              0.22941437955284338,
+              0.22745724866289624,
+              0.21505913641090857,
+              0.20862971519944923,
+              0.20522648305730298
+            ]
+          ],
+          "risk_labels": [
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved"
+          ]
+        }
+      },
+      "long_history_non_drift_informative": true,
+      "risk_pass": true
+    },
+    "rough-joint": {
+      "calibration_pass": false,
+      "execution_pass": true,
+      "lengths": {
+        "1": {
+          "coverage90": [
+            0.9035618279569892,
+            0.9005376344086021,
+            0.8834005376344086,
+            0.8998655913978495,
+            0.8887768817204301,
+            0.9008736559139785,
+            0.8854166666666666
+          ],
+          "coverage90_simultaneous_interval": [
+            [
+              0.8813124767365439,
+              0.8780129931461033,
+              0.859421685551791,
+              0.8772805892170819,
+              0.8652360585521481,
+              0.8783793048617768,
+              0.8616002406445175
+            ],
+            [
+              0.9230476222137851,
+              0.920319811475177,
+              0.904756059975091,
+              0.9197128134869055,
+              0.9096570635958586,
+              0.9206232002941674,
+              0.9065957772442883
+            ]
+          ],
+          "coverage_criterion": [
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility"
+          ],
+          "nominal_inside_interval": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "prior_normalized_paired_risk_difference": [
+            -0.00024952775840449837,
+            0.0038402830228390565,
+            0.003754365330949322,
+            -0.1344978556612147,
+            0.002064718098079198,
+            -0.0001854093099745762,
+            0.00970263438846389
+          ],
+          "risk_difference_simultaneous_interval": [
+            [
+              -0.205072782784804,
+              -0.20470090329318177,
+              -0.20117568236586675,
+              -0.39538658408460725,
+              -0.21845473242363403,
+              -0.2399549718692382,
+              -0.1984214683208637
+            ],
+            [
+              0.20457372726799494,
+              0.21238146933885987,
+              0.20868441302776536,
+              0.12639087276217797,
+              0.22258416861979244,
+              0.23958415324928903,
+              0.21782673709779146
+            ]
+          ],
+          "risk_labels": [
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved"
+          ]
+        },
+        "126": {
+          "coverage90": [
+            0.9002016129032258,
+            0.9012096774193549,
+            0.8743279569892473,
+            0.9002016129032258,
+            0.8797043010752689,
+            0.9069220430107527,
+            0.8793682795698925
+          ],
+          "coverage90_simultaneous_interval": [
+            [
+              0.8776467547069738,
+              0.8787456901840344,
+              0.8496440254149971,
+              0.8776467547069738,
+              0.8554331954807519,
+              0.8849858362017066,
+              0.8550709524211069
+            ],
+            [
+              0.9200163490962332,
+              0.9209265152208763,
+              0.8964514119183173,
+              0.9200163490962332,
+              0.9013776994361156,
+              0.9260712273735249,
+              0.9010702276984797
+            ]
+          ],
+          "coverage_criterion": [
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility"
+          ],
+          "nominal_inside_interval": [
+            true,
+            true,
+            false,
+            true,
+            true,
+            true,
+            true
+          ],
+          "prior_normalized_paired_risk_difference": [
+            -0.2597284429798458,
+            -0.647817662772298,
+            -0.33136870152468273,
+            -0.5577356471612321,
+            -0.10115837830455034,
+            -0.014536452922827976,
+            -0.22391182201645726
+          ],
+          "risk_difference_simultaneous_interval": [
+            [
+              -0.5182075033083849,
+              -0.9224315082148835,
+              -0.5972030907773324,
+              -0.8503116983588194,
+              -0.3713126086074256,
+              -0.2676895736990021,
+              -0.48408792275877865
+            ],
+            [
+              -0.0012493826513066963,
+              -0.37320381732971264,
+              -0.06553431227203305,
+              -0.2651595959636448,
+              0.16899585199832487,
+              0.23861666785334612,
+              0.03626427872586423
+            ]
+          ],
+          "risk_labels": [
+            "informative",
+            "informative",
+            "informative",
+            "informative",
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved"
+          ]
+        },
+        "1260": {
+          "coverage90": [
+            0.905241935483871,
+            0.9166666666666666,
+            0.8904569892473119,
+            0.8907930107526881,
+            0.895497311827957,
+            0.9055779569892473,
+            0.9015456989247311
+          ],
+          "coverage90_simultaneous_interval": [
+            [
+              0.8831481793741841,
+              0.8956853480979055,
+              0.8670563240440957,
+              0.8674205696677957,
+              0.8725269320884168,
+              0.8835155529199067,
+              0.8791121494456808
+            ],
+            [
+              0.9245604058640573,
+              0.934792713950696,
+              0.911185342182325,
+              0.9114908047051026,
+              0.9157603317262811,
+              0.9248627286325457,
+              0.9212297559201842
+            ]
+          ],
+          "coverage_criterion": [
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility"
+          ],
+          "nominal_inside_interval": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "prior_normalized_paired_risk_difference": [
+            -0.7023426250451331,
+            -0.9574981242787022,
+            -0.804305957845168,
+            -0.5764154190387007,
+            -0.26025365403515544,
+            -0.017454883373674,
+            -0.8128037523322841
+          ],
+          "risk_difference_simultaneous_interval": [
+            [
+              -0.9761893444494316,
+              -1.2267531449286968,
+              -1.075628854264667,
+              -0.8717739600491643,
+              -0.5410509842893491,
+              -0.28161433220081705,
+              -1.0872068107552741
+            ],
+            [
+              -0.42849590564083473,
+              -0.6882431036287076,
+              -0.5329830614256689,
+              -0.2810568780282373,
+              0.02054367621903825,
+              0.24670456545346903,
+              -0.5384006939092941
+            ]
+          ],
+          "risk_labels": [
+            "informative",
+            "informative",
+            "informative",
+            "informative",
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "informative"
+          ]
+        },
+        "17": {
+          "coverage90": [
+            0.9065860215053764,
+            0.8951612903225806,
+            0.8813844086021505,
+            0.9112903225806451,
+            0.8870967741935484,
+            0.9069220430107527,
+            0.8817204301075269
+          ],
+          "coverage90_simultaneous_interval": [
+            [
+              0.8846181462594016,
+              0.8721617549786005,
+              0.8572452718106265,
+              0.8897732354040551,
+              0.8634173742969933,
+              0.8849858362017066,
+              0.8576078607482696
+            ],
+            [
+              0.9257692223007596,
+              0.9154558040248407,
+              0.9029141943663812,
+              0.9299898321001576,
+              0.9081271983415486,
+              0.9260712273735249,
+              0.9032213191268931
+            ]
+          ],
+          "coverage_criterion": [
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility"
+          ],
+          "nominal_inside_interval": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "prior_normalized_paired_risk_difference": [
+            -0.05926976235882476,
+            -0.12587862035749164,
+            -0.04161500728236939,
+            -0.5117021334238278,
+            0.00032871731937057194,
+            0.001201633507403168,
+            -0.011131182448096315
+          ],
+          "risk_difference_simultaneous_interval": [
+            [
+              -0.29003224127203686,
+              -0.37691558250110524,
+              -0.27386333398561724,
+              -0.8052238223608196,
+              -0.2289360231276167,
+              -0.2422817184108294,
+              -0.23351004387758412
+            ],
+            [
+              0.17149271655438736,
+              0.12515834178612192,
+              0.19063331942087847,
+              -0.21818044448683574,
+              0.2295934577663579,
+              0.24468498542563577,
+              0.21124767898139146
+            ]
+          ],
+          "risk_labels": [
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "informative",
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved"
+          ]
+        },
+        "2": {
+          "coverage90": [
+            0.9035618279569892,
+            0.8931451612903226,
+            0.8800403225806451,
+            0.9082661290322581,
+            0.8918010752688172,
+            0.9045698924731183,
+            0.8850806451612904
+          ],
+          "coverage90_simultaneous_interval": [
+            [
+              0.8813124767365439,
+              0.8699721176225977,
+              0.8557954956658077,
+              0.8864574004134171,
+              0.8685136962543326,
+              0.8824136663974521,
+              0.8612369973688296
+            ],
+            [
+              0.9230476222137851,
+              0.9136272073278189,
+              0.9016851138682124,
+              0.927278439875713,
+              0.9124068011899455,
+              0.9239555252611077,
+              0.9062893089573243
+            ]
+          ],
+          "coverage_criterion": [
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility"
+          ],
+          "nominal_inside_interval": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "prior_normalized_paired_risk_difference": [
+            -0.003235570325313044,
+            0.0013823304960696452,
+            0.00038204744030601213,
+            -0.21358095186361595,
+            0.0023852278050514575,
+            0.002985441742263451,
+            0.00932291107769621
+          ],
+          "risk_difference_simultaneous_interval": [
+            [
+              -0.21252269190620152,
+              -0.21285623805130993,
+              -0.20710031020150677,
+              -0.4883645773985812,
+              -0.2177469535653422,
+              -0.2362238746905091,
+              -0.2001827246378493
+            ],
+            [
+              0.20605155125557542,
+              0.2156208990434492,
+              0.20786440508211876,
+              0.06120267367134937,
+              0.2225174091754451,
+              0.242194758175036,
+              0.2188285467932417
+            ]
+          ],
+          "risk_labels": [
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved"
+          ]
+        },
+        "21": {
+          "coverage90": [
+            0.8998655913978495,
+            0.8897849462365591,
+            0.8817204301075269,
+            0.9082661290322581,
+            0.8834005376344086,
+            0.905241935483871,
+            0.8813844086021505
+          ],
+          "coverage90_simultaneous_interval": [
+            [
+              0.8772805892170819,
+              0.8663280260907014,
+              0.8576078607482696,
+              0.8864574004134171,
+              0.859421685551791,
+              0.8831481793741841,
+              0.8572452718106265
+            ],
+            [
+              0.9197128134869055,
+              0.9105742231686946,
+              0.9032213191268931,
+              0.927278439875713,
+              0.904756059975091,
+              0.9245604058640573,
+              0.9029141943663812
+            ]
+          ],
+          "coverage_criterion": [
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility"
+          ],
+          "nominal_inside_interval": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "prior_normalized_paired_risk_difference": [
+            -0.07093956702102841,
+            -0.16385559533035146,
+            -0.06117896635050976,
+            -0.522456230967953,
+            0.0008963291626967894,
+            0.0023259813775705174,
+            -0.017411274130755935
+          ],
+          "risk_difference_simultaneous_interval": [
+            [
+              -0.3044879044284734,
+              -0.4183782952069381,
+              -0.29754786742486544,
+              -0.8169942281924674,
+              -0.2299114034554767,
+              -0.24123192656008416,
+              -0.2417149130321295
+            ],
+            [
+              0.16260877038641655,
+              0.09066710454623508,
+              0.17518993472384592,
+              -0.22791823374343853,
+              0.23170406178087027,
+              0.24588388931522523,
+              0.20689236477061765
+            ]
+          ],
+          "risk_labels": [
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "informative",
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved"
+          ]
+        },
+        "252": {
+          "coverage90": [
+            0.8971774193548387,
+            0.8995295698924731,
+            0.8797043010752689,
+            0.9025537634408602,
+            0.8793682795698925,
+            0.9059139784946236,
+            0.8786962365591398
+          ],
+          "coverage90_simultaneous_interval": [
+            [
+              0.8743538530709486,
+              0.8769144963518222,
+              0.8554331954807519,
+              0.8802119742371688,
+              0.8550709524211069,
+              0.883883004998675,
+              0.8543466368593332
+            ],
+            [
+              0.9172819309813242,
+              0.9194092049740363,
+              0.9013776994361156,
+              0.9221390292599406,
+              0.9010702276984797,
+              0.9251649725473228,
+              0.9004551131300836
+            ]
+          ],
+          "coverage_criterion": [
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility"
+          ],
+          "nominal_inside_interval": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "prior_normalized_paired_risk_difference": [
+            -0.3717993097074845,
+            -0.790086483172466,
+            -0.4879069081319894,
+            -0.5712782822014744,
+            -0.1670388366008394,
+            -0.015060649930087586,
+            -0.4077009050173421
+          ],
+          "risk_difference_simultaneous_interval": [
+            [
+              -0.6376521984336155,
+              -1.0639718134791603,
+              -0.7596305960766461,
+              -0.8644836270222519,
+              -0.44567098519864684,
+              -0.27396417504981646,
+              -0.6791989592545942
+            ],
+            [
+              -0.10594642098135337,
+              -0.5162011528657717,
+              -0.2161832201873327,
+              -0.2780729373806971,
+              0.11159331199696802,
+              0.24384287518964126,
+              -0.13620285078009017
+            ]
+          ],
+          "risk_labels": [
+            "informative",
+            "informative",
+            "informative",
+            "informative",
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "informative"
+          ]
+        },
+        "4": {
+          "coverage90": [
+            0.9055779569892473,
+            0.8921370967741935,
+            0.8827284946236559,
+            0.9119623655913979,
+            0.8860887096774194,
+            0.9079301075268817,
+            0.8850806451612904
+          ],
+          "coverage90_simultaneous_interval": [
+            [
+              0.8835155529199067,
+              0.8688782025686714,
+              0.8586959787387203,
+              0.8905110159895155,
+              0.862326909947225,
+              0.8860893879097642,
+              0.8612369973688296
+            ],
+            [
+              0.9248627286325457,
+              0.9127120021044169,
+              0.9041423411004628,
+              0.9305914313335282,
+              0.9072085304584914,
+              0.9269767587086359,
+              0.9062893089573243
+            ]
+          ],
+          "coverage_criterion": [
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility"
+          ],
+          "nominal_inside_interval": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "prior_normalized_paired_risk_difference": [
+            -0.005404132006651222,
+            -0.01145310299964815,
+            -0.008963443489279722,
+            -0.33540389816843086,
+            0.007089921986452709,
+            0.004306168018048579,
+            0.007071061289635666
+          ],
+          "risk_difference_simultaneous_interval": [
+            [
+              -0.22025093150766117,
+              -0.23634440069996987,
+              -0.2215182170039479,
+              -0.6176288431213826,
+              -0.21343649068039255,
+              -0.23585464126932332,
+              -0.20598255232952611
+            ],
+            [
+              0.2094426674943587,
+              0.2134381947006736,
+              0.20359133002538846,
+              -0.05317895321547928,
+              0.22761633465329795,
+              0.2444669773054205,
+              0.2201246749087974
+            ]
+          ],
+          "risk_labels": [
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "informative",
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved"
+          ]
+        },
+        "504": {
+          "coverage90": [
+            0.8998655913978495,
+            0.9129704301075269,
+            0.885752688172043,
+            0.9022177419354839,
+            0.8881048387096774,
+            0.9038978494623656,
+            0.8844086021505376
+          ],
+          "coverage90_simultaneous_interval": [
+            [
+              0.8772805892170819,
+              0.8916183350218674,
+              0.8619635447597188,
+              0.879845291132382,
+              0.8645083968425553,
+              0.8816794631317072,
+              0.8605106924131929
+            ],
+            [
+              0.9197128134869055,
+              0.9314931791814327,
+              0.9069021844894155,
+              0.921836013281964,
+              0.9090453061424928,
+              0.9233503336964054,
+              0.9056761901863095
+            ]
+          ],
+          "coverage_criterion": [
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility"
+          ],
+          "nominal_inside_interval": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "prior_normalized_paired_risk_difference": [
+            -0.5318126842120419,
+            -0.8982257902309819,
+            -0.6585318058572891,
+            -0.5774157974243587,
+            -0.22618994946123736,
+            -0.02047757947019659,
+            -0.6008707965741458
+          ],
+          "risk_difference_simultaneous_interval": [
+            [
+              -0.8025541888407268,
+              -1.1692898843388282,
+              -0.9309475047982507,
+              -0.8717107137189671,
+              -0.5060427176405197,
+              -0.2840952443614574,
+              -0.8766571784666698
+            ],
+            [
+              -0.26107117958335685,
+              -0.6271616961231359,
+              -0.3861161069163272,
+              -0.28312088112975026,
+              0.053662818718044965,
+              0.24314008542106416,
+              -0.3250844146816217
+            ]
+          ],
+          "risk_labels": [
+            "informative",
+            "informative",
+            "informative",
+            "informative",
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "informative"
+          ]
+        },
+        "63": {
+          "coverage90": [
+            0.8988575268817204,
+            0.8938172043010753,
+            0.8746639784946236,
+            0.8995295698924731,
+            0.8803763440860215,
+            0.9059139784946236,
+            0.8830645161290323
+          ],
+          "coverage90_simultaneous_interval": [
+            [
+              0.8761825272100985,
+              0.8707017271461518,
+              0.8500054354347527,
+              0.8769144963518222,
+              0.8561578531827214,
+              0.883883004998675,
+              0.8590588025172659
+            ],
+            [
+              0.9188017705315995,
+              0.9142370101305687,
+              0.8967597192601143,
+              0.9194092049740363,
+              0.9019924707871148,
+              0.9251649725473228,
+              0.9044492302621382
+            ]
+          ],
+          "coverage_criterion": [
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility"
+          ],
+          "nominal_inside_interval": [
+            true,
+            true,
+            false,
+            true,
+            true,
+            true,
+            true
+          ],
+          "prior_normalized_paired_risk_difference": [
+            -0.16618417942518712,
+            -0.43886118090839116,
+            -0.176748635427427,
+            -0.5434603223316262,
+            -0.048005541909570223,
+            -0.004782316124389967,
+            -0.1033254111773731
+          ],
+          "risk_difference_simultaneous_interval": [
+            [
+              -0.41422232324905944,
+              -0.7111170245577293,
+              -0.4314660957238039,
+              -0.8378774600962898,
+              -0.30165260226506607,
+              -0.25363016234903213,
+              -0.3482972933329252
+            ],
+            [
+              0.0818539643986852,
+              -0.1666053372590531,
+              0.07796882486894993,
+              -0.24904318456696262,
+              0.20564151844592563,
+              0.2440655301002522,
+              0.14164647097817903
+            ]
+          ],
+          "risk_labels": [
+            "broad_or_unresolved",
+            "informative",
+            "broad_or_unresolved",
+            "informative",
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved"
+          ]
+        },
+        "756": {
+          "coverage90": [
+            0.9035618279569892,
+            0.9139784946236559,
+            0.8844086021505376,
+            0.897513440860215,
+            0.883736559139785,
+            0.9079301075268817,
+            0.8968413978494624
+          ],
+          "coverage90_simultaneous_interval": [
+            [
+              0.8813124767365439,
+              0.8927264426676644,
+              0.8605106924131929,
+              0.874719446432252,
+              0.8597846280636999,
+              0.8860893879097642,
+              0.8739883298310361
+            ],
+            [
+              0.9230476222137851,
+              0.9323941349142779,
+              0.9056761901863095,
+              0.9175860408899249,
+              0.9050628300165879,
+              0.9269767587086359,
+              0.9169777506894511
+            ]
+          ],
+          "coverage_criterion": [
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility"
+          ],
+          "nominal_inside_interval": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "prior_normalized_paired_risk_difference": [
+            -0.6161264820659351,
+            -0.9293174755706733,
+            -0.7372175946222639,
+            -0.576327640844184,
+            -0.2439039145041715,
+            -0.02135866329464966,
+            -0.7128916356632873
+          ],
+          "risk_difference_simultaneous_interval": [
+            [
+              -0.8884725968843854,
+              -1.1996746350604053,
+              -1.009123043406436,
+              -0.8710661103666981,
+              -0.5254395911245915,
+              -0.28455731511181387,
+              -0.988587369682679
+            ],
+            [
+              -0.3437803672474849,
+              -0.6589603160809416,
+              -0.4653121458380919,
+              -0.2815891713216696,
+              0.03763176211624846,
+              0.24183998852251454,
+              -0.43719590164389566
+            ]
+          ],
+          "risk_labels": [
+            "informative",
+            "informative",
+            "informative",
+            "informative",
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "informative"
+          ]
+        },
+        "8": {
+          "coverage90": [
+            0.90625,
+            0.896505376344086,
+            0.8827284946236559,
+            0.9203629032258065,
+            0.8897849462365591,
+            0.905241935483871,
+            0.8860887096774194
+          ],
+          "coverage90_simultaneous_interval": [
+            [
+              0.8842505359856744,
+              0.8736228764108718,
+              0.8586959787387203,
+              0.8997636103887467,
+              0.8663280260907014,
+              0.8831481793741841,
+              0.862326909947225
+            ],
+            [
+              0.9254671372304788,
+              0.9166735003179733,
+              0.9041423411004628,
+              0.9380809472720074,
+              0.9105742231686946,
+              0.9245604058640573,
+              0.9072085304584914
+            ]
+          ],
+          "coverage_criterion": [
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility"
+          ],
+          "nominal_inside_interval": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "prior_normalized_paired_risk_difference": [
+            -0.01960177234491898,
+            -0.04601239260135147,
+            -0.022286048702392973,
+            -0.4513614335631433,
+            0.005823532639018143,
+            0.002181418185162574,
+            -0.0025891343474008337
+          ],
+          "risk_difference_simultaneous_interval": [
+            [
+              -0.240937737283255,
+              -0.2826925254577745,
+              -0.24193033891945603,
+              -0.7393954695208981,
+              -0.21683890348394633,
+              -0.23879495456585212,
+              -0.21828008671861462
+            ],
+            [
+              0.201734192593417,
+              0.1906677402550716,
+              0.19735824151467005,
+              -0.1633273976053885,
+              0.22848596876198263,
+              0.24315779093617723,
+              0.21310181802381295
+            ]
+          ],
+          "risk_labels": [
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "informative",
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved"
+          ]
+        }
+      },
+      "long_history_non_drift_informative": true,
+      "risk_pass": true
+    },
+    "rough-known": {
+      "calibration_pass": true,
+      "execution_pass": true,
+      "lengths": {
+        "1": {
+          "coverage90": [
+            0.8988575268817204,
+            0.9035618279569892,
+            0.8881048387096774,
+            0.90625
+          ],
+          "coverage90_simultaneous_interval": [
+            [
+              0.8761825272100985,
+              0.8813124767365439,
+              0.8645083968425553,
+              0.8842505359856744
+            ],
+            [
+              0.9188017705315995,
+              0.9230476222137851,
+              0.9090453061424928,
+              0.9254671372304788
+            ]
+          ],
+          "coverage_criterion": [
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility"
+          ],
+          "nominal_inside_interval": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "prior_normalized_paired_risk_difference": [
+            0.0023193166589563275,
+            0.003133466733923442,
+            0.003917129079793066,
+            0.0012490701041908195
+          ],
+          "risk_difference_simultaneous_interval": [
+            [
+              -0.20502184409020208,
+              -0.20561645489472052,
+              -0.2014316389774661,
+              -0.20415296791925372
+            ],
+            [
+              0.20966047740811475,
+              0.2118833883625674,
+              0.2092658971370522,
+              0.20665110812763532
+            ]
+          ],
+          "risk_labels": [
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved"
+          ]
+        },
+        "126": {
+          "coverage90": [
+            0.9002016129032258,
+            0.8998655913978495,
+            0.9008736559139785,
+            0.9079301075268817
+          ],
+          "coverage90_simultaneous_interval": [
+            [
+              0.8776467547069738,
+              0.8772805892170819,
+              0.8783793048617768,
+              0.8860893879097642
+            ],
+            [
+              0.9200163490962332,
+              0.9197128134869055,
+              0.9206232002941674,
+              0.9269767587086359
+            ]
+          ],
+          "coverage_criterion": [
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility"
+          ],
+          "nominal_inside_interval": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "prior_normalized_paired_risk_difference": [
+            -0.2673476025995946,
+            -0.6736593162997526,
+            -0.34071270946254134,
+            -0.1894642705143428
+          ],
+          "risk_difference_simultaneous_interval": [
+            [
+              -0.5286596181376897,
+              -0.9477416231068441,
+              -0.6127537598328113,
+              -0.444955415746918
+            ],
+            [
+              -0.006035587061499481,
+              -0.3995770094926612,
+              -0.06867165909227134,
+              0.06602687471823233
+            ]
+          ],
+          "risk_labels": [
+            "informative",
+            "informative",
+            "informative",
+            "broad_or_unresolved"
+          ]
+        },
+        "1260": {
+          "coverage90": [
+            0.9116263440860215,
+            0.905241935483871,
+            0.9082661290322581,
+            0.9193548387096774
+          ],
+          "coverage90_simultaneous_interval": [
+            [
+              0.8901420827823585,
+              0.8831481793741841,
+              0.8864574004134171,
+              0.8986502019921159
+            ],
+            [
+              0.9302906748188537,
+              0.9245604058640573,
+              0.927278439875713,
+              0.9371853169125662
+            ]
+          ],
+          "coverage_criterion": [
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility"
+          ],
+          "nominal_inside_interval": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "prior_normalized_paired_risk_difference": [
+            -0.7210936581544232,
+            -0.9280000245205838,
+            -0.7859893324007945,
+            -0.7773172599247796
+          ],
+          "risk_difference_simultaneous_interval": [
+            [
+              -0.9962175992009403,
+              -1.196510042795814,
+              -1.0622048158614317,
+              -1.0506941048699407
+            ],
+            [
+              -0.4459697171079062,
+              -0.6594900062453535,
+              -0.5097738489401574,
+              -0.5039404149796185
+            ]
+          ],
+          "risk_labels": [
+            "informative",
+            "informative",
+            "informative",
+            "informative"
+          ]
+        },
+        "17": {
+          "coverage90": [
+            0.9018817204301075,
+            0.9018817204301075,
+            0.8991935483870968,
+            0.9096102150537635
+          ],
+          "coverage90_simultaneous_interval": [
+            [
+              0.8794786829823188,
+              0.8794786829823188,
+              0.8765484757892597,
+              0.8879302707711971
+            ],
+            [
+              0.9215329220541474,
+              0.9215329220541474,
+              0.9191055238817732,
+              0.9284843407365718
+            ]
+          ],
+          "coverage_criterion": [
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility"
+          ],
+          "nominal_inside_interval": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "prior_normalized_paired_risk_difference": [
+            -0.05614417050917208,
+            -0.17955023236813783,
+            -0.054546678792677904,
+            -0.009633191818988474
+          ],
+          "risk_difference_simultaneous_interval": [
+            [
+              -0.2905209755802588,
+              -0.42851678545751737,
+              -0.290979397614514,
+              -0.22904026084297774
+            ],
+            [
+              0.17823263456191463,
+              0.0694163207212417,
+              0.1818860400291582,
+              0.20977387720500082
+            ]
+          ],
+          "risk_labels": [
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved"
+          ]
+        },
+        "2": {
+          "coverage90": [
+            0.9005376344086021,
+            0.9032258064516129,
+            0.8907930107526881,
+            0.9089381720430108
+          ],
+          "coverage90_simultaneous_interval": [
+            [
+              0.8780129931461033,
+              0.8809455666906347,
+              0.8674205696677957,
+              0.887193670712426
+            ],
+            [
+              0.920319811475177,
+              0.9227448340769315,
+              0.9114908047051026,
+              0.9278815558849385
+            ]
+          ],
+          "coverage_criterion": [
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility"
+          ],
+          "nominal_inside_interval": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "prior_normalized_paired_risk_difference": [
+            0.0015603922260235567,
+            -0.0017499339860026948,
+            0.0036385283253125775,
+            0.00413026633402948
+          ],
+          "risk_difference_simultaneous_interval": [
+            [
+              -0.20838510693990958,
+              -0.2146083939030792,
+              -0.20477896527951628,
+              -0.20334466475204105
+            ],
+            [
+              0.2115058913919567,
+              0.2111085259310738,
+              0.21205602193014145,
+              0.21160519742010006
+            ]
+          ],
+          "risk_labels": [
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved"
+          ]
+        },
+        "21": {
+          "coverage90": [
+            0.9015456989247311,
+            0.8988575268817204,
+            0.8995295698924731,
+            0.9106182795698925
+          ],
+          "coverage90_simultaneous_interval": [
+            [
+              0.8791121494456808,
+              0.8761825272100985,
+              0.8769144963518222,
+              0.8890357963877707
+            ],
+            [
+              0.9212297559201842,
+              0.9188017705315995,
+              0.9194092049740363,
+              0.9293878898103298
+            ]
+          ],
+          "coverage_criterion": [
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility"
+          ],
+          "nominal_inside_interval": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "prior_normalized_paired_risk_difference": [
+            -0.06885330421317062,
+            -0.22586681080338467,
+            -0.07281910233512597,
+            -0.016177962435235334
+          ],
+          "risk_difference_simultaneous_interval": [
+            [
+              -0.3055486281141062,
+              -0.4798454067007327,
+              -0.3141785837830553,
+              -0.23775838625554924
+            ],
+            [
+              0.1678420196877649,
+              0.028111785093963407,
+              0.16854037911280337,
+              0.20540246138507856
+            ]
+          ],
+          "risk_labels": [
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved"
+          ]
+        },
+        "252": {
+          "coverage90": [
+            0.8914650537634409,
+            0.9059139784946236,
+            0.894489247311828,
+            0.9079301075268817
+          ],
+          "coverage90_simultaneous_interval": [
+            [
+              0.8681492555098163,
+              0.883883004998675,
+              0.8714316055128064,
+              0.8860893879097642
+            ],
+            [
+              0.9121015344736916,
+              0.9251649725473228,
+              0.9148465431198487,
+              0.9269767587086359
+            ]
+          ],
+          "coverage_criterion": [
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility"
+          ],
+          "nominal_inside_interval": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "prior_normalized_paired_risk_difference": [
+            -0.3789138319088051,
+            -0.7959532942394894,
+            -0.48967620038558857,
+            -0.36196162702980256
+          ],
+          "risk_difference_simultaneous_interval": [
+            [
+              -0.6491934860224995,
+              -1.0685457233306865,
+              -0.7659023323562899,
+              -0.6303366124488148
+            ],
+            [
+              -0.10863417779511063,
+              -0.523360865148292,
+              -0.21345006841488723,
+              -0.09358664161079033
+            ]
+          ],
+          "risk_labels": [
+            "informative",
+            "informative",
+            "informative",
+            "informative"
+          ]
+        },
+        "4": {
+          "coverage90": [
+            0.8985215053763441,
+            0.9008736559139785,
+            0.8934811827956989,
+            0.9096102150537635
+          ],
+          "coverage90_simultaneous_interval": [
+            [
+              0.8758166502976523,
+              0.8783793048617768,
+              0.8703368889186178,
+              0.8879302707711971
+            ],
+            [
+              0.918497945242365,
+              0.9206232002941674,
+              0.9139321423153354,
+              0.9284843407365718
+            ]
+          ],
+          "coverage_criterion": [
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility"
+          ],
+          "nominal_inside_interval": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "prior_normalized_paired_risk_difference": [
+            -0.008681598498465814,
+            -0.02080736605106998,
+            -0.007505917620696281,
+            -4.69858961785727e-05
+          ],
+          "risk_difference_simultaneous_interval": [
+            [
+              -0.22299662876883583,
+              -0.24161850673830412,
+              -0.22290856292856026,
+              -0.2098852094417548
+            ],
+            [
+              0.2056334317719042,
+              0.20000377463616417,
+              0.20789672768716766,
+              0.2097912376493976
+            ]
+          ],
+          "risk_labels": [
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved"
+          ]
+        },
+        "504": {
+          "coverage90": [
+            0.9089381720430108,
+            0.8981854838709677,
+            0.9065860215053764,
+            0.9089381720430108
+          ],
+          "coverage90_simultaneous_interval": [
+            [
+              0.887193670712426,
+              0.8754508447378138,
+              0.8846181462594016,
+              0.887193670712426
+            ],
+            [
+              0.9278815558849385,
+              0.9181940483303164,
+              0.9257692223007596,
+              0.9278815558849385
+            ]
+          ],
+          "coverage_criterion": [
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility"
+          ],
+          "nominal_inside_interval": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "prior_normalized_paired_risk_difference": [
+            -0.544928788616579,
+            -0.8739677071686082,
+            -0.6465217764999248,
+            -0.5597009101853266
+          ],
+          "risk_difference_simultaneous_interval": [
+            [
+              -0.8183624555562756,
+              -1.1442221421739232,
+              -0.9232809958820155,
+              -0.8343728111774326
+            ],
+            [
+              -0.2714951216768826,
+              -0.6037132721632932,
+              -0.369762557117834,
+              -0.28502900919322055
+            ]
+          ],
+          "risk_labels": [
+            "informative",
+            "informative",
+            "informative",
+            "informative"
+          ]
+        },
+        "63": {
+          "coverage90": [
+            0.9005376344086021,
+            0.9002016129032258,
+            0.8985215053763441,
+            0.9059139784946236
+          ],
+          "coverage90_simultaneous_interval": [
+            [
+              0.8780129931461033,
+              0.8776467547069738,
+              0.8758166502976523,
+              0.883883004998675
+            ],
+            [
+              0.920319811475177,
+              0.9200163490962332,
+              0.918497945242365,
+              0.9251649725473228
+            ]
+          ],
+          "coverage_criterion": [
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility"
+          ],
+          "nominal_inside_interval": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "prior_normalized_paired_risk_difference": [
+            -0.1672835476454835,
+            -0.512518401493596,
+            -0.20305065172846326,
+            -0.08588488263262985
+          ],
+          "risk_difference_simultaneous_interval": [
+            [
+              -0.4205749800787609,
+              -0.7846756584990566,
+              -0.4664786191792322,
+              -0.32589671805925813
+            ],
+            [
+              0.08600788478779392,
+              -0.2403611444881354,
+              0.060377315722305716,
+              0.15412695279399843
+            ]
+          ],
+          "risk_labels": [
+            "broad_or_unresolved",
+            "informative",
+            "broad_or_unresolved",
+            "broad_or_unresolved"
+          ]
+        },
+        "756": {
+          "coverage90": [
+            0.9045698924731183,
+            0.9045698924731183,
+            0.905241935483871,
+            0.9099462365591398
+          ],
+          "coverage90_simultaneous_interval": [
+            [
+              0.8824136663974521,
+              0.8824136663974521,
+              0.8831481793741841,
+              0.8882986954884574
+            ],
+            [
+              0.9239555252611077,
+              0.9239555252611077,
+              0.9245604058640573,
+              0.9287856079426126
+            ]
+          ],
+          "coverage_criterion": [
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility"
+          ],
+          "nominal_inside_interval": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "prior_normalized_paired_risk_difference": [
+            -0.6298452829457434,
+            -0.9032682660645192,
+            -0.7170555144849956,
+            -0.6554834566892538
+          ],
+          "risk_difference_simultaneous_interval": [
+            [
+              -0.9050075581601965,
+              -1.1726439951894332,
+              -0.9933904654264873,
+              -0.9316666414629379
+            ],
+            [
+              -0.35468300773129025,
+              -0.633892536939605,
+              -0.4407205635435038,
+              -0.37930027191556975
+            ]
+          ],
+          "risk_labels": [
+            "informative",
+            "informative",
+            "informative",
+            "informative"
+          ]
+        },
+        "8": {
+          "coverage90": [
+            0.9005376344086021,
+            0.9018817204301075,
+            0.8894489247311828,
+            0.9086021505376344
+          ],
+          "coverage90_simultaneous_interval": [
+            [
+              0.8780129931461033,
+              0.8794786829823188,
+              0.8659639732466224,
+              0.8868254945466807
+            ],
+            [
+              0.920319811475177,
+              0.9215329220541474,
+              0.9102685671954859,
+              0.9275800390697714
+            ]
+          ],
+          "coverage_criterion": [
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility",
+            "two_sided_nominal_compatibility"
+          ],
+          "nominal_inside_interval": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "prior_normalized_paired_risk_difference": [
+            -0.02456836330490512,
+            -0.06810087016190665,
+            -0.020025814585706535,
+            -0.007856297269687952
+          ],
+          "risk_difference_simultaneous_interval": [
+            [
+              -0.2472804360472677,
+              -0.2999818556176516,
+              -0.244086877870269,
+              -0.22076960690879407
+            ],
+            [
+              0.19814370943745746,
+              0.16378011529383835,
+              0.204035248698856,
+              0.20505701236941815
+            ]
+          ],
+          "risk_labels": [
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved",
+            "broad_or_unresolved"
+          ]
+        }
+      },
+      "long_history_non_drift_informative": true,
+      "risk_pass": true
+    }
+  },
+  "passed": false,
+  "receipt_sha256": "855a32f50cace5ac2a38ec4a1a51c59c2661c27db9a3b22214b53767c1864635",
+  "reserved_test_evaluated": false,
+  "risk_pass": true,
+  "scientific_acceptance": false,
+  "scope": "predeclared simultaneous marginal screens; no conditional, all-prefix or copula certification",
+  "selection_sha256": "d83ba139a61c138672a2b9f62c285bbd382abbf52f5dd327dd478c1e9ef6a1ba",
+  "status": "failed_calibration_screen"
+}

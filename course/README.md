@@ -1,6 +1,6 @@
 # Amortized Bayesian calibration of volatility models: a lecture series
 
-Version 2, updated 29 October 2026 · AI & Analytics Solutions SAS di Muia Francesco
+Version 2, updated 29 October 2026
 
 This folder is a course in sixteen lectures. It builds, from the basics, everything needed to understand and teach
 the advanced example of the ICAIF '26 tutorial: the calibration of a rough volatility model to option quotes, with

@@ -147,7 +147,22 @@ def delta_bounds(fit, fitter, product_fn, step=1e-2):
 
 
 def records(out, arm):
-    return {r["row"]: r for f in sorted(out.glob(f"rows-{arm}-*.jsonl")) for r in map(json.loads, f.read_text().splitlines())}
+    return {r["row"]: r for f in sorted(out.glob(f"rows-{arm}-*.jsonl")) for r in thin_joint.read_rows(f)}
+
+
+def posterior_draws(out):
+    """The network's draws by row, from every sample file in out; a row may come from one file only."""
+    files = sorted(out.glob("posterior-*.npz"))
+    if not files:
+        raise FileNotFoundError(f"no posterior-*.npz in {out}: run the sample step first")
+    draws = {}
+    for f in files:
+        with np.load(f) as data:
+            for row, d in zip(data["rows"], data["draws"]):
+                if int(row) in draws:
+                    raise ValueError(f"row {int(row)} is in more than one sample file")
+                draws[int(row)] = d
+    return draws
 
 
 def run(args):
@@ -158,8 +173,7 @@ def run(args):
     box = thin_joint.bounds(task)
     product = lambda theta, flat=None: thin_joint.products(task, theta, args.product_paths, args.seed + 1, flat)
     if args.arm == "posterior":
-        post = np.load(next(args.out.glob("posterior-*.npz")))
-        index = {int(r): i for i, r in enumerate(post["rows"])}
+        post = posterior_draws(args.out)
     else:
         _, splits = bank.load_bank(args.bank, splits=(args.split,))
         data = splits[args.split]
@@ -169,16 +183,14 @@ def run(args):
             continue
         t0 = time.process_time()
         if args.arm == "posterior":
-            if row not in index:
+            if row not in post:
                 continue
-            i = index[row]
-            priced = np.array([product(d) for d in post["draws"][i][: args.draws]])
+            priced = np.array([product(d) for d in post[row][: args.draws]])
             record = {"row": row, "posterior": {"lower": np.quantile(priced, 0.1, axis=0).tolist(),
                                                 "upper": np.quantile(priced, 0.9, axis=0).tolist(),
                                                 "median": np.median(priced, axis=0).tolist()},
                       "cpu_seconds": {"posterior": time.process_time() - t0}}
-            with out_file.open("a") as handle:
-                handle.write(json.dumps(record) + "\n")
+            thin_joint.append_row(out_file, record)
             print(f"row {row}: posterior {record['cpu_seconds']['posterior']:.0f} CPU-s", flush=True)
             continue
         if args.arm == "laplace":
@@ -203,8 +215,7 @@ def run(args):
                                   "evaluations": fit["evaluations"]},
                       "laplace_delta": {"mark": mark.tolist(), "lower": lower.tolist(), "upper": upper.tolist()},
                       "cpu_seconds_laplace": timings}
-            with out_file.open("a") as handle:
-                handle.write(json.dumps(record) + "\n")
+            thin_joint.append_row(out_file, record)
             print(f"row {row}: laplace {sum(timings.values()):.0f} CPU-s; chi2 at the mode {fit['chi2']:.1f}", flush=True)
             continue
         quotes = chain_quotes(data, task, row, args.seed)
@@ -230,8 +241,7 @@ def run(args):
                             "theta": f["theta"].tolist(), "evaluations": f["evaluations"]}
         timings["delta"] = time.process_time() - t0
         record["cpu_seconds"] = timings
-        with out_file.open("a") as handle:
-            handle.write(json.dumps(record) + "\n")
+        thin_joint.append_row(out_file, record)
         print(f"row {row}: {sum(timings.values()):.0f} CPU-s; GN chi2 {fit['chi2']:.1f}, H fixed {fit_h['chi2']:.1f}",
               flush=True)
 

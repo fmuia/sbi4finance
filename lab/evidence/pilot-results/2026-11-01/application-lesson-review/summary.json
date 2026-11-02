@@ -1,0 +1,449 @@
+{
+  "format": "application_lesson_review_v1",
+  "checked_utc": "2026-11-02T00:10:03.306326+00:00",
+  "scientific_acceptance": false,
+  "parent_commit": "4ed5722df3e03ed527ddeea2c8aaf0766401a99c",
+  "scope": "Rough-option and trajectory teaching/presentation changes, plus readable option parameter labels. No task, bank, checkpoint, posterior cache or numerical acceptance replaced.",
+  "validation": {
+    "lab_tests": 514,
+    "optional_skips": 3,
+    "tutorial_tests": 29,
+    "all_notebook_exports": 7,
+    "exported_cells": 220,
+    "genuine_cell_errors": 0,
+    "final_application_exports": 2,
+    "marimo_check": true,
+    "manifest_claims_copy_parity": true
+  },
+  "browser_review": {
+    "format": "application_lesson_browser_review_v1",
+    "scientific_acceptance": false,
+    "scope": "Read-only cached UI controls and presentation; no fresh inference, training or Monte Carlo actions.",
+    "started_utc": "2026-11-02T00:07:28.867351+00:00",
+    "finished_utc": "2026-11-02T00:07:52.178206+00:00",
+    "browser": "Installed Google Chrome, isolated Playwright context",
+    "playwright": "1.64.1",
+    "source_sha256": {
+      "tutorial/notebooks/slot5_calibration.py": "71d5129a4fadb7787d6e1b4392d72a471fbef535bffd76b01542fd32fe647fdf",
+      "tutorial/notebooks/trajectory_inference.py": "30bec383c9938b2876883341d30b7df40847d864cb87324030e258782a6ad613",
+      "tutorial/src/sbi4f_tutorial/backbones.py": "d82d2f2a81f9bbd2223fec58232aaf525e5533db647128e93acd1559ca865caf",
+      "tutorial/src/sbi4f_tutorial/trajectory.py": "ec3cbf815fa5a28500ae9afe51b41a7858b391c5165a9ac32801fe3fe45d2c1d"
+    },
+    "results": [
+      {
+        "check": "rough default visible highlighted workflow and clean display",
+        "passed": true,
+        "detail": {
+          "text": "from sbi4f_tutorial import full_surface\n\ndata = full_surface.training_data(split, task)\nworkflow = full_surface.build_workflow(task, family=\"flow_matching\")\nhistory = workflow.fit_offline(data=data, epochs=500, batch_size=256)\n\nquotes = split[\"observations\"][:1]  # one stored market, for this API illustration\ngiven_curve = (split[\"context_values\"][:1]\n               if full_surface.uses_known_curve(task) else None)\ndraws = full_surface.sample(\n    workflow, task, quotes, num_samples=1000, context_values=given_curve)\n",
+          "span_count": 95,
+          "syntax_colors": [
+            "rgb(169, 13, 145)",
+            "rgb(0, 0, 0)",
+            "color(srgb 0.0588235 0.0901961 0.164706)",
+            "rgb(10, 48, 105)",
+            "rgb(28, 1, 206)",
+            "rgb(23, 117, 0)",
+            "rgb(207, 34, 46)"
+          ],
+          "visible_sha256_count": 0,
+          "visible_raw_case_id_count": 0,
+          "default_buttons": [
+            "",
+            "",
+            "",
+            "Price this smile by Monte Carlo (a few seconds)",
+            "Columns",
+            "Explore",
+            "Export",
+            "",
+            "",
+            "",
+            "",
+            "Columns",
+            "Explore",
+            "Export",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "Exact observations, contract design and known quote noise",
+            "Columns",
+            "Explore",
+            "Export",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "Columns",
+            "Explore",
+            "Export",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "Source and reproducibility details",
+            "Coverage, SBC and importance auditing, formally",
+            "What this notebook reads (click to open): every result and its status",
+            "The model in detail (click to open): rough Bergomi, its prior and its likelihood",
+            "Columns",
+            "Explore",
+            "Export",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "Rough Bergomi: one likelihood evaluation (63 prices, 32,768 paths per block)",
+            "Rough Bergomi: exact posterior by MCMC, 400 effective draws (12,293 evaluations, extrapolated)",
+            "Rough Bergomi: loading the network and its first call, once per session",
+            "Heston: loading the network and its first call, once per session",
+            "Heston: one likelihood evaluation (63 Fourier prices)",
+            "Heston: exact posterior by MCMC, 400 effective draws (extrapolated)",
+            "Historical method comparison \u00b7 technical diagnostic",
+            "Columns",
+            "Explore",
+            "Export",
+            "",
+            "",
+            "",
+            "",
+            "Columns",
+            "Explore",
+            "Export",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "Columns",
+            "Explore",
+            "Export",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          "workflow_diagram": {
+            "natural_width": 2088,
+            "natural_height": 957,
+            "image_dom_index": 0
+          }
+        }
+      },
+      {
+        "check": "rough five friendly cached cases, known/joint inputs and rates",
+        "passed": true,
+        "detail": {
+          "states": [
+            {
+              "label": "Known curve \u00b7 parameters only",
+              "value": "Known curve \u00b7 parameters only",
+              "visible_sha256_count": 0,
+              "visible_raw_case_id_count": 0
+            },
+            {
+              "label": "Joint curve \u00b7 worked example",
+              "value": "Joint curve \u00b7 worked example",
+              "visible_sha256_count": 0,
+              "visible_raw_case_id_count": 0
+            },
+            {
+              "label": "Joint curve \u00b7 curved trade-off",
+              "value": "Joint curve \u00b7 curved trade-off",
+              "visible_sha256_count": 0,
+              "visible_raw_case_id_count": 0
+            },
+            {
+              "label": "Joint curve \u00b7 coupled volatility parameters",
+              "value": "Joint curve \u00b7 coupled volatility parameters",
+              "visible_sha256_count": 0,
+              "visible_raw_case_id_count": 0
+            },
+            {
+              "label": "Joint curve \u00b7 weak decay",
+              "value": "Joint curve \u00b7 weak decay",
+              "visible_sha256_count": 0,
+              "visible_raw_case_id_count": 0
+            }
+          ],
+          "narrow": {
+            "viewport": 760,
+            "body": 760,
+            "document": 760
+          }
+        }
+      },
+      {
+        "check": "trajectory default visible highlighted workflow and clean display",
+        "passed": true,
+        "detail": {
+          "text": "import bayesflow as bf\n\nadapter = (bf.Adapter().convert_dtype(\"float64\", \"float32\")\n    .rename(\"parameters\", \"inference_variables\")\n    .rename(\"observations\", \"summary_variables\")\n    .rename(\"time_context\", \"inference_conditions\"))\nsummary = bf.networks.RecurrentNetwork(\n    hidden_dim=64, summary_dim=32, recurrent_type=\"gru\",\n    bidirectional=False, time_axis=1, time_embed_dim=4,\n    dropout=0.0, return_sequences=False)\ndensity = bf.networks.CouplingFlow(\n    depth=6, transform=\"spline\", subnet_kwargs={\"widths\": [64, 64]},\n    transform_kwargs={\"bins\": 8})\nworkflow = bf.BasicWorkflow(\n    adapter=adapter, summary_network=summary,\n    inference_network=density, standardize=None)\n",
+          "span_count": 138,
+          "syntax_colors": [
+            "rgb(169, 13, 145)",
+            "rgb(0, 0, 0)",
+            "rgb(207, 34, 46)",
+            "color(srgb 0.0588235 0.0901961 0.164706)",
+            "rgb(10, 48, 105)",
+            "rgb(28, 1, 206)"
+          ],
+          "visible_sha256_count": 0,
+          "visible_raw_case_id_count": 0,
+          "workflow_diagram": {
+            "natural_width": 2088,
+            "natural_height": 855,
+            "image_dom_index": 0
+          }
+        }
+      },
+      {
+        "check": "trajectory three models/four cases, arbitrary prefix, warnings and paired views",
+        "passed": true,
+        "detail": {
+          "models": [
+            {
+              "model": "Heston",
+              "cases": [
+                {
+                  "label": "History 0",
+                  "value": "History 0"
+                },
+                {
+                  "label": "History 1",
+                  "value": "History 1"
+                },
+                {
+                  "label": "History 2",
+                  "value": "History 2"
+                },
+                {
+                  "label": "History 3",
+                  "value": "History 3"
+                }
+              ],
+              "joint_parameter_count": 5
+            },
+            {
+              "model": "Rough Bergomi \u00b7 known variance curve",
+              "cases": [
+                {
+                  "label": "History 0",
+                  "value": "History 0"
+                },
+                {
+                  "label": "History 1",
+                  "value": "History 1"
+                },
+                {
+                  "label": "History 2",
+                  "value": "History 2"
+                },
+                {
+                  "label": "History 3",
+                  "value": "History 3"
+                }
+              ],
+              "joint_parameter_count": 4
+            },
+            {
+              "model": "Rough Bergomi \u00b7 inferred variance curve",
+              "cases": [
+                {
+                  "label": "History 0",
+                  "value": "History 0"
+                },
+                {
+                  "label": "History 1",
+                  "value": "History 1"
+                },
+                {
+                  "label": "History 2",
+                  "value": "History 2"
+                },
+                {
+                  "label": "History 3",
+                  "value": "History 3"
+                }
+              ],
+              "joint_parameter_count": 7
+            }
+          ],
+          "requested_prefix": 137,
+          "cached_prefix": 126,
+          "pair_guard": true,
+          "restored_pair": true,
+          "narrow": {
+            "viewport": 760,
+            "body": 760,
+            "document": 760
+          }
+        }
+      },
+      {
+        "check": "slot5_calibration runtime errors",
+        "passed": true,
+        "detail": {
+          "page_console_errors": [],
+          "traceback": false,
+          "katex_errors": 0,
+          "visible_error_testids": 0,
+          "run_buttons_clicked": 0
+        }
+      },
+      {
+        "check": "trajectory_inference runtime errors",
+        "passed": true,
+        "detail": {
+          "page_console_errors": [],
+          "traceback": false,
+          "katex_errors": 0,
+          "visible_error_testids": 0,
+          "run_buttons_clicked": 0
+        }
+      },
+      {
+        "check": "source unchanged during browser review",
+        "passed": true,
+        "detail": {
+          "before": {
+            "tutorial/notebooks/slot5_calibration.py": "71d5129a4fadb7787d6e1b4392d72a471fbef535bffd76b01542fd32fe647fdf",
+            "tutorial/notebooks/trajectory_inference.py": "30bec383c9938b2876883341d30b7df40847d864cb87324030e258782a6ad613",
+            "tutorial/src/sbi4f_tutorial/backbones.py": "d82d2f2a81f9bbd2223fec58232aaf525e5533db647128e93acd1559ca865caf",
+            "tutorial/src/sbi4f_tutorial/trajectory.py": "ec3cbf815fa5a28500ae9afe51b41a7858b391c5165a9ac32801fe3fe45d2c1d"
+          },
+          "after": {
+            "tutorial/notebooks/slot5_calibration.py": "71d5129a4fadb7787d6e1b4392d72a471fbef535bffd76b01542fd32fe647fdf",
+            "tutorial/notebooks/trajectory_inference.py": "30bec383c9938b2876883341d30b7df40847d864cb87324030e258782a6ad613",
+            "tutorial/src/sbi4f_tutorial/backbones.py": "d82d2f2a81f9bbd2223fec58232aaf525e5533db647128e93acd1559ca865caf",
+            "tutorial/src/sbi4f_tutorial/trajectory.py": "ec3cbf815fa5a28500ae9afe51b41a7858b391c5165a9ac32801fe3fe45d2c1d"
+          }
+        }
+      }
+    ],
+    "all_checks_passed": true,
+    "harness_sha256": "195b92c217e6a8b88d60fb8ad3cf45abd569cb63a8734d773eac45a2074c9d56",
+    "visual_inspection": {
+      "status": "passed",
+      "inspected_screenshots": [
+        "rough-visible-workflow-code.png",
+        "rough-narrow-760.png",
+        "trajectory-workflow-diagram.png",
+        "trajectory-narrow-760.png",
+        "trajectory-137-input-preview.png",
+        "rough-case-4.png"
+      ],
+      "observations": "Workflow code has syntax colors; diagrams and plot labels are legible; narrow layouts wrap controls and prose without document overflow. Exact137 inputs and earlier126 cached posterior remain clearly separated."
+    },
+    "screenshots": {
+      "rough-case-1.png": {
+        "sha256": "713b8eb9afa557da7c9d75560df2522474bf7554b7c423ab5f598d60369e69e8",
+        "bytes": 185555
+      },
+      "rough-case-2.png": {
+        "sha256": "9c51bc767eded3bcffd8e64ec76bd3ab41a2308e6bb5dc0b99fd8185fb30e98d",
+        "bytes": 191227
+      },
+      "rough-case-3.png": {
+        "sha256": "c27196032f27ee88b21adec6bd4a2b6f8d662ee587c3266c1d0a77412485b7f8",
+        "bytes": 192502
+      },
+      "rough-case-4.png": {
+        "sha256": "4b290e10e1d35a79511bade34669e99dd6aaea3c99a5f748a9f50fe301cdce68",
+        "bytes": 194156
+      },
+      "rough-case-5.png": {
+        "sha256": "1c3ce5c55423be0dd79178c7e5cef2dfcd96c96bb0c9b33d8f4b7c0ff2454e6d",
+        "bytes": 191973
+      },
+      "rough-model-and-data.png": {
+        "sha256": "d504cd9a35c1e0ab6370f8f3726b36c5561adfdd776dadd7c85993d6ef943a4c",
+        "bytes": 199997
+      },
+      "rough-narrow-760.png": {
+        "sha256": "25794cde579710f8b1db6623a22875dbea2d1a0172515846f42bb13432692d94",
+        "bytes": 153393
+      },
+      "rough-visible-workflow-code.png": {
+        "sha256": "3dcf19dcb8cae0699942470c5fd5978727fe98e5d51f169199d58978fc3ae72a",
+        "bytes": 212174
+      },
+      "rough-workflow-diagram.png": {
+        "sha256": "d2fb0a7ee9ff724ca858fbb18c35779ff46ecd7fb56895093d3ea215842e75e9",
+        "bytes": 273283
+      },
+      "trajectory-137-input-126-cache.png": {
+        "sha256": "5d57f0da282d5eb49865ca5927dbe2e126ca6f1d3bafa40356efda67f1ba4b0b",
+        "bytes": 202975
+      },
+      "trajectory-137-input-preview.png": {
+        "sha256": "4a24a24164c3e50d275407ce93f8253bfd0faf64cd2ca2bd0d70e85e44c4591a",
+        "bytes": 203764
+      },
+      "trajectory-heston-model.png": {
+        "sha256": "771a7d90a29f78c7939a94c87560ebbdd51285e224526dc6f4bbe7bd99c4edaf",
+        "bytes": 189635
+      },
+      "trajectory-identical-pair-guard.png": {
+        "sha256": "def32fcd025d0c73c503ed071c91a7761cd582b3b629d1605ec7fb8e49942677",
+        "bytes": 210657
+      },
+      "trajectory-joint-model.png": {
+        "sha256": "1367c97a136836b08e9e5ef03540bce67c1c15dafddbec882cfe1c42558a06b1",
+        "bytes": 198561
+      },
+      "trajectory-known-model.png": {
+        "sha256": "28932cf903c06f0477bb7a0aadae77516b9c65b3d5d6ab18b7a9749cc2659992",
+        "bytes": 194793
+      },
+      "trajectory-model-and-data.png": {
+        "sha256": "f16c29cefe405b4a15fc3aba5e93f63c2aaa7603832c08e3fe6f8e931e695412",
+        "bytes": 219775
+      },
+      "trajectory-narrow-760.png": {
+        "sha256": "0a84e7ea8f49507ad9b056c14b8abbe67411e2b36820de1cab80f8721203e6fe",
+        "bytes": 179971
+      },
+      "trajectory-restored-joint-pair.png": {
+        "sha256": "fcc43d36394640ac6278eb0e7ede46b1a46d79d36cec9fcbecfabf409feaf3db",
+        "bytes": 210487
+      },
+      "trajectory-visible-workflow-code.png": {
+        "sha256": "4c7a3aa984360a4c0a9e881c203a6c631b769cc1e84d7c877053afd5843ef6df",
+        "bytes": 213192
+      },
+      "trajectory-workflow-diagram.png": {
+        "sha256": "a53b7fd13a7fafe60fc5ed5f79bd6b52a0206e69a816acee6b6e7c6304d8dc6a",
+        "bytes": 280090
+      }
+    }
+  },
+  "local_evidence_directory": "local-artifacts/application-refinement-20261101/application-lesson-review",
+  "limitations": [
+    "Browser checks cover cached interactions only; no neural inference, training or Monte Carlo button clicked.",
+    "Rough conditional references and product checks remain pending.",
+    "Trajectory final marginal-calibration failures and Heston atomic-drift issue remain visible.",
+    "Independent replicated histories and conditional forecasts are explained; no new predictive cache is fabricated."
+  ]
+}

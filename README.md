@@ -1,59 +1,122 @@
 # sbi4finance
 
-The course, participant notebooks and numerical work for **Amortized Bayesian Calibration of Volatility Models**,
-the ICAIF '26 tutorial in Milan, 14–15 November 2026. Inference uses [BayesFlow](https://github.com/bayesflow-org/bayesflow).
+Three core application lessons for the ICAIF '26 tutorial: **Heston options,
+rough Bergomi options, and parameter inference from return trajectories**.
+They share a model → simulation → training → inference → checks workflow using
+[BayesFlow](https://github.com/bayesflow-org/bayesflow).
 
-The core path follows option quotes through Heston, rough Bergomi with a supplied variance curve, and joint
-curve inference. The next task is to turn the completed numerical backbone into a clear lesson: inference,
-checks, posterior interpretation and the uncertainty of a financial output.
+PR #64 is merged. The current [collaborator handover plan](tutorial/curriculum/TUTORIAL-REVIEW.md#g-collaborator-handover-before-the-next-feedback-round)
+documents the implemented review/compute routes and the deferred collaborator rehearsal.
+Older returns exclusions and slot timings do not define the current application scope.
 
 ## Start editing here
 
-| Work | Main editing files | Plan and supporting material |
-|---|---|---|
-| Agree on the story, scope and division of work | [`tutorial/curriculum/00-overview.md`](tutorial/curriculum/00-overview.md) | Owners, timing and decisions; D21 excludes the returns track |
-| Heston inference workflow | [`tutorial/notebooks/slot4_heston_bayesflow.py`](tutorial/notebooks/slot4_heston_bayesflow.py) | [Slot 4 plan](tutorial/curriculum/04-slot4-heston-in-bayesflow.md); course lectures [10](course/10-heston.md), [11](course/11-calibrating-heston.md), [12](course/12-the-amortized-workflow-on-heston.md) |
-| Rough Bergomi and the financial output | [`tutorial/notebooks/slot5_calibration.py`](tutorial/notebooks/slot5_calibration.py) | [Slot 5 plan](tutorial/curriculum/05-slot5-rough-bergomi-to-a-reserve.md); lectures [13](course/13-rough-bergomi.md), [14](course/14-why-the-exact-posterior-is-expensive.md), [15](course/15-a-liquid-smile-spy.md) |
-| Explain amortization and architecture choices | [`slot2_amortized_bayes.py`](tutorial/notebooks/slot2_amortized_bayes.py), [`slot3_architectures.py`](tutorial/notebooks/slot3_architectures.py) | Their curriculum files; lectures [8](course/08-bayesian-calibration.md), [9](course/09-amortized-inference.md) |
-| Review current saved posteriors before changing a lesson | [`tutorial/notebooks/backbone_review.py`](tutorial/notebooks/backbone_review.py) | Six cached synthetic cases, with optional matching native model loading |
-| Change a numerical implementation or experiment | [`lab/README.md`](lab/README.md) | Canonical loading, training, evaluation, generation and publication routes |
-| Check the evidence behind a claim | [`course/status.md`](course/status.md), [`tutorial/CLAIMS.md`](tutorial/CLAIMS.md) | Current J1/J2/J3 status and separately identified historical studies |
+For lesson feedback, start with these **three files**. They contain the prose,
+equations, highlighted teaching snippets, layout and controls.
 
-For a local session follow [the tutorial README](tutorial/README.md). For training data and numerical work follow
-[the lab README](lab/README.md). [The course README](course/README.md) indexes the theory. Repository rules are in
-[AGENTS.md](AGENTS.md).
+| Application | Main notebook | Runtime helpers it uses |
+| --- | --- | --- |
+| Heston options | [slot4_heston_bayesflow.py](tutorial/notebooks/slot4_heston_bayesflow.py) | [teaching](tutorial/src/sbi4f_tutorial/teaching.py), [backbones](tutorial/src/sbi4f_tutorial/backbones.py), optional [full_surface](tutorial/src/sbi4f_tutorial/full_surface.py) |
+| Rough Bergomi options | [slot5_calibration.py](tutorial/notebooks/slot5_calibration.py) | [backbones](tutorial/src/sbi4f_tutorial/backbones.py), [teaching](tutorial/src/sbi4f_tutorial/teaching.py), [pricing](tutorial/src/sbi4f_tutorial/pricing.py); historical [long_end](tutorial/src/sbi4f_tutorial/long_end.py) |
+| Trajectory inference | [trajectory_inference.py](tutorial/notebooks/trajectory_inference.py) | [trajectory](tutorial/src/sbi4f_tutorial/trajectory.py), including cached views, masks and explicit native inference |
+
+Review locally from your checkout; cached viewing needs no Oscar login, full bank
+or native model download:
+
+```bash
+cd tutorial
+pixi install --locked
+pixi run --locked test
+pixi run --locked heston-options # Heston, in the marimo editor
+pixi run --locked rough-options  # rough options
+pixi run --locked path-inference # observed paths
+```
+
+Run one lesson command at a time. The [tutorial README](tutorial/README.md)
+explains read-only app mode, optional model downloads and author checks.
+Exported HTML is a static preview; marimo runs the reactive controls.
+
+## How code reaches the lessons
+
+```mermaid
+flowchart LR
+    N[Three application notebooks] --> R[Participant runtime]
+    N --> A[Published assets]
+    L[Canonical lab functions] -->|copy unchanged| R
+    U[Participant UI definitions] --> R
+    S[Lab studies and figure scripts] -->|publish and verify| A
+```
+
+Numerical changes start in `lab/`, then the existing tools copy reviewed functions
+into the self-contained participant runtime. [backbones.py](tutorial/src/sbi4f_tutorial/backbones.py)
+is participant-authored UI; [trajectory.py](tutorial/src/sbi4f_tutorial/trajectory.py)
+contains both authored and copied definitions. The [copy registry](lab/studies/copy_to_tutorial.py)
+identifies that boundary per definition. Do not edit both numerical copies by hand.
+The [minimal intervention map](tutorial/curriculum/TUTORIAL-REVIEW.md#g1--publish-the-minimal-edit-and-dependency-map)
+links each type of change to its canonical source.
+
+Changing displayed example code alone does not change an executing helper.
+Shipped observations, draws, figures and metadata under `tutorial/assets/` enter
+through publication tools; their [manifest](tutorial/MANIFEST.md) is generated.
+The [lab README](lab/README.md#from-lab-code-to-a-lesson) gives the copy/publication/check sequence.
+
+## Make a small change
+
+For explanation or layout, edit one of the three notebook files above and run
+`pixi run --locked check`, `test` and `test-notebooks` from `tutorial/`.
+For executing numerical behavior, edit the canonical lab function and refresh
+its participant copy; [the source walks and check matrix](tutorial/curriculum/TUTORIAL-REVIEW.md#follow-a-computation-from-the-lesson)
+show the relevant definitions and assets. UI-only helpers and copied numerical
+definitions have different editing rules. Record comments with the
+[feedback form](tutorial/curriculum/TUTORIAL-REVIEW.md#g6--rehearse-the-handover-and-collect-actionable-feedback).
+
+## Run numerical work on your compute
+
+The core bank, training, evaluation and native-loading workers already run without
+Slurm or Oscar. Start with the [lab workflow](lab/README.md#canonical-workflow)
+and [training-data guide](lab/plans/training-data-guide.md). Current lab work uses
+`pixi run --locked -e core ...`; its default environment retains historical BF2.0
+studies. Use caller-owned data/output directories and preserve native bank trees.
+
+Cluster launchers are deployment wrappers. Dated Oscar controllers retain their
+original paths and campaign history; they are not the default training interface.
+The [local CPU recipes](lab/README.md#run-the-workers-on-a-local-cpu) cover
+bounded generation, training, native reload and validation. The
+[single-job Slurm recipe](lab/README.md#optional-single-job-slurm-deployment)
+uses caller-selected resources and prints the command before submission.
+Author-side worker checks passed on Apple Silicon without SSH or Slurm; a new
+cluster/GPU allocation still needs its own readiness check.
 
 ## Current state and next priorities
 
-All three routes have immutable **100k training banks and completed baseline fits**. The participant package uses
-**BayesFlow 2.1** and opens the six cached cases without loading a neural backend. Fresh sampling uses the matching
-external checkpoints and BayesFlow's native adaptive FlowMatching sampler. Historical SPY results and archived
-2.0 checkpoints retain their original provenance; their neural comparisons await a separately checked update.
+All three lessons have cached synthetic examples, visible workflow code and
+recorded browser/runtime checks. Option routes have three 100k training banks;
+trajectory routes have three million-history banks. Native models and full banks
+are external downloads; a full bank is unnecessary for pretrained inference.
 
-The first content review is to reconcile the slot 4/5 curriculum files and notebook prose with this complete-surface,
-known-then-joint sequence. They still contain historical SPY/known-curve framing; keep that provenance explicit
-and make thin-chain material optional. The cached integration is ready for review; the lessons are not yet fully curated.
+Scientific status remains explicit: rough conditional references and product
+checks are unfinished; trajectory estimators failed their final marginal-calibration
+screen, and the current Heston path law has a drift point-mass limitation.
+See the [current application plan](tutorial/curriculum/TUTORIAL-REVIEW.md),
+[path plan](lab/plans/PATH-INFERENCE-PLAN.md), [course status](course/status.md)
+and historical [claim ledger](tutorial/CLAIMS.md) for their respective scope.
 
-J1's joint validation, contraction and observation-dependence checks are complete as development evidence.
-**J2's conditional references and J3's product/long-end comparisons remain pending.** Review the cached Heston
-lesson, then known-curve and joint-curve rough examples, before commissioning more computation. The
-[numerical plan](lab/plans/NUMERICAL-EXPERIMENT-PLAN.md) defines the next work and the dependency checks needed
-before trimming. Sparse quote chains and the returns curriculum are outside this core unit; slot 6 remains in preparation.
-
-The [versioned GitHub release](https://github.com/fmuia/sbi4finance/releases/tag/tutorial-backbones-2026-10-29)
-and [Google Drive mirror](https://drive.google.com/drive/folders/1Zez6mSu8Y_B7IIjdRYWJlDxdAl49fTLq) provide the
-banks, pretrained models and small teaching cases. The [training-data guide](lab/plans/training-data-guide.md)
-gives exact archive names, checksums and executable loading/training examples. No cluster connection or full bank
-is needed for content review or pretrained laptop inference. GitHub downloads require access to the repository.
+The editing map, scheduler-free recipes, artifact paths and first bounded
+cleanup batch are implemented. Collaborator rehearsal is deferred; its checklist
+is ready in the handover plan. Record feedback
+with source version, notebook/section, selected model/example and controls,
+expected/observed behavior and a proposed improvement. Use GitHub review comments
+or the [existing review notes](tutorial/curriculum/TUTORIAL-REVIEW.md#guided-notebook-review--1-november-2026).
 
 ## Where things belong
 
 | Area | Purpose |
-|---|---|
-| `course/` | The sixteen lectures, figures and scripts that draw them; scientific status in `course/status.md` |
-| `tutorial/` | The self-contained participant package: notebooks, copied runtime functions and small published assets |
-| `lab/` | Simulators, data and estimator workflows, reference studies, checks, cluster tools, tests and numerical evidence |
+| --- | --- |
+| `tutorial/` | Participant notebooks, runtime and small published inputs/results |
+| `lab/` | Canonical numerical code, workers, studies, tests, publication tools and evidence |
+| `course/` | Supporting lectures, theory and their figures |
 
-Edit the explanation in its notebook or lecture. Put numerical work in the lab, then use the existing tools to
-publish code and assets into the tutorial. Keep bulky banks, models and full draws outside Git, with immutable
-identities and download links. Update the existing plan and status pages rather than adding another handover document.
+Introduction, amortized-Bayes/architecture lessons and the backbone-review notebook
+remain supporting work outside the current application-handover pass. Preserved
+evidence and legacy utilities are not a required reading list; check dependencies
+before retiring them. Repository rules are in [AGENTS.md](AGENTS.md).

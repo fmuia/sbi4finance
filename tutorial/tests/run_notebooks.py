@@ -3,7 +3,11 @@
     python tests/run_notebooks.py [NOTEBOOK.py ...]     (all of notebooks/ by default; a few minutes)
 
 Each notebook runs in a fresh process; its rendered HTML goes to a temporary directory. The check reads the
-session that marimo embeds in the export and counts the cells whose output is an error.
+session that marimo embeds in the export and counts genuine errors. Marimo's
+documented ``ancestor-stopped`` output means an upstream cell deliberately used
+``mo.stop`` (for example, an idle training button), not that execution failed.
+Only that specific empty-traceback control-flow marker is ignored. Exceptions,
+unresolved dependencies and ancestor-raised errors still fail the run.
 """
 
 import json
@@ -17,11 +21,28 @@ import time
 NOTEBOOKS = Path(__file__).resolve().parents[1] / "notebooks"
 
 
+def intentional_ancestor_stop(output):
+    """Recognize the locked marimo 0.25.1 intentional-stop export marker only.
+
+    Marimo's runner emits this tag for descendants of ``MarimoStopError``;
+    ordinary exceptions use a different error type. Requiring the documented
+    message and empty traceback avoids hiding a malformed or genuine exception
+    merely because it mentions ``mo.stop``.
+    """
+    message = output.get("evalue")
+    return (output.get("type") == "error" and output.get("ename") == "ancestor-stopped"
+            and output.get("traceback") == [] and isinstance(message, str)
+            and message.startswith("This cell wasn't run because an ancestor was stopped with `mo.stop`:"))
+
+
 def errors_in(html):
     match = re.search(r'"session":\s*', html)
+    if match is None:
+        raise ValueError("marimo export has no embedded session to verify")
     session = json.JSONDecoder().raw_decode(html[match.end():])[0]
     outputs = [o for cell in session["cells"] for o in cell.get("outputs", [])]
-    return len(session["cells"]), [o for o in outputs if o.get("type") == "error"]
+    return len(session["cells"]), [o for o in outputs if o.get("type") == "error"
+                                  and not intentional_ancestor_stop(o)]
 
 
 def main(paths):

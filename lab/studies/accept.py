@@ -28,12 +28,19 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-ASSETS = Path(__file__).resolve().parents[2] / "tutorial" / "assets"
+REPOSITORY = Path(__file__).resolve().parents[2]
+ASSETS = REPOSITORY / "tutorial" / "assets"
 SLICED = ("draws", "truth", "rows")
 
 
 def sha256(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+def recorded_source(source):
+    """The source as ACCEPTED.json records it: relative to the repository, or else its name alone. A local
+    absolute path would travel with the tutorial; the files' SHA-256 identify the source."""
+    return str(source.relative_to(REPOSITORY)) if source.is_relative_to(REPOSITORY) else source.name
 
 
 def accept_run(source, destination, keep):
@@ -139,12 +146,16 @@ def main():
     if staging.exists():
         shutil.rmtree(staging)  # left by a failed earlier attempt
     staging.mkdir(parents=True)
-    record = {"accepted": datetime.now(timezone.utc).isoformat(timespec="seconds"), "source": str(source),
+    record = {"accepted": datetime.now(timezone.utc).isoformat(timespec="seconds"), "source": recorded_source(source),
               "source_sha256": {p.name: sha256(p) for p in sorted(source.iterdir()) if p.is_file()}}
     if args.replay:
         from sbi4finance.calibration import full_surface_teaching as replay
         bundle = json.loads((source / "bundle.json").read_text())
-        loader = replay.load_cache if bundle["format"] == "full_surface_teaching_v1" else replay.load_neural_replay
+        if bundle["format"] == "trajectory_teaching_replay_v1":
+            from sbi4finance.path_inference.teaching import load_cache
+            loader = load_cache
+        else:
+            loader = replay.load_cache if bundle["format"] == "full_surface_teaching_v1" else replay.load_neural_replay
         loader(source)
         if args.keep_surfaces is not None:
             raise ValueError("bound replay arrays cannot be sliced")
@@ -157,10 +168,16 @@ def main():
         for name in ("task.json", "training.json"):
             shutil.copy2(source / name, staging / name)
         metadata = json.loads((source / "training.json").read_text())
-        native = metadata.get("format") == "full_surface_training_v1"
+        native = metadata.get("format") in ("full_surface_training_v1", "path_posterior_v1")
         if native:
-            if sha256(source / "model.keras") != metadata["checkpoint_sha256"]:
+            model_key = "model_sha256" if metadata["format"] == "path_posterior_v1" else "checkpoint_sha256"
+            if sha256(source / "model.keras") != metadata[model_key]:
                 raise ValueError("native checkpoint bytes differ from training record")
+            if metadata["format"] == "path_posterior_v1":
+                from sbi4finance.path_inference import inference as path_inference
+                task = path_inference.validate_task(json.loads((source / "task.json").read_text()))
+                if path_inference.fingerprint(task) != metadata["task_sha256"]:
+                    raise ValueError("native path task differs from training record")
             shutil.copy2(source / "model.keras", staging / "model.keras")
             record["changes"] = ["native BF2.1 model and metadata copied unchanged; checkpoint hash retained"]
             record["scientific_acceptance"] = False

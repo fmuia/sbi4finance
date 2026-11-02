@@ -1,0 +1,455 @@
+{
+  "format": "trajectory_workshop_closeout_summary_v1",
+  "scientific_acceptance": false,
+  "scope": "Frozen development candidates; no calibrated-posterior endorsement. All4000 reserved histories/model evaluated once, with models and thresholds unchanged after confirmation. Heston numerical mixed/atomic drift limitation retained. Failed marginal screens do not establish conditional accuracy or identify a unique cause.",
+  "source_worker_commit": "49e3e3aae626cc88b4ea69481f4bb26879b1e144",
+  "pull_request": "https://github.com/fmuia/sbi4finance/pull/63",
+  "selection_receipt_sha256": "d83ba139a61c138672a2b9f62c285bbd382abbf52f5dd327dd478c1e9ef6a1ba",
+  "final_receipt_sha256": "b59ddf1501712352bfb76204673e772e6316792de985692dab4cf9072db6cfa0",
+  "models": {
+    "heston": {
+      "model_sha256": "ae8229c76ede0783deb264309747c2ac28c5b0cee8191e7ffa0ecf913636a9b7",
+      "task_sha256": "dd233e297f3ff974985383cf23dbb76865d4db92b7e348d675ac3065637ea7c3",
+      "cases": 4000,
+      "draws": 512,
+      "targets": [
+        "kappa",
+        "long_variance",
+        "vol_of_vol",
+        "rho",
+        "drift"
+      ],
+      "execution_pass": true,
+      "risk_pass": true,
+      "calibration_pass": false,
+      "confirmation_calibration_pass": false,
+      "coverage90_range": [
+        0.8775,
+        0.92475
+      ],
+      "failed_coverage_cells": [
+        {
+          "days": 252,
+          "parameter": "kappa",
+          "coverage90": 0.8775,
+          "simultaneous_interval": [
+            0.8565886074932524,
+            0.8964918507920634
+          ],
+          "criterion": "two_sided_nominal_compatibility"
+        },
+        {
+          "days": 504,
+          "parameter": "rho",
+          "coverage90": 0.923,
+          "simultaneous_interval": [
+            0.9056673028137875,
+            0.9381777861685969
+          ],
+          "criterion": "two_sided_nominal_compatibility"
+        },
+        {
+          "days": 756,
+          "parameter": "rho",
+          "coverage90": 0.922,
+          "simultaneous_interval": [
+            0.9045746130734312,
+            0.9372756947802907
+          ],
+          "criterion": "two_sided_nominal_compatibility"
+        },
+        {
+          "days": 756,
+          "parameter": "vol_of_vol",
+          "coverage90": 0.91975,
+          "simultaneous_interval": [
+            0.9021188873915245,
+            0.9352431522711605
+          ],
+          "criterion": "two_sided_nominal_compatibility"
+        },
+        {
+          "days": 1260,
+          "parameter": "vol_of_vol",
+          "coverage90": 0.92475,
+          "simultaneous_interval": [
+            0.9075814252475811,
+            0.9397545233327557
+          ],
+          "criterion": "two_sided_nominal_compatibility"
+        }
+      ],
+      "drift_learning": {
+        "1": {
+          "drift_mse_to_prior_mean_ratio": 0.9976573092898176,
+          "drift_coverage90": 0.893
+        },
+        "2": {
+          "drift_mse_to_prior_mean_ratio": 1.0011099099598528,
+          "drift_coverage90": 0.891
+        },
+        "4": {
+          "drift_mse_to_prior_mean_ratio": 1.0012411641698868,
+          "drift_coverage90": 0.8915
+        },
+        "8": {
+          "drift_mse_to_prior_mean_ratio": 0.9975454752308063,
+          "drift_coverage90": 0.8885
+        },
+        "17": {
+          "drift_mse_to_prior_mean_ratio": 0.9901039250936373,
+          "drift_coverage90": 0.8885
+        },
+        "21": {
+          "drift_mse_to_prior_mean_ratio": 0.9860148786607642,
+          "drift_coverage90": 0.89
+        },
+        "63": {
+          "drift_mse_to_prior_mean_ratio": 0.8980969292415756,
+          "drift_coverage90": 0.8845
+        },
+        "126": {
+          "drift_mse_to_prior_mean_ratio": 0.7574759567515004,
+          "drift_coverage90": 0.886
+        },
+        "252": {
+          "drift_mse_to_prior_mean_ratio": 0.5987696353962491,
+          "drift_coverage90": 0.886
+        },
+        "504": {
+          "drift_mse_to_prior_mean_ratio": 0.43168127994742367,
+          "drift_coverage90": 0.901
+        },
+        "756": {
+          "drift_mse_to_prior_mean_ratio": 0.34394298621417024,
+          "drift_coverage90": 0.9095
+        },
+        "1260": {
+          "drift_mse_to_prior_mean_ratio": 0.2452105948776922,
+          "drift_coverage90": 0.9125
+        }
+      },
+      "five_year_mse_to_prior_mean_ratio": {
+        "kappa": 0.4490369927535439,
+        "long_variance": 0.4150206276497146,
+        "vol_of_vol": 0.07584528416373464,
+        "rho": 0.22858832478475286,
+        "drift": 0.2452105948776922
+      },
+      "five_year_risk_labels": {
+        "kappa": "informative",
+        "long_variance": "informative",
+        "vol_of_vol": "informative",
+        "rho": "informative",
+        "drift": "informative"
+      },
+      "evaluation_sha256": "7ccd89ec111f5ad7bccbb302f9fee5cf6d42666677e1e2b8ba86728d7ef650e0"
+    },
+    "rough-joint": {
+      "model_sha256": "9fea2e446b6264d46ee92a924a930faa9ad5473b88d909ab4844b1b37f726003",
+      "task_sha256": "277c7219e49edb130049f78f91bcf176a22c06fad31f4404556fa27df263a7ca",
+      "cases": 4000,
+      "draws": 512,
+      "targets": [
+        "hurst",
+        "eta",
+        "rho",
+        "short_variance",
+        "long_variance",
+        "decay",
+        "drift"
+      ],
+      "execution_pass": true,
+      "risk_pass": true,
+      "calibration_pass": false,
+      "confirmation_calibration_pass": false,
+      "coverage90_range": [
+        0.87575,
+        0.911
+      ],
+      "failed_coverage_cells": [
+        {
+          "days": 252,
+          "parameter": "rho",
+          "coverage90": 0.87575,
+          "simultaneous_interval": [
+            0.8547221664439926,
+            0.8948672856873486
+          ],
+          "criterion": "two_sided_nominal_compatibility"
+        }
+      ],
+      "drift_learning": {
+        "1": {
+          "drift_mse_to_prior_mean_ratio": 1.0012786785522216,
+          "drift_coverage90": 0.8905
+        },
+        "2": {
+          "drift_mse_to_prior_mean_ratio": 1.0055916400008362,
+          "drift_coverage90": 0.89
+        },
+        "4": {
+          "drift_mse_to_prior_mean_ratio": 1.0043361372549564,
+          "drift_coverage90": 0.89225
+        },
+        "8": {
+          "drift_mse_to_prior_mean_ratio": 0.9977131868144486,
+          "drift_coverage90": 0.8895
+        },
+        "17": {
+          "drift_mse_to_prior_mean_ratio": 0.9800856007242631,
+          "drift_coverage90": 0.89
+        },
+        "21": {
+          "drift_mse_to_prior_mean_ratio": 0.9776036489173356,
+          "drift_coverage90": 0.892
+        },
+        "63": {
+          "drift_mse_to_prior_mean_ratio": 0.8979260697931363,
+          "drift_coverage90": 0.8945
+        },
+        "126": {
+          "drift_mse_to_prior_mean_ratio": 0.774664865739635,
+          "drift_coverage90": 0.8905
+        },
+        "252": {
+          "drift_mse_to_prior_mean_ratio": 0.5952544690512455,
+          "drift_coverage90": 0.888
+        },
+        "504": {
+          "drift_mse_to_prior_mean_ratio": 0.405754252137726,
+          "drift_coverage90": 0.89125
+        },
+        "756": {
+          "drift_mse_to_prior_mean_ratio": 0.30765950487491384,
+          "drift_coverage90": 0.898
+        },
+        "1260": {
+          "drift_mse_to_prior_mean_ratio": 0.22104445006080173,
+          "drift_coverage90": 0.90125
+        }
+      },
+      "five_year_mse_to_prior_mean_ratio": {
+        "hurst": 0.32007185507129354,
+        "eta": 0.06716325150733149,
+        "rho": 0.19597715495028833,
+        "short_variance": 0.4181747058067666,
+        "long_variance": 0.7521627988425443,
+        "decay": 0.9802669612993237,
+        "drift": 0.22104445006080173
+      },
+      "five_year_risk_labels": {
+        "hurst": "informative",
+        "eta": "informative",
+        "rho": "informative",
+        "short_variance": "informative",
+        "long_variance": "informative",
+        "decay": "broad_or_unresolved",
+        "drift": "informative"
+      },
+      "evaluation_sha256": "83814a9be163f0a3df7f1e2792ed3ed686c052ea1da811c617dbc9ff5a65835d"
+    },
+    "rough-known": {
+      "model_sha256": "b9b800ef987b7fddce62919d84f6420d751a7c390f8a2f476f49a2ca37be1e9c",
+      "task_sha256": "eb195dd594de03a95630a4c46bd35e9355e235982d0eb30ae597491e14df6446",
+      "cases": 4000,
+      "draws": 512,
+      "targets": [
+        "hurst",
+        "eta",
+        "rho",
+        "drift"
+      ],
+      "execution_pass": true,
+      "risk_pass": true,
+      "calibration_pass": false,
+      "confirmation_calibration_pass": true,
+      "coverage90_range": [
+        0.89,
+        0.92
+      ],
+      "failed_coverage_cells": [
+        {
+          "days": 1260,
+          "parameter": "drift",
+          "coverage90": 0.92,
+          "simultaneous_interval": [
+            0.902391555879217,
+            0.9354691809557045
+          ],
+          "criterion": "two_sided_nominal_compatibility"
+        }
+      ],
+      "drift_learning": {
+        "1": {
+          "drift_mse_to_prior_mean_ratio": 1.0036511068838225,
+          "drift_coverage90": 0.89375
+        },
+        "2": {
+          "drift_mse_to_prior_mean_ratio": 1.002847882698016,
+          "drift_coverage90": 0.8945
+        },
+        "4": {
+          "drift_mse_to_prior_mean_ratio": 0.9967245796320793,
+          "drift_coverage90": 0.897
+        },
+        "8": {
+          "drift_mse_to_prior_mean_ratio": 0.9935608489218394,
+          "drift_coverage90": 0.899
+        },
+        "17": {
+          "drift_mse_to_prior_mean_ratio": 0.9794817112644861,
+          "drift_coverage90": 0.9005
+        },
+        "21": {
+          "drift_mse_to_prior_mean_ratio": 0.9743760013142985,
+          "drift_coverage90": 0.89975
+        },
+        "63": {
+          "drift_mse_to_prior_mean_ratio": 0.8982942733136281,
+          "drift_coverage90": 0.90125
+        },
+        "126": {
+          "drift_mse_to_prior_mean_ratio": 0.8023081434201369,
+          "drift_coverage90": 0.89625
+        },
+        "252": {
+          "drift_mse_to_prior_mean_ratio": 0.6177072769515368,
+          "drift_coverage90": 0.899
+        },
+        "504": {
+          "drift_mse_to_prior_mean_ratio": 0.4278668259235334,
+          "drift_coverage90": 0.90425
+        },
+        "756": {
+          "drift_mse_to_prior_mean_ratio": 0.3134406718448965,
+          "drift_coverage90": 0.9115
+        },
+        "1260": {
+          "drift_mse_to_prior_mean_ratio": 0.20651021048851761,
+          "drift_coverage90": 0.92
+        }
+      },
+      "five_year_mse_to_prior_mean_ratio": {
+        "hurst": 0.311037094192683,
+        "eta": 0.0722239356737676,
+        "rho": 0.20538474633581905,
+        "drift": 0.20651021048851761
+      },
+      "five_year_risk_labels": {
+        "hurst": "informative",
+        "eta": "informative",
+        "rho": "informative",
+        "drift": "informative"
+      },
+      "evaluation_sha256": "ddbe096c4ea63244bc2a302275d0b9f35fb50b7d74468e125eaa533fcf2a3c09"
+    }
+  },
+  "resources": {
+    "jobs": [
+      {
+        "job_id": "8159378",
+        "state": "COMPLETED",
+        "exit_code": "0:0",
+        "elapsed_seconds": 795,
+        "allocated_cpus": 2
+      },
+      {
+        "job_id": "8159379",
+        "state": "COMPLETED",
+        "exit_code": "0:0",
+        "elapsed_seconds": 760,
+        "allocated_cpus": 2
+      },
+      {
+        "job_id": "8159380",
+        "state": "COMPLETED",
+        "exit_code": "0:0",
+        "elapsed_seconds": 876,
+        "allocated_cpus": 2
+      },
+      {
+        "job_id": "8159935",
+        "state": "COMPLETED",
+        "exit_code": "0:0",
+        "elapsed_seconds": 1355,
+        "allocated_cpus": 2
+      },
+      {
+        "job_id": "8159937",
+        "state": "COMPLETED",
+        "exit_code": "0:0",
+        "elapsed_seconds": 1118,
+        "allocated_cpus": 2
+      },
+      {
+        "job_id": "8159940",
+        "state": "COMPLETED",
+        "exit_code": "0:0",
+        "elapsed_seconds": 1236,
+        "allocated_cpus": 2
+      }
+    ],
+    "allocated_cpu_seconds": 12280,
+    "allocated_cpu_hours": 3.411111111111111,
+    "cleanup_allowance_cpu_seconds": 2880,
+    "cpu_hours_including_cleanup": 4.211111111111111,
+    "cpu_limit_hours_for_six_jobs": 8,
+    "gpu_hours": 0,
+    "peak_batch_max_rss_gib": 4.304840087890625,
+    "start_oscar_local": "2026-10-30T23:38:14",
+    "end_oscar_local": "2026-10-31T00:18:30",
+    "elapsed_campaign_seconds": 2416.0
+  },
+  "validation_design": {
+    "confirmation": {
+      "cases": 2976,
+      "offset": 1024,
+      "split": "validation"
+    },
+    "draws": 512,
+    "final": {
+      "cases": 4000,
+      "offset": 0,
+      "split": "test"
+    },
+    "lengths": [
+      1,
+      2,
+      4,
+      8,
+      17,
+      21,
+      63,
+      126,
+      252,
+      504,
+      756,
+      1260
+    ],
+    "seed": 20261101001
+  },
+  "screen_policy": {
+    "coverage_family_alpha": 0.025,
+    "coverage_method": "exact Clopper-Pearson; Bonferroni across every model/length/target",
+    "coverage_nominal": 0.9,
+    "execution_guard": "identities/cohorts match; zero nonfinite and support violations",
+    "family_cells": 192,
+    "heston_drift_coverage": "one-sided minimum nominal coverage; central intervals for a mixed/atomic posterior can legitimately overcover",
+    "interpretation": "combined family error bound0.05 for the two declared marginal screens under iid trajectories; no conditional/copula certification",
+    "risk_family_alpha": 0.025,
+    "risk_guard": "no cell with demonstrated worse risk than analytic prior mean (lower bound>0); require at least one non-drift target informative (upper bound<0) at1260 permodel; unresolved cells explicitly broad/unresolved",
+    "risk_method": "two-sided bounded paired-loss empirical Bernstein; Bonferroni across every model/length/target"
+  },
+  "software_verification": {
+    "lab_tests": 476,
+    "lab_skips": 3,
+    "lab_skip_scope": "optional PyMC environment, unchanged by this work",
+    "tutorial_tests": 29,
+    "notebooks": 7,
+    "notebook_cells": 183,
+    "genuine_notebook_errors": 0,
+    "portable_tutorial_payload_hashes_verified": 208,
+    "portable_live_models_verified": 3
+  }
+}

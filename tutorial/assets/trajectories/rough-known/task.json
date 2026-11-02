@@ -1,0 +1,64 @@
+{
+  "dt_years": 0.003968253968253968,
+  "fixed": {
+    "variance_level": 0.04
+  },
+  "history_length_range": [
+    1,
+    1260
+  ],
+  "measure": "P",
+  "min_history": 1,
+  "model": "rough-known",
+  "n_observations": 1260,
+  "numerics": {
+    "driver_method": "hybrid",
+    "initialization": "zero_volterra_driver_at_origin",
+    "observation_substeps": 4,
+    "scheme": "log_euler",
+    "variance_compensator": "discrete_hybrid_variance"
+  },
+  "observation": "decimal_log_returns_only",
+  "parameter_names": [
+    "hurst",
+    "eta",
+    "rho",
+    "drift"
+  ],
+  "prefix_lengths": [
+    21,
+    63,
+    126,
+    252,
+    504,
+    756,
+    1260
+  ],
+  "prefix_lengths_role": "validation_landmarks",
+  "prior_bounds": [
+    [
+      0.03,
+      0.4
+    ],
+    [
+      0.2,
+      2.5
+    ],
+    [
+      -0.95,
+      -0.05
+    ],
+    [
+      -0.1,
+      0.2
+    ]
+  ],
+  "prior_types": [
+    "uniform",
+    "uniform",
+    "uniform",
+    "uniform"
+  ],
+  "task_id": "physical_rough_known_daily_drift_paths_v2",
+  "task_version": 2
+}

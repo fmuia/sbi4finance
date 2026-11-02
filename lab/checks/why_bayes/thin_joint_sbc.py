@@ -11,6 +11,7 @@ python checks/why_bayes/thin_joint_sbc.py --checkpoint RUN --bank BANK --out OUT
 """
 
 import argparse
+import hashlib
 import json
 import time
 from pathlib import Path
@@ -41,21 +42,25 @@ def main():
     quotes = np.stack([data["reference_prices"][r] + args.scale * sd * np.random.default_rng(
         np.random.SeedSequence([args.seed, int(r)])).standard_normal(len(sd)) for r in rows])
     workflow = thin_joint.load(args.checkpoint, task)
-    started = time.perf_counter()
-    # Draws are cached per batch of 100 surfaces, so an interrupted run continues where it stopped.
-    cache = args.out.with_suffix(".batches")
-    cache.mkdir(exist_ok=True)
-    batches = []
+    digest = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
+    checkpoint_sha256, bank_sha256 = digest(args.checkpoint / "model.keras"), digest(args.bank / "manifest.json")
+    # Draws are cached per batch of 100 surfaces, under the network's, the bank's and the split's identity, so an
+    # interrupted run continues where it stopped and a retrained network never reuses another's draws.
+    cache = args.out.with_suffix(".batches") / f"{checkpoint_sha256[:16]}-{bank_sha256[:16]}-{args.split}"
+    cache.mkdir(parents=True, exist_ok=True)
+    batches, seconds, sampled = [], 0.0, 0
     for s in range(0, len(rows), 100):
-        path = cache / f"{s:05d}-{args.draws}-{args.scale:g}-{args.seed}.npy"
+        part = quotes[s:s + 100]
+        path = cache / f"{s:05d}-{len(part)}-{args.draws}-{args.scale:g}-{args.seed}.npy"
         if not path.exists():
+            started = time.perf_counter()
             temporary = path.with_name(path.stem + ".tmp.npy")
-            np.save(temporary, thin_joint.sample(workflow, task, quotes[s:s + 100], args.draws, args.scale,
-                                                 seed=args.seed + s))
+            np.save(temporary, thin_joint.sample(workflow, task, part, args.draws, args.scale, seed=args.seed + s))
             temporary.replace(path)
+            seconds, sampled = seconds + time.perf_counter() - started, sampled + len(part)
         batches.append(np.load(path))
     draws = np.concatenate(batches)
-    seconds = time.perf_counter() - started
+    per_surface = seconds / sampled if sampled else None  # cached batches are not timed
     truth = np.asarray(data["parameters"], dtype=float)[rows]
     names = thin_joint.NAMES + ["rho_eta", "forward_variance_6m_1y"]
     extra = lambda x: np.stack([x[..., 2] * x[..., 1], thin_joint.forward_variance(x, 0.5, 1.0)], axis=-1)
@@ -63,12 +68,15 @@ def main():
     sbc = validation.sbc(draws_all, truth_all, seed=args.seed)
     cover = validation.coverage(draws_all, truth_all)
     shrink = validation.contraction(draws, thin_joint.bounds(task))
-    report = {"checkpoint": str(args.checkpoint), "bank": str(args.bank), "split": args.split, "surfaces": len(rows),
+    report = {"checkpoint": args.checkpoint.name, "checkpoint_sha256": checkpoint_sha256, "bank": args.bank.name,
+              "bank_manifest_sha256": bank_sha256, "split": args.split, "surfaces": len(rows),
               "draws": args.draws, "noise_scale": args.scale, "seed": args.seed, "targets": names,
               "sbc": {k: v for k, v in sbc.items() if k != "fractional_ranks"}, "coverage": cover,
-              "contraction": dict(zip(thin_joint.NAMES, shrink)), "seconds_per_surface": seconds / len(rows)}
+              "contraction": dict(zip(thin_joint.NAMES, shrink)), "seconds_per_surface": per_surface,
+              "surfaces_sampled": sampled}
     args.out.write_text(json.dumps(report, indent=1) + "\n")
-    print(f"{len(rows)} surfaces x {args.draws} draws at noise x{args.scale:g}, {seconds / len(rows):.3f} s a surface;"
+    timing = f"{per_surface:.3f} s a sampled surface" if sampled else "all draws cached"
+    print(f"{len(rows)} surfaces x {args.draws} draws at noise x{args.scale:g}, {timing};"
           f" DKW bound {sbc['dkw_bound']:.4f}")
     for j, name in enumerate(names):
         c90 = cover["0.9"]["coverage"][j]

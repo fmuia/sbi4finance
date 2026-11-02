@@ -1,0 +1,11 @@
+{
+  "accepted": "2026-10-31T04:25:22+00:00",
+  "source": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/path-workshop-closeout-20261031/publication-report",
+  "source_sha256": {
+    "closeout-summary.json": "447fd12830ea146c60b7a0a4225b09ab76ff63d9df166dd1352d703b910f9b2a",
+    "drift-learning.png": "efa3d41706ddc9f0a46d39eba430d2a96f3ecaed892149a06ccf6c11ca2e3854",
+    "figure-metadata.json": "b0b5fe9f9e30862eb3452b33808ac4b13cec9ef2de046813e62102a030372c5c",
+    "marginal-coverage.png": "bbdc7660b6f3e40203104f0eb5c7dea1e72b53364cec14e3d7d92098c2b4111b"
+  },
+  "changes": []
+}

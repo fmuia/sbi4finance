@@ -1,0 +1,7 @@
+# pixi run --locked -e core python checks/why_bayes/thin_joint_timing.py configs/thin/ewg_layout.json
+# run from lab/ on 30 October 2026, 4 cores; the CPU-seconds depend on the machine, the errors do not
+contracts 27 days [21, 42, 63, 126] blocks [{'horizon': 0.25, 'n_steps': 504}, {'horizon': 0.5, 'n_steps': 252}]
+4096 paths: 0.84 CPU-s, largest SE/noise 0.096
+8192 paths: 1.09 CPU-s, largest SE/noise 0.067
+16384 paths: 1.47 CPU-s, largest SE/noise 0.046
+32768 paths: 2.17 CPU-s, largest SE/noise 0.031

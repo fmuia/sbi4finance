@@ -1,37 +1,172 @@
 # Load the tutorial banks and train your own estimator
 
-Use the saved simulation banks to train or compare estimators without running
-the financial simulators again. The three current banks contain complete
-63-quote surfaces for Heston, rough Bergomi with a supplied known curve, and
-rough Bergomi with jointly inferred curve coefficients.
+Choose the smallest tier needed for your work. No Oscar login, owner-specific
+SSH setup or Drive Desktop mount is needed for any of these routes.
 
-Download the versioned archives from the
-[29 October numerical-backbone release](https://github.com/fmuia/sbi4finance/releases/tag/tutorial-backbones-2026-10-29).
-The [artifact inventory](../evidence/pilot-results/2026-10-29/local-backbone-transfer/README.md)
-records their verified identities. Download only the bank you need; the separate
-38 MB pretrained-and-cases ZIP supports inference/review without a training bank.
-The repository contains code, compact examples and provenance; release assets
-contain the full payloads. The alternative
-[Drive mirror](https://drive.google.com/drive/folders/1Zez6mSu8Y_B7IIjdRYWJlDxdAl49fTLq)
-opens the versioned folder `tutorial-backbones-2026-10-29` directly and contains
-the same archive and `SHA256SUMS` filenames. These are synthetic research data; the recorded
-numerical and scientific limitations remain unchanged.
+| Goal | Required files | Where they belong |
+| --- | --- | --- |
+| Read, edit and review the three application lessons | Fresh repository checkout, its shipped small assets and the locked tutorial environment | `tutorial/`; no additional model or bank download |
+| Draw fresh approximate posteriors for the packaged observations | The matching native model archive below | Ignored `tutorial/assets/local-checkpoints/`; no training bank |
+| Retrain or compare estimators | The selected option or trajectory bank and locked lab environment | A caller-owned directory outside Git; preserve the complete native tree |
 
-**Access:** this GitHub repository is private. Sign in with an account that has
-repository read access; releases inherit that access. For the CLI example, run
-`gh auth login` first if needed. A 404 from an unauthenticated release link does
-not mean the asset is missing. Drive folder access and GitHub repository access
-are separate permissions; access to one does not grant access to the other.
+The current [participant instructions](../../tutorial/README.md) give the
+three-application launch and review sequence. An older exported workshop kit or
+HTML preview does not contain subsequent notebook edits; use the agreed Git
+revision for collaboration. Model and bank distribution does not change any
+recorded numerical or scientific limitation.
 
-For a manual browser download, open the Drive mirror and download your chosen
-archive plus `SHA256SUMS`. Then use the checksum-verification and extraction
-commands below; the Drive route does not require the GitHub CLI.
+## Access and local paths
+
+The [29 October option-backbone release](https://github.com/fmuia/sbi4finance/releases/tag/tutorial-backbones-2026-10-29)
+and its [Drive mirror](https://drive.google.com/drive/folders/1Zez6mSu8Y_B7IIjdRYWJlDxdAl49fTLq)
+contain the option archives and `SHA256SUMS`. The [artifact inventory](../evidence/pilot-results/2026-10-29/local-backbone-transfer/README.md)
+records their identities. The trajectory archive and banks use the separate
+[path-workshop Drive folder](https://drive.google.com/drive/folders/1LJsR0Qb0RkD4h8XiF3t6OQQlyYDKcI2k).
+
+This GitHub repository is private. Use your own account with repository read
+access; releases inherit that access. Run `gh auth login` if needed. An
+unauthenticated 404 does not establish that a release asset is missing. Drive
+uses your own separately granted folder access; GitHub and Drive permissions do
+not confer access to one another. A browser download is sufficient; neither a
+Drive filesystem mount nor an owner's account or SSH key is required. Request
+access to the relevant service if needed. Do not regenerate data to repair a
+missing or corrupt download.
+
+For the commands below, set these to your own checkout and
+download directory, using absolute paths:
+
+```sh
+export SBI_CHECKOUT="/absolute/path/to/your/sbi4finance"
+export SBI_DOWNLOADS="/absolute/path/to/your/downloads"
+mkdir -p "$SBI_DOWNLOADS"
+```
+
+## Optional native posterior models
+
+Each native model needs its unchanged `model.keras`, `task.json` and
+`training.json` together. The tutorial loaders bind the task and model to the
+selected cache, preserve its recorded sampler and reject mismatches. Extraction
+is into the explicitly ignored download cache; never replace the shipped replay
+assets or edit model metadata to make a different checkpoint load.
+
+### Option models: Heston and known/joint-curve rough Bergomi
+
+Download `sbi4finance-pretrained-and-cases-20261029.zip` and `SHA256SUMS` from
+the option release or mirror. The ZIP is **38,046,255 bytes**, SHA-256
+`8d3a146312efdeaffcf797dee89158a491cde0961689649bbe17b6a3ae4bf51c`.
+The CLI alternative, after authenticating with your own GitHub account, is:
+
+```sh
+gh release download tutorial-backbones-2026-10-29 --repo fmuia/sbi4finance \
+  --dir "$SBI_DOWNLOADS" \
+  --pattern sbi4finance-pretrained-and-cases-20261029.zip --pattern SHA256SUMS
+python3 - <<'PY_OPTION_HASH'
+import hashlib
+import os
+from pathlib import Path
+archive = Path(os.environ["SBI_DOWNLOADS"]) / "sbi4finance-pretrained-and-cases-20261029.zip"
+expected = "8d3a146312efdeaffcf797dee89158a491cde0961689649bbe17b6a3ae4bf51c"
+hasher = hashlib.sha256()
+with archive.open("rb") as stream:
+    for chunk in iter(lambda: stream.read(8 * 1024 * 1024), b""):
+        hasher.update(chunk)
+actual = hasher.hexdigest()
+if actual != expected:
+    raise SystemExit("Archive checksum differs; do not extract or use it")
+print("SHA256 verified:", archive.name)
+PY_OPTION_HASH
+mkdir -p "$SBI_CHECKOUT/tutorial/assets/local-checkpoints"
+python3 -m zipfile -e "$SBI_DOWNLOADS/sbi4finance-pretrained-and-cases-20261029.zip" \
+  "$SBI_CHECKOUT/tutorial/assets/local-checkpoints"
+```
+
+The ZIP also contains historical packaged cases and separate forward-pricer
+artifacts. Leave them in this ignored cache; the current checkout already
+supplies its own published teaching assets. Use only the `pretrained/` native
+posterior directories below for fresh option inference.
+
+From `tutorial/`, open `pixi run --locked backbones`. Select the cached example
+and enter the **absolute** checkpoint directory in **Local matching checkpoint
+directory**, then press **Load the matching model and draw 1,000 fresh samples**.
+The field is a filesystem path; it does not expand shell variables.
+
+| Selected example | Checkpoint directory below `tutorial/assets/local-checkpoints/` |
+| --- | --- |
+| `heston-final500` | `pretrained/heston100k-final500/` |
+| `rough-known100k-validation0` | `pretrained/rough-known100k-final500/` |
+| Any of the four `rough-joint100k-*` examples | `pretrained/rough-joint100k-final500/` |
+
+For example, print the Heston path to paste into the field:
+
+```sh
+printf '%s\n' "$SBI_CHECKOUT/tutorial/assets/local-checkpoints/pretrained/heston100k-final500"
+```
+
+This optional review action draws a new approximate posterior for the exact
+packaged observation. It does not run MCMC, train a model or update the cached
+lesson result. The current option estimator is BayesFlow 2.1; archived 2.0
+models are separate historical artifacts.
+
+### Trajectory models: daily return histories
+
+Download `path-workshop-native-models-20261031.tar.gz` from the
+[path-workshop Drive folder](https://drive.google.com/drive/folders/1LJsR0Qb0RkD4h8XiF3t6OQQlyYDKcI2k).
+It is **6,354,318 bytes**, SHA-256
+`261c36550da52948aedcc2680d51bcb756db485626a6a2b8ee918fa9d6fff4cf`.
+After saving it in `SBI_DOWNLOADS`, verify and extract:
+
+```sh
+python3 - <<'PY_PATH_HASH'
+import hashlib
+import os
+from pathlib import Path
+archive = Path(os.environ["SBI_DOWNLOADS"]) / "path-workshop-native-models-20261031.tar.gz"
+expected = "261c36550da52948aedcc2680d51bcb756db485626a6a2b8ee918fa9d6fff4cf"
+hasher = hashlib.sha256()
+with archive.open("rb") as stream:
+    for chunk in iter(lambda: stream.read(8 * 1024 * 1024), b""):
+        hasher.update(chunk)
+actual = hasher.hexdigest()
+if actual != expected:
+    raise SystemExit("Archive checksum differs; do not extract or use it")
+print("SHA256 verified:", archive.name)
+PY_PATH_HASH
+tar -xzf "$SBI_DOWNLOADS/path-workshop-native-models-20261031.tar.gz" \
+  -C "$SBI_CHECKOUT/tutorial/assets"
+```
+
+The archive already includes its `local-checkpoints/` parent. Its native folders
+are `path-heston/`, `path-rough-known/` and `path-rough-joint/` under that parent.
+From `tutorial/`, open `pixi run --locked path-inference`, select a model and case,
+then choose a history length. Leave **Checkpoint folder relative to
+tutorial/assets/ (optional)** empty to use the matching default path. To override
+it, enter e.g. `local-checkpoints/path-rough-known`, **not** an option-model path.
+Press **Run CPU inference at the exact observed history length** explicitly.
+No bank is loaded. The cached views remain available when models are absent.
+
+Exact-length denotes the observation prefix, not an exact posterior. The three
+trajectory candidates failed their declared final marginal-calibration screen;
+Heston also retains its atom-bearing numerical law. Native publication files,
+including any `ACCEPTED.json` provenance receipt, do not change that scientific
+status. The notebook and [trajectory plan](PATH-INFERENCE-PLAN.md) retain the
+limitations and follow-up protocol.
+
+## Full option training banks
+
+Use saved banks to train or compare estimators without rerunning the financial
+simulators. These three banks contain complete 63-quote surfaces for Heston,
+known-curve rough Bergomi and joint-curve rough Bergomi. Download only the bank
+you need, plus `SHA256SUMS`, from the option release or mirror. A browser download
+does not require the GitHub CLI. The following example keeps its download and
+extracted tree outside the checkout.
 
 For example, with the GitHub CLI installed, download Heston and verify it:
 
 ```sh
-mkdir -p /absolute/path/to/sbi-bank-downloads
-cd /absolute/path/to/sbi-bank-downloads
+export SBI_BANK_DOWNLOADS="/absolute/path/to/your/sbi-bank-downloads"
+export SBI_BANKS="/absolute/path/to/your/sbi-banks"
+mkdir -p "$SBI_BANK_DOWNLOADS" "$SBI_BANKS"
+cd "$SBI_BANK_DOWNLOADS"
 gh release download tutorial-backbones-2026-10-29 --repo fmuia/sbi4finance \
   --pattern sbi4finance-bank-heston-100k-20261029.tar.gz --pattern SHA256SUMS
 python3 - <<'PY'
@@ -49,8 +184,7 @@ if actual != expected:
     raise SystemExit("Archive checksum differs; do not extract or use it")
 print("SHA256 verified:", name)
 PY
-mkdir -p ../sbi-banks
-tar -xzf sbi4finance-bank-heston-100k-20261029.tar.gz -C ../sbi-banks
+tar -xzf sbi4finance-bank-heston-100k-20261029.tar.gz -C "$SBI_BANKS"
 ```
 
 Browser downloads work too. The other bank filenames are
@@ -86,8 +220,8 @@ Run commands from `lab/`:
 ```sh
 pixi install --locked -e core
 pixi run --locked -e core core-check
-export SBI_BANK=/absolute/path/to/extracted/snapshot-100k
-export SBI_RUN=/absolute/path/to/new-training-run
+export SBI_BANK="/absolute/path/to/extracted/snapshot-100k"
+export SBI_RUN="/absolute/path/to/new-training-run"
 ```
 
 `SBI_BANK` is the directory containing the chosen snapshot's `manifest.json`,
@@ -277,3 +411,91 @@ not replace the posterior estimator. The
 [full-surface workflow guide](full-surface-calibration.md) covers that route
 and optional PyMC references. The numerical generation task and independent
 pricing checks keep their recorded scope when a bank or model is copied.
+
+## Trajectory banks: daily histories with inferred drift
+
+The physical-measure trajectory application has separate native banks for
+Heston, known-curve rough Bergomi and joint-curve rough Bergomi. Each contains
+1,000,000 training, 4,000 validation and 4,000 test histories with 1,260 daily
+log returns (five trading years). The files store observed returns, target
+parameters and stable trajectory IDs; latent volatility is not an inference
+input. Prefixes of a history stay in its original split.
+
+**Preservation complete, 1 November:** all source shards, 30 transferred archive
+parts and 23,631 extracted native shards passed their integrity checks. Bound
+copy-time receipts verify the original Gmail copies and the last five parts
+copied through the Brown-account view. Fresh Brown provider metadata confirms
+all 40 distribution files uploaded under the same Google folder identities;
+old cold payloads were not re-read or rehashed. The [preservation record](../evidence/pilot-results/2026-11-01/oscar-preservation/README.md)
+binds the manifests, archive parts, native checks and upload receipts. An
+independent cloud download was not performed. Download every part and verify it
+locally before use.
+
+The Drive destination is `training-banks-20261031/` within the existing
+[path-workshop Drive folder](https://drive.google.com/drive/folders/1LJsR0Qb0RkD4h8XiF3t6OQQlyYDKcI2k).
+Download one model's entire folder, including all ten archive parts and its
+`sha256sums.txt`, `bank-manifest.json` and `archive-receipt.json`.
+
+| Folder | Native NPZ payload | Compressed split archive | Native manifest SHA-256 |
+| --- | ---: | ---: | --- |
+| `heston` | 10,372,028,516 B | 9,643,832,260 B | `bcddef79dddd753df6a07035124c7e0043e309dd84a8e693fb489555f76477a9` |
+| `rough-known` | 10,363,964,516 B | 9,752,018,975 B | `0de676d0da84a1fd9a1984f54fbc9d8205edeae276fa3c6a783a2679044272ea` |
+| `rough-joint` | 10,388,156,516 B | 9,775,977,517 B | `1e48dc63aa700dd98039d84d815f4b1a607e9fbdeacaa5c999b1c35299228fce` |
+
+The archive sizes above come from the completed source-part receipts. Native
+bank bytes and identities are unchanged. After downloading
+all parts, verify their checksums and stream extraction (requires `zstd`):
+
+```sh
+export SBI_PATH_DOWNLOADS="/absolute/path/to/downloaded/heston"
+cd "$SBI_PATH_DOWNLOADS"
+shasum -a 256 -c sha256sums.txt
+cat path-bank-heston-1000000-native.tar.zst.part* | zstd -d -c | tar -xf -
+```
+
+The extracted `heston/` contains `manifest.json` and the native split directories.
+Use the analogous filename and directory for either rough bank. From `lab/`,
+check every native shard without materializing a whole split:
+
+```sh
+export SBI_PATH_BANK="$SBI_PATH_DOWNLOADS/heston"
+pixi run --locked -e core python scripts/path_bank.py check \
+  --bank "$SBI_PATH_BANK"
+```
+
+This verifies checksums, array schemas, finite values, prior support and canonical
+split-qualified identities. It is not posterior evaluation or scientific
+acceptance. The checker retains one decoded shard at a time; avoid calling
+`load_split` on the million-history training split for an integrity audit.
+
+For a fresh streaming fit using the published Heston recipe, choose a new
+output directory and run from `lab/` in the locked BF2.1 environment:
+
+```sh
+export SBI_PATH_RUN="/absolute/path/to/new-heston-fit"
+pixi run --locked -e core python scripts/train_path_posterior.py \
+  --bank "$SBI_PATH_BANK" \
+  --out "$SBI_PATH_RUN" \
+  --streaming --training-limit 1000000 --epochs 5 --batch-size 128 \
+  --prefix-policy uniform_log_mixture --checkpoint-selection final \
+  --hidden-dim 64 --summary-dim 32 --depth 6 --bins 8 --width 64 \
+  --learning-rate 0.0005 --cache-shards 2 --max-seconds 3300 --seed 20261031301
+```
+
+The matched comparison uses the first 100,000 training histories for 50 epochs,
+also five million presentations. Known-curve and joint-curve training use their
+own banks and recorded seeds `20261031302` and `20261031303`. Runtime, backend,
+source and selected checkpoint identity remain part of reproducibility; matching
+this command is not a guarantee of bitwise agreement across devices. These are
+fresh trajectory fits; the option trainer's optimizer-resume contract above does
+not apply to them. On a slower CPU, the time cap may stop a run before all five
+epochs. Inspect the recorded status, completed epochs and actual training views;
+an interrupted budget is not a completed comparison.
+
+All three selected trajectory candidates failed their declared final marginal
+calibration screen; Heston also retains its documented atom-bearing numerical
+law. Bank distribution does not change that status. All 4,000 test histories
+have been characterized already. Use development data for changes and the
+[bounded follow-up protocol](PATH-INFERENCE-PLAN.md#bounded-numerical-diagnosis-follow-up--1-november-2026)
+for a new target, refit and fresh acceptance cohort. Native checkpoints alone,
+in the parent workshop folder, remain sufficient for participant inference.

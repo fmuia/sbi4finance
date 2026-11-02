@@ -1,0 +1,39 @@
+{
+  "format": "trajectory_teaching_replay_v1",
+  "role": "cached_development_trajectory_replay",
+  "scientific_acceptance": false,
+  "reserved_test_evaluated": false,
+  "source_split": "validation",
+  "source_offset": 0,
+  "model": "rough-known",
+  "task_sha256": "eb195dd594de03a95630a4c46bd35e9355e235982d0eb30ae597491e14df6446",
+  "checkpoint_sha256": "b9b800ef987b7fddce62919d84f6420d751a7c390f8a2f476f49a2ca37be1e9c",
+  "cached_lengths": [
+    1,
+    2,
+    4,
+    8,
+    17,
+    21,
+    63,
+    126,
+    252,
+    504,
+    756,
+    1260
+  ],
+  "case_ids": [
+    "eb195dd594de03a9:20261031002:validation:0",
+    "eb195dd594de03a9:20261031002:validation:1",
+    "eb195dd594de03a9:20261031002:validation:2",
+    "eb195dd594de03a9:20261031002:validation:3"
+  ],
+  "source_case_panel_sha256": "0a52c475772da48f492b10aa4784aaf5e0c3e9e0e3fd9268233ff55b30ea4076",
+  "files": {
+    "task.json": "f38737f8b3e87f0450d0531245a885c5d6d3872ea716930ef5b1720be2864601",
+    "training.json": "602930a448433dd7c5297e42cfcf13a7558bfea7092e8bff9563ede4ce1495e1",
+    "evaluation.json": "e65001d7fd0604ccb1e838879d26bb5918f4e40e1e22ac87d17d5423ecbfddf7",
+    "posterior.npz": "2d446c4e3f9ec9de9686748b4f7385846db7631b6382118589c5ee43b8f57892"
+  },
+  "limitations": "Development illustration from prespecified validation cases. Approximate neural posteriors; marginal diagnostics do not certify conditional or joint accuracy. No real-market validity claim. Intervals can widen as returns accumulate."
+}
