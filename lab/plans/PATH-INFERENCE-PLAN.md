@@ -366,3 +366,255 @@ Untouched confirmation used 2,976 histories per model. All execution/risk checks
 These are independent-trajectory marginal screens with repeated prefixes, not conditional or joint certificates. Overcoverage and undercoverage retain their direction. Risk passes indicate useful estimation relative to the prior baseline under the declared simultaneous bounds; weak joint long-variance/decay cells remain broad or unresolved. Five-year drift MSE is approximately 75–79% below the prior-mean baseline. Future tuning must use a new held-out cohort; these reserved tests have now been consumed.
 
 The 92,104,580-byte final audit archive has SHA-256 `a29fd9bdf1cc9d44aa4a9bcfe0f30125dd4c59e759c8c1bb1cfb649ef4e9a180` and is checksum-verified outside Oscar scratch, alongside all previous models and the new reference audit. The standalone tutorial is packaged with all three native models and verified independently of the checkout: 208 initial payload hashes, 29 tutorial tests and actual seeded 137-day CPU inference for all models. Full lab tests passed 476 tests with three optional PyMC-environment skips; seven notebooks exported 183 cells without genuine errors. Source parity, manifest/claims, Marimo and diff checks passed. Final aggregate reports/figures enter tutorial assets only through the existing acceptance and manifest tools. Source integration is prepared as [draft PR #63](https://github.com/fmuia/sbi4finance/pull/63).
+
+## Oscar preservation closure — 1 November 2026
+
+The [preservation record](../evidence/pilot-results/2026-11-01/oscar-preservation/README.md)
+reconciles 41 original run roots, 1,650 JSON receipts and all known allocations.
+All three million-history trajectory banks are now available in native form
+off Oscar: 30 resumable archive parts, 29.172 GB compressed / 31.124 GB native,
+with all 23,631 extracted shards verified one at a time. Historical unique
+results, including old fixed-drift banks, repaired models, intermediate option
+studies and failed/partial references, are archived and logically hash-verified.
+Source/config identities and explicit exclusion proofs are retained.
+
+Original Gmail copy/readback proofs are retained. The remaining five bank
+parts were copied and hash-verified through the verified Brown-account view;
+fresh Brown provider metadata confirms completion under the same Google parent
+and workshop identities. Old cold payloads were not re-read or freshly hashed.
+The Gmail-path denial remains unexplained; sharing permissions were unchanged.
+An independent cloud download was not performed. Remote originals
+and existing versioned workshop archives are unchanged. No active allocation
+or unpreserved unique output was identified in the saved accounting scope.
+The last successful queue observation remains bound; the latest read-only retry
+failed with expired SSH authentication. The live queue was not freshly rechecked,
+and no jobs were submitted after the pilot. The seven packaging jobs
+and one isolated numerical pilot used 784 allocated CPU-seconds and no GPU;
+historical accounting remains separate. Use the [training guide](training-data-guide.md#trajectory-banks-daily-histories-with-inferred-drift)
+for extraction and streaming training. This closes preservation work; numerical
+accuracy, conditional references and fresh acceptance remain the follow-ups below.
+
+## Bounded numerical diagnosis follow-up — 1 November 2026
+
+This develops [application subplan E](../../tutorial/curriculum/TUTORIAL-REVIEW.md#e-resolve-trajectory-numerical-and-inference-limitations)
+against merged baseline `7751e4c`. The current implementation tranche is diagnosis
+and specification; this section submits no jobs and does not extend an earlier
+allocation. Notebook refinement and preservation proceed independently. Equal
+application status requires the same evidence discipline for trajectory and option
+inference; it does not turn a working interface into scientific acceptance.
+
+### E1. Freeze the evidence and locate the failure
+
+Use the existing training/validation outputs for development. The inspected
+4,000-history final panels are now historical characterization, never a fresh
+selection or acceptance cohort. The [closeout summary](../evidence/path-inference/2026-10-31/closeout-summary.json)
+binds task/model hashes and failed cells. Preserve all six 100k/1M fits and the
+old numerical laws before modifying a candidate.
+
+| Lane | Recorded issue | First diagnosis on development data |
+|---|---|---|
+| Heston | Several marginal failures and an atom-bearing numerical return law | Separate zero-effective-variance episodes from continuous-return cases; inspect interval shape and boundary behavior without treating compatibility counts as posterior atom weights. |
+| Known-curve rough | Five-year drift **overcoverage** of 92% | Inspect drift bias, posterior variance and interval tails by horizon and prior region. A wider interval is not the remedy for overcoverage. |
+| Joint-curve rough | One-year rho **undercoverage** of 87.575%; decay can remain broad | Inspect rho bias/width, eta/rho and curve trade-offs, prior boundaries and nearly flat curves. Broad decay alone is not evidence of an inaccurate posterior or structural nonidentifiability. |
+
+For all lanes, compare posterior-mean risk with the analytic prior-mean baseline,
+coverage at several nominal levels, rank diagnostics, support/nonfinite counts
+and saved within-case dependence. Retain the direction and uncertainty of each
+effect. Stratify by parameter quantiles and curve orientation using declared
+development groups; truth labels are diagnostic overlays, never estimator inputs.
+Check actual prefix-exposure histograms, endpoint behavior, loss history and
+selected/final checkpoint identity before attributing a failure to data volume.
+The matched scale-up used five million presentations for either bank size;
+five epochs on one million rows is not evidence of less optimization by itself.
+Use a fixed higher-draw replication only on development cases if needed to
+separate finite posterior-sample noise from estimator error.
+
+**Bound:** one source-bound diagnosis table and a fixed case panel per lane,
+with an initial proposed ceiling of four allocated CPU-hours and zero GPUs.
+No architecture search or repeated acceptance testing belongs to E1.
+
+The [first development diagnosis](../evidence/path-inference/2026-11-01/development-diagnosis/README.md)
+is complete: 192 comparisons bind 27 input files and use 768 already-inspected
+validation histories as their primary cohort. Known-curve eta shows negative
+long-history mean error; the joint results do not isolate a correction. The
+record names the next data/reference diagnostics and justifies no production
+fit, broader architecture search or additional bank generation.
+
+### E2. Choose Heston's numerical target before a refit
+
+The first 32 inspected development histories contained five histories with 18
+daily returns numerically compatible with generating drift/day. This is a
+forensic panel, not a population atom-rate estimate. The issue is structural:
+under signed full-truncation Euler, eight zero-effective-variance substeps can
+produce a deterministic daily return. A continuous spline density cannot exactly
+represent its resulting drift atoms. More training cannot remove that mismatch.
+
+Compare at most two explicitly specified directions:
+
+1. **A new Heston numerical law with strictly positive daily integrated variance.**
+   Select a documented construction preserving variance dynamics, leverage and
+   the joint price/integrated-variance law over the whole declared prior box.
+   Exact variance endpoints alone do not make a joint price transition exact.
+   Show why the independent price-noise variance is positive; do not substitute
+   an arbitrary floor or added measurement noise. Retain the daily grid,
+   inferred proportional drift and parameter priors unless a separate modelling
+   decision changes them. A finer version of the existing signed scheme can
+   reduce observed episodes but does not establish absence of atoms.
+2. **The unchanged v2 observation law with atom-aware inference.** This requires
+   deriving and representing both drift atoms and continuous posterior mass,
+   with reference comparisons of their weights. It is a different estimator
+   contract, not another fit of the existing continuous flow. If that work is
+   disproportionate, retain v2 as a development control while specifying the
+   first direction; do not silently drop difficult histories.
+
+Before selecting a law, use a prespecified panel of 64 parameter settings spanning
+the prior and low-variance/high-vol-of-vol regions, with four innovations each
+(256 histories/law), at the daily maximum horizon. Compare the working internal
+grid and two refinements, using shared Brownian increments where a valid coupling
+exists; otherwise use replicated weak-distribution comparisons. Record integrated
+variance, return and realized-variance summaries, boundary events, variance-mean
+and price-drift/martingale checks, finite outputs, runtime and memory. Distinguish
+Monte Carlo uncertainty from numerical differences. Require analytical support
+arguments and checked leverage, not merely zero observed atom episodes.
+
+Choose by fidelity to the intended Heston process, numerical stability across
+the prior, feasible matched references and measured generation cost. Convenience
+for a neural density alone is insufficient. A changed law gets a new immutable
+task ID/version, source hash, bank and catalogue entry; preserve v2 bytes and
+results. Publish neither a numerical-accuracy nor an exact-transition claim
+without the corresponding checks.
+
+#### E2 first-candidate pilot: projected Euler
+
+**Analysis/prototype only: no production target has been adopted.** Test the
+documented absorption fix, described here as projected Euler:
+\[
+V_{j+1}=\max\{V_j+\kappa(L-V_j)h+\sigma\sqrt{V_jh}Z_j^v,0\}.
+\]
+Keep the Gaussian log-price increment
+\((\mu-V_j/2)h+\sqrt{V_jh}(\rho Z_j^v+\sqrt{1-\rho^2}Z_j^\perp)\),
+including its shared variance driver and independent price noise. Zero is not
+absorbing: its next value is \(\kappa Lh>0\). Thus no two consecutive variance
+states are both zero; eight left-point substeps contain at least four positive
+states. In real arithmetic, daily \(I_h=h\sum_jV_j>0\) and conditional price-noise
+variance \((1-\rho^2)I_h>0\) over the declared prior. This argument gives no
+uniform positive lower bound on \(I_h\); finite-precision behavior still needs
+checking. The adapted Gaussian price increment preserves proportional price
+drift. The [Lord–Koekkoek–van Dijk comparison](https://papers.tinbergen.nl/06046.pdf)
+documents absorption's boundary bias and generally better option-price accuracy
+of full truncation: removing this support mismatch does not certify accuracy.
+
+[Andersen's QE scheme](https://www.maths.univ-evry.fr/pages_perso/crepey/Finance/andersen%20vol%20sto.pdf)
+is not an automatic remedy: its high-variance-ratio branch has a zero endpoint
+atom, and the joint price approximation can have zero conditional variance when
+both endpoints are zero. Exact endpoints alone are insufficient.
+[Broadie–Kaya](https://doi.org/10.1287/opre.1050.0247) instead samples conditional
+integrated variance and the joint price law; numerical inversion and its cost
+need separate checks before treating it as a reference or production generator.
+
+The [first numerical pilot](../evidence/path-inference/2026-11-01/numerical-pilot/README.md)
+completed on Oscar as job 8206381 at source `5eeefc4`, using the 64-setting,
+four-innovation panel and coupled 8/16/32 grids. All recorded values were finite.
+The projected law had zero daily integrated-variance atoms in this panel; the
+signed control had 11,412 / 6,691 / 3,342 zero days respectively. These deliberately
+selected settings do not estimate a population atom rate. The allocation used
+13 CPU-seconds and 203.3 MiB peak memory, with no GPU. Source, results and logs
+are preserved locally and provider-confirmed uploaded.
+
+Next, specify a bounded fixed-parameter precision check against continuous-time
+moments and characteristic functions before deciding on a production law. Retain
+the coupled-grid sensitivity and explicit boundary-bias concern. Four paths per
+setting cannot certify weak accuracy; the completed support screen neither
+selects projected Euler nor justifies a production bank regeneration/refit.
+
+### E3. Reuse data only when the target is unchanged
+
+| Proposed change | Reuse | Required new work |
+|---|---|---|
+| Rough prefix exposure, optimization or density capacity; unchanged v2 task | Existing immutable one-million-history offline bank and its canonical 100k subset | New fit identity, matched development evaluation and fresh acceptance cohort. |
+| Heston numerical law, observation noise, prior or observation design changes | Old parameters/appropriate innovations as a controlled comparison panel; old bank as historical evidence | New target identity and newly simulated observations; no manifest relabelling or inherited reference. |
+| Atom-aware estimator for unchanged Heston v2 law | Existing v2 bank, including difficult histories | New model/loader contract and mixed-posterior references; fresh acceptance cohort. |
+
+For rough, select one mechanism per lane from E1 and change only that mechanism
+in the first experiment. Keep the original model as the frozen baseline. Do not
+both enlarge the bank and change capacity/optimization and then attribute the
+effect to one component. Compare at matched presentations and report optimizer
+steps, actual prefix frequencies, validation use, wall time and peak memory.
+
+**First refit bounds, proposed for a separately admitted E2/E3 tranche:** at most
+one candidate per model, one declared seed, batch 128, at most five million
+training presentations and a hard maximum of 60 GPU-minutes/model (three GPU-hours
+total). Keep the endpoint/checkpoint-selection rule fixed before execution.
+Production-shape readiness and a measured pilot must show the planned work fits
+before submission; if the cap stops a fit, record actual exposure and an
+incomplete comparison rather than silently increasing it. Cost generation and
+references separately from measured pilots. A broader seed replication or
+second candidate needs a new bounded tranche. No first-pass one-million-row
+Heston regeneration is automatic: verify a small bank and decide its necessary
+size from the diagnosed question first. Use bounded offline shard streaming;
+online producers remain outside this design.
+
+### E4. Stage conditional references and a fresh final cohort
+
+The first identity-contract implementation adds
+`evaluate_path_posterior.py --bank TRAINING_BANK --cohort-bank DEVELOPMENT_BANK`
+for development/validation only. It retains the exact native training-manifest guard, checks the same task
+with a distinct root seed and canonical IDs, and reads only the selected cohort
+rows/shards. Exclusive per-output opening receipts bind both manifests and the
+model; a durable validation-exposure marker permits paired development comparisons
+without describing the exposed data as fresh acceptance. **A versioned fresh
+confirmation/acceptance selection-and-review schema remains pending.** The new
+route rejects reserved tests and the old confirmation/final guards; the default
+route keeps those original guards unchanged. No fresh cohort was generated and
+no acceptance result follows from this software change.
+
+Keep the existing one-day validation cases 0/1 as development controls. Their six
+stable marginal comparisons do not validate multiday or joint inference. The
+four 21-day rough importance references were inconclusive through weight
+degeneracy; allocating more samples without an ESS/precision forecast is not a
+validated remedy. First derive a reference for the actual chosen numerical law,
+then try a bounded intermediate horizon (four days), followed by 21 days. A
+one-year feasibility attempt follows only if shorter checks pass and its measured
+cost fits a separately declared cap. Do not promise a five-year latent-path
+reference in this tranche. Record actual NumPy/SciPy, particle or PyMC provenance,
+target density/Jacobians, independent-run precision and convergence failures.
+
+For a retained mixed Heston target, references and SBC must handle atoms/ties
+explicitly. Central intervals can legitimately contain more than nominal mass;
+do not force them toward 90% by shrinking a correct mixed posterior. For a new
+continuous target, use the declared continuous-posterior checks. In neither case
+does optimizer or chain completion establish reference accuracy.
+
+Before new acceptance evaluation:
+
+1. Freeze the selected model bytes, task, training recipe, numerical/reference
+   scope, assessed quantities, thresholds and draw seeds. Select using development
+   evidence only; keep the inspected final panels labelled consumed.
+2. Generate 4,000 genuinely fresh maximum-length histories/model from a new
+   recorded root seed, with disjoint trajectory identities. Keep all prefixes
+   of a trajectory together. Preserve explicit generation/source receipts.
+3. Add an explicit evaluation-cohort identity to the evaluator. Its current
+   guard requires the training bank's exact manifest; a fresh cohort necessarily
+   has another manifest. Validate both identities, exact task agreement and
+   disjoint IDs. Never rewrite the frozen training record or relax its existing
+   identity guard to make a new cohort appear original.
+4. Evaluate 512 draws/history at the twelve existing reported lengths plus two
+   fixed non-landmark lengths 137 and 997. Count all assessed model/length/target
+   cells in the declared simultaneous family; do not retain the old family size
+   after adding lengths. Retain execution/support checks, marginal coverage and
+   prior-relative risk screens. Report paired baseline/candidate comparisons only
+   on a genuinely shared target and cohort. An old-law Heston model applied to
+   new-law data is a transfer experiment, not a matched-target baseline.
+5. Open each fresh acceptance cohort once, after the freeze, with durable
+   exclusive receipts. Preserve failed outcomes and actual resource use. A failure
+   returns the model to development; further tuning consumes a newly generated
+   cohort, not a rerun until the same panel passes. Marginal compatibility is not
+   conditional/joint certification or proof of accuracy at every integer length.
+
+**Delivery gate:** a compact diagnosis and chosen-target record precedes any
+production generation/refit. New numerical results reach the lesson only through
+the existing exporter, catalogue, manifest and copy-parity routes, with labels
+matching the checks actually passed. A new task version may need a separately
+reviewed runtime/loader extension; do not overwrite the v2 tutorial assets to
+bypass its strict task contract. Until then retain all current candidate and
+prototype labels while continuing the application-level presentation work.

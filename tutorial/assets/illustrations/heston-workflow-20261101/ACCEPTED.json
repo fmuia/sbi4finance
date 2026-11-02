@@ -1,0 +1,13 @@
+{
+  "accepted": "2026-11-01T22:06:31+00:00",
+  "source": "lab/evidence/illustrations/heston-workflow-20261101",
+  "source_sha256": {
+    "provenance.json": "efafc39ea637ed5d8374ba628d4c5e756af1e28434b8defb794a4479260fac69",
+    "render.py": "9890cb0bdf139f8b118e73a8d7df84418c1177ae95ec70c0efc7eac3040c1636",
+    "simulation-and-observation.png": "b02181de0a4518ef840f620a056ece2953eba31dc6fa9ec86600a352e70f38b7",
+    "simulation-and-observation.svg": "a77e18a4cfc0ab8f7cd6b2bac847de1345c34201bf9c78915d917927a6c3de0e",
+    "two-amortization-routes.png": "d5c7a9f8595a8fa787e2e57cad661c1ca56571483687dc86f0e68ab85754ee21",
+    "two-amortization-routes.svg": "d9176e2453020a86d684c6585e76d124b4f39578c1d4294f24a0d98d0966aa39"
+  },
+  "changes": []
+}

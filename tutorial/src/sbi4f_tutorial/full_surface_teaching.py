@@ -188,3 +188,46 @@ def load_tutorial_checkpoint(manifest, name, directory):
     require(live_task == task and record["checkpoint_sha256"] == report["checkpoint_sha256"],
             "live checkpoint differs from the selected tutorial artifact")
     return live_task, workflow, record
+
+
+def rough_variance_products(task, draws, *, context_values=None):
+    """Continuous mean-curve variance rates, preserving all leading draw axes.
+
+    Known curves use seven observed piecewise-constant levels. Joint curves use
+    each paired draw's exponential-curve coefficients; an observed/generating
+    curve is not accepted for that task. These analytic functionals establish
+    neither Monte Carlo product-price nor posterior accuracy.
+    """
+    task = rough_task(task)
+    values = np.asarray(draws, dtype=float)
+    bounds = np.asarray(task["prior_bounds"], dtype=float)
+    require(values.ndim >= 1 and values.shape[-1] == len(task["parameter_names"])
+            and values.size > 0 and np.isfinite(values).all(), "invalid rough parameter draws")
+    require(np.all(values >= bounds[:, 0]) and np.all(values <= bounds[:, 1]),
+            "rough parameter draws outside task prior")
+    context = task.get("model_context", {})
+    knots = np.asarray(context.get("forward_variance_knots"), dtype=float)
+    require(task.get("measure") == "Q" and knots.shape == (8,) and np.isfinite(knots).all()
+            and knots[0] == 0 and np.all(np.diff(knots) > 0) and knots[-1] >= 1,
+            "rough curve knots must cover the one-year product horizon")
+    if task["task_id"] == "rough_calibration_v1":
+        levels = np.asarray(context_values, dtype=float)
+        require(levels.shape == (7,) and np.isfinite(levels).all() and np.all(levels > 0),
+                "seven positive finite observed curve levels required")
+        def rate(start, end):
+            widths = np.maximum(0, np.minimum(knots[1:], end) - np.maximum(knots[:-1], start))
+            return np.full(values.shape[:-1], np.dot(levels, widths) / (end - start))
+    else:
+        require(context_values is None and context.get("curve_family") == "heston_exponential_v1",
+                "joint rough products require paired inferred curve coefficients only")
+        short, long, decay = values[..., 3], values[..., 4], values[..., 5]
+        require(np.all(values[..., 3:] > 0), "positive joint curve levels and decay required")
+        def rate(start, end):
+            x = decay * (end - start)
+            average = np.divide(-np.expm1(-x), x, out=np.ones_like(x), where=x != 0)
+            weight = np.exp(-decay * start) * average
+            return weight * short + (1 - weight) * long
+    products = {"variance_swap_1y": rate(0, 1), "forward_variance_0_5_to_1y": rate(.5, 1)}
+    require(all(np.isfinite(value).all() and np.all(value > 0) for value in products.values()),
+            "nonpositive or nonfinite rough variance product")
+    return products

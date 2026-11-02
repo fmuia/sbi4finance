@@ -1,4 +1,402 @@
-# Review of the Heston and rough Bergomi tutorial
+# Application notebook refinement: execution plan
+
+Updated 1 November 2026 against merged baseline `7751e4c` (PRs #54 and #63).
+The workshop is now two hours. Refine the content and presentation first; defer
+minute allocation and pruning until the application sequence can be rehearsed.
+
+This plan covers the existing Heston-option, rough-Bergomi-option and trajectory
+application notebooks. Introduction, Amortized Bayes, Architectures and the
+separate backbone-review notebook are outside this workstream. Trajectory
+inference is a full application with the same delivery and evidence standards
+as option inference. Its present development status is a starting point to
+improve, not a reason to demote the application.
+
+The six subplans below are ordered by their dependencies. Several can run in
+parallel. Their status distinguishes available software, preserved outputs and
+scientific acceptance; none implies the others.
+
+## A. Close Oscar work and preserve its outputs
+
+**Starting evidence.** The three harmonized trajectory banks currently exist on
+Oscar: each has 1,000,000 training, 4,000 validation and 4,000 test histories, with
+1,260 daily returns. Together their uncompressed NPZ payloads occupy 31.124 GB.
+Live verification found all 23,631 shards, matching sizes and manifest hashes;
+sampled payload hashes passed. Earlier full verification is recorded separately.
+The published workshop archives include all six scale-up fits and diagnostics,
+but explicitly exclude these full banks. Older fixed-drift banks, repaired fits
+and some raw logs also require reconciliation.
+
+1. Reconcile project job accounting with every relevant run root and local
+   transfer receipt. Classify stopped attempts by their actual outcome and
+   superseding run; do not resume failed historical experiments blindly.
+2. Preserve unique banks, native models, references (including failed/partial
+   chains), evaluations, logs, source and runtime identities. Exclude installed
+   environments and redundant code/cache copies from preservation payloads.
+3. Package immutable native files in bounded, resumable parts. Verify source
+   manifests and payloads, transferred archive hashes and extracted contents.
+4. Copy the missing deliverables to the existing shared Drive folder, retaining
+   the distinction between local checksum verification, provider-reported upload
+   completion and an independent cloud download.
+5. Record an inventory mapping each produced output to its durable copy or an
+   explicit redundancy/exclusion reason. Retain remote originals.
+
+**Deliverables:** durable full-bank downloads, historical-output archives,
+checksums, extraction instructions and one compact closeout record linked from
+the existing path plan and training guide. Large payloads remain outside Git.
+
+**Completion:** no unexplained active jobs or unique results left only on
+scratch; every advertised transferred payload has a matching verification
+receipt. Scientific questions still pending remain named as such.
+
+## B. Establish a consistent application and evidence contract
+
+For each selected example, display observations, unknown parameters, supplied
+quantities, prior family/support, simulator/numerical law, observation design,
+checkpoint identity and reference scope. Use the actual task metadata rather
+than retyping a competing definition in explanatory prose.
+
+Keep these distinctions visible:
+
+- Option calibration concerns a pricing model; trajectory tasks concern the
+  specified physical return process, including drift.
+- Known-curve option inference conditions on seven supplied curve levels. Joint
+  option inference targets three exponential-curve coefficients alongside the
+  volatility parameters. This changes the curve family as well as uncertainty.
+- Current synthetic cases, historical SPY studies, pilot fits and the separate
+  long-end Gaussian/Laplace experiment keep their own identities and claims.
+- A reference using an approximate neural pricer is not an exact-pricer target.
+- Cached, live and newly trained outputs are labelled by their actual origin.
+
+**Deliverable:** consistent task/source panels and a selected-case map, reusing
+the existing notebooks and asset catalogue. No new asset platform is needed.
+
+**Completion:** a reader can identify the target of every posterior or product
+plot without relying on an opening disclaimer or presenter explanation.
+
+Start with the existing case inventory, keeping illustration and evaluation
+separate:
+
+| Application | Existing primary case | Teaching role |
+| --- | --- | --- |
+| Heston options | `heston-final500` | Follow one current synthetic observation and its numerical reference. |
+| Known-curve rough options | `rough-known100k-validation0` | Identify supplied curve inputs and posterior targets. |
+| Joint-curve rough options | `rough-joint100k-validation0` | Explain inferred curve uncertainty; selected cases 1983/1941/1962 extend geometry inspection. |
+| Trajectories | Predeclared validation case 0 per model; cases 1–3 remain available | Reveal history and inspect uncertainty, with each model's own synthetic path and task. |
+
+The shared trajectory grid does not make the cached observations identical.
+Likewise, switching current option development cases changes the observation.
+Any future same-observation cross-model comparison needs an explicit shared-data
+and measure contract; compare current interfaces without implying that experiment
+has already been performed.
+
+## C. Refine the option notebooks in place
+
+**Retain:** Heston's simulator → prior predictive → bank/adapter/network →
+training → diagnostics → numerical reference → application sequence; rough
+Bergomi's parameter controls, forward simulation, computational-cost comparison,
+classical baseline, product controls and assumption-sensitivity interactions.
+These descend from the earlier `tutorial_final` notebooks and provide the
+teaching structure to improve.
+
+1. Remove stale full-bank-pending statements and identify historical results
+   beside the sections that use them.
+2. Carry an explicitly selected current synthetic case through its supported
+   parameter, reference and derived-quantity views. Do not splice a new model's
+   posterior into an old model's diagnostics or product results.
+3. Keep historical SPY model checks available independently of the disabled
+   archived neural loader, where their inputs are already accepted and packaged.
+4. Preserve the known-curve/joint progression, explaining fixed inputs,
+   uncertainty and weakly identified decay through actual examples.
+5. Add prediction and interpretation prompts to existing controls. Keep a
+   clear distinction between exploring a forward simulator and conditioning on
+   the selected inference case.
+6. Use analytic variance-related quantities for a supported uncertainty example.
+   Retain historical reserve/long-end demonstrations with their method labels.
+   New rough product conclusions depend on the existing J2/J3 validation work,
+   including the exact forward-start contract definition.
+
+**Deliverable:** refined `slot4_heston_bayesflow.py` and
+`slot5_calibration.py`, with their existing useful interactions preserved.
+
+**Completion:** current/historical continuity is explicit, cached viewing is
+complete, optional actions remain explicit, and no statement exceeds its source.
+
+## D. Develop the trajectory notebook to application parity
+
+**Retain:** the shared Heston/known-curve/joint-curve selector, daily observation
+grid, drift inference, every integer history length from 1 to 1,260, posterior
+evolution, cached fallback and optional exact-length CPU inference.
+
+**Reuse presentation patterns:** earlier Heston trajectory notebooks provide
+prior/neural/reference marginals, paired joint geometry, per-case diagnostics
+and exercises. Earlier Bergomi notebooks provide simulation/seed controls and
+observed/latent displays. `sbi_fin_pocs` supplies a complete batch training and
+diagnostic example. Their numerical claims and weights do not transfer to the
+new tasks.
+
+1. Add model/parameter/prior panels and a concrete observation-versus-hidden-state
+   explanation. Synthetic truth may be displayed for interpretation, never fed
+   into inference conditions.
+2. Add prior/posterior marginal and joint views for the selected current case,
+   retaining paired draw rows. Integrate the existing recovery, coverage and
+   risk reports with their actual failures visible.
+3. Walk through bank reading, random prefixes/masks, fixed return scaling,
+   encoder, conditional density, offline training and native checkpoint loading.
+   Use actual APIs and saved results. Optional small fits must be bounded and
+   must not masquerade as reproduction of the published fit.
+4. Add explicit simulation/prior-predictive exploration using the frozen model
+   law. A displayed latent path is a teaching aid, not an estimator input.
+5. Add matched reference overlays only at supported cases and lengths. A
+   one-day comparison must not imply long-history conditional accuracy.
+6. Develop posterior-predictive replicated-history checks. Continuation forecasts
+   and future VaR/ES require joint latent-state/history conditioning, including
+   rough memory; a parameter posterior alone is insufficient for that extension.
+
+**Completion:** participants can follow generation → training → checks →
+inference → interpretation for all three tasks. Numerical readiness is governed
+by subplan E; a working interface never implies an acceptance certificate.
+
+## E. Resolve trajectory numerical and inference limitations
+
+**Current evidence:** all three selected candidates passed execution and risk
+screens but failed the declared final marginal-calibration screen. Heston's
+discrete simulator can also create deterministic daily returns and an atomic
+drift posterior that its continuous neural density cannot represent exactly.
+The 4,000 reserved tests per model have already been examined.
+
+1. Diagnose before refitting. Use existing development reports to locate errors
+   by model, history length, parameter and prior region. Separate simulator-law
+   effects, finite-history information and estimator error.
+2. For Heston, specify and verify a numerical target compatible with the intended
+   posterior representation. Compare candidate laws on a bounded coupled panel;
+   preserve the original atom-bearing task and its results. Never silently floor
+   observations, discard difficult histories or relabel an old bank.
+3. For the rough candidates, use a bounded experiment addressing the diagnosed
+   mechanism (for example prefix exposure, optimization or conditional density
+   capacity). Reuse the existing bank when the task is unchanged. Compare at
+   matched training exposure and retain the common observation design.
+4. Define task, candidate, budgets and validation rules before new production
+   runs. Check full-shape memory and native reload locally and on Oscar. Use
+   offline banks and bounded shard streaming; online simulation is outside the
+   agreed training design.
+5. Extend independent conditional-reference feasibility at selected short and
+   longer lengths. Preserve actual sampler provenance, numerical target,
+   convergence diagnostics and unsuccessful attempts. No framework name or
+   optimizer completion substitutes for a validated reference.
+6. Freeze selected candidates before opening fresh acceptance cohorts. Apply
+   declared coverage/recovery/risk checks across the target history range, with
+   conditional/joint claims limited to the independent comparisons performed.
+
+**Deliverables:** bounded numerical proposal, new immutable task/bank only when
+required, reloadable selected fits and source-bound validation reports. No broad
+architecture sweep or automatic larger-bank campaign is implied.
+
+**Completion:** selected examples meet the predeclared checks or retain an
+explicit development label and narrowed teaching claim. Equal application
+status means applying the same evidence discipline to both applications, not
+promoting an unresolved result to meet a presentation deadline.
+
+## F. Integrate and rehearse the application sequence
+
+Use the same visible sequence in the application notebooks: task, simulation,
+bank/training, checks, inference and interpretation. Add a few assessable
+predict → change → inspect → explain exercises using existing controls. Keep
+parameter names, colors, interval labels and source labels consistent.
+
+Start with these application activities; they require cached assets and existing
+controls, with fresh CPU inference optional:
+
+| Application activity | Participant action | Evidence of understanding |
+| --- | --- | --- |
+| Heston: define the data | Inspect the current quote/noise plot and contract table before the posterior. | Distinguish the 63 observations, assumed noise, fixed mean reversion and four unknowns; identify the synthetic case rather than SPY. |
+| Heston: check and propagate | Compare neural/PyMC marginals and pairs, then the two analytic variance-rate summaries. | Explain why reference agreement tests the approximation under this task, and why a derived quantity depends on paired parameter draws. It does not establish model adequacy on another observation. |
+| Rough: change what is supplied | Identify the known curve inputs, then select a joint-curve case and inspect dependence and variance rates. | Explain the known-curve zero rate spread as imposed by conditioning. Recognize that the selected observations and curve families also change, so this is not a controlled numerical ablation. |
+| Trajectories: reveal information | Move from one day to 252 and 1,260 days; compare parameter intervals and drift learning. | Describe learning about fixed parameters, distinguish a single path's changing intervals from average contraction, and retain the candidate's calibration limitations. |
+| Trajectories: inspect a non-landmark input | Select 137 days and open the input preview; optionally run fresh CPU inference. | Identify exactly 137 observed mask entries, the labelled 126-day cached posterior, and why only the explicit inference action conditions on the newly selected complete prefix. Never multiply overlapping prefix posteriors. |
+
+Across these activities, ask what additional *training* should improve: the
+approximation to the declared posterior, rather than automatically narrowing
+its uncertainty. Additional *observations* change the posterior target. This
+distinction can be taught directly from the application, without expanding the
+separate introductory/architecture lessons in this workstream.
+
+Run required area tests, notebook execution/export, Marimo checks, copy parity,
+manifest/claims generation and release checks after relevant changes. Explicitly
+exercise optional live/model actions separately from headless cached export.
+Rehearse with supplied assets on a CPU and without Oscar access. Then decide
+what to prune for two hours; no minute-by-minute allocation is required now.
+
+## Parallel execution and current tranche
+
+| Unit | Can start independently | Depends on |
+| --- | --- | --- |
+| A: inventory, archival and transfer | Yes; active | Existing immutable outputs |
+| B: task/evidence labels | Yes; active | Current metadata and predecessor review |
+| C: option notebook refinements | Yes; active | B for shared wording; stronger product claims require J2/J3 |
+| D1: path task/plots/diagnostic views | Yes | Current caches and reports |
+| D2: new simulation/reference views | Partly | Verified model law and matched reference assets |
+| E1: numerical diagnosis/proposal | Yes | Existing development evidence |
+| E2: generation/training/acceptance | After specification | Only its own task, bank and fit prerequisites |
+| F: integration and rehearsal | Incrementally | Completed, independently checked slices |
+
+Use one draft PR for this plan and its first implementation tranche. Preserve
+isolated failures: generation depends only on that model's readiness, training
+on its own bank, evaluation on its own fit. Packaging and notebook edits do not
+depend on successful new scientific training. Report what has landed in the PR,
+what is actively transferring and what remains a developed numerical subplan.
+
+The first tranche is operational preservation, option continuity and evidence
+labels, path inspection views, and the bounded numerical diagnosis. Training
+submission follows its tested specification rather than the completion of an
+unrelated notebook or transfer.
+
+### First implementation status
+
+- **A:** preservation is complete: all three full trajectory banks and unique
+  historical outputs are off Oscar, verified locally and provider-confirmed
+  uploaded to the same Drive folder. The [compact record](../../lab/evidence/pilot-results/2026-11-01/oscar-preservation/README.md)
+  binds the inventories and receipts. Original Gmail copy/readback proofs are
+  retained; the last five bank parts were copied and hash-verified through the
+  verified Brown-account view, followed by fresh provider metadata checks over
+  the same Google parent/workshop identities. Old cold payloads were not re-read.
+  The cause of the Gmail-path denial remains unknown; sharing permissions were
+  unchanged. No unpreserved unique output or nonterminal allocation was
+  identified in the audited records. The latest queue retry was blocked by
+  expired SSH authentication; the prior successful check remains separately
+  bound, with no fresh live-empty-queue claim. No jobs were submitted after
+  the pilot. Failed scientific attempts and remote originals remain preserved;
+  scientific acceptance is unchanged.
+- **B/C:** the option lessons now name their current and historical evidence
+  locally, correct stale pending-bank text, retain their controls, add
+  interpretation prompts and restore the independent stored Heston
+  mean-reversion check. Current cases now connect their exact quotes/noise to
+  posterior and analytic mean-variance functionals; the longer historical
+  simulation/training studies remain separately labelled. Main application
+  parameter and derived-quantity tables use central 90% intervals.
+- **D1:** the trajectory lesson now displays actual task/prior metadata,
+  prior/posterior densities, paired joint geometry and hash-bound final
+  diagnostics, plus an actual observed/padded-input preview using the native
+  conditioning function. Simulator/prior-predictive and fuller training
+  walkthroughs remain developed follow-ups.
+- **E:** the bounded diagnosis protocol and the
+  [first source-bound development diagnosis](../../lab/evidence/path-inference/2026-11-01/development-diagnosis/README.md)
+  are complete. The latter uses 768 already-inspected development histories,
+  binds 27 inputs and supports no production refit yet. An explicit separate
+  development-cohort evaluator binds both bank identities and preserves the
+  original reserved-test guards; the versioned fresh-acceptance protocol is
+  still pending. The isolated
+  [Heston numerical admission pilot](../../lab/evidence/path-inference/2026-11-01/numerical-pilot/README.md)
+  completed on Oscar and its full source/results are preserved. Projection
+  removed zero daily integrated variance in that panel, without establishing
+  weak accuracy or selecting a production law. No production refit or new
+  acceptance result is claimed.
+- **F:** first-tranche checks pass: 514 lab tests (three unchanged optional PyMC
+  skips), 29 tutorial tests and all seven cached exports (220 cells, zero errors),
+  plus Marimo, manifest/claims and copy parity. Offline checks cover all six
+  current option cases and nine path model/length combinations. Independent
+  reviews found no code blockers. The [live isolated-Chrome check record](../../lab/evidence/pilot-results/2026-11-01/application-browser-qa/summary.json)
+  also covers the
+  current option cases, trajectory model/case/joint controls, the actual
+  137-day input with its labelled 126-day cache, and 760-pixel layouts. No
+  browser runtime errors were found. A display-math delimiter defect found in
+  that review was fixed and checked visually. This implementation tranche is
+  ready for review. Rehearsal and two-hour pruning follow content refinement;
+  the existing versioned workshop kit has not been repackaged with
+  these new notebook interfaces.
+
+## Guided notebook review · 1 November 2026
+
+The Heston review establishes the presentation contract for the remaining
+application lessons: define the model and data locally; pair a short intuitive
+statement with the relevant mathematics; show syntax-highlighted core workflow
+code by default; reserve implementation accounting for optional source panels.
+The prerequisite is probability/Bayes and Python, rather than prior expertise
+in option calibration. Timing and pruning remain deferred.
+
+### Heston feedback implemented
+
+The [source-bound check record](../../lab/evidence/pilot-results/2026-11-01/heston-lesson-review/summary.json)
+records the final code, exports and browser review for this revision.
+
+- Explain the pricing-measure Heston equations, all four inferred parameters,
+  fixed mean reversion and variance versus volatility before showing inference.
+  Show coupled price/volatility paths and the update code in the main flow.
+- Illustrate the construction of a training pair: prior draw, Fourier expected
+  option prices, prescribed quote error and observed price vector. Distinguish
+  path randomness, quote noise, numerical pricing error and bid–ask spreads.
+- Explain both neural routes visually and mathematically: a forward price
+  surrogate plus a new sampler for each observation, and an amortized posterior
+  conditional on observations. Original diagrams use the inspected Overleaf
+  deck's palette, with editable sources and attribution retained.
+- Show the simulator, adapter/network, offline fit and posterior-draw APIs in
+  highlighted code by default. Plotting and input validation remain helpers;
+  visible snippets disclose that division rather than claiming the financial
+  pricer itself is only a few lines.
+- Add a synthetic posterior-predictive illustration from saved joint neural and
+  reference draws. Distinguish model-price uncertainty from replicated quotes
+  with fresh Gaussian errors; label the bounded empirical bands and in-sample
+  scope. No learned model or posterior cache is replaced.
+- Explain recovery, coverage, SBC and reference comparisons with both slogans
+  and formal definitions. Describe historical contraction in its actual logit
+  coordinates rather than as a physical interval-width reduction.
+- Replace standardized historical comparison panels with four selectable,
+  descriptively named cases in original parameter units, alongside illustrative
+  Heston paths and saved observed quotes. All four cases/methods/truths remain.
+- Audit the displaced truth in case 2001. [The source-bound diagnosis](../../lab/evidence/pilot-results/2026-11-01/heston-case-2001/summary.json)
+  reproduces its declared simulation and finds a likelihood shift consistent
+  with its quote errors. Retain its importance-weight and reference limitations;
+  a single case neither establishes nor refutes aggregate calibration.
+- Explain strike/forward and premium/forward with a currency example and the
+  put/call switch at the forward. Hide technical case IDs and hashes behind a
+  reproducibility panel while keeping scientific limitations visible.
+
+### Rough options and trajectories: shared presentation contract
+
+The [source-bound application check record](../../lab/evidence/pilot-results/2026-11-01/application-lesson-review/summary.json)
+binds the final notebook/runtime sources, tests and cached-control browser review.
+
+The same contract now applies to the two remaining core applications. The
+opening establishes the model and observed data before posterior plots, and
+short highlighted code stays visible throughout the generative and Bayesian
+workflow. New original diagrams use the inspected Overleaf palette and retain
+source, editable SVG and attribution. Parameter tables and corner axes use
+readable names/symbols; technical identities remain optional source details.
+
+**Rough options.** Explain the Volterra-memory variance model, its parameters
+and the forward-variance curve. Distinguish many latent paths averaged into
+numerical prices, finite-path pricing error and separately prescribed Gaussian
+quote errors. Supplied seven-level and jointly inferred exponential curves
+remain different tasks and curve families. Friendly selectors retain every
+case. Reference, calibration, importance-audit and product uncertainty each
+receive an intuitive explanation and their mathematical scope. Current neural
+examples do not inherit historical validation or become a matched comparison
+when the selected data change. Explicit forward simulation is not relabelled
+as posterior prediction.
+
+**Trajectories.** Explain observed daily log returns, hidden variance/shocks,
+physical drift and each model's equation locally. Show the actual generation,
+offline training, random-prefix/mask and GRU/conditional-flow APIs, distinguishing
+a small author example from million-history streaming production. The revealed
+history and mask are visible; detailed tensor/accounting fields are optional.
+All integer lengths from 1 to 1,260 remain supported. The 137-day input versus
+126-day cached posterior is explicit, and prefixes use the original prior and
+full revealed data. Generating labels and hidden states remain excluded. Model
+switches change the synthetic observation; the display does not pretend to be
+a matched cross-model experiment.
+
+Calibration explanations distinguish concentration, recovery, coverage and
+prior-averaged ranks. All failed trajectory marginal screens and the Heston
+atomic-drift limitation remain visible in plain language. New independent
+replicate histories and continuation forecasts are distinct; the latter need
+latent-state and rough-memory conditioning beyond a parameter posterior.
+No new posterior-predictive trajectory cache or conditional reference is
+fabricated. These interface and teaching changes replace no scientific task,
+bank, checkpoint or inference result.
+
+## Historical review: 26 October 2026
+
+The following assessment records the earlier option-focused proposal. Its slot
+scope and extension decisions are superseded by the execution plan above.
 
 26 October 2026. Review of the course and curriculum proposed in PR #44 at
 `cebfb1f`. This assessment assumes that Heston and rough Bergomi remain the two

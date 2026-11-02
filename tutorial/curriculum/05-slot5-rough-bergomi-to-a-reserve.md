@@ -1,5 +1,13 @@
 # Slot 5. Rough Bergomi on the SPY smile: from the posterior to a reserve
 
+> **Review update · 1 November 2026.** The notebook now leads with the rough
+> model, simulation and quote noise, supplied-versus-inferred curve assumptions,
+> visible inference code and statistical checks. Synthetic cases and historical
+> SPY/product studies retain separate identities. The [application review](TUTORIAL-REVIEW.md#rough-options-and-trajectories-shared-presentation-contract)
+> supersedes the older timing and single-SPY map below. No new conditional rough
+> reference, product validation or trajectory acceptance is implied.
+
+
 Francesco and Alex · 40 minutes. Part of the [curriculum](00-overview.md).
 
 ![Minute map of slot 5](images/slot-5.png)

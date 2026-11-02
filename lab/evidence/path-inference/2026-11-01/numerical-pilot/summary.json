@@ -1,0 +1,117 @@
+{
+  "schema": "heston_projected_euler_pilot_closeout_v1",
+  "development_only": true,
+  "source_commit": "5eeefc4004170948a59cf0acb670019df468bf55",
+  "job_id": "8206381",
+  "status": "COMPLETED",
+  "exit_code": "0:0",
+  "complete_panel": true,
+  "all_recorded_values_finite": true,
+  "design": {
+    "parameter_panel": "48 marginally stratified prior rows plus 16 kappa/theta/vol_of_vol/rho corners at drift .05",
+    "replicates_per_parameter": 4,
+    "days": 1260,
+    "substeps": [
+      8,
+      16,
+      32
+    ],
+    "panel_seed": 2026110101,
+    "innovation_seed": 2026110102
+  },
+  "aggregate_events": {
+    "signed_full_truncation/8": {
+      "zero_integrated_days": 11412,
+      "all_zero_left_days": 11412,
+      "zero_left_steps": 207343,
+      "negative_end_states": 25989,
+      "floating_equal_return_drift_dt_days": 4400,
+      "minimum_daily_integrated_variance": 0.0,
+      "minimum_daily_independent_variance": 0.0
+    },
+    "projected_euler/8": {
+      "zero_integrated_days": 0,
+      "all_zero_left_days": 0,
+      "zero_left_steps": 48025,
+      "negative_end_states": 0,
+      "floating_equal_return_drift_dt_days": 0,
+      "minimum_daily_integrated_variance": 1.944844297777266e-09,
+      "minimum_daily_independent_variance": 2.0447685864657975e-10
+    },
+    "signed_full_truncation/16": {
+      "zero_integrated_days": 6691,
+      "all_zero_left_days": 6691,
+      "zero_left_steps": 391948,
+      "negative_end_states": 24460,
+      "floating_equal_return_drift_dt_days": 1317,
+      "minimum_daily_integrated_variance": 0.0,
+      "minimum_daily_independent_variance": 0.0
+    },
+    "projected_euler/16": {
+      "zero_integrated_days": 0,
+      "all_zero_left_days": 0,
+      "zero_left_steps": 84269,
+      "negative_end_states": 0,
+      "floating_equal_return_drift_dt_days": 0,
+      "minimum_daily_integrated_variance": 1.2302374653565128e-09,
+      "minimum_daily_independent_variance": 1.1994815287226005e-10
+    },
+    "signed_full_truncation/32": {
+      "zero_integrated_days": 3342,
+      "all_zero_left_days": 3342,
+      "zero_left_steps": 741564,
+      "negative_end_states": 23242,
+      "floating_equal_return_drift_dt_days": 42,
+      "minimum_daily_integrated_variance": 0.0,
+      "minimum_daily_independent_variance": 0.0
+    },
+    "projected_euler/32": {
+      "zero_integrated_days": 0,
+      "all_zero_left_days": 0,
+      "zero_left_steps": 156399,
+      "negative_end_states": 0,
+      "floating_equal_return_drift_dt_days": 0,
+      "minimum_daily_integrated_variance": 9.768399793366022e-10,
+      "minimum_daily_independent_variance": 9.524189798531874e-11
+    }
+  },
+  "resources": {
+    "elapsed_seconds_including_initial_jit": 3.9856786094605923,
+    "largest_explicit_innovation_buffer_bytes": 3870720,
+    "peak_rss": 208164,
+    "peak_rss_units": "KiB",
+    "python": "3.12.16",
+    "numpy": "2.5.3",
+    "numba": "0.68.0",
+    "platform": "Linux-5.14.0-570.62.1.0.1.el9_6.x86_64-x86_64-with-glibc2.34"
+  },
+  "accounting": {
+    "elapsed_seconds": 13,
+    "cpus": 1,
+    "actual_cpu_hours": 0.003611111111111111,
+    "actual_cpu_hours_including_240s_cleanup": 0.07027777777777777,
+    "gpu_hours": 0
+  },
+  "interpretation": "Projected Euler removes structural zero integrated-variance days in this panel, consistent with the mathematical positivity property. These stratified/corner cases are not iid prior draws; counts are not population atom rates. Refinement is a sensitivity diagnostic; four replicates and continuous-process first moments do not certify accuracy, posterior calibration, or production task adoption.",
+  "production_target_or_model_changed": false,
+  "scientific_acceptance": false,
+  "result_archive_sha256": "768470001963a65ecada81eab983647928985a1344d385423a3199bcf68e531d",
+  "source_archive": {
+    "bytes": 4559154,
+    "sha256": "9ed2225a4e0e31efdc935d5f834d9953f925ddceeed1c08192120226a7770bf9",
+    "name": "source-5eeefc400417.tar.gz"
+  },
+  "full_report": {
+    "name": "collected/run/pilot/summary.json",
+    "bytes": 1391591,
+    "sha256": "ee0d5087fe1d625e8f945255044f68530644b8ff91da197c2c2ed8fc6bb024bb"
+  },
+  "preservation": {
+    "folder_url": "https://drive.google.com/drive/folders/1LJsR0Qb0RkD4h8XiF3t6OQQlyYDKcI2k",
+    "relative_directory": "oscar-history-20261101/numerical-pilot-20261101",
+    "all_uploaded": true,
+    "local_copy_hashes_verified": true,
+    "independent_cloud_download_verified": false,
+    "provider_receipt_sha256": "cd01f778a81bc2972394e767e77b0aecc13eb586e3e3e86c1a06d2cb03ab244a"
+  }
+}

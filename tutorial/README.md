@@ -1,10 +1,22 @@
 # Amortized Bayesian calibration of volatility models: the notebooks
 
-The notebooks of the ICAIF '26 tutorial (Milan, 14–15 November 2026). A desk calibrates a volatility model to the
-day's option quotes and marks products that nobody quotes; the notebooks show how a posterior states the
-uncertainty of that calibration, how a network trained on simulations returns the posterior in seconds, and how
-to check it. Current cached examples open offline from `assets/` without loading a neural backend.
-Fresh model sampling, financial simulations and training are explicit actions.
+The notebooks of the ICAIF '26 tutorial (Milan, 14–15 November 2026) teach one
+workflow through three applications: Heston option calibration, rough Bergomi
+option calibration, and parameter estimation from daily return histories.
+Define a model and observation process, simulate training pairs, fit an
+amortized posterior, and check the resulting uncertainty.
+
+The application lessons expose their core Python code, pair short intuitive
+explanations with mathematics, and use consistent workflow diagrams. They open
+offline from `assets/` without initializing a neural backend. Source identifiers
+and detailed numerical settings remain available in optional panels; scientific
+limitations stay next to the relevant results.
+
+Fresh model sampling, large pricing simulations and training are explicit
+actions. Heston also runs bounded illustrative paths and Fourier re-pricing of
+saved draws on opening. Rough-option prices are expectations over many paths;
+trajectory observations are returns from one path. The two observation models
+and the different pricing/physical measures are explained locally.
 
 ## Install
 
@@ -44,9 +56,9 @@ pixi run --locked trajectories # parameter inference from daily return histories
 | `slot1_intro.py` | 1. The problem: Bayes for volatility models | Calibrate Black–Scholes to SPY quotes as inference, compare the posterior with the classical interval, price what the quotes do not pin | Grid posteriors, a toy smile, a sector of names (seconds) |
 | `slot2_amortized_bayes.py` | 2. What is amortized Bayes? | Watch a small network learn slot 1's posterior and check it against the exact answer | Exact grid by default; a new 2.1 toy trains only after pressing the button |
 | `slot3_architectures.py` | 3. Network architectures | See how flow matching carries noise to Heston's posterior, and what the sampler's steps change | Cached Heston posterior and PyMC reference |
-| `slot4_heston_bayesflow.py` | 4. A worked example in BayesFlow: Heston on the SPY smile | Follow the whole workflow, from simulator to checks, against the exact posterior | Cached 100k example; simulation and a small native fit are optional buttons |
-| `slot5_calibration.py` | 5. Rough Bergomi on the SPY smile: from the posterior to a reserve | Read rough Bergomi's posterior, its audit, and the price ranges and reserves of products | Cached known/joint-curve examples; Monte Carlo is an explicit action |
-| `trajectory_inference.py` | Counterpart: estimate dynamics from observed paths | Switch between Heston and two rough Bergomi tasks, reveal a daily history, inspect posterior evolution and drift uncertainty | Cached validation examples by default; exact-length CPU inference is an explicit button |
+| `slot4_heston_bayesflow.py` | Heston: from option quotes to a posterior | Follow simulation, training, numerical-reference checks and posterior prediction | Cached posterior; bounded path/predictive illustrations; optional small native fit |
+| `slot5_calibration.py` | Rough Bergomi: supplied versus inferred variance curves | Explain simulation/noise, compare the inference inputs, inspect uncertainty and its checks | Cached known/joint-curve examples; Monte Carlo is an explicit action |
+| `trajectory_inference.py` | Dynamics from observed paths | Follow the generative model, masked GRU training, revealed history and parameter uncertainty | Cached validation examples by default; exact-length CPU inference is an explicit button |
 
 `backbone_review.py` adds the current Heston, known-curve rough and joint-curve rough estimators.
 The rough examples include validation:0 and three explicitly selected joint-geometry illustrations.
@@ -54,7 +66,9 @@ They retain development scope; conditional rough references and product validati
 Slots 4 and 5 expose these cached examples alongside the historical SPY material. The historical SPY
 neural comparison awaits a separately checked 2.1 update. Slot 6 is still in preparation.
 
-Start by reviewing the cached example, its diagnostics and its financial interpretation. No cluster connection
+Review Heston, rough options and trajectories in that order. Start with each model and its observed data,
+then its visible simulator/training recipe, posterior and checks. The inference examples are approximate;
+calibration failures and reference limitations remain explicit. No cluster connection
 or full bank is needed. For fresh samples, obtain the models archive from the
 [training-data guide](../lab/plans/training-data-guide.md) and extract it under
 `assets/local-checkpoints/`. Enter the matching native checkpoint directory in the review notebook
@@ -166,14 +180,16 @@ scientific claim; retain the original reference methods, chain/draw axes, task a
 | `src/sbi4f_tutorial/` | The code the notebooks run, copied unchanged from the project's lab: Black–Scholes and implied volatility (`surface.py`), the Heston Fourier pricer (`hkde.py`), rough Bergomi by Monte Carlo (`rough_bergomi.py`, `bergomi.py`, `pricing.py`), the current network's adapter and native sampler (`full_surface.py`), and the notebooks' loaders and figures (`teaching.py`) |
 | `assets/` | The trained networks, the accepted study results, quick-check outputs, task files, data and figures that the notebooks load |
 | `MANIFEST.md` | Every shipped asset, with its size, SHA-256 and origin; excludes downloaded `local-checkpoints/` |
-| `CLAIMS.md` | Every number said on stage, with the study that produced it and its status |
+| `CLAIMS.md` | Historical calibration-study claims, source outputs and actual verification status |
 | `tests/` | `pixi run test` checks the files and the code; `pixi run test-notebooks` runs every notebook headless (a few minutes) |
 
 ## Where the numbers come from
 
-Stage claims come from the accepted studies in `CLAIMS.md`. The current development replays are
-labelled separately and do not promote their models to accepted status. A pilot value is labelled as one and
-never quoted as a result. The simulations, training runs and studies behind them, and a sixteen-lecture course with
+Historical calibration-study claims and their outcomes are recorded in `CLAIMS.md`.
+Current option replays and trajectory diagnostics identify their own tasks, checkpoints and source reports.
+Pilot values and failed screens can be inspected with their explicit labels; only the stated verification
+supports a scientific claim, and a working replay does not promote its model to accepted status.
+The simulations, training runs and studies behind them, and a sixteen-lecture course with
 the full theory, are in the project repository, [fmuia/sbi4finance](https://github.com/fmuia/sbi4finance): the
 course in `course/`, the code that produced every asset in `lab/`.
 

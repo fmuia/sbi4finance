@@ -1,0 +1,462 @@
+{
+  "format": "trajectory_development_diagnosis_summary_v1",
+  "created_utc": "2026-11-01T04:17:13.542229+00:00",
+  "full_report": {
+    "file": "development-diagnosis.json",
+    "sha256": "8d6941b2814ccb95efd8e87b3abeec3f088d6041395d6903fe705869813e2dd1",
+    "bytes": 643111,
+    "artifact_directory": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/application-refinement-20261101"
+  },
+  "analysis_script": {
+    "file": "diagnose_development.py",
+    "sha256": "d7cb3eae41ba0f89dcce2009daf22055ad87507e0caf2ee10ee1cfdcc0a095ce",
+    "bytes": 20996
+  },
+  "input_files": {
+    "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/path-workshop-closeout-20261031/completed/run/fits/heston/100k/task.json": {
+      "sha256": "79d0e5f8f15b9e91c28e15fd36ef54dd4f107f1d8acd9381ffeeea5e9cbb62ce",
+      "bytes": 973
+    },
+    "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/path-workshop-closeout-20261031/completed/run/fits/heston/100k/training.json": {
+      "sha256": "73a3931642cbd78fa3946fc9befb52efe19114718ff7a78ffce577748cf361a6",
+      "bytes": 175703
+    },
+    "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/path-workshop-closeout-20261031/completed/run/evaluation/heston/100k/evaluation.json": {
+      "sha256": "c6b11a9b441da9a56399c4a8cac88d68603c6556200f72652a9b7c97cbdea23f",
+      "bytes": 42948
+    },
+    "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/path-workshop-closeout-20261031/completed/run/evaluation/heston/100k/case-summary.npz": {
+      "sha256": "680137abc8944e7260ca87549ee3503faf93fe1e11e34837e7ae939cf882892e",
+      "bytes": 1919835
+    },
+    "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/path-workshop-closeout-20261031/completed/run/banks/heston/manifest.json": {
+      "sha256": "bcddef79dddd753df6a07035124c7e0043e309dd84a8e693fb489555f76477a9",
+      "bytes": 1703330
+    },
+    "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/path-workshop-closeout-20261031/completed/run/fits/heston/1m/task.json": {
+      "sha256": "79d0e5f8f15b9e91c28e15fd36ef54dd4f107f1d8acd9381ffeeea5e9cbb62ce",
+      "bytes": 973
+    },
+    "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/path-workshop-closeout-20261031/completed/run/fits/heston/1m/training.json": {
+      "sha256": "eff064e64eeb24e36ba53c41c031062396d8c3ac504a6205f2c953cff384b481",
+      "bytes": 1572632
+    },
+    "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/path-workshop-closeout-20261031/completed/run/evaluation/heston/1m/evaluation.json": {
+      "sha256": "4d2ca547543367ded90a920d67088a9140fc2c55a301eda045968a558db6ccfd",
+      "bytes": 42969
+    },
+    "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/path-workshop-closeout-20261031/completed/run/evaluation/heston/1m/case-summary.npz": {
+      "sha256": "48d492e0d80c4479596c933a82234804e5c117681d3d457d85a00ca4a58aacd8",
+      "bytes": 1919854
+    },
+    "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/path-workshop-closeout-20261031/completed/run/fits/rough-known/100k/task.json": {
+      "sha256": "f38737f8b3e87f0450d0531245a885c5d6d3872ea716930ef5b1720be2864601",
+      "bytes": 1029
+    },
+    "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/path-workshop-closeout-20261031/completed/run/fits/rough-known/100k/training.json": {
+      "sha256": "c7f97b5abe97755c8a1e679b2843ce769494e44bf6a87340146d3469230c946b",
+      "bytes": 175721
+    },
+    "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/path-workshop-closeout-20261031/completed/run/evaluation/rough-known/100k/evaluation.json": {
+      "sha256": "d8fdd5cacb39228879398a1f46251c3069cb0286a3b7366b5fbec1b0f8a3884e",
+      "bytes": 55867
+    },
+    "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/path-workshop-closeout-20261031/completed/run/evaluation/rough-known/100k/case-summary.npz": {
+      "sha256": "90c7646aad622cca82c42f28c9df7caffc128bc421b7fb79e05a657ccce53dd9",
+      "bytes": 1539549
+    },
+    "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/path-workshop-closeout-20261031/completed/run/banks/rough-known/manifest.json": {
+      "sha256": "0de676d0da84a1fd9a1984f54fbc9d8205edeae276fa3c6a783a2679044272ea",
+      "bytes": 1703381
+    },
+    "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/path-workshop-closeout-20261031/completed/run/fits/rough-known/1m/task.json": {
+      "sha256": "f38737f8b3e87f0450d0531245a885c5d6d3872ea716930ef5b1720be2864601",
+      "bytes": 1029
+    },
+    "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/path-workshop-closeout-20261031/completed/run/fits/rough-known/1m/training.json": {
+      "sha256": "602930a448433dd7c5297e42cfcf13a7558bfea7092e8bff9563ede4ce1495e1",
+      "bytes": 1572629
+    },
+    "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/path-workshop-closeout-20261031/completed/run/evaluation/rough-known/1m/evaluation.json": {
+      "sha256": "e65001d7fd0604ccb1e838879d26bb5918f4e40e1e22ac87d17d5423ecbfddf7",
+      "bytes": 55915
+    },
+    "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/path-workshop-closeout-20261031/completed/run/evaluation/rough-known/1m/case-summary.npz": {
+      "sha256": "b1a51480a97602c8f0461e754c11701e613f7d7469e0205ce0ebfc34c386ef56",
+      "bytes": 1539117
+    },
+    "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/path-workshop-closeout-20261031/completed/run/fits/rough-joint/100k/task.json": {
+      "sha256": "717b64b512d2ceb1055acdfe1f5ced2aeccef06ad2964c2a2b2f0b90daa3f680",
+      "bytes": 1219
+    },
+    "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/path-workshop-closeout-20261031/completed/run/fits/rough-joint/100k/training.json": {
+      "sha256": "b4c9146cfb43e12381b9ee174d736971e902feb606ec1ab741e64180b51ba5f1",
+      "bytes": 175699
+    },
+    "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/path-workshop-closeout-20261031/completed/run/evaluation/rough-joint/100k/evaluation.json": {
+      "sha256": "32063390628356c10f8bf89d9ffd934364a00756c1d1f71ec1f9774b61dc1cf9",
+      "bytes": 73187
+    },
+    "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/path-workshop-closeout-20261031/completed/run/evaluation/rough-joint/100k/case-summary.npz": {
+      "sha256": "d9447c330b22484f20984d43741d14a2cb9f553d2de5f345f8cb993e823b3f46",
+      "bytes": 2695270
+    },
+    "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/path-workshop-closeout-20261031/completed/run/banks/rough-joint/manifest.json": {
+      "sha256": "1e48dc63aa700dd98039d84d815f4b1a607e9fbdeacaa5c999b1c35299228fce",
+      "bytes": 1703602
+    },
+    "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/path-workshop-closeout-20261031/completed/run/fits/rough-joint/1m/task.json": {
+      "sha256": "717b64b512d2ceb1055acdfe1f5ced2aeccef06ad2964c2a2b2f0b90daa3f680",
+      "bytes": 1219
+    },
+    "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/path-workshop-closeout-20261031/completed/run/fits/rough-joint/1m/training.json": {
+      "sha256": "a8e8d26fda40bc54fccfde0ead59981991d93a0706a7ea61f75fc12c9bb81ec9",
+      "bytes": 1572624
+    },
+    "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/path-workshop-closeout-20261031/completed/run/evaluation/rough-joint/1m/evaluation.json": {
+      "sha256": "3f6ea3dc8f9683ca791442093fdee4ea673cb030affc67b3862727bf4f582112",
+      "bytes": 73203
+    },
+    "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/path-workshop-closeout-20261031/completed/run/evaluation/rough-joint/1m/case-summary.npz": {
+      "sha256": "f057d6d72b81926a50dcf23e6405ca015340d59d86788ccd1a6c4d449b8c71de",
+      "bytes": 2695974
+    }
+  },
+  "scope": "Only already-inspected original validation IDs0:1024; primary256:1024(n768), excluding first256training-monitoring histories. No confirmation or consumed final-test artifact was read or used for candidate choice.",
+  "primary_cohort": {
+    "split": "validation",
+    "offset": 256,
+    "cases": 768,
+    "already_inspected": true
+  },
+  "secondary_cohort": {
+    "split": "validation",
+    "offset": 0,
+    "cases": 1024,
+    "already_inspected": true
+  },
+  "row_counts": {
+    "model_length_parameter_comparisons": 192,
+    "truth_boundary_strata": 144,
+    "curve_orientation_strata": 63
+  },
+  "scientific_acceptance": false,
+  "new_generation_or_inference": false,
+  "production_fit_justified": false,
+  "models": {
+    "heston": {
+      "task_sha256": "dd233e297f3ff974985383cf23dbb76865d4db92b7e348d675ac3065637ea7c3",
+      "parameters": [
+        "kappa",
+        "long_variance",
+        "vol_of_vol",
+        "rho",
+        "drift"
+      ],
+      "aggregate_reproduction_check": {
+        "100k": {
+          "maximum_coverage_error": 0.0,
+          "maximum_physical_mse_error": 0.0
+        },
+        "1m": {
+          "maximum_coverage_error": 0.0,
+          "maximum_physical_mse_error": 0.0
+        }
+      },
+      "training": {
+        "100k": {
+          "model_sha256": "cacec73458b8bb16356d2329c2c779655670f4f9823f27d021689dcabb0088f5",
+          "epochs_completed": 50,
+          "training_trajectories": 100000,
+          "completed_training_views": 5000000,
+          "optimizer_steps": 39100,
+          "learning_rate": 0.0005,
+          "seed": 20261031301,
+          "validation_cases_per_length": 256,
+          "prefix_policy": "uniform_log_mixture",
+          "checkpoint_selection": "final",
+          "last_two_validation_losses": [
+            5.562893867492676,
+            5.579329967498779
+          ]
+        },
+        "1m": {
+          "model_sha256": "ae8229c76ede0783deb264309747c2ac28c5b0cee8191e7ffa0ecf913636a9b7",
+          "epochs_completed": 5,
+          "training_trajectories": 1000000,
+          "completed_training_views": 5000000,
+          "optimizer_steps": 39065,
+          "learning_rate": 0.0005,
+          "seed": 20261031301,
+          "validation_cases_per_length": 256,
+          "prefix_policy": "uniform_log_mixture",
+          "checkpoint_selection": "final",
+          "last_two_validation_losses": [
+            5.593784809112549,
+            5.507725715637207
+          ]
+        }
+      }
+    },
+    "rough-known": {
+      "task_sha256": "eb195dd594de03a95630a4c46bd35e9355e235982d0eb30ae597491e14df6446",
+      "parameters": [
+        "hurst",
+        "eta",
+        "rho",
+        "drift"
+      ],
+      "aggregate_reproduction_check": {
+        "100k": {
+          "maximum_coverage_error": 0.0,
+          "maximum_physical_mse_error": 0.0
+        },
+        "1m": {
+          "maximum_coverage_error": 0.0,
+          "maximum_physical_mse_error": 0.0
+        }
+      },
+      "training": {
+        "100k": {
+          "model_sha256": "0c0dc09d9ac10c624323bd95686a1dcc80a02b792ae7b0e3d8fb40e8d1c5fb65",
+          "epochs_completed": 50,
+          "training_trajectories": 100000,
+          "completed_training_views": 5000000,
+          "optimizer_steps": 39100,
+          "learning_rate": 0.0005,
+          "seed": 20261031302,
+          "validation_cases_per_length": 256,
+          "prefix_policy": "uniform_log_mixture",
+          "checkpoint_selection": "final",
+          "last_two_validation_losses": [
+            4.351528644561768,
+            4.367936611175537
+          ]
+        },
+        "1m": {
+          "model_sha256": "b9b800ef987b7fddce62919d84f6420d751a7c390f8a2f476f49a2ca37be1e9c",
+          "epochs_completed": 5,
+          "training_trajectories": 1000000,
+          "completed_training_views": 5000000,
+          "optimizer_steps": 39065,
+          "learning_rate": 0.0005,
+          "seed": 20261031302,
+          "validation_cases_per_length": 256,
+          "prefix_policy": "uniform_log_mixture",
+          "checkpoint_selection": "final",
+          "last_two_validation_losses": [
+            4.367072105407715,
+            4.36983585357666
+          ]
+        }
+      }
+    },
+    "rough-joint": {
+      "task_sha256": "277c7219e49edb130049f78f91bcf176a22c06fad31f4404556fa27df263a7ca",
+      "parameters": [
+        "hurst",
+        "eta",
+        "rho",
+        "short_variance",
+        "long_variance",
+        "decay",
+        "drift"
+      ],
+      "aggregate_reproduction_check": {
+        "100k": {
+          "maximum_coverage_error": 0.0,
+          "maximum_physical_mse_error": 0.0
+        },
+        "1m": {
+          "maximum_coverage_error": 0.0,
+          "maximum_physical_mse_error": 0.0
+        }
+      },
+      "training": {
+        "100k": {
+          "model_sha256": "3dfa1b857ef0111671f8d1acabb57ea0c0308b8830eac0765d7a3e7430055b1d",
+          "epochs_completed": 50,
+          "training_trajectories": 100000,
+          "completed_training_views": 5000000,
+          "optimizer_steps": 39100,
+          "learning_rate": 0.0005,
+          "seed": 20261031303,
+          "validation_cases_per_length": 256,
+          "prefix_policy": "uniform_log_mixture",
+          "checkpoint_selection": "final",
+          "last_two_validation_losses": [
+            8.066717147827148,
+            8.028468132019043
+          ]
+        },
+        "1m": {
+          "model_sha256": "9fea2e446b6264d46ee92a924a930faa9ad5473b88d909ab4844b1b37f726003",
+          "epochs_completed": 5,
+          "training_trajectories": 1000000,
+          "completed_training_views": 5000000,
+          "optimizer_steps": 39065,
+          "learning_rate": 0.0005,
+          "seed": 20261031303,
+          "validation_cases_per_length": 256,
+          "prefix_policy": "uniform_log_mixture",
+          "checkpoint_selection": "final",
+          "last_two_validation_losses": [
+            8.050973892211914,
+            7.99959659576416
+          ]
+        }
+      }
+    }
+  },
+  "bounded_conclusions": {
+    "rough-known": {
+      "observed_phenotype": "Negative aggregate eta posterior-mean bias at longer histories; modest long-history drift overdispersion is a separate, weaker pattern. Neither identifies an encoder or density-family cause.",
+      "eta252": {
+        "n": 768,
+        "bias_in_prior_sd": -0.0798765365,
+        "bias_iid_se_in_prior_sd": 0.0158163359,
+        "mse_over_prior_variance": 0.198250282,
+        "mse_to_analytic_prior_mean_risk": 0.20237245,
+        "root_mean_posterior_variance_over_prior_sd": 0.455757305,
+        "mean_posterior_sd_over_prior_sd": 0.446026862,
+        "pooled_neural_mean_mcse_in_prior_sd": 0.000726805237,
+        "coverage90": 0.90234375,
+        "analytic_prior90_coverage_in_same_stratum": 0.919270833,
+        "truth_below_lower90_fraction": 0.0390625,
+        "truth_above_upper90_fraction": 0.05859375,
+        "mean_interval90_width_over_prior90_width": 0.458988696,
+        "mse_over_variance_expected_under_exact_posterior": 0.952574897,
+        "prior_normalized_risk_minus_reported_spread": -0.00987013198,
+        "risk_minus_spread_iid_se": 0.0114249478
+      },
+      "eta1260": {
+        "n": 768,
+        "bias_in_prior_sd": -0.0750156707,
+        "bias_iid_se_in_prior_sd": 0.00908787119,
+        "mse_over_prior_variance": 0.0689734228,
+        "mse_to_analytic_prior_mean_risk": 0.0704075698,
+        "root_mean_posterior_variance_over_prior_sd": 0.263020854,
+        "mean_posterior_sd_over_prior_sd": 0.252630438,
+        "pooled_neural_mean_mcse_in_prior_sd": 0.000419444586,
+        "coverage90": 0.915364583,
+        "analytic_prior90_coverage_in_same_stratum": 0.919270833,
+        "truth_below_lower90_fraction": 0.015625,
+        "truth_above_upper90_fraction": 0.0690104167,
+        "mean_interval90_width_over_prior90_width": 0.261052184,
+        "mse_over_variance_expected_under_exact_posterior": 0.995070856,
+        "prior_normalized_risk_minus_reported_spread": -0.000341664018,
+        "risk_minus_spread_iid_se": 0.00486685562
+      },
+      "drift1260": {
+        "n": 768,
+        "bias_in_prior_sd": 0.0315687026,
+        "bias_iid_se_in_prior_sd": 0.0168610538,
+        "mse_over_prior_variance": 0.219050951,
+        "mse_to_analytic_prior_mean_risk": 0.224099312,
+        "root_mean_posterior_variance_over_prior_sd": 0.499602171,
+        "mean_posterior_sd_over_prior_sd": 0.432410634,
+        "pooled_neural_mean_mcse_in_prior_sd": 0.000796725517,
+        "coverage90": 0.930989583,
+        "analytic_prior90_coverage_in_same_stratum": 0.91015625,
+        "truth_below_lower90_fraction": 0.0325520833,
+        "truth_above_upper90_fraction": 0.0364583333,
+        "mean_interval90_width_over_prior90_width": 0.443189357,
+        "mse_over_variance_expected_under_exact_posterior": 0.875889067,
+        "prior_normalized_risk_minus_reported_spread": -0.0310388828,
+        "risk_minus_spread_iid_se": 0.0133472446
+      },
+      "causal_fit_mechanism_established": false,
+      "production_fit_justified": false,
+      "next_specific_diagnostic": "Join the existing768validation observations to these hash-bound saved means at252/1260days; stratify signed eta error by prespecified observed-history summaries (realized variance and lag1squared-return autocorrelation). This conditions on observed information, unlike truth-decile bins. Read original bank rows; do not generate histories or update weights. Then test task-matched reference feasibility before choosing a correction.",
+      "avoid": "Do not infer structural non-identifiability, prescribe a global temperature/mean shift, or expand the bank solely from these marginal diagnostics."
+    },
+    "rough-joint": {
+      "observed_phenotype": "Curve-level recovery remains partial; marginal level-interval misses and mild bias vary with curve orientation. Opposite truth-stratum shrinkage signs can occur under correct Bayes and do not establish a copula error. Decay remains nearly prior-limited, especially near flat curves.",
+      "short_variance1260": {
+        "n": 768,
+        "bias_in_prior_sd": -0.0453868292,
+        "bias_iid_se_in_prior_sd": 0.0243512336,
+        "mse_over_prior_variance": 0.4568776,
+        "mse_to_analytic_prior_mean_risk": 0.436552437,
+        "root_mean_posterior_variance_over_prior_sd": 0.642936135,
+        "mean_posterior_sd_over_prior_sd": 0.604617119,
+        "pooled_neural_mean_mcse_in_prior_sd": 0.00102530304,
+        "coverage90": 0.880208333,
+        "analytic_prior90_coverage_in_same_stratum": 0.889322917,
+        "truth_below_lower90_fraction": 0.0677083333,
+        "truth_above_upper90_fraction": 0.0520833333,
+        "mean_interval90_width_over_prior90_width": 0.613893159,
+        "mse_over_variance_expected_under_exact_posterior": 1.10310485,
+        "prior_normalized_risk_minus_reported_spread": 0.0427033699,
+        "risk_minus_spread_iid_se": 0.0266582572
+      },
+      "long_variance1260": {
+        "n": 768,
+        "bias_in_prior_sd": -0.00448533687,
+        "bias_iid_se_in_prior_sd": 0.0307157956,
+        "mse_over_prior_variance": 0.723654012,
+        "mse_to_analytic_prior_mean_risk": 0.713669204,
+        "root_mean_posterior_variance_over_prior_sd": 0.845050169,
+        "mean_posterior_sd_over_prior_sd": 0.822931455,
+        "pooled_neural_mean_mcse_in_prior_sd": 0.00134761831,
+        "coverage90": 0.884114583,
+        "analytic_prior90_coverage_in_same_stratum": 0.8828125,
+        "truth_below_lower90_fraction": 0.0638020833,
+        "truth_above_upper90_fraction": 0.0520833333,
+        "mean_interval90_width_over_prior90_width": 0.832267579,
+        "mse_over_variance_expected_under_exact_posterior": 1.01138984,
+        "prior_normalized_risk_minus_reported_spread": 0.00814947931,
+        "risk_minus_spread_iid_se": 0.0376580968
+      },
+      "decay1260": {
+        "n": 768,
+        "bias_in_prior_sd": 0.0443617521,
+        "bias_iid_se_in_prior_sd": 0.0362834037,
+        "mse_over_prior_variance": 1.01171226,
+        "mse_to_analytic_prior_mean_risk": 0.963399033,
+        "root_mean_posterior_variance_over_prior_sd": 1.03365091,
+        "mean_posterior_sd_over_prior_sd": 1.02951185,
+        "pooled_neural_mean_mcse_in_prior_sd": 0.00164838366,
+        "coverage90": 0.903645833,
+        "analytic_prior90_coverage_in_same_stratum": 0.89453125,
+        "truth_below_lower90_fraction": 0.0455729167,
+        "truth_above_upper90_fraction": 0.05078125,
+        "mean_interval90_width_over_prior90_width": 1.01375477,
+        "mse_over_variance_expected_under_exact_posterior": 0.945065315,
+        "prior_normalized_risk_minus_reported_spread": -0.0588087337,
+        "risk_minus_spread_iid_se": 0.0525140298
+      },
+      "causal_fit_mechanism_established": false,
+      "production_fit_justified": false,
+      "next_specific_diagnostic": "Establish an independently stabilized conditional-reference feasibility check on prespecified existing short/medium-history development cases, retaining level/decay dependence and the exact daily4hybrid target. Prior-importance replication is not sufficient where its weights degenerate. Before a new fit, compare candidate means/intervals and actual paired curve-function draws with that reference; marginal summary arrays cannot supply the missing joint covariance.",
+      "avoid": "Do not call weak decay a neural failure, pool rising/falling truth groups into a claimed posterior ridge, or choose an architecture from tail-miss counts alone."
+    },
+    "heston": {
+      "observed_phenotype": "The recorded atom-bearing numerical-target limitation is not repaired here. This artifact estimates no atom frequency or new reference accuracy.",
+      "production_fit_justified": false,
+      "next_specific_diagnostic": "Complete the separately specified numerical-law comparison before any new Heston task or fit."
+    }
+  },
+  "interpretation": {
+    "not_an_acceptance_test": "Already-inspected development cases; descriptive estimates only. Prefixes reuse histories. No new formal significance, model-selection or posterior-accuracy verdict.",
+    "prior_baseline": "Physical saved posterior-mean squared error / same-cohort error of analytic prior mean. This differs slightly from evaluator ratios using a simulated100kprior mean; no priors or paths were regenerated.",
+    "risk_spread_balance": "On the unstratified prior-predictive cohort only: MSE / mean(saved variance times513/511) should approach1for an exact posterior with512iid draws. Paired per-case difference and descriptive iidSE are also supplied. This identity does not certify conditional calibration.",
+    "boundary_strata": "Prior-CDF boundary deciles and joint curve orientation at21/252/1260days are posthoc descriptive groups. Exact Bayesian credible intervals need not have nominal coverage conditional on a true-parameter stratum; do not treat these rows as calibration tests.",
+    "curve_orientation": "At1260days the disjoint truth groups contain114near-flat,316rising and338falling histories. Truth-conditioned biases and coverage can differ under correctBayes; these are not posterior-copula diagnostics.",
+    "finite_draws": "Saved marginal variances use ddof0with512neural draws. Spread corrected by512/511; exact-posterior aggregateMSE expectation includes MonteCarlo mean noise, giving savedVariance\u00d7513/511."
+  },
+  "limitations": [
+    "One initialization seed per model/budget; bank size and data reuse count change together at matched5million views, so their causal effects are not isolated.",
+    "The32saved teaching panels are not substituted for full-cohort posterior draws or treated as a reference study.",
+    "Training loss reduction does not prove posterior calibration, and truth-stratified failures alone do not diagnose an amortization error.",
+    "Heston has the already-recorded atom-bearing numerical target and continuous-density mismatch; this diagnostic does not repair or reclassify it.",
+    "The analyst has seen final characterization in earlier tasks; this computation and its candidate-diagnostic recommendations use only the bound development inputs. Consumed tests do not become independent again."
+  ],
+  "unavailable_from_full_case_summaries": [
+    "individual posterior draw ranks/ECDF arrays",
+    "joint posterior covariance/copula",
+    "within-case reference errors",
+    "all1024observed histories or latent trajectories",
+    "alternative-seed fit replication"
+  ]
+}

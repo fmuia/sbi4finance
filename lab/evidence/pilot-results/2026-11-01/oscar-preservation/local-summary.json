@@ -1,0 +1,346 @@
+{
+  "schema": "sbi4finance_local_oscar_preservation_v1",
+  "checked_utc": "2026-11-01T09:14:31.022863+00:00",
+  "local_preservation_complete": true,
+  "cloud_mirror_complete": false,
+  "scope": {
+    "original_project_run_roots": 41,
+    "json_receipts_audited": 1650,
+    "unique_results_only_on_oscar_identified": 0,
+    "remote_originals_retained": true,
+    "scientific_acceptance": false
+  },
+  "trajectory_banks": {
+    "native_shards": 23631,
+    "native_bytes": 31124149548,
+    "compressed_bytes": 29171828752,
+    "archive_parts": 30,
+    "banks": [
+      {
+        "model": "heston",
+        "source_bank": "/oscar/scratch/afengler/sbi4finance-path-scaleup-20261031-v1/run/banks/heston",
+        "manifest_sha256": "bcddef79dddd753df6a07035124c7e0043e309dd84a8e693fb489555f76477a9",
+        "task_sha256": "dd233e297f3ff974985383cf23dbb76865d4db92b7e348d675ac3065637ea7c3",
+        "split_counts": {
+          "test": 4000,
+          "train": 1000000,
+          "validation": 4000
+        },
+        "daily_observations": 1260,
+        "native_payload_bytes": 10372028516,
+        "archive_bytes": 9643832260,
+        "parts": [
+          {
+            "name": "path-bank-heston-1000000-native.tar.zst.part0000",
+            "bytes": 1000000000,
+            "sha256": "eee3d57f83f16de30db8e02b4070e50c63b2f295084a1e036a4974769268245f"
+          },
+          {
+            "name": "path-bank-heston-1000000-native.tar.zst.part0001",
+            "bytes": 1000000000,
+            "sha256": "a4f3aee78717653f1a6cc1c0476f3df40da33e181ef36ea6bd2cd576c4ad7619"
+          },
+          {
+            "name": "path-bank-heston-1000000-native.tar.zst.part0002",
+            "bytes": 1000000000,
+            "sha256": "fed3c39484cae99e1684aa5a7615f61778cf6ac1c8064a9aa1d5674a781d2775"
+          },
+          {
+            "name": "path-bank-heston-1000000-native.tar.zst.part0003",
+            "bytes": 1000000000,
+            "sha256": "1a9519b61d57aab981d5be56be811e9913b69c43bdb5e7b00000fa6c9561f91c"
+          },
+          {
+            "name": "path-bank-heston-1000000-native.tar.zst.part0004",
+            "bytes": 1000000000,
+            "sha256": "8a9e32a83f39d26acaa08a23dd26cfed719f736d084431797234890c6f6975d9"
+          },
+          {
+            "name": "path-bank-heston-1000000-native.tar.zst.part0005",
+            "bytes": 1000000000,
+            "sha256": "633637b0e0527bc3cce0b5eec1ec3d6033fb4b13c1aa57929a52975e9b065140"
+          },
+          {
+            "name": "path-bank-heston-1000000-native.tar.zst.part0006",
+            "bytes": 1000000000,
+            "sha256": "3cf816594061dbd10e7a32a0b2e723ef0442e479391004a9f402ca7aa88ede42"
+          },
+          {
+            "name": "path-bank-heston-1000000-native.tar.zst.part0007",
+            "bytes": 1000000000,
+            "sha256": "983d5a0ddd9b6dc2faac26e4cd3c8671420778219401e1261eb35096f620a569"
+          },
+          {
+            "name": "path-bank-heston-1000000-native.tar.zst.part0008",
+            "bytes": 1000000000,
+            "sha256": "4558f8de5eba128a37754acd6923a4eaf1a7ffc4ea7e34a1aef81de74c7a0fdb"
+          },
+          {
+            "name": "path-bank-heston-1000000-native.tar.zst.part0009",
+            "bytes": 643832260,
+            "sha256": "322387046055b919ab72d1a295fe500ce41ecda4a41ae825a0d18f2622c38d99"
+          }
+        ],
+        "native_verification": {
+          "passed": true,
+          "task_sha256": "dd233e297f3ff974985383cf23dbb76865d4db92b7e348d675ac3065637ea7c3",
+          "counts": {
+            "train": 1000000,
+            "validation": 4000,
+            "test": 4000
+          },
+          "checked_shards": 7877,
+          "largest_decoded_shard_bytes": 1317888,
+          "scope": "byte/array/identity integrity; not scientific acceptance"
+        },
+        "verification_receipt": {
+          "path": "local-artifacts/oscar-closeout-20261101/heston-native-bank-verification.json",
+          "bytes": 327,
+          "sha256": "43242458cdbc8c49e04a09e7029ee262bf33ac15a2ee8a5a6748a666a512ed35"
+        }
+      },
+      {
+        "model": "rough-known",
+        "source_bank": "/oscar/scratch/afengler/sbi4finance-path-scaleup-20261031-v1/run/banks/rough-known",
+        "manifest_sha256": "0de676d0da84a1fd9a1984f54fbc9d8205edeae276fa3c6a783a2679044272ea",
+        "task_sha256": "eb195dd594de03a95630a4c46bd35e9355e235982d0eb30ae597491e14df6446",
+        "split_counts": {
+          "test": 4000,
+          "train": 1000000,
+          "validation": 4000
+        },
+        "daily_observations": 1260,
+        "native_payload_bytes": 10363964516,
+        "archive_bytes": 9752018975,
+        "parts": [
+          {
+            "name": "path-bank-rough-known-1000000-native.tar.zst.part0000",
+            "bytes": 1000000000,
+            "sha256": "c9ad3c6ebbb73e146bc5c7e2a9bf751af2b5c63ad7c16b712e5abeaaba7e4917"
+          },
+          {
+            "name": "path-bank-rough-known-1000000-native.tar.zst.part0001",
+            "bytes": 1000000000,
+            "sha256": "b197a1f5a727e0f883b7a1f166fcccdd858484b98b4830f8f6c3bcc17c3fa1e3"
+          },
+          {
+            "name": "path-bank-rough-known-1000000-native.tar.zst.part0002",
+            "bytes": 1000000000,
+            "sha256": "704e18a8b7b13abc3637787ddf55314440a1a6915364d9cdb4f1ab1cae6afcae"
+          },
+          {
+            "name": "path-bank-rough-known-1000000-native.tar.zst.part0003",
+            "bytes": 1000000000,
+            "sha256": "0132d91396dff99741a63dcd26b429f590baea735f198b61d2b4bb5712fa33bd"
+          },
+          {
+            "name": "path-bank-rough-known-1000000-native.tar.zst.part0004",
+            "bytes": 1000000000,
+            "sha256": "da89dc0d5d97187337ed672e0a0488fd90b3cd8fd6a673f59a470d1222507bc2"
+          },
+          {
+            "name": "path-bank-rough-known-1000000-native.tar.zst.part0005",
+            "bytes": 1000000000,
+            "sha256": "08fa19f1581b1271cb6f5487e006df0fa6c9eb693ce3a9fb3526488f18099472"
+          },
+          {
+            "name": "path-bank-rough-known-1000000-native.tar.zst.part0006",
+            "bytes": 1000000000,
+            "sha256": "adccbd6d7f5afb8e850a7f18bdeb1d4e8142eb2d93cd849607b57cccf6fba78e"
+          },
+          {
+            "name": "path-bank-rough-known-1000000-native.tar.zst.part0007",
+            "bytes": 1000000000,
+            "sha256": "97c5c30baf6a991173e42402f26b839ad5c6a80e7cb92d2b341853bf7c0bcdf2"
+          },
+          {
+            "name": "path-bank-rough-known-1000000-native.tar.zst.part0008",
+            "bytes": 1000000000,
+            "sha256": "ff6f8a5d6579ff6ea3d6b02eb6292ad308b9bc1396ba80ff89c1f5ff7d3fca04"
+          },
+          {
+            "name": "path-bank-rough-known-1000000-native.tar.zst.part0009",
+            "bytes": 752018975,
+            "sha256": "6e558d5bb996ce46f6e80c6cdcab31c81b959d40ea710987003b605c52a778e4"
+          }
+        ],
+        "native_verification": {
+          "passed": true,
+          "task_sha256": "eb195dd594de03a95630a4c46bd35e9355e235982d0eb30ae597491e14df6446",
+          "counts": {
+            "train": 1000000,
+            "validation": 4000,
+            "test": 4000
+          },
+          "checked_shards": 7877,
+          "largest_decoded_shard_bytes": 1316864,
+          "scope": "byte/array/identity integrity; not scientific acceptance"
+        },
+        "verification_receipt": {
+          "path": "local-artifacts/oscar-closeout-20261101/rough-known-native-bank-verification.json",
+          "bytes": 327,
+          "sha256": "8fcc60e00d914f8347a27bbc80614c5e79410dda93412927385b68fbd4c22fab"
+        }
+      },
+      {
+        "model": "rough-joint",
+        "source_bank": "/oscar/scratch/afengler/sbi4finance-path-scaleup-20261031-v1/run/banks/rough-joint",
+        "manifest_sha256": "1e48dc63aa700dd98039d84d815f4b1a607e9fbdeacaa5c999b1c35299228fce",
+        "task_sha256": "277c7219e49edb130049f78f91bcf176a22c06fad31f4404556fa27df263a7ca",
+        "split_counts": {
+          "test": 4000,
+          "train": 1000000,
+          "validation": 4000
+        },
+        "daily_observations": 1260,
+        "native_payload_bytes": 10388156516,
+        "archive_bytes": 9775977517,
+        "parts": [
+          {
+            "name": "path-bank-rough-joint-1000000-native.tar.zst.part0000",
+            "bytes": 1000000000,
+            "sha256": "f7d4fb2d157f865f789131ab0e72724b38271b515b4684b16b0635c26225f374"
+          },
+          {
+            "name": "path-bank-rough-joint-1000000-native.tar.zst.part0001",
+            "bytes": 1000000000,
+            "sha256": "a792186375c482a393e8faf4f694f39c7825f12c1d7ec3cdf25d9c470137d7de"
+          },
+          {
+            "name": "path-bank-rough-joint-1000000-native.tar.zst.part0002",
+            "bytes": 1000000000,
+            "sha256": "20df125d8a0c310ca0875544d22f6beeffd768fd988cdef2c890f3fd83e7d76a"
+          },
+          {
+            "name": "path-bank-rough-joint-1000000-native.tar.zst.part0003",
+            "bytes": 1000000000,
+            "sha256": "0e46f2d4e690e997e4905cc442eeb2c7e1ae98e2e28c223144af98ab7fd96bee"
+          },
+          {
+            "name": "path-bank-rough-joint-1000000-native.tar.zst.part0004",
+            "bytes": 1000000000,
+            "sha256": "a031f0c9d00f85edbf5bdfbf0ce259ffbce5cc9c42fb51466e92934fd2cff83c"
+          },
+          {
+            "name": "path-bank-rough-joint-1000000-native.tar.zst.part0005",
+            "bytes": 1000000000,
+            "sha256": "830c00ab760347c020836d97fc310a75fd5504645af634dcde924e88309b8807"
+          },
+          {
+            "name": "path-bank-rough-joint-1000000-native.tar.zst.part0006",
+            "bytes": 1000000000,
+            "sha256": "f63b5da491f322fa5ea9ffb208f5ad7d2aea77312d8758bf98dfc89bb4d07d6b"
+          },
+          {
+            "name": "path-bank-rough-joint-1000000-native.tar.zst.part0007",
+            "bytes": 1000000000,
+            "sha256": "2d78522634421819b26032245dcf7ba346aa0a3bae740ba7ce41fcfc7bdd0102"
+          },
+          {
+            "name": "path-bank-rough-joint-1000000-native.tar.zst.part0008",
+            "bytes": 1000000000,
+            "sha256": "a773bedea0bc370f0566cb3d78826063d9765b60d94a77ec739ff59544a16e35"
+          },
+          {
+            "name": "path-bank-rough-joint-1000000-native.tar.zst.part0009",
+            "bytes": 775977517,
+            "sha256": "119357f8cb875f320e3165617353de77e66ba9a66d2ee6ceefa8844f41f59177"
+          }
+        ],
+        "native_verification": {
+          "passed": true,
+          "task_sha256": "277c7219e49edb130049f78f91bcf176a22c06fad31f4404556fa27df263a7ca",
+          "counts": {
+            "train": 1000000,
+            "validation": 4000,
+            "test": 4000
+          },
+          "checked_shards": 7877,
+          "largest_decoded_shard_bytes": 1319936,
+          "scope": "byte/array/identity integrity; not scientific acceptance"
+        },
+        "verification_receipt": {
+          "path": "local-artifacts/oscar-closeout-20261101/rough-joint-native-bank-verification.json",
+          "bytes": 327,
+          "sha256": "3d6920bfcf407cf752de75a2a9b1e012c356ac583c2bf402573c9a8fd8ffc3bd"
+        }
+      }
+    ],
+    "full_verification": {
+      "path": "local-artifacts/oscar-closeout-20261101/bank-transfer-verification.json",
+      "bytes": 2074,
+      "sha256": "cfa618ca438f06496e78191ecbaf89f4ea5ebd3c0b6a435281982fe14fac09b2"
+    },
+    "largest_decoded_shard_bytes": 1319936
+  },
+  "historical_outputs": {
+    "logical_files": 20420,
+    "logical_payload_bytes": 7672992354,
+    "compressed_bytes": 7060858995,
+    "archive_parts": 9,
+    "all_local_part_and_logical_payload_hashes_verified": true,
+    "full_verification": {
+      "path": "local-artifacts/oscar-closeout-20261101/historical/download-state.json",
+      "bytes": 11389,
+      "sha256": "f9791c9c8a4098c685e62a4a833e6d53c52959f536b29f9e3dc47e34e33ea275"
+    },
+    "archive_index": {
+      "path": "local-artifacts/oscar-closeout-20261101/historical/remote-archive-index.json",
+      "bytes": 6824,
+      "sha256": "7489aa33d4414c99d31f4cf1abb77413cb0e0146680d14f2df054de44f996221"
+    },
+    "source_and_exclusion_proof": {
+      "path": "local-artifacts/oscar-closeout-20261101/historical/excluded-source-generated-closeout.json",
+      "bytes": 29555,
+      "sha256": "21ffc0f5a17004b792cb97c6869a78d14b3a767592b951886679df7a5738c42a"
+    }
+  },
+  "accounting": {
+    "original_scientific_records": 15491,
+    "seven_preservation_and_one_pilot_jobs_all_completed_exit0": true,
+    "new_allocated_cpu_seconds": 784,
+    "new_gpu_seconds": 0,
+    "preservation_job_accounting": {
+      "path": "local-artifacts/oscar-closeout-20261101/historical/seven-preservation-jobs-accounting.psv",
+      "bytes": 402,
+      "sha256": "f5ab2ff59335a218e66dc11c204effaa3bdf4e2b85f73666be3acf3787427e64"
+    },
+    "queue_observation": {
+      "path": "local-artifacts/oscar-closeout-20261101/final-current-queue.json",
+      "bytes": 418,
+      "sha256": "03e92e5cb8a3d460386c9a9f8806bc158009573419124505fd7eb1d36030c901"
+    }
+  },
+  "drive": {
+    "url": "https://drive.google.com/drive/folders/1LJsR0Qb0RkD4h8XiF3t6OQQlyYDKcI2k",
+    "bank_distribution_files_copied_before_access_denial": 35,
+    "bank_distribution_files_total": 40,
+    "bank_distribution_bytes_copied_before_access_denial": 24424933428,
+    "bank_distribution_bytes_total": 29176952403,
+    "local_copy_progress": {
+      "path": "local-artifacts/oscar-closeout-20261101/bank-mirror-progress.json",
+      "bytes": 202,
+      "sha256": "fe081a462b88d9fabad49c1bfad2005e70dc3a58097d82b7a85d72322debbf7f"
+    },
+    "current_limitation": "macOS returns EPERM for both destination identity metadata and ordinary reads, including a previously uploaded file. FileProvider observations remain available; destination Google-ID checks and further copies remain gated. Computer-use permission is unavailable.",
+    "destination_identity_read_attempt": {
+      "path": "local-artifacts/oscar-closeout-20261101/root-destination-identity-current.json",
+      "bytes": 14649,
+      "sha256": "3ff95d08ae6205c07bf1ac7d0b228bcc3738c6e3a4a92f0f6cfe17303b481fb8"
+    },
+    "ordinary_read_attempt": {
+      "path": "local-artifacts/oscar-closeout-20261101/drive-current-read-test.json",
+      "bytes": 307,
+      "sha256": "f6370bad040c2c506d06712f87cf3bca17d5675155773ca1c0d3378d8a873e65"
+    },
+    "independent_cloud_download_verified": false,
+    "all_files_uploaded_claimed": false,
+    "strict_resume_monitors_installed": true
+  },
+  "scientific_limitations": {
+    "production_target_bank_or_model_replaced": false,
+    "all_three_frozen_path_candidates_retain_failed_final_marginal_screen_status": true,
+    "new_heston_numerical_pilot_is_development_only": true,
+    "pending_work": "Numerical accuracy, conditional references, simulator/training walkthroughs and fresh acceptance remain in the developed application/path plans."
+  }
+}

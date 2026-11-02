@@ -8,7 +8,7 @@ from time import perf_counter
 import numpy as np
 
 from sbi4finance.path_inference.bank import (
-    MODELS, default_task, teaching_task, validate_task, generate, load_manifest, load_split, task_fingerprint, write_bank,
+    MODELS, default_task, teaching_task, validate_task, generate, task_fingerprint, verify_bank, write_bank,
 )
 
 
@@ -44,13 +44,7 @@ def main():
     check.add_argument("--out", type=Path)
     args = parser.parse_args()
     if args.command == "check":
-        manifest = load_manifest(args.bank)
-        checked = {}
-        for split in manifest["splits"]:
-            arrays = load_split(args.bank, split)
-            checked[split] = len(arrays["parameters"])
-        report = {"passed": True, "task_sha256": manifest["task_sha256"], "counts": checked,
-                  "scope": "byte/array/identity integrity; not scientific acceptance"}
+        report = verify_bank(args.bank)
         if args.out:
             _write(args.out, report)
     else:

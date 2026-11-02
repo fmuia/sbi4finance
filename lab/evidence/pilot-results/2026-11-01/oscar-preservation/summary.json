@@ -1,0 +1,1440 @@
+{
+  "schema": "sbi4finance_oscar_preservation_closeout_account_continuation_v2",
+  "completed": true,
+  "scope": {
+    "original_project_roots": 41,
+    "json_receipts_audited": 1650,
+    "original_job_records": 15491,
+    "source_code_exclusions_verified_against_main": "7751e4ce5db9ae02d5fcf71925a308d4c88b81b4",
+    "source_scope_and_exclusion_record": {
+      "path": "local-artifacts/oscar-closeout-20261101/historical/closeout-summary-account-continuation.json",
+      "bytes": 32979,
+      "sha256": "ea0b42761266044632f4a8165bef76df23f0f5183c6f86ee4ce716e29541455e"
+    },
+    "no_remote_deletions": true,
+    "historical_science_retried": false,
+    "scientific_acceptance": false
+  },
+  "trajectory_banks": {
+    "total_native_payload_files": 23631,
+    "total_native_payload_bytes": 31124149548,
+    "total_archive_bytes": 29171828752,
+    "all_source_and_transferred_archive_hashes_verified": true,
+    "all_extracted_native_checks_passed": true,
+    "checker": "one decoded shard at a time; bytes/schema/prior/IDs/inventory, not posterior accuracy",
+    "full_transfer_receipt": {
+      "path": "local-artifacts/oscar-closeout-20261101/bank-transfer-verification.json",
+      "bytes": 2074,
+      "sha256": "cfa618ca438f06496e78191ecbaf89f4ea5ebd3c0b6a435281982fe14fac09b2"
+    },
+    "drive": {
+      "manifest": {
+        "path": "local-artifacts/oscar-closeout-20261101/bank-drive-manifest.json",
+        "bytes": 15582,
+        "sha256": "725a1688f0e76f8289971af2008ab19fa1f61e3e09900bbffcff8307bdc4d73c"
+      },
+      "receipt": {
+        "path": "local-artifacts/oscar-closeout-20261101/bank-drive-account-continuation-verification.json",
+        "bytes": 324264,
+        "sha256": "385d62e2076fd01bddbee05c9ae9c48f0d2a43a2d7b899060ffb3e79fc58c88b"
+      },
+      "files": 40,
+      "bytes": 29176952403,
+      "all_uploaded": true,
+      "provider_upload_complete": true,
+      "copy_readback_hashes_verified_by_bound_receipts": true,
+      "verification_mode": "inherited_destination_readbacks_plus_current_Brown_metadata",
+      "current_metadata_verified": true,
+      "destination_payloads_read_by_this_summary": false,
+      "fresh_destination_payload_hashes_verified": false,
+      "hash_scope": "Prior Gmail copy/readback proofs and, for the five missing bank parts, new Brown copy/readbacks; current Brown checks read metadata only. Cold old payloads were not read or rehashed.",
+      "legacy_copy_receipts": [
+        {
+          "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/963aa2a7b2a0524bf0674a53d22cc9afb87320bd2ff7270f030c5e5dabf351f5.json",
+          "bytes": 92144,
+          "sha256": "963aa2a7b2a0524bf0674a53d22cc9afb87320bd2ff7270f030c5e5dabf351f5",
+          "manifest": {
+            "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/60e1fe37a327c0c14524640bc137cb47215119892b75b64294c8574e543cb571.json",
+            "bytes": 2084,
+            "sha256": "60e1fe37a327c0c14524640bc137cb47215119892b75b64294c8574e543cb571"
+          },
+          "account": "alexander_fengler@brown.edu",
+          "created_utc": "2026-11-01T15:32:49.276937+00:00",
+          "checked_utc": "2026-11-01T16:15:08.814316+00:00"
+        },
+        {
+          "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/46acfa7b250a6eb883c716682579b6febda5c2f3515a41ae194983334b0f58ad.json",
+          "bytes": 2720,
+          "sha256": "46acfa7b250a6eb883c716682579b6febda5c2f3515a41ae194983334b0f58ad",
+          "manifest": {
+            "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/4991923101e129ecabbf51f32cd4560253c82161533cf0b2b30def37f1648fd9.json",
+            "bytes": 323,
+            "sha256": "4991923101e129ecabbf51f32cd4560253c82161533cf0b2b30def37f1648fd9"
+          },
+          "account": "fengleralexander@gmail.com",
+          "created_utc": "2026-11-01T03:56:00.851227+00:00",
+          "checked_utc": "2026-11-01T03:56:00.890662+00:00"
+        },
+        {
+          "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/90f70bb36cd2ad2316377eee16acaf04b78598338d1db0dbfedeaf98cfb66d5d.json",
+          "bytes": 2957,
+          "sha256": "90f70bb36cd2ad2316377eee16acaf04b78598338d1db0dbfedeaf98cfb66d5d",
+          "manifest": {
+            "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/6a6a1e6d470a4c2abe3c0bc3cb702fa434475ecf40e86575ad1bb29f5a82c6de.json",
+            "bytes": 413,
+            "sha256": "6a6a1e6d470a4c2abe3c0bc3cb702fa434475ecf40e86575ad1bb29f5a82c6de"
+          },
+          "account": "fengleralexander@gmail.com",
+          "created_utc": "2026-11-01T03:56:01.281606+00:00",
+          "checked_utc": "2026-11-01T03:56:02.171732+00:00"
+        },
+        {
+          "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/3d8a6fff6abef1c0ea9d90f7fbfe5eb6878b371ce6e172425ee17a9dccc679ea.json",
+          "bytes": 2998,
+          "sha256": "3d8a6fff6abef1c0ea9d90f7fbfe5eb6878b371ce6e172425ee17a9dccc679ea",
+          "manifest": {
+            "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/e5904ecbed3a7884d07bf29532f19ef1b97eb2c4f8e261d9d1d58deda1a455ae.json",
+            "bytes": 413,
+            "sha256": "e5904ecbed3a7884d07bf29532f19ef1b97eb2c4f8e261d9d1d58deda1a455ae"
+          },
+          "account": "fengleralexander@gmail.com",
+          "created_utc": "2026-11-01T03:57:23.239158+00:00",
+          "checked_utc": "2026-11-01T03:57:24.132854+00:00"
+        },
+        {
+          "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/3c7f69595d0ddb0cc968049e403c2b94194fba9c5e5d0dc786ec9373863ec80d.json",
+          "bytes": 2998,
+          "sha256": "3c7f69595d0ddb0cc968049e403c2b94194fba9c5e5d0dc786ec9373863ec80d",
+          "manifest": {
+            "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/fba9f8e53182e913a1cb01f12455f2d78d6f1c51e354d99dbc127ad7062fa756.json",
+            "bytes": 413,
+            "sha256": "fba9f8e53182e913a1cb01f12455f2d78d6f1c51e354d99dbc127ad7062fa756"
+          },
+          "account": "fengleralexander@gmail.com",
+          "created_utc": "2026-11-01T04:02:24.625921+00:00",
+          "checked_utc": "2026-11-01T04:02:25.584354+00:00"
+        },
+        {
+          "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/59f78c4d19d59b04a6519eae3c35653e33d005987a887945389b9e9ff812397b.json",
+          "bytes": 2998,
+          "sha256": "59f78c4d19d59b04a6519eae3c35653e33d005987a887945389b9e9ff812397b",
+          "manifest": {
+            "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/f705eca09c58c7a3f2c8cdf1ecc0faca1150b5e018af22ab61fcc7b83f9e793f.json",
+            "bytes": 413,
+            "sha256": "f705eca09c58c7a3f2c8cdf1ecc0faca1150b5e018af22ab61fcc7b83f9e793f"
+          },
+          "account": "fengleralexander@gmail.com",
+          "created_utc": "2026-11-01T04:12:26.139078+00:00",
+          "checked_utc": "2026-11-01T04:12:26.990303+00:00"
+        },
+        {
+          "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/357db4ef1718e60071a0898d20bbd47f861b400c4317f831050cbe8de930150e.json",
+          "bytes": 2998,
+          "sha256": "357db4ef1718e60071a0898d20bbd47f861b400c4317f831050cbe8de930150e",
+          "manifest": {
+            "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/d9864f940b603060e1b3bfc821d7d34c5930b01f94b9d05d0e4f5bf2b420f70f.json",
+            "bytes": 413,
+            "sha256": "d9864f940b603060e1b3bfc821d7d34c5930b01f94b9d05d0e4f5bf2b420f70f"
+          },
+          "account": "fengleralexander@gmail.com",
+          "created_utc": "2026-11-01T04:21:07.532922+00:00",
+          "checked_utc": "2026-11-01T04:21:08.389432+00:00"
+        },
+        {
+          "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/f0989442282f15dcec52a3f3620c7610587d89d1005cfe72d87936e057c36a6c.json",
+          "bytes": 2998,
+          "sha256": "f0989442282f15dcec52a3f3620c7610587d89d1005cfe72d87936e057c36a6c",
+          "manifest": {
+            "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/71b8e1c420e6649d607b45e5d8025fb4033163b5c3f47d861b6ade1577eeb94e.json",
+            "bytes": 413,
+            "sha256": "71b8e1c420e6649d607b45e5d8025fb4033163b5c3f47d861b6ade1577eeb94e"
+          },
+          "account": "fengleralexander@gmail.com",
+          "created_utc": "2026-11-01T04:29:48.935890+00:00",
+          "checked_utc": "2026-11-01T04:29:49.805282+00:00"
+        },
+        {
+          "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/1a68cf3be348b9f343009463c668bf57ce2465edeb5d78b95ba314213c2ea2f9.json",
+          "bytes": 2998,
+          "sha256": "1a68cf3be348b9f343009463c668bf57ce2465edeb5d78b95ba314213c2ea2f9",
+          "manifest": {
+            "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/5ea65c02fc4acd34f1bac66e4a1b00d08f3018fba9ed53a682f53418af09652f.json",
+            "bytes": 413,
+            "sha256": "5ea65c02fc4acd34f1bac66e4a1b00d08f3018fba9ed53a682f53418af09652f"
+          },
+          "account": "fengleralexander@gmail.com",
+          "created_utc": "2026-11-01T04:39:10.472486+00:00",
+          "checked_utc": "2026-11-01T04:39:11.350200+00:00"
+        },
+        {
+          "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/b90c749cc0dbddd3c02631f5ddaf66fed7e832d17a32c6f0d6ddc47e54897533.json",
+          "bytes": 2998,
+          "sha256": "b90c749cc0dbddd3c02631f5ddaf66fed7e832d17a32c6f0d6ddc47e54897533",
+          "manifest": {
+            "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/2bd8cd5b0e9fc0d42f3714fee8191a36b7e6635eae216fb94bdb0cd8a2f7228e.json",
+            "bytes": 413,
+            "sha256": "2bd8cd5b0e9fc0d42f3714fee8191a36b7e6635eae216fb94bdb0cd8a2f7228e"
+          },
+          "account": "fengleralexander@gmail.com",
+          "created_utc": "2026-11-01T04:47:51.994355+00:00",
+          "checked_utc": "2026-11-01T04:47:52.851043+00:00"
+        },
+        {
+          "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/a4299879fca44637ad2c67d132e89f91fb8972baf0b98f9ed9339d65359b1330.json",
+          "bytes": 2998,
+          "sha256": "a4299879fca44637ad2c67d132e89f91fb8972baf0b98f9ed9339d65359b1330",
+          "manifest": {
+            "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/0ded0f445f53b775f071043f9736229050e66cae532844a91d73d6c9936430bf.json",
+            "bytes": 413,
+            "sha256": "0ded0f445f53b775f071043f9736229050e66cae532844a91d73d6c9936430bf"
+          },
+          "account": "fengleralexander@gmail.com",
+          "created_utc": "2026-11-01T04:57:33.495225+00:00",
+          "checked_utc": "2026-11-01T04:57:34.330413+00:00"
+        },
+        {
+          "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/1b888a0bf21670c83211a0c54d18e0b2c25e8b4f057190eb3f7009c25dac6e71.json",
+          "bytes": 2995,
+          "sha256": "1b888a0bf21670c83211a0c54d18e0b2c25e8b4f057190eb3f7009c25dac6e71",
+          "manifest": {
+            "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/1e1e67d911b0f046e8d9274f75a6093319342d2470ebab0013396ab8f686e947.json",
+            "bytes": 412,
+            "sha256": "1e1e67d911b0f046e8d9274f75a6093319342d2470ebab0013396ab8f686e947"
+          },
+          "account": "fengleralexander@gmail.com",
+          "created_utc": "2026-11-01T05:03:34.772971+00:00",
+          "checked_utc": "2026-11-01T05:03:35.332577+00:00"
+        },
+        {
+          "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/71a0ee741b4a354d09e5838dcd2da685b2a08e4a498ed67dafe64891d68bd139.json",
+          "bytes": 2807,
+          "sha256": "71a0ee741b4a354d09e5838dcd2da685b2a08e4a498ed67dafe64891d68bd139",
+          "manifest": {
+            "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/4503018d8100c23471beaa6a2bca918db311c120d1a388a2bfc964570988f384.json",
+            "bytes": 359,
+            "sha256": "4503018d8100c23471beaa6a2bca918db311c120d1a388a2bfc964570988f384"
+          },
+          "account": "fengleralexander@gmail.com",
+          "created_utc": "2026-11-01T03:56:02.195761+00:00",
+          "checked_utc": "2026-11-01T03:56:02.238299+00:00"
+        },
+        {
+          "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/3703260c9a01563770f17b4f045fd801067a6ba97e777595baf6c4d7ea4226e2.json",
+          "bytes": 2806,
+          "sha256": "3703260c9a01563770f17b4f045fd801067a6ba97e777595baf6c4d7ea4226e2",
+          "manifest": {
+            "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/3ad0c87a88e5715efaf78d1fae4c6cce664f2f7d933ec9346e8f571524a901a5.json",
+            "bytes": 358,
+            "sha256": "3ad0c87a88e5715efaf78d1fae4c6cce664f2f7d933ec9346e8f571524a901a5"
+          },
+          "account": "fengleralexander@gmail.com",
+          "created_utc": "2026-11-01T03:56:02.261728+00:00",
+          "checked_utc": "2026-11-01T03:56:02.308592+00:00"
+        },
+        {
+          "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/0a0a1a6e737b3817dc2fd73cea2cc63d383fe685463675d59584740a02db7cd0.json",
+          "bytes": 2777,
+          "sha256": "0a0a1a6e737b3817dc2fd73cea2cc63d383fe685463675d59584740a02db7cd0",
+          "manifest": {
+            "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/5ca3f637442db0180eb214b498a55193b62f5a85d6db4df8bb35c0e2be379331.json",
+            "bytes": 347,
+            "sha256": "5ca3f637442db0180eb214b498a55193b62f5a85d6db4df8bb35c0e2be379331"
+          },
+          "account": "fengleralexander@gmail.com",
+          "created_utc": "2026-11-01T03:56:02.333468+00:00",
+          "checked_utc": "2026-11-01T03:56:02.378963+00:00"
+        },
+        {
+          "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/6a39ca69ff6494643eca5d1152c09b0a6e144a71a2d53f6a1e9911b788ea5778.json",
+          "bytes": 3048,
+          "sha256": "6a39ca69ff6494643eca5d1152c09b0a6e144a71a2d53f6a1e9911b788ea5778",
+          "manifest": {
+            "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/59d46a4c41065ed7f5d9619dad2fadd99e747905f8b70dac5aad573dcdcd8eca.json",
+            "bytes": 433,
+            "sha256": "59d46a4c41065ed7f5d9619dad2fadd99e747905f8b70dac5aad573dcdcd8eca"
+          },
+          "account": "fengleralexander@gmail.com",
+          "created_utc": "2026-11-01T05:12:15.931217+00:00",
+          "checked_utc": "2026-11-01T05:12:16.791537+00:00"
+        },
+        {
+          "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/6495279cc7cb9f659aced887aaa12aa6193d81c559918254e4059961f0424b7a.json",
+          "bytes": 3048,
+          "sha256": "6495279cc7cb9f659aced887aaa12aa6193d81c559918254e4059961f0424b7a",
+          "manifest": {
+            "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/625a89194e3bcf0ec9a8186d709dc0b5e2109ac5626cb9f1b5f302f1682e6c35.json",
+            "bytes": 433,
+            "sha256": "625a89194e3bcf0ec9a8186d709dc0b5e2109ac5626cb9f1b5f302f1682e6c35"
+          },
+          "account": "fengleralexander@gmail.com",
+          "created_utc": "2026-11-01T05:16:37.303013+00:00",
+          "checked_utc": "2026-11-01T05:16:38.179075+00:00"
+        },
+        {
+          "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/a3a87e8aaa576e6557e1f3474d51e7d4b11c13f187c5a90f4268837e388917bf.json",
+          "bytes": 3048,
+          "sha256": "a3a87e8aaa576e6557e1f3474d51e7d4b11c13f187c5a90f4268837e388917bf",
+          "manifest": {
+            "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/815e42899fa2b002acddb2d5bc831cd9311e7dcc27c11fbf86d764c270f8c08c.json",
+            "bytes": 433,
+            "sha256": "815e42899fa2b002acddb2d5bc831cd9311e7dcc27c11fbf86d764c270f8c08c"
+          },
+          "account": "fengleralexander@gmail.com",
+          "created_utc": "2026-11-01T05:20:38.689897+00:00",
+          "checked_utc": "2026-11-01T05:20:39.554552+00:00"
+        },
+        {
+          "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/c5085513304a740de792b54a083b5a558ca8b1df71dfbae5cf68bce0cfbaa29d.json",
+          "bytes": 3048,
+          "sha256": "c5085513304a740de792b54a083b5a558ca8b1df71dfbae5cf68bce0cfbaa29d",
+          "manifest": {
+            "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/e25cb484823779092aca4039cdbd6cedd1e0fd7be684a43f021eddc00429c4a9.json",
+            "bytes": 433,
+            "sha256": "e25cb484823779092aca4039cdbd6cedd1e0fd7be684a43f021eddc00429c4a9"
+          },
+          "account": "fengleralexander@gmail.com",
+          "created_utc": "2026-11-01T05:25:00.041856+00:00",
+          "checked_utc": "2026-11-01T05:25:00.900766+00:00"
+        },
+        {
+          "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/23f2a2a29156ad86a5126f6d64ff26409eb68f50d922c511fe7d0396206efd36.json",
+          "bytes": 3048,
+          "sha256": "23f2a2a29156ad86a5126f6d64ff26409eb68f50d922c511fe7d0396206efd36",
+          "manifest": {
+            "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/277dcbfb2bac97457d545261b70d8053387bb43707c9e2f5fb861e49e8ee5438.json",
+            "bytes": 433,
+            "sha256": "277dcbfb2bac97457d545261b70d8053387bb43707c9e2f5fb861e49e8ee5438"
+          },
+          "account": "fengleralexander@gmail.com",
+          "created_utc": "2026-11-01T05:29:21.446197+00:00",
+          "checked_utc": "2026-11-01T05:29:22.295717+00:00"
+        },
+        {
+          "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/ffa0ead5ae429c0e6648aee847a4737d78ba6dc82a17b75005ceef5d6cdcec2a.json",
+          "bytes": 3048,
+          "sha256": "ffa0ead5ae429c0e6648aee847a4737d78ba6dc82a17b75005ceef5d6cdcec2a",
+          "manifest": {
+            "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/bd947490d58ea2eba0c64367766990e05ded80e4d4d74c18c5b89042502228ef.json",
+            "bytes": 433,
+            "sha256": "bd947490d58ea2eba0c64367766990e05ded80e4d4d74c18c5b89042502228ef"
+          },
+          "account": "fengleralexander@gmail.com",
+          "created_utc": "2026-11-01T05:34:02.782868+00:00",
+          "checked_utc": "2026-11-01T05:34:03.635545+00:00"
+        },
+        {
+          "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/17ac55674bf5dc343238e024dad659baf4578b315f8a945facddef74cb5ea1a4.json",
+          "bytes": 3048,
+          "sha256": "17ac55674bf5dc343238e024dad659baf4578b315f8a945facddef74cb5ea1a4",
+          "manifest": {
+            "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/d13f3a50de4187a903908d05c45e9ee4b43179da25bc359c9a3f3d9b6a524efe.json",
+            "bytes": 433,
+            "sha256": "d13f3a50de4187a903908d05c45e9ee4b43179da25bc359c9a3f3d9b6a524efe"
+          },
+          "account": "fengleralexander@gmail.com",
+          "created_utc": "2026-11-01T05:38:04.153894+00:00",
+          "checked_utc": "2026-11-01T05:38:05.010392+00:00"
+        },
+        {
+          "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/e74b8cf2027afaf48f0b1eb7b3cc2e2fee85c02ae61f5a52a86a180c62d5862f.json",
+          "bytes": 3048,
+          "sha256": "e74b8cf2027afaf48f0b1eb7b3cc2e2fee85c02ae61f5a52a86a180c62d5862f",
+          "manifest": {
+            "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/75bb873e5182a96b500b2d2c6a4cbe5e2f0e555b53da59d79c36495161a83420.json",
+            "bytes": 433,
+            "sha256": "75bb873e5182a96b500b2d2c6a4cbe5e2f0e555b53da59d79c36495161a83420"
+          },
+          "account": "fengleralexander@gmail.com",
+          "created_utc": "2026-11-01T05:42:05.506211+00:00",
+          "checked_utc": "2026-11-01T05:42:06.389647+00:00"
+        },
+        {
+          "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/6664bf6461f68f53ef97ffdb80bbd733a44ea267490a27ca60c6dab735f08013.json",
+          "bytes": 3048,
+          "sha256": "6664bf6461f68f53ef97ffdb80bbd733a44ea267490a27ca60c6dab735f08013",
+          "manifest": {
+            "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/361b1da35616446a499a618e22fce9c734fc50110666d0fdf40f711ed44a3d77.json",
+            "bytes": 433,
+            "sha256": "361b1da35616446a499a618e22fce9c734fc50110666d0fdf40f711ed44a3d77"
+          },
+          "account": "fengleralexander@gmail.com",
+          "created_utc": "2026-11-01T05:46:26.923607+00:00",
+          "checked_utc": "2026-11-01T05:46:27.776581+00:00"
+        },
+        {
+          "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/6cfa3be860f6e77ac69f4ac71f4e428f77f2e17f1dff4afff8d60da15418b74c.json",
+          "bytes": 3045,
+          "sha256": "6cfa3be860f6e77ac69f4ac71f4e428f77f2e17f1dff4afff8d60da15418b74c",
+          "manifest": {
+            "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/c33d82a424baae4171fa14497dafd3988b3b54c6dfd81530d8105b53ee54afe5.json",
+            "bytes": 432,
+            "sha256": "c33d82a424baae4171fa14497dafd3988b3b54c6dfd81530d8105b53ee54afe5"
+          },
+          "account": "fengleralexander@gmail.com",
+          "created_utc": "2026-11-01T05:49:28.193826+00:00",
+          "checked_utc": "2026-11-01T05:49:28.873593+00:00"
+        },
+        {
+          "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/8fd27be024bed57958fc5e52fc0aaaf35b9e2851a4656f9ac1dfc91590fb1442.json",
+          "bytes": 2832,
+          "sha256": "8fd27be024bed57958fc5e52fc0aaaf35b9e2851a4656f9ac1dfc91590fb1442",
+          "manifest": {
+            "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/5fd683ecb8f02ec717d03f811edafedba4c5f9ce9c1994e18a86f0370d8f492e.json",
+            "bytes": 369,
+            "sha256": "5fd683ecb8f02ec717d03f811edafedba4c5f9ce9c1994e18a86f0370d8f492e"
+          },
+          "account": "fengleralexander@gmail.com",
+          "created_utc": "2026-11-01T03:56:02.403216+00:00",
+          "checked_utc": "2026-11-01T03:56:02.449382+00:00"
+        },
+        {
+          "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/c6c1e125808e77c4806a4b85fec61b4cf0eaece7afc2f3d46b0ab7a39aa03686.json",
+          "bytes": 2831,
+          "sha256": "c6c1e125808e77c4806a4b85fec61b4cf0eaece7afc2f3d46b0ab7a39aa03686",
+          "manifest": {
+            "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/7598561ba2a384f289f7ab67b75077f4549552fecf40f13db4522e5832d46a25.json",
+            "bytes": 368,
+            "sha256": "7598561ba2a384f289f7ab67b75077f4549552fecf40f13db4522e5832d46a25"
+          },
+          "account": "fengleralexander@gmail.com",
+          "created_utc": "2026-11-01T03:56:02.475239+00:00",
+          "checked_utc": "2026-11-01T03:56:02.518181+00:00"
+        },
+        {
+          "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/c915ac5d4a7eedc7527780fce794f6f080ee326fc0f2ca407f0ef3c37d5ac871.json",
+          "bytes": 2802,
+          "sha256": "c915ac5d4a7eedc7527780fce794f6f080ee326fc0f2ca407f0ef3c37d5ac871",
+          "manifest": {
+            "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/0797748bd834a365ea9dbceaed63393a8daf91a57ca6b5621a6f713e0ae28022.json",
+            "bytes": 357,
+            "sha256": "0797748bd834a365ea9dbceaed63393a8daf91a57ca6b5621a6f713e0ae28022"
+          },
+          "account": "fengleralexander@gmail.com",
+          "created_utc": "2026-11-01T03:56:02.542231+00:00",
+          "checked_utc": "2026-11-01T03:56:02.588010+00:00"
+        },
+        {
+          "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/19746d0ce305fc76ca1ed26dec44bdd134dbc5aea4ab870cfed96c3a3e796103.json",
+          "bytes": 3048,
+          "sha256": "19746d0ce305fc76ca1ed26dec44bdd134dbc5aea4ab870cfed96c3a3e796103",
+          "manifest": {
+            "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/1c891b8e95327e7667339caa0ceb5861e7e5dbf9e0343d49e75a978d76755372.json",
+            "bytes": 433,
+            "sha256": "1c891b8e95327e7667339caa0ceb5861e7e5dbf9e0343d49e75a978d76755372"
+          },
+          "account": "fengleralexander@gmail.com",
+          "created_utc": "2026-11-01T05:53:49.404151+00:00",
+          "checked_utc": "2026-11-01T05:53:50.275779+00:00"
+        },
+        {
+          "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/87646486222eaefa8322efae557d299c437abd4a50df96520327734271fb3b06.json",
+          "bytes": 3048,
+          "sha256": "87646486222eaefa8322efae557d299c437abd4a50df96520327734271fb3b06",
+          "manifest": {
+            "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/f17981f2f3c746f54f574245046d33f01f44ce55784922bc9f98c4dae59f62f7.json",
+            "bytes": 433,
+            "sha256": "f17981f2f3c746f54f574245046d33f01f44ce55784922bc9f98c4dae59f62f7"
+          },
+          "account": "fengleralexander@gmail.com",
+          "created_utc": "2026-11-01T05:58:50.780700+00:00",
+          "checked_utc": "2026-11-01T05:58:51.641735+00:00"
+        },
+        {
+          "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/780bae2fbc34f04178b836992f264f9cb32289bde7e1fbd4526a0b6d323ee74a.json",
+          "bytes": 3048,
+          "sha256": "780bae2fbc34f04178b836992f264f9cb32289bde7e1fbd4526a0b6d323ee74a",
+          "manifest": {
+            "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/0bc19a2b3e75776b3400cd9aa4acd7699968944565de47692060319529dc3034.json",
+            "bytes": 433,
+            "sha256": "0bc19a2b3e75776b3400cd9aa4acd7699968944565de47692060319529dc3034"
+          },
+          "account": "fengleralexander@gmail.com",
+          "created_utc": "2026-11-01T06:03:12.163471+00:00",
+          "checked_utc": "2026-11-01T06:03:13.020116+00:00"
+        },
+        {
+          "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/baf1812ca97af77dc9cdaea66e233d57dcf6032661c931c6ad61199125713791.json",
+          "bytes": 3048,
+          "sha256": "baf1812ca97af77dc9cdaea66e233d57dcf6032661c931c6ad61199125713791",
+          "manifest": {
+            "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/195a01933de44c5eb00de47417916736dffcad14d78c8716f0c30fcf184e6ab4.json",
+            "bytes": 433,
+            "sha256": "195a01933de44c5eb00de47417916736dffcad14d78c8716f0c30fcf184e6ab4"
+          },
+          "account": "fengleralexander@gmail.com",
+          "created_utc": "2026-11-01T06:07:33.553452+00:00",
+          "checked_utc": "2026-11-01T06:07:34.408238+00:00"
+        },
+        {
+          "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/ef265c8195a883c671f6fedc6da543ab31851a108027f4c7ee9f3b2c8e710a67.json",
+          "bytes": 3048,
+          "sha256": "ef265c8195a883c671f6fedc6da543ab31851a108027f4c7ee9f3b2c8e710a67",
+          "manifest": {
+            "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/e182814481ecef85013ab32895722d858498d1a92e9f2ff9e9c93b43a42b9465.json",
+            "bytes": 433,
+            "sha256": "e182814481ecef85013ab32895722d858498d1a92e9f2ff9e9c93b43a42b9465"
+          },
+          "account": "fengleralexander@gmail.com",
+          "created_utc": "2026-11-01T06:11:54.926390+00:00",
+          "checked_utc": "2026-11-01T06:11:55.776256+00:00"
+        },
+        {
+          "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/ed030a05372a3d4c54f8298f487ea311a0a5e5ed76e30ea38fbdf1f226dca339.json",
+          "bytes": 2832,
+          "sha256": "ed030a05372a3d4c54f8298f487ea311a0a5e5ed76e30ea38fbdf1f226dca339",
+          "manifest": {
+            "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/31bc5ad4d17cb76e9ba170afb3f91385f06f6a97aae95eecbd3a805609a57a86.json",
+            "bytes": 369,
+            "sha256": "31bc5ad4d17cb76e9ba170afb3f91385f06f6a97aae95eecbd3a805609a57a86"
+          },
+          "account": "fengleralexander@gmail.com",
+          "created_utc": "2026-11-01T03:56:02.609943+00:00",
+          "checked_utc": "2026-11-01T03:56:02.649302+00:00"
+        },
+        {
+          "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/45e7e25bab718011980cb125fef6dd38ff53957bb81dbe22f88353f797c79037.json",
+          "bytes": 2831,
+          "sha256": "45e7e25bab718011980cb125fef6dd38ff53957bb81dbe22f88353f797c79037",
+          "manifest": {
+            "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/235839ffef17275f8fef47a87ad59a7a3e63b215f4e032a584becfa4e40a5ecf.json",
+            "bytes": 368,
+            "sha256": "235839ffef17275f8fef47a87ad59a7a3e63b215f4e032a584becfa4e40a5ecf"
+          },
+          "account": "fengleralexander@gmail.com",
+          "created_utc": "2026-11-01T03:56:02.673432+00:00",
+          "checked_utc": "2026-11-01T03:56:02.714998+00:00"
+        },
+        {
+          "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/817ccec1ae604d92f45975c677745851b55e22acef4387fd6f5f8f3603332fe2.json",
+          "bytes": 2802,
+          "sha256": "817ccec1ae604d92f45975c677745851b55e22acef4387fd6f5f8f3603332fe2",
+          "manifest": {
+            "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/0e2dc7abb0484cd66369df106542084ae394b4249089ef299316e3072f198274.json",
+            "bytes": 357,
+            "sha256": "0e2dc7abb0484cd66369df106542084ae394b4249089ef299316e3072f198274"
+          },
+          "account": "fengleralexander@gmail.com",
+          "created_utc": "2026-11-01T03:56:02.737453+00:00",
+          "checked_utc": "2026-11-01T03:56:02.777793+00:00"
+        }
+      ],
+      "verifier_source": {
+        "path": "local-artifacts/oscar-closeout-20261101/verify_account_continuation.py",
+        "bytes": 23893,
+        "sha256": "88df201f43152fb56c996beb92de6ef8268712719f5687f9de466d5bcd5423f3"
+      },
+      "checked_utc": "2026-11-01T16:21:21.045724+00:00",
+      "destination_account": "Brown",
+      "independent_cloud_download_verified": false
+    },
+    "banks": [
+      {
+        "model": "heston",
+        "source_bank": "/oscar/scratch/afengler/sbi4finance-path-scaleup-20261031-v1/run/banks/heston",
+        "manifest_sha256": "bcddef79dddd753df6a07035124c7e0043e309dd84a8e693fb489555f76477a9",
+        "task_sha256": "dd233e297f3ff974985383cf23dbb76865d4db92b7e348d675ac3065637ea7c3",
+        "daily_observations": 1260,
+        "split_counts": {
+          "test": 4000,
+          "train": 1000000,
+          "validation": 4000
+        },
+        "native_payload_files": 7877,
+        "native_payload_bytes": 10372028516,
+        "archive_bytes": 9643832260,
+        "parts": [
+          {
+            "name": "path-bank-heston-1000000-native.tar.zst.part0000",
+            "bytes": 1000000000,
+            "sha256": "eee3d57f83f16de30db8e02b4070e50c63b2f295084a1e036a4974769268245f"
+          },
+          {
+            "name": "path-bank-heston-1000000-native.tar.zst.part0001",
+            "bytes": 1000000000,
+            "sha256": "a4f3aee78717653f1a6cc1c0476f3df40da33e181ef36ea6bd2cd576c4ad7619"
+          },
+          {
+            "name": "path-bank-heston-1000000-native.tar.zst.part0002",
+            "bytes": 1000000000,
+            "sha256": "fed3c39484cae99e1684aa5a7615f61778cf6ac1c8064a9aa1d5674a781d2775"
+          },
+          {
+            "name": "path-bank-heston-1000000-native.tar.zst.part0003",
+            "bytes": 1000000000,
+            "sha256": "1a9519b61d57aab981d5be56be811e9913b69c43bdb5e7b00000fa6c9561f91c"
+          },
+          {
+            "name": "path-bank-heston-1000000-native.tar.zst.part0004",
+            "bytes": 1000000000,
+            "sha256": "8a9e32a83f39d26acaa08a23dd26cfed719f736d084431797234890c6f6975d9"
+          },
+          {
+            "name": "path-bank-heston-1000000-native.tar.zst.part0005",
+            "bytes": 1000000000,
+            "sha256": "633637b0e0527bc3cce0b5eec1ec3d6033fb4b13c1aa57929a52975e9b065140"
+          },
+          {
+            "name": "path-bank-heston-1000000-native.tar.zst.part0006",
+            "bytes": 1000000000,
+            "sha256": "3cf816594061dbd10e7a32a0b2e723ef0442e479391004a9f402ca7aa88ede42"
+          },
+          {
+            "name": "path-bank-heston-1000000-native.tar.zst.part0007",
+            "bytes": 1000000000,
+            "sha256": "983d5a0ddd9b6dc2faac26e4cd3c8671420778219401e1261eb35096f620a569"
+          },
+          {
+            "name": "path-bank-heston-1000000-native.tar.zst.part0008",
+            "bytes": 1000000000,
+            "sha256": "4558f8de5eba128a37754acd6923a4eaf1a7ffc4ea7e34a1aef81de74c7a0fdb"
+          },
+          {
+            "name": "path-bank-heston-1000000-native.tar.zst.part0009",
+            "bytes": 643832260,
+            "sha256": "322387046055b919ab72d1a295fe500ce41ecda4a41ae825a0d18f2622c38d99"
+          }
+        ],
+        "source_archive_receipt": {
+          "path": "local-artifacts/oscar-closeout-20261101/archive-metadata/heston/archive-receipt.json",
+          "bytes": 2659,
+          "sha256": "037c8e20a3db8d3af08f508ef86cfaefc228ee9f0caa7d874328ff4528f4378b"
+        },
+        "native_verification": {
+          "passed": true,
+          "task_sha256": "dd233e297f3ff974985383cf23dbb76865d4db92b7e348d675ac3065637ea7c3",
+          "counts": {
+            "train": 1000000,
+            "validation": 4000,
+            "test": 4000
+          },
+          "checked_shards": 7877,
+          "largest_decoded_shard_bytes": 1317888,
+          "scope": "byte/array/identity integrity; not scientific acceptance"
+        },
+        "native_verification_receipt": {
+          "path": "local-artifacts/oscar-closeout-20261101/heston-native-bank-verification.json",
+          "bytes": 327,
+          "sha256": "43242458cdbc8c49e04a09e7029ee262bf33ac15a2ee8a5a6748a666a512ed35"
+        },
+        "drive_relative_folder": "training-banks-20261031/heston"
+      },
+      {
+        "model": "rough-known",
+        "source_bank": "/oscar/scratch/afengler/sbi4finance-path-scaleup-20261031-v1/run/banks/rough-known",
+        "manifest_sha256": "0de676d0da84a1fd9a1984f54fbc9d8205edeae276fa3c6a783a2679044272ea",
+        "task_sha256": "eb195dd594de03a95630a4c46bd35e9355e235982d0eb30ae597491e14df6446",
+        "daily_observations": 1260,
+        "split_counts": {
+          "test": 4000,
+          "train": 1000000,
+          "validation": 4000
+        },
+        "native_payload_files": 7877,
+        "native_payload_bytes": 10363964516,
+        "archive_bytes": 9752018975,
+        "parts": [
+          {
+            "name": "path-bank-rough-known-1000000-native.tar.zst.part0000",
+            "bytes": 1000000000,
+            "sha256": "c9ad3c6ebbb73e146bc5c7e2a9bf751af2b5c63ad7c16b712e5abeaaba7e4917"
+          },
+          {
+            "name": "path-bank-rough-known-1000000-native.tar.zst.part0001",
+            "bytes": 1000000000,
+            "sha256": "b197a1f5a727e0f883b7a1f166fcccdd858484b98b4830f8f6c3bcc17c3fa1e3"
+          },
+          {
+            "name": "path-bank-rough-known-1000000-native.tar.zst.part0002",
+            "bytes": 1000000000,
+            "sha256": "704e18a8b7b13abc3637787ddf55314440a1a6915364d9cdb4f1ab1cae6afcae"
+          },
+          {
+            "name": "path-bank-rough-known-1000000-native.tar.zst.part0003",
+            "bytes": 1000000000,
+            "sha256": "0132d91396dff99741a63dcd26b429f590baea735f198b61d2b4bb5712fa33bd"
+          },
+          {
+            "name": "path-bank-rough-known-1000000-native.tar.zst.part0004",
+            "bytes": 1000000000,
+            "sha256": "da89dc0d5d97187337ed672e0a0488fd90b3cd8fd6a673f59a470d1222507bc2"
+          },
+          {
+            "name": "path-bank-rough-known-1000000-native.tar.zst.part0005",
+            "bytes": 1000000000,
+            "sha256": "08fa19f1581b1271cb6f5487e006df0fa6c9eb693ce3a9fb3526488f18099472"
+          },
+          {
+            "name": "path-bank-rough-known-1000000-native.tar.zst.part0006",
+            "bytes": 1000000000,
+            "sha256": "adccbd6d7f5afb8e850a7f18bdeb1d4e8142eb2d93cd849607b57cccf6fba78e"
+          },
+          {
+            "name": "path-bank-rough-known-1000000-native.tar.zst.part0007",
+            "bytes": 1000000000,
+            "sha256": "97c5c30baf6a991173e42402f26b839ad5c6a80e7cb92d2b341853bf7c0bcdf2"
+          },
+          {
+            "name": "path-bank-rough-known-1000000-native.tar.zst.part0008",
+            "bytes": 1000000000,
+            "sha256": "ff6f8a5d6579ff6ea3d6b02eb6292ad308b9bc1396ba80ff89c1f5ff7d3fca04"
+          },
+          {
+            "name": "path-bank-rough-known-1000000-native.tar.zst.part0009",
+            "bytes": 752018975,
+            "sha256": "6e558d5bb996ce46f6e80c6cdcab31c81b959d40ea710987003b605c52a778e4"
+          }
+        ],
+        "source_archive_receipt": {
+          "path": "local-artifacts/oscar-closeout-20261101/archive-metadata/rough-known/archive-receipt.json",
+          "bytes": 2719,
+          "sha256": "0e0f2ec569528a79bd9895395644cc51a276fc8ee601391f72432f36555c699c"
+        },
+        "native_verification": {
+          "passed": true,
+          "task_sha256": "eb195dd594de03a95630a4c46bd35e9355e235982d0eb30ae597491e14df6446",
+          "counts": {
+            "train": 1000000,
+            "validation": 4000,
+            "test": 4000
+          },
+          "checked_shards": 7877,
+          "largest_decoded_shard_bytes": 1316864,
+          "scope": "byte/array/identity integrity; not scientific acceptance"
+        },
+        "native_verification_receipt": {
+          "path": "local-artifacts/oscar-closeout-20261101/rough-known-native-bank-verification.json",
+          "bytes": 327,
+          "sha256": "8fcc60e00d914f8347a27bbc80614c5e79410dda93412927385b68fbd4c22fab"
+        },
+        "drive_relative_folder": "training-banks-20261031/rough-known"
+      },
+      {
+        "model": "rough-joint",
+        "source_bank": "/oscar/scratch/afengler/sbi4finance-path-scaleup-20261031-v1/run/banks/rough-joint",
+        "manifest_sha256": "1e48dc63aa700dd98039d84d815f4b1a607e9fbdeacaa5c999b1c35299228fce",
+        "task_sha256": "277c7219e49edb130049f78f91bcf176a22c06fad31f4404556fa27df263a7ca",
+        "daily_observations": 1260,
+        "split_counts": {
+          "test": 4000,
+          "train": 1000000,
+          "validation": 4000
+        },
+        "native_payload_files": 7877,
+        "native_payload_bytes": 10388156516,
+        "archive_bytes": 9775977517,
+        "parts": [
+          {
+            "name": "path-bank-rough-joint-1000000-native.tar.zst.part0000",
+            "bytes": 1000000000,
+            "sha256": "f7d4fb2d157f865f789131ab0e72724b38271b515b4684b16b0635c26225f374"
+          },
+          {
+            "name": "path-bank-rough-joint-1000000-native.tar.zst.part0001",
+            "bytes": 1000000000,
+            "sha256": "a792186375c482a393e8faf4f694f39c7825f12c1d7ec3cdf25d9c470137d7de"
+          },
+          {
+            "name": "path-bank-rough-joint-1000000-native.tar.zst.part0002",
+            "bytes": 1000000000,
+            "sha256": "20df125d8a0c310ca0875544d22f6beeffd768fd988cdef2c890f3fd83e7d76a"
+          },
+          {
+            "name": "path-bank-rough-joint-1000000-native.tar.zst.part0003",
+            "bytes": 1000000000,
+            "sha256": "0e46f2d4e690e997e4905cc442eeb2c7e1ae98e2e28c223144af98ab7fd96bee"
+          },
+          {
+            "name": "path-bank-rough-joint-1000000-native.tar.zst.part0004",
+            "bytes": 1000000000,
+            "sha256": "a031f0c9d00f85edbf5bdfbf0ce259ffbce5cc9c42fb51466e92934fd2cff83c"
+          },
+          {
+            "name": "path-bank-rough-joint-1000000-native.tar.zst.part0005",
+            "bytes": 1000000000,
+            "sha256": "830c00ab760347c020836d97fc310a75fd5504645af634dcde924e88309b8807"
+          },
+          {
+            "name": "path-bank-rough-joint-1000000-native.tar.zst.part0006",
+            "bytes": 1000000000,
+            "sha256": "f63b5da491f322fa5ea9ffb208f5ad7d2aea77312d8758bf98dfc89bb4d07d6b"
+          },
+          {
+            "name": "path-bank-rough-joint-1000000-native.tar.zst.part0007",
+            "bytes": 1000000000,
+            "sha256": "2d78522634421819b26032245dcf7ba346aa0a3bae740ba7ce41fcfc7bdd0102"
+          },
+          {
+            "name": "path-bank-rough-joint-1000000-native.tar.zst.part0008",
+            "bytes": 1000000000,
+            "sha256": "a773bedea0bc370f0566cb3d78826063d9765b60d94a77ec739ff59544a16e35"
+          },
+          {
+            "name": "path-bank-rough-joint-1000000-native.tar.zst.part0009",
+            "bytes": 775977517,
+            "sha256": "119357f8cb875f320e3165617353de77e66ba9a66d2ee6ceefa8844f41f59177"
+          }
+        ],
+        "source_archive_receipt": {
+          "path": "local-artifacts/oscar-closeout-20261101/archive-metadata/rough-joint/archive-receipt.json",
+          "bytes": 2719,
+          "sha256": "e31f774fa36c19f5e596c76d4d3c552b19beb9e28cb636e0e705a2e56ed859b4"
+        },
+        "native_verification": {
+          "passed": true,
+          "task_sha256": "277c7219e49edb130049f78f91bcf176a22c06fad31f4404556fa27df263a7ca",
+          "counts": {
+            "train": 1000000,
+            "validation": 4000,
+            "test": 4000
+          },
+          "checked_shards": 7877,
+          "largest_decoded_shard_bytes": 1319936,
+          "scope": "byte/array/identity integrity; not scientific acceptance"
+        },
+        "native_verification_receipt": {
+          "path": "local-artifacts/oscar-closeout-20261101/rough-joint-native-bank-verification.json",
+          "bytes": 327,
+          "sha256": "3d6920bfcf407cf752de75a2a9b1e012c356ac583c2bf402573c9a8fd8ffc3bd"
+        },
+        "drive_relative_folder": "training-banks-20261031/rough-joint"
+      }
+    ]
+  },
+  "historical_payloads": {
+    "logical_files": 20420,
+    "payload_bytes": 7672992354,
+    "compressed_bytes": 7060858995,
+    "parts": 9,
+    "groups": [
+      {
+        "name": "historical-heston-fits-and-references",
+        "job_id": "8204297",
+        "logical_files": 738,
+        "payload_bytes": 1845379780,
+        "compressed_bytes": 1697301351,
+        "receipt_sha256": "091a3bd5294d26ea8c64a3b0315b7f97ae49cd59960d8a38bd40e27db9dff03d",
+        "payload_manifest_sha256": "429cb91c05f81e212e3d38115c0ea7373c84d767ef4b5cc45d3b49776acc1809",
+        "part_count": 2,
+        "parts": [
+          {
+            "bytes": 1000000000,
+            "name": "historical-heston-fits-and-references.tar.zst.part-00000",
+            "sha256": "05177bb88cee5c339e5d5b6d52bdd7e90b3b46e7942458c617f1b88854c3925c"
+          },
+          {
+            "bytes": 697301351,
+            "name": "historical-heston-fits-and-references.tar.zst.part-00001",
+            "sha256": "c58b8156a49dc55970f4bd6a312ab49ac90d14e79b1d1da7e9a222b8d45d8bee"
+          }
+        ],
+        "all_local_part_and_logical_payload_hashes_verified": true
+      },
+      {
+        "name": "historical-options-operators-and-controls",
+        "job_id": "8204298",
+        "logical_files": 16682,
+        "payload_bytes": 179975985,
+        "compressed_bytes": 115868506,
+        "receipt_sha256": "b07ad0ae3cebbb421a6bde493f097532a1751be648b28c2d5c14e0c437a9ed9a",
+        "payload_manifest_sha256": "883be3380cda99a102f0d2445dc610f8cd736a9a7a9707daf252b6a13717e9fe",
+        "part_count": 1,
+        "parts": [
+          {
+            "bytes": 115868506,
+            "name": "historical-options-operators-and-controls.tar.zst.part-00000",
+            "sha256": "ba0e88812ffb2f9a548921b1d2e109ecbcf59370cb7059778703ab1d5621b740"
+          }
+        ],
+        "all_local_part_and_logical_payload_hashes_verified": true
+      },
+      {
+        "name": "historical-path-pilots-and-followups",
+        "job_id": "8204299",
+        "logical_files": 2590,
+        "payload_bytes": 2948457884,
+        "compressed_bytes": 2757008239,
+        "receipt_sha256": "0d5e7e8af064607fd20b28d098ee67c0e054e6d4a633ba9ee3c208fb60047dd7",
+        "payload_manifest_sha256": "69a758a1c82500d17e74c53c6e7586643a4a51c20f66ed03d5623af3404f3db0",
+        "part_count": 3,
+        "parts": [
+          {
+            "bytes": 1000000000,
+            "name": "historical-path-pilots-and-followups.tar.zst.part-00000",
+            "sha256": "54354af68902876044f09de7fe7376c3595a4e96eca466287299ea404bfda87c"
+          },
+          {
+            "bytes": 1000000000,
+            "name": "historical-path-pilots-and-followups.tar.zst.part-00001",
+            "sha256": "8fa32f9cae24759e5c718e90adb25893ce9e784fc7bcac52e9a2b46e38fc477a"
+          },
+          {
+            "bytes": 757008239,
+            "name": "historical-path-pilots-and-followups.tar.zst.part-00002",
+            "sha256": "740403afec8dddd431bc18e6593f21dd607ec2bc061c326393cefd1d872bb764"
+          }
+        ],
+        "all_local_part_and_logical_payload_hashes_verified": true
+      },
+      {
+        "name": "historical-rough-and-architecture-fits",
+        "job_id": "8204300",
+        "logical_files": 410,
+        "payload_bytes": 2699178705,
+        "compressed_bytes": 2490680899,
+        "receipt_sha256": "6222dd55cb21412f05417fc3ee9e7d1261e4212cb04e264d60e51dfea07866eb",
+        "payload_manifest_sha256": "dd71122a81aef7f1de2a5c8c6996b565459d3d1f7a5ee1f264540c847dc77e2e",
+        "part_count": 3,
+        "parts": [
+          {
+            "bytes": 1000000000,
+            "name": "historical-rough-and-architecture-fits.tar.zst.part-00000",
+            "sha256": "6dfae44b2be47e95be6437fbf1bdc3d0de5e72775185b4a18b6776aa42818679"
+          },
+          {
+            "bytes": 1000000000,
+            "name": "historical-rough-and-architecture-fits.tar.zst.part-00001",
+            "sha256": "847dbe8296c304582275e945ca57a91181c45f0c77adb32583db2e39b34fd641"
+          },
+          {
+            "bytes": 490680899,
+            "name": "historical-rough-and-architecture-fits.tar.zst.part-00002",
+            "sha256": "31e6675e534cfb700b4c06c4468ec2df3cf4e22681441aa5b669888d869a339d"
+          }
+        ],
+        "all_local_part_and_logical_payload_hashes_verified": true
+      }
+    ],
+    "all_logical_payload_hashes_verified_locally": true,
+    "full_historical_closeout": {
+      "path": "local-artifacts/oscar-closeout-20261101/historical/closeout-summary-account-continuation.json",
+      "bytes": 32979,
+      "sha256": "ea0b42761266044632f4a8165bef76df23f0f5183c6f86ee4ce716e29541455e"
+    },
+    "drive": {
+      "destination_url": "https://drive.google.com/drive/folders/1LJsR0Qb0RkD4h8XiF3t6OQQlyYDKcI2k",
+      "relative_root": "oscar-history-20261101",
+      "all_owned_files_provider_uploaded": true,
+      "owned_files": 64,
+      "owned_bytes": 7081450183,
+      "proofs": {
+        "historical_43": {
+          "manifest": {
+            "path": "local-artifacts/oscar-closeout-20261101/historical/drive-complete-history-manifest.json",
+            "bytes": 17872,
+            "sha256": "7d4133549171bc2d62c93683d763bcce7872811497d41ae4c823a062d85f9906"
+          },
+          "receipt": {
+            "path": "local-artifacts/oscar-closeout-20261101/historical/drive-complete-history-account-continuation-receipt.json",
+            "bytes": 437361,
+            "sha256": "e60e82cea164d219f0677289ab2cbd3587456515bace27f5516ae448edbb8556"
+          },
+          "files": 43,
+          "bytes": 7074313515,
+          "all_uploaded": true,
+          "provider_upload_complete": true,
+          "copy_readback_hashes_verified_by_bound_receipts": true,
+          "verification_mode": "inherited_destination_readbacks_plus_current_Brown_metadata",
+          "current_metadata_verified": true,
+          "destination_payloads_read_by_this_summary": false,
+          "fresh_destination_payload_hashes_verified": false,
+          "hash_scope": "Prior Gmail copy/readback proofs and, for the five missing bank parts, new Brown copy/readbacks; current Brown checks read metadata only. Cold old payloads were not read or rehashed.",
+          "legacy_copy_receipts": [
+            {
+              "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/415a62873a1b2786eb9826878470abd5e06a90f7d245a1f6a6e8b2b6d9c954b9.json",
+              "bytes": 112020,
+              "sha256": "415a62873a1b2786eb9826878470abd5e06a90f7d245a1f6a6e8b2b6d9c954b9",
+              "manifest": {
+                "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/7d4133549171bc2d62c93683d763bcce7872811497d41ae4c823a062d85f9906.json",
+                "bytes": 17872,
+                "sha256": "7d4133549171bc2d62c93683d763bcce7872811497d41ae4c823a062d85f9906"
+              },
+              "account": "fengleralexander@gmail.com",
+              "created_utc": "2026-11-01T05:42:36.431782+00:00",
+              "checked_utc": "2026-11-01T06:12:40.267443+00:00"
+            },
+            {
+              "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/eaea79a20446d5e97566ca559e2b8faaabd75a61506d8c137e0b8bb8f6bd6d67.json",
+              "bytes": 13637,
+              "sha256": "eaea79a20446d5e97566ca559e2b8faaabd75a61506d8c137e0b8bb8f6bd6d67",
+              "manifest": {
+                "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/08321af74c6fb93e01044fc5475abb0daa21dd9e4b27a955f7104cd4f5f8736d.json",
+                "bytes": 3913,
+                "sha256": "08321af74c6fb93e01044fc5475abb0daa21dd9e4b27a955f7104cd4f5f8736d"
+              },
+              "account": "fengleralexander@gmail.com",
+              "created_utc": "2026-11-01T04:12:07.672035+00:00",
+              "checked_utc": "2026-11-01T04:12:08.024085+00:00"
+            },
+            {
+              "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/8db9ac5f2ee5e165ab179fb01173f5253c9cbf1a90a6859c6529800a99240858.json",
+              "bytes": 19245,
+              "sha256": "8db9ac5f2ee5e165ab179fb01173f5253c9cbf1a90a6859c6529800a99240858",
+              "manifest": {
+                "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/84d2061803df8d14ace9022db5ef5be35bf8cb2187f054ada5b2d21bbe653d84.json",
+                "bytes": 5883,
+                "sha256": "84d2061803df8d14ace9022db5ef5be35bf8cb2187f054ada5b2d21bbe653d84"
+              },
+              "account": "fengleralexander@gmail.com",
+              "created_utc": "2026-11-01T04:22:43.287421+00:00",
+              "checked_utc": "2026-11-01T04:22:43.826252+00:00"
+            },
+            {
+              "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/114e31094f88357ee4705794098a606da372b9234196786292b0fda4b9f1be06.json",
+              "bytes": 17000,
+              "sha256": "114e31094f88357ee4705794098a606da372b9234196786292b0fda4b9f1be06",
+              "manifest": {
+                "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/6a7275306846d899d659eb70cd160bcd18e65845d33f9d44217ee7ad32464a06.json",
+                "bytes": 5254,
+                "sha256": "6a7275306846d899d659eb70cd160bcd18e65845d33f9d44217ee7ad32464a06"
+              },
+              "account": "fengleralexander@gmail.com",
+              "created_utc": "2026-11-01T04:05:47.060819+00:00",
+              "checked_utc": "2026-11-01T04:05:47.647682+00:00"
+            },
+            {
+              "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/2cd4a09d3687533c57561d7f452b143f7295416833221950cc2c77681f2cdbb1.json",
+              "bytes": 3203,
+              "sha256": "2cd4a09d3687533c57561d7f452b143f7295416833221950cc2c77681f2cdbb1",
+              "manifest": {
+                "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/b55a4486437b3da19eda3346b4018d663ab1d95ec0f3e891b0858d7975e1e133.json",
+                "bytes": 501,
+                "sha256": "b55a4486437b3da19eda3346b4018d663ab1d95ec0f3e891b0858d7975e1e133"
+              },
+              "account": "fengleralexander@gmail.com",
+              "created_utc": "2026-11-01T04:14:28.310737+00:00",
+              "checked_utc": "2026-11-01T04:14:29.202817+00:00"
+            },
+            {
+              "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/7de818ef3575c0ea255b621fe63f5bd594c740f1cfad2504573c4a9b2425a148.json",
+              "bytes": 4562,
+              "sha256": "7de818ef3575c0ea255b621fe63f5bd594c740f1cfad2504573c4a9b2425a148",
+              "manifest": {
+                "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/f7c4d984be9231650abd6ed4b3bf9f9e870e7c0eb426b43d52a485ef92cbaaf6.json",
+                "bytes": 983,
+                "sha256": "f7c4d984be9231650abd6ed4b3bf9f9e870e7c0eb426b43d52a485ef92cbaaf6"
+              },
+              "account": "fengleralexander@gmail.com",
+              "created_utc": "2026-11-01T04:20:49.687056+00:00",
+              "checked_utc": "2026-11-01T04:20:50.342573+00:00"
+            },
+            {
+              "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/34155049726f3e868b2bd4d71d9a6627cd7ae5369d06a485be9c2a3b2ac69727.json",
+              "bytes": 3216,
+              "sha256": "34155049726f3e868b2bd4d71d9a6627cd7ae5369d06a485be9c2a3b2ac69727",
+              "manifest": {
+                "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/953e82c619e3a4a0055e644eeb4b8884441b1da044f8290099198dc1868fde81.json",
+                "bytes": 507,
+                "sha256": "953e82c619e3a4a0055e644eeb4b8884441b1da044f8290099198dc1868fde81"
+              },
+              "account": "fengleralexander@gmail.com",
+              "created_utc": "2026-11-01T04:21:10.399045+00:00",
+              "checked_utc": "2026-11-01T04:21:10.439072+00:00"
+            },
+            {
+              "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/3c0c23c15f6b12ac51c9ef9f35ce0645e6cbdd1732214a4fae1b88c11d64c692.json",
+              "bytes": 3213,
+              "sha256": "3c0c23c15f6b12ac51c9ef9f35ce0645e6cbdd1732214a4fae1b88c11d64c692",
+              "manifest": {
+                "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/d9a3fca2f20a64c43e81a1b4dc361f3f64805cbb53b73f94edbf60743750a555.json",
+                "bytes": 505,
+                "sha256": "d9a3fca2f20a64c43e81a1b4dc361f3f64805cbb53b73f94edbf60743750a555"
+              },
+              "account": "fengleralexander@gmail.com",
+              "created_utc": "2026-11-01T04:30:11.100406+00:00",
+              "checked_utc": "2026-11-01T04:30:11.956140+00:00"
+            },
+            {
+              "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/4ef6a89f012ded9d182dd02cd0fe4eba5816780398809b9bdc0d5c9e4f8037cb.json",
+              "bytes": 3213,
+              "sha256": "4ef6a89f012ded9d182dd02cd0fe4eba5816780398809b9bdc0d5c9e4f8037cb",
+              "manifest": {
+                "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/0e705eebb3b235c4b45115c2a4cc4261fc1a73bf88a14a44e1ca427b0e1b8c33.json",
+                "bytes": 505,
+                "sha256": "0e705eebb3b235c4b45115c2a4cc4261fc1a73bf88a14a44e1ca427b0e1b8c33"
+              },
+              "account": "fengleralexander@gmail.com",
+              "created_utc": "2026-11-01T04:39:32.766447+00:00",
+              "checked_utc": "2026-11-01T04:39:33.681632+00:00"
+            },
+            {
+              "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/28c1223a4fee13b57d9a24362d26f1ad40b2b9721e4ad36a6bce2d5e8e09d01e.json",
+              "bytes": 3210,
+              "sha256": "28c1223a4fee13b57d9a24362d26f1ad40b2b9721e4ad36a6bce2d5e8e09d01e",
+              "manifest": {
+                "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/43810fe28001380b0fe523f4f6222a8917cc442d63659a1f45a3bd530ce3e4d0.json",
+                "bytes": 504,
+                "sha256": "43810fe28001380b0fe523f4f6222a8917cc442d63659a1f45a3bd530ce3e4d0"
+              },
+              "account": "fengleralexander@gmail.com",
+              "created_utc": "2026-11-01T04:44:14.135509+00:00",
+              "checked_utc": "2026-11-01T04:44:14.712546+00:00"
+            },
+            {
+              "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/85cbf1385cb6c5fa788967672a541bcf24079bf2d389e434c69a1dbbfd355cf2.json",
+              "bytes": 4497,
+              "sha256": "85cbf1385cb6c5fa788967672a541bcf24079bf2d389e434c69a1dbbfd355cf2",
+              "manifest": {
+                "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/283d8c113cda835b295e3996ddb0dd2cdd315461938b6fa0fd4c5ddb99908979.json",
+                "bytes": 974,
+                "sha256": "283d8c113cda835b295e3996ddb0dd2cdd315461938b6fa0fd4c5ddb99908979"
+              },
+              "account": "fengleralexander@gmail.com",
+              "created_utc": "2026-11-01T04:44:34.784264+00:00",
+              "checked_utc": "2026-11-01T04:44:34.860798+00:00"
+            },
+            {
+              "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/faca0fcf8ee30545e466c1f978a84065bb58b793c9c0dffea3793ce63d173e87.json",
+              "bytes": 3193,
+              "sha256": "faca0fcf8ee30545e466c1f978a84065bb58b793c9c0dffea3793ce63d173e87",
+              "manifest": {
+                "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/c1a213e7f8308014be3e2640f9ce92c1079d707770d533726abbf0109b4f4253.json",
+                "bytes": 497,
+                "sha256": "c1a213e7f8308014be3e2640f9ce92c1079d707770d533726abbf0109b4f4253"
+              },
+              "account": "fengleralexander@gmail.com",
+              "created_utc": "2026-11-01T04:54:35.696483+00:00",
+              "checked_utc": "2026-11-01T04:54:36.631446+00:00"
+            },
+            {
+              "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/6d1862d9f0c1796f5626755770464827a5e62262cc54bd8919f9816137e1b7ed.json",
+              "bytes": 3193,
+              "sha256": "6d1862d9f0c1796f5626755770464827a5e62262cc54bd8919f9816137e1b7ed",
+              "manifest": {
+                "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/e352519b681816f30fc38f25d1cd4319892f3f1e6a43ad7320b467f5ab8383d1.json",
+                "bytes": 497,
+                "sha256": "e352519b681816f30fc38f25d1cd4319892f3f1e6a43ad7320b467f5ab8383d1"
+              },
+              "account": "fengleralexander@gmail.com",
+              "created_utc": "2026-11-01T05:04:17.440391+00:00",
+              "checked_utc": "2026-11-01T05:04:18.288724+00:00"
+            },
+            {
+              "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/ab72ce083c71641d2bf45ee098f89d22842b1afd4c1cd0223b619550abd59e12.json",
+              "bytes": 3190,
+              "sha256": "ab72ce083c71641d2bf45ee098f89d22842b1afd4c1cd0223b619550abd59e12",
+              "manifest": {
+                "path": "local-artifacts/oscar-closeout-20261101/account-continuation-proof-snapshots/c8825e9995d58957288a1becb1199bf2b64740f18a015cadfb23e7190b661041.json",
+                "bytes": 496,
+                "sha256": "c8825e9995d58957288a1becb1199bf2b64740f18a015cadfb23e7190b661041"
+              },
+              "account": "fengleralexander@gmail.com",
+              "created_utc": "2026-11-01T05:11:38.921103+00:00",
+              "checked_utc": "2026-11-01T05:11:39.584753+00:00"
+            }
+          ],
+          "verifier_source": {
+            "path": "local-artifacts/oscar-closeout-20261101/verify_account_continuation.py",
+            "bytes": 23893,
+            "sha256": "88df201f43152fb56c996beb92de6ef8268712719f5687f9de466d5bcd5423f3"
+          },
+          "checked_utc": "2026-11-01T15:58:45.262867+00:00",
+          "destination_account": "Brown",
+          "independent_cloud_download_verified": false
+        },
+        "source_payload_audit_3": {
+          "manifest": {
+            "path": "local-artifacts/oscar-closeout-20261101/historical/drive-excluded-payload-audit-manifest.json",
+            "bytes": 1209,
+            "sha256": "e934af1d3757286489c9b3ee7f07a065f80e4e2bc64985837b5856af032c63e9"
+          },
+          "receipt": {
+            "path": "local-artifacts/oscar-closeout-20261101/historical/drive-excluded-payload-audit-brown-receipt.json",
+            "bytes": 5213,
+            "sha256": "88903ec1bcd94266219c504b0d6439b37d54261a28cf04087d7ffdfd1b650956"
+          },
+          "files": 3,
+          "bytes": 454738,
+          "all_uploaded": true,
+          "provider_upload_complete": true,
+          "copy_readback_hashes_verified_by_bound_receipts": true,
+          "verification_mode": "saved_local_copy_readback_and_provider_upload_receipt",
+          "current_metadata_verified": false,
+          "destination_payloads_read_by_this_summary": false,
+          "saved_destination_copy_readback_verified": true,
+          "hash_scope": "Saved original destination readback and provider-upload proof; this summary rechecks only the proof bytes.",
+          "legacy_copy_receipts": [],
+          "checked_utc": "2026-11-01T15:40:15.847656+00:00",
+          "destination_account": "Brown",
+          "independent_cloud_download_verified": false
+        },
+        "historical_publication_audit_4": {
+          "manifest": {
+            "path": "local-artifacts/oscar-closeout-20261101/historical/drive-publication-audit-brown-manifest.json",
+            "bytes": 1652,
+            "sha256": "272a0a98a20f3d6f03e252fd09cb81bc541c95ae49eed7d700ba18547c4b5f57"
+          },
+          "receipt": {
+            "path": "local-artifacts/oscar-closeout-20261101/historical/drive-publication-audit-brown-receipt.json",
+            "bytes": 7609,
+            "sha256": "881985982537c1233054384eee7b099dc346d8e6f4f371162252a331b027c8c9"
+          },
+          "files": 4,
+          "bytes": 457977,
+          "all_uploaded": true,
+          "provider_upload_complete": true,
+          "copy_readback_hashes_verified_by_bound_receipts": true,
+          "verification_mode": "saved_local_copy_readback_and_provider_upload_receipt",
+          "current_metadata_verified": false,
+          "destination_payloads_read_by_this_summary": false,
+          "saved_destination_copy_readback_verified": true,
+          "hash_scope": "Saved original destination readback and provider-upload proof; this summary rechecks only the proof bytes.",
+          "legacy_copy_receipts": [],
+          "checked_utc": "2026-11-01T16:18:22.701991+00:00",
+          "destination_account": "Brown",
+          "independent_cloud_download_verified": false
+        },
+        "new_numerical_pilot_14": {
+          "manifest": {
+            "path": "local-artifacts/application-refinement-20261101/projected-euler-oscar/drive-pilot-complete-manifest.json",
+            "bytes": 5218,
+            "sha256": "75ce9c5953c97ebf9eff0d92a68c3a24fc2415470162c6ba33c2a22e42f4fe06"
+          },
+          "receipt": {
+            "path": "local-artifacts/application-refinement-20261101/projected-euler-oscar/drive-pilot-complete-receipt.json",
+            "bytes": 17164,
+            "sha256": "8d05f91ba92724d515432e1c4b5eaa28ba91d9e90a8ca84c935012e5fe7b1484"
+          },
+          "files": 14,
+          "bytes": 6223953,
+          "all_uploaded": true,
+          "provider_upload_complete": true,
+          "copy_readback_hashes_verified_by_bound_receipts": true,
+          "verification_mode": "saved_local_copy_readback_and_provider_upload_receipt",
+          "current_metadata_verified": false,
+          "destination_payloads_read_by_this_summary": false,
+          "saved_destination_copy_readback_verified": true,
+          "hash_scope": "Saved original destination readback and provider-upload proof; this summary rechecks only the proof bytes.",
+          "legacy_copy_receipts": [],
+          "checked_utc": "2026-11-01T05:01:33.896662+00:00",
+          "destination_account": "Gmail",
+          "independent_cloud_download_verified": false
+        }
+      },
+      "provider_flags_only_independent_cloud_redownload": false,
+      "sharing_permissions_changed": false
+    }
+  },
+  "previously_preserved_outputs": {
+    "source_audit": {
+      "path": "local-artifacts/oscar-closeout-20261101/local-preservation-audit.json",
+      "bytes": 58000,
+      "sha256": "159d47d63049ecda013a13bcf6fa40abe274328d1abf43abd1852f6611bb8a10"
+    },
+    "option_native_files": 29766,
+    "option_native_bytes": 2347578442,
+    "option_scope": "Earlier complete checksum receipt reconciled against current presence/size; full option-bank payloads were not rehashed in this closeout.",
+    "path_scaleup_models_and_diagnostics_files_rehashed": 234,
+    "all_six_scaleup_fits_preserved": true
+  },
+  "development_diagnosis_drive": {
+    "manifest": {
+      "path": "local-artifacts/oscar-closeout-20261101/development-diagnosis-drive-manifest.json",
+      "bytes": 1410,
+      "sha256": "e4f755c462dfb979c982c7cd2b9626ebf428dbb3bc723b3e7e882198a54eae03"
+    },
+    "receipt": {
+      "path": "local-artifacts/oscar-closeout-20261101/development-diagnosis-drive-verification.json",
+      "bytes": 6668,
+      "sha256": "b8ade03e0b53e0f45ac42cfce8b1aa5145912af042636e02c193d965ab32d839"
+    },
+    "files": 4,
+    "bytes": 692664,
+    "all_uploaded": true,
+    "provider_upload_complete": true,
+    "copy_readback_hashes_verified_by_bound_receipts": true,
+    "verification_mode": "saved_local_copy_readback_and_provider_upload_receipt",
+    "current_metadata_verified": false,
+    "destination_payloads_read_by_this_summary": false,
+    "saved_destination_copy_readback_verified": true,
+    "hash_scope": "Saved original destination readback and provider-upload proof; this summary rechecks only the proof bytes.",
+    "legacy_copy_receipts": [],
+    "checked_utc": "2026-11-01T04:25:50.263003+00:00",
+    "destination_account": "Gmail",
+    "independent_cloud_download_verified": false
+  },
+  "accounting": {
+    "original_historical_science_records": 15491,
+    "known_allocations_after_terminal_overrides_and_new_pilot": 15499,
+    "states": {
+      "COMPLETED": 15429,
+      "TIMEOUT": 56,
+      "FAILED": 12,
+      "CANCELLED": 2
+    },
+    "historical_lifetime_allocated_cpu_hours_including_failed_attempts": 3049.325277777778,
+    "historical_lifetime_allocated_gpu_hours_including_failed_attempts": 10.180555555555555,
+    "new_preservation_and_pilot_jobs": [
+      {
+        "job_id": "8203024",
+        "state": "COMPLETED",
+        "exit_code": "0:0",
+        "elapsed_seconds": 193,
+        "cpus": 1,
+        "tres": "billing=1,cpu=1,mem=2G,node=1"
+      },
+      {
+        "job_id": "8203025",
+        "state": "COMPLETED",
+        "exit_code": "0:0",
+        "elapsed_seconds": 192,
+        "cpus": 1,
+        "tres": "billing=1,cpu=1,mem=2G,node=1"
+      },
+      {
+        "job_id": "8203026",
+        "state": "COMPLETED",
+        "exit_code": "0:0",
+        "elapsed_seconds": 197,
+        "cpus": 1,
+        "tres": "billing=1,cpu=1,mem=2G,node=1"
+      },
+      {
+        "job_id": "8204297",
+        "state": "COMPLETED",
+        "exit_code": "0:0",
+        "elapsed_seconds": 28,
+        "cpus": 1,
+        "tres": "billing=1,cpu=1,mem=2G,node=1"
+      },
+      {
+        "job_id": "8204298",
+        "state": "COMPLETED",
+        "exit_code": "0:0",
+        "elapsed_seconds": 52,
+        "cpus": 1,
+        "tres": "billing=1,cpu=1,mem=2G,node=1"
+      },
+      {
+        "job_id": "8204299",
+        "state": "COMPLETED",
+        "exit_code": "0:0",
+        "elapsed_seconds": 64,
+        "cpus": 1,
+        "tres": "billing=1,cpu=1,mem=2G,node=1"
+      },
+      {
+        "job_id": "8204300",
+        "state": "COMPLETED",
+        "exit_code": "0:0",
+        "elapsed_seconds": 45,
+        "cpus": 1,
+        "tres": "billing=1,cpu=1,mem=2G,node=1"
+      },
+      {
+        "job_id": "8206381",
+        "state": "COMPLETED",
+        "exit_code": "0:0",
+        "elapsed_seconds": 13,
+        "cpus": 1,
+        "tres": "cpu=1"
+      }
+    ],
+    "new_actual_allocated_cpu_hours": 0.21777777777777776,
+    "new_cpu_hours_including240s_per_job_cleanup": 0.7511111111111111,
+    "new_gpu_hours": 0,
+    "reconciliation": "Original raw snapshot included three still-running bank-preservation jobs; their terminal rows are replaced by the seven-job final accounting. No batch/extern records counted.",
+    "original_accounting": {
+      "path": "local-artifacts/oscar-closeout-20261101/project-accounting.psv",
+      "sha256": "253a1e72b32f1292000f7072eb9519969b1d190114dc4e355c960353a94e62e7",
+      "bytes": 2084023
+    },
+    "final_seven_preservation_jobs": {
+      "path": "local-artifacts/oscar-closeout-20261101/historical/seven-preservation-jobs-accounting.psv",
+      "sha256": "f5ab2ff59335a218e66dc11c204effaa3bdf4e2b85f73666be3acf3787427e64",
+      "bytes": 402
+    },
+    "pilot_collection": {
+      "path": "local-artifacts/application-refinement-20261101/projected-euler-oscar/collection-receipt.json",
+      "sha256": "a23de6eab8c13db9f86427e52dce719003f08ee44020f3a2c13f48006620a560",
+      "bytes": 557
+    },
+    "historical_post_pilot_queue_observation": {
+      "path": "local-artifacts/oscar-closeout-20261101/historical/post-pilot-current-queue.json",
+      "sha256": "2aea366d6679e6c68d677ef24625768c80cd6f4652782dccbea97cec8301476e",
+      "bytes": 283
+    }
+  },
+  "last_successful_queue_observation": {
+    "path": "local-artifacts/oscar-closeout-20261101/final-current-queue.json",
+    "bytes": 418,
+    "sha256": "03e92e5cb8a3d460386c9a9f8806bc158009573419124505fd7eb1d36030c901",
+    "checked_utc": "2026-11-01T06:02:53.232536+00:00",
+    "returncode": 0,
+    "queue_empty_at_that_observation": true
+  },
+  "latest_queue_attempt": {
+    "path": "local-artifacts/oscar-closeout-20261101/final-current-queue-account-continuation.json",
+    "bytes": 1733,
+    "sha256": "6167f714001d94ded7f042f0734226169d55ce39f7f106ce85bc9d79c4ae961c",
+    "checked_utc": "2026-11-01T16:15:26.436382+00:00",
+    "returncode": 255,
+    "result": "SSH authentication expired; no live queue result"
+  },
+  "live_queue_rechecked": false,
+  "no_new_cluster_jobs_submitted": true,
+  "queue_scope": "All 15,499 known allocations are terminal in the audited accounting. No jobs were submitted after the numerical pilot (operator confirmation); the latest SSH authentication failure is not a fresh empty-queue observation.",
+  "backlog": {
+    "identified_unique_unpreserved_outputs": 0,
+    "operational_allocations_nonterminal_in_audited_records": 0,
+    "pending_science": {
+      "path": "local-artifacts/oscar-closeout-20261101/terminal-attempts-and-scientific-backlog.json",
+      "bytes": 4802,
+      "sha256": "aa30ebac1d8545f7235f3ad5940ca8a0d4e68bd926a46bde0bc96a34cf8ab0a7"
+    },
+    "all_trajectory_candidates_retain_failed_final_marginal_screen_status": true,
+    "no_production_task_bank_or_model_replaced": true,
+    "new_pilot_is_development_only": true
+  },
+  "drive_destination_url": "https://drive.google.com/drive/folders/1LJsR0Qb0RkD4h8XiF3t6OQQlyYDKcI2k",
+  "sharing_permissions_changed": false,
+  "account_continuation": {
+    "same_parent_google_id": "1ta1LjBopl-kErBfDEr2R_UL-9Hs8Y9D7",
+    "same_workshop_google_id": "1LJsR0Qb0RkD4h8XiF3t6OQQlyYDKcI2k",
+    "account_comparison_snapshot": {
+      "path": "local-artifacts/oscar-closeout-20261101/brown-access-comparison-snapshot.json",
+      "bytes": 4332,
+      "sha256": "aa874a06f99c64c2ac65515bdc2b6ddc8ff2bd2b082f12103a76b6c9fd544f8f"
+    },
+    "Brown_write_readback_upload_audit": {
+      "manifest": {
+        "path": "local-artifacts/oscar-closeout-20261101/brown-access-audit-manifest.json",
+        "bytes": 378,
+        "sha256": "50dcd91157a17e996153ec60e8f2decb49836550fb2475e1711c744cd33d7dca"
+      },
+      "receipt": {
+        "path": "local-artifacts/oscar-closeout-20261101/brown-access-audit-receipt.json",
+        "bytes": 3266,
+        "sha256": "be631c415b1bd54cc24b72ef172ce7446dcbc353ab910c8c25ec9473cabc86f8"
+      },
+      "files": 1,
+      "bytes": 4332,
+      "all_uploaded": true,
+      "provider_upload_complete": true,
+      "copy_readback_hashes_verified_by_bound_receipts": true,
+      "verification_mode": "saved_local_copy_readback_and_provider_upload_receipt",
+      "current_metadata_verified": false,
+      "destination_payloads_read_by_this_summary": false,
+      "saved_destination_copy_readback_verified": true,
+      "hash_scope": "Saved original destination readback and provider-upload proof; this summary rechecks only the proof bytes.",
+      "legacy_copy_receipts": [],
+      "checked_utc": "2026-11-01T15:32:47.280705+00:00",
+      "destination_account": "Brown",
+      "independent_cloud_download_verified": false
+    },
+    "upload_monitor_source": {
+      "path": "local-artifacts/oscar-closeout-20261101/finish_brown_uploads.py",
+      "bytes": 1920,
+      "sha256": "8e0824c99efc62ef1e1cbad8e6d7bf4f478896628c98e1c85e713550429dc316"
+    },
+    "original_copy_readbacks": "Gmail FileProvider destination",
+    "new_five_bank_parts": {
+      "path": "local-artifacts/oscar-closeout-20261101/brown-five-parts-receipt.json",
+      "bytes": 92144,
+      "sha256": "963aa2a7b2a0524bf0674a53d22cc9afb87320bd2ff7270f030c5e5dabf351f5"
+    },
+    "current_provider_verification": "Brown FileProvider metadata, without rehydrating old payloads",
+    "ownership_or_permission_failure_cause_inferred": false,
+    "sharing_permissions_changed": false
+  },
+  "independent_cloud_redownload_verified": false
+}
