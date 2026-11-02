@@ -2,9 +2,8 @@
 # Submit from the immutable checkout. Supply the absolute Pixi executable.
 # sbatch [resource overrides] cluster/core_gpu.sbatch /absolute/pixi COMMAND [ARGS...]
 # Example command: python scripts/check_core_cluster.py --require-gpu --out SHARED_NEW_DIR
+# Choose the account and GPU partition with the caller's sbatch flags; neither is fixed here.
 #SBATCH --job-name=sbi4finance-core-gpu
-#SBATCH --account=carney-mjfrank-condo2
-#SBATCH --partition=gpu-he
 #SBATCH --gres=gpu:1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=4

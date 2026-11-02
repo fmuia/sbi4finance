@@ -304,6 +304,330 @@ unrelated notebook or transfer.
   the existing versioned workshop kit has not been repackaged with
   these new notebook interfaces.
 
+## G. Collaborator handover before the next feedback round
+
+**Baseline:** merged PR #64, `main` at `08f4ebde1b47893057c61706a1a94ae017806c47`.
+The local main checkout was pulled after the merge. The application source tree
+matches reviewed commit `517887c`; this plan starts from that delivered work.
+The immediate objective is that another collaborator can run, understand and
+change the three application lessons, and execute the same numerical workers
+on their own supported compute. Notebook-content feedback resumes after this
+handover pass. No new scientific campaign is part of the handover.
+
+### Audit findings and design decisions
+
+- **Cached review already needs no Oscar.** All three lessons use shipped assets;
+  a full bank or native model is unnecessary for the default review. Optional
+  model inference and research-scale training need separate downloads.
+- **The numerical core is already scheduler-free.** Bank generation, posterior
+  training, evaluation and native loading accept filesystem paths. Oscar binds
+  deployment/accounting wrappers, dated controllers and campaign configurations.
+  Reuse the workers; introduce a thin compute profile only where it is consumed.
+- **Documentation conflicts are a real cleanup risk.** Several entry pages still
+  exclude returns, call trajectories proposed work, or direct users to Oscar for
+  already published models. Correct their authority/scope before retiring code.
+- **Navigation and retention are separate.** At this baseline, 1,309 of 2,057
+  tracked files live under `lab/evidence/`. The feedback entry point should show
+  a small editing surface; reducing that surface does not require deleting the
+  numerical history. Historical dependencies still matter: `long_end.py`
+  eagerly loads SPY/quick-check assets, and `gbm`/`svj` names include active utilities.
+- **Keep one current handover plan.** This section is the execution plan; root,
+  tutorial and lab READMEs supply the short entry points. Update those and the
+  existing training guide instead of adding more overlapping handover documents.
+
+### G0 · Establish the current front door and review baseline
+
+**Work.** Name the three application notebooks in the root README; identify
+introduction/architecture/backbone review and historical studies as supporting
+material. Correct stale returns exclusions in active instructions, and mark
+older operational guides as historical. Give the current plan priority over
+old slot timings and D21. Keep the completed numerical limitations visible.
+
+**Deliverables.** One short root editing map, aligned author instructions and
+links to the merged review baseline, existing checks and this plan. This
+planning change performs the scope/navigation corrections; it does not claim
+that the clean-machine or external-compute rehearsals below have happened.
+
+**Done when.** A new reader can identify all three lessons from the first README
+screen and finds no active instruction telling them to remove the trajectory
+application. Comments can name an exact source version.
+
+### G1 · Publish the minimal edit and dependency map
+
+**Work.** Trace the actual notebook cells and optional actions to their runtime
+functions, canonical lab definitions and input assets. Include both executed
+code and displayed author-side recipes; changing a displayed snippet alone does
+not change an executing numerical helper. Use the copy registry and cached
+imports to establish the map, including historical dependencies that are still
+loaded. Avoid a catalogue of every file.
+
+**Required map.**
+
+| Intervention | First editing location | Source boundary |
+| --- | --- | --- |
+| Prose, equations, visible snippets, layout and controls | Three application files under `tutorial/notebooks/` | Notebook Python/Markdown; verify displayed code against the actual API. |
+| Option case selection/tables/corners | `tutorial/src/sbi4f_tutorial/backbones.py` | Participant-authored UI. |
+| Heston illustration/PPC or rough forward helper | `lab/src/sbi4finance/calibration/teaching.py` | Copy unchanged to tutorial through `copy-to-tutorial`. |
+| Option adapter/conditional network/native sampling | `lab/src/sbi4finance/calibration/full_surface.py` | Canonical numerical code, copied into participant runtime. |
+| Trajectory scaling, prefix masks and inference | `lab/src/sbi4finance/path_inference/inference.py` | Canonical numerical code; copied definitions live in `trajectory.py`. |
+| Trajectory cached loading/presentation | Registered authored definitions in `tutorial/src/sbi4f_tutorial/trajectory.py` | This module mixes copied and authored definitions; consult the registry per definition. |
+| Shared plot style | `lab/src/sbi4finance/svj/plots.py` | Active shared utility despite its historical directory name. |
+| Workflow illustrations | Existing `lab/evidence/illustrations/*/render.py` | Regenerate and publish with the asset tools. |
+| Shipped observations/draws/results | Source study/export plus `accept`, `manifest`, `claims` | Generated artifacts; never hand-edit payloads or hash tables. |
+
+**Deliverables.** A concise notebook → helper → canonical source → assets map
+in existing READMEs, plus a small example intervention showing which checks to
+run for prose/UI, numerical code and asset changes. Preserve function-level
+copy parity and authored exceptions.
+
+**Done when.** A collaborator can locate the executing implementation behind
+one figure/control in each lesson and make a small prose/UI change without
+editing a bank, checkpoint or both copies of a numerical function.
+
+#### Follow a computation from the lesson
+
+| Visible behavior | Executing participant code | Canonical definition / inputs |
+| --- | --- | --- |
+| Heston path illustration, Fourier quote prices and predictive quotes | `teaching.heston_illustrative_paths`, `heston_smile`, `heston_posterior_predictive` | Copied from `lab/src/sbi4finance/calibration/teaching.py`; Fourier numerics use `hkde.py`. The current saved posterior/reference is under `assets/backbones/heston-final500/`. |
+| Option case selector, posterior table and corner | `backbones.load_example`, `parameter_rows`, `corner` | Authored in the participant `backbones.py`; the copied `full_surface_teaching` loader checks the selected cache. Rough cases live under `assets/backbones/rough-known*/` or `rough-joint*/`. |
+| Explicit rough forward-simulation button | `teaching.price_rough_smile` → `pricing` → `rough_bergomi`/`bergomi` | Canonical calibration `teaching.py`/`pricing.py` and model simulators; the participant example reads `assets/tasks/calibration_rough_pilot.json`. It does not replace the selected cached posterior. |
+| Trajectory case/history views | Authored `trajectory.load_example`, `cached_posterior`, `plot_returns`, `plot_evolution` | `assets/trajectories/{heston,rough-known,rough-joint}/`; aggregate diagnostics separately use `assets/results/trajectories/closeout-20261031/`. |
+| Actual trajectory prefix/mask and optional inference | Copied `trajectory.conditioning_data`, `build_workflow`, `sample`; authored `load_live` | Canonical `lab/src/sbi4finance/path_inference/inference.py`; optional model bytes under `assets/local-checkpoints/path-*/`. |
+| Shared plot style | `plots.style` | Copied from `lab/src/sbi4finance/svj/plots.py`. |
+
+These are the short source walks needed for routine intervention. Deeper
+imports remain behind those helpers. In particular, the rough lesson's
+historical `long_end` import still reads SPY and quick-check assets eagerly;
+collapsing that section does not make its assets removable. Heston's optional
+small fit executes `full_surface` APIs; the rough training scaffold is displayed
+code until explicitly run by an author.
+
+#### A small intervention and its checks
+
+- **Prose, math or layout:** edit the relevant notebook's Markdown/cell, then
+  run `check`, `test` and `test-notebooks` from `tutorial/`. A prose-only change
+  should leave `assets/` and scientific task/model identities unchanged.
+- **Participant presentation helper:** edit authored `backbones.py` definitions
+  or the registered authored `trajectory.py` definitions. Run tutorial checks
+  and lab copy parity. Do not alter a copied definition in only one location.
+- **Numerical behavior:** edit the canonical lab definition, run the relevant
+  numerical tests, refresh its copy with `copy-to-tutorial`, and run lab release
+  checks plus tutorial checks. A changed model/prior/noise/numerical target
+  needs its own specified run; do not patch frozen metadata to accept old weights.
+- **Published result/figure:** edit its producer, regenerate and publish via
+  the lab tools, then refresh/check the asset manifest and claims. Keep prior
+  scientific evidence and reference scope attached to the original estimator.
+
+
+### G2 · Document and check scheduler-free compute recipes
+
+**Work.** Turn the existing lab entry points into a clearly named supported
+command set. Use explicit `pixi run --locked -e core` for current BF2.1 work;
+lab's default environment retains BF2.0 historical studies. `pip install lab`
+alone does not install the scientific dependencies. Keep the experiment
+configuration (task/prior/noise/seeds/holdouts) separate from data/output paths
+and machine resources.
+
+| Operation | Existing scheduler-free route |
+| --- | --- |
+| Option generation/collections | `scripts/calibration_bank.py` local execution; `scripts/calibration_bank_collection.py` |
+| Option posterior/pricer training and evaluation | `train_full_surface.py`, `train_full_surface_pricer.py`, `evaluate_full_surface.py` |
+| Trajectory generation/verification | `scripts/path_bank.py` generate, benchmark and check |
+| Trajectory training/evaluation | `train_path_posterior.py`, `evaluate_path_posterior.py`; use bounded shard streaming for million-history banks |
+| Software readiness | Start with the `core-check` task / `check_full_surface_environment.py`; bounded local smokes use `check_core_cluster.py --allow-local` or `check_path_cluster.py --quick --teaching`, with explicit output paths |
+| References | Task-compatible reference CLIs and their actual sampler/environment; older path reference targets do not validate the new inferred-drift tasks |
+
+**Deliverables.** Existing lab README/training guide gains a local CPU route:
+locked environment → supplied data verification → tiny generation/fit/reload/
+sampling/evaluation → a downloaded-bank training recipe. Examples use caller
+paths and fresh output directories. Explain which runs can resume and which
+require a new fit; warm-starting weights is not exact state continuation.
+No Slurm commands, SSH session or owner-specific account is needed for this path.
+
+**Checks.** On a supported non-Oscar CPU environment, exercise one Heston-option
+workflow and all three tiny path tasks, including native reload, arbitrary
+prefixes/masks and validation-only evaluation. Bound size, time and host memory;
+use distinct smoke outputs and preserve all reserved-test guards. A tiny fit
+checks software execution, not posterior accuracy. Verify that commands do not
+need `sbatch`, `squeue`, shared-login state or Oscar filesystem paths.
+
+**Supported scope.** Test Linux x86-64 CPU and/or Apple Silicon as the first
+concrete target; record the machine actually tested. NVIDIA Linux GPU uses
+`core-gpu`, and references use `core-reference`. Windows lab execution, Apple
+Intel, object-store paths and other accelerators are additional support work,
+not claims of the current handover. POSIX locks/hard links and ordinary paths
+remain part of collection-generation requirements.
+
+**Done when.** A collaborator can reproduce the bounded worker chain with their
+own paths on a supported machine and inspect a reload/evaluation record, without
+changing scientific code or any owner's credentials.
+
+### G3 · Make artifact access and optional inference unambiguous
+
+**Work.** Separate three access levels: cached lesson feedback, optional native
+model inference, and full-bank research. Confirm collaborators' own repository/
+Drive access once; no workflow should depend on the owner's SSH login or desktop
+Drive mount. Use existing immutable downloads and hashes; do not regenerate
+successful data to repair a transfer.
+
+**Deliverables.** Consolidate exact archive names, destination layouts and
+verification commands in `training-data-guide.md`, linked from the participant
+README. In particular document `sbi4finance-pretrained-and-cases-20261029.zip`
+and its `pretrained/{heston100k-final500,rough-known100k-final500,rough-joint100k-final500}`
+directories. Explain extraction beneath `assets/local-checkpoints/`, unchanged
+native metadata/model files, and corresponding UI paths. Retain the already
+specified path-model archive and defaults. Full option snapshots must retain
+their referenced collection tree; trajectory banks are external sharded files
+and must not be eagerly loaded as million-history tensors.
+
+**Checks.** Resolve each advertised archive and example model path from its
+recorded inventory; verify identity using the native loader. Run cached lessons
+with native models absent; test missing-model recovery separately. Confirm that
+opening a notebook starts no download, large Monte Carlo job or training.
+
+**Done when.** A reviewer knows which download is necessary for their chosen
+activity, where it goes and how to verify it, using their own access.
+
+### G4 · Keep scheduler deployment thin and optional
+
+**Work.** Reuse the same workers under a local shell or an allocated Slurm job.
+Document runtime, project/data/output roots, account, partition/QOS, time/memory
+and GPU settings. Existing flags take precedence over adding a configuration
+framework. If a reusable profile is useful, supply one small consumed example
+with no credentials or user-specific paths.
+
+**Deliverables.** One bounded single-job Slurm recipe with a reviewable command
+plan/preflight. Distinguish portable worker commands from Slurm orchestration:
+`run_bank_campaign.py` submits jobs despite residing under `scripts/`, and
+`submit_path_scaleup.py` is a fixed multi-job campaign rather than a generic
+training command. Keep dated Oscar controllers/configs as frozen provenance;
+do not replace their paths and present them as fresh deployment scripts.
+
+**Checks.** Test command construction without submission, custom paths/resource
+flags and preserved duplicate-submission, source, memory and spending guards.
+After the actual target is chosen, perform a bounded allocated GPU readiness/
+small-fit check before any full GPU campaign. Local runs report available
+local metrics; they must not invent Slurm accounting. Each model's generation,
+fit and evaluation depend only on their necessary inputs, not unrelated models.
+
+**Done when.** Deployment changes machine settings and wrapper invocation,
+while the reviewed scientific worker/configuration remains the same. This plan
+submits no job and authorizes no research-scale campaign by itself.
+
+### G5 · Retire files in small dependency-checked batches
+
+**First pass.** Fix navigation, superseded instructions and broken operational
+links. Keep historical numerical records clearly scoped. Exclude generated
+evidence from the core editing map instead of introducing another directory
+layout or duplicating the tutorial into a new package.
+
+**Second pass.** Classify candidate dated controllers, duplicate operator copies
+and bulk historical outputs. For each candidate record its consumers, retained
+source commit/archive, evidence bindings and replacement link. Check imports,
+CLI/pixi tasks, tests, the function-copy registry, manifests, claims and Markdown
+links before deleting or moving it. Retire source through Git history/pinned
+references and the existing verified external archives; do not rewrite old
+scientific hashes or remove failures to make the tree look cleaner.
+
+The first bounded retirement batch covered
+`lab/cluster/start_known100k_20261028.py` and
+`lab/cluster/start_joint100k_20261029.py`, followed by duplicated evidence-bound
+operator copies. Their absence from current worker imports alone is not enough:
+check source/evidence bindings before removing them from the working tree.
+
+**Protected by default.** Current notebooks and their full dependency closure;
+shipped cached/reference assets; native format/loaders; canonical generation,
+training and evaluation; accepted evidence and unresolved failures; publication
+and verification tools. Collapsed notebook sections still execute their imports.
+Do not remove `gbm`/`svj` or path code simply because a directory name looks old.
+
+**Done when.** Each removal batch has a positive dependency/retention argument,
+all affected checks pass and a clean checkout still supports the advertised
+workflows. Stop rather than introduce new numerical abstractions solely to
+justify removing a few files. No mass rename, source move or evidence deletion
+is performed by the planning change.
+
+### G6 · Rehearse the handover and collect actionable feedback
+
+**Feedback route.** From a fresh checkout of the named baseline, install the
+locked tutorial environment, run its checks and open Heston → rough options →
+trajectories. Inspect quote/noise and posterior-predictive views; switch known/
+joint curves; reveal 137 days and explain the 126-day cache; locate failed
+calibration and the Heston limitation. Make one small notebook-only edit and
+verify it using the documented checks. HTML exports are static previews; the
+reactive review uses marimo. No Pair/Studio add-on is needed for this minimum.
+
+**Feedback format.** Record source version, platform, notebook and section
+heading, selected model/friendly case and relevant controls/history length,
+expected/observed behavior, and a suggested improvement. Include error text or
+a screenshot when useful. Distinguish a teaching/presentation comment from a
+runtime bug or a proposed numerical change. GitHub review comments or the
+existing guided-review notes host the feedback; no automatic collaborator
+messages/invitations are sent by this workstream.
+
+The feedback form is ready to use when rehearsal resumes:
+
+```text
+Source version / platform:
+Notebook and section heading:
+Mode (cached / optional live / author recipe):
+Model, friendly case, history length and relevant controls:
+Expected behavior or learning point:
+Observed behavior / error text:
+Suggested change (teaching / UI / numerical):
+```
+
+**Rehearsal status:** deferred at the user's request. Author-side software,
+artifact and worker checks below do not count as a collaborator rehearsal.
+
+**Release gates.**
+
+- **Feedback-ready:** aligned scope, three-file entry map, own-machine cached
+  walkthrough and a small edit validated without Oscar or large downloads.
+- **Compute-ready:** scheduler-free recipes, usable artifact instructions and
+  a bounded supported non-Oscar CPU worker rehearsal. Any untested machine or
+  GPU deployment remains named as untested.
+- **Cleanup-ready:** dependency/retention evidence exists for each proposed
+  deletion; the same clean-checkout walkthrough passes afterward.
+
+Publish one named review baseline and its small check record once these gates
+are met. Begin the next content-feedback round from that baseline. Numerical
+improvements remain separately specified; the handover cannot turn failed
+trajectory calibration into acceptance.
+
+### Order, parallel work and current status
+
+| Slice | Can run in parallel | Prerequisites |
+| --- | --- | --- |
+| G0 scope/front door | First, small documentation change | Merged main verified |
+| G1 core edit/dependency map | With G2/G3 | G0 scope |
+| G2 scheduler-free recipes/smokes | With G1/G3 | Existing workers, declared supported target |
+| G3 artifact/model path clarity | With G1/G2 | Existing download inventories and native loaders |
+| G4 optional Slurm profile | With low-risk G5 cleanup | G2 worker contract; actual target for allocated test |
+| G5 source retirement | After dependency mapping, in small batches | G1 and retained provenance; G6 repeated after each batch |
+| G6 collaborator rehearsal | Incremental; final gate after relevant cleanup | G0–G3 minimum, target-specific deployment only if advertised |
+
+### Implementation status · 1 November 2026
+
+The implementation is recorded in the [compact software/artifact check record](../../lab/evidence/pilot-results/2026-11-01/collaborator-handover/summary.json).
+These author-side checks do not stand in for the deferred collaborator rehearsal.
+
+| Slice | Implemented and checked | Scope still explicit |
+| --- | --- | --- |
+| G0 | Three-file front door, current trajectory scope and historical-guide designation. | The selected source version still belongs in each feedback report. |
+| G1 | Named launch tasks, concrete source walks, authored/copied boundaries and a small-change/check matrix. | Deep historical branches retain their actual dependencies. |
+| G2 | Caller-path CPU recipes and all 16 documented generation/check/train/reload/validation CLI commands passed on Apple Silicon, with SSH and Slurm state absent. Heston recovery and all three path mask/reload readiness checks passed. | Short software tasks and tiny fits check execution, not posterior quality. The existing verified locked runtime was reused; no fresh installation is claimed. |
+| G3 | Two existing model archives verified/extracted; all six native task/model identities match the publication records and tutorial caches. Exact archive, extraction and UI paths are documented. | Each collaborator needs their own repository/Drive permission. Model draws and full-bank downloads were not repeated for this check. |
+| G4 | Reusable CPU/GPU wrappers have no owner account/partition defaults. Caller flags, allocation guards, GPU preflight and bounded print-only single-job recipe are documented/tested. | No Slurm job was submitted and no new cluster/GPU deployment is claimed tested. A target allocation still needs its own readiness check before a full campaign. |
+| G5 | Two completed controllers retired with exact pinned Git/archive recovery and a dependency/retention ledger. Distinct operator versions and current tested dependencies retained. | No immutable evidence or scientific result was deleted; further retirement needs a separate dependency proof. |
+| G6 | Feedback form and rehearsal checklist are prepared. | **Deferred at the user's request; no collaborator rehearsal performed.** |
+
+The two retired controllers and their retained sources are listed in the
+[numerical-plan retirement record](../../lab/plans/NUMERICAL-EXPERIMENT-PLAN.md#bounded-retirement-batch--1-november-2026).
+The next handover action is the collaborator rehearsal when requested, followed
+by the next round of feedback on the three core lessons. No additional bank,
+training campaign or source reorganization is required to begin that rehearsal.
+
 ## Guided notebook review · 1 November 2026
 
 The Heston review establishes the presentation contract for the remaining
@@ -428,7 +752,7 @@ Sparse-chain inference is a separate downstream unit of work that needs its own 
 
 The incremental-bank and recovery safeguards address real duplicate-ID, interrupted-write, memory and changed-dataset failure modes. Keep the tested primitives rather than rewriting them to reduce line count, and stop expanding the infrastructure unless a pilot exposes a concrete need. Collection/recovery machinery belongs in instructor tools; participants should use supplied data/checkpoints and follow the inference workflow. The infrastructure's passing mocked tests are not scientific validation. Prioritize actual pricing refinement, independent holdouts, calibrated/conditionally checked posteriors, matched baselines and an honest product/cost figure over more framework work.
 
-The [central plan](../../lab/plans/NUMERICAL-EXPERIMENT-PLAN.md#tutorial-scope-after-self-review) and [protocol](../../lab/plans/EXPERIMENT-PROTOCOL.md#training-comparisons) reflect the reduced programme. No new tracking system or additional planning document is needed.
+The [central plan](../../lab/plans/NUMERICAL-EXPERIMENT-PLAN.md#current-next-work-and-repository-trimming) and [protocol](../../lab/plans/EXPERIMENT-PROTOCOL.md#training-comparisons) reflect the reduced programme. No new tracking system or additional planning document is needed.
 
 ## What already works well
 
