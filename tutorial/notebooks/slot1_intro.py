@@ -151,7 +151,7 @@ def _(mo, np, plots, plt, spy_expirations, surface):
     _ax.set_xlabel("expiration, trading days (dotted: the grid's maturities)")
     _ax.set_ylabel("standardized moneyness δ")
     _ax.set_title("SPY's option chain: how far each expiration's cleaned quotes reach", loc="left")
-    _ax.legend(fontsize=7.5, loc="lower left")
+    _fig.legend(fontsize=7.5, loc="outside lower center", ncols=3)
     mo.vstack([
         _fig,
         mo.md("Each bar is one expiration: it spans that expiration's cleaned quotes of 21 October, from the lowest δ "

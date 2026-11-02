@@ -36,6 +36,7 @@
 % A figure on its own centred line
 \newcommand\fig[2]{\par{\centering\includegraphics[width=#1\linewidth]{figures/slot1/#2}\par}}
 \newcommand\source[1]{\par\vfill{\fontsize{5.5}{7}\selectfont\color{aviation!55}#1\par}}
+\newcommand\dmethod{$\Delta$-method}  % the delta method; capital, since δ is the moneyness
 
 \title[Slot 1 · Bayes for Volatility Models]{The Problem: Bayes for Volatility Models}
 \subtitle{Slot 1 · Amortized Bayesian Calibration of Volatility Models}
@@ -55,8 +56,8 @@
 
 \begin{frame}{Why Calibration Is Relevant}
 \begin{block}{Calibration}
-Adjust a model's parameters until its prices of liquid options match their quotes. The calibrated model then prices
-and hedges what the market does not quote.
+\textbf{Adjust a model's parameters} until it reprices the liquid options.\\
+Then \textbf{use the calibrated model} to price and hedge what is not quoted.
 \end{block}
 \vspace{0.8em}
 {\centering
@@ -72,55 +73,61 @@ and hedges what the market does not quote.
   \foreach \a/\b in {q/c, c/m, m/p, p/b} \draw[arr] (\a) -- (\b);
 \end{tikzpicture}\par}
 \vspace{0.9em}
-\small The quotes change every day, so the calibration is redone every day.\\
+\small The quotes change every day, so the calibration is \textbf{redone every day}.\\
 The data throughout: \highlight{SPY's option quotes at the close of 21 October 2026}.
 \end{frame}
 
 \begin{frame}{The Option Chain}
 \begin{columns}[T,onlytextwidth]
 \column{0.24\textwidth}
-\stat{13,114}{options in the raw chain}{35 expirations (study S8)}\\[2pt]
+\stat{13,114}{options in the raw chain}{35 expirations}\\[2pt]
 \stat{5,358}{quotes kept after cleaning}{32 expirations}
-\column{0.73\textwidth}\footnotesize
-\textbf{The cleaning removes} in-the-money options (the out-of-the-money one at the same strike says the same, by
-put–call parity); quotes we cannot trust (no bid, a crossed market, a spread over half the mid); isolated outliers;
-expirations left with fewer than 8 quotes.\par\medskip
-\textbf{Standardized moneyness} $\delta = \ln(K/F) / (0.2\sqrt{T})$ compares strikes across maturities: the strike's
-distance from the forward, in standard deviations of a 20\% volatility.
+\column{0.73\textwidth}\small
+\textbf{Cleaning removes}
+\begin{itemize}\footnotesize
+\item in-the-money options: the out-of-the-money one carries the same information;
+\item unreliable quotes: no bid, a crossed market, a spread over half the mid;
+\item outliers, and expirations with fewer than 8 quotes.
+\end{itemize}
+\textbf{Standardized moneyness} \quad $\delta = \ln(K/F) / (0.2\sqrt{T})$\\[1pt]
+{\footnotesize the distance from the forward, in standard deviations of a 20\% volatility}
 \end{columns}
-\fig{0.78}{chain-reach.pdf}
+\fig{0.62}{chain-reach.pdf}
 \end{frame}
 
 \begin{frame}{The Smile}
 \begin{block}{Black–Scholes does not describe SPY}
-Implied volatility is the $\sigma$ at which Black–Scholes reproduces a price. If Black–Scholes described SPY, every
-option would have the same one.
+\textbf{Implied volatility} is the $\sigma$ at which Black–Scholes reproduces a price. If Black–Scholes described SPY,
+every option would have the same one.
 \end{block}
 \fig{0.7}{smiles.pdf}
 \begin{columns}[T,onlytextwidth]\scriptsize
-\column{0.31\textwidth} \highlight{Level}: the at-the-money volatility, from 12.2\% at one week to 16.6\% at one year.
+\column{0.31\textwidth} \highlight{Level}: the ATM volatility, from 12.2\% at one week to 16.6\% at one year.
 \column{0.33\textwidth} \highlight{Skew}: far puts cost more than far calls; large falls are priced as likelier than large
 rises.
-\column{0.31\textwidth} \highlight{Curvature}: both wings bend up, the fat tails. The skew falls like $T^{-0.32}$ (C1).
+\column{0.31\textwidth} \highlight{Curvature}: both wings bend up, the fat tails. The skew falls like $T^{-0.32}$.
 \end{columns}
 \end{frame}
 
 \begin{frame}{The Grid: 63 Prices Read From the Chain}
-\begin{columns}[T,onlytextwidth]
-\column{0.47\textwidth}\footnotesize
-\textbf{Why a grid.} The chain's strikes and expirations change every day. Fixed points give every smile, real or
-simulated, the same 63 inputs.\par\smallskip
-\textbf{The points.} 7 maturities, 5 to 252 trading days, times 9 strikes, $\delta = -2, -1.5, \dots, 2$: a put for
-$\delta \le 0$, a call above. 35 points come from two expirations, 28 from one; none is extrapolated.
-\column{0.49\textwidth}\footnotesize
+\begin{block}{Why a grid: the same 63 inputs every day}
+\small The chain's strikes and expirations change daily. Fixed points make every smile, real or simulated, the same 63
+prices: the networks of the later slots need that.
+\end{block}
+\begin{columns}[c,onlytextwidth]
+\column{0.46\textwidth}\footnotesize
+\textbf{The points}: 7 maturities, 1 week to 1 year $\times$ 9 strikes, $\delta = -2, \dots, 2$.\par\smallskip
 \textbf{How a grid price is read}
 \begin{enumerate}
-\item a smoothing spline through each expiration's implied volatilities;
-\item the nearest expirations either side, read at the same $\ln(K/F)$;
-\item linear in total variance $\sigma^2 T$, then back to a price.
+\item \textbf{Smooth} each expiration's implied volatilities.
+\item \textbf{Read} the expirations before and after the grid maturity, at the grid strike.
+\item \textbf{Interpolate} between them in total variance $\sigma^2 T$.
 \end{enumerate}
+\column{0.52\textwidth}\includegraphics[width=\linewidth]{figures/slot1/grid-contracts.pdf}
 \end{columns}
-\fig{0.58}{grid-contracts.pdf}
+\vspace{0.3em}
+\scriptsize Nothing is extrapolated. The grid stops at $\delta = \pm 2$: beyond, the calls run out, and those left cost less
+than their noise.
 \end{frame}
 
 \begin{frame}{The Noise of a Price}
@@ -132,34 +139,18 @@ $\delta \le 0$, a call above. 35 points come from two expirations, 28 from one; 
 \end{gather*}
 \begin{columns}[T,onlytextwidth]
 \column{0.29\textwidth}
-\stat{11.5 bp $\approx$ \$0.89}{one volatility point}{one month, at the money (vega 0.115)}\\[2pt]
-\stat{\$0.06 to \$1.40}{the noise of the 63 prices}{3.45 bp $\approx$ \$0.27 at one month, at the money}
+\stat{11.5 bp $\approx$ \$0.89}{one volatility point}{1M ATM, vega 0.115}\\[2pt]
+\stat{\$0.06 to \$1.40}{the noise of the 63 prices}{3.45 bp $\approx$ \$0.27 for the 1M ATM}
 \column{0.68\textwidth}
-\begin{defblock}{Why a fixed rule, wider than SPY's own spreads}\footnotesize
+\begin{defblock}{A tolerance, not the bid–ask spread}\footnotesize
 \begin{itemize}
-\item \textbf{More than the spread}: a grid price is read from a curve, not traded. SPY's half-spreads are below the
-rule everywhere: a floor.
-\item \textbf{Room for model error}: Heston misses SPY's 63 prices by about one noise unit each ($\chi^2 = 67$).
-\item \textbf{The same for every smile}: the networks learn with this noise; slot 6 changes it.
+\item \textbf{More than the quote}: the bid–ask, the grid reading and the model's own error. SPY's half-spreads sit below
+the rule.
+\item \textbf{No over-confidence}: Heston misses SPY's prices by about one noise unit each ($\chi^2 = 67$ on 63); with a
+smaller noise its error would count as information.
+\item \textbf{One rule for every smile}, real or simulated.
 \end{itemize}
 \end{defblock}
-\end{columns}
-\end{frame}
-
-\begin{frame}{What a Price Says About Volatility}
-\fig{0.66}{quote-information.pdf}
-\begin{columns}[T,onlytextwidth]\footnotesize
-\column{0.44\textwidth}
-Each bar: the implied volatilities that fit a price within one noise standard deviation.
-\highlight{At the money} it is fixed to $\pm 0.3$ points. \highlight{Above the money}, at $\delta = 1.5$ and 2, the bars
-reach zero: those calls cost less than their noise.
-\column{0.53\textwidth}
-\textbf{Why the grid stops at $\delta = \pm 2$}
-\begin{enumerate}
-\item \textbf{The calls stop}: on 16 of 32 expirations before $\delta = 2$.
-\item \textbf{The rest say little}: at one week the $\delta = 2$ call costs \$0.01; its noise is \$0.06.
-\item \textbf{Nothing is invented}: beyond, the grid would extrapolate.
-\end{enumerate}
 \end{columns}
 \end{frame}
 
@@ -174,9 +165,10 @@ and with them the prices of the products the market does not quote?\par}
 % ════════════════════════════════════════════════════════════════════════════
 \section{Bayes With One Parameter}
 
-\begin{frame}{From One Price to $\sigma$}
-\footnotesize \textbf{Data}: the one-month at-the-money grid price, 147.8 bp of the forward (\$11.47), with noise
-3.45 bp (\$0.27). \textbf{Model}: Black–Scholes, one parameter $\sigma$.
+\begin{frame}{Calibrating Black–Scholes to One Price}
+\footnotesize
+\textbf{Data}: the 1M ATM grid price, 147.8 bp of the forward (\$11.47), with noise 3.45 bp (\$0.27).\\
+\textbf{Model}: Black–Scholes, one parameter $\sigma$.
 \[ y = P(\sigma) + \sigma_c\,\varepsilon, \qquad \chi^2(\sigma) = \frac{\big(y - P(\sigma)\big)^2}{\sigma_c^2}
    \quad\text{(the miss in noise units)} \]
 \begin{columns}[c,onlytextwidth]
@@ -191,13 +183,19 @@ A price known to within its noise $\sigma_c$ gives a volatility known to within 
 \end{frame}
 
 \begin{frame}{Prior $\times$ Likelihood $\to$ Posterior}
-\[ p(\sigma \mid y) = \frac{p(y \mid \sigma)\, p(\sigma)}{p(y)}, \qquad p(y \mid \sigma) \propto e^{-\chi^2(\sigma)/2} \]
-{\centering\scriptsize \highlight{Likelihood}: the least-squares curve as a probability.\quad
-\highlight{Prior}: flat on 5–60\%, or normal around 20\%.\par}
-\fig{0.56}{prior-sweep.pdf}
+\begin{columns}[c,onlytextwidth]
+\column{0.34\textwidth}\footnotesize
+\[ p(\sigma \mid y) = \frac{p(y \mid \sigma)\, p(\sigma)}{p(y)} \]
+\highlight{Likelihood}: the least-squares curve, read as a probability:
+\[ p(y \mid \sigma) \propto e^{-\chi^2(\sigma)/2} \]
+\highlight{Prior}: flat on 5–60\%, or normal around 20\%:
+\[ p(\sigma) = \mathcal N\big(20\%,\ w^2\big) \]
+\highlight{Posterior}: their product, normalized.
+\column{0.64\textwidth}\includegraphics[width=\linewidth]{figures/slot1/prior-sweep.pdf}
+\end{columns}
 \begin{block}{The prior matters only when it is narrower than what the price says}
-\footnotesize Much wider than the price's $\pm 0.30$ points, it barely moves the answer ($\pm 2$: 12.99\%); as wide, it meets it
-halfway ($\pm 0.3$: 16.4\%); narrower, it decides ($\pm 0.1$: 19.3\%).
+\footnotesize Much wider than the price's $\pm 0.30$ points, it barely moves the answer ($w = 2$: 12.99\%); as wide, it
+meets it halfway ($w = 0.3$: 16.4\%); narrower, it decides ($w = 0.1$: 19.3\%).
 \end{block}
 \end{frame}
 
@@ -214,33 +212,32 @@ With a flat prior both say 12.84\% $\pm$ 0.30. The error bar describes the proce
 the true $\sigma$ 68\% of the time. The posterior is a probability for $\sigma$ given today's price.
 \end{defblock}
 \end{columns}
-\fig{0.6}{more-prices.pdf}
-\footnotesize \highlight{More prices}: each multiplies the likelihood by one more factor. From one simulated price to
-seven, the width falls from 0.30 to 0.11 points, about $0.30/\sqrt{7}$: around the truth, because these prices come
-from the model itself.
+\fig{0.56}{more-prices.pdf}
+\footnotesize \highlight{More prices}: from one simulated price to seven, the width falls from 0.30 to 0.11 points,
+about $0.30/\sqrt{7}$, around the truth.
 \end{frame}
 
 % ════════════════════════════════════════════════════════════════════════════
 \section{The Range of a Price}
 
 \begin{frame}{A Range for Any Price}
-\small We price the one-month put at $\delta = -2$ as if it were not quoted, like the products a desk marks.
+\small We price the 1M put at $\delta = -2$ as if it were not quoted, like the products a desk marks.
 \begin{columns}[T,onlytextwidth]
 \column{0.48\textwidth}
 \begin{defblock}{Bayes}\footnotesize
-Price the put under each posterior draw of $\sigma$, and read its range off these prices.
+Price the put under each posterior draw of $\sigma$.
 \end{defblock}
 \column{0.48\textwidth}
 \begin{defblock}{Classical}\footnotesize
-Gauss–Newton: $\sigma$ normal, least squares $\pm$ noise/vega. The delta method: the price normal too.
+$\sigma$ normal (Gauss–Newton); the price linearized (\dmethod).
 \end{defblock}
 \end{columns}
 \begin{columns}[c,onlytextwidth]
 \column{0.66\textwidth}\includegraphics[width=\linewidth]{figures/slot1/put-range.pdf}
 \column{0.31\textwidth}
 \stat{0.05 to 0.14 bp}{the put's 90\% range}{under the posterior}\\[2pt]
-\stat{43\% vs 37\%}{reserve for a sold put}{posterior vs delta method: the price is convex in $\sigma$, and the delta
-method makes it normal}
+\stat{43\% vs 37\%}{reserve for a sold put, over the mark}{posterior vs \dmethod: the price is convex in $\sigma$, the
+\dmethod{} makes it normal}
 \end{columns}
 \end{frame}
 
@@ -251,57 +248,53 @@ method makes it normal}
 The 5\% to 95\% points of a product's price over the posterior.
 \end{defblock}
 \column{0.34\textwidth}
-\begin{defblock}{The 90\% point and the reserve}\footnotesize
-For a sold position, the prudent value is the 90\% point and the reserve that point minus the mark: a quantile like a
-VaR, but of today's valuation.
+\begin{defblock}{The reserve}\footnotesize
+Sold position: the 90\% point minus the mark. A quantile like a VaR, but of today's value.
 \end{defblock}
 \column{0.31\textwidth}
 \begin{defblock}{Coverage}\footnotesize
-On simulated smiles, 90\% ranges should contain the truth 90\% of the time: a check of the method, not of one mark.
+On simulated smiles, 90\% ranges should contain the truth 90\% of the time.
 \end{defblock}
 \end{columns}
-\vspace{0.5em}
-\begin{columns}[T,onlytextwidth]
-\column{0.235\textwidth}
-\begin{block}{Capital}\scriptsize
-EU prudent valuation (2016/101, Art.~9 and 11): the distance to the 90\% point is a valuation adjustment, deducted from
-capital.
-\end{block}
-\column{0.235\textwidth}
-\begin{block}{Accounts}\scriptsize
-IFRS 13 §93(h): for Level 3 fair values, how the value moves under reasonably possible alternative inputs.
-\end{block}
-\column{0.235\textwidth}
-\begin{block}{Model risk}\scriptsize
-SR 26-2 (replacing SR 11-7) and PRA SS1/23: understand the uncertainty of estimates and of model choices.
-\end{block}
-\column{0.235\textwidth}
-\begin{block}{P\&L}\scriptsize
-Refitting to tomorrow's quotes moves the parameters within this range, and the marks with them.
-\end{block}
-\end{columns}
+\vspace{0.8em}
+\small\textbf{Why it matters}\par\smallskip
+\footnotesize
+\begin{tabular}{@{}p{0.14\linewidth}p{0.82\linewidth}@{}}
+\toprule
+\highlight{Capital} & EU prudent valuation (2016/101, Art.~9 and 11): the distance to the 90\% point is deducted
+from capital. \\
+\highlight{Accounts} & IFRS 13 §93(h): for Level 3 fair values, how the value moves under reasonable alternative inputs. \\
+\highlight{Model risk} & SR 26-2 and PRA SS1/23: understand the uncertainty of estimates and of model choices. \\
+\highlight{P\&L} & Refitting to tomorrow's quotes moves the marks within this range, even if the market does not move. \\
+\bottomrule
+\end{tabular}
 \end{frame}
 
 % ════════════════════════════════════════════════════════════════════════════
 \section{Checking the Model}
 
 \begin{frame}{A Posterior Predictive Check}
-\begin{warnblock}{A posterior cannot show that its model is wrong; a predictive check can}
-\small Simulate the quotes the fitted model expects, the price under each draw plus the noise, and compare them with
-quotes the fit did not use.
+\begin{columns}[c,onlytextwidth]
+\column{0.62\textwidth}\includegraphics[width=\linewidth]{figures/slot1/predictive-check.pdf}
+\column{0.35\textwidth}
+\begin{warnblock}{A predictive check}\footnotesize
+A posterior cannot show that its model is wrong; this check can. Simulate the quotes the fitted model expects (price
+under each draw, plus noise) and compare them with quotes the fit did not use.
 \end{warnblock}
-\fig{0.68}{predictive-check.pdf}
-\footnotesize The market quotes the put at 14.1 bp, 9.5 standard deviations from the prediction. Black–Scholes predicts
-one volatility for every strike; SPY's rises from 12.8\% at the money to 24.4\% at $\delta = -2$.
+\footnotesize
+\begin{itemize}
+\item \textbf{The put}: the market's 14.1 bp is 9.5 sd from the prediction.
+\item \textbf{The smile}: one $\sigma$ for every strike, against SPY's 12.8\% ATM and 24.4\% at $\delta = -2$.
+\end{itemize}
+\end{columns}
 \end{frame}
 
 \begin{frame}{Precise, but Wrong}
-\small Fit both prices, at the money and the put, with one $\sigma$. If Black–Scholes were right, one $\sigma$ would fit
-both within their noise.
-\fig{0.76}{noise-frames.pdf}
-\begin{block}{No single volatility prices both options: this mismatch is the smile}
-\small With the assumed noise the posterior misses the put by 9.5 noise units; only 4.8 times the noise brings both
-misses below two. Check a model before using its ranges: hence Heston (slot 4) and rough Bergomi (slot 5).
+\small Fit the ATM price and the put with one $\sigma$:
+\fig{0.74}{noise-frames.pdf}
+\begin{block}{No single $\sigma$ prices both options: this is the smile}
+\small At the assumed noise the put is missed by 9.5 noise units; it takes 4.8 times the noise to fit both.
+Check the model before using its ranges.
 \end{block}
 \end{frame}
 
@@ -309,75 +302,44 @@ misses below two. Check a model before using its ranges: hence Heston (slot 4) a
 \section{A Model With a Smile: Heston}
 
 \begin{frame}{Heston: A Model With a Smile}
-\begin{block}{On SPY's 63 quotes the classical route is enough; on 15 it is not}
-\small Heston's posterior is Gaussian down to its tails, and Gauss–Newton with the delta method gives its reserves. With
-15 quotes the posterior bends and the classical reserves differ by up to 40\%.
-\end{block}
-\footnotesize The variance moves randomly: it reverts to a long-run level and moves against the price. $v_0$ and
-$\theta$ set the short- and long-dated levels, $\kappa = 2$ the speed between them, $\rho\,\sigma_v$ the skew and
-$\sigma_v$ the curvature.
-\fig{0.7}{heston-smile.pdf}
+\footnotesize
+\begin{itemize}
+\item \textbf{Random variance}: it reverts to a long-run level and moves against the price.
+\item \textbf{Four parameters, four features}: $v_0$ and $\theta$ the short and long levels, $\rho\,\sigma_v$ the skew,
+$\sigma_v$ the curvature ($\kappa = 2$ fixed).
+\end{itemize}
+\fig{0.8}{heston-smile.pdf}
 \end{frame}
 
 \begin{frame}{How Far the Products Move}
-\footnotesize With four parameters, MCMC samples the posterior (exact, slot 4). A desk reports prices, so we price four
-products nobody quotes under each draw: each bar is the width of their central 90\%, as a share of the price.
-\fig{0.7}{products.pdf}
+\footnotesize With four parameters a grid is impractical: the exact posterior is \textbf{sampled} by Markov chain Monte
+Carlo (MCMC), a random walk whose visits follow the posterior (slot 4). Each product is priced under every draw.
+\fig{0.68}{products.pdf}
 \vspace{0.2em}
 \begin{columns}[T,onlytextwidth]
 \column{0.235\textwidth}\stat{6.8 m}{2-year 90\% put: the mark}{on 100 million of notional}
 \column{0.235\textwidth}\stat{111 k}{reserve, 63 quotes}{90\% point minus the mark}
 \column{0.235\textwidth}\stat{917 k}{reserve, 15 quotes}{1, 3 and 6 months, $\kappa$ free}
-\column{0.235\textwidth}\stat{434 k}{gap to a second model}{rough Bergomi, same smile (S7)}
+\column{0.235\textwidth}\stat{434 k}{gap to a second model}{rough Bergomi, same smile}
 \end{columns}
-\source{Heston: a lab quick check (\texttt{heston\_checks.json}), not an accepted study. Second model: S7 pilot networks.}
-\end{frame}
-
-\begin{frame}{Gauss–Newton or the Posterior?}
-\footnotesize The classical route: a normal at the least-squares fit with covariance $(J^\top W J)^{-1}$, and the delta
-method for prices. An elliptical scatter is not enough to trust it. Three checks against the exact posterior:
-\highlight{centre and width}, \highlight{tails}, \highlight{the reserve}.
-\fig{0.7}{tails.pdf}
-\begin{columns}[T,onlytextwidth]
-\column{0.48\textwidth}
-\begin{goodblock}{63 quotes, $\kappa = 2$}\scriptsize
-On the diagonal: widths 0.96 to 1.05 times the posterior's, skewness and excess kurtosis within $\pm 0.14$.
-\end{goodblock}
-\column{0.48\textwidth}
-\begin{warnblock}{15 quotes, $\kappa$ free}\scriptsize
-$\theta$'s 99\% point lies 5.4 Gauss–Newton sd out (a normal's: 2.3); $\kappa$'s interval reaches $-0.58$.
-\end{warnblock}
-\end{columns}
-\end{frame}
-
-\begin{frame}{A Curved Posterior, and Why}
-\begin{block}{The quotes pin an average, not its parts}
-\small The expected variance is $\theta + (v_0 - \theta)\,e^{-\kappa t}$. Fifteen quotes to six months fix its average to
-six months, not how it splits between the level $\theta$ and the speed $\kappa$.
-\end{block}
-\fig{0.7}{curved-posterior.pdf}
-\scriptsize The dashed curves come from the model's formula, not from a sampler or a network. \textbf{Left}: exact
-(MCMC); Gauss–Newton's box misses the upper arm and reaches $\kappa < 0$. \textbf{Right}: rough Bergomi's network
-posterior; where the two levels differ it pins the decay to 14–19\% of its prior, and its 90\% intervals cover 89\% of
-2,000 simulated smiles. An exact sampler on this smile is pending (J2).
+\source{Heston results: a quick check, not yet a finished study. Second model: preliminary networks.}
 \end{frame}
 
 \begin{frame}{What It Does to a Reserve}
-\fig{0.76}{reserves.pdf}
+\footnotesize The classical route, Gauss–Newton with the \dmethod, against the exact posterior, where the rules look:
+the 90\% point.
+\fig{0.74}{reserves.pdf}
 \begin{columns}[T,onlytextwidth]
 \column{0.48\textwidth}
 \begin{goodblock}{63 quotes: no real difference}\footnotesize
-Within 1.9 times the precision of the posterior's reserve, for every product, sold or held. Gauss–Newton's 90\%
-intervals cover 87–92\% on 200 Heston smiles (C11).
+Within 1.9 times the precision of the posterior's reserve, for every product, sold or held.
 \end{goodblock}
 \column{0.48\textwidth}
 \begin{warnblock}{15 quotes: up to 40\%}\footnotesize
-A sold volatility swap: the delta method's reserve is 15\% too small, the unsafe direction. A sold forward-start: 40\%
-too large. The delta method makes every price symmetric.
+Sold volatility swap: the \dmethod's reserve is 15\% too small. Sold forward-start: 40\% too large.
 \end{warnblock}
 \end{columns}
-\source{The 63-quote posterior: the feasibility run of 23 October (S8-H replaces it). The 15-quote results: a lab quick
-check, with about 93 effective draws for $\theta$ and $\kappa$.}
+\source{Preliminary results: the 63-quote posterior is a feasibility run; the 15-quote results are a quick check.}
 \end{frame}
 
 % ════════════════════════════════════════════════════════════════════════════
@@ -395,7 +357,7 @@ smiles to test a method. A run of 500 smiles:
 \fig{0.8}{valuation-run.pdf}
 At least 8,475 CPU-hours by the rough-Bergomi chain, or 2,119 cores for a four-hour run; 0.5 by a trained network, after
 one training run.
-\source{Measured on one 4-core machine (study S9, claim C8). The chain's cost is a lower bound.}
+\source{Measured on one 4-core machine. The chain's cost is a lower bound.}
 \end{frame}
 
 \begin{frame}{Amortized Inference}
@@ -455,10 +417,48 @@ inference cuts the cost.
 \appendix
 \section{Backup}
 
+\begin{frame}{Backup: What a Price Says About Volatility}
+\fig{0.72}{quote-information.pdf}
+\footnotesize
+\textbf{The error bars} are the implied volatilities of the grid price $\pm$ its noise $\sigma_c$: the noise rule, not
+the bid–ask spread, which is narrower. At the money a 1M price fixes the volatility to $\pm 0.3$ points. At
+$\delta = 1.5$ and 2 the bars reach zero: those calls cost less than their noise, so any lower volatility fits them.\par
+\smallskip
+\textbf{Why the grid stops at $\delta = \pm 2$}: on 16 of 32 expirations the calls stop before $\delta = 2$; at one week
+the $\delta = 2$ call costs \$0.01 against a noise of \$0.06; beyond, the grid would extrapolate.
+\end{frame}
+
+\begin{frame}{Backup: Gauss–Newton or the Posterior?}
+\footnotesize The classical route: a normal at the least-squares fit with covariance $(J^\top W J)^{-1}$, and the
+\dmethod{} for prices. An elliptical scatter is not enough to trust it: check the centre and width, the tails, and the
+reserve.
+\fig{0.72}{tails.pdf}
+\begin{columns}[T,onlytextwidth]
+\column{0.48\textwidth}
+\begin{goodblock}{63 quotes, $\kappa = 2$}\scriptsize
+On the diagonal: widths 0.96 to 1.05 times the posterior's, skewness and excess kurtosis within $\pm 0.14$.
+\end{goodblock}
+\column{0.48\textwidth}
+\begin{warnblock}{15 quotes, $\kappa$ free}\scriptsize
+$\theta$'s 99\% point lies 5.4 Gauss–Newton sd out (a normal's: 2.3); $\kappa$'s interval reaches $-0.58$.
+\end{warnblock}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Backup: A Curved Posterior, and Why}
+\footnotesize The expected variance is $\theta + (v_0 - \theta)\,e^{-\kappa t}$. Fifteen quotes to six months fix its
+average to six months, not how it splits between the level $\theta$ and the speed $\kappa$: the posterior lies along the
+curve of equal averages (dashed, from the formula).
+\fig{0.74}{curved-posterior.pdf}
+\scriptsize \textbf{Left}: exact; Gauss–Newton's box misses the upper arm and reaches $\kappa < 0$. \textbf{Right}: rough
+Bergomi, network posterior: where its two levels differ it pins the decay to 14–19\% of its prior; its 90\% intervals
+cover 89\% of 2,000 simulated smiles. An exact check on this smile is pending.
+\end{frame}
+
 \begin{frame}{Backup: Level, Skew and Curvature}
 \fig{0.9}{smile-shape.pdf}
 \footnotesize The one-month smile with the parabola through the five quotes nearest the money; the level by maturity;
-skew and curvature by maturity on log–log axes. The skew falls like $T^{-0.32}$ (C1).
+skew and curvature by maturity on log–log axes. The skew falls like $T^{-0.32}$.
 \end{frame}
 
 \begin{frame}{Backup: The Noise Rule}
