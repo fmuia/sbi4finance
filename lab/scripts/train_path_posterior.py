@@ -16,6 +16,7 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 from sbi4finance.path_inference import bank, inference  # noqa: E402
+from sbi4finance.runtime_sources import path_inference_runtime_hashes  # noqa: E402
 
 
 def atomic_json(path, value):
@@ -199,7 +200,9 @@ def run_training(args):
                                   "parent_bank_manifest_sha256": initial_record["bank_manifest_sha256"],
                                   "parent_selected_epoch": initial_record["selected_epoch"]}),
               "source_sha256": {str(p.relative_to(ROOT)): inference.sha256(p)
-                                for p in (Path(__file__), Path(inference.__file__), Path(bank.__file__))},
+                                for p in (Path(__file__), Path(inference.__file__), Path(bank.__file__),
+                                          ROOT / "src/sbi4finance/runtime_sources.py")},
+              "shared_runtime_source_sha256": path_inference_runtime_hashes(),
               "environment_sha256": {name: inference.sha256(ROOT / name)
                                      for name in ("pyproject.toml", "pixi.lock")},
               "history": {"loss": [], "val_loss": []}}

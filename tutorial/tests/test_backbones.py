@@ -9,8 +9,8 @@ import unittest
 
 import numpy as np
 
-from sbi4f_tutorial import backbones, full_surface
-from sbi4f_tutorial.paths import ASSETS
+from sbi4f_tutorial.shared import backbones, full_surface
+from sbi4f_tutorial.shared.paths import ASSETS
 
 
 class BackboneTests(unittest.TestCase):
@@ -35,7 +35,7 @@ class Offline(importlib.abc.MetaPathFinder):
         if fullname.split('.')[0] in {'bayesflow','keras','jax','sbi4finance'}:
             raise AssertionError('cached import initialized neural backend: '+fullname)
 sys.meta_path.insert(0,Offline())
-from sbi4f_tutorial import backbones
+from sbi4f_tutorial.shared import backbones
 for name in backbones.examples():
     backbones.load_example(name)
 '''

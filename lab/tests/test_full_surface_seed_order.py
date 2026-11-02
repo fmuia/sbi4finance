@@ -1,5 +1,6 @@
 """A training seed must not depend on whether BayesFlow was already imported."""
 
+from importlib import metadata
 import json
 import os
 from pathlib import Path
@@ -10,6 +11,11 @@ import unittest
 
 
 ROOT = Path(__file__).resolve().parents[1]
+try:
+    CORE_ENVIRONMENT = metadata.version("bayesflow") == "2.1.0"
+except metadata.PackageNotFoundError:
+    CORE_ENVIRONMENT = False
+
 PROBE = textwrap.dedent("""
     from argparse import Namespace
     import hashlib, json, os, tempfile
@@ -61,6 +67,7 @@ PROBE = textwrap.dedent("""
 """)
 
 
+@unittest.skipUnless(CORE_ENVIRONMENT, "native training requires the BayesFlow 2.1 core environment")
 class TrainingSeedOrderTests(unittest.TestCase):
     def test_cold_and_preimported_bayesflow_give_identical_initial_weights(self):
         hashes = []

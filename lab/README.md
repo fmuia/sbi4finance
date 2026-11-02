@@ -1,13 +1,23 @@
 # The lab
 
-The lab produces and checks the tutorial's data, estimators and financial conclusions. The participant package
-loads published assets and copied functions; it never imports this package. Run the commands below from `lab/`.
+The lab produces and checks the tutorial's data, estimators and financial conclusions.
+It reuses the authoritative numerical runtime under `tutorial/src/sbi4f_tutorial/`;
+the participant package never imports the lab. Keep the complete repository
+checkout and run the commands below from `lab/`.
 
 ```bash
 cd lab
 pixi install --locked -e core
 pixi run --locked -e core test
 ```
+
+Pixi installs the sibling tutorial runtime as a local dependency without its
+participant-only BayesFlow/marimo extra. The lab selects its own current or
+historical neural environment. Deploy both `lab/` and `tutorial/` from the same
+revision; copying `lab/` alone no longer supplies all executing source.
+A source-checkout import checks this boundary before loading numerical modules.
+If an old editable install points to another worktree, it stops with the expected
+and actual runtime locations; rerun the locked install above in this checkout.
 
 ## Start with the supplied data and models
 
@@ -51,11 +61,11 @@ Use the current full-surface route for new backbone work. The guide above gives 
 | Initialize, plan, append and freeze a native collection | [`scripts/calibration_bank_collection.py`](scripts/calibration_bank_collection.py) |
 | Run a bounded generation campaign when needed | [`scripts/run_bank_campaign.py`](scripts/run_bank_campaign.py); [on-demand instructions](plans/generate-bank-on-demand.md) |
 | Reference MCMC, classical comparisons and financial products | [`studies/README.md`](studies/README.md), the relevant task/study and [MCMC policy](plans/mcmc-policy.md) |
-| Publish reviewed code and lesson assets | [`copy_to_tutorial.py`](studies/copy_to_tutorial.py), [`accept.py`](studies/accept.py), [`manifest.py`](studies/manifest.py), [`claims.py`](studies/claims.py) |
+| Check runtime ownership and publish lesson assets | [`runtime_boundary.py`](studies/runtime_boundary.py), [`accept.py`](studies/accept.py), [`manifest.py`](studies/manifest.py), [`claims.py`](studies/claims.py) |
 
 Reuse successful bank rows and fixed holdouts. An unchanged task can grow by appending missing split-qualified
-IDs; a changed task, grid or prior needs a new collection. Training on a new snapshot starts a new fit. Never
-regenerate successful data to repair a local download. Retain the task, source/runtime, bank and checkpoint
+IDs when producer source/runtime identities also match; a changed task, grid or prior needs a new collection.
+Training on a new snapshot starts a new fit. Never regenerate successful data to repair a local download. Retain the task, source/runtime, bank and checkpoint
 identities, observation-noise law, Monte Carlo error records and actual sampler settings.
 
 The older [`studies/train_calibration.py`](studies/train_calibration.py) supports the registered study and sparse
@@ -88,7 +98,9 @@ and other accelerators are not supported by this lock. Use a filesystem with
 POSIX locks and hard links for option collections. Obtain private GitHub/Drive
 access with your own account when downloading existing artifacts; computation
 then uses ordinary filesystem paths. `pip install lab` alone does not install
-these scientific dependencies.
+these scientific dependencies. The supported Pixi install resolves the sibling
+tutorial runtime too; a manually managed environment must install the base
+package from `../tutorial` as well as this lab package.
 
 From `lab/`, install the current environment and choose a **new**, absolute
 output directory. The following sizes are software checks, not calibrated fits.
@@ -201,10 +213,15 @@ The same workers run in an allocation. `cluster/core_cpu.sbatch` and
 `core_gpu.sbatch` set no account, partition or QOS: choose those in the caller's
 `sbatch` flags. Their CPU/GPU/memory/time defaults are resource requests, not
 estimates of a new experiment's cost. The wrappers still require an allocation,
-use the submitted lab checkout, select a locked current environment and stop if
-GPU readiness fails. Source, runtime and output directories must be visible to
-the allocated node. Install the environment before submitting; do not rely on a
-compute node downloading packages.
+use the submitted checkout, select a locked current environment and stop if
+GPU readiness fails. Both sibling source directories (`lab/` and `tutorial/`),
+the installed runtime and output directories must be visible to the allocated
+node. Install the environment before submitting; do not rely on a compute node
+downloading packages.
+The same-checkout import guard also applies to raw-Python workers: a missing
+sibling runtime or an editable install from another worktree fails immediately.
+Install from the intended source checkout before submitting; do not bypass the
+guard by changing manifests or mixing source revisions.
 
 This builds and prints **one** bounded CPU-readiness submission without invoking
 `sbatch`. Replace the site and filesystem placeholders, run from `lab/`, and
@@ -241,13 +258,29 @@ runtime/wall-time/memory information; they do not invent Slurm accounting.
 
 ## From lab code to a lesson
 
-Put numerical changes here, with the relevant checks. When the tutorial needs a lab function live, copy it
-unchanged with `pixi run --locked -e core copy-to-tutorial --add MODULE.NAME`. The registry in that tool and
-[`test_tutorial_parity.py`](tests/test_tutorial_parity.py) enforce the copies; the tutorial must not import the lab.
+The executing lesson runtime is owned under `tutorial/src/sbi4f_tutorial/`.
+Edit application helpers in `heston_options/`, `rough_options/` or
+`trajectories/`; edit reused numerical components in `shared/`. The lab imports
+those same definitions. Its existing public module names remain available for
+worker and study compatibility. There is no function-copy step and no second
+implementation to maintain. `copy-to-tutorial` is a migration-only command that
+explains the new locations; it no longer writes source.
 
-Publish assets through `accept`, `manifest` and `claims`, preserving their acceptance/development roles and
-reference provenance. Never hand-edit `tutorial/MANIFEST.md`, the generated claim tables or asset payloads.
-After a change, run from this folder:
+The historical `checks/bs_hierarchy.py` and `checks/long_end/long_end.py`
+programs retain their original study inputs/globals. Numerical parity tests
+compare their retained calculations with the tutorial versions; they are not
+the editing targets for current lessons or production worker APIs.
+
+Run `pixi run --locked -e core runtime-check` to check the dependency boundary
+and shared-definition identity. [`test_tutorial_parity.py`](tests/test_tutorial_parity.py)
+also exercises the lab and tutorial APIs on the same inputs. The tutorial remains
+self-contained and must never import `sbi4finance` or read lab files.
+
+Keep large-bank generation, production training, reference studies and publication
+here. Publish assets through `accept`, `manifest` and `claims`, preserving their
+acceptance/development roles and reference provenance. Never hand-edit
+`tutorial/MANIFEST.md`, generated claim tables or asset payloads. After a shared
+runtime or publication change, run from this folder:
 
 ```bash
 pixi run --locked -e core manifest
@@ -256,11 +289,19 @@ pixi run --locked -e core test
 pixi run --locked -e core release-check
 ```
 
-Then run the required [tutorial checks](../tutorial/README.md#author-or-change-a-lesson). For historical studies,
-use their recorded environment. [`studies/README.md`](studies/README.md) describes S1–S9 and the publication tools;
-[`checks/README.md`](checks/README.md) describes exploratory quick checks, which are not accepted studies.
-Course figures are drawn by `course/scripts/` in the lab environment; `pixi run --locked -e core course-check`
-checks course-plan numbers against stored results.
+Then run the required [tutorial checks](../tutorial/README.md#author-or-change-a-lesson).
+Moving numerical source changes generator provenance even when its calculations
+are identical. Existing banks remain readable/trainable; keep their original
+manifests and use the matching historical producer checkout/environment to append
+or resume frozen generation. New banks record the new source identity. Existing
+model payloads, tasks and published caches are not rewritten by this refactor.
+
+For historical studies, use their recorded environment.
+[`studies/README.md`](studies/README.md) describes S1–S9 and publication tools;
+[`checks/README.md`](checks/README.md) describes exploratory quick checks, which
+are not accepted studies. Course figures are drawn by `course/scripts/` in the
+lab environment; `pixi run --locked -e core course-check` checks course-plan
+numbers against stored results.
 
 ## What remains, and what can be trimmed
 

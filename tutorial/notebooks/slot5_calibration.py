@@ -18,7 +18,8 @@ def _():
     import matplotlib.pyplot as plt
     import numpy as np
 
-    from sbi4f_tutorial import full_surface, long_end, plots, surface, teaching
+    from sbi4f_tutorial.rough_options import lesson as teaching, long_end
+    from sbi4f_tutorial.shared import full_surface, plots, surface
 
     ROOT = mo.notebook_dir().parent
     ASSETS = ROOT / "assets"
@@ -176,7 +177,7 @@ def _(mo):
 
     ```python
     import numpy as np
-    from sbi4f_tutorial import pricing, tasks
+    from sbi4f_tutorial.shared import pricing, tasks
 
     task = tasks.rough_task()
     parameters = {"hurst": 0.1, "eta": 2.0, "rho": -0.7}
@@ -269,7 +270,7 @@ def _(mo):
     separately and is not part of the cached lesson. It is not executed here.
 
     ```python
-    from sbi4f_tutorial import full_surface
+    from sbi4f_tutorial.shared import full_surface
 
     data = full_surface.training_data(split, task)
     workflow = full_surface.build_workflow(task, family="flow_matching")
@@ -310,7 +311,7 @@ def _(mo):
 
 @app.cell
 def _(mo):
-    from sbi4f_tutorial import backbones
+    from sbi4f_tutorial.shared import backbones
 
     _labels = {"Known curve · parameters only": "rough-known100k-validation0",
                "Joint curve · worked example": "rough-joint100k-validation0",

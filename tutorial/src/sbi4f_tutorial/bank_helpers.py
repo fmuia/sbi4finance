@@ -1,13 +1,8 @@
-"""Scalar validation and canonical JSON, copied from the lab."""
-import json
-import numpy as np
+"""Compatibility imports; edit sbi4f_tutorial/shared/bank_helpers.py."""
 
-
-def _json(value):
-    return json.dumps(value, sort_keys=True, indent=2, allow_nan=False) + "\n"
-
-
-def _integer(value, name, *, minimum=0):
-    if isinstance(value, bool) or not isinstance(value, (int, np.integer)) or value < minimum:
-        raise ValueError(f"{name} must be an integer >= {minimum}")
-    return int(value)
+from .shared.bank_helpers import (
+    _integer,
+    _json,
+    json,
+    np,
+)

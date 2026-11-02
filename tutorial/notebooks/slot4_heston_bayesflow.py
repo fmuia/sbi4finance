@@ -15,7 +15,8 @@ def _():
     import matplotlib.pyplot as plt
     import numpy as np
 
-    from sbi4f_tutorial import full_surface, plots, surface, teaching
+    from sbi4f_tutorial.heston_options import lesson as teaching
+    from sbi4f_tutorial.shared import full_surface, plots, surface
 
     ROOT = mo.notebook_dir().parent
     ASSETS = ROOT / "assets"
@@ -392,7 +393,7 @@ def _(mo):
 
 @app.cell
 def _(mo):
-    from sbi4f_tutorial import backbones
+    from sbi4f_tutorial.shared import backbones
 
     backbone_case = mo.ui.dropdown(options={"Synthetic option quotes": "heston-final500"},
                                     value="Synthetic option quotes", label="Observed data set")

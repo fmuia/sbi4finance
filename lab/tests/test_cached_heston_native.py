@@ -2,6 +2,7 @@
 
 import argparse
 import copy
+from importlib import metadata
 import json
 from pathlib import Path
 import shutil
@@ -14,6 +15,11 @@ import numpy as np
 
 from scripts import check_cached_heston_native as native
 from sbi4finance.calibration import tasks
+
+try:
+    CORE_ENVIRONMENT = metadata.version("bayesflow") == "2.1.0"
+except metadata.PackageNotFoundError:
+    CORE_ENVIRONMENT = False
 
 
 class CachedNativeTests(unittest.TestCase):
@@ -34,6 +40,7 @@ class CachedNativeTests(unittest.TestCase):
         result.sample = Mock(side_effect=sample)
         return result
 
+    @unittest.skipUnless(CORE_ENVIRONMENT, "native defaults require the BayesFlow 2.1 core environment")
     def test_installed_native_defaults_are_read_without_loading_a_model(self):
         settings, sources = native.native_settings()
         self.assertEqual(settings, {"method": "tsit5", "steps": "adaptive", "min_steps": 50,
@@ -96,6 +103,7 @@ class CachedNativeTests(unittest.TestCase):
             self.assertEqual(row["paired_rms_change"], 0.)
             self.assertEqual(row["signed_q10_q90_change"], [0., 0.])
 
+    @unittest.skipUnless(CORE_ENVIRONMENT, "native checkpoint audit requires the BayesFlow 2.1 core environment")
     def test_actual_prettyprinted_metadata_and_changed_euler_draw_guard(self):
         euler, references = self.root/"euler", self.root/"references"
         shutil.copytree(native.OLD, euler)
@@ -128,6 +136,7 @@ class CachedNativeTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "case1"):
                 native.checked_inputs(euler, references, recipe)
 
+    @unittest.skipUnless(CORE_ENVIRONMENT, "native checkpoint audit requires the BayesFlow 2.1 core environment")
     def test_manifest_is_written_before_model_loading(self):
         args = argparse.Namespace(out=self.root/"out", euler_run=self.root/"euler", references=self.root/"refs")
         inputs = {"checkpoint": "frozen-checkpoint", "task": self.task, "cases": [], "sha256": {}}

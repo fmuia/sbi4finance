@@ -6,8 +6,10 @@ import unittest
 import numpy as np
 from numpy.testing import assert_allclose
 
-from sbi4f_tutorial import hkde, inference, long_end, surface, tasks, teaching
-from sbi4f_tutorial.paths import CHECKPOINTS, RESULTS
+from sbi4f_tutorial.heston_options import model as hkde, lesson as heston
+from sbi4f_tutorial.rough_options import long_end, lesson as rough
+from sbi4f_tutorial.shared import inference, surface, tasks, teaching
+from sbi4f_tutorial.shared.paths import CHECKPOINTS, RESULTS
 
 
 class PricingTests(unittest.TestCase):
@@ -31,12 +33,12 @@ class PricingTests(unittest.TestCase):
 
     def test_heston_smile_of_the_checkpoint_task_lies_inside_the_bounds(self):
         task = json.loads((CHECKPOINTS / "heston" / "task.json").read_text())
-        prices = teaching.heston_smile(task, [0.04, 0.05, 0.8, -0.7])
+        prices = heston.heston_smile(task, [0.04, 0.05, 0.8, -0.7])
         k, maturity, kind = surface.contract_arrays(task["context"]["contracts"])
         self.assertTrue(np.isfinite(surface.implied_vol(prices, k, maturity, kind)).all())
 
     def test_one_rough_smile_has_a_negative_skew_falling_with_maturity(self):
-        result = teaching.price_rough_smile(0.1, 2.0, -0.8, paths=1024)
+        result = rough.price_rough_smile(0.1, 2.0, -0.8, paths=1024)
         self.assertTrue(np.isfinite(result["implied"]).all())
         self.assertTrue(np.all(np.asarray(result["skew"]) < 0))
         self.assertLess(result["exponent"], 0)

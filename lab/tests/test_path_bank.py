@@ -12,6 +12,7 @@ import weakref
 import numpy as np
 
 from sbi4finance.path_inference import bank
+from sbi4f_tutorial.trajectories import simulation
 from sbi4finance.rough_bergomi import rough_driver
 
 
@@ -133,7 +134,7 @@ class PathBankTests(unittest.TestCase):
 
                 return FutureChanged()
 
-            with patch.object(bank, "_rng", side_effect=changed_rng):
+            with patch.object(simulation, "_rng", side_effect=changed_rng):
                 changed = bank.generate(task, "train", 0, 2, 44)
             np.testing.assert_array_equal(baseline["parameters"], changed["parameters"])
             # FFT convolution can change rounding at machine precision when
@@ -298,7 +299,7 @@ class PathBankTests(unittest.TestCase):
 
                     return ControlledParameterPrior()
 
-                with patch.object(bank, "_rng", side_effect=controlled):
+                with patch.object(simulation, "_rng", side_effect=controlled):
                     return bank.generate(task, "validation", 3, 4, 2026103103)
 
             low, high = generate_with_drift_quantile(.2), generate_with_drift_quantile(.8)

@@ -1,0 +1,460 @@
+{
+  "baseline_main": "c1fc88f95a5c3ae52f8d7597d6a17fc15350c271",
+  "baseline_trees_equal": true,
+  "checks": {
+    "lab_core": {
+      "log_sha256": "0911a9435907d5ea0aec83de8b9333f457c06f362c4fce7f01dbf6a2ad6f390a",
+      "passed": true,
+      "seconds": 151.802,
+      "skips": 3,
+      "tests": 527
+    },
+    "lab_historical": {
+      "log_sha256": "f381e538bb2216ada66ac828667146b3323769000976ab2f821e701b61d74830",
+      "passed": true,
+      "seconds": 52.327,
+      "skips": 21,
+      "tests": 527
+    },
+    "tutorial": {
+      "log_sha256": "03a042a66d6496ac2709ad7e6ee5aae88dd9f657a59629e2936b3fe4e4c8defe",
+      "passed": true,
+      "seconds": 1.953,
+      "skips": 0,
+      "tests": 36
+    }
+  },
+  "document_links": {
+    "checked_heading_anchors": 45,
+    "checked_local_file_links": 164,
+    "errors": 0
+  },
+  "environment_install": "new worktree Pixi environments from committed locks; existing package cache reused",
+  "format": "tutorial_owned_runtime_refactor_checks_v1",
+  "locks": {
+    "lab": {
+      "external_package_records_unchanged": true,
+      "sha256": "afa779732a85392263b459529a10a9e75385604253627adc81bd661acc5afb54"
+    },
+    "tutorial": {
+      "external_package_records_unchanged": true,
+      "sha256": "1ad2f7303da1efc9b117b83118b7a109f8353a801e1fca9a04f1891ea5c5d6fc"
+    }
+  },
+  "manifest_regeneration_copies_refreshed": 0,
+  "marimo_check_passed": true,
+  "native_model_equivalence": {
+    "all_seeded_draws_exactly_equal": true,
+    "draws_per_model": 4,
+    "existing_estimators": 6,
+    "models": {
+      "heston-final500": {
+        "finite": true,
+        "seeded_draws_exactly_equal": true,
+        "shape": [
+          1,
+          4,
+          4
+        ]
+      },
+      "path-heston": {
+        "finite": true,
+        "seeded_draws_exactly_equal": true,
+        "shape": [
+          1,
+          4,
+          5
+        ]
+      },
+      "path-rough-joint": {
+        "finite": true,
+        "seeded_draws_exactly_equal": true,
+        "shape": [
+          1,
+          4,
+          7
+        ]
+      },
+      "path-rough-known": {
+        "finite": true,
+        "seeded_draws_exactly_equal": true,
+        "shape": [
+          1,
+          4,
+          4
+        ]
+      },
+      "rough-joint100k-validation0": {
+        "finite": true,
+        "seeded_draws_exactly_equal": true,
+        "shape": [
+          1,
+          4,
+          6
+        ]
+      },
+      "rough-known100k-validation0": {
+        "finite": true,
+        "seeded_draws_exactly_equal": true,
+        "shape": [
+          1,
+          4,
+          3
+        ]
+      }
+    },
+    "seed": 2026,
+    "task_and_checkpoint_identities_unchanged": true,
+    "trajectory_history_length": 137
+  },
+  "not_performed": [
+    "new scientific data/training campaign",
+    "GPU or alternative cluster deployment",
+    "collaborator rehearsal"
+  ],
+  "notebook_exports": [
+    {
+      "cells": 11,
+      "errors": 0,
+      "notebook": "backbone_review.py",
+      "seconds": 15
+    },
+    {
+      "cells": 39,
+      "errors": 0,
+      "notebook": "slot1_intro.py",
+      "seconds": 16
+    },
+    {
+      "cells": 25,
+      "errors": 0,
+      "notebook": "slot2_amortized_bayes.py",
+      "seconds": 3
+    },
+    {
+      "cells": 12,
+      "errors": 0,
+      "notebook": "slot3_architectures.py",
+      "seconds": 2
+    },
+    {
+      "cells": 53,
+      "errors": 0,
+      "notebook": "slot4_heston_bayesflow.py",
+      "seconds": 4
+    },
+    {
+      "cells": 50,
+      "errors": 0,
+      "notebook": "slot5_calibration.py",
+      "seconds": 4
+    },
+    {
+      "cells": 30,
+      "errors": 0,
+      "notebook": "trajectory_inference.py",
+      "seconds": 2
+    }
+  ],
+  "numerical_baseline_checkout_head": "8b380cdc7f29b58b5d639139d74218f844ee257e",
+  "numerical_equivalence": {
+    "all_arrays_exactly_equal": true,
+    "array_count": 62,
+    "complete_task_identities_equal": true,
+    "scope": [
+      "Heston and known/joint rough generated paths, all3 splits",
+      "Heston NumPy/Numba kernels",
+      "rough driver arrays",
+      "all6 option teaching cases and3 encoders",
+      "Fourier option prices and posterior-predictive arrays"
+    ]
+  },
+  "ownership": {
+    "applications": [
+      "heston_options",
+      "rough_options",
+      "trajectories"
+    ],
+    "canonical_root": "tutorial/src/sbi4f_tutorial",
+    "historical_reference_exceptions": [
+      "lab/checks/bs_hierarchy.py",
+      "lab/checks/long_end/long_end.py"
+    ],
+    "lab_reused_symbols": 183,
+    "legacy_flat_modules": "import-only compatibility",
+    "shared": "shared"
+  },
+  "participant_recipe": {
+    "canonical_source_sha256": {
+      "inference.py": "6e9ab646a2627a356fef0fcaf8587cdf9bbbbbde0a6d64360cd77de9e517f643",
+      "simulation.py": "7cdb45a6f5e246f4d6247786a18fff4911956922c930d46df0f61e51d6e62449"
+    },
+    "elapsed_seconds": 15.337629957939498,
+    "environment_python": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-tutorial-runtime-20261102/tutorial/.pixi/envs/default/bin/python",
+    "forbidden_modules_imported": [],
+    "format": "participant_path_recipe_readiness_v1",
+    "jax_devices": [
+      "cpu:0"
+    ],
+    "process_peak_rss_bytes": 737181696,
+    "purpose": "bounded software check, not scientific validation or a published estimator",
+    "python": "3.12.16",
+    "reserved_test_evaluated": false,
+    "scientific_validation": false,
+    "tasks": {
+      "heston": {
+        "backend": "numpy",
+        "batch_size": 4,
+        "elapsed_seconds": 6.134260333026759,
+        "epochs": 1,
+        "finite_samples": true,
+        "finite_training_loss": true,
+        "finite_validation_loss": true,
+        "generated_keys": [
+          "observations",
+          "parameters",
+          "trajectory_id"
+        ],
+        "histories": 8,
+        "history": {
+          "loss": [
+            7.59671688079834
+          ],
+          "val_loss": [
+            7.540041446685791
+          ]
+        },
+        "latent_states_excluded": true,
+        "network": {
+          "bins": 4,
+          "depth": 2,
+          "hidden_dim": 8,
+          "summary_dim": 8,
+          "widths": [
+            8,
+            8
+          ]
+        },
+        "observations": 29,
+        "optimizer_steps": 2,
+        "prefix_exposure_total": 12,
+        "prefix_policy": "uniform_log_mixture",
+        "sample_observed_length": 17,
+        "sample_shape": [
+          2,
+          4,
+          5
+        ],
+        "samples_inside_prior": true,
+        "task_id": "physical_heston_daily_drift_paths_v2"
+      },
+      "rough-joint": {
+        "backend": "numpy",
+        "batch_size": 4,
+        "elapsed_seconds": 5.0465312079759315,
+        "epochs": 1,
+        "finite_samples": true,
+        "finite_training_loss": true,
+        "finite_validation_loss": true,
+        "generated_keys": [
+          "observations",
+          "parameters",
+          "trajectory_id"
+        ],
+        "histories": 8,
+        "history": {
+          "loss": [
+            10.162090301513672
+          ],
+          "val_loss": [
+            10.090529441833496
+          ]
+        },
+        "latent_states_excluded": true,
+        "network": {
+          "bins": 4,
+          "depth": 2,
+          "hidden_dim": 8,
+          "summary_dim": 8,
+          "widths": [
+            8,
+            8
+          ]
+        },
+        "observations": 29,
+        "optimizer_steps": 2,
+        "prefix_exposure_total": 12,
+        "prefix_policy": "uniform_log_mixture",
+        "sample_observed_length": 17,
+        "sample_shape": [
+          2,
+          4,
+          7
+        ],
+        "samples_inside_prior": true,
+        "task_id": "physical_rough_joint_daily_drift_paths_v2"
+      },
+      "rough-known": {
+        "backend": "numpy",
+        "batch_size": 4,
+        "elapsed_seconds": 3.679916249937378,
+        "epochs": 1,
+        "finite_samples": true,
+        "finite_training_loss": true,
+        "finite_validation_loss": true,
+        "generated_keys": [
+          "observations",
+          "parameters",
+          "trajectory_id"
+        ],
+        "histories": 8,
+        "history": {
+          "loss": [
+            5.593027114868164
+          ],
+          "val_loss": [
+            5.564318656921387
+          ]
+        },
+        "latent_states_excluded": true,
+        "network": {
+          "bins": 4,
+          "depth": 2,
+          "hidden_dim": 8,
+          "summary_dim": 8,
+          "widths": [
+            8,
+            8
+          ]
+        },
+        "observations": 29,
+        "optimizer_steps": 2,
+        "prefix_exposure_total": 12,
+        "prefix_policy": "uniform_log_mixture",
+        "sample_observed_length": 17,
+        "sample_shape": [
+          2,
+          4,
+          4
+        ],
+        "samples_inside_prior": true,
+        "task_id": "physical_rough_known_daily_drift_paths_v2"
+      }
+    },
+    "validation_data_role": "Same eight training pairs used only to exercise fit_offline validation; no held-out scientific validation.",
+    "versions": {
+      "bayesflow": "2.1.0",
+      "jax": "0.11.1",
+      "keras": "3.15.1",
+      "numpy": "2.5.3",
+      "sbi4f-tutorial": "0.1.0",
+      "scipy": "1.18.1"
+    }
+  },
+  "platform": "Apple Silicon macOS CPU",
+  "producer_identity": "new generation/training records bind canonical runtime source hashes; historical banks remain readable and frozen producer mismatch guards remain",
+  "release_check_passed": true,
+  "reserved_test_evaluated": false,
+  "same_checkout_guard": "accepts sibling editable runtime; rejects another worktree before numerical imports",
+  "scientific_validation": false,
+  "shipped_assets_manifest_claims_unchanged": true,
+  "source_sha256": {
+    "lab/pixi.lock": "afa779732a85392263b459529a10a9e75385604253627adc81bd661acc5afb54",
+    "lab/pyproject.toml": "25c8e213e5b7471f734f92d0dfd7759cb52d0f280be85f1d4d3106f2492a207f",
+    "lab/scripts/train_full_surface.py": "47186b446720cb6981c10da3c2ab9f3136c5273a923483ba8c75ef6afc279898",
+    "lab/scripts/train_full_surface_pricer.py": "5b65e857cc190068c04332d74707a16d0746370ba123468cdc1089629dd012e7",
+    "lab/scripts/train_path_posterior.py": "afd33937e873d4aa072b7d367781b7b5f6ac2f5b223bac00591e97612d81121c",
+    "lab/src/sbi4finance/__init__.py": "ea4ac30b8896c12956ec21eb4dadef0f8e3f219673feff20793d61634708b187",
+    "lab/src/sbi4finance/bergomi.py": "bfdffb8175d26a6dd46620092ffc0c205a114cb2d1e0dc523f1cd8eb96ee215f",
+    "lab/src/sbi4finance/calibration/bank.py": "e8a40cb9c7fadfb472bc6e48fa5874f62f9fa7afd30156bd70e44feec7596353",
+    "lab/src/sbi4finance/calibration/full_surface.py": "64a417679db38f8d8897c66617af746567dc808b8e14499525f988dd770a1ddd",
+    "lab/src/sbi4finance/calibration/full_surface_teaching.py": "c9e326ce57a7ca4737eed6d2453863e680061c03c00705508505a87c18675a0c",
+    "lab/src/sbi4finance/calibration/inference.py": "0b657953d68f47a34e83d66bb69a4d5f6447df576b698a4b0004b167f34d824c",
+    "lab/src/sbi4finance/calibration/pricing.py": "e0e1cc1da9b08ab83cd2fb095c8657da05477e788fcdae04435abddaa3fe89ca",
+    "lab/src/sbi4finance/calibration/rough_working_grid_pilot.py": "1ee3ea282e18474a3d71ce58117cdedd8fc485b9b08fc36486ed0e50dea9564a",
+    "lab/src/sbi4finance/calibration/surface.py": "ec661b14550a1931b3fa20e79cfcfab102920b24e303d8aaf22e23bfd70971e0",
+    "lab/src/sbi4finance/calibration/tasks.py": "0b7ac3011ca25cea335c81efc6eb12f8f7d622ccb20c83e5a24794cb28219519",
+    "lab/src/sbi4finance/calibration/teaching.py": "5e6e5d3be56730f254df2a51613a9629b5397490b8c51b041fe20c1cee372575",
+    "lab/src/sbi4finance/gbm.py": "3ac0a55dd52f38804058c78045a000fd6c9f402fdafe5577f8839167460c1b95",
+    "lab/src/sbi4finance/gbm_bank.py": "94cac3413ec95ed90f05ed3f1934ea5ae5451068b29c105c22fb838a51b27ecc",
+    "lab/src/sbi4finance/heston.py": "e56a4dc60f41c66ec1acae703d2441761882518152d58ec530262a385e125563",
+    "lab/src/sbi4finance/hkde.py": "b167af651c0cbbbb85186211cd680b4ec6b646f3bf0f245d58ac9283b482788c",
+    "lab/src/sbi4finance/path_inference/bank.py": "e803328cd0cb3f3e561d64c6b4bd64da6a1f100a92b70b19474d0bb9a1bb3cd4",
+    "lab/src/sbi4finance/path_inference/inference.py": "f4e344e3364c4603eecb77dff15dfd1a85cc8a7c3a5d7f77e41d2491481c33d9",
+    "lab/src/sbi4finance/rough_bergomi.py": "eb3f123f0bc642c224ee17718964ed01b927a482dcc03767e760aea0546ad55d",
+    "lab/src/sbi4finance/runtime_sources.py": "fac6a8489ce901283fdb8c4ae9aafae663b63f22f85f12e91ff9054e4d576b01",
+    "lab/src/sbi4finance/svj/plots.py": "1e28008425ddd9d153538e204c58bf237eab6acae3638651c75b2cf37934bb4a",
+    "lab/studies/copy_to_tutorial.py": "2a9c5b99e3596e2675845382d8ab68a6c87de5cfb286efdaba421be79e12ad16",
+    "lab/studies/runtime_boundary.py": "330e0ac59ad2ae37a22dc1b01f3ab038d6d7b569841283b0b977050db8518409",
+    "lab/tests/test_cached_heston_native.py": "81daa0fb692c04f087edec810540a80dafd150b041d1d4b9a5463bfec7fc39cb",
+    "lab/tests/test_full_surface_pricer_cli.py": "0582320b6e8c8f8e3ed75ad1f48957778cde13ce9256d2f7de856c17ed79a619",
+    "lab/tests/test_full_surface_seed_order.py": "487559c4bbd39bc94341b44fdf12c7f2f53faa9523adce231bd93aca2818345f",
+    "lab/tests/test_heston_lesson_helpers.py": "71cb48c0a61e2573b97db6901d635f777091791952907012dab833755b5a152d",
+    "lab/tests/test_hkde_maturity_reuse.py": "83dca2fa6f615b09b3a716a9fbb275eb49f6e2d4d4963412360be9265a654fd2",
+    "lab/tests/test_path_bank.py": "559ba7bb60f0673c28c272f1a6444896543fad826783d3572e924100e47f55c4",
+    "lab/tests/test_path_inference.py": "dcf2d90043ce373041c48868c86079f0c1085c2197247764eff1e2616e1dc208",
+    "lab/tests/test_rough_conditional_outputs.py": "5ab61eb82de65d87593d54b13d67c04f7f71d215d1b3b504e146ff6344a742c7",
+    "lab/tests/test_rough_working_grid_pilot.py": "8735aeda89ef20e5c90c548f9230a180e9d1893dee2c4822217a9ca760bba9ef",
+    "lab/tests/test_runtime_checkout.py": "9c48f3e6122ad9dbba3503759e1eac7b14f0017f3ac7db99fbcca314d74a5143",
+    "lab/tests/test_runtime_reuse.py": "8e8b1972517b0d5af7ebdf6368e63d2befa8760be0172b14cafb3647e9efde99",
+    "lab/tests/test_tutorial_parity.py": "dc4b19b46010befafd97b33703eb16d2ec84ce477a13a593b500bbd1d01cee14",
+    "tutorial/notebooks/slot4_heston_bayesflow.py": "32bb0210c220f62a18ed576a790f00df61c9c543743818042d2ed48e752907df",
+    "tutorial/notebooks/slot5_calibration.py": "a19e85d3023ac270a68c6f0d0692dc5c412a9bb83d3ca71fb09363689f0d7efa",
+    "tutorial/notebooks/trajectory_inference.py": "a0dcf76e5214beeb5f9abcaa414a8a12d80de69e8b1e59b030b3947fe3586090",
+    "tutorial/pixi.lock": "1ad2f7303da1efc9b117b83118b7a109f8353a801e1fca9a04f1891ea5c5d6fc",
+    "tutorial/pyproject.toml": "8080bdb5424c3e422bbe7c8593fe4899b5d05ee7a8464fb41496c72aa5187994",
+    "tutorial/src/sbi4f_tutorial/__init__.py": "0716d08819d9e6a323e978ca441cab68f05f9c73ca5e175ddfb28e98bf02b1be",
+    "tutorial/src/sbi4f_tutorial/backbones.py": "862c074d973061d06a46dff97aee03fd904ad8e78541832c017783b49563c435",
+    "tutorial/src/sbi4f_tutorial/bank_helpers.py": "ca3e0b5589eeff934f3521c8b5a53bd4c77de83d81b8e3740143a010b298c8a4",
+    "tutorial/src/sbi4f_tutorial/bergomi.py": "29fda0c9a0a6c964830475a2163c4d77747b8401f18542ef1848381ab4504076",
+    "tutorial/src/sbi4f_tutorial/bs_hierarchy.py": "4e3ee369792b1f74887234cbd532af429fcee35b079b60f8a23e235ead3f9614",
+    "tutorial/src/sbi4f_tutorial/full_surface.py": "e38e1db66864fe5033a223efd999d00fda6e7370bfe9a550e3961c2dd5a65ceb",
+    "tutorial/src/sbi4f_tutorial/full_surface_teaching.py": "71c8c4feedf0a4ff9d15f0d7e57198fb15eee2f0489e59c5a13cc57ae03f9fd4",
+    "tutorial/src/sbi4f_tutorial/gbm.py": "61e993677e6400e4ce93fa8478111eb46e19a6f5d1fd6888dad62318a8124c6a",
+    "tutorial/src/sbi4f_tutorial/heston_options/__init__.py": "b15cc0363ee8fd30f2fa1f599836af94715d773a80811af9dac8cda38e25e5cc",
+    "tutorial/src/sbi4f_tutorial/heston_options/lesson.py": "8a29329ae912bb595fe4ea3ff75b31fb2f013dd8ef4186c413f06d6c098bce0f",
+    "tutorial/src/sbi4f_tutorial/heston_options/model.py": "958567be4d3e0c59676d651f12d99b8cfdf64cef8036c6b342a3774133df2292",
+    "tutorial/src/sbi4f_tutorial/heston_options/simulator.py": "08de17c3e99b00918779ac4ea275d9ba5f435d4cc25c0a47d4e9ba3ecd39d523",
+    "tutorial/src/sbi4f_tutorial/hkde.py": "970b548b7c6a68181a8e54ca95a3c769d819227c2948e0b8d1a750986d50864c",
+    "tutorial/src/sbi4f_tutorial/inference.py": "fbdc79ae1ebab13efb8b2f58e3001ce13ae95fac6c97ca816f0af5f76d079d9b",
+    "tutorial/src/sbi4f_tutorial/long_end.py": "09bc6f31bec3df7ec5b9e30ada89c7b42c921d84486fa85a7827463eaf67f587",
+    "tutorial/src/sbi4f_tutorial/paths.py": "110880f17d45ec4e71e0ab40da9c5894cd96f20653fa4bfc2e1fc5798d374720",
+    "tutorial/src/sbi4f_tutorial/plots.py": "3ddddeaaad10fdfc08b4b4abbe6a1b9c1c1275dd670880269c5195987e231057",
+    "tutorial/src/sbi4f_tutorial/pricing.py": "0cb3384a3076140fa913c76a41580a9e7efa251cdc758ed8d50fdc8ccc8ea6ed",
+    "tutorial/src/sbi4f_tutorial/rough_bergomi.py": "de98246d63471705e925aa4a5faa530c5875ec4cf9bd01929249f6ea2e204b49",
+    "tutorial/src/sbi4f_tutorial/rough_options/__init__.py": "9244a8a3f87583949af20947088546f3c428ad91797f066ba1f7ebc8daa04264",
+    "tutorial/src/sbi4f_tutorial/rough_options/lesson.py": "c2740cd0739a0ae4aeddcaa86ecf1b607b0caccb26a0249ca36765345041fc07",
+    "tutorial/src/sbi4f_tutorial/rough_options/long_end.py": "07d299c801eace30a8ece6ca027bc4b88b2afcd71bef12ed28e68dec22fd75ce",
+    "tutorial/src/sbi4f_tutorial/rough_options/model.py": "546d03f66fd7f1321bcc71a37bdb5cba0b5f6b41e51a1ff4e0ac13a03915bd69",
+    "tutorial/src/sbi4f_tutorial/rough_options/simulator.py": "542359c3999c2d6b55860191bf9468aeaf877820128d9e87c94cd7ecb0066bca",
+    "tutorial/src/sbi4f_tutorial/shared/__init__.py": "fd846d8f62785d4e8f9465119d59b3304c1ac5acd037f6b3ad37f881a178eef0",
+    "tutorial/src/sbi4f_tutorial/shared/backbones.py": "d82d2f2a81f9bbd2223fec58232aaf525e5533db647128e93acd1559ca865caf",
+    "tutorial/src/sbi4f_tutorial/shared/bank_helpers.py": "39df3eaa28c703840c00123d8e68fb4b22551c01a76a5cf7aeee2f7e049ea452",
+    "tutorial/src/sbi4f_tutorial/shared/bs_hierarchy.py": "943645a58d6df5ed7a86c82bb8ffba3a96c8abb2a9c140fb4871252e632b40b6",
+    "tutorial/src/sbi4f_tutorial/shared/full_surface.py": "deddcd18288b0191946ba30982bd9495f801437bad993cd42d9e1f000fed803f",
+    "tutorial/src/sbi4f_tutorial/shared/full_surface_teaching.py": "ef85accb62ed08aa8f49f83c3b7113366f2c496ce5782e4183b8f34585028509",
+    "tutorial/src/sbi4f_tutorial/shared/gbm.py": "52184ef8c6e472ae8f7a2423d3ff3ec759ddbc919edbcd238dc6eba0ca87fa1a",
+    "tutorial/src/sbi4f_tutorial/shared/inference.py": "e2f6e8ab54ca85186139ad0effa54a451101db885daa80adf5b0381e0d26b982",
+    "tutorial/src/sbi4f_tutorial/shared/paths.py": "b72b81eb8b124640a60a7e594352fe9098783fba26b6df721bd87fb78cacc610",
+    "tutorial/src/sbi4f_tutorial/shared/plots.py": "1cf3f2db683759d0186fcd6a7ed3e5b715592ab570b7b8a523739d38874194bf",
+    "tutorial/src/sbi4f_tutorial/shared/pricing.py": "b93283c1269a3984a7db90b074a2593abd8b5fdfb106d1d9b33132fc81b794b2",
+    "tutorial/src/sbi4f_tutorial/shared/surface.py": "62a51bf361174b551b1a9553c58e23ce55940c377e2478f6d7c4b708cf4eb1c8",
+    "tutorial/src/sbi4f_tutorial/shared/tasks.py": "c5a36364e5d48acc2b86a3d13fb2497d857569ffcb6ffff1797288aca4549c41",
+    "tutorial/src/sbi4f_tutorial/shared/teaching.py": "c9304ea59e6c9c225d691cc78894e00125516cdc3afc09288fecb645528c49ff",
+    "tutorial/src/sbi4f_tutorial/shared/why_bayes.py": "69b2132d667344956e128f881feda8abcbbf3660fd5c9dd59e913ca774b48a31",
+    "tutorial/src/sbi4f_tutorial/surface.py": "62ebd4de9018acb75ff5c93b961b31766cd26ac3e96865f7a7a279082b6bb220",
+    "tutorial/src/sbi4f_tutorial/tasks.py": "49881b142215343c8b6509fc207948ece39539327ed4d7ea1d85ac6f11584509",
+    "tutorial/src/sbi4f_tutorial/teaching.py": "d62e9a53c5ef219e2215a6cdefc40275e0b58e0c14d4867875436c6393b55234",
+    "tutorial/src/sbi4f_tutorial/trajectories/__init__.py": "c954a5eec86ae6695ab8147ed0adcc996dda468dd3cac5b5f22d8f2cff0489a4",
+    "tutorial/src/sbi4f_tutorial/trajectories/inference.py": "6e9ab646a2627a356fef0fcaf8587cdf9bbbbbde0a6d64360cd77de9e517f643",
+    "tutorial/src/sbi4f_tutorial/trajectories/lesson.py": "8062f5e2c1213d84f68af586577c7129bd5b0c2743a1858eda8c65318e94db63",
+    "tutorial/src/sbi4f_tutorial/trajectories/simulation.py": "7cdb45a6f5e246f4d6247786a18fff4911956922c930d46df0f61e51d6e62449",
+    "tutorial/src/sbi4f_tutorial/trajectory.py": "8d2b3cfa1875e65fdc5a0fbac17365d41aeac647e2f7288c716d61ad33e2eb75",
+    "tutorial/src/sbi4f_tutorial/why_bayes.py": "351f64bf7a47b695da73370320cc6aa1243ef61b781ca86d4c5bf9067344b2bf",
+    "tutorial/tests/test_backbones.py": "26a4e2682545e5a8ec745858dfc1c18ae4987c22091910db4113d8abce675dcb",
+    "tutorial/tests/test_independence.py": "351de636bc7e4ccc5d73fc7bf77f2b15fec191150fb348f44b14570db85030f6",
+    "tutorial/tests/test_runtime.py": "e3a8d483fc2d11a3bf4de64ef69e88dbdb0ce80d4ff8cadcf3620ebff8dcdc3e",
+    "tutorial/tests/test_runtime_ownership.py": "2c80301c43a7fd5e8e3f0ae734aea3703e4750d50d4df2a1e468ae78ca29e938",
+    "tutorial/tests/test_trajectory.py": "d93c45c4e0819adfbdd9cd8976e34c5d4ca490813cbf7e2789833d45c0735273"
+  }
+}

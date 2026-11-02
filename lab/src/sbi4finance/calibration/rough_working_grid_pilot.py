@@ -22,6 +22,7 @@ import numpy as np
 
 from ..gbm_bank import _integer, _json, _write_json
 from . import bank, numerical_pilot, pricing, tasks
+from sbi4f_tutorial.shared import pricing as core_pricing
 
 FORMAT = "rough_working_grid_pilot_v1"
 ROOT_SEED = 271100
@@ -186,7 +187,7 @@ def _arrays(prices, errors, covariance):
 @contextmanager
 def _observe(report, component, sigma, progress):
     """Process-local journal; the original estimator and RNG receive unchanged arguments."""
-    original = pricing.rough_block
+    original = core_pricing.rough_block
     declared = {s["pcg64_initial_state_sha256"]: s for s in component["streams"]}
 
     def observed(*args, **kwargs):
@@ -224,11 +225,11 @@ def _observe(report, component, sigma, progress):
                        finished_utc=_utc())
             progress(report)
 
-    pricing.rough_block = observed
+    core_pricing.rough_block = observed
     try:
         yield
     finally:
-        pricing.rough_block = original
+        core_pricing.rough_block = original
 
 
 def run_component(declaration, component_index, output):

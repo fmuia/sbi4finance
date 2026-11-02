@@ -2,6 +2,14 @@
 
 The reusable launcher takes one campaign JSON and calls the existing collection, shard and snapshot code. It uses the same operator for a new task or an append; no new Python wrapper is needed for each experiment. The original generation phases retain their frozen operators and ledgers. The known-curve 100k append now uses a separately frozen copy of this launcher; see the [live recovery record](run-recovery-2026-10-28.md).
 
+For the current source layout, deploy the complete checkout: lab generation
+imports the sibling tutorial numerical runtime. Install the locked lab environment
+from that revision, with both source directories visible to workers. Its recorded
+producer hashes include the executing tutorial sources. A moved source layout
+cannot extend a frozen collection by rewriting its metadata; select the original
+producer checkout/environment for that operation. Existing snapshots remain
+readable for a new fit from the current checkout.
+
 On Oscar, use the locked numerical Python belonging to the frozen producer:
 
 ```bash

@@ -141,6 +141,8 @@ class ActualWorkflowTests(unittest.TestCase):
                             prefix_policy="uniform", learning_rate=5e-4, init_checkpoint=None)
             parent = trainer.run_training(SimpleNamespace(**settings, out=work / "parent"))
             self.assertEqual(parent["optimizer_steps"], 2)
+            self.assertIn("tutorial/src/sbi4f_tutorial/trajectories/inference.py",
+                          parent["shared_runtime_source_sha256"])
             # An original uniform checkpoint without the new policy field still
             # loads, so historical native bytes need not be rewritten.
             legacy = json.loads((work / "parent/training.json").read_text())

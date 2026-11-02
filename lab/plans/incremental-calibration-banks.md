@@ -6,7 +6,16 @@ This implements the data-growth part of the [numerical experiment plan](NUMERICA
 
 **Tutorial scope:** first complete the full-surface Heston and joint rough examples. Sparse-chain support, adapters, checkpoints and studies are a separate downstream unit that starts with specification. Existing storage or study-runner support does not establish missing-quote support for the core estimator.
 
-**Current rough-task status:** the plan now calls for a six-target joint rough model with a Heston-shaped initial curve. The rough config and CLI examples below still describe the earlier seven-level task and illustrate storage mechanics only. Do not queue that old full bank as data for the new model. Complete the [curve-family check and task/prior freeze](NUMERICAL-EXPERIMENT-PLAN.md#rough-curve-baseline-and-bounded-flexibility-check), implement the new generator/adapter, then use its compatible config. Existing Heston data and this incremental machinery remain reusable.
+**Current rough-task status:** known-curve and six-target joint-curve rough routes have published 100k banks and completed baseline fits; use the [training-data guide](training-data-guide.md) for their exact configurations and native trees. The CLI examples below describe the earlier supplied seven-level curve and illustrate storage mechanics. They do not change the six-target task or authorize another campaign. Preserve each task/prior/producer identity; joint conditional and product checks remain separate [unfinished numerical work](NUMERICAL-EXPERIMENT-PLAN.md#joint-curve-and-bounded-numerical-refinement).
+
+**Current source layout:** install and deploy the complete repository checkout;
+lab generation reuses the authoritative numerical runtime under `tutorial/`.
+Both sibling source trees belong to the frozen producer identity. Existing banks
+remain readable/trainable, but extending an older collection requires its
+producer-matching historical checkout/environment. New generation records the
+new numerical source paths/hashes; preserve old manifests unchanged. The
+[current lab recipes](../README.md#run-the-workers-on-a-local-cpu) give bounded
+checks in the current `core` environment.
 
 ## What makes a surface unique
 

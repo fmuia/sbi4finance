@@ -21,6 +21,7 @@ sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(ROOT))
 
 from sbi4finance.calibration import bank_collection as bank, full_surface, inference  # noqa: E402
+from sbi4finance.runtime_sources import option_inference_runtime_hashes  # noqa: E402
 from studies import train_calibration as recovery  # noqa: E402
 
 
@@ -39,7 +40,7 @@ def run_contract(args, manifest):
     selection = getattr(args, "checkpoint_selection", "validation_loss")
     if selection not in ("validation_loss", "final"):
         raise ValueError("checkpoint selection must be validation_loss or final")
-    sources = [Path(__file__), Path(recovery.__file__), *sorted((ROOT / "src/sbi4finance/calibration").glob("*.py"))]
+    sources = [Path(__file__), Path(recovery.__file__), ROOT / "src/sbi4finance/runtime_sources.py", *sorted((ROOT / "src/sbi4finance/calibration").glob("*.py"))]
     return {"format": "full_surface_training_run_v1", "network": config,
             "dataset": {"manifest_sha256": sha256(args.bank / "manifest.json"),
                         "task_fingerprint": manifest["task_fingerprint"],
@@ -49,7 +50,8 @@ def run_contract(args, manifest):
             "settings": {"epochs": args.epochs, "batch_size": args.batch_size,
                          "chunk_epochs": args.chunk_epochs, "seed": args.seed, "fresh_quote_noise": True,
                          "checkpoint_selection": selection},
-            "source_sha256": {str(p.relative_to(ROOT)): sha256(p) for p in sources}}
+            "source_sha256": {str(p.relative_to(ROOT)): sha256(p) for p in sources},
+            "shared_runtime_source_sha256": option_inference_runtime_hashes(manifest["configuration"]["task"])}
 
 
 def run_training(args):

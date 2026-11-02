@@ -5,8 +5,9 @@ rough Bergomi options, and parameter inference from return trajectories**.
 They share a model → simulation → training → inference → checks workflow using
 [BayesFlow](https://github.com/bayesflow-org/bayesflow).
 
-PR #64 is merged. The current [collaborator handover plan](tutorial/curriculum/TUTORIAL-REVIEW.md#g-collaborator-handover-before-the-next-feedback-round)
-documents the implemented review/compute routes and the deferred collaborator rehearsal.
+PRs #64 and #65 are merged. The current [collaborator handover](tutorial/README.md#collaborator-handover)
+explains how to review and edit the lessons; the [application plan](tutorial/curriculum/TUTORIAL-REVIEW.md#h-tutorial-owned-runtime-refactor)
+records the source-ownership refactor and the deferred collaborator rehearsal.
 Older returns exclusions and slot timings do not define the current application scope.
 
 ## Start editing here
@@ -14,11 +15,15 @@ Older returns exclusions and slot timings do not define the current application 
 For lesson feedback, start with these **three files**. They contain the prose,
 equations, highlighted teaching snippets, layout and controls.
 
-| Application | Main notebook | Runtime helpers it uses |
+| Application | Main notebook | Authoritative helper package |
 | --- | --- | --- |
-| Heston options | [slot4_heston_bayesflow.py](tutorial/notebooks/slot4_heston_bayesflow.py) | [teaching](tutorial/src/sbi4f_tutorial/teaching.py), [backbones](tutorial/src/sbi4f_tutorial/backbones.py), optional [full_surface](tutorial/src/sbi4f_tutorial/full_surface.py) |
-| Rough Bergomi options | [slot5_calibration.py](tutorial/notebooks/slot5_calibration.py) | [backbones](tutorial/src/sbi4f_tutorial/backbones.py), [teaching](tutorial/src/sbi4f_tutorial/teaching.py), [pricing](tutorial/src/sbi4f_tutorial/pricing.py); historical [long_end](tutorial/src/sbi4f_tutorial/long_end.py) |
-| Trajectory inference | [trajectory_inference.py](tutorial/notebooks/trajectory_inference.py) | [trajectory](tutorial/src/sbi4f_tutorial/trajectory.py), including cached views, masks and explicit native inference |
+| Heston options | [slot4_heston_bayesflow.py](tutorial/notebooks/slot4_heston_bayesflow.py) | [heston_options/](tutorial/src/sbi4f_tutorial/heston_options/) |
+| Rough Bergomi options | [slot5_calibration.py](tutorial/notebooks/slot5_calibration.py) | [rough_options/](tutorial/src/sbi4f_tutorial/rough_options/) |
+| Trajectory inference | [trajectory_inference.py](tutorial/notebooks/trajectory_inference.py) | [trajectories/](tutorial/src/sbi4f_tutorial/trajectories/) |
+
+Common observation/conditioning code and native option inference live once
+in [shared/](tutorial/src/sbi4f_tutorial/shared/). The [source walks](tutorial/curriculum/TUTORIAL-REVIEW.md#follow-a-computation-from-the-lesson)
+identify the specific implementation behind each core computation.
 
 Review locally from your checkout; cached viewing needs no Oscar login, full bank
 or native model download:
@@ -40,34 +45,32 @@ Exported HTML is a static preview; marimo runs the reactive controls.
 
 ```mermaid
 flowchart LR
-    N[Three application notebooks] --> R[Participant runtime]
+    N[Application notebooks] --> R[Tutorial-owned application helpers]
+    R --> C[Shared tutorial numerical runtime]
+    L[Lab generation and training workers] --> C
     N --> A[Published assets]
-    L[Canonical lab functions] -->|copy unchanged| R
-    U[Participant UI definitions] --> R
-    S[Lab studies and figure scripts] -->|publish and verify| A
+    S[Lab studies and publication tools] -->|publish and verify| A
 ```
 
-Numerical changes start in `lab/`, then the existing tools copy reviewed functions
-into the self-contained participant runtime. [backbones.py](tutorial/src/sbi4f_tutorial/backbones.py)
-is participant-authored UI; [trajectory.py](tutorial/src/sbi4f_tutorial/trajectory.py)
-contains both authored and copied definitions. The [copy registry](lab/studies/copy_to_tutorial.py)
-identifies that boundary per definition. Do not edit both numerical copies by hand.
-The [minimal intervention map](tutorial/curriculum/TUTORIAL-REVIEW.md#g1--publish-the-minimal-edit-and-dependency-map)
-links each type of change to its canonical source.
+Everything needed to run and change a lesson is under `tutorial/`. Edit its
+application helpers or the shared runtime directly; the lab reuses the same
+implementation. Older flat module names remain compatibility imports. There
+is no function-copy step and no second numerical implementation to edit.
 
 Changing displayed example code alone does not change an executing helper.
 Shipped observations, draws, figures and metadata under `tutorial/assets/` enter
 through publication tools; their [manifest](tutorial/MANIFEST.md) is generated.
-The [lab README](lab/README.md#from-lab-code-to-a-lesson) gives the copy/publication/check sequence.
+The [lab README](lab/README.md#from-lab-code-to-a-lesson) gives the publication
+and validation sequence.
 
 ## Make a small change
 
 For explanation or layout, edit one of the three notebook files above and run
 `pixi run --locked check`, `test` and `test-notebooks` from `tutorial/`.
-For executing numerical behavior, edit the canonical lab function and refresh
-its participant copy; [the source walks and check matrix](tutorial/curriculum/TUTORIAL-REVIEW.md#follow-a-computation-from-the-lesson)
-show the relevant definitions and assets. UI-only helpers and copied numerical
-definitions have different editing rules. Record comments with the
+For executing behavior, edit the application helper or shared definition under
+`tutorial/src/sbi4f_tutorial/`; [the source walks and check matrix](tutorial/curriculum/TUTORIAL-REVIEW.md#follow-a-computation-from-the-lesson)
+show the relevant definitions and assets. Changes to shared numerical code also
+require the affected lab tests and release checks. Record comments with the
 [feedback form](tutorial/curriculum/TUTORIAL-REVIEW.md#g6--rehearse-the-handover-and-collect-actionable-feedback).
 
 ## Run numerical work on your compute
@@ -76,7 +79,8 @@ The core bank, training, evaluation and native-loading workers already run witho
 Slurm or Oscar. Start with the [lab workflow](lab/README.md#canonical-workflow)
 and [training-data guide](lab/plans/training-data-guide.md). Current lab work uses
 `pixi run --locked -e core ...`; its default environment retains historical BF2.0
-studies. Use caller-owned data/output directories and preserve native bank trees.
+studies. Keep the complete checkout: the lab installs the sibling tutorial runtime
+as a local dependency. Use caller-owned data/output directories and preserve native bank trees.
 
 Cluster launchers are deployment wrappers. Dated Oscar controllers retain their
 original paths and campaign history; they are not the default training interface.
@@ -112,8 +116,8 @@ or the [existing review notes](tutorial/curriculum/TUTORIAL-REVIEW.md#guided-not
 
 | Area | Purpose |
 | --- | --- |
-| `tutorial/` | Participant notebooks, runtime and small published inputs/results |
-| `lab/` | Canonical numerical code, workers, studies, tests, publication tools and evidence |
+| `tutorial/` | Notebooks, authoritative application/shared runtime, tests and small published inputs/results |
+| `lab/` | Bank/training/reference workers, lab-only studies, tests, publication tools and evidence |
 | `course/` | Supporting lectures, theory and their figures |
 
 Introduction, amortized-Bayes/architecture lessons and the backbone-review notebook

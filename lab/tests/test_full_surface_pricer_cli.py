@@ -38,6 +38,8 @@ class FullSurfacePricerCliTests(unittest.TestCase):
             saved = json.loads((checkpoint / "pricer.json").read_text())
             self.assertEqual(saved, report)
             self.assertEqual(report["status"], "completed")
+            self.assertIn("tutorial/src/sbi4f_tutorial/shared/full_surface.py",
+                          report["shared_runtime_source_sha256"])
             self.assertEqual(report["pricer_sha256"], cli.digest(checkpoint / "pricer.npz"))
             self.assertEqual(json.loads((checkpoint / "task.json").read_text()), config["task"])
             self.assertFalse(report["reserved_test_evaluated"])

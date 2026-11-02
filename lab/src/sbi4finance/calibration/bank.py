@@ -30,6 +30,7 @@ import numpy as np
 import scipy
 
 from ..gbm_bank import _integer, _json, _sha256, _write_json
+from ..runtime_sources import option_runtime_hashes
 from . import tasks
 
 FORMAT = "calibration_bank_v1"
@@ -56,12 +57,13 @@ def task_fingerprint(config):
 
 def source_files(task):
     model = {"hkde": ["hkde.py", "heston.py", "gbm.py"], "rough": ["bergomi.py", "rough_bergomi.py"]}[task["model"]]
-    return ["gbm_bank.py", *model, "calibration/surface.py", "calibration/pricing.py",
+    return ["gbm_bank.py", "runtime_sources.py", *model, "calibration/surface.py", "calibration/pricing.py",
             "calibration/tasks.py", "calibration/bank.py"]
 
 
 def source_hashes(task):
-    return {name: _sha256(PACKAGE / name) for name in source_files(task)}
+    return {**{name: _sha256(PACKAGE / name) for name in source_files(task)},
+            **option_runtime_hashes(task)}
 
 
 def versions():

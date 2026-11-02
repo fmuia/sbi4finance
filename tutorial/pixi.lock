@@ -1399,13 +1399,14 @@ packages:
 - pypi: .
   name: sbi4f-tutorial
   requires_dist:
-  - bayesflow==2.1.0
-  - keras==3.15.1
-  - jax==0.11.1
   - numpy==2.5.3
   - scipy==1.18.1
   - matplotlib==3.11.2
-  - marimo==0.25.1
+  - numba==0.68.0 ; extra == 'acceleration'
+  - bayesflow==2.1.0 ; extra == 'participant'
+  - keras==3.15.1 ; extra == 'participant'
+  - jax==0.11.1 ; extra == 'participant'
+  - marimo==0.25.1 ; extra == 'participant'
   requires_python: '>=3.12'
 - pypi: https://files.pythonhosted.org/packages/02/8b/b83f7780dad22e0878e4c7bd9158ebd24ed12bc3d5e3a471cd0576f77ded/pyzmq-27.2.0-cp312-abi3-win_amd64.whl
   name: pyzmq

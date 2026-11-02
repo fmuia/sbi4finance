@@ -2,7 +2,10 @@
 
 Use the [incremental bank guide](../plans/incremental-calibration-banks.md) for append-only generation, legacy-shard reuse and immutable training snapshots. Standard study outputs get a new directory; chunked training supports checked same-run recovery, while a larger dataset starts a new training run. The legacy `scripts/calibration_bank.py local --resume` also keeps finished shards of an interrupted fixed-size bank build. The
 numbers in `tutorial_final/CLAIMS.md` and in the [design document](https://github.com/fmuia/sbi4finance/blob/dd001a37f0d21ba669465c688e71cc12489ff742/docs/design/calibration-design-document.md)
-come from these outputs. Library code is in `src/sbi4finance/calibration/`.
+come from these outputs. Production orchestration and lab-only code are in
+`src/sbi4finance/`; numerical components also needed by the lessons are owned
+in `tutorial/src/sbi4f_tutorial/` and imported by the lab. Keep both sibling
+directories from the same checkout when installing or deploying workers.
 
 | ID | Script | What it produces |
 |---|---|---|
@@ -23,7 +26,23 @@ come from these outputs. Library code is in `src/sbi4finance/calibration/`.
 | S10 | `thin_coverage.py` (`run`, `summarize`), `cluster/thin_coverage_array.sbatch` | Breach rates of every method's one-sided 90% bounds on simulated chains with the thin layout; with `--truths`, truths drawn from S11's posterior (S10-E) |
 | S11 | `thin_real.py` | A real thin chain (EWG): the audited posterior, products, classical fits, the predictive check, at several noise scales |
 | S2-1, S2-2 | `smile_facts.py` (`example`, `prior-predictive`) | The example surfaces at the centre of the prior, and the prior predictive check of four smile statistics |
-| – | `manifest.py` | Regenerates the artifact table of `tutorial_final/MANIFEST.md` from the files in `results/` and `checkpoints/` |
+| – | `manifest.py` | Regenerates the artifact table of `tutorial/MANIFEST.md` from the publication inputs |
+| – | `runtime_boundary.py` | Checks that lab runtime imports reuse the authoritative tutorial implementations |
+
+## Runtime ownership and current commands
+
+For new numerical work, use the [current worker route](../README.md#canonical-workflow)
+and its locked `core` environment. Shared runtime edits start in the relevant
+application package or `shared/` under `tutorial/src/sbi4f_tutorial/`. The lab
+reuses those definitions directly; `pixi run --locked -e core runtime-check`
+and the parity tests check the boundary. The former `copy-to-tutorial` command
+provides migration guidance and never overwrites tutorial source.
+
+Publication remains separate: reviewed results enter tutorial assets through
+`accept.py`, `manifest.py` and the designated exporters; `claims.py` retains the
+stated scientific status. Do not change frozen asset/model metadata to accommodate
+a source move. The historical commands and test ranges below preserve their
+original study scope and do not authorize a new campaign.
 
 ## Order and test-split use
 

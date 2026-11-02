@@ -38,9 +38,14 @@ With pip, on Python 3.12, for example in a hosted notebook:
 
 ```bash
 cd tutorial
-pip install -e .
+pip install -e ".[participant]"
 export KERAS_BACKEND=jax
 ```
+
+The base package contains the shared runtime without selecting a neural backend
+version. The `participant` extra adds the complete notebook stack above. Pixi
+selects that extra automatically; lab environments reuse the base package with
+their own current or historical BayesFlow version.
 
 ## Run or review an existing lesson
 
@@ -207,23 +212,70 @@ A short cached walkthrough is sufficient for the first feedback round:
 Record what was actually checked. A fresh collaborator rehearsal remains a
 separate acceptance step from the saved local software/artifact checks.
 
+## Collaborator handover
+
+Pull the agreed repository revision, then run these from your checkout. Open
+one lesson at a time; stop its terminal server before starting the next. Cached
+review needs no Oscar login, full bank or additional native-model download.
+
+```bash
+cd tutorial
+pixi install --locked
+pixi run --locked heston-options
+pixi run --locked rough-options
+pixi run --locked path-inference
+```
+
+The three notebook files hold the presentation and controls. Their executing
+helpers are owned here too: `src/sbi4f_tutorial/heston_options/`,
+`rough_options/` and `trajectories/`. Shared numerical and plotting code is in
+`shared/`. Edit the implementation in these locations directly; lab workflows
+reuse it. Old flat module names are compatibility imports, not editing targets.
+
+For a content/UI change, run `pixi run --locked check`, `test` and
+`test-notebooks`. For shared numerical changes, also run the relevant lab tests
+and release checks. Assets are generated: use the lab publication tools when a
+result or figure needs changing. Keep scientific limitations beside the results.
+
+Give feedback with the notebook and section, selected model/example and controls,
+expected versus observed behavior, and a proposed improvement. For trajectories,
+include both requested and cached history lengths. A fresh collaborator rehearsal
+remains deferred; previous author-side checks do not substitute for it.
+
 ## Author or change a lesson
 
 Start with the [editing map](../README.md#start-editing-here) and the slot's plan in `curriculum/`.
 The three core content files are `notebooks/slot4_heston_bayesflow.py`,
 `notebooks/slot5_calibration.py` and `notebooks/trajectory_inference.py`.
-The current [application and collaborator plan](curriculum/TUTORIAL-REVIEW.md#g-collaborator-handover-before-the-next-feedback-round)
-supersedes older returns exclusions and slot timings. Edit explanations, equations,
-visible code examples and controls in the notebook. Executing numerical helpers
-have their own source locations: changing a displayed code block alone does not
-change the simulator or fitted estimator. Keep historical SPY studies distinct,
-and state the model, inputs, noise assumptions and evidence status locally.
+The current [application and collaborator plan](curriculum/TUTORIAL-REVIEW.md#h-tutorial-owned-runtime-refactor)
+supersedes older source-copy instructions, returns exclusions and slot timings.
+Edit explanations, equations, visible code examples and controls in the notebook.
+Changing a displayed code block alone does not change the executing simulator or
+fitted estimator. Keep historical SPY studies distinct, and state the model,
+inputs, noise assumptions and evidence status locally.
 
-Put new numerical work in the lab. Use its existing `copy-to-tutorial` tool for runtime functions and its
-publication tools for assets; [the lab README](../lab/README.md#from-lab-code-to-a-lesson) gives the workflow.
-Do not make the participant package import `sbi4finance`, edit `sys.path`, or read lab files. Do not hand-copy a
-checkpoint into the shipped assets or edit the generated manifest/claim tables. The ignored
-`assets/local-checkpoints/` download cache is the explicit hash-checked exception for optional live loading.
+| Executing behavior | Edit here |
+| --- | --- |
+| Heston illustrative paths, Fourier smiles and posterior predictive quotes | [heston_options/lesson.py](src/sbi4f_tutorial/heston_options/lesson.py); Fourier model in [model.py](src/sbi4f_tutorial/heston_options/model.py); physical path kernel in [simulator.py](src/sbi4f_tutorial/heston_options/simulator.py) |
+| Rough forward-simulation button and smile figure | [rough_options/lesson.py](src/sbi4f_tutorial/rough_options/lesson.py); rough numerics in [model.py](src/sbi4f_tutorial/rough_options/model.py) and [simulator.py](src/sbi4f_tutorial/rough_options/simulator.py) |
+| Trajectory cached examples, history views and figures | [trajectories/lesson.py](src/sbi4f_tutorial/trajectories/lesson.py) |
+| Small trajectory simulations, task definitions and teaching training pairs | [trajectories/simulation.py](src/sbi4f_tutorial/trajectories/simulation.py): `teaching_task`, `generate`; use `backend="numpy"` for the dependency-light lesson recipe |
+| Trajectory normalization, prefix masks, GRU and native inference | [trajectories/inference.py](src/sbi4f_tutorial/trajectories/inference.py) |
+| Option conditions, network construction and native loading | [shared/full_surface.py](src/sbi4f_tutorial/shared/full_surface.py) |
+| Option examples and posterior presentation | [shared/backbones.py](src/sbi4f_tutorial/shared/backbones.py) |
+| Contract grid/noise, option tasks and shared plot style | [shared/surface.py](src/sbi4f_tutorial/shared/surface.py), [tasks.py](src/sbi4f_tutorial/shared/tasks.py), [plots.py](src/sbi4f_tutorial/shared/plots.py) |
+
+The tutorial owns these implementations. `lab/` reuses them for generation,
+production training, references and publication; it retains its own orchestration
+and lab-only functions. Do not add a second implementation or run a function-copy
+step. Legacy flat modules only preserve older import paths. The participant
+package must not import `sbi4finance`, edit `sys.path`, or read lab files.
+
+Use the [lab publication workflow](../lab/README.md#from-lab-code-to-a-lesson)
+for shipped results and figures. Never hand-copy a checkpoint into shipped
+assets or edit the generated manifest/claim tables. The ignored
+`assets/local-checkpoints/` download cache remains the explicit hash-checked
+exception for optional live loading.
 
 Run these checks from `tutorial/` before a PR:
 
@@ -233,16 +285,31 @@ pixi run --locked check
 pixi run --locked test-notebooks
 ```
 
-These are validation commands for authors, not actions executed by this handover. Interactive Pair/MCP/Studio
-sessions still need their stated review. Runtime success does not promote a development example to an accepted
-scientific claim; retain the original reference methods, chain/draw axes, task and checkpoint hashes.
+Shared numerical changes additionally require the relevant lab tests and
+`pixi run --locked -e core release-check` from `lab/`.
+
+The small trajectory recipe uses `trajectories.simulation` for task definitions
+and simulation, plus `trajectories.inference` for training data, prefixes and
+workflow construction. Its NumPy simulation backend needs no optional Numba
+install; lab production workers can use their pinned accelerated backend.
+A changed model/prior/noise law or numerical target needs its own specified data
+and fit; source organization alone does not justify regenerating banks or
+changing frozen metadata. Existing
+banks and models keep their original identities. To extend generation or resume
+a frozen run, use its producer-matching source/environment.
+
+Interactive Pair/MCP/Studio sessions still need their stated review. Runtime
+success does not promote a development example to an accepted scientific claim;
+retain the original reference methods, chain/draw axes, task and checkpoint hashes.
 
 ## What is in this folder
 
 | Path | What |
 |---|---|
 | `notebooks/` | The marimo notebooks: plain Python files, reactive, readable in any editor |
-| `src/sbi4f_tutorial/` | The participant runtime: unchanged numerical copies from the lab plus authored UI/loaders. `backbones.py` is authored; `trajectory.py` mixes copied numerical and authored presentation definitions. The copy registry identifies each boundary. Core numerical modules include `surface`, `hkde`, `rough_bergomi`, `pricing`, `full_surface` and `teaching`. |
+| `src/sbi4f_tutorial/{heston_options,rough_options,trajectories}/` | Authoritative application helpers, organized to match the lessons; trajectory presentation and native inference are separate modules. |
+| `src/sbi4f_tutorial/shared/` | Shared simulators, option conditions/tasks, native inference, cached option views, asset paths and plot utilities; lab workflows reuse this code. |
+| Flat modules in `src/sbi4f_tutorial/` | Compatibility imports for older callers; edit the owning application/shared module. |
 | `assets/` | The trained networks, the accepted study results, quick-check outputs, task files, data and figures that the notebooks load |
 | `MANIFEST.md` | Every shipped asset, with its size, SHA-256 and origin; excludes downloaded `local-checkpoints/` |
 | `CLAIMS.md` | Historical calibration-study claims, source outputs and actual verification status |
@@ -256,7 +323,8 @@ Pilot values and failed screens can be inspected with their explicit labels; onl
 supports a scientific claim, and a working replay does not promote its model to accepted status.
 The simulations, training runs and studies behind them, and a sixteen-lecture course with
 the full theory, are in the project repository, [fmuia/sbi4finance](https://github.com/fmuia/sbi4finance): the
-course in `course/`, the code that produced every asset in `lab/`.
+course in `course/`, production workers and publication records in `lab/`, and
+the numerical runtime they share with the lessons in `tutorial/src/sbi4f_tutorial/`.
 
 ## If something does not work
 

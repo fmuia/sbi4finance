@@ -10,7 +10,8 @@ def _():
     import marimo as mo
     import matplotlib.pyplot as plt
     import numpy as np
-    from sbi4f_tutorial import plots, trajectory
+    from sbi4f_tutorial.shared import plots
+    from sbi4f_tutorial.trajectories import lesson as trajectory
     plots.style()
     return json, mo, np, plt, trajectory
 
@@ -202,14 +203,16 @@ def _(mo, trajectory):
 @app.cell(hide_code=True)
 def _(cache_task, mo):
     mo.md(f"""
-    **The simulation API.** This author-side example runs from `lab/`; it is
-    shown here rather than executed by the participant notebook.
+    **The simulation API.** The implementation lives beside this lesson in
+    `src/sbi4f_tutorial/trajectories/simulation.py`. This small example can run
+    in the tutorial environment; opening the notebook does not execute it.
 
     ```python
-    from sbi4finance.path_inference import bank
+    from sbi4f_tutorial.trajectories import simulation
 
-    task = bank.teaching_task("{cache_task['model']}", observations=1260)
-    pairs = bank.generate(task, "train", start=0, count=128, seed=2026)
+    task = simulation.teaching_task("{cache_task['model']}", observations=1260)
+    pairs = simulation.generate(
+        task, "train", start=0, count=128, seed=2026, backend="numpy")
     returns = pairs["observations"]   # [128, 1260, 1]
     parameters = pairs["parameters"] # [128, number_of_unknowns]
     ```
@@ -279,11 +282,11 @@ def _(mo):
         length remains possible. This changes training exposure, not the prior
         or the return-process law.
 
-        A small **author-side software illustration**, continuing the `pairs`
+        A small **software illustration in the tutorial environment**, continuing the `pairs`
         example above, uses the public offline-training API:
 
         ```python
-        from sbi4finance.path_inference import inference
+        from sbi4f_tutorial.trajectories import inference
 
         train = inference.training_data(pairs, task)
         workflow = inference.build_workflow(task)

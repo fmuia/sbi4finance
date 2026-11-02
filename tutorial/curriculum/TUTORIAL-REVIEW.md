@@ -314,6 +314,11 @@ change the three application lessons, and execute the same numerical workers
 on their own supported compute. Notebook-content feedback resumes after this
 handover pass. No new scientific campaign is part of the handover.
 
+**Current source ownership:** the follow-up in [section H](#h-tutorial-owned-runtime-refactor)
+supersedes the original lab-to-tutorial copy workflow. G0–G5 were delivered in
+merged PR #65 (`c1fc88f95a5c3ae52f8d7597d6a17fc15350c271`); G6 remains deferred.
+The edit map below reflects the tutorial-owned runtime.
+
 ### Audit findings and design decisions
 
 - **Cached review already needs no Oscar.** All three lessons use shipped assets;
@@ -354,70 +359,70 @@ application. Comments can name an exact source version.
 
 ### G1 · Publish the minimal edit and dependency map
 
-**Work.** Trace the actual notebook cells and optional actions to their runtime
-functions, canonical lab definitions and input assets. Include both executed
-code and displayed author-side recipes; changing a displayed snippet alone does
-not change an executing numerical helper. Use the copy registry and cached
-imports to establish the map, including historical dependencies that are still
-loaded. Avoid a catalogue of every file.
+**Current editing rule.** The runtime is authoritative under
+`tutorial/src/sbi4f_tutorial/`. Application-specific helpers live beside one
+another in `heston_options/`, `rough_options/` and `trajectories/`; reusable
+numerical components live in `shared/`. Lab workflows import these same
+definitions. Older flat names remain compatibility imports, and the former
+function-copy workflow is retired. The source-ownership follow-up is recorded
+in [section H](#h-tutorial-owned-runtime-refactor).
 
 **Required map.**
 
 | Intervention | First editing location | Source boundary |
 | --- | --- | --- |
-| Prose, equations, visible snippets, layout and controls | Three application files under `tutorial/notebooks/` | Notebook Python/Markdown; verify displayed code against the actual API. |
-| Option case selection/tables/corners | `tutorial/src/sbi4f_tutorial/backbones.py` | Participant-authored UI. |
-| Heston illustration/PPC or rough forward helper | `lab/src/sbi4finance/calibration/teaching.py` | Copy unchanged to tutorial through `copy-to-tutorial`. |
-| Option adapter/conditional network/native sampling | `lab/src/sbi4finance/calibration/full_surface.py` | Canonical numerical code, copied into participant runtime. |
-| Trajectory scaling, prefix masks and inference | `lab/src/sbi4finance/path_inference/inference.py` | Canonical numerical code; copied definitions live in `trajectory.py`. |
-| Trajectory cached loading/presentation | Registered authored definitions in `tutorial/src/sbi4f_tutorial/trajectory.py` | This module mixes copied and authored definitions; consult the registry per definition. |
-| Shared plot style | `lab/src/sbi4finance/svj/plots.py` | Active shared utility despite its historical directory name. |
+| Prose, equations, visible snippets, layout and controls | Three application files under `tutorial/notebooks/` | Notebook Python/Markdown; verify displayed code against the executing API. |
+| Heston illustration, Fourier smile or posterior prediction | `tutorial/src/sbi4f_tutorial/heston_options/lesson.py` | Authoritative lesson helpers; Fourier model in `model.py`. |
+| Rough forward-simulation button/figure | `tutorial/src/sbi4f_tutorial/rough_options/lesson.py` | Authoritative lesson helpers; numerical model/simulator in the same package. |
+| Option case selection/tables/corners | `tutorial/src/sbi4f_tutorial/shared/backbones.py` | Shared option replay/presentation. |
+| Option adapter/conditional network/native sampling | `tutorial/src/sbi4f_tutorial/shared/full_surface.py` | Shared numerical implementation reused by lab training/loading. |
+| Trajectory task definitions and small simulation recipe | `tutorial/src/sbi4f_tutorial/trajectories/simulation.py` | `teaching_task`, `validate_task`, `task_fingerprint`, `generate`; lesson uses the NumPy backend. |
+| Trajectory scaling, prefix masks and native inference | `tutorial/src/sbi4f_tutorial/trajectories/inference.py` | Shared numerical implementation; lab retains production training/orchestration. |
+| Trajectory cached loading/presentation | `tutorial/src/sbi4f_tutorial/trajectories/lesson.py` | Participant catalogue, replay selection, figures and explicit local-model UI. |
+| Contract grid/noise, option tasks and plot style | `tutorial/src/sbi4f_tutorial/shared/{surface,tasks,plots}.py` | Shared runtime components. |
 | Workflow illustrations | Existing `lab/evidence/illustrations/*/render.py` | Regenerate and publish with the asset tools. |
 | Shipped observations/draws/results | Source study/export plus `accept`, `manifest`, `claims` | Generated artifacts; never hand-edit payloads or hash tables. |
 
-**Deliverables.** A concise notebook → helper → canonical source → assets map
-in existing READMEs, plus a small example intervention showing which checks to
-run for prose/UI, numerical code and asset changes. Preserve function-level
-copy parity and authored exceptions.
-
 **Done when.** A collaborator can locate the executing implementation behind
-one figure/control in each lesson and make a small prose/UI change without
-editing a bank, checkpoint or both copies of a numerical function.
+one figure/control in each lesson, edit it in `tutorial/`, and validate the
+change without updating another numerical copy or reaching Oscar. A displayed
+snippet is explanatory code; editing it alone does not alter an executing helper.
 
 #### Follow a computation from the lesson
 
-| Visible behavior | Executing participant code | Canonical definition / inputs |
-| --- | --- | --- |
-| Heston path illustration, Fourier quote prices and predictive quotes | `teaching.heston_illustrative_paths`, `heston_smile`, `heston_posterior_predictive` | Copied from `lab/src/sbi4finance/calibration/teaching.py`; Fourier numerics use `hkde.py`. The current saved posterior/reference is under `assets/backbones/heston-final500/`. |
-| Option case selector, posterior table and corner | `backbones.load_example`, `parameter_rows`, `corner` | Authored in the participant `backbones.py`; the copied `full_surface_teaching` loader checks the selected cache. Rough cases live under `assets/backbones/rough-known*/` or `rough-joint*/`. |
-| Explicit rough forward-simulation button | `teaching.price_rough_smile` → `pricing` → `rough_bergomi`/`bergomi` | Canonical calibration `teaching.py`/`pricing.py` and model simulators; the participant example reads `assets/tasks/calibration_rough_pilot.json`. It does not replace the selected cached posterior. |
-| Trajectory case/history views | Authored `trajectory.load_example`, `cached_posterior`, `plot_returns`, `plot_evolution` | `assets/trajectories/{heston,rough-known,rough-joint}/`; aggregate diagnostics separately use `assets/results/trajectories/closeout-20261031/`. |
-| Actual trajectory prefix/mask and optional inference | Copied `trajectory.conditioning_data`, `build_workflow`, `sample`; authored `load_live` | Canonical `lab/src/sbi4finance/path_inference/inference.py`; optional model bytes under `assets/local-checkpoints/path-*/`. |
-| Shared plot style | `plots.style` | Copied from `lab/src/sbi4finance/svj/plots.py`. |
+All paths in the runtime column are relative to `tutorial/src/sbi4f_tutorial/`.
 
-These are the short source walks needed for routine intervention. Deeper
-imports remain behind those helpers. In particular, the rough lesson's
-historical `long_end` import still reads SPY and quick-check assets eagerly;
-collapsing that section does not make its assets removable. Heston's optional
-small fit executes `full_surface` APIs; the rough training scaffold is displayed
-code until explicitly run by an author.
+| Visible behavior | Authoritative executing code | Inputs / lab boundary |
+| --- | --- | --- |
+| Heston path illustration, Fourier quote prices and predictive quotes | `heston_options/lesson.py`: `heston_illustrative_paths`, `heston_smile`, `heston_posterior_predictive`; Fourier model in `heston_options/model.py` | Current saved posterior/reference under `assets/backbones/heston-final500/`; the lab imports the same runtime definitions. |
+| Option case selector, posterior table and corner | `shared/backbones.py`: `load_example`, `parameter_rows`, `corner`; cache checks in `shared/full_surface_teaching.py` | Rough cases under `assets/backbones/rough-known*/` or `rough-joint*/`. |
+| Explicit rough forward-simulation button | `rough_options/lesson.py`: `price_rough_smile` → `shared/pricing.py` → `rough_options/{simulator,model}.py` | Reads `assets/tasks/calibration_rough_pilot.json`; it does not replace the selected cached posterior. |
+| Trajectory teaching data generation | `trajectories/simulation.py`: `teaching_task`, `generate`; Heston physical path kernel in `heston_options/simulator.py` | NumPy backend for small tutorial examples; optional accelerated backend for production. Disk-backed banks and verification remain in the lab. |
+| Trajectory case/history views | `trajectories/lesson.py`: `load_example`, `cached_posterior`, `plot_returns`, `plot_evolution` | `assets/trajectories/{heston,rough-known,rough-joint}/`; aggregate diagnostics under `assets/results/trajectories/closeout-20261031/`. |
+| Actual trajectory prefix/mask and optional inference | `trajectories/inference.py`: `conditioning_data`, `build_workflow`, `sample`; explicit local loading via `trajectories/lesson.py`: `load_live` | Optional model bytes under `assets/local-checkpoints/path-*/`; lab training reuses the numerical definitions. |
+| Shared plot style | `shared/plots.py`: `style` | Historical lab imports remain compatibility entry points. |
+
+Historical dependencies remain real. In particular, `rough_options/long_end.py`
+reads SPY and quick-check assets eagerly; collapsing a notebook section does not
+make those assets removable. Heston's optional small fit executes shared
+`full_surface` APIs; the rough training scaffold remains displayed code until
+explicitly run by an author.
 
 #### A small intervention and its checks
 
 - **Prose, math or layout:** edit the relevant notebook's Markdown/cell, then
   run `check`, `test` and `test-notebooks` from `tutorial/`. A prose-only change
   should leave `assets/` and scientific task/model identities unchanged.
-- **Participant presentation helper:** edit authored `backbones.py` definitions
-  or the registered authored `trajectory.py` definitions. Run tutorial checks
-  and lab copy parity. Do not alter a copied definition in only one location.
-- **Numerical behavior:** edit the canonical lab definition, run the relevant
-  numerical tests, refresh its copy with `copy-to-tutorial`, and run lab release
-  checks plus tutorial checks. A changed model/prior/noise/numerical target
-  needs its own specified run; do not patch frozen metadata to accept old weights.
-- **Published result/figure:** edit its producer, regenerate and publish via
+- **Application presentation helper:** edit the owning application module or
+  `shared/backbones.py`. Run tutorial checks and the lab runtime-boundary check.
+- **Shared numerical behavior:** edit the authoritative application/shared
+  definition, run its relevant numerical tests, the lab test/release checks and
+  tutorial checks. Do not copy a second implementation into `lab/`. A changed
+  model/prior/noise/numerical target needs its own specified run; never patch
+  frozen metadata to accept old weights.
+- **Published result/figure:** edit its producer, regenerate and publish through
   the lab tools, then refresh/check the asset manifest and claims. Keep prior
   scientific evidence and reference scope attached to the original estimator.
-
 
 ### G2 · Document and check scheduler-free compute recipes
 
@@ -524,7 +529,7 @@ layout or duplicating the tutorial into a new package.
 **Second pass.** Classify candidate dated controllers, duplicate operator copies
 and bulk historical outputs. For each candidate record its consumers, retained
 source commit/archive, evidence bindings and replacement link. Check imports,
-CLI/pixi tasks, tests, the function-copy registry, manifests, claims and Markdown
+CLI/pixi tasks, tests, runtime-boundary checks, manifests, claims and Markdown
 links before deleting or moving it. Retire source through Git history/pinned
 references and the existing verified external archives; do not rewrite old
 scientific hashes or remove failures to make the tree look cleaner.
@@ -615,7 +620,7 @@ These author-side checks do not stand in for the deferred collaborator rehearsal
 | Slice | Implemented and checked | Scope still explicit |
 | --- | --- | --- |
 | G0 | Three-file front door, current trajectory scope and historical-guide designation. | The selected source version still belongs in each feedback report. |
-| G1 | Named launch tasks, concrete source walks, authored/copied boundaries and a small-change/check matrix. | Deep historical branches retain their actual dependencies. |
+| G1 | Named launch tasks, concrete source walks and the original source-copy boundary/check matrix. | Section H supersedes source-copy ownership; deep historical branches retain their actual dependencies. |
 | G2 | Caller-path CPU recipes and all 16 documented generation/check/train/reload/validation CLI commands passed on Apple Silicon, with SSH and Slurm state absent. Heston recovery and all three path mask/reload readiness checks passed. | Short software tasks and tiny fits check execution, not posterior quality. The existing verified locked runtime was reused; no fresh installation is claimed. |
 | G3 | Two existing model archives verified/extracted; all six native task/model identities match the publication records and tutorial caches. Exact archive, extraction and UI paths are documented. | Each collaborator needs their own repository/Drive permission. Model draws and full-bank downloads were not repeated for this check. |
 | G4 | Reusable CPU/GPU wrappers have no owner account/partition defaults. Caller flags, allocation guards, GPU preflight and bounded print-only single-job recipe are documented/tested. | No Slurm job was submitted and no new cluster/GPU deployment is claimed tested. A target allocation still needs its own readiness check before a full campaign. |
@@ -624,9 +629,115 @@ These author-side checks do not stand in for the deferred collaborator rehearsal
 
 The two retired controllers and their retained sources are listed in the
 [numerical-plan retirement record](../../lab/plans/NUMERICAL-EXPERIMENT-PLAN.md#bounded-retirement-batch--1-november-2026).
-The next handover action is the collaborator rehearsal when requested, followed
-by the next round of feedback on the three core lessons. No additional bank,
-training campaign or source reorganization is required to begin that rehearsal.
+The user requested the source-ownership refinement below before the next
+feedback round. Collaborator rehearsal remains deferred and can begin when
+requested from the resulting review baseline. No additional scientific bank or
+training campaign is part of this organization work.
+
+
+## H. Tutorial-owned runtime refactor
+
+**Baseline:** merged PR #65, `main` at
+`c1fc88f95a5c3ae52f8d7597d6a17fc15350c271`. The user requested that code needed
+to understand, run and refine each tutorial be owned where collaborators find
+the lesson, with updated documentation and handover guidance.
+
+### H0 · Give each application a clear source home
+
+Keep the three notebook filenames and named launch tasks stable. Group Heston
+helpers in `heston_options/`, rough-option helpers in `rough_options/`, and
+trajectory helpers in `trajectories/` under `tutorial/src/sbi4f_tutorial/`.
+Separate trajectory replay/UI code (`lesson.py`) from native inference
+(`inference.py`). Own physical-measure task definitions and small trajectory
+simulation in `trajectories/simulation.py`, with a NumPy teaching backend and
+optional accelerated production backend; Heston physical paths use
+`heston_options/simulator.py`. Shared numerical, cache and plotting utilities live once in
+`shared/`. Existing flat module names are compatibility imports only.
+
+**Acceptance:** the root editing map, tutorial author map and G1 computation
+walks all point to the same executing implementation. The tutorial remains
+self-contained, with cached opening independent of neural initialization.
+
+### H1 · Make the runtime authoritative and reuse it from the lab
+
+Edit shared implementations directly in their tutorial package. Lab workers
+import/re-export the same definitions while keeping lab-only generation,
+training orchestration, references, exporters and studies. Retire source-copy
+mutation: `runtime-check` checks the dependency/ownership boundary;
+`copy-to-tutorial` only explains the migration and cannot overwrite source.
+Historical `bs_hierarchy` and `long_end` quick-check programs retain their
+original study input/global contracts and numerical parity tests; current lesson
+edits belong in the tutorial runtime, not those preserved study programs.
+
+Keep base runtime requirements separate from the participant neural/notebook
+stack. `pixi install --locked` in `tutorial/` selects the participant stack;
+manual participant installation uses `pip install -e ".[participant]"`.
+Lab installs the sibling base runtime with its own recorded current/historical
+BayesFlow environment. Deploy the complete checkout, with `lab/` and
+`tutorial/` from one revision visible to workers.
+The lab source-checkout import guard rejects missing or differently located
+editable runtimes before numerical imports, with the expected/actual paths and
+locked reinstall guidance. Installed distributions use their declared package
+dependency; the source-layout guard is specific to deployed/editable checkouts.
+
+**Acceptance:** one authoritative implementation per reused definition; no
+tutorial imports from its lab consumer; current and historical
+lab environments keep their intended neural versions; release/runtime checks
+reject ownership drift.
+
+### H2 · Preserve data, model and producer provenance
+
+Move source without changing the mathematical model, prior, noise law, task
+contracts, conditioning inputs, native sampler or saved asset/model bytes.
+Generation provenance includes the actual reused numerical sources. A source
+move changes the producer identity even if numerical outputs are equivalent.
+
+Existing downloaded banks remain readable and usable for a new fit. Extending
+or resuming their generation requires their producer-matching historical
+checkout/environment. Do not rewrite a frozen manifest to fit the new source
+layout. Newly generated banks record the new source identity. This refactor
+launches no scientific campaign and creates no new accuracy claim.
+
+**Acceptance:** cached asset hashes and native task/model identities unchanged;
+seeded numerical outputs and load/sample behavior equivalent; new producer
+records bind the executing runtime; frozen producer-mismatch guards remain.
+
+### H3 · Update handover and validate the route
+
+The short [collaborator handover](../README.md#collaborator-handover) is the
+shareable entry point. Root/tutorial/lab READMEs and repository instructions
+must agree on ownership, installation, editing and checks. Publication of data
+and figures remains separate from source edits.
+
+Required checks cover tutorial independence/tests, every notebook's headless
+execution and marimo checks, lab tests/release/runtime boundaries, native model
+loading and bounded generation/training/evaluation workers. Reuse the existing
+supported environment and record which platforms/routes were actually checked.
+Do not describe a fresh install, GPU/other-cluster deployment or collaborator
+rehearsal as tested unless it was performed.
+
+**Status:** implemented and checked on Apple Silicon CPU in newly installed
+locked worktree environments, reusing the existing package cache. The
+[compact validation record](../../lab/evidence/pilot-results/2026-11-02/tutorial-runtime-refactor/summary.json)
+records 527 lab tests in core (three optional PyMC skips), 527 in the historical
+environment (21 environment-specific/optional skips), 36 tutorial tests and all
+seven notebook exports (220 cells, zero errors). All 183 registered shared lab
+symbols reuse their tutorial definitions. Manifest, claims, marimo and runtime
+boundary checks pass; no shipped asset bytes changed.
+
+An independent pre/post comparison reproduces 62 arrays exactly. All six
+published native estimators load with unchanged task/model identities and
+produce exactly matching seeded draws. The participant-only simulation →
+one-epoch training → inference recipe works for all three trajectory models,
+without lab or Numba imports (eight 29-day histories per model; about 15 seconds
+and 703 MiB peak process memory). This is a bounded software check, not a new
+estimator or accuracy result. Four native BF2.1 tests now explicitly require
+that environment and remain executed in core.
+
+No GPU/other-cluster deployment or fresh collaborator rehearsal was performed.
+The collaborator rehearsal remains deferred at the user's request. Numerical
+limitations and failed trajectory calibration screens retain their original
+scope throughout this change.
 
 ## Guided notebook review · 1 November 2026
 
