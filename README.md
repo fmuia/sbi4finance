@@ -6,7 +6,7 @@ They share a model → simulation → training → inference → checks workflow
 [BayesFlow](https://github.com/bayesflow-org/bayesflow).
 
 PR #64 is merged. The current [collaborator handover plan](tutorial/curriculum/TUTORIAL-REVIEW.md#g-collaborator-handover-before-the-next-feedback-round)
-prepares a clean review and compute route before the next content-feedback round.
+documents the implemented review/compute routes and the deferred collaborator rehearsal.
 Older returns exclusions and slot timings do not define the current application scope.
 
 ## Start editing here
@@ -27,9 +27,9 @@ or native model download:
 cd tutorial
 pixi install --locked
 pixi run --locked test
-pixi run --locked slot4        # Heston, in the marimo editor
-pixi run --locked slot5        # rough options
-pixi run --locked trajectories # observed paths
+pixi run --locked heston-options # Heston, in the marimo editor
+pixi run --locked rough-options  # rough options
+pixi run --locked path-inference # observed paths
 ```
 
 Run one lesson command at a time. The [tutorial README](tutorial/README.md)
@@ -60,6 +60,16 @@ Shipped observations, draws, figures and metadata under `tutorial/assets/` enter
 through publication tools; their [manifest](tutorial/MANIFEST.md) is generated.
 The [lab README](lab/README.md#from-lab-code-to-a-lesson) gives the copy/publication/check sequence.
 
+## Make a small change
+
+For explanation or layout, edit one of the three notebook files above and run
+`pixi run --locked check`, `test` and `test-notebooks` from `tutorial/`.
+For executing numerical behavior, edit the canonical lab function and refresh
+its participant copy; [the source walks and check matrix](tutorial/curriculum/TUTORIAL-REVIEW.md#follow-a-computation-from-the-lesson)
+show the relevant definitions and assets. UI-only helpers and copied numerical
+definitions have different editing rules. Record comments with the
+[feedback form](tutorial/curriculum/TUTORIAL-REVIEW.md#g6--rehearse-the-handover-and-collect-actionable-feedback).
+
 ## Run numerical work on your compute
 
 The core bank, training, evaluation and native-loading workers already run without
@@ -70,9 +80,12 @@ studies. Use caller-owned data/output directories and preserve native bank trees
 
 Cluster launchers are deployment wrappers. Dated Oscar controllers retain their
 original paths and campaign history; they are not the default training interface.
-The [portability plan](tutorial/curriculum/TUTORIAL-REVIEW.md#g2--document-and-check-scheduler-free-compute-recipes)
-specifies the remaining local recipes, artifact instructions and target-specific
-rehearsal. It does not claim deployment to another cluster has already passed.
+The [local CPU recipes](lab/README.md#run-the-workers-on-a-local-cpu) cover
+bounded generation, training, native reload and validation. The
+[single-job Slurm recipe](lab/README.md#optional-single-job-slurm-deployment)
+uses caller-selected resources and prints the command before submission.
+Author-side worker checks passed on Apple Silicon without SSH or Slurm; a new
+cluster/GPU allocation still needs its own readiness check.
 
 ## Current state and next priorities
 
@@ -88,8 +101,9 @@ See the [current application plan](tutorial/curriculum/TUTORIAL-REVIEW.md),
 [path plan](lab/plans/PATH-INFERENCE-PLAN.md), [course status](course/status.md)
 and historical [claim ledger](tutorial/CLAIMS.md) for their respective scope.
 
-Next complete the handover's editing map, scheduler-free recipes, artifact paths
-and dependency-checked cleanup, then resume notebook feedback. Record feedback
+The editing map, scheduler-free recipes, artifact paths and first bounded
+cleanup batch are implemented. Collaborator rehearsal is deferred; its checklist
+is ready in the handover plan. Record feedback
 with source version, notebook/section, selected model/example and controls,
 expected/observed behavior and a proposed improvement. Use GitHub review comments
 or the [existing review notes](tutorial/curriculum/TUTORIAL-REVIEW.md#guided-notebook-review--1-november-2026).

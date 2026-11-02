@@ -384,6 +384,41 @@ copy parity and authored exceptions.
 one figure/control in each lesson and make a small prose/UI change without
 editing a bank, checkpoint or both copies of a numerical function.
 
+#### Follow a computation from the lesson
+
+| Visible behavior | Executing participant code | Canonical definition / inputs |
+| --- | --- | --- |
+| Heston path illustration, Fourier quote prices and predictive quotes | `teaching.heston_illustrative_paths`, `heston_smile`, `heston_posterior_predictive` | Copied from `lab/src/sbi4finance/calibration/teaching.py`; Fourier numerics use `hkde.py`. The current saved posterior/reference is under `assets/backbones/heston-final500/`. |
+| Option case selector, posterior table and corner | `backbones.load_example`, `parameter_rows`, `corner` | Authored in the participant `backbones.py`; the copied `full_surface_teaching` loader checks the selected cache. Rough cases live under `assets/backbones/rough-known*/` or `rough-joint*/`. |
+| Explicit rough forward-simulation button | `teaching.price_rough_smile` → `pricing` → `rough_bergomi`/`bergomi` | Canonical calibration `teaching.py`/`pricing.py` and model simulators; the participant example reads `assets/tasks/calibration_rough_pilot.json`. It does not replace the selected cached posterior. |
+| Trajectory case/history views | Authored `trajectory.load_example`, `cached_posterior`, `plot_returns`, `plot_evolution` | `assets/trajectories/{heston,rough-known,rough-joint}/`; aggregate diagnostics separately use `assets/results/trajectories/closeout-20261031/`. |
+| Actual trajectory prefix/mask and optional inference | Copied `trajectory.conditioning_data`, `build_workflow`, `sample`; authored `load_live` | Canonical `lab/src/sbi4finance/path_inference/inference.py`; optional model bytes under `assets/local-checkpoints/path-*/`. |
+| Shared plot style | `plots.style` | Copied from `lab/src/sbi4finance/svj/plots.py`. |
+
+These are the short source walks needed for routine intervention. Deeper
+imports remain behind those helpers. In particular, the rough lesson's
+historical `long_end` import still reads SPY and quick-check assets eagerly;
+collapsing that section does not make its assets removable. Heston's optional
+small fit executes `full_surface` APIs; the rough training scaffold is displayed
+code until explicitly run by an author.
+
+#### A small intervention and its checks
+
+- **Prose, math or layout:** edit the relevant notebook's Markdown/cell, then
+  run `check`, `test` and `test-notebooks` from `tutorial/`. A prose-only change
+  should leave `assets/` and scientific task/model identities unchanged.
+- **Participant presentation helper:** edit authored `backbones.py` definitions
+  or the registered authored `trajectory.py` definitions. Run tutorial checks
+  and lab copy parity. Do not alter a copied definition in only one location.
+- **Numerical behavior:** edit the canonical lab definition, run the relevant
+  numerical tests, refresh its copy with `copy-to-tutorial`, and run lab release
+  checks plus tutorial checks. A changed model/prior/noise/numerical target
+  needs its own specified run; do not patch frozen metadata to accept old weights.
+- **Published result/figure:** edit its producer, regenerate and publish via
+  the lab tools, then refresh/check the asset manifest and claims. Keep prior
+  scientific evidence and reference scope attached to the original estimator.
+
+
 ### G2 · Document and check scheduler-free compute recipes
 
 **Work.** Turn the existing lab entry points into a clearly named supported
@@ -494,7 +529,7 @@ links before deleting or moving it. Retire source through Git history/pinned
 references and the existing verified external archives; do not rewrite old
 scientific hashes or remove failures to make the tree look cleaner.
 
-The first retirement candidates to audit are
+The first bounded retirement batch covered
 `lab/cluster/start_known100k_20261028.py` and
 `lab/cluster/start_joint100k_20261029.py`, followed by duplicated evidence-bound
 operator copies. Their absence from current worker imports alone is not enough:
@@ -530,6 +565,21 @@ runtime bug or a proposed numerical change. GitHub review comments or the
 existing guided-review notes host the feedback; no automatic collaborator
 messages/invitations are sent by this workstream.
 
+The feedback form is ready to use when rehearsal resumes:
+
+```text
+Source version / platform:
+Notebook and section heading:
+Mode (cached / optional live / author recipe):
+Model, friendly case, history length and relevant controls:
+Expected behavior or learning point:
+Observed behavior / error text:
+Suggested change (teaching / UI / numerical):
+```
+
+**Rehearsal status:** deferred at the user's request. Author-side software,
+artifact and worker checks below do not count as a collaborator rehearsal.
+
 **Release gates.**
 
 - **Feedback-ready:** aligned scope, three-file entry map, own-machine cached
@@ -557,12 +607,26 @@ trajectory calibration into acceptance.
 | G5 source retirement | After dependency mapping, in small batches | G1 and retained provenance; G6 repeated after each batch |
 | G6 collaborator rehearsal | Incremental; final gate after relevant cleanup | G0–G3 minimum, target-specific deployment only if advertised |
 
-The read-only inventory and plan are complete. This change corrects the current
-front-door/scope contradictions and publishes the minimal editing map. Local
-worker recipes, exact optional option-model paths, target deployment and file
-retirement remain execution work; existing tests are not relabelled as a fresh
-collaborator-machine rehearsal. Start G1/G2/G3 next, then perform only justified
-G5 retirement before the next feedback round.
+### Implementation status · 1 November 2026
+
+The implementation is recorded in the [compact software/artifact check record](../../lab/evidence/pilot-results/2026-11-01/collaborator-handover/summary.json).
+These author-side checks do not stand in for the deferred collaborator rehearsal.
+
+| Slice | Implemented and checked | Scope still explicit |
+| --- | --- | --- |
+| G0 | Three-file front door, current trajectory scope and historical-guide designation. | The selected source version still belongs in each feedback report. |
+| G1 | Named launch tasks, concrete source walks, authored/copied boundaries and a small-change/check matrix. | Deep historical branches retain their actual dependencies. |
+| G2 | Caller-path CPU recipes and all 16 documented generation/check/train/reload/validation CLI commands passed on Apple Silicon, with SSH and Slurm state absent. Heston recovery and all three path mask/reload readiness checks passed. | Short software tasks and tiny fits check execution, not posterior quality. The existing verified locked runtime was reused; no fresh installation is claimed. |
+| G3 | Two existing model archives verified/extracted; all six native task/model identities match the publication records and tutorial caches. Exact archive, extraction and UI paths are documented. | Each collaborator needs their own repository/Drive permission. Model draws and full-bank downloads were not repeated for this check. |
+| G4 | Reusable CPU/GPU wrappers have no owner account/partition defaults. Caller flags, allocation guards, GPU preflight and bounded print-only single-job recipe are documented/tested. | No Slurm job was submitted and no new cluster/GPU deployment is claimed tested. A target allocation still needs its own readiness check before a full campaign. |
+| G5 | Two completed controllers retired with exact pinned Git/archive recovery and a dependency/retention ledger. Distinct operator versions and current tested dependencies retained. | No immutable evidence or scientific result was deleted; further retirement needs a separate dependency proof. |
+| G6 | Feedback form and rehearsal checklist are prepared. | **Deferred at the user's request; no collaborator rehearsal performed.** |
+
+The two retired controllers and their retained sources are listed in the
+[numerical-plan retirement record](../../lab/plans/NUMERICAL-EXPERIMENT-PLAN.md#bounded-retirement-batch--1-november-2026).
+The next handover action is the collaborator rehearsal when requested, followed
+by the next round of feedback on the three core lessons. No additional bank,
+training campaign or source reorganization is required to begin that rehearsal.
 
 ## Guided notebook review · 1 November 2026
 

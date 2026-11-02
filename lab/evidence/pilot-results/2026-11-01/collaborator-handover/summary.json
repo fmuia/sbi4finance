@@ -1,0 +1,1297 @@
+{
+  "format": "collaborator_handover_implementation_v1",
+  "checked_utc": "2026-11-02T01:52:42.988059+00:00",
+  "scientific_acceptance": false,
+  "collaborator_rehearsal": "deferred_by_user",
+  "source_parent": "840e6236aec9feba6bf1b94ddcf4f4afd8bd1afb",
+  "scope": "Source/edit map, site-neutral wrappers, runnable local worker/artifact recipes, named notebook tasks and one bounded historical-controller retirement. No notebook, model, task, numerical worker, dependency pin or scientific payload changed.",
+  "source_sha256": {
+    "README.md": "79eaa523f74b2c934c9e7648e8c8cc233c563e590f8e24604be7611153d9f36c",
+    "lab/README.md": "1c4eb94dce867e17b5e92bb8ecca26acfda68611b29740e66049be1471da239b",
+    "lab/cluster/core_cpu.sbatch": "3d91b96553ba71b027cf3c7ef8a96a6802f930afde06cc670a605d2c30ad78ce",
+    "lab/cluster/core_gpu.sbatch": "e14b580908439918d63332a70686fac50068f688b9bf1db090713c55f9534df3",
+    "lab/plans/NUMERICAL-EXPERIMENT-PLAN.md": "3bc2282581bfe7aef6e3a583576b80827273e9da87383babfc76fee11034824a",
+    "lab/plans/training-data-guide.md": "2d77a01d5a9e79e8ca2fa0694df7be5ef0f4624e8c0d5d02576ff37153756325",
+    "lab/tests/test_core_cluster.py": "3a669781e002a018bae448992845f218cc741a27db0041c42c0c1c7b029bc928",
+    "tutorial/README.md": "bba6f2138e85673e368b5f3d9c186e53423b4b92c6babb6c7b7a2f81643aa5e6",
+    "tutorial/curriculum/TUTORIAL-REVIEW.md": "2909a3bb9ceff15590529f5e04490f546bfaf63e22f31ee1e18312b9c1e52049",
+    "tutorial/pyproject.toml": "c920177b2cfd0bf2a180c92a4d2223013c6c3145138903fd88c8de37a10d220b"
+  },
+  "validation": {
+    "lab_tests": 517,
+    "optional_skips": 3,
+    "tutorial_tests": 29,
+    "notebook_exports": 7,
+    "exported_cells": 220,
+    "genuine_cell_errors": 0,
+    "marimo_check": true,
+    "manifest_claims_copy_parity": true,
+    "wrapper_bash_syntax": true,
+    "friendly_pixi_tasks_parsed": true,
+    "local_markdown_links": 130
+  },
+  "software_checks": {
+    "format": "collaborator_handover_agent_cpu_check_v1",
+    "scientific_acceptance": false,
+    "collaborator_rehearsal": false,
+    "finished_utc": "2026-11-02T01:46:12.909459+00:00",
+    "source_revision": "840e6236aec9feba6bf1b94ddcf4f4afd8bd1afb",
+    "platform": "macOS-26.4.1-arm64-arm-64bit-Mach-O",
+    "runtime_python": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-full-surface-core/.pixi/envs/core/bin/python",
+    "runtime_scope": "Reused preinstalled core runtime with pinned package versions; this is not a fresh locked installation or a second-person/other-cluster rehearsal.",
+    "environment": {
+      "KERAS_BACKEND": "jax",
+      "JAX_PLATFORMS": "cpu",
+      "removed": [
+        "SLURM_JOB_ID",
+        "SLURM_CPUS_PER_TASK",
+        "SSH_AUTH_SOCK",
+        "SSH_CONNECTION",
+        "SSH_CLIENT"
+      ]
+    },
+    "checks": {
+      "core_environment": "passed",
+      "heston_option_readiness": "passed",
+      "all_three_teaching_path_readiness": "passed",
+      "focused_launcher_tests": {
+        "passed": true,
+        "count": 8
+      },
+      "batch_wrapper_bash_syntax": "passed",
+      "slurm_preview": {
+        "printed_only": true,
+        "submitted_jobs": 0
+      },
+      "documented_worker_chains": {
+        "passed": true,
+        "commands": 16,
+        "reserved_test_evaluated": false,
+        "saved_numeric_arrays_finite": true
+      }
+    },
+    "option_seconds": 10.79453758301679,
+    "path_seconds": 14.169066167087294,
+    "path_peak_rss_bytes": 967180288,
+    "source_sha256": {
+      "lab/README.md": "1c4eb94dce867e17b5e92bb8ecca26acfda68611b29740e66049be1471da239b",
+      "lab/cluster/core_cpu.sbatch": "3d91b96553ba71b027cf3c7ef8a96a6802f930afde06cc670a605d2c30ad78ce",
+      "lab/cluster/core_gpu.sbatch": "e14b580908439918d63332a70686fac50068f688b9bf1db090713c55f9534df3",
+      "lab/tests/test_core_cluster.py": "3a669781e002a018bae448992845f218cc741a27db0041c42c0c1c7b029bc928",
+      "lab/scripts/check_full_surface_environment.py": "0715d58995c803b483203cdb544e29e74cccdb19cf0de7f43d77353644138309",
+      "lab/scripts/check_core_cluster.py": "ac0ac0b5515cd7414ce5e10541dc6c8639c1c0dbc4f09df9baa7f7ddc5b0768a",
+      "lab/scripts/check_path_cluster.py": "92963faf732ef315edda31f412b0ea48e78f31c4639c0cdff8080d2587b36a38",
+      "lab/pixi.lock": "c814f74feb11cb8712a1f722243beb4b558f0edba1f31865248924709c22bc42"
+    },
+    "evidence": {
+      "core-environment.json": {
+        "sha256": "ec016a3944a70323216a2067132806047fa1105b603f3b53544bc2674634ca54",
+        "bytes": 346
+      },
+      "option-readiness/readiness.json": {
+        "sha256": "4aae31bbecc8e058b20bdad549d0ad89e36e2712b083f784bb2abea932713c17",
+        "bytes": 1506
+      },
+      "path-readiness/readiness.json": {
+        "sha256": "f478dab028e8190363141cc9f799b395a6fe224dd2974d9bf48650ec466d2f82",
+        "bytes": 4171
+      },
+      "core-launcher-tests.log": {
+        "sha256": "3b31c941683fc5ba4429915a474c8322664b093313785bf9151c0ec51c7d2c98",
+        "bytes": 97
+      },
+      "slurm-command-preview.txt": {
+        "sha256": "82c5155ae9326b9305e306baaa8a44ff6493bc7a17b0321ac3af3c4ae7cb758f",
+        "bytes": 478
+      },
+      "documented-worker-chains.json": {
+        "sha256": "ec99483bacedbe397cacdf2818def2eb1c4ef64cac1e928918e50363e003f205",
+        "bytes": 30397
+      }
+    },
+    "limits": [
+      "Software execution only; no posterior-accuracy or scientific promotion.",
+      "No jobs submitted and no new deployment tested.",
+      "The exact documented worker chains and existing readiness workers were executed with the verified Python prefix; a fresh dependency installation was not rehearsed."
+    ]
+  },
+  "documented_worker_cli_checks": {
+    "format": "documented_worker_cli_execution_v1",
+    "scientific_acceptance": false,
+    "collaborator_rehearsal": false,
+    "scope": "Exact lab README CLI chains, substituting only pixi-run python prefix with verified existing core Python; no fresh installation or external-machine rehearsal.",
+    "started_utc": "2026-11-02T01:44:02.039961+00:00",
+    "cwd": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-application-refinement-20261101/lab",
+    "python": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-full-surface-core/.pixi/envs/core/bin/python",
+    "readme_sha256": "1c4eb94dce867e17b5e92bb8ecca26acfda68611b29740e66049be1471da239b",
+    "commands": [
+      {
+        "name": "heston-option-config",
+        "argv": [
+          "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-full-surface-core/.pixi/envs/core/bin/python",
+          "scripts/calibration_bank.py",
+          "config",
+          "--model",
+          "heston",
+          "--train",
+          "32",
+          "--validation",
+          "8",
+          "--test",
+          "4",
+          "--seed",
+          "20261101",
+          "--out",
+          "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/collaborator-handover-implementation-20261101/documented-cli-smoke/heston-config.json"
+        ],
+        "log": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/collaborator-handover-implementation-20261101/documented-cli-smoke/logs/heston-option-config.log",
+        "state": "complete",
+        "returncode": 0,
+        "seconds": 0.4623511249665171,
+        "log_sha256": "dd508bcd23897a7e347c1af04dac66b1a65fae12c137b45cb0fe04d33ca685f9"
+      },
+      {
+        "name": "heston-option-bank",
+        "argv": [
+          "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-full-surface-core/.pixi/envs/core/bin/python",
+          "scripts/calibration_bank.py",
+          "local",
+          "--config",
+          "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/collaborator-handover-implementation-20261101/documented-cli-smoke/heston-config.json",
+          "--chunk",
+          "8",
+          "--workers",
+          "1",
+          "--out",
+          "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/collaborator-handover-implementation-20261101/documented-cli-smoke/heston-bank"
+        ],
+        "log": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/collaborator-handover-implementation-20261101/documented-cli-smoke/logs/heston-option-bank.log",
+        "state": "complete",
+        "returncode": 0,
+        "seconds": 1.6040782919153571,
+        "log_sha256": "6f833d544ddba81c270c43c7a1a5723aa0415d11541759e11d184b612b5785b4"
+      },
+      {
+        "name": "heston-option-fit",
+        "argv": [
+          "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-full-surface-core/.pixi/envs/core/bin/python",
+          "scripts/train_full_surface.py",
+          "--bank",
+          "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/collaborator-handover-implementation-20261101/documented-cli-smoke/heston-bank",
+          "--out",
+          "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/collaborator-handover-implementation-20261101/documented-cli-smoke/heston-fit",
+          "--family",
+          "spline",
+          "--encoder",
+          "vector",
+          "--widths",
+          "16,16",
+          "--epochs",
+          "2",
+          "--batch-size",
+          "8",
+          "--chunk-epochs",
+          "1",
+          "--checkpoint-selection",
+          "final",
+          "--seed",
+          "20261102"
+        ],
+        "log": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/collaborator-handover-implementation-20261101/documented-cli-smoke/logs/heston-option-fit.log",
+        "state": "complete",
+        "returncode": 0,
+        "seconds": 6.30627162498422,
+        "log_sha256": "16c88da6351925ead1e136e954493ac3c37aacceb74ec1472eef154aead1b7a7"
+      },
+      {
+        "name": "heston-option-validation",
+        "argv": [
+          "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-full-surface-core/.pixi/envs/core/bin/python",
+          "scripts/evaluate_full_surface.py",
+          "--bank",
+          "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/collaborator-handover-implementation-20261101/documented-cli-smoke/heston-bank",
+          "--checkpoint",
+          "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/collaborator-handover-implementation-20261101/documented-cli-smoke/heston-fit",
+          "--out",
+          "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/collaborator-handover-implementation-20261101/documented-cli-smoke/heston-validation",
+          "--split",
+          "validation",
+          "--surfaces",
+          "8",
+          "--draws",
+          "32",
+          "--batch-size",
+          "4",
+          "--seed",
+          "20261103"
+        ],
+        "log": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/collaborator-handover-implementation-20261101/documented-cli-smoke/logs/heston-option-validation.log",
+        "state": "complete",
+        "returncode": 0,
+        "seconds": 3.184690749971196,
+        "log_sha256": "4e4142b2b007a0a73f19c2a4d1dc27ba47f532ce71944cc07f77aed484e0d4cb"
+      },
+      {
+        "name": "heston-path-bank",
+        "argv": [
+          "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-full-surface-core/.pixi/envs/core/bin/python",
+          "scripts/path_bank.py",
+          "generate",
+          "--model",
+          "heston",
+          "--teaching",
+          "--observations",
+          "29",
+          "--train",
+          "64",
+          "--validation",
+          "8",
+          "--test",
+          "4",
+          "--chunk",
+          "16",
+          "--seed",
+          "20261101",
+          "--out",
+          "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/collaborator-handover-implementation-20261101/documented-cli-smoke/heston-path-bank"
+        ],
+        "log": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/collaborator-handover-implementation-20261101/documented-cli-smoke/logs/heston-path-bank.log",
+        "state": "complete",
+        "returncode": 0,
+        "seconds": 0.40632979199290276,
+        "log_sha256": "e536bc711cee4c9dd673ca1d5c27f79475d5746892579560c31e6c777f32d861"
+      },
+      {
+        "name": "heston-path-check",
+        "argv": [
+          "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-full-surface-core/.pixi/envs/core/bin/python",
+          "scripts/path_bank.py",
+          "check",
+          "--bank",
+          "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/collaborator-handover-implementation-20261101/documented-cli-smoke/heston-path-bank"
+        ],
+        "log": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/collaborator-handover-implementation-20261101/documented-cli-smoke/logs/heston-path-check.log",
+        "state": "complete",
+        "returncode": 0,
+        "seconds": 0.34557887504342943,
+        "log_sha256": "f9639558d63db93b3d823264ad6ffdf593c5a0ba4ddaaddbcfd539d73b42edb9"
+      },
+      {
+        "name": "heston-path-fit",
+        "argv": [
+          "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-full-surface-core/.pixi/envs/core/bin/python",
+          "scripts/train_path_posterior.py",
+          "--bank",
+          "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/collaborator-handover-implementation-20261101/documented-cli-smoke/heston-path-bank",
+          "--out",
+          "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/collaborator-handover-implementation-20261101/documented-cli-smoke/heston-path-fit",
+          "--streaming",
+          "--training-limit",
+          "64",
+          "--cache-shards",
+          "2",
+          "--epochs",
+          "2",
+          "--batch-size",
+          "16",
+          "--hidden-dim",
+          "8",
+          "--summary-dim",
+          "4",
+          "--depth",
+          "2",
+          "--bins",
+          "4",
+          "--width",
+          "16",
+          "--prefix-policy",
+          "uniform_log_mixture",
+          "--checkpoint-selection",
+          "final",
+          "--validation-cases",
+          "8",
+          "--max-seconds",
+          "120",
+          "--seed",
+          "20261102"
+        ],
+        "log": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/collaborator-handover-implementation-20261101/documented-cli-smoke/logs/heston-path-fit.log",
+        "state": "complete",
+        "returncode": 0,
+        "seconds": 6.514404290937819,
+        "log_sha256": "0baa2c61826537a94eb1abcb7d8e154c0f92ce01ca279f0484e7940a8c3c981e"
+      },
+      {
+        "name": "heston-path-validation",
+        "argv": [
+          "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-full-surface-core/.pixi/envs/core/bin/python",
+          "scripts/evaluate_path_posterior.py",
+          "--bank",
+          "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/collaborator-handover-implementation-20261101/documented-cli-smoke/heston-path-bank",
+          "--checkpoint",
+          "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/collaborator-handover-implementation-20261101/documented-cli-smoke/heston-path-fit",
+          "--out",
+          "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/collaborator-handover-implementation-20261101/documented-cli-smoke/heston-path-validation",
+          "--split",
+          "validation",
+          "--cases",
+          "8",
+          "--draws",
+          "32",
+          "--batch-size",
+          "4",
+          "--lengths",
+          "1",
+          "17",
+          "29",
+          "--seed",
+          "20261103"
+        ],
+        "log": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/collaborator-handover-implementation-20261101/documented-cli-smoke/logs/heston-path-validation.log",
+        "state": "complete",
+        "returncode": 0,
+        "seconds": 5.488013416994363,
+        "log_sha256": "52c6c57753202a5f7e4accbf67b3c2a59e87e2fdc5f87dfd884c73cae81283c6"
+      },
+      {
+        "name": "rough-known-path-bank",
+        "argv": [
+          "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-full-surface-core/.pixi/envs/core/bin/python",
+          "scripts/path_bank.py",
+          "generate",
+          "--model",
+          "rough-known",
+          "--teaching",
+          "--observations",
+          "29",
+          "--train",
+          "64",
+          "--validation",
+          "8",
+          "--test",
+          "4",
+          "--chunk",
+          "16",
+          "--seed",
+          "20261101",
+          "--out",
+          "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/collaborator-handover-implementation-20261101/documented-cli-smoke/rough-known-path-bank"
+        ],
+        "log": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/collaborator-handover-implementation-20261101/documented-cli-smoke/logs/rough-known-path-bank.log",
+        "state": "complete",
+        "returncode": 0,
+        "seconds": 0.4023964579682797,
+        "log_sha256": "06c7f1c919ff9137206a5b72a019d1062422848ce8ab352a508f5806095f0a11"
+      },
+      {
+        "name": "rough-known-path-check",
+        "argv": [
+          "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-full-surface-core/.pixi/envs/core/bin/python",
+          "scripts/path_bank.py",
+          "check",
+          "--bank",
+          "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/collaborator-handover-implementation-20261101/documented-cli-smoke/rough-known-path-bank"
+        ],
+        "log": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/collaborator-handover-implementation-20261101/documented-cli-smoke/logs/rough-known-path-check.log",
+        "state": "complete",
+        "returncode": 0,
+        "seconds": 0.5609265000093728,
+        "log_sha256": "8737c786c66e61af360a5e4902f1461c87c109b38aefdb025c53012a327abd72"
+      },
+      {
+        "name": "rough-known-path-fit",
+        "argv": [
+          "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-full-surface-core/.pixi/envs/core/bin/python",
+          "scripts/train_path_posterior.py",
+          "--bank",
+          "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/collaborator-handover-implementation-20261101/documented-cli-smoke/rough-known-path-bank",
+          "--out",
+          "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/collaborator-handover-implementation-20261101/documented-cli-smoke/rough-known-path-fit",
+          "--streaming",
+          "--training-limit",
+          "64",
+          "--cache-shards",
+          "2",
+          "--epochs",
+          "2",
+          "--batch-size",
+          "16",
+          "--hidden-dim",
+          "8",
+          "--summary-dim",
+          "4",
+          "--depth",
+          "2",
+          "--bins",
+          "4",
+          "--width",
+          "16",
+          "--prefix-policy",
+          "uniform_log_mixture",
+          "--checkpoint-selection",
+          "final",
+          "--validation-cases",
+          "8",
+          "--max-seconds",
+          "120",
+          "--seed",
+          "20261102"
+        ],
+        "log": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/collaborator-handover-implementation-20261101/documented-cli-smoke/logs/rough-known-path-fit.log",
+        "state": "complete",
+        "returncode": 0,
+        "seconds": 6.424453166080639,
+        "log_sha256": "db0b81f6f0b439f957b9fb5bc1ba0237b6f949dd7fea64434a446041d735e1d4"
+      },
+      {
+        "name": "rough-known-path-validation",
+        "argv": [
+          "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-full-surface-core/.pixi/envs/core/bin/python",
+          "scripts/evaluate_path_posterior.py",
+          "--bank",
+          "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/collaborator-handover-implementation-20261101/documented-cli-smoke/rough-known-path-bank",
+          "--checkpoint",
+          "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/collaborator-handover-implementation-20261101/documented-cli-smoke/rough-known-path-fit",
+          "--out",
+          "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/collaborator-handover-implementation-20261101/documented-cli-smoke/rough-known-path-validation",
+          "--split",
+          "validation",
+          "--cases",
+          "8",
+          "--draws",
+          "32",
+          "--batch-size",
+          "4",
+          "--lengths",
+          "1",
+          "17",
+          "29",
+          "--seed",
+          "20261103"
+        ],
+        "log": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/collaborator-handover-implementation-20261101/documented-cli-smoke/logs/rough-known-path-validation.log",
+        "state": "complete",
+        "returncode": 0,
+        "seconds": 4.463995457976125,
+        "log_sha256": "ef4004f4497ccd848000730b98e8ecbddc24cab59f5e71f3e71827ae8ae304dc"
+      },
+      {
+        "name": "rough-joint-path-bank",
+        "argv": [
+          "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-full-surface-core/.pixi/envs/core/bin/python",
+          "scripts/path_bank.py",
+          "generate",
+          "--model",
+          "rough-joint",
+          "--teaching",
+          "--observations",
+          "29",
+          "--train",
+          "64",
+          "--validation",
+          "8",
+          "--test",
+          "4",
+          "--chunk",
+          "16",
+          "--seed",
+          "20261101",
+          "--out",
+          "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/collaborator-handover-implementation-20261101/documented-cli-smoke/rough-joint-path-bank"
+        ],
+        "log": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/collaborator-handover-implementation-20261101/documented-cli-smoke/logs/rough-joint-path-bank.log",
+        "state": "complete",
+        "returncode": 0,
+        "seconds": 0.3379894579993561,
+        "log_sha256": "bef10070f6e35a9eb823bd16fa94ef4b1d29c63e51b978a4f3f2ac728b3bfe6b"
+      },
+      {
+        "name": "rough-joint-path-check",
+        "argv": [
+          "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-full-surface-core/.pixi/envs/core/bin/python",
+          "scripts/path_bank.py",
+          "check",
+          "--bank",
+          "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/collaborator-handover-implementation-20261101/documented-cli-smoke/rough-joint-path-bank"
+        ],
+        "log": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/collaborator-handover-implementation-20261101/documented-cli-smoke/logs/rough-joint-path-check.log",
+        "state": "complete",
+        "returncode": 0,
+        "seconds": 0.3416681250091642,
+        "log_sha256": "a057407b9fc40c9d6fe1810279aebedf74a8495baa349cb51713edc88249f3fc"
+      },
+      {
+        "name": "rough-joint-path-fit",
+        "argv": [
+          "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-full-surface-core/.pixi/envs/core/bin/python",
+          "scripts/train_path_posterior.py",
+          "--bank",
+          "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/collaborator-handover-implementation-20261101/documented-cli-smoke/rough-joint-path-bank",
+          "--out",
+          "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/collaborator-handover-implementation-20261101/documented-cli-smoke/rough-joint-path-fit",
+          "--streaming",
+          "--training-limit",
+          "64",
+          "--cache-shards",
+          "2",
+          "--epochs",
+          "2",
+          "--batch-size",
+          "16",
+          "--hidden-dim",
+          "8",
+          "--summary-dim",
+          "4",
+          "--depth",
+          "2",
+          "--bins",
+          "4",
+          "--width",
+          "16",
+          "--prefix-policy",
+          "uniform_log_mixture",
+          "--checkpoint-selection",
+          "final",
+          "--validation-cases",
+          "8",
+          "--max-seconds",
+          "120",
+          "--seed",
+          "20261102"
+        ],
+        "log": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/collaborator-handover-implementation-20261101/documented-cli-smoke/logs/rough-joint-path-fit.log",
+        "state": "complete",
+        "returncode": 0,
+        "seconds": 7.341221250011586,
+        "log_sha256": "5ed8bc980c677e67848147267f243576ea26a83f6f7c9ef2537140a48e2c98c6"
+      },
+      {
+        "name": "rough-joint-path-validation",
+        "argv": [
+          "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-full-surface-core/.pixi/envs/core/bin/python",
+          "scripts/evaluate_path_posterior.py",
+          "--bank",
+          "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/collaborator-handover-implementation-20261101/documented-cli-smoke/rough-joint-path-bank",
+          "--checkpoint",
+          "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/collaborator-handover-implementation-20261101/documented-cli-smoke/rough-joint-path-fit",
+          "--out",
+          "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/collaborator-handover-implementation-20261101/documented-cli-smoke/rough-joint-path-validation",
+          "--split",
+          "validation",
+          "--cases",
+          "8",
+          "--draws",
+          "32",
+          "--batch-size",
+          "4",
+          "--lengths",
+          "1",
+          "17",
+          "29",
+          "--seed",
+          "20261103"
+        ],
+        "log": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/collaborator-handover-implementation-20261101/documented-cli-smoke/logs/rough-joint-path-validation.log",
+        "state": "complete",
+        "returncode": 0,
+        "seconds": 5.495188291999511,
+        "log_sha256": "78b4315d76b099f7401239ae11674231b138340286747a8636b7cd1eda063f45"
+      }
+    ],
+    "checks": {
+      "heston-options": {
+        "reserved_test_evaluated": false,
+        "evaluated_split": "validation",
+        "arrays": [
+          {
+            "file": "draws.npz",
+            "array": "draws",
+            "shape": [
+              8,
+              32,
+              4
+            ],
+            "finite": true
+          },
+          {
+            "file": "draws.npz",
+            "array": "truth",
+            "shape": [
+              8,
+              4
+            ],
+            "finite": true
+          }
+        ],
+        "evaluation_sha256": "8bdf1d14d3902357a13985645c7ddf69103ec98b97c097b8e121329a217890bb"
+      },
+      "heston-paths": {
+        "reserved_test_evaluated": false,
+        "evaluated_split": "validation",
+        "arrays": [
+          {
+            "file": "case-summary.npz",
+            "array": "truth",
+            "shape": [
+              8,
+              5
+            ],
+            "finite": true
+          },
+          {
+            "file": "case-summary.npz",
+            "array": "posterior_mean_1",
+            "shape": [
+              8,
+              5
+            ],
+            "finite": true
+          },
+          {
+            "file": "case-summary.npz",
+            "array": "lower90_1",
+            "shape": [
+              8,
+              5
+            ],
+            "finite": true
+          },
+          {
+            "file": "case-summary.npz",
+            "array": "upper90_1",
+            "shape": [
+              8,
+              5
+            ],
+            "finite": true
+          },
+          {
+            "file": "case-summary.npz",
+            "array": "posterior_variance_1",
+            "shape": [
+              8,
+              5
+            ],
+            "finite": true
+          },
+          {
+            "file": "case-summary.npz",
+            "array": "posterior_mean_17",
+            "shape": [
+              8,
+              5
+            ],
+            "finite": true
+          },
+          {
+            "file": "case-summary.npz",
+            "array": "lower90_17",
+            "shape": [
+              8,
+              5
+            ],
+            "finite": true
+          },
+          {
+            "file": "case-summary.npz",
+            "array": "upper90_17",
+            "shape": [
+              8,
+              5
+            ],
+            "finite": true
+          },
+          {
+            "file": "case-summary.npz",
+            "array": "posterior_variance_17",
+            "shape": [
+              8,
+              5
+            ],
+            "finite": true
+          },
+          {
+            "file": "case-summary.npz",
+            "array": "posterior_mean_29",
+            "shape": [
+              8,
+              5
+            ],
+            "finite": true
+          },
+          {
+            "file": "case-summary.npz",
+            "array": "lower90_29",
+            "shape": [
+              8,
+              5
+            ],
+            "finite": true
+          },
+          {
+            "file": "case-summary.npz",
+            "array": "upper90_29",
+            "shape": [
+              8,
+              5
+            ],
+            "finite": true
+          },
+          {
+            "file": "case-summary.npz",
+            "array": "posterior_variance_29",
+            "shape": [
+              8,
+              5
+            ],
+            "finite": true
+          },
+          {
+            "file": "teaching-cases.npz",
+            "array": "truth",
+            "shape": [
+              8,
+              5
+            ],
+            "finite": true
+          },
+          {
+            "file": "teaching-cases.npz",
+            "array": "observations",
+            "shape": [
+              8,
+              29,
+              1
+            ],
+            "finite": true
+          },
+          {
+            "file": "teaching-cases.npz",
+            "array": "draws_1",
+            "shape": [
+              8,
+              32,
+              5
+            ],
+            "finite": true
+          },
+          {
+            "file": "teaching-cases.npz",
+            "array": "draws_17",
+            "shape": [
+              8,
+              32,
+              5
+            ],
+            "finite": true
+          },
+          {
+            "file": "teaching-cases.npz",
+            "array": "draws_29",
+            "shape": [
+              8,
+              32,
+              5
+            ],
+            "finite": true
+          }
+        ],
+        "evaluation_sha256": "843d9f48937615c050dff3298340878bd833e4f568d95b036d669145be1f3a00"
+      },
+      "rough-known-paths": {
+        "reserved_test_evaluated": false,
+        "evaluated_split": "validation",
+        "arrays": [
+          {
+            "file": "case-summary.npz",
+            "array": "truth",
+            "shape": [
+              8,
+              4
+            ],
+            "finite": true
+          },
+          {
+            "file": "case-summary.npz",
+            "array": "posterior_mean_1",
+            "shape": [
+              8,
+              4
+            ],
+            "finite": true
+          },
+          {
+            "file": "case-summary.npz",
+            "array": "lower90_1",
+            "shape": [
+              8,
+              4
+            ],
+            "finite": true
+          },
+          {
+            "file": "case-summary.npz",
+            "array": "upper90_1",
+            "shape": [
+              8,
+              4
+            ],
+            "finite": true
+          },
+          {
+            "file": "case-summary.npz",
+            "array": "posterior_variance_1",
+            "shape": [
+              8,
+              4
+            ],
+            "finite": true
+          },
+          {
+            "file": "case-summary.npz",
+            "array": "posterior_mean_17",
+            "shape": [
+              8,
+              4
+            ],
+            "finite": true
+          },
+          {
+            "file": "case-summary.npz",
+            "array": "lower90_17",
+            "shape": [
+              8,
+              4
+            ],
+            "finite": true
+          },
+          {
+            "file": "case-summary.npz",
+            "array": "upper90_17",
+            "shape": [
+              8,
+              4
+            ],
+            "finite": true
+          },
+          {
+            "file": "case-summary.npz",
+            "array": "posterior_variance_17",
+            "shape": [
+              8,
+              4
+            ],
+            "finite": true
+          },
+          {
+            "file": "case-summary.npz",
+            "array": "posterior_mean_29",
+            "shape": [
+              8,
+              4
+            ],
+            "finite": true
+          },
+          {
+            "file": "case-summary.npz",
+            "array": "lower90_29",
+            "shape": [
+              8,
+              4
+            ],
+            "finite": true
+          },
+          {
+            "file": "case-summary.npz",
+            "array": "upper90_29",
+            "shape": [
+              8,
+              4
+            ],
+            "finite": true
+          },
+          {
+            "file": "case-summary.npz",
+            "array": "posterior_variance_29",
+            "shape": [
+              8,
+              4
+            ],
+            "finite": true
+          },
+          {
+            "file": "teaching-cases.npz",
+            "array": "truth",
+            "shape": [
+              8,
+              4
+            ],
+            "finite": true
+          },
+          {
+            "file": "teaching-cases.npz",
+            "array": "observations",
+            "shape": [
+              8,
+              29,
+              1
+            ],
+            "finite": true
+          },
+          {
+            "file": "teaching-cases.npz",
+            "array": "draws_1",
+            "shape": [
+              8,
+              32,
+              4
+            ],
+            "finite": true
+          },
+          {
+            "file": "teaching-cases.npz",
+            "array": "draws_17",
+            "shape": [
+              8,
+              32,
+              4
+            ],
+            "finite": true
+          },
+          {
+            "file": "teaching-cases.npz",
+            "array": "draws_29",
+            "shape": [
+              8,
+              32,
+              4
+            ],
+            "finite": true
+          }
+        ],
+        "evaluation_sha256": "713e11f3bb038955eb924118b52ebf777aa0ca0ea650cdab764b11990bde6662"
+      },
+      "rough-joint-paths": {
+        "reserved_test_evaluated": false,
+        "evaluated_split": "validation",
+        "arrays": [
+          {
+            "file": "case-summary.npz",
+            "array": "truth",
+            "shape": [
+              8,
+              7
+            ],
+            "finite": true
+          },
+          {
+            "file": "case-summary.npz",
+            "array": "posterior_mean_1",
+            "shape": [
+              8,
+              7
+            ],
+            "finite": true
+          },
+          {
+            "file": "case-summary.npz",
+            "array": "lower90_1",
+            "shape": [
+              8,
+              7
+            ],
+            "finite": true
+          },
+          {
+            "file": "case-summary.npz",
+            "array": "upper90_1",
+            "shape": [
+              8,
+              7
+            ],
+            "finite": true
+          },
+          {
+            "file": "case-summary.npz",
+            "array": "posterior_variance_1",
+            "shape": [
+              8,
+              7
+            ],
+            "finite": true
+          },
+          {
+            "file": "case-summary.npz",
+            "array": "posterior_mean_17",
+            "shape": [
+              8,
+              7
+            ],
+            "finite": true
+          },
+          {
+            "file": "case-summary.npz",
+            "array": "lower90_17",
+            "shape": [
+              8,
+              7
+            ],
+            "finite": true
+          },
+          {
+            "file": "case-summary.npz",
+            "array": "upper90_17",
+            "shape": [
+              8,
+              7
+            ],
+            "finite": true
+          },
+          {
+            "file": "case-summary.npz",
+            "array": "posterior_variance_17",
+            "shape": [
+              8,
+              7
+            ],
+            "finite": true
+          },
+          {
+            "file": "case-summary.npz",
+            "array": "posterior_mean_29",
+            "shape": [
+              8,
+              7
+            ],
+            "finite": true
+          },
+          {
+            "file": "case-summary.npz",
+            "array": "lower90_29",
+            "shape": [
+              8,
+              7
+            ],
+            "finite": true
+          },
+          {
+            "file": "case-summary.npz",
+            "array": "upper90_29",
+            "shape": [
+              8,
+              7
+            ],
+            "finite": true
+          },
+          {
+            "file": "case-summary.npz",
+            "array": "posterior_variance_29",
+            "shape": [
+              8,
+              7
+            ],
+            "finite": true
+          },
+          {
+            "file": "teaching-cases.npz",
+            "array": "truth",
+            "shape": [
+              8,
+              7
+            ],
+            "finite": true
+          },
+          {
+            "file": "teaching-cases.npz",
+            "array": "observations",
+            "shape": [
+              8,
+              29,
+              1
+            ],
+            "finite": true
+          },
+          {
+            "file": "teaching-cases.npz",
+            "array": "draws_1",
+            "shape": [
+              8,
+              32,
+              7
+            ],
+            "finite": true
+          },
+          {
+            "file": "teaching-cases.npz",
+            "array": "draws_17",
+            "shape": [
+              8,
+              32,
+              7
+            ],
+            "finite": true
+          },
+          {
+            "file": "teaching-cases.npz",
+            "array": "draws_29",
+            "shape": [
+              8,
+              32,
+              7
+            ],
+            "finite": true
+          }
+        ],
+        "evaluation_sha256": "229d7bfa29a4d4afafbd2745db8d515c2cee5faf48097d634812dd056a57f0f6"
+      }
+    },
+    "all_passed": true,
+    "finished_utc": "2026-11-02T01:44:51.792471+00:00"
+  },
+  "native_model_artifact_checks": {
+    "format": "collaborator_handover_local_model_artifact_check_v1",
+    "created_utc": "2026-11-02T01:39:42.702034+00:00",
+    "source_commit": "840e6236aec9feba6bf1b94ddcf4f4afd8bd1afb",
+    "python": "3.12.16 (main, Oct 26 2026, 11:31:43) [Clang 21.1.8 ]",
+    "platform": "macOS-26.4.1-arm64-arm-64bit",
+    "scope": "Local existing archives, extraction layout and native task/model identities only; no posterior draws, fitting, scientific evaluation, remote access or fresh collaborator rehearsal.",
+    "archives": [
+      {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/tutorial-backbones-20261029/distribution/sbi4finance-pretrained-and-cases-20261029.zip",
+        "bytes": 38046255,
+        "sha256": "8d3a146312efdeaffcf797dee89158a491cde0961689649bbe17b6a3ae4bf51c",
+        "sha256_verified": true,
+        "manifest_payload_files_verified": 60,
+        "zip_crc_verified": true
+      },
+      {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/path-workshop-closeout-20261031/path-workshop-native-models-20261031.tar.gz",
+        "bytes": 6354318,
+        "sha256": "261c36550da52948aedcc2680d51bcb756db485626a6a2b8ee918fa9d6fff4cf",
+        "sha256_verified": true
+      }
+    ],
+    "models": [
+      {
+        "kind": "option",
+        "case": "heston-final500",
+        "relative_native_directory": "pretrained/heston100k-final500",
+        "task_hash": "5e499526ff8f29a72f49785a1a36006b1d769d26bca8a6f83f7a8c8ac4d431fa",
+        "model_sha256": "8d4a243ba099524cf4cda40e4f0616e895879f053829a7f60dadbe65b98301db",
+        "task_matches_shipped_cache": true,
+        "model_matches_native_training_record_and_catalogue": true,
+        "native_file_sha256": {
+          "model.keras": "8d4a243ba099524cf4cda40e4f0616e895879f053829a7f60dadbe65b98301db",
+          "task.json": "5e499526ff8f29a72f49785a1a36006b1d769d26bca8a6f83f7a8c8ac4d431fa",
+          "training.json": "6d9c25a77869940bd23e561933f0296ddfb4269fc708d45e24e1ad9f8fbdf4ee"
+        }
+      },
+      {
+        "kind": "option",
+        "case": "rough-known100k-validation0",
+        "relative_native_directory": "pretrained/rough-known100k-final500",
+        "task_hash": "c99b0dd131896d89d8483a1668a3fde0fb7a0f28794c3db7fe14635cbbd52b65",
+        "model_sha256": "39f1a81986a38994dc6eacc520ad95254b34346abc02e758c08779c7c5916fc4",
+        "task_matches_shipped_cache": true,
+        "model_matches_native_training_record_and_catalogue": true,
+        "native_file_sha256": {
+          "model.keras": "39f1a81986a38994dc6eacc520ad95254b34346abc02e758c08779c7c5916fc4",
+          "task.json": "c99b0dd131896d89d8483a1668a3fde0fb7a0f28794c3db7fe14635cbbd52b65",
+          "training.json": "ab93cd13a399e16d32aae8875c9b1831f38696fbab6619ba341720408a5bd198"
+        }
+      },
+      {
+        "kind": "option",
+        "case": "rough-joint100k-validation0",
+        "relative_native_directory": "pretrained/rough-joint100k-final500",
+        "task_hash": "29eca4e1b970c4f13b99573939aa3449c5280a3a4478f7d24beace6539a9889d",
+        "model_sha256": "19c24d64290651f592d3c13d7d0a1616d0d8ae080d487d0298aee8f97779498b",
+        "task_matches_shipped_cache": true,
+        "model_matches_native_training_record_and_catalogue": true,
+        "native_file_sha256": {
+          "model.keras": "19c24d64290651f592d3c13d7d0a1616d0d8ae080d487d0298aee8f97779498b",
+          "task.json": "29eca4e1b970c4f13b99573939aa3449c5280a3a4478f7d24beace6539a9889d",
+          "training.json": "ef41e5f9fc24fd897f3bdf1162bed15765387ca1c49107d24f9593cf6b951c37"
+        }
+      },
+      {
+        "kind": "path",
+        "case": "heston",
+        "relative_native_directory": "path-heston",
+        "task_hash": "dd233e297f3ff974985383cf23dbb76865d4db92b7e348d675ac3065637ea7c3",
+        "model_sha256": "ae8229c76ede0783deb264309747c2ac28c5b0cee8191e7ffa0ecf913636a9b7",
+        "task_matches_shipped_cache": true,
+        "model_matches_native_training_record_and_catalogue": true,
+        "native_file_sha256": {
+          "model.keras": "ae8229c76ede0783deb264309747c2ac28c5b0cee8191e7ffa0ecf913636a9b7",
+          "task.json": "79d0e5f8f15b9e91c28e15fd36ef54dd4f107f1d8acd9381ffeeea5e9cbb62ce",
+          "training.json": "eff064e64eeb24e36ba53c41c031062396d8c3ac504a6205f2c953cff384b481"
+        }
+      },
+      {
+        "kind": "path",
+        "case": "rough-known",
+        "relative_native_directory": "path-rough-known",
+        "task_hash": "eb195dd594de03a95630a4c46bd35e9355e235982d0eb30ae597491e14df6446",
+        "model_sha256": "b9b800ef987b7fddce62919d84f6420d751a7c390f8a2f476f49a2ca37be1e9c",
+        "task_matches_shipped_cache": true,
+        "model_matches_native_training_record_and_catalogue": true,
+        "native_file_sha256": {
+          "model.keras": "b9b800ef987b7fddce62919d84f6420d751a7c390f8a2f476f49a2ca37be1e9c",
+          "task.json": "f38737f8b3e87f0450d0531245a885c5d6d3872ea716930ef5b1720be2864601",
+          "training.json": "602930a448433dd7c5297e42cfcf13a7558bfea7092e8bff9563ede4ce1495e1"
+        }
+      },
+      {
+        "kind": "path",
+        "case": "rough-joint",
+        "relative_native_directory": "path-rough-joint",
+        "task_hash": "277c7219e49edb130049f78f91bcf176a22c06fad31f4404556fa27df263a7ca",
+        "model_sha256": "9fea2e446b6264d46ee92a924a930faa9ad5473b88d909ab4844b1b37f726003",
+        "task_matches_shipped_cache": true,
+        "model_matches_native_training_record_and_catalogue": true,
+        "native_file_sha256": {
+          "model.keras": "9fea2e446b6264d46ee92a924a930faa9ad5473b88d909ab4844b1b37f726003",
+          "task.json": "717b64b512d2ceb1055acdfe1f5ced2aeccef06ad2964c2a2b2f0b90daa3f680",
+          "training.json": "a8e8d26fda40bc54fccfde0ead59981991d93a0706a7ea61f75fc12c9bb81ec9"
+        }
+      }
+    ],
+    "extraction_seconds": 0.17213275004178286,
+    "elapsed_seconds": 0.5083139169728383,
+    "all_checks_passed": true,
+    "backend_imported": false
+  },
+  "tutorial_task_checks": {
+    "friendly_tasks": [
+      "heston-options",
+      "rough-options",
+      "path-inference"
+    ],
+    "old_tasks_retained": true,
+    "pixi_task_parser_checked": true,
+    "dependency_metadata_unchanged": true,
+    "pyproject_sha256": "c920177b2cfd0bf2a180c92a4d2223013c6c3145138903fd88c8de37a10d220b"
+  },
+  "retired_sources": [
+    {
+      "path": "lab/cluster/start_known100k_20261028.py",
+      "bytes": 6564,
+      "sha256": "a6293857c61a9f4178190deb4f2bc2bffde9826518a7c35141047f2d47484d67",
+      "recovery_commit": "08f4ebde1b47893057c61706a1a94ae017806c47"
+    },
+    {
+      "path": "lab/cluster/start_joint100k_20261029.py",
+      "bytes": 11341,
+      "sha256": "525ad97a6a2db32e3f24f9f2e0cc53a9510a2e209c322251ecf17973108311ce",
+      "recovery_commit": "08f4ebde1b47893057c61706a1a94ae017806c47"
+    }
+  ],
+  "retention_ledger": "../../../../plans/NUMERICAL-EXPERIMENT-PLAN.md#bounded-retirement-batch--1-november-2026",
+  "limitations": [
+    "Author-side checks on the existing verified Apple Silicon CPU runtime; no fresh install or collaborator rehearsal.",
+    "No Slurm job submission or new cluster/GPU deployment.",
+    "Native archive checks cover extraction and identities; published-model draws, large banks and scientific acceptance were not rerun.",
+    "Historical scientific evidence and its original immutable hashes are retained."
+  ]
+}

@@ -28,9 +28,11 @@ pixi install --locked
 pixi run --locked test # asset hashes, runtime and inference input boundaries
 ```
 
-The participant environment uses **BayesFlow 2.1.0** and is locked for Linux, macOS on Apple silicon,
-and Windows (not runtime-tested here). Archived 2.0 checkpoints remain historical evidence; they are
-never loaded implicitly in the 2.1 environment.
+The participant environment pins Python 3.12, **BayesFlow 2.1.0**, Keras 3.15.1,
+JAX 0.11.1 and marimo 0.25.1. Its lock supports Linux, macOS on Apple silicon,
+and Windows (not runtime-tested here); Intel macOS is not a locked target. A CPU
+is sufficient for cached review and optional pretrained inference. Archived 2.0
+checkpoints remain historical evidence and are never loaded implicitly in this environment.
 
 With pip, on Python 3.12, for example in a hosted notebook:
 
@@ -42,14 +44,26 @@ export KERAS_BACKEND=jax
 
 ## Run or review an existing lesson
 
+From `tutorial/`, review these three applications in order. Each command opens
+the marimo editor in a browser; press Ctrl+C in its terminal before starting the next:
+
 ```bash
-pixi run --locked slot1 # opens slot 1 in the marimo editor, in your browser; likewise slot2 ... slot5
-pixi run --locked edit  # all notebooks
-pixi run --locked backbones # cached 100k examples and explicit native model sampling
-pixi run --locked trajectories # parameter inference from daily return histories
+pixi run --locked heston-options
+pixi run --locked rough-options
+pixi run --locked path-inference
 ```
 
-`pixi run --locked marimo run notebooks/slot4_heston_bayesflow.py` opens a notebook as a read-only app.
+A fresh checkout includes the cached examples. No additional model, bank,
+Oscar account or Drive filesystem is required. Opening Heston also runs its
+small deterministic path/Fourier illustrations; training, native model loading
+and rough Monte Carlo remain explicit actions.
+
+For a read-only app, use e.g.
+`pixi run --locked marimo run notebooks/slot4_heston_bayesflow.py`.
+An exported HTML file is a static preview, not an interactive app. The other
+notebooks remain available through `slot1`, `slot2`, `slot3` or `edit`;
+`backbones` opens the separate cached/native model review. The older task names
+`slot4`, `slot5` and `trajectories` remain aliases for the three applications.
 
 | Notebook | Slot | What you do | Computed live |
 |---|---|---|---|
@@ -66,19 +80,40 @@ They retain development scope; conditional rough references and product validati
 Slots 4 and 5 expose these cached examples alongside the historical SPY material. The historical SPY
 neural comparison awaits a separately checked 2.1 update. Slot 6 is still in preparation.
 
-Review Heston, rough options and trajectories in that order. Start with each model and its observed data,
-then its visible simulator/training recipe, posterior and checks. The inference examples are approximate;
-calibration failures and reference limitations remain explicit. No cluster connection
-or full bank is needed. For fresh samples, obtain the models archive from the
-[training-data guide](../lab/plans/training-data-guide.md) and extract it under
-`assets/local-checkpoints/`. Enter the matching native checkpoint directory in the review notebook
-and press its live button. The loader checks its task, model SHA256 and sampler settings against the
-selected cached example. Model payloads are excluded from git and the shipped asset manifest;
-their own native hashes are checked on loading. No bank is needed for pretrained inference.
+Start with each model and its observed data, then its visible simulator/training
+recipe, posterior and checks. The inference examples are approximate;
+calibration failures and reference limitations remain explicit.
+
+## Choose files for the task
+
+| Task | Additional download | Instructions |
+| --- | --- | --- |
+| Read, edit or review the application lessons | None | The cached observations, draws and evidence ship with this checkout. |
+| Draw fresh option posteriors in `backbone_review.py` | `sbi4finance-pretrained-and-cases-20261029.zip` (38,046,255 B) | [Exact checksum, extraction and UI paths](../lab/plans/training-data-guide.md#option-models-heston-and-knownjoint-curve-rough-bergomi). |
+| Draw fresh trajectory posteriors at any supported history length | `path-workshop-native-models-20261031.tar.gz` (6,354,318 B) | [Exact checksum, extraction and defaults](../lab/plans/training-data-guide.md#trajectory-models-daily-return-histories). |
+| Retrain or compare estimators | Only the selected full native bank | [Option banks](../lab/plans/training-data-guide.md#full-option-training-banks) or [trajectory banks](../lab/plans/training-data-guide.md#trajectory-banks-daily-histories-with-inferred-drift), outside Git. |
+
+For option models, the ZIP SHA-256 is
+`8d3a146312efdeaffcf797dee89158a491cde0961689649bbe17b6a3ae4bf51c`.
+Extract beneath `tutorial/assets/local-checkpoints/`; the native directories
+are `pretrained/heston100k-final500/`, `pretrained/rough-known100k-final500/`
+and `pretrained/rough-joint100k-final500/`. In `pixi run --locked backbones`,
+choose the matching example and paste its **absolute** directory into
+**Local matching checkpoint directory** before pressing the live button.
+Keep each unchanged `model.keras`, `task.json` and `training.json` together.
+The loader checks their task/model identities and recorded sampler against the
+selected cache. This changes neither the cached lesson nor its evidence status.
+
+Use your own GitHub or Drive account with the relevant access. They have
+separate permissions; an unauthenticated GitHub 404 does not establish that a
+release asset is missing. Browser downloads work without Drive Desktop or
+owner-specific SSH access. Optional models belong in the ignored
+`assets/local-checkpoints/` cache; their native hashes are checked at loading.
+Do not replace shipped assets or regenerate data to fix a download.
 
 ## Trajectory inference
 
-Run `pixi run --locked trajectories` to compare the three physical-measure models
+Run `pixi run --locked path-inference` to compare the three physical-measure models
 on the same daily grid, from one observed return to five trading years. All infer
 annual proportional price drift; the joint rough task also infers its variance-scale
 curve. Realized latent volatility and synthetic truth are excluded from conditions.
@@ -95,14 +130,17 @@ the return chart reveals the requested days and the posterior is explicitly labe
 with its nearest **past** cached length. Cached posteriors are not interpolated.
 
 For fresh inference at any integer length from 1 to 1,260, obtain the matching native
-checkpoint from the `path-workshop-2026-10-31` subfolder of the existing
-[shared sbi4finance Drive folder](https://drive.google.com/drive/folders/1ta1LjBopl-kErBfDEr2R_UL-9Hs8Y9D7).
+checkpoint from the
+[path-workshop Drive folder](https://drive.google.com/drive/folders/1LJsR0Qb0RkD4h8XiF3t6OQQlyYDKcI2k).
 The `path-workshop-native-models-20261031.tar.gz` archive is 6,354,318 bytes, with
 SHA-256 `261c36550da52948aedcc2680d51bcb756db485626a6a2b8ee918fa9d6fff4cf`.
 Extract it into `tutorial/assets/`; it places unchanged `model.keras`, `task.json` and `training.json` in
 `assets/local-checkpoints/path-heston/`, `path-rough-known/` or `path-rough-joint/`.
 Select the model and case, reveal the desired history, and press the CPU inference
-button. These optional model payloads stay outside Git; the loader verifies their
+button. Leave the optional checkpoint field empty for these defaults, or enter
+e.g. `local-checkpoints/path-rough-known` relative to `tutorial/assets/`. The
+[model instructions](../lab/plans/training-data-guide.md#trajectory-models-daily-return-histories)
+include runnable checksum and extraction commands. These optional model payloads stay outside Git; the loader verifies their
 native hashes against the selected cached example. The same cached notebook remains
 usable when those files are absent. Development examples and aggregate held-out
 evaluation have separate scopes; neither a smooth learning curve nor a narrow
@@ -144,6 +182,30 @@ pixi run --locked -e collaboration studio-build
 This preserves marimo Pair/MCP, Studio 0.3 and Lens 0.2.3. The old SVJ-specific Studio view is not
 reused for the new notebook. Live server sessions and the new Studio scaffold need a separate
 interactive review; they were not executed during this integration.
+
+## Give feedback on an application
+
+Use the agreed commit or PR revision and report the notebook, section heading,
+friendly case/model label and relevant controls (including requested and cached
+history lengths for trajectories). Include expected versus observed behavior,
+platform, and a screenshot or exact error text when useful. Separate a teaching
+suggestion from an execution failure or a scientific claim needing evidence.
+
+A short cached walkthrough is sufficient for the first feedback round:
+
+- Heston: identify the 63 observations, assumed quote noise, fixed inputs and
+  four unknowns; compare neural/reference uncertainty and the replicated-quote
+  illustration without confusing latent price means with new noisy quotes.
+- Rough options: switch from the supplied curve to a joint-curve example;
+  distinguish inference conditions from targets, and note that the observation
+  and curve family also change. Interpret physical-unit intervals and the
+  candidate's remaining reference limitations.
+- Trajectories: select 137 days and inspect the input preview. It contains
+  exactly 137 observed returns; the labelled cached posterior uses 126 days.
+  Keep the calibration failures visible. Fresh CPU inference is optional.
+
+Record what was actually checked. A fresh collaborator rehearsal remains a
+separate acceptance step from the saved local software/artifact checks.
 
 ## Author or change a lesson
 
@@ -200,5 +262,9 @@ course in `course/`, the code that produced every asset in `lab/`.
 
 - **Keras complains about its backend:** set `KERAS_BACKEND=jax`. pixi sets it; with pip, export it before
   starting marimo.
-- **The first network call is slow:** it compiles once per session, in a few seconds.
-- **A cell says "pending":** the result it shows is not final yet. The notebook says which study produces it.
+- **The first network call is slow:** backend initialization/compilation adds
+  first-call latency. The trajectory result reports actual load/draw elapsed
+  times; saved timing measurements are not a guarantee on your machine.
+- **A cell says "pending":** that historical or proposed result is not packaged
+  for this route. Check its local study/status label; this does not mean the
+  current training banks or cached application examples are missing.

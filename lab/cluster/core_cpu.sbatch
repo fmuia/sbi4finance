@@ -2,9 +2,8 @@
 # Submit from the immutable checkout. Supply the absolute Pixi executable.
 # sbatch [resource overrides] cluster/core_cpu.sbatch /absolute/pixi core COMMAND [ARGS...]
 # Select core-reference for PyMC jobs. No archived/default environment is used.
+# Choose the account and partition with the caller's sbatch flags; neither is fixed here.
 #SBATCH --job-name=sbi4finance-core-cpu
-#SBATCH --account=carney-mjfrank-condo2
-#SBATCH --partition=batch
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
 #SBATCH --mem=8G

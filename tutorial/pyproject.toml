@@ -40,6 +40,10 @@ sbi4f-tutorial = { path = ".", editable = true }
 KERAS_BACKEND = "jax"
 
 [tool.pixi.tasks]
+# Named application entry points; the numbered slot tasks remain compatible.
+heston-options = { cmd = "marimo edit slot4_heston_bayesflow.py --no-token", cwd = "notebooks" }
+rough-options = { cmd = "marimo edit slot5_calibration.py --no-token", cwd = "notebooks" }
+path-inference = "marimo edit notebooks/trajectory_inference.py --no-token"
 edit = { cmd = "marimo edit --no-token", cwd = "notebooks" }
 slot1 = { cmd = "marimo edit slot1_intro.py --no-token", cwd = "notebooks" }
 slot2 = { cmd = "marimo edit slot2_amortized_bayes.py --no-token", cwd = "notebooks" }
