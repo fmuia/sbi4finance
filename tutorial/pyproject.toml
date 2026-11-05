@@ -13,10 +13,9 @@ dependencies = [
 
 [project.optional-dependencies]
 acceleration = ["numba==0.68.0"]
-# Current native estimators use BF2.1; archived BF2.0 files are evidence only.
+# Current native estimators use BF2.1
 participant = [
     "bayesflow==2.1.0",
-    "keras==3.15.1",
     "jax==0.11.1",
     "marimo==0.25.1",
 ]
