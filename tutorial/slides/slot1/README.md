@@ -12,6 +12,19 @@ frames after `\appendix`. The plan, the minute map, and the source and status of
 | `figures/slot1/*.pdf` | The 13 figures the deck includes, in the theme's colours, as vector PDFs |
 | `export_figures.py` | Regenerates the figures: twelve from the notebook, one from Heston's variance-swap formula |
 
+## How a slide is written
+
+Every main slide has one reading order, so that the audience knows what to read first:
+
+1. **The title and the key line** (`\key`) are what everyone reads. The key line is one plain sentence, or two short
+   ones, with one idea; `\highlight` marks its few essential words.
+2. **The figure** is the evidence. Most slides have exactly one.
+3. **Everything else is optional**: at most three lines of small grey detail (`\detail`) under the figure, and a
+   source line (`\source`). Numbers, definitions and citations go there unless they are the point of the slide.
+
+No paragraphs, cards or blocks on the main slides; a table only where the table is the content. The backup frames
+after `\appendix` hold the rest.
+
 ## In the Overleaf project
 
 The theme (`bayesops.sty`), its fonts (`fonts/`) and its logos (`assets/`) live in the tutorial's Overleaf project and
@@ -19,9 +32,9 @@ are not copied here. Upload `slot1.tex` and the folder `figures/slot1/` to that 
 Menu › Main document › `slot1.tex` and the LuaLaTeX compiler, which the theme needs. The project's `main.tex` is left
 as it is.
 
-The deck adds a few helpers to the theme, at the top of `slot1.tex`: `\stat` for a headline number, three block
-colours (definition, reassuring result, warning), `\highlight`, `\source` for a source line, the ragged table column
-`L`, and `\todo` for a placeholder. It loads `unicode-math` with Latin Modern Math and the `array` package. Dashes are
+The deck adds a few helpers to the theme, at the top of `slot1.tex`: `\key`, `\detail` and `\bignum` for the reading
+order above, `\stat` and three block colours for the backup frames, `\highlight`, `\source` for a source line, the
+ragged table column `L`, and `\todo` for a placeholder. It loads `unicode-math` with Latin Modern Math and the `array` package. Dashes are
 typed as Unicode (–), because the theme's title fonts do not turn `--` into a dash.
 
 Before the talk, fill the `\todo` placeholders on the last frame (the presenters' affiliations and who presents the

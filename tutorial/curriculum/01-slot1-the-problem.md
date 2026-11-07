@@ -40,24 +40,27 @@ name, every day?
 
 ## Slide by slide
 
-| Min | Slide | On screen | Source and status |
+| Min | Slide | Key line (read by everyone); figure; optional detail | Source and status |
 | --- | --- | --- | --- |
-| 0:00–1:30 | The problem: calibrate every day, then mark what nobody quotes | The paper's opening line; the desk diagram (quotes → calibration → model → products not quoted → the book), "for every name, every day", "one of many that fit: which one?"; models priced by Fourier or Monte Carlo; seven models fit one Eurostoxx 50 smile and price exotics differently; the question of the talk | De Spiegeleer et al. 2018; Schoutens, Simons and Tistaert 2004 |
-| 1:30–2:30 | One close of SPY: 63 prices, each known to within a tolerance | SPY's smile at seven maturities; cards: 13,114 options, 63 prices on a fixed grid, ±0.3 points at the money | S8, verified |
-| 2:30–3:30 | Calibration runs the model backwards | The quote equation, $\chi^2$ and the likelihood; one-price figure; 12.84% and ±0.30 points | By construction |
-| 3:30–4:30 | Prior × likelihood = posterior | Bayes' rule; the prior sweep; three habits as priors (flat, normal, zero width) | By construction |
-| 4:30–5:30 | Any price inherits the posterior | The 1-month put at $\delta = -2$ under every draw: a skewed range; a sold put's reserve 43% of its mark against 37% by the delta method; the 90% point the rules ask for, and how it is met today | By construction; Reg. (EU) 2016/101; Totem |
-| 5:30–6:30 | The predictive check rejects Black–Scholes | The predicted put quote 9.5 sd from the market's; one $\sigma$ cannot draw the smile; the afternoon's models (Fourier, Monte Carlo) | By construction |
-| 6:30–8:30 | What the quotes leave open, practice fixes silently | Four rows: fix a parameter, hold the curve flat, use a proxy, fit with no prior, each with what it does on simulated data; "each habit is a prior, of zero width or none" | Quick checks, labelled; C11 verified |
-| 8:30–9:45 | Exact posteriors do not scale | Heston about 4 CPU-min; rough Bergomi at least 17 CPU-h by a chain, about 85 CPU-min by importance sampling; return histories have no closed-form likelihood; a book and a validation need many posteriors | C8, verified |
-| 9:45–11:30 | Amortized inference learns the posterior once | The pipeline; 1,000 draws in 1.4–3.6 s; a coverage test on 2,000 smiles in about 2 CPU-h after the bank; learned pricers and calibrators, applied to the posterior | C8; laptop benchmark; Lecture 14.4 |
-| 11:30–12:45 | This afternoon | Amortized Bayes, Architectures; the three notebooks with their data, model and what each adds; worked cases synthetic | Main README and notebooks |
-| 12:45–13:45 | Takeaways | Three blocks; next, Amortized Bayes | — |
+| 0:00–1:30 | Calibrate, then price what nobody quotes | "Many calibrations fit the same quotes, and they disagree on what is not quoted"; the desk diagram; detail: the daily load at scale (De Spiegeleer et al.) and seven models that fit one smile (Schoutens et al.) | Cited |
+| 1:30–2:30 | The data: one close of SPY | "63 option prices, each known only to within an error band"; SPY's smile; detail: 13,114 options, the 7 × 9 grid, the band | S8, verified |
+| 2:30–3:30 | Calibration runs the model backwards | "The likelihood scores every σ by how well it reproduces the quote"; one-price figure; detail: 12.84% ± 0.30, the formula | By construction |
+| 3:30–4:30 | Prior × likelihood = posterior | "The prior moves the answer only where the data say little"; the prior sweep; detail: least squares, penalties and fixed parameters as priors | By construction |
+| 4:30–5:30 | Any price inherits the posterior | "Price a product under every posterior draw: you get its range, not just a mark"; the put's range; detail: the skew, 43% against 37%, and how the rules are met today | By construction; Reg. (EU) 2016/101; Totem |
+| 5:30–6:30 | Check the model against the data | "Simulate the quotes the fitted model expects; if the market's look different, the model is wrong"; the predictive check; detail: 9.5 sd, and the afternoon's models | By construction |
+| 6:30–8:30 | Where the quotes are silent, someone chooses | "Quotes fix the short end; the long end is a choice; Bayes states the choice and gives it a width"; three Heston calibrations with the same short end; detail: fixing understates the range, no prior overstates it | Formula; quick checks in the backup |
+| 8:30–9:45 | Exact posteriors do not scale | "An exact posterior needs about 10,000 model evaluations, and a book needs thousands of posteriors"; three numbers; detail: importance sampling, the hidden variance path | C8, verified |
+| 9:45–11:30 | Amortized inference: learn the posterior once | "Train a network once on simulated data; it then returns the posterior for new data in seconds"; the pipeline; detail: 1.4–3.6 s, the coverage test, learned pricers | C8; laptop benchmark; Lecture 14.4 |
+| 11:30–12:45 | This afternoon | "Every notebook runs the same five steps"; the three notebooks; detail: the two talks before them | Main README and notebooks |
+| 12:45–13:45 | Takeaways | Three sentences; next, Amortized Bayes | — |
 | 13:45–14:30 | The presenters | Names, affiliations (to fill), who presents what | To confirm |
 
+Each main slide follows one reading order: the title and the key line are read by everyone, the figure is the
+evidence, and the grey detail is optional ([`slides/slot1/README.md`](../slides/slot1/README.md)).
+
 Twelve backup frames follow: SPY's chain and its cleaning, how a grid price is read, the tolerance of a price, what a
-price says about volatility, level, skew and curvature, what a network reads, the variance curve, same short end and
-different long end (from Heston's variance-swap formula alone), the evidence behind slide 7, where the posterior's
+price says about volatility, level, skew and curvature, what a network reads, the variance curve, what the quotes leave open and
+what practice does (the table behind slide 7), the evidence in detail, where the posterior's
 shape matters, the methods that compute a posterior, and the references.
 
 ## Why Bayes, and what the slot does not claim
@@ -73,7 +76,7 @@ data, with its prior stated, that can be tested by coverage. The slot says this 
 **The prior, not the shape.** Where the course measured it, on simulated thin chains, a Gaussian at the mode with the
 same prior gave the same product ranges as the posterior (Lecture 16, Section 16.4). The argument is therefore the
 prior: each classical habit fixes what the quotes leave open with a prior of zero width, or leaves it with none, and
-both fail in measurable ways (slide 7). Cases where the shape itself matters exist and are kept in the backup: a price
+both fail in measurable ways (slide 7 and its backup). Cases where the shape itself matters exist and are kept in the backup: a price
 convex in a parameter, a valley cut by bounds (Heston below a vol of vol of 0.3), a bent ridge (the rough-Bergomi long
 end with the curve inferred), and two optima (Heston with jumps).
 
@@ -109,7 +112,7 @@ notebook's "risk" screens are statistical estimation-risk checks, not financial 
 
 | Say | Do not say | Why |
 | --- | --- | --- |
-| "Each price is known to within a tolerance: 0.3 volatility points at the money, the tutorial's assumption." | "The quote's bid–ask is 0.3 points." | The rule is the design's floor, wider than SPY's half-spreads at every grid point (S8). |
+| "Each price is known only to within an error band: 0.3 volatility points at the money, the tutorial's assumption." | "The quote's bid–ask is 0.3 points." | The rule is the design's floor, wider than SPY's half-spreads at every grid point (S8). |
 | "The 63 prices are read from SPY's quotes by smoothing and interpolation." | "The 63 prices are quoted." | Each is read from a spline through an expiration's implied volatilities (S8). |
 | "The rules are met today, with consensus marks and expert ranges; Bayes gives a range derived from the data, with its assumptions stated, that can be tested." | "Banks cannot meet the rules without Bayes." | Totem publishes 10th and 90th percentiles; Art. 3(3)(a) and 11(4) allow proxies and expert-based ranges. |
 | "Where we measured, the prior made the difference, not the posterior's shape." | "Classical methods miss the posterior's shape." | Lecture 16, Section 16.4: a Laplace approximation with the same prior matches the posterior on thin chains. |
