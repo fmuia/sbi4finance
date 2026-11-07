@@ -1087,7 +1087,7 @@ def _(NAMES, exact_spy, heston_checks, mo, network_spy, np, teaching):
         mo.md("""
         Three routes, one answer. Here the network's value is not a different interval: it is the same interval
         for any smile in a second, with a check of its own calibration (SBC above). Where the answers part, with
-        few quotes or inputs the quotes do not pin, is slot 1's first case and slot 5's long end.
+        few quotes or inputs the quotes do not pin, is slot 1's section 5 and slot 5's long end.
         *Source of the Gauss–Newton column:* `lab/checks/heston_checks.py`.
         """),
     ])

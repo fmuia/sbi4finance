@@ -39,14 +39,13 @@ TUTORIAL = ("The tutorial: one smile, three models, 115 minutes", [
 
 SLOTS = {
     1: ("Slot 1, 15 minutes", [
-        ("The marking\nprocedure", 2, "F", "cached"),
-        ("Two calibrations,\ntwo prices", 1.5, "F", "cached"),
-        ("The rules", 1, "F", "slide"),
-        ("The posterior in one example:\nBlack–Scholes on two SPY quotes", 4, "F", "live"),
-        ("Richer models,\ncostlier posteriors", 2, "F", "cached"),
-        ("Every name at month-end,\nevery validation run", 1.5, "F", "slide"),
-        ("Amortized\ninference", 1.5, "F", "slide"),
-        ("The\nafternoon", 1.5, "F", "slide"),
+        ("1 Problem setup:\ncalibration, chain,\nsmile, grid, noise", 3, "F", "cached"),
+        ("2 Bayes, one parameter:\nleast squares, prior,\nposterior, more quotes", 2.5, "F", "live"),
+        ("3 The range of\na price; why\nit matters", 1.5, "F", "live"),
+        ("4 Checking\nthe model", 1.5, "F", "live"),
+        ("5 Heston: ranges,\ntails, curved\nposteriors, reserves", 3.5, "F", "cached"),
+        ("6 Cost and\namortization", 2, "F", "cached"),
+        ("Close", 1, "F", "slide"),
     ]),
     2: ("Slot 2, 15 minutes", [
         ("Two ways\nto pay", 2, "A", "slide"),
