@@ -1,13 +1,20 @@
 % Slot 1 of the ICAIF '26 tutorial: the problem, Bayes for volatility models (15 minutes).
 % Uses the tutorial's bayesops theme unchanged; compile with LuaLaTeX (the theme needs it).
 % In the Overleaf project: upload this file and figures/slot1/, then Menu > Main document > slot1.tex.
-% The figures come from tutorial/notebooks/slot1_intro.py through tutorial/slides/slot1/export_figures.py.
+% The figures come from tutorial/notebooks/slot1_intro.py through tutorial/slides/slot1/export_figures.py; one of them,
+% same-short-end.pdf, from Heston's variance-swap formula alone.
 % Dashes are typed as Unicode (–): the theme's title fonts do not turn -- into a dash.
+% Speaker notes are in \note{}; Beamer prints them only with \setbeameroption{show notes on second screen}.
+% Numbers on the main slides are SPY market facts (study S8), measured costs (C8), results that hold by construction,
+% and, on "What the Quotes Leave Open", quick checks on simulated data labelled as such.
+% Placeholders in angle brackets (\todo) are for the presenters to fill in.
 \documentclass[aspectratio=169]{beamer}
 
 \usepackage[cover]{bayesops}
 \noautothankyouframe
 \usepackage{booktabs}
+\usepackage{array}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}  % a table column set ragged right
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta, positioning}
 \usepackage{unicode-math}
@@ -25,9 +32,9 @@
 \newcommand\stat[3]{%
   \tikz\node[fill=neonlake!8, rounded corners=2pt, inner sep=4pt, text width=\dimexpr\linewidth-8pt\relax,
              align=flush left]{%
-    {\fontsize{6.5}{8}\selectfont\color{aviation!75}#2}\\[1pt]
-    {\fontsize{13}{15}\selectfont\TitleFont\color{neonlake}#1}\\[1pt]
-    {\fontsize{6}{7.5}\selectfont\color{aviation!65}#3}};%
+    {\footnotesize\color{aviation!80}#2}\\[1pt]
+    {\fontsize{15}{17}\selectfont\TitleFont\color{neonlake}#1}\\[1pt]
+    {\footnotesize\color{aviation!70}#3}};%
 }
 % Blocks in the colour of a definition, a reassuring result or a warning
 \newenvironment{defblock}[1]{\setblockcolor{aviation}\begin{block}{#1}}{\end{block}}
@@ -35,8 +42,8 @@
 \newenvironment{warnblock}[1]{\setblockcolor{orchid}\begin{block}{#1}}{\end{block}}
 % A figure on its own centred line
 \newcommand\fig[2]{\par{\centering\includegraphics[width=#1\linewidth]{figures/slot1/#2}\par}}
-\newcommand\source[1]{\par\vfill{\fontsize{5.5}{7}\selectfont\color{aviation!55}#1\par}}
-\newcommand\dmethod{$\Delta$-method}  % the delta method; capital, since δ is the moneyness
+\newcommand\source[1]{\par\vfill{\fontsize{6.5}{8}\selectfont\color{aviation!60}#1\par}}
+\newcommand\todo[1]{\textcolor{orchid}{$\langle$#1$\rangle$}}  % for the presenters to fill in
 
 \title[Slot 1 · Bayes for Volatility Models]{The Problem: Bayes for Volatility Models}
 \subtitle{Slot 1 · Amortized Bayesian Calibration of Volatility Models}
@@ -52,37 +59,304 @@
 \useclassicframetitle
 
 % ════════════════════════════════════════════════════════════════════════════
-\section{Problem Setup}
+% 0:00–1:30 · The problem, aligned with De Spiegeleer, Madan, Reyners and Schoutens (2018)
 
-\begin{frame}{Why Calibration Is Relevant}
-\begin{block}{Calibration}
-\textbf{Adjust a model's parameters} until it reprices the liquid options.\\
-Then \textbf{use the calibrated model} to price and hedge what is not quoted.
-\end{block}
+\begin{frame}{The Problem: Calibrate Every Day, Then Mark What Nobody Quotes}
+{\small\itshape\color{aviation!85}“In the derivatives world, daily zillion computations need to be
+done.”}\hfill{\footnotesize\color{aviation!60}De Spiegeleer, Madan, Reyners and Schoutens (2018)}
+\vspace{0.5em}
+
+{\centering
+\begin{tikzpicture}[
+    box/.style={draw=aviation!35, fill=aviation!4, rounded corners=3pt, align=center, font=\footnotesize,
+                inner sep=4pt, text width=2.05cm, minimum height=1.5cm},
+    arr/.style={-{Stealth[length=4pt]}, aviation!70, line width=0.6pt}]
+  \node[box] (q) {\textbf{Option quotes}\\[1pt] {\scriptsize by strike and expiry}};
+  \node[box, right=0.38cm of q] (c) {\textbf{Calibration}\\[1pt] {\scriptsize parameters that fit the quotes}};
+  \node[box, right=0.38cm of c, fill=neonlake!12, draw=neonlake!60] (m) {\textbf{Calibrated model}};
+  \node[box, right=0.38cm of m] (p) {\textbf{Products not quoted}\\[1pt] {\scriptsize forward starts, cliquets}};
+  \node[box, right=0.38cm of p] (b) {\textbf{The book}\\[1pt] {\scriptsize valuations, hedges, reserves}};
+  \foreach \a/\b in {q/c, c/m, m/p, p/b} \draw[arr] (\a) -- (\b);
+  \node[font=\footnotesize\bfseries, text=neonlake, above=3pt of m] {for every name, every day};
+  \node[font=\footnotesize, text=orchid, below=2pt of c, align=center] {one of many that fit:\\which one?};
+\end{tikzpicture}\par}
+\vspace{0.2em}
+\small
+\begin{itemize}
+\item Realistic models are slow to price: Fourier integrals for Heston, Monte Carlo for rough volatility.
+\item Seven models reproduced one Eurostoxx 50 smile, and priced barriers, lookbacks and cliquets substantially
+differently (Schoutens, Simons and Tistaert 2004).
+\end{itemize}
+\vspace{0.4em}
+{\centering\small\color{neonlake}\TitleFont Which price do we mark for what is not quoted, with what range,\\
+fast enough for every name, every day?\par}
+\note{The speed problem is the 2018 paper's: daily calibration, pricing, hedging and risk on thousands of options and
+underliers, with models that need Fourier integrals or Monte Carlo. Our addition is the second line: a calibration is
+one choice among many that fit the quotes, and the products nobody quotes depend on which. Say that banks handle this
+today with consensus data and expert choices; do not say they cannot.}
+\end{frame}
+
+% ════════════════════════════════════════════════════════════════════════════
+% 1:30–6:30 · The ingredients, on Black–Scholes and one close of SPY
+
+\begin{frame}{One Close of SPY: 63 Prices, Each Known to Within a Tolerance}
+\fig{0.8}{smiles.pdf}
+\vspace{0.4em}
+\begin{columns}[T,onlytextwidth]
+\column{0.32\textwidth}\stat{13,114}{options in SPY's chain}{at the close of 21 October 2026}
+\column{0.32\textwidth}\stat{63 prices}{read onto a fixed grid}{7 maturities × 9 strikes, the same inputs every day,
+real or simulated}
+\column{0.32\textwidth}\stat{± 0.3 points}{each price's tolerance at the money}{1 volatility point at $\delta = \pm 2$}
+\end{columns}
+\note{The chain is cleaned, then each expiry's implied volatilities are smoothed and read at fixed points: 7 maturities
+from one week to one year, 9 standardized strikes. Every smile, real or simulated, becomes the same 63 prices, which is
+what the networks of the afternoon read. Say: each price is known to within a tolerance, the tutorial's assumption,
+wider than SPY's spreads. Do not say: the bid–ask is 0.3 points. Details are in the backup.}
+\end{frame}
+
+\begin{frame}{Calibration Runs the Model Backwards}
+\small Black–Scholes and one quote, the 1-month at-the-money price, known to within its tolerance $\sigma_c$. Read as a
+probability, the miss is the \highlight{likelihood}:
+\[ y = P(\sigma) + \sigma_c\,\varepsilon,\ \ \varepsilon \sim \mathcal N(0,1), \qquad
+   \chi^2(\sigma) = \frac{\big(y - P(\sigma)\big)^2}{\sigma_c^2}, \qquad p(y \mid \sigma) \propto e^{-\chi^2(\sigma)/2} \]
+\fig{0.82}{one-price.pdf}
+\vspace{0.3em}
+\begin{columns}[T,onlytextwidth]
+\column{0.48\textwidth}\stat{12.84\%}{least squares}{the $\sigma$ that misses least}
+\column{0.48\textwidth}\stat{± 0.30 points}{the error bar, where $\chi^2 \le 1$}{the tolerance over the vega}
+\end{columns}
+\note{The model maps a volatility to a price; calibration goes back from the price to the volatilities that reproduce
+it within its tolerance. A price known to within its tolerance gives a volatility known to within the tolerance over
+the vega: 0.30 points.}
+\end{frame}
+
+\begin{frame}{Prior × Likelihood = Posterior}
+\small
+\[ p(\sigma \mid y) \propto p(y \mid \sigma)\, p(\sigma) \]
+The prior moves the answer only where the data say little: much wider than the quote's ± 0.30 points, it barely moves
+it; narrower, it decides.
+\fig{0.76}{prior-sweep.pdf}
+\vspace{0.3em}
+\begin{columns}[T,onlytextwidth]
+\column{0.3\textwidth}\footnotesize Least squares: the peak under a \highlight{flat} prior.
+\column{0.37\textwidth}\footnotesize A penalty $\lambda(\sigma - \sigma_{\mathrm{yesterday}})^2$: a \highlight{normal}
+prior of width $1/\sqrt{\lambda}$.
+\column{0.29\textwidth}\footnotesize A parameter held fixed: a prior of \highlight{zero width}.
+\end{columns}
+\note{A prior of ± 2 points, about seven times the price's error bar, moves the answer by 0.15 points; one of ± 0.3
+points, as wide as the error bar, meets it halfway (16.4\%); one of ± 0.1 points decides (19.3\%). The last of the three
+habits is the one that matters later: holding a parameter fixed is a prior too, of zero width.}
+\end{frame}
+
+\begin{frame}{Any Price Inherits the Posterior}
+\small Price a product the fit did not use, the 1-month put at $\delta = -2$, under every posterior draw: the prices
+form its range.
+\vspace{0.3em}
+\begin{columns}[c,onlytextwidth]
+\column{0.68\textwidth}\includegraphics[width=\linewidth]{figures/slot1/put-range.pdf}
+\column{0.29\textwidth}
+\stat{43\% vs 37\%}{reserve for a sold put, over its mark}{posterior vs delta method: the price is convex in
+$\sigma$, so its range is skewed}
+\end{columns}
+\vspace{0.4em}
+\begin{defblock}{The 90\% point is what prudent valuation asks for}\footnotesize
+Today it comes from consensus marks where they exist, such as Totem's 10th and 90th percentiles, and from expert
+ranges and proxies where they do not (Reg.~(EU) 2016/101, Art.~3, 9 and 11).
+\end{defblock}
+\note{The reserve for a sold position is the 90\% point minus the mark. The delta method linearizes the price and
+misses the skew. The rules are met today; what Bayes adds is a range derived from the data, with its assumptions
+stated, that can be tested. Do not say the rules cannot be met without Bayes.}
+\end{frame}
+
+\begin{frame}{The Predictive Check Rejects Black–Scholes}
+\small Simulate the quotes the fitted model expects, a price under each draw plus its tolerance, and compare them with
+quotes the fit did not use.
+\fig{0.8}{predictive-check.pdf}
+\vspace{0.2em}
+\begin{columns}[T,onlytextwidth]
+\column{0.48\textwidth}\small \highlight{The put}: the market's quote lies 9.5 standard deviations from the prediction.
+\column{0.48\textwidth}\small \highlight{The smile}: one $\sigma$ for every strike cannot draw it.
+\end{columns}
+\vspace{0.4em}
+\begin{goodblock}{The afternoon's models draw a smile}\footnotesize
+Heston, priced by Fourier integrals, and rough Bergomi, priced only by Monte Carlo. Every notebook checks its
+posterior.
+\end{goodblock}
+\note{A posterior cannot show that its model is wrong; this check can. Black–Scholes was the vehicle for the
+ingredients; its failure is the reason for the models of the afternoon.}
+\end{frame}
+
+% ════════════════════════════════════════════════════════════════════════════
+% 6:30–8:30 · Why Bayes, beyond the range
+
+\begin{frame}{What the Quotes Leave Open, Practice Fixes Silently}
+\footnotesize
+\begin{tabular}{@{}L{0.28\linewidth}L{0.13\linewidth}L{0.5\linewidth}@{}}
+\toprule
+\textbf{Left open by the quotes} & \textbf{Common practice} & \textbf{What it does, on simulated data} \\
+\midrule
+A parameter: $\kappa$ (Heston), $\beta$ (SABR), $H$ (rough Bergomi) & Fix it & $H$ fixed at 0.10: the truth lies
+above the 90\% bound on \highlight{23\%} of thin chains, not 10\% \\
+The variance curve beyond the last quote & Hold it flat & SPY's long end: \highlight{0.30–0.32} of the posterior's
+range for a forward start and a 5-year put; \highlight{zero} for a 3-year variance swap \\
+A name that barely quotes & Mark it from a proxy & 90\% intervals cover \highlight{59.5\%}; with a hierarchical prior,
+88.0\% \\
+Any of these & Fit with no prior & Thin chains: \highlight{76 of 100} fits on a bound, ranges 1.5–3.3 times the
+posterior's. Heston: no interval on 11 of 200 \\
+\bottomrule
+\end{tabular}
+\vspace{0.3em}
+\begin{goodblock}{Each habit is a prior, of zero width or none}\small
+Bayes states the width, carries it into every price and lets it be tested. Where we measured, the prior made the
+difference, not the posterior's shape.
+\end{goodblock}
+\source{Quick checks on simulated data, not accepted studies (course, Lectures 8.10, 15.6, 16.4); Heston: study S6
+(C11, verified). Practice: Hagan et al.\ 2002; Bergomi 2003; Janek et al.\ 2011; QuantLib, ORE; Reg.~(EU) 2016/101,
+Art.~3(3)(a). Fixing $H$ is our analogy.}
+\note{Each row is a choice a desk makes about something the quotes do not determine. Fixing it understates the range;
+fitting it with no prior cannot identify it and over-reserves. A prior with a stated width does neither. On thin
+chains a Gaussian at the mode, with the same prior, gave the same ranges as the posterior: the prior is the argument,
+not exotic shapes. Do not say Gauss–Newton is wrong: on liquid Heston smiles it covers at 87–92\% (C11).}
+\end{frame}
+
+% ════════════════════════════════════════════════════════════════════════════
+% 8:30–11:30 · What exact posteriors cost, and amortized inference
+
+\begin{frame}{Exact Posteriors Do Not Scale}
+\begin{columns}[T,onlytextwidth]
+\column{0.31\textwidth}\stat{$\approx$ 4 CPU-min}{Heston: one exact posterior}{20 ms per evaluation, Fourier pricing}
+\column{0.36\textwidth}\stat{$\ge$ 17 CPU-h}{rough Bergomi: one exact posterior by a chain}{$\approx$ 85 CPU-min
+by importance sampling; 5.0 CPU-s per evaluation, Monte Carlo pricing}
+\column{0.29\textwidth}\stat{no closed form}{return histories}{the likelihood integrates over the hidden variance path}
+\end{columns}
 \vspace{0.8em}
+\small
+\begin{itemize}
+\item A posterior takes about $10^4$ evaluations of the model.
+\item A book needs one per name, every day.
+\item Checking that a method's 90\% ranges cover 90\% needs thousands: about 2,800 CPU-hours by importance sampling
+for 2,000 simulated smiles.
+\end{itemize}
+\source{Measured on one 4-core machine (C8, verified). The chain's cost is a lower bound; importance sampling prices
+1,024 proposals from a Gauss–Newton fit to SPY's 63 quotes.}
+\note{Always give the importance-sampling figure beside the chain's: one rough-Bergomi posterior is affordable when a
+classical fit gives a good proposal. What does not scale is many of them: a book, and above all a validation.}
+\end{frame}
+
+\begin{frame}{Amortized Inference Learns the Posterior Once}
+\begin{block}{Simulation-based inference needs only a simulator}\small
+Draw parameters from the prior, simulate quotes or a return history, and train a network on the pairs, once. It then
+returns the posterior for any new data in one pass.
+\end{block}
+\vspace{0.3em}
 {\centering
 \begin{tikzpicture}[
     box/.style={draw=aviation!35, fill=aviation!4, rounded corners=3pt, align=center, font=\scriptsize,
-                inner sep=4pt, text width=2.2cm, minimum height=1.35cm},
+                inner sep=3pt, text width=1.72cm, minimum height=1.1cm},
     arr/.style={-{Stealth[length=4pt]}, aviation!70, line width=0.6pt}]
-  \node[box] (q) {\textbf{Option quotes}\\[2pt] bid and ask for each strike and expiration};
-  \node[box, right=0.42cm of q] (c) {\textbf{Calibration}\\[2pt] choose the parameters that reproduce the quotes};
-  \node[box, right=0.42cm of c, fill=neonlake!12, draw=neonlake!60] (m) {\textbf{Calibrated model}};
-  \node[box, right=0.42cm of m] (p) {\textbf{Products not quoted}\\[2pt] forward starts, cliquets, long-dated options};
-  \node[box, right=0.42cm of p] (b) {\textbf{The book}\\[2pt] valuations, hedges, reserves};
-  \foreach \a/\b in {q/c, c/m, m/p, p/b} \draw[arr] (\a) -- (\b);
+  \node[box] (prior) {\textbf{Prior}\\ plausible parameters};
+  \node[box, right=0.32cm of prior] (sim) {\textbf{Simulator}\\ quotes or returns};
+  \node[box, right=0.32cm of sim] (bank) {\textbf{A bank}\\ of simulated pairs};
+  \node[box, right=0.32cm of bank, fill=neonlake!12, draw=neonlake!60] (net) {\textbf{Train a network}\\ once};
+  \node[box, right=0.32cm of net] (draws) {\textbf{Posterior draws}\\ in seconds};
+  \node[box, right=0.32cm of draws] (checks) {\textbf{Checks}\\ coverage, reference, predictive};
+  \node[box, above=0.3cm of net, fill=orchid!8, draw=orchid!50, minimum height=0.55cm] (today) {\textbf{Today's data}};
+  \foreach \a/\b in {prior/sim, sim/bank, bank/net, net/draws, draws/checks} \draw[arr] (\a) -- (\b);
+  \draw[arr] (today) -- (net);
 \end{tikzpicture}\par}
-\vspace{0.9em}
-\small The quotes change every day, so the calibration is \textbf{redone every day}.\\
-The data throughout: \highlight{SPY's option quotes at the close of 21 October 2026}.
+\vspace{0.3em}
+\begin{columns}[T,onlytextwidth]
+\column{0.3\textwidth}\stat{1.4–3.6 s}{1,000 posterior draws}{for new data, on a laptop}
+\column{0.33\textwidth}\stat{$\approx$ 2 CPU-h}{a coverage test on 2,000 smiles}{after a $\approx$ 370 CPU-h bank;
+$\approx$ 2,800 by importance sampling}
+\column{0.33\textwidth}\small Learned pricers and calibrators, applied to the posterior: valid where the prior
+reaches, and checked.
+\end{columns}
+\source{De Spiegeleer et al.\ 2018; Hernandez 2017; Horvath et al.\ 2021; Cranmer et al.\ 2020; BayesFlow: Radev et
+al.\ 2022. Costs: C8; course, Lecture 14.4.}
+\note{This is where the 2018 paper's idea returns: learn an expensive map once from simulations, then evaluate it in
+seconds. Learned pricers return prices and learned calibrators a point; here the network returns the posterior. Say
+seconds, never milliseconds. The prior is the training set: the curve prior of our first rough-Bergomi bank did not
+contain SPY's forward-variance curve, and checking SPY's curve against the prior caught it (gate G0).}
 \end{frame}
 
-\begin{frame}{The Option Chain}
+% ════════════════════════════════════════════════════════════════════════════
+% 11:30–14:30 · The afternoon, takeaways and presenters
+
+\begin{frame}{This Afternoon}
+\small
+\textbf{Two more talks.} \highlight{Amortized Bayes}: why a network trained on simulations returns the posterior, and
+when it pays. \highlight{Architectures}: networks that read a grid of prices or a return history.
+\vspace{0.6em}
+
+\textbf{Three notebooks}, each model $\to$ simulate $\to$ train $\to$ infer $\to$ check:
+\vspace{0.3em}
+
+\footnotesize
+\begin{tabular}{@{}L{0.17\linewidth}L{0.17\linewidth}L{0.29\linewidth}L{0.25\linewidth}@{}}
+\toprule
+\textbf{Notebook} & \textbf{The data} & \textbf{The model} & \textbf{What it adds} \\
+\midrule
+Heston options & 63 option prices & Heston, priced by Fourier integrals & an exact posterior to check the network
+against \\
+Rough Bergomi options & 63 option prices & rough Bergomi, priced by Monte Carlo; variance curve supplied or inferred &
+no fast pricer; a curve to infer \\
+Return histories & daily returns, 1 day to 5 years & Heston and rough Bergomi, with drift & a hidden variance path; the
+posterior as the history grows \\
+\bottomrule
+\end{tabular}
+\vspace{0.6em}
+
+{\small The worked cases are synthetic, so every posterior can be compared with the truth.\par}
+\end{frame}
+
+\begin{frame}{Takeaways}
 \begin{columns}[T,onlytextwidth]
-\column{0.24\textwidth}
-\stat{13,114}{options in the raw chain}{35 expirations}\\[2pt]
+\column{0.32\textwidth}
+\begin{block}{1. A calibration is an estimate}\small
+What the quotes leave open is decided by a prior, stated or not.
+\end{block}
+\column{0.32\textwidth}
+\begin{block}{2. Bayes states it}\small
+It carries the prior into every price, and the predictive check tests the model against the data.
+\end{block}
+\column{0.32\textwidth}
+\begin{block}{3. Amortize, then check}\small
+Exact posteriors do not scale. Amortized inference learns them once, and is checked like any learned surrogate.
+\end{block}
+\end{columns}
+\vspace{1.2em}
+{\centering\small\highlight{Next}: Amortized Bayes.\par}
+\end{frame}
+
+\begin{frame}{The Presenters}
+\small
+\begin{columns}[T,onlytextwidth]
+\column{0.24\textwidth}\textbf{Francesco Muia}\\ {\footnotesize\todo{affiliation}}\\[4pt]
+{\footnotesize This introduction; rough Bergomi options}
+\column{0.24\textwidth}\textbf{Alexander Fengler}\\ {\footnotesize\todo{affiliation}}\\[4pt]
+{\footnotesize Amortized Bayes; rough Bergomi options}
+\column{0.24\textwidth}\textbf{Stefan T. Radev}\\ {\footnotesize\todo{affiliation}}\\[4pt]
+{\footnotesize Architectures; Heston options}
+\column{0.24\textwidth}\textbf{Jerry Huang}\\ {\footnotesize\todo{affiliation}}\\[4pt]
+{\footnotesize Architectures; Heston options}
+\end{columns}
+\vspace{1.5em}
+{\footnotesize Return histories: \todo{presenter}.\par}
+\note{Assignments as in the curriculum of 24 October; confirm them, and who presents the return histories, before the
+run-through.}
+\end{frame}
+
+% ════════════════════════════════════════════════════════════════════════════
+\appendix
+\section{Backup}
+
+\begin{frame}{Backup: SPY's Option Chain}
+\begin{columns}[T,onlytextwidth]
+\column{0.26\textwidth}
+\stat{13,114}{options in the raw chain}{35 expirations}\\[3pt]
 \stat{5,358}{quotes kept after cleaning}{32 expirations}
-\column{0.73\textwidth}\small
+\column{0.71\textwidth}\small
 \textbf{Cleaning removes}
 \begin{itemize}\footnotesize
 \item in-the-money options: the out-of-the-money one carries the same information;
@@ -95,364 +369,41 @@ The data throughout: \highlight{SPY's option quotes at the close of 21 October 2
 \fig{0.62}{chain-reach.pdf}
 \end{frame}
 
-\begin{frame}{The Smile}
-\begin{block}{Black–Scholes does not describe SPY}
-\textbf{Implied volatility} is the $\sigma$ at which Black–Scholes reproduces a price. If Black–Scholes described SPY,
-every option would have the same one.
-\end{block}
-\fig{0.7}{smiles.pdf}
-\begin{columns}[T,onlytextwidth]\scriptsize
-\column{0.31\textwidth} \highlight{Level}: the ATM volatility, from 12.2\% at one week to 16.6\% at one year.
-\column{0.33\textwidth} \highlight{Skew}: far puts cost more than far calls; large falls are priced as likelier than large
-rises.
-\column{0.31\textwidth} \highlight{Curvature}: both wings bend up, the fat tails. The skew falls like $T^{-0.32}$.
-\end{columns}
-\end{frame}
-
-\begin{frame}{The Grid: 63 Prices Read From the Chain}
-\begin{block}{Why a grid: the same 63 inputs every day}
-\small The chain's strikes and expirations change daily. Fixed points make every smile, real or simulated, the same 63
-prices: the networks of the later slots need that.
-\end{block}
+\begin{frame}{Backup: How a Grid Price Is Read}
 \begin{columns}[c,onlytextwidth]
-\column{0.46\textwidth}\footnotesize
-\textbf{The points}: 7 maturities, 1 week to 1 year $\times$ 9 strikes, $\delta = -2, \dots, 2$.\par\smallskip
-\textbf{How a grid price is read}
-\begin{enumerate}
+\column{0.44\textwidth}\small
+\textbf{The points}: 7 maturities, 1 week to 1 year, $\times$ 9 strikes, $\delta = -2, \dots, 2$.\par\smallskip
+\begin{enumerate}\footnotesize
 \item \textbf{Smooth} each expiration's implied volatilities.
 \item \textbf{Read} the expirations before and after the grid maturity, at the grid strike.
 \item \textbf{Interpolate} between them in total variance $\sigma^2 T$.
 \end{enumerate}
-\column{0.52\textwidth}\includegraphics[width=\linewidth]{figures/slot1/grid-contracts.pdf}
+\footnotesize 35 points come from two expirations, 28 from one. Nothing is extrapolated: beyond $\delta = 2$ the calls run
+out, and those left cost less than their tolerance.
+\column{0.54\textwidth}\includegraphics[width=\linewidth]{figures/slot1/grid-contracts.pdf}
 \end{columns}
-\vspace{0.3em}
-\scriptsize Nothing is extrapolated. The grid stops at $\delta = \pm 2$: beyond, the calls run out, and those left cost less
-than their noise.
 \end{frame}
 
-\begin{frame}{The Noise of a Price}
+\begin{frame}{Backup: The Tolerance of a Price}
 \small Each grid price is the model's price plus an error of known size, set by a rule in two steps:
-\begin{gather*}
-  y_c = P_c(\theta) + \sigma_c\,\varepsilon_c, \qquad \varepsilon_c \sim \mathcal N(0, 1), \\
-  \sigma_c = \underbrace{\mathrm{vega}_{20\%}(k_c, T_c)}_{\text{price per unit of volatility}} \times
-  \underbrace{s(\delta_c)}_{\text{error in volatility}}, \qquad s(\delta) = 0.3 + 0.35\,|\delta| \text{ points.}
-\end{gather*}
-\begin{columns}[T,onlytextwidth]
-\column{0.29\textwidth}
-\stat{11.5 bp $\approx$ \$0.89}{one volatility point}{1M ATM, vega 0.115}\\[2pt]
-\stat{\$0.06 to \$1.40}{the noise of the 63 prices}{3.45 bp $\approx$ \$0.27 for the 1M ATM}
-\column{0.68\textwidth}
-\begin{defblock}{A tolerance, not the bid–ask spread}\footnotesize
-\begin{itemize}
-\item \textbf{More than the quote}: the bid–ask, the grid reading and the model's own error. SPY's half-spreads sit below
-the rule.
-\item \textbf{No over-confidence}: Heston misses SPY's prices by about one noise unit each ($\chi^2 = 67$ on 63); with a
-smaller noise its error would count as information.
-\item \textbf{One rule for every smile}, real or simulated.
+\[ \sigma_c = \underbrace{\mathrm{vega}_{20\%}(k_c, T_c)}_{\text{price per unit of volatility}} \times
+  \underbrace{s(\delta_c)}_{\text{error in volatility}}, \qquad s(\delta) = 0.3 + 0.35\,|\delta| \text{ points.} \]
+\fig{0.82}{noise-rule.pdf}
+\begin{itemize}\footnotesize
+\item \textbf{More than the quote}: the bid–ask, the grid reading and the model's own error. SPY's half-spreads sit
+below the rule at every grid point.
+\item \textbf{One rule for every smile}, real or simulated: a network trained on simulations then reads real quotes as
+the same kind of data. At one month and the money, one volatility point is 11.5 bp of the forward, about \$0.89.
 \end{itemize}
-\end{defblock}
-\end{columns}
 \end{frame}
-
-\begin{frame}[c]{The Question of This Slot}
-\centering
-{\Large\TitleFont The 63 prices are known only to within their noise.\par}
-\vspace{1em}
-{\large\color{neonlake} How precisely do they determine a model's parameters,\\
-and with them the prices of the products the market does not quote?\par}
-\end{frame}
-
-% ════════════════════════════════════════════════════════════════════════════
-\section{Bayes With One Parameter}
-
-\begin{frame}{Calibrating Black–Scholes to One Price}
-\footnotesize
-\textbf{Data}: the 1M ATM grid price, 147.8 bp of the forward (\$11.47), with noise 3.45 bp (\$0.27).\\
-\textbf{Model}: Black–Scholes, one parameter $\sigma$.
-\[ y = P(\sigma) + \sigma_c\,\varepsilon, \qquad \chi^2(\sigma) = \frac{\big(y - P(\sigma)\big)^2}{\sigma_c^2}
-   \quad\text{(the miss in noise units)} \]
-\begin{columns}[c,onlytextwidth]
-\column{0.72\textwidth}\includegraphics[width=\linewidth]{figures/slot1/one-price.pdf}
-\column{0.25\textwidth}
-\stat{12.84\%}{least squares}{the $\sigma$ with the smallest $\chi^2$}\\[2pt]
-\stat{$\pm$0.30 points}{error bar, where $\chi^2 \le 1$}{the noise over the option's vega}
-\end{columns}
-\begin{block}{Calibration runs the model backwards}
-A price known to within its noise $\sigma_c$ gives a volatility known to within $\sigma_c / \mathrm{vega}$.
-\end{block}
-\end{frame}
-
-\begin{frame}{Prior $\times$ Likelihood $\to$ Posterior}
-\begin{columns}[c,onlytextwidth]
-\column{0.34\textwidth}\footnotesize
-\[ p(\sigma \mid y) = \frac{p(y \mid \sigma)\, p(\sigma)}{p(y)} \]
-\highlight{Likelihood}: the least-squares curve, read as a probability:
-\[ p(y \mid \sigma) \propto e^{-\chi^2(\sigma)/2} \]
-\highlight{Prior}: flat on 5–60\%, or normal around 20\%:
-\[ p(\sigma) = \mathcal N\big(20\%,\ w^2\big) \]
-\highlight{Posterior}: their product, normalized.
-\column{0.64\textwidth}\includegraphics[width=\linewidth]{figures/slot1/prior-sweep.pdf}
-\end{columns}
-\begin{block}{The prior matters only when it is narrower than what the price says}
-\footnotesize Much wider than the price's $\pm 0.30$ points, it barely moves the answer ($w = 2$: 12.99\%); as wide, it
-meets it halfway ($w = 0.3$: 16.4\%); narrower, it decides ($w = 0.1$: 19.3\%).
-\end{block}
-\end{frame}
-
-\begin{frame}{Same Numbers, Different Meaning}
-\begin{columns}[T,onlytextwidth]
-\column{0.48\textwidth}
-\begin{defblock}{A penalty is a prior}\footnotesize
-Adding $\lambda(\sigma - \sigma_{\mathrm{ref}})^2$ to $\chi^2$, toward yesterday's value say, returns the peak of the
-posterior under a normal prior of width $1/\sqrt{\lambda}$. Bayes states the prior and keeps the width.
-\end{defblock}
-\column{0.48\textwidth}
-\begin{defblock}{Least squares and the posterior}\footnotesize
-With a flat prior both say 12.84\% $\pm$ 0.30. The error bar describes the procedure: over redrawn prices it contains
-the true $\sigma$ 68\% of the time. The posterior is a probability for $\sigma$ given today's price.
-\end{defblock}
-\end{columns}
-\fig{0.56}{more-prices.pdf}
-\footnotesize \highlight{More prices}: from one simulated price to seven, the width falls from 0.30 to 0.11 points,
-about $0.30/\sqrt{7}$, around the truth.
-\end{frame}
-
-% ════════════════════════════════════════════════════════════════════════════
-\section{The Range of a Price}
-
-\begin{frame}{A Range for Any Price}
-\small We price the 1M put at $\delta = -2$ as if it were not quoted, like the products a desk marks.
-\begin{columns}[T,onlytextwidth]
-\column{0.48\textwidth}
-\begin{defblock}{Bayes}\footnotesize
-Price the put under each posterior draw of $\sigma$.
-\end{defblock}
-\column{0.48\textwidth}
-\begin{defblock}{Classical}\footnotesize
-$\sigma$ normal (Gauss–Newton); the price linearized (\dmethod).
-\end{defblock}
-\end{columns}
-\begin{columns}[c,onlytextwidth]
-\column{0.66\textwidth}\includegraphics[width=\linewidth]{figures/slot1/put-range.pdf}
-\column{0.31\textwidth}
-\stat{0.05 to 0.14 bp}{the put's 90\% range}{under the posterior}\\[2pt]
-\stat{43\% vs 37\%}{reserve for a sold put, over the mark}{posterior vs \dmethod: the price is convex in $\sigma$, the
-\dmethod{} makes it normal}
-\end{columns}
-\end{frame}
-
-\begin{frame}{What Is Measured, and Why It Matters}
-\begin{columns}[T,onlytextwidth]
-\column{0.31\textwidth}
-\begin{defblock}{The range}\footnotesize
-The 5\% to 95\% points of a product's price over the posterior.
-\end{defblock}
-\column{0.34\textwidth}
-\begin{defblock}{The reserve}\footnotesize
-Sold position: the 90\% point minus the mark. A quantile like a VaR, but of today's value.
-\end{defblock}
-\column{0.31\textwidth}
-\begin{defblock}{Coverage}\footnotesize
-On simulated smiles, 90\% ranges should contain the truth 90\% of the time.
-\end{defblock}
-\end{columns}
-\vspace{0.8em}
-\small\textbf{Why it matters}\par\smallskip
-\footnotesize
-\begin{tabular}{@{}p{0.14\linewidth}p{0.82\linewidth}@{}}
-\toprule
-\highlight{Capital} & EU prudent valuation (2016/101, Art.~9 and 11): the distance to the 90\% point is deducted
-from capital. \\
-\highlight{Accounts} & IFRS 13 §93(h): for Level 3 fair values, how the value moves under reasonable alternative inputs. \\
-\highlight{Model risk} & SR 26-2 and PRA SS1/23: understand the uncertainty of estimates and of model choices. \\
-\highlight{P\&L} & Refitting to tomorrow's quotes moves the marks within this range, even if the market does not move. \\
-\bottomrule
-\end{tabular}
-\end{frame}
-
-% ════════════════════════════════════════════════════════════════════════════
-\section{Checking the Model}
-
-\begin{frame}{A Posterior Predictive Check}
-\begin{columns}[c,onlytextwidth]
-\column{0.62\textwidth}\includegraphics[width=\linewidth]{figures/slot1/predictive-check.pdf}
-\column{0.35\textwidth}
-\begin{warnblock}{A predictive check}\footnotesize
-A posterior cannot show that its model is wrong; this check can. Simulate the quotes the fitted model expects (price
-under each draw, plus noise) and compare them with quotes the fit did not use.
-\end{warnblock}
-\footnotesize
-\begin{itemize}
-\item \textbf{The put}: the market's 14.1 bp is 9.5 sd from the prediction.
-\item \textbf{The smile}: one $\sigma$ for every strike, against SPY's 12.8\% ATM and 24.4\% at $\delta = -2$.
-\end{itemize}
-\end{columns}
-\end{frame}
-
-\begin{frame}{Precise, but Wrong}
-\small Fit the ATM price and the put with one $\sigma$:
-\fig{0.74}{noise-frames.pdf}
-\begin{block}{No single $\sigma$ prices both options: this is the smile}
-\small At the assumed noise the put is missed by 9.5 noise units; it takes 4.8 times the noise to fit both.
-Check the model before using its ranges.
-\end{block}
-\end{frame}
-
-% ════════════════════════════════════════════════════════════════════════════
-\section{A Model With a Smile: Heston}
-
-\begin{frame}{Heston: A Model With a Smile}
-\footnotesize
-\begin{itemize}
-\item \textbf{Random variance}: it reverts to a long-run level and moves against the price.
-\item \textbf{Four parameters, four features}: $v_0$ and $\theta$ the short and long levels, $\rho\,\sigma_v$ the skew,
-$\sigma_v$ the curvature ($\kappa = 2$ fixed).
-\end{itemize}
-\fig{0.8}{heston-smile.pdf}
-\end{frame}
-
-\begin{frame}{How Far the Products Move}
-\footnotesize With four parameters a grid is impractical: the exact posterior is \textbf{sampled} by Markov chain Monte
-Carlo (MCMC), a random walk whose visits follow the posterior (slot 4). Each product is priced under every draw.
-\fig{0.68}{products.pdf}
-\vspace{0.2em}
-\begin{columns}[T,onlytextwidth]
-\column{0.235\textwidth}\stat{6.8 m}{2-year 90\% put: the mark}{on 100 million of notional}
-\column{0.235\textwidth}\stat{111 k}{reserve, 63 quotes}{90\% point minus the mark}
-\column{0.235\textwidth}\stat{917 k}{reserve, 15 quotes}{1, 3 and 6 months, $\kappa$ free}
-\column{0.235\textwidth}\stat{434 k}{gap to a second model}{rough Bergomi, same smile}
-\end{columns}
-\source{Heston results: a quick check, not yet a finished study. Second model: preliminary networks.}
-\end{frame}
-
-\begin{frame}{What It Does to a Reserve}
-\footnotesize The classical route, Gauss–Newton with the \dmethod, against the exact posterior, where the rules look:
-the 90\% point.
-\fig{0.74}{reserves.pdf}
-\begin{columns}[T,onlytextwidth]
-\column{0.48\textwidth}
-\begin{goodblock}{63 quotes: no real difference}\footnotesize
-Within 1.9 times the precision of the posterior's reserve, for every product, sold or held.
-\end{goodblock}
-\column{0.48\textwidth}
-\begin{warnblock}{15 quotes: up to 40\%}\footnotesize
-Sold volatility swap: the \dmethod's reserve is 15\% too small. Sold forward-start: 40\% too large.
-\end{warnblock}
-\end{columns}
-\source{Preliminary results: the 63-quote posterior is a feasibility run; the 15-quote results are a quick check.}
-\end{frame}
-
-% ════════════════════════════════════════════════════════════════════════════
-\section{What It Costs}
-
-\begin{frame}{Exact Posteriors Get Expensive}
-\begin{columns}[T,onlytextwidth]
-\column{0.31\textwidth}\stat{4 CPU-min}{Heston, exact posterior}{20 ms per likelihood evaluation}
-\column{0.33\textwidth}\stat{$\ge$ 17 CPU-h}{rough Bergomi, exact posterior}{5.0 CPU-s per likelihood evaluation}
-\column{0.31\textwidth}\stat{1.4 s}{a trained network, any smile}{1,000 draws, 3.6 CPU-s}
-\end{columns}
-\vspace{0.4em}
-\footnotesize A desk needs many posteriors: one for every underlying in a valuation run, and thousands of simulated
-smiles to test a method. A run of 500 smiles:
-\fig{0.8}{valuation-run.pdf}
-At least 8,475 CPU-hours by the rough-Bergomi chain, or 2,119 cores for a four-hour run; 0.5 by a trained network, after
-one training run.
-\source{Measured on one 4-core machine. The chain's cost is a lower bound.}
-\end{frame}
-
-\begin{frame}{Amortized Inference}
-\begin{block}{Pay for the posterior once}
-Draw parameters from the prior, simulate a smile for each, and train a network on these pairs. A new smile then takes
-one pass through the network: about 1.4 seconds for 1,000 posterior draws.
-\end{block}
-\vspace{0.6em}
-{\centering
-\begin{tikzpicture}[
-    box/.style={draw=aviation!35, fill=aviation!4, rounded corners=3pt, align=center, font=\scriptsize,
-                inner sep=3pt, text width=1.85cm, minimum height=1.15cm},
-    arr/.style={-{Stealth[length=4pt]}, aviation!70, line width=0.6pt}]
-  \node[box] (prior) {\textbf{Prior}\\ plausible parameters};
-  \node[box, right=0.38cm of prior] (sim) {\textbf{Simulator}\\ price a smile, add the noise};
-  \node[box, right=0.38cm of sim] (bank) {\textbf{A bank}\\ of (parameters, smile) pairs};
-  \node[box, right=0.38cm of bank, fill=neonlake!12, draw=neonlake!60] (net) {\textbf{Train a network}\\ once};
-  \node[box, right=0.38cm of net] (draws) {\textbf{Posterior draws}\\ in seconds};
-  \node[box, right=0.38cm of draws] (checks) {\textbf{Checks}\\ exact posterior, coverage, audit};
-  \node[box, below=0.55cm of net, fill=orchid!8, draw=orchid!50] (today) {\textbf{Today's smile}};
-  \foreach \a/\b in {prior/sim, sim/bank, bank/net, net/draws, draws/checks} \draw[arr] (\a) -- (\b);
-  \draw[arr] (today) -- (net);
-\end{tikzpicture}\par}
-\vspace{0.6em}
-\small The rest of the afternoon builds these networks and checks them: \highlight{slot 2} explains how they work and when
-they pay off.
-\end{frame}
-
-% ════════════════════════════════════════════════════════════════════════════
-\section{Takeaways}
-
-\begin{frame}{Takeaways}
-\begin{columns}[T,onlytextwidth]
-\column{0.485\textwidth}
-\begin{block}{1. Calibration is estimation}\footnotesize
-Least squares keeps the peak of the likelihood; the posterior keeps all of it. Priced under it, a product gets a range:
-a few percent on a liquid smile, much more with few quotes. The rules ask for its 90\% point.
-\end{block}
-\begin{block}{3. Test on the reserve}\footnotesize
-The classical route is right when the quotes inform every direction: on 63 quotes Gauss–Newton and the posterior agree,
-on 15 they do not. A scatter plot's shape is not the test.
-\end{block}
-\column{0.485\textwidth}
-\begin{block}{2. Check the model first}\footnotesize
-A posterior is only as good as its model. On SPY, Black–Scholes gives a precise but wrong answer.
-\end{block}
-\begin{block}{4. Exact posteriors are costly}\footnotesize
-They get expensive as models get realistic, and many are needed. The rest of the afternoon shows how amortized
-inference cuts the cost.
-\end{block}
-\end{columns}
-\vspace{0.6em}
-{\centering\small\highlight{Next, slot 2}: how a network trained on simulations returns the posterior of section 2.\par}
-\end{frame}
-
-% ════════════════════════════════════════════════════════════════════════════
-\appendix
-\section{Backup}
 
 \begin{frame}{Backup: What a Price Says About Volatility}
 \fig{0.72}{quote-information.pdf}
 \footnotesize
-\textbf{The error bars} are the implied volatilities of the grid price $\pm$ its noise $\sigma_c$: the noise rule, not
-the bid–ask spread, which is narrower. At the money a 1M price fixes the volatility to $\pm 0.3$ points. At
-$\delta = 1.5$ and 2 the bars reach zero: those calls cost less than their noise, so any lower volatility fits them.\par
-\smallskip
-\textbf{Why the grid stops at $\delta = \pm 2$}: on 16 of 32 expirations the calls stop before $\delta = 2$; at one week
-the $\delta = 2$ call costs \$0.01 against a noise of \$0.06; beyond, the grid would extrapolate.
-\end{frame}
-
-\begin{frame}{Backup: Gauss–Newton or the Posterior?}
-\footnotesize The classical route: a normal at the least-squares fit with covariance $(J^\top W J)^{-1}$, and the
-\dmethod{} for prices. An elliptical scatter is not enough to trust it: check the centre and width, the tails, and the
-reserve.
-\fig{0.72}{tails.pdf}
-\begin{columns}[T,onlytextwidth]
-\column{0.48\textwidth}
-\begin{goodblock}{63 quotes, $\kappa = 2$}\scriptsize
-On the diagonal: widths 0.96 to 1.05 times the posterior's, skewness and excess kurtosis within $\pm 0.14$.
-\end{goodblock}
-\column{0.48\textwidth}
-\begin{warnblock}{15 quotes, $\kappa$ free}\scriptsize
-$\theta$'s 99\% point lies 5.4 Gauss–Newton sd out (a normal's: 2.3); $\kappa$'s interval reaches $-0.58$.
-\end{warnblock}
-\end{columns}
-\end{frame}
-
-\begin{frame}{Backup: A Curved Posterior, and Why}
-\footnotesize The expected variance is $\theta + (v_0 - \theta)\,e^{-\kappa t}$. Fifteen quotes to six months fix its
-average to six months, not how it splits between the level $\theta$ and the speed $\kappa$: the posterior lies along the
-curve of equal averages (dashed, from the formula).
-\fig{0.74}{curved-posterior.pdf}
-\scriptsize \textbf{Left}: exact; Gauss–Newton's box misses the upper arm and reaches $\kappa < 0$. \textbf{Right}: rough
-Bergomi, network posterior: where its two levels differ it pins the decay to 14–19\% of its prior; its 90\% intervals
-cover 89\% of 2,000 simulated smiles. An exact check on this smile is pending.
+The error bars are the implied volatilities of each grid price $\pm$ its tolerance. At the money a 1-month price fixes
+the volatility to $\pm 0.3$ points. At $\delta = 1.5$ and 2 the bars reach zero: those calls cost less than their
+tolerance, so any lower volatility fits them. On 16 of 32 expirations the calls stop before $\delta = 2$; at one week
+the $\delta = 2$ call costs \$0.01 against a tolerance of \$0.06.
 \end{frame}
 
 \begin{frame}{Backup: Level, Skew and Curvature}
@@ -461,54 +412,110 @@ cover 89\% of 2,000 simulated smiles. An exact check on this smile is pending.
 skew and curvature by maturity on log–log axes. The skew falls like $T^{-0.32}$.
 \end{frame}
 
-\begin{frame}{Backup: The Noise Rule}
-\fig{0.9}{noise-rule.pdf}
-\footnotesize Step 1, the error in volatility $s(\delta)$; step 2, times the vega at 20\%: the price noise $\sigma_c$,
-from 0.7 to 17 bp of the forward.
-\end{frame}
-
 \begin{frame}{Backup: What a Network Reads}
 \fig{0.9}{noise-units.pdf}
-\footnotesize SPY's prices in noise units, $y_c / \sigma_c$: from 0.2 (one week, $\delta = 2$) to 56 (one year, at the
-money).
+\footnotesize SPY's prices in units of their tolerance, $y_c / \sigma_c$: from 0.2 (one week, $\delta = 2$) to 56
+(one year, at the money).
 \end{frame}
 
 \begin{frame}{Backup: The Variance Curve}
 \fig{0.9}{variance-curve.pdf}
-\footnotesize SPY's forward-variance levels and variance swaps, replicated from the far puts: the curve that rough
-Bergomi takes as an input.
+\footnotesize SPY's forward-variance levels and variance swaps, replicated from the option strip on 17 of 32
+expirations: the curve rough Bergomi takes as an input, or infers.
+\end{frame}
+
+\begin{frame}{Backup: Same Short End, Different Long End}
+\fig{0.9}{same-short-end.pdf}
+\footnotesize
+The quotes fix the variance-swap levels at the maturities they cover, by replication (Demeterfi, Derman, Kamal and Zou
+1999). Under Heston the level is $\theta + (v_0 - \theta)(1 - e^{-\kappa T})/(\kappa T)$. Three calibrations, with
+$\kappa = 1$, 2 and 4, match illustrative 1-, 3- and 6-month levels to within 0.16 volatility points; at two years they
+give 25.3\%, 23.3\% and 21.3\%. Computed from the formula alone, with no study behind it.
+\end{frame}
+
+\begin{frame}{Backup: The Evidence Behind “What the Quotes Leave Open”}
+\scriptsize
+\begin{tabular}{@{}L{0.2\linewidth}L{0.75\linewidth}@{}}
+\toprule
+\textbf{Case} & \textbf{What was measured} \\
+\midrule
+Thin chains (quick check; course, Lecture 16.4) & 100 simulated chains with EWG's layout (27 quotes to six months), six
+products, truths drawn from the prior. $H$ fixed at 0.10: truth above the upper bound on 23\% of chains for the variance
+swap and the put (10\% nominal; about $\pm 6$ points at 95\%). Gauss–Newton with no prior: 76 fits on a bound, median
+condition number $2 \times 10^{12}$, bands 1.5–3.3 times the posterior's, breached 0–7\%. A Laplace approximation with
+the same prior: widths within 5\% of the posterior's. On 10 audited chains the network's bands are 1.04 times the exact
+ones (median). \\
+SPY's long end (quick check; Lecture 15.6) & Laplace posterior; beyond SPY's LEAPs the curve follows a random walk
+with a standard deviation of 0.2 per square-root year. Flat extrapolation gives 0.32, 0.30 and 0 of the posterior's 90\%
+range for a 2-to-3-year forward start, a 5-year put at 80\% and a 3-year variance swap. The forward start's range goes
+from 19.4\% to 36.8\% of its price as that standard deviation goes from 0.1 to 0.3: the prior must be stated and tested. \\
+A sector of names (quick check; Lecture 8.10) & 600 simulated Black–Scholes sectors of 2 liquid and 6 illiquid names.
+Coverage of 90\% intervals: one name at a time 89.7\% (width 9.9 points), proxy 59.5\% (8.2), empirical Bayes 69.7\%
+(5.5), hierarchical Bayes 88.0\% (7.6). Error of an unquoted 6-month call's mark: 10.2\%, 12.4\%, 8.5\%, 7.9\%. The
+model is right by construction. \\
+Heston, 200 smiles (study S6; C11, verified) & Gauss–Newton 90\% coverage 87–92\%, the network posterior's 87–90\%: on a
+liquid, well-identified smile the classical route works. The optimum is on a bound of the box on 15 smiles; on 11 the
+information matrix, computed in the search's logit coordinates, is singular and no interval exists. \\
+\bottomrule
+\end{tabular}
+\end{frame}
+
+\begin{frame}{Backup: Where the Posterior's Shape Matters}
+\footnotesize
+\begin{tabular}{@{}L{0.22\linewidth}L{0.73\linewidth}@{}}
+\toprule
+\textbf{Mechanism} & \textbf{Example} \\
+\midrule
+A price convex in a parameter & The put of “Any Price Inherits the Posterior”: a sold put's reserve is 43\% of its mark
+under the posterior, 37\% by the delta method. Exact. \\
+A valley cut by bounds & Heston smiles with a fitted vol of vol below 0.3, 28 of study S6's 200: the skew pins only
+$\rho\sigma_v$; Gauss–Newton's interval for $\sigma_v$ is 1.48 times the posterior's (median), and 6 smiles have two
+or more optima. SPY sits far above, at $\sigma_v \approx 1.1$. Quick check (Lecture 11.6). \\
+A bent ridge & Rough Bergomi with the curve inferred, one simulated smile: the posterior's 90\% range for the forward
+variance from one to two years is 0.37 times Gauss–Newton's, skewed down; holding the curve flat puts it 21\% low and
+the 2-year put 7.4\% low. Quick check (Lecture 15.6). \\
+Two optima & Heston with jumps, synthetic surfaces: two optimizer end points with almost equal fit; a variance swap's
+posterior range from $-18\%$ to $+67\%$ of its true price. Study of 9 October, not a registered claim. \\
+\bottomrule
+\end{tabular}
 \end{frame}
 
 \begin{frame}{Backup: Computing a Posterior}
 \footnotesize
-\begin{tabular}{@{}p{0.3\linewidth}p{0.34\linewidth}p{0.32\linewidth}@{}}
+\begin{tabular}{@{}L{0.26\linewidth}L{0.32\linewidth}L{0.33\linewidth}@{}}
 \toprule
-Method & Needs & In this slot \\
+\textbf{Method} & \textbf{Needs} & \textbf{Here} \\
 \midrule
-A grid & one or two parameters & Black–Scholes, sections 2 to 4 \\
-A Gaussian approximation & a posterior close to a normal & Heston on a liquid smile \\
-MCMC & thousands of likelihood evaluations & Heston: minutes; rough Bergomi: hours \\
-Amortized inference & one training run on simulated smiles & about a second per smile \\
+A grid & one or two parameters & Black–Scholes, in this talk \\
+A Gaussian (Laplace) approximation & a posterior close to a normal, at one mode & thin chains, with the prior \\
+Markov chain Monte Carlo & about $10^4$ evaluations of the model & Heston: minutes; rough Bergomi: $\ge$ 17 CPU-h \\
+Importance sampling & a good proposal, such as a Gauss–Newton fit & rough Bergomi on SPY: $\approx$ 85 CPU-min \\
+Amortized inference & one training run on simulations & seconds per data set; checkable at scale \\
 \bottomrule
 \end{tabular}
 \end{frame}
 
-\begin{frame}{Backup: The Objects of the Afternoon}
+\begin{frame}{Backup: References}
 \scriptsize
-\begin{tabular}{@{}p{0.2\linewidth}p{0.47\linewidth}p{0.29\linewidth}@{}}
-\toprule
-Object & Here & Where it returns \\
-\midrule
-Quotes $y$ & 63 prices of one smile, each with its noise & every slot \\
-Model & a pricer plus quote noise; run forward, it simulates smiles & slots 2, 4 and 5 \\
-Parameters $\theta$ & $\sigma$; Heston's four; rough Bergomi's six & slots 4 and 5 \\
-Prior $p(\theta)$ & a box of plausible values & slot 6 changes it \\
-Posterior $p(\theta \mid y)$ & every $\theta$ the quotes allow & slot 2 learns it; slots 4 and 5 compute it \\
-A product's range & the product priced under each posterior draw & slot 5 \\
-Checks & predictive checks, coverage, SBC, an audit of each smile & slots 2, 4, 5 and 6 \\
-Network $q(\theta \mid y)$ & a posterior in seconds, after one training run & slots 2 to 5 \\
-\bottomrule
-\end{tabular}
+\begin{itemize}
+\item Bergomi, L. (2003). Dynamic aspects of smile models. Société Générale, slides.
+\item Commission Delegated Regulation (EU) 2016/101 (prudent valuation), Articles 3 and 9 to 11.
+\item Cranmer, K., Brehmer, J., Louppe, G. (2020). The frontier of simulation-based inference. \textit{PNAS} 117(48),
+30055–30062.
+\item De Spiegeleer, J., Madan, D. B., Reyners, S., Schoutens, W. (2018). Machine learning for quantitative finance:
+fast derivative pricing, hedging and fitting. SSRN 3191050.
+\item Demeterfi, K., Derman, E., Kamal, M., Zou, J. (1999). A guide to volatility and variance swaps. \textit{Journal of
+Derivatives} 6(4), 9–32.
+\item Hagan, P., Kumar, D., Lesniewski, A., Woodward, D. (2002). Managing smile risk. \textit{Wilmott Magazine}.
+\item Hernandez, A. (2017). Model calibration with neural networks. \textit{Risk}, June 2017.
+\item Horvath, B., Muguruza, A., Tomas, M. (2021). Deep learning volatility. \textit{Quantitative Finance} 21(1), 11–27.
+\item Janek, A., Kluge, T., Weron, R., Wystup, U. (2011). FX smile in the Heston model. In \textit{Statistical Tools for
+Finance and Insurance}, Springer.
+\item Radev, S. T., Mertens, U. K., Voss, A., Ardizzone, L., Köthe, U. (2022). BayesFlow: learning complex stochastic
+models with invertible neural networks. \textit{IEEE TNNLS} 33(4), 1452–1466.
+\item S\&P Global Market Intelligence (2023). \textit{Totem Service}.
+\item Schoutens, W., Simons, E., Tistaert, J. (2004). A perfect calibration! Now what? \textit{Wilmott Magazine}, March.
+\end{itemize}
 \end{frame}
 
 \end{document}
