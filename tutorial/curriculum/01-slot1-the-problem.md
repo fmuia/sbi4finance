@@ -40,7 +40,7 @@ name, every day?
 
 ## Slide by slide
 
-| Min | Slide | Key line (read by everyone); figure; optional detail | Source and status |
+| Min | Slide | Key line (read by everyone); figure; optional facts | Source and status |
 | --- | --- | --- | --- |
 | 0:00–1:30 | Calibrate, then price what nobody quotes | "Many calibrations fit the same quotes, and they disagree on what is not quoted"; the desk diagram; detail: the daily load at scale (De Spiegeleer et al.) and seven models that fit one smile (Schoutens et al.) | Cited |
 | 1:30–2:30 | The data: one close of SPY | "63 option prices, each known only to within an error band"; SPY's smile; detail: 13,114 options, the 7 × 9 grid, the band | S8, verified |
@@ -56,7 +56,7 @@ name, every day?
 | 13:45–14:30 | The presenters | Names, affiliations (to fill), who presents what | To confirm |
 
 Each main slide follows one reading order: the title and the key line are read by everyone, the figure is the
-evidence, and the grey detail is optional ([`slides/slot1/README.md`](../slides/slot1/README.md)).
+evidence, and a strip of at most three short label–value facts is optional; explanations go in the speaker notes ([`slides/slot1/README.md`](../slides/slot1/README.md)).
 
 Twelve backup frames follow: SPY's chain and its cleaning, how a grid price is read, the tolerance of a price, what a
 price says about volatility, level, skew and curvature, what a network reads, the variance curve, what the quotes leave open and

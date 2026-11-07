@@ -19,11 +19,11 @@ Every main slide has one reading order, so that the audience knows what to read 
 1. **The title and the key line** (`\key`) are what everyone reads. The key line is one plain sentence, or two short
    ones, with one idea; `\highlight` marks its few essential words.
 2. **The figure** is the evidence. Most slides have exactly one.
-3. **Everything else is optional**: at most three lines of small grey detail (`\detail`) under the figure, and a
-   source line (`\source`). Numbers, definitions and citations go there unless they are the point of the slide.
+3. **Everything else is optional**: a strip under the figure of at most three label–value pairs (`\pairs`), each
+   value a few words, and a source line (`\source`). Numbers and definitions go there unless they are the point.
 
-No paragraphs, cards or blocks on the main slides; a table only where the table is the content. The backup frames
-after `\appendix` hold the rest.
+Explanations go in the speaker notes (`\note{}`), never in sentences on the slide. No paragraphs, cards or blocks on
+the main slides; a table only where the table is the content. The backup frames after `\appendix` hold the rest.
 
 ## In the Overleaf project
 
@@ -32,10 +32,10 @@ are not copied here. Upload `slot1.tex` and the folder `figures/slot1/` to that 
 Menu › Main document › `slot1.tex` and the LuaLaTeX compiler, which the theme needs. The project's `main.tex` is left
 as it is.
 
-The deck adds a few helpers to the theme, at the top of `slot1.tex`: `\key`, `\detail` and `\bignum` for the reading
-order above, `\stat` and three block colours for the backup frames, `\highlight`, `\source` for a source line, the
-ragged table column `L`, and `\todo` for a placeholder. It loads `unicode-math` with Latin Modern Math and the `array` package. Dashes are
-typed as Unicode (–), because the theme's title fonts do not turn `--` into a dash.
+The deck adds a few helpers to the theme, at the top of `slot1.tex`: `\key`, `\pairs` and `\bignum` for the reading
+order above; `\stat`, `\detail` and three block colours for the backup frames; `\highlight`, `\source` for a source
+line, the ragged table column `L`, and `\todo` for a placeholder. It loads `unicode-math` with Latin Modern Math and
+the `array` package. Dashes are typed as Unicode (–), because the theme's title fonts do not turn `--` into a dash.
 
 Before the talk, fill the `\todo` placeholders on the last frame (the presenters' affiliations and who presents the
 return histories) and confirm the assignments, which follow the curriculum of 24 October. Speaker notes are in
