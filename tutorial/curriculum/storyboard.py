@@ -29,7 +29,7 @@ TEXT = {"live": "white", "cached": "#1E1E1E", "slide": "#1E1E1E"}
 # (label, minutes, presenter, mode); mode is "live" (computed on stage), "cached" (loaded from
 # results/) or "slide" (static text or code on screen).
 TUTORIAL = ("The tutorial: one smile, three models, 115 minutes", [
-    ("1  The problem:\nBayes for\nvolatility models", 15, "F", "live"),
+    ("1  The problem:\nBayes for\nvolatility models", 15, "F", "slide"),
     ("2  What is\namortized Bayes?", 15, "A", "live"),
     ("3  Network\narchitectures", 10, "S", "cached"),
     ("4  Heston on the\nSPY smile, in\nBayesFlow", 20, "S", "live"),
@@ -38,14 +38,12 @@ TUTORIAL = ("The tutorial: one smile, three models, 115 minutes", [
 ])
 
 SLOTS = {
-    1: ("Slot 1, 15 minutes", [
-        ("1 Problem setup:\ncalibration, chain,\nsmile, grid, noise", 3, "F", "cached"),
-        ("2 Bayes, one parameter:\nleast squares, prior,\nposterior, more quotes", 2.5, "F", "live"),
-        ("3 The range of\na price; why\nit matters", 1.5, "F", "live"),
-        ("4 Checking\nthe model", 1.5, "F", "live"),
-        ("5 Heston: ranges,\ntails, curved\nposteriors, reserves", 3.5, "F", "cached"),
-        ("6 Cost and\namortization", 2, "F", "cached"),
-        ("Close", 1, "F", "slide"),
+    1: ("Slot 1, 15 minutes, Beamer slides", [
+        ("The\nproblem", 1.5, "F", "slide"),
+        ("The ingredients on Black–Scholes: the data,\nthe likelihood, prior and posterior,\na price's range, the predictive check", 5, "F", "slide"),
+        ("What the quotes\nleave open", 2, "F", "slide"),
+        ("What exact posteriors\ncost; amortized\ninference", 3, "F", "slide"),
+        ("The afternoon,\ntakeaways,\npresenters", 3, "F", "slide"),
     ]),
     2: ("Slot 2, 15 minutes", [
         ("Two ways\nto pay", 2, "A", "slide"),
