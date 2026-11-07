@@ -671,7 +671,7 @@ def _(mo):
     mo.md(r"""
     ### Historical study: bank and network
 
-    The archived estimator used 50,000 training, 5,000 validation, and 5,000 test smiles generated with the same pricer. It shares the bounded-adapter and flow-matching structure shown above, but preserves its original BayesFlow version, sampler settings, four 256-unit hidden layers, and training recipe. The live network is a separate, smaller demonstration.
+    The archived estimator used 50,000 training, 5,000 validation, and 5,000 test smiles generated with the same pricer. The live network is a separate, smaller demonstration.
     """)
     return
 
@@ -792,7 +792,7 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    **Numerical reference.** On 50 additional test smiles, importance sampling with the Fourier likelihood provides a reference; four cases also use MCMC. The comparison requires means within 0.3 posterior standard deviations and 90% interval widths within 25%.
+    **Numerical reference.** Four selected test smiles are also evaluated with MCMC using the Fourier likelihood. The comparison requires means within 0.3 posterior standard deviations and 90% interval widths within 25%.
     """)
     return
 
@@ -802,8 +802,8 @@ def _(RESULTS, mo, teaching):
     _report = teaching.load_json(RESULTS / "heston" / "s3" / "heston-check.json")
     _chains = _report["summary"]["chain_checks"]
     mo.vstack([
-        mo.ui.table(teaching.agreement_rows(_report), selection=None, pagination=False),
-        mo.md(f"The network meets the criterion for all four parameters on **{100 * _report['summary']['network_vs_reweighted_pass_rate']:.0f}%** of the smiles. After reweighting with the exact likelihood, it agrees with the exact chain on **{sum(c['reweighted_vs_chain'] for c in _chains)} of {len(_chains)}** smiles. Slot 5 develops that correction."),
+        mo.ui.table(teaching.agreement_rows(_report, key="network_vs_chain"), selection=None, pagination=False),
+        mo.md(f"The neural posterior agrees with the MCMC reference on **{sum(c['network_vs_chain'] for c in _chains)} of {len(_chains)}** selected smiles."),
 
     ])
     return
@@ -838,8 +838,7 @@ def _(RESULTS, comparison_case, heston_task, mo, np, plt, teaching):
     _axes[2].set(xlabel="strike / forward", ylabel="premium / forward", title="Observed three-month quotes")
     _fig, _axes2 = plt.subplots(1, 4, figsize=(10, 2.7), constrained_layout=True)
     _sets = {"Fourier-MCMC reference": (_saved[f"chain_{_row}"], "#555555"),
-             "neural posterior": (_saved[f"network_{_row}"], "#397ec4"),
-             "importance-corrected": (_saved[f"reweighted_{_row}"], "#35a478")}
+             "neural posterior": (_saved[f"network_{_row}"], "#397ec4")}
     for _j, _ax in enumerate(_axes2):
         for _name, (_draws, _color) in _sets.items():
             _ax.hist(_draws[:, _j], bins=35, density=True, histtype="step", color=_color, label=_name)
@@ -848,10 +847,10 @@ def _(RESULTS, comparison_case, heston_task, mo, np, plt, teaching):
         _ax.set_yticks([])
     _axes2[0].set_ylabel("posterior density")
     _axes2[0].legend(fontsize=7, loc="upper left")
-    _notice = (mo.callout(mo.md("**Case 2001 is a genuine interval miss.** Both the neural and numerical posteriors exclude the generating vol-of-variance and correlation from their 95% marginal intervals. The saved seed reproduces the case, whose likelihood favors a shifted, strongly correlated region. A credible interval need not contain the truth in every simulation, and one miss does not determine calibration. The importance correction is also unstable here."), kind="warn")
+    _notice = (mo.callout(mo.md("**Case 2001 is a genuine interval miss.** Both the neural and numerical posteriors exclude the generating vol-of-variance and correlation from their 95% marginal intervals. The saved seed reproduces the case, whose likelihood favors a shifted, strongly correlated region. A credible interval need not contain the truth in every simulation, and one miss does not determine calibration."), kind="warn")
         if _row == 2001 else mo.md("The dotted line is the generating value. Compare the methods in physical units, and inspect joint dependence as well as these marginals."))
     mo.vstack([_overview, mo.md("The path panels illustrate the generating parameters; they are not recovered latent paths or calibration inputs. The third panel shows the saved Fourier-price observation with noise."), _fig, _notice,
-        mo.accordion({"Numerical reference scope and source": mo.md(f"Archived case ID: `{_row}`. The reference uses the Fourier likelihood and four Metropolis chains initialized from neural draws. Mixing diagnostics are reassuring but cannot rule out an unvisited mode. The observations, truths, and posterior arrays are preserved; the original raw bank is unavailable. In case 2001, the truth is 3.03 and 3.33 reference SDs below the vol-of-variance and correlation means, their posterior correlation is 0.887, and the Pareto diagnostic k-hat is 0.738.")}),
+        mo.accordion({"Numerical reference scope and source": mo.md(f"Archived case ID: `{_row}`. The reference uses the Fourier likelihood and four Metropolis chains initialized from neural draws. Mixing diagnostics are reassuring but cannot rule out an unvisited mode. The observations, truths, and posterior arrays are preserved; the original raw bank is unavailable. In case 2001, the truth is 3.03 and 3.33 reference SDs below the vol-of-variance and correlation means, and their posterior correlation is 0.887.")}),
     ])
     return
 
@@ -1036,7 +1035,7 @@ def _(
 
 
 @app.cell(hide_code=True)
-def _(heston_checks, mo, np, plots, plt):
+def _(heston_checks, mo, plots, plt):
     _free = heston_checks["cases"]["full grid, kappa free"]
     _fixed = heston_checks["cases"]["full grid, kappa fixed"]
     _kq = _free["parameters"]["kappa"]["posterior_q05_q50_q95"]
