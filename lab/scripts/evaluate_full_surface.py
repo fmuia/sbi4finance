@@ -11,15 +11,27 @@ from pathlib import Path
 import sys
 import time
 
+_IMPORT_STARTED = (time.perf_counter(), time.process_time())
+
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from sbi4finance.calibration import bank_collection as bank, full_surface, validation  # noqa: E402
+from sbi4finance.calibration.performance import PerformanceRecorder, synchronize_model  # noqa: E402
+
+_IMPORT_ENDED = (time.perf_counter(), time.process_time())
 
 
 def evaluate(args):
-    task, workflow, record = full_surface.load_checkpoint(args.checkpoint)
-    manifest, splits = bank.load_bank(args.bank, splits=(args.split,), roles=bank.TRAINING_ROLES)
+    performance = PerformanceRecorder()
+    performance.phases["worker_module_imports"] = {
+        "wall_seconds": _IMPORT_ENDED[0] - _IMPORT_STARTED[0],
+        "process_cpu_seconds": _IMPORT_ENDED[1] - _IMPORT_STARTED[1], "calls": 1}
+    with performance.phase("checkpoint_construction_and_reload"):
+        task, workflow, record = full_surface.load_checkpoint(args.checkpoint)
+        synchronize_model(getattr(workflow, "estimator", None))
+    with performance.phase("data_loading"):
+        manifest, splits = bank.load_bank(args.bank, splits=(args.split,), roles=bank.TRAINING_ROLES)
     if task != manifest["configuration"]["task"] or record["task_fingerprint"] != manifest["task_fingerprint"]:
         raise ValueError("bank and checkpoint tasks differ")
     split = splits[args.split]
@@ -31,10 +43,12 @@ def evaluate(args):
     args.out.mkdir(parents=True, exist_ok=False)
     started = time.perf_counter()
     curves = split.get("context_values")
-    draws = np.concatenate([full_surface.sample(workflow, task, split["observations"][start:min(start + args.batch_size, stop)],
-                                  args.draws, encoder=record["network"]["encoder"], seed=args.seed + start,
-                                  context_values=None if curves is None else curves[start:min(start + args.batch_size, stop)])
-                             for start in range(args.first, stop, args.batch_size)])
+    with performance.phase("posterior_sampling"):
+        draws = np.concatenate([full_surface.sample(workflow, task, split["observations"][start:min(start + args.batch_size, stop)],
+                                      args.draws, encoder=record["network"]["encoder"], seed=args.seed + start,
+                                      context_values=None if curves is None else curves[start:min(start + args.batch_size, stop)])
+                                 for start in range(args.first, stop, args.batch_size)])
+    diagnostics_started = performance.now()
     truth = split["parameters"][args.first:stop]
     bounds = np.asarray(task["prior_bounds"])
     sbc = validation.sbc(draws, truth, seed=args.seed)
@@ -65,9 +79,18 @@ def evaluate(args):
             "coverage": validation.coverage(diagnostic_draws, diagnostic_truth),
             "scope": "one simultaneous rank-screen family containing primary parameters and rho*eta; "
                      "no uniform-prior assumption or logit contraction is applied to the derived target"}
+    performance.finish("posterior_diagnostics", diagnostics_started)
     report["seconds"] = time.perf_counter() - started
+    with performance.phase("draw_archive_serialization"):
+        np.savez_compressed(args.out / "draws.npz", draws=draws, truth=truth)
+    report["performance"] = performance.report(work={
+        "observations": len(truth), "draws_per_observation": args.draws,
+        "posterior_draws": len(truth) * args.draws,
+        "sample_calls": int(np.ceil(len(truth) / args.batch_size)),
+        "batch_size": args.batch_size, "optimizer_updates": 0, "online_simulated_rows": 0})
+    report["performance"]["imports_scope"] = "worker module imports occurred at module load, outside invocation total"
+    report["performance"]["phase_note"] = "reload includes backend import/build; sampling returns host NumPy arrays, synchronizing its results; final report JSON write is outside total"
     (args.out / "evaluation.json").write_text(json.dumps(report, indent=2, allow_nan=False) + "\n")
-    np.savez_compressed(args.out / "draws.npz", draws=draws, truth=truth)
     return report
 
 
