@@ -30,7 +30,25 @@ def write(path, value):
 def checked_support(draws, bounds):
     import numpy as np
 
-    return bool(np.isfinite(draws).all() and np.all(draws >= bounds[:, 0]) and np.all(draws <= bounds[:, 1]))
+    draws = np.asarray(draws)
+    return bool(draws.size and not np.iscomplexobj(draws) and draws.shape[-1] == len(bounds)
+                and np.isfinite(draws).all() and np.all(draws > bounds[:, 0]) and np.all(draws < bounds[:, 1]))
+
+
+def validate_panels(protocol, available):
+    """Reject ranges that could silently select another case or repeat a draw."""
+    panel = protocol["data_roles"]["development"]
+    predictive = protocol["data_roles"]["posterior_predictive"]
+    for settings, keys in ((panel, ("start", "stop", "draws", "seed", "batch_size")),
+                           (predictive, ("start", "stop", "paired_draws", "seed"))):
+        if any(type(settings.get(key)) is not int for key in keys):
+            raise ValueError("integer panel indices, counts and seeds are required")
+    if (panel.get("split") != "validation" or predictive.get("split") != "validation"
+            or not 0 <= panel["start"] < panel["stop"] <= available
+            or panel["draws"] < 2 or panel["batch_size"] < 1 or panel["seed"] < 0
+            or not panel["start"] <= predictive["start"] < predictive["stop"] <= panel["stop"]
+            or not 2 <= predictive["paired_draws"] <= panel["draws"] or predictive["seed"] < 0):
+        raise ValueError("validation panels must have valid nested ranges and distinct selected draws")
 
 
 def run(args):
@@ -57,6 +75,7 @@ def run(args):
     if manifest["configuration"]["task"] != task:
         raise ValueError("control and bank tasks differ")
     split = splits["validation"]
+    validate_panels(protocol, len(split["parameters"]))
     bounds, names = np.asarray(task["prior_bounds"]), task["parameter_names"]
     args.out.mkdir(parents=True, exist_ok=False)
     report = {"format": "heston_training_budget_readiness_v1", "status": "running",

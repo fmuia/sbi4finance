@@ -18,7 +18,20 @@ class ReadinessTests(unittest.TestCase):
         bounds = np.asarray([[0., 1.], [-1., 0.]])
         self.assertTrue(readiness.checked_support(np.array([[.5, -.5]]), bounds))
         self.assertFalse(readiness.checked_support(np.array([[1.01, -.5]]), bounds))
+        self.assertFalse(readiness.checked_support(np.array([[1., -.5]]), bounds))
         self.assertFalse(readiness.checked_support(np.array([[np.nan, -.5]]), bounds))
+
+    def test_rejects_misnested_panels_and_duplicate_draw_selection(self):
+        import copy
+        protocol = {"data_roles": {"development": {"split": "validation", "start": 5, "stop": 10,
+            "draws": 8, "seed": 1, "batch_size": 2}, "posterior_predictive": {"split": "validation",
+            "start": 5, "stop": 7, "paired_draws": 4, "seed": 2}}}
+        readiness.validate_panels(protocol, 12)
+        for field, value in (("start", 4), ("stop", 11), ("paired_draws", 9), ("seed", -1), ("paired_draws", True)):
+            bad = copy.deepcopy(protocol)
+            bad["data_roles"]["posterior_predictive"][field] = value
+            with self.assertRaises(ValueError):
+                readiness.validate_panels(bad, 12)
 
     def test_control_reads_validation_only_and_never_admits_matrix(self):
         from sbi4finance.calibration import bank_collection, full_surface, heston_budget_diagnostics
@@ -46,7 +59,7 @@ class ReadinessTests(unittest.TestCase):
                 "conditional": {"case_indices": [0], "source_template": str(reference), "draws": 8,
                     "seed_base": 11, "mean_error_reference_sd_max": .3, "central90_width_ratio": [.75, 1.25]},
                 "data_roles": {"development": {"split": "validation", "start": 0, "stop": 4, "draws": 8,
-                    "seed": 12, "batch_size": 2}, "posterior_predictive": {"start": 0, "stop": 2,
+                    "seed": 12, "batch_size": 2}, "posterior_predictive": {"split": "validation", "start": 0, "stop": 2,
                     "paired_draws": 2, "seed": 13}}}
             protocol_path = root / "protocol.json"
             protocol_path.write_text(json.dumps(protocol))
