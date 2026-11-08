@@ -115,7 +115,47 @@ def characteristic_function(u, maturity, parameters, initial_variance):
 @lru_cache(maxsize=8)
 def _quadrature(nodes, upper_limit):
     roots, weights = roots_legendre(nodes)
-    return 0.5*upper_limit*(roots+1), 0.5*upper_limit*weights
+    return (_read_only(0.5*upper_limit*(roots+1)),
+            _read_only(0.5*upper_limit*weights))
+
+
+def _read_only(array):
+    """A byte-backed array cannot be made writable by a cache consumer."""
+    return np.frombuffer(array.tobytes(), dtype=array.dtype).reshape(array.shape)
+
+
+# Four grid plans of at most 16 MiB each. Oversized/non-repeating grids still
+# use the same Fourier formula without retaining their phase arrays. The
+# separately cached quadrature vectors are shared, not copied into each plan.
+_MAX_PLAN_BYTES = 16 * 1024 * 1024
+
+
+@lru_cache(maxsize=4)
+def _fourier_plan(shape, forward_bytes, strike_bytes, maturity_bytes, nodes, upper_limit):
+    """Immutable strike phases and exact maturity maps, keyed by grid content.
+
+    Keys retain the full float64 values and order, so mutating a caller's grid
+    or changing even one maturity creates a different plan. No model parameter
+    or price is cached. Arithmetic order matches the uncached formula.
+    """
+    forward = np.frombuffer(forward_bytes, dtype=np.float64).reshape(shape)
+    strike = np.frombuffer(strike_bytes, dtype=np.float64).reshape(shape)
+    maturity = np.frombuffer(maturity_bytes, dtype=np.float64).reshape(shape)
+    u, _ = _quadrature(nodes, upper_limit)
+    phase = _read_only(np.exp(1j*u*np.log(forward/strike)[..., None]))
+    unique_time, inverse = np.unique(maturity.reshape(-1), return_inverse=True)
+    return phase, _read_only(unique_time), _read_only(inverse)
+
+
+def _grid_plan(forward, strike, maturity, nodes, upper_limit):
+    count = maturity.size
+    # The phase array dominates; include grid keys and index/time arrays in
+    # the admission bound so unusual large caller grids cannot fill the cache.
+    estimate = count * (16*nodes + 40)
+    if estimate > _MAX_PLAN_BYTES:
+        return None
+    return _fourier_plan(maturity.shape, forward.tobytes(), strike.tobytes(),
+                         maturity.tobytes(), nodes, upper_limit)
 
 
 def european_price(forward, strike, discount, maturity, parameters, initial_variance,
@@ -148,13 +188,18 @@ def european_price(forward, strike, discount, maturity, parameters, initial_vari
     u, weights = _quadrature(int(nodes), cutoff)
     # A surface repeats each maturity across strikes. The characteristic
     # function depends on maturity, not strike; retain exact floating values.
-    unique_time, inverse = np.unique(time.reshape(-1), return_inverse=True)
+    plan = _grid_plan(fwd, k, time, int(nodes), cutoff)
+    if plan is None:
+        phase = np.exp(1j*u*np.log(fwd/k)[..., None])
+        unique_time, inverse = np.unique(time.reshape(-1), return_inverse=True)
+    else:
+        phase, unique_time, inverse = plan
     if len(unique_time) < time.size:
         phi = characteristic_function(u-0.5j, unique_time[:, None], parameters, initial_variance)
         phi = phi[inverse].reshape((*time.shape, len(u)))
     else:
         phi = characteristic_function(u-0.5j, time[..., None], parameters, initial_variance)
-    integrand = np.real(np.exp(1j*u*np.log(fwd/k)[..., None])*phi)/(u*u+0.25)
+    integrand = np.real(phase*phi)/(u*u+0.25)
     call = disc*(fwd - np.sqrt(fwd*k)*np.sum(integrand*weights, axis=-1)/np.pi)
     call = np.where(time == 0, disc*np.maximum(fwd-k, 0), call)
     price = call if kind == "call" else call-disc*(fwd-k)
