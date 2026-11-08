@@ -1,10 +1,7 @@
 import marimo
 
 __generated_with = "0.25.2"
-app = marimo.App(
-    width="medium",
-    app_title="Rough Bergomi · uncertainty with a simulated pricer",
-)
+app = marimo.App(width="medium", app_title="Bayesian calibration of rough Bergomi")
 
 
 @app.cell(hide_code=True)
@@ -13,76 +10,66 @@ def _():
     import time
 
     os.environ.setdefault("KERAS_BACKEND", "jax")
-
     import marimo as mo
     import matplotlib.pyplot as plt
     import numpy as np
 
     from sbi4f_tutorial.rough_options import lesson as teaching, long_end
-    from sbi4f_tutorial.shared import full_surface, plots, surface
+    from sbi4f_tutorial.shared import backbones, full_surface, plots, surface
 
     ROOT = mo.notebook_dir().parent
     ASSETS = ROOT / "assets"
     RESULTS = ASSETS / "results" / "calibration"
     CHECKPOINTS = ASSETS / "checkpoints"
     CHECKS = ASSETS / "quick-checks"
-
     plots.style()
 
-
     def pending(what):
-        return mo.callout(mo.md(f"**Pending:** {what}"), kind="warn")
-
+        return mo.callout(mo.md(f"**Not included in this archived study:** {what}"), kind="neutral")
 
     def pilot_banner(what):
-        return mo.callout(mo.md(f"**Historical pilot result:** {what} This is separate from the current 100k estimators' evidence."), kind="neutral")
-
+        return mo.callout(mo.md(f"**Historical pilot:** {what} This does not validate the current estimators."), kind="neutral")
 
     def image(path, caption, width=None):
-        found = teaching.existing(path)
-        if found is None:
-            return pending(f"`{path.relative_to(ROOT)}` is not in the results yet.")
-        return mo.image(src=found, caption=caption, width=width)
+        return (mo.image(src=path, caption=caption, width=width) if teaching.existing(path)
+                else pending(f"`{path.relative_to(ROOT)}`"))
 
-    return (
-        ASSETS,
-        CHECKPOINTS,
-        CHECKS,
-        RESULTS,
-        image,
-        full_surface,
-        long_end,
-        mo,
-        np,
-        pending,
-        pilot_banner,
-        plots,
-        plt,
-        surface,
-        teaching,
-    )
+    def focused_posterior(task, arrays, pair=("eta", "rho")):
+        names = task["parameter_names"]
+        draws = arrays["neural_draws"]
+        fig, axes = plt.subplots(1, 3, figsize=(10, 2.7), constrained_layout=True)
+        for ax, name in zip(axes[:2], pair):
+            j = names.index(name)
+            ax.hist(draws[:, j], bins=35, density=True, histtype="step", color=plots.SERIES[0])
+            ax.axvline(arrays["truth"][j], color=plots.INK, ls=":", label="generating truth")
+            ax.set(xlabel=backbones.PARAMETER_LABELS[name][0], ylabel="posterior density")
+            ax.set_yticks([])
+        a, b = [names.index(name) for name in pair]
+        ids = np.linspace(0, len(draws) - 1, min(800, len(draws)), dtype=int)
+        axes[2].scatter(draws[ids, a], draws[ids, b], s=3, alpha=.15, color=plots.SERIES[0])
+        axes[2].plot(arrays["truth"][a], arrays["truth"][b], "k+", ms=8)
+        axes[2].set(xlabel=backbones.PARAMETER_LABELS[pair[0]][1],
+                    ylabel=backbones.PARAMETER_LABELS[pair[1]][1], title="Keep paired draws together")
+        axes[0].legend(fontsize=7)
+        return fig
+
+    return (ASSETS, CHECKPOINTS, CHECKS, RESULTS, backbones, focused_posterior,
+            full_surface, image, long_end, mo, np, pending, pilot_banner,
+            plots, plt, surface, teaching, time)
 
 
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    # Rough Bergomi · uncertainty with a simulated pricer
+    # Bayesian calibration of rough Bergomi
 
-    **Keep the inference workflow; change the financial simulator.**
+    We keep the option-calibration problem from Heston and change the volatility model.
+    Our data are again **63 noisy option prices**: nine strikes at seven maturities.
+    We first infer roughness $H$, variance amplitude $\eta$, and correlation $\rho$
+    **given a forward-variance curve**. We then let the curve be unknown too.
 
-    We again observe **63 option prices**, across strikes and maturities. Heston
-    supplied a Fourier pricer. Here the implementation estimates expected option
-    payoffs by Monte Carlo, so generating training pairs and evaluating a
-    likelihood both require numerical simulation.
-
-    First infer the volatility parameters with a supplied forward-variance curve;
-    then inspect a task that also infers the curve. Both current examples are
-    synthetic. Their approximate posteriors illustrate the workflow; independent
-    conditional references and Monte Carlo product checks remain unfinished.
-    The later SPY/pilot and long-end studies retain their own evidence and controls.
-
-    **The route:** model → controlled price estimates → noisy observations →
-    training pairs → posterior → checks → derived quantities.
+    The main change is the forward calculation. Rough Bergomi prices options by
+    Monte Carlo, so we reuse simulated data when training the network.
     """)
     return
 
@@ -90,36 +77,26 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## 1 · The model: rough volatility remembers its past
+    ## 1. The rough Bergomi model
 
-    **Roughness describes how volatility varies over time, not its level.**
-    Under the pricing measure, with spot one and zero carry,
+    Rough Bergomi makes variance depend on past shocks through a rough kernel.
+    Under the pricing measure, with spot one and zero rates and dividends,
 
-    $$
-    \frac{dS_t}{S_t}=\sqrt{V_t}\left(\rho\,dW_t+\sqrt{1-\rho^2}\,dW_t^\perp\right),
-    \qquad V_t=\xi_0(t)\exp\left(\eta Y_t-\tfrac12\eta^2t^{2H}\right),
-    $$
+    $$\frac{dS_t}{S_t}=\sqrt{V_t}\left(\rho\,dW_t+\sqrt{1-\rho^2}\,dW_t^\perp\right),
+    \qquad V_t=\xi_0(t)\exp\left(\eta Y_t-\tfrac12\eta^2t^{2H}\right),$$
+    $$Y_t=\sqrt{2H}\int_0^t(t-s)^{H-1/2}\,dW_s.$$
 
-    $$
-    Y_t=\sqrt{2H}\int_0^t(t-s)^{H-1/2}\,dW_s.
-    $$
-
-    | Input | Meaning | Role in inference |
+    | Input | Meaning | In the first example |
     |:---|:---|:---|
-    | $H$ | roughness and memory-kernel shape | infer it |
+    | $H$ | roughness of the variance process | infer it |
     | $\eta$ | amplitude of log-variance fluctuations | infer it |
-    | $\rho$ | correlation linking price and variance shocks | infer it |
-    | $\xi_0(t)$ | deterministic initial forward-variance curve, $\mathbb E[V_t]=\xi_0(t)$ | supplied in the known-curve task; inferred in the joint task |
-    | $V_t$ | realized instantaneous variance | hidden; never an inference condition |
+    | $\rho$ | correlation of price and variance shocks | infer it |
+    | $\xi_0(t)=\mathbb E[V_t]$ | initial forward-variance curve | supplied |
+    | $V_t$ | instantaneous variance | hidden |
 
-    The same $W$ drives variance and part of the price shock; negative $\rho$
-    links downward price moves with higher variance. The kernel uses the whole
-    past of $W$. This implementation uses a hybrid path approximation and
-    Monte Carlo pricing; no Heston-style Fourier pricer is supplied. Alternative
-    approximations exist, and numerical accuracy still needs checking.
-
-    Times are in years. A variance level of 0.04 corresponds to 20% volatility.
-    These are pricing-measure parameters, distinct from return-process estimation.
+    Roughness describes how variance changes, not its level. A variance of 0.04
+    means 20% volatility. These are pricing-measure parameters; fitting observed
+    returns is a separate task in the trajectory notebook.
     """)
     return
 
@@ -128,41 +105,40 @@ def _(mo):
 def _(ASSETS, mo):
     mo.vstack([
         mo.md(r"""
-        ## 2 · Simulated data: an expectation, a numerical estimate, then noise
+        ## 2. Generating synthetic option data
 
-        **Many latent paths estimate one expected price; they are not our observed data.**
-        For the chosen parameters and curve, a clean call price is
-        $P_{K,T}=\mathbb E^{\mathbb Q}[(S_T-K)_+]$; a put uses $(K-S_T)_+$.
-        A finite Monte Carlo calculation returns $\widehat P_{c,N}$ and an
-        estimated standard error $s_{c,N}$ for each contract.
+        One training example is **one parameter vector, one curve, and 63 quotes**,
+        with $\boldsymbol\vartheta=(H,\eta,\rho)$. Many simulated asset paths estimate each expected option payoff:
 
-        The intended observation model is
-
-        $$
+        $$P_{K,T}=\mathbb E^{\mathbb Q}[(S_T-K)_+],\qquad
         y_c=P_c(\boldsymbol\vartheta,\xi_0)+\sigma_c\epsilon_c,
-        \qquad \epsilon_c\overset{\rm iid}{\sim}\mathcal N(0,1).
-        $$
+        \quad \epsilon_c\sim\mathcal N(0,1).$$
 
-        The numerical bank uses the controlled estimate $\widehat P_{c,N}$ in
-        place of $P_c$. Conditional option expectations, antithetic paths and
-        control variates reduce simulation variance. The task specifies path
-        ladders and a standard-error budget relative to $\sigma_c$; a separate
-        time-grid check is needed for discretization bias.
+        The Monte Carlo estimate $\widehat P_c$ replaces $P_c$ in the numerical
+        simulator. We control its standard error before adding quote noise.
+        The latent paths are never supplied to the option-calibration network.
         """),
         mo.image(ASSETS / "illustrations" / "application-workflows-20261101" / "rough-data-and-inference.png"),
         mo.md(r"""
-        **Two different errors.** Monte Carlo error concerns our numerical
-        estimate of an expected price. Quote noise $\sigma_c\epsilon_c$ is an
-        assumed statistical tolerance between model prices and observations.
-        They are not interchangeable; do not add simulation variance to the
-        declared quote variance merely because a pricer is noisy.
+        **Two sources of error.** Monte Carlo error belongs to the numerical
+        price estimate. Quote noise represents an assumed tolerance between
+        model prices and observed quotes. We keep them separate.
 
-        As in Heston, quote SDs are fixed before inference: 0.3 volatility
-        percentage points near the money and 1.0 point in the wings, converted
-        to price SDs using Black–Scholes vega at 20% reference volatility.
-        These are imposed model inputs, not measured bid–ask spreads. Gaussian
-        quotes are not clipped, even if a realization violates a price bound.
+        As in Heston, quote SDs correspond to 0.3 volatility percentage points
+        near the money and 1.0 point in the wings, converted to price SDs with
+        reference vega. They are fixed model inputs, not measured bid–ask spreads.
         """),
+        mo.accordion({"Numerical accuracy and the observation model": mo.md(r"""
+        The pricer uses a hybrid time grid, conditional option expectations,
+        antithetic paths and control variates. Its declared path ladder controls
+        standard errors relative to quote SDs, with a separate final-rung cap.
+        This does not establish the size of time-discretization bias.
+
+        Shared paths can correlate numerical price errors. Quote errors remain
+        independent Gaussians in this task, and quotes are not clipped at price
+        bounds. Adding Monte Carlo variance to quote variance changes the target;
+        it is not a free correction for an imprecise pricer.
+        """)}),
     ])
     return
 
@@ -170,389 +146,368 @@ def _(ASSETS, mo):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    **The numerical simulator, in code.** This executable forward example uses
-    a flat supplied curve. It is displayed for inspection; opening the notebook
-    does not run this Monte Carlo calculation. The current training banks vary
-    parameters and curves according to their own declared simulation design.
+    ### Explore the forward model
 
-    ```python
-    import numpy as np
-    from sbi4f_tutorial.shared import pricing, tasks
-
-    task = tasks.rough_task()
-    parameters = {"hurst": 0.1, "eta": 2.0, "rho": -0.7}
-    known_levels = np.full(tasks.context_size(task), 0.04)
-    curve = tasks.curve(task, known_levels)
-    sigma = np.asarray(task["context"]["quote_noise_std"])
-    n = task["numerics"]
-    mean_prices, mc_se, mc_cov, used = pricing.rough_surface(
-        parameters, curve, task["context"]["contracts"], n["blocks"],
-        n["paths_ladder"], sigma, n["max_mc_se_over_quote_sigma"], seed=7,
-        cap=n.get("max_mc_se_over_quote_sigma_last_rung"),
-    )
-    rng = np.random.default_rng(7)
-    observations = mean_prices + sigma * rng.standard_normal(63)
-    pair = {"parameters": np.array([parameters[k] for k in task["parameter_names"]]),
-            "observations": observations, "context_values": known_levels}
-    ```
-
-    `mc_cov` describes correlated numerical errors from shared paths. It is not
-    the independent quote-noise covariance. The last-rung cap, when declared,
-    also belongs to the numerical policy. A training row contains parameters,
-    their observation and, **only in the known-curve task**, the supplied curve.
-    True parameter labels supervise training; a new observation does not supply them.
+    Before moving a control, predict which part of the smile will change.
+    This illustration uses a flat curve at 20% volatility and a fixed simulation
+    budget. It prices a new smile; it does not update the posterior below.
     """)
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""
-    **Explore the forward map, explicitly.** Choose $H$, $\eta$ and $\rho$; the button prices the 63 options by
-    Monte Carlo on a flat variance curve of 0.04 (20% volatility). Predict which feature of the smile changes before
-    moving one control, then inspect the generated prices. This button runs the forward simulator;
-    it does not update the cached inverse posterior below or perform a posterior-predictive check.
-    """)
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    rough_h = mo.ui.slider(0.02, 0.35, step=0.01, value=0.10, label="H", show_value=True)
-    rough_eta = mo.ui.slider(0.5, 3.5, step=0.1, value=2.0, label="η", show_value=True)
-    rough_rho = mo.ui.slider(-0.99, -0.2, step=0.01, value=-0.70, label="ρ", show_value=True)
-    run_rough = mo.ui.run_button(label="Price this smile by Monte Carlo (a few seconds)")
+    rough_h = mo.ui.slider(0.02, 0.35, step=.01, value=.10, label="H", show_value=True)
+    rough_eta = mo.ui.slider(.5, 3.5, step=.1, value=2., label="η", show_value=True)
+    rough_rho = mo.ui.slider(-.99, -.2, step=.01, value=-.7, label="ρ", show_value=True)
+    run_rough = mo.ui.run_button(label="Simulate this option smile")
     mo.vstack([mo.hstack([rough_h, rough_eta, rough_rho]), run_rough])
     return rough_eta, rough_h, rough_rho, run_rough
 
 
 @app.cell
 def _(mo, rough_eta, rough_h, rough_rho, run_rough, teaching):
-    mo.stop(not run_rough.value, mo.md("*Choose H, η and ρ, then press the button: 63 prices from 8,192 paths per "
-                                       "maturity block.*"))
-    teaching.live_smile_figure(teaching.price_rough_smile(rough_h.value, rough_eta.value, rough_rho.value))
+    mo.stop(not run_rough.value, mo.md("*Choose parameters and press the button to run a fixed 8,192-path illustration.*"))
+    _result = teaching.price_rough_smile(rough_h.value, rough_eta.value, rough_rho.value)
+    mo.vstack([teaching.live_smile_figure(_result),
+               mo.md(f"Largest estimated Monte Carlo SE / quote SD: **{_result['max_se_over_sigma']:.2f}**. "
+                     "This fixed-budget illustration does not apply the training bank's adaptive accuracy policy.")])
     return
 
 
 @app.cell(hide_code=True)
-def _(ASSETS, mo):
+def _(backbones):
+    known_task, known_report, known_arrays = backbones.load_example("rough-known100k-validation0")
+    return known_arrays, known_report, known_task
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ## 3. Building and training the posterior estimator
+
+    The BayesFlow workflow is the same as in Heston: prepare the data, define an
+    adapter and conditional network, train, then sample. The extra condition is
+    the supplied curve. We divide prices by their quote SDs and take logs of the
+    positive curve levels before standardizing the network inputs.
+
+    The code below runs only when requested. It generates a **small fresh training
+    set**, then fits a separate demonstration network. The selected cached
+    observation is used only for inference. Eight markets are only enough to exercise the API; they do not give a
+    useful calibrated estimator or reproduce the pretrained result.
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(full_surface, mo, teaching, time):
+    def train_small_estimator(task, observed_prices, supplied_curve):
+        started = time.perf_counter()
+        import bayesflow as bf
+
+        split, generation = teaching.generate_training_pairs(task, count=8, seed=2026, max_seconds=90)
+        data = full_surface.training_data(split, task)
+
+        adapter = bf.Adapter()
+        for name, (lower, upper) in zip(task["parameter_names"], task["prior_bounds"], strict=True):
+            adapter = adapter.constrain(name, lower=lower, upper=upper, inclusive="none")
+        adapter = (adapter.convert_dtype("float64", "float32")
+                   .concatenate(task["parameter_names"], into="inference_variables")
+                   .concatenate(["observations", "curve_context"], into="inference_conditions"))
+        network = bf.networks.FlowMatching(subnet_kwargs={"widths": [128, 128]})
+        workflow = bf.BasicWorkflow(adapter=adapter, inference_network=network,
+                                   standardize=["inference_variables", "inference_conditions"])
+        fit_started = time.perf_counter()
+        workflow.fit_offline(data=data, epochs=5, batch_size=4)
+        fit_seconds = time.perf_counter() - fit_started
+
+        conditions = full_surface.conditioning_data(observed_prices[None, :], task,
+                                                     context_values=supplied_curve[None, :])
+        posterior = workflow.sample(conditions=conditions, num_samples=128, seed=17)
+        return posterior, {"generation": generation["runtime_seconds"], "fitting": fit_seconds,
+                           "total": time.perf_counter() - started}
+
+    mo.show_code()
+    return (train_small_estimator,)
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    train_rough = mo.ui.run_button(label="Generate fresh examples and train a small network")
+    mo.vstack([train_rough, mo.md("This action generates eight markets and makes ten optimizer updates. It may take a minute; results stay in memory.")])
+    return (train_rough,)
+
+
+@app.cell(hide_code=True)
+def _(known_arrays, known_task, mo, np, train_rough, train_small_estimator):
+    mo.stop(not train_rough.value, mo.md("*Press the button to run the displayed training workflow.*"))
+    try:
+        _draws, _timing = train_small_estimator(
+            known_task, known_arrays["observations"], known_arrays["context_values"])
+    except (RuntimeError, ValueError) as _error:
+        mo.stop(True, mo.callout(mo.md(f"**Training run stopped:** {_error}. No partial or selectively accepted training sample is used."), kind="warn"))
     mo.vstack([
-        mo.md(r"""
-        ## 3 · Two neural approaches: learn the pricer or the posterior
-
-        **A cheap likelihood is useful; a cheap posterior is a different object.**
-
-        | | Neural pricer + Bayesian sampler | Amortized posterior |
-        |:---|:---|:---|
-        | Learn | parameters/curve → estimated expected prices | noisy quotes, plus supplied context → joint parameter draws |
-        | At a new observation | run a Bayesian sampler with the surrogate likelihood | condition the trained network and draw |
-        | Check | pricing error relative to quote noise, then sampler convergence | posterior calibration, recovery and conditional-reference agreement |
-
-        A good pricer fit does not validate its posterior. A concentrated
-        posterior does not establish calibration. Both routes require the
-        declared model, prior, observation design and noise assumptions.
-        """),
-        mo.image(ASSETS / "illustrations" / "heston-workflow-20261101" / "two-amortization-routes.png"),
-        mo.md("The arrows are the same as in Heston. For **known-curve rough Bergomi**, the supplied "
-              "curve enters the forward pricer and is an additional inverse condition. In the **joint "
-              "task**, curve coefficients are part of the forward parameter vector and the posterior "
-              "targets; the generating curve is never supplied to inference."),
+        mo.md(f"Generated 8 fresh markets; trained for 5 epochs (**10 optimizer updates**). "
+              f"Generation: **{_timing['generation']:.1f} s**; fitting including compilation: **{_timing['fitting']:.1f} s**; "
+              f"total including imports and sampling: **{_timing['total']:.1f} s**. These session draws are separate from the pretrained results below."),
+        mo.ui.table([{ "parameter": name, "session median": float(np.median(_draws[name]))}
+                     for name in known_task["parameter_names"]], selection=None, pagination=False),
     ])
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""
-    **From a bank to an estimator.** This minimal training scaffold uses the
-    same participant runtime APIs. It assumes `split` is an already loaded
-    native training split, with its exact `task`; the full bank is downloaded
-    separately and is not part of the cached lesson. It is not executed here.
+    mo.accordion({"What is learned? And why train offline?": mo.md(r"""
+    The network learns a joint conditional distribution over $H,\eta,\rho$.
+    Its training targets are the generating parameters; its conditions are the
+    63 quotes and seven supplied curve levels. New observations supply no target
+    parameters. Curves vary between training examples and stay fixed within each
+    inference problem.
 
-    ```python
-    from sbi4f_tutorial.shared import full_surface
+    Offline training reuses expensive price simulations. A longer run can use a
+    downloaded matching training bank through the same `training_data` API.
+    The pretrained estimator used 100,000 training surfaces and a larger network;
+    this action is a small demonstration of the API.
 
-    data = full_surface.training_data(split, task)
-    workflow = full_surface.build_workflow(task, family="flow_matching")
-    history = workflow.fit_offline(data=data, epochs=500, batch_size=256)
-
-    quotes = split["observations"][:1]  # one stored market, for this API illustration
-    given_curve = (split["context_values"][:1]
-                   if full_surface.uses_known_curve(task) else None)
-    draws = full_surface.sample(
-        workflow, task, quotes, num_samples=1000, context_values=given_curve)
-    ```
-
-    The task decides whether stored curve levels are observed inputs or hidden
-    generating labels. Input preparation divides quotes by their declared SDs;
-    the adapter maps parameter bounds and standardizes the network variables. Native checkpoints retain their
-    task, model and sampler identities. The sampling lines illustrate the API
-    on one stored row, not held-out accuracy. For a new market, replace `quotes`
-    and supply its curve levels only if this same task treats them as known.
-    Existing pretrained examples require no bank or neural backend for cached viewing.
-    """)
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md("""
-    ## 4 · State the task, then inspect one posterior
-
-    **What is observed, what is supplied, and what must be inferred?** Start
-    with the known-curve example, then choose a joint-curve example. These are
-    different synthetic observations and curve families, not a controlled
-    ablation of curve uncertainty. All displayed draws are cached candidates.
-    Independent conditional rough references and Monte Carlo product checks
-    remain pending. Fresh sampling is explicit in [the backbone review](backbone_review.py).
-    """)
-    return
-
-
-@app.cell
-def _(mo):
-    from sbi4f_tutorial.shared import backbones
-
-    _labels = {"Known curve · parameters only": "rough-known100k-validation0",
-               "Joint curve · worked example": "rough-joint100k-validation0",
-               "Joint curve · curved trade-off": "rough-joint100k-validation1983",
-               "Joint curve · coupled volatility parameters": "rough-joint100k-validation1941",
-               "Joint curve · weak decay": "rough-joint100k-validation1962"}
-    backbone_case = mo.ui.dropdown(options={label: name for label, name in _labels.items()
-                                            if name in backbones.examples("rough")},
-                                    value="Known curve · parameters only", label="Current synthetic example")
-    backbone_case
-    return backbone_case, backbones
-
-
-@app.cell
-def _(backbone_case, backbones, mo, np, plt):
-    _task, _report, _arrays = backbones.load_example(backbone_case.value)
-    _contracts = _task["context"]["contracts"]
-    _noise = np.asarray(_task["context"]["quote_noise_std"])
-    _maturities = np.asarray([c["maturity"] for c in _contracts])
-    _strikes = np.asarray([c["strike"] for c in _contracts])
-    _quote_fig, _quote_ax = plt.subplots(figsize=(6.8, 3.0), constrained_layout=True)
-    for _maturity in np.unique(_maturities):
-        _at = _maturities == _maturity
-        _quote_ax.errorbar(_strikes[_at], _arrays["observations"][_at], yerr=_noise[_at],
-                           fmt=".", capsize=2, label=f"{252 * _maturity:g} days")
-    _quote_ax.set(xlabel="strike / forward", ylabel="observed price / forward",
-                  title="Observed option prices · bars show assumed quote-noise SD")
-    _quote_ax.legend(fontsize=7, ncol=4)
-    _quote_rows = [{"maturity (years)": float(c["maturity"]), "strike / forward": float(c["strike"]),
-                    "option": c["option_type"], "observed price / forward": float(y),
-                    "quote-noise SD": float(noise)}
-                   for c, y, noise in zip(_contracts, _arrays["observations"], _noise)]
-    _quote_view = mo.vstack([
-        mo.md(r"""**Read the axes.** Strike / forward is $K/F$; premium / forward is the
-        option price divided by $F$. With spot one and zero carry, both are already
-        normalized. A premium of 0.02 means a price of 2 when the forward is 100.
-        Colors identify maturities. The plot mixes puts at/below the forward with
-        calls above it: this is an out-of-the-money quote strip, not one call's
-        price as strike changes. Bars show the assumed observation SD, not
-        Monte Carlo error or posterior uncertainty."""),
-        _quote_fig,
-        mo.accordion({"Exact observations, contract design and known quote noise": mo.vstack([
-            mo.md("These are the saved noisy prices used for this posterior, in the task's spot-one, "
-                  "zero-carry forward units. The quote-noise standard deviations define the observation "
-                  "model; they are not posterior intervals. Prices are shown as stored, without implied-"
-                  "volatility inversion or clipping."),
-            mo.ui.table(_quote_rows, selection=None, pagination=True, page_size=9),
-        ])}),
-    ])
-    _rates = backbones.replay.rough_variance_products(
-        _task, _arrays["neural_draws"], context_values=_arrays.get("context_values"))
-    _rate_rows = []
-    for _quantity, _label in (("variance_swap_1y", "1-year mean variance rate"),
-                              ("forward_variance_0_5_to_1y", "6-month to 1-year forward variance rate")):
-        _q = np.quantile(_rates[_quantity], [.05, .5, .95])
-        _rate_rows.append({"quantity": _label, "source": "neural candidate",
-                           "median (variance/year)": float(_q[1]),
-                           "central 90%": f"{_q[0]:.5g} to {_q[2]:.5g}"})
-    _rate_scope = (
-        "The known curve is an observed input: these rates are constant across the parameter draws "
-        "by construction. Their zero posterior width does not mean the quotes identified the curve."
-        if "context_values" in _arrays else
-        "Each paired draw of the three exponential-curve coefficients gives one rate. This is the "
-        "learned candidate's uncertainty propagation; a conditional reference is still unavailable.")
-    _rate_view = mo.vstack([
-        mo.md("**Carry the posterior to a derived quantity.** These two analytic rates average the "
-              "continuous forward-variance curve over [0, 1] and [0.5, 1] years. They are annualized decimal "
-              "variance rates, not realized payoffs or new Monte Carlo product prices."),
-        mo.ui.table(_rate_rows, selection=None, pagination=False),
-        mo.md(_rate_scope + " The known and joint examples have different observations and curve families; "
-              "their widths do not isolate the effect of changing the conditioning assumption."),
-        mo.md("**Interpret the rates.** Which curve inputs determine these quantities? In a known-curve "
-              "case, could tighter intervals for H, eta or rho change these rates? In a joint case, why "
-              "might a broad decay posterior coexist with a more concentrated curve average?"),
-    ])
-    if "context_values" in _arrays:
-        _context = mo.vstack([
-            mo.md("**Known curve first:** infer H, eta and rho from the quotes and seven supplied curve levels. "
-                  "The seven piecewise-constant curve levels vary across training examples and stay fixed during each inference."),
-            mo.ui.table([{"maturity (years)": float(t), "supplied forward variance (annualized)": float(v)}
-                         for t, v in zip(_task["model_context"]["forward_variance_knots"][1:],
-                                         _arrays["context_values"])], selection=None, pagination=False),
-        ])
-    else:
-        _notes = {"validation:1983": "Selected illustration of curved long-variance/decay trade-offs.",
-                  "validation:1941": "Selected illustration of strong eta/rho correlation; correlation alone is not non-Gaussianity.",
-                  "validation:1962": "Near-flat-curve illustration: decay can remain weakly informed."}
-        _context = mo.md("**Joint calibration next:** infer H, eta, rho and three curve coefficients from the quotes. "
-                         "The generating curve is excluded from the conditions. "
-                         "xi(t) = long + (short - long) * exp(-decay * t). "
-                         + _notes.get(_report["case_id"], "Primary joint example; no special interior selection is claimed."))
-    _prior_rows = [{"unknown parameter": backbones.PARAMETER_LABELS.get(name, (name, name))[0],
-                    "prior family": "Uniform", "support": f"{bound[0]:g} to {bound[1]:g}"}
-                   for name, bound in zip(_task["parameter_names"], _task["prior_bounds"])]
-    mo.vstack([
-        mo.md("**The selected inference task.** Observe 63 ordered normalized option quotes on the fixed "
-              "seven-maturity design, with known quote-noise SDs. The parameter priors below are independent. "
-              "The realized variance paths are hidden; their generating values are not inference inputs."),
-        _context,
-        mo.ui.table(_prior_rows, selection=None, pagination=False),
-        mo.callout(mo.md("**Approximate posterior, synthetic observation.** Independent conditional "
-                         "rough references and Monte Carlo product checks remain pending. "
-                         "The selected geometry examples illustrate trade-offs; they are not an accuracy study."), kind="neutral"),
-        _quote_view,
-        mo.md("**Condition on those inputs, then inspect the joint posterior.** The table reports "
-              "central 90% marginal intervals. Paired draw rows preserve parameter dependence."),
-        mo.ui.table(backbones.parameter_rows(_task, _arrays), selection=None, pagination=False),
-        backbones.corner(_task, _arrays),
-        _rate_view,
-        mo.accordion({"Source and reproducibility details": mo.md(
-            f"Stored case: `{_report['case_id']}`; {len(_arrays['neural_draws']):,} paired draws.  \n"
-            f"Task SHA-256: `{_report['task_fingerprint']}`  \nModel SHA-256: `{_report['checkpoint_sha256']}`. "
-            "The cache, task and checkpoint identities are verified on loading. These are development "
-            "examples, with no reserved-test or conditional-accuracy claim inherited from a historical study.")}),
-        mo.md("**Predict, then compare.** Before switching from known to joint curve, name which inputs "
-              "become unknown. In the selected case, which parameter trade-off or broad interval can you "
-              "explain? These cases have different synthetic observations: switching cases is not a matched "
-              "experiment measuring the effect of curve uncertainty alone."),
-    ])
-    return
-
-
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""
-    ## 5 · Predictive checking: return to data space
-
-    **A posterior should generate plausible new quotes, not just plausible parameters.**
-    A genuine posterior-predictive draw uses a complete paired parameter row:
-
-    $$
-    \boldsymbol\vartheta^{(m)}\sim q(\boldsymbol\vartheta\mid\mathbf y,\text{supplied context}),
-    \qquad \widetilde{\mathbf y}^{(m)}
-       =\mathbf P(\boldsymbol\vartheta^{(m)},\xi_0^{(m)})
-        +\boldsymbol\sigma\odot\boldsymbol\epsilon^{(m)}.
-    $$
-
-    In the known-curve task, $\xi_0$ stays at its supplied value for every draw.
-    In the joint task, all six coordinates stay paired and each row supplies its
-    own curve. Computing $\mathbf P$ requires controlled numerical pricing;
-    newly added quote noise is separate from that pricing error.
-
-    **No current rough posterior-predictive band is claimed here.** The cached
-    replay does not contain one, and this notebook does not launch many pricing
-    runs when it opens. The explicit forward button above generates a smile at
-    user-chosen parameters, not from the posterior. The analytic curve-rate
-    table is uncertainty propagation for a derived quantity, not replicated data.
-    Historical product and audit panels below keep their separate scope.
-
-    A good-looking in-sample fit would still not certify the parameter
-    posterior, its dependence, or adequacy for a real market.
-    """)
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""
-    ## 6 · Calibration and audits answer different questions
-
-    **A 90% interval should contain truth about 90% of the time across new simulations.**
-    Financial calibration estimates model parameters from quotes. Statistical
-    calibration checks the uncertainty statements over repeated data sets.
-
-    | Check | Plain-language question | What it can reveal |
-    |:---|:---|:---|
-    | Prior predictive | Can these assumptions generate this kind of data? | implausible prior or observation design |
-    | Recovery | Do posterior centers track generating values? | weak information or systematic error |
-    | Coverage | Does “90%” behave like 90%? | intervals too narrow or wide on average |
-    | SBC | Does truth behave like one more posterior draw? | rank patterns caused by bias or spread error |
-    | Conditional reference | Does another validated calculation agree on this observation? | approximation errors hidden by aggregate checks |
-    | Importance audit | Are proposal weights stable for the stated likelihood? | unreliable correction or poor proposal coverage |
-
-    One complete 63-quote market is one evaluation case, not 63 independent test
-    cases. A prior-only estimator can pass prior-averaged calibration while
-    learning nothing. Use recovery, information gain and conditional checks too.
-    The current known/joint fits do not inherit historical pilot or Heston checks.
-    """)
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.accordion({"Coverage, SBC and importance auditing, formally": mo.md(r"""
-    Draw parameter–data pairs from the declared simulation design, including
-    any supplied curve context. For target $j$, empirical coverage is
-
-    $$
-    \widehat C_j=\frac1N\sum_{i=1}^N
-       \mathbf1\{\vartheta^*_{ij}\in C^{.9}_{ij}\}.
-    $$
-
-    With $M$ independent posterior draws per case, the SBC rank is
-
-    $$
-    R_{ij}=\sum_{m=1}^M\mathbf1\{\vartheta^{(m)}_{ij}<\vartheta^*_{ij}\}.
-    $$
-
-    Under a correct continuous posterior, ranks are uniform on
-    $\{0,\ldots,M\}$. Autocorrelation and finite simulation counts require care.
-    These statements average over the declared prior predictive; they do not
-    prove conditional calibration everywhere, a correct joint copula or market validity.
-
-    An importance proposal $g$ is audited using
-    $w_m\propto p(\boldsymbol\vartheta^{(m)})L(\boldsymbol\vartheta^{(m)})/
-    g(\boldsymbol\vartheta^{(m)})$, with the appropriate transformation Jacobians.
-    Low effective sample size or high Pareto $\hat k$ warns that a few rows
-    dominate. Stable weights do not prove that the likelihood is accurate or
-    that all posterior modes have been found. A neural-pricer chain targets its
-    surrogate likelihood and needs its own pricing and convergence checks.
+    A neural **pricer** instead learns parameters → expected prices and still
+    needs a sampler for every new observation. A good price fit and a good
+    posterior approximation are separate checks. The comparison diagram from
+    Heston applies here too.
     """)})
     return
 
 
 @app.cell(hide_code=True)
-def _(CHECKPOINTS, RESULTS, backbones, mo, teaching):
-    _checks = [
-        ("Real SPY smile (S8)", RESULTS / "spy/surface.json"),
-        ("Costs on one machine (S9)", RESULTS / "costs/costs.json"),
-        ("Historical rough SPY route: checkpoint", CHECKPOINTS / "rough/model.keras"),
-        ("Historical rough SPY route: SBC and recovery (S2)", RESULTS / "rough/s2/validation.json"),
-        ("Historical rough SPY route: audit (S5)", RESULTS / "rough/s5/audit.json"),
-        ("Historical rough SPY route: classical comparison (S6)", RESULTS / "rough/s6/classical.json"),
-        ("Historical rough SPY route: products and reserves (S7)", RESULTS / "rough/s7/products.json"),
-        ("Rough Bergomi pilot: S2, S5, S6, S7, across models", RESULTS / "rough-pilot/s7-across/across-models.json"),
-        ("Heston: neural-pricer route (S4)", RESULTS / "heston/s4/pricer-route.json"),
-        ("Heston: classical route (S6)", RESULTS / "heston/s6/classical.json"),
-        ("Heston: products and reserves (S7)", RESULTS / "heston/s7/products.json"),
-    ]
-    mo.accordion({"**What this notebook reads** (click to open): every result and its status": mo.vstack([
-        mo.md("The current 100,000-surface known-curve and joint-curve fits are complete and their development "
-              "replays are packaged above. Their conditional references and downstream-product checks remain "
-              "separate work. Historical studies, pilot results and quick checks below keep their own provenance; "
-              "an absent historical export does not mean the new training bank is unfinished."),
-        mo.ui.table([{"result": f"Current 2.1 replay: {name}", "status": "packaged development example"}
-                     for name in backbones.examples("rough")] +
-                    [{"result": n, "status": "historical asset available" if teaching.existing(p)
-                      else "not packaged for this historical route"} for n, p in _checks],
-                    selection=None, pagination=False),
+def _(mo):
+    mo.md(r"""
+    ## 4. Infer parameters with the curve supplied
+
+    We now use the pretrained estimator on one synthetic option market.
+    The seven curve levels are known inputs; only $H,\eta,\rho$ are inferred.
+    Their priors are independent uniforms on the ranges in the table. The plots show paired posterior draws in the original parameter units.
+    Independent conditional rough-model references remain outstanding.
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(backbones, focused_posterior, known_arrays, known_task, mo, np, plt):
+    _contracts = known_task["context"]["contracts"]
+    _t = np.asarray([c["maturity"] for c in _contracts])
+    _k = np.asarray([c["strike"] for c in _contracts])
+    _noise = np.asarray(known_task["context"]["quote_noise_std"])
+    _fig, _axes = plt.subplots(1, 2, figsize=(9.5, 2.9), constrained_layout=True)
+    for _maturity in np.unique(_t):
+        _at = _t == _maturity
+        _axes[0].errorbar(_k[_at], known_arrays["observations"][_at], yerr=_noise[_at],
+                          fmt=".", label=f"{252 * _maturity:g} days")
+    _axes[0].set(xlabel="strike / forward", ylabel="premium / forward", title="The observed option quotes")
+    _axes[0].legend(fontsize=6, ncol=2)
+    _knots = known_task["model_context"]["forward_variance_knots"]
+    _axes[1].stairs(known_arrays["context_values"], _knots, color="#7755aa")
+    _axes[1].set(xlabel="maturity (years)", ylabel="annualized forward variance", title="The supplied curve")
+    mo.vstack([
+        _fig,
+        mo.md("Strike / forward is K/F; premium / forward is the option price divided by F. "
+              "A premium of 0.02 means 2 when the forward is 100. Puts appear at/below the forward "
+              "and calls above it. Bars show one quote-noise SD."),
+        mo.ui.table(backbones.parameter_rows(known_task, known_arrays), selection=None, pagination=False,
+                    format_mapping={"median": "{:.4g}".format}),
+        focused_posterior(known_task, known_arrays),
+        mo.md("The marginals summarize each parameter; the joint panel preserves dependence. "
+              "Can you explain which combinations of variance amplitude and correlation remain plausible?"),
+        mo.accordion({"All parameter relationships": backbones.corner(known_task, known_arrays)}),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ## 5. Return to the data: posterior predictive simulation
+
+    Draw complete parameter rows, price the same contracts, then add fresh quote
+    noise. This separates uncertainty about expected prices from variation in
+    replicated observations:
+
+    $$\boldsymbol\vartheta^{(m)}\sim q(\boldsymbol\vartheta\mid\mathbf y,\xi_0),
+    \qquad \widetilde{\mathbf y}^{(m)}=
+       \mathbf P(\boldsymbol\vartheta^{(m)},\xi_0)+\boldsymbol\sigma\odot\boldsymbol\epsilon^{(m)}.$$
+
+    The curve stays at its supplied value. The action below uses a small number
+    of paired draws and checks Monte Carlo precision. It is an illustration,
+    not a stable estimate of tail probabilities or a proof of posterior accuracy.
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo, teaching):
+    def simulate_predictive(task, case):
+        return teaching.rough_posterior_predictive(
+            task, case["neural_draws"], case["observations"],
+            context_values=case["context_values"], draws=8, maturity=.25, seed=2026)
+
+    mo.show_code()
+    return (simulate_predictive,)
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    predictive_rough = mo.ui.run_button(label="Simulate a small posterior-predictive check")
+    predictive_rough
+    return (predictive_rough,)
+
+
+@app.cell
+def _(known_arrays, known_task, mo, np, plots, plt, predictive_rough, simulate_predictive):
+    mo.stop(not predictive_rough.value, mo.md("*This optional action reprices posterior draws; opening the notebook does not run it.*"))
+    try:
+        _check = simulate_predictive(known_task, known_arrays)
+    except (RuntimeError, ValueError) as _error:
+        mo.stop(True, mo.callout(mo.md(f"**Predictive simulation stopped:** {_error}. No partial sample is presented as a posterior-predictive band."), kind="warn"))
+    _k = _check["strikes"]
+    _noise = _check["quote_noise_std"]
+    _center = np.median(_check["reference_prices"], axis=0)
+    _fig, _axes = plt.subplots(1, 2, figsize=(10, 3), constrained_layout=True)
+    for _values, _label, _color in [(_check["reference_prices"], "estimated expected-price draws", plots.SERIES[0]),
+                                    (_check["replicated_quotes"], "replicated quotes", plots.SERIES[1])]:
+        _lo, _hi = np.quantile(_values, [.1, .9], axis=0)
+        _axes[0].fill_between(_k, _lo, _hi, alpha=.25, color=_color, label=_label)
+        _axes[1].fill_between(_k, (_lo - _center) / _noise, (_hi - _center) / _noise,
+                              alpha=.25, color=_color, label=_label)
+    _axes[0].plot(_k, _check["observations"], "k.", label="observed")
+    _axes[0].set(xlabel="strike / forward", ylabel="premium / forward", title="Three-month option prices")
+    _axes[0].legend(fontsize=7)
+    _axes[1].plot(_k, (_check["observations"] - _center) / _noise, "k.")
+    _axes[1].set(xlabel="strike / forward", ylabel="price difference / quote SD",
+                 title="The same uncertainty in quote-noise units")
+    _meta = _check["metadata"]
+    mo.vstack([_fig, mo.md("Shading shows empirical central 80% ranges from **8 paired parameter draws**, "
+                          "with eight fresh quote-noise draws per parameter row. Tail estimates remain coarse. The right panel subtracts the posterior-median expected price at each strike. "
+                          "Both bands retain monitored Monte Carlo pricing error; replicated quotes additionally include quote noise. Numerical variance is not added to the declared observation variance."),
+               mo.md(f"Largest estimated Monte Carlo SE / quote SD: **{_meta['max_mc_se_over_sigma']:.2f}**. "
+                     f"Wall time: **{_meta['runtime_seconds']:.1f} s**. This checks simulation precision, not time-grid bias."),
+               mo.accordion({"Simulation precision and budget": mo.ui.table(
+                   [{"setting": key, "value": str(value)} for key, value in _meta.items()],
+                   selection=None, pagination=False)})])
+    return
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ## 6. Extension: infer the curve too
+
+    If the curve is uncertain, treating it as fixed removes part of the
+    uncertainty. In the joint task, the three coefficients of
+    $\xi_0(t)=L+(S-L)e^{-kt}$ join $H,\eta,\rho$ as targets.
+    The generating curve is **not** an inference condition.
+
+    These examples use different observations and a different curve family from
+    the known-curve case. Switching between them is not a controlled comparison
+    of interval widths.
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    joint_case = mo.ui.dropdown(options={
+        "Worked joint example": "rough-joint100k-validation0",
+        "Curve level–decay trade-off": "rough-joint100k-validation1983",
+        "Coupled volatility parameters": "rough-joint100k-validation1941",
+        "Weakly informed decay": "rough-joint100k-validation1962",
+    }, value="Worked joint example", label="Joint inference example")
+    joint_case
+    return (joint_case,)
+
+
+@app.cell(hide_code=True)
+def _(backbones, focused_posterior, joint_case, mo, np):
+    _task, _report, _arrays = backbones.load_example(joint_case.value)
+    _pair = ("eta", "rho") if joint_case.value.endswith("1941") else ("long_variance", "decay")
+    _rates = backbones.replay.rough_variance_products(_task, _arrays["neural_draws"])
+    _q = np.quantile(_rates["variance_swap_1y"], [.05, .5, .95])
+    mo.vstack([
+        mo.ui.table(backbones.parameter_rows(_task, _arrays), selection=None, pagination=False,
+                    format_mapping={"median": "{:.4g}".format}),
+        focused_posterior(_task, _arrays, pair=_pair),
+        mo.md(f"**Propagate paired draws.** The one-year mean variance rate has median **{_q[1]:.4f}** "
+              f"and central 90% interval **{_q[0]:.4f}–{_q[2]:.4f}**, in variance/year. "
+              "This is the analytic curve average, not a new realized payoff or a predictive data set. "
+              "With a supplied curve it would have zero parameter-induced width by construction."),
+        mo.accordion({"All parameter relationships": backbones.corner(_task, _arrays),
+                      "Case and model details": mo.md(f"Stored synthetic case `{_report['case_id']}`. "
+                          "Task and checkpoint identities are verified when loading. These selected examples "
+                          "illustrate geometry; they are not a conditional-accuracy study.")}),
+        mo.md("Which curve combinations remain plausible? Why can weakly informed decay coexist with "
+              "a better determined average variance rate?"),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(known_report, mo):
+    mo.md(r"""
+    ## 7. What do the checks establish?
+
+    Financial calibration estimates model parameters. Statistical calibration
+    asks whether the uncertainty statements behave as advertised across new
+    simulated data sets.
+
+    | Check | Question |
+    |:---|:---|
+    | Recovery | Do posterior estimates track generating values? |
+    | Coverage | Do 90% intervals contain truth about 90% of the time? |
+    | Simulation-based calibration | Does truth behave like another posterior draw? |
+    | Conditional reference | Does an independently checked calculation agree for this observation? |
+    | Posterior predictive | Can the posterior generate plausible observations? |
+
+    Each complete market is one evaluation case. Passing average calibration is
+    not enough: a network that returns the prior can pass while learning nothing.
+    The current synthetic fits have aggregate diagnostics, but their independent
+    conditional references and downstream Monte Carlo product checks remain
+    unfinished. Historical pilots do not supply that missing evidence.
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(ASSETS, backbones, known_report, mo):
+    mo.accordion({"Diagnostic definitions and reproducibility": mo.md(r"""
+    For $N$ independent simulated markets, coverage of a nominal 90% interval is
+    $\widehat C_j=N^{-1}\sum_i\mathbf1\{\vartheta^*_{ij}\in C^{.9}_{ij}\}$.
+    With $M$ posterior draws, the rank
+    $R_{ij}=\sum_m\mathbf1\{\vartheta^{(m)}_{ij}<\vartheta^*_{ij}\}$ should be
+    uniform on $\{0,\ldots,M\}$ under a correct continuous posterior.
+
+    Finite case counts and dependent draws require care. These prior-averaged
+    statements do not establish calibration at every observation, correct joint
+    dependence, or adequacy for a real market.
+
+    The current cases are stored under `assets/backbones/`; loaders verify
+    their task and model identities. Full diagnostics and native checkpoint
+    sampling are available in [the backbone review](backbone_review.py).
+    """)})
+    return
+
+
+@app.cell(hide_code=True)
+def _(ASSETS, mo, teaching):
+    _rows = []
+    for _label, _name in [("Supplied curve", "rough-known100k-validation0"),
+                            ("Inferred curve", "rough-joint100k-validation0")]:
+        _report = teaching.load_json(ASSETS / "backbones" / _name / "evaluation.json")
+        for _j, _parameter in enumerate(_report["targets"]):
+            _rows.append({"task": _label, "parameter": _parameter,
+                          "coverage of 90% intervals": f"{100 * _report['coverage']['0.9']['coverage'][_j]:.1f}%",
+                          "rank screen": "passed" if _report["sbc"]["passed"][_j] else "failed"})
+    mo.accordion({"Saved aggregate diagnostics": mo.vstack([
+        mo.md("Each task was evaluated on 2,000 synthetic validation markets, with 1,000 "
+              "draws per market. These are prior-averaged checks on the current fits; "
+              "they are not reserved-test results or independent conditional references."),
+        mo.ui.table(_rows, selection=None, pagination=False),
     ])})
     return
 
@@ -560,9 +515,39 @@ def _(CHECKPOINTS, RESULTS, backbones, mo, teaching):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## 7 · Historical SPY application and comparison experiments
+    ## Takeaways
 
-    The following sections preserve the original SPY/pilot studies. In this route, the curve is supplied
+    1. **The same workflow accommodates a different simulator.** Monte Carlo changes data-generation cost, not the Bayesian goal.
+    2. **State which curve inputs are known.** Supplying a curve and inferring a curve define different posteriors.
+    3. **Keep numerical error separate from observation noise.** Check pricing precision before interpreting the uncertainty.
+    4. **Preserve paired draws.** Parameter and curve dependence matters for derived quantities.
+    5. **Check the approximation.** A plausible posterior or predictive plot alone does not establish accuracy.
+
+    *Code and evidence:* [rough-model curriculum](../curriculum/05-slot5-rough-bergomi-to-a-reserve.md),
+    `src/sbi4f_tutorial/rough_options/`, and `assets/backbones/`.
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    archive_toggle = mo.ui.checkbox(value=False, label="Show archived SPY, pilot, cost and long-end studies")
+    mo.accordion({"Optional historical studies": mo.vstack([
+        mo.md("These preserve separate observations, numerical methods and evidence. "
+              "They are not outputs of the current worked examples. "
+              "Historical importance audits and incomplete comparisons remain labelled as such."),
+        archive_toggle,
+    ])})
+    return (archive_toggle,)
+
+
+@app.cell(hide_code=True)
+def _(archive_toggle, mo):
+    mo.stop(not archive_toggle.value)
+    mo.md(r"""
+    ## Optional archive · SPY and comparison studies
+
+    The following sections preserve the original SPY/pilot studies and their original numerical workloads. Timings describe those archived runs, not the current implementation or the session examples above. In this route, the curve is supplied
     at short maturities. Historical study 8 uses a separate eleven-level long-end curve model. Neither route is
     the six-target exponential-curve inference task shown in the current development panel above.
 
@@ -580,7 +565,8 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(mo):
+def _(archive_toggle, mo):
+    mo.stop(not archive_toggle.value)
     mo.accordion({
         "**The model in detail** (click to open): rough Bergomi, its prior and its likelihood": mo.md(r"""
         #### 1 · The model
@@ -624,7 +610,8 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(mo):
+def _(archive_toggle, mo):
+    mo.stop(not archive_toggle.value)
     mo.md(r"""
     ### Historical study 1 · The question
 
@@ -639,13 +626,15 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(RESULTS, image):
+def _(RESULTS, archive_toggle, image, mo):
+    mo.stop(not archive_toggle.value)
     image(RESULTS / "spy" / "surface.png", "The SPY chain of 21 October 2026 read onto the design grid (study S8).")
     return
 
 
 @app.cell(hide_code=True)
-def _(mo):
+def _(archive_toggle, mo):
+    mo.stop(not archive_toggle.value)
     mo.md(r"""
     ### Historical study 2 · Why rough Bergomi
 
@@ -658,7 +647,8 @@ def _(mo):
 
 
 @app.cell
-def _(ASSETS, CHECKPOINTS, RESULTS, np, surface, teaching):
+def _(ASSETS, CHECKPOINTS, RESULTS, archive_toggle, mo, np, surface, teaching):
+    mo.stop(not archive_toggle.value)
     spy = teaching.load_json(RESULTS / "spy" / "surface.json")
     _k, _maturity, _kind, _delta = teaching.design_arrays()
     spy_skew = np.abs(np.asarray(spy["atm_skew"]))
@@ -672,7 +662,8 @@ def _(ASSETS, CHECKPOINTS, RESULTS, np, surface, teaching):
 
 
 @app.cell(hide_code=True)
-def _(heston_skew, mo, plots, plt, power_law, skew_days, spy_skew, surface):
+def _(archive_toggle, heston_skew, mo, plots, plt, power_law, skew_days, spy_skew, surface):
+    mo.stop(not archive_toggle.value)
     _fig, _ax = plt.subplots(figsize=(7.4, 3.8), constrained_layout=True)
     _t = skew_days / surface.TRADING_DAYS
     _ax.loglog(skew_days, spy_skew, "o", color=plots.SERIES[1], label="SPY")
@@ -695,7 +686,8 @@ def _(heston_skew, mo, plots, plt, power_law, skew_days, spy_skew, surface):
 
 
 @app.cell(hide_code=True)
-def _(mo):
+def _(archive_toggle, mo):
+    mo.stop(not archive_toggle.value)
     mo.md(r"""
     ### Historical study 3 · What a numerical posterior would cost
 
@@ -712,7 +704,8 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(ASSETS, RESULTS, image, mo, teaching):
+def _(ASSETS, RESULTS, archive_toggle, image, mo, teaching):
+    mo.stop(not archive_toggle.value)
     _costs = teaching.load_json(RESULTS / "costs" / "costs.json")
     mo.vstack([
         image(ASSETS / "images" / "ladder.png", "One likelihood evaluation and estimated posterior workload under each model "
@@ -723,7 +716,8 @@ def _(ASSETS, RESULTS, image, mo, teaching):
 
 
 @app.cell(hide_code=True)
-def _(mo):
+def _(archive_toggle, mo):
+    mo.stop(not archive_toggle.value)
     mo.md(r"""
     ### Historical study 4 · Historical SPY neural route · export status
 
@@ -736,7 +730,8 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(CHECKPOINTS, mo, pending, teaching):
+def _(CHECKPOINTS, archive_toggle, mo, pending, teaching):
+    mo.stop(not archive_toggle.value)
     _ready = teaching.existing(CHECKPOINTS / "rough" / "model.keras")
     pending("a matching native SPY posterior and historical-route export (study S8); the completed current "
             "100k fits are available above.") if _ready is None else mo.md(
@@ -746,7 +741,8 @@ def _(CHECKPOINTS, mo, pending, teaching):
 
 
 @app.cell(hide_code=True)
-def _(RESULTS, mo, pilot_banner, teaching):
+def _(RESULTS, archive_toggle, mo, pilot_banner, teaching):
+    mo.stop(not archive_toggle.value)
     pilot = teaching.load_npz(RESULTS / "rough-pilot" / "s2" / "draws.npz")
     pilot_surface = mo.ui.slider(0, (len(pilot["truth"]) - 1) if pilot else 0, value=0, label="pilot test smile",
                                  show_value=True)
@@ -755,7 +751,8 @@ def _(RESULTS, mo, pilot_banner, teaching):
 
 
 @app.cell(hide_code=True)
-def _(pending, pilot, pilot_surface, teaching):
+def _(archive_toggle, mo, pending, pilot, pilot_surface, teaching):
+    mo.stop(not archive_toggle.value)
     (teaching.pairs({"network (pilot)": pilot["draws"][pilot_surface.value]}, ["H", "η", "ρ", "ρη"],
                     truth=pilot["truth"][pilot_surface.value], figsize=(7.4, 7.4))
      if pilot else pending("the pilot network's draws."))
@@ -763,7 +760,8 @@ def _(pending, pilot, pilot_surface, teaching):
 
 
 @app.cell(hide_code=True)
-def _(mo):
+def _(archive_toggle, mo):
+    mo.stop(not archive_toggle.value)
     mo.md(r"""
     ### Historical study 5 · Is it right without an exact answer? · historical and pilot studies
 
@@ -774,7 +772,7 @@ def _(mo):
     2. **Does another calculation agree?** MCMC on a neural pricer samples a surrogate
        likelihood. Heston supplies a useful control against its Fourier reference;
        that comparison does not validate an unperformed rough-Bergomi reference.
-    3. **Right on this smile?** The audit is slot 4's importance-sampling correction with a Monte Carlo
+    3. **Right on this smile?** This archived audit used importance weighting with a Monte Carlo
        likelihood. It draws 256 parameter values from a widened fit to the network's posterior and reweights
        them with the likelihood of section 3. The efficiency and the Pareto shape $\hat k$ decide, with the
        threshold 0.58 used for 256 draws in that study. A warning calls for a better proposal or
@@ -784,7 +782,8 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(RESULTS, image, mo, pilot_banner):
+def _(RESULTS, archive_toggle, image, mo, pilot_banner):
+    mo.stop(not archive_toggle.value)
     mo.vstack([
         image(RESULTS / "rough" / "s2" / "sbc.png", "Rough Bergomi, full bank: SBC on held-out smiles."),
         pilot_banner("the pilot network fails SBC for ρ and ρη."),
@@ -794,7 +793,8 @@ def _(RESULTS, image, mo, pilot_banner):
 
 
 @app.cell(hide_code=True)
-def _(RESULTS, image, mo, pending, teaching):
+def _(RESULTS, archive_toggle, image, mo, pending, teaching):
+    mo.stop(not archive_toggle.value)
     _route = teaching.load_json(RESULTS / "heston" / "s4" / "pricer-route.json")
     _exact = teaching.load_json(RESULTS / "heston" / "s4-exact" / "pricer-route.json")
     _parts = [image(RESULTS / "heston" / "s4" / "agreement.png",
@@ -821,7 +821,8 @@ def _(RESULTS, image, mo, pending, teaching):
 
 
 @app.cell(hide_code=True)
-def _(RESULTS, image, mo, pending, pilot_banner, teaching):
+def _(RESULTS, archive_toggle, image, mo, pending, pilot_banner, teaching):
+    mo.stop(not archive_toggle.value)
     _audit = teaching.load_json(RESULTS / "rough-pilot" / "s5" / "audit.json")
     if _audit is None:
         _out = pending("the audit (study S5).")
@@ -845,7 +846,8 @@ def _(RESULTS, image, mo, pending, pilot_banner, teaching):
 
 
 @app.cell(hide_code=True)
-def _(mo):
+def _(archive_toggle, mo):
+    mo.stop(not archive_toggle.value)
     mo.md(r"""
     ### Historical study 6 · The classical route on the same smiles
 
@@ -862,7 +864,8 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(CHECKS, mo, np, plots, plt, teaching):
+def _(CHECKS, archive_toggle, mo, np, plots, plt, teaching):
+    mo.stop(not archive_toggle.value)
     _r = teaching.load_json(CHECKS / "rough_checks.json")
     _width = np.diff(np.asarray(_r["prior_bounds"]), axis=1)[:, 0]
     _sets = list(dict.fromkeys(s["quotes"] for s in _r["scenarios"]))
@@ -893,7 +896,8 @@ def _(CHECKS, mo, np, plots, plt, teaching):
 
 
 @app.cell(hide_code=True)
-def _(RESULTS, mo, teaching):
+def _(RESULTS, archive_toggle, mo, teaching):
+    mo.stop(not archive_toggle.value)
     _models = {name: key for name, key in (("rough Bergomi", "rough"), ("rough Bergomi (pilot)", "rough-pilot"),
                                            ("Heston", "heston"))
                if teaching.existing(RESULTS / key / "s6" / "classical.json")}
@@ -903,7 +907,8 @@ def _(RESULTS, mo, teaching):
 
 
 @app.cell(hide_code=True)
-def _(RESULTS, classical_model, image, mo, pending, pilot_banner, teaching):
+def _(RESULTS, archive_toggle, classical_model, image, mo, pending, pilot_banner, teaching):
+    mo.stop(not archive_toggle.value)
     if classical_model.value is None:
         _out = pending("study S6 (`lab/studies/classical_route.py`).")
     else:
@@ -931,7 +936,8 @@ def _(RESULTS, classical_model, image, mo, pending, pilot_banner, teaching):
 
 
 @app.cell(hide_code=True)
-def _(mo):
+def _(archive_toggle, mo):
+    mo.stop(not archive_toggle.value)
     mo.md(r"""
     ### Historical study 7 · From posterior to prices: the range and the reserve · stored studies
 
@@ -954,7 +960,8 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(RESULTS, mo, teaching):
+def _(RESULTS, archive_toggle, mo, teaching):
+    mo.stop(not archive_toggle.value)
     _models = {name: key for name, key in (("rough Bergomi", "rough"), ("rough Bergomi (pilot)", "rough-pilot"),
                                            ("Heston", "heston"))
                if teaching.existing(RESULTS / key / "s7" / "price-draws.npz")}
@@ -965,7 +972,8 @@ def _(RESULTS, mo, teaching):
 
 
 @app.cell(hide_code=True)
-def _(RESULTS, mo, product_model, teaching):
+def _(RESULTS, archive_toggle, mo, product_model, teaching):
+    mo.stop(not archive_toggle.value)
     products = (teaching.load_npz(RESULTS / product_model.value / "s7" / "price-draws.npz") if product_model.value else None)
     product_rows = sorted(int(k.split("_")[1]) for k in (products or {}) if k.startswith("prices_"))
     product_surface = mo.ui.dropdown(options={f"Synthetic market {i + 1}": str(row)
@@ -977,17 +985,8 @@ def _(RESULTS, mo, product_model, teaching):
 
 
 @app.cell(hide_code=True)
-def _(
-    level,
-    mo,
-    pending,
-    pilot_banner,
-    product_model,
-    product_rows,
-    product_surface,
-    products,
-    teaching,
-):
+def _(archive_toggle, level, mo, pending, pilot_banner, product_model, product_rows, product_surface, products, teaching):
+    mo.stop(not archive_toggle.value)
     if not product_rows:
         _out = pending("the product prices of study S7.")
     else:
@@ -1005,7 +1004,8 @@ def _(
 
 
 @app.cell(hide_code=True)
-def _(mo):
+def _(archive_toggle, mo):
+    mo.stop(not archive_toggle.value)
     mo.md(r"""
     ### Historical study 8 · The long end: where the reserve comes from · separate Gaussian/Laplace experiment
 
@@ -1033,7 +1033,8 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(mo):
+def _(archive_toggle, mo):
+    mo.stop(not archive_toggle.value)
     long_prior = mo.ui.slider(0.05, 0.40, step=0.05, value=0.20, label="prior width beyond the data (sd of log ξ0 per √year)",
                               show_value=True)
     long_noise = mo.ui.slider(0.25, 1.50, step=0.25, value=0.50, label="LEAP variance-swap noise (vol points)", show_value=True)
@@ -1042,7 +1043,8 @@ def _(mo):
 
 
 @app.cell
-def _(CHECKS, long_end, long_noise, long_prior, np, teaching):
+def _(CHECKS, archive_toggle, long_end, long_noise, long_prior, mo, np, teaching):
+    mo.stop(not archive_toggle.value)
     long_report = teaching.load_json(CHECKS / "long_end" / "long_end.json")
     long_extra = teaching.load_json(CHECKS / "long_end" / "long_end_extra.json")
     long_desk, long_post, long_shares, _ = long_end.ranges(long_report, long_prior.value, long_noise.value / 100)
@@ -1060,22 +1062,8 @@ def _(CHECKS, long_end, long_noise, long_prior, np, teaching):
 
 
 @app.cell(hide_code=True)
-def _(
-    long_cov,
-    long_desk,
-    long_end,
-    long_extra,
-    long_mean,
-    long_noise,
-    long_post,
-    long_report,
-    long_shares,
-    mo,
-    np,
-    plots,
-    plt,
-    spy,
-):
+def _(archive_toggle, long_cov, long_desk, long_end, long_extra, long_mean, long_noise, long_post, long_report, long_shares, mo, np, plots, plt, spy):
+    mo.stop(not archive_toggle.value)
     _tt = np.linspace(0.02, 5.0, 200)
     _knots = long_end.KNOTS
     _overlap = np.array([[long_end.overlap(t, _knots[j], _knots[j + 1]) for j in range(len(_knots) - 1)] for t in _tt])
@@ -1154,7 +1142,8 @@ def _(
 
 
 @app.cell(hide_code=True)
-def _(mo):
+def _(archive_toggle, mo):
+    mo.stop(not archive_toggle.value)
     mo.md(r"""
     **Where amortized inference comes in.** Every number in this section needs the Monte Carlo pricer: the
     surface's likelihood, and the products. The posterior over the 14 inputs ($H$, $\eta$, $\rho$ and eleven
@@ -1173,7 +1162,8 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(mo):
+def _(archive_toggle, mo):
+    mo.stop(not archive_toggle.value)
     mo.md(r"""
     ### Historical study 9 · Heston against rough Bergomi on the same smile
 
@@ -1185,7 +1175,8 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(RESULTS, image, mo, pending, pilot_banner, teaching):
+def _(RESULTS, archive_toggle, image, mo, pending, pilot_banner, teaching):
+    mo.stop(not archive_toggle.value)
     _across = teaching.load_json(RESULTS / "rough-pilot" / "s7-across" / "across-models.json")
     if _across is None:
         _out = pending("the across-model study.")
@@ -1212,13 +1203,14 @@ def _(RESULTS, image, mo, pending, pilot_banner, teaching):
 
 
 @app.cell(hide_code=True)
-def _(mo):
+def _(archive_toggle, mo):
+    mo.stop(not archive_toggle.value)
     mo.md(r"""
     ### Historical study 10 · What the answer assumes, and what it takes
 
     This historical SPY answer is conditional on four things: **the model**, **the prior**, **the quote-noise model**, and
     **$\xi_0$**, read off the same smile up to one year and treated as exact there, with its long end priced
-    as in section 8. Each is a lever; slot 6 pulls them.
+    as in the long-end study. Each is an assumption to examine.
 
     The chain is:
 
@@ -1230,8 +1222,7 @@ def _(mo):
     6. the products, priced under the posterior with common random numbers;
     7. the reserve, reported with its diagnostics.
 
-    Everything shown is in the repository. A simulation-based pricer, or a range you must report?
-    Talk to the authors: ⟨contacts⟩.
+    The numerical records remain available for review. Missing panels and failed checks keep their original status.
 
     ### Historical-study takeaways
 
@@ -1239,7 +1230,7 @@ def _(mo):
        per smile by random-walk Metropolis, and about 85 CPU-minutes by importance sampling from a
        Gauss–Newton proposal on SPY's 63 quotes (1,024 evaluations at 5.0 CPU-seconds). Where that proposal
        works a book is affordable too; a validation on thousands of simulated smiles is not. The amortized posterior
-       takes seconds, and the audit checks it smile by smile, at about 53 CPU-minutes on SPY's 63 quotes.
+       was designed to amortize repeated inference. These cost estimates do not validate the archived audit: its pilot likelihood counted Monte Carlo variance twice, and a corrected rerun is not included.
     2. **On SPY's full surface the classical interval is a good approximation**; the posterior differs where
        the quotes are thin, and for the inputs they do not reach.
     3. **Long-dated products rest on the curve beyond the quotes.** Held flat, as in the baseline, it gives a
@@ -1248,7 +1239,7 @@ def _(mo):
     4. **The range is conditional on the model.** Heston's long end is confidently wrong, and the gap across
        models is judged smile by smile.
 
-    **Next, slot 6:** what changes when the prior or the model is wrong, and how to find out.
+    **Further discussion:** what changes when the prior or the model is wrong?
 
     *Evidence and code:* the [curriculum](../curriculum/05-slot5-rough-bergomi-to-a-reserve.md), the
     [course](../../course/README.md) and `src/sbi4f_tutorial/`.

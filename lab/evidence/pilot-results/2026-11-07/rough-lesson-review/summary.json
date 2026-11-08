@@ -1,0 +1,165 @@
+{
+  "format": "notebook_workflow_review_v1",
+  "application": "rough-options",
+  "baseline": "3d6febb3894c0ebe5fc0041954664d43270a73d9",
+  "scientific_acceptance": false,
+  "existing_assets_changed": false,
+  "verification": {
+    "tutorial_tests": 44,
+    "lab_core_tests": 527,
+    "lab_optional_skips": 3,
+    "notebook_exports": 7,
+    "notebook_cell_errors": 0,
+    "runtime_boundary_symbols": 192,
+    "local_document_links": 48,
+    "moved_function_definitions_unchanged": 8,
+    "marimo_warnings": "existing empty cells in slots 2 and 3"
+  },
+  "browser": {
+    "page_errors": [],
+    "native_workflow_visible": true,
+    "ppc_elapsed_seconds": 5.933668458950706,
+    "training_elapsed_seconds": 20.135736708994955,
+    "joint_options": [
+      "Worked joint example",
+      "Curve level\u2013decay trade-off",
+      "Coupled volatility parameters",
+      "Weakly informed decay"
+    ],
+    "archive_toggle": true,
+    "narrow_width": 760,
+    "horizontal_overflow": false
+  },
+  "helper_benchmarks": {
+    "implementation": "exact task grids and precision; bounded session-only helpers",
+    "known_posterior_predictive": {
+      "case": "rough-known100k-validation0",
+      "parameter_draws": 8,
+      "quote_replicates_per_draw": 8,
+      "maturity_years": 0.25,
+      "seed": 2026,
+      "seconds": 4.8151280001038685,
+      "max_mc_se_over_sigma": 0.24408684009751105,
+      "paths_per_draw_per_block": [
+        [
+          0,
+          32768,
+          0
+        ],
+        [
+          0,
+          32768,
+          0
+        ],
+        [
+          0,
+          32768,
+          0
+        ],
+        [
+          0,
+          32768,
+          0
+        ],
+        [
+          0,
+          32768,
+          0
+        ],
+        [
+          0,
+          32768,
+          0
+        ],
+        [
+          0,
+          32768,
+          0
+        ],
+        [
+          0,
+          32768,
+          0
+        ]
+      ],
+      "target_se_over_sigma": 0.25,
+      "last_rung_cap_used": false
+    },
+    "fresh_known_training_pairs": {
+      "case_task": "rough-known100k-validation0",
+      "examples": 8,
+      "seed": 2026,
+      "seconds": 19.870194291928783,
+      "max_mc_se_over_sigma": 0.2420018766445242,
+      "paths_per_example_per_block": [
+        [
+          32768,
+          32768,
+          32768
+        ],
+        [
+          32768,
+          32768,
+          32768
+        ],
+        [
+          32768,
+          32768,
+          32768
+        ],
+        [
+          32768,
+          32768,
+          32768
+        ],
+        [
+          65536,
+          65536,
+          65536
+        ],
+        [
+          32768,
+          32768,
+          32768
+        ],
+        [
+          32768,
+          32768,
+          32768
+        ],
+        [
+          32768,
+          32768,
+          32768
+        ]
+      ],
+      "target_se_over_sigma": 0.25,
+      "last_rung_cap_used": false,
+      "scope": "fresh full-prior examples, no validation examples and no rejected prior rows"
+    },
+    "joint_posterior_predictive_trial": {
+      "case": "rough-joint100k-validation0",
+      "parameter_draws": 8,
+      "seconds": 129.1029069579672,
+      "status": "stopped by 120-second between-surface guard; no partial result",
+      "published_action": false
+    },
+    "scope": "Local bounded workflow and repricing demonstrations; no training convergence or conditional posterior validation claimed."
+  },
+  "scope": "Session-only software illustrations, not new calibrated estimators or posterior acceptance. Banks and existing model weights unchanged.",
+  "source_sha256": {
+    "lab/src/sbi4finance/calibration/pricing.py": "dc554bda791ee4edea22a8de2352579f9fa30b91cc6acaa0fd138d587d06921c",
+    "lab/src/sbi4finance/calibration/tasks.py": "8f24909732836d6618a2e698cd01304984426928f0b42c58786270870b74d052",
+    "lab/studies/runtime_boundary.py": "87e38e0cbf7c569b57db1e930a336cabdc2870d893b9d3af7757adf27bd20102",
+    "tutorial/notebooks/slot5_calibration.py": "5714dd9b8356db533890f2a513df109bf459ec3276c383eba95a287f22c72eb4",
+    "tutorial/src/sbi4f_tutorial/rough_options/lesson.py": "4a3164006411713001784ed0841fb1915f7b1be9754e4f1b9f9ac140fb742204",
+    "tutorial/src/sbi4f_tutorial/shared/pricing.py": "68a690b4b425cf3d50f68c303989c96a930ca48f83940d3bace344855d60fb09",
+    "tutorial/src/sbi4f_tutorial/shared/tasks.py": "fb6240751ab4eeab4a46aab5d0329322705557c2a71a151f280409b853fdf7b2",
+    "tutorial/tests/test_rough_session.py": "26dae70ed3c8e3f173371e89140741080cdc22aac819415992afb6f0a9cad2b6"
+  },
+  "timing_environment": {
+    "system": "Darwin",
+    "architecture": "arm64",
+    "scope": "Local CPU runs; browser elapsed includes UI round trips. Not a hardware-independent speed guarantee."
+  }
+}

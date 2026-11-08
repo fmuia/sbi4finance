@@ -121,6 +121,53 @@ teaching structure to improve.
 **Completion:** current/historical continuity is explicit, cached viewing is
 complete, optional actions remain explicit, and no statement exceeds its source.
 
+### Slot 5 revision plan · 7 November 2026
+
+Apply the direct BayesFlow teaching style of Stefan’s revised Heston lesson.
+The primary lesson follows one current known-curve synthetic observation;
+joint-curve inference is the extension. Historical studies remain available
+with their own evidence and are optional to the teaching sequence.
+
+1. Show the question, rough-volatility model and data first. Keep the distinction
+   between Monte Carlo pricing error and imposed quote noise visible; put
+   numerical ladders, covariance details and production settings behind details.
+2. Connect prior/simulation, adapter, network, fitting and posterior sampling.
+   Explain supplied curve context explicitly. Replace the 500-epoch production
+   example with a bounded teaching recipe; full-scale reproduction is optional.
+   Any executable small fit uses independent training pairs, never cached
+   validation labels, and displays its own outputs separately from pretrained results.
+3. Present quotes, supplied inputs, focused posterior views and interpretation
+   in short steps. Joint inference makes curve coefficients targets; existing
+   known/joint examples remain different observations and curve families.
+4. Add an explicit, bounded posterior-predictive action using complete paired
+   posterior rows and the selected task’s numerical pricing policy. Report
+   numerical precision separately from new quote noise and stop on a missed
+   pricing budget. No pricing campaign starts on opening or writes assets.
+5. Collapse historical SPY/pilot/classical/long-end/cost studies, remove the
+   stale slot-4 importance-sampling reference and keep that method out of the
+   main calibration explanation. Preserve archived limitations and provenance.
+6. Update this plan and the collaborator handover. Check helper behavior,
+   notebook exports, rendered controls, task switching and narrow layouts.
+
+**Acceptance:** cached viewing needs no download or training; the visible code
+matches executable actions; optional action results identify the observation
+and task; numerical failures remain explicit; existing weights, saved evidence
+and scientific-acceptance decisions do not change. Run tutorial tests, marimo
+checks and all notebook exports, then the affected lab checks and release checks.
+
+**Status:** implemented. The known-curve lesson has focused posterior views,
+visible native BayesFlow code, an eight-market/ten-update training action and
+an eight-draw three-month predictive action. Historical studies are default-off.
+The eight moved curve/context functions retain their original definitions;
+lab imports reuse the same objects. No saved evidence or model changed.
+
+Verification passes: 44 tutorial tests; 527 core lab tests (three optional skips);
+all seven notebook exports; marimo and release checks; 48 local documentation
+links. Chrome checks cover the actual training/predictive actions, four joint
+cases, archive controls and a 760-pixel layout. Existing empty-cell warnings in
+slots 2 and 3 remain outside this change. The handover is updated; collaborator
+rehearsal remains deferred.
+
 ## D. Develop the trajectory notebook to application parity
 
 **Retain:** the shared Heston/known-curve/joint-curve selector, daily observation
@@ -397,6 +444,8 @@ All paths in the runtime column are relative to `tutorial/src/sbi4f_tutorial/`.
 | Heston path illustration, Fourier quote prices and predictive quotes | `heston_options/lesson.py`: `heston_illustrative_paths`, `heston_smile`, `heston_posterior_predictive`; Fourier model in `heston_options/model.py` | Current saved posterior/reference under `assets/backbones/heston-final500/`; the lab imports the same runtime definitions. |
 | Option case selector, posterior table and corner | `shared/backbones.py`: `load_example`, `parameter_rows`, `corner`; cache checks in `shared/full_surface_teaching.py` | Rough cases under `assets/backbones/rough-known*/` or `rough-joint*/`. |
 | Explicit rough forward-simulation button | `rough_options/lesson.py`: `price_rough_smile` → `shared/pricing.py` → `rough_options/{simulator,model}.py` | Reads `assets/tasks/calibration_rough_pilot.json`; it does not replace the selected cached posterior. |
+| Rough small training action | Notebook `train_small_estimator`; `rough_options/lesson.py`: `generate_training_pairs`; priors/curves in `shared/tasks.py` | Eight fresh prior examples, ten optimizer updates, session-only results. The selected cached observation is inference-only. |
+| Rough posterior-predictive action | `rough_options/lesson.py`: `rough_posterior_predictive` → `shared/pricing.py` | Eight paired posterior rows at three months; independent quote noise, original pricing policy, explicit numerical failure. No assets written. |
 | Trajectory teaching data generation | `trajectories/simulation.py`: `teaching_task`, `generate`; Heston physical path kernel in `heston_options/simulator.py` | NumPy backend for small tutorial examples; optional accelerated backend for production. Disk-backed banks and verification remain in the lab. |
 | Trajectory case/history views | `trajectories/lesson.py`: `load_example`, `cached_posterior`, `plot_returns`, `plot_evolution` | `assets/trajectories/{heston,rough-known,rough-joint}/`; aggregate diagnostics under `assets/results/trajectories/closeout-20261031/`. |
 | Actual trajectory prefix/mask and optional inference | `trajectories/inference.py`: `conditioning_data`, `build_workflow`, `sample`; explicit local loading via `trajectories/lesson.py`: `load_live` | Optional model bytes under `assets/local-checkpoints/path-*/`; lab training reuses the numerical definitions. |
@@ -404,9 +453,9 @@ All paths in the runtime column are relative to `tutorial/src/sbi4f_tutorial/`.
 
 Historical dependencies remain real. In particular, `rough_options/long_end.py`
 reads SPY and quick-check assets eagerly; collapsing a notebook section does not
-make those assets removable. Heston's optional small fit executes shared
-`full_surface` APIs; the rough training scaffold remains displayed code until
-explicitly run by an author.
+make those assets removable. Optional small fits execute native BayesFlow
+workflows. Rough training and prediction are session-only explicit actions;
+their highlighted code is visible before running them.
 
 #### A small intervention and its checks
 

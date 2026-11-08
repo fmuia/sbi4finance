@@ -64,7 +64,7 @@ REUSED_SYMBOLS = {
     "sbi4finance.calibration.pricing": {
         "sbi4f_tutorial.shared.pricing": (
             "_PAIR_CHUNK", "step_curve", "_block_contracts", "rough_block", "rough_surface",
-            "heston_surface",
+            "heston_surface", "heston_variance_values", "heston_integrated_variance", "heston_variance_curve",
         ),
     },
     "sbi4finance.rough_bergomi": {
@@ -87,7 +87,8 @@ REUSED_SYMBOLS = {
             "curve", "FAMILY", "JOINT_ROUGH_ID", "JOINT_ROUGH_PARAMETERS", "HKDE_PARAMETERS",
             "UNIVERSE", "TASK_KEYS", "CURVE_KINDS", "is_calibration_task", "is_joint_curve_task",
             "_positive_int", "_interval", "validate_context", "validate_task", "_validate_joint_task",
-            "curve_kind", "validate_curve_prior",
+            "curve_kind", "validate_curve_prior", "MAX_CURVE_DRAWS", "interval_midpoints", "draw_context",
+            "_joint_coefficients", "derived_context", "joint_curve",
         ),
     },
     "sbi4finance.calibration.teaching": {

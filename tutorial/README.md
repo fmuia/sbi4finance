@@ -102,6 +102,23 @@ Use your own GitHub or Drive account with access to the files; Drive Desktop
 and Oscar are not required. Put downloaded models in `assets/local-checkpoints/`
 as instructed. The loaders check that the model matches the selected example.
 
+## Rough options
+
+Start with the supplied-curve example: infer H, eta and rho from option quotes
+and seven known forward-variance levels. The joint-curve extension estimates
+three curve coefficients as well. These examples use different observations
+and curve families; they are not a matched comparison of curve uncertainty.
+
+The visible BayesFlow code follows simulation → adapter → network → fit → sample.
+Saved results remain the default. Optional simulation, small training and
+posterior-predictive actions run only when requested and keep their results
+separate from the supplied estimator. Monte Carlo pricing error is reported
+separately from the assumed quote noise.
+
+Historical SPY, pilot, classical and long-end studies are optional. They retain
+their original scope; they do not validate the current synthetic posteriors.
+An independent rough-model reference and further product checks remain outstanding.
+
 ## Trajectory inference
 
 The three models use daily returns and estimate drift. The joint rough model
