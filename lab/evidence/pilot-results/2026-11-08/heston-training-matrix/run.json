@@ -10,7 +10,6 @@
   "control_original_sha256": "bc9bedd624191389aa316fc6b25dd8e9e81a1bc1b78b1e9d63d00d8ed1fdad6c",
   "control_original_status_retained": "inconclusive",
   "root_on_oscar": "/oscar/scratch/afengler/sbi4finance-heston-matrix-20261108",
-  "data_generation_performed": false,
   "reserved_test_evaluated": false,
   "scientific_acceptance": false,
   "model_publication_allowed": false,
@@ -663,5 +662,6 @@
     "submit_matrix.py": "c3da93f617db60ad9068d9ed4dac801b2d1b972a68f24a660671d2ffc7e831eb",
     "collect_matrix.py": "0f96c237a2b13bc99c9aba942de4e029881239ddcc0355730a927c60997950ad"
   },
-  "next": "Let all14 independent lanes finish, collect completed and failed outputs/accounting, then review development cost versus quality. No automatic retry or larger budget."
+  "next": "Let all14 independent lanes finish, collect completed and failed outputs/accounting, then review development cost versus quality. No automatic retry or larger budget.",
+  "new_training_bank_generated": false
 }
