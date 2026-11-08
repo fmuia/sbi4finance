@@ -231,7 +231,7 @@
   "reproduction": "From lab/: pixi run --locked -e core python scripts/benchmark_heston_pricing.py --out CALLER_OUTPUT --panel P1_PANEL_JSON --reference P1_REPORT_JSON --threads 1 --repeats 3",
   "scope": "Same-host sequential P1/P2 scalar pricing microbenchmarks; within each, warm routes alternate. No complete writer/bank generation measurement. Peak RSS includes both implementations and imports, not incremental cache memory.",
   "validation": {
-    "lab_tests": 542,
+    "lab_tests": 545,
     "lab_optional_skips": 3,
     "tutorial_tests": 37,
     "notebook_exports": 7,
@@ -239,6 +239,7 @@
     "marimo_check_exit": 0,
     "preexisting_empty_cell_warnings": 2,
     "manifest_claims_changed": false,
-    "runtime_aliases_verified": 183
+    "runtime_aliases_verified": 183,
+    "scope": "Integrated P1 and P2 branch; full locked core suite."
   }
 }

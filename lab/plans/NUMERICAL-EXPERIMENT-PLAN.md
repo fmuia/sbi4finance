@@ -69,7 +69,7 @@ The optimization retains the numerical ladder and price bounds, with a bounded
 read-only grid cache and a general-grid fallback. Existing banks/checkpoints
 remain unchanged; generation from this producer has a new identity. No complete
 bank writer was timed, so these are scalar-pricing gains. The pricing branch
-passes **542 lab tests (three optional skips)**, **37 tutorial tests**, all
+passes **545 lab tests (three optional skips)**, **37 tutorial tests**, all
 **seven notebook exports**, notebook checks and release checks.
 
 ### Sequence and parallel work
