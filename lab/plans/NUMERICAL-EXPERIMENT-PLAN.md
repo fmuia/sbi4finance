@@ -2,9 +2,340 @@
 
 **Delivery objective, revised 29 October 2026:** provide the reusable data, trained estimators and checked examples that the live tutorial actually loads. A working generator, a small development fit or a larger row count is an intermediate result. Each lesson needs a usable estimator and evidence that its posterior and product conclusions are trustworthy.
 
+**Performance follow-up, 7 November:** the [Heston PR and commit plan](#heston-performance-pr-and-commit-plan--7-november-2026)
+below separates pricing optimizations, a bounded training-budget study and the
+publication of measured recipes. No implementation or compute jobs start in
+this planning change.
+
 The numerical implementation was delivered through [PR 48](https://github.com/fmuia/sbi4finance/pull/48) and its follow-ups. It extends Francesco's course and existing numerical studies, whose [recorded results](../../course/status.md) remain the baseline to reproduce and improve. The [implementation guide](full-surface-calibration.md) gives the shared workflow; the [backbone work order](tutorial-backbone-work-order.md) gives the immediate actions and spending boundaries.
 
 **Current state, 29 October:** Heston, known-curve rough Bergomi and joint-curve rough Bergomi each have a checked **100k training bank and completed baseline fit**. Their native archives, models and small cases are available through the [training-data guide](training-data-guide.md), on [GitHub](https://github.com/fmuia/sbi4finance/releases/tag/tutorial-backbones-2026-10-29) and [Drive](https://drive.google.com/drive/folders/1Zez6mSu8Y_B7IIjdRYWJlDxdAl49fTLq). The participant package uses BayesFlow 2.1, ships six cached cases and supports optional matching native checkpoints. The [report](../evidence/reports/inference-performance-2026-10-28.pdf) and [course status](../../course/status.md#the-joint-runs) distinguish completed J1 development checks from pending J2 conditional references and J3 product/long-end comparisons. Bank generation is complete; lesson curation is the immediate priority. Historical budgets and controllers do not authorize another campaign.
+
+## Heston performance: PR and commit plan · 7 November 2026
+
+**Objective:** reduce the cost of generating Heston option data and find a
+shorter training recipe that meets the tutorial's stated posterior checks.
+Keep the model, prior, quote noise, numerical target and scientific claims
+explicit. This is a performance follow-up for the four-parameter, 63-quote
+Heston option task; it does not launch a new bank or extend the rough/trajectory
+campaigns.
+
+The [initial audit](../evidence/pilot-results/2026-11-07/heston-performance-audit/summary.json)
+is exploratory evidence, not a release benchmark. On the current notebook,
+15 online epochs mean only **30 updates / 1,920 training presentations**. The
+local timed fit took **9.36 s**, including 7.26 s in pricing callbacks; imports
+and workflow construction are outside that timer. The full 100k fit used
+**195,500 updates / 50 million presentations** and took **482 s including reload**
+on an L40S GPU. Those are different workloads and machines.
+
+The current checked scalar pricer averaged **4.84 ms/surface** on 64 fixed prior
+rows. A fixed-grid prototype averaged **1.51 ms** with the same refinement and
+price-bound checks, with maximum price difference below 6e-16. The published
+bank's generation timings belong to an older frozen producer. The prototype
+needs the regression and reproducibility work below before production use.
+
+### Implementation progress · 8 November 2026
+
+P1 is implemented: the lab lock metadata is repaired without external dependency
+changes; the portable benchmark retains all 276 predeclared rows; training and
+evaluation now report actual work and separately scoped clocks. The
+[baseline record](../evidence/pilot-results/2026-11-08/heston-performance-baseline/summary.json)
+contains the measured panel, source identities, cold/warm summaries and
+reproduction command. Warm median pricing is **3.92 ms** for the checked bank
+route and **2.39 ms** for the notebook route on this CPU. This measures pricing,
+not complete bank generation. All cold/warm prices and refinement differences
+match the frozen reference exactly; there are no failed panel rows. The frozen
+reference median is stable at 8.53 ms for the checked route.
+
+The additive training report distinguishes completed versus recovered work,
+partial final batches, selected-checkpoint updates, nested timing phases, host
+peak RSS and scheduler allocations. Existing epoch recovery/defaults remain in
+place. The baseline lab suite passes **534 tests, with three optional skips**;
+manifest, claims and runtime-boundary checks pass. P2 and P3 proceed as separate
+branches. No study matrix has been admitted and no model has been replaced.
+
+### Sequence and parallel work
+
+| PR | Purpose | Depends on | Can proceed alongside |
+| --- | --- | --- | --- |
+| Planning PR, this change | Record the audit and agree this sequence | Current main `3d6febb` | — |
+| P1 | Reproducible benchmarks and separate timing fields | Planning review | — |
+| P2 | Faster checked scalar pricing | P1 baseline | P3 and the bank-based training study |
+| P3 | Frozen training-budget protocol and bounded runner | P1 timing contract | P2 |
+| P4 | Run the study and report accuracy versus cost | P3 protocol review and readiness | P2; it reads the existing bank |
+| P5 | Publish the measured recipe and refresh tutorial cost statements | P2 and P4 results | Content review of the other lessons |
+| P6, optional | Bounded batch pricing | P2 benchmark demonstrates a remaining need | Does not block P3–P5 |
+
+Each row is a separate reviewable PR. The implementation starts from current
+main, not another collaborator's unmerged lesson branch. P2 and P3 should avoid
+editing each other's files. Changes to the Heston notebook land in P5; resolve
+against the then-current notebook without reverting Stefan's simplifications.
+
+The planning PR has two commits: record the compact exploratory audit, then add
+this plan. It changes no executing code and submits no jobs.
+
+### P1 · Establish a reproducible baseline
+
+**Commit 1 — reconcile local package lock metadata.** At baseline `3d6febb`,
+`pixi install --locked -e core` in the lab fails because its lock metadata no
+longer matches the sibling tutorial package. `pixi lock --dry-run --json`
+reports no environment/package changes. Refresh the local-package metadata and
+verify both locked environments install. Keep all external package versions and
+builds unchanged; any required upgrade needs its own reviewed scope. Do not
+work around the mismatch by changing the documented install to `--frozen`.
+
+**Commit 2 — portable pricing benchmark.** Add one benchmark entry point under
+`lab/scripts/`, reusing the checked pricing APIs and the existing
+`tests/test_hkde_maturity_reuse.py` reference. Accept input/output paths and
+CPU thread settings; remove local paths from the exploratory scripts. Freeze
+256 prior rows, all 16 prior-box corners, targeted difficult short-maturity
+cases, the ordered 63-contract grid, seeds and source/task identities. Include
+one-rung notebook pricing and the full bank refinement policy as separate
+routes. Record every failure; do not skip or redraw a difficult row.
+
+**Commit 3 — training timing and work counters.** Extend the existing training
+worker/report with backward-compatible additive fields: actual optimizer
+updates, batch sizes, unique rows, example presentations, architecture and
+optimizer/schedule. Measure imports, data loading, first build/compile, pricing,
+training, validation, checkpoint serialization/reload and posterior sampling.
+Record wall time, process CPU time and allocated resource time separately.
+For accelerator phases, synchronize at measurement boundaries; callback times
+may overlap device work and must not be subtracted as if all phases were serial.
+Keep the existing interrupted-run and optimizer-state recovery contract.
+
+**Commit 4 — baseline report and cost labels.** Record hardware/device, package
+and source versions, cold/warm cache state, sample counts, failure counts,
+median/p95/max and total panel time. Use alternating implementation order and
+repeats for microbenchmarks. Label old generation/training records as historical
+rather than overwriting them. Define the fields P2 and P4 must report.
+
+**Files:** local-package lock metadata, `lab/scripts/`, the existing full-surface trainer/evaluator, focused
+lab tests and compact evidence under `lab/evidence/pilot-results/`. Runtime
+mathematics and notebook defaults stay outside this PR.
+
+**Gate:** the benchmark reruns from a complete checkout using caller-owned paths;
+prices, seeds and failures agree; current training defaults and recovery still
+work. No unit test passes or fails because of wall-clock speed. A benchmark
+failure is a recorded result, not an excuse to shorten the panel.
+
+### P2 · Optimize scalar pricing while retaining the checks
+
+**Commit 1 — cache fixed-grid Fourier plans.** Cache the immutable contract-grid
+quantities used repeatedly: strike phases, weights, maturity index maps and
+quadrature controls. Use exact, content-based keys that retain contract order;
+never round maturities or key only by a mutable task object's identity. Bound
+cache memory and prevent callers from mutating cached arrays. Keep the general
+pricing API and use its existing path when fast-path conditions are not met.
+
+**Commit 2 — share work across calls and puts.** Evaluate characteristic
+functions once per distinct maturity for the combined surface. Derive puts by
+put–call parity, retaining the existing price bounds, precision and failure
+behavior. Place the implementation in the tutorial-owned
+`shared/pricing.py` / `heston_options/model.py`; lab callers reuse it directly.
+
+**Commit 3 — reuse refinement rungs and publish measurements.** When an accuracy
+comparison fails, carry its successfully computed refined prices into the next
+comparison rather than repricing that rung. Failed/bounds-violating evaluations
+must not become accepted cached results. Return the accepted refined prices and
+the same diagnostic discrepancy as before. Run the P1 benchmark after each
+optimization so its contribution can be measured or reverted independently.
+
+**Regression panel:** compare against the frozen reference at every rung,
+including cold/warm caches, changed and mutated grids, mixed/unsorted contracts,
+scalar/broadcast inputs, expiry, zero vol-of-vol, zero/nonzero supported jumps,
+price-bound failures and refinement exhaustion. The supported general Heston–Kou
+API retains its tests even though this optimization targets the Heston lesson.
+
+**Gate:** identical acceptance/failure outcomes and target/task/noise controls;
+per-price differences at most **1e-12 forward units** and **1e-6 quote-noise SD**
+on the declared valid panel. Report differences in prices and refinement
+records; investigate any acceptance-boundary discrepancy rather than widening
+the tolerance after seeing it. Publish cold/warm total and tail timings plus
+peak memory. A useful target is at least 2× on the fixed-grid benchmark; the
+observed 3.2× prototype is not a promised end-to-end bank speedup.
+
+This changes producer source identity. Preserve existing bank/checkpoint bytes
+and keep old generation resumable only from its original producer. Run the
+shared-runtime boundary, pricing/collection tests and required release checks.
+
+### P3 · Freeze the training-budget experiment before fitting
+
+**Commit 1 — protocol and data-role audit.** Add a bounded experiment
+configuration beside the existing Heston configs and update this plan with its
+hash before launching. Reuse the immutable 100k bank and saved full-model
+baseline. Audit all previously inspected IDs, reference cases and validation
+usage. The 5k validation pool already influenced epoch selection; a new slice of
+it is not an untouched final test. Reserve genuinely unused test IDs before
+screening. If none can be established, propose a small independent evaluation
+panel separately; do not silently reuse inspected observations.
+
+Hold the task, prior, quote noise, target transform, production adapter,
+FlowMatching family, vector conditions and native sampler fixed. Compare
+**2×128 and 4×256** subnet widths, **batch 256**, and optimizer-update budgets
+**30, 100, 300, 1,000, 3,000, 10,000 and 30,000**. The initial screen uses seed 0:
+**14 fresh fits at most**. This isolates network size and training exposure;
+it is not a claim that the notebook's different adapter/default optimizer is
+the same training recipe. Benchmark that exact notebook recipe separately.
+Short runs visit fewer unique rows of the same source bank. Record the actual
+visited IDs outside neural conditions; do not report the entire bank as seen.
+
+**Commit 2 — explicit update cap and learning-rate schedule.** Add a small
+fresh-run-only budget mode to the existing worker using the public fit/callback
+interfaces. Stop at the exact requested update, including a partial epoch, and
+record actual exposure and the endpoint checkpoint. Use the same existing
+AdamW/warm-up/cosine rule parameterized by each run's own total update budget;
+record its discrete values for very short budgets. Preserve the current default
+500-epoch behavior and epoch-recovery format. Do not claim that an early
+checkpoint from a 500-epoch schedule is an independently designed short fit.
+Test the cap, stop/checkpoint ordering, schedule, determinism and rejection of
+incompatible resume attempts. Assert actual optimizer iterations and endpoint
+weights even when several batches could execute inside one compiled block;
+checking the requested limit alone does not establish an exact stop.
+
+**Commit 3 — posterior-based screening and report.** Use one fixed, already
+inspected development panel of **512 observations and 128 draws each**, the
+same seeds and the same full-model control. Reuse the
+[three cached conditional comparisons](heston-backbone-comparison-2026-10-27.md#the-three-cached-conditional-comparisons)
+with **4,096 draws per case**; retain their MCMC limitations and
+Monte Carlo uncertainty. Use **32 fixed development observations × 32 paired
+parameter draws** for the bounded posterior-predictive check.
+Conditional mean and interval comparisons account for neural sampling error
+and reference mean/quantile uncertainty, retaining the reference chain/draw
+structure and autocorrelation. They must not treat all MCMC draws as independent.
+Report rank/coverage diagnostics, parameter recovery, physical interval widths,
+conditional mean/width agreement and a bounded posterior-predictive check.
+Validation loss is descriptive, not the model-selection gate: the old epoch-402
+minimum-loss candidate failed checks that final epoch 500 passed.
+Before admitting the fit matrix, evaluate the saved full-model control using
+these same sampling settings, conditional rules and uncertainty calculation.
+If even that control is inconclusive or fails the intended reference gate,
+resolve the protocol/reference-precision question before commissioning the
+matrix; fitting more models does not repair an imprecise reference.
+
+**Commit 4 — resource admission and independent execution.** Give each fit its
+own directory and durable state. A failed lane does not cancel unrelated lanes;
+there are no automatic retries or automatic larger budgets. Keep the existing
+source/task/bank hashes, same-checkout guard and projected bank reads. New
+budget fits use no online simulation and never decode the unused covariance
+payloads. Expose ordinary CPU/GPU CLI commands; Slurm is optional deployment.
+Each job uses an immutable checkout. Merging P2 must not update source beneath
+an active P4 run; the independent training lane does not wait for that merge.
+
+**Gate before P4:** freeze panel IDs, candidate configs, seeds, metrics, numerical
+thresholds, checkpoint policy and resource ceilings. Review a tiny exact-cap
+training/reload smoke and its measured memory/time. No selected model or
+notebook weight changes in P3.
+
+### P4 · Execute and compare time to posterior quality
+
+**Commit 1 — the bounded development screen.** Run the 14 predeclared seed-0
+fits, with independent resource receipts. Use endpoint checkpoints and compare
+to the saved full-model baseline; do not refit that baseline. Record setup,
+training, simulation-free optimizer work, evaluation, sampling and reload costs
+separately. Record failed/incomplete fits and all diagnostics, not just winners.
+
+**Commit 2 — freeze and confirm at most two finalists.** A development finalist
+must have finite in-support samples without clipping, pass the existing
+simultaneous marginal rank screen on the declared panel, have 90% and 95%
+coverage within three percentage points of the full-model control, and meet the
+existing conditional rules on the three cached cases: absolute mean difference
+at most 0.3 reference SD and 90% width ratio in [0.75, 1.25]. Keep borderline
+comparisons inconclusive when reference/sample uncertainty crosses a threshold.
+Among qualifying candidates, choose by measured total cost; do not pick a winner
+from loss alone. Freeze up to two complete recipes, then run seeds 1 and 2 for
+each. Including the reused seed-0 fits, this is **18 new fits at most**, not an
+open architecture search. Report every seed; do not keep only the best one.
+Seed 0 is the predeclared publication candidate; seeds 1 and 2 test robustness.
+
+**Commit 3 — one final confirmation and compact report.** After candidate
+selection freezes, compare the candidates and saved full-model control on
+**2,000 audited unused observations, 512 draws per observation**. Evaluate all
+three seeds for each finalist. Apply the existing simultaneous rank criterion;
+report 50/80/90/95% coverage, recovery and paired uncertainty. For each coverage
+level, compare **absolute coverage error against nominal**: candidate error
+minus control error. Its upper confidence bound must be at most **two percentage
+points**. The upper bound on each parameter's normalized mean-squared-error ratio
+to the control must be at most **1.10**. Use predeclared simultaneous one-sided
+95% paired-bootstrap bounds over observation IDs, covering the declared
+finalists, seeds, parameters and levels. Each seed must meet the gates; there is
+no best-seed selection. These proposed margins and their executable calculation
+must be reviewed in P3, before the screen. An inconclusive interval is not a
+pass. Normalize physical-coordinate squared errors by that parameter's declared
+prior variance; resample observations jointly across models and targets to
+preserve pairing. Apply the recovery gate per parameter, not to an average that
+could hide an initial-variance regression. Conditional references and a fixed
+posterior-predictive panel remain distinct checks, not proof of the full copula.
+
+This is one predeclared final comparison of frozen candidates; no feedback from
+it goes back into model/schedule tuning. A candidate that misses a gate remains
+a fast demonstration. If none qualifies within 30k updates, retain the current
+pretrained estimator and report the failed cost target; a new budget needs a
+separate proposal. Initial scope adds no MCMC chains or path-product study.
+
+**Proposed compute ceilings, to confirm from the P3 smoke:** no more than
+**1.25 GPU-hours and six allocated CPU-hours total**, including failed attempts,
+readiness, evaluation, reload and cleanup. Use at most four host cores per GPU
+run; plan a 24 GiB allocation with GPU preallocation disabled and measure actual
+peak use. Reserve the forecast final-confirmation cost before admitting the
+screen. These are new proposed limits, not reuse of historical authorization.
+If the measured forecast does not fit, reduce the predeclared matrix before
+launch or stop for a revised plan; do not trim quality checks after results.
+No new 100k bank, alternative-cluster requirement or overnight dependency chain
+is needed.
+
+**Gate:** a reproducible cost-versus-quality report with continuous discrepancies,
+uncertainty and all failures; the original task/bank and independent final-panel
+roles remain intact. Smaller/faster is a result only at the stated quality.
+
+### P5 · Publish the recipe and update the teaching cost statements
+
+**Commit 1 — explicit lesson actions and tested recipe.** Keep the direct,
+small BayesFlow example understandable. Separate its measured fit time from
+the evaluated pretrained estimator and from optional training on the downloaded
+bank. Publish a short recommended recipe/model only if P4 supports it; otherwise
+retain the current pretrained model and label the small fit as a demonstration.
+Do not remove calibration or reference limitations to make the timing attractive.
+
+**Commit 2 — cost labels, metadata and handover.** Update the Heston notebook,
+existing curriculum/cost notes and training-data guide with clearly labelled
+historical versus current figures. Report dataset size, unique examples,
+updates, architecture, device, included phases and cold/warm state beside a
+number. Use measured end-to-end generation before claiming bank-generation
+speedups. Publish new assets only through the established acceptance/manifest
+workflow; keep historical hashes, failure records and the unchanged full model
+available. No changes to the opening Beamer slides or public website are needed
+unless their actual cost claims need correction.
+
+**Commit 3 — rehearse and close out.** Verify installed locked environments,
+all tutorial tests and notebook exports, explicit training/inference buttons,
+matching native reload and saved/live example identities. Record a cold and
+warm presenter-machine run; headless export alone does not exercise a training
+button. The collaborator workshop rehearsal remains a separate agreed step.
+
+**Gate:** a collaborator can run the documented recipe and interpret the cost
+and accuracy it establishes. The tutorial keeps a saved-example fallback and
+opens without training. A production change includes the required lab tests,
+release checks, tutorial checks and reviewed artifact metadata.
+
+### P6 · Optional bounded batch pricing
+
+Consider this only if the P2 end-to-end profile still shows row dispatch or
+pricing as a material bottleneck. It is not required for the first improvement.
+
+1. Add a bounded parameter-batch API with a caller-selected chunk limit; retain
+   scalar callers and the general pricing fallback.
+2. Carry per-row refinement, failure, order and split/seed identity through the
+   batch. Verify batch versus scalar prices, diagnostics and failures on the
+   same panel, including mixed easy/hard rows. Never drop/redraw a failed row.
+3. Benchmark the complete bank writer and explicit online example, including
+   memory, serialization and startup. A GPU/JAX or Numba kernel requires its own
+   numerical-precision comparison; it is not assumed faster merely by using an
+   accelerator.
+
+**Gate:** a measured benefit beyond P2 with bounded memory and unchanged checks.
+A covariance/storage-format change is a separate future task and should follow
+measurement of actual I/O/compression cost, not the logical zero-array size.
+
 
 ## The three delivered routes
 
