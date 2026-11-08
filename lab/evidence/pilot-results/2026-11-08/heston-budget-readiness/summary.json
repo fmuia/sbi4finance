@@ -1154,5 +1154,7 @@
     "saved_reference_mean_mcse_reference_sd": 0.01967276482025098,
     "critical_value": 3.078088072842161,
     "scope": "The saved-reference mean MCSE floor nearly exhausts the observed margin even if neural Monte Carlo error vanished. Additional short fits do not resolve this; a separately costed reference-precision or pre-study protocol review is needed."
-  }
+  },
+  "cpu_model": "Apple M5 Max",
+  "cpu_model_source": "Read separately with sysctl -n machdep.cpu.brand_string on the local readiness host;18 logical CPUs."
 }
