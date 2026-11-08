@@ -4,8 +4,9 @@ from importlib import metadata
 import json
 from pathlib import Path
 import tempfile
+from types import SimpleNamespace
 import unittest
-from unittest.mock import patch
+from unittest.mock import patch, PropertyMock
 
 import numpy as np
 
@@ -76,6 +77,32 @@ class UpdateBudgetTests(unittest.TestCase):
             args.updates = 4
             with self.assertRaisesRegex(ValueError, "nonempty training output"):
                 trainer.run_training(args)
+
+    def test_batch_accounting_never_reads_callback_model_and_verifies_actual_endpoint(self):
+        plan = BatchPlan(16, 8, 3, 3)
+        callback = update_guard(plan)
+        actual = [0]
+        model = SimpleNamespace(steps_per_execution=1,
+            optimizer=SimpleNamespace(iterations=SimpleNamespace(numpy=lambda: actual[0])))
+        callback.set_model(model)
+        callback.on_train_begin()
+        # Keras' real JAX model getter synchronizes all model/optimizer state.
+        # Forbid access while checking every scheduled callback and row visit.
+        with patch.object(type(callback), "model", new_callable=PropertyMock,
+                          side_effect=AssertionError("per-batch model access forces JAX state sync")) as getter:
+            for batch in range(3):
+                callback.on_train_batch_end(batch)
+            self.assertEqual(getter.call_count, 0)
+        self.assertEqual(callback.updates, 3)
+        self.assertEqual(callback.visits.sum(), 24)
+        self.assertEqual(np.count_nonzero(callback.visits), 16)
+        # Callback counts alone cannot certify that the optimizer advanced.
+        with self.assertRaisesRegex(RuntimeError, "exact requested update"):
+            callback.on_train_end()
+        actual[0] = 3
+        callback.on_train_end()
+        with self.assertRaisesRegex(RuntimeError, "exceeded"):
+            callback.on_train_batch_end(3)
 
     def test_multi_batch_execution_rejected_before_any_update(self):
         import keras
