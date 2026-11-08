@@ -119,35 +119,45 @@ def reference_pricer(enabled):
         model.european_price = original_european
 
 
+def frozen_checked(task, parameters, v0):
+    """Original adjacent-rung retry policy, including repeated successful rungs."""
+    import numpy as np
+    from sbi4f_tutorial.shared import pricing
+    from sbi4finance.calibration import tasks
+
+    limit = task["numerics"]["max_refinement_over_quote_sigma"] * tasks.sigma(task)
+    failure = None
+    ladder = task["numerics"]["quadrature_ladder"]
+    for (nodes, cutoff), (next_nodes, next_cutoff) in zip(ladder, ladder[1:]):
+        try:
+            base = pricing.heston_surface(parameters, v0, task["context"]["contracts"], nodes=nodes, upper_limit=cutoff)
+            refined = pricing.heston_surface(parameters, v0, task["context"]["contracts"], nodes=next_nodes, upper_limit=next_cutoff)
+        except ValueError as error:
+            failure = error
+            continue
+        if np.all(np.abs(refined - base) <= limit):
+            return refined, refined - base
+        failure = ValueError("Fourier refinement budget failed")
+    raise ValueError(f"{failure} on every quadrature rung")
+
+
 def evaluate(task, row, route, *, frozen=False):
     from sbi4f_tutorial.heston_options.lesson import heston_smile
+    from sbi4f_tutorial.shared import pricing
     from sbi4finance.calibration import tasks
 
     with reference_pricer(frozen):
-        if route == "notebook":
-            return {"prices": heston_smile(task, row).tolist(), "refined_minus_base": None}
-        if frozen:
-            # Freeze the original retry policy; P2 also optimizes rung reuse.
-            from sbi4f_tutorial.shared import pricing
-            import numpy as np
-
-            parameters, v0 = tasks._heston_split(tasks.model_parameters(task, row))
-            limit = task["numerics"]["max_refinement_over_quote_sigma"] * tasks.sigma(task)
-            failure = None
-            ladder = task["numerics"]["quadrature_ladder"]
-            for (nodes, cutoff), (next_nodes, next_cutoff) in zip(ladder, ladder[1:]):
-                try:
-                    base = pricing.heston_surface(parameters, v0, task["context"]["contracts"], nodes=nodes, upper_limit=cutoff)
-                    refined = pricing.heston_surface(parameters, v0, task["context"]["contracts"], nodes=next_nodes, upper_limit=next_cutoff)
-                except ValueError as error:
-                    failure = error
-                    continue
-                if np.all(np.abs(refined - base) <= limit):
-                    return {"prices": refined.tolist(), "refined_minus_base": (refined - base).tolist()}
-                failure = ValueError("Fourier refinement budget failed")
-            raise ValueError(f"{failure} on every quadrature rung")
         parameters, v0 = tasks._heston_split(tasks.model_parameters(task, row))
-        prices, difference = tasks.heston_prices(task, parameters, v0)
+        if route == "notebook":
+            if not frozen:
+                prices = heston_smile(task, row)
+            else:
+                try:
+                    prices = pricing.heston_surface(parameters, v0, task["context"]["contracts"], nodes=1024, upper_limit=600.)
+                except ValueError:
+                    prices = frozen_checked(task, parameters, v0)[0]
+            return {"prices": prices.tolist(), "refined_minus_base": None}
+        prices, difference = (frozen_checked(task, parameters, v0) if frozen else tasks.heston_prices(task, parameters, v0))
         return {"prices": prices.tolist(), "refined_minus_base": difference.tolist()}
 
 

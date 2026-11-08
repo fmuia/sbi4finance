@@ -67,6 +67,8 @@ class FullSurfaceSelectionTests(unittest.TestCase):
             self.assertEqual(record["validation_best_epoch"], 1)
             self.assertEqual(record["checkpoint_sha256"], trainer.sha256(args.out / state["checkpoint_files"]["best"]))
             self.assertNotEqual(record["checkpoint_sha256"], record["final_checkpoint_sha256"])
+            self.assertEqual(record["performance"]["work"]["optimizer_updates"], 4)
+            self.assertEqual(record["performance"]["work"]["selected_checkpoint_optimizer_updates"], 2)
 
     def test_final_policy_recovers_then_publishes_last_while_retaining_best(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -92,6 +94,9 @@ class FullSurfaceSelectionTests(unittest.TestCase):
             self.assertEqual(record["resumed_at_epochs"], [1])
             self.assertEqual(record["checkpoint_sha256"], trainer.sha256(args.out / state["checkpoint_files"]["last"]))
             self.assertEqual(record["checkpoint_sha256"], repeated["checkpoint_sha256"])
+            self.assertEqual(repeated["performance"]["work"]["optimizer_updates_this_invocation"], 0)
+            self.assertEqual(repeated["performance"]["work"]["training_presentations_this_invocation"], 0)
+            self.assertEqual(repeated["performance"]["work"]["unique_training_rows_this_invocation"], 0)
             self.assertNotEqual(record["checkpoint_sha256"], record["validation_best_checkpoint_sha256"])
             self.assertTrue(record["same_seed_reload_exact"])
             self.assertFalse(record["scientific_validation"])

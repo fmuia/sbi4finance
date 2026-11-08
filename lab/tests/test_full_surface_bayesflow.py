@@ -39,7 +39,7 @@ class ActualBayesFlowTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             config = {"task": tasks.heston_task(), "root_seed": 1283,
-                      "splits": {"train": 16, "validation": 8, "test": 2}}
+                      "splits": {"train": 17, "validation": 8, "test": 2}}
             bank.write_bank(root / "bank", config)
             args = argparse.Namespace(bank=root / "bank", out=root / "run", family="spline", encoder="vector",
                          widths="16,16", summary_dim=32, flow_steps=4, mean_steps=4, epochs=2,
@@ -58,6 +58,21 @@ class ActualBayesFlowTests(unittest.TestCase):
             self.assertEqual(len(report["history"]["loss"]), 2)
             self.assertFalse(report["reserved_test_evaluated"])
             self.assertTrue(report["same_seed_reload_exact"])
+            work = report["performance"]["work"]
+            self.assertEqual(work["optimizer_updates"], 6)
+            self.assertEqual(work["optimizer_updates_this_invocation"], 3)
+            self.assertEqual(work["training_presentations"], 34)
+            self.assertEqual(work["training_presentations_this_invocation"], 17)
+            self.assertEqual(work["unique_training_rows"], 17)
+            self.assertEqual(work["last_batch_size"], 1)
+            self.assertEqual(work["full_batches"], 4)
+            self.assertEqual(work["partial_batches"], 2)
+            self.assertEqual(work["online_simulated_rows"], 0)
+            self.assertEqual(len(work["training_example_ids_sha256"]), 64)
+            phases = report["performance"]["phases"]
+            self.assertEqual(phases["validation"]["calls"], 1)
+            self.assertEqual(phases["first_training_batch_including_compile"]["calls"], 1)
+            self.assertIn("resume_reload", phases)
             full_surface.load_checkpoint(args.out)
             training_path = args.out / "training.json"
             original = training_path.read_text()
