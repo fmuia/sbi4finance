@@ -52,80 +52,110 @@ where the factor $`1/\eta`$ comes from changing variables from $`\rho`$ to $`\rh
 
 ## 9.2 Neural posterior estimation
 
-Let $`q_\phi(\theta \mid y)`$ be a family of conditional densities with parameters $`\phi`$, for example a neural network that outputs a density over $`\theta`$ for each $`y`$. **Neural posterior estimation** fits $`\phi`$ by maximizing the likelihood of the simulated parameters given their simulated data, that is, by minimizing
+Section 9.1 showed that the simulated pairs contain the posterior of every observation. Neural posterior estimation extracts it by fitting a conditional density to the pairs.
+
+**The family and its parameters.** Choose a family of densities for $`\theta`$ whose shape depends on the data $`y`$, and write a member of it as $`q_\phi(\theta \mid y)`$. The letter $`q`$ names the family, and $`\phi`$ collects the numbers that pick one member. The simplest example is a Gaussian whose mean is linear in the data:
+
+```math
+q_\phi(\theta \mid y) = \mathcal{N}\big(\theta;\ a + b\,y,\ e^{2c}\big), \qquad \phi = (a, b, c) .
+```
+
+Three numbers set the whole conditional density: $`a`$ and $`b`$ place its centre for each $`y`$, and $`c`$ sets its width. In the tutorial, $`q`$ is the flow of Sections 9.3 and 9.4, and $`\phi`$ is the set of weights of a neural network.
+
+**The fit.** Neural posterior estimation chooses $`\phi`$ to make the simulated parameters as likely as possible given their simulated data. It minimizes
 
 ```math
 \mathcal{L}(\phi) = \mathbb{E}_{p(\theta, y)}\big[-\log q_\phi(\theta \mid y)\big] \approx -\frac{1}{n}\sum_{i=1}^{n} \log q_\phi(\theta_i \mid y_i)
 ```
 
-over the $`n`$ simulated pairs (Papamakarios and Murray 2016; Greenberg, Nonnenmacher and Macke 2019).
+over the $`n`$ simulated pairs (Papamakarios and Murray 2016; Greenberg, Nonnenmacher and Macke 2019). For the linear Gaussian family this is a familiar fit: $`a`$ and $`b`$ are the least-squares regression of $`\theta`$ on $`y`$, and $`e^{c}`$ is the standard deviation of its residuals. Neural posterior estimation is a regression of parameters on data, with the Gaussian replaced by a family flexible enough to take the posterior's shape.
 
-**Why the minimizer is the posterior.** Write the joint expectation as an expectation over $`y`$ of an expectation over the posterior, and add and subtract $`\log p(\theta \mid y)`$:
+**Why the fit returns the posterior.** The loss averages over pairs drawn from the joint distribution. By the second factorization of Section 9.1, drawing a pair is the same as drawing $`y`$ and then drawing $`\theta`$ from its posterior. Grouping the loss by $`y`$ in this way splits it into two parts (Appendix 9.A):
 
 ```math
-\mathcal{L}(\phi) = \mathbb{E}_{p(y)}\Big[\mathbb{E}_{p(\theta \mid y)}\Big[\log\frac{p(\theta \mid y)}{q_\phi(\theta \mid y)}\Big]\Big] - \mathbb{E}_{p(y)}\Big[\mathbb{E}_{p(\theta \mid y)}\big[\log p(\theta \mid y)\big]\Big] = \mathbb{E}_{p(y)}\Big[\mathrm{KL}\big(p(\cdot \mid y)\,\big\|\,q_\phi(\cdot \mid y)\big)\Big] + \text{const}.
+\mathcal{L}(\phi) = \mathbb{E}_{p(y)}\Big[\mathrm{KL}\big(p(\cdot \mid y)\,\big\|\,q_\phi(\cdot \mid y)\big)\Big] + \text{const}.
 ```
 
-The constant does not depend on $`\phi`$. The Kullback–Leibler divergence is non-negative and is zero only when the two densities coincide. If the family is rich enough to contain the posterior, the minimizer is therefore $`q_\phi(\theta \mid y) = p(\theta \mid y)`$ for almost every $`y`$ the prior and the model can produce. One fit serves every observation: this is what **amortized** means. The cost of inference is paid in training, and each new observation costs one evaluation of the network.
+The first part is the Kullback–Leibler divergence of $`q_\phi`$ from the posterior, averaged over the data. It is non-negative, and zero only where the two densities coincide. The second part does not depend on $`\phi`$. Neither part can be computed, because both contain the unknown posterior, but neither has to be: the loss that can be computed, the average of $`-\log q_\phi`$ over the pairs, differs from the average divergence by a constant, so the two have the same minimizer. If the family is rich enough to contain the posterior, the minimizer is $`q_\phi(\theta \mid y) = p(\theta \mid y)`$ for almost every $`y`$ the prior and the model can produce. If it is not, the minimizer is the member of the family closest to the posterior, on average over the data.
+
+**One fit for every observation.** The fit is made once, on simulated pairs, and then serves every observation: this is what **amortized** means. The cost of inference is paid in training, and each new observation costs one evaluation of the network.
 
 ![Left: simulated pairs of a nonlinear model, with the exact posterior mean and two-standard-deviation band, and those of a fitted conditional Gaussian. Right: the exact posterior at three observations against the fitted Gaussian.](images/l12-amortized-conditional-density.png)
 
-*Figure 9.2.* How to read the figure: the model is $`y = \theta^3/4 + 0.3\,\varepsilon`$ with $`\theta \sim \mathcal{U}(-2, 2)`$. Its posterior is narrow where the cube is steep and wide where it is flat. The family $`q_\phi`$ is a Gaussian whose mean and log standard deviation are linear combinations of 13 smooth functions of $`y`$, fitted to 40,000 simulated pairs by minimizing $`\mathcal{L}(\phi)`$.
+*Figure 9.2.* How to read the figure: the model is $`y = \theta^3/4 + 0.3\,\varepsilon`$ with $`\theta \sim \mathcal{U}(-2, 2)`$. Its posterior is narrow where the cube is steep and wide where it is flat. The family $`q_\phi`$ is a Gaussian whose mean and log standard deviation are each a linear combination of 13 functions of $`y`$: a constant, $`y`$ itself and 11 Gaussian bumps. Here $`\phi`$ is the 26 coefficients, fitted to 40,000 simulated pairs by minimizing $`\mathcal{L}(\phi)`$.
 
 - **Left.** The fitted mean and band (teal) lie on the exact ones (black and grey) across all observations, including the wide region around $`y = 0`$ and the narrow tails. At $`y = 1`$, for example, the exact posterior has mean 1.506 and standard deviation 0.257, and the fit gives 1.503 and 0.270.
-- **Right.** The fit has the right mean and spread, but a Gaussian cannot take the posterior's shape. At $`y = 0`$ the posterior is flat-topped, because the cube is flat near zero. At $`y = 1`$ it is skewed, with a long left tail and a sharp right edge: above its mode near $`\theta = 1.6`$ the cube rises steeply, so the likelihood falls fast. The prior's bound at $`\theta = 2`$ plays no part there, since the posterior density at 2 is 0.4% of its peak. At $`y = -1.5`$ the posterior is cut by the bound at $`-2`$, 1.8 posterior standard deviations from its mean.
+- **Right.** The fit has the right mean and spread, but a Gaussian is symmetric and the posterior is not. At $`y = 0`$ the posterior is flat-topped, because the cube is flat near zero. At $`y = 1`$ it is asymmetric, with a long left tail and a sharp right edge. The data are fitted best at $`\theta = 1.59`$, where $`\theta^3/4 = 1`$. To the right the cube rises fast: at $`\theta = 1.9`$, only 0.31 away, the model predicts 1.71, which is 2.4 noise standard deviations from the observation. To the left the cube flattens: a similar mismatch, 2.5 standard deviations, is reached only at $`\theta = 1.0`$, 0.59 away. The likelihood therefore falls steeply on the right and slowly on the left. The prior's bound at $`\theta = 2`$ plays no part there, since the posterior density at 2 is 0.4% of its peak. At $`y = -1.5`$ the posterior is cut by the bound at $`-2`$, 1.8 posterior standard deviations from its mean.
 
 **Interpretation.** The objective recovers the best member of the family, for every observation at once. The posterior of the smile is not Gaussian either: Figure 9.1 showed a curved valley cut by the prior box. The family must be flexible enough to represent such shapes. The next two sections build one.
 
 ## 9.3 Flexible densities by change of variables
 
-A **normalizing flow** represents a density as the image of a simple one under an invertible map (Papamakarios et al. 2021). Let $`z \sim \mathcal{N}(0, I)`$ and $`\theta = g(z)`$ with $`g`$ invertible and differentiable. The change-of-variables formula gives the density of $`\theta`$:
+A flexible family can be built from simple noise. Draw $`z`$ from a standard normal distribution and bend it with a function, $`\theta = g(z)`$. The shape of $`g`$ decides the distribution of $`\theta`$. A family of such functions, with parameters $`\phi`$ and depending on the data, is a family of conditional densities called a **normalizing flow** (Papamakarios et al. 2021).
+
+**How a map shapes a density.** The map conserves probability: the probability that $`z`$ falls in a small interval equals the probability that $`\theta`$ falls in the image of that interval. Where $`g`$ is steep, it stretches a short interval of $`z`$ over a long interval of $`\theta`$, so the density of $`\theta`$ is low. Where $`g`$ is flat, it squeezes a long interval of $`z`$ into a short one, so the density is high. For an increasing $`g`$ in one dimension this gives (Appendix 9.B)
 
 ```math
-p(\theta) = \varphi\big(g^{-1}(\theta)\big)\,\Big|\det \frac{\partial g^{-1}}{\partial \theta}\Big| ,
+p(\theta) = \varphi\big(g^{-1}(\theta)\big)\,\frac{d g^{-1}}{d\theta}(\theta) ,
 ```
 
-where $`\varphi`$ is the standard normal density. In one dimension any continuous density can be reached this way: with $`F`$ the target's cumulative distribution function and $`\Phi`$ the standard normal one, the map $`g = F^{-1}\circ\Phi`$ sends $`\mathcal{N}(0, 1)`$ exactly to the target, because $`\Phi(z)`$ is uniform and $`F^{-1}`$ of a uniform has distribution $`F`$.
+where $`\varphi`$ is the standard normal density. In several dimensions, with $`z \sim \mathcal{N}(0, I)`$ and $`g`$ invertible and differentiable, the derivative becomes the absolute determinant of the Jacobian, which measures how the map changes volume:
+
+```math
+p(\theta) = \varphi\big(g^{-1}(\theta)\big)\,\Big|\det \frac{\partial g^{-1}}{\partial \theta}\Big| .
+```
+
+**Three examples.**
+
+- **A straight line.** The map $`g(z) = \mu + \sigma z`$ gives $`\mathcal{N}(\mu, \sigma^2)`$. With $`\mu`$ and $`\sigma`$ depending on $`y`$, this is the Gaussian family of Section 9.2: a flow made of one linear map.
+- **The exponential.** The map $`g(z) = e^{z}`$ gives the lognormal density $`\varphi(\log\theta)/\theta`$. The same map, after a shift and a scale of $`z`$, turns Gaussian noise into the Black–Scholes terminal price (Lecture 4).
+- **Any density in one dimension.** With $`F`$ the target's cumulative distribution function and $`\Phi`$ the standard normal one, the map $`g = F^{-1}\circ\Phi`$ sends $`\mathcal{N}(0, 1)`$ exactly to the target, because $`\Phi(z)`$ is uniform and $`F^{-1}`$ of a uniform has distribution $`F`$.
 
 ![Left: the increasing map from a standard normal variable to η that produces the posterior of Figure 9.1. Right: the density of the mapped draws against the target.](images/l12-normalizing-flow-map.png)
 
-*Figure 9.3.* How to read the figure: the left panel shows $`g = F^{-1}\circ\Phi`$ for the marginal posterior of $`\eta`$ in Figure 9.1, over the standard normal density (shaded). The map is flat on the left, where the posterior has its sharp edge at $`\eta \approx 1`$, and steep on the right, where it spreads mass thinly up to 3.5. The right panel pushes 100,000 standard normal draws through $`g`$; their histogram matches the target.
+*Figure 9.3.* How to read the figure: the left panel shows $`g = F^{-1}\circ\Phi`$ for the marginal posterior of $`\eta`$ in Figure 9.1, over the standard normal density (shaded). The map is flat on the left, where it squeezes mass into the posterior's sharp edge at $`\eta \approx 1`$, and steep on the right, where it spreads mass thinly up to 3.5. The right panel pushes 100,000 standard normal draws through $`g`$; their histogram matches the target.
 
-**From one dimension to several, and to conditional densities.** In several dimensions a flow composes simple invertible layers whose Jacobian determinants are cheap, and conditions each layer on the data $`y`$. Such a network can be trained by the objective of Section 9.2, because $`\log q_\phi`$ is computable through the change-of-variables formula. The tutorial uses a different construction of $`g`$, which does not require invertible layers: it defines the map as the solution of an ordinary differential equation and learns its velocity.
+**From one dimension to a trainable family.** In several dimensions a flexible map is built by composing simple invertible layers. The parameters of the layers, together with the network that makes them depend on $`y`$, form $`\phi`$. The change-of-variables formula gives $`\log q_\phi`$ exactly, so the family can be fitted with the loss of Section 9.2. The construction has a cost: every layer must be invertible, with a Jacobian determinant that is cheap to compute, and this limits the layers that can be used. The tutorial uses a construction without this limit. It defines the map as the end point of a motion and learns the velocity of that motion.
 
 ## 9.4 Flow matching
 
-**The path.** Draw a noise vector $`z \sim \mathcal{N}(0, I)`$ and a target $`\theta`$ from the distribution to be learned, independently, and connect them by a straight line in time $`\tau \in [0, 1]`$:
+**The aim.** Flow matching builds the map from noise to the target as a motion. Each point starts from the noise at time $`\tau = 0`$ and moves with a velocity $`v(x, \tau)`$ that depends only on its position $`x`$ and the time; its position at $`\tau = 1`$ is the sample. The task is to find a velocity field for which points started from $`\mathcal{N}(0, I)`$ end distributed as the target. The construction takes four steps.
+
+**Step 1: a motion with the right end points.** Draw a noise vector $`z \sim \mathcal{N}(0, I)`$ and a target $`\theta`$, independently, and join them by a straight line:
 
 ```math
 x_\tau = (1 - \tau)\,z + \tau\,\theta, \qquad \frac{dx_\tau}{d\tau} = \theta - z .
 ```
 
-Each line has a constant velocity. Many lines pass through the same point $`x`$ at the same time $`\tau`$, from different pairs.
+At $`\tau = 0`$ the points are distributed as the noise, at $`\tau = 1`$ as the target, and in between as a blend of the two. This motion cannot be used to sample, because each point moves towards its own $`\theta`$, which is fixed at the start. At sampling time $`\theta`$ is unknown: producing it is the purpose of the motion.
 
-**The averaged velocity field.** Define the velocity at $`(x, \tau)`$ as the average velocity of the lines that pass there:
+**Step 2: average the velocities.** Many lines pass through the same point $`x`$ at the same time $`\tau`$, from different pairs and towards different targets (Figure 9.4, left). Replace their velocities by their average:
 
 ```math
 v(x, \tau) = \mathbb{E}\big[\theta - z \,\big|\, x_\tau = x\big] .
 ```
 
-**It carries the noise to the target.** Let $`p_\tau`$ be the law of $`x_\tau`$. For any smooth test function $`f`$, differentiate $`\mathbb{E}[f(x_\tau)]`$ in $`\tau`$ and use the tower property of conditional expectation:
+This field depends only on the position and the time, so a point can follow it without knowing where it will end.
+
+*An example.* Let the target be a single value, $`\theta = 2`$. The line through $`x`$ at time $`\tau`$ started from $`z = (x - 2\tau)/(1 - \tau)`$, and its velocity is $`2 - z`$, so
 
 ```math
-\frac{d}{d\tau}\mathbb{E}\big[f(x_\tau)\big] = \mathbb{E}\big[f'(x_\tau)\,(\theta - z)\big] = \mathbb{E}\big[f'(x_\tau)\,v(x_\tau, \tau)\big] = \int f'(x)\,v(x, \tau)\,p_\tau(x)\,dx = -\int f(x)\,\partial_x\big(p_\tau v\big)(x)\,dx ,
+v(x, \tau) = \frac{2 - x}{1 - \tau} .
 ```
 
-where the last step integrates by parts. Since this holds for every $`f`$, the densities satisfy the **continuity equation** $`\partial_\tau p_\tau + \partial_x(p_\tau\,v) = 0`$. The law of the solutions of the ordinary differential equation $`dx/d\tau = v(x, \tau)`$, started from $`x_0 \sim \mathcal{N}(0, I)`$, satisfies the same equation with the same initial law. So, under regularity conditions that make the solution unique, following the field from $`\tau = 0`$ to $`\tau = 1`$ turns standard normal draws into draws from the target (Lipman et al. 2023; Liu, Gong and Liu 2023).
+The field contains no $`z`$. A point that follows it from any start $`x_0`$ moves along $`x_\tau = (1 - \tau)\,x_0 + 2\tau`$ and reaches 2 at $`\tau = 1`$. With one target the lines do not cross and the averaged field reproduces them. With two targets the lines cross, and the averaged field bends the paths (Figure 9.4).
 
-**It can be learned by regression.** The conditional mean minimizes the expected squared error. The field is therefore the minimizer of
+**Step 3: averaging keeps the distribution.** The density at a point changes only through the net flow of probability into and out of it, and the net flow depends only on the average velocity there. A crowd in a station behaves the same way: people walk in every direction, but how crowded each spot becomes depends only on the net movement through it. Points that follow the averaged field therefore have, at every time $`\tau`$, the same density $`p_\tau`$ as the points on the straight lines, and at $`\tau = 1`$ they are distributed as the target. Their individual paths differ from the lines: they bend, and they never cross (Figure 9.4, centre). Appendix 9.C gives the proof, through the continuity equation (Lipman et al. 2023; Liu, Gong and Liu 2023).
+
+**Step 4: learn the field by regression.** The conditional mean of a quantity is the function that predicts it with the smallest expected squared error. The field is a conditional mean, so it is the minimizer of
 
 ```math
 \mathcal{L}(\phi) = \mathbb{E}_{z,\,\theta,\,\tau}\Big\| u_\phi\big((1 - \tau)z + \tau\theta,\ \tau\big) - (\theta - z)\Big\|^2
 ```
 
-over functions $`u_\phi`$. The loss needs only pairs $`(z, \theta)`$ and a time $`\tau`$; no density and no inverse map are computed.
+over functions $`u_\phi`$. The loss needs only pairs $`(z, \theta)`$ and a time $`\tau`$; it computes no density and no inverse map. As in Section 9.2, the object of the fit cannot be computed directly, but it is the minimizer of a loss that can.
 
-**For a posterior.** Give the network the data as an extra input, $`u_\phi(x, \tau, y)`$, and draw $`(\theta, y)`$ from the simulated pairs. The same argument, for each $`y`$, makes the learned field transport $`\mathcal{N}(0, I)`$ to $`p(\theta \mid y)`$ for every observation the prior can produce (Wildberger et al. 2023). This is the tutorial's inference network.
+**For a posterior.** Give the network the data as an extra input, $`u_\phi(x, \tau, y)`$, and draw $`(\theta, y)`$ from the simulated pairs. The same argument, for each $`y`$, makes the learned field carry $`\mathcal{N}(0, I)`$ to $`p(\theta \mid y)`$ for every observation the prior can produce (Wildberger et al. 2023). This is the tutorial's inference network.
 
 ![Left: 40 straight-line training paths from standard normal noise to a two-component target. Centre: the averaged velocity field over position and time, with paths that follow it. Right: the distribution of the transported draws at three times against the exact densities.](images/l12-flow-matching.png)
 
@@ -244,11 +274,103 @@ Lecture 12 reports coverage and contraction for the Heston network, and Lecture 
 
 1. Pairs simulated from the prior and the model are draws from the joint distribution, so their parameters, among pairs with data near the observation, follow the posterior. No likelihood is evaluated.
 2. Neural posterior estimation minimizes $`\mathbb{E}[-\log q_\phi(\theta \mid y)]`$, which equals the expected Kullback–Leibler divergence from the posterior plus a constant. One fit serves every observation.
-3. A flexible family is needed, because posteriors are skewed and cut by the prior box. Normalizing flows build one by change of variables.
-4. Flow matching learns the average velocity of straight lines from noise to target by regression. The continuity equation shows that following that field carries $`\mathcal{N}(0, I)`$ to the posterior.
+3. A flexible family is needed, because posteriors are asymmetric and cut by the prior box. Normalizing flows build one by bending standard normal noise with an invertible map.
+4. Flow matching joins noise and target by straight lines and averages their velocities at each point and time. Following the averaged field carries $`\mathcal{N}(0, I)`$ to the posterior, and the field is learned by regression.
 5. Euler steps undershoot sharp posteriors: 50 uniform steps give 0.65 of the spread at $`s = 0.02`$; 100 end-dense steps give 0.96. Training times drawn as $`\tau = u^{0.5}`$ put more training where a sharp posterior's location is set.
 6. If the posterior is exact, the rank of the true parameter among posterior draws is uniform, because the truth is one more exchangeable draw. Overconfidence, underconfidence and bias each leave their own shape in the ranks. A posterior that ignores the data passes.
 7. Contraction measures what the smile identifies, from 0 when the data teach nothing to 1 when they fix the target. It must be read with simulation-based calibration, which a posterior that ignores the data passes. Coverage, with its Wilson interval, says whether intervals hold their level, and a recovery plot compares the posterior median with the truth.
+
+## Appendix 9.A The loss and the Kullback–Leibler divergence
+
+This appendix derives the identity of Section 9.2,
+
+```math
+\mathbb{E}_{p(\theta, y)}\big[-\log q_\phi(\theta \mid y)\big] = \mathbb{E}_{p(y)}\Big[\mathrm{KL}\big(p(\cdot \mid y)\,\big\|\,q_\phi(\cdot \mid y)\big)\Big] + \text{const}.
+```
+
+**Step 1: average over $`y`$, then over $`\theta`$ given $`y`$.** The joint density factors as $`p(\theta, y) = p(y)\,p(\theta \mid y)`$, so for any function $`h`$
+
+```math
+\mathbb{E}_{p(\theta, y)}\big[h(\theta, y)\big] = \mathbb{E}_{p(y)}\Big[\mathbb{E}_{p(\theta \mid y)}\big[h(\theta, y)\big]\Big] .
+```
+
+**Step 2: add and subtract the log posterior.** For every $`\theta`$ and $`y`$,
+
+```math
+-\log q_\phi(\theta \mid y) = \log\frac{p(\theta \mid y)}{q_\phi(\theta \mid y)} - \log p(\theta \mid y) .
+```
+
+**Step 3: split the expectation.** Apply Step 1 to each term of Step 2:
+
+```math
+\mathcal{L}(\phi) = \mathbb{E}_{p(y)}\Big[\mathbb{E}_{p(\theta \mid y)}\Big[\log\frac{p(\theta \mid y)}{q_\phi(\theta \mid y)}\Big]\Big] - \mathbb{E}_{p(y)}\Big[\mathbb{E}_{p(\theta \mid y)}\big[\log p(\theta \mid y)\big]\Big] .
+```
+
+**Step 4: name the two terms.** The inner expectation of the first term is, by definition, the Kullback–Leibler divergence $`\mathrm{KL}\big(p(\cdot \mid y)\,\|\,q_\phi(\cdot \mid y)\big)`$. The second term is the average entropy of the true posterior. It contains no $`\phi`$, so it is the constant.
+
+**Step 5: the minimizer.** By Gibbs' inequality, $`\mathrm{KL}(p\,\|\,q) \ge 0`$, with equality only when $`q = p`$ almost everywhere. The average over $`y`$ is therefore smallest when $`q_\phi(\cdot \mid y) = p(\cdot \mid y)`$ for almost every $`y`$ with $`p(y) \gt 0`$, if the family contains such a member.
+
+## Appendix 9.B The change-of-variables formula
+
+**One dimension.** Let $`z \sim \mathcal{N}(0, 1)`$ and $`\theta = g(z)`$ with $`g`$ increasing and differentiable. For any $`t`$,
+
+```math
+\mathbb{P}(\theta \le t) = \mathbb{P}\big(g(z) \le t\big) = \mathbb{P}\big(z \le g^{-1}(t)\big) = \Phi\big(g^{-1}(t)\big) .
+```
+
+Differentiating in $`t`$ gives the density,
+
+```math
+p(\theta) = \varphi\big(g^{-1}(\theta)\big)\,\frac{d g^{-1}}{d\theta}(\theta) .
+```
+
+For a decreasing $`g`$ the inequality reverses and the derivative is negative; taking its absolute value covers both cases.
+
+**Checks on the examples of Section 9.3.** For $`g(z) = \mu + \sigma z`$, $`g^{-1}(\theta) = (\theta - \mu)/\sigma`$ with derivative $`1/\sigma`$, so $`p(\theta) = \varphi\big((\theta - \mu)/\sigma\big)/\sigma`$, the density of $`\mathcal{N}(\mu, \sigma^2)`$. For $`g(z) = e^{z}`$, $`g^{-1}(\theta) = \log\theta`$ with derivative $`1/\theta`$, so $`p(\theta) = \varphi(\log\theta)/\theta`$, the lognormal density.
+
+**Several dimensions.** The same argument applied to a small box around $`\theta`$ replaces the length ratio $`dg^{-1}/d\theta`$ by the volume ratio, the absolute determinant of the Jacobian $`\partial g^{-1}/\partial\theta`$, which gives the formula of Section 9.3.
+
+## Appendix 9.C Why the averaged field carries the noise to the target
+
+The argument is written in one dimension; in several, $`f'`$ becomes a gradient and $`\partial_x`$ a divergence. Let $`p_\tau`$ be the density of $`x_\tau = (1 - \tau)z + \tau\theta`$, and $`f`$ a smooth function that vanishes outside a bounded set.
+
+**Step 1: how the straight lines move the density.** Differentiate $`\mathbb{E}[f(x_\tau)]`$ in $`\tau`$. The chain rule gives
+
+```math
+\frac{d}{d\tau}\mathbb{E}\big[f(x_\tau)\big] = \mathbb{E}\big[f'(x_\tau)\,(\theta - z)\big] .
+```
+
+**Step 2: replace the velocity by its average.** By the tower property, condition on $`x_\tau`$ inside the expectation. Since $`f'(x_\tau)`$ is fixed given $`x_\tau`$,
+
+```math
+\mathbb{E}\big[f'(x_\tau)\,(\theta - z)\big] = \mathbb{E}\Big[f'(x_\tau)\,\mathbb{E}\big[\theta - z \mid x_\tau\big]\Big] = \mathbb{E}\big[f'(x_\tau)\,v(x_\tau, \tau)\big] = \int f'(x)\,v(x, \tau)\,p_\tau(x)\,dx .
+```
+
+This is the step that the crowd picture of Section 9.4 describes: only the average velocity at each point affects how the density changes.
+
+**Step 3: integrate by parts.** The boundary terms vanish because $`f`$ does, so
+
+```math
+\frac{d}{d\tau}\int f(x)\,p_\tau(x)\,dx = -\int f(x)\,\partial_x\big(p_\tau\,v\big)(x)\,dx .
+```
+
+Since this holds for every $`f`$, the densities satisfy the **continuity equation**
+
+```math
+\partial_\tau p_\tau + \partial_x\big(p_\tau\,v\big) = 0 .
+```
+
+**Step 4: the points that follow the field obey the same equation.** Let $`X_\tau`$ solve $`dX_\tau/d\tau = v(X_\tau, \tau)`$ with $`X_0 \sim \mathcal{N}(0, I)`$. The chain rule gives $`\frac{d}{d\tau}\mathbb{E}[f(X_\tau)] = \mathbb{E}\big[f'(X_\tau)\,v(X_\tau, \tau)\big]`$, and Step 3 applied to the density of $`X_\tau`$ gives the same continuity equation, with the same field and the same initial density. Under regularity conditions that make its solution unique, the two densities coincide at every $`\tau`$. At $`\tau = 1`$ the density of $`X_1`$ is the target. The same conditions make the solution of the ordinary differential equation unique from each start, so two paths cannot cross.
+
+**Step 5: the conditional mean minimizes the squared error.** For any function $`u`$, write $`w = \theta - z`$ and $`x = x_\tau`$. Then
+
+```math
+\mathbb{E}\big\|u(x, \tau) - w\big\|^2 = \mathbb{E}\big\|u(x, \tau) - v(x, \tau)\big\|^2 + \mathbb{E}\big\|v(x, \tau) - w\big\|^2 ,
+```
+
+because the cross term has zero mean given $`x`$. The second term does not depend on $`u`$, and the first is zero only for $`u = v`$. This is why the regression of Section 9.4, Step 4, recovers the field.
+
+**For a posterior.** Every step holds with $`\theta`$ drawn from $`p(\theta \mid y)`$ for a fixed $`y`$, and the regression with $`y`$ as an extra input recovers the field for every $`y`$ at once.
 
 ## References
 
