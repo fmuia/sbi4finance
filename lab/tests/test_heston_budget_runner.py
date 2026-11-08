@@ -53,6 +53,9 @@ class BudgetRunnerTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary); p, r, s, a, admission = self.fixture(root)
             runner.validate_admission(p, r, s, a, "frozen-revision")
+            cpu_only = {**admission, "reserved_confirmation": {"allocated_cpu_seconds": 2000, "gpu_seconds": 0}}
+            a.write_text(json.dumps(cpu_only))
+            runner.validate_admission(p, r, s, a, "frozen-revision")
             for changes, error in (({"source_revision": "changed"}, "identity changed"),
                 ({"approved_for_execution": False}, "explicitly admitted"),
                 ({"reserved_confirmation": {"allocated_cpu_seconds": 21600, "gpu_seconds": 1}}, "resource ceiling")):

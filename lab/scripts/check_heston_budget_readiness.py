@@ -31,7 +31,7 @@ def checked_support(draws, bounds):
     import numpy as np
 
     draws = np.asarray(draws)
-    return bool(draws.size and not np.iscomplexobj(draws) and draws.shape[-1] == len(bounds)
+    return bool(draws.size and draws.ndim > 0 and not np.iscomplexobj(draws) and draws.shape[-1] == len(bounds)
                 and np.isfinite(draws).all() and np.all(draws > bounds[:, 0]) and np.all(draws < bounds[:, 1]))
 
 

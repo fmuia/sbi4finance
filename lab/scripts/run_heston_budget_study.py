@@ -189,9 +189,9 @@ def validate_admission(protocol_path, readiness_path, smoke_path, admission_path
     # Reserve readiness, failed attempts and final confirmation before the screen.
     prior = admission.get("already_used", {})
     final = admission.get("reserved_confirmation", {})
-    if any(not finite_number(d.get(k), positive=(d is final))
+    if any(not finite_number(d.get(k), positive=(d is final and (k == "allocated_cpu_seconds" or gpus == 1)))
            for d in (prior, final) for k in ("allocated_cpu_seconds", "gpu_seconds")):
-        raise ValueError("finite prior usage and strictly positive final-confirmation reservations are required")
+        raise ValueError("finite prior usage, positive final CPU reserve and a positive final GPU reserve when used are required")
     total_seconds = sum(lanes.values())
     cpu = prior["allocated_cpu_seconds"] + final["allocated_cpu_seconds"] + cpus * total_seconds
     gpu = prior["gpu_seconds"] + final["gpu_seconds"] + gpus * total_seconds
