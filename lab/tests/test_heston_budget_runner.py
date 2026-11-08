@@ -132,6 +132,32 @@ class BudgetRunnerTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, "ledger is locked"):
                     runner.reserve_lane(out, "small-u00030-s0", a, admission)
 
+    def test_preparation_is_charged_and_cannot_start_an_expired_lane(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            p, r, s, a, admission = self.fixture(root)
+            bank = root / "bank"
+            bank.mkdir()
+            (bank / "manifest.json").write_text("{}")
+            protocol = runner.read_json(p)
+            protocol["bank"]["manifest_sha256"] = runner.digest(bank / "manifest.json")
+            args = SimpleNamespace(protocol=p, readiness=r, smoke=s, admission=a, bank=bank,
+                                   out=root / "lanes", candidate="small-u00030-s0")
+            with patch.object(runner, "clean_source", return_value=True), \
+                    patch.object(runner, "source_revision", return_value="frozen-revision"), \
+                    patch.object(runner, "executing_sources_digest", return_value="frozen-sources"), \
+                    patch.object(runner, "validate_admission", return_value=(protocol, admission)), \
+                    patch.object(runner, "verify_execution_resources", return_value={}), \
+                    patch.object(runner.time, "perf_counter", side_effect=[0., 25., 25.]), \
+                    patch.object(runner.subprocess, "run") as launch:
+                with self.assertRaisesRegex(TimeoutError, "preparation exhausted"):
+                    runner.run(args)
+            launch.assert_not_called()
+            journal = runner.read_json(args.out / args.candidate / "lane.json")
+            self.assertEqual(journal["status"], "failed")
+            self.assertEqual(journal["elapsed_wall_seconds"], 25.)
+            self.assertEqual(journal["allocated_cpu_seconds"], 100.)
+
     def test_candidates_and_commands_keep_task_recipe(self):
         protocol = runner.read_json(runner.DEFAULT_PROTOCOL)
         candidates = runner.candidates(protocol)
