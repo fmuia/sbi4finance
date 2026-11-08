@@ -3,16 +3,24 @@
 The public page for the ICAIF '26 tutorial, published with GitHub Pages at
 **https://fmuia.github.io/sbi4finance/**.
 
-It is plain HTML and CSS, with no build step:
+It is plain HTML and CSS, with a small script for setup tabs and no build step:
 
 | File | Contents |
 | --- | --- |
 | `index.html` | All the text, one block per section (search for `SECTION:`) |
 | `style.css` | Colours (variables at the top), layout and typography |
-| `assets/` | The favicon and the hero illustration |
+| `site.js` | Operating-system setup tabs, including keyboard navigation |
+| `assets/` | Icons, BayesFlow logo, hero illustration, presenter photos and fonts |
 
 The hero illustration (`assets/smile-fan.svg`) is decorative, not a result.
 Its colours are in the `<style>` block at the top of the file.
+
+All text and headings use Inter, served from `assets/fonts/` alongside its
+SIL Open Font License.
+
+Setup instructions follow `tutorial/pyproject.toml` and `tutorial/README.md`.
+The tabs cover Apple Silicon macOS, x86-64 Linux and x86-64 Windows; all three
+instruction panels remain visible when JavaScript is disabled.
 
 ## Edit
 
@@ -35,10 +43,9 @@ as it is, usually within a minute or two. To redeploy by hand, open Actions →
 "Deploy site to GitHub Pages" → Run workflow.
 
 One-time setup, by the repository owner: Settings → Pages → Build and
-deployment → Source: **GitHub Actions**. Pages for a private repository needs
-a paid plan (GitHub Pro for a personal account).
+deployment → Source: **GitHub Actions**.
 
-**The site is public even though the repository is private.** Put here only
+**The site and repository are public.** Put here only
 what may be public: no unreleased results, private links or credentials.
 
 ## Before announcing the page
