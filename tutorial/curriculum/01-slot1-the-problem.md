@@ -42,18 +42,18 @@ name, every day?
 
 | Min | Slide | Key line (read by everyone); figure; optional facts | Source and status |
 | --- | --- | --- | --- |
-| 0:00–1:30 | Calibrate, then price what nobody quotes | "Many calibrations fit the same quotes, and they disagree on what is not quoted"; the desk diagram; detail: the daily load at scale (De Spiegeleer et al.) and seven models that fit one smile (Schoutens et al.) | Cited |
-| 1:30–2:30 | The data: one close of SPY | "63 option prices, each known only to within an error band"; SPY's smile; detail: 13,114 options, the 7 × 9 grid, the band | S8, verified |
-| 2:30–3:30 | Calibration runs the model backwards | "The likelihood scores every σ by how well it reproduces the quote"; one-price figure; detail: 12.84% ± 0.30, the formula | By construction |
-| 3:30–4:30 | Prior × likelihood = posterior | "The prior moves the answer only where the data say little"; the prior sweep; detail: least squares, penalties and fixed parameters as priors | By construction |
-| 4:30–5:30 | Any price inherits the posterior | "Price a product under every posterior draw: you get its range, not just a mark"; the put's range; detail: the skew, 43% against 37%, and how the rules are met today | By construction; Reg. (EU) 2016/101; Totem |
-| 5:30–6:30 | Check the model against the data | "Simulate the quotes the fitted model expects; if the market's look different, the model is wrong"; the predictive check; detail: 9.5 sd, and the afternoon's models | By construction |
-| 6:30–8:30 | Where the quotes are silent, someone chooses | "Quotes fix the short end; the long end is a choice; Bayes states the choice and gives it a width"; three Heston calibrations with the same short end; detail: fixing understates the range, no prior overstates it | Formula; quick checks in the backup |
-| 8:30–9:45 | Exact posteriors do not scale | "An exact posterior needs about 10,000 model evaluations, and a book needs thousands of posteriors"; three numbers; detail: importance sampling, the hidden variance path | C8, verified |
-| 9:45–11:30 | Amortized inference: learn the posterior once | "Train a network once on simulated data; it then returns the posterior for new data in seconds"; the pipeline; detail: 1.4–3.6 s, the coverage test, learned pricers | C8; laptop benchmark; Lecture 14.4 |
-| 11:30–12:45 | This afternoon | "Every notebook runs the same five steps"; the three notebooks; detail: the two talks before them | Main README and notebooks |
-| 12:45–13:45 | Takeaways | Three sentences; next, Amortized Bayes | — |
-| 13:45–14:30 | The presenters | Names, affiliations (to fill), who presents what | To confirm |
+| 0:00–1:30 | The Problem | "The calibrated parameters are uncertain, and so are the prices computed from them"; the desk diagram; facts: daily, for many underlyings; Fourier or Monte Carlo pricing; seven models with similar fits and different exotic prices | De Spiegeleer et al. 2018; Schoutens et al. 2004 |
+| 1:30–2:30 | The Data | "The data are 63 SPY option prices, each with an error band"; SPY's smile; facts: date, grid, error band | S8, verified |
+| 2:30–3:30 | The Likelihood | "The likelihood measures how well each value of σ reproduces the observed price"; one-price figure; facts: Black–Scholes and one price, 12.84% ± 0.30, the formula | By construction |
+| 3:30–4:30 | Prior and Posterior | "The posterior combines the prior with the likelihood. The prior matters only where the data are weak"; the prior sweep; facts: least squares, penalties and fixed parameters as priors | By construction |
+| 4:30–5:30 | Pricing Under the Posterior | "Pricing a product under each posterior draw gives the distribution of its price"; the put's distribution; facts: the put, its 90% point (43% against 37% linearized), prudent valuation | By construction; Reg. (EU) 2016/101 |
+| 5:30–6:30 | Checking the Model | "A posterior predictive check compares simulated quotes with the observed ones. Black–Scholes fails it on SPY"; the predictive check; facts: 9.5 sd, the smile, the models used next | By construction |
+| 6:30–8:30 | Beyond the Quotes | "Some quantities are not determined by the quotes. Their uncertainty is set by the prior"; three Heston fits with the same short end; facts: the example, 21.3% to 25.3% at two years, fixing gives too narrow a range | Formula; quick checks in the backup |
+| 8:30–9:45 | The Cost of Exact Posteriors | "An exact posterior requires about 10,000 model evaluations. A book or a validation requires thousands of posteriors"; three numbers | C8, verified |
+| 9:45–11:30 | Amortized Inference | "A network is trained once on simulated data. It then returns posteriors for new data in seconds"; the pipeline; facts: 1.4–3.6 s, the coverage test, valid within the prior | C8; laptop benchmark; Lecture 14.4 |
+| 11:30–12:45 | This Afternoon | "The three notebooks follow the same five steps"; the steps and the three notebooks; facts: the next two talks, synthetic worked cases | Main README and notebooks |
+| 12:45–13:45 | Summary | Three statements; next, Amortized Bayes | — |
+| 13:45–14:30 | Presenters | Names, affiliations (to fill), who presents what | To confirm |
 
 Each main slide follows one reading order: the title and the key line are read by everyone, the figure is the
 evidence, and a strip of at most three short label–value facts is optional; explanations go in the speaker notes ([`slides/slot1/README.md`](../slides/slot1/README.md)).

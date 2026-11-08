@@ -22,6 +22,7 @@ Every main slide has one reading order, so that the audience knows what to read 
 3. **Everything else is optional**: a strip under the figure of at most three label–value pairs (`\pairs`), each
    value a few words, and a source line (`\source`). Numbers and definitions go there unless they are the point.
 
+Write plain statements, not slogans, and keep the logical order: each key line follows from the previous one.
 Explanations go in the speaker notes (`\note{}`), never in sentences on the slide. No paragraphs, cards or blocks on
 the main slides; a table only where the table is the content. The backup frames after `\appendix` hold the rest.
 
