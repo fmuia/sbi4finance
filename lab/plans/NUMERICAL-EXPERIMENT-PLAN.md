@@ -266,6 +266,29 @@ absolute conditional limitation retained. Neither is an automatic continuation
 of this bounded setup. Once readiness passes, forecast and reserve final
 confirmation costs before admitting any of the 14 seed-0 lanes.
 
+The P3 branch passes **561 lab tests (three optional skips)** and the release
+checks; saved neural archives also pass the tightened strict-support guard.
+The final comparison helper validates ordered observation IDs and uses a shared
+paired observation bootstrap across every candidate/seed, parameter and level.
+Its simultaneous bounds remain approximate; it has not been applied to the
+reserved final panel. Bounded lane execution verifies source/runtime identities,
+CPU allocation or Linux affinity and measured-memory forecasts. Plain training
+and command planning remain separate from study admission.
+
+To inspect the frozen independent commands without starting a job, run from
+`lab/`:
+
+```sh
+pixi run --locked -e core python scripts/run_heston_budget_study.py --bank BANK --out OUTPUT
+```
+
+`BANK` is the preserved Heston snapshot described in the training-data guide;
+`OUTPUT` belongs outside the checkout. The exact-update worker is
+`scripts/train_full_surface.py --updates N --checkpoint-selection final`.
+Study execution additionally needs the readiness, same-device smoke and resource
+admission receipts; the current inconclusive receipt is rejected. The reserved
+confirmation and finalist-freeze stages are not automatic actions of the runner.
+
 ### P4 · Execute and compare time to posterior quality
 
 **Commit 1 — the bounded development screen.** Run the 14 predeclared seed-0

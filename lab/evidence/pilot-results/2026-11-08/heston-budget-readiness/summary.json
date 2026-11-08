@@ -1156,5 +1156,14 @@
     "scope": "The saved-reference mean MCSE floor nearly exhausts the observed margin even if neural Monte Carlo error vanished. Additional short fits do not resolve this; a separately costed reference-precision or pre-study protocol review is needed."
   },
   "cpu_model": "Apple M5 Max",
-  "cpu_model_source": "Read separately with sysctl -n machdep.cpu.brand_string on the local readiness host;18 logical CPUs."
+  "cpu_model_source": "Read separately with sysctl -n machdep.cpu.brand_string on the local readiness host;18 logical CPUs.",
+  "validation": {
+    "lab_tests": 561,
+    "optional_pymc_skips": 3,
+    "manifest_claims_changed": false,
+    "runtime_aliases_verified": 183,
+    "saved_draw_archives_rechecked_strict_support": 19,
+    "panel_range_guards_passed": true,
+    "scope": "Strict support and range hardening does not change the saved control result; no posterior draws were regenerated."
+  }
 }
