@@ -22,65 +22,69 @@
   <meta property="og:title" content="Amortized Bayesian Calibration of Volatility Models">
   <meta property="og:description" content="An ICAIF '26 tutorial on simulation-based inference for volatility models with BayesFlow. Saturday 14 November 2026, 11:00–13:00 CET, Bocconi University, Milan.">
   <meta name="color-scheme" content="light dark">
-  <meta name="theme-color" content="#f8f7f3" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#0d1320" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f8f7f3">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preload" href="assets/fonts/inter-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
+  <script src="theme.js"></script>
   <link rel="stylesheet" href="style.css">
   <script src="site.js" defer></script>
+  <script src="hero.js" defer></script>
+  <script src="smile.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
-
-  <!-- DRAFT BANNER: delete this block when the page is final. -->
-  <div class="draft-banner" role="note">Draft page. Details are still being added and may change.</div>
+  <button class="theme-toggle" data-theme-toggle type="button" aria-label="Switch to dark mode" hidden>
+    <svg class="theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M5 19l1.5-1.5M17.5 6.5 19 5"/>
+    </svg>
+    <svg class="theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <path d="M20.5 14A9 9 0 0 1 10 3.5 9 9 0 1 0 20.5 14Z"/>
+    </svg>
+  </button>
 
   <main id="main">
 
     <!-- ===================== SECTION: Hero ===================== -->
     <section class="hero" id="top">
-      <div class="container hero-grid">
+      <canvas class="hero-canvas" data-hero-canvas aria-hidden="true"></canvas>
+      <div class="container hero-content">
         <div class="hero-text">
           <p class="eyebrow">ICAIF '26 · Tutorial</p>
-          <h1>Amortized Bayesian Calibration of Volatility Models</h1>
+          <h1>
+            <span class="hero-title-line">Amortized Bayesian Calibration</span>
+            <span class="hero-title-line">of Volatility Models</span>
+          </h1>
           <dl class="facts">
             <div>
               <dt>When</dt>
-              <dd>Saturday 14 November 2026<br><span class="nowrap">11:00–13:00 CET</span></dd>
+              <dd>Saturday &bull; 14 November 2026<br><span class="nowrap">11:00–13:00 CET</span></dd>
             </div>
             <div>
               <dt>Where</dt>
-              <dd>Room 3, Bocconi University<br>Via Röntgen 1, Milan</dd>
+              <dd>Room 3 &bull; Bocconi University<br>Via Röntgen 1 &bull; Milan</dd>
             </div>
           </dl>
           <p class="actions">
             <a class="button" href="#program">View Program</a>
-            <a class="button button-ghost" href="#materials">Course Materials</a>
+            <a class="button button-ghost" href="#materials">View Materials</a>
           </p>
         </div>
-        <figure class="hero-figure">
-          <img src="assets/smile-fan.svg" width="560" height="400" alt="Many posterior draws of an implied-volatility smile. They agree where the market quotes and fan out beyond the first and last quotes.">
-          <figcaption>Illustration: posterior draws of a volatility smile agree where the market quotes and fan out where the quotes stop. Pricing under each draw turns that spread into a range of prices.</figcaption>
-        </figure>
       </div>
     </section>
 
     <!-- ===================== SECTION: Overview ===================== -->
     <section class="section" id="overview">
       <div class="container">
-        <h2>Overview</h2>
-        <div class="prose">
-          <p>This tutorial introduces amortized Bayesian inference for volatility models using BayesFlow. We train neural networks on simulated data to approximate parameter posteriors for new observations.</p>
-          <p>The examples cover Heston options, rough Bergomi options and return histories, with simulation-based calibration and posterior predictive checks to assess the approximations.</p>
+        <div class="overview-intro">
+          <div class="prose">
+            <h2>Overview</h2>
+            <p>This tutorial introduces amortized Bayesian inference for volatility models using BayesFlow. We train neural networks on simulated data to approximate parameter posteriors for new observations.</p>
+            <p>The examples cover Heston options, rough Bergomi options and return histories, with simulation-based calibration and posterior predictive checks to assess the approximations.</p>
+          </div>
+          <figure class="overview-figure">
+            <img data-smile-plot src="assets/smile-fan.svg" width="560" height="400" loading="lazy" alt="Illustrative volatility-smile curves with a narrow spread at quoted strikes and a wider spread beyond them.">
+          </figure>
         </div>
-        <h3 class="workflow-title" id="workflow-title">Amortized inference workflow</h3>
-        <ol class="workflow" aria-labelledby="workflow-title">
-          <li><strong><svg class="workflow-icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg#trend"></use></svg>Model</strong><span>State the simulator and the prior.</span></li>
-          <li><strong><svg class="workflow-icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg#simulate"></use></svg>Simulate</strong><span>Draw parameters and synthetic data.</span></li>
-          <li><strong><svg class="workflow-icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg#network"></use></svg>Train</strong><span>Fit the posterior network once.</span></li>
-          <li><strong><svg class="workflow-icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg#infer"></use></svg>Infer</strong><span>Approximate the posterior for new data.</span></li>
-          <li><strong><svg class="workflow-icon" aria-hidden="true" focusable="false"><use href="assets/icons.svg#check"></use></svg>Check</strong><span>Calibration, coverage, predictive checks.</span></li>
-        </ol>
         <div class="learning-outcomes">
           <h3>Learning outcomes</h3>
           <ul>
@@ -105,7 +109,7 @@
             </div>
             <h3>Francesco Muia</h3>
             <p class="affiliation">PyMC Labs</p>
-            <p class="bio">AI and Bayesian data science consultant; PhD in Theoretical Physics and Executive MBA. Twelve years of research experience and three years at a hedge fund.</p>
+            <p class="bio">AI and Bayesian data science consultant; PhD in Theoretical Physics and Executive MBA. Extensive research and industry experience in computational finance.</p>
           </article>
           <article class="card person">
             <div class="person-photo person-photo-alexander-fengler">
@@ -113,7 +117,7 @@
             </div>
             <h3>Alexander Fengler</h3>
             <p class="affiliation">Brown University</p>
-            <p class="bio">Postdoctoral Fellow; PhD in Computational Cognitive Science and MPhil in Statistics. Experience includes 4+ years in hedge funds, 5+ years in open source probabilistic programming, and SBI teaching.</p>
+            <p class="bio">Postdoctoral Fellow; PhD in Computational Cognitive Science and MPhil in Statistics. Extensive experience in hedge funds, open source probabilistic modeling, and SBI.</p>
           </article>
           <article class="card person">
             <div class="person-photo person-photo-stefan-radev">
@@ -129,7 +133,7 @@
             </div>
             <h3>Jerry M. Huang</h3>
             <p class="affiliation">Rensselaer Polytechnic Institute</p>
-            <p class="bio">Postdoctoral Scholar in Statistical Modeling and core BayesFlow developer. Specializes in computational modeling, simulation-based inference, and digital twins across cognitive science, acoustics, and options pricing.</p>
+            <p class="bio">Postdoctoral Scholar in Statistical Modeling and core BayesFlow developer. Specializes in computational modeling, simulation-based inference, and digital twins across different disciplines.</p>
           </article>
         </div>
       </div>
@@ -145,7 +149,7 @@
           <table class="program-table" aria-labelledby="program-title">
             <thead>
               <tr>
-                <th scope="col">#</th>
+                <th scope="col">Time</th>
                 <th scope="col">Session</th>
                 <th scope="col">Presenters</th>
                 <th scope="col">Materials</th>
@@ -153,7 +157,7 @@
             </thead>
             <tbody>
               <tr>
-                <td>1</td>
+                <td>11:00-11:15</td>
                 <th scope="row">Introduction: Bayes for volatility models</th>
                 <td>Francesco Muia</td>
                 <td>
@@ -161,7 +165,7 @@
                 </td>
               </tr>
               <tr>
-                <td>2</td>
+                <td>11:15-11:30</td>
                 <th scope="row">Amortized Bayesian inference</th>
                 <td>Alexander Fengler</td>
                 <td>
@@ -169,7 +173,7 @@
                 </td>
               </tr>
               <tr>
-                <td>3</td>
+                <td>11:30-11:40</td>
                 <th scope="row">Network architectures</th>
                 <td>Stefan T. Radev</td>
                 <td>
@@ -177,19 +181,19 @@
                 </td>
               </tr>
               <tr>
-                <td>4</td>
+                <td>11:40-12:00</td>
                 <th scope="row">Worked BayesFlow example: the Heston model</th>
                 <td>Stefan T. Radev</td>
                 <td><a class="notebook-link" href="https://github.com/fmuia/sbi4finance/blob/main/tutorial/notebooks/slot4_heston_bayesflow.py"><svg aria-hidden="true" focusable="false"><use href="assets/icons.svg#notebook"></use></svg>Notebook</a></td>
               </tr>
               <tr>
-                <td>5</td>
+                <td>12:00-12:30</td>
                 <th scope="row">Rough Bergomi model and application</th>
                 <td>Francesco Muia<br>Alexander Fengler</td>
                 <td><a class="notebook-link" href="https://github.com/fmuia/sbi4finance/blob/main/tutorial/notebooks/slot5_calibration.py"><svg aria-hidden="true" focusable="false"><use href="assets/icons.svg#notebook"></use></svg>Notebook</a></td>
               </tr>
               <tr>
-                <td>6</td>
+                <td>12:30-13:00</td>
                 <th scope="row">Advanced Topics and Open Question</th>
                 <td>Stefan T. Radev<br>Jerry M. Huang</td>
                 <td class="material-pending">To be added</td>

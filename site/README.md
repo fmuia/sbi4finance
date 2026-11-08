@@ -3,20 +3,32 @@
 The public page for the ICAIF '26 tutorial, published with GitHub Pages at
 **https://fmuia.github.io/sbi4finance/**.
 
-It is plain HTML and CSS, with a small script for setup tabs and no build step:
+It is plain HTML, CSS and JavaScript, with no build step:
 
 | File | Contents |
 | --- | --- |
 | `index.html` | All the text, one block per section (search for `SECTION:`) |
 | `style.css` | Colours (variables at the top), layout and typography |
 | `site.js` | Operating-system setup tabs, including keyboard navigation |
-| `assets/` | Icons, BayesFlow logo, hero illustration, presenter photos and fonts |
+| `theme.js` | Light/dark toggle, saved preference and system-theme detection |
+| `hero.js` | Animated background of simulated paths, volatility smiles and a volatility surface |
+| `smile.js` | Smoothly interpolates the overview plot's illustrative posterior draws |
+| `assets/` | Icons, BayesFlow logo, illustrations, presenter photos and fonts |
 
-The hero illustration (`assets/smile-fan.svg`) is decorative, not a result.
-Its colours are in the `<style>` block at the top of the file.
+The hero animation is decorative, not a result or live market data. Its drawing
+code is in `hero.js`; the page layout and text contrast are in `style.css`.
+It respects reduced-motion preferences and stops when the hero is off screen
+or the browser tab is hidden. The overview plot (`assets/smile-fan.svg`) is also
+illustrative. Its curves animate with JavaScript while the labels and quote
+markers stay fixed; its caption is part of the SVG. It remains a static image
+without JavaScript. Both animations stop for reduced-motion preferences.
 
 All text and headings use Inter, served from `assets/fonts/` alongside its
 SIL Open Font License.
+
+The top-right theme toggle remembers a selection in browser storage. Without
+a saved selection, the site follows the system theme. Page, plot and hero
+colors transition together; reduced-motion preferences disable transitions.
 
 Setup instructions follow `tutorial/pyproject.toml` and `tutorial/README.md`.
 The tabs cover Apple Silicon macOS, x86-64 Linux and x86-64 Windows; all three
@@ -51,6 +63,5 @@ what may be public: no unreleased results, private links or credentials.
 ## Before announcing the page
 
 - Fill in or remove every `todo` placeholder.
-- Delete the draft banner at the top of `index.html`.
 - Delete the `<meta name="robots" content="noindex">` line, so that search
   engines can find the page.
