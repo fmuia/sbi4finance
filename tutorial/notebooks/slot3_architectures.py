@@ -6,45 +6,27 @@ app = marimo.App(width="medium", app_title="Slot 3 · Network architectures")
 
 @app.cell(hide_code=True)
 def _():
-    import inspect
-    import os
-    import time
-
-    os.environ.setdefault("KERAS_BACKEND", "jax")
-
     import marimo as mo
-    import matplotlib.pyplot as plt
-    import numpy as np
+    from sbi4f_tutorial import plots
 
-    from sbi4f_tutorial import full_surface, inference, plots, teaching
-
-    ROOT = mo.notebook_dir().parent
-    ASSETS = ROOT / "assets"
-    RESULTS = ASSETS / "results" / "calibration"
-    CHECKPOINTS = ASSETS / "checkpoints"
     plots.style()
-    return full_surface, inspect, mo
+    return (mo,)
 
 
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    # Slot 3 · Network architectures for amortized inference
+    # Neural network architectures for amortized inference
 
-    **Which networks represent the posterior, and how they read the data**
+    **Which networks represent the posterior, and how they process the data**
 
-    Slot 2 ended on the object to build: a conditional distribution $q_\phi(\theta \mid y)$, trained on
-    simulated pairs. This notebook shows the networks that build it, using the current cached Heston
-    development example and its PyMC reference. Historical SPY results remain labelled separately in slot 4.
+    Slot 2 ended on the object to build: a neural estimator $q_\phi(\theta \mid y)$ trained on simulated pairs. This notebook shows the networks that build it, using the current cached Heston development example and its PyMC reference. Historical SPY results remain labelled separately in slot 4.
 
-    Three claims, each shown below:
+    The slot in brief:
 
-    1. **An inference network represents the posterior.** Flow matching learns a velocity field that
-       carries Gaussian noise to the posterior along an ordinary differential equation.
-    2. **A summary network, when needed, follows the shape of the data.** None for a fixed grid of quotes,
-       a set network for a variable set of quotes, a time-series network for returns.
-    3. **A few details decide whether a network works on financial data:** bounded parameters, scales,
-       fresh noise in every batch, and the sampler's steps.
+    1. **An inference network represents the posterior.** Flow matching learns a velocity field that transports Gaussian noise to the posterior along an ordinary differential equation.
+    2. **A summary network, when needed, embeds the data.** Irregular or non-vector data types (e.g., time series, sets, graphs) benefit from an embedding step $h(y)$ trained jointly with the inference network.
+    3. **A few details decide whether a network works on financial data:** bounded parameters, scales, noise in every batch, and the sampler's steps.
     """)
     return
 
@@ -53,8 +35,8 @@ def _(mo):
 def _(mo):
     mo.mermaid("""
     flowchart LR
-      Y["data y: 63 prices, or a set of quotes, or a return series"] --> H["summary network h (optional)"]
-      H --> Q["inference network q(θ | h(y))"]
+      Y["data y: quotes, returns, etc"] --> H["summary net h (optional)"]
+      H --> Q["inference net q(θ | h(y))"]
       Y -. "a fixed grid needs no summary" .-> Q
       Z["Gaussian noise z"] --> Q
       Q --> D["posterior draws of θ"]
@@ -65,21 +47,29 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## 1 · Flow matching: noise carried to the posterior
+    ## 1. Flow matching: transporting noise to the posterior
 
-    For a simulated pair $(\theta, y)$, Gaussian noise $z$ and a time $\tau \in [0, 1]$, the network
-    $u_\phi$ is trained by least squares on straight paths from noise to parameter:
+    For each simulated pair $(\theta,y)$, we draw Gaussian noise $z_1 \sim \mathcal{N}(0, I)$ and a time $t \sim \mathcal{U}(0, 1)$. We construct a straight path between the parameter and the noise:
 
-    $$\mathcal L(\phi) = \mathbb E\,\big\| u_\phi\big((1 - \tau)\,z + \tau\,\theta,\ \tau,\ y\big) - (\theta - z) \big\|^2 .$$
+    $$
+    z_t = (1 - t) \theta + t z_1.
+    $$
 
-    This formula uses a conceptual noise-to-parameter time. BayesFlow retains its released
-    time convention and sampler. In this conceptual convention, sampling integrates
-    $dz/d\tau = u_\phi(z, \tau, y)$ from $\tau = 0$ to $1$. A normalizing flow does
-    the same transport in one invertible map with an exact density; flow matching trades that for a
-    regression loss that scales to many parameters and odd shapes, and the tutorial's networks use it.
+    At $t = 0$, the path starts at the parameter $\theta$; at $t = 1$, it ends at Gaussian noise $z_1$. Its velocity is simply $z_1 - \theta$. We train a neural network $u_\phi(z_t, t, y)$ to predict this velocity by minimizing a regression loss:
 
-    The cached current Heston example below shows the endpoint and its reference.
-    Flow trajectories depend on the trained network and its sampler; we do not invent intermediate states from cached endpoint draws.
+    $$
+    \mathcal{L}(\phi) = \mathbb{E}_{p(\theta, y)p(z)p(t)}\left[\left\|u_\phi((1 - t)\theta + t z_1, t, y)-(z_1 -\theta)\right\|^2\right].
+    $$
+
+    **How does this generate posterior samples?** Given observed data $y$, we draw $x_1\sim\mathcal{N}(0,I)$ and solve the learned ODE backward in time:
+
+    $$
+    \frac{dz_t}{dt}=u_\phi(x_t,t,y),\qquad t: 1 \rightarrow 0.
+    $$
+
+    The endpoint $z_0$ is approximately distributed according to the posterior $q_\phi(\theta \mid y)$. Training is very fast, but sampling requires numerical ODE integration.
+
+    The cached Heston example below shows posterior samples and their reference distribution. Intermediate trajectories depend on the trained velocity field and numerical solver and cannot be reconstructed from endpoint samples alone.
     """)
     return
 
@@ -87,123 +77,130 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md("""
-    The archived BayesFlow 2.0 Euler-step experiment is retained in git history. Current estimators use BayesFlow 2.1's native adaptive solver; this notebook does not override it. Inspect all current Heston parameter pairs in the cached example below, and use the backbone review for explicit native sampling.
+    The [BayesFlow 2.1 inference-network guide](https://bayesflow.org/v2.1.0/user_guide/inference_networks.html) compares the available posterior estimators:
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    _rows = [
+        {"Network": "CouplingFlow", "Architecture": "Normalizing flow", "Inference speed": "⚡⚡⚡", "Exact density": "✓", "Best for": "Simple to moderately complex posteriors"},
+        {"Network": "FlowMatching", "Architecture": "Flow matching (OT)", "Inference speed": "⚡", "Exact density": "✓", "Best for": "Complex, multimodal posteriors"},
+        {"Network": "DiffusionModel", "Architecture": "Score-based SDE/ODE", "Inference speed": "⚡", "Exact density": "✓", "Best for": "Complex, multimodal; compositional inference"},
+        {"Network": "ConsistencyModel", "Architecture": "Consistency training", "Inference speed": "⚡⚡", "Exact density": "—", "Best for": "Fast single-step distillation training"},
+        {"Network": "StableConsistencyModel", "Architecture": "Stable CT", "Inference speed": "⚡⚡", "Exact density": "—", "Best for": "Continuous consistency training without discretization"},
+        {"Network": "ScoringRuleNetwork", "Architecture": "Feed-forward + heads", "Inference speed": "⚡⚡⚡⚡", "Exact density": "Parametric", "Best for": "Various Bayes estimators and parametric distributions"},
+        {"Network": "PointNetwork", "Architecture": "Feed-forward + heads", "Inference speed": "⚡⚡⚡⚡", "Exact density": "—", "Best for": "Posterior mean and quantile estimation"},
+    ]
+    mo.ui.table(_rows, selection=None, pagination=False)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    from sbi4f_tutorial import backbones
+    cache_task, _report, cache_arrays = backbones.load_example("heston-final500")
+    mo.vstack([mo.md("**Current cached Heston development case**, with the PyMC reference."), backbones.corner(cache_task, cache_arrays)])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ## 2. Processing the observed financial data
+
+    It is useful to remember that amortized Bayes solves two tasks at the same time: **representation learning** and **probabilistic inference**. In BayesFlow, these are handled together by separate neural networks:
+
+    - **Summary network:** Transforms the observed data $y$ into an informative representation $s_\psi(y)$ for estimating the parameters $\theta$.
+    - **Inference network:** Learns the conditional posterior $q_\phi(\theta\mid s_\psi(y))$ and uses this representation to generate posterior samples.
+
+    The summary network does not need to reconstruct the observations or retain every detail. Its goal is to preserve information relevant to the parameters. Ideally, $p(\theta\mid y)=p(\theta\mid s_\psi(y))$. Both networks are trained jointly, so the summary network learns which features of the data are useful for posterior inference.
+
+    **When do we need a summary network?** For small, fixed-dimensional inputs, we can pass the observations directly to the inference network. For variable-sized data, long time series, or unordered sets, we need an architecture that converts observations into a fixed-dimensional representation while respecting their symmetry.
+
+    | Data | Shape | Network | Where |
+    |:---|:---|:---|:---|
+    | A smile on the design grid | A fixed vector of 63 prices (and, in slot 5, the forward-variance curve as context) | No summary network: standardized prices enter directly as conditions | Slots 4 and 5 |
+    | A real option chain | A set of (log-moneyness, maturity, price, noise) tuples, with varying size and order | DeepSet or SetTransformer: invariant to the order of quotes | Extension beyond the fixed design grid |
+    | Daily returns | Any prefix of 1 to 1,260 daily observations | Recurrent network (GRU): processes the ordered sequence | `trajectory_inference.py` (`pixi run trajectories`) |
+
+    In BayesFlow, choosing an appropriate summary network takes just one line:
+
+    ```python
+    bf.networks.DeepSet(summary_dim=16)  # Unordered sets of quotes
+    bf.networks.SetTransformer(summary_dim=16)  # Sets with attention between quotes
+    bf.networks.RecurrentNetwork(hidden_dim=64, summary_dim=32, recurrent_type="gru")  # Ordered returns
+    ```
+
+    The [BayesFlow 2.1 summary-network guide](https://bayesflow.org/v2.1.0/user_guide/summary_networks.html) compares the available summary networks. You can even use pretrained foundation models as backbone, which is described in this more [advanced tutorial](https://github.com/bayesflow-org/bayesflow/blob/dev/examples/Foundation_Models.ipynb).
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ## 3. A Heston workflow is one plain BayesFlow specification:
+
+    ```python
+    import bayesflow as bf
+
+    adapter = (
+        bf.Adapter()
+        .constrain("initial_variance", lower=0.01, upper=0.16, inclusive="none")
+        .constrain("theta", lower=0.01, upper=0.16, inclusive="none")
+        .constrain("vol_of_vol", lower=0.1, upper=1.5, inclusive="none")
+        .constrain("rho", lower=-0.95, upper=-0.1, inclusive="none")
+        .concatenate(
+            ["initial_variance", "theta", "vol_of_vol", "rho"],
+            into="inference_variables",
+        )
+        .rename("observations", "inference_conditions")
+    )
+
+    inference_network = bf.networks.FlowMatching(
+        subnet_kwargs={"widths": (256,)*4}
+    )
+
+    workflow = bf.BasicWorkflow(
+        adapter=adapter,
+        inference_network=inference_network,
+        standardize="all"
+    )
+
+    history = workflow.fit_offline(
+        data=training_data,
+        epochs=500,
+        batch_size=256
+    )
+    ```
+
+    - The adapter prepares simulated data for neural network training. It maps the four Heston parameters to unconstrained values, respecting their specified bounds, and combines them into a single parameter vector (`inference_variables`). It also tells BayesFlow which simulated observations should be used as inputs (`inference_conditions`).
+
+    - The workflow is a high-level wrapper that brings everything together: the adapter, the flow-matching network, and automatic standardization. During training, BayesFlow processes the simulated parameter–observation pairs, standardizes the inputs, and trains the network to approximate the posterior. Here, we train for 500 epochs using batches of 256 simulations.
+
+    - Once trained, the same workflow can generate posterior samples for new option prices without retraining the network.
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ## Takeaways
+
+    1. **Flow matching learns to turn noise into posterior samples.** Once trained, the same network can perform inference for different volatility smiles.
+    2. **How we process the data depends on its structure.** A fixed design grid can go straight into the inference network. Option chains with varying numbers of quotes need a set network, while daily returns call for a time-series network.
+    3. **The practical details matter.** Parameter bounds, standardization, and network hyperparameters all play a role in getting reliable posterior estimates.
+
+    **Next, slot 4:** We put everything together in BayesFlow, using the Heston model and real SPY option prices, and compare the results against the exact posterior.
     """)
     return
 
 
 @app.cell
-def _(mo):
-    from sbi4f_tutorial import backbones
-    _task, _report, _arrays = backbones.load_example("heston-final500")
-    mo.vstack([mo.md("**Current cached Heston development case**, with the PyMC reference. "
-                    "No network is loaded on opening this lesson."), backbones.corner(_task, _arrays)])
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""
-    The current cached endpoint is a synthetic development observation with its own PyMC reference.
-    It is not SPY. Flow paths need not be straight in physical parameter units because the adapter
-    works in standardized, unbounded coordinates.
-
-    ## 2 · Reading the data
-
-    | Data | Shape | Network | Where |
-    |:---|:---|:---|:---|
-    | A smile on the design grid | a fixed vector of 63 prices (and, in slot 5, the forward-variance curve as context) | no summary network: the standardized prices enter as conditions | slots 4 and 5 |
-    | A real option chain | a set of (log-moneyness, maturity, price, noise) tuples, of varying size and order | a set network (DeepSet, set transformer), invariant to the order of the quotes | the extension that removes the design grid |
-    | Daily returns | any prefix of 1 to 1,260 daily observations | a causal GRU summary of the ordered returns | `trajectory_inference.py` (`pixi run trajectories`) |
-    | Any data, for misspecification tests | any | a summary network trained with a distance term in its output space (Schmitt et al. 2024) | slot 6 |
-
-    In BayesFlow each is one line, and the rest of the workflow does not change:
-
-    ```python
-    bf.networks.DeepSet(summary_dim=16)                    # a set of quotes, any order, any number
-    bf.networks.SetTransformer(summary_dim=16)             # the same, with attention between quotes
-    bf.networks.RecurrentNetwork(hidden_dim=64, summary_dim=32, recurrent_type="gru")  # ordered returns
-    ```
-
-    The current set-encoder experiments still use complete 63-quote surfaces. Supporting
-    variable or missing quotes is a separate follow-up; a set network alone does not establish it.
-    Where sufficient statistics exist, a learned summary can learn to approximate them.
-
-    ## 3 · The configuration slot 4 trains
-
-    The current network factory for slots 4 and 5 is this function (`src/sbi4f_tutorial/full_surface.py`):
-    """)
-    return
-
-
-@app.cell(hide_code=True)
-def _(full_surface, inspect, mo):
-    mo.ui.code_editor(inspect.getsource(full_surface.build_workflow), language="python", disabled=True)
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""
-    Each line answers a practical problem:
-
-    1. **Bounded parameters.** `constrain` maps each parameter from its prior box to the real line, so
-       draws never leave the box: $\rho$ stays in $(-0.95, -0.1)$.
-    2. **Scales.** Parameters and prices are standardized with training statistics, because SPY's 63 prices
-       range from about $1.5 \times 10^{-5}$ to $0.07$ of the forward.
-    3. **Noise.** Quote noise is drawn fresh in every batch during training, so the network never sees the
-       same noisy smile twice.
-    4. **Capacity.** Four dense layers of 256 in the velocity network.
-    5. **Training times** follow the current BayesFlow family defaults. The earlier 2.0 study
-       used a custom time distribution; its results retain that historical identity.
-    6. **Sampler.** `full_surface.sample` preserves BayesFlow 2.1's native adaptive solver,
-       with the integration settings bound in the checkpoint metadata.
-
-    ## 4 · How many steps does the sampler need?
-
-    Fewer steps are faster and less accurate. The exact Heston posterior on SPY (slot 4) is the reference.
-    """)
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    _message = ("The default sampler is BayesFlow 2.1's native adaptive solver. "
-                "Numerical posterior-sampling error is distinct from simulator pricing error. "
-                "Check both while preserving the recorded sampler identity.")
-    mo.md(_message)
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md("""
-    The archived BayesFlow 2.0 Euler-step experiment is retained in git history. Current estimators use BayesFlow 2.1's native adaptive solver; this notebook does not override it. Inspect all current Heston parameter pairs in the cached example below, and use the backbone review for explicit native sampling.
-    """)
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""
-    A width ratio of 1 means the network's posterior is as wide as the exact one. Too few steps shrink
-    sharp posteriors.
-
-    ## Takeaways
-
-    1. **Flow matching carries noise to the posterior**; one trained network does it for any smile.
-    2. **The summary network follows the data's shape.** The design grid needs none; real chains need a
-       set network; returns need a time-series network.
-    3. **Bounds, scales, fresh noise and the sampler's grid** are what make the same network work on
-       option prices.
-
-    **Next, slot 4:** the whole workflow in BayesFlow, on Heston and the SPY smile, checked against the
-    exact posterior.
-
-    *Evidence and code:* the [curriculum](../curriculum/03-slot3-architectures.md),
-    `src/sbi4f_tutorial/full_surface.py`, the bound cases in `assets/backbones/`,
-    and [the cached/live backbone review](backbone_review.py).
-    """)
+def _():
     return
 
 

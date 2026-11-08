@@ -6,14 +6,21 @@ from pathlib import Path
 import subprocess
 import sys
 import unittest
+from unittest import mock
 
 import numpy as np
 
-from sbi4f_tutorial.shared import backbones, full_surface
+from sbi4f_tutorial.shared import backbones, full_surface, full_surface_teaching
 from sbi4f_tutorial.shared.paths import ASSETS
 
 
 class BackboneTests(unittest.TestCase):
+    def test_json_hashes_are_stable_across_git_line_endings(self):
+        with mock.patch.object(Path, "read_bytes", side_effect=[b'{"value": 1}\n', b'{"value": 1}\r\n']):
+            self.assertEqual(full_surface_teaching.digest("lf.json"), full_surface_teaching.digest("crlf.json"))
+        with mock.patch.object(Path, "read_bytes", side_effect=[b"value\n", b"value\r\n"]):
+            self.assertNotEqual(full_surface_teaching.digest("lf.npz"), full_surface_teaching.digest("crlf.npz"))
+
     def test_all_current_development_bundles_validate_and_keep_known_joint_boundaries(self):
         self.assertEqual(len(backbones.examples()), 6)
         for name in backbones.examples():
@@ -50,11 +57,11 @@ for name in backbones.examples():
     def test_no_notebook_uses_archived_checkpoint_loading_or_implicit_toy_training(self):
         notebooks = Path(__file__).resolve().parents[1] / "notebooks"
         for path in notebooks.glob("*.py"):
-            text = path.read_text()
+            text = path.read_text(encoding="utf-8")
             ast.parse(text)
             self.assertNotIn("load_approximator", text, path.name)
             self.assertNotIn("teaching.load_network", text, path.name)
-        toy = (notebooks / "slot2_amortized_bayes.py").read_text()
+        toy = (notebooks / "slot2_amortized_bayes.py").read_text(encoding="utf-8")
         self.assertNotIn("or not TOY_CHECKPOINT.exists()", toy)
         self.assertIn("mo.stop(not train_button.value", toy)
 
