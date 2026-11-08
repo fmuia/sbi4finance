@@ -1,0 +1,256 @@
+<!doctype html>
+<!--
+  Tutorial webpage. Published to GitHub Pages by .github/workflows/pages.yml
+  on every push to main that changes site/. See site/README.md.
+
+  Editing: all the text is in this file, one block per section (search for
+  "SECTION:"). Placeholders have class="todo"; search for "todo" to find what
+  is left. Colours and layout are in style.css.
+
+  The published page is PUBLIC even though the repository is private. Put here
+  only what may be public: no unreleased results, private links or credentials.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- DRAFT: keeps search engines away while the page is a draft. Delete this line when the page is ready. -->
+  <meta name="robots" content="noindex">
+  <title>Amortized Bayesian Calibration of Volatility Models · ICAIF '26 tutorial</title>
+  <meta name="description" content="ICAIF '26 tutorial, Saturday 14 November 2026, Milan. Amortized Bayesian inference for volatility models with BayesFlow: posteriors in seconds from networks trained on simulations, and the checks that say when to trust them.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Amortized Bayesian Calibration of Volatility Models">
+  <meta property="og:description" content="An ICAIF '26 tutorial on simulation-based inference for volatility models with BayesFlow. Saturday 14 November 2026, 11:00–13:00 CET, Bocconi University, Milan.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f8f7f3" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0d1320" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- DRAFT BANNER: delete this block when the page is final. -->
+  <div class="draft-banner" role="note">Draft page. Details are still being added and may change.</div>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#top"><img src="assets/favicon.svg" alt="" width="26" height="26"> ICAIF '26 Tutorial</a>
+      <nav class="site-nav" aria-label="Sections">
+        <a href="#overview">Overview</a>
+        <a href="#program">Program</a>
+        <a href="#presenters">Presenters</a>
+        <a href="#materials">Materials</a>
+        <a href="#setup">Setup</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ===================== SECTION: Hero ===================== -->
+    <section class="hero" id="top">
+      <div class="container hero-grid">
+        <div class="hero-text">
+          <p class="eyebrow">ICAIF '26 · Tutorial</p>
+          <h1>Amortized Bayesian Calibration of Volatility Models</h1>
+          <p class="lead">Train a neural network on simulated markets once, then get the full posterior of a volatility model's parameters for new data in seconds. We show how to do it with BayesFlow, and how to check the result before you trust it.</p>
+          <dl class="facts">
+            <div>
+              <dt>When</dt>
+              <dd>Saturday 14 November 2026<br><span class="nowrap">11:00–13:00 CET</span></dd>
+            </div>
+            <div>
+              <dt>Where</dt>
+              <dd>Room 3, Bocconi University<br>Via Röntgen 1, Milan</dd>
+            </div>
+            <div>
+              <dt>Format</dt>
+              <dd>Two hours: slides,<br>then three notebooks</dd>
+            </div>
+          </dl>
+          <p class="actions">
+            <a class="button" href="#program">See the program</a>
+            <a class="button button-ghost" href="https://icaif2026.org/tutorials/#bayesian-volatility-calibration">Official listing <span aria-hidden="true">↗</span></a>
+          </p>
+        </div>
+        <figure class="hero-figure">
+          <img src="assets/smile-fan.svg" width="560" height="400" alt="Many posterior draws of an implied-volatility smile. They agree where the market quotes and fan out beyond the first and last quotes.">
+          <figcaption>Illustration: posterior draws of a volatility smile agree where the market quotes and fan out where the quotes stop. Pricing under each draw turns that spread into a range of prices.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ===================== SECTION: Overview ===================== -->
+    <section class="section" id="overview">
+      <div class="container">
+        <h2>Why this tutorial</h2>
+        <div class="prose">
+          <p>A calibrated volatility model is an estimate. The prices it gives for products the market does not quote inherit its uncertainty, and that uncertainty is largest where the quotes stop. A Bayesian posterior describes it, and pricing under each posterior draw turns it into a range.</p>
+          <p>For models that can only be simulated, such as rough volatility, an exact posterior is expensive. Amortized Bayesian inference pays that cost once: a generative neural network is trained on simulated data, then returns the posterior for each new data set in seconds. That speed is also what makes the method checkable, on thousands of simulated data sets, before it is trusted on a real one.</p>
+        </div>
+
+        <div class="cards">
+          <article class="card">
+            <span class="card-num" aria-hidden="true">1</span>
+            <h3>The range matters</h3>
+            <p>A single calibrated parameter set hides how much the data really pin down. The posterior keeps that information and carries it into the prices you report.</p>
+          </article>
+          <article class="card">
+            <span class="card-num" aria-hidden="true">2</span>
+            <h3>Amortization makes it practical</h3>
+            <p>Pay once in training, then seconds per data set: fast enough for the many posteriors that validation needs.</p>
+          </article>
+          <article class="card">
+            <span class="card-num" aria-hidden="true">3</span>
+            <h3>Trust comes from checks</h3>
+            <p>Simulation-based calibration, coverage and posterior predictive checks show when to trust the network, and when not to.</p>
+          </article>
+        </div>
+
+        <div class="two-col">
+          <div>
+            <h3>What you will learn</h3>
+            <ul class="checklist">
+              <li>Why a calibrated model needs a posterior, and why the exact one gets expensive as models get richer.</li>
+              <li>How amortized Bayesian inference turns simulations into a network that returns posteriors.</li>
+              <li>Which networks to use: normalizing flows and flow matching for the posterior, summary networks for the data.</li>
+              <li>The complete BayesFlow workflow, on option surfaces and on return histories.</li>
+              <li>How to check a posterior before using it, and how to read identifiability off it.</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Who it is for</h3>
+            <!-- TODO: confirm the audience and prerequisites. -->
+            <p>Quants, risk managers and machine-learning researchers who fit models to market data. Some Python and basic probability help; no prior experience with BayesFlow is needed.</p>
+            <p>You will leave able to say three things about your own model: whether you need this, what it costs, and how you would check it.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SECTION: Program ===================== -->
+    <section class="section section-alt" id="program">
+      <div class="container">
+        <h2>Program</h2>
+        <p class="section-lead">Saturday 14 November, <span class="nowrap">11:00–13:00 CET</span>. <span class="todo">Timings within the session to add</span></p>
+
+        <h3 class="subhead">Every application follows the same five steps</h3>
+        <ol class="workflow">
+          <li><strong>Model</strong><span>State the simulator and the prior.</span></li>
+          <li><strong>Simulate</strong><span>Draw parameters and synthetic data.</span></li>
+          <li><strong>Train</strong><span>Fit the posterior network once.</span></li>
+          <li><strong>Infer</strong><span>Posterior for new data in seconds.</span></li>
+          <li><strong>Check</strong><span>Calibration, coverage, predictive checks.</span></li>
+        </ol>
+
+        <div class="program-grid">
+          <div class="part">
+            <h3><span class="part-label">Part 1</span> Foundations <span class="tag">Slides</span></h3>
+            <ol class="agenda">
+              <li><span class="n" aria-hidden="true">1</span><div><strong>Why calibration needs a posterior</strong><p>What a posterior adds to a calibrated model, and why richer models make the exact one expensive.</p></div></li>
+              <li><span class="n" aria-hidden="true">2</span><div><strong>Amortized Bayesian inference</strong><p>How a network trained on simulations returns the posterior, and when the up-front training pays off.</p></div></li>
+              <li><span class="n" aria-hidden="true">3</span><div><strong>Network architectures</strong><p>Normalizing flows and flow matching for the posterior; summary networks for the data.</p></div></li>
+            </ol>
+          </div>
+          <div class="part">
+            <h3><span class="part-label">Part 2</span> Applications <span class="tag">Notebooks</span></h3>
+            <ol class="agenda">
+              <li><span class="n" aria-hidden="true">4</span><div><strong>Heston options</strong><p>The complete BayesFlow workflow on an option surface: simulator, posterior network, posterior predictive checks and calibration across repeated data sets.</p></div></li>
+              <li><span class="n" aria-hidden="true">5</span><div><strong>Rough Bergomi options</strong><p>Rough volatility, which only simulation can price, with a supplied or an estimated forward-variance curve.</p></div></li>
+              <li><span class="n" aria-hidden="true">6</span><div><strong>Return histories</strong><p>Volatility dynamics and drift from daily returns of any length, and how the posterior changes as the history grows.</p></div></li>
+            </ol>
+          </div>
+        </div>
+        <p class="close-note">The session closes with questions and discussion.</p>
+      </div>
+    </section>
+
+    <!-- ===================== SECTION: Presenters ===================== -->
+    <section class="section" id="presenters">
+      <div class="container">
+        <h2>Presenters</h2>
+        <p class="section-lead">Names and affiliations as listed in the ICAIF '26 programme.</p>
+        <div class="people">
+          <!-- One <article> per presenter. To add a homepage, wrap the name in <a href="...">. -->
+          <article class="card person">
+            <span class="avatar" aria-hidden="true">FM</span>
+            <h3>Francesco Muia</h3>
+            <p class="affiliation">PyMC Labs</p>
+            <p><span class="todo">Short bio to add</span></p>
+          </article>
+          <article class="card person">
+            <span class="avatar" aria-hidden="true">AF</span>
+            <h3>Alexander Fengler</h3>
+            <p class="affiliation">Brown University</p>
+            <p><span class="todo">Short bio to add</span></p>
+          </article>
+          <article class="card person">
+            <span class="avatar" aria-hidden="true">SR</span>
+            <h3>Stefan T. Radev</h3>
+            <p class="affiliation">Rensselaer Polytechnic Institute</p>
+            <p><span class="todo">Short bio to add</span></p>
+          </article>
+          <article class="card person">
+            <span class="avatar" aria-hidden="true">JH</span>
+            <h3>Jerry M. Huang</h3>
+            <p class="affiliation">Rensselaer Polytechnic Institute</p>
+            <p><span class="todo">Short bio to add</span></p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SECTION: Materials ===================== -->
+    <section class="section section-alt" id="materials">
+      <div class="container">
+        <h2>Materials</h2>
+        <p class="section-lead">Slides, notebooks and code will be linked here.</p>
+        <div class="cards cards-4">
+          <article class="card">
+            <h3>Slides</h3>
+            <p>Introduction, amortized Bayesian inference and network architectures.</p>
+            <p class="status"><span class="todo">Link to add</span></p>
+          </article>
+          <article class="card">
+            <h3>Notebooks</h3>
+            <p>Three marimo notebooks with saved examples, one per application. A laptop CPU is enough.</p>
+            <p class="status"><span class="todo">Link to add</span></p>
+          </article>
+          <article class="card">
+            <h3>Code</h3>
+            <p>The tutorial repository, with the simulators, the trained networks and setup instructions.</p>
+            <p class="status"><span class="todo">Link to add</span></p>
+          </article>
+          <article class="card">
+            <h3>BayesFlow</h3>
+            <p>The open-source Python library for amortized Bayesian inference that we use throughout.</p>
+            <p class="links"><a href="https://bayesflow.org/">Documentation <span aria-hidden="true">↗</span></a> <a href="https://github.com/bayesflow-org/bayesflow">GitHub <span aria-hidden="true">↗</span></a></p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SECTION: Setup ===================== -->
+    <section class="section" id="setup">
+      <div class="container">
+        <h2>Before the tutorial</h2>
+        <ul class="checklist setup-list">
+          <li>Bring a laptop. The notebooks include saved examples, so a CPU is enough: no GPU and no large downloads.</li>
+          <li>The notebooks use Python 3.12, <a href="https://bayesflow.org/">BayesFlow</a> 2.1 and <a href="https://marimo.io/">marimo</a>. We install them with <a href="https://pixi.sh/">Pixi</a>; pip also works.</li>
+          <li><span class="todo">Step-by-step installation instructions to add</span></li>
+        </ul>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================== SECTION: Footer ===================== -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>A tutorial at <a href="https://icaif2026.org/">ICAIF '26</a>, the 7th ACM International Conference on AI in Finance, Milan, <span class="nowrap">14–17 November 2026</span>.</p>
+      <p>Contact: <span class="todo">to add</span></p>
+    </div>
+  </footer>
+</body>
+</html>
