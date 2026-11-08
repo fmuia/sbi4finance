@@ -1,8 +1,10 @@
-"""Admission is explicit; independent lanes consume reservations on failure."""
+"""Admission requires finite resources, same-bank smoke and explicit readiness."""
 import json
 from pathlib import Path
 import tempfile
+from types import SimpleNamespace
 import unittest
+from unittest.mock import patch
 
 from scripts import run_heston_budget_study as runner
 
@@ -12,20 +14,38 @@ class BudgetRunnerTests(unittest.TestCase):
         protocol_path = runner.DEFAULT_PROTOCOL
         protocol = runner.read_json(protocol_path)
         readiness = root / "readiness.json"
-        readiness.write_text(json.dumps({"protocol_sha256": runner.digest(protocol_path),
-                                         "control_checkpoint_sha256": protocol["control"]["checkpoint_sha256"],
-                                         "status": "pass", "reserved_test_evaluated": False}))
+        readiness.write_text(json.dumps({"format": "heston_training_budget_readiness_v1",
+            "protocol_sha256": runner.digest(protocol_path),
+            "control_checkpoint_sha256": protocol["control"]["checkpoint_sha256"],
+            "bank_manifest_sha256": protocol["bank"]["manifest_sha256"],
+            "status": "pass", "reserved_test_evaluated": False,
+            "training_performed": False, "new_mcmc_performed": False,
+            "gates": {key: True for key in ("finite_in_support_without_clipping", "development_rank_screen",
+                                            "conditional_all_cases", "predictive_pricing_completed")}}))
         smoke = root / "smoke.json"
-        smoke.write_text(json.dumps({"same_seed_reload_exact": True, "scientific_validation": False,
-                                    "run_contract": {"format": "full_surface_update_budget_run_v1", "settings": {"updates": 3}},
-                                    "selected_update": 3, "performance": {"work": {"optimizer_updates": 3}}}))
+        smoke.write_text(json.dumps({"format": "full_surface_training_v1", "checkpoint_selection": "endpoint",
+            "same_seed_reload_exact": True, "scientific_validation": False, "reserved_test_evaluated": False,
+            "task_fingerprint": protocol["bank"]["task_fingerprint"],
+            "run_contract": {"format": "full_surface_update_budget_run_v1", "settings": {
+                "updates": 3, "batch_size": 256, "steps_per_execution": 1, "checkpoint_selection": "endpoint"},
+                "dataset": {"manifest_sha256": protocol["bank"]["manifest_sha256"],
+                            "task_fingerprint": protocol["bank"]["task_fingerprint"]}},
+            "selected_update": 3, "performance": {"work": {"optimizer_updates": 3,
+                "available_training_rows": 100000, "example_presentations": 768, "unique_rows_seen": 768,
+                "reserved_test_evaluated": False}, "runtime": runner.runtime_identity(),
+                "hardware": {"devices": ["fixture:cpu"]}, "peak_process_rss_bytes": 2**30}}))
         admission = {"format": "heston_training_budget_admission_v1",
-                     "protocol_sha256": runner.digest(protocol_path), "readiness_sha256": runner.digest(readiness),
-                     "smoke_training_sha256": runner.digest(smoke), "source_revision": "frozen-revision",
-                     "host_cpus": 4, "gpu_count": 1, "cleanup_seconds_per_lane": 5, "lane_wall_seconds": {"small-u00030-s0": 20, "full-u00030-s0": 30},
-                     "already_used": {"allocated_cpu_seconds": 40, "gpu_seconds": 10},
-                     "reserved_confirmation": {"allocated_cpu_seconds": 2000, "gpu_seconds": 500},
-                     "approved_for_execution": True}
+            "protocol_sha256": runner.digest(protocol_path), "readiness_sha256": runner.digest(readiness),
+            "smoke_training_sha256": runner.digest(smoke), "source_revision": "frozen-revision",
+            "host_cpus": 4, "gpu_count": 0, "cleanup_seconds_per_lane": 5,
+            "lane_wall_seconds": {"small-u00030-s0": 20, "full-u00030-s0": 30},
+            "already_used": {"allocated_cpu_seconds": 40, "gpu_seconds": 10},
+            "reserved_confirmation": {"allocated_cpu_seconds": 2000, "gpu_seconds": 500},
+            "source_manifest_sha256": runner.executing_sources_digest(),
+            "runtime": runner.runtime_identity(), "execution_devices": ["fixture:cpu"],
+            "memory": {"host_allocation_bytes": 24 * 2**30, "forecast_peak_host_bytes": 2 * 2**30,
+                       "forecast_peak_device_bytes": 0, "available_device_bytes": 0},
+            "approved_for_execution": True}
         path = root / "admission.json"; path.write_text(json.dumps(admission))
         return protocol_path, readiness, smoke, path, admission
 
@@ -34,15 +54,67 @@ class BudgetRunnerTests(unittest.TestCase):
             root = Path(temporary); p, r, s, a, admission = self.fixture(root)
             runner.validate_admission(p, r, s, a, "frozen-revision")
             for changes, error in (({"source_revision": "changed"}, "identity changed"),
-                                   ({"approved_for_execution": False}, "explicitly admitted"),
-                                   ({"reserved_confirmation": {"allocated_cpu_seconds": 21600, "gpu_seconds": 0}}, "resource ceiling")):
+                ({"approved_for_execution": False}, "explicitly admitted"),
+                ({"reserved_confirmation": {"allocated_cpu_seconds": 21600, "gpu_seconds": 1}}, "resource ceiling")):
                 a.write_text(json.dumps({**admission, **changes}))
                 with self.assertRaisesRegex(ValueError, error):
                     runner.validate_admission(p, r, s, a, "frozen-revision")
             a.write_text(json.dumps(admission))
             r.write_text(r.read_text().replace('"pass"', '"inconclusive"'))
-            with self.assertRaisesRegex(ValueError, "readiness did not pass"):
+            with self.assertRaisesRegex(ValueError, "every gate"):
                 runner.validate_admission(p, r, s, a, "frozen-revision")
+
+    def test_nonfinite_boolean_and_missing_resource_proofs_are_rejected(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary); p, r, s, a, admission = self.fixture(root)
+            changes = [{"lane_wall_seconds": {"small-u00030-s0": value}}
+                       for value in (float("nan"), float("inf"), True)]
+            changes += [{"gpu_count": True}, {"cleanup_seconds_per_lane": float("nan")},
+                {"already_used": {"allocated_cpu_seconds": float("nan"), "gpu_seconds": 0}},
+                {"reserved_confirmation": {"allocated_cpu_seconds": 0, "gpu_seconds": 0}},
+                {"memory": {**admission["memory"], "forecast_peak_host_bytes": 1}},
+                {"memory": {**admission["memory"], "host_allocation_bytes": 25 * 2**30}},
+                {"runtime": {}}, {"execution_devices": ["another device"]},
+                {"source_manifest_sha256": "changed executing source"}]
+            for change in changes:
+                with self.subTest(change=change):
+                    a.write_text(json.dumps({**admission, **change}))
+                    with self.assertRaises(ValueError):
+                        runner.validate_admission(p, r, s, a, "frozen-revision")
+
+    def test_status_only_readiness_and_missing_or_wrong_bank_smoke_cannot_admit(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary); p, r, s, a, admission = self.fixture(root)
+            original_readiness, original_smoke = runner.read_json(r), runner.read_json(s)
+            for gates in ({}, {**original_readiness["gates"], "conditional_all_cases": False}):
+                r.write_text(json.dumps({**original_readiness, "gates": gates}))
+                admission["readiness_sha256"] = runner.digest(r); a.write_text(json.dumps(admission))
+                with self.assertRaisesRegex(ValueError, "every gate"):
+                    runner.validate_admission(p, r, s, a, "frozen-revision")
+            r.write_text(json.dumps(original_readiness)); admission["readiness_sha256"] = runner.digest(r)
+            for change in ({"selected_update": None}, {"selected_update": 0},
+                           {"task_fingerprint": "another task"}, {"performance": {}},
+                           {"run_contract": {"format": "full_surface_update_budget_run_v1"}}):
+                s.write_text(json.dumps({**original_smoke, **change}))
+                admission["smoke_training_sha256"] = runner.digest(s); a.write_text(json.dumps(admission))
+                with self.assertRaisesRegex(ValueError, "smoke evidence"):
+                    runner.validate_admission(p, r, s, a, "frozen-revision")
+
+    def test_execution_requires_real_cpu_binding_and_matched_devices(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            _, _, _, _, admission = self.fixture(Path(temporary))
+            device = type("Device", (), {"platform": "cpu", "__str__": lambda self: "fixture:cpu"})()
+            with patch.dict(runner.os.environ, {}, clear=True), \
+                    patch.object(runner.os, "sched_getaffinity", return_value=set(range(8)), create=True):
+                with self.assertRaisesRegex(ValueError, "thread variables alone"):
+                    runner.verify_execution_resources(admission)
+            with patch.dict(runner.os.environ, {"SLURM_CPUS_PER_TASK": "4", "SLURM_MEM_PER_NODE": "24576"}, clear=True), \
+                    patch.dict(runner.sys.modules, {"jax": SimpleNamespace(devices=lambda: [device])}):
+                result = runner.verify_execution_resources(admission)
+                self.assertTrue(result["blas_thread_values_are_not_cpu_binding"])
+                self.assertFalse(result["python_enforces_memory_limit"])
+            with patch.object(runner.subprocess, "check_output", return_value="?? src/new_runtime.py\n"):
+                self.assertFalse(runner.clean_source())
 
     def test_reservations_are_independent_nonretryable_and_lock_is_exclusive(self):
         with tempfile.TemporaryDirectory() as temporary:
