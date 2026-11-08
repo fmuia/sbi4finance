@@ -5,30 +5,44 @@
   "scientific_acceptance": false,
   "existing_assets_changed": false,
   "verification": {
-    "tutorial_tests": 46,
+    "tutorial_tests": 57,
     "lab_core_tests": 527,
     "lab_optional_skips": 3,
     "notebook_exports": 7,
     "notebook_cell_errors": 0,
     "runtime_boundary_symbols": 192,
-    "local_document_links": 48,
+    "local_document_links": 51,
     "moved_function_definitions_unchanged": 8,
     "marimo_warnings": "existing empty cells in slots 2 and 3"
   },
   "browser": {
     "page_errors": [],
-    "native_workflow_visible": true,
-    "ppc_elapsed_seconds": 5.933668458950706,
-    "training_elapsed_seconds": 20.135736708994955,
-    "joint_options": [
-      "Worked joint example",
+    "studies": [
+      "context support",
+      "paired uncertainty propagation",
+      "surrogate disagreement",
+      "unobserved tail"
+    ],
+    "current_joint_cases": [
+      "Joint worked example",
       "Curve level\u2013decay trade-off",
       "Coupled volatility parameters",
       "Weakly informed decay"
     ],
-    "archive_toggle": true,
+    "reference_cases": 3,
+    "context_width_endpoints": [
+      0.05,
+      0.6
+    ],
+    "tail_width_endpoints": [
+      0,
+      0.5
+    ],
+    "shuffled_marginals_control": true,
     "narrow_width": 760,
-    "horizontal_overflow": false
+    "horizontal_overflow": false,
+    "math_render_errors": 0,
+    "old_archive_absent": true
   },
   "helper_benchmarks": {
     "implementation": "exact task grids and precision; bounded session-only helpers",
@@ -151,11 +165,15 @@
     "lab/src/sbi4finance/calibration/pricing.py": "dc554bda791ee4edea22a8de2352579f9fa30b91cc6acaa0fd138d587d06921c",
     "lab/src/sbi4finance/calibration/tasks.py": "8f24909732836d6618a2e698cd01304984426928f0b42c58786270870b74d052",
     "lab/studies/runtime_boundary.py": "87e38e0cbf7c569b57db1e930a336cabdc2870d893b9d3af7757adf27bd20102",
-    "tutorial/notebooks/slot5_calibration.py": "9ca3e0bc9c22daab2a65b6d531eee6a37cda298c499ea51707d5bb47d9f9c1d7",
-    "tutorial/src/sbi4f_tutorial/rough_options/lesson.py": "add95d809372db5755cbe27888dc9919a265f850acb94513f90fc19126565bb0",
+    "tutorial/notebooks/slot5_calibration.py": "937d54ae9139216f041ab3942e32f90effaa55a7cf6e1ef131b0d4266e020623",
+    "tutorial/src/sbi4f_tutorial/rough_options/lesson.py": "6d2d2f6517ccb0bd4292c0adcf8f223e95cb31f261631d3e2e2424e6a765cc93",
     "tutorial/src/sbi4f_tutorial/shared/pricing.py": "68a690b4b425cf3d50f68c303989c96a930ca48f83940d3bace344855d60fb09",
     "tutorial/src/sbi4f_tutorial/shared/tasks.py": "fb6240751ab4eeab4a46aab5d0329322705557c2a71a151f280409b853fdf7b2",
-    "tutorial/tests/test_rough_session.py": "53b759c8aa83027cdcbad34f9fabf07cca44b82c1360cc1aaba10a640d1581c8"
+    "tutorial/tests/test_rough_session.py": "fade7005723db92c00306c885619ebc9b872863a32294fa8f2937e0ed527a838",
+    "tutorial/src/sbi4f_tutorial/rough_options/context_checks.py": "2c2927cdd02f3ece4314061dcd99d3be04e08e072338c9b39edca1a551d5955d",
+    "tutorial/src/sbi4f_tutorial/rough_options/studies.py": "ed39e6d00ed40a36007fc7e385491fa2e4faf26524470328d8f77ab271894e4f",
+    "tutorial/tests/test_rough_context.py": "d18fda5017f334b1e111817fa38a41e691797bbfb290e1e396317814de0dd65c",
+    "tutorial/tests/test_rough_studies.py": "7cdb7f37ad99a8d3cac353c81fd49400cd4574b9e15c264bd08c85c9e33d7eba"
   },
   "timing_environment": {
     "system": "Darwin",
@@ -199,5 +217,97 @@
       "narrow_width": 760,
       "horizontal_overflow": false
     }
+  },
+  "initial_browser": {
+    "page_errors": [],
+    "native_workflow_visible": true,
+    "ppc_elapsed_seconds": 5.933668458950706,
+    "training_elapsed_seconds": 20.135736708994955,
+    "joint_options": [
+      "Worked joint example",
+      "Curve level\u2013decay trade-off",
+      "Coupled volatility parameters",
+      "Weakly informed decay"
+    ],
+    "archive_toggle": true,
+    "narrow_width": 760,
+    "horizontal_overflow": false
+  },
+  "additional_studies_redesign": {
+    "date": "2026-11-08",
+    "tutorial_tests": 57,
+    "lab_core_tests": 527,
+    "lab_optional_skips": 3,
+    "notebook_exports": 7,
+    "cell_errors": 0,
+    "rough_notebook_cells": 39,
+    "local_document_link_targets": 51,
+    "study_execution": [
+      {
+        "study": "context",
+        "outputs": 33,
+        "checkpoint": "39f1a81986a38994dc6eacc520ad95254b34346abc02e758c08779c7c5916fc4",
+        "reference_cases": 3
+      },
+      {
+        "study": "dependence",
+        "outputs": 33,
+        "checkpoint": "39f1a81986a38994dc6eacc520ad95254b34346abc02e758c08779c7c5916fc4",
+        "reference_cases": 3
+      },
+      {
+        "study": "reference",
+        "outputs": 33,
+        "checkpoint": "39f1a81986a38994dc6eacc520ad95254b34346abc02e758c08779c7c5916fc4",
+        "reference_cases": 3
+      },
+      {
+        "study": "tail",
+        "outputs": 33,
+        "checkpoint": "39f1a81986a38994dc6eacc520ad95254b34346abc02e758c08779c7c5916fc4",
+        "reference_cases": 3
+      }
+    ],
+    "browser": {
+      "page_errors": [],
+      "studies": [
+        "context support",
+        "paired uncertainty propagation",
+        "surrogate disagreement",
+        "unobserved tail"
+      ],
+      "current_joint_cases": [
+        "Joint worked example",
+        "Curve level\u2013decay trade-off",
+        "Coupled volatility parameters",
+        "Weakly informed decay"
+      ],
+      "reference_cases": 3,
+      "context_width_endpoints": [
+        0.05,
+        0.6
+      ],
+      "tail_width_endpoints": [
+        0,
+        0.5
+      ],
+      "shuffled_marginals_control": true,
+      "narrow_width": 760,
+      "horizontal_overflow": false,
+      "math_render_errors": 0,
+      "old_archive_absent": true
+    },
+    "fresh_calculations": [
+      "current known-curve context support for a fixed SPY snapshot",
+      "current paired joint draws through analytic variance-rate functionals",
+      "matching current neural/surrogate discrepancy metric plots",
+      "independent post-one-year tail prior through analytic integrals"
+    ],
+    "retired_from_notebook": [
+      "ten earlier SPY/pilot/cost/export/classical/product/long-end/cross-model sections",
+      "pilot-only product histogram renderer"
+    ],
+    "retained_existing_evidence": "matching three-case deterministic-surrogate comparison; no new MCMC",
+    "scope": "Intentional question/action/interpretation studies. Context controls propose a new design; shuffled marginals are artificial; tail parameter remains prior-driven. No model weights, simulation banks or acceptance decisions changed."
   }
 }

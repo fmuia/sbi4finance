@@ -91,35 +91,33 @@ has already been performed.
 
 ## C. Refine the option notebooks in place
 
-**Retain:** Heston's simulator → prior predictive → bank/adapter/network →
-training → diagnostics → numerical reference → application sequence; rough
-Bergomi's parameter controls, forward simulation, computational-cost comparison,
-classical baseline, product controls and assumption-sensitivity interactions.
-These descend from the earlier `tutorial_final` notebooks and provide the
-teaching structure to improve.
+**Retain:** Heston's model → simulator → network → posterior → predictive and
+reference checks; rough Bergomi's known/joint curve progression, explicit forward
+simulation, both neural routes, posterior checks and derived-quantity learning.
+Optional content must support a clear student question and current evidence.
 
 1. Remove stale full-bank-pending statements and identify historical results
    beside the sections that use them.
 2. Carry an explicitly selected current synthetic case through its supported
    parameter, reference and derived-quantity views. Do not splice a new model's
    posterior into an old model's diagnostics or product results.
-3. Keep historical SPY model checks available independently of the disabled
-   archived neural loader, where their inputs are already accepted and packaged.
+3. Use the fixed SPY data for a current simulation-support check. Do not claim
+   supported SPY inference from a checkpoint whose curve prior excludes it.
 4. Preserve the known-curve/joint progression, explaining fixed inputs,
    uncertainty and weakly identified decay through actual examples.
 5. Add prediction and interpretation prompts to existing controls. Keep a
    clear distinction between exploring a forward simulator and conditioning on
    the selected inference case.
-6. Use analytic variance-related quantities for a supported uncertainty example.
-   Retain historical reserve/long-end demonstrations with their method labels.
-   New rough product conclusions depend on the existing J2/J3 validation work,
+6. Use analytic variance-rate quantities for a supported uncertainty example.
+   Teach extrapolation through an explicit independent tail assumption. New
+   Monte Carlo product conclusions still require the J2/J3 validation work,
    including the exact forward-start contract definition.
 
 **Deliverable:** refined `slot4_heston_bayesflow.py` and
 `slot5_calibration.py`, with their existing useful interactions preserved.
 
-**Completion:** current/historical continuity is explicit, cached viewing is
-complete, optional actions remain explicit, and no statement exceeds its source.
+**Completion:** the core sequence and Additional studies are coherent, cached
+viewing is complete, optional actions are explicit and every claim has suitable evidence.
 
 ### Slot 5 revision plan · 7 November 2026
 
@@ -143,9 +141,9 @@ with their own evidence and are optional to the teaching sequence.
    posterior rows and the selected task’s numerical pricing policy. Report
    numerical precision separately from new quote noise and stop on a missed
    pricing budget. No pricing campaign starts on opening or writes assets.
-5. Collapse historical SPY/pilot/classical/long-end/cost studies, remove the
-   stale slot-4 importance-sampling reference and keep that method out of the
-   main calibration explanation. Preserve archived limitations and provenance.
+5. Consolidate optional content into the four question-led Additional studies
+   below. Retire stale pilot/classical/cost panels from the notebook, preserve
+   their source records and refresh retained calculations with current tasks.
 6. Update this plan and the collaborator handover. Check helper behavior,
    notebook exports, rendered controls, task switching and narrow layouts.
 
@@ -157,43 +155,49 @@ checks and all notebook exports, then the affected lab checks and release checks
 
 **Status:** implemented. The known-curve lesson has focused posterior views,
 visible native BayesFlow code, an eight-market/ten-update training action and
-an eight-draw three-month predictive action. Historical studies are default-off.
-The eight moved curve/context functions retain their original definitions;
+an eight-draw three-month predictive action. Four intentional Additional studies
+replace the archive. The eight moved curve/context functions retain their original definitions;
 lab imports reuse the same objects. No saved evidence or model changed.
 
-Verification passes: 44 tutorial tests; 527 core lab tests (three optional skips);
-all seven notebook exports; marimo and release checks; 48 local documentation
-links. Chrome checks cover the actual training/predictive actions, four joint
-cases, archive controls and a 760-pixel layout. Existing empty-cell warnings in
+Verification passes: 57 tutorial tests; 527 core lab tests (three optional skips);
+all seven notebook exports; marimo and release checks. Chrome checks cover the
+training/predictive actions, all four Additional studies, four joint cases,
+reference cases, control endpoints and a 760-pixel layout. Existing empty-cell warnings in
 slots 2 and 3 remain outside this change. The handover is updated; collaborator
 rehearsal remains deferred.
 
-#### Review corrections · 8 November 2026
+#### Additional studies redesign · 8 November 2026
 
-- Replace the ambiguous “historical studies” label with additional SPY examples
-  and earlier pilot experiments; identify real-quote versus synthetic inputs.
-- Bring the pricer-surrogate route into the main explanation. The fixed-pricer
-  PyMC comparisons already cover three development cases for the displayed
-  known-curve checkpoint: cases 0 and 1 pass; case 2 still fails H/eta screens.
-  Publish the original comparison summary unchanged through `accept.py` and
-  bind the displayed summary to the current task, bank and checkpoint. No new
-  MCMC or scientific training is performed. Joint/exact-model references remain
-  distinct from this approximate deterministic-emulator target.
-- Replace the unqualified cross-model histogram with a view that labels
-  deterministic supplied-curve variance-swap strikes and suppresses Heston
-  distributions when their importance diagnostics fail. Case 291 has only one
-  unique resampled parameter row among 400 draws (ESS about one of 2,048).
-  This is a failed approximation, not proof that the true posterior collapses.
-  Preserve the original arrays and figure as optional source evidence.
-- Explain that these are distributions of estimated fair prices, not future
-  payoffs; least-squares lines are points. Retain the legacy return-ratio
-  forward-start payoff label and MC/grid/curve-extrapolation qualifications.
+The optional section is a teaching extension, not an experiment archive. Each
+study has a student question, prediction, intervention and interpretation.
+The core workflow remains unchanged.
 
-Verified after these corrections: 46 tutorial tests, 527 core lab tests (three
-optional skips), all seven notebook exports, release checks and Chrome review
-of the surrogate section, corrected figure, preserved source image and narrow
-layout. The added evidence is a byte-for-byte publication of an existing
-comparison summary; no new model fit or MCMC run is claimed.
+| Student question | Current evidence/calculation | Teaching objective |
+| --- | --- | --- |
+| Can I use this estimator on a new market? | Evaluate the supplied SPY curve against the current known-curve context prior. Its final/initial level ratio is 2.93; the current necessary bound is 2.15. A proposed-prior control changes the envelope, not the trained estimator. | Check support before applying an amortized estimator. Passing a necessary ratio bound is not a full support certificate. |
+| Why must posterior draws stay paired? | Propagate current joint posterior rows into analytic three-month and one-year mean variance rates; independently shuffle curve columns as an explicitly incorrect comparison. | Marginals alone do not determine uncertainty in a derived quantity. Fixed supplied curves give deterministic fair variance strikes. |
+| What if two inference routes disagree? | Plot the matching three-case, fixed-pricer PyMC comparison for the current known-curve checkpoint. Two cases pass; the third fails H/eta screens. | Read conditional location/spread discrepancies without treating a surrogate as exact truth. |
+| What lies beyond the last quote? | Keep the fitted curve through year one and multiply its continuation by an independent normal log-slope afterward. Integrate three-year variance rates analytically. Width zero recovers the original curve. | Parameters that cannot affect observed quotes remain prior-driven. Mean variance rates are distinct from realized payoffs and forecasts. |
+
+**Consolidation.** The ten earlier sections are removed from the notebook.
+The old cost projections are replaced by the core actions' measured timers.
+Pilot posterior/SBC/importance panels, classical comparisons, failed cross-model
+histograms and the fourteen-input Laplace experiment leave the student flow.
+The SPY material becomes the current input-support exercise; the long-end topic
+becomes the explicit analytic tail-prior exercise. Raw evidence is preserved.
+No obsolete plot API or eager long-end imports remain in this notebook.
+
+**Freshness contract.** Curve/support/tail figures are evaluated from the current
+tasks and paired posterior rows each time their controls change. The existing
+surrogate comparison is retained because task, bank and checkpoint identities
+match; no new chains are implied. The original report was published unchanged
+through `accept.py`. The additional studies require no model download, financial
+Monte Carlo campaign or retraining. No scientific-acceptance decision changes.
+
+**Verification:** helper quadrature, zero-slope limits, unchanged short-horizon
+laws, context-support bounds and pairing checks; all four study selections and
+controls; default and selected-study execution; all tutorial/lab/release checks.
+Collaborator rehearsal remains deferred.
 
 ## D. Develop the trajectory notebook to application parity
 
@@ -473,14 +477,16 @@ All paths in the runtime column are relative to `tutorial/src/sbi4f_tutorial/`.
 | Explicit rough forward-simulation button | `rough_options/lesson.py`: `price_rough_smile` → `shared/pricing.py` → `rough_options/{simulator,model}.py` | Reads `assets/tasks/calibration_rough_pilot.json`; it does not replace the selected cached posterior. |
 | Rough small training action | Notebook `train_small_estimator`; `rough_options/lesson.py`: `generate_training_pairs`; priors/curves in `shared/tasks.py` | Eight fresh prior examples, ten optimizer updates, session-only results. The selected cached observation is inference-only. |
 | Rough posterior-predictive action | `rough_options/lesson.py`: `rough_posterior_predictive` → `shared/pricing.py` | Eight paired posterior rows at three months; independent quote noise, original pricing policy, explicit numerical failure. No assets written. |
+| Additional-study context support | `rough_options/context_checks.py`: `context_support`, `context_support_figure` | Current known-curve task plus fixed SPY curve levels; proposed prior controls do not modify the estimator. |
+| Additional-study variance rates and tail assumptions | `rough_options/studies.py`: `curve_functionals`, `tail_functionals`, plotting helpers | Current paired joint draws; analytic rates, artificial shuffled-marginal comparison and an independent tail prior. |
 | Trajectory teaching data generation | `trajectories/simulation.py`: `teaching_task`, `generate`; Heston physical path kernel in `heston_options/simulator.py` | NumPy backend for small tutorial examples; optional accelerated backend for production. Disk-backed banks and verification remain in the lab. |
 | Trajectory case/history views | `trajectories/lesson.py`: `load_example`, `cached_posterior`, `plot_returns`, `plot_evolution` | `assets/trajectories/{heston,rough-known,rough-joint}/`; aggregate diagnostics under `assets/results/trajectories/closeout-20261031/`. |
 | Actual trajectory prefix/mask and optional inference | `trajectories/inference.py`: `conditioning_data`, `build_workflow`, `sample`; explicit local loading via `trajectories/lesson.py`: `load_live` | Optional model bytes under `assets/local-checkpoints/path-*/`; lab training reuses the numerical definitions. |
 | Shared plot style | `shared/plots.py`: `style` | Historical lab imports remain compatibility entry points. |
 
 Historical dependencies remain real. In particular, `rough_options/long_end.py`
-reads SPY and quick-check assets eagerly; collapsing a notebook section does not
-make those assets removable. Optional small fits execute native BayesFlow
+is still used by slot 1. Removing it from the rough-options lesson does not
+make its shared SPY and quick-check assets removable. Optional small fits execute native BayesFlow
 workflows. Rough training and prediction are session-only explicit actions;
 their highlighted code is visible before running them.
 

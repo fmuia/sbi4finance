@@ -1,6 +1,5 @@
 """Bounded repricing preserves joint draws, context roles and numerical budgets."""
 
-import copy
 import unittest
 from unittest.mock import patch
 
@@ -104,71 +103,6 @@ class RoughSessionTests(unittest.TestCase):
         short, long, decay = row[3:]
         np.testing.assert_allclose(curve["values"], long + (short - long) * np.exp(-decay * t), rtol=1e-15)
 
-
-class ArchivedProductFigureTests(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        folder = backbones.ASSETS / "results" / "calibration" / "rough-pilot"
-        cls.report = lesson.load_json(folder / "s7-across" / "across-models.json")
-        cls.rough = lesson.load_npz(folder / "s7" / "price-draws.npz")
-        cls.heston = lesson.load_npz(folder / "s7-across" / "heston-price-draws.npz")
-        if cls.report is None or cls.rough is None or cls.heston is None:
-            raise unittest.SkipTest("archived product arrays are not packaged")
-
-    def tearDown(self):
-        import matplotlib.pyplot as plt
-        plt.close("all")
-
-    def test_real_fixed_curve_prices_are_lines_and_failed_case_is_not_a_histogram(self):
-        figure = lesson.product_comparison_figure(self.report, self.rough, self.heston)
-        self.assertEqual(len(figure.axes), 4 * len(self.report["surfaces"]))
-        for i, case in enumerate(self.report["surfaces"]):
-            row = case["test_row"]
-            variance = self.rough[f"prices_{row}"][:, 0]
-            self.assertEqual(np.ptp(variance), 0)
-            fixed = [line for line in figure.axes[4 * i].lines if "fixed curve" in line.get_label()]
-            self.assertEqual(len(fixed), 1)
-            np.testing.assert_array_equal(fixed[0].get_xdata(), [variance[0], variance[0]])
-            self.assertIn(f"Case {row}", figure.axes[4 * i].get_ylabel())
-            for ax in figure.axes[4 * i:4 * i + 4]:
-                points = [line for line in ax.lines if "least-squares" in line.get_label()]
-                self.assertEqual(len(points), 2)
-                self.assertTrue(all(np.isfinite(line.get_xdata()).all() for line in points))
-                self.assertTrue(np.isfinite(ax.get_xlim()).all())
-                self.assertIn("count", ax.get_ylabel().lower())
-                for container in ax.containers:
-                    self.assertEqual(container.datavalues.sum(), 400)
-                    self.assertTrue(np.isfinite(container.datavalues).all())
-            if row == 291:
-                self.assertGreater(case["heston_audit"]["khat"], .7)
-                for ax in figure.axes[4 * i:4 * i + 4]:
-                    self.assertFalse(any("Heston price draws" in label for label in ax.get_legend_handles_labels()[1]))
-                    self.assertTrue(any("Heston sampling failed\nESS ≈ 1" == t.get_text() for t in ax.texts))
-            else:
-                self.assertTrue(any("Heston price draws" in label for label in figure.axes[4 * i].get_legend_handles_labels()[1]))
-        self.assertIn("Legacy", figure.axes[2].get_title(loc="left"))
-        self.assertIn("S_{0.5}/S_{0.25}", figure.axes[2].get_xlabel())
-
-    def test_sampling_decision_uses_diagnostics_not_case_number_and_matches_product_names(self):
-        report = copy.deepcopy(self.report)
-        case = copy.deepcopy(report["surfaces"][0])
-        original = case["test_row"]
-        case["test_row"] = 17
-        report["surfaces"] = [case]
-        rough = {"products": self.rough["products"], "prices_17": self.rough[f"prices_{original}"],
-                 "point_prices_17": self.rough[f"point_prices_{original}"]}
-        heston = {"products": self.heston["products"][::-1],
-                  "heston_prices_17": self.heston[f"heston_prices_{original}"][:, ::-1],
-                  "heston_point_prices_17": self.heston[f"heston_point_prices_{original}"][::-1]}
-        for khat, ess, expected in ((.7, 100, True), (.71, 1000, False), (.1, 99, False), (np.nan, 1000, False)):
-            with self.subTest(khat=khat, ess=ess):
-                case["heston_audit"].update(khat=khat, efficiency=ess / report["settings"]["proposals"])
-                figure = lesson.product_comparison_figure(report, rough, heston)
-                for j, ax in enumerate(figure.axes):
-                    self.assertEqual(any("Heston price draws" in label for label in ax.get_legend_handles_labels()[1]), expected)
-                    marker = next(line for line in ax.lines if line.get_label() == "Heston least-squares price")
-                    np.testing.assert_array_equal(marker.get_xdata(),
-                        [self.heston[f"heston_point_prices_{original}"][j]] * 2)
 
 
 if __name__ == "__main__":

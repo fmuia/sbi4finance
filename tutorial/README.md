@@ -115,16 +115,25 @@ posterior-predictive actions run only when requested and keep their results
 separate from the supplied estimator. Monte Carlo pricing error is reported
 separately from the assumed quote noise.
 
-Additional SPY examples, pilot checks and long-end experiments are optional.
-Some use saved SPY quotes; others use synthetic data and earlier estimators.
-They are separate from the current worked example.
+The **Additional studies** selector offers four short learning extensions:
 
-The main lesson also explains the neural-pricer route. Three supplied-curve
-cases have recorded comparisons against PyMC sampling of that surrogate target:
-two pass the stated comparison screens, and one still disagrees. Exact-model
-references, joint-curve conditional checks and further product checks remain
-outstanding. A fixed supplied curve can make a fair variance-swap strike
-constant; failed importance sampling cannot establish a zero-width posterior.
+- Check whether a new market's supplied curve fits the simulation design.
+- Propagate paired parameter draws into a variance-swap strike; compare with
+  deliberately shuffled marginals.
+- Inspect disagreement with the matching neural-pricer reference.
+- Change an explicit assumption beyond the latest quoted maturity.
+
+Each has a prediction prompt, a control or calculation, and an interpretation.
+They use current task/checkpoint evidence and freshly evaluated analytic checks.
+SPY is a fixed real-market example for the input-support check; its supplied
+curve is outside the current known-curve training prior, so no supported SPY
+posterior is claimed. Old pilot outputs and timing projections are absent from
+the student narrative; their source records remain in the repository.
+
+The pricer comparison covers three supplied-curve cases: two pass its recorded
+screens and one still disagrees. Exact-model references, joint-curve conditional
+checks and further Monte Carlo product checks remain outstanding. The additional
+variance-rate calculations do not claim those missing checks or exotic prices.
 
 ## Trajectory inference
 
@@ -154,8 +163,8 @@ Useful starting points:
 
 - **Heston:** are the model, quote noise, posterior comparison and predictive
   checks clear?
-- **Rough Bergomi:** is the difference between a supplied and an estimated
-  variance curve clear? Are the remaining checks easy to spot?
+- **Rough Bergomi:** is the supplied/inferred curve distinction clear? Does
+  each Additional study have a useful question, action and takeaway?
 - **Trajectories:** can you follow how longer histories change the posterior?
   Is the distinction between saved and freshly computed results clear?
 
