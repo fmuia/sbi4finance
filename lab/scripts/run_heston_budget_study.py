@@ -293,6 +293,7 @@ def source_revision():
 
 
 def run(args):
+    started = time.perf_counter()
     # Source identity must bind a clean immutable tracked checkout. Downloads and
     # lane outputs belong outside it; no switching code underneath active jobs.
     if not clean_source():
@@ -314,16 +315,18 @@ def run(args):
                "source_manifest_sha256": source_identity, "resource_binding": resource_binding,
                "reserved_test_evaluated": False, "command": command(candidate, args.bank, lane / "checkpoint")}
     write_json(lane / "lane.json", journal)
-    started = time.perf_counter()
     environment = {**os.environ, "XLA_PYTHON_CLIENT_PREALLOCATE": "false",
                    "OMP_NUM_THREADS": str(admission["host_cpus"]),
                    "OPENBLAS_NUM_THREADS": str(admission["host_cpus"]),
                    "MKL_NUM_THREADS": str(admission["host_cpus"]),
                    "NUMEXPR_NUM_THREADS": str(admission["host_cpus"])}
     try:
+        remaining = seconds - admission["cleanup_seconds_per_lane"] - (time.perf_counter() - started)
+        if remaining <= 0:
+            raise TimeoutError("lane preparation exhausted the admitted allowance before training")
         with (lane / "training.log").open("x") as stream:
             result = subprocess.run(journal["command"], cwd=ROOT, env=environment,
-                                    stdout=stream, stderr=subprocess.STDOUT, timeout=seconds - admission["cleanup_seconds_per_lane"], check=False)
+                                    stdout=stream, stderr=subprocess.STDOUT, timeout=remaining, check=False)
         journal.update(status="complete" if result.returncode == 0 else "failed", returncode=result.returncode)
     except BaseException as error:
         journal.update(status="failed", error_type=type(error).__name__, error=str(error))
