@@ -42,7 +42,7 @@ evaluation now report actual work and separately scoped clocks. The
 [baseline record](../evidence/pilot-results/2026-11-08/heston-performance-baseline/summary.json)
 contains the measured panel, source identities, cold/warm summaries and
 reproduction command. Warm median pricing is **3.92 ms** for the checked bank
-route and **2.39 ms** for the notebook route on this CPU. This measures pricing,
+route and **2.39 ms** for the notebook route on an Apple M5 Max CPU. This measures pricing,
 not complete bank generation. All cold/warm prices and refinement differences
 match the frozen reference exactly; there are no failed panel rows. The frozen
 reference median is stable at 8.53 ms for the checked route.
