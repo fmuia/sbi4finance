@@ -2184,7 +2184,6 @@ packages:
   - matplotlib==3.11.2
   - numba==0.68.0 ; extra == 'acceleration'
   - bayesflow==2.1.0 ; extra == 'participant'
-  - keras==3.15.1 ; extra == 'participant'
   - jax==0.11.1 ; extra == 'participant'
   - marimo==0.25.1 ; extra == 'participant'
   requires_python: '>=3.12'

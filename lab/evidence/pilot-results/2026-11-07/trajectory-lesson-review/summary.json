@@ -1,0 +1,74 @@
+{
+  "format": "notebook_workflow_review_v1",
+  "application": "trajectory-inference",
+  "baseline": "3d6febb3894c0ebe5fc0041954664d43270a73d9",
+  "scientific_acceptance": false,
+  "existing_assets_changed": false,
+  "verification": {
+    "tutorial_tests": 40,
+    "lab_core_tests": 527,
+    "lab_optional_skips": 3,
+    "notebook_exports": 7,
+    "notebook_cell_errors": 0,
+    "runtime_boundary_symbols": 183,
+    "local_document_links": 48,
+    "marimo_warnings": "existing empty cells in slots 2 and 3"
+  },
+  "browser": {
+    "page_errors": [],
+    "models": [
+      "Heston",
+      "Rough Bergomi \u00b7 inferred variance curve",
+      "Rough Bergomi \u00b7 known variance curve"
+    ],
+    "saved_lengths": [
+      1,
+      1260
+    ],
+    "fresh_history_days": 137,
+    "fresh_elapsed_seconds": 1.332550709019415,
+    "changing_history_invalidates_fresh": true,
+    "missing_model_fallback_days": 126,
+    "training_elapsed_seconds": 2.335909583955072,
+    "mask_panel": true,
+    "narrow_width": 760,
+    "horizontal_overflow": false
+  },
+  "small_exercise_benchmark": {
+    "exercise": "rough-known;252dailyobservations;128traininghistories;2epochs;batch32;16unitGRU;16summary;2spline_layers;widths32",
+    "generation_seconds": 0.017615542048588395,
+    "model_build_and_training_seconds": 12.850709334015846,
+    "sampling_128_draws_seconds": 1.34992800001055,
+    "draw_shape": [
+      128,
+      4
+    ],
+    "finite_draws": true,
+    "training_loss": [
+      5.77666711807251,
+      5.755234718322754
+    ],
+    "scope": "separate fresh one-year software exercise; no accuracy acceptance or fixed performance guarantee",
+    "native_137day_app_run": {
+      "posterior_source": "live",
+      "draw_shape": [
+        512,
+        4
+      ],
+      "error": null,
+      "bayesflow_sampling_logged_seconds": 1.95,
+      "load_timing_not_recorded": true
+    }
+  },
+  "timing_environment": {
+    "system": "Darwin",
+    "architecture": "arm64",
+    "scope": "Local CPU; cold/warm setup differs between the benchmark and browser session. Not a performance guarantee."
+  },
+  "scope": "Session-only one-year training exercise. Supplied five-year models and banks unchanged; all three final calibration failures remain explicit.",
+  "source_sha256": {
+    "tutorial/notebooks/trajectory_inference.py": "1f9b1851fcb0561c157724831650160e8477ef32aaf8c7cfb0da25a60f840baf",
+    "tutorial/src/sbi4f_tutorial/trajectories/lesson.py": "e9346f68263cd067a5ef523016cdca8254051cc39cc710c3e13b8fb1e3f1d459",
+    "tutorial/tests/test_trajectory.py": "3a971ae63448fc45e15c2604389f46b7a988cca1e808db3bb96b728acaf287ad"
+  }
+}

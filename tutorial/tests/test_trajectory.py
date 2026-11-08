@@ -119,6 +119,44 @@ class TrajectoryReplayTests(unittest.TestCase):
             self.assertFalse(report["reserved_test_evaluated"])
             self.assertNotIn("drift", task["fixed"])
 
+    def test_saved_controls_have_an_exact_posterior_for_every_selectable_length(self):
+        for model in trajectory.MODEL_LABELS:
+            task, _, arrays = trajectory.load_example(model)
+            lengths = trajectory.saved_lengths(arrays)
+            self.assertEqual(lengths, [1, 21, 63, 126, 252, 504, 756, 1260])
+            for length in lengths:
+                view = trajectory.posterior_view(task, arrays, 0, length)
+                self.assertEqual((view["source"], view["length"], view["exact"]), ("saved", length, True))
+
+    def test_fresh_draws_cannot_follow_a_changed_model_history_or_prefix(self):
+        task, _, arrays = trajectory.load_example("rough-known")
+        draws = arrays["draws_252"][0].copy()
+        live = {"selection": trajectory.selection_key(task, arrays, 0, 137), "draws": draws}
+        fresh = trajectory.posterior_view(task, arrays, 0, 137, live=live)
+        self.assertEqual((fresh["source"], fresh["length"], fresh["exact"]), ("live", 137, True))
+        np.testing.assert_array_equal(fresh["draws"], draws)
+        for case, length in ((1, 137), (0, 138), (1, 252)):
+            view = trajectory.posterior_view(task, arrays, case, length, live=live)
+            self.assertEqual(view["source"], "saved")
+            expected = trajectory.cached_posterior(task, arrays, case, length)
+            self.assertEqual(view["length"], expected["length"])
+            np.testing.assert_array_equal(view["draws"], expected["draws"])
+        other_task, _, other_arrays = trajectory.load_example("rough-joint")
+        self.assertEqual(trajectory.posterior_view(other_task, other_arrays, 0, 137, live=live)["source"], "saved")
+        changed_task = copy.deepcopy(task)
+        changed_task["fixed"]["variance_level"] = .05
+        self.assertEqual(trajectory.posterior_view(changed_task, arrays, 0, 137, live=live)["source"], "saved")
+
+    def test_malformed_fresh_draws_cannot_be_displayed_as_a_completed_posterior(self):
+        task, _, arrays = trajectory.load_example("rough-known")
+        key = trajectory.selection_key(task, arrays, 0, 137)
+        draws = arrays["draws_252"][0].copy()
+        invalid = [draws[:1], draws[:, :-1], np.full_like(draws, np.nan), np.full_like(draws, 100)]
+        for values in invalid:
+            with self.subTest(shape=values.shape):
+                with self.assertRaisesRegex(ValueError, "invalid fresh posterior"):
+                    trajectory.posterior_view(task, arrays, 0, 137, live={"selection": key, "draws": values})
+
     def test_cached_loading_initializes_no_neural_backend(self):
         program = """
 import importlib.abc, sys

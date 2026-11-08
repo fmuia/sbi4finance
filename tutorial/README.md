@@ -29,8 +29,7 @@ improve the content and presentation; we can trim for timing later.
    explain what you would change, and why.
 
 For bugs, include the model, example, settings and error message. For return
-histories, include the requested history length and the length used by the
-saved posterior. See the [editing guide](#author-or-change-a-lesson) for checks.
+histories, include saved/live mode and the history length shown beside the posterior. See the [editing guide](#author-or-change-a-lesson) for checks.
 
 ## Install
 
@@ -108,13 +107,22 @@ The three models use daily returns and estimate drift. The joint rough model
 also estimates its variance curve. The estimator accepts any integer history
 length from **1 to 1,260 trading days** (five years).
 
-The notebook opens with saved posterior snapshots. Between snapshots, it shows
-the nearest **past** posterior and labels the length it uses. For example,
-requesting 137 days shows 137 returns but a saved posterior based on 126 days.
-It does not interpolate posteriors or use future returns.
+Start with the rough model and its supplied variance curve. Show the observed
+returns, then follow simulation → recurrent summary → prefix training → posterior.
+Heston and the inferred-curve model remain available as extensions; switching
+models also changes the synthetic history.
 
-With the matching model downloaded, the CPU inference button uses exactly the
-selected history length. The result remains an approximate posterior.
+**Saved mode** offers only lengths with saved posterior snapshots, so the
+returns and posterior use the same history. **Live mode** accepts any integer
+length. With the matching model downloaded, the CPU action updates the same
+posterior plots using exactly that prefix. Without it, the labelled saved
+fallback remains available. Changing the model, history or length clears a
+previous live result.
+
+An optional small training exercise uses fresh simulated histories and shows
+its own results. It does not reproduce or validate the supplied five-year fits.
+Production-bank instructions and detailed input/diagnostic tables are optional.
+Parameter inference alone does not provide a conditional continuation forecast.
 
 **Checks are not yet satisfactory:** all three estimators failed the final
 calibration check. The Heston simulator can also produce zero-variance days

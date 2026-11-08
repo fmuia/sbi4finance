@@ -146,6 +146,40 @@ def cached_posterior(task, arrays, case, length):
                       f"Requested {length} days; cached posterior uses the nearest past prefix, {selected} days")}
 
 
+def saved_lengths(arrays):
+    """The participant's saved-mode control uses only actual posterior snapshots."""
+    return sorted(int(key.removeprefix("draws_")) for key in arrays if key.startswith("draws_"))
+
+
+def selection_key(task, arrays, case, length):
+    """Bind session-only draws to the task, observed history and revealed prefix."""
+    case = integer(case, "case", minimum=0)
+    length = integer(length, "observed days")
+    _require(case < len(arrays["trajectory_id"]) and length <= task["n_observations"],
+             "case or history outside replay")
+    return fingerprint(task), str(arrays["trajectory_id"][case]), length
+
+
+def posterior_view(task, arrays, case, length, *, live=None):
+    """Use matching fresh draws; stale actions fall back to an explicitly labelled cache.
+
+    Every posterior display consumes this single result. In particular, moving
+    to a different history, model or day cannot relabel earlier fresh draws.
+    """
+    key = selection_key(task, arrays, case, length)
+    cached = {**cached_posterior(task, arrays, case, length), "source": "saved", "selection": key}
+    if live is None or live.get("selection") != key:
+        return cached
+    draws = np.asarray(live["draws"])
+    bounds = np.asarray(task["prior_bounds"])
+    _require(draws.ndim == 2 and draws.shape[0] >= 2 and draws.shape[1] == len(bounds)
+             and np.isfinite(draws).all() and np.all(draws >= bounds[:, 0])
+             and np.all(draws <= bounds[:, 1]), "invalid fresh posterior draws")
+    return {"requested_length": length, "length": length, "exact": True,
+            "draws": draws, "source": "live", "selection": key,
+            "label": f"Fresh approximate posterior at exactly {length} trading days"}
+
+
 def posterior_rows(task, draws):
     quantiles = np.quantile(draws, [.05, .5, .95], axis=0)
     return [{"parameter": name, "posterior median": float(quantiles[1, index]),
@@ -169,7 +203,7 @@ def plot_returns(task, arrays, case, length):
     return figure
 
 
-def plot_evolution(task, arrays, case, length):
+def plot_evolution(task, arrays, case, length, *, posterior=None):
     import matplotlib.pyplot as plt
     lengths = sorted(int(key.removeprefix("draws_")) for key in arrays
                      if key.startswith("draws_") and int(key.removeprefix("draws_")) <= length)
@@ -194,13 +228,19 @@ def plot_evolution(task, arrays, case, length):
                     yerr=[snapshot_quantiles[:, 1, index] - snapshot_quantiles[:, 0, index],
                           snapshot_quantiles[:, 2, index] - snapshot_quantiles[:, 1, index]],
                     fmt="o", markersize=2.5, capsize=2, elinewidth=.7, color="#2563eb")
+        if posterior is not None and posterior["source"] == "live":
+            fresh = np.quantile(posterior["draws"][:, index], [.05, .5, .95])
+            ax.errorbar(length * task["dt_years"], fresh[1],
+                        yerr=[[fresh[1] - fresh[0]], [fresh[2] - fresh[1]]],
+                        fmt="D", markersize=4, capsize=3, color="#0f766e",
+                        label="fresh median and 90% interval")
         ax.axhline(arrays["truth"][case, index], color="#111827", linestyle=":", linewidth=1, label="synthetic truth")
         ax.set_title(names[index].replace("_", " "), fontsize=10)
         ax.set_xlim(0, max(task["dt_years"] * length, .02))
         ax.set_xlabel("Observed years", fontsize=8)
         ax.tick_params(labelsize=8)
     axes.flat[0].legend(fontsize=7, loc="best")
-    figure.suptitle("Approximate posterior evolution: cached snapshots shown as steps", fontsize=11)
+    figure.suptitle("Approximate posterior evolution: saved snapshots shown as steps", fontsize=11)
     figure.tight_layout()
     return figure
 

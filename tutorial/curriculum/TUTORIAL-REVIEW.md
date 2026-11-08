@@ -156,6 +156,55 @@ new tasks.
 inference → interpretation for all three tasks. Numerical readiness is governed
 by subplan E; a working interface never implies an acceptance certificate.
 
+### Trajectory revision plan · 7 November 2026
+
+Carry over the direct BayesFlow workflow and concise prose from Stefan’s Heston
+revision. Keep the sequence model and offline-prefix training appropriate to
+ordered daily returns rather than copying Heston’s architecture or training budget.
+
+1. Start with one rough-known history and the inference question. Bring the
+   observed data forward; keep priors, numerical settings and other model
+   variants available without making them the opening reading task.
+2. Connect simulation, adapter, causal GRU summary, conditional flow, random-prefix
+   training and sampling in one visible walkthrough. Move million-history
+   bank/shard commands into reproduction details. A bounded small fit must
+   use fresh independent pairs and display only its own session results.
+3. Use saved history landmarks in cached mode. Offer arbitrary integer lengths
+   beside explicit live inference. Fresh draws must update the same posterior
+   table, marginals and joint plot, with task/history/length changes invalidating
+   stale results; missing models leave a clearly labelled cached fallback.
+4. Keep one mask illustration and the distinction between a genuine zero return
+   and padding. Move tensor previews and detailed scaling explanations aside.
+5. Keep recovery versus coverage, one clear calibration-failure verdict and a
+   useful diagnostic figure in the main flow. Preserve detailed failure tables,
+   Heston’s drift atom, the lack of a matched conditional reference and the
+   distinction between independent replication and continuation forecasts.
+6. Update the handover and this plan. Check saved/live modes, all models and
+   history choices, missing-checkpoint behavior, plots and narrow layouts.
+
+**Acceptance:** the plotted posterior identifies the returns it actually uses;
+all posterior views share the same paired draws; cached viewing needs no backend
+or downloads; optional fits remain teaching exercises, not scientific acceptance.
+Run tutorial tests, marimo checks and all notebook exports, plus affected lab
+checks and release checks where runtime interfaces change. Models, banks and
+recorded numerical results remain unchanged.
+
+**Status:** implemented. The lesson starts with observed returns, offers actual
+saved lengths by default and places exact-prefix live inference beside the
+posterior. Tables, marginals, joint plots and the evolution endpoint share the
+selected paired draws. Selection changes clear fresh results; missing models
+leave the labelled saved fallback. A separate one-year exercise generates 128
+fresh histories and trains for eight optimizer updates. Production and detailed
+input/diagnostic material are optional; all scientific limitations remain.
+
+Verification passes: 40 tutorial tests; 527 core lab tests (three optional skips);
+all seven notebook exports; marimo/release checks and 48 local documentation
+links. Chrome checks cover all three models at saved endpoints, live inference
+at 137 days, history-change invalidation, missing-model fallback, the small
+training action, mask details and a 760-pixel layout. Existing empty-cell warnings
+in slots 2 and 3 are unchanged. Handover guidance is updated. No saved numerical
+evidence or model changed; collaborator rehearsal remains deferred.
+
 ## E. Resolve trajectory numerical and inference limitations
 
 **Current evidence:** all three selected candidates passed execution and risk
@@ -398,7 +447,7 @@ All paths in the runtime column are relative to `tutorial/src/sbi4f_tutorial/`.
 | Option case selector, posterior table and corner | `shared/backbones.py`: `load_example`, `parameter_rows`, `corner`; cache checks in `shared/full_surface_teaching.py` | Rough cases under `assets/backbones/rough-known*/` or `rough-joint*/`. |
 | Explicit rough forward-simulation button | `rough_options/lesson.py`: `price_rough_smile` → `shared/pricing.py` → `rough_options/{simulator,model}.py` | Reads `assets/tasks/calibration_rough_pilot.json`; it does not replace the selected cached posterior. |
 | Trajectory teaching data generation | `trajectories/simulation.py`: `teaching_task`, `generate`; Heston physical path kernel in `heston_options/simulator.py` | NumPy backend for small tutorial examples; optional accelerated backend for production. Disk-backed banks and verification remain in the lab. |
-| Trajectory case/history views | `trajectories/lesson.py`: `load_example`, `cached_posterior`, `plot_returns`, `plot_evolution` | `assets/trajectories/{heston,rough-known,rough-joint}/`; aggregate diagnostics under `assets/results/trajectories/closeout-20261031/`. |
+| Trajectory case/history views | `trajectories/lesson.py`: `load_example`, `saved_lengths`, `posterior_view`, `plot_returns`, `plot_evolution` | `assets/trajectories/{heston,rough-known,rough-joint}/`; aggregate diagnostics under `assets/results/trajectories/closeout-20261031/`. All current posterior panels share the selected saved/fresh draw rows. |
 | Actual trajectory prefix/mask and optional inference | `trajectories/inference.py`: `conditioning_data`, `build_workflow`, `sample`; explicit local loading via `trajectories/lesson.py`: `load_live` | Optional model bytes under `assets/local-checkpoints/path-*/`; lab training reuses the numerical definitions. |
 | Shared plot style | `shared/plots.py`: `style` | Historical lab imports remain compatibility entry points. |
 
