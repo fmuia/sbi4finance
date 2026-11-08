@@ -69,6 +69,8 @@ class ReadinessTests(unittest.TestCase):
                      "example_id": np.asarray([f"validation:{i}" for i in range(4)])}
             record = {"checkpoint_sha256": protocol["control"]["checkpoint_sha256"],
                       "task_fingerprint": "test", "network": {"encoder": "vector"}}
+            (checkpoint / "task.json").write_text(json.dumps(task))
+            (checkpoint / "training.json").write_text(json.dumps(record))
             def sample(workflow, task, observations, count, **kwargs):
                 result = np.broadcast_to(row, (len(observations), count, 4)).copy()
                 result += np.linspace(-.0001, .0001, count)[None, :, None]
@@ -81,6 +83,18 @@ class ReadinessTests(unittest.TestCase):
                     patch.object(heston_budget_diagnostics, "conditional_agreement", return_value={"status": "pass"}), \
                     patch.object(tasks, "heston_prices", return_value=(np.full(63, .02), np.zeros(63))):
                 report = readiness.run(args)
+                control_hash = protocol["control"]["checkpoint_sha256"]
+                protocol["control"]["checkpoint_sha256"] = "0" * 64
+                protocol_path.write_text(json.dumps(protocol))
+                candidate_args = Namespace(**{**vars(args), "out": root / "candidate-evaluation"})
+                candidate_report = readiness.run(candidate_args, role="candidate")
+                self.assertEqual(candidate_report["control_checkpoint_sha256"], "0" * 64)
+                self.assertEqual(candidate_report["evaluated_checkpoint_sha256"], control_hash)
+                self.assertEqual(candidate_report["evaluation_role"], "candidate")
+                self.assertFalse(candidate_report["scientific_acceptance"])
+                self.assertTrue((candidate_args.out / "evaluation.json").is_file())
+                protocol["control"]["checkpoint_sha256"] = control_hash
+                protocol_path.write_text(json.dumps(protocol))
             self.assertEqual(loader.call_args.kwargs["splits"], ("validation",))
             self.assertEqual(loader.call_args.kwargs["roles"], bank_collection.TRAINING_ROLES)
             self.assertFalse(report["reserved_test_evaluated"])
