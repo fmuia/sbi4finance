@@ -49,6 +49,7 @@ also covers setup, optional downloads and checks.
 | [tutorial/](tutorial/) | Notebooks, their code, tests and saved examples |
 | [lab/](lab/) | Data generation, larger training runs, reference calculations and results |
 | [course/](course/) | Background notes and figures |
+| [site/](site/) | The public tutorial webpage, published with GitHub Pages ([how to edit](site/README.md)) |
 
 ## Run numerical work on your compute
 
