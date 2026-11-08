@@ -200,5 +200,7 @@
   "full_report_sha256": "bd79954b888843cb1902e70687a2498dbd89e48620b5c06b725c53bdaf1d2db1",
   "panel_file_sha256": "2a4584b3c89d098cbfaf9ad1868def281403e4bc4d64121cead165a0da351e11",
   "reproduction": "From lab/: pixi run --locked -e core python scripts/benchmark_heston_pricing.py --out CALLER_OUTPUT --threads 1 --repeats 3",
-  "scope": "Local scalar-pricing microbenchmark; no bank writer, training fit, queue time or GPU. Historical bank/training timings remain in the initial audit."
+  "scope": "Local scalar-pricing microbenchmark; no bank writer, training fit, queue time or GPU. Historical bank/training timings remain in the initial audit.",
+  "cpu_model": "Apple M5 Max",
+  "cpu_model_source": "Read separately with sysctl -n machdep.cpu.brand_string on the benchmark host;18 logical CPUs."
 }
