@@ -5,7 +5,7 @@
   "scientific_acceptance": false,
   "existing_assets_changed": false,
   "verification": {
-    "tutorial_tests": 44,
+    "tutorial_tests": 46,
     "lab_core_tests": 527,
     "lab_optional_skips": 3,
     "notebook_exports": 7,
@@ -151,15 +151,53 @@
     "lab/src/sbi4finance/calibration/pricing.py": "dc554bda791ee4edea22a8de2352579f9fa30b91cc6acaa0fd138d587d06921c",
     "lab/src/sbi4finance/calibration/tasks.py": "8f24909732836d6618a2e698cd01304984426928f0b42c58786270870b74d052",
     "lab/studies/runtime_boundary.py": "87e38e0cbf7c569b57db1e930a336cabdc2870d893b9d3af7757adf27bd20102",
+    "tutorial/notebooks/slot5_calibration.py": "9ca3e0bc9c22daab2a65b6d531eee6a37cda298c499ea51707d5bb47d9f9c1d7",
+    "tutorial/src/sbi4f_tutorial/rough_options/lesson.py": "add95d809372db5755cbe27888dc9919a265f850acb94513f90fc19126565bb0",
+    "tutorial/src/sbi4f_tutorial/shared/pricing.py": "68a690b4b425cf3d50f68c303989c96a930ca48f83940d3bace344855d60fb09",
+    "tutorial/src/sbi4f_tutorial/shared/tasks.py": "fb6240751ab4eeab4a46aab5d0329322705557c2a71a151f280409b853fdf7b2",
+    "tutorial/tests/test_rough_session.py": "53b759c8aa83027cdcbad34f9fabf07cca44b82c1360cc1aaba10a640d1581c8"
+  },
+  "timing_environment": {
+    "system": "Darwin",
+    "architecture": "arm64",
+    "scope": "Local CPU runs; browser elapsed includes UI round trips. Not a hardware-independent speed guarantee."
+  },
+  "initial_revision_source_sha256": {
+    "lab/src/sbi4finance/calibration/pricing.py": "dc554bda791ee4edea22a8de2352579f9fa30b91cc6acaa0fd138d587d06921c",
+    "lab/src/sbi4finance/calibration/tasks.py": "8f24909732836d6618a2e698cd01304984426928f0b42c58786270870b74d052",
+    "lab/studies/runtime_boundary.py": "87e38e0cbf7c569b57db1e930a336cabdc2870d893b9d3af7757adf27bd20102",
     "tutorial/notebooks/slot5_calibration.py": "5714dd9b8356db533890f2a513df109bf459ec3276c383eba95a287f22c72eb4",
     "tutorial/src/sbi4f_tutorial/rough_options/lesson.py": "4a3164006411713001784ed0841fb1915f7b1be9754e4f1b9f9ac140fb742204",
     "tutorial/src/sbi4f_tutorial/shared/pricing.py": "68a690b4b425cf3d50f68c303989c96a930ca48f83940d3bace344855d60fb09",
     "tutorial/src/sbi4f_tutorial/shared/tasks.py": "fb6240751ab4eeab4a46aab5d0329322705557c2a71a151f280409b853fdf7b2",
     "tutorial/tests/test_rough_session.py": "26dae70ed3c8e3f173371e89140741080cdc22aac819415992afb6f0a9cad2b6"
   },
-  "timing_environment": {
-    "system": "Darwin",
-    "architecture": "arm64",
-    "scope": "Local CPU runs; browser elapsed includes UI round trips. Not a hardware-independent speed guarantee."
+  "review_followup": {
+    "date": "2026-11-08",
+    "previous_head": "6e56f98ba9aebe0c1d73c0fa61ca79430ab1dc7c",
+    "tutorial_tests": 46,
+    "lab_core_tests": 527,
+    "lab_optional_skips": 3,
+    "notebook_exports": 7,
+    "cell_errors": 0,
+    "shipped_artifacts": 155,
+    "newly_published_comparison_sha256": "80eec85c42c97b65847cf8d7cfe4e417ee9abc70466c04e5f86f85fdfbd7c87e",
+    "comparison_existing_source_unchanged": true,
+    "known_curve_surrogate_cases": 3,
+    "known_curve_surrogate_case_passes": 2,
+    "failed_heston_importance_case": 291,
+    "importance_effective_sample_size": 1.0001911512980377,
+    "maximum_importance_weight": 0.9999044334842025,
+    "raw_price_arrays_and_original_figure_changed": false,
+    "scope": "Restore existing approximate-surrogate comparisons and correct pilot uncertainty presentation; no new financial simulation, training or MCMC.",
+    "browser": {
+      "page_errors": [],
+      "visible_two_routes": true,
+      "three_case_surrogate_table": true,
+      "failed_heston_distribution_label": true,
+      "original_figure_optional": true,
+      "narrow_width": 760,
+      "horizontal_overflow": false
+    }
   }
 }

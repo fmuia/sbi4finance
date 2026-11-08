@@ -168,6 +168,33 @@ cases, archive controls and a 760-pixel layout. Existing empty-cell warnings in
 slots 2 and 3 remain outside this change. The handover is updated; collaborator
 rehearsal remains deferred.
 
+#### Review corrections · 8 November 2026
+
+- Replace the ambiguous “historical studies” label with additional SPY examples
+  and earlier pilot experiments; identify real-quote versus synthetic inputs.
+- Bring the pricer-surrogate route into the main explanation. The fixed-pricer
+  PyMC comparisons already cover three development cases for the displayed
+  known-curve checkpoint: cases 0 and 1 pass; case 2 still fails H/eta screens.
+  Publish the original comparison summary unchanged through `accept.py` and
+  bind the displayed summary to the current task, bank and checkpoint. No new
+  MCMC or scientific training is performed. Joint/exact-model references remain
+  distinct from this approximate deterministic-emulator target.
+- Replace the unqualified cross-model histogram with a view that labels
+  deterministic supplied-curve variance-swap strikes and suppresses Heston
+  distributions when their importance diagnostics fail. Case 291 has only one
+  unique resampled parameter row among 400 draws (ESS about one of 2,048).
+  This is a failed approximation, not proof that the true posterior collapses.
+  Preserve the original arrays and figure as optional source evidence.
+- Explain that these are distributions of estimated fair prices, not future
+  payoffs; least-squares lines are points. Retain the legacy return-ratio
+  forward-start payoff label and MC/grid/curve-extrapolation qualifications.
+
+Verified after these corrections: 46 tutorial tests, 527 core lab tests (three
+optional skips), all seven notebook exports, release checks and Chrome review
+of the surrogate section, corrected figure, preserved source image and narrow
+layout. The added evidence is a byte-for-byte publication of an existing
+comparison summary; no new model fit or MCMC run is claimed.
+
 ## D. Develop the trajectory notebook to application parity
 
 **Retain:** the shared Heston/known-curve/joint-curve selector, daily observation

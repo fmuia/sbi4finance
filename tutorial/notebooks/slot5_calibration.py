@@ -25,10 +25,10 @@ def _():
     plots.style()
 
     def pending(what):
-        return mo.callout(mo.md(f"**Not included in this archived study:** {what}"), kind="neutral")
+        return mo.callout(mo.md(f"**Not included in this earlier study:** {what}"), kind="neutral")
 
     def pilot_banner(what):
-        return mo.callout(mo.md(f"**Historical pilot:** {what} This does not validate the current estimators."), kind="neutral")
+        return mo.callout(mo.md(f"**Earlier pilot:** {what} This does not validate the current estimators."), kind="neutral")
 
     def image(path, caption, width=None):
         return (mo.image(src=path, caption=caption, width=width) if teaching.existing(path)
@@ -182,9 +182,50 @@ def _(backbones):
 
 
 @app.cell(hide_code=True)
+def _(ASSETS, mo):
+    mo.vstack([
+        mo.md(r"""
+        ## 3. Two neural approaches
+
+        A **neural pricer** learns the forward map: parameters and a supplied
+        curve go in, estimated expected option prices come out. It trains on
+        Monte Carlo mean-price labels, rather than individual asset paths or
+        noisy quotes.
+
+        An **amortized posterior estimator** learns the inverse map: quotes and
+        the supplied curve go in, joint parameter draws come out. Its training
+        pairs include fresh quote noise.
+        """),
+        mo.image(ASSETS / "illustrations" / "heston-workflow-20261101" / "two-amortization-routes.png"),
+        mo.md(r"""
+        | | Neural pricer + MCMC | Amortized posterior |
+        |:---|:---|:---|
+        | Learn | parameters → expected prices | noisy quotes → parameter distribution |
+        | For each new market | run a new sampler using the cheap pricer | condition the network and draw |
+        | Main approximation | the learned prices and resulting likelihood | the learned posterior distribution |
+
+        **The learned pricer makes a likelihood cheap; it does not supply the
+        posterior.** With a fixed curve, its Gaussian likelihood is
+
+        $$\widetilde L(\boldsymbol\vartheta;\mathbf y,\xi_0)
+          =\prod_c\mathcal N\!\left(y_c;
+             f_\phi(\boldsymbol\vartheta,\xi_0)_c,\sigma_c^2\right).$$
+
+        MCMC then targets $p(\boldsymbol\vartheta)\widetilde L$. Comparing its
+        draws with the amortized network can expose errors missed by aggregate
+        calibration checks. Both routes still share simulation labels and model
+        assumptions. Agreement does not establish accuracy of the Monte Carlo
+        labels, the time grid or both neural approximations. We inspect three
+        such comparisons below.
+        """),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## 3. Building and training the posterior estimator
+    ## 4. Building and training the posterior estimator
 
     The BayesFlow workflow is the same as in Heston: prepare the data, define an
     adapter and conditional network, train, then sample. The extra condition is
@@ -269,11 +310,6 @@ def _(mo):
     downloaded matching training bank through the same `training_data` API.
     The pretrained estimator used 100,000 training surfaces and a larger network;
     this action is a small demonstration of the API.
-
-    A neural **pricer** instead learns parameters → expected prices and still
-    needs a sampler for every new observation. A good price fit and a good
-    posterior approximation are separate checks. The comparison diagram from
-    Heston applies here too.
     """)})
     return
 
@@ -281,12 +317,13 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## 4. Infer parameters with the curve supplied
+    ## 5. Infer parameters with the curve supplied
 
     We now use the pretrained estimator on one synthetic option market.
     The seven curve levels are known inputs; only $H,\eta,\rho$ are inferred.
     Their priors are independent uniforms on the ranges in the table. The plots show paired posterior draws in the original parameter units.
-    Independent conditional rough-model references remain outstanding.
+    Three checks against MCMC under a learned pricer follow below. References
+    under the original rough-model likelihood remain outstanding.
     """)
     return
 
@@ -323,9 +360,64 @@ def _(backbones, focused_posterior, known_arrays, known_task, mo, np, plt):
 
 
 @app.cell(hide_code=True)
+def _(RESULTS, backbones, known_report, known_task, mo, teaching):
+    _comparison = teaching.load_json(RESULTS / "rough-known" / "surrogate-check" / "comparison.json")
+    if _comparison is None:
+        raise ValueError("The saved known-curve surrogate comparison is missing.")
+    _pricer = _comparison["reference_pricer"]
+    _training = _pricer["training_record"]
+    if (_pricer["task_fingerprint"] != backbones.replay.fingerprint(known_task)
+            or _pricer["task_fingerprint"] != known_report["task_fingerprint"]
+            or _training["task_id"] != known_task["task_id"]
+            or _comparison["posterior_checkpoint_sha256"] != known_report["checkpoint_sha256"]
+            or _comparison["bank_manifest_sha256"] != known_report["bank_manifest_sha256"]):
+        raise ValueError("The surrogate comparison does not match this task and posterior estimator.")
+    _labels = {"hurst": "H", "eta": "η", "rho": "ρ"}
+    _rows, _details = [], []
+    for _i, _case in enumerate(_comparison["cases"]):
+        _agreement = _case["known100k_neural"]["proposed_parameter_agreement"]
+        _row = {"synthetic observation": "Worked example" if _case["surface_id"] == known_report["case_id"] else f"Market {_i + 1}"}
+        for _name, _stats in _agreement["parameters"].items():
+            _passed = (_stats["mean_error_within_0_3_reference_sd"]
+                       and _stats["relative_width_error_within_25_percent"])
+            _row[_labels[_name]] = "passed" if _passed else "failed"
+            _details.append({"stored case": _case["surface_id"], "parameter": _labels[_name],
+                             "mean gap / reference SD": f"{_stats['standardized_mean_error']:.3f}",
+                             "90% width / reference width": f"{_stats['width_ratio_90']:.3f}"})
+        _row["all parameter checks"] = "passed" if _agreement["all_checks_passed"] else "failed"
+        _rows.append(_row)
+    _rmse = _training["validation_errors"]["rmse"]
+    mo.vstack([
+        mo.md("### An alternate calculation on three synthetic markets"),
+        mo.md(f"The pretrained **100,000-market posterior estimator** was compared with PyMC MCMC "
+              f"under a **fixed pricer trained on {_training['training_surfaces']:,} markets**. "
+              "The observation, prior, supplied curve and quote-noise assumptions match for each case. "
+              "The reference pricer was held fixed; it was not replaced by a newer 100,000-market pricer."),
+        mo.ui.table(_rows, selection=None, pagination=False),
+        mo.md("Two cases meet the original comparison screens. In the third, **H and η fail both "
+              "the mean and interval-width screens**; ρ passes. These differences remain visible even "
+              "though aggregate calibration checks can look good."),
+        mo.md(f"The pricer's validation RMSE was **{_rmse:.3f} quote-noise SDs** against numerical "
+              "mean-price labels. This averages over contracts and markets; it does not bound the "
+              "resulting posterior error. The reference targets the deterministic surrogate likelihood, "
+              "with no correction for Monte Carlo-label uncertainty or pricing/grid bias. It is an "
+              "approximate comparison, not an exact-model reference or validation of the neural posterior everywhere."),
+        mo.accordion({"Comparison screens and recorded scope": mo.vstack([
+            mo.md("The original descriptive screens require a mean gap below 0.3 reference SD "
+                  "and a central 90% width within 25% of the reference width, for every parameter. "
+                  "Each neural comparison uses 1,000 saved draws; each reference has four chains of "
+                  "8,000 retained draws. Quantile MCSE and neural Monte Carlo error were not assessed. "
+                  "These three validation observations are not reserved-test results."),
+            mo.ui.table(_details, selection=None, pagination=False),
+        ])}),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## 5. Return to the data: posterior predictive simulation
+    ## 6. Return to the data: posterior predictive simulation
 
     Draw complete parameter rows, price the same contracts, then add fresh quote
     noise. This separates uncertainty about expected prices from variation in
@@ -397,7 +489,7 @@ def _(known_arrays, known_task, mo, np, plots, plt, predictive_rough, simulate_p
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## 6. Extension: infer the curve too
+    ## 7. Extension: infer the curve too
 
     If the curve is uncertain, treating it as fixed removes part of the
     uncertainty. In the joint task, the three coefficients of
@@ -450,7 +542,7 @@ def _(backbones, focused_posterior, joint_case, mo, np):
 @app.cell(hide_code=True)
 def _(known_report, mo):
     mo.md(r"""
-    ## 7. What do the checks establish?
+    ## 8. What do the checks establish?
 
     Financial calibration estimates model parameters. Statistical calibration
     asks whether the uncertainty statements behave as advertised across new
@@ -466,9 +558,11 @@ def _(known_report, mo):
 
     Each complete market is one evaluation case. Passing average calibration is
     not enough: a network that returns the prior can pass while learning nothing.
-    The current synthetic fits have aggregate diagnostics, but their independent
-    conditional references and downstream Monte Carlo product checks remain
-    unfinished. Historical pilots do not supply that missing evidence.
+    The current synthetic fits have aggregate diagnostics, and three known-curve
+    observations have the surrogate-likelihood comparisons shown above.
+    Original-model likelihood references, joint-curve references and downstream
+    Monte Carlo product checks remain unfinished. Earlier pilots do not supply
+    that missing evidence.
     """)
     return
 
@@ -506,7 +600,7 @@ def _(ASSETS, mo, teaching):
     mo.accordion({"Saved aggregate diagnostics": mo.vstack([
         mo.md("Each task was evaluated on 2,000 synthetic validation markets, with 1,000 "
               "draws per market. These are prior-averaged checks on the current fits; "
-              "they are not reserved-test results or independent conditional references."),
+              "they are not reserved-test results and do not themselves establish conditional agreement."),
         mo.ui.table(_rows, selection=None, pagination=False),
     ])})
     return
@@ -531,11 +625,11 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
-    archive_toggle = mo.ui.checkbox(value=False, label="Show archived SPY, pilot, cost and long-end studies")
-    mo.accordion({"Optional historical studies": mo.vstack([
-        mo.md("These preserve separate observations, numerical methods and evidence. "
-              "They are not outputs of the current worked examples. "
-              "Historical importance audits and incomplete comparisons remain labelled as such."),
+    archive_toggle = mo.ui.checkbox(value=False, label="Show earlier SPY examples and pilot experiments")
+    mo.accordion({"Earlier SPY examples and pilot experiments": mo.vstack([
+        mo.md("Some examples use real SPY quotes; others use synthetic markets. "
+              "They use separate estimators and numerical experiments, so they are "
+              "not outputs of the current worked example. Failed or incomplete checks remain labelled."),
         archive_toggle,
     ])})
     return (archive_toggle,)
@@ -545,11 +639,14 @@ def _(mo):
 def _(archive_toggle, mo):
     mo.stop(not archive_toggle.value)
     mo.md(r"""
-    ## Optional archive · SPY and comparison studies
+    ## Earlier SPY examples and pilot experiments
 
-    The following sections preserve the original SPY/pilot studies and their original numerical workloads. Timings describe those archived runs, not the current implementation or the session examples above. In this route, the curve is supplied
-    at short maturities. Historical study 8 uses a separate eleven-level long-end curve model. Neither route is
-    the six-target exponential-curve inference task shown in the current development panel above.
+    These examples combine real SPY quotes with separate synthetic pilot markets.
+    Their estimators and numerical methods differ from the worked example above.
+    Recorded costs describe those earlier workloads, not current software speed.
+    The SPY route supplies the short-maturity curve; the long-end experiment uses
+    eleven uncertain curve levels. Neither is the six-target exponential-curve
+    estimator shown above.
 
     | | Slot 4: Heston | Slot 5: rough Bergomi |
     |:---|:---|:---|
@@ -613,7 +710,7 @@ def _(archive_toggle, mo):
 def _(archive_toggle, mo):
     mo.stop(not archive_toggle.value)
     mo.md(r"""
-    ### Historical study 1 · The question
+    ### Earlier study 1 · The question
 
     SPY on 21 October 2026: the 63 prices of slots 1 and 4, read from the chain onto the design grid. A
     bank marks products the smile does not quote: a forward-start call (one period of a cliquet), a
@@ -636,7 +733,7 @@ def _(RESULTS, archive_toggle, image, mo):
 def _(archive_toggle, mo):
     mo.stop(not archive_toggle.value)
     mo.md(r"""
-    ### Historical study 2 · Why rough Bergomi
+    ### Earlier study 2 · Why rough Bergomi
 
     The at-the-money skew of SPY falls with maturity as a power law. Heston, at slot 4's posterior mean,
     cannot follow it: its skew tends to a constant as $T \to 0$. Rough Bergomi's skew goes like
@@ -689,7 +786,7 @@ def _(archive_toggle, heston_skew, mo, plots, plt, power_law, skew_days, spy_ske
 def _(archive_toggle, mo):
     mo.stop(not archive_toggle.value)
     mo.md(r"""
-    ### Historical study 3 · What a numerical posterior would cost
+    ### Earlier study 3 · What a numerical posterior would cost
 
     One numerical likelihood evaluation uses a Monte Carlo surface. The historical cost projection uses
     about 12,300 evaluations for 400 effective draws, giving at least 17 CPU-hours per smile. It extrapolates
@@ -719,7 +816,7 @@ def _(ASSETS, RESULTS, archive_toggle, image, mo, teaching):
 def _(archive_toggle, mo):
     mo.stop(not archive_toggle.value)
     mo.md(r"""
-    ### Historical study 4 · Historical SPY neural route · export status
+    ### Earlier study 4 · SPY neural route · export status
 
     The current 100,000-surface estimators already have packaged synthetic replays above. A matching
     native SPY posterior and the historical S2–S7 exports are separate artifacts. In the known-curve
@@ -763,15 +860,16 @@ def _(archive_toggle, mo, pending, pilot, pilot_surface, teaching):
 def _(archive_toggle, mo):
     mo.stop(not archive_toggle.value)
     mo.md(r"""
-    ### Historical study 5 · Is it right without an exact answer? · historical and pilot studies
+    ### Earlier study 5 · Is it right without an exact answer? · historical and pilot studies
 
     The original study design used three checks, each answering a different question.
     The saved historical results and explicit missing exports below do not certify the new 100k fits.
 
     1. **Calibrated on average?** Simulation-based calibration on held-out simulated smiles.
     2. **Does another calculation agree?** MCMC on a neural pricer samples a surrogate
-       likelihood. Heston supplies a useful control against its Fourier reference;
-       that comparison does not validate an unperformed rough-Bergomi reference.
+       likelihood. Heston supplies a useful control against its Fourier reference.
+       The three known-curve comparisons above use a separate current estimator;
+       none provides an original-model rough-Bergomi likelihood reference.
     3. **Right on this smile?** This archived audit used importance weighting with a Monte Carlo
        likelihood. It draws 256 parameter values from a widened fit to the network's posterior and reweights
        them with the likelihood of section 3. The efficiency and the Pareto shape $\hat k$ decide, with the
@@ -807,10 +905,11 @@ def _(RESULTS, archive_toggle, image, mo, pending, teaching):
                          f"{len(_route['surfaces'])} Heston smiles:"),
                    mo.ui.table(teaching.agreement_rows(_route, key="agreement"), selection=None, pagination=False)]
     if _exact is not None:
-        _parts += [mo.md("**MCMC on the pricer against the exact-likelihood reference**: the check that this route can "
-                         "stand in where no exact posterior is affordable."),
+        _parts += [mo.md("**MCMC on the pricer against the Fourier-likelihood importance reference**: "
+                         "this archived Heston comparison uses reweighted proposal summaries, not direct MCMC references for every case."),
                    mo.ui.table(teaching.agreement_rows(_exact, key="pricer_vs_exact"), selection=None, pagination=False)]
-    _parts.append(pending("the neural-pricer route on rough-Bergomi smiles (study S4)."))
+    _parts.append(mo.md("The three current known-curve surrogate comparisons are shown in the main lesson. "
+                        "A matching neural-pricer posterior for these earlier rough SPY observations is not included."))
     mo.accordion({"Historical method comparison · technical diagnostic": mo.vstack([
         mo.md("These archived comparison panels use the original study’s plotting coordinates. "
               "The current synthetic example above is the primary posterior view, in physical parameter units. "
@@ -849,7 +948,7 @@ def _(RESULTS, archive_toggle, image, mo, pending, pilot_banner, teaching):
 def _(archive_toggle, mo):
     mo.stop(not archive_toggle.value)
     mo.md(r"""
-    ### Historical study 6 · The classical route on the same smiles
+    ### Earlier study 6 · The classical route on the same smiles
 
     The classical route is weighted least squares from several starting points, with an interval from the
     Gauss–Newton approximation $(J^\top W J)^{-1}$. On Heston that interval covers the truth as often as the
@@ -939,7 +1038,7 @@ def _(RESULTS, archive_toggle, classical_model, image, mo, pending, pilot_banner
 def _(archive_toggle, mo):
     mo.stop(not archive_toggle.value)
     mo.md(r"""
-    ### Historical study 7 · From posterior to prices: the range and the reserve · stored studies
+    ### Earlier study 7 · From posterior to prices: the range and the reserve · stored studies
 
     Each posterior draw prices each path-dependent product by Monte Carlo, with the same random numbers for
     every draw. This reduces pricing-noise contributions to differences between draws; numerical error still
@@ -1007,7 +1106,7 @@ def _(archive_toggle, level, mo, pending, pilot_banner, product_model, product_r
 def _(archive_toggle, mo):
     mo.stop(not archive_toggle.value)
     mo.md(r"""
-    ### Historical study 8 · The long end: where the reserve comes from · separate Gaussian/Laplace experiment
+    ### Earlier study 8 · The long end: where the reserve comes from · separate Gaussian/Laplace experiment
 
     This stored experiment has fourteen uncertain inputs: $H$, $\eta$, $\rho$ and eleven curve levels.
     Its sliders recompute Gaussian curve updates and delta-method product ranges from stored Monte Carlo
@@ -1165,7 +1264,7 @@ def _(archive_toggle, mo):
 def _(archive_toggle, mo):
     mo.stop(not archive_toggle.value)
     mo.md(r"""
-    ### Historical study 9 · Heston against rough Bergomi on the same smile
+    ### Earlier study 9 · Heston against rough Bergomi on the same smile
 
     The posterior's range is the parameter part of model risk; the choice of model is the other part. Both
     models, calibrated to the same smile, price the forward-start differently, and the gap is judged smile
@@ -1178,35 +1277,53 @@ def _(archive_toggle, mo):
 def _(RESULTS, archive_toggle, image, mo, pending, pilot_banner, teaching):
     mo.stop(not archive_toggle.value)
     _across = teaching.load_json(RESULTS / "rough-pilot" / "s7-across" / "across-models.json")
-    if _across is None:
-        _out = pending("the across-model study.")
+    _rough_prices = teaching.load_npz(RESULTS / "rough-pilot" / "s7" / "price-draws.npz")
+    _heston_prices = teaching.load_npz(RESULTS / "rough-pilot" / "s7-across" / "heston-price-draws.npz")
+    if _across is None or _rough_prices is None or _heston_prices is None:
+        _out = pending("the across-model pilot report and price arrays.")
     else:
-        _rows = []
-        for _s in _across["surfaces"]:
-            _fs = _s["products"]["forward_start_call"]
-            _rows.append({"pilot smile": _s["test_row"],
-                          "Heston fit, χ² on 63 quotes": round(_s["heston_least_squares"]["chi2"], 1),
-                          "Heston audit k̂": round(_s["heston_audit"]["khat"], 2),
-                          "forward start, Heston minus rough (points)": f"{100 * _fs['gap_between_points_relative']:+.1f}%",
-                          "90% ranges overlap": "yes" if _fs["ranges_overlap"] else "no"})
+        _rows = [{"synthetic case": case["test_row"],
+                  "Heston fit, χ² on 63 quotes": f"{case['heston_least_squares']['chi2']:.1f}",
+                  "importance ESS / 2048": f"{case['heston_audit']['efficiency'] * _across['settings']['proposals']:.1f}",
+                  "largest importance weight": f"{100 * case['heston_audit']['max_weight']:.3f}%"}
+                 for case in _across["surfaces"]]
         _out = mo.vstack([
-            pilot_banner("3 simulated rough-Bergomi smiles."),
+            pilot_banner("Three synthetic rough-Bergomi markets, compared using earlier estimators."),
             mo.ui.table(_rows, selection=None, pagination=False),
-            image(RESULTS / "rough-pilot" / "s7-across" / "across-models.png",
-                  "The forward-start price under each model's posterior, on the pilot smiles."),
-            mo.md("A smile Heston cannot fit is reported as such: its posterior collapses and its audit flags it. "
-                  "**On SPY**, with slot 4's Heston posterior and the full rough-Bergomi network:"),
-            pending("the two models' forward-start distributions on SPY (study S7 on S8's posterior)."),
+            teaching.product_comparison_figure(_across, _rough_prices, _heston_prices),
+            mo.md("**Read the price distributions.** These show estimated expected product prices across "
+                  "parameter draws, not distributions of future payoffs. The supplied rough-model curve "
+                  "fixes the variance-swap price, so it appears as a line. That says nothing about "
+                  "uncertainty in realized future variance. Dashed lines are least-squares price estimates. "
+                  "The rough model receives supplied curve levels as well as quotes; Heston infers its "
+                  "mean variance curve. Widths therefore reflect different conditioning assumptions and "
+                  "product sensitivities, and need not be smaller under rough Bergomi."),
+            mo.callout(mo.md("**The Heston approximation failed on case 291.** One proposal received "
+                            "99.990% of the importance weight; the 400 saved parameter rows are identical. "
+                            "The resulting price spikes have therefore been replaced by a sampling-failure "
+                            "notice. They do not show a certain posterior. The other Heston panels pass "
+                            "the displayed audit screen; that alone does not certify exact-model accuracy."), kind="warn"),
+            mo.md("The earlier forward-start column uses the return-ratio payoff "
+                  "E[(S₀.₅ / S₀.₂₅ − 1)⁺], rather than a spot-notional payoff. Pricing uses common "
+                  "random numbers across parameter draws. Numerical price error and pilot calibration "
+                  "limitations remain; these are not results from the current known- or joint-curve estimator."),
+            mo.accordion({"Original unfiltered figure": mo.vstack([
+                mo.md("**Preserved for comparison:** this original image labels the failed Heston "
+                      "sample as a posterior and displays its duplicate draws as zero-width histograms. "
+                      "Use the diagnosed rendering above when interpreting uncertainty."),
+                image(RESULTS / "rough-pilot" / "s7-across" / "across-models.png",
+                      "Original pilot figure, including the failed Heston importance sample."),
+            ])}),
+            pending("the two models' forward-start distributions for matching real SPY quotes."),
         ])
     _out
     return
-
 
 @app.cell(hide_code=True)
 def _(archive_toggle, mo):
     mo.stop(not archive_toggle.value)
     mo.md(r"""
-    ### Historical study 10 · What the answer assumes, and what it takes
+    ### Earlier study 10 · What the answer assumes, and what it takes
 
     This historical SPY answer is conditional on four things: **the model**, **the prior**, **the quote-noise model**, and
     **$\xi_0$**, read off the same smile up to one year and treated as exact there, with its long end priced
@@ -1224,7 +1341,7 @@ def _(archive_toggle, mo):
 
     The numerical records remain available for review. Missing panels and failed checks keep their original status.
 
-    ### Historical-study takeaways
+    ### What these earlier examples illustrate
 
     1. **Rough Bergomi's posterior is affordable for one smile, not for a validation**: at least 17 CPU-hours
        per smile by random-walk Metropolis, and about 85 CPU-minutes by importance sampling from a

@@ -115,9 +115,16 @@ posterior-predictive actions run only when requested and keep their results
 separate from the supplied estimator. Monte Carlo pricing error is reported
 separately from the assumed quote noise.
 
-Historical SPY, pilot, classical and long-end studies are optional. They retain
-their original scope; they do not validate the current synthetic posteriors.
-An independent rough-model reference and further product checks remain outstanding.
+Additional SPY examples, pilot checks and long-end experiments are optional.
+Some use saved SPY quotes; others use synthetic data and earlier estimators.
+They are separate from the current worked example.
+
+The main lesson also explains the neural-pricer route. Three supplied-curve
+cases have recorded comparisons against PyMC sampling of that surrogate target:
+two pass the stated comparison screens, and one still disagrees. Exact-model
+references, joint-curve conditional checks and further product checks remain
+outstanding. A fixed supplied curve can make a fair variance-swap strike
+constant; failed importance sampling cannot establish a zero-width posterior.
 
 ## Trajectory inference
 
