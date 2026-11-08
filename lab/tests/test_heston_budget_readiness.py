@@ -51,7 +51,7 @@ class ReadinessTests(unittest.TestCase):
             protocol_path = root / "protocol.json"
             protocol_path.write_text(json.dumps(protocol))
             args = Namespace(protocol=protocol_path, bank=bank, checkpoint=checkpoint, out=root / "readiness")
-            split = {"observations": np.full((4, 63, 1), .02),
+            split = {"observations": np.full((4, 63, 1), .02) + np.arange(4)[:, None, None] * .00001,
                      "parameters": row + np.linspace(-.0001, .0001, 4)[:, None],
                      "example_id": np.asarray([f"validation:{i}" for i in range(4)])}
             record = {"checkpoint_sha256": protocol["control"]["checkpoint_sha256"],
@@ -59,6 +59,7 @@ class ReadinessTests(unittest.TestCase):
             def sample(workflow, task, observations, count, **kwargs):
                 result = np.broadcast_to(row, (len(observations), count, 4)).copy()
                 result += np.linspace(-.0001, .0001, count)[None, :, None]
+                result += (observations[:, 0, 0] - .02)[:, None, None]
                 return result
             with patch.object(bank_collection, "load_bank", return_value=(
                     {"configuration": {"task": task}}, {"validation": split})) as loader, \
