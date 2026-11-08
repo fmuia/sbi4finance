@@ -19,7 +19,11 @@ NEURAL_FILES = {"task.json", "posterior.npz", "evaluation.json", "training.json"
 
 
 def digest(path):
-    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+    path = Path(path)
+    data = path.read_bytes()
+    if path.suffix == ".json":
+        data = data.replace(b"\r\n", b"\n")
+    return hashlib.sha256(data).hexdigest()
 
 
 def fingerprint(task):

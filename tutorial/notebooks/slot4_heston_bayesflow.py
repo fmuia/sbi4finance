@@ -75,11 +75,11 @@ def _(mo):
     | Symbol | Meaning | In this inference task |
     |:---|:---|:---|
     | $S_t$ | asset price, starting at 1 | a possible future path |
-    | $V_t$ | instantaneous **variance**; volatility is $\sqrt{V_t}$ | an unobserved state |
-    | $v_0$ | initial variance $V_0$ | infer it |
-    | $\theta$ | long-run variance level | infer it |
-    | $\sigma_v$ | strength of random variance moves | infer it |
-    | $\rho$ | correlation between the two random shocks | infer it |
+    | $V_t$ | instantaneous variance; volatility is $\sqrt{V_t}$ | an unobserved state |
+    | $v_0$ | initial variance $V_0$ | inferred |
+    | $\theta$ | long-run variance level | inferred |
+    | $\sigma_v$ | strength of random variance moves | inferred |
+    | $\rho$ | correlation between the two random shocks | inferred |
     | $\kappa$ | speed of mean reversion | fixed at 2 per year |
 
     These are **pricing-measure dynamics**: they describe the distribution used to value contingent payoffs. We use zero rates and dividends, so no drift appears in this equation. Estimating drift from observed returns is a different task, explored in the trajectory notebook.
