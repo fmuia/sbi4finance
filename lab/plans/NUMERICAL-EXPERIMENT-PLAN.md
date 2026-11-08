@@ -54,46 +54,6 @@ place. The baseline lab suite passes **534 tests, with three optional skips**;
 manifest, claims and runtime-boundary checks pass. P2 and P3 proceed as separate
 branches. No study matrix has been admitted and no model has been replaced.
 
-P3's protocol and training machinery are implemented. The actual three-update
-smoke on the preserved 100k bank used **768 distinct examples**, reloaded exactly,
-and recorded **4.55 s wall / 7.94 process-CPU s**, with **843 MB** peak RSS. These
-clocks exclude module imports before recorder creation. The fresh-update mode
-retains actual row visits, a budget-specific schedule and the endpoint; it does
-not alter epoch-mode recovery. The runner requires independent output lanes,
-hashed readiness/smoke evidence and a resource admission; failures consume their
-reservation and cannot trigger automatic retries.
-
-**P4 is not admitted.** The
-[saved-control readiness result](../evidence/pilot-results/2026-11-08/heston-budget-readiness/summary.json)
-is **inconclusive**. The 512-case/128-draw rank screen passes all four parameters;
-all draws are finite and within support; all three conditional point estimates
-meet the historical margins; and the fixed 32×32 predictive panel prices
-successfully. But case 2's initial-variance mean discrepancy is **0.240 reference
-SD**, with a simultaneous Monte Carlo interval for its absolute discrepancy of
-**[0.157, 0.322]**, crossing the **0.300** limit. Its width check passes. Cases 0
-and 1 pass the uncertainty-aware checks.
-
-The conditional calculation retains four chains, uses paired within-chain
-circular blocks at two predeclared lengths, includes neural Monte Carlo error,
-and retains the saved reference mean-MCSE floor. These are approximate
-Bonferroni-normal intervals, not exact coverage guarantees. The reference floor
-alone gives a mean half-width of about **0.061 SD**, nearly exhausting this
-observed margin even with infinitely many neural draws. Repeating the same
-check until it passes would not resolve that uncertainty.
-
-The control check recorded **93.08 s wall / 610.57 process-CPU s**, **2.74 GB**
-peak RSS and no GPU/scheduler allocation. Local JAX internal threads explain why
-process CPU exceeds wall; BLAS thread variables do not enforce CPU affinity.
-The reserved final panel **test:2500–4499 remains unopened**. The study has no
-admission receipt, selected short fit or new published model.
-
-Next, review a separately costed reference-precision follow-up while retaining
-the target and margins. Reframing the study as relative agreement with the saved
-model would require an explicit protocol revision before fitting, with the
-absolute conditional limitation retained. Neither is an automatic continuation
-of this bounded setup. Once readiness passes, forecast and reserve final
-confirmation costs before admitting any of the 14 seed-0 lanes.
-
 ### Sequence and parallel work
 
 | PR | Purpose | Depends on | Can proceed alongside |
@@ -265,6 +225,46 @@ an active P4 run; the independent training lane does not wait for that merge.
 thresholds, checkpoint policy and resource ceilings. Review a tiny exact-cap
 training/reload smoke and its measured memory/time. No selected model or
 notebook weight changes in P3.
+
+P3's protocol and training machinery are implemented. The actual three-update
+smoke on the preserved 100k bank used **768 distinct examples**, reloaded exactly,
+and recorded **4.55 s wall / 7.94 process-CPU s**, with **843 MB** peak RSS. These
+clocks exclude module imports before recorder creation. The fresh-update mode
+retains actual row visits, a budget-specific schedule and the endpoint; it does
+not alter epoch-mode recovery. The runner requires independent output lanes,
+hashed readiness/smoke evidence and a resource admission; failures consume their
+reservation and cannot trigger automatic retries.
+
+**P4 is not admitted.** The
+[saved-control readiness result](../evidence/pilot-results/2026-11-08/heston-budget-readiness/summary.json)
+is **inconclusive**. The 512-case/128-draw rank screen passes all four parameters;
+all draws are finite and within support; all three conditional point estimates
+meet the historical margins; and the fixed 32×32 predictive panel prices
+successfully. But case 2's initial-variance mean discrepancy is **0.240 reference
+SD**, with a simultaneous Monte Carlo interval for its absolute discrepancy of
+**[0.157, 0.322]**, crossing the **0.300** limit. Its width check passes. Cases 0
+and 1 pass the uncertainty-aware checks.
+
+The conditional calculation retains four chains, uses paired within-chain
+circular blocks at two predeclared lengths, includes neural Monte Carlo error,
+and retains the saved reference mean-MCSE floor. These are approximate
+Bonferroni-normal intervals, not exact coverage guarantees. The reference floor
+alone gives a mean half-width of about **0.061 SD**, nearly exhausting this
+observed margin even with infinitely many neural draws. Repeating the same
+check until it passes would not resolve that uncertainty.
+
+The control check recorded **93.08 s wall / 610.57 process-CPU s**, **2.74 GB**
+peak RSS and no GPU/scheduler allocation. Local JAX internal threads explain why
+process CPU exceeds wall; BLAS thread variables do not enforce CPU affinity.
+The reserved final panel **test:2500–4499 remains unopened**. The study has no
+admission receipt, selected short fit or new published model.
+
+Next, review a separately costed reference-precision follow-up while retaining
+the target and margins. Reframing the study as relative agreement with the saved
+model would require an explicit protocol revision before fitting, with the
+absolute conditional limitation retained. Neither is an automatic continuation
+of this bounded setup. Once readiness passes, forecast and reserve final
+confirmation costs before admitting any of the 14 seed-0 lanes.
 
 ### P4 · Execute and compare time to posterior quality
 
