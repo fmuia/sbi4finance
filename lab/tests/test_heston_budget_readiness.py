@@ -59,7 +59,7 @@ class ReadinessTests(unittest.TestCase):
             def sample(workflow, task, observations, count, **kwargs):
                 result = np.broadcast_to(row, (len(observations), count, 4)).copy()
                 result += np.linspace(-.0001, .0001, count)[None, :, None]
-                result += (observations[:, 0, 0] - .02)[:, None, None]
+                result += (np.asarray(observations).reshape(len(observations), -1)[:, 0] - .02)[:, None, None]
                 return result
             with patch.object(bank_collection, "load_bank", return_value=(
                     {"configuration": {"task": task}}, {"validation": split})) as loader, \
