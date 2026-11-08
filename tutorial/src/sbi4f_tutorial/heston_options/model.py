@@ -170,6 +170,18 @@ def european_price(forward, strike, discount, maturity, parameters, initial_vari
     """
     if kind not in ("call", "put"):
         raise ValueError("kind must be call or put")
+    return _european_price(forward, strike, discount, maturity, parameters, initial_variance,
+                           put=kind == "put", upper_limit=upper_limit, nodes=nodes)
+
+
+def _european_price(forward, strike, discount, maturity, parameters, initial_variance,
+                    *, put, upper_limit, nodes):
+    """One integral for a scalar type or a mixed call/put surface.
+
+    ``put`` is an internal boolean scalar or a broadcast contract mask. Price
+    bounds apply to each requested option, rather than to an intermediate call
+    that a put-only caller did not request.
+    """
     if isinstance(nodes, (bool, np.bool_)) or not isinstance(nodes, (int, np.integer)) or nodes < 16:
         raise ValueError("nodes must be an integer >=16")
     cutoff = gbm._scalar(upper_limit, "upper_limit", positive=True)
@@ -184,7 +196,18 @@ def european_price(forward, strike, discount, maturity, parameters, initial_vari
     if float(values["vol_of_vol"]) == 0 and float(values["jump_intensity"]) == 0:
         kappa, theta = float(values["kappa"]), float(values["theta"])
         integrated = theta*time + (initial_variance-theta)*(-np.expm1(-kappa*time))/kappa
-        return gbm.european_price(fwd, k, disc, integrated, option=kind)
+        if np.ndim(put) == 0:
+            return gbm.european_price(fwd, k, disc, integrated, option="put" if put else "call")
+        # Keep Black's direct put formula in this exact limit. Subtracting
+        # parity from a call would introduce unnecessary cancellation.
+        price = np.empty_like(time)
+        for is_put in (False, True):
+            chosen = put == is_put
+            if np.any(chosen):
+                price[chosen] = gbm.european_price(fwd[chosen], k[chosen], disc[chosen],
+                                                  integrated[chosen],
+                                                  option="put" if is_put else "call")
+        return price
     u, weights = _quadrature(int(nodes), cutoff)
     # A surface repeats each maturity across strikes. The characteristic
     # function depends on maturity, not strike; retain exact floating values.
@@ -202,9 +225,9 @@ def european_price(forward, strike, discount, maturity, parameters, initial_vari
     integrand = np.real(phase*phi)/(u*u+0.25)
     call = disc*(fwd - np.sqrt(fwd*k)*np.sum(integrand*weights, axis=-1)/np.pi)
     call = np.where(time == 0, disc*np.maximum(fwd-k, 0), call)
-    price = call if kind == "call" else call-disc*(fwd-k)
-    lower = disc*np.maximum(fwd-k if kind == "call" else k-fwd, 0)
-    upper = disc*(fwd if kind == "call" else k)
+    price = np.where(put, call-disc*(fwd-k), call)
+    lower = disc*np.maximum(np.where(put, k-fwd, fwd-k), 0)
+    upper = disc*np.where(put, k, fwd)
     tolerance = 1e-9*disc*np.maximum(fwd, k)
     if (not np.isfinite(price).all() or np.any(price < lower-tolerance)
             or np.any(price > upper+tolerance)):

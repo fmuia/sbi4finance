@@ -7,7 +7,10 @@ import numpy as np
 from numpy.testing import assert_array_equal
 
 from sbi4f_tutorial.heston_options import model
-from test_hkde_maturity_reuse import original_price, model as parameters
+from sbi4f_tutorial.shared import pricing
+from test_hkde_maturity_reuse import (
+    calibration_task, original_price, original_surface, model as parameters,
+)
 
 
 class FourierPlanTests(unittest.TestCase):
@@ -67,6 +70,46 @@ class FourierPlanTests(unittest.TestCase):
                           pars, .04)
                 assert_array_equal(model.european_price(*inputs, kind=kind),
                                    original_price(*inputs, kind=kind))
+
+    def test_mixed_surface_matches_frozen_prices_on_every_rung_and_preserves_order(self):
+        task = calibration_task()
+        # Interleave types and maturities, including expiry and duplicate strikes.
+        contracts = task["context"]["contracts"][::-1] + [
+            {"maturity": 0., "strike": 1.1, "option_type": "call"},
+            {"maturity": 0., "strike": .9, "option_type": "put"},
+        ]
+        for pars in (parameters(), parameters(jump_intensity=0.),
+                     parameters(vol_of_vol=0.),
+                     parameters(jump_intensity=0., vol_of_vol=0.),
+                     parameters(jump_up_probability=0., jump_up_rate=.5)):
+            for nodes, cutoff in task["numerics"]["quadrature_ladder"]:
+                kwargs = dict(nodes=nodes, upper_limit=cutoff)
+                with self.subTest(parameters=pars, nodes=nodes):
+                    expected = original_surface(pars, .04, contracts, **kwargs)
+                    actual = pricing.heston_surface(pars, .04, contracts, **kwargs)
+                    assert_array_equal(actual, expected)
+
+    def test_surface_evaluates_one_cf_row_per_unique_maturity_across_types(self):
+        task = calibration_task()
+        contracts = task["context"]["contracts"]
+        with patch.object(model, "characteristic_function", wraps=model.characteristic_function) as cf:
+            pricing.heston_surface(parameters(), .04, contracts, nodes=1024, upper_limit=600.)
+        self.assertEqual(cf.call_count, 2)  # validation and one shared integration
+        expected = np.unique([c["maturity"] for c in contracts])[:, None]
+        assert_array_equal(cf.call_args_list[1].args[1], expected)
+
+    def test_surface_preserves_empty_invalid_type_and_price_bounds_failures(self):
+        assert_array_equal(pricing.heston_surface({}, -.1, [], nodes=1, upper_limit=-1.), [])
+        for contract in ({"maturity": .25, "strike": 1., "option_type": "american"},
+                         {"maturity": -.1, "strike": 1., "option_type": "put"},
+                         {"maturity": .02, "strike": .8, "option_type": "put"}):
+            kwargs = dict(nodes=16, upper_limit=3000.)
+            with self.subTest(contract=contract):
+                with self.assertRaises(ValueError) as expected:
+                    original_surface(parameters(), .04, [contract], **kwargs)
+                with self.assertRaises(ValueError) as actual:
+                    pricing.heston_surface(parameters(), .04, [contract], **kwargs)
+                self.assertEqual(str(actual.exception), str(expected.exception))
 
 
 if __name__ == "__main__":
