@@ -266,7 +266,7 @@ absolute conditional limitation retained. Neither is an automatic continuation
 of this bounded setup. Once readiness passes, forecast and reserve final
 confirmation costs before admitting any of the 14 seed-0 lanes.
 
-The P3 branch passes **561 lab tests (three optional skips)** and the release
+The P3 branch passes **562 lab tests (three optional skips)** and the release
 checks; saved neural archives also pass the tightened strict-support guard.
 The final comparison helper validates ordered observation IDs and uses a shared
 paired observation bootstrap across every candidate/seed, parameter and level.
