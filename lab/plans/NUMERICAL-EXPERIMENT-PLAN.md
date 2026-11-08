@@ -289,6 +289,48 @@ Study execution additionally needs the readiness, same-device smoke and resource
 admission receipts; the current inconclusive receipt is rejected. The reserved
 confirmation and finalist-freeze stages are not automatic actions of the runner.
 
+### P4 execution · user-requested development screen, 8 November
+
+The user subsequently requested the matrix despite the unresolved conditional
+reference uncertainty. The [execution record](../evidence/pilot-results/2026-11-08/heston-training-matrix/run.json)
+binds that explicit development scope to the unchanged protocol, bank, original
+control and source **`67703bb`**. The original **inconclusive** control report
+remains unchanged. Strict default admission still requires a pass; the explicit
+exception permits only this fixed seed-0 screen and cannot publish a model,
+confirm finalists or open the reserved final panel.
+
+All **14 jobs, 8641245–8641258**, are submitted independently on Oscar: two
+architectures × seven update budgets, each followed by the fixed development
+checks. At most two can run concurrently under the account's CPU quota. Each
+gets four host CPUs, one L40S, 24 GiB host memory and a 4–6 minute hard limit.
+The software path is already completing fit and evaluation; scientific check
+failures remain results rather than failures that cancel other lanes.
+
+The admission reserves **4,002 GPU-seconds / 18,008 allocated CPU-seconds**,
+including failed preflights and conservative prior local CPU usage. It remains
+below the original 4,500 / 21,600 ceilings. This revised scope covers the screen
+only: **future confirmation is explicitly deferred and has no reservation or
+automatic authorization**. Its costs must be admitted separately. No training
+data is generated and no test outcomes are evaluated.
+
+Five GPU software/cost fits completed and reloaded exactly. Incremental fit
+rates are approximately **2.4 ms/update** for both architectures. Cold CLI
+training/reload costs were **40–43 seconds**: compilation, terminal validation
+and reload sampling dominate the small runs. The callback counter now avoids
+per-batch `Callback.model` access, which forces JAX state synchronization;
+finite batch counts and endpoint optimizer/weight checks preserve the exact cap.
+The lab suite passes **573 tests (three optional skips)** and release checks.
+
+Both preflight failures are retained. The first found a missing dependency in
+the archived environment before any training; a fresh locked environment fixes
+it without editing the archive. The second completed every training/reload
+smoke but exhausted its whole-run allowance during control evaluation. Its
+three conditional cases and first development batch remain partial evidence,
+not a passed GPU readiness result. The admission uses an explicit **150-second
+evaluation bound** and the original complete CPU control for quality comparisons,
+with cross-device limitations recorded. The initial screen records preserve all
+pending/failed lanes; they do not select a recipe or replace the saved model.
+
 ### P4 · Execute and compare time to posterior quality
 
 **Commit 1 — the bounded development screen.** Run the 14 predeclared seed-0

@@ -1,0 +1,667 @@
+{
+  "format": "heston_training_matrix_execution_v1",
+  "status": "submitted_and_running",
+  "snapshot_utc": "2026-11-08T23:14:00.314294+00:00",
+  "scope": "14 seed0 development fits/evaluations requested by user; no confirmation, final test, accepted replacement or publication.",
+  "source_revision": "67703bb1786ee1cac43acab1fb88d73c4c004940",
+  "protocol_sha256": "d494fc568e49164cac52d8703dc086e9187ed96aba19c23ddeb7715048365bea",
+  "admission_sha256": "c3badf36b9a8fc8e66a8e24d84f0a94e40d229d2d63387d2ec4f5ecf01223167",
+  "submission_receipt_sha256": "fa9adab0e79847a4c4e7390c78f6ee3f11cfceb4c679546bc2b56ce77754c557",
+  "control_original_sha256": "bc9bedd624191389aa316fc6b25dd8e9e81a1bc1b78b1e9d63d00d8ed1fdad6c",
+  "control_original_status_retained": "inconclusive",
+  "root_on_oscar": "/oscar/scratch/afengler/sbi4finance-heston-matrix-20261108",
+  "data_generation_performed": false,
+  "reserved_test_evaluated": false,
+  "scientific_acceptance": false,
+  "model_publication_allowed": false,
+  "confirmation_allowed": false,
+  "status_counts": {
+    "completed": 4,
+    "in_progress": 2,
+    "pending": 8
+  },
+  "jobs": [
+    {
+      "id": "small-u00030-s0",
+      "architecture": "small",
+      "widths": [
+        128,
+        128
+      ],
+      "requested_updates": 30,
+      "seed": 0,
+      "status": "completed",
+      "checks_status": "fail",
+      "actual_optimizer_updates": 30,
+      "actual_example_presentations": 7680,
+      "unique_training_rows_seen": 7680,
+      "same_seed_reload_exact": true,
+      "checkpoint_sha256": "6b2fadc5cb8d45a66f7ba9bfa6f27f7a55faf169fb3f99efbf46f67a429e090e",
+      "job_id": "8641245",
+      "submission_status": "submitted",
+      "script_sha256": "26157ca7f833acd512629fbb058a0d61a4facdc22a20fa70ca5d761f8aa06f46",
+      "scheduler": {
+        "job_id": "8641245",
+        "job_name": "heston-small-u00030-s0",
+        "state": "COMPLETED",
+        "exit_code": "0:0",
+        "elapsed_seconds": 176,
+        "allocated_cpus": 4,
+        "allocated_gpus": 1,
+        "allocated_cpu_seconds": 704,
+        "gpu_seconds": 176,
+        "allocated_tres": {
+          "billing": "110",
+          "cpu": "4",
+          "gres/gpu": "1",
+          "mem": "24G",
+          "node": "1"
+        },
+        "receipt_sources": [
+          "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/heston-matrix-operator-20261108/matrix-admission/accounting.psv",
+          "matrix-admission/accounting.psv"
+        ]
+      }
+    },
+    {
+      "id": "small-u00100-s0",
+      "architecture": "small",
+      "widths": [
+        128,
+        128
+      ],
+      "requested_updates": 100,
+      "seed": 0,
+      "status": "completed",
+      "checks_status": "fail",
+      "actual_optimizer_updates": 100,
+      "actual_example_presentations": 25600,
+      "unique_training_rows_seen": 25600,
+      "same_seed_reload_exact": true,
+      "checkpoint_sha256": "e68413bfc3d41317b1375232ea28090c101d050e7cb6c6b5e957b04aeedd323d",
+      "job_id": "8641247",
+      "submission_status": "submitted",
+      "script_sha256": "371e9dcc33f9f5001aa42038d27e25a2214ae089f57b67a7f49df20c68d25cf5",
+      "scheduler": {
+        "job_id": "8641247",
+        "job_name": "heston-small-u00100-s0",
+        "state": "RUNNING",
+        "exit_code": "0:0",
+        "elapsed_seconds": 175,
+        "allocated_cpus": 4,
+        "allocated_gpus": 1,
+        "allocated_cpu_seconds": 700,
+        "gpu_seconds": 175,
+        "allocated_tres": {
+          "billing": "110",
+          "cpu": "4",
+          "gres/gpu": "1",
+          "mem": "24G",
+          "node": "1"
+        },
+        "receipt_sources": [
+          "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/heston-matrix-operator-20261108/matrix-admission/accounting.psv",
+          "matrix-admission/accounting.psv"
+        ]
+      }
+    },
+    {
+      "id": "small-u00300-s0",
+      "architecture": "small",
+      "widths": [
+        128,
+        128
+      ],
+      "requested_updates": 300,
+      "seed": 0,
+      "status": "in_progress",
+      "checks_status": "running",
+      "actual_optimizer_updates": 300,
+      "actual_example_presentations": 76800,
+      "unique_training_rows_seen": 76800,
+      "same_seed_reload_exact": true,
+      "checkpoint_sha256": "6a920c3057f2a3e694995172be84bad83686a532442b520d5fe991a0811fe319",
+      "job_id": "8641249",
+      "submission_status": "submitted",
+      "script_sha256": "ada64a7d63853abe2529109c5090f5a0e1c90d07c5c49cce9d959d4ce6d568c6",
+      "scheduler": {
+        "job_id": "8641249",
+        "job_name": "heston-small-u00300-s0",
+        "state": "PENDING",
+        "exit_code": "0:0",
+        "elapsed_seconds": 0,
+        "allocated_cpus": 0,
+        "allocated_gpus": null,
+        "allocated_cpu_seconds": 0,
+        "gpu_seconds": null,
+        "allocated_tres": {},
+        "receipt_sources": [
+          "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/heston-matrix-operator-20261108/matrix-admission/accounting.psv",
+          "matrix-admission/accounting.psv"
+        ]
+      }
+    },
+    {
+      "id": "small-u01000-s0",
+      "architecture": "small",
+      "widths": [
+        128,
+        128
+      ],
+      "requested_updates": 1000,
+      "seed": 0,
+      "status": "pending",
+      "checks_status": null,
+      "actual_optimizer_updates": null,
+      "actual_example_presentations": null,
+      "unique_training_rows_seen": null,
+      "same_seed_reload_exact": null,
+      "checkpoint_sha256": null,
+      "job_id": "8641251",
+      "submission_status": "submitted",
+      "script_sha256": "2fb88a39f0eda5b0942c34a492c244f0f46be643725bc289235b3349866d114d",
+      "scheduler": {
+        "job_id": "8641251",
+        "job_name": "heston-small-u01000-s0",
+        "state": "PENDING",
+        "exit_code": "0:0",
+        "elapsed_seconds": 0,
+        "allocated_cpus": 0,
+        "allocated_gpus": null,
+        "allocated_cpu_seconds": 0,
+        "gpu_seconds": null,
+        "allocated_tres": {},
+        "receipt_sources": [
+          "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/heston-matrix-operator-20261108/matrix-admission/accounting.psv",
+          "matrix-admission/accounting.psv"
+        ]
+      }
+    },
+    {
+      "id": "small-u03000-s0",
+      "architecture": "small",
+      "widths": [
+        128,
+        128
+      ],
+      "requested_updates": 3000,
+      "seed": 0,
+      "status": "pending",
+      "checks_status": null,
+      "actual_optimizer_updates": null,
+      "actual_example_presentations": null,
+      "unique_training_rows_seen": null,
+      "same_seed_reload_exact": null,
+      "checkpoint_sha256": null,
+      "job_id": "8641253",
+      "submission_status": "submitted",
+      "script_sha256": "8fdf14d0cc805ced3b12d22986de9336cefa6cef6f365c857a38017ec3df11e8",
+      "scheduler": {
+        "job_id": "8641253",
+        "job_name": "heston-small-u03000-s0",
+        "state": "PENDING",
+        "exit_code": "0:0",
+        "elapsed_seconds": 0,
+        "allocated_cpus": 0,
+        "allocated_gpus": null,
+        "allocated_cpu_seconds": 0,
+        "gpu_seconds": null,
+        "allocated_tres": {},
+        "receipt_sources": [
+          "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/heston-matrix-operator-20261108/matrix-admission/accounting.psv",
+          "matrix-admission/accounting.psv"
+        ]
+      }
+    },
+    {
+      "id": "small-u10000-s0",
+      "architecture": "small",
+      "widths": [
+        128,
+        128
+      ],
+      "requested_updates": 10000,
+      "seed": 0,
+      "status": "pending",
+      "checks_status": null,
+      "actual_optimizer_updates": null,
+      "actual_example_presentations": null,
+      "unique_training_rows_seen": null,
+      "same_seed_reload_exact": null,
+      "checkpoint_sha256": null,
+      "job_id": "8641255",
+      "submission_status": "submitted",
+      "script_sha256": "2f9eab0f814b9ddcae09c9b9a46b8b75ac8c588a429cd1994d368ba268c15c0d",
+      "scheduler": {
+        "job_id": "8641255",
+        "job_name": "heston-small-u10000-s0",
+        "state": "PENDING",
+        "exit_code": "0:0",
+        "elapsed_seconds": 0,
+        "allocated_cpus": 0,
+        "allocated_gpus": null,
+        "allocated_cpu_seconds": 0,
+        "gpu_seconds": null,
+        "allocated_tres": {},
+        "receipt_sources": [
+          "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/heston-matrix-operator-20261108/matrix-admission/accounting.psv",
+          "matrix-admission/accounting.psv"
+        ]
+      }
+    },
+    {
+      "id": "small-u30000-s0",
+      "architecture": "small",
+      "widths": [
+        128,
+        128
+      ],
+      "requested_updates": 30000,
+      "seed": 0,
+      "status": "pending",
+      "checks_status": null,
+      "actual_optimizer_updates": null,
+      "actual_example_presentations": null,
+      "unique_training_rows_seen": null,
+      "same_seed_reload_exact": null,
+      "checkpoint_sha256": null,
+      "job_id": "8641257",
+      "submission_status": "submitted",
+      "script_sha256": "b64c28a63d2e063dcd19d6708b78735dee6dd964d5b9c47a0ff7b27656cc5dc4",
+      "scheduler": {
+        "job_id": "8641257",
+        "job_name": "heston-small-u30000-s0",
+        "state": "PENDING",
+        "exit_code": "0:0",
+        "elapsed_seconds": 0,
+        "allocated_cpus": 0,
+        "allocated_gpus": null,
+        "allocated_cpu_seconds": 0,
+        "gpu_seconds": null,
+        "allocated_tres": {},
+        "receipt_sources": [
+          "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/heston-matrix-operator-20261108/matrix-admission/accounting.psv",
+          "matrix-admission/accounting.psv"
+        ]
+      }
+    },
+    {
+      "id": "full-u00030-s0",
+      "architecture": "full",
+      "widths": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "requested_updates": 30,
+      "seed": 0,
+      "status": "completed",
+      "checks_status": "fail",
+      "actual_optimizer_updates": 30,
+      "actual_example_presentations": 7680,
+      "unique_training_rows_seen": 7680,
+      "same_seed_reload_exact": true,
+      "checkpoint_sha256": "5d9f436988fb7ea607cf4252d4368b4d3a840491a18e68ffe9b6101ca8749e0f",
+      "job_id": "8641246",
+      "submission_status": "submitted",
+      "script_sha256": "880fee43ee084428970cf56e3fbed056ca520eee61f9c54e058f0667137711ef",
+      "scheduler": {
+        "job_id": "8641246",
+        "job_name": "heston-full-u00030-s0",
+        "state": "COMPLETED",
+        "exit_code": "0:0",
+        "elapsed_seconds": 161,
+        "allocated_cpus": 4,
+        "allocated_gpus": 1,
+        "allocated_cpu_seconds": 644,
+        "gpu_seconds": 161,
+        "allocated_tres": {
+          "billing": "110",
+          "cpu": "4",
+          "gres/gpu": "1",
+          "mem": "24G",
+          "node": "1"
+        },
+        "receipt_sources": [
+          "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/heston-matrix-operator-20261108/matrix-admission/accounting.psv",
+          "matrix-admission/accounting.psv"
+        ]
+      }
+    },
+    {
+      "id": "full-u00100-s0",
+      "architecture": "full",
+      "widths": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "requested_updates": 100,
+      "seed": 0,
+      "status": "completed",
+      "checks_status": "fail",
+      "actual_optimizer_updates": 100,
+      "actual_example_presentations": 25600,
+      "unique_training_rows_seen": 25600,
+      "same_seed_reload_exact": true,
+      "checkpoint_sha256": "a1df2f42482c1abc540c5f6271a1b5f9083fcfffd36de2a1ba3d7f4bce33a621",
+      "job_id": "8641248",
+      "submission_status": "submitted",
+      "script_sha256": "6de3d955b04bc147d538b5c0bb5e6d17c54f60c6d1dac6e288b188608805d190",
+      "scheduler": {
+        "job_id": "8641248",
+        "job_name": "heston-full-u00100-s0",
+        "state": "RUNNING",
+        "exit_code": "0:0",
+        "elapsed_seconds": 94,
+        "allocated_cpus": 4,
+        "allocated_gpus": 1,
+        "allocated_cpu_seconds": 376,
+        "gpu_seconds": 94,
+        "allocated_tres": {
+          "billing": "110",
+          "cpu": "4",
+          "gres/gpu": "1",
+          "mem": "24G",
+          "node": "1"
+        },
+        "receipt_sources": [
+          "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/heston-matrix-operator-20261108/matrix-admission/accounting.psv",
+          "matrix-admission/accounting.psv"
+        ]
+      }
+    },
+    {
+      "id": "full-u00300-s0",
+      "architecture": "full",
+      "widths": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "requested_updates": 300,
+      "seed": 0,
+      "status": "in_progress",
+      "checks_status": null,
+      "actual_optimizer_updates": null,
+      "actual_example_presentations": null,
+      "unique_training_rows_seen": null,
+      "same_seed_reload_exact": null,
+      "checkpoint_sha256": null,
+      "job_id": "8641250",
+      "submission_status": "submitted",
+      "script_sha256": "da69f086cdc65cb6423cc1637aa313b853628c921b4123d89d1426b86e397583",
+      "scheduler": {
+        "job_id": "8641250",
+        "job_name": "heston-full-u00300-s0",
+        "state": "PENDING",
+        "exit_code": "0:0",
+        "elapsed_seconds": 0,
+        "allocated_cpus": 0,
+        "allocated_gpus": null,
+        "allocated_cpu_seconds": 0,
+        "gpu_seconds": null,
+        "allocated_tres": {},
+        "receipt_sources": [
+          "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/heston-matrix-operator-20261108/matrix-admission/accounting.psv",
+          "matrix-admission/accounting.psv"
+        ]
+      }
+    },
+    {
+      "id": "full-u01000-s0",
+      "architecture": "full",
+      "widths": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "requested_updates": 1000,
+      "seed": 0,
+      "status": "pending",
+      "checks_status": null,
+      "actual_optimizer_updates": null,
+      "actual_example_presentations": null,
+      "unique_training_rows_seen": null,
+      "same_seed_reload_exact": null,
+      "checkpoint_sha256": null,
+      "job_id": "8641252",
+      "submission_status": "submitted",
+      "script_sha256": "21ef6fb84fe9958f87b82c67776eed0b4bc1e5896436e87b1b4a840deda8a72f",
+      "scheduler": {
+        "job_id": "8641252",
+        "job_name": "heston-full-u01000-s0",
+        "state": "PENDING",
+        "exit_code": "0:0",
+        "elapsed_seconds": 0,
+        "allocated_cpus": 0,
+        "allocated_gpus": null,
+        "allocated_cpu_seconds": 0,
+        "gpu_seconds": null,
+        "allocated_tres": {},
+        "receipt_sources": [
+          "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/heston-matrix-operator-20261108/matrix-admission/accounting.psv",
+          "matrix-admission/accounting.psv"
+        ]
+      }
+    },
+    {
+      "id": "full-u03000-s0",
+      "architecture": "full",
+      "widths": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "requested_updates": 3000,
+      "seed": 0,
+      "status": "pending",
+      "checks_status": null,
+      "actual_optimizer_updates": null,
+      "actual_example_presentations": null,
+      "unique_training_rows_seen": null,
+      "same_seed_reload_exact": null,
+      "checkpoint_sha256": null,
+      "job_id": "8641254",
+      "submission_status": "submitted",
+      "script_sha256": "ef2ba997ceef1a326bd23bea39f41c478bcc3bae9a3e08dd9e8b3add360b8c37",
+      "scheduler": {
+        "job_id": "8641254",
+        "job_name": "heston-full-u03000-s0",
+        "state": "PENDING",
+        "exit_code": "0:0",
+        "elapsed_seconds": 0,
+        "allocated_cpus": 0,
+        "allocated_gpus": null,
+        "allocated_cpu_seconds": 0,
+        "gpu_seconds": null,
+        "allocated_tres": {},
+        "receipt_sources": [
+          "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/heston-matrix-operator-20261108/matrix-admission/accounting.psv",
+          "matrix-admission/accounting.psv"
+        ]
+      }
+    },
+    {
+      "id": "full-u10000-s0",
+      "architecture": "full",
+      "widths": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "requested_updates": 10000,
+      "seed": 0,
+      "status": "pending",
+      "checks_status": null,
+      "actual_optimizer_updates": null,
+      "actual_example_presentations": null,
+      "unique_training_rows_seen": null,
+      "same_seed_reload_exact": null,
+      "checkpoint_sha256": null,
+      "job_id": "8641256",
+      "submission_status": "submitted",
+      "script_sha256": "f522760198c07c57311197c09c157c9cc916924590d6de611284448488d7c86b",
+      "scheduler": {
+        "job_id": "8641256",
+        "job_name": "heston-full-u10000-s0",
+        "state": "PENDING",
+        "exit_code": "0:0",
+        "elapsed_seconds": 0,
+        "allocated_cpus": 0,
+        "allocated_gpus": null,
+        "allocated_cpu_seconds": 0,
+        "gpu_seconds": null,
+        "allocated_tres": {},
+        "receipt_sources": [
+          "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/heston-matrix-operator-20261108/matrix-admission/accounting.psv",
+          "matrix-admission/accounting.psv"
+        ]
+      }
+    },
+    {
+      "id": "full-u30000-s0",
+      "architecture": "full",
+      "widths": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "requested_updates": 30000,
+      "seed": 0,
+      "status": "pending",
+      "checks_status": null,
+      "actual_optimizer_updates": null,
+      "actual_example_presentations": null,
+      "unique_training_rows_seen": null,
+      "same_seed_reload_exact": null,
+      "checkpoint_sha256": null,
+      "job_id": "8641258",
+      "submission_status": "submitted",
+      "script_sha256": "64cf9f5f0ed6fcdd127ef5abe6b01567dea7fda1ef87c5bee7117ce4ed5a4d13",
+      "scheduler": {
+        "job_id": "8641258",
+        "job_name": "heston-full-u30000-s0",
+        "state": "PENDING",
+        "exit_code": "0:0",
+        "elapsed_seconds": 0,
+        "allocated_cpus": 0,
+        "allocated_gpus": null,
+        "allocated_cpu_seconds": 0,
+        "gpu_seconds": null,
+        "allocated_tres": {},
+        "receipt_sources": [
+          "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/heston-matrix-operator-20261108/matrix-admission/accounting.psv",
+          "matrix-admission/accounting.psv"
+        ]
+      }
+    }
+  ],
+  "resources": {
+    "ceilings": {
+      "gpu_seconds": 4500,
+      "allocated_cpu_seconds": 21600
+    },
+    "reserved_totals": {
+      "gpu_seconds": 4002,
+      "allocated_cpu_seconds": 18008
+    },
+    "screen_hard_cap_gpu_seconds": 3720,
+    "host_cpus_per_gpu": 4,
+    "host_memory_gib_per_job": 24,
+    "readiness_accounting": {
+      "8638765": {
+        "job_id": "8638765",
+        "job_name": "heston-matrix-readiness",
+        "state": "FAILED",
+        "exit_code": "1:0",
+        "elapsed_seconds": 6,
+        "allocated_cpus": 4,
+        "allocated_gpus": 1,
+        "allocated_cpu_seconds": 24,
+        "gpu_seconds": 6,
+        "allocated_tres": {
+          "billing": "110",
+          "cpu": "4",
+          "gres/gpu": "1",
+          "mem": "24G",
+          "node": "1"
+        },
+        "batch_peak_rss_bytes": 73383936
+      },
+      "8639613": {
+        "job_id": "8639613",
+        "job_name": "heston-matrix-readiness-v2",
+        "state": "FAILED",
+        "exit_code": "1:0",
+        "elapsed_seconds": 276,
+        "allocated_cpus": 4,
+        "allocated_gpus": 1,
+        "allocated_cpu_seconds": 1104,
+        "gpu_seconds": 276,
+        "allocated_tres": {
+          "billing": "110",
+          "cpu": "4",
+          "gres/gpu": "1",
+          "mem": "24G",
+          "node": "1"
+        },
+        "batch_peak_rss_bytes": 2374725632
+      }
+    },
+    "future_confirmation_reservation": {
+      "allocated_cpu_seconds": 0,
+      "gpu_seconds": 0
+    },
+    "future_scope": "Deferred explicitly before candidate results; separate scope/quality/device/cost admission required."
+  },
+  "readiness_evidence": {
+    "training_reloads": "Five GPU software/cost smokes completed, including both architectures at30/300updates; exact endpoint counts/reloads.",
+    "old_environment_failure": "Job8638765 failed before training because the old environment lacked typing_extensions.py;6GPU/24allocatedCPU seconds retained.",
+    "fresh_environment": "Installed fresh pinned core-gpu environment from existing lock using checksum-verified Pixi0.70.2; archived environments unchanged.",
+    "control_cost_failure": "Job8639613 used276GPU/1104allocatedCPU seconds; five fit/reload smokes completed, then whole-run deadline interrupted control evaluation. Its failed verdict is retained.",
+    "partial_control": "All3conditional cases and first32x128developmentbatch completed; no completed GPU rank screen claimed. Original complete CPUcontrol remains the quality comparator.",
+    "evaluation_forecast_seconds": 150,
+    "forecast_scope": "Explicit conservative bound using the partial GPU costs and complete CPU control; not a completed GPU evaluation measurement.",
+    "incremental_update_ms": {
+      "small": 2.451766434091109,
+      "full": 2.361252807356693
+    },
+    "memory": {
+      "host_allocation_bytes": 25769803776,
+      "forecast_peak_host_bytes": 3571081216,
+      "forecast_peak_device_bytes": 1522473088,
+      "available_device_bytes": 35750150144,
+      "measured_max_host_peak_bytes": 1664892928,
+      "measured_max_device_peak_bytes": 299154176,
+      "rule": "maximum measured smoke peak \u00d71.5 +1GiB; not a Python-enforced memory limit",
+      "observed_partial_control_batch_peak_rss_bytes": 2374725632,
+      "partial_control_gpu_peak_unmeasured": true,
+      "partial_control_scope": "Training allocator peak \u00d71.5 +1GiB is a forecast; unfinished control has no completed GPU allocator report. The host forecast also covers its measured Slurm batch MaxRSS."
+    }
+  },
+  "validation": {
+    "lab_tests": 573,
+    "optional_pymc_skips": 3,
+    "release_check_passed": true,
+    "runtime_shared_aliases": 183,
+    "manifest_claims_changed": false,
+    "gpu_five_smokes_exact_reload": true,
+    "operator_accounting_forecast_collector_checks": "passed"
+  },
+  "operator_sha256": {
+    "gpu_readiness.py": "ed60284e63aa0fd954bad19de2240a5dbb953f1752e0203d3165a96af22b794a",
+    "gpu_readiness_v2.sbatch": "ffec54d9abd63fc72b55d9e5a09388ed3130ed6ef6c6f2d3da96fb9fae4f43d5",
+    "prepare_matrix.py": "dd2bec86deae480ad7b794a1d6f472cd248eca8659666c466284e33e7c11104b",
+    "submit_matrix.py": "c3da93f617db60ad9068d9ed4dac801b2d1b972a68f24a660671d2ffc7e831eb",
+    "collect_matrix.py": "0f96c237a2b13bc99c9aba942de4e029881239ddcc0355730a927c60997950ad"
+  },
+  "next": "Let all14 independent lanes finish, collect completed and failed outputs/accounting, then review development cost versus quality. No automatic retry or larger budget."
+}
