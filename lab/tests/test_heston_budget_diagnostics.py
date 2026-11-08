@@ -5,7 +5,7 @@ import unittest
 
 import numpy as np
 
-from sbi4finance.calibration.heston_budget_diagnostics import conditional_agreement
+from sbi4finance.calibration.heston_budget_diagnostics import conditional_agreement, paired_final_comparison, _simultaneous_bounds
 
 
 class ConditionalAgreementTests(unittest.TestCase):
@@ -115,6 +115,94 @@ class ConditionalAgreementTests(unittest.TestCase):
         for options in ({"family_checks": 7}, {"mean_limit": 0}, {"width_limits": (1., 2.)}):
             with self.subTest(options=options), self.assertRaises(ValueError):
                 self.compare(neural, chains, diagnostics, names, **options)
+
+
+class PairedFinalComparisonTests(unittest.TestCase):
+    def fixture(self):
+        rng = np.random.default_rng(67)
+        truth = rng.uniform(-.3, .3, (96, 2))
+        draws = truth[:, None, :] + rng.normal(0, .1, (96, 1, 2)) + rng.uniform(-.5, .5, (96, 64, 2))
+        identifiers = [f"test:{index}" for index in range(96)]
+        record = {"draws": draws, "example_ids": identifiers}
+        return {"recipe-a-seed-0": record}, record, truth, [[-5., 5.], [-5., 5.]], identifiers, ["a", "b"]
+
+    def compare(self, *args, **kwargs):
+        return paired_final_comparison(*args, seed=109, replicates=200, **kwargs)
+
+    def test_identical_estimators_have_exact_paired_zero_error_and_zero_se(self):
+        inputs = self.fixture()
+        result = self.compare(*inputs)
+        self.assertEqual(result, self.compare(*inputs))
+        self.assertEqual(result["status"], "pass")
+        self.assertEqual(result["family_checks"], 10)
+        self.assertEqual(result["zero_se_checks"], 10)
+        for parameter in result["candidates"]["recipe-a-seed-0"]["parameters"].values():
+            self.assertEqual(parameter["recovery"]["mse_ratio"], 1.)
+            self.assertEqual(parameter["recovery"]["upper_bound"], 1.)
+            for value in parameter["coverage"].values():
+                self.assertEqual(value["absolute_error_increase"], 0.)
+                self.assertEqual(value["upper_bound"], 0.)
+        json.dumps(result, allow_nan=False)
+
+    def test_all_candidate_seeds_and_parameters_enter_one_family(self):
+        candidates, control, truth, bounds, identifiers, names = self.fixture()
+        candidates["recipe-a-seed-1"] = control
+        result = self.compare(candidates, control, truth, bounds, identifiers, names)
+        self.assertEqual(result["family_checks"], 20)
+        self.assertEqual(result["zero_se_checks"], 20)
+
+    def test_coverage_is_absolute_error_from_nominal_and_catches_undercoverage(self):
+        n, samples = 100, 64
+        truth = np.zeros((n, 1)); identifiers = [f"test:{index}" for index in range(n)]
+        ramp = np.linspace(-.5, .5, samples)[None, :, None]
+        def record(covered):
+            means = np.where(np.arange(n) < covered, .1, 2.)[:, None, None]
+            return {"draws": means + ramp, "example_ids": identifiers}
+        result = self.compare({"undercovered": record(60)}, record(80), truth, [[-5., 5.]], identifiers, ["a"], levels=(.9,))
+        metric = result["candidates"]["undercovered"]["parameters"]["a"]["coverage"]["0.9"]
+        self.assertAlmostEqual(metric["absolute_error_increase"], .2)
+        self.assertEqual(metric["status"], "fail")
+
+    def test_recovery_is_per_parameter_and_does_not_hide_a_regression(self):
+        n, samples = 100, 64
+        truth = np.zeros((n, 2)); identifiers = [f"test:{index}" for index in range(n)]
+        ramp = np.linspace(-1.25, 1.25, samples)[None, :, None]
+        def record(offset):
+            return {"draws": np.broadcast_to(np.asarray(offset)[None, None, :] + ramp, (n, samples, 2)),
+                    "example_ids": identifiers}
+        result = self.compare({"mixed": record([.2, .1])}, record([.1, .9]), truth,
+                              [[-5., 5.], [-5., 5.]], identifiers, ["a", "b"])
+        parameters = result["candidates"]["mixed"]["parameters"]
+        self.assertEqual(parameters["a"]["recovery"]["status"], "fail")
+        self.assertEqual(parameters["b"]["recovery"]["status"], "pass")
+        self.assertAlmostEqual(parameters["a"]["recovery"]["mse_ratio"], 4.)
+        self.assertAlmostEqual(parameters["b"]["recovery"]["mse_ratio"], 1 / 81)
+
+    def test_upper_bound_uses_negative_centered_error_and_handles_constant_metrics(self):
+        # A skew empirical error distribution distinguishes the two signs.
+        bootstrap = np.column_stack([np.r_[np.full(60, 11.), np.full(20, 7.)], np.ones(80)])
+        low, high, se, _, _, zero_se = _simultaneous_bounds(np.array([10., 1.]), bootstrap)
+        np.testing.assert_allclose(high, [13., 1.])
+        np.testing.assert_allclose(low, [9., 1.])
+        self.assertEqual(zero_se, 1)
+        self.assertEqual(se[1], 0.)
+        with self.assertRaisesRegex(ValueError, "zero bootstrap SE"):
+            _simultaneous_bounds(np.array([2.]), np.ones((80, 1)))
+
+    def test_identity_order_duplicates_and_out_of_support_cannot_be_ignored(self):
+        candidates, control, truth, bounds, identifiers, names = self.fixture()
+        for altered in (list(reversed(identifiers)), [*identifiers[:-1], identifiers[0]],
+                        [identifier.replace("test:", "validation:") for identifier in identifiers]):
+            bad = {"draws": control["draws"], "example_ids": altered}
+            with self.subTest(ids=altered[:2]), self.assertRaises(ValueError):
+                self.compare({"bad": bad}, control, truth, bounds, identifiers, names)
+        for value in (-5., 5., np.nan):
+            draws = np.copy(control["draws"]); draws[0, 0, 0] = value
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                self.compare({"bad": {"draws": draws, "example_ids": identifiers}}, control,
+                             truth, bounds, identifiers, names)
+        with self.assertRaisesRegex(ValueError, "explicit ordered example_ids"):
+            self.compare({"unidentified": control["draws"]}, control, truth, bounds, identifiers, names)
 
 
 if __name__ == "__main__":
