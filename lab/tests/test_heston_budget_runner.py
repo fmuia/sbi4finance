@@ -1,5 +1,6 @@
 """Admission requires finite resources, same-bank smoke and explicit readiness."""
 import json
+import copy
 from pathlib import Path
 import tempfile
 from types import SimpleNamespace
@@ -48,6 +49,112 @@ class BudgetRunnerTests(unittest.TestCase):
             "approved_for_execution": True}
         path = root / "admission.json"; path.write_text(json.dumps(admission))
         return protocol_path, readiness, smoke, path, admission
+
+    def inconclusive_fixture(self, root):
+        p, r, s, a, admission = self.fixture(root)
+        protocol, readiness = runner.read_json(p), runner.read_json(r)
+        readiness["status"] = "inconclusive"
+        readiness["gates"]["conditional_all_cases"] = False
+        readiness["conditional"] = {}
+        for index in protocol["conditional"]["case_indices"]:
+            parameters = {name: {"status": "pass", "mean_status": "pass", "width_status": "pass",
+                                 "absolute_standardized_mean_difference": .1, "width_ratio_90": 1.}
+                          for name in runner.HESTON_TARGETS}
+            if index == 2:
+                parameters["initial_variance"].update(status="inconclusive", mean_status="inconclusive",
+                                                      absolute_standardized_mean_difference=.24)
+            readiness["conditional"][str(index)] = {
+                "format": "heston_budget_conditional_agreement_v1",
+                "status": "inconclusive" if index == 2 else "pass", "parameters": parameters,
+                "reference_diagnostics_passed": True, "finite_in_support_without_clipping": True,
+                "input_sha256": {name: "a" * 64 for name in ("reference.json", "diagnostics.json", "chains.npz")}}
+        r.write_text(json.dumps(readiness))
+        admission["readiness_sha256"] = runner.digest(r)
+        admission["user_authorized_exploratory_control_override"] = {
+            "authorized": True, "authorization_source": "User: run the training matrix",
+            "rationale": "Explore the fixed seed-0 screen while retaining the unresolved reference interval.",
+            "readiness_sha256": runner.digest(r), "scope": "seed0_development_screen_only",
+            "scientific_acceptance": False, "model_publication_allowed": False,
+            "reserved_test_evaluation_allowed": False, "confirmation_allowed": False}
+        a.write_text(json.dumps(admission))
+        return p, r, s, a, admission
+
+    def test_explicit_exploration_retains_the_original_control_verdict(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            p, r, s, a, admission = self.inconclusive_fixture(Path(temporary))
+            original = r.read_bytes()
+            protocol, admitted = runner.validate_admission(p, r, s, a, "frozen-revision")
+            policy = runner.readiness_admission(protocol, runner.read_json(r), r, admitted)
+            self.assertEqual(policy["mode"], "user_authorized_exploratory_screen")
+            self.assertEqual(policy["original_control_status"], "inconclusive")
+            self.assertFalse(policy["original_control_gates"]["conditional_all_cases"])
+            self.assertFalse(policy["scientific_acceptance"])
+            self.assertFalse(policy["model_publication_allowed"])
+            self.assertFalse(policy["reserved_test_evaluation_allowed"])
+            self.assertFalse(policy["confirmation_allowed"])
+            self.assertEqual(r.read_bytes(), original)
+            without = {key: value for key, value in admission.items()
+                       if key != "user_authorized_exploratory_control_override"}
+            a.write_text(json.dumps(without))
+            with self.assertRaisesRegex(ValueError, "every gate"):
+                runner.validate_admission(p, r, s, a, "frozen-revision")
+
+    def test_exploration_cannot_bypass_failed_or_missing_reference_evidence(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            p, r, s, a, admission = self.inconclusive_fixture(Path(temporary))
+            original = runner.read_json(r)
+            mutations = [lambda report: report.update(status="fail"),
+                lambda report: report["gates"].update(development_rank_screen=False),
+                lambda report: report["gates"].update(finite_in_support_without_clipping=False),
+                lambda report: report["gates"].update(predictive_pricing_completed=False),
+                lambda report: report["conditional"]["2"].update(reference_diagnostics_passed=False),
+                lambda report: report["conditional"]["2"].update(finite_in_support_without_clipping=False),
+                lambda report: report["conditional"]["2"].update(status="fail"),
+                lambda report: report["conditional"].pop("0"),
+                lambda report: report["conditional"]["2"].pop("input_sha256"),
+                lambda report: report["conditional"]["2"]["parameters"].pop("rho"),
+                lambda report: report["conditional"]["2"]["parameters"]["initial_variance"].update(mean_status="fail"),
+                lambda report: report["conditional"]["2"]["parameters"]["initial_variance"].update(
+                    absolute_standardized_mean_difference=.31)]
+            for mutate in mutations:
+                report = copy.deepcopy(original)
+                mutate(report)
+                r.write_text(json.dumps(report))
+                changed = copy.deepcopy(admission)
+                changed["readiness_sha256"] = runner.digest(r)
+                changed["user_authorized_exploratory_control_override"]["readiness_sha256"] = runner.digest(r)
+                a.write_text(json.dumps(changed))
+                with self.assertRaises(ValueError):
+                    runner.validate_admission(p, r, s, a, "frozen-revision")
+
+    def test_exploration_permission_is_hashed_and_cannot_authorize_a_later_stage(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            p, r, s, a, admission = self.inconclusive_fixture(Path(temporary))
+            changes = [{"authorized": False}, {"readiness_sha256": "another report"}, {"rationale": ""},
+                       {"scope": "final_confirmation"}, {"scientific_acceptance": True},
+                       {"model_publication_allowed": True}, {"reserved_test_evaluation_allowed": True},
+                       {"confirmation_allowed": True}, {"authorization_source": None}]
+            for change in changes:
+                altered = copy.deepcopy(admission)
+                altered["user_authorized_exploratory_control_override"].update(change)
+                a.write_text(json.dumps(altered))
+                with self.assertRaises(ValueError):
+                    runner.validate_admission(p, r, s, a, "frozen-revision")
+
+    def test_omitting_confirmation_reserve_requires_an_explicit_scope_exclusion(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            p, r, s, a, admission = self.inconclusive_fixture(Path(temporary))
+            admission["reserved_confirmation"] = {"allocated_cpu_seconds": 0, "gpu_seconds": 0}
+            a.write_text(json.dumps(admission))
+            with self.assertRaisesRegex(ValueError, "final CPU reserve"):
+                runner.validate_admission(p, r, s, a, "frozen-revision")
+            admission["user_authorized_exploratory_control_override"]["confirmation_not_in_current_scope"] = True
+            a.write_text(json.dumps(admission))
+            runner.validate_admission(p, r, s, a, "frozen-revision")
+            admission["lane_wall_seconds"] = {"small-u00030-s0": 10000}
+            a.write_text(json.dumps(admission))
+            with self.assertRaisesRegex(ValueError, "resource ceiling"):
+                runner.validate_admission(p, r, s, a, "frozen-revision")
 
     def test_admission_binds_evidence_and_caps_total_including_final(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -141,6 +248,9 @@ class BudgetRunnerTests(unittest.TestCase):
             (bank / "manifest.json").write_text("{}")
             protocol = runner.read_json(p)
             protocol["bank"]["manifest_sha256"] = runner.digest(bank / "manifest.json")
+            readiness = runner.read_json(r)
+            readiness["bank_manifest_sha256"] = protocol["bank"]["manifest_sha256"]
+            r.write_text(json.dumps(readiness))
             args = SimpleNamespace(protocol=p, readiness=r, smoke=s, admission=a, bank=bank,
                                    out=root / "lanes", candidate="small-u00030-s0")
             with patch.object(runner, "clean_source", return_value=True), \
@@ -168,3 +278,11 @@ class BudgetRunnerTests(unittest.TestCase):
         self.assertEqual(command[command.index("--widths") + 1], "256,256,256,256")
         self.assertEqual(command[command.index("--checkpoint-selection") + 1], "final")
         self.assertFalse(any("oscar" in item for item in command))
+        candidate = candidates["full-u30000-s0"]
+        actual = runner.lane_command(candidate, "/caller/bank", Path("/caller/lane"), Path("/caller/protocol"),
+                                     Path("/caller/readiness"), 123.5,
+                                     {"execution_scope": "training_and_development_evaluation"})
+        self.assertEqual(actual[actual.index("--candidate") + 1], candidate["id"])
+        self.assertEqual(actual[actual.index("--wall-seconds") + 1], "123.5")
+        self.assertEqual(actual[actual.index("--out") + 1], "/caller/lane")
+        self.assertIn("--control-readiness", actual)

@@ -22,6 +22,7 @@ import time
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_PROTOCOL = ROOT / "configs/heston_training_budget_study.json"
+HESTON_TARGETS = ("initial_variance", "theta", "vol_of_vol", "rho")
 
 
 def digest(path):
@@ -59,6 +60,16 @@ def command(candidate, bank, out):
             "--seed", str(candidate["seed"]), "--checkpoint-selection", "final"]
 
 
+def lane_command(candidate, bank, lane, protocol_path, readiness_path, seconds, admission):
+    """Keep the original trainer CLI; explicitly opt into bounded development evaluation."""
+    if admission.get("execution_scope", "training_only") == "training_only":
+        return command(candidate, bank, lane / "checkpoint")
+    return [sys.executable, str(ROOT / "scripts/run_heston_matrix_lane.py"),
+            "--protocol", str(Path(protocol_path).resolve()), "--bank", str(Path(bank).resolve()),
+            "--out", str(Path(lane).resolve()), "--candidate", candidate["id"],
+            "--control-readiness", str(Path(readiness_path).resolve()), "--wall-seconds", str(seconds)]
+
+
 def finite_number(value, *, positive=False):
     return type(value) in (int, float) and math.isfinite(value) and (value > 0 if positive else value >= 0)
 
@@ -76,7 +87,8 @@ def runtime_identity():
 def executing_sources():
     """Bind the complete tracked trainer/runtime, not only a movable branch name."""
     paths = ["scripts/train_full_surface.py", "scripts/train_full_surface_budget.py",
-             "scripts/run_heston_budget_study.py", "studies/train_calibration.py", "src/sbi4finance",
+             "scripts/run_heston_budget_study.py", "scripts/run_heston_matrix_lane.py",
+             "scripts/evaluate_heston_budget_candidate.py", "studies/train_calibration.py", "src/sbi4finance",
              "pyproject.toml", "pixi.lock", "../tutorial/src/sbi4f_tutorial",
              "../tutorial/pyproject.toml", "../tutorial/pixi.lock"]
     tracked = subprocess.check_output(["git", "ls-files", "-z", "--", *paths], cwd=ROOT).decode().split("\0")
@@ -95,23 +107,96 @@ def clean_source():
                                        cwd=ROOT, text=True).strip()
 
 
+def readiness_admission(protocol, readiness, readiness_path, admission):
+    """Retain the original verdict when a user authorizes an exploratory screen.
+
+    The exception covers an unresolved conditional comparison only. It does
+    not admit failed support/rank/reference diagnostics, change thresholds,
+    select a model, open the final panel or authorize confirmation fits.
+    """
+    expected_gates = {"finite_in_support_without_clipping", "development_rank_screen",
+                      "conditional_all_cases", "predictive_pricing_completed"}
+    gates = readiness.get("gates")
+    if (readiness.get("format") != "heston_training_budget_readiness_v1"
+            or readiness.get("protocol_sha256") != admission.get("protocol_sha256")
+            or readiness.get("control_checkpoint_sha256") != protocol["control"]["checkpoint_sha256"]
+            or readiness.get("bank_manifest_sha256") != protocol["bank"]["manifest_sha256"]
+            or readiness.get("reserved_test_evaluated") is not False
+            or readiness.get("training_performed") is not False or readiness.get("new_mcmc_performed") is not False
+            or not isinstance(gates, dict) or set(gates) != expected_gates):
+        raise ValueError("saved-control readiness did not identify every gate of this exact protocol")
+    override = admission.get("user_authorized_exploratory_control_override")
+    if readiness.get("status") == "pass" and all(value is True for value in gates.values()):
+        if override is not None:
+            raise ValueError("an exploratory control override is only valid for an inconclusive control")
+        return {"mode": "strict_control_pass", "original_control_status": "pass",
+                "original_control_gates": gates, "scientific_acceptance": False,
+                "model_publication_allowed": False, "reserved_test_evaluation_allowed": False,
+                "confirmation_allowed": False}
+    if (not isinstance(override, dict) or override.get("authorized") is not True
+            or override.get("scope") != "seed0_development_screen_only"
+            or override.get("readiness_sha256") != digest(readiness_path)
+            or any(not isinstance(override.get(key), str) or not override[key].strip()
+                   for key in ("authorization_source", "rationale"))
+            or type(override.get("confirmation_not_in_current_scope", False)) is not bool
+            or any(override.get(key) is not False for key in ("scientific_acceptance", "model_publication_allowed",
+                                                            "reserved_test_evaluation_allowed", "confirmation_allowed"))
+            or readiness.get("status") != "inconclusive" or gates["conditional_all_cases"] is not False
+            or any(value is not True for key, value in gates.items() if key != "conditional_all_cases")):
+        raise ValueError("saved-control readiness did not pass every gate; a bound user-authorized exploratory exception is required")
+    conditional = readiness.get("conditional")
+    case_ids = {str(index) for index in protocol["conditional"]["case_indices"]}
+    if not isinstance(conditional, dict) or set(conditional) != case_ids:
+        raise ValueError("exploratory control exception requires every original conditional case")
+    inconclusive = False
+    mean_limit = protocol["conditional"]["mean_error_reference_sd_max"]
+    low_width, high_width = protocol["conditional"]["central90_width_ratio"]
+    for case in conditional.values():
+        inputs = case.get("input_sha256", {}) if isinstance(case, dict) else {}
+        if (not isinstance(case, dict) or case.get("format") != "heston_budget_conditional_agreement_v1"
+                or case.get("status") not in ("pass", "inconclusive")
+                or case.get("reference_diagnostics_passed") is not True
+                or case.get("finite_in_support_without_clipping") is not True
+                or not isinstance(inputs, dict) or set(inputs) != {"reference.json", "diagnostics.json", "chains.npz"}
+                or any(not isinstance(value, str) or len(value) != 64
+                       or any(letter not in "0123456789abcdef" for letter in value) for value in inputs.values())):
+            raise ValueError("exploratory control exception cannot bypass failed or missing reference evidence")
+        parameters = case.get("parameters")
+        if not isinstance(parameters, dict) or set(parameters) != set(HESTON_TARGETS):
+            raise ValueError("exploratory control exception requires all original parameter comparisons")
+        case_inconclusive = False
+        for row in parameters.values():
+            if (not isinstance(row, dict) or row.get("status") not in ("pass", "inconclusive")
+                    or row.get("mean_status") not in ("pass", "inconclusive")
+                    or row.get("width_status") not in ("pass", "inconclusive")
+                    or not finite_number(row.get("absolute_standardized_mean_difference"))
+                    or row["absolute_standardized_mean_difference"] > mean_limit
+                    or not finite_number(row.get("width_ratio_90"), positive=True)
+                    or not low_width <= row["width_ratio_90"] <= high_width):
+                raise ValueError("exploratory control exception cannot bypass failed conditional point checks")
+            parameter_inconclusive = "inconclusive" in (row["mean_status"], row["width_status"])
+            if (row["status"] == "inconclusive") != parameter_inconclusive:
+                raise ValueError("conditional parameter verdicts are inconsistent")
+            case_inconclusive |= parameter_inconclusive
+        if (case["status"] == "inconclusive") != case_inconclusive:
+            raise ValueError("conditional case verdicts are inconsistent")
+        inconclusive |= case_inconclusive
+    if not inconclusive:
+        raise ValueError("exploratory control exception requires a retained inconclusive conditional comparison")
+    return {"mode": "user_authorized_exploratory_screen", "original_control_status": readiness["status"],
+            "original_control_gates": gates, "user_authorized_exploratory_control_override": override,
+            "scientific_acceptance": False, "model_publication_allowed": False,
+            "reserved_test_evaluation_allowed": False, "confirmation_allowed": False}
+
+
 def validate_admission(protocol_path, readiness_path, smoke_path, admission_path, source_revision):
     protocol, readiness, smoke, admission = map(read_json, (protocol_path, readiness_path, smoke_path, admission_path))
     if protocol.get("format") != "heston_training_budget_protocol_v1":
         raise ValueError("unknown protocol format")
     candidates(protocol)
-    expected_gates = {"finite_in_support_without_clipping", "development_rank_screen",
-                      "conditional_all_cases", "predictive_pricing_completed"}
-    if (readiness.get("format") != "heston_training_budget_readiness_v1"
-            or readiness.get("protocol_sha256") != digest(protocol_path)
-            or readiness.get("control_checkpoint_sha256") != protocol["control"]["checkpoint_sha256"]
-            or readiness.get("bank_manifest_sha256") != protocol["bank"]["manifest_sha256"]
-            or readiness.get("status") != "pass" or readiness.get("reserved_test_evaluated") is not False
-            or readiness.get("training_performed") is not False or readiness.get("new_mcmc_performed") is not False
-            or not isinstance(readiness.get("gates"), dict)
-            or set(readiness["gates"]) != expected_gates
-            or any(value is not True for value in readiness["gates"].values())):
-        raise ValueError("saved-control readiness did not pass every gate of this exact protocol")
+    if readiness.get("protocol_sha256") != digest(protocol_path):
+        raise ValueError("saved-control readiness belongs to another protocol")
+    readiness_policy = readiness_admission(protocol, readiness, readiness_path, admission)
     contract = smoke.get("run_contract", {})
     settings = contract.get("settings", {})
     work = smoke.get("performance", {}).get("work", {})
@@ -136,6 +221,8 @@ def validate_admission(protocol_path, readiness_path, smoke_path, admission_path
         raise ValueError("exact-update same-bank training/reload smoke evidence is missing or incomplete")
     if admission.get("format") != "heston_training_budget_admission_v1":
         raise ValueError("unknown admission format")
+    if admission.get("execution_scope", "training_only") not in ("training_only", "training_and_development_evaluation"):
+        raise ValueError("unknown lane execution scope")
     required = {"protocol_sha256": digest(protocol_path), "readiness_sha256": digest(readiness_path),
                 "smoke_training_sha256": digest(smoke_path), "source_revision": source_revision,
                 "source_manifest_sha256": executing_sources_digest()}
@@ -189,7 +276,12 @@ def validate_admission(protocol_path, readiness_path, smoke_path, admission_path
     # Reserve readiness, failed attempts and final confirmation before the screen.
     prior = admission.get("already_used", {})
     final = admission.get("reserved_confirmation", {})
-    if any(not finite_number(d.get(k), positive=(d is final and (k == "allocated_cpu_seconds" or gpus == 1)))
+    no_confirmation = (readiness_policy["mode"] == "user_authorized_exploratory_screen"
+                       and readiness_policy["user_authorized_exploratory_control_override"].get(
+                           "confirmation_not_in_current_scope") is True
+                       and final.get("allocated_cpu_seconds") == 0 and final.get("gpu_seconds") == 0)
+    if any(not finite_number(d.get(k), positive=(d is final and not no_confirmation
+                                                and (k == "allocated_cpu_seconds" or gpus == 1)))
            for d in (prior, final) for k in ("allocated_cpu_seconds", "gpu_seconds")):
         raise ValueError("finite prior usage, positive final CPU reserve and a positive final GPU reserve when used are required")
     total_seconds = sum(lanes.values())
@@ -313,7 +405,12 @@ def run(args):
                "protocol_sha256": digest(args.protocol), "admission_sha256": digest(args.admission),
                "reserved_wall_seconds": seconds, "automatic_retry": False,
                "source_manifest_sha256": source_identity, "resource_binding": resource_binding,
-               "reserved_test_evaluated": False, "command": command(candidate, args.bank, lane / "checkpoint")}
+               "readiness_admission": readiness_admission(protocol, read_json(args.readiness), args.readiness, admission),
+               "execution_scope": admission.get("execution_scope", "training_only"),
+               "reserved_confirmation": admission["reserved_confirmation"],
+               "confirmation_policy": "No confirmation or final-panel evaluation in this seed-0 lane; any future stage needs a separate budget admission.",
+               "scientific_acceptance": False, "model_publication_allowed": False,
+               "reserved_test_evaluated": False, "command": None}
     write_json(lane / "lane.json", journal)
     environment = {**os.environ, "XLA_PYTHON_CLIENT_PREALLOCATE": "false",
                    "OMP_NUM_THREADS": str(admission["host_cpus"]),
@@ -324,6 +421,8 @@ def run(args):
         remaining = seconds - admission["cleanup_seconds_per_lane"] - (time.perf_counter() - started)
         if remaining <= 0:
             raise TimeoutError("lane preparation exhausted the admitted allowance before training")
+        journal["command"] = lane_command(candidate, args.bank, lane, args.protocol, args.readiness, remaining, admission)
+        write_json(lane / "lane.json", journal)
         with (lane / "training.log").open("x") as stream:
             result = subprocess.run(journal["command"], cwd=ROOT, env=environment,
                                     stdout=stream, stderr=subprocess.STDOUT, timeout=remaining, check=False)
