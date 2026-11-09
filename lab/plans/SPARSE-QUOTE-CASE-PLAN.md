@@ -4,6 +4,31 @@
 
 **Heston verification completed; reflection gate reached.** The [run record](../evidence/pilot-results/2026-11-09/heston-observations/README.md) contains the frozen SPXW designs, 11 converged reference cases, numerical and carry audits, and four neural development endpoints. The forward-variance information effect is visible but prior-sensitive (short/full interval-width ratio 6.49 with vol-of-vol capped at 1.5; 3.11 with cap 3). Structured market residuals remain. Neural conditional verification fails at both 2,000 and 10,000 updates, despite much better prior-average coverage at the latter budget. Pricing/software checks passed; the revised market/neural task is **not accepted for release**. Stop here before choosing final discrepancy/prior/carry assumptions or running Bergomi.
 
+## Continuation: full-panel network training study
+
+Following the reflection and training discussion, the user requested continuation. The next bounded step improves the full 54-quote Heston network. The short panel, wider architecture search, production acceptance, lesson publication and all Bergomi work remain deferred.
+
+Keep the existing observation law and fixed quote/vega/carry design as an **engineering benchmark**; its structured market residuals remain unresolved. Use the already audited vol-of-vol support `[.1,3]` and extended Fourier ladder, then check whether increasing the full-panel kappa ceiling from 10 to 20 materially changes the reference posterior before freezing the training target. This is not a claim that the pilot prior or independent discrepancy is scientifically final.
+
+Generate one new source-bound bank with 100,000 clean surfaces, a separate 5,000-row validation pool and a reserved 2,000-row final pool. The 20,000-row training condition is the first 20,000 rows of the same training pool. Generate prices under the strictest supported spread multiplier .5. Reuse clean prices while independently sampling tau from its declared prior and fresh Gaussian observation errors at each batch. Tau changes the observation distribution, not the Heston prices.
+
+Hold the spline architecture (two 128-unit subnet layers), batch size 128, seed 9011 and optimizer recipe fixed across four predeclared checkpoints:
+
+| Training rows | Optimizer updates | Comparison |
+| --- | --- | --- |
+| 20,000 | 10,000 | Re-established baseline under the new support and augmentation |
+| 20,000 | 50,000 | More optimization on the same physical parameter locations |
+| 100,000 | 10,000 | More physical parameter locations at the same update budget |
+| 100,000 | 50,000 | Both increased together |
+
+Use two fresh 50,000-update training trajectories, one per data size, with checkpoints at 10,000 and 50,000 updates. Both use the same 50,000-update learning-rate schedule, making the optimizer comparison an identical-prefix continuation within each data size. Log fixed independent-noise train/validation probes every 1,000 updates, with explicit metric scope. No retrospective checkpoint or best-seed selection is allowed.
+
+Use 512 new validation-pool observations for development calibration and compare every endpoint with the existing matched market reference plus six predeclared synthetic reference observations. Declare 12 synthetic cases before viewing any network outcomes: six broad-prior cases, four market-like cases, and two low-discrepancy/boundary cases. Initially run indices `[0,2,4,6,8,10]`; retain failures and do not replace hard cases. Simulated Gaussian observations may be negative; the reference accepts arbitrary finite observations around frozen valid contract/scale metadata rather than truncating or regenerating them.
+
+Report parameter and variance-product mean/interval errors, chain-aware Monte Carlo uncertainty, prior support, fresh calibration ranks and coverage. Use the existing conditional margins (mean within .3 reference SD, 90% width ratio .75–1.25) as development checks; they do not establish acceptance on their own. The reserved 2,000-case pool stays unopened until a recipe and any seed confirmation are frozen. Do not infer correctness from average coverage or loss alone.
+
+Bound this continuation to two fits/four checkpoints, their declared development checks, one kappa-prior sensitivity reference and six synthetic references. At most two training fits run concurrently; initial training compute is capped at two hours of wall time including both fits and their checks. Preserve incomplete/failing runs. Report the optimization/data comparison before adding network capacity, further seeds or the short-panel recipe.
+
 ## Authorized Heston pilot
 
 Use one frozen public Cboe delayed SPX snapshot, selecting only European PM-settled **SPXW** roots. Source bytes, retrieval metadata and hashes are recorded in [the run evidence](../evidence/pilot-results/2026-11-09/heston-observations/source.json). This is intraday delayed data, with no bid/ask update timestamps. Snapshot UTC and trade-time New York assignments are explicit vendor-field assumptions; the default valuation time subtracts an assumed 15-minute delay. Exact ACT/365F elapsed time ends at 16:00 New York. Exclude same-day expiries and known half-day expiries.
