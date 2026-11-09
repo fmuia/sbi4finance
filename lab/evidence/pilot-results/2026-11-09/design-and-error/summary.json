@@ -1,0 +1,780 @@
+{
+ "record": "Observation design and error checks behind lab/plans/OPTION-APPLICATION-PLAN.md",
+ "date": "2026-11-09",
+ "status": "scratch-run quick checks (Laplace/Fisher, least squares); not accepted assets, not production studies",
+ "data": {
+  "spy_cboe": {
+   "file_timestamp": "2026-11-08 23:53:35",
+   "last_trade": "2026-11-06T16:00:00",
+   "sha256": "81ac26c80ffddb75ccd4eb459f793e28470b5027a6100daf79000be7bdad4429"
+  },
+  "spx_cboe_intraday": {
+   "file_timestamp": "2026-11-09 16:50:16",
+   "last_trade": "2026-11-09T11:35:14",
+   "sha256": "43dee488077cfde008590cd6eaa2b6db2efb6f511955da614cb5fe7e71d13bce"
+  },
+  "spx_cboe_close_2026_11_09": {
+   "file_timestamp": "2026-11-09 23:20:45",
+   "last_trade": "2026-11-09T16:14:59",
+   "sha256": "209765afc08b1261330f93e81d0b29c551051774f4c2931196f5381fe32fa8a1",
+   "note": "fetched for the plan; not analysed here"
+  },
+  "raw_files_committed": false,
+  "tutorial_assets_read": [
+   "tutorial/assets/results/calibration/spy/surface.json",
+   "tutorial/assets/data/heston-spy-exact.json",
+   "tutorial/assets/backbones/rough-joint100k-validation0/task.json"
+  ]
+ },
+ "environment": {
+  "python": "3.13",
+  "numpy": "2.5.4",
+  "scipy": "1.18.1",
+  "numba": "0.68.1",
+  "pixi": "not available"
+ },
+ "current_noise_rule": {
+  "definition": "price sd = BS vega at 20% x (0.3 vol pts at delta=0 rising to 1.0 at |delta|>=2), delta in 20%-vol units",
+  "effective_vol_points_by_delta_column": {
+   "columns": [
+    -2,
+    -1.5,
+    -1,
+    -0.5,
+    0,
+    0.5,
+    1,
+    1.5,
+    2
+   ],
+   "spy_2026_10_21_real_median": [
+    0.44,
+    0.64,
+    0.67,
+    0.51,
+    0.3,
+    0.61,
+    1.86,
+    4.87,
+    5.38
+   ],
+   "spy_2026_10_21_real_max": [
+    0.91,
+    1.08,
+    0.89,
+    0.55,
+    0.3,
+    0.63,
+    2.09,
+    5.0,
+    6.99
+   ],
+   "spy_2026_11_06_real_median": [
+    0.3,
+    0.46,
+    0.54,
+    0.46,
+    0.3,
+    0.52,
+    1.16,
+    2.87,
+    3.42
+   ],
+   "heston_prior_centre_simulated": [
+    0.28,
+    0.42,
+    0.49,
+    0.45,
+    0.3,
+    0.45,
+    0.54,
+    0.55,
+    0.5
+   ]
+  },
+  "deep_puts_under_rule_vol_points": "0.003-0.03 at delta_atm=-4 (spurious precision)",
+  "laplace_matches_exact_heston_spy": {
+   "laplace_sd": [
+    0.000379,
+    0.00147,
+    0.0437,
+    0.0223
+   ],
+   "exact_sd": [
+    0.000388,
+    0.0015,
+    0.0436,
+    0.0216
+   ],
+   "names": [
+    "v0",
+    "theta",
+    "vol_of_vol",
+    "rho"
+   ]
+  }
+ },
+ "reviewer_proposal_independent_errors": {
+  "grids": {
+   "G0": "+-2 at 20% vol",
+   "G1": "-4..+1 ATM vol (proposal)",
+   "G2": "-4..+1 at 20% vol (shift only)",
+   "G3": "+-2 ATM vol (scale only)"
+  },
+  "heston_150_prior_draws_median_sd_ratio_vs_G0": {
+   "names": [
+    "v0",
+    "theta",
+    "vol_of_vol",
+    "rho",
+    "varswap_1y"
+   ],
+   "design_convention": {
+    "G1": [
+     0.65,
+     0.37,
+     0.39,
+     0.94,
+     0.54
+    ],
+    "G2": [
+     0.35,
+     0.22,
+     0.26,
+     0.65,
+     0.3
+    ],
+    "G3": [
+     1.25,
+     1.15,
+     1.0,
+     1.18,
+     1.14
+    ],
+    "note": "G1/G2 gains are an artefact of near-zero deep-put noise"
+   },
+   "consistent_local_vol_point_noise": {
+    "G1": [
+     1.07,
+     0.89,
+     0.83,
+     1.48,
+     0.83
+    ],
+    "G2": [
+     1.04,
+     0.94,
+     0.98,
+     1.76,
+     0.91
+    ],
+    "G3": [
+     1.06,
+     0.98,
+     0.87,
+     0.9,
+     0.96
+    ]
+   }
+  },
+  "rough_bergomi_8_points_median_sd_ratio_vs_G0_local_noise": {
+   "names": [
+    "H",
+    "eta",
+    "rho",
+    "short_var",
+    "long_var",
+    "decay",
+    "varswap_vol_1y",
+    "atm_iv_1y"
+   ],
+   "G1": [
+    0.58,
+    0.77,
+    1.41,
+    0.88,
+    0.78,
+    0.95,
+    0.68,
+    0.97
+   ],
+   "G2": [
+    0.66,
+    0.79,
+    1.46,
+    0.88,
+    0.8,
+    0.94,
+    0.71,
+    0.98
+   ],
+   "G3": [
+    0.95,
+    0.95,
+    0.97,
+    1.0,
+    0.95,
+    0.98,
+    0.96,
+    1.02
+   ],
+   "mc_check": "32,768 paths/block; G1/G2 under the design convention unreliable (sd swings up to 76%; MC SE 40-65x that noise)"
+  }
+ },
+ "spy_2026_11_06_heston_kappa2_fits_xi_bound_4": {
+  "grid_points_outside_quoted_strikes": {
+   "G0": 0,
+   "G1": 0
+  },
+  "varswap_replicated_volpct": [
+   26.58,
+   26.68,
+   24.99,
+   24.82,
+   24.32,
+   24.03,
+   24.04
+  ],
+  "fits": {
+   "G0_current_noise": {
+    "vol_of_vol": 1.72,
+    "rms_noise_units": 2.75,
+    "n_over_2sd": 18,
+    "varswap_gap_volpts": [
+     -3.06,
+     -3.11,
+     -1.32,
+     -0.97,
+     -0.31,
+     0.36,
+     0.83
+    ],
+    "iv_resid_1w_volpts": [
+     -3.1,
+     -1.9,
+     -1.0,
+     -0.4,
+     -0.1,
+     0.2,
+     0.9,
+     1.9,
+     1.9
+    ]
+   },
+   "G0_local_noise": {
+    "vol_of_vol": 1.44,
+    "rms_noise_units": 1.62,
+    "n_over_2sd": 17,
+    "varswap_gap_volpts": [
+     -3.87,
+     -3.87,
+     -1.99,
+     -1.49,
+     -0.7,
+     0.29,
+     1.16
+    ],
+    "iv_resid_1w_volpts": [
+     -4.0,
+     -2.8,
+     -1.7,
+     -1.0,
+     -0.6,
+     -0.3,
+     0.1,
+     0.4,
+     -0.1
+    ]
+   },
+   "G1_local_noise": {
+    "vol_of_vol": 1.75,
+    "rms_noise_units": 2.44,
+    "n_over_2sd": 27,
+    "varswap_gap_volpts": [
+     -3.24,
+     -3.23,
+     -1.34,
+     -0.8,
+     0.01,
+     1.07,
+     2.01
+    ],
+    "iv_resid_1w_volpts": [
+     -11.5,
+     -8.2,
+     -5.3,
+     -2.9,
+     -1.2,
+     -0.5,
+     -0.3,
+     -0.1,
+     0.6
+    ]
+   }
+  }
+ },
+ "spx_2026_11_09_intraday": {
+  "atm_vol_pct_range": [
+   15.6,
+   17.1
+  ],
+  "half_spread_volpts_median_by_atm_sd_bin": {
+   "bins": [
+    -12,
+    -8,
+    -6,
+    -4,
+    -3,
+    -2,
+    -1,
+    -0.5,
+    0.5,
+    1,
+    1.5,
+    2,
+    3,
+    5
+   ],
+   "by_design_day": {
+    "5": [
+     0.611570220687988,
+     0.23643930664663937,
+     0.1673145177600971,
+     0.13084586037330012,
+     0.10193120476025941,
+     0.05251126294398413,
+     0.04284307322172012,
+     0.036848890973184625,
+     0.03703979142339295,
+     0.0798487171445405,
+     0.13117866744026901,
+     0.3425262419845844,
+     NaN
+    ],
+    "10": [
+     0.37191603790132854,
+     0.24407504125673582,
+     0.15005169574475644,
+     0.11988092595717399,
+     0.09113095352634222,
+     0.05901284405898211,
+     0.04436134370661263,
+     0.05076038442748641,
+     0.05124929004846517,
+     0.08389269581108788,
+     0.14419169788970349,
+     0.3683344617461229,
+     NaN
+    ],
+    "21": [
+     0.4595835908618954,
+     0.2524699421357556,
+     0.12441646802258094,
+     0.090055785707956,
+     0.06889617077398308,
+     0.05226112435914026,
+     0.04269968475410883,
+     0.04813826390566271,
+     0.04351753173745748,
+     0.0731349924692012,
+     0.11689248918946614,
+     0.2984115812542304,
+     NaN
+    ],
+    "42": [
+     0.27932809347907606,
+     0.17948014046117444,
+     0.09849159437871517,
+     0.07678624098436723,
+     0.06004470793834964,
+     0.03899697782992311,
+     0.037876956767617743,
+     0.036069340738826505,
+     0.03697255043175577,
+     0.0566622129702459,
+     0.09564786412535604,
+     0.2383498392488431,
+     NaN
+    ],
+    "63": [
+     0.29391688474760347,
+     0.1098277935346971,
+     0.06825753118472248,
+     0.0534553547767329,
+     0.041907549388874143,
+     0.029890987459366452,
+     0.02669542866198147,
+     0.027714469105747187,
+     0.02892405163710506,
+     0.04856448077396996,
+     0.07431738628521556,
+     0.11438825134626521,
+     0.38948573238458273
+    ],
+    "126": [
+     NaN,
+     0.11884509630378341,
+     0.061192673666788405,
+     0.05501684441367807,
+     0.037502782605581896,
+     0.029936300961936696,
+     0.025534091533239486,
+     0.02653032469953731,
+     0.019449316710981157,
+     0.02336679987708586,
+     0.07660513320146875,
+     0.10413345778331377,
+     NaN
+    ],
+    "252": [
+     0.28814019515334305,
+     0.12805258931681582,
+     0.08540368599653493,
+     0.0706077161311193,
+     0.03975701150756946,
+     0.029551289996141865,
+     0.0240125864890146,
+     0.031082868205254185,
+     0.0356678880361652,
+     0.040752245537633035,
+     0.09534190196810556,
+     0.23029974240513554,
+     NaN
+    ]
+   }
+  },
+  "heston_kappa_free_iv_fit": {
+   "kappa": 7.2645,
+   "v0": 0.0329,
+   "theta": 0.0506,
+   "vol_of_vol": 2.5304,
+   "rho": -0.7173
+  },
+  "grid_atm_sd": [
+   -5.0,
+   -4.5,
+   -4.0,
+   -3.5,
+   -3.0,
+   -2.5,
+   -2.0,
+   -1.5,
+   -1.0,
+   -0.5,
+   0.0,
+   0.5,
+   1.0,
+   1.5,
+   2.0
+  ],
+  "model_error_rms_volpts": 1.0,
+  "median_half_spread_volpts": 0.06,
+  "ratio": 17,
+  "residual_lag1_corr_strikes": 0.8,
+  "residual_corr_adjacent_maturities": 0.85
+ },
+ "correlated_error_design_heston_spx_fit": {
+  "error_models": {
+   "spread": "half-spreads only",
+   "iid": "+ independent model error 1 vp",
+   "corr": "+ smooth model error 1 vp, l_delta 0.75 ATM-sd, l_logT 1.15"
+  },
+  "sd": {
+   "current: +-2 at 20% vol, 9/maturity": {
+    "spread": {
+     "params": [
+      0.0642,
+      0.0001,
+      0.0001,
+      0.0142,
+      0.0008
+     ],
+     "varswap_1y_volpts": 0.017
+    },
+    "iid": {
+     "params": [
+      1.2802,
+      0.0011,
+      0.0026,
+      0.2159,
+      0.012
+     ],
+     "varswap_1y_volpts": 0.431
+    },
+    "corr": {
+     "params": [
+      1.614,
+      0.0024,
+      0.0042,
+      0.3129,
+      0.0275
+     ],
+     "varswap_1y_volpts": 0.769
+    }
+   },
+   "current range, 17/maturity (denser)": {
+    "spread": {
+     "params": [
+      0.0472,
+      0.0,
+      0.0001,
+      0.0103,
+      0.0006
+     ],
+     "varswap_1y_volpts": 0.012
+    },
+    "iid": {
+     "params": [
+      0.9677,
+      0.0008,
+      0.0019,
+      0.1629,
+      0.009
+     ],
+     "varswap_1y_volpts": 0.327
+    },
+    "corr": {
+     "params": [
+      1.355,
+      0.0023,
+      0.004,
+      0.2587,
+      0.0239
+     ],
+     "varswap_1y_volpts": 0.737
+    }
+   },
+   "wide put-heavy: -6..+2 ATM-sd, 9/maturity": {
+    "spread": {
+     "params": [
+      0.0523,
+      0.0001,
+      0.0001,
+      0.0109,
+      0.0009
+     ],
+     "varswap_1y_volpts": 0.014
+    },
+    "iid": {
+     "params": [
+      0.6953,
+      0.0013,
+      0.0017,
+      0.1211,
+      0.0158
+     ],
+     "varswap_1y_volpts": 0.312
+    },
+    "corr": {
+     "params": [
+      0.9516,
+      0.0024,
+      0.003,
+      0.2019,
+      0.0312
+     ],
+     "varswap_1y_volpts": 0.579
+    }
+   },
+   "wide put-heavy: -6..+2 ATM-sd, 17/maturity": {
+    "spread": {
+     "params": [
+      0.0366,
+      0.0,
+      0.0001,
+      0.0078,
+      0.0007
+     ],
+     "varswap_1y_volpts": 0.01
+    },
+    "iid": {
+     "params": [
+      0.5087,
+      0.0009,
+      0.0012,
+      0.0894,
+      0.0125
+     ],
+     "varswap_1y_volpts": 0.222
+    },
+    "corr": {
+     "params": [
+      0.832,
+      0.0021,
+      0.0028,
+      0.1741,
+      0.0274
+     ],
+     "varswap_1y_volpts": 0.54
+    }
+   }
+  },
+  "names": [
+   "kappa",
+   "v0",
+   "theta",
+   "vol_of_vol",
+   "rho"
+  ],
+  "robustness_wide17_over_current9": {
+   "tau_volpts": [
+    0.05,
+    2.5
+   ],
+   "l_delta": [
+    0.75,
+    2.2
+   ],
+   "l_logT": [
+    1.15,
+    2.0
+   ],
+   "kappa": [
+    0.51,
+    0.75
+   ],
+   "theta": [
+    0.63,
+    0.73
+   ],
+   "vol_of_vol": [
+    0.54,
+    0.77
+   ],
+   "rho": [
+    0.97,
+    1.12
+   ],
+   "varswap_1y": [
+    0.68,
+    0.72
+   ]
+  },
+  "robustness_dense_over_current": {
+   "vol_of_vol": [
+    0.83,
+    0.98
+   ],
+   "rho": [
+    0.86,
+    0.9
+   ],
+   "varswap_1y": [
+    0.96,
+    0.98
+   ]
+  }
+ },
+ "region_unique_information_pct_sd_increase_if_removed": {
+  "names": [
+   "kappa",
+   "v0",
+   "theta",
+   "vol_of_vol",
+   "rho",
+   "varswap_1y"
+  ],
+  "deep_puts_below_-3": [
+   59,
+   9,
+   33,
+   51,
+   3,
+   27
+  ],
+  "near_puts_-3_to_-0.5": [
+   3,
+   4,
+   5,
+   2,
+   4,
+   4
+  ],
+  "atm_abs_le_0.5": [
+   17,
+   21,
+   9,
+   25,
+   15,
+   11
+  ],
+  "calls_above_0.5": [
+   11,
+   9,
+   6,
+   17,
+   72,
+   7
+  ],
+  "short_maturities_le_1m": [
+   63,
+   79,
+   3,
+   108,
+   15,
+   1
+  ],
+  "long_maturities_ge_2m": [
+   232,
+   24,
+   303,
+   15,
+   37,
+   287
+  ]
+ },
+ "layout_choice_63_contracts_sd_ratio_vs_current": {
+  "names": [
+   "kappa",
+   "v0",
+   "theta",
+   "vol_of_vol",
+   "rho",
+   "varswap_1y"
+  ],
+  "chosen_E": {
+   "deltas_in_16pct_units": [
+    -5,
+    -3.5,
+    -2.25,
+    -1.25,
+    -0.5,
+    0,
+    0.5,
+    1,
+    2
+   ],
+   "tau1_l0.75_1.15": [
+    0.65,
+    0.92,
+    0.72,
+    0.68,
+    1.09,
+    0.75
+   ],
+   "tau2.5_l1.6_2.0": [
+    0.78,
+    0.81,
+    0.77,
+    0.83,
+    1.31,
+    0.78
+   ]
+  },
+  "rejected_examples": {
+   "D_uniform_-6_to_2_rho": [
+    1.14,
+    4.09
+   ],
+   "G_no_atm_point_rho": [
+    1.13,
+    2.53
+   ]
+  }
+ },
+ "costs": {
+  "heston_cpu_h_per_1000_surfaces": 0.0129,
+  "rough_cpu_h_per_1000_surfaces": 3.313,
+  "source": "tutorial/assets/results/calibration/{heston,rough-pilot}/s1/bank-quality.json"
+ }
+}
