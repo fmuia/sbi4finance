@@ -1,0 +1,404 @@
+{
+  "schema": "raw_heston_posterior_pointwise_precision_v1",
+  "created_utc": "2026-11-09T20:43:47.125140+00:00",
+  "design_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/lab/evidence/pilot-results/2026-11-09/heston-observations/designs/put_heavy.json",
+  "design_sha256": "4b84185e7a072844fd6a3ce0f79aed983d39502607a7a76c79dbf7196f9ed547",
+  "script_sha256": "e1aa93d6f4904c72323d55d7dc3c580cf8d4ff57af789788d0f0f2bb63a8a873",
+  "price_shift_gate_measurement_sigma": 0.02,
+  "log_likelihood_shift_gate": 0.1,
+  "posterior_stability_assessed": false,
+  "scope": "pointwise numerical sensitivity on retained chains; does not establish refined posterior stability",
+  "references": [
+    {
+      "reference_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/local-artifacts/heston-observations-20261109/reference-short-wide-xi",
+      "arm": "short",
+      "names": [
+        "initial_variance",
+        "kappa",
+        "theta",
+        "vol_of_vol",
+        "rho",
+        "tau"
+      ],
+      "bounds": [
+        [
+          0.01,
+          0.16
+        ],
+        [
+          0.1,
+          10.0
+        ],
+        [
+          0.01,
+          0.16
+        ],
+        [
+          0.1,
+          3.0
+        ],
+        [
+          -0.95,
+          -0.1
+        ],
+        [
+          0.0,
+          0.02
+        ]
+      ],
+      "conditioning_quotes": 27,
+      "run_sha256": "9d99285e6d752f547cebd98ce1b7a7cf22283c9c9f0312c7831f4d0884661bae",
+      "chains_sha256": "9f85d7cc87a449ac3d2cd8a40adc44b7d3b8238208ad474710f7efef07c7e8a6",
+      "chain_shape": [
+        4,
+        12000,
+        6
+      ],
+      "points_per_chain": 4,
+      "source_mcmc_diagnostics_passed": true,
+      "points": [
+        {
+          "chain": 0,
+          "draw": 0,
+          "parameters": [
+            0.023935507280083836,
+            8.817867590450467,
+            0.05009224322940965,
+            2.1172234527592284,
+            -0.6212050497560104,
+            0.007013825836092191
+          ],
+          "priced": true,
+          "base_nodes": 1024,
+          "base_cutoff": 600.0,
+          "refined_nodes": 2048,
+          "refined_cutoff": 1200.0,
+          "max_abs_price_shift_over_measurement_sigma": 1.536149816112285e-05,
+          "log_likelihood_shift": 4.3063408038210727e-07,
+          "pointwise_gates_passed": true,
+          "wall_seconds": 0.09500783286057413
+        },
+        {
+          "chain": 0,
+          "draw": 3999,
+          "parameters": [
+            0.023985988637427222,
+            9.505611501399892,
+            0.04948338055181113,
+            2.5440046000159477,
+            -0.5909270103410834,
+            0.007354560166736297
+          ],
+          "priced": true,
+          "base_nodes": 2048,
+          "base_cutoff": 1200.0,
+          "refined_nodes": 4096,
+          "refined_cutoff": 2400.0,
+          "max_abs_price_shift_over_measurement_sigma": 5.1290476221765815e-06,
+          "log_likelihood_shift": -1.666093896873506e-07,
+          "pointwise_gates_passed": true,
+          "wall_seconds": 0.29066945891827345
+        },
+        {
+          "chain": 0,
+          "draw": 7999,
+          "parameters": [
+            0.02700248906943778,
+            9.003406239826887,
+            0.04607974604580052,
+            2.1020161096139183,
+            -0.6458892519328598,
+            0.005517843630596555
+          ],
+          "priced": true,
+          "base_nodes": 2048,
+          "base_cutoff": 1200.0,
+          "refined_nodes": 4096,
+          "refined_cutoff": 2400.0,
+          "max_abs_price_shift_over_measurement_sigma": 5.129419378135931e-06,
+          "log_likelihood_shift": -3.437170075504259e-07,
+          "pointwise_gates_passed": true,
+          "wall_seconds": 0.008110582828521729
+        },
+        {
+          "chain": 0,
+          "draw": 11999,
+          "parameters": [
+            0.02521374403049243,
+            9.67073810930147,
+            0.046360668711650996,
+            2.3851074954834077,
+            -0.6289017977414372,
+            0.005036467442133196
+          ],
+          "priced": true,
+          "base_nodes": 1024,
+          "base_cutoff": 600.0,
+          "refined_nodes": 2048,
+          "refined_cutoff": 1200.0,
+          "max_abs_price_shift_over_measurement_sigma": 6.413026304130653e-05,
+          "log_likelihood_shift": 3.557742935670835e-06,
+          "pointwise_gates_passed": true,
+          "wall_seconds": 0.004662750056013465
+        },
+        {
+          "chain": 1,
+          "draw": 0,
+          "parameters": [
+            0.026282366553382272,
+            8.138888787715665,
+            0.048161800481141465,
+            2.0131904285056264,
+            -0.6533265451410657,
+            0.008591135736035899
+          ],
+          "priced": true,
+          "base_nodes": 2048,
+          "base_cutoff": 1200.0,
+          "refined_nodes": 4096,
+          "refined_cutoff": 2400.0,
+          "max_abs_price_shift_over_measurement_sigma": 5.129401188241896e-06,
+          "log_likelihood_shift": -4.5335775866305744e-07,
+          "pointwise_gates_passed": true,
+          "wall_seconds": 0.006421583006158471
+        },
+        {
+          "chain": 1,
+          "draw": 3999,
+          "parameters": [
+            0.024294545432023033,
+            8.233601561902436,
+            0.04979812566100364,
+            2.2516724496690315,
+            -0.625377789791923,
+            0.006403902362242311
+          ],
+          "priced": true,
+          "base_nodes": 1024,
+          "base_cutoff": 600.0,
+          "refined_nodes": 2048,
+          "refined_cutoff": 1200.0,
+          "max_abs_price_shift_over_measurement_sigma": 6.799050927952521e-05,
+          "log_likelihood_shift": 1.8126205639495269e-06,
+          "pointwise_gates_passed": true,
+          "wall_seconds": 0.0043624998070299625
+        },
+        {
+          "chain": 1,
+          "draw": 7999,
+          "parameters": [
+            0.025731898041890217,
+            8.553223976685025,
+            0.0490592021106668,
+            2.1472344372555883,
+            -0.6567439248264344,
+            0.005599406079853192
+          ],
+          "priced": true,
+          "base_nodes": 2048,
+          "base_cutoff": 1200.0,
+          "refined_nodes": 4096,
+          "refined_cutoff": 2400.0,
+          "max_abs_price_shift_over_measurement_sigma": 5.129437568029967e-06,
+          "log_likelihood_shift": 9.650063506399728e-08,
+          "pointwise_gates_passed": true,
+          "wall_seconds": 0.006438875105232
+        },
+        {
+          "chain": 1,
+          "draw": 11999,
+          "parameters": [
+            0.023523399312069634,
+            9.606740544704477,
+            0.04948718400898806,
+            2.170525522174365,
+            -0.7042328489467937,
+            0.006341017804532727
+          ],
+          "priced": true,
+          "base_nodes": 2048,
+          "base_cutoff": 1200.0,
+          "refined_nodes": 4096,
+          "refined_cutoff": 2400.0,
+          "max_abs_price_shift_over_measurement_sigma": 5.129202236275883e-06,
+          "log_likelihood_shift": -7.118142976752121e-07,
+          "pointwise_gates_passed": true,
+          "wall_seconds": 0.009875749936327338
+        },
+        {
+          "chain": 2,
+          "draw": 0,
+          "parameters": [
+            0.024190537444972276,
+            9.344388657465041,
+            0.04825918017775005,
+            2.306279141601669,
+            -0.6410270952241057,
+            0.006034109249778432
+          ],
+          "priced": true,
+          "base_nodes": 1024,
+          "base_cutoff": 600.0,
+          "refined_nodes": 2048,
+          "refined_cutoff": 1200.0,
+          "max_abs_price_shift_over_measurement_sigma": 4.951146527787387e-05,
+          "log_likelihood_shift": 3.7126026899512304e-06,
+          "pointwise_gates_passed": true,
+          "wall_seconds": 0.005650084000080824
+        },
+        {
+          "chain": 2,
+          "draw": 3999,
+          "parameters": [
+            0.025526048803735026,
+            8.342272176973891,
+            0.04940449692734229,
+            2.041992197585232,
+            -0.6748337491517233,
+            0.005514956419805441
+          ],
+          "priced": true,
+          "base_nodes": 2048,
+          "base_cutoff": 1200.0,
+          "refined_nodes": 4096,
+          "refined_cutoff": 2400.0,
+          "max_abs_price_shift_over_measurement_sigma": 5.129365945322202e-06,
+          "log_likelihood_shift": -5.85581095521611e-07,
+          "pointwise_gates_passed": true,
+          "wall_seconds": 0.010028042132034898
+        },
+        {
+          "chain": 2,
+          "draw": 7999,
+          "parameters": [
+            0.02456300482993687,
+            6.939509168661483,
+            0.05457942787447292,
+            1.9099872600954955,
+            -0.6652450904968916,
+            0.007035841345560648
+          ],
+          "priced": true,
+          "base_nodes": 2048,
+          "base_cutoff": 1200.0,
+          "refined_nodes": 4096,
+          "refined_cutoff": 2400.0,
+          "max_abs_price_shift_over_measurement_sigma": 5.129401188241896e-06,
+          "log_likelihood_shift": -9.501956846927567e-07,
+          "pointwise_gates_passed": true,
+          "wall_seconds": 0.013862709049135447
+        },
+        {
+          "chain": 2,
+          "draw": 11999,
+          "parameters": [
+            0.024840926015503452,
+            7.765591303205728,
+            0.05161804957652835,
+            2.004543463523245,
+            -0.679919947690047,
+            0.007528104832533477
+          ],
+          "priced": true,
+          "base_nodes": 2048,
+          "base_cutoff": 1200.0,
+          "refined_nodes": 4096,
+          "refined_cutoff": 2400.0,
+          "max_abs_price_shift_over_measurement_sigma": 5.129355713506807e-06,
+          "log_likelihood_shift": -5.044794157822336e-07,
+          "pointwise_gates_passed": true,
+          "wall_seconds": 0.012225166894495487
+        },
+        {
+          "chain": 3,
+          "draw": 0,
+          "parameters": [
+            0.024105311818445038,
+            6.564730052865877,
+            0.05746852325510425,
+            2.0105945728715535,
+            -0.6377201240686753,
+            0.006404785920679797
+          ],
+          "priced": true,
+          "base_nodes": 1024,
+          "base_cutoff": 600.0,
+          "refined_nodes": 2048,
+          "refined_cutoff": 1200.0,
+          "max_abs_price_shift_over_measurement_sigma": 2.3392332601750665e-05,
+          "log_likelihood_shift": 6.69187216057642e-07,
+          "pointwise_gates_passed": true,
+          "wall_seconds": 0.0054240410681813955
+        },
+        {
+          "chain": 3,
+          "draw": 3999,
+          "parameters": [
+            0.025372215002357902,
+            8.871067210936058,
+            0.04873193833518497,
+            2.2023655982485555,
+            -0.6467799767678657,
+            0.005420570438377356
+          ],
+          "priced": true,
+          "base_nodes": 1024,
+          "base_cutoff": 600.0,
+          "refined_nodes": 2048,
+          "refined_cutoff": 1200.0,
+          "max_abs_price_shift_over_measurement_sigma": 2.5714667474728254e-05,
+          "log_likelihood_shift": 1.7283919692473101e-06,
+          "pointwise_gates_passed": true,
+          "wall_seconds": 0.0047742079477757215
+        },
+        {
+          "chain": 3,
+          "draw": 7999,
+          "parameters": [
+            0.023992679778220036,
+            9.733595778002703,
+            0.047982143167858864,
+            2.0127139797686735,
+            -0.6883263627985705,
+            0.0062471612604472135
+          ],
+          "priced": true,
+          "base_nodes": 2048,
+          "base_cutoff": 1200.0,
+          "refined_nodes": 4096,
+          "refined_cutoff": 2400.0,
+          "max_abs_price_shift_over_measurement_sigma": 5.129437568029967e-06,
+          "log_likelihood_shift": -2.1342841425042204e-06,
+          "pointwise_gates_passed": true,
+          "wall_seconds": 0.00874525005929172
+        },
+        {
+          "chain": 3,
+          "draw": 11999,
+          "parameters": [
+            0.023500817425553634,
+            7.987975288378249,
+            0.05401722647283257,
+            2.4323441506179657,
+            -0.6146021092534231,
+            0.009093257610697798
+          ],
+          "priced": true,
+          "base_nodes": 2048,
+          "base_cutoff": 1200.0,
+          "refined_nodes": 4096,
+          "refined_cutoff": 2400.0,
+          "max_abs_price_shift_over_measurement_sigma": 5.128957809574781e-06,
+          "log_likelihood_shift": 1.3764008879993867e-07,
+          "pointwise_gates_passed": true,
+          "wall_seconds": 0.0100811249576509
+        }
+      ],
+      "all_points_priced": true,
+      "pointwise_gates_passed": true,
+      "max_abs_price_shift_over_measurement_sigma": 6.799050927952521e-05,
+      "max_abs_log_likelihood_shift": 3.7126026899512304e-06
+    }
+  ],
+  "pointwise_gates_passed": true
+}

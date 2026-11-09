@@ -1,0 +1,1583 @@
+{
+  "format": "heston_pilot_neural_reference_development_comparison_v1",
+  "scientific_acceptance": false,
+  "design_sha256": "4b84185e7a072844fd6a3ce0f79aed983d39502607a7a76c79dbf7196f9ed547",
+  "scope": "The 2k screen and 10k follow-up reuse 128 development cases and the same market reference. Original xi<=1.5 prior only; c=1 conditional market comparison. No fresh acceptance or widened-prior neural result.",
+  "criteria": {
+    "parameter_absolute_mean_error_reference_sd": 0.3,
+    "parameter_absolute_relative_90_interval_width_error": 0.25,
+    "product_quantile_error": "q10/q90 absolute error <= max(.10*(reference q95-q05),.0001 annualized variance units)"
+  },
+  "limitations": [
+    "Point comparisons omit reference and neural-sampling Monte Carlo uncertainty; borderline coordinate decisions are inconclusive.",
+    "Coverage confidence intervals are marginal exact binomial intervals, not simultaneous acceptance bands.",
+    "Ten-bin rank histograms on 128 cases are descriptive development checks, not a broad SBC certification.",
+    "One frozen quote design, vegas and carry anchors; no variable-design, liquidity-selection or market-wide calibration claim."
+  ],
+  "source_sha256": {
+    "compare_heston_pilot_neural.py": "93b534193a4ab6a24c2453294b2981396ebe9f4a983858944fa997a32dc97ea2",
+    "run_heston_observation_pilot.py": "ae3a666e436344782e90457c2be39e28b2da9abd7445ec9fced5460ca6fbc089"
+  },
+  "endpoints": {
+    "2000": {
+      "full": {
+        "training": {
+          "layout": "full",
+          "names": [
+            "initial_variance",
+            "kappa",
+            "theta",
+            "vol_of_vol",
+            "rho",
+            "tau"
+          ],
+          "bounds": [
+            [
+              0.01,
+              0.16
+            ],
+            [
+              0.1,
+              10.0
+            ],
+            [
+              0.01,
+              0.16
+            ],
+            [
+              0.1,
+              1.5
+            ],
+            [
+              -0.95,
+              -0.1
+            ],
+            [
+              0.0,
+              0.02
+            ]
+          ],
+          "architecture": {
+            "family": "spline",
+            "widths": [
+              128,
+              128
+            ]
+          },
+          "seed": 9011,
+          "updates": 2000,
+          "batch_size": 128,
+          "endpoint_selection": "predeclared exact-update endpoint; validation not used for selection",
+          "history": {
+            "loss": [
+              0.7275983095169067
+            ],
+            "val_loss": [
+              -1.1751154661178589
+            ]
+          },
+          "training_seconds": 44.55790762510151,
+          "same_seed_reload_exact": true,
+          "versions": {
+            "python": "3.12.16",
+            "bayesflow": "2.1.0",
+            "keras": "3.15.1",
+            "jax": "0.11.1",
+            "numpy": "2.5.3",
+            "scipy": "1.18.1"
+          },
+          "source_sha256": {
+            "trainer": "8cc81f9596b06adc3de4879bcae39bf392ce6b0f741bcda7ac855d47ee938fb1",
+            "pilot": "7189d8d35fb7f776424835e279647867dbd0a3e4bccf00be0a1c915b0725904b"
+          }
+        },
+        "identity": {
+          "training_record_sha256": "7ac388da57df9ec5d467ec14e32f21973da9b0db1f6df5a24e3fc8439c5797a3",
+          "checkpoint_sha256": "12924812a39b6af118c15aa40b4755ef94df0e4ba29de428ccc9dad2a445cc54",
+          "neural_draws_sha256": "0f71f8b6147b3c97e89faefede779430793804b7976957fdea1e338cf4eec3e3",
+          "bank_payload_sha256": "18b307727641d64513e38d7c60eec0447eced8e56877609c781c5f3e49b763b5",
+          "bank_record_sha256": "c26dc1e28e7d6388f65dc524c3a14a89322cd79f385d742b586cf4789d253d9b",
+          "bank_split_counts": {
+            "train": 20000,
+            "validation": 1000,
+            "test": 128
+          },
+          "bank_pricing_seconds": 20.99378625000827,
+          "reference_run_sha256": "6c2240ef6550e2b4e0ffb26a9a2fb9dbcae59c21665715c0d3aa09b5e5b30760",
+          "reference_chains_sha256": "9ed3b8ac8db57fe96dccf4c156478aea2e23188a636b2bc6eb687517119322d3",
+          "reference_diagnostics_sha256": "5488db81ab1376a9ea0f7cc2908f0aed8de9fb6a098310d0ce9b85000df4cd4d"
+        },
+        "reference_mcmc_diagnostics_passed": true,
+        "parameters": {
+          "initial_variance": {
+            "reference_q05_q50_q95": [
+              0.026438279682040725,
+              0.027798635513524253,
+              0.029112772008595293
+            ],
+            "neural_q05_q50_q95": [
+              0.022496124356985094,
+              0.026694047264754772,
+              0.029782616440206765
+            ],
+            "mean_error_reference_sd": -1.7086605485435595,
+            "interval_width_relative_error": 1.7244393303638823,
+            "passes_point_comparison": false
+          },
+          "kappa": {
+            "reference_q05_q50_q95": [
+              2.5619117150245034,
+              3.068932877118515,
+              3.6028369055714435
+            ],
+            "neural_q05_q50_q95": [
+              1.6181069374084474,
+              3.0541898012161255,
+              4.9840865373611445
+            ],
+            "mean_error_reference_sd": 0.09029398228130957,
+            "interval_width_relative_error": 2.2336421776708937,
+            "passes_point_comparison": false
+          },
+          "theta": {
+            "reference_q05_q50_q95": [
+              0.05669890800751521,
+              0.06073695282364686,
+              0.0655292829633594
+            ],
+            "neural_q05_q50_q95": [
+              0.049601711332798004,
+              0.06116378679871559,
+              0.08780465535819529
+            ],
+            "mean_error_reference_sd": 1.1761365688125898,
+            "interval_width_relative_error": 3.3263105152871795,
+            "passes_point_comparison": false
+          },
+          "vol_of_vol": {
+            "reference_q05_q50_q95": [
+              1.4203853280106897,
+              1.479028258506348,
+              1.4985935865704545
+            ],
+            "neural_q05_q50_q95": [
+              1.2974509418010711,
+              1.460288643836975,
+              1.4961204171180724
+            ],
+            "mean_error_reference_sd": -1.4646204648661105,
+            "interval_width_relative_error": 1.5402621024374699,
+            "passes_point_comparison": false
+          },
+          "rho": {
+            "reference_q05_q50_q95": [
+              -0.7183411031923743,
+              -0.6893703434497015,
+              -0.6602771854793292
+            ],
+            "neural_q05_q50_q95": [
+              -0.7507026970386506,
+              -0.6624579429626465,
+              -0.5948744505643845
+            ],
+            "mean_error_reference_sd": 1.208553829413258,
+            "interval_width_relative_error": 1.683736348008369,
+            "passes_point_comparison": false
+          },
+          "tau": {
+            "reference_q05_q50_q95": [
+              0.005642582575778754,
+              0.006633456208682389,
+              0.007939491368038688
+            ],
+            "neural_q05_q50_q95": [
+              0.0012226762832142414,
+              0.008852813392877579,
+              0.01814850643277168
+            ],
+            "mean_error_reference_sd": 3.549454320961915,
+            "interval_width_relative_error": 6.368960494467032,
+            "passes_point_comparison": false
+          }
+        },
+        "products": {
+          "control": {
+            "interval": [
+              0.0,
+              0.05762249492643328
+            ],
+            "reference_q05_q10_q50_q90_q95": [
+              0.029442254970920997,
+              0.02968654111547936,
+              0.030537646183451374,
+              0.03140306677360374,
+              0.031638015627093896
+            ],
+            "neural_q05_q10_q50_q90_q95": [
+              0.025770203582942488,
+              0.02717313151806593,
+              0.02953873947262764,
+              0.03174275420606136,
+              0.032351587526500226
+            ],
+            "q10_q90_absolute_error": [
+              0.002513409597413429,
+              0.0003396874324576235
+            ],
+            "tolerance": 0.0002195760656172899,
+            "passes_point_comparison": false
+          },
+          "affected": {
+            "interval": [
+              0.2220060565702689,
+              0.8903850520040588
+            ],
+            "reference_q05_q10_q50_q90_q95": [
+              0.051476464693591836,
+              0.05195257498316852,
+              0.05361967701192686,
+              0.05529006937982368,
+              0.05572960720176501
+            ],
+            "neural_q05_q10_q50_q90_q95": [
+              0.04634421337395907,
+              0.04915635660290718,
+              0.053483301773667336,
+              0.05869108177721501,
+              0.0627739030867815
+            ],
+            "q10_q90_absolute_error": [
+              0.0027962183802613394,
+              0.00340101239739133
+            ],
+            "tolerance": 0.0004253142508173172,
+            "passes_point_comparison": false
+          }
+        },
+        "synthetic_calibration": {
+          "initial_variance": {
+            "covered": 126,
+            "cases": 128,
+            "coverage_90": 0.984375,
+            "coverage_exact_ci95": [
+              0.944697409977551,
+              0.9981021068782607
+            ],
+            "unadjusted_exact_p_value": 0.0003079625227475867,
+            "rank_histogram_10bins": [
+              3,
+              11,
+              12,
+              14,
+              17,
+              28,
+              16,
+              15,
+              5,
+              7
+            ],
+            "posterior_mean_rmse": 0.0018943221055343342
+          },
+          "kappa": {
+            "covered": 115,
+            "cases": 128,
+            "coverage_90": 0.8984375,
+            "coverage_exact_ci95": [
+              0.8325876836313582,
+              0.9448045044185333
+            ],
+            "unadjusted_exact_p_value": 0.8832232313367313,
+            "rank_histogram_10bins": [
+              13,
+              9,
+              11,
+              16,
+              15,
+              20,
+              15,
+              9,
+              8,
+              12
+            ],
+            "posterior_mean_rmse": 1.3788858501780388
+          },
+          "theta": {
+            "covered": 117,
+            "cases": 128,
+            "coverage_90": 0.9140625,
+            "coverage_exact_ci95": [
+              0.8514365078654029,
+              0.9563176931226512
+            ],
+            "unadjusted_exact_p_value": 0.7674445547133205,
+            "rank_histogram_10bins": [
+              12,
+              9,
+              16,
+              13,
+              12,
+              17,
+              11,
+              17,
+              11,
+              10
+            ],
+            "posterior_mean_rmse": 0.014553967369315633
+          },
+          "vol_of_vol": {
+            "covered": 122,
+            "cases": 128,
+            "coverage_90": 0.953125,
+            "coverage_exact_ci95": [
+              0.9007648763061088,
+              0.9826059438597277
+            ],
+            "unadjusted_exact_p_value": 0.053273066001231134,
+            "rank_histogram_10bins": [
+              11,
+              12,
+              19,
+              16,
+              19,
+              11,
+              11,
+              10,
+              12,
+              7
+            ],
+            "posterior_mean_rmse": 0.1338630170228228
+          },
+          "rho": {
+            "covered": 113,
+            "cases": 128,
+            "coverage_90": 0.8828125,
+            "coverage_exact_ci95": [
+              0.8140910983080725,
+              0.9329059181181221
+            ],
+            "unadjusted_exact_p_value": 0.4635423111306709,
+            "rank_histogram_10bins": [
+              13,
+              13,
+              9,
+              21,
+              18,
+              7,
+              14,
+              18,
+              8,
+              7
+            ],
+            "posterior_mean_rmse": 0.1447538303037377
+          },
+          "tau": {
+            "covered": 118,
+            "cases": 128,
+            "coverage_90": 0.921875,
+            "coverage_exact_ci95": [
+              0.8610175408226004,
+              0.9619006105596336
+            ],
+            "unadjusted_exact_p_value": 0.5539796000302555,
+            "rank_histogram_10bins": [
+              18,
+              15,
+              14,
+              9,
+              13,
+              9,
+              16,
+              15,
+              15,
+              4
+            ],
+            "posterior_mean_rmse": 0.005463244445051905
+          }
+        },
+        "numeric_boundary_draw_counts": {
+          "test": 0,
+          "market_c0.5": 0,
+          "market_c1.0": 0,
+          "market_c2.0": 0
+        },
+        "outside_prior_draw_counts": {
+          "test": 0,
+          "market_c0.5": 0,
+          "market_c1.0": 0,
+          "market_c2.0": 0
+        },
+        "conditional_point_comparisons_passed": false,
+        "conclusion": "conditional validation failed; preserve as development evidence"
+      },
+      "short": {
+        "training": {
+          "layout": "short",
+          "names": [
+            "initial_variance",
+            "kappa",
+            "theta",
+            "vol_of_vol",
+            "rho",
+            "tau"
+          ],
+          "bounds": [
+            [
+              0.01,
+              0.16
+            ],
+            [
+              0.1,
+              10.0
+            ],
+            [
+              0.01,
+              0.16
+            ],
+            [
+              0.1,
+              1.5
+            ],
+            [
+              -0.95,
+              -0.1
+            ],
+            [
+              0.0,
+              0.02
+            ]
+          ],
+          "architecture": {
+            "family": "spline",
+            "widths": [
+              128,
+              128
+            ]
+          },
+          "seed": 9011,
+          "updates": 2000,
+          "batch_size": 128,
+          "endpoint_selection": "predeclared exact-update endpoint; validation not used for selection",
+          "history": {
+            "loss": [
+              2.4318935871124268
+            ],
+            "val_loss": [
+              1.039833426475525
+            ]
+          },
+          "training_seconds": 44.382616207934916,
+          "same_seed_reload_exact": true,
+          "versions": {
+            "python": "3.12.16",
+            "bayesflow": "2.1.0",
+            "keras": "3.15.1",
+            "jax": "0.11.1",
+            "numpy": "2.5.3",
+            "scipy": "1.18.1"
+          },
+          "source_sha256": {
+            "trainer": "8cc81f9596b06adc3de4879bcae39bf392ce6b0f741bcda7ac855d47ee938fb1",
+            "pilot": "7189d8d35fb7f776424835e279647867dbd0a3e4bccf00be0a1c915b0725904b"
+          }
+        },
+        "identity": {
+          "training_record_sha256": "c07b1b5a3e16c5cbad57cadc95564dee843b7bce6994702d063de9d23068dfd4",
+          "checkpoint_sha256": "e437f5a99fc4273a1b3817e7c537b6d1b5041185243b7642c0144d29fec05147",
+          "neural_draws_sha256": "7db6d2a9d843a6df0a6f1121c0afd0756eeff7c17d6ede7024128f171946bf2e",
+          "bank_payload_sha256": "18b307727641d64513e38d7c60eec0447eced8e56877609c781c5f3e49b763b5",
+          "bank_record_sha256": "c26dc1e28e7d6388f65dc524c3a14a89322cd79f385d742b586cf4789d253d9b",
+          "bank_split_counts": {
+            "train": 20000,
+            "validation": 1000,
+            "test": 128
+          },
+          "bank_pricing_seconds": 20.99378625000827,
+          "reference_run_sha256": "995799c3a6ac6d38730d5ba30a6d2c4496f31334c1dd997661ef240c1a07b18e",
+          "reference_chains_sha256": "0dbf8f0e252367b8f384e50eafa86112f9082046f4f06ebf4bda4ffc2f49a094",
+          "reference_diagnostics_sha256": "2f6fa5cfb61b57f2de986c03c94835976097e66ca7a1a8369e2033b91218361b"
+        },
+        "reference_mcmc_diagnostics_passed": true,
+        "parameters": {
+          "initial_variance": {
+            "reference_q05_q50_q95": [
+              0.023342354944610302,
+              0.025798855496895583,
+              0.028378930669296552
+            ],
+            "neural_q05_q50_q95": [
+              0.017905701696872712,
+              0.02498690877109766,
+              0.029320696275681256
+            ],
+            "mean_error_reference_sd": -0.8115454010754406,
+            "interval_width_relative_error": 1.2664197269702786,
+            "passes_point_comparison": false
+          },
+          "kappa": {
+            "reference_q05_q50_q95": [
+              1.0650508265525431,
+              2.073667719855097,
+              3.941290838096891
+            ],
+            "neural_q05_q50_q95": [
+              0.6087276399135589,
+              2.5526092052459717,
+              7.029844522476196
+            ],
+            "mean_error_reference_sd": 0.9068352062467595,
+            "interval_width_relative_error": 1.2324690765687976,
+            "passes_point_comparison": false
+          },
+          "theta": {
+            "reference_q05_q50_q95": [
+              0.05952795150337894,
+              0.09056677286137149,
+              0.14621062787100947
+            ],
+            "neural_q05_q50_q95": [
+              0.04706380479037762,
+              0.08463605120778084,
+              0.1539603628218174
+            ],
+            "mean_error_reference_sd": -0.07921451965924096,
+            "interval_width_relative_error": 0.23319401881501722,
+            "passes_point_comparison": true
+          },
+          "vol_of_vol": {
+            "reference_q05_q50_q95": [
+              1.3527823710588394,
+              1.4618377658442143,
+              1.4967884407320238
+            ],
+            "neural_q05_q50_q95": [
+              1.2863985240459441,
+              1.4690995812416077,
+              1.496664720773697
+            ],
+            "mean_error_reference_sd": -0.1785001692910373,
+            "interval_width_relative_error": 0.46012037690454943,
+            "passes_point_comparison": false
+          },
+          "rho": {
+            "reference_q05_q50_q95": [
+              -0.7437036818047378,
+              -0.6895127142429998,
+              -0.6380453877595409
+            ],
+            "neural_q05_q50_q95": [
+              -0.7874278277158737,
+              -0.6518808007240295,
+              -0.5648101508617401
+            ],
+            "mean_error_reference_sd": 0.8797447676665228,
+            "interval_width_relative_error": 1.1069588418577494,
+            "passes_point_comparison": false
+          },
+          "tau": {
+            "reference_q05_q50_q95": [
+              0.0064915213229655285,
+              0.008235633773494754,
+              0.010823001875063512
+            ],
+            "neural_q05_q50_q95": [
+              0.0016106309543829412,
+              0.011138217989355326,
+              0.019153917301446197
+            ],
+            "mean_error_reference_sd": 1.8120270747404474,
+            "interval_width_relative_error": 3.0501824113156966,
+            "passes_point_comparison": false
+          }
+        },
+        "products": {
+          "control": {
+            "interval": [
+              0.0,
+              0.05762249492643328
+            ],
+            "reference_q05_q10_q50_q90_q95": [
+              0.027868578324563582,
+              0.028230885193366584,
+              0.029505563868724043,
+              0.030804478399786325,
+              0.03120774549957335
+            ],
+            "neural_q05_q10_q50_q90_q95": [
+              0.02372301071882248,
+              0.025722574070096017,
+              0.028957290574908257,
+              0.03162144646048546,
+              0.032337289303541183
+            ],
+            "q10_q90_absolute_error": [
+              0.0025083111232705665,
+              0.0008169680606991345
+            ],
+            "tolerance": 0.0003339167175009768,
+            "passes_point_comparison": false
+          },
+          "affected": {
+            "interval": [
+              0.2220060565702689,
+              0.8903850520040588
+            ],
+            "reference_q05_q10_q50_q90_q95": [
+              0.05382730279138966,
+              0.05665406246796515,
+              0.0677744720398907,
+              0.07901072581175117,
+              0.08141947550790614
+            ],
+            "neural_q05_q10_q50_q90_q95": [
+              0.04334029462188482,
+              0.0491085808724165,
+              0.0651571936905384,
+              0.08153902217745781,
+              0.08602610677480697
+            ],
+            "q10_q90_absolute_error": [
+              0.007545481595548652,
+              0.002528296365706645
+            ],
+            "tolerance": 0.002759217271651648,
+            "passes_point_comparison": false
+          }
+        },
+        "synthetic_calibration": {
+          "initial_variance": {
+            "covered": 118,
+            "cases": 128,
+            "coverage_90": 0.921875,
+            "coverage_exact_ci95": [
+              0.8610175408226004,
+              0.9619006105596336
+            ],
+            "unadjusted_exact_p_value": 0.5539796000302555,
+            "rank_histogram_10bins": [
+              4,
+              19,
+              13,
+              15,
+              14,
+              19,
+              10,
+              11,
+              12,
+              11
+            ],
+            "posterior_mean_rmse": 0.002972174489399897
+          },
+          "kappa": {
+            "covered": 113,
+            "cases": 128,
+            "coverage_90": 0.8828125,
+            "coverage_exact_ci95": [
+              0.8140910983080725,
+              0.9329059181181221
+            ],
+            "unadjusted_exact_p_value": 0.4635423111306709,
+            "rank_histogram_10bins": [
+              18,
+              8,
+              12,
+              11,
+              16,
+              7,
+              12,
+              17,
+              12,
+              15
+            ],
+            "posterior_mean_rmse": 2.478137499108077
+          },
+          "theta": {
+            "covered": 115,
+            "cases": 128,
+            "coverage_90": 0.8984375,
+            "coverage_exact_ci95": [
+              0.8325876836313582,
+              0.9448045044185333
+            ],
+            "unadjusted_exact_p_value": 0.8832232313367313,
+            "rank_histogram_10bins": [
+              19,
+              13,
+              9,
+              12,
+              12,
+              15,
+              12,
+              12,
+              10,
+              14
+            ],
+            "posterior_mean_rmse": 0.02236694745034328
+          },
+          "vol_of_vol": {
+            "covered": 119,
+            "cases": 128,
+            "coverage_90": 0.9296875,
+            "coverage_exact_ci95": [
+              0.8707206120454714,
+              0.9673463726807808
+            ],
+            "unadjusted_exact_p_value": 0.3042856558188598,
+            "rank_histogram_10bins": [
+              13,
+              12,
+              17,
+              15,
+              11,
+              14,
+              13,
+              13,
+              11,
+              9
+            ],
+            "posterior_mean_rmse": 0.17033108457750928
+          },
+          "rho": {
+            "covered": 117,
+            "cases": 128,
+            "coverage_90": 0.9140625,
+            "coverage_exact_ci95": [
+              0.8514365078654029,
+              0.9563176931226512
+            ],
+            "unadjusted_exact_p_value": 0.7674445547133205,
+            "rank_histogram_10bins": [
+              15,
+              11,
+              15,
+              20,
+              14,
+              10,
+              14,
+              10,
+              10,
+              9
+            ],
+            "posterior_mean_rmse": 0.18106630368204973
+          },
+          "tau": {
+            "covered": 117,
+            "cases": 128,
+            "coverage_90": 0.9140625,
+            "coverage_exact_ci95": [
+              0.8514365078654029,
+              0.9563176931226512
+            ],
+            "unadjusted_exact_p_value": 0.7674445547133205,
+            "rank_histogram_10bins": [
+              18,
+              15,
+              13,
+              14,
+              8,
+              11,
+              16,
+              13,
+              16,
+              4
+            ],
+            "posterior_mean_rmse": 0.005647153396523263
+          }
+        },
+        "numeric_boundary_draw_counts": {
+          "test": 1,
+          "market_c0.5": 0,
+          "market_c1.0": 0,
+          "market_c2.0": 0
+        },
+        "outside_prior_draw_counts": {
+          "test": 1,
+          "market_c0.5": 0,
+          "market_c1.0": 0,
+          "market_c2.0": 0
+        },
+        "conditional_point_comparisons_passed": false,
+        "conclusion": "conditional validation failed; preserve as development evidence"
+      }
+    },
+    "10000": {
+      "full": {
+        "training": {
+          "layout": "full",
+          "names": [
+            "initial_variance",
+            "kappa",
+            "theta",
+            "vol_of_vol",
+            "rho",
+            "tau"
+          ],
+          "bounds": [
+            [
+              0.01,
+              0.16
+            ],
+            [
+              0.1,
+              10.0
+            ],
+            [
+              0.01,
+              0.16
+            ],
+            [
+              0.1,
+              1.5
+            ],
+            [
+              -0.95,
+              -0.1
+            ],
+            [
+              0.0,
+              0.02
+            ]
+          ],
+          "architecture": {
+            "family": "spline",
+            "widths": [
+              128,
+              128
+            ]
+          },
+          "seed": 9011,
+          "updates": 10000,
+          "batch_size": 128,
+          "endpoint_selection": "predeclared exact-update endpoint; validation not used for selection",
+          "history": {
+            "loss": [
+              -1.0614842176437378
+            ],
+            "val_loss": [
+              -2.5755162239074707
+            ]
+          },
+          "training_seconds": 194.5155016251374,
+          "same_seed_reload_exact": true,
+          "versions": {
+            "python": "3.12.16",
+            "bayesflow": "2.1.0",
+            "keras": "3.15.1",
+            "jax": "0.11.1",
+            "numpy": "2.5.3",
+            "scipy": "1.18.1"
+          },
+          "source_sha256": {
+            "trainer": "8cc81f9596b06adc3de4879bcae39bf392ce6b0f741bcda7ac855d47ee938fb1",
+            "pilot": "7189d8d35fb7f776424835e279647867dbd0a3e4bccf00be0a1c915b0725904b"
+          }
+        },
+        "identity": {
+          "training_record_sha256": "d5129f6661127eaa9957d5de08af5379d75559c9078a7cffdfd6d35d058a4604",
+          "checkpoint_sha256": "44a6f3fb438b444c851742ac3e37c6f3b60f4510c8f066ccfa36ed04fc44af72",
+          "neural_draws_sha256": "17418fb398feee973ddeeeb877f4f7bac56a92a2eddedc1129ae3a4715a4c1de",
+          "bank_payload_sha256": "18b307727641d64513e38d7c60eec0447eced8e56877609c781c5f3e49b763b5",
+          "bank_record_sha256": "c26dc1e28e7d6388f65dc524c3a14a89322cd79f385d742b586cf4789d253d9b",
+          "bank_split_counts": {
+            "train": 20000,
+            "validation": 1000,
+            "test": 128
+          },
+          "bank_pricing_seconds": 20.99378625000827,
+          "reference_run_sha256": "6c2240ef6550e2b4e0ffb26a9a2fb9dbcae59c21665715c0d3aa09b5e5b30760",
+          "reference_chains_sha256": "9ed3b8ac8db57fe96dccf4c156478aea2e23188a636b2bc6eb687517119322d3",
+          "reference_diagnostics_sha256": "5488db81ab1376a9ea0f7cc2908f0aed8de9fb6a098310d0ce9b85000df4cd4d"
+        },
+        "reference_mcmc_diagnostics_passed": true,
+        "parameters": {
+          "initial_variance": {
+            "reference_q05_q50_q95": [
+              0.026438279682040725,
+              0.027798635513524253,
+              0.029112772008595293
+            ],
+            "neural_q05_q50_q95": [
+              0.025155821442604066,
+              0.027625015936791897,
+              0.02986650262027979
+            ],
+            "mean_error_reference_sd": -0.351483625346247,
+            "interval_width_relative_error": 0.7613365837337387,
+            "passes_point_comparison": false
+          },
+          "kappa": {
+            "reference_q05_q50_q95": [
+              2.5619117150245034,
+              3.068932877118515,
+              3.6028369055714435
+            ],
+            "neural_q05_q50_q95": [
+              2.0866382241249086,
+              3.2553558349609375,
+              4.67147376537323
+            ],
+            "mean_error_reference_sd": 0.7755712111124604,
+            "interval_width_relative_error": 1.4832097106710953,
+            "passes_point_comparison": false
+          },
+          "theta": {
+            "reference_q05_q50_q95": [
+              0.05669890800751521,
+              0.06073695282364686,
+              0.0655292829633594
+            ],
+            "neural_q05_q50_q95": [
+              0.05109231695532799,
+              0.05955873802304268,
+              0.07141310945153236
+            ],
+            "mean_error_reference_sd": -0.12569423119955664,
+            "interval_width_relative_error": 1.3012377841051355,
+            "passes_point_comparison": false
+          },
+          "vol_of_vol": {
+            "reference_q05_q50_q95": [
+              1.4203853280106897,
+              1.479028258506348,
+              1.4985935865704545
+            ],
+            "neural_q05_q50_q95": [
+              1.3612010061740876,
+              1.484491765499115,
+              1.4979289889335632
+            ],
+            "mean_error_reference_sd": -0.35999529363951943,
+            "interval_width_relative_error": 0.7482550471954514,
+            "passes_point_comparison": false
+          },
+          "rho": {
+            "reference_q05_q50_q95": [
+              -0.7183411031923743,
+              -0.6893703434497015,
+              -0.6602771854793292
+            ],
+            "neural_q05_q50_q95": [
+              -0.7294433504343033,
+              -0.6737174689769745,
+              -0.6261069148778915
+            ],
+            "mean_error_reference_sd": 0.8140114901332082,
+            "interval_width_relative_error": 0.7797013985020071,
+            "passes_point_comparison": false
+          },
+          "tau": {
+            "reference_q05_q50_q95": [
+              0.005642582575778754,
+              0.006633456208682389,
+              0.007939491368038688
+            ],
+            "neural_q05_q50_q95": [
+              0.0013916809170041234,
+              0.007392798084765673,
+              0.015024835150688887
+            ],
+            "mean_error_reference_sd": 1.4316632826758264,
+            "interval_width_relative_error": 4.935435607902859,
+            "passes_point_comparison": false
+          }
+        },
+        "products": {
+          "control": {
+            "interval": [
+              0.0,
+              0.05762249492643328
+            ],
+            "reference_q05_q10_q50_q90_q95": [
+              0.029442254970920997,
+              0.02968654111547936,
+              0.030537646183451374,
+              0.03140306677360374,
+              0.031638015627093896
+            ],
+            "neural_q05_q10_q50_q90_q95": [
+              0.028316066600382328,
+              0.028914187848567963,
+              0.0304289348423481,
+              0.03189081847667694,
+              0.032246004603803155
+            ],
+            "q10_q90_absolute_error": [
+              0.0007723532669113957,
+              0.00048775170307320537
+            ],
+            "tolerance": 0.0002195760656172899,
+            "passes_point_comparison": false
+          },
+          "affected": {
+            "interval": [
+              0.2220060565702689,
+              0.8903850520040588
+            ],
+            "reference_q05_q10_q50_q90_q95": [
+              0.051476464693591836,
+              0.05195257498316852,
+              0.05361967701192686,
+              0.05529006937982368,
+              0.05572960720176501
+            ],
+            "neural_q05_q10_q50_q90_q95": [
+              0.04812306445091963,
+              0.049666302278637886,
+              0.0531868040561676,
+              0.05651351660490036,
+              0.057672718167304994
+            ],
+            "q10_q90_absolute_error": [
+              0.002286272704530634,
+              0.001223447225076682
+            ],
+            "tolerance": 0.0004253142508173172,
+            "passes_point_comparison": false
+          }
+        },
+        "synthetic_calibration": {
+          "initial_variance": {
+            "covered": 122,
+            "cases": 128,
+            "coverage_90": 0.953125,
+            "coverage_exact_ci95": [
+              0.9007648763061088,
+              0.9826059438597277
+            ],
+            "unadjusted_exact_p_value": 0.053273066001231134,
+            "rank_histogram_10bins": [
+              6,
+              13,
+              10,
+              21,
+              24,
+              13,
+              17,
+              8,
+              10,
+              6
+            ],
+            "posterior_mean_rmse": 0.001735640193675257
+          },
+          "kappa": {
+            "covered": 115,
+            "cases": 128,
+            "coverage_90": 0.8984375,
+            "coverage_exact_ci95": [
+              0.8325876836313582,
+              0.9448045044185333
+            ],
+            "unadjusted_exact_p_value": 0.8832232313367313,
+            "rank_histogram_10bins": [
+              10,
+              10,
+              12,
+              12,
+              15,
+              21,
+              18,
+              9,
+              8,
+              13
+            ],
+            "posterior_mean_rmse": 1.1981018699012553
+          },
+          "theta": {
+            "covered": 118,
+            "cases": 128,
+            "coverage_90": 0.921875,
+            "coverage_exact_ci95": [
+              0.8610175408226004,
+              0.9619006105596336
+            ],
+            "unadjusted_exact_p_value": 0.5539796000302555,
+            "rank_histogram_10bins": [
+              10,
+              11,
+              13,
+              11,
+              14,
+              17,
+              10,
+              16,
+              11,
+              15
+            ],
+            "posterior_mean_rmse": 0.013174803424277853
+          },
+          "vol_of_vol": {
+            "covered": 121,
+            "cases": 128,
+            "coverage_90": 0.9453125,
+            "coverage_exact_ci95": [
+              0.8905679484317433,
+              0.9777328541900766
+            ],
+            "unadjusted_exact_p_value": 0.10333830753909143,
+            "rank_histogram_10bins": [
+              12,
+              14,
+              18,
+              15,
+              14,
+              12,
+              13,
+              13,
+              9,
+              8
+            ],
+            "posterior_mean_rmse": 0.12094417030715525
+          },
+          "rho": {
+            "covered": 115,
+            "cases": 128,
+            "coverage_90": 0.8984375,
+            "coverage_exact_ci95": [
+              0.8325876836313582,
+              0.9448045044185333
+            ],
+            "unadjusted_exact_p_value": 0.8832232313367313,
+            "rank_histogram_10bins": [
+              16,
+              15,
+              9,
+              17,
+              22,
+              10,
+              9,
+              14,
+              7,
+              9
+            ],
+            "posterior_mean_rmse": 0.1405415636025503
+          },
+          "tau": {
+            "covered": 118,
+            "cases": 128,
+            "coverage_90": 0.921875,
+            "coverage_exact_ci95": [
+              0.8610175408226004,
+              0.9619006105596336
+            ],
+            "unadjusted_exact_p_value": 0.5539796000302555,
+            "rank_histogram_10bins": [
+              15,
+              15,
+              8,
+              14,
+              14,
+              14,
+              14,
+              15,
+              17,
+              2
+            ],
+            "posterior_mean_rmse": 0.0037297639244329166
+          }
+        },
+        "numeric_boundary_draw_counts": {
+          "test": 0,
+          "market_c0.5": 0,
+          "market_c1.0": 0,
+          "market_c2.0": 0
+        },
+        "outside_prior_draw_counts": {
+          "test": 0,
+          "market_c0.5": 0,
+          "market_c1.0": 0,
+          "market_c2.0": 0
+        },
+        "conditional_point_comparisons_passed": false,
+        "conclusion": "conditional validation failed; preserve as development evidence"
+      },
+      "short": {
+        "training": {
+          "layout": "short",
+          "names": [
+            "initial_variance",
+            "kappa",
+            "theta",
+            "vol_of_vol",
+            "rho",
+            "tau"
+          ],
+          "bounds": [
+            [
+              0.01,
+              0.16
+            ],
+            [
+              0.1,
+              10.0
+            ],
+            [
+              0.01,
+              0.16
+            ],
+            [
+              0.1,
+              1.5
+            ],
+            [
+              -0.95,
+              -0.1
+            ],
+            [
+              0.0,
+              0.02
+            ]
+          ],
+          "architecture": {
+            "family": "spline",
+            "widths": [
+              128,
+              128
+            ]
+          },
+          "seed": 9011,
+          "updates": 10000,
+          "batch_size": 128,
+          "endpoint_selection": "predeclared exact-update endpoint; validation not used for selection",
+          "history": {
+            "loss": [
+              1.076164722442627
+            ],
+            "val_loss": [
+              0.06411760300397873
+            ]
+          },
+          "training_seconds": 194.38018599990755,
+          "same_seed_reload_exact": true,
+          "versions": {
+            "python": "3.12.16",
+            "bayesflow": "2.1.0",
+            "keras": "3.15.1",
+            "jax": "0.11.1",
+            "numpy": "2.5.3",
+            "scipy": "1.18.1"
+          },
+          "source_sha256": {
+            "trainer": "8cc81f9596b06adc3de4879bcae39bf392ce6b0f741bcda7ac855d47ee938fb1",
+            "pilot": "7189d8d35fb7f776424835e279647867dbd0a3e4bccf00be0a1c915b0725904b"
+          }
+        },
+        "identity": {
+          "training_record_sha256": "04736e7b71c4b02534f7b376e6af8daaeea9db30446fc6e79fae823dd5e7fcae",
+          "checkpoint_sha256": "7ce3bbdf329dcb092865c95e38fa4cd48eac2670a12f704bc3c9b76378e828b2",
+          "neural_draws_sha256": "579f1b5edce386533ff6609732e6dec89f6faf4339ebe8453faeaebae395b968",
+          "bank_payload_sha256": "18b307727641d64513e38d7c60eec0447eced8e56877609c781c5f3e49b763b5",
+          "bank_record_sha256": "c26dc1e28e7d6388f65dc524c3a14a89322cd79f385d742b586cf4789d253d9b",
+          "bank_split_counts": {
+            "train": 20000,
+            "validation": 1000,
+            "test": 128
+          },
+          "bank_pricing_seconds": 20.99378625000827,
+          "reference_run_sha256": "995799c3a6ac6d38730d5ba30a6d2c4496f31334c1dd997661ef240c1a07b18e",
+          "reference_chains_sha256": "0dbf8f0e252367b8f384e50eafa86112f9082046f4f06ebf4bda4ffc2f49a094",
+          "reference_diagnostics_sha256": "2f6fa5cfb61b57f2de986c03c94835976097e66ca7a1a8369e2033b91218361b"
+        },
+        "reference_mcmc_diagnostics_passed": true,
+        "parameters": {
+          "initial_variance": {
+            "reference_q05_q50_q95": [
+              0.023342354944610302,
+              0.025798855496895583,
+              0.028378930669296552
+            ],
+            "neural_q05_q50_q95": [
+              0.022018695436418056,
+              0.025923244655132294,
+              0.029722699709236623
+            ],
+            "mean_error_reference_sd": 0.01878905818589492,
+            "interval_width_relative_error": 0.5296115245638409,
+            "passes_point_comparison": false
+          },
+          "kappa": {
+            "reference_q05_q50_q95": [
+              1.0650508265525431,
+              2.073667719855097,
+              3.941290838096891
+            ],
+            "neural_q05_q50_q95": [
+              0.9427842617034912,
+              2.7475143671035767,
+              5.9325694799423205
+            ],
+            "mean_error_reference_sd": 0.8264565200456563,
+            "interval_width_relative_error": 0.7348292208617351,
+            "passes_point_comparison": false
+          },
+          "theta": {
+            "reference_q05_q50_q95": [
+              0.05952795150337894,
+              0.09056677286137149,
+              0.14621062787100947
+            ],
+            "neural_q05_q50_q95": [
+              0.04662373103201389,
+              0.07593359798192978,
+              0.15202989056706429
+            ],
+            "mean_error_reference_sd": -0.3381915154416861,
+            "interval_width_relative_error": 0.21600028923901204,
+            "passes_point_comparison": false
+          },
+          "vol_of_vol": {
+            "reference_q05_q50_q95": [
+              1.3527823710588394,
+              1.4618377658442143,
+              1.4967884407320238
+            ],
+            "neural_q05_q50_q95": [
+              1.2555154621601106,
+              1.4587080478668213,
+              1.4974962770938873
+            ],
+            "mean_error_reference_sd": -0.47113041578784753,
+            "interval_width_relative_error": 0.6803514982593568,
+            "passes_point_comparison": false
+          },
+          "rho": {
+            "reference_q05_q50_q95": [
+              -0.7437036818047378,
+              -0.6895127142429998,
+              -0.6380453877595409
+            ],
+            "neural_q05_q50_q95": [
+              -0.8071754157543183,
+              -0.6916094124317169,
+              -0.6109412252902985
+            ],
+            "mean_error_reference_sd": -0.19373276909087955,
+            "interval_width_relative_error": 0.8572530650559032,
+            "passes_point_comparison": false
+          },
+          "tau": {
+            "reference_q05_q50_q95": [
+              0.0064915213229655285,
+              0.008235633773494754,
+              0.010823001875063512
+            ],
+            "neural_q05_q50_q95": [
+              0.0011074753187131138,
+              0.008989404886960983,
+              0.018114814814180133
+            ],
+            "mean_error_reference_sd": 0.6605945046125258,
+            "interval_width_relative_error": 2.9264494647746697,
+            "passes_point_comparison": false
+          }
+        },
+        "products": {
+          "control": {
+            "interval": [
+              0.0,
+              0.05762249492643328
+            ],
+            "reference_q05_q10_q50_q90_q95": [
+              0.027868578324563582,
+              0.028230885193366584,
+              0.029505563868724043,
+              0.030804478399786325,
+              0.03120774549957335
+            ],
+            "neural_q05_q10_q50_q90_q95": [
+              0.026622359082102774,
+              0.027464823424816133,
+              0.02969430759549141,
+              0.031536223366856575,
+              0.03217754550278187
+            ],
+            "q10_q90_absolute_error": [
+              0.0007660617685504509,
+              0.0007317449670702497
+            ],
+            "tolerance": 0.0003339167175009768,
+            "passes_point_comparison": false
+          },
+          "affected": {
+            "interval": [
+              0.2220060565702689,
+              0.8903850520040588
+            ],
+            "reference_q05_q10_q50_q90_q95": [
+              0.05382730279138966,
+              0.05665406246796515,
+              0.0677744720398907,
+              0.07901072581175117,
+              0.08141947550790614
+            ],
+            "neural_q05_q10_q50_q90_q95": [
+              0.043736846372485164,
+              0.04869054891169071,
+              0.06251371651887894,
+              0.07860067486763,
+              0.08273909017443656
+            ],
+            "q10_q90_absolute_error": [
+              0.007963513556274442,
+              0.00041005094412116527
+            ],
+            "tolerance": 0.002759217271651648,
+            "passes_point_comparison": false
+          }
+        },
+        "synthetic_calibration": {
+          "initial_variance": {
+            "covered": 118,
+            "cases": 128,
+            "coverage_90": 0.921875,
+            "coverage_exact_ci95": [
+              0.8610175408226004,
+              0.9619006105596336
+            ],
+            "unadjusted_exact_p_value": 0.5539796000302555,
+            "rank_histogram_10bins": [
+              10,
+              13,
+              15,
+              12,
+              12,
+              17,
+              12,
+              13,
+              14,
+              10
+            ],
+            "posterior_mean_rmse": 0.0029505924706213905
+          },
+          "kappa": {
+            "covered": 119,
+            "cases": 128,
+            "coverage_90": 0.9296875,
+            "coverage_exact_ci95": [
+              0.8707206120454714,
+              0.9673463726807808
+            ],
+            "unadjusted_exact_p_value": 0.3042856558188598,
+            "rank_histogram_10bins": [
+              15,
+              10,
+              13,
+              12,
+              17,
+              10,
+              15,
+              11,
+              11,
+              14
+            ],
+            "posterior_mean_rmse": 2.286187542299687
+          },
+          "theta": {
+            "covered": 116,
+            "cases": 128,
+            "coverage_90": 0.90625,
+            "coverage_exact_ci95": [
+              0.841963633474165,
+              0.9506145040346635
+            ],
+            "unadjusted_exact_p_value": 1.0,
+            "rank_histogram_10bins": [
+              17,
+              19,
+              11,
+              13,
+              8,
+              17,
+              10,
+              17,
+              6,
+              10
+            ],
+            "posterior_mean_rmse": 0.02149798110680314
+          },
+          "vol_of_vol": {
+            "covered": 118,
+            "cases": 128,
+            "coverage_90": 0.921875,
+            "coverage_exact_ci95": [
+              0.8610175408226004,
+              0.9619006105596336
+            ],
+            "unadjusted_exact_p_value": 0.5539796000302555,
+            "rank_histogram_10bins": [
+              15,
+              10,
+              16,
+              18,
+              10,
+              14,
+              14,
+              9,
+              17,
+              5
+            ],
+            "posterior_mean_rmse": 0.16120028024564675
+          },
+          "rho": {
+            "covered": 116,
+            "cases": 128,
+            "coverage_90": 0.90625,
+            "coverage_exact_ci95": [
+              0.841963633474165,
+              0.9506145040346635
+            ],
+            "unadjusted_exact_p_value": 1.0,
+            "rank_histogram_10bins": [
+              13,
+              15,
+              16,
+              14,
+              18,
+              16,
+              12,
+              5,
+              8,
+              11
+            ],
+            "posterior_mean_rmse": 0.17296767469250823
+          },
+          "tau": {
+            "covered": 119,
+            "cases": 128,
+            "coverage_90": 0.9296875,
+            "coverage_exact_ci95": [
+              0.8707206120454714,
+              0.9673463726807808
+            ],
+            "unadjusted_exact_p_value": 0.3042856558188598,
+            "rank_histogram_10bins": [
+              19,
+              12,
+              14,
+              10,
+              14,
+              13,
+              11,
+              17,
+              14,
+              4
+            ],
+            "posterior_mean_rmse": 0.005142329434900519
+          }
+        },
+        "numeric_boundary_draw_counts": {
+          "test": 2,
+          "market_c0.5": 1,
+          "market_c1.0": 1,
+          "market_c2.0": 1
+        },
+        "outside_prior_draw_counts": {
+          "test": 2,
+          "market_c0.5": 1,
+          "market_c1.0": 1,
+          "market_c2.0": 1
+        },
+        "conditional_point_comparisons_passed": false,
+        "conclusion": "conditional validation failed; preserve as development evidence"
+      }
+    }
+  }
+}

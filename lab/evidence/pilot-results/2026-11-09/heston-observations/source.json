@@ -1,0 +1,56 @@
+{
+  "calendar_additional_source": "https://ir.theice.com/press/news-details/2025/NYSE-Group-Announces-2026-2027-and-2028-Holiday-and-Early-Closings-Calendar/",
+  "calendar_source": "https://www.cboe.com/about/hours/us-options",
+  "contract_convention": "SPXW European cash settlement at 16:00 America/New_York; early closes excluded",
+  "contract_source": "https://www.cboe.com/tradable-products/sp-500/spx-options/spx-specifications",
+  "effective_url": "https://cdn-api.cboe.com/api/global/delayed_quotes/options/_SPX.json",
+  "excluded_early_close_dates": [
+    "2026-11-27",
+    "2026-12-24",
+    "2027-11-26",
+    "2028-07-03",
+    "2028-11-24"
+  ],
+  "exclusion_counts": {
+    "excluded_early_close_expiry": 600,
+    "other_root": 10590,
+    "same_day_or_past_expiry": 574,
+    "zero_bid_or_locked_crossed_market": 418
+  },
+  "http_last_modified_utc": "2026-11-09T20:28:40+00:00",
+  "http_response_date_utc": "2026-11-09T20:29:09+00:00",
+  "input_quote_count": 31584,
+  "quality_limitations": [
+    "Delayed intraday snapshot; no per-contract bid/ask update timestamps.",
+    "Last-trade timestamps do not establish bid/ask freshness or synchronization.",
+    "Timezone assignments for naive vendor fields are explicit assumptions.",
+    "Snapshot generation time is used as valuation time unless explicitly overridden."
+  ],
+  "raw_path_from_repository_root": "local-artifacts/heston-observations-20261109/raw.json",
+  "raw_sha256": "8c730e1108e3ba0a0f7b2871799880a63eca6ad337be7e4c00de6e2989b59458",
+  "raw_size_bytes": 14091523,
+  "retrieved_file_mtime_utc": "2026-11-09T20:29:09.644795+00:00",
+  "root_counts": {
+    "SPX": 10022,
+    "SPXO": 568,
+    "SPXW": 20994
+  },
+  "schema": "spxw_actual_quotes_v1",
+  "snapshot_timestamp_raw": "2026-11-09 20:28:37",
+  "snapshot_timestamp_utc": "2026-11-09T20:28:37+00:00",
+  "source_url": "https://cdn.cboe.com/api/global/delayed_quotes/options/_SPX.json",
+  "time_convention": "ACT/365F: actual UTC seconds / (365 * 86400)",
+  "timestamp_zone_assumption": "UTC",
+  "trade_time_zone_assumption": "America/New_York",
+  "underlying_last_trade_time_raw": "2026-11-09T15:13:35",
+  "underlying_price": 7571.54,
+  "usable_expiration_count": 38,
+  "usable_quote_count": 19402,
+  "valuation_delay_sensitivity": {
+    "absolute_maturity_change_years": 2.8538812785388127e-05,
+    "alternative": "snapshot generation timestamp minus 15 minutes; sensitivity assumption, not verified individual quote time",
+    "max_relative_maturity_change": 0.010194488180057377,
+    "quote_identity_and_filter_counts_unchanged": true
+  },
+  "valuation_time_utc": "2026-11-09T20:28:37+00:00"
+}

@@ -1,0 +1,488 @@
+{
+  "format": "heston_carry_clock_physical_map_sensitivity_v1",
+  "scope": "Conditional finite-scenario optimization sensitivity; no carry-integrated posterior and no posterior sensitivity claim.",
+  "target": "Normalized independent Gaussian likelihood with physical independent Uniform priors; no coordinate Jacobian.",
+  "optimizer": "scipy L-BFGS-B on linear unit-box physical coordinates, numerical 3-point gradients, finite multistart search",
+  "carry_scenarios": "Eight signed coherent curves from both eigenaxes of standardized (parity-intercept, discount) correlation matrices. Each expiry has conditional-WLS Mahalanobis radius2; level and first-half/last-half sign-tilt patterns. These are stress directions, not joint 95% confidence regions or independent draws.",
+  "clock_scenarios": "Valuation timestamp +/-15min around the frozen baseline; selected physical quotes and carry F,D fixed.",
+  "frozen_quantities": [
+    "actual symbols, strikes, option types",
+    "observed mids and halfspreads",
+    "market vegas",
+    "prior support"
+  ],
+  "limitations": [
+    "WLS carry covariance inherits the assumed spread-to-Gaussian-SD convention.",
+    "Carry anchors and smile quotes can share unmodeled quote errors.",
+    "Finite coherent carry curves do not cover every combination across expiries.",
+    "A physical-density MAP can sit on a support boundary and differs from a transformed-coordinate density MAP.",
+    "Repeated optimizer convergence does not establish global mode coverage.",
+    "The scalar discrepancy cannot remove systematic smile bias."
+  ],
+  "design_sha256": "4b84185e7a072844fd6a3ce0f79aed983d39502607a7a76c79dbf7196f9ed547",
+  "script_sha256": "920fbe9c7c771c0de484d10608649dc3224257c0baf0ef014daa6e490dc567d8",
+  "versions": {
+    "python": "3.12.16",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1"
+  },
+  "settings": {
+    "starts": 3,
+    "maxfun_per_start": 2500,
+    "seed": 261110
+  },
+  "initializer_sha256": {
+    "full": "e93c2dfd2b700cb14c658e890a68235bb3ed922cc9a90683a08b387b71eaa1e9",
+    "short": "46481c8446156113ec9e21e4057162d36a164b4797f5d08394ba4c84ef4c6d6a"
+  },
+  "wall_seconds": 169.93829095805995,
+  "scientific_acceptance": false,
+  "full_record_sha256": "8acad192404869a22b27712d3600442f46b90046b9d98414f3fbf6be922e8383",
+  "full_record_path_from_repository_root": "local-artifacts/heston-observations-20261109/carry-clock-sensitivity/sensitivity.json",
+  "summary": {
+    "full": {
+      "cases": 11,
+      "all_starts_converged": true,
+      "largest_loglike_gap_across_starts": 4.3144154915353283e-10,
+      "baseline_physical_map": [
+        0.02775785985864184,
+        3.1626250831883285,
+        0.060281888638490884,
+        1.5,
+        -0.6866071230760882,
+        0.006149498940522285
+      ],
+      "baseline_physical_map_log_likelihood": -163.66502137793435,
+      "baseline_fitted_expected_variance_strikes": {
+        "control": 0.03054930934457709,
+        "affected": 0.053578312379020526
+      },
+      "support_boundary_parameters": [
+        "vol_of_vol"
+      ],
+      "carry_max_absolute_fit_loglike_delta": 0.32414814574218553,
+      "carry_max_absolute_baseline_price_shift_over_measurement_sigma": 1.2546325143350618,
+      "carry_max_absolute_fitted_row_baseline_price_shift_over_measurement_sigma": 1.2546325143350618,
+      "carry_max_absolute_map_parameter_delta": [
+        0.0001096264577108777,
+        0.003387368732549856,
+        0.0002298233978651823,
+        0.0,
+        0.0007413925387675935,
+        3.7577027148284065e-05
+      ],
+      "carry_max_absolute_expected_variance_strike_delta": {
+        "control": 8.06757210222199e-05,
+        "affected": 0.00015919839822849113
+      },
+      "clock_max_absolute_fit_loglike_delta": 9.000091395705567e-05,
+      "clock_max_absolute_expected_variance_strike_delta": {
+        "control": 1.1226064304481476e-05,
+        "affected": 3.307633843790958e-06
+      },
+      "scenarios": [
+        {
+          "name": "baseline",
+          "fitted_expected_variance_strikes": {
+            "control": 0.03054930934457709,
+            "affected": 0.053578312379020526
+          },
+          "fit_loglike_delta_from_baseline": 0.0,
+          "map_parameters": [
+            0.02775785985864184,
+            3.1626250831883285,
+            0.060281888638490884,
+            1.5,
+            -0.6866071230760882,
+            0.006149498940522285
+          ]
+        },
+        {
+          "name": "carry_level_axis0_minus2se",
+          "fitted_expected_variance_strikes": {
+            "control": 0.03046863362355487,
+            "affected": 0.05373751077724902
+          },
+          "fit_loglike_delta_from_baseline": -0.20334442138008058,
+          "map_parameters": [
+            0.027648233400930963,
+            3.1624066550823287,
+            0.060511712036356066,
+            1.5,
+            -0.6867190293874141,
+            0.0061730090955847815
+          ]
+        },
+        {
+          "name": "carry_level_axis0_plus2se",
+          "fitted_expected_variance_strikes": {
+            "control": 0.03062998444630309,
+            "affected": 0.05341945143985147
+          },
+          "fit_loglike_delta_from_baseline": 0.1932151947982561,
+          "map_parameters": [
+            0.027867439378055914,
+            3.162857590796388,
+            0.06005246725436868,
+            1.5,
+            -0.686497556839498,
+            0.00612724222695198
+          ]
+        },
+        {
+          "name": "carry_level_axis1_minus2se",
+          "fitted_expected_variance_strikes": {
+            "control": 0.03060012201228937,
+            "affected": 0.05346212420475832
+          },
+          "fit_loglike_delta_from_baseline": -0.02447185239500982,
+          "map_parameters": [
+            0.027829566090068522,
+            3.161472375357287,
+            0.06012123393040071,
+            1.5,
+            -0.6858657305373206,
+            0.006152339684204528
+          ]
+        },
+        {
+          "name": "carry_level_axis1_plus2se",
+          "fitted_expected_variance_strikes": {
+            "control": 0.030498545196156177,
+            "affected": 0.05369471333949212
+          },
+          "fit_loglike_delta_from_baseline": 0.020714398230381903,
+          "map_parameters": [
+            0.027686188009973065,
+            3.16375100074794,
+            0.06044284454980614,
+            1.5,
+            -0.6873483407947398,
+            0.006147095713788695
+          ]
+        },
+        {
+          "name": "carry_maturity_tilt_axis0_minus2se",
+          "fitted_expected_variance_strikes": {
+            "control": 0.030595711466838673,
+            "affected": 0.053644451044243015
+          },
+          "fit_loglike_delta_from_baseline": 0.30551593646558217,
+          "map_parameters": [
+            0.027799954409226814,
+            3.1659901095950156,
+            0.06034159005331338,
+            1.5,
+            -0.6871634089319852,
+            0.0061142790347272335
+          ]
+        },
+        {
+          "name": "carry_maturity_tilt_axis0_plus2se",
+          "fitted_expected_variance_strikes": {
+            "control": 0.030502817994893287,
+            "affected": 0.05351235582228283
+          },
+          "fit_loglike_delta_from_baseline": -0.32414814574218553,
+          "map_parameters": [
+            0.027715652119831825,
+            3.1592377144557786,
+            0.060222538701397904,
+            1.5,
+            -0.6860515681132933,
+            0.006187075967670569
+          ]
+        },
+        {
+          "name": "carry_maturity_tilt_axis1_minus2se",
+          "fitted_expected_variance_strikes": {
+            "control": 0.030523273467493083,
+            "affected": 0.053509254567110164
+          },
+          "fit_loglike_delta_from_baseline": -0.16829008639493281,
+          "map_parameters": [
+            0.027735697576889935,
+            3.1649882467125465,
+            0.060191772246290125,
+            1.5,
+            -0.6864183647848131,
+            0.00616898071967716
+          ]
+        },
+        {
+          "name": "carry_maturity_tilt_axis1_plus2se",
+          "fitted_expected_variance_strikes": {
+            "control": 0.030575312134991005,
+            "affected": 0.053647580136747836
+          },
+          "fit_loglike_delta_from_baseline": 0.15880105740825456,
+          "map_parameters": [
+            0.02777999115539847,
+            3.160214910040973,
+            0.060372503497806644,
+            1.5,
+            -0.686794666915092,
+            0.006131168829056017
+          ]
+        },
+        {
+          "name": "clock_valuation_minus15min",
+          "fitted_expected_variance_strikes": {
+            "control": 0.03053808994454591,
+            "affected": 0.05358161586684571
+          },
+          "fit_loglike_delta_from_baseline": -9.000091395705567e-05,
+          "map_parameters": [
+            0.027743449430736894,
+            3.1627029693454873,
+            0.0602887347113656,
+            1.5,
+            -0.6865931827723677,
+            0.006149537745224102
+          ]
+        },
+        {
+          "name": "clock_valuation_plus15min",
+          "fitted_expected_variance_strikes": {
+            "control": 0.03056053540888157,
+            "affected": 0.053575004745176735
+          },
+          "fit_loglike_delta_from_baseline": 1.8758736018753552e-05,
+          "map_parameters": [
+            0.02777227635841953,
+            3.1625472806154096,
+            0.060275034167517616,
+            1.5,
+            -0.6866210305751592,
+            0.0061494677395445
+          ]
+        }
+      ]
+    },
+    "short": {
+      "cases": 11,
+      "all_starts_converged": true,
+      "largest_loglike_gap_across_starts": 7.418492486976902e-10,
+      "baseline_physical_map": [
+        0.025636998849698285,
+        2.495150464145734,
+        0.08166511462644797,
+        1.5,
+        -0.6835529395784778,
+        0.0070862299980525125
+      ],
+      "baseline_physical_map_log_likelihood": -75.24990454927385,
+      "baseline_fitted_expected_variance_strikes": {
+        "control": 0.029478480546606685,
+        "affected": 0.06600097436683579
+      },
+      "support_boundary_parameters": [
+        "vol_of_vol"
+      ],
+      "carry_max_absolute_fit_loglike_delta": 0.04475971172730908,
+      "carry_max_absolute_baseline_price_shift_over_measurement_sigma": 1.3979433631995108,
+      "carry_max_absolute_fitted_row_baseline_price_shift_over_measurement_sigma": 1.0929163956234695,
+      "carry_max_absolute_map_parameter_delta": [
+        0.0001460556782309358,
+        0.03780136029700065,
+        0.0013622861282897858,
+        0.0,
+        0.0008154763590672021,
+        1.1951253022081214e-05
+      ],
+      "carry_max_absolute_expected_variance_strike_delta": {
+        "control": 9.92840908730433e-05,
+        "affected": 0.0006537279982981037
+      },
+      "clock_max_absolute_fit_loglike_delta": 0.01014128537312331,
+      "clock_max_absolute_expected_variance_strike_delta": {
+        "control": 1.3099896830973123e-05,
+        "affected": 2.7624869351025594e-05
+      },
+      "scenarios": [
+        {
+          "name": "baseline",
+          "fitted_expected_variance_strikes": {
+            "control": 0.029478480546606685,
+            "affected": 0.06600097436683579
+          },
+          "fit_loglike_delta_from_baseline": 0.0,
+          "map_parameters": [
+            0.025636998849698285,
+            2.495150464145734,
+            0.08166511462644797,
+            1.5,
+            -0.6835529395784778,
+            0.0070862299980525125
+          ]
+        },
+        {
+          "name": "carry_level_axis0_minus2se",
+          "fitted_expected_variance_strikes": {
+            "control": 0.029379562877532163,
+            "affected": 0.06665470236513389
+          },
+          "fit_loglike_delta_from_baseline": -0.034747248662597485,
+          "map_parameters": [
+            0.025491726507926762,
+            2.4573491038487334,
+            0.08302740075473776,
+            1.5,
+            -0.6827400705415929,
+            0.007095426048086114
+          ]
+        },
+        {
+          "name": "carry_level_axis0_plus2se",
+          "fitted_expected_variance_strikes": {
+            "control": 0.029577764637479728,
+            "affected": 0.06535560949399427
+          },
+          "fit_loglike_delta_from_baseline": 0.030784810319033795,
+          "map_parameters": [
+            0.02578305452792922,
+            2.5328914529503046,
+            0.08034292270085397,
+            1.5,
+            -0.684368415937545,
+            0.007078100264980772
+          ]
+        },
+        {
+          "name": "carry_level_axis1_minus2se",
+          "fitted_expected_variance_strikes": {
+            "control": 0.02953836688629114,
+            "affected": 0.06561698553752067
+          },
+          "fit_loglike_delta_from_baseline": -0.04475971172730908,
+          "map_parameters": [
+            0.02572699250383876,
+            2.514834046773718,
+            0.0809012568529066,
+            1.5,
+            -0.6832722890898107,
+            0.007098181251074594
+          ]
+        },
+        {
+          "name": "carry_level_axis1_plus2se",
+          "fitted_expected_variance_strikes": {
+            "control": 0.029418801643826736,
+            "affected": 0.06638733858672169
+          },
+          "fit_loglike_delta_from_baseline": 0.04406904256164523,
+          "map_parameters": [
+            0.02554739835278614,
+            2.4754253707351337,
+            0.08244080177359103,
+            1.5,
+            -0.6838320276343506,
+            0.007074479832049971
+          ]
+        },
+        {
+          "name": "carry_maturity_tilt_axis0_minus2se",
+          "fitted_expected_variance_strikes": {
+            "control": 0.029577764637479728,
+            "affected": 0.06535560949399427
+          },
+          "fit_loglike_delta_from_baseline": 0.030784810319033795,
+          "map_parameters": [
+            0.02578305452792922,
+            2.5328914529503046,
+            0.08034292270085397,
+            1.5,
+            -0.684368415937545,
+            0.007078100264980772
+          ]
+        },
+        {
+          "name": "carry_maturity_tilt_axis0_plus2se",
+          "fitted_expected_variance_strikes": {
+            "control": 0.029379562877532163,
+            "affected": 0.06665470236513389
+          },
+          "fit_loglike_delta_from_baseline": -0.034747248662597485,
+          "map_parameters": [
+            0.025491726507926762,
+            2.4573491038487334,
+            0.08302740075473776,
+            1.5,
+            -0.6827400705415929,
+            0.007095426048086114
+          ]
+        },
+        {
+          "name": "carry_maturity_tilt_axis1_minus2se",
+          "fitted_expected_variance_strikes": {
+            "control": 0.029418801643826736,
+            "affected": 0.06638733858672169
+          },
+          "fit_loglike_delta_from_baseline": 0.04406904256164523,
+          "map_parameters": [
+            0.02554739835278614,
+            2.4754253707351337,
+            0.08244080177359103,
+            1.5,
+            -0.6838320276343506,
+            0.007074479832049971
+          ]
+        },
+        {
+          "name": "carry_maturity_tilt_axis1_plus2se",
+          "fitted_expected_variance_strikes": {
+            "control": 0.02953836688629114,
+            "affected": 0.06561698553752067
+          },
+          "fit_loglike_delta_from_baseline": -0.04475971172730908,
+          "map_parameters": [
+            0.02572699250383876,
+            2.514834046773718,
+            0.0809012568529066,
+            1.5,
+            -0.6832722890898107,
+            0.007098181251074594
+          ]
+        },
+        {
+          "name": "clock_valuation_minus15min",
+          "fitted_expected_variance_strikes": {
+            "control": 0.02946539315059899,
+            "affected": 0.06602853790208457
+          },
+          "fit_loglike_delta_from_baseline": 0.010116465064811564,
+          "map_parameters": [
+            0.025618175913728218,
+            2.4946474005063695,
+            0.08171424807409366,
+            1.5,
+            -0.6835163306186971,
+            0.0070835593040994484
+          ]
+        },
+        {
+          "name": "clock_valuation_plus15min",
+          "fitted_expected_variance_strikes": {
+            "control": 0.029491580443437658,
+            "affected": 0.06597334949748476
+          },
+          "fit_loglike_delta_from_baseline": -0.01014128537312331,
+          "map_parameters": [
+            0.025655836531668516,
+            2.495656721638583,
+            0.08161586795397922,
+            1.5,
+            -0.683589633940205,
+            0.007088905089510844
+          ]
+        }
+      ]
+    }
+  },
+  "source_sha256_at_report_time": {
+    "lab/scripts/check_heston_pilot_sensitivity.py": "920fbe9c7c771c0de484d10608649dc3224257c0baf0ef014daa6e490dc567d8",
+    "lab/src/sbi4finance/calibration/heston_pilot.py": "7189d8d35fb7f776424835e279647867dbd0a3e4bccf00be0a1c915b0725904b",
+    "tutorial/src/sbi4f_tutorial/heston_options/model.py": "4b48d998ff99e3709d8c753bd12ef32453242332ec0486c9d1251a788cadfe85",
+    "lab/scripts/run_heston_observation_pilot.py": "ef4e047e08c1a47b10dc2bdfd01877c14d9ea2ac3149363e4d1d5551fea339b3"
+  }
+}

@@ -11,3 +11,4 @@ tutorial/.cache/
 tutorial/assets/local-checkpoints/
 output/pdf/
 tmp/pdfs/
+/local-artifacts/heston-observations-20261109/

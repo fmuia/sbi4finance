@@ -1,0 +1,3351 @@
+{
+  "schema": "raw_heston_pointwise_precision_v1",
+  "seed": 20261109,
+  "created_utc": "2026-11-09T20:44:09.913115+00:00",
+  "parameter_names": [
+    "initial_variance",
+    "kappa",
+    "theta",
+    "vol_of_vol",
+    "rho"
+  ],
+  "bounds": [
+    [
+      0.01,
+      0.16
+    ],
+    [
+      0.1,
+      10.0
+    ],
+    [
+      0.01,
+      0.16
+    ],
+    [
+      0.1,
+      1.5
+    ],
+    [
+      -0.95,
+      -0.1
+    ]
+  ],
+  "number_of_contracts": 54,
+  "measurement_sigma_range": [
+    0.09999999999999987,
+    1.9000000000000057
+  ],
+  "spread_multiplier": 1.0,
+  "numerical_fraction": 0.02,
+  "quadrature_ladder": [
+    [
+      256,
+      150.0
+    ],
+    [
+      512,
+      300.0
+    ],
+    [
+      1024,
+      600.0
+    ],
+    [
+      2048,
+      1200.0
+    ],
+    [
+      4096,
+      2400.0
+    ],
+    [
+      8192,
+      4800.0
+    ]
+  ],
+  "panel": "seeded scrambled Sobol draws; all physical-prior corners; center; declared reference",
+  "versions": {
+    "numpy": "2.5.3",
+    "scipy": "1.18.1"
+  },
+  "python": "3.12.16",
+  "platform": "macOS-26.4.1-arm64-arm-64bit",
+  "scope": "pointwise pricing and likelihood sensitivity; neither posterior stability nor model adequacy",
+  "posterior_stability_assessed": false,
+  "points": [
+    {
+      "id": "sobol:0",
+      "parameters": [
+        0.11845319828949868,
+        6.3468477225862445,
+        0.10496908634901046,
+        1.3885630955919623,
+        -0.4621639552991837
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 1.3083434424743241e-06,
+      "max_abs_price_shift": 1.3905136597713863e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": 0.013828577953972854,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 6.525145295199761e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 6.525145295199761e-06
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.3083434424743241e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.3083434424743241e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.03285566600970924
+    },
+    {
+      "id": "sobol:1",
+      "parameters": [
+        0.06560086644254624,
+        0.8277037802152336,
+        0.0670753931067884,
+        0.4332278527319431,
+        -0.6360101660713553
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 1.3087422701119063e-06,
+      "max_abs_price_shift": 1.395696926920209e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": 0.006219637526783117,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 1.7742106450668866e-07,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 1.7742106450668866e-07
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.3087422701119063e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.3087422701119063e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.0031572910957038403
+    },
+    {
+      "id": "sobol:2",
+      "parameters": [
+        0.03477459656074643,
+        9.446394736506045,
+        0.15522786499001087,
+        0.9486262256279587,
+        -0.8369697372429072
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 1.3208809868103795e-06,
+      "max_abs_price_shift": 1.3887169814097433e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": 0.012157964986727166,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 0.000851607049234816,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 0.000851607049234816
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.3208809868103795e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.3208809868103795e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.003030958119779825
+    },
+    {
+      "id": "sobol:3",
+      "parameters": [
+        0.1305466357059777,
+        2.6895997321233156,
+        0.04085151533596217,
+        0.5176065545529127,
+        -0.15822848794050515
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 1.308298038793509e-06,
+      "max_abs_price_shift": 1.3941200904810103e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": 0.01526336248112159,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 2.688821609808655e-08,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 2.688821609808655e-08
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.308298038793509e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.308298038793509e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.0030875839293003082
+    },
+    {
+      "id": "sobol:4",
+      "parameters": [
+        0.14613171763718127,
+        8.644874943140895,
+        0.04938467078842223,
+        0.783960187062621,
+        -0.261189025035128
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 1.3082799910080207e-06,
+      "max_abs_price_shift": 1.3957927080809895e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": 0.012873337240947896,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 2.68883582066337e-08,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 2.68883582066337e-08
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.3082799910080207e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.3082799910080207e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.007609709165990353
+    },
+    {
+      "id": "sobol:5",
+      "parameters": [
+        0.019172060713171957,
+        4.418678061384708,
+        0.0851724030356854,
+        1.0317491957917808,
+        -0.939930185675621
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 5.723047107391783e-06,
+      "max_abs_price_shift": 6.064997819521523e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": 0.0032803401216696115,
+      "base_diagnostics": {
+        "nodes": 2048,
+        "cutoff": 1200.0,
+        "base_nodes": 1024,
+        "base_cutoff": 600.0,
+        "max_difference_over_measurement_sigma": 0.000662059395561223,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 256,
+            "cutoff": 150.0,
+            "error": "Fourier price violates bounds; refine controls or reject this domain"
+          },
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 0.1488394984905395
+          },
+          {
+            "nodes": 2048,
+            "cutoff": 1200.0,
+            "max_difference_over_measurement_sigma": 0.000662059395561223
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 4096,
+        "cutoff": 2400.0,
+        "base_nodes": 2048,
+        "base_cutoff": 1200.0,
+        "explicit_beyond_accepted_rung": true,
+        "max_difference_over_measurement_sigma": 5.723047107391783e-06
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.4067647089250386
+    },
+    {
+      "id": "sobol:6",
+      "parameters": [
+        0.08209571958519518,
+        5.5458943933248515,
+        0.023460056856274607,
+        0.17458065077662469,
+        -0.5264219612814486
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 1.308660699805841e-06,
+      "max_abs_price_shift": 1.399181357442103e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": 0.005965281574319192,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 2.6906477046395584e-08,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 2.6906477046395584e-08
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.308660699805841e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.308660699805841e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.00622537499293685
+    },
+    {
+      "id": "sobol:7",
+      "parameters": [
+        0.10197522685863077,
+        2.5573485735803843,
+        0.13510902686044574,
+        1.2966869002208115,
+        -0.35257586450316014
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 1.3084249417261158e-06,
+      "max_abs_price_shift": 1.3894791095481196e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": 0.013523906471164082,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 3.0482920863050863e-05,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 3.0482920863050863e-05
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.3084249417261158e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.3084249417261158e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.004003916867077351
+    },
+    {
+      "id": "sobol:8",
+      "parameters": [
+        0.09422760046087204,
+        8.798423687834292,
+        0.010202909391373397,
+        1.1342464750632644,
+        -0.6950335784815251
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 1.2887619504908815e-06,
+      "max_abs_price_shift": 1.401350395724421e-07,
+      "worst_contract_index": 7,
+      "log_likelihood_shift": 0.002605955526531867,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 0.0019915589201247056,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 0.0019915589201247056
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.2887619504908815e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.2887619504908815e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.004785500001162291
+    },
+    {
+      "id": "sobol:9",
+      "parameters": [
+        0.07111165485344827,
+        3.3370043166913095,
+        0.12434157900512217,
+        0.6820623509585857,
+        -0.5226336904335767
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 1.3086425809660791e-06,
+      "max_abs_price_shift": 1.3906790741202713e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": 0.010610064662614604,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 2.852098646144451e-07,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 2.852098646144451e-07
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.3086425809660791e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.3086425809660791e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.003438125131651759
+    },
+    {
+      "id": "sobol:10",
+      "parameters": [
+        0.026919758636504414,
+        6.936792076006531,
+        0.06015031876973808,
+        1.2247803578153253,
+        -0.11270684669725595
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 7.339164476150015e-07,
+      "max_abs_price_shift": 7.735878426728959e-08,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": -0.0018419882028786194,
+      "base_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 2.7102963500169645e-05,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 0.03206471513787308
+          },
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 2.7102963500169645e-05
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 2048,
+        "cutoff": 1200.0,
+        "base_nodes": 1024,
+        "base_cutoff": 600.0,
+        "explicit_beyond_accepted_rung": true,
+        "max_difference_over_measurement_sigma": 7.339164476150015e-07
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.01864754199050367
+    },
+    {
+      "id": "sobol:11",
+      "parameters": [
+        0.15711571084335446,
+        0.23832589089870454,
+        0.0984290347341448,
+        0.24691314063966274,
+        -0.7895866708829998
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 1.308035280089825e-06,
+      "max_abs_price_shift": 1.386912629186554e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": 0.023175427751993993,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 2.6879263259615972e-08,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 2.6879263259615972e-08
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.308035280089825e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.308035280089825e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.004276291001588106
+    },
+    {
+      "id": "sobol:12",
+      "parameters": [
+        0.14065647743642332,
+        6.193280095141381,
+        0.1421184217464179,
+        0.3382501047104597,
+        -0.8924822662957013
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 1.30818023080792e-06,
+      "max_abs_price_shift": 1.3875737181479053e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": 0.021127486459590727,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 2.6852120527109936e-08,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 2.6852120527109936e-08
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.30818023080792e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.30818023080792e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.006527624791488051
+    },
+    {
+      "id": "sobol:13",
+      "parameters": [
+        0.04343306370079517,
+        1.909396407660097,
+        0.029938661018386485,
+        1.4829414004459978,
+        -0.21560253077186642
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 7.392832301889039e-07,
+      "max_abs_price_shift": 7.754249509162037e-08,
+      "worst_contract_index": 7,
+      "log_likelihood_shift": -0.0013123013555902535,
+      "base_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 0.00040594083155080226,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 0.08708395222394433
+          },
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 0.00040594083155080226
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 2048,
+        "cutoff": 1200.0,
+        "base_nodes": 1024,
+        "base_cutoff": 600.0,
+        "explicit_beyond_accepted_rung": true,
+        "max_difference_over_measurement_sigma": 7.392832301889039e-07
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.011016583070158958
+    },
+    {
+      "id": "sobol:14",
+      "parameters": [
+        0.05549123928882182,
+        8.0554781710729,
+        0.1158825827203691,
+        0.5983998157083988,
+        -0.4130845127161592
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 1.3087150918522634e-06,
+      "max_abs_price_shift": 1.3903084550292988e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": 0.011453410453214019,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 3.863721786956374e-08,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 3.863721786956374e-08
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.3087150918522634e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.3087150918522634e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.009846291970461607
+    },
+    {
+      "id": "sobol:15",
+      "parameters": [
+        0.10979451657272875,
+        5.008641297556459,
+        0.08018647417426109,
+        0.8674070170149206,
+        -0.5854842867702246
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 1.3084340366731335e-06,
+      "max_abs_price_shift": 1.3930051068200555e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": 0.011699552153004333,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 9.262222988581937e-08,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 9.262222988581937e-08
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.3084340366731335e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.3084340366731335e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.00632629101164639
+    },
+    {
+      "id": "sobol:16",
+      "parameters": [
+        0.10722042558714746,
+        7.706139053869992,
+        0.13130942353978753,
+        0.11768933776766062,
+        -0.20441174097359183
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 1.3085156069791988e-06,
+      "max_abs_price_shift": 1.3881640370527748e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": 0.018544992271927185,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 2.6525555085754594e-08,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 2.6525555085754594e-08
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.3085156069791988e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.3085156069791988e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.004685583058744669
+    },
+    {
+      "id": "sobol:17",
+      "parameters": [
+        0.04874468607828021,
+        4.739192667696625,
+        0.017298714853823186,
+        1.261035056039691,
+        -0.800767690455541
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 8.073017543352986e-07,
+      "max_abs_price_shift": 1.1279307443601283e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": -1.7080527346280405e-05,
+      "base_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 0.004234783691945416,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 0.6066275174707777
+          },
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 0.004234783691945416
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 2048,
+        "cutoff": 1200.0,
+        "base_nodes": 1024,
+        "base_cutoff": 600.0,
+        "explicit_beyond_accepted_rung": true,
+        "max_difference_over_measurement_sigma": 8.073017543352986e-07
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.00943795801140368
+    },
+    {
+      "id": "sobol:18",
+      "parameters": [
+        0.04205150212161243,
+        5.8441297870129345,
+        0.10069042555056512,
+        0.7319408198818563,
+        -0.682977236295119
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 1.3072736670949321e-06,
+      "max_abs_price_shift": 1.3925782127444108e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": 0.006520788101170183,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 0.0005363407012026763,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 0.0005363407012026763
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.3072736670949321e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.3072736670949321e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.004272958030924201
+    },
+    {
+      "id": "sobol:19",
+      "parameters": [
+        0.13260753433220088,
+        1.639834462851286,
+        0.06257757571525871,
+        1.0023364849388599,
+        -0.4317262989468872
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 1.3082346583814793e-06,
+      "max_abs_price_shift": 1.3918901231591008e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": 0.014766493264687597,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 7.104934714637525e-08,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 7.104934714637525e-08
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.3082346583814793e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.3082346583814793e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.0064261669758707285
+    },
+    {
+      "id": "sobol:20",
+      "parameters": [
+        0.15337035310454666,
+        7.286112328898161,
+        0.03705191089771688,
+        0.9186527334153651,
+        -0.3221868360415101
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 1.308207373540426e-06,
+      "max_abs_price_shift": 1.396785904717035e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": 0.012533189589871707,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 2.7033308924728762e-08,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 2.7033308924728762e-08
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.308207373540426e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.308207373540426e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.006081708008423448
+    },
+    {
+      "id": "sobol:21",
+      "parameters": [
+        0.021345617147162557,
+        0.507717890944332,
+        0.14906652186997235,
+        0.46512253638356926,
+        -0.5734376847278326
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 9.09789154013296e-06,
+      "max_abs_price_shift": 9.097891540132963e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": -0.0003019146663326387,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 0.017814013886581208,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 0.017814013886581208
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 9.09789154013296e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 9.09789154013296e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.0036727499682456255
+    },
+    {
+      "id": "sobol:22",
+      "parameters": [
+        0.07090250443667173,
+        9.147630625776946,
+        0.08259341673925519,
+        1.3523504700511695,
+        -0.9036794856656343
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 7.332093421297257e-07,
+      "max_abs_price_shift": 7.723819095417639e-08,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": -0.0031621766269722684,
+      "base_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 0.00017025742184983978,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 0.06402621464151712
+          },
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 0.00017025742184983978
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 2048,
+        "cutoff": 1200.0,
+        "base_nodes": 1024,
+        "base_cutoff": 600.0,
+        "explicit_beyond_accepted_rung": true,
+        "max_difference_over_measurement_sigma": 7.332093421297257e-07
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.00708741694688797
+    },
+    {
+      "id": "sobol:23",
+      "parameters": [
+        0.08500739004462957,
+        3.606585125811398,
+        0.11816199239343404,
+        0.37587188873440025,
+        -0.30732365017756813
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 1.308542891820252e-06,
+      "max_abs_price_shift": 1.390131956213736e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": 0.013622655284052598,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 2.6870168312598243e-08,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 2.6870168312598243e-08
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.308542891820252e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.308542891820252e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.0035049160942435265
+    },
+    {
+      "id": "sobol:24",
+      "parameters": [
+        0.09628893299028277,
+        5.273880143370479,
+        0.07402485501021146,
+        0.568900297023356,
+        -0.7419199837837368
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 1.3085337968732343e-06,
+      "max_abs_price_shift": 1.3938850429440208e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": 0.010264913497394446,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 4.2544456846371745e-08,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 4.2544456846371745e-08
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.3085337968732343e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.3085337968732343e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.003694209037348628
+    },
+    {
+      "id": "sobol:25",
+      "parameters": [
+        0.07838927147909998,
+        2.2105750764720145,
+        0.11208327444270252,
+        0.8153008367866277,
+        -0.1436900951899588
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 1.3086153671792995e-06,
+      "max_abs_price_shift": 1.3913586371927522e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": 0.011356243016052758,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 8.221873315505956e-07,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 8.221873315505956e-07
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.3086153671792995e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.3086153671792995e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.0038487501442432404
+    },
+    {
+      "id": "sobol:26",
+      "parameters": [
+        0.010064002675935626,
+        8.373049502260983,
+        0.043131288783624766,
+        0.3026850318536162,
+        -0.477513226121664
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 1.311987737340203e-06,
+      "max_abs_price_shift": 1.3987718716634845e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": 0.00015932100403948102,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 0.0025601013386615,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 0.0025601013386615
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.311987737340203e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.311987737340203e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.004977916833013296
+    },
+    {
+      "id": "sobol:27",
+      "parameters": [
+        0.14588365758769214,
+        4.071791249327362,
+        0.15763673930428923,
+        1.4261368535459042,
+        -0.7302231015171855
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 1.3081258032343608e-06,
+      "max_abs_price_shift": 1.387582670986376e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": 0.017006806388963014,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 3.4143283542675804e-05,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 3.4143283542675804e-05
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.3081258032343608e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.3081258032343608e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.00488512497395277
+    },
+    {
+      "id": "sobol:28",
+      "parameters": [
+        0.12368793067522346,
+        9.71835235664621,
+        0.09226741445250808,
+        1.1675112016499043,
+        -0.6206186969298869
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 1.3083252525802887e-06,
+      "max_abs_price_shift": 1.3917508567828918e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": 0.013091860761960561,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 3.5969520695289163e-07,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 3.5969520695289163e-07
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.3083252525802887e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.3083252525802887e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.020760249812155962
+    },
+    {
+      "id": "sobol:29",
+      "parameters": [
+        0.032239415766671296,
+        3.036354364920408,
+        0.05635100937448442,
+        0.21078732814639806,
+        -0.3679089101962745
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 1.3089598560611644e-06,
+      "max_abs_price_shift": 1.397526290247697e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": 0.002523963596835266,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 1.7096642324077062e-07,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 1.7096642324077062e-07
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.3089598560611644e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.3089598560611644e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.004116791998967528
+    },
+    {
+      "id": "sobol:30",
+      "parameters": [
+        0.057664075158536436,
+        6.618692027777433,
+        0.13753420788794757,
+        1.0816756855696439,
+        -0.24664091747254135
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 1.3086969730125016e-06,
+      "max_abs_price_shift": 1.3894405981318414e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": 0.01270510996982921,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 7.447757279048026e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 7.447757279048026e-06
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.3086969730125016e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.3086969730125016e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.0037112501449882984
+    },
+    {
+      "id": "sobol:31",
+      "parameters": [
+        0.11703272651880979,
+        1.1746472220867874,
+        0.025721228066831824,
+        0.6520020926371216,
+        -0.8448706920724361
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 1.3083524663670683e-06,
+      "max_abs_price_shift": 1.3942683096956898e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": 0.010754518674730207,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 3.1660186436965887e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 3.1660186436965887e-06
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.3083524663670683e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.3083524663670683e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.0035069577861577272
+    },
+    {
+      "id": "corner:0",
+      "parameters": [
+        0.01,
+        0.1,
+        0.01,
+        0.1,
+        -0.95
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 7.342609452311991e-07,
+      "max_abs_price_shift": 7.782124626425206e-08,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": 0.0014626489512181706,
+      "base_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 5.979840912368384e-05,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 256,
+            "cutoff": 150.0,
+            "error": "Fourier price violates bounds; refine controls or reject this domain"
+          },
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 5.979840912368384e-05
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 2048,
+        "cutoff": 1200.0,
+        "base_nodes": 1024,
+        "base_cutoff": 600.0,
+        "explicit_beyond_accepted_rung": true,
+        "max_difference_over_measurement_sigma": 7.342609452311991e-07
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.006922916974872351
+    },
+    {
+      "id": "corner:1",
+      "parameters": [
+        0.01,
+        0.1,
+        0.01,
+        0.1,
+        -0.1
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 1.3094312635575363e-06,
+      "max_abs_price_shift": 1.4027006134398334e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": -0.002514895445358434,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 0.011474168888980757,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 0.011474168888980757
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.3094312635575363e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.3094312635575363e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.0038580000400543213
+    },
+    {
+      "id": "corner:2",
+      "parameters": [
+        0.01,
+        0.1,
+        0.01,
+        1.5,
+        -0.95
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 0.00023544275063564193,
+      "max_abs_price_shift": 2.5226711361771292e-05,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": -0.4950469607056931,
+      "base_diagnostics": {
+        "nodes": 8192,
+        "cutoff": 4800.0,
+        "base_nodes": 4096,
+        "base_cutoff": 2400.0,
+        "max_difference_over_measurement_sigma": 0.0007244188841428589,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 256,
+            "cutoff": 150.0,
+            "error": "Fourier price violates bounds; refine controls or reject this domain"
+          },
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "error": "Fourier price violates bounds; refine controls or reject this domain"
+          },
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "error": "Fourier price violates bounds; refine controls or reject this domain"
+          },
+          {
+            "nodes": 2048,
+            "cutoff": 1200.0,
+            "error": "Fourier price violates bounds; refine controls or reject this domain"
+          },
+          {
+            "nodes": 8192,
+            "cutoff": 4800.0,
+            "max_difference_over_measurement_sigma": 0.0007244188841428589
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 16384,
+        "cutoff": 9600.0,
+        "base_nodes": 8192,
+        "base_cutoff": 4800.0,
+        "explicit_beyond_accepted_rung": true,
+        "max_difference_over_measurement_sigma": 0.00023544275063564193
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 6.382191582815722
+    },
+    {
+      "id": "corner:3",
+      "parameters": [
+        0.01,
+        0.1,
+        0.01,
+        1.5,
+        -0.1
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 0.00014327778555145437,
+      "max_abs_price_shift": 1.5340339817981885e-05,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": 0.2251931586514595,
+      "base_diagnostics": {
+        "nodes": 4096,
+        "cutoff": 2400.0,
+        "base_nodes": 2048,
+        "base_cutoff": 1200.0,
+        "max_difference_over_measurement_sigma": 0.00010234194857616785,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 6.825747443225566
+          },
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 0.7672037289067662
+          },
+          {
+            "nodes": 2048,
+            "cutoff": 1200.0,
+            "max_difference_over_measurement_sigma": 0.029322133556693122
+          },
+          {
+            "nodes": 4096,
+            "cutoff": 2400.0,
+            "max_difference_over_measurement_sigma": 0.00010234194857616785
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 8192,
+        "cutoff": 4800.0,
+        "base_nodes": 4096,
+        "base_cutoff": 2400.0,
+        "explicit_beyond_accepted_rung": true,
+        "max_difference_over_measurement_sigma": 0.00014327778555145437
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.06051425007171929
+    },
+    {
+      "id": "corner:4",
+      "parameters": [
+        0.01,
+        0.1,
+        0.16,
+        0.1,
+        -0.95
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 7.342428142050048e-07,
+      "max_abs_price_shift": 7.778988639350892e-08,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": 0.0013240402926157913,
+      "base_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.450670329831012e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 256,
+            "cutoff": 150.0,
+            "error": "Fourier price violates bounds; refine controls or reject this domain"
+          },
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.450670329831012e-06
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 2048,
+        "cutoff": 1200.0,
+        "base_nodes": 1024,
+        "base_cutoff": 600.0,
+        "explicit_beyond_accepted_rung": true,
+        "max_difference_over_measurement_sigma": 7.342428142050048e-07
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.019259291933849454
+    },
+    {
+      "id": "corner:5",
+      "parameters": [
+        0.01,
+        0.1,
+        0.16,
+        0.1,
+        -0.1
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 1.309304346469586e-06,
+      "max_abs_price_shift": 1.401785958421442e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": -0.0022036697555805063,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 0.008447766078537198,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 0.008447766078537198
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.309304346469586e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.309304346469586e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.004842707887291908
+    },
+    {
+      "id": "corner:6",
+      "parameters": [
+        0.01,
+        0.1,
+        0.16,
+        1.5,
+        -0.95
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 0.00023640828179475955,
+      "max_abs_price_shift": 2.521617793169173e-05,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": -0.4668857558867643,
+      "base_diagnostics": {
+        "nodes": 8192,
+        "cutoff": 4800.0,
+        "base_nodes": 4096,
+        "base_cutoff": 2400.0,
+        "max_difference_over_measurement_sigma": 0.0005916083327609329,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 256,
+            "cutoff": 150.0,
+            "error": "Fourier price violates bounds; refine controls or reject this domain"
+          },
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "error": "Fourier price violates bounds; refine controls or reject this domain"
+          },
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "error": "Fourier price violates bounds; refine controls or reject this domain"
+          },
+          {
+            "nodes": 2048,
+            "cutoff": 1200.0,
+            "error": "Fourier price violates bounds; refine controls or reject this domain"
+          },
+          {
+            "nodes": 8192,
+            "cutoff": 4800.0,
+            "max_difference_over_measurement_sigma": 0.0005916083327609329
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 16384,
+        "cutoff": 9600.0,
+        "base_nodes": 8192,
+        "base_cutoff": 4800.0,
+        "explicit_beyond_accepted_rung": true,
+        "max_difference_over_measurement_sigma": 0.00023640828179475955
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.14504858292639256
+    },
+    {
+      "id": "corner:7",
+      "parameters": [
+        0.01,
+        0.1,
+        0.16,
+        1.5,
+        -0.1
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 5.0358035217357034e-05,
+      "max_abs_price_shift": 1.2241090445286318e-05,
+      "worst_contract_index": 6,
+      "log_likelihood_shift": -0.0044534262647708545,
+      "base_diagnostics": {
+        "nodes": 2048,
+        "cutoff": 1200.0,
+        "base_nodes": 1024,
+        "base_cutoff": 600.0,
+        "max_difference_over_measurement_sigma": 0.017092628893067216,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 6.200190311680188
+          },
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 0.608749662283094
+          },
+          {
+            "nodes": 2048,
+            "cutoff": 1200.0,
+            "max_difference_over_measurement_sigma": 0.017092628893067216
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 4096,
+        "cutoff": 2400.0,
+        "base_nodes": 2048,
+        "base_cutoff": 1200.0,
+        "explicit_beyond_accepted_rung": true,
+        "max_difference_over_measurement_sigma": 5.0358035217357034e-05
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.03597954101860523
+    },
+    {
+      "id": "corner:8",
+      "parameters": [
+        0.01,
+        10.0,
+        0.01,
+        0.1,
+        -0.95
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 7.342972072575669e-07,
+      "max_abs_price_shift": 7.786741496040861e-08,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": 0.0014448859710682882,
+      "base_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.2528080911566891e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 0.040731997561759326
+          },
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.2528080911566891e-06
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 2048,
+        "cutoff": 1200.0,
+        "base_nodes": 1024,
+        "base_cutoff": 600.0,
+        "explicit_beyond_accepted_rung": true,
+        "max_difference_over_measurement_sigma": 7.342972072575669e-07
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.011401124997064471
+    },
+    {
+      "id": "corner:9",
+      "parameters": [
+        0.01,
+        10.0,
+        0.01,
+        0.1,
+        -0.1
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 1.309150232664535e-06,
+      "max_abs_price_shift": 1.4026570571701313e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": -0.0025310187693463604,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 0.009826825253931281,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 0.009826825253931281
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.309150232664535e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.309150232664535e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.0050724169705063105
+    },
+    {
+      "id": "corner:10",
+      "parameters": [
+        0.01,
+        10.0,
+        0.01,
+        1.5,
+        -0.95
+      ],
+      "priced": false,
+      "error_type": "ValueError",
+      "error": "Fourier price violates bounds; refine controls or reject this domain",
+      "pointwise_price_gate_passed": false,
+      "wall_seconds": 0.16651995782740414
+    },
+    {
+      "id": "corner:11",
+      "parameters": [
+        0.01,
+        10.0,
+        0.01,
+        1.5,
+        -0.1
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 6.621992096889082e-06,
+      "max_abs_price_shift": 6.689602667364625e-07,
+      "worst_contract_index": 7,
+      "log_likelihood_shift": -0.009480984253176228,
+      "base_diagnostics": {
+        "nodes": 2048,
+        "cutoff": 1200.0,
+        "base_nodes": 1024,
+        "base_cutoff": 600.0,
+        "max_difference_over_measurement_sigma": 0.002581818177738165,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 3.8980415214628086
+          },
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 0.20131752649271073
+          },
+          {
+            "nodes": 2048,
+            "cutoff": 1200.0,
+            "max_difference_over_measurement_sigma": 0.002581818177738165
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 4096,
+        "cutoff": 2400.0,
+        "base_nodes": 2048,
+        "base_cutoff": 1200.0,
+        "explicit_beyond_accepted_rung": true,
+        "max_difference_over_measurement_sigma": 6.621992096889082e-06
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.03234212496317923
+    },
+    {
+      "id": "corner:12",
+      "parameters": [
+        0.01,
+        10.0,
+        0.16,
+        0.1,
+        -0.95
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 1.3100023998902084e-06,
+      "max_abs_price_shift": 1.3882703342460445e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": 0.013565025324268731,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 2.7495694610024647e-08,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 2.7495694610024647e-08
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.3100023998902084e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.3100023998902084e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.0075159999541938305
+    },
+    {
+      "id": "corner:13",
+      "parameters": [
+        0.01,
+        10.0,
+        0.16,
+        0.1,
+        -0.1
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 1.3080170369050843e-06,
+      "max_abs_price_shift": 1.3878150184609694e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": 0.013809981664195448,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 2.6634463523578224e-08,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 2.6634463523578224e-08
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.3080170369050843e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.3080170369050843e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.006643540924414992
+    },
+    {
+      "id": "corner:14",
+      "parameters": [
+        0.01,
+        10.0,
+        0.16,
+        1.5,
+        -0.95
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 3.498180690397755e-06,
+      "max_abs_price_shift": 3.8240404265366124e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": -0.005023783214138433,
+      "base_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 0.005499632230048242,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 0.7265424113262596
+          },
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 0.005499632230048242
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 2048,
+        "cutoff": 1200.0,
+        "base_nodes": 1024,
+        "base_cutoff": 600.0,
+        "explicit_beyond_accepted_rung": true,
+        "max_difference_over_measurement_sigma": 3.498180690397755e-06
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.010277708992362022
+    },
+    {
+      "id": "corner:15",
+      "parameters": [
+        0.01,
+        10.0,
+        0.16,
+        1.5,
+        -0.1
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 1.3139640131498705e-06,
+      "max_abs_price_shift": 1.38860087872672e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": 0.01303673114263218,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 0.0010371006737841502,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 0.0010371006737841502
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.3139640131498705e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.3139640131498705e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.007905000122264028
+    },
+    {
+      "id": "corner:16",
+      "parameters": [
+        0.16,
+        0.1,
+        0.01,
+        0.1,
+        -0.95
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 1.3079898053547363e-06,
+      "max_abs_price_shift": 1.3866446124666254e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": 0.02453566652184236,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 2.6870168312598243e-08,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 2.6870168312598243e-08
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.3079898053547363e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.3079898053547363e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.005470791831612587
+    },
+    {
+      "id": "corner:17",
+      "parameters": [
+        0.16,
+        0.1,
+        0.01,
+        0.1,
+        -0.1
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 1.3080079952487718e-06,
+      "max_abs_price_shift": 1.386555368299014e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": 0.025187976967572467,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 2.689745315365143e-08,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 2.689745315365143e-08
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.3080079952487718e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.3080079952487718e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.0054066660813987255
+    },
+    {
+      "id": "corner:18",
+      "parameters": [
+        0.16,
+        0.1,
+        0.01,
+        1.5,
+        -0.95
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 7.292295833849492e-07,
+      "max_abs_price_shift": 7.690053083209136e-08,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": -0.005992020171773096,
+      "base_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 0.000258121709180159,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 0.11962228587722734
+          },
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 0.000258121709180159
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 2048,
+        "cutoff": 1200.0,
+        "base_nodes": 1024,
+        "base_cutoff": 600.0,
+        "explicit_beyond_accepted_rung": true,
+        "max_difference_over_measurement_sigma": 7.292295833849492e-07
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.011097166920080781
+    },
+    {
+      "id": "corner:19",
+      "parameters": [
+        0.16,
+        0.1,
+        0.01,
+        1.5,
+        -0.1
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 1.307998900301754e-06,
+      "max_abs_price_shift": 1.3869305348634953e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": 0.020925684288158664,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 1.0437301511956316e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 1.0437301511956316e-06
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.307998900301754e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.307998900301754e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.006599500076845288
+    },
+    {
+      "id": "corner:20",
+      "parameters": [
+        0.16,
+        0.1,
+        0.16,
+        0.1,
+        -0.95
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 1.3080079952487718e-06,
+      "max_abs_price_shift": 1.3864837455912493e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": 0.024915733418310992,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 2.6879263259615972e-08,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 2.6879263259615972e-08
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.3080079952487718e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.3080079952487718e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.01078395894728601
+    },
+    {
+      "id": "corner:21",
+      "parameters": [
+        0.16,
+        0.1,
+        0.16,
+        0.1,
+        -0.1
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 1.3079626626222303e-06,
+      "max_abs_price_shift": 1.3863945014236378e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": 0.025562561495462433,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 2.6843025580092207e-08,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 2.6843025580092207e-08
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.3079626626222303e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.3079626626222303e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.004488375037908554
+    },
+    {
+      "id": "corner:22",
+      "parameters": [
+        0.16,
+        0.1,
+        0.16,
+        1.5,
+        -0.95
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 7.29728171222632e-07,
+      "max_abs_price_shift": 7.706310745092537e-08,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": -0.0061214880439823816,
+      "base_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 0.00023010437125492436,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 0.09598258556124506
+          },
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 0.00023010437125492436
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 2048,
+        "cutoff": 1200.0,
+        "base_nodes": 1024,
+        "base_cutoff": 600.0,
+        "explicit_beyond_accepted_rung": true,
+        "max_difference_over_measurement_sigma": 7.29728171222632e-07
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.02058608317747712
+    },
+    {
+      "id": "corner:23",
+      "parameters": [
+        0.16,
+        0.1,
+        0.16,
+        1.5,
+        -0.1
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 1.3079898053547363e-06,
+      "max_abs_price_shift": 1.386751762311178e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": 0.021268657888867892,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 9.658394617417794e-07,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 9.658394617417794e-07
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.3079898053547363e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.3079898053547363e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.004391459049656987
+    },
+    {
+      "id": "corner:24",
+      "parameters": [
+        0.16,
+        10.0,
+        0.01,
+        0.1,
+        -0.95
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 1.3083524663670683e-06,
+      "max_abs_price_shift": 1.4003486370484097e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": 0.00952454426591487,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 2.6924595886157466e-08,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 2.6924595886157466e-08
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.3083524663670683e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.3083524663670683e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.004784249933436513
+    },
+    {
+      "id": "corner:25",
+      "parameters": [
+        0.16,
+        10.0,
+        0.01,
+        0.1,
+        -0.1
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 1.3082346583814793e-06,
+      "max_abs_price_shift": 1.4002789328060317e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": 0.009827366029028894,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 2.68883582066337e-08,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 2.68883582066337e-08
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.3082346583814793e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.3082346583814793e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.004301125183701515
+    },
+    {
+      "id": "corner:26",
+      "parameters": [
+        0.16,
+        10.0,
+        0.01,
+        1.5,
+        -0.95
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 7.303174243133979e-07,
+      "max_abs_price_shift": 7.770451787927641e-08,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": -0.0027546002176110918,
+      "base_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 0.00016086276179549936,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 256,
+            "cutoff": 150.0,
+            "error": "Fourier price violates bounds; refine controls or reject this domain"
+          },
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 0.00016086276179549936
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 2048,
+        "cutoff": 1200.0,
+        "base_nodes": 1024,
+        "base_cutoff": 600.0,
+        "explicit_beyond_accepted_rung": true,
+        "max_difference_over_measurement_sigma": 7.303174243133979e-07
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.011675416026264429
+    },
+    {
+      "id": "corner:27",
+      "parameters": [
+        0.16,
+        10.0,
+        0.01,
+        1.5,
+        -0.1
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 1.3082890859550385e-06,
+      "max_abs_price_shift": 1.400427009912164e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": 0.00911620362957044,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 1.242065508222367e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 1.242065508222367e-06
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.3082890859550385e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.3082890859550385e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.005379167152568698
+    },
+    {
+      "id": "corner:28",
+      "parameters": [
+        0.16,
+        10.0,
+        0.16,
+        0.1,
+        -0.95
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 1.3090958361772205e-06,
+      "max_abs_price_shift": 1.3861176739737857e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": 0.025348907885927474,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 2.744130256360221e-08,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 2.744130256360221e-08
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.3090958361772205e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.3090958361772205e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.006082167150452733
+    },
+    {
+      "id": "corner:29",
+      "parameters": [
+        0.16,
+        10.0,
+        0.16,
+        0.1,
+        -0.1
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 1.307128627558995e-06,
+      "max_abs_price_shift": 1.3856350733476575e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": 0.02561372545460472,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 2.6607267500367006e-08,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 2.6607267500367006e-08
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.307128627558995e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.307128627558995e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.0062198329251259565
+    },
+    {
+      "id": "corner:30",
+      "parameters": [
+        0.16,
+        10.0,
+        0.16,
+        1.5,
+        -0.95
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 1.0832377483893652e-06,
+      "max_abs_price_shift": 1.4954014204704436e-07,
+      "worst_contract_index": 26,
+      "log_likelihood_shift": 0.018667291009478504,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 0.0029144430123295697,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 0.0029144430123295697
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.0832377483893652e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.0832377483893652e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.004425666993483901
+    },
+    {
+      "id": "corner:31",
+      "parameters": [
+        0.16,
+        10.0,
+        0.16,
+        1.5,
+        -0.1
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 1.3079807104077186e-06,
+      "max_abs_price_shift": 1.3864840298083436e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": 0.024376922454393934,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 2.7259972057436234e-08,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 2.7259972057436234e-08
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.3079807104077186e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.3079807104077186e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.006225916091352701
+    },
+    {
+      "id": "center",
+      "parameters": [
+        0.085,
+        5.05,
+        0.085,
+        0.8,
+        -0.525
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 1.3085790584455022e-06,
+      "max_abs_price_shift": 1.393127035953512e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": 0.009902111703922856,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 4.0056860939330347e-07,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 4.0056860939330347e-07
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 1.3085790584455022e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 1.3085790584455022e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.005359583999961615
+    },
+    {
+      "id": "reference",
+      "parameters": [
+        0.04,
+        2.0,
+        0.04,
+        0.6,
+        -0.7
+      ],
+      "priced": true,
+      "max_abs_price_shift_over_measurement_sigma": 2.091675952442528e-06,
+      "max_abs_price_shift": 2.0916759524425288e-07,
+      "worst_contract_index": 8,
+      "log_likelihood_shift": 0.0012193958146626827,
+      "base_diagnostics": {
+        "nodes": 512,
+        "cutoff": 300.0,
+        "base_nodes": 256,
+        "base_cutoff": 150.0,
+        "max_difference_over_measurement_sigma": 0.005835356205805551,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 512,
+            "cutoff": 300.0,
+            "max_difference_over_measurement_sigma": 0.005835356205805551
+          }
+        ]
+      },
+      "refined_diagnostics": {
+        "nodes": 1024,
+        "cutoff": 600.0,
+        "base_nodes": 512,
+        "base_cutoff": 300.0,
+        "max_difference_over_measurement_sigma": 2.091675952442528e-06,
+        "numerical_fraction": 0.02,
+        "attempts": [
+          {
+            "nodes": 1024,
+            "cutoff": 600.0,
+            "max_difference_over_measurement_sigma": 2.091675952442528e-06
+          }
+        ]
+      },
+      "pointwise_price_gate_passed": true,
+      "wall_seconds": 0.006342209177091718
+    }
+  ],
+  "independent_quadrature": [
+    {
+      "id": "center",
+      "parameters": [
+        0.085,
+        5.05,
+        0.085,
+        0.8,
+        -0.525
+      ],
+      "contract_indices": [
+        0,
+        7,
+        15,
+        22,
+        30,
+        37,
+        45,
+        53
+      ],
+      "scope": "adaptive scipy.quad on [0,infinity); shared characteristic function and Lewis formula",
+      "priced": true,
+      "prices": [
+        50.092832710244124,
+        58.85246853105324,
+        136.8823577321746,
+        395.5176700212329,
+        364.42910624096686,
+        198.73717327136455,
+        135.41566584295015,
+        225.5123305041494
+      ],
+      "independent_prices": [
+        50.09283268823083,
+        58.852468487054466,
+        136.8823577109879,
+        395.51766999841766,
+        364.429106262224,
+        198.73717324359404,
+        135.4156658298266,
+        225.51233047996993
+      ],
+      "independent_error_estimates": [
+        2.145489901628161e-06,
+        0.00011352265288701972,
+        9.91804799333973e-06,
+        1.7164874825515682e-05,
+        0.0019448068518863803,
+        0.0007482937706968249,
+        4.550718274445399e-05,
+        0.00013746285599984163
+      ],
+      "max_abs_difference_over_measurement_sigma": 4.3998774401643517e-07,
+      "price_gate_passed": true,
+      "wall_seconds": 0.09212895901873708
+    },
+    {
+      "id": "reference",
+      "parameters": [
+        0.04,
+        2.0,
+        0.04,
+        0.6,
+        -0.7
+      ],
+      "contract_indices": [
+        0,
+        7,
+        15,
+        22,
+        30,
+        37,
+        45,
+        53
+      ],
+      "scope": "adaptive scipy.quad on [0,infinity); shared characteristic function and Lewis formula",
+      "priced": true,
+      "prices": [
+        19.02125469832322,
+        14.078856812582917,
+        43.80231696446086,
+        262.8550935147904,
+        213.81123565063086,
+        100.46977309517274,
+        66.81848185299577,
+        25.853514536309575
+      ],
+      "independent_prices": [
+        19.021254650090214,
+        14.07885673542296,
+        43.802316933599286,
+        262.8550934924906,
+        213.81123562268823,
+        100.46977302168852,
+        66.81852546013442,
+        25.853514511386493
+      ],
+      "independent_error_estimates": [
+        7.333033266187646e-05,
+        1.1235403962278766e-06,
+        3.7103523558920936e-05,
+        0.00018320635250703248,
+        3.752422000965291e-05,
+        0.00010510792667348931,
+        0.0014677590373175047,
+        8.915046164021026e-05
+      ],
+      "max_abs_difference_over_measurement_sigma": 7.928570663683497e-05,
+      "price_gate_passed": true,
+      "wall_seconds": 0.12210641708225012
+    },
+    {
+      "id": "low_variance_high_xi",
+      "parameters": [
+        0.01,
+        0.1,
+        0.01,
+        1.5,
+        -0.95
+      ],
+      "contract_indices": [
+        0,
+        7,
+        15,
+        22,
+        30,
+        37,
+        45,
+        53
+      ],
+      "scope": "adaptive scipy.quad on [0,infinity); shared characteristic function and Lewis formula",
+      "priced": true,
+      "prices": [
+        8.645632234454297,
+        0.000465377079195713,
+        0.05305454783318385,
+        49.67257591004404,
+        37.43647426721594,
+        24.33591729582804,
+        19.502691733382107,
+        0.04862967277437285
+      ],
+      "independent_prices": [
+        8.6455259720301,
+        0.0005451387669381802,
+        0.05295040128839901,
+        49.672562009750436,
+        37.435912619841304,
+        24.33596270452108,
+        19.502639057065153,
+        0.04866189905169449
+      ],
+      "independent_error_estimates": [
+        0.0004645922213046268,
+        0.00025996086100793503,
+        0.0004284181984664164,
+        0.001913094536673594,
+        0.0033795687344519536,
+        0.0013361435986808156,
+        0.001965122720661872,
+        0.0014198447156479337
+      ],
+      "max_abs_difference_over_measurement_sigma": 0.0007976168774246733,
+      "price_gate_passed": true,
+      "wall_seconds": 0.6328058340586722
+    }
+  ],
+  "wall_seconds": 8.517429166007787,
+  "all_points_priced": false,
+  "failed_point_ids": [
+    "corner:10"
+  ],
+  "max_abs_price_shift_over_measurement_sigma": 0.00023640828179475955,
+  "max_abs_log_likelihood_shift": 0.4950469607056931,
+  "pointwise_numerical_gates_passed": false,
+  "source_sha256": {
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/lab/scripts/audit_heston_pilot_precision.py": "46d5b7c8f1d9e8dea39c5493a0fdc6886e7d5fccd77499317d1222ba93f7430d",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/lab/src/sbi4finance/calibration/heston_pilot.py": "7189d8d35fb7f776424835e279647867dbd0a3e4bccf00be0a1c915b0725904b",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/tutorial/src/sbi4f_tutorial/heston_options/model.py": "4b48d998ff99e3709d8c753bd12ef32453242332ec0486c9d1251a788cadfe85"
+  },
+  "design_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/lab/evidence/pilot-results/2026-11-09/heston-observations/designs/symmetric.json",
+  "design_sha256": "31fbc25bda82490a3b06fa482b713ae355084dcc062fe9c4dc9c46602ed48156"
+}

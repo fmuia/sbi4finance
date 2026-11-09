@@ -1,0 +1,293 @@
+{
+  "schema": "raw_heston_quantlib_comparison_v1",
+  "created_utc": "2026-11-09T20:40:51.424549+00:00",
+  "quantlib_version": "1.44",
+  "quantlib_module": "/private/tmp/sbi4f-quantlib/QuantLib/__init__.py",
+  "quantlib_source": "https://github.com/lballabio/QuantLib/blob/v1.44/ql/pricingengines/vanilla/analytichestonengine.cpp",
+  "independence": "QuantLib AnalyticHestonEngine has separate CF and Gatheral inversion; production uses Lewis half-shift integral",
+  "time_transform": "s=t/T,U_s=T*V_(Ts): v0'=T*v0,theta'=T*theta,kappa'=T*kappa,xi'=T*xi,rho'=rho; ACT/365F horizon exactly1year",
+  "price_transform": "F'=1,K'=K/F,r'=q'=0; actual quote price=D*F*normalized QuantLib price",
+  "quantlib_numerics": {
+    "adaptive_relative_tolerance": 1e-11,
+    "adaptive_max_evaluations": 5000,
+    "independent_laguerre_order": 192
+  },
+  "contract_indices": [
+    0,
+    7,
+    15,
+    22,
+    30,
+    37,
+    45,
+    53
+  ],
+  "number_of_quotes": 54,
+  "parameter_names": [
+    "initial_variance",
+    "kappa",
+    "theta",
+    "vol_of_vol",
+    "rho"
+  ],
+  "bounds": [
+    [
+      0.01,
+      0.16
+    ],
+    [
+      0.1,
+      10.0
+    ],
+    [
+      0.01,
+      0.16
+    ],
+    [
+      0.1,
+      1.5
+    ],
+    [
+      -0.95,
+      -0.1
+    ]
+  ],
+  "numerical_fraction": 0.02,
+  "python": "3.12.16",
+  "points": [
+    {
+      "id": "center",
+      "parameters": [
+        0.085,
+        5.05,
+        0.085,
+        0.8,
+        -0.525
+      ],
+      "priced": true,
+      "production_prices": [
+        50.092832710244124,
+        58.85246853105324,
+        136.8823577321746,
+        395.5176700212329,
+        364.42910624096686,
+        198.73717327136455,
+        135.41566584295015,
+        225.5123305041494
+      ],
+      "quantlib_adaptive_prices": [
+        50.09283268812802,
+        58.85246850752657,
+        136.88235770862775,
+        395.5176699983784,
+        364.42910621875336,
+        198.73717325087364,
+        135.41566582383305,
+        225.51233047920695
+      ],
+      "quantlib_laguerre_prices": [
+        50.0928326881276,
+        58.85246850752661,
+        136.88235770862465,
+        395.5176699983786,
+        364.42910621875325,
+        198.73717325087347,
+        135.41566582383305,
+        225.51233047920687
+      ],
+      "max_abs_difference_over_measurement_sigma": 2.3526673942342345e-07,
+      "max_abs_price_difference": 2.494243744877167e-08,
+      "quantlib_refinement_over_measurement_sigma": 1.548983163957024e-11,
+      "passed": true
+    },
+    {
+      "id": "reference",
+      "parameters": [
+        0.04,
+        2.0,
+        0.04,
+        0.6,
+        -0.7
+      ],
+      "priced": true,
+      "production_prices": [
+        19.02125469832322,
+        14.078856812582917,
+        43.80231696446086,
+        262.8550935147904,
+        213.81123565063086,
+        100.46977309517274,
+        66.81848185299577,
+        25.853514536309575
+      ],
+      "quantlib_adaptive_prices": [
+        19.021254643754023,
+        14.078856735407829,
+        43.80231693399348,
+        262.8550934917876,
+        213.81123562836703,
+        100.46977307460091,
+        66.81848183378014,
+        25.85351451123677
+      ],
+      "quantlib_laguerre_prices": [
+        19.021254643753707,
+        14.078856735407859,
+        43.80231693399463,
+        262.85509349178824,
+        213.81123562836714,
+        100.4697730746007,
+        66.81848183378014,
+        25.853514511237027
+      ],
+      "max_abs_difference_over_measurement_sigma": 7.717508765381364e-07,
+      "max_abs_price_difference": 7.717508765381353e-08,
+      "quantlib_refinement_over_measurement_sigma": 5.755396159656832e-12,
+      "passed": true
+    },
+    {
+      "id": "low_variance_high_xi",
+      "parameters": [
+        0.01,
+        0.1,
+        0.01,
+        1.5,
+        -0.95
+      ],
+      "priced": true,
+      "production_prices": [
+        8.645632234454297,
+        0.000465377079195713,
+        0.05305454783318385,
+        49.67257591004404,
+        37.43647426721594,
+        24.33591729582804,
+        19.502691733382107,
+        0.04862967277437285
+      ],
+      "quantlib_adaptive_prices": [
+        8.645619350934885,
+        0.0004517538352629964,
+        0.05304097919507994,
+        49.67256221562445,
+        37.436461327960856,
+        24.335905376567833,
+        19.502680568220878,
+        0.048615137670559194
+      ],
+      "quantlib_laguerre_prices": [
+        8.645619430198842,
+        0.0004517511028621859,
+        0.053040976398905794,
+        49.672559289462775,
+        37.4364613363079,
+        24.335905383798274,
+        19.502680574777628,
+        0.04861513475818502
+      ],
+      "max_abs_difference_over_measurement_sigma": 0.0001362324393271659,
+      "max_abs_price_difference": 1.4535103813655137e-05,
+      "quantlib_refinement_over_measurement_sigma": 2.340929341926312e-06,
+      "passed": true
+    },
+    {
+      "id": "high_variance_high_xi",
+      "parameters": [
+        0.16,
+        0.1,
+        0.16,
+        1.5,
+        -0.95
+      ],
+      "priced": true,
+      "production_prices": [
+        117.06171628510356,
+        91.66528651669068,
+        161.70315205144126,
+        475.9213454353208,
+        455.7474627893552,
+        338.924044400253,
+        283.5351292377509,
+        7.938447217226952
+      ],
+      "quantlib_adaptive_prices": [
+        117.06171638478688,
+        91.6652866227279,
+        161.70315215777111,
+        475.9213455382609,
+        455.74746288947233,
+        338.9240444928901,
+        283.5351293242036,
+        7.938447326816007
+      ],
+      "quantlib_laguerre_prices": [
+        117.06171649748329,
+        91.66528662198427,
+        161.70315215700782,
+        475.92134553760644,
+        455.74746300723734,
+        338.9240445958877,
+        283.53512941659346,
+        7.938447261098916
+      ],
+      "max_abs_difference_over_measurement_sigma": 1.0603721989355123e-06,
+      "max_abs_price_difference": 1.095890551638945e-07,
+      "quantlib_refinement_over_measurement_sigma": 7.513094146816073e-07,
+      "passed": true
+    },
+    {
+      "id": "low_variance_high_kappa_weak_correlation",
+      "parameters": [
+        0.01,
+        10.0,
+        0.16,
+        1.5,
+        -0.1
+      ],
+      "priced": true,
+      "production_prices": [
+        18.330900421408955,
+        29.63322179663996,
+        141.30562346135355,
+        429.3537655081438,
+        457.4349553268823,
+        295.9918271577392,
+        225.412684404238,
+        495.69320330337735
+      ],
+      "quantlib_adaptive_prices": [
+        18.330900398812414,
+        29.633221773886337,
+        141.30562343779874,
+        429.3537654852986,
+        457.43495530471444,
+        295.9918271373386,
+        225.4126843852406,
+        495.6932032786088
+      ],
+      "quantlib_laguerre_prices": [
+        18.330900398812414,
+        29.633221773886405,
+        141.30562343779994,
+        429.35376548529865,
+        457.4349553047142,
+        295.99182713733836,
+        225.412684385241,
+        495.6932032786088
+      ],
+      "max_abs_difference_over_measurement_sigma": 2.2753621209403747e-07,
+      "max_abs_price_difference": 2.476855343047646e-08,
+      "quantlib_refinement_over_measurement_sigma": 5.9685589803848626e-12,
+      "passed": true
+    }
+  ],
+  "scope": "40 fixed parameter/contract price comparisons, not exhaustive model validation or posterior stability",
+  "posterior_stability_assessed": false,
+  "all_points_priced": true,
+  "pointwise_price_gates_passed": true,
+  "max_abs_difference_over_measurement_sigma": 0.0001362324393271659,
+  "wall_seconds": 2.0565474999602884,
+  "design_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/lab/evidence/pilot-results/2026-11-09/heston-observations/designs/symmetric.json",
+  "design_sha256": "31fbc25bda82490a3b06fa482b713ae355084dcc062fe9c4dc9c46602ed48156",
+  "script_sha256": "fde4b87909406f07ffe32e9509f0e39413e1fcb5ff08a8601e09bf3e1b322b70"
+}

@@ -1,0 +1,50 @@
+{
+  "format": "heston_pilot_validation_v1",
+  "lab_suite": {
+    "command": "pixi run -e core-reference test",
+    "tests": 590,
+    "passed": true,
+    "log_sha256": "483f3fab6a0fea6a80855f56ae04baccd43086dbfaeb571e34eeb5366e65a7d8"
+  },
+  "additional_tests": {
+    "command": ".pixi/envs/core-reference/bin/python -m unittest discover -s tests -p test_heston_pilot_products.py -v",
+    "tests": 2,
+    "passed": true,
+    "scope": "Added after full-suite discovery: independent variance integration and wrong-design evidence protection."
+  },
+  "release_checks": {
+    "manifest": true,
+    "claims": true,
+    "runtime_boundary": true,
+    "command": "pixi run -e core-reference release-check"
+  },
+  "versions": {
+    "python": "3.12.16",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "pymc": "6.3.2",
+    "pytensor": "3.3.4",
+    "bayesflow": "2.1.0",
+    "keras": "3.15.1",
+    "jax": "0.11.1"
+  },
+  "locked_environment_sha256": {
+    "pyproject.toml": "25c8e213e5b7471f734f92d0dfd7759cb52d0f280be85f1d4d3106f2492a207f",
+    "pixi.lock": "994fa6075abf60c5e2045a6e2d73302a0a84af9b37e311e8ac2cdfcd8854a871"
+  },
+  "unchanged_sampler_source_sha256": {
+    "lab/src/sbi4finance/calibration/reference.py": "fd69a6958026f6addde982f2c8d57461cf549efe75f838956e0d931e12153056",
+    "lab/src/sbi4finance/calibration/reference_initialization.py": "0abf68e9862d30bf152dd01e28807ed651d53a12dca4c1286ccb17c52ef0b74f",
+    "lab/src/sbi4finance/calibration/pymc_reference_op.py": "99704310f8a503cad7eee2310da0204d52c213427ad21683834214018f02451b",
+    "tutorial/src/sbi4f_tutorial/heston_options/model.py": "4b48d998ff99e3709d8c753bd12ef32453242332ec0486c9d1251a788cadfe85"
+  },
+  "baseline_producer_commit": "47f474c",
+  "scientific_acceptance": false,
+  "limitations": "Software checks and development-study results; neural conditional validation failed. No tutorial assets promoted.",
+  "final_targeted_tests": {
+    "command": ".pixi/envs/core-reference/bin/python -m unittest discover -s tests -p test_heston_pilot*.py -v",
+    "tests": 16,
+    "passed": true,
+    "scope": "All final numerical/likelihood, product, data binding, simulator/pairing, carry and common-heldout tests; includes tests added after full-suite discovery."
+  }
+}
