@@ -54,6 +54,24 @@ place. The baseline lab suite passes **534 tests, with three optional skips**;
 manifest, claims and runtime-boundary checks pass. P2 and P3 proceed as separate
 branches. No study matrix has been admitted and no model has been replaced.
 
+P2 is implemented and checked. The
+[pricing record](../evidence/pilot-results/2026-11-08/heston-pricing-optimization/summary.json)
+compares the same panel before and after the cache, shared call/put calculation
+and successful-rung reuse. Warm median checked pricing falls **3.92 → 1.83 ms**
+(**2.15×**); notebook pricing falls **2.39 → 1.09 ms** (**2.19×**). Cold panel
+wall time improves less (**2.24 → 1.61 s**, checked route), including quadrature
+startup. All 276 cold and 828 warm evaluations per route have zero failures,
+zero price differences and zero refinement-difference changes against P1 and
+the frozen reference. RSS high-water marks are 445 MB / 545 MB for the complete
+benchmark processes; these include imports and both implementations.
+
+The optimization retains the numerical ladder and price bounds, with a bounded
+read-only grid cache and a general-grid fallback. Existing banks/checkpoints
+remain unchanged; generation from this producer has a new identity. No complete
+bank writer was timed, so these are scalar-pricing gains. The pricing branch
+passes **545 lab tests (three optional skips)**, **37 tutorial tests**, all
+**seven notebook exports**, notebook checks and release checks.
+
 ### Sequence and parallel work
 
 | PR | Purpose | Depends on | Can proceed alongside |

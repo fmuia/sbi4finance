@@ -1,0 +1,247 @@
+{
+  "summaries": {
+    "reference_checked": {
+      "cold": {
+        "evaluations": 276,
+        "failures": 0,
+        "wall_seconds": {
+          "total": 3.5566579196602106,
+          "median": 0.007711416517850012,
+          "p95": 0.008318989537656307,
+          "max": 0.8871486670104787
+        },
+        "process_cpu_seconds": {
+          "total": 3.552864999999999,
+          "median": 0.007705999999999991,
+          "p95": 0.008309999999999984,
+          "max": 0.886444
+        }
+      },
+      "warm": {
+        "evaluations": 828,
+        "failures": 0,
+        "wall_seconds": {
+          "total": 8.072451672749594,
+          "median": 0.008528583974111825,
+          "p95": 0.0100141437666025,
+          "max": 0.07955941604450345
+        },
+        "process_cpu_seconds": {
+          "total": 8.06016800000006,
+          "median": 0.008517999999999581,
+          "p95": 0.01000515000000064,
+          "max": 0.07948700000000031
+        }
+      }
+    },
+    "current_checked": {
+      "cold": {
+        "evaluations": 276,
+        "failures": 0,
+        "wall_seconds": {
+          "total": 1.6108297540340573,
+          "median": 0.0015660624485462904,
+          "p95": 0.0021056347468402237,
+          "max": 0.8382122080074623
+        },
+        "process_cpu_seconds": {
+          "total": 1.6096160000000053,
+          "median": 0.0015649999999998165,
+          "p95": 0.0020962500000003548,
+          "max": 0.8376219999999996
+        }
+      },
+      "warm": {
+        "evaluations": 828,
+        "failures": 0,
+        "wall_seconds": {
+          "total": 1.703898710082285,
+          "median": 0.0018258335185237229,
+          "p95": 0.0025415016163606195,
+          "max": 0.024969833088107407
+        },
+        "process_cpu_seconds": {
+          "total": 1.701846999999944,
+          "median": 0.0018254999999998134,
+          "p95": 0.002532500000001647,
+          "max": 0.024948999999999444
+        }
+      }
+    },
+    "reference_notebook": {
+      "cold": {
+        "evaluations": 276,
+        "failures": 0,
+        "wall_seconds": {
+          "total": 2.878240716527216,
+          "median": 0.0050835415022447705,
+          "p95": 0.005811781506054103,
+          "max": 0.8917507089208812
+        },
+        "process_cpu_seconds": {
+          "total": 2.871234000000001,
+          "median": 0.005075999999999858,
+          "p95": 0.005803000000000003,
+          "max": 0.8910670000000005
+        }
+      },
+      "warm": {
+        "evaluations": 828,
+        "failures": 0,
+        "wall_seconds": {
+          "total": 5.597961429855786,
+          "median": 0.005481166997924447,
+          "p95": 0.0065838415583129965,
+          "max": 0.0774156249826774
+        },
+        "process_cpu_seconds": {
+          "total": 5.592365999999977,
+          "median": 0.0054755000000001885,
+          "p95": 0.006564550000000402,
+          "max": 0.07734400000000008
+        }
+      }
+    },
+    "current_notebook": {
+      "cold": {
+        "evaluations": 276,
+        "failures": 0,
+        "wall_seconds": {
+          "total": 1.413533802027814,
+          "median": 0.000738041999284178,
+          "p95": 0.001182573294499889,
+          "max": 0.8324640000937507
+        },
+        "process_cpu_seconds": {
+          "total": 1.4124499999999927,
+          "median": 0.0007374999999996135,
+          "p95": 0.001175499999999552,
+          "max": 0.8318300000000001
+        }
+      },
+      "warm": {
+        "evaluations": 828,
+        "failures": 0,
+        "wall_seconds": {
+          "total": 1.1402588684577495,
+          "median": 0.0010896040475927293,
+          "p95": 0.001550529070664197,
+          "max": 0.022591792047023773
+        },
+        "process_cpu_seconds": {
+          "total": 1.1392159999999656,
+          "median": 0.0010890000000003397,
+          "p95": 0.0015430000000016264,
+          "max": 0.022574000000002314
+        }
+      }
+    }
+  },
+  "comparisons": {
+    "checked_cold": {
+      "failure_outcome_mismatch_ids": [],
+      "max_abs_price_difference": 0.0,
+      "max_price_difference_over_quote_sigma": 0.0,
+      "max_abs_refinement_difference": 0.0,
+      "passes_price_and_failure_gate": true
+    },
+    "checked_warm": {
+      "failure_outcome_mismatch_ids": [],
+      "max_abs_price_difference": 0.0,
+      "max_price_difference_over_quote_sigma": 0.0,
+      "max_abs_refinement_difference": 0.0,
+      "passes_price_and_failure_gate": true
+    },
+    "notebook_cold": {
+      "failure_outcome_mismatch_ids": [],
+      "max_abs_price_difference": 0.0,
+      "max_price_difference_over_quote_sigma": 0.0,
+      "max_abs_refinement_difference": 0.0,
+      "passes_price_and_failure_gate": true
+    },
+    "notebook_warm": {
+      "failure_outcome_mismatch_ids": [],
+      "max_abs_price_difference": 0.0,
+      "max_price_difference_over_quote_sigma": 0.0,
+      "max_abs_refinement_difference": 0.0,
+      "passes_price_and_failure_gate": true
+    }
+  },
+  "format": "heston_pricing_benchmark_v1",
+  "panel_sha256": "8f5c8162b0bd0c5b2d6eb3494b0d270ade5e59db4a571e19e10da92e2437a6a3",
+  "task_sha256": "76a0e7012888d5f888e8638ce1e65a1fea2819cc3b24ba437d7e284975988ec7",
+  "task_file_sha256": "15760492c822cf902e7b0a265ccadd69a92eac832776ba033202db8e312e56e8",
+  "repeats": 3,
+  "threads": 1,
+  "source_sha256": {
+    "lab/scripts/benchmark_heston_pricing.py": "bddbea7415ead2da25438860349313b4bffb2da18a5d1543d0b72a345a5bd050",
+    "lab/src/sbi4finance/calibration/heston_pricing_reference.py": "355d1f6c1f6821453a217cd4618c22b10e6c92b187f9dfa0f7f22d01a214dabe",
+    "tutorial/src/sbi4f_tutorial/heston_options/model.py": "4b48d998ff99e3709d8c753bd12ef32453242332ec0486c9d1251a788cadfe85",
+    "tutorial/src/sbi4f_tutorial/heston_options/lesson.py": "8a29329ae912bb595fe4ea3ff75b31fb2f013dd8ef4186c413f06d6c098bce0f",
+    "tutorial/src/sbi4f_tutorial/shared/pricing.py": "12fb0a54c1c2e98cfa2feea2e37ccd18b5fe9d0280249ecb11d9abf04387c9d4",
+    "tutorial/src/sbi4f_tutorial/shared/tasks.py": "fa2e3ab505ace28c5442ea9ecc66fe688b180439a33798b4c77d8c528704e8a5"
+  },
+  "source_commit": "6cc4a3d0ed75f428360111774ff036284b1fb1d4",
+  "platform": "macOS-26.4.1-arm64-arm-64bit",
+  "processor": "arm",
+  "cpu_count": 18,
+  "python": "3.12.16",
+  "versions": {
+    "numpy": "2.5.3",
+    "scipy": "1.18.1"
+  },
+  "total_wall_seconds": 26.030392999993637,
+  "total_process_cpu_seconds": 25.983696,
+  "process_peak_rss_bytes": 544948224,
+  "memory_scope": "Process lifetime RSS high-water mark, including imports and both implementations; not incremental allocation.",
+  "cache_scope": "Cold panel clears caches once before its first row; warm rows alternate implementation order and retain caches.",
+  "resource_allocation_seconds": null,
+  "resource_scope": "Local process benchmark; no scheduler allocation or queue time.",
+  "previous_report_sha256": "bd79954b888843cb1902e70687a2498dbd89e48620b5c06b725c53bdaf1d2db1",
+  "previous_checkout_comparisons": {
+    "current_checked": {
+      "failure_outcome_mismatch_ids": [],
+      "max_abs_price_difference": 0.0,
+      "max_price_difference_over_quote_sigma": 0.0,
+      "max_abs_refinement_difference": 0.0,
+      "passes_price_and_failure_gate": true
+    },
+    "current_notebook": {
+      "failure_outcome_mismatch_ids": [],
+      "max_abs_price_difference": 0.0,
+      "max_price_difference_over_quote_sigma": 0.0,
+      "max_abs_refinement_difference": 0.0,
+      "passes_price_and_failure_gate": true
+    }
+  },
+  "full_report_sha256": "1f2dbf64bf5108ee0a38bff07f71fd2d3604652b1f1e8a978a16fe807e6c527d",
+  "baseline_full_report_sha256": "bd79954b888843cb1902e70687a2498dbd89e48620b5c06b725c53bdaf1d2db1",
+  "comparison_to_p1": {
+    "current_checked": {
+      "warm_median_wall_speedup": 2.148379309198245,
+      "warm_total_process_cpu_speedup": 2.0263378552831615,
+      "cold_panel_wall_speedup": 1.3879436463777663
+    },
+    "current_notebook": {
+      "warm_median_wall_speedup": 2.193170508121183,
+      "warm_total_process_cpu_speedup": 1.9961780733417964,
+      "cold_panel_wall_speedup": 1.2630323511975698
+    }
+  },
+  "reproduction": "From lab/: pixi run --locked -e core python scripts/benchmark_heston_pricing.py --out CALLER_OUTPUT --panel P1_PANEL_JSON --reference P1_REPORT_JSON --threads 1 --repeats 3",
+  "scope": "Same-host sequential P1/P2 scalar pricing microbenchmarks; within each, warm routes alternate. No complete writer/bank generation measurement. Peak RSS includes both implementations and imports, not incremental cache memory.",
+  "validation": {
+    "lab_tests": 545,
+    "lab_optional_skips": 3,
+    "tutorial_tests": 37,
+    "notebook_exports": 7,
+    "notebook_export_errors": 0,
+    "marimo_check_exit": 0,
+    "preexisting_empty_cell_warnings": 2,
+    "manifest_claims_changed": false,
+    "runtime_aliases_verified": 183,
+    "scope": "Integrated P1 and P2 branch; full locked core suite."
+  },
+  "cpu_model": "Apple M5 Max",
+  "cpu_model_source": "Read separately with sysctl -n machdep.cpu.brand_string on the same host as P1;18 logical CPUs."
+}
