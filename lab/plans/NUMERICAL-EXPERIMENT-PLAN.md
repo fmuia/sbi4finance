@@ -34,6 +34,26 @@ price-bound checks, with maximum price difference below 6e-16. The published
 bank's generation timings belong to an older frozen producer. The prototype
 needs the regression and reproducibility work below before production use.
 
+### Implementation progress · 8 November 2026
+
+P1 is implemented: the lab lock metadata is repaired without external dependency
+changes; the portable benchmark retains all 276 predeclared rows; training and
+evaluation now report actual work and separately scoped clocks. The
+[baseline record](../evidence/pilot-results/2026-11-08/heston-performance-baseline/summary.json)
+contains the measured panel, source identities, cold/warm summaries and
+reproduction command. Warm median pricing is **3.92 ms** for the checked bank
+route and **2.39 ms** for the notebook route on an Apple M5 Max CPU. This measures pricing,
+not complete bank generation. All cold/warm prices and refinement differences
+match the frozen reference exactly; there are no failed panel rows. The frozen
+reference median is stable at 8.53 ms for the checked route.
+
+The additive training report distinguishes completed versus recovered work,
+partial final batches, selected-checkpoint updates, nested timing phases, host
+peak RSS and scheduler allocations. Existing epoch recovery/defaults remain in
+place. The baseline lab suite passes **534 tests, with three optional skips**;
+manifest, claims and runtime-boundary checks pass. P2 and P3 proceed as separate
+branches. No study matrix has been admitted and no model has been replaced.
+
 ### Sequence and parallel work
 
 | PR | Purpose | Depends on | Can proceed alongside |
