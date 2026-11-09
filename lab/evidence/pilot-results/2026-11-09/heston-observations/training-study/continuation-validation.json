@@ -1,0 +1,41 @@
+{
+  "format": "heston_optimization_continuation_validation_v1",
+  "created_utc": "2026-11-09T22:58:51.795074+00:00",
+  "lab_suite": {
+    "command": "pixi run -e core-reference test",
+    "tests": 618,
+    "passed": true,
+    "seconds": 171.207,
+    "log_sha256": "9de27a8844393a28362b2f524100fbf569af20f09e9a8be3d6ee45fb9b9c5e46"
+  },
+  "release_checks": {
+    "manifest": true,
+    "claims": true,
+    "runtime_boundary": true
+  },
+  "resume_continuity_proof_sha256": "ad3c158b8d97597cada8c53e1f080517566313a0aadaca04fb50b80f6eaa33cc",
+  "inference_loader_compatibility_sha256": "2c7d36e0765ca04cd399bdb9d33afab0644139aed619a4de701d4a272921c8c5",
+  "continuation_protocol_sha256": "fe3fdfa542ff433a319de0a4c4ce2e6f9dc561c8f555b5f4df2983e2c59a1cb2",
+  "continuation_density_sha256": "71cf8f20429069a490c85fdcb8401e72362cf703cab1ab821aa2471c5f645fb4",
+  "evaluation_jobs_sha256": "1f859ae7555145653420ada9ba54ad368cd5f8ce5b88ac9aff5c56a290ce304e",
+  "source_sha256": {
+    "continue_heston_pilot_campaign.py": "f875d01c1e62e1c8d714f102bffdcdcd820c38d05de4509b7f5cc5bcea97ae95",
+    "evaluate_heston_pilot_campaign.py": "0d57cf26053cde58590a1af439f31be7ca34c9914f188ef43be802e5ec957ff5",
+    "score_heston_campaign_continuation.py": "4e5708aeaa8032d3c7befcfa8c4f4b6cd76a6f68e9850374a67574da0480920f"
+  },
+  "training_outcome": "A non-finite loss was detected at the 88k monitor; the last finite probes are at 87k. The 75k checkpoint is valid and evaluated; the 100k checkpoint is absent. The failing field and weights were not retained.",
+  "inference_development_verdict": "75k fails collective conditional agreement on market and all six completed synthetic observations despite better average physical NLL.",
+  "reserved_final_2000_opened": false,
+  "scientific_acceptance": false,
+  "readonly_failure_audit_sha256": "5cff8ddd28d35070c940a74b8190b56a98c0f10c995d964d0d302f6de582a994",
+  "readonly_failure_audit_input_hashes_verified": true,
+  "summary_verification": {
+    "source_sha256": "fa0619e7b7d2ef20d8885557c0ffb739196311c679ab1ebf5f6a19f73571791a",
+    "summary_sha256": "3aa8d0ca99151371d290ee44ecca5d4f9e2a60707a0980d4cc99e1b5e6f91b9b",
+    "figure_sha256": "ece71f5f8b9422cb06e7860e4b9b966ba9d3a87ae3d6033c6627f856a05df803",
+    "source_and_payload_bindings_verified": true,
+    "visual_review_passed": true,
+    "cli_help_passed": true,
+    "scope": "Report producer ran successfully against the saved paired evaluations, density scores, curves and preserved failure. No new model or acceptance cases."
+  }
+}

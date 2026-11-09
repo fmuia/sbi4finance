@@ -1,0 +1,25 @@
+{
+  "format": "heston_longer_optimization_protocol_v1",
+  "status": "training_failed",
+  "started_utc": "2026-11-09T22:46:13.937817+00:00",
+  "start_updates": 50000,
+  "target_updates": 100000,
+  "checkpoints": [
+    75000,
+    100000
+  ],
+  "training_rows": 100000,
+  "learning_rate_schedule_horizon": 50000,
+  "learning_rate_after_50000": 5e-05,
+  "parent_model_sha256": "9740725072109537de22bdf38742ec6c96ff6c67eba6f80bb22ef9f31405fc67",
+  "parent_checkpoint_sha256": "68af75c07168970e4ea99d13eeb74fc6f19dcd5728fdaebfa9ab5e82cb917e80",
+  "task_fingerprint": "8225d51175df3768aae84d2829466c8085645266973316bc3fb12a3608322962",
+  "continuation_source_sha256": "f875d01c1e62e1c8d714f102bffdcdcd820c38d05de4509b7f5cc5bcea97ae95",
+  "continuation_producer_commit": "197d9c3f4acd9187e08ab2c02a6ecd88cc8727dc",
+  "bank_payload_sha256": "35117eb977867ffb5b73e95cc2da6327f74820b2a74be96d223c85dfc8400fbb",
+  "reserved_final_2000_opened": false,
+  "scientific_acceptance": false,
+  "scope": "Additional optimization only. Preserve weights, Adam moments, standardization, reconstructed dropout streams, absolute data/tau/noise steps and parent learning-rate schedule.",
+  "exit_code": 1,
+  "seconds": 540.7889626249671
+}

@@ -1,0 +1,85 @@
+{
+  "format": "heston_continuation_physical_density_development_score_v1",
+  "created_utc": "2026-11-09T22:56:17.932142+00:00",
+  "scientific_acceptance": false,
+  "scope": "Physical-density scores for the authorized 75k/100k update continuation.\n\nRead the same saved512 development observations and frozen checkpoints. Reuse\nthe recorded100k-row/50k-update physical log densities as the paired baseline.\nNo fitting, simulation, original-record modification or reserved-test reads.\n",
+  "method": "negative public BasicEstimator.log_prob on original training_data; adapter and target-standardization Jacobians included",
+  "units": "joint physical-parameter NLL, nats per observation; lower is better",
+  "script_sha256": "4e5708aeaa8032d3c7befcfa8c4f4b6cd76a6f68e9850374a67574da0480920f",
+  "design_sha256": "4b84185e7a072844fd6a3ce0f79aed983d39502607a7a76c79dbf7196f9ed547",
+  "baseline_score_sha256": "249587ac8326f5443d7ee5424898034d5d7698a548bb0dfc117c9570589346ca",
+  "baseline_cell": {
+    "mean_physical_nll": -17.979407055303454,
+    "observation_standard_error": 0.15749845747988425,
+    "physical_logp_min_max": [
+      6.411909103393555,
+      27.451923370361328
+    ],
+    "checkpoint_record_sha256": "68af75c07168970e4ea99d13eeb74fc6f19dcd5728fdaebfa9ab5e82cb917e80",
+    "model_sha256": "9740725072109537de22bdf38742ec6c96ff6c67eba6f80bb22ef9f31405fc67",
+    "task_fingerprint": "8225d51175df3768aae84d2829466c8085645266973316bc3fb12a3608322962",
+    "evaluation_record_sha256": "a12890f93bbbbaaa9ce98e104d7e38df73cf372fd31aca5aa32b02ea4a608400",
+    "evaluation_payload_sha256": "8009f61a5c40ea39d454b8423414140557210f07b27cf69d32ba597f365048e7",
+    "cohort_sha256": "419b03e51c0552f6bfb429edf61c3f2fd74dfe7d0ab88e624483f9a20db7fc3c",
+    "truth_sha256": "b7bd2455b2e50a9660cef550b6a55d37042e625ff235e91f71dbf193a8aa4e42",
+    "observations_sha256": "1c80673828105f03787be536a2c9f4ab03921764915172ce792ba5debed6843d",
+    "row_ids_sha256": "2f63b982c6bc12683c5e2df48a7f7c8d130120521d1e3a201df85b5a12e7e4da",
+    "official_basic_estimator_source_sha256": "dfe54314ce12a917d5bd8ca810e7af8cd8071110248160c4470edc81ab972c6e",
+    "actual_optimizer_updates": 50000,
+    "training_rows": 100000
+  },
+  "baseline_logp_payload_sha256": "7b7092664815397774e2c8e8dec705a0e1139cb2b5b85f1fb83565ec4015974b",
+  "cells": {
+    "75000": {
+      "mean_physical_nll": -18.072644501924515,
+      "observation_standard_error": 0.1598010619242973,
+      "checkpoint_record_sha256": "495763fafff61691bbb0cb84bd653bfbdd88477db3fe2b6e2ea1ab64a36e926b",
+      "model_sha256": "a792e5e5334f06c2d9caa2ed9091ad978c637a61354216a2c7fae123c52eb94f",
+      "task_fingerprint": "8225d51175df3768aae84d2829466c8085645266973316bc3fb12a3608322962",
+      "actual_optimizer_updates": 75000,
+      "planned_updates": 100000,
+      "schedule_updates": 50000,
+      "evaluation_record_sha256": "03102bfabe964c9971105f47860048b634f1b609389493a864693b3ef381289f",
+      "evaluation_payload_sha256": "a42dc1deb729db34212965140242e2c01176384f3eeac76d40b4faefb0596233",
+      "truth_sha256": "b7bd2455b2e50a9660cef550b6a55d37042e625ff235e91f71dbf193a8aa4e42",
+      "observations_sha256": "1c80673828105f03787be536a2c9f4ab03921764915172ce792ba5debed6843d",
+      "row_ids_sha256": "2f63b982c6bc12683c5e2df48a7f7c8d130120521d1e3a201df85b5a12e7e4da",
+      "official_basic_estimator_source_sha256": "dfe54314ce12a917d5bd8ca810e7af8cd8071110248160c4470edc81ab972c6e"
+    }
+  },
+  "paired_later_minus_50k": {
+    "75000": {
+      "mean_nll_difference": -0.09323744662106037,
+      "paired_observation_standard_error": 0.01985366483313063,
+      "normal_approximation_ci95": [
+        -0.1321506296939964,
+        -0.054324263548124335
+      ],
+      "cases": 512,
+      "negative_favors": "second model",
+      "scientific_acceptance": false
+    }
+  },
+  "logp_payload_sha256": "26ad22cd0d85eea9d0a89136de5687a46e84d6fb15b883054827386df97e2681",
+  "logp_payload_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/local-artifacts/heston-observations-20261109/training-study/continuation-physical-logp.npz",
+  "wall_seconds": 3.309514499967918,
+  "unavailable_endpoints": {
+    "100000": {
+      "status": "training_failed_no_checkpoint",
+      "scored": false,
+      "error": "FloatingPointError: nonfinite continuation curve",
+      "last_recorded_finite_curve_point": {
+        "updates": 87000,
+        "continuation_updates": 37000,
+        "seconds": 519.1144793750718,
+        "batch_training_loss": -4.690974235534668,
+        "train_probe_loss": -5.198482513427734,
+        "validation_probe_loss": -5.012024879455566
+      },
+      "continuation_log_sha256": "aed543e83306d284b05131b68d14064287e6b8af06f1632a992841e684c1ef9d",
+      "curve_sha256": "fd3e486cbc701c1a90bbccee820eb7818aac642f99c534d13a766f487ff3e985",
+      "continuation_run_sha256": "031d8573a30b1e0814b1980c9850a586969322089763b5b8d8fafd769f030af7",
+      "scope": "Failure retained; no100k posterior or density score fabricated, and no new inference attempted."
+    }
+  }
+}

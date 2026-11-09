@@ -1,0 +1,29 @@
+{
+  "format": "heston_continuation_inference_loader_compatibility_v1",
+  "scientific_acceptance": false,
+  "method": "Compare original native checkpoint loader against continuation loader restoring nontrainable sidecar; identical frozen market observations,16posterior draws, explicit seed. Inference only; no fitting or new/test observations.",
+  "checkpoint_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/local-artifacts/heston-observations-20261109/campaign-continuation-smoke-v3",
+  "checkpoint_sha256": "869a10011186bdde34cac38e8a7ce2afd533ad6598e953567a370aa3ee1a74f6",
+  "model_sha256": "ecff8fc449906068660b23c3cd733500a4f57d2acabd28fa7a81e40d28daf7a3",
+  "sidecar_sha256": "5abf1ece4d3a0779dd8472f4e1d53cbf4532729fecabdd2381ad34a456abbafd",
+  "design_sha256": "4b84185e7a072844fd6a3ce0f79aed983d39502607a7a76c79dbf7196f9ed547",
+  "seed": 9042,
+  "draw_shape": [
+    1,
+    16,
+    6
+  ],
+  "same_seed_samples_exact": true,
+  "maximum_absolute_sample_difference": 0.0,
+  "native_sample_sha256": "d8397c5386a0b2b03e54473096ee0dc6cd1fc3da791f374789dfa37b8f368cda",
+  "preserved_sample_sha256": "d8397c5386a0b2b03e54473096ee0dc6cd1fc3da791f374789dfa37b8f368cda",
+  "actual_optimizer_updates": 10,
+  "planned_updates": 10,
+  "schedule_updates": 50000,
+  "source_sha256": {
+    "native_loader": "cef4a364eab69cfcd78ed4a20128c5d58155ff7a682520ffda8e7d841d4dc847",
+    "preserved_loader": "f875d01c1e62e1c8d714f102bffdcdcd820c38d05de4509b7f5cc5bcea97ae95",
+    "sample": "8cc81f9596b06adc3de4879bcae39bf392ce6b0f741bcda7ac855d47ee938fb1"
+  },
+  "wall_seconds": 4.149755958002061
+}

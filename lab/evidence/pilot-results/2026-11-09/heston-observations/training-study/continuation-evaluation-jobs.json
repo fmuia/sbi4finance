@@ -1,0 +1,26 @@
+{
+  "format": "heston_continuation_evaluation_jobs_v1",
+  "created_utc": "2026-11-09T22:58:51.794424+00:00",
+  "jobs": [
+    {
+      "updates": 75000,
+      "status": "completed",
+      "exit_code": 0,
+      "evaluation_sha256": "03102bfabe964c9971105f47860048b634f1b609389493a864693b3ef381289f",
+      "log_sha256": "63a4a9bc2f4f79d122bc86886f699c3b57bab441bfe120459d9d45ece81b7496",
+      "market_status": "fail"
+    },
+    {
+      "updates": 100000,
+      "status": "not_started_training_failed_no_checkpoint",
+      "evaluated": false
+    }
+  ],
+  "watcher": {
+    "status": "intentionally_terminated_after_training_failure",
+    "exit_code": 143,
+    "reason": "The pending 100k checkpoint cannot be produced by the failed training process; the completed 75k evaluation is retained."
+  },
+  "scientific_acceptance": false,
+  "reserved_final_2000_opened": false
+}

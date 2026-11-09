@@ -1,0 +1,126 @@
+{
+  "format": "heston_continuation_failure_readonly_audit_v1",
+  "created_utc": "2026-11-09T22:59:29.692221+00:00",
+  "scientific_acceptance": false,
+  "scope": "Read-only reconstruction and stateless forward scoring at the valid75k checkpoint. No gradients, optimizer updates, checkpoint mutation, test-pool reads or production retry.",
+  "failure": {
+    "exception": "FloatingPointError: nonfinite continuation curve",
+    "guard_source": "continue_heston_pilot_campaign.py Monitor.on_train_batch_end",
+    "detected_optimizer_update": 88000,
+    "corresponding_absolute_data_step": 87999,
+    "last_persisted_finite_check": {
+      "updates": 87000,
+      "continuation_updates": 37000,
+      "seconds": 519.1144793750718,
+      "batch_training_loss": -4.690974235534668,
+      "train_probe_loss": -5.198482513427734,
+      "validation_probe_loss": -5.012024879455566
+    },
+    "which_metric_failed": "Not recorded. Guard tests batch_training_loss, train_probe_loss and validation_probe_loss together before printing or saving the point.",
+    "exact_first_nonfinite_update": "Unknown; the first observed nonfinite monitored metric is after the successful87k check and by88k. This does not prove all weights were finite at87k.",
+    "weights_at_failure_assessed": false,
+    "failure_state_saved": false,
+    "completed_100k_checkpoint_exists": false,
+    "last_valid_saved_checkpoint_updates": 75000
+  },
+  "checkpoint_identity": {
+    "actual_optimizer_updates": 75000,
+    "planned_updates": 100000,
+    "schedule_updates": 50000,
+    "learning_rate": 5.0000002374872565e-05,
+    "parent_model_unchanged": true,
+    "bank_unchanged": true,
+    "resume_record_hash_matches": true,
+    "exact_parent_state_before_fit": true,
+    "exact_parent_state_at_train_begin": true,
+    "reconstructed_gradient_rng_variables": 24,
+    "checkpoint_optimizer_and_standardization_reload_exact": true,
+    "checkpoint_same_seed_reload_exact": true
+  },
+  "checkpoint_array_finiteness": {
+    "trainable": true,
+    "non_trainable": true,
+    "optimizer": true,
+    "standardization": true
+  },
+  "input_sha256": {
+    "local-artifacts/heston-observations-20261109/training-study/continuation.log": "aed543e83306d284b05131b68d14064287e6b8af06f1632a992841e684c1ef9d",
+    "local-artifacts/heston-observations-20261109/training-study/100k-continuation/run.json": "031d8573a30b1e0814b1980c9850a586969322089763b5b8d8fafd769f030af7",
+    "local-artifacts/heston-observations-20261109/training-study/100k-continuation/resume.json": "f0cb9ba56e586a5ae93316f30923b09d5c5f1dff64c6990f40c8d1b506dd255c",
+    "local-artifacts/heston-observations-20261109/training-study/100k-continuation/curve.json": "fd3e486cbc701c1a90bbccee820eb7818aac642f99c534d13a766f487ff3e985",
+    "local-artifacts/heston-observations-20261109/training-study/100k-continuation/checkpoints/update-075000/checkpoint.json": "495763fafff61691bbb0cb84bd653bfbdd88477db3fe2b6e2ea1ab64a36e926b",
+    "local-artifacts/heston-observations-20261109/training-study/100k-continuation/checkpoints/update-075000/model.keras": "a792e5e5334f06c2d9caa2ed9091ad978c637a61354216a2c7fae123c52eb94f",
+    "local-artifacts/heston-observations-20261109/training-study/100k-continuation/checkpoints/update-075000/continuation-state.npz": "17065864b4c777f786f9df218bf80eae39c80229d435c0c41264b98947c3a36f",
+    "local-artifacts/heston-observations-20261109/training-study/train-n100000/model.keras": "9740725072109537de22bdf38742ec6c96ff6c67eba6f80bb22ef9f31405fc67",
+    "local-artifacts/heston-observations-20261109/training-study/bank/bank.json": "865b4333debdc7ed8b3e3723f1811c3ff8967b61be6cae23455e4a7ba312475e",
+    "local-artifacts/heston-observations-20261109/training-study/bank/bank.npz": "35117eb977867ffb5b73e95cc2da6327f74820b2a74be96d223c85dfc8400fbb",
+    "lab/evidence/pilot-results/2026-11-09/heston-observations/designs/put_heavy.json": "4b84185e7a072844fd6a3ce0f79aed983d39502607a7a76c79dbf7196f9ed547"
+  },
+  "source_sha256": {
+    "continuation_trainer": "f875d01c1e62e1c8d714f102bffdcdcd820c38d05de4509b7f5cc5bcea97ae95",
+    "frozen_campaign_trainer": "cef4a364eab69cfcd78ed4a20128c5d58155ff7a682520ffda8e7d841d4dc847",
+    "original_training_helper": "8cc81f9596b06adc3de4879bcae39bf392ce6b0f741bcda7ac855d47ee938fb1",
+    "batch_plan": "b7cc5bd5d4a69733518b4e6e16d5242e78858e6ce73b3d6baa372d143d7c37ab"
+  },
+  "versions": {
+    "python": "3.12.16",
+    "bayesflow": "2.1.0",
+    "keras": "3.15.1",
+    "jax": "0.11.1",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1"
+  },
+  "reconstructed_batches": [
+    {
+      "absolute_data_step": 86999,
+      "corresponding_completed_optimizer_update": 87000,
+      "row_count": 128,
+      "row_indices_sha256": "38bb924fe77e9892fcab01124b80a9dd0080597d3c44c3b9e4f177272c3b949b",
+      "raw_data_all_finite": true,
+      "adapter_outputs_all_finite": true,
+      "tau_min_max": [
+        6.4654669275801e-05,
+        0.0199766883313807
+      ],
+      "quote_min_max": [
+        -12.64059661979779,
+        1075.437139739416
+      ],
+      "maximum_absolute_adapter_outputs": {
+        "inference_variables": 7.186915874481201,
+        "inference_conditions": 1499.5382080078125
+      },
+      "frozen75k_validation_stage_loss": -5.247282028198242,
+      "frozen75k_training_stage_forward_loss_with_requested_dropout_counters": -4.674837112426758,
+      "dropout_counters_adjusted_in_stateless_input_only": 24,
+      "interpretation": "Input and forward-scoring check at75k weights, not reconstruction of the failed88k model. Gaussian observations may legitimately be negative."
+    },
+    {
+      "absolute_data_step": 87999,
+      "corresponding_completed_optimizer_update": 88000,
+      "row_count": 128,
+      "row_indices_sha256": "1db12cfd9c4b872fa13bf916aa635dc778b5943a586bcaf86f592929585d21f2",
+      "raw_data_all_finite": true,
+      "adapter_outputs_all_finite": true,
+      "tau_min_max": [
+        0.0001760183608665522,
+        0.019925880453159083
+      ],
+      "quote_min_max": [
+        -27.484728143815218,
+        1142.6881363160267
+      ],
+      "maximum_absolute_adapter_outputs": {
+        "inference_variables": 6.070638656616211,
+        "inference_conditions": 1471.5697021484375
+      },
+      "frozen75k_validation_stage_loss": -6.311573028564453,
+      "frozen75k_training_stage_forward_loss_with_requested_dropout_counters": -5.742666244506836,
+      "dropout_counters_adjusted_in_stateless_input_only": 24,
+      "interpretation": "Input and forward-scoring check at75k weights, not reconstruction of the failed88k model. Gaussian observations may legitimately be negative."
+    }
+  ],
+  "frozen75k_model_state_unchanged_by_forward_audit": true,
+  "conclusion": "No evidence of deterministic invalid88k input: raw/adapter tensors are finite and75k forward scores are finite, including the requested dropout counters. The failing88k metric and weight state remain unidentifiable from retained artifacts.",
+  "possible_bounded_followup": "If separately authorized, replay only the saved75k-to-first-failure prefix with unchanged state/streams and detailed per-step failure recording, including individual loss fields, gradient/parameter finiteness and an atomic failure-state checkpoint. No such replay or production retry was performed by this audit."
+}
