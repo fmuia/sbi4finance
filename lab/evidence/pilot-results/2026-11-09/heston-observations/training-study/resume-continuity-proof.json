@@ -1,0 +1,24 @@
+{
+  "format": "heston_resume_uninterrupted_smoke_v1",
+  "continuation_source_sha256": "f875d01c1e62e1c8d714f102bffdcdcd820c38d05de4509b7f5cc5bcea97ae95",
+  "resumed_path": "../local-artifacts/heston-observations-20261109/campaign-continuation-smoke-v3",
+  "uninterrupted_path": "../local-artifacts/heston-observations-20261109/campaign-uninterrupted-smoke-10",
+  "resumed_checkpoint_sha256": "869a10011186bdde34cac38e8a7ce2afd533ad6598e953567a370aa3ee1a74f6",
+  "uninterrupted_checkpoint_sha256": "aab8563930f3aaca1bea304b5f875f466a75872a4a9eede700e625bfca71bb18",
+  "start_updates": 5,
+  "final_updates": 10,
+  "schedule_updates": 50000,
+  "exact_array_equalities": {
+    "trainable": true,
+    "optimizer": true,
+    "standardization": true,
+    "non_trainable_without_seeds": true
+  },
+  "optimizer_iterations_equal": true,
+  "optimizer_config_equal": true,
+  "learning_rates_equal": true,
+  "initial_parent_state_verified": true,
+  "gradient_rng_variables_reconstructed": 24,
+  "new_checkpoint_sidecar_all_nontrainable_reload_exact": true,
+  "scope": "Bounded resume5->10 matches independently trained uninterrupted10 in all trainable, Adam and standardization arrays. Original.keras omitsSeedGenerator states; originalinitialization/counterreplayrecoversdropoutstates; newsidecarpreservesallnontrainablevalues."
+}
