@@ -161,9 +161,12 @@ def _(cache_task, mo):
         $$d\log S_t=(\mu-V_t/2)dt+\sqrt{V_t}\,dW_t^S,
         \qquad d\langle W^S,W^V\rangle_t=\rho\,dt.$$
 
-        Volatility is $\sqrt{V_t}$. Unlike option calibration, we do not infer
-        a change of measure. The model's process randomness produces the returns;
-        **there is no extra measurement-error or quote-noise term**.
+        Volatility is $\sqrt{V_t}$. The physical measure **P** describes the
+        statistical law of returns. The option lessons used a pricing measure
+        **Q**, under which discounted prices are martingales. A drift or variance
+        parameter fitted under one measure need not have the same value under
+        the other. This lesson fits the declared P law, with **no extra
+        measurement-error or quote-noise term**.
         """),
         mo.md(_story + "\n\n" + _curve),
         mo.ui.table(_priors, selection=None, pagination=False),
@@ -202,6 +205,97 @@ def _(cache_task, mo):
 
 
 @app.cell(hide_code=True)
+def _(cache_task, mo):
+    _heston = cache_task["model"] == "heston"
+    _innovations = (r"""
+    The Heston simulator draws independent $Z_j^V,Z_j^\perp\sim N(0,1)$ at
+    each internal step and for each path. A Brownian increment is $\sqrt h Z$.
+    The variance shock uses $Z_j^V$; the price shock uses
+    $\rho Z_j^V+\sqrt{1-\rho^2}Z_j^\perp$. Shared $Z_j^V$ gives the chosen
+    price–variance correlation. These process shocks are not measurement noise.
+    """ if _heston else r"""
+    Rough Bergomi uses three independent standard-normal channels per internal
+    step: $Z^W$, a Gaussian bridge residual $Z^B$, and $Z^\perp$.
+    The hybrid convolution of past $Z^W$ values plus $Z^B$ builds the Gaussian
+    driver $Y$. The bridge residual approximates the kernel's most recent,
+    singular contribution; it is not a quote or measurement error.
+    The price shock is $\rho Z^W+\sqrt{1-\rho^2}Z^\perp$.
+    Paths draw independent channels. A fixed seed freezes these normal draws
+    within the selected model; changing parameters still changes its variance
+    and return paths.
+    """)
+    _calculation = (r"""
+    **Eight internal steps make one observed day.** Write $h=1/(252\cdot8)$,
+    let $\widetilde V_j$ be the signed numerical variance state, and set
+    $v_j=\max(\widetilde V_j,0)$. Each step computes
+
+    $$\Delta\ell_j=(\mu-v_j/2)h+\sqrt{v_jh}
+       (\rho Z_j^V+\sqrt{1-\rho^2}Z_j^\perp),$$
+
+    $$\widetilde V_{j+1}=\widetilde V_j+\kappa(L-v_j)h
+       +\sigma\sqrt{v_jh}Z_j^V.$$
+
+    Sum the eight $\Delta\ell_j$ values to obtain one daily log return.
+    The signed state and its positive part are different objects; neither is
+    an observed network input. The zero-variance-day limitation described above
+    belongs to this actual finite-step law.
+    """ if _heston else r"""
+    **Four internal steps make one observed day.** With $h=1/(252\cdot4)$,
+    the hybrid driver has the form
+    $Y_i=\sum_{j=0}^{i-1}w_{ij}(H,h)Z_j^W+b(H,h)Z_{i-1}^B$ for $i\ge1$.
+    Its known grid variance $q_i=\operatorname{Var}_{\rm grid}(Y_i)$ is used in
+
+    $$V_i=\xi(t_i)\exp(\eta Y_i-\tfrac12\eta^2q_i),$$
+
+    $$\Delta\ell_i=(\mu-V_i/2)h+\sqrt{V_i h}
+       (\rho Z_i^W+\sqrt{1-\rho^2}Z_i^\perp).$$
+
+    Thus $Y_i$ uses earlier shocks, while $Z_i^W$ drives the next return step
+    and contributes to $Y_{i+1}$. The return step uses left-endpoint variance. Four consecutive
+    $\Delta\ell_i$ values are summed into one daily return. At the declared
+    origin $Y_0=q_0=0$. The idealized continuous driver has variance $t^{2H}$;
+    substituting it for $q_i$ would change this simulator's finite-grid law.
+    """)
+    _curve = (r"""
+    Heston supplies the initial variance $V_0=0.04$, not a subsequent variance
+    path. $L$ is the mean-reversion destination, $\kappa$ its speed, and $\sigma$
+    the shock amplitude. Their P-law priors and the drift prior are shown above.
+    This task does not supply a market-derived forward-variance curve.
+    """ if _heston else r"""
+    **A mean curve is not a realized variance path.** In this declared synthetic
+    P model, $\xi(t_i)=\mathbb E_P[V_i]$ at simulator grid nodes. The Gaussian
+    compensator ensures this equality for the hybrid approximation. It is a
+    physical-law variance-scale curve, not a Q curve estimated from option prices.
+
+    - **Supplied curve:** $\xi(t)=0.04$. Mean variance is constant at $0.2^2$;
+      each realized $V_i$ still fluctuates. The constant does not say that the
+      average realized volatility is exactly 20%.
+    - **Inferred curve:** $\xi(t)=L+(S-L)e^{-kt}$. $S$ is the initial level,
+      $L$ the long level, and $k$ the transition rate. These coefficients join
+      $H,\eta,\rho,\mu$ as targets; they are not extra inputs supplied to the GRU.
+      If $S$ and $L$ are similar, changing $k$ barely changes the curve, so
+      decay can remain weakly informed.
+    """)
+    mo.accordion({
+        "P versus Q: what changes from the option lessons?": mo.md(r"""
+        | | Return-history lesson | Option lessons |
+        |:---|:---|:---|
+        | Data | One ordered history of daily returns | Option prices across strikes and maturities |
+        | Law | Physical probability P | Pricing probability Q |
+        | Price drift | Inferred physical growth rate $\mu$ | Rate minus dividend yield; zero in the examples |
+        | Randomness in an observation | Process shocks along that history | The declared option observation model |
+
+        Fitting either model does not estimate the change of measure between them.
+        Similar parameter names therefore do not make the fitted laws interchangeable.
+        """),
+        "What are the random innovations?": mo.md(_innovations),
+        "The discrete model, step by step": mo.md(_calculation),
+        "What does the variance curve mean?": mo.md(_curve),
+    })
+    return
+
+
+@app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
     ### Try the forward model
@@ -210,6 +304,10 @@ def _(mo):
     use the model's declared parameter ranges. Eight independent one-year paths
     share those parameters. A fixed seed keeps the same innovations when a
     slider changes, so it is easier to see a parameter's effect.
+
+    **One observed data set is one path's ordered return history.** The eight
+    paths below are eight possible histories, not paths averaged into one price
+    observation. Each training pair uses just one such history.
 
     The purple path is shown as daily returns and 21-day realized volatility
     on the right. Realized volatility is a summary of those returns, not the
@@ -243,11 +341,31 @@ def _(cache_task, mo, parameter_labels):
 
 
 @app.cell
-def _(cache_task, mo, simulator_controls, trajectory):
+def _(mo, trajectory):
+    simulator_scale = mo.ui.dropdown(options=list(trajectory.SIMULATOR_SCALES), value="Standard",
+                                     label="Fixed simulator axes")
+    mo.vstack([simulator_scale, mo.md(
+        "The axis limits stay fixed when model parameters change. Choose a wider preset yourself. "
+        "All simulated points remain in the data; counts on each panel report points outside the view.")])
+    return (simulator_scale,)
+
+
+@app.cell
+def _(cache_task, mo, simulator_controls, simulator_scale, trajectory):
     try:
         simulation_preview = trajectory.simulator_preview(
             cache_task, simulator_controls.value, paths=8, days=252, seed=20261108)
-        _panel = trajectory.forward_simulator_figure(simulation_preview)
+        _limits = trajectory.SIMULATOR_SCALES[simulator_scale.value]
+        _panel = mo.vstack([
+            mo.md(f"**Fixed axes ({simulator_scale.value}):** asset price "
+                  f"**{_limits['prices'][0]:g}–{_limits['prices'][1]:g}**; daily return "
+                  f"**{_limits['returns'][0]:g}–{_limits['returns'][1]:g}%**; realized volatility "
+                  f"**{_limits['realized'][0]:g}–{_limits['realized'][1]:g}%**."),
+            trajectory.forward_simulator_figure(simulation_preview, scale=simulator_scale.value),
+            mo.accordion({"Exact axis limits, outside counts and data ranges": mo.ui.table(
+                trajectory.simulator_axis_summary(simulation_preview, simulator_scale.value),
+                selection=None, pagination=False)}),
+        ])
     except (ValueError, FloatingPointError) as _error:
         simulation_preview = None
         _panel = mo.callout(mo.md("This forward example could not be simulated: " + str(_error)), kind="warn")
@@ -264,12 +382,19 @@ def _(mo):
     preview = trajectory.simulator_preview(
         cache_task, parameters, paths=8, days=252, seed=20261108)
     # Plot returns and return-based summaries; no posterior is fitted here.
-    trajectory.forward_simulator_figure(preview)
+    trajectory.forward_simulator_figure(preview, scale=simulator_scale.value)
+    # Scale selection changes the view only; no path value is clipped or discarded.
     ```
 
     The helper calls `simulation.simulate_parameters`, which uses the **same
     numerical implementation** as training-pair generation. Only daily returns
     leave that simulator. No latent variance is supplied to inference.
+
+    **Read the panels:** prices start at 100 and equal
+    $100\exp(\sum_{j\le t}r_j)$. Daily-return bars multiply log returns by 100.
+    Realized volatility is the highlighted path's rolling 21-day return standard
+    deviation, multiplied by $\sqrt{252}$ and shown in percent. It is a noisy
+    return summary, not the hidden $\sqrt{V_t}$.
     """)
     return
 
@@ -306,6 +431,23 @@ def _(cache_task, mo, trajectory):
         inference, regardless of the model selected for the supplied examples.
         The implementation lives in `src/sbi4f_tutorial/trajectories/`.
         """),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo, trajectory):
+    from sbi4f_tutorial.trajectories import simulation as _input_simulation
+    _task = _input_simulation.teaching_task("rough-known", observations=252)
+    mo.vstack([
+        mo.md("### From a return sequence to network inputs\n\n"
+              "The tutorial model uses a 252-day maximum. Each observed day becomes a scaled return "
+              "and a known time coordinate. Padding gets a false mask; a genuine zero return remains "
+              "observed. Generating parameter labels follow a separate training route."),
+        trajectory.input_concept_figure(_task),
+        mo.md("The query supplies the upper route only. `training_data` also transforms the "
+              "parameter labels for density scoring during training. The supplied five-year model "
+              "uses the same input format with a 1,260-day maximum."),
     ])
     return
 
@@ -712,7 +854,10 @@ def _(cache_arrays, cache_task, case_choice, mo, pair_x, pair_y, parameter_label
 def _(cache_arrays, cache_task, case_choice, mo, posterior, requested_days, trajectory):
     mo.vstack([mo.md("### Watch the evidence grow\n\n"
                      "Drift can remain uncertain after volatility parameters sharpen. Along one history, "
-                     "intervals can move or widen after surprising returns. The parameters themselves stay fixed."),
+                     "intervals can move or widen after surprising returns. The parameters themselves stay fixed. "
+                     "Grey shading marks prior support; blue steps and bars show the saved median and central "
+                     "90% interval. A step is held between snapshots, not interpolated. A green diamond, "
+                     "when present, marks fresh inference at the requested day."),
                trajectory.plot_evolution(cache_task, cache_arrays, case_choice.value, requested_days, posterior=posterior)])
     return
 

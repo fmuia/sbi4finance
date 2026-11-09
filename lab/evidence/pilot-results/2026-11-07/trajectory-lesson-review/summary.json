@@ -5,16 +5,185 @@
   "scientific_acceptance": false,
   "existing_assets_changed": false,
   "verification": {
-    "tutorial_tests": 44,
-    "lab_core_tests": 527,
-    "lab_optional_skips": 3,
+    "tutorial_tests": 46,
     "notebook_exports": 7,
     "notebook_cell_errors": 0,
     "runtime_boundary_symbols": 183,
     "local_document_links": 53,
-    "marimo_warnings": "existing empty cells in slots 2 and 3"
+    "marimo_warnings": "existing empty cells in slots 2 and 3",
+    "lab_runtime_parity_tests": 12,
+    "trajectory_notebook_cells": 41
   },
   "browser": {
+    "page_errors": [],
+    "model_components_opened_for_all_three_models": true,
+    "P_vs_Q_refresher": true,
+    "innovations_and_finite_step_math": true,
+    "curve_roles_explained": true,
+    "input_concept_diagram": true,
+    "simulator_checks": [
+      {
+        "model": "Heston",
+        "scales": [
+          "Standard",
+          "Wide",
+          "Very wide"
+        ],
+        "parameter_change": true,
+        "outside_counts_and_ranges_visible": true
+      },
+      {
+        "model": "Rough Bergomi \u00b7 inferred variance curve",
+        "scales": [
+          "Standard",
+          "Wide",
+          "Very wide"
+        ],
+        "parameter_change": true,
+        "outside_counts_and_ranges_visible": true
+      },
+      {
+        "model": "Rough Bergomi \u00b7 known variance curve",
+        "scales": [
+          "Standard",
+          "Wide",
+          "Very wide"
+        ],
+        "parameter_change": true,
+        "outside_counts_and_ranges_visible": true
+      }
+    ],
+    "all_scale_limits_are_explicit": true,
+    "outside_data_counts_visible": true,
+    "fresh_history_days": 137,
+    "fresh_inference_elapsed_seconds": 1.852565208915621,
+    "changing_view_scale_preserves_fresh_source": true,
+    "math_render_errors": 0,
+    "narrow_width": 760,
+    "horizontal_overflow": false,
+    "date": "2026-11-09"
+  },
+  "small_exercise_benchmark": {
+    "exercise": "rough-known;252dailyobservations;128traininghistories;2epochs;batch32;16unitGRU;16summary;2spline_layers;widths32",
+    "generation_seconds": 0.017615542048588395,
+    "model_build_and_training_seconds": 12.850709334015846,
+    "sampling_128_draws_seconds": 1.34992800001055,
+    "draw_shape": [
+      128,
+      4
+    ],
+    "finite_draws": true,
+    "training_loss": [
+      5.77666711807251,
+      5.755234718322754
+    ],
+    "scope": "separate fresh one-year software exercise; no accuracy acceptance or fixed performance guarantee",
+    "native_137day_app_run": {
+      "posterior_source": "live",
+      "draw_shape": [
+        512,
+        4
+      ],
+      "error": null,
+      "bayesflow_sampling_logged_seconds": 1.95,
+      "load_timing_not_recorded": true
+    }
+  },
+  "timing_environment": {
+    "system": "Darwin",
+    "architecture": "arm64",
+    "scope": "Local CPU; cold/warm setup differs between the benchmark and browser session. Not a performance guarantee."
+  },
+  "scope": "Component explanations and fixed-axis UI for the existing session-only forward simulator and tutorial training route; optional supplied estimator remains separate. All source-bound prefix guards, prior calibration failures and Heston drift atom retained.",
+  "source_sha256": {
+    "tutorial/notebooks/trajectory_inference.py": "3669c7f37872f4f098ad1dc6adab4952a7ee529af2e38efc1c95c559c97b63f2",
+    "tutorial/src/sbi4f_tutorial/trajectories/lesson.py": "ffeb613f3ec53ce6930a7f9ddb2d6b0675ea84493754375cc04a8801e2f031b2",
+    "tutorial/src/sbi4f_tutorial/trajectories/simulation.py": "5ed98e3d2fce3df3319e3478e08fbdd7f63f00e0f632461bbd783cebf9acac06",
+    "tutorial/tests/test_trajectory.py": "3a971ae63448fc45e15c2604389f46b7a988cca1e808db3bb96b728acaf287ad",
+    "tutorial/tests/test_trajectory_forward.py": "a24559e42a6656e4a53f05602650e882769708686042131606a7bd93bc82e0fb",
+    "tutorial/README.md": "28e08ccd8c3664a92334b9b8475585326954773eda635436259f7c1b7978c20c",
+    "tutorial/curriculum/TUTORIAL-REVIEW.md": "1e8379cbe6bba85f02504a227633655d14692e7c82b379cae81788dd8a349f47"
+  },
+  "updated_at_utc": "2026-11-09T21:59:34.004280+00:00",
+  "forward_simulator": {
+    "paths": 8,
+    "days": 252,
+    "seed": 20261108,
+    "observations": "daily log returns only",
+    "canonical_path_law_shared_with_generate": true,
+    "before_after_exact_arrays": 54,
+    "comparison_panel": "three models; train/validation/test; starts 0/3; two paths; 29 days; NumPy; seed 2026",
+    "frozen_histories_reproduced": true,
+    "scope": "separate forward illustration; sliders do not replace selected fitted observations; realized volatility is computed from returns",
+    "axis_scales": {
+      "Standard": {
+        "prices": [
+          0.0,
+          200.0
+        ],
+        "returns": [
+          -8.0,
+          8.0
+        ],
+        "realized": [
+          0.0,
+          80.0
+        ]
+      },
+      "Wide": {
+        "prices": [
+          0.0,
+          400.0
+        ],
+        "returns": [
+          -20.0,
+          20.0
+        ],
+        "realized": [
+          0.0,
+          200.0
+        ]
+      },
+      "Very wide": {
+        "prices": [
+          0.0,
+          1000.0
+        ],
+        "returns": [
+          -50.0,
+          50.0
+        ],
+        "realized": [
+          0.0,
+          500.0
+        ]
+      }
+    },
+    "axis_scales_selected_manually": true,
+    "points_outside_view_counted": true,
+    "full_data_min_max_reported": true,
+    "no_path_or_return_dropped": true
+  },
+  "workflow_code": {
+    "comments_explain_option_differences": true,
+    "same": "BasicWorkflow fit/sample pattern",
+    "changed": [
+      "ordered returns as summary_variables",
+      "summary_mask and known time_context",
+      "causal GRU encoder",
+      "spline CouplingFlow instead of displayed option FlowMatching",
+      "fixed scaling and prior-CDF parameter logits outside adapter",
+      "no extra quote noise"
+    ],
+    "model_sources_separately_labelled": true
+  },
+  "previous_full_lab_verification": {
+    "date": "2026-11-08",
+    "tests": 527,
+    "optional_skips": 3,
+    "scope": "preceding complete core suite; the current component/axis review changes no canonical simulator or inference law"
+  },
+  "workflow_browser_20261108": {
     "page_errors": [],
     "models_and_simulator_controls": [
       {
@@ -64,70 +233,27 @@
     "horizontal_overflow": false,
     "math_render_errors": 0
   },
-  "small_exercise_benchmark": {
-    "exercise": "rough-known;252dailyobservations;128traininghistories;2epochs;batch32;16unitGRU;16summary;2spline_layers;widths32",
-    "generation_seconds": 0.017615542048588395,
-    "model_build_and_training_seconds": 12.850709334015846,
-    "sampling_128_draws_seconds": 1.34992800001055,
-    "draw_shape": [
-      128,
-      4
+  "component_explanations": {
+    "P_vs_Q_refresher": true,
+    "Gaussian_innovation_channels_explained": true,
+    "actual_discrete_model_math": {
+      "heston_internal_steps_per_day": 8,
+      "rough_internal_steps_per_day": 4
+    },
+    "rough_driver_uses_grid_variance_compensator": true,
+    "known_vs_inferred_P_mean_variance_curve": true,
+    "one_history_is_one_data_set_not_a_price_average": true,
+    "realized_volatility_is_return_derived_not_latent_variance": true
+  },
+  "input_concept_diagram": {
+    "return_tokens": [
+      "return/sqrt(0.04*dt)",
+      "day_index/maximum_days"
     ],
-    "finite_draws": true,
-    "training_loss": [
-      5.77666711807251,
-      5.755234718322754
-    ],
-    "scope": "separate fresh one-year software exercise; no accuracy acceptance or fixed performance guarantee",
-    "native_137day_app_run": {
-      "posterior_source": "live",
-      "draw_shape": [
-        512,
-        4
-      ],
-      "error": null,
-      "bayesflow_sampling_logged_seconds": 1.95,
-      "load_timing_not_recorded": true
-    }
+    "mask": "true for observed returns; false for padding",
+    "flow_conditions": "GRU summary plus [observed_days/maximum_days, dt/(1/252)]",
+    "generating_parameter_labels": "separate training-loss route only",
+    "latent_variance_in_conditions": false
   },
-  "timing_environment": {
-    "system": "Darwin",
-    "architecture": "arm64",
-    "scope": "Local CPU; cold/warm setup differs between the benchmark and browser session. Not a performance guarantee."
-  },
-  "scope": "Session-only forward simulator and small one-year training route; optional supplied five-year estimator loaded separately. Existing tasks, banks, checkpoints and calibration failures unchanged.",
-  "source_sha256": {
-    "tutorial/notebooks/trajectory_inference.py": "c0251d6914bdca67fea6a63d59abe23678491f5ee915df3bf6a087e35cbb1f55",
-    "tutorial/src/sbi4f_tutorial/trajectories/lesson.py": "810fc4fa33b254bb90c904fd09d2bee26c2af252d24db1264585bbbabdbec821",
-    "tutorial/src/sbi4f_tutorial/trajectories/simulation.py": "5ed98e3d2fce3df3319e3478e08fbdd7f63f00e0f632461bbd783cebf9acac06",
-    "tutorial/tests/test_trajectory.py": "3a971ae63448fc45e15c2604389f46b7a988cca1e808db3bb96b728acaf287ad",
-    "tutorial/tests/test_trajectory_forward.py": "8cc5b3e37cb26ca442ae832c637108d17fb29fa09cfe7e72d16a43de7913092b",
-    "tutorial/README.md": "45bd6bfbc99348f254c6b7145b97581eb70a077e2ff4e7575a38b19d9249226f",
-    "tutorial/curriculum/TUTORIAL-REVIEW.md": "5d025a0e5e0398dc89559ce01dbc663ec4e0fe37a9ba6a3966b19900d33bb9ad"
-  },
-  "updated_at_utc": "2026-11-09T04:36:50.138843+00:00",
-  "forward_simulator": {
-    "paths": 8,
-    "days": 252,
-    "seed": 20261108,
-    "observations": "daily log returns only",
-    "canonical_path_law_shared_with_generate": true,
-    "before_after_exact_arrays": 54,
-    "comparison_panel": "three models; train/validation/test; starts 0/3; two paths; 29 days; NumPy; seed 2026",
-    "frozen_histories_reproduced": true,
-    "scope": "separate forward illustration; sliders do not replace selected fitted observations; realized volatility is computed from returns"
-  },
-  "workflow_code": {
-    "comments_explain_option_differences": true,
-    "same": "BasicWorkflow fit/sample pattern",
-    "changed": [
-      "ordered returns as summary_variables",
-      "summary_mask and known time_context",
-      "causal GRU encoder",
-      "spline CouplingFlow instead of displayed option FlowMatching",
-      "fixed scaling and prior-CDF parameter logits outside adapter",
-      "no extra quote noise"
-    ],
-    "model_sources_separately_labelled": true
-  }
+  "canonical_simulation_and_inference_unchanged_this_review": true
 }

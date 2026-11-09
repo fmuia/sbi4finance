@@ -211,17 +211,30 @@ flow in a source-rendered diagram. The visible primary route constructs the
 16-unit/16-summary/two-block tutorial model and performs eight updates. The
 optional pretrained route loads the separate 64-unit/32-summary/six-block model.
 Each route labels its own outputs, and the code shown matches the executed settings.
+Component panels now explain P versus Q, Gaussian innovations, the actual
+left-endpoint daily calculations and the supplied/inferred P variance-scale
+curves. One observed history is one data set, not a Monte Carlo price average.
+A separate input concept diagram traces return/time tokens, masks, the GRU
+and flow conditions, with parameter labels used only in the training loss.
+The simulator uses stated fixed y-axis presets for all parameter settings.
+Manual scale changes alter only the view; outside counts and complete data
+ranges make view clipping explicit without dropping any path or return.
 
-Verification passes: 44 tutorial tests; 527 core lab tests (three optional skips);
-all seven notebook exports; marimo/release checks and current documentation
-links. Chrome checks cover all three models at saved endpoints, live inference
-at 137 days, history-change invalidation, missing-model fallback, the small
-training action, all 16 simulator-slider range endpoints, source-rendered
-architecture diagrams, mask details and a 760-pixel layout. Displayed code
-comments explain changes from the option lessons and the unchanged workflow
-pattern. Existing empty-cell warnings
-in slots 2 and 3 are unchanged. Handover guidance is updated. No saved numerical
-evidence or model changed; collaborator rehearsal remains deferred.
+Current verification passes: **46 tutorial tests**, all seven notebook exports
+(the trajectory lesson has 41 cells and zero errors), 12 lab runtime/parity
+tests, the 183-symbol ownership check, marimo/release checks and documentation
+links. The preceding full lab suite passed 527 tests with three optional skips;
+this component/axis pass changes no canonical simulator or inference law.
+
+Chrome checks open the component math for every model, exercise all three
+manual scale presets after parameter changes, inspect outside counts and ranges,
+and verify the input diagram. Fresh inference at 137 days stays source-bound
+when only the view scale changes. The 760-pixel layout has no horizontal
+overflow, and there are no page or math-rendering errors. The earlier workflow
+review also covers history-change invalidation, missing-model fallback, the
+small training action and all 16 simulator-slider range endpoints. Existing
+empty-cell warnings in slots 2 and 3 are unchanged. Handover guidance is updated;
+scientific limitations and the deferred collaborator rehearsal retain their status.
 
 ## E. Resolve trajectory numerical and inference limitations
 

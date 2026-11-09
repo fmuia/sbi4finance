@@ -112,6 +112,9 @@ Start with the rough model and its supplied variance curve. Inspect returns,
 then use the early simulator to change parameters while keeping innovations
 fixed. It shows eight one-year price paths, daily returns and realized volatility.
 That forward example stays separate from the selected fitted history.
+Its y axes stay fixed as parameters change. Choose **Standard**, **Wide** or
+**Very wide** yourself; each panel reports points outside the view. The full
+series and its minimum/maximum stay available in the axis-details table.
 Heston and the inferred-curve model remain available as extensions.
 
 There are two explicit routes:
@@ -122,8 +125,13 @@ There are two explicit routes:
 - **Use the optional pretrained model:** inspect saved draws or load the matching
   five-year model. Its larger encoder and flow have their own data and checks.
 
-The architecture diagram and visible code separate the encoder from the density
-estimator and show each route's actual settings. Switching the supplied model
+Open the component panels for the physical P law versus pricing Q law,
+Gaussian innovations, daily numerical steps and supplied versus inferred
+variance curves. One history is one observed data set; simulation paths are
+not averaged into that observation. The input diagram traces returns into
+scaled time/mask tokens, the GRU and flow conditions, with generating labels
+kept on a separate training route. The architecture diagram and visible code
+show each route's actual settings. Switching the supplied model
 also changes its synthetic history.
 
 **Saved mode** offers only lengths with saved posterior snapshots, so the

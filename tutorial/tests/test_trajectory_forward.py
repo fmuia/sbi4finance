@@ -8,6 +8,10 @@ from sbi4f_tutorial.trajectories import lesson, simulation
 
 
 class TrajectoryForwardTests(unittest.TestCase):
+    def tearDown(self):
+        import matplotlib.pyplot as plt
+        plt.close("all")
+
     def test_chosen_parameter_simulation_replays_the_canonical_training_innovations(self):
         for model in simulation.MODELS:
             with self.subTest(model=model):
@@ -66,6 +70,41 @@ class TrajectoryForwardTests(unittest.TestCase):
                         simulation.simulate_parameters(task, invalid)
                 with self.assertRaisesRegex(ValueError, "16 paths"):
                     lesson.simulator_preview(task, chosen, paths=17)
+
+    def test_simulator_limits_stay_fixed_when_parameters_change_and_only_presets_change_them(self):
+        task, _, _ = lesson.load_example("rough-known")
+        parameters = {"hurst": .1, "eta": .5, "rho": -.7, "drift": .05}
+        low = lesson.simulator_preview(task, parameters, paths=2, days=29)
+        parameters["eta"] = 2.5
+        high = lesson.simulator_preview(task, parameters, paths=2, days=29)
+        self.assertFalse(np.array_equal(low["observations"], high["observations"]))
+        for scale in ("Standard", "Wide", "Very wide"):
+            a = lesson.forward_simulator_figure(low, scale=scale)
+            b = lesson.forward_simulator_figure(high, scale=scale)
+            for ax_a, ax_b, name in zip(a.axes, b.axes, ("prices", "returns", "realized"), strict=True):
+                self.assertEqual(ax_a.get_ylim(), lesson.SIMULATOR_SCALES[scale][name])
+                self.assertEqual(ax_b.get_ylim(), ax_a.get_ylim())
+        with self.assertRaisesRegex(ValueError, "fixed simulator scale"):
+            lesson.forward_simulator_figure(high, scale="automatic")
+
+    def test_fixed_views_report_outside_values_without_deleting_or_changing_them(self):
+        task = simulation.teaching_task("rough-known", observations=29)
+        returns = np.stack([np.full((29, 1), .2), np.full((29, 1), -.2)])
+        original = returns.copy()
+        result = {"task": task, "observations": returns}
+        rows = lesson.simulator_axis_summary(result, "Standard")
+        expected_prices = 100 * np.exp(np.column_stack([np.zeros(2), np.cumsum(returns[:, :, 0], axis=1)]))
+        self.assertEqual(rows[0]["points above view"], np.count_nonzero(expected_prices > 200))
+        self.assertEqual(rows[0]["total points"], 60)
+        self.assertEqual(rows[0]["data maximum"], expected_prices.max())
+        self.assertEqual(rows[1]["points above view"], 29)
+        self.assertEqual(rows[1]["total points"], 29)
+        figure = lesson.forward_simulator_figure(result, scale="Standard")
+        for i in range(2):
+            np.testing.assert_array_equal(figure.axes[0].lines[i].get_ydata(), expected_prices[i])
+        np.testing.assert_array_equal([bar.get_height() for bar in figure.axes[1].patches], np.full(29, 20.))
+        self.assertGreater(figure.axes[0].lines[0].get_ydata().max(), figure.axes[0].get_ylim()[1])
+        np.testing.assert_array_equal(returns, original)
 
 
 if __name__ == "__main__":

@@ -290,39 +290,80 @@ def simulator_preview(task, parameters, *, paths=8, days=252, seed=20261108):
     return {"task": preview_task, "parameters": values, "observations": observations, "seed": seed}
 
 
-def forward_simulator_figure(result):
-    """Price paths and return-based summaries, with no latent variance observation."""
-    import matplotlib.pyplot as plt
+SIMULATOR_SCALES = {
+    "Standard": {"prices": (0.0, 200.0), "returns": (-8.0, 8.0), "realized": (0.0, 80.0)},
+    "Wide": {"prices": (0.0, 400.0), "returns": (-20.0, 20.0), "realized": (0.0, 200.0)},
+    "Very wide": {"prices": (0.0, 1000.0), "returns": (-50.0, 50.0), "realized": (0.0, 500.0)},
+}
 
+
+def _forward_series(result):
+    """Return every simulated point and every selected return-derived summary."""
     task, returns = result["task"], result["observations"][:, :, 0]
     times = np.arange(returns.shape[1] + 1) * task["dt_years"]
     with np.errstate(over="raise", invalid="raise"):
         prices = 100 * np.exp(np.column_stack([np.zeros(len(returns)), np.cumsum(returns, axis=1)]))
+    window = min(21, returns.shape[1])
+    realized = np.std(np.lib.stride_tricks.sliding_window_view(returns[0], window), axis=1) / np.sqrt(task["dt_years"])
+    return {"prices": prices, "returns": 100 * returns[0], "realized": 100 * realized,
+            "times": times, "window": window}
+
+
+def simulator_axis_summary(result, scale="Standard"):
+    """Report view clipping explicitly; changing a scale never alters the data."""
+    _require(scale in SIMULATOR_SCALES, "choose a declared fixed simulator scale")
+    series = _forward_series(result)
+    labels = {"prices": "Asset price: all paths", "returns": "Daily return: highlighted path (%)",
+              "realized": "Realized volatility: highlighted path (%)"}
+    rows = []
+    for name, label in labels.items():
+        values = series[name]
+        low, high = SIMULATOR_SCALES[scale][name]
+        rows.append({"panel": label, "fixed lower limit": low, "fixed upper limit": high,
+                     "points below view": int(np.count_nonzero(values < low)),
+                     "points above view": int(np.count_nonzero(values > high)),
+                     "total points": int(values.size), "data minimum": float(values.min()),
+                     "data maximum": float(values.max())})
+    return rows
+
+
+def forward_simulator_figure(result, *, scale="Standard"):
+    """Fixed-axis path/return plots retain all points and report any outside view."""
+    import matplotlib.pyplot as plt
+
+    _require(scale in SIMULATOR_SCALES, "choose a declared fixed simulator scale")
+    task, series = result["task"], _forward_series(result)
+    times, prices = series["times"], series["prices"]
     figure = plt.figure(figsize=(10, 5), layout="constrained")
     grid = figure.add_gridspec(2, 2, width_ratios=[1.3, 1])
     path_ax = figure.add_subplot(grid[:, 0])
     return_ax = figure.add_subplot(grid[0, 1])
     vol_ax = figure.add_subplot(grid[1, 1], sharex=return_ax)
-    shades = plt.get_cmap("PuBuGn")(np.linspace(.35, .8, len(returns)))
-    for i in range(len(returns)):
+    shades = plt.get_cmap("PuBuGn")(np.linspace(.35, .8, len(prices)))
+    for i in range(len(prices)):
         path_ax.plot(times, prices[i], color="#7c3aed" if i == 0 else shades[i],
                      linewidth=1.7 if i == 0 else .85, alpha=1 if i == 0 else .75,
                      label="Highlighted path" if i == 0 else None)
     path_ax.axhline(100, color="#94a3b8", linestyle=":", linewidth=.8)
     path_ax.set(xlabel="Years", ylabel="Asset price (starts at 100)",
-                title=f"Same parameters · {len(returns)} independent paths")
+                title=f"Same parameters · {len(prices)} independent paths")
     path_ax.legend(fontsize=8)
-    selected = returns[0]
-    return_ax.bar(times[1:], 100 * selected, width=task["dt_years"] * .8,
+    selected = series["returns"]
+    return_ax.bar(times[1:], selected, width=task["dt_years"] * .8,
                   color=np.where(selected >= 0, "#1baf7a", "#eb6834"), alpha=.8)
     return_ax.set(ylabel="Daily log return (%)", title="The highlighted path, day by day")
-    window = min(21, len(selected))
-    realized = np.std(np.lib.stride_tricks.sliding_window_view(selected, window), axis=1) / np.sqrt(task["dt_years"])
-    vol_ax.plot(times[window:], 100 * realized, color="#0f766e", linewidth=1.2)
-    vol_ax.fill_between(times[window:], 100 * realized, color="#1baf7a", alpha=.15)
-    vol_ax.set(xlabel="Years", ylabel=f"{window}-day realized vol. (%)",
+    vol_ax.plot(times[series["window"]:], series["realized"], color="#0f766e", linewidth=1.2)
+    vol_ax.fill_between(times[series["window"]:], series["realized"], color="#1baf7a", alpha=.15)
+    vol_ax.set(xlabel="Years", ylabel=f"{series['window']}-day realized vol. (%)",
                title="A summary computed from returns")
-    figure.suptitle(MODEL_LABELS[task["model"]] + " · separate forward simulation", fontsize=12)
+    for ax, name, summary in zip((path_ax, return_ax, vol_ax), ("prices", "returns", "realized"),
+                                  simulator_axis_summary(result, scale), strict=True):
+        ax.set(xlim=(0, times[-1]), ylim=SIMULATOR_SCALES[scale][name])
+        outside = summary["points below view"] + summary["points above view"]
+        ax.text(.02, .02, f"{outside}/{summary['total points']} points outside view",
+                transform=ax.transAxes, va="bottom", fontsize=7, color="#475569",
+                bbox={"facecolor": "white", "alpha": .85, "edgecolor": "none", "pad": 2})
+    figure.suptitle(MODEL_LABELS[task["model"]] + f" · fixed {scale.lower()} axes", fontsize=12)
     return figure
 
 
@@ -353,4 +394,39 @@ def architecture_figure(task, *, network=None):
              ha="center", fontsize=9, color="#7c3aed")
     ax.text(.5, .04, "Inference: only observed returns, their mask and the known time design enter.",
              ha="center", fontsize=9, color="#0f766e")
+    return figure
+
+
+def input_concept_figure(task):
+    """Explain the actual token/condition contract, with labels on a separate training route."""
+    import matplotlib.pyplot as plt
+    from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
+
+    validate_task(task)
+    maximum = task["n_observations"]
+    figure, ax = plt.subplots(figsize=(12, 3.5), layout="constrained")
+    ax.set(xlim=(0, 1), ylim=(0, 1))
+    ax.axis("off")
+    boxes = [(.01, .16, "One observed history", r"$r_1,\ldots,r_T$" + "\nKeep the time order", "#eff6ff"),
+             (.205, .25, "Preprocess return tokens", r"$[r_j/\sqrt{0.04\Delta t},\ j/T_{\max}]$" + "\nTrue mask: observed; false: padding", "#eff6ff"),
+             (.49, .15, "GRU encoder", "Reads tokens\nwith their mask", "#f3e8ff"),
+             (.675, .31, "Coupling-flow conditions", "GRU summary + known time context\n" + r"$[T/T_{\max},\ \Delta t/(1/252)]$", "#dcfce7")]
+    for x, width, title, body, color in boxes:
+        ax.add_patch(FancyBboxPatch((x, .50), width, .36, boxstyle="round,pad=.007,rounding_size=.02",
+                                   facecolor=color, edgecolor="#94a3b8", linewidth=.8))
+        ax.text(x + width / 2, .78, title, ha="center", va="center", fontsize=8.5, fontweight="bold")
+        ax.text(x + width / 2, .64, body, ha="center", va="center", fontsize=8)
+    for start, end in ((.17, .20), (.455, .485), (.64, .67)):
+        ax.add_patch(FancyArrowPatch((start, .68), (end, .68), arrowstyle="-|>",
+                                     mutation_scale=12, color="#64748b", linewidth=1.1))
+    ax.add_patch(FancyBboxPatch((.08, .13), .38, .18, boxstyle="round,pad=.01",
+                               facecolor="#f3e8ff", edgecolor="#c4b5fd", linewidth=.8))
+    ax.text(.27, .22, "Generating parameters Θ: training labels only", ha="center", fontsize=9, color="#6d28d9")
+    ax.text(.78, .22, r"Training loss: $-\log q_\phi(\Theta\mid r_{1:T},T)$", ha="center", fontsize=9, color="#6d28d9")
+    ax.add_patch(FancyArrowPatch((.47, .22), (.59, .22), arrowstyle="-|>",
+                                 mutation_scale=12, color="#7c3aed", linestyle="--"))
+    ax.add_patch(FancyArrowPatch((.83, .49), (.83, .32), arrowstyle="-|>",
+                                 mutation_scale=12, color="#7c3aed", linestyle="--"))
+    ax.text(.5, .035, f"The query uses only the upper route. Maximum history: {maximum} days; no truth or latent variance enters conditions.",
+             ha="center", fontsize=8.5, color="#0f766e")
     return figure
