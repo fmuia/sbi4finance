@@ -74,7 +74,12 @@ def make_dataset(data, adapter, plan):
 
 
 def update_guard(plan):
-    """Assert actual per-batch optimizer work and account only committed updates."""
+    """Count finite single-step batches, then verify the actual optimizer endpoint.
+
+    Reading Callback.model during JAX training synchronizes every model and
+    optimizer variable. Keep that state access at the fit boundaries so the
+    accounting callback does not add a full state synchronization per update.
+    """
     import keras
 
     class ExactUpdates(keras.callbacks.Callback):
@@ -86,23 +91,23 @@ def update_guard(plan):
             self.batch_sizes = {}
 
         def on_train_begin(self, logs=None):
-            if int(self.model.optimizer.iterations.numpy()) != 0:
+            model = self.model
+            if int(model.optimizer.iterations.numpy()) != 0:
                 raise ValueError("update-budget mode requires a fresh optimizer; resume is unsupported")
-            if int(self.model.steps_per_execution) != 1:
+            if int(model.steps_per_execution) != 1:
                 raise ValueError("exact update accounting requires steps_per_execution=1 before training")
 
         def on_train_batch_end(self, batch, logs=None):
-            actual = int(self.model.optimizer.iterations.numpy())
-            if actual != self.updates + 1 or int(batch) != self.updates:
-                raise RuntimeError("optimizer updates differ from the finite batch schedule")
+            if self.updates >= plan.updates:
+                raise RuntimeError("optimizer exceeded its predeclared update budget")
+            if int(batch) != self.updates:
+                raise RuntimeError("training callbacks differ from the finite batch schedule")
             indices = plan.indices(self.updates)
             self.visits[indices] += 1
             self.order.update(np.asarray(indices, dtype="<i8").tobytes())
             size = len(indices)
             self.batch_sizes[str(size)] = self.batch_sizes.get(str(size), 0) + 1
-            self.updates = actual
-            if actual > plan.updates:
-                raise RuntimeError("optimizer exceeded its predeclared update budget")
+            self.updates += 1
 
         def on_train_end(self, logs=None):
             if self.updates != plan.updates or int(self.model.optimizer.iterations.numpy()) != plan.updates:
@@ -194,7 +199,7 @@ def run_budget_training(args, trainer):
             fitted = workflow.estimator.fit(dataset=dataset, epochs=1, shuffle=False, verbose=0,
                                              validation_data=validation_dataset,
                                              callbacks=[guard, phases])
-        if int(optimizer.iterations.numpy()) != updates:
+        if int(optimizer.iterations.numpy()) != updates or guard.updates != updates:
             raise RuntimeError("actual optimizer iterations differ from the requested budget")
         history = {key: [float(v) for v in values] for key, values in fitted.history.items()}
         if any(not np.isfinite(v) for values in history.values() for v in values):

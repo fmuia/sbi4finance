@@ -51,20 +51,23 @@ def validate_panels(protocol, available):
         raise ValueError("validation panels must have valid nested ranges and distinct selected draws")
 
 
-def run(args):
+def run(args, *, role="control"):
     import numpy as np
     from sbi4finance.calibration import bank_collection as bank, full_surface, tasks, validation
     from sbi4finance.calibration.heston_budget_diagnostics import conditional_agreement
     from sbi4finance.calibration.performance import PerformanceRecorder
     from scripts.compare_full_surface_reference import _reference_issues
 
+    if role not in ("control", "candidate"):
+        raise ValueError("evaluation role must be control or candidate")
     performance = PerformanceRecorder()
+    filename = "readiness.json" if role == "control" else "evaluation.json"
     protocol = json.loads(args.protocol.read_text())
     if protocol.get("format") != "heston_training_budget_protocol_v1":
         raise ValueError("a frozen Heston budget protocol is required")
     if digest(args.bank / "manifest.json") != protocol["bank"]["manifest_sha256"]:
         raise ValueError("bank differs from protocol")
-    if digest(args.checkpoint / "model.keras") != protocol["control"]["checkpoint_sha256"]:
+    if role == "control" and digest(args.checkpoint / "model.keras") != protocol["control"]["checkpoint_sha256"]:
         raise ValueError("readiness must evaluate the saved full-model control")
     with performance.phase("checkpoint_construction_and_reload"):
         task, workflow, record = full_surface.load_checkpoint(args.checkpoint)
@@ -78,14 +81,19 @@ def run(args):
     validate_panels(protocol, len(split["parameters"]))
     bounds, names = np.asarray(task["prior_bounds"]), task["parameter_names"]
     args.out.mkdir(parents=True, exist_ok=False)
-    report = {"format": "heston_training_budget_readiness_v1", "status": "running",
-              "protocol_sha256": digest(args.protocol), "control_checkpoint_sha256": record["checkpoint_sha256"],
+    report = {"format": ("heston_training_budget_readiness_v1" if role == "control"
+                         else "heston_training_budget_candidate_v1"), "status": "running",
+              "evaluation_role": role, "scientific_acceptance": False, "parameter_names": names,
+              "protocol_sha256": digest(args.protocol), "control_checkpoint_sha256": protocol["control"]["checkpoint_sha256"],
+              "evaluated_checkpoint_sha256": record["checkpoint_sha256"],
+              "checkpoint_metadata_sha256": {name: digest(args.checkpoint / name)
+                                             for name in ("model.keras", "task.json", "training.json")},
               "bank_manifest_sha256": digest(args.bank / "manifest.json"), "reserved_test_evaluated": False,
               "training_performed": False, "new_mcmc_performed": False, "gates": {}, "conditional": {},
               "source_sha256": {"scripts/check_heston_budget_readiness.py": digest(__file__),
                   "src/sbi4finance/calibration/heston_budget_diagnostics.py": digest(
                       ROOT / "src/sbi4finance/calibration/heston_budget_diagnostics.py")}}
-    write(args.out / "readiness.json", report)
+    write(args.out / filename, report)
     try:
         # Complete conditional cases first; the same observations and seeds are
         # declared before any candidate exists. Preserve chains and neural rows.
@@ -114,6 +122,7 @@ def run(args):
                     family_checks=uncertainty.get("family_checks", 24),
                     mean_limit=conditional["mean_error_reference_sd_max"],
                     width_limits=tuple(conditional["central90_width_ratio"]))
+            result["sampling_seed"] = conditional["seed_base"] + index
             result["finite_in_support_without_clipping"] = checked_support(draws, bounds)
             result["input_sha256"] = {name: digest(reference_root / name)
                                       for name in ("reference.json", "diagnostics.json", "chains.npz")}
@@ -122,12 +131,13 @@ def run(args):
                 result["historical_pointwise_precision_sha256"] = digest(precision)
                 result["precision_scope"] = "Historical pointwise numerical sensitivity; not posterior stability."
             report["conditional"][str(index)] = result
-            write(args.out / "readiness.json", report)
+            write(args.out / filename, report)
 
         panel = protocol["data_roles"]["development"]
         if panel["split"] != "validation":
             raise ValueError("readiness development must use validation only")
         batches = []
+        report["development_sampling_calls"] = []
         with performance.phase("development_posterior_sampling"):
             for start in range(panel["start"], panel["stop"], panel["batch_size"]):
                 stop = min(start + panel["batch_size"], panel["stop"])
@@ -135,6 +145,9 @@ def run(args):
                     encoder=record["network"]["encoder"], seed=panel["seed"] + start)
                 np.savez_compressed(args.out / f"development-{start:04d}.npz", parameters=draws)
                 batches.append(draws)
+                report["development_sampling_calls"].append({"first": start, "stop": stop,
+                    "split": "validation", "seed": panel["seed"] + start, "draws_per_observation": panel["draws"]})
+                write(args.out / filename, report)
         draws = np.concatenate(batches)
         truth = split["parameters"][panel["start"]:panel["stop"]]
         with performance.phase("development_diagnostics"):
@@ -197,13 +210,14 @@ def run(args):
             "development_observations": len(truth), "development_posterior_draws": int(draws.shape[0] * draws.shape[1]),
             "conditional_posterior_draws": len(conditional["case_indices"]) * conditional["draws"]})
         report["matrix_launch_allowed"] = False
-        report["next_gate"] = "Control pass alone is insufficient: exact-cap smoke and a cost/resource admission receipt are also required."
-        write(args.out / "readiness.json", report)
+        report["next_gate"] = ("Control pass alone is insufficient: exact-cap smoke and a cost/resource admission receipt are also required."
+                               if role == "control" else "Development metrics only; no final-test, confirmation or publication admission.")
+        write(args.out / filename, report)
         return report
     except Exception as error:
         report.update(status="failed_execution", failure={"type": type(error).__name__, "error": str(error)},
                       performance=performance.report(), matrix_launch_allowed=False)
-        write(args.out / "readiness.json", report)
+        write(args.out / filename, report)
         raise
 
 

@@ -307,6 +307,96 @@ Study execution additionally needs the readiness, same-device smoke and resource
 admission receipts; the current inconclusive receipt is rejected. The reserved
 confirmation and finalist-freeze stages are not automatic actions of the runner.
 
+### P4 execution · user-requested development screen, 8 November
+
+The user subsequently requested the matrix despite the unresolved conditional
+reference uncertainty. The [execution record](../evidence/pilot-results/2026-11-08/heston-training-matrix/run.json)
+binds that explicit development scope to the unchanged protocol, bank, original
+control and source **`67703bb`**. The original **inconclusive** control report
+remains unchanged. Strict default admission still requires a pass; the explicit
+exception permits only this fixed seed-0 screen and cannot publish a model,
+confirm finalists or open the reserved final panel.
+
+All **14 jobs, 8641245–8641258, completed** with exit code 0: two architectures
+× seven update budgets, each followed by the fixed development checks. Every
+fit reached its exact update count, reloaded identically and evaluated the
+matching checkpoint. Jobs ran independently, at most two concurrently, with
+four host CPUs, one L40S, 24 GiB host memory and a 4–6 minute hard limit each.
+
+**None passed every posterior-quality check.** The table reports the fit phase,
+including first compilation and terminal validation. Rank counts are the number
+of parameters passing the simultaneous marginal screen; four passes do not
+establish conditional accuracy. The last columns show the largest 90% interval
+width ratio to the reference across the three cases and four parameters.
+
+| Updates | Small fit, s | Full fit, s | Small ranks / 4 | Full ranks / 4 | Small max width ratio | Full max width ratio |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 30 | 26.4 | 25.5 | 0 | 0 | 85.18 | 71.37 |
+| 100 | 26.3 | 26.3 | 0 | 0 | 49.36 | 40.16 |
+| 300 | 25.8 | 27.4 | 0 | 0 | 26.43 | 23.03 |
+| 1,000 | 43.0 | 40.2 | 2 | 3 | 14.38 | 13.41 |
+| 3,000 | 45.9 | 43.6 | 3 | 3 | 8.61 | 6.51 |
+| 10,000 | 60.1 | 58.8 | 3 | 4 | 4.64 | 2.55 |
+| 30,000 | 97.4 | 101.2 | 4 | 4 | 2.77 | 1.61 |
+
+The full 30,000-update fit is the only endpoint to pass both the rank and
+coverage-within-control checks. Its conditional case 0 is inconclusive; cases
+1 and 2 fail. Case 1's theta interval is too wide: ratio **1.342**, uncertainty
+interval **[1.258, 1.431]**, above the 1.25 limit. Case 2's initial-variance mean
+differs by **−0.481 reference SD**, interval **[−0.584, −0.377]**, beyond the
+±0.3 limit; its width ratio is **1.614 [1.512, 1.723]**. These failures extend
+beyond the original control's unresolved reference precision. No endpoint
+qualifies for automatic confirmation or replacement.
+
+Coverage uses only 128 posterior draws per observation. Finite-draw quantiles
+can lower measured coverage even for an exact posterior; the relative coverage
+gate uses the same draw count for the saved control. Do not interpret raw
+coverage percentages alone as proof of miscalibration. The 4,096-draw
+conditional discrepancies above remain material. The 32-draw predictive check
+is descriptive; successful pricing is not a predictive-adequacy pass.
+
+The [learning curves](../evidence/pilot-results/2026-11-08/heston-training-matrix/matrix-cost-quality.png)
+show mean estimation improving before posterior uncertainty is calibrated.
+Whole training reports take **43.9–119.1 seconds**, including setup, fit,
+serialization and native reload sampling. Separate evaluation takes
+**96.4–109.2 seconds**. These nested timing scopes must not be added to the fit
+phase again. This establishes a much shorter execution path, but no speedup
+at equivalent posterior quality over the historical control.
+
+The admission reserves **4,002 GPU-seconds / 18,008 allocated CPU-seconds**,
+including failed preflights and conservative prior local CPU usage. It remains
+below the original 4,500 / 21,600 ceilings. This revised scope covers the screen
+only: **future confirmation is explicitly deferred and has no reservation or
+automatic authorization**. Its costs must be admitted separately. No training
+data is generated and no test outcomes are evaluated.
+
+Actual screen allocations total **2,543 GPU-seconds (42.4 minutes)** and
+**10,172 CPU-seconds (2.83 hours)**. Including both failed preflights and the
+conservative prior local CPU charge gives **2,825 GPU-seconds / 13,300
+CPU-seconds**, below the admitted limits. All **495 output files (136.5 MB)**
+are copied locally and independently checksum-matched against Oscar. Full
+models and draws remain outside Git; the record retains their identities,
+all endpoint diagnostics and resource receipts.
+
+Five GPU software/cost fits completed and reloaded exactly. Incremental fit
+rates are approximately **2.4 ms/update** for both architectures. Cold CLI
+training/reload costs were **40–43 seconds**: compilation, terminal validation
+and reload sampling dominate the small runs. The callback counter now avoids
+per-batch `Callback.model` access, which forces JAX state synchronization;
+finite batch counts and endpoint optimizer/weight checks preserve the exact cap.
+The lab suite passes **573 tests (three optional skips)** and release checks.
+
+Both preflight failures are retained. The first found a missing dependency in
+the archived environment before any training; a fresh locked environment fixes
+it without editing the archive. The second completed every training/reload
+smoke but exhausted its whole-run allowance during control evaluation. Its
+three conditional cases and first development batch remain partial evidence,
+not a passed GPU readiness result. The admission uses an explicit **150-second
+evaluation bound** and the original complete CPU control for quality comparisons,
+with cross-device limitations recorded. The completed screen retains every
+endpoint and both preflight failures; it does not select a recipe or replace
+the saved model.
+
 ### P4 · Execute and compare time to posterior quality
 
 **Commit 1 — the bounded development screen.** Run the 14 predeclared seed-0
