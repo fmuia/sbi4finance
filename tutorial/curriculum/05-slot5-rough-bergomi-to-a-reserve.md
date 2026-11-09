@@ -18,22 +18,23 @@ uses the [rough-options notebook](../notebooks/slot5_calibration.py).
 
 | Step | Content | Student prompt |
 | --- | --- | --- |
-| Model | Rough variance, its kernel and the supplied forward-variance curve. Immediately explore coupled price/volatility paths with fixed shocks and parameter controls. | What does roughness change, and what sets the mean variance? |
+| Model | Rough variance, its kernel and the supplied forward-variance curve. Decompose Y, variance, finite-step returns and prices with shared random draws and fixed axis presets. | What does roughness change, and what sets the mean variance? |
 | Why rough volatility? | Contrast Heston's limiting short-expiry skew with the rough power law; show a dated SPY grid and finite-price illustrations. | What extra time-scale behavior does H make possible? |
-| Data | Controlled Monte Carlo mean prices, then independent quote noise. | Which uncertainty would more simulation paths reduce? |
+| Data | Generate a prior market: paths, payoffs, conditional mean-price estimates, then independent quote noise. Explain Q versus P. | Which uncertainty would more simulation paths reduce? |
 | Two neural routes | Decompose the dense pricer and conditional flow-matching network. Fit a small pricer on clean labels and evaluate its Gaussian likelihood. | Which computation repeats for a new market? |
 | BayesFlow | Visible adapter, network, fitting and sampling code. Choose a small live fit or optional matching pretrained weights; saved results need neither. | What are training targets, and what enters inference? |
 | Known curve | Current synthetic observation, supplied levels and focused posterior views. | Which parameter relationships remain visible? |
 | Predictive check | Explicit three-month repricing of paired draws, with fresh quote noise and a reported precision budget. | Why does adding quote noise change the data spread? |
 | Joint curve | Curve coefficients become targets; the generating curve is not supplied. | How does the inference task change? |
-| Accuracy | Current aggregate diagnostics and the matching three-case surrogate comparison. | What can one passed check establish? |
+| Another contract | Carry the joint posterior into a fair variance-swap strike; optionally compare a least-squares point fit using the matching six-input pricer. | What uncertainty does one plug-in vector leave out? |
+| Accuracy | Price-label residuals, predictive checks and optional aggregate diagnostics. | What can one passed check establish? |
 
 The supplied-curve and joint examples use different observations and curve
 families. Their widths are not a matched experiment about curve uncertainty.
 The small training actions demonstrate the APIs; they do not reproduce the
 longer-fit estimators. The pricer's validation rows select an epoch; they are
-not an independent final accuracy test. MCMC comparisons use the fixed reference
-pricer, never the tiny session fit. Default viewing uses saved data and results.
+not an independent final accuracy test. The tiny session pricer is not used for MCMC. Default inference views use saved
+data and results; the small forward/data simulators run locally.
 
 ## Additional studies
 
@@ -73,20 +74,7 @@ An exactly supplied curve gives one fair variance-swap strike, even when
 H, eta and rho remain uncertain. This says nothing about certainty of future
 realized variance. The known/joint examples are not a controlled width comparison.
 
-### 3. What if two inference routes disagree?
-
-Use the existing comparison whose task, bank and posterior checkpoint match
-the current known-curve lesson. The reference holds its 50,000-market pricer
-fixed and samples that deterministic surrogate likelihood with PyMC.
-Two of three cases meet the recorded location/width screens; H and eta fail
-in the third. Show the metrics, then ask students which follow-up checks matter.
-
-**Learning outcome:** small average pricing error and aggregate calibration do
-not guarantee conditional posterior agreement. Check the reference's mixing,
-local pricing accuracy and the posterior estimator. The surrogate target omits
-emulator uncertainty and grid/label bias; agreement is not exact-model acceptance.
-
-### 4. What lies beyond the last quote?
+### 3. What lies beyond the last quote?
 
 Add an independent tail slope, leaving the curve unchanged through year one:
 
@@ -132,12 +120,14 @@ Application helpers are in `src/sbi4f_tutorial/rough_options/`:
 `explorer.py` for path and architecture figures, `lesson.py` for explicit
 pricing/training-data actions, `surrogate.py` for supervised price regression,
 `comparison.py` for the Heston/Bergomi skew and smile comparison,
-`context_checks.py` for necessary support bounds and `studies.py` for analytic curve/tail propagation.
+`data_story.py` for payoff/quote generation and pricer validation,
+`context_checks.py` for necessary support bounds and `studies.py` for analytic curve/tail propagation and the optional point-fit comparison.
 Shared numerical definitions remain in `shared/`; lab workflows reuse them.
 
 Run the tutorial tests, marimo check and notebook exports. Check every study
 selection, all four current joint examples, prior-width endpoints, the paired/
-shuffled switch and reference-case controls. Tail integrals are checked against
+shuffled switch, data/noise controls, pricer validation selections, optional native
+point fit and source invalidation. Tail integrals are checked against
 quadrature and their zero-slope limits. The
 [application plan](TUTORIAL-REVIEW.md#c-refine-the-option-notebooks-in-place)
 records source scope and verification. Collaborator rehearsal remains separate.

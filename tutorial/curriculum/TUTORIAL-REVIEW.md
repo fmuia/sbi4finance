@@ -237,6 +237,46 @@ and the narrow layout. Existing numerical and calibration limits remain unchange
 pricing optimizations are integrated, with its functions and the lesson’s curve
 helpers preserved unchanged; the final comparison and exports pass again.
 
+#### Component and data-story revision · 9 November 2026
+
+Explain the generative model component by component, with collapsible mathematics
+and interactive views of its Gaussian driver, compensated variance, finite-step
+returns and asset paths. Rename the realization selector, explain its independent
+normal draws, and use fixed display ranges with explicit out-of-view counts.
+
+Add a paths/payoffs → estimated expected prices → independently perturbed quotes
+simulator alongside the data equations. Explain Q versus P, the forward-variance
+curve, interval levels, time averaging and variance versus volatility. Illustrate
+exactly how 63 quote/SD values and seven log curve levels become 70 conditions;
+generating parameters remain training targets.
+
+Improve quote/curve figures and replace opaque pricer residual traces with direct
+predicted-price versus numerical-label comparisons at a selected maturity. Remove
+the three-market comparison and its optional repetition. Explain the available
+six-input joint-curve pricer without claiming an unfinished MCMC comparison.
+Teach the propagation of joint calibration uncertainty into another contract on
+the same underlying; distinguish this from an unimplemented cross-asset model.
+
+**Status:** implemented. Browser review covers both component views and fixed
+ranges, three realizations, all synthetic-data controls, two validation markets
+at four expiries, native posterior loading, four actual joint point fits, missing
+models and source invalidation. All eight model/Q detail panels render correctly.
+The three-market report and its repeated optional study are removed from the
+student notebook; source records remain preserved.
+
+**Verification:** 91 tutorial tests, 573 core lab tests (three optional PyMC skips),
+all seven exports (70 cells in rough options, no errors), release/ownership
+checks and 62 local documentation targets pass. The joint pricer is task- and
+bank-matched to the cached posterior; the loader checks its native payload.
+The new uncertainty exercise transfers to another contract on the same underlying,
+not another underlying or a real-world risk forecast. No saved model or posterior
+has changed, and no new MCMC or acceptance result is claimed.
+
+Apply component explanations, fixed axes and input diagrams to the trajectory
+lesson where relevant. Preserve canonical numerical laws, model identities and
+reported accuracy limits. Verify actual controls, model loaders, small examples,
+source binding, standalone exports and relevant software/numerical checks.
+
 ## D. Develop the trajectory notebook to application parity
 
 **Retain:** the shared Heston/known-curve/joint-curve selector, daily observation

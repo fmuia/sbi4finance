@@ -109,7 +109,11 @@ and seven known forward-variance levels. The joint-curve extension estimates
 three curve coefficients as well. These examples use different observations
 and curve families; they are not a matched comparison of curve uncertainty.
 
-Start by changing H, eta, rho and the variance scale in the path simulator.
+Start by changing H, eta, rho and the variance scale in the component simulator.
+Its driver, variance, return and price panels use fixed axes. Random realizations
+and values outside the view are explained. Collapsible notes cover each
+equation, the Q measure and the forward-variance curve. A second simulator
+shows how path payoffs become estimated prices and independently noisy quotes.
 Compare Heston and rough Bergomi through short-maturity skew: an instant shape
 guide sits beside the model, and an optional pricing action compares actual
 smiles on the same contract grid. A dated SPY example motivates the pattern;
@@ -133,12 +137,11 @@ the Heston comparison in `rough_options/comparison.py`,
 the supervised pricer in `rough_options/surrogate.py`, and the notebook for its
 controls and visible workflows. Lab pricer training reuses the same implementation.
 
-The **Additional studies** selector offers four short learning extensions:
+The **Additional studies** selector offers three short learning extensions:
 
 - Check whether a new market's supplied curve fits the simulation design.
 - Propagate paired parameter draws into a variance-swap strike; compare with
   deliberately shuffled marginals.
-- Inspect disagreement with the matching neural-pricer reference.
 - Change an explicit assumption beyond the latest quoted maturity.
 
 Each has a prediction prompt, a control or calculation, and an interpretation.
@@ -148,10 +151,21 @@ curve is outside the current known-curve training prior, so no supported SPY
 posterior is claimed. Old pilot outputs and timing projections are absent from
 the student narrative; their source records remain in the repository.
 
-The pricer comparison covers three supplied-curve cases: two pass its recorded
-screens and one still disagrees. Exact-model references, joint-curve conditional
-checks and further Monte Carlo product checks remain outstanding. The additional
-variance-rate calculations do not claim those missing checks or exotic prices.
+An input figure explains the 70 supplied-curve features and the 63-feature joint
+task. The pricer check shows predicted prices against numerical labels at one
+expiry, then signed errors in quote-SD units.
+
+The joint extension includes its six-input pricer counterpart. An optional
+matching model load adds a least-squares point calibration beside the saved
+posterior propagation: compare one variance-swap strike with a distribution
+of fair strikes on the **same underlying**. This is not a transfer to another
+underlying or a forecast of realized variance. Exact-model and joint MCMC
+references remain unfinished.
+
+Edit the data story in `rough_options/data_story.py`, input figures in
+`rough_options/lesson.py`, and uncertainty/point-fit calculations in
+`rough_options/studies.py`. The point fit needs the published joint-pricer
+folder; posterior propagation works without it.
 
 ## Trajectory inference
 

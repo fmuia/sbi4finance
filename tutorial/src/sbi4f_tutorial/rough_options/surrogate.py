@@ -145,3 +145,54 @@ def errors(pricer, task, split):
     """Prediction error in quote-noise units, per surface and contract."""
     predicted = pricer(features(task, split["parameters"], split.get("context_values")))
     return predicted - targets(task, split["reference_prices"])
+
+
+def load_pricer(directory, *, expected_task=None, expected_pricer_sha256=None):
+    """Load a bound native pricer from the ignored tutorial model cache.
+
+    The task and payload must match the training record. An expected task and
+    payload identity can additionally pin the particular published candidate.
+    Identity checks establish which approximation is loaded, not its accuracy.
+    Raw Pricer.load remains available for historical lab payloads.
+    """
+    import hashlib
+    import json
+
+    from ..shared import full_surface
+    from ..shared.bank_helpers import _json
+    from ..shared.paths import ASSETS
+
+    assets = ASSETS.resolve()
+    root = (assets / "local-checkpoints").resolve()
+    if not root.is_relative_to(assets):
+        raise ValueError("local-checkpoints must remain under tutorial/assets/")
+    directory = Path(directory)
+    if not directory.is_absolute():
+        directory = ASSETS / directory
+    directory = directory.resolve()
+    if not directory.is_relative_to(root):
+        raise ValueError("native pricers must be under tutorial/assets/local-checkpoints/")
+    paths = {name: (directory / name).resolve() for name in ("task.json", "pricer.json", "pricer.npz")}
+    if not all(path.is_relative_to(root) for path in paths.values()):
+        raise ValueError("pricer files must remain under tutorial/assets/local-checkpoints/")
+    task = full_surface.validate_task(json.loads(paths["task.json"].read_text()))
+    record = json.loads(paths["pricer.json"].read_text())
+    task_hash = hashlib.sha256(_json(task).encode()).hexdigest()
+    payload_hash = hashlib.sha256(paths["pricer.npz"].read_bytes()).hexdigest()
+    if (record.get("format") != "full_surface_pricer_training_v1" or record.get("status") != "completed"
+            or record.get("task_fingerprint") != task_hash or record.get("task_id") != task["task_id"]
+            or record.get("pricer_sha256") != payload_hash):
+        raise ValueError("native pricer task or payload differs from its completed training record")
+    if expected_task is not None and task != expected_task:
+        raise ValueError("native pricer task differs from the selected lesson task")
+    if expected_pricer_sha256 is not None and payload_hash != expected_pricer_sha256:
+        raise ValueError("native pricer payload differs from the selected published candidate")
+    pricer = Pricer.load(directory)
+    if record.get("fit", {}).get("hidden_activation") != pricer.activation:
+        raise ValueError("native pricer activation differs from the training record")
+    rows = np.asarray(task["prior_bounds"]).mean(axis=1)[None, :]
+    context = np.full((1, tasks.context_size(task)), .04) if full_surface.uses_known_curve(task) else None
+    probe = pricer(features(task, rows, context))
+    if probe.shape != (1, 63) or not np.isfinite(probe).all():
+        raise ValueError("native pricer does not produce one finite complete price vector")
+    return task, pricer, record

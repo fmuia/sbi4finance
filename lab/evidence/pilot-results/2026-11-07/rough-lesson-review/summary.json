@@ -5,43 +5,87 @@
   "scientific_acceptance": false,
   "existing_assets_changed": false,
   "verification": {
-    "tutorial_tests": 71,
+    "tutorial_tests": 91,
     "lab_core_tests": 573,
     "lab_optional_skips": 3,
     "notebook_exports": 7,
     "notebook_cell_errors": 0,
     "runtime_boundary_symbols": 203,
-    "local_document_links": 52,
+    "local_document_links": 62,
     "moved_function_definitions_unchanged": 8,
     "marimo_warnings": "existing empty cells in slots 2 and 3"
   },
   "browser": {
     "page_errors": [],
-    "path_H_endpoints": [
-      0.02,
-      0.4
+    "path_controls": {
+      "realizations": [
+        "A",
+        "B",
+        "C"
+      ],
+      "views": [
+        "paths",
+        "components"
+      ],
+      "ranges": [
+        "detail",
+        "wide"
+      ],
+      "H_endpoints": [
+        0.02,
+        0.4
+      ]
+    },
+    "math_accordions_opened": [
+      "Read the simulator one component at a time",
+      "What exactly is the forward-variance curve ξ₀?",
+      "Grid approximation and the extra Gaussian channel",
+      "What does this simulation approximate?",
+      "The short-maturity relationship",
+      "Numerical accuracy and the observation model",
+      "A refresher: what does the pricing measure Q mean?",
+      "How the numerical averaging works"
     ],
-    "fixed_shocks_control": true,
-    "smile_expiries": [
-      5,
-      21,
-      63,
-      252
-    ],
-    "smile_elapsed_seconds": 3.787787541979924,
-    "code_visible": [
-      "simulator",
-      "pricer fit and likelihood",
-      "BayesFlow fit",
-      "pretrained load and sample"
-    ],
-    "small_pricer_elapsed_seconds": 13.577211290947162,
-    "pretrained_load_elapsed_seconds": 1.860046749934554,
-    "pretrained_missing_folder": true,
-    "changed_folder_clears_old_output": true,
+    "dataset_controls": {
+      "draws": [
+        "A",
+        "B",
+        "C"
+      ],
+      "paths": [
+        256,
+        1024,
+        4096
+      ],
+      "expiries_days": [
+        5,
+        21,
+        63,
+        252
+      ],
+      "quote_error_scale": [
+        0,
+        4,
+        1
+      ]
+    },
+    "small_pricer_seconds": 39.002179249888286,
+    "pricer_display_reuses_fit": true,
+    "pricer_fit_summary": "Overall validation RMSE across both 63-price surfaces: 21.18 quote SDs. Selected epoch: 5. Generation: 34.3 s; total: 37.5 s. Changing the display reuses this fit; it does not train again. The likelihood code above explains the next step, but this tiny pricer is not used for MCMC.",
+    "native_known_load_and_sample_seconds": 4.970754582900554,
+    "joint_point_fit_seconds": {
+      "Worked joint example": 0.15046650008298457,
+      "Curve level–decay trade-off": 0.2606706670485437,
+      "Coupled volatility parameters": 0.14333424996584654,
+      "Weakly informed decay": 0.13396137487143278
+    },
+    "joint_case_change_clears_fit": true,
+    "missing_pricer_preserves_posterior_only": true,
+    "removed_three_market_section": true,
+    "math_render_errors": 0,
+    "marimo_errors": 0,
     "narrow_width": 760,
-    "horizontal_overflow": false,
-    "math_render_errors": 0
+    "horizontal_overflow": false
   },
   "helper_benchmarks": {
     "implementation": "exact task grids and precision; bounded session-only helpers",
@@ -171,24 +215,28 @@
     "lab/studies/runtime_boundary.py": "e3f95c3208b86ea88c6d16553f81edac55bc4294f08852b908a223704817ea6f",
     "lab/tests/test_full_surface_pricer_cli.py": "b286a4534d5f283728561a0f2b23fc5f6d0e582e6ef02c4c33fe564ac55501a0",
     "lab/tests/test_pricer_pymc_reference.py": "2077b03dcb0a6aa04d9b7533f65dbc41bd4c0fd93dfd931db3f2f47765a0e9fc",
-    "tutorial/notebooks/slot5_calibration.py": "f4951cd54c2d49f99e0ff82569e2e0ec30e8379cf3b41e11ebe229a037cd74ef",
-    "tutorial/src/sbi4f_tutorial/rough_options/comparison.py": "5deee8c688d0ecc79e1a7ba2d7caba05afa00f7699926711b51c87091a83364d",
+    "tutorial/notebooks/slot5_calibration.py": "480db8329b3241a4cd01e22977850791a1d2ee8b272dcdd354607d50504bccc5",
+    "tutorial/src/sbi4f_tutorial/heston_options/model.py": "4b48d998ff99e3709d8c753bd12ef32453242332ec0486c9d1251a788cadfe85",
+    "tutorial/src/sbi4f_tutorial/rough_options/comparison.py": "717a53025bc48c899b49cf2444ffe9e31c04e41977abfc73a80ebb7f9904e8d1",
     "tutorial/src/sbi4f_tutorial/rough_options/context_checks.py": "2c2927cdd02f3ece4314061dcd99d3be04e08e072338c9b39edca1a551d5955d",
-    "tutorial/src/sbi4f_tutorial/rough_options/explorer.py": "05a88a89d1e35787036c26999c08479ec90f4ee65e94b177715dc3fd200ee212",
-    "tutorial/src/sbi4f_tutorial/rough_options/lesson.py": "6d2d2f6517ccb0bd4292c0adcf8f223e95cb31f261631d3e2e2424e6a765cc93",
-    "tutorial/src/sbi4f_tutorial/rough_options/studies.py": "ed39e6d00ed40a36007fc7e385491fa2e4faf26524470328d8f77ab271894e4f",
-    "tutorial/src/sbi4f_tutorial/rough_options/surrogate.py": "da71768a50bc91dcb4b43c25e3a2f1b224ba09ee5da752356b9c19ac9bbffb1a",
+    "tutorial/src/sbi4f_tutorial/rough_options/data_story.py": "d68c20b629ee84e342d1834850cb977e289ee88614ac09d1b2e2433920e34350",
+    "tutorial/src/sbi4f_tutorial/rough_options/explorer.py": "85bb1c0372b6a4c40da3cba9cec265e2c007b5fc70a77431821b78f2ae13e934",
+    "tutorial/src/sbi4f_tutorial/rough_options/lesson.py": "7458559ce42884960961526e72bcb3658ee4f44c63b64b61d5150bfddb8774cb",
+    "tutorial/src/sbi4f_tutorial/rough_options/studies.py": "09b6af340523d1a5cde627053a935c5f8db3092d0ef8899fb72f0f88148ebd69",
+    "tutorial/src/sbi4f_tutorial/rough_options/surrogate.py": "4ef51bd248fd596cbbbd70a30f80225a2fbc256610faf1f449578a0a2d522edc",
     "tutorial/src/sbi4f_tutorial/shared/parameter_transforms.py": "e83762a6d2b5a4886ff6792fd88f51b46a27d1ba3d723b9b317f04cdfa47b2e8",
     "tutorial/src/sbi4f_tutorial/shared/pricing.py": "3f0431d77418ca04ddb676a9d6ce036dc22c097f244965a0b6de7fe34c0e353e",
     "tutorial/src/sbi4f_tutorial/shared/tasks.py": "4bc28d37c865a04a3f5d214fec5afbecf1db0ab4a2e02dd331d520fe9b08848b",
     "tutorial/tests/test_independence.py": "e3a2789fc0d407d345c14a94f3cf800ea8fb35ee12ae40e8004aa2c00b0417a6",
-    "tutorial/tests/test_rough_comparison.py": "36edcf61579214e238826d1432d443162007b58928d6b034ce413ed8b499ea7a",
+    "tutorial/tests/test_rough_comparison.py": "565c050d589c0d02a746221387cb3f095f1430dc10596f072d53abefda924ad7",
     "tutorial/tests/test_rough_context.py": "d18fda5017f334b1e111817fa38a41e691797bbfb290e1e396317814de0dd65c",
-    "tutorial/tests/test_rough_explorer.py": "88db231867980ad1c99cb71fd721ccae16cc83a0ca9248086b88b58beb81e4fc",
+    "tutorial/tests/test_rough_data_story.py": "339cabb198cad2eb720dedf691ae087e9e6a20067b27330bba429af1f45ff83b",
+    "tutorial/tests/test_rough_explorer.py": "9ff63ec0b85269150281755665bf8c4ea30f93687e6dbc31f5b10448db82bbe6",
+    "tutorial/tests/test_rough_inputs.py": "9147ebe853137c924194bf18a51c56f09525aeebb41ec12fc0f9f260b23c95fb",
+    "tutorial/tests/test_rough_pricer_loader.py": "77a6da8159933b09c22efdb8fd1249f0645d97600d666ac6d7e910dcc84e3b60",
     "tutorial/tests/test_rough_session.py": "fade7005723db92c00306c885619ebc9b872863a32294fa8f2937e0ed527a838",
-    "tutorial/tests/test_rough_studies.py": "7cdb7f37ad99a8d3cac353c81fd49400cd4574b9e15c264bd08c85c9e33d7eba",
-    "tutorial/tests/test_rough_surrogate.py": "49b4761e6de900aa3ac83f6a0355e10216d00c3a4a971821ec097be05c902f3c",
-    "tutorial/src/sbi4f_tutorial/heston_options/model.py": "4b48d998ff99e3709d8c753bd12ef32453242332ec0486c9d1251a788cadfe85"
+    "tutorial/tests/test_rough_studies.py": "2af10f7ad4171f113bd92f068475fbebaa46f93ac46057fe4245443250c68050",
+    "tutorial/tests/test_rough_surrogate.py": "49b4761e6de900aa3ac83f6a0355e10216d00c3a4a971821ec097be05c902f3c"
   },
   "timing_environment": {
     "system": "Darwin",
@@ -449,5 +497,258 @@
       "commented_workflow_and_heston_comparison_visible": true,
       "math_render_errors": 0
     }
+  },
+  "pre_round2_verification": {
+    "tutorial_tests": 71,
+    "lab_core_tests": 573,
+    "lab_optional_skips": 3,
+    "notebook_exports": 7,
+    "notebook_cell_errors": 0,
+    "runtime_boundary_symbols": 203,
+    "local_document_links": 52,
+    "moved_function_definitions_unchanged": 8,
+    "marimo_warnings": "existing empty cells in slots 2 and 3"
+  },
+  "model_and_data_story_revision": {
+    "date": "2026-11-09",
+    "requirements": [
+      "component math, Gaussian innovations and Y/V/relative-return decomposition",
+      "fixed simulator and pricing-comparison axes with explicit outside counts",
+      "prior market to path/payoff to conditional expected-price estimate to independent quote error",
+      "Q/P and forward-variance interval-level explanations",
+      "grayscale expiry lines and open-ended step curve",
+      "direct held-out numerical-price versus small-pricer predictions",
+      "exact 70/63 market input diagrams with labels separated",
+      "remove three-market MCMC section and optional repetition",
+      "six-input joint-pricer counterpart and guarded native load",
+      "matched same-underlying point calibration versus paired-posterior fair-strike propagation"
+    ],
+    "tutorial_tests": 91,
+    "lab_core_tests": 573,
+    "optional_skips": 3,
+    "notebook_exports": 7,
+    "rough_cells": 70,
+    "cell_errors": 0,
+    "runtime_shared_symbols": 203,
+    "browser": {
+      "page_errors": [],
+      "path_controls": {
+        "realizations": [
+          "A",
+          "B",
+          "C"
+        ],
+        "views": [
+          "paths",
+          "components"
+        ],
+        "ranges": [
+          "detail",
+          "wide"
+        ],
+        "H_endpoints": [
+          0.02,
+          0.4
+        ]
+      },
+      "math_accordions_opened": [
+        "Read the simulator one component at a time",
+        "What exactly is the forward-variance curve ξ₀?",
+        "Grid approximation and the extra Gaussian channel",
+        "What does this simulation approximate?",
+        "The short-maturity relationship",
+        "Numerical accuracy and the observation model",
+        "A refresher: what does the pricing measure Q mean?",
+        "How the numerical averaging works"
+      ],
+      "dataset_controls": {
+        "draws": [
+          "A",
+          "B",
+          "C"
+        ],
+        "paths": [
+          256,
+          1024,
+          4096
+        ],
+        "expiries_days": [
+          5,
+          21,
+          63,
+          252
+        ],
+        "quote_error_scale": [
+          0,
+          4,
+          1
+        ]
+      },
+      "small_pricer_seconds": 39.002179249888286,
+      "pricer_display_reuses_fit": true,
+      "pricer_fit_summary": "Overall validation RMSE across both 63-price surfaces: 21.18 quote SDs. Selected epoch: 5. Generation: 34.3 s; total: 37.5 s. Changing the display reuses this fit; it does not train again. The likelihood code above explains the next step, but this tiny pricer is not used for MCMC.",
+      "native_known_load_and_sample_seconds": 4.970754582900554,
+      "joint_point_fit_seconds": {
+        "Worked joint example": 0.15046650008298457,
+        "Curve level–decay trade-off": 0.2606706670485437,
+        "Coupled volatility parameters": 0.14333424996584654,
+        "Weakly informed decay": 0.13396137487143278
+      },
+      "joint_case_change_clears_fit": true,
+      "missing_pricer_preserves_posterior_only": true,
+      "removed_three_market_section": true,
+      "math_render_errors": 0,
+      "marimo_errors": 0,
+      "narrow_width": 760,
+      "horizontal_overflow": false
+    },
+    "actual_joint_point_check": {
+      "chi2": 50.87682912112705,
+      "parameters": [
+        0.024934611862022945,
+        1.2956818193644075,
+        -0.9854103791268811,
+        0.14770566981937286,
+        0.044092252339323824,
+        6.924718432951008
+      ],
+      "q90Kvar": [
+        0.05780677484272336,
+        0.059243678804246545,
+        0.06057907320112126
+      ],
+      "pointKvar": 0.05904037591312794,
+      "same_bank": true,
+      "runs": [
+        {
+          "start_index": 0,
+          "initial_logits": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "initial_parameters": [
+            0.18499999999999997,
+            2.0,
+            -0.595,
+            0.08499999999999999,
+            0.08499999999999999,
+            4.125
+          ],
+          "success": true,
+          "status": "converged",
+          "message": "`ftol` termination condition is satisfied.",
+          "scipy_status": 2,
+          "chi2": 50.87682912112705,
+          "parameters": [
+            0.024934611862022945,
+            1.2956818193644075,
+            -0.9854103791268811,
+            0.14770566981937286,
+            0.044092252339323824,
+            6.924718432951008
+          ],
+          "active_numerical_bounds": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "evaluations": 132
+        },
+        {
+          "start_index": 1,
+          "initial_logits": [
+            -0.7903677719964292,
+            1.1588202388356872,
+            5.1746860213098715,
+            -0.4651047197401485,
+            1.3586947319383096,
+            1.353393732887328
+          ],
+          "initial_parameters": [
+            0.12298960334085615,
+            2.7833548400080548,
+            -0.20444466667476036,
+            0.06786633149401704,
+            0.12933212133384506,
+            6.408800288396396
+          ],
+          "success": true,
+          "status": "converged",
+          "message": "`ftol` termination condition is satisfied.",
+          "scipy_status": 2,
+          "chi2": 50.876829288140385,
+          "parameters": [
+            0.02493508884010528,
+            1.295675823882833,
+            -0.985404452093515,
+            0.14770570032278693,
+            0.04409217900376118,
+            6.924715696348217
+          ],
+          "active_numerical_bounds": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "evaluations": 138
+        },
+        {
+          "start_index": 2,
+          "initial_logits": [
+            2.000558905663871,
+            0.7728296026828716,
+            -0.7784591367326785,
+            -0.13935154513302234,
+            -2.8328743404258114,
+            -0.07015845142597898
+          ],
+          "initial_parameters": [
+            0.3106823965098021,
+            2.5523980265550974,
+            -0.7414248628437519,
+            0.07978275706582635,
+            0.01833600181949218,
+            3.9891237300658173
+          ],
+          "success": true,
+          "status": "converged",
+          "message": "`ftol` termination condition is satisfied.",
+          "scipy_status": 2,
+          "chi2": 50.8768291365946,
+          "parameters": [
+            0.024934678518579986,
+            1.295677739862936,
+            -0.9854117591074519,
+            0.14770566211441147,
+            0.04409227551113134,
+            6.924720635123435
+          ],
+          "active_numerical_bounds": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "evaluations": 112
+        }
+      ]
+    },
+    "canonical_numerical_law_changed": false,
+    "model_weights_or_existing_assets_changed": false,
+    "scientific_acceptance": false,
+    "scope": "Forward/data/pricer teaching simulations and local least-squares points; no new reference posterior, cross-underlying model or realized-risk forecast.",
+    "cache_boundary_check": "Reject symlinked caches that escape tutorial/assets before any model read."
   }
 }

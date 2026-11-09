@@ -60,6 +60,11 @@ class RoughComparisonTests(unittest.TestCase):
         np.testing.assert_array_equal(heston.get_ydata(), np.ones_like(heston.get_ydata()))
         self.assertEqual(observed.get_ydata()[2], 1)
         np.testing.assert_allclose(rough.get_ydata(), (rough.get_xdata() / 21) ** -.4)
+        self.assertEqual(figure.axes[0].get_ylim(), (.3, 30))
+        self.assertEqual(figure.axes[0].get_xlim(), (.5, 252))
+        alternative = comparison.skew_shape_figure(.4, spy)
+        self.assertEqual(alternative.axes[0].get_ylim(), figure.axes[0].get_ylim())
+        plt.close(alternative)
         plt.close(figure)
         invalid = copy.deepcopy(spy)
         invalid["design"]["days"][2] = 20
@@ -71,6 +76,31 @@ class RoughComparisonTests(unittest.TestCase):
         missing["max_se_over_sigma"] = np.nan
         with self.assertRaisesRegex(ValueError, "rough timing/MC SE"):
             comparison.compare_smiles(missing, volatility=.25, rho=missing["parameters"]["rho"])
+
+    def test_axis_presets_stay_fixed_when_model_values_change_and_report_off_scale_points(self):
+        import matplotlib.pyplot as plt
+
+        result = comparison.compare_smiles(self.rough, volatility=.25, rho=self.rough["parameters"]["rho"])
+        original = comparison.comparison_figure(result)
+        changed = copy.deepcopy(result)
+        changed["rough"]["implied"] *= 10
+        changed["rough"]["skew"] *= 100
+        raw = changed["rough"]["implied"].copy()
+        figure = comparison.comparison_figure(changed)
+        for before, after in zip(original.axes, figure.axes):
+            self.assertEqual(before.get_xlim(), after.get_xlim())
+            self.assertEqual(before.get_ylim(), after.get_ylim())
+        self.assertEqual(figure.axes[0].get_xlim(), (-2.05, 2.05))
+        self.assertEqual(figure.axes[0].get_ylim(), (0, 100))
+        self.assertEqual(figure.axes[1].get_xlim(), (5, 252))
+        self.assertEqual(figure.axes[1].get_ylim(), (.02, 10))
+        self.assertNotIn("0 points outside axes", figure.axes[0].get_title())
+        np.testing.assert_array_equal(changed["rough"]["implied"], raw)
+        wide = comparison.comparison_figure(changed, scale="wide")
+        self.assertEqual(wide.axes[0].get_ylim(), (0, 250))
+        self.assertEqual(wide.axes[1].get_ylim(), (.002, 100))
+        for item in (original, figure, wide):
+            plt.close(item)
 
 
 if __name__ == "__main__":

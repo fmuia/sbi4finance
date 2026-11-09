@@ -95,10 +95,10 @@ python3 -m zipfile -e "$SBI_DOWNLOADS/sbi4finance-pretrained-and-cases-20261029.
   "$SBI_CHECKOUT/tutorial/assets/local-checkpoints"
 ```
 
-The ZIP also contains historical packaged cases and separate forward-pricer
-artifacts. Leave them in this ignored cache; the current checkout already
-supplies its own published teaching assets. Use only the `pretrained/` native
-posterior directories below for fresh option inference.
+The ZIP also contains packaged cases and forward-pricer artifacts. Leave them
+in this ignored cache; the checkout supplies its own teaching cases. Use the
+`pretrained/` directories below for posterior inference. The rough notebook can
+also load the joint forward pricer for its point-calibration example below.
 
 From `tutorial/`, open `pixi run --locked backbones`. Select the cached example
 and enter the **absolute** checkpoint directory in **Local matching checkpoint
@@ -121,6 +121,23 @@ This optional review action draws a new approximate posterior for the exact
 packaged observation. It does not run MCMC, train a model or update the cached
 lesson result. The current option estimator is BayesFlow 2.1; archived 2.0
 models are separate historical artifacts.
+
+### Joint rough-Bergomi pricer: optional point calibration
+
+The same ZIP contains `pricers/rough-joint100k/`. Keep `pricer.npz`, `task.json`
+and `pricer.json` together under
+`tutorial/assets/local-checkpoints/pricers/rough-joint100k/`.
+
+In the rough notebook, use **Load the joint pricer and fit this market**.
+The default field names that archive location. The loader verifies the selected
+task and the model's recorded payload identity; the notebook checks the bank
+identity too. It then fits the selected market by local multi-start least
+squares and carries that point into a fair variance-swap strike beside the
+approximate posterior distribution.
+
+This pricer maps six parameters to expected option prices; it is not a posterior
+network. The example runs no joint MCMC reference. Saved posterior propagation
+works without the download. No training bank is needed.
 
 ### Trajectory models: daily return histories
 

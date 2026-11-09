@@ -39,7 +39,8 @@ def skew_shape_figure(hurst, spy_report):
     axis.loglog(days, empirical / empirical[anchor[0]], "o", color="#111827", markersize=5,
                 label="saved SPY skew / its one-month skew")
     axis.axvline(days[0], color="#94a3b8", linewidth=.8, linestyle=":")
-    axis.set(xlabel="Maturity (trading days)", ylabel="Absolute ATM skew / one-month level",
+    axis.set(xlim=(.5, 252), ylim=(.3, 30),
+             xlabel="Maturity (trading days)", ylabel="Absolute ATM skew / one-month level",
              title="Short-maturity shape guides; no model fitting")
     axis.legend(fontsize=8)
     return figure
@@ -110,28 +111,52 @@ def compare_smiles(rough_result, *, volatility=.2, sigma_v=.4, rho=-.7):
                          "scope": "Illustrative forward prices on the same design; no model fitting, posterior or market-fit claim."}}
 
 
-def comparison_figure(result, *, maturity_days=5):
-    """Actual fixed-grid smiles and skew; rough Monte Carlo is reused unchanged."""
+def _outside_markers(axis, x, y, xlim, ylim, color):
+    """Mark finite off-scale values at the boundary without changing data."""
+    x, y = np.asarray(x), np.asarray(y)
+    finite = np.isfinite(x) & np.isfinite(y)
+    outside = finite & ((x < xlim[0]) | (x > xlim[1]) | (y < ylim[0]) | (y > ylim[1]))
+    for marker, selected in (("v", outside & (y > ylim[1])),
+                              ("^", outside & (y <= ylim[1]))):
+        if selected.any():
+            axis.plot(np.clip(x[selected], *xlim), np.clip(y[selected], *ylim),
+                      marker, color=color, markersize=5, linestyle="none", clip_on=False)
+    return int(outside.sum())
+
+
+def comparison_figure(result, *, maturity_days=5, scale="detail"):
+    """Actual smiles and skew on fixed axes; rough Monte Carlo is reused unchanged."""
     import matplotlib.pyplot as plt
 
+    if scale not in ("detail", "wide"):
+        raise ValueError("choose the detail or wide axis preset")
+    iv_limits, skew_limits = ((0, 100), (.02, 10)) if scale == "detail" else ((0, 250), (.002, 100))
+    x_limits, day_limits = (-2.05, 2.05), (5, 252)
     chosen = np.isclose(result["maturity_days"], maturity_days, rtol=0, atol=1e-9)
     if not chosen.any():
         raise ValueError("choose a maturity present in the shared contract design")
     figure, (left, right) = plt.subplots(1, 2, figsize=(10.5, 3.7), layout="constrained")
+    smile_outside, skew_outside = 0, 0
     for key, label, color in (("rough", "rough Bergomi", "#7755aa"), ("heston", "Heston", "#3a9874")):
         model = result[key]
         omitted = model["omitted_wing_quotes"]
-        left.plot(result["standardized_moneyness"][chosen], 100 * model["implied"][chosen], "o-",
+        x, iv = result["standardized_moneyness"][chosen], 100 * model["implied"][chosen]
+        days, skew = model["maturities"] * surface.TRADING_DAYS, np.abs(model["skew"])
+        left.plot(x, iv, "o-",
                   color=color, markersize=3, label=label + (f" ({omitted} wing IVs unavailable)" if omitted else ""))
-        right.loglog(model["maturities"] * surface.TRADING_DAYS, np.abs(model["skew"]), "o-",
+        right.loglog(days, skew, "o-",
                      color=color, markersize=4, label=label)
-    left.set(xlabel="Standardized log-moneyness k / (0.20 √T)", ylabel="Implied volatility (%)",
-             title=f"{maturity_days:g}-day smile; equal mean variance and correlation")
-    right.set(xlabel="Maturity (trading days)", ylabel="Absolute ATM IV skew, |dσ / dk|",
-              title="Finite-grid skew estimates; no fitting")
+        smile_outside += _outside_markers(left, x, iv, x_limits, iv_limits, color)
+        skew_outside += _outside_markers(right, days, skew, day_limits, skew_limits, color)
+    left.set(xlim=x_limits, ylim=iv_limits,
+             xlabel="Standardized log-moneyness k / (0.20 √T)", ylabel="Implied volatility (%)",
+             title=f"{maturity_days:g}-day smile; {smile_outside} points outside axes")
+    right.set(xlim=day_limits, ylim=skew_limits,
+              xlabel="Maturity (trading days)", ylabel="Absolute ATM IV skew, |dσ / dk|",
+              title=f"Finite-grid skew; {skew_outside} points outside axes")
     left.legend(fontsize=8)
     right.legend(fontsize=8)
     m = result["metadata"]
     figure.suptitle(f"Rough: {m['rough_paths_per_block']:,} paths/block, max MC SE/quote SD {m['rough_max_mc_se_over_quote_sigma']:.2f}; "
-                   "Heston: Fourier prices", fontsize=10)
+                   "Heston: Fourier prices\nEqual mean variance and correlation; no fitting", fontsize=10)
     return figure

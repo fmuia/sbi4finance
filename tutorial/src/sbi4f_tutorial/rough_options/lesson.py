@@ -252,3 +252,67 @@ def live_smile_figure(result):
     right.legend(fontsize=7.5, loc="lower left")
     right.set_title(f"{result['paths']:,} paths per block, {result['cpu_seconds']:.1f} CPU-s", loc="left", fontsize=9)
     return fig
+
+
+def conditioning_example(task, observed_prices, context_values=None):
+    """Expose the exact pre-standardization vector used by the option adapter.
+
+    One surface is one row. Curve levels are observed inputs only for the
+    supplied-curve task; generating parameter labels never enter this vector.
+    The workflow subsequently standardizes with statistics learned at fitting.
+    """
+    from ..shared import full_surface, tasks
+
+    levels = None if context_values is None else np.asarray(context_values)[None, :]
+    data = full_surface.conditioning_data(np.asarray(observed_prices)[None, :], task,
+                                           context_values=levels)
+    quotes = data["observations"][0]
+    curve = data.get("curve_context", np.empty((1, 0)))[0]
+    return {"scaled_quotes": quotes, "log_curve_levels": curve,
+            "condition_vector": np.r_[quotes, curve],
+            "prices": np.asarray(observed_prices), "quote_sd": tasks.sigma(task),
+            "curve_levels": None if context_values is None else np.asarray(context_values)}
+
+
+def conditioning_figure(task, observed_prices, context_values=None):
+    """Show append-versus-transform operations on one actual market's inputs."""
+    import matplotlib.pyplot as plt
+    from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
+
+    data = conditioning_example(task, observed_prices, context_values)
+    known = len(data["log_curve_levels"]) > 0
+    figure, ax = plt.subplots(figsize=(10.5, 3.6), layout="constrained")
+    ax.set(xlim=(0, 1), ylim=(-.12, 1.05)); ax.axis("off")
+
+    def box(x, y, w, h, title, text, color):
+        ax.add_patch(FancyBboxPatch((x, y), w, h, boxstyle="round,pad=.012",
+                                    facecolor=color, edgecolor="#d8dde3"))
+        ax.text(x+w/2, y+h*.76, title, ha="center", va="center", fontsize=12, weight="bold")
+        ax.text(x+w/2, y+h*.32, text, ha="center", va="center", fontsize=10, linespacing=1.4)
+
+    def arrow(a, b):
+        ax.add_patch(FancyArrowPatch(a, b, arrowstyle="-|>", mutation_scale=13,
+                                     color="#667581", linewidth=1.2))
+
+    index = 4  # the at-the-money quote in the first expiry group
+    box(.01, .56, .29, .36, "63 quotes → divide by quote SD",
+        f"Example: {data['prices'][index]:.4g} / {data['quote_sd'][index]:.4g}\n"
+        f"= {data['scaled_quotes'][index]:.3g}\n7 expiries × 9 strikes, in fixed order", "#f3f4f6")
+    if known:
+        box(.01, .07, .29, .36, "7 curve levels → natural log",
+            f"Example: log({data['curve_levels'][0]:.4g})\n= {data['log_curve_levels'][0]:.3g}\nOne level per maturity interval", "#f1edf7")
+        arrow((.31,.24),(.38,.47))
+    else:
+        box(.01, .07, .29, .36, "No supplied curve inputs",
+            "Curve coefficients are targets\ninside the six-parameter vector", "#f1edf7")
+    arrow((.31,.73),(.38,.58))
+    count = len(data["condition_vector"])
+    box(.39, .32, .27, .42, "Append the lists",
+        ("63 quote/SD values\n+ 7 log curve levels\n= 70 entries in one row" if known else
+         "63 quote/SD values\n= 63 entries in one row"), "#f7f5fa")
+    arrow((.67,.53),(.73,.53))
+    box(.74, .32, .25, .42, f"{count}-value market condition",
+        "Standardize using training stats\nThen condition the flow\nNo target parameters appended", "#edf7f2")
+    ax.text(.01,-.035,"Training labels: " + ", ".join(task["parameter_names"])
+            + ". New-market inference supplies no labels.", fontsize=10, color="#667581")
+    return figure
