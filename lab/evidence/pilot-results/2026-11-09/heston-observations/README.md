@@ -2,6 +2,8 @@
 
 The Heston pilot is complete. **Do not promote this task or its neural checkpoints into the lessons yet.** The controlled information comparison is useful, but the market fit remains sensitive to parameter support and discrepancy assumptions, and the neural posterior fails conditional reference agreement. No rough-Bergomi jobs or lesson changes were performed.
 
+A first-principles PDF explains the old fixed noise profile, the current measurement-plus-discrepancy construction, training priors, units, worked examples and numerical implications. Generate `output/pdf/heston-observation-noise-explained.pdf` at the repository root with `python scripts/render_heston_noise_report.py` from `lab/` in an environment containing matplotlib, numpy, reportlab and svglib. The PDF and its source-hash sidecar are generated local artifacts, excluded from Git. The renderer reads preserved source/evidence and runs no inference or training.
+
 ## Full-panel training continuation
 
 After reflection, the user requested continuation. We completed the controlled data/optimization comparison on the full 54-quote panel. It uses a distinct wider-support target (vol-of-vol up to 3), the same observation law, and fresh tau/c/quote-error draws per batch. A separate kappa-ceiling check supports retaining kappa <=10: raising it to 20 changed parameter means by at most .049 reference SD and product widths by under 2%, with chain-aware uncertainty. See `kappa-prior.json`.
