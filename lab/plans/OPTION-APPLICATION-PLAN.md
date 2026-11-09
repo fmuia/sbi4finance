@@ -41,8 +41,13 @@ Evidence: [`lab/evidence/pilot-results/2026-11-09/design-and-error/`](../evidenc
    - measured half-spreads plus an inferred smooth model error;
    - an exact reference posterior on every real day;
    - an amortized network that must match it.
-3. **The goal after fitting:** mark unquoted products and their prudent range, and show
-   what the full posterior gives that a point calibration does not (Section 4.9).
+3. **The goal after fitting** (Section 4.9): mark products that SPX's listed options do
+   not price directly, and give each a range from the full posterior.
+   - The products are a 6 m → 1 y forward start, 3 m and 1 y volatility swaps and a 1-year
+     down-and-in put.
+   - The ranges are validated for coverage in simulation.
+   - On real data, the checks are what the market prices independently: the variance
+     swap and the listed 2-year 90% put beyond the design.
 4. **Rough Bergomi remains the Monte Carlo case on synthetic data.** Its error is stated
    as an assumed allowance and its real-data claims are removed. Retraining it with the
    new error model is optional.
@@ -300,7 +305,13 @@ what changes when no cheap exact posterior exists.
   settings of the current Heston backbone.
 - Input: the 63 implied vols, standardized with fixed constants stored in the task.
 - Targets: κ, v0, θ, ξ, ρ, τ, with the logit box adapter.
-- About 250–500 epochs; record `training.json` and the checkpoint SHA-256.
+- Training budget: at least 30,000 updates, several seeds and settings, using
+  `lab/scripts/train_full_surface.py` as updated on `main`. On the current Heston task,
+  30,000 updates take about 100 s per fit on one L40S. It was the only budget to pass
+  the rank and coverage checks, and it still missed the conditional checks on two of
+  three reference cases (`NUMERICAL-EXPERIMENT-PLAN.md`, P4, 8 November). Record
+  `training.json` and the checkpoint SHA-256.
+- Bank pricing uses the checked Heston pricing speed-ups merged in PR #77.
 - New task id `heston_spx_iv_v1`. Pricing parameters and the error parameter are kept
   apart, because `model_parameters` passes every inferred name to the pricer.
 
@@ -321,18 +332,34 @@ what changes when no cheap exact posterior exists.
 | V1 | Prior predictive vs each SPX day | every point inside the 1–99% band |
 | V2 | Pilot exact fits (9, 10 Nov) | whitened residuals: lag-1 correlation < 0.3 and χ²/dof ≈ 1; ℓ fixed |
 | V3 | SBC and coverage on 2,000 held-out simulations | 90% intervals cover 87–93% for all 6 targets; rank histograms pass χ² |
-| V4 | Network vs exact on the 8 synthetic cases and each real day | per target: median gap ≤ 0.2 reference sd; 90% width ratio 0.8–1.25; τ within ±20%; product 90% quantiles within ±10% of the range |
+| V4 | Network vs exact on the 8 synthetic cases and each real day | per target, with the repo's existing conditional limits: mean gap within ±0.3 reference sd; 90% width ratio 0.8–1.25; τ within ±20%; product 90% quantiles within ±10% of the range. Expect this to be the binding gate (Section 4.6). |
 | V5 | Posterior predictive on held-out quotes, discrepancy kriged from the grid residuals | report coverage of 90% intervals (expect 80–97%); do not tune to it |
-| V6 | Model-free variance swap (held out) | report inside or outside the 90% band per day and maturity; do not tune to it |
+| V6 | Market checks held out of the fit: model-free variance swap (1 m, 3 m, 1 y) and the listed 2-year 90% put | report inside or outside the 90% band per day and maturity; do not tune to them |
 
 **If V4 fails:** show real-data posteriors from the exact reference, labelled as such.
 Show the network on synthetic data only, and state the V4 result.
 
 ### 4.9 After the fit: products and what the full posterior shows
 
-**The goal.** Mark products the smile does not quote, give each a prudent range, and
-aggregate the ranges across a book. Price in forward units with common random numbers
-across draws, using `lab/src/sbi4finance/calibration/products.py`.
+**The goal.** Mark products that SPX's listed options do not price directly, consistently
+with the listed smile: a 6 m → 1 y forward-start call, 3 m and 1 y volatility swaps and a
+1-year down-and-in put. Give each a range from the full Heston posterior instead of a
+single point calibration:
+- a prudent value at 90%;
+- a book-level range from the same draws;
+- widths that grow when the model misfits the quotes.
+
+Coverage of these ranges is validated in simulation, under the stated model and error
+model (D3). On real data, the true price of a forward start or barrier is never observed.
+The checks there are what the market prices independently and the fit does not use:
+- the variance swap, replicated model-free from the strip;
+- the 2-year 90% put, listed on SPX but beyond the design's last maturity.
+
+The range is within-model and covers misfit on quoted points only. It feeds model risk
+and is not a model-risk reserve.
+
+Price in forward units with common random numbers across draws, using
+`lab/src/sbi4finance/calibration/products.py`.
 
 | Product | Depends on | Method |
 | --- | --- | --- |
@@ -340,7 +367,7 @@ across draws, using `lab/src/sbi4finance/calibration/products.py`.
 | Volatility swap, 3 m, 1 y | vol-of-vol (convexity) | `volatility_swap` |
 | Forward-start ATM call, 6 m → 1 y (one cliquet period) | the forward smile, which today's smile does not pin | `forward_start_call_spot` |
 | Down-and-in put, 1 y, strike 100%, barrier 70%, daily monitoring | downside dynamics, deep puts | new: spot paths from the stored variance paths plus independent normals. Test: in the ξ → 0 limit, against Black–Scholes with the Broadie–Glasserman shift |
-| Put, 2 y, 90% | beyond the last quoted maturity | `put_out_of_grid` (extrapolation) |
+| Put, 2 y, 90% (check, not a product to mark) | beyond the design's last maturity, but listed on SPX | Fourier; compared with its listed mid and spread on each day |
 | Book: short 1 down-and-in, long 1 forward start, short 1 1-year volatility swap | joint | from the same draws |
 
 **Baselines:**
@@ -352,7 +379,7 @@ across draws, using `lab/src/sbi4finance/calibration/products.py`.
 
 | | Shows | Figure or table |
 | --- | --- | --- |
-| D1 | One posterior prices every product. Widths differ by what the quotes pin: tight for a vanilla reprice, wide for the forward start and the 2-year put. | 5/50/95% per product against the point, delta-method and refit ranges. The reserve is the 90% quantile minus the point (`products.reserve`). |
+| D1 | One posterior prices every product. Widths differ by what the quotes pin: tight for a vanilla reprice, wide for the forward start; the 2-year put shows extrapolation against a listed price. | 5/50/95% per product against the point, delta-method and refit ranges. The reserve is the 90% quantile minus the point (`products.reserve`). |
 | D2 | Coherent aggregation | the book's 90% range against the sum of the standalone ranges |
 | D3 | Ranges that can be checked, because amortization makes thousands of posteriors cheap | on 1,000 simulated days (prior) and 300 days near SPX: how often each 90% range contains the true product price. Posterior (target ≈ 90%) against delta method, refits and point (0%). |
 | D4 | "Precise but wrong" comes from the error model | one day under three error models (the rule, independent, smooth inferred): variance-swap bands against the model-free value; product ranges as τ grows |
@@ -429,7 +456,7 @@ path is W4 → W5 → W6 → W7 → W8.
 | Item | Estimate |
 | --- | --- |
 | Heston clean bank, 200k | 3–4 CPU-h |
-| Network training | as the current Heston backbone (a few GPU-hours, or about 12 CPU-h) |
+| Network training | about 100 s per 30,000-update fit on one L40S (8 November matrix); 10–20 fits for seeds and settings is under an hour |
 | Exact references, 12 posteriors | 3–8 CPU-h |
 | Products, including D3 (1,000 days × 100 draws × 20k paths) | 1–4 CPU-h |
 | Tier 3 | retraining (GPU-hours) plus about 1.5 CPU-h per audited day |
@@ -439,9 +466,11 @@ path is W4 → W5 → W6 → W7 → W8.
 
 1. **The smooth error absorbs parameter signal.** Fix ℓ from the pilot fits. Report the
    wider posteriors as the honest result. V2 and V4 detect a problem.
-2. **The network misses the exact posterior,** as the noise session's
-   independent-error network did. Train on the smooth error, which is what the data show.
-   Fallback in Section 6.
+2. **The network misses the exact posterior.** The noise session's independent-error
+   network did, and so did the best fit of the 8 November training matrix on the current
+   task. Train on the smooth error, which is what the data show. Give the network the
+   longest budget and several seeds, and pick by V4 on synthetic cases, never on the
+   real days. Fallback in Section 6.
 3. **Fourier accuracy at extreme κ and ξ** for short-dated deep puts. Use the quadrature
    ladder with refinement checks, and record rejected draws.
 4. **Event risk inside the 1-week maturity** (CPI release that week). The smooth term
