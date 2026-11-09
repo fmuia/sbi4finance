@@ -74,7 +74,8 @@ press Ctrl+C in the terminal before opening the next notebook.
 
 The saved observations and posterior draws are included. Training and fresh
 model sampling only start when requested. Heston also computes small path and
-pricing illustrations on opening.
+pricing illustrations on opening. The trajectory notebook also runs a small
+NumPy forward illustration when its parameter controls change.
 
 For a read-only app:
 
@@ -107,10 +108,23 @@ The three models use daily returns and estimate drift. The joint rough model
 also estimates its variance curve. The estimator accepts any integer history
 length from **1 to 1,260 trading days** (five years).
 
-Start with the rough model and its supplied variance curve. Show the observed
-returns, then follow simulation → recurrent summary → prefix training → posterior.
-Heston and the inferred-curve model remain available as extensions; switching
-models also changes the synthetic history.
+Start with the rough model and its supplied variance curve. Inspect returns,
+then use the early simulator to change parameters while keeping innovations
+fixed. It shows eight one-year price paths, daily returns and realized volatility.
+That forward example stays separate from the selected fitted history.
+Heston and the inferred-curve model remain available as extensions.
+
+There are two explicit routes:
+
+- **Train here:** generate 128 new one-year histories, fit a 16-unit GRU and
+  two-block spline coupling flow for eight updates, then infer parameters for
+  an independent history. Results stay in the session and have no calibration claim.
+- **Use the optional pretrained model:** inspect saved draws or load the matching
+  five-year model. Its larger encoder and flow have their own data and checks.
+
+The architecture diagram and visible code separate the encoder from the density
+estimator and show each route's actual settings. Switching the supplied model
+also changes its synthetic history.
 
 **Saved mode** offers only lengths with saved posterior snapshots, so the
 returns and posterior use the same history. **Live mode** accepts any integer
@@ -119,9 +133,9 @@ posterior plots using exactly that prefix. Without it, the labelled saved
 fallback remains available. Changing the model, history or length clears a
 previous live result.
 
-An optional small training exercise uses fresh simulated histories and shows
-its own results. It does not reproduce or validate the supplied five-year fits.
-Production-bank instructions and detailed input/diagnostic tables are optional.
+The two model sources are labelled beside their outputs. The tutorial fit does
+not reproduce or validate the supplied five-year fits. Production-bank
+instructions and detailed input/diagnostic tables are optional.
 Parameter inference alone does not provide a conditional continuation forecast.
 
 **Checks are not yet satisfactory:** all three estimators failed the final

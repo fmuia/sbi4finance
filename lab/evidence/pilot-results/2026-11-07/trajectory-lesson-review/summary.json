@@ -5,34 +5,64 @@
   "scientific_acceptance": false,
   "existing_assets_changed": false,
   "verification": {
-    "tutorial_tests": 40,
+    "tutorial_tests": 44,
     "lab_core_tests": 527,
     "lab_optional_skips": 3,
     "notebook_exports": 7,
     "notebook_cell_errors": 0,
     "runtime_boundary_symbols": 183,
-    "local_document_links": 48,
+    "local_document_links": 53,
     "marimo_warnings": "existing empty cells in slots 2 and 3"
   },
   "browser": {
     "page_errors": [],
-    "models": [
-      "Heston",
-      "Rough Bergomi \u00b7 inferred variance curve",
-      "Rough Bergomi \u00b7 known variance curve"
+    "models_and_simulator_controls": [
+      {
+        "model": "Heston",
+        "parameter_sliders": 5,
+        "range_endpoints": true
+      },
+      {
+        "model": "Rough Bergomi \u00b7 inferred variance curve",
+        "parameter_sliders": 7,
+        "range_endpoints": true
+      },
+      {
+        "model": "Rough Bergomi \u00b7 known variance curve",
+        "parameter_sliders": 4,
+        "range_endpoints": true
+      }
     ],
-    "saved_lengths": [
-      1,
-      1260
-    ],
+    "forward_simulator_reactive": true,
+    "simulator_keeps_posterior_source": true,
+    "tutorial_network": {
+      "hidden_dim": 16,
+      "summary_dim": 16,
+      "depth": 2,
+      "widths": [
+        32,
+        32
+      ],
+      "bins": 8
+    },
+    "pretrained_network": {
+      "hidden_dim": 64,
+      "summary_dim": 32,
+      "depth": 6,
+      "widths": [
+        64,
+        64
+      ],
+      "bins": 8
+    },
+    "training_elapsed_seconds": 2.3417270840145648,
     "fresh_history_days": 137,
-    "fresh_elapsed_seconds": 1.332550709019415,
-    "changing_history_invalidates_fresh": true,
+    "fresh_elapsed_seconds": 3.8517097090370953,
+    "history_change_invalidates_fresh": true,
     "missing_model_fallback_days": 126,
-    "training_elapsed_seconds": 2.335909583955072,
-    "mask_panel": true,
     "narrow_width": 760,
-    "horizontal_overflow": false
+    "horizontal_overflow": false,
+    "math_render_errors": 0
   },
   "small_exercise_benchmark": {
     "exercise": "rough-known;252dailyobservations;128traininghistories;2epochs;batch32;16unitGRU;16summary;2spline_layers;widths32",
@@ -65,10 +95,39 @@
     "architecture": "arm64",
     "scope": "Local CPU; cold/warm setup differs between the benchmark and browser session. Not a performance guarantee."
   },
-  "scope": "Session-only one-year training exercise. Supplied five-year models and banks unchanged; all three final calibration failures remain explicit.",
+  "scope": "Session-only forward simulator and small one-year training route; optional supplied five-year estimator loaded separately. Existing tasks, banks, checkpoints and calibration failures unchanged.",
   "source_sha256": {
-    "tutorial/notebooks/trajectory_inference.py": "1f9b1851fcb0561c157724831650160e8477ef32aaf8c7cfb0da25a60f840baf",
-    "tutorial/src/sbi4f_tutorial/trajectories/lesson.py": "e9346f68263cd067a5ef523016cdca8254051cc39cc710c3e13b8fb1e3f1d459",
-    "tutorial/tests/test_trajectory.py": "3a971ae63448fc45e15c2604389f46b7a988cca1e808db3bb96b728acaf287ad"
+    "tutorial/notebooks/trajectory_inference.py": "c0251d6914bdca67fea6a63d59abe23678491f5ee915df3bf6a087e35cbb1f55",
+    "tutorial/src/sbi4f_tutorial/trajectories/lesson.py": "810fc4fa33b254bb90c904fd09d2bee26c2af252d24db1264585bbbabdbec821",
+    "tutorial/src/sbi4f_tutorial/trajectories/simulation.py": "5ed98e3d2fce3df3319e3478e08fbdd7f63f00e0f632461bbd783cebf9acac06",
+    "tutorial/tests/test_trajectory.py": "3a971ae63448fc45e15c2604389f46b7a988cca1e808db3bb96b728acaf287ad",
+    "tutorial/tests/test_trajectory_forward.py": "8cc5b3e37cb26ca442ae832c637108d17fb29fa09cfe7e72d16a43de7913092b",
+    "tutorial/README.md": "45bd6bfbc99348f254c6b7145b97581eb70a077e2ff4e7575a38b19d9249226f",
+    "tutorial/curriculum/TUTORIAL-REVIEW.md": "5d025a0e5e0398dc89559ce01dbc663ec4e0fe37a9ba6a3966b19900d33bb9ad"
+  },
+  "updated_at_utc": "2026-11-09T04:36:50.138843+00:00",
+  "forward_simulator": {
+    "paths": 8,
+    "days": 252,
+    "seed": 20261108,
+    "observations": "daily log returns only",
+    "canonical_path_law_shared_with_generate": true,
+    "before_after_exact_arrays": 54,
+    "comparison_panel": "three models; train/validation/test; starts 0/3; two paths; 29 days; NumPy; seed 2026",
+    "frozen_histories_reproduced": true,
+    "scope": "separate forward illustration; sliders do not replace selected fitted observations; realized volatility is computed from returns"
+  },
+  "workflow_code": {
+    "comments_explain_option_differences": true,
+    "same": "BasicWorkflow fit/sample pattern",
+    "changed": [
+      "ordered returns as summary_variables",
+      "summary_mask and known time_context",
+      "causal GRU encoder",
+      "spline CouplingFlow instead of displayed option FlowMatching",
+      "fixed scaling and prior-CDF parameter logits outside adapter",
+      "no extra quote noise"
+    ],
+    "model_sources_separately_labelled": true
   }
 }

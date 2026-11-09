@@ -210,7 +210,6 @@ def generate(task, split, start, count, seed=30102026, *, backend="numba"):
                           _integer(seed, "seed"))
     if start + count > 2**64:
         raise ValueError("trajectory IDs exceed uint64 range")
-    n = task["n_observations"]
     bounds = np.asarray(task["prior_bounds"])
     parameters = np.empty((count, len(bounds)), dtype=np.float64)
     for row, identifier in enumerate(range(start, start + count)):
@@ -218,6 +217,17 @@ def generate(task, split, start, count, seed=30102026, *, backend="numba"):
         for col, ((low, high), kind) in enumerate(zip(bounds, task["prior_types"], strict=True)):
             parameters[row, col] = (np.exp(np.log(low) + uniform[col] * np.log(high / low))
                                     if kind == "log_uniform" else low + uniform[col] * (high - low))
+    observations = _simulate_observations(task, parameters, digest=digest, split=split,
+                                           start=start, seed=seed, backend=backend)
+    if not np.isfinite(observations).all() or not np.isfinite(parameters).all():
+        raise FloatingPointError(f"nonfinite path in {split}:{start}-{start + count}; no redraw")
+    identities = np.asarray([f"{digest[:16]}:{seed}:{split}:{i}" for i in range(start, start + count)])
+    return {"observations": observations, "parameters": parameters, "trajectory_id": identities}
+
+
+def _simulate_observations(task, parameters, *, digest, split, start, seed, backend):
+    """One numerical implementation for prior-pair generation and fixed-parameter illustrations."""
+    count, n = len(parameters), task["n_observations"]
     if task["model"] == "heston":
         substeps = task["numerics"]["substeps"]
         noise = np.empty((count, n, substeps, 2), dtype=np.float64)
@@ -256,7 +266,29 @@ def generate(task, split, start, count, seed=30102026, *, backend="numba"):
                                              + np.sqrt(1 - p["rho"] ** 2) * normals[0, :, 2]))
                 observations[row, :, 0] = (fine_returns if observation_substeps == 1 else
                                            fine_returns.reshape(n, observation_substeps).sum(axis=1))
-    if not np.isfinite(observations).all() or not np.isfinite(parameters).all():
-        raise FloatingPointError(f"nonfinite path in {split}:{start}-{start + count}; no redraw")
-    identities = np.asarray([f"{digest[:16]}:{seed}:{split}:{i}" for i in range(start, start + count)])
-    return {"observations": observations, "parameters": parameters, "trajectory_id": identities}
+    if not np.isfinite(observations).all():
+        raise FloatingPointError("nonfinite simulated returns; no redraw")
+    return observations
+
+
+def simulate_parameters(task, parameters, seed=20261108, *, backend="numpy"):
+    """Simulate chosen parameter rows with fixed innovations from the canonical P law.
+
+    Returns only daily returns, with shape [rows, observations, 1]. This
+    session-only forward illustration assigns no training-bank trajectory IDs.
+    Reusing a task and seed reuses innovations when its chosen parameters change.
+    """
+    digest = task_fingerprint(task)
+    seed = _integer(seed, "seed")
+    if backend not in ("numpy", "numba"):
+        raise ValueError("backend must be numpy or numba")
+    if np.iscomplexobj(parameters) or np.ma.isMaskedArray(parameters):
+        raise ValueError("real unmasked parameter rows are required")
+    parameters = np.asarray(parameters, dtype=np.float64)
+    bounds = np.asarray(task["prior_bounds"], dtype=float)
+    if (parameters.ndim != 2 or not 1 <= len(parameters) <= 32 or parameters.shape[1] != len(bounds)
+            or not np.isfinite(parameters).all() or np.any(parameters < bounds[:, 0])
+            or np.any(parameters > bounds[:, 1])):
+        raise ValueError("one to 32 finite complete parameter rows within declared prior support are required")
+    return _simulate_observations(task, parameters, digest=digest, split="train",
+                                   start=0, seed=seed, backend=backend)

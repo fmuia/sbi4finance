@@ -265,3 +265,92 @@ def load_live(name, directory=None):
              and fingerprint(record) == report["training_record_sha256"],
              "native checkpoint differs from this cached trajectory example")
     return live_task, workflow, record
+
+
+TUTORIAL_NETWORK = {"hidden_dim": 16, "summary_dim": 16, "depth": 2,
+                    "bins": 8, "widths": [32, 32]}
+
+
+def simulator_preview(task, parameters, *, paths=8, days=252, seed=20261108):
+    """A small given-parameter forward example, separate from every fitted history."""
+    from copy import deepcopy
+    from . import simulation
+
+    _teaching_task(task)
+    days, paths = integer(days, "days"), integer(paths, "paths")
+    _require(days <= 1260 and 2 <= paths <= 16, "preview supports up to five years and two to 16 paths")
+    _require(isinstance(parameters, dict) and set(parameters) == set(task["parameter_names"]),
+             "supply exactly the model's declared parameters")
+    preview_task = deepcopy(task)
+    preview_task.update(n_observations=days, history_length_range=[1, days],
+                        prefix_lengths=sorted({n for n in task["prefix_lengths"] if n <= days} | {days}))
+    values = np.asarray([parameters[name] for name in task["parameter_names"]])
+    observations = simulation.simulate_parameters(
+        preview_task, np.repeat(values[None, :], paths, axis=0), seed=seed, backend="numpy")
+    return {"task": preview_task, "parameters": values, "observations": observations, "seed": seed}
+
+
+def forward_simulator_figure(result):
+    """Price paths and return-based summaries, with no latent variance observation."""
+    import matplotlib.pyplot as plt
+
+    task, returns = result["task"], result["observations"][:, :, 0]
+    times = np.arange(returns.shape[1] + 1) * task["dt_years"]
+    with np.errstate(over="raise", invalid="raise"):
+        prices = 100 * np.exp(np.column_stack([np.zeros(len(returns)), np.cumsum(returns, axis=1)]))
+    figure = plt.figure(figsize=(10, 5), layout="constrained")
+    grid = figure.add_gridspec(2, 2, width_ratios=[1.3, 1])
+    path_ax = figure.add_subplot(grid[:, 0])
+    return_ax = figure.add_subplot(grid[0, 1])
+    vol_ax = figure.add_subplot(grid[1, 1], sharex=return_ax)
+    shades = plt.get_cmap("PuBuGn")(np.linspace(.35, .8, len(returns)))
+    for i in range(len(returns)):
+        path_ax.plot(times, prices[i], color="#7c3aed" if i == 0 else shades[i],
+                     linewidth=1.7 if i == 0 else .85, alpha=1 if i == 0 else .75,
+                     label="Highlighted path" if i == 0 else None)
+    path_ax.axhline(100, color="#94a3b8", linestyle=":", linewidth=.8)
+    path_ax.set(xlabel="Years", ylabel="Asset price (starts at 100)",
+                title=f"Same parameters · {len(returns)} independent paths")
+    path_ax.legend(fontsize=8)
+    selected = returns[0]
+    return_ax.bar(times[1:], 100 * selected, width=task["dt_years"] * .8,
+                  color=np.where(selected >= 0, "#1baf7a", "#eb6834"), alpha=.8)
+    return_ax.set(ylabel="Daily log return (%)", title="The highlighted path, day by day")
+    window = min(21, len(selected))
+    realized = np.std(np.lib.stride_tricks.sliding_window_view(selected, window), axis=1) / np.sqrt(task["dt_years"])
+    vol_ax.plot(times[window:], 100 * realized, color="#0f766e", linewidth=1.2)
+    vol_ax.fill_between(times[window:], 100 * realized, color="#1baf7a", alpha=.15)
+    vol_ax.set(xlabel="Years", ylabel=f"{window}-day realized vol. (%)",
+               title="A summary computed from returns")
+    figure.suptitle(MODEL_LABELS[task["model"]] + " · separate forward simulation", fontsize=12)
+    return figure
+
+
+def architecture_figure(task, *, network=None):
+    """Decompose the actual recurrent encoder and spline density estimator."""
+    import matplotlib.pyplot as plt
+    from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
+
+    validate_task(task)
+    settings = DEFAULT_NETWORK if network is None else network
+    figure, ax = plt.subplots(figsize=(11, 3), layout="constrained")
+    ax.set(xlim=(0, 1), ylim=(0, 1))
+    ax.axis("off")
+    boxes = [(.015, .22, "Observed input", f"Returns + time\nMask: 1 to {task['n_observations']} days", "#eff6ff"),
+             (.27, .24, "Encoder · causal GRU", f"{settings['hidden_dim']} hidden units\n{settings['summary_dim']} summary values", "#f3e8ff"),
+             (.55, .26, "Density · coupling flow", f"{settings['depth']} spline blocks\nSubnets {settings['widths']} · {settings['bins']} bins", "#dcfce7"),
+             (.85, .135, "Joint draws", f"{len(task['parameter_names'])} parameters\nOriginal units", "#eff6ff")]
+    for x, width, title, body, color in boxes:
+        ax.add_patch(FancyBboxPatch((x, .35), width, .4, boxstyle="round,pad=.008,rounding_size=.02",
+                                   facecolor=color, edgecolor="#94a3b8", linewidth=.9))
+        ax.text(x + width / 2, .66, title, ha="center", va="center", fontsize=8.5, fontweight="bold")
+        ax.text(x + width / 2, .49, body, ha="center", va="center", fontsize=8)
+    for start, end in ((.24, .26), (.515, .54), (.815, .84)):
+        ax.add_patch(FancyArrowPatch((start, .55), (end, .55), arrowstyle="-|>",
+                                     mutation_scale=12, color="#64748b", linewidth=1.2))
+    ax.text(.53, .25, "Known time context also conditions the flow", ha="center", fontsize=8, color="#64748b")
+    ax.text(.5, .14, "Training: generating parameters score the density; both networks learn together.",
+             ha="center", fontsize=9, color="#7c3aed")
+    ax.text(.5, .04, "Inference: only observed returns, their mask and the known time design enter.",
+             ha="center", fontsize=9, color="#0f766e")
+    return figure

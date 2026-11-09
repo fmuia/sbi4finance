@@ -28,8 +28,15 @@ def _(mo):
     moves, how it relates to returns, and what drift is plausible?
 
     We start with rough Bergomi and a supplied variance curve:
-    **observe → simulate → train → infer → check**. Saved results run without
-    a model download; a small training exercise and fresh inference are optional.
+    **observe → simulate → train → infer → check**.
+
+    | Route | What you do | Model source |
+    |:---|:---|:---|
+    | **Train here** | Generate a small training set, fit the GRU and flow, then infer parameters | A new tutorial model, kept in this session |
+    | **Optional pretrained model** | Load the supplied estimator and reveal more days | A larger, separately trained model; saved draws work without a download |
+
+    First inspect an observed history, then explore the forward simulator. Both
+    training and model loading are explicit actions; the small simulator runs locally.
 
     The supplied estimators learn useful information, but **all three failed
     their final marginal-calibration screen**. We will inspect that distinction.
@@ -55,7 +62,7 @@ def _(mo, trajectory):
 def _(mo, model_choice, trajectory):
     mo.stop(not trajectory.CATALOGUE.is_file(), mo.callout(mo.md(
         "**Trajectory examples are not packaged in this copy.** See the tutorial "
-        "README for the matching assets. No simulation or model download starts automatically."), kind="info"))
+        "README for the matching assets. No training or model download starts automatically."), kind="info"))
     cache_task, cache_report, cache_arrays = trajectory.load_example(model_choice.value)
     return cache_arrays, cache_report, cache_task
 
@@ -64,10 +71,10 @@ def _(mo, model_choice, trajectory):
 def _(cache_arrays, mo):
     case_choice = mo.ui.dropdown(
         options={f"History {index + 1}": index for index in range(len(cache_arrays["trajectory_id"]))},
-        value="History 1", label="Synthetic history")
+        value="History 1", label="Supplied synthetic history")
     inference_mode = mo.ui.radio(
         options={"Saved results": "saved", "Fresh inference at any day": "live"},
-        value="Saved results", inline=True, label="Posterior source")
+        value="Saved results", inline=True, label="Supplied estimator: saved or loaded")
     mo.vstack([mo.md("## 1. Observe a history"), case_choice, inference_mode])
     return case_choice, inference_mode
 
@@ -195,10 +202,83 @@ def _(cache_task, mo):
 
 
 @app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ### Try the forward model
+
+    **Choose the parameters; see the histories they can generate.** The sliders
+    use the model's declared parameter ranges. Eight independent one-year paths
+    share those parameters. A fixed seed keeps the same innovations when a
+    slider changes, so it is easier to see a parameter's effect.
+
+    The purple path is shown as daily returns and 21-day realized volatility
+    on the right. Realized volatility is a summary of those returns, not the
+    hidden instantaneous variance. This panel is a separate forward example;
+    the posterior sections retain the selected supplied history.
+    """)
+    return
+
+
+@app.cell
+def _(cache_task, mo, parameter_labels):
+    _defaults = {"hurst": .10, "eta": 1.5, "rho": -.70, "drift": .05,
+                 "kappa": 2., "long_variance": .04, "vol_of_vol": .30,
+                 "short_variance": .04, "decay": 2.}
+    _steps = {"hurst": .01, "eta": .05, "rho": .01, "drift": .01,
+              "kappa": .05, "long_variance": .001, "vol_of_vol": .01,
+              "short_variance": .001, "decay": .05}
+    simulator_controls = mo.ui.dictionary({
+        _name: mo.ui.slider(_bounds[0], _bounds[1], step=_steps[_name], value=_defaults[_name],
+                           label=parameter_labels[_name], show_value=True, debounce=True)
+        for _name, _bounds in zip(cache_task["parameter_names"], cache_task["prior_bounds"], strict=True)})
+    _curve_names = {"short_variance", "long_variance", "decay"} if cache_task["model"] == "rough-joint" else set()
+    _main = [_name for _name in cache_task["parameter_names"] if _name not in _curve_names]
+    _panels = [mo.hstack([simulator_controls[_name] for _name in _main[_i:_i + 2]], justify="start")
+               for _i in range(0, len(_main), 2)]
+    if _curve_names:
+        _panels.append(mo.accordion({"Set the variance-curve coefficients": mo.vstack([
+            simulator_controls[_name] for _name in cache_task["parameter_names"] if _name in _curve_names])}))
+    mo.vstack(_panels)
+    return (simulator_controls,)
+
+
+@app.cell
+def _(cache_task, mo, simulator_controls, trajectory):
+    try:
+        simulation_preview = trajectory.simulator_preview(
+            cache_task, simulator_controls.value, paths=8, days=252, seed=20261108)
+        _panel = trajectory.forward_simulator_figure(simulation_preview)
+    except (ValueError, FloatingPointError) as _error:
+        simulation_preview = None
+        _panel = mo.callout(mo.md("This forward example could not be simulated: " + str(_error)), kind="warn")
+    _panel
+    return (simulation_preview,)
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ```python
+    # Forward simulation at chosen parameters; fixed seed keeps innovations fixed.
+    parameters = simulator_controls.value
+    preview = trajectory.simulator_preview(
+        cache_task, parameters, paths=8, days=252, seed=20261108)
+    # Plot returns and return-based summaries; no posterior is fitted here.
+    trajectory.forward_simulator_figure(preview)
+    ```
+
+    The helper calls `simulation.simulate_parameters`, which uses the **same
+    numerical implementation** as training-pair generation. Only daily returns
+    leave that simulator. No latent variance is supplied to inference.
+    """)
+    return
+
+
+@app.cell(hide_code=True)
 def _(cache_task, mo, trajectory):
     _figure = trajectory.ASSETS / "illustrations" / "application-workflows-20261101" / "trajectory-prefix-workflow.png"
     mo.vstack([
-        mo.md("## 3. Simulate and train\n\n"
+        mo.md("## 3. Train a tutorial model here\n\n"
               "**One training pair: parameters drawn from the prior and the daily returns they generate.** "
               "Only returns enter the estimator. Generating parameters are training labels; latent "
               "variance and shocks stay inside the simulator."),
@@ -209,18 +289,32 @@ def _(cache_task, mo, trajectory):
         ```python
         from sbi4f_tutorial.trajectories import simulation, inference
 
-        task = simulation.teaching_task("{cache_task['model']}", observations=1260)
+        # A physical-measure return model; process randomness needs no extra quote noise.
+        task = simulation.teaching_task("rough-known", observations=252)
         pairs = simulation.generate(
-            task, "train", start=0, count=128, seed=2026, backend="numpy")
-        # pairs["observations"]: [128, 1260, 1]
-        # pairs["parameters"]:   [128, number_of_unknowns]
+            task, "train", start=0, count=128, seed=20261107, backend="numpy")
+        # A fresh, independent history is used only after training.
+        example = simulation.generate(
+            task, "validation", start=0, count=1, seed=20261108, backend="numpy")
+        # 128 training histories, each with 252 daily returns
+        # One independently generated history for the inference example
         ```
 
         The simulator samples both parameters and process innovations. It retains
-        aligned parameter labels, daily returns and history IDs. The implementation
-        lives beside this lesson in `src/sbi4f_tutorial/trajectories/`.
+        aligned parameter labels, daily returns and history IDs. This tutorial route
+        uses **rough Bergomi with a supplied curve**, one-year histories and drift
+        inference, regardless of the model selected for the supplied examples.
+        The implementation lives in `src/sbi4f_tutorial/trajectories/`.
         """),
     ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(trajectory):
+    from sbi4f_tutorial.trajectories import simulation as _architecture_simulation
+    _task = _architecture_simulation.teaching_task("rough-known", observations=252)
+    trajectory.architecture_figure(_task, network=trajectory.TUTORIAL_NETWORK)
     return
 
 
@@ -233,22 +327,52 @@ def _(mo):
     and produces a learned summary. The conditional flow maps that summary to a
     joint parameter distribution. Both networks train together.
 
-    This is the construction inside `inference.build_workflow(task)`:
+    The **encoder** extracts temporal features. The **density estimator** turns
+    the summary and known time design into uncertainty about the parameters.
+    A spline coupling block transforms part of a parameter vector conditional
+    on the rest; several blocks can represent curved, dependent distributions.
+
+    | Component | Tutorial model | Supplied model |
+    |:---|:---|:---|
+    | Causal GRU | 16 hidden units → 16 summary values | 64 hidden units → 32 summary values |
+    | Spline coupling flow | 2 blocks, subnets [32, 32], 8 bins | 6 blocks, subnets [64, 64], 8 bins |
+    | Training data | 128 one-year histories | One million five-year histories per model |
+
+    **What changes from the option lessons?** The `BasicWorkflow` pattern stays:
+    simulate pairs, adapt inputs, fit, then sample. The observation representation
+    and the two networks change.
+
+    | Piece | Heston / rough option examples | This return-history example |
+    |:---|:---|:---|
+    | Observations | Flat quote vector in `inference_conditions` | Ordered returns in `summary_variables`, with an observation mask |
+    | Encoder | No sequence encoder in the displayed workflow | Causal GRU learns a summary of the observed prefix |
+    | Density estimator | `FlowMatching` in the displayed small fit | Spline `CouplingFlow`, conditional on the summary and known time design |
+    | Parameter bounds and units | Adapter constraints and fitted standardization | Fixed return units and prior-CDF logits in `training_data`; `sample` reverses the parameter transform |
+    | Additional noise | Prescribed Gaussian quote errors | None; the return process is already stochastic |
+
+    The adapter below routes arrays. It receives the already transformed targets
+    and scaled return tokens; it does not fit another standardizer. This is the
+    construction inside `inference.build_workflow(task, network=trajectory.TUTORIAL_NETWORK)`:
 
     ```python
     import bayesflow as bf
 
+    # Preprocessing has already scaled returns and transformed bounded parameters.
+    # Route the ordered history to a summary, and known times to the density.
     adapter = (bf.Adapter().convert_dtype("float64", "float32")
         .rename("parameters", "inference_variables")
         .rename("observations", "summary_variables")
         .rename("time_context", "inference_conditions"))
+    # The encoder reads observed returns in order; the mask excludes padded days.
     summary = bf.networks.RecurrentNetwork(
-        hidden_dim=64, summary_dim=32, recurrent_type="gru",
+        hidden_dim=16, summary_dim=16, recurrent_type="gru",
         bidirectional=False, time_axis=1, time_embed_dim=4,
         dropout=0.0, return_sequences=False)
+    # This spline flow replaces FlowMatching in the displayed option fits.
     density = bf.networks.CouplingFlow(
-        depth=6, transform="spline", subnet_kwargs={"widths": [64, 64]},
+        depth=2, transform="spline", subnet_kwargs={"widths": [32, 32]},
         transform_kwargs={"bins": 8})
+    # BasicWorkflow is unchanged; now it trains the summary and density together.
     workflow = bf.BasicWorkflow(
         adapter=adapter, summary_network=summary,
         inference_network=density, standardize=None)
@@ -271,16 +395,24 @@ def _(mo):
         to accept shorter or longer histories without treating padding as data.
 
         ```python
+        # Scale returns in fixed units; map bounded labels to unbounded coordinates.
         train = inference.training_data(pairs, task)
-        workflow = inference.build_workflow(task)
+        workflow = inference.build_workflow(task, network=trajectory.TUTORIAL_NETWORK)
+        # Reveal random prefix lengths; mask every later day, including its time token.
         prefixes = inference.random_prefixes(
-            task, seed=2027, policy="uniform_log_mixture")
+            task, seed=20261109, policy="uniform_log_mixture")
+        # Same offline fit API; the GRU and flow receive eight optimizer updates.
         history = workflow.fit_offline(
-            data=train, epochs=5, batch_size=32, augmentations=prefixes)
+            data=train, epochs=2, batch_size=32, augmentations=prefixes)
+        # The helper conditions the workflow, samples, then restores original units.
+        draws = inference.sample(workflow, task, example["observations"],
+                                 draws=128, seed=20261110)[0]
         ```
 
-        These calls continue the simulated-pairs example above. Five epochs on
-        128 histories illustrate the API; they do not reproduce the supplied fit.
+        These calls continue the simulation example above. Two epochs on 128
+        histories make **eight optimizer updates**. The last call infers parameters
+        for the independent example using the newly trained model. It illustrates
+        the workflow; no accuracy or calibration result is established.
         No training starts on opening the notebook.
         """),
         mo.accordion({"Training target and full-scale reproduction": mo.vstack([
@@ -312,32 +444,11 @@ python scripts/train_path_posterior.py \
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ### Optional: run a small training example
+    ### Run the tutorial training route
 
-    This separate **one-year rough Bergomi exercise** generates 128 new histories,
-    trains a smaller network for two epochs (eight batches), then samples for one
-    independent synthetic history. Its outputs do not replace the supplied results below.
-    It illustrates the calls; it does not establish posterior accuracy.
-
-    ```python
-    from sbi4f_tutorial.trajectories import simulation, inference
-
-    task = simulation.teaching_task("rough-known", observations=252)
-    pairs = simulation.generate(task, "train", start=0, count=128,
-                                seed=20261107, backend="numpy")
-    example = simulation.generate(task, "validation", start=0, count=1,
-                                  seed=20261108, backend="numpy")
-    train = inference.training_data(pairs, task)
-    workflow = inference.build_workflow(task, network={
-        "hidden_dim": 16, "summary_dim": 16, "depth": 2,
-        "bins": 8, "widths": [32, 32]})
-    prefixes = inference.random_prefixes(
-        task, seed=20261109, policy="uniform_log_mixture")
-    history = workflow.fit_offline(
-        data=train, epochs=2, batch_size=32, augmentations=prefixes)
-    draws = inference.sample(workflow, task, example["observations"],
-                             draws=128, seed=20261110)[0]
-    ```
+    The button executes the simulation, network, training and sampling steps
+    above. It creates a **new one-year rough Bergomi model**. Its loss and
+    posterior summary appear here, separately from the supplied model below.
 
     The button runs these steps on the CPU, keeps results only in this session,
     and reports generation, model-building/training and sampling time separately.
@@ -348,7 +459,7 @@ def _(mo):
 
 @app.cell
 def _(mo):
-    train_demo_button = mo.ui.run_button(label="Generate 128 histories and train the small example")
+    train_demo_button = mo.ui.run_button(label="Train the tutorial model and infer its example")
     train_demo_button
     return (train_demo_button,)
 
@@ -363,6 +474,7 @@ def _(mo, plt, train_demo_button, trajectory):
     from sbi4f_tutorial.trajectories import simulation as _simulation, inference as _inference
     try:
         _start = _clock()
+        # Fresh prior/process draws supply training labels; no cached history is trained on.
         _task = _simulation.teaching_task("rough-known", observations=252)
         _pairs = _simulation.generate(_task, "train", start=0, count=128,
                                       seed=20261107, backend="numpy")
@@ -370,16 +482,17 @@ def _(mo, plt, train_demo_button, trajectory):
                                         seed=20261108, backend="numpy")
         _generation_seconds = _clock() - _start
         _start = _clock()
+        # Fixed scaling and parameter logits happen before the routing adapter.
         _train = _inference.training_data(_pairs, _task)
-        _workflow = _inference.build_workflow(_task, network={
-            "hidden_dim": 16, "summary_dim": 16, "depth": 2,
-            "bins": 8, "widths": [32, 32]})
+        _workflow = _inference.build_workflow(_task, network=trajectory.TUTORIAL_NETWORK)
+        # Random-prefix augmentation masks all unrevealed returns and time tokens.
         _prefixes = _inference.random_prefixes(
             _task, seed=20261109, policy="uniform_log_mixture")
         _history = _workflow.fit_offline(
             data=_train, epochs=2, batch_size=32, augmentations=_prefixes, verbose=0)
         _training_seconds = _clock() - _start
         _start = _clock()
+        # Infer only for the independently generated history; undo label transforms.
         _draws = _inference.sample(_workflow, _task, _example["observations"],
                                    draws=128, seed=20261110)[0]
         _sample_seconds = _clock() - _start
@@ -388,7 +501,7 @@ def _(mo, plt, train_demo_button, trajectory):
         _axis.set(xlabel="Epoch", ylabel="Training loss", xticks=[1, 2],
                   title="Separate one-year exercise: two training epochs")
         _output = mo.vstack([
-            mo.md(f"**Small training example completed.** Generation: **{_generation_seconds:.2f} s**; "
+            mo.md(f"**Source: newly trained tutorial model.** Generation: **{_generation_seconds:.2f} s**; "
                   f"model construction and training: **{_training_seconds:.2f} s**; "
                   f"128 draws: **{_sample_seconds:.2f} s**. Times describe this click only."),
             _figure,
@@ -406,15 +519,20 @@ def _(mo, plt, train_demo_button, trajectory):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## 4. Infer parameters and reveal more days
+    ## 4. Optional: use the supplied pretrained model
 
-    **Reuse the fitted estimator; change the evidence.** With the matching model
-    downloaded, loading and querying the supplied estimator takes three calls:
+    **Reuse a larger fitted estimator; change the evidence.** This route uses
+    the supplied five-year model selected at the top, not the tutorial model
+    trained above. Saved draws let you inspect it immediately. To draw a fresh
+    posterior at any day, download the matching model and run:
 
     ```python
+    # Restore the matching pretrained weights; no fitting is performed.
     task, workflow, record = trajectory.load_live(model_choice.value)
+    # Only the observed prefix enters; future returns and generating labels stay out.
     revealed = cache_arrays["observations"][case_choice.value:case_choice.value + 1,
                                            :observed_days.value]
+    # Same workflow.sample pattern, with preprocessing and inverse parameter transforms.
     draws = trajectory.sample(workflow, task, revealed, draws=512, seed=20261031)[0]
     ```
 
@@ -425,9 +543,21 @@ def _(mo):
     return
 
 
+@app.cell(hide_code=True)
+def _(cache_task, mo, trajectory):
+    mo.accordion({"The supplied model's architecture": mo.vstack([
+        trajectory.architecture_figure(cache_task),
+        mo.md("This uses the same GRU-plus-coupling-flow construction, with the supplied "
+              "64-unit encoder, 32-value summary and six spline blocks. "
+              "The loader verifies the task and checkpoint before sampling."),
+    ])})
+    return
+
+
 @app.cell
 def _(inference_mode, mo):
-    checkpoint_path = mo.ui.text(value="", label="Model folder relative to tutorial/assets/ (optional)", full_width=True)
+    checkpoint_path = mo.ui.text(value="", placeholder="local-checkpoints/path-rough-known (blank = selected model)",
+                                 label="Model folder relative to tutorial/assets/ (optional)", full_width=True)
     if inference_mode.value == "live":
         _panel = mo.accordion({"Model download and folder": mo.vstack([
             mo.md("Download the matching native model as described in the tutorial README. "
@@ -466,6 +596,7 @@ def _(cache_arrays, cache_task, case_choice, checkpoint_path, inference_mode, li
             _task, _workflow, _record = trajectory.load_live(
                 model_choice.value, checkpoint_path.value.strip() or None)
             _load_seconds = _live_clock() - _start
+            # This slice excludes future observations, parameter labels and hidden states.
             _revealed = cache_arrays["observations"][case_choice.value:case_choice.value + 1, :requested_days]
             _start = _live_clock()
             _draws = trajectory.sample(_workflow, _task, _revealed, draws=512, seed=20261031)[0]
@@ -488,7 +619,7 @@ def _(cache_arrays, cache_task, case_choice, live_result, requested_days, trajec
 
 @app.cell(hide_code=True)
 def _(inference_mode, live_error, live_timing, mo, posterior, requested_days):
-    _contents = [mo.callout(mo.md(f"**{posterior['label']}.**"), kind="neutral")]
+    _contents = [mo.callout(mo.md(f"**Source: supplied pretrained model. {posterior['label']}.**"), kind="neutral")]
     if live_error:
         _contents.append(mo.callout(mo.md(
             "Fresh inference is unavailable: " + live_error + " The labelled saved result remains visible."), kind="warn"))

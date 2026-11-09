@@ -197,11 +197,29 @@ leave the labelled saved fallback. A separate one-year exercise generates 128
 fresh histories and trains for eight optimizer updates. Production and detailed
 input/diagnostic material are optional; all scientific limitations remain.
 
-Verification passes: 40 tutorial tests; 527 core lab tests (three optional skips);
-all seven notebook exports; marimo/release checks and 48 local documentation
+The early forward simulator now exposes parameter controls for all three models.
+It uses eight one-year paths with fixed innovations, showing price paths, daily
+returns and a return-based realized-volatility summary. It shares the canonical
+path implementation with training-pair generation. Extracting that shared path
+block preserves all 54 pre-edit check arrays exactly across three models, three
+splits and two offsets. No new bank identity or latent inference channel is added.
+The generating source bytes have changed; extending a preserved bank still needs
+its matching producer checkout and environment.
+
+The architecture now separates the causal GRU encoder from the spline coupling
+flow in a source-rendered diagram. The visible primary route constructs the
+16-unit/16-summary/two-block tutorial model and performs eight updates. The
+optional pretrained route loads the separate 64-unit/32-summary/six-block model.
+Each route labels its own outputs, and the code shown matches the executed settings.
+
+Verification passes: 44 tutorial tests; 527 core lab tests (three optional skips);
+all seven notebook exports; marimo/release checks and current documentation
 links. Chrome checks cover all three models at saved endpoints, live inference
 at 137 days, history-change invalidation, missing-model fallback, the small
-training action, mask details and a 760-pixel layout. Existing empty-cell warnings
+training action, all 16 simulator-slider range endpoints, source-rendered
+architecture diagrams, mask details and a 760-pixel layout. Displayed code
+comments explain changes from the option lessons and the unchanged workflow
+pattern. Existing empty-cell warnings
 in slots 2 and 3 are unchanged. Handover guidance is updated. No saved numerical
 evidence or model changed; collaborator rehearsal remains deferred.
 
@@ -860,7 +878,7 @@ as posterior prediction.
 **Trajectories.** Explain observed daily log returns, hidden variance/shocks,
 physical drift and each model's equation locally. Show the actual generation,
 offline training, random-prefix/mask and GRU/conditional-flow APIs, distinguishing
-a small author example from million-history streaming production. The revealed
+a small tutorial training route from the optional pretrained and million-history streaming routes. The revealed
 history and mask are visible; detailed tensor/accounting fields are optional.
 All integer lengths from 1 to 1,260 remain supported. The 137-day input versus
 126-day cached posterior is explicit, and prefixes use the original prior and
