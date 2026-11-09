@@ -408,7 +408,15 @@ h1 {
   font-size: 12px;
   line-height: 1.5;
   text-align: center;
-  white-space: nowrap;
+}
+/* Several affiliations stack one per line; the dot is kept for copy-paste. */
+.person .affiliation > span:not(.affiliation-sep) { display: block; }
+.person .affiliation-sep { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+
+/* Align photo, name, affiliation and bio rows across cards on the same row,
+   so a two-line affiliation does not push one card's divider lower. */
+@supports (grid-template-rows: subgrid) {
+  .person { display: grid; grid-row: span 4; grid-template-rows: subgrid; row-gap: 0; align-content: start; }
 }
 .person .bio { padding-top: 16px; border-top: 1px solid var(--border); }
 
