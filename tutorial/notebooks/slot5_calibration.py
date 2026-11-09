@@ -14,7 +14,7 @@ def _():
     import matplotlib.pyplot as plt
     import numpy as np
 
-    from sbi4f_tutorial.rough_options import lesson as teaching, context_checks, studies
+    from sbi4f_tutorial.rough_options import lesson as teaching, context_checks, studies, explorer, surrogate, comparison
     from sbi4f_tutorial.shared import backbones, full_surface, plots
 
     ROOT = mo.notebook_dir().parent
@@ -41,8 +41,8 @@ def _():
         axes[0].legend(fontsize=7)
         return fig
 
-    return (ASSETS, RESULTS, backbones, context_checks, focused_posterior,
-            full_surface, mo, np, plots, plt, studies, teaching, time)
+    return (ASSETS, RESULTS, backbones, comparison, context_checks, explorer, focused_posterior,
+            full_surface, mo, np, plots, plt, studies, surrogate, teaching, time)
 
 
 @app.cell(hide_code=True)
@@ -57,6 +57,10 @@ def _(mo):
 
     The main change is the forward calculation. Rough Bergomi prices options by
     Monte Carlo, so we reuse simulated data when training the network.
+
+    **Explore the paths → build a network → train a small example or load
+    pretrained weights → infer and check.** Saved results are available without
+    downloading a model or running training.
     """)
     return
 
@@ -85,6 +89,105 @@ def _(mo):
     means 20% volatility. These are pricing-measure parameters; fitting observed
     returns is a separate task in the trajectory notebook.
     """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    path_h = mo.ui.slider(.02, .40, step=.01, value=.10, label="Path roughness H", show_value=True)
+    path_eta = mo.ui.slider(.2, 3., step=.1, value=1.5, label="Path amplitude η", show_value=True)
+    path_rho = mo.ui.slider(-.95, -.05, step=.05, value=-.70, label="Path correlation ρ", show_value=True)
+    path_vol = mo.ui.slider(.10, .40, step=.01, value=.20, label="√ξ₀ (annualized)", show_value=True)
+    path_seed = mo.ui.dropdown(options={"Shock set 1": 7, "Shock set 2": 17, "Shock set 3": 27},
+                               value="Shock set 1", label="Random shocks")
+    mo.vstack([
+        mo.md("### Try the simulator\n\nPredict what changes when you increase η, then move the control. "
+              "Keep the shock set fixed to compare the same random shocks under different parameters."),
+        mo.hstack([path_h, path_eta, path_rho], wrap=True),
+        mo.hstack([path_vol, path_seed], wrap=True),
+    ])
+    return path_eta, path_h, path_rho, path_seed, path_vol
+
+
+@app.cell(hide_code=True)
+def _(explorer, mo, path_eta, path_h, path_rho, path_seed, path_vol, simulate_model):
+    path_example = simulate_model(
+        hurst=path_h.value, eta=path_eta.value, rho=path_rho.value,
+        volatility=path_vol.value, seed=path_seed.value)
+    mo.vstack([
+        explorer.path_figure(path_example),
+        mo.md("**One model, many possible histories.** The highlighted price and volatility belong "
+              "to the same simulated path. The dashed volatility scale is √ξ₀, not an observed "
+              "volatility path or the expected value of √V. These are pricing-measure illustrations; "
+              "option quotes come from averaging payoffs across many more paths below."),
+        mo.accordion({"What does this simulation approximate?": mo.md(
+            "The illustration uses a flat supplied variance curve, one year and a finite hybrid grid. "
+            "The discrete Gaussian variance replaces t^(2H) in the exponential compensator so "
+            "the grid model retains E[Vₜ] = ξ₀(t). Twenty-four paths illustrate randomness; "
+            "they do not establish Monte Carlo pricing accuracy. No latent paths enter the estimator.")}),
+    ])
+    return (path_example,)
+
+
+@app.cell(hide_code=True)
+def _(explorer, mo):
+    def simulate_model(hurst=.10, eta=1.5, rho=-.70, volatility=.20, seed=7):
+        # Fixed shocks make parameter changes easier to compare; these are Q paths,
+        # not training observations. Option data require expected payoffs plus noise.
+        return explorer.explore_paths(hurst=hurst, eta=eta, rho=rho,
+                                      volatility=volatility, seed=seed)
+
+    mo.show_code()
+    return (simulate_model,)
+
+
+@app.cell(hide_code=True)
+def _(RESULTS, comparison, mo, path_h, teaching):
+    _spy = teaching.load_json(RESULTS / "spy" / "surface.json")
+    mo.vstack([
+        mo.md(r"""
+        ### Why move beyond Heston?
+
+        **The extra freedom is in how volatility behaves across time scales.**
+        In Heston, a current variance value summarizes its variance dynamics.
+        Rough Bergomi weights the history of shocks with a power kernel;
+        H controls their short-scale roughness separately from the variance level.
+
+        The option-market signature is the **short-maturity skew**: the slope of
+        implied volatility against log strike near the forward. Equity-index
+        downside protection often becomes relatively more expensive as expiry
+        shortens. We want a model that can reproduce that pattern across maturities,
+        rather than matching just one smile.
+
+        **Try it:** lower H in the path controls. Both shape guides equal one at
+        one month. What happens to the one-week skew relative to one month?
+        """),
+        comparison.skew_shape_figure(path_h.value, _spy),
+        mo.md("Dots summarize the interpolated SPY option grid from **21 October 2026**. "
+              "The lines show normalized short-maturity shapes, not calibrated prices or a fit "
+              "to those dots. A finite-maturity Heston skew can vary; the constant guide describes "
+              "its limiting behavior near expiry. The pricing comparison in Section 2 evaluates "
+              "both models at finite maturities."),
+        mo.accordion({"The short-maturity relationship": mo.md(r"""
+        Write $k=\log(K/F)$ and
+        $\psi(T)=\partial_k\sigma_{\rm imp}(k,T)|_{k=0}$.
+        With positive initial variance and nonzero leverage, standard Heston has
+        a finite skew limit as $T\downarrow0$. For a regular, locally flat supplied
+        curve, rough Bergomi's leading behavior is
+        $|\psi(T)|\propto T^{H-1/2}$. Negative correlation gives a negative skew.
+
+        H changes this rate; η and ρ also change its amplitude. The leading
+        formula is not an exact relationship over the entire one-week to one-year
+        grid, so estimating H by adding 1/2 to a fitted exponent is only a heuristic.
+        This comparison shows modelling flexibility, not that either particular
+        fit is accurate or that roughness is the only possible explanation.
+
+        See [El Euch et al., *Short-term at-the-money asymptotics under stochastic volatility models*](https://arxiv.org/abs/1801.08675)
+        for the asymptotics, [Bayer, Friz and Gatheral](https://doi.org/10.1080/14697688.2015.1099717)
+        for rough option pricing, and [Gatheral, Jaisson and Rosenbaum](https://arxiv.org/abs/1410.3394)
+        for the volatility evidence.
+        """)}),
+    ])
     return
 
 
@@ -133,32 +236,62 @@ def _(ASSETS, mo):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ### Explore the forward model
+    ### Compare option smiles with Heston
 
-    Before moving a control, predict which part of the smile will change.
-    This illustration uses a flat curve at 20% volatility and a fixed simulation
-    budget. It prices a new smile; it does not update the posterior below.
+    We now price both models on the same 63-contract grid, with a flat expected
+    variance curve and the same correlation. Heston keeps κ = 2 and
+    variance-shock amplitude σᵥ = 0.4. These are illustrative parameters, **not
+    calibrations to SPY**. The rough simulator uses a fixed path budget.
+
+    Use the **H, η, ρ and volatility-scale controls above**, predict which part of
+    the smile changes, then run. Changing the expiry afterward only redraws the plot.
     """)
     return
 
 
 @app.cell(hide_code=True)
+def _(mo, path_eta, path_h, path_rho, path_seed, path_vol):
+    run_rough = mo.ui.run_button(label="Compare rough Bergomi and Heston smiles")
+    mo.vstack([
+        mo.md(f"Selected rough model: **H = {path_h.value:.2f}, η = {path_eta.value:.1f}, "
+              f"ρ = {path_rho.value:.2f}, √ξ₀ = {100*path_vol.value:.0f}%, seed = {path_seed.value}**."),
+        run_rough,
+    ])
+    return (run_rough,)
+
+
+@app.cell(hide_code=True)
+def _(comparison, mo, path_eta, path_h, path_rho, path_seed, path_vol, run_rough, teaching):
+    mo.stop(not run_rough.value, mo.md("*Press the button to compare Fourier prices with an 8,192-path rough-model illustration.*"))
+    try:
+        _rough = teaching.price_rough_smile(path_h.value, path_eta.value, path_rho.value,
+                                            vol=path_vol.value, seed=path_seed.value)
+        smile_comparison = comparison.compare_smiles(
+            _rough, volatility=path_vol.value, sigma_v=.4, rho=path_rho.value)
+    except (ValueError, RuntimeError) as _error:
+        mo.stop(True, mo.callout(mo.md(f"**Pricing comparison stopped:** {_error}. Change the controls and try again."), kind="warn"))
+    return (smile_comparison,)
+
+
+@app.cell(hide_code=True)
 def _(mo):
-    rough_h = mo.ui.slider(0.02, 0.35, step=.01, value=.10, label="H", show_value=True)
-    rough_eta = mo.ui.slider(.5, 3.5, step=.1, value=2., label="η", show_value=True)
-    rough_rho = mo.ui.slider(-.99, -.2, step=.01, value=-.7, label="ρ", show_value=True)
-    run_rough = mo.ui.run_button(label="Simulate this option smile")
-    mo.vstack([mo.hstack([rough_h, rough_eta, rough_rho]), run_rough])
-    return rough_eta, rough_h, rough_rho, run_rough
+    smile_expiry = mo.ui.dropdown(
+        options={"One week": 5, "One month": 21, "Three months": 63, "One year": 252},
+        value="One week", label="Expiry for the smile comparison")
+    smile_expiry
+    return (smile_expiry,)
 
 
-@app.cell
-def _(mo, rough_eta, rough_h, rough_rho, run_rough, teaching):
-    mo.stop(not run_rough.value, mo.md("*Choose parameters and press the button to run a fixed 8,192-path illustration.*"))
-    _result = teaching.price_rough_smile(rough_h.value, rough_eta.value, rough_rho.value)
-    mo.vstack([teaching.live_smile_figure(_result),
-               mo.md(f"Largest estimated Monte Carlo SE / quote SD: **{_result['max_se_over_sigma']:.2f}**. "
-                     "This fixed-budget illustration does not apply the training bank's adaptive accuracy policy.")])
+@app.cell(hide_code=True)
+def _(comparison, mo, smile_comparison, smile_expiry):
+    mo.vstack([
+        comparison.comparison_figure(smile_comparison, maturity_days=smile_expiry.value),
+        mo.md("Left: δ = log(K/F)/(0.2√T); negative values are downside strikes. "
+              "Right: absolute near-the-money skew versus expiry. Each skew comes from a quadratic "
+              "fit to the five nearest strikes, rather than an exact derivative at k = 0. "
+              "The rough prices contain Monte Carlo error, which can affect these slopes. "
+              "This fixed-budget comparison does not apply the training bank's adaptive accuracy policy."),
+    ])
     return
 
 
@@ -210,14 +343,169 @@ def _(ASSETS, mo):
 
 
 @app.cell(hide_code=True)
+def _(explorer, mo):
+    mo.vstack([
+        mo.md("### What is inside each network?"),
+        explorer.architecture_figure(),
+        mo.md(r"""
+        **Pricer: a dense regression network.** Logit parameters and log curve levels
+        give 10 inputs; 63 outputs estimate clean prices in quote-noise units.
+        Training minimizes squared pricing errors. It is a deterministic forward map.
+
+        **Posterior: a conditional flow-matching network.** The 63 scaled quotes
+        and seven log curve levels form a fixed, ordered 70-value condition.
+        A time-conditioned residual MLP learns a velocity for a noisy
+        three-parameter state at time t. BayesFlow embeds time with Fourier
+        features and supplies the market condition to its hidden blocks.
+        Integrating that velocity transforms Gaussian draws into joint
+        parameter draws; the adapter returns them in physical units.
+        No recurrent or set encoder is needed for this fixed option grid.
+
+        The live examples below use **two 32-unit dense layers** for the pricer
+        and **two 128-unit residual blocks** for flow matching. The pretrained
+        posterior has four 256-unit blocks; the reference pricer has four
+        256-unit dense layers. These are
+        separate fits with different losses and training budgets.
+        """),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## 4. Building and training the posterior estimator
+    ### A working pricer-surrogate example
+
+    Train on **clean expected-price estimates**, then compare predictions with
+    separate validation markets. The same quote SDs scale the regression error
+    and the Gaussian likelihood. No noisy quotes are used as price targets.
+
+    This small fit shows the workflow. Two validation markets select an epoch;
+    they are not an independent final accuracy test. We do not run MCMC on this
+    tiny fit. The longer-fit PyMC comparison appears in Section 5.
+
+    Inside `surrogate.train`, the small pricer is an ordinary Keras network:
+
+    ```python
+    import keras
+
+    # Three parameter logits + seven log curve levels enter the dense network.
+    model = keras.Sequential([
+        keras.Input((10,)),
+        keras.layers.Dense(32, activation="gelu"),
+        keras.layers.Dense(32, activation="gelu"),
+        keras.layers.Dense(63),  # one standardized clean-price output per contract
+    ])
+    # The helper standardizes inputs/outputs and fits squared errors in quote-SD units.
+    ```
+
+    This network predicts prices; the BayesFlow flow below generates parameters.
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo, np, surrogate, teaching, time):
+    def train_small_pricer(task):
+        started = time.perf_counter()
+        # Simulate clean mean prices once; the noisy observations are unused here.
+        bank, generation = teaching.generate_training_pairs(task, count=8, seed=2026, max_seconds=120)
+        # Validation selects an epoch. It is separate from these six fitting rows.
+        train = {key: values[:6] for key, values in bank.items()}
+        validation = {key: values[6:] for key, values in bank.items()}
+        # Forward regression: parameter logits + log curve -> 63 scaled prices.
+        pricer, fit = surrogate.train(task, train, validation, widths=(32, 32),
+                                      epochs=5, batch_size=4, patience=5, seed=2026)
+        # Inspect errors in the same quote-noise units used by the likelihood.
+        residual = surrogate.errors(pricer, task, validation)
+        return pricer, residual, fit, {"generation": generation["runtime_seconds"],
+                                      "total": time.perf_counter() - started}
+
+    def surrogate_log_likelihood(pricer, task, parameters, prices, curve):
+        from sbi4f_tutorial.shared.tasks import sigma
+
+        # Supply candidate physical parameters and the observed curve, not quotes.
+        inputs = surrogate.features(task, np.atleast_2d(parameters), np.atleast_2d(curve))
+        mean_over_sd = pricer(inputs)
+        # Independent Gaussian quote errors: log L = -sum((prediction-y)^2 / SD^2)/2.
+        residual = mean_over_sd - prices / sigma(task)
+        return -.5 * np.sum(residual**2, axis=-1)  # constant terms omitted
+
+    mo.show_code()
+    return surrogate_log_likelihood, train_small_pricer
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    train_pricer = mo.ui.run_button(label="Generate fresh examples and train a small pricer")
+    mo.vstack([train_pricer, mo.md("Eight fresh markets: six for fitting, two for validation. "
+                                  "Five epochs; results stay in memory. Pricing may take a minute.")])
+    return (train_pricer,)
+
+
+@app.cell(hide_code=True)
+def _(known_arrays, known_task, mo, np, plt, surrogate_log_likelihood, train_pricer, train_small_pricer):
+    mo.stop(not train_pricer.value, mo.md("*Run the displayed code when you want to try the forward-learning route.*"))
+    try:
+        _pricer, _error, _fit, _timing = train_small_pricer(known_task)
+    except (RuntimeError, ValueError) as _error_message:
+        mo.stop(True, mo.callout(mo.md(f"**Pricer fit stopped:** {_error_message}. No partial bank is used."), kind="warn"))
+    _fig, _ax = plt.subplots(figsize=(9.5, 2.5), constrained_layout=True)
+    for _i, _row in enumerate(_error):
+        _ax.plot(np.arange(1, 64), _row, lw=1, label=f"Validation market {_i + 1}")
+    _ax.axhline(0, color="#29303d", lw=.8)
+    _ax.set(xlabel="contract index (seven maturity groups, nine strikes each)",
+            ylabel="price error / quote SD", title="A small fit needs an accuracy check")
+    _ax.legend(fontsize=8)
+    _midpoint = np.mean(known_task["prior_bounds"], axis=1)
+    _loglike = surrogate_log_likelihood(_pricer, known_task, _midpoint,
+                                       known_arrays["observations"], known_arrays["context_values"])
+    mo.vstack([
+        _fig,
+        mo.md(f"Validation RMSE: **{np.sqrt(np.mean(_error**2)):.2f} quote SDs**. "
+              f"Selected epoch: **{_fit['selected_epoch']}**. Generation: **{_timing['generation']:.1f} s**; "
+              f"total including fitting and imports: **{_timing['total']:.1f} s**. "
+              f"The displayed likelihood evaluates at the prior midpoint (log likelihood up to a constant: {_loglike[0]:.1f}). "
+              "An MCMC sampler would combine this likelihood with the parameter prior; "
+              "a logit-coordinate sampler also needs the transformation Jacobian. "
+              "This fit has not passed a pricing-accuracy check and is not used for posterior sampling. "
+              "It does not replace the reference pricer or the saved posterior."),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ## 4. Train a tutorial network or load pretrained weights
 
     The BayesFlow workflow is the same as in Heston: prepare the data, define an
     adapter and conditional network, train, then sample. The extra condition is
     the supplied curve. We divide prices by their quote SDs and take logs of the
     positive curve levels before standardizing the network inputs.
+
+    **What changes from the Heston code?**
+
+    | BayesFlow step | Heston live example | Rough Bergomi live example |
+    |:---|:---|:---|
+    | Training pairs | Fourier prices from a callable simulator | reuse a small Monte Carlo price bank |
+    | Adapter targets | four bounded parameters | three bounded parameters; same constraint pattern |
+    | Adapter conditions | 63 quotes, renamed | 63 scaled quotes + seven log curve levels, concatenated |
+    | Inference network | `FlowMatching`, widths `[128, 128]` | **the same** |
+    | Workflow | `BasicWorkflow`, standardize targets and conditions | **the same** |
+    | Fit | `fit_online` generates new batches | `fit_offline` reuses the simulated pairs |
+    | Infer | `sample(conditions=..., num_samples=...)` | **the same conditional-sampling pattern** |
+
+    The supplied curve is an observed condition, not a target. In the joint-curve
+    extension, its coefficients become targets and the curve is no longer supplied.
+
+    | Route | What happens | What to use it for |
+    |:---|:---|:---|
+    | **Tutorial: train live** | generate eight markets and fit a small network | learn the API |
+    | **Pretrained: load and infer** | load matching weights and draw for our worked example | reuse the longer fit |
+    | **Saved results** | display bundled draws, no model needed | follow the lesson immediately |
+
+    ### Tutorial version: train live
 
     The code below runs only when requested. It generates a **small fresh training
     set**, then fits a separate demonstration network. The selected cached
@@ -233,22 +521,30 @@ def _(full_surface, mo, teaching, time):
         started = time.perf_counter()
         import bayesflow as bf
 
+        # Different from Heston: price a small bank first, then reuse it offline.
         split, generation = teaching.generate_training_pairs(task, count=8, seed=2026, max_seconds=90)
+        # Scale quotes by their SDs; log the seven supplied positive curve levels.
         data = full_surface.training_data(split, task)
 
+        # Same as Heston: map bounded parameters to unbounded network coordinates.
         adapter = bf.Adapter()
         for name, (lower, upper) in zip(task["parameter_names"], task["prior_bounds"], strict=True):
             adapter = adapter.constrain(name, lower=lower, upper=upper, inclusive="none")
         adapter = (adapter.convert_dtype("float64", "float32")
                    .concatenate(task["parameter_names"], into="inference_variables")
+                   # Different: concatenate the curve as well as the quotes.
                    .concatenate(["observations", "curve_context"], into="inference_conditions"))
+        # Same as Heston: a conditional flow with the same small TimeMLP widths.
         network = bf.networks.FlowMatching(subnet_kwargs={"widths": [128, 128]})
         workflow = bf.BasicWorkflow(adapter=adapter, inference_network=network,
                                    standardize=["inference_variables", "inference_conditions"])
         fit_started = time.perf_counter()
+        # Different: fit_offline reuses prices rather than repricing every batch.
         workflow.fit_offline(data=data, epochs=5, batch_size=4)
         fit_seconds = time.perf_counter() - fit_started
 
+        # Same inference pattern: condition and sample. No generating truth enters.
+        # This helper applies exactly the same scaling/logs as training_data.
         conditions = full_surface.conditioning_data(observed_prices[None, :], task,
                                                      context_values=supplied_curve[None, :])
         posterior = workflow.sample(conditions=conditions, num_samples=128, seed=17)
@@ -304,9 +600,80 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
+    ### Pretrained version: load and infer
+
+    Download the **rough-known100k-final500** bundle using the
+    [model guide](https://github.com/fmuia/sbi4finance/blob/main/lab/plans/training-data-guide.md).
+    Keep `model.keras`, `task.json` and `training.json` together under
+    `tutorial/assets/local-checkpoints/rough-known100k-final500/`.
+
+    This loads the longer fit and draws for the **same worked-example quotes
+    and supplied curve**. It does not retrain. The loader checks model and task
+    identities before inference. Loading weights does not remove the accuracy
+    limitations discussed below.
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(backbones, full_surface, mo, time):
+    def infer_with_pretrained(directory, prices, curve):
+        started = time.perf_counter()
+        # Rebuild the recorded workflow and verify task/weights; skip training.
+        task, workflow, record = backbones.load_live("rough-known100k-validation0", directory)
+        loaded = time.perf_counter()
+        # Same observed inputs as the tutorial fit; return complete physical rows.
+        draws = full_surface.sample(workflow, task, prices[None, :], num_samples=512,
+                                    context_values=curve[None, :], seed=17)[0]
+        return task, draws, {"load": loaded - started, "sampling": time.perf_counter() - loaded}
+
+    mo.show_code()
+    return (infer_with_pretrained,)
+
+
+@app.cell(hide_code=True)
+def _(ASSETS, mo):
+    pretrained_folder = mo.ui.text(
+        value=str(ASSETS / "local-checkpoints" / "rough-known100k-final500"),
+        placeholder="Folder containing model.keras",
+        label="Matching pretrained posterior folder", full_width=True)
+    pretrained_folder
+    return (pretrained_folder,)
+
+
+@app.cell(hide_code=True)
+def _(mo, pretrained_folder):
+    _directory = pretrained_folder.value.strip()
+    load_pretrained = mo.ui.run_button(label="Load pretrained weights and draw this posterior")
+    mo.vstack([load_pretrained, mo.md("Optional. The rest of the lesson uses saved draws and needs no download.")])
+    return (load_pretrained,)
+
+
+@app.cell(hide_code=True)
+def _(focused_posterior, infer_with_pretrained, known_arrays, load_pretrained, mo, pretrained_folder):
+    mo.stop(not load_pretrained.value, mo.md("*Download the matching bundle, then load it here to run inference yourself.*"))
+    try:
+        _task, _draws, _timing = infer_with_pretrained(
+            pretrained_folder.value.strip(), known_arrays["observations"], known_arrays["context_values"])
+    except (OSError, ValueError, RuntimeError) as _error:
+        mo.stop(True, mo.callout(mo.md(f"**Model not loaded:** {_error}. "
+                                      "Check the folder and matching bundle in the model guide."), kind="warn"))
+    _case = dict(known_arrays, neural_draws=_draws)
+    mo.vstack([
+        mo.md(f"**Fresh inference from pretrained weights · 512 paired draws.** "
+              f"Load including imports: **{_timing['load']:.1f} s**; sampling including compilation: "
+              f"**{_timing['sampling']:.1f} s**. The saved checks below retain their original draws."),
+        focused_posterior(_task, _case),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
     ## 5. Infer parameters with the curve supplied
 
-    We now use the pretrained estimator on one synthetic option market.
+    We now inspect saved draws from the pretrained estimator on one synthetic option market.
     The seven curve levels are known inputs; only $H,\eta,\rho$ are inferred.
     Their priors are independent uniforms on the ranges in the table. The plots show paired posterior draws in the original parameter units.
     Three checks against MCMC under a learned pricer follow below. References
@@ -424,6 +791,8 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(mo, teaching):
     def simulate_predictive(task, case):
+        # Keep H, eta and rho paired; reprice, then add independent quote noise.
+        # The supplied curve stays fixed for this observation.
         return teaching.rough_posterior_predictive(
             task, case["neural_draws"], case["observations"],
             context_values=case["context_values"], draws=8, maturity=.25, seed=2026)

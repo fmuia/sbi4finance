@@ -123,8 +123,8 @@ viewing is complete, optional actions are explicit and every claim has suitable 
 
 Apply the direct BayesFlow teaching style of Stefan’s revised Heston lesson.
 The primary lesson follows one current known-curve synthetic observation;
-joint-curve inference is the extension. Historical studies remain available
-with their own evidence and are optional to the teaching sequence.
+joint-curve inference is the extension. Additional studies answer deliberate
+student questions with current evidence.
 
 1. Show the question, rough-volatility model and data first. Keep the distinction
    between Monte Carlo pricing error and imposed quote noise visible; put
@@ -159,7 +159,7 @@ an eight-draw three-month predictive action. Four intentional Additional studies
 replace the archive. The eight moved curve/context functions retain their original definitions;
 lab imports reuse the same objects. No saved evidence or model changed.
 
-Verification passes: 57 tutorial tests; 527 core lab tests (three optional skips);
+Verification passes: 71 tutorial tests; 527 core lab tests (three optional skips);
 all seven notebook exports; marimo and release checks. Chrome checks cover the
 training/predictive actions, all four Additional studies, four joint cases,
 reference cases, control endpoints and a 760-pixel layout. Existing empty-cell warnings in
@@ -198,6 +198,42 @@ Monte Carlo campaign or retraining. No scientific-acceptance decision changes.
 laws, context-support bounds and pairing checks; all four study selections and
 controls; default and selected-study execution; all tutorial/lab/release checks.
 Collaborator rehearsal remains deferred.
+
+#### Simulator, architecture and executable routes · 8 November 2026
+
+Add an interactive price/volatility path simulator immediately after the model.
+Use the canonical hybrid simulator, shared shocks across parameter changes and
+a labelled mean-variance scale. Keep latent-path exploration separate from quote
+generation and parameter inference.
+
+Make the modelling motivation explicit: an H-controlled short-maturity skew
+shape guide with a dated SPY example, then a finite-maturity Heston/Bergomi
+pricing comparison on the same contracts, flat mean variance and correlation.
+Distinguish asymptotic shape guides from finite-price curves and illustrative
+parameters from real-market calibration. Preserve the Monte Carlo precision
+caption and explain the near-ATM finite-grid slope estimator.
+
+Decompose the dense neural pricer and the time-conditioned residual network
+inside flow matching. Show actual input/output roles and the small versus
+pretrained widths. Comment displayed workflows around the statistical roles of
+their inputs and transformations. Compare the BayesFlow calls with Heston:
+the constrained adapter, flow-matching network, workflow and conditional sampling
+pattern persist; curve conditioning and offline fitting change.
+Add visible, executable clean-label pricer training,
+validation residuals and a Gaussian likelihood; the existing PyMC comparisons
+continue to use their fixed longer-fit pricer.
+
+Keep three explicit choices: view saved results, train a small tutorial network,
+or load matching pretrained posterior weights. The loader validates identities;
+fresh draws identify their source and do not replace saved validation evidence.
+Document source ownership and both routes in the collaborator handover.
+
+**Verification:** 71 tutorial tests, 527 core lab tests (three optional PyMC skips),
+all seven notebook exports and 203-symbol runtime ownership checks pass. Actual
+session checks exercise the six-market pricer fit, two-market validation, Gaussian
+likelihood and identity-checked 512-draw pretrained inference. Browser checks cover
+the path controls, all four smile expiries, small pricer, missing/matching folders
+and the narrow layout. Existing numerical and calibration limits remain unchanged.
 
 ## D. Develop the trajectory notebook to application parity
 

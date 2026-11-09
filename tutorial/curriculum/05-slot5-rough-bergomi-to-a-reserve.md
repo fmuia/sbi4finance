@@ -18,10 +18,11 @@ uses the [rough-options notebook](../notebooks/slot5_calibration.py).
 
 | Step | Content | Student prompt |
 | --- | --- | --- |
-| Model | Rough variance, its kernel and the supplied forward-variance curve. Prices are expectations, not observed latent paths. | What does roughness change, and what sets the mean variance? |
+| Model | Rough variance, its kernel and the supplied forward-variance curve. Immediately explore coupled price/volatility paths with fixed shocks and parameter controls. | What does roughness change, and what sets the mean variance? |
+| Why rough volatility? | Contrast Heston's limiting short-expiry skew with the rough power law; show a dated SPY grid and finite-price illustrations. | What extra time-scale behavior does H make possible? |
 | Data | Controlled Monte Carlo mean prices, then independent quote noise. | Which uncertainty would more simulation paths reduce? |
-| Two neural routes | Learn parameters → prices and run MCMC, or learn quotes → joint parameter draws. | Which computation repeats for a new market? |
-| BayesFlow | Visible adapter, network, fitting and sampling code. The small fit uses fresh pairs and its own outputs. | What are training targets, and what enters inference? |
+| Two neural routes | Decompose the dense pricer and conditional flow-matching network. Fit a small pricer on clean labels and evaluate its Gaussian likelihood. | Which computation repeats for a new market? |
+| BayesFlow | Visible adapter, network, fitting and sampling code. Choose a small live fit or optional matching pretrained weights; saved results need neither. | What are training targets, and what enters inference? |
 | Known curve | Current synthetic observation, supplied levels and focused posterior views. | Which parameter relationships remain visible? |
 | Predictive check | Explicit three-month repricing of paired draws, with fresh quote noise and a reported precision budget. | Why does adding quote noise change the data spread? |
 | Joint curve | Curve coefficients become targets; the generating curve is not supplied. | How does the inference task change? |
@@ -29,8 +30,10 @@ uses the [rough-options notebook](../notebooks/slot5_calibration.py).
 
 The supplied-curve and joint examples use different observations and curve
 families. Their widths are not a matched experiment about curve uncertainty.
-The small training action demonstrates the API; it does not reproduce the
-100,000-market estimator. Default viewing uses saved data and results.
+The small training actions demonstrate the APIs; they do not reproduce the
+longer-fit estimators. The pricer's validation rows select an epoch; they are
+not an independent final accuracy test. MCMC comparisons use the fixed reference
+pricer, never the tiny session fit. Default viewing uses saved data and results.
 
 ## Additional studies
 
@@ -126,8 +129,10 @@ view; no classroom illustration is a new scientific-acceptance decision.
 
 The main lesson lives in `notebooks/slot5_calibration.py`.
 Application helpers are in `src/sbi4f_tutorial/rough_options/`:
-`lesson.py` for explicit pricing/training actions, `context_checks.py` for
-necessary support bounds and `studies.py` for analytic curve/tail propagation.
+`explorer.py` for path and architecture figures, `lesson.py` for explicit
+pricing/training-data actions, `surrogate.py` for supervised price regression,
+`comparison.py` for the Heston/Bergomi skew and smile comparison,
+`context_checks.py` for necessary support bounds and `studies.py` for analytic curve/tail propagation.
 Shared numerical definitions remain in `shared/`; lab workflows reuse them.
 
 Run the tutorial tests, marimo check and notebook exports. Check every study

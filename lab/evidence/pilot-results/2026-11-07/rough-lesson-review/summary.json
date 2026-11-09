@@ -25,7 +25,7 @@
     ],
     "current_joint_cases": [
       "Joint worked example",
-      "Curve level\u2013decay trade-off",
+      "Curve level–decay trade-off",
       "Coupled volatility parameters",
       "Weakly informed decay"
     ],
@@ -162,18 +162,33 @@
   },
   "scope": "Session-only software illustrations, not new calibrated estimators or posterior acceptance. Banks and existing model weights unchanged.",
   "source_sha256": {
+    "lab/scripts/calibration_reference.py": "3518261ee7f58fa8e67345e611ee6634ef0e6b4b9ca047a1e58c6ace22c458e0",
+    "lab/scripts/train_full_surface_pricer.py": "b2858261840a9a3c947f82ba817ffbdf983f8f90001f905e84cccc91a88cfcff",
+    "lab/src/sbi4finance/calibration/correction.py": "1390601eed943a76751ab869b53f7caff2e36de927ffc60d372bffb093a00bc6",
+    "lab/src/sbi4finance/calibration/pricer_net.py": "48ed820bdd0f596f421a08da322e3e2d3e05a2b8ab3b08e5009384537e7aeaba",
     "lab/src/sbi4finance/calibration/pricing.py": "dc554bda791ee4edea22a8de2352579f9fa30b91cc6acaa0fd138d587d06921c",
     "lab/src/sbi4finance/calibration/tasks.py": "8f24909732836d6618a2e698cd01304984426928f0b42c58786270870b74d052",
-    "lab/studies/runtime_boundary.py": "87e38e0cbf7c569b57db1e930a336cabdc2870d893b9d3af7757adf27bd20102",
-    "tutorial/notebooks/slot5_calibration.py": "937d54ae9139216f041ab3942e32f90effaa55a7cf6e1ef131b0d4266e020623",
+    "lab/src/sbi4finance/runtime_sources.py": "22a29f40eb8d1b9be4b9c58d46028806aeb5adde8457738b013f2a999f9467e1",
+    "lab/studies/runtime_boundary.py": "e3f95c3208b86ea88c6d16553f81edac55bc4294f08852b908a223704817ea6f",
+    "lab/tests/test_full_surface_pricer_cli.py": "b286a4534d5f283728561a0f2b23fc5f6d0e582e6ef02c4c33fe564ac55501a0",
+    "lab/tests/test_pricer_pymc_reference.py": "2077b03dcb0a6aa04d9b7533f65dbc41bd4c0fd93dfd931db3f2f47765a0e9fc",
+    "tutorial/notebooks/slot5_calibration.py": "f4951cd54c2d49f99e0ff82569e2e0ec30e8379cf3b41e11ebe229a037cd74ef",
+    "tutorial/src/sbi4f_tutorial/rough_options/comparison.py": "5deee8c688d0ecc79e1a7ba2d7caba05afa00f7699926711b51c87091a83364d",
+    "tutorial/src/sbi4f_tutorial/rough_options/context_checks.py": "2c2927cdd02f3ece4314061dcd99d3be04e08e072338c9b39edca1a551d5955d",
+    "tutorial/src/sbi4f_tutorial/rough_options/explorer.py": "05a88a89d1e35787036c26999c08479ec90f4ee65e94b177715dc3fd200ee212",
     "tutorial/src/sbi4f_tutorial/rough_options/lesson.py": "6d2d2f6517ccb0bd4292c0adcf8f223e95cb31f261631d3e2e2424e6a765cc93",
+    "tutorial/src/sbi4f_tutorial/rough_options/studies.py": "ed39e6d00ed40a36007fc7e385491fa2e4faf26524470328d8f77ab271894e4f",
+    "tutorial/src/sbi4f_tutorial/rough_options/surrogate.py": "da71768a50bc91dcb4b43c25e3a2f1b224ba09ee5da752356b9c19ac9bbffb1a",
+    "tutorial/src/sbi4f_tutorial/shared/parameter_transforms.py": "e83762a6d2b5a4886ff6792fd88f51b46a27d1ba3d723b9b317f04cdfa47b2e8",
     "tutorial/src/sbi4f_tutorial/shared/pricing.py": "68a690b4b425cf3d50f68c303989c96a930ca48f83940d3bace344855d60fb09",
     "tutorial/src/sbi4f_tutorial/shared/tasks.py": "fb6240751ab4eeab4a46aab5d0329322705557c2a71a151f280409b853fdf7b2",
-    "tutorial/tests/test_rough_session.py": "fade7005723db92c00306c885619ebc9b872863a32294fa8f2937e0ed527a838",
-    "tutorial/src/sbi4f_tutorial/rough_options/context_checks.py": "2c2927cdd02f3ece4314061dcd99d3be04e08e072338c9b39edca1a551d5955d",
-    "tutorial/src/sbi4f_tutorial/rough_options/studies.py": "ed39e6d00ed40a36007fc7e385491fa2e4faf26524470328d8f77ab271894e4f",
+    "tutorial/tests/test_independence.py": "e3a2789fc0d407d345c14a94f3cf800ea8fb35ee12ae40e8004aa2c00b0417a6",
+    "tutorial/tests/test_rough_comparison.py": "36edcf61579214e238826d1432d443162007b58928d6b034ce413ed8b499ea7a",
     "tutorial/tests/test_rough_context.py": "d18fda5017f334b1e111817fa38a41e691797bbfb290e1e396317814de0dd65c",
-    "tutorial/tests/test_rough_studies.py": "7cdb7f37ad99a8d3cac353c81fd49400cd4574b9e15c264bd08c85c9e33d7eba"
+    "tutorial/tests/test_rough_explorer.py": "88db231867980ad1c99cb71fd721ccae16cc83a0ca9248086b88b58beb81e4fc",
+    "tutorial/tests/test_rough_session.py": "fade7005723db92c00306c885619ebc9b872863a32294fa8f2937e0ed527a838",
+    "tutorial/tests/test_rough_studies.py": "7cdb7f37ad99a8d3cac353c81fd49400cd4574b9e15c264bd08c85c9e33d7eba",
+    "tutorial/tests/test_rough_surrogate.py": "49b4761e6de900aa3ac83f6a0355e10216d00c3a4a971821ec097be05c902f3c"
   },
   "timing_environment": {
     "system": "Darwin",
@@ -225,7 +240,7 @@
     "training_elapsed_seconds": 20.135736708994955,
     "joint_options": [
       "Worked joint example",
-      "Curve level\u2013decay trade-off",
+      "Curve level–decay trade-off",
       "Coupled volatility parameters",
       "Weakly informed decay"
     ],
@@ -278,7 +293,7 @@
       ],
       "current_joint_cases": [
         "Joint worked example",
-        "Curve level\u2013decay trade-off",
+        "Curve level–decay trade-off",
         "Coupled volatility parameters",
         "Weakly informed decay"
       ],
@@ -309,5 +324,102 @@
     ],
     "retained_existing_evidence": "matching three-case deterministic-surrogate comparison; no new MCMC",
     "scope": "Intentional question/action/interpretation studies. Context controls propose a new design; shuffled marginals are artificial; tail parameter remains prior-driven. No model weights, simulation banks or acceptance decisions changed."
+  },
+  "simulator_and_network_workflows": {
+    "date": "2026-11-08",
+    "tutorial_tests": 71,
+    "lab_core_tests": 527,
+    "lab_optional_skips": 3,
+    "notebook_exports": 7,
+    "rough_notebook_cells": 55,
+    "cell_errors": 0,
+    "runtime_shared_symbols": 203,
+    "changes": [
+      "early fixed-shock Q path explorer",
+      "Heston versus rough short-maturity skew shape guides and same-design finite-price comparison",
+      "actual architecture decomposition for dense pricer and time-conditioned flow matching",
+      "commented executable clean-label pricer training and Gaussian likelihood",
+      "same/different BayesFlow table and inline Heston comparisons",
+      "explicit saved,small-train,and optional validated pretrained-load routes"
+    ],
+    "browser": {
+      "page_errors": [],
+      "path_H_endpoints": [
+        0.02,
+        0.4
+      ],
+      "fixed_shocks_control": true,
+      "smile_expiries": [
+        5,
+        21,
+        63,
+        252
+      ],
+      "smile_elapsed_seconds": 3.787787541979924,
+      "code_visible": [
+        "simulator",
+        "pricer fit and likelihood",
+        "BayesFlow fit",
+        "pretrained load and sample"
+      ],
+      "small_pricer_elapsed_seconds": 13.577211290947162,
+      "pretrained_load_elapsed_seconds": 1.860046749934554,
+      "pretrained_missing_folder": true,
+      "changed_folder_clears_old_output": true,
+      "narrow_width": 760,
+      "horizontal_overflow": false,
+      "math_render_errors": 0
+    },
+    "session_routes": {
+      "pricer": {
+        "timing": {
+          "generation": 15.79394687502645,
+          "total": 25.3506011669524
+        },
+        "validation_rmse_quote_sd": 21.183124255063845,
+        "selected_epoch": 5,
+        "history": {
+          "loss": [
+            243.0347900390625,
+            237.70375061035156,
+            232.500732421875,
+            230.6312255859375,
+            229.48585510253906
+          ],
+          "val_loss": [
+            478.2814025878906,
+            463.0836181640625,
+            454.2271423339844,
+            449.6519775390625,
+            448.72479248046875
+          ]
+        },
+        "loglike_midpoint": [
+          -9423.574965468704
+        ]
+      },
+      "pretrained": {
+        "draw_shape": [
+          512,
+          3
+        ],
+        "timing": {
+          "load": 0.9991232499014586,
+          "sampling": 2.030290708062239
+        },
+        "task_matches": true,
+        "checkpoint_sha256": "39f1a81986a38994dc6eacc520ad95254b34346abc02e758c08779c7c5916fc4"
+      }
+    },
+    "new_checks": [
+      "canonical hybrid simulator parity and controls",
+      "clean-label features/likelihood units and legacy payload activations",
+      "shared physical-parameter transforms and Jacobian",
+      "matched Fourier repricing, mean variance and correlation",
+      "no second rough Monte Carlo run for expiry selection",
+      "near-ATM inversion failure and explicit wing availability",
+      "changed checkpoint folder resets explicit action"
+    ],
+    "scientific_scope": "No existing assets, model weights, saved posterior evidence or scientific acceptance changed. Tiny supervised fit is an API exercise, not a reference pricer. Asymptotic shape guides are not finite-price curves or calibrations to SPY."
   }
 }

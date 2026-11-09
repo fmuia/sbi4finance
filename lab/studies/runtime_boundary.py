@@ -14,6 +14,16 @@ from pathlib import Path
 
 # Lab compatibility API -> authoritative runtime module -> imported symbols.
 REUSED_SYMBOLS = {
+    "sbi4finance.calibration.correction": {
+        "sbi4f_tutorial.shared.parameter_transforms": (
+            "bounds_of", "to_unbounded", "to_bounded", "log_jacobian",
+        ),
+    },
+    "sbi4finance.calibration.pricer_net": {
+        "sbi4f_tutorial.rough_options.surrogate": (
+            "features", "_log_known_curve", "quote_noise_mse", "targets", "Pricer", "train", "errors",
+        ),
+    },
     "sbi4finance.bergomi": {
         "sbi4f_tutorial.rough_options.model": (
             "_positive_integer", "_scalar", "curve_values", "_model_parameters", "_normals",

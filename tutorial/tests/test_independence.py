@@ -30,7 +30,9 @@ class IndependenceTests(unittest.TestCase):
                 if path.is_relative_to(TUTORIAL / "src"):
                     # Numba is a lazy, optional acceleration for lab generation; cached
                     # viewing and the explicit NumPy simulator require no Numba install.
-                    allowed = set(sys.stdlib_module_names) | {RUNTIME, "numpy", "scipy", "matplotlib", "bayesflow", "numba"}
+                    # Keras is lazy and limited to explicitly requested pricer
+                    # training, just like BayesFlow's posterior training.
+                    allowed = set(sys.stdlib_module_names) | {RUNTIME, "numpy", "scipy", "matplotlib", "bayesflow", "numba", "keras"}
                     self.assertLessEqual(top, allowed)
 
     def test_code_neither_edits_sys_path_nor_climbs_out_of_tutorial(self):

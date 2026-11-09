@@ -109,11 +109,29 @@ and seven known forward-variance levels. The joint-curve extension estimates
 three curve coefficients as well. These examples use different observations
 and curve families; they are not a matched comparison of curve uncertainty.
 
-The visible BayesFlow code follows simulation → adapter → network → fit → sample.
-Saved results remain the default. Optional simulation, small training and
-posterior-predictive actions run only when requested and keep their results
-separate from the supplied estimator. Monte Carlo pricing error is reported
-separately from the assumed quote noise.
+Start by changing H, eta, rho and the variance scale in the path simulator.
+Compare Heston and rough Bergomi through short-maturity skew: an instant shape
+guide sits beside the model, and an optional pricing action compares actual
+smiles on the same contract grid. A dated SPY example motivates the pattern;
+the illustrative parameters are not market calibrations.
+The architecture diagram then separates the forward pricer from the conditional
+posterior network. Both have visible, commented training code. A short table and
+inline comments mark what stays the same as Heston and what changes: curve
+conditioning and offline reuse of Monte Carlo prices.
+
+Choose how to run the lesson:
+
+- **Saved results:** no download or training needed.
+- **Tutorial version:** train a small pricer or posterior network on fresh markets.
+- **Pretrained version:** optionally load the matching posterior weights and draw
+  for the worked example. See the [model guide](../lab/plans/training-data-guide.md).
+
+The small fits demonstrate the APIs; their outputs stay separate from the saved
+accuracy checks. Monte Carlo pricing error is reported separately from quote noise.
+Edit the path explorer and architecture figure in `rough_options/explorer.py`,
+the Heston comparison in `rough_options/comparison.py`,
+the supervised pricer in `rough_options/surrogate.py`, and the notebook for its
+controls and visible workflows. Lab pricer training reuses the same implementation.
 
 The **Additional studies** selector offers four short learning extensions:
 

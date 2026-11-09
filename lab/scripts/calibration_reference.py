@@ -153,6 +153,7 @@ def main():
     if pricer_identity is not None:
         from sbi4finance.calibration import pricer_net
         from sbi4finance.gbm_bank import _json
+        from sbi4finance.runtime_sources import option_pricer_runtime_hashes
 
         record["emulator"] = pricer_identity
         record["task_fingerprint"] = bank.task_fingerprint(manifest["configuration"])
@@ -160,6 +161,7 @@ def main():
         record["known_curve_sha256"] = (None if known_curve is None else
             hashlib.sha256(_json(record["known_curve_levels"]).encode()).hexdigest())
         record["source_sha256"]["pricer_net.py"] = hashlib.sha256(Path(pricer_net.__file__).read_bytes()).hexdigest()
+        record["shared_runtime_source_sha256"] = option_pricer_runtime_hashes(task)
         record["reference_pricing_source_sha256"] = None
         record["approximation_scope"] = (
             "MCMC targets the fixed fitted emulator with declared Gaussian quote noise. "
