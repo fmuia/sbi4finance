@@ -182,16 +182,15 @@ def rough_surface(parameters, curve, contracts, blocks, paths_ladder, sigma, bud
 
 
 def heston_surface(parameters, initial_variance, contracts, *, nodes, upper_limit):
-    """Fourier prices for every contract, one vectorized call per option type."""
-    from ..heston_options.model import european_price
+    """Fourier prices sharing each maturity's characteristic function across types."""
+    from ..heston_options.model import _european_price
 
     k = np.log(np.array([c["strike"] for c in contracts], dtype=float))
     maturity = np.array([c["maturity"] for c in contracts], dtype=float)
     kind = np.array([c["option_type"] for c in contracts])
-    prices = np.empty(len(contracts))
-    for value in np.unique(kind):
-        chosen = kind == value
-        prices[chosen] = european_price(1.0, np.exp(k[chosen]), 1.0, maturity[chosen], parameters,
-                                        initial_variance, kind=str(value), nodes=nodes,
-                                        upper_limit=upper_limit)
-    return prices
+    if not len(contracts):
+        return np.empty(0)
+    if np.any((kind != "call") & (kind != "put")):
+        raise ValueError("kind must be call or put")
+    return _european_price(1.0, np.exp(k), 1.0, maturity, parameters, initial_variance,
+                           put=kind == "put", nodes=nodes, upper_limit=upper_limit)

@@ -1,0 +1,6319 @@
+{
+  "format": "heston_training_matrix_execution_v1",
+  "status": "completed_development_screen",
+  "snapshot_utc": "2026-11-08T23:32:17.390506+00:00",
+  "scope": "14 seed-0 development fits/evaluations requested by the user; no confirmation, final test, accepted replacement or publication.",
+  "source_revision": "67703bb1786ee1cac43acab1fb88d73c4c004940",
+  "protocol_sha256": "d494fc568e49164cac52d8703dc086e9187ed96aba19c23ddeb7715048365bea",
+  "admission_sha256": "c3badf36b9a8fc8e66a8e24d84f0a94e40d229d2d63387d2ec4f5ecf01223167",
+  "submission_receipt_sha256": "fa9adab0e79847a4c4e7390c78f6ee3f11cfceb4c679546bc2b56ce77754c557",
+  "control_original_sha256": "bc9bedd624191389aa316fc6b25dd8e9e81a1bc1b78b1e9d63d00d8ed1fdad6c",
+  "control_original_status_retained": "inconclusive",
+  "root_on_oscar": "/oscar/scratch/afengler/sbi4finance-heston-matrix-20261108",
+  "reserved_test_evaluated": false,
+  "scientific_acceptance": false,
+  "model_publication_allowed": false,
+  "confirmation_allowed": false,
+  "status_counts": {
+    "completed": 14
+  },
+  "jobs": [
+    {
+      "id": "small-u00030-s0",
+      "architecture": "small",
+      "widths": [
+        128,
+        128
+      ],
+      "requested_updates": 30,
+      "seed": 0,
+      "status": "completed",
+      "checks_status": "fail",
+      "actual_optimizer_updates": 30,
+      "actual_example_presentations": 7680,
+      "unique_training_rows_seen": 7680,
+      "same_seed_reload_exact": true,
+      "checkpoint_sha256": "6b2fadc5cb8d45a66f7ba9bfa6f27f7a55faf169fb3f99efbf46f67a429e090e",
+      "evaluation_verified_checkpoint_sha256": "6b2fadc5cb8d45a66f7ba9bfa6f27f7a55faf169fb3f99efbf46f67a429e090e",
+      "job_id": "8641245",
+      "submission_status": "submitted",
+      "script_sha256": "26157ca7f833acd512629fbb058a0d61a4facdc22a20fa70ca5d761f8aa06f46",
+      "scheduler": {
+        "job_id": "8641245",
+        "job_name": "heston-small-u00030-s0",
+        "state": "COMPLETED",
+        "exit_code": "0:0",
+        "elapsed_seconds": 176,
+        "allocated_cpus": 4,
+        "allocated_gpus": 1,
+        "allocated_cpu_seconds": 704,
+        "gpu_seconds": 176,
+        "allocated_tres": {
+          "billing": "110",
+          "cpu": "4",
+          "gres/gpu": "1",
+          "mem": "24G",
+          "node": "1"
+        }
+      },
+      "gates": {
+        "finite_in_support_without_clipping": true,
+        "development_rank_screen": false,
+        "conditional_all_cases": false,
+        "predictive_pricing_completed": true,
+        "coverage_within_control_margin": false
+      },
+      "parameters": {
+        "initial_variance": {
+          "rank_ks": 0.27314361931764075,
+          "rank_passed": false,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.06074926373354535,
+          "recovery_correlation": 0.9760086157278157,
+          "mean_physical_central90_width": 0.09720789122084172,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.9921875,
+              "wilson_interval": [
+                0.9800865852024431,
+                0.9969577980703442
+              ]
+            },
+            "0.95": {
+              "coverage": 0.998046875,
+              "wilson_interval": [
+                0.9890207217875779,
+                0.9996551422384565
+              ]
+            }
+          }
+        },
+        "theta": {
+          "rank_ks": 0.1874165402173093,
+          "rank_passed": false,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.07131231055331808,
+          "recovery_correlation": 0.9656620491413674,
+          "mean_physical_central90_width": 0.09151039966827736,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.984375,
+              "wilson_interval": [
+                0.9694739672468663,
+                0.9920617750215911
+              ]
+            },
+            "0.95": {
+              "coverage": 0.9921875,
+              "wilson_interval": [
+                0.9800865852024431,
+                0.9969577980703442
+              ]
+            }
+          }
+        },
+        "vol_of_vol": {
+          "rank_ks": 0.18793128973226159,
+          "rank_passed": false,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.39310910809032157,
+          "recovery_correlation": 0.8153173084533558,
+          "mean_physical_central90_width": 1.232981094447313,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.982421875,
+              "wilson_interval": [
+                0.9669335150663066,
+                0.9907250669510682
+              ]
+            },
+            "0.95": {
+              "coverage": 0.9921875,
+              "wilson_interval": [
+                0.9800865852024431,
+                0.9969577980703442
+              ]
+            }
+          }
+        },
+        "rho": {
+          "rank_ks": 0.16576063428324816,
+          "rank_passed": false,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.34900152012463165,
+          "recovery_correlation": 0.8186783870747075,
+          "mean_physical_central90_width": 0.6420703462616066,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.962890625,
+              "wilson_interval": [
+                0.9427707550251679,
+                0.976116224481382
+              ]
+            },
+            "0.95": {
+              "coverage": 0.970703125,
+              "wilson_interval": [
+                0.9522288905280138,
+                0.982166729982866
+              ]
+            }
+          }
+        }
+      },
+      "conditional": {
+        "0": {
+          "status": "fail",
+          "sampling_seed": 811083,
+          "reference_chain_shape": [
+            4,
+            8000,
+            4
+          ],
+          "block_lengths": [
+            40,
+            80
+          ],
+          "family_confidence": 0.95,
+          "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+          "parameter_order": [
+            "initial_variance",
+            "theta",
+            "vol_of_vol",
+            "rho"
+          ],
+          "parameter_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "signed_standardized_mean_difference": [
+            -8.053253125359927,
+            -14.783959840779781,
+            0.35710212685639553,
+            -10.074885087127425
+          ],
+          "signed_standardized_mean_interval": [
+            [
+              -11.059672442275085,
+              -5.046833808444768
+            ],
+            [
+              -15.810399896027828,
+              -13.757519785531734
+            ],
+            [
+              -0.13175245310088357,
+              0.8459567068136746
+            ],
+            [
+              -10.869922180115115,
+              -9.279847994139736
+            ]
+          ],
+          "mean_status": [
+            "fail",
+            "fail",
+            "inconclusive",
+            "fail"
+          ],
+          "width_ratio_90": [
+            54.21074856250377,
+            17.08124423589272,
+            8.70205577351036,
+            11.703717842528468
+          ],
+          "width_ratio_interval": [
+            [
+              48.81486651322179,
+              60.203078890137085
+            ],
+            [
+              15.69376825807665,
+              18.59138607428219
+            ],
+            [
+              8.314334363622844,
+              9.107857751860806
+            ],
+            [
+              11.040647799883033,
+              12.40660999429494
+            ]
+          ],
+          "width_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ]
+        },
+        "1": {
+          "status": "fail",
+          "sampling_seed": 811084,
+          "reference_chain_shape": [
+            4,
+            8000,
+            4
+          ],
+          "block_lengths": [
+            38,
+            76
+          ],
+          "family_confidence": 0.95,
+          "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+          "parameter_order": [
+            "initial_variance",
+            "theta",
+            "vol_of_vol",
+            "rho"
+          ],
+          "parameter_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "signed_standardized_mean_difference": [
+            8.030402367573512,
+            -7.067863446777606,
+            -25.69132902927349,
+            -18.23813356283644
+          ],
+          "signed_standardized_mean_interval": [
+            [
+              5.155110491962748,
+              10.905694243184275
+            ],
+            [
+              -8.424544996367036,
+              -5.711181897188176
+            ],
+            [
+              -27.022774402643144,
+              -24.359883655903836
+            ],
+            [
+              -19.429539180906815,
+              -17.04672794476606
+            ]
+          ],
+          "mean_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "width_ratio_90": [
+            53.02822040263691,
+            26.355923031470002,
+            17.51084709599362,
+            18.26490730645626
+          ],
+          "width_ratio_interval": [
+            [
+              48.79133587713535,
+              57.633022513499135
+            ],
+            [
+              25.20349313200233,
+              27.561047796138745
+            ],
+            [
+              16.77337068686486,
+              18.28074820163537
+            ],
+            [
+              17.352922861944112,
+              19.224821176670865
+            ]
+          ],
+          "width_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ]
+        },
+        "2": {
+          "status": "fail",
+          "sampling_seed": 811085,
+          "reference_chain_shape": [
+            4,
+            8000,
+            4
+          ],
+          "block_lengths": [
+            44,
+            88
+          ],
+          "family_confidence": 0.95,
+          "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+          "parameter_order": [
+            "initial_variance",
+            "theta",
+            "vol_of_vol",
+            "rho"
+          ],
+          "parameter_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "signed_standardized_mean_difference": [
+            -28.850285196175687,
+            -6.965686719803608,
+            -18.765053816649722,
+            -16.707845854501915
+          ],
+          "signed_standardized_mean_interval": [
+            [
+              -33.252986435581064,
+              -24.447583956770313
+            ],
+            [
+              -7.900205514448246,
+              -6.031167925158969
+            ],
+            [
+              -19.799433137271112,
+              -17.730674496028332
+            ],
+            [
+              -18.116263628146605,
+              -15.299428080857227
+            ]
+          ],
+          "mean_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "width_ratio_90": [
+            85.17613923932859,
+            16.84393833348466,
+            13.868604544135223,
+            21.38643769818989
+          ],
+          "width_ratio_interval": [
+            [
+              81.43737933335265,
+              89.08654422707123
+            ],
+            [
+              15.505068376504413,
+              18.298420341839066
+            ],
+            [
+              13.259277601496581,
+              14.505932961227002
+            ],
+            [
+              19.203649667454307,
+              23.817332920507774
+            ]
+          ],
+          "width_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ]
+        }
+      },
+      "posterior_predictive": {
+        "status": "completed_descriptive_check",
+        "observations": 32,
+        "paired_draws": 32,
+        "central90_quote_coverage": 0.9856150793650794,
+        "mean_absolute_residual_over_quote_sigma": 3.6790603786898277,
+        "scope": "Fixed development panel; replicated quotes include new Gaussian observation noise. No new adequacy/acceptance rule."
+      },
+      "cost": {
+        "training_wall_seconds": 51.65519814705476,
+        "fit_including_compile_and_validation_seconds": 26.388245993992314,
+        "first_training_batch_including_compile_seconds": 16.321377251995727,
+        "evaluation_wall_seconds": 100.20097275217995,
+        "worker_wall_seconds": 159.744592852192,
+        "worker_child_peak_rss_bytes": 1808338944,
+        "scope": "Nested timings overlap; scheduler allocation is authoritative for resource charging."
+      },
+      "evaluation_sha256": "ce75b23611cbdd1aa39dcc6613215d55598780f5285b5bec84ded6af7869ec25",
+      "training_sha256": "e2a3da5640d25ee546a7b64ce16b16c1c1ef71c340e66ed9c3dff9ba391a4777"
+    },
+    {
+      "id": "small-u00100-s0",
+      "architecture": "small",
+      "widths": [
+        128,
+        128
+      ],
+      "requested_updates": 100,
+      "seed": 0,
+      "status": "completed",
+      "checks_status": "fail",
+      "actual_optimizer_updates": 100,
+      "actual_example_presentations": 25600,
+      "unique_training_rows_seen": 25600,
+      "same_seed_reload_exact": true,
+      "checkpoint_sha256": "e68413bfc3d41317b1375232ea28090c101d050e7cb6c6b5e957b04aeedd323d",
+      "evaluation_verified_checkpoint_sha256": "e68413bfc3d41317b1375232ea28090c101d050e7cb6c6b5e957b04aeedd323d",
+      "job_id": "8641247",
+      "submission_status": "submitted",
+      "script_sha256": "371e9dcc33f9f5001aa42038d27e25a2214ae089f57b67a7f49df20c68d25cf5",
+      "scheduler": {
+        "job_id": "8641247",
+        "job_name": "heston-small-u00100-s0",
+        "state": "COMPLETED",
+        "exit_code": "0:0",
+        "elapsed_seconds": 179,
+        "allocated_cpus": 4,
+        "allocated_gpus": 1,
+        "allocated_cpu_seconds": 716,
+        "gpu_seconds": 179,
+        "allocated_tres": {
+          "billing": "110",
+          "cpu": "4",
+          "gres/gpu": "1",
+          "mem": "24G",
+          "node": "1"
+        }
+      },
+      "gates": {
+        "finite_in_support_without_clipping": true,
+        "development_rank_screen": false,
+        "conditional_all_cases": false,
+        "predictive_pricing_completed": true,
+        "coverage_within_control_margin": false
+      },
+      "parameters": {
+        "initial_variance": {
+          "rank_ks": 0.1857361494572385,
+          "rank_passed": false,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.013407105582914122,
+          "recovery_correlation": 0.9931327025348756,
+          "mean_physical_central90_width": 0.04741100027467834,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.990234375,
+              "wilson_interval": [
+                0.977345524728445,
+                0.9958216982932597
+              ]
+            },
+            "0.95": {
+              "coverage": 0.998046875,
+              "wilson_interval": [
+                0.9890207217875779,
+                0.9996551422384565
+              ]
+            }
+          }
+        },
+        "theta": {
+          "rank_ks": 0.16425216350794625,
+          "rank_passed": false,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.026998058915887257,
+          "recovery_correlation": 0.9874946136990589,
+          "mean_physical_central90_width": 0.04700615949104755,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.974609375,
+              "wilson_interval": [
+                0.9570473392668004,
+                0.9851026017462445
+              ]
+            },
+            "0.95": {
+              "coverage": 0.98828125,
+              "wilson_interval": [
+                0.9746716344674621,
+                0.9946184283031602
+              ]
+            }
+          }
+        },
+        "vol_of_vol": {
+          "rank_ks": 0.16772835792454122,
+          "rank_passed": false,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.1349275809180048,
+          "recovery_correlation": 0.9337339447523476,
+          "mean_physical_central90_width": 0.8574650996655693,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.97265625,
+              "wilson_interval": [
+                0.9546295060012657,
+                0.9836432747606967
+              ]
+            },
+            "0.95": {
+              "coverage": 0.984375,
+              "wilson_interval": [
+                0.9694739672468663,
+                0.9920617750215911
+              ]
+            }
+          }
+        },
+        "rho": {
+          "rank_ks": 0.12877359495895258,
+          "rank_passed": false,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.2048619169730325,
+          "recovery_correlation": 0.8982425122193846,
+          "mean_physical_central90_width": 0.49064024967374303,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.955078125,
+              "wilson_interval": [
+                0.9334960572612445,
+                0.9698822812409755
+              ]
+            },
+            "0.95": {
+              "coverage": 0.970703125,
+              "wilson_interval": [
+                0.9522288905280138,
+                0.982166729982866
+              ]
+            }
+          }
+        }
+      },
+      "conditional": {
+        "0": {
+          "status": "fail",
+          "sampling_seed": 811083,
+          "reference_chain_shape": [
+            4,
+            8000,
+            4
+          ],
+          "block_lengths": [
+            40,
+            80
+          ],
+          "family_confidence": 0.95,
+          "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+          "parameter_order": [
+            "initial_variance",
+            "theta",
+            "vol_of_vol",
+            "rho"
+          ],
+          "parameter_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "signed_standardized_mean_difference": [
+            2.522211513473925,
+            -7.440136035130764,
+            -0.6847029633646258,
+            -7.896529632403817
+          ],
+          "signed_standardized_mean_interval": [
+            [
+              0.41727962202024793,
+              4.627143404927603
+            ],
+            [
+              -7.939167179013082,
+              -6.941104891248446
+            ],
+            [
+              -1.1349727893879717,
+              -0.2344331373412799
+            ],
+            [
+              -8.589287221384705,
+              -7.203772043422929
+            ]
+          ],
+          "mean_status": [
+            "fail",
+            "fail",
+            "inconclusive",
+            "fail"
+          ],
+          "width_ratio_90": [
+            36.14961872464881,
+            7.4292476906117635,
+            8.343526370146508,
+            10.93090383452927
+          ],
+          "width_ratio_interval": [
+            [
+              32.14359494703943,
+              40.65490920012485
+            ],
+            [
+              6.861604100228225,
+              8.043851035740236
+            ],
+            [
+              7.945568738111676,
+              8.76141590159782
+            ],
+            [
+              10.291513447458673,
+              11.610018220326142
+            ]
+          ],
+          "width_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ]
+        },
+        "1": {
+          "status": "fail",
+          "sampling_seed": 811084,
+          "reference_chain_shape": [
+            4,
+            8000,
+            4
+          ],
+          "block_lengths": [
+            38,
+            76
+          ],
+          "family_confidence": 0.95,
+          "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+          "parameter_order": [
+            "initial_variance",
+            "theta",
+            "vol_of_vol",
+            "rho"
+          ],
+          "parameter_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "signed_standardized_mean_difference": [
+            -3.7921839854152046,
+            -4.19135693478346,
+            -13.474288336557066,
+            -6.2789882820873855
+          ],
+          "signed_standardized_mean_interval": [
+            [
+              -4.937682958238553,
+              -2.646685012591856
+            ],
+            [
+              -4.995925767836034,
+              -3.386788101730887
+            ],
+            [
+              -14.33473816138659,
+              -12.613838511727543
+            ],
+            [
+              -7.039368626930515,
+              -5.518607937244256
+            ]
+          ],
+          "mean_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "width_ratio_90": [
+            20.21326177680238,
+            16.77021197727529,
+            14.275077324798257,
+            14.351427537735669
+          ],
+          "width_ratio_interval": [
+            [
+              18.59809285365778,
+              21.96870156916027
+            ],
+            [
+              15.810761586603569,
+              17.787885056785747
+            ],
+            [
+              13.49199401814404,
+              15.103611249377144
+            ],
+            [
+              13.462387696921759,
+              15.29917849698923
+            ]
+          ],
+          "width_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ]
+        },
+        "2": {
+          "status": "fail",
+          "sampling_seed": 811085,
+          "reference_chain_shape": [
+            4,
+            8000,
+            4
+          ],
+          "block_lengths": [
+            44,
+            88
+          ],
+          "family_confidence": 0.95,
+          "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+          "parameter_order": [
+            "initial_variance",
+            "theta",
+            "vol_of_vol",
+            "rho"
+          ],
+          "parameter_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "signed_standardized_mean_difference": [
+            -13.242086807253443,
+            -3.519146329324166,
+            -13.052733290051094,
+            -9.35677282004768
+          ],
+          "signed_standardized_mean_interval": [
+            [
+              -15.604137573057532,
+              -10.880036041449355
+            ],
+            [
+              -4.074737934509628,
+              -2.963554724138704
+            ],
+            [
+              -13.9082507081413,
+              -12.19721587196089
+            ],
+            [
+              -10.214828882352768,
+              -8.498716757742594
+            ]
+          ],
+          "mean_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "width_ratio_90": [
+            49.36355396829184,
+            9.91502079788455,
+            13.055277682810532,
+            11.61795046853515
+          ],
+          "width_ratio_interval": [
+            [
+              45.59161569147561,
+              53.447556604932274
+            ],
+            [
+              9.227165251354338,
+              10.654153767112149
+            ],
+            [
+              12.470397413494931,
+              13.667589710561074
+            ],
+            [
+              9.90635307442266,
+              13.625273809171446
+            ]
+          ],
+          "width_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ]
+        }
+      },
+      "posterior_predictive": {
+        "status": "completed_descriptive_check",
+        "observations": 32,
+        "paired_draws": 32,
+        "central90_quote_coverage": 0.9677579365079365,
+        "mean_absolute_residual_over_quote_sigma": 1.697019664746214,
+        "scope": "Fixed development panel; replicated quotes include new Gaussian observation noise. No new adequacy/acceptance rule."
+      },
+      "cost": {
+        "training_wall_seconds": 54.031758732046,
+        "fit_including_compile_and_validation_seconds": 26.306928114034235,
+        "first_training_batch_including_compile_seconds": 16.460049238987267,
+        "evaluation_wall_seconds": 98.41786616493482,
+        "worker_wall_seconds": 159.97817927098367,
+        "worker_child_peak_rss_bytes": 1803399168,
+        "scope": "Nested timings overlap; scheduler allocation is authoritative for resource charging."
+      },
+      "evaluation_sha256": "006f952b9639d35e7b36f8ba61a44328f7abe5a3149d080bf1038ed3ba65255c",
+      "training_sha256": "a87b7d1b7d923bde1560801f10842d6bbfb272e43511ca4bba879b206955ecfd"
+    },
+    {
+      "id": "small-u00300-s0",
+      "architecture": "small",
+      "widths": [
+        128,
+        128
+      ],
+      "requested_updates": 300,
+      "seed": 0,
+      "status": "completed",
+      "checks_status": "fail",
+      "actual_optimizer_updates": 300,
+      "actual_example_presentations": 76800,
+      "unique_training_rows_seen": 76800,
+      "same_seed_reload_exact": true,
+      "checkpoint_sha256": "6a920c3057f2a3e694995172be84bad83686a532442b520d5fe991a0811fe319",
+      "evaluation_verified_checkpoint_sha256": "6a920c3057f2a3e694995172be84bad83686a532442b520d5fe991a0811fe319",
+      "job_id": "8641249",
+      "submission_status": "submitted",
+      "script_sha256": "ada64a7d63853abe2529109c5090f5a0e1c90d07c5c49cce9d959d4ce6d568c6",
+      "scheduler": {
+        "job_id": "8641249",
+        "job_name": "heston-small-u00300-s0",
+        "state": "COMPLETED",
+        "exit_code": "0:0",
+        "elapsed_seconds": 155,
+        "allocated_cpus": 4,
+        "allocated_gpus": 1,
+        "allocated_cpu_seconds": 620,
+        "gpu_seconds": 155,
+        "allocated_tres": {
+          "billing": "110",
+          "cpu": "4",
+          "gres/gpu": "1",
+          "mem": "24G",
+          "node": "1"
+        }
+      },
+      "gates": {
+        "finite_in_support_without_clipping": true,
+        "development_rank_screen": false,
+        "conditional_all_cases": false,
+        "predictive_pricing_completed": true,
+        "coverage_within_control_margin": false
+      },
+      "parameters": {
+        "initial_variance": {
+          "rank_ks": 0.1553627870442208,
+          "rank_passed": false,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.004057980718115694,
+          "recovery_correlation": 0.9980999711306612,
+          "mean_physical_central90_width": 0.02193862038939189,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.994140625,
+              "wilson_interval": [
+                0.9829162193160559,
+                0.998005324207814
+              ]
+            },
+            "0.95": {
+              "coverage": 0.994140625,
+              "wilson_interval": [
+                0.9829162193160559,
+                0.998005324207814
+              ]
+            }
+          }
+        },
+        "theta": {
+          "rank_ks": 0.12183880701567096,
+          "rank_passed": false,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.008540577066355052,
+          "recovery_correlation": 0.9961137861376708,
+          "mean_physical_central90_width": 0.02510061624088847,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.9765625,
+              "wilson_interval": [
+                0.9594842199324425,
+                0.986542881331685
+              ]
+            },
+            "0.95": {
+              "coverage": 0.994140625,
+              "wilson_interval": [
+                0.9829162193160559,
+                0.998005324207814
+              ]
+            }
+          }
+        },
+        "vol_of_vol": {
+          "rank_ks": 0.07560427844123685,
+          "rank_passed": false,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.0406522645216588,
+          "recovery_correlation": 0.9791476915803494,
+          "mean_physical_central90_width": 0.39821476306969983,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.955078125,
+              "wilson_interval": [
+                0.9334960572612445,
+                0.9698822812409755
+              ]
+            },
+            "0.95": {
+              "coverage": 0.986328125,
+              "wilson_interval": [
+                0.9720509995117902,
+                0.9933619030077497
+              ]
+            }
+          }
+        },
+        "rho": {
+          "rank_ks": 0.08355446911691211,
+          "rank_passed": false,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.10914299914914964,
+          "recovery_correlation": 0.9464681523781209,
+          "mean_physical_central90_width": 0.3147108909906817,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.958984375,
+              "wilson_interval": [
+                0.9381136079604665,
+                0.9730190510439184
+              ]
+            },
+            "0.95": {
+              "coverage": 0.9765625,
+              "wilson_interval": [
+                0.9594842199324425,
+                0.986542881331685
+              ]
+            }
+          }
+        }
+      },
+      "conditional": {
+        "0": {
+          "status": "fail",
+          "sampling_seed": 811083,
+          "reference_chain_shape": [
+            4,
+            8000,
+            4
+          ],
+          "block_lengths": [
+            40,
+            80
+          ],
+          "family_confidence": 0.95,
+          "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+          "parameter_order": [
+            "initial_variance",
+            "theta",
+            "vol_of_vol",
+            "rho"
+          ],
+          "parameter_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "signed_standardized_mean_difference": [
+            9.484943439094316,
+            -3.6225291624051104,
+            -2.3863648948337977,
+            -6.499471697731048
+          ],
+          "signed_standardized_mean_interval": [
+            [
+              8.601942402827893,
+              10.367944475360739
+            ],
+            [
+              -3.8555423508979647,
+              -3.389515973912256
+            ],
+            [
+              -2.6989749174285356,
+              -2.0737548722390597
+            ],
+            [
+              -7.083926478327669,
+              -5.915016917134427
+            ]
+          ],
+          "mean_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "width_ratio_90": [
+            14.106072618045703,
+            3.3532149844593353,
+            5.650230199461163,
+            9.55375044471841
+          ],
+          "width_ratio_interval": [
+            [
+              13.053493326657165,
+              15.243527516058057
+            ],
+            [
+              3.126078800067675,
+              3.5968545424252274
+            ],
+            [
+              5.266090092228499,
+              6.062391783615101
+            ],
+            [
+              8.926919678418479,
+              10.224596036258685
+            ]
+          ],
+          "width_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ]
+        },
+        "1": {
+          "status": "fail",
+          "sampling_seed": 811084,
+          "reference_chain_shape": [
+            4,
+            8000,
+            4
+          ],
+          "block_lengths": [
+            38,
+            76
+          ],
+          "family_confidence": 0.95,
+          "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+          "parameter_order": [
+            "initial_variance",
+            "theta",
+            "vol_of_vol",
+            "rho"
+          ],
+          "parameter_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "signed_standardized_mean_difference": [
+            -2.741610999252142,
+            5.878154766130303,
+            -3.1945169286549366,
+            2.466397621649724
+          ],
+          "signed_standardized_mean_interval": [
+            [
+              -3.3046060922968494,
+              -2.1786159062074346
+            ],
+            [
+              5.4023725684546395,
+              6.353936963805966
+            ],
+            [
+              -3.4505616549477427,
+              -2.9384722023621306
+            ],
+            [
+              2.2114204114766234,
+              2.7213748318228244
+            ]
+          ],
+          "mean_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "width_ratio_90": [
+            10.631395766627364,
+            8.597712682799328,
+            3.685418027125823,
+            4.26068208740151
+          ],
+          "width_ratio_interval": [
+            [
+              9.792101492912243,
+              11.542627088625826
+            ],
+            [
+              7.989272744218985,
+              9.25248964988174
+            ],
+            [
+              3.36906047618338,
+              4.031481812416329
+            ],
+            [
+              3.89054529319478,
+              4.666032774803436
+            ]
+          ],
+          "width_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ]
+        },
+        "2": {
+          "status": "fail",
+          "sampling_seed": 811085,
+          "reference_chain_shape": [
+            4,
+            8000,
+            4
+          ],
+          "block_lengths": [
+            44,
+            88
+          ],
+          "family_confidence": 0.95,
+          "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+          "parameter_order": [
+            "initial_variance",
+            "theta",
+            "vol_of_vol",
+            "rho"
+          ],
+          "parameter_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "signed_standardized_mean_difference": [
+            -4.713457453299669,
+            0.01611289098545868,
+            -3.00383612745005,
+            -2.416279991994442
+          ],
+          "signed_standardized_mean_interval": [
+            [
+              -6.113871328009754,
+              -3.3130435785895838
+            ],
+            [
+              -0.24490123183481302,
+              0.2771270138057304
+            ],
+            [
+              -3.335387342956499,
+              -2.6722849119436005
+            ],
+            [
+              -2.664962558405663,
+              -2.167597425583221
+            ]
+          ],
+          "mean_status": [
+            "fail",
+            "pass",
+            "fail",
+            "fail"
+          ],
+          "width_ratio_90": [
+            26.431386701927792,
+            4.813091685033818,
+            5.822268512029837,
+            3.136239306838396
+          ],
+          "width_ratio_interval": [
+            [
+              24.109453642584626,
+              28.976940470889527
+            ],
+            [
+              4.478270339535061,
+              5.172946207384788
+            ],
+            [
+              5.328049999922852,
+              6.362329675334312
+            ],
+            [
+              2.820608819241032,
+              3.487189333969695
+            ]
+          ],
+          "width_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ]
+        }
+      },
+      "posterior_predictive": {
+        "status": "completed_descriptive_check",
+        "observations": 32,
+        "paired_draws": 32,
+        "central90_quote_coverage": 0.9499007936507936,
+        "mean_absolute_residual_over_quote_sigma": 1.1486558236810573,
+        "scope": "Fixed development panel; replicated quotes include new Gaussian observation noise. No new adequacy/acceptance rule."
+      },
+      "cost": {
+        "training_wall_seconds": 43.898288756026886,
+        "fit_including_compile_and_validation_seconds": 25.835506423027255,
+        "first_training_batch_including_compile_seconds": 16.32987191597931,
+        "evaluation_wall_seconds": 102.45948606193997,
+        "worker_wall_seconds": 150.88940292410553,
+        "worker_child_peak_rss_bytes": 1819361280,
+        "scope": "Nested timings overlap; scheduler allocation is authoritative for resource charging."
+      },
+      "evaluation_sha256": "d880a1a4a053c968106cea1372d3ca70311a97111b22e110ddf55773da15e8fb",
+      "training_sha256": "7188566cbeac6a9f5a29b808142d9b2aec29781e46175a5f933c4cd8d0730c9d"
+    },
+    {
+      "id": "small-u01000-s0",
+      "architecture": "small",
+      "widths": [
+        128,
+        128
+      ],
+      "requested_updates": 1000,
+      "seed": 0,
+      "status": "completed",
+      "checks_status": "fail",
+      "actual_optimizer_updates": 1000,
+      "actual_example_presentations": 255808,
+      "unique_training_rows_seen": 100000,
+      "same_seed_reload_exact": true,
+      "checkpoint_sha256": "6857ee09c90510ad2a038cc7ab8f9dfef69b8b87aa9de3861b6248bf2394cb1b",
+      "evaluation_verified_checkpoint_sha256": "6857ee09c90510ad2a038cc7ab8f9dfef69b8b87aa9de3861b6248bf2394cb1b",
+      "job_id": "8641251",
+      "submission_status": "submitted",
+      "script_sha256": "2fb88a39f0eda5b0942c34a492c244f0f46be643725bc289235b3349866d114d",
+      "scheduler": {
+        "job_id": "8641251",
+        "job_name": "heston-small-u01000-s0",
+        "state": "COMPLETED",
+        "exit_code": "0:0",
+        "elapsed_seconds": 167,
+        "allocated_cpus": 4,
+        "allocated_gpus": 1,
+        "allocated_cpu_seconds": 668,
+        "gpu_seconds": 167,
+        "allocated_tres": {
+          "billing": "110",
+          "cpu": "4",
+          "gres/gpu": "1",
+          "mem": "24G",
+          "node": "1"
+        }
+      },
+      "gates": {
+        "finite_in_support_without_clipping": true,
+        "development_rank_screen": false,
+        "conditional_all_cases": false,
+        "predictive_pricing_completed": true,
+        "coverage_within_control_margin": false
+      },
+      "parameters": {
+        "initial_variance": {
+          "rank_ks": 0.11117565463073353,
+          "rank_passed": false,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.0013587773355432774,
+          "recovery_correlation": 0.999384980068394,
+          "mean_physical_central90_width": 0.01034232143028931,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.98828125,
+              "wilson_interval": [
+                0.9746716344674621,
+                0.9946184283031602
+              ]
+            },
+            "0.95": {
+              "coverage": 1.0,
+              "wilson_interval": [
+                0.9925530242771171,
+                0.9999999999999999
+              ]
+            }
+          }
+        },
+        "theta": {
+          "rank_ks": 0.08310713511224366,
+          "rank_passed": false,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.0034482309825161423,
+          "recovery_correlation": 0.9983986106933939,
+          "mean_physical_central90_width": 0.013531680005053209,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.970703125,
+              "wilson_interval": [
+                0.9522288905280138,
+                0.982166729982866
+              ]
+            },
+            "0.95": {
+              "coverage": 0.984375,
+              "wilson_interval": [
+                0.9694739672468663,
+                0.9920617750215911
+              ]
+            }
+          }
+        },
+        "vol_of_vol": {
+          "rank_ks": 0.05384125592252323,
+          "rank_passed": true,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.019215874601205368,
+          "recovery_correlation": 0.9907558217736478,
+          "mean_physical_central90_width": 0.22723049386477212,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.9375,
+              "wilson_interval": [
+                0.9131004927359689,
+                0.9553834035065087
+              ]
+            },
+            "0.95": {
+              "coverage": 0.982421875,
+              "wilson_interval": [
+                0.9669335150663066,
+                0.9907250669510682
+              ]
+            }
+          }
+        },
+        "rho": {
+          "rank_ks": 0.06047738116025114,
+          "rank_passed": true,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.0622552724094872,
+          "recovery_correlation": 0.9681606343378033,
+          "mean_physical_central90_width": 0.20253652356332172,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.96484375,
+              "wilson_interval": [
+                0.9451159458429383,
+                0.9776481939146942
+              ]
+            },
+            "0.95": {
+              "coverage": 0.986328125,
+              "wilson_interval": [
+                0.9720509995117902,
+                0.9933619030077497
+              ]
+            }
+          }
+        }
+      },
+      "conditional": {
+        "0": {
+          "status": "fail",
+          "sampling_seed": 811083,
+          "reference_chain_shape": [
+            4,
+            8000,
+            4
+          ],
+          "block_lengths": [
+            40,
+            80
+          ],
+          "family_confidence": 0.95,
+          "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+          "parameter_order": [
+            "initial_variance",
+            "theta",
+            "vol_of_vol",
+            "rho"
+          ],
+          "parameter_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "signed_standardized_mean_difference": [
+            3.9109718244029814,
+            -1.880637088218753,
+            -1.0899795435150392,
+            -4.018463523736722
+          ],
+          "signed_standardized_mean_interval": [
+            [
+              3.459148434346424,
+              4.362795214459539
+            ],
+            [
+              -2.0206061550057743,
+              -1.7406680214317318
+            ],
+            [
+              -1.275292580043181,
+              -0.9046665069868975
+            ],
+            [
+              -4.411950347934893,
+              -3.624976699538551
+            ]
+          ],
+          "mean_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "width_ratio_90": [
+            7.417615206008935,
+            1.919673022862818,
+            3.342613279947309,
+            6.260775998240853
+          ],
+          "width_ratio_interval": [
+            [
+              6.71122051746962,
+              8.198362011975725
+            ],
+            [
+              1.7917043100249064,
+              2.056781631929011
+            ],
+            [
+              3.1366377043418154,
+              3.5621147841888336
+            ],
+            [
+              5.580437155402238,
+              7.024058332455749
+            ]
+          ],
+          "width_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ]
+        },
+        "1": {
+          "status": "fail",
+          "sampling_seed": 811084,
+          "reference_chain_shape": [
+            4,
+            8000,
+            4
+          ],
+          "block_lengths": [
+            38,
+            76
+          ],
+          "family_confidence": 0.95,
+          "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+          "parameter_order": [
+            "initial_variance",
+            "theta",
+            "vol_of_vol",
+            "rho"
+          ],
+          "parameter_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "signed_standardized_mean_difference": [
+            -1.6561958383035282,
+            3.8865034542692913,
+            -0.46670244740287803,
+            1.4259594580038124
+          ],
+          "signed_standardized_mean_interval": [
+            [
+              -1.9975576871962686,
+              -1.3148339894107879
+            ],
+            [
+              3.588991310540215,
+              4.184015597998368
+            ],
+            [
+              -0.5757053601144512,
+              -0.3576995346913049
+            ],
+            [
+              1.260785015053835,
+              1.59113390095379
+            ]
+          ],
+          "mean_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "width_ratio_90": [
+            6.25520718925152,
+            4.6989041424024975,
+            1.4913298327757,
+            2.793994194214249
+          ],
+          "width_ratio_interval": [
+            [
+              5.739944225085167,
+              6.816724247853356
+            ],
+            [
+              4.306978059505115,
+              5.126494687094919
+            ],
+            [
+              1.38289001542752,
+              1.6082729973570808
+            ],
+            [
+              2.593245046006577,
+              3.0102838022670735
+            ]
+          ],
+          "width_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ]
+        },
+        "2": {
+          "status": "fail",
+          "sampling_seed": 811085,
+          "reference_chain_shape": [
+            4,
+            8000,
+            4
+          ],
+          "block_lengths": [
+            44,
+            88
+          ],
+          "family_confidence": 0.95,
+          "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+          "parameter_order": [
+            "initial_variance",
+            "theta",
+            "vol_of_vol",
+            "rho"
+          ],
+          "parameter_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "signed_standardized_mean_difference": [
+            0.00041686150287814606,
+            -0.3756084550992907,
+            0.368419494684355,
+            -1.3251556267700568
+          ],
+          "signed_standardized_mean_interval": [
+            [
+              -0.7813883667709243,
+              0.7822220897766805
+            ],
+            [
+              -0.5435686768314376,
+              -0.20764823336714372
+            ],
+            [
+              0.19510799149071692,
+              0.5417309978779931
+            ],
+            [
+              -1.4630631520143913,
+              -1.1872481015257224
+            ]
+          ],
+          "mean_status": [
+            "inconclusive",
+            "inconclusive",
+            "inconclusive",
+            "fail"
+          ],
+          "width_ratio_90": [
+            14.381705158103001,
+            3.2398208857132125,
+            2.976881078283208,
+            1.8882672133457523
+          ],
+          "width_ratio_interval": [
+            [
+              13.198653744539987,
+              15.670798496412504
+            ],
+            [
+              3.045482469638722,
+              3.446560430455773
+            ],
+            [
+              2.753156994842599,
+              3.2187851876377422
+            ],
+            [
+              1.736608802023614,
+              2.0531699855728642
+            ]
+          ],
+          "width_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ]
+        }
+      },
+      "posterior_predictive": {
+        "status": "completed_descriptive_check",
+        "observations": 32,
+        "paired_draws": 32,
+        "central90_quote_coverage": 0.9250992063492064,
+        "mean_absolute_residual_over_quote_sigma": 0.9034257482362814,
+        "scope": "Fixed development panel; replicated quotes include new Gaussian observation noise. No new adequacy/acceptance rule."
+      },
+      "cost": {
+        "training_wall_seconds": 61.48658844898455,
+        "fit_including_compile_and_validation_seconds": 43.02883238799404,
+        "first_training_batch_including_compile_seconds": 16.569126526010223,
+        "evaluation_wall_seconds": 97.25994605605956,
+        "worker_wall_seconds": 163.1734057359863,
+        "worker_child_peak_rss_bytes": 1808789504,
+        "scope": "Nested timings overlap; scheduler allocation is authoritative for resource charging."
+      },
+      "evaluation_sha256": "efd6f9f9fc12aa8fc5026f5dccb16c20cddecf4e9df1329d2ba81d5efdd0a10a",
+      "training_sha256": "7b9979865249c7bad30d2421ca03c643567ddd4f1793f6fe9986b9f1ea724d0d"
+    },
+    {
+      "id": "small-u03000-s0",
+      "architecture": "small",
+      "widths": [
+        128,
+        128
+      ],
+      "requested_updates": 3000,
+      "seed": 0,
+      "status": "completed",
+      "checks_status": "fail",
+      "actual_optimizer_updates": 3000,
+      "actual_example_presentations": 767328,
+      "unique_training_rows_seen": 100000,
+      "same_seed_reload_exact": true,
+      "checkpoint_sha256": "a269178c4df6dc8591b16629c44244853d06120609c2337593db0af29395c5ac",
+      "evaluation_verified_checkpoint_sha256": "a269178c4df6dc8591b16629c44244853d06120609c2337593db0af29395c5ac",
+      "job_id": "8641253",
+      "submission_status": "submitted",
+      "script_sha256": "8fdf14d0cc805ced3b12d22986de9336cefa6cef6f365c857a38017ec3df11e8",
+      "scheduler": {
+        "job_id": "8641253",
+        "job_name": "heston-small-u03000-s0",
+        "state": "COMPLETED",
+        "exit_code": "0:0",
+        "elapsed_seconds": 173,
+        "allocated_cpus": 4,
+        "allocated_gpus": 1,
+        "allocated_cpu_seconds": 692,
+        "gpu_seconds": 173,
+        "allocated_tres": {
+          "billing": "110",
+          "cpu": "4",
+          "gres/gpu": "1",
+          "mem": "24G",
+          "node": "1"
+        }
+      },
+      "gates": {
+        "finite_in_support_without_clipping": true,
+        "development_rank_screen": false,
+        "conditional_all_cases": false,
+        "predictive_pricing_completed": true,
+        "coverage_within_control_margin": false
+      },
+      "parameters": {
+        "initial_variance": {
+          "rank_ks": 0.10816762257046852,
+          "rank_passed": false,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.0004960262824229937,
+          "recovery_correlation": 0.999768119842621,
+          "mean_physical_central90_width": 0.005534489107503755,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.986328125,
+              "wilson_interval": [
+                0.9720509995117902,
+                0.9933619030077497
+              ]
+            },
+            "0.95": {
+              "coverage": 0.99609375,
+              "wilson_interval": [
+                0.985870592855346,
+                0.9989281109196064
+              ]
+            }
+          }
+        },
+        "theta": {
+          "rank_ks": 0.054646795894334854,
+          "rank_passed": true,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.0018807592572390758,
+          "recovery_correlation": 0.9990923184575159,
+          "mean_physical_central90_width": 0.008201914547043988,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.94140625,
+              "wilson_interval": [
+                0.9175865885145797,
+                0.9586516282300628
+              ]
+            },
+            "0.95": {
+              "coverage": 0.974609375,
+              "wilson_interval": [
+                0.9570473392668004,
+                0.9851026017462445
+              ]
+            }
+          }
+        },
+        "vol_of_vol": {
+          "rank_ks": 0.044910934517278706,
+          "rank_passed": true,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.011203916014367127,
+          "recovery_correlation": 0.9946038580367664,
+          "mean_physical_central90_width": 0.1616648286857526,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.9296875,
+              "wilson_interval": [
+                0.9041932796740074,
+                0.9487819755641401
+              ]
+            },
+            "0.95": {
+              "coverage": 0.970703125,
+              "wilson_interval": [
+                0.9522288905280138,
+                0.982166729982866
+              ]
+            }
+          }
+        },
+        "rho": {
+          "rank_ks": 0.04426343138278832,
+          "rank_passed": true,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.04102431822846115,
+          "recovery_correlation": 0.9790006847449358,
+          "mean_physical_central90_width": 0.14769056024670127,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.955078125,
+              "wilson_interval": [
+                0.9334960572612445,
+                0.9698822812409755
+              ]
+            },
+            "0.95": {
+              "coverage": 0.984375,
+              "wilson_interval": [
+                0.9694739672468663,
+                0.9920617750215911
+              ]
+            }
+          }
+        }
+      },
+      "conditional": {
+        "0": {
+          "status": "fail",
+          "sampling_seed": 811083,
+          "reference_chain_shape": [
+            4,
+            8000,
+            4
+          ],
+          "block_lengths": [
+            40,
+            80
+          ],
+          "family_confidence": 0.95,
+          "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+          "parameter_order": [
+            "initial_variance",
+            "theta",
+            "vol_of_vol",
+            "rho"
+          ],
+          "parameter_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "signed_standardized_mean_difference": [
+            3.085074224261878,
+            -0.815959016760905,
+            -1.0577126065841655,
+            -2.1240795537574537
+          ],
+          "signed_standardized_mean_interval": [
+            [
+              2.837379559621167,
+              3.332768888902589
+            ],
+            [
+              -0.9195934469526812,
+              -0.7123245865691288
+            ],
+            [
+              -1.1929516236729047,
+              -0.9224735894954262
+            ],
+            [
+              -2.3595952351499223,
+              -1.8885638723649851
+            ]
+          ],
+          "mean_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "width_ratio_90": [
+            3.5943208041849015,
+            1.3709472433870213,
+            2.0195453233605942,
+            3.146917831504683
+          ],
+          "width_ratio_interval": [
+            [
+              3.229339814865642,
+              4.0005520583264795
+            ],
+            [
+              1.2904103933062336,
+              1.456510544164875
+            ],
+            [
+              1.8431883606224362,
+              2.2127761873074845
+            ],
+            [
+              2.7832768152850864,
+              3.5580693173804123
+            ]
+          ],
+          "width_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ]
+        },
+        "1": {
+          "status": "fail",
+          "sampling_seed": 811084,
+          "reference_chain_shape": [
+            4,
+            8000,
+            4
+          ],
+          "block_lengths": [
+            38,
+            76
+          ],
+          "family_confidence": 0.95,
+          "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+          "parameter_order": [
+            "initial_variance",
+            "theta",
+            "vol_of_vol",
+            "rho"
+          ],
+          "parameter_status": [
+            "fail",
+            "fail",
+            "inconclusive",
+            "fail"
+          ],
+          "signed_standardized_mean_difference": [
+            -0.6786869815906446,
+            0.7118549008655337,
+            -0.35001727658024795,
+            0.37001847021782985
+          ],
+          "signed_standardized_mean_interval": [
+            [
+              -0.8766038807686138,
+              -0.48077008241267527
+            ],
+            [
+              0.549686822200322,
+              0.8740229795307455
+            ],
+            [
+              -0.447293148909932,
+              -0.2527414042505639
+            ],
+            [
+              0.24441875972462385,
+              0.49561818071103586
+            ]
+          ],
+          "mean_status": [
+            "fail",
+            "fail",
+            "inconclusive",
+            "inconclusive"
+          ],
+          "width_ratio_90": [
+            3.3897158575501263,
+            2.7105965954820017,
+            1.252319415961021,
+            2.0339757024800265
+          ],
+          "width_ratio_interval": [
+            [
+              3.1180694903949684,
+              3.6850280695544466
+            ],
+            [
+              2.530310277478063,
+              2.903728435534649
+            ],
+            [
+              1.1746026312953237,
+              1.335178278856284
+            ],
+            [
+              1.886330009332848,
+              2.1931778309259364
+            ]
+          ],
+          "width_status": [
+            "fail",
+            "fail",
+            "inconclusive",
+            "fail"
+          ]
+        },
+        "2": {
+          "status": "fail",
+          "sampling_seed": 811085,
+          "reference_chain_shape": [
+            4,
+            8000,
+            4
+          ],
+          "block_lengths": [
+            44,
+            88
+          ],
+          "family_confidence": 0.95,
+          "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+          "parameter_order": [
+            "initial_variance",
+            "theta",
+            "vol_of_vol",
+            "rho"
+          ],
+          "parameter_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "signed_standardized_mean_difference": [
+            1.1833963857192364,
+            0.24086064596002052,
+            0.8813966258028783,
+            -1.1069112186592103
+          ],
+          "signed_standardized_mean_interval": [
+            [
+              0.718849422154273,
+              1.6479433492842
+            ],
+            [
+              0.12278772316883306,
+              0.35893356875120797
+            ],
+            [
+              0.757488100419601,
+              1.0053051511861555
+            ],
+            [
+              -1.2226376284846516,
+              -0.9911848088337689
+            ]
+          ],
+          "mean_status": [
+            "fail",
+            "inconclusive",
+            "fail",
+            "fail"
+          ],
+          "width_ratio_90": [
+            8.612634260078272,
+            1.9297219577669915,
+            1.9537204940690327,
+            1.3281956086747218
+          ],
+          "width_ratio_interval": [
+            [
+              8.047515136470219,
+              9.217437636334724
+            ],
+            [
+              1.778215749812386,
+              2.09413668430333
+            ],
+            [
+              1.8102740552455308,
+              2.1085336542745927
+            ],
+            [
+              1.2300555366428012,
+              1.434165793617412
+            ]
+          ],
+          "width_status": [
+            "fail",
+            "fail",
+            "fail",
+            "inconclusive"
+          ]
+        }
+      },
+      "posterior_predictive": {
+        "status": "completed_descriptive_check",
+        "observations": 32,
+        "paired_draws": 32,
+        "central90_quote_coverage": 0.9072420634920635,
+        "mean_absolute_residual_over_quote_sigma": 0.8163417515804811,
+        "scope": "Fixed development panel; replicated quotes include new Gaussian observation noise. No new adequacy/acceptance rule."
+      },
+      "cost": {
+        "training_wall_seconds": 63.7646934579825,
+        "fit_including_compile_and_validation_seconds": 45.94716179498937,
+        "first_training_batch_including_compile_seconds": 16.74512439907994,
+        "evaluation_wall_seconds": 101.45822999707889,
+        "worker_wall_seconds": 169.47382976394147,
+        "worker_child_peak_rss_bytes": 1824317440,
+        "scope": "Nested timings overlap; scheduler allocation is authoritative for resource charging."
+      },
+      "evaluation_sha256": "f2e7d04e21bbbe4c06e9514ad8c09d5c6c72c32c5eee252731f3cf88a5ba9ea3",
+      "training_sha256": "2c9b21cdaee09234e16b934c5086c0c3b762ac3566601f852340aae2a5e2b56b"
+    },
+    {
+      "id": "small-u10000-s0",
+      "architecture": "small",
+      "widths": [
+        128,
+        128
+      ],
+      "requested_updates": 10000,
+      "seed": 0,
+      "status": "completed",
+      "checks_status": "fail",
+      "actual_optimizer_updates": 10000,
+      "actual_example_presentations": 2557600,
+      "unique_training_rows_seen": 100000,
+      "same_seed_reload_exact": true,
+      "checkpoint_sha256": "9e2692c14429990bd59fd397e520e91cd6e5a5c075bfc2be7faeb90b6aa4ca50",
+      "evaluation_verified_checkpoint_sha256": "9e2692c14429990bd59fd397e520e91cd6e5a5c075bfc2be7faeb90b6aa4ca50",
+      "job_id": "8641255",
+      "submission_status": "submitted",
+      "script_sha256": "2f9eab0f814b9ddcae09c9b9a46b8b75ac8c588a429cd1994d368ba268c15c0d",
+      "scheduler": {
+        "job_id": "8641255",
+        "job_name": "heston-small-u10000-s0",
+        "state": "COMPLETED",
+        "exit_code": "0:0",
+        "elapsed_seconds": 183,
+        "allocated_cpus": 4,
+        "allocated_gpus": 1,
+        "allocated_cpu_seconds": 732,
+        "gpu_seconds": 183,
+        "allocated_tres": {
+          "billing": "110",
+          "cpu": "4",
+          "gres/gpu": "1",
+          "mem": "24G",
+          "node": "1"
+        }
+      },
+      "gates": {
+        "finite_in_support_without_clipping": true,
+        "development_rank_screen": false,
+        "conditional_all_cases": false,
+        "predictive_pricing_completed": true,
+        "coverage_within_control_margin": false
+      },
+      "parameters": {
+        "initial_variance": {
+          "rank_ks": 0.0843881337283219,
+          "rank_passed": false,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.00021981639185624524,
+          "recovery_correlation": 0.9998922648919849,
+          "mean_physical_central90_width": 0.0031302965947361374,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.966796875,
+              "wilson_interval": [
+                0.9474733440447254,
+                0.9791679559639896
+              ]
+            },
+            "0.95": {
+              "coverage": 0.982421875,
+              "wilson_interval": [
+                0.9669335150663066,
+                0.9907250669510682
+              ]
+            }
+          }
+        },
+        "theta": {
+          "rank_ks": 0.029661797693980696,
+          "rank_passed": true,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.0014795644288818606,
+          "recovery_correlation": 0.9992575449172195,
+          "mean_physical_central90_width": 0.006000479614976938,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.896484375,
+              "wilson_interval": [
+                0.8670780645066506,
+                0.9199854664630948
+              ]
+            },
+            "0.95": {
+              "coverage": 0.951171875,
+              "wilson_interval": [
+                0.9289134485442119,
+                0.9667105694558431
+              ]
+            }
+          }
+        },
+        "vol_of_vol": {
+          "rank_ks": 0.025988438281388748,
+          "rank_passed": true,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.007998330012926746,
+          "recovery_correlation": 0.9958846655426267,
+          "mean_physical_central90_width": 0.12565609010562181,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.9296875,
+              "wilson_interval": [
+                0.9041932796740074,
+                0.9487819755641401
+              ]
+            },
+            "0.95": {
+              "coverage": 0.962890625,
+              "wilson_interval": [
+                0.9427707550251679,
+                0.976116224481382
+              ]
+            }
+          }
+        },
+        "rho": {
+          "rank_ks": 0.03672973762770759,
+          "rank_passed": true,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.031009741116395706,
+          "recovery_correlation": 0.9842495816313565,
+          "mean_physical_central90_width": 0.11455489098734697,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.9140625,
+              "wilson_interval": [
+                0.8865969291864807,
+                0.935361044043007
+              ]
+            },
+            "0.95": {
+              "coverage": 0.958984375,
+              "wilson_interval": [
+                0.9381136079604665,
+                0.9730190510439184
+              ]
+            }
+          }
+        }
+      },
+      "conditional": {
+        "0": {
+          "status": "fail",
+          "sampling_seed": 811083,
+          "reference_chain_shape": [
+            4,
+            8000,
+            4
+          ],
+          "block_lengths": [
+            40,
+            80
+          ],
+          "family_confidence": 0.95,
+          "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+          "parameter_order": [
+            "initial_variance",
+            "theta",
+            "vol_of_vol",
+            "rho"
+          ],
+          "parameter_status": [
+            "fail",
+            "pass",
+            "fail",
+            "fail"
+          ],
+          "signed_standardized_mean_difference": [
+            1.7546697923219254,
+            -0.1321829070504552,
+            -0.49079399592763945,
+            -0.9382061460556693
+          ],
+          "signed_standardized_mean_interval": [
+            [
+              1.5866039527463278,
+              1.922735631897523
+            ],
+            [
+              -0.22198386108680213,
+              -0.042381953014108284
+            ],
+            [
+              -0.6002449304792689,
+              -0.38134306137601004
+            ],
+            [
+              -1.0970403489349791,
+              -0.7793719431763595
+            ]
+          ],
+          "mean_status": [
+            "fail",
+            "pass",
+            "fail",
+            "fail"
+          ],
+          "width_ratio_90": [
+            2.427333404202066,
+            1.0516574624635524,
+            1.5062529488520124,
+            1.9201146800281041
+          ],
+          "width_ratio_interval": [
+            [
+              2.243712841312899,
+              2.6259810732765354
+            ],
+            [
+              0.9908327200747025,
+              1.1162160836512283
+            ],
+            [
+              1.399360763210083,
+              1.6213102479169437
+            ],
+            [
+              1.7203000556261319,
+              2.1431379789832894
+            ]
+          ],
+          "width_status": [
+            "fail",
+            "pass",
+            "fail",
+            "fail"
+          ]
+        },
+        "1": {
+          "status": "fail",
+          "sampling_seed": 811084,
+          "reference_chain_shape": [
+            4,
+            8000,
+            4
+          ],
+          "block_lengths": [
+            38,
+            76
+          ],
+          "family_confidence": 0.95,
+          "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+          "parameter_order": [
+            "initial_variance",
+            "theta",
+            "vol_of_vol",
+            "rho"
+          ],
+          "parameter_status": [
+            "fail",
+            "fail",
+            "pass",
+            "fail"
+          ],
+          "signed_standardized_mean_difference": [
+            0.21432752448420744,
+            -0.2425752597891617,
+            0.09057605587780526,
+            0.16841072031890186
+          ],
+          "signed_standardized_mean_interval": [
+            [
+              0.09206857666420115,
+              0.33658647230421374
+            ],
+            [
+              -0.3739235860536432,
+              -0.11122693352468022
+            ],
+            [
+              0.00648680580449619,
+              0.17466530595111435
+            ],
+            [
+              0.06288938881671118,
+              0.27393205182109254
+            ]
+          ],
+          "mean_status": [
+            "inconclusive",
+            "inconclusive",
+            "pass",
+            "pass"
+          ],
+          "width_ratio_90": [
+            2.001384982166688,
+            2.176658768783714,
+            0.9724985391235853,
+            1.5773649077303455
+          ],
+          "width_ratio_interval": [
+            [
+              1.8605930679751292,
+              2.1528306838214535
+            ],
+            [
+              2.049130895636326,
+              2.3121233523014
+            ],
+            [
+              0.9109713996028908,
+              1.0381812305082014
+            ],
+            [
+              1.4657021537878467,
+              1.6975345541446882
+            ]
+          ],
+          "width_status": [
+            "fail",
+            "fail",
+            "pass",
+            "fail"
+          ]
+        },
+        "2": {
+          "status": "fail",
+          "sampling_seed": 811085,
+          "reference_chain_shape": [
+            4,
+            8000,
+            4
+          ],
+          "block_lengths": [
+            44,
+            88
+          ],
+          "family_confidence": 0.95,
+          "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+          "parameter_order": [
+            "initial_variance",
+            "theta",
+            "vol_of_vol",
+            "rho"
+          ],
+          "parameter_status": [
+            "fail",
+            "inconclusive",
+            "fail",
+            "fail"
+          ],
+          "signed_standardized_mean_difference": [
+            -0.5347206764442264,
+            0.01825431685315053,
+            -0.21321740962807764,
+            -0.663863720175036
+          ],
+          "signed_standardized_mean_interval": [
+            [
+              -0.7889463003641862,
+              -0.28049505252426654
+            ],
+            [
+              -0.07566936283015939,
+              0.11217799653646045
+            ],
+            [
+              -0.31190799619613857,
+              -0.11452682306001671
+            ],
+            [
+              -0.7648878419984692,
+              -0.5628395983516029
+            ]
+          ],
+          "mean_status": [
+            "inconclusive",
+            "pass",
+            "inconclusive",
+            "fail"
+          ],
+          "width_ratio_90": [
+            4.642509326685151,
+            1.3263207630463438,
+            1.374898581374063,
+            1.135190452261955
+          ],
+          "width_ratio_interval": [
+            [
+              4.319740893433778,
+              4.989394822527456
+            ],
+            [
+              1.2346905677247721,
+              1.4247511177877297
+            ],
+            [
+              1.2719014007736273,
+              1.4862363607073772
+            ],
+            [
+              1.0548892051196699,
+              1.221604464859902
+            ]
+          ],
+          "width_status": [
+            "fail",
+            "inconclusive",
+            "fail",
+            "pass"
+          ]
+        }
+      },
+      "posterior_predictive": {
+        "status": "completed_descriptive_check",
+        "observations": 32,
+        "paired_draws": 32,
+        "central90_quote_coverage": 0.8943452380952381,
+        "mean_absolute_residual_over_quote_sigma": 0.7862519363770308,
+        "scope": "Fixed development panel; replicated quotes include new Gaussian observation noise. No new adequacy/acceptance rule."
+      },
+      "cost": {
+        "training_wall_seconds": 77.93306765693706,
+        "fit_including_compile_and_validation_seconds": 60.07747474091593,
+        "first_training_batch_including_compile_seconds": 16.44972107699141,
+        "evaluation_wall_seconds": 96.38485617307015,
+        "worker_wall_seconds": 178.7432013390353,
+        "worker_child_peak_rss_bytes": 1823203328,
+        "scope": "Nested timings overlap; scheduler allocation is authoritative for resource charging."
+      },
+      "evaluation_sha256": "4d2e1669fdbc2f46cd1ddca0897c04596993ae14326e8ee02f59a74c66ad181a",
+      "training_sha256": "bc3f9e714076cb5238b35cc01f478b3a37ba1d40723cf779256be3a9e5a5b58c"
+    },
+    {
+      "id": "small-u30000-s0",
+      "architecture": "small",
+      "widths": [
+        128,
+        128
+      ],
+      "requested_updates": 30000,
+      "seed": 0,
+      "status": "completed",
+      "checks_status": "fail",
+      "actual_optimizer_updates": 30000,
+      "actual_example_presentations": 7672704,
+      "unique_training_rows_seen": 100000,
+      "same_seed_reload_exact": true,
+      "checkpoint_sha256": "25f93621f97d02d99b6beab31cee7e1af1fb436cf1683efad0181972e630cce3",
+      "evaluation_verified_checkpoint_sha256": "25f93621f97d02d99b6beab31cee7e1af1fb436cf1683efad0181972e630cce3",
+      "job_id": "8641257",
+      "submission_status": "submitted",
+      "script_sha256": "b64c28a63d2e063dcd19d6708b78735dee6dd964d5b9c47a0ff7b27656cc5dc4",
+      "scheduler": {
+        "job_id": "8641257",
+        "job_name": "heston-small-u30000-s0",
+        "state": "COMPLETED",
+        "exit_code": "0:0",
+        "elapsed_seconds": 222,
+        "allocated_cpus": 4,
+        "allocated_gpus": 1,
+        "allocated_cpu_seconds": 888,
+        "gpu_seconds": 222,
+        "allocated_tres": {
+          "billing": "110",
+          "cpu": "4",
+          "gres/gpu": "1",
+          "mem": "24G",
+          "node": "1"
+        }
+      },
+      "gates": {
+        "finite_in_support_without_clipping": true,
+        "development_rank_screen": true,
+        "conditional_all_cases": false,
+        "predictive_pricing_completed": true,
+        "coverage_within_control_margin": false
+      },
+      "parameters": {
+        "initial_variance": {
+          "rank_ks": 0.05509043011573134,
+          "rank_passed": true,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.0001449715169280183,
+          "recovery_correlation": 0.9999295249410839,
+          "mean_physical_central90_width": 0.002092962909682683,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.919921875,
+              "wilson_interval": [
+                0.8931649760362443,
+                0.9404244779464908
+              ]
+            },
+            "0.95": {
+              "coverage": 0.95703125,
+              "wilson_interval": [
+                0.9358001975831783,
+                0.9714553011701242
+              ]
+            }
+          }
+        },
+        "theta": {
+          "rank_ks": 0.028882191013629946,
+          "rank_passed": true,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.0014365685533375388,
+          "recovery_correlation": 0.9992835550777545,
+          "mean_physical_central90_width": 0.005173251907763192,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.869140625,
+              "wilson_interval": [
+                0.8371591247862454,
+                0.8956241626683451
+              ]
+            },
+            "0.95": {
+              "coverage": 0.939453125,
+              "wilson_interval": [
+                0.915340639807479,
+                0.957020416686081
+              ]
+            }
+          }
+        },
+        "vol_of_vol": {
+          "rank_ks": 0.01932223961176277,
+          "rank_passed": true,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.007407740889508024,
+          "recovery_correlation": 0.9961630061602714,
+          "mean_physical_central90_width": 0.11620931016805108,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.9140625,
+              "wilson_interval": [
+                0.8865969291864807,
+                0.935361044043007
+              ]
+            },
+            "0.95": {
+              "coverage": 0.94921875,
+              "wilson_interval": [
+                0.9266340388165446,
+                0.9651128189324278
+              ]
+            }
+          }
+        },
+        "rho": {
+          "rank_ks": 0.025461933436497997,
+          "rank_passed": true,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.028827441630026727,
+          "recovery_correlation": 0.9854640279636453,
+          "mean_physical_central90_width": 0.1061748707579682,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.90234375,
+              "wilson_interval": [
+                0.8735560090639636,
+                0.9251390026590292
+              ]
+            },
+            "0.95": {
+              "coverage": 0.9453125,
+              "wilson_interval": [
+                0.9220969712394934,
+                0.9618955660073142
+              ]
+            }
+          }
+        }
+      },
+      "conditional": {
+        "0": {
+          "status": "fail",
+          "sampling_seed": 811083,
+          "reference_chain_shape": [
+            4,
+            8000,
+            4
+          ],
+          "block_lengths": [
+            40,
+            80
+          ],
+          "family_confidence": 0.95,
+          "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+          "parameter_order": [
+            "initial_variance",
+            "theta",
+            "vol_of_vol",
+            "rho"
+          ],
+          "parameter_status": [
+            "fail",
+            "pass",
+            "inconclusive",
+            "inconclusive"
+          ],
+          "signed_standardized_mean_difference": [
+            0.15791648734708577,
+            -0.07815965120371769,
+            -0.0950890746555842,
+            -0.09443773199104895
+          ],
+          "signed_standardized_mean_interval": [
+            [
+              0.04644970667294991,
+              0.26938326802122164
+            ],
+            [
+              -0.16514112037034878,
+              0.008821817962913384
+            ],
+            [
+              -0.1889858034374881,
+              -0.0011923458736802922
+            ],
+            [
+              -0.20571892649483767,
+              0.01684346251273977
+            ]
+          ],
+          "mean_status": [
+            "pass",
+            "pass",
+            "pass",
+            "pass"
+          ],
+          "width_ratio_90": [
+            1.7300133129414283,
+            0.9549891051505679,
+            1.1960605002176208,
+            1.21100626795561
+          ],
+          "width_ratio_interval": [
+            [
+              1.602140643232086,
+              1.8680919653325458
+            ],
+            [
+              0.9032376408825203,
+              1.009705696127983
+            ],
+            [
+              1.116035715850459,
+              1.2818234218343871
+            ],
+            [
+              1.1063192547582572,
+              1.3255994367993067
+            ]
+          ],
+          "width_status": [
+            "fail",
+            "pass",
+            "inconclusive",
+            "inconclusive"
+          ]
+        },
+        "1": {
+          "status": "fail",
+          "sampling_seed": 811084,
+          "reference_chain_shape": [
+            4,
+            8000,
+            4
+          ],
+          "block_lengths": [
+            38,
+            76
+          ],
+          "family_confidence": 0.95,
+          "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+          "parameter_order": [
+            "initial_variance",
+            "theta",
+            "vol_of_vol",
+            "rho"
+          ],
+          "parameter_status": [
+            "fail",
+            "fail",
+            "pass",
+            "inconclusive"
+          ],
+          "signed_standardized_mean_difference": [
+            0.9085756395752926,
+            -0.030476499514228227,
+            0.1541866602266338,
+            -0.12785183748614146
+          ],
+          "signed_standardized_mean_interval": [
+            [
+              0.803372765815836,
+              1.0137785133347492
+            ],
+            [
+              -0.1347792065422089,
+              0.07382620751375243
+            ],
+            [
+              0.07126399915740302,
+              0.2371093212958646
+            ],
+            [
+              -0.22304525641174447,
+              -0.032658418560538444
+            ]
+          ],
+          "mean_status": [
+            "fail",
+            "pass",
+            "pass",
+            "pass"
+          ],
+          "width_ratio_90": [
+            1.516569633438529,
+            1.5961753411929935,
+            0.9372020917236366,
+            1.3061702987222341
+          ],
+          "width_ratio_interval": [
+            [
+              1.4119778983022317,
+              1.628908962267316
+            ],
+            [
+              1.5087007804390697,
+              1.6887216821688809
+            ],
+            [
+              0.8702566628885665,
+              1.009297369600983
+            ],
+            [
+              1.219205169027539,
+              1.3993385958369355
+            ]
+          ],
+          "width_status": [
+            "fail",
+            "fail",
+            "pass",
+            "inconclusive"
+          ]
+        },
+        "2": {
+          "status": "fail",
+          "sampling_seed": 811085,
+          "reference_chain_shape": [
+            4,
+            8000,
+            4
+          ],
+          "block_lengths": [
+            44,
+            88
+          ],
+          "family_confidence": 0.95,
+          "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+          "parameter_order": [
+            "initial_variance",
+            "theta",
+            "vol_of_vol",
+            "rho"
+          ],
+          "parameter_status": [
+            "fail",
+            "inconclusive",
+            "inconclusive",
+            "fail"
+          ],
+          "signed_standardized_mean_difference": [
+            1.1377526303781909,
+            -0.24438726726358578,
+            0.1049832733749402,
+            -0.4190199107033239
+          ],
+          "signed_standardized_mean_interval": [
+            [
+              0.9723862603493371,
+              1.3031190004070445
+            ],
+            [
+              -0.3364699910190931,
+              -0.15230454350807848
+            ],
+            [
+              0.01100370081879315,
+              0.19896284593108726
+            ],
+            [
+              -0.5161152056592055,
+              -0.32192461574744224
+            ]
+          ],
+          "mean_status": [
+            "fail",
+            "inconclusive",
+            "pass",
+            "fail"
+          ],
+          "width_ratio_90": [
+            2.772448987764278,
+            1.266305542088551,
+            1.262128364894157,
+            1.1415113258848955
+          ],
+          "width_ratio_interval": [
+            [
+              2.5953639222814653,
+              2.961616798232421
+            ],
+            [
+              1.1860945154323448,
+              1.351940933088013
+            ],
+            [
+              1.1717314521919897,
+              1.3594992320897334
+            ],
+            [
+              1.0638213159874461,
+              1.2248749743409626
+            ]
+          ],
+          "width_status": [
+            "fail",
+            "inconclusive",
+            "inconclusive",
+            "pass"
+          ]
+        }
+      },
+      "posterior_predictive": {
+        "status": "completed_descriptive_check",
+        "observations": 32,
+        "paired_draws": 32,
+        "central90_quote_coverage": 0.8874007936507936,
+        "mean_absolute_residual_over_quote_sigma": 0.773269661536705,
+        "scope": "Fixed development panel; replicated quotes include new Gaussian observation noise. No new adequacy/acceptance rule."
+      },
+      "cost": {
+        "training_wall_seconds": 115.02175105805509,
+        "fit_including_compile_and_validation_seconds": 97.41645196999889,
+        "first_training_batch_including_compile_seconds": 16.53178276901599,
+        "evaluation_wall_seconds": 97.24564335797913,
+        "worker_wall_seconds": 216.41961708501913,
+        "worker_child_peak_rss_bytes": 1815482368,
+        "scope": "Nested timings overlap; scheduler allocation is authoritative for resource charging."
+      },
+      "evaluation_sha256": "df7cccfa81453ccc1397b9fa7dfde9e92b9c849f80a9d8a6ef80ae9a27fbaaf1",
+      "training_sha256": "3ee11237f1c6f4f4391b6998aa2353188e594649359da81d09b65c1d0f686898"
+    },
+    {
+      "id": "full-u00030-s0",
+      "architecture": "full",
+      "widths": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "requested_updates": 30,
+      "seed": 0,
+      "status": "completed",
+      "checks_status": "fail",
+      "actual_optimizer_updates": 30,
+      "actual_example_presentations": 7680,
+      "unique_training_rows_seen": 7680,
+      "same_seed_reload_exact": true,
+      "checkpoint_sha256": "5d9f436988fb7ea607cf4252d4368b4d3a840491a18e68ffe9b6101ca8749e0f",
+      "evaluation_verified_checkpoint_sha256": "5d9f436988fb7ea607cf4252d4368b4d3a840491a18e68ffe9b6101ca8749e0f",
+      "job_id": "8641246",
+      "submission_status": "submitted",
+      "script_sha256": "880fee43ee084428970cf56e3fbed056ca520eee61f9c54e058f0667137711ef",
+      "scheduler": {
+        "job_id": "8641246",
+        "job_name": "heston-full-u00030-s0",
+        "state": "COMPLETED",
+        "exit_code": "0:0",
+        "elapsed_seconds": 161,
+        "allocated_cpus": 4,
+        "allocated_gpus": 1,
+        "allocated_cpu_seconds": 644,
+        "gpu_seconds": 161,
+        "allocated_tres": {
+          "billing": "110",
+          "cpu": "4",
+          "gres/gpu": "1",
+          "mem": "24G",
+          "node": "1"
+        }
+      },
+      "gates": {
+        "finite_in_support_without_clipping": true,
+        "development_rank_screen": false,
+        "conditional_all_cases": false,
+        "predictive_pricing_completed": true,
+        "coverage_within_control_margin": false
+      },
+      "parameters": {
+        "initial_variance": {
+          "rank_ks": 0.23470362936112577,
+          "rank_passed": false,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.05272580998420569,
+          "recovery_correlation": 0.977768267467976,
+          "mean_physical_central90_width": 0.08512463744591518,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.9921875,
+              "wilson_interval": [
+                0.9800865852024431,
+                0.9969577980703442
+              ]
+            },
+            "0.95": {
+              "coverage": 0.99609375,
+              "wilson_interval": [
+                0.985870592855346,
+                0.9989281109196064
+              ]
+            }
+          }
+        },
+        "theta": {
+          "rank_ks": 0.20100691271807325,
+          "rank_passed": false,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.05239596251048788,
+          "recovery_correlation": 0.9707596429978359,
+          "mean_physical_central90_width": 0.09330353946288601,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.994140625,
+              "wilson_interval": [
+                0.9829162193160559,
+                0.998005324207814
+              ]
+            },
+            "0.95": {
+              "coverage": 0.998046875,
+              "wilson_interval": [
+                0.9890207217875779,
+                0.9996551422384565
+              ]
+            }
+          }
+        },
+        "vol_of_vol": {
+          "rank_ks": 0.20278487562841707,
+          "rank_passed": false,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.16515111035599497,
+          "recovery_correlation": 0.9234349351584069,
+          "mean_physical_central90_width": 1.0582268093821774,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.98828125,
+              "wilson_interval": [
+                0.9746716344674621,
+                0.9946184283031602
+              ]
+            },
+            "0.95": {
+              "coverage": 0.9921875,
+              "wilson_interval": [
+                0.9800865852024431,
+                0.9969577980703442
+              ]
+            }
+          }
+        },
+        "rho": {
+          "rank_ks": 0.17014676736938406,
+          "rank_passed": false,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.26381111167914306,
+          "recovery_correlation": 0.8834270580439679,
+          "mean_physical_central90_width": 0.6201782427640867,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.96484375,
+              "wilson_interval": [
+                0.9451159458429383,
+                0.9776481939146942
+              ]
+            },
+            "0.95": {
+              "coverage": 0.9765625,
+              "wilson_interval": [
+                0.9594842199324425,
+                0.986542881331685
+              ]
+            }
+          }
+        }
+      },
+      "conditional": {
+        "0": {
+          "status": "fail",
+          "sampling_seed": 811083,
+          "reference_chain_shape": [
+            4,
+            8000,
+            4
+          ],
+          "block_lengths": [
+            40,
+            80
+          ],
+          "family_confidence": 0.95,
+          "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+          "parameter_order": [
+            "initial_variance",
+            "theta",
+            "vol_of_vol",
+            "rho"
+          ],
+          "parameter_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "signed_standardized_mean_difference": [
+            -16.721190835656675,
+            -12.877668547430744,
+            0.6922303911718973,
+            -5.822874812369013
+          ],
+          "signed_standardized_mean_interval": [
+            [
+              -19.851741104140892,
+              -13.590640567172457
+            ],
+            [
+              -13.895293840846454,
+              -11.860043254015034
+            ],
+            [
+              0.20755582347953377,
+              1.1769049588642608
+            ],
+            [
+              -6.461026116850952,
+              -5.184723507887073
+            ]
+          ],
+          "mean_status": [
+            "fail",
+            "fail",
+            "inconclusive",
+            "fail"
+          ],
+          "width_ratio_90": [
+            57.30366856635463,
+            17.087216830543092,
+            8.625478986038413,
+            10.979106000950171
+          ],
+          "width_ratio_interval": [
+            [
+              52.84332872880396,
+              62.140491716842355
+            ],
+            [
+              15.481763779038875,
+              18.859154756598482
+            ],
+            [
+              8.222842417647747,
+              9.047830903206465
+            ],
+            [
+              10.292597294956986,
+              11.711404335148803
+            ]
+          ],
+          "width_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ]
+        },
+        "1": {
+          "status": "fail",
+          "sampling_seed": 811084,
+          "reference_chain_shape": [
+            4,
+            8000,
+            4
+          ],
+          "block_lengths": [
+            38,
+            76
+          ],
+          "family_confidence": 0.95,
+          "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+          "parameter_order": [
+            "initial_variance",
+            "theta",
+            "vol_of_vol",
+            "rho"
+          ],
+          "parameter_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "signed_standardized_mean_difference": [
+            5.956700547463149,
+            6.7399081028831604,
+            -15.054811308461122,
+            -13.263081415581187
+          ],
+          "signed_standardized_mean_interval": [
+            [
+              3.318424476392631,
+              8.594976618533668
+            ],
+            [
+              5.38301703724346,
+              8.096799168522862
+            ],
+            [
+              -15.989506380005292,
+              -14.120116236916953
+            ],
+            [
+              -14.347224769245646,
+              -12.178938061916728
+            ]
+          ],
+          "mean_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "width_ratio_90": [
+            49.37607085183034,
+            26.450458074742432,
+            15.311377158824156,
+            18.26194849610256
+          ],
+          "width_ratio_interval": [
+            [
+              45.52817888972998,
+              53.54917398892319
+            ],
+            [
+              25.28373319327004,
+              27.671021799499595
+            ],
+            [
+              14.532108445417387,
+              16.132433320348007
+            ],
+            [
+              17.31202005736108,
+              19.264000490370197
+            ]
+          ],
+          "width_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ]
+        },
+        "2": {
+          "status": "fail",
+          "sampling_seed": 811085,
+          "reference_chain_shape": [
+            4,
+            8000,
+            4
+          ],
+          "block_lengths": [
+            44,
+            88
+          ],
+          "family_confidence": 0.95,
+          "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+          "parameter_order": [
+            "initial_variance",
+            "theta",
+            "vol_of_vol",
+            "rho"
+          ],
+          "parameter_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "signed_standardized_mean_difference": [
+            -14.813221806563277,
+            -2.282692005827704,
+            -17.270564436042246,
+            -21.50220214011814
+          ],
+          "signed_standardized_mean_interval": [
+            [
+              -18.296187392053056,
+              -11.330256221073498
+            ],
+            [
+              -3.041547290402393,
+              -1.5238367212530153
+            ],
+            [
+              -18.22183959630796,
+              -16.319289275776534
+            ],
+            [
+              -23.332474515213622,
+              -19.671929765022657
+            ]
+          ],
+          "mean_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "width_ratio_90": [
+            71.37256226484664,
+            13.518279790026652,
+            13.539389187009704,
+            29.374326387926562
+          ],
+          "width_ratio_interval": [
+            [
+              67.95624205223862,
+              74.9606289343306
+            ],
+            [
+              12.41789535793148,
+              14.716172363678524
+            ],
+            [
+              12.929695709604808,
+              14.177832462146798
+            ],
+            [
+              25.772169630530254,
+              33.47995388491807
+            ]
+          ],
+          "width_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ]
+        }
+      },
+      "posterior_predictive": {
+        "status": "completed_descriptive_check",
+        "observations": 32,
+        "paired_draws": 32,
+        "central90_quote_coverage": 0.9856150793650794,
+        "mean_absolute_residual_over_quote_sigma": 3.478113533088018,
+        "scope": "Fixed development panel; replicated quotes include new Gaussian observation noise. No new adequacy/acceptance rule."
+      },
+      "cost": {
+        "training_wall_seconds": 44.789948649005964,
+        "fit_including_compile_and_validation_seconds": 25.5051000979729,
+        "first_training_batch_including_compile_seconds": 17.784781910013407,
+        "evaluation_wall_seconds": 107.90014611696824,
+        "worker_wall_seconds": 157.41119471378624,
+        "worker_child_peak_rss_bytes": 2027761664,
+        "scope": "Nested timings overlap; scheduler allocation is authoritative for resource charging."
+      },
+      "evaluation_sha256": "0888d895b85129df0c965844d5907bef435a85ecb7e05e246b25cc6e0c254c79",
+      "training_sha256": "8a741ec78ffe6539d81412a6909213324ee3da616dd9c93ce692824d472a7a6f"
+    },
+    {
+      "id": "full-u00100-s0",
+      "architecture": "full",
+      "widths": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "requested_updates": 100,
+      "seed": 0,
+      "status": "completed",
+      "checks_status": "fail",
+      "actual_optimizer_updates": 100,
+      "actual_example_presentations": 25600,
+      "unique_training_rows_seen": 25600,
+      "same_seed_reload_exact": true,
+      "checkpoint_sha256": "a1df2f42482c1abc540c5f6271a1b5f9083fcfffd36de2a1ba3d7f4bce33a621",
+      "evaluation_verified_checkpoint_sha256": "a1df2f42482c1abc540c5f6271a1b5f9083fcfffd36de2a1ba3d7f4bce33a621",
+      "job_id": "8641248",
+      "submission_status": "submitted",
+      "script_sha256": "6de3d955b04bc147d538b5c0bb5e6d17c54f60c6d1dac6e288b188608805d190",
+      "scheduler": {
+        "job_id": "8641248",
+        "job_name": "heston-full-u00100-s0",
+        "state": "COMPLETED",
+        "exit_code": "0:0",
+        "elapsed_seconds": 163,
+        "allocated_cpus": 4,
+        "allocated_gpus": 1,
+        "allocated_cpu_seconds": 652,
+        "gpu_seconds": 163,
+        "allocated_tres": {
+          "billing": "110",
+          "cpu": "4",
+          "gres/gpu": "1",
+          "mem": "24G",
+          "node": "1"
+        }
+      },
+      "gates": {
+        "finite_in_support_without_clipping": true,
+        "development_rank_screen": false,
+        "conditional_all_cases": false,
+        "predictive_pricing_completed": true,
+        "coverage_within_control_margin": false
+      },
+      "parameters": {
+        "initial_variance": {
+          "rank_ks": 0.14962818997713656,
+          "rank_passed": false,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.011785583011849165,
+          "recovery_correlation": 0.9947552202026851,
+          "mean_physical_central90_width": 0.0355024058280833,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.98828125,
+              "wilson_interval": [
+                0.9746716344674621,
+                0.9946184283031602
+              ]
+            },
+            "0.95": {
+              "coverage": 0.9921875,
+              "wilson_interval": [
+                0.9800865852024431,
+                0.9969577980703442
+              ]
+            }
+          }
+        },
+        "theta": {
+          "rank_ks": 0.11383988967498293,
+          "rank_passed": false,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.01968119685463819,
+          "recovery_correlation": 0.9914638055375591,
+          "mean_physical_central90_width": 0.038819410249197946,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.9765625,
+              "wilson_interval": [
+                0.9594842199324425,
+                0.986542881331685
+              ]
+            },
+            "0.95": {
+              "coverage": 0.986328125,
+              "wilson_interval": [
+                0.9720509995117902,
+                0.9933619030077497
+              ]
+            }
+          }
+        },
+        "vol_of_vol": {
+          "rank_ks": 0.12683886120609772,
+          "rank_passed": false,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.05121309655695908,
+          "recovery_correlation": 0.9735925681079548,
+          "mean_physical_central90_width": 0.5356779040848771,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.978515625,
+              "wilson_interval": [
+                0.9619423364720409,
+                0.9879619250431689
+              ]
+            },
+            "0.95": {
+              "coverage": 0.9921875,
+              "wilson_interval": [
+                0.9800865852024431,
+                0.9969577980703442
+              ]
+            }
+          }
+        },
+        "rho": {
+          "rank_ks": 0.12020470671992145,
+          "rank_passed": false,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.1309570705137781,
+          "recovery_correlation": 0.9424687187988574,
+          "mean_physical_central90_width": 0.4092525549523995,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.951171875,
+              "wilson_interval": [
+                0.9289134485442119,
+                0.9667105694558431
+              ]
+            },
+            "0.95": {
+              "coverage": 0.970703125,
+              "wilson_interval": [
+                0.9522288905280138,
+                0.982166729982866
+              ]
+            }
+          }
+        }
+      },
+      "conditional": {
+        "0": {
+          "status": "fail",
+          "sampling_seed": 811083,
+          "reference_chain_shape": [
+            4,
+            8000,
+            4
+          ],
+          "block_lengths": [
+            40,
+            80
+          ],
+          "family_confidence": 0.95,
+          "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+          "parameter_order": [
+            "initial_variance",
+            "theta",
+            "vol_of_vol",
+            "rho"
+          ],
+          "parameter_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "signed_standardized_mean_difference": [
+            11.124429740901952,
+            -6.912006912560876,
+            -3.248307653650965,
+            -5.1357480640017235
+          ],
+          "signed_standardized_mean_interval": [
+            [
+              9.82476784162915,
+              12.424091640174755
+            ],
+            [
+              -7.419938617843401,
+              -6.404075207278351
+            ],
+            [
+              -3.627240199884224,
+              -2.869375107417706
+            ],
+            [
+              -5.702221554142092,
+              -4.569274573861355
+            ]
+          ],
+          "mean_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "width_ratio_90": [
+            21.49202097907632,
+            7.786585960857183,
+            6.539544648920001,
+            9.87204969947651
+          ],
+          "width_ratio_interval": [
+            [
+              19.85403013665541,
+              23.26514881793511
+            ],
+            [
+              7.009969755074342,
+              8.649241443863433
+            ],
+            [
+              6.134412605478003,
+              6.971432631875574
+            ],
+            [
+              9.230981927845933,
+              10.557637966438538
+            ]
+          ],
+          "width_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ]
+        },
+        "1": {
+          "status": "fail",
+          "sampling_seed": 811084,
+          "reference_chain_shape": [
+            4,
+            8000,
+            4
+          ],
+          "block_lengths": [
+            38,
+            76
+          ],
+          "family_confidence": 0.95,
+          "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+          "parameter_order": [
+            "initial_variance",
+            "theta",
+            "vol_of_vol",
+            "rho"
+          ],
+          "parameter_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "signed_standardized_mean_difference": [
+            -7.946291119310905,
+            -0.2798828919372002,
+            -4.396107852298465,
+            -2.771873634244736
+          ],
+          "signed_standardized_mean_interval": [
+            [
+              -8.653894128453697,
+              -7.238688110168112
+            ],
+            [
+              -0.7372796045908545,
+              0.17751382071645416
+            ],
+            [
+              -4.724656917482589,
+              -4.067558787114342
+            ],
+            [
+              -3.221503311981391,
+              -2.322243956508081
+            ]
+          ],
+          "mean_status": [
+            "fail",
+            "inconclusive",
+            "fail",
+            "fail"
+          ],
+          "width_ratio_90": [
+            11.49236768016729,
+            8.65029272484544,
+            4.871291627108415,
+            8.470910282492982
+          ],
+          "width_ratio_interval": [
+            [
+              10.588722753970082,
+              12.473129948239915
+            ],
+            [
+              7.994595330232169,
+              9.359768835646737
+            ],
+            [
+              4.441813691406143,
+              5.342295684811698
+            ],
+            [
+              7.711261616348712,
+              9.305393148886838
+            ]
+          ],
+          "width_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ]
+        },
+        "2": {
+          "status": "fail",
+          "sampling_seed": 811085,
+          "reference_chain_shape": [
+            4,
+            8000,
+            4
+          ],
+          "block_lengths": [
+            44,
+            88
+          ],
+          "family_confidence": 0.95,
+          "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+          "parameter_order": [
+            "initial_variance",
+            "theta",
+            "vol_of_vol",
+            "rho"
+          ],
+          "parameter_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "signed_standardized_mean_difference": [
+            14.47004394477489,
+            -2.049153318293917,
+            -5.911182845775362,
+            -7.046692564983742
+          ],
+          "signed_standardized_mean_interval": [
+            [
+              12.466945990775006,
+              16.473141898774774
+            ],
+            [
+              -2.538712556970129,
+              -1.5595940796177052
+            ],
+            [
+              -6.45115174704176,
+              -5.3712139445089635
+            ],
+            [
+              -7.751791808362458,
+              -6.341593321605026
+            ]
+          ],
+          "mean_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "width_ratio_90": [
+            40.16117671344361,
+            8.726071187903795,
+            9.911134023999645,
+            8.957730152223917
+          ],
+          "width_ratio_interval": [
+            [
+              37.55864941042563,
+              42.944039264647444
+            ],
+            [
+              8.077932730290028,
+              9.426213477966273
+            ],
+            [
+              9.249099695439405,
+              10.620555608252275
+            ],
+            [
+              7.576582907442387,
+              10.59064890601828
+            ]
+          ],
+          "width_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ]
+        }
+      },
+      "posterior_predictive": {
+        "status": "completed_descriptive_check",
+        "observations": 32,
+        "paired_draws": 32,
+        "central90_quote_coverage": 0.8968253968253969,
+        "mean_absolute_residual_over_quote_sigma": 1.714476419106412,
+        "scope": "Fixed development panel; replicated quotes include new Gaussian observation noise. No new adequacy/acceptance rule."
+      },
+      "cost": {
+        "training_wall_seconds": 49.35611544502899,
+        "fit_including_compile_and_validation_seconds": 26.281962033128366,
+        "first_training_batch_including_compile_seconds": 17.744284664047882,
+        "evaluation_wall_seconds": 105.29788763285615,
+        "worker_wall_seconds": 159.02874588780105,
+        "worker_child_peak_rss_bytes": 2078474240,
+        "scope": "Nested timings overlap; scheduler allocation is authoritative for resource charging."
+      },
+      "evaluation_sha256": "30d7a9ebb390ed896507c315679a9c31fa5be643eed884fa5c9144af77c3d897",
+      "training_sha256": "f84e64394efdf7386407ac9e9c05e02486705bad3003673f612da765f2c38b6d"
+    },
+    {
+      "id": "full-u00300-s0",
+      "architecture": "full",
+      "widths": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "requested_updates": 300,
+      "seed": 0,
+      "status": "completed",
+      "checks_status": "fail",
+      "actual_optimizer_updates": 300,
+      "actual_example_presentations": 76800,
+      "unique_training_rows_seen": 76800,
+      "same_seed_reload_exact": true,
+      "checkpoint_sha256": "05bb06a62663569adde5223021e99448c17bd06385e2fe3c0a80bb001ffe694e",
+      "evaluation_verified_checkpoint_sha256": "05bb06a62663569adde5223021e99448c17bd06385e2fe3c0a80bb001ffe694e",
+      "job_id": "8641250",
+      "submission_status": "submitted",
+      "script_sha256": "da69f086cdc65cb6423cc1637aa313b853628c921b4123d89d1426b86e397583",
+      "scheduler": {
+        "job_id": "8641250",
+        "job_name": "heston-full-u00300-s0",
+        "state": "COMPLETED",
+        "exit_code": "0:0",
+        "elapsed_seconds": 163,
+        "allocated_cpus": 4,
+        "allocated_gpus": 1,
+        "allocated_cpu_seconds": 652,
+        "gpu_seconds": 163,
+        "allocated_tres": {
+          "billing": "110",
+          "cpu": "4",
+          "gres/gpu": "1",
+          "mem": "24G",
+          "node": "1"
+        }
+      },
+      "gates": {
+        "finite_in_support_without_clipping": true,
+        "development_rank_screen": false,
+        "conditional_all_cases": false,
+        "predictive_pricing_completed": true,
+        "coverage_within_control_margin": false
+      },
+      "parameters": {
+        "initial_variance": {
+          "rank_ks": 0.11463966450487195,
+          "rank_passed": false,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.002747020965735822,
+          "recovery_correlation": 0.9987850897109027,
+          "mean_physical_central90_width": 0.016097258705212888,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.984375,
+              "wilson_interval": [
+                0.9694739672468663,
+                0.9920617750215911
+              ]
+            },
+            "0.95": {
+              "coverage": 0.9921875,
+              "wilson_interval": [
+                0.9800865852024431,
+                0.9969577980703442
+              ]
+            }
+          }
+        },
+        "theta": {
+          "rank_ks": 0.1114125399497532,
+          "rank_passed": false,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.005219459425828018,
+          "recovery_correlation": 0.997680910057356,
+          "mean_physical_central90_width": 0.01967856841311004,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.984375,
+              "wilson_interval": [
+                0.9694739672468663,
+                0.9920617750215911
+              ]
+            },
+            "0.95": {
+              "coverage": 1.0,
+              "wilson_interval": [
+                0.9925530242771171,
+                0.9999999999999999
+              ]
+            }
+          }
+        },
+        "vol_of_vol": {
+          "rank_ks": 0.08194384827288353,
+          "rank_passed": false,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.022086463224702122,
+          "recovery_correlation": 0.9894566461846375,
+          "mean_physical_central90_width": 0.2906799226970178,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.97265625,
+              "wilson_interval": [
+                0.9546295060012657,
+                0.9836432747606967
+              ]
+            },
+            "0.95": {
+              "coverage": 0.9921875,
+              "wilson_interval": [
+                0.9800865852024431,
+                0.9969577980703442
+              ]
+            }
+          }
+        },
+        "rho": {
+          "rank_ks": 0.08925938366792252,
+          "rank_passed": false,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.07594929600888577,
+          "recovery_correlation": 0.9631286862285826,
+          "mean_physical_central90_width": 0.27004906052316097,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.96875,
+              "wilson_interval": [
+                0.9498439445861043,
+                0.980674515673693
+              ]
+            },
+            "0.95": {
+              "coverage": 0.982421875,
+              "wilson_interval": [
+                0.9669335150663066,
+                0.9907250669510682
+              ]
+            }
+          }
+        }
+      },
+      "conditional": {
+        "0": {
+          "status": "fail",
+          "sampling_seed": 811083,
+          "reference_chain_shape": [
+            4,
+            8000,
+            4
+          ],
+          "block_lengths": [
+            40,
+            80
+          ],
+          "family_confidence": 0.95,
+          "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+          "parameter_order": [
+            "initial_variance",
+            "theta",
+            "vol_of_vol",
+            "rho"
+          ],
+          "parameter_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "signed_standardized_mean_difference": [
+            5.8043924350268705,
+            -2.873124282885641,
+            -3.3100590385376476,
+            -4.5123501731938145
+          ],
+          "signed_standardized_mean_interval": [
+            [
+              5.176529086090815,
+              6.432255783962926
+            ],
+            [
+              -3.0720152057727677,
+              -2.674233359998514
+            ],
+            [
+              -3.570035299509216,
+              -3.0500827775660793
+            ],
+            [
+              -5.052544387890619,
+              -3.9721559584970096
+            ]
+          ],
+          "mean_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "width_ratio_90": [
+            10.667690395216562,
+            2.776437463961019,
+            3.912309172428019,
+            9.82763498826771
+          ],
+          "width_ratio_interval": [
+            [
+              9.887429426399095,
+              11.509525222435938
+            ],
+            [
+              2.582167677620355,
+              2.9853231678549634
+            ],
+            [
+              3.6662727702334044,
+              4.17485659685108
+            ],
+            [
+              9.125812177102127,
+              10.583431653892868
+            ]
+          ],
+          "width_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ]
+        },
+        "1": {
+          "status": "fail",
+          "sampling_seed": 811084,
+          "reference_chain_shape": [
+            4,
+            8000,
+            4
+          ],
+          "block_lengths": [
+            38,
+            76
+          ],
+          "family_confidence": 0.95,
+          "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+          "parameter_order": [
+            "initial_variance",
+            "theta",
+            "vol_of_vol",
+            "rho"
+          ],
+          "parameter_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "signed_standardized_mean_difference": [
+            -1.8678545793830488,
+            3.003174336685613,
+            -2.2351388408535455,
+            1.82372026864253
+          ],
+          "signed_standardized_mean_interval": [
+            [
+              -2.3309334743744707,
+              -1.4047756843916268
+            ],
+            [
+              2.7265378426139515,
+              3.279810830757275
+            ],
+            [
+              -2.4014050832535947,
+              -2.0688725984534964
+            ],
+            [
+              1.6401831399717282,
+              2.0072573973133316
+            ]
+          ],
+          "mean_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "width_ratio_90": [
+            8.32313591599535,
+            4.408439828984106,
+            2.3229774130257925,
+            2.902023227421608
+          ],
+          "width_ratio_interval": [
+            [
+              7.7057191174812685,
+              8.990022919337243
+            ],
+            [
+              4.07670474830889,
+              4.767169301096731
+            ],
+            [
+              2.1747784129337155,
+              2.4812753471047415
+            ],
+            [
+              2.705324726869024,
+              3.113023264398033
+            ]
+          ],
+          "width_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ]
+        },
+        "2": {
+          "status": "fail",
+          "sampling_seed": 811085,
+          "reference_chain_shape": [
+            4,
+            8000,
+            4
+          ],
+          "block_lengths": [
+            44,
+            88
+          ],
+          "family_confidence": 0.95,
+          "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+          "parameter_order": [
+            "initial_variance",
+            "theta",
+            "vol_of_vol",
+            "rho"
+          ],
+          "parameter_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "signed_standardized_mean_difference": [
+            0.24093645557020063,
+            0.506546838981503,
+            1.030408751546573,
+            -2.272950218224842
+          ],
+          "signed_standardized_mean_interval": [
+            [
+              -0.9248281777019806,
+              1.4067010888423819
+            ],
+            [
+              0.2609248660208269,
+              0.7521688119421791
+            ],
+            [
+              0.8316866008560165,
+              1.2291309022371295
+            ],
+            [
+              -2.487559752421951,
+              -2.058340684027733
+            ]
+          ],
+          "mean_status": [
+            "inconclusive",
+            "inconclusive",
+            "fail",
+            "fail"
+          ],
+          "width_ratio_90": [
+            23.032264633618755,
+            4.468151197403474,
+            3.395176203062966,
+            2.657625381991549
+          ],
+          "width_ratio_interval": [
+            [
+              20.902982392208177,
+              25.37844620444161
+            ],
+            [
+              4.115590884170579,
+              4.850913437398565
+            ],
+            [
+              3.1449755293259116,
+              3.6652817620860105
+            ],
+            [
+              2.402526106109985,
+              2.939810998533388
+            ]
+          ],
+          "width_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ]
+        }
+      },
+      "posterior_predictive": {
+        "status": "completed_descriptive_check",
+        "observations": 32,
+        "paired_draws": 32,
+        "central90_quote_coverage": 0.9295634920634921,
+        "mean_absolute_residual_over_quote_sigma": 1.0613463194878576,
+        "scope": "Fixed development panel; replicated quotes include new Gaussian observation noise. No new adequacy/acceptance rule."
+      },
+      "cost": {
+        "training_wall_seconds": 47.18879457493313,
+        "fit_including_compile_and_validation_seconds": 27.428169453982264,
+        "first_training_batch_including_compile_seconds": 18.30256824195385,
+        "evaluation_wall_seconds": 107.48938934900798,
+        "worker_wall_seconds": 159.28016857616603,
+        "worker_child_peak_rss_bytes": 2082754560,
+        "scope": "Nested timings overlap; scheduler allocation is authoritative for resource charging."
+      },
+      "evaluation_sha256": "324a2565da9be075aae00dc9772458adf5f897d75b5cd53bb7b7ab4b006302fa",
+      "training_sha256": "165e06fc06d35bc8c2ce0d84a3069d913a7fe91b76b23ac709d8c936da971fa5"
+    },
+    {
+      "id": "full-u01000-s0",
+      "architecture": "full",
+      "widths": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "requested_updates": 1000,
+      "seed": 0,
+      "status": "completed",
+      "checks_status": "fail",
+      "actual_optimizer_updates": 1000,
+      "actual_example_presentations": 255808,
+      "unique_training_rows_seen": 100000,
+      "same_seed_reload_exact": true,
+      "checkpoint_sha256": "7487cc2b5666fd068e7b69bb00c0b37179a18287b3404a30bd891d0f817e617f",
+      "evaluation_verified_checkpoint_sha256": "7487cc2b5666fd068e7b69bb00c0b37179a18287b3404a30bd891d0f817e617f",
+      "job_id": "8641252",
+      "submission_status": "submitted",
+      "script_sha256": "21ef6fb84fe9958f87b82c67776eed0b4bc1e5896436e87b1b4a840deda8a72f",
+      "scheduler": {
+        "job_id": "8641252",
+        "job_name": "heston-full-u01000-s0",
+        "state": "COMPLETED",
+        "exit_code": "0:0",
+        "elapsed_seconds": 200,
+        "allocated_cpus": 4,
+        "allocated_gpus": 1,
+        "allocated_cpu_seconds": 800,
+        "gpu_seconds": 200,
+        "allocated_tres": {
+          "billing": "110",
+          "cpu": "4",
+          "gres/gpu": "1",
+          "mem": "24G",
+          "node": "1"
+        }
+      },
+      "gates": {
+        "finite_in_support_without_clipping": true,
+        "development_rank_screen": false,
+        "conditional_all_cases": false,
+        "predictive_pricing_completed": true,
+        "coverage_within_control_margin": false
+      },
+      "parameters": {
+        "initial_variance": {
+          "rank_ks": 0.11011628833708687,
+          "rank_passed": false,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.000660624406921935,
+          "recovery_correlation": 0.9996909989758583,
+          "mean_physical_central90_width": 0.0068391235577109875,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.978515625,
+              "wilson_interval": [
+                0.9619423364720409,
+                0.9879619250431689
+              ]
+            },
+            "0.95": {
+              "coverage": 0.994140625,
+              "wilson_interval": [
+                0.9829162193160559,
+                0.998005324207814
+              ]
+            }
+          }
+        },
+        "theta": {
+          "rank_ks": 0.0696143901031524,
+          "rank_passed": true,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.002249489885394946,
+          "recovery_correlation": 0.9989184011130683,
+          "mean_physical_central90_width": 0.010193826472641368,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.970703125,
+              "wilson_interval": [
+                0.9522288905280138,
+                0.982166729982866
+              ]
+            },
+            "0.95": {
+              "coverage": 0.986328125,
+              "wilson_interval": [
+                0.9720509995117902,
+                0.9933619030077497
+              ]
+            }
+          }
+        },
+        "vol_of_vol": {
+          "rank_ks": 0.05711124125746053,
+          "rank_passed": true,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.011427611879478255,
+          "recovery_correlation": 0.9946409390811132,
+          "mean_physical_central90_width": 0.17710989168481314,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.953125,
+              "wilson_interval": [
+                0.9312006389371313,
+                0.9683005393140062
+              ]
+            },
+            "0.95": {
+              "coverage": 0.978515625,
+              "wilson_interval": [
+                0.9619423364720409,
+                0.9879619250431689
+              ]
+            }
+          }
+        },
+        "rho": {
+          "rank_ks": 0.05207490942019544,
+          "rank_passed": true,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.04372531482265315,
+          "recovery_correlation": 0.9781523157363851,
+          "mean_physical_central90_width": 0.16498161053459606,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.953125,
+              "wilson_interval": [
+                0.9312006389371313,
+                0.9683005393140062
+              ]
+            },
+            "0.95": {
+              "coverage": 0.984375,
+              "wilson_interval": [
+                0.9694739672468663,
+                0.9920617750215911
+              ]
+            }
+          }
+        }
+      },
+      "conditional": {
+        "0": {
+          "status": "fail",
+          "sampling_seed": 811083,
+          "reference_chain_shape": [
+            4,
+            8000,
+            4
+          ],
+          "block_lengths": [
+            40,
+            80
+          ],
+          "family_confidence": 0.95,
+          "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+          "parameter_order": [
+            "initial_variance",
+            "theta",
+            "vol_of_vol",
+            "rho"
+          ],
+          "parameter_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "signed_standardized_mean_difference": [
+            1.1420927109683747,
+            -1.24260128230432,
+            -2.0465396302365964,
+            -2.6042093932936354
+          ],
+          "signed_standardized_mean_interval": [
+            [
+              0.8648214374162836,
+              1.4193639845204657
+            ],
+            [
+              -1.3590738787856538,
+              -1.1261286858229862
+            ],
+            [
+              -2.2160846915821732,
+              -1.8769945688910195
+            ],
+            [
+              -2.9318079317426897,
+              -2.276610854844581
+            ]
+          ],
+          "mean_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "width_ratio_90": [
+            4.522364270153845,
+            1.5415623382545733,
+            2.39710949959111,
+            5.097969380732515
+          ],
+          "width_ratio_interval": [
+            [
+              4.202049409138707,
+              4.867096171569319
+            ],
+            [
+              1.443292902147858,
+              1.6465226422082522
+            ],
+            [
+              2.2255936667123914,
+              2.581843235345845
+            ],
+            [
+              4.451775664757271,
+              5.83796079677418
+            ]
+          ],
+          "width_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ]
+        },
+        "1": {
+          "status": "fail",
+          "sampling_seed": 811084,
+          "reference_chain_shape": [
+            4,
+            8000,
+            4
+          ],
+          "block_lengths": [
+            38,
+            76
+          ],
+          "family_confidence": 0.95,
+          "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+          "parameter_order": [
+            "initial_variance",
+            "theta",
+            "vol_of_vol",
+            "rho"
+          ],
+          "parameter_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "signed_standardized_mean_difference": [
+            -1.358085654428616,
+            0.6596956532663173,
+            -0.7603606896565954,
+            1.2768449117057046
+          ],
+          "signed_standardized_mean_interval": [
+            [
+              -1.567706815090719,
+              -1.148464493766513
+            ],
+            [
+              0.5060074804909497,
+              0.8133838260416849
+            ],
+            [
+              -0.8727175758864855,
+              -0.6480038034267054
+            ],
+            [
+              1.1414439330138828,
+              1.4122458903975263
+            ]
+          ],
+          "mean_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "width_ratio_90": [
+            3.6067428366744863,
+            2.554520544470668,
+            1.5345058854907858,
+            1.9897137245036374
+          ],
+          "width_ratio_interval": [
+            [
+              3.3025566352519347,
+              3.938946497100833
+            ],
+            [
+              2.3806718423924953,
+              2.741064558299112
+            ],
+            [
+              1.4487456245462744,
+              1.6253428294862462
+            ],
+            [
+              1.8284883313305158,
+              2.1651550286882957
+            ]
+          ],
+          "width_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ]
+        },
+        "2": {
+          "status": "fail",
+          "sampling_seed": 811085,
+          "reference_chain_shape": [
+            4,
+            8000,
+            4
+          ],
+          "block_lengths": [
+            44,
+            88
+          ],
+          "family_confidence": 0.95,
+          "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+          "parameter_order": [
+            "initial_variance",
+            "theta",
+            "vol_of_vol",
+            "rho"
+          ],
+          "parameter_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "signed_standardized_mean_difference": [
+            0.34777417110907227,
+            0.9553061819354781,
+            1.4134561040404372,
+            -0.6087034916260001
+          ],
+          "signed_standardized_mean_interval": [
+            [
+              -0.3728797504709608,
+              1.0684280926891052
+            ],
+            [
+              0.8135235539453087,
+              1.0970888099256475
+            ],
+            [
+              1.2760256082251866,
+              1.5508865998556878
+            ],
+            [
+              -0.7145377134268334,
+              -0.5028692698251669
+            ]
+          ],
+          "mean_status": [
+            "inconclusive",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "width_ratio_90": [
+            13.411689525673562,
+            2.459232510239944,
+            2.0707776851008357,
+            1.316742073132144
+          ],
+          "width_ratio_interval": [
+            [
+              12.419699719492336,
+              14.482911825215556
+            ],
+            [
+              2.2798259464944457,
+              2.652757132061086
+            ],
+            [
+              1.9267562511617007,
+              2.2255644524449503
+            ],
+            [
+              1.222004052753818,
+              1.4188248257026241
+            ]
+          ],
+          "width_status": [
+            "fail",
+            "fail",
+            "fail",
+            "inconclusive"
+          ]
+        }
+      },
+      "posterior_predictive": {
+        "status": "completed_descriptive_check",
+        "observations": 32,
+        "paired_draws": 32,
+        "central90_quote_coverage": 0.9151785714285714,
+        "mean_absolute_residual_over_quote_sigma": 0.8635847411150384,
+        "scope": "Fixed development panel; replicated quotes include new Gaussian observation noise. No new adequacy/acceptance rule."
+      },
+      "cost": {
+        "training_wall_seconds": 65.33527745772153,
+        "fit_including_compile_and_validation_seconds": 40.212640821002424,
+        "first_training_batch_including_compile_seconds": 15.430768351070583,
+        "evaluation_wall_seconds": 107.87078464496881,
+        "worker_wall_seconds": 181.7534203696996,
+        "worker_child_peak_rss_bytes": 2085859328,
+        "scope": "Nested timings overlap; scheduler allocation is authoritative for resource charging."
+      },
+      "evaluation_sha256": "da8cd6bd6852cf704b6155633ff1ef58ed709631e1ef50d2c1581a20471e9bdd",
+      "training_sha256": "f6b5fcd58816a6c04a4f8b9763e4225dfe436d0c6f71a5833faef3d274f9e97c"
+    },
+    {
+      "id": "full-u03000-s0",
+      "architecture": "full",
+      "widths": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "requested_updates": 3000,
+      "seed": 0,
+      "status": "completed",
+      "checks_status": "fail",
+      "actual_optimizer_updates": 3000,
+      "actual_example_presentations": 767328,
+      "unique_training_rows_seen": 100000,
+      "same_seed_reload_exact": true,
+      "checkpoint_sha256": "82c3724af3860f23f3cdd6412ad74248bfa5aa02749a870e3a5ca6aa6b900993",
+      "evaluation_verified_checkpoint_sha256": "82c3724af3860f23f3cdd6412ad74248bfa5aa02749a870e3a5ca6aa6b900993",
+      "job_id": "8641254",
+      "submission_status": "submitted",
+      "script_sha256": "ef2ba997ceef1a326bd23bea39f41c478bcc3bae9a3e08dd9e8b3add360b8c37",
+      "scheduler": {
+        "job_id": "8641254",
+        "job_name": "heston-full-u03000-s0",
+        "state": "COMPLETED",
+        "exit_code": "0:0",
+        "elapsed_seconds": 175,
+        "allocated_cpus": 4,
+        "allocated_gpus": 1,
+        "allocated_cpu_seconds": 700,
+        "gpu_seconds": 175,
+        "allocated_tres": {
+          "billing": "110",
+          "cpu": "4",
+          "gres/gpu": "1",
+          "mem": "24G",
+          "node": "1"
+        }
+      },
+      "gates": {
+        "finite_in_support_without_clipping": true,
+        "development_rank_screen": false,
+        "conditional_all_cases": false,
+        "predictive_pricing_completed": true,
+        "coverage_within_control_margin": false
+      },
+      "parameters": {
+        "initial_variance": {
+          "rank_ks": 0.1131042019490755,
+          "rank_passed": false,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.0002577684318440037,
+          "recovery_correlation": 0.9998793952206826,
+          "mean_physical_central90_width": 0.003862053989269045,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.970703125,
+              "wilson_interval": [
+                0.9522288905280138,
+                0.982166729982866
+              ]
+            },
+            "0.95": {
+              "coverage": 0.98046875,
+              "wilson_interval": [
+                0.9644243436209257,
+                0.9893570781453667
+              ]
+            }
+          }
+        },
+        "theta": {
+          "rank_ks": 0.02964475459632636,
+          "rank_passed": true,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.0016355759870632508,
+          "recovery_correlation": 0.9991865662836396,
+          "mean_physical_central90_width": 0.00656631773381378,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.9296875,
+              "wilson_interval": [
+                0.9041932796740074,
+                0.9487819755641401
+              ]
+            },
+            "0.95": {
+              "coverage": 0.958984375,
+              "wilson_interval": [
+                0.9381136079604665,
+                0.9730190510439184
+              ]
+            }
+          }
+        },
+        "vol_of_vol": {
+          "rank_ks": 0.030028482915154253,
+          "rank_passed": true,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.008391825788096836,
+          "recovery_correlation": 0.995804522211904,
+          "mean_physical_central90_width": 0.13192523031757442,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.9296875,
+              "wilson_interval": [
+                0.9041932796740074,
+                0.9487819755641401
+              ]
+            },
+            "0.95": {
+              "coverage": 0.958984375,
+              "wilson_interval": [
+                0.9381136079604665,
+                0.9730190510439184
+              ]
+            }
+          }
+        },
+        "rho": {
+          "rank_ks": 0.03456174712580762,
+          "rank_passed": true,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.0326582958671576,
+          "recovery_correlation": 0.9837313202403809,
+          "mean_physical_central90_width": 0.1216599068953655,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.927734375,
+              "wilson_interval": [
+                0.9019787977852332,
+                0.9471192972018321
+              ]
+            },
+            "0.95": {
+              "coverage": 0.962890625,
+              "wilson_interval": [
+                0.9427707550251679,
+                0.976116224481382
+              ]
+            }
+          }
+        }
+      },
+      "conditional": {
+        "0": {
+          "status": "fail",
+          "sampling_seed": 811083,
+          "reference_chain_shape": [
+            4,
+            8000,
+            4
+          ],
+          "block_lengths": [
+            40,
+            80
+          ],
+          "family_confidence": 0.95,
+          "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+          "parameter_order": [
+            "initial_variance",
+            "theta",
+            "vol_of_vol",
+            "rho"
+          ],
+          "parameter_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "signed_standardized_mean_difference": [
+            -0.39860208276602893,
+            -0.4038459090992276,
+            -1.3210299845096773,
+            -1.3204071351353344
+          ],
+          "signed_standardized_mean_interval": [
+            [
+              -0.5963565243445713,
+              -0.20084764118748652
+            ],
+            [
+              -0.4984317228403713,
+              -0.30926009535808385
+            ],
+            [
+              -1.4619883154673856,
+              -1.180071653551969
+            ],
+            [
+              -1.5248440237520642,
+              -1.1159702465186045
+            ]
+          ],
+          "mean_status": [
+            "inconclusive",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "width_ratio_90": [
+            3.352820062957744,
+            1.1645263919938589,
+            2.0229131639919404,
+            2.743359549634308
+          ],
+          "width_ratio_interval": [
+            [
+              3.1099435697064717,
+              3.6146644215904455
+            ],
+            [
+              1.100249773056228,
+              1.2325580525985989
+            ],
+            [
+              1.8862116984731983,
+              2.169521943037631
+            ],
+            [
+              2.490084988773918,
+              3.0223954814793124
+            ]
+          ],
+          "width_status": [
+            "fail",
+            "pass",
+            "fail",
+            "fail"
+          ]
+        },
+        "1": {
+          "status": "fail",
+          "sampling_seed": 811084,
+          "reference_chain_shape": [
+            4,
+            8000,
+            4
+          ],
+          "block_lengths": [
+            38,
+            76
+          ],
+          "family_confidence": 0.95,
+          "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+          "parameter_order": [
+            "initial_variance",
+            "theta",
+            "vol_of_vol",
+            "rho"
+          ],
+          "parameter_status": [
+            "fail",
+            "fail",
+            "inconclusive",
+            "fail"
+          ],
+          "signed_standardized_mean_difference": [
+            -0.9976746285647873,
+            0.8005545281098602,
+            -0.24792961785665812,
+            0.17448653035355383
+          ],
+          "signed_standardized_mean_interval": [
+            [
+              -1.1610181100124093,
+              -0.8343311471171654
+            ],
+            [
+              0.6623030174293981,
+              0.9388060387903222
+            ],
+            [
+              -0.34153532838541356,
+              -0.1543239073279027
+            ],
+            [
+              0.06595976405850328,
+              0.28301329664860436
+            ]
+          ],
+          "mean_status": [
+            "fail",
+            "fail",
+            "inconclusive",
+            "pass"
+          ],
+          "width_ratio_90": [
+            2.794411907418918,
+            2.3513831081436503,
+            1.1878880287424591,
+            1.6428834362583171
+          ],
+          "width_ratio_interval": [
+            [
+              2.57196575941626,
+              3.0360971485471584
+            ],
+            [
+              2.1905257882864753,
+              2.5240526958545053
+            ],
+            [
+              1.1198545054117917,
+              1.2600547321196562
+            ],
+            [
+              1.5334334554813414,
+              1.7601454927724303
+            ]
+          ],
+          "width_status": [
+            "fail",
+            "fail",
+            "inconclusive",
+            "fail"
+          ]
+        },
+        "2": {
+          "status": "fail",
+          "sampling_seed": 811085,
+          "reference_chain_shape": [
+            4,
+            8000,
+            4
+          ],
+          "block_lengths": [
+            44,
+            88
+          ],
+          "family_confidence": 0.95,
+          "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+          "parameter_order": [
+            "initial_variance",
+            "theta",
+            "vol_of_vol",
+            "rho"
+          ],
+          "parameter_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "signed_standardized_mean_difference": [
+            0.9604485077349428,
+            0.9128141052914596,
+            0.7132141822909549,
+            -0.8042854235184869
+          ],
+          "signed_standardized_mean_interval": [
+            [
+              0.5988729671313004,
+              1.3220240483385852
+            ],
+            [
+              0.8004653215004246,
+              1.0251628890824946
+            ],
+            [
+              0.6036825912641235,
+              0.8227457733177863
+            ],
+            [
+              -0.9066898892027213,
+              -0.7018809578342524
+            ]
+          ],
+          "mean_status": [
+            "fail",
+            "fail",
+            "fail",
+            "fail"
+          ],
+          "width_ratio_90": [
+            6.513308723686716,
+            1.6442472703209325,
+            1.5539103594953074,
+            1.1514512278922466
+          ],
+          "width_ratio_interval": [
+            [
+              6.018197989495137,
+              7.0491516902740425
+            ],
+            [
+              1.519852219733719,
+              1.7788236585472137
+            ],
+            [
+              1.436893983247599,
+              1.6804562017090414
+            ],
+            [
+              1.0754356625016714,
+              1.23283984011689
+            ]
+          ],
+          "width_status": [
+            "fail",
+            "fail",
+            "fail",
+            "pass"
+          ]
+        }
+      },
+      "posterior_predictive": {
+        "status": "completed_descriptive_check",
+        "observations": 32,
+        "paired_draws": 32,
+        "central90_quote_coverage": 0.8963293650793651,
+        "mean_absolute_residual_over_quote_sigma": 0.7929108483554367,
+        "scope": "Fixed development panel; replicated quotes include new Gaussian observation noise. No new adequacy/acceptance rule."
+      },
+      "cost": {
+        "training_wall_seconds": 62.16606249008328,
+        "fit_including_compile_and_validation_seconds": 43.63518972881138,
+        "first_training_batch_including_compile_seconds": 15.218253177590668,
+        "evaluation_wall_seconds": 102.66033026762307,
+        "worker_wall_seconds": 170.05035653989762,
+        "worker_child_peak_rss_bytes": 2091069440,
+        "scope": "Nested timings overlap; scheduler allocation is authoritative for resource charging."
+      },
+      "evaluation_sha256": "f7127c37f42db57c5a76f6662145bc934d254b10af0c97c7209e3de82de44ba3",
+      "training_sha256": "73edd87d5e8e9f9da6872d2159806abf03eb4792b24b1cb88b9e968ee82d3268"
+    },
+    {
+      "id": "full-u10000-s0",
+      "architecture": "full",
+      "widths": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "requested_updates": 10000,
+      "seed": 0,
+      "status": "completed",
+      "checks_status": "fail",
+      "actual_optimizer_updates": 10000,
+      "actual_example_presentations": 2557600,
+      "unique_training_rows_seen": 100000,
+      "same_seed_reload_exact": true,
+      "checkpoint_sha256": "93a22c7e9515dfa7439d5425a77e7a0fddc52e0ca1d6dff04f5bdb07ea694817",
+      "evaluation_verified_checkpoint_sha256": "93a22c7e9515dfa7439d5425a77e7a0fddc52e0ca1d6dff04f5bdb07ea694817",
+      "job_id": "8641256",
+      "submission_status": "submitted",
+      "script_sha256": "f522760198c07c57311197c09c157c9cc916924590d6de611284448488d7c86b",
+      "scheduler": {
+        "job_id": "8641256",
+        "job_name": "heston-full-u10000-s0",
+        "state": "COMPLETED",
+        "exit_code": "0:0",
+        "elapsed_seconds": 189,
+        "allocated_cpus": 4,
+        "allocated_gpus": 1,
+        "allocated_cpu_seconds": 756,
+        "gpu_seconds": 189,
+        "allocated_tres": {
+          "billing": "110",
+          "cpu": "4",
+          "gres/gpu": "1",
+          "mem": "24G",
+          "node": "1"
+        }
+      },
+      "gates": {
+        "finite_in_support_without_clipping": true,
+        "development_rank_screen": true,
+        "conditional_all_cases": false,
+        "predictive_pricing_completed": true,
+        "coverage_within_control_margin": false
+      },
+      "parameters": {
+        "initial_variance": {
+          "rank_ks": 0.058283087704584985,
+          "rank_passed": true,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.00014773964443925346,
+          "recovery_correlation": 0.9999306088047201,
+          "mean_physical_central90_width": 0.002106934388939406,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.935546875,
+              "wilson_interval": [
+                0.9108659024588599,
+                0.9537408335325352
+              ]
+            },
+            "0.95": {
+              "coverage": 0.966796875,
+              "wilson_interval": [
+                0.9474733440447254,
+                0.9791679559639896
+              ]
+            }
+          }
+        },
+        "theta": {
+          "rank_ks": 0.04048185848298902,
+          "rank_passed": true,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.0014378786185841681,
+          "recovery_correlation": 0.9992800638555245,
+          "mean_physical_central90_width": 0.005192997533777091,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.890625,
+              "wilson_interval": [
+                0.86062566245746,
+                0.9148063877590378
+              ]
+            },
+            "0.95": {
+              "coverage": 0.943359375,
+              "wilson_interval": [
+                0.9198386034432544,
+                0.9602767735524707
+              ]
+            }
+          }
+        },
+        "vol_of_vol": {
+          "rank_ks": 0.03041224582712121,
+          "rank_passed": true,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.007348958076939753,
+          "recovery_correlation": 0.9961989615784925,
+          "mean_physical_central90_width": 0.11456937175316853,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.91015625,
+              "wilson_interval": [
+                0.8822365395187666,
+                0.9319671132085561
+              ]
+            },
+            "0.95": {
+              "coverage": 0.951171875,
+              "wilson_interval": [
+                0.9289134485442119,
+                0.9667105694558431
+              ]
+            }
+          }
+        },
+        "rho": {
+          "rank_ks": 0.04022676509230244,
+          "rank_passed": true,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.029401775183992444,
+          "recovery_correlation": 0.9852597084724898,
+          "mean_physical_central90_width": 0.1058782510430319,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.9140625,
+              "wilson_interval": [
+                0.8865969291864807,
+                0.935361044043007
+              ]
+            },
+            "0.95": {
+              "coverage": 0.94140625,
+              "wilson_interval": [
+                0.9175865885145797,
+                0.9586516282300628
+              ]
+            }
+          }
+        }
+      },
+      "conditional": {
+        "0": {
+          "status": "fail",
+          "sampling_seed": 811083,
+          "reference_chain_shape": [
+            4,
+            8000,
+            4
+          ],
+          "block_lengths": [
+            40,
+            80
+          ],
+          "family_confidence": 0.95,
+          "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+          "parameter_order": [
+            "initial_variance",
+            "theta",
+            "vol_of_vol",
+            "rho"
+          ],
+          "parameter_status": [
+            "fail",
+            "pass",
+            "fail",
+            "fail"
+          ],
+          "signed_standardized_mean_difference": [
+            -0.06797525403129821,
+            -0.03648100267651367,
+            -0.3342623370960592,
+            -0.28595341411895864
+          ],
+          "signed_standardized_mean_interval": [
+            [
+              -0.19176084347311567,
+              0.05581033541051923
+            ],
+            [
+              -0.12488816583067855,
+              0.0519261604776512
+            ],
+            [
+              -0.43434880551863825,
+              -0.23417586867348011
+            ],
+            [
+              -0.40712437250371125,
+              -0.16478245573420602
+            ]
+          ],
+          "mean_status": [
+            "pass",
+            "pass",
+            "inconclusive",
+            "inconclusive"
+          ],
+          "width_ratio_90": [
+            2.013586256275014,
+            0.9856206768437235,
+            1.3469344438734425,
+            1.4191964527864174
+          ],
+          "width_ratio_interval": [
+            [
+              1.8779870384900859,
+              2.1589763551933223
+            ],
+            [
+              0.9279081916163946,
+              1.0469226669177685
+            ],
+            [
+              1.2595085420917553,
+              1.4404288144641204
+            ],
+            [
+              1.2909207732685637,
+              1.5602185767774703
+            ]
+          ],
+          "width_status": [
+            "fail",
+            "pass",
+            "fail",
+            "fail"
+          ]
+        },
+        "1": {
+          "status": "fail",
+          "sampling_seed": 811084,
+          "reference_chain_shape": [
+            4,
+            8000,
+            4
+          ],
+          "block_lengths": [
+            38,
+            76
+          ],
+          "family_confidence": 0.95,
+          "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+          "parameter_order": [
+            "initial_variance",
+            "theta",
+            "vol_of_vol",
+            "rho"
+          ],
+          "parameter_status": [
+            "fail",
+            "fail",
+            "pass",
+            "fail"
+          ],
+          "signed_standardized_mean_difference": [
+            -0.30473638935356506,
+            0.521342088007492,
+            0.00230320743091047,
+            0.13754450698738982
+          ],
+          "signed_standardized_mean_interval": [
+            [
+              -0.4162356431415831,
+              -0.193237135565547
+            ],
+            [
+              0.4021926668673931,
+              0.640491509147591
+            ],
+            [
+              -0.08340438266790731,
+              0.08801079752972826
+            ],
+            [
+              0.04013555629756255,
+              0.2349534576772171
+            ]
+          ],
+          "mean_status": [
+            "inconclusive",
+            "fail",
+            "pass",
+            "pass"
+          ],
+          "width_ratio_90": [
+            1.713561679906463,
+            1.9409803827812107,
+            0.9907081195638815,
+            1.3736190828701966
+          ],
+          "width_ratio_interval": [
+            [
+              1.6080735778527773,
+              1.8259697014390495
+            ],
+            [
+              1.821512315449462,
+              2.068284037603051
+            ],
+            [
+              0.9314534199381546,
+              1.053732325374865
+            ],
+            [
+              1.2860247231722797,
+              1.4671797134434987
+            ]
+          ],
+          "width_status": [
+            "fail",
+            "fail",
+            "pass",
+            "fail"
+          ]
+        },
+        "2": {
+          "status": "fail",
+          "sampling_seed": 811085,
+          "reference_chain_shape": [
+            4,
+            8000,
+            4
+          ],
+          "block_lengths": [
+            44,
+            88
+          ],
+          "family_confidence": 0.95,
+          "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+          "parameter_order": [
+            "initial_variance",
+            "theta",
+            "vol_of_vol",
+            "rho"
+          ],
+          "parameter_status": [
+            "fail",
+            "fail",
+            "inconclusive",
+            "inconclusive"
+          ],
+          "signed_standardized_mean_difference": [
+            0.007426030848650738,
+            0.40119934278313946,
+            0.10033185249485829,
+            -0.2921981819918528
+          ],
+          "signed_standardized_mean_interval": [
+            [
+              -0.1396649031918409,
+              0.15451696488914238
+            ],
+            [
+              0.3096748571393267,
+              0.4927238284269522
+            ],
+            [
+              0.009598436769108626,
+              0.19106526822060796
+            ],
+            [
+              -0.3843066062728043,
+              -0.20008975771090137
+            ]
+          ],
+          "mean_status": [
+            "pass",
+            "fail",
+            "pass",
+            "inconclusive"
+          ],
+          "width_ratio_90": [
+            2.545513788153478,
+            1.2174213550958846,
+            1.1770080455866931,
+            1.0694421128024414
+          ],
+          "width_ratio_interval": [
+            [
+              2.377903227447487,
+              2.7249386648231733
+            ],
+            [
+              1.1361651611469423,
+              1.3044888248001958
+            ],
+            [
+              1.0921644013104754,
+              1.2684426792464065
+            ],
+            [
+              1.0034153050678998,
+              1.1398136213977288
+            ]
+          ],
+          "width_status": [
+            "fail",
+            "inconclusive",
+            "inconclusive",
+            "pass"
+          ]
+        }
+      },
+      "posterior_predictive": {
+        "status": "completed_descriptive_check",
+        "observations": 32,
+        "paired_draws": 32,
+        "central90_quote_coverage": 0.8869047619047619,
+        "mean_absolute_residual_over_quote_sigma": 0.7734114241732339,
+        "scope": "Fixed development panel; replicated quotes include new Gaussian observation noise. No new adequacy/acceptance rule."
+      },
+      "cost": {
+        "training_wall_seconds": 77.32114843837917,
+        "fit_including_compile_and_validation_seconds": 58.837687999010086,
+        "first_training_batch_including_compile_seconds": 15.287605974823236,
+        "evaluation_wall_seconds": 102.32782955560833,
+        "worker_wall_seconds": 184.62738864962012,
+        "worker_child_peak_rss_bytes": 2110185472,
+        "scope": "Nested timings overlap; scheduler allocation is authoritative for resource charging."
+      },
+      "evaluation_sha256": "7a5c12f173968ae94b32295a3351752473f6e6a41130406469579a74024c08d6",
+      "training_sha256": "bd2307bb10cbec94f806dc09ad36ac3111717a8961d5db6656c304c9fa4c91fc"
+    },
+    {
+      "id": "full-u30000-s0",
+      "architecture": "full",
+      "widths": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "requested_updates": 30000,
+      "seed": 0,
+      "status": "completed",
+      "checks_status": "fail",
+      "actual_optimizer_updates": 30000,
+      "actual_example_presentations": 7672704,
+      "unique_training_rows_seen": 100000,
+      "same_seed_reload_exact": true,
+      "checkpoint_sha256": "ac00ca2ba10ba24f368f30973b9434c85306f5bc7589bef451fe7fa8f6cc1c38",
+      "evaluation_verified_checkpoint_sha256": "ac00ca2ba10ba24f368f30973b9434c85306f5bc7589bef451fe7fa8f6cc1c38",
+      "job_id": "8641258",
+      "submission_status": "submitted",
+      "script_sha256": "64cf9f5f0ed6fcdd127ef5abe6b01567dea7fda1ef87c5bee7117ce4ed5a4d13",
+      "scheduler": {
+        "job_id": "8641258",
+        "job_name": "heston-full-u30000-s0",
+        "state": "COMPLETED",
+        "exit_code": "0:0",
+        "elapsed_seconds": 237,
+        "allocated_cpus": 4,
+        "allocated_gpus": 1,
+        "allocated_cpu_seconds": 948,
+        "gpu_seconds": 237,
+        "allocated_tres": {
+          "billing": "110",
+          "cpu": "4",
+          "gres/gpu": "1",
+          "mem": "24G",
+          "node": "1"
+        }
+      },
+      "gates": {
+        "finite_in_support_without_clipping": true,
+        "development_rank_screen": true,
+        "conditional_all_cases": false,
+        "predictive_pricing_completed": true,
+        "coverage_within_control_margin": true
+      },
+      "parameters": {
+        "initial_variance": {
+          "rank_ks": 0.025559684883604605,
+          "rank_passed": true,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.00012588198248463938,
+          "recovery_correlation": 0.9999396625891772,
+          "mean_physical_central90_width": 0.0016177142464584905,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.884765625,
+              "wilson_interval": [
+                0.8541970418460828,
+                0.9096035276171676
+              ]
+            },
+            "0.95": {
+              "coverage": 0.939453125,
+              "wilson_interval": [
+                0.915340639807479,
+                0.957020416686081
+              ]
+            }
+          }
+        },
+        "theta": {
+          "rank_ks": 0.04520293389310048,
+          "rank_passed": true,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.0014225674928344467,
+          "recovery_correlation": 0.999285845362944,
+          "mean_physical_central90_width": 0.004885828672831845,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.87109375,
+              "wilson_interval": [
+                0.8392810633432318,
+                0.8973793843624412
+              ]
+            },
+            "0.95": {
+              "coverage": 0.92578125,
+              "wilson_interval": [
+                0.8997688824692767,
+                0.945452052266706
+              ]
+            }
+          }
+        },
+        "vol_of_vol": {
+          "rank_ks": 0.02186146947433204,
+          "rank_passed": true,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.0070076357185081106,
+          "recovery_correlation": 0.9963156884977574,
+          "mean_physical_central90_width": 0.10863327610932177,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.90234375,
+              "wilson_interval": [
+                0.8735560090639636,
+                0.9251390026590292
+              ]
+            },
+            "0.95": {
+              "coverage": 0.93359375,
+              "wilson_interval": [
+                0.9086366418684898,
+                0.9520929338718228
+              ]
+            }
+          }
+        },
+        "rho": {
+          "rank_ks": 0.03036923766070665,
+          "rank_passed": true,
+          "rank_dkw_bound": 0.07040045759041118,
+          "normalized_posterior_mean_mse": 0.028364190686632387,
+          "recovery_correlation": 0.9857584349706102,
+          "mean_physical_central90_width": 0.10033248256368098,
+          "coverage": {
+            "0.9": {
+              "coverage": 0.904296875,
+              "wilson_interval": [
+                0.8757213408880494,
+                0.9268508310860258
+              ]
+            },
+            "0.95": {
+              "coverage": 0.9453125,
+              "wilson_interval": [
+                0.9220969712394934,
+                0.9618955660073142
+              ]
+            }
+          }
+        }
+      },
+      "conditional": {
+        "0": {
+          "status": "inconclusive",
+          "sampling_seed": 811083,
+          "reference_chain_shape": [
+            4,
+            8000,
+            4
+          ],
+          "block_lengths": [
+            40,
+            80
+          ],
+          "family_confidence": 0.95,
+          "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+          "parameter_order": [
+            "initial_variance",
+            "theta",
+            "vol_of_vol",
+            "rho"
+          ],
+          "parameter_status": [
+            "inconclusive",
+            "inconclusive",
+            "pass",
+            "pass"
+          ],
+          "signed_standardized_mean_difference": [
+            0.31101532114056984,
+            -0.2391748176747447,
+            -0.09193953698208886,
+            -0.07851307143537753
+          ],
+          "signed_standardized_mean_interval": [
+            [
+              0.2157479140483694,
+              0.4062827282327703
+            ],
+            [
+              -0.3285949450481458,
+              -0.14975469030134358
+            ],
+            [
+              -0.17613513263231179,
+              -0.007743941331865928
+            ],
+            [
+              -0.1690310460316175,
+              0.012004903160862446
+            ]
+          ],
+          "mean_status": [
+            "inconclusive",
+            "inconclusive",
+            "pass",
+            "pass"
+          ],
+          "width_ratio_90": [
+            1.308682989876645,
+            1.0225799043269608,
+            0.9624070570030828,
+            0.918626344805122
+          ],
+          "width_ratio_interval": [
+            [
+              1.2238956568805754,
+              1.399344101242767
+            ],
+            [
+              0.9659349318458462,
+              1.0825466874203642
+            ],
+            [
+              0.9001397319382263,
+              1.028981735285627
+            ],
+            [
+              0.8449208659384195,
+              0.9987614170621311
+            ]
+          ],
+          "width_status": [
+            "inconclusive",
+            "pass",
+            "pass",
+            "pass"
+          ]
+        },
+        "1": {
+          "status": "fail",
+          "sampling_seed": 811084,
+          "reference_chain_shape": [
+            4,
+            8000,
+            4
+          ],
+          "block_lengths": [
+            38,
+            76
+          ],
+          "family_confidence": 0.95,
+          "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+          "parameter_order": [
+            "initial_variance",
+            "theta",
+            "vol_of_vol",
+            "rho"
+          ],
+          "parameter_status": [
+            "inconclusive",
+            "fail",
+            "pass",
+            "pass"
+          ],
+          "signed_standardized_mean_difference": [
+            0.11969710282501099,
+            0.2770037898665617,
+            0.20214611407663882,
+            -0.01306108324712833
+          ],
+          "signed_standardized_mean_interval": [
+            [
+              0.027304071626903084,
+              0.21209013402311888
+            ],
+            [
+              0.18164415878799417,
+              0.37236342094512925
+            ],
+            [
+              0.12114116823410147,
+              0.28315105991917616
+            ],
+            [
+              -0.10316431456138027,
+              0.0770421480671236
+            ]
+          ],
+          "mean_status": [
+            "pass",
+            "inconclusive",
+            "pass",
+            "pass"
+          ],
+          "width_ratio_90": [
+            1.2721549359582385,
+            1.341738254274219,
+            0.8722153754955981,
+            1.1328567860445928
+          ],
+          "width_ratio_interval": [
+            [
+              1.1961121965326806,
+              1.3530320866004915
+            ],
+            [
+              1.2579249237393344,
+              1.431135919965186
+            ],
+            [
+              0.8167545913616048,
+              0.9314421605915567
+            ],
+            [
+              1.0549048289523455,
+              1.2165689856229291
+            ]
+          ],
+          "width_status": [
+            "inconclusive",
+            "fail",
+            "pass",
+            "pass"
+          ]
+        },
+        "2": {
+          "status": "fail",
+          "sampling_seed": 811085,
+          "reference_chain_shape": [
+            4,
+            8000,
+            4
+          ],
+          "block_lengths": [
+            44,
+            88
+          ],
+          "family_confidence": 0.95,
+          "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+          "parameter_order": [
+            "initial_variance",
+            "theta",
+            "vol_of_vol",
+            "rho"
+          ],
+          "parameter_status": [
+            "fail",
+            "pass",
+            "pass",
+            "inconclusive"
+          ],
+          "signed_standardized_mean_difference": [
+            -0.48064599580797357,
+            0.008496670307398636,
+            0.12472947235982616,
+            -0.21250557825624009
+          ],
+          "signed_standardized_mean_interval": [
+            [
+              -0.5841731736405418,
+              -0.3771188179754054
+            ],
+            [
+              -0.07526944473799506,
+              0.09226278535279232
+            ],
+            [
+              0.03588232656923043,
+              0.2135766181504219
+            ],
+            [
+              -0.3055733581177294,
+              -0.11943779839475077
+            ]
+          ],
+          "mean_status": [
+            "fail",
+            "pass",
+            "pass",
+            "inconclusive"
+          ],
+          "width_ratio_90": [
+            1.6139063576602244,
+            1.043031534251888,
+            1.124467076842271,
+            1.110824140916073
+          ],
+          "width_ratio_interval": [
+            [
+              1.5119396420862656,
+              1.7227498101061616
+            ],
+            [
+              0.9730475107531493,
+              1.118048984680912
+            ],
+            [
+              1.0428564214371776,
+              1.212464324820166
+            ],
+            [
+              1.0418133291771448,
+              1.1844063014787174
+            ]
+          ],
+          "width_status": [
+            "fail",
+            "pass",
+            "pass",
+            "pass"
+          ]
+        }
+      },
+      "posterior_predictive": {
+        "status": "completed_descriptive_check",
+        "observations": 32,
+        "paired_draws": 32,
+        "central90_quote_coverage": 0.8784722222222222,
+        "mean_absolute_residual_over_quote_sigma": 0.7708598854111633,
+        "scope": "Fixed development panel; replicated quotes include new Gaussian observation noise. No new adequacy/acceptance rule."
+      },
+      "cost": {
+        "training_wall_seconds": 119.05027255229652,
+        "fit_including_compile_and_validation_seconds": 101.21369266975671,
+        "first_training_batch_including_compile_seconds": 15.137575674802065,
+        "evaluation_wall_seconds": 109.19147212337703,
+        "worker_wall_seconds": 233.47885117027909,
+        "worker_child_peak_rss_bytes": 2110074880,
+        "scope": "Nested timings overlap; scheduler allocation is authoritative for resource charging."
+      },
+      "evaluation_sha256": "0ae18e68f3678d30d1627417c316ac899d07aea46faf9ae915daef5d8bdbb98e",
+      "training_sha256": "46f49acaf113aa7c8c6ba6b9965a2ce1592b7809f7cde2c561fcfb411e827f97"
+    }
+  ],
+  "resources": {
+    "ceilings": {
+      "gpu_seconds": 4500,
+      "allocated_cpu_seconds": 21600
+    },
+    "reserved_totals": {
+      "gpu_seconds": 4002,
+      "allocated_cpu_seconds": 18008
+    },
+    "screen_hard_cap_gpu_seconds": 3720,
+    "host_cpus_per_gpu": 4,
+    "host_memory_gib_per_job": 24,
+    "readiness_accounting": {
+      "8638765": {
+        "job_id": "8638765",
+        "job_name": "heston-matrix-readiness",
+        "state": "FAILED",
+        "exit_code": "1:0",
+        "elapsed_seconds": 6,
+        "allocated_cpus": 4,
+        "allocated_gpus": 1,
+        "allocated_cpu_seconds": 24,
+        "gpu_seconds": 6,
+        "allocated_tres": {
+          "billing": "110",
+          "cpu": "4",
+          "gres/gpu": "1",
+          "mem": "24G",
+          "node": "1"
+        },
+        "batch_peak_rss_bytes": 73383936
+      },
+      "8639613": {
+        "job_id": "8639613",
+        "job_name": "heston-matrix-readiness-v2",
+        "state": "FAILED",
+        "exit_code": "1:0",
+        "elapsed_seconds": 276,
+        "allocated_cpus": 4,
+        "allocated_gpus": 1,
+        "allocated_cpu_seconds": 1104,
+        "gpu_seconds": 276,
+        "allocated_tres": {
+          "billing": "110",
+          "cpu": "4",
+          "gres/gpu": "1",
+          "mem": "24G",
+          "node": "1"
+        },
+        "batch_peak_rss_bytes": 2374725632
+      }
+    },
+    "future_confirmation_reservation": {
+      "allocated_cpu_seconds": 0,
+      "gpu_seconds": 0
+    },
+    "future_scope": "Deferred explicitly before candidate results; separate scope/quality/device/cost admission required.",
+    "actual_screen": {
+      "complete": true,
+      "accounted_screen_jobs": 14,
+      "terminal_screen_jobs": 14,
+      "allocated_cpu_seconds": 10172,
+      "gpu_seconds": 2543
+    },
+    "charged_prior_plus_screen": {
+      "charged_cpu_seconds_prior_plus_observed_screen": 13300,
+      "charged_gpu_seconds_prior_plus_observed_screen": 2825
+    },
+    "prior_charge_scope": "Includes both failed preflight allocations and 2,000 conservative prior local CPU-seconds; allocated CPU-seconds are not measured process CPU utilization."
+  },
+  "readiness_evidence": {
+    "training_reloads": "Five GPU software/cost smokes completed, including both architectures at 30/300 updates; exact endpoint counts/reloads.",
+    "old_environment_failure": "Job 8638765 failed before training because the old environment lacked typing_extensions.py; 6 GPU / 24 allocated CPU-seconds retained.",
+    "fresh_environment": "Installed a fresh pinned core-gpu environment from the existing lock using checksum-verified Pixi 0.70.2; archived environments unchanged.",
+    "control_cost_failure": "Job 8639613 used 276 GPU / 1,104 allocated CPU-seconds; five fit/reload smokes completed, then the whole-run deadline interrupted control evaluation. Its failed verdict is retained.",
+    "partial_control": "All three conditional cases and the first 32 \u00d7 128 development batch completed; no completed GPU rank screen claimed. The original complete CPU control remains the quality comparator.",
+    "evaluation_forecast_seconds": 150,
+    "forecast_scope": "Explicit conservative bound using the partial GPU costs and complete CPU control; not a completed GPU evaluation measurement.",
+    "incremental_update_ms": {
+      "small": 2.451766434091109,
+      "full": 2.361252807356693
+    },
+    "memory": {
+      "host_allocation_bytes": 25769803776,
+      "forecast_peak_host_bytes": 3571081216,
+      "forecast_peak_device_bytes": 1522473088,
+      "available_device_bytes": 35750150144,
+      "measured_max_host_peak_bytes": 1664892928,
+      "measured_max_device_peak_bytes": 299154176,
+      "rule": "maximum measured smoke peak \u00d71.5 +1GiB; not a Python-enforced memory limit",
+      "observed_partial_control_batch_peak_rss_bytes": 2374725632,
+      "partial_control_gpu_peak_unmeasured": true,
+      "partial_control_scope": "Training allocator peak \u00d71.5 +1GiB is a forecast; unfinished control has no completed GPU allocator report. The host forecast also covers its measured Slurm batch MaxRSS."
+    }
+  },
+  "validation": {
+    "lab_tests": 573,
+    "optional_pymc_skips": 3,
+    "release_check_passed": true,
+    "runtime_shared_aliases": 183,
+    "manifest_claims_changed": false,
+    "gpu_five_smokes_exact_reload": true,
+    "operator_accounting_forecast_collector_checks": "passed",
+    "all14_native_endpoint_reloads_exact": true,
+    "all14_checkpoint_bytes_match_evaluation": true,
+    "reserved_test_arrays_opened_by_collector": false,
+    "collector_issues": []
+  },
+  "operator_sha256": {
+    "gpu_readiness.py": "ed60284e63aa0fd954bad19de2240a5dbb953f1752e0203d3165a96af22b794a",
+    "gpu_readiness_v2.sbatch": "ffec54d9abd63fc72b55d9e5a09388ed3130ed6ef6c6f2d3da96fb9fae4f43d5",
+    "prepare_matrix.py": "dd2bec86deae480ad7b794a1d6f472cd248eca8659666c466284e33e7c11104b",
+    "submit_matrix.py": "c3da93f617db60ad9068d9ed4dac801b2d1b972a68f24a660671d2ffc7e831eb",
+    "collect_matrix.py": "0f96c237a2b13bc99c9aba942de4e029881239ddcc0355730a927c60997950ad"
+  },
+  "next": "Review the completed development screen. No candidate qualifies for automatic confirmation or replacement. Diagnose remaining conditional discrepancies and define a separate bounded scope before further training/reference work; reserved final panel remains closed.",
+  "new_training_bank_generated": false,
+  "checks_status_counts": {
+    "fail": 14
+  },
+  "parameter_names": [
+    "initial_variance",
+    "theta",
+    "vol_of_vol",
+    "rho"
+  ],
+  "metric_scope": "512 development observations \u00d7 128 draws for ranks/coverage/recovery; three cached conditional observations \u00d7 4,096 neural draws, compared with preserved 4 \u00d7 8,000 reference chains; 32 observations \u00d7 32 draws for a descriptive predictive check. One training seed per endpoint.",
+  "original_control_summary": {
+    "status_retained": "inconclusive",
+    "control_checkpoint_sha256": "8d4a243ba099524cf4cda40e4f0616e895879f053829a7f60dadbe65b98301db",
+    "parameters": {
+      "initial_variance": {
+        "rank_ks": 0.02748522320073976,
+        "rank_passed": true,
+        "rank_dkw_bound": 0.07040045759041118,
+        "coverage": {
+          "0.5": {
+            "coverage": 0.474609375,
+            "wilson_interval": [
+              0.43170578221120814,
+              0.5178911345247195
+            ]
+          },
+          "0.8": {
+            "coverage": 0.775390625,
+            "wilson_interval": [
+              0.7372680468181392,
+              0.8094115485844917
+            ]
+          },
+          "0.9": {
+            "coverage": 0.88671875,
+            "wilson_interval": [
+              0.8563373724144565,
+              0.9113403572998764
+            ]
+          },
+          "0.95": {
+            "coverage": 0.935546875,
+            "wilson_interval": [
+              0.9108659024588599,
+              0.9537408335325352
+            ]
+          }
+        },
+        "normalized_posterior_mean_mse": 0.00011379694036751441,
+        "recovery_correlation": 0.999944771060403,
+        "mean_physical_central90_width": 0.0014624707248913197
+      },
+      "theta": {
+        "rank_ks": 0.03954077575293469,
+        "rank_passed": true,
+        "rank_dkw_bound": 0.07040045759041118,
+        "coverage": {
+          "0.5": {
+            "coverage": 0.470703125,
+            "wilson_interval": [
+              0.4278469468194331,
+              0.5139956494143296
+            ]
+          },
+          "0.8": {
+            "coverage": 0.7578125,
+            "wilson_interval": [
+              0.7188729901641424,
+              0.7929121629787461
+            ]
+          },
+          "0.9": {
+            "coverage": 0.875,
+            "wilson_interval": [
+              0.8435314068192065,
+              0.9008833613886315
+            ]
+          },
+          "0.95": {
+            "coverage": 0.91796875,
+            "wilson_interval": [
+              0.8909718133445638,
+              0.938740480387089
+            ]
+          }
+        },
+        "normalized_posterior_mean_mse": 0.0013989960098594665,
+        "recovery_correlation": 0.9992982669192642,
+        "mean_physical_central90_width": 0.004863910211770418
+      },
+      "vol_of_vol": {
+        "rank_ks": 0.03406994171232869,
+        "rank_passed": true,
+        "rank_dkw_bound": 0.07040045759041118,
+        "coverage": {
+          "0.5": {
+            "coverage": 0.498046875,
+            "wilson_interval": [
+              0.4549138158353452,
+              0.5412090239135723
+            ]
+          },
+          "0.8": {
+            "coverage": 0.810546875,
+            "wilson_interval": [
+              0.7743386557769042,
+              0.8421298241452116
+            ]
+          },
+          "0.9": {
+            "coverage": 0.888671875,
+            "wilson_interval": [
+              0.8584802269199013,
+              0.9130746630455141
+            ]
+          },
+          "0.95": {
+            "coverage": 0.93359375,
+            "wilson_interval": [
+              0.9086366418684898,
+              0.9520929338718228
+            ]
+          }
+        },
+        "normalized_posterior_mean_mse": 0.006730225329256174,
+        "recovery_correlation": 0.9964328216966916,
+        "mean_physical_central90_width": 0.10696690381082595
+      },
+      "rho": {
+        "rank_ks": 0.036217544065610285,
+        "rank_passed": true,
+        "rank_dkw_bound": 0.07040045759041118,
+        "coverage": {
+          "0.5": {
+            "coverage": 0.478515625,
+            "wilson_interval": [
+              0.4355672416399762,
+              0.5217839955981164
+            ]
+          },
+          "0.8": {
+            "coverage": 0.791015625,
+            "wilson_interval": [
+              0.7536951237380339,
+              0.824001753673257
+            ]
+          },
+          "0.9": {
+            "coverage": 0.90234375,
+            "wilson_interval": [
+              0.8735560090639636,
+              0.9251390026590292
+            ]
+          },
+          "0.95": {
+            "coverage": 0.9453125,
+            "wilson_interval": [
+              0.9220969712394934,
+              0.9618955660073142
+            ]
+          }
+        },
+        "normalized_posterior_mean_mse": 0.02707855603738342,
+        "recovery_correlation": 0.9863591993020684,
+        "mean_physical_central90_width": 0.09850106097292158
+      }
+    },
+    "gates": {
+      "finite_in_support_without_clipping": true,
+      "development_rank_screen": true,
+      "conditional_all_cases": false,
+      "predictive_pricing_completed": true
+    }
+  },
+  "findings": [
+    "All 14 independent fits/evaluations completed with Slurm COMPLETED/0:0, exact requested optimizer updates, endpoint reload equality and matching model bytes/evaluation identities.",
+    "None passes all predeclared development checks. All samples are finite and in support without clipping; all bounded predictive computations complete.",
+    "All four simultaneous marginal rank checks pass only for small 30,000, full 10,000 and full 30,000. Only full 30,000 also meets the coverage-within-control margin. These are development diagnostics, not confirmation or final-test results.",
+    "Full 30,000 conditional case 0 is inconclusive; cases 1 and 2 fail. Case 1 theta 90% width ratio 1.342, uncertainty interval [1.258, 1.431]; case 2 initial_variance mean difference \u22120.481 reference SD, interval [\u22120.584, \u22120.377], and width ratio 1.614, interval [1.512, 1.723]. These failures are not solely the original control reference-precision issue.",
+    "Training fit costs 25.5\u2013101.2 seconds including compilation/terminal validation; whole training reports 43.9\u2013119.1 seconds; independent evaluation reports 96.4\u2013109.2 seconds. Cold costs dominate short budgets; no same-quality speedup over the historical CPU control is established.",
+    "Mean estimation improves before posterior calibration. Full 30,000 prior-normalized MSE is approximately 1.106/1.017/1.041/1.047 times the saved control for v0/theta/vol_of_vol/rho; these single-seed point comparisons do not imply equivalent posterior distributions."
+  ],
+  "preservation": {
+    "local_payload_root": "/Users/afengler/Projects/proj_sbi4finance/local-artifacts/heston-matrix-operator-20261108/matrix-admission",
+    "oscar_payload_root": "/oscar/scratch/afengler/sbi4finance-heston-matrix-20261108/matrix-admission",
+    "files": 495,
+    "bytes": 136483589,
+    "payload_manifest_sha256": "061a501dfe7087431083c3367ba55272c97857cce5ab3669adc7bfe573405b31",
+    "remote_manifest_sha256": "061a501dfe7087431083c3367ba55272c97857cce5ab3669adc7bfe573405b31",
+    "all_file_hashes_match": true,
+    "full_collection_sha256": "61248f2a840c14d57ea302f87b53977cbfd54dc3510c0e5a42f0108d619d2ec8",
+    "full_collection_relative_path": "matrix-complete-local/summary.json",
+    "payload_manifest_relative_path": "matrix-complete-local/payload-checksums.json",
+    "method": "Completed rsync --checksum; independently hashed all 495 regular files on Oscar and locally, with identical canonical manifests. Models and full arrays remain outside Git."
+  },
+  "figure": {
+    "path": "matrix-cost-quality.png",
+    "sha256": "11b23869411564a1d04ae9972339c75d477de09b44107b4e62893202716e3ee5",
+    "visually_checked": true,
+    "scope": "Mean-error learning curves and overlapping wall-time scopes. Failed overall checks remain visible; the figure alone does not assess posterior calibration."
+  },
+  "coverage_interpretation": "Development central intervals use 128 posterior draws, so finite-draw quantiles can lower coverage even under an exact posterior. The relative gate compares the saved control at the same draw count; raw nominal coverage alone is not an adequacy verdict. Conditional comparisons use 4,096 neural draws; their material discrepancies remain. The 32-draw predictive check is descriptive and successful pricing is not a predictive-adequacy pass."
+}
