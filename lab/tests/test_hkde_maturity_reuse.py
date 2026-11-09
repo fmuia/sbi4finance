@@ -20,46 +20,14 @@ import numpy as np
 from numpy.testing import assert_array_equal
 
 from sbi4f_tutorial.heston_options import model as heston_model
+from sbi4f_tutorial.shared import pricing
 
 from sbi4finance import gbm, hkde
 from sbi4finance.calibration import tasks
+from sbi4finance.calibration.heston_pricing_reference import original_price
 
 
 ROOT = Path(__file__).resolve().parents[1]
-
-
-def original_price(forward, strike, discount, maturity, parameters, initial_variance,
-                   *, kind="call", upper_limit=200.0, nodes=512):
-    """Frozen pre-optimization reference, with one CF row per contract."""
-    if kind not in ("call", "put"):
-        raise ValueError("kind must be call or put")
-    if isinstance(nodes, (bool, np.bool_)) or not isinstance(nodes, (int, np.integer)) or nodes < 16:
-        raise ValueError("nodes must be an integer >=16")
-    cutoff = gbm._scalar(upper_limit, "upper_limit", positive=True)
-    fwd, k, disc, time = np.broadcast_arrays(*[np.asarray(value, dtype=np.float64)
-                                              for value in (forward, strike, discount, maturity)])
-    if any(not value.size or not np.isfinite(value).all() or np.any(value <= 0)
-           for value in (fwd, k, disc)) or not np.isfinite(time).all() or np.any(time < 0):
-        raise ValueError("require finite F,K,D>0 and T>=0")
-    hkde.characteristic_function(0.0, 0.0, parameters, initial_variance)
-    values = hkde.validate_parameters(parameters)
-    if float(values["vol_of_vol"]) == 0 and float(values["jump_intensity"]) == 0:
-        kappa, theta = float(values["kappa"]), float(values["theta"])
-        integrated = theta*time + (initial_variance-theta)*(-np.expm1(-kappa*time))/kappa
-        return gbm.european_price(fwd, k, disc, integrated, option=kind)
-    u, weights = hkde._quadrature(int(nodes), cutoff)
-    phi = hkde.characteristic_function(u-0.5j, time[..., None], parameters, initial_variance)
-    integrand = np.real(np.exp(1j*u*np.log(fwd/k)[..., None])*phi)/(u*u+0.25)
-    call = disc*(fwd - np.sqrt(fwd*k)*np.sum(integrand*weights, axis=-1)/np.pi)
-    call = np.where(time == 0, disc*np.maximum(fwd-k, 0), call)
-    price = call if kind == "call" else call-disc*(fwd-k)
-    lower = disc*np.maximum(fwd-k if kind == "call" else k-fwd, 0)
-    upper = disc*(fwd if kind == "call" else k)
-    tolerance = 1e-9*disc*np.maximum(fwd, k)
-    if (not np.isfinite(price).all() or np.any(price < lower-tolerance)
-            or np.any(price > upper+tolerance)):
-        raise ValueError("Fourier price violates bounds; refine controls or reject this domain")
-    return price
 
 
 def model(**updates):
@@ -71,6 +39,20 @@ def model(**updates):
 
 def calibration_task():
     return json.loads((ROOT / "configs/tasks/calibration_heston_bank.json").read_text())["task"]
+
+
+def original_surface(parameters, initial_variance, contracts, *, nodes, upper_limit):
+    """Frozen pre-surface-sharing route, preserving contract order and controls."""
+    strike = np.exp(np.log(np.array([c["strike"] for c in contracts], dtype=float)))
+    maturity = np.array([c["maturity"] for c in contracts], dtype=float)
+    kind = np.array([c["option_type"] for c in contracts])
+    prices = np.empty(len(contracts))
+    for value in np.unique(kind):
+        chosen = kind == value
+        prices[chosen] = original_price(1., strike[chosen], 1., maturity[chosen], parameters,
+                                        initial_variance, kind=str(value), nodes=nodes,
+                                        upper_limit=upper_limit)
+    return prices
 
 
 class MaturityReuseTests(unittest.TestCase):
@@ -149,7 +131,7 @@ class MaturityReuseTests(unittest.TestCase):
         for parameters in candidates:
             with self.subTest(parameters=parameters):
                 actual = tasks.price(task, parameters, [], 0)
-                with patch.object(heston_model, "european_price", original_price):
+                with patch.object(pricing, "heston_surface", original_surface):
                     expected = tasks.price(task, parameters, [], 0)
                 for value, reference in zip(actual, expected, strict=True):
                     assert_array_equal(value, reference, strict=True)
@@ -159,19 +141,19 @@ def benchmark(repeats=80):
     """Report medians of alternating timings; no timing-dependent test gates."""
     task = calibration_task()
     parameters = [(lo + hi) / 2 for lo, hi in task["prior_bounds"]]
-    optimized = hkde.european_price
+    optimized = pricing.heston_surface
     outputs = {}
     timings = {}
-    for name, implementation in (("original", original_price), ("maturity_reuse", optimized)):
+    for name, implementation in (("original", original_surface), ("maturity_reuse", optimized)):
         hkde._quadrature.cache_clear()
-        with patch.object(heston_model, "european_price", implementation):
+        with patch.object(pricing, "heston_surface", implementation):
             start = time.perf_counter()
             outputs[name] = tasks.price(task, parameters, [], 0)
             timings[name] = {"cold_wall_seconds": time.perf_counter() - start, "warm_wall_seconds": []}
     for i in range(repeats):
-        order = (("original", original_price), ("maturity_reuse", optimized))
+        order = (("original", original_surface), ("maturity_reuse", optimized))
         for name, implementation in order[::1 if i % 2 == 0 else -1]:
-            with patch.object(heston_model, "european_price", implementation):
+            with patch.object(pricing, "heston_surface", implementation):
                 start = time.perf_counter()
                 tasks.price(task, parameters, [], 0)
                 timings[name]["warm_wall_seconds"].append(time.perf_counter() - start)

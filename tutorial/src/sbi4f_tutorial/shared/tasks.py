@@ -54,16 +54,24 @@ def heston_prices(task, parameters, v0, contracts=None):
     limit = numerics["max_refinement_over_quote_sigma"] * sigma(task)
     ladder = numerics["quadrature_ladder"]
     failure = None
+    base = None
     for (nodes, cutoff), (next_nodes, next_cutoff) in zip(ladder, ladder[1:]):
         try:
-            base = pricing.heston_surface(parameters, v0, contracts, nodes=nodes, upper_limit=cutoff)
+            if base is None:
+                base = pricing.heston_surface(parameters, v0, contracts, nodes=nodes, upper_limit=cutoff)
             refined = pricing.heston_surface(parameters, v0, contracts, nodes=next_nodes, upper_limit=next_cutoff)
         except ValueError as error:
             failure = error
+            # A failed evaluation is never carried forward as an accepted
+            # rung. Preserve the original retry and failure behavior.
+            base = None
             continue
         if len(contracts) != len(limit) or np.all(np.abs(refined - base) <= limit):
             return refined, refined - base
         failure = ValueError("Fourier refinement budget failed")
+        # This refined rung priced successfully; it is exactly the next
+        # comparison's base, even though its discrepancy has not yet passed.
+        base = refined
     raise ValueError(f"{failure} on every quadrature rung")
 
 

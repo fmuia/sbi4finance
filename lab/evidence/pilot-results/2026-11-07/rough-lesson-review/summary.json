@@ -5,44 +5,43 @@
   "scientific_acceptance": false,
   "existing_assets_changed": false,
   "verification": {
-    "tutorial_tests": 57,
-    "lab_core_tests": 527,
+    "tutorial_tests": 71,
+    "lab_core_tests": 573,
     "lab_optional_skips": 3,
     "notebook_exports": 7,
     "notebook_cell_errors": 0,
-    "runtime_boundary_symbols": 192,
-    "local_document_links": 51,
+    "runtime_boundary_symbols": 203,
+    "local_document_links": 52,
     "moved_function_definitions_unchanged": 8,
     "marimo_warnings": "existing empty cells in slots 2 and 3"
   },
   "browser": {
     "page_errors": [],
-    "studies": [
-      "context support",
-      "paired uncertainty propagation",
-      "surrogate disagreement",
-      "unobserved tail"
+    "path_H_endpoints": [
+      0.02,
+      0.4
     ],
-    "current_joint_cases": [
-      "Joint worked example",
-      "Curve level–decay trade-off",
-      "Coupled volatility parameters",
-      "Weakly informed decay"
+    "fixed_shocks_control": true,
+    "smile_expiries": [
+      5,
+      21,
+      63,
+      252
     ],
-    "reference_cases": 3,
-    "context_width_endpoints": [
-      0.05,
-      0.6
+    "smile_elapsed_seconds": 3.787787541979924,
+    "code_visible": [
+      "simulator",
+      "pricer fit and likelihood",
+      "BayesFlow fit",
+      "pretrained load and sample"
     ],
-    "tail_width_endpoints": [
-      0,
-      0.5
-    ],
-    "shuffled_marginals_control": true,
+    "small_pricer_elapsed_seconds": 13.577211290947162,
+    "pretrained_load_elapsed_seconds": 1.860046749934554,
+    "pretrained_missing_folder": true,
+    "changed_folder_clears_old_output": true,
     "narrow_width": 760,
     "horizontal_overflow": false,
-    "math_render_errors": 0,
-    "old_archive_absent": true
+    "math_render_errors": 0
   },
   "helper_benchmarks": {
     "implementation": "exact task grids and precision; bounded session-only helpers",
@@ -180,15 +179,16 @@
     "tutorial/src/sbi4f_tutorial/rough_options/studies.py": "ed39e6d00ed40a36007fc7e385491fa2e4faf26524470328d8f77ab271894e4f",
     "tutorial/src/sbi4f_tutorial/rough_options/surrogate.py": "da71768a50bc91dcb4b43c25e3a2f1b224ba09ee5da752356b9c19ac9bbffb1a",
     "tutorial/src/sbi4f_tutorial/shared/parameter_transforms.py": "e83762a6d2b5a4886ff6792fd88f51b46a27d1ba3d723b9b317f04cdfa47b2e8",
-    "tutorial/src/sbi4f_tutorial/shared/pricing.py": "68a690b4b425cf3d50f68c303989c96a930ca48f83940d3bace344855d60fb09",
-    "tutorial/src/sbi4f_tutorial/shared/tasks.py": "fb6240751ab4eeab4a46aab5d0329322705557c2a71a151f280409b853fdf7b2",
+    "tutorial/src/sbi4f_tutorial/shared/pricing.py": "3f0431d77418ca04ddb676a9d6ce036dc22c097f244965a0b6de7fe34c0e353e",
+    "tutorial/src/sbi4f_tutorial/shared/tasks.py": "4bc28d37c865a04a3f5d214fec5afbecf1db0ab4a2e02dd331d520fe9b08848b",
     "tutorial/tests/test_independence.py": "e3a2789fc0d407d345c14a94f3cf800ea8fb35ee12ae40e8004aa2c00b0417a6",
     "tutorial/tests/test_rough_comparison.py": "36edcf61579214e238826d1432d443162007b58928d6b034ce413ed8b499ea7a",
     "tutorial/tests/test_rough_context.py": "d18fda5017f334b1e111817fa38a41e691797bbfb290e1e396317814de0dd65c",
     "tutorial/tests/test_rough_explorer.py": "88db231867980ad1c99cb71fd721ccae16cc83a0ca9248086b88b58beb81e4fc",
     "tutorial/tests/test_rough_session.py": "fade7005723db92c00306c885619ebc9b872863a32294fa8f2937e0ed527a838",
     "tutorial/tests/test_rough_studies.py": "7cdb7f37ad99a8d3cac353c81fd49400cd4574b9e15c264bd08c85c9e33d7eba",
-    "tutorial/tests/test_rough_surrogate.py": "49b4761e6de900aa3ac83f6a0355e10216d00c3a4a971821ec097be05c902f3c"
+    "tutorial/tests/test_rough_surrogate.py": "49b4761e6de900aa3ac83f6a0355e10216d00c3a4a971821ec097be05c902f3c",
+    "tutorial/src/sbi4f_tutorial/heston_options/model.py": "4b48d998ff99e3709d8c753bd12ef32453242332ec0486c9d1251a788cadfe85"
   },
   "timing_environment": {
     "system": "Darwin",
@@ -421,5 +421,33 @@
       "changed checkpoint folder resets explicit action"
     ],
     "scientific_scope": "No existing assets, model weights, saved posterior evidence or scientific acceptance changed. Tiny supervised fit is an API exercise, not a reference pricer. Asymptotic shape guides are not finite-price curves or calibrations to SPY."
+  },
+  "pre_workflow_verification": {
+    "tutorial_tests": 57,
+    "lab_core_tests": 527,
+    "lab_optional_skips": 3,
+    "notebook_exports": 7,
+    "notebook_cell_errors": 0,
+    "runtime_boundary_symbols": 192,
+    "local_document_links": 51,
+    "moved_function_definitions_unchanged": 8,
+    "marimo_warnings": "existing empty cells in slots 2 and 3"
+  },
+  "main_integration": {
+    "main_commit": "ad5bef6dbd6de6af3ad88b7c572c8697bb2463f6",
+    "main_heston_pricing_and_refinement_functions_preserved_unchanged": true,
+    "tutorial_curve_helpers_preserved_unchanged": true,
+    "lab_core_tests": 573,
+    "lab_optional_skips": 3,
+    "tutorial_tests": 71,
+    "notebook_exports": 7,
+    "notebook_cell_errors": 0,
+    "release_check": true,
+    "browser": {
+      "page_errors": [],
+      "main_pricing_comparison_action": true,
+      "commented_workflow_and_heston_comparison_visible": true,
+      "math_render_errors": 0
+    }
   }
 }

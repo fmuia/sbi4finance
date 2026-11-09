@@ -159,7 +159,7 @@ an eight-draw three-month predictive action. Four intentional Additional studies
 replace the archive. The eight moved curve/context functions retain their original definitions;
 lab imports reuse the same objects. No saved evidence or model changed.
 
-Verification passes: 71 tutorial tests; 527 core lab tests (three optional skips);
+Verification passes: 71 tutorial tests; 573 core lab tests (three optional skips);
 all seven notebook exports; marimo and release checks. Chrome checks cover the
 training/predictive actions, all four Additional studies, four joint cases,
 reference cases, control endpoints and a 760-pixel layout. Existing empty-cell warnings in
@@ -228,12 +228,14 @@ or load matching pretrained posterior weights. The loader validates identities;
 fresh draws identify their source and do not replace saved validation evidence.
 Document source ownership and both routes in the collaborator handover.
 
-**Verification:** 71 tutorial tests, 527 core lab tests (three optional PyMC skips),
+**Verification:** 71 tutorial tests, 573 core lab tests (three optional PyMC skips),
 all seven notebook exports and 203-symbol runtime ownership checks pass. Actual
 session checks exercise the six-market pricer fit, two-market validation, Gaussian
 likelihood and identity-checked 512-draw pretrained inference. Browser checks cover
 the path controls, all four smile expiries, small pricer, missing/matching folders
-and the narrow layout. Existing numerical and calibration limits remain unchanged.
+and the narrow layout. Existing numerical and calibration limits remain unchanged. Main’s newer Heston
+pricing optimizations are integrated, with its functions and the lesson’s curve
+helpers preserved unchanged; the final comparison and exports pass again.
 
 ## D. Develop the trajectory notebook to application parity
 
