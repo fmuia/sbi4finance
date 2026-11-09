@@ -20,6 +20,7 @@ import numpy as np
 from numpy.testing import assert_array_equal
 
 from sbi4f_tutorial.heston_options import model as heston_model
+from sbi4f_tutorial.shared import pricing
 
 from sbi4finance import gbm, hkde
 from sbi4finance.calibration import tasks
@@ -38,6 +39,20 @@ def model(**updates):
 
 def calibration_task():
     return json.loads((ROOT / "configs/tasks/calibration_heston_bank.json").read_text())["task"]
+
+
+def original_surface(parameters, initial_variance, contracts, *, nodes, upper_limit):
+    """Frozen pre-surface-sharing route, preserving contract order and controls."""
+    strike = np.exp(np.log(np.array([c["strike"] for c in contracts], dtype=float)))
+    maturity = np.array([c["maturity"] for c in contracts], dtype=float)
+    kind = np.array([c["option_type"] for c in contracts])
+    prices = np.empty(len(contracts))
+    for value in np.unique(kind):
+        chosen = kind == value
+        prices[chosen] = original_price(1., strike[chosen], 1., maturity[chosen], parameters,
+                                        initial_variance, kind=str(value), nodes=nodes,
+                                        upper_limit=upper_limit)
+    return prices
 
 
 class MaturityReuseTests(unittest.TestCase):
@@ -116,7 +131,7 @@ class MaturityReuseTests(unittest.TestCase):
         for parameters in candidates:
             with self.subTest(parameters=parameters):
                 actual = tasks.price(task, parameters, [], 0)
-                with patch.object(heston_model, "european_price", original_price):
+                with patch.object(pricing, "heston_surface", original_surface):
                     expected = tasks.price(task, parameters, [], 0)
                 for value, reference in zip(actual, expected, strict=True):
                     assert_array_equal(value, reference, strict=True)
@@ -126,19 +141,19 @@ def benchmark(repeats=80):
     """Report medians of alternating timings; no timing-dependent test gates."""
     task = calibration_task()
     parameters = [(lo + hi) / 2 for lo, hi in task["prior_bounds"]]
-    optimized = hkde.european_price
+    optimized = pricing.heston_surface
     outputs = {}
     timings = {}
-    for name, implementation in (("original", original_price), ("maturity_reuse", optimized)):
+    for name, implementation in (("original", original_surface), ("maturity_reuse", optimized)):
         hkde._quadrature.cache_clear()
-        with patch.object(heston_model, "european_price", implementation):
+        with patch.object(pricing, "heston_surface", implementation):
             start = time.perf_counter()
             outputs[name] = tasks.price(task, parameters, [], 0)
             timings[name] = {"cold_wall_seconds": time.perf_counter() - start, "warm_wall_seconds": []}
     for i in range(repeats):
-        order = (("original", original_price), ("maturity_reuse", optimized))
+        order = (("original", original_surface), ("maturity_reuse", optimized))
         for name, implementation in order[::1 if i % 2 == 0 else -1]:
-            with patch.object(heston_model, "european_price", implementation):
+            with patch.object(pricing, "heston_surface", implementation):
                 start = time.perf_counter()
                 tasks.price(task, parameters, [], 0)
                 timings[name]["warm_wall_seconds"].append(time.perf_counter() - start)
