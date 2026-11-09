@@ -1,0 +1,97 @@
+{
+  "schema": "heston_training_campaign_code_review_v1",
+  "created_utc": "2026-11-09T21:59:47.207936+00:00",
+  "scope": "Read-only source review of target fidelity, checkpoint/metric callback state and information boundaries; no additional training experiments.",
+  "frozen_producer_commit": "76cef0d",
+  "source_sha256": {
+    "train_heston_pilot_campaign.py": "cef4a364eab69cfcd78ed4a20128c5d58155ff7a682520ffda8e7d841d4dc847",
+    "evaluate_heston_pilot_campaign.py": "0d57cf26053cde58590a1af439f31be7ca34c9914f188ef43be802e5ec957ff5",
+    "run_heston_pilot_training_reference.py": "e119ca4205201bef1af96fdb0e9be8614e172adc1bde9bbe7076699407168665"
+  },
+  "versions": {
+    "bayesflow": "2.1.0",
+    "keras": "3.15.1",
+    "jax": "0.11.1"
+  },
+  "findings": [
+    {
+      "id": "reference_observation_binding",
+      "severity": "medium",
+      "status": "resolved by evaluator owner before campaign evaluation",
+      "detail": "Initial evaluator checked design/prior identity without checking the conditioned observation vector or declared synthetic case identity.",
+      "resolution": "Evaluator now requires expected observations and reference kind; rejects synthetic references for the market call; binds synthetic index/id/truth/errors, run/case observations, float64 hashes and deterministic observation recomposition. A CLI-only bootstrap import failure was subsequently fixed before loading any checkpoint; failed launch attempts remain preserved.",
+      "verified_evaluator_sha256": "1185a9e4a464e0a2ca3124990d035a6f2cda7a51b5f107612362ca3df5c04003",
+      "validation": "Independent rerun: all nine evaluator tests pass, including real direct-CLI bootstrap, observation identity, reserved-test isolation and float32 support handling.",
+      "final_evaluator_sha256": "0d57cf26053cde58590a1af439f31be7ca34c9914f188ef43be802e5ec957ff5"
+    },
+    {
+      "id": "curve_loss_label",
+      "severity": "low",
+      "status": "documented; frozen producer retained",
+      "file": "scripts/train_heston_pilot_campaign.py",
+      "line": 298,
+      "field": "cumulative_training_loss",
+      "detail": "Under BayesFlow 2.1 JAXEstimator.stateless_train_step, callback logs[loss] is the current batch loss, not a cumulative average.",
+      "interpretation": "Label this field as batch loss in analysis. Fixed train_probe_loss and validation_probe_loss remain valid for evaluating the train/validation gap."
+    },
+    {
+      "id": "synthetic_reference_reanalysis_binding",
+      "severity": "low",
+      "status": "nonblocking future producer/reanalysis hardening; existing producer preserved unchanged",
+      "detail": "The emitted current cases are internally consistent. Future load/reanalysis should explicitly bind panel names and c=1 plus supplied design, bounds, and config/case observation hashes.",
+      "resolution": "All six current cases are exactly bound by the evaluator and independent numerical auditor. Producer commit76cef0d and original diagnostics remain immutable; additional guards within the old producer are deferred rather than duplicated."
+    }
+  ],
+  "target_review": {
+    "physical_prior": "Independent physical Uniform draws for five Heston parameters; kappa<=10 and xi<=3.",
+    "nuisance_prior": "Fresh independent tau~Uniform(0,.02), c~Uniform(.5,2) and Gaussian errors per row and optimizer step.",
+    "observation_law": "Untruncated Gaussian, SD hypot(c*halfspread,tau*frozen_market_vega); design/carry/vegas remain frozen.",
+    "conditioning": "Observed quote values and spread metadata only; true tau stays exclusively in posterior targets.",
+    "assessment": "No training target mismatch identified."
+  },
+  "jax_callback_review": {
+    "synchronization": "Keras Callback.model synchronizes attached JAX state before callback access; fit reloads synchronized state for the next step.",
+    "probes": "BayesFlow compute_metrics(stage=validation) leaves standardization moments unchanged; spline validation computes deterministic density loss without updating training RNG.",
+    "checkpoints": "Saving/loading creates a separate estimator; diagnostic sampling uses explicit seeds and verifies exact same-seed reload samples.",
+    "assessment": "No callback interference with gradient/optimizer state identified by source review."
+  },
+  "information_boundary_review": {
+    "training": "Existing bank loads only train_ and validation_ members; fresh bank generation returns only those members to training.",
+    "evaluation": "Development evaluator requests only validation_parameters, validation_clean and validation_row_id; reserved test members remain unopened.",
+    "selection": "Development validation and declared conditional cases may guide the bounded matrix; final reserved acceptance cases remain separate.",
+    "assessment": "No reserved-test information leak identified."
+  },
+  "limits": [
+    "Source review is not an empirical claim that every callback path has been exercised.",
+    "Probe losses use the current standardized transformed-target coordinates; no physical-coordinate density interpretation is asserted.",
+    "Numerical reference precision and MCMC convergence are audited separately."
+  ],
+  "underlying_model_provenance": {
+    "run_record_limitation": "Synthetic producer run records hash pilot.py but omit its imported tutorial Heston model file.",
+    "frozen_producer_commit": "76cef0d",
+    "producer_commit_model_sha256": "4b48d998ff99e3709d8c753bd12ef32453242332ec0486c9d1251a788cadfe85",
+    "current_audit_model_sha256": "4b48d998ff99e3709d8c753bd12ef32453242332ec0486c9d1251a788cadfe85",
+    "exact_match": true,
+    "assessment": "No current model-source drift identified; future producers can record this dependency directly."
+  },
+  "numerical_audit_summary": {
+    "references": 6,
+    "retained_draw_points": 96,
+    "all_pointwise_gates_passed": true,
+    "all_source_mcmc_diagnostics_passed": true,
+    "max_price_shift_measurement_sigma": 0.0003287199290521537,
+    "max_abs_log_likelihood_shift": 0.0008706945835648128,
+    "posterior_stability_assessed": false,
+    "negative_observations_preserved": 2
+  },
+  "independent_review": "Data-audit agent read the new numerical audit binding/likelihood code and identified no observation or likelihood bug.",
+  "summary_review": {
+    "scope": "Read-only comparison against all four emitted evaluation JSON files.",
+    "extraction": "Parameter means, width ratios, Monte Carlo intervals and 90% coverage extraction match actual schema.",
+    "support_extraction": "Root corrected the initially omitted actual neural_support field and preserves numeric_support_boundary_draw_count.",
+    "paired_observation_guard": "Root now verifies draws.npz SHA and binds actual validation truth and observation float64 hashes, evaluation seed and evaluator source across all four cells. Current task/cohort/seed/cases were independently checked against emitted JSON files.",
+    "claims": "Current scope correctly states one seed, fixed task and development evidence only; it does not establish capacity effects, fresh acceptance or market-model adequacy.",
+    "actual_results": "All four market comparisons and all six completed synthetic conditional comparisons per cell fail their declared agreement criteria; approximate prior-predictive coverage near90% does not contradict those conditional failures.",
+    "source_sha256": "c891515a6e790c6cd7d5a67c8cc145c4d18d27b1fd96891e50ac58078c222085"
+  }
+}

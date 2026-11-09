@@ -2,6 +2,33 @@
 
 The Heston pilot is complete. **Do not promote this task or its neural checkpoints into the lessons yet.** The controlled information comparison is useful, but the market fit remains sensitive to parameter support and discrepancy assumptions, and the neural posterior fails conditional reference agreement. No rough-Bergomi jobs or lesson changes were performed.
 
+## Full-panel training continuation
+
+After reflection, the user requested continuation. We completed the controlled data/optimization comparison on the full 54-quote panel. It uses a distinct wider-support target (vol-of-vol up to 3), the same observation law, and fresh tau/c/quote-error draws per batch. A separate kappa-ceiling check supports retaining kappa <=10: raising it to 20 changed parameter means by at most .049 reference SD and product widths by under 2%, with chain-aware uncertainty. See `kappa-prior.json`.
+
+One new bank contains 100,000 clean training surfaces, 5,000 validation surfaces and 2,000 reserved final surfaces. The 20,000-row arm is an exact prefix of the same training pool. Bank generation took 267 seconds. Two fresh training trajectories use the same 50,000-update learning-rate schedule, with predeclared checkpoints at 10,000 and 50,000 updates. Each full trajectory took about 875 seconds, including compilation, probes and checkpoint checks; they ran concurrently. The architecture remains a two-layer 128-unit spline conditioner, batch 128, seed 9011.
+
+| Training surfaces | Updates | Physical-coordinate validation NLL | Market tau posterior mean | Market conditional verdict |
+| ---: | ---: | ---: | ---: | --- |
+| 20,000 | 10,000 | -15.867 | .00771 | Fail |
+| 20,000 | 50,000 | -17.915 | .00215 | Fail |
+| 100,000 | 10,000 | -15.922 | .00911 | Fail |
+| 100,000 | 50,000 | -17.979 | .00184 | Fail |
+
+These scores use the same 512 saved validation observations and physical truths, with adapter and learned-standardization Jacobians included (`training-study/physical-density-score.json`). Lower is better. The paired 100k-minus-20k differences are -.0559 +/- .0498 SE at 10k updates and -.0646 +/- .0352 SE at 50k; both approximate 95% intervals include zero. The small data-volume advantage is therefore unresolved on this panel. The plotted monitoring losses are the raw objective in each checkpoint's standardized/logit coordinates, useful for tracking optimization but not a substitute for common-coordinate scoring.
+
+The matched reference tau mean is **.00609**. At 50,000 updates its neural mean error is **-6.15 /-6.63 reference SD** for the 20k/100k arms; MC-aware intervals exclude the allowed +/-0.3 margin by a large amount. Tau interval widths are still **2.03 /1.79 times** the reference width. Several physical-parameter intervals instead become too narrow, roughly .59–.89 of reference widths. More training therefore improves the density objective and changes uncertainty substantially, but does not monotonically improve every conditional posterior metric.
+
+The engineering checks use the same 512 validation-pool observations with new independent tau and error draws, 512 neural posterior draws per observation, and 4,096 draws for the market and each of six synthetic conditional observations. Actual observation/truth hashes are paired across all four checkpoints. Six independent synthetic references cover broad-prior, market-like and low-discrepancy/boundary observations. **All six references converge**, and 96 retained-point numerical checks pass (worst normalized likelihood shift .000871). The slowest stress case preserves two negative observations from the untruncated Gaussian law. All four checkpoints fail the full conditional criteria on the market and on each of these six synthetic cases; individual coordinates can still agree well.
+
+The failure is not confined to the market snapshot. Broad-prior synthetic case 0, whose true tau is .00160, still has tau width ratios **6.89 /6.18** at 50,000 updates. On market-like synthetic case 6 the ratios are **2.88 /2.60**. Average development coverage can conceal these conditional failures: the 100k/50k tau 90% interval covers about **95.3%** of the 512 truths, and rank tests reject tau calibration. This does not identify a unique cause, but it argues against assuming that a larger physical bank alone will solve the problem.
+
+The 2,000-case acceptance pool remains unopened. No capacity comparison, seed confirmation, short-panel retraining or model publication was performed. A training plateau has **not** been established: the 100k run's fixed validation probe improves by .141 NLL from 40k to 50k, with essentially unchanged train/validation gap. The physical-coordinate 10k-to-50k improvement is about 2.06 nats per observation. The next test therefore extends this same model to 100k total updates, preserving optimizer moments and its existing learning-rate floor, with fixed 75k/100k checkpoints. Capacity or conditioning changes remain separate follow-ups if additional optimization ceases to help. Market-discrepancy adequacy also remains a separate scientific question.
+
+The [comparison figure](training-study/training-comparison.png), `training-study/results.json`, `protocol.json`, `reference-panel.json`, `reference-precision.json`, `code-review.json` and `validation.json` record methods, identities, limitations and outcomes. Native banks/models/draws stay in the ignored `local-artifacts/heston-observations-20261109/training-study/` tree. The producer is frozen at commit **76cef0d**. Direct CLI evaluation initially failed before loading anything because of an import path; the bootstrap-only fix and a real CLI regression test are recorded, and all four evaluations then completed. Full lab validation passed **613 tests**, followed by all **nine** final evaluator regression tests after that fix. No posterior draws were clipped or dropped; tiny native-float32 endpoint excursions are counted separately from material prior violations.
+
+Reproduce a trajectory from `lab/` with `python scripts/train_heston_pilot_campaign.py --design <fixed-design> --bank <new-bank> --out <new-run> --bank-size 100000 --validation-rows 5000 --test-rows 2000 --train-rows 20000 --updates 50000 --schedule-updates 50000` (use 100000 for the second arm). The CLI evaluator, synthetic-reference runner and summary script are `evaluate_heston_pilot_campaign.py`, `run_heston_pilot_training_reference.py` and `summarize_heston_training_study.py`. Every output directory must be new; preserve producer/task bindings when reusing an existing bank.
+
 ## Results by category
 
 | Category | Result | Evidence |

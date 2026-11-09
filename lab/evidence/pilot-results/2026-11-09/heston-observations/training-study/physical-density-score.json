@@ -1,0 +1,130 @@
+{
+  "format": "heston_campaign_physical_density_development_score_v1",
+  "created_utc": "2026-11-09T22:27:44.821596+00:00",
+  "scientific_acceptance": false,
+  "scope": "Comparable physical-coordinate NLL on the saved development observations.\n\nRead-only scoring of frozen checkpoints and saved evaluation truths/quotes.\nNo simulation, fitting or reserved-test member reads occur. BayesFlow's public\nBasicEstimator.log_prob applies adapter and target-standardization Jacobians.\n",
+  "method": "negative BasicEstimator.log_prob(original training_data dict), including constrain-adapter and learned target-standardization log Jacobians",
+  "units": "nats per observation; joint density in the six declared physical parameter coordinates",
+  "paired_uncertainty": "Direct standard error across the same512 saved validation observations; approximate normal interval, conditional on these fixed models. Development comparison, no acceptance claim.",
+  "design_sha256": "4b84185e7a072844fd6a3ce0f79aed983d39502607a7a76c79dbf7196f9ed547",
+  "script_sha256": "6e202f369996be719d1cb09ebe64d1967bec2e4b71e1b536c59ef52ea84690ca",
+  "cells": {
+    "n020000-u010000": {
+      "mean_physical_nll": -15.866545971482992,
+      "observation_standard_error": 0.12026677424190352,
+      "physical_logp_min_max": [
+        4.320085525512695,
+        22.637577056884766
+      ],
+      "checkpoint_record_sha256": "c23ae081222cd3c6251da83912d85ce17f19c4a8361bad5c69a1955632781da2",
+      "model_sha256": "3ad35a50d4cabafde452c39e2bf480f20280cfac7714f6216ca02a1c7161e87c",
+      "task_fingerprint": "8225d51175df3768aae84d2829466c8085645266973316bc3fb12a3608322962",
+      "evaluation_record_sha256": "c0a2d90e11ffe8ae3d4ddb92d97973f2f4463b180b825da78f0528eaf6d24cc3",
+      "evaluation_payload_sha256": "c99d636c3c5e39c2f49bdded04bce9220d828cecde2d019fa2d175d29376620b",
+      "cohort_sha256": "419b03e51c0552f6bfb429edf61c3f2fd74dfe7d0ab88e624483f9a20db7fc3c",
+      "truth_sha256": "b7bd2455b2e50a9660cef550b6a55d37042e625ff235e91f71dbf193a8aa4e42",
+      "observations_sha256": "1c80673828105f03787be536a2c9f4ab03921764915172ce792ba5debed6843d",
+      "row_ids_sha256": "2f63b982c6bc12683c5e2df48a7f7c8d130120521d1e3a201df85b5a12e7e4da",
+      "official_basic_estimator_source_sha256": "dfe54314ce12a917d5bd8ca810e7af8cd8071110248160c4470edc81ab972c6e",
+      "actual_optimizer_updates": 10000,
+      "training_rows": 20000
+    },
+    "n020000-u050000": {
+      "mean_physical_nll": -17.914759198203683,
+      "observation_standard_error": 0.15589354507748981,
+      "physical_logp_min_max": [
+        8.101251602172852,
+        26.559650421142578
+      ],
+      "checkpoint_record_sha256": "3211635f7b5ce7cfc2a5fd9f64906a7b32821c624dafb98798d31321404453f1",
+      "model_sha256": "b79974413e758be2e9935e89e250c273460e3faf995845d0e27fd7294bad4a30",
+      "task_fingerprint": "8225d51175df3768aae84d2829466c8085645266973316bc3fb12a3608322962",
+      "evaluation_record_sha256": "4dbcb0523e64364dfd8851b10fe6bef5211522b1f9d7d6d7bc0be2f8b37d0405",
+      "evaluation_payload_sha256": "c0651a7b8d02f07513d2f86b836b72e904e56ec0e615025da47b355d828a23ba",
+      "cohort_sha256": "419b03e51c0552f6bfb429edf61c3f2fd74dfe7d0ab88e624483f9a20db7fc3c",
+      "truth_sha256": "b7bd2455b2e50a9660cef550b6a55d37042e625ff235e91f71dbf193a8aa4e42",
+      "observations_sha256": "1c80673828105f03787be536a2c9f4ab03921764915172ce792ba5debed6843d",
+      "row_ids_sha256": "2f63b982c6bc12683c5e2df48a7f7c8d130120521d1e3a201df85b5a12e7e4da",
+      "official_basic_estimator_source_sha256": "dfe54314ce12a917d5bd8ca810e7af8cd8071110248160c4470edc81ab972c6e",
+      "actual_optimizer_updates": 50000,
+      "training_rows": 20000
+    },
+    "n100000-u010000": {
+      "mean_physical_nll": -15.922420788556337,
+      "observation_standard_error": 0.11678995669043907,
+      "physical_logp_min_max": [
+        6.052255630493164,
+        22.29669952392578
+      ],
+      "checkpoint_record_sha256": "bce634aea384407572ea6d4a26822ca9fde372d9f73b9531e48d1eeef2cbd37d",
+      "model_sha256": "e8872ec42ba4dd8db23afee1747afc5d74d4572c85033ca40fe34235e6317821",
+      "task_fingerprint": "8225d51175df3768aae84d2829466c8085645266973316bc3fb12a3608322962",
+      "evaluation_record_sha256": "febe7e94b10f241b2ab3e41b23aca9c59c707675996b6e15a82353f0cc543df0",
+      "evaluation_payload_sha256": "011d7ae571d351d7441c87a4bcc129ceac0cab0b4c57e755af9f550c78dac193",
+      "cohort_sha256": "419b03e51c0552f6bfb429edf61c3f2fd74dfe7d0ab88e624483f9a20db7fc3c",
+      "truth_sha256": "b7bd2455b2e50a9660cef550b6a55d37042e625ff235e91f71dbf193a8aa4e42",
+      "observations_sha256": "1c80673828105f03787be536a2c9f4ab03921764915172ce792ba5debed6843d",
+      "row_ids_sha256": "2f63b982c6bc12683c5e2df48a7f7c8d130120521d1e3a201df85b5a12e7e4da",
+      "official_basic_estimator_source_sha256": "dfe54314ce12a917d5bd8ca810e7af8cd8071110248160c4470edc81ab972c6e",
+      "actual_optimizer_updates": 10000,
+      "training_rows": 100000
+    },
+    "n100000-u050000": {
+      "mean_physical_nll": -17.979407055303454,
+      "observation_standard_error": 0.15749845747988425,
+      "physical_logp_min_max": [
+        6.411909103393555,
+        27.451923370361328
+      ],
+      "checkpoint_record_sha256": "68af75c07168970e4ea99d13eeb74fc6f19dcd5728fdaebfa9ab5e82cb917e80",
+      "model_sha256": "9740725072109537de22bdf38742ec6c96ff6c67eba6f80bb22ef9f31405fc67",
+      "task_fingerprint": "8225d51175df3768aae84d2829466c8085645266973316bc3fb12a3608322962",
+      "evaluation_record_sha256": "a12890f93bbbbaaa9ce98e104d7e38df73cf372fd31aca5aa32b02ea4a608400",
+      "evaluation_payload_sha256": "8009f61a5c40ea39d454b8423414140557210f07b27cf69d32ba597f365048e7",
+      "cohort_sha256": "419b03e51c0552f6bfb429edf61c3f2fd74dfe7d0ab88e624483f9a20db7fc3c",
+      "truth_sha256": "b7bd2455b2e50a9660cef550b6a55d37042e625ff235e91f71dbf193a8aa4e42",
+      "observations_sha256": "1c80673828105f03787be536a2c9f4ab03921764915172ce792ba5debed6843d",
+      "row_ids_sha256": "2f63b982c6bc12683c5e2df48a7f7c8d130120521d1e3a201df85b5a12e7e4da",
+      "official_basic_estimator_source_sha256": "dfe54314ce12a917d5bd8ca810e7af8cd8071110248160c4470edc81ab972c6e",
+      "actual_optimizer_updates": 50000,
+      "training_rows": 100000
+    }
+  },
+  "paired_100k_minus_20k": {
+    "10000": {
+      "mean_nll_difference": -0.055874817073345184,
+      "paired_observation_standard_error": 0.04984174346488829,
+      "normal_approximation_ci95": [
+        -0.1535646342645262,
+        0.04181500011783586
+      ],
+      "cases": 512,
+      "negative_favors": "second model",
+      "scientific_acceptance": false
+    },
+    "50000": {
+      "mean_nll_difference": -0.0646478570997715,
+      "paired_observation_standard_error": 0.03519375566735768,
+      "normal_approximation_ci95": [
+        -0.13362761820779256,
+        0.004331904008249551
+      ],
+      "cases": 512,
+      "negative_favors": "second model",
+      "scientific_acceptance": false
+    }
+  },
+  "per_observation_logp_payload_sha256": "7b7092664815397774e2c8e8dec705a0e1139cb2b5b85f1fb83565ec4015974b",
+  "per_observation_logp_payload_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/local-artifacts/heston-observations-20261109/training-study/physical-density-logp.npz",
+  "versions": {
+    "bayesflow": "2.1.0",
+    "keras": "3.15.1",
+    "jax": "0.11.1",
+    "numpy": "2.5.3"
+  },
+  "source_sha256": {
+    "checkpoint_loader": "cef4a364eab69cfcd78ed4a20128c5d58155ff7a682520ffda8e7d841d4dc847",
+    "training_data": "8cc81f9596b06adc3de4879bcae39bf392ce6b0f741bcda7ac855d47ee938fb1"
+  },
+  "wall_seconds": 3.2622924998868257
+}

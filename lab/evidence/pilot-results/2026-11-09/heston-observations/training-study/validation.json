@@ -1,0 +1,51 @@
+{
+  "format": "heston_training_study_validation_v1",
+  "lab_suite": {
+    "tests": 613,
+    "passed": true,
+    "command": "pixi run -e core-reference test",
+    "log_sha256": "d651d525b73defa4bc0dfa7fcea57b4788d1a15f3f754f73cdecf33013668c81"
+  },
+  "post_fix_evaluator_regressions": {
+    "tests": 9,
+    "passed": true,
+    "scope": "Includes direct script CLI with PYTHONPATH removed; also independently rerun by numerical reviewer."
+  },
+  "all_training_jobs_exit_zero": true,
+  "all_four_final_evaluations_exit_zero": true,
+  "all_six_synthetic_references_converged": true,
+  "numerical_retained_points": 96,
+  "numerical_points_passed": true,
+  "reserved_final_2000_opened": false,
+  "scientific_acceptance": false,
+  "inference_development_verdict": "All four checkpoints fail full conditional agreement on market and each of six synthetic references.",
+  "producer_commit": "76cef0d",
+  "versions": {
+    "python": "3.12.16",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "pymc": "6.3.2",
+    "pytensor": "3.3.4",
+    "bayesflow": "2.1.0",
+    "keras": "3.15.1",
+    "jax": "0.11.1"
+  },
+  "environment_sha256": {
+    "pyproject.toml": "25c8e213e5b7471f734f92d0dfd7759cb52d0f280be85f1d4d3106f2492a207f",
+    "pixi.lock": "994fa6075abf60c5e2045a6e2d73302a0a84af9b37e311e8ac2cdfcd8854a871"
+  },
+  "source_sha256": {
+    "train_heston_pilot_campaign.py": "cef4a364eab69cfcd78ed4a20128c5d58155ff7a682520ffda8e7d841d4dc847",
+    "evaluate_heston_pilot_campaign.py": "0d57cf26053cde58590a1af439f31be7ca34c9914f188ef43be802e5ec957ff5",
+    "run_heston_pilot_training_reference.py": "e119ca4205201bef1af96fdb0e9be8614e172adc1bde9bbe7076699407168665",
+    "summarize_heston_training_study.py": "a3679e0f9e62b8da7d4f1b2810078516410a4d8d0de62a8df0d25cdb35da5417",
+    "audit_heston_training_references.py": "27e2445b4ac99652d5d705f2540398ad55dc1c270c89c107ed241b271b6dec67",
+    "score_heston_campaign_density.py": "6e202f369996be719d1cb09ebe64d1967bec2e4b71e1b536c59ef52ea84690ca"
+  },
+  "release_checks": {
+    "manifest": true,
+    "claims": true,
+    "runtime_boundary": true
+  },
+  "physical_density_scoring": "Same512 validation truths/observations, both coordinate Jacobians included; paired data-volume effect uncertain; no reserved data."
+}
