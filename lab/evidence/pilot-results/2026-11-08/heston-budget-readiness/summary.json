@@ -1,0 +1,1170 @@
+{
+  "format": "heston_training_budget_readiness_v1",
+  "status": "inconclusive",
+  "protocol_sha256": "d494fc568e49164cac52d8703dc086e9187ed96aba19c23ddeb7715048365bea",
+  "control_checkpoint_sha256": "8d4a243ba099524cf4cda40e4f0616e895879f053829a7f60dadbe65b98301db",
+  "bank_manifest_sha256": "4b5929b0d0b23698c340eec6defabfd629fe23eca2ed78fe9bd46e4de35c244e",
+  "reserved_test_evaluated": false,
+  "training_performed": false,
+  "new_mcmc_performed": false,
+  "gates": {
+    "finite_in_support_without_clipping": true,
+    "development_rank_screen": true,
+    "conditional_all_cases": false,
+    "predictive_pricing_completed": true
+  },
+  "conditional": {
+    "0": {
+      "format": "heston_budget_conditional_agreement_v1",
+      "status": "pass",
+      "parameters": {
+        "initial_variance": {
+          "status": "pass",
+          "neural_mean": 0.13892551281969645,
+          "reference_mean": 0.13889570284977537,
+          "reference_sd": 0.0004630889071816585,
+          "neural_width_90": 0.0014987625181674957,
+          "reference_width_90": 0.0015371441556042975,
+          "signed_standardized_mean_difference": 0.06437202329570361,
+          "absolute_standardized_mean_difference": 0.06437202329570361,
+          "standardized_mean_mcse": 0.026949368812575064,
+          "signed_standardized_mean_interval": [
+            -0.0185805074169082,
+            0.14732455400831543
+          ],
+          "mean_status": "pass",
+          "width_ratio_90": 0.9750305543583108,
+          "log_width_ratio_mcse": 0.01937634753150712,
+          "width_ratio_interval": [
+            0.9185778915726206,
+            1.0349526051674147
+          ],
+          "width_status": "pass",
+          "reference_mean_mcse": 1.0147336045407209e-05,
+          "saved_reference_mean_mcse": 1.0147336045407209e-05,
+          "neural_mean_mcse_iid": 7.192567227115963e-06,
+          "reference_q05_q95": [
+            0.1381283809322682,
+            0.1396655250878725
+          ],
+          "neural_q05_q95": [
+            0.13818218186497688,
+            0.13968094438314438
+          ],
+          "reference_quantile_mcse": [
+            1.7705942728126836e-05,
+            1.5388755755640194e-05
+          ],
+          "neural_quantile_mcse_iid": [
+            1.666483323308212e-05,
+            1.2037468561553808e-05
+          ]
+        },
+        "theta": {
+          "status": "pass",
+          "neural_mean": 0.1570503298753465,
+          "reference_mean": 0.15721196981961363,
+          "reference_sd": 0.001497951606000435,
+          "neural_width_90": 0.004841838032007217,
+          "reference_width_90": 0.0048735193749010475,
+          "signed_standardized_mean_difference": -0.10790732065017125,
+          "absolute_standardized_mean_difference": 0.10790732065017125,
+          "standardized_mean_mcse": 0.028809748577520576,
+          "signed_standardized_mean_interval": [
+            -0.19658626412821875,
+            -0.01922837717212375
+          ],
+          "mean_status": "pass",
+          "width_ratio_90": 0.9934992886132779,
+          "log_width_ratio_mcse": 0.019562096915021757,
+          "width_ratio_interval": [
+            0.9354423216944783,
+            1.0551594829354571
+          ],
+          "width_status": "pass",
+          "reference_mean_mcse": 3.428449055062402e-05,
+          "saved_reference_mean_mcse": 3.428449055062402e-05,
+          "neural_mean_mcse_iid": 2.30364258668789e-05,
+          "reference_q05_q95": [
+            0.15461722162128863,
+            0.15949074099618968
+          ],
+          "neural_q05_q95": [
+            0.15451744943857193,
+            0.15935928747057915
+          ],
+          "reference_quantile_mcse": [
+            6.094868028125315e-05,
+            4.8106795501472275e-05
+          ],
+          "neural_quantile_mcse_iid": [
+            4.7411087436951936e-05,
+            3.37360790624636e-05
+          ]
+        },
+        "vol_of_vol": {
+          "status": "pass",
+          "neural_mean": 0.5851559107759385,
+          "reference_mean": 0.5854112167490508,
+          "reference_sd": 0.04515786922833353,
+          "neural_width_90": 0.14704792201519012,
+          "reference_width_90": 0.14686391003891075,
+          "signed_standardized_mean_difference": -0.005653631968802218,
+          "absolute_standardized_mean_difference": 0.005653631968802218,
+          "standardized_mean_mcse": 0.02715573258070432,
+          "signed_standardized_mean_interval": [
+            -0.08924136853475945,
+            0.07793410459715502
+          ],
+          "mean_status": "pass",
+          "width_ratio_90": 1.0012529421028666,
+          "log_width_ratio_mcse": 0.020841278465775766,
+          "width_ratio_interval": [
+            0.9390381870251776,
+            1.0675896549484702
+          ],
+          "width_status": "pass",
+          "reference_mean_mcse": 0.0009959102797058655,
+          "saved_reference_mean_mcse": 0.0009959102797058655,
+          "neural_mean_mcse_iid": 0.000699986592967378,
+          "reference_q05_q95": [
+            0.5109082790990447,
+            0.6577721891379554
+          ],
+          "neural_q05_q95": [
+            0.5086899995803833,
+            0.6557379215955734
+          ],
+          "reference_quantile_mcse": [
+            0.0017380887895790053,
+            0.0013355660369555576
+          ],
+          "neural_quantile_mcse_iid": [
+            0.0019204241618959285,
+            0.001117792580806009
+          ]
+        },
+        "rho": {
+          "status": "pass",
+          "neural_mean": -0.2539767121197656,
+          "reference_mean": -0.2530901483897575,
+          "reference_sd": 0.020127316381429134,
+          "neural_width_90": 0.06186489760875702,
+          "reference_width_90": 0.06514884385182668,
+          "signed_standardized_mean_difference": -0.044047786262557405,
+          "absolute_standardized_mean_difference": 0.044047786262557405,
+          "standardized_mean_mcse": 0.028534685040023326,
+          "signed_standardized_mean_interval": [
+            -0.13188005994656085,
+            0.043784487421446035
+          ],
+          "mean_status": "pass",
+          "width_ratio_90": 0.9495931769635297,
+          "log_width_ratio_mcse": 0.024616629331206317,
+          "width_ratio_interval": [
+            0.8802988965409747,
+            1.0243420788994677
+          ],
+          "width_status": "pass",
+          "reference_mean_mcse": 0.0004852211912735582,
+          "saved_reference_mean_mcse": 0.0004852211912735582,
+          "neural_mean_mcse_iid": 0.00030726450763641214,
+          "reference_q05_q95": [
+            -0.288197196779372,
+            -0.22304835292754532
+          ],
+          "neural_q05_q95": [
+            -0.2875163108110428,
+            -0.22565141320228577
+          ],
+          "reference_quantile_mcse": [
+            0.0011121641311726774,
+            0.0005772853493097841
+          ],
+          "neural_quantile_mcse_iid": [
+            0.0008950554661624607,
+            0.0005654502672371031
+          ]
+        }
+      },
+      "neural_shape": [
+        4096,
+        4
+      ],
+      "reference_chain_shape": [
+        4,
+        8000,
+        4
+      ],
+      "seed": 811183,
+      "replicates_per_block_length": 400,
+      "block_lengths": [
+        40,
+        80
+      ],
+      "block_length_rule": "max(ceil(D^(1/3)), ceil(2*C*D/min(saved bulk and tail ESS across parameters))); also double L",
+      "family_checks": 24,
+      "family_confidence": 0.95,
+      "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+      "reference_diagnostics_passed": true,
+      "limits": {
+        "absolute_standardized_mean": 0.3,
+        "width_ratio_90": [
+          0.75,
+          1.25
+        ]
+      },
+      "scope": "Monte Carlo agreement on one fixed case; no numerical-target, product, copula or MCMC convergence certification",
+      "normal_critical_value": 3.078088072842161,
+      "finite_in_support_without_clipping": true,
+      "input_sha256": {
+        "reference.json": "35e646876a5c4a1413593455741dc0a3a6688678909a570353ec4fc70125c902",
+        "diagnostics.json": "72bd9616e0a4f3985cbe6f642156e0650776a80e11770dbdb668917b20608808",
+        "chains.npz": "be70a6798988bad251254fbe86df901b3affb5e0def92555aceb145f1fcb8505"
+      },
+      "historical_pointwise_precision_sha256": "c073e80c87d78f493f4d0933881361e8acd0c87e04fa3d6aa0d33e56a0b49533",
+      "precision_scope": "Historical pointwise numerical sensitivity; not posterior stability.",
+      "sensitivity_detail_scope": "Per-block bootstrap details remain in the full hashed readiness report; the retained intervals use the larger MCSE from both lengths."
+    },
+    "1": {
+      "format": "heston_budget_conditional_agreement_v1",
+      "status": "pass",
+      "parameters": {
+        "initial_variance": {
+          "status": "pass",
+          "neural_mean": 0.02420546731309514,
+          "reference_mean": 0.024219368571447044,
+          "reference_sd": 0.00039775937293303794,
+          "neural_width_90": 0.0013452647253870964,
+          "reference_width_90": 0.001306017536660705,
+          "signed_standardized_mean_difference": -0.03494891458973316,
+          "absolute_standardized_mean_difference": 0.03494891458973316,
+          "standardized_mean_mcse": 0.02661353949217006,
+          "signed_standardized_mean_interval": [
+            -0.11686773307669565,
+            0.046969903897229326
+          ],
+          "mean_status": "pass",
+          "width_ratio_90": 1.0300510426733938,
+          "log_width_ratio_mcse": 0.019464311952672973,
+          "width_ratio_interval": [
+            0.970150068691014,
+            1.093650544130888
+          ],
+          "width_status": "pass",
+          "reference_mean_mcse": 7.94550777403881e-06,
+          "saved_reference_mean_mcse": 7.94550777403881e-06,
+          "neural_mean_mcse_iid": 6.531276696920241e-06,
+          "reference_q05_q95": [
+            0.023580953531271532,
+            0.024886971067932237
+          ],
+          "neural_q05_q95": [
+            0.023528313729912043,
+            0.02487357845529914
+          ],
+          "reference_quantile_mcse": [
+            1.4004010459390117e-05,
+            1.3950662434344487e-05
+          ],
+          "neural_quantile_mcse_iid": [
+            1.2974392032067282e-05,
+            1.3344012823111387e-05
+          ]
+        },
+        "theta": {
+          "status": "pass",
+          "neural_mean": 0.08899135318097251,
+          "reference_mean": 0.0889361245125926,
+          "reference_sd": 0.0014342770599045087,
+          "neural_width_90": 0.004808556288480759,
+          "reference_width_90": 0.004723562297280812,
+          "signed_standardized_mean_difference": 0.03850627603539052,
+          "absolute_standardized_mean_difference": 0.03850627603539052,
+          "standardized_mean_mcse": 0.027096546315346286,
+          "signed_standardized_mean_interval": [
+            -0.04489927999309209,
+            0.12191183206387313
+          ],
+          "mean_status": "pass",
+          "width_ratio_90": 1.0179936213075618,
+          "log_width_ratio_mcse": 0.02007577407754375,
+          "width_ratio_interval": [
+            0.956990945856829,
+            1.0828848668939457
+          ],
+          "width_status": "pass",
+          "reference_mean_mcse": 3.115089465086972e-05,
+          "saved_reference_mean_mcse": 3.115089465086972e-05,
+          "neural_mean_mcse_iid": 2.3238518537234046e-05,
+          "reference_q05_q95": [
+            0.08657202606884074,
+            0.09129558836612155
+          ],
+          "neural_q05_q95": [
+            0.0865339357405901,
+            0.09134249202907085
+          ],
+          "reference_quantile_mcse": [
+            4.0997624812171356e-05,
+            5.4194238415394316e-05
+          ],
+          "neural_quantile_mcse_iid": [
+            5.964376176360545e-05,
+            4.4189832882262656e-05
+          ]
+        },
+        "vol_of_vol": {
+          "status": "pass",
+          "neural_mean": 1.4689914385962766,
+          "reference_mean": 1.4671017717031718,
+          "reference_sd": 0.024384729058382168,
+          "neural_width_90": 0.0740307867527008,
+          "reference_width_90": 0.07663513996817461,
+          "signed_standardized_mean_difference": 0.07749386464703008,
+          "absolute_standardized_mean_difference": 0.07749386464703008,
+          "standardized_mean_mcse": 0.027448858671231147,
+          "signed_standardized_mean_interval": [
+            -0.006996139842016635,
+            0.1619838691360768
+          ],
+          "mean_status": "pass",
+          "width_ratio_90": 0.9660162007069426,
+          "log_width_ratio_mcse": 0.021001433080086757,
+          "width_ratio_interval": [
+            0.9055444312496456,
+            1.030526242362822
+          ],
+          "width_status": "pass",
+          "reference_mean_mcse": 0.0005448055579433488,
+          "saved_reference_mean_mcse": 0.0005448055579433488,
+          "neural_mean_mcse_iid": 0.00036767213567639594,
+          "reference_q05_q95": [
+            1.4205084698341568,
+            1.4971436098023314
+          ],
+          "neural_q05_q95": [
+            1.4236303865909576,
+            1.4976611733436584
+          ],
+          "reference_quantile_mcse": [
+            0.0010571289071639592,
+            0.0002300887292955999
+          ],
+          "neural_quantile_mcse_iid": [
+            0.0012179897790625162,
+            0.00016078814975371538
+          ]
+        },
+        "rho": {
+          "status": "pass",
+          "neural_mean": -0.23924493428785354,
+          "reference_mean": -0.2387358203517987,
+          "reference_sd": 0.012304975057214318,
+          "neural_width_90": 0.041411638259887695,
+          "reference_width_90": 0.040173768722481795,
+          "signed_standardized_mean_difference": -0.04137464185726735,
+          "absolute_standardized_mean_difference": 0.04137464185726735,
+          "standardized_mean_mcse": 0.02823906974831541,
+          "signed_standardized_mean_interval": [
+            -0.1282969856377149,
+            0.0455477019231802
+          ],
+          "mean_status": "pass",
+          "width_ratio_90": 1.0308128805628627,
+          "log_width_ratio_mcse": 0.0215509042365662,
+          "width_ratio_interval": [
+            0.9646519793259462,
+            1.1015114440306075
+          ],
+          "width_status": "pass",
+          "reference_mean_mcse": 0.0002853812982033379,
+          "saved_reference_mean_mcse": 0.0002853812982033379,
+          "neural_mean_mcse_iid": 0.00019824377411366991,
+          "reference_q05_q95": [
+            -0.2588340942543398,
+            -0.218660325531858
+          ],
+          "neural_q05_q95": [
+            -0.2606556713581085,
+            -0.21924403309822083
+          ],
+          "reference_quantile_mcse": [
+            0.0004372500476129559,
+            0.0005248637999581012
+          ],
+          "neural_quantile_mcse_iid": [
+            0.00048027778235654726,
+            0.0003976982945192378
+          ]
+        }
+      },
+      "neural_shape": [
+        4096,
+        4
+      ],
+      "reference_chain_shape": [
+        4,
+        8000,
+        4
+      ],
+      "seed": 811184,
+      "replicates_per_block_length": 400,
+      "block_lengths": [
+        38,
+        76
+      ],
+      "block_length_rule": "max(ceil(D^(1/3)), ceil(2*C*D/min(saved bulk and tail ESS across parameters))); also double L",
+      "family_checks": 24,
+      "family_confidence": 0.95,
+      "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+      "reference_diagnostics_passed": true,
+      "limits": {
+        "absolute_standardized_mean": 0.3,
+        "width_ratio_90": [
+          0.75,
+          1.25
+        ]
+      },
+      "scope": "Monte Carlo agreement on one fixed case; no numerical-target, product, copula or MCMC convergence certification",
+      "normal_critical_value": 3.078088072842161,
+      "finite_in_support_without_clipping": true,
+      "input_sha256": {
+        "reference.json": "e1c6c08419fbd08e35900e590f8110e68c32e087f4619359f16ef8322919bdfd",
+        "diagnostics.json": "270f9257b19a3bd0fce0012d182977a366f6aabd93e95b60b6b92686be896dc4",
+        "chains.npz": "ff98be1a51cf294b59a7b723664a3a03313f48ea32fc9f4a3a54fff1989774b8"
+      },
+      "historical_pointwise_precision_sha256": "a443bf9f6bf1075e111be961c05a00d2ec41a185f10933df196d1fc1e5c8e549",
+      "precision_scope": "Historical pointwise numerical sensitivity; not posterior stability.",
+      "sensitivity_detail_scope": "Per-block bootstrap details remain in the full hashed readiness report; the retained intervals use the larger MCSE from both lengths."
+    },
+    "2": {
+      "format": "heston_budget_conditional_agreement_v1",
+      "status": "inconclusive",
+      "parameters": {
+        "initial_variance": {
+          "status": "inconclusive",
+          "neural_mean": 0.08730664436006919,
+          "reference_mean": 0.08741411028012412,
+          "reference_sd": 0.00044869198403118117,
+          "neural_width_90": 0.001669038087129593,
+          "reference_width_90": 0.0014693325874813312,
+          "signed_standardized_mean_difference": -0.2395093379860066,
+          "absolute_standardized_mean_difference": 0.2395093379860066,
+          "standardized_mean_mcse": 0.026818180784200164,
+          "signed_standardized_mean_interval": [
+            -0.32205806039317797,
+            -0.15696061557883523
+          ],
+          "mean_status": "inconclusive",
+          "width_ratio_90": 1.1359157901687789,
+          "log_width_ratio_mcse": 0.019084751261201807,
+          "width_ratio_interval": [
+            1.0711090895645978,
+            1.204643574520748
+          ],
+          "width_status": "pass",
+          "reference_mean_mcse": 8.827011878577236e-06,
+          "saved_reference_mean_mcse": 8.827011878577236e-06,
+          "neural_mean_mcse_iid": 8.177984039309444e-06,
+          "reference_q05_q95": [
+            0.08667954539140074,
+            0.08814887797888207
+          ],
+          "neural_q05_q95": [
+            0.08645739033818245,
+            0.08812642842531204
+          ],
+          "reference_quantile_mcse": [
+            1.3439632032580382e-05,
+            1.3302436307669338e-05
+          ],
+          "neural_quantile_mcse_iid": [
+            1.789490430824116e-05,
+            1.8679418977293027e-05
+          ]
+        },
+        "theta": {
+          "status": "pass",
+          "neural_mean": 0.1422663324738096,
+          "reference_mean": 0.14226658825374203,
+          "reference_sd": 0.0016531282950168569,
+          "neural_width_90": 0.005478557199239731,
+          "reference_width_90": 0.005485340192392191,
+          "signed_standardized_mean_difference": -0.00015472479250386835,
+          "absolute_standardized_mean_difference": 0.00015472479250386835,
+          "standardized_mean_mcse": 0.026560910768883495,
+          "signed_standardized_mean_interval": [
+            -0.08191154743402906,
+            0.08160209784902134
+          ],
+          "mean_status": "pass",
+          "width_ratio_90": 0.9987634325466509,
+          "log_width_ratio_mcse": 0.019788578021017546,
+          "width_ratio_interval": [
+            0.9397434949969915,
+            1.0614900762846589
+          ],
+          "width_status": "pass",
+          "reference_mean_mcse": 3.463333556757606e-05,
+          "saved_reference_mean_mcse": 3.463333556757606e-05,
+          "neural_mean_mcse_iid": 2.5809504972128765e-05,
+          "reference_q05_q95": [
+            0.13953311942667343,
+            0.14501845961906562
+          ],
+          "neural_q05_q95": [
+            0.13950806111097336,
+            0.1449866183102131
+          ],
+          "reference_quantile_mcse": [
+            5.788460324680504e-05,
+            5.026667582506051e-05
+          ],
+          "neural_quantile_mcse_iid": [
+            6.646346543869054e-05,
+            4.3714605112345575e-05
+          ]
+        },
+        "vol_of_vol": {
+          "status": "pass",
+          "neural_mean": 1.2095053308585193,
+          "reference_mean": 1.2101474602670714,
+          "reference_sd": 0.02973013576911221,
+          "neural_width_90": 0.09696760773658752,
+          "reference_width_90": 0.0971796449020812,
+          "signed_standardized_mean_difference": -0.021598603300670458,
+          "absolute_standardized_mean_difference": 0.021598603300670458,
+          "standardized_mean_mcse": 0.02726791183218868,
+          "signed_standardized_mean_interval": [
+            -0.10553163748264208,
+            0.06233443088130117
+          ],
+          "mean_status": "pass",
+          "width_ratio_90": 0.9978180907564818,
+          "log_width_ratio_mcse": 0.02283073418845169,
+          "width_ratio_interval": [
+            0.9301035976880322,
+            1.0704624137738905
+          ],
+          "width_status": "pass",
+          "reference_mean_mcse": 0.0006400094208134019,
+          "saved_reference_mean_mcse": 0.0006400094208134019,
+          "neural_mean_mcse_iid": 0.0004651521223063824,
+          "reference_q05_q95": [
+            1.1616564210571978,
+            1.258836065959279
+          ],
+          "neural_q05_q95": [
+            1.1609166264533997,
+            1.2578842341899872
+          ],
+          "reference_quantile_mcse": [
+            0.0010385577219199286,
+            0.0011193742544130419
+          ],
+          "neural_quantile_mcse_iid": [
+            0.0014675850183499537,
+            0.0009559394967463859
+          ]
+        },
+        "rho": {
+          "status": "pass",
+          "neural_mean": -0.10820646944921464,
+          "reference_mean": -0.10770647108738676,
+          "reference_sd": 0.0050293513729849915,
+          "neural_width_90": 0.01692672073841095,
+          "reference_width_90": 0.015889231843209825,
+          "signed_standardized_mean_difference": -0.09941607271935717,
+          "absolute_standardized_mean_difference": 0.09941607271935717,
+          "standardized_mean_mcse": 0.029572536097923277,
+          "signed_standardized_mean_interval": [
+            -0.19044294336606907,
+            -0.008389202072645263
+          ],
+          "mean_status": "pass",
+          "width_ratio_90": 1.065295094529349,
+          "log_width_ratio_mcse": 0.023268567422100858,
+          "width_ratio_interval": [
+            0.9916640830434095,
+            1.144393205152129
+          ],
+          "width_status": "pass",
+          "reference_mean_mcse": 0.00011408449698566858,
+          "saved_reference_mean_mcse": 0.00011408449698566858,
+          "neural_mean_mcse_iid": 8.390713365343207e-05,
+          "reference_q05_q95": [
+            -0.116815465137493,
+            -0.10092623329428317
+          ],
+          "neural_q05_q95": [
+            -0.11787624657154083,
+            -0.10094952583312988
+          ],
+          "reference_quantile_mcse": [
+            0.0002807162794400208,
+            0.00010571936482568641
+          ],
+          "neural_quantile_mcse_iid": [
+            0.0002578279231849759,
+            7.200312973620878e-05
+          ]
+        }
+      },
+      "neural_shape": [
+        4096,
+        4
+      ],
+      "reference_chain_shape": [
+        4,
+        8000,
+        4
+      ],
+      "seed": 811185,
+      "replicates_per_block_length": 400,
+      "block_lengths": [
+        44,
+        88
+      ],
+      "block_length_rule": "max(ceil(D^(1/3)), ceil(2*C*D/min(saved bulk and tail ESS across parameters))); also double L",
+      "family_checks": 24,
+      "family_confidence": 0.95,
+      "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+      "reference_diagnostics_passed": true,
+      "limits": {
+        "absolute_standardized_mean": 0.3,
+        "width_ratio_90": [
+          0.75,
+          1.25
+        ]
+      },
+      "scope": "Monte Carlo agreement on one fixed case; no numerical-target, product, copula or MCMC convergence certification",
+      "normal_critical_value": 3.078088072842161,
+      "finite_in_support_without_clipping": true,
+      "input_sha256": {
+        "reference.json": "34f5811eab68c86a0cb303cd047e4c1e524590e5892b43a4a0f3e902da44cc1c",
+        "diagnostics.json": "cffe17d61e60a553a832b7cc281d2941f0cda211b99fe55c5957654969886a33",
+        "chains.npz": "f37a3b78360fcdbb0a9e2b775cfacd057a11aaeb7d8ef97a72b9a544bdd13ccb"
+      },
+      "historical_pointwise_precision_sha256": "915ed7872ec516f7e9a458fc44de8f2b2b0e2ad3fadefc65ec102405554e86be",
+      "precision_scope": "Historical pointwise numerical sensitivity; not posterior stability.",
+      "sensitivity_detail_scope": "Per-block bootstrap details remain in the full hashed readiness report; the retained intervals use the larger MCSE from both lengths."
+    }
+  },
+  "source_sha256": {
+    "scripts/check_heston_budget_readiness.py": "4cfa2651693a13833d68470deca34999555e19bb4b4f78b6b8df89417bbf2621",
+    "src/sbi4finance/calibration/heston_budget_diagnostics.py": "173d123fde8820ced355797ba0d25b131b435cd240394aabb398ad9f86899457"
+  },
+  "development": {
+    "rank_screen": {
+      "surfaces": 512,
+      "draws_per_surface": 128,
+      "rank_ks": [
+        0.02748522320073976,
+        0.03954077575293469,
+        0.03406994171232869,
+        0.036217544065610285
+      ],
+      "dkw_bound": 0.07040045759041118,
+      "family_alpha": 0.05,
+      "passed": [
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    "coverage": {
+      "0.5": {
+        "coverage": [
+          0.474609375,
+          0.470703125,
+          0.498046875,
+          0.478515625
+        ],
+        "wilson": [
+          [
+            0.43170578221120814,
+            0.5178911345247195
+          ],
+          [
+            0.4278469468194331,
+            0.5139956494143296
+          ],
+          [
+            0.4549138158353452,
+            0.5412090239135723
+          ],
+          [
+            0.4355672416399762,
+            0.5217839955981164
+          ]
+        ]
+      },
+      "0.8": {
+        "coverage": [
+          0.775390625,
+          0.7578125,
+          0.810546875,
+          0.791015625
+        ],
+        "wilson": [
+          [
+            0.7372680468181392,
+            0.8094115485844917
+          ],
+          [
+            0.7188729901641424,
+            0.7929121629787461
+          ],
+          [
+            0.7743386557769042,
+            0.8421298241452116
+          ],
+          [
+            0.7536951237380339,
+            0.824001753673257
+          ]
+        ]
+      },
+      "0.9": {
+        "coverage": [
+          0.88671875,
+          0.875,
+          0.888671875,
+          0.90234375
+        ],
+        "wilson": [
+          [
+            0.8563373724144565,
+            0.9113403572998764
+          ],
+          [
+            0.8435314068192065,
+            0.9008833613886315
+          ],
+          [
+            0.8584802269199013,
+            0.9130746630455141
+          ],
+          [
+            0.8735560090639636,
+            0.9251390026590292
+          ]
+        ]
+      },
+      "0.95": {
+        "coverage": [
+          0.935546875,
+          0.91796875,
+          0.93359375,
+          0.9453125
+        ],
+        "wilson": [
+          [
+            0.9108659024588599,
+            0.9537408335325352
+          ],
+          [
+            0.8909718133445638,
+            0.938740480387089
+          ],
+          [
+            0.9086366418684898,
+            0.9520929338718228
+          ],
+          [
+            0.9220969712394934,
+            0.9618955660073142
+          ]
+        ]
+      }
+    },
+    "recovery_correlation": [
+      0.999944771060403,
+      0.9992982669192642,
+      0.9964328216966916,
+      0.9863591993020684
+    ],
+    "normalized_posterior_mean_mse": [
+      0.00011379694036751441,
+      0.0013989960098594665,
+      0.006730225329256174,
+      0.02707855603738342
+    ],
+    "mean_physical_central90_width": [
+      0.0014624707248913197,
+      0.004863910211770418,
+      0.10696690381082595,
+      0.09850106097292158
+    ],
+    "example_ids": {
+      "first": "validation:0",
+      "last": "validation:511",
+      "count": 512,
+      "sha256": "26d82d73055f2c7c3a3358e636d4723aeeb561ff742a9f399495e7e5e8518be5"
+    }
+  },
+  "posterior_predictive": {
+    "status": "completed_descriptive_check",
+    "observations": 32,
+    "paired_draws": 32,
+    "central90_quote_coverage": 0.878968253968254,
+    "mean_absolute_residual_over_quote_sigma": 0.7692234515332242,
+    "scope": "Fixed development panel; replicated quotes include new Gaussian observation noise. No new adequacy/acceptance rule."
+  },
+  "performance": {
+    "format": "full_surface_performance_v1",
+    "timing_scope": "current worker invocation only; previous or interrupted attempts are not included",
+    "wall_seconds": 93.07619195792358,
+    "process_cpu_seconds": 610.5680699999999,
+    "phases": {
+      "checkpoint_construction_and_reload": {
+        "wall_seconds": 8.4439006249886,
+        "process_cpu_seconds": 2.147182,
+        "calls": 1
+      },
+      "development_data_loading": {
+        "wall_seconds": 0.04077966709155589,
+        "process_cpu_seconds": 0.0407519999999999,
+        "calls": 1
+      },
+      "conditional_posterior_sampling": {
+        "wall_seconds": 11.205319875036366,
+        "process_cpu_seconds": 89.439536,
+        "calls": 3
+      },
+      "conditional_uncertainty": {
+        "wall_seconds": 4.501561668002978,
+        "process_cpu_seconds": 4.497921000000005,
+        "calls": 3
+      },
+      "development_posterior_sampling": {
+        "wall_seconds": 63.875885375076905,
+        "process_cpu_seconds": 509.47136500000005,
+        "calls": 1
+      },
+      "development_diagnostics": {
+        "wall_seconds": 0.019184542004950345,
+        "process_cpu_seconds": 0.019168000000036045,
+        "calls": 1
+      },
+      "posterior_predictive_pricing": {
+        "wall_seconds": 4.921595708001405,
+        "process_cpu_seconds": 4.891076999999996,
+        "calls": 1
+      }
+    },
+    "phases_are_additive": false,
+    "phase_note": "fit includes validation, first-step compilation and checkpoint callbacks; nested phases overlap",
+    "allocation": {
+      "cpu_cores": null,
+      "gpu_count": null,
+      "cpu_seconds": null,
+      "gpu_seconds": null,
+      "source": "Slurm allocation environment, when a single integer is available; not utilization"
+    },
+    "hardware": {
+      "system": "Darwin",
+      "machine": "arm64",
+      "processor": "arm",
+      "logical_cpu_count": 18,
+      "devices": [
+        "cpu:0"
+      ],
+      "device_memory": [
+        {
+          "device": "cpu:0",
+          "stats": null
+        }
+      ]
+    },
+    "thread_environment": {
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1",
+      "NUMEXPR_NUM_THREADS": "1",
+      "XLA_PYTHON_CLIENT_PREALLOCATE": "false"
+    },
+    "runtime": {
+      "python": "3.12.16",
+      "bayesflow": "2.1.0",
+      "keras": "3.15.1",
+      "jax": "0.11.1",
+      "numpy": "2.5.3",
+      "scipy": "1.18.1"
+    },
+    "peak_process_rss_bytes": 2741026816,
+    "peak_rss_scope": "process lifetime high-water mark, including imports and earlier invocations",
+    "work": {
+      "optimizer_updates": 0,
+      "test_observations": 0,
+      "development_observations": 512,
+      "development_posterior_draws": 65536,
+      "conditional_posterior_draws": 12288
+    }
+  },
+  "matrix_launch_allowed": false,
+  "next_gate": "Control pass alone is insufficient: exact-cap smoke and a cost/resource admission receipt are also required.",
+  "full_readiness_report_sha256": "bc9bedd624191389aa316fc6b25dd8e9e81a1bc1b78b1e9d63d00d8ed1fdad6c",
+  "interpretation": "All three conditional point estimates meet the historical margins, but the simultaneous Monte Carlo interval for case2 initial variance crosses the0.3SD mean margin. Readiness is inconclusive; no matrix or final test was launched. Do not rerun until a lucky pass or weaken the gate after observing it.",
+  "source_revision_at_readiness": "442c58a",
+  "cost_scope": "Local CPU readiness process; no scheduler allocation/GPU used. Wall/processCPU clocks exclude module imports before PerformanceRecorder creation. ProcessCPU can exceed wall because JAX has internal worker threads; thread environment does not enforce a CPU affinity limit.",
+  "exact_cap_smoke": {
+    "selected_update": 3,
+    "same_seed_reload_exact": true,
+    "checkpoint_sha256": "fb56c00436fd080fd4ac56bc93e9730845f936b35e294ad7c4cf1f0103323dc4",
+    "performance": {
+      "format": "full_surface_performance_v1",
+      "timing_scope": "current worker invocation only; previous or interrupted attempts are not included",
+      "wall_seconds": 4.545443000039086,
+      "process_cpu_seconds": 7.940868999999999,
+      "phases": {
+        "data_loading": {
+          "wall_seconds": 0.6021364170592278,
+          "process_cpu_seconds": 0.552289,
+          "calls": 1
+        },
+        "neural_imports": {
+          "wall_seconds": 0.848919834010303,
+          "process_cpu_seconds": 0.8472299999999999,
+          "calls": 1
+        },
+        "workflow_construction": {
+          "wall_seconds": 0.10413237498141825,
+          "process_cpu_seconds": 0.12045999999999979,
+          "calls": 1
+        },
+        "first_fit_preparation_including_build": {
+          "wall_seconds": 0.7925428340677172,
+          "process_cpu_seconds": 1.391906,
+          "calls": 1
+        },
+        "first_training_batch_including_compile": {
+          "wall_seconds": 0.35584029206074774,
+          "process_cpu_seconds": 1.330321,
+          "calls": 1
+        },
+        "validation": {
+          "wall_seconds": 0.29617866699118167,
+          "process_cpu_seconds": 0.9548950000000005,
+          "calls": 1
+        },
+        "training_fit": {
+          "wall_seconds": 1.479173916974105,
+          "process_cpu_seconds": 3.7197190000000004,
+          "calls": 1
+        },
+        "checkpoint_serialization": {
+          "wall_seconds": 0.011878874967806041,
+          "process_cpu_seconds": 0.011636999999999453,
+          "calls": 1
+        },
+        "checkpoint_reload": {
+          "wall_seconds": 0.03853345906827599,
+          "process_cpu_seconds": 0.061957000000000484,
+          "calls": 1
+        },
+        "posterior_sampling": {
+          "wall_seconds": 1.4213625829434022,
+          "process_cpu_seconds": 2.5883400000000005,
+          "calls": 1
+        }
+      },
+      "phases_are_additive": false,
+      "phase_note": "fit includes validation, first-step compilation and checkpoint callbacks; nested phases overlap",
+      "allocation": {
+        "cpu_cores": null,
+        "gpu_count": null,
+        "cpu_seconds": null,
+        "gpu_seconds": null,
+        "source": "Slurm allocation environment, when a single integer is available; not utilization"
+      },
+      "hardware": {
+        "system": "Darwin",
+        "machine": "arm64",
+        "processor": "arm",
+        "logical_cpu_count": 18,
+        "devices": [
+          "cpu:0"
+        ],
+        "device_memory": [
+          {
+            "device": "cpu:0",
+            "stats": null
+          }
+        ]
+      },
+      "thread_environment": {
+        "OMP_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1",
+        "XLA_PYTHON_CLIENT_PREALLOCATE": "false"
+      },
+      "runtime": {
+        "python": "3.12.16",
+        "bayesflow": "2.1.0",
+        "keras": "3.15.1",
+        "jax": "0.11.1",
+        "numpy": "2.5.3",
+        "scipy": "1.18.1"
+      },
+      "peak_process_rss_bytes": 842514432,
+      "peak_rss_scope": "process lifetime high-water mark, including imports and earlier invocations",
+      "work": {
+        "optimizer_updates": 3,
+        "example_presentations": 768,
+        "unique_rows_seen": 768,
+        "available_training_rows": 100000,
+        "batch_size_counts": {
+          "256": 3
+        },
+        "ordered_row_indices_sha256": "5ee9615f880108986b083d01a6e0561b02bcd68f2465581b65389ee57aad9f8e",
+        "exposure_file": "training-exposure.npz",
+        "exposure_sha256": "b4b96fe0fe7d1aec9f9c6803891848a24da6ceabf1caa0c87fc38a015a028568",
+        "architecture": {
+          "family": "flow_matching",
+          "encoder": "vector",
+          "widths": [
+            128,
+            128
+          ],
+          "summary_dim": 32,
+          "flow_steps": null,
+          "mean_steps": 4
+        },
+        "optimizer_schedule": {
+          "serialized": {
+            "module": "keras.optimizers.schedules",
+            "class_name": "CosineDecay",
+            "config": {
+              "initial_learning_rate": 5e-05,
+              "decay_steps": 3,
+              "alpha": 0,
+              "name": "CosineDecay",
+              "warmup_target": 0.0005,
+              "warmup_steps": 0
+            },
+            "registered_name": null
+          },
+          "discrete_learning_rates": {
+            "0": 0.0005000000237487257,
+            "1": 0.000375000003259629,
+            "2": 0.00012499999138526618,
+            "3": 0.0
+          }
+        },
+        "simulation_calls": 0,
+        "reserved_test_evaluated": false,
+        "scope": "Actual optimizer-committed batches; dataset probes excluded from presentations."
+      }
+    },
+    "reserved_test_evaluated": false,
+    "training_report_sha256": "bf06f47720d37c05b605d39551d06c8e4a0cea923dfec38695fd5fde6eb9a295",
+    "run_contract_summary": {
+      "format": "full_surface_update_budget_run_v1",
+      "network": {
+        "family": "flow_matching",
+        "encoder": "vector",
+        "widths": [
+          128,
+          128
+        ],
+        "summary_dim": 32,
+        "flow_steps": null,
+        "mean_steps": 4
+      },
+      "dataset": {
+        "manifest_sha256": "4b5929b0d0b23698c340eec6defabfd629fe23eca2ed78fe9bd46e4de35c244e",
+        "task_fingerprint": "5e499526ff8f29a72f49785a1a36006b1d769d26bca8a6f83f7a8c8ac4d431fa",
+        "collection_id": "402230db66b9885b59524e7808eebf1b3882c4a271f97eccc7cf970581e85221"
+      },
+      "runtime": {
+        "python": "3.12.16",
+        "keras_backend_env": "jax",
+        "bayesflow": "2.1.0",
+        "keras": "3.15.1",
+        "jax": "0.11.1",
+        "numpy": "2.5.3",
+        "scipy": "1.18.1"
+      },
+      "settings": {
+        "updates": 3,
+        "batch_size": 256,
+        "seed": 0,
+        "fresh_quote_noise": true,
+        "checkpoint_selection": "endpoint",
+        "steps_per_execution": 1,
+        "data_order": "seeded within-bank permutations; finite ordered batch schedule",
+        "noise_stream": "standard-normal keyed by seed and batch; probe invariant"
+      }
+    },
+    "source_sha256": {
+      "scripts/train_full_surface.py": "0253ff678df7edce1422bbabadcf95238bfef92e255228df4316acb8d575cb48",
+      "studies/train_calibration.py": "82ee8a2ccaa941fcefdfa533b6e3a4f03c80e7dcd545b13e6e214b8ff2d4b627",
+      "src/sbi4finance/runtime_sources.py": "fac6a8489ce901283fdb8c4ae9aafae663b63f22f85f12e91ff9054e4d576b01",
+      "src/sbi4finance/calibration/__init__.py": "5464cd12c864060c7cb148c9dd925be2fcae45ee19976e43d40388f38fb48120",
+      "src/sbi4finance/calibration/bank.py": "e8a40cb9c7fadfb472bc6e48fa5874f62f9fa7afd30156bd70e44feec7596353",
+      "src/sbi4finance/calibration/bank_collection.py": "b18bfa6d8322753bdbd36754a3f08c82800b826952453d5ce95adb5751757ed5",
+      "src/sbi4finance/calibration/chain.py": "b9bb3ec19d4aa40afba5cddf3be68bd2fbd00ba8a9b5964760d36030a346139f",
+      "src/sbi4finance/calibration/classical.py": "1f5b2840bf3db78c976da0224448d7da2323744f758d6b744ece38855393b17b",
+      "src/sbi4finance/calibration/correction.py": "a5b945329c6dc6dfcb14748d6a3cfeef918387e55b3c93e972207c1bae2d9fa3",
+      "src/sbi4finance/calibration/curve_adequacy.py": "5815ddca3eb883863b397a620f7655b9d56fe354ce69773e75deacd7b993cdd1",
+      "src/sbi4finance/calibration/full_surface.py": "64a417679db38f8d8897c66617af746567dc808b8e14499525f988dd770a1ddd",
+      "src/sbi4finance/calibration/full_surface_teaching.py": "c9e326ce57a7ca4737eed6d2453863e680061c03c00705508505a87c18675a0c",
+      "src/sbi4finance/calibration/heston_budget_diagnostics.py": "fd1f4d0daed2135eca6c558c5599639acf0eae0b80673aa032efc39a168e6e4c",
+      "src/sbi4finance/calibration/inference.py": "0b657953d68f47a34e83d66bb69a4d5f6447df576b698a4b0004b167f34d824c",
+      "src/sbi4finance/calibration/numerical_pilot.py": "eeb73c2e97e935be3d3d0c61b41c7ac86e6905940b1900d493e022a5a0f897a2",
+      "src/sbi4finance/calibration/performance.py": "d2d752ac72736114f5b25178a2a6e1ac1a2771ea0c42b6acd5a1158bf64bd8ef",
+      "src/sbi4finance/calibration/plots.py": "558d60bda9969df4115ac0a1cb161e62e85fb9712fbb21660ddc7ff267844492",
+      "src/sbi4finance/calibration/pricer_net.py": "e5d8da240c2dc9b242fabfe289e6623d786645acf86d42d7eb96e702c47bd489",
+      "src/sbi4finance/calibration/pricing.py": "e0e1cc1da9b08ab83cd2fb095c8657da05477e788fcdae04435abddaa3fe89ca",
+      "src/sbi4finance/calibration/products.py": "80328d3ae995ad0c5f127e476244de65f67b02a4deac3330e319a2f8ae23ee34",
+      "src/sbi4finance/calibration/pymc_reference_op.py": "99704310f8a503cad7eee2310da0204d52c213427ad21683834214018f02451b",
+      "src/sbi4finance/calibration/reference.py": "fd69a6958026f6addde982f2c8d57461cf549efe75f838956e0d931e12153056",
+      "src/sbi4finance/calibration/reference_initialization.py": "0abf68e9862d30bf152dd01e28807ed651d53a12dca4c1286ccb17c52ef0b74f",
+      "src/sbi4finance/calibration/rough_control_diagnostic.py": "4726b15125f363a5602cbe0783280f83a14895ad26bc1fe44e85efe0e27e6c85",
+      "src/sbi4finance/calibration/rough_working_grid_pilot.py": "1ee3ea282e18474a3d71ce58117cdedd8fc485b9b08fc36486ed0e50dea9564a",
+      "src/sbi4finance/calibration/surface.py": "ec661b14550a1931b3fa20e79cfcfab102920b24e303d8aaf22e23bfd70971e0",
+      "src/sbi4finance/calibration/tasks.py": "0b7ac3011ca25cea335c81efc6eb12f8f7d622ccb20c83e5a24794cb28219519",
+      "src/sbi4finance/calibration/teaching.py": "5e6e5d3be56730f254df2a51613a9629b5397490b8c51b041fe20c1cee372575",
+      "src/sbi4finance/calibration/thin.py": "13cdb088029e6779e0426f7b4ff1fb7729e65a89585d2ab0e78c92bc69345081",
+      "src/sbi4finance/calibration/thin_products.py": "9c0277e302806d961a80be2f6178c525b3d2ddccc8d77cf786c50cdb674169b2",
+      "src/sbi4finance/calibration/validation.py": "42ebc47973d512c13ed6f6edf121a58db41b659cbc0258357350d84e8d3f04b7",
+      "src/sbi4finance/calibration/variance_functionals.py": "f4b2f1e0764a5cd1d060a661fc2d15a77727a9fa43caa6555362b6ebd69f7e0e",
+      "scripts/train_full_surface_budget.py": "b7cc5bd5d4a69733518b4e6e16d5242e78858e6ce73b3d6baa372d143d7c37ab"
+    },
+    "shared_runtime_source_sha256": {
+      "tutorial/src/sbi4f_tutorial/heston_options/model.py": "958567be4d3e0c59676d651f12d99b8cfdf64cef8036c6b342a3774133df2292",
+      "tutorial/src/sbi4f_tutorial/rough_options/model.py": "546d03f66fd7f1321bcc71a37bdb5cba0b5f6b41e51a1ff4e0ac13a03915bd69",
+      "tutorial/src/sbi4f_tutorial/rough_options/simulator.py": "542359c3999c2d6b55860191bf9468aeaf877820128d9e87c94cd7ecb0066bca",
+      "tutorial/src/sbi4f_tutorial/shared/bank_helpers.py": "39df3eaa28c703840c00123d8e68fb4b22551c01a76a5cf7aeee2f7e049ea452",
+      "tutorial/src/sbi4f_tutorial/shared/full_surface.py": "deddcd18288b0191946ba30982bd9495f801437bad993cd42d9e1f000fed803f",
+      "tutorial/src/sbi4f_tutorial/shared/gbm.py": "52184ef8c6e472ae8f7a2423d3ff3ec759ddbc919edbcd238dc6eba0ca87fa1a",
+      "tutorial/src/sbi4f_tutorial/shared/pricing.py": "b93283c1269a3984a7db90b074a2593abd8b5fdfb106d1d9b33132fc81b794b2",
+      "tutorial/src/sbi4f_tutorial/shared/surface.py": "62a51bf361174b551b1a9553c58e23ce55940c377e2478f6d7c4b708cf4eb1c8",
+      "tutorial/src/sbi4f_tutorial/shared/tasks.py": "c5a36364e5d48acc2b86a3d13fb2497d857569ffcb6ffff1797288aca4549c41"
+    }
+  },
+  "precision_followup": {
+    "case": 2,
+    "parameter": "initial_variance",
+    "mean_error_reference_sd": 0.2395093379860066,
+    "saved_reference_mean_mcse_reference_sd": 0.01967276482025098,
+    "critical_value": 3.078088072842161,
+    "scope": "The saved-reference mean MCSE floor nearly exhausts the observed margin even if neural Monte Carlo error vanished. Additional short fits do not resolve this; a separately costed reference-precision or pre-study protocol review is needed."
+  },
+  "cpu_model": "Apple M5 Max",
+  "cpu_model_source": "Read separately with sysctl -n machdep.cpu.brand_string on the local readiness host;18 logical CPUs.",
+  "validation": {
+    "lab_tests": 562,
+    "optional_pymc_skips": 3,
+    "manifest_claims_changed": false,
+    "runtime_aliases_verified": 183,
+    "saved_draw_archives_rechecked_strict_support": 19,
+    "panel_range_guards_passed": true,
+    "scope": "Strict support and range hardening does not change the saved control result; no posterior draws were regenerated.",
+    "full_suite_seconds": 156.638
+  }
+}

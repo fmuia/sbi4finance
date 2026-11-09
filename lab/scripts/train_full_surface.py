@@ -60,6 +60,9 @@ def run_contract(args, manifest):
 
 
 def run_training(args):
+    if getattr(args, "updates", None) is not None:
+        from scripts.train_full_surface_budget import run_budget_training
+        return run_budget_training(args, sys.modules[__name__])
     started = time.perf_counter()
     performance = PerformanceRecorder()
     performance.phases["worker_module_imports"] = {
@@ -241,6 +244,8 @@ def main():
     parser.add_argument("--flow-steps", type=int, default=None,
                         help="Explicit legacy Euler step count; omit for BayesFlow's native FlowMatching solver.")
     parser.add_argument("--mean-steps", type=int, default=4)
+    parser.add_argument("--updates", type=int, default=None,
+                        help="Fresh Heston fit with exactly this many optimizer updates; requires --checkpoint-selection final. Epoch/chunk settings are unused.")
     parser.add_argument("--epochs", type=int, default=40)
     parser.add_argument("--batch-size", type=int, default=256)
     parser.add_argument("--chunk-epochs", type=int, default=10)
@@ -250,7 +255,7 @@ def main():
     args = parser.parse_args()
     with recovery.training_lock(args.out):
         report = run_training(args)
-    print(json.dumps({"selected_epoch": report["selected_epoch"], "reload_exact": True,
+    print(json.dumps({"selected_epoch": report["selected_epoch"], "selected_update": report.get("selected_update"), "reload_exact": True,
                       "scientific_validation": False}))
 
 

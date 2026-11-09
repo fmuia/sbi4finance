@@ -1,0 +1,344 @@
+{
+  "format": "heston_training_budget_protocol_v1",
+  "status": "prepared_not_admitted",
+  "scope": "Four-parameter Heston complete63quotes; existing immutable bank; no online generation, no new MCMC, no new bank.",
+  "bank": {
+    "manifest_sha256": "4b5929b0d0b23698c340eec6defabfd629fe23eca2ed78fe9bd46e4de35c244e",
+    "task_fingerprint": "5e499526ff8f29a72f49785a1a36006b1d769d26bca8a6f83f7a8c8ac4d431fa",
+    "root_seed": 271028,
+    "splits": {
+      "train": 100000,
+      "validation": 5000,
+      "test": 5000
+    }
+  },
+  "control": {
+    "checkpoint_sha256": "8d4a243ba099524cf4cda40e4f0616e895879f053829a7f60dadbe65b98301db",
+    "role": "Saved100k final500 estimator; reuse without refitting."
+  },
+  "data_roles": {
+    "training": {
+      "split": "train",
+      "start": 0,
+      "stop": 100000,
+      "role": "Training; actual visits recorded per candidate.",
+      "expanded_ids_sha256": "80e3d5d3560effc5c0f1ff239898abad514f0c149bf697bc3ff92967403b2636"
+    },
+    "development": {
+      "split": "validation",
+      "start": 0,
+      "stop": 512,
+      "draws": 128,
+      "seed": 811080,
+      "batch_size": 32,
+      "role": "Inspected development; all5kvalidation rows already influenced historical epoch selection.",
+      "expanded_ids_sha256": "26d82d73055f2c7c3a3358e636d4723aeeb561ff742a9f399495e7e5e8518be5"
+    },
+    "posterior_predictive": {
+      "split": "validation",
+      "start": 0,
+      "stop": 32,
+      "paired_draws": 32,
+      "seed": 811081,
+      "role": "Inspected development; fixed32x32 bounded check.",
+      "expanded_ids_sha256": "93b2dcc9ccb3bfdd159ad7ba3220cf0e815cbc3877201b1590ec557294b02769"
+    },
+    "historical_acceptance": {
+      "split": "test",
+      "start": 0,
+      "stop": 2000,
+      "role": "Already inspected Oct28; prohibited as fresh final test.",
+      "expanded_ids_sha256": "7d872d8f3379052207c8209084add67a052c6e1baae26614a503a47f266321f4"
+    },
+    "displayed_cases": {
+      "split": "test",
+      "start": 2000,
+      "stop": 2004,
+      "role": "Conservatively excluded, including legacy teaching cases even if producer differs.",
+      "expanded_ids_sha256": "9a994b092aa6a771317b1da1da921b3a5a22a1bbbcdf2531a381402d9ccdfd8d"
+    },
+    "final_confirmation": {
+      "split": "test",
+      "start": 2500,
+      "stop": 4500,
+      "draws": 512,
+      "seed": 811082,
+      "batch_size": 32,
+      "role": "Reserved before study; open once only after frozen finalists/control; no tuning afterward.",
+      "expanded_ids_sha256": "52bfe02f064ae710c1e8abc165ad3eae20be456cb867137e9bd9d162b97db07d"
+    },
+    "unused_buffer": {
+      "split": "test",
+      "ranges": [
+        [
+          2004,
+          2500
+        ],
+        [
+          4500,
+          5000
+        ]
+      ],
+      "role": "Not needed by this bounded study."
+    }
+  },
+  "data_use_audit": {
+    "scope": "Tracked task-specific run declarations, journals, plans and teaching IDs inspected for role metadata. No final-confirmation parameters, quotes or outcomes were opened. A reservation does not prove unrecorded human usage did not occur.",
+    "source_sha256": {
+      "configs/heston_backbone_100k_fit.json": "a83309af284c7c54b22c1d07e3446e3a2abc79f0b90b2b6264e115cd20aaf363",
+      "evidence/pilot-results/2026-10-28/heston-candidate-acceptance/manifest.json": "6db210193e45b7d6af634ed77a5de17e5fbf7102c22298d18c13a3e1a141f525",
+      "evidence/pilot-results/2026-10-27/heston-replication-audit/final-panel/results/final100k-validation/run.json": "c845dd3d415970dce369bcc0d2ebed0c8a13616df630fbcbbd20d1a61157951e",
+      "plans/heston-backbone-comparison-2026-10-27.md": "f0c020ab2f93f0499e707d33ce0de020eaccb7469520ccb9270f356de3b99288"
+    },
+    "finding": "Historical acceptance covers test0..1999. Validation0..4999 is development. test2500..4499 is disjoint from recorded Heston evaluation/teaching IDs examined; only metadata reviewed."
+  },
+  "fixed_training": {
+    "family": "flow_matching",
+    "encoder": "vector",
+    "summary_dim": 32,
+    "flow_steps": null,
+    "mean_steps": 4,
+    "batch_size": 256,
+    "fresh_quote_noise": true,
+    "checkpoint_selection": "endpoint",
+    "optimizer": {
+      "name": "AdamW",
+      "initial_learning_rate": 0.0005,
+      "warmup_fraction": 0.05,
+      "warmup_rounding": "floor",
+      "warmup_initial_factor": 0.1,
+      "weight_decay": 0.005,
+      "clipnorm": 1.5,
+      "schedule": "CosineDecay parameterized by each candidate own update budget"
+    },
+    "data_order": "Seeded permutation of all training rows per pass; fixed within-pass batches including the last short batch. Keras shuffle=False. No IDs in neural conditions.",
+    "noise_stream": "Deterministic independent standard-normal quote noise keyed by seed and scheduled batch; probes do not consume a new batch stream.",
+    "steps_per_execution": 1
+  },
+  "screen_candidates": [
+    {
+      "id": "small-u00030-s0",
+      "widths": [
+        128,
+        128
+      ],
+      "updates": 30,
+      "seed": 0
+    },
+    {
+      "id": "small-u00100-s0",
+      "widths": [
+        128,
+        128
+      ],
+      "updates": 100,
+      "seed": 0
+    },
+    {
+      "id": "small-u00300-s0",
+      "widths": [
+        128,
+        128
+      ],
+      "updates": 300,
+      "seed": 0
+    },
+    {
+      "id": "small-u01000-s0",
+      "widths": [
+        128,
+        128
+      ],
+      "updates": 1000,
+      "seed": 0
+    },
+    {
+      "id": "small-u03000-s0",
+      "widths": [
+        128,
+        128
+      ],
+      "updates": 3000,
+      "seed": 0
+    },
+    {
+      "id": "small-u10000-s0",
+      "widths": [
+        128,
+        128
+      ],
+      "updates": 10000,
+      "seed": 0
+    },
+    {
+      "id": "small-u30000-s0",
+      "widths": [
+        128,
+        128
+      ],
+      "updates": 30000,
+      "seed": 0
+    },
+    {
+      "id": "full-u00030-s0",
+      "widths": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "updates": 30,
+      "seed": 0
+    },
+    {
+      "id": "full-u00100-s0",
+      "widths": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "updates": 100,
+      "seed": 0
+    },
+    {
+      "id": "full-u00300-s0",
+      "widths": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "updates": 300,
+      "seed": 0
+    },
+    {
+      "id": "full-u01000-s0",
+      "widths": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "updates": 1000,
+      "seed": 0
+    },
+    {
+      "id": "full-u03000-s0",
+      "widths": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "updates": 3000,
+      "seed": 0
+    },
+    {
+      "id": "full-u10000-s0",
+      "widths": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "updates": 10000,
+      "seed": 0
+    },
+    {
+      "id": "full-u30000-s0",
+      "widths": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "updates": 30000,
+      "seed": 0
+    }
+  ],
+  "confirmation": {
+    "max_finalists": 2,
+    "additional_seeds": [
+      1,
+      2
+    ],
+    "publication_seed": 0,
+    "max_new_fits_total": 18,
+    "selection": "Among candidates passing all development gates, measured total cost; freeze before confirmation. Keep all seeds and failures."
+  },
+  "conditional": {
+    "case_indices": [
+      0,
+      1,
+      2
+    ],
+    "draws": 4096,
+    "seed_base": 811083,
+    "source_template": "evidence/pilot-results/2026-10-27/heston-reviewed/case-{case}/reference",
+    "mean_error_reference_sd_max": 0.3,
+    "central90_width_ratio": [
+      0.75,
+      1.25
+    ],
+    "uncertainty": "Retain chains/autocorrelation; mean/quantile reference and neural MC uncertainty. Threshold-crossing uncertainty is inconclusive, never pass.",
+    "uncertainty_calculation": {
+      "replicates_per_block_length": 400,
+      "family_checks": 24,
+      "family_confidence": 0.95,
+      "block_length": "max(ceil(draws_per_chain^(1/3)), ceil(2*chains*draws_per_chain/min(saved bulk and tail ESS across parameters))); also double L",
+      "resampling": "Independent circular blocks within each retained chain; paired parameter rows; neural rows resampled IID.",
+      "intervals": "Approximate normal with two-sided Bonferroni adjustment; maximum MCSE over both block lengths, reference mean MCSE floor.",
+      "decision": "Pass only if entire intervals lie within the mean and width margins; wholly outside fails; overlap is inconclusive."
+    }
+  },
+  "development_gates": {
+    "finite_in_support_without_clipping": true,
+    "simultaneous_marginal_rank_alpha": 0.05,
+    "coverage_levels": [
+      0.9,
+      0.95
+    ],
+    "coverage_difference_from_control_max": 0.03,
+    "conditional_all_cases_required": true,
+    "control_first": true
+  },
+  "final_gates": {
+    "coverage_levels": [
+      0.5,
+      0.8,
+      0.9,
+      0.95
+    ],
+    "absolute_coverage_error_increase_upper_bound_max": 0.02,
+    "per_parameter_prior_variance_normalized_mse_ratio_upper_bound_max": 1.1,
+    "bootstrap": "Simultaneous one-sided95% paired bootstrap over observation IDs, preserving cross-model/target pairing; family covers all finalists,seeds,parameters,levels.",
+    "all_seeds_required": true,
+    "inconclusive_is_pass": false,
+    "rank_alpha": 0.05
+  },
+  "resources": {
+    "gpu_hours_total": 1.25,
+    "allocated_cpu_hours_total": 6,
+    "max_host_cpus": 4,
+    "memory_gib": 24,
+    "gpu_preallocation": false,
+    "max_retries": 0,
+    "includes": [
+      "readiness",
+      "failed attempts",
+      "training",
+      "evaluation",
+      "reload",
+      "cleanup"
+    ],
+    "admission": "Do not launch matrix until saved-control gates pass, exact-cap smoke passes, memory/time forecast plus reserved final cost fits. Run independent lanes; no automatic extension.",
+    "fallback": "If no candidate qualifies by30000updates, retain existing full model."
+  },
+  "readiness": {
+    "full_control_passed": false,
+    "exact_cap_smoke_passed": false,
+    "cost_forecast_approved": false,
+    "full_matrix_launch_allowed": false
+  }
+}

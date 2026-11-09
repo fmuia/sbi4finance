@@ -244,6 +244,69 @@ thresholds, checkpoint policy and resource ceilings. Review a tiny exact-cap
 training/reload smoke and its measured memory/time. No selected model or
 notebook weight changes in P3.
 
+P3's protocol and training machinery are implemented. The actual three-update
+smoke on the preserved 100k bank used **768 distinct examples**, reloaded exactly,
+and recorded **4.55 s wall / 7.94 process-CPU s**, with **843 MB** peak RSS. These
+clocks exclude module imports before recorder creation. The fresh-update mode
+retains actual row visits, a budget-specific schedule and the endpoint; it does
+not alter epoch-mode recovery. The runner requires independent output lanes,
+hashed readiness/smoke evidence and a resource admission; failures consume their
+reservation and cannot trigger automatic retries.
+
+**P4 is not admitted.** The
+[saved-control readiness result](../evidence/pilot-results/2026-11-08/heston-budget-readiness/summary.json)
+is **inconclusive**. The 512-case/128-draw rank screen passes all four parameters;
+all draws are finite and within support; all three conditional point estimates
+meet the historical margins; and the fixed 32×32 predictive panel prices
+successfully. But case 2's initial-variance mean discrepancy is **0.240 reference
+SD**, with a simultaneous Monte Carlo interval for its absolute discrepancy of
+**[0.157, 0.322]**, crossing the **0.300** limit. Its width check passes. Cases 0
+and 1 pass the uncertainty-aware checks.
+
+The conditional calculation retains four chains, uses paired within-chain
+circular blocks at two predeclared lengths, includes neural Monte Carlo error,
+and retains the saved reference mean-MCSE floor. These are approximate
+Bonferroni-normal intervals, not exact coverage guarantees. The reference floor
+alone gives a mean half-width of about **0.061 SD**, nearly exhausting this
+observed margin even with infinitely many neural draws. Repeating the same
+check until it passes would not resolve that uncertainty.
+
+The control check recorded **93.08 s wall / 610.57 process-CPU s**, **2.74 GB**
+peak RSS and no GPU/scheduler allocation. Local JAX internal threads explain why
+process CPU exceeds wall; BLAS thread variables do not enforce CPU affinity.
+The reserved final panel **test:2500–4499 remains unopened**. The study has no
+admission receipt, selected short fit or new published model.
+
+Next, review a separately costed reference-precision follow-up while retaining
+the target and margins. Reframing the study as relative agreement with the saved
+model would require an explicit protocol revision before fitting, with the
+absolute conditional limitation retained. Neither is an automatic continuation
+of this bounded setup. Once readiness passes, forecast and reserve final
+confirmation costs before admitting any of the 14 seed-0 lanes.
+
+The P3 branch passes **562 lab tests (three optional skips)** and the release
+checks; saved neural archives also pass the tightened strict-support guard.
+The final comparison helper validates ordered observation IDs and uses a shared
+paired observation bootstrap across every candidate/seed, parameter and level.
+Its simultaneous bounds remain approximate; it has not been applied to the
+reserved final panel. Bounded lane execution verifies source/runtime identities,
+CPU allocation or Linux affinity and measured-memory forecasts. Plain training
+and command planning remain separate from study admission.
+
+To inspect the frozen independent commands without starting a job, run from
+`lab/`:
+
+```sh
+pixi run --locked -e core python scripts/run_heston_budget_study.py --bank BANK --out OUTPUT
+```
+
+`BANK` is the preserved Heston snapshot described in the training-data guide;
+`OUTPUT` belongs outside the checkout. The exact-update worker is
+`scripts/train_full_surface.py --updates N --checkpoint-selection final`.
+Study execution additionally needs the readiness, same-device smoke and resource
+admission receipts; the current inconclusive receipt is rejected. The reserved
+confirmation and finalist-freeze stages are not automatic actions of the runner.
+
 ### P4 · Execute and compare time to posterior quality
 
 **Commit 1 — the bounded development screen.** Run the 14 predeclared seed-0
