@@ -67,7 +67,7 @@ interval has 90% coverage.
 
 **Delta method.** A linear approximation that turns the covariance of fitted parameters
 into the variance of a function of them, here a product's price:
-$`\operatorname{Var} P \approx \nabla P^\top \operatorname{Cov}(\hat\theta)\,\nabla P`$.
+$`\mathrm{Var}\,P \approx \nabla P^\top \mathrm{Cov}(\hat\theta)\,\nabla P`$.
 
 **Desk.** A team of traders managing a book of positions.
 
@@ -119,7 +119,7 @@ uncertainty of a quote's price. Divided by vega, it is expressed in vol points.
 
 **Heston model.** A stochastic volatility model in which the variance reverts to a
 long-run level and fluctuates in proportion to its square root (Heston, 1993). Its
-parameters are $`v_0`$, $`\bar v`$, $`\kappa`$, $`\xi`$ and $`\rho`$, and its option
+parameters are $`v_0`$, $`\bar{v}`$, $`\kappa`$, $`\xi`$ and $`\rho`$, and its option
 prices come from a Fourier integral.
 
 **Hurst exponent** ($`H`$). In rough Bergomi, the parameter that sets how rough volatility
@@ -150,7 +150,7 @@ years.
 using only its density up to a constant. Here it gives Heston's exact posterior.
 
 **Mean reversion** ($`\kappa`$). In Heston, the speed at which the variance is pulled back
-to its long-run level $`\bar v`$: a gap halves in about $`\ln 2/\kappa`$ years.
+to its long-run level $`\bar{v}`$: a gap halves in about $`\ln 2/\kappa`$ years.
 
 **Model error.** The part of the gap between quotes and model prices that comes from the
 model being wrong rather than from the quotes. Here it is smooth across strikes and

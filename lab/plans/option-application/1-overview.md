@@ -144,11 +144,11 @@ The first ingredient is the model. **Heston** lets the variance $`V_t`$ of index
 move randomly around a long-run level:
 
 ```math
-\frac{dS_t}{S_t} = (r-q)\,dt + \sqrt{V_t}\,dB_t,\qquad dV_t = \kappa(\bar v - V_t)\,dt + \xi\sqrt{V_t}\,dW_t,\qquad \operatorname{corr}(dB_t, dW_t) = \rho ,
+\frac{dS_t}{S_t} = (r-q)\,dt + \sqrt{V_t}\,dB_t,\qquad dV_t = \kappa(\bar{v} - V_t)\,dt + \xi\sqrt{V_t}\,dW_t,\qquad \mathrm{corr}(dB_t, dW_t) = \rho ,
 ```
 
 with $`r-q`$ the interest rate less the dividend yield. Its parameters are today's
-variance $`v_0`$, the long-run variance $`\bar v`$, the speed of **mean reversion**
+variance $`v_0`$, the long-run variance $`\bar{v}`$, the speed of **mean reversion**
 $`\kappa`$, the **vol of vol** $`\xi`$, and the correlation $`\rho`$ (negative:
 volatility rises when the index falls). A Fourier integral prices the quotes in
 milliseconds, so the exact posterior takes minutes and serves as the reference.
