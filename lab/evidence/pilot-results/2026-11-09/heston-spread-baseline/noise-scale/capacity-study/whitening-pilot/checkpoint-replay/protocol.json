@@ -1,0 +1,1429 @@
+{
+  "format": "heston_spread_whitening_checkpoint_replay_study_v1",
+  "declared_utc": "2026-11-10T22:55:32.703444+00:00",
+  "replay_points_declared_before_fit": true,
+  "checkpoint_selection_posthoc": true,
+  "selection_scope": "Development diagnosis: epoch83 was selected after inspecting the historical validation curve; no fresh acceptance claim.",
+  "task": {
+    "format": "heston_spread_scale_task_v1",
+    "target": {
+      "format": "heston_spread_task_v1",
+      "model": "heston",
+      "measure": "Q",
+      "parameter_names": [
+        "initial_variance",
+        "kappa",
+        "theta",
+        "vol_of_vol",
+        "rho",
+        "c"
+      ],
+      "prior_bounds": [
+        [
+          0.01,
+          0.16
+        ],
+        [
+          0.1,
+          10.0
+        ],
+        [
+          0.01,
+          0.16
+        ],
+        [
+          0.1,
+          3.0
+        ],
+        [
+          -0.95,
+          -0.1
+        ],
+        [
+          0.5,
+          2.0
+        ]
+      ],
+      "prior": "independent Uniform in physical coordinates",
+      "infer_c": true,
+      "fixed_c": null,
+      "c_bounds": [
+        0.5,
+        2.0
+      ],
+      "quote_count": 54,
+      "geometry_and_spreads_sha256": "5ece6ab07e578c3bdfd68ec8f9158a161f066d271077e75dd2934c03af6b2b07",
+      "observation_model": "independent Gaussian with price SD c * half_spread",
+      "pricing_controls": {
+        "c_min": 0.5,
+        "numerical_fraction": 0.02,
+        "quadrature_ladder": [
+          [
+            256,
+            150.0
+          ],
+          [
+            512,
+            300.0
+          ],
+          [
+            1024,
+            600.0
+          ],
+          [
+            2048,
+            1200.0
+          ],
+          [
+            4096,
+            2400.0
+          ],
+          [
+            8192,
+            4800.0
+          ],
+          [
+            16384,
+            9600.0
+          ]
+        ]
+      }
+    },
+    "physical_clean_price_task": {
+      "format": "heston_spread_baseline_task_v1",
+      "target": {
+        "format": "heston_spread_task_v1",
+        "model": "heston",
+        "measure": "Q",
+        "parameter_names": [
+          "initial_variance",
+          "kappa",
+          "theta",
+          "vol_of_vol",
+          "rho"
+        ],
+        "prior_bounds": [
+          [
+            0.01,
+            0.16
+          ],
+          [
+            0.1,
+            10.0
+          ],
+          [
+            0.01,
+            0.16
+          ],
+          [
+            0.1,
+            3.0
+          ],
+          [
+            -0.95,
+            -0.1
+          ]
+        ],
+        "prior": "independent Uniform in physical coordinates",
+        "infer_c": false,
+        "fixed_c": 1.0,
+        "c_bounds": [
+          0.5,
+          2.0
+        ],
+        "quote_count": 54,
+        "geometry_and_spreads_sha256": "5ece6ab07e578c3bdfd68ec8f9158a161f066d271077e75dd2934c03af6b2b07",
+        "observation_model": "independent Gaussian with price SD c * half_spread",
+        "pricing_controls": {
+          "c_min": 0.5,
+          "numerical_fraction": 0.02,
+          "quadrature_ladder": [
+            [
+              256,
+              150.0
+            ],
+            [
+              512,
+              300.0
+            ],
+            [
+              1024,
+              600.0
+            ],
+            [
+              2048,
+              1200.0
+            ],
+            [
+              4096,
+              2400.0
+            ],
+            [
+              8192,
+              4800.0
+            ],
+            [
+              16384,
+              9600.0
+            ]
+          ]
+        }
+      },
+      "design_sha256": "4b84185e7a072844fd6a3ce0f79aed983d39502607a7a76c79dbf7196f9ed547",
+      "records": {
+        "forward": [
+          7583.100157723256,
+          7583.100157723256,
+          7583.100157723256,
+          7583.100157723256,
+          7583.100157723256,
+          7583.100157723256,
+          7583.100157723256,
+          7583.100157723256,
+          7583.100157723256,
+          7606.002225793427,
+          7606.002225793427,
+          7606.002225793427,
+          7606.002225793427,
+          7606.002225793427,
+          7606.002225793427,
+          7606.002225793427,
+          7606.002225793427,
+          7606.002225793427,
+          7632.674125364058,
+          7632.674125364058,
+          7632.674125364058,
+          7632.674125364058,
+          7632.674125364058,
+          7632.674125364058,
+          7632.674125364058,
+          7632.674125364058,
+          7632.674125364058,
+          7675.175363930313,
+          7675.175363930313,
+          7675.175363930313,
+          7675.175363930313,
+          7675.175363930313,
+          7675.175363930313,
+          7675.175363930313,
+          7675.175363930313,
+          7675.175363930313,
+          7751.210865004965,
+          7751.210865004965,
+          7751.210865004965,
+          7751.210865004965,
+          7751.210865004965,
+          7751.210865004965,
+          7751.210865004965,
+          7751.210865004965,
+          7751.210865004965,
+          7830.898473901978,
+          7830.898473901978,
+          7830.898473901978,
+          7830.898473901978,
+          7830.898473901978,
+          7830.898473901978,
+          7830.898473901978,
+          7830.898473901978,
+          7830.898473901978
+        ],
+        "strike": [
+          6580.0,
+          6820.0,
+          7065.0,
+          7190.0,
+          7320.0,
+          7455.0,
+          7580.0,
+          7715.0,
+          7860.0,
+          6035.0,
+          6395.0,
+          6775.0,
+          6975.0,
+          7180.0,
+          7385.0,
+          7605.0,
+          7830.0,
+          8060.0,
+          5700.0,
+          6125.0,
+          6590.0,
+          6840.0,
+          7095.0,
+          7355.0,
+          7635.0,
+          7920.0,
+          8215.0,
+          5150.0,
+          5700.0,
+          6295.0,
+          6615.0,
+          6950.0,
+          7305.0,
+          7680.0,
+          8070.0,
+          8475.0,
+          4600.0,
+          5200.0,
+          5950.0,
+          6350.0,
+          6790.0,
+          7255.0,
+          7760.0,
+          8275.0,
+          8850.0,
+          4100.0,
+          4800.0,
+          5650.0,
+          6150.0,
+          6650.0,
+          7225.0,
+          7830.0,
+          8490.0,
+          9205.0
+        ],
+        "discount": [
+          0.9967633151463883,
+          0.9967633151463883,
+          0.9967633151463883,
+          0.9967633151463883,
+          0.9967633151463883,
+          0.9967633151463883,
+          0.9967633151463883,
+          0.9967633151463883,
+          0.9967633151463883,
+          0.9931693133158164,
+          0.9931693133158164,
+          0.9931693133158164,
+          0.9931693133158164,
+          0.9931693133158164,
+          0.9931693133158164,
+          0.9931693133158164,
+          0.9931693133158164,
+          0.9931693133158164,
+          0.9892756374161668,
+          0.9892756374161668,
+          0.9892756374161668,
+          0.9892756374161668,
+          0.9892756374161668,
+          0.9892756374161668,
+          0.9892756374161668,
+          0.9892756374161668,
+          0.9892756374161668,
+          0.9821697293190635,
+          0.9821697293190635,
+          0.9821697293190635,
+          0.9821697293190635,
+          0.9821697293190635,
+          0.9821697293190635,
+          0.9821697293190635,
+          0.9821697293190635,
+          0.9821697293190635,
+          0.970072876673254,
+          0.970072876673254,
+          0.970072876673254,
+          0.970072876673254,
+          0.970072876673254,
+          0.970072876673254,
+          0.970072876673254,
+          0.970072876673254,
+          0.970072876673254,
+          0.9577926609156969,
+          0.9577926609156969,
+          0.9577926609156969,
+          0.9577926609156969,
+          0.9577926609156969,
+          0.9577926609156969,
+          0.9577926609156969,
+          0.9577926609156969,
+          0.9577926609156969
+        ],
+        "maturity": [
+          0.05762249492643328,
+          0.05762249492643328,
+          0.05762249492643328,
+          0.05762249492643328,
+          0.05762249492643328,
+          0.05762249492643328,
+          0.05762249492643328,
+          0.05762249492643328,
+          0.05762249492643328,
+          0.14255400177574834,
+          0.14255400177574834,
+          0.14255400177574834,
+          0.14255400177574834,
+          0.14255400177574834,
+          0.14255400177574834,
+          0.14255400177574834,
+          0.14255400177574834,
+          0.14255400177574834,
+          0.2220060565702689,
+          0.2220060565702689,
+          0.2220060565702689,
+          0.2220060565702689,
+          0.2220060565702689,
+          0.2220060565702689,
+          0.2220060565702689,
+          0.2220060565702689,
+          0.2220060565702689,
+          0.38901518899036025,
+          0.38901518899036025,
+          0.38901518899036025,
+          0.38901518899036025,
+          0.38901518899036025,
+          0.38901518899036025,
+          0.38901518899036025,
+          0.38901518899036025,
+          0.38901518899036025,
+          0.6383302574835109,
+          0.6383302574835109,
+          0.6383302574835109,
+          0.6383302574835109,
+          0.6383302574835109,
+          0.6383302574835109,
+          0.6383302574835109,
+          0.6383302574835109,
+          0.6383302574835109,
+          0.8903850520040588,
+          0.8903850520040588,
+          0.8903850520040588,
+          0.8903850520040588,
+          0.8903850520040588,
+          0.8903850520040588,
+          0.8903850520040588,
+          0.8903850520040588,
+          0.8903850520040588
+        ],
+        "option_type": [
+          "put",
+          "put",
+          "put",
+          "put",
+          "put",
+          "put",
+          "put",
+          "call",
+          "call",
+          "put",
+          "put",
+          "put",
+          "put",
+          "put",
+          "put",
+          "put",
+          "call",
+          "call",
+          "put",
+          "put",
+          "put",
+          "put",
+          "put",
+          "put",
+          "call",
+          "call",
+          "call",
+          "put",
+          "put",
+          "put",
+          "put",
+          "put",
+          "put",
+          "call",
+          "call",
+          "call",
+          "put",
+          "put",
+          "put",
+          "put",
+          "put",
+          "put",
+          "call",
+          "call",
+          "call",
+          "put",
+          "put",
+          "put",
+          "put",
+          "put",
+          "put",
+          "put",
+          "call",
+          "call"
+        ],
+        "mid": [
+          6.300000000000001,
+          9.95,
+          18.25,
+          26.549999999999997,
+          40.900000000000006,
+          66.0,
+          104.94999999999999,
+          42.55,
+          10.65,
+          13.0,
+          20.2,
+          35.3,
+          49.45,
+          72.25,
+          108.55000000000001,
+          173.55,
+          66.4,
+          17.8,
+          17.3,
+          26.45,
+          45.45,
+          63.05,
+          91.65,
+          137.45,
+          219.45,
+          83.85,
+          22.65,
+          22.9,
+          35.900000000000006,
+          62.45,
+          86.80000000000001,
+          125.30000000000001,
+          188.45,
+          295.9,
+          113.95,
+          31.049999999999997,
+          28.2,
+          43.75,
+          78.6,
+          110.5,
+          163.85000000000002,
+          251.25,
+          393.8,
+          154.45,
+          39.85,
+          29.05,
+          48.1,
+          88.75,
+          129.8,
+          191.8,
+          301.5,
+          482.6,
+          185.15,
+          47.9
+        ],
+        "half_spread": [
+          0.10000000000000009,
+          0.14999999999999947,
+          0.14999999999999858,
+          0.15000000000000036,
+          0.1999999999999993,
+          0.29999999999999716,
+          0.3500000000000014,
+          0.25,
+          0.15000000000000036,
+          0.1999999999999993,
+          0.1999999999999993,
+          0.1999999999999993,
+          0.25,
+          0.25,
+          0.3500000000000014,
+          0.3500000000000085,
+          0.30000000000000426,
+          0.1999999999999993,
+          0.1999999999999993,
+          0.25,
+          0.34999999999999787,
+          0.75,
+          0.3500000000000014,
+          0.3500000000000085,
+          1.25,
+          0.3500000000000014,
+          0.25,
+          0.20000000000000107,
+          0.3000000000000007,
+          0.34999999999999787,
+          0.3999999999999986,
+          0.3999999999999986,
+          0.9500000000000028,
+          0.5,
+          0.45000000000000284,
+          0.34999999999999964,
+          0.3000000000000007,
+          0.3500000000000014,
+          0.3999999999999986,
+          0.4000000000000057,
+          0.5499999999999972,
+          0.5500000000000114,
+          0.8000000000000114,
+          0.5499999999999972,
+          0.3500000000000014,
+          0.25,
+          0.3999999999999986,
+          0.5499999999999972,
+          0.5,
+          0.6000000000000085,
+          0.6000000000000227,
+          1.9000000000000057,
+          0.6500000000000057,
+          0.5
+        ]
+      },
+      "conditioning": "complete ordered noisy prices / fixed half_spread; no additional channels",
+      "scope": "fixed-design development experiment; no scientific acceptance"
+    },
+    "design_sha256": "4b84185e7a072844fd6a3ce0f79aed983d39502607a7a76c79dbf7196f9ed547",
+    "records": {
+      "forward": [
+        7583.100157723256,
+        7583.100157723256,
+        7583.100157723256,
+        7583.100157723256,
+        7583.100157723256,
+        7583.100157723256,
+        7583.100157723256,
+        7583.100157723256,
+        7583.100157723256,
+        7606.002225793427,
+        7606.002225793427,
+        7606.002225793427,
+        7606.002225793427,
+        7606.002225793427,
+        7606.002225793427,
+        7606.002225793427,
+        7606.002225793427,
+        7606.002225793427,
+        7632.674125364058,
+        7632.674125364058,
+        7632.674125364058,
+        7632.674125364058,
+        7632.674125364058,
+        7632.674125364058,
+        7632.674125364058,
+        7632.674125364058,
+        7632.674125364058,
+        7675.175363930313,
+        7675.175363930313,
+        7675.175363930313,
+        7675.175363930313,
+        7675.175363930313,
+        7675.175363930313,
+        7675.175363930313,
+        7675.175363930313,
+        7675.175363930313,
+        7751.210865004965,
+        7751.210865004965,
+        7751.210865004965,
+        7751.210865004965,
+        7751.210865004965,
+        7751.210865004965,
+        7751.210865004965,
+        7751.210865004965,
+        7751.210865004965,
+        7830.898473901978,
+        7830.898473901978,
+        7830.898473901978,
+        7830.898473901978,
+        7830.898473901978,
+        7830.898473901978,
+        7830.898473901978,
+        7830.898473901978,
+        7830.898473901978
+      ],
+      "strike": [
+        6580.0,
+        6820.0,
+        7065.0,
+        7190.0,
+        7320.0,
+        7455.0,
+        7580.0,
+        7715.0,
+        7860.0,
+        6035.0,
+        6395.0,
+        6775.0,
+        6975.0,
+        7180.0,
+        7385.0,
+        7605.0,
+        7830.0,
+        8060.0,
+        5700.0,
+        6125.0,
+        6590.0,
+        6840.0,
+        7095.0,
+        7355.0,
+        7635.0,
+        7920.0,
+        8215.0,
+        5150.0,
+        5700.0,
+        6295.0,
+        6615.0,
+        6950.0,
+        7305.0,
+        7680.0,
+        8070.0,
+        8475.0,
+        4600.0,
+        5200.0,
+        5950.0,
+        6350.0,
+        6790.0,
+        7255.0,
+        7760.0,
+        8275.0,
+        8850.0,
+        4100.0,
+        4800.0,
+        5650.0,
+        6150.0,
+        6650.0,
+        7225.0,
+        7830.0,
+        8490.0,
+        9205.0
+      ],
+      "discount": [
+        0.9967633151463883,
+        0.9967633151463883,
+        0.9967633151463883,
+        0.9967633151463883,
+        0.9967633151463883,
+        0.9967633151463883,
+        0.9967633151463883,
+        0.9967633151463883,
+        0.9967633151463883,
+        0.9931693133158164,
+        0.9931693133158164,
+        0.9931693133158164,
+        0.9931693133158164,
+        0.9931693133158164,
+        0.9931693133158164,
+        0.9931693133158164,
+        0.9931693133158164,
+        0.9931693133158164,
+        0.9892756374161668,
+        0.9892756374161668,
+        0.9892756374161668,
+        0.9892756374161668,
+        0.9892756374161668,
+        0.9892756374161668,
+        0.9892756374161668,
+        0.9892756374161668,
+        0.9892756374161668,
+        0.9821697293190635,
+        0.9821697293190635,
+        0.9821697293190635,
+        0.9821697293190635,
+        0.9821697293190635,
+        0.9821697293190635,
+        0.9821697293190635,
+        0.9821697293190635,
+        0.9821697293190635,
+        0.970072876673254,
+        0.970072876673254,
+        0.970072876673254,
+        0.970072876673254,
+        0.970072876673254,
+        0.970072876673254,
+        0.970072876673254,
+        0.970072876673254,
+        0.970072876673254,
+        0.9577926609156969,
+        0.9577926609156969,
+        0.9577926609156969,
+        0.9577926609156969,
+        0.9577926609156969,
+        0.9577926609156969,
+        0.9577926609156969,
+        0.9577926609156969,
+        0.9577926609156969
+      ],
+      "maturity": [
+        0.05762249492643328,
+        0.05762249492643328,
+        0.05762249492643328,
+        0.05762249492643328,
+        0.05762249492643328,
+        0.05762249492643328,
+        0.05762249492643328,
+        0.05762249492643328,
+        0.05762249492643328,
+        0.14255400177574834,
+        0.14255400177574834,
+        0.14255400177574834,
+        0.14255400177574834,
+        0.14255400177574834,
+        0.14255400177574834,
+        0.14255400177574834,
+        0.14255400177574834,
+        0.14255400177574834,
+        0.2220060565702689,
+        0.2220060565702689,
+        0.2220060565702689,
+        0.2220060565702689,
+        0.2220060565702689,
+        0.2220060565702689,
+        0.2220060565702689,
+        0.2220060565702689,
+        0.2220060565702689,
+        0.38901518899036025,
+        0.38901518899036025,
+        0.38901518899036025,
+        0.38901518899036025,
+        0.38901518899036025,
+        0.38901518899036025,
+        0.38901518899036025,
+        0.38901518899036025,
+        0.38901518899036025,
+        0.6383302574835109,
+        0.6383302574835109,
+        0.6383302574835109,
+        0.6383302574835109,
+        0.6383302574835109,
+        0.6383302574835109,
+        0.6383302574835109,
+        0.6383302574835109,
+        0.6383302574835109,
+        0.8903850520040588,
+        0.8903850520040588,
+        0.8903850520040588,
+        0.8903850520040588,
+        0.8903850520040588,
+        0.8903850520040588,
+        0.8903850520040588,
+        0.8903850520040588,
+        0.8903850520040588
+      ],
+      "option_type": [
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "call",
+        "call",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "call",
+        "call",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "call",
+        "call",
+        "call",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "call",
+        "call",
+        "call",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "call",
+        "call",
+        "call",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "call",
+        "call"
+      ],
+      "mid": [
+        6.300000000000001,
+        9.95,
+        18.25,
+        26.549999999999997,
+        40.900000000000006,
+        66.0,
+        104.94999999999999,
+        42.55,
+        10.65,
+        13.0,
+        20.2,
+        35.3,
+        49.45,
+        72.25,
+        108.55000000000001,
+        173.55,
+        66.4,
+        17.8,
+        17.3,
+        26.45,
+        45.45,
+        63.05,
+        91.65,
+        137.45,
+        219.45,
+        83.85,
+        22.65,
+        22.9,
+        35.900000000000006,
+        62.45,
+        86.80000000000001,
+        125.30000000000001,
+        188.45,
+        295.9,
+        113.95,
+        31.049999999999997,
+        28.2,
+        43.75,
+        78.6,
+        110.5,
+        163.85000000000002,
+        251.25,
+        393.8,
+        154.45,
+        39.85,
+        29.05,
+        48.1,
+        88.75,
+        129.8,
+        191.8,
+        301.5,
+        482.6,
+        185.15,
+        47.9
+      ],
+      "half_spread": [
+        0.10000000000000009,
+        0.14999999999999947,
+        0.14999999999999858,
+        0.15000000000000036,
+        0.1999999999999993,
+        0.29999999999999716,
+        0.3500000000000014,
+        0.25,
+        0.15000000000000036,
+        0.1999999999999993,
+        0.1999999999999993,
+        0.1999999999999993,
+        0.25,
+        0.25,
+        0.3500000000000014,
+        0.3500000000000085,
+        0.30000000000000426,
+        0.1999999999999993,
+        0.1999999999999993,
+        0.25,
+        0.34999999999999787,
+        0.75,
+        0.3500000000000014,
+        0.3500000000000085,
+        1.25,
+        0.3500000000000014,
+        0.25,
+        0.20000000000000107,
+        0.3000000000000007,
+        0.34999999999999787,
+        0.3999999999999986,
+        0.3999999999999986,
+        0.9500000000000028,
+        0.5,
+        0.45000000000000284,
+        0.34999999999999964,
+        0.3000000000000007,
+        0.3500000000000014,
+        0.3999999999999986,
+        0.4000000000000057,
+        0.5499999999999972,
+        0.5500000000000114,
+        0.8000000000000114,
+        0.5499999999999972,
+        0.3500000000000014,
+        0.25,
+        0.3999999999999986,
+        0.5499999999999972,
+        0.5,
+        0.6000000000000085,
+        0.6000000000000227,
+        1.9000000000000057,
+        0.6500000000000057,
+        0.5
+      ]
+    },
+    "conditioning": "54 ordered noisy prices / frozen half_spread only",
+    "scale_generation": "independent fresh Uniform(.5,2) per example exposure; sixth inferred target",
+    "scope": "six-target fixed-design development experiment; no discrepancy parameter or release acceptance"
+  },
+  "task_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/task.json",
+  "bank": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/local-artifacts/heston-observations-20261109/training-study/bank",
+    "record": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/local-artifacts/heston-observations-20261109/training-study/bank/bank.json",
+      "sha256": "865b4333debdc7ed8b3e3723f1811c3ff8967b61be6cae23455e4a7ba312475e"
+    },
+    "payload": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/local-artifacts/heston-observations-20261109/training-study/bank/bank.npz",
+      "sha256": "35117eb977867ffb5b73e95cc2da6327f74820b2a74be96d223c85dfc8400fbb"
+    }
+  },
+  "original": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/zca",
+    "run": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/zca/run.json",
+      "sha256": "1e15f168f1546647a12ae85361f635da9a995362da5cb1ce3e6bc4dd49c12766"
+    }
+  },
+  "original_study": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/protocol.json",
+    "sha256": "33d1fa300bbed186deec8680695585590a6ea5e4b77af3f50afa3f895f8c68fd"
+  },
+  "contract": {
+    "format": "heston_spread_whitening_checkpoint_replay_protocol_v1",
+    "predeclared_before_fit": true,
+    "mode": "zca",
+    "task_fingerprint": "7dc67dc4dc7fa210b777207fefc7211034a1bcf5eddbde10e054e4a0a86439c0",
+    "design_sha256": "4b84185e7a072844fd6a3ce0f79aed983d39502607a7a76c79dbf7196f9ed547",
+    "bank_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/local-artifacts/heston-observations-20261109/training-study/bank",
+    "bank_record_sha256": "865b4333debdc7ed8b3e3723f1811c3ff8967b61be6cae23455e4a7ba312475e",
+    "bank_payload_sha256": "35117eb977867ffb5b73e95cc2da6327f74820b2a74be96d223c85dfc8400fbb",
+    "bank_identity": {
+      "task_fingerprint": "8225d51175df3768aae84d2829466c8085645266973316bc3fb12a3608322962",
+      "task": {
+        "format": "heston_pilot_full_campaign_task_v1",
+        "model": "heston",
+        "measure": "Q",
+        "parameter_names": [
+          "initial_variance",
+          "kappa",
+          "theta",
+          "vol_of_vol",
+          "rho",
+          "tau"
+        ],
+        "prior_bounds": [
+          [
+            0.01,
+            0.16
+          ],
+          [
+            0.1,
+            10.0
+          ],
+          [
+            0.01,
+            0.16
+          ],
+          [
+            0.1,
+            3.0
+          ],
+          [
+            -0.95,
+            -0.1
+          ],
+          [
+            0.0,
+            0.02
+          ]
+        ],
+        "prior": "independent Uniform in physical coordinates",
+        "design_sha256": "4b84185e7a072844fd6a3ce0f79aed983d39502607a7a76c79dbf7196f9ed547",
+        "quote_count": 54,
+        "layout": "full",
+        "c_training_bounds": [
+          0.5,
+          2.0
+        ],
+        "tau_training_bounds": [
+          0.0,
+          0.02
+        ],
+        "observation_model": {
+          "distribution": "independent Gaussian",
+          "mean": "deterministic refined Heston price",
+          "variance": "(c * observed halfspread)^2 + (tau * frozen observed market vega)^2",
+          "vega_units": "quote price per unit decimal implied volatility",
+          "conditioning": "fixed quote design, carry, market vegas and spread metadata"
+        },
+        "pricing_controls": {
+          "quadrature_ladder": [
+            [
+              256,
+              150.0
+            ],
+            [
+              512,
+              300.0
+            ],
+            [
+              1024,
+              600.0
+            ],
+            [
+              2048,
+              1200.0
+            ],
+            [
+              4096,
+              2400.0
+            ],
+            [
+              8192,
+              4800.0
+            ],
+            [
+              16384,
+              9600.0
+            ]
+          ],
+          "numerical_fraction": 0.02,
+          "measurement_spread_multiplier": 0.5,
+          "precision_scope": "gate relative to smallest supported measurement SD; never relaxed by tau"
+        },
+        "scope": "fixed engineering benchmark; no market-model or release acceptance"
+      },
+      "train_rows": 100000,
+      "validation_rows": 5000,
+      "test_rows": 2000,
+      "seed": 9011,
+      "producer_source_sha256": {
+        "campaign_trainer": "cef4a364eab69cfcd78ed4a20128c5d58155ff7a682520ffda8e7d841d4dc847",
+        "heston_pilot": "7189d8d35fb7f776424835e279647867dbd0a3e4bccf00be0a1c915b0725904b",
+        "heston_model": "4b48d998ff99e3709d8c753bd12ef32453242332ec0486c9d1251a788cadfe85"
+      },
+      "environment_sha256": {
+        "pyproject.toml": "25c8e213e5b7471f734f92d0dfd7759cb52d0f280be85f1d4d3106f2492a207f",
+        "pixi.lock": "994fa6075abf60c5e2045a6e2d73302a0a84af9b37e311e8ac2cdfcd8854a871"
+      },
+      "random_protocol": "PCG64 SeedSequence([0x43414D50, seed, split]); split0 train, split1 validation, split2 reserved test; prefix-stable physical Uniform draws",
+      "stored_latents": [
+        "initial_variance",
+        "kappa",
+        "theta",
+        "vol_of_vol",
+        "rho"
+      ],
+      "excluded_latents": "tau does not affect clean prices and is sampled fresh during training"
+    },
+    "reserved_arrays_opened": false,
+    "simulation_calls": 0,
+    "splits": {
+      "train": {
+        "rows": 10000,
+        "namespace": 501,
+        "augmentation_step": 0,
+        "row_id": {
+          "shape": [
+            10000
+          ],
+          "dtype": "<U14",
+          "sha256": "540c37e0bd8c1d638ea6b0445ea31734875c2151e5f9694771c5350239643da1"
+        },
+        "first_row_id": "train:00000000",
+        "last_row_id": "train:00009999",
+        "conditions": {
+          "shape": [
+            10000,
+            54
+          ],
+          "dtype": "float64",
+          "all_finite": true,
+          "nonfinite_count": 0,
+          "sha256": "743533fe2dfdc681a74bdc452813f58bb2c39ced94320e08e0fbdb88a8c4c386"
+        },
+        "targets": {
+          "shape": [
+            10000,
+            6
+          ],
+          "dtype": "float64",
+          "all_finite": true,
+          "nonfinite_count": 0,
+          "sha256": "520b166c325de864b98f7cbd018d17b905a37c6de3367da5c83443fe6e5ec90f"
+        },
+        "quotes": {
+          "shape": [
+            10000,
+            54
+          ],
+          "dtype": "float64",
+          "all_finite": true,
+          "nonfinite_count": 0,
+          "sha256": "989c3e525b690711f71804b1f172957ca9a4516390b12a341d05f655dd3b63d4"
+        }
+      },
+      "validation": {
+        "rows": 100,
+        "namespace": 502,
+        "augmentation_step": 0,
+        "row_id": {
+          "shape": [
+            100
+          ],
+          "dtype": "<U19",
+          "sha256": "0f43e43c33f0fdeff5c4404b60068cbdf4df512eab2cd47ca70862494c66bed7"
+        },
+        "first_row_id": "validation:00000000",
+        "last_row_id": "validation:00000099",
+        "conditions": {
+          "shape": [
+            100,
+            54
+          ],
+          "dtype": "float64",
+          "all_finite": true,
+          "nonfinite_count": 0,
+          "sha256": "bf8c9eb2d44e11992a57a40d8e4b79b5770a4cce96a252eec653b3aecb766529"
+        },
+        "targets": {
+          "shape": [
+            100,
+            6
+          ],
+          "dtype": "float64",
+          "all_finite": true,
+          "nonfinite_count": 0,
+          "sha256": "19078c5c905c936eaadb13089f1a48e7db762bb607b76ae9c86c4784a3e480fe"
+        },
+        "quotes": {
+          "shape": [
+            100,
+            54
+          ],
+          "dtype": "float64",
+          "all_finite": true,
+          "nonfinite_count": 0,
+          "sha256": "6576d37a0764083033f1a46303515dee41645f82a54e0861d75af0a1c58607ea"
+        }
+      }
+    },
+    "noise_recipe": "one independent c~Uniform(.5,2) and Gaussian vector per row; frozen before training; repeat identical noisy rows",
+    "new_pricing_labels": false,
+    "train_rows": 10000,
+    "validation_rows": 100,
+    "seed": 9011,
+    "batch_size": 256,
+    "batches_per_pass": 40,
+    "tail_batch_size": 16,
+    "planned_updates": 4000,
+    "bank_passes": 100,
+    "planned_presentations": 1000000,
+    "checkpoint_updates": [
+      2000,
+      3000,
+      3320,
+      4000
+    ],
+    "preprocessing_fingerprint": "ed782788c8916b88825c9c41fa8bc5dcfe35e2ce72ee886d4a6b63b5355ff7ec",
+    "architecture": {
+      "family": "spline",
+      "depth": 6,
+      "widths": [
+        128,
+        128
+      ],
+      "dropout": 0.0
+    },
+    "standardize": [
+      "inference_variables"
+    ],
+    "optimizer": {
+      "class_name": "Adam",
+      "schedule": {
+        "class_name": "CosineDecay",
+        "initial_learning_rate": 0.0005,
+        "decay_steps": 8000,
+        "alpha": 0.1
+      }
+    },
+    "data_order": "shared complete per-pass seeded permutation, unpadded tail; fixed noisy training rows repeated",
+    "source": {
+      "replay": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/replay_heston_spread_whitening.py",
+        "sha256": "bd6db80bb0a0c65e5215c4009a1d9de3090031e199cb1c36a5210fbe25f95d65"
+      },
+      "original": {
+        "trainer": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/train_heston_spread_whitening.py",
+          "sha256": "6a7b35afc9c5beadcccb8e83cf73603cca2790a5e94b4818aed53f3e29523c9c"
+        },
+        "whitening": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/tutorial/src/sbi4f_tutorial/shared/whitening.py",
+          "sha256": "79d312451e7b28868b2d6a70c5646706183be16e9ecfe22c0c8d7e2db4257d58"
+        },
+        "fixed": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/train_heston_spread_baseline.py",
+          "sha256": "3a8747332a3493adcd9298d701d0d6aab087dada35d8648827d7790330931f38"
+        },
+        "scale": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/train_heston_spread_scale.py",
+          "sha256": "93714493768c1db7ce792b931f1dd994e2a5936bafd5da6b1062b666ac4b9068"
+        },
+        "precision": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/continue_heston_spread_scale_precision.py",
+          "sha256": "767a759a79d764c067d7c702ed30272965eb62a58400208bf58bab7331c9db47"
+        },
+        "expansion": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/continue_heston_spread_scale.py",
+          "sha256": "5d712d9b37dba7a5662c67ccc84e4148b58a45e328815a07815c40dda7109892"
+        },
+        "full_state": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/continue_heston_spread_baseline.py",
+          "sha256": "3c14cb7461d4c0ab741f0a9d279ff99fad75fa20f58f0f1185f265e72d84fc9b"
+        }
+      }
+    },
+    "max_wall_seconds": 900,
+    "smoke_test_only": false,
+    "target_prior_changed": false,
+    "scientific_acceptance": false,
+    "automatic_extension": false,
+    "schedule_updates": 8000,
+    "original": {
+      "directory": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/zca",
+      "files": {
+        "run.json": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/zca/run.json",
+          "sha256": "1e15f168f1546647a12ae85361f635da9a995362da5cb1ce3e6bc4dd49c12766"
+        },
+        "preprocessing.json": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/zca/preprocessing.json",
+          "sha256": "422d2f1362e05539b8f26bbe9d81fe43e1f048c5e16084d27722b91787a018b2"
+        },
+        "initial-probes.json": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/zca/initial-probes.json",
+          "sha256": "2cb502b63431a3927436272d35ab7fecb6991b9c076c4760dab5de06f2193925"
+        },
+        "learning-curve.json": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/zca/learning-curve.json",
+          "sha256": "34126046916d770e5d553a14e7327c7172da9d84d12cf1a4d20663100a1f5a46"
+        },
+        "training.json": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/zca/training.json",
+          "sha256": "a2b13dc080477bcc16e419e40e81491afb2c1c197c6532bad24be9a968486a63"
+        },
+        "final_checkpoint": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/zca/checkpoints/update-008000/checkpoint.json",
+          "sha256": "c09852b0ab13c436e204fecc254cedba82cec853e44a2378987abcdc4c76cf67"
+        }
+      }
+    },
+    "checkpoint_selection": "post-hoc development replay; not a fresh acceptance test",
+    "scope": "exact original ZCA trajectory prefix; no fresh noise, pricing, new reference inference or reserved arrays"
+  },
+  "output": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/training",
+  "log": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/training.log",
+  "evaluations": [
+    {
+      "updates": 2000,
+      "epoch": 50,
+      "output": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/evaluations/update-002000",
+      "payload_output": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/evaluations/update-002000",
+      "log": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/evaluation-002000.log"
+    },
+    {
+      "updates": 3000,
+      "epoch": 75,
+      "output": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/evaluations/update-003000",
+      "payload_output": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/evaluations/update-003000",
+      "log": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/evaluation-003000.log"
+    },
+    {
+      "updates": 3320,
+      "epoch": 83,
+      "output": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/evaluations/update-003320",
+      "payload_output": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/evaluations/update-003320",
+      "log": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/evaluation-003320.log"
+    },
+    {
+      "updates": 4000,
+      "epoch": 100,
+      "output": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/evaluations/update-004000",
+      "payload_output": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/evaluations/update-004000",
+      "log": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/evaluation-004000.log"
+    }
+  ],
+  "evaluation": {
+    "mode": "zca",
+    "checkpoint_updates": [
+      2000,
+      3000,
+      3320,
+      4000
+    ],
+    "reused_final_updates": 8000,
+    "seed": 261112,
+    "population_rows": 512,
+    "posterior_draws_per_population_case": 512,
+    "conditional_cases": [
+      "synthetic-broad",
+      "synthetic-market-like",
+      "market"
+    ],
+    "conditional_draws": 4096,
+    "population_c": "reuse draw_c(512,0,261112,namespace=3); c is never a condition",
+    "population_gaussian": "reuse PCG64 SeedSequence([0x53504556,261112]) standard errors",
+    "preprocessing": "load the original training-only frozen sidecar and apply exactly once; never refit",
+    "conditional_metrics": "descriptive absolute mean error / reference SD and central90% width ratio; no pass/fail family",
+    "sbc_scope": "six full-prior marginal DKW screens per checkpoint; exploratory across checkpoints",
+    "checkpoint_selection": "epochs50/75/83/100 fixed before replay; original minimum83 already observed, posthoc development comparison",
+    "primary_quantity": "c",
+    "max_wall_seconds": 300,
+    "reserved_arrays_opened": false,
+    "new_reference_sampling": false,
+    "scientific_acceptance": false
+  },
+  "reused_final_evaluation": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/evaluations/zca/evaluation.json",
+    "sha256": "ce60288332b649167c04f08c108fd3467fa4331067620ba6c93130b10dd422d8"
+  },
+  "reused_final_recovery": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/evaluations/zca/recovery.npz",
+    "sha256": "0eaf37d4a7169aba4ef2d769de733f19ab7ee02c62ed581bb6af127be488eb67"
+  },
+  "campaign": {
+    "training_wall_seconds": 900,
+    "evaluation_wall_seconds": 300,
+    "max_concurrent_workers": 1,
+    "automatic_retry": false,
+    "automatic_extension": false
+  },
+  "sources": {
+    "trainer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/replay_heston_spread_whitening.py",
+      "sha256": "bd6db80bb0a0c65e5215c4009a1d9de3090031e199cb1c36a5210fbe25f95d65"
+    },
+    "controller": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/run_heston_spread_whitening_replay.py",
+      "sha256": "d1bfb39f53ba47d225ce94c724238552d196ef02635e732998c10d801786b6dd"
+    },
+    "evaluator": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/evaluate_heston_spread_whitening_replay.py",
+      "sha256": "025ed26620030456c99496ee242a6013767e9ee94bb339e5077904a92f5ca64e"
+    },
+    "renderer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/render_heston_spread_whitening_replay.py",
+      "sha256": "5672b175a7cd1bf8bb7f2580f848e2645bfd034653601f58f2da243d2452fe6e"
+    }
+  },
+  "reserved_arrays_opened": false,
+  "new_pricing_labels": false,
+  "new_reference_sampling": false,
+  "scientific_acceptance": false,
+  "task_file": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/task.json",
+    "sha256": "4a2c070dfa2ec19bfc6680d811af654a82840eba3a97e8eac650ffb1ea1b4a2d"
+  }
+}
