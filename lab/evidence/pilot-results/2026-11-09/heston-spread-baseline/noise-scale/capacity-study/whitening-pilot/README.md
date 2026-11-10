@@ -16,6 +16,12 @@ The raw training covariance has condition number 1.09 million. Fixed per-feature
 
 **Specification predeclared before fitting.** [PR #87](https://github.com/fmuia/sbi4finance/pull/87), pinned at `ddf3619faf48b8f4b0ee56ee841ef24124a508d1`, adds a notebook whose saved recovery plot shows c correlation .887. It fits a full-covariance ZCA transform to noisy training quotes divided by their half-spreads. It also changes the network to FlowMatching, dropout, target constraints, optimizer/schedule and dataset exposure. Its appended c-response diagnostic has no executed result. This pilot isolates the input transform within a new matched pair, while preserving bounded targets and the spline architecture.
 
+## Checkpoint selection qualification
+
+All reported recovery, coverage, SBC and conditional comparisons use the predeclared **final epoch 200 / step 8000** checkpoint, not a best-validation checkpoint. The ZCA validation probe reaches its minimum at **epoch 83 / step 3320**, with loss −6.38217; the final validation loss is −1.41399 while training loss continues to improve. Only the final native weights were saved. This pattern is strongly consistent with overfitting, but earlier-checkpoint calibration has not been evaluated and cannot be inferred from the loss alone.
+
+The next proposed diagnosis is an identical-setup replay preserving the original 8000-update learning-rate horizon, retaining epochs 50/75/83/100 and comparing them with the existing final-200 evaluations. It is post-hoc development analysis using the already inspected curve; it is not fresh acceptance evidence. No replay or augmentation change is launched by this note. The original report and final-model evidence remain unchanged.
+
 ## Which covariance is this?
 
 For each dataset, the same five Heston parameters determine all 54 clean prices. Across training datasets, those parameters vary, making neighboring quotes move together. The covariance being whitened is across those prior-generated quote vectors. It is not a market-return covariance, Heston's Brownian correlation rho, or an estimated bid–ask error covariance.
