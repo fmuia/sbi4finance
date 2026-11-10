@@ -1,0 +1,102 @@
+{
+  "format": "heston_large_batch_native_preflight_v1",
+  "status": "passed",
+  "production_batch_sizes": [
+    1024,
+    4098
+  ],
+  "source": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/continue_heston_spread_scale_large_batch.py",
+    "sha256": "9afdb945978f556a879681a205781093d5f83a96a80baabff6f57ca94575662d"
+  },
+  "tests": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/tests/test_heston_spread_scale_large_batch.py",
+    "sha256": "2652e62c879d02bc084e863db3256c04e6ec84cb710158910d43d9d97b9892b8",
+    "total_tests_passed": 8,
+    "executions": [
+      {
+        "test_count": 7,
+        "reported_duration_seconds": 29.761,
+        "exit_code": 0,
+        "scope": "focused suite before adding the actual production-size native update test"
+      },
+      {
+        "test_count": 1,
+        "reported_duration_seconds": 6.669,
+        "exit_code": 0,
+        "scope": "native finite updates at actual1024 and4098 batch shapes"
+      }
+    ],
+    "total_reported_duration_seconds": 36.43
+  },
+  "native_preflight": {
+    "test_method": "ScaleExpansionWorkflowTests.test_native_finite_updates_at_both_actual_production_batch_sizes",
+    "data_scope": "software-only fixture;4098 training rows and32 validation rows; deterministic synthetic clean values, not numerical Heston labels",
+    "production_parent_loaded": false,
+    "production_bank_loaded": false,
+    "neural_parameter_updates": 2,
+    "architecture": "same six-target depth6 spline flow,128x128 conditioners, effective zero dropout, native BF2.1 JAX train step",
+    "target_adaptation": "frozen precision-safe host float64 bounded logit thenfloat32;54 conditions",
+    "results": [
+      {
+        "batch_size": 1024,
+        "target_shape": [
+          1024,
+          6
+        ],
+        "condition_shape": [
+          1024,
+          54
+        ],
+        "optimizer_updates_after": 1,
+        "batch_metrics_finite": true,
+        "gradients_finite": true,
+        "post_update_state_finite": true
+      },
+      {
+        "batch_size": 4098,
+        "target_shape": [
+          4098,
+          6
+        ],
+        "condition_shape": [
+          4098,
+          54
+        ],
+        "optimizer_updates_after": 2,
+        "batch_metrics_finite": true,
+        "gradients_finite": true,
+        "post_update_state_finite": true
+      }
+    ],
+    "evidence": "passing assertions in the source-hashed test; no numeric loss or gradient norm was retained"
+  },
+  "other_checks": [
+    "exact production grouping/tail counts and inherited strict128-control validation",
+    "exposure schedule at1024/4098 and serialization",
+    "actual CLI-authored software checkpoint imported with exact next-update replay",
+    "full saved arrays and Adam state restored exactly on software parent",
+    "paired epoch examples; no reserved arrays; precision-safe boundary targets; protocol and corrupted-payload rejection"
+  ],
+  "host": {
+    "platform": "macOS-26.4.1-arm64-arm-64bit",
+    "machine": "arm64",
+    "jax_backend": "cpu",
+    "jax_devices": [
+      {
+        "platform": "cpu",
+        "device_kind": "cpu",
+        "id": 0
+      }
+    ],
+    "device_query_scope": "read-only query after smoke completion; no further updates"
+  },
+  "observed_max_rss_bytes": null,
+  "max_rss_note": "RSS was not collected during these test processes; no rerun performed for RSS.",
+  "limitations": [
+    "This is a native execution and serialization preflight, not evidence of posterior accuracy.",
+    "Actual production60k-parent replay is separately source-bound by the launch protocol.",
+    "Durations are unittest-reported rounded values from completed runs."
+  ],
+  "additional_updates_for_this_record": 0
+}
