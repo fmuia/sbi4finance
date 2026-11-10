@@ -1,0 +1,1601 @@
+{
+  "format": "heston_spread_continuation_comparison_v1",
+  "status": "no_accepted_endpoint",
+  "scientific_acceptance": false,
+  "parameter_names": [
+    "initial_variance",
+    "kappa",
+    "theta",
+    "vol_of_vol",
+    "rho"
+  ],
+  "endpoints": {
+    "10000": {
+      "conditional_status": "fail",
+      "cases": {
+        "synthetic-broad": {
+          "status": "fail",
+          "reason": null,
+          "reference_diagnostics_passed": true,
+          "parameters": {
+            "initial_variance": {
+              "status": "fail",
+              "signed_standardized_mean_difference": 1.8254256749334192,
+              "signed_standardized_mean_interval": [
+                1.688043631344001,
+                1.9628077185228374
+              ],
+              "width_ratio_90": 1.6048987743332017,
+              "width_ratio_interval": [
+                1.5028700500311092,
+                1.713854152461749
+              ],
+              "mean_status": "fail",
+              "width_status": "fail"
+            },
+            "kappa": {
+              "status": "fail",
+              "signed_standardized_mean_difference": 0.10725514634990461,
+              "signed_standardized_mean_interval": [
+                -0.052483763671094905,
+                0.2669940563709041
+              ],
+              "width_ratio_90": 1.6210779195004785,
+              "width_ratio_interval": [
+                1.5315045764562694,
+                1.715890152396836
+              ],
+              "mean_status": "pass",
+              "width_status": "fail"
+            },
+            "theta": {
+              "status": "fail",
+              "signed_standardized_mean_difference": -0.5780609963418658,
+              "signed_standardized_mean_interval": [
+                -0.6953616716899512,
+                -0.4607603209937804
+              ],
+              "width_ratio_90": 1.6516459445967533,
+              "width_ratio_interval": [
+                1.5328692380148143,
+                1.7796262451165048
+              ],
+              "mean_status": "fail",
+              "width_status": "fail"
+            },
+            "vol_of_vol": {
+              "status": "fail",
+              "signed_standardized_mean_difference": -0.10021552130110935,
+              "signed_standardized_mean_interval": [
+                -0.21871283269463504,
+                0.01828179009241636
+              ],
+              "width_ratio_90": 1.6509174655748176,
+              "width_ratio_interval": [
+                1.5509864281791996,
+                1.757287122969637
+              ],
+              "mean_status": "pass",
+              "width_status": "fail"
+            },
+            "rho": {
+              "status": "fail",
+              "signed_standardized_mean_difference": -1.5352160840131297,
+              "signed_standardized_mean_interval": [
+                -2.104584448208616,
+                -0.9658477198176436
+              ],
+              "width_ratio_90": 1.7841570240279312,
+              "width_ratio_interval": [
+                1.6574428311693143,
+                1.920558722464332
+              ],
+              "mean_status": "fail",
+              "width_status": "fail"
+            },
+            "control": {
+              "status": "fail",
+              "signed_standardized_mean_difference": 1.9667518713346313,
+              "signed_standardized_mean_interval": [
+                1.8182637707057847,
+                2.115239971963478
+              ],
+              "width_ratio_90": 1.7814443791628847,
+              "width_ratio_interval": [
+                1.65888780625113,
+                1.913055279623057
+              ],
+              "mean_status": "fail",
+              "width_status": "fail"
+            },
+            "affected": {
+              "status": "fail",
+              "signed_standardized_mean_difference": -0.19970133716602664,
+              "signed_standardized_mean_interval": [
+                -0.3429249832558645,
+                -0.056477691076188746
+              ],
+              "width_ratio_90": 1.7161011323564441,
+              "width_ratio_interval": [
+                1.5863496655592793,
+                1.856465292875255
+              ],
+              "mean_status": "inconclusive",
+              "width_status": "fail"
+            }
+          },
+          "physical_width_range": [
+            1.6048987743332017,
+            1.7841570240279312
+          ]
+        },
+        "synthetic-market-like": {
+          "status": "fail",
+          "reason": null,
+          "reference_diagnostics_passed": true,
+          "parameters": {
+            "initial_variance": {
+              "status": "fail",
+              "signed_standardized_mean_difference": 2.1820473758246006,
+              "signed_standardized_mean_interval": [
+                1.6053929087193226,
+                2.7587018429298786
+              ],
+              "width_ratio_90": 2.0344502031132388,
+              "width_ratio_interval": [
+                1.8973604079690323,
+                2.1814451337571352
+              ],
+              "mean_status": "fail",
+              "width_status": "fail"
+            },
+            "kappa": {
+              "status": "inconclusive",
+              "signed_standardized_mean_difference": 0.2248795127374248,
+              "signed_standardized_mean_interval": [
+                0.12413241183922477,
+                0.32562661363562484
+              ],
+              "width_ratio_90": 1.273121152258146,
+              "width_ratio_interval": [
+                1.1928877865062937,
+                1.358750996247674
+              ],
+              "mean_status": "inconclusive",
+              "width_status": "inconclusive"
+            },
+            "theta": {
+              "status": "inconclusive",
+              "signed_standardized_mean_difference": 0.2756818129078498,
+              "signed_standardized_mean_interval": [
+                0.1683661802603833,
+                0.38299744555531634
+              ],
+              "width_ratio_90": 1.3088541934904754,
+              "width_ratio_interval": [
+                1.219241309729306,
+                1.4050535248005518
+              ],
+              "mean_status": "inconclusive",
+              "width_status": "inconclusive"
+            },
+            "vol_of_vol": {
+              "status": "fail",
+              "signed_standardized_mean_difference": -0.4529511979540225,
+              "signed_standardized_mean_interval": [
+                -0.5644316235702601,
+                -0.34147077233778494
+              ],
+              "width_ratio_90": 1.270143612277167,
+              "width_ratio_interval": [
+                1.1862298301655159,
+                1.3599934471243147
+              ],
+              "mean_status": "fail",
+              "width_status": "inconclusive"
+            },
+            "rho": {
+              "status": "fail",
+              "signed_standardized_mean_difference": -0.31707302565243267,
+              "signed_standardized_mean_interval": [
+                -0.9226473102776745,
+                0.2885012589728092
+              ],
+              "width_ratio_90": 2.21816367576652,
+              "width_ratio_interval": [
+                2.041329814869713,
+                2.4103160874099476
+              ],
+              "mean_status": "inconclusive",
+              "width_status": "fail"
+            },
+            "control": {
+              "status": "fail",
+              "signed_standardized_mean_difference": 2.5161989966327796,
+              "signed_standardized_mean_interval": [
+                1.921373452991342,
+                3.111024540274217
+              ],
+              "width_ratio_90": 2.287307390903765,
+              "width_ratio_interval": [
+                2.117878524902506,
+                2.4702904529067964
+              ],
+              "mean_status": "fail",
+              "width_status": "fail"
+            },
+            "affected": {
+              "status": "fail",
+              "signed_standardized_mean_difference": 0.7509518785581456,
+              "signed_standardized_mean_interval": [
+                0.6193150479972258,
+                0.8825887091190654
+              ],
+              "width_ratio_90": 1.5085678807144156,
+              "width_ratio_interval": [
+                1.409029063922141,
+                1.6151384730052214
+              ],
+              "mean_status": "fail",
+              "width_status": "fail"
+            }
+          },
+          "physical_width_range": [
+            1.270143612277167,
+            2.21816367576652
+          ]
+        },
+        "synthetic-boundary": {
+          "status": "inconclusive",
+          "reason": "matched completed reference unavailable",
+          "reference_diagnostics_passed": null,
+          "parameters": {},
+          "physical_width_range": null
+        },
+        "market": {
+          "status": "fail",
+          "reason": null,
+          "reference_diagnostics_passed": true,
+          "parameters": {
+            "initial_variance": {
+              "status": "fail",
+              "signed_standardized_mean_difference": -12.444172286978407,
+              "signed_standardized_mean_interval": [
+                -13.722234282920624,
+                -11.16611029103619
+              ],
+              "width_ratio_90": 2.105521704703331,
+              "width_ratio_interval": [
+                1.8717354789644713,
+                2.368508637464884
+              ],
+              "mean_status": "fail",
+              "width_status": "fail"
+            },
+            "kappa": {
+              "status": "fail",
+              "signed_standardized_mean_difference": -3.2207352490072467,
+              "signed_standardized_mean_interval": [
+                -3.52117801078377,
+                -2.9202924872307237
+              ],
+              "width_ratio_90": 1.4842356396367684,
+              "width_ratio_interval": [
+                1.3411949328033832,
+                1.6425318796599693
+              ],
+              "mean_status": "fail",
+              "width_status": "fail"
+            },
+            "theta": {
+              "status": "fail",
+              "signed_standardized_mean_difference": 9.589726753993181,
+              "signed_standardized_mean_interval": [
+                8.790994687817033,
+                10.38845882016933
+              ],
+              "width_ratio_90": 1.5973887078680498,
+              "width_ratio_interval": [
+                1.4334127910724943,
+                1.780122725230592
+              ],
+              "mean_status": "fail",
+              "width_status": "fail"
+            },
+            "vol_of_vol": {
+              "status": "fail",
+              "signed_standardized_mean_difference": 29.476155690948005,
+              "signed_standardized_mean_interval": [
+                27.120866279594996,
+                31.831445102301014
+              ],
+              "width_ratio_90": 1.6701289125443184,
+              "width_ratio_interval": [
+                1.5143528085067302,
+                1.8419291520758392
+              ],
+              "mean_status": "fail",
+              "width_status": "fail"
+            },
+            "rho": {
+              "status": "fail",
+              "signed_standardized_mean_difference": 43.84760667003608,
+              "signed_standardized_mean_interval": [
+                40.177507955395065,
+                47.51770538467709
+              ],
+              "width_ratio_90": 1.9293845609555906,
+              "width_ratio_interval": [
+                1.7198361655111576,
+                2.1644647662979075
+              ],
+              "mean_status": "fail",
+              "width_status": "fail"
+            },
+            "control": {
+              "status": "fail",
+              "signed_standardized_mean_difference": -11.542190544355762,
+              "signed_standardized_mean_interval": [
+                -12.718078225479205,
+                -10.366302863232319
+              ],
+              "width_ratio_90": 2.410413824101083,
+              "width_ratio_interval": [
+                2.1509219867310216,
+                2.701211312757934
+              ],
+              "mean_status": "fail",
+              "width_status": "fail"
+            },
+            "affected": {
+              "status": "fail",
+              "signed_standardized_mean_difference": 12.294921961576547,
+              "signed_standardized_mean_interval": [
+                11.274912518950899,
+                13.314931404202195
+              ],
+              "width_ratio_90": 1.7202827498335918,
+              "width_ratio_interval": [
+                1.5504163006099205,
+                1.9087600783162766
+              ],
+              "mean_status": "fail",
+              "width_status": "fail"
+            }
+          },
+          "physical_width_range": [
+            1.4842356396367684,
+            2.105521704703331
+          ]
+        }
+      },
+      "population": {
+        "rows": 512,
+        "draws_per_case": 512,
+        "support": {
+          "outside_value_count": 0,
+          "material_outside_value_count": 0,
+          "rounding_tolerance": [
+            1.1920928955078125e-07,
+            7.62939453125e-06,
+            1.1920928955078125e-07,
+            1.9073486328125e-06,
+            4.76837158203125e-07
+          ],
+          "draws_clipped": false
+        },
+        "coverage": {
+          "0.5": {
+            "coverage": [
+              0.48046875,
+              0.525390625,
+              0.576171875,
+              0.529296875,
+              0.53515625
+            ],
+            "wilson": [
+              [
+                0.43749895445367276,
+                0.5237294430355024
+              ],
+              [
+                0.4821088654752805,
+                0.5682942177887919
+              ],
+              [
+                0.5329565628135977,
+                0.6182526869786193
+              ],
+              [
+                0.48600435058567043,
+                0.572153053180567
+              ],
+              [
+                0.491852505783265,
+                0.5779363787362197
+              ]
+            ]
+          },
+          "0.8": {
+            "coverage": [
+              0.80078125,
+              0.83984375,
+              0.880859375,
+              0.822265625,
+              0.837890625
+            ],
+            "wilson": [
+              [
+                0.7640009571653381,
+                0.8330817215013653
+              ],
+              [
+                0.8055628302469452,
+                0.869063053441408
+              ],
+              [
+                0.8499237357408231,
+                0.9061225132202622
+              ],
+              [
+                0.7867885863654592,
+                0.8529428550631516
+              ],
+              [
+                0.8034705415897391,
+                0.8672781818475316
+              ]
+            ]
+          },
+          "0.9": {
+            "coverage": [
+              0.91796875,
+              0.927734375,
+              0.955078125,
+              0.912109375,
+              0.91796875
+            ],
+            "wilson": [
+              [
+                0.8909718133445638,
+                0.938740480387089
+              ],
+              [
+                0.9019787977852332,
+                0.9471192972018321
+              ],
+              [
+                0.9334960572612445,
+                0.9698822812409755
+              ],
+              [
+                0.8844149764714027,
+                0.9336658365070025
+              ],
+              [
+                0.8909718133445638,
+                0.938740480387089
+              ]
+            ]
+          },
+          "0.95": {
+            "coverage": [
+              0.96484375,
+              0.96875,
+              0.984375,
+              0.951171875,
+              0.94921875
+            ],
+            "wilson": [
+              [
+                0.9451159458429383,
+                0.9776481939146942
+              ],
+              [
+                0.9498439445861043,
+                0.980674515673693
+              ],
+              [
+                0.9694739672468663,
+                0.9920617750215911
+              ],
+              [
+                0.9289134485442119,
+                0.9667105694558431
+              ],
+              [
+                0.9266340388165446,
+                0.9651128189324278
+              ]
+            ]
+          }
+        },
+        "rank_dkw": {
+          "surfaces": 512,
+          "draws_per_surface": 512,
+          "rank_ks": [
+            0.03038960937763141,
+            0.031114483815508187,
+            0.0754043206858116,
+            0.049217625920988106,
+            0.09598975142587557
+          ],
+          "dkw_bound": 0.07193148165629265,
+          "family_alpha": 0.05,
+          "passed": [
+            true,
+            true,
+            false,
+            true,
+            false
+          ]
+        },
+        "scope": "Prior-predictive development calibration under fixed c=1; not conditional or market acceptance."
+      },
+      "explicit_checkpoint_hashes_in_evaluation": false
+    },
+    "25000": {
+      "conditional_status": "fail",
+      "cases": {
+        "synthetic-broad": {
+          "status": "fail",
+          "reason": null,
+          "reference_diagnostics_passed": true,
+          "parameters": {
+            "initial_variance": {
+              "status": "fail",
+              "signed_standardized_mean_difference": 1.3352643873825103,
+              "signed_standardized_mean_interval": [
+                1.213676509069011,
+                1.4568522656960097
+              ],
+              "width_ratio_90": 1.4613799688162803,
+              "width_ratio_interval": [
+                1.3734134015081196,
+                1.5549807588249651
+              ],
+              "mean_status": "fail",
+              "width_status": "fail"
+            },
+            "kappa": {
+              "status": "fail",
+              "signed_standardized_mean_difference": 0.7420855505691705,
+              "signed_standardized_mean_interval": [
+                0.6170708764415495,
+                0.8671002246967915
+              ],
+              "width_ratio_90": 1.4923488089483832,
+              "width_ratio_interval": [
+                1.410395957999677,
+                1.5790636345330251
+              ],
+              "mean_status": "fail",
+              "width_status": "fail"
+            },
+            "theta": {
+              "status": "fail",
+              "signed_standardized_mean_difference": -0.5553084706895722,
+              "signed_standardized_mean_interval": [
+                -0.6578731848674332,
+                -0.4527437565117112
+              ],
+              "width_ratio_90": 1.3805043189694233,
+              "width_ratio_interval": [
+                1.2770693628193628,
+                1.4923168859723082
+              ],
+              "mean_status": "fail",
+              "width_status": "fail"
+            },
+            "vol_of_vol": {
+              "status": "fail",
+              "signed_standardized_mean_difference": 0.9000729356325201,
+              "signed_standardized_mean_interval": [
+                0.7850639152862946,
+                1.0150819559787456
+              ],
+              "width_ratio_90": 1.5232479503670817,
+              "width_ratio_interval": [
+                1.4266465032750997,
+                1.6263904989574673
+              ],
+              "mean_status": "fail",
+              "width_status": "fail"
+            },
+            "rho": {
+              "status": "fail",
+              "signed_standardized_mean_difference": 0.5686176785757862,
+              "signed_standardized_mean_interval": [
+                0.16889943121759754,
+                0.9683359259339748
+              ],
+              "width_ratio_90": 1.6560349208682534,
+              "width_ratio_interval": [
+                1.545727640860331,
+                1.7742140249291984
+              ],
+              "mean_status": "inconclusive",
+              "width_status": "fail"
+            },
+            "control": {
+              "status": "fail",
+              "signed_standardized_mean_difference": 1.2575158509800775,
+              "signed_standardized_mean_interval": [
+                1.134076400834517,
+                1.380955301125638
+              ],
+              "width_ratio_90": 1.5760857199273832,
+              "width_ratio_interval": [
+                1.4756723958190612,
+                1.6833317500530098
+              ],
+              "mean_status": "fail",
+              "width_status": "fail"
+            },
+            "affected": {
+              "status": "fail",
+              "signed_standardized_mean_difference": -0.6480115002855662,
+              "signed_standardized_mean_interval": [
+                -0.7591949751420007,
+                -0.5368280254291317
+              ],
+              "width_ratio_90": 1.478722879701958,
+              "width_ratio_interval": [
+                1.3691484887387497,
+                1.597066624211339
+              ],
+              "mean_status": "fail",
+              "width_status": "fail"
+            }
+          },
+          "physical_width_range": [
+            1.3805043189694233,
+            1.6560349208682534
+          ]
+        },
+        "synthetic-market-like": {
+          "status": "fail",
+          "reason": null,
+          "reference_diagnostics_passed": true,
+          "parameters": {
+            "initial_variance": {
+              "status": "fail",
+              "signed_standardized_mean_difference": -0.42993909353622106,
+              "signed_standardized_mean_interval": [
+                -0.728249860374846,
+                -0.1316283266975961
+              ],
+              "width_ratio_90": 1.7322703691860843,
+              "width_ratio_interval": [
+                1.6228445783438734,
+                1.8490745645047504
+              ],
+              "mean_status": "inconclusive",
+              "width_status": "fail"
+            },
+            "kappa": {
+              "status": "inconclusive",
+              "signed_standardized_mean_difference": -0.18761039389593562,
+              "signed_standardized_mean_interval": [
+                -0.2835323208882291,
+                -0.09168846690364212
+              ],
+              "width_ratio_90": 1.19979860492201,
+              "width_ratio_interval": [
+                1.121415204754294,
+                1.2836607585396564
+              ],
+              "mean_status": "pass",
+              "width_status": "inconclusive"
+            },
+            "theta": {
+              "status": "inconclusive",
+              "signed_standardized_mean_difference": -0.3346262904678057,
+              "signed_standardized_mean_interval": [
+                -0.4352911453538306,
+                -0.23396143558178073
+              ],
+              "width_ratio_90": 1.2312065222461823,
+              "width_ratio_interval": [
+                1.145393781387751,
+                1.3234483415694138
+              ],
+              "mean_status": "inconclusive",
+              "width_status": "inconclusive"
+            },
+            "vol_of_vol": {
+              "status": "fail",
+              "signed_standardized_mean_difference": -0.9444174342649216,
+              "signed_standardized_mean_interval": [
+                -1.048596269940216,
+                -0.8402385985896272
+              ],
+              "width_ratio_90": 1.1724152566472705,
+              "width_ratio_interval": [
+                1.0921537957096503,
+                1.2585750646282716
+              ],
+              "mean_status": "fail",
+              "width_status": "inconclusive"
+            },
+            "rho": {
+              "status": "fail",
+              "signed_standardized_mean_difference": -1.6852105827575297,
+              "signed_standardized_mean_interval": [
+                -2.159722658718933,
+                -1.2106985067961262
+              ],
+              "width_ratio_90": 1.8706496573626814,
+              "width_ratio_interval": [
+                1.7408125002081039,
+                2.010170618704078
+              ],
+              "mean_status": "fail",
+              "width_status": "fail"
+            },
+            "control": {
+              "status": "fail",
+              "signed_standardized_mean_difference": -0.7062550058182174,
+              "signed_standardized_mean_interval": [
+                -1.0154963777422317,
+                -0.3970136338942032
+              ],
+              "width_ratio_90": 1.9375617986205171,
+              "width_ratio_interval": [
+                1.8081513814052228,
+                2.0762341926017287
+              ],
+              "mean_status": "fail",
+              "width_status": "fail"
+            },
+            "affected": {
+              "status": "fail",
+              "signed_standardized_mean_difference": -0.6992181974305257,
+              "signed_standardized_mean_interval": [
+                -0.8131674000867808,
+                -0.5852689947742706
+              ],
+              "width_ratio_90": 1.3519039336516085,
+              "width_ratio_interval": [
+                1.2729512643692766,
+                1.435753509957238
+              ],
+              "mean_status": "fail",
+              "width_status": "fail"
+            }
+          },
+          "physical_width_range": [
+            1.1724152566472705,
+            1.8706496573626814
+          ]
+        },
+        "synthetic-boundary": {
+          "status": "inconclusive",
+          "reason": "matched completed reference unavailable",
+          "reference_diagnostics_passed": null,
+          "parameters": {},
+          "physical_width_range": null
+        },
+        "market": {
+          "status": "fail",
+          "reason": null,
+          "reference_diagnostics_passed": true,
+          "parameters": {
+            "initial_variance": {
+              "status": "fail",
+              "signed_standardized_mean_difference": -12.57587110011855,
+              "signed_standardized_mean_interval": [
+                -13.773407507413868,
+                -11.37833469282323
+              ],
+              "width_ratio_90": 1.7325332694339821,
+              "width_ratio_interval": [
+                1.5451725482641852,
+                1.9426125147431712
+              ],
+              "mean_status": "fail",
+              "width_status": "fail"
+            },
+            "kappa": {
+              "status": "fail",
+              "signed_standardized_mean_difference": -3.6407785391670546,
+              "signed_standardized_mean_interval": [
+                -3.968941581013398,
+                -3.3126154973207114
+              ],
+              "width_ratio_90": 1.369263377986227,
+              "width_ratio_interval": [
+                1.2354557245305353,
+                1.5175632449367586
+              ],
+              "mean_status": "fail",
+              "width_status": "inconclusive"
+            },
+            "theta": {
+              "status": "fail",
+              "signed_standardized_mean_difference": 8.782195807527495,
+              "signed_standardized_mean_interval": [
+                8.048440513891498,
+                9.515951101163493
+              ],
+              "width_ratio_90": 1.4919020831849041,
+              "width_ratio_interval": [
+                1.341905779916582,
+                1.658664758079974
+              ],
+              "mean_status": "fail",
+              "width_status": "fail"
+            },
+            "vol_of_vol": {
+              "status": "fail",
+              "signed_standardized_mean_difference": 24.651963204821815,
+              "signed_standardized_mean_interval": [
+                22.681089596834852,
+                26.622836812808778
+              ],
+              "width_ratio_90": 1.5381148628202472,
+              "width_ratio_interval": [
+                1.397502333106723,
+                1.6928754072054057
+              ],
+              "mean_status": "fail",
+              "width_status": "fail"
+            },
+            "rho": {
+              "status": "fail",
+              "signed_standardized_mean_difference": 37.769294033334155,
+              "signed_standardized_mean_interval": [
+                34.60953635900412,
+                40.92905170766419
+              ],
+              "width_ratio_90": 1.6885842940996405,
+              "width_ratio_interval": [
+                1.5135640867882691,
+                1.8838428733667811
+              ],
+              "mean_status": "fail",
+              "width_status": "fail"
+            },
+            "control": {
+              "status": "fail",
+              "signed_standardized_mean_difference": -12.331168995849351,
+              "signed_standardized_mean_interval": [
+                -13.44991366643514,
+                -11.212424325263562
+              ],
+              "width_ratio_90": 1.9905084780266324,
+              "width_ratio_interval": [
+                1.7919168443332454,
+                2.2111093009844263
+              ],
+              "mean_status": "fail",
+              "width_status": "fail"
+            },
+            "affected": {
+              "status": "fail",
+              "signed_standardized_mean_difference": 10.451810556726324,
+              "signed_standardized_mean_interval": [
+                9.581065325464232,
+                11.322555787988415
+              ],
+              "width_ratio_90": 1.5511897323443553,
+              "width_ratio_interval": [
+                1.4013764716464594,
+                1.7170186844250006
+              ],
+              "mean_status": "fail",
+              "width_status": "fail"
+            }
+          },
+          "physical_width_range": [
+            1.369263377986227,
+            1.7325332694339821
+          ]
+        }
+      },
+      "population": {
+        "rows": 512,
+        "draws_per_case": 512,
+        "support": {
+          "outside_value_count": 0,
+          "material_outside_value_count": 0,
+          "rounding_tolerance": [
+            1.1920928955078125e-07,
+            7.62939453125e-06,
+            1.1920928955078125e-07,
+            1.9073486328125e-06,
+            4.76837158203125e-07
+          ],
+          "draws_clipped": false
+        },
+        "coverage": {
+          "0.5": {
+            "coverage": [
+              0.529296875,
+              0.54296875,
+              0.591796875,
+              0.525390625,
+              0.515625
+            ],
+            "wilson": [
+              [
+                0.48600435058567043,
+                0.572153053180567
+              ],
+              [
+                0.4996592655455357,
+                0.5856382599782792
+              ],
+              [
+                0.5486932461802594,
+                0.6335332856206175
+              ],
+              [
+                0.4821088654752805,
+                0.5682942177887919
+              ],
+              [
+                0.4723816267229168,
+                0.5586356552857431
+              ]
+            ]
+          },
+          "0.8": {
+            "coverage": [
+              0.81640625,
+              0.857421875,
+              0.861328125,
+              0.833984375,
+              0.818359375
+            ],
+            "wilson": [
+              [
+                0.780557332045865,
+                0.8475426286294983
+              ],
+              [
+                0.8244703208053621,
+                0.8850500051427335
+              ],
+              [
+                0.828692006648878,
+                0.8885826398013826
+              ],
+              [
+                0.7992907911560903,
+                0.8637036117790153
+              ],
+              [
+                0.78263299633789,
+                0.8493441245885558
+              ]
+            ]
+          },
+          "0.9": {
+            "coverage": [
+              0.916015625,
+              0.931640625,
+              0.931640625,
+              0.904296875,
+              0.931640625
+            ],
+            "wilson": [
+              [
+                0.8887825040202595,
+                0.9370526294603108
+              ],
+              [
+                0.9064124998359672,
+                0.9504399156532629
+              ],
+              [
+                0.9064124998359672,
+                0.9504399156532629
+              ],
+              [
+                0.8757213408880494,
+                0.9268508310860258
+              ],
+              [
+                0.9064124998359672,
+                0.9504399156532629
+              ]
+            ]
+          },
+          "0.95": {
+            "coverage": [
+              0.953125,
+              0.970703125,
+              0.97265625,
+              0.951171875,
+              0.96484375
+            ],
+            "wilson": [
+              [
+                0.9312006389371313,
+                0.9683005393140062
+              ],
+              [
+                0.9522288905280138,
+                0.982166729982866
+              ],
+              [
+                0.9546295060012657,
+                0.9836432747606967
+              ],
+              [
+                0.9289134485442119,
+                0.9667105694558431
+              ],
+              [
+                0.9451159458429383,
+                0.9776481939146942
+              ]
+            ]
+          }
+        },
+        "rank_dkw": {
+          "surfaces": 512,
+          "draws_per_surface": 512,
+          "rank_ks": [
+            0.10068906916725612,
+            0.05001765285485771,
+            0.060737764543180195,
+            0.042057695990422084,
+            0.04492202166224368
+          ],
+          "dkw_bound": 0.07193148165629265,
+          "family_alpha": 0.05,
+          "passed": [
+            false,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        "scope": "Prior-predictive development calibration under fixed c=1; not conditional or market acceptance."
+      },
+      "explicit_checkpoint_hashes_in_evaluation": true
+    },
+    "50000": {
+      "conditional_status": "fail",
+      "cases": {
+        "synthetic-broad": {
+          "status": "fail",
+          "reason": null,
+          "reference_diagnostics_passed": true,
+          "parameters": {
+            "initial_variance": {
+              "status": "fail",
+              "signed_standardized_mean_difference": 0.13624530963723724,
+              "signed_standardized_mean_interval": [
+                0.032870603677829985,
+                0.2396200155966445
+              ],
+              "width_ratio_90": 1.3915125024431867,
+              "width_ratio_interval": [
+                1.3103301291053426,
+                1.4777245836343218
+              ],
+              "mean_status": "pass",
+              "width_status": "fail"
+            },
+            "kappa": {
+              "status": "fail",
+              "signed_standardized_mean_difference": 0.02512624515919858,
+              "signed_standardized_mean_interval": [
+                -0.08537684190816101,
+                0.13562933222655818
+              ],
+              "width_ratio_90": 1.4126531610040036,
+              "width_ratio_interval": [
+                1.3347552571855676,
+                1.4950972791090207
+              ],
+              "mean_status": "pass",
+              "width_status": "fail"
+            },
+            "theta": {
+              "status": "fail",
+              "signed_standardized_mean_difference": -1.4166392902014775,
+              "signed_standardized_mean_interval": [
+                -1.5274230949330954,
+                -1.3058554854698596
+              ],
+              "width_ratio_90": 1.3018667303267448,
+              "width_ratio_interval": [
+                1.193434342911028,
+                1.4201510067135743
+              ],
+              "mean_status": "fail",
+              "width_status": "inconclusive"
+            },
+            "vol_of_vol": {
+              "status": "fail",
+              "signed_standardized_mean_difference": 1.6011537115403125,
+              "signed_standardized_mean_interval": [
+                1.4801580193791568,
+                1.7221494037014682
+              ],
+              "width_ratio_90": 1.4147388807787027,
+              "width_ratio_interval": [
+                1.3219286623970188,
+                1.5140651365844007
+              ],
+              "mean_status": "fail",
+              "width_status": "fail"
+            },
+            "rho": {
+              "status": "fail",
+              "signed_standardized_mean_difference": -0.6392806191034257,
+              "signed_standardized_mean_interval": [
+                -0.9552439640709788,
+                -0.32331727413587263
+              ],
+              "width_ratio_90": 1.5046621841832517,
+              "width_ratio_interval": [
+                1.4114314173278004,
+                1.6040512211336904
+              ],
+              "mean_status": "fail",
+              "width_status": "fail"
+            },
+            "control": {
+              "status": "fail",
+              "signed_standardized_mean_difference": -0.038512502382691556,
+              "signed_standardized_mean_interval": [
+                -0.1445563465346714,
+                0.06753134176928827
+              ],
+              "width_ratio_90": 1.4610782457160698,
+              "width_ratio_interval": [
+                1.369915768307704,
+                1.5583072255178618
+              ],
+              "mean_status": "pass",
+              "width_status": "fail"
+            },
+            "affected": {
+              "status": "fail",
+              "signed_standardized_mean_difference": -1.111733933755923,
+              "signed_standardized_mean_interval": [
+                -1.2196187094706583,
+                -1.003849158041188
+              ],
+              "width_ratio_90": 1.3554401340052886,
+              "width_ratio_interval": [
+                1.251607663441868,
+                1.467886471564103
+              ],
+              "mean_status": "fail",
+              "width_status": "fail"
+            }
+          },
+          "physical_width_range": [
+            1.3018667303267448,
+            1.5046621841832517
+          ]
+        },
+        "synthetic-market-like": {
+          "status": "fail",
+          "reason": null,
+          "reference_diagnostics_passed": true,
+          "parameters": {
+            "initial_variance": {
+              "status": "fail",
+              "signed_standardized_mean_difference": -0.5076634983155043,
+              "signed_standardized_mean_interval": [
+                -0.6502881219464338,
+                -0.36503887468457474
+              ],
+              "width_ratio_90": 1.5065998168471069,
+              "width_ratio_interval": [
+                1.4050595749027772,
+                1.6154781253889519
+              ],
+              "mean_status": "fail",
+              "width_status": "fail"
+            },
+            "kappa": {
+              "status": "fail",
+              "signed_standardized_mean_difference": -1.0487465986433395,
+              "signed_standardized_mean_interval": [
+                -1.1509151081791316,
+                -0.9465780891075475
+              ],
+              "width_ratio_90": 1.1415411896895578,
+              "width_ratio_interval": [
+                1.0646584597713604,
+                1.2239758917969807
+              ],
+              "mean_status": "fail",
+              "width_status": "pass"
+            },
+            "theta": {
+              "status": "pass",
+              "signed_standardized_mean_difference": 0.13120950746203122,
+              "signed_standardized_mean_interval": [
+                0.0331194529172721,
+                0.22929956200679036
+              ],
+              "width_ratio_90": 1.164269216271135,
+              "width_ratio_interval": [
+                1.0869480361596784,
+                1.2470907190244644
+              ],
+              "mean_status": "pass",
+              "width_status": "pass"
+            },
+            "vol_of_vol": {
+              "status": "fail",
+              "signed_standardized_mean_difference": -1.3404946384190082,
+              "signed_standardized_mean_interval": [
+                -1.4433926567359816,
+                -1.2375966201020348
+              ],
+              "width_ratio_90": 1.111177379831968,
+              "width_ratio_interval": [
+                1.0349529196275349,
+                1.193015784616168
+              ],
+              "mean_status": "fail",
+              "width_status": "pass"
+            },
+            "rho": {
+              "status": "fail",
+              "signed_standardized_mean_difference": 0.12447049110825235,
+              "signed_standardized_mean_interval": [
+                -0.010988284730212308,
+                0.25992926694671703
+              ],
+              "width_ratio_90": 1.6553316087294911,
+              "width_ratio_interval": [
+                1.5351402359890403,
+                1.7849331745862254
+              ],
+              "mean_status": "pass",
+              "width_status": "fail"
+            },
+            "control": {
+              "status": "fail",
+              "signed_standardized_mean_difference": -1.162208643940817,
+              "signed_standardized_mean_interval": [
+                -1.31680203003865,
+                -1.007615257842984
+              ],
+              "width_ratio_90": 1.617315007283958,
+              "width_ratio_interval": [
+                1.515317536232061,
+                1.7261780255576284
+              ],
+              "mean_status": "fail",
+              "width_status": "fail"
+            },
+            "affected": {
+              "status": "fail",
+              "signed_standardized_mean_difference": -0.582472485694277,
+              "signed_standardized_mean_interval": [
+                -0.687581665985027,
+                -0.47736330540352695
+              ],
+              "width_ratio_90": 1.2367422235361256,
+              "width_ratio_interval": [
+                1.1581853631995902,
+                1.320627402207548
+              ],
+              "mean_status": "fail",
+              "width_status": "inconclusive"
+            }
+          },
+          "physical_width_range": [
+            1.111177379831968,
+            1.6553316087294911
+          ]
+        },
+        "synthetic-boundary": {
+          "status": "inconclusive",
+          "reason": "matched completed reference unavailable",
+          "reference_diagnostics_passed": null,
+          "parameters": {},
+          "physical_width_range": null
+        },
+        "market": {
+          "status": "fail",
+          "reason": null,
+          "reference_diagnostics_passed": true,
+          "parameters": {
+            "initial_variance": {
+              "status": "fail",
+              "signed_standardized_mean_difference": -8.006028733197454,
+              "signed_standardized_mean_interval": [
+                -8.764714787217489,
+                -7.247342679177418
+              ],
+              "width_ratio_90": 1.488494513630216,
+              "width_ratio_interval": [
+                1.3335595435779266,
+                1.6614300634546684
+              ],
+              "mean_status": "fail",
+              "width_status": "fail"
+            },
+            "kappa": {
+              "status": "fail",
+              "signed_standardized_mean_difference": -4.439433498292111,
+              "signed_standardized_mean_interval": [
+                -4.823960818193402,
+                -4.054906178390819
+              ],
+              "width_ratio_90": 1.2447281031316806,
+              "width_ratio_interval": [
+                1.1234347634477408,
+                1.3791170623659121
+              ],
+              "mean_status": "fail",
+              "width_status": "inconclusive"
+            },
+            "theta": {
+              "status": "fail",
+              "signed_standardized_mean_difference": 9.833293487276089,
+              "signed_standardized_mean_interval": [
+                9.01635800127488,
+                10.650228973277299
+              ],
+              "width_ratio_90": 1.402889166693877,
+              "width_ratio_interval": [
+                1.2566379930702294,
+                1.5661614760019833
+              ],
+              "mean_status": "fail",
+              "width_status": "fail"
+            },
+            "vol_of_vol": {
+              "status": "fail",
+              "signed_standardized_mean_difference": 20.09716295748592,
+              "signed_standardized_mean_interval": [
+                18.488890433643913,
+                21.705435481327928
+              ],
+              "width_ratio_90": 1.4278043103703588,
+              "width_ratio_interval": [
+                1.294422683170489,
+                1.5749300249582134
+              ],
+              "mean_status": "fail",
+              "width_status": "fail"
+            },
+            "rho": {
+              "status": "fail",
+              "signed_standardized_mean_difference": 34.50482319414545,
+              "signed_standardized_mean_interval": [
+                31.64188048441996,
+                37.367765903870946
+              ],
+              "width_ratio_90": 1.5450029473336833,
+              "width_ratio_interval": [
+                1.3811166251884779,
+                1.7283363792279416
+              ],
+              "mean_status": "fail",
+              "width_status": "fail"
+            },
+            "control": {
+              "status": "fail",
+              "signed_standardized_mean_difference": -7.568919260765375,
+              "signed_standardized_mean_interval": [
+                -8.25275842425672,
+                -6.885080097274029
+              ],
+              "width_ratio_90": 1.6662642888999306,
+              "width_ratio_interval": [
+                1.5026347926233175,
+                1.8477122279433285
+              ],
+              "mean_status": "fail",
+              "width_status": "fail"
+            },
+            "affected": {
+              "status": "fail",
+              "signed_standardized_mean_difference": 11.868692542489885,
+              "signed_standardized_mean_interval": [
+                10.883852478885638,
+                12.853532606094133
+              ],
+              "width_ratio_90": 1.4136036302301107,
+              "width_ratio_interval": [
+                1.2822233626046382,
+                1.558445495284504
+              ],
+              "mean_status": "fail",
+              "width_status": "fail"
+            }
+          },
+          "physical_width_range": [
+            1.2447281031316806,
+            1.5450029473336833
+          ]
+        }
+      },
+      "population": {
+        "rows": 512,
+        "draws_per_case": 512,
+        "support": {
+          "outside_value_count": 0,
+          "material_outside_value_count": 0,
+          "rounding_tolerance": [
+            1.1920928955078125e-07,
+            7.62939453125e-06,
+            1.1920928955078125e-07,
+            1.9073486328125e-06,
+            4.76837158203125e-07
+          ],
+          "draws_clipped": false
+        },
+        "coverage": {
+          "0.5": {
+            "coverage": [
+              0.54296875,
+              0.505859375,
+              0.4765625,
+              0.48828125,
+              0.548828125
+            ],
+            "wilson": [
+              [
+                0.4996592655455357,
+                0.5856382599782792
+              ],
+              [
+                0.46267075036527133,
+                0.5489607303879761
+              ],
+              [
+                0.43363618411142957,
+                0.5198378928755806
+              ],
+              [
+                0.4452323527485954,
+                0.5315046857449096
+              ],
+              [
+                0.5055212711004755,
+                0.5914077351765867
+              ]
+            ]
+          },
+          "0.8": {
+            "coverage": [
+              0.83203125,
+              0.826171875,
+              0.755859375,
+              0.814453125,
+              0.828125
+            ],
+            "wilson": [
+              [
+                0.7972032842381693,
+                0.861913958445854
+              ],
+              [
+                0.7909499792318174,
+                0.8565357826989582
+              ],
+              [
+                0.7168343866396908,
+                0.7910736062521152
+              ],
+              [
+                0.7784830650129315,
+                0.8457397354113492
+              ],
+              [
+                0.7930328989697278,
+                0.8583300232121304
+              ]
+            ]
+          },
+          "0.9": {
+            "coverage": [
+              0.927734375,
+              0.916015625,
+              0.87890625,
+              0.890625,
+              0.9140625
+            ],
+            "wilson": [
+              [
+                0.9019787977852332,
+                0.9471192972018321
+              ],
+              [
+                0.8887825040202595,
+                0.9370526294603108
+              ],
+              [
+                0.8477906572251377,
+                0.9043784314848653
+              ],
+              [
+                0.86062566245746,
+                0.9148063877590378
+              ],
+              [
+                0.8865969291864807,
+                0.935361044043007
+              ]
+            ]
+          },
+          "0.95": {
+            "coverage": [
+              0.97265625,
+              0.958984375,
+              0.94140625,
+              0.939453125,
+              0.9609375
+            ],
+            "wilson": [
+              [
+                0.9546295060012657,
+                0.9836432747606967
+              ],
+              [
+                0.9381136079604665,
+                0.9730190510439184
+              ],
+              [
+                0.9175865885145797,
+                0.9586516282300628
+              ],
+              [
+                0.915340639807479,
+                0.957020416686081
+              ],
+              [
+                0.9404368991207068,
+                0.9745729201347606
+              ]
+            ]
+          }
+        },
+        "rank_dkw": {
+          "surfaces": 512,
+          "draws_per_surface": 512,
+          "rank_ks": [
+            0.07249128141992309,
+            0.08727964308600822,
+            0.18406571219565343,
+            0.027294313210704718,
+            0.07856906742384778
+          ],
+          "dkw_bound": 0.07193148165629265,
+          "family_alpha": 0.05,
+          "passed": [
+            false,
+            false,
+            false,
+            true,
+            false
+          ]
+        },
+        "scope": "Prior-predictive development calibration under fixed c=1; not conditional or market acceptance."
+      },
+      "explicit_checkpoint_hashes_in_evaluation": true
+    }
+  },
+  "boundary_reference": {
+    "status": "failed",
+    "error_type": "TimeoutError",
+    "error": "reference budget/interruption signal 14",
+    "cpu_and_wall_limit_seconds": 2700,
+    "completed_attempts": 1,
+    "source_sha256": "a8059eddc0ece707f5b1203eb6252bf92044858e82242c4e7e1ae8a1acad56c1",
+    "interpretation": "reference failure leaves boundary neural comparison inconclusive, never accepted"
+  },
+  "limits": [
+    "Same512 development cases and seeds; reserved final pool remains unopened.",
+    "10k evaluation predates explicit model/state hash fields; its declared immutable checkpoint path/payload is verified here. 25k/50k evaluations explicitly bind record/model/state/source hashes.",
+    "Additional optimization modestly narrows broad-case intervals, but conditional mean errors and population calibration are not uniformly improved.",
+    "Neither the lowest loss nor the best pooled rank count chooses an accepted checkpoint. Market-model adequacy remains separate."
+  ]
+}

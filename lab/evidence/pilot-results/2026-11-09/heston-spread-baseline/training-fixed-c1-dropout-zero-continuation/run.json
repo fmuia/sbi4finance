@@ -1,0 +1,196 @@
+{
+  "format": "heston_spread_compact_continuation_run_v1",
+  "target": {
+    "format": "heston_spread_task_v1",
+    "model": "heston",
+    "measure": "Q",
+    "parameter_names": [
+      "initial_variance",
+      "kappa",
+      "theta",
+      "vol_of_vol",
+      "rho"
+    ],
+    "prior_bounds": [
+      [
+        0.01,
+        0.16
+      ],
+      [
+        0.1,
+        10.0
+      ],
+      [
+        0.01,
+        0.16
+      ],
+      [
+        0.1,
+        3.0
+      ],
+      [
+        -0.95,
+        -0.1
+      ]
+    ],
+    "prior": "independent Uniform in physical coordinates",
+    "infer_c": false,
+    "fixed_c": 1.0,
+    "c_bounds": [
+      0.5,
+      2.0
+    ],
+    "quote_count": 54,
+    "geometry_and_spreads_sha256": "5ece6ab07e578c3bdfd68ec8f9158a161f066d271077e75dd2934c03af6b2b07",
+    "observation_model": "independent Gaussian with price SD c * half_spread",
+    "pricing_controls": {
+      "c_min": 0.5,
+      "numerical_fraction": 0.02,
+      "quadrature_ladder": [
+        [
+          256,
+          150.0
+        ],
+        [
+          512,
+          300.0
+        ],
+        [
+          1024,
+          600.0
+        ],
+        [
+          2048,
+          1200.0
+        ],
+        [
+          4096,
+          2400.0
+        ],
+        [
+          8192,
+          4800.0
+        ],
+        [
+          16384,
+          9600.0
+        ]
+      ]
+    }
+  },
+  "original_run_sha256": "072a08cdabcd33f9ddf5f106c97488a6ce474804204adde37e71151f879e8aa7",
+  "original_run_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/training-fixed-c1-dropout-zero-continuation",
+  "completed_optimizer_updates": 50000,
+  "task_fingerprint": "0498dffe793365269887b0d534c2e0703d703a83cacd570846062a9081ee7685",
+  "names": [
+    "initial_variance",
+    "kappa",
+    "theta",
+    "vol_of_vol",
+    "rho"
+  ],
+  "bounds": [
+    [
+      0.01,
+      0.16
+    ],
+    [
+      0.1,
+      10.0
+    ],
+    [
+      0.01,
+      0.16
+    ],
+    [
+      0.1,
+      3.0
+    ],
+    [
+      -0.95,
+      -0.1
+    ]
+  ],
+  "design_sha256": "4b84185e7a072844fd6a3ce0f79aed983d39502607a7a76c79dbf7196f9ed547",
+  "bank_record_sha256": "865b4333debdc7ed8b3e3723f1811c3ff8967b61be6cae23455e4a7ba312475e",
+  "bank_payload_sha256": "35117eb977867ffb5b73e95cc2da6327f74820b2a74be96d223c85dfc8400fbb",
+  "train_rows": 20000,
+  "planned_updates": 50000,
+  "schedule_updates": 10000,
+  "seed": 9011,
+  "batch_size": 128,
+  "checkpoint_updates": [
+    25000,
+    50000
+  ],
+  "wall_seconds": 900,
+  "architecture": {
+    "family": "spline",
+    "widths": [
+      128,
+      128
+    ],
+    "subnet_dropout": 0.0
+  },
+  "source_sha256": {
+    "trainer": "3a8747332a3493adcd9298d701d0d6aab087dada35d8648827d7790330931f38",
+    "batch_plan": "48948207347f5dfe57bb7d8f1c4481be78f7859cd2d141b8b2e8c2bb97c14d07",
+    "spread_pilot": "5ad4bd6a4024023f92e76c137643c073d0b0fb067c11885d330dcf0e10b291ca",
+    "heston_pilot": "7189d8d35fb7f776424835e279647867dbd0a3e4bccf00be0a1c915b0725904b",
+    "heston_model": "4b48d998ff99e3709d8c753bd12ef32453242332ec0486c9d1251a788cadfe85",
+    "continuation": "3c14cb7461d4c0ab741f0a9d279ff99fad75fa20f58f0f1185f265e72d84fc9b"
+  },
+  "environment_sha256": {
+    "pyproject.toml": "25c8e213e5b7471f734f92d0dfd7759cb52d0f280be85f1d4d3106f2492a207f",
+    "pixi.lock": "994fa6075abf60c5e2045a6e2d73302a0a84af9b37e311e8ac2cdfcd8854a871"
+  },
+  "versions": {
+    "python": "3.12.16",
+    "bayesflow": "2.1.0",
+    "keras": "3.15.1",
+    "jax": "0.11.1",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1"
+  },
+  "devices": [
+    "cpu:0"
+  ],
+  "optimizer_schedule": {
+    "serialized": {
+      "module": "keras.optimizers.schedules",
+      "class_name": "CosineDecay",
+      "config": {
+        "initial_learning_rate": 0.0005,
+        "decay_steps": 10000,
+        "alpha": 0.1,
+        "name": "CosineDecay",
+        "warmup_target": null,
+        "warmup_steps": 0
+      },
+      "registered_name": null
+    },
+    "discrete_learning_rates": {
+      "0": 0.0005000000237487257,
+      "1": 0.0005000000237487257,
+      "500": 0.0004972299211658537,
+      "5000": 0.0002749999985098839,
+      "9999": 5.0000016926787794e-05,
+      "10000": 5.0000002374872565e-05
+    }
+  },
+  "numeric_configuration": {
+    "jax_enable_x64": false,
+    "keras_floatx": "float32"
+  },
+  "augmentation": "PCG64 SeedSequence([0x53505244, seed, namespace, step]); namespace0 train,1 fixed train probe,2 fixed validation probe; independent Gaussian SD exactly halfspread",
+  "batch_plan": "BatchPlan seeded pass permutations; probes never advance training streams",
+  "probe_rows": {
+    "train": 512,
+    "validation": 512
+  },
+  "resume_protocol_sha256": "07383100c5e436ae0f5fd3f3553306ee37f09ea817e6b5d9ea6f7b466d7cbf88",
+  "parent_actual_optimizer_updates": 10000,
+  "scientific_acceptance": false,
+  "reserved_arrays_opened": false,
+  "scope": "compact completed continuation record; full checkpoint variable lists and payload arrays remain outside Git"
+}

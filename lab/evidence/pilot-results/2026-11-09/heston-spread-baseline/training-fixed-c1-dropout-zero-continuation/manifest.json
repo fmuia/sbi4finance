@@ -1,0 +1,113 @@
+{
+  "format": "heston_spread_continuation_package_manifest_v1",
+  "source_files": {
+    "evaluation_10000": {
+      "path": "evidence/pilot-results/2026-11-09/heston-spread-baseline/evaluation-dropout-zero-update-010000-provisional.json",
+      "sha256": "639ace690e604a501c803eb5b413b98ec32e959abf0226c920ae69978bbc898e"
+    },
+    "checkpoint_record_10000": {
+      "path": "../local-artifacts/heston-spread-baseline-20261109/training-fixed-c1-dropout-zero/checkpoints/update-010000/checkpoint.json",
+      "sha256": "4f0190fc8a87351dc4dbf2df75a338ba05a5ff9b76420d92fa700cf9832e77e1"
+    },
+    "evaluation_25000": {
+      "path": "evidence/pilot-results/2026-11-09/heston-spread-baseline/evaluation-dropout-zero-update-025000.json",
+      "sha256": "ec399f470f139c2c5397a4bba279dc5deae446972b9827a8b409bb5c834e3584"
+    },
+    "checkpoint_record_25000": {
+      "path": "../local-artifacts/heston-spread-baseline-20261109/training-fixed-c1-dropout-zero-continuation/checkpoints/update-025000/checkpoint.json",
+      "sha256": "58c7dedcec12133a6ee191ae0664da56ecde9735f5308d4e95730a7fb95a519a"
+    },
+    "evaluation_50000": {
+      "path": "evidence/pilot-results/2026-11-09/heston-spread-baseline/evaluation-dropout-zero-update-050000.json",
+      "sha256": "f0b0a4df4cfba44480e159a5e064e88d6392406fde041e0964e6524e387a3135"
+    },
+    "checkpoint_record_50000": {
+      "path": "../local-artifacts/heston-spread-baseline-20261109/training-fixed-c1-dropout-zero-continuation/checkpoints/update-050000/checkpoint.json",
+      "sha256": "f17c03acd8db061da90facc5de1fcb531d3ce25629d0ae28cb6715e058daf301"
+    },
+    "producer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/plot_heston_spread_continuation.py",
+      "sha256": "477eedb6988fc54fd869f5cd497c22c00a6b5ca683ea76396784e65e84a69192"
+    },
+    "shared_summary_producer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/plot_heston_spread_development.py",
+      "sha256": "d859cf943d57f810b51ff1563de94a71f6b6b5a992ec7353edfc01c2b4131167"
+    },
+    "parent_run": {
+      "path": "../local-artifacts/heston-spread-baseline-20261109/training-fixed-c1-dropout-zero/run.json",
+      "sha256": "aa1c08b96848b1689a9162f363e248e79b59acd28f94d9236f475cd93b5a5442"
+    },
+    "parent_curve": {
+      "path": "../local-artifacts/heston-spread-baseline-20261109/training-fixed-c1-dropout-zero/learning-curve.json",
+      "sha256": "0d0e10548cedf481f1c6698645d9f02dae274b42796c8a75f347be4d290f7869"
+    },
+    "continuation_run": {
+      "path": "../local-artifacts/heston-spread-baseline-20261109/training-fixed-c1-dropout-zero-continuation/run.json",
+      "sha256": "072a08cdabcd33f9ddf5f106c97488a6ce474804204adde37e71151f879e8aa7"
+    },
+    "declared_protocol": {
+      "path": "evidence/pilot-results/2026-11-09/heston-spread-baseline/optimization-continuation-protocol.json",
+      "sha256": "e5dbd96893fd9402c587b40f39d2b5d370cbe1dce8134fc2ec912ec947708a4b"
+    },
+    "boundary_reference": {
+      "path": "evidence/pilot-results/2026-11-09/heston-spread-baseline/references/synthetic-boundary/run.json",
+      "sha256": "a8059eddc0ece707f5b1203eb6252bf92044858e82242c4e7e1ae8a1acad56c1"
+    },
+    "original_training.json": {
+      "path": "../local-artifacts/heston-spread-baseline-20261109/training-fixed-c1-dropout-zero-continuation/training.json",
+      "sha256": "8bc3cb626c296e0e6df4df7389d345b47d1e11d47f82eb06b05563f7a8aff40f"
+    },
+    "original_learning-curve.json": {
+      "path": "../local-artifacts/heston-spread-baseline-20261109/training-fixed-c1-dropout-zero-continuation/learning-curve.json",
+      "sha256": "4aca4075187d8be8903b9169c41c8f700e36a4ee02a93bf7c3b5a6c8bffa0b5a"
+    },
+    "original_resume-protocol.json": {
+      "path": "../local-artifacts/heston-spread-baseline-20261109/training-fixed-c1-dropout-zero-continuation/resume-protocol.json",
+      "sha256": "07383100c5e436ae0f5fd3f3553306ee37f09ea817e6b5d9ea6f7b466d7cbf88"
+    },
+    "original_initial-probes.json": {
+      "path": "../local-artifacts/heston-spread-baseline-20261109/training-fixed-c1-dropout-zero-continuation/initial-probes.json",
+      "sha256": "d79b0591d8dac17b048ccda8d16ea5aec3cd40816a7064d02de5c4c298a50df7"
+    },
+    "original_first-batch.json": {
+      "path": "../local-artifacts/heston-spread-baseline-20261109/training-fixed-c1-dropout-zero-continuation/first-batch.json",
+      "sha256": "891f0e4ed9373edc1b359426f6df54d63585c563b5dfb9cbb85c1ab7b012a2ef"
+    }
+  },
+  "copied_records": {
+    "training.json": {
+      "source_sha256": "8bc3cb626c296e0e6df4df7389d345b47d1e11d47f82eb06b05563f7a8aff40f",
+      "copied_sha256": "8bc3cb626c296e0e6df4df7389d345b47d1e11d47f82eb06b05563f7a8aff40f"
+    },
+    "learning-curve.json": {
+      "source_sha256": "4aca4075187d8be8903b9169c41c8f700e36a4ee02a93bf7c3b5a6c8bffa0b5a",
+      "copied_sha256": "4aca4075187d8be8903b9169c41c8f700e36a4ee02a93bf7c3b5a6c8bffa0b5a"
+    },
+    "resume-protocol.json": {
+      "source_sha256": "07383100c5e436ae0f5fd3f3553306ee37f09ea817e6b5d9ea6f7b466d7cbf88",
+      "copied_sha256": "07383100c5e436ae0f5fd3f3553306ee37f09ea817e6b5d9ea6f7b466d7cbf88"
+    },
+    "initial-probes.json": {
+      "source_sha256": "d79b0591d8dac17b048ccda8d16ea5aec3cd40816a7064d02de5c4c298a50df7",
+      "copied_sha256": "d79b0591d8dac17b048ccda8d16ea5aec3cd40816a7064d02de5c4c298a50df7"
+    },
+    "first-batch.json": {
+      "source_sha256": "891f0e4ed9373edc1b359426f6df54d63585c563b5dfb9cbb85c1ab7b012a2ef",
+      "copied_sha256": "891f0e4ed9373edc1b359426f6df54d63585c563b5dfb9cbb85c1ab7b012a2ef"
+    }
+  },
+  "generated_files_sha256": {
+    "learning-curve.json": "4aca4075187d8be8903b9169c41c8f700e36a4ee02a93bf7c3b5a6c8bffa0b5a",
+    "training.json": "8bc3cb626c296e0e6df4df7389d345b47d1e11d47f82eb06b05563f7a8aff40f",
+    "comparison.json": "4690d9ec422599cdd20349191378012209ef3e179142a921b05252211230fcea",
+    "initial-probes.json": "d79b0591d8dac17b048ccda8d16ea5aec3cd40816a7064d02de5c4c298a50df7",
+    "README.md": "ad95fbba0113295cbf6d37b993638f15e50357597aa63148c988c60a8c9da602",
+    "checkpoint-payloads.json": "818f3e9b51f3b746588424e63a6ff76994ba13383988838d09a670535035d0c2",
+    "resume-protocol.json": "07383100c5e436ae0f5fd3f3553306ee37f09ea817e6b5d9ea6f7b466d7cbf88",
+    "run.json": "ebf5fdb8fa6d764882c002c51bfdffa53664ca998fd00c0318b7768c6a136f25",
+    "first-batch.json": "891f0e4ed9373edc1b359426f6df54d63585c563b5dfb9cbb85c1ab7b012a2ef",
+    "continuation-comparison.png": "ed3fac0ad7badd5d8e05e1360b686af09b831beff82baf9e49925ec17e477f7e"
+  },
+  "scientific_acceptance": false,
+  "reserved_arrays_opened": false
+}

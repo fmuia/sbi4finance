@@ -1,0 +1,13 @@
+{
+  "status": "complete",
+  "completed_updates": 50000,
+  "continued_updates": 40000,
+  "seconds": 298.8388815841172,
+  "last_checkpoint": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/training-fixed-c1-dropout-zero-continuation/checkpoints/update-050000",
+  "continued_row_presentations": 5095520,
+  "total_row_presentations": 6369472,
+  "all_parent_array_hashes_restored": true,
+  "same_seed_reload_exact": true,
+  "reserved_arrays_opened": false,
+  "scientific_acceptance": false
+}

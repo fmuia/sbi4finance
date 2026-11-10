@@ -1,0 +1,1835 @@
+{
+  "format": "heston_spread_update_scale_diagnostic_v1",
+  "task": {
+    "format": "heston_spread_baseline_task_v1",
+    "target": {
+      "format": "heston_spread_task_v1",
+      "model": "heston",
+      "measure": "Q",
+      "parameter_names": [
+        "initial_variance",
+        "kappa",
+        "theta",
+        "vol_of_vol",
+        "rho"
+      ],
+      "prior_bounds": [
+        [
+          0.01,
+          0.16
+        ],
+        [
+          0.1,
+          10.0
+        ],
+        [
+          0.01,
+          0.16
+        ],
+        [
+          0.1,
+          3.0
+        ],
+        [
+          -0.95,
+          -0.1
+        ]
+      ],
+      "prior": "independent Uniform in physical coordinates",
+      "infer_c": false,
+      "fixed_c": 1.0,
+      "c_bounds": [
+        0.5,
+        2.0
+      ],
+      "quote_count": 54,
+      "geometry_and_spreads_sha256": "5ece6ab07e578c3bdfd68ec8f9158a161f066d271077e75dd2934c03af6b2b07",
+      "observation_model": "independent Gaussian with price SD c * half_spread",
+      "pricing_controls": {
+        "c_min": 0.5,
+        "numerical_fraction": 0.02,
+        "quadrature_ladder": [
+          [
+            256,
+            150.0
+          ],
+          [
+            512,
+            300.0
+          ],
+          [
+            1024,
+            600.0
+          ],
+          [
+            2048,
+            1200.0
+          ],
+          [
+            4096,
+            2400.0
+          ],
+          [
+            8192,
+            4800.0
+          ],
+          [
+            16384,
+            9600.0
+          ]
+        ]
+      }
+    },
+    "design_sha256": "4b84185e7a072844fd6a3ce0f79aed983d39502607a7a76c79dbf7196f9ed547",
+    "records": {
+      "forward": [
+        7583.100157723256,
+        7583.100157723256,
+        7583.100157723256,
+        7583.100157723256,
+        7583.100157723256,
+        7583.100157723256,
+        7583.100157723256,
+        7583.100157723256,
+        7583.100157723256,
+        7606.002225793427,
+        7606.002225793427,
+        7606.002225793427,
+        7606.002225793427,
+        7606.002225793427,
+        7606.002225793427,
+        7606.002225793427,
+        7606.002225793427,
+        7606.002225793427,
+        7632.674125364058,
+        7632.674125364058,
+        7632.674125364058,
+        7632.674125364058,
+        7632.674125364058,
+        7632.674125364058,
+        7632.674125364058,
+        7632.674125364058,
+        7632.674125364058,
+        7675.175363930313,
+        7675.175363930313,
+        7675.175363930313,
+        7675.175363930313,
+        7675.175363930313,
+        7675.175363930313,
+        7675.175363930313,
+        7675.175363930313,
+        7675.175363930313,
+        7751.210865004965,
+        7751.210865004965,
+        7751.210865004965,
+        7751.210865004965,
+        7751.210865004965,
+        7751.210865004965,
+        7751.210865004965,
+        7751.210865004965,
+        7751.210865004965,
+        7830.898473901978,
+        7830.898473901978,
+        7830.898473901978,
+        7830.898473901978,
+        7830.898473901978,
+        7830.898473901978,
+        7830.898473901978,
+        7830.898473901978,
+        7830.898473901978
+      ],
+      "strike": [
+        6580.0,
+        6820.0,
+        7065.0,
+        7190.0,
+        7320.0,
+        7455.0,
+        7580.0,
+        7715.0,
+        7860.0,
+        6035.0,
+        6395.0,
+        6775.0,
+        6975.0,
+        7180.0,
+        7385.0,
+        7605.0,
+        7830.0,
+        8060.0,
+        5700.0,
+        6125.0,
+        6590.0,
+        6840.0,
+        7095.0,
+        7355.0,
+        7635.0,
+        7920.0,
+        8215.0,
+        5150.0,
+        5700.0,
+        6295.0,
+        6615.0,
+        6950.0,
+        7305.0,
+        7680.0,
+        8070.0,
+        8475.0,
+        4600.0,
+        5200.0,
+        5950.0,
+        6350.0,
+        6790.0,
+        7255.0,
+        7760.0,
+        8275.0,
+        8850.0,
+        4100.0,
+        4800.0,
+        5650.0,
+        6150.0,
+        6650.0,
+        7225.0,
+        7830.0,
+        8490.0,
+        9205.0
+      ],
+      "discount": [
+        0.9967633151463883,
+        0.9967633151463883,
+        0.9967633151463883,
+        0.9967633151463883,
+        0.9967633151463883,
+        0.9967633151463883,
+        0.9967633151463883,
+        0.9967633151463883,
+        0.9967633151463883,
+        0.9931693133158164,
+        0.9931693133158164,
+        0.9931693133158164,
+        0.9931693133158164,
+        0.9931693133158164,
+        0.9931693133158164,
+        0.9931693133158164,
+        0.9931693133158164,
+        0.9931693133158164,
+        0.9892756374161668,
+        0.9892756374161668,
+        0.9892756374161668,
+        0.9892756374161668,
+        0.9892756374161668,
+        0.9892756374161668,
+        0.9892756374161668,
+        0.9892756374161668,
+        0.9892756374161668,
+        0.9821697293190635,
+        0.9821697293190635,
+        0.9821697293190635,
+        0.9821697293190635,
+        0.9821697293190635,
+        0.9821697293190635,
+        0.9821697293190635,
+        0.9821697293190635,
+        0.9821697293190635,
+        0.970072876673254,
+        0.970072876673254,
+        0.970072876673254,
+        0.970072876673254,
+        0.970072876673254,
+        0.970072876673254,
+        0.970072876673254,
+        0.970072876673254,
+        0.970072876673254,
+        0.9577926609156969,
+        0.9577926609156969,
+        0.9577926609156969,
+        0.9577926609156969,
+        0.9577926609156969,
+        0.9577926609156969,
+        0.9577926609156969,
+        0.9577926609156969,
+        0.9577926609156969
+      ],
+      "maturity": [
+        0.05762249492643328,
+        0.05762249492643328,
+        0.05762249492643328,
+        0.05762249492643328,
+        0.05762249492643328,
+        0.05762249492643328,
+        0.05762249492643328,
+        0.05762249492643328,
+        0.05762249492643328,
+        0.14255400177574834,
+        0.14255400177574834,
+        0.14255400177574834,
+        0.14255400177574834,
+        0.14255400177574834,
+        0.14255400177574834,
+        0.14255400177574834,
+        0.14255400177574834,
+        0.14255400177574834,
+        0.2220060565702689,
+        0.2220060565702689,
+        0.2220060565702689,
+        0.2220060565702689,
+        0.2220060565702689,
+        0.2220060565702689,
+        0.2220060565702689,
+        0.2220060565702689,
+        0.2220060565702689,
+        0.38901518899036025,
+        0.38901518899036025,
+        0.38901518899036025,
+        0.38901518899036025,
+        0.38901518899036025,
+        0.38901518899036025,
+        0.38901518899036025,
+        0.38901518899036025,
+        0.38901518899036025,
+        0.6383302574835109,
+        0.6383302574835109,
+        0.6383302574835109,
+        0.6383302574835109,
+        0.6383302574835109,
+        0.6383302574835109,
+        0.6383302574835109,
+        0.6383302574835109,
+        0.6383302574835109,
+        0.8903850520040588,
+        0.8903850520040588,
+        0.8903850520040588,
+        0.8903850520040588,
+        0.8903850520040588,
+        0.8903850520040588,
+        0.8903850520040588,
+        0.8903850520040588,
+        0.8903850520040588
+      ],
+      "option_type": [
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "call",
+        "call",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "call",
+        "call",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "call",
+        "call",
+        "call",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "call",
+        "call",
+        "call",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "call",
+        "call",
+        "call",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "put",
+        "call",
+        "call"
+      ],
+      "mid": [
+        6.300000000000001,
+        9.95,
+        18.25,
+        26.549999999999997,
+        40.900000000000006,
+        66.0,
+        104.94999999999999,
+        42.55,
+        10.65,
+        13.0,
+        20.2,
+        35.3,
+        49.45,
+        72.25,
+        108.55000000000001,
+        173.55,
+        66.4,
+        17.8,
+        17.3,
+        26.45,
+        45.45,
+        63.05,
+        91.65,
+        137.45,
+        219.45,
+        83.85,
+        22.65,
+        22.9,
+        35.900000000000006,
+        62.45,
+        86.80000000000001,
+        125.30000000000001,
+        188.45,
+        295.9,
+        113.95,
+        31.049999999999997,
+        28.2,
+        43.75,
+        78.6,
+        110.5,
+        163.85000000000002,
+        251.25,
+        393.8,
+        154.45,
+        39.85,
+        29.05,
+        48.1,
+        88.75,
+        129.8,
+        191.8,
+        301.5,
+        482.6,
+        185.15,
+        47.9
+      ],
+      "half_spread": [
+        0.10000000000000009,
+        0.14999999999999947,
+        0.14999999999999858,
+        0.15000000000000036,
+        0.1999999999999993,
+        0.29999999999999716,
+        0.3500000000000014,
+        0.25,
+        0.15000000000000036,
+        0.1999999999999993,
+        0.1999999999999993,
+        0.1999999999999993,
+        0.25,
+        0.25,
+        0.3500000000000014,
+        0.3500000000000085,
+        0.30000000000000426,
+        0.1999999999999993,
+        0.1999999999999993,
+        0.25,
+        0.34999999999999787,
+        0.75,
+        0.3500000000000014,
+        0.3500000000000085,
+        1.25,
+        0.3500000000000014,
+        0.25,
+        0.20000000000000107,
+        0.3000000000000007,
+        0.34999999999999787,
+        0.3999999999999986,
+        0.3999999999999986,
+        0.9500000000000028,
+        0.5,
+        0.45000000000000284,
+        0.34999999999999964,
+        0.3000000000000007,
+        0.3500000000000014,
+        0.3999999999999986,
+        0.4000000000000057,
+        0.5499999999999972,
+        0.5500000000000114,
+        0.8000000000000114,
+        0.5499999999999972,
+        0.3500000000000014,
+        0.25,
+        0.3999999999999986,
+        0.5499999999999972,
+        0.5,
+        0.6000000000000085,
+        0.6000000000000227,
+        1.9000000000000057,
+        0.6500000000000057,
+        0.5
+      ]
+    },
+    "conditioning": "complete ordered noisy prices / fixed half_spread; no additional channels",
+    "scope": "fixed-design development experiment; no scientific acceptance"
+  },
+  "checkpoint": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/training-fixed-c1-dropout-zero-continuation/checkpoints/update-050000",
+  "checkpoint_updates": 50000,
+  "steps": [
+    50000,
+    50001,
+    50002,
+    50003,
+    50004,
+    50005,
+    50006,
+    50007
+  ],
+  "case_ids": [
+    "synthetic-broad",
+    "synthetic-market-like"
+  ],
+  "posterior_draws": 4096,
+  "common_latent_seed": 261120,
+  "weight_delta_scale": 0.1,
+  "optimizer": {
+    "config": {
+      "name": "adam",
+      "learning_rate": {
+        "module": "keras.optimizers.schedules",
+        "class_name": "CosineDecay",
+        "config": {
+          "initial_learning_rate": 0.0005,
+          "decay_steps": 10000,
+          "alpha": 0.1,
+          "name": "CosineDecay",
+          "warmup_target": null,
+          "warmup_steps": 0
+        },
+        "registered_name": null
+      },
+      "weight_decay": null,
+      "clipnorm": null,
+      "global_clipnorm": null,
+      "clipvalue": null,
+      "use_ema": false,
+      "ema_momentum": 0.99,
+      "ema_overwrite_frequency": null,
+      "loss_scale_factor": null,
+      "gradient_accumulation_steps": null,
+      "beta_1": 0.9,
+      "beta_2": 0.999,
+      "epsilon": 1e-07,
+      "amsgrad": false
+    },
+    "learning_rate": 5.0000002374872565e-05,
+    "scaled_delta_equivalent_rate": 5.000000237487257e-06,
+    "interpretation": "One-step weight-delta scaling at identical prestate/gradient/Adam slots; candidate optimizer and other arrays are retained. Float32 interpolation need not be bit-identical to rerunning Adam at the lower LR. No future trajectory equivalence is claimed."
+  },
+  "independent_from_same_saved_prestate": true,
+  "batches": [
+    {
+      "absolute_step": 50000,
+      "rows": 128,
+      "indices_sha256": "6e1595f8237f6357f96d746bfd282e7ce57e9b6179b51cb1e2b9505d7414a09f",
+      "quotes_sha256": "3d4caf9dcab294b7ca1f2f3884b143d7bd5c2724b0e9e28d67af36eb6c91e89f"
+    },
+    {
+      "absolute_step": 50001,
+      "rows": 128,
+      "indices_sha256": "83d49463cb1aa7048217dc5d5d42a478f04077bb6faada1aa6a462ebf24ec3a7",
+      "quotes_sha256": "3700b012496d3a233512001dacf57c82a94294bb55d9ce4fa3aa09b150b3f78a"
+    },
+    {
+      "absolute_step": 50002,
+      "rows": 128,
+      "indices_sha256": "d636033239ff960f2b857a84f43393433ca9be8ad8a1206d65749bed842ec6ca",
+      "quotes_sha256": "50440fc0c2ee9b63e724a838cd379beaf3eeaca1e791352be544b61f2b76cedc"
+    },
+    {
+      "absolute_step": 50003,
+      "rows": 128,
+      "indices_sha256": "a0ab36a70e8dd99ca350e829d69f1a75bd780a08fd26011a0fb7f0d5ac67b08e",
+      "quotes_sha256": "7f56dbf3a73576dd2bd92ac342bcee67afe7b1d2ba13422b9dc4731e16e02a06"
+    },
+    {
+      "absolute_step": 50004,
+      "rows": 128,
+      "indices_sha256": "7be6084975b91d5a0a864a7ca54032337a9279848b6d45eef6b0cd7b691c22cd",
+      "quotes_sha256": "f0caa36e9865e49c1e59a53b62b88f1d36b8fd52b402295c2ec921902530b4e7"
+    },
+    {
+      "absolute_step": 50005,
+      "rows": 128,
+      "indices_sha256": "d730f621eafabe33c52fcaed568fb9d6c3084d38de410c63ad720228ed87659d",
+      "quotes_sha256": "962ab9345990b0840ca2dec7dbadf24810bfd6714a4d26adf1de161b46aeed03"
+    },
+    {
+      "absolute_step": 50006,
+      "rows": 128,
+      "indices_sha256": "55b4ebd29d6f15449e19e34d189e9a04d86671dcd71f485a320078ca8ab8d056",
+      "quotes_sha256": "379a0c90501080845d386a687570fb8c28783bdb1a0971190d509156ad54a540"
+    },
+    {
+      "absolute_step": 50007,
+      "rows": 128,
+      "indices_sha256": "22e49453ebff5bb5cadd6bfd263400e07fa4deeab80e7501ee8f2ca0154d49b1",
+      "quotes_sha256": "42bfaf628d1928c3ea5dae9e2cc06beec5f3e279b78d11346d70730469ccdba8"
+    }
+  ],
+  "references": {
+    "synthetic-broad": {
+      "sd": [
+        8.530720973773064e-05,
+        0.012448638487663548,
+        0.00010882888806397014,
+        0.0030166905100037903,
+        0.0010542009312706243
+      ],
+      "mean": [
+        0.1360257894359904,
+        3.0733037349964096,
+        0.08295003981915623,
+        1.7263597677529017,
+        -0.780281668858515
+      ],
+      "observation_sha256": "ee684695a1671219e9b45037a498b82286d032ac9f464b185e00d94735eb45a8",
+      "physical_truth": [
+        0.13606576993442382,
+        3.0827415084102587,
+        0.08283978188501408,
+        1.72407461760237,
+        -0.7807145844719824
+      ],
+      "reference_run_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/references/synthetic-broad/run.json",
+      "reference_diagnostics_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/references/synthetic-broad/diagnostics.json",
+      "chain_payload_read": "hash only; no array decompression"
+    },
+    "synthetic-market-like": {
+      "sd": [
+        5.614908149092773e-05,
+        0.0437194398335826,
+        0.00017233611475915263,
+        0.009406627353900127,
+        0.000991502801574663
+      ],
+      "mean": [
+        0.02712583033515242,
+        4.316725369626359,
+        0.05665062762339388,
+        1.8110489131985592,
+        -0.6645029923795812
+      ],
+      "observation_sha256": "2fff2664136ba888e2f75c83b230ec53e0f31a522f74c6801ed2654802f9ed4f",
+      "physical_truth": [
+        0.027111476938590673,
+        4.33564875507931,
+        0.056477632243131036,
+        1.7993356588948335,
+        -0.6674551198176153
+      ],
+      "reference_run_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/references/synthetic-market-like/run.json",
+      "reference_diagnostics_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/references/synthetic-market-like/diagnostics.json",
+      "chain_payload_read": "hash only; no array decompression"
+    }
+  },
+  "source_sha256": {
+    "diagnostic": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/diagnose_heston_spread_update_scale.py",
+      "sha256": "4961caac515bb9c8797936a609b1c493cbdf4d17d20012edcda7318927a6bcee"
+    },
+    "trainer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/train_heston_spread_baseline.py",
+      "sha256": "3a8747332a3493adcd9298d701d0d6aab087dada35d8648827d7790330931f38"
+    },
+    "continuation": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/continue_heston_spread_baseline.py",
+      "sha256": "3c14cb7461d4c0ab741f0a9d279ff99fad75fa20f58f0f1185f265e72d84fc9b"
+    },
+    "case_helper": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/run_heston_spread_reference.py",
+      "sha256": "69b6267580b91c49b691a867326f8f64ce332dad445204e1fe00166ff6d2f575"
+    },
+    "reference_binding": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/evaluate_heston_spread_baseline.py",
+      "sha256": "f899e126b4f9098b06d022b39dadd0f382d200d29ae4b8e2e52550dba808f7e0"
+    },
+    "native_step": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/lab/.pixi/envs/core-reference/lib/python3.12/site-packages/bayesflow/estimators/backend_estimators/jax_estimator.py",
+      "sha256": "d9b227c87015734ccc21de0a0d7d8a32f9d3cad9c80e8d6f5dfb97c4507d0ce0"
+    },
+    "keras_adam": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/lab/.pixi/envs/core-reference/lib/python3.12/site-packages/keras/src/optimizers/adam.py",
+      "sha256": "a3160c816bd37e76dde92e838f4b08ce79a94f4e4f57c30dbb6d9779b3235da5"
+    }
+  },
+  "protected_input_sha256": {
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/training-fixed-c1-dropout-zero-continuation/checkpoints/update-050000/checkpoint.json": "f17c03acd8db061da90facc5de1fcb531d3ce25629d0ae28cb6715e058daf301",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/training-fixed-c1-dropout-zero-continuation/checkpoints/update-050000/model.keras": "b0bf8d570d73885a66a965a43c405039ca3f417c0db4c394202ad9552586e869",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/training-fixed-c1-dropout-zero-continuation/checkpoints/update-050000/state.npz": "469c3dcd3b1b8eeeacd0c4c9880fd259b73f1fd1c3557225818008408d669e62",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/references/panel.json": "8246c08c72336a819771bf481ffd46be4e09f1c2cf64dab6e6725a10229d4f1d",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/lab/evidence/pilot-results/2026-11-09/heston-observations/designs/put_heavy.json": "4b84185e7a072844fd6a3ce0f79aed983d39502607a7a76c79dbf7196f9ed547",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/local-artifacts/heston-observations-20261109/training-study/bank/bank.json": "865b4333debdc7ed8b3e3723f1811c3ff8967b61be6cae23455e4a7ba312475e",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/local-artifacts/heston-observations-20261109/training-study/bank/bank.npz": "35117eb977867ffb5b73e95cc2da6327f74820b2a74be96d223c85dfc8400fbb",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/references/synthetic-broad/run.json": "dd7871b91d2ff4f2bc9306df38eed8ff5add1beb9909244a89254ca2dbaf3454",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/references/synthetic-broad/diagnostics.json": "bc678e388e07a9a69b7fd48d386ac2bc6daaf2eb5f182be2cc9b68a80d96dc9b",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/references/synthetic-broad/attempt-1/chains.npz": "ac7139627a0e7db99693df6f72c34602c888d722e2cab20ebf15fb24b1caf12e",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/references/synthetic-market-like/run.json": "e1f383402cf90c7dbf98e59c7e99b215283f0e416cca7ea7869466e5cc3347a4",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/references/synthetic-market-like/diagnostics.json": "6213330454934678f6552e161b6b10df73381a4bead1f88ecb9cc590872eab1f",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/references/synthetic-market-like/attempt-1/chains.npz": "595e16e3fc478d8222bca5c758dbc7014d8ddc78c931446b1303fa96e1f1b8c4",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/references/panel.declaration.json": "46d880785a6d0592352517957240e2c30083f9720d93e580f28ca5310a4ccbcb",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/diagnose_heston_spread_update_scale.py": "4961caac515bb9c8797936a609b1c493cbdf4d17d20012edcda7318927a6bcee",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/train_heston_spread_baseline.py": "3a8747332a3493adcd9298d701d0d6aab087dada35d8648827d7790330931f38",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/continue_heston_spread_baseline.py": "3c14cb7461d4c0ab741f0a9d279ff99fad75fa20f58f0f1185f265e72d84fc9b",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/run_heston_spread_reference.py": "69b6267580b91c49b691a867326f8f64ce332dad445204e1fe00166ff6d2f575",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/evaluate_heston_spread_baseline.py": "f899e126b4f9098b06d022b39dadd0f382d200d29ae4b8e2e52550dba808f7e0",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/lab/.pixi/envs/core-reference/lib/python3.12/site-packages/bayesflow/estimators/backend_estimators/jax_estimator.py": "d9b227c87015734ccc21de0a0d7d8a32f9d3cad9c80e8d6f5dfb97c4507d0ce0",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/lab/.pixi/envs/core-reference/lib/python3.12/site-packages/keras/src/optimizers/adam.py": "a3160c816bd37e76dde92e838f4b08ce79a94f4e4f57c30dbb6d9779b3235da5"
+  },
+  "restoration": {
+    "all_array_hashes_exact": true,
+    "variable_counts": {
+      "trainable": 84,
+      "non_trainable": 46,
+      "optimizer": 169,
+      "metrics": 2
+    },
+    "variable_mapping": "saved group/index/shape/dtype/hash; Keras constructor name counters and model-root prefixes can change on archive reload",
+    "archive_path_changes": {
+      "trainable": 0,
+      "non_trainable": 0,
+      "optimizer": 0,
+      "metrics": 0
+    },
+    "state_sha256": "469c3dcd3b1b8eeeacd0c4c9880fd259b73f1fd1c3557225818008408d669e62"
+  },
+  "reserved_arrays_opened": false,
+  "price_calls": 0,
+  "fits": 0,
+  "committed_updates": 0,
+  "scope": "Eight local, discarded next-step perturbations; no stationary jitter, causal, data-sufficiency or acceptance claim.",
+  "protocol_sha256": "26926971a82eab4eea521208025ed4332ea15fb966c73e2b9123c8311b6dd13f",
+  "status": "completed",
+  "trials": [
+    {
+      "absolute_step": 50000,
+      "rows": 128,
+      "indices_sha256": "6e1595f8237f6357f96d746bfd282e7ce57e9b6179b51cb1e2b9505d7414a09f",
+      "quotes_sha256": "3d4caf9dcab294b7ca1f2f3884b143d7bd5c2724b0e9e28d67af36eb6c91e89f",
+      "native_candidate_optimizer_iteration": 50001,
+      "native_batch_training_loss": -16.557445526123047,
+      "mean_shifts_in_reference_sd": {
+        "native": [
+          [
+            0.3391599722001171,
+            0.011753914724248095,
+            0.3234468812721313,
+            -0.6705584248072868,
+            0.5451161126067927
+          ],
+          [
+            0.41992041094587296,
+            0.19488057937975758,
+            0.36825393576235954,
+            0.42155709335144315,
+            -0.4042195520805912
+          ]
+        ],
+        "scaled_weight_delta": [
+          [
+            0.03495043068941624,
+            0.0013747628257044185,
+            0.03097825928778612,
+            -0.06856699563974723,
+            0.054032212903000004
+          ],
+          [
+            0.04085676580663516,
+            0.019613948395932675,
+            0.03606587185630763,
+            0.04245042428709513,
+            -0.04066461412987875
+          ]
+        ],
+        "candidate_other_state_only": [
+          [
+            0.0011679355812496323,
+            0.00021548775472000063,
+            -0.001564383641540141,
+            -0.0016434208224913578,
+            -0.0004584912135560674
+          ],
+          [
+            -0.0012346410317876353,
+            0.0001340231256506731,
+            -0.0008482546018265887,
+            0.0003083915405208611,
+            -0.0002431916833226228
+          ]
+        ]
+      },
+      "posterior_means": {
+        "native": [
+          [
+            0.13606345944936038,
+            3.0731724794895854,
+            0.08283536802446179,
+            1.7292447370709851,
+            -0.7806258418422658
+          ],
+          [
+            0.027122099597363558,
+            4.278658219380304,
+            0.056736256838121335,
+            1.8021965371153783,
+            -0.6648078117432306
+          ]
+        ],
+        "scaled_weight_delta": [
+          [
+            0.1360375081821985,
+            3.073043273179792,
+            0.08280353898953763,
+            1.7310607589024585,
+            -0.7811435429466655
+          ],
+          [
+            0.027100815521862387,
+            4.270995660452172,
+            0.0566790088378184,
+            1.7986304219521116,
+            -0.6644473460037261
+          ]
+        ],
+        "candidate_other_state_only": [
+          [
+            0.13603462629180285,
+            3.0730288417835254,
+            0.08279999740989297,
+            1.7312626466155052,
+            -0.7812009870976908
+          ],
+          [
+            0.02709845212802975,
+            4.270144009031355,
+            0.05667264720068488,
+            1.7982340075541288,
+            -0.6644072680501267
+          ]
+        ]
+      }
+    },
+    {
+      "absolute_step": 50001,
+      "rows": 128,
+      "indices_sha256": "83d49463cb1aa7048217dc5d5d42a478f04077bb6faada1aa6a462ebf24ec3a7",
+      "quotes_sha256": "3700b012496d3a233512001dacf57c82a94294bb55d9ce4fa3aa09b150b3f78a",
+      "native_candidate_optimizer_iteration": 50001,
+      "native_batch_training_loss": -16.74903678894043,
+      "mean_shifts_in_reference_sd": {
+        "native": [
+          [
+            1.1986614942257479,
+            0.40449034812317425,
+            0.8230560867847752,
+            -0.6489930524435407,
+            0.39582962039799746
+          ],
+          [
+            0.6111314692323166,
+            0.36724930510160947,
+            -0.11450873493325578,
+            0.423148177122574,
+            0.1416574236936274
+          ]
+        ],
+        "scaled_weight_delta": [
+          [
+            0.12006963726058154,
+            0.040259741031883074,
+            0.08238274310801878,
+            -0.06433378208973962,
+            0.03885548425291957
+          ],
+          [
+            0.06068361300412782,
+            0.036592555113790906,
+            -0.011579003572132707,
+            0.04249288284852546,
+            0.013650846722500786
+          ]
+        ],
+        "candidate_other_state_only": [
+          [
+            0.00019761980076353,
+            -0.00020665745831899117,
+            0.00012605860746715396,
+            0.0006290429684938303,
+            -0.0007995816211120038
+          ],
+          [
+            -0.00044394272135812407,
+            -0.00014349996551777047,
+            -4.57765747719423e-05,
+            0.00020959486460501328,
+            -0.000606306073007898
+          ]
+        ]
+      },
+      "posterior_means": {
+        "native": [
+          [
+            0.13613678112596972,
+            3.078061513369903,
+            0.08288973993876425,
+            1.7293097931251395,
+            -0.7807832198013784
+          ],
+          [
+            0.02713283592265725,
+            4.286194083513692,
+            0.0566530593951029,
+            1.8022115038475022,
+            -0.6642665731924353
+          ]
+        ],
+        "scaled_weight_delta": [
+          [
+            0.13604476946420618,
+            3.0735273382160813,
+            0.08280913328235329,
+            1.7310735291976016,
+            -0.7811595422681421
+          ],
+          [
+            0.027101928781121387,
+            4.271737955627032,
+            0.05667079790509888,
+            1.798630821343977,
+            -0.6643934920721222
+          ]
+        ],
+        "candidate_other_state_only": [
+          [
+            0.13603454351687105,
+            3.073023586650379,
+            0.08280018137884326,
+            1.7312695019354578,
+            -0.7812013466755161
+          ],
+          [
+            0.027098496525013616,
+            4.270131875877269,
+            0.05667278549663024,
+            1.7982330782106146,
+            -0.6644076280790614
+          ]
+        ]
+      }
+    },
+    {
+      "absolute_step": 50002,
+      "rows": 128,
+      "indices_sha256": "d636033239ff960f2b857a84f43393433ca9be8ad8a1206d65749bed842ec6ca",
+      "quotes_sha256": "50440fc0c2ee9b63e724a838cd379beaf3eeaca1e791352be544b61f2b76cedc",
+      "native_candidate_optimizer_iteration": 50001,
+      "native_batch_training_loss": -16.192440032958984,
+      "mean_shifts_in_reference_sd": {
+        "native": [
+          [
+            0.7633481452193863,
+            0.25386486346687714,
+            0.845298026605604,
+            -0.9470552350518271,
+            0.35444952878331637
+          ],
+          [
+            0.6150412913663568,
+            0.2487479783319615,
+            0.11285844560991765,
+            0.3363430978035965,
+            -0.27807027270397944
+          ]
+        ],
+        "scaled_weight_delta": [
+          [
+            0.07602762959555541,
+            0.024938007819764053,
+            0.08492311989008258,
+            -0.09420853788243043,
+            0.03532814563313785
+          ],
+          [
+            0.06175914250250669,
+            0.02467230154387635,
+            0.011254282261812484,
+            0.033462943400293065,
+            -0.02797651000550193
+          ]
+        ],
+        "candidate_other_state_only": [
+          [
+            -0.0003164731423103488,
+            -0.000522245284711118,
+            0.00044242526381007235,
+            0.0005608826578835896,
+            -8.124881177151927e-05
+          ],
+          [
+            0.00024821593586032634,
+            -0.00020331669234397888,
+            -3.7733745632855365e-05,
+            -0.00018057960634562388,
+            -0.00021262027255852965
+          ]
+        ]
+      },
+      "posterior_means": {
+        "native": [
+          [
+            0.1360996457588044,
+            3.0761864311643876,
+            0.08289216050434334,
+            1.7284106317674741,
+            -0.7808268427324947
+          ],
+          [
+            0.02713305545557887,
+            4.281013271887787,
+            0.056692242971621454,
+            1.8013949608139228,
+            -0.664682734379312
+          ]
+        ],
+        "scaled_weight_delta": [
+          [
+            0.13604101236342103,
+            3.073336603498319,
+            0.08280940974873374,
+            1.730983406305313,
+            -0.7811632607918
+          ],
+          [
+            0.027101989171114838,
+            4.271216808818281,
+            0.05667473290486669,
+            1.7985458800685592,
+            -0.6644347657129401
+          ]
+        ],
+        "candidate_other_state_only": [
+          [
+            0.13603449966103653,
+            3.073019658011617,
+            0.0828002158086747,
+            1.7312692963168956,
+            -0.7812005894083995
+          ],
+          [
+            0.027098535389086464,
+            4.270129260723479,
+            0.056672786882700166,
+            1.7982294079847634,
+            -0.6644072377384873
+          ]
+        ]
+      }
+    },
+    {
+      "absolute_step": 50003,
+      "rows": 128,
+      "indices_sha256": "a0ab36a70e8dd99ca350e829d69f1a75bd780a08fd26011a0fb7f0d5ac67b08e",
+      "quotes_sha256": "7f56dbf3a73576dd2bd92ac342bcee67afe7b1d2ba13422b9dc4731e16e02a06",
+      "native_candidate_optimizer_iteration": 50001,
+      "native_batch_training_loss": -15.942418098449707,
+      "mean_shifts_in_reference_sd": {
+        "native": [
+          [
+            0.7263905558025777,
+            0.1620608377291538,
+            1.132090618268338,
+            -0.30635097805381395,
+            0.5222621994686847
+          ],
+          [
+            0.5096434256922902,
+            0.0008966011836722571,
+            0.21606599233294346,
+            0.2618925904550462,
+            -0.5554805815923906
+          ]
+        ],
+        "scaled_weight_delta": [
+          [
+            0.0720752762259043,
+            0.01510664524047675,
+            0.11293751433727993,
+            -0.030745905342184496,
+            0.05094107245718703
+          ],
+          [
+            0.05040037211971123,
+            -0.00012108466964779977,
+            0.021631780043631775,
+            0.02670332569901087,
+            -0.0558591336381484
+          ]
+        ],
+        "candidate_other_state_only": [
+          [
+            -0.0006810505434168266,
+            -0.0012258705152477895,
+            -0.00031357538248359527,
+            -9.453685543803936e-05,
+            -0.0014121777844841163
+          ],
+          [
+            -0.0005833738604788295,
+            -0.0002373230767055132,
+            2.610225257344093e-05,
+            0.0005506896765911917,
+            -0.0003217850124833135
+          ]
+        ]
+      },
+      "posterior_means": {
+        "native": [
+          [
+            0.13609649300997262,
+            3.0750435960362665,
+            0.08292337182319898,
+            1.730343438219279,
+            -0.7806499344587792
+          ],
+          [
+            0.027127137462230166,
+            4.2701773485168815,
+            0.056710029359237524,
+            1.8006946326349862,
+            -0.6649577874777606
+          ]
+        ],
+        "scaled_weight_delta": [
+          [
+            0.13604067519918317,
+            3.0732142164197285,
+            0.08281245852413122,
+            1.7311748534266371,
+            -0.7811468016298022
+          ],
+          [
+            0.027101351386590977,
+            4.270132855861448,
+            0.05667652132251533,
+            1.7984822948637884,
+            -0.6644624114123872
+          ]
+        ],
+        "candidate_other_state_only": [
+          [
+            0.1360344685599557,
+            3.0730108988354914,
+            0.08280013353396498,
+            1.7312673191190697,
+            -0.781201992474962
+          ],
+          [
+            0.027098488696083223,
+            4.270127773983404,
+            0.05667279788394808,
+            1.7982362867624033,
+            -0.6644073459756328
+          ]
+        ]
+      }
+    },
+    {
+      "absolute_step": 50004,
+      "rows": 128,
+      "indices_sha256": "7be6084975b91d5a0a864a7ca54032337a9279848b6d45eef6b0cd7b691c22cd",
+      "quotes_sha256": "f0caa36e9865e49c1e59a53b62b88f1d36b8fd52b402295c2ec921902530b4e7",
+      "native_candidate_optimizer_iteration": 50001,
+      "native_batch_training_loss": -16.19114875793457,
+      "mean_shifts_in_reference_sd": {
+        "native": [
+          [
+            0.7985523599904477,
+            0.27823621501161144,
+            0.9076464600880829,
+            -0.5893563792152571,
+            0.42224672046784284
+          ],
+          [
+            0.4956279802570152,
+            0.19381310749806016,
+            -0.0022565624279958173,
+            0.32603346418246926,
+            -0.45884432281384124
+          ]
+        ],
+        "scaled_weight_delta": [
+          [
+            0.07962977713787157,
+            0.028025434336710165,
+            0.09125093772916802,
+            -0.058825628241437035,
+            0.04238359588212351
+          ],
+          [
+            0.04965934453280793,
+            0.019199220155050285,
+            -0.0001388918486105577,
+            0.03227796495581523,
+            -0.04579493128420621
+          ]
+        ],
+        "candidate_other_state_only": [
+          [
+            -0.0002349773634456302,
+            0.00023682354634182014,
+            0.0005816379582669704,
+            0.0001270975133728677,
+            0.0002138475351621435
+          ],
+          [
+            0.00012040675797557659,
+            -0.00019468395425768222,
+            0.0001491934250406743,
+            -0.00035772799906257823,
+            0.00011974658685753043
+          ]
+        ]
+      },
+      "posterior_means": {
+        "native": [
+          [
+            0.13610264893213753,
+            3.0764898213092238,
+            0.08289894581503177,
+            1.7294896985113155,
+            -0.7807553708698833
+          ],
+          [
+            0.02712635050784229,
+            4.278611550107598,
+            0.05667240449838573,
+            1.8012979819322936,
+            -0.664861972356448
+          ]
+        ],
+        "scaled_weight_delta": [
+          [
+            0.13604131965257693,
+            3.073375037754886,
+            0.08281009839811304,
+            1.7310901455930434,
+            -0.781155822929577
+          ],
+          [
+            0.027101309778572613,
+            4.270977528765798,
+            0.05667276944950572,
+            1.7985347334179096,
+            -0.6644524327275576
+          ]
+        ],
+        "candidate_other_state_only": [
+          [
+            0.13603450661321403,
+            3.073029107385082,
+            0.08280023095903744,
+            1.7312679877213668,
+            -0.7812002783175558
+          ],
+          [
+            0.02709852821271852,
+            4.2701296381419525,
+            0.0566728190970025,
+            1.7982277416158468,
+            -0.664406908195815
+          ]
+        ]
+      }
+    },
+    {
+      "absolute_step": 50005,
+      "rows": 128,
+      "indices_sha256": "d730f621eafabe33c52fcaed568fb9d6c3084d38de410c63ad720228ed87659d",
+      "quotes_sha256": "962ab9345990b0840ca2dec7dbadf24810bfd6714a4d26adf1de161b46aeed03",
+      "native_candidate_optimizer_iteration": 50001,
+      "native_batch_training_loss": -16.245439529418945,
+      "mean_shifts_in_reference_sd": {
+        "native": [
+          [
+            0.8619270342803192,
+            0.5057230169440631,
+            0.9378061908522836,
+            -0.7403503282795364,
+            0.3429497436836972
+          ],
+          [
+            1.0806078257011722,
+            0.41061864215937416,
+            0.25212286086476865,
+            0.3240757789039917,
+            -0.04325602185161837
+          ]
+        ],
+        "scaled_weight_delta": [
+          [
+            0.08541670241279808,
+            0.05003230978170451,
+            0.09276743514551679,
+            -0.07527664258964617,
+            0.033826492008031415
+          ],
+          [
+            0.1081005345369008,
+            0.04119400688519187,
+            0.024424657739626654,
+            0.032856797390897294,
+            -0.0036827762651043504
+          ]
+        ],
+        "candidate_other_state_only": [
+          [
+            -0.0008966667956094049,
+            -0.0005831058290349406,
+            -0.0011384720218798364,
+            -0.001357957916525836,
+            -0.0004892735530481652
+          ],
+          [
+            8.789766222566306e-05,
+            0.00018061115327493155,
+            -0.000847199112438257,
+            0.0005343658865958261,
+            0.0007409054047973834
+          ]
+        ]
+      },
+      "posterior_means": {
+        "native": [
+          [
+            0.13610805524876923,
+            3.0793217222671956,
+            0.08290222806499514,
+            1.7290341964981053,
+            -0.7808389658166561
+          ],
+          [
+            0.027159196588854684,
+            4.288090166635811,
+            0.05671624325987068,
+            1.8012795667164028,
+            -0.6644499153917423
+          ]
+        ],
+        "scaled_weight_delta": [
+          [
+            0.1360418133190251,
+            3.0736489933915436,
+            0.08281026343684061,
+            1.7310405179741792,
+            -0.78116484383645
+          ],
+          [
+            0.02710459119771258,
+            4.2719391285208985,
+            0.05667700263620645,
+            1.7985401782789268,
+            -0.6644106784078758
+          ]
+        ],
+        "candidate_other_state_only": [
+          [
+            0.13603445016633486,
+            3.0730189003807027,
+            0.08280004376138095,
+            1.7312635077687446,
+            -0.7812010195484618
+          ],
+          [
+            0.027098526387362654,
+            4.270146045833826,
+            0.05667264738258382,
+            1.7982361332105938,
+            -0.6644062923151068
+          ]
+        ]
+      }
+    },
+    {
+      "absolute_step": 50006,
+      "rows": 128,
+      "indices_sha256": "55b4ebd29d6f15449e19e34d189e9a04d86671dcd71f485a320078ca8ab8d056",
+      "quotes_sha256": "379a0c90501080845d386a687570fb8c28783bdb1a0971190d509156ad54a540",
+      "native_candidate_optimizer_iteration": 50001,
+      "native_batch_training_loss": -16.132152557373047,
+      "mean_shifts_in_reference_sd": {
+        "native": [
+          [
+            0.6879722686266512,
+            0.06260560213392385,
+            0.1996103283675752,
+            -0.35620579289671994,
+            0.38469464053070884
+          ],
+          [
+            0.22784411991746345,
+            0.3527213734921086,
+            0.4103737253288514,
+            0.49693635195181274,
+            -0.5530720299468438
+          ]
+        ],
+        "scaled_weight_delta": [
+          [
+            0.06798551867022384,
+            0.0058757194373307365,
+            0.01990550988685761,
+            -0.03727312577922722,
+            0.03850718829324934
+          ],
+          [
+            0.024585930988092676,
+            0.0351688136993994,
+            0.04104607187642377,
+            0.04953374249646776,
+            -0.055334268159634
+          ]
+        ],
+        "candidate_other_state_only": [
+          [
+            -0.000893340437288396,
+            -0.00038954301994604054,
+            -5.039335740035392e-05,
+            -0.0017870350310892407,
+            5.3213416476249884e-05
+          ],
+          [
+            0.0020864052570039797,
+            -6.100699022058673e-05,
+            3.2118542086931156e-05,
+            -0.0001445874439089128,
+            -5.5873912999953226e-05
+          ]
+        ]
+      },
+      "posterior_means": {
+        "native": [
+          [
+            0.13609321565309074,
+            3.073805513762636,
+            0.08282189103010751,
+            1.7301930416724645,
+            -0.7807949583075242
+          ],
+          [
+            0.02711131469004613,
+            4.285558930481784,
+            0.0567435155990097,
+            1.8029056017112453,
+            -0.6649553993920563
+          ]
+        ],
+        "scaled_weight_delta": [
+          [
+            0.1360403263133776,
+            3.0730993039614987,
+            0.08280233395453251,
+            1.731155162822688,
+            -0.7811599094420671
+          ],
+          [
+            0.027099901929432235,
+            4.2716757104499266,
+            0.05667986710614059,
+            1.7986970520869363,
+            -0.6644618910067948
+          ]
+        ],
+        "candidate_other_state_only": [
+          [
+            0.1360344504500972,
+            3.0730213099741377,
+            0.08280016217577213,
+            1.731262213375885,
+            -0.7812004476581933
+          ],
+          [
+            0.027098638601728453,
+            4.270135482423939,
+            0.05667279892077204,
+            1.798229746549623,
+            -0.6644070823240327
+          ]
+        ]
+      }
+    },
+    {
+      "absolute_step": 50007,
+      "rows": 128,
+      "indices_sha256": "22e49453ebff5bb5cadd6bfd263400e07fa4deeab80e7501ee8f2ca0154d49b1",
+      "quotes_sha256": "42bfaf628d1928c3ea5dae9e2cc06beec5f3e279b78d11346d70730469ccdba8",
+      "native_candidate_optimizer_iteration": 50001,
+      "native_batch_training_loss": -16.31301498413086,
+      "mean_shifts_in_reference_sd": {
+        "native": [
+          [
+            0.9146017094095145,
+            0.10972497551567703,
+            0.8729696125087612,
+            -0.6301128200613464,
+            0.4491419958840316
+          ],
+          [
+            0.22585720188821035,
+            0.3173917623976391,
+            0.31894704452347666,
+            0.2874056624893476,
+            -0.05821895888727803
+          ]
+        ],
+        "scaled_weight_delta": [
+          [
+            0.09113901957418194,
+            0.010907559921224892,
+            0.08778917314609197,
+            -0.06281526877488744,
+            0.044823475889713534
+          ],
+          [
+            0.02257780996614566,
+            0.031876047210381675,
+            0.03206549319027361,
+            0.02899513507323891,
+            -0.004836197580773729
+          ]
+        ],
+        "candidate_other_state_only": [
+          [
+            -0.00036717878389598476,
+            -8.13219565826616e-05,
+            0.0005328993081245386,
+            0.00024656377328604673,
+            -7.891597976516747e-05
+          ],
+          [
+            7.984732810124501e-05,
+            0.00016239240127417844,
+            0.00023224988500848936,
+            0.00029079922249325527,
+            0.0010746078371272852
+          ]
+        ]
+      },
+      "posterior_means": {
+        "native": [
+          [
+            0.13611254877832835,
+            3.074392085807631,
+            0.08289517197226814,
+            1.7293667489429936,
+            -0.7807270178454928
+          ],
+          [
+            0.02711120312642379,
+            4.2840143396751955,
+            0.056727759480054374,
+            1.800934624596266,
+            -0.6644647511857329
+          ]
+        ],
+        "scaled_weight_delta": [
+          [
+            0.13604230147393537,
+            3.0731619435246103,
+            0.08280972165812273,
+            1.7310781100823078,
+            -0.7811532508058008
+          ],
+          [
+            0.02709978917528133,
+            4.271531752543524,
+            0.05667831942810153,
+            1.798503853060538,
+            -0.6644118220283417
+          ]
+        ],
+        "candidate_other_state_only": [
+          [
+            0.13603449533547973,
+            3.07302514690673,
+            0.08280022565486433,
+            1.7312683481140994,
+            -0.7812005869491259
+          ],
+          [
+            0.027098525935343787,
+            4.270145249320194,
+            0.05667283341063012,
+            1.7982338420697488,
+            -0.6644059614482103
+          ]
+        ]
+      }
+    }
+  ],
+  "summary": {
+    "synthetic-broad": {
+      "parameter_names": [
+        "initial_variance",
+        "kappa",
+        "theta",
+        "vol_of_vol",
+        "rho"
+      ],
+      "base_posterior_mean": [
+        0.13603452665847726,
+        3.0730261592543684,
+        0.08280016766002518,
+        1.7312676043075044,
+        -0.7812005037558265
+      ],
+      "native": {
+        "rms": [
+          0.8179676573813165,
+          0.2746797847371878,
+          0.8126668985828893,
+          0.6404089910359817,
+          0.43270230190843284
+        ],
+        "max_abs": [
+          1.1986614942257479,
+          0.5057230169440631,
+          1.132090618268338,
+          0.9470552350518271,
+          0.5451161126067927
+        ],
+        "signed_mean": [
+          0.7863266924693452,
+          0.2235574717060911,
+          0.755240525593444,
+          -0.611122876351166,
+          0.42708632022788395
+        ]
+      },
+      "scaled_weight_delta": {
+        "rms": [
+          0.08153110019965447,
+          0.02719146837570678,
+          0.08120120554255356,
+          0.06434564774372045,
+          0.042873138045932443
+        ],
+        "max_abs": [
+          0.12006963726058154,
+          0.05003230978170451,
+          0.11293751433727993,
+          0.09420853788243043,
+          0.054032212903000004
+        ],
+        "signed_mean": [
+          0.07841174894581662,
+          0.022065022549349823,
+          0.07536683656635024,
+          -0.06150573579241246,
+          0.04233720841492028
+        ],
+        "rms_ratio_to_native": [
+          0.09967521266143005,
+          0.09899333655632299,
+          0.09991942047122927,
+          0.10047586564896488,
+          0.09908229712862754
+        ]
+      },
+      "candidate_other_state_only": {
+        "rms": [
+          0.0006854939186467238,
+          0.0005498972358583881,
+          0.0007647057446464228,
+          0.0010328688812331352,
+          0.000626954065671445
+        ],
+        "max_abs": [
+          0.0011679355812496323,
+          0.0012258705152477895,
+          0.001564383641540141,
+          0.0017870350310892407,
+          0.0014121777844841163
+        ],
+        "signed_mean": [
+          -0.00025301646049417866,
+          -0.0003195540953474651,
+          -0.00017297540820439893,
+          -0.0004149204640635175,
+          -0.0003815785015123307
+        ],
+        "rms_ratio_to_native": [
+          0.0008380452606662947,
+          0.0020019574297559864,
+          0.0009409830103575031,
+          0.0016128269522922782,
+          0.0014489270403838046
+        ]
+      },
+      "native_minus_other_state_only": {
+        "rms": [
+          0.8182756937899796,
+          0.2749871621326062,
+          0.8127392180412638,
+          0.6400968252175241,
+          0.4331142830400376
+        ],
+        "max_abs": [
+          1.1984638744249843,
+          0.506306122773098,
+          1.1324041936508216,
+          0.9476161177097107,
+          0.5455746038203488
+        ],
+        "signed_mean": [
+          0.7865797089298393,
+          0.2238770258014386,
+          0.7554135010016484,
+          -0.6107079558871025,
+          0.42746789872939633
+        ]
+      }
+    },
+    "synthetic-market-like": {
+      "parameter_names": [
+        "initial_variance",
+        "kappa",
+        "theta",
+        "vol_of_vol",
+        "rho"
+      ],
+      "base_posterior_mean": [
+        0.027098521451989654,
+        4.270138149615377,
+        0.05667279338558728,
+        1.798231106629828,
+        -0.6644070269248914
+      ],
+      "native": {
+        "rms": [
+          0.5813896952623481,
+          0.288541145466688,
+          0.2602521839639285,
+          0.3673128527042063,
+          0.36929482438628847
+        ],
+        "max_abs": [
+          1.0806078257011722,
+          0.41061864215937416,
+          0.4103737253288514,
+          0.49693635195181274,
+          0.5554805815923906
+        ],
+        "signed_mean": [
+          0.5232092156250873,
+          0.26078991869302287,
+          0.19523208838263323,
+          0.35967402703253515,
+          -0.2761880395228644
+        ]
+      },
+      "scaled_weight_delta": {
+        "rms": [
+          0.05806479889299725,
+          0.02883345124808204,
+          0.025833535085783416,
+          0.036837931299525756,
+          0.03697785315836387
+        ],
+        "max_abs": [
+          0.1081005345369008,
+          0.04119400688519187,
+          0.04104607187642377,
+          0.04953374249646776,
+          0.0558591336381484
+        ],
+        "signed_mean": [
+          0.05232793918211601,
+          0.026024476041746916,
+          0.019346282693416584,
+          0.036096652018917964,
+          -0.02756219804259332
+        ],
+        "rms_ratio_to_native": [
+          0.09987242527027576,
+          0.09992838699467509,
+          0.09926347088547006,
+          0.10029034113105485,
+          0.10013098130962275
+        ]
+      },
+      "candidate_other_state_only": {
+        "rms": [
+          0.0009017376356079938,
+          0.0001720573065927168,
+          0.00043570534072502956,
+          0.00035247152411136876,
+          0.0005358038569822695
+        ],
+        "max_abs": [
+          0.0020864052570039797,
+          0.0002373230767055132,
+          0.0008482546018265887,
+          0.0005506896765911917,
+          0.0010746078371272852
+        ],
+        "signed_mean": [
+          4.510191594277521e-05,
+          -4.535049985571855e-05,
+          -0.00016741249124501342,
+          0.00015136826768612907,
+          6.193535930123523e-05
+        ],
+        "rms_ratio_to_native": [
+          0.0015510038154375799,
+          0.0005963007678313274,
+          0.001674165934320917,
+          0.000959594856309618,
+          0.0014508837427459039
+        ]
+      },
+      "native_minus_other_state_only": {
+        "rms": [
+          0.5814519546721846,
+          0.28854592552007047,
+          0.26046016266281385,
+          0.36718693280637504,
+          0.3692506559743488
+        ],
+        "max_abs": [
+          1.0805199280389466,
+          0.4104380310060992,
+          0.41034160678676446,
+          0.4970809393957217,
+          0.5551587965799072
+        ],
+        "signed_mean": [
+          0.5231641137091445,
+          0.2608352691928785,
+          0.19539950087387825,
+          0.359522658764849,
+          -0.2762499748821656
+        ]
+      }
+    }
+  },
+  "seconds": 16.16524749994278,
+  "all_saved_arrays_restored": true,
+  "protected_files_unchanged": true,
+  "sampling_state_unchanged": true,
+  "candidate_other_state_scope": "Native nontrainable, optimizer and metrics state with old trainables. Inference does not use optimizer/metrics; dropout is zero, so this measures normalization effects and any remaining inference-relevant nontrainable change."
+}

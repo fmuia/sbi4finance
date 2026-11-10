@@ -1,0 +1,43 @@
+{
+  "format": "heston_spread_zero_continuation_protocol_v1",
+  "start_updates": 10000,
+  "target_updates": 50000,
+  "checkpoint_updates": [
+    25000,
+    50000
+  ],
+  "schedule_updates": 10000,
+  "learning_rates": {
+    "10000": 5.0000002374872565e-05,
+    "25000": 5.0000002374872565e-05,
+    "50000": 5.0000002374872565e-05
+  },
+  "wall_seconds": 900,
+  "smoke_test_only": false,
+  "parent_checkpoint_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/training-fixed-c1-dropout-zero/checkpoints/update-010000",
+  "parent_checkpoint_sha256": "4f0190fc8a87351dc4dbf2df75a338ba05a5ff9b76420d92fa700cf9832e77e1",
+  "parent_model_sha256": "1db28d6bf52474ccdee7c6050f66a7695b4a4ddb263d2c626e81c7f0d9e90620",
+  "parent_state_sha256": "7cb50958c41f384186f064cd53e984a1115e0c9c3d2783150c01b08b7a782348",
+  "frozen_trainer_sha256": "3a8747332a3493adcd9298d701d0d6aab087dada35d8648827d7790330931f38",
+  "continuation_source_sha256": "3c14cb7461d4c0ab741f0a9d279ff99fad75fa20f58f0f1185f265e72d84fc9b",
+  "restoration": {
+    "all_array_hashes_exact": true,
+    "variable_counts": {
+      "trainable": 84,
+      "non_trainable": 46,
+      "optimizer": 169,
+      "metrics": 2
+    },
+    "variable_mapping": "saved group/index/shape/dtype/hash; Keras constructor name counters and model-root prefixes can change on archive reload",
+    "archive_path_changes": {
+      "trainable": 84,
+      "non_trainable": 46,
+      "optimizer": 168,
+      "metrics": 0
+    },
+    "state_sha256": "7cb50958c41f384186f064cd53e984a1115e0c9c3d2783150c01b08b7a782348"
+  },
+  "absolute_data_and_noise_steps": true,
+  "reserved_arrays_opened": false,
+  "scope": "one zero-dropout continuation only; no generic checkpoint-resume or scientific acceptance claim"
+}

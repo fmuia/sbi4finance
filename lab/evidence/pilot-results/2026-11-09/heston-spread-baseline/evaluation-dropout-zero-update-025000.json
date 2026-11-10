@@ -1,0 +1,1952 @@
+{
+  "format": "heston_spread_development_evaluation_v1",
+  "seed": 261112,
+  "checkpoint": "../local-artifacts/heston-spread-baseline-20261109/training-fixed-c1-dropout-zero-continuation/checkpoints/update-025000",
+  "panel_sha256": "8246c08c72336a819771bf481ffd46be4e09f1c2cf64dab6e6725a10229d4f1d",
+  "checkpoint_record_sha256": "58c7dedcec12133a6ee191ae0664da56ecde9735f5308d4e95730a7fb95a519a",
+  "model_sha256": "3e7bb9ac538b3e61d578ff409674da770f9193c32e8f52167bbb48bebeb81a49",
+  "state_sha256": "fc1d6cda7b9c8ea7234ce6cb61ec22c10b283b0aecd123a9ba67829a6b70a149",
+  "actual_optimizer_updates": 25000,
+  "checkpoint_source_sha256": {
+    "trainer": "3a8747332a3493adcd9298d701d0d6aab087dada35d8648827d7790330931f38",
+    "batch_plan": "48948207347f5dfe57bb7d8f1c4481be78f7859cd2d141b8b2e8c2bb97c14d07",
+    "spread_pilot": "5ad4bd6a4024023f92e76c137643c073d0b0fb067c11885d330dcf0e10b291ca",
+    "heston_pilot": "7189d8d35fb7f776424835e279647867dbd0a3e4bccf00be0a1c915b0725904b",
+    "heston_model": "4b48d998ff99e3709d8c753bd12ef32453242332ec0486c9d1251a788cadfe85",
+    "continuation": "3c14cb7461d4c0ab741f0a9d279ff99fad75fa20f58f0f1185f265e72d84fc9b"
+  },
+  "task": {
+    "format": "heston_spread_task_v1",
+    "model": "heston",
+    "measure": "Q",
+    "parameter_names": [
+      "initial_variance",
+      "kappa",
+      "theta",
+      "vol_of_vol",
+      "rho"
+    ],
+    "prior_bounds": [
+      [
+        0.01,
+        0.16
+      ],
+      [
+        0.1,
+        10.0
+      ],
+      [
+        0.01,
+        0.16
+      ],
+      [
+        0.1,
+        3.0
+      ],
+      [
+        -0.95,
+        -0.1
+      ]
+    ],
+    "prior": "independent Uniform in physical coordinates",
+    "infer_c": false,
+    "fixed_c": 1.0,
+    "c_bounds": [
+      0.5,
+      2.0
+    ],
+    "quote_count": 54,
+    "geometry_and_spreads_sha256": "5ece6ab07e578c3bdfd68ec8f9158a161f066d271077e75dd2934c03af6b2b07",
+    "observation_model": "independent Gaussian with price SD c * half_spread",
+    "pricing_controls": {
+      "c_min": 0.5,
+      "numerical_fraction": 0.02,
+      "quadrature_ladder": [
+        [
+          256,
+          150.0
+        ],
+        [
+          512,
+          300.0
+        ],
+        [
+          1024,
+          600.0
+        ],
+        [
+          2048,
+          1200.0
+        ],
+        [
+          4096,
+          2400.0
+        ],
+        [
+          8192,
+          4800.0
+        ],
+        [
+          16384,
+          9600.0
+        ]
+      ]
+    }
+  },
+  "source_sha256": "f899e126b4f9098b06d022b39dadd0f382d200d29ae4b8e2e52550dba808f7e0",
+  "cases": {
+    "synthetic-broad": {
+      "neural_support": {
+        "outside_value_count": 0,
+        "material_outside_value_count": 0,
+        "rounding_tolerance": [
+          1.1920928955078125e-07,
+          7.62939453125e-06,
+          1.1920928955078125e-07,
+          1.9073486328125e-06,
+          4.76837158203125e-07
+        ],
+        "draws_clipped": false
+      },
+      "neural_quantiles_05_50_95": [
+        [
+          0.13593564927577972,
+          3.0525404810905457,
+          0.08263659663498402,
+          1.7217139899730682,
+          -0.7820974737405777
+        ],
+        [
+          0.13613895326852798,
+          3.082400918006897,
+          0.08288950473070145,
+          1.7290407419204712,
+          -0.7792725563049316
+        ],
+        [
+          0.1363413780927658,
+          3.1140416264533997,
+          0.08313767984509468,
+          1.7368939220905304,
+          -0.7763237804174423
+        ]
+      ],
+      "comparison": {
+        "format": "heston_budget_conditional_agreement_v1",
+        "status": "fail",
+        "parameters": {
+          "initial_variance": {
+            "status": "fail",
+            "neural_mean": 0.13613969711514073,
+            "reference_mean": 0.13602578943599097,
+            "reference_sd": 8.530720973772945e-05,
+            "neural_width_90": 0.000405728816986084,
+            "reference_width_90": 0.0002776340347094841,
+            "signed_standardized_mean_difference": 1.3352643873825103,
+            "absolute_standardized_mean_difference": 1.3352643873825103,
+            "standardized_mean_mcse": 0.03463057942665673,
+            "signed_standardized_mean_interval": [
+              1.213676509069011,
+              1.4568522656960097
+            ],
+            "mean_status": "fail",
+            "width_ratio_90": 1.4613799688162803,
+            "log_width_ratio_mcse": 0.01768215389098936,
+            "width_ratio_interval": [
+              1.3734134015081196,
+              1.5549807588249651
+            ],
+            "width_status": "fail",
+            "reference_mean_mcse": 1.669914878273993e-06,
+            "saved_reference_mean_mcse": 1.669914878273993e-06,
+            "neural_mean_mcse_iid": 1.9812776876461803e-06,
+            "reference_q05_q95": [
+              0.13588590307402093,
+              0.13616353710873041
+            ],
+            "neural_q05_q95": [
+              0.13593564927577972,
+              0.1363413780927658
+            ],
+            "reference_quantile_mcse": [
+              2.2244275487081566e-06,
+              2.6596545032561546e-06
+            ],
+            "neural_quantile_mcse_iid": [
+              4.03666326853086e-06,
+              4.58623404747429e-06
+            ]
+          },
+          "kappa": {
+            "status": "fail",
+            "neural_mean": 3.0825416897423565,
+            "reference_mean": 3.073303734996402,
+            "reference_sd": 0.012448638487663666,
+            "neural_width_90": 0.061501145362854004,
+            "reference_width_90": 0.04121097225667514,
+            "signed_standardized_mean_difference": 0.7420855505691705,
+            "absolute_standardized_mean_difference": 0.7420855505691705,
+            "standardized_mean_mcse": 0.03560659715363682,
+            "signed_standardized_mean_interval": [
+              0.6170708764415495,
+              0.8671002246967915
+            ],
+            "mean_status": "fail",
+            "width_ratio_90": 1.4923488089483832,
+            "log_width_ratio_mcse": 0.016086816960086483,
+            "width_ratio_interval": [
+              1.410395957999677,
+              1.5790636345330251
+            ],
+            "width_status": "fail",
+            "reference_mean_mcse": 0.00023212503705936696,
+            "saved_reference_mean_mcse": 0.00023212503705936696,
+            "neural_mean_mcse_iid": 0.0003279827671564079,
+            "reference_q05_q95": [
+              3.052509066629857,
+              3.093720038886532
+            ],
+            "neural_q05_q95": [
+              3.0525404810905457,
+              3.1140416264533997
+            ],
+            "reference_quantile_mcse": [
+              0.000319966298568438,
+              0.0003817007518196653
+            ],
+            "neural_quantile_mcse_iid": [
+              0.0004344394213898175,
+              0.0005627272043820472
+            ]
+          },
+          "theta": {
+            "status": "fail",
+            "neural_mean": 0.08288960621575825,
+            "reference_mean": 0.0829500398191559,
+            "reference_sd": 0.00010882888806397016,
+            "neural_width_90": 0.0005010832101106644,
+            "reference_width_90": 0.0003629711281778053,
+            "signed_standardized_mean_difference": -0.5553084706895722,
+            "absolute_standardized_mean_difference": 0.5553084706895722,
+            "standardized_mean_mcse": 0.029212414345702178,
+            "signed_standardized_mean_interval": [
+              -0.6578731848674332,
+              -0.4527437565117112
+            ],
+            "mean_status": "fail",
+            "width_ratio_90": 1.3805043189694233,
+            "log_width_ratio_mcse": 0.02218201181267132,
+            "width_ratio_interval": [
+              1.2770693628193628,
+              1.4923168859723082
+            ],
+            "width_status": "fail",
+            "reference_mean_mcse": 2.0400450282201013e-06,
+            "saved_reference_mean_mcse": 2.0400450282201013e-06,
+            "neural_mean_mcse_iid": 2.438286297494954e-06,
+            "reference_q05_q95": [
+              0.08277061401166143,
+              0.08313358513983923
+            ],
+            "neural_q05_q95": [
+              0.08263659663498402,
+              0.08313767984509468
+            ],
+            "reference_quantile_mcse": [
+              3.4022126532967748e-06,
+              4.304990179577608e-06
+            ],
+            "neural_quantile_mcse_iid": [
+              5.574290395148975e-06,
+              5.789606825442352e-06
+            ]
+          },
+          "vol_of_vol": {
+            "status": "fail",
+            "neural_mean": 1.7290750092361122,
+            "reference_mean": 1.7263597677528784,
+            "reference_sd": 0.003016690510003791,
+            "neural_width_90": 0.015179932117462158,
+            "reference_width_90": 0.009965503064556236,
+            "signed_standardized_mean_difference": 0.9000729356325201,
+            "absolute_standardized_mean_difference": 0.9000729356325201,
+            "standardized_mean_mcse": 0.03275679343308145,
+            "signed_standardized_mean_interval": [
+              0.7850639152862946,
+              1.0150819559787456
+            ],
+            "mean_status": "fail",
+            "width_ratio_90": 1.5232479503670817,
+            "log_width_ratio_mcse": 0.01866087249869969,
+            "width_ratio_interval": [
+              1.4266465032750997,
+              1.6263904989574673
+            ],
+            "width_status": "fail",
+            "reference_mean_mcse": 5.507931041518635e-05,
+            "saved_reference_mean_mcse": 5.507931041518635e-05,
+            "neural_mean_mcse_iid": 7.494720065928036e-05,
+            "reference_q05_q95": [
+              1.7212988794296016,
+              1.7312643824941578
+            ],
+            "neural_q05_q95": [
+              1.7217139899730682,
+              1.7368939220905304
+            ],
+            "reference_quantile_mcse": [
+              0.00010107873687023318,
+              7.633623377447678e-05
+            ],
+            "neural_quantile_mcse_iid": [
+              0.00012682424821508715,
+              0.00018155948335259227
+            ]
+          },
+          "rho": {
+            "status": "fail",
+            "neural_mean": -0.7796822315722238,
+            "reference_mean": -0.7802816688585154,
+            "reference_sd": 0.0010542009312706107,
+            "neural_width_90": 0.005773693323135376,
+            "reference_width_90": 0.0034864562639224106,
+            "signed_standardized_mean_difference": 0.5686176785757862,
+            "absolute_standardized_mean_difference": 0.5686176785757862,
+            "standardized_mean_mcse": 0.11384748796858395,
+            "signed_standardized_mean_interval": [
+              0.16889943121759754,
+              0.9683359259339748
+            ],
+            "mean_status": "inconclusive",
+            "width_ratio_90": 1.6560349208682534,
+            "log_width_ratio_mcse": 0.0196329899085422,
+            "width_ratio_interval": [
+              1.545727640860331,
+              1.7742140249291984
+            ],
+            "width_status": "fail",
+            "reference_mean_mcse": 1.891448604774522e-05,
+            "saved_reference_mean_mcse": 1.891448604774522e-05,
+            "neural_mean_mcse_iid": 0.00011761654910865315,
+            "reference_q05_q95": [
+              -0.7820342355741914,
+              -0.778547779310269
+            ],
+            "neural_q05_q95": [
+              -0.7820974737405777,
+              -0.7763237804174423
+            ],
+            "reference_quantile_mcse": [
+              3.6769715505929156e-05,
+              2.886442735160773e-05
+            ],
+            "neural_quantile_mcse_iid": [
+              5.525754329691576e-05,
+              6.531578753450787e-05
+            ]
+          },
+          "control": {
+            "status": "fail",
+            "neural_mean": 0.13167844501444137,
+            "reference_mean": 0.13159170442222295,
+            "reference_sd": 6.897773268687746e-05,
+            "neural_width_90": 0.0003559805393363036,
+            "reference_width_90": 0.00022586369182553412,
+            "signed_standardized_mean_difference": 1.2575158509800775,
+            "absolute_standardized_mean_difference": 1.2575158509800775,
+            "standardized_mean_mcse": 0.03515794289646763,
+            "signed_standardized_mean_interval": [
+              1.134076400834517,
+              1.380955301125638
+            ],
+            "mean_status": "fail",
+            "width_ratio_90": 1.5760857199273832,
+            "log_width_ratio_mcse": 0.018749837617252272,
+            "width_ratio_interval": [
+              1.4756723958190612,
+              1.6833317500530098
+            ],
+            "width_status": "fail",
+            "reference_mean_mcse": 1.3364871317063273e-06,
+            "saved_reference_mean_mcse": 1.3364871317063273e-06,
+            "neural_mean_mcse_iid": 1.7317803752470958e-06,
+            "reference_q05_q95": [
+              0.13147723198430208,
+              0.13170309567612762
+            ],
+            "neural_q05_q95": [
+              0.1314984624437719,
+              0.1318544429831082
+            ],
+            "reference_quantile_mcse": [
+              2.34003945316776e-06,
+              2.3227267440766165e-06
+            ],
+            "neural_quantile_mcse_iid": [
+              3.5146479885531043e-06,
+              3.5586388953169816e-06
+            ]
+          },
+          "affected": {
+            "status": "fail",
+            "neural_mean": 0.09426611151850432,
+            "reference_mean": 0.0943360582327066,
+            "reference_sd": 0.00010794054452962296,
+            "neural_width_90": 0.0005204014234664045,
+            "reference_width_90": 0.00035192626732825916,
+            "signed_standardized_mean_difference": -0.6480115002855662,
+            "absolute_standardized_mean_difference": 0.6480115002855662,
+            "standardized_mean_mcse": 0.03166720408608329,
+            "signed_standardized_mean_interval": [
+              -0.7591949751420007,
+              -0.5368280254291317
+            ],
+            "mean_status": "fail",
+            "width_ratio_90": 1.478722879701958,
+            "log_width_ratio_mcse": 0.0219281814523807,
+            "width_ratio_interval": [
+              1.3691484887387497,
+              1.597066624211339
+            ],
+            "width_status": "fail",
+            "reference_mean_mcse": 2.010670461563458e-06,
+            "saved_reference_mean_mcse": 2.010670461563458e-06,
+            "neural_mean_mcse_iid": 2.586185797047406e-06,
+            "reference_q05_q95": [
+              0.09416266842878018,
+              0.09451459469610844
+            ],
+            "neural_q05_q95": [
+              0.09400191054346607,
+              0.09452231196693248
+            ],
+            "reference_quantile_mcse": [
+              3.560989138161797e-06,
+              4.094733761428774e-06
+            ],
+            "neural_quantile_mcse_iid": [
+              6.115284065871109e-06,
+              5.898138790106257e-06
+            ]
+          }
+        },
+        "neural_shape": [
+          4096,
+          7
+        ],
+        "reference_chain_shape": [
+          4,
+          12000,
+          7
+        ],
+        "seed": 261212,
+        "replicates_per_block_length": 400,
+        "block_lengths": [
+          37,
+          74
+        ],
+        "block_length_rule": "max(ceil(D^(1/3)), ceil(2*C*D/min(saved bulk and tail ESS across parameters))); also double L",
+        "family_checks": 112,
+        "family_confidence": 0.95,
+        "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+        "reference_diagnostics_passed": true,
+        "limits": {
+          "absolute_standardized_mean": 0.3,
+          "width_ratio_90": [
+            0.75,
+            1.25
+          ]
+        },
+        "scope": "Monte Carlo agreement on one fixed case; no numerical-target, product, copula or MCMC convergence certification",
+        "normal_critical_value": 3.5109975151009944,
+        "block_length_sensitivity": [
+          {
+            "block_length": 37,
+            "reference_mean_mcse": [
+              1.3318673348623738e-06,
+              0.00020654743732278894,
+              1.8773926237696224e-06,
+              4.3994549678073464e-05,
+              1.590128000979248e-05,
+              1.0489935926569089e-06,
+              1.852746730033653e-06
+            ],
+            "reference_sd_mcse": [
+              8.910405374385706e-07,
+              0.0001289789312455375,
+              1.14912355585681e-06,
+              3.0243948917787386e-05,
+              1.0908815528121923e-05,
+              7.181761681429467e-07,
+              1.1753300979770498e-06
+            ],
+            "reference_quantile_mcse": [
+              [
+                2.0287145792376586e-06,
+                0.00029044481150215427,
+                3.28202832479073e-06,
+                9.052840107486472e-05,
+                3.5304604465479006e-05,
+                2.113300893815014e-06,
+                3.4039483636465165e-06
+              ],
+              [
+                2.1531687030871665e-06,
+                0.000361964776337087,
+                4.304990179577608e-06,
+                7.633623377447678e-05,
+                2.7047315849494576e-05,
+                1.8996756464940412e-06,
+                4.094733761428774e-06
+              ]
+            ],
+            "neural_mean_mcse": [
+              1.9240930862784786e-06,
+              0.00033447339372443127,
+              2.246900420583126e-06,
+              7.568376607884015e-05,
+              0.00011464079626192005,
+              1.68426046800243e-06,
+              2.5220955132001065e-06
+            ],
+            "neural_quantile_mcse": [
+              [
+                3.838700041648778e-06,
+                0.0004344394213898175,
+                5.451859137288921e-06,
+                0.00012682424821508715,
+                5.41472097553974e-05,
+                3.2952194211420015e-06,
+                5.6748585860131985e-06
+              ],
+              [
+                4.274970650851477e-06,
+                0.0005322684533843115,
+                5.438992572836148e-06,
+                0.00016609711405356556,
+                6.531578753450787e-05,
+                3.470915109281931e-06,
+                5.816067066942034e-06
+              ]
+            ],
+            "standardized_mean_mcse": [
+              0.030976179202538857,
+              0.03231368924344706,
+              0.02815567801474285,
+              0.03085985557335444,
+              0.10807951701350575,
+              0.03182364002948276,
+              0.029312568817130687
+            ],
+            "log_width_ratio_mcse": [
+              0.017534901487355342,
+              0.015648647784344962,
+              0.02218201181267132,
+              0.017043424425934244,
+              0.0196329899085422,
+              0.017689419184454828,
+              0.021820549262021528
+            ]
+          },
+          {
+            "block_length": 74,
+            "reference_mean_mcse": [
+              1.6215905367130222e-06,
+              0.00021957832879616153,
+              1.9734519408582684e-06,
+              5.360649812245568e-05,
+              1.8169592486575323e-05,
+              1.2951637537905357e-06,
+              1.993447977027084e-06
+            ],
+            "reference_sd_mcse": [
+              1.0008905536165366e-06,
+              0.0001354123822628651,
+              1.2126465133255795e-06,
+              3.1859291631297644e-05,
+              1.0847238814303593e-05,
+              7.894848902049828e-07,
+              1.1826343675607923e-06
+            ],
+            "reference_quantile_mcse": [
+              [
+                2.2244275487081566e-06,
+                0.000319966298568438,
+                3.4022126532967748e-06,
+                0.00010107873687023318,
+                3.6769715505929156e-05,
+                2.34003945316776e-06,
+                3.560989138161797e-06
+              ],
+              [
+                2.6596545032561546e-06,
+                0.0003817007518196653,
+                4.303608864384734e-06,
+                7.626375198832779e-05,
+                2.886442735160773e-05,
+                2.3227267440766165e-06,
+                4.079172416518288e-06
+              ]
+            ],
+            "neural_mean_mcse": [
+              1.9441151010270146e-06,
+              0.0003510296021092133,
+              2.4344534102649938e-06,
+              7.279199384039933e-05,
+              0.00011800198020541733,
+              1.7131097255975068e-06,
+              2.692416710765773e-06
+            ],
+            "neural_quantile_mcse": [
+              [
+                4.03666326853086e-06,
+                0.0004316114506560036,
+                5.574290395148975e-06,
+                0.0001232254931763033,
+                5.525754329691576e-05,
+                3.5146479885531043e-06,
+                6.115284065871109e-06
+              ],
+              [
+                4.58623404747429e-06,
+                0.0005627272043820472,
+                5.789606825442352e-06,
+                0.00018155948335259227,
+                6.424934370331546e-05,
+                3.5586388953169816e-06,
+                5.898138790106257e-06
+              ]
+            ],
+            "standardized_mean_mcse": [
+              0.03431355573653023,
+              0.035089293859503434,
+              0.028624743315841153,
+              0.030782043656480632,
+              0.11373827107036674,
+              0.03483137423642155,
+              0.03157361266553748
+            ],
+            "log_width_ratio_mcse": [
+              0.01768215389098936,
+              0.016086816960086483,
+              0.021107164953226912,
+              0.01866087249869969,
+              0.018087324198784935,
+              0.018749837617252272,
+              0.0219281814523807
+            ]
+          }
+        ]
+      },
+      "status": "fail",
+      "reference_diagnostics_passed": true,
+      "reference_run_sha256": "dd7871b91d2ff4f2bc9306df38eed8ff5add1beb9909244a89254ca2dbaf3454",
+      "reference_diagnostics_sha256": "bc678e388e07a9a69b7fd48d386ac2bc6daaf2eb5f182be2cc9b68a80d96dc9b",
+      "reference_chain_payload_sha256": "ac7139627a0e7db99693df6f72c34602c888d722e2cab20ebf15fb24b1caf12e"
+    },
+    "synthetic-market-like": {
+      "neural_support": {
+        "outside_value_count": 0,
+        "material_outside_value_count": 0,
+        "rounding_tolerance": [
+          1.1920928955078125e-07,
+          7.62939453125e-06,
+          1.1920928955078125e-07,
+          1.9073486328125e-06,
+          4.76837158203125e-07
+        ],
+        "draws_clipped": false
+      },
+      "neural_quantiles_05_50_95": [
+        [
+          0.026956701185554266,
+          4.220714688301086,
+          0.056256238371133804,
+          1.7835793197154999,
+          -0.6690824627876282
+        ],
+        [
+          0.027105177752673626,
+          4.3086020946502686,
+          0.05658895522356033,
+          1.8020554780960083,
+          -0.6658522188663483
+        ],
+        [
+          0.02727603306993842,
+          4.393579959869385,
+          0.05695062875747681,
+          1.819593906402588,
+          -0.6629938781261444
+        ]
+      ],
+      "comparison": {
+        "format": "heston_budget_conditional_agreement_v1",
+        "status": "fail",
+        "parameters": {
+          "initial_variance": {
+            "status": "fail",
+            "neural_mean": 0.027101689649953187,
+            "reference_mean": 0.027125830335152288,
+            "reference_sd": 5.614908149092849e-05,
+            "neural_width_90": 0.0003193318843841553,
+            "reference_width_90": 0.00018434298136392815,
+            "signed_standardized_mean_difference": -0.42993909353622106,
+            "absolute_standardized_mean_difference": 0.42993909353622106,
+            "standardized_mean_mcse": 0.08496467615131421,
+            "signed_standardized_mean_interval": [
+              -0.728249860374846,
+              -0.1316283266975961
+            ],
+            "mean_status": "inconclusive",
+            "width_ratio_90": 1.7322703691860843,
+            "log_width_ratio_mcse": 0.018585139405052284,
+            "width_ratio_interval": [
+              1.6228445783438734,
+              1.8490745645047504
+            ],
+            "width_status": "fail",
+            "reference_mean_mcse": 1.0900034204992644e-06,
+            "saved_reference_mean_mcse": 1.0900034204992644e-06,
+            "neural_mean_mcse_iid": 4.644497986493174e-06,
+            "reference_q05_q95": [
+              0.02703461629773049,
+              0.02721895927909442
+            ],
+            "neural_q05_q95": [
+              0.026956701185554266,
+              0.02727603306993842
+            ],
+            "reference_quantile_mcse": [
+              1.8341523699288759e-06,
+              1.4592322331088862e-06
+            ],
+            "neural_quantile_mcse_iid": [
+              3.427487875536644e-06,
+              3.121771406938912e-06
+            ]
+          },
+          "kappa": {
+            "status": "inconclusive",
+            "neural_mean": 4.3085231482982635,
+            "reference_mean": 4.316725369626352,
+            "reference_sd": 0.04371943983358277,
+            "neural_width_90": 0.17286527156829834,
+            "reference_width_90": 0.14407857356988263,
+            "signed_standardized_mean_difference": -0.18761039389593562,
+            "absolute_standardized_mean_difference": 0.18761039389593562,
+            "standardized_mean_mcse": 0.027320420074274616,
+            "signed_standardized_mean_interval": [
+              -0.2835323208882291,
+              -0.09168846690364212
+            ],
+            "mean_status": "pass",
+            "width_ratio_90": 1.19979860492201,
+            "log_width_ratio_mcse": 0.019243035589236093,
+            "width_ratio_interval": [
+              1.121415204754294,
+              1.2836607585396564
+            ],
+            "width_status": "inconclusive",
+            "reference_mean_mcse": 0.0008585374192716374,
+            "saved_reference_mean_mcse": 0.0008585374192716374,
+            "neural_mean_mcse_iid": 0.0008304124240740388,
+            "reference_q05_q95": [
+              4.245225760507505,
+              4.389304334077388
+            ],
+            "neural_q05_q95": [
+              4.220714688301086,
+              4.393579959869385
+            ],
+            "reference_quantile_mcse": [
+              0.0013434820393044573,
+              0.0014729275336955317
+            ],
+            "neural_quantile_mcse_iid": [
+              0.0019428075061393266,
+              0.0016939835468619657
+            ]
+          },
+          "theta": {
+            "status": "inconclusive",
+            "neural_mean": 0.05659295942859899,
+            "reference_mean": 0.05665062762339448,
+            "reference_sd": 0.00017233611475915193,
+            "neural_width_90": 0.0006943903863430023,
+            "reference_width_90": 0.0005639918029967661,
+            "signed_standardized_mean_difference": -0.3346262904678057,
+            "absolute_standardized_mean_difference": 0.3346262904678057,
+            "standardized_mean_mcse": 0.028671297673399043,
+            "signed_standardized_mean_interval": [
+              -0.4352911453538306,
+              -0.23396143558178073
+            ],
+            "mean_status": "inconclusive",
+            "width_ratio_90": 1.2312065222461823,
+            "log_width_ratio_mcse": 0.020577089254984648,
+            "width_ratio_interval": [
+              1.145393781387751,
+              1.3234483415694138
+            ],
+            "width_status": "inconclusive",
+            "reference_mean_mcse": 3.450164450920024e-06,
+            "saved_reference_mean_mcse": 3.450164450920024e-06,
+            "neural_mean_mcse_iid": 3.3256261484983594e-06,
+            "reference_q05_q95": [
+              0.05637113998598588,
+              0.05693513178898264
+            ],
+            "neural_q05_q95": [
+              0.056256238371133804,
+              0.05695062875747681
+            ],
+            "reference_quantile_mcse": [
+              5.0671359046638705e-06,
+              6.353189465758437e-06
+            ],
+            "neural_quantile_mcse_iid": [
+              6.299674370001258e-06,
+              9.660630511588841e-06
+            ]
+          },
+          "vol_of_vol": {
+            "status": "fail",
+            "neural_mean": 1.8021651303279214,
+            "reference_mean": 1.8110489131985779,
+            "reference_sd": 0.009406627353900033,
+            "neural_width_90": 0.03601458668708801,
+            "reference_width_90": 0.03071828559283518,
+            "signed_standardized_mean_difference": -0.9444174342649216,
+            "absolute_standardized_mean_difference": 0.9444174342649216,
+            "standardized_mean_mcse": 0.029672147367582995,
+            "signed_standardized_mean_interval": [
+              -1.048596269940216,
+              -0.8402385985896272
+            ],
+            "mean_status": "fail",
+            "width_ratio_90": 1.1724152566472705,
+            "log_width_ratio_mcse": 0.02019774627377171,
+            "width_ratio_interval": [
+              1.0921537957096503,
+              1.2585750646282716
+            ],
+            "width_status": "inconclusive",
+            "reference_mean_mcse": 0.0001739739311329563,
+            "saved_reference_mean_mcse": 0.0001739739311329563,
+            "neural_mean_mcse_iid": 0.00019890592720581187,
+            "reference_q05_q95": [
+              1.795737457319381,
+              1.8264557429122161
+            ],
+            "neural_q05_q95": [
+              1.7835793197154999,
+              1.819593906402588
+            ],
+            "reference_quantile_mcse": [
+              0.0003056738420341817,
+              0.0003248231197514313
+            ],
+            "neural_quantile_mcse_iid": [
+              0.00040079845867862184,
+              0.0004045832004903692
+            ]
+          },
+          "rho": {
+            "status": "fail",
+            "neural_mean": -0.6661738833936397,
+            "reference_mean": -0.6645029923795923,
+            "reference_sd": 0.0009915028015746754,
+            "neural_width_90": 0.006088584661483765,
+            "reference_width_90": 0.003254796876325683,
+            "signed_standardized_mean_difference": -1.6852105827575297,
+            "absolute_standardized_mean_difference": 1.6852105827575297,
+            "standardized_mean_mcse": 0.13515021697409374,
+            "signed_standardized_mean_interval": [
+              -2.159722658718933,
+              -1.2106985067961262
+            ],
+            "mean_status": "fail",
+            "width_ratio_90": 1.8706496573626814,
+            "log_width_ratio_mcse": 0.02048814395299547,
+            "width_ratio_interval": [
+              1.7408125002081039,
+              2.010170618704078
+            ],
+            "width_status": "fail",
+            "reference_mean_mcse": 1.786072096128028e-05,
+            "saved_reference_mean_mcse": 1.786072096128028e-05,
+            "neural_mean_mcse_iid": 0.0001328061823809392,
+            "reference_q05_q95": [
+              -0.6661464654115531,
+              -0.6628916685352274
+            ],
+            "neural_q05_q95": [
+              -0.6690824627876282,
+              -0.6629938781261444
+            ],
+            "reference_quantile_mcse": [
+              3.568781197229915e-05,
+              3.030893183528485e-05
+            ],
+            "neural_quantile_mcse_iid": [
+              7.35459979650451e-05,
+              5.6418879973308374e-05
+            ]
+          },
+          "control": {
+            "status": "fail",
+            "neural_mean": 0.030477264539620033,
+            "reference_mean": 0.03051122072999237,
+            "reference_sd": 4.8079220809200986e-05,
+            "neural_width_90": 0.00030408234756909916,
+            "reference_width_90": 0.000156940721986569,
+            "signed_standardized_mean_difference": -0.7062550058182174,
+            "absolute_standardized_mean_difference": 0.7062550058182174,
+            "standardized_mean_mcse": 0.0880779238931244,
+            "signed_standardized_mean_interval": [
+              -1.0154963777422317,
+              -0.3970136338942032
+            ],
+            "mean_status": "fail",
+            "width_ratio_90": 1.9375617986205171,
+            "log_width_ratio_mcse": 0.01968824824948432,
+            "width_ratio_interval": [
+              1.8081513814052228,
+              2.0762341926017287
+            ],
+            "width_status": "fail",
+            "reference_mean_mcse": 9.242749377565722e-07,
+            "saved_reference_mean_mcse": 9.242749377565722e-07,
+            "neural_mean_mcse_iid": 4.106089752085933e-06,
+            "reference_q05_q95": [
+              0.030433012635870105,
+              0.030589953357856674
+            ],
+            "neural_q05_q95": [
+              0.030336959323229648,
+              0.030641041670798747
+            ],
+            "reference_quantile_mcse": [
+              1.5374434361532794e-06,
+              1.356303338051317e-06
+            ],
+            "neural_quantile_mcse_iid": [
+              2.9542980330457243e-06,
+              4.044327693928275e-06
+            ]
+          },
+          "affected": {
+            "status": "fail",
+            "neural_mean": 0.05287755482997331,
+            "reference_mean": 0.052944041837745315,
+            "reference_sd": 9.508763933251098e-05,
+            "neural_width_90": 0.0004210442109760376,
+            "reference_width_90": 0.0003114453627180158,
+            "signed_standardized_mean_difference": -0.6992181974305257,
+            "absolute_standardized_mean_difference": 0.6992181974305257,
+            "standardized_mean_mcse": 0.03245493685659225,
+            "signed_standardized_mean_interval": [
+              -0.8131674000867808,
+              -0.5852689947742706
+            ],
+            "mean_status": "fail",
+            "width_ratio_90": 1.3519039336516085,
+            "log_width_ratio_mcse": 0.017139256032267073,
+            "width_ratio_interval": [
+              1.2729512643692766,
+              1.435753509957238
+            ],
+            "width_status": "fail",
+            "reference_mean_mcse": 1.895434348383974e-06,
+            "saved_reference_mean_mcse": 1.895434348383974e-06,
+            "neural_mean_mcse_iid": 2.130136354311782e-06,
+            "reference_q05_q95": [
+              0.052787541444738004,
+              0.05309898680745602
+            ],
+            "neural_q05_q95": [
+              0.052670071437602384,
+              0.05309111564857842
+            ],
+            "reference_quantile_mcse": [
+              3.1720653174825546e-06,
+              2.9654909449285705e-06
+            ],
+            "neural_quantile_mcse_iid": [
+              3.7741447910574563e-06,
+              3.6838043455768716e-06
+            ]
+          }
+        },
+        "neural_shape": [
+          4096,
+          7
+        ],
+        "reference_chain_shape": [
+          4,
+          12000,
+          7
+        ],
+        "seed": 261213,
+        "replicates_per_block_length": 400,
+        "block_lengths": [
+          39,
+          78
+        ],
+        "block_length_rule": "max(ceil(D^(1/3)), ceil(2*C*D/min(saved bulk and tail ESS across parameters))); also double L",
+        "family_checks": 112,
+        "family_confidence": 0.95,
+        "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+        "reference_diagnostics_passed": true,
+        "limits": {
+          "absolute_standardized_mean": 0.3,
+          "width_ratio_90": [
+            0.75,
+            1.25
+          ]
+        },
+        "scope": "Monte Carlo agreement on one fixed case; no numerical-target, product, copula or MCMC convergence certification",
+        "normal_critical_value": 3.5109975151009944,
+        "block_length_sensitivity": [
+          {
+            "block_length": 39,
+            "reference_mean_mcse": [
+              9.123276851405583e-07,
+              0.0007540871035310134,
+              2.988117540897753e-06,
+              0.0001559700942428728,
+              1.65226158351456e-05,
+              7.65486121297938e-07,
+              1.620276222560887e-06
+            ],
+            "reference_sd_mcse": [
+              5.700962156059664e-07,
+              0.0004958559108066089,
+              1.9490192894591303e-06,
+              9.649852799421027e-05,
+              9.363694488752735e-06,
+              4.954073686859604e-07,
+              1.026792153335724e-06
+            ],
+            "reference_quantile_mcse": [
+              [
+                1.716649831244053e-06,
+                0.001258681766737154,
+                5.0671359046638705e-06,
+                0.0003056738420341817,
+                3.559048103366443e-05,
+                1.4178363889057208e-06,
+                3.0753064598677186e-06
+              ],
+              [
+                1.4356590901274167e-06,
+                0.0014729275336955317,
+                5.693393500627254e-06,
+                0.00030288530940192327,
+                2.9098325897504233e-05,
+                1.318622974123517e-06,
+                2.5441835679014878e-06
+              ]
+            ],
+            "neural_mean_mcse": [
+              4.452696547356681e-06,
+              0.000827241980500051,
+              3.295039246281854e-06,
+              0.0001956747467898184,
+              0.0001277427154272744,
+              3.971940245272423e-06,
+              2.1034350370675204e-06
+            ],
+            "neural_quantile_mcse": [
+              [
+                3.427487875536644e-06,
+                0.0019428075061393266,
+                6.186447062392955e-06,
+                0.0003712536100474691,
+                7.35459979650451e-05,
+                2.9542980330457243e-06,
+                3.535110731022078e-06
+              ],
+              [
+                3.121771406938912e-06,
+                0.0016331717407855784,
+                9.387065105959596e-06,
+                0.0003971085655148936,
+                5.554117717933088e-05,
+                4.044327693928275e-06,
+                3.5541446108853547e-06
+              ]
+            ],
+            "standardized_mean_mcse": [
+              0.0817284667730015,
+              0.024685163011773148,
+              0.024425140477192145,
+              0.02820025499465338,
+              0.12917561255317614,
+              0.08550875526429638,
+              0.02740837487000921
+            ],
+            "log_width_ratio_mcse": [
+              0.018585139405052284,
+              0.019243035589236093,
+              0.01942169748100664,
+              0.01922487082810375,
+              0.019924803971857686,
+              0.01968824824948432,
+              0.016163183990211022
+            ]
+          },
+          {
+            "block_length": 78,
+            "reference_mean_mcse": [
+              1.010860687116628e-06,
+              0.0008088187946338911,
+              3.367518107574457e-06,
+              0.00016487026296672252,
+              1.7214665380889738e-05,
+              8.536761600469431e-07,
+              1.8707246454226346e-06
+            ],
+            "reference_sd_mcse": [
+              6.101904134658579e-07,
+              0.0005167047970049014,
+              2.1871019538244684e-06,
+              9.720449575067878e-05,
+              9.369972008246095e-06,
+              5.152816540896426e-07,
+              1.2142326862442046e-06
+            ],
+            "reference_quantile_mcse": [
+              [
+                1.8341523699288759e-06,
+                0.0013434820393044573,
+                4.882510860255902e-06,
+                0.0002981498236037297,
+                3.568781197229915e-05,
+                1.5374434361532794e-06,
+                3.1720653174825546e-06
+              ],
+              [
+                1.4592322331088862e-06,
+                0.0014553609554225373,
+                6.353189465758437e-06,
+                0.0003248231197514313,
+                3.030893183528485e-05,
+                1.356303338051317e-06,
+                2.9654909449285705e-06
+              ]
+            ],
+            "neural_mean_mcse": [
+              4.609025045817449e-06,
+              0.0008077088741356718,
+              3.343486802154049e-06,
+              0.00019669570173232957,
+              0.00012481910216721693,
+              4.0982191886439176e-06,
+              2.1375282356248332e-06
+            ],
+            "neural_quantile_mcse": [
+              [
+                3.2585287696179917e-06,
+                0.0019124591272175284,
+                6.299674370001258e-06,
+                0.00040079845867862184,
+                7.254890849687464e-05,
+                2.7502298096665166e-06,
+                3.7741447910574563e-06
+              ],
+              [
+                2.9548154931685365e-06,
+                0.0016939835468619657,
+                9.660630511588841e-06,
+                0.0004045832004903692,
+                5.6418879973308374e-05,
+                3.831447626639866e-06,
+                3.6838043455768716e-06
+              ]
+            ],
+            "standardized_mean_mcse": [
+              0.08435935656815845,
+              0.02647700199130536,
+              0.02833851692432226,
+              0.029078765916530986,
+              0.12698760928205563,
+              0.08776913117328387,
+              0.03229598262132332
+            ],
+            "log_width_ratio_mcse": [
+              0.01803266576072669,
+              0.018672008302076385,
+              0.020577089254984648,
+              0.02019774627377171,
+              0.02048814395299547,
+              0.0191801999702706,
+              0.017139256032267073
+            ]
+          }
+        ]
+      },
+      "status": "fail",
+      "reference_diagnostics_passed": true,
+      "reference_run_sha256": "e1f383402cf90c7dbf98e59c7e99b215283f0e416cca7ea7869466e5cc3347a4",
+      "reference_diagnostics_sha256": "6213330454934678f6552e161b6b10df73381a4bead1f88ecb9cc590872eab1f",
+      "reference_chain_payload_sha256": "595e16e3fc478d8222bca5c758dbc7014d8ddc78c931446b1303fa96e1f1b8c4"
+    },
+    "synthetic-boundary": {
+      "neural_support": {
+        "outside_value_count": 0,
+        "material_outside_value_count": 0,
+        "rounding_tolerance": [
+          1.1920928955078125e-07,
+          7.62939453125e-06,
+          1.1920928955078125e-07,
+          1.9073486328125e-06,
+          4.76837158203125e-07
+        ],
+        "draws_clipped": false
+      },
+      "neural_quantiles_05_50_95": [
+        [
+          0.010322595247998834,
+          0.11282457038760185,
+          0.010022727306932211,
+          2.735880136489868,
+          -0.9145121425390244
+        ],
+        [
+          0.011078394018113613,
+          1.3678286671638489,
+          0.010287411976605654,
+          2.994168758392334,
+          -0.8805670738220215
+        ],
+        [
+          0.011656293645501137,
+          2.0431572794914246,
+          0.014140672981739044,
+          2.9989416003227234,
+          -0.841175839304924
+        ]
+      ],
+      "status": "inconclusive",
+      "reason": "matched completed reference unavailable"
+    },
+    "market": {
+      "neural_support": {
+        "outside_value_count": 0,
+        "material_outside_value_count": 0,
+        "rounding_tolerance": [
+          1.1920928955078125e-07,
+          7.62939453125e-06,
+          1.1920928955078125e-07,
+          1.9073486328125e-06,
+          4.76837158203125e-07
+        ],
+        "draws_clipped": false
+      },
+      "neural_quantiles_05_50_95": [
+        [
+          0.026473062578588724,
+          3.4723849296569824,
+          0.05730137601494789,
+          1.6672090888023376,
+          -0.6422491669654846
+        ],
+        [
+          0.026623605750501156,
+          3.5630929470062256,
+          0.05774643272161484,
+          1.6865468621253967,
+          -0.6390693485736847
+        ],
+        [
+          0.026779518462717533,
+          3.655174434185028,
+          0.05822273902595043,
+          1.706246554851532,
+          -0.6360903680324554
+        ]
+      ],
+      "comparison": {
+        "format": "heston_budget_conditional_agreement_v1",
+        "status": "fail",
+        "parameters": {
+          "initial_variance": {
+            "status": "fail",
+            "neural_mean": 0.026607262601828552,
+            "reference_mean": 0.027252122469497323,
+            "reference_sd": 5.127755067898973e-05,
+            "neural_width_90": 0.000306455884128809,
+            "reference_width_90": 0.00017688311649503158,
+            "signed_standardized_mean_difference": -12.57587110011855,
+            "absolute_standardized_mean_difference": 12.57587110011855,
+            "standardized_mean_mcse": 0.3410815308597195,
+            "signed_standardized_mean_interval": [
+              -13.773407507413868,
+              -11.37833469282323
+            ],
+            "mean_status": "fail",
+            "width_ratio_90": 1.7325332694339821,
+            "log_width_ratio_mcse": 0.03259730851520918,
+            "width_ratio_interval": [
+              1.5451725482641852,
+              1.9426125147431712
+            ],
+            "width_status": "fail",
+            "reference_mean_mcse": 2.264993599420248e-06,
+            "saved_reference_mean_mcse": 2.264993599420248e-06,
+            "neural_mean_mcse_iid": 7.640844132483802e-06,
+            "reference_q05_q95": [
+              0.027163232146956304,
+              0.027340115263451335
+            ],
+            "neural_q05_q95": [
+              0.026473062578588724,
+              0.026779518462717533
+            ],
+            "reference_quantile_mcse": [
+              3.452901963650395e-06,
+              4.258767053359377e-06
+            ],
+            "neural_quantile_mcse_iid": [
+              3.610606500712437e-06,
+              3.821340417136841e-06
+            ]
+          },
+          "kappa": {
+            "status": "fail",
+            "neural_mean": 3.562990792968776,
+            "reference_mean": 3.7106000170645896,
+            "reference_sd": 0.040543313060064326,
+            "neural_width_90": 0.18278950452804565,
+            "reference_width_90": 0.13349477351601546,
+            "signed_standardized_mean_difference": -3.6407785391670546,
+            "absolute_standardized_mean_difference": 3.6407785391670546,
+            "standardized_mean_mcse": 0.09346718145908557,
+            "signed_standardized_mean_interval": [
+              -3.968941581013398,
+              -3.3126154973207114
+            ],
+            "mean_status": "fail",
+            "width_ratio_90": 1.369263377986227,
+            "log_width_ratio_mcse": 0.0292888288195763,
+            "width_ratio_interval": [
+              1.2354557245305353,
+              1.5175632449367586
+            ],
+            "width_status": "inconclusive",
+            "reference_mean_mcse": 0.0016970756603812904,
+            "saved_reference_mean_mcse": 0.0016970756603812904,
+            "neural_mean_mcse_iid": 0.0008635850879350649,
+            "reference_q05_q95": [
+              3.643289643745987,
+              3.7767844172620024
+            ],
+            "neural_q05_q95": [
+              3.4723849296569824,
+              3.655174434185028
+            ],
+            "reference_quantile_mcse": [
+              0.0026152924453978457,
+              0.002466894270254763
+            ],
+            "neural_quantile_mcse_iid": [
+              0.001905846780186651,
+              0.002110036635791684
+            ]
+          },
+          "theta": {
+            "status": "fail",
+            "neural_mean": 0.05775227042067854,
+            "reference_mean": 0.05610582682771267,
+            "reference_sd": 0.0001874751632791718,
+            "neural_width_90": 0.0009213630110025406,
+            "reference_width_90": 0.000617576060377649,
+            "signed_standardized_mean_difference": 8.782195807527495,
+            "absolute_standardized_mean_difference": 8.782195807527495,
+            "standardized_mean_mcse": 0.20898769950137408,
+            "signed_standardized_mean_interval": [
+              8.048440513891498,
+              9.515951101163493
+            ],
+            "mean_status": "fail",
+            "width_ratio_90": 1.4919020831849041,
+            "log_width_ratio_mcse": 0.03017975487060191,
+            "width_ratio_interval": [
+              1.341905779916582,
+              1.658664758079974
+            ],
+            "width_status": "fail",
+            "reference_mean_mcse": 7.852778136866369e-06,
+            "saved_reference_mean_mcse": 7.852778136866369e-06,
+            "neural_mean_mcse_iid": 4.413386614006495e-06,
+            "reference_q05_q95": [
+              0.05580505035486682,
+              0.05642262641524447
+            ],
+            "neural_q05_q95": [
+              0.05730137601494789,
+              0.05822273902595043
+            ],
+            "reference_quantile_mcse": [
+              1.1972777850213031e-05,
+              1.2868226848463831e-05
+            ],
+            "neural_quantile_mcse_iid": [
+              8.928250904285382e-06,
+              1.1356123473974503e-05
+            ]
+          },
+          "vol_of_vol": {
+            "status": "fail",
+            "neural_mean": 1.6866002696624491,
+            "reference_mean": 1.4949104987007413,
+            "reference_sd": 0.007775842003699492,
+            "neural_width_90": 0.039037466049194336,
+            "reference_width_90": 0.0253800720562678,
+            "signed_standardized_mean_difference": 24.651963204821815,
+            "absolute_standardized_mean_difference": 24.651963204821815,
+            "standardized_mean_mcse": 0.5613429230610752,
+            "signed_standardized_mean_interval": [
+              22.681089596834852,
+              26.622836812808778
+            ],
+            "mean_status": "fail",
+            "width_ratio_90": 1.5381148628202472,
+            "log_width_ratio_mcse": 0.02730590255015371,
+            "width_ratio_interval": [
+              1.397502333106723,
+              1.6928754072054057
+            ],
+            "width_status": "fail",
+            "reference_mean_mcse": 0.0003295477066200617,
+            "saved_reference_mean_mcse": 0.0003295477066200617,
+            "neural_mean_mcse_iid": 0.00019581924980213388,
+            "reference_q05_q95": [
+              1.4819061377931266,
+              1.5072862098493944
+            ],
+            "neural_q05_q95": [
+              1.6672090888023376,
+              1.706246554851532
+            ],
+            "reference_quantile_mcse": [
+              0.00044865134970662325,
+              0.00043437581839099926
+            ],
+            "neural_quantile_mcse_iid": [
+              0.00038401248097463125,
+              0.00037342162632768473
+            ]
+          },
+          "rho": {
+            "status": "fail",
+            "neural_mean": -0.6392865932866698,
+            "reference_mean": -0.681144139189432,
+            "reference_sd": 0.0011082427398780555,
+            "neural_width_90": 0.006158798933029175,
+            "reference_width_90": 0.003647315064192913,
+            "signed_standardized_mean_difference": 37.769294033334155,
+            "absolute_standardized_mean_difference": 37.769294033334155,
+            "standardized_mean_mcse": 0.8999600998689824,
+            "signed_standardized_mean_interval": [
+              34.60953635900412,
+              40.92905170766419
+            ],
+            "mean_status": "fail",
+            "width_ratio_90": 1.6885842940996405,
+            "log_width_ratio_mcse": 0.031165869410143935,
+            "width_ratio_interval": [
+              1.5135640867882691,
+              1.8838428733667811
+            ],
+            "width_status": "fail",
+            "reference_mean_mcse": 4.9199258720544725e-05,
+            "saved_reference_mean_mcse": 4.9199258720544725e-05,
+            "neural_mean_mcse_iid": 0.0001096539490166078,
+            "reference_q05_q95": [
+              -0.6830019432901131,
+              -0.6793546282259202
+            ],
+            "neural_q05_q95": [
+              -0.6422491669654846,
+              -0.6360903680324554
+            ],
+            "reference_quantile_mcse": [
+              7.344540421787918e-05,
+              8.415556850544007e-05
+            ],
+            "neural_quantile_mcse_iid": [
+              5.852274426185047e-05,
+              6.0509598381973176e-05
+            ]
+          },
+          "control": {
+            "status": "fail",
+            "neural_mean": 0.029596105617182247,
+            "reference_mean": 0.03012801887365869,
+            "reference_sd": 4.313567161843972e-05,
+            "neural_width_90": 0.0002920935468789798,
+            "reference_width_90": 0.0001467431815053398,
+            "signed_standardized_mean_difference": -12.331168995849351,
+            "absolute_standardized_mean_difference": 12.331168995849351,
+            "standardized_mean_mcse": 0.3186401203002867,
+            "signed_standardized_mean_interval": [
+              -13.44991366643514,
+              -11.212424325263562
+            ],
+            "mean_status": "fail",
+            "width_ratio_90": 1.9905084780266324,
+            "log_width_ratio_mcse": 0.029935712741943187,
+            "width_ratio_interval": [
+              1.7919168443332454,
+              2.2111093009844263
+            ],
+            "width_status": "fail",
+            "reference_mean_mcse": 1.8910510754926435e-06,
+            "saved_reference_mean_mcse": 1.8910510754926435e-06,
+            "neural_mean_mcse_iid": 6.8634954753962075e-06,
+            "reference_q05_q95": [
+              0.03005412751469343,
+              0.03020087069619877
+            ],
+            "neural_q05_q95": [
+              0.02946656900441487,
+              0.02975866255129385
+            ],
+            "reference_quantile_mcse": [
+              2.3687613144239384e-06,
+              3.5220285117620278e-06
+            ],
+            "neural_quantile_mcse_iid": [
+              2.8286142802486127e-06,
+              2.4546655409252318e-06
+            ]
+          },
+          "affected": {
+            "status": "fail",
+            "neural_mean": 0.05236814309625326,
+            "reference_mean": 0.0514272647048771,
+            "reference_sd": 9.002061281819274e-05,
+            "neural_width_90": 0.0004616704346778258,
+            "reference_width_90": 0.0002976234467334249,
+            "signed_standardized_mean_difference": 10.451810556726324,
+            "absolute_standardized_mean_difference": 10.451810556726324,
+            "standardized_mean_mcse": 0.2480050833180507,
+            "signed_standardized_mean_interval": [
+              9.581065325464232,
+              11.322555787988415
+            ],
+            "mean_status": "fail",
+            "width_ratio_90": 1.5511897323443553,
+            "log_width_ratio_mcse": 0.028928319567982096,
+            "width_ratio_interval": [
+              1.4013764716464594,
+              1.7170186844250006
+            ],
+            "width_status": "fail",
+            "reference_mean_mcse": 3.921765380774149e-06,
+            "saved_reference_mean_mcse": 3.921765380774149e-06,
+            "neural_mean_mcse_iid": 2.634050865050386e-06,
+            "reference_q05_q95": [
+              0.05127434207014483,
+              0.05157196551687825
+            ],
+            "neural_q05_q95": [
+              0.05213737600876086,
+              0.052599046443438685
+            ],
+            "reference_quantile_mcse": [
+              5.24317723582339e-06,
+              5.923555903188087e-06
+            ],
+            "neural_quantile_mcse_iid": [
+              4.68463547508981e-06,
+              4.943205801568104e-06
+            ]
+          }
+        },
+        "neural_shape": [
+          4096,
+          7
+        ],
+        "reference_chain_shape": [
+          4,
+          2000,
+          7
+        ],
+        "seed": 261215,
+        "replicates_per_block_length": 400,
+        "block_lengths": [
+          32,
+          64
+        ],
+        "block_length_rule": "max(ceil(D^(1/3)), ceil(2*C*D/min(saved bulk and tail ESS across parameters))); also double L",
+        "family_checks": 112,
+        "family_confidence": 0.95,
+        "interval_method": "approximate normal, two-sided Bonferroni; maximum MCSE over L and 2L",
+        "reference_diagnostics_passed": true,
+        "limits": {
+          "absolute_standardized_mean": 0.3,
+          "width_ratio_90": [
+            0.75,
+            1.25
+          ]
+        },
+        "scope": "Monte Carlo agreement on one fixed case; no numerical-target, product, copula or MCMC convergence certification",
+        "normal_critical_value": 3.5109975151009944,
+        "block_length_sensitivity": [
+          {
+            "block_length": 32,
+            "reference_mean_mcse": [
+              1.964746994043445e-06,
+              0.0015464670803483566,
+              7.056732825081496e-06,
+              0.00029610109765398115,
+              4.261663470150335e-05,
+              1.6062382757488853e-06,
+              3.3876370146401775e-06
+            ],
+            "reference_sd_mcse": [
+              1.208049641454151e-06,
+              0.0009336675534893528,
+              4.342956532499118e-06,
+              0.000159081626855915,
+              2.550114822881459e-05,
+              9.364862530967911e-07,
+              2.104757497277046e-06
+            ],
+            "reference_quantile_mcse": [
+              [
+                3.452901963650395e-06,
+                0.002530421524538804,
+                1.156887454724663e-05,
+                0.0004257560025496278,
+                6.488348369720427e-05,
+                2.3246281599778474e-06,
+                5.200863489253824e-06
+              ],
+              [
+                4.110058353935678e-06,
+                0.002357283225570662,
+                1.2675271950573678e-05,
+                0.0004266256059602233,
+                8.29498645718903e-05,
+                3.5220285117620278e-06,
+                5.8365360672723884e-06
+              ]
+            ],
+            "neural_mean_mcse": [
+              7.5163327830157366e-06,
+              0.0008373227332786217,
+              4.35345370350173e-06,
+              0.00019247352910112026,
+              0.00010959433453996337,
+              6.742347637275246e-06,
+              2.6889278684198137e-06
+            ],
+            "neural_quantile_mcse": [
+              [
+                3.610606500712437e-06,
+                0.0018121510186751891,
+                8.560048988439793e-06,
+                0.0003538463982021812,
+                5.3899525182300324e-05,
+                2.8286142802486127e-06,
+                4.68463547508981e-06
+              ],
+              [
+                3.7624575094412134e-06,
+                0.002110036635791684,
+                1.0929413918473693e-05,
+                0.0003666594455944639,
+                6.000896234547898e-05,
+                2.351147163295963e-06,
+                4.943205801568104e-06
+              ]
+            ],
+            "standardized_mean_mcse": [
+              0.328510021984258,
+              0.09186362873099499,
+              0.2081782218120358,
+              0.5067467837200736,
+              0.8909648620335282,
+              0.3028227602618568,
+              0.24703187466753546
+            ],
+            "log_width_ratio_mcse": [
+              0.03259730851520918,
+              0.02875284887125192,
+              0.03017975487060191,
+              0.025289683801708162,
+              0.030087267181176675,
+              0.029935712741943187,
+              0.028928319567982096
+            ]
+          },
+          {
+            "block_length": 64,
+            "reference_mean_mcse": [
+              2.1186597909600265e-06,
+              0.0016105484365917671,
+              7.284721135665758e-06,
+              0.0003131191950148164,
+              4.550570271572071e-05,
+              1.759971511266123e-06,
+              3.5417901119442786e-06
+            ],
+            "reference_sd_mcse": [
+              1.2292845813378009e-06,
+              0.0009189575014138512,
+              4.231077356875876e-06,
+              0.00017625187276438034,
+              2.591146717382454e-05,
+              9.468594211762885e-07,
+              2.052425379614371e-06
+            ],
+            "reference_quantile_mcse": [
+              [
+                3.4337928166964943e-06,
+                0.0026152924453978457,
+                1.1972777850213031e-05,
+                0.00044865134970662325,
+                7.344540421787918e-05,
+                2.3687613144239384e-06,
+                5.24317723582339e-06
+              ],
+              [
+                4.258767053359377e-06,
+                0.002466894270254763,
+                1.2868226848463831e-05,
+                0.00043437581839099926,
+                8.415556850544007e-05,
+                3.4572072376569147e-06,
+                5.923555903188087e-06
+              ]
+            ],
+            "neural_mean_mcse": [
+              8.26587647288273e-06,
+              0.0008643351231216435,
+              4.421261220419449e-06,
+              0.00020247922310071277,
+              0.00011193029950109148,
+              7.437459445446486e-06,
+              2.7615085444317346e-06
+            ],
+            "neural_quantile_mcse": [
+              [
+                3.347060379046025e-06,
+                0.001905846780186651,
+                8.928250904285382e-06,
+                0.00038401248097463125,
+                5.852274426185047e-05,
+                2.74974940871018e-06,
+                4.591065555537469e-06
+              ],
+              [
+                3.821340417136841e-06,
+                0.0020704560988506057,
+                1.1356123473974503e-05,
+                0.00037342162632768473,
+                6.0509598381973176e-05,
+                2.4546655409252318e-06,
+                4.784297843269282e-06
+              ]
+            ],
+            "standardized_mean_mcse": [
+              0.3407237097128914,
+              0.09093622096311682,
+              0.20211585963619738,
+              0.5611873654628485,
+              0.8998018539336955,
+              0.31823626923669235,
+              0.24120958604828263
+            ],
+            "log_width_ratio_mcse": [
+              0.032476631718371424,
+              0.0292888288195763,
+              0.029262759893563643,
+              0.02730590255015371,
+              0.031165869410143935,
+              0.02850360057028031,
+              0.028771123594351456
+            ]
+          }
+        ]
+      },
+      "status": "fail",
+      "reference_diagnostics_passed": true,
+      "reference_run_sha256": "9bd1fe9daada72269195c0473ac2f70ece011a9f928ff6d2b580c17f112b36b6",
+      "reference_diagnostics_sha256": "47bad4888040dd54e4a59d8dd58f7e2637a5d298fbcc2982420345609860fb20",
+      "reference_chain_payload_sha256": "c9c8953d99ad7e1a8698bc769863a6cecf0bd1bb007e6d21ac9837a1fde607e8"
+    }
+  },
+  "scientific_acceptance": false,
+  "reserved_test_arrays_opened": false,
+  "scope": "Development conditional/population checks; no final-pool or lesson acceptance.",
+  "population": {
+    "rows": 512,
+    "draws_per_case": 512,
+    "support": {
+      "outside_value_count": 0,
+      "material_outside_value_count": 0,
+      "rounding_tolerance": [
+        1.1920928955078125e-07,
+        7.62939453125e-06,
+        1.1920928955078125e-07,
+        1.9073486328125e-06,
+        4.76837158203125e-07
+      ],
+      "draws_clipped": false
+    },
+    "coverage": {
+      "0.5": {
+        "coverage": [
+          0.529296875,
+          0.54296875,
+          0.591796875,
+          0.525390625,
+          0.515625
+        ],
+        "wilson": [
+          [
+            0.48600435058567043,
+            0.572153053180567
+          ],
+          [
+            0.4996592655455357,
+            0.5856382599782792
+          ],
+          [
+            0.5486932461802594,
+            0.6335332856206175
+          ],
+          [
+            0.4821088654752805,
+            0.5682942177887919
+          ],
+          [
+            0.4723816267229168,
+            0.5586356552857431
+          ]
+        ]
+      },
+      "0.8": {
+        "coverage": [
+          0.81640625,
+          0.857421875,
+          0.861328125,
+          0.833984375,
+          0.818359375
+        ],
+        "wilson": [
+          [
+            0.780557332045865,
+            0.8475426286294983
+          ],
+          [
+            0.8244703208053621,
+            0.8850500051427335
+          ],
+          [
+            0.828692006648878,
+            0.8885826398013826
+          ],
+          [
+            0.7992907911560903,
+            0.8637036117790153
+          ],
+          [
+            0.78263299633789,
+            0.8493441245885558
+          ]
+        ]
+      },
+      "0.9": {
+        "coverage": [
+          0.916015625,
+          0.931640625,
+          0.931640625,
+          0.904296875,
+          0.931640625
+        ],
+        "wilson": [
+          [
+            0.8887825040202595,
+            0.9370526294603108
+          ],
+          [
+            0.9064124998359672,
+            0.9504399156532629
+          ],
+          [
+            0.9064124998359672,
+            0.9504399156532629
+          ],
+          [
+            0.8757213408880494,
+            0.9268508310860258
+          ],
+          [
+            0.9064124998359672,
+            0.9504399156532629
+          ]
+        ]
+      },
+      "0.95": {
+        "coverage": [
+          0.953125,
+          0.970703125,
+          0.97265625,
+          0.951171875,
+          0.96484375
+        ],
+        "wilson": [
+          [
+            0.9312006389371313,
+            0.9683005393140062
+          ],
+          [
+            0.9522288905280138,
+            0.982166729982866
+          ],
+          [
+            0.9546295060012657,
+            0.9836432747606967
+          ],
+          [
+            0.9289134485442119,
+            0.9667105694558431
+          ],
+          [
+            0.9451159458429383,
+            0.9776481939146942
+          ]
+        ]
+      }
+    },
+    "rank_dkw": {
+      "surfaces": 512,
+      "draws_per_surface": 512,
+      "rank_ks": [
+        0.10068906916725612,
+        0.05001765285485771,
+        0.060737764543180195,
+        0.042057695990422084,
+        0.04492202166224368
+      ],
+      "dkw_bound": 0.07193148165629265,
+      "family_alpha": 0.05,
+      "passed": [
+        false,
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    "scope": "Prior-predictive development calibration under fixed c=1; not conditional or market acceptance."
+  },
+  "conditional_status": "fail"
+}

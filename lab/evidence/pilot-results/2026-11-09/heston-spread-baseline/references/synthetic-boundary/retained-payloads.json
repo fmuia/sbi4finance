@@ -1,0 +1,57 @@
+{
+  "format": "heston_spread_failed_reference_retained_payloads_v1",
+  "run_sha256": "a8059eddc0ece707f5b1203eb6252bf92044858e82242c4e7e1ae8a1acad56c1",
+  "payload_root": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/references/synthetic-boundary",
+  "files": {
+    "attempt-0/chains.npz": {
+      "bytes": 158610,
+      "sha256": "2876979661506cf9058a7a0e5ac49885f246f692838c05292a9eab3fe140b43e"
+    },
+    "attempt-0/diagnostics.json": {
+      "bytes": 7063,
+      "sha256": "da6ed71572b9bd2e5445ab462f8c944491bc16f5bbbf0e018efb614825e17e03"
+    },
+    "attempt-0/initialization.json": {
+      "bytes": 10317,
+      "sha256": "f65e3e2f9f90b7f79e3cb50cb56ae154b35beaaee94ccc51b9fa9ce4aa86401d"
+    },
+    "attempt-0/partial/chain-000.npz": {
+      "bytes": 36841,
+      "sha256": "1ee1e36de416d627c15107cbe346b1eebf24cc62385850ce729c0b54aedf2757"
+    },
+    "attempt-0/partial/chain-001.npz": {
+      "bytes": 39393,
+      "sha256": "c977a1cbfc03b80fce90cac16286be55d5ca11da24ac1811659a4aa486f6bcbe"
+    },
+    "attempt-0/partial/chain-002.npz": {
+      "bytes": 39020,
+      "sha256": "67ae6aeb6a72516601050931d0daad12e783a3a91eb8380d3831531d4ee2bf2d"
+    },
+    "attempt-0/partial/chain-003.npz": {
+      "bytes": 38933,
+      "sha256": "3b6ae95ce46b412157252c335f9a02e0a45109f4381255527a6e004a57f35dc4"
+    },
+    "attempt-0/partial/progress.json": {
+      "bytes": 461,
+      "sha256": "7f570ae4b293cf62d5da371445a5a969c67fb477a9fa4bff95659611d9a5e699"
+    },
+    "attempt-1/initialization.json": {
+      "bytes": 10326,
+      "sha256": "8725e75be8e835e97644478556c84622274a41db2fbf8199679ac9fe56d2379e"
+    },
+    "attempt-1/partial/chain-000.npz": {
+      "bytes": 159852,
+      "sha256": "2270edef982d72ee28416200fbdaaed825a7952d52c4df10ca543f4d6b40d321"
+    },
+    "attempt-1/partial/progress.json": {
+      "bytes": 445,
+      "sha256": "efcf61f78db0dbbb7f272f0510e5018998a7d09fa62a71afea08c9c562c00352"
+    },
+    "run.json": {
+      "bytes": 7965,
+      "sha256": "a8059eddc0ece707f5b1203eb6252bf92044858e82242c4e7e1ae8a1acad56c1"
+    }
+  },
+  "reference_ready": false,
+  "scope": "Integrity inventory of retained first-attempt and partial escalation files. NPZ arrays were not opened by this inventory. No unconverged or partial chain is an accepted reference."
+}

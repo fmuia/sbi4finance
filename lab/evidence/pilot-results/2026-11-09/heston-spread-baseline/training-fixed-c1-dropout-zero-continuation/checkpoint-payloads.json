@@ -1,0 +1,110 @@
+{
+  "format": "heston_spread_continuation_payload_summary_v1",
+  "checkpoints": {
+    "10000": {
+      "actual_optimizer_updates": 10000,
+      "model_sha256": "1db28d6bf52474ccdee7c6050f66a7695b4a4ddb263d2c626e81c7f0d9e90620",
+      "state_sha256": "7cb50958c41f384186f064cd53e984a1115e0c9c3d2783150c01b08b7a782348",
+      "task_fingerprint": "0498dffe793365269887b0d534c2e0703d703a83cacd570846062a9081ee7685",
+      "architecture": {
+        "family": "spline",
+        "widths": [
+          128,
+          128
+        ],
+        "subnet_dropout": 0.0
+      },
+      "source_sha256": {
+        "trainer": "3a8747332a3493adcd9298d701d0d6aab087dada35d8648827d7790330931f38",
+        "batch_plan": "48948207347f5dfe57bb7d8f1c4481be78f7859cd2d141b8b2e8c2bb97c14d07",
+        "spread_pilot": "5ad4bd6a4024023f92e76c137643c073d0b0fb067c11885d330dcf0e10b291ca",
+        "heston_pilot": "7189d8d35fb7f776424835e279647867dbd0a3e4bccf00be0a1c915b0725904b",
+        "heston_model": "4b48d998ff99e3709d8c753bd12ef32453242332ec0486c9d1251a788cadfe85"
+      },
+      "probe_metrics": {
+        "updates": 10000,
+        "seconds": 80.25893975002691,
+        "batch_training_loss": -16.55812644958496,
+        "train_probe_loss": -15.500249862670898,
+        "validation_probe_loss": -15.324993133544922
+      },
+      "resume_supported": false,
+      "checkpoint_record_sha256": "4f0190fc8a87351dc4dbf2df75a338ba05a5ff9b76420d92fa700cf9832e77e1",
+      "payload_bytes": {
+        "model.keras": 6255717,
+        "state.npz": 5507806
+      }
+    },
+    "25000": {
+      "actual_optimizer_updates": 25000,
+      "model_sha256": "3e7bb9ac538b3e61d578ff409674da770f9193c32e8f52167bbb48bebeb81a49",
+      "state_sha256": "fc1d6cda7b9c8ea7234ce6cb61ec22c10b283b0aecd123a9ba67829a6b70a149",
+      "task_fingerprint": "0498dffe793365269887b0d534c2e0703d703a83cacd570846062a9081ee7685",
+      "architecture": {
+        "family": "spline",
+        "widths": [
+          128,
+          128
+        ],
+        "subnet_dropout": 0.0
+      },
+      "source_sha256": {
+        "trainer": "3a8747332a3493adcd9298d701d0d6aab087dada35d8648827d7790330931f38",
+        "batch_plan": "48948207347f5dfe57bb7d8f1c4481be78f7859cd2d141b8b2e8c2bb97c14d07",
+        "spread_pilot": "5ad4bd6a4024023f92e76c137643c073d0b0fb067c11885d330dcf0e10b291ca",
+        "heston_pilot": "7189d8d35fb7f776424835e279647867dbd0a3e4bccf00be0a1c915b0725904b",
+        "heston_model": "4b48d998ff99e3709d8c753bd12ef32453242332ec0486c9d1251a788cadfe85",
+        "continuation": "3c14cb7461d4c0ab741f0a9d279ff99fad75fa20f58f0f1185f265e72d84fc9b"
+      },
+      "probe_metrics": {
+        "updates": 25000,
+        "seconds": 104.47733591706492,
+        "batch_training_loss": -16.22718048095703,
+        "train_probe_loss": -16.311708450317383,
+        "validation_probe_loss": -16.01686668395996
+      },
+      "resume_supported": false,
+      "checkpoint_record_sha256": "58c7dedcec12133a6ee191ae0664da56ecde9735f5308d4e95730a7fb95a519a",
+      "payload_bytes": {
+        "model.keras": 6255717,
+        "state.npz": 5506471
+      }
+    },
+    "50000": {
+      "actual_optimizer_updates": 50000,
+      "model_sha256": "b0bf8d570d73885a66a965a43c405039ca3f417c0db4c394202ad9552586e869",
+      "state_sha256": "469c3dcd3b1b8eeeacd0c4c9880fd259b73f1fd1c3557225818008408d669e62",
+      "task_fingerprint": "0498dffe793365269887b0d534c2e0703d703a83cacd570846062a9081ee7685",
+      "architecture": {
+        "family": "spline",
+        "widths": [
+          128,
+          128
+        ],
+        "subnet_dropout": 0.0
+      },
+      "source_sha256": {
+        "trainer": "3a8747332a3493adcd9298d701d0d6aab087dada35d8648827d7790330931f38",
+        "batch_plan": "48948207347f5dfe57bb7d8f1c4481be78f7859cd2d141b8b2e8c2bb97c14d07",
+        "spread_pilot": "5ad4bd6a4024023f92e76c137643c073d0b0fb067c11885d330dcf0e10b291ca",
+        "heston_pilot": "7189d8d35fb7f776424835e279647867dbd0a3e4bccf00be0a1c915b0725904b",
+        "heston_model": "4b48d998ff99e3709d8c753bd12ef32453242332ec0486c9d1251a788cadfe85",
+        "continuation": "3c14cb7461d4c0ab741f0a9d279ff99fad75fa20f58f0f1185f265e72d84fc9b"
+      },
+      "probe_metrics": {
+        "updates": 50000,
+        "seconds": 298.33555229217745,
+        "batch_training_loss": -16.452733993530273,
+        "train_probe_loss": -16.362688064575195,
+        "validation_probe_loss": -16.10476303100586
+      },
+      "resume_supported": false,
+      "checkpoint_record_sha256": "f17c03acd8db061da90facc5de1fcb531d3ce25629d0ae28cb6715e058daf301",
+      "payload_bytes": {
+        "model.keras": 6255717,
+        "state.npz": 5506550
+      }
+    }
+  },
+  "scope": "full models/state arrays remain ignored; no release asset accepted"
+}
