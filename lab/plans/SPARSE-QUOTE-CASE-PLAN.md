@@ -2,6 +2,77 @@
 
 **Status, 9 November 2026: Heston pilot explicitly reprioritized by the user.** Verify the revised European-option observation/design setup with Heston and stop for reflection before any rough-Bergomi extension. The pilot has a distinct task identity and does not promote its results or checkpoints into the lessons. General sparse adapters, variable-length sets and production release changes remain outside this pilot. Historical requirements and evidence below remain relevant where consistent with this bounded specification.
 
+## Proposed combined follow-up after PR #81 review
+
+This is the proposed next Heston execution specification, not a report of new runs. It combines the user's known-Gaussian/direct-sigma discussion with the coverage ideas in [PR #81](https://github.com/fmuia/sbi4finance/pull/81), reviewed at **df2cfc442de07459a8b971f070e3a6f25b0b2020**. The companion noise PDF explains the original, current tau and proposed single-scale models. Existing tasks, banks, checkpoints and evidence remain under their original identities. No PR merge, new pricing bank, training or Bergomi work follows automatically from this review.
+
+### What to adopt from the PR
+
+- Select contracts for useful coverage rather than increase density alone: deep puts, ATM, near calls and calls near +2 standardized log-moneyness; include short as well as later expiries.
+- Keep a small fixed layout and actual European SPXW observations for the first implementation. A set encoder and an interpolated multi-day reader are unnecessary for this unit.
+- Use one shared observation/design specification for simulation, deterministic calibration, reference inference and neural inference. Keep numerical pricing accuracy separate from observation uncertainty.
+- Preserve the distinctions between synthetic calibration, conditional neural/reference agreement, market-model adequacy and downstream product uncertainty.
+
+The actual pilot's 54-quote design has these coverage properties, measured in the PR's fixed-16% coordinate `z = log(K/F)/(0.16*sqrt(T))`:
+
+| Feature | Existing 54 | Implication |
+| --- | --- | --- |
+| Expiries | 30 Nov 2026 to 30 Sep 2027; 21.03-324.99 calendar days | No one-week expiry; only one within a month; final expiry about 10.7 months |
+| Deepest puts per expiry | z approximately -3.69 to -4.29 | Passes the proposed below-minus-3 coverage criterion |
+| Nearest ATM | absolute z at most 0.011 | ATM coverage is adequate |
+| Furthest call per expiry | z approximately +0.93 to +1.07 | No +2 call at any expiry |
+
+Thus retaining the exact existing contracts requires relaxing the PR's criteria. Retain them as a useful control, not as an already adequate final grid. Fifty-four is not inherently inadequate: a redesigned 6-by-9 layout is possible. The PR's 7-by-9 layout E is a simple candidate, not a required point count or a proven optimum.
+
+### Grid candidate and fair comparison
+
+Start the coverage audit from layout E: approximately 1 and 2 weeks, 1, 2, 3, 6 and 12 months, with targets `[-5,-3.5,-2.25,-1.25,-0.5,0,+0.5,+1,+2]` in fixed-16% standardized log-moneyness. Select distinct actual quoted contracts near those targets. Record realized strike/expiry distances, spreads, roots and unsupported targets; revise the declared design rather than fill gaps with interpolated pseudo-observations. If approximately one-year SPXW coverage is unavailable, disclose the actual endpoint or revise the snapshot/design; do not silently substitute AM settlement conventions.
+
+Freeze the physical strikes, actual ACT/365F maturities, carry anchors and quote provenance before production training. Revised expiries need additional carry anchors: define one common conditioning record over the union of expiries for both grids, preserving the old anchor estimates on unchanged expiries and keeping new anchors disjoint from fitted/scored quotes. A fixed reference volatility is only a coordinate convention. Selecting contracts once using observed ATM information and then freezing them does not require adaptive strikes for every simulated parameter draw.
+
+The PR's E63 evidence is preliminary: `layout_choice.py` calls a grid constructed with fitted per-maturity ATM levels (14.30%-17.25%), whereas the written specification uses fixed 16%. The resulting log-moneyness offsets differ in scale by about -10.6% to +7.8%; those are not percentage changes in the physical strikes. Its Fisher comparisons also use a fixed smooth-error covariance at one fitted SPX point; they do not establish the ranking under our proposed single-scale likelihood. Its reported E layout can worsen local rho widths by 9% or 31% in its two scenarios. Recheck the literal candidate under the intended likelihood on a small representative panel. Do not claim that comparing 54 versus 63 isolates placement alone: expiry coverage and point count change too.
+
+### One Gaussian family, two inference questions
+
+Use `Y_i = P_i(phi) + sigma * h_i * Z_i`, with known frozen price half-spreads, independent standard-Normal quote errors and the same five-parameter physical prior in every condition. This returns to the original known-Gaussian model class for the core example, replacing its prescribed noise profile with a spread-anchored convention.
+
+- **Known scale:** sample sigma in [0.5,2] as a supplied condition; infer only the five physical parameters. The main assumed scale is 1, with sensitivity at 0.5, 1 and 2 on the **same observed prices**.
+- **Unknown scale:** use the explicit illustration prior `sigma ~ Uniform(0.5,2)`, independent of the physical parameters, and infer the six-dimensional joint posterior. Here sigma is a dimensionless SD in spread units. Hide its generating value and any feature containing it from network conditions; supply only the known spread profile and design.
+- Use matched synthetic truths and price observations within each grid to compare these questions. The unknown-scale marginal uses posterior weights over sigma, not an equal average of the fixed-scale sensitivity plots. Fresh datasets for synthetic calibration are a separate experiment.
+- Keep half-spread-as-Gaussian-SD and the scale prior visibly labelled as conventions. A large inferred scale or boundary concentration can reflect model/data/prior mismatch, not a measured pure observation-noise process. The [noise proposal PDF renderer](../scripts/render_heston_simplification_report.py) specifies the conditional-sigma likelihood and oracle.
+
+The bounded development comparison has four conditions:
+
+| Contract design | Known Gaussian scale | One inferred Gaussian scale |
+| --- | --- | --- |
+| Existing 54 contracts | Control using preserved clean labels | Isolate scalar scale inference on that control |
+| Revised fixed actual-quote layout | Test the coverage upgrade | Combined candidate |
+
+Use paired physical parameter rows and the same layer-width/batch/optimizer recipe where compatible; reuse quote errors on identical contracts when pairing designs. Give each target/design its own identity. Stage this screen: establish both Gaussian arms on the reusable 54-contract bank first, then repeat on a revised design after its coverage and pricing gates pass. Declare update/checkpoint and wall-time limits before launching each pair; a failure prompts diagnosis rather than automatic longer training or a wider search. This is a development screen, not a claim that all changes are individually isolated.
+
+### Execution sequence and gates
+
+| Phase | Work | Required evidence before advancing |
+| --- | --- | --- |
+| 1. Lock the specification and failure capture | Audit actual quote coverage; declare one revised candidate and both Gaussian targets. Record individual losses, gradient/parameter finiteness and state at the first non-finite event. | Reproducible design/target records; no sigma leakage; finite toy likelihood/conditional-sigma checks. |
+| 2. Check the grid and pricing | Evaluate the literal candidate under known spread-based scales on a small prior/market-like panel. Preserve the audited Heston ladder and measurement-only precision gate. | Realized coverage, manageable conditioning, successful price refinement and a bounded measured cost. |
+| 3. Prepare matched clean labels | Reuse the existing bank for unchanged 54-contract tasks. Reprice once for changed contracts, using paired physical rows, and create a new bank identity. | Unchanged producer/old payloads; a precision-checked new bank if needed. No relabelling of old labels as new strikes or maturities. |
+| 4. Establish references and run the four-cell screen | New matched five/six-target references and bounded training runs with fixed checkpoints and logged probes. Do not infer success from decreasing loss alone. | Rank-normalized R-hat <=1.01 and bulk/tail ESS >=400; conditional means/widths and analytic variance products compared with Monte Carlo uncertainty. Use existing repository margins, including 90% width ratio [.75,1.25], not PR point-only replacements. |
+| 5. Information and market checks | On the useful recipe, compare full/restricted quote information and hold-out predictions. Keep the current near-term average-variance control and affected forward-average-variance product first. | Separate evidence for approximation fidelity, simulator calibration and residual/model adequacy; no mandatory wide intervals. |
+| 6. Freeze and reflect | Freeze the recipe before fresh acceptance data/seed confirmation and any lesson promotion. Keep the reserved final pool unopened during development. | Explicit acceptance or a recorded failure. Stop for reflection before Bergomi or broader product work. |
+
+The old 54-contract bank cannot be reused unchanged after supplementing/replacing contracts or changing the clock. The PR incorrectly describes pilot maturities as whole business days: they are fractional ACT/365F. Its proposed clock, carry estimation and alternate Fourier ladder are additional changes, not covered by the old bank's provenance. Keep those conventions fixed in this execution unit.
+
+### PR ideas to retain as later studies
+
+Smooth Gaussian-process discrepancy is a reasonable model-adequacy hypothesis, not the next baseline or an established diagnosis of the neural failure. The PR also changes tau from Uniform(0,2 volatility points) to LogUniform(0.2,5), profiles correlation lengths on the fitted data and adds multi-day interpolation. That is substantially more than changing grid locations. A correlation study needs matched amplitude priors, explicit hyperparameter conditioning/sensitivity and checks on raw quote residuals; interpolated fitted residuals alone do not identify the covariance law.
+
+The proposed V4b attribution requires success on the network's own simulator, which our completed checks already fail: all six cases fail collective agreement, and tau alone fails five with one inconclusive at 75k. Smooth market residuals do not explain that finding, or establish the cause of the 88k non-finite event. Resolve matched synthetic fidelity first.
+
+Retain posterior product propagation as the eventual purpose, but defer the forward-start/barrier/volatility-swap suite, book aggregation, four-day reader and prudent-value terminology. Conditional product quantiles are not automatically regulatory reserves. Finite-strip variance replication is a useful market-informed benchmark with tail/convention uncertainty, not an independent observed variance-swap quote. For future Bergomi work, a fixed-seed importance sampler is an approximate numerical reference, and marginal price-SE tolerances do not control every contrast direction under smooth covariance. Those require a separate specification and numerical audit.
+
+## Completed Heston pilot and prior continuation
+
 **Heston verification completed; reflection gate reached.** The [run record](../evidence/pilot-results/2026-11-09/heston-observations/README.md) contains the frozen SPXW designs, 11 converged reference cases, numerical and carry audits, and four neural development endpoints. The forward-variance information effect is visible but prior-sensitive (short/full interval-width ratio 6.49 with vol-of-vol capped at 1.5; 3.11 with cap 3). Structured market residuals remain. Neural conditional verification fails at both 2,000 and 10,000 updates, despite much better prior-average coverage at the latter budget. Pricing/software checks passed; the revised market/neural task is **not accepted for release**. Stop here before choosing final discrepancy/prior/carry assumptions or running Bergomi.
 
 ## Continuation: full-panel network training study
