@@ -1,0 +1,11 @@
+{
+  "status": "complete",
+  "completed_updates": 60000,
+  "seconds": 480.48293016594835,
+  "same_seed_reload_exact": true,
+  "last_checkpoint": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/training/checkpoints/update-060000",
+  "row_presentations": 7643328,
+  "unique_rows_seen": 20000,
+  "reserved_arrays_opened": false,
+  "scientific_acceptance": false
+}

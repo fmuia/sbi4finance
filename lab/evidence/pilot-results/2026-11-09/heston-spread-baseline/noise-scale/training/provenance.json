@@ -1,0 +1,143 @@
+{
+  "format": "heston_spread_scale_training_copy_v1",
+  "status": "complete",
+  "completed_updates": 60000,
+  "source_run_directory": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/training",
+  "source_commit": "9f88177755465d498260a6bbad1a0c6db8f1fdb2",
+  "source_sha256": {
+    "trainer": "93714493768c1db7ce792b931f1dd994e2a5936bafd5da6b1062b666ac4b9068",
+    "fixed_helper": "3a8747332a3493adcd9298d701d0d6aab087dada35d8648827d7790330931f38",
+    "spread_pilot": "5ad4bd6a4024023f92e76c137643c073d0b0fb067c11885d330dcf0e10b291ca",
+    "heston_pilot": "7189d8d35fb7f776424835e279647867dbd0a3e4bccf00be0a1c915b0725904b",
+    "batch_plan": "48948207347f5dfe57bb7d8f1c4481be78f7859cd2d141b8b2e8c2bb97c14d07"
+  },
+  "training_protocol_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/training-protocol.json",
+  "training_protocol_sha256": "f3e800a80d685b4799aa8db9ed9bce7e8d7b4bccbdc50e103c5705f23e63a431",
+  "task_fingerprint": "7dc67dc4dc7fa210b777207fefc7211034a1bcf5eddbde10e054e4a0a86439c0",
+  "bank_record_sha256": "865b4333debdc7ed8b3e3723f1811c3ff8967b61be6cae23455e4a7ba312475e",
+  "bank_payload_sha256": "35117eb977867ffb5b73e95cc2da6327f74820b2a74be96d223c85dfc8400fbb",
+  "copies": {
+    "run.json": {
+      "source_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/training/run.json",
+      "source_sha256": "2d972353e95314a7260eec786b3d38a98cc26bcd9fdf515f2601040b9b1b0ac1",
+      "copy_sha256": "2d972353e95314a7260eec786b3d38a98cc26bcd9fdf515f2601040b9b1b0ac1",
+      "bytes": 32753
+    },
+    "training.json": {
+      "source_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/training/training.json",
+      "source_sha256": "e8c4087e8806e8a6f2b51b32cfbeb7b5abb20f87aaaa07cb4a48e57e909a3e3f",
+      "copy_sha256": "e8c4087e8806e8a6f2b51b32cfbeb7b5abb20f87aaaa07cb4a48e57e909a3e3f",
+      "bytes": 459
+    },
+    "learning-curve.json": {
+      "source_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/training/learning-curve.json",
+      "source_sha256": "450d97d8aa549f950f350f6f240c963f9b376ee1cdbd7fad66079efbb84e59f7",
+      "copy_sha256": "450d97d8aa549f950f350f6f240c963f9b376ee1cdbd7fad66079efbb84e59f7",
+      "bytes": 12399
+    },
+    "progress.json": {
+      "source_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/training/progress.json",
+      "source_sha256": "e8c4087e8806e8a6f2b51b32cfbeb7b5abb20f87aaaa07cb4a48e57e909a3e3f",
+      "copy_sha256": "e8c4087e8806e8a6f2b51b32cfbeb7b5abb20f87aaaa07cb4a48e57e909a3e3f",
+      "bytes": 459
+    },
+    "initial-probes.json": {
+      "source_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/training/initial-probes.json",
+      "source_sha256": "41af223e07ae9d153135da0377fb476dd753974ec5e763ddbb14605fd69f3452",
+      "copy_sha256": "41af223e07ae9d153135da0377fb476dd753974ec5e763ddbb14605fd69f3452",
+      "bytes": 90
+    }
+  },
+  "checkpoints": {
+    "10000": {
+      "checkpoint_record_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/training/checkpoints/update-010000/checkpoint.json",
+      "checkpoint_record_sha256": "b37e8b64c4293cd5f06fe4409bf07664cc7b303dfdb94a7f7410086c26e0ae52",
+      "model_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/training/checkpoints/update-010000/model.keras",
+      "model_sha256": "ed341c4ecb5103dd184c123d56ccdf375e336fc7487ff31e741fe1fc6a5ba027",
+      "state_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/training/checkpoints/update-010000/state.npz",
+      "state_sha256": "403fc22e1614d1af0c34da6179cbed651e59da9d4f0b4d96df586ac250db8f17",
+      "probe_metrics": {
+        "updates": 10000,
+        "seconds": 82.90480758296326,
+        "batch_training_loss": -14.580673217773438,
+        "train_probe_loss": -13.866425514221191,
+        "validation_probe_loss": -13.641937255859375
+      },
+      "serialized_optimizer_schedule": {
+        "module": "keras.optimizers.schedules",
+        "class_name": "CosineDecay",
+        "config": {
+          "initial_learning_rate": 0.0005,
+          "decay_steps": 10000,
+          "alpha": 0.1,
+          "name": "CosineDecay",
+          "warmup_target": null,
+          "warmup_steps": 0
+        },
+        "registered_name": null
+      }
+    },
+    "50000": {
+      "checkpoint_record_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/training/checkpoints/update-050000/checkpoint.json",
+      "checkpoint_record_sha256": "3102904e4a71d08c44ae5056abb17fe1856ac8c0429b71b14748459c08f428e1",
+      "model_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/training/checkpoints/update-050000/model.keras",
+      "model_sha256": "a5d1238c585aee8a25ff77de56d2f796c804cef5ab2d09913ded64f7eccca855",
+      "state_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/training/checkpoints/update-050000/state.npz",
+      "state_sha256": "853b79c0fe9814ded303f27ba57292e7db99ddf21b267c74774a79896a9b3f31",
+      "probe_metrics": {
+        "updates": 50000,
+        "seconds": 401.1141798750032,
+        "batch_training_loss": -14.326237678527832,
+        "train_probe_loss": -14.524827003479004,
+        "validation_probe_loss": -14.292048454284668
+      },
+      "serialized_optimizer_schedule": {
+        "module": "keras.optimizers.schedules",
+        "class_name": "CosineDecay",
+        "config": {
+          "initial_learning_rate": 0.0005,
+          "decay_steps": 10000,
+          "alpha": 0.1,
+          "name": "CosineDecay",
+          "warmup_target": null,
+          "warmup_steps": 0
+        },
+        "registered_name": null
+      }
+    },
+    "60000": {
+      "checkpoint_record_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/training/checkpoints/update-060000/checkpoint.json",
+      "checkpoint_record_sha256": "7b8c2126e2da16146d8a4789ff04f53e8709a6213ad24cbf97a33e583aa061a3",
+      "model_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/training/checkpoints/update-060000/model.keras",
+      "model_sha256": "7b4f4ec9ce9cd2f9b184ad05c061c053997a6a1e7dfc79c0305e8cf602622656",
+      "state_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/training/checkpoints/update-060000/state.npz",
+      "state_sha256": "e4bb7c9bd2377073eebb585e4853a74000e9318ff61f8ae420e1f8d89d76b99a",
+      "probe_metrics": {
+        "updates": 60000,
+        "seconds": 479.9825812908821,
+        "batch_training_loss": -15.479228973388672,
+        "train_probe_loss": -15.643003463745117,
+        "validation_probe_loss": -15.307299613952637
+      },
+      "serialized_optimizer_schedule": {
+        "module": "keras.optimizers.schedules",
+        "class_name": "PiecewiseConstantDecay",
+        "config": {
+          "boundaries": [
+            54999
+          ],
+          "values": [
+            5e-06,
+            5e-07
+          ],
+          "name": "heston_spread_two_stage_annealing"
+        },
+        "registered_name": null
+      }
+    }
+  },
+  "model_state_fullprobes_copied": false,
+  "reserved_arrays_opened": false,
+  "scientific_acceptance": false,
+  "scope": "Verbatim compact JSON records only; six-target posterior/reference evaluation is a separate step."
+}

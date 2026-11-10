@@ -1,0 +1,26 @@
+{
+  "format": "heston_spread_scale_launch_v1",
+  "status": "launching",
+  "utc": "2026-11-10T15:15:51.598866+00:00",
+  "source_commit": "9f88177755465d498260a6bbad1a0c6db8f1fdb2",
+  "trainer_sha256": "93714493768c1db7ce792b931f1dd994e2a5936bafd5da6b1062b666ac4b9068",
+  "protocol_sha256": "f3e800a80d685b4799aa8db9ed9bce7e8d7b4bccbdc50e103c5705f23e63a431",
+  "maximum_attempts": 1,
+  "maximum_wall_seconds": 900,
+  "checkpoint_updates": [
+    10000,
+    50000,
+    60000
+  ],
+  "automatic_extension": false,
+  "reserved_arrays_opened": false,
+  "threads": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "NUMEXPR_NUM_THREADS": "1",
+    "VECLIB_MAXIMUM_THREADS": "1"
+  },
+  "log": "/private/tmp/sbi4finance-heston-spread-scale-training.log",
+  "out": "../local-artifacts/heston-spread-baseline-20261109/noise-scale/training"
+}
