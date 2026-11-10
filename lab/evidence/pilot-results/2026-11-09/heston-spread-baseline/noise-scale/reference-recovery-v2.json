@@ -1,0 +1,120 @@
+{
+  "format": "heston_spread_scale_reference_recovery_v1",
+  "original_study": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/protocol.json",
+    "sha256": "74ac585500dd0758a49113d1201c5a0119ffbc6970573c33ff61b12675639102"
+  },
+  "original_reference_protocol": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/reference-protocol.json",
+    "sha256": "a922b7bebb6dce2bef97d9ca539c59e18df54f7053ff57cb4947fd779cd912c2"
+  },
+  "original_campaign": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/campaign.json",
+    "sha256": "e0e143c682c5ff5bd0a2d870050151806f9ef454fae1b1b85559522d783462d4"
+  },
+  "startup_failure_audit": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/bootstrap-failure-audit.json",
+    "sha256": "504be7b62385d4b286fe97edfca4912e3ce346a4cc3729e73b7670add5f462d9"
+  },
+  "previous_recovery": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/reference-recovery.json",
+    "sha256": "d3a91267d6c612478d715246bfcd54758179070d4997e3c18c3127b7aff310bf"
+  },
+  "previous_recovery_campaign": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/recovery-campaign.json",
+    "sha256": "85c77c9a9a8a2e70a2d572e53e8511565db9f12aec1f990c79acfa6190a7bf2b"
+  },
+  "extra_startup_failure_audit": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/bootstrap-extra-failure-audit-v2.json",
+    "sha256": "0c296c20d9f9fe7999760eb22c2d2a6fe9e61d303b43b0cd12c8a5f054b486a1"
+  },
+  "symbolic_preflight": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/bootstrap-preflight-v2.json",
+    "sha256": "ad793e4b6c849fe210b72edda2edb718ffcf372bf6f22cf1f491036d09e50cf0"
+  },
+  "recovery_reference_protocol": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/recovery-v2-reference-protocol.json",
+    "sha256": "14c016581ad1981df650758405306d6098f19ff4e74a127932f88088d77522bc"
+  },
+  "recovered_environment_cache": {
+    "synthetic-broad-c-half": {
+      "base_compiledir": "/private/tmp/sbi4f-scale-v2-60adbfd49bd8-synthetic-broad-c-half",
+      "compiledir": "/private/tmp/sbi4f-scale-v2-60adbfd49bd8-synthetic-broad-c-half/compiled",
+      "PYTENSOR_FLAGS": "base_compiledir=/private/tmp/sbi4f-scale-v2-60adbfd49bd8-synthetic-broad-c-half,compiledir=/private/tmp/sbi4f-scale-v2-60adbfd49bd8-synthetic-broad-c-half/compiled",
+      "NUMBA_CACHE_DIR": "/private/tmp/sbi4f-scale-v2-60adbfd49bd8-synthetic-broad-c-half/numba-native"
+    },
+    "synthetic-broad-c-double": {
+      "base_compiledir": "/private/tmp/sbi4f-scale-v2-60adbfd49bd8-synthetic-broad-c-double",
+      "compiledir": "/private/tmp/sbi4f-scale-v2-60adbfd49bd8-synthetic-broad-c-double/compiled",
+      "PYTENSOR_FLAGS": "base_compiledir=/private/tmp/sbi4f-scale-v2-60adbfd49bd8-synthetic-broad-c-double,compiledir=/private/tmp/sbi4f-scale-v2-60adbfd49bd8-synthetic-broad-c-double/compiled",
+      "NUMBA_CACHE_DIR": "/private/tmp/sbi4f-scale-v2-60adbfd49bd8-synthetic-broad-c-double/numba-native"
+    },
+    "synthetic-broad-c-joint": {
+      "base_compiledir": "/private/tmp/sbi4f-scale-v2-60adbfd49bd8-synthetic-broad-c-joint",
+      "compiledir": "/private/tmp/sbi4f-scale-v2-60adbfd49bd8-synthetic-broad-c-joint/compiled",
+      "PYTENSOR_FLAGS": "base_compiledir=/private/tmp/sbi4f-scale-v2-60adbfd49bd8-synthetic-broad-c-joint,compiledir=/private/tmp/sbi4f-scale-v2-60adbfd49bd8-synthetic-broad-c-joint/compiled",
+      "NUMBA_CACHE_DIR": "/private/tmp/sbi4f-scale-v2-60adbfd49bd8-synthetic-broad-c-joint/numba-native"
+    },
+    "synthetic-market-like-c-half": {
+      "base_compiledir": "/private/tmp/sbi4f-scale-v2-60adbfd49bd8-synthetic-market-like-c-half",
+      "compiledir": "/private/tmp/sbi4f-scale-v2-60adbfd49bd8-synthetic-market-like-c-half/compiled",
+      "PYTENSOR_FLAGS": "base_compiledir=/private/tmp/sbi4f-scale-v2-60adbfd49bd8-synthetic-market-like-c-half,compiledir=/private/tmp/sbi4f-scale-v2-60adbfd49bd8-synthetic-market-like-c-half/compiled",
+      "NUMBA_CACHE_DIR": "/private/tmp/sbi4f-scale-v2-60adbfd49bd8-synthetic-market-like-c-half/numba-native"
+    },
+    "synthetic-market-like-c-double": {
+      "base_compiledir": "/private/tmp/sbi4f-scale-v2-60adbfd49bd8-synthetic-market-like-c-double",
+      "compiledir": "/private/tmp/sbi4f-scale-v2-60adbfd49bd8-synthetic-market-like-c-double/compiled",
+      "PYTENSOR_FLAGS": "base_compiledir=/private/tmp/sbi4f-scale-v2-60adbfd49bd8-synthetic-market-like-c-double,compiledir=/private/tmp/sbi4f-scale-v2-60adbfd49bd8-synthetic-market-like-c-double/compiled",
+      "NUMBA_CACHE_DIR": "/private/tmp/sbi4f-scale-v2-60adbfd49bd8-synthetic-market-like-c-double/numba-native"
+    },
+    "synthetic-market-like-c-joint": {
+      "base_compiledir": "/private/tmp/sbi4f-scale-v2-60adbfd49bd8-synthetic-market-like-c-joint",
+      "compiledir": "/private/tmp/sbi4f-scale-v2-60adbfd49bd8-synthetic-market-like-c-joint/compiled",
+      "PYTENSOR_FLAGS": "base_compiledir=/private/tmp/sbi4f-scale-v2-60adbfd49bd8-synthetic-market-like-c-joint,compiledir=/private/tmp/sbi4f-scale-v2-60adbfd49bd8-synthetic-market-like-c-joint/compiled",
+      "NUMBA_CACHE_DIR": "/private/tmp/sbi4f-scale-v2-60adbfd49bd8-synthetic-market-like-c-joint/numba-native"
+    },
+    "market-c-joint": {
+      "base_compiledir": "/private/tmp/sbi4f-scale-v2-60adbfd49bd8-market-c-joint",
+      "compiledir": "/private/tmp/sbi4f-scale-v2-60adbfd49bd8-market-c-joint/compiled",
+      "PYTENSOR_FLAGS": "base_compiledir=/private/tmp/sbi4f-scale-v2-60adbfd49bd8-market-c-joint,compiledir=/private/tmp/sbi4f-scale-v2-60adbfd49bd8-market-c-joint/compiled",
+      "NUMBA_CACHE_DIR": "/private/tmp/sbi4f-scale-v2-60adbfd49bd8-market-c-joint/numba-native"
+    }
+  },
+  "original_started_utc": "2026-11-10T15:15:41.563316+00:00",
+  "deadline_utc": "2026-11-10T16:20:40.860497+00:00",
+  "remaining_seconds_at_prepare": 2963.515442,
+  "failed_startup_inner_cpu_seconds": 46.056057,
+  "preflight_cpu_seconds": 1.363659,
+  "initial_charged_cpu_seconds": 47.419716,
+  "maximum_sum_inner_cpu_seconds": 6300,
+  "maximum_concurrent_jobs": 2,
+  "cpu_admission_rule": "initialchargedCPU + completedactualinnerCPU + activeworkers*900 + next900 <=6300",
+  "logs_root": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/recovery-v2-campaign-logs",
+  "progress_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/recovery-v2-campaign.json",
+  "sources": {
+    "recovery_controller": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/recover_heston_spread_scale_campaign_v2.py",
+      "sha256": "62571433f13241fb0ae0f9591c32766a12df092d27f5c8318db4a3c5a988de1e"
+    },
+    "previous_recovery_controller": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/recover_heston_spread_scale_campaign.py",
+      "sha256": "04ed9acd4b30873aa25c4c6be2ac24c77dfb6e805939c6aa4b133c7e49d195ab"
+    },
+    "original_controller": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/run_heston_spread_scale_campaign.py",
+      "sha256": "ed5a192df30aa0dd0774b1a5cddbe240724e4b75a7f09de73678a8ccb820aa0f"
+    },
+    "consumer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/run_heston_spread_scale_reference.py",
+      "sha256": "191b0482fa73ec82f5e88fa3d8022c6fc502e5f9120a9b2dc37d25ceebed9eb3"
+    },
+    "producer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/run_heston_spread_reference.py",
+      "sha256": "69b6267580b91c49b691a867326f8f64ce332dad445204e1fe00166ff6d2f575"
+    }
+  },
+  "process_topology": "consumer --worker directly in one Popen; no nested consumer supervisor; native PyMC cores1. Controller owns950s outer timeout and signals direct Popen only.",
+  "authorization": "Manual environment/controller correction after zero MCMC draws; original failures, deadline and CPU cost retained. No automatic statistical retry or budget extension.",
+  "scientific_acceptance": false,
+  "automatic_retry": false
+}

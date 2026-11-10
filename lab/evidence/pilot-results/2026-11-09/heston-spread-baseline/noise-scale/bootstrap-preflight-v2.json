@@ -1,0 +1,25 @@
+{
+  "format": "heston_spread_cache_symbolic_preflight_v2",
+  "status": "passed",
+  "returncode": 0,
+  "wall_seconds": 1.9742794160265476,
+  "cpu_seconds": 1.363659,
+  "environment": {
+    "PYTENSOR_FLAGS": "base_compiledir=/private/tmp/sbi4f-scale-preflight-v2-bk3fqs2o,compiledir=/private/tmp/sbi4f-scale-preflight-v2-bk3fqs2o/compiled",
+    "NUMBA_CACHE_DIR": "/private/tmp/sbi4f-scale-preflight-v2-bk3fqs2o/numba-native"
+  },
+  "symbolic_program": "import json,numpy as np,pytensor,pytensor.tensor as pt\nfrom pytensor.compile.mode import Mode\nx=pt.dvector(\"x\")\ny=pt.exp(x)+1\na=pytensor.function([x],y,mode=Mode(linker=\"cvm\",optimizer=\"fast_run\"))\nb=pytensor.function([x],y,mode=\"NUMBA\")\nnp.testing.assert_allclose(a([0.,1.]),[2.,np.e+1])\nnp.testing.assert_allclose(b([0.,1.]),[2.,np.e+1])\nprint(json.dumps({\"symbolic_cvm_compilation\":True,\"symbolic_numba_compilation\":True,\"base_compiledir\":str(pytensor.config.base_compiledir),\"compiledir\":str(pytensor.config.compiledir),\"pytensor_numba_cache\":str(pytensor.config.base_compiledir/\"numba\")}))\n",
+  "symbolic_program_sha256": "d879b44d4c2b71ecdb0af822a6634ae50eb9b624fe197c1817193d5d5cdb6dff",
+  "stdout": "{\"symbolic_cvm_compilation\": true, \"symbolic_numba_compilation\": true, \"base_compiledir\": \"/private/tmp/sbi4f-scale-preflight-v2-bk3fqs2o\", \"compiledir\": \"/private/tmp/sbi4f-scale-preflight-v2-bk3fqs2o/compiled\", \"pytensor_numba_cache\": \"/private/tmp/sbi4f-scale-preflight-v2-bk3fqs2o/numba\"}\n",
+  "stderr": "",
+  "heston_prices": 0,
+  "mcmc_draws": 0,
+  "neural_inference": 0,
+  "result": {
+    "symbolic_cvm_compilation": true,
+    "symbolic_numba_compilation": true,
+    "base_compiledir": "/private/tmp/sbi4f-scale-preflight-v2-bk3fqs2o",
+    "compiledir": "/private/tmp/sbi4f-scale-preflight-v2-bk3fqs2o/compiled",
+    "pytensor_numba_cache": "/private/tmp/sbi4f-scale-preflight-v2-bk3fqs2o/numba"
+  }
+}

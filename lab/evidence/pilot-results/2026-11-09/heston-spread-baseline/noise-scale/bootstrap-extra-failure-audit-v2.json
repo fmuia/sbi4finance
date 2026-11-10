@@ -1,0 +1,82 @@
+{
+  "format": "heston_spread_scale_bootstrap_extra_failures_v2",
+  "jobs": [
+    {
+      "id": "synthetic-broad-c-half",
+      "sampling_started": false,
+      "callback_counts_including_warmup": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "posterior_draw_counts": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "inner_cpu_seconds": 2.657668,
+      "files": {
+        "run": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/recovery-references/synthetic-broad-c-half/run.json",
+          "sha256": "19c281942fab3e02c2b4e42463352ceb38de5c16ae110c2325a4038cd7d58016"
+        },
+        "consumer": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/recovery-references/synthetic-broad-c-half.consumer.json",
+          "sha256": "dae5be0b0cfa1f702e506c14cebcba6d0c53467b1d86b0162ded796733d9333a"
+        },
+        "partial": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/recovery-references/synthetic-broad-c-half/attempt-0/partial/progress.json",
+          "sha256": "1d9e6cdb3e2985e2767112889f655ce88fa76153bc507380f7bfd8390526300b"
+        },
+        "log": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/recovery-campaign-logs/synthetic-broad-c-half.log",
+          "sha256": "20f094e7dd6f70c9ab26f296458bed49aa57f2e3a5caab3c1ec35206e37ffd42"
+        }
+      }
+    },
+    {
+      "id": "synthetic-broad-c-double",
+      "sampling_started": false,
+      "callback_counts_including_warmup": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "posterior_draw_counts": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "inner_cpu_seconds": 2.658516,
+      "files": {
+        "run": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/recovery-references/synthetic-broad-c-double/run.json",
+          "sha256": "ad91740027a1d3990da603db37e1b6b75a3626cad39cb2fc40d292c5f9b5530d"
+        },
+        "consumer": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/recovery-references/synthetic-broad-c-double.consumer.json",
+          "sha256": "1daf181ed45917138d5d2368282ac2a8036efc176976ac2836ace52db749da3d"
+        },
+        "partial": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/recovery-references/synthetic-broad-c-double/attempt-0/partial/progress.json",
+          "sha256": "9f1f5c501655d9e8ed860717030ea8f692c2beba555d09a1290975f3910b76bc"
+        },
+        "log": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/recovery-campaign-logs/synthetic-broad-c-double.log",
+          "sha256": "53040cb0ef43edc093f815f26d4788cf038b99de2678f1330ed9056b9ceebd5e"
+        }
+      }
+    }
+  ],
+  "inner_cpu_seconds": 5.316184,
+  "zero_mcmc_draws": true,
+  "controller_errors_preserved": [
+    "duplicate status keyword during progress update",
+    "process-group signal denied by sandbox"
+  ],
+  "process_groups_exited_verified": "read-only process inspection after failure found no remaining members of groups74846/74847"
+}
