@@ -16,6 +16,9 @@ Common Equity Tier 1 capital (CRR, Article 34).
 simulated data, so that each later posterior costs seconds. The training cost is spread
 ("amortized") over all later uses.
 
+**Antithetic paths.** Simulating each random path together with its mirror image (all
+normals with flipped sign), which cancels part of the Monte Carlo noise.
+
 **Ask.** The lowest price at which someone currently offers to sell. See *bid*.
 
 **At the money.** An option whose strike is at, or near, the forward level of the index.
@@ -43,6 +46,15 @@ volatilities.
 **Book.** The set of positions a desk holds. Its value is the sum of its positions'
 values.
 
+**Breeden–Litzenberger formula.** The second derivative of the call price in the strike
+is the discounted density of the index at maturity:
+$`\partial^2 C/\partial K^2 = D(T)\,p_T(K)`$. So listed options at one maturity fix the
+distribution of the index at that maturity, and nothing about how dates are linked.
+
+**Broadie–Glasserman–Kou correction.** An adjustment that turns a barrier price for
+continuous monitoring into one for monitoring at discrete dates, by shifting the barrier
+by a factor $`e^{\pm 0.5826\,\sigma\sqrt{\Delta t}}`$.
+
 **Calibration.** Choosing a model's parameters so that its prices reproduce market
 prices.
 
@@ -58,9 +70,29 @@ SPX options are cash-settled.
 shareholders' equity and retained earnings. Regulators set minimum ratios of CET1 to
 risk-weighted assets; deductions such as AVAs reduce it.
 
+**Characteristic function.** The Fourier transform of a distribution,
+$`\varphi(u) = \mathbb{E}[e^{iu\ln X_T}]`$. Heston's is known in closed form, and one
+Fourier integral turns it into an option price.
+
+**Cholesky factor.** For a covariance matrix $`\Sigma`$, the lower-triangular $`L`$ with
+$`LL^\top = \Sigma`$. Multiplying independent normals by $`L`$ gives correlated ones;
+multiplying residuals by $`L^{-1}`$ "whitens" them.
+
 **Common random numbers.** Using the same random numbers in the simulations for every
 parameter draw, so that differences between draws come from the parameters and not from
 simulation noise.
+
+**Conditional Monte Carlo.** Simulating only part of the randomness and integrating the
+rest in closed form. Here: given the variance path, an option's payoff is averaged with a
+Black–Scholes formula instead of by sampling the index.
+
+**Consensus service.** A service that collects banks' valuations of the same products and
+returns the consensus, and sometimes its spread (some publish 10th and 90th percentiles
+for prudent valuation).
+
+**Control variate.** A quantity simulated on the same paths whose exact mean is known;
+subtracting its error, scaled by a regression coefficient, reduces the noise of the
+estimate.
 
 **Coverage.** How often an interval contains the true value. A well-calibrated 90%
 interval has 90% coverage.
@@ -78,6 +110,10 @@ $`D(T) = e^{-r(T)\,T}`$, with $`r(T)`$ the interest rate for that maturity.
 $`B`$ below its starting level during the put's life. Here the barrier is checked on daily
 closes: the payoff is $`(K - S_T)^+`$ if some close was at or below $`B`$, and zero
 otherwise.
+
+**Effective sample size (ESS).** The number of independent draws that a set of correlated
+(MCMC) or weighted (importance-sampling) draws is worth. For importance weights $`w_s`$,
+$`(\sum_s w_s)^2/\sum_s w_s^2`$.
 
 **Error model.** The statement of how observed quotes differ from model prices. Here: a
 quote uncertainty the size of the half-spread, plus a smooth model error of size
@@ -97,6 +133,9 @@ counter, often with a payoff that depends on the index's path.
 liability, in an orderly transaction between market participants (the accounting
 standard IFRS 13). The mark is the bank's estimate of it.
 
+**Feller condition.** In Heston, $`2\kappa\bar{v} \ge \xi^2`$: it keeps the variance
+away from zero. Violating it is allowed; the model and its Fourier prices remain valid.
+
 **Forward** ($`F(T)`$). The price agreed today for buying the index at $`T`$, paid at
 $`T`$. It equals today's level grown at the interest rate less the dividend yield,
 $`F(T) = S_0\,e^{(r-q)T}`$. In this work it is read from the quotes through put–call
@@ -105,14 +144,22 @@ parity.
 **Forward smile.** The smile that options starting at a future date will show. No listed
 option reveals it today, and models disagree about it.
 
+**Forward-start call.** A call whose strike is fixed at a future date $`T_1`$ in
+proportion to the index level then, and which pays at a later date $`T_2`$. Here
+$`T_1`$ is 6 months and $`T_2`$ is 1 year. Its value depends on the forward smile.
+
+**Forward units.** Prices divided by $`D(T)\,F(T)`$, and the index divided by its
+forward, $`X_t = S_t/F(t)`$. In these units the index has no drift under the pricing
+probabilities.
+
 **Forward variance curve** ($`\xi_0(t)`$). The expected future variance at each date
 $`t`$ under the pricing probabilities, $`\xi_0(t) = \mathbb{E}[V_t]`$. Rough Bergomi takes
 it as a curve, here described by three numbers: a short-term level, a long-term level and
 the speed between them. Not to be confused with Heston's vol of vol $`\xi`$.
 
-**Forward-start call.** A call whose strike is fixed at a future date $`T_1`$ in
-proportion to the index level then, and which pays at a later date $`T_2`$. Here
-$`T_1`$ is 6 months and $`T_2`$ is 1 year. Its value depends on the forward smile.
+**Full-truncation Euler scheme.** A time-stepping scheme for Heston's variance that
+replaces negative values by zero in the drift and the volatility, so the simulation stays
+well defined.
 
 **Half-spread** ($`h`$). Half the bid–ask spread, $`(\text{ask} - \text{bid})/2`$: the
 uncertainty of a quote's price. Divided by vega, it is expressed in vol points.
@@ -126,15 +173,34 @@ prices come from a Fourier integral.
 paths are: $`H = 1/2`$ is as rough as Brownian motion, and $`H \lt 1/2`$ is rougher.
 Estimates from data are near 0.1.
 
+**Hybrid scheme.** The standard way to simulate rough Bergomi (Bennedsen, Lunde and
+Pakkanen): the singular part of the kernel near the present is simulated exactly, the
+rest by a convolution.
+
 **Implied volatility.** The volatility $`\sigma`$ that makes the Black–Scholes formula
 reproduce an option's market price. It quotes prices in a common unit across strikes and
 maturities.
+
+**Importance sampling.** Drawing from a convenient distribution $`q`$ and weighting each
+draw by $`p/q`$ to obtain expectations under the target $`p`$. Here $`q`$ is the network's
+posterior and $`p`$ the exact one.
+
+**Kriging.** Predicting a Gaussian quantity at a new point from its values at observed
+points, through their correlation. Here: the model error at an unused quote, from the
+residuals at the design's quotes.
+
+**Level 3 (IFRS 13).** A fair value that depends significantly on inputs nobody quotes.
+Banks must disclose how sensitive it is to reasonably possible alternative inputs.
 
 **Likelihood.** The probability (density) of the observed data given the parameters,
 $`p(y \mid \theta)`$, seen as a function of $`\theta`$.
 
 **Listed.** Traded on an exchange, with standard terms and public quotes. The opposite of
 over the counter.
+
+**Log-moneyness.** $`k = \ln(K/F(T))`$: how far a strike is from the forward, on a log
+scale. The design measures it in standard deviations at 16% volatility,
+$`\delta = k/(0.16\sqrt{T})`$.
 
 **Mark; mark to market; mark to model.** The mark is the value a bank assigns to a
 position at the end of a day, for its P&L and balance sheet. Marking to market values a
@@ -167,6 +233,9 @@ quotes the design uses.
 **Over the counter (OTC).** Traded privately between two parties, on terms set by
 contract, rather than on an exchange. There is no public price.
 
+**Pareto k-hat** ($`\hat k`$). A diagnostic of importance sampling: it estimates how heavy the
+tail of the weights is. Below 0.7 the estimate is reliable.
+
 **P&L.** Profit and loss: the change in the value of a book, usually per day.
 
 **Posterior.** The distribution of the parameters given the data:
@@ -194,6 +263,9 @@ the strike $`K`$. It protects against a fall.
 **Put–call parity.** For European options with the same strike and maturity,
 $`C - P = D(T)\,(F(T) - K)`$: a call minus a put is a forward contract. It is used to read
 the forward from the quotes.
+
+**R-hat** ($`\hat R`$). An MCMC diagnostic comparing the spread within and between
+chains. Close to 1 (here at most 1.01) means the chains agree.
 
 **Realized volatility and variance.** Computed from the index's daily log returns $`r_i`$
 over a period of $`N`$ trading days: realized variance $`= (252/N)\sum_i r_i^2`$, and
@@ -232,6 +304,13 @@ day.
 **SPY.** A fund traded on an exchange that tracks the S&P 500. Its options are American,
 so their prices include an early-exercise value; this application uses SPX instead.
 
+**Squared-exponential correlation.** $`\exp(-d^2/2\ell^2)`$ between two points at
+distance $`d`$: near 1 for nearby points, near 0 beyond a few lengths $`\ell`$. It makes
+the model error a smooth random curve.
+
+**Stacking.** Combining several models' predictions with weights chosen to predict
+held-out data best.
+
 **Stochastic volatility model.** A model in which the index's volatility is itself
 random, such as Heston and rough Bergomi.
 
@@ -261,3 +340,7 @@ rough Bergomi.
 **Volatility swap.** Pays the realized volatility over a period minus a strike agreed
 today. Unlike the variance swap, it cannot be replicated with listed options alone; its
 value also depends on the vol of vol.
+
+**Whitened residuals.** Residuals multiplied by the inverse Cholesky factor of their
+assumed covariance. If the error model is right, they are independent standard
+normals.

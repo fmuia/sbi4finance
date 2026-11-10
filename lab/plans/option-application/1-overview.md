@@ -1,11 +1,11 @@
 # Option application on SPX · Layer 1: overview
 
-*Layer 1 of 3 · about 10 minutes · [Index](README.md) · [Glossary](glossary.md)*
+*Layer 1 of 3 · about 10 minutes · [Index](README.md) · [Layer 2](2-walkthrough.md) · [Glossary](glossary.md)*
 
 *10 November 2026: what we are building for the tutorial of 14 November
 ([PR #81](https://github.com/fmuia/sbi4finance/pull/81)). There are no results yet;
 "first checks" are quick runs of 9 November. The details are in
-[the plan](../OPTION-APPLICATION-PLAN.md) until Layers 2 and 3 replace it.*
+[Layer 2](2-walkthrough.md) and, until Layer 3 replaces it, [the plan](../OPTION-APPLICATION-PLAN.md).*
 
 ## Goals
 
