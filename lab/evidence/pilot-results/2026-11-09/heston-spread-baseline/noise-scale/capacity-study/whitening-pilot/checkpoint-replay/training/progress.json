@@ -1,0 +1,16 @@
+{
+  "status": "complete",
+  "completed_updates": 4000,
+  "completed_bank_passes": 100,
+  "presentations": 1000000,
+  "seconds": 67.78139983303845,
+  "same_seed_reload_exact": true,
+  "paired_initial_trainable_hashes_exact": true,
+  "all_original_initial_state_hashes_exact": true,
+  "original_learning_curve_prefix_exact": true,
+  "original_curve_points_compared": 100,
+  "schedule_updates": 8000,
+  "last_checkpoint": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/training/checkpoints/update-004000",
+  "reserved_arrays_opened": false,
+  "scientific_acceptance": false
+}

@@ -1,0 +1,830 @@
+<svg role="img" aria-label="Saved checkpoints on the unchanged trajectory" xmlns:xlink="http://www.w3.org/1999/xlink" width="778.79952pt" height="296.39952pt" viewBox="0 0 778.79952 296.39952" xmlns="http://www.w3.org/2000/svg" version="1.1">
+<title>Saved checkpoints on the unchanged trajectory</title><desc>The cosine schedule still spans 8000 updates. Saving earlier weights does not shorten the decay schedule.</desc>
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.11.2, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="heston-7c58c30f72-figure_1">
+  <g id="heston-7c58c30f72-patch_1">
+   <path d="M 0 296.39952 
+L 778.79952 296.39952 
+L 778.79952 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="heston-7c58c30f72-axes_1">
+   <g id="heston-7c58c30f72-patch_2">
+    <path d="M 54.781484 260.198817 
+L 771.59952 260.198817 
+L 771.59952 21.406312 
+L 54.781484 21.406312 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="heston-7c58c30f72-matplotlib.axis_1">
+    <g id="heston-7c58c30f72-xtick_1">
+     <g id="heston-7c58c30f72-line2d_1">
+      <defs>
+       <path id="heston-7c58c30f72-mdfa2674407" d="M 0 0 
+L 0 3.5 
+" style="stroke: #000000; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#heston-7c58c30f72-mdfa2674407" x="84.089485" y="260.198817" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7c58c30f72-text_1">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="84.089485" y="274.036707" transform="rotate(-0 84.089485 274.036707)">0</text>
+     </g>
+    </g>
+    <g id="heston-7c58c30f72-xtick_2">
+     <g id="heston-7c58c30f72-line2d_2">
+      <g>
+       <use xlink:href="#heston-7c58c30f72-mdfa2674407" x="165.95541" y="260.198817" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7c58c30f72-text_2">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="165.95541" y="274.036707" transform="rotate(-0 165.95541 274.036707)">25</text>
+     </g>
+    </g>
+    <g id="heston-7c58c30f72-xtick_3">
+     <g id="heston-7c58c30f72-line2d_3">
+      <g>
+       <use xlink:href="#heston-7c58c30f72-mdfa2674407" x="247.821335" y="260.198817" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7c58c30f72-text_3">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="247.821335" y="274.036707" transform="rotate(-0 247.821335 274.036707)">50</text>
+     </g>
+    </g>
+    <g id="heston-7c58c30f72-xtick_4">
+     <g id="heston-7c58c30f72-line2d_4">
+      <g>
+       <use xlink:href="#heston-7c58c30f72-mdfa2674407" x="329.687259" y="260.198817" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7c58c30f72-text_4">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="329.687259" y="274.036707" transform="rotate(-0 329.687259 274.036707)">75</text>
+     </g>
+    </g>
+    <g id="heston-7c58c30f72-xtick_5">
+     <g id="heston-7c58c30f72-line2d_5">
+      <g>
+       <use xlink:href="#heston-7c58c30f72-mdfa2674407" x="411.553184" y="260.198817" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7c58c30f72-text_5">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="411.553184" y="274.036707" transform="rotate(-0 411.553184 274.036707)">100</text>
+     </g>
+    </g>
+    <g id="heston-7c58c30f72-xtick_6">
+     <g id="heston-7c58c30f72-line2d_6">
+      <g>
+       <use xlink:href="#heston-7c58c30f72-mdfa2674407" x="493.419108" y="260.198817" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7c58c30f72-text_6">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="493.419108" y="274.036707" transform="rotate(-0 493.419108 274.036707)">125</text>
+     </g>
+    </g>
+    <g id="heston-7c58c30f72-xtick_7">
+     <g id="heston-7c58c30f72-line2d_7">
+      <g>
+       <use xlink:href="#heston-7c58c30f72-mdfa2674407" x="575.285033" y="260.198817" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7c58c30f72-text_7">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="575.285033" y="274.036707" transform="rotate(-0 575.285033 274.036707)">150</text>
+     </g>
+    </g>
+    <g id="heston-7c58c30f72-xtick_8">
+     <g id="heston-7c58c30f72-line2d_8">
+      <g>
+       <use xlink:href="#heston-7c58c30f72-mdfa2674407" x="657.150957" y="260.198817" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7c58c30f72-text_8">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="657.150957" y="274.036707" transform="rotate(-0 657.150957 274.036707)">175</text>
+     </g>
+    </g>
+    <g id="heston-7c58c30f72-xtick_9">
+     <g id="heston-7c58c30f72-line2d_9">
+      <g>
+       <use xlink:href="#heston-7c58c30f72-mdfa2674407" x="739.016882" y="260.198817" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7c58c30f72-text_9">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="739.016882" y="274.036707" transform="rotate(-0 739.016882 274.036707)">200</text>
+     </g>
+    </g>
+    <g id="heston-7c58c30f72-text_10">
+     <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="413.190502" y="287.037411" transform="rotate(-0 413.190502 287.037411)">Pass over the same fixed 10,000 noisy rows</text>
+    </g>
+   </g>
+   <g id="heston-7c58c30f72-matplotlib.axis_2">
+    <g id="heston-7c58c30f72-ytick_1">
+     <g id="heston-7c58c30f72-line2d_10">
+      <defs>
+       <path id="heston-7c58c30f72-m2f5b8c0569" d="M 0 0 
+L -3.5 0 
+" style="stroke: #000000; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#heston-7c58c30f72-m2f5b8c0569" x="54.781484" y="256.62418" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7c58c30f72-text_11">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="47.781484" y="260.043126" transform="rotate(-0 47.781484 260.043126)">−17.5</text>
+     </g>
+    </g>
+    <g id="heston-7c58c30f72-ytick_2">
+     <g id="heston-7c58c30f72-line2d_11">
+      <g>
+       <use xlink:href="#heston-7c58c30f72-m2f5b8c0569" x="54.781484" y="230.014827" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7c58c30f72-text_12">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="47.781484" y="233.433772" transform="rotate(-0 47.781484 233.433772)">−15.0</text>
+     </g>
+    </g>
+    <g id="heston-7c58c30f72-ytick_3">
+     <g id="heston-7c58c30f72-line2d_12">
+      <g>
+       <use xlink:href="#heston-7c58c30f72-m2f5b8c0569" x="54.781484" y="203.405473" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7c58c30f72-text_13">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="47.781484" y="206.824418" transform="rotate(-0 47.781484 206.824418)">−12.5</text>
+     </g>
+    </g>
+    <g id="heston-7c58c30f72-ytick_4">
+     <g id="heston-7c58c30f72-line2d_13">
+      <g>
+       <use xlink:href="#heston-7c58c30f72-m2f5b8c0569" x="54.781484" y="176.796119" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7c58c30f72-text_14">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="47.781484" y="180.215064" transform="rotate(-0 47.781484 180.215064)">−10.0</text>
+     </g>
+    </g>
+    <g id="heston-7c58c30f72-ytick_5">
+     <g id="heston-7c58c30f72-line2d_14">
+      <g>
+       <use xlink:href="#heston-7c58c30f72-m2f5b8c0569" x="54.781484" y="150.186765" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7c58c30f72-text_15">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="47.781484" y="153.60571" transform="rotate(-0 47.781484 153.60571)">−7.5</text>
+     </g>
+    </g>
+    <g id="heston-7c58c30f72-ytick_6">
+     <g id="heston-7c58c30f72-line2d_15">
+      <g>
+       <use xlink:href="#heston-7c58c30f72-m2f5b8c0569" x="54.781484" y="123.577411" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7c58c30f72-text_16">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="47.781484" y="126.996356" transform="rotate(-0 47.781484 126.996356)">−5.0</text>
+     </g>
+    </g>
+    <g id="heston-7c58c30f72-ytick_7">
+     <g id="heston-7c58c30f72-line2d_16">
+      <g>
+       <use xlink:href="#heston-7c58c30f72-m2f5b8c0569" x="54.781484" y="96.968057" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7c58c30f72-text_17">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="47.781484" y="100.387003" transform="rotate(-0 47.781484 100.387003)">−2.5</text>
+     </g>
+    </g>
+    <g id="heston-7c58c30f72-ytick_8">
+     <g id="heston-7c58c30f72-line2d_17">
+      <g>
+       <use xlink:href="#heston-7c58c30f72-m2f5b8c0569" x="54.781484" y="70.358704" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7c58c30f72-text_18">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="47.781484" y="73.777649" transform="rotate(-0 47.781484 73.777649)">0.0</text>
+     </g>
+    </g>
+    <g id="heston-7c58c30f72-ytick_9">
+     <g id="heston-7c58c30f72-line2d_18">
+      <g>
+       <use xlink:href="#heston-7c58c30f72-m2f5b8c0569" x="54.781484" y="43.74935" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7c58c30f72-text_19">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end" x="47.781484" y="47.168295" transform="rotate(-0 47.781484 47.168295)">2.5</text>
+     </g>
+    </g>
+    <g id="heston-7c58c30f72-text_20">
+     <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle" x="14.038594" y="140.802565" transform="rotate(-90 14.038594 140.802565)">Fixed-probe negative log density</text>
+    </g>
+   </g>
+   <g id="heston-7c58c30f72-line2d_19">
+    <path d="M 87.364122 40.029538 
+L 90.638759 50.439447 
+L 93.913396 59.031761 
+L 97.188033 63.887039 
+L 100.46267 69.857427 
+L 103.737307 76.640466 
+L 107.011944 81.741521 
+L 110.286581 86.566819 
+L 113.561218 91.094252 
+L 116.835855 96.13331 
+L 120.110492 96.747471 
+L 123.385129 102.751446 
+L 126.659766 102.30099 
+L 129.934403 108.123466 
+L 133.20904 111.372234 
+L 136.483677 112.447156 
+L 139.758314 116.150425 
+L 143.032951 114.789185 
+L 146.307588 123.051526 
+L 149.582225 119.110328 
+L 152.856862 125.866756 
+L 156.131499 126.143813 
+L 159.406136 128.019118 
+L 162.680773 123.96172 
+L 165.95541 133.086628 
+L 169.230047 129.280784 
+L 172.504684 131.381393 
+L 175.779321 137.114924 
+L 179.053958 136.930451 
+L 182.328595 136.132842 
+L 185.603232 141.333519 
+L 188.877869 134.446107 
+L 192.152506 142.950362 
+L 195.427143 141.146544 
+L 198.70178 146.531633 
+L 201.976417 145.552348 
+L 205.251054 141.675992 
+L 208.525691 148.988753 
+L 211.800328 140.097712 
+L 215.074965 152.285775 
+L 218.349602 154.784482 
+L 221.624239 153.517563 
+L 224.898876 156.624996 
+L 228.173513 155.80803 
+L 231.44815 145.728411 
+L 234.722787 155.883317 
+L 237.997424 152.677266 
+L 241.272061 163.081853 
+L 244.546698 158.665116 
+L 247.821335 161.83259 
+L 251.095972 162.153219 
+L 254.370609 164.550115 
+L 257.645245 168.539143 
+L 260.919882 163.384312 
+L 264.194519 169.93692 
+L 267.469156 162.276184 
+L 270.743793 166.115003 
+L 274.01843 161.729246 
+L 277.293067 173.615612 
+L 280.567704 170.518726 
+L 283.842341 161.663257 
+L 287.116978 172.549396 
+L 290.391615 168.962253 
+L 293.666252 175.843469 
+L 296.940889 174.067966 
+L 300.215526 174.698007 
+L 303.490163 174.213252 
+L 306.7648 180.551671 
+L 310.039437 182.425585 
+L 313.314074 179.089966 
+L 316.588711 180.644682 
+L 319.863348 162.291329 
+L 323.137985 181.60999 
+L 326.412622 174.48464 
+L 329.687259 181.107846 
+L 332.961896 173.064278 
+L 336.236533 180.093998 
+L 339.51117 189.158357 
+L 342.785807 179.580151 
+L 346.060444 181.78718 
+L 349.335081 182.555097 
+L 352.609718 182.333001 
+L 355.884355 188.498138 
+L 359.158992 186.058457 
+L 362.433629 181.729534 
+L 365.708266 192.939205 
+L 368.982903 188.496798 
+L 372.25754 191.118816 
+L 375.532177 192.299399 
+L 378.806814 190.694975 
+L 382.081451 183.355132 
+L 385.356088 195.254561 
+L 388.630725 191.988992 
+L 391.905362 188.159329 
+L 395.179999 186.469335 
+L 398.454636 195.100241 
+L 401.729273 197.305746 
+L 405.00391 199.909676 
+L 411.553184 197.32145 
+L 414.827821 193.035058 
+L 418.102458 191.497557 
+L 421.377095 200.897335 
+L 424.651732 199.099034 
+L 427.926369 198.288605 
+L 431.201006 203.806728 
+L 434.475643 204.167239 
+L 437.75028 202.769574 
+L 441.024917 202.854424 
+L 444.299554 205.864867 
+L 447.574191 204.003996 
+L 450.848827 194.93244 
+L 454.123464 201.678865 
+L 457.398101 205.991811 
+L 460.672738 205.995526 
+L 463.947375 202.40144 
+L 467.222012 209.747516 
+L 470.496649 211.598489 
+L 473.771286 208.262311 
+L 477.045923 209.677557 
+L 480.32056 210.151908 
+L 483.595197 215.878668 
+L 486.869834 216.81459 
+L 490.144471 208.427513 
+L 493.419108 211.045369 
+L 499.968382 218.259273 
+L 503.243019 209.248885 
+L 506.517656 215.256778 
+L 509.792293 217.343043 
+L 513.06693 219.706524 
+L 516.341567 218.140408 
+L 519.616204 217.806431 
+L 522.890841 218.920162 
+L 526.165478 215.857169 
+L 532.714752 224.467347 
+L 535.989389 221.524376 
+L 539.264026 225.031815 
+L 542.538663 226.108293 
+L 545.8133 223.733952 
+L 549.087937 226.284448 
+L 552.362574 220.495921 
+L 555.637211 227.544135 
+L 558.911848 224.729346 
+L 562.186485 229.393971 
+L 565.461122 225.352617 
+L 568.735759 229.8547 
+L 572.010396 227.332088 
+L 575.285033 228.722931 
+L 578.55967 230.87609 
+L 581.834307 229.320075 
+L 585.108944 229.721056 
+L 588.383581 232.606524 
+L 591.658218 232.715248 
+L 594.932855 232.214079 
+L 598.207492 236.100261 
+L 601.482129 232.431172 
+L 604.756766 231.430682 
+L 608.031403 234.553279 
+L 611.30604 233.799877 
+L 614.580677 234.597049 
+L 617.855314 234.327153 
+L 621.129951 235.432083 
+L 624.404588 237.900897 
+L 630.953862 240.33533 
+L 637.503136 238.648828 
+L 640.777773 239.77545 
+L 644.05241 239.886681 
+L 647.327046 241.896746 
+L 650.601683 240.257018 
+L 653.87632 240.831515 
+L 657.150957 241.795158 
+L 660.425594 241.168822 
+L 663.700231 242.320597 
+L 666.974868 242.233626 
+L 670.249505 244.293825 
+L 673.524142 244.24636 
+L 676.798779 243.966913 
+L 680.073416 244.365001 
+L 683.348053 243.509707 
+L 686.62269 245.773122 
+L 689.897327 246.417648 
+L 693.171964 244.788934 
+L 696.446601 246.203165 
+L 699.721238 246.217761 
+L 702.995875 247.179192 
+L 706.270512 246.507888 
+L 709.545149 244.910051 
+L 712.819786 246.948832 
+L 716.094423 249.344612 
+L 719.36906 247.988605 
+L 722.643697 246.116153 
+L 725.918334 248.463514 
+L 729.192971 246.726797 
+L 732.467608 247.775563 
+L 735.742245 247.577788 
+L 739.016882 249.072838 
+L 739.016882 249.072838 
+" clip-path="url(#heston-7c58c30f72-p83d7a90cea)" style="fill: none; stroke-dasharray: 1.5,2.475; stroke-dashoffset: 0; stroke: #405562; stroke-width: 1.5"/>
+   </g>
+   <g id="heston-7c58c30f72-line2d_20">
+    <path d="M 87.364122 32.260517 
+L 90.638759 40.256512 
+L 93.913396 51.993153 
+L 97.188033 54.118959 
+L 100.46267 59.436571 
+L 103.737307 66.917588 
+L 107.011944 68.726576 
+L 110.286581 74.795035 
+L 116.835855 80.688941 
+L 123.385129 88.251714 
+L 126.659766 91.215863 
+L 129.934403 94.781287 
+L 133.20904 97.529851 
+L 136.483677 98.599972 
+L 139.758314 100.487345 
+L 143.032951 97.784409 
+L 146.307588 101.986096 
+L 149.582225 101.864864 
+L 152.856862 104.269904 
+L 156.131499 105.963024 
+L 159.406136 110.16736 
+L 162.680773 101.434666 
+L 165.95541 109.843001 
+L 169.230047 107.869981 
+L 172.504684 109.227142 
+L 175.779321 119.793193 
+L 179.053958 113.089097 
+L 182.328595 114.95422 
+L 185.603232 117.422846 
+L 188.877869 110.493585 
+L 192.152506 117.593514 
+L 195.427143 116.932909 
+L 198.70178 120.388169 
+L 201.976417 120.365939 
+L 205.251054 114.656648 
+L 208.525691 124.048031 
+L 211.800328 111.735409 
+L 215.074965 123.822408 
+L 218.349602 125.193224 
+L 221.624239 122.368335 
+L 224.898876 128.007937 
+L 228.173513 124.33295 
+L 231.44815 114.998101 
+L 234.722787 126.82004 
+L 237.997424 116.297244 
+L 241.272061 125.044893 
+L 244.546698 123.65379 
+L 247.821335 126.00415 
+L 251.095972 125.180363 
+L 254.370609 128.901368 
+L 257.645245 126.30091 
+L 260.919882 130.768892 
+L 264.194519 134.422613 
+L 267.469156 125.21048 
+L 270.743793 129.794301 
+L 274.01843 120.364082 
+L 277.293067 129.535333 
+L 280.567704 131.622811 
+L 283.842341 121.098315 
+L 287.116978 130.366241 
+L 290.391615 123.3284 
+L 293.666252 133.131844 
+L 300.215526 128.045378 
+L 303.490163 127.856261 
+L 306.7648 132.428114 
+L 310.039437 131.780588 
+L 313.314074 129.756495 
+L 316.588711 133.700896 
+L 319.863348 117.728807 
+L 323.137985 134.690844 
+L 326.412622 124.047093 
+L 329.687259 130.667025 
+L 332.961896 123.73769 
+L 336.236533 130.557591 
+L 339.51117 136.062848 
+L 342.785807 128.242757 
+L 346.060444 129.57657 
+L 349.335081 128.822365 
+L 352.609718 129.5658 
+L 355.884355 138.288879 
+L 359.158992 130.19036 
+L 362.433629 119.740902 
+L 365.708266 137.019122 
+L 368.982903 127.104574 
+L 372.25754 133.364807 
+L 375.532177 126.640054 
+L 378.806814 131.296254 
+L 382.081451 125.311383 
+L 385.356088 132.83645 
+L 388.630725 131.824982 
+L 391.905362 131.50382 
+L 395.179999 126.557093 
+L 398.454636 125.636296 
+L 401.729273 131.403501 
+L 405.00391 131.025587 
+L 408.278547 131.47788 
+L 411.553184 127.259458 
+L 414.827821 124.784817 
+L 418.102458 126.690777 
+L 421.377095 126.652646 
+L 424.651732 122.41075 
+L 427.926369 125.062819 
+L 431.201006 131.408059 
+L 434.475643 130.018276 
+L 437.75028 126.527717 
+L 441.024917 124.975883 
+L 444.299554 128.524717 
+L 447.574191 122.083345 
+L 450.848827 124.344101 
+L 454.123464 123.400927 
+L 457.398101 125.818535 
+L 460.672738 123.591861 
+L 463.947375 115.954984 
+L 467.222012 121.666331 
+L 470.496649 125.841451 
+L 473.771286 123.348016 
+L 477.045923 128.332581 
+L 480.32056 128.312173 
+L 483.595197 129.384306 
+L 486.869834 123.093915 
+L 490.144471 117.049824 
+L 493.419108 118.485651 
+L 496.693745 115.277514 
+L 499.968382 120.018807 
+L 503.243019 118.620568 
+L 506.517656 120.029927 
+L 509.792293 119.212591 
+L 513.06693 125.54999 
+L 516.341567 117.52756 
+L 519.616204 119.691514 
+L 522.890841 114.897523 
+L 526.165478 117.760817 
+L 529.440115 116.580158 
+L 532.714752 118.400081 
+L 535.989389 113.820254 
+L 539.264026 115.601086 
+L 542.538663 116.442744 
+L 545.8133 112.366276 
+L 549.087937 114.387762 
+L 552.362574 117.494829 
+L 555.637211 116.923149 
+L 558.911848 109.268334 
+L 562.186485 114.512788 
+L 565.461122 110.01541 
+L 568.735759 112.796973 
+L 572.010396 109.090228 
+L 575.285033 108.684168 
+L 578.55967 109.264169 
+L 581.834307 107.526533 
+L 585.108944 104.713059 
+L 588.383581 106.599785 
+L 591.658218 98.518226 
+L 594.932855 107.002612 
+L 598.207492 106.491308 
+L 601.482129 102.81604 
+L 604.756766 106.240147 
+L 608.031403 103.723527 
+L 611.30604 100.516247 
+L 614.580677 101.878276 
+L 617.855314 105.040819 
+L 621.129951 101.916239 
+L 624.404588 104.208221 
+L 627.679225 102.581305 
+L 630.953862 102.183572 
+L 634.228499 96.107862 
+L 637.503136 103.656745 
+L 640.777773 97.121535 
+L 644.05241 95.998385 
+L 647.327046 93.903199 
+L 650.601683 97.530204 
+L 653.87632 94.899236 
+L 657.150957 95.384511 
+L 660.425594 93.271615 
+L 663.700231 94.070198 
+L 666.974868 94.336952 
+L 670.249505 91.716944 
+L 673.524142 90.398264 
+L 676.798779 92.811313 
+L 680.073416 89.502084 
+L 683.348053 91.027689 
+L 686.62269 88.487066 
+L 689.897327 91.753258 
+L 693.171964 87.417456 
+L 696.446601 91.498246 
+L 699.721238 86.777084 
+L 702.995875 89.266942 
+L 706.270512 84.5749 
+L 709.545149 87.373473 
+L 712.819786 85.241885 
+L 716.094423 86.247331 
+L 719.36906 86.734617 
+L 722.643697 83.669862 
+L 725.918334 85.693347 
+L 729.192971 80.806884 
+L 732.467608 85.602855 
+L 735.742245 83.859923 
+L 739.016882 85.408894 
+L 739.016882 85.408894 
+" clip-path="url(#heston-7c58c30f72-p83d7a90cea)" style="fill: none; stroke: #405562; stroke-width: 1.5; stroke-linecap: square"/>
+   </g>
+   <g id="heston-7c58c30f72-patch_3">
+    <path d="M 54.781484 260.198817 
+L 54.781484 21.406312 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-7c58c30f72-patch_4">
+    <path d="M 771.59952 260.198817 
+L 771.59952 21.406312 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-7c58c30f72-patch_5">
+    <path d="M 54.781484 260.198817 
+L 771.59952 260.198817 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-7c58c30f72-patch_6">
+    <path d="M 54.781484 21.406312 
+L 771.59952 21.406312 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-7c58c30f72-text_21">
+    <text style="font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: middle" x="413.190502" y="15.406312" transform="rotate(-0 413.190502 15.406312)">Original trajectory; replay matches the first 100 epochs exactly</text>
+   </g>
+   <g id="heston-7c58c30f72-PathCollection_1">
+    <defs>
+     <path id="heston-7c58c30f72-mb1d10e8e65" d="M 0 3 
+C 0.795609 3 1.55874 2.683901 2.12132 2.12132 
+C 2.683901 1.55874 3 0.795609 3 0 
+C 3 -0.795609 2.683901 -1.55874 2.12132 -2.12132 
+C 1.55874 -2.683901 0.795609 -3 0 -3 
+C -0.795609 -3 -1.55874 -2.683901 -2.12132 -2.12132 
+C -2.683901 -1.55874 -3 -0.795609 -3 0 
+C -3 0.795609 -2.683901 1.55874 -2.12132 2.12132 
+C -1.55874 2.683901 -0.795609 3 0 3 
+z
+" style="stroke: #b57920"/>
+    </defs>
+    <g clip-path="url(#heston-7c58c30f72-p83d7a90cea)">
+     <use xlink:href="#heston-7c58c30f72-mb1d10e8e65" x="247.821335" y="126.00415" style="fill: #b57920; stroke: #b57920"/>
+    </g>
+   </g>
+   <g id="heston-7c58c30f72-PathCollection_2">
+    <defs>
+     <path id="heston-7c58c30f72-mf791134f25" d="M 0 3 
+C 0.795609 3 1.55874 2.683901 2.12132 2.12132 
+C 2.683901 1.55874 3 0.795609 3 0 
+C 3 -0.795609 2.683901 -1.55874 2.12132 -2.12132 
+C 1.55874 -2.683901 0.795609 -3 0 -3 
+C -0.795609 -3 -1.55874 -2.683901 -2.12132 -2.12132 
+C -2.683901 -1.55874 -3 -0.795609 -3 0 
+C -3 0.795609 -2.683901 1.55874 -2.12132 2.12132 
+C -1.55874 2.683901 -0.795609 3 0 3 
+z
+" style="stroke: #6f7c37"/>
+    </defs>
+    <g clip-path="url(#heston-7c58c30f72-p83d7a90cea)">
+     <use xlink:href="#heston-7c58c30f72-mf791134f25" x="329.687259" y="130.667025" style="fill: #6f7c37; stroke: #6f7c37"/>
+    </g>
+   </g>
+   <g id="heston-7c58c30f72-PathCollection_3">
+    <defs>
+     <path id="heston-7c58c30f72-m4ad83f13a9" d="M 0 3 
+C 0.795609 3 1.55874 2.683901 2.12132 2.12132 
+C 2.683901 1.55874 3 0.795609 3 0 
+C 3 -0.795609 2.683901 -1.55874 2.12132 -2.12132 
+C 1.55874 -2.683901 0.795609 -3 0 -3 
+C -0.795609 -3 -1.55874 -2.683901 -2.12132 -2.12132 
+C -2.683901 -1.55874 -3 -0.795609 -3 0 
+C -3 0.795609 -2.683901 1.55874 -2.12132 2.12132 
+C -1.55874 2.683901 -0.795609 3 0 3 
+z
+" style="stroke: #246da0"/>
+    </defs>
+    <g clip-path="url(#heston-7c58c30f72-p83d7a90cea)">
+     <use xlink:href="#heston-7c58c30f72-m4ad83f13a9" x="355.884355" y="138.288879" style="fill: #246da0; stroke: #246da0"/>
+    </g>
+   </g>
+   <g id="heston-7c58c30f72-PathCollection_4">
+    <defs>
+     <path id="heston-7c58c30f72-mdf97c68f65" d="M 0 3 
+C 0.795609 3 1.55874 2.683901 2.12132 2.12132 
+C 2.683901 1.55874 3 0.795609 3 0 
+C 3 -0.795609 2.683901 -1.55874 2.12132 -2.12132 
+C 1.55874 -2.683901 0.795609 -3 0 -3 
+C -0.795609 -3 -1.55874 -2.683901 -2.12132 -2.12132 
+C -2.683901 -1.55874 -3 -0.795609 -3 0 
+C -3 0.795609 -2.683901 1.55874 -2.12132 2.12132 
+C -1.55874 2.683901 -0.795609 3 0 3 
+z
+" style="stroke: #7952a3"/>
+    </defs>
+    <g clip-path="url(#heston-7c58c30f72-p83d7a90cea)">
+     <use xlink:href="#heston-7c58c30f72-mdf97c68f65" x="411.553184" y="127.259458" style="fill: #7952a3; stroke: #7952a3"/>
+    </g>
+   </g>
+   <g id="heston-7c58c30f72-PathCollection_5">
+    <defs>
+     <path id="heston-7c58c30f72-m2329848d35" d="M 0 3 
+C 0.795609 3 1.55874 2.683901 2.12132 2.12132 
+C 2.683901 1.55874 3 0.795609 3 0 
+C 3 -0.795609 2.683901 -1.55874 2.12132 -2.12132 
+C 1.55874 -2.683901 0.795609 -3 0 -3 
+C -0.795609 -3 -1.55874 -2.683901 -2.12132 -2.12132 
+C -2.683901 -1.55874 -3 -0.795609 -3 0 
+C -3 0.795609 -2.683901 1.55874 -2.12132 2.12132 
+C -1.55874 2.683901 -0.795609 3 0 3 
+z
+" style="stroke: #b44b37"/>
+    </defs>
+    <g clip-path="url(#heston-7c58c30f72-p83d7a90cea)">
+     <use xlink:href="#heston-7c58c30f72-m2329848d35" x="739.016882" y="85.408894" style="fill: #b44b37; stroke: #b44b37"/>
+    </g>
+   </g>
+   <g id="heston-7c58c30f72-legend_1">
+    <g id="heston-7c58c30f72-patch_7">
+     <path d="M 463.85577 51.807562 
+L 765.99952 51.807562 
+Q 767.59952 51.807562 767.59952 50.207562 
+L 767.59952 27.006312 
+Q 767.59952 25.406312 765.99952 25.406312 
+L 463.85577 25.406312 
+Q 462.25577 25.406312 462.25577 27.006312 
+L 462.25577 50.207562 
+Q 462.25577 51.807562 463.85577 51.807562 
+z
+" style="fill: #ffffff; opacity: 0.8; stroke: #cccccc; stroke-linejoin: miter"/>
+    </g>
+    <g id="heston-7c58c30f72-line2d_21">
+     <path d="M 465.45577 31.885062 
+L 473.45577 31.885062 
+L 481.45577 31.885062 
+" style="fill: none; stroke-dasharray: 1.5,2.475; stroke-dashoffset: 0; stroke: #405562; stroke-width: 1.5"/>
+    </g>
+    <g id="heston-7c58c30f72-text_22">
+     <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: start" x="487.85577" y="34.685062" transform="rotate(-0 487.85577 34.685062)">Training</text>
+    </g>
+    <g id="heston-7c58c30f72-line2d_22">
+     <path d="M 465.45577 43.885687 
+L 473.45577 43.885687 
+L 481.45577 43.885687 
+" style="fill: none; stroke: #405562; stroke-width: 1.5; stroke-linecap: square"/>
+    </g>
+    <g id="heston-7c58c30f72-text_23">
+     <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: start" x="487.85577" y="46.685687" transform="rotate(-0 487.85577 46.685687)">Validation</text>
+    </g>
+    <g id="heston-7c58c30f72-PathCollection_6">
+     <g>
+      <use xlink:href="#heston-7c58c30f72-mb1d10e8e65" x="551.35952" y="32.585062" style="fill: #b57920; stroke: #b57920"/>
+     </g>
+    </g>
+    <g id="heston-7c58c30f72-text_24">
+     <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: start" x="565.75952" y="34.685062" transform="rotate(-0 565.75952 34.685062)">Epoch 50</text>
+    </g>
+    <g id="heston-7c58c30f72-PathCollection_7">
+     <g>
+      <use xlink:href="#heston-7c58c30f72-mf791134f25" x="551.35952" y="44.585687" style="fill: #6f7c37; stroke: #6f7c37"/>
+     </g>
+    </g>
+    <g id="heston-7c58c30f72-text_25">
+     <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: start" x="565.75952" y="46.685687" transform="rotate(-0 565.75952 46.685687)">Epoch 75</text>
+    </g>
+    <g id="heston-7c58c30f72-PathCollection_8">
+     <g>
+      <use xlink:href="#heston-7c58c30f72-m4ad83f13a9" x="626.97952" y="32.585062" style="fill: #246da0; stroke: #246da0"/>
+     </g>
+    </g>
+    <g id="heston-7c58c30f72-text_26">
+     <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: start" x="641.37952" y="34.685062" transform="rotate(-0 641.37952 34.685062)">Epoch 83</text>
+    </g>
+    <g id="heston-7c58c30f72-PathCollection_9">
+     <g>
+      <use xlink:href="#heston-7c58c30f72-mdf97c68f65" x="626.97952" y="44.585687" style="fill: #7952a3; stroke: #7952a3"/>
+     </g>
+    </g>
+    <g id="heston-7c58c30f72-text_27">
+     <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: start" x="641.37952" y="46.685687" transform="rotate(-0 641.37952 46.685687)">Epoch 100</text>
+    </g>
+    <g id="heston-7c58c30f72-PathCollection_10">
+     <g>
+      <use xlink:href="#heston-7c58c30f72-m2329848d35" x="707.68952" y="32.585062" style="fill: #b44b37; stroke: #b44b37"/>
+     </g>
+    </g>
+    <g id="heston-7c58c30f72-text_28">
+     <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: start" x="722.08952" y="34.685062" transform="rotate(-0 722.08952 34.685062)">Epoch 200</text>
+    </g>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="heston-7c58c30f72-p83d7a90cea">
+   <rect x="54.781484" y="21.406312" width="716.818036" height="238.792504"/>
+  </clipPath>
+ </defs>
+</svg>

@@ -1,0 +1,141 @@
+{
+  "format": "heston_spread_whitening_checkpoint_replay_results_verification_v1",
+  "status": "passed",
+  "audit_source": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/verify_heston_spread_whitening_replay.py",
+    "sha256": "887cafb0c94ed7c83eba303b7b5f2cdbc0ccf62128b22bbbbe0eeb75922a5317"
+  },
+  "protocol": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/protocol.json",
+    "sha256": "901c7c3257ec2f12bb5b57f2608ab49c8e5e5cf8a30bcbba80651692edb6f7ab"
+  },
+  "producer_sources": {
+    "replay": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/replay_heston_spread_whitening.py",
+      "sha256": "bd6db80bb0a0c65e5215c4009a1d9de3090031e199cb1c36a5210fbe25f95d65"
+    },
+    "original": {
+      "trainer": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/train_heston_spread_whitening.py",
+        "sha256": "6a7b35afc9c5beadcccb8e83cf73603cca2790a5e94b4818aed53f3e29523c9c"
+      },
+      "whitening": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/tutorial/src/sbi4f_tutorial/shared/whitening.py",
+        "sha256": "79d312451e7b28868b2d6a70c5646706183be16e9ecfe22c0c8d7e2db4257d58"
+      },
+      "fixed": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/train_heston_spread_baseline.py",
+        "sha256": "3a8747332a3493adcd9298d701d0d6aab087dada35d8648827d7790330931f38"
+      },
+      "scale": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/train_heston_spread_scale.py",
+        "sha256": "93714493768c1db7ce792b931f1dd994e2a5936bafd5da6b1062b666ac4b9068"
+      },
+      "precision": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/continue_heston_spread_scale_precision.py",
+        "sha256": "767a759a79d764c067d7c702ed30272965eb62a58400208bf58bab7331c9db47"
+      },
+      "expansion": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/continue_heston_spread_scale.py",
+        "sha256": "5d712d9b37dba7a5662c67ccc84e4148b58a45e328815a07815c40dda7109892"
+      },
+      "full_state": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/continue_heston_spread_baseline.py",
+        "sha256": "3c14cb7461d4c0ab741f0a9d279ff99fad75fa20f58f0f1185f265e72d84fc9b"
+      }
+    }
+  },
+  "training": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/training/training.json",
+    "sha256": "e72623ab17a4d0c6965a03e767e749c30a0ec32fd39611c00a3ed0fca13a9d7c"
+  },
+  "checks": {
+    "all_four_original_initial_state_groups_hash_exact": true,
+    "original_initial_probe_bytes_exact": true,
+    "original_preprocessing_bytes_exact": true,
+    "original_learning_curve_prefix_points_exact": 100,
+    "only_ignored_learning_curve_field": "seconds",
+    "all_10000_rows_seen_exactly_100_times": true,
+    "schedule_horizon_8000_while_stopping_4000": true,
+    "all_checkpoints_load_full_state_and_preserve_seeded_draws": true,
+    "preserved_files_checked": 294,
+    "preserved_files_unchanged": true
+  },
+  "preserved_catalogue": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/preserved-artifacts-before.json",
+    "sha256": "607296c402ab7cbe7f2ff10ec5c30504ecf86f2b52b05e84137029ad06382ca2",
+    "file_count": 294,
+    "files_fingerprint": "4ab24efac45e3aeea580aa25b5ebe148f9e789780eb741891ced10a071eda14c"
+  },
+  "checkpoints": [
+    {
+      "updates": 2000,
+      "epoch": 50,
+      "checkpoint_json_sha256": "4bb067ac434f71aa59844c8464f49336a1d071f03cf6e973446e7744d3fb2644",
+      "all_saved_full_state_arrays_match_loaded": true,
+      "state_array_counts": {
+        "trainable": 84,
+        "non_trainable": 19,
+        "optimizer": 169,
+        "metrics": 2
+      },
+      "frozen_preprocessing_bytes_match_original": true,
+      "schedule_decay_steps": 8000,
+      "native_seeded_reload_draws_exact": true
+    },
+    {
+      "updates": 3000,
+      "epoch": 75,
+      "checkpoint_json_sha256": "a75c3b27bc407484e7a93344d6dd39d4f1e8f796a24c91634045925759de2a14",
+      "all_saved_full_state_arrays_match_loaded": true,
+      "state_array_counts": {
+        "trainable": 84,
+        "non_trainable": 19,
+        "optimizer": 169,
+        "metrics": 2
+      },
+      "frozen_preprocessing_bytes_match_original": true,
+      "schedule_decay_steps": 8000,
+      "native_seeded_reload_draws_exact": true
+    },
+    {
+      "updates": 3320,
+      "epoch": 83,
+      "checkpoint_json_sha256": "bd54ab3ccb1088eac09e9fb0088fb3e6403673f9d5cb3def7930d00c7c4ee715",
+      "all_saved_full_state_arrays_match_loaded": true,
+      "state_array_counts": {
+        "trainable": 84,
+        "non_trainable": 19,
+        "optimizer": 169,
+        "metrics": 2
+      },
+      "frozen_preprocessing_bytes_match_original": true,
+      "schedule_decay_steps": 8000,
+      "native_seeded_reload_draws_exact": true
+    },
+    {
+      "updates": 4000,
+      "epoch": 100,
+      "checkpoint_json_sha256": "f146944e11b24f7b89bd150fbefac422eac649384eca79ace22b51b0791c7de8",
+      "all_saved_full_state_arrays_match_loaded": true,
+      "state_array_counts": {
+        "trainable": 84,
+        "non_trainable": 19,
+        "optimizer": 169,
+        "metrics": 2
+      },
+      "frozen_preprocessing_bytes_match_original": true,
+      "schedule_decay_steps": 8000,
+      "native_seeded_reload_draws_exact": true
+    }
+  ],
+  "limits": [
+    "Historical early weights were never saved; exact equality of those unavailable weights is not directly testable.",
+    "All saved curve fields except elapsed seconds and all initial state array hashes agree with the original trajectory.",
+    "This verifies replay identity and serialization, not posterior calibration or scientific acceptance."
+  ],
+  "reserved_arrays_opened": false,
+  "new_pricing_labels": false,
+  "new_reference_sampling": false,
+  "scientific_acceptance": false
+}

@@ -1,0 +1,151 @@
+{
+  "format": "heston_spread_whitening_checkpoint_replay_campaign_v1",
+  "status": "complete",
+  "protocol": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/protocol.json",
+    "sha256": "901c7c3257ec2f12bb5b57f2608ab49c8e5e5cf8a30bcbba80651692edb6f7ab"
+  },
+  "started_utc": "2026-11-10T22:57:04.079100+00:00",
+  "git_revision": "66eba70dce000b9a8c34fb0d247a5240155f75be",
+  "jobs": [
+    {
+      "id": "training",
+      "command": [
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/.pixi/envs/core-reference/bin/python",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/replay_heston_spread_whitening.py",
+        "--bank",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-observations-20261109/local-artifacts/heston-observations-20261109/training-study/bank",
+        "--task",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/task.json",
+        "--original",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/zca",
+        "--protocol",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/protocol.json",
+        "--out",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/training",
+        "--worker"
+      ],
+      "log": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/training.log",
+      "wall_seconds_limit": 900,
+      "status": "complete",
+      "pid": 44748,
+      "returncode": 0,
+      "seconds": 68.60326908319257,
+      "record": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/training/training.json",
+        "sha256": "e72623ab17a4d0c6965a03e767e749c30a0ec32fd39611c00a3ed0fca13a9d7c"
+      }
+    },
+    {
+      "id": "evaluation-002000",
+      "command": [
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/.pixi/envs/core-reference/bin/python",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/evaluate_heston_spread_whitening_replay.py",
+        "--checkpoint",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/training/checkpoints/update-002000",
+        "--study",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/protocol.json",
+        "--replay-protocol",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/protocol.json",
+        "--out",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/evaluations/update-002000",
+        "--payload-out",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/evaluations/update-002000"
+      ],
+      "log": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/evaluation-002000.log",
+      "wall_seconds_limit": 300,
+      "status": "complete",
+      "pid": 45241,
+      "returncode": 0,
+      "seconds": 10.516959749860689,
+      "record": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/evaluations/update-002000/evaluation.json",
+        "sha256": "d725e2b0c48012e520c490e2aed5c6073110e2c65548d1745a13a45e4cc2df0a"
+      }
+    },
+    {
+      "id": "evaluation-003000",
+      "command": [
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/.pixi/envs/core-reference/bin/python",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/evaluate_heston_spread_whitening_replay.py",
+        "--checkpoint",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/training/checkpoints/update-003000",
+        "--study",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/protocol.json",
+        "--replay-protocol",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/protocol.json",
+        "--out",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/evaluations/update-003000",
+        "--payload-out",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/evaluations/update-003000"
+      ],
+      "log": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/evaluation-003000.log",
+      "wall_seconds_limit": 300,
+      "status": "complete",
+      "pid": 45260,
+      "returncode": 0,
+      "seconds": 10.935405208962038,
+      "record": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/evaluations/update-003000/evaluation.json",
+        "sha256": "50176dfb8a62d562a1664f4df87a1ccd9135f924ff678207a61179c4fd46f729"
+      }
+    },
+    {
+      "id": "evaluation-003320",
+      "command": [
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/.pixi/envs/core-reference/bin/python",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/evaluate_heston_spread_whitening_replay.py",
+        "--checkpoint",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/training/checkpoints/update-003320",
+        "--study",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/protocol.json",
+        "--replay-protocol",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/protocol.json",
+        "--out",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/evaluations/update-003320",
+        "--payload-out",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/evaluations/update-003320"
+      ],
+      "log": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/evaluation-003320.log",
+      "wall_seconds_limit": 300,
+      "status": "complete",
+      "pid": 45285,
+      "returncode": 0,
+      "seconds": 9.492484458023682,
+      "record": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/evaluations/update-003320/evaluation.json",
+        "sha256": "fe3ed9af2cb050dbfd8c31d395f73802bb40a7769813bfed121756b355a15fe9"
+      }
+    },
+    {
+      "id": "evaluation-004000",
+      "command": [
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/.pixi/envs/core-reference/bin/python",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/evaluate_heston_spread_whitening_replay.py",
+        "--checkpoint",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/training/checkpoints/update-004000",
+        "--study",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/protocol.json",
+        "--replay-protocol",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/protocol.json",
+        "--out",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/evaluations/update-004000",
+        "--payload-out",
+        "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/evaluations/update-004000"
+      ],
+      "log": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/evaluation-004000.log",
+      "wall_seconds_limit": 300,
+      "status": "complete",
+      "pid": 45309,
+      "returncode": 0,
+      "seconds": 10.505089457845315,
+      "record": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/evaluations/update-004000/evaluation.json",
+        "sha256": "29e46bd7951f3415a3e8d32a523d1f95af006dbd7e93187bc6659064f03d42a5"
+      }
+    }
+  ],
+  "automatic_retry": false,
+  "scientific_acceptance": false,
+  "seconds": 110.07469533290714
+}

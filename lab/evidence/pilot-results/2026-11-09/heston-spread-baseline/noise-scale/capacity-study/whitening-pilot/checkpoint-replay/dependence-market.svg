@@ -1,0 +1,992 @@
+<svg role="img" aria-label="Actual market: posterior dependence" xmlns:xlink="http://www.w3.org/1999/xlink" width="841.230559pt" height="552.873451pt" viewBox="0 0 841.230559 552.873451" xmlns="http://www.w3.org/2000/svg" version="1.1">
+<title>Actual market: posterior dependence</title><desc>Pearson correlation differences for all six jointly inferred targets; identical references across the five epochs.</desc>
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.11.2, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="heston-7fdd66fffa-figure_1">
+  <g id="heston-7fdd66fffa-patch_1">
+   <path d="M 0 552.873451 
+L 841.230559 552.873451 
+L 841.230559 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="heston-7fdd66fffa-axes_1">
+   <g id="heston-7fdd66fffa-patch_2">
+    <path d="M 102.97625 179.897201 
+L 249.853388 179.897201 
+L 249.853388 33.020062 
+L 102.97625 33.020062 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g clip-path="url(#heston-7fdd66fffa-p95920ff18e)">
+    <image xlink:href="data:image/png;base64,
+iVBORw0KGgoAAAANSUhEUgAAAMwAAADMCAYAAAA/IkzyAAADG0lEQVR4nO3dsYqcZRSA4W/imjQjdoKrfWoRvRqbFFstIWVYsFwRixSpDISQJla5kzSWacRKN7BVWCazgibjLfgWwll4nis4fPzvf8qz+e3y6rAGOBxGjLE+ufPRmuDT27fWCIcPa4TNjPeYMQXcEIKBQDAQCAYCwUAgGAgEA4FgIBAMBIKBQDAQCAYCwUAgGAgEA4FgIBAMBIKBQDAQCAYCwUAgGAgEA4FgIBAMBIKBQDAQCAYCwUAgGAgEA4FgIBAMBJv9fj/i9Ne7v2dcunp1sVsTfHu8XRNsPx7yTz3M+D6GvAbcDIKBQDAQCAYCwUAgGAgEA4FgIBAMBIKBQDAQCAYCwUAgGAgEA4FgIBAMBIKBQDAQCAYCwUAgGAgEA4FgIBAMBIKBQDAQCAYCwUAgGAgEA4FgIBAMBEd/Pry3Jji9e39N8OT3n9cE2/Ona4LdkMtw2yGX0GZMATeEYCAQDASCgUAwEAgGAsFAIBgIBAOBYCAQDAgG/h82DASCgUAwEAgGAsFAIBgIBAOBYCAQDASCgUAwEAgGAsFAIBgIBAOBYCAQDASCgUAwEAgGAsFAsLneXR3WAC++/GZN8N3Fr2uCN9+frAlenzxaE3z9+XZNYMNAIBgIBAOBYCAQDASCgUAwEAgGAsFAIBgIBAOBYCAQDASCgUAwEAgGAsFAIBgIBAOBYCAQDASCgUAwEAgGAsFAIBgIBAOBYCAQDASCgUAwEAgGAsFAcHT544M1wZTLXy+Ov1oTvDx/tib45XjG5a+3f71fE9gwEAgGAsFAIBgIBAOBYCAQDASCgUAwEAgGAsFAIBgIBAOBYCAQDASCgUAwEAgGAsFAIBgIBAOBYCAQDASCgUAwEAgGAsFAIBgIBAOBYCAQDASCgUAwEGyu9/vDGuDyh9M1wWdnj9cEf5ydrAm++On5muBi98+awIaBQDAQCAYCwUAgGAgEA4FgIBAMBIKBQDAQCAYCwUAgGAgEA4FgIBAMBIKBQDAQCAYCwUAgGAgEA4FgIBAMBIKBQDAQCAYCwUAgGAgEA4FgIBAMBIKB9d/9CxIuQSzp0c2mAAAAAElFTkSuQmCC" id="heston-7fdd66fffa-imageb604949a29" transform="scale(1 -1) translate(0 -146.88)" x="102.96" y="-33.033451" width="146.88" height="146.88"/>
+   </g>
+   <g id="heston-7fdd66fffa-matplotlib.axis_1">
+    <g id="heston-7fdd66fffa-xtick_1">
+     <g id="heston-7fdd66fffa-line2d_1">
+      <defs>
+       <path id="heston-7fdd66fffa-m158c3cc05e" d="M 0 0 
+L 0 3.5 
+" style="stroke: #000000; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m158c3cc05e" x="115.216012" y="179.897201" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_1">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'" transform="translate(117.294449 256.503451) rotate(-90)">Initial variance v₀</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-xtick_2">
+     <g id="heston-7fdd66fffa-line2d_2">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m158c3cc05e" x="139.695535" y="179.897201" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_2">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'" transform="translate(141.773972 255.830951) rotate(-90)">Mean reversion κ</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-xtick_3">
+     <g id="heston-7fdd66fffa-line2d_3">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m158c3cc05e" x="164.175058" y="179.897201" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_3">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'" transform="translate(166.284745 266.995951) rotate(-90)">Long-run variance θ</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-xtick_4">
+     <g id="heston-7fdd66fffa-line2d_4">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m158c3cc05e" x="188.654581" y="179.897201" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_4">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'" transform="translate(190.733018 275.673451) rotate(-90)">Volatility of volatility ξ</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-xtick_5">
+     <g id="heston-7fdd66fffa-line2d_5">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m158c3cc05e" x="213.134104" y="179.897201" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_5">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'" transform="translate(215.212541 238.632201) rotate(-90)">Correlation ρ</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-xtick_6">
+     <g id="heston-7fdd66fffa-line2d_6">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m158c3cc05e" x="237.613627" y="179.897201" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_6">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'" transform="translate(239.692064 262.733451) rotate(-90)">Spread multiplier c</text>
+     </g>
+    </g>
+   </g>
+   <g id="heston-7fdd66fffa-matplotlib.axis_2">
+    <g id="heston-7fdd66fffa-ytick_1">
+     <g id="heston-7fdd66fffa-line2d_7">
+      <defs>
+       <path id="heston-7fdd66fffa-m5454f8b392" d="M 0 0 
+L -3.5 0 
+" style="stroke: #000000; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m5454f8b392" x="102.97625" y="45.259824" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_7">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: end" x="95.97625" y="48.299199" transform="rotate(-0 95.97625 48.299199)">Initial variance v₀</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-ytick_2">
+     <g id="heston-7fdd66fffa-line2d_8">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m5454f8b392" x="102.97625" y="69.739347" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_8">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: end" x="95.97625" y="72.778722" transform="rotate(-0 95.97625 72.778722)">Mean reversion κ</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-ytick_3">
+     <g id="heston-7fdd66fffa-line2d_9">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m5454f8b392" x="102.97625" y="94.21887" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_9">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: end" x="95.97625" y="97.289495" transform="rotate(-0 95.97625 97.289495)">Long-run variance θ</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-ytick_4">
+     <g id="heston-7fdd66fffa-line2d_10">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m5454f8b392" x="102.97625" y="118.698393" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_10">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: end" x="95.97625" y="121.737768" transform="rotate(-0 95.97625 121.737768)">Volatility of volatility ξ</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-ytick_5">
+     <g id="heston-7fdd66fffa-line2d_11">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m5454f8b392" x="102.97625" y="143.177916" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_11">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: end" x="95.97625" y="146.217291" transform="rotate(-0 95.97625 146.217291)">Correlation ρ</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-ytick_6">
+     <g id="heston-7fdd66fffa-line2d_12">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m5454f8b392" x="102.97625" y="167.657439" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_12">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: end" x="95.97625" y="170.696814" transform="rotate(-0 95.97625 170.696814)">Spread multiplier c</text>
+     </g>
+    </g>
+   </g>
+   <g id="heston-7fdd66fffa-patch_3">
+    <path d="M 102.97625 179.897201 
+L 102.97625 33.020062 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-7fdd66fffa-patch_4">
+    <path d="M 249.853388 179.897201 
+L 249.853388 33.020062 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-7fdd66fffa-patch_5">
+    <path d="M 102.97625 179.897201 
+L 249.853388 179.897201 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-7fdd66fffa-patch_6">
+    <path d="M 102.97625 33.020062 
+L 249.853388 33.020062 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-7fdd66fffa-text_13">
+    <text style="font-size: 9.6px; font-family: 'DejaVu Sans'" transform="translate(154.082819 15.455437)">Epoch 50</text>
+    <text style="font-size: 9.6px; font-family: 'DejaVu Sans'" transform="translate(140.150069 27.020062)">max |Δ|=0.713</text>
+   </g>
+  </g>
+  <g id="heston-7fdd66fffa-axes_2">
+   <g id="heston-7fdd66fffa-patch_7">
+    <path d="M 351.630118 179.897201 
+L 498.507256 179.897201 
+L 498.507256 33.020062 
+L 351.630118 33.020062 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g clip-path="url(#heston-7fdd66fffa-pbd6bc5f042)">
+    <image xlink:href="data:image/png;base64,
+iVBORw0KGgoAAAANSUhEUgAAAMwAAADMCAYAAAA/IkzyAAADHElEQVR4nO3dMaoWRhSA0flfngpaPMXCxkBsXICVpRCwtRNs7bWwUJcgIVqk0spKEEF3kC3YBtKJNgEVH+oTQ+LvFvIVkiucs4JhmG9ueTcvXr/frgF+2Pm/TzDLyUP/rhF2dtcImxkPZMYp4DshGAgEA4FgIBAMBIKBQDAQCAYCwUAgGAgEA4FgIBAMBIKBQDAQCAYCwUAgGAgEA4FgIBAMBIKBQDAQCAYCwUAgGAgEA4FgIBAMBIKBQDAQCAYCwUCwe2rn45pge/jomuDpn/trgp/PnFgT7B2Z8adutl/WBDNuA74TgoFAMBAIBgLBQCAYCAQDgWAgEAwEgoFAMBAIBgLBQCAYCAQDgWAgEAwEgoFAMBAIBgLBQCAYCAQDgWAgEAwEgoFAMBAIBgLBQCAYCAQDgWAgEAwEmz+uXtquAW6fv70muP/20Zpg7/ova4L9zzM2fx3f/WdNYMJAIBgIBAOBYCAQDASCgUAwEAgGAsFAIBgIBAOCgW/DhIFAMBAIBgLBQCAYCAQDgWAgEAwEgoFAMBAIBgLBQCAYCAQDgWAgEAwEgoFAMBAIBgLBQCAYCDYfPh6M2ED29Mdza4LLr56vCd79dnNN8PvFW2uCCz8dXxOYMBAIBgLBQCAYCAQDgWAgEAwEgoFAMBAIBgLBQCAYCAQDgWAgEAwEgoFAMBAIBgLBQCAYCAQDgWAgEAwEgoFAMBAIBgLBQCAYCAQDgWAgEAwEgoFAMBDs7t+7sSaYsvnryekZm9Ce3Xm4Jnh8dm9N8ObvNYIJA4FgIBAMBIKBQDAQCAYCwUAgGAgEA4FgIBAMBIKBQDAQCAYCwUAgGAgEA4FgIBAMBIKBQDAQCAYCwUAgGAgEA4FgIBAMBIKBQDAQCAYCwUAgGAgEA8Hm08HBdg3w9u6MTWh7N+6tCV5eu7ImOPPrgzXBX1+OrQlMGAgEA4FgIBAMBIKBQDAQCAYCwUAgGAgEA4FgIBAMBIKBQDAQCAYCwUAgGAgEA4FgIBAMBIKBQDAQCAYCwUAgGAgEA4FgIBAMBIKBQDAQCAYCwUAgGFj/3Vc1EDiB9Bl1OQAAAABJRU5ErkJggg==" id="heston-7fdd66fffa-image5d5179b8b7" transform="scale(1 -1) translate(0 -146.88)" x="351.36" y="-33.033451" width="146.88" height="146.88"/>
+   </g>
+   <g id="heston-7fdd66fffa-matplotlib.axis_3">
+    <g id="heston-7fdd66fffa-xtick_7">
+     <g id="heston-7fdd66fffa-line2d_13">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m158c3cc05e" x="363.86988" y="179.897201" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_14">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'" transform="translate(365.948317 256.503451) rotate(-90)">Initial variance v₀</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-xtick_8">
+     <g id="heston-7fdd66fffa-line2d_14">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m158c3cc05e" x="388.349403" y="179.897201" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_15">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'" transform="translate(390.42784 255.830951) rotate(-90)">Mean reversion κ</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-xtick_9">
+     <g id="heston-7fdd66fffa-line2d_15">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m158c3cc05e" x="412.828926" y="179.897201" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_16">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'" transform="translate(414.938613 266.995951) rotate(-90)">Long-run variance θ</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-xtick_10">
+     <g id="heston-7fdd66fffa-line2d_16">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m158c3cc05e" x="437.308449" y="179.897201" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_17">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'" transform="translate(439.386886 275.673451) rotate(-90)">Volatility of volatility ξ</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-xtick_11">
+     <g id="heston-7fdd66fffa-line2d_17">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m158c3cc05e" x="461.787972" y="179.897201" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_18">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'" transform="translate(463.866409 238.632201) rotate(-90)">Correlation ρ</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-xtick_12">
+     <g id="heston-7fdd66fffa-line2d_18">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m158c3cc05e" x="486.267495" y="179.897201" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_19">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'" transform="translate(488.345932 262.733451) rotate(-90)">Spread multiplier c</text>
+     </g>
+    </g>
+   </g>
+   <g id="heston-7fdd66fffa-matplotlib.axis_4">
+    <g id="heston-7fdd66fffa-ytick_7">
+     <g id="heston-7fdd66fffa-line2d_19">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m5454f8b392" x="351.630118" y="45.259824" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_20">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: end" x="344.630118" y="48.299199" transform="rotate(-0 344.630118 48.299199)">Initial variance v₀</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-ytick_8">
+     <g id="heston-7fdd66fffa-line2d_20">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m5454f8b392" x="351.630118" y="69.739347" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_21">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: end" x="344.630118" y="72.778722" transform="rotate(-0 344.630118 72.778722)">Mean reversion κ</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-ytick_9">
+     <g id="heston-7fdd66fffa-line2d_21">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m5454f8b392" x="351.630118" y="94.21887" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_22">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: end" x="344.630118" y="97.289495" transform="rotate(-0 344.630118 97.289495)">Long-run variance θ</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-ytick_10">
+     <g id="heston-7fdd66fffa-line2d_22">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m5454f8b392" x="351.630118" y="118.698393" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_23">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: end" x="344.630118" y="121.737768" transform="rotate(-0 344.630118 121.737768)">Volatility of volatility ξ</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-ytick_11">
+     <g id="heston-7fdd66fffa-line2d_23">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m5454f8b392" x="351.630118" y="143.177916" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_24">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: end" x="344.630118" y="146.217291" transform="rotate(-0 344.630118 146.217291)">Correlation ρ</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-ytick_12">
+     <g id="heston-7fdd66fffa-line2d_24">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m5454f8b392" x="351.630118" y="167.657439" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_25">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: end" x="344.630118" y="170.696814" transform="rotate(-0 344.630118 170.696814)">Spread multiplier c</text>
+     </g>
+    </g>
+   </g>
+   <g id="heston-7fdd66fffa-patch_8">
+    <path d="M 351.630118 179.897201 
+L 351.630118 33.020062 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-7fdd66fffa-patch_9">
+    <path d="M 498.507256 179.897201 
+L 498.507256 33.020062 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-7fdd66fffa-patch_10">
+    <path d="M 351.630118 179.897201 
+L 498.507256 179.897201 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-7fdd66fffa-patch_11">
+    <path d="M 351.630118 33.020062 
+L 498.507256 33.020062 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-7fdd66fffa-text_26">
+    <text style="font-size: 9.6px; font-family: 'DejaVu Sans'" transform="translate(402.736687 15.455437)">Epoch 75</text>
+    <text style="font-size: 9.6px; font-family: 'DejaVu Sans'" transform="translate(388.803937 27.020062)">max |Δ|=0.703</text>
+   </g>
+  </g>
+  <g id="heston-7fdd66fffa-axes_3">
+   <g id="heston-7fdd66fffa-patch_12">
+    <path d="M 600.283986 179.897201 
+L 747.161124 179.897201 
+L 747.161124 33.020062 
+L 600.283986 33.020062 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g clip-path="url(#heston-7fdd66fffa-p0419532f05)">
+    <image xlink:href="data:image/png;base64,
+iVBORw0KGgoAAAANSUhEUgAAAMwAAADMCAYAAAA/IkzyAAADHklEQVR4nO3doYqmdRiH4eebmQV1HYRFWJBF2LbZYPEAzBarSbCuwUWTRYOwumwyisGwJ+AZCBazVbEI+gVHd4KO4yl4B+ERrusQ/i83v7c9hx9/vbieBW7eOJkNjpd/zQZ3nj+dDa5mx3c5OcwKO14D/icEA4FgIBAMBIKBQDAQCAYCwUAgGAgEA4FgIBAMBIKBQDAQCAYCwUAgGAgEA4FgIBAMBIKBQDAQCAYCwUAgGAgEA4FgIBAMBIKBQDAQCAYCwUAgGAjObl8dZ4Prk2dng29+uZoNXnjmfDY4vzErXK24k2dhIPFLBoFgIBAMBIKBQDAQCAYCwUAgGAgEA4FgIBAMBIKBQDAQCAYCwUAgGAgEA4FgIBAMBIKBQDAQCAYCwUAgGAgEA4FgIBAMBIKBQDAQCAYCwUAgGAgO37/9xorbTh++9v5s8Pj41Wxw/s7Hs8HFn3/PBudns4KFgUAwEAgGAsFAIBgIBAOBYCAQDASCgUAwEAgGBAP/DQsDgWAgEAwEgoFAMBAIBgLBQCAYCAQDgWAgEAwEgoFAMBAIBgLBQCAYCAQDgWAgEAwEgoFAMBAcLn//bcUFsicvvzobvPnTd7PBxecfzAbfvv5gNrj34nOzgYWBQDAQCAYCwUAgGAgEA4FgIBAMBIKBQDAQCAYCwUAgGAgEA4FgIBAMBIKBQDAQCAYCwUAgGAgEA4FgIBAMBIKBQDAQCAYCwUAgGAgEA4FgIBAMBIKB4Oz42XuzwZbLX0/uvDIbfP3pl7PBFy+dzgZ/nJ7NBhYGAsFAIBgIBAOBYCAQDASCgUAwEAgGAsFAIBgIBAOBYCAQDASCgUAwEAgGAsFAIBgIBAOBYCAQDASCgUAwEAgGAsFAIBgIBAOBYCAQDASCgUAwEAgGgsPl06fXs8Dx4buzwa37n8wGP9x/aza4+9Gj2eDn01uzgYWBQDAQCAYCwUAgGAgEA4FgIBAMBIKBQDAQCAYCwUAgGAgEA4FgIBAMBIKBQDAQCAYCwUAgGAgEA4FgIBAMBIKBQDAQCAYCwUAgGAgEA4FgIBAMBIKB+ff+ATKCOU7cczvyAAAAAElFTkSuQmCC" id="heston-7fdd66fffa-imagea02231bb68" transform="scale(1 -1) translate(0 -146.88)" x="600.48" y="-33.033451" width="146.88" height="146.88"/>
+   </g>
+   <g id="heston-7fdd66fffa-matplotlib.axis_5">
+    <g id="heston-7fdd66fffa-xtick_13">
+     <g id="heston-7fdd66fffa-line2d_25">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m158c3cc05e" x="612.523748" y="179.897201" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_27">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'" transform="translate(614.602185 256.503451) rotate(-90)">Initial variance v₀</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-xtick_14">
+     <g id="heston-7fdd66fffa-line2d_26">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m158c3cc05e" x="637.003271" y="179.897201" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_28">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'" transform="translate(639.081708 255.830951) rotate(-90)">Mean reversion κ</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-xtick_15">
+     <g id="heston-7fdd66fffa-line2d_27">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m158c3cc05e" x="661.482794" y="179.897201" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_29">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'" transform="translate(663.592481 266.995951) rotate(-90)">Long-run variance θ</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-xtick_16">
+     <g id="heston-7fdd66fffa-line2d_28">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m158c3cc05e" x="685.962317" y="179.897201" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_30">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'" transform="translate(688.040754 275.673451) rotate(-90)">Volatility of volatility ξ</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-xtick_17">
+     <g id="heston-7fdd66fffa-line2d_29">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m158c3cc05e" x="710.44184" y="179.897201" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_31">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'" transform="translate(712.520277 238.632201) rotate(-90)">Correlation ρ</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-xtick_18">
+     <g id="heston-7fdd66fffa-line2d_30">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m158c3cc05e" x="734.921363" y="179.897201" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_32">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'" transform="translate(736.9998 262.733451) rotate(-90)">Spread multiplier c</text>
+     </g>
+    </g>
+   </g>
+   <g id="heston-7fdd66fffa-matplotlib.axis_6">
+    <g id="heston-7fdd66fffa-ytick_13">
+     <g id="heston-7fdd66fffa-line2d_31">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m5454f8b392" x="600.283986" y="45.259824" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_33">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: end" x="593.283986" y="48.299199" transform="rotate(-0 593.283986 48.299199)">Initial variance v₀</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-ytick_14">
+     <g id="heston-7fdd66fffa-line2d_32">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m5454f8b392" x="600.283986" y="69.739347" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_34">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: end" x="593.283986" y="72.778722" transform="rotate(-0 593.283986 72.778722)">Mean reversion κ</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-ytick_15">
+     <g id="heston-7fdd66fffa-line2d_33">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m5454f8b392" x="600.283986" y="94.21887" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_35">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: end" x="593.283986" y="97.289495" transform="rotate(-0 593.283986 97.289495)">Long-run variance θ</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-ytick_16">
+     <g id="heston-7fdd66fffa-line2d_34">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m5454f8b392" x="600.283986" y="118.698393" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_36">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: end" x="593.283986" y="121.737768" transform="rotate(-0 593.283986 121.737768)">Volatility of volatility ξ</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-ytick_17">
+     <g id="heston-7fdd66fffa-line2d_35">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m5454f8b392" x="600.283986" y="143.177916" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_37">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: end" x="593.283986" y="146.217291" transform="rotate(-0 593.283986 146.217291)">Correlation ρ</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-ytick_18">
+     <g id="heston-7fdd66fffa-line2d_36">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m5454f8b392" x="600.283986" y="167.657439" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_38">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: end" x="593.283986" y="170.696814" transform="rotate(-0 593.283986 170.696814)">Spread multiplier c</text>
+     </g>
+    </g>
+   </g>
+   <g id="heston-7fdd66fffa-patch_13">
+    <path d="M 600.283986 179.897201 
+L 600.283986 33.020062 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-7fdd66fffa-patch_14">
+    <path d="M 747.161124 179.897201 
+L 747.161124 33.020062 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-7fdd66fffa-patch_15">
+    <path d="M 600.283986 179.897201 
+L 747.161124 179.897201 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-7fdd66fffa-patch_16">
+    <path d="M 600.283986 33.020062 
+L 747.161124 33.020062 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-7fdd66fffa-text_39">
+    <text style="font-size: 9.6px; font-family: 'DejaVu Sans'" transform="translate(651.390555 15.455437)">Epoch 83</text>
+    <text style="font-size: 9.6px; font-family: 'DejaVu Sans'" transform="translate(637.457805 27.020062)">max |Δ|=0.700</text>
+   </g>
+  </g>
+  <g id="heston-7fdd66fffa-axes_4">
+   <g id="heston-7fdd66fffa-patch_17">
+    <path d="M 102.97625 449.897201 
+L 249.853388 449.897201 
+L 249.853388 303.020062 
+L 102.97625 303.020062 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g clip-path="url(#heston-7fdd66fffa-p4cc3e66114)">
+    <image xlink:href="data:image/png;base64,
+iVBORw0KGgoAAAANSUhEUgAAAMwAAADMCAYAAAA/IkzyAAADIklEQVR4nO3dv8rWZRjA8fuXD77wviAW9NqiEB5AS4uewHsadQQuETQ0CQ4hSIMETYGTY6NLzoLnEKiTgfZHHxDLp1PoOwSX8PkcwcUN3/sar+3Zi78Oa4Bz27YmePLnmzXBZx/OeI/DufNrgsP2wZpgxhTwnhAMBIKBQDAQCAYCwUAgGAgEA4FgIBAMBIKBQDAQCAYCwUAgGAgEA4FgIBAMBIKBQDAQCAYCwUAgGAgEA4FgIBAMBIKBQDAQCAYCwUAgGAgEA4FgINh9/PeLNcFhd7QmuP/09Zrgk5PTNcHp8Yw/dTu8WxPMeA14TwgGAsFAIBgIBAOBYCAQDASCgUAwEAgGAsFAIBgIBAOBYCAQDASCgUAwEAgGAsFAIBgIBAOBYCAQDASCgUAwEAgGAsFAIBgIBAOBYCAQDASCgUAwEOye3Px6TXDr2ow57l54tCbYjr9YEzzf/7MmuHT+7ZrAhoFAMBAIBgLBQCAYCAQDgWAgEAwEgoFAMBAIBgQD/w8bBgLBQCAYCAQDgWAgEAwEgoFAMBAIBgLBQCAYCAQDgWAgEAwEgoFAMBAIBgLBQCAYCAQDgWAg2P54tT+sAR5e/XxNcPbr4zXB4Zef1gQ/XjxbE1y7fHFNYMNAIBgIBAOBYCAQDASCgUAwEAgGAsFAIBgIBAOBYCAQDASCgUAwEAgGAsFAIBgIBAOBYCAQDASCgUAwEAgGAsFAIBgIBAOBYCAQDASCgUAwEAgGAsFAsHv9/VdrgimXvx58OuMS2s937q0Jfrh+siZ4uR2tCWwYCAQDgWAgEAwEgoFAMBAIBgLBQCAYCAQDgWAgEAwEgoFAMBAIBgLBQCAYCAQDgWAgEAwEgoFAMBAIBgLBQCAYCAQDgWAgEAwEgoFAMBAIBgLBQCAYCLb9fn9YA/x+Z8YltJMbt9cEz7/5ck1w5dvv1gS/7T5aE9gwEAgGAsFAIBgIBAOBYCAQDASCgUAwEAgGAsFAIBgIBAOBYCAQDASCgUAwEAgGAsFAIBgIBAOBYCAQDASCgUAwEAgGAsFAIBgIBAOBYCAQDASCgUAwsP67fwEttzlGWwOmwAAAAABJRU5ErkJggg==" id="heston-7fdd66fffa-imagecb5b4fa08f" transform="scale(1 -1) translate(0 -146.88)" x="102.96" y="-303.033451" width="146.88" height="146.88"/>
+   </g>
+   <g id="heston-7fdd66fffa-matplotlib.axis_7">
+    <g id="heston-7fdd66fffa-xtick_19">
+     <g id="heston-7fdd66fffa-line2d_37">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m158c3cc05e" x="115.216012" y="449.897201" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_40">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'" transform="translate(117.294449 526.503451) rotate(-90)">Initial variance v₀</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-xtick_20">
+     <g id="heston-7fdd66fffa-line2d_38">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m158c3cc05e" x="139.695535" y="449.897201" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_41">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'" transform="translate(141.773972 525.830951) rotate(-90)">Mean reversion κ</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-xtick_21">
+     <g id="heston-7fdd66fffa-line2d_39">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m158c3cc05e" x="164.175058" y="449.897201" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_42">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'" transform="translate(166.284745 536.995951) rotate(-90)">Long-run variance θ</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-xtick_22">
+     <g id="heston-7fdd66fffa-line2d_40">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m158c3cc05e" x="188.654581" y="449.897201" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_43">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'" transform="translate(190.733018 545.673451) rotate(-90)">Volatility of volatility ξ</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-xtick_23">
+     <g id="heston-7fdd66fffa-line2d_41">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m158c3cc05e" x="213.134104" y="449.897201" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_44">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'" transform="translate(215.212541 508.632201) rotate(-90)">Correlation ρ</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-xtick_24">
+     <g id="heston-7fdd66fffa-line2d_42">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m158c3cc05e" x="237.613627" y="449.897201" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_45">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'" transform="translate(239.692064 532.733451) rotate(-90)">Spread multiplier c</text>
+     </g>
+    </g>
+   </g>
+   <g id="heston-7fdd66fffa-matplotlib.axis_8">
+    <g id="heston-7fdd66fffa-ytick_19">
+     <g id="heston-7fdd66fffa-line2d_43">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m5454f8b392" x="102.97625" y="315.259824" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_46">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: end" x="95.97625" y="318.299199" transform="rotate(-0 95.97625 318.299199)">Initial variance v₀</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-ytick_20">
+     <g id="heston-7fdd66fffa-line2d_44">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m5454f8b392" x="102.97625" y="339.739347" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_47">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: end" x="95.97625" y="342.778722" transform="rotate(-0 95.97625 342.778722)">Mean reversion κ</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-ytick_21">
+     <g id="heston-7fdd66fffa-line2d_45">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m5454f8b392" x="102.97625" y="364.21887" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_48">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: end" x="95.97625" y="367.289495" transform="rotate(-0 95.97625 367.289495)">Long-run variance θ</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-ytick_22">
+     <g id="heston-7fdd66fffa-line2d_46">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m5454f8b392" x="102.97625" y="388.698393" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_49">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: end" x="95.97625" y="391.737768" transform="rotate(-0 95.97625 391.737768)">Volatility of volatility ξ</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-ytick_23">
+     <g id="heston-7fdd66fffa-line2d_47">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m5454f8b392" x="102.97625" y="413.177916" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_50">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: end" x="95.97625" y="416.217291" transform="rotate(-0 95.97625 416.217291)">Correlation ρ</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-ytick_24">
+     <g id="heston-7fdd66fffa-line2d_48">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m5454f8b392" x="102.97625" y="437.657439" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_51">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: end" x="95.97625" y="440.696814" transform="rotate(-0 95.97625 440.696814)">Spread multiplier c</text>
+     </g>
+    </g>
+   </g>
+   <g id="heston-7fdd66fffa-patch_18">
+    <path d="M 102.97625 449.897201 
+L 102.97625 303.020062 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-7fdd66fffa-patch_19">
+    <path d="M 249.853388 449.897201 
+L 249.853388 303.020062 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-7fdd66fffa-patch_20">
+    <path d="M 102.97625 449.897201 
+L 249.853388 449.897201 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-7fdd66fffa-patch_21">
+    <path d="M 102.97625 303.020062 
+L 249.853388 303.020062 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-7fdd66fffa-text_52">
+    <text style="font-size: 9.6px; font-family: 'DejaVu Sans'" transform="translate(151.028819 285.455437)">Epoch 100</text>
+    <text style="font-size: 9.6px; font-family: 'DejaVu Sans'" transform="translate(140.150069 297.020062)">max |Δ|=0.667</text>
+   </g>
+  </g>
+  <g id="heston-7fdd66fffa-axes_5">
+   <g id="heston-7fdd66fffa-patch_22">
+    <path d="M 351.630118 449.897201 
+L 498.507256 449.897201 
+L 498.507256 303.020062 
+L 351.630118 303.020062 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g clip-path="url(#heston-7fdd66fffa-p0706c791cc)">
+    <image xlink:href="data:image/png;base64,
+iVBORw0KGgoAAAANSUhEUgAAAMwAAADMCAYAAAA/IkzyAAADI0lEQVR4nO3dscrXZRjH4eenr0IS4ugiYoN4AAkuLSK5C+Lo7ru6dwKCm6tItLQ2JRFBYyGOJhGE4CAhWSqp5b9T8DNId3BdR/AsH77Pdm9P/3yxWwMcPrCtCS7dvrcm+OrKyTXB7tAHa4Ld4SNrggP/9QPg/0QwEAgGAsFAIBgIBAOBYCAQDASCgUAwEAgGAsFAIBgIBAOBYCAQDASCgUAwEAgGAsFAIBgIBAOBYCAQDASCgUAwEAgGAsFAIBgIBAOBYCAQDASCgWDv6G8/rQl2L35fE3z80fE1we7goTXBlMtf2+uXawILA4FgIBAMBIKBQDAQCAYCwUAgGAgEA4FgIBAMBIKBQDAQCAYCwUAgGAgEA4FgIBAMBIKBQDAQCAYCwUAgGAgEA4FgIBAMBIKBQDAQCAYCwUAgGAgEA8H23dlzuzXA/ZtfrAn2P/x5TfD36U/WBNtff6wJtn/erAksDASCgUAwEAgGAsFAIBgIBAOBYCAQDASCgUAwIBh4PywMBIKBQDAQCAYCwUAgGAgEA4FgIBAMBIKBQDAQCAYCwUAgGAgEA4FgIBAMBIKBQDAQCAYCwUCwPXn2fMQFsgcXP10TnP32mzXB3sPv1wSfPT6xJvjxl6drAgsDgWAgEAwEgoFAMBAIBgLBQCAYCAQDgWAgEAwEgoFAMBAIBgLBQCAYCAQDgWAgEAwEgoFAMBAIBgLBQCAYCAQDgWAgEAwEgoFAMBAIBgLBQCAYCAQDwfbw2uURF8hO3LizJvjh/IU1wb0bn68J9o/9uiZ4dercmsDCQCAYCAQDgWAgEAwEgoFAMBAIBgLBQCAYCAQDgWAgEAwEgoFAMBAIBgLBQCAYCAQDgWAgEAwEgoFAMBAIBgLBQCAYCAQDgWAgEAwEgoFAMBAIBgLBQLA35fLXo+tX1wRnvr67Jnh7YcYltO3LW2uC129HHMqzMFD4kkEgGAgEA4FgIBAMBIKBQDAQCAYCwUAgGAgEA4FgIBAMBIKBQDAQCAYCwUAgGAgEA4FgIBAMBIKBQDAQCAYCwUAgGAgEA4FgIBAMBIKBQDAQCAbWu/sXfeE/QSEjWOoAAAAASUVORK5CYII=" id="heston-7fdd66fffa-imageb6ef6b9a44" transform="scale(1 -1) translate(0 -146.88)" x="351.36" y="-303.033451" width="146.88" height="146.88"/>
+   </g>
+   <g id="heston-7fdd66fffa-matplotlib.axis_9">
+    <g id="heston-7fdd66fffa-xtick_25">
+     <g id="heston-7fdd66fffa-line2d_49">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m158c3cc05e" x="363.86988" y="449.897201" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_53">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'" transform="translate(365.948317 526.503451) rotate(-90)">Initial variance v₀</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-xtick_26">
+     <g id="heston-7fdd66fffa-line2d_50">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m158c3cc05e" x="388.349403" y="449.897201" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_54">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'" transform="translate(390.42784 525.830951) rotate(-90)">Mean reversion κ</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-xtick_27">
+     <g id="heston-7fdd66fffa-line2d_51">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m158c3cc05e" x="412.828926" y="449.897201" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_55">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'" transform="translate(414.938613 536.995951) rotate(-90)">Long-run variance θ</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-xtick_28">
+     <g id="heston-7fdd66fffa-line2d_52">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m158c3cc05e" x="437.308449" y="449.897201" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_56">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'" transform="translate(439.386886 545.673451) rotate(-90)">Volatility of volatility ξ</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-xtick_29">
+     <g id="heston-7fdd66fffa-line2d_53">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m158c3cc05e" x="461.787972" y="449.897201" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_57">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'" transform="translate(463.866409 508.632201) rotate(-90)">Correlation ρ</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-xtick_30">
+     <g id="heston-7fdd66fffa-line2d_54">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m158c3cc05e" x="486.267495" y="449.897201" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_58">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'" transform="translate(488.345932 532.733451) rotate(-90)">Spread multiplier c</text>
+     </g>
+    </g>
+   </g>
+   <g id="heston-7fdd66fffa-matplotlib.axis_10">
+    <g id="heston-7fdd66fffa-ytick_25">
+     <g id="heston-7fdd66fffa-line2d_55">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m5454f8b392" x="351.630118" y="315.259824" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_59">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: end" x="344.630118" y="318.299199" transform="rotate(-0 344.630118 318.299199)">Initial variance v₀</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-ytick_26">
+     <g id="heston-7fdd66fffa-line2d_56">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m5454f8b392" x="351.630118" y="339.739347" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_60">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: end" x="344.630118" y="342.778722" transform="rotate(-0 344.630118 342.778722)">Mean reversion κ</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-ytick_27">
+     <g id="heston-7fdd66fffa-line2d_57">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m5454f8b392" x="351.630118" y="364.21887" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_61">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: end" x="344.630118" y="367.289495" transform="rotate(-0 344.630118 367.289495)">Long-run variance θ</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-ytick_28">
+     <g id="heston-7fdd66fffa-line2d_58">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m5454f8b392" x="351.630118" y="388.698393" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_62">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: end" x="344.630118" y="391.737768" transform="rotate(-0 344.630118 391.737768)">Volatility of volatility ξ</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-ytick_29">
+     <g id="heston-7fdd66fffa-line2d_59">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m5454f8b392" x="351.630118" y="413.177916" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_63">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: end" x="344.630118" y="416.217291" transform="rotate(-0 344.630118 416.217291)">Correlation ρ</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-ytick_30">
+     <g id="heston-7fdd66fffa-line2d_60">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m5454f8b392" x="351.630118" y="437.657439" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_64">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: end" x="344.630118" y="440.696814" transform="rotate(-0 344.630118 440.696814)">Spread multiplier c</text>
+     </g>
+    </g>
+   </g>
+   <g id="heston-7fdd66fffa-patch_23">
+    <path d="M 351.630118 449.897201 
+L 351.630118 303.020062 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-7fdd66fffa-patch_24">
+    <path d="M 498.507256 449.897201 
+L 498.507256 303.020062 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-7fdd66fffa-patch_25">
+    <path d="M 351.630118 449.897201 
+L 498.507256 449.897201 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-7fdd66fffa-patch_26">
+    <path d="M 351.630118 303.020062 
+L 498.507256 303.020062 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="heston-7fdd66fffa-text_65">
+    <text style="font-size: 9.6px; font-family: 'DejaVu Sans'" transform="translate(399.682687 285.455437)">Epoch 200</text>
+    <text style="font-size: 9.6px; font-family: 'DejaVu Sans'" transform="translate(388.803937 297.020062)">max |Δ|=0.597</text>
+   </g>
+  </g>
+  <g id="heston-7fdd66fffa-axes_6"/>
+  <g id="heston-7fdd66fffa-axes_7">
+   <g id="heston-7fdd66fffa-patch_27">
+    <path d="M 779.370368 403.791792 
+L 795.603684 403.791792 
+L 795.603684 79.125471 
+L 779.370368 79.125471 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <image xlink:href="data:image/png;base64,
+iVBORw0KGgoAAAANSUhEUgAAABcAAAHDCAYAAADP8oEtAAACpklEQVR4nO1c0Y1jQQxieLP9XEvbfw3j2QLi+yRPWFAAQpjBThRl/fz7vRCBEGIvPjJy2irfseWFgT6uUWSiOO0RUUZOGTPSigOj+NgqZxb0l5cFZczwfkSM8k/Elhbp8xbp82mPiFy2fb6E5MvVFmags6JI2yiuRHHU899LqJ06aqTPe+T5t0ift0ifj+vz5XtaQAbqqJH7fFwUmSv3654/ylZ8bAf6RPkoz/fOQEcNlGLllJFTxoz0+cAoLlvlzGnxiWyiFoniMFsoY0aU/wcZaItE8Y0FvVy7hbbKH51w+H71txPFDonitG+hKSyubdwty3WgT6LYIFFskSi2UH7xj5wWr0QRMtB5QS8ZOWXMMF/QkIG+UVy+tyJco7h8PV86ctp6vhPFDoliiy1MIowX9LLtFgrJKeSG9AeoO8uiQ6LYIlH8/rKgkBvWz3/pyOlrC3SgkBs5it5Iy5X9MSQ2btnaUqbKYaz8KslLRk4ZMxLFcY9o+0YR5ap8+Xp+y7NyKWOG9SNatsqRVmyQKLbIJmqRK7dFWnFcn9cxteXaXrmw9RxC5fseX1tKRk4ZM6yjeJVRhO1Ar+1AYay8dOTXuBWPjJwyZlgrv7bFBW2fHxk5ZczIQOdF8Rr3ecnIKWOG+fM/SvJyteVE+aRNtDPQ7w+0bDfRTRSHPaJyVV5Cz7fxQI+t8rJVfqL8E7sy0BeieGTklDEjp8W8bilb5TdXboN9j+uPIcs4ildHXrYDvb4DPa6el1D59h1oCV8oZcwwj2LJyGnr+c5AZy1oypiRPp/4iK6MnL4fuMrXluOrvGTkdG7F62rLdVV+jJVDSX5l5LS1hTpqxPNpnm/nKEIG6qiRR9Qjfd4iUWyR06LF1n1oQaLYI1FskQU97Cja+cDVQTrQPw7uTxii1TLuAAAAAElFTkSuQmCC" id="heston-7fdd66fffa-imagef26dab9952" transform="scale(1 -1) translate(0 -324.72)" x="779.04" y="-78.48" width="16.56" height="324.72"/>
+   <g id="heston-7fdd66fffa-matplotlib.axis_11"/>
+   <g id="heston-7fdd66fffa-matplotlib.axis_12">
+    <g id="heston-7fdd66fffa-ytick_31">
+     <g id="heston-7fdd66fffa-line2d_61">
+      <defs>
+       <path id="heston-7fdd66fffa-m8d949d640a" d="M 0 0 
+L 3.5 0 
+" style="stroke: #000000; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m8d949d640a" x="795.603684" y="397.250535" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_66">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: start" x="802.603684" y="400.289597" transform="rotate(-0 802.603684 400.289597)">−0.8</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-ytick_32">
+     <g id="heston-7fdd66fffa-line2d_62">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m8d949d640a" x="795.603684" y="358.302559" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_67">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: start" x="802.603684" y="361.341622" transform="rotate(-0 802.603684 361.341622)">−0.6</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-ytick_33">
+     <g id="heston-7fdd66fffa-line2d_63">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m8d949d640a" x="795.603684" y="319.354583" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_68">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: start" x="802.603684" y="322.393646" transform="rotate(-0 802.603684 322.393646)">−0.4</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-ytick_34">
+     <g id="heston-7fdd66fffa-line2d_64">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m8d949d640a" x="795.603684" y="280.406607" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_69">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: start" x="802.603684" y="283.44567" transform="rotate(-0 802.603684 283.44567)">−0.2</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-ytick_35">
+     <g id="heston-7fdd66fffa-line2d_65">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m8d949d640a" x="795.603684" y="241.458632" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_70">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: start" x="802.603684" y="244.497694" transform="rotate(-0 802.603684 244.497694)">0.0</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-ytick_36">
+     <g id="heston-7fdd66fffa-line2d_66">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m8d949d640a" x="795.603684" y="202.510656" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_71">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: start" x="802.603684" y="205.549718" transform="rotate(-0 802.603684 205.549718)">0.2</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-ytick_37">
+     <g id="heston-7fdd66fffa-line2d_67">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m8d949d640a" x="795.603684" y="163.56268" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_72">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: start" x="802.603684" y="166.601742" transform="rotate(-0 802.603684 166.601742)">0.4</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-ytick_38">
+     <g id="heston-7fdd66fffa-line2d_68">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m8d949d640a" x="795.603684" y="124.614704" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_73">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: start" x="802.603684" y="127.653766" transform="rotate(-0 802.603684 127.653766)">0.6</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-ytick_39">
+     <g id="heston-7fdd66fffa-line2d_69">
+      <g>
+       <use xlink:href="#heston-7fdd66fffa-m8d949d640a" x="795.603684" y="85.666728" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="heston-7fdd66fffa-text_74">
+      <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: start" x="802.603684" y="88.705791" transform="rotate(-0 802.603684 88.705791)">0.8</text>
+     </g>
+    </g>
+    <g id="heston-7fdd66fffa-text_75">
+     <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: middle" x="832.108684" y="241.458632" transform="rotate(-90 832.108684 241.458632)">Neural correlation − MCMC correlation</text>
+    </g>
+   </g>
+   <g id="heston-7fdd66fffa-LineCollection_1"/>
+   <g id="heston-7fdd66fffa-patch_28">
+    <path d="M 779.370368 403.791792 
+L 787.487026 403.791792 
+L 795.603684 403.791792 
+L 795.603684 79.125471 
+L 787.487026 79.125471 
+L 779.370368 79.125471 
+L 779.370368 403.791792 
+z
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="heston-7fdd66fffa-p95920ff18e">
+   <rect x="102.97625" y="33.020062" width="146.877138" height="146.877138"/>
+  </clipPath>
+  <clipPath id="heston-7fdd66fffa-pbd6bc5f042">
+   <rect x="351.630118" y="33.020062" width="146.877138" height="146.877138"/>
+  </clipPath>
+  <clipPath id="heston-7fdd66fffa-p0419532f05">
+   <rect x="600.283986" y="33.020062" width="146.877138" height="146.877138"/>
+  </clipPath>
+  <clipPath id="heston-7fdd66fffa-p4cc3e66114">
+   <rect x="102.97625" y="303.020062" width="146.877138" height="146.877138"/>
+  </clipPath>
+  <clipPath id="heston-7fdd66fffa-p0706c791cc">
+   <rect x="351.630118" y="303.020062" width="146.877138" height="146.877138"/>
+  </clipPath>
+ </defs>
+</svg>

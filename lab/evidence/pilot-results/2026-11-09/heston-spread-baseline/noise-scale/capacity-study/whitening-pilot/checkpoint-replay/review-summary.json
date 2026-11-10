@@ -1,0 +1,2798 @@
+{
+  "format": "heston_spread_whitening_checkpoint_replay_review_v1",
+  "protocol": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/protocol.json",
+    "sha256": "901c7c3257ec2f12bb5b57f2608ab49c8e5e5cf8a30bcbba80651692edb6f7ab"
+  },
+  "producer": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/review_heston_spread_whitening_replay.py",
+    "sha256": "66398e6080ef9258ae92f020a55391286d1fc918bdf2767ef9c56c8fb23afb3f"
+  },
+  "frozen_renderer": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/render_heston_spread_whitening_replay.py",
+    "sha256": "5672b175a7cd1bf8bb7f2580f848e2645bfd034653601f58f2da243d2452fe6e"
+  },
+  "raw_report": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/frozen-report/report.html",
+    "sha256": "02ba316d750329f678677b27492a2864c7478b58fec3ce848f872452f3236ed5"
+  },
+  "raw_plot_summary": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/frozen-report/plot-summary.json",
+    "sha256": "6b010f46b529067f17eb8aa096ef4130b99558233b0cdb0b74e62b4d03004885"
+  },
+  "compact_plot_summary": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/plot-summary.json",
+    "sha256": "6b010f46b529067f17eb8aa096ef4130b99558233b0cdb0b74e62b4d03004885"
+  },
+  "exported_figures": {
+    "learning-curves.png": {
+      "source": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/frozen-report/learning-curves.png",
+        "sha256": "4e0bfd26da96e150d2181f969c6a33c4ad25a3e3e9afc1ffd8c0d21bdcba1bda"
+      },
+      "copy": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/learning-curves.png",
+        "sha256": "4e0bfd26da96e150d2181f969c6a33c4ad25a3e3e9afc1ffd8c0d21bdcba1bda"
+      }
+    },
+    "learning-curves.svg": {
+      "source": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/frozen-report/learning-curves.svg",
+        "sha256": "1c84433c29739b18abb53e2b3d39bb154111b5761ce70fb71b65c2c59411443b"
+      },
+      "copy": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/learning-curves.svg",
+        "sha256": "1c84433c29739b18abb53e2b3d39bb154111b5761ce70fb71b65c2c59411443b"
+      }
+    },
+    "sbc-ecdf.png": {
+      "source": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/frozen-report/sbc-ecdf.png",
+        "sha256": "af7915784e16b638826ae06dcb9f0182df9edf3d01cbe2428d87455429361b9f"
+      },
+      "copy": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/sbc-ecdf.png",
+        "sha256": "af7915784e16b638826ae06dcb9f0182df9edf3d01cbe2428d87455429361b9f"
+      }
+    },
+    "sbc-ecdf.svg": {
+      "source": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/frozen-report/sbc-ecdf.svg",
+        "sha256": "a9008f2d4cf1062a67286229e695c27ff6b7f204071af2a9a64381ffd842d567"
+      },
+      "copy": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/sbc-ecdf.svg",
+        "sha256": "a9008f2d4cf1062a67286229e695c27ff6b7f204071af2a9a64381ffd842d567"
+      }
+    },
+    "coverage.png": {
+      "source": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/frozen-report/coverage.png",
+        "sha256": "56703a46921b25bced2021725c6e7d9bb13e544bb4db52806b85e74dfa2249f0"
+      },
+      "copy": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/coverage.png",
+        "sha256": "56703a46921b25bced2021725c6e7d9bb13e544bb4db52806b85e74dfa2249f0"
+      }
+    },
+    "coverage.svg": {
+      "source": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/frozen-report/coverage.svg",
+        "sha256": "622129248fe2c6617da1e93c980d0f34c4a40121e5a280af4b66d3bc44c302f2"
+      },
+      "copy": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/coverage.svg",
+        "sha256": "622129248fe2c6617da1e93c980d0f34c4a40121e5a280af4b66d3bc44c302f2"
+      }
+    },
+    "recovery-epoch050.png": {
+      "source": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/frozen-report/recovery-epoch050.png",
+        "sha256": "741d03a74cb4d88b86b392bd69426ef9419360c0073ffa1dfe81c2cc331e739e"
+      },
+      "copy": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/recovery-epoch050.png",
+        "sha256": "741d03a74cb4d88b86b392bd69426ef9419360c0073ffa1dfe81c2cc331e739e"
+      }
+    },
+    "recovery-epoch050.svg": {
+      "source": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/frozen-report/recovery-epoch050.svg",
+        "sha256": "71c87838e580c6362f150bfe4f49d5b111846e40117cb1339ae808486bf1727b"
+      },
+      "copy": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/recovery-epoch050.svg",
+        "sha256": "71c87838e580c6362f150bfe4f49d5b111846e40117cb1339ae808486bf1727b"
+      }
+    },
+    "recovery-epoch075.png": {
+      "source": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/frozen-report/recovery-epoch075.png",
+        "sha256": "c52e363eee77e6f87f8b66ee1e0f123a30e68b7298cd07126b56fe6393b9d3db"
+      },
+      "copy": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/recovery-epoch075.png",
+        "sha256": "c52e363eee77e6f87f8b66ee1e0f123a30e68b7298cd07126b56fe6393b9d3db"
+      }
+    },
+    "recovery-epoch075.svg": {
+      "source": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/frozen-report/recovery-epoch075.svg",
+        "sha256": "863c2705eae7c4fca737ded5a8476f47d2224a9aae8e4e71a8dc67e349670ac0"
+      },
+      "copy": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/recovery-epoch075.svg",
+        "sha256": "863c2705eae7c4fca737ded5a8476f47d2224a9aae8e4e71a8dc67e349670ac0"
+      }
+    },
+    "recovery-epoch083.png": {
+      "source": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/frozen-report/recovery-epoch083.png",
+        "sha256": "649628558ef28e030847ce3d3b1a72e970ecc4cf89fbdaafa1d9ea1361168d20"
+      },
+      "copy": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/recovery-epoch083.png",
+        "sha256": "649628558ef28e030847ce3d3b1a72e970ecc4cf89fbdaafa1d9ea1361168d20"
+      }
+    },
+    "recovery-epoch083.svg": {
+      "source": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/frozen-report/recovery-epoch083.svg",
+        "sha256": "4a245aafcbe0624f9d3ac663c8fadee0cd5c15d8dc0c52798cf7068bc0b5cea3"
+      },
+      "copy": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/recovery-epoch083.svg",
+        "sha256": "4a245aafcbe0624f9d3ac663c8fadee0cd5c15d8dc0c52798cf7068bc0b5cea3"
+      }
+    },
+    "recovery-epoch100.png": {
+      "source": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/frozen-report/recovery-epoch100.png",
+        "sha256": "179eec4c66429c49f14178fdfbcb64f6d3cfbf960b66f72e074050967df60a81"
+      },
+      "copy": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/recovery-epoch100.png",
+        "sha256": "179eec4c66429c49f14178fdfbcb64f6d3cfbf960b66f72e074050967df60a81"
+      }
+    },
+    "recovery-epoch100.svg": {
+      "source": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/frozen-report/recovery-epoch100.svg",
+        "sha256": "2e7b28512622c6860ccb6b3e7c114736aa4094fc7cc321ae81fce5531dea0ca3"
+      },
+      "copy": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/recovery-epoch100.svg",
+        "sha256": "2e7b28512622c6860ccb6b3e7c114736aa4094fc7cc321ae81fce5531dea0ca3"
+      }
+    },
+    "recovery-epoch200.png": {
+      "source": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/frozen-report/recovery-epoch200.png",
+        "sha256": "d8ff60f5e80aa167fc5afbd2e41cd7c9ec1cecad20c8b9568187e3d20b691ddc"
+      },
+      "copy": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/recovery-epoch200.png",
+        "sha256": "d8ff60f5e80aa167fc5afbd2e41cd7c9ec1cecad20c8b9568187e3d20b691ddc"
+      }
+    },
+    "recovery-epoch200.svg": {
+      "source": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/frozen-report/recovery-epoch200.svg",
+        "sha256": "11cd1f1db8f6824db57e9d423b4143f1945e1b2ab6325bdbd114eb53f706648a"
+      },
+      "copy": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/recovery-epoch200.svg",
+        "sha256": "11cd1f1db8f6824db57e9d423b4143f1945e1b2ab6325bdbd114eb53f706648a"
+      }
+    },
+    "selected-c-recovery.png": {
+      "source": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/frozen-report/selected-c-recovery.png",
+        "sha256": "70783086e6a79949684497fa2190a9f4cd0a7789e6413213eccd21988a6902ee"
+      },
+      "copy": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/selected-c-recovery.png",
+        "sha256": "70783086e6a79949684497fa2190a9f4cd0a7789e6413213eccd21988a6902ee"
+      }
+    },
+    "selected-c-recovery.svg": {
+      "source": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/frozen-report/selected-c-recovery.svg",
+        "sha256": "4b5a6a9f4a9fb967db2127aee785c2acd35dbaa960a65b2737127dc3c4a952d5"
+      },
+      "copy": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/selected-c-recovery.svg",
+        "sha256": "4b5a6a9f4a9fb967db2127aee785c2acd35dbaa960a65b2737127dc3c4a952d5"
+      }
+    },
+    "conditional-c.png": {
+      "source": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/frozen-report/conditional-c.png",
+        "sha256": "3f17cb05128f77f8f83ff0d84e7aa47e0fbfd3b849166f1396e83c86b9c786f9"
+      },
+      "copy": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/conditional-c.png",
+        "sha256": "3f17cb05128f77f8f83ff0d84e7aa47e0fbfd3b849166f1396e83c86b9c786f9"
+      }
+    },
+    "conditional-c.svg": {
+      "source": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/frozen-report/conditional-c.svg",
+        "sha256": "2927fa37859e0dd08bf1b2bbdaeee1722ad4e5a1f822f2f4f0cd622c2ca8d86b"
+      },
+      "copy": {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/conditional-c.svg",
+        "sha256": "2927fa37859e0dd08bf1b2bbdaeee1722ad4e5a1f822f2f4f0cd622c2ca8d86b"
+      }
+    }
+  },
+  "dependence": {
+    "synthetic-broad": {
+      "50": {
+        "neural_correlation": [
+          [
+            1.0,
+            0.04071886285696765,
+            0.04449140413387319,
+            -0.044205571331524585,
+            -0.03537281362179772,
+            0.035873927603872785
+          ],
+          [
+            0.04071886285696766,
+            1.0,
+            -0.07964019691267442,
+            0.09133564253652762,
+            -0.09571102834100878,
+            -0.0238866070384368
+          ],
+          [
+            0.04449140413387319,
+            -0.07964019691267443,
+            1.0,
+            -0.17552929702575892,
+            -0.12562392205336737,
+            -0.14471142007010662
+          ],
+          [
+            -0.044205571331524585,
+            0.09133564253652764,
+            -0.17552929702575892,
+            1.0,
+            0.06432409149044481,
+            -0.044614939449962296
+          ],
+          [
+            -0.03537281362179772,
+            -0.09571102834100877,
+            -0.12562392205336737,
+            0.0643240914904448,
+            1.0,
+            0.059483591247367226
+          ],
+          [
+            0.035873927603872785,
+            -0.0238866070384368,
+            -0.14471142007010665,
+            -0.044614939449962296,
+            0.059483591247367226,
+            1.0
+          ]
+        ],
+        "reference_correlation": [
+          [
+            0.9999999999999999,
+            0.5251408436776736,
+            -0.2992452367740136,
+            0.5530184591992963,
+            0.11684004596280019,
+            0.01833658961630624
+          ],
+          [
+            0.5251408436776736,
+            1.0,
+            -0.20811718020905404,
+            0.16658664671391257,
+            -0.49314726272490705,
+            0.0010241716004542557
+          ],
+          [
+            -0.2992452367740136,
+            -0.20811718020905404,
+            1.0,
+            0.40173032077555504,
+            0.23362961222841835,
+            0.008632995181768187
+          ],
+          [
+            0.5530184591992963,
+            0.16658664671391257,
+            0.40173032077555504,
+            1.0,
+            0.6347591810010711,
+            0.006148713476746733
+          ],
+          [
+            0.11684004596280019,
+            -0.49314726272490705,
+            0.23362961222841835,
+            0.6347591810010712,
+            1.0,
+            -0.007127238509984896
+          ],
+          [
+            0.01833658961630624,
+            0.0010241716004542557,
+            0.008632995181768187,
+            0.006148713476746733,
+            -0.007127238509984896,
+            1.0
+          ]
+        ],
+        "signed_correlation_difference": [
+          [
+            1.1102230246251565e-16,
+            -0.4844219808207059,
+            0.3437366409078868,
+            -0.5972240305308208,
+            -0.1522128595845979,
+            0.017537337987566546
+          ],
+          [
+            -0.48442198082070587,
+            0.0,
+            0.12847698329637963,
+            -0.07525100417738495,
+            0.3974362343838983,
+            -0.024910778638891056
+          ],
+          [
+            0.3437366409078868,
+            0.1284769832963796,
+            0.0,
+            -0.577259617801314,
+            -0.35925353428178575,
+            -0.1533444152518748
+          ],
+          [
+            -0.5972240305308208,
+            -0.07525100417738494,
+            -0.577259617801314,
+            0.0,
+            -0.5704350895106263,
+            -0.05076365292670903
+          ],
+          [
+            -0.1522128595845979,
+            0.3974362343838983,
+            -0.35925353428178575,
+            -0.5704350895106264,
+            0.0,
+            0.06661082975735212
+          ],
+          [
+            0.017537337987566546,
+            -0.024910778638891056,
+            -0.15334441525187484,
+            -0.05076365292670903,
+            0.06661082975735212,
+            0.0
+          ]
+        ],
+        "unique_parameter_pairs": 15,
+        "max_absolute_correlation_difference": 0.5972240305308208,
+        "median_absolute_correlation_difference": 0.1533444152518748,
+        "neural_draws": 4096,
+        "reference_draws": 48000,
+        "reference_chain_shape": [
+          4,
+          12000,
+          6
+        ],
+        "scope": "Descriptive Pearson correlation only; no Monte Carlo acceptance threshold, nonlinear-dependence or full-joint equality claim."
+      },
+      "75": {
+        "neural_correlation": [
+          [
+            0.9999999999999998,
+            -0.0008232634168105727,
+            0.025184368364879545,
+            0.0006449144685858816,
+            -0.018074284963871107,
+            0.057067892322390255
+          ],
+          [
+            -0.0008232634168105727,
+            0.9999999999999999,
+            -0.08212606767012508,
+            0.038584820422650934,
+            -0.060912322292748074,
+            -0.0713687022167687
+          ],
+          [
+            0.025184368364879542,
+            -0.08212606767012508,
+            1.0,
+            -0.14851598777555283,
+            -0.13894958572823987,
+            -0.08626487782676219
+          ],
+          [
+            0.0006449144685858816,
+            0.038584820422650934,
+            -0.14851598777555283,
+            1.0,
+            0.04753649457871155,
+            -0.06614403361560446
+          ],
+          [
+            -0.018074284963871104,
+            -0.060912322292748074,
+            -0.13894958572823987,
+            0.04753649457871155,
+            1.0,
+            0.08118715900001476
+          ],
+          [
+            0.057067892322390255,
+            -0.0713687022167687,
+            -0.08626487782676219,
+            -0.06614403361560446,
+            0.08118715900001476,
+            1.0
+          ]
+        ],
+        "reference_correlation": [
+          [
+            0.9999999999999999,
+            0.5251408436776736,
+            -0.2992452367740136,
+            0.5530184591992963,
+            0.11684004596280019,
+            0.01833658961630624
+          ],
+          [
+            0.5251408436776736,
+            1.0,
+            -0.20811718020905404,
+            0.16658664671391257,
+            -0.49314726272490705,
+            0.0010241716004542557
+          ],
+          [
+            -0.2992452367740136,
+            -0.20811718020905404,
+            1.0,
+            0.40173032077555504,
+            0.23362961222841835,
+            0.008632995181768187
+          ],
+          [
+            0.5530184591992963,
+            0.16658664671391257,
+            0.40173032077555504,
+            1.0,
+            0.6347591810010711,
+            0.006148713476746733
+          ],
+          [
+            0.11684004596280019,
+            -0.49314726272490705,
+            0.23362961222841835,
+            0.6347591810010712,
+            1.0,
+            -0.007127238509984896
+          ],
+          [
+            0.01833658961630624,
+            0.0010241716004542557,
+            0.008632995181768187,
+            0.006148713476746733,
+            -0.007127238509984896,
+            1.0
+          ]
+        ],
+        "signed_correlation_difference": [
+          [
+            -1.1102230246251565e-16,
+            -0.5259641070944842,
+            0.32442960513889313,
+            -0.5523735447307104,
+            -0.1349143309266713,
+            0.03873130270608402
+          ],
+          [
+            -0.5259641070944842,
+            -1.1102230246251565e-16,
+            0.12599111253892897,
+            -0.12800182629126164,
+            0.432234940432159,
+            -0.07239287381722297
+          ],
+          [
+            0.32442960513889313,
+            0.12599111253892897,
+            0.0,
+            -0.5502463085511079,
+            -0.3725791979566582,
+            -0.09489787300853038
+          ],
+          [
+            -0.5523735447307104,
+            -0.12800182629126164,
+            -0.5502463085511079,
+            0.0,
+            -0.5872226864223595,
+            -0.0722927470923512
+          ],
+          [
+            -0.1349143309266713,
+            0.432234940432159,
+            -0.3725791979566582,
+            -0.5872226864223596,
+            0.0,
+            0.08831439750999966
+          ],
+          [
+            0.03873130270608402,
+            -0.07239287381722297,
+            -0.09489787300853038,
+            -0.0722927470923512,
+            0.08831439750999966,
+            0.0
+          ]
+        ],
+        "unique_parameter_pairs": 15,
+        "max_absolute_correlation_difference": 0.5872226864223595,
+        "median_absolute_correlation_difference": 0.1349143309266713,
+        "neural_draws": 4096,
+        "reference_draws": 48000,
+        "reference_chain_shape": [
+          4,
+          12000,
+          6
+        ],
+        "scope": "Descriptive Pearson correlation only; no Monte Carlo acceptance threshold, nonlinear-dependence or full-joint equality claim."
+      },
+      "83": {
+        "neural_correlation": [
+          [
+            1.0,
+            0.012535402707276336,
+            0.03677128103914768,
+            -0.004388385236297393,
+            -0.00726692204167072,
+            0.056044143314233553
+          ],
+          [
+            0.012535402707276336,
+            0.9999999999999999,
+            -0.07437776001594826,
+            0.06062057345962566,
+            -0.04432662670806737,
+            -0.05369281652576404
+          ],
+          [
+            0.03677128103914768,
+            -0.07437776001594826,
+            0.9999999999999999,
+            -0.16202226706282918,
+            -0.0949369234573483,
+            -0.1492259174178779
+          ],
+          [
+            -0.004388385236297393,
+            0.06062057345962567,
+            -0.1620222670628292,
+            0.9999999999999999,
+            0.05681748678564819,
+            -0.0195442850309411
+          ],
+          [
+            -0.00726692204167072,
+            -0.04432662670806737,
+            -0.09493692345734832,
+            0.05681748678564819,
+            0.9999999999999999,
+            0.06158498570802584
+          ],
+          [
+            0.056044143314233553,
+            -0.05369281652576404,
+            -0.1492259174178779,
+            -0.0195442850309411,
+            0.061584985708025834,
+            1.0
+          ]
+        ],
+        "reference_correlation": [
+          [
+            0.9999999999999999,
+            0.5251408436776736,
+            -0.2992452367740136,
+            0.5530184591992963,
+            0.11684004596280019,
+            0.01833658961630624
+          ],
+          [
+            0.5251408436776736,
+            1.0,
+            -0.20811718020905404,
+            0.16658664671391257,
+            -0.49314726272490705,
+            0.0010241716004542557
+          ],
+          [
+            -0.2992452367740136,
+            -0.20811718020905404,
+            1.0,
+            0.40173032077555504,
+            0.23362961222841835,
+            0.008632995181768187
+          ],
+          [
+            0.5530184591992963,
+            0.16658664671391257,
+            0.40173032077555504,
+            1.0,
+            0.6347591810010711,
+            0.006148713476746733
+          ],
+          [
+            0.11684004596280019,
+            -0.49314726272490705,
+            0.23362961222841835,
+            0.6347591810010712,
+            1.0,
+            -0.007127238509984896
+          ],
+          [
+            0.01833658961630624,
+            0.0010241716004542557,
+            0.008632995181768187,
+            0.006148713476746733,
+            -0.007127238509984896,
+            1.0
+          ]
+        ],
+        "signed_correlation_difference": [
+          [
+            1.1102230246251565e-16,
+            -0.5126054409703972,
+            0.3360165178131613,
+            -0.5574068444355936,
+            -0.12410696800447091,
+            0.03770755369792732
+          ],
+          [
+            -0.5126054409703972,
+            -1.1102230246251565e-16,
+            0.13373942019310578,
+            -0.10596607325428692,
+            0.4488206360168397,
+            -0.054716988126218294
+          ],
+          [
+            0.3360165178131613,
+            0.13373942019310578,
+            -1.1102230246251565e-16,
+            -0.5637525878383842,
+            -0.32856653568576666,
+            -0.1578589125996461
+          ],
+          [
+            -0.5574068444355936,
+            -0.1059660732542869,
+            -0.5637525878383842,
+            -1.1102230246251565e-16,
+            -0.5779416942154229,
+            -0.02569299850768783
+          ],
+          [
+            -0.12410696800447091,
+            0.4488206360168397,
+            -0.32856653568576666,
+            -0.577941694215423,
+            -1.1102230246251565e-16,
+            0.06871222421801074
+          ],
+          [
+            0.03770755369792732,
+            -0.054716988126218294,
+            -0.1578589125996461,
+            -0.02569299850768783,
+            0.06871222421801074,
+            0.0
+          ]
+        ],
+        "unique_parameter_pairs": 15,
+        "max_absolute_correlation_difference": 0.5779416942154229,
+        "median_absolute_correlation_difference": 0.1578589125996461,
+        "neural_draws": 4096,
+        "reference_draws": 48000,
+        "reference_chain_shape": [
+          4,
+          12000,
+          6
+        ],
+        "scope": "Descriptive Pearson correlation only; no Monte Carlo acceptance threshold, nonlinear-dependence or full-joint equality claim."
+      },
+      "100": {
+        "neural_correlation": [
+          [
+            1.0,
+            -0.018045299539253736,
+            0.04930576697392493,
+            -0.0009644326806900703,
+            -0.021333492554875298,
+            0.04669081713562384
+          ],
+          [
+            -0.018045299539253736,
+            1.0,
+            -0.08124996764663218,
+            0.06839132815886682,
+            -0.08519634476365708,
+            -0.19088220066447134
+          ],
+          [
+            0.04930576697392493,
+            -0.08124996764663217,
+            0.9999999999999998,
+            -0.1423244439408886,
+            -0.10947650904970481,
+            -0.085707093178464
+          ],
+          [
+            -0.0009644326806900704,
+            0.06839132815886681,
+            -0.1423244439408886,
+            1.0,
+            0.024231026265018628,
+            -0.1041486495781473
+          ],
+          [
+            -0.021333492554875298,
+            -0.08519634476365708,
+            -0.10947650904970482,
+            0.024231026265018628,
+            0.9999999999999998,
+            0.059946634681277595
+          ],
+          [
+            0.046690817135623834,
+            -0.19088220066447134,
+            -0.085707093178464,
+            -0.1041486495781473,
+            0.0599466346812776,
+            1.0
+          ]
+        ],
+        "reference_correlation": [
+          [
+            0.9999999999999999,
+            0.5251408436776736,
+            -0.2992452367740136,
+            0.5530184591992963,
+            0.11684004596280019,
+            0.01833658961630624
+          ],
+          [
+            0.5251408436776736,
+            1.0,
+            -0.20811718020905404,
+            0.16658664671391257,
+            -0.49314726272490705,
+            0.0010241716004542557
+          ],
+          [
+            -0.2992452367740136,
+            -0.20811718020905404,
+            1.0,
+            0.40173032077555504,
+            0.23362961222841835,
+            0.008632995181768187
+          ],
+          [
+            0.5530184591992963,
+            0.16658664671391257,
+            0.40173032077555504,
+            1.0,
+            0.6347591810010711,
+            0.006148713476746733
+          ],
+          [
+            0.11684004596280019,
+            -0.49314726272490705,
+            0.23362961222841835,
+            0.6347591810010712,
+            1.0,
+            -0.007127238509984896
+          ],
+          [
+            0.01833658961630624,
+            0.0010241716004542557,
+            0.008632995181768187,
+            0.006148713476746733,
+            -0.007127238509984896,
+            1.0
+          ]
+        ],
+        "signed_correlation_difference": [
+          [
+            1.1102230246251565e-16,
+            -0.5431861432169273,
+            0.3485510037479385,
+            -0.5539828918799863,
+            -0.1381735385176755,
+            0.028354227519317602
+          ],
+          [
+            -0.5431861432169273,
+            0.0,
+            0.12686721256242184,
+            -0.09819531855504575,
+            0.40795091796125,
+            -0.1919063722649256
+          ],
+          [
+            0.3485510037479385,
+            0.12686721256242187,
+            -2.220446049250313e-16,
+            -0.5440547647164437,
+            -0.3431061212781232,
+            -0.0943400883602322
+          ],
+          [
+            -0.5539828918799863,
+            -0.09819531855504576,
+            -0.5440547647164437,
+            0.0,
+            -0.6105281547360525,
+            -0.11029736305489404
+          ],
+          [
+            -0.1381735385176755,
+            0.40795091796125,
+            -0.3431061212781232,
+            -0.6105281547360526,
+            -2.220446049250313e-16,
+            0.06707387319126248
+          ],
+          [
+            0.028354227519317595,
+            -0.1919063722649256,
+            -0.0943400883602322,
+            -0.11029736305489404,
+            0.0670738731912625,
+            0.0
+          ]
+        ],
+        "unique_parameter_pairs": 15,
+        "max_absolute_correlation_difference": 0.6105281547360525,
+        "median_absolute_correlation_difference": 0.1919063722649256,
+        "neural_draws": 4096,
+        "reference_draws": 48000,
+        "reference_chain_shape": [
+          4,
+          12000,
+          6
+        ],
+        "scope": "Descriptive Pearson correlation only; no Monte Carlo acceptance threshold, nonlinear-dependence or full-joint equality claim."
+      },
+      "200": {
+        "neural_correlation": [
+          [
+            0.9999999999999998,
+            -0.05038253644038686,
+            0.047926152487836764,
+            0.024661747607491052,
+            0.00612260408950849,
+            0.08370207837455612
+          ],
+          [
+            -0.050382536440386864,
+            1.0,
+            -0.053251468502156764,
+            0.019448611716100128,
+            -0.11286742937388503,
+            -0.24802264400020183
+          ],
+          [
+            0.047926152487836764,
+            -0.05325146850215676,
+            1.0,
+            -0.12657376548844668,
+            -0.10811390019663979,
+            -0.09735126152207241
+          ],
+          [
+            0.024661747607491052,
+            0.01944861171610013,
+            -0.12657376548844668,
+            0.9999999999999998,
+            0.08300318461630944,
+            -0.11760834085387598
+          ],
+          [
+            0.006122604089508491,
+            -0.11286742937388503,
+            -0.10811390019663979,
+            0.08300318461630946,
+            1.0,
+            0.05555495714362721
+          ],
+          [
+            0.08370207837455612,
+            -0.2480226440002018,
+            -0.0973512615220724,
+            -0.11760834085387596,
+            0.0555549571436272,
+            1.0
+          ]
+        ],
+        "reference_correlation": [
+          [
+            0.9999999999999999,
+            0.5251408436776736,
+            -0.2992452367740136,
+            0.5530184591992963,
+            0.11684004596280019,
+            0.01833658961630624
+          ],
+          [
+            0.5251408436776736,
+            1.0,
+            -0.20811718020905404,
+            0.16658664671391257,
+            -0.49314726272490705,
+            0.0010241716004542557
+          ],
+          [
+            -0.2992452367740136,
+            -0.20811718020905404,
+            1.0,
+            0.40173032077555504,
+            0.23362961222841835,
+            0.008632995181768187
+          ],
+          [
+            0.5530184591992963,
+            0.16658664671391257,
+            0.40173032077555504,
+            1.0,
+            0.6347591810010711,
+            0.006148713476746733
+          ],
+          [
+            0.11684004596280019,
+            -0.49314726272490705,
+            0.23362961222841835,
+            0.6347591810010712,
+            1.0,
+            -0.007127238509984896
+          ],
+          [
+            0.01833658961630624,
+            0.0010241716004542557,
+            0.008632995181768187,
+            0.006148713476746733,
+            -0.007127238509984896,
+            1.0
+          ]
+        ],
+        "signed_correlation_difference": [
+          [
+            -1.1102230246251565e-16,
+            -0.5755233801180604,
+            0.34717138926185037,
+            -0.5283567115918052,
+            -0.1107174418732917,
+            0.06536548875824988
+          ],
+          [
+            -0.5755233801180604,
+            0.0,
+            0.15486571170689728,
+            -0.14713803499781244,
+            0.380279833351022,
+            -0.24904681560065609
+          ],
+          [
+            0.34717138926185037,
+            0.15486571170689728,
+            0.0,
+            -0.5283040862640017,
+            -0.3417435124250581,
+            -0.1059842567038406
+          ],
+          [
+            -0.5283567115918052,
+            -0.14713803499781244,
+            -0.5283040862640017,
+            -2.220446049250313e-16,
+            -0.5517559963847617,
+            -0.12375705433062271
+          ],
+          [
+            -0.1107174418732917,
+            0.380279833351022,
+            -0.3417435124250581,
+            -0.5517559963847618,
+            0.0,
+            0.0626821956536121
+          ],
+          [
+            0.06536548875824988,
+            -0.24904681560065606,
+            -0.10598425670384058,
+            -0.1237570543306227,
+            0.0626821956536121,
+            0.0
+          ]
+        ],
+        "unique_parameter_pairs": 15,
+        "max_absolute_correlation_difference": 0.5755233801180604,
+        "median_absolute_correlation_difference": 0.24904681560065609,
+        "neural_draws": 4096,
+        "reference_draws": 48000,
+        "reference_chain_shape": [
+          4,
+          12000,
+          6
+        ],
+        "scope": "Descriptive Pearson correlation only; no Monte Carlo acceptance threshold, nonlinear-dependence or full-joint equality claim."
+      }
+    },
+    "synthetic-market-like": {
+      "50": {
+        "neural_correlation": [
+          [
+            1.0,
+            0.3233632823740192,
+            0.05614856723693649,
+            0.405980507964948,
+            0.15686859860190258,
+            -0.09279847268726452
+          ],
+          [
+            0.3233632823740192,
+            1.0,
+            -0.04598695591192596,
+            0.39551157628795686,
+            -0.022726043632830976,
+            -0.014111187579580216
+          ],
+          [
+            0.05614856723693649,
+            -0.04598695591192596,
+            1.0,
+            0.04811171552444965,
+            0.025858969319166487,
+            -0.10171122722564915
+          ],
+          [
+            0.40598050796494806,
+            0.39551157628795686,
+            0.04811171552444966,
+            1.0,
+            0.1794492122701727,
+            -0.0019978609463552166
+          ],
+          [
+            0.15686859860190255,
+            -0.022726043632830976,
+            0.025858969319166487,
+            0.1794492122701727,
+            1.0,
+            -0.005205884047170768
+          ],
+          [
+            -0.09279847268726452,
+            -0.014111187579580216,
+            -0.10171122722564917,
+            -0.0019978609463552166,
+            -0.005205884047170767,
+            1.0
+          ]
+        ],
+        "reference_correlation": [
+          [
+            1.0,
+            -0.06589284491566504,
+            -0.13833042990803143,
+            0.03354982727868997,
+            0.1645676271889517,
+            0.02136979737941057
+          ],
+          [
+            -0.06589284491566502,
+            1.0,
+            -0.8795766687593489,
+            0.846527177465839,
+            -0.0400231115665302,
+            0.026944550556390542
+          ],
+          [
+            -0.13833042990803143,
+            -0.8795766687593489,
+            0.9999999999999999,
+            -0.5986058274122412,
+            0.10478018398957453,
+            -0.028454528854600886
+          ],
+          [
+            0.03354982727868997,
+            0.8465271774658389,
+            -0.5986058274122412,
+            1.0,
+            0.29122583845050176,
+            0.028115786813010555
+          ],
+          [
+            0.1645676271889517,
+            -0.0400231115665302,
+            0.10478018398957453,
+            0.29122583845050176,
+            0.9999999999999998,
+            0.02256158580392728
+          ],
+          [
+            0.021369797379410565,
+            0.026944550556390542,
+            -0.028454528854600886,
+            0.02811578681301055,
+            0.022561585803927277,
+            0.9999999999999999
+          ]
+        ],
+        "signed_correlation_difference": [
+          [
+            0.0,
+            0.38925612728968423,
+            0.1944789971449679,
+            0.372430680686258,
+            -0.007699028587049128,
+            -0.11416827006667508
+          ],
+          [
+            0.3892561272896842,
+            0.0,
+            0.833589712847423,
+            -0.4510156011778822,
+            0.01729706793369922,
+            -0.04105573813597076
+          ],
+          [
+            0.1944789971449679,
+            0.833589712847423,
+            1.1102230246251565e-16,
+            0.6467175429366909,
+            -0.07892121467040805,
+            -0.07325669837104827
+          ],
+          [
+            0.37243068068625806,
+            -0.4510156011778821,
+            0.6467175429366909,
+            0.0,
+            -0.11177662618032908,
+            -0.030113647759365772
+          ],
+          [
+            -0.007699028587049156,
+            0.01729706793369922,
+            -0.07892121467040805,
+            -0.11177662618032908,
+            2.220446049250313e-16,
+            -0.02776746985109805
+          ],
+          [
+            -0.11416827006667508,
+            -0.04105573813597076,
+            -0.07325669837104828,
+            -0.03011364775936577,
+            -0.027767469851098046,
+            1.1102230246251565e-16
+          ]
+        ],
+        "unique_parameter_pairs": 15,
+        "max_absolute_correlation_difference": 0.833589712847423,
+        "median_absolute_correlation_difference": 0.11177662618032908,
+        "neural_draws": 4096,
+        "reference_draws": 48000,
+        "reference_chain_shape": [
+          4,
+          12000,
+          6
+        ],
+        "scope": "Descriptive Pearson correlation only; no Monte Carlo acceptance threshold, nonlinear-dependence or full-joint equality claim."
+      },
+      "75": {
+        "neural_correlation": [
+          [
+            0.9999999999999999,
+            0.29472822000589116,
+            0.018444655358321245,
+            0.3947134280069096,
+            0.17067557302457245,
+            -0.05946606211492602
+          ],
+          [
+            0.29472822000589116,
+            1.0,
+            -0.06513611407029637,
+            0.4108179772598109,
+            0.04162279758131247,
+            -0.07466293303288529
+          ],
+          [
+            0.018444655358321245,
+            -0.06513611407029637,
+            1.0,
+            0.04846316014721316,
+            0.005687429749274736,
+            -0.0635221927157157
+          ],
+          [
+            0.3947134280069096,
+            0.4108179772598109,
+            0.048463160147213157,
+            1.0,
+            0.17245841318002883,
+            -0.026198621960048553
+          ],
+          [
+            0.17067557302457245,
+            0.04162279758131247,
+            0.005687429749274736,
+            0.17245841318002883,
+            1.0,
+            0.03434348509497143
+          ],
+          [
+            -0.05946606211492602,
+            -0.0746629330328853,
+            -0.06352219271571571,
+            -0.026198621960048553,
+            0.03434348509497142,
+            0.9999999999999998
+          ]
+        ],
+        "reference_correlation": [
+          [
+            1.0,
+            -0.06589284491566504,
+            -0.13833042990803143,
+            0.03354982727868997,
+            0.1645676271889517,
+            0.02136979737941057
+          ],
+          [
+            -0.06589284491566502,
+            1.0,
+            -0.8795766687593489,
+            0.846527177465839,
+            -0.0400231115665302,
+            0.026944550556390542
+          ],
+          [
+            -0.13833042990803143,
+            -0.8795766687593489,
+            0.9999999999999999,
+            -0.5986058274122412,
+            0.10478018398957453,
+            -0.028454528854600886
+          ],
+          [
+            0.03354982727868997,
+            0.8465271774658389,
+            -0.5986058274122412,
+            1.0,
+            0.29122583845050176,
+            0.028115786813010555
+          ],
+          [
+            0.1645676271889517,
+            -0.0400231115665302,
+            0.10478018398957453,
+            0.29122583845050176,
+            0.9999999999999998,
+            0.02256158580392728
+          ],
+          [
+            0.021369797379410565,
+            0.026944550556390542,
+            -0.028454528854600886,
+            0.02811578681301055,
+            0.022561585803927277,
+            0.9999999999999999
+          ]
+        ],
+        "signed_correlation_difference": [
+          [
+            -1.1102230246251565e-16,
+            0.3606210649215562,
+            0.15677508526635267,
+            0.3611636007282196,
+            0.006107945835620743,
+            -0.08083585949433658
+          ],
+          [
+            0.3606210649215562,
+            0.0,
+            0.8144405546890525,
+            -0.43570920020602816,
+            0.08164590914784267,
+            -0.10160748358927583
+          ],
+          [
+            0.15677508526635267,
+            0.8144405546890525,
+            1.1102230246251565e-16,
+            0.6470689875594544,
+            -0.0990927542402998,
+            -0.03506766386111482
+          ],
+          [
+            0.3611636007282196,
+            -0.43570920020602805,
+            0.6470689875594544,
+            0.0,
+            -0.11876742527047293,
+            -0.05431440877305911
+          ],
+          [
+            0.006107945835620743,
+            0.08164590914784267,
+            -0.0990927542402998,
+            -0.11876742527047293,
+            2.220446049250313e-16,
+            0.011781899291044146
+          ],
+          [
+            -0.08083585949433658,
+            -0.10160748358927585,
+            -0.03506766386111483,
+            -0.054314408773059104,
+            0.011781899291044142,
+            -1.1102230246251565e-16
+          ]
+        ],
+        "unique_parameter_pairs": 15,
+        "max_absolute_correlation_difference": 0.8144405546890525,
+        "median_absolute_correlation_difference": 0.10160748358927583,
+        "neural_draws": 4096,
+        "reference_draws": 48000,
+        "reference_chain_shape": [
+          4,
+          12000,
+          6
+        ],
+        "scope": "Descriptive Pearson correlation only; no Monte Carlo acceptance threshold, nonlinear-dependence or full-joint equality claim."
+      },
+      "83": {
+        "neural_correlation": [
+          [
+            0.9999999999999999,
+            0.30869583472015033,
+            0.05637014243236521,
+            0.42433553066591445,
+            0.20343575291655627,
+            -0.057892917313258185
+          ],
+          [
+            0.30869583472015033,
+            1.0,
+            -0.06449276951580012,
+            0.44977214032138474,
+            0.057668993497396126,
+            -0.02298862322040169
+          ],
+          [
+            0.05637014243236522,
+            -0.06449276951580012,
+            1.0,
+            0.027455834461429483,
+            0.059370001229528395,
+            -0.11064659173563325
+          ],
+          [
+            0.42433553066591445,
+            0.44977214032138474,
+            0.02745583446142948,
+            0.9999999999999999,
+            0.19781824746855606,
+            -0.03058092263400176
+          ],
+          [
+            0.20343575291655627,
+            0.057668993497396126,
+            0.059370001229528395,
+            0.19781824746855606,
+            1.0,
+            0.014950569738208092
+          ],
+          [
+            -0.057892917313258185,
+            -0.02298862322040169,
+            -0.11064659173563327,
+            -0.030580922634001757,
+            0.014950569738208092,
+            1.0
+          ]
+        ],
+        "reference_correlation": [
+          [
+            1.0,
+            -0.06589284491566504,
+            -0.13833042990803143,
+            0.03354982727868997,
+            0.1645676271889517,
+            0.02136979737941057
+          ],
+          [
+            -0.06589284491566502,
+            1.0,
+            -0.8795766687593489,
+            0.846527177465839,
+            -0.0400231115665302,
+            0.026944550556390542
+          ],
+          [
+            -0.13833042990803143,
+            -0.8795766687593489,
+            0.9999999999999999,
+            -0.5986058274122412,
+            0.10478018398957453,
+            -0.028454528854600886
+          ],
+          [
+            0.03354982727868997,
+            0.8465271774658389,
+            -0.5986058274122412,
+            1.0,
+            0.29122583845050176,
+            0.028115786813010555
+          ],
+          [
+            0.1645676271889517,
+            -0.0400231115665302,
+            0.10478018398957453,
+            0.29122583845050176,
+            0.9999999999999998,
+            0.02256158580392728
+          ],
+          [
+            0.021369797379410565,
+            0.026944550556390542,
+            -0.028454528854600886,
+            0.02811578681301055,
+            0.022561585803927277,
+            0.9999999999999999
+          ]
+        ],
+        "signed_correlation_difference": [
+          [
+            -1.1102230246251565e-16,
+            0.3745886796358154,
+            0.19470057234039664,
+            0.39078570338722446,
+            0.03886812572760456,
+            -0.07926271469266875
+          ],
+          [
+            0.3745886796358153,
+            0.0,
+            0.8150838992435488,
+            -0.3967550371444543,
+            0.09769210506392632,
+            -0.04993317377679223
+          ],
+          [
+            0.19470057234039664,
+            0.8150838992435488,
+            1.1102230246251565e-16,
+            0.6260616618736707,
+            -0.04541018276004614,
+            -0.08219206288103237
+          ],
+          [
+            0.39078570338722446,
+            -0.3967550371444542,
+            0.6260616618736707,
+            -1.1102230246251565e-16,
+            -0.0934075909819457,
+            -0.058696709447012316
+          ],
+          [
+            0.03886812572760456,
+            0.09769210506392632,
+            -0.04541018276004614,
+            -0.0934075909819457,
+            2.220446049250313e-16,
+            -0.007611016065719189
+          ],
+          [
+            -0.07926271469266875,
+            -0.04993317377679223,
+            -0.08219206288103238,
+            -0.05869670944701231,
+            -0.007611016065719185,
+            1.1102230246251565e-16
+          ]
+        ],
+        "unique_parameter_pairs": 15,
+        "max_absolute_correlation_difference": 0.8150838992435488,
+        "median_absolute_correlation_difference": 0.0934075909819457,
+        "neural_draws": 4096,
+        "reference_draws": 48000,
+        "reference_chain_shape": [
+          4,
+          12000,
+          6
+        ],
+        "scope": "Descriptive Pearson correlation only; no Monte Carlo acceptance threshold, nonlinear-dependence or full-joint equality claim."
+      },
+      "100": {
+        "neural_correlation": [
+          [
+            1.0,
+            0.32317348934304746,
+            0.05544625385280244,
+            0.43442850584954257,
+            0.18018928744661952,
+            -0.06409404438996397
+          ],
+          [
+            0.32317348934304746,
+            1.0,
+            -0.06919772728599394,
+            0.4945062484330908,
+            0.051062622241055934,
+            -0.14226814271510638
+          ],
+          [
+            0.05544625385280245,
+            -0.06919772728599394,
+            0.9999999999999998,
+            0.02096057372567058,
+            0.011238853986936005,
+            -0.0547839255049482
+          ],
+          [
+            0.4344285058495425,
+            0.4945062484330908,
+            0.020960573725670575,
+            1.0,
+            0.15436273087460425,
+            -0.09110233518575585
+          ],
+          [
+            0.18018928744661952,
+            0.051062622241055934,
+            0.011238853986936005,
+            0.15436273087460425,
+            1.0,
+            0.01841792950030516
+          ],
+          [
+            -0.06409404438996398,
+            -0.14226814271510635,
+            -0.0547839255049482,
+            -0.09110233518575586,
+            0.01841792950030516,
+            1.0
+          ]
+        ],
+        "reference_correlation": [
+          [
+            1.0,
+            -0.06589284491566504,
+            -0.13833042990803143,
+            0.03354982727868997,
+            0.1645676271889517,
+            0.02136979737941057
+          ],
+          [
+            -0.06589284491566502,
+            1.0,
+            -0.8795766687593489,
+            0.846527177465839,
+            -0.0400231115665302,
+            0.026944550556390542
+          ],
+          [
+            -0.13833042990803143,
+            -0.8795766687593489,
+            0.9999999999999999,
+            -0.5986058274122412,
+            0.10478018398957453,
+            -0.028454528854600886
+          ],
+          [
+            0.03354982727868997,
+            0.8465271774658389,
+            -0.5986058274122412,
+            1.0,
+            0.29122583845050176,
+            0.028115786813010555
+          ],
+          [
+            0.1645676271889517,
+            -0.0400231115665302,
+            0.10478018398957453,
+            0.29122583845050176,
+            0.9999999999999998,
+            0.02256158580392728
+          ],
+          [
+            0.021369797379410565,
+            0.026944550556390542,
+            -0.028454528854600886,
+            0.02811578681301055,
+            0.022561585803927277,
+            0.9999999999999999
+          ]
+        ],
+        "signed_correlation_difference": [
+          [
+            0.0,
+            0.3890663342587125,
+            0.19377668376083387,
+            0.4008786785708526,
+            0.015621660257667813,
+            -0.08546384176937454
+          ],
+          [
+            0.3890663342587125,
+            0.0,
+            0.810378941473355,
+            -0.35202092903274823,
+            0.09108573380758614,
+            -0.1692126932714969
+          ],
+          [
+            0.19377668376083387,
+            0.810378941473355,
+            -1.1102230246251565e-16,
+            0.6195664011379118,
+            -0.09354133000263853,
+            -0.026329396650347312
+          ],
+          [
+            0.4008786785708525,
+            -0.3520209290327481,
+            0.6195664011379118,
+            0.0,
+            -0.1368631075758975,
+            -0.1192181219987664
+          ],
+          [
+            0.015621660257667813,
+            0.09108573380758614,
+            -0.09354133000263853,
+            -0.1368631075758975,
+            2.220446049250313e-16,
+            -0.0041436563036221195
+          ],
+          [
+            -0.08546384176937455,
+            -0.1692126932714969,
+            -0.026329396650347312,
+            -0.11921812199876641,
+            -0.004143656303622116,
+            1.1102230246251565e-16
+          ]
+        ],
+        "unique_parameter_pairs": 15,
+        "max_absolute_correlation_difference": 0.810378941473355,
+        "median_absolute_correlation_difference": 0.1368631075758975,
+        "neural_draws": 4096,
+        "reference_draws": 48000,
+        "reference_chain_shape": [
+          4,
+          12000,
+          6
+        ],
+        "scope": "Descriptive Pearson correlation only; no Monte Carlo acceptance threshold, nonlinear-dependence or full-joint equality claim."
+      },
+      "200": {
+        "neural_correlation": [
+          [
+            1.0,
+            0.39919262434029135,
+            0.06094332587473474,
+            0.4792077636482071,
+            0.3778352479214989,
+            -0.07123432457028599
+          ],
+          [
+            0.39919262434029135,
+            1.0,
+            -0.062108508029681965,
+            0.6076578226146674,
+            0.25183734395260204,
+            -0.11115024126545102
+          ],
+          [
+            0.06094332587473475,
+            -0.06210850802968197,
+            1.0,
+            0.0018940164224402654,
+            0.041249388777569625,
+            -0.04453084656842989
+          ],
+          [
+            0.4792077636482071,
+            0.6076578226146674,
+            0.0018940164224402654,
+            1.0,
+            0.4579233867417028,
+            -0.12414669295128723
+          ],
+          [
+            0.3778352479214989,
+            0.251837343952602,
+            0.041249388777569625,
+            0.45792338674170285,
+            1.0,
+            0.039723546786982145
+          ],
+          [
+            -0.07123432457028599,
+            -0.11115024126545103,
+            -0.0445308465684299,
+            -0.12414669295128725,
+            0.03972354678698215,
+            1.0
+          ]
+        ],
+        "reference_correlation": [
+          [
+            1.0,
+            -0.06589284491566504,
+            -0.13833042990803143,
+            0.03354982727868997,
+            0.1645676271889517,
+            0.02136979737941057
+          ],
+          [
+            -0.06589284491566502,
+            1.0,
+            -0.8795766687593489,
+            0.846527177465839,
+            -0.0400231115665302,
+            0.026944550556390542
+          ],
+          [
+            -0.13833042990803143,
+            -0.8795766687593489,
+            0.9999999999999999,
+            -0.5986058274122412,
+            0.10478018398957453,
+            -0.028454528854600886
+          ],
+          [
+            0.03354982727868997,
+            0.8465271774658389,
+            -0.5986058274122412,
+            1.0,
+            0.29122583845050176,
+            0.028115786813010555
+          ],
+          [
+            0.1645676271889517,
+            -0.0400231115665302,
+            0.10478018398957453,
+            0.29122583845050176,
+            0.9999999999999998,
+            0.02256158580392728
+          ],
+          [
+            0.021369797379410565,
+            0.026944550556390542,
+            -0.028454528854600886,
+            0.02811578681301055,
+            0.022561585803927277,
+            0.9999999999999999
+          ]
+        ],
+        "signed_correlation_difference": [
+          [
+            0.0,
+            0.4650854692559564,
+            0.19927375578276618,
+            0.4456579363695171,
+            0.2132676207325472,
+            -0.09260412194969656
+          ],
+          [
+            0.4650854692559564,
+            0.0,
+            0.817468160729667,
+            -0.23886935485117167,
+            0.29186045551913226,
+            -0.13809479182184156
+          ],
+          [
+            0.19927375578276618,
+            0.817468160729667,
+            1.1102230246251565e-16,
+            0.6004998438346815,
+            -0.06353079521200491,
+            -0.016076317713829006
+          ],
+          [
+            0.4456579363695171,
+            -0.23886935485117156,
+            0.6004998438346815,
+            0.0,
+            0.16669754829120104,
+            -0.1522624797642978
+          ],
+          [
+            0.2132676207325472,
+            0.2918604555191322,
+            -0.06353079521200491,
+            0.1666975482912011,
+            2.220446049250313e-16,
+            0.017161960983054864
+          ],
+          [
+            -0.09260412194969656,
+            -0.1380947918218416,
+            -0.016076317713829013,
+            -0.1522624797642978,
+            0.017161960983054874,
+            1.1102230246251565e-16
+          ]
+        ],
+        "unique_parameter_pairs": 15,
+        "max_absolute_correlation_difference": 0.817468160729667,
+        "median_absolute_correlation_difference": 0.19927375578276618,
+        "neural_draws": 4096,
+        "reference_draws": 48000,
+        "reference_chain_shape": [
+          4,
+          12000,
+          6
+        ],
+        "scope": "Descriptive Pearson correlation only; no Monte Carlo acceptance threshold, nonlinear-dependence or full-joint equality claim."
+      }
+    },
+    "market": {
+      "50": {
+        "neural_correlation": [
+          [
+            1.0,
+            0.33159660316356915,
+            -0.10186322435403314,
+            0.45795146346115717,
+            0.1330627885040294,
+            -0.10585135489435256
+          ],
+          [
+            0.3315966031635692,
+            1.0,
+            -0.17399554926485833,
+            0.3425729398288281,
+            -0.06269922158662869,
+            -0.13325713659960878
+          ],
+          [
+            -0.10186322435403315,
+            -0.17399554926485833,
+            1.0,
+            -0.15102212028738174,
+            -0.14735062957171738,
+            -0.0540794026924442
+          ],
+          [
+            0.45795146346115717,
+            0.342572939828828,
+            -0.15102212028738174,
+            1.0,
+            0.30931404247743777,
+            -0.006909993112014505
+          ],
+          [
+            0.1330627885040294,
+            -0.06269922158662869,
+            -0.14735062957171738,
+            0.3093140424774378,
+            1.0,
+            0.0028427900147434066
+          ],
+          [
+            -0.10585135489435255,
+            -0.13325713659960878,
+            -0.054079402692444205,
+            -0.006909993112014505,
+            0.0028427900147434066,
+            1.0
+          ]
+        ],
+        "reference_correlation": [
+          [
+            1.0,
+            -0.10143718907640087,
+            -0.12098230530279161,
+            -0.006676370643627409,
+            0.13870472032371522,
+            0.009095904280670766
+          ],
+          [
+            -0.10143718907640087,
+            1.0,
+            -0.886701613141442,
+            0.8365795412834437,
+            -0.012467395610367608,
+            -0.010297789262366389
+          ],
+          [
+            -0.1209823053027916,
+            -0.886701613141442,
+            1.0,
+            -0.6024625002304888,
+            0.09065429240136301,
+            0.005908457231395316
+          ],
+          [
+            -0.006676370643627408,
+            0.8365795412834436,
+            -0.6024625002304888,
+            1.0,
+            0.3604902898804604,
+            -0.011144128708034547
+          ],
+          [
+            0.13870472032371522,
+            -0.012467395610367608,
+            0.09065429240136301,
+            0.3604902898804604,
+            1.0,
+            -0.0038676765977425803
+          ],
+          [
+            0.009095904280670766,
+            -0.010297789262366389,
+            0.005908457231395315,
+            -0.011144128708034547,
+            -0.0038676765977425803,
+            1.0
+          ]
+        ],
+        "signed_correlation_difference": [
+          [
+            0.0,
+            0.43303379223997,
+            0.01911908094875847,
+            0.4646278341047846,
+            -0.005641931819685836,
+            -0.11494725917502333
+          ],
+          [
+            0.4330337922399701,
+            0.0,
+            0.7127060638765836,
+            -0.4940066014546156,
+            -0.05023182597626108,
+            -0.12295934733724238
+          ],
+          [
+            0.019119080948758443,
+            0.7127060638765836,
+            0.0,
+            0.45144037994310704,
+            -0.23800492197308037,
+            -0.059987859923839516
+          ],
+          [
+            0.4646278341047846,
+            -0.49400660145461556,
+            0.45144037994310704,
+            0.0,
+            -0.05117624740302262,
+            0.004234135596020042
+          ],
+          [
+            -0.005641931819685836,
+            -0.05023182597626108,
+            -0.23800492197308037,
+            -0.05117624740302257,
+            0.0,
+            0.006710466612485987
+          ],
+          [
+            -0.11494725917502331,
+            -0.12295934733724238,
+            -0.05998785992383952,
+            0.004234135596020042,
+            0.006710466612485987,
+            0.0
+          ]
+        ],
+        "unique_parameter_pairs": 15,
+        "max_absolute_correlation_difference": 0.7127060638765836,
+        "median_absolute_correlation_difference": 0.11494725917502333,
+        "neural_draws": 4096,
+        "reference_draws": 48000,
+        "reference_chain_shape": [
+          4,
+          12000,
+          6
+        ],
+        "scope": "Descriptive Pearson correlation only; no Monte Carlo acceptance threshold, nonlinear-dependence or full-joint equality claim."
+      },
+      "75": {
+        "neural_correlation": [
+          [
+            1.0,
+            0.3124262918606547,
+            -0.13052452676090423,
+            0.48755271171661846,
+            0.18851837694850535,
+            -0.08251970603190877
+          ],
+          [
+            0.3124262918606547,
+            1.0,
+            -0.18359675372508014,
+            0.36262743251580726,
+            0.0038680874016306446,
+            -0.08958371411678424
+          ],
+          [
+            -0.13052452676090426,
+            -0.18359675372508016,
+            1.0,
+            -0.20186966001744305,
+            -0.18962890573539645,
+            -0.0723708895390594
+          ],
+          [
+            0.4875527117166185,
+            0.36262743251580726,
+            -0.20186966001744305,
+            0.9999999999999999,
+            0.2937656594416337,
+            0.014332758851946521
+          ],
+          [
+            0.18851837694850532,
+            0.003868087401630645,
+            -0.18962890573539648,
+            0.2937656594416337,
+            0.9999999999999998,
+            0.006751770878862653
+          ],
+          [
+            -0.08251970603190878,
+            -0.08958371411678424,
+            -0.0723708895390594,
+            0.014332758851946521,
+            0.0067517708788626535,
+            1.0
+          ]
+        ],
+        "reference_correlation": [
+          [
+            1.0,
+            -0.10143718907640087,
+            -0.12098230530279161,
+            -0.006676370643627409,
+            0.13870472032371522,
+            0.009095904280670766
+          ],
+          [
+            -0.10143718907640087,
+            1.0,
+            -0.886701613141442,
+            0.8365795412834437,
+            -0.012467395610367608,
+            -0.010297789262366389
+          ],
+          [
+            -0.1209823053027916,
+            -0.886701613141442,
+            1.0,
+            -0.6024625002304888,
+            0.09065429240136301,
+            0.005908457231395316
+          ],
+          [
+            -0.006676370643627408,
+            0.8365795412834436,
+            -0.6024625002304888,
+            1.0,
+            0.3604902898804604,
+            -0.011144128708034547
+          ],
+          [
+            0.13870472032371522,
+            -0.012467395610367608,
+            0.09065429240136301,
+            0.3604902898804604,
+            1.0,
+            -0.0038676765977425803
+          ],
+          [
+            0.009095904280670766,
+            -0.010297789262366389,
+            0.005908457231395315,
+            -0.011144128708034547,
+            -0.0038676765977425803,
+            1.0
+          ]
+        ],
+        "signed_correlation_difference": [
+          [
+            0.0,
+            0.41386348093705555,
+            -0.00954222145811262,
+            0.4942290823602459,
+            0.04981365662479012,
+            -0.09161561031257953
+          ],
+          [
+            0.41386348093705555,
+            0.0,
+            0.7031048594163619,
+            -0.47395210876763644,
+            0.016335483011998254,
+            -0.07928592485441785
+          ],
+          [
+            -0.009542221458112662,
+            0.7031048594163618,
+            0.0,
+            0.4005928402130457,
+            -0.28028319813675945,
+            -0.07827934677045471
+          ],
+          [
+            0.49422908236024593,
+            -0.4739521087676363,
+            0.4005928402130457,
+            -1.1102230246251565e-16,
+            -0.0667246304388267,
+            0.02547688755998107
+          ],
+          [
+            0.04981365662479009,
+            0.016335483011998254,
+            -0.2802831981367595,
+            -0.0667246304388267,
+            -2.220446049250313e-16,
+            0.010619447476605233
+          ],
+          [
+            -0.09161561031257955,
+            -0.07928592485441785,
+            -0.07827934677045471,
+            0.02547688755998107,
+            0.010619447476605233,
+            0.0
+          ]
+        ],
+        "unique_parameter_pairs": 15,
+        "max_absolute_correlation_difference": 0.7031048594163619,
+        "median_absolute_correlation_difference": 0.07928592485441785,
+        "neural_draws": 4096,
+        "reference_draws": 48000,
+        "reference_chain_shape": [
+          4,
+          12000,
+          6
+        ],
+        "scope": "Descriptive Pearson correlation only; no Monte Carlo acceptance threshold, nonlinear-dependence or full-joint equality claim."
+      },
+      "83": {
+        "neural_correlation": [
+          [
+            1.0,
+            0.3123431985526126,
+            -0.10499913529922915,
+            0.4790658684301542,
+            0.2126079431837043,
+            -0.07935001524607008
+          ],
+          [
+            0.3123431985526126,
+            1.0,
+            -0.1866452384061203,
+            0.3869419514128215,
+            0.02936258609481517,
+            -0.05546286672654699
+          ],
+          [
+            -0.10499913529922915,
+            -0.1866452384061203,
+            1.0,
+            -0.21546486702210765,
+            -0.15299403065649572,
+            -0.1147020358308409
+          ],
+          [
+            0.4790658684301542,
+            0.3869419514128215,
+            -0.21546486702210765,
+            1.0,
+            0.3063316405180378,
+            0.00020571076887679904
+          ],
+          [
+            0.21260794318370432,
+            0.029362586094815173,
+            -0.1529940306564957,
+            0.30633164051803774,
+            1.0,
+            -0.012301416588204873
+          ],
+          [
+            -0.07935001524607008,
+            -0.05546286672654699,
+            -0.11470203583084092,
+            0.00020571076887679904,
+            -0.012301416588204873,
+            0.9999999999999998
+          ]
+        ],
+        "reference_correlation": [
+          [
+            1.0,
+            -0.10143718907640087,
+            -0.12098230530279161,
+            -0.006676370643627409,
+            0.13870472032371522,
+            0.009095904280670766
+          ],
+          [
+            -0.10143718907640087,
+            1.0,
+            -0.886701613141442,
+            0.8365795412834437,
+            -0.012467395610367608,
+            -0.010297789262366389
+          ],
+          [
+            -0.1209823053027916,
+            -0.886701613141442,
+            1.0,
+            -0.6024625002304888,
+            0.09065429240136301,
+            0.005908457231395316
+          ],
+          [
+            -0.006676370643627408,
+            0.8365795412834436,
+            -0.6024625002304888,
+            1.0,
+            0.3604902898804604,
+            -0.011144128708034547
+          ],
+          [
+            0.13870472032371522,
+            -0.012467395610367608,
+            0.09065429240136301,
+            0.3604902898804604,
+            1.0,
+            -0.0038676765977425803
+          ],
+          [
+            0.009095904280670766,
+            -0.010297789262366389,
+            0.005908457231395315,
+            -0.011144128708034547,
+            -0.0038676765977425803,
+            1.0
+          ]
+        ],
+        "signed_correlation_difference": [
+          [
+            0.0,
+            0.4137803876290135,
+            0.01598317000356246,
+            0.4857422390737816,
+            0.07390322285998907,
+            -0.08844591952674084
+          ],
+          [
+            0.4137803876290135,
+            0.0,
+            0.7000563747353217,
+            -0.4496375898706222,
+            0.041829981705182775,
+            -0.0451650774641806
+          ],
+          [
+            0.015983170003562447,
+            0.7000563747353217,
+            0.0,
+            0.3869976332083811,
+            -0.24364832305785872,
+            -0.12061049306223622
+          ],
+          [
+            0.4857422390737816,
+            -0.4496375898706221,
+            0.3869976332083811,
+            0.0,
+            -0.054158649362422595,
+            0.011349839476911346
+          ],
+          [
+            0.0739032228599891,
+            0.04182998170518278,
+            -0.24364832305785872,
+            -0.05415864936242265,
+            0.0,
+            -0.008433739990462293
+          ],
+          [
+            -0.08844591952674084,
+            -0.0451650774641806,
+            -0.12061049306223623,
+            0.011349839476911346,
+            -0.008433739990462293,
+            -2.220446049250313e-16
+          ]
+        ],
+        "unique_parameter_pairs": 15,
+        "max_absolute_correlation_difference": 0.7000563747353217,
+        "median_absolute_correlation_difference": 0.08844591952674084,
+        "neural_draws": 4096,
+        "reference_draws": 48000,
+        "reference_chain_shape": [
+          4,
+          12000,
+          6
+        ],
+        "scope": "Descriptive Pearson correlation only; no Monte Carlo acceptance threshold, nonlinear-dependence or full-joint equality claim."
+      },
+      "100": {
+        "neural_correlation": [
+          [
+            0.9999999999999998,
+            0.3050789222964731,
+            -0.14698068417228494,
+            0.46027800763399207,
+            0.21394455848263133,
+            -0.07218592178163188
+          ],
+          [
+            0.30507892229647304,
+            1.0,
+            -0.22001393509815254,
+            0.4067256138417003,
+            0.038259887729260915,
+            -0.07905962212462023
+          ],
+          [
+            -0.14698068417228494,
+            -0.2200139350981525,
+            1.0,
+            -0.31634874368519067,
+            -0.2442212269427683,
+            -0.17888521832935972
+          ],
+          [
+            0.46027800763399207,
+            0.40672561384170025,
+            -0.31634874368519067,
+            1.0,
+            0.2677683749943344,
+            0.016766707315378406
+          ],
+          [
+            0.21394455848263133,
+            0.038259887729260915,
+            -0.24422122694276832,
+            0.2677683749943344,
+            1.0,
+            0.0028589052778967084
+          ],
+          [
+            -0.07218592178163188,
+            -0.07905962212462023,
+            -0.17888521832935972,
+            0.016766707315378406,
+            0.0028589052778967084,
+            0.9999999999999998
+          ]
+        ],
+        "reference_correlation": [
+          [
+            1.0,
+            -0.10143718907640087,
+            -0.12098230530279161,
+            -0.006676370643627409,
+            0.13870472032371522,
+            0.009095904280670766
+          ],
+          [
+            -0.10143718907640087,
+            1.0,
+            -0.886701613141442,
+            0.8365795412834437,
+            -0.012467395610367608,
+            -0.010297789262366389
+          ],
+          [
+            -0.1209823053027916,
+            -0.886701613141442,
+            1.0,
+            -0.6024625002304888,
+            0.09065429240136301,
+            0.005908457231395316
+          ],
+          [
+            -0.006676370643627408,
+            0.8365795412834436,
+            -0.6024625002304888,
+            1.0,
+            0.3604902898804604,
+            -0.011144128708034547
+          ],
+          [
+            0.13870472032371522,
+            -0.012467395610367608,
+            0.09065429240136301,
+            0.3604902898804604,
+            1.0,
+            -0.0038676765977425803
+          ],
+          [
+            0.009095904280670766,
+            -0.010297789262366389,
+            0.005908457231395315,
+            -0.011144128708034547,
+            -0.0038676765977425803,
+            1.0
+          ]
+        ],
+        "signed_correlation_difference": [
+          [
+            -2.220446049250313e-16,
+            0.40651611137287397,
+            -0.025998378869493327,
+            0.4669543782776195,
+            0.0752398381589161,
+            -0.08128182606230265
+          ],
+          [
+            0.4065161113728739,
+            0.0,
+            0.6666876780432895,
+            -0.4298539274417434,
+            0.050727283339628525,
+            -0.06876183286225383
+          ],
+          [
+            -0.02599837886949334,
+            0.6666876780432895,
+            0.0,
+            0.2861137565452981,
+            -0.3348755193441313,
+            -0.18479367556075504
+          ],
+          [
+            0.4669543782776195,
+            -0.42985392744174333,
+            0.2861137565452981,
+            0.0,
+            -0.09272191488612597,
+            0.027910836023412953
+          ],
+          [
+            0.0752398381589161,
+            0.050727283339628525,
+            -0.33487551934413134,
+            -0.09272191488612597,
+            0.0,
+            0.006726581875639289
+          ],
+          [
+            -0.08128182606230265,
+            -0.06876183286225383,
+            -0.18479367556075504,
+            0.027910836023412953,
+            0.006726581875639289,
+            -2.220446049250313e-16
+          ]
+        ],
+        "unique_parameter_pairs": 15,
+        "max_absolute_correlation_difference": 0.6666876780432895,
+        "median_absolute_correlation_difference": 0.09272191488612597,
+        "neural_draws": 4096,
+        "reference_draws": 48000,
+        "reference_chain_shape": [
+          4,
+          12000,
+          6
+        ],
+        "scope": "Descriptive Pearson correlation only; no Monte Carlo acceptance threshold, nonlinear-dependence or full-joint equality claim."
+      },
+      "200": {
+        "neural_correlation": [
+          [
+            1.0,
+            0.3678997678851772,
+            -0.17473826464101086,
+            0.5903321773851694,
+            0.27601828051376687,
+            -0.028902883811529754
+          ],
+          [
+            0.3678997678851772,
+            1.0,
+            -0.29672257947830744,
+            0.5036270027295877,
+            0.1756469669911375,
+            -0.02293556569207543
+          ],
+          [
+            -0.1747382646410109,
+            -0.2967225794783075,
+            1.0,
+            -0.4023716499537042,
+            -0.2893794759129796,
+            -0.48834863103408216
+          ],
+          [
+            0.5903321773851694,
+            0.5036270027295877,
+            -0.40237164995370417,
+            1.0,
+            0.4094193831380516,
+            0.05937037640331703
+          ],
+          [
+            0.27601828051376687,
+            0.1756469669911375,
+            -0.2893794759129795,
+            0.4094193831380516,
+            1.0,
+            0.034093514717466085
+          ],
+          [
+            -0.028902883811529754,
+            -0.02293556569207543,
+            -0.48834863103408216,
+            0.05937037640331703,
+            0.034093514717466085,
+            1.0
+          ]
+        ],
+        "reference_correlation": [
+          [
+            1.0,
+            -0.10143718907640087,
+            -0.12098230530279161,
+            -0.006676370643627409,
+            0.13870472032371522,
+            0.009095904280670766
+          ],
+          [
+            -0.10143718907640087,
+            1.0,
+            -0.886701613141442,
+            0.8365795412834437,
+            -0.012467395610367608,
+            -0.010297789262366389
+          ],
+          [
+            -0.1209823053027916,
+            -0.886701613141442,
+            1.0,
+            -0.6024625002304888,
+            0.09065429240136301,
+            0.005908457231395316
+          ],
+          [
+            -0.006676370643627408,
+            0.8365795412834436,
+            -0.6024625002304888,
+            1.0,
+            0.3604902898804604,
+            -0.011144128708034547
+          ],
+          [
+            0.13870472032371522,
+            -0.012467395610367608,
+            0.09065429240136301,
+            0.3604902898804604,
+            1.0,
+            -0.0038676765977425803
+          ],
+          [
+            0.009095904280670766,
+            -0.010297789262366389,
+            0.005908457231395315,
+            -0.011144128708034547,
+            -0.0038676765977425803,
+            1.0
+          ]
+        ],
+        "signed_correlation_difference": [
+          [
+            0.0,
+            0.46933695696157807,
+            -0.05375595933821925,
+            0.5970085480287968,
+            0.13731356019005164,
+            -0.03799878809220052
+          ],
+          [
+            0.46933695696157807,
+            0.0,
+            0.5899790336631345,
+            -0.332952538553856,
+            0.1881143626015051,
+            -0.01263777642970904
+          ],
+          [
+            -0.05375595933821929,
+            0.5899790336631345,
+            0.0,
+            0.20009085027678453,
+            -0.3800337683143426,
+            -0.4942570882654775
+          ],
+          [
+            0.5970085480287968,
+            -0.33295253855385587,
+            0.20009085027678458,
+            0.0,
+            0.048929093257591205,
+            0.07051450511135157
+          ],
+          [
+            0.13731356019005164,
+            0.1881143626015051,
+            -0.38003376831434255,
+            0.048929093257591205,
+            0.0,
+            0.03796119131520866
+          ],
+          [
+            -0.03799878809220052,
+            -0.01263777642970904,
+            -0.4942570882654775,
+            0.07051450511135157,
+            0.03796119131520866,
+            0.0
+          ]
+        ],
+        "unique_parameter_pairs": 15,
+        "max_absolute_correlation_difference": 0.5970085480287968,
+        "median_absolute_correlation_difference": 0.1881143626015051,
+        "neural_draws": 4096,
+        "reference_draws": 48000,
+        "reference_chain_shape": [
+          4,
+          12000,
+          6
+        ],
+        "scope": "Descriptive Pearson correlation only; no Monte Carlo acceptance threshold, nonlinear-dependence or full-joint equality claim."
+      }
+    }
+  },
+  "dependence_figures": {
+    "dependence-synthetic-broad.png": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/dependence-synthetic-broad.png",
+      "sha256": "07fad01591149df212ab40ad240010eaf868467f4dd0d4aef0ddc02c623a01e6"
+    },
+    "dependence-synthetic-broad.svg": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/dependence-synthetic-broad.svg",
+      "sha256": "dc004bf0a6b055689d6a3cc7079fd6de69feed5b03db091538ac7690028174de"
+    },
+    "dependence-synthetic-market-like.png": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/dependence-synthetic-market-like.png",
+      "sha256": "462e32a6e195b9e0371b79cfddcc2e1c29fc39b6c0091ae6aa84515c9346c8ae"
+    },
+    "dependence-synthetic-market-like.svg": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/dependence-synthetic-market-like.svg",
+      "sha256": "14d5f6c402b8ba3f107c9e15f0a7c7d332ea4e8e519146077f245654ead53174"
+    },
+    "dependence-market.png": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/dependence-market.png",
+      "sha256": "1f6f7d2da6f53d59f3edb8e0d140245aee7eba1168da72441e33fda7cc949a23"
+    },
+    "dependence-market.svg": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/dependence-market.svg",
+      "sha256": "767c49f463cc1a29b666d049418b3403d3f5de416d8543fa25eb26074f0bd765"
+    }
+  },
+  "interpretation": "At the previously observed validation minimum, epoch 83, nominal 90% intervals cover 74.2\u201378.7% of physical-parameter truths and 78.9% of c truths. At epoch 200 those figures are 54.9\u201360.9% and 74.0%. The c median RMSE changes from 0.1697 at epoch 200 to 0.1677 at epoch 83; 0/6 marginal SBC screens are within their band at epoch 83. This is a diagnosis on reused development data, rather than independent acceptance of a selected estimator.",
+  "text_corrections": {
+    "The market observation is a model/prior-adequacy diagnostic.": "The market observation compares conditional inference under the same assumed model and likelihood; model adequacy requires separate predictive or residual checks.",
+    "The market case additionally tests model/prior adequacy.": "For the market case, this comparison tests neural inference under the assumed model and likelihood; market-model adequacy is a separate question requiring predictive or residual checks."
+  },
+  "frozen_metadata_compatibility": {
+    "mode": "scoped original JSON metadata compatibility adapter",
+    "allowed_metadata": [
+      {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/zca/run.json",
+        "sha256": "1e15f168f1546647a12ae85361f635da9a995362da5cb1ce3e6bc4dd49c12766"
+      },
+      {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/zca/preprocessing.json",
+        "sha256": "422d2f1362e05539b8f26bbe9d81fe43e1f048c5e16084d27722b91787a018b2"
+      },
+      {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/zca/initial-probes.json",
+        "sha256": "2cb502b63431a3927436272d35ab7fecb6991b9c076c4760dab5de06f2193925"
+      },
+      {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/zca/learning-curve.json",
+        "sha256": "34126046916d770e5d553a14e7327c7172da9d84d12cf1a4d20663100a1f5a46"
+      },
+      {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/zca/training.json",
+        "sha256": "a2b13dc080477bcc16e419e40e81491afb2c1c197c6532bad24be9a968486a63"
+      },
+      {
+        "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/zca/checkpoints/update-008000/checkpoint.json",
+        "sha256": "c09852b0ab13c436e204fecc254cedba82cec853e44a2378987abcdc4c76cf67"
+      }
+    ],
+    "original_executable_source_checks_unchanged": true,
+    "original_hook_restored": true
+  },
+  "protected_inputs": {
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/protocol.json": "901c7c3257ec2f12bb5b57f2608ab49c8e5e5cf8a30bcbba80651692edb6f7ab",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/review_heston_spread_whitening_replay.py": "66398e6080ef9258ae92f020a55391286d1fc918bdf2767ef9c56c8fb23afb3f",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/frozen-report/report.html": "02ba316d750329f678677b27492a2864c7478b58fec3ce848f872452f3236ed5",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/frozen-report/plot-summary.json": "6b010f46b529067f17eb8aa096ef4130b99558233b0cdb0b74e62b4d03004885",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/evaluations/zca/evaluation.json": "ce60288332b649167c04f08c108fd3467fa4331067620ba6c93130b10dd422d8",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/evaluations/update-002000/evaluation.json": "d725e2b0c48012e520c490e2aed5c6073110e2c65548d1745a13a45e4cc2df0a",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/evaluations/update-002000/conditional-draws.npz": "80ed4693399c2430f8957770a4a7b92fefef020dbee3e6942b78fd5c5af0007a",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/recovery-v2-references/synthetic-broad-c-joint/run.json": "2988306a5fd573397fd779f9cf964ecd02a330debf575b20ea918e17863c258e",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/recovery-v2-references/synthetic-broad-c-joint/diagnostics.json": "ed8fd500ff403c45fffe726acd3b7bf15cc60d5a7b11b90e61dc5b8fc39a2a78",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/recovery-v2-references/synthetic-broad-c-joint/attempt-1/chains.npz": "6617f373cd697807fcbfc4a79b39acc70e4bdb66643c79b9d9656df45418d533",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/recovery-v2-references/synthetic-market-like-c-joint/run.json": "fca67f428ac2ffe122f5bea8ab218fe1dc15c17b048db1c2e41df0b3146fa58c",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/recovery-v2-references/synthetic-market-like-c-joint/diagnostics.json": "7911cfc4acd7eebcfc8c32d13ca76f49a362a718d5859a9d2fd07c7fbf07faf4",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/recovery-v2-references/synthetic-market-like-c-joint/attempt-1/chains.npz": "73f0669518e9373d7eaeeba5d02667ba5c4de4aadba061e18890ea7dac7a1cd2",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/recovery-v2-references/market-c-joint/run.json": "abe607bc753e493f9d83dc2e7dfdba3e05a9b5f3bcdb4de04ac751437a96d0ac",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/recovery-v2-references/market-c-joint/diagnostics.json": "ddb0a0537ccb7046ab2f41d8445c4387504b114982f9e3c19cf81d1756132317",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/recovery-v2-references/market-c-joint/attempt-1/chains.npz": "3a18e1b5017af7b82cd0ad90ad8ff014b9d092c4b4ffcc76b8f722174ec13b6d",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/evaluations/update-003000/evaluation.json": "50176dfb8a62d562a1664f4df87a1ccd9135f924ff678207a61179c4fd46f729",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/evaluations/update-003000/conditional-draws.npz": "34a1cc250ab00755c085c8e193905059002a69b776d2004c8ae65358d0818d3e",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/evaluations/update-003320/evaluation.json": "fe3ed9af2cb050dbfd8c31d395f73802bb40a7769813bfed121756b355a15fe9",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/evaluations/update-003320/conditional-draws.npz": "5976f16d0811be54d99ddd0d31c1d670da1dadc873c6df2783788713df92223c",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/evaluations/update-004000/evaluation.json": "29e46bd7951f3415a3e8d32a523d1f95af006dbd7e93187bc6659064f03d42a5",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/evaluations/update-004000/conditional-draws.npz": "5fdd16cddb8ea6d9d62503bc38fab68c2cee82bb0fb904cfc371116ca4703d2f",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/evaluations/zca/conditional-draws.npz": "be484f664ff02af87a6f0a30e5df2a2fb0bc21b51f83398068c775ffdbcdd0ca",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/frozen-report/learning-curves.png": "4e0bfd26da96e150d2181f969c6a33c4ad25a3e3e9afc1ffd8c0d21bdcba1bda",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/frozen-report/learning-curves.svg": "1c84433c29739b18abb53e2b3d39bb154111b5761ce70fb71b65c2c59411443b",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/frozen-report/sbc-ecdf.png": "af7915784e16b638826ae06dcb9f0182df9edf3d01cbe2428d87455429361b9f",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/frozen-report/sbc-ecdf.svg": "a9008f2d4cf1062a67286229e695c27ff6b7f204071af2a9a64381ffd842d567",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/frozen-report/coverage.png": "56703a46921b25bced2021725c6e7d9bb13e544bb4db52806b85e74dfa2249f0",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/frozen-report/coverage.svg": "622129248fe2c6617da1e93c980d0f34c4a40121e5a280af4b66d3bc44c302f2",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/frozen-report/recovery-epoch050.png": "741d03a74cb4d88b86b392bd69426ef9419360c0073ffa1dfe81c2cc331e739e",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/frozen-report/recovery-epoch050.svg": "71c87838e580c6362f150bfe4f49d5b111846e40117cb1339ae808486bf1727b",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/frozen-report/recovery-epoch075.png": "c52e363eee77e6f87f8b66ee1e0f123a30e68b7298cd07126b56fe6393b9d3db",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/frozen-report/recovery-epoch075.svg": "863c2705eae7c4fca737ded5a8476f47d2224a9aae8e4e71a8dc67e349670ac0",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/frozen-report/recovery-epoch083.png": "649628558ef28e030847ce3d3b1a72e970ecc4cf89fbdaafa1d9ea1361168d20",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/frozen-report/recovery-epoch083.svg": "4a245aafcbe0624f9d3ac663c8fadee0cd5c15d8dc0c52798cf7068bc0b5cea3",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/frozen-report/recovery-epoch100.png": "179eec4c66429c49f14178fdfbcb64f6d3cfbf960b66f72e074050967df60a81",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/frozen-report/recovery-epoch100.svg": "2e7b28512622c6860ccb6b3e7c114736aa4094fc7cc321ae81fce5531dea0ca3",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/frozen-report/recovery-epoch200.png": "d8ff60f5e80aa167fc5afbd2e41cd7c9ec1cecad20c8b9568187e3d20b691ddc",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/frozen-report/recovery-epoch200.svg": "11cd1f1db8f6824db57e9d423b4143f1945e1b2ab6325bdbd114eb53f706648a",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/frozen-report/selected-c-recovery.png": "70783086e6a79949684497fa2190a9f4cd0a7789e6413213eccd21988a6902ee",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/frozen-report/selected-c-recovery.svg": "4b5a6a9f4a9fb967db2127aee785c2acd35dbaa960a65b2737127dc3c4a952d5",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/frozen-report/conditional-c.png": "3f17cb05128f77f8f83ff0d84e7aa47e0fbfd3b849166f1396e83c86b9c786f9",
+    "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/frozen-report/conditional-c.svg": "2927fa37859e0dd08bf1b2bbdaeee1722ad4e5a1f822f2f4f0cd622c2ca8d86b"
+  },
+  "new_neural_queries": false,
+  "new_pricing": false,
+  "new_reference_sampling": false,
+  "scientific_acceptance": false,
+  "scope": "Offline posthoc dependence review; saved development observations and references only.",
+  "report": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/report.html",
+    "sha256": "99b6113cfd959849adfe3a54efa05e3a3b30772ae7862b8a7487053f22e51948"
+  }
+}

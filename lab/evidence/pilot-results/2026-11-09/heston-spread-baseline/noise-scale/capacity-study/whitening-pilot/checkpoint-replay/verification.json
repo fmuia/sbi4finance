@@ -1,0 +1,100 @@
+{
+  "format": "heston_spread_whitening_checkpoint_replay_verification_v1",
+  "status": "passed",
+  "verified_utc": "2026-11-10T23:07:43.531383+00:00",
+  "protocol": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/protocol.json",
+    "sha256": "901c7c3257ec2f12bb5b57f2608ab49c8e5e5cf8a30bcbba80651692edb6f7ab"
+  },
+  "report": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/report.html",
+    "sha256": "99b6113cfd959849adfe3a54efa05e3a3b30772ae7862b8a7487053f22e51948"
+  },
+  "review_summary": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/review-summary.json",
+    "sha256": "4d4aa5f69b5e4aa9429ceaa4d9199c88a1ca1535c1081eb9c9de4a87907e05df"
+  },
+  "full_lab_tests": {
+    "count": 748,
+    "seconds": 372.655,
+    "status": "passed",
+    "log": {
+      "path": "/private/tmp/heston-checkpoint-replay-lab-tests.log",
+      "sha256": "30e0befbeb1103cf8f2a1377bcfe11673f9aeaf507bd5f560baa5fb2da98c090"
+    }
+  },
+  "additional_consumer_tests": {
+    "count": 9,
+    "status": "passed",
+    "log": {
+      "path": "/private/tmp/heston-checkpoint-replay-consumer-tests-discovery.log",
+      "sha256": "fef8c50f849a55e97dc088a8e936fc67dcc071f551a7509d393534dc1907c27c"
+    },
+    "scope": "4 new evaluation tests and5 final review-consumer tests created after full-suite discovery"
+  },
+  "release_checks": {
+    "manifest": "current;153artifacts;0copies",
+    "claims": "current",
+    "runtime_boundary": "183sharedsymbols,no duplicatedfinancialimplementation"
+  },
+  "report_checks": {
+    "inline_svg_count": 13,
+    "png_count": 13,
+    "svg_count": 13,
+    "all_ids_unique": true,
+    "all_navigation_anchors_resolve": true,
+    "external_asset_dependencies": [],
+    "all_review_protected_hashes_exact": true,
+    "all_exported_figure_hashes_exact": true,
+    "visible_market_inference_adequacy_distinction_correct": true,
+    "visual_qa": [
+      "recoveryepoch83",
+      "coverage",
+      "SBC_ECDF",
+      "broadandmarketlikedependence"
+    ],
+    "numerical_headline_matches_saved_evaluations": true
+  },
+  "rendering_note": {
+    "initial_attempt_source": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/checkpoint-replay/report-consumer-attempt-01.py",
+      "sha256": "00be888f6899e23c75de3daec695a64365682fc5b85b83b6e82aa3a5b31dbb80"
+    },
+    "initial_error": "frozen renderer sent hash-bound original JSON metadata through a code-source-only extension allowlist; no HTML had been produced",
+    "resolution": "new read-only review consumer uses narrowly scoped hash-validated metadata adapter; frozen renderer, producer, protocol and all model/evaluation artifacts unchanged",
+    "compatibility": {
+      "mode": "scoped original JSON metadata compatibility adapter",
+      "allowed_metadata": [
+        {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/zca/run.json",
+          "sha256": "1e15f168f1546647a12ae85361f635da9a995362da5cb1ce3e6bc4dd49c12766"
+        },
+        {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/zca/preprocessing.json",
+          "sha256": "422d2f1362e05539b8f26bbe9d81fe43e1f048c5e16084d27722b91787a018b2"
+        },
+        {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/zca/initial-probes.json",
+          "sha256": "2cb502b63431a3927436272d35ab7fecb6991b9c076c4760dab5de06f2193925"
+        },
+        {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/zca/learning-curve.json",
+          "sha256": "34126046916d770e5d553a14e7327c7172da9d84d12cf1a4d20663100a1f5a46"
+        },
+        {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/zca/training.json",
+          "sha256": "a2b13dc080477bcc16e419e40e81491afb2c1c197c6532bad24be9a968486a63"
+        },
+        {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/whitening-pilot/zca/checkpoints/update-008000/checkpoint.json",
+          "sha256": "c09852b0ab13c436e204fecc254cedba82cec853e44a2378987abcdc4c76cf67"
+        }
+      ],
+      "original_executable_source_checks_unchanged": true,
+      "original_hook_restored": true
+    }
+  },
+  "test_invocation_note": "An initial module-mode consumer invocation omitted tests from PYTHONPATH and could not import a shared test fixture; corrected invocation passes all9 with no product-source change.",
+  "reserved_arrays_opened": false,
+  "scientific_acceptance": false
+}
