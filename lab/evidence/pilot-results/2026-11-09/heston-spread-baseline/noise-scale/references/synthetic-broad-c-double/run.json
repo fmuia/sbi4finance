@@ -1,0 +1,273 @@
+{
+  "format": "heston_spread_reference_run_v1",
+  "status": "failed",
+  "case_id": "synthetic-broad",
+  "case_kind": "synthetic",
+  "panel_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/references/panel.json",
+  "panel_sha256": "8246c08c72336a819771bf481ffd46be4e09f1c2cf64dab6e6725a10229d4f1d",
+  "design_sha256": "4b84185e7a072844fd6a3ce0f79aed983d39502607a7a76c79dbf7196f9ed547",
+  "observation_sha256": "ee684695a1671219e9b45037a498b82286d032ac9f464b185e00d94735eb45a8",
+  "observations": [
+    34.62957525886513,
+    58.04481162711743,
+    95.89626321801,
+    122.10101287418613,
+    155.72993077430252,
+    199.0643065266881,
+    246.74186798762375,
+    177.85690438426627,
+    114.67225627584787,
+    54.94994211756224,
+    87.97145280716141,
+    139.90553683869965,
+    176.22808752593374,
+    221.53237456796612,
+    277.0268234310142,
+    353.12219334167366,
+    228.32058966332926,
+    129.48682722251894,
+    66.80849655052451,
+    102.88011851063088,
+    160.52736058667577,
+    202.0446559197972,
+    254.7451743564138,
+    321.73589859243515,
+    409.6186796699342,
+    251.20275992788532,
+    130.08356776428266,
+    74.94825103270306,
+    117.069402762666,
+    183.57502624851105,
+    231.65960524172877,
+    295.0681887298548,
+    381.5016138822342,
+    494.06000290252496,
+    282.7074144950379,
+    132.14893383617832,
+    76.09529776794298,
+    118.58725199654265,
+    196.19757495619223,
+    252.29714996896223,
+    330.8631337854189,
+    440.7398130606492,
+    593.9217500388595,
+    325.12116873400834,
+    132.8829826656942,
+    69.54817095936879,
+    114.75284302498079,
+    198.30974068830034,
+    266.2440401902197,
+    355.8302932659403,
+    491.34800582383576,
+    683.3528947818623,
+    356.97615029744276,
+    139.01498210418424
+  ],
+  "physical_truth": [
+    0.13606576993442382,
+    3.0827415084102587,
+    0.08283978188501408,
+    1.72407461760237,
+    -0.7807145844719824
+  ],
+  "products": {
+    "control": [
+      0.0,
+      0.05762249492643328
+    ],
+    "affected": [
+      0.2220060565702689,
+      0.8903850520040588
+    ]
+  },
+  "task": {
+    "format": "heston_spread_task_v1",
+    "model": "heston",
+    "measure": "Q",
+    "parameter_names": [
+      "initial_variance",
+      "kappa",
+      "theta",
+      "vol_of_vol",
+      "rho"
+    ],
+    "prior_bounds": [
+      [
+        0.01,
+        0.16
+      ],
+      [
+        0.1,
+        10.0
+      ],
+      [
+        0.01,
+        0.16
+      ],
+      [
+        0.1,
+        3.0
+      ],
+      [
+        -0.95,
+        -0.1
+      ]
+    ],
+    "prior": "independent Uniform in physical coordinates",
+    "infer_c": false,
+    "fixed_c": 2.0,
+    "c_bounds": [
+      0.5,
+      2.0
+    ],
+    "quote_count": 54,
+    "geometry_and_spreads_sha256": "5ece6ab07e578c3bdfd68ec8f9158a161f066d271077e75dd2934c03af6b2b07",
+    "observation_model": "independent Gaussian with price SD c * half_spread",
+    "pricing_controls": {
+      "c_min": 0.5,
+      "numerical_fraction": 0.02,
+      "quadrature_ladder": [
+        [
+          256,
+          150.0
+        ],
+        [
+          512,
+          300.0
+        ],
+        [
+          1024,
+          600.0
+        ],
+        [
+          2048,
+          1200.0
+        ],
+        [
+          4096,
+          2400.0
+        ],
+        [
+          8192,
+          4800.0
+        ],
+        [
+          16384,
+          9600.0
+        ]
+      ]
+    }
+  },
+  "names": [
+    "initial_variance",
+    "kappa",
+    "theta",
+    "vol_of_vol",
+    "rho"
+  ],
+  "bounds": [
+    [
+      0.01,
+      0.16
+    ],
+    [
+      0.1,
+      10.0
+    ],
+    [
+      0.01,
+      0.16
+    ],
+    [
+      0.1,
+      3.0
+    ],
+    [
+      -0.95,
+      -0.1
+    ]
+  ],
+  "source_sha256": {
+    "runner": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/run_heston_spread_reference.py",
+      "sha256": "69b6267580b91c49b691a867326f8f64ce332dad445204e1fe00166ff6d2f575"
+    },
+    "spread_likelihood": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/src/sbi4finance/calibration/heston_spread.py",
+      "sha256": "5ad4bd6a4024023f92e76c137643c073d0b0fb067c11885d330dcf0e10b291ca"
+    },
+    "checked_pricer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/src/sbi4finance/calibration/heston_pilot.py",
+      "sha256": "7189d8d35fb7f776424835e279647867dbd0a3e4bccf00be0a1c915b0725904b"
+    },
+    "runtime_model": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/tutorial/src/sbi4f_tutorial/heston_options/model.py",
+      "sha256": "4b48d998ff99e3709d8c753bd12ef32453242332ec0486c9d1251a788cadfe85"
+    },
+    "reference": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/src/sbi4finance/calibration/reference.py",
+      "sha256": "fd69a6958026f6addde982f2c8d57461cf549efe75f838956e0d931e12153056"
+    },
+    "initialization": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/src/sbi4finance/calibration/reference_initialization.py",
+      "sha256": "0abf68e9862d30bf152dd01e28807ed651d53a12dca4c1286ccb17c52ef0b74f"
+    },
+    "likelihood_op": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/src/sbi4finance/calibration/pymc_reference_op.py",
+      "sha256": "99704310f8a503cad7eee2310da0204d52c213427ad21683834214018f02451b"
+    },
+    "partial_writer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/calibration_reference.py",
+      "sha256": "070f3199645faabe8032132d13c6b1859d053d9b8717334d65ce157f707ef6b8"
+    },
+    "pyproject.toml": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/pyproject.toml",
+      "sha256": "25c8e213e5b7471f734f92d0dfd7759cb52d0f280be85f1d4d3106f2492a207f"
+    },
+    "pixi.lock": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/pixi.lock",
+      "sha256": "994fa6075abf60c5e2045a6e2d73302a0a84af9b37e311e8ac2cdfcd8854a871"
+    }
+  },
+  "settings": {
+    "seed": 261112,
+    "chains": 4,
+    "cores": 1,
+    "fit_budget": 2000,
+    "attempts": [
+      [
+        2000,
+        2000
+      ],
+      [
+        6000,
+        12000
+      ]
+    ],
+    "cpu_and_wall_seconds": 900,
+    "blas_threads": 1
+  },
+  "versions": {
+    "python": "3.12.16",
+    "pymc": "6.3.2",
+    "pytensor": "3.3.4",
+    "arviz-stats": "1.3.3",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "xarray": "2026.9.0"
+  },
+  "smoke": false,
+  "scientific_acceptance": false,
+  "reserved_test_arrays_opened": false,
+  "sampler": "native PyMC DEMetropolisZ; bounded physical Uniform priors; deterministic Fourier likelihood",
+  "scope": "Reference convergence and sampled numerical precision only; no neural or market-model acceptance.",
+  "attempts": [],
+  "reference_ready": false,
+  "error_type": "ValueError",
+  "error": "Unable to create the compiledir directory '/Users/afengler/.pytensor/compiledir_macOS-26.4.1-arm64-arm-64bit-arm-3.12.16-64'. Check the permissions.",
+  "usage": {
+    "wall_seconds": 2.41225383291021,
+    "cpu_seconds": 2.343629,
+    "limit_seconds": 900.0
+  }
+}

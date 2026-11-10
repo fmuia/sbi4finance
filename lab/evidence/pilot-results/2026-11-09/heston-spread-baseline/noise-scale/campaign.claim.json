@@ -1,0 +1,6 @@
+{
+  "protocol_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/campaign-protocol.json",
+  "protocol_sha256": "86ee7a3bbde53943cf37824996025a6bb7f3c8f609c378600912af5c2c1d45eb",
+  "controller_sha256": "ed5a192df30aa0dd0774b1a5cddbe240724e4b75a7f09de73678a8ccb820aa0f",
+  "started_utc": "2026-11-10T15:15:41.563057+00:00"
+}

@@ -1,0 +1,274 @@
+{
+  "format": "heston_spread_scale_bootstrap_failure_audit_v1",
+  "all_seven_zero_sampling": true,
+  "failed_startup_inner_cpu_seconds": 40.739873,
+  "jobs": [
+    {
+      "id": "synthetic-broad-c-half",
+      "error": "Unable to create the compiledir directory '/Users/afengler/.pytensor/compiledir_macOS-26.4.1-arm64-arm-64bit-arm-3.12.16-64'. Check the permissions.",
+      "sampling_started": false,
+      "callback_counts_including_warmup": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "posterior_draw_counts": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "completed_sampler_attempts": 0,
+      "chain_payloads": 0,
+      "inner_cpu_seconds": 2.321516,
+      "files": {
+        "consumer": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/references/synthetic-broad-c-half.consumer.json",
+          "sha256": "98596cf9a26f86b906ddb3f6eae3fb00c5bffc624847708b32ba3b8fb59c0f60"
+        },
+        "run": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/references/synthetic-broad-c-half/run.json",
+          "sha256": "fc54487256eff4a0565b3c225c4c868d096060da51516ac3356c48f54e6c020c"
+        },
+        "partial_progress": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/references/synthetic-broad-c-half/attempt-0/partial/progress.json",
+          "sha256": "9b9a16522e2fbc7d41b7139c8ae0796726c3239ea3c9f30ae1fe41cc59868855"
+        },
+        "log": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/campaign-logs/synthetic-broad-c-half.log",
+          "sha256": "4048c17dce04207b803499fc69353c8febd21a1fe7b56409b4351f72050e73cb"
+        }
+      }
+    },
+    {
+      "id": "synthetic-broad-c-double",
+      "error": "Unable to create the compiledir directory '/Users/afengler/.pytensor/compiledir_macOS-26.4.1-arm64-arm-64bit-arm-3.12.16-64'. Check the permissions.",
+      "sampling_started": false,
+      "callback_counts_including_warmup": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "posterior_draw_counts": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "completed_sampler_attempts": 0,
+      "chain_payloads": 0,
+      "inner_cpu_seconds": 2.343629,
+      "files": {
+        "consumer": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/references/synthetic-broad-c-double.consumer.json",
+          "sha256": "bcd94e562fbcc42d329a56398d0dea124b3aab59da6bea4e80581ca96b25cba7"
+        },
+        "run": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/references/synthetic-broad-c-double/run.json",
+          "sha256": "5d8d52f5fba07cce9d8ff481d4e13edabe1950d62cd2718a68cba859fd24f364"
+        },
+        "partial_progress": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/references/synthetic-broad-c-double/attempt-0/partial/progress.json",
+          "sha256": "ab5a297afaf5f4e6dda325d2afd058bd48371de07d04a725af40fbf0c2061b61"
+        },
+        "log": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/campaign-logs/synthetic-broad-c-double.log",
+          "sha256": "4048c17dce04207b803499fc69353c8febd21a1fe7b56409b4351f72050e73cb"
+        }
+      }
+    },
+    {
+      "id": "synthetic-broad-c-joint",
+      "error": "Unable to create the compiledir directory '/Users/afengler/.pytensor/compiledir_macOS-26.4.1-arm64-arm-64bit-arm-3.12.16-64'. Check the permissions.",
+      "sampling_started": false,
+      "callback_counts_including_warmup": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "posterior_draw_counts": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "completed_sampler_attempts": 0,
+      "chain_payloads": 0,
+      "inner_cpu_seconds": 2.219391,
+      "files": {
+        "consumer": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/references/synthetic-broad-c-joint.consumer.json",
+          "sha256": "c37b1e0a191fceb2fd74706497ad25cc836bf6ded5f370ac37dfa866e2096fde"
+        },
+        "run": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/references/synthetic-broad-c-joint/run.json",
+          "sha256": "ce47b133773093a8953b6454c2a40b3dcc50b660c67ad0ae59101694a31a469e"
+        },
+        "partial_progress": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/references/synthetic-broad-c-joint/attempt-0/partial/progress.json",
+          "sha256": "580e1fb0b64bca893a4cb90b1c471e4aee097f2ee08967b851bf5ee804c73274"
+        },
+        "log": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/campaign-logs/synthetic-broad-c-joint.log",
+          "sha256": "4048c17dce04207b803499fc69353c8febd21a1fe7b56409b4351f72050e73cb"
+        }
+      }
+    },
+    {
+      "id": "synthetic-market-like-c-half",
+      "error": "Unable to create the compiledir directory '/Users/afengler/.pytensor/compiledir_macOS-26.4.1-arm64-arm-64bit-arm-3.12.16-64'. Check the permissions.",
+      "sampling_started": false,
+      "callback_counts_including_warmup": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "posterior_draw_counts": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "completed_sampler_attempts": 0,
+      "chain_payloads": 0,
+      "inner_cpu_seconds": 7.895831000000001,
+      "files": {
+        "consumer": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/references/synthetic-market-like-c-half.consumer.json",
+          "sha256": "78af043950b56b9d6faf3da7b0f47abf7a2be025da673ea903dfb6c0e18451da"
+        },
+        "run": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/references/synthetic-market-like-c-half/run.json",
+          "sha256": "35c43cff3c50b758e8c2caf84df7b041b77373f5857e88955df90df8a63d0084"
+        },
+        "partial_progress": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/references/synthetic-market-like-c-half/attempt-0/partial/progress.json",
+          "sha256": "fc6ced6a834df6bd4f3c9e740870d7e8163e4f3d2be07e44cee472feae44ed45"
+        },
+        "log": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/campaign-logs/synthetic-market-like-c-half.log",
+          "sha256": "4048c17dce04207b803499fc69353c8febd21a1fe7b56409b4351f72050e73cb"
+        }
+      }
+    },
+    {
+      "id": "synthetic-market-like-c-double",
+      "error": "Unable to create the compiledir directory '/Users/afengler/.pytensor/compiledir_macOS-26.4.1-arm64-arm-64bit-arm-3.12.16-64'. Check the permissions.",
+      "sampling_started": false,
+      "callback_counts_including_warmup": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "posterior_draw_counts": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "completed_sampler_attempts": 0,
+      "chain_payloads": 0,
+      "inner_cpu_seconds": 9.144201,
+      "files": {
+        "consumer": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/references/synthetic-market-like-c-double.consumer.json",
+          "sha256": "effd1d97f5bd764bbfc20f848f020edb1f107675670588fd7c0f4477def83ee9"
+        },
+        "run": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/references/synthetic-market-like-c-double/run.json",
+          "sha256": "c97bca14ded29e33ea23ea05f451d13e25b5fcd36b5ba601bf97a2c3e0ac373b"
+        },
+        "partial_progress": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/references/synthetic-market-like-c-double/attempt-0/partial/progress.json",
+          "sha256": "653563222073a3e1b5b4b9eda1d16f7665131cff52141c09e798b38a64551ecd"
+        },
+        "log": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/campaign-logs/synthetic-market-like-c-double.log",
+          "sha256": "4048c17dce04207b803499fc69353c8febd21a1fe7b56409b4351f72050e73cb"
+        }
+      }
+    },
+    {
+      "id": "synthetic-market-like-c-joint",
+      "error": "Unable to create the compiledir directory '/Users/afengler/.pytensor/compiledir_macOS-26.4.1-arm64-arm-64bit-arm-3.12.16-64'. Check the permissions.",
+      "sampling_started": false,
+      "callback_counts_including_warmup": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "posterior_draw_counts": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "completed_sampler_attempts": 0,
+      "chain_payloads": 0,
+      "inner_cpu_seconds": 8.180309000000001,
+      "files": {
+        "consumer": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/references/synthetic-market-like-c-joint.consumer.json",
+          "sha256": "410de1c6522c1d07f8a4fe632bdb477793824903d3405a7e031cadaa11d26d02"
+        },
+        "run": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/references/synthetic-market-like-c-joint/run.json",
+          "sha256": "7cc98d80c2e21858501d26efe01dcc53d84d6edcaab4b1333e2d61c84352ba78"
+        },
+        "partial_progress": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/references/synthetic-market-like-c-joint/attempt-0/partial/progress.json",
+          "sha256": "1770baac09ae699a1dfde4dfb8b38f65adfa9361f2fa29a55d1e1277f8ed29dc"
+        },
+        "log": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/campaign-logs/synthetic-market-like-c-joint.log",
+          "sha256": "4048c17dce04207b803499fc69353c8febd21a1fe7b56409b4351f72050e73cb"
+        }
+      }
+    },
+    {
+      "id": "market-c-joint",
+      "error": "Unable to create the compiledir directory '/Users/afengler/.pytensor/compiledir_macOS-26.4.1-arm64-arm-64bit-arm-3.12.16-64'. Check the permissions.",
+      "sampling_started": false,
+      "callback_counts_including_warmup": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "posterior_draw_counts": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "completed_sampler_attempts": 0,
+      "chain_payloads": 0,
+      "inner_cpu_seconds": 8.634996,
+      "files": {
+        "consumer": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/references/market-c-joint.consumer.json",
+          "sha256": "22374b0e98a2cec8fca66a56cea10f691f758288ce81e38a4278a1eb88ae3b0b"
+        },
+        "run": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/references/market-c-joint/run.json",
+          "sha256": "77d4fa9635f6645df6f864e87da4996ba4dd120255caf40bb3aa91005bb534f8"
+        },
+        "partial_progress": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/references/market-c-joint/attempt-0/partial/progress.json",
+          "sha256": "f2fa2c1367dffa1b4644c5cc57d8e67bb84ec3a760a542271c0d9c9656d9c761"
+        },
+        "log": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/campaign-logs/market-c-joint.log",
+          "sha256": "4048c17dce04207b803499fc69353c8febd21a1fe7b56409b4351f72050e73cb"
+        }
+      }
+    }
+  ],
+  "scope": "Initialization likelihood evaluations occurred, but all callback counts including warmup are zero and no chain payload exists. Not a statistical retry."
+}

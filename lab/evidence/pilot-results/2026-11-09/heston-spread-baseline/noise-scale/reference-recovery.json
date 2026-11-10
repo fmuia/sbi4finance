@@ -1,0 +1,92 @@
+{
+  "format": "heston_spread_scale_reference_recovery_v1",
+  "original_study": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/protocol.json",
+    "sha256": "74ac585500dd0758a49113d1201c5a0119ffbc6970573c33ff61b12675639102"
+  },
+  "original_reference_protocol": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/reference-protocol.json",
+    "sha256": "a922b7bebb6dce2bef97d9ca539c59e18df54f7053ff57cb4947fd779cd912c2"
+  },
+  "original_campaign": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/campaign.json",
+    "sha256": "e0e143c682c5ff5bd0a2d870050151806f9ef454fae1b1b85559522d783462d4"
+  },
+  "startup_failure_audit": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/bootstrap-failure-audit.json",
+    "sha256": "504be7b62385d4b286fe97edfca4912e3ce346a4cc3729e73b7670add5f462d9"
+  },
+  "recovery_reference_protocol": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/recovery-reference-protocol.json",
+    "sha256": "afc57eede3f0c442f14ccefa938e5014bb5ad10a601534b4e935febca36e32b1"
+  },
+  "recovered_environment_cache": {
+    "synthetic-broad-c-half": {
+      "compiledir": "/private/tmp/sbi4f-noise-scale-80c39a9019da-synthetic-broad-c-half",
+      "PYTENSOR_FLAGS": "compiledir=/private/tmp/sbi4f-noise-scale-80c39a9019da-synthetic-broad-c-half"
+    },
+    "synthetic-broad-c-double": {
+      "compiledir": "/private/tmp/sbi4f-noise-scale-80c39a9019da-synthetic-broad-c-double",
+      "PYTENSOR_FLAGS": "compiledir=/private/tmp/sbi4f-noise-scale-80c39a9019da-synthetic-broad-c-double"
+    },
+    "synthetic-broad-c-joint": {
+      "compiledir": "/private/tmp/sbi4f-noise-scale-80c39a9019da-synthetic-broad-c-joint",
+      "PYTENSOR_FLAGS": "compiledir=/private/tmp/sbi4f-noise-scale-80c39a9019da-synthetic-broad-c-joint"
+    },
+    "synthetic-market-like-c-half": {
+      "compiledir": "/private/tmp/sbi4f-noise-scale-80c39a9019da-synthetic-market-like-c-half",
+      "PYTENSOR_FLAGS": "compiledir=/private/tmp/sbi4f-noise-scale-80c39a9019da-synthetic-market-like-c-half"
+    },
+    "synthetic-market-like-c-double": {
+      "compiledir": "/private/tmp/sbi4f-noise-scale-80c39a9019da-synthetic-market-like-c-double",
+      "PYTENSOR_FLAGS": "compiledir=/private/tmp/sbi4f-noise-scale-80c39a9019da-synthetic-market-like-c-double"
+    },
+    "synthetic-market-like-c-joint": {
+      "compiledir": "/private/tmp/sbi4f-noise-scale-80c39a9019da-synthetic-market-like-c-joint",
+      "PYTENSOR_FLAGS": "compiledir=/private/tmp/sbi4f-noise-scale-80c39a9019da-synthetic-market-like-c-joint"
+    },
+    "market-c-joint": {
+      "compiledir": "/private/tmp/sbi4f-noise-scale-80c39a9019da-market-c-joint",
+      "PYTENSOR_FLAGS": "compiledir=/private/tmp/sbi4f-noise-scale-80c39a9019da-market-c-joint"
+    }
+  },
+  "original_started_utc": "2026-11-10T15:15:41.563316+00:00",
+  "conservative_original_start_utc": "2026-11-10T15:15:40.860497+00:00",
+  "deadline_utc": "2026-11-10T16:20:40.860497+00:00",
+  "remaining_seconds_at_prepare": 3482.155956,
+  "deadline_estimate": "Original campaign started_utc minus its first launch event elapsed time; conservative relative to its first-statement clock. Reconverted to monotonic at recovery launch; no new3900-second allowance.",
+  "maximum_concurrent_jobs": 2,
+  "maximum_sum_inner_cpu_seconds": 6300,
+  "failed_startup_inner_cpu_seconds": 40.739873,
+  "cpu_admission_rule": "failed_startupCPU + completed_new_actual_innerCPU + active_jobs*900 + next900 <=6300; unused completed reservations are released; unreported CPU conservatively charged900",
+  "logs_root": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/recovery-campaign-logs",
+  "progress_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/recovery-campaign.json",
+  "sources": {
+    "recovery_controller": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/recover_heston_spread_scale_campaign.py",
+      "sha256": "04ed9acd4b30873aa25c4c6be2ac24c77dfb6e805939c6aa4b133c7e49d195ab"
+    },
+    "original_controller": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/run_heston_spread_scale_campaign.py",
+      "sha256": "ed5a192df30aa0dd0774b1a5cddbe240724e4b75a7f09de73678a8ccb820aa0f"
+    },
+    "consumer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/run_heston_spread_scale_reference.py",
+      "sha256": "191b0482fa73ec82f5e88fa3d8022c6fc502e5f9120a9b2dc37d25ceebed9eb3"
+    },
+    "producer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/run_heston_spread_reference.py",
+      "sha256": "69b6267580b91c49b691a867326f8f64ce332dad445204e1fe00166ff6d2f575"
+    }
+  },
+  "modified_reference_fields": [
+    "evidence_root",
+    "payload_root",
+    "jobs[*].evidence_out",
+    "jobs[*].payload_out",
+    "environment_bootstrap_recovery"
+  ],
+  "authorization": "Explicit environment correction after seven verified zero-sampling startup failures; no scientific rerun, prior change or automatic budget extension",
+  "scientific_acceptance": false,
+  "automatic_retry": false
+}
