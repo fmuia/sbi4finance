@@ -1,0 +1,372 @@
+{
+  "format": "heston_spread_noise_scale_study_v1",
+  "status": "declared_before_new_joint_scale_fit_and_references",
+  "declared_utc": "2026-11-10T15:07:41.119295+00:00",
+  "base_commit": "fa38447ed0e6b4dc522326400fa4e239f69893a4",
+  "user_scope": "Complete the planned examination of one Gaussian spread multiplier c on the current frozen Heston pilot; grid adjustment is a separate later stage.",
+  "observation_law": "Y_i=P_i(phi)+c*h_i*Z_i; independent Z_i~Normal(0,1), h_i=(ask_i-bid_i)/2 fixed in price units.",
+  "fixed_scale_values": [
+    0.5,
+    1.0,
+    2.0
+  ],
+  "inferred_c_prior": {
+    "family": "Uniform",
+    "bounds": [
+      0.5,
+      2.0
+    ],
+    "coordinate": "physical c",
+    "independent_of_physical_parameters": true
+  },
+  "fixed_task": {
+    "format": "heston_spread_task_v1",
+    "model": "heston",
+    "measure": "Q",
+    "parameter_names": [
+      "initial_variance",
+      "kappa",
+      "theta",
+      "vol_of_vol",
+      "rho"
+    ],
+    "prior_bounds": [
+      [
+        0.01,
+        0.16
+      ],
+      [
+        0.1,
+        10.0
+      ],
+      [
+        0.01,
+        0.16
+      ],
+      [
+        0.1,
+        3.0
+      ],
+      [
+        -0.95,
+        -0.1
+      ]
+    ],
+    "prior": "independent Uniform in physical coordinates",
+    "infer_c": false,
+    "fixed_c": 1.0,
+    "c_bounds": [
+      0.5,
+      2.0
+    ],
+    "quote_count": 54,
+    "geometry_and_spreads_sha256": "5ece6ab07e578c3bdfd68ec8f9158a161f066d271077e75dd2934c03af6b2b07",
+    "observation_model": "independent Gaussian with price SD c * half_spread",
+    "pricing_controls": {
+      "c_min": 0.5,
+      "numerical_fraction": 0.02,
+      "quadrature_ladder": [
+        [
+          256,
+          150.0
+        ],
+        [
+          512,
+          300.0
+        ],
+        [
+          1024,
+          600.0
+        ],
+        [
+          2048,
+          1200.0
+        ],
+        [
+          4096,
+          2400.0
+        ],
+        [
+          8192,
+          4800.0
+        ],
+        [
+          16384,
+          9600.0
+        ]
+      ]
+    }
+  },
+  "joint_task": {
+    "format": "heston_spread_task_v1",
+    "model": "heston",
+    "measure": "Q",
+    "parameter_names": [
+      "initial_variance",
+      "kappa",
+      "theta",
+      "vol_of_vol",
+      "rho",
+      "c"
+    ],
+    "prior_bounds": [
+      [
+        0.01,
+        0.16
+      ],
+      [
+        0.1,
+        10.0
+      ],
+      [
+        0.01,
+        0.16
+      ],
+      [
+        0.1,
+        3.0
+      ],
+      [
+        -0.95,
+        -0.1
+      ],
+      [
+        0.5,
+        2.0
+      ]
+    ],
+    "prior": "independent Uniform in physical coordinates",
+    "infer_c": true,
+    "fixed_c": null,
+    "c_bounds": [
+      0.5,
+      2.0
+    ],
+    "quote_count": 54,
+    "geometry_and_spreads_sha256": "5ece6ab07e578c3bdfd68ec8f9158a161f066d271077e75dd2934c03af6b2b07",
+    "observation_model": "independent Gaussian with price SD c * half_spread",
+    "pricing_controls": {
+      "c_min": 0.5,
+      "numerical_fraction": 0.02,
+      "quadrature_ladder": [
+        [
+          256,
+          150.0
+        ],
+        [
+          512,
+          300.0
+        ],
+        [
+          1024,
+          600.0
+        ],
+        [
+          2048,
+          1200.0
+        ],
+        [
+          4096,
+          2400.0
+        ],
+        [
+          8192,
+          4800.0
+        ],
+        [
+          16384,
+          9600.0
+        ]
+      ]
+    }
+  },
+  "unchanged": [
+    "54 actual European SPXW contracts",
+    "five physical parameter names/bounds and Uniform priors",
+    "carry and ACT/365F clock",
+    "raw observation vectors in the reference comparisons",
+    "half-spread profile",
+    "minimum pricing gate .02*(.5*h)",
+    "BayesFlow2.1 spline family,6blocks,128x128 conditioners,effective dropout0",
+    "20k physical clean training-row prefix"
+  ],
+  "excluded": [
+    "new strike/maturity layout",
+    "tau or vega error component",
+    "spread-profile variation",
+    "extra fixed-c neural fits at .5 or2",
+    "old boundary reference retry",
+    "original4D lesson attribution control",
+    "rough Bergomi production",
+    "tutorial asset promotion"
+  ],
+  "panel": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/references/panel.json",
+    "sha256": "8246c08c72336a819771bf481ffd46be4e09f1c2cf64dab6e6725a10229d4f1d",
+    "same_observations_per_case_for_all_targets": true,
+    "cases": {
+      "synthetic-broad": {
+        "kind": "synthetic",
+        "observation_sha256": "ee684695a1671219e9b45037a498b82286d032ac9f464b185e00d94735eb45a8",
+        "generating_c": 1.0
+      },
+      "synthetic-market-like": {
+        "kind": "synthetic",
+        "observation_sha256": "2fff2664136ba888e2f75c83b230ec53e0f31a522f74c6801ed2654802f9ed4f",
+        "generating_c": 1.0
+      },
+      "synthetic-boundary": {
+        "kind": "synthetic",
+        "observation_sha256": "c01c6d454a6044b2d1beacdea98f6da7599e446b27a2a7d136e1517d8ab731fb",
+        "generating_c": 1.0
+      },
+      "market": {
+        "kind": "market",
+        "observation_sha256": "e55bc1a754740303e906c35ad7595d93eff27a99178ef64315ba2b09f0e1aed6",
+        "generating_c": null
+      }
+    }
+  },
+  "reference_protocol": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/reference-protocol.json",
+    "sha256": "a922b7bebb6dce2bef97d9ca539c59e18df54f7053ff57cb4947fd779cd912c2",
+    "new_targets": 7,
+    "reuse_ready_c1_cases": [
+      "synthetic-broad",
+      "synthetic-market-like",
+      "market"
+    ],
+    "new_synthetic_matrix": {
+      "cases": [
+        "synthetic-broad",
+        "synthetic-market-like"
+      ],
+      "targets": [
+        "fixedc.5",
+        "fixedc2",
+        "jointc"
+      ]
+    },
+    "application_only": "market jointc",
+    "per_job_inner_cpu_and_wall_seconds": 900,
+    "per_job_outer_wall_seconds": 950,
+    "max_concurrent_jobs": 2,
+    "whole_campaign_wall_seconds": 3900,
+    "max_sum_inner_cpu_seconds": 6300,
+    "sampler": "native PyMC DEMetropolisZ,4sequential chains;2k/2k initially;one6k/12k escalation only as declared",
+    "no_automatic_retry_or_budget_extension": true
+  },
+  "joint_neural_fit": {
+    "fits_max": 1,
+    "targets": [
+      "initial_variance",
+      "kappa",
+      "theta",
+      "vol_of_vol",
+      "rho",
+      "c"
+    ],
+    "c_is_never_a_condition": true,
+    "input": "54 ordered Y/h values only",
+    "source_bound_contract": "training-protocol.json persisted before production fit",
+    "seed": 9011,
+    "physical_training_rows": 20000,
+    "batch_size": 128,
+    "effective_dropout": 0.0,
+    "depth": 6,
+    "widths": [
+      128,
+      128
+    ],
+    "initialization": "construct .05 model, then disable24existing Dropoutlayers before first update; different6Dweights from5D are unavoidable",
+    "new_pricing_labels": false,
+    "bank_record_sha256": "865b4333debdc7ed8b3e3723f1811c3ff8967b61be6cae23455e4a7ba312475e",
+    "bank_payload_sha256": "35117eb977867ffb5b73e95cc2da6327f74820b2a74be96d223c85dfc8400fbb",
+    "endpoints": [
+      10000,
+      50000,
+      60000
+    ],
+    "schedule": [
+      {
+        "t_inclusive": [
+          0,
+          9999
+        ],
+        "rule": "CosineDecay5e-4,horizon10000,alpha.1"
+      },
+      {
+        "t_inclusive": [
+          10000,
+          49999
+        ],
+        "rate": 5e-05
+      },
+      {
+        "t_inclusive": [
+          50000,
+          54999
+        ],
+        "rate": 5e-06
+      },
+      {
+        "t_inclusive": [
+          55000,
+          59999
+        ],
+        "rate": 5e-07
+      }
+    ],
+    "preserve_adam_at_schedule_change": true,
+    "max_wall_seconds_including_reload": 900,
+    "no_automatic_extension": true
+  },
+  "joint_evaluation": {
+    "checkpoints": [
+      10000,
+      50000,
+      60000
+    ],
+    "conditional_cases": [
+      "synthetic-broad",
+      "synthetic-market-like",
+      "market"
+    ],
+    "case_roles": "Two existing c=1-generated synthetic cases are development fidelity checks; market is a separate application/misfit diagnostic. No claim of off-1 conditional fidelity from those cases.",
+    "conditional_draws": 4096,
+    "reference_draws": "chain-preserving selected converged attempt only",
+    "mean_tolerance_reference_sd": 0.3,
+    "width_ratio90_limits": [
+      0.75,
+      1.25
+    ],
+    "quantities": "six parameters including c, plus two analytic expected-average-variance quantities",
+    "family_checks": 144,
+    "family_definition": "2metrics*8quantities*3cases*3endpoints",
+    "block_bootstrap_replicates": 400,
+    "missing_or_failed_reference": "inconclusive",
+    "seed": 261112,
+    "population_rows": 512,
+    "posterior_draws_per_population_case": 512,
+    "population_c": "independent Uniform(.5,2) per validation surface: draw_c(512,0,261112,namespace=3)",
+    "population_gaussian": "reuse PCG64 SeedSequence([0x53504556,261112]) standard errors; apply generated c*h",
+    "ranks": "six marginal randomized-rank tests across full declared prior; no uniform-rank assertion conditional on truth-c bins",
+    "plots": [
+      "six-parameter recovery including c",
+      "marginal90% intervals on fixed index-selected subset",
+      "SBC histograms/ECDF and coverage",
+      "same-y physical/product posterior sensitivity fixedc.5/1/2 vs jointc",
+      "inferred c marginal,prior comparison and phi-c correlations"
+    ],
+    "reserved_test_arrays_opened": false
+  },
+  "interpretation": {
+    "fixed_scale": "Sensitivity changes the assumed likelihood at identical y; five-parameter Uniform-prior physical MAP is unchanged mathematically, while posterior means/widths can change.",
+    "joint_scale": "Infer one shared residual amplitude, marginalizing c with its data-dependent posterior; this is not an equal mixture of fixed-c posterior curves.",
+    "oracle": "p(c|phi_truth,y) is a fixed-physical one-dimensional likelihood check, not the joint6D reference or an identifiability certificate.",
+    "market": "Posterior concentration near c=2 is evidence under a truncated working model. It does not identify pure measurement noise and does not authorize retrospectively widening c support.",
+    "comparison_to_c1_network": "Existing five-target c1 network is not applied at other assumed c or silently relabelled as jointc."
+  },
+  "scientific_acceptance": false,
+  "release_or_bergomi_authorized_by_this_study": false
+}

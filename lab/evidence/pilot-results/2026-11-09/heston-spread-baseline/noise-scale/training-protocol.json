@@ -1,0 +1,116 @@
+{
+  "format": "heston_spread_scale_protocol_v1",
+  "predeclared_before_fit": true,
+  "task_fingerprint": "7dc67dc4dc7fa210b777207fefc7211034a1bcf5eddbde10e054e4a0a86439c0",
+  "design_sha256": "4b84185e7a072844fd6a3ce0f79aed983d39502607a7a76c79dbf7196f9ed547",
+  "bank_record_sha256": "865b4333debdc7ed8b3e3723f1811c3ff8967b61be6cae23455e4a7ba312475e",
+  "bank_payload_sha256": "35117eb977867ffb5b73e95cc2da6327f74820b2a74be96d223c85dfc8400fbb",
+  "trainer_sha256": "93714493768c1db7ce792b931f1dd994e2a5936bafd5da6b1062b666ac4b9068",
+  "frozen_fixed_helper_sha256": "3a8747332a3493adcd9298d701d0d6aab087dada35d8648827d7790330931f38",
+  "seed": 9011,
+  "train_rows": 20000,
+  "batch_size": 128,
+  "planned_updates": 60000,
+  "checkpoint_updates": [
+    10000,
+    50000,
+    60000
+  ],
+  "max_wall_seconds": 900,
+  "scale_prior": [
+    0.5,
+    2.0
+  ],
+  "input_channels": 54,
+  "schedule": "CosineDecay(5e-4,10000,alpha=.1) through absolute step49999; PiecewiseConstantDecay([54999],[5e-6,5e-7]) from50000",
+  "scale_randomness": "PCG64 SeedSequence([0x5343414c,seed,namespace,step]); independent of Gaussian stream",
+  "gaussian_randomness": "PCG64 SeedSequence([0x53505244,seed,namespace,step])",
+  "reserved_arrays_opened": false,
+  "new_pricing_labels": false,
+  "automatic_extension": false,
+  "target": {
+    "format": "heston_spread_task_v1",
+    "model": "heston",
+    "measure": "Q",
+    "parameter_names": [
+      "initial_variance",
+      "kappa",
+      "theta",
+      "vol_of_vol",
+      "rho",
+      "c"
+    ],
+    "prior_bounds": [
+      [
+        0.01,
+        0.16
+      ],
+      [
+        0.1,
+        10.0
+      ],
+      [
+        0.01,
+        0.16
+      ],
+      [
+        0.1,
+        3.0
+      ],
+      [
+        -0.95,
+        -0.1
+      ],
+      [
+        0.5,
+        2.0
+      ]
+    ],
+    "prior": "independent Uniform in physical coordinates",
+    "infer_c": true,
+    "fixed_c": null,
+    "c_bounds": [
+      0.5,
+      2.0
+    ],
+    "quote_count": 54,
+    "geometry_and_spreads_sha256": "5ece6ab07e578c3bdfd68ec8f9158a161f066d271077e75dd2934c03af6b2b07",
+    "observation_model": "independent Gaussian with price SD c * half_spread",
+    "pricing_controls": {
+      "c_min": 0.5,
+      "numerical_fraction": 0.02,
+      "quadrature_ladder": [
+        [
+          256,
+          150.0
+        ],
+        [
+          512,
+          300.0
+        ],
+        [
+          1024,
+          600.0
+        ],
+        [
+          2048,
+          1200.0
+        ],
+        [
+          4096,
+          2400.0
+        ],
+        [
+          8192,
+          4800.0
+        ],
+        [
+          16384,
+          9600.0
+        ]
+      ]
+    }
+  },
+  "production_launched": false,
+  "scope": "One six-target c~Uniform(.5,2) development fit on frozen physical clean prices; requires root explicit launch go, no automatic extensions or acceptance."
+}

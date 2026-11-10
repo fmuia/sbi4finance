@@ -1,0 +1,46 @@
+{
+  "format": "heston_spread_scale_campaign_protocol_v1",
+  "study_protocol": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/protocol.json",
+    "sha256": "74ac585500dd0758a49113d1201c5a0119ffbc6970573c33ff61b12675639102"
+  },
+  "reference_protocol": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/reference-protocol.json",
+    "sha256": "a922b7bebb6dce2bef97d9ca539c59e18df54f7053ff57cb4947fd779cd912c2"
+  },
+  "sources": {
+    "controller": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/run_heston_spread_scale_campaign.py",
+      "sha256": "ed5a192df30aa0dd0774b1a5cddbe240724e4b75a7f09de73678a8ccb820aa0f"
+    },
+    "consumer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/run_heston_spread_scale_reference.py",
+      "sha256": "191b0482fa73ec82f5e88fa3d8022c6fc502e5f9120a9b2dc37d25ceebed9eb3"
+    },
+    "producer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/run_heston_spread_reference.py",
+      "sha256": "69b6267580b91c49b691a867326f8f64ce332dad445204e1fe00166ff6d2f575"
+    }
+  },
+  "job_ids": [
+    "synthetic-broad-c-half",
+    "synthetic-broad-c-double",
+    "synthetic-broad-c-joint",
+    "synthetic-market-like-c-half",
+    "synthetic-market-like-c-double",
+    "synthetic-market-like-c-joint",
+    "market-c-joint"
+  ],
+  "maximum_concurrent_jobs": 2,
+  "whole_campaign_wall_seconds": 3900,
+  "maximum_sum_inner_cpu_budget_seconds": 6300,
+  "inner_budget_per_job_seconds": 900,
+  "outer_budget_per_job_seconds": 950,
+  "logs_root": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/campaign-logs",
+  "progress_path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/campaign.json",
+  "clock_scope": "Earliest executable controller statement, before imports; includes controller validation, child startup and cleanup. Python interpreter startup before that statement is not measured.",
+  "cpu_scope": "At most7 inner900-second CPU allocations. Per-process startup/controller CPU outside the inner budgets is not represented as part of that6300-second sum.",
+  "process_groups": "Every consumer starts a new session; its reference worker inherits that process group. Whole-cap/interruption shutdown targets all such groups.",
+  "automatic_retry": false,
+  "scientific_acceptance": false
+}
