@@ -1,0 +1,137 @@
+{
+  "format": "heston_capacity_evaluation_cli_compatibility_proof_v1",
+  "compatibility_addendum": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/evaluation-compatibility-v1.json",
+    "sha256": "42c2b6496a0c7ef215bd81ec55820449f6299cf78a8953c7740967f85f070875"
+  },
+  "checkpoint_record": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/batch-512/checkpoints/pass-0025/checkpoint.json",
+    "sha256": "6b02178e4850863cf6728374d1dfc9eb1b541cff3735f71ba47c30059120722f"
+  },
+  "bootstrap_source": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/evaluate_heston_spread_scale_capacity_compat.py",
+    "sha256": "bdb222ebd3f3a3cbcec9ebed5efb2112edea1b8188cfded497c0198c2bbdb529"
+  },
+  "frozen_sources": {
+    "trainer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/continue_heston_spread_scale.py",
+      "sha256": "5d712d9b37dba7a5662c67ccc84e4148b58a45e328815a07815c40dda7109892"
+    },
+    "evaluator": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/evaluate_heston_spread_scale_continuation.py",
+      "sha256": "eda6b86ed47c3aa6af0678c129eba0e4a7220d4070fed7193fe5b6e511af39b5"
+    }
+  },
+  "serialization": {
+    "original_module": "scripts.continue_heston_spread_scale",
+    "restored_module": "__main__",
+    "serialization_before": {
+      "module": "scripts.continue_heston_spread_scale",
+      "class_name": "SpreadExposureCosine",
+      "config": {
+        "train_rows": 100000,
+        "batch_size": 512,
+        "start_updates": 60000,
+        "decay_passes": 400,
+        "maximum": 5e-05,
+        "minimum": 5e-06
+      },
+      "registered_name": "sbi4finance>SpreadExposureCosine"
+    },
+    "serialization_after": {
+      "module": null,
+      "class_name": "SpreadExposureCosine",
+      "config": {
+        "train_rows": 100000,
+        "batch_size": 512,
+        "start_updates": 60000,
+        "decay_passes": 400,
+        "maximum": 5e-05,
+        "minimum": 5e-06
+      },
+      "registered_name": "sbi4finance>SpreadExposureCosine"
+    },
+    "executable_method_sha256": {
+      "__init__": "3cfae7dde6a0d416bcb891b2d27af37519e7642fdd2c455cd6b9683a9c797f02",
+      "__call__": "f9f2b48cd02a0fec3719a914506adf1d3b9c32e7f0579051356eb763a772dd14",
+      "get_config": "2184234259ce89e4070310c5bd8a2ea4a55a78cf1bee2c723696eb95de8d05be"
+    },
+    "same_registered_class_object": true,
+    "numeric_rates_bitwise_unchanged": true,
+    "rates": [
+      {
+        "absolute_update": 0,
+        "actual": 5.0000002374872565e-05,
+        "independent_formula": 5e-05
+      },
+      {
+        "absolute_update": 60000,
+        "actual": 5.0000002374872565e-05,
+        "independent_formula": 5e-05
+      },
+      {
+        "absolute_update": 60195,
+        "actual": 4.999931115889922e-05,
+        "independent_formula": 4.9999308265869455e-05
+      },
+      {
+        "absolute_update": 60196,
+        "actual": 4.999931115889922e-05,
+        "independent_formula": 4.999930604700777e-05
+      },
+      {
+        "absolute_update": 64900,
+        "actual": 4.95676722493954e-05,
+        "independent_formula": 4.956766880907269e-05
+      },
+      {
+        "absolute_update": 79600,
+        "actual": 4.3409905629232526e-05,
+        "independent_formula": 4.340990257669732e-05
+      },
+      {
+        "absolute_update": 109000,
+        "actual": 1.888962106022518e-05,
+        "independent_formula": 1.888962277178548e-05
+      },
+      {
+        "absolute_update": 138204,
+        "actual": 5.000693363399478e-06,
+        "independent_formula": 5.000693952992233e-06
+      },
+      {
+        "absolute_update": 138400,
+        "actual": 4.999999873689376e-06,
+        "independent_formula": 5e-06
+      },
+      {
+        "absolute_update": 138596,
+        "actual": 4.999999873689376e-06,
+        "independent_formula": 5e-06
+      },
+      {
+        "absolute_update": 158000,
+        "actual": 4.999999873689376e-06,
+        "independent_formula": 5e-06
+      }
+    ]
+  },
+  "all_saved_array_groups_exact": {
+    "trainable": true,
+    "non_trainable": true,
+    "optimizer": true,
+    "metrics": true
+  },
+  "array_counts": {
+    "trainable": 84,
+    "non_trainable": 46,
+    "optimizer": 169,
+    "metrics": 2
+  },
+  "optimizer_iteration_exact": true,
+  "frozen_loader_all_guards_passed": true,
+  "new_optimizer_updates": 0,
+  "posterior_sampling_during_proof": false,
+  "checkpoint_payloads_unchanged": true,
+  "seconds": 2.1331447910051793
+}

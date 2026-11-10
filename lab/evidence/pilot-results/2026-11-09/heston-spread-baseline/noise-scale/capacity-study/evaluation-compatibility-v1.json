@@ -1,0 +1,37 @@
+{
+  "format": "heston_capacity_evaluation_cli_compatibility_v1",
+  "declared_utc": "2026-11-10T18:20:00.414932+00:00",
+  "original_study": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/protocol.json",
+    "sha256": "76f36d6c623944a98e6b6fede7776d46dd871b97f391c3b39e6781f8d3102b16"
+  },
+  "bootstrap_source": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/evaluate_heston_spread_scale_capacity_compat.py",
+    "sha256": "bdb222ebd3f3a3cbcec9ebed5efb2112edea1b8188cfded497c0198c2bbdb529"
+  },
+  "frozen_sources": {
+    "trainer": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/continue_heston_spread_scale.py",
+      "sha256": "5d712d9b37dba7a5662c67ccc84e4148b58a45e328815a07815c40dda7109892"
+    },
+    "evaluator": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/scripts/evaluate_heston_spread_scale_continuation.py",
+      "sha256": "eda6b86ed47c3aa6af0678c129eba0e4a7220d4070fed7193fe5b6e511af39b5"
+    }
+  },
+  "startup_failure_audit": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/evaluation-startup-failure-audit.json",
+    "sha256": "a80e5d4623f9679c562ac61e9833281f767ded39ee5c2ec5c9446f61df9c5858"
+  },
+  "scope": "startup-only read compatibility; unchanged target, training, samples, seeds and frozen evaluator",
+  "mechanism": "Set the existing registered schedule class's __module__ to '__main__' to recover its original module:null Keras serialization; preserve class identity, executable method bytecode, all schedule numeric rates, every saved array, optimizer iterations and all frozen loader checks.",
+  "required_proof": "Per endpoint .compatibility.json sidecar before invoking the unchanged evaluator; exact archive/metadata schedule equality, executable hashes, same registered object, rates, all saved array groups, iteration and payload checks.",
+  "original_deadline_utc": "2026-11-10T19:48:49+00:00",
+  "per_evaluation_outer_wall_seconds": 300,
+  "automatic_retry": false,
+  "retry_scope": "One declared startup-only compatible replay of512:25; remaining seven endpoints have not been evaluated. No completed or scientific-failure evaluation is rerun.",
+  "scientific_acceptance": false,
+  "new_reference_sampling": false,
+  "reserved_arrays_opened": false,
+  "finalized_before_first_compatible_evaluation": true
+}

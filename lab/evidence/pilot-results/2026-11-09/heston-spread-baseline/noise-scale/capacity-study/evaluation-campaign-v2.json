@@ -1,0 +1,146 @@
+{
+  "format": "heston_capacity_evaluation_campaign_v2",
+  "status": "settled_with_training_failures",
+  "started_utc": "2026-11-10T18:21:22.319061+00:00",
+  "deadline_utc": "2026-11-10T19:48:49+00:00",
+  "per_evaluation_outer_wall_seconds": 300,
+  "automatic_retry": false,
+  "compatibility_addendum": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/evaluation-compatibility-v1.json",
+  "original_startup_campaign": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/evaluation-campaign.json",
+  "jobs": {
+    "128:25": {
+      "status": "complete",
+      "checkpoint": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/batch-128/checkpoints/pass-0025",
+      "out": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/evaluations/batch-128/pass-0025",
+      "payload": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/evaluations/batch-128/pass-0025",
+      "log": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/evaluation-logs/batch-128-pass-0025-compatible-v1.log",
+      "started_utc": "2026-11-10T18:21:22.319602+00:00",
+      "exit_code": 0,
+      "wall_seconds": 22.27586895809509,
+      "finished_utc": "2026-11-10T18:21:44.596073+00:00",
+      "c_summary": {
+        "median_rmse": 0.4438531456214429,
+        "truth_posterior_median_correlation": -0.0038947005067743287,
+        "median_posterior_width90": 1.3448146700859072,
+        "prior_width90": 1.35,
+        "median_width90_over_prior": 0.9961590148784497,
+        "prior_midpoint_rmse": 0.4370734589111061
+      },
+      "sbc_passed": [
+        false,
+        true,
+        false,
+        true,
+        false,
+        true
+      ],
+      "conditional_status": "fail"
+    },
+    "512:25": {
+      "status": "complete",
+      "prior_eligibility_decision": {
+        "status": "unavailable",
+        "reason": "training terminal before verified checkpoint",
+        "training_progress": {
+          "status": "failed",
+          "completed_updates": 75715,
+          "failure": "failure/failure.json",
+          "automatic_retry": false
+        }
+      },
+      "checkpoint": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/batch-512/checkpoints/pass-0025",
+      "out": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/evaluations/batch-512/pass-0025",
+      "payload": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/evaluations/batch-512/pass-0025",
+      "log": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/evaluation-logs/batch-512-pass-0025-compatible-v1.log",
+      "started_utc": "2026-11-10T18:22:39.757895+00:00",
+      "eligibility_reassessment": {
+        "reason": "failed progress omits previously verified checkpoint; retained failure record and original startup campaign identify settled pass0025",
+        "failure_record": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/batch-512/failure/failure.json",
+          "sha256": "b54d762e0621573e4bd659d36c9d2828e63fc2a19ce5658752cf1ca832fa82bd"
+        }
+      },
+      "exit_code": 0,
+      "wall_seconds": 22.80978620913811,
+      "finished_utc": "2026-11-10T18:23:02.568347+00:00",
+      "c_summary": {
+        "median_rmse": 0.44637491749623665,
+        "truth_posterior_median_correlation": -0.034851479288658414,
+        "median_posterior_width90": 1.3472380101680757,
+        "prior_width90": 1.35,
+        "median_width90_over_prior": 0.9979540816059819,
+        "prior_midpoint_rmse": 0.4370734589111061
+      },
+      "sbc_passed": [
+        false,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "conditional_status": "fail"
+    },
+    "128:100": {
+      "status": "unavailable",
+      "reason": "training failed before this scheduled checkpoint; no evaluation or automatic retry",
+      "training_progress": {
+        "status": "failed",
+        "completed_updates": 122703,
+        "failure": "failure/failure.json",
+        "automatic_retry": false
+      }
+    },
+    "512:100": {
+      "status": "unavailable",
+      "reason": "training failed before this scheduled checkpoint; no evaluation or automatic retry",
+      "training_progress": {
+        "status": "failed",
+        "completed_updates": 75715,
+        "failure": "failure/failure.json",
+        "automatic_retry": false
+      }
+    },
+    "128:250": {
+      "status": "unavailable",
+      "reason": "training failed before this scheduled checkpoint; no evaluation or automatic retry",
+      "training_progress": {
+        "status": "failed",
+        "completed_updates": 122703,
+        "failure": "failure/failure.json",
+        "automatic_retry": false
+      }
+    },
+    "512:250": {
+      "status": "unavailable",
+      "reason": "training failed before this scheduled checkpoint; no evaluation or automatic retry",
+      "training_progress": {
+        "status": "failed",
+        "completed_updates": 75715,
+        "failure": "failure/failure.json",
+        "automatic_retry": false
+      }
+    },
+    "128:500": {
+      "status": "unavailable",
+      "reason": "training failed before this scheduled checkpoint; no evaluation or automatic retry",
+      "training_progress": {
+        "status": "failed",
+        "completed_updates": 122703,
+        "failure": "failure/failure.json",
+        "automatic_retry": false
+      }
+    },
+    "512:500": {
+      "status": "unavailable",
+      "reason": "training failed before this scheduled checkpoint; no evaluation or automatic retry",
+      "training_progress": {
+        "status": "failed",
+        "completed_updates": 75715,
+        "failure": "failure/failure.json",
+        "automatic_retry": false
+      }
+    }
+  },
+  "finished_utc": "2026-11-10T18:23:42.490382+00:00"
+}

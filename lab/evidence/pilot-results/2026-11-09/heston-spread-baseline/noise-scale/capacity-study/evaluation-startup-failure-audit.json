@@ -1,0 +1,30 @@
+{
+  "format": "heston_capacity_evaluation_startup_failure_audit_v1",
+  "recorded_utc": "2026-11-10T18:20:00.412493+00:00",
+  "original_campaign": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/evaluation-campaign.json",
+    "sha256": "28b86ca6fc50f688098e391ec64177cb457bf37e5079565dd4cd42a601d9ef1e"
+  },
+  "failed_job": {
+    "batch_size": 512,
+    "completed_bank_passes": 25,
+    "log": {
+      "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/evaluation-logs/batch-512-pass-0025.log",
+      "sha256": "73ebbc152fc36864a2e47a5aab65b4dfaf89e17cf4d165a7916ddb24fa5195db"
+    },
+    "failure_stage": "frozen loader serialized schedule equality before evaluation output creation or posterior sampling",
+    "evaluation_output_created": false,
+    "payload_output_created": false,
+    "posterior_sampling_started": false,
+    "optimizer_updates": 0
+  },
+  "all_other_jobs_unattempted": true,
+  "original_watcher_interrupted": true,
+  "training_workers_unchanged": true,
+  "cause": {
+    "archive_and_checkpoint_module": null,
+    "imported_runtime_module": "scripts.continue_heston_spread_scale",
+    "other_serialized_schedule_fields_equal": true
+  },
+  "scope": "Read-only evaluator startup failure; no statistical result or training run was repeated."
+}

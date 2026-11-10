@@ -1,0 +1,42 @@
+{
+  "format": "heston_capacity_evaluation_campaign_v1",
+  "status": "watching",
+  "started_utc": "2026-11-10T18:15:05.258213+00:00",
+  "deadline_utc": "2026-11-10T19:48:49+00:00",
+  "per_evaluation_outer_wall_seconds": 300,
+  "automatic_retry": false,
+  "jobs": {
+    "128:25": {
+      "status": "pending"
+    },
+    "512:25": {
+      "status": "failed",
+      "checkpoint": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/batch-512/checkpoints/pass-0025",
+      "out": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/evaluations/batch-512/pass-0025",
+      "payload": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/evaluations/batch-512/pass-0025",
+      "log": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/evaluation-logs/batch-512-pass-0025.log",
+      "started_utc": "2026-11-10T18:15:55.280392+00:00",
+      "exit_code": 1,
+      "wall_seconds": 3.455179249867797,
+      "finished_utc": "2026-11-10T18:15:58.735946+00:00"
+    },
+    "128:100": {
+      "status": "pending"
+    },
+    "512:100": {
+      "status": "pending"
+    },
+    "128:250": {
+      "status": "pending"
+    },
+    "512:250": {
+      "status": "pending"
+    },
+    "128:500": {
+      "status": "pending"
+    },
+    "512:500": {
+      "status": "pending"
+    }
+  }
+}

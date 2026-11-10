@@ -8,6 +8,7 @@ import unittest
 from unittest.mock import patch
 
 import numpy as np
+import scripts
 
 from scripts import evaluate_heston_spread_scale_continuation as evaluation
 from scripts import train_heston_spread_scale as scale
@@ -166,6 +167,7 @@ class CapacityEvaluationTests(unittest.TestCase):
         source = {"fixture": self.artifact(Path(dummy.__file__))}
         with ExitStack() as stack:
             stack.enter_context(patch.dict("sys.modules", {"scripts.continue_heston_spread_scale": dummy}))
+            stack.enter_context(patch.object(scripts, "continue_heston_spread_scale", dummy, create=True))
             stack.enter_context(patch.object(evaluation.previous, "validate_study"))
             stack.enter_context(patch.object(evaluation.previous, "selected_reference_protocol", return_value=(ref_path, {})))
             stack.enter_context(patch.object(evaluation.previous.scale_reference, "validate_protocol"))

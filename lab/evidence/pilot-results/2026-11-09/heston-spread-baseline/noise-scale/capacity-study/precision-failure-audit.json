@@ -1,0 +1,137 @@
+{
+  "format": "heston_spread_scale_precision_failure_audit_v1",
+  "original_protocol": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/protocol.json",
+    "sha256": "76f36d6c623944a98e6b6fede7776d46dd871b97f391c3b39e6781f8d3102b16"
+  },
+  "original_campaign": {
+    "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/lab/evidence/pilot-results/2026-11-09/heston-spread-baseline/noise-scale/capacity-study/campaign.json",
+    "sha256": "d9abee6b162fe65b88de77a2a979cfd42f57e4d64a2b31e1e16a74b0a37a7600"
+  },
+  "original_absolute_deadline_utc": "2026-11-10T19:48:49.590152+00:00",
+  "arms": [
+    {
+      "batch_size": 128,
+      "status": "stopped_before_bad_optimizer_update",
+      "completed_finite_updates": 122703,
+      "additional_finite_updates": 62703,
+      "complete_passes": 80,
+      "finite_batches_in_next_pass": 143,
+      "last_finite_example_count": 8018304,
+      "bad_batch_row": 102,
+      "physical_bank_row": 26111,
+      "raw_c": 1.9999999587495068,
+      "normalized_c_float64": 0.9999999724996712,
+      "normalized_c_float32": 1.0,
+      "stable_logit_float64": 17.40906784742835,
+      "stable_logit_float32": 17.409067153930664,
+      "all_saved_state_arrays_finite": true,
+      "gradients_for_bad_batch_available": false,
+      "last_scheduled_checkpoint": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/batch-128/checkpoints/pass-0025",
+      "artifacts": {
+        "run": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/batch-128/run.json",
+          "sha256": "32cd33125232176a5b55d8be8a83e16589326c3abda5ae3550d16f3748ea834d"
+        },
+        "progress": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/batch-128/progress.json",
+          "sha256": "acff31f4420c743e03220f4d3f7d56f9b947583ea90ce352ea18f3869fee743f"
+        },
+        "failure": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/batch-128/failure/failure.json",
+          "sha256": "6d4d976c363ccd03d728bd68e08f5f17810cd6e02a5fdd7abed71b1982b711ff"
+        },
+        "offending_batch": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/batch-128/failure/offending-batch-and-gradients.npz",
+          "sha256": "201f217645182a9b054084713bc26c0c88047df1093bf03c7cf6d1d0e8f417ab"
+        },
+        "last_valid_model": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/batch-128/failure/last-valid-pre-update.keras",
+          "sha256": "049d96d386136cf7826c9a8b127fd576bb9aec906d6633204d2e0f97297e5bfd"
+        },
+        "last_valid_state": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/batch-128/failure/pre-update-state.npz",
+          "sha256": "36a8f58710aa1227feae9c8e3860e576a8c6f8ce7ed1e1e0d8317a85b6922174"
+        },
+        "log": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/batch-128.log",
+          "sha256": "747b055b987ddb085edc2b73dcba0b6fc569f8bb6abaf0c1854c6ec2216e87cf"
+        }
+      }
+    },
+    {
+      "batch_size": 512,
+      "status": "stopped_before_bad_optimizer_update",
+      "completed_finite_updates": 75715,
+      "additional_finite_updates": 15715,
+      "complete_passes": 80,
+      "finite_batches_in_next_pass": 35,
+      "last_finite_example_count": 8017920,
+      "bad_batch_row": 486,
+      "physical_bank_row": 26111,
+      "raw_c": 1.9999999587495068,
+      "normalized_c_float64": 0.9999999724996712,
+      "normalized_c_float32": 1.0,
+      "stable_logit_float64": 17.40906784742835,
+      "stable_logit_float32": 17.409067153930664,
+      "all_saved_state_arrays_finite": true,
+      "gradients_for_bad_batch_available": false,
+      "last_scheduled_checkpoint": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/batch-512/checkpoints/pass-0025",
+      "artifacts": {
+        "run": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/batch-512/run.json",
+          "sha256": "564657d3b53d4b37e52f996067675f3312de9e0f8c7957376a122dd146817210"
+        },
+        "progress": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/batch-512/progress.json",
+          "sha256": "67fe6973598d0508ef345814018ed48a03e1f56cca32634331d3e514a1523a86"
+        },
+        "failure": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/batch-512/failure/failure.json",
+          "sha256": "b54d762e0621573e4bd659d36c9d2828e63fc2a19ce5658752cf1ca832fa82bd"
+        },
+        "offending_batch": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/batch-512/failure/offending-batch-and-gradients.npz",
+          "sha256": "edcd3050e70db9ee71ac83a10d725979f2c02060aea986a990fae978f5bb836b"
+        },
+        "last_valid_model": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/batch-512/failure/last-valid-pre-update.keras",
+          "sha256": "64d3ccc583c2586eaf47b604b05500e7d2935c54ef3534c0adeb1e90f2089a2d"
+        },
+        "last_valid_state": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/batch-512/failure/pre-update-state.npz",
+          "sha256": "5d8fe112551f8a9b7d3d52d356e3c957c4ea1c327cf5a301c72662bc822faff1"
+        },
+        "log": {
+          "path": "/Users/afengler/Projects/proj_sbi4finance/sbi4finance-heston-spread-baseline-20261109/local-artifacts/heston-spread-baseline-20261109/noise-scale/capacity-study/batch-512.log",
+          "sha256": "cff74291ffc09fed3710adbb04f47e4a04210470304fee5d0fc08e26a2576ebc"
+        }
+      }
+    }
+  ],
+  "same_offending_raw_quote_vector_and_all_six_targets": true,
+  "cause": "A valid Uniform c generated extremely close to2 yields normalized z that rounds to1 when Keras logarithms usefloat32; the bounded target logit becomes+inf before optimization.",
+  "repair": "Compute log(x-lower)-log(upper-x) onhost with NumPyfloat64 for allsix bounded targets, then cast finite logits tofloat32; retain the original inverse transform for posterior samples.",
+  "mathematical_target_unchanged": true,
+  "clipping_or_resampling": false,
+  "unchanged": [
+    "source60k warmstart",
+    "100k physical bank",
+    "physical priors",
+    "c priorUniform(.5,2)",
+    "paired per-pass rawc and Gaussian errors",
+    "54 ordered observationsY/h",
+    "architecture and effective dropout0",
+    "batch sizes128/512",
+    "500completepasses/checkpoints25,100,250,500",
+    "example-based cosineLR and preservedAdamstate"
+  ],
+  "replay_reason": "Both original runs failed deterministically on the same rawexample before a gradient update. Corrected host precision changes finite roundoff too, so replayboth fromsame60k undernewidentities instead of claiming bitwiseoldtrajectory.",
+  "numerical_scope": "The implemented density remains in bounded transformed coordinates; this algebraically equivalent forward map does not change prior, likelihood, inverse map or Jacobian formula.",
+  "budget_scope": "Preserve the original absolute campaigndeadline. Charge and retain original failed-fit walltime. No automatic extensions, hyperparameter searches or seed changes.",
+  "reserved_arrays_opened": false,
+  "new_pricing_labels": false,
+  "new_reference_sampling": false,
+  "scientific_acceptance": false,
+  "automatic_extension": false
+}
