@@ -151,6 +151,73 @@ def _noise(ratios: np.ndarray) -> str:
         "This is a counterfactual noise calculation, not an old-versus-new market calibration study.")
 
 
+def _sbc_records(evidence):
+    stages = (("default-010000", "Dropout .05 / 10k", "#a65331"),
+              ("zero-010000", "Dropout 0 / 10k", "#85a9bd"),
+              ("zero-050000", "Dropout 0 / 50k", "#286784"),
+              ("annealed-060000", "Dropout 0 / 60k + lower LR", "#654a97"))
+    result = []
+    for ident, label, color in stages:
+        record = _read(evidence/"sbc-development"/(ident+".json"))
+        ranks = np.asarray(record["fractional_ranks"], dtype=float)
+        if (ranks.shape != (512,5) or not np.isfinite(ranks).all()
+                or np.any(ranks < 0) or np.any(ranks >= 1)
+                or record["parameter_names"] != list(_NAMES)
+                or record["metrics_exact_match"] is not True):
+            raise ValueError("SBC figure requires exactly reproduced development ranks")
+        result.append((record, ranks, label, color))
+    return result
+
+
+def _sbc_histogram(evidence):
+    record, ranks, _, color = _sbc_records(evidence)[-1]
+    fig, axes = plt.subplots(1,5,figsize=(12.0,3.0),sharex=True,sharey=True,layout="constrained")
+    for index, axis in enumerate(axes):
+        axis.hist(ranks[:,index], bins=np.linspace(0,1,11), color=color, edgecolor="white", linewidth=.7)
+        axis.axhline(512/10,color="#2d6147",ls="--",lw=1)
+        axis.set(title=_SYMBOLS[index],xlabel="Fractional rank",xlim=(0,1),ylim=(0,None))
+        axis.set_xticks((0,.5,1))
+        axis.spines[["top","right"]].set_visible(False)
+    axes[0].set_ylabel("Datasets per bin")
+    fig.suptitle("60k checkpoint: SBC rank histograms across 512 simulated datasets",fontsize=13)
+    fig.supxlabel("10 equal bins; dashed line = uniform expected count 51.2. Random fluctuation is expected.",fontsize=9)
+    return _svg(fig,"Latest Heston SBC rank histograms",
+        "Five histograms show randomized fractional ranks of each generating parameter among 512 posterior draws, "
+        "on the same 512 held-out development datasets. Uniform ranks should be approximately flat. "
+        "The dashed expected count is not a confidence band. All five marginal DKW screens pass at this checkpoint.")
+
+
+def _sbc_ecdf(evidence):
+    from sbi4finance.calibration.validation import ecdf_difference
+    records = _sbc_records(evidence)
+    fig, axes = plt.subplots(1,5,figsize=(12.0,3.5),sharex=True,sharey=True,layout="constrained")
+    band = float(records[-1][0]["rank_dkw"]["dkw_bound"])
+    for axis in axes:
+        axis.axhspan(-band,band,color="#dbece1",zorder=0)
+        axis.axhline(0,color="#446152",lw=.7)
+        axis.set(xlim=(0,1),xlabel="Fractional rank")
+        axis.set_xticks((0,.5,1))
+        axis.spines[["top","right"]].set_visible(False)
+        axis.grid(alpha=.15)
+    for record, ranks, label, color in records:
+        grid, difference = ecdf_difference(ranks)
+        for index, axis in enumerate(axes):
+            axis.plot(grid,difference[:,index],color=color,lw=1.3 if record is records[-1][0] else 1.,
+                      label=label,alpha=1. if record is records[-1][0] else .85)
+    for index, axis in enumerate(axes):
+        axis.set_title(_SYMBOLS[index])
+    axes[0].set_ylabel("Rank ECDF − uniform CDF")
+    handles, labels = axes[0].get_legend_handles_labels()
+    fig.legend(handles,labels,loc="outside lower center",ncol=2,frameon=False,fontsize=9,
+               title=f"Green band: ±{band:.4f}, simultaneous marginal DKW reference (reused development pool)")
+    fig.suptitle("SBC development history: zero is uniform; large departures flag rank distortion",fontsize=13)
+    return _svg(fig,"Heston SBC rank ECDF comparison",
+        "Five panels compare rank ECDF minus the uniform CDF for the original 10k dropout fit, "
+        "zero-dropout 10k and 50k checkpoints and the lower-rate 60k checkpoint. "
+        "The green simultaneous marginal DKW reference band is diagnostic on this repeatedly reused development pool, "
+        "not fresh acceptance evidence. Passing these screens does not establish per-dataset or joint posterior accuracy.")
+
+
 def make_figures(evidence: Path, noise_ratios: np.ndarray) -> dict[str, str]:
     """Return self-contained SVG strings; write no output files."""
     evidence = Path(evidence)
@@ -158,4 +225,5 @@ def make_figures(evidence: Path, noise_ratios: np.ndarray) -> dict[str, str]:
                          "font.family": "DejaVu Sans", "font.size": 10,
                          "axes.titlesize": 11, "axes.labelsize": 10}):
         return {"conditional": _conditional(evidence), "training": _training(evidence),
-                "noise": _noise(noise_ratios)}
+                "noise": _noise(noise_ratios), "sbc_histogram": _sbc_histogram(evidence),
+                "sbc_ecdf": _sbc_ecdf(evidence)}

@@ -4,6 +4,7 @@ Presentation only: no fitting, option pricing, posterior sampling, or bank reads
 The optional old-noise comparison reuses the tutorial's existing noise function.
 """
 import argparse
+import ast
 import hashlib
 import html
 import json
@@ -44,6 +45,18 @@ def frame(title, body, ident):
     return f'<section id="{ident}"><h2>{title}</h2>{body}</section>'
 
 
+def source_function(path, name):
+    text = Path(path).read_text()
+    for node in ast.parse(text).body:
+        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) and node.name == name:
+            return ast.get_source_segment(text, node)
+    raise ValueError(f"missing source function {name}")
+
+
+def code_block(text):
+    return '<pre><code>'+html.escape(text)+'</code></pre>'
+
+
 def metric_cell(value, verdict, suffix=""):
     return f'<span class="number">{value:.2f}{suffix}</span> {status(verdict)}'
 
@@ -72,8 +85,9 @@ main{max-width:1120px;margin:auto;background:white;padding:48px 52px 64px}header
 p{margin:12px 0 17px}.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:12px;font-weight:750;color:var(--blue)}.lead{font-size:19px;max-width:920px}.muted,small{color:var(--muted)}small{display:block;font-size:12px;line-height:1.45;margin-top:5px}.actions{display:flex;gap:12px;flex-wrap:wrap;margin:22px 0 0}button{border:1px solid var(--blue);border-radius:6px;padding:9px 14px;color:var(--blue);background:white;font:600 14px system-ui;cursor:pointer}button:hover{background:var(--pale)}a{color:var(--blue);text-underline-offset:3px}nav{display:flex;gap:8px 20px;flex-wrap:wrap;margin:24px 0;font-size:14px}section{padding-top:38px;margin-top:30px;border-top:1px solid var(--line);scroll-margin-top:15px}
 .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:25px 0}.card{padding:18px;background:var(--pale);border-top:3px solid var(--blue);border-radius:4px}.card strong{display:block;font-size:18px;margin-bottom:7px}.card p{font-size:14px;margin:0}.callout{padding:18px 22px;border-left:4px solid var(--blue);background:var(--pale);margin:22px 0}.callout.warn{border-color:#bb7625;background:#fff8e9}.callout p:last-child{margin-bottom:0}.equation{font:18px/1.7 Georgia,serif;padding:16px 20px;background:#f4f7f8;border-radius:5px;overflow:auto;margin:15px 0}.equation small{font:13px/1.5 system-ui}
 .table-scroll{overflow-x:auto;margin:18px 0}table{border-collapse:collapse;width:100%;font-size:14px;line-height:1.45}th,td{padding:12px 10px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left}thead th{background:var(--pale);color:#254b5c;font-weight:750}tbody th{font-weight:650;min-width:140px}td{min-width:130px}.number{font-variant-numeric:tabular-nums;white-space:nowrap;font-weight:600}.badge{display:inline-block;white-space:nowrap;border-radius:4px;padding:2px 6px;font-size:11px;font-weight:750;text-transform:uppercase;letter-spacing:.02em}.pass{color:var(--pass);background:#e6f4ed}.fail{color:var(--fail);background:#fbecea}.inconclusive{color:var(--inc);background:#fff4d6}.chart{margin:25px 0 15px}.chart svg{width:100%;height:auto;display:block}.caption{font-size:13px;color:var(--muted);margin:8px 0 24px}.filter{font-size:14px;margin:20px 0;padding:10px 14px;border:1px solid var(--line);border-radius:4px}.filter input{margin-right:9px}details{border:1px solid var(--line);padding:14px 18px;margin:20px 0;border-radius:5px}summary{cursor:pointer;font-weight:700}ol,ul{padding-left:24px}li{margin:9px 0}.sources{font-size:12px}.sources td{min-width:0;word-break:break-word}.hash{font-family:ui-monospace,SFMono-Regular,monospace;font-size:10px;overflow-wrap:anywhere}footer{margin-top:38px;padding-top:20px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}code{font: .92em ui-monospace,SFMono-Regular,monospace;background:#f0f4f6;padding:1px 4px;border-radius:3px}.two{display:grid;grid-template-columns:1fr 1fr;gap:22px}.two>div{min-width:0}
+pre{padding:18px 20px;background:#142d3b;color:#edf5f8;border-radius:5px;overflow-x:auto;font:12.5px/1.6 ui-monospace,SFMono-Regular,monospace;tab-size:4}pre code{font:inherit;background:transparent;padding:0;color:inherit}.flow{border:1px solid var(--line);padding:16px 20px;background:#f8fafb;white-space:pre-wrap;color:var(--ink);font-size:14px}.settings td:first-child{font-weight:650}
 @media(max-width:740px){main{padding:28px 20px 45px}.cards,.two{grid-template-columns:1fr}h2{font-size:24px}td,th{padding:10px 8px}.lead{font-size:17px}}
-@media print{body{background:white;font-size:10.5pt}main{max-width:none;padding:0}h1{font-size:27pt}h2{font-size:19pt}h3{font-size:14pt}section{padding-top:20px;margin-top:20px}nav,.actions,.filter{display:none}.cards{grid-template-columns:repeat(3,1fr)}.card,.callout,thead th{-webkit-print-color-adjust:exact;print-color-adjust:exact}.table-scroll{overflow:visible}table{font-size:9pt}thead{display:table-header-group}tr,.card{break-inside:avoid}.chart{break-inside:avoid}.chart svg{max-height:650px}a{color:inherit}details:not([open])>:not(summary){display:block}tr[hidden]{display:table-row!important}.sources{font-size:8pt}.hash{font-size:7pt}@page{size:A4;margin:16mm}}
+@media print{body{background:white;font-size:10.5pt}main{max-width:none;padding:0}h1{font-size:27pt}h2{font-size:19pt}h3{font-size:14pt}section{padding-top:20px;margin-top:20px}nav,.actions,.filter{display:none}.cards{grid-template-columns:repeat(3,1fr)}.card,.callout,thead th{-webkit-print-color-adjust:exact;print-color-adjust:exact}.table-scroll{overflow:visible}table{font-size:9pt}thead{display:table-header-group}tr,.card{break-inside:avoid}.chart{break-inside:avoid}.chart svg{max-height:650px}a{color:inherit}details:not([open])>:not(summary){display:block}tr[hidden]{display:table-row!important}.sources{font-size:8pt}.hash{font-size:7pt}pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:8pt;line-height:1.45;background:#eef3f5;color:var(--ink)}@page{size:A4;margin:16mm}}
 """
 
 
@@ -97,6 +111,16 @@ def build(historical_root, out):
         "Shared original noise function": ROOT/"tutorial/src/sbi4f_tutorial/shared/surface.py",
         "HTML report producer": Path(__file__).resolve(),
         "Report figure producer": Path(__file__).with_name("heston_spread_report_figures.py"),
+        "SBC reproduction manifest": EVIDENCE/"sbc-development/manifest.json",
+        "SBC default 10k ranks": EVIDENCE/"sbc-development/default-010000.json",
+        "SBC zero-dropout 10k ranks": EVIDENCE/"sbc-development/zero-010000.json",
+        "SBC zero-dropout 50k ranks": EVIDENCE/"sbc-development/zero-050000.json",
+        "SBC lower-rate 60k ranks": EVIDENCE/"sbc-development/annealed-060000.json",
+        "SBC extraction producer": ROOT/"lab/scripts/extract_heston_spread_sbc.py",
+        "Resolved network and optimizer settings": EVIDENCE/"network-settings.json",
+        "Actual fixed-c workflow and zero-dropout code": ROOT/"lab/scripts/train_heston_spread_baseline.py",
+        "Actual original-floor continuation": ROOT/"lab/scripts/continue_heston_spread_baseline.py",
+        "Actual lower-rate continuation": ROOT/"lab/scripts/anneal_heston_spread_baseline.py",
     }
     for path in sources.values():
         if not path.is_file():
@@ -125,21 +149,30 @@ def build(historical_root, out):
       <title>Heston development report — conditional accuracy and the original comparison</title><style>''',CSS,
       '''</style></head><body><main><header><div class="eyebrow">Heston development report · 10 November 2026</div>
       <h1>What improved, what still fails, and why the comparison changed</h1>
-      <p class="lead">The simpler observation model is implemented. Neural accuracy improves substantially after removing dropout and lowering the learning rate, but the latest 60k checkpoint still fails conditional posterior checks. The study also changes several things beyond noise, so it cannot isolate the effect of smaller noise.</p>
+      <p class="lead">The latest 60k checkpoint passes all five marginal SBC rank screens on simulated development data, but does not reproduce MCMC accurately enough on either of the two completed synthetic examples. Its real-market posterior also differs substantially from MCMC. It is an improving research pilot, with conditional accuracy still unresolved.</p>
       <div class="actions"><button onclick="window.print()">Print / save as PDF</button><button id="download">Download report data</button></div></header>
-      <nav aria-label="Contents"><a href="#verdict">Main findings</a><a href="#checks">Conditional checks</a><a href="#training">Training progress</a><a href="#comparison">Original versus current</a><a href="#noise">Noise construction</a><a href="#xi">What ξ means</a><a href="#choices">Why changes happened</a><a href="#next">Controlled next steps</a><a href="#sources">Sources</a></nav>''']
+      <nav aria-label="Contents"><a href="#verdict">How well does it work?</a><a href="#checks">Network versus MCMC</a><a href="#sbc">SBC plots</a><a href="#training">Training progress</a><a href="#settings">Exact network, dropout and rates</a><a href="#comparison">Original versus current</a><a href="#noise">Noise construction</a><a href="#xi">What ξ means</a><a href="#choices">Why changes happened</a><a href="#next">Controlled next steps</a><a href="#sources">Sources</a></nav>''']
     parts.append(frame("The findings to keep separate", '''
-      <div class="cards"><div class="card"><strong>Observation law simplified</strong><p>One Gaussian error scale, c × half-spread. Current fits fix c=1; there is no inferred τ.</p></div>
-      <div class="card"><strong>Inference still needs work</strong><p>Both completed synthetic cases still fail conditional agreement. Passing population rank checks does not resolve those failures.</p></div>
-      <div class="card"><strong>Attribution is unresolved</strong><p>More parameters, wider prior support, different contracts, a different network and fewer distinct training surfaces changed together.</p></div></div>
+      <div class="cards"><div class="card"><strong>Across 512 simulations</strong><p>5/5 marginal SBC rank screens do not reject at 60k. Nominal 90% intervals contain the truths in 91.6–93.4% of cases across parameters.</p></div>
+      <div class="card"><strong>On specific synthetic quotes</strong><p>Neither of the two completed reference cases passes every check. Broad-case means miss by up to .78 reference SD; some market-like widths are 54% too wide.</p></div>
+      <div class="card"><strong>On the real market query</strong><p>All five parameter means differ substantially from MCMC. The raw network posterior is not validated for that query.</p></div></div>
+      <p><strong>The practical assessment:</strong> removing dropout and lowering the learning rate materially improved the approximation. The model passes one averaged simulation check, while visible per-dataset errors remain. The two synthetic cases are a small development panel, not an estimate of a domain-wide failure rate. All fits here use five physical parameters, fixed c=1 and no τ.</p>
       <div class="callout warn"><strong>The correction to the earlier interpretation</strong><p>Smaller noise is a plausible source of greater approximation difficulty. The current experiments do not establish that it caused the regression. This pilot is a broader redesign, not a noise-only adaptation of the original lesson.</p></div>
       <p>Numerical and likelihood checks passed at the sampled points. Three reference cases pass convergence and sampled pricing-refinement checks. The boundary reference reached its declared time cap and remains inconclusive. No new neural checkpoint or lesson is accepted; revised-grid production and Bergomi remain gated.</p>''',"verdict"))
-    parts.append(frame("Which conditional posterior checks fail?", '''
+    parts.append(frame("What does “conditional result” mean?", '''
+      <p><strong>Conditional means conditional on this one observed set of quotes.</strong> Hold all 54 quotes fixed and ask whether the fast network reproduces the posterior from our chosen Heston model. MCMC supplies a reference for that same dataset.</p>
+      <pre class="flow">One fixed set of 54 option quotes
+    ├─ Network → fast posterior draws for five Heston parameters
+    └─ MCMC    → reference posterior draws for those same parameters
+                    ↓
+          Compare posterior means and 90% interval widths</pre>
       <p>For one fixed set of 54 quotes, compare the network’s draws with MCMC under the <strong>same prior, pricing model and Gaussian likelihood</strong>. These checks assess the network’s approximation to that posterior. They do not require its mean to equal a generating truth and do not establish that Heston describes actual market prices.</p>
       <div class="equation">Mean error = |network mean − reference mean| / reference SD ≤ 0.30<br>
       Width ratio = network central-90% width / reference central-90% width ∈ [0.75, 1.25]</div>
       <p>A <strong>pass</strong> places the sampling-uncertainty interval wholly inside the allowed range; a <strong>fail</strong> places it wholly outside; an <strong>inconclusive</strong> result overlaps a boundary. The evaluator accounts for correlated reference draws and finite neural draws, using approximate family-adjusted uncertainty intervals and two reference block lengths. A combined quantity passes only when both mean and width pass.</p>
-      <p class="caption">All tables and the chart below use the predeclared <strong>60k endpoint</strong>. The 55k outcome is also retained; neither endpoint was chosen from the loss curve.</p>'''+svg("conditional")+'''
+      <div class="callout"><strong>Exactly how one case receives its label</strong><p>The network has five parameter targets. We also calculate two variance quantities from the same paired draws. That gives seven quantities × two checks = <strong>14 checks per quote surface</strong>. Any definite failure makes that case fail; all 14 must pass for the case to pass; otherwise it is inconclusive. “Fail” does not mean every parameter is wrong. An unavailable reference also makes a case inconclusive.</p></div>
+      <p>For example, market-like κ and θ pass both checks, and the later-window expected variance passes too. The case still fails because ξ’s mean misses by .57 reference SD and ρ’s interval is 54% too wide. The result describes those specific disagreements, not a completely unsuccessful inverse fit.</p>
+      <p class="caption">The following case tables and mean/width chart use the predeclared <strong>60k endpoint</strong>. The 55k outcome is also retained; neither endpoint was chosen from the loss curve.</p>'''+svg("conditional")+'''
       <label class="filter"><input type="checkbox" id="hide-passes">Hide rows whose mean and width both pass</label>'''+
       "".join('<article class="case"><h3>'+CASES[cid]+'</h3><p>'+description+'</p>'+conditional_table(latest["cases"][cid])+conditional_table(latest["cases"][cid],True)+'</article>'
         for cid,description in (("synthetic-broad","A synthetic surface generated from a predeclared broad-prior parameter draw. “Broad” describes the source prior, not a broad posterior."),
@@ -149,6 +182,24 @@ def build(historical_root, out):
       <p>All five physical-parameter mean checks fail. Their absolute discrepancies are about 7.2 SD (v₀), 3.7 SD (κ), 10.0 SD (θ), 20.9 SD (ξ) and 33.9 SD (ρ). This disagreement remains an inference problem to assess; market-model inadequacy is a separate issue and does not by itself excuse disagreement with the matched posterior.</p>'''+conditional_table(latest["cases"]["market"])+conditional_table(latest["cases"]["market"],True)+'''</details>
       <details><summary>Boundary example: unscored because its reference is unresolved</summary><p>The first MCMC attempt failed convergence. Its one escalation exhausted the 2,700-second wall limit. The failure and partial chains remain retained. We have no accepted reference for scoring this neural case; its status is inconclusive.</p></details>
       <p><strong>Why can a small mean error remain inconclusive?</strong> For broad-case ρ, the estimated error is only −0.024 reference SD, but its sampling-uncertainty interval is [−0.310,+0.263], slightly crossing −0.30. Finite neural-draw uncertainty dominates here. Its excessive central interval width is nevertheless a definite failure.</p>''',"checks"))
+    sbc_latest=read(EVIDENCE/"sbc-development/annealed-060000.json")
+    sbc_rows="".join(f'<tr><th>{LABELS[name]}</th><td>{sbc_latest["rank_dkw"]["rank_ks"][i]:.4f}</td><td>{sbc_latest["rank_dkw"]["dkw_bound"]:.4f}</td><td>Does not reject</td><td>{100*sbc_latest["coverage"]["0.9"]["coverage"][i]:.1f}%</td></tr>' for i,name in enumerate(protocol["names"]))
+    parts.append(frame("Simple SBC plots: how it behaves across simulated datasets",'''
+      <p>SBC asks a different question. For each of 512 held-out development parameters drawn from the prior, generate a noisy quote surface and draw 512 samples from the network posterior. Rank the generating value among those posterior draws. Across repeated simulations, those ranks should be approximately uniform.</p>
+      <pre class="flow">Repeat over 512 simulated datasets:
+Prior parameter → Heston quotes + Gaussian error → 512 network posterior draws
+                              ↓
+             Rank each generating parameter among its draws
+                              ↓
+        Across datasets, the rank histograms should look approximately flat</pre>
+      <p><strong>Why these plots were missing:</strong> the earlier evaluator computed SBC and saved KS/coverage summaries, but explicitly discarded the 512×5 fractional ranks before writing its JSON. The report initially showed those summaries alone. To add the plots, we repeated inference from the same four frozen checkpoints with the original validation rows, noise and sample seeds. The reproduced KS, support and coverage statistics match the saved evaluations exactly. No network was trained, no new synthetic dataset was selected and no reserved test arrays were opened.</p>'''+svg("sbc_histogram")+'''
+      <p class="caption">These are the latest 60k ranks, with 10 bins and an expected uniform count of 51.2 per bin. Random departures from a flat histogram are normal. The dashed count is not a simultaneous confidence band.</p>'''+svg("sbc_ecdf")+'''
+      <p>The ECDF plot makes the deviations easier to compare across runs: zero means uniform ranks. The green band is the saved simultaneous marginal DKW reference, ±.07193. At 60k, none of the five marginal rank screens rejects. It is not a claim that every conditional posterior is correct.</p>
+      <div class="table-scroll"><table><thead><tr><th>Parameter</th><th>60k rank KS</th><th>DKW threshold</th><th>Rank screen</th><th>Truth inside nominal 90% interval</th></tr></thead><tbody>'''+sbc_rows+'''</tbody></table></div>
+      <p>The coverage figures also show mild overcoverage. At the 90% level, the pointwise Wilson intervals for κ and θ are approximately [90.6%,95.0%] and [90.9%,95.2%], excluding 90%. Those intervals are not adjusted across parameters or coverage levels. Thus “5/5 rank screens do not reject” must not be read as “every calibration diagnostic passes.”</p>
+      <div class="callout warn"><strong>Why SBC and the per-dataset failures can coexist</strong><p>SBC averages over prior-generated datasets; biases can vary across datasets and a finite screen has limited power. It does not establish joint dependence or real-market validity. As a hypothetical illustration, returning the prior for every dataset can yield uniform SBC ranks while ignoring the observations. This is not a description of our fitted network; it shows why SBC alone cannot establish accurate use of the quotes.</p></div>
+      <p>SBC remains useful for detecting systematic rank distortion across many simulations without calculating an MCMC posterior for every dataset. The fixed-quote comparisons supply the complementary check of whether the network approximates the actual posterior on particular examples.</p>
+      <p>The same development pool has been reused across checkpoints and interventions. These plots help diagnose this development round; they are not fresh acceptance evidence for the chosen recipe.</p>''',"sbc"))
     stages = [("Default dropout .05",10000,EVIDENCE/"evaluation-update-010000-provisional.json"),
               ("Dropout zero",10000,EVIDENCE/"evaluation-dropout-zero-update-010000-provisional.json"),
               ("Same schedule floor",25000,EVIDENCE/"evaluation-dropout-zero-update-025000.json"),
@@ -162,9 +213,53 @@ def build(historical_root, out):
         ranks=r["population"]["rank_dkw"]["passed"]
         stage_rows.append(f'<tr><th>{label}</th><td>{steps:,}</td><td>{min(widths):.2f}–{max(widths):.2f}×</td><td>{sum(ranks)}/5</td><td>{status(r["conditional_status"])}</td></tr>')
     parts.append(frame("What training improved—and what it did not",svg("training")+'''
-      <div class="table-scroll"><table><thead><tr><th>Recipe / endpoint</th><th>Updates</th><th>Broad physical width range</th><th>Development rank checks</th><th>Conditional result</th></tr></thead><tbody>'''+"".join(stage_rows)+'''</tbody></table></div>
+      <div class="table-scroll"><table><thead><tr><th>Recipe / endpoint</th><th>Updates</th><th>Broad physical width range</th><th>Development rank screens not rejecting</th><th>Network/MCMC agreement on checked quote sets</th></tr></thead><tbody>'''+"".join(stage_rows)+'''</tbody></table></div>
+      <p class="caption">The last column is an aggregate label: any definite case failure makes that checkpoint’s checked-panel result fail. It is not a percentage of accurate posteriors. Case-level details and individual mean/width results are shown above.</p>
       <p>Removing dropout changed a matched 10k control substantially. Continuing to 50k improved widths but left unstable centering. Eight discarded future updates showed that the original 5e-5 learning-rate floor could move broad-case means by .275–.818 reference SD RMS. That prompted one bounded schedule change: 5e-6 for 5k updates, then 5e-7 for 5k. Adam moments, iteration and all saved state were retained.</p>
       <p>The annealing fit plus both evaluations completed in 99.86 seconds. At 60k the population rank checks pass 5/5 and 90% coverage is .916–.934, yet both synthetic conditional panels fail. These are repeated development checks on 512 cases, not fresh acceptance evidence. Lower loss and acceptable average ranks can coexist with errors for individual quote surfaces.</p>''',"training"))
+    architecture=read(EVIDENCE/"network-settings.json")
+    workflow_code=source_function(sources["Actual fixed-c workflow and zero-dropout code"],"build_workflow")
+    zero_code=source_function(sources["Actual fixed-c workflow and zero-dropout code"],"switch_dropout_zero")
+    rate_code=source_function(sources["Actual lower-rate continuation"],"make_schedule")
+    parts.append(frame("Exactly which network, dropout and learning rates were used?",f'''
+      <p><strong>There are two fresh runs, not one run with dropout removed at 10k.</strong> Branch A stops at 10k. Branch B starts afresh with matched initialization, rows and noise streams, effective dropout zero, and is then continued. The 60k result belongs entirely to Branch B.</p>
+      <pre class="flow">Branch A: fresh matched construction → dropout .05 → 10k → STOP
+
+Branch B: same construction; change existing dropout rates to 0 before training
+          → fresh 0–10k fit → same Adam state to 50k
+          → same Adam state, lower rates to 55k and 60k → STOP</pre>
+      <h3>Network and preprocessing</h3>
+      <div class="table-scroll"><table class="settings"><thead><tr><th>Setting</th><th>Actual value</th></tr></thead><tbody>
+      <tr><td>Inference family</td><td>BayesFlow 2.1.0 spline CouplingFlow, Keras 3.15.1 / JAX 0.11.1</td></tr>
+      <tr><td>Observations</td><td>54 complete ordered noisy prices divided by their fixed half-spreads, then learned workflow standardization. No variable locations, missing-quote masks or summary network.</td></tr>
+      <tr><td>Posterior targets</td><td>Five physical Heston parameters: v₀, κ, θ, ξ, ρ. Bounded parameters use the adapter’s logit constraints and learned standardization. c=1 is fixed; no c or τ target is learned.</td></tr>
+      <tr><td>Flow blocks</td><td>6; each contains ActNorm, a fixed random permutation and a dual coupling. Two conditional MLPs per block: 12 MLPs total.</td></tr>
+      <tr><td>Conditioner MLP</td><td>Two hidden layers of 128 units each. Dense → hard_silu → Dropout at each hidden layer; orthogonal initialization, no residual connection or hidden normalization. A zero-initialized Dense projector produces spline parameters.</td></tr>
+      <tr><td>Spline transformation</td><td>16 rational-quadratic bins; learned domain initialized at [−3,3] with affine tails. This is not a posterior support cutoff at ±3.</td></tr>
+      <tr><td>Sampling</td><td>Draw a five-dimensional standard Normal latent and transform it conditional on the quotes, then map back to the physical bounds. Posterior draw randomness comes from this latent, not dropout.</td></tr>
+      <tr><td>Size</td><td>{architecture['resolved_architecture']['trainable_scalar_count']:,} learned scalars in 84 trainable arrays. 24 Dropout layers were constructed; their rate is .05 in Branch A and zero in Branch B.</td></tr>
+      <tr><td>Data and batches</td><td>20k distinct clean training surfaces; fresh independent Gaussian quote noise on each exposure; batch 128, with a final short batch of 32 in each pass; training seed 9011.</td></tr>
+      </tbody></table></div>
+      <p><strong>Actual construction code</strong>, extracted from the frozen trainer. The constructor visibly sets <code>dropout=.05</code>; the rest of the resolved defaults are listed in the table above.</p>'''+code_block(workflow_code)+'''
+      <h3>Why was dropout present?</h3>
+      <p>The spline pilot explicitly carried over the .05 coupling-MLP default. There was no financial reason to require dropout. During training, it sets each hidden activation to zero with probability 5% and scales retained activations by 1/.95. This is neural regularization; it does not remove quotes, add price noise or infer market uncertainty.</p>
+      <p><strong>Validation and posterior inference disable dropout.</strong> We did not use Monte Carlo dropout. The original FlowMatching builder’s time-MLP default was dropout 0.0, so using .05 here was another change from that recipe. It should have been explicit in the comparison from the beginning.</p>
+      <p>The matched zero-dropout control first constructs/builds the original .05 model, then changes the existing 24 rates to zero before its fresh training run. The switch is checked to leave all initialized arrays unchanged, and the original saved deterministic initial probes match. The original run did not save its full initial array archive, so a direct archive-to-archive initial-state comparison is unavailable. Directly constructing a new network with <code>dropout=0</code> is not claimed to be an exact replay of this control.</p>
+      <p>The saved archives retain the original .05 constructor configuration. The strict checkpoint loader reapplies the recorded effective zero rates and verifies saved state and seeded inference. This explains why inspecting a constructor field alone can show .05 even for the zero-dropout control.</p>
+      <details><summary>Actual zero-dropout switch and its state checks</summary>'''+code_block(zero_code)+'''</details>
+      <h3>Optimizer and complete learning-rate timeline</h3>
+      <p>Adam uses β₁=.9, β₂=.999, ε=1e−7, AMSGrad=False, no weight decay, no gradient clipping, no EMA and no gradient accumulation. The original lesson’s separate AdamW recipe is not used here.</p>
+      <p>The first engineering run was budgeted for 10k updates with a 10%-of-initial-rate floor. The later 10k→50k continuation deliberately retained that schedule to test additional updates with the same recipe. The update-scale diagnostic then motivated the two lower-rate stages. Thus 60k is a sequence of separately declared development interventions, not one schedule chosen before the first fit. These are documented engineering choices, not established optimal settings.</p>
+      <div class="table-scroll"><table><thead><tr><th>Branch</th><th>Pre-update iteration t</th><th>Learning rate</th><th>State handling</th></tr></thead><tbody>
+      <tr><th>A and B fresh fits</th><td>0–9,999</td><td>Cosine decay from 5e−4 toward 5e−5; horizon 10,000; alpha=.1</td><td>Separate fresh fits; matched initial construction and data/noise schedule. A stops after update 10,000.</td></tr>
+      <tr><th>B continuation</th><td>10,000–49,999</td><td>5e−5</td><td>Original cosine horizon remains 10k, so this is its constant floor. Adam moments/iteration retained.</td></tr>
+      <tr><th>B lower-rate stage 1</th><td>50,000–54,999</td><td>5e−6</td><td>All saved state retained. Only the learning-rate schedule changes.</td></tr>
+      <tr><th>B lower-rate stage 2</th><td>55,000–59,999</td><td>5e−7</td><td>Same stateful run. Stops after update 60,000.</td></tr>
+      </tbody></table></div>
+      <p class="caption">t is the zero-based optimizer iteration before an update; the update number is t+1. Thus the checkpoint named 55k has completed updates at t=0,…,54,999.</p>
+      <div class="equation">For the first 10k: η(t)=5×10<sup>−5</sup> + ½(5×10<sup>−4</sup>−5×10<sup>−5</sup>)[1+cos(π min(t,10,000)/10,000)]</div>
+      <p>The later schedule is created by the following actual function, with <code>BOUNDARY=54999</code> and <code>RATES=(5e-6,5e-7)</code>:</p>'''+code_block(rate_code)+'''
+      <p>It is assigned using <code>model.optimizer.learning_rate = make_schedule()</code> after restoring the 50k checkpoint. Assignment verifies every saved array remains unchanged; Adam is not re-created. Existing historical producers and checkpoints remain unchanged. These snippets document the runs that produced the plots, not a newly executed training recipe.</p>''',"settings"))
     parts.append(frame("What differs from the original example?",f'''
       <p>The current lesson’s saved original-task example uses the 100k, final-500 FlowMatching candidate. Its historical archive used 50k surfaces. Both retain the same original four-dimensional task.</p>
       <div class="table-scroll"><table><thead><tr><th>Aspect</th><th>Original lesson task / recipe</th><th>Current spread pilot</th></tr></thead><tbody>
@@ -175,6 +270,9 @@ def build(historical_root, out):
       <tr><th>Contracts</th><td>63 canonical quotes; symmetric standardized log-moneyness ±2; seven tenors through one year</td><td>54 actual SPXW contracts; put-heavy; six expiries about 21–325 calendar days</td></tr>
       <tr><th>Noise</th><td>Prescribed IV-scale rule converted at fixed 20% vega</td><td>Observed price half-spreads; fixed c=1</td></tr>
       <tr><th>Network</th><td>FlowMatching, four 256-unit blocks</td><td>Spline coupling flow, [128,128] conditioners</td></tr>
+      <tr><th>Hidden-layer dropout</th><td>Time-MLP default 0.0</td><td>Explicit .05 in initial branch; zero throughout matched control and its continuations</td></tr>
+      <tr><th>Optimizer</th><td>AdamW; weight decay .005; per-variable clipnorm 1.5</td><td>Adam; no weight decay or clipping</td></tr>
+      <tr><th>Learning-rate recipe</th><td>100k candidate: 9,775-update warm-up from 5e−5 to 5e−4, then 185,725-update cosine decay toward zero; scheduled zero at t=195,500</td><td>10k cosine 5e−4→5e−5; floor through 50k; 5e−6 to 55k; 5e−7 to 60k on the zero-dropout branch</td></tr>
       <tr><th>Distinct clean training surfaces</th><td>{old_rows:,} in final-500 candidate; archive 50,000</td><td>20,000-row prefix of an available 100k bank</td></tr>
       <tr><th>Training updates / batch</th><td>{old_updates:,} / 256 in 100k recipe; archive about 98,000 / 256</td><td>60,000 / 128, including the declared continuation and annealing</td></tr>
       <tr><th>Checks</th><td>Original candidate passed three examined development conditional cases; historical archive was imperfect</td><td>Different predeclared cases; explicit sampling-uncertainty-aware verdicts</td></tr>
@@ -239,10 +337,14 @@ def build(historical_root, out):
           "latest_updates":60000,"scientific_acceptance":False,"sources":source_data,
           "same_54_counterfactual_old_sd_over_halfspread":{"median":float(np.median(ratios)),"min":float(min(ratios)),"max":float(max(ratios)),"count_above_one":int(np.sum(ratios>1)),"ratios":ratios.tolist()},
           "latest_case_statuses":{k:v["status"] for k,v in latest["cases"].items()},
-          "scope":"Read-only presentation of frozen development records; no fitting, posterior draws, option pricing or bank-array access."}
+          "network_settings":{key:architecture[key] for key in ("resolved_architecture","optimizer","learning_rate_timeline")},
+          "sbc":{ident:{key:record[key] for key in ("parameter_names","rows","draws_per_case","seed","fractional_ranks","rank_dkw","coverage","metrics_exact_match")}
+                 for ident in ("default-010000","zero-010000","zero-050000","annealed-060000")
+                 for record in [read(EVIDENCE/"sbc-development"/(ident+".json"))]},
+          "scope":"Renderer reads frozen records only. SBC ranks separately reproduce existing checkpoint inference with exact original metrics; no fitting, option pricing or reserved-array access."}
     parts.append(frame("Sources, scope and reproducibility",'''
-      <p>This file is self-contained: charts, styles, equations and tables render offline without a math service or JavaScript library. Source links are optional GitHub links to the private project. Neither source access nor scripts are required to read the report. Use the print button for a paper copy; the data button exports the source inventory and noise-comparison statistics.</p>
-      <p>The main new evidence uses 4,096 neural draws per conditional query and 512 development cases with 512 draws each for population checks. The reserved test pool remains unopened. Conditional mean/width tests are useful screens, not a complete test of joint shape or tails. The original and current panels differ, so their pass counts are not a controlled head-to-head score.</p>
+      <p>This file is self-contained: charts, styles, equations and tables render offline without a math service or JavaScript library. Source links are optional GitHub links to the private project. Neither source access nor scripts are required to read the report. Use the print button for a paper copy; the data button exports the source inventory, reproduced SBC ranks/statistics, resolved network/rate settings and noise-comparison statistics.</p>
+      <p>The main new evidence uses 4,096 neural draws per conditional query and 512 development cases with 512 draws each for population checks. The SBC plot extraction repeats the four existing checkpoint population queries with the exact original observations and seeds and verifies their metrics exactly; it creates no new training results. The reserved test pool remains unopened. Conditional mean/width tests are useful screens, not a complete test of joint shape or tails. The original and current panels differ, so their pass counts are not a controlled head-to-head score.</p>
       <details><summary>Input files and SHA-256 identities</summary><div class="table-scroll"><table class="sources"><thead><tr><th>Source</th><th>Repository path</th><th>SHA-256</th></tr></thead><tbody>'''+"".join(source_rows)+'''</tbody></table></div></details>
       <p>Primary external reference for the market volatility-of-volatility analogue: <a href="https://www.cboe.com/us/indices/dashboard/vvix/">Cboe VVIX description and FAQ</a>. Model interpretation and local numerical scales above follow from the explicitly stated Heston SDE; the daily scale is a derivation, not an empirical calibration.</p>''',"sources"))
     payload=json.dumps(data,ensure_ascii=False,allow_nan=False).replace("<","\\u003c")
