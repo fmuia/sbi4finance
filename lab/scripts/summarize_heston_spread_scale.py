@@ -11,7 +11,6 @@ import sys
 import numpy as np
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-from scripts import evaluate_heston_spread_baseline as baseline
 from scripts import run_heston_spread_scale_reference as consumer
 from scripts import train_heston_spread_baseline as fixed
 
@@ -35,10 +34,15 @@ def ready_summary(protocol,spec):
     diagnostic_path=Path(spec["evidence_out"])/"diagnostics.json"
     with np.load(chain_path,allow_pickle=False) as archive:
         chains=archive["parameters"].copy()
-    derived=baseline.product_values(chains,protocol["products"]).reshape(-1,len(protocol["products"]))
+    derived=consumer.producer.product_values(chains,protocol["products"]).reshape(-1,len(protocol["products"]))
     result["products"]={name:{"interval":interval,"quantiles_05_50_95":np.quantile(derived[:,i],[.05,.5,.95]).tolist()}
         for i,(name,interval) in enumerate(protocol["products"].items())}
-    result["sources"].extend([artifact(diagnostic_path),artifact(chain_path)])
+    posterior_path=Path(spec["evidence_out"])/"posterior.json"
+    posterior=read(posterior_path)
+    if posterior["products"]!=result["products"]:
+        raise ValueError("derived reference product summaries differ from producer record")
+    result["sources"].extend([artifact(diagnostic_path),artifact(posterior_path)])
+    result["chain_payload_identity"]=artifact(chain_path)
     return result
 
 
@@ -55,7 +59,7 @@ def build(study_path,reference_path,out,*,recovery=None):
         posterior=read(posterior_path)
         refs.append({"case_id":case,"mode":"one","status":"completed","reference_ready":True,
             **posterior,"sources":[artifact(record["run_path"]),artifact(record["diagnostics_path"]),artifact(posterior_path),
-                                    artifact(record["chain_payload_path"])]})
+                                    ],"chain_payload_identity":artifact(record["chain_payload_path"])})
     for spec in protocol["jobs"]:
         consumer_path=Path(protocol["evidence_root"])/(spec["id"]+".consumer.json")
         if not (Path(spec["evidence_out"])/"run.json").exists():
@@ -70,7 +74,8 @@ def build(study_path,reference_path,out,*,recovery=None):
         "panel":artifact(study["panel"]["path"]),"training_curve":artifact(directory/"training"/"learning-curve.json"),
         "training_record":artifact(directory/"training"/"run.json"),
         "training_protocol":artifact(directory/"training-protocol.json"),
-        "trainer_source":artifact(Path(__file__).with_name("train_heston_spread_scale.py")),"evaluations":evaluations}
+        "trainer_source":artifact(Path(__file__).with_name("train_heston_spread_scale.py")),
+        "fixed_helper_source":artifact(Path(fixed.__file__)),"evaluations":evaluations}
     if recovery is not None:artifacts["recovery"]=artifact(recovery)
     result={"format":"heston_spread_scale_report_summary_v1","artifacts":artifacts,"references":refs,
         "sources":{"summary_producer":artifact(__file__)},"scientific_acceptance":False,
