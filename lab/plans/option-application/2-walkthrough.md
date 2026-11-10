@@ -1,15 +1,15 @@
 # Option application on SPX · Layer 2: walkthrough
 
 *Layer 2 of 3 · about 30 minutes · [Index](README.md) · [Layer 1](1-overview.md) ·
-[Glossary](glossary.md)*
+[Layer 3](3-full-detail.md) · [Glossary](glossary.md)*
 
 *10 November 2026: the plan for the tutorial of 14 November
 ([PR #81](https://github.com/fmuia/sbi4finance/pull/81)). There are no results yet.
 Numbers marked "first checks" come from quick runs of 9 November
 ([evidence](../../evidence/pilot-results/2026-11-09/design-and-error/README.md)); numbers
 marked "noise session" come from exact fits and test networks of the same day, which are
-not committed. Layer 3 will give every derivation; until it exists, the details are in
-[the plan](../OPTION-APPLICATION-PLAN.md).*
+not committed. [Layer 3](3-full-detail.md) gives every derivation and integrates the
+results pushed on 10 November by Alex and Stefan; the main ones are summarized here.*
 
 This layer takes each step of [Layer 1](1-overview.md) one level deeper: what we do, why,
 the formulas that carry it, and the numbers behind each choice. The steps have the same
@@ -23,8 +23,8 @@ The three goals of Layer 1, made precise:
    two volatility swaps and a down-and-in put on the S&P 500, give on each of four days
    (9 to 12 November 2026) a mark, a 90% range, a prudent value and the range of a small
    book. All of it comes from one posterior per day and per model, under two models
-   (Heston and rough Bergomi) that see the same data, the same 54 quotes and the same
-   error model.
+   (Heston and rough Bergomi) that see the same data, the same quotes and the same error
+   model.
 2. **SBI makes this fast and testable.** Show that a network trained once returns each
    day's posterior in seconds; that it agrees with an exact posterior wherever one can be
    computed; and that its 90% ranges contain the truth about 90% of the time on hundreds
@@ -278,11 +278,9 @@ B^{(s)} = \sum_j n_j\,P_j^{(s)} .
 The book's prudent value is the 10% quantile of $`B^{(s)}`$. Comparing the book's reserve
 with the sum of the products' standalone reserves measures how much the products offset
 each other under the posterior. The Regulation replaces this offset with the fixed factor
-$`\alpha = 50\%`$; the joint draws measure it. The plan's example book is short one
-down-and-in put, long one forward start and short one 1-year volatility swap. *Open
-point:* a bank that issues autocallables is normally long the down-and-in put, because
-the investors sell it to the bank; whether the example book should follow that is to be
-decided.
+$`\alpha = 50\%`$; the joint draws measure it. The example book is long one down-and-in
+put, as a bank that issues autocallables is (the notes' buyers in effect sell it the
+put), long one forward start and short one 1-year volatility swap.
 
 **The three ingredients.** The posterior needs a model with its prior (step 4), the
 quotes (step 5), and an error model that turns the two into a likelihood (step 6).
@@ -292,7 +290,7 @@ Together they define how quotes are generated:
 \theta \sim p(\theta),\qquad y = P(\theta) + \text{error},
 ```
 
-with $`P(\theta)`$ the model's prices at the 54 chosen quotes. This is a simulator, and
+with $`P(\theta)`$ the model's prices at the chosen quotes. This is a simulator, and
 step 7 learns to invert it.
 
 ## 4. Two models
@@ -391,9 +389,8 @@ The second ingredient is the data the posterior conditions on.
 feed, fetched each evening because Cboe serves only the current snapshot. The raw files
 stay outside Git, identified by their SHA-256 hashes.
 
-**The design.** A fixed set of $`n = 54`$ actual SPXW quotes from Alex's pilot (its
-"put-heavy" design), frozen with their strike, expiry, forward, discount factor,
-half-spread and vega. It is fixed because one network can serve all days only if every
+**The design.** A fixed set of $`n`$ actual SPXW quotes, each frozen with its strike,
+expiry, forward, discount factor, half-spread and vega. It is fixed because one network can serve all days only if every
 observation has the same shape. Using actual quotes, rather than points interpolated on a
 grid, avoids reading errors on the design's own day.
 
@@ -420,18 +417,26 @@ volatility:
 Coverage matters more than density: under smooth model error, doubling the number of
 points within the current range narrows the posteriors by 2–17%, while widening the
 range narrows $`\kappa`$, $`\bar{v}`$, $`\xi`$ and the variance swap by 23–49% (first
-checks). The pilot's design file is not yet on GitHub, so it has not been checked against
-these criteria. If it misses one, the missing points are added from a fallback layout
-(7 maturities from 1 week to 1 year, times 9 values of $`\delta`$ from −5 to +2).
+checks).
 
-**The other days.** On 10 to 12 November the chain is read at the same 54 places in
+**The pilot's 54 quotes, checked.** Alex's pilot used 54 quotes on six expiries from 21
+to 325 days, nine per expiry from $`\delta \approx -4`$ to $`+1`$, with half-spreads of
+0.02–0.10 vol points. They meet the put criterion but miss the 1-week maturity, the second
+maturity under a month, and the $`+2`$ calls. The design is therefore rebuilt as actual
+quotes at the targets of "layout E" (7 maturities from 1 week to 1 year, times 9 values of
+$`\delta`$ from −5 to +2): 62 of the 63 targets are quoted, there is no 1-year expiry
+settled on the close, and the last call is revised to $`+1.5`$ (Alex's audit). The final
+contract list is not frozen yet.
+
+**The other days.** The plan reads 10 to 12 November at the design's places in
 $`(k, T)`$: a smoothing spline of implied volatility against $`\delta`$ for each expiry,
 linear interpolation of the total implied variance $`\sigma^2 T`$ between the two
 expiries around $`T`$, and no extrapolation beyond the quoted strikes. Reading adds about
 0.01 vol points (the spline) to 0.05–0.25 (interpolation between expiries); the error is
 smooth across strikes, so the model-error term absorbs it. The vegas stay frozen (they
 change by a few percent a day), and the day's half-spreads enter through the multiplier
-$`c`$ of step 6.
+$`c`$ of step 6. Alex's baseline instead uses actual quotes only and treats another day
+as another design; the choice is open (Layer 3, step 5.4).
 
 **Data kept out of the fit,** for the checks of step 8:
 - the **model-free variance swap**: for each expiry whose strikes reach far enough into
@@ -531,10 +536,15 @@ points and contain the market from 1 month to 1 year (noise session, tentative).
 - An extra independent model-error term is added only if the checks of step 8 (V2) ask
   for it.
 
-**Relation to the pilot.** Alex's pilot uses the same price form, with an independent
-model error ($`K_\ell = I`$) and $`\tau`$ uniform from 0 to 2 vol points. The plan keeps
-everything else and changes the error law. The pilot's version is kept for comparison
-(D4).
+**Where the implementation stands.** Alex's pilot used the same price form with an
+independent model error ($`K_\ell = I`$) and $`\tau`$ uniform from 0 to 2 vol points; its
+version is kept for comparison (D4). His current baseline (PRs #82 and #85) keeps only the
+quote term ($`\tau = 0`$), with $`c`$ fixed at 1 as the primary teaching target and $`c`$
+inferred as an extension. On the market chain its exact posterior puts $`c`$ at its upper
+bound of 2: the misfit shows through. The two tracks support a two-stage reading: the
+quote term alone to validate inference and teach what the quotes identify if the model
+were right, then the smooth model error for the product ranges on market data. Which one
+the market application uses is the main open decision (Layer 3, step 6.8).
 
 ## 7. Computing the posterior: simulation-based inference
 
@@ -566,10 +576,10 @@ $`\log q(\theta \mid y)`$ over the simulated pairs, whose optimum is the posteri
 the tutorial's BayesFlow configuration uses flow matching, a different loss with the same
 target.
 
-**Simulation banks.** The expensive part, the model prices at the 54 quotes, does not
+**Simulation banks.** The expensive part, the model prices at the design's quotes, does not
 depend on the errors. It is computed once and stored as a **bank**: 100,000 draws from
 the prior with their clean prices.
-- Heston's bank exists (the pilot's). If the design changed, rebuilding it would take
+- Heston's bank exists for the pilot's 54 quotes; the rebuilt design needs repricing,
   about 1.3 CPU-hours.
 - Rough Bergomi's is new: 90,000 draws for training, 5,000 for validation and 5,000 for
   testing, an estimated 660–1,300 CPU-hours at the accuracy target of step 4, measured
@@ -585,6 +595,20 @@ measurement scale, and returns the joint posterior of the model parameters and
 $`\ln\tau`$, through a transform that maps each prior range onto the real line. The
 configuration and the seed are chosen on simulated data only, never on the real days.
 
+**Whitened inputs: the finding of 10 November.** A network given these inputs, merely
+standardized one by one, ignored the error scale entirely: inferring $`c`$, Alex's
+network returned its prior (truth–estimate correlation about 0), although MCMC on the same
+data recovers $`c`$ well. The reason is geometric. All quotes move together with the
+parameters, by far more than the noise, so the residual that carries the error scale is
+a tiny combination of nearly identical inputs (input condition number about 2 million),
+which training cannot resolve. Stefan's notebook showed the fix and Alex's controlled
+pilot isolated it: a fixed full **whitening** of the inputs (a rotation and rescaling,
+fitted on training simulations, that makes them uncorrelated with unit variance) raised
+the correlation to 0.92. The whitened network then overfits when each training row keeps
+one noise draw, giving intervals that are too narrow; drawing fresh errors at every pass,
+as this plan does, is the remedy being tested. Inferring $`\tau`$ is the same kind of
+problem, so this plan's networks whiten their inputs too.
+
 **Cost after training.** A Heston training run takes about 100 seconds per 30,000
 updates on one GPU, and 10–20 runs per model are planned. After that, a day's posterior
 takes seconds.
@@ -596,8 +620,9 @@ and each check answers one question.
 
 **Reference posteriors,** computed directly, to check the network against:
 - *Heston, exact:* MCMC on the Fourier likelihood, with PyMC's DEMetropolisZ sampler (it
-  needs no gradients), 4 chains of 2,000 tuning steps and 1,000 draws. Accepted when the
-  chains agree ($`\hat R \le 1.01`$) and give at least 400 effective draws per parameter.
+  needs no gradients), 4 chains of 2,000 tuning steps and 2,000 retained draws, at most
+  45 CPU-minutes per case. Accepted when the chains agree ($`\hat R \le 1.01`$) and give
+  at least 400 effective draws for every parameter and reported product.
 - *Rough Bergomi, by importance sampling:* draw 1,000 parameter sets from the network,
   weight each by prior times likelihood over the network's density, and use a fixed-seed
   Monte Carlo likelihood, so that the weights are a deterministic function of
@@ -613,7 +638,7 @@ and each check answers one question.
 | V1, prior predictive | Can the model, its prior and its error model produce each real day? | Every quote lies inside the 1–99% band of 10,000 simulations from the prior |
 | V2, error-model fit | Do exact fits leave residuals like those the error model describes? | Whitened residuals have lag-1 correlation below 0.3 along strikes, and mean square within $`1 \pm 2\sqrt{2/n}`$ |
 | V3, calibration | On 2,000 simulated cases, are the network's posteriors calibrated? | The rank of the truth among posterior draws is uniform (SBC), and 90% intervals cover 87–93% |
-| V4, accuracy | Does the network match the reference on each case? | Means within 0.3 reference standard deviations; 90% widths within a factor 0.8–1.25; $`\tau`$'s median within 20%; product quantiles within 10% of the reference range |
+| V4, accuracy | Does the network match the reference on each case? | Means within 0.3 reference standard deviations; 90% widths within a factor 0.75–1.25; $`\tau`$'s median within 20%; product quantiles within 10% of the reference range |
 | V5, held-out quotes | Do the fits predict quotes they did not use? | Coverage of 90% predictive intervals between 80% and 97% by region; reported, not tuned |
 | V6, market | Do the fits match two market prices they never used? | Reported per day: the model-free variance swap at 1, 3 and 12 months against the band of $`\sqrt{K_{\text{var}}}`$, and the listed 2-year put against its predictive band; not tuned |
 
@@ -630,13 +655,21 @@ Three terms in the table:
 **V4b: why did the pilot's network fail?** Alex's 75,000-update network fails V4 on the
 market day: its $`\tau`$ has posterior mean 0.14 vol points, against the exact
 posterior's 0.61 (its continuation to 88,000 updates hit a non-finite loss, cause
-unresolved). A possible cause: trained only on independent errors, it meets smooth market
-residuals it has never seen, and reads part of the misfit as signal. The test compares
-network and reference on (1) simulated cases with independent errors, (2) simulated cases
-with smooth errors of the same size, and (3) the market day, and measures the correlation
-of neighbouring whitened residuals on the market day. Agreement on (1) alone, with
-correlated residuals, points to the error law rather than to training. The same test is
-repeated on the smooth-error network.
+unresolved). Two causes are possible. The leading one is now input conditioning (step 7):
+its inputs were not whitened, and the $`\tau`$ networks failed even on their own
+simulator, where the error law is right by construction. The other is the error law:
+trained on independent errors, the network meets smooth market residuals. The test
+compares network and reference, with and without whitening, on (1) simulated cases with
+independent errors, (2) simulated cases with smooth errors of the same size, and (3) the
+market day, and measures the correlation of neighbouring whitened residuals on the market
+day. Failure already on (1) without whitening points to conditioning; agreement on (1)
+with failure on (2) and (3) points to the error law.
+
+**Status.** No Heston network passes V4 yet. The fixed-$`c`$ teaching network has
+intervals 1.13–1.41 times the reference widths on a broad simulated case; the whitened
+network that infers $`c`$ learns it but undercovers (55–61% at a nominal 90% for the
+physical parameters). Pooled checks can pass while single posteriors are wrong, which is
+why V4 is binding.
 
 **If a check fails.** If V3 or V4 fails, the real-day results come from the reference
 posteriors, and the network is shown on simulated data with its scores. If V5 or V6
@@ -748,6 +781,9 @@ Finally, what the outputs will establish, and where they stop.
    it, and the text says so.
 7. Four days illustrate day-to-day behaviour; they are not a history.
 8. The raw quotes must be fetched each evening.
+9. A network must read error scales from whitened inputs. The whitener belongs to one
+   ordered design and is refitted for every new design or model, and a whitened network
+   overfits fixed training noise unless the noise is redrawn.
 
 ## Back to the goals, the audience and the practitioner
 

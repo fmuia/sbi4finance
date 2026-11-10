@@ -1,6 +1,7 @@
 # Observation design and error checks · 9 November 2026
 
-Evidence behind [the option-application plan](../../../../plans/OPTION-APPLICATION-PLAN.md).
+Evidence behind the option-application plan of 9 November, now
+[Layer 3 of the option-application documentation](../../../../plans/option-application/3-full-detail.md).
 These are quick checks run in a scratch environment (Laplace/Fisher approximations
 and least-squares fits), not production studies or accepted assets. Key numbers
 are in [`summary.json`](summary.json).

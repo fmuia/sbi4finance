@@ -1,9 +1,10 @@
 # Application notebook refinement: execution plan
 
-> **9 November 2026.** The option applications' error model, observation design and
+> **10 November 2026.** The option applications' error model, observation design and
 > downstream products are replanned for the 14 November tutorial in
-> [`lab/plans/OPTION-APPLICATION-PLAN.md`](../../lab/plans/OPTION-APPLICATION-PLAN.md).
-> Where it conflicts with the option sections below, that plan takes precedence.
+> [`lab/plans/option-application/`](../../lab/plans/option-application/README.md), in three
+> layers; Layer 3 holds every detail and the open decisions. Where it conflicts with the
+> option sections below, that document takes precedence.
 
 Updated 1 November 2026 against merged baseline `7751e4c` (PRs #54 and #63).
 The workshop is now two hours. Refine the content and presentation first; defer

@@ -5,12 +5,19 @@
 Plain-language definitions of the finance and statistics terms the layers use, in
 alphabetical order. Each layer also explains a term where it first appears.
 
+**ACT/365F.** A time convention: actual elapsed time divided by 365 days. Alex's frozen
+design records settlement times this way; the plan counts business days over 252.
+
 **Additional valuation adjustment (AVA).** The amount by which a position's fair value
 exceeds its prudent value. EU banks compute AVAs for several sources of valuation
 uncertainty, among them market price uncertainty (Article 9 of Regulation 2016/101),
 close-out costs (Article 10) and model risk (Article 11). The Regulation's Annex
 aggregates these three with a factor $`\alpha = 50\%`$, and the total is deducted from
 Common Equity Tier 1 capital (CRR, Article 34).
+
+**Aggregation factor.** In the Annex of Regulation 2016/101, the factor $`\alpha = 50\%`$
+by which individual AVAs are reduced when they are added up, a fixed allowance for
+diversification between valuation exposures.
 
 **Amortized inference.** Paying the cost of inference once, by training a network on
 simulated data, so that each later posterior costs seconds. The training cost is spread
@@ -61,6 +68,10 @@ prices.
 **Call option.** Pays $`\max(S_T - K,\,0)`$ at maturity $`T`$: the right to buy the index
 at the strike $`K`$.
 
+**Carry anchors.** Pairs of near-the-money calls and puts used only to estimate each
+expiry's forward and discount factor by put–call parity; they are never fitted as
+observations.
+
 **Cash-settled.** Settled by paying the payoff in cash, not by delivering the underlying.
 SPX options are cash-settled.
 
@@ -78,9 +89,16 @@ Fourier integral turns it into an option price.
 $`LL^\top = \Sigma`$. Multiplying independent normals by $`L`$ gives correlated ones;
 multiplying residuals by $`L^{-1}`$ "whitens" them.
 
+**Close-out costs.** The cost of exiting a position at the bid or ask rather than the mid;
+an AVA category of its own (Article 10 of Regulation 2016/101).
+
 **Common random numbers.** Using the same random numbers in the simulations for every
 parameter draw, so that differences between draws come from the parameters and not from
 simulation noise.
+
+**Condition number.** The ratio of the largest to the smallest eigenvalue of a covariance
+(or curvature) matrix. A large one means some directions are tiny next to others, which
+gradient-based training resolves very slowly.
 
 **Conditional Monte Carlo.** Simulating only part of the randomness and integrating the
 rest in closed form. Here: given the variance path, an option's payoff is averaged with a
@@ -133,8 +151,21 @@ counter, often with a payoff that depends on the index's path.
 liability, in an orderly transaction between market participants (the accounting
 standard IFRS 13). The mark is the bank's estimate of it.
 
+**Fair-value levels (IFRS 13).** Level 1: quoted prices for the identical instrument in an
+active market. Level 2: other observable inputs. Level 3: significant inputs nobody
+quotes; banks disclose how sensitive such values are to reasonably possible alternative
+inputs.
+
 **Feller condition.** In Heston, $`2\kappa\bar{v} \ge \xi^2`$: it keeps the variance
 away from zero. Violating it is allowed; the model and its Fourier prices remain valid.
+
+**Fisher information.** The expected curvature of the log-likelihood in the parameters. Its
+inverse approximates the parameters' covariance; small eigenvalues mark directions the
+data barely constrain.
+
+**Flow matching.** A way to train a generative network by regressing a velocity field that
+carries a simple distribution into the target; used by BayesFlow in the tutorial. Its
+optimum is the same posterior as neural posterior estimation's.
 
 **Forward** ($`F(T)`$). The price agreed today for buying the index at $`T`$, paid at
 $`T`$. It equals today's level grown at the interest rate less the dividend yield,
@@ -189,8 +220,9 @@ posterior and $`p`$ the exact one.
 points, through their correlation. Here: the model error at an unused quote, from the
 residuals at the design's quotes.
 
-**Level 3 (IFRS 13).** A fair value that depends significantly on inputs nobody quotes.
-Banks must disclose how sensitive it is to reasonably possible alternative inputs.
+**Layout E.** The plan's target observation design: 7 maturities from 1 week to 1 year,
+times 9 standardized strikes from −5 to +2 (puts below the money, calls above), realized
+as actual quotes.
 
 **Likelihood.** The probability (density) of the observed data given the parameters,
 $`p(y \mid \theta)`$, seen as a function of $`\theta`$.
@@ -226,6 +258,10 @@ maturities, with size $`\tau`$.
 models or calibrations would give other values. In EU prudent valuation it is the subject
 of Article 11 of Regulation 2016/101.
 
+**Neural posterior estimation (NPE).** Training a conditional density network
+$`q(\theta \mid y)`$ on simulated pairs by maximizing $`\log q(\theta \mid y)`$; the
+optimum is the posterior.
+
 **Out of the money.** A put whose strike is below the forward, or a call whose strike is
 above it: it would pay nothing if the index ended at the forward. These are the liquid
 quotes the design uses.
@@ -233,10 +269,18 @@ quotes the design uses.
 **Over the counter (OTC).** Traded privately between two parties, on terms set by
 contract, rather than on an exchange. There is no public price.
 
+**Overfitting.** Fitting the particular training examples rather than the law they come
+from: training loss keeps falling while validation loss rises. Here, a whitened network
+memorized the fixed noise draws of its training rows.
+
 **Pareto k-hat** ($`\hat k`$). A diagnostic of importance sampling: it estimates how heavy the
 tail of the weights is. Below 0.7 the estimate is reliable.
 
 **P&L.** Profit and loss: the change in the value of a book, usually per day.
+
+**Population and conditional checks.** Population checks (coverage, SBC) average over
+many simulated observations; conditional checks compare single posteriors with reference
+posteriors. Pooled checks can pass while single posteriors are wrong.
 
 **Posterior.** The distribution of the parameters given the data:
 $`p(\theta \mid y) \propto p(y \mid \theta)\,p(\theta)`$.
@@ -249,6 +293,9 @@ the absence of riskless profits.
 **Prior.** The distribution of the parameters before seeing the data: which values are
 considered plausible.
 
+**Prior predictive check.** Simulating data from the prior and the error model, and
+checking that the real data look like a possible draw.
+
 **Product control.** The bank function, independent of the traders, that verifies the
 marks against market data and computes valuation adjustments such as AVAs.
 
@@ -256,6 +303,9 @@ marks against market data and computes valuation adjustments such as AVAs.
 exit the position at that price or better (Regulation 2016/101, Articles 9 and 11). From
 a posterior: the 10% quantile of the value for a position the bank owns, the 90% quantile
 for one it owes.
+
+**Push-forward.** The distribution of a function of a random quantity: here, of a
+product's value when the parameters follow the posterior.
 
 **Put option.** Pays $`\max(K - S_T,\,0)`$ at maturity: the right to sell the index at
 the strike $`K`$. It protects against a fall.
@@ -270,6 +320,9 @@ chains. Close to 1 (here at most 1.01) means the chains agree.
 **Realized volatility and variance.** Computed from the index's daily log returns $`r_i`$
 over a period of $`N`$ trading days: realized variance $`= (252/N)\sum_i r_i^2`$, and
 realized volatility is its square root.
+
+**Reference posterior.** A posterior computed directly from the likelihood (by MCMC or
+importance sampling), used to check the network's.
 
 **Reserve.** Here, the gap between a product's (or a book's) mark and its prudent value.
 
@@ -344,3 +397,9 @@ value also depends on the vol of vol.
 **Whitened residuals.** Residuals multiplied by the inverse Cholesky factor of their
 assumed covariance. If the error model is right, they are independent standard
 normals.
+
+**Whitening (ZCA).** A fixed linear change of input coordinates, fitted on training
+simulations, that makes the inputs uncorrelated with unit variance:
+$`u = W(x - \mu)`$, $`W = Q\,\mathrm{diag}(\lambda)^{-1/2}Q^\top`$ from the
+eigendecomposition of their covariance. It loses no information and lets a network read
+small residuals hidden under large common moves.

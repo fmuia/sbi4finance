@@ -1,11 +1,12 @@
 # Option application on SPX · Layer 1: overview
 
-*Layer 1 of 3 · about 10 minutes · [Index](README.md) · [Layer 2](2-walkthrough.md) · [Glossary](glossary.md)*
+*Layer 1 of 3 · about 10 minutes · [Index](README.md) · [Layer 2](2-walkthrough.md) · [Layer 3](3-full-detail.md) · [Glossary](glossary.md)*
 
 *10 November 2026: what we are building for the tutorial of 14 November
 ([PR #81](https://github.com/fmuia/sbi4finance/pull/81)). There are no results yet;
 "first checks" are quick runs of 9 November. The details are in
-[Layer 2](2-walkthrough.md) and, until Layer 3 replaces it, [the plan](../OPTION-APPLICATION-PLAN.md).*
+[Layer 2](2-walkthrough.md) and [Layer 3](3-full-detail.md), which also integrates the results
+pushed on 10 November.*
 
 ## Goals
 
@@ -167,21 +168,24 @@ curve family for the expected variance. Neither sees information the other does 
 
 ## 5. Which quotes
 
-The second ingredient is the data: a fixed **observation design** of 54 SPX quotes from
-Alex's pilot, with maturities from 1 week to 1 year. Because it is fixed, one trained
-network serves every day: the closing quotes of 9 to 12 November are read at the same 54
-places.
+The second ingredient is the data: a fixed **observation design** of actual SPX quotes.
+Because it is fixed, one trained network can serve every day; how the later days are
+handled is still open.
 
-The design is heavy in **out-of-the-money** puts (strikes below today's level), because
-each region of the smile pins something different (first checks):
-- deep puts: how fast volatility reverts and how much it fluctuates, on which the
-  volatility swaps and the barrier put depend;
+The design needs every region of the smile, because each region pins something different
+(first checks):
+- deep **out-of-the-money** puts (strikes far below today's level): how fast volatility
+  reverts and how much it fluctuates, on which the volatility swaps and the barrier put
+  depend;
 - quotes near today's level: today's volatility;
-- calls: the correlation;
+- calls (strikes above today's level): the correlation;
 - short maturities: the vol of vol; longer ones: the long-run level.
 
 A region left out leaves its quantities loose, and with them the products that depend on
-them.
+them. Alex's pilot used 54 quotes from 3 weeks to 11 months, with calls only up to one
+standard deviation above today's level, so it lacks the shortest maturities and the far
+calls. The design is therefore being rebuilt from 1 week to 1 year, with calls further
+out: 63 target places, 62 of which the market quotes.
 
 ## 6. How quotes differ from the model
 
@@ -208,6 +212,10 @@ then comes out too narrow: precise, but wrong. In first runs on data with smooth
 the measured size, networks trained with independent errors covered the truth 18–58% of
 the time instead of 90%.
 
+The current implementation, Alex's baseline, starts without the model-error term, as a
+first stage that tests the inference. Adding it for the market's product ranges is the
+main open decision (Layer 3, step 6).
+
 ## 7. Computing the posterior: simulation-based inference
 
 With the three ingredients the posterior is defined; computing it is the next problem.
@@ -228,6 +236,11 @@ quotes. The cost is paid once, in simulating 100,000 sets of prices per model an
 training the network. After that, each day's posterior takes seconds; the cost is
 **amortized**.
 
+One requirement surfaced on 10 November: the network must see its inputs **whitened**,
+that is, rotated and rescaled so that they are uncorrelated with unit variance. Without
+that, a network ignored the error scale entirely, although the data determine it; with
+it, the scale is learned (Layer 3, step 7).
+
 ## 8. Checking it
 
 The network's posterior is an approximation, trusted only as far as it passes these
@@ -243,8 +256,9 @@ checks:
 | V6 | Do they match two prices never fitted: the **variance swap**, priced from all the listed options without a model (as the VIX index is), and a listed 2-year put? |
 
 If V3 or V4 fails, the results on real days come from the exact posterior, and the
-failure is reported. Alex's pilot network, trained with independent errors, fails V4 on
-the real day; a dedicated test asks whether the smooth error of step 6 explains this.
+failure is reported. No Heston network passes V4 yet: the latest ones learn the error
+scale but give intervals that are too narrow, and the next fix is being tested (Layer 3,
+steps 7 and 8).
 
 ## 9. From the posterior to the products
 

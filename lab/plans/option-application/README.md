@@ -9,7 +9,7 @@ others, so a reader can go one layer deeper on any step.
 | --- | --- | --- |
 | [1. Overview](1-overview.md) | Every step in a few sentences, with the key equations | about 10 minutes |
 | [2. Walkthrough](2-walkthrough.md) | Each step with its reasoning, its formulas and the numbers behind each choice | about 30 minutes |
-| 3. Full detail (in preparation) | Every definition, derivation, check and implementation item. It will replace [the plan](../OPTION-APPLICATION-PLAN.md). | reference |
+| [3. Full detail](3-full-detail.md) | Every definition, derivation, check and implementation item; the results of 10 November; what is settled, running and still to decide. It replaces the plan of 9 November ([PR #81](https://github.com/fmuia/sbi4finance/pull/81)). | reference |
 
 The [glossary](glossary.md) explains the finance and statistics terms the layers use.
 Textbook background (Itô calculus, Black–Scholes, Heston's Fourier formula, the rough
